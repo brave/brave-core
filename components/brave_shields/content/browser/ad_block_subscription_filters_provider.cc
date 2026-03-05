@@ -23,7 +23,7 @@ AdBlockSubscriptionFiltersProvider::AdBlockSubscriptionFiltersProvider(
     PrefService* local_state,
     AdBlockFiltersProviderManager* manager,
     base::FilePath list_file,
-    base::RepeatingCallback<void(const adblock::FilterListMetadata&)>
+    base::RepeatingCallback<void(const adblock::CxxFilterListMetadata&)>
         on_metadata_retrieved)
     : AdBlockFiltersProvider(false, manager),
       list_file_(list_file),
@@ -33,10 +33,10 @@ AdBlockSubscriptionFiltersProvider::~AdBlockSubscriptionFiltersProvider() =
     default;
 
 void AdBlockSubscriptionFiltersProvider::LoadFilters(
-    base::OnceCallback<
-        void(mojo_base::BigBuffer filter_buffer,
-             uint8_t permission_mask,
-             base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>
+    base::OnceCallback<void(
+        mojo_base::BigBuffer filter_buffer,
+        uint8_t permission_mask,
+        base::OnceCallback<void(adblock::CxxFilterListMetadata)> on_metadata)>
         cb) {
   const auto flow = perfetto::Flow::FromPointer(this);
   TRACE_EVENT("brave.adblock",
@@ -56,7 +56,8 @@ void AdBlockSubscriptionFiltersProvider::OnDATFileDataReady(
     base::OnceCallback<void(
         mojo_base::BigBuffer filter_buffer,
         uint8_t permission_mask,
-        base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)> cb,
+        base::OnceCallback<void(adblock::CxxFilterListMetadata)> on_metadata)>
+        cb,
     const perfetto::Flow& flow,
     DATFileDataBuffer dat_buf) {
   TRACE_EVENT("brave.adblock",
@@ -65,9 +66,9 @@ void AdBlockSubscriptionFiltersProvider::OnDATFileDataReady(
       std::move(dat_buf), 0,
       base::BindOnce(
           [](scoped_refptr<base::SequencedTaskRunner> task_runner,
-             base::RepeatingCallback<void(const adblock::FilterListMetadata&)>
-                 on_metadata,
-             adblock::FilterListMetadata metadata) {
+             base::RepeatingCallback<void(
+                 const adblock::CxxFilterListMetadata&)> on_metadata,
+             adblock::CxxFilterListMetadata metadata) {
             task_runner->PostTask(FROM_HERE,
                                   base::BindOnce(on_metadata, metadata));
           },

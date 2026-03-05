@@ -112,7 +112,7 @@ void AdBlockCustomFiltersProvider::LoadFilters(
     base::OnceCallback<
         void(mojo_base::BigBuffer filter_buffer,
              uint8_t permission_mask,
-             base::OnceCallback<void(adblock::FilterListMetadata)>)> cb) {
+             base::OnceCallback<void(adblock::CxxFilterListMetadata)>)> cb) {
   const uint64_t flow_id = base::RandUint64();
   TRACE_EVENT("brave.adblock", "AdBlockCustomFiltersProvider::LoadFilters",
               perfetto::TerminatingFlow::ProcessScoped(flow_id));

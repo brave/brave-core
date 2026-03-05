@@ -28,10 +28,11 @@ void LoadFiltersTuple(
     base::RepeatingCallback<void(
         std::tuple<mojo_base::BigBuffer,
                    uint8_t,
-                   base::OnceCallback<void(adblock::FilterListMetadata)>>)> cb,
+                   base::OnceCallback<void(adblock::CxxFilterListMetadata)>>)>
+        cb,
     mojo_base::BigBuffer filter_buffer,
     uint8_t permission_mask,
-    base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata) {
+    base::OnceCallback<void(adblock::CxxFilterListMetadata)> on_metadata) {
   cb.Run(std::tuple(std::move(filter_buffer), permission_mask,
                     std::move(on_metadata)));
 }
@@ -86,10 +87,11 @@ void AdBlockFiltersProviderManager::OnChanged(bool is_for_default_engine) {
 
 // Use LoadDATBufferForEngine instead, for Filter Provider Manager.
 void AdBlockFiltersProviderManager::LoadFilters(
-    base::OnceCallback<void(
-        mojo_base::BigBuffer filter_buffer,
-        uint8_t permission_mask,
-        base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>) {
+    base::OnceCallback<
+        void(mojo_base::BigBuffer filter_buffer,
+             uint8_t permission_mask,
+             base::OnceCallback<void(adblock::CxxFilterListMetadata)>
+                 on_metadata)>) {
   NOTREACHED();
 }
 
@@ -106,7 +108,7 @@ void AdBlockFiltersProviderManager::LoadFiltersForEngine(
                                 : additional_engine_filters_providers_;
   auto collect_and_merge = base::BarrierCallback<
       std::tuple<mojo_base::BigBuffer, uint8_t,
-                 base::OnceCallback<void(adblock::FilterListMetadata)>>>(
+                 base::OnceCallback<void(adblock::CxxFilterListMetadata)>>>(
       filters_providers.size(),
       base::BindOnce(&AdBlockFiltersProviderManager::FinishCombinating,
                      weak_factory_.GetWeakPtr(), std::move(cb), flow_id));
@@ -125,7 +127,7 @@ void AdBlockFiltersProviderManager::FinishCombinating(
     std::vector<
         std::tuple<mojo_base::BigBuffer,
                    uint8_t,
-                   base::OnceCallback<void(adblock::FilterListMetadata)>>>
+                   base::OnceCallback<void(adblock::CxxFilterListMetadata)>>>
         results) {
   TRACE_EVENT("brave.adblock",
               "AdBlockFiltersProviderManager::FinishCombinating",
@@ -133,7 +135,7 @@ void AdBlockFiltersProviderManager::FinishCombinating(
 
   std::vector<adblock::mojom::FilterListInputPtr> inputs;
   inputs.reserve(results.size());
-  std::vector<base::OnceCallback<void(adblock::FilterListMetadata)>>
+  std::vector<base::OnceCallback<void(adblock::CxxFilterListMetadata)>>
       on_metadata_cbs;
   on_metadata_cbs.reserve(results.size());
   for (auto& [filters, permission_mask, on_metadata_cb] : results) {
@@ -150,13 +152,13 @@ void AdBlockFiltersProviderManager::FinishCombinating(
 
 void AdBlockFiltersProviderManager::OnParseFilters(
     base::OnceCallback<void(mojo_base::BigBuffer verified_engine_dat)> cb,
-    std::vector<base::OnceCallback<void(adblock::FilterListMetadata)>>
+    std::vector<base::OnceCallback<void(adblock::CxxFilterListMetadata)>>
         on_metadata_cbs,
     mojo_base::BigBuffer verified_engine_dat,
     const std::vector<adblock::mojom::FilterListMetadataPtr> metadata) {
   DCHECK_EQ(on_metadata_cbs.size(), metadata.size());
   for (size_t i = 0; i < metadata.size(); i++) {
-    auto adblock_metadata = adblock::FilterListMetadata();
+    auto adblock_metadata = adblock::CxxFilterListMetadata();
     if (metadata[i]->title) {
       adblock_metadata.title =
           adblock::OptionalString(true, *metadata[i]->title);

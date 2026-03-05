@@ -20,7 +20,7 @@ using brave_component_updater::DATFileDataBuffer;
 class PrefService;
 
 namespace adblock {
-struct FilterListMetadata;
+struct CxxFilterListMetadata;
 }  // namespace adblock
 
 namespace brave_shields {
@@ -31,7 +31,7 @@ class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
       PrefService* local_state,
       AdBlockFiltersProviderManager* manager,
       base::FilePath list_file,
-      base::RepeatingCallback<void(const adblock::FilterListMetadata&)>
+      base::RepeatingCallback<void(const adblock::CxxFilterListMetadata&)>
           on_metadata_retrieved);
   AdBlockSubscriptionFiltersProvider(
       const AdBlockSubscriptionFiltersProvider&) = delete;
@@ -39,12 +39,11 @@ class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
       const AdBlockSubscriptionFiltersProvider&) = delete;
   ~AdBlockSubscriptionFiltersProvider() override;
 
-  void LoadFilters(
-      base::OnceCallback<void(
-          mojo_base::BigBuffer filter_buffer,
-          uint8_t permission_mask,
-          base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>)
-      override;
+  void LoadFilters(base::OnceCallback<
+                   void(mojo_base::BigBuffer filter_buffer,
+                        uint8_t permission_mask,
+                        base::OnceCallback<void(adblock::CxxFilterListMetadata)>
+                            on_metadata)>) override;
 
   void OnListAvailable();
 
@@ -53,7 +52,7 @@ class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
       base::OnceCallback<void(
           mojo_base::BigBuffer filter_buffer,
           uint8_t permission_mask,
-          base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>
+          base::OnceCallback<void(adblock::CxxFilterListMetadata)> on_metadata)>
           cb,
       const perfetto::Flow& flow,
       DATFileDataBuffer dat_buf);
@@ -63,7 +62,7 @@ class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
  private:
   base::FilePath list_file_;
 
-  base::RepeatingCallback<void(const adblock::FilterListMetadata&)>
+  base::RepeatingCallback<void(const adblock::CxxFilterListMetadata&)>
       on_metadata_retrieved_;
 
   base::WeakPtrFactory<AdBlockSubscriptionFiltersProvider> weak_factory_{this};

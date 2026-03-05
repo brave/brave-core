@@ -355,7 +355,7 @@ void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
 
 void AdBlockSubscriptionServiceManager::OnListMetadata(
     const GURL& sub_url,
-    const adblock::FilterListMetadata& metadata) {
+    const adblock::CxxFilterListMetadata& metadata) {
   // The engine will have loaded new list metadata; read it and update local
   // preferences with the new values.
 

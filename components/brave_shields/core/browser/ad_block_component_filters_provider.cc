@@ -32,7 +32,8 @@ void OnReadDATFileData(
     base::OnceCallback<void(
         mojo_base::BigBuffer filter_buffer,
         uint8_t permission_mask,
-        base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)> cb,
+        base::OnceCallback<void(adblock::CxxFilterListMetadata)> on_metadata)>
+        cb,
     uint8_t permission_mask,
     DATFileDataBuffer buffer) {
   std::move(cb).Run(std::move(buffer), permission_mask, base::DoNothing());
@@ -121,10 +122,10 @@ base::FilePath AdBlockComponentFiltersProvider::GetFilterSetPath() {
 }
 
 void AdBlockComponentFiltersProvider::LoadFilters(
-    base::OnceCallback<
-        void(mojo_base::BigBuffer filter_buffer,
-             uint8_t permission_mask,
-             base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>
+    base::OnceCallback<void(
+        mojo_base::BigBuffer filter_buffer,
+        uint8_t permission_mask,
+        base::OnceCallback<void(adblock::CxxFilterListMetadata)> on_metadata)>
         cb) {
   base::FilePath list_file_path = GetFilterSetPath();
 

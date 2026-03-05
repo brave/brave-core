@@ -47,7 +47,7 @@ class AdBlockFiltersProvider {
       base::OnceCallback<
           void(mojo_base::BigBuffer filter_buffer,
                uint8_t permission_mask,
-               base::OnceCallback<void(adblock::FilterListMetadata)>
+               base::OnceCallback<void(adblock::CxxFilterListMetadata)>
                    on_metadata)>) = 0;
 
   base::WeakPtr<AdBlockFiltersProvider> AsWeakPtr();

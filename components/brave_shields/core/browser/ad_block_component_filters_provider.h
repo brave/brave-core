@@ -60,12 +60,11 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
   // Otherwise an empty path is returned
   base::FilePath GetFilterSetPath();
 
-  void LoadFilters(
-      base::OnceCallback<void(
-          mojo_base::BigBuffer filter_buffer,
-          uint8_t permission_mask,
-          base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>)
-      override;
+  void LoadFilters(base::OnceCallback<
+                   void(mojo_base::BigBuffer filter_buffer,
+                        uint8_t permission_mask,
+                        base::OnceCallback<void(adblock::CxxFilterListMetadata)>
+                            on_metadata)>) override;
 
   // Remove the component. This will force it to be redownloaded next time it
   // is registered.

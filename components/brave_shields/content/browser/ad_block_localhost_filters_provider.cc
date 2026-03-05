@@ -43,10 +43,10 @@ std::string AdBlockLocalhostFiltersProvider::GetNameForDebugging() {
 }
 
 void AdBlockLocalhostFiltersProvider::LoadFilters(
-    base::OnceCallback<
-        void(mojo_base::BigBuffer filter_buffer,
-             uint8_t permission_mask,
-             base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>
+    base::OnceCallback<void(
+        mojo_base::BigBuffer filter_buffer,
+        uint8_t permission_mask,
+        base::OnceCallback<void(adblock::CxxFilterListMetadata)> on_metadata)>
         cb) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 

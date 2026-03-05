@@ -28,7 +28,7 @@ void BindInProcessFilterSetParser(
 }
 
 adblock::mojom::FilterListMetadataPtr ConvertToMojomFilterListMetadata(
-    adblock::FilterListMetadataResult metadata) {
+    adblock::CxxFilterListMetadataResult metadata) {
   auto mojom_metadata = adblock::mojom::FilterListMetadata::New();
   if (metadata.result_kind == adblock::ResultKind::Success) {
     if (metadata.value.title.has_value) {

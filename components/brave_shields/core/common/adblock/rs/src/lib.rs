@@ -22,12 +22,12 @@ mod ffi {
     extern "Rust" {
         type FilterSet;
         fn new_filter_set() -> Box<FilterSet>;
-        fn add_filter_list(&mut self, rules: &CxxVector<u8>) -> FilterListMetadataResult;
+        fn add_filter_list(&mut self, rules: &CxxVector<u8>) -> CxxFilterListMetadataResult;
         fn add_filter_list_with_permissions(
             &mut self,
             rules: &CxxVector<u8>,
             permission_mask: u8,
-        ) -> FilterListMetadataResult;
+        ) -> CxxFilterListMetadataResult;
     }
     extern "Rust" {
         type BraveCoreResourceStorage;
@@ -57,7 +57,7 @@ mod ffi {
 
         /// Extracts the homepage and title from the metadata contained in a
         /// filter list.
-        fn read_list_metadata(list: &CxxVector<u8>) -> FilterListMetadata;
+        fn read_list_metadata(list: &CxxVector<u8>) -> CxxFilterListMetadata;
 
         /// Enables a given tag for the engine.
         fn enable_tag(&mut self, tag: &CxxString);
@@ -162,7 +162,7 @@ mod ffi {
     }
 
     #[derive(Default)]
-    struct FilterListMetadata {
+    struct CxxFilterListMetadata {
         homepage: OptionalString,
         title: OptionalString,
         expires_hours: OptionalU16,
@@ -204,8 +204,8 @@ mod ffi {
         error_message: String,
     }
 
-    struct FilterListMetadataResult {
-        value: FilterListMetadata,
+    struct CxxFilterListMetadataResult {
+        value: CxxFilterListMetadata,
         result_kind: ResultKind,
         error_message: String,
     }

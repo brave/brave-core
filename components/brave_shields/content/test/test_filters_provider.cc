@@ -49,10 +49,10 @@ std::string TestFiltersProvider::GetNameForDebugging() {
 }
 
 void TestFiltersProvider::LoadFilters(
-    base::OnceCallback<
-        void(mojo_base::BigBuffer filter_buffer,
-             uint8_t permission_mask,
-             base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>
+    base::OnceCallback<void(
+        mojo_base::BigBuffer filter_buffer,
+        uint8_t permission_mask,
+        base::OnceCallback<void(adblock::CxxFilterListMetadata)> on_metadata)>
         cb) {
   mojo_base::BigBuffer big_buffer(base::as_byte_span(rules_));
   std::move(cb).Run(std::move(big_buffer), permission_mask_, base::DoNothing());

@@ -29,12 +29,11 @@ class TestFiltersProvider : public AdBlockFiltersProvider {
   void RegisterAsSourceProvider(AdBlockService* ad_block_service);
   void RegisterAsSourceProvider(AdBlockFiltersProviderManager* manager);
 
-  void LoadFilters(
-      base::OnceCallback<void(
-          mojo_base::BigBuffer filter_buffer,
-          uint8_t permission_mask,
-          base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>)
-      override;
+  void LoadFilters(base::OnceCallback<
+                   void(mojo_base::BigBuffer filter_buffer,
+                        uint8_t permission_mask,
+                        base::OnceCallback<void(adblock::CxxFilterListMetadata)>
+                            on_metadata)>) override;
 
   void Initialize();
   bool IsInitialized() const override;

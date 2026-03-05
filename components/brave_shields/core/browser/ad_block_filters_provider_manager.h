@@ -41,12 +41,11 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   AdBlockFiltersProviderManager& operator=(
       const AdBlockFiltersProviderManager&) = delete;
 
-  void LoadFilters(
-      base::OnceCallback<void(
-          mojo_base::BigBuffer filter_buffer,
-          uint8_t permission_mask,
-          base::OnceCallback<void(adblock::FilterListMetadata)> on_metadata)>)
-      override;
+  void LoadFilters(base::OnceCallback<
+                   void(mojo_base::BigBuffer filter_buffer,
+                        uint8_t permission_mask,
+                        base::OnceCallback<void(adblock::CxxFilterListMetadata)>
+                            on_metadata)>) override;
 
   void LoadFiltersForEngine(
       bool is_for_default_engine,
@@ -65,7 +64,7 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
  private:
   void OnParseFilters(
       base::OnceCallback<void(mojo_base::BigBuffer verified_engine_dat)> cb,
-      std::vector<base::OnceCallback<void(adblock::FilterListMetadata)>>
+      std::vector<base::OnceCallback<void(adblock::CxxFilterListMetadata)>>
           on_metadata_cbs,
       mojo_base::BigBuffer verified_engine_dat,
       const std::vector<adblock::mojom::FilterListMetadataPtr> metadata);
@@ -75,7 +74,7 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
       std::vector<
           std::tuple<mojo_base::BigBuffer,
                      uint8_t,
-                     base::OnceCallback<void(adblock::FilterListMetadata)>>>
+                     base::OnceCallback<void(adblock::CxxFilterListMetadata)>>>
           results);
 
   base::flat_set<AdBlockFiltersProvider*> default_engine_filters_providers_;

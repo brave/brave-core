@@ -49,7 +49,7 @@ class AdBlockCustomFiltersProvider : public AdBlockFiltersProvider {
       base::OnceCallback<void(
           mojo_base::BigBuffer filter_buffer,
           uint8_t permission_mask,
-          base::OnceCallback<void(adblock::FilterListMetadata)>)>) override;
+          base::OnceCallback<void(adblock::CxxFilterListMetadata)>)>) override;
 
   std::string GetNameForDebugging() override;
 
