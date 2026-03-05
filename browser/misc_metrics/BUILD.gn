@@ -136,6 +136,7 @@ source_set("unit_tests") {
     "//chrome/test:test_support",
     "//components/bookmarks/browser",
     "//components/prefs:test_support",
+    "//components/search_engines",
     "//testing/gtest",
   ]
 

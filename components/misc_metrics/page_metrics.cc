@@ -60,15 +60,18 @@ PageMetrics::PageMetrics(PrefService* local_state,
                          history::HistoryService* history_service,
                          bookmarks::BookmarkModel* bookmark_model,
                          DefaultBrowserMonitor* default_browser_monitor,
+                         TemplateURLService* template_url_service,
                          FirstRunTimeCallback first_run_time_callback)
     : local_state_(local_state),
       profile_prefs_(profile_prefs),
       host_content_settings_map_(host_content_settings_map),
       history_service_(history_service),
       first_run_time_callback_(first_run_time_callback),
-      default_browser_monitor_(default_browser_monitor) {
+      default_browser_monitor_(default_browser_monitor),
+      brave_search_metrics_(local_state, template_url_service) {
   DCHECK(local_state);
   DCHECK(history_service);
+  DCHECK(template_url_service);
 
   default_browser_observation_.Observe(default_browser_monitor_);
 
@@ -152,6 +155,7 @@ void PageMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kMiscMetricsInterstitialAllowDecisionCount);
   registry->RegisterListPref(kMiscMetricsFailedHTTPSUpgradeCount);
   registry->RegisterTimePref(kMiscMetricsFailedHTTPSUpgradeMetricAddedTime, {});
+  BraveSearchMetrics::RegisterPrefs(registry);
 }
 
 void PageMetrics::IncrementPagesLoadedCount(bool is_reload) {
@@ -350,10 +354,6 @@ void PageMetrics::OnDomainDiversityResult(
 
 void PageMetrics::OnDefaultBrowserStatusChanged(bool is_default) {
   ReportDomainsLoadedWithStatus();
-
-  if (has_pending_brave_query_) {
-    ReportBraveQuery();
-  }
 }
 
 void PageMetrics::ReportDomainsLoadedWithStatus() {
@@ -404,16 +404,6 @@ void PageMetrics::ReportBookmarkCount() {
     return;
   }
   bookmark_counter_->Restart();
-}
-
-void PageMetrics::ReportBraveQuery() {
-  auto is_default = default_browser_monitor_->GetCachedDefaultStatus();
-  if (!is_default) {
-    has_pending_brave_query_ = true;
-    return;
-  }
-  base::UmaHistogramBoolean(kSearchBraveDailyHistogramName, *is_default);
-  has_pending_brave_query_ = false;
 }
 
 }  // namespace misc_metrics
