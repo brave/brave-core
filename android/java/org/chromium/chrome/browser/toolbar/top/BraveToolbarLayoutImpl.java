@@ -379,7 +379,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
         }
 
-        if (BraveReflectionUtil.equalTypes(this.getClass(), CustomTabToolbar.class)) {
+        if (BraveReflectionUtil.equalTypes(this.getClass(), CustomTabToolbar.class)
+                && !ChromeFeatureList.sCctToolbarRefactor.isEnabled()) {
+            // In the old (non-refactored) CCT toolbar, adjust the action_buttons container margin
+            // to account for the shields button. In refactored mode this is handled dynamically in
+            // maybeRepositionCctShieldsButton() via onLayout.
             LinearLayout customActionButtons = findViewById(R.id.action_buttons);
             assert customActionButtons != null : "Something has changed in the upstream!";
             if (customActionButtons != null && mBraveShieldsButton != null) {
@@ -387,8 +391,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         (ViewGroup.MarginLayoutParams) mBraveShieldsButton.getLayoutParams();
                 ViewGroup.MarginLayoutParams actionButtonsLayout =
                         (ViewGroup.MarginLayoutParams) customActionButtons.getLayoutParams();
-                actionButtonsLayout.setMarginEnd(actionButtonsLayout.getMarginEnd()
-                        + braveShieldsButtonLayout.getMarginEnd());
+                actionButtonsLayout.setMarginEnd(
+                        actionButtonsLayout.getMarginEnd()
+                                + braveShieldsButtonLayout.getMarginEnd());
                 customActionButtons.setLayoutParams(actionButtonsLayout);
             }
         }
@@ -1739,6 +1744,84 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         maybeHideRewardsLayout(MeasureSpec.getSize(widthMeasureSpec));
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        maybeRepositionCctShieldsButton();
+    }
+
+    private void maybeRepositionCctShieldsButton() {
+        if (!BraveReflectionUtil.equalTypes(this.getClass(), CustomTabToolbar.class)) return;
+        if (!ChromeFeatureList.sCctToolbarRefactor.isEnabled()) return;
+        if (mBraveShieldsButton == null) return;
+
+        int toolbarWidth = getWidth();
+        if (toolbarWidth <= 0) return;
+
+        // After super.onLayout() children have their actual pixel positions. We anchor the shields
+        // button immediately to the left of the menu button (matching the expected visual order:
+        // [...location bar...][custom buttons][shields][menu]).
+        View menuButton = findViewById(R.id.menu_button_wrapper);
+        if (menuButton == null || menuButton.getVisibility() != View.VISIBLE) return;
+
+        int menuLeft = menuButton.getLeft();
+        if (menuLeft <= 0) return;
+
+        int buttonWidth = getResources().getDimensionPixelSize(R.dimen.toolbar_button_width);
+
+        // Shields sits immediately to the left of menu.
+        int targetShieldsMarginEnd = toolbarWidth - menuLeft;
+        int shieldsLeftEdge = menuLeft - buttonWidth;
+        if (shieldsLeftEdge <= 0) return;
+
+        // Any custom action button whose right edge intrudes into shields' space must be shifted
+        // one buttonWidth further from the toolbar end. Using the laid-out right-edge position
+        // as the guard means we never double-shift: a button that was already pushed left will
+        // have right <= shieldsLeftEdge and will not be shifted again.
+        int leftmostLeft = shieldsLeftEdge; // will track the leftmost end-aligned element
+        View actionButtonsView = findViewById(R.id.action_buttons);
+        if (actionButtonsView instanceof ViewGroup) {
+            int containerLeft = actionButtonsView.getLeft(); // 0 for match_parent
+            ViewGroup actionButtons = (ViewGroup) actionButtonsView;
+            for (int i = 0; i < actionButtons.getChildCount(); i++) {
+                View child = actionButtons.getChildAt(i);
+                if (child.getVisibility() != View.VISIBLE) continue;
+                int childLeft = containerLeft + child.getLeft();
+                int childRight = childLeft + child.getWidth();
+                if (childRight > shieldsLeftEdge) {
+                    // Button overlaps shields area — shift it one buttonWidth further out.
+                    ViewGroup.MarginLayoutParams lp =
+                            (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                    lp.setMarginEnd(lp.getMarginEnd() + buttonWidth);
+                    child.setLayoutParams(lp);
+                    leftmostLeft = Math.min(leftmostLeft, childLeft - buttonWidth);
+                } else {
+                    leftmostLeft = Math.min(leftmostLeft, childLeft);
+                }
+            }
+        }
+
+        // Location bar must leave room for shields + all custom buttons to its right.
+        int targetLocationBarMarginEnd = toolbarWidth - leftmostLeft;
+
+        ViewGroup.MarginLayoutParams shieldsLp =
+                (ViewGroup.MarginLayoutParams) mBraveShieldsButton.getLayoutParams();
+        if (shieldsLp.getMarginEnd() != targetShieldsMarginEnd) {
+            shieldsLp.setMarginEnd(targetShieldsMarginEnd);
+            mBraveShieldsButton.setLayoutParams(shieldsLp);
+        }
+
+        View locationBar = findViewById(R.id.location_bar_frame_layout);
+        if (locationBar != null) {
+            ViewGroup.MarginLayoutParams locationBarLp =
+                    (ViewGroup.MarginLayoutParams) locationBar.getLayoutParams();
+            if (locationBarLp.getMarginEnd() != targetLocationBarMarginEnd) {
+                locationBarLp.setMarginEnd(targetLocationBarMarginEnd);
+                locationBar.setLayoutParams(locationBarLp);
+            }
+        }
     }
 
     /**
