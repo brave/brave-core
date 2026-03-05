@@ -6,6 +6,7 @@
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//printing/buildflags/buildflags.gni")
+import("//services/screen_ai/buildflags/features.gni")
 
 assert(enable_ai_chat)
 
@@ -355,7 +356,10 @@ source_set("browser_tests") {
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
       "//printing/buildflags",
+      "//services/screen_ai/buildflags",
       "//services/screen_ai/public/cpp:utilities",
+      "//ui/accessibility:ax_base",
+      "//ui/accessibility:ax_features_mojo",
     ]
 
     if (enable_print_preview) {
@@ -394,6 +398,10 @@ source_set("browser_tests") {
       ]
 
       data += [ "//chrome/test/data/actor/" ]
+    }
+
+    if (enable_screen_ai_browsertests) {
+      data_deps = [ "//third_party/screen-ai:screen_ai" ]
     }
   }
 }
