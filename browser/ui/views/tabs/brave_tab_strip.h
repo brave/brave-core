@@ -53,7 +53,8 @@ class BraveTabStrip : public TabStrip {
 
   // TabSlotController:
   bool ShouldPaintTabAccent(const Tab* tab) const override;
-  std::optional<SkColor> GetTabAccentColor(const Tab* tab) const override;
+  std::optional<TabAccentColors> GetTabAccentColors(
+      const Tab* tab) const override;
   ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;
 
  private:
