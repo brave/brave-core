@@ -78,7 +78,9 @@ TorProfileManager& TorProfileManager::GetInstance() {
 class TorTabNavigator final : public content::WebContentsObserver,
                               public TorLauncherObserver {
  public:
-  static void Navigate(Browser* tor_browser, const GURL& url) {
+  static void Navigate(Browser* tor_browser,
+                       const GURL& url,
+                       const url::Origin& initiator_origin) {
     auto* tab = FindNTPTab(tor_browser);
     if (!tab) {
       tab = &chrome::NewTab(tor_browser);
@@ -88,18 +90,22 @@ class TorTabNavigator final : public content::WebContentsObserver,
     }
     if (TorLauncherFactory::GetInstance()->IsTorConnected()) {
       // If Tor is connected just navigate to specified url.
-      OpenURL(tab, url);
+      OpenURL(tab, url, initiator_origin);
     } else {
       // Wait for the NTP to load and then go to the specified URL.
       // TorNavigationThrottle defers navigation until Tor is connected, so the
       // user can see the connection status.
-      new TorTabNavigator(tab, url);
+      new TorTabNavigator(tab, url, initiator_origin);
     }
   }
 
  private:
-  TorTabNavigator(content::WebContents* web_contents, const GURL& url)
-      : content::WebContentsObserver(web_contents), url_(url) {
+  TorTabNavigator(content::WebContents* web_contents,
+                  const GURL& url,
+                  const url::Origin& initiator_origin)
+      : content::WebContentsObserver(web_contents),
+        url_(url),
+        initiator_origin_(initiator_origin) {
     TorLauncherFactory::GetInstance()->AddObserver(this);
   }
 
@@ -116,13 +122,7 @@ class TorTabNavigator final : public content::WebContentsObserver,
     if (!url_.is_valid()) {
       return;
     }
-    content::NavigationController::LoadURLParams params(url_);
-    params.transition_type = ui::PAGE_TRANSITION_TYPED;
-    web_contents()->GetController().LoadURLWithParams(params);
-    if (web_contents()->GetDelegate()) {
-      web_contents()->GetDelegate()->NavigationStateChanged(
-          web_contents(), content::INVALIDATE_TYPE_URL);
-    }
+    OpenURL(web_contents(), url_, initiator_origin_);
     url_ = GURL();
   }
 
@@ -142,9 +142,12 @@ class TorTabNavigator final : public content::WebContentsObserver,
     WebContentsDestroyed();
   }
 
-  static void OpenURL(content::WebContents* web_contents, const GURL& url) {
+  static void OpenURL(content::WebContents* web_contents,
+                      const GURL& url,
+                      const url::Origin& initiator_origin) {
     content::NavigationController::LoadURLParams params(url);
     params.transition_type = ui::PAGE_TRANSITION_TYPED;
+    params.initiator_origin = initiator_origin;
     web_contents->GetController().LoadURLWithParams(params);
     if (web_contents->GetDelegate()) {
       web_contents->GetDelegate()->NavigationStateChanged(
@@ -163,11 +166,20 @@ class TorTabNavigator final : public content::WebContentsObserver,
   }
 
   GURL url_;
+  url::Origin initiator_origin_;
 };
 
 // static
-Browser* TorProfileManager::SwitchToTorProfile(Profile* original_profile,
-                                               const GURL& url) {
+Browser* TorProfileManager::SwitchToTorProfile(Profile* original_profile) {
+  return TorProfileManager::SwitchToTorProfile(
+      original_profile, GURL::EmptyGURL(), url::Origin());
+}
+
+// static
+Browser* TorProfileManager::SwitchToTorProfile(
+    Profile* original_profile,
+    const GURL& url,
+    const url::Origin& initiator_origin) {
   Profile* tor_profile =
       TorProfileManager::GetInstance().GetTorProfile(original_profile);
   if (!tor_profile) {
@@ -182,7 +194,7 @@ Browser* TorProfileManager::SwitchToTorProfile(Profile* original_profile,
     browser = Browser::Create(Browser::CreateParams(tor_profile, true));
   }
   if (browser) {
-    TorTabNavigator::Navigate(browser, url);
+    TorTabNavigator::Navigate(browser, url, initiator_origin);
     browser->window()->Activate();
     browser->window()->Show();
   }
