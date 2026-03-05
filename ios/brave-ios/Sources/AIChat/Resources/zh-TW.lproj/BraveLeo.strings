@@ -160,18 +160,6 @@
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "兼顧速度與智慧";
 
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 DeepSeek 建立的模型 DeepSeek R1 提供技術支援，用於執行深度推理任務。DeepSeek R1 透過我們自己的安全基礎架構由 Brave 託管。";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageDeepSeekR1ModelPurposeDescription" = "推理模型";
-
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageGemmaMessageDescription" = "嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Google DeepMind 建立的模型 Gemma 3 12B 提供技術支援，效能強大，可適用於許多使用案例。Gemma 透過我們自己的安全基礎架構由 Brave 託管。";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageGemmaPurposeDescription" = "一般用途的文字和影像理解";
-
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "您好，我是 Leo。我是 Brave 的 AI 助理，由 %@ 提供技術支援。歡迎詢問我任何問題，我會盡力回答。";
 
@@ -182,7 +170,7 @@
 "aichat.introMessageLlamaModelPurposeDescription" = "一般目的聊天";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Alibaba Cloud 建立的模型 Qwen 14B 提供技術支援，效能強大，可適用於許多使用案例。Qwen 透過我們自己的安全基礎架構由 Brave 託管。";
+"aichat.introMessageQwenMessageDescription" = "嗨，我是 Leo。我是 Brave 的 AI 助理。我由 Alibaba Cloud 建立的模型 Qwen VL 30B 提供技術支援，具有高效能且適用於許多使用案例。Qwen 透過我們自己的安全基礎架構由 Brave 託管。";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "一般用途的聊天、編碼等";

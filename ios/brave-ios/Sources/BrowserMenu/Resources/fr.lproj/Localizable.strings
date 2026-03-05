@@ -44,7 +44,7 @@
 "BrowserMenu.myActions" = "Mes actions";
 
 /* A row in the menu action customization list that divides which items are placed in a grid and which are placed in a list. */
-"BrowserMenu.quickActionDividerTitle" = "Les éléments au-dessus s'afficheront en premier";
+"BrowserMenu.quickActionDividerTitle" = "Les éléments au-dessus s’afficheront en premier";
 
 /* A button title that when taps shows a confirmation dialog to reset the menu back to its default state */
 "BrowserMenu.resetButtonTitle" = "Réinitialiser";

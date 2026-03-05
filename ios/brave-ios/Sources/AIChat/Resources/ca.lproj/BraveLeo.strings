@@ -160,18 +160,6 @@
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Velocitat i intel·ligència equilibrades";
 
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia DeepSeek R1, un model creat per DeepSeek per realitzar tasques de raonament profund. DeepSeek R1 s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Model de raonament";
-
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageGemmaMessageDescription" = "Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia Gemma 3 12B, un model creat per Google DeepMind per ser eficient i aplicable a molts casos d'ús. Gemma s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageGemmaPurposeDescription" = "Comprensió de textos i imatges d'ús general";
-
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Ei, soc en Leo. Soc l'assistent d'IA de Brave. Funciono amb %@. Pregunteu-me el que vulgueu i intentaré respondre tan bé com sàpiga.";
 
@@ -182,7 +170,7 @@
 "aichat.introMessageLlamaModelPurposeDescription" = "Xat de tipus general";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia Qwen 14B, un model creat per Alibaba Cloud per ser eficient i aplicable a molts casos d'ús. Qwen s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.";
+"aichat.introMessageQwenMessageDescription" = "Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia Qwen VL 30B, un model creat per Alibaba Cloud per ser eficient i aplicable a molts casos d'ús. Qwen s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "Xat general, de programació i més";

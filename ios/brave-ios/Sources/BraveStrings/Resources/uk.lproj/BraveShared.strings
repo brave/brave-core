@@ -154,6 +154,9 @@
 /* Button text to cancel Brave Account registration */
 "BraveAccountCancelRegistration" = "Скасувати реєстрацію";
 
+/* Title shown when user is logged in */
+"BraveAccountEmailAddress" = "Адреса електронної пошти";
+
 /* Button text to get started with Brave Account */
 "BraveAccountGetStarted" = "Почати";
 
@@ -3504,6 +3507,12 @@
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "На жаль, сталася помилка.";
+
+/* Message for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorMessage" = "Не вдалося прочитати файл контакту. Він може бути пошкодженим або в непідтримуваному форматі.";
+
+/* Title for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorTitle" = "Неможливо відкрити контакт";
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "Версія %1$@ (%2$@)";

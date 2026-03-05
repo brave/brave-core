@@ -154,6 +154,9 @@
 /* Button text to cancel Brave Account registration */
 "BraveAccountCancelRegistration" = "Regisztráció visszavonása";
 
+/* Title shown when user is logged in */
+"BraveAccountEmailAddress" = "E-mail cím";
+
 /* Button text to get started with Brave Account */
 "BraveAccountGetStarted" = "Első lépések";
 
@@ -3504,6 +3507,12 @@
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "Elnézést, valamilyen hiba történt";
+
+/* Message for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorMessage" = "A kontaktfájl nem olvasható. Előfordulhat, hogy sérült vagy nem támogatott formátumban van.";
+
+/* Title for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorTitle" = "Nem sikerült megnyitni a kontaktot";
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "%1$@. (%2$@) verzió";
