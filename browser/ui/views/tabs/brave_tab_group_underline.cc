@@ -84,10 +84,6 @@ gfx::Rect BraveTabGroupUnderline::CalculateTabGroupUnderlineBounds(
   ConvertRectToTarget(trailing_view->parent(), underline_view->parent(),
                       &trailing_bounds);
   trailing_bounds.Inset(gfx::InsetsF(GetInsetsForUnderline(trailing_view)));
-  if (trailing_bounds.height()) {
-    trailing_bounds.set_height(trailing_bounds.height() +
-                               BraveTabGroupHeader::kPaddingForGroup);
-  }
 
   gfx::Rect group_bounds = ToEnclosingRect(leading_bounds);
   group_bounds.Union(ToEnclosingRect(trailing_bounds));
