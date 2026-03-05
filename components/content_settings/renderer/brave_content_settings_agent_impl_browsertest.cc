@@ -399,30 +399,6 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
-                       WebGLReadPixels) {
-  std::string origin = "a.test";
-  std::string path = "/webgl/readpixels.html";
-
-  // Farbling level: maximum
-  // WebGL readPixels(): blocked
-  BlockFingerprinting();
-  NavigateToURLUntilLoadStop(origin, path);
-  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "1");
-
-  // Farbling level: balanced (default)
-  // WebGL readPixels(): allowed
-  SetFingerprintingDefault();
-  NavigateToURLUntilLoadStop(origin, path);
-  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "0");
-
-  // Farbling level: off
-  // WebGL readPixels(): allowed
-  AllowFingerprinting();
-  NavigateToURLUntilLoadStop(origin, path);
-  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "0");
-}
-
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        FarbleGetImageData) {
   // Farbling should be balanced by default
   NavigateToPageWithIframe();
@@ -448,6 +424,30 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   NavigateToPageWithIframe();
   EXPECT_EQ(kExpectedImageDataHashFarblingOff,
             content::EvalJs(contents(), kGetImageDataScript));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
+                       WebGLReadPixels) {
+  std::string origin = "a.test";
+  std::string path = "/webgl/readpixels.html";
+
+  // Farbling level: maximum
+  // WebGL readPixels(): blocked
+  BlockFingerprinting();
+  NavigateToURLUntilLoadStop(origin, path);
+  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "1");
+
+  // Farbling level: balanced (default)
+  // WebGL readPixels(): allowed
+  SetFingerprintingDefault();
+  NavigateToURLUntilLoadStop(origin, path);
+  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "0");
+
+  // Farbling level: off
+  // WebGL readPixels(): allowed
+  AllowFingerprinting();
+  NavigateToURLUntilLoadStop(origin, path);
+  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "0");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
