@@ -119,6 +119,7 @@ import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoVoiceRecognitionHandler;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
+import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
 import org.chromium.chrome.browser.brave_shields.BraveFirstPartyStorageCleanerUtils;
 import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerAnimationFragment;
 import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerInterface;
@@ -1207,6 +1208,16 @@ public abstract class BraveActivity extends ChromeActivity
         String countryCode = Locale.getDefault().getCountry();
 
         BraveVpnNativeWorker.getInstance().reloadPurchasedState();
+
+        // Restore Origin purchase from Google Play if the local pref is not set
+        // (e.g. after device change). This ensures prefs are populated before the user
+        // taps the Origin menu.
+        Profile profile = mTabModelProfileSupplier.get();
+        if (profile != null
+                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN)
+                && !BraveOriginSubscriptionPrefs.getIsSubscriptionActive(profile)) {
+            BraveOriginSubscriptionPrefs.verifyPurchase(profile);
+        }
 
         BraveHelper.maybeMigrateSettings();
 

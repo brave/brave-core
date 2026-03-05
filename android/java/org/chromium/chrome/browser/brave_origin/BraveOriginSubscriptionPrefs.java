@@ -8,6 +8,9 @@ package org.chromium.chrome.browser.brave_origin;
 import android.app.Activity;
 import android.util.Base64;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,12 +27,15 @@ import org.chromium.brave.browser.util.ServicesEnvironment;
 import org.chromium.brave_origin.mojom.BraveOriginSettingsHandler;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
+import org.chromium.chrome.browser.billing.PurchaseModel;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.policy.BravePolicyConstants;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BraveOriginPreferences;
 import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
+import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.skus.mojom.SkusResult;
@@ -57,6 +63,38 @@ public class BraveOriginSubscriptionPrefs {
     private static final String JSON_FIELD_PACKAGE = "package";
     private static final String JSON_FIELD_SUBSCRIPTION_ID = "subscription_id";
     private static final String JSON_VALUE_ANDROID = "android";
+
+    /**
+     * Queries Google Play for an existing Origin purchase and restores it if found. This handles
+     * the case where a user changes devices - the purchase exists in their Google account but the
+     * local prefs are empty.
+     *
+     * @param profile The profile to use for preference storage
+     */
+    public static void verifyPurchase(@Nullable Profile profile) {
+        MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData<>();
+        LiveData<PurchaseModel> activePurchases = _activePurchases;
+        InAppPurchaseWrapper inAppPurchaseWrapper = InAppPurchaseWrapper.getInstance();
+        // Suppress toasts during startup query so devices without Google Play
+        // don't show "Billing service is not available" on every launch.
+        inAppPurchaseWrapper.setSuppressToasts(true);
+        inAppPurchaseWrapper.queryPurchases(
+                _activePurchases, InAppPurchaseWrapper.SubscriptionProduct.ORIGIN);
+        LiveDataUtil.observeOnce(
+                activePurchases,
+                activePurchaseModel -> {
+                    boolean purchaseFound = activePurchaseModel != null;
+                    setIsSubscriptionActive(profile, purchaseFound);
+                    if (purchaseFound) {
+                        setOriginPackageName(profile);
+                        setOriginProductId(profile, activePurchaseModel.getProductId());
+                        setOriginPurchaseToken(profile, activePurchaseModel.getPurchaseToken());
+                    } else {
+                        setOriginProductId(profile, "");
+                        setOriginPurchaseToken(profile, "");
+                    }
+                });
+    }
 
     /**
      * Sets the Origin subscription active status for the given profile.
@@ -256,6 +294,7 @@ public class BraveOriginSubscriptionPrefs {
      * @param profile The profile to use for the operation
      * @param orderId The order ID to fetch credentials for
      * @param skusService The SkusService instance to use for the operation
+     * @param domain The SKU service domain
      */
     private static void fetchOrderCredentials(
             Profile profile, @Nullable String orderId, SkusService skusService, String domain) {

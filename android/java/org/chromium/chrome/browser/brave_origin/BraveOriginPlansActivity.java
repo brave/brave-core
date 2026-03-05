@@ -101,6 +101,9 @@ public class BraveOriginPlansActivity extends AsyncInitializationActivity {
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+        // Re-enable toasts that may have been suppressed during startup purchase
+        // verification on devices without Google Play.
+        InAppPurchaseWrapper.getInstance().setSuppressToasts(false);
         getProductDetails();
         InAppPurchaseWrapper.getInstance().queryOriginProductDetailsAsync();
     }
