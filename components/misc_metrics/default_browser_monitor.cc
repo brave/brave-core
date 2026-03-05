@@ -67,7 +67,7 @@ void DefaultBrowserMonitor::OnDefaultBrowserStateReceived(bool is_default) {
 
   if (status_changed) {
     for (auto& observer : observers_) {
-      observer.OnDefaultBrowserStatusChanged();
+      observer.OnDefaultBrowserStatusChanged(is_default);
     }
   }
 

@@ -6,9 +6,9 @@
 #include "brave/components/p3a/metric_log_store.h"
 
 #include <memory>
-#include <set>
 #include <string_view>
 
+#include "base/containers/flat_set.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/metric_names.h"
@@ -19,6 +19,7 @@ namespace p3a {
 
 constexpr char kTestExpressMetric[] = "Brave.Test.ExpressMetric";
 constexpr char kTestUnknownMetric[] = "Brave.Test.UnknownMetric";
+constexpr char kTestDeferredMetric[] = "Brave.Test.DeferredMetric";
 
 class P3AMetricLogStoreTest : public testing::Test,
                               public MetricLogStore::Delegate {
@@ -39,13 +40,20 @@ class P3AMetricLogStoreTest : public testing::Test,
     if (histogram_name == kTestExpressMetric) {
       return MetricLogType::kExpress;
     }
+    if (histogram_name == kTestDeferredMetric) {
+      return MetricLogType::kTypical;
+    }
     return p3a::kCollectedTypicalHistograms.contains(histogram_name)
                ? std::make_optional(MetricLogType::kTypical)
                : std::nullopt;
   }
 
-  bool IsEphemeralMetric(const std::string& histogram_name) const override {
+  bool IsEphemeralMetric(std::string_view histogram_name) const override {
     return false;
+  }
+
+  bool ShouldDeferMetric(std::string_view histogram_name) const override {
+    return defer_metrics_.contains(histogram_name);
   }
 
  protected:
@@ -92,6 +100,7 @@ class P3AMetricLogStoreTest : public testing::Test,
 
   std::unique_ptr<MetricLogStore> log_store;
   TestingPrefServiceSimple local_state;
+  base::flat_set<std::string> defer_metrics_;
 };
 
 TEST_F(P3AMetricLogStoreTest, GetAllLogs) {
@@ -128,6 +137,71 @@ TEST_F(P3AMetricLogStoreTest, ShouldNotLoadUnknownMetric) {
   log_store->RemoveObsoleteLogs();
 
   ASSERT_FALSE(log_store->has_unsent_logs());
+}
+
+TEST_F(P3AMetricLogStoreTest, DeferredMetricNotUnsent) {
+  defer_metrics_.insert(kTestDeferredMetric);
+
+  log_store->UpdateValue(kTestDeferredMetric, 5);
+  ASSERT_FALSE(log_store->has_unsent_logs());
+}
+
+TEST_F(P3AMetricLogStoreTest, DeferredMetricMovedAfterReevaluation) {
+  defer_metrics_.insert(kTestDeferredMetric);
+
+  log_store->UpdateValue(kTestDeferredMetric, 5);
+  ASSERT_FALSE(log_store->has_unsent_logs());
+
+  defer_metrics_.erase(kTestDeferredMetric);
+  log_store->ReevaluateDeferredEntries();
+  ASSERT_TRUE(log_store->has_unsent_logs());
+
+  log_store->StageNextLog();
+  EXPECT_EQ(log_store->staged_log_key(), kTestDeferredMetric);
+  log_store->DiscardStagedLog();
+  ASSERT_FALSE(log_store->has_unsent_logs());
+}
+
+TEST_F(P3AMetricLogStoreTest, DeferredMetricDoesNotBlockNormalMetric) {
+  defer_metrics_.insert(kTestDeferredMetric);
+
+  auto first_typical =
+      std::string(p3a::kCollectedTypicalHistograms.begin()->first);
+  log_store->UpdateValue(first_typical, 1);
+  log_store->UpdateValue(kTestDeferredMetric, 5);
+
+  ASSERT_TRUE(log_store->has_unsent_logs());
+
+  log_store->StageNextLog();
+  EXPECT_EQ(log_store->staged_log_key(), first_typical);
+  log_store->DiscardStagedLog();
+
+  ASSERT_FALSE(log_store->has_unsent_logs());
+
+  defer_metrics_.erase(kTestDeferredMetric);
+  log_store->ReevaluateDeferredEntries();
+  ASSERT_TRUE(log_store->has_unsent_logs());
+
+  log_store->StageNextLog();
+  EXPECT_EQ(log_store->staged_log_key(), kTestDeferredMetric);
+  log_store->DiscardStagedLog();
+
+  ASSERT_FALSE(log_store->has_unsent_logs());
+}
+
+TEST_F(P3AMetricLogStoreTest, DeferredMetricPersistedAndReloaded) {
+  defer_metrics_.insert(kTestDeferredMetric);
+
+  log_store->UpdateValue(kTestDeferredMetric, 5);
+  ASSERT_FALSE(log_store->has_unsent_logs());
+
+  SetUpLogStore();
+  log_store->LoadPersistedUnsentLogs();
+  ASSERT_FALSE(log_store->has_unsent_logs());
+
+  defer_metrics_.erase(kTestDeferredMetric);
+  log_store->ReevaluateDeferredEntries();
+  ASSERT_TRUE(log_store->has_unsent_logs());
 }
 
 }  // namespace p3a

@@ -19,11 +19,17 @@
 #include "base/memory/ref_counted.h"
 #include "base/metrics/histogram_base.h"
 #include "base/metrics/statistics_recorder.h"
+#include "base/scoped_observation.h"
 #include "brave/components/p3a/message_manager.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/remote_config_manager.h"
+#include "build/build_config.h"
 #include "components/prefs/pref_change_registrar.h"
+
+#if !BUILDFLAG(IS_IOS)
+#include "brave/components/misc_metrics/default_browser_monitor.h"
+#endif  // !BUILDFLAG(IS_IOS)
 
 class PrefRegistrySimple;
 class PrefService;
@@ -48,6 +54,9 @@ struct P3AConfig;
 // TODO(iefremov): It should be possible to get rid of refcounted here.
 class P3AService : public base::RefCountedThreadSafe<P3AService>,
                    public MessageManager::Delegate,
+#if !BUILDFLAG(IS_IOS)
+                   public misc_metrics::DefaultBrowserMonitor::Observer,
+#endif  // !BUILDFLAG(IS_IOS)
                    public RemoteConfigManager::Delegate {
  public:
   P3AService(PrefService& local_state,
@@ -85,6 +94,10 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
       base::RepeatingCallback<void(const std::string& histogram_name)>
           callback);
 
+#if !BUILDFLAG(IS_IOS)
+  void SetDefaultBrowserMonitor(misc_metrics::DefaultBrowserMonitor* monitor);
+#endif  // !BUILDFLAG(IS_IOS)
+
   bool IsP3AEnabled() const;
 
   // Needs a living browser process to complete the initialization.
@@ -114,6 +127,11 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
 
   // RemoteConfigManager::Delegate
   void OnRemoteConfigLoaded() override;
+
+#if !BUILDFLAG(IS_IOS)
+  // misc_metrics::DefaultBrowserMonitor::Observer
+  void OnDefaultBrowserStatusChanged(bool is_default) override;
+#endif  // !BUILDFLAG(IS_IOS)
 
  private:
   friend class base::RefCountedThreadSafe<P3AService>;
@@ -172,6 +190,12 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   // Contains callbacks registered via `RegisterMetricCycledCallback`
   base::RepeatingCallbackList<void(const std::string& histogram_name)>
       metric_cycled_callbacks_;
+
+#if !BUILDFLAG(IS_IOS)
+  base::ScopedObservation<misc_metrics::DefaultBrowserMonitor,
+                          misc_metrics::DefaultBrowserMonitor::Observer>
+      default_browser_observation_{this};
+#endif  // !BUILDFLAG(IS_IOS)
 };
 
 }  // namespace p3a
