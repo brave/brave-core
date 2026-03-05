@@ -110,6 +110,8 @@ struct SignMessageRequestContentView: View {
       return ethStandardSignData.message
     } else if let solanaSignData = request.signData.solanaSignData {
       return solanaSignData.message
+    } else if let cardanoSignData = request.signData.cardanoSignData {
+      return cardanoSignData.message
     } else {  // ethSiweData displayed via `SignInWithEthereumView`
       return nil
     }

@@ -19,7 +19,7 @@ struct SignMessageRequestContainerView: View {
 
   /// The account for the current request
   private var currentRequestAccount: BraveWallet.AccountInfo {
-    keyringStore.allAccounts.first(where: { $0.address == store.currentRequest.accountId.address })
+    keyringStore.allAccounts.first(where: { $0.id == store.currentRequest.accountId.uniqueKey })
       ?? keyringStore.selectedAccount
   }
 
