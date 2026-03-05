@@ -1,12 +1,12 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
-index f1c6e7c3cc6b6896b8d07eb0e942178444a8c2eb..b8871eb80c48b81f339c6c41cd56fb2a171e8b4c 100644
+index f1c6e7c3cc6b6896b8d07eb0e942178444a8c2eb..10c45f6b1547c6f30528a25f51dca158b995bde0 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 @@ -140,6 +140,7 @@ public final class SearchIndexProviderRegistry {
                              .SEARCH_INDEX_DATA_PROVIDER,
                      org.chromium.chrome.browser.tracing.settings.TracingSettings
                              .SEARCH_INDEX_DATA_PROVIDER,
-+                    org.chromium.components.browser_ui.site_settings.BraveSiteSettingsPreferencesBase.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.password_manager.settings.PasswordSettings.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.privacy.settings.BravePrivacySettings.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveLeoDefaultModelPreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveLeoPreferences.SEARCH_INDEX_DATA_PROVIDER,
++                    org.chromium.components.browser_ui.site_settings.BraveSiteSettingsPreferencesBase.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.password_manager.settings.PasswordSettings.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.privacy.settings.BravePrivacySettings.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveLeoDefaultModelPreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveLeoPreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveLicensePreferences.SEARCH_INDEX_DATA_PROVIDER,
                      org.chromium.chrome.browser.tracing.settings.TracingCategoriesSettings
                              .SEARCH_INDEX_DATA_PROVIDER);
  }

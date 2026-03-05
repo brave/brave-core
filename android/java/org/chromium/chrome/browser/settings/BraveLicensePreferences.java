@@ -14,6 +14,7 @@ import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,4 +62,10 @@ public class BraveLicensePreferences extends BravePreferenceFragment {
     public MonotonicObservableSupplier<String> getPageTitle() {
         return mPageTitle;
     }
+
+    // The screen only displays a dynamically-loaded HTML license text; there are no static
+    // settings to index.
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(
+                    BraveLicensePreferences.class.getName(), BaseSearchIndexProvider.INDEX_OPT_OUT);
 }
