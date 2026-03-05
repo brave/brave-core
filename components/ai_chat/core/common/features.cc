@@ -182,7 +182,7 @@ bool IsAIChatWebUIEnabled() {
 }
 #endif
 
-BASE_FEATURE(kShowAIChatInputOnNewTabPage, base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kShowAIChatInputOnNewTabPage, base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsShowAIChatInputOnNewTabPageEnabled() {
   return base::FeatureList::IsEnabled(features::kShowAIChatInputOnNewTabPage);
