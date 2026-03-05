@@ -6,10 +6,10 @@
 import * as BraveNewTabPage from 'gen/brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.m.js'
 import * as NTPBackgroundMedia from 'gen/brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.m.js'
 
+import { images as backgrounds, solidColorsForBackground, gradientColorsForBackground } from '../data/backgrounds'
+
 // Provide access to all the generated types
 export * from 'gen/brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.m.js'
-
-import { images as backgrounds, solidColorsForBackground, gradientColorsForBackground } from '../data/backgrounds'
 
 /**
  * Generates a random image for new tab backgrounds

@@ -6,7 +6,7 @@
 import * as Crypto from '@cardano-sdk/crypto';
 import { HexBlob } from "@cardano-sdk/util";
 import { XorShift } from "xorshift";
-import { createHash } from "crypto";
+import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 
 // Generates Bip32Ed25519 test vectors based one "@cardano-sdk/crypto implementation:

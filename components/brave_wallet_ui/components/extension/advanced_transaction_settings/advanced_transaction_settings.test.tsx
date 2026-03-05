@@ -7,7 +7,7 @@ import * as React from 'react'
 import { render } from '@testing-library/react'
 
 // Utils
-import { default as BraveCoreThemeProvider } from '../../../../common/BraveCoreThemeProvider'
+import BraveCoreThemeProvider from '../../../../common/BraveCoreThemeProvider'
 
 // Components
 import { AdvancedTransactionSettings } from './advanced_transaction_settings'

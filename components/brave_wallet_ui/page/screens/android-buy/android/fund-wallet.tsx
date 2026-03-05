@@ -23,7 +23,7 @@ import { store } from '../../../store'
 import * as WalletActions from '../../../../common/actions/wallet_actions'
 
 // Components
-import { default as BraveCoreThemeProvider } from '../../../../../common/BraveCoreThemeProvider'
+import BraveCoreThemeProvider from '../../../../../common/BraveCoreThemeProvider'
 import { FundWalletScreen } from '../../fund-wallet/fund_wallet_v2'
 
 // Resources

@@ -34,11 +34,11 @@ import SwitchDown from '../../assets/svg-icons/switch-icon.svg'
 import WarningCircleFilled from '../../assets/svg-icons/warning-circle-icon.svg'
 import WarningTriangleFilled from '../../assets/svg-icons/warning-triangle-filled.svg'
 
-export type ThemeColor = StringWithAutocomplete<keyof IThemeProps['color']>
-
 // graphics
 import BraveWalletWithCoins from '../../assets/svg-icons/onboarding/brave-wallet-with-coins.svg'
 import { makePaddingMixin } from '../../utils/style.utils'
+
+export type ThemeColor = StringWithAutocomplete<keyof IThemeProps['color']>
 
 // re-export "send" styles
 export { Text } from '../../page/screens/send/shared.styles'

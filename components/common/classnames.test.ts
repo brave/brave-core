@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 /* global describe, it */
 
-import * as assert from 'assert'
+import * as assert from 'node:assert'
 import classnames from './classnames'
 
 describe('classnames', function () {

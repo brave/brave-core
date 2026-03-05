@@ -8,7 +8,7 @@ import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 // Utils
-import { default as BraveCoreThemeProvider } from '../../../../common/BraveCoreThemeProvider'
+import BraveCoreThemeProvider from '../../../../common/BraveCoreThemeProvider'
 import { createMockStore } from '../../../utils/test-utils'
 
 // Components

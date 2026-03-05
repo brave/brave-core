@@ -7,7 +7,7 @@ import * as React from 'react'
 import { render, act, waitFor } from '@testing-library/react'
 
 // Utils
-import { default as BraveCoreThemeProvider } from '../../../../../../common/BraveCoreThemeProvider'
+import BraveCoreThemeProvider from '../../../../../../common/BraveCoreThemeProvider'
 import { createMockStore } from '../../../../../utils/test-utils'
 
 // Components

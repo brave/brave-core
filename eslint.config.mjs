@@ -267,9 +267,7 @@ export default defineConfig([
       '@eslint-community/eslint-comments/require-description': 'off',
 
       'import/enforce-node-protocol-usage': 'off',
-      'import/first': 'off',
       'import/no-absolute-path': 'off',
-      'import/no-named-default': 'off',
 
       'react-hooks/immutability': 'off',
       'react-hooks/preserve-manual-memoization': 'off',
@@ -289,15 +287,17 @@ export default defineConfig([
     },
   },
   {
-    // Enforce import resolution for build/commands scripts. When running
-    // TypeScript natively via Node.js (no transpilation), imports must use the
-    // real file extension. For example, if a file is named config.ts, importing
-    // it as './config.js' is an error.
     files: ['build/commands/**/*.{js,cjs,mjs,ts,cts,mts}'],
     plugins: {
       import: importPlugin,
     },
     rules: {
+      ...importPlugin.flatConfigs.recommended.rules,
+
+      // Enforce import resolution for build/commands scripts. When running
+      // TypeScript natively via Node.js (no transpilation), imports must use
+      // the real file extension. For example, if a file is named config.ts,
+      // importing it as './config.js' is an error.
       'import/no-unresolved': 'error',
     },
   },
@@ -307,6 +307,19 @@ export default defineConfig([
     rules: {
       'licenses/header': 'off',
       'no-undef': 'off',
+    },
+  },
+
+  {
+    // Specific rules for NodeJS targets (except build/commands)
+    files: ['**/*.test.{js,ts}', '**/*.{cts,cjs}'],
+    ignores: ['build/commands/**/*'],
+    plugins: {
+      import: importPlugin,
+    },
+    rules: {
+      ...importPlugin.flatConfigs.recommended.rules,
+      'import/no-unresolved': 'off',
     },
   },
 ])

@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { render } from '@testing-library/react'
 
-import { default as BraveCoreThemeProvider } from '../../../../common/BraveCoreThemeProvider'
+import BraveCoreThemeProvider from '../../../../common/BraveCoreThemeProvider'
 
 // Components
 import { DomainTextContainer, DomainText } from './connections.style'

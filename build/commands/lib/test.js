@@ -4,11 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import fs from 'fs-extra'
-import path from 'path'
+import path from 'node:path'
 import Config from './config.js'
 import Log from './logging.js'
 import util from './util.js'
-import assert from 'assert'
+import assert from 'node:assert'
 import { getAffectedTests } from './affectedTests.js'
 import {
   getTestBinary,

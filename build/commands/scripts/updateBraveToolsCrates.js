@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import config from '../lib/config.js'
-import path from 'path'
+import path from 'node:path'
 import util from '../lib/util.js'
 
 const args = [path.join(config.srcDir, 'brave', 'tools', 'crates', 'update.py')]

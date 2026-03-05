@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import fs from 'fs-extra'
-import path from 'path'
+import path from 'node:path'
 
 // HACK: determines the executable path from the gn target name
 // Alternative: gn desc <buildDir> <target> outputs --format=json

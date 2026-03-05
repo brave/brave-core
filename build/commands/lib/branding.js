@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import path from 'path'
-import config from './config.js'
 import fs from 'fs-extra'
+import path from 'node:path'
+import config from './config.js'
 import l10nUtil from './l10nUtil.js'
-import util from './util.js'
 import Log from './logging.js'
+import util from './util.js'
 
 const update = () => {
   Log.progressStart('update branding')

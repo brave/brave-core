@@ -11,7 +11,7 @@ import {
   cip8,
 } from '@cardano-sdk/key-management'
 import { XorShift } from 'xorshift'
-import { createHash } from 'crypto'
+import { createHash } from 'node:crypto'
 import fs from 'node:fs/promises'
 import { dummyLogger } from 'ts-log'
 

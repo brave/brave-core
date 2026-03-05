@@ -6,8 +6,8 @@
 import build from './build.js'
 import config from './config.js'
 import fs from 'fs-extra'
-import path from 'path'
-import { spawn } from 'child_process'
+import path from 'node:path'
+import { spawn } from 'node:child_process'
 import jszip from 'jszip'
 
 const fuzzerBuildConfig = 'Fuzzer'
