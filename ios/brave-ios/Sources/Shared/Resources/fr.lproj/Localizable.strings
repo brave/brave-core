@@ -50,7 +50,7 @@
 "DownloadsButtonTitle" = "Téléchargements";
 
 /* Question shown to user when tapping a link that opens the App Store app */
-"ExternalLinkAppStoreConfirmationTitle" = "Ouvrir ce lien dans l'App Store";
+"ExternalLinkAppStoreConfirmationTitle" = "Ouvrir ce lien dans l’App Store";
 
 /* The button to open a new tab with the copied link */
 "GoButtonTittle" = "OK";
@@ -62,7 +62,7 @@
 "LoginsHelperDontUpdateButtonTitle" = "Ne pas mettre à jour";
 
 /* Button to save the user's password */
-"LoginsHelperSaveLoginButtonTitle" = "Enregistrer l'identifiant";
+"LoginsHelperSaveLoginButtonTitle" = "Enregistrer l’identifiant";
 
 /* Button to update the user's password */
 "LoginsHelperUpdateButtonTitle" = "Mettre à jour";
@@ -80,7 +80,7 @@
 "SaveLoginPrompt" = "Enregistrer le mot de passe pour %@ ?";
 
 /* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
-"SaveLoginUsernamePrompt" = "Enregistrer l'identifiant %1$@ pour %2$@ ?";
+"SaveLoginUsernamePrompt" = "Enregistrer l’identifiant %1$@ pour %2$@ ?";
 
 /* OK button to dismiss the error prompt. */
 "ScanQRCodeErrorOKButton" = "OK";
@@ -92,10 +92,10 @@
 "ScanQRCodeInvalidDataErrorMessage" = "Les données ne sont pas valides";
 
 /* Text of the prompt user to setup the camera authorization. */
-"ScanQRCodePermissionErrorMessage" = "Autorisez Brave à accéder à l'appareil photo de votre appareil dans Réglages -> Confidentialité et sécurité -> Caméra.";
+"ScanQRCodePermissionErrorMessage" = "Autorisez Brave à accéder à l’appareil photo de votre appareil dans Réglages -> Confidentialité et sécurité -> Caméra.";
 
 /* Title for the QR code scanner view. */
-"ScanQRCodeViewTitle" = "Scanner le code QR";
+"ScanQRCodeViewTitle" = "Analyser le code QR";
 
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Général";
@@ -113,16 +113,16 @@
 "UnableToAddPassErrorDismiss" = "OK";
 
 /* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
-"UnableToAddPassErrorMessage" = "Une erreur s'est produite lors de l'ajout de la carte ou du billet dans Cartes. Veuillez réessayer.";
+"UnableToAddPassErrorMessage" = "Une erreur s’est produite lors de l’ajout de la carte ou du billet dans Cartes. Veuillez réessayer.";
 
 /* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
-"UnableToAddPassErrorTitle" = "Impossible d'ajouter la carte ou le billet";
+"UnableToAddPassErrorTitle" = "Impossible d’ajouter la carte ou le billet";
 
 /* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
-"UnableToOpenURLError" = "Brave ne peut pas ouvrir la page, car l'adresse n'est pas valide.";
+"UnableToOpenURLError" = "Brave ne peut pas ouvrir la page, car l’adresse n’est pas valide.";
 
 /* Title of the message shown when the user attempts to navigate to an invalid link. */
-"UnableToOpenURLErrorTitle" = "Impossible d'ouvrir la page";
+"UnableToOpenURLErrorTitle" = "Impossible d’ouvrir la page";
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
 "UpdateLoginPrompt" = "Mettre à jour les identifiants %1$@ pour %2$@ ?";

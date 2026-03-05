@@ -154,6 +154,9 @@
 /* Button text to cancel Brave Account registration */
 "BraveAccountCancelRegistration" = "登録をキャンセル";
 
+/* Title shown when user is logged in */
+"BraveAccountEmailAddress" = "メールアドレス";
+
 /* Button text to get started with Brave Account */
 "BraveAccountGetStarted" = "始める";
 
@@ -3504,6 +3507,12 @@
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "申し訳ありません、エラーが発生しました";
+
+/* Message for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorMessage" = "連絡先ファイルを読み込むことができませんでした。ファイルが破損しているか、サポートされていない形式の可能性があります。";
+
+/* Title for error alert when a VCard contact file cannot be parsed or opened */
+"VCard.unableToOpenContactErrorTitle" = "連絡先を開くことができません";
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "バージョン %1$@ (%2$@)";
