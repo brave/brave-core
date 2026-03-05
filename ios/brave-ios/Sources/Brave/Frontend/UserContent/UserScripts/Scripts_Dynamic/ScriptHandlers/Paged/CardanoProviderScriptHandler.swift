@@ -146,6 +146,15 @@ class CardanoProviderScriptHandler: TabContentScript {
         } else if api != nil {
           // Return success - API object is stored in tab
           replyHandler("{}", nil)
+        } else {
+          // no error and no api
+          replyHandler(
+            nil,
+            buildErrorJson(
+              code: Int32(BraveWallet.CardanoProviderError.unknown.rawValue),
+              errorMessage: "Unknown error"
+            )
+          )
         }
       case .isEnabled:
         await isEnabled(tab: tab, replyHandler: replyHandler)
@@ -268,40 +277,47 @@ class CardanoProviderScriptHandler: TabContentScript {
 
     Logger.module.info("Cardano: Calling provider.enable()...")
 
-    return await withCheckedContinuation { continuation in
-      provider.enable { api, error in
-        if let error = error {
-          Logger.module.error("Cardano: Enable failed - \(error.errorMessage)")
-          continuation.resume(
-            returning: (
-              nil,
-              self.buildErrorJson(
-                code: error.code,
-                errorMessage: error.errorMessage
+    return await withTaskCancellationHandler {
+      await withCheckedContinuation { continuation in
+        provider.enable { api, error in
+          if let error = error {
+            Logger.module.error("Cardano: Enable failed - \(error.errorMessage)")
+            continuation.resume(
+              returning: (
+                nil,
+                self.buildErrorJson(
+                  code: error.code,
+                  errorMessage: error.errorMessage
+                )
               )
             )
-          )
-          return
-        }
+            return
+          }
 
-        if let api = api {
-          Logger.module.info("Cardano: Enable succeeded! Got API object")
-          // Store API for future use
-          tab.walletCardanoApi = api
-          continuation.resume(returning: (api, nil))
-        } else {
-          Logger.module.error("Cardano: Enable returned nil API with no error")
-          continuation.resume(
-            returning: (
-              nil,
-              self.buildErrorJson(
-                code: Int32(BraveWallet.CardanoProviderError.unknown.rawValue),
-                errorMessage: "No API returned"
+          if let api = api {
+            Logger.module.info("Cardano: Enable succeeded! Got API object")
+            // Store API for future use
+            tab.walletCardanoApi = api
+            continuation.resume(returning: (api, nil))
+          } else {
+            Logger.module.error("Cardano: Enable returned nil API with no error")
+            continuation.resume(
+              returning: (
+                nil,
+                self.buildErrorJson(
+                  code: Int32(BraveWallet.CardanoProviderError.unknown.rawValue),
+                  errorMessage: "Unknown error"
+                )
               )
             )
-          )
+          }
         }
       }
+    } onCancel: {
+      // provider has no cancel method
+      // user has to re-connect wallet in order
+      // to make the site to call enable() again.
+      Logger.module.info("Cardano: Enable task cancelled")
     }
   }
 
@@ -410,11 +426,12 @@ class CardanoProviderScriptHandler: TabContentScript {
       }
     } else {
       // API returned nil result with no error - this shouldn't happen
+      Logger.module.error("Cardano: API call returned nil with no error")
       replyHandler(
         nil,
         buildErrorJson(
           code: Int32(BraveWallet.CardanoProviderError.unknown.rawValue),
-          errorMessage: "No result returned"
+          errorMessage: "Unkown error"
         )
       )
     }

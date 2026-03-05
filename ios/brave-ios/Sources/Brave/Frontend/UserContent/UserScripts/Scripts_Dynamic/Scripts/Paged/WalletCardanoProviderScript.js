@@ -29,7 +29,7 @@ if (window.isSecureContext) {
       })
     }));
   }
-  
+
   // CIP-30 API object factory - creates the API returned by enable()
   function createCardanoApi() {
     const api = {};
