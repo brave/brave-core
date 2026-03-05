@@ -115,32 +115,35 @@ function ConversationItem(props: ConversationItemProps) {
               {title}
             </div>
           </div>
-          <ButtonMenu
-            className={styles.optionsMenu}
-            onChange={handleButtonMenuChange}
-          >
-            <Button
-              slot='anchor-content'
-              className={styles.optionsButton}
-              kind='plain-faint'
-              fab
-              size='small'
+          {/* Stop propagation so clicks don't bubble to the Link and close the sidebar */}
+          <div onClick={(e) => e.stopPropagation()}>
+            <ButtonMenu
+              className={styles.optionsMenu}
+              onChange={handleButtonMenuChange}
             >
-              <Icon name='more-vertical' />
-            </Button>
-            <leo-menu-item onClick={handleEditTitle}>
-              <div className={styles.optionsMenuItemWithIcon}>
-                <Icon name='edit-pencil' />
-                <div>{getLocale(S.CHAT_UI_MENU_RENAME_CONVERSATION)}</div>
-              </div>
-            </leo-menu-item>
-            <leo-menu-item onClick={handleDelete}>
-              <div className={styles.optionsMenuItemWithIcon}>
-                <Icon name='trash' />
-                <div>{getLocale(S.CHAT_UI_MENU_DELETE_CONVERSATION)}</div>
-              </div>
-            </leo-menu-item>
-          </ButtonMenu>
+              <Button
+                slot='anchor-content'
+                className={styles.optionsButton}
+                kind='plain-faint'
+                fab
+                size='small'
+              >
+                <Icon name='more-vertical' />
+              </Button>
+              <leo-menu-item onClick={handleEditTitle}>
+                <div className={styles.optionsMenuItemWithIcon}>
+                  <Icon name='edit-pencil' />
+                  <div>{getLocale(S.CHAT_UI_MENU_RENAME_CONVERSATION)}</div>
+                </div>
+              </leo-menu-item>
+              <leo-menu-item onClick={handleDelete}>
+                <div className={styles.optionsMenuItemWithIcon}>
+                  <Icon name='trash' />
+                  <div>{getLocale(S.CHAT_UI_MENU_DELETE_CONVERSATION)}</div>
+                </div>
+              </leo-menu-item>
+            </ButtonMenu>
+          </div>
         </div>
         {uuid === aiChatContext.editingConversationId && (
           <div className={styles.editibleTitle}>
