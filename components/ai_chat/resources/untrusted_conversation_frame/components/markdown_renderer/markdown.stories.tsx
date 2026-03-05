@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import '@brave/leo/tokens/css/variables.css'
 import MarkdownRenderer from './index'
 import AssistantResponseContextProvider from '../assistant_response/assistant_response_context'
 import * as searchResults from '../search_widget/storybook-data/searchResults.json'
@@ -18,14 +19,97 @@ export const Default = () => {
   return (
     <MarkdownRenderer
       text={`
-## Some Markdown
+# Heading 1
+## Heading 2
+### Heading 3
+#### Heading 4
+##### Heading 5
+###### Heading 6
 
-A list
-1. Item 1 ~~strike~~
-2. Item 2 **bold**
-3. Item 3 *italic*`}
+---
+
+## Inline Formatting
+
+Here is **bold text**, *italic text*, ~~strikethrough~~, and ***bold italic*** together. You can also use \`inline code\` within a sentence.
+
+---
+
+## Ordered List
+
+1. First item
+2. Second item with **bold**
+3. Third item with *italic*
+4. Fourth with ~~strikethrough~~
+
+## Unordered List
+
+- Apples
+- Bananas
+  - Cavendish
+  - Plantain
+- Cherries
+
+---
+
+## Blockquote
+
+> This is a blockquote. It can contain **bold**, *italic*, and \`code\`.
+>
+> It can also span multiple paragraphs.
+
+---
+
+## Code Blocks
+
+Inline: use the \`useState\` hook.
+
+\`\`\`javascript
+function greet(name) {
+  return \`Hello, \${name}!\`;
+}
+
+console.log(greet('World'));
+\`\`\`
+
+\`\`\`python
+def fibonacci(n):
+    a, b = 0, 1
+    for _ in range(n):
+        yield a
+        a, b = b, a + b
+
+print(list(fibonacci(10)))
+\`\`\`
+
+---
+
+## Table
+
+| Feature       | Status      | Notes                  |
+|---------------|-------------|------------------------|
+| Markdown      | ✅ Supported | Basic formatting       |
+| GFM Tables    | ✅ Supported | With header labels     |
+| Code Blocks   | ✅ Supported | Syntax highlighted     |
+| Strikethrough | ✅ Supported | Via remark-gfm         |
+
+---
+
+## Links
+
+Here is a [link to Brave](https://brave.com) and another [link to GitHub](https://github.com).
+
+---
+
+## Mixed Content
+
+Here's a paragraph that mixes **bold**, *italic*, ~~strikethrough~~, and \`inline code\` to show how they all render together in a single block of text. This also tests line wrapping behavior for longer content.
+
+1. A list item with a \`code snippet\` inside
+2. A list item with a **bold** word
+3. A list item with an *italic* phrase and ~~deleted text~~
+`}
       shouldShowTextCursor={false}
-      allowedLinks={[]}
+      allowedLinks={['https://brave.com', 'https://github.com']}
     />
   )
 }

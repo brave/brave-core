@@ -65,6 +65,9 @@
 
   hr {
     margin: var(--leo-spacing-2xl) 0;
+    height: 1px;
+    background-color: var(--leo-color-divider-subtle);
+    border: none;
   }
 
   strong {
