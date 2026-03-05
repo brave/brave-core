@@ -154,7 +154,6 @@ std::optional<CardanoAddress> CardanoAddress::FromShellyPayload(
   return CardanoAddress(std::move(address_bytes));
 }
 
-// https://cips.cardano.org/cip/CIP-0019#user-facing-encoding
 std::string CardanoAddress::ToString() const {
   if (IsByronAddress()) {
     return Base58Encode(bytes_);

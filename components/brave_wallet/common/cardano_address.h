@@ -56,18 +56,28 @@ class CardanoAddress {
   CardanoAddress& operator=(CardanoAddress&& other);
   auto operator<=>(const CardanoAddress& other) const = default;
 
+  // Create CardanoAddress from string. Supports Shelly and Byron style
+  // addresses.
   static std::optional<CardanoAddress> FromString(std::string_view sv);
+
+  // Create Shelly style address.
   static std::optional<CardanoAddress> FromShellyPayload(
       AddressType address_type,
       NetworkTag network_tag,
       base::span<const uint8_t> payload);
+
+  // Create address from raw bytes. Usually comes from parsed tx.
   static std::optional<CardanoAddress> FromCborBytes(
       base::span<const uint8_t> bytes);
 
+  // Returns user visible address.
   std::string ToString() const;
 
+  // Raw bytes address. Usually to be included into a transaction.
   std::vector<uint8_t> ToCborBytes() const;
 
+  // True if it is a stake only address. Such address could not be used as
+  // payment destination.
   bool IsStakeOnlyAddress() const;
 
  private:
