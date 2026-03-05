@@ -27,7 +27,7 @@ bool FakeTabSlotController::ShouldPaintTabAccent(const Tab* tab) const {
   return false;
 }
 
-std::optional<SkColor> FakeTabSlotController::GetTabAccentColor(
+std::optional<TabAccentColors> FakeTabSlotController::GetTabAccentColors(
     const Tab* tab) const {
   return std::nullopt;
 }

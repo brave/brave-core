@@ -82,7 +82,8 @@ bool TabStrip::ShouldPaintTabAccent(const Tab* tab) const {
   return false;
 }
 
-std::optional<SkColor> TabStrip::GetTabAccentColor(const Tab* tab) const {
+std::optional<TabAccentColors> TabStrip::GetTabAccentColors(
+    const Tab* tab) const {
   return std::nullopt;
 }
 

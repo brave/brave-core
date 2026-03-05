@@ -6,6 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_
 
+#include "brave/browser/ui/views/tabs/accent_color/brave_tab_accent_types.h"
 #include "ui/base/models/image_model.h"
 
 namespace tabs {
@@ -37,10 +38,11 @@ class TreeTabNodeId;
   /* tab style to determine if accent painting is needed without exposing */   \
   /* implementation details. */                                                \
   ShouldPaintTabAccent(const Tab* tab) const = 0;                              \
-  /* Returns the accent color for the tab if it should have an accent */       \
-  /* painted. Returns nullopt if the tab should not have an accent or color */ \
-  /* cannot be determined. */                                                  \
-  virtual std::optional<SkColor> GetTabAccentColor(const Tab* tab) const = 0;  \
+  /* Returns the accent colors (border, background) for the tab if it */       \
+  /* should have an accent painted. Returns nullopt if the tab should not */   \
+  /* have an accent or colors cannot be determined. */                         \
+  virtual std::optional<TabAccentColors> GetTabAccentColors(const Tab* tab)    \
+      const = 0;                                                               \
   /* Returns the accent icon for the tab if it should have an accent */        \
   /* painted. Returns an empty ImageModel if the tab should not have an */     \
   /* accent or icon cannot be determined. */                                   \

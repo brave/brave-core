@@ -35,11 +35,12 @@
   bool IsVerticalTabsAnimatingButNotFinalState() const
 
 // Add overrides for TabAccent related methods
-#define CanPaintThrobberToLayer()                                          \
-  ShouldPaintTabAccent(const Tab* tab) const override;                     \
-  std::optional<SkColor> GetTabAccentColor(const Tab* tab) const override; \
-  ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;          \
-  bool CanCloseTabViaMiddleButtonClick() const override;                   \
+#define CanPaintThrobberToLayer()                                   \
+  ShouldPaintTabAccent(const Tab* tab) const override;              \
+  std::optional<TabAccentColors> GetTabAccentColors(const Tab* tab) \
+      const override;                                               \
+  ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;   \
+  bool CanCloseTabViaMiddleButtonClick() const override;            \
   bool CanPaintThrobberToLayer()
 
 // Add a method to TabSlotController to get the height of the tree tab node for
