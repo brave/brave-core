@@ -20,110 +20,54 @@ export default function FullScreen() {
   const { createNewConversation } = useActiveChat()
   const conversationContext = useConversation()
 
-  const asideAnimationRef = React.useRef<Animation | null>()
-  const controllerRef = React.useRef(new AbortController())
+  const asideRef = React.useRef<HTMLElement | null>(null)
   const isSmall = useIsSmall()
-  const [isNavigationCollapsed, setIsNavigationCollapsed] =
-    React.useState(isSmall)
-  const [isNavigationRendered, setIsNavigationRendered] =
-    React.useState(!isSmall)
+
+  // Enable CSS transitions after the first paint to avoid animating on mount
+  const [isAnimated, setIsAnimated] = React.useState(false)
+  React.useEffect(() => {
+    const frame = requestAnimationFrame(() => setIsAnimated(true))
+    return () => cancelAnimationFrame(frame)
+  }, [])
 
   const canStartNewConversation =
     aiChatContext.hasAcceptedAgreement
     && !!conversationContext.conversationHistory.length
 
-  const asideRef = React.useRef<HTMLElement | null>(null)
-
-  const initAsideAnimation = React.useCallback((node: HTMLElement | null) => {
-    asideRef.current = node
-
-    if (!node) return
-    const open = { width: 'var(--navigation-width)', opacity: 1 }
-    const close = { width: '0px', opacity: 0 }
-    const animationOptions: KeyframeAnimationOptions = {
-      duration: 400,
-      easing: 'cubic-bezier(0.77, 0, 0.175, 1)',
-      fill: 'forwards',
-    }
-    asideAnimationRef.current = new Animation(
-      new KeyframeEffect(node, [open, close], animationOptions),
-    )
-
-    // Make sure we're in the right state for our screen size when
-    asideAnimationRef.current.playbackRate = isSmall ? 1 : -1
-    asideAnimationRef.current.finish()
-  }, [])
-
-  const toggleAside = () => {
-    const asideAnimation = asideAnimationRef.current
-
-    if (asideAnimation) {
-      if (isNavigationCollapsed) {
-        controllerRef.current.abort()
-        controllerRef.current = new AbortController()
-        asideAnimation.ready.then(() => setIsNavigationRendered(true))
-        asideAnimation.playbackRate = -1
-      } else {
-        // 'finish' triggers in both directions, so we only need this once per close animation
-        // user may rapidly toggle the aside, so we need to abort scheduled listener in open animation
-        asideAnimation.addEventListener(
-          'finish',
-          () => setIsNavigationRendered(false),
-          { once: true, signal: controllerRef.current.signal },
-        )
-        asideAnimation.playbackRate = 1
-      }
-
-      asideAnimation.play()
-      setIsNavigationCollapsed(!isNavigationCollapsed)
-    }
-  }
-
+  // When editing a conversation title, ensure the sidebar is open
   React.useEffect(() => {
-    const isOpen = asideAnimationRef.current?.playbackRate === 1
-    if (aiChatContext.editingConversationId && isOpen) {
-      toggleAside()
+    if (aiChatContext.editingConversationId && !aiChatContext.showSidebar) {
+      aiChatContext.toggleSidebar()
     }
-  }, [aiChatContext.editingConversationId, isNavigationCollapsed])
+  }, [aiChatContext.editingConversationId])
 
   // On iOS, close the sidebar when the delete-conversation dialog opens.
   // The sidebar overlaps the dialog and intercepts touch events, requiring
-  // a double-tap to reach buttons inside the dialog. Uses toggleSidebar()
-  // (not toggleAside()) so showSidebar stays in sync with the visual state;
-  // the showSidebar effect above then drives the actual animation.
+  // a double-tap to reach buttons inside a dialog. Uses toggleSidebar()
+  // so showSidebar stays in sync with the visual state.
   // <if expr="is_ios">
   React.useEffect(() => {
-    const isClosed = asideAnimationRef.current?.playbackRate === 1
-    if (aiChatContext.deletingConversationId && !isClosed) {
+    if (aiChatContext.deletingConversationId && aiChatContext.showSidebar) {
       aiChatContext.toggleSidebar()
     }
   }, [aiChatContext.deletingConversationId])
   // </if>
 
   React.useEffect(() => {
-    const isOpen = asideAnimationRef.current?.playbackRate === 1
-
     // We've just changed to small and the sidebar was open, so close it
-    if (isSmall && !isOpen) {
+    if (isSmall && aiChatContext.showSidebar) {
       aiChatContext.toggleSidebar()
     }
 
     // We've just changed to big and the sidebar was closed, so open it
-    if (!isSmall && isOpen) {
+    if (!isSmall && !aiChatContext.showSidebar) {
       aiChatContext.toggleSidebar()
     }
   }, [isSmall])
 
-  React.useEffect(() => {
-    const isOpen = asideAnimationRef.current?.playbackRate === 1
-    if (isOpen !== aiChatContext.showSidebar) {
-      toggleAside()
-    }
-  }, [aiChatContext.showSidebar])
-
   // Add handler for closing the sidebar when clicking outside of it.
   React.useEffect(() => {
-    if (aiChatContext.showSidebar || !isSmall) return
+    if (!aiChatContext.showSidebar || !isSmall) return
     const handleClick = (e: MouseEvent) => {
       const path = e.composedPath()
       // On iOS, the one-tap fix dispatches synthetic clicks at (0,0).
@@ -173,7 +117,7 @@ export default function FullScreen() {
             >
               <Icon name='window-tabs-vertical-expanded' />
             </Button>
-            {!isNavigationRendered && canStartNewConversation && (
+            {!aiChatContext.showSidebar && canStartNewConversation && (
               <>
                 <Button
                   fab
@@ -188,17 +132,23 @@ export default function FullScreen() {
           </div>
         )}
         <aside
-          ref={initAsideAnimation}
-          className={styles.aside}
-        >
-          {isNavigationRendered && (
-            <div className={styles.nav}>
-              <NavigationHeader />
-              <ConversationsList
-                setIsConversationsListOpen={setIsNavigationCollapsed}
-              />
-            </div>
+          ref={asideRef}
+          className={classNames(
+            styles.aside,
+            aiChatContext.showSidebar && styles.open,
+            isAnimated && styles.animated,
           )}
+        >
+          <div className={styles.nav}>
+            <NavigationHeader />
+            <ConversationsList
+              setIsConversationsListOpen={(open) => {
+                if (!open && aiChatContext.showSidebar) {
+                  aiChatContext.toggleSidebar()
+                }
+              }}
+            />
+          </div>
         </aside>
       </div>
       <div className={styles.content}>
