@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.playlist.settings;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.preference.Preference;
@@ -12,6 +13,7 @@ import androidx.preference.Preference;
 import com.brave.playlist.local_database.PlaylistRepository;
 import com.brave.playlist.util.PlaylistPreferenceUtils;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSuppliers;
@@ -20,14 +22,20 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.PlaylistService;
+
+import java.util.Map;
 
 public class BravePlaylistPreferences extends BravePreferenceFragment
         implements ConnectionErrorHandler, Preference.OnPreferenceChangeListener {
@@ -147,6 +155,62 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
 
         return true;
     }
+
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(
+                    BravePlaylistPreferences.class.getName(), R.xml.brave_playlist_preferences) {
+
+                @Override
+                public void initPreferenceXml(
+                        Context context,
+                        SettingsIndexData indexData,
+                        Map<String, SearchIndexProvider> providerMap) {
+                    super.initPreferenceXml(context, indexData, providerMap);
+                    // brave_main_preferences.xml is not processed by
+                    // MainSettings.SEARCH_INDEX_DATA_PROVIDER, so we add the brave_playlist
+                    // entry and child-parent link manually so resolveIndex() does not treat
+                    // BravePlaylistPreferences entries as orphans.
+                    indexData.addEntryForKey(
+                            "org.chromium.chrome.browser.settings.MainSettings",
+                            "brave_playlist",
+                            R.string.brave_playlist,
+                            /* summaryId= */ 0,
+                            BravePlaylistPreferences.class.getName());
+                }
+
+                @Override
+                public void updateDynamicPreferences(Context context, SettingsIndexData indexData) {
+                    String frag = BravePlaylistPreferences.class.getName();
+                    if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
+                        indexData.removeEntryForKey(
+                                "org.chromium.chrome.browser.settings.MainSettings",
+                                "brave_playlist");
+                        indexData.removeEntryForKey(frag, BravePreferenceKeys.PREF_ENABLE_PLAYLIST);
+                        indexData.removeEntryForKey(
+                                frag, BravePreferenceKeys.PREF_ADD_TO_PLAYLIST_BUTTON);
+                        indexData.removeEntryForKey(
+                                frag, BravePreferenceKeys.PREF_REMEMBER_FILE_PLAYBACK_POSITION);
+                        indexData.removeEntryForKey(
+                                frag, BravePreferenceKeys.PREF_REMEMBER_LIST_PLAYBACK_POSITION);
+                        indexData.removeEntryForKey(
+                                frag, BravePreferenceKeys.PREF_CONTINUOUS_LISTENING);
+                        indexData.removeEntryForKey(frag, BravePreferenceKeys.PREF_RESET_PLAYLIST);
+                        return;
+                    }
+                    if (!ChromeSharedPreferences.getInstance()
+                            .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)) {
+                        indexData.removeEntryForKey(
+                                frag, BravePreferenceKeys.PREF_ADD_TO_PLAYLIST_BUTTON);
+                        indexData.removeEntryForKey(
+                                frag, BravePreferenceKeys.PREF_REMEMBER_FILE_PLAYBACK_POSITION);
+                        indexData.removeEntryForKey(
+                                frag, BravePreferenceKeys.PREF_REMEMBER_LIST_PLAYBACK_POSITION);
+                        indexData.removeEntryForKey(
+                                frag, BravePreferenceKeys.PREF_CONTINUOUS_LISTENING);
+                        indexData.removeEntryForKey(frag, BravePreferenceKeys.PREF_RESET_PLAYLIST);
+                    }
+                }
+            };
 
     private void updatePlaylistSettingsState(boolean isPlaylistEnabled) {
         if (isPlaylistEnabled) {
