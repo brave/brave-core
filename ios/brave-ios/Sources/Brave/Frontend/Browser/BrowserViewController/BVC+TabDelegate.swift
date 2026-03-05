@@ -395,12 +395,17 @@ extension BrowserViewController: TabDelegate {
       title: Strings.forcePaste,
       attributes: !canPaste ? .hidden : []
     ) { [weak tab] _ in
+      guard let tab else { return }
       if let string = UIPasteboard.general.string {
-        tab?.evaluateJavaScript(
-          functionName: "window.__firefox__.forcePaste",
-          args: [string, UserScriptManager.securityToken],
-          contentWorld: .defaultClient
-        ) { _, _ in }
+        if FeatureList.kUseProfileWebViewConfiguration.enabled {
+          tab.forcePaste?.forcePasteIntoActiveElement(contents: string)
+        } else {
+          tab.evaluateJavaScript(
+            functionName: "window.__firefox__.forcePaste",
+            args: [string, UserScriptManager.securityToken],
+            contentWorld: .defaultClient
+          ) { _, _ in }
+        }
       }
     }
     let searchWithBrave = UIAction(title: Strings.searchWithBrave) { [weak tab, weak self] _ in
