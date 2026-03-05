@@ -35,63 +35,71 @@ export function WidgetsPanel() {
 
   return (
     <div data-css-scope={style.scope}>
-      <div className='control-row'>
-        <label>{getString(S.NEW_TAB_SHOW_STATS_LABEL)}</label>
-        <Toggle
-          size='small'
-          checked={showStats}
-          onChange={({ checked }) => {
-            newTabActions.setShowShieldsStats(checked)
-          }}
-        />
-      </div>
+      <Toggle
+        className='toggle-row'
+        size='small'
+        checked={showStats}
+        onChange={({ checked }) => {
+          newTabActions.setShowShieldsStats(checked)
+        }}
+      >
+        <span className='label'>{getString(S.NEW_TAB_SHOW_STATS_LABEL)}</span>
+      </Toggle>
       {vpnFeatureEnabled && (
-        <div className='control-row'>
-          <label>{getString(S.NEW_TAB_SHOW_VPN_WIDGET_LABEL)}</label>
-          <Toggle
-            size='small'
-            checked={showVpnWidget}
-            onChange={({ checked }) => {
-              vpnActions.setShowVpnWidget(checked)
-            }}
-          />
-        </div>
+        <Toggle
+          className='toggle-row'
+          size='small'
+          checked={showVpnWidget}
+          onChange={({ checked }) => {
+            vpnActions.setShowVpnWidget(checked)
+          }}
+        >
+          <span className='label'>
+            {getString(S.NEW_TAB_SHOW_VPN_WIDGET_LABEL)}
+          </span>
+        </Toggle>
       )}
       {rewardsFeatureEnabled && (
-        <div className='control-row'>
-          <label>{getString(S.NEW_TAB_SHOW_REWARDS_WIDGET_LABEL)}</label>
-          <Toggle
-            size='small'
-            checked={showRewardsWidget}
-            onChange={({ checked }) => {
-              rewardsActions.setShowRewardsWidget(checked)
-            }}
-          />
-        </div>
+        <Toggle
+          className='toggle-row'
+          size='small'
+          checked={showRewardsWidget}
+          onChange={({ checked }) => {
+            rewardsActions.setShowRewardsWidget(checked)
+          }}
+        >
+          <span className='label'>
+            {getString(S.NEW_TAB_SHOW_REWARDS_WIDGET_LABEL)}
+          </span>
+        </Toggle>
       )}
       {talkFeatureEnabled && (
-        <div className='control-row'>
-          <label>{getString(S.NEW_TAB_SHOW_TALK_WIDGET_LABEL)}</label>
-          <Toggle
-            size='small'
-            checked={showTalkWidget}
-            onChange={({ checked }) => {
-              newTabActions.setShowTalkWidget(checked)
-            }}
-          />
-        </div>
+        <Toggle
+          className='toggle-row'
+          size='small'
+          checked={showTalkWidget}
+          onChange={({ checked }) => {
+            newTabActions.setShowTalkWidget(checked)
+          }}
+        >
+          <span className='label'>
+            {getString(S.NEW_TAB_SHOW_TALK_WIDGET_LABEL)}
+          </span>
+        </Toggle>
       )}
       {newsFeatureEnabled && (
-        <div className='control-row'>
-          <label>{getString(S.NEW_TAB_SHOW_NEWS_WIDGET_LABEL)}</label>
-          <Toggle
-            size='small'
-            checked={braveNews.isShowOnNTPPrefEnabled}
-            onChange={({ checked }) => {
-              braveNews.toggleBraveNewsOnNTP(checked)
-            }}
-          />
-        </div>
+        <Toggle
+          className='toggle-row'
+          size='small'
+          checked={braveNews.isShowOnNTPPrefEnabled}
+          onChange={({ checked }) => {
+            braveNews.toggleBraveNewsOnNTP(checked)
+          }}
+        >
+          <span className='label'>
+            {getString(S.NEW_TAB_SHOW_NEWS_WIDGET_LABEL)}
+          </span>
+        </Toggle>
       )}
     </div>
   )

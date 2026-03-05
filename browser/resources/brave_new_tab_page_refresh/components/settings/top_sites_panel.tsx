@@ -36,16 +36,18 @@ export function TopSitesPanel() {
 
   return (
     <div data-css-scope={style.scope}>
-      <div className='control-row'>
-        <label>{getString(S.NEW_TAB_SHOW_TOP_SITES_LABEL)}</label>
-        <Toggle
-          size='small'
-          checked={showTopSites}
-          onChange={({ checked }) => {
-            actions.setShowTopSites(checked)
-          }}
-        />
-      </div>
+      <Toggle
+        className='toggle-row'
+        size='small'
+        checked={showTopSites}
+        onChange={({ checked }) => {
+          actions.setShowTopSites(checked)
+        }}
+      >
+        <span className='label'>
+          {getString(S.NEW_TAB_SHOW_TOP_SITES_LABEL)}
+        </span>
+      </Toggle>
       {showTopSites && (
         <div className='list-view-options'>
           <button
