@@ -42,16 +42,16 @@ export function ClockPanel() {
 
   return (
     <div data-css-scope={style.scope}>
-      <div className='control-row'>
-        <label>{getString(S.NEW_TAB_SHOW_CLOCK_LABEL)}</label>
-        <Toggle
-          size='small'
-          checked={showClock}
-          onChange={({ checked }) => {
-            actions.setShowClock(checked)
-          }}
-        />
-      </div>
+      <Toggle
+        className='toggle-row'
+        size='small'
+        checked={showClock}
+        onChange={({ checked }) => {
+          actions.setShowClock(checked)
+        }}
+      >
+        <span className='label'>{getString(S.NEW_TAB_SHOW_CLOCK_LABEL)}</span>
+      </Toggle>
       <div className='control-row'>
         <label>{getString(S.NEW_TAB_CLOCK_FORMAT_LABEL)}</label>
         <DropDown
