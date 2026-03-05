@@ -129,7 +129,7 @@ SkPath BraveVerticalTabStyle::GetPath(TabStyle::PathType path_type,
     return {};
   }
 
-  if (inset_tab_accent_area) {
+  if (inset_tab_accent_area && path_type != TabStyle::PathType::kHitTest) {
     aligned_bounds = InsetAlignedBoundsForTabAccent(aligned_bounds, scale);
   }
 
