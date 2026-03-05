@@ -75,6 +75,10 @@ PageState PageState::RemoveTopURLPrefix(size_t prefix_length) const {
     return *this;
   }
 
+  if (prefix_length > state.top.url_string->size()) {
+    return *this;
+  }
+
   state.top.url_string = state.top.url_string->substr(prefix_length);
 
   return ToPageState(state);
