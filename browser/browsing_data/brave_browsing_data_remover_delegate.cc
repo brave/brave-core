@@ -17,6 +17,7 @@
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
+#include "brave/components/misc_metrics/page_metrics.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
 #include "build/build_config.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
@@ -203,6 +204,10 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
       if (serp_metrics::SerpMetrics* serp_metrics =
               profile_misc_metrics_service->GetSerpMetrics()) {
         serp_metrics->ClearHistory();
+      }
+      if (misc_metrics::PageMetrics* page_metrics =
+              profile_misc_metrics_service->GetPageMetrics()) {
+        page_metrics->brave_search_metrics()->ClearQueryCounts();
       }
     }
   }
