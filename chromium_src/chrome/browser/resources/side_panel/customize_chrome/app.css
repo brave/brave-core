@@ -12,6 +12,10 @@
 
 :host {
   --toolbar-button-height: 20px;
+  --cr-theme-color-max-width: 80px;
+  --cr-grid-template-columns: repeat(auto-fill, minmax(64px, 80px));
+  --cr-grid-width-override: 100%;
+  --cr-grid-justify-content: center;
 }
 
 #container {
@@ -53,7 +57,10 @@ sp-heading h2[slot='heading'] {
   line-height: var(--leo-typography-line-height-button-small);
 }
 
-.sp-card,
+.sp-card {
+  max-width: none;
+}
+
 customize-chrome-appearance,
 customize-chrome-shortcuts,
 customize-chrome-cards,

@@ -3,12 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-/* This override adds a CSS custom property for grid justify-content to allow
-   centering grid tracks from parent components.
-
-   The 'revert' fallback ensures that when the custom property is not set,
-   justify-content reverts to the browser default (start). */
-
 /* #css_wrapper_metadata_start
  * #type=style-lit
  * #import=./cr_grid-chromium.css.js
@@ -17,5 +11,8 @@
  * #css_wrapper_metadata_end */
 
 #grid {
+  grid-template-columns: var(--cr-grid-template-columns,
+      repeat(var(--cr-grid-columns), var(--cr-column-width)));
+  width: var(--cr-grid-width-override, var(--cr-grid-width));
   justify-content: var(--cr-grid-justify-content, revert);
 }
