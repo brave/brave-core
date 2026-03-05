@@ -11,12 +11,14 @@ import {
   ExternalWallet,
   ExternalWalletProvider,
 } from '../../brave_rewards/resources/shared/lib/external_wallet'
+import * as MeldTypes from 'gen/brave/components/brave_wallet/common/meld_integration.mojom.m.js'
+
+import Amount from '../utils/amount'
 
 // Re-export BraveWallet for use in other modules, to avoid hard-coding the
 // path of generated mojom files.
 export { BraveWallet }
 export { Url } from 'gen/url/mojom/url.mojom.m.js'
-import * as MeldTypes from 'gen/brave/components/brave_wallet/common/meld_integration.mojom.m.js'
 export {
   MeldFiatCurrency,
   MeldFilter,
@@ -34,8 +36,6 @@ export type DAppConnectionOptionsType = 'networks' | 'accounts' | 'main'
 
 export { Origin } from 'gen/url/mojom/origin.mojom.m.js'
 export { TimeDelta }
-
-import Amount from '../utils/amount'
 
 export type HardwareWalletResponseCodeType =
   | 'deviceNotConnected'

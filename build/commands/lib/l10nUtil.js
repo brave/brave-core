@@ -10,8 +10,8 @@
  * - Top level global string replacements, such as replacing Chromium with Brave
  */
 
-import path from 'path'
-import fs from 'fs'
+import path from 'node:path'
+import fs from 'node:fs'
 import chalk from 'chalk'
 import { JSDOM } from 'jsdom'
 import config from './config.js'

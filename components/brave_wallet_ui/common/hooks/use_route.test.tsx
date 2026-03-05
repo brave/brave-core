@@ -17,12 +17,12 @@ import {
 // Hooks
 import { useRoute } from './use_route'
 
+import { openWalletRouteTab } from '../../utils/routes-utils'
+
 // Mocks
 jest.mock('../../utils/routes-utils', () => ({
   openWalletRouteTab: jest.fn(),
 }))
-
-import { openWalletRouteTab } from '../../utils/routes-utils'
 
 const mockOpenWalletRouteTab = openWalletRouteTab as jest.MockedFunction<
   typeof openWalletRouteTab

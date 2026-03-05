@@ -23,7 +23,7 @@ import * as WalletActions from '../../../../common/actions/wallet_actions'
 
 // Components
 import { store } from '../../../store'
-import { default as BraveCoreThemeProvider } from '../../../../../common/BraveCoreThemeProvider'
+import BraveCoreThemeProvider from '../../../../../common/BraveCoreThemeProvider'
 import { SendScreen } from '../send_screen/send_screen'
 
 export function AndroidSendApp() {
