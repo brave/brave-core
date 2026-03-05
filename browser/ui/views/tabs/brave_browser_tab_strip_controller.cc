@@ -248,6 +248,7 @@ void BraveBrowserTabStripController::OnTreeTabChanged(
       static_cast<BraveTab*>(tabstrip_->tab_at(index))
           ->UpdateTreeToggleButtonIcon();
       tabstrip_->InvalidateLayout();
+      break;
     }
   }
 }
