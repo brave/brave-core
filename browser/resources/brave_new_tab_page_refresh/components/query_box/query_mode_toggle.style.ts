@@ -21,9 +21,4 @@ export const style = scoped.css`
     --leo-icon-color: ${color.neutral[50]};
     --leo-segmented-control-item-color: ${color.neutral[50]};
   }
-
-  .icon {
-    // fix issue with icons not rendering until clicked
-    display: inline;
-  }
 `

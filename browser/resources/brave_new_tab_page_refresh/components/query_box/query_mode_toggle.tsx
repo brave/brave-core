@@ -31,47 +31,40 @@ export function QueryModeToggle(props: Props) {
       }}
     >
       <SegmentedControlItem
-        value={'chat'}
-        className={classnames('item', props.queryMode === 'chat' && 'selected')}
+        className={classnames({
+          item: true,
+          selected: props.queryMode === 'chat',
+        })}
+        value='chat'
         data-test-id='query-mode-toggle-chat'
       >
-        <div
-          className='icon'
-          slot={props.queryMode === 'chat' ? 'icon-before' : 'default'}
-        >
-          <Icon
-            title={getString(S.NEW_TAB_QUERY_TOGGLE_CHAT_LABEL)}
-            name='product-brave-leo'
-          ></Icon>
-        </div>
-        {props.queryMode === 'chat' && (
-          <span className='name'>
-            {getString(S.NEW_TAB_QUERY_TOGGLE_CHAT_LABEL)}
-          </span>
-        )}
+        <Icon
+          slot='icon-before'
+          title={getString(S.NEW_TAB_QUERY_TOGGLE_CHAT_LABEL)}
+          name='product-brave-leo'
+        />
+        <span>
+          {props.queryMode === 'chat'
+            && getString(S.NEW_TAB_QUERY_TOGGLE_CHAT_LABEL)}
+        </span>
       </SegmentedControlItem>
       <SegmentedControlItem
-        className={classnames(
-          'item',
-          props.queryMode === 'search' && 'selected',
-        )}
-        value={'search'}
+        className={classnames({
+          item: true,
+          selected: props.queryMode === 'search',
+        })}
+        value='search'
         data-test-id='query-mode-toggle-search'
       >
-        <div
-          className='icon'
-          slot={props.queryMode === 'search' ? 'icon-before' : 'default'}
-        >
-          <Icon
-            title={getString(S.NEW_TAB_QUERY_TOGGLE_SEARCH_LABEL)}
-            name='search'
-          ></Icon>
-        </div>
-        {props.queryMode === 'search' && (
-          <span className='name'>
-            {getString(S.NEW_TAB_QUERY_TOGGLE_SEARCH_LABEL)}
-          </span>
-        )}
+        <Icon
+          slot='icon-before'
+          title={getString(S.NEW_TAB_QUERY_TOGGLE_SEARCH_LABEL)}
+          name='search'
+        />
+        <span>
+          {props.queryMode === 'search'
+            && getString(S.NEW_TAB_QUERY_TOGGLE_SEARCH_LABEL)}
+        </span>
       </SegmentedControlItem>
     </SegmentedControl>
   )
