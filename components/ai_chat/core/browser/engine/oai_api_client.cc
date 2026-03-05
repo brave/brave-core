@@ -70,6 +70,7 @@ std::string CreateJSONRequestBody(
     base::ListValue messages,
     const bool is_sse_enabled,
     const mojom::CustomModelOptions& model_options,
+    std::optional<base::ListValue> oai_tool_definitions,
     const std::optional<std::vector<std::string>>& stop_sequences) {
   base::DictValue dict;
 
@@ -77,6 +78,10 @@ std::string CreateJSONRequestBody(
   dict.Set("stream", is_sse_enabled);
   dict.Set("temperature", 0.7);
   dict.Set("model", model_options.model_request_name);
+
+  if (oai_tool_definitions.has_value() && !oai_tool_definitions->empty()) {
+    dict.Set("tools", std::move(oai_tool_definitions.value()));
+  }
 
   if (stop_sequences && !stop_sequences->empty()) {
     base::ListValue stop_list;
@@ -279,6 +284,8 @@ base::ListValue OAIAPIClient::SerializeOAIMessages(
     }
     message_dict.Set("content", std::move(content_list));
 
+    SerializeToolCallsOnMessageDict(message, message_dict);
+
     serialized_messages.Append(std::move(message_dict));
   }
 
@@ -300,6 +307,7 @@ void OAIAPIClient::ClearAllQueries() {
 void OAIAPIClient::PerformRequest(
     const mojom::CustomModelOptions& model_options,
     std::vector<OAIMessage> messages,
+    std::optional<base::ListValue> oai_tool_definitions,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
     const std::optional<std::vector<std::string>>& stop_sequences) {
@@ -310,9 +318,9 @@ void OAIAPIClient::PerformRequest(
 
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
-  const std::string request_body =
-      CreateJSONRequestBody(SerializeOAIMessages(std::move(messages)),
-                            is_sse_enabled, model_options, stop_sequences);
+  const std::string request_body = CreateJSONRequestBody(
+      SerializeOAIMessages(std::move(messages)), is_sse_enabled, model_options,
+      std::move(oai_tool_definitions), stop_sequences);
   base::flat_map<std::string, std::string> headers;
   if (!model_options.api_key.empty()) {
     headers.emplace("Authorization",
@@ -402,9 +410,16 @@ void OAIAPIClient::OnQueryDataReceived(
     return;
   }
 
+  auto& result_dict = result->GetDict();
+
   if (auto result_data = ParseOAICompletionResponse(
-          result->GetDict(), std::nullopt /* model_key */)) {
+          result_dict, std::nullopt /* model_key */)) {
     callback.Run(std::move(*result_data));
+  }
+
+  for (auto& tool_result :
+       ParseToolCallsFromOAIResponse(result_dict, std::nullopt)) {
+    callback.Run(std::move(tool_result));
   }
 }
 

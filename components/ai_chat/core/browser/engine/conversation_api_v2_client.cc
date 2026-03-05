@@ -282,29 +282,7 @@ base::ListValue ConversationAPIV2Client::SerializeOAIMessages(
     }
     message_dict.Set("content", std::move(content_list));
 
-    // Tool calls
-    if (!message.tool_calls.empty()) {
-      base::ListValue tool_call_dicts;
-      for (const auto& tool_event : message.tool_calls) {
-        base::DictValue tool_call_dict;
-        tool_call_dict.Set("id", tool_event->id);
-        tool_call_dict.Set("type", "function");
-
-        base::DictValue function_dict;
-        function_dict.Set("name", tool_event->tool_name);
-
-        function_dict.Set("arguments", tool_event->arguments_json);
-
-        tool_call_dict.Set("function", std::move(function_dict));
-        tool_call_dicts.Append(std::move(tool_call_dict));
-      }
-
-      message_dict.Set("tool_calls", std::move(tool_call_dicts));
-    }
-
-    if (!message.tool_call_id.empty()) {
-      message_dict.Set("tool_call_id", message.tool_call_id);
-    }
+    SerializeToolCallsOnMessageDict(message, message_dict);
 
     serialized_messages.Append(std::move(message_dict));
   }
@@ -558,29 +536,9 @@ void ConversationAPIV2Client::OnQueryDataReceived(
 
   // Tool calls - in OpenAI format they're inside choices[0].delta.tool_calls
   // or choices[0].message.tool_calls
-  const base::DictValue* content_container =
-      GetOAIContentContainer(result_params);
-  if (content_container) {
-    if (const base::ListValue* tool_calls =
-            content_container->FindList("tool_calls")) {
-      for (const auto& tool_call_value : *tool_calls) {
-        if (!tool_call_value.is_dict()) {
-          continue;
-        }
-        const auto& tool_call_dict = tool_call_value.GetDict();
-
-        // Parse tool request or server tool result
-        if (auto tool_use_event = ParseToolCallRequest(tool_call_dict)) {
-          auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
-              std::move(*tool_use_event));
-          callback.Run(GenerationResultData(std::move(tool_event), model_key));
-        } else {
-          for (auto& event : ParseToolCallResult(tool_call_dict)) {
-            callback.Run(GenerationResultData(std::move(event), model_key));
-          }
-        }
-      }
-    }
+  for (auto& tool_result :
+       ParseToolCallsFromOAIResponse(result_params, model_key)) {
+    callback.Run(std::move(tool_result));
   }
 }
 
