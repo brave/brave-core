@@ -11,6 +11,7 @@
 
 #include "base/apple/foundation_util.h"
 #include "base/notreached.h"
+#include "base/strings/sys_string_conversions.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat_associated_content_page_fetcher.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat_tab_helper.h"
@@ -21,6 +22,7 @@
 #include "brave/ios/browser/api/web_view/passwords/brave_web_view_password_manager_client.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler_bridge_holder.h"
+#include "brave/ios/browser/web/force_paste/force_paste_javascript_feature.h"
 #include "components/autofill/core/browser/logging/log_manager.h"
 #include "components/autofill/core/browser/logging/log_router.h"
 #include "components/autofill/ios/browser/autofill_agent.h"
@@ -416,6 +418,15 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
   _walletPageHandler = bridge;
   brave_wallet::PageHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
       ->SetBridge(bridge);
+}
+
+@end
+
+@implementation BraveWebView (ForcePaste)
+
+- (void)forcePasteContents:(NSString*)contents {
+  ForcePasteJavaScriptFeature::GetInstance()->ForcePaste(
+      self.webState, base::SysNSStringToUTF8(contents));
 }
 
 @end
