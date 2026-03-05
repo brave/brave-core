@@ -13,6 +13,7 @@
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "brave/components/services/brave_shields/filter_parsing_service.h"
+#include "brave/components/services/brave_shields/mojom/adblock_filter_list_parser.mojom-forward.h"
 #include "mojo/public/cpp/base/big_buffer.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 
@@ -25,6 +26,25 @@ void BindInProcessFilterSetParser(
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_shields::FilterParsingService>(),
       std::move(receiver));
+}
+
+adblock_filter_list_parser::mojom::FilterListMetadataPtr
+ConvertToMojomFilterListMetadata(adblock::FilterListMetadataResult metadata) {
+  auto mojom_metadata =
+      adblock_filter_list_parser::mojom::FilterListMetadata::New();
+  if (metadata.result_kind == adblock::ResultKind::Success) {
+    if (metadata.value.title.has_value) {
+      mojom_metadata->title = metadata.value.title.value.c_str();
+    }
+    if (metadata.value.homepage.has_value) {
+      mojom_metadata->homepage = metadata.value.homepage.value.c_str();
+    }
+    if (metadata.value.expires_hours.has_value) {
+      mojom_metadata->expires_hours = metadata.value.expires_hours.value;
+    }
+  }
+
+  return mojom_metadata;
 }
 }  // namespace
 
@@ -67,26 +87,14 @@ void FilterParsingService::ParseFilters(
         (*filter_set)
             ->add_filter_list_with_permissions(std::move(filter_vec),
                                                filter_list->permission_mask);
-    auto mojom_metadata =
-        adblock_filter_list_parser::mojom::FilterListMetadata::New();
-    if (this_metadata.result_kind == adblock::ResultKind::Success) {
-      if (this_metadata.value.title.has_value) {
-        mojom_metadata->title = this_metadata.value.title.value.c_str();
-      }
-      if (this_metadata.value.homepage.has_value) {
-        mojom_metadata->homepage = this_metadata.value.homepage.value.c_str();
-      }
-      if (this_metadata.value.expires_hours.has_value) {
-        mojom_metadata->expires_hours = this_metadata.value.expires_hours.value;
-      }
-    }
-    metadata.push_back(std::move(mojom_metadata));
+    metadata.push_back(ConvertToMojomFilterListMetadata(this_metadata));
   }
 
   auto e = adblock::engine_from_filter_set(std::move(*filter_set));
   if (e.result_kind != adblock::ResultKind::Success) {
     VLOG(0) << "AdBlockEngine::OnFilterSetLoaded failed: "
             << e.error_message.c_str();
+    std::move(callback).Run(mojo_base::BigBuffer(), std::move(metadata));
     return;
   }
 

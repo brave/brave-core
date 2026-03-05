@@ -137,10 +137,8 @@ void AdBlockFiltersProviderManager::FinishCombinating(
       on_metadata_cbs;
   on_metadata_cbs.reserve(results.size());
   for (auto& [filters, permission_mask, on_metadata_cb] : results) {
-    auto r = adblock_filter_list_parser::mojom::FilterListInput::New();
-    r->filters = std::move(filters);
-    r->permission_mask = permission_mask;
-    inputs.push_back(std::move(r));
+    inputs.push_back(adblock_filter_list_parser::mojom::FilterListInput::New(
+        std::move(filters), permission_mask));
     on_metadata_cbs.push_back(std::move(on_metadata_cb));
   }
   list_parser_service_->ParseFilters(
