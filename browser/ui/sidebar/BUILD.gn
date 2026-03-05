@@ -30,11 +30,12 @@ source_set("sidebar") {
     "sidebar_web_panel_controller.h",
   ]
 
+  public_deps = [ "//brave/components/sidebar/browser" ]
+
   deps = [
     "//base",
     "//brave/browser/ui/views/frame/split_view",
     "//brave/components/brave_talk/buildflags",
-    "//brave/components/sidebar/browser",
     "//brave/components/sidebar/common",
     "//chrome/browser:browser_process",
     "//chrome/browser/favicon",
