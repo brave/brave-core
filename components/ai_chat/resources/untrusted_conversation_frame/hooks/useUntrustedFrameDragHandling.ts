@@ -3,20 +3,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import UntrustedConversationFrameAPI from '../untrusted_conversation_frame_api'
+import * as React from 'react'
 
 /**
  * Sets up drag handling for the untrusted iframe.
- * Detects drag start events and notifies the parent frame via mojom API.
+ * Detects drag start events and notifies the parent frame via the provided callback.
+ * Should be called early in module initialization.
  */
-export function untrustedFrameDragHandlingSetup(): void {
-  const api = UntrustedConversationFrameAPI.getInstance()
-
-  const handleDragEnter = (e: DragEvent) => {
-    if (e.dataTransfer?.types?.includes('Files')) {
-      api.parentUIFrame.dragStart()
+export function useUntrustedFrameDragHandling(onDragStarted: () => void): void {
+  React.useEffect(() => {
+    const handleDragEnter = (e: DragEvent) => {
+      if (e.dataTransfer?.types?.includes('Files')) {
+        onDragStarted()
+      }
     }
-  }
 
-  document.addEventListener('dragenter', handleDragEnter)
+    document.addEventListener('dragenter', handleDragEnter)
+
+    return () => {
+      document.removeEventListener('dragenter', handleDragEnter)
+    }
+  }, [onDragStarted])
 }

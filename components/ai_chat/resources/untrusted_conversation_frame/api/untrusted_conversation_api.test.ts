@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as Mojom from '../common/mojom'
-import { createTextContentBlock } from '../common/content_block'
-import { updateToolUseEventInHistory } from './untrusted_conversation_frame_api'
+import * as Mojom from '../../common/mojom'
+import { createTextContentBlock } from '../../common/content_block'
+import { updateToolUseEventInHistory } from './untrusted_conversation_api'
 
 describe('updateToolUseEventInHistory', () => {
   const mockToolUseEvent: Mojom.ToolUseEvent = {
@@ -13,6 +13,8 @@ describe('updateToolUseEventInHistory', () => {
     id: 'tool-123',
     argumentsJson: '{"param": "value"}',
     output: [createTextContentBlock('Updated output')],
+    permissionChallenge: undefined,
+    isServerResult: false,
   }
 
   const createMockConversationTurn = (

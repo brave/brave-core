@@ -67,12 +67,12 @@ describe('ConversationEntries allowedLinks per response', () => {
     ],
   }
 
-  let mockContext: Partial<UntrustedConversationContext>
+  let mockOverrides: Partial<UntrustedConversationContext>
+  let mockConversationHistory: Mojom.ConversationTurn[]
 
   beforeEach(() => {
     assistantResponseMock.mockClear()
-    mockContext = {
-      conversationHistory: [assistantTurn1, humanTurn1, assistantTurn2] as any,
+    mockOverrides = {
       isGenerating: false,
       isMobile: false,
       isLeoModel: true,
@@ -82,11 +82,19 @@ describe('ConversationEntries allowedLinks per response', () => {
       totalTokens: BigInt(100),
       contentUsedPercentage: 100,
     }
+    mockConversationHistory = [
+      assistantTurn1,
+      humanTurn1,
+      assistantTurn2,
+    ] as any
   })
 
   it('passes correct allowedLinks to each AssistantResponse', () => {
     render(
-      <MockContext {...mockContext}>
+      <MockContext
+        overrides={mockOverrides}
+        initialState={{ conversationHistory: mockConversationHistory }}
+      >
         <ConversationEntries />
       </MockContext>,
     )
@@ -100,13 +108,17 @@ describe('ConversationEntries allowedLinks per response', () => {
   })
 
   it('passes correct allowedLinks for a combined AssistantResponse group', () => {
-    mockContext.conversationHistory = [
-      humanTurn1,
-      assistantTurn1,
-      assistantTurn2,
-    ] as any
     render(
-      <MockContext {...mockContext}>
+      <MockContext
+        overrides={mockOverrides}
+        initialState={{
+          conversationHistory: [
+            humanTurn1,
+            assistantTurn1,
+            assistantTurn2,
+          ] as any,
+        }}
+      >
         <ConversationEntries />
       </MockContext>,
     )
@@ -124,17 +136,19 @@ describe('conversation entries', () => {
   it("doesn't render attached tabs until the conversation has started", () => {
     const { container } = render(
       <MockContext
-        associatedContent={[
-          {
-            contentId: 1,
-            contentType: Mojom.ContentType.PageContent,
-            contentUsedPercentage: 0.5,
-            title: 'Associated Content',
-            url: { url: 'https://example.com' },
-            uuid: '1234',
-            conversationTurnUuid: '111',
-          },
-        ]}
+        overrides={{
+          associatedContent: [
+            {
+              contentId: 1,
+              contentType: Mojom.ContentType.PageContent,
+              contentUsedPercentage: 0.5,
+              title: 'Associated Content',
+              url: { url: 'https://example.com' },
+              uuid: '1234',
+              conversationTurnUuid: '111',
+            },
+          ],
+        }}
       >
         <ConversationEntries />
       </MockContext>,
@@ -149,33 +163,37 @@ describe('conversation entries', () => {
   it('renders attached tabs on started conversation', () => {
     const { container } = render(
       <MockContext
-        associatedContent={[
-          {
-            contentId: 1,
-            contentType: Mojom.ContentType.PageContent,
-            contentUsedPercentage: 0.5,
-            title: 'Associated Content',
-            url: { url: 'https://example.com' },
-            uuid: '1234',
-            conversationTurnUuid: '111',
-          },
-        ]}
-        conversationHistory={[
-          {
-            characterType: Mojom.CharacterType.HUMAN,
-            text: 'Summarize this page',
-            actionType: Mojom.ActionType.SUMMARIZE_PAGE,
-            events: [],
-            createdTime: { internalValue: BigInt(0) },
-            edits: [],
-            fromBraveSearchSERP: false,
-            uploadedFiles: [],
-            uuid: '111',
-            prompt: undefined,
-            selectedText: undefined,
-            modelKey: 'gpt-4o',
-          },
-        ]}
+        overrides={{
+          associatedContent: [
+            {
+              contentId: 1,
+              contentType: Mojom.ContentType.PageContent,
+              contentUsedPercentage: 0.5,
+              title: 'Associated Content',
+              url: { url: 'https://example.com' },
+              uuid: '1234',
+              conversationTurnUuid: '111',
+            },
+          ],
+        }}
+        initialState={{
+          conversationHistory: [
+            {
+              characterType: Mojom.CharacterType.HUMAN,
+              text: 'Summarize this page',
+              actionType: Mojom.ActionType.SUMMARIZE_PAGE,
+              events: [],
+              createdTime: { internalValue: BigInt(0) },
+              edits: [],
+              fromBraveSearchSERP: false,
+              uploadedFiles: [],
+              uuid: '111',
+              prompt: undefined,
+              selectedText: undefined,
+              modelKey: 'gpt-4o',
+            },
+          ],
+        }}
       >
         <ConversationEntries />
       </MockContext>,
@@ -192,62 +210,66 @@ describe('conversation entries', () => {
   it('only renders attached tabs on first entry', () => {
     const { container } = render(
       <MockContext
-        associatedContent={[
-          {
-            contentId: 1,
-            contentType: Mojom.ContentType.PageContent,
-            contentUsedPercentage: 0.5,
-            title: 'Associated Content',
-            url: { url: 'https://example.com' },
-            uuid: '1234',
-            conversationTurnUuid: '111',
-          },
-        ]}
-        conversationHistory={[
-          {
-            characterType: Mojom.CharacterType.HUMAN,
-            text: 'Summarize this page',
-            actionType: Mojom.ActionType.SUMMARIZE_PAGE,
-            events: undefined,
-            createdTime: { internalValue: BigInt(0) },
-            edits: undefined,
-            fromBraveSearchSERP: false,
-            uploadedFiles: [],
-            uuid: '111',
-            prompt: undefined,
-            selectedText: undefined,
-            modelKey: 'gpt-4o',
-          },
+        overrides={{
+          associatedContent: [
+            {
+              contentId: 1,
+              contentType: Mojom.ContentType.PageContent,
+              contentUsedPercentage: 0.5,
+              title: 'Associated Content',
+              url: { url: 'https://example.com' },
+              uuid: '1234',
+              conversationTurnUuid: '111',
+            },
+          ],
+        }}
+        initialState={{
+          conversationHistory: [
+            {
+              characterType: Mojom.CharacterType.HUMAN,
+              text: 'Summarize this page',
+              actionType: Mojom.ActionType.SUMMARIZE_PAGE,
+              events: undefined,
+              createdTime: { internalValue: BigInt(0) },
+              edits: undefined,
+              fromBraveSearchSERP: false,
+              uploadedFiles: [],
+              uuid: '111',
+              prompt: undefined,
+              selectedText: undefined,
+              modelKey: 'gpt-4o',
+            },
 
-          {
-            characterType: Mojom.CharacterType.ASSISTANT,
-            text: 'It Means this!',
-            actionType: Mojom.ActionType.RESPONSE,
-            events: undefined,
-            createdTime: { internalValue: BigInt(1) },
-            edits: undefined,
-            fromBraveSearchSERP: false,
-            uploadedFiles: [],
-            uuid: '222',
-            prompt: undefined,
-            selectedText: undefined,
-            modelKey: 'gpt-4o',
-          },
-          {
-            characterType: Mojom.CharacterType.HUMAN,
-            text: 'Question',
-            actionType: Mojom.ActionType.QUERY,
-            events: undefined,
-            createdTime: { internalValue: BigInt(3) },
-            edits: undefined,
-            fromBraveSearchSERP: false,
-            uploadedFiles: [],
-            uuid: '333',
-            prompt: undefined,
-            selectedText: undefined,
-            modelKey: 'gpt-4o',
-          },
-        ]}
+            {
+              characterType: Mojom.CharacterType.ASSISTANT,
+              text: 'It Means this!',
+              actionType: Mojom.ActionType.RESPONSE,
+              events: undefined,
+              createdTime: { internalValue: BigInt(1) },
+              edits: undefined,
+              fromBraveSearchSERP: false,
+              uploadedFiles: [],
+              uuid: '222',
+              prompt: undefined,
+              selectedText: undefined,
+              modelKey: 'gpt-4o',
+            },
+            {
+              characterType: Mojom.CharacterType.HUMAN,
+              text: 'Question',
+              actionType: Mojom.ActionType.QUERY,
+              events: undefined,
+              createdTime: { internalValue: BigInt(3) },
+              edits: undefined,
+              fromBraveSearchSERP: false,
+              uploadedFiles: [],
+              uuid: '333',
+              prompt: undefined,
+              selectedText: undefined,
+              modelKey: 'gpt-4o',
+            },
+          ],
+        }}
       >
         <ConversationEntries />
       </MockContext>,
@@ -293,8 +315,8 @@ describe('conversation entries', () => {
 
     render(
       <MockContext
-        conversationHistory={[humanTurn1, assistantTurn1]}
-        canSubmitUserEntries={true}
+        initialState={{ conversationHistory: [humanTurn1, assistantTurn1] }}
+        overrides={{ canSubmitUserEntries: true }}
       >
         <ConversationEntries />
       </MockContext>,
@@ -342,9 +364,11 @@ describe('conversation entries', () => {
 
     render(
       <MockContext
-        conversationHistory={[humanTurn1, assistantTurn1]}
-        conversationCapability={Mojom.ConversationCapability.CONTENT_AGENT}
-        canSubmitUserEntries={true}
+        initialState={{ conversationHistory: [humanTurn1, assistantTurn1] }}
+        overrides={{
+          conversationCapability: Mojom.ConversationCapability.CONTENT_AGENT,
+          canSubmitUserEntries: true,
+        }}
       >
         <ConversationEntries />
       </MockContext>,
@@ -424,7 +448,9 @@ describe('conversation entries', () => {
     ]
 
     render(
-      <MockContext conversationHistory={[humanTurn1, assistantTurn1]}>
+      <MockContext
+        initialState={{ conversationHistory: [humanTurn1, assistantTurn1] }}
+      >
         <ConversationEntries />
       </MockContext>,
     )
@@ -472,11 +498,15 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
   test('should show visual content warning when visualContentUsedPercentage is less than 100', () => {
     const { container } = render(
       <MockContext
-        conversationHistory={[createHumanTurn(), createAssistantTurn()]}
-        visualContentUsedPercentage={75}
-        contentUsedPercentage={100}
-        trimmedTokens={BigInt(0)}
-        totalTokens={BigInt(0)}
+        initialState={{
+          conversationHistory: [createHumanTurn(), createAssistantTurn()],
+        }}
+        overrides={{
+          visualContentUsedPercentage: 75,
+          contentUsedPercentage: 100,
+          trimmedTokens: BigInt(0),
+          totalTokens: BigInt(0),
+        }}
       >
         <ConversationEntries />
       </MockContext>,
@@ -491,11 +521,15 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
   test('should show visual content warning when visualContentUsedPercentage is 0', () => {
     const { container } = render(
       <MockContext
-        conversationHistory={[createHumanTurn(), createAssistantTurn()]}
-        visualContentUsedPercentage={0}
-        contentUsedPercentage={100}
-        trimmedTokens={BigInt(0)}
-        totalTokens={BigInt(0)}
+        initialState={{
+          conversationHistory: [createHumanTurn(), createAssistantTurn()],
+        }}
+        overrides={{
+          visualContentUsedPercentage: 0,
+          contentUsedPercentage: 100,
+          trimmedTokens: BigInt(0),
+          totalTokens: BigInt(0),
+        }}
       >
         <ConversationEntries />
       </MockContext>,
@@ -508,11 +542,15 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
   test('should not show content warning when visualContentUsedPercentage is 100', () => {
     const { container } = render(
       <MockContext
-        conversationHistory={[createHumanTurn(), createAssistantTurn()]}
-        visualContentUsedPercentage={100}
-        contentUsedPercentage={100}
-        trimmedTokens={BigInt(0)}
-        totalTokens={BigInt(0)}
+        initialState={{
+          conversationHistory: [createHumanTurn(), createAssistantTurn()],
+        }}
+        overrides={{
+          visualContentUsedPercentage: 100,
+          contentUsedPercentage: 100,
+          trimmedTokens: BigInt(0),
+          totalTokens: BigInt(0),
+        }}
       >
         <ConversationEntries />
       </MockContext>,
@@ -526,11 +564,15 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
   test('should not show content warning when visualContentUsedPercentage is undefined (defaults to 100)', () => {
     const { container } = render(
       <MockContext
-        conversationHistory={[createHumanTurn(), createAssistantTurn()]}
-        visualContentUsedPercentage={undefined}
-        contentUsedPercentage={100}
-        trimmedTokens={BigInt(0)}
-        totalTokens={BigInt(0)}
+        initialState={{
+          conversationHistory: [createHumanTurn(), createAssistantTurn()],
+        }}
+        overrides={{
+          visualContentUsedPercentage: undefined,
+          contentUsedPercentage: 100,
+          trimmedTokens: BigInt(0),
+          totalTokens: BigInt(0),
+        }}
       >
         <ConversationEntries />
       </MockContext>,
@@ -544,11 +586,15 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
   test('should show visual content warning when both contentUsedPercentage and visualContentUsedPercentage are truncated', () => {
     const { container } = render(
       <MockContext
-        conversationHistory={[createHumanTurn(), createAssistantTurn()]}
-        visualContentUsedPercentage={60}
-        contentUsedPercentage={80}
-        trimmedTokens={BigInt(0)}
-        totalTokens={BigInt(0)}
+        initialState={{
+          conversationHistory: [createHumanTurn(), createAssistantTurn()],
+        }}
+        overrides={{
+          visualContentUsedPercentage: 60,
+          contentUsedPercentage: 80,
+          trimmedTokens: BigInt(0),
+          totalTokens: BigInt(0),
+        }}
       >
         <ConversationEntries />
       </MockContext>,
@@ -562,11 +608,15 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
   test('should show text content warning when visualContentUsedPercentage is fine but trimmed tokens exist', () => {
     const { container } = render(
       <MockContext
-        conversationHistory={[createHumanTurn(), createAssistantTurn()]}
-        visualContentUsedPercentage={100}
-        contentUsedPercentage={100}
-        trimmedTokens={BigInt(200)}
-        totalTokens={BigInt(1000)}
+        initialState={{
+          conversationHistory: [createHumanTurn(), createAssistantTurn()],
+        }}
+        overrides={{
+          visualContentUsedPercentage: 100,
+          contentUsedPercentage: 100,
+          trimmedTokens: BigInt(200),
+          totalTokens: BigInt(1000),
+        }}
       >
         <ConversationEntries />
       </MockContext>,
@@ -580,11 +630,15 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
   test('should only show content warnings for assistant responses, not human turns', () => {
     const { container } = render(
       <MockContext
-        conversationHistory={[createHumanTurn()]} // Only human turn
-        visualContentUsedPercentage={50}
-        contentUsedPercentage={80}
-        trimmedTokens={BigInt(0)}
-        totalTokens={BigInt(0)}
+        initialState={{
+          conversationHistory: [createHumanTurn()], // Only human turn
+        }}
+        overrides={{
+          visualContentUsedPercentage: 50,
+          contentUsedPercentage: 80,
+          trimmedTokens: BigInt(0),
+          totalTokens: BigInt(0),
+        }}
       >
         <ConversationEntries />
       </MockContext>,
@@ -598,13 +652,15 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
   test('should highlight skill shortcuts in text', () => {
     const { container } = render(
       <MockContext
-        conversationHistory={[
-          createHumanTurn({
-            text: '/shortcut and additional text',
-            uuid: '111',
-            skill: { shortcut: 'shortcut', prompt: 'prompt' },
-          }),
-        ]}
+        initialState={{
+          conversationHistory: [
+            createHumanTurn({
+              text: '/shortcut and additional text',
+              uuid: '111',
+              skill: { shortcut: 'shortcut', prompt: 'prompt' },
+            }),
+          ],
+        }}
       >
         <ConversationEntries />
       </MockContext>,
