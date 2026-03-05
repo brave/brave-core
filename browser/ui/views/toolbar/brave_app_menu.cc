@@ -20,7 +20,6 @@
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
-#include "brave/ui/color/nala/nala_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/toolbar/brave_app_menu_model.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -28,6 +27,7 @@
 #include "brave/components/misc_metrics/menu_metrics.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/toolbar/app_menu_model.h"
@@ -122,7 +122,7 @@ SidebarShowOptionInMenuButton::SidebarShowOptionInMenuButton(
   SetFocusBehavior(FocusBehavior::ALWAYS);
 
   auto* service = sidebar::SidebarServiceFactory::GetForProfile(
-      app_menu->browser()->profile());
+      app_menu_->browser()->profile());
   CHECK(service);
 
   sidebar_service_observation_.Observe(service);
@@ -142,12 +142,10 @@ void SidebarShowOptionInMenuButton::UpdateBackground() {
 void SidebarShowOptionInMenuButton::OnShowSidebarOptionChanged(
     sidebar::SidebarService::ShowSidebarOption option) {
   is_active_option_ = option == show_option_;
-  SetEnabledTextColors(
-      is_active_option_
-          ? std::optional<ui::ColorVariant>(nala::kColorSchemesOnPrimary)
-          : std::nullopt);
+  SetEnabledTextColors(is_active_option_ ? std::optional<ui::ColorVariant>(
+                                               nala::kColorSchemesOnPrimary)
+                                         : std::nullopt);
   UpdateBackground();
-  SchedulePaint();
 }
 
 BEGIN_METADATA(SidebarShowOptionInMenuButton)
