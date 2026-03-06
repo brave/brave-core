@@ -58,7 +58,10 @@
   p {
     margin: var(--leo-spacing-l) 0 0 0;
   }
-
+  ul,
+  ol {
+    padding-left: var(--leo-spacing-xl);
+  }
   li {
     margin: var(--leo-spacing-l) 0 0 0;
   }
@@ -68,6 +71,24 @@
     height: 1px;
     background-color: var(--leo-color-divider-subtle);
     border: none;
+  }
+
+  blockquote {
+    position: relative;
+    margin: var(--leo-spacing-l) 0 0 0;
+    padding-left: calc(3px + var(--leo-spacing-l));
+    color: var(--leo-color-text-secondary);
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--leo-color-divider-subtle);
+      border-radius: var(--leo-radius-xs);
+    }
   }
 
   strong {
@@ -178,7 +199,7 @@
   .markdownContainer .tableBody {
     display: flex;
     flex-direction: column;
-    gap: var(--leo-spacing-xl);
+    gap: var(--leo-spacing-m);
   }
   .markdownContainer .tableRow {
     display: block;
@@ -192,23 +213,27 @@
     }
   }
   .markdownContainer .tableCell {
-    display: flex;
-    flex-direction: row;
-    padding: 0;
+    display: block;
+    padding: 0 0 var(--leo-spacing-m) 0;
     font: var(--leo-font-large-regular);
-    gap: var(--leo-spacing-m);
     &:first-child {
       padding-left: 0;
     }
     &:last-child {
+      padding-bottom: 0;
       padding-right: 0;
+    }
+    // So content flows inline with the :before label and wraps like a paragraph
+    > * {
+      display: inline;
     }
   }
   .markdownContainer .tableCell:before {
     content: attr(data-label) ': ';
     color: var(--leo-color-text-tertiary);
-    display: inline-block;
-    white-space: nowrap;
+    display: inline;
+    white-space: normal;
+    vertical-align: baseline;
   }
 }
 
