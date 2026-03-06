@@ -12,6 +12,7 @@ import type { AnyAction } from 'redux'
 import {
   BraveWallet,
   CommonNftMetadata,
+  MeldCryptoCurrency,
   MeldFiatCurrency,
   MeldFilter,
 } from '../../../constants/types'
@@ -590,6 +591,15 @@ export class MockedWalletApiProxy {
           symbolImageUrl: '',
         },
       ],
+      error: null,
+    }),
+    getCryptoCurrencies: async (
+      filter: MeldFilter,
+    ): Promise<{
+      fiatCurrencies: MeldCryptoCurrency[] | null
+      error: string[] | null
+    }> => ({
+      fiatCurrencies: [],
       error: null,
     }),
   }
