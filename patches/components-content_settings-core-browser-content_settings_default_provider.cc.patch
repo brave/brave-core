@@ -1,12 +1,20 @@
 diff --git a/components/content_settings/core/browser/content_settings_default_provider.cc b/components/content_settings/core/browser/content_settings_default_provider.cc
-index 0dd1396ad557eb9a4aea6abd9edfa00ac45aa341..a1f10844cf523dab1b9334b3b0ba81b6091d51a8 100644
+index 8a82bc5d452d9b0847369e73f86176d98a63b5e1..5e4088d810ad72e695141213f4b77bf441c358b2 100644
 --- a/components/content_settings/core/browser/content_settings_default_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_default_provider.cc
-@@ -427,6 +427,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
+@@ -389,6 +389,7 @@ void DefaultProvider::OnPreferenceChanged(const std::string& name) {
+ 
+ base::Value DefaultProvider::ReadFromPref(ContentSettingsType content_type) {
+   const base::Value& value = prefs_->GetValue(GetPrefName(content_type));
++  BRAVE_DEFAULT_PROVIDER_READ_FROM_PREF
+   // Validate settings.
+   if (value.is_int()) {
+     return ContentSettingToValue(IntToContentSetting(value.GetInt()));
+@@ -432,6 +433,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
    // TODO(https://crbug.com/367181093): clean this up.
    prefs_->ClearPref(kBug364820109AlreadyWorkedAroundPref);
  #endif  // !BUILDFLAG(IS_IOS)
-+BRAVE_DISCARD_OR_MIGRATE_OBSOLETE_PREFERENCES
++  BRAVE_DISCARD_OR_MIGRATE_OBSOLETE_PREFERENCES
  }
  
  void DefaultProvider::MigrateGeolocationDefaultValue() {
