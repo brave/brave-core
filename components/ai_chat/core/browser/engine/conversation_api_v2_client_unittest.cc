@@ -14,6 +14,7 @@
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
@@ -23,6 +24,7 @@
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/test_utils.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -624,7 +626,13 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PremiumHeaders) {
 
         // Currently server only expects we pass content_agent capability,
         // so it won't be passed for CHAT.
-        EXPECT_FALSE(body_dict.FindString("brave_capability"));
+        const base::ListValue* capability_list =
+            body_dict.FindList("brave_capability");
+        EXPECT_TRUE(capability_list);
+        if (capability_list) {
+          EXPECT_EQ(capability_list->size(), 1u);
+          EXPECT_EQ(capability_list->front(), base::Value("chat"));
+        }
 
         // Verify body contains the stream
         std::optional<bool> stream = body_dict.FindBool("stream");
@@ -747,10 +755,14 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonPremium) {
         auto system_language = GetSystemLanguage(dict);
         EXPECT_EQ(system_language, expected_system_language);
 
-        // Verify body contains the brave_capability
-        const std::string* capability = dict.FindString("brave_capability");
-        EXPECT_TRUE(capability);
-        EXPECT_EQ(*capability, expected_capability);
+        // Verify body contains the brave_capability list
+        const base::ListValue* capability_list =
+            dict.FindList("brave_capability");
+        EXPECT_TRUE(capability_list);
+        if (capability_list) {
+          EXPECT_EQ(capability_list->size(), 1u);
+          EXPECT_EQ(capability_list->front(), base::Value(expected_capability));
+        }
 
         // Verify body contains the stream
         std::optional<bool> stream = dict.FindBool("stream");
@@ -2119,6 +2131,96 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_CompletionChunk) {
         base::ok(base::Value(std::move(chunk))));
 
     testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+  }
+}
+
+TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_BraveCapabilityList) {
+  struct TestCase {
+    std::string name;
+    mojom::ConversationCapability capability;
+    bool deep_research_enabled;
+    std::vector<std::string> expected_capabilities;
+  };
+
+  const TestCase kTestCases[] = {
+      {"ContentAgent",
+       mojom::ConversationCapability::CONTENT_AGENT,
+       false,
+       {"content_agent"}},
+      {"ContentAgentWithDeepResearch",
+       mojom::ConversationCapability::CONTENT_AGENT,
+       true,
+       {"content_agent"}},
+      {"ChatNoDeepResearch",
+       mojom::ConversationCapability::CHAT,
+       false,
+       {"chat"}},
+      {"ChatWithDeepResearch",
+       mojom::ConversationCapability::CHAT,
+       true,
+       {"chat", "deep_research"}},
+  };
+
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+
+  EXPECT_DEATH(
+      {
+        client_->PerformRequest(GetMockMessagesAndExpectedMessagesJson().first,
+                                std::nullopt, std::nullopt,
+                                mojom::ConversationCapability::DEEP_RESEARCH,
+                                base::DoNothing(), base::DoNothing());
+      },
+      "");
+
+  for (const auto& test_case : kTestCases) {
+    SCOPED_TRACE(test_case.name);
+
+    base::test::ScopedFeatureList feature_list;
+    if (test_case.deep_research_enabled) {
+      feature_list.InitAndEnableFeature(features::kAIChatDeepResearch);
+    }
+
+    base::RunLoop run_loop;
+    std::vector<std::string> captured_capabilities;
+
+    EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
+        .WillOnce([&](const std::string& method, const GURL& url,
+                      const std::string& body, const std::string& content_type,
+                      DataReceivedCallback data_received_callback,
+                      ResultCallback result_callback,
+                      const base::flat_map<std::string, std::string>& headers,
+                      const api_request_helper::APIRequestOptions& options) {
+          auto dict = base::test::ParseJsonDict(body);
+          const base::ListValue* capability_list =
+              dict.FindList("brave_capability");
+          EXPECT_TRUE(capability_list);
+          if (capability_list) {
+            for (const auto& val : *capability_list) {
+              EXPECT_TRUE(val.is_string());
+              if (val.is_string()) {
+                captured_capabilities.push_back(val.GetString());
+              }
+            }
+          }
+          auto completion_dict = base::test::ParseJsonDict(R"({
+            "choices": [{"message": {"content": "response"}}]
+          })");
+          std::move(result_callback)
+              .Run(api_request_helper::APIRequestResult(
+                  200, base::Value(std::move(completion_dict)), {}, net::OK,
+                  GURL()));
+          run_loop.Quit();
+          return Ticket();
+        });
+
+    client_->PerformRequest(GetMockMessagesAndExpectedMessagesJson().first,
+                            std::nullopt, std::nullopt, test_case.capability,
+                            base::DoNothing(), base::DoNothing());
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(mock_request_helper);
+
+    EXPECT_EQ(captured_capabilities, test_case.expected_capabilities);
   }
 }
 

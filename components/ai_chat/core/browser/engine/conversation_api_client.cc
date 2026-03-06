@@ -264,16 +264,13 @@ std::string ConversationAPIClient::CreateJSONRequestBody(
     const bool is_sse_enabled) {
   base::DictValue dict;
 
-  static constexpr auto kCapabilityMap =
-      base::MakeFixedFlatMap<mojom::ConversationCapability, std::string_view>(
-          {{mojom::ConversationCapability::CHAT, "chat"},
-           {mojom::ConversationCapability::CONTENT_AGENT, "content_agent"}});
-  auto capability_it = kCapabilityMap.find(conversation_capability);
-  CHECK(capability_it != kCapabilityMap.end())
-      << "Invalid conversation capability: " << conversation_capability;
+  const auto* capability_str =
+      base::FindOrNull(kCapabilityStringMap, conversation_capability);
+  CHECK(capability_str) << "Invalid conversation capability: "
+                        << conversation_capability;
 
   dict.Set("events", ConversationEventsToList(std::move(conversation)));
-  dict.Set("capability", capability_it->second);
+  dict.Set("capability", *capability_str);
   dict.Set("model", model_name ? *model_name : model_name_);
   dict.Set("system_language",
            base::StrCat({brave_l10n::GetDefaultISOLanguageCodeString(), "_",

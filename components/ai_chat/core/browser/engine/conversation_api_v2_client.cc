@@ -129,6 +129,33 @@ std::string_view GetContentBlockTypeString(
   }
 }
 
+base::ListValue BuildCapabilitiesList(
+    mojom::ConversationCapability primary_conversation_capability) {
+  CHECK(primary_conversation_capability ==
+            mojom::ConversationCapability::CHAT ||
+        primary_conversation_capability ==
+            mojom::ConversationCapability::CONTENT_AGENT)
+      << "Invalid primary capability: " << primary_conversation_capability;
+
+  const auto* capability_str =
+      base::FindOrNull(kCapabilityStringMap, primary_conversation_capability);
+  CHECK(capability_str) << "Missing string for capability: "
+                        << primary_conversation_capability;
+
+  base::ListValue capabilities;
+  capabilities.Append(*capability_str);
+
+  if (primary_conversation_capability == mojom::ConversationCapability::CHAT &&
+      features::IsAIChatDeepResearchEnabled()) {
+    const auto* deep_research_str = base::FindOrNull(
+        kCapabilityStringMap, mojom::ConversationCapability::DEEP_RESEARCH);
+    CHECK(deep_research_str);
+    capabilities.Append(*deep_research_str);
+  }
+
+  return capabilities;
+}
+
 }  // namespace
 
 // static
@@ -313,7 +340,7 @@ void ConversationAPIV2Client::PerformRequest(
     std::vector<OAIMessage> messages,
     std::optional<base::ListValue> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
-    mojom::ConversationCapability conversation_capability,
+    mojom::ConversationCapability primary_conversation_capability,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
     const std::optional<std::string>& model_name) {
@@ -322,8 +349,8 @@ void ConversationAPIV2Client::PerformRequest(
       &ConversationAPIV2Client::PerformRequestWithCredentials,
       weak_ptr_factory_.GetWeakPtr(), std::move(messages),
       std::move(oai_tool_definitions), preferred_tool_name,
-      conversation_capability, model_name, std::move(data_received_callback),
-      std::move(completed_callback));
+      primary_conversation_capability, model_name,
+      std::move(data_received_callback), std::move(completed_callback));
   credential_manager_->FetchPremiumCredential(std::move(callback));
 }
 
@@ -331,17 +358,15 @@ std::string ConversationAPIV2Client::CreateJSONRequestBody(
     std::vector<OAIMessage> messages,
     std::optional<base::ListValue> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
-    mojom::ConversationCapability conversation_capability,
+    mojom::ConversationCapability primary_conversation_capability,
     const std::optional<std::string>& model_name,
     const bool is_sse_enabled) {
   base::DictValue dict;
 
   dict.Set("messages", SerializeOAIMessages(std::move(messages)));
 
-  // Currently server only expects we pass content_agent capability.
-  if (conversation_capability == mojom::ConversationCapability::CONTENT_AGENT) {
-    dict.Set("brave_capability", "content_agent");
-  }
+  dict.Set("brave_capability",
+           BuildCapabilitiesList(primary_conversation_capability));
   dict.Set("model", model_name ? *model_name : model_name_);
   dict.Set("system_language",
            base::StrCat({brave_l10n::GetDefaultISOLanguageCodeString(), "_",
@@ -361,7 +386,7 @@ void ConversationAPIV2Client::PerformRequestWithCredentials(
     std::vector<OAIMessage> messages,
     std::optional<base::ListValue> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
-    mojom::ConversationCapability conversation_capability,
+    mojom::ConversationCapability primary_conversation_capability,
     const std::optional<std::string>& model_name,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
@@ -383,7 +408,7 @@ void ConversationAPIV2Client::PerformRequestWithCredentials(
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
   const std::string request_body = CreateJSONRequestBody(
       std::move(messages), std::move(oai_tool_definitions), preferred_tool_name,
-      conversation_capability, model_name, is_sse_enabled);
+      primary_conversation_capability, model_name, is_sse_enabled);
 
   base::flat_map<std::string, std::string> headers;
   const auto digest_header = brave_service_keys::GetDigestHeader(request_body);
