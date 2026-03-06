@@ -17,6 +17,14 @@ export const style = scoped.css`
   & {
     --search-transition-duration: 120ms;
     --top-controls-text-shadow: rgba(0, 0, 0, 0.33) 0 1px 2px;
+
+    /* As of CR146, scrollbars for elements slotted into shadow DOM trees
+     * sometimes do not respect the user's color scheme. Adding a rule for
+     * "color-scheme" ensures that scrollbars are consistent.
+     */
+    @media (prefers-color-scheme: dark) {
+      color-scheme: dark;
+    }
   }
 
   @keyframes background-scroll-fade {
