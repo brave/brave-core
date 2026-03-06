@@ -138,7 +138,7 @@ mojom::NetworkInfoPtr ValueToNetworkInfo(const base::Value& value) {
           params_dict->FindInt("activeRpcEndpointIndex")) {
     chain.active_rpc_endpoint_index = endpoint_index.value();
     if (chain.active_rpc_endpoint_index < 0 ||
-        static_cast<size_t>(chain.active_rpc_endpoint_index) >
+        static_cast<size_t>(chain.active_rpc_endpoint_index) >=
             chain.rpc_endpoints.size()) {
       chain.active_rpc_endpoint_index = 0;
     }

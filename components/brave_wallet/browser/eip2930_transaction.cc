@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/eip2930_transaction.h"
 
+#include <algorithm>
 #include <optional>
 #include <utility>
 
@@ -65,6 +66,7 @@ Eip2930Transaction::~Eip2930Transaction() = default;
 
 bool Eip2930Transaction::operator==(const Eip2930Transaction& tx) const {
   return EthTransaction::operator==(tx) && chain_id_ == tx.chain_id_ &&
+         access_list_.size() == tx.access_list_.size() &&
          std::equal(access_list_.begin(), access_list_.end(),
                     tx.access_list_.begin());
 }
