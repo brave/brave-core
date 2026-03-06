@@ -15,7 +15,6 @@
 #include "brave/components/misc_metrics/page_metrics.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/browser/media_session.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/reload_type.h"
 #include "content/public/browser/restore_type.h"
@@ -44,14 +43,6 @@ PageMetricsTabHelper::PageMetricsTabHelper(content::WebContents* web_contents)
 
   if (auto* process_metrics = g_brave_browser_process->process_misc_metrics()) {
     media_session_metrics_ = process_metrics->media_session_metrics();
-  }
-
-  // Pick up a MediaSession that was already created for this WebContents.
-  if (media_session_metrics_) {
-    if (auto* media_session =
-            content::MediaSession::GetIfExists(web_contents)) {
-      media_session_metrics_->OnMediaSessionCreated(media_session);
-    }
   }
 }
 
@@ -88,17 +79,16 @@ void PageMetricsTabHelper::MediaSessionCreated(
   if (!media_session_metrics_) {
     return;
   }
+  media_session_ = media_session;
   media_session_metrics_->OnMediaSessionCreated(media_session);
 }
 
 void PageMetricsTabHelper::WebContentsDestroyed() {
-  if (!media_session_metrics_) {
+  if (!media_session_metrics_ || !media_session_) {
     return;
   }
-  if (auto* media_session =
-          content::MediaSession::GetIfExists(web_contents())) {
-    media_session_metrics_->OnMediaSessionDestroyed(media_session);
-  }
+  media_session_metrics_->OnMediaSessionDestroyed(media_session_);
+  media_session_ = nullptr;
 }
 
 bool PageMetricsTabHelper::IsRelevantNavigationEvent(

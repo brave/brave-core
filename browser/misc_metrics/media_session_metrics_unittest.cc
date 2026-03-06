@@ -16,6 +16,7 @@
 #include "services/media_session/public/mojom/media_session.mojom.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace misc_metrics {
 
@@ -43,16 +44,14 @@ class MediaSessionMetricsTest : public testing::Test {
     base::Time start_time_ = base::Time::Now();
   };
 
-  // Calls OnMediaSessionCreated, waits for AddObserver to be called, then
-  // sets the session playing. Returns the observer remote for later use.
   content::MockMediaSession* AddSession() {
     auto session = std::make_unique<content::MockMediaSession>();
     content::MockMediaSession* session_ptr = session.get();
 
     auto quit = task_environment_.QuitClosure();
     EXPECT_CALL(*session_ptr, AddObserver)
-        .WillOnce([this, &session_ptr, quit = std::move(quit)](
-                      auto pending_observer) {
+        .WillOnce([this, &session_ptr,
+                   quit = std::move(quit)](auto pending_observer) {
           session_observers_[session_ptr].Bind(std::move(pending_observer));
           quit.Run();
         });
@@ -84,8 +83,8 @@ class MediaSessionMetricsTest : public testing::Test {
   MockUptimeMonitor uptime_monitor_;
 
   std::vector<std::unique_ptr<content::MockMediaSession>> mock_sessions_;
-  std::map<content::MockMediaSession*,
-           mojo::Remote<media_session::mojom::MediaSessionObserver>>
+  absl::flat_hash_map<content::MockMediaSession*,
+                      mojo::Remote<media_session::mojom::MediaSessionObserver>>
       session_observers_;
 
   std::unique_ptr<MediaSessionMetrics> metrics_;

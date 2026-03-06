@@ -39,8 +39,9 @@ MediaSessionMetrics::Session::~Session() = default;
 
 void MediaSessionMetrics::Session::MediaSessionInfoChanged(
     media_session::mojom::MediaSessionInfoPtr info) {
-  bool is_playing = info && info->playback_state ==
-                                media_session::mojom::MediaPlaybackState::kPlaying;
+  bool is_playing =
+      info && info->playback_state ==
+                  media_session::mojom::MediaPlaybackState::kPlaying;
   on_playback_state_changed_.Run(is_playing);
 }
 
@@ -74,13 +75,12 @@ void MediaSessionMetrics::OnMediaSessionCreated(
   if (sessions_.contains(media_session)) {
     return;
   }
-  sessions_.emplace(
-      media_session,
-      std::make_unique<Session>(
-          media_session,
-          base::BindRepeating(
-              &MediaSessionMetrics::OnSessionPlaybackStateChanged,
-              base::Unretained(this), media_session)));
+  sessions_.emplace(media_session,
+                    std::make_unique<Session>(
+                        media_session,
+                        base::BindRepeating(
+                            &MediaSessionMetrics::OnSessionPlaybackStateChanged,
+                            base::Unretained(this), media_session)));
 }
 
 void MediaSessionMetrics::OnMediaSessionDestroyed(
@@ -97,7 +97,8 @@ void MediaSessionMetrics::ResetFrameStartTime() {
 void MediaSessionMetrics::OnSessionPlaybackStateChanged(
     content::MediaSession* media_session,
     bool is_playing) {
-  if (playing_sessions_.contains(media_session) == is_playing) {
+  bool was_playing = playing_sessions_.contains(media_session);
+  if (is_playing == was_playing) {
     return;
   }
   if (is_playing) {
