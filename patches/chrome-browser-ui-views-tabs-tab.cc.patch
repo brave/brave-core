@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index e8202d230532d5b6061bde7be827d5395d257a93..51034f39058da8c4e161bdce6091c14daf0faa71 100644
+index f93f7cc3b444f4eab776248fd658708993a8677e..d47f043e2ccc25836238fff823f50575cfad9cee 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
 @@ -391,6 +391,7 @@ void Tab::Layout(PassKey) {

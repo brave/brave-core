@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.ts b/chrome/browser/resources/settings/privacy_page/privacy_page.ts
-index 2f0417633dd760b0a7b1593d7d53a009d8715079..ac0bd41d896e2fc32d592cda541cb13dc2743848 100644
+index 4ab4d784d4fe5b04e6e5406e2a4a4c2399292380..c26e1367c1c900e8272dd03a0b480f9268a5b3fb 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.ts
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.ts
 @@ -16,6 +16,7 @@ import '../icons.html.js';

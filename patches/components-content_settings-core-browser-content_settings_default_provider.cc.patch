@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/content_settings_default_provider.cc b/components/content_settings/core/browser/content_settings_default_provider.cc
-index 1b58b667596960a35ed8c2d0516cfb6d42c4463c..b573db6cf5f0ff3088016603565ef9c7ca44fd27 100644
+index 8a82bc5d452d9b0847369e73f86176d98a63b5e1..552fa124102117be9b6ff95ce0cc34c888bc6b1b 100644
 --- a/components/content_settings/core/browser/content_settings_default_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_default_provider.cc
-@@ -427,6 +427,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
+@@ -432,6 +432,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
    // TODO(https://crbug.com/367181093): clean this up.
    prefs_->ClearPref(kBug364820109AlreadyWorkedAroundPref);
  #endif  // !BUILDFLAG(IS_IOS)
