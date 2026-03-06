@@ -27,7 +27,7 @@ function removeElementWithId(elementId: string) {
 }
 
 // Hides preview image.
-removeElementWithId('themeSnapshot')
+// removeElementWithId('themeSnapshot')
 
 // Hides a label and button says "Brave ia managing your new tab page"
 removeElementWithId('thirdPartyManageLinkButton')
