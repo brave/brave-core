@@ -119,15 +119,6 @@ extension ManagePasswordsViewModel {
       }
     }
   }
-
-  private func credentials(for groupId: GroupID) -> [CWVPassword] {
-    let (groups, domain): ([(domain: String, credentials: [CWVPassword])], String) =
-      switch groupId {
-      case .saved(let d): (allowedGroups, d)
-      case .blocked(let d): (blockedGroups, d)
-      }
-    return groups.first { $0.domain == domain }?.credentials ?? []
-  }
 }
 
 extension Array where Element == CWVPassword {
