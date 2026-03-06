@@ -7,6 +7,7 @@ import * as React from 'react'
 import '@brave/leo/tokens/css/variables.css'
 import MarkdownRenderer from './index'
 import AssistantResponseContextProvider from '../assistant_response/assistant_response_context'
+import MockContext from '../../mock_untrusted_conversation_context'
 import * as searchResults from '../search_widget/storybook-data/searchResults.json'
 import { getEventTemplate } from '../../../common/test_data_utils'
 
@@ -17,8 +18,9 @@ export default {
 
 export const Default = () => {
   return (
-    <MarkdownRenderer
-      text={`
+    <MockContext>
+      <MarkdownRenderer
+        text={`
 # Heading 1
 ## Heading 2
 ### Heading 3
@@ -108,50 +110,55 @@ Here's a paragraph that mixes **bold**, *italic*, ~~strikethrough~~, and \`inlin
 2. A list item with a **bold** word
 3. A list item with an *italic* phrase and ~~deleted text~~
 `}
-      shouldShowTextCursor={false}
-      allowedLinks={['https://brave.com', 'https://github.com']}
-    />
+        shouldShowTextCursor={false}
+        allowedLinks={['https://brave.com', 'https://github.com']}
+      />
+    </MockContext>
   )
 }
 
 export const WithDirectives = () => {
   return (
-    <AssistantResponseContextProvider
-      events={[
-        {
-          ...getEventTemplate(),
-          inlineSearchEvent: {
-            query: 'Approach shoes',
-            resultsJson: JSON.stringify(Array.from(searchResults)),
+    <MockContext>
+      <AssistantResponseContextProvider
+        events={[
+          {
+            ...getEventTemplate(),
+            inlineSearchEvent: {
+              query: 'Approach shoes',
+              resultsJson: JSON.stringify(Array.from(searchResults)),
+            },
           },
-        },
-      ]}
-    >
-      <MarkdownRenderer
-        text={`
+        ]}
+      >
+        <MarkdownRenderer
+          text={`
 ## Hello World
 
 This is some text about a product followed by a directive.
 
 ::search[Approach shoes]{type=web}`}
-        shouldShowTextCursor={false}
-        allowedLinks={[]}
-      />
-    </AssistantResponseContextProvider>
+          shouldShowTextCursor={false}
+          allowedLinks={[]}
+        />
+      </AssistantResponseContextProvider>
+    </MockContext>
   )
 }
 
 export const WithNonWhitelistedDirective = () => {
   return (
-    <MarkdownRenderer
-      text={`
+    <MockContext>
+      <MarkdownRenderer
+        text={`
 ## Hello World
 
 This has a directive that is not whitelisted. It should just display the text content.
 
 ::evil[do the thing]{type=alert}`}
-      shouldShowTextCursor={false}
-      allowedLinks={[]}
-    />
+        shouldShowTextCursor={false}
+        allowedLinks={[]}
+      />
+    </MockContext>
   )
 }
