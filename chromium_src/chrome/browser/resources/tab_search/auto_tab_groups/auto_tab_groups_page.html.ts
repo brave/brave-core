@@ -32,7 +32,7 @@ export function getHtml(this:  AutoTabGroupsPageElement) {
             id="submitButton"
             size="medium"
             fab
-            @click=${this.onFocusTabsClicked_}
+            @click=${this.onFocusTabsClick_}
             ?isDisabled=${this.errorMessage !== ''}
           >
             ${this.getSubmitButtonLabel_()}
@@ -58,7 +58,7 @@ export function getHtml(this:  AutoTabGroupsPageElement) {
                     id="premiumButton"
                     kind="filled"
                     size="medium"
-                    @click="${this.onGoPremiumClicked_}"
+                    @click="${this.onGoPremiumClick_}"
                   >
                     ${this.getGoPremiumButtonLabel_()}
                   </leo-button>
@@ -66,7 +66,7 @@ export function getHtml(this:  AutoTabGroupsPageElement) {
                     id="dismissButton"
                     kind="plain-faint"
                     size="medium"
-                    @click="${this.onDismissErrorClicked_}"
+                    @click="${this.onDismissErrorClick_}"
                   >
                     ${this.getDismissButtonLabel_()}
                   </leo-button>
@@ -78,7 +78,7 @@ export function getHtml(this:  AutoTabGroupsPageElement) {
       ${this.errorMessage === '' ? html`
       <div class="footer">
         ${this.getFooterMessage_()}
-        <span class="learn-more-link" @click=${this.onLearnMoreClicked_}>
+        <span class="learn-more-link" @click=${this.onLearnMoreClick_}>
           ${this.getLearnMoreLabel_()}
         </span>
       </div>

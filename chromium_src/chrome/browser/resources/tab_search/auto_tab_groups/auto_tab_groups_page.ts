@@ -78,11 +78,11 @@ export class AutoTabGroupsPageElement extends CrLitElement {
     this.topic = e.value
   }
 
-  protected onFocusTabsClicked_() {
+  protected onFocusTabsClick_() {
     this.getFocusTabs_(this.topic)
   }
 
-  protected onUndoClicked_() {
+  protected onUndoClick_() {
     this.apiProxy_.undoFocusTabs().then(() => {
       this.undoTopic_ = ''
     })
@@ -148,7 +148,7 @@ export class AutoTabGroupsPageElement extends CrLitElement {
     return topic.match(/^\p{Emoji}/u)![0]
   }
 
-  protected onTopicClicked_(index: number) {
+  protected onTopicClick_(index: number) {
     if (this.topics_[index]) {
       this.getFocusTabs_(this.topics_[index])
     }
@@ -237,19 +237,19 @@ export class AutoTabGroupsPageElement extends CrLitElement {
     return loadTimeData.getString('tabOrganizationEnableButtonLabel')
   }
 
-  protected onLearnMoreClicked_() {
+  protected onLearnMoreClick_() {
     this.apiProxy_.openHelpPage()
   }
 
-  protected onGoPremiumClicked_() {
+  protected onGoPremiumClick_() {
     this.apiProxy_.openLeoGoPremiumPage()
   }
 
-  protected onEnableTabFocusClicked_() {
+  protected onEnableTabFocusClick_() {
     this.apiProxy_.setTabFocusEnabled()
   }
 
-  protected onDismissErrorClicked_() {
+  protected onDismissErrorClick_() {
     this.errorMessage = ''
   }
 
@@ -280,7 +280,7 @@ export class AutoTabGroupsPageElement extends CrLitElement {
           id="undoButton"
           kind="plain-faint"
           size="tiny"
-          @click="${this.onUndoClicked_}"
+          @click="${this.onUndoClick_}"
         >
           ${this.getUndoButtonLabel_()}
         </leo-button>
@@ -312,7 +312,7 @@ export class AutoTabGroupsPageElement extends CrLitElement {
           class="topics-button"
           size="small"
           kind="outline"
-          @click="${() => this.onTopicClicked_(index)}"
+          @click="${() => this.onTopicClick_(index)}"
         >
           <div class="topic-description">
             <div class="emoji-wrapper">
@@ -360,7 +360,7 @@ export class AutoTabGroupsPageElement extends CrLitElement {
               ${this.getPrivacyDisclaimerMessage_()}
             </span>
             <div class="enable-tab-focus-button-row">
-              <span class="learn-more-link" @click=${this.onLearnMoreClicked_}>
+              <span class="learn-more-link" @click=${this.onLearnMoreClick_}>
                 ${this.getLearnMoreLabel_()}
               </span>
               <div>
@@ -368,7 +368,7 @@ export class AutoTabGroupsPageElement extends CrLitElement {
                 id="enableButton"
                 kind="filled"
                 size="small"
-                @click="${this.onEnableTabFocusClicked_}"
+                @click="${this.onEnableTabFocusClick_}"
               >
                 ${this.getEnableButtonLabel_()}
               </leo-button>

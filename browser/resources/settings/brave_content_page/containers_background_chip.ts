@@ -34,7 +34,7 @@ export class SettingsBraveContentContainersBackgroundChipElement extends CrLitEl
   accessor selected: boolean = false
   accessor backgroundColor: string = 'magenta' // Debug color that should never be visible
 
-  handleChipClick_() {
+  onChipClick_() {
     const event: ColorSelectedEvent = new CustomEvent('background-selected', {
       bubbles: true,
       composed: true,
