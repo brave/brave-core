@@ -52,9 +52,10 @@ function Block(props: CodeBlockProps) {
   return (
     <div className={styles.container}>
       <div className={styles.toolbar}>
-        <div>{props.lang}</div>
+        <div className={styles.toolbarLabel}>{props.lang}</div>
         <Button
           kind='plain-faint'
+          size='small'
           onClick={handleCopy}
         >
           <div slot='icon-before'>
@@ -67,6 +68,7 @@ function Block(props: CodeBlockProps) {
         </Button>
       </div>
       <SyntaxHighlighter
+        className={styles.codeBlock}
         language={props.lang}
         style={isDarkMode ? darkStyle : lightStyle}
         wrapLines
