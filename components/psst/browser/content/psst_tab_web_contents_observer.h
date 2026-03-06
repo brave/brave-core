@@ -16,7 +16,9 @@
 #include "brave/components/psst/common/psst_metadata_schema.h"
 #include "brave/components/psst/common/psst_script_responses.h"
 #include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
+#include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
 
 class PrefService;
 
@@ -31,6 +33,10 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   using InsertScriptInPageTimeoutCallback =
       base::RepeatingCallback<void(const int)>;
   using InjectScriptCallback = base::RepeatingCallback<void(
+      const std::string&,
+      PsstTabWebContentsObserver::InsertScriptInPageCallback)>;
+  using InjectScriptAsyncCallback = base::RepeatingCallback<void(
+      mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>&,
       const std::string&,
       PsstTabWebContentsObserver::InsertScriptInPageCallback)>;
 
@@ -85,7 +91,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
                              PrefService* prefs,
                              std::unique_ptr<PsstUiDelegate> ui_delegate,
                              InjectScriptCallback inject_script_callback,
-                             InjectScriptCallback inject_async_script_callback);
+                             InjectScriptAsyncCallback inject_async_script_callback);
 
   bool ShouldInsertScriptForPage(int id);
   void InsertUserScript(int id, std::unique_ptr<MatchedRule> rule);
@@ -99,9 +105,6 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
                       bool is_async,
                       InsertScriptInPageCallback callback);
   void OnScriptTimeout(int id);
-  void MaybeGetPolicyScriptResult(int id,
-                                  std::optional<int> retry_counter,
-                                  const base::DictValue& script_result);
 
   // content::WebContentsObserver overrides
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
@@ -118,7 +121,9 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   const raw_ptr<PsstRuleRegistry> registry_;
   const raw_ptr<PrefService> prefs_;
   InjectScriptCallback inject_script_callback_;
-  InjectScriptCallback inject_async_script_callback_;
+  mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
+      script_injector_remote_;
+  InjectScriptAsyncCallback inject_async_script_callback_;
   std::unique_ptr<PsstUiDelegate> ui_delegate_;
   base::OneShotTimer timeout_timer_;
   base::WeakPtrFactory<PsstTabWebContentsObserver> weak_factory_{this};

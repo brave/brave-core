@@ -52,24 +52,10 @@ const char kUserScriptResultSiteNamePropName[] = "name";
 const char kUserScriptResultTaskItemUrlPropName[] = "url";
 const char kUserScriptResultInitialExecutionPropName[] = "initial_execution";
 
-const char kPolicyScriptResultSettingStatusPropName[] = "psst_settings_status";
 const char kPolicyScriptResultPsstPropName[] = "psst";
 const char kPolicyScriptResultIsDonePropName[] = "result";
 const char kPolicyScriptResultNextUrlPropName[] = "next_url";
-const char kGetPolicyScriptResultRetryCounter[] = "retry_counter";
-const char kGetPolicyScriptResultScript[] = R"(
-((item, counter) => {
- const data = window.parent.localStorage.getItem(item)
-  if (data !== null) {
-    window.parent.localStorage.removeItem(item);
-    return JSON.parse(data)
-  } else {
-    return { retry_counter: counter }
-  }
-})("psst_settings_status_$1",  $2)
-)";
-constexpr int kGetPolicyScriptExecutionDelay = 3;
-constexpr int kRetryCounterDefault = 5;
+const char kPolicyScriptResultStartUrlPropName[] = "start_url";
 
 struct PsstNavigationData : public base::SupportsUserData::Data {
  public:
@@ -137,15 +123,6 @@ void PrepareParametersForPolicyExecution(
   }
 
   params->Set(kUserScriptResultInitialExecutionPropName, is_initial);
-  params->Set(kPolicyScriptResultSettingStatusPropName, navigation_id);
-}
-
-mojo::AssociatedRemote<script_injector::mojom::ScriptInjector> GetRemote(
-    content::RenderFrameHost* rfh) {
-  mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
-      script_injector_remote;
-  rfh->GetRemoteAssociatedInterfaces()->GetInterface(&script_injector_remote);
-  return script_injector_remote;
 }
 
 }  // namespace
@@ -179,12 +156,23 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
 
   auto inject_async_script_callback = base::BindRepeating(
       [](content::WebContents* web_contents, int32_t world_id,
+         mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>&
+             script_injector_remote,
          const std::string& script,
          PsstTabWebContentsObserver::InsertScriptInPageCallback cb) {
-        auto remote = GetRemote(web_contents->GetPrimaryMainFrame());
-        remote->RequestAsyncExecuteScript(
+        auto* rfh = web_contents->GetPrimaryMainFrame();
+        CHECK(rfh);
+        CHECK(rfh->IsRenderFrameLive());
+        script_injector_remote.reset();
+        if (!script_injector_remote.is_bound() ||
+            !script_injector_remote.is_connected()) {
+          rfh->GetRemoteAssociatedInterfaces()->GetInterface(
+              &script_injector_remote);
+          script_injector_remote.reset_on_disconnect();
+        }
+        script_injector_remote->RequestAsyncExecuteScript(
             world_id, base::UTF8ToUTF16(std::string(script)),
-            blink::mojom::UserActivationOption::kDoNotActivate,
+            blink::mojom::UserActivationOption::kActivate,
             blink::mojom::PromiseResultOption::kAwait, std::move(cb));
       },
       contents, world_id);
@@ -202,7 +190,7 @@ PsstTabWebContentsObserver::PsstTabWebContentsObserver(
     PrefService* prefs,
     std::unique_ptr<PsstUiDelegate> ui_delegate,
     InjectScriptCallback inject_script_callback,
-    InjectScriptCallback inject_async_script_callback)
+    InjectScriptAsyncCallback inject_async_script_callback)
     : WebContentsObserver(web_contents),
       registry_(registry),
       prefs_(prefs),
@@ -358,35 +346,6 @@ void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
                      weak_factory_.GetWeakPtr(), id));
 }
 
-void PsstTabWebContentsObserver::MaybeGetPolicyScriptResult(
-    const int id,
-    std::optional<int> retry_counter,
-    const base::DictValue& script_result) {
-  if (retry_counter.has_value() && retry_counter <= 0) {
-    ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
-    return;
-  }
-
-  const int retry_counter_value = script_result.empty()
-                                      ? kRetryCounterDefault
-                                      : (retry_counter.value() - 1);
-
-  base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE,
-      base::BindOnce(
-          &PsstTabWebContentsObserver::RunWithTimeout,
-          weak_factory_.GetWeakPtr(), id,
-          base::ReplaceStringPlaceholders(
-              kGetPolicyScriptResultScript,
-              {base::NumberToString(id),
-               base::NumberToString(retry_counter_value)},
-              nullptr),
-          false,
-          base::BindOnce(&PsstTabWebContentsObserver::OnPolicyScriptResult,
-                         weak_factory_.GetWeakPtr(), id)),
-      base::Seconds(kGetPolicyScriptExecutionDelay));
-}
-
 void PsstTabWebContentsObserver::OnPolicyScriptResult(
     const int id,
     base::Value script_result) {
@@ -403,15 +362,6 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
 
   const auto& script_result_dict = script_result.GetDict();
 
-  // The empty dictionary means that it is return from async script started
-  // If the result contains the retry_counter, means we have to try again
-  const auto retry_counter =
-      script_result_dict.FindInt(kGetPolicyScriptResultRetryCounter);
-  if (script_result_dict.empty() || retry_counter.has_value()) {
-    MaybeGetPolicyScriptResult(id, retry_counter, script_result_dict);
-    return;
-  }
-
   const auto* psst =
       script_result_dict.FindDict(kPolicyScriptResultPsstPropName);
   if (!psst) {
@@ -421,12 +371,6 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
   const auto is_done =
       script_result_dict.FindBool(kPolicyScriptResultIsDonePropName);
   if (!is_done.has_value()) {
-    return;
-  }
-
-  const auto* next_url =
-      script_result_dict.FindString(kPolicyScriptResultNextUrlPropName);
-  if (!next_url || next_url->empty()) {
     return;
   }
 
@@ -440,6 +384,13 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
                             script_result_parsed->applied_tasks,
                             is_done.value() ? mojom::PsstStatus::kCompleted
                                             : mojom::PsstStatus::kInProgress);
+
+  const auto* next_url = script_result_dict.FindString(
+      is_done.value() ? kPolicyScriptResultStartUrlPropName
+                      : kPolicyScriptResultNextUrlPropName);
+  if (!next_url || next_url->empty()) {
+    return;
+  }
 
   auto url_to_load = GURL(*next_url);
   if (url_to_load.is_valid()) {
@@ -460,7 +411,8 @@ void PsstTabWebContentsObserver::RunWithTimeout(
       base::BindOnce(&PsstTabWebContentsObserver::OnScriptTimeout,
                      weak_factory_.GetWeakPtr(), last_committed_entry_id));
   if (is_async) {
-    inject_async_script_callback_.Run(script, std::move(callback));
+    inject_async_script_callback_.Run(script_injector_remote_, script,
+                                      std::move(callback));
   } else {
     inject_script_callback_.Run(script, std::move(callback));
   }

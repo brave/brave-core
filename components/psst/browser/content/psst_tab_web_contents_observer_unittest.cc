@@ -176,30 +176,6 @@ MATCHER_P4(PsstWebsiteSettingsEq,
          arg.urls_to_skip == urls_to_skip;
 }
 
-std::string IgnorePsstSettingsField(const std::string& arg) {
-  std::string modified_arg = arg;
-  if (size_t psst_settings_start =
-          modified_arg.find("\"psst_settings_status\":");
-      psst_settings_start != std::string::npos) {
-    size_t comma_pos = modified_arg.find(",", psst_settings_start);
-    if (comma_pos != std::string::npos) {
-      modified_arg.erase(psst_settings_start,
-                         comma_pos - psst_settings_start + 1);
-    }
-  }
-  return modified_arg;
-}
-
-MATCHER_P(ScriptWithParametersEq,
-          expected_policy_script,
-          "expected_policy_script=" +
-              ::testing::PrintToString(expected_policy_script)) {
-  // Remove psst_settings_status field from the script string
-  // as it contain navigation entry id which can be different
-  return IgnorePsstSettingsField(arg) ==
-         IgnorePsstSettingsField(expected_policy_script);
-}
-
 }  // namespace
 
 class DocumentOnLoadObserver : public content::WebContentsObserver {
@@ -255,9 +231,9 @@ ACTION_P(InsertScriptInPageCallback, future, value) {
       .Run(value.Clone());
   future->SetValue(value.Clone());
 }
-ACTION_P(InsertPolicyScriptInPageCallback, future, value) {
+ACTION_P(InsertPolicyAsyncScriptInPageCallback, future, value) {
   std::move(
-      const_cast<PsstTabWebContentsObserver::InsertScriptInPageCallback&>(arg1))
+      const_cast<PsstTabWebContentsObserver::InsertScriptInPageCallback&>(arg2))
       .Run(value.Clone());
   future->SetValue(value.Clone());
 }
@@ -339,7 +315,8 @@ class PsstTabWebContentsObserverUnitTestBase
     psst_web_contents_observer_ = base::WrapUnique<PsstTabWebContentsObserver>(
         new PsstTabWebContentsObserver(web_contents(), rule_registry_.get(),
                                        &prefs_, std::move(ui_delegate),
-                                       inject_script_callback_.Get()));
+                                       inject_script_callback_.Get(),
+                                       inject_async_script_callback_.Get()));
   }
 
   void TearDown() override {
@@ -360,6 +337,11 @@ class PsstTabWebContentsObserverUnitTestBase
     return inject_script_callback_;
   }
 
+  base::MockCallback<PsstTabWebContentsObserver::InjectScriptAsyncCallback>&
+  inject_async_script_callback() {
+    return inject_async_script_callback_;
+  }
+
   MockUiDelegate& ui_delegate() { return *ui_delegate_; }
 
   PsstTabWebContentsObserver& psst_web_contents_observer() {
@@ -373,6 +355,8 @@ class PsstTabWebContentsObserverUnitTestBase
   raw_ptr<MockUiDelegate> ui_delegate_;
   base::MockCallback<PsstTabWebContentsObserver::InjectScriptCallback>
       inject_script_callback_;
+  base::MockCallback<PsstTabWebContentsObserver::InjectScriptAsyncCallback>
+      inject_async_script_callback_;
   std::unique_ptr<MockPsstRuleRegistry> rule_registry_;
   std::unique_ptr<PsstTabWebContentsObserver> psst_web_contents_observer_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -773,7 +757,6 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   // We expect the next two parameters to be added by the
   // PrepareParametersForPolicyExecution
   policy_script_params.GetDict().Set("initial_execution", true);
-  policy_script_params.GetDict().Set("psst_settings_status", 0);  // any value
 
   const auto script_with_parameters = base::StrCat(
       {"const params = ",
@@ -783,9 +766,9 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
        ";\n", policy_script});
 
   // Policy script executed, parameters added
-  EXPECT_CALL(inject_script_callback(),
-              Run(ScriptWithParametersEq(script_with_parameters), _))
-      .WillOnce(InsertPolicyScriptInPageCallback(&policy_script_insert_future,
+  EXPECT_CALL(inject_async_script_callback(),
+              Run(_, script_with_parameters, _))
+      .WillOnce(InsertPolicyAsyncScriptInPageCallback(&policy_script_insert_future,
                                                  policy_script_result.Clone()));
 
   DocumentOnLoadObserver observer(web_contents());
@@ -883,8 +866,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
                              std::vector<std::string>()));
 
   // Policy script executed, parameters not added
-  EXPECT_CALL(inject_script_callback(), Run(policy_script, _))
-      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_future,
+  EXPECT_CALL(inject_async_script_callback(), Run(_, policy_script, _))
+      .WillOnce(InsertPolicyAsyncScriptInPageCallback(&policy_script_insert_future,
                                            policy_script_result.Clone()));
 
   DocumentOnLoadObserver observer(web_contents());
@@ -975,7 +958,6 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
   // We expect the next two parameters to be added by the
   // PrepareParametersForPolicyExecution
   policy_script_params.GetDict().Set("initial_execution", true);
-  policy_script_params.GetDict().Set("psst_settings_status", 0);  // any value
 
   const auto policy_script_with_parameters = base::StrCat(
       {"const params = ",
@@ -984,9 +966,9 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
            .value(),
        ";\n", policy_script});
   // Policy script executed, parameters added
-  EXPECT_CALL(inject_script_callback(),
-              Run(ScriptWithParametersEq(policy_script_with_parameters), _))
-      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_future,
+  EXPECT_CALL(inject_async_script_callback(),
+              Run(_, policy_script_with_parameters, _))
+      .WillOnce(InsertPolicyAsyncScriptInPageCallback(&policy_script_insert_future,
                                            policy_script_result.Clone()));
 
   DocumentOnLoadObserver observer(web_contents());
