@@ -25,7 +25,11 @@ const Logo = ({ isPremium }: { isPremium: boolean }) => (
   <div className={styles.logo}>
     <div className={styles.logoTitle}>Leo AI</div>
     {isPremium && (
-      <Label mode='default' color='blue' className={styles.badgePremium}>
+      <Label
+        mode='default'
+        color='blue'
+        className={styles.badgePremium}
+      >
         Premium
       </Label>
     )}
