@@ -1282,16 +1282,19 @@ class SettingsViewController: TableViewController {
             if FeatureList.kUseChromiumWebViewsAutofill.enabled,
               let autofillDataManager = braveCore.defaultWebViewConfiguration.autofillDataManager
             {
-              let managePasswordsViewController = ManagePasswordsViewController(
-                autofillDataManager: autofillDataManager,
-                windowProtection: windowProtection,
-                settingsDelegate: settingsDelegate /*,
+              let context = AutofillManagementContext(
+                settingsDelegate: settingsDelegate,
                 askForAuthentication: { [weak self] completion in
                   self?.askForLocalAuthentication(viewType: .passwords, completion: completion)
-                }*/
+                }
+              )
+              let manageAutofillViewController = ManageAutofillViewController(
+                autofillDataManager: autofillDataManager,
+                context: context,
+                type: .passwords
               )
               self.navigationController?.pushViewController(
-                managePasswordsViewController,
+                manageAutofillViewController,
                 animated: true
               )
             } else {
