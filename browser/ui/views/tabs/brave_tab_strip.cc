@@ -158,9 +158,18 @@ void BraveTabStrip::SetSelection(const ui::ListSelectionModel& new_selection) {
   // expand the node.
   // In case of newly created tabs, they don't have a tree tab node yet, so we
   // post tasks for it.
+  std::vector<base::WeakPtr<BraveTab>> tabs;
+  for (int index : new_selection.selected_indices()) {
+    tabs.push_back(static_cast<BraveTab*>(tab_at(index))->GetWeakPtr());
+  }
+
+  if (tabs.empty()) {
+    return;
+  }
+
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&BraveTabStrip::ExpandAllCollapsedAncestors,
-                                weak_factory_.GetWeakPtr(), new_selection));
+                                weak_factory_.GetWeakPtr(), tabs));
 }
 
 void BraveTabStrip::ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) {
@@ -346,11 +355,9 @@ void BraveTabStrip::OnAlwaysHideCloseButtonPrefChanged() {
 }
 
 void BraveTabStrip::ExpandAllCollapsedAncestors(
-    const ui::ListSelectionModel& new_selection) {
-  for (int index : new_selection.selected_indices()) {
-    Tab* tab = tab_at(index);
-    CHECK(tab);
-    if (tab->data().pinned) {
+    const std::vector<base::WeakPtr<BraveTab>>& tabs) {
+  for (const auto& tab : tabs) {
+    if (!tab) {
       continue;
     }
 

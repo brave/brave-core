@@ -86,6 +86,8 @@ class BraveTab : public Tab {
   // cannot be determined.
   ui::ImageModel GetTabAccentIcon() const;
 
+  base::WeakPtr<BraveTab> GetWeakPtr();
+
  private:
   friend class BraveTabTest;
 
@@ -134,6 +136,8 @@ class BraveTab : public Tab {
   }
   bool center_icon_for_test() const { return center_icon_; }
   bool showing_close_button_for_test() const { return showing_close_button_; }
+
+  base::WeakPtrFactory<BraveTab> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_H_

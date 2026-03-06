@@ -103,8 +103,9 @@ class BraveTabStrip : public TabStrip {
 
   void OnAlwaysHideCloseButtonPrefChanged();
 
-  // Expands all collapsed ancestors of the node identified by |id|.
-  void ExpandAllCollapsedAncestors(const ui::ListSelectionModel& new_selection);
+  // Expands all collapsed ancestors of the tabs
+  void ExpandAllCollapsedAncestors(
+      const std::vector<base::WeakPtr<BraveTab>>& tabs);
 
   BooleanPrefMember always_hide_close_button_;
   BooleanPrefMember middle_click_close_tab_enabled_;

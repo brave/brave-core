@@ -436,6 +436,10 @@ ui::ImageModel BraveTab::GetTabAccentIcon() const {
   return controller_->GetTabAccentIcon(this);
 }
 
+base::WeakPtr<BraveTab> BraveTab::GetWeakPtr() {
+  return weak_factory_.GetWeakPtr();
+}
+
 void BraveTab::InitTreeToggleButton() {
   constexpr int kButtonPadding = 12;
   const int icon_size = GetLayoutConstant(LayoutConstant::kTabCloseButtonSize);
