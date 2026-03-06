@@ -187,6 +187,15 @@
 -WebSocketBrowserTestWithAllowFileAccessFromFiles.CheckFileOrigin
 -WebUIBubbleManagerBrowserTest.*
 
+# Known upstream flake: 1.8% flake rate over 30 days per LUCI Analysis.
+# COM interface reference leak (CheckForLeakedAxPlatformNodes detects
+# ghost_count=1) in notification accessibility tree during test teardown.
+# Chromium test, not disabled upstream. Brave modifications (chromium_src
+# DefaultBrowserWorker -> BraveDefaultBrowserWorker) are unrelated to
+# accessibility/COM node cleanup.
+# https://github.com/brave/brave-browser/issues/53421
+-DefaultBrowserManagerWinBrowserTest.ClickAcceptTriggersSetterAndMetric
+
 # This test fails because Brave enables screen farbling
 # (kBraveBlockScreenFingerprinting) by default on desktop, which modifies
 # screen dimension values returned to web content.
