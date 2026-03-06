@@ -51,7 +51,7 @@ class MediaSessionMetrics {
   void OnMediaSessionDestroyed(content::MediaSession* media_session);
 
  private:
-  class Session : public media_session::mojom::MediaSessionObserver {
+  class Session final : public media_session::mojom::MediaSessionObserver {
    public:
     using PlaybackStateChangedCallback = base::RepeatingCallback<void(bool)>;
 
