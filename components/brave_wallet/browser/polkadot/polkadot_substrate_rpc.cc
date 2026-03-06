@@ -271,10 +271,6 @@ std::optional<std::vector<std::string>> ParseExtrinsics(
 
 }  // namespace
 
-PolkadotBlock::PolkadotBlock() = default;
-PolkadotBlock::~PolkadotBlock() = default;
-PolkadotBlock::PolkadotBlock(PolkadotBlock&&) = default;
-
 PolkadotSubstrateRpc::PolkadotSubstrateRpc(
     NetworkManager& network_manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)

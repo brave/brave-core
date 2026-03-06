@@ -15,17 +15,6 @@
 
 namespace brave_wallet {
 
-struct PolkadotBlock {
-  PolkadotBlockHeader header;
-  std::vector<std::string> extrinsics;
-
-  PolkadotBlock();
-  ~PolkadotBlock();
-
-  PolkadotBlock(const PolkadotBlock&) = delete;
-  PolkadotBlock(PolkadotBlock&&);
-};
-
 class NetworkManager;
 
 struct PolkadotRuntimeVersion {
