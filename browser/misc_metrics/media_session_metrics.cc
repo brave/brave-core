@@ -142,7 +142,7 @@ void MediaSessionMetrics::ReportMetric() {
     return;
   }
 
-  uint64_t uptime_minutes = base::Seconds(uptime_monitor_->GetTimePeriodStorage()->GetPeriodSum()).InMinutes();
+  uint64_t uptime_minutes = uptime_monitor_->GetUsedTimeInWeek().InMinutes();
   if (uptime_minutes == 0) {
     return;
   }

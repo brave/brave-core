@@ -34,7 +34,7 @@ UptimeMonitorImpl::UptimeMonitorImpl(PrefService* local_state)
           local_state->GetTime(kDailyUptimeFrameStartTimePrefName)),
       report_frame_time_sum_(
           local_state_->GetTimeDelta(kDailyUptimeSumPrefName)),
-      time_period_storage_(local_state, kWeeklyUptimeStoragePrefName, 8) {}
+      weekly_storage_(local_state, kWeeklyUptimeStoragePrefName) {}
 
 void UptimeMonitorImpl::Init() {
   if (report_frame_start_time_.is_null()) {
@@ -56,7 +56,7 @@ void UptimeMonitorImpl::ReportUsageDuration(base::TimeDelta duration) {
   report_frame_time_sum_ += duration;
   local_state_->SetTimeDelta(kDailyUptimeSumPrefName, report_frame_time_sum_);
 
-  time_period_storage_.AddDelta(duration.InSeconds());
+  weekly_storage_.AddDelta(duration.InSeconds());
 
   RecordP3A();
 }
@@ -69,7 +69,7 @@ void UptimeMonitorImpl::RecordUsage() {
     current_total_usage_ = new_total;
     local_state_->SetTimeDelta(kDailyUptimeSumPrefName, report_frame_time_sum_);
 
-    time_period_storage_.AddDelta(total_diff.InSeconds());
+    weekly_storage_.AddDelta(total_diff.InSeconds());
   }
   RecordP3A();
 }
@@ -96,13 +96,7 @@ void UptimeMonitorImpl::ResetReportFrame() {
 }
 
 base::TimeDelta UptimeMonitorImpl::GetUsedTimeInWeek() const {
-  const base::Time now = base::Time::Now();
-  const base::Time week_start = now.LocalMidnight() - base::Days(6);
-  return base::Seconds(time_period_storage_.GetPeriodSumInTimeRange(week_start, now));
-}
-
-TimePeriodStorage* UptimeMonitorImpl::GetTimePeriodStorage() {
-  return &time_period_storage_;
+  return base::Seconds(weekly_storage_.GetWeeklySum());
 }
 
 base::WeakPtr<UptimeMonitor> UptimeMonitorImpl::GetWeakPtr() {

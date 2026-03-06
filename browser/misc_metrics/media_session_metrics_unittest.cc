@@ -10,7 +10,6 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/task_environment.h"
 #include "brave/components/misc_metrics/uptime_monitor.h"
-#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/mock_media_session.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -21,10 +20,6 @@
 
 namespace misc_metrics {
 
-namespace {
-constexpr char kTestUptimeStoragePref[] = "test.uptime_storage";
-}  // namespace
-
 class MediaSessionMetricsTest : public testing::Test {
  public:
   MediaSessionMetricsTest()
@@ -32,30 +27,21 @@ class MediaSessionMetricsTest : public testing::Test {
 
   void SetUp() override {
     MediaSessionMetrics::RegisterPrefs(local_state_.registry());
-    local_state_.registry()->RegisterListPref(kTestUptimeStoragePref);
-    uptime_monitor_ = std::make_unique<MockUptimeMonitor>(&local_state_);
     metrics_ =
-        std::make_unique<MediaSessionMetrics>(&local_state_, uptime_monitor_.get());
+        std::make_unique<MediaSessionMetrics>(&local_state_, &uptime_monitor_);
   }
 
  protected:
   class MockUptimeMonitor : public UptimeMonitor {
    public:
-    explicit MockUptimeMonitor(PrefService* prefs)
-        : storage_(prefs, kTestUptimeStoragePref, 8) {}
-    base::TimeDelta GetUsedTimeInWeek() const override { return {}; }
-    TimePeriodStorage* GetTimePeriodStorage() override {
-      const base::Time now = base::Time::Now();
-      storage_.AddDelta((now - frame_start_time_).InSeconds());
-      frame_start_time_ = now;
-      return &storage_;
+    base::TimeDelta GetUsedTimeInWeek() const override {
+      return base::Time::Now() - start_time_;
     }
     base::WeakPtr<UptimeMonitor> GetWeakPtr() override { return nullptr; }
     bool IsInUse() const override { return true; }
 
    private:
-    base::Time frame_start_time_ = base::Time::Now();
-    TimePeriodStorage storage_;
+    base::Time start_time_ = base::Time::Now();
   };
 
   content::MockMediaSession* AddSession() {
@@ -94,7 +80,7 @@ class MediaSessionMetricsTest : public testing::Test {
   TestingPrefServiceSimple local_state_;
   base::HistogramTester histogram_tester_;
 
-  std::unique_ptr<MockUptimeMonitor> uptime_monitor_;
+  MockUptimeMonitor uptime_monitor_;
 
   std::vector<std::unique_ptr<content::MockMediaSession>> mock_sessions_;
   absl::flat_hash_map<content::MockMediaSession*,

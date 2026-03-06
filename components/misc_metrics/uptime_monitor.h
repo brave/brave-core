@@ -8,7 +8,6 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
-#include "brave/components/time_period_storage/time_period_storage.h"
 
 namespace misc_metrics {
 
@@ -19,9 +18,6 @@ class UptimeMonitor {
 
   // Returns the total browser usage time for the current week
   virtual base::TimeDelta GetUsedTimeInWeek() const = 0;
-
-  // Returns the underlying 8-day rolling storage for uptime data
-  virtual TimePeriodStorage* GetTimePeriodStorage() = 0;
 
   // Returns a weak pointer to this instance
   virtual base::WeakPtr<UptimeMonitor> GetWeakPtr() = 0;

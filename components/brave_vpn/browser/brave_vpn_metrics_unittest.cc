@@ -31,7 +31,6 @@ class BraveVpnMetricsTest : public testing::Test {
 
     // UptimeMonitor implementation
     base::TimeDelta GetUsedTimeInWeek() const override { return usage_time_; }
-    TimePeriodStorage* GetTimePeriodStorage() override { return nullptr; }
     base::WeakPtr<misc_metrics::UptimeMonitor> GetWeakPtr() override {
       return weak_ptr_factory_.GetWeakPtr();
     }
