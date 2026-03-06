@@ -5,9 +5,11 @@
 
 #include "brave/components/serp_metrics/serp_classifier.h"
 
-#include "base/containers/fixed_flat_set.h"
+#include <memory>
+#include <string_view>
+
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
-#include "components/search_engines/search_engine_type.h"
+#include "brave/components/serp_metrics/serp_classifier_utils.h"
 #include "components/search_engines/search_terms_data.h"
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_data_util.h"
@@ -18,19 +20,15 @@ namespace serp_metrics {
 
 namespace {
 
-constexpr auto kAllowedPrepopulatedEngines =
-    base::MakeFixedFlatSet<SearchEngineType>(
-        base::sorted_unique,
-        {SEARCH_ENGINE_BING, SEARCH_ENGINE_GOOGLE, SEARCH_ENGINE_YAHOO,
-         SEARCH_ENGINE_DUCKDUCKGO, SEARCH_ENGINE_QWANT, SEARCH_ENGINE_ECOSIA,
-         SEARCH_ENGINE_BRAVE, SEARCH_ENGINE_STARTPAGE});
+constexpr std::string_view kStartpageUrlHost = "www.startpage.com";
+constexpr std::string_view kStartpageUrlPath = "/sp/search";
 
 // Returns a `TemplateURL` if `url` matches the search engine results page for
 // `prepopulated_engine`.
 std::unique_ptr<TemplateURL> MaybeGetTemplateURLForPrepopulatedEngine(
     const TemplateURLPrepopulateData::PrepopulatedEngine& prepopulated_engine,
     const GURL& url) {
-  if (!kAllowedPrepopulatedEngines.contains(prepopulated_engine.type)) {
+  if (!IsAllowedSearchEngine(prepopulated_engine.type)) {
     return nullptr;
   }
 
@@ -40,7 +38,7 @@ std::unique_ptr<TemplateURL> MaybeGetTemplateURLForPrepopulatedEngine(
 
   if (!template_url->IsSearchURL(url, SearchTermsData())) {
     if (prepopulated_engine.type == SEARCH_ENGINE_STARTPAGE &&
-        url.host() == "www.startpage.com" && url.path() == "/sp/search") {
+        url.host() == kStartpageUrlHost && url.path() == kStartpageUrlPath) {
       // Startpage uses a path-based SERP URL. Chromium still checks the legacy
       // query-based format and does not support the new one. Even if we update
       // the search URL, `TemplateURL::IsSearchURL` still fails because it
@@ -54,31 +52,32 @@ std::unique_ptr<TemplateURL> MaybeGetTemplateURLForPrepopulatedEngine(
   return template_url;
 }
 
-}  // namespace
-
-bool SerpClassifier::IsSameSearchQuery(const GURL& lhs, const GURL& rhs) const {
-  if (lhs.host() == "www.startpage.com") {
-    // For Startpage, we cannot determine whether two URLs represent the same
-    // search results page, so these pages are always classified.
-    return false;
+// Returns a `TemplateURL` if `url` matches the search engine results page for
+// any prepopulated engine in the allow list.
+std::unique_ptr<TemplateURL> MaybeGetTemplateUrl(const GURL& url) {
+  for (const auto* prepopulated_engine :
+       TemplateURLPrepopulateData::GetAllPrepopulatedEngines()) {
+    if (auto search_engine = MaybeGetTemplateURLForPrepopulatedEngine(
+            *prepopulated_engine, url)) {
+      return search_engine;
+    }
   }
 
-  return NormalizeUrl(lhs) == NormalizeUrl(rhs);
-}
-
-std::optional<SearchEngineType> SerpClassifier::MaybeClassify(const GURL& url) {
-  const GURL normalized_url = NormalizeUrl(url);
-
-  if (const auto template_url = MaybeGetTemplateUrl(normalized_url)) {
-    return template_url->GetEngineType(SearchTermsData());
+  for (const auto& [_, prepopulated_engine] :
+       TemplateURLPrepopulateData::kBraveEngines) {
+    if (auto search_engine = MaybeGetTemplateURLForPrepopulatedEngine(
+            *prepopulated_engine, url)) {
+      return search_engine;
+    }
   }
 
-  return std::nullopt;
+  return nullptr;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-
-GURL SerpClassifier::NormalizeUrl(const GURL& url) const {
+// Normalizes a SERP URL so equivalent search queries produce the same URL for
+// comparison. Strips ports, removes non-search parameters, and canonicalizes
+// the search terms.
+GURL NormalizeUrl(const GURL& url) {
   if (!url.is_valid()) {
     return url;
   }
@@ -102,25 +101,25 @@ GURL SerpClassifier::NormalizeUrl(const GURL& url) const {
   return normalized_url;
 }
 
-std::unique_ptr<TemplateURL> SerpClassifier::MaybeGetTemplateUrl(
-    const GURL& url) const {
-  for (const auto* prepopulated_engine :
-       TemplateURLPrepopulateData::GetAllPrepopulatedEngines()) {
-    if (auto search_engine = MaybeGetTemplateURLForPrepopulatedEngine(
-            *prepopulated_engine, url)) {
-      return search_engine;
-    }
+}  // namespace
+
+bool IsSameSearchQuery(const GURL& lhs, const GURL& rhs) {
+  if (lhs.host() == kStartpageUrlHost) {
+    // For Startpage, we cannot determine whether two URLs represent the same
+    // search results page, so these pages are always classified.
+    return false;
   }
 
-  for (const auto& [_, prepopulated_engine] :
-       TemplateURLPrepopulateData::kBraveEngines) {
-    if (auto search_engine = MaybeGetTemplateURLForPrepopulatedEngine(
-            *prepopulated_engine, url)) {
-      return search_engine;
-    }
+  return NormalizeUrl(lhs) == NormalizeUrl(rhs);
+}
+
+std::optional<SearchEngineType> MaybeClassifySearchEngine(const GURL& url) {
+  const GURL normalized_url = NormalizeUrl(url);
+  if (const auto template_url = MaybeGetTemplateUrl(normalized_url)) {
+    return template_url->GetEngineType(SearchTermsData());
   }
 
-  return nullptr;
+  return std::nullopt;
 }
 
 }  // namespace serp_metrics
