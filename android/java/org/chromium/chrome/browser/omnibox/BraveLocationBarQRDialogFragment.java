@@ -22,6 +22,8 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.gms.vision.barcode.Barcode;
 
 import org.chromium.base.Log;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
 import org.chromium.chrome.browser.qrreader.QRCodeCameraManager;
@@ -136,24 +138,34 @@ public class BraveLocationBarQRDialogFragment extends DialogFragment
     // QRCodeCameraManager.Callback implementation
     @Override
     public void onDetectedQrCode(Barcode barcode) {
-        if (barcode == null) {
+        if (barcode == null || !isHostValid()) {
             return;
         }
 
-        if (getActivity() != null) {
-            final String barcodeValue = barcode.displayValue;
-            getActivity()
-                    .runOnUiThread(
-                            () -> {
-                                if (Patterns.WEB_URL.matcher(barcodeValue).matches()) {
-                                    mLocationBarMediator.setSearchQuery(barcodeValue);
-                                } else {
-                                    mLocationBarMediator.performSearchQuery(barcodeValue);
-                                }
-                            });
+        final String barcodeValue = barcode.displayValue;
 
-            dismiss();
-        }
+        PostTask.postTask(
+                TaskTraits.UI_USER_VISIBLE,
+                () -> {
+                    if (!isHostValid()) {
+                        return;
+                    }
+
+                    if (Patterns.WEB_URL.matcher(barcodeValue).matches()) {
+                        mLocationBarMediator.setSearchQuery(barcodeValue);
+                        // After cr146 update LocationBarMediator.setSearchQuery keeps
+                        // the url edit empty. The below call puts the text into editbox and selects
+                        // all - to replicate cr145 and below behavior.
+                        mLocationBarMediator.setUrlBarData(
+                                UrlBarData.forNonUrlText(barcodeValue),
+                                UrlBar.ScrollType.NO_SCROLL,
+                                UrlBarData.SELECT_ALL);
+                    } else {
+                        mLocationBarMediator.performSearchQuery(barcodeValue);
+                    }
+                });
+
+        dismiss();
     }
 
     @Override
