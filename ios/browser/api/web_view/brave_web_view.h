@@ -143,6 +143,13 @@ CWV_EXPORT
 - (void)forcePasteContents:(NSString*)contents;
 @end
 
+CWV_EXPORT
+@interface BraveWebView (PageMetadata)
+// Fetches the page metadata (OpenSearch & RSS feeds from the page) and returns
+// a JSON string with the results
+- (void)fetchMetadata:(void (^)(NSString* _Nullable json))completionHandler;
+@end
+
 NS_ASSUME_NONNULL_END
 
 #endif  // BRAVE_IOS_BROWSER_API_WEB_VIEW_BRAVE_WEB_VIEW_H_

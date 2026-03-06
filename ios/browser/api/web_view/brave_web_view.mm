@@ -23,6 +23,7 @@
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler_bridge_holder.h"
 #include "brave/ios/browser/web/force_paste/force_paste_javascript_feature.h"
+#include "brave/ios/browser/web/page_metadata/page_metadata_javascript_feature.h"
 #include "components/autofill/core/browser/logging/log_manager.h"
 #include "components/autofill/core/browser/logging/log_router.h"
 #include "components/autofill/ios/browser/autofill_agent.h"
@@ -427,6 +428,21 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 - (void)forcePasteContents:(NSString*)contents {
   ForcePasteJavaScriptFeature::GetInstance()->ForcePaste(
       self.webState, base::SysNSStringToUTF8(contents));
+}
+
+@end
+
+@implementation BraveWebView (PageMetadata)
+
+- (void)fetchMetadata:(void (^)(NSString* json))completionHandler {
+  PageMetadataJavaScriptFeature::GetInstance()->GetMetadata(
+      self.webState, base::BindOnce(^(const base::Value* value) {
+        if (value && value->is_string()) {
+          completionHandler(base::SysUTF8ToNSString(value->GetString()));
+          return;
+        }
+        completionHandler(nil);
+      }));
 }
 
 @end
