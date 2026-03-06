@@ -7,6 +7,7 @@ license = "MPL-2.0"
 [dependencies]
 star-constellation = "0.2.5"
 cxx = "1"
+postcard = { version = "1.1", default-features = false, features = ["use-std"] }
 
 [lib]
 name = "constellation_cxx"
