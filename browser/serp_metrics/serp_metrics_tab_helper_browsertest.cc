@@ -192,26 +192,9 @@ class SerpMetricsTabHelperTest : public PlatformBrowserTest {
   }
 
   void Reload() const {
-    ASSERT_TRUE(GetWebContents()->GetController().CanGoBack());
     content::TestNavigationObserver observer(GetWebContents());
     GetWebContents()->GetController().Reload(content::ReloadType::NORMAL,
                                              /*check_for_repost=*/false);
-    observer.Wait();
-    ASSERT_TRUE(content::WaitForLoadStop(GetWebContents()));
-  }
-
-  void GoBack() const {
-    ASSERT_TRUE(GetWebContents()->GetController().CanGoBack());
-    content::TestNavigationObserver observer(GetWebContents());
-    GetWebContents()->GetController().GoBack();
-    observer.Wait();
-    ASSERT_TRUE(content::WaitForLoadStop(GetWebContents()));
-  }
-
-  void GoForward() const {
-    ASSERT_TRUE(GetWebContents()->GetController().CanGoForward());
-    content::TestNavigationObserver observer(GetWebContents());
-    GetWebContents()->GetController().GoForward();
     observer.Wait();
     ASSERT_TRUE(content::WaitForLoadStop(GetWebContents()));
   }
@@ -582,8 +565,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, RecordBackForwardNavigation) {
   ASSERT_EQ(
       1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 
-  GoBack();
-  GoForward();
+  ASSERT_TRUE(content::HistoryGoBack(GetWebContents()));
+  ASSERT_TRUE(content::HistoryGoForward(GetWebContents()));
 
   EXPECT_EQ(
       2U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
@@ -605,8 +588,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
   ASSERT_EQ(
       1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 
-  GoBack();
-  GoForward();
+  ASSERT_TRUE(content::HistoryGoBack(GetWebContents()));
+  ASSERT_TRUE(content::HistoryGoForward(GetWebContents()));
 
   EXPECT_EQ(
       3U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
@@ -625,10 +608,10 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
   ASSERT_EQ(
       1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 
-  GoBack();
-  GoForward();
-  GoBack();
-  GoForward();
+  ASSERT_TRUE(content::HistoryGoBack(GetWebContents()));
+  ASSERT_TRUE(content::HistoryGoForward(GetWebContents()));
+  ASSERT_TRUE(content::HistoryGoBack(GetWebContents()));
+  ASSERT_TRUE(content::HistoryGoForward(GetWebContents()));
 
   EXPECT_EQ(
       3U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
@@ -648,8 +631,8 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_EQ(
       1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 
-  GoBack();
-  GoForward();
+  ASSERT_TRUE(content::HistoryGoBack(GetWebContents()));
+  ASSERT_TRUE(content::HistoryGoForward(GetWebContents()));
 
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(),
@@ -683,8 +666,8 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_EQ(1U,
             GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
 
-  GoBack();
-  GoForward();
+  ASSERT_TRUE(content::HistoryGoBack(GetWebContents()));
+  ASSERT_TRUE(content::HistoryGoForward(GetWebContents()));
 
   SimulateClickingAnchorLink();
 
@@ -706,8 +689,8 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_EQ(
       1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 
-  GoBack();
-  GoForward();
+  ASSERT_TRUE(content::HistoryGoBack(GetWebContents()));
+  ASSERT_TRUE(content::HistoryGoForward(GetWebContents()));
 
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(),
