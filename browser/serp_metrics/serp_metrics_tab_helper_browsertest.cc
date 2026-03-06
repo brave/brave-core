@@ -190,26 +190,9 @@ class SerpMetricsTabHelperTest : public PlatformBrowserTest {
   }
 
   void Reload() const {
-    ASSERT_TRUE(GetWebContents()->GetController().CanGoBack());
     content::TestNavigationObserver observer(GetWebContents());
     GetWebContents()->GetController().Reload(content::ReloadType::NORMAL,
                                              /*check_for_repost=*/false);
-    observer.Wait();
-    ASSERT_TRUE(content::WaitForLoadStop(GetWebContents()));
-  }
-
-  void GoBack() const {
-    ASSERT_TRUE(GetWebContents()->GetController().CanGoBack());
-    content::TestNavigationObserver observer(GetWebContents());
-    GetWebContents()->GetController().GoBack();
-    observer.Wait();
-    ASSERT_TRUE(content::WaitForLoadStop(GetWebContents()));
-  }
-
-  void GoForward() const {
-    ASSERT_TRUE(GetWebContents()->GetController().CanGoForward());
-    content::TestNavigationObserver observer(GetWebContents());
-    GetWebContents()->GetController().GoForward();
     observer.Wait();
     ASSERT_TRUE(content::WaitForLoadStop(GetWebContents()));
   }
@@ -566,8 +549,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, RecordBackForwardNavigation) {
   ASSERT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
                     kGoogleSearchEngineTimePeriodStorageDictKey));
 
-  GoBack();
-  GoForward();
+  ASSERT_TRUE(content::HistoryGoBack(GetWebContents()));
+  ASSERT_TRUE(content::HistoryGoForward(GetWebContents()));
 
   EXPECT_EQ(2U, GetSearchCountForTimePeriodStorageDictKey(
                     kGoogleSearchEngineTimePeriodStorageDictKey));
@@ -589,8 +572,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
   ASSERT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
                     kGoogleSearchEngineTimePeriodStorageDictKey));
 
-  GoBack();
-  GoForward();
+  ASSERT_TRUE(content::HistoryGoBack(GetWebContents()));
+  ASSERT_TRUE(content::HistoryGoForward(GetWebContents()));
 
   EXPECT_EQ(3U, GetSearchCountForTimePeriodStorageDictKey(
                     kGoogleSearchEngineTimePeriodStorageDictKey));
@@ -609,10 +592,10 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
   ASSERT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
                     kGoogleSearchEngineTimePeriodStorageDictKey));
 
-  GoBack();
-  GoForward();
-  GoBack();
-  GoForward();
+  ASSERT_TRUE(content::HistoryGoBack(GetWebContents()));
+  ASSERT_TRUE(content::HistoryGoForward(GetWebContents()));
+  ASSERT_TRUE(content::HistoryGoBack(GetWebContents()));
+  ASSERT_TRUE(content::HistoryGoForward(GetWebContents()));
 
   EXPECT_EQ(3U, GetSearchCountForTimePeriodStorageDictKey(
                     kGoogleSearchEngineTimePeriodStorageDictKey));
@@ -632,8 +615,8 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
                     kGoogleSearchEngineTimePeriodStorageDictKey));
 
-  GoBack();
-  GoForward();
+  ASSERT_TRUE(content::HistoryGoBack(GetWebContents()));
+  ASSERT_TRUE(content::HistoryGoForward(GetWebContents()));
 
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(),
@@ -667,8 +650,8 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
                     kBraveSearchEngineTimePeriodStorageDictKey));
 
-  GoBack();
-  GoForward();
+  ASSERT_TRUE(content::HistoryGoBack(GetWebContents()));
+  ASSERT_TRUE(content::HistoryGoForward(GetWebContents()));
 
   SimulateClickingAnchorLink();
 
@@ -688,8 +671,8 @@ IN_PROC_BROWSER_TEST_F(
       https_server_->GetURL("www.google.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
 
-  GoBack();
-  GoForward();
+  ASSERT_TRUE(content::HistoryGoBack(GetWebContents()));
+  ASSERT_TRUE(content::HistoryGoForward(GetWebContents()));
 
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(),
