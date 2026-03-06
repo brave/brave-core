@@ -24,12 +24,6 @@
         android:title="@string/prefs_section_analytics">
 
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-            android:key="crash_reports_switch"
-            android:title="@string/origin_crash_reports_toggle"
-            android:icon="@drawable/ic_bar_chart"
-            android:defaultValue="false" />
-
-        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="privacy_preserving_analytics_switch"
             android:title="@string/origin_privacy_preserving_analytics_toggle"
             android:icon="@drawable/ic_bar_chart"
@@ -96,10 +90,6 @@
     <PreferenceCategory
         android:key="origin_purchase_section"
         android:title="@string/origin_purchase_section_title">
-
-        <org.chromium.components.browser_ui.settings.ChromeBasePreference
-            android:key="account_manage"
-            android:title="@string/origin_manage_account"/>
 
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
             android:key="link_purchase"
