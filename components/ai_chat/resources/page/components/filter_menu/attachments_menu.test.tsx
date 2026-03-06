@@ -146,31 +146,28 @@ describe('TabsMenu', () => {
   })
 
   it('should filter by text after @', async () => {
-    const { container } = await act(
-      async () =>
-        await renderTabsMenu(
-          <MockContext
-            conversationOverrides={{ inputText: ['@2'] }}
-            initialState={{
-              tabs: [
-                {
-                  contentId: 1,
-                  title: 'Test 1',
-                  url: { url: 'https://tes1t.com' },
-                  id: 1,
-                },
-                {
-                  contentId: 2,
-                  title: 'Test 2',
-                  url: { url: 'https://test2.com' },
-                  id: 2,
-                },
-              ],
-            }}
-          >
-            <TabsMenu />
-          </MockContext>,
-        ),
+    const { container } = await renderTabsMenu(
+      <MockContext
+        conversationOverrides={{ inputText: ['@2'] }}
+        initialState={{
+          tabs: [
+            {
+              contentId: 1,
+              title: 'Test 1',
+              url: { url: 'https://tes1t.com' },
+              id: 1,
+            },
+            {
+              contentId: 2,
+              title: 'Test 2',
+              url: { url: 'https://test2.com' },
+              id: 2,
+            },
+          ],
+        }}
+      >
+        <TabsMenu />
+      </MockContext>,
     )
 
     const matches = Array.from(container.querySelectorAll('.matchedText'))
@@ -278,11 +275,13 @@ describe('TabsMenu', () => {
       </MockContext>,
     )
 
-    await act(() => waitFor(() => expect(onFetch).toHaveBeenCalled()))
+    await waitFor(() => expect(onFetch).toHaveBeenCalled())
 
-    const matches = Array.from(container.querySelectorAll('.matchedText'))
-    expect(matches).toHaveLength(1)
-    expect(matches[0]).toHaveTextContent('Brave')
+    await waitFor(() => {
+      const matches = Array.from(container.querySelectorAll('.matchedText'))
+      expect(matches).toHaveLength(1)
+      expect(matches[0]).toHaveTextContent('Brave')
+    })
   })
 
   it('should render history in the list', async () => {
@@ -345,11 +344,13 @@ describe('TabsMenu', () => {
     )
 
     // Wait for history to be queried
-    await act(() => waitFor(() => expect(onFetchHistory).toHaveBeenCalled()))
+    await waitFor(() => expect(onFetchHistory).toHaveBeenCalled())
 
-    const matches = Array.from(container.querySelectorAll('.matchedText'))
-    expect(matches).toHaveLength(1)
-    expect(matches[0]).toHaveTextContent('Search')
+    await waitFor(() => {
+      const matches = Array.from(container.querySelectorAll('.matchedText'))
+      expect(matches).toHaveLength(1)
+      expect(matches[0]).toHaveTextContent('Search')
+    })
   })
 
   it('should pass query to getHistory when query length >= 2', async () => {
