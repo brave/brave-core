@@ -8,7 +8,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/onboarding_variant_b"
+        android:id="@+id/onboarding_variant_y"
         android:visibility="gone"
         android:paddingTop="@dimen/onboarding_padding_top"
         android:layout_width="match_parent"
