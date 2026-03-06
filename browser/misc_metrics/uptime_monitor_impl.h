@@ -12,7 +12,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "brave/components/misc_metrics/uptime_monitor.h"
-#include "brave/components/time_period_storage/weekly_storage.h"
+#include "brave/components/time_period_storage/time_period_storage.h"
 
 class PrefService;
 class PrefRegistrySimple;
@@ -45,6 +45,7 @@ class UptimeMonitorImpl : public UptimeMonitor {
 
   // UptimeMonitor:
   base::TimeDelta GetUsedTimeInWeek() const override;
+  TimePeriodStorage* GetTimePeriodStorage() override;
   base::WeakPtr<UptimeMonitor> GetWeakPtr() override;
   bool IsInUse() const override;
 
@@ -69,8 +70,8 @@ class UptimeMonitorImpl : public UptimeMonitor {
   base::Time report_frame_start_time_;
   base::TimeDelta report_frame_time_sum_;
 
-  // Weekly storage for uptime data
-  WeeklyStorage weekly_storage_;
+  // 8-day rolling storage for uptime data
+  TimePeriodStorage time_period_storage_;
 
   // WeakPtr factory for this class
   base::WeakPtrFactory<UptimeMonitor> weak_ptr_factory_{this};
