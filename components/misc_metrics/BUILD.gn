@@ -56,6 +56,7 @@ static_library("misc_metrics") {
     "//components/language/core/common",
     "//components/prefs",
     "//components/search_engines",
+    "//content/public/browser",
     "//mojo/public/cpp/bindings",
     "//services/media_session/public/mojom",
     "//url",

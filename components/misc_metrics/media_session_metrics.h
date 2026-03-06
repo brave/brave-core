@@ -12,19 +12,19 @@
 #include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/wall_clock_timer.h"
-#include "base/unguessable_token.h"
 #include "brave/components/misc_metrics/uptime_monitor.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "mojo/public/cpp/bindings/remote.h"
-#include "services/media_session/public/mojom/audio_focus.mojom.h"
-#include "services/media_session/public/mojom/media_controller.mojom.h"
+#include "services/media_session/public/mojom/media_session.mojom.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 class PrefRegistrySimple;
 class PrefService;
+
+namespace content {
+class MediaSession;
+}  // namespace content
 
 namespace misc_metrics {
 
@@ -33,42 +33,37 @@ inline constexpr char kMediaSessionUsageHistogramName[] =
 
 // Observes media session activity to track the percentage of active browsing
 // time during which media was playing. Reports metrics on a weekly basis.
-class MediaSessionMetrics : public media_session::mojom::AudioFocusObserver {
+class MediaSessionMetrics {
  public:
-  MediaSessionMetrics(
-      PrefService* local_state,
-      UptimeMonitor* uptime_monitor,
-      mojo::PendingRemote<media_session::mojom::AudioFocusManager>
-          audio_focus_remote,
-      mojo::PendingRemote<media_session::mojom::MediaControllerManager>
-          controller_manager_remote);
-  ~MediaSessionMetrics() override;
+  MediaSessionMetrics(PrefService* local_state, UptimeMonitor* uptime_monitor);
+  ~MediaSessionMetrics();
 
   MediaSessionMetrics(const MediaSessionMetrics&) = delete;
   MediaSessionMetrics& operator=(const MediaSessionMetrics&) = delete;
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
-  // media_session::mojom::AudioFocusObserver:
-  void OnFocusGained(
-      media_session::mojom::AudioFocusRequestStatePtr state) override;
-  void OnFocusLost(
-      media_session::mojom::AudioFocusRequestStatePtr state) override;
-  void OnRequestIdReleased(const base::UnguessableToken& request_id) override;
+  // Called by PageMetricsTabHelper when a new MediaSession is created for a
+  // WebContents.
+  void OnMediaSessionCreated(content::MediaSession* media_session);
+
+  // Called by PageMetricsTabHelper when a WebContents (and its MediaSession)
+  // is being destroyed.
+  void OnMediaSessionDestroyed(content::MediaSession* media_session);
 
  private:
-  class Session : public media_session::mojom::MediaControllerObserver {
+  class Session : public media_session::mojom::MediaSessionObserver {
    public:
     using PlaybackStateChangedCallback = base::RepeatingCallback<void(bool)>;
 
-    Session(mojo::Remote<media_session::mojom::MediaController> controller,
+    Session(content::MediaSession* media_session,
             PlaybackStateChangedCallback on_playback_state_changed);
     ~Session() override;
 
     Session(const Session&) = delete;
     Session& operator=(const Session&) = delete;
 
-    // media_session::mojom::MediaControllerObserver:
+    // media_session::mojom::MediaSessionObserver:
     void MediaSessionInfoChanged(
         media_session::mojom::MediaSessionInfoPtr info) override;
     void MediaSessionMetadataChanged(
@@ -76,44 +71,38 @@ class MediaSessionMetrics : public media_session::mojom::AudioFocusObserver {
     void MediaSessionActionsChanged(
         const std::vector<media_session::mojom::MediaSessionAction>& actions)
         override {}
-    void MediaSessionChanged(
-        const std::optional<base::UnguessableToken>& request_id) override {}
+    void MediaSessionImagesChanged(
+        const base::flat_map<media_session::mojom::MediaSessionImageType,
+                             std::vector<media_session::MediaImage>>& images)
+        override {}
     void MediaSessionPositionChanged(
         const std::optional<media_session::MediaPosition>& position) override {}
 
    private:
     PlaybackStateChangedCallback on_playback_state_changed_;
-    mojo::Receiver<media_session::mojom::MediaControllerObserver>
+    mojo::Receiver<media_session::mojom::MediaSessionObserver>
         observer_receiver_{this};
   };
 
-  void OnSessionPlaybackStateChanged(const base::UnguessableToken& request_id,
+  void OnSessionPlaybackStateChanged(content::MediaSession* media_session,
                                      bool is_playing);
-  void RemoveSession(const base::UnguessableToken& request_id);
+  void RemoveSession(content::MediaSession* media_session);
   void OnMediaPlayingTick();
   void StartMediaPlayingTimer();
   void ReportMetric();
   void ResetFrameStartTime();
-  void OnGetFocusRequests(
-      std::vector<media_session::mojom::AudioFocusRequestStatePtr> requests);
 
   raw_ptr<PrefService> local_state_;
   raw_ptr<UptimeMonitor> uptime_monitor_;
 
-  absl::flat_hash_map<base::UnguessableToken, std::unique_ptr<Session>>
+  absl::flat_hash_map<content::MediaSession*, std::unique_ptr<Session>>
       sessions_;
-  absl::flat_hash_set<base::UnguessableToken> playing_sessions_;
+  absl::flat_hash_set<content::MediaSession*> playing_sessions_;
 
   WeeklyStorage weekly_media_storage_;
   base::Time frame_start_time_;
   base::WallClockTimer report_timer_;
   base::WallClockTimer media_playing_timer_;
-
-  mojo::Remote<media_session::mojom::AudioFocusManager> audio_focus_remote_;
-  mojo::Remote<media_session::mojom::MediaControllerManager>
-      controller_manager_remote_;
-  mojo::Receiver<media_session::mojom::AudioFocusObserver>
-      audio_focus_observer_receiver_{this};
 
   base::WeakPtrFactory<MediaSessionMetrics> weak_ptr_factory_{this};
 };

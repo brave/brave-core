@@ -9,11 +9,13 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/time/time.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/media_session.h"
 
 namespace misc_metrics {
 
@@ -28,53 +30,48 @@ constexpr int kMediaSessionUsageBuckets[] = {0, 20, 40, 60, 80, 100};
 }  // namespace
 
 MediaSessionMetrics::Session::Session(
-    mojo::Remote<media_session::mojom::MediaController> controller,
+    content::MediaSession* media_session,
     PlaybackStateChangedCallback on_playback_state_changed)
     : on_playback_state_changed_(std::move(on_playback_state_changed)) {
-  controller->AddObserver(observer_receiver_.BindNewPipeAndPassRemote());
+  LOG(ERROR) << "MediaSessionMetrics::Session: created for session "
+             << media_session;
+  media_session->AddObserver(observer_receiver_.BindNewPipeAndPassRemote());
 }
 
-MediaSessionMetrics::Session::~Session() = default;
+MediaSessionMetrics::Session::~Session() {
+  LOG(ERROR) << "MediaSessionMetrics::Session: destroyed";
+}
 
 void MediaSessionMetrics::Session::MediaSessionInfoChanged(
     media_session::mojom::MediaSessionInfoPtr info) {
-  on_playback_state_changed_.Run(
-      info && info->playback_state ==
-                  media_session::mojom::MediaPlaybackState::kPlaying);
+  bool is_playing = info && info->playback_state ==
+                                media_session::mojom::MediaPlaybackState::kPlaying;
+  LOG(ERROR) << "MediaSessionMetrics::Session: MediaSessionInfoChanged,"
+             << " is_playing=" << is_playing;
+  on_playback_state_changed_.Run(is_playing);
 }
 
-MediaSessionMetrics::MediaSessionMetrics(
-    PrefService* local_state,
-    UptimeMonitor* uptime_monitor,
-    mojo::PendingRemote<media_session::mojom::AudioFocusManager>
-        audio_focus_remote,
-    mojo::PendingRemote<media_session::mojom::MediaControllerManager>
-        controller_manager_remote)
+MediaSessionMetrics::MediaSessionMetrics(PrefService* local_state,
+                                         UptimeMonitor* uptime_monitor)
     : local_state_(local_state),
       uptime_monitor_(uptime_monitor),
       weekly_media_storage_(local_state, kMiscMetricsMediaSessionUsageStorage) {
+  LOG(ERROR) << "MediaSessionMetrics: constructor";
   CHECK(uptime_monitor_);
-  audio_focus_remote_.Bind(std::move(audio_focus_remote));
-  controller_manager_remote_.Bind(std::move(controller_manager_remote));
 
   frame_start_time_ =
       local_state_->GetTime(kMiscMetricsMediaSessionFrameStartTime);
   if (frame_start_time_.is_null()) {
+    LOG(ERROR) << "MediaSessionMetrics: no stored frame start time, resetting";
     ResetFrameStartTime();
   }
-
-  audio_focus_remote_->AddObserver(
-      audio_focus_observer_receiver_.BindNewPipeAndPassRemote());
-
-  // Pick up any sessions that were already active before construction.
-  audio_focus_remote_->GetFocusRequests(
-      base::BindOnce(&MediaSessionMetrics::OnGetFocusRequests,
-                     weak_ptr_factory_.GetWeakPtr()));
 
   ReportMetric();
 }
 
-MediaSessionMetrics::~MediaSessionMetrics() = default;
+MediaSessionMetrics::~MediaSessionMetrics() {
+  LOG(ERROR) << "MediaSessionMetrics: destructor";
+}
 
 // static
 void MediaSessionMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
@@ -83,77 +80,69 @@ void MediaSessionMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
                              base::Time());
 }
 
+void MediaSessionMetrics::OnMediaSessionCreated(
+    content::MediaSession* media_session) {
+  LOG(ERROR) << "MediaSessionMetrics: OnMediaSessionCreated " << media_session;
+  if (sessions_.contains(media_session)) {
+    LOG(ERROR) << "MediaSessionMetrics: session already tracked, skipping";
+    return;
+  }
+  sessions_.emplace(
+      media_session,
+      std::make_unique<Session>(
+          media_session,
+          base::BindRepeating(
+              &MediaSessionMetrics::OnSessionPlaybackStateChanged,
+              base::Unretained(this), media_session)));
+}
+
+void MediaSessionMetrics::OnMediaSessionDestroyed(
+    content::MediaSession* media_session) {
+  LOG(ERROR) << "MediaSessionMetrics: OnMediaSessionDestroyed "
+             << media_session;
+  RemoveSession(media_session);
+}
+
 void MediaSessionMetrics::ResetFrameStartTime() {
+  LOG(ERROR) << "MediaSessionMetrics: ResetFrameStartTime";
   frame_start_time_ = base::Time::Now();
   local_state_->SetTime(kMiscMetricsMediaSessionFrameStartTime,
                         frame_start_time_);
 }
 
-void MediaSessionMetrics::OnGetFocusRequests(
-    std::vector<media_session::mojom::AudioFocusRequestStatePtr> requests) {
-  for (auto& state : requests) {
-    OnFocusGained(std::move(state));
-  }
-}
-
-void MediaSessionMetrics::OnFocusGained(
-    media_session::mojom::AudioFocusRequestStatePtr state) {
-  if (!state->request_id.has_value()) {
-    return;
-  }
-  const base::UnguessableToken& request_id = state->request_id.value();
-  if (sessions_.contains(request_id)) {
-    return;
-  }
-  mojo::Remote<media_session::mojom::MediaController> controller;
-  controller_manager_remote_->CreateMediaControllerForSession(
-      controller.BindNewPipeAndPassReceiver(), request_id);
-  sessions_.emplace(request_id,
-                    std::make_unique<Session>(
-                        std::move(controller),
-                        base::BindRepeating(
-                            &MediaSessionMetrics::OnSessionPlaybackStateChanged,
-                            base::Unretained(this), request_id)));
-}
-
-void MediaSessionMetrics::OnFocusLost(
-    media_session::mojom::AudioFocusRequestStatePtr state) {
-  if (!state->request_id.has_value()) {
-    return;
-  }
-  RemoveSession(state->request_id.value());
-}
-
-void MediaSessionMetrics::OnRequestIdReleased(
-    const base::UnguessableToken& request_id) {
-  RemoveSession(request_id);
-}
-
 void MediaSessionMetrics::OnSessionPlaybackStateChanged(
-    const base::UnguessableToken& request_id,
+    content::MediaSession* media_session,
     bool is_playing) {
-  bool was_playing = playing_sessions_.contains(request_id);
+  bool was_playing = playing_sessions_.contains(media_session);
+  LOG(ERROR) << "MediaSessionMetrics: OnSessionPlaybackStateChanged,"
+             << " is_playing=" << is_playing << " was_playing=" << was_playing;
   if (is_playing == was_playing) {
+    LOG(ERROR) << "MediaSessionMetrics: playback state unchanged, ignoring";
     return;
   }
   if (is_playing) {
-    playing_sessions_.insert(request_id);
+    LOG(ERROR) << "MediaSessionMetrics: session started playing";
+    playing_sessions_.insert(media_session);
     StartMediaPlayingTimer();
   } else {
-    playing_sessions_.erase(request_id);
+    LOG(ERROR) << "MediaSessionMetrics: session stopped playing";
+    playing_sessions_.erase(media_session);
   }
 }
 
-void MediaSessionMetrics::RemoveSession(
-    const base::UnguessableToken& request_id) {
-  sessions_.erase(request_id);
-  playing_sessions_.erase(request_id);
+void MediaSessionMetrics::RemoveSession(content::MediaSession* media_session) {
+  LOG(ERROR) << "MediaSessionMetrics: RemoveSession " << media_session
+             << ", sessions_count=" << sessions_.size();
+  sessions_.erase(media_session);
+  playing_sessions_.erase(media_session);
 }
 
 void MediaSessionMetrics::StartMediaPlayingTimer() {
   if (media_playing_timer_.IsRunning()) {
+    LOG(ERROR) << "MediaSessionMetrics: media playing timer already running";
     return;
   }
+  LOG(ERROR) << "MediaSessionMetrics: StartMediaPlayingTimer";
   media_playing_timer_.Start(
       FROM_HERE, base::Time::Now() + kMediaPlayingTickInterval,
       base::BindRepeating(&MediaSessionMetrics::OnMediaPlayingTick,
@@ -161,7 +150,10 @@ void MediaSessionMetrics::StartMediaPlayingTimer() {
 }
 
 void MediaSessionMetrics::OnMediaPlayingTick() {
+  LOG(ERROR) << "MediaSessionMetrics: OnMediaPlayingTick,"
+             << " playing_sessions=" << playing_sessions_.size();
   if (playing_sessions_.empty()) {
+    LOG(ERROR) << "MediaSessionMetrics: no playing sessions, stopping tick";
     return;
   }
   weekly_media_storage_.AddDelta(
@@ -170,16 +162,19 @@ void MediaSessionMetrics::OnMediaPlayingTick() {
 }
 
 void MediaSessionMetrics::ReportMetric() {
+  LOG(ERROR) << "MediaSessionMetrics: ReportMetric";
   report_timer_.Start(FROM_HERE, base::Time::Now() + kReportInterval,
                       base::BindRepeating(&MediaSessionMetrics::ReportMetric,
                                           base::Unretained(this)));
 
   if ((base::Time::Now() - frame_start_time_) < kFrameDuration) {
+    LOG(ERROR) << "MediaSessionMetrics: frame duration not reached, skipping";
     return;
   }
 
   uint64_t uptime_minutes = uptime_monitor_->GetUsedTimeInWeek().InMinutes();
   if (uptime_minutes == 0) {
+    LOG(ERROR) << "MediaSessionMetrics: no uptime recorded, skipping";
     return;
   }
 
@@ -189,6 +184,9 @@ void MediaSessionMetrics::ReportMetric() {
     percentage = 1;
   }
 
+  LOG(ERROR) << "MediaSessionMetrics: recording metric, percentage="
+             << percentage << " media_minutes=" << media_minutes
+             << " uptime_minutes=" << uptime_minutes;
   p3a_utils::RecordToHistogramBucket(kMediaSessionUsageHistogramName,
                                      kMediaSessionUsageBuckets, percentage);
 

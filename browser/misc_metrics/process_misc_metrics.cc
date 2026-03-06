@@ -5,17 +5,12 @@
 
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 
-#include "base/task/sequenced_task_runner.h"
 #include "brave/browser/misc_metrics/doh_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/components/misc_metrics/default_browser_monitor.h"
 #include "brave/components/misc_metrics/media_session_metrics.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/media_session_service.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
-#include "services/media_session/public/mojom/audio_focus.mojom.h"
-#include "services/media_session/public/mojom/media_controller.mojom.h"
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/misc_metrics/default_browser_monitor_delegate_impl.h"
 #include "brave/browser/misc_metrics/vertical_tab_metrics.h"
@@ -45,24 +40,8 @@ ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state) {
 #endif
   doh_metrics_ = std::make_unique<DohMetrics>(local_state);
   uptime_monitor_ = std::make_unique<UptimeMonitorImpl>(local_state);
-
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&ProcessMiscMetrics::InitMediaSessionMetrics,
-                                weak_ptr_factory_.GetWeakPtr(), local_state));
-}
-
-void ProcessMiscMetrics::InitMediaSessionMetrics(PrefService* local_state) {
-  mojo::PendingRemote<media_session::mojom::AudioFocusManager>
-      audio_focus_remote;
-  mojo::PendingRemote<media_session::mojom::MediaControllerManager>
-      controller_manager_remote;
-  content::GetMediaSessionService().BindAudioFocusManager(
-      audio_focus_remote.InitWithNewPipeAndPassReceiver());
-  content::GetMediaSessionService().BindMediaControllerManager(
-      controller_manager_remote.InitWithNewPipeAndPassReceiver());
-  media_session_metrics_ = std::make_unique<MediaSessionMetrics>(
-      local_state, uptime_monitor_.get(), std::move(audio_focus_remote),
-      std::move(controller_manager_remote));
+  media_session_metrics_ =
+      std::make_unique<MediaSessionMetrics>(local_state, uptime_monitor_.get());
 }
 
 ProcessMiscMetrics::~ProcessMiscMetrics() = default;
@@ -99,6 +78,10 @@ DefaultBrowserMonitor* ProcessMiscMetrics::default_browser_monitor() {
 
 UptimeMonitorImpl* ProcessMiscMetrics::uptime_monitor() {
   return uptime_monitor_.get();
+}
+
+MediaSessionMetrics* ProcessMiscMetrics::media_session_metrics() {
+  return media_session_metrics_.get();
 }
 
 void ProcessMiscMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
