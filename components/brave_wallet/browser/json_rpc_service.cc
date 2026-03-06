@@ -147,10 +147,12 @@ constexpr char kUDPattern[] =
     "blockchain|boomer|brave|bunni|calicoin|carbon|caw|cgai|chip|chomp|clay|"
     "collect|crypto|dao|dejay|depin|derad|dfz|digibyte|doga|donut|dream|dsci|"
     "emir|ethermail|farms|goblin|gotchi|grow|her|hub|imtoken|kingdom|klever|"
-    "kresus|kryptic|learn|lfg|ltc|lunar|manga|marketer|metropolis|miku|ministry|"
+    "kresus|kryptic|learn|lfg|ltc|lunar|manga|marketer|metropolis|miku|"
+    "ministry|"
     "mobix|moon|mooncat|mumu|mycircle|nft|nibi|npc|ohm|onchain|pack|pastor|"
     "pbdx|pendle|pilot|podcast|pog|pokt|polygon|presearch|privacy|propykeys|"
-    "pudgy|pundi|quantum|rad|raiin|secret|smobler|south|spend|stepn|supernova|tball|"
+    "pudgy|pundi|quantum|rad|raiin|secret|smobler|south|spend|stepn|supernova|"
+    "tball|"
     "tea|tribe|twin|u|ubu|unstoppable|wallet|web3|wifi|witg|wrkx|x|xec|xmr|xyo|"
     "zano|zil)";
 
