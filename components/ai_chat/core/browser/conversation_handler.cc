@@ -2053,11 +2053,12 @@ std::vector<base::WeakPtr<Tool>> ConversationHandler::GetTools() {
       std::remove_if(
           tools.begin(), tools.end(),
           [&](auto& tool) {
-            return (!tool->IsSupportedByModel(model) ||
-                    !tool->SupportsConversation(
-                        GetIsTemporary(),
-                        associated_content_manager_->HasAssociatedContent(),
-                        conversation_capability_));
+            return (
+                !tool->IsSupportedByModel(model, conversation_capability_) ||
+                !tool->SupportsConversation(
+                    GetIsTemporary(),
+                    associated_content_manager_->HasAssociatedContent(),
+                    conversation_capability_));
           }),
       tools.end());
 

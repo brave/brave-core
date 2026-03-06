@@ -65,7 +65,9 @@ std::optional<base::DictValue> MockTool::ExtraParams() const {
   return std::nullopt;
 }
 
-bool MockTool::IsSupportedByModel(const mojom::Model& model) const {
+bool MockTool::IsSupportedByModel(
+    const mojom::Model& model,
+    mojom::ConversationCapability conversation_capability) const {
   return is_supported_by_model_;
 }
 

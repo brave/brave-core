@@ -853,6 +853,7 @@ const MODELS: Mojom.Model[] = [
     displayName: 'Model One',
     visionSupport: false,
     supportsTools: false,
+    supportedCapabilities: [Mojom.ConversationCapability.CHAT],
     isSuggestedModel: true,
     isNearModel: false,
     options: {
@@ -872,6 +873,10 @@ const MODELS: Mojom.Model[] = [
     displayName: 'Model Two',
     visionSupport: true,
     supportsTools: true,
+    supportedCapabilities: [
+      Mojom.ConversationCapability.CHAT,
+      Mojom.ConversationCapability.CONTENT_AGENT,
+    ],
     isSuggestedModel: true,
     isNearModel: false,
     options: {
@@ -891,6 +896,7 @@ const MODELS: Mojom.Model[] = [
     displayName: 'Model Three',
     visionSupport: false,
     supportsTools: false,
+    supportedCapabilities: [Mojom.ConversationCapability.CHAT],
     isSuggestedModel: false,
     isNearModel: false,
     options: {
@@ -910,6 +916,7 @@ const MODELS: Mojom.Model[] = [
     displayName: 'Microsoft Phi-3',
     visionSupport: false,
     supportsTools: true,
+    supportedCapabilities: [Mojom.ConversationCapability.CHAT],
     isSuggestedModel: false,
     isNearModel: false,
     options: {

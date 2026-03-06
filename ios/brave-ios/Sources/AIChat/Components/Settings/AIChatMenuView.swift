@@ -295,6 +295,7 @@ struct AIChatMenuView_Preview: PreviewProvider {
           displayName: "Mixtral 8x7b",
           visionSupport: false,
           supportsTools: false,
+          supportedCapabilities: [NSNumber(value: AiChat.ConversationCapability.chat.rawValue)],
           isSuggestedModel: false,
           isNearModel: false
         ),
@@ -314,6 +315,7 @@ struct AIChatMenuView_Preview: PreviewProvider {
           displayName: "Mixtral 8x7b",
           visionSupport: false,
           supportsTools: false,
+          supportedCapabilities: [NSNumber(value: AiChat.ConversationCapability.chat.rawValue)],
           isSuggestedModel: false,
           isNearModel: false
         ),
@@ -332,6 +334,7 @@ struct AIChatMenuView_Preview: PreviewProvider {
           displayName: "Claude-Instant",
           visionSupport: false,
           supportsTools: false,
+          supportedCapabilities: [NSNumber(value: AiChat.ConversationCapability.chat.rawValue)],
           isSuggestedModel: false,
           isNearModel: false
         ),
@@ -350,6 +353,7 @@ struct AIChatMenuView_Preview: PreviewProvider {
           displayName: "Llama-2 13b",
           visionSupport: false,
           supportsTools: false,
+          supportedCapabilities: [NSNumber(value: AiChat.ConversationCapability.chat.rawValue)],
           isSuggestedModel: false,
           isNearModel: false
         ),
@@ -368,6 +372,7 @@ struct AIChatMenuView_Preview: PreviewProvider {
           displayName: "Llama-2 70b",
           visionSupport: false,
           supportsTools: false,
+          supportedCapabilities: [NSNumber(value: AiChat.ConversationCapability.chat.rawValue)],
           isSuggestedModel: false,
           isNearModel: false
         ),

@@ -165,7 +165,11 @@ export default function createUntrustedConversationApi(
             state.allModels =
               state.conversationCapability
               === Mojom.ConversationCapability.CONTENT_AGENT
-                ? state.allModels.filter((model) => model.supportsTools)
+                ? state.allModels.filter((m) =>
+                    m.supportedCapabilities.includes(
+                      Mojom.ConversationCapability.CONTENT_AGENT,
+                    ),
+                  )
                 : state.allModels
             api.state.update(state)
           },

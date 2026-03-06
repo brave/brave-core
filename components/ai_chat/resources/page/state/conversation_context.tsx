@@ -124,7 +124,11 @@ export function useProvideConversationContext(props: ConversationContextProps) {
   const availableModels = React.useMemo(() => {
     return aiChat.isAIChatAgentProfileFeatureEnabled
       && aiChat.isAIChatAgentProfile
-      ? conversationState.allModels.filter((m) => m.supportsTools)
+      ? conversationState.allModels.filter((m) =>
+          m.supportedCapabilities.includes(
+            Mojom.ConversationCapability.CONTENT_AGENT,
+          ),
+        )
       : conversationState.allModels
   }, [
     conversationState.allModels,

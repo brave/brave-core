@@ -595,6 +595,13 @@ struct Model {
   bool vision_support;
   // Model supports tool use
   bool supports_tools = false;
+  // Conversation capabilities this model supports. Used to filter which models
+  // are available for different conversation types (e.g. basic chat, content
+  // agent, deep research).
+  // All models that can participate in regular conversations should include
+  // CHAT. Models approved for agentic contexts (content agent, agent profile)
+  // should include CONTENT_AGENT, which should be approved by security team.
+  array<ConversationCapability> supported_capabilities;
   // Is a suggested model
   bool is_suggested_model;
   // Is a Near model
