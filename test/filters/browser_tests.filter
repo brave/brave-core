@@ -2402,18 +2402,6 @@
 # bad cert hash that the test sets isn't getting compared to anything.
 -PKPModelClientTest.PKPEnforced
 
-# This test fails because we set enable_glic to false.
--ActorPageContextMetricsTest.*
--ActorSitePolicyBrowserTest.*
--ActorSitePolicyDelayedWarningBrowserTest.*
--ActorSitePolicyNoSafetyChecksBrowserTest.*
--ActorSitePolicySafeBrowsingBrowserTest.*
--ExtensionApiTestWithFlags.ExtensionExperimentalActor
--GlicInstanceCoordinatorBrowserTest.*
--GlicInstanceCoordinatorTrustFirstOnboardingArm1BrowserTest.*
--GlicTabSubMenuModelTest.UnpinThenNavigateToOtherTabAndRemainsUnpinned
--GlicUserStatusBrowserTest.ClientDataHeaderExists
-
 # These tests fail because we change BACKGROUND_SYNC content setting to be
 # BLOCKED by default. This prevents reports from being sent.
 -All/JSCallStackReportingBrowserTest.IframeUnresponsiveWithJSCallStackNotOptedIn/*
