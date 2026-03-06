@@ -268,8 +268,8 @@ void EmailAliasesService::UpdateAliasWithToken(
     if (update_data->active.has_value()) {
       auto request = MakeRequest<brave_account::endpoint_client::WithHeaders<
           endpoints::UpdateAlias::Request>>(token.value()->serviceToken);
-      request.alias = alias_email;
-      request.status = *update_data->active ? "active" : "inactive";
+      request.body.alias = alias_email;
+      request.body.status = *update_data->active ? "active" : "inactive";
 
       refresh_aliases = false;  // will be updated in response.
       brave_account::endpoint_client::Client<endpoints::UpdateAlias>::Send(
@@ -302,7 +302,7 @@ void EmailAliasesService::DeleteAliasWithToken(const std::string& alias_email,
   if (token.has_value()) {
     auto request = MakeRequest<brave_account::endpoint_client::WithHeaders<
         endpoints::DeleteAlias::Request>>(token.value()->serviceToken);
-    request.alias = alias_email;
+    request.body.alias = alias_email;
     brave_account::endpoint_client::Client<endpoints::DeleteAlias>::Send(
         url_loader_factory_, std::move(request),
         base::BindOnce(&EmailAliasesService::OnEditAliasResponse,

@@ -27,7 +27,6 @@ source_set("endpoints") {
 
 generated_types("generated_api_types") {
   sources = [
-    "auth_logout_bodies.idl",
     "auth_validate_bodies.idl",
     "error_body.idl",
     "login_finalize_bodies.idl",
@@ -35,7 +34,6 @@ generated_types("generated_api_types") {
     "password_finalize_bodies.idl",
     "password_init_bodies.idl",
     "service_token_bodies.idl",
-    "verify_delete_bodies.idl",
     "verify_resend_bodies.idl",
     "verify_result_bodies.idl",
   ]

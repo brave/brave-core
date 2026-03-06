@@ -9,23 +9,30 @@
 #include <concepts>
 #include <optional>
 
-namespace base {
-class Value;
-}  // namespace base
+#include "base/values.h"
+#include "google/protobuf/message_lite.h"
 
 namespace brave_account::endpoint_client::detail {
 
-// Concept that checks whether `T` defines a static, accessible member
-// function `FromValue()` such that:
-//   - `T::FromValue(value)` is a valid expression,
-//      and that call yields `std::optional<T>`
-//
-// In short: models any type with a proper static `FromValue()` function
-// whose result is a `std::optional<T>`.
-template <typename T>
-concept IsResponseBody = requires(const base::Value& value) {
-  { T::FromValue(value) } -> std::same_as<std::optional<T>>;
+// A JSON response body provides a static FromValue() taking
+// const base::Value& and returning std::optional<ResponseBody>.
+template <typename ResponseBody>
+concept IsJSONResponseBody = requires(const base::Value& value) {
+  {
+    ResponseBody::FromValue(value)
+  } -> std::same_as<std::optional<ResponseBody>>;
 };
+
+// A Protobuf response body is a type publicly derived from
+// google::protobuf::MessageLite.
+template <typename ResponseBody>
+concept IsProtobufResponseBody =
+    std::derived_from<ResponseBody, google::protobuf::MessageLite>;
+
+// A response body is either a JSON response body or a Protobuf response body.
+template <typename ResponseBody>
+concept IsResponseBody =
+    IsJSONResponseBody<ResponseBody> || IsProtobufResponseBody<ResponseBody>;
 
 }  // namespace brave_account::endpoint_client::detail
 

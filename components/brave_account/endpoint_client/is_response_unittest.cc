@@ -5,12 +5,8 @@
 
 #include "brave/components/brave_account/endpoint_client/is_response.h"
 
-#include <optional>
-#include <tuple>
-#include <type_traits>
-
-#include "base/values.h"
-#include "brave/components/brave_account/endpoint_client/concept_test.h"
+#include "brave/components/brave_account/endpoint_client/json_test_endpoint_bodies.h"
+#include "brave/components/brave_account/endpoint_client/protobuf_test_endpoint_bodies.pb.h"
 #include "brave/components/brave_account/endpoint_client/response.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -18,27 +14,30 @@ namespace brave_account::endpoint_client::detail {
 
 namespace {
 
-struct ValidResponseBody {
-  static std::optional<ValidResponseBody> FromValue(const base::Value&);
+template <typename T, bool SatisfiesConcept>
+struct IsResponseTestCase {
+  using Type = T;
+  static constexpr bool kSatisfiesConcept = SatisfiesConcept;
 };
 
-template <typename T>
-using IsResponseConceptTest = ConceptTest::Fixture<T>;
+using IsResponseTestCases = testing::Types<
+    IsResponseTestCase<void*, false>,
+    IsResponseTestCase<volatile int, false>,
+    IsResponseTestCase<JSONSuccessBody, false>,
+    IsResponseTestCase<Response<JSONSuccessBody, JSONErrorBody>, true>,
+    IsResponseTestCase<ProtobufSuccessBody, false>,
+    IsResponseTestCase<Response<ProtobufSuccessBody, ProtobufErrorBody>, true>,
+    IsResponseTestCase<Response<JSONSuccessBody, ProtobufErrorBody>, false>>;
 
-using ResponseTestTypes = testing::Types<
-    std::tuple<void*, std::false_type>,
-    std::tuple<volatile int, std::false_type>,
-    std::tuple<ValidResponseBody, std::false_type>,
-    std::tuple<Response<ValidResponseBody, ValidResponseBody>, std::true_type>>;
+template <typename>
+struct IsResponseTest : testing::Test {};
 
 }  // namespace
 
-TYPED_TEST_SUITE(IsResponseConceptTest, ResponseTestTypes);
+TYPED_TEST_SUITE(IsResponseTest, IsResponseTestCases);
 
-TYPED_TEST(IsResponseConceptTest, SatisfyConcept) {
-  using TestType = typename TestFixture::TestType;
-  using ExpectedResult = typename TestFixture::ExpectedResult;
-  EXPECT_EQ(IsResponse<TestType>, ExpectedResult::value);
+TYPED_TEST(IsResponseTest, SatisfyConcept) {
+  EXPECT_EQ(IsResponse<typename TypeParam::Type>, TypeParam::kSatisfiesConcept);
 }
 
 }  // namespace brave_account::endpoint_client::detail

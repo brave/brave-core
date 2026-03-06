@@ -5,61 +5,96 @@
 
 #include "brave/components/brave_account/endpoint_client/is_request_body.h"
 
-#include <tuple>
-#include <type_traits>
+#include <string>
 
-#include "base/values.h"
-#include "brave/components/brave_account/endpoint_client/concept_test.h"
+#include "base/strings/strcat.h"
+#include "google/protobuf/message_lite.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+namespace base {
+class DictValue;
+}  // namespace base
 
 namespace brave_account::endpoint_client::detail {
 
 namespace {
 
-struct RequestBodyNoToValue {
-  static constexpr char kName[] = "RequestBodyNoToValue";
+struct JSONRequestBodyNoToValue {
+  static constexpr char kName[] = "JSONRequestBodyNoToValue";
 };
 
-struct RequestBodyStaticToValue {
-  static constexpr char kName[] = "RequestBodyStaticToValue";
+struct JSONRequestBodyStaticToValue {
+  static constexpr char kName[] = "JSONRequestBodyStaticToValue";
   static base::DictValue ToValue();
 };
 
-struct RequestBodyToValueWithWrongReturnType {
-  static constexpr char kName[] = "RequestBodyToValueWithWrongReturnType";
-  void ToValue() const;
+struct JSONRequestBodyNonConstToValue {
+  static constexpr char kName[] = "JSONRequestBodyNonConstToValue";
+  base::DictValue ToValue();
 };
 
-struct RequestBodyToValueWithWrongParameterType {
-  static constexpr char kName[] = "RequestBodyToValueWithWrongParameterType";
+struct JSONRequestBodyToValueWithWrongReturnType {
+  static constexpr char kName[] = "JSONRequestBodyToValueWithWrongReturnType";
+  std::string ToValue() const;
+};
+
+struct JSONRequestBodyToValueWithWrongParameterType {
+  static constexpr char kName[] =
+      "JSONRequestBodyToValueWithWrongParameterType";
   base::DictValue ToValue(int) const;
 };
 
-struct ValidRequestBody {
-  static constexpr char kName[] = "ValidRequestBody";
+struct JSONRequestBodyValid {
+  static constexpr char kName[] = "JSONRequestBodyValid";
   base::DictValue ToValue() const;
 };
 
-template <typename T>
-using IsRequestBodyConceptTest = ConceptTest::Fixture<T>;
+class ProtobufRequestBodyPrivateInheritance : google::protobuf::MessageLite {
+ public:
+  static constexpr char kName[] = "ProtobufRequestBodyPrivateInheritance";
+};
 
-using RequestBodyTestTypes = testing::Types<
-    std::tuple<RequestBodyNoToValue, std::false_type>,
-    std::tuple<RequestBodyStaticToValue, std::false_type>,
-    std::tuple<RequestBodyToValueWithWrongReturnType, std::false_type>,
-    std::tuple<RequestBodyToValueWithWrongParameterType, std::false_type>,
-    std::tuple<ValidRequestBody, std::true_type>>;
+struct ProtobufRequestBodyValid : google::protobuf::MessageLite {
+  static constexpr char kName[] = "ProtobufRequestBodyValid";
+};
+
+template <typename T, bool SatisfiesConcept>
+struct IsRequestBodyTestCase {
+  using Type = T;
+  static constexpr bool kSatisfiesConcept = SatisfiesConcept;
+};
+
+using IsRequestBodyTestCases = testing::Types<
+    IsRequestBodyTestCase<JSONRequestBodyNoToValue, false>,
+    IsRequestBodyTestCase<JSONRequestBodyStaticToValue, false>,
+    IsRequestBodyTestCase<JSONRequestBodyNonConstToValue, false>,
+    IsRequestBodyTestCase<JSONRequestBodyToValueWithWrongReturnType, false>,
+    IsRequestBodyTestCase<JSONRequestBodyToValueWithWrongParameterType, false>,
+    IsRequestBodyTestCase<JSONRequestBodyValid, true>,
+    IsRequestBodyTestCase<ProtobufRequestBodyPrivateInheritance, false>,
+    IsRequestBodyTestCase<ProtobufRequestBodyValid, true>>;
+
+struct IsRequestBodyTestCaseName {
+  template <typename IsRequestBodyTestCase>
+  static std::string GetName(int) {
+    return base::StrCat(
+        {IsRequestBodyTestCase::Type::kName, "_does",
+         (IsRequestBodyTestCase::kSatisfiesConcept ? "" : "_not")});
+  }
+};
+
+template <typename>
+struct IsRequestBodyTest : testing::Test {};
 
 }  // namespace
 
-TYPED_TEST_SUITE(IsRequestBodyConceptTest,
-                 RequestBodyTestTypes,
-                 ConceptTest::NameGenerator);
+TYPED_TEST_SUITE(IsRequestBodyTest,
+                 IsRequestBodyTestCases,
+                 IsRequestBodyTestCaseName);
 
-TYPED_TEST(IsRequestBodyConceptTest, SatisfyConcept) {
-  using TestType = typename TestFixture::TestType;
-  using ExpectedResult = typename TestFixture::ExpectedResult;
-  EXPECT_EQ(IsRequestBody<TestType>, ExpectedResult::value);
+TYPED_TEST(IsRequestBodyTest, SatisfyConcept) {
+  EXPECT_EQ(IsRequestBody<typename TypeParam::Type>,
+            TypeParam::kSatisfiesConcept);
 }
 
 }  // namespace brave_account::endpoint_client::detail
