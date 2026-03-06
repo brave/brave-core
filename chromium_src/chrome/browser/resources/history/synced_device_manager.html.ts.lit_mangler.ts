@@ -13,7 +13,7 @@ mangle(
         '[Brave History] Could not find #signInGuide. Has upstream changed?',
       )
     }
-    signInGuide.remove()
+    signInGuide.setAttribute('style', 'display: none')
   },
   (literal) => literal.text.includes('id="signInGuide"'),
 )
