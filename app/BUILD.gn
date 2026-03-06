@@ -99,6 +99,7 @@ source_set("browser_tests") {
       "//chrome/app:command_ids",
       "//chrome/browser",
       "//chrome/browser/desktop_to_mobile_promos:utils",
+      "//chrome/browser/domain_reliability",
       "//chrome/browser/ui",
       "//chrome/common:non_code_constants",
       "//chrome/test",
