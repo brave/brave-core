@@ -6,6 +6,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
+import Label from '@brave/leo/react/label'
 import { Conversation } from '../../../common/mojom'
 import FeatureButtonMenu, {
   Props as FeatureButtonMenuProps,
@@ -23,7 +24,15 @@ import {
 const Logo = ({ isPremium }: { isPremium: boolean }) => (
   <div className={styles.logo}>
     <div className={styles.logoTitle}>Leo AI</div>
-    {isPremium && <div className={styles.badgePremium}>PREMIUM</div>}
+    {isPremium && (
+      <Label
+        mode='default'
+        color='blue'
+        className={styles.badgePremium}
+      >
+        Premium
+      </Label>
+    )}
   </div>
 )
 
