@@ -287,14 +287,14 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
   if ((!is_initial || !is_initial.value()) && psst_settings &&
       psst_settings->consent_status == ConsentStatus::kAllow) {
     // If user accepted the consent dialog and it is not the initial iteration
-    // (i.e. it is not the first applied PSST setting), call we don't need to
+    // (i.e. it is not the first applied PSST setting), we don't need to
     // show the dialog again.
     OnUserAcceptedPsstSettings(id, false, std::move(rule), params.Clone(),
                                psst_settings->urls_to_skip);
     return;
   }
 
-  // If PSST websettings doesn't exist, means initial call
+  // If PSST websettings doesn't exist then this is the initial call
   if (!psst_settings) {
     psst_settings = PsstWebsiteSettings();
     psst_settings->consent_status = ConsentStatus::kAsk;
@@ -332,7 +332,7 @@ void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
 }
 
 void PsstTabWebContentsObserver::OnPolicyScriptResult(
-    const int id,
+    int id,
     base::Value script_result) {
   if (!ShouldInsertScriptForPage(id)) {
     return;

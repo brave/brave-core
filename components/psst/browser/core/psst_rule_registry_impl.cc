@@ -70,6 +70,7 @@ void PsstRuleRegistryImpl::LoadRules(const base::FilePath& path,
                                      OnLoadCallback cb) {
   CHECK(base::FeatureList::IsEnabled(psst::features::kEnablePsst));
   component_path_ = path;
+
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&ReadFile, path.Append(kJsonFile)),
