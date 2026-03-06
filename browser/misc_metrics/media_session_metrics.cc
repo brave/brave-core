@@ -11,6 +11,7 @@
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/components/misc_metrics/pref_names.h"
+#include "brave/components/misc_metrics/uptime_monitor.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -21,7 +22,7 @@ namespace misc_metrics {
 namespace {
 
 constexpr base::TimeDelta kReportInterval = base::Minutes(20);
-constexpr base::TimeDelta kMediaPlayingTickInterval = base::Minutes(1);
+constexpr base::TimeDelta kTickInterval = base::Seconds(30);
 constexpr base::TimeDelta kFrameDuration = base::Days(7);
 
 constexpr int kMediaSessionUsageBuckets[] = {0, 20, 40, 60, 80, 100};
@@ -47,16 +48,16 @@ void MediaSessionMetrics::Session::MediaSessionInfoChanged(
 
 MediaSessionMetrics::MediaSessionMetrics(PrefService* local_state,
                                          UptimeMonitor* uptime_monitor)
-    : local_state_(local_state),
-      uptime_monitor_(uptime_monitor),
-      weekly_media_storage_(local_state, kMiscMetricsMediaSessionUsageStorage) {
-  CHECK(uptime_monitor_);
-
+    : local_state_(local_state), uptime_monitor_(uptime_monitor) {
   frame_start_time_ =
       local_state_->GetTime(kMiscMetricsMediaSessionFrameStartTime);
   if (frame_start_time_.is_null()) {
-    ResetFrameStartTime();
+    ResetFrame();
   }
+
+  tick_timer_.Start(FROM_HERE, base::Time::Now() + kTickInterval,
+                    base::BindRepeating(&MediaSessionMetrics::OnTick,
+                                        base::Unretained(this)));
 
   ReportMetric();
 }
@@ -65,7 +66,9 @@ MediaSessionMetrics::~MediaSessionMetrics() = default;
 
 // static
 void MediaSessionMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterListPref(kMiscMetricsMediaSessionUsageStorage);
+  registry->RegisterTimeDeltaPref(kMiscMetricsMediaSessionPlayingTime, {});
+  registry->RegisterTimeDeltaPref(kMiscMetricsMediaSessionActiveProcessTime,
+                                  {});
   registry->RegisterTimePref(kMiscMetricsMediaSessionFrameStartTime,
                              base::Time());
 }
@@ -88,10 +91,12 @@ void MediaSessionMetrics::OnMediaSessionDestroyed(
   RemoveSession(media_session);
 }
 
-void MediaSessionMetrics::ResetFrameStartTime() {
+void MediaSessionMetrics::ResetFrame() {
   frame_start_time_ = base::Time::Now();
   local_state_->SetTime(kMiscMetricsMediaSessionFrameStartTime,
                         frame_start_time_);
+  local_state_->SetTimeDelta(kMiscMetricsMediaSessionPlayingTime, {});
+  local_state_->SetTimeDelta(kMiscMetricsMediaSessionActiveProcessTime, {});
 }
 
 void MediaSessionMetrics::OnSessionPlaybackStateChanged(
@@ -103,7 +108,6 @@ void MediaSessionMetrics::OnSessionPlaybackStateChanged(
   }
   if (is_playing) {
     playing_sessions_.insert(media_session);
-    StartMediaPlayingTimer();
   } else {
     playing_sessions_.erase(media_session);
   }
@@ -114,23 +118,23 @@ void MediaSessionMetrics::RemoveSession(content::MediaSession* media_session) {
   playing_sessions_.erase(media_session);
 }
 
-void MediaSessionMetrics::StartMediaPlayingTimer() {
-  if (media_playing_timer_.IsRunning()) {
-    return;
+void MediaSessionMetrics::OnTick() {
+  bool is_playing = !playing_sessions_.empty();
+  if (is_playing || uptime_monitor_->IsInUse()) {
+    local_state_->SetTimeDelta(
+        kMiscMetricsMediaSessionActiveProcessTime,
+        local_state_->GetTimeDelta(kMiscMetricsMediaSessionActiveProcessTime) +
+            kTickInterval);
   }
-  media_playing_timer_.Start(
-      FROM_HERE, base::Time::Now() + kMediaPlayingTickInterval,
-      base::BindRepeating(&MediaSessionMetrics::OnMediaPlayingTick,
-                          base::Unretained(this)));
-}
-
-void MediaSessionMetrics::OnMediaPlayingTick() {
-  if (playing_sessions_.empty()) {
-    return;
+  if (is_playing) {
+    local_state_->SetTimeDelta(
+        kMiscMetricsMediaSessionPlayingTime,
+        local_state_->GetTimeDelta(kMiscMetricsMediaSessionPlayingTime) +
+            kTickInterval);
   }
-  weekly_media_storage_.AddDelta(
-      static_cast<uint64_t>(kMediaPlayingTickInterval.InMinutes()));
-  StartMediaPlayingTimer();
+  tick_timer_.Start(FROM_HERE, base::Time::Now() + kTickInterval,
+                    base::BindRepeating(&MediaSessionMetrics::OnTick,
+                                        base::Unretained(this)));
 }
 
 void MediaSessionMetrics::ReportMetric() {
@@ -142,21 +146,23 @@ void MediaSessionMetrics::ReportMetric() {
     return;
   }
 
-  uint64_t uptime_minutes = uptime_monitor_->GetUsedTimeInWeek().InMinutes();
-  if (uptime_minutes == 0) {
+  base::TimeDelta active_time =
+      local_state_->GetTimeDelta(kMiscMetricsMediaSessionActiveProcessTime);
+  if (active_time.is_zero()) {
     return;
   }
 
-  uint64_t media_minutes = weekly_media_storage_.GetWeeklySum();
-  int percentage = static_cast<int>(media_minutes * 100 / uptime_minutes);
-  if (percentage == 0 && media_minutes > 0) {
+  base::TimeDelta media_time =
+      local_state_->GetTimeDelta(kMiscMetricsMediaSessionPlayingTime);
+  int percentage = static_cast<int>(media_time * 100 / active_time);
+  if (percentage == 0 && !media_time.is_zero()) {
     percentage = 1;
   }
 
   p3a_utils::RecordToHistogramBucket(kMediaSessionUsageHistogramName,
                                      kMediaSessionUsageBuckets, percentage);
 
-  ResetFrameStartTime();
+  ResetFrame();
 }
 
 }  // namespace misc_metrics

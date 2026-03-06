@@ -34,14 +34,11 @@ class MediaSessionMetricsTest : public testing::Test {
  protected:
   class MockUptimeMonitor : public UptimeMonitor {
    public:
-    base::TimeDelta GetUsedTimeInWeek() const override {
-      return base::Time::Now() - start_time_;
-    }
+    base::TimeDelta GetUsedTimeInWeek() const override { return {}; }
     base::WeakPtr<UptimeMonitor> GetWeakPtr() override { return nullptr; }
-    bool IsInUse() const override { return true; }
+    bool IsInUse() const override { return is_in_use; }
 
-   private:
-    base::Time start_time_ = base::Time::Now();
+    bool is_in_use = true;
   };
 
   content::MockMediaSession* AddSession() {
@@ -155,6 +152,27 @@ TEST_F(MediaSessionMetricsTest, FrameResetAfterReport) {
   task_environment_.FastForwardBy(base::Days(7));
   histogram_tester_.ExpectBucketCount(kMediaSessionUsageHistogramName, 0, 1);
   histogram_tester_.ExpectTotalCount(kMediaSessionUsageHistogramName, 2);
+}
+
+TEST_F(MediaSessionMetricsTest, ActiveProcessTimeOnlyWhenInUseOrPlaying) {
+  // With browser not in use and no media, active process time does not
+  // accumulate. Playing media should count toward both storages regardless
+  // of IsInUse.
+  uptime_monitor_.is_in_use = false;
+
+  // Advance 3 days with no activity — nothing should accumulate.
+  task_environment_.FastForwardBy(base::Days(3));
+
+  // Play media for 1 day while not "in use" per uptime monitor.
+  auto* session = AddSession();
+  task_environment_.FastForwardBy(base::Days(1));
+  SetPlaying(session, false);
+
+  // Advance remaining time to trigger report.
+  task_environment_.FastForwardBy(base::Days(4));
+
+  // 1 day playing / 1 day active = 100% → bucket 5.
+  histogram_tester_.ExpectUniqueSample(kMediaSessionUsageHistogramName, 5, 1);
 }
 
 }  // namespace misc_metrics

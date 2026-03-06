@@ -13,7 +13,6 @@
 #include "base/time/time.h"
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/misc_metrics/uptime_monitor.h"
-#include "brave/components/time_period_storage/weekly_storage.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "services/media_session/public/mojom/media_session.mojom.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
@@ -87,10 +86,9 @@ class MediaSessionMetrics {
   void OnSessionPlaybackStateChanged(content::MediaSession* media_session,
                                      bool is_playing);
   void RemoveSession(content::MediaSession* media_session);
-  void OnMediaPlayingTick();
-  void StartMediaPlayingTimer();
+  void OnTick();
   void ReportMetric();
-  void ResetFrameStartTime();
+  void ResetFrame();
 
   raw_ptr<PrefService> local_state_;
   raw_ptr<UptimeMonitor> uptime_monitor_;
@@ -99,10 +97,9 @@ class MediaSessionMetrics {
       sessions_;
   absl::flat_hash_set<content::MediaSession*> playing_sessions_;
 
-  WeeklyStorage weekly_media_storage_;
   base::Time frame_start_time_;
   base::WallClockTimer report_timer_;
-  base::WallClockTimer media_playing_timer_;
+  base::WallClockTimer tick_timer_;
 
   base::WeakPtrFactory<MediaSessionMetrics> weak_ptr_factory_{this};
 };
