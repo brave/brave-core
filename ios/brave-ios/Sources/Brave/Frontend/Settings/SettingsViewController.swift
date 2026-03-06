@@ -1366,7 +1366,12 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
               let autofillDataManager = braveCore.defaultWebViewConfiguration.autofillDataManager
             {
               let managePasswordsViewController = ManagePasswordsViewController(
-                autofillDataManager: autofillDataManager
+                autofillDataManager: autofillDataManager,
+                windowProtection: windowProtection,
+                settingsDelegate: settingsDelegate /*,
+                askForAuthentication: { [weak self] completion in
+                  self?.askForLocalAuthentication(viewType: .passwords, completion: completion)
+                }*/
               )
               self.navigationController?.pushViewController(
                 managePasswordsViewController,
