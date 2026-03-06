@@ -5,6 +5,7 @@
 
 import BraveCore
 import BraveUI
+import LocalAuthentication
 import Preferences
 import SwiftUI
 import UIKit
@@ -13,11 +14,20 @@ class ManagePasswordsViewController: UIHostingController<ManagePasswordsView> {
 
   private let autofillDataManager: CWVAutofillDataManager
 
-  init(autofillDataManager: CWVAutofillDataManager) {
+  init(
+    autofillDataManager: CWVAutofillDataManager,
+    windowProtection: WindowProtection? = nil,
+    settingsDelegate: SettingsDelegate? = nil
+  ) {
     self.autofillDataManager = autofillDataManager
     let viewModel = ManagePasswordsViewModel(autofillDataManager: autofillDataManager)
-    let view = ManagePasswordsView(viewModel: viewModel)
+    let view = ManagePasswordsView(
+      viewModel: viewModel,
+      windowProtection: windowProtection,
+      settingsDelegate: settingsDelegate
+    )
 
+    //askForAuthentication: @escaping (@escaping (Bool, LAError.Code?) -> Void) -> Void
     super.init(rootView: view)
   }
 

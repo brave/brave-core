@@ -38,7 +38,7 @@ class ManagePasswordsViewModel {
     }
   }
 
-  private let autofillDataManager: CWVAutofillDataManager
+  let autofillDataManager: CWVAutofillDataManager
   private let observer: AutofillDataManagerObserver
 
   init(autofillDataManager: CWVAutofillDataManager) {
@@ -118,6 +118,15 @@ extension ManagePasswordsViewModel {
       case .saved(let domain), .blocked(let domain): return domain
       }
     }
+  }
+
+  private func credentials(for groupId: GroupID) -> [CWVPassword] {
+    let (groups, domain): ([(domain: String, credentials: [CWVPassword])], String) =
+      switch groupId {
+      case .saved(let d): (allowedGroups, d)
+      case .blocked(let d): (blockedGroups, d)
+      }
+    return groups.first { $0.domain == domain }?.credentials ?? []
   }
 }
 
