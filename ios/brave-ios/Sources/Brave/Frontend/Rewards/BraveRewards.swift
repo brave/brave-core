@@ -246,7 +246,7 @@ public class BraveRewards: PreferencesObserver {
 
     let tabId = Int(tab.rewardsId ?? 0)
     if isSelected {
-      tabRetrieved(tabId, url: url, html: nil)
+      tabRetrieved(tabId, url: url)
     }
   }
 
@@ -264,7 +264,7 @@ public class BraveRewards: PreferencesObserver {
 
     let tabId = Int(tab.rewardsId ?? 0)
 
-    tabRetrieved(tabId, url: url, html: htmlContent)
+    tabRetrieved(tabId, url: url)
 
     // Don't notify about content changes if the ads service is not available, the
     // tab was restored, was a previously committed navigation, or an error page was displayed.
@@ -316,11 +316,11 @@ public class BraveRewards: PreferencesObserver {
     }
   }
 
-  private func tabRetrieved(_ tabId: Int, url: URL, html: String?) {
+  private func tabRetrieved(_ tabId: Int, url: URL) {
     rewardsAPI?.fetchPublisherActivity(
       from: url,
       faviconURL: nil,
-      publisherBlob: html,
+      publisherBlob: nil,
       tabId: UInt64(tabId)
     )
   }
