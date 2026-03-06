@@ -13,25 +13,9 @@ import * as Mojom from '../../../common/mojom'
 import { MockContext } from '../../state/mock_context'
 import TabsMenu from './attachments_menu'
 
-// Render and flush async state updates from usePromise hooks.
-async function renderTabsMenu(
-  ...args: Parameters<typeof render>
-): Promise<ReturnType<typeof render>> {
-  let result: ReturnType<typeof render>
-  await act(async () => {
-    result = render(...args)
-  })
-  return result!
-}
-
 describe('TabsMenu', () => {
-  // Clear the shared QueryClient between tests to avoid cache pollution
-  beforeEach(() => {
-    clearAllDataForTesting()
-  })
-
   it('should render tabs', async () => {
-    const { getByText, container } = await renderTabsMenu(
+    const { getByText, container } = render(
       <MockContext
         initialState={{
           tabs: [
@@ -61,7 +45,7 @@ describe('TabsMenu', () => {
   })
 
   it('should filter out attached tabs', async () => {
-    const { queryByText } = await renderTabsMenu(
+    const { queryByText } = render(
       <MockContext
         initialState={{
           conversationState: {
@@ -104,7 +88,7 @@ describe('TabsMenu', () => {
   })
 
   it('should be open when query starts with @', async () => {
-    const { container } = await renderTabsMenu(
+    const { container } = render(
       <MockContext
         conversationOverrides={{ inputText: ['@'] }}
         initialState={{
@@ -128,13 +112,13 @@ describe('TabsMenu', () => {
   })
 
   it('should be close when @ is removed', async () => {
-    await renderTabsMenu(
+    render(
       <MockContext conversationOverrides={{ inputText: ['@'] }}>
         <TabsMenu />
       </MockContext>,
     )
 
-    const { container } = await renderTabsMenu(
+    const { container } = render(
       <MockContext conversationOverrides={{ inputText: ['hi'] }}>
         <TabsMenu />
       </MockContext>,
@@ -146,7 +130,7 @@ describe('TabsMenu', () => {
   })
 
   it('should filter by text after @', async () => {
-    const { container } = await renderTabsMenu(
+    const { container } = render(
       <MockContext
         conversationOverrides={{ inputText: ['@2'] }}
         initialState={{
@@ -185,7 +169,7 @@ describe('TabsMenu', () => {
       },
       id: 1,
     }
-    const { queryByText, findByText } = await renderTabsMenu(
+    const { queryByText, findByText } = render(
       <MockContext
         conversationOverrides={{ inputText: ['@'] }}
         initialState={{
@@ -217,7 +201,7 @@ describe('TabsMenu', () => {
   })
 
   it('should render bookmarks in the list', async () => {
-    const { findByText } = await renderTabsMenu(
+    const { findByText } = render(
       <MockContext
         bookmarksService={{
           getBookmarks: () =>
@@ -248,7 +232,7 @@ describe('TabsMenu', () => {
   it('should filter bookmarks by query', async () => {
     const onFetch = jest.fn()
 
-    const { container } = await renderTabsMenu(
+    const { container } = render(
       <MockContext
         conversationOverrides={{ inputText: ['@brave'] }}
         bookmarksService={{
@@ -285,7 +269,7 @@ describe('TabsMenu', () => {
   })
 
   it('should render history in the list', async () => {
-    const { findByText } = await renderTabsMenu(
+    const { findByText } = render(
       <MockContext
         historyService={{
           getHistory: () =>
@@ -316,7 +300,7 @@ describe('TabsMenu', () => {
   it('should filter history by query', async () => {
     const onFetchHistory = jest.fn()
 
-    const { container } = await renderTabsMenu(
+    const { container } = render(
       <MockContext
         conversationOverrides={{ inputText: ['@search'] }}
         historyService={{
@@ -366,7 +350,7 @@ describe('TabsMenu', () => {
       }),
     )
 
-    await renderTabsMenu(
+    render(
       <MockContext
         conversationOverrides={{ inputText: ['@ab'] }}
         historyService={{ getHistory }}
@@ -379,7 +363,7 @@ describe('TabsMenu', () => {
   })
 
   it('should filter out already attached history items', async () => {
-    const { findByText, queryByText } = await renderTabsMenu(
+    const { findByText, queryByText } = render(
       <MockContext
         initialState={{
           conversationState: {
