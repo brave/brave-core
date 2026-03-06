@@ -86,12 +86,13 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   FRIEND_TEST_ALL_PREFIXES(PsstTabWebContentsObserverUnitTest,
                            ShouldNotProcessRestoredNavigationEntry);
 
-  PsstTabWebContentsObserver(content::WebContents* web_contents,
-                             PsstRuleRegistry* registry,
-                             PrefService* prefs,
-                             std::unique_ptr<PsstUiDelegate> ui_delegate,
-                             InjectScriptCallback inject_script_callback,
-                             InjectScriptAsyncCallback inject_async_script_callback);
+  PsstTabWebContentsObserver(
+      content::WebContents* web_contents,
+      PsstRuleRegistry* registry,
+      PrefService* prefs,
+      std::unique_ptr<PsstUiDelegate> ui_delegate,
+      InjectScriptCallback inject_script_callback,
+      InjectScriptAsyncCallback inject_async_script_callback);
 
   bool ShouldInsertScriptForPage(int id);
   void InsertUserScript(int id, std::unique_ptr<MatchedRule> rule);

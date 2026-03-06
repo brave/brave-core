@@ -84,10 +84,6 @@ void PsstRuleRegistryImpl::OnLoadRules(OnLoadCallback cb,
     rules_ = std::move(parsed_rules.value());
   }
 
-  if (!cb) {
-    return;
-  }
-
   std::move(cb).Run(contents, rules_);
 }
 

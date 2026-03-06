@@ -14,8 +14,6 @@
 #include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/task/single_thread_task_runner.h"
-#include "base/task/task_traits.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
@@ -43,9 +41,6 @@ constexpr base::TimeDelta kScriptTimeout = base::Seconds(15);
 const char kShouldProcessKey[] = "should_process_key";
 
 const char kSignedUserId[] = "user_id";
-const char kConsentStatusSettingsKey[] = "consent_status";
-const char kScriptVersionSettingsKey[] = "script_version";
-const char kUrlsToSkipSettingsKey[] = "urls_to_skip";
 const char kUserScriptIsInitialPropName[] = "is_initial";
 const char kUserScriptResultTasksPropName[] = "tasks";
 const char kUserScriptResultSiteNamePropName[] = "name";
@@ -89,18 +84,6 @@ std::string MaybeAddParamsToScript(std::unique_ptr<MatchedRule> rule,
 
   return base::StrCat(
       {"const params = ", *params_json, ";\n", rule->policy_script()});
-}
-
-std::optional<PsstWebsiteSettings> CreatePsstWebsiteSettings(
-    const std::string& user_id,
-    ConsentStatus consent_status,
-    const int& version) {
-  return PsstWebsiteSettings::FromValue(
-      base::DictValue()
-          .Set(kSignedUserId, user_id)
-          .Set(kConsentStatusSettingsKey, ToString(consent_status))
-          .Set(kScriptVersionSettingsKey, version)
-          .Set(kUrlsToSkipSettingsKey, base::ListValue()));
 }
 
 void PrepareParametersForPolicyExecution(
@@ -313,8 +296,10 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
 
   // If PSST websettings doesn't exist, means initial call
   if (!psst_settings) {
-    psst_settings = CreatePsstWebsiteSettings(*user_id, ConsentStatus::kAsk,
-                                              rule->version());
+    psst_settings = PsstWebsiteSettings();
+    psst_settings->consent_status = ConsentStatus::kAsk;
+    psst_settings->script_version = rule->version();
+    psst_settings->user_id = *user_id;
   }
 
   auto origin = url::Origin::Create(web_contents()->GetLastCommittedURL());

@@ -766,10 +766,9 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
        ";\n", policy_script});
 
   // Policy script executed, parameters added
-  EXPECT_CALL(inject_async_script_callback(),
-              Run(_, script_with_parameters, _))
-      .WillOnce(InsertPolicyAsyncScriptInPageCallback(&policy_script_insert_future,
-                                                 policy_script_result.Clone()));
+  EXPECT_CALL(inject_async_script_callback(), Run(_, script_with_parameters, _))
+      .WillOnce(InsertPolicyAsyncScriptInPageCallback(
+          &policy_script_insert_future, policy_script_result.Clone()));
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -867,8 +866,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
   // Policy script executed, parameters not added
   EXPECT_CALL(inject_async_script_callback(), Run(_, policy_script, _))
-      .WillOnce(InsertPolicyAsyncScriptInPageCallback(&policy_script_insert_future,
-                                           policy_script_result.Clone()));
+      .WillOnce(InsertPolicyAsyncScriptInPageCallback(
+          &policy_script_insert_future, policy_script_result.Clone()));
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -968,8 +967,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
   // Policy script executed, parameters added
   EXPECT_CALL(inject_async_script_callback(),
               Run(_, policy_script_with_parameters, _))
-      .WillOnce(InsertPolicyAsyncScriptInPageCallback(&policy_script_insert_future,
-                                           policy_script_result.Clone()));
+      .WillOnce(InsertPolicyAsyncScriptInPageCallback(
+          &policy_script_insert_future, policy_script_result.Clone()));
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),

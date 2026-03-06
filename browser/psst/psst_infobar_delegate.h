@@ -7,7 +7,6 @@
 #define BRAVE_BROWSER_PSST_PSST_INFOBAR_DELEGATE_H_
 
 #include "base/functional/callback.h"
-#include "base/functional/callback_forward.h"
 #include "components/infobars/core/confirm_infobar_delegate.h"
 
 namespace psst {
@@ -15,13 +14,14 @@ namespace psst {
 class PsstInfoBarDelegate : public ConfirmInfoBarDelegate {
  public:
   using AcceptCallback = base::OnceCallback<void(const bool is_accepted)>;
-  static void Create(infobars::InfoBarManager* infobar_manager,
-                     AcceptCallback on_accept_callback);
 
   PsstInfoBarDelegate(const PsstInfoBarDelegate&) = delete;
   PsstInfoBarDelegate& operator=(const PsstInfoBarDelegate&) = delete;
 
   ~PsstInfoBarDelegate() override;
+
+  static void Create(infobars::InfoBarManager* infobar_manager,
+                     AcceptCallback on_accept_callback);
 
   bool Accept() override;
   bool Cancel() override;
