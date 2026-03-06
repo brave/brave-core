@@ -317,6 +317,12 @@ void ConversationAPIV2Client::PerformRequest(
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
     const std::optional<std::string>& model_name) {
+  CHECK(!(
+      conversation_capabilities.contains(mojom::ConversationCapability::CHAT) &&
+      conversation_capabilities.contains(
+          mojom::ConversationCapability::CONTENT_AGENT)))
+      << "CHAT and CONTENT_AGENT cannot be used together";
+
   // Get credentials and then perform request
   auto callback = base::BindOnce(
       &ConversationAPIV2Client::PerformRequestWithCredentials,

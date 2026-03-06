@@ -2134,4 +2134,15 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_CompletionChunk) {
   }
 }
 
+TEST_F(ConversationAPIV2ClientUnitTest,
+       PerformRequest_InvalidCapabilities_ChatAndContentAgent) {
+  auto [messages, _] = GetMockMessagesAndExpectedMessagesJson();
+  EXPECT_DEATH(
+      client_->PerformRequest(std::move(messages), std::nullopt, std::nullopt,
+                              {mojom::ConversationCapability::CHAT,
+                               mojom::ConversationCapability::CONTENT_AGENT},
+                              base::DoNothing(), base::DoNothing()),
+      "CHAT and CONTENT_AGENT cannot be used together");
+}
+
 }  // namespace ai_chat
