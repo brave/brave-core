@@ -44,6 +44,10 @@
     Trackers, ads, and more blocked.
   </message>
 
+  <message name="IDS_BRAVE_SHIELDS_TRACKERS_ADS_BLOCKED_TITLE" desc="Title of the trackers and ads blocked details view" formatter_data="webui=BraveShields">
+    Trackers and ads
+  </message>
+
   <message name="IDS_BRAVE_SHIELDS_SITE_NOT_WORKING" desc="Prompt asking if site is not working with Shields enabled." formatter_data="webui=BraveShields">
     Is this site not working correctly with Shields up?
   </message>
@@ -52,11 +56,11 @@
     Report
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_ARE_YOU_EXPERIENCING_ISSUES_WITH_THIS_SITE_TITLE" desc="Title for the alert if the user is experiencing issues with the site.">
+  <message name="IDS_BRAVE_SHIELDS_ARE_YOU_EXPERIENCING_ISSUES_WITH_THIS_SITE_TITLE" desc="Title for the alert if the user is experiencing issues with the site." formatter_data="webui=BraveShields">
     Are you experiencing issues with this site?
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_ARE_YOU_EXPERIENCING_ISSUES_WITH_THIS_SITE_DESC1" desc="First part of the description for the alert if the user is experiencing issues with the site.">
+  <message name="IDS_BRAVE_SHIELDS_ARE_YOU_EXPERIENCING_ISSUES_WITH_THIS_SITE_DESC1" desc="First part of the description for the alert if the user is experiencing issues with the site." formatter_data="webui=BraveShields">
     We're trying out an experiment to increase website compatibility, where we keep only ad blocking enabled. Warning: removes all privacy protections. Do you want to try it out? <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>.
   </message>
 
@@ -64,35 +68,35 @@
     Please note that for individual websites broken by Brave's privacy protections, you can set Shields to DOWN.
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_ENABLE_AD_BLOCK_ONLY_MODE" desc="A button label to enable Adblock-Only mode.">
+  <message name="IDS_BRAVE_SHIELDS_ENABLE_AD_BLOCK_ONLY_MODE" desc="A button label to enable Adblock-Only mode." formatter_data="webui=BraveShields">
     Enable Adblock-Only mode
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_DISMISS_ALERT" desc="A button label to dismiss the alert.">
+  <message name="IDS_BRAVE_SHIELDS_DISMISS_ALERT" desc="A button label to dismiss the alert." formatter_data="webui=BraveShields">
     Dismiss
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_IS_THIS_SITE_WORKING_CORRECTLY_NOW_TITLE" desc="Title for the alert to ask if the site is working correctly now.">
+  <message name="IDS_BRAVE_SHIELDS_IS_THIS_SITE_WORKING_CORRECTLY_NOW_TITLE" desc="Title for the alert to ask if the site is working correctly now." formatter_data="webui=BraveShields">
     Is the site working correctly now?
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_IS_THIS_SITE_WORKING_CORRECTLY_NOW_DESC" desc="Description for the alert to ask if the site is working correctly now.">
+  <message name="IDS_BRAVE_SHIELDS_IS_THIS_SITE_WORKING_CORRECTLY_NOW_DESC" desc="Description for the alert to ask if the site is working correctly now." formatter_data="webui=BraveShields">
     Please consider submitting a report if this site is still broken.
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_IS_THIS_SITE_WORKING_CORRECTLY_NOW_LOOKS_GOOD" desc="A button label to indicate the site is working correctly now.">
+  <message name="IDS_BRAVE_SHIELDS_IS_THIS_SITE_WORKING_CORRECTLY_NOW_LOOKS_GOOD" desc="A button label to indicate the site is working correctly now." formatter_data="webui=BraveShields">
     Looks good
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_IS_THIS_SITE_WORKING_CORRECTLY_NOW_REPORT_SITE" desc="A button label to report the site if it is not working correctly.">
+  <message name="IDS_BRAVE_SHIELDS_IS_THIS_SITE_WORKING_CORRECTLY_NOW_REPORT_SITE" desc="A button label to report the site if it is not working correctly." formatter_data="webui=BraveShields">
     Report site
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE_ENABLE_TITLE" desc="Title for the alert to indicate Adblock-Only mode is enabled.">
+  <message name="IDS_BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE_ENABLE_TITLE" desc="Title for the alert to indicate Adblock-Only mode is enabled." formatter_data="webui=BraveShields">
     Adblock-Only mode enabled
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE_ENABLE_DESC" desc="Description for the alert to indicate Adblock-Only mode is enabled.">
+  <message name="IDS_BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE_ENABLE_DESC" desc="Description for the alert to indicate Adblock-Only mode is enabled." formatter_data="webui=BraveShields">
     You're currently using Adblock-Only mode. This mode only offers ad blocking protection (if Shields are UP). If you wish to return to full Shields mode, disable this mode from settings.
   </message>
 
@@ -144,19 +148,19 @@
     Settings managed by organization
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_ALLOW_SCRIPT_ONCE" desc="A link to allow script to be executed in a page.">
+  <message name="IDS_BRAVE_SHIELDS_ALLOW_SCRIPT_ONCE" desc="A link to allow script to be executed in a page." formatter_data="webui=BraveShields">
     Allow
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_SCRIPT_BLOCK" desc="A text to indicate a script will be blocked in a page.">
+  <message name="IDS_BRAVE_SHIELDS_SCRIPT_BLOCK" desc="A text to indicate a script will be blocked in a page." formatter_data="webui=BraveShields">
     Block
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_ALLOW_SCRIPTS_ALL" desc="A link to allow all scripts to be executed in a page.">
+  <message name="IDS_BRAVE_SHIELDS_ALLOW_SCRIPTS_ALL" desc="A link to allow all scripts to be executed in a page." formatter_data="webui=BraveShields">
     Allow all
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_BLOCK_SCRIPTS_ALL" desc="A link to block all scripts to be executed in a page.">
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_SCRIPTS_ALL" desc="A link to block all scripts to be executed in a page." formatter_data="webui=BraveShields">
     Block all
   </message>
 
@@ -301,11 +305,15 @@
 <ph name="NUMBER">$1</ph> Trackers, ads, and more blocked
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_BLOCKED_SCRIPTS_LABEL" desc="Label for secondary panel of Shields which shows a list of blocked scripts">
+  <message name="IDS_BRAVE_SHIELDS_SCRIPT_DETAILS_TITLE" desc="Title of the blocked scripts details view" formatter_data="webui=BraveShields">
+    Scripts
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BLOCKED_SCRIPTS_LABEL" desc="Label for secondary panel of Shields which shows a list of blocked scripts" formatter_data="webui=BraveShields">
     Blocked scripts
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_ALLOWED_SCRIPTS_LABEL" desc="Label for secondary panel of Shields which shows a list of allowed scripts">
+  <message name="IDS_BRAVE_SHIELDS_ALLOWED_SCRIPTS_LABEL" desc="Label for secondary panel of Shields which shows a list of allowed scripts" formatter_data="webui=BraveShields">
     Allowed scripts
   </message>
 
@@ -313,11 +321,15 @@
     anti-fingerprinting protections applied
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_LEARN_MORE_LINK_TEXT" desc="The label in the shields fingerprinting side panel for users to obtain more information.">
+  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_PROTECTIONS_TITLE" desc="Title of the fingerprinting protections details view" formatter_data="webui=BraveShields">
+    Fingerprinting protections
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_LEARN_MORE_LINK_TEXT" desc="The label in the shields fingerprinting side panel for users to obtain more information." formatter_data="webui=BraveShields">
     Learn more
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_LIST_DESCRIPTION" desc="The description in the shields fingerprinting side panel.">
+  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_LIST_DESCRIPTION" desc="The description in the shields fingerprinting side panel." formatter_data="webui=BraveShields">
     Applied protections do not necessarily indicate that this web page is attempting to fingerprint your browser.
   </message>
 
