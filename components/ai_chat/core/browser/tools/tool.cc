@@ -5,6 +5,8 @@
 
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 
+#include <algorithm>
+
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 
@@ -29,9 +31,13 @@ bool Tool::IsAgentTool() const {
   return false;
 }
 
-bool Tool::IsSupportedByModel(const mojom::Model& model) const {
+bool Tool::IsSupportedByModel(
+    const mojom::Model& model,
+    mojom::ConversationCapability conversation_capability) const {
   // Implementors should add any extra checks in an override.
-  return model.supports_tools;
+  return model.supports_tools && std::ranges::find(model.supported_capabilities,
+                                                   conversation_capability) !=
+                                     model.supported_capabilities.end();
 }
 
 std::variant<bool, mojom::PermissionChallengePtr>
