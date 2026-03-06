@@ -5,5 +5,6 @@
 
 [[substitution]]
 description = 'Prefix virtual URL on converting SerializedNavigationEntry to SyncData'
-re_pattern = '\? navigation\.virtual_url\(\)\.spec\(\)'
-replace = '? navigation.virtual_url_prefix() + navigation.virtual_url().spec()'
+re_pattern = '(sync_data\.set_virtual_url[\s\S]*?)(\s+navigation\.virtual_url\(\)\.spec\(\))'
+re_flags = ['MULTILINE']
+replace = '\1 navigation.virtual_url_prefix() +\2'

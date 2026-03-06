@@ -18,8 +18,12 @@ replace = '''
 
 [[substitution]]
 description = 'Restore storage partition key from SerializedNavigationEntry for containers'
-pattern = '  return entry;'
-replace = '''#if BUILDFLAG(ENABLE_CONTAINERS)
+re_pattern = '(ContentSerializedNavigationBuilder::FromNavigationEntry[\s\S]*?)(\s+return entry;\s*^\})'
+re_flags = ['MULTILINE']
+replace = '''
+\1
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
   // If the SerializedNavigationEntry contains storage partition key information,
   // we copy it into the NavigationEntry so it can be used later to create the
   // correct SiteInstance with the right StoragePartitionConfig.
@@ -32,13 +36,15 @@ replace = '''#if BUILDFLAG(ENABLE_CONTAINERS)
         navigation->storage_partition_key().value());
   }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
-
-  return entry;'''
+\2'''
 
 [[substitution]]
 description = 'Set virtual URL prefix and storage partition key for containers'
-pattern = '  return navigation;'
-replace = '''#if BUILDFLAG(ENABLE_CONTAINERS)
+re_pattern = '(ContentSerializedNavigationBuilder::FromNavigationEntry[\s\S]*?)(\s+return navigation;\s*^\})'
+re_flags = ['MULTILINE']
+replace = '''\1
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
   // This is called when saving a session (browser close, tab close, manual
   // session save, or sync). We add storage partition key information to the
   // serialized data.
@@ -65,5 +71,4 @@ replace = '''#if BUILDFLAG(ENABLE_CONTAINERS)
     }
   }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
-
-  return navigation;'''
+\2'''
