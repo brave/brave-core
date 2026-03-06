@@ -39,6 +39,7 @@ struct OAIMessage;
 // Performs remote request to the remote HTTP Brave Conversation API.
 class ConversationAPIV2Client {
  public:
+  using ConversationCapabilitySet = EngineConsumer::ConversationCapabilitySet;
   using GenerationResult = EngineConsumer::GenerationResult;
   using GenerationResultData = EngineConsumer::GenerationResultData;
   using GenerationDataCallback = EngineConsumer::GenerationDataCallback;
@@ -58,7 +59,7 @@ class ConversationAPIV2Client {
       std::vector<OAIMessage> messages,
       std::optional<base::ListValue> oai_tool_definitions,
       const std::optional<std::string>& preferred_tool_name,
-      mojom::ConversationCapability primary_conversation_capability,
+      const ConversationCapabilitySet& conversation_capabilities,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback,
       const std::optional<std::string>& model_name = std::nullopt);
@@ -78,7 +79,7 @@ class ConversationAPIV2Client {
       std::vector<OAIMessage> messages,
       std::optional<base::ListValue> oai_tool_definitions,
       const std::optional<std::string>& preferred_tool_name,
-      mojom::ConversationCapability primary_conversation_capability,
+      const ConversationCapabilitySet& conversation_capabilities,
       const std::optional<std::string>& model_name,
       const bool is_sse_enabled);
 
@@ -104,7 +105,7 @@ class ConversationAPIV2Client {
       std::vector<OAIMessage> messages,
       std::optional<base::ListValue> oai_tool_definitions,
       const std::optional<std::string>& preferred_tool_name,
-      mojom::ConversationCapability primary_conversation_capability,
+      const ConversationCapabilitySet& conversation_capabilities,
       const std::optional<std::string>& model_name,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback,

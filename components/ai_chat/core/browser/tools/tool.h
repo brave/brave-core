@@ -17,12 +17,15 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace ai_chat {
 
 // Base class for Tools that are exposed to the Assistant
 class Tool {
  public:
+  using ConversationCapabilitySet =
+      absl::flat_hash_set<mojom::ConversationCapability>;
   using ToolResult = std::vector<mojom::ContentBlockPtr>;
   using ToolArtifacts = std::vector<mojom::ToolArtifactPtr>;
   using UseToolCallback =
@@ -98,7 +101,7 @@ class Tool {
   virtual bool SupportsConversation(
       bool is_temporary,
       bool has_untrusted_content,
-      mojom::ConversationCapability conversation_capability) const;
+      const ConversationCapabilitySet& conversation_capabilities) const;
 
   // Implementers should handle tool execution unless it is a built-in
   // tool handled directly by the ConversationHandler.

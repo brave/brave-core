@@ -53,10 +53,10 @@ class CodeExecutionTool : public Tool {
   std::variant<bool, mojom::PermissionChallengePtr>
   RequiresUserInteractionBeforeHandling(
       const mojom::ToolUseEvent& tool_use) const override;
-  bool SupportsConversation(
-      bool is_temporary,
-      bool has_untrusted_content,
-      mojom::ConversationCapability conversation_capability) const override;
+  bool SupportsConversation(bool is_temporary,
+                            bool has_untrusted_content,
+                            const ConversationCapabilitySet&
+                                conversation_capabilities) const override;
   void UseTool(const std::string& input_json,
                UseToolCallback callback) override;
 

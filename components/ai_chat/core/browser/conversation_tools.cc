@@ -121,14 +121,14 @@ class AssistantDetailStorageTool : public Tool {
               "Useful information from an immediately-previous tool call")}});
   }
 
-  bool SupportsConversation(
-      bool is_temporary,
-      bool has_untrusted_content,
-      mojom::ConversationCapability conversation_capability) const override {
+  bool SupportsConversation(bool is_temporary,
+                            bool has_untrusted_content,
+                            const ConversationCapabilitySet&
+                                conversation_capabilities) const override {
     // This tool is only useful for multi-step agentic tasks especially when
     // other tools might have their output truncated from the context.
-    return conversation_capability ==
-           mojom::ConversationCapability::CONTENT_AGENT;
+    return conversation_capabilities.contains(
+        mojom::ConversationCapability::CONTENT_AGENT);
   }
 
   void UseTool(const std::string& input_json,

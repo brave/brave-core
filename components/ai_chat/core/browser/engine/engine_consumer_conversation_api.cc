@@ -133,7 +133,7 @@ void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
                             std::vector<std::string>{text});
   conversation.emplace_back(std::move(*rewrite_event));
   api_->PerformRequest(std::move(conversation), std::nullopt, std::nullopt,
-                       mojom::ConversationCapability::CHAT,
+                       {mojom::ConversationCapability::CHAT},
                        std::move(received_callback),
                        std::move(completed_callback));
 }
@@ -164,7 +164,7 @@ void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
       weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   api_->PerformRequest(std::move(conversation), std::nullopt, std::nullopt,
-                       mojom::ConversationCapability::CHAT,
+                       {mojom::ConversationCapability::CHAT},
                        base::NullCallback(), std::move(on_response));
 }
 
@@ -216,7 +216,7 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     bool is_temporary_chat,
     const std::vector<base::WeakPtr<Tool>>& tools,
     std::optional<std::string_view> preferred_tool_name,
-    mojom::ConversationCapability conversation_capability,
+    const ConversationCapabilitySet& conversation_capabilities,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
   if (!CanPerformCompletionRequest(conversation_history)) {
@@ -479,7 +479,7 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
 
   api_->PerformRequest(
       std::move(conversation), ToolApiDefinitionsFromTools(tools), std::nullopt,
-      conversation_capability, std::move(data_received_callback),
+      conversation_capabilities, std::move(data_received_callback),
       std::move(completed_callback), model_name);
 }
 
@@ -527,7 +527,7 @@ void EngineConsumerConversationAPI::DedupeTopics(
            base::WriteJson(topic_list).value_or(std::string())}});
   api_->PerformRequest(
       std::move(conversation), std::nullopt, std::nullopt,
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::NullCallback() /* data_received_callback */,
       base::BindOnce(
           [](GetSuggestedTopicsCallback callback,
@@ -579,7 +579,7 @@ void EngineConsumerConversationAPI::ProcessTabChunks(
          topic});
 
     api_->PerformRequest(std::move(conversation), std::nullopt, std::nullopt,
-                         mojom::ConversationCapability::CHAT,
+                         {mojom::ConversationCapability::CHAT},
                          base::NullCallback() /* data_received_callback */,
                          barrier_callback /* data_completed_callback */);
   }

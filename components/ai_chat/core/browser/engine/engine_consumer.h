@@ -20,6 +20,7 @@
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 class PrefService;
 
@@ -69,6 +70,9 @@ class EngineConsumer {
   using GenerationCompletedCallback =
       base::OnceCallback<void(GenerationResult)>;
 
+  using ConversationCapabilitySet =
+      absl::flat_hash_set<mojom::ConversationCapability>;
+
   using ConversationHistory = std::vector<mojom::ConversationTurnPtr>;
 
   using GetSuggestedTopicsCallback = base::OnceCallback<void(
@@ -93,7 +97,7 @@ class EngineConsumer {
       bool is_temporary_chat,
       const std::vector<base::WeakPtr<Tool>>& tools,
       std::optional<std::string_view> preferred_tool_name,
-      mojom::ConversationCapability conversation_capability,
+      const ConversationCapabilitySet& conversation_capabilities,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback) = 0;
 

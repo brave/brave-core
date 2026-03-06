@@ -241,7 +241,7 @@ void ConversationAPIClient::PerformRequest(
     std::vector<ConversationEvent> conversation,
     std::optional<base::ListValue> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
-    mojom::ConversationCapability conversation_capability,
+    const ConversationCapabilitySet& conversation_capabilities,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
     const std::optional<std::string>& model_name) {
@@ -250,7 +250,7 @@ void ConversationAPIClient::PerformRequest(
       &ConversationAPIClient::PerformRequestWithCredentials,
       weak_ptr_factory_.GetWeakPtr(), std::move(conversation),
       std::move(oai_tool_definitions), preferred_tool_name,
-      conversation_capability, model_name, std::move(data_received_callback),
+      conversation_capabilities, model_name, std::move(data_received_callback),
       std::move(completed_callback));
   credential_manager_->FetchPremiumCredential(std::move(callback));
 }
@@ -259,18 +259,20 @@ std::string ConversationAPIClient::CreateJSONRequestBody(
     std::vector<ConversationEvent> conversation,
     std::optional<base::ListValue> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
-    mojom::ConversationCapability conversation_capability,
+    const ConversationCapabilitySet& conversation_capabilities,
     const std::optional<std::string>& model_name,
     const bool is_sse_enabled) {
   base::DictValue dict;
 
-  const auto* capability_str =
-      base::FindOrNull(kCapabilityStringMap, conversation_capability);
-  CHECK(capability_str) << "Invalid conversation capability: "
-                        << conversation_capability;
+  if (conversation_capabilities.contains(
+          mojom::ConversationCapability::CONTENT_AGENT)) {
+    const auto* capability_str = base::FindOrNull(
+        kCapabilityStringMap, mojom::ConversationCapability::CONTENT_AGENT);
+    CHECK(capability_str);
+    dict.Set("capability", *capability_str);
+  }
 
   dict.Set("events", ConversationEventsToList(std::move(conversation)));
-  dict.Set("capability", *capability_str);
   dict.Set("model", model_name ? *model_name : model_name_);
   dict.Set("system_language",
            base::StrCat({brave_l10n::GetDefaultISOLanguageCodeString(), "_",
@@ -295,7 +297,7 @@ void ConversationAPIClient::PerformRequestWithCredentials(
     std::vector<ConversationEvent> conversation,
     std::optional<base::ListValue> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
-    mojom::ConversationCapability conversation_capability,
+    const ConversationCapabilitySet& conversation_capabilities,
     const std::optional<std::string>& model_name,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
@@ -317,7 +319,8 @@ void ConversationAPIClient::PerformRequestWithCredentials(
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
   const std::string request_body = CreateJSONRequestBody(
       std::move(conversation), std::move(oai_tool_definitions),
-      preferred_tool_name, conversation_capability, model_name, is_sse_enabled);
+      preferred_tool_name, conversation_capabilities, model_name,
+      is_sse_enabled);
 
   base::flat_map<std::string, std::string> headers;
   const auto digest_header = brave_service_keys::GetDigestHeader(request_body);

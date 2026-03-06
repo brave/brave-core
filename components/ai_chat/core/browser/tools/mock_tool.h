@@ -43,11 +43,11 @@ class MockTool : public Tool {
   std::optional<base::DictValue> ExtraParams() const override;
   bool IsSupportedByModel(
       const mojom::Model& model,
-      mojom::ConversationCapability conversation_capability) const override;
+      const ConversationCapabilitySet& conversation_capabilities) const override;
   bool SupportsConversation(
       bool is_temporary,
       bool has_untrusted_content,
-      mojom::ConversationCapability conversation_capability) const override;
+      const ConversationCapabilitySet& conversation_capabilities) const override;
 
   void set_requires_user_interaction_before_handling(
       bool requires_user_interaction_before_handling) {
