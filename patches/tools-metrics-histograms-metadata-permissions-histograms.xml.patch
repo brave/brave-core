@@ -1,5 +1,5 @@
 diff --git a/tools/metrics/histograms/metadata/permissions/histograms.xml b/tools/metrics/histograms/metadata/permissions/histograms.xml
-index be137e6eee17e2d0cbf5f095f03f237faf0217f3..453771478685ac95bbd0f9926e5bcd16dfb72018 100644
+index 62669632086367232727df45c04c58e7a848f79f..730cf7bb4d44d0beb3e78d10cc5d8c098fa2e24d 100644
 --- a/tools/metrics/histograms/metadata/permissions/histograms.xml
 +++ b/tools/metrics/histograms/metadata/permissions/histograms.xml
 @@ -53,6 +53,7 @@ chromium-metrics-reviews@google.com.
@@ -17,4 +17,4 @@ index be137e6eee17e2d0cbf5f095f03f237faf0217f3..453771478685ac95bbd0f9926e5bcd16
 +  <variant name=".Widevine" summary="Widevine permission"/>
    <variant name=".RegisterProtocolHandler"
        summary="registerProtocolHandler permission"/>
-   <variant name=".SmartCard" summary="Smart card connection permission"/>
+   <variant name=".Sensors" summary="Sensors permission"/>
