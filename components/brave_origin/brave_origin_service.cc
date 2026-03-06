@@ -60,9 +60,8 @@ BraveOriginService::BraveOriginService(
       profile_policy_service_(profile_policy_service),
       browser_policy_service_(browser_policy_service),
       skus_service_getter_(std::move(skus_service_getter)),
-      origin_sku_domain_(brave_domains::GetServicesDomain(
-          kOriginSkuHostnamePart,
-          brave_domains::ServicesEnvironment::STAGING)) {
+      origin_sku_domain_(
+          brave_domains::GetServicesDomain(kOriginSkuHostnamePart)) {
   CHECK(local_state_);
   CHECK(profile_prefs_);
   CHECK(!profile_id_.empty());

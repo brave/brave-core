@@ -12,6 +12,7 @@ import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
@@ -189,6 +190,10 @@ test("brave_unit_tests") {
     "//brave/components/brave_origin/buildflags",
     "//brave/components/brave_perf_predictor/browser",
   ]
+
+  if (is_brave_origin_branded) {
+    deps += [ "//brave/browser/ui/webui/brave_origin_startup:unit_tests" ]
+  }
 
   if (enable_brave_news) {
     deps += [

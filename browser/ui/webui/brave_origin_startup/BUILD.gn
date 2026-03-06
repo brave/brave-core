@@ -1,0 +1,56 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
+
+assert(is_brave_origin_branded)
+
+source_set("brave_origin_startup") {
+  sources = [
+    "brave_origin_startup_handler.cc",
+    "brave_origin_startup_handler.h",
+    "brave_origin_startup_ui.cc",
+    "brave_origin_startup_ui.h",
+  ]
+
+  public_deps = [
+    "//brave/components/brave_origin/mojom",
+    "//brave/components/skus/common:mojom",
+    "//mojo/public/cpp/bindings",
+  ]
+
+  deps = [
+    "//brave/brave_domains",
+    "//brave/browser/resources/brave_origin_startup:resources",
+    "//brave/browser/skus",
+    "//brave/components/brave_origin:pref_names",
+    "//brave/components/constants",
+    "//brave/components/resources:strings_grit",
+    "//brave/components/skus/browser",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
+    "//components/prefs",
+    "//content/public/browser",
+    "//ui/webui",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_origin_startup_handler_unittest.cc" ]
+
+  deps = [
+    ":brave_origin_startup",
+    "//base/test:test_support",
+    "//brave/components/brave_origin:pref_names",
+    "//brave/components/skus/browser:test_support",
+    "//chrome/test:test_support",
+    "//components/prefs:test_support",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+}
