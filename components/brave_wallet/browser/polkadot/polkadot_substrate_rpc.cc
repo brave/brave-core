@@ -218,31 +218,29 @@ base::expected<RpcResponse, std::string> HandleRpcCall(
 }
 
 std::optional<PolkadotBlockHeader> ParseChainHeaderFromHex(
-    const polkadot_substrate_rpc_responses::PolkadotChainHeader& res) {
+    const polkadot_substrate_rpc_responses::ChainHeader& res) {
   PolkadotBlockHeader header;
 
-  if (!PrefixedHexStringToFixed(res.result->parent_hash, header.parent_hash)) {
+  if (!PrefixedHexStringToFixed(res.parent_hash, header.parent_hash)) {
     return std::nullopt;
   }
 
-  if (!base::HexStringToUInt(res.result->number, &header.block_number)) {
+  if (!base::HexStringToUInt(res.number, &header.block_number)) {
     return std::nullopt;
   }
 
-  if (!PrefixedHexStringToFixed(res.result->state_root, header.state_root)) {
+  if (!PrefixedHexStringToFixed(res.state_root, header.state_root)) {
     return std::nullopt;
   }
 
-  if (!PrefixedHexStringToFixed(res.result->extrinsics_root,
-                                header.extrinsics_root)) {
+  if (!PrefixedHexStringToFixed(res.extrinsics_root, header.extrinsics_root)) {
     return std::nullopt;
   }
 
   // We need this for hashing the block header.
   // If we receive more than u32::MAX logs, it's safe to say we're getting bad
   // data from the remote.
-  auto num_logs =
-      base::CheckedNumeric<uint32_t>(res.result->digest.logs.size());
+  auto num_logs = base::CheckedNumeric<uint32_t>(res.digest.logs.size());
   if (!num_logs.IsValid()) {
     return std::nullopt;
   }
@@ -250,7 +248,7 @@ std::optional<PolkadotBlockHeader> ParseChainHeaderFromHex(
   auto enc_num_logs = compact_scale_encode_u32(num_logs.ValueOrDie());
 
   base::Extend(header.encoded_logs, enc_num_logs);
-  for (const auto& log_str : res.result->digest.logs) {
+  for (const auto& log_str : res.digest.logs) {
     std::vector<uint8_t> log;
     if (!PrefixedHexStringToBytes(log_str, &log)) {
       return std::nullopt;
@@ -259,6 +257,16 @@ std::optional<PolkadotBlockHeader> ParseChainHeaderFromHex(
   }
 
   return header;
+}
+
+std::optional<std::vector<std::string>> ParseExtrinsics(
+    polkadot_substrate_rpc_responses::ChainBlockData& res) {
+  for (const auto& extrinsic : res.extrinsics) {
+    if (!IsValidHexString(extrinsic)) {
+      return std::nullopt;
+    }
+  }
+  return std::move(res.extrinsics);
 }
 
 }  // namespace
@@ -458,7 +466,7 @@ void PolkadotSubstrateRpc::OnGetBlockHeader(GetBlockHeaderCallback callback,
     return std::move(callback).Run(std::nullopt, std::nullopt);
   }
 
-  auto header = ParseChainHeaderFromHex(*res);
+  auto header = ParseChainHeaderFromHex(res->result.value());
   if (!header) {
     // We received { "parentHash": "...", "number": "..." } that contained
     // invalid hex or hex that exceeded numeric limits.
@@ -466,6 +474,63 @@ void PolkadotSubstrateRpc::OnGetBlockHeader(GetBlockHeaderCallback callback,
   }
 
   std::move(callback).Run(std::move(*header), std::nullopt);
+}
+
+void PolkadotSubstrateRpc::GetBlock(
+    std::string_view chain_id,
+    std::optional<base::span<uint8_t, kPolkadotBlockHashSize>> block_hash,
+    GetBlockCallback callback) {
+  auto url = GetNetworkURL(chain_id);
+
+  base::ListValue params;
+
+  if (block_hash) {
+    params.Append(base::HexEncodeLower(*block_hash));
+  }
+
+  auto payload =
+      base::WriteJson(MakeRpcRequestJson("chain_getBlock", std::move(params)));
+  CHECK(payload);
+
+  api_request_helper_.Request(
+      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+      base::BindOnce(&PolkadotSubstrateRpc::OnGetBlock,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void PolkadotSubstrateRpc::OnGetBlock(GetBlockCallback callback,
+                                      APIRequestResult api_result) {
+  auto res = HandleRpcCall<polkadot_substrate_rpc_responses::PolkadotBlock>(
+      api_result);
+
+  if (!res.has_value()) {
+    // We received either a network error, an actual RPC error or JSON that
+    // didn't match our schema.
+    return std::move(callback).Run(std::nullopt, res.error());
+  }
+
+  if (!res->result) {
+    // We received { "result": null } from the RPC, not an error.
+    return std::move(callback).Run(std::nullopt, std::nullopt);
+  }
+
+  auto header = ParseChainHeaderFromHex(res->result->block.header);
+  if (!header) {
+    // We received { "parentHash": "...", "number": "..." } that contained
+    // invalid hex or hex that exceeded numeric limits.
+    return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+  }
+
+  auto extrinsics = ParseExtrinsics(res->result->block);
+  if (!extrinsics) {
+    return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+  }
+
+  PolkadotBlock block;
+  block.header = std::move(header.value());
+  block.extrinsics = std::move(extrinsics.value());
+
+  std::move(callback).Run(std::move(block), std::nullopt);
 }
 
 void PolkadotSubstrateRpc::GetBlockHash(std::string_view chain_id,

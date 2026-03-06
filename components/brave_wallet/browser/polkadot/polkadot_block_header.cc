@@ -24,4 +24,10 @@ std::array<uint8_t, 32> PolkadotBlockHeader::GetHash() const {
       {parent_hash, enc_block_num, state_root, extrinsics_root, encoded_logs});
 }
 
+PolkadotBlock::PolkadotBlock() = default;
+PolkadotBlock::~PolkadotBlock() = default;
+PolkadotBlock::PolkadotBlock(PolkadotBlock&&) = default;
+
+PolkadotBlock& PolkadotBlock::operator=(PolkadotBlock&&) = default;
+
 }  // namespace brave_wallet

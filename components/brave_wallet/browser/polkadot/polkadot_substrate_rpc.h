@@ -47,6 +47,9 @@ class PolkadotSubstrateRpc {
       base::OnceCallback<void(std::optional<PolkadotBlockHeader>,
                               std::optional<std::string>)>;
 
+  using GetBlockCallback = base::OnceCallback<void(std::optional<PolkadotBlock>,
+                                                   std::optional<std::string>)>;
+
   using GetBlockHashCallback = base::OnceCallback<void(
       std::optional<std::array<uint8_t, kPolkadotBlockHashSize>>,
       std::optional<std::string>)>;
@@ -102,6 +105,16 @@ class PolkadotSubstrateRpc {
       std::optional<base::span<uint8_t, kPolkadotBlockHashSize>> block_hash,
       GetBlockHeaderCallback callback);
 
+  // Grab the entire block specified by the associated block hash or, if not
+  // provided, the latest block in the chain. This method is similar to
+  // GetBlockHeader but includes the array of extrinsics finalized with the
+  // block. Note that an extrinsic being finalized in a block does not mean it
+  // was successful. Extrinsic status must be separately queried.
+  void GetBlock(
+      std::string_view chain_id,
+      std::optional<base::span<uint8_t, kPolkadotBlockHashSize>> block_hash,
+      GetBlockCallback callback);
+
   // Get the block hash for a given block number. This is most useful for
   // getting the "genesis hash", which is the blockhash of block 0.
   // If a block number is not provided then the latest block hash is returned.
@@ -147,6 +160,7 @@ class PolkadotSubstrateRpc {
   void OnGetAccountBalance(GetAccountBalanceCallback, APIRequestResult res);
   void OnGetFinalizedHead(GetFinalizedHeadCallback, APIRequestResult res);
   void OnGetBlockHeader(GetBlockHeaderCallback callback, APIRequestResult res);
+  void OnGetBlock(GetBlockCallback callback, APIRequestResult res);
   void OnGetBlockHash(GetBlockHashCallback callback, APIRequestResult res);
   void OnGetRuntimeVersion(GetRuntimeVersionCallback callback,
                            APIRequestResult res);
