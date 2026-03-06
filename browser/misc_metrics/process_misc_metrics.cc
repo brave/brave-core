@@ -6,9 +6,9 @@
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 
 #include "brave/browser/misc_metrics/doh_metrics.h"
+#include "brave/browser/misc_metrics/media_session_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/components/misc_metrics/default_browser_monitor.h"
-#include "brave/components/misc_metrics/media_session_metrics.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #if !BUILDFLAG(IS_ANDROID)
