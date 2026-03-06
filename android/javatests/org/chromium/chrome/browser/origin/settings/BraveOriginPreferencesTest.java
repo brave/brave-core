@@ -29,7 +29,6 @@ import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 @DoNotBatch(reason = "Tests cannot run batched because they launch a Settings activity.")
 public class BraveOriginPreferencesTest {
     private static final String PREF_REWARDS_SWITCH = "rewards_switch";
-    private static final String PREF_CRASH_REPORTS_SWITCH = "crash_reports_switch";
     private static final String PREF_PRIVACY_PRESERVING_ANALYTICS_SWITCH =
             "privacy_preserving_analytics_switch";
     private static final String PREF_EMAIL_ALIASES_SWITCH = "email_aliases_switch";
@@ -63,15 +62,6 @@ public class BraveOriginPreferencesTest {
                         mBraveOriginPreferences.findPreference(PREF_REWARDS_SWITCH);
         assertNotNull("PREF_REWARDS_SWITCH should exist", rewardsSwitch);
         assertFalse("PREF_REWARDS_SWITCH should be off by default", rewardsSwitch.isChecked());
-
-        // Test crash reports switch
-        ChromeSwitchPreference crashReportsSwitch =
-                (ChromeSwitchPreference)
-                        mBraveOriginPreferences.findPreference(PREF_CRASH_REPORTS_SWITCH);
-        assertNotNull("PREF_CRASH_REPORTS_SWITCH should exist", crashReportsSwitch);
-        assertFalse(
-                "PREF_CRASH_REPORTS_SWITCH should be off by default",
-                crashReportsSwitch.isChecked());
 
         // Test privacy preserving analytics switch
         ChromeSwitchPreference privacyPreservingAnalyticsSwitch =
