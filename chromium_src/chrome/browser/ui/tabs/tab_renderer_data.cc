@@ -26,7 +26,7 @@
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "chrome/browser/extensions/extension_web_ui.h"
+#include "chrome/browser/extensions/extension_url_overrides.h"
 #endif
 
 namespace {
@@ -36,7 +36,7 @@ namespace {
 bool IsChromeURLOverridden(const GURL& url, Profile* profile) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   GURL override_url(url);
-  return ExtensionWebUI::HandleChromeURLOverride(&override_url, profile);
+  return ExtensionUrlOverrides::HandleChromeURLOverride(&override_url, profile);
 #else
   return false;
 #endif
