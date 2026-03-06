@@ -2702,7 +2702,13 @@
 -All/DownloadReferrerPolicyTest.DownloadCrossDomainReferrerPolicy/2
 -All/FromGWSNavigationAndKeepAliveRequestBrowserTest.TwoDifferentCategoryRequestAndTwoDifferentCategoryNavigationsFromSRP/*
 -All/GetAuthTokenFunctionEnableGranularPermissionsTest.EnableGranularPermissions/*
+
+# Brave's canvas farbling (PerturbPixels) modifies getImageData() results,
+# breaking this test's canvas-based video playback detection.
+# Stable upstream: Capture/0 1.1%, Capture/1 0.2% flake rate (30-day LUCI).
 -All/GetDisplayMediaHiDpiBrowserTest.Capture/0
+-All/GetDisplayMediaHiDpiBrowserTest.Capture/1
+
 -All/HeadlessModeDumpDomCommandBrowserTestWithSubResourceTimeout.HeadlessDumpDomWithSubResourceTimeout/*
 -All/IdentityGetProfileUserInfoFunctionTest*.*/*
 -All/LoginPromptBrowserTest.*
