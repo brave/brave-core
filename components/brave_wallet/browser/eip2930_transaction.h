@@ -23,7 +23,7 @@ class Eip2930Transaction : public EthTransaction {
     AccessListItem();
     ~AccessListItem();
     AccessListItem(const AccessListItem&);
-    bool operator==(const AccessListItem&) const;
+    bool operator==(const AccessListItem&) const = default;
 
     AccessedAddress address;
     std::vector<AccessedStorageKey> storage_keys;
@@ -34,7 +34,7 @@ class Eip2930Transaction : public EthTransaction {
   Eip2930Transaction();
   Eip2930Transaction(const Eip2930Transaction&);
   ~Eip2930Transaction() override;
-  bool operator==(const Eip2930Transaction&) const;
+  bool operator==(const Eip2930Transaction&) const = default;
 
   static std::optional<Eip2930Transaction> FromTxData(const mojom::TxDataPtr&,
                                                       uint256_t chain_id,
