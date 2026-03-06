@@ -105,6 +105,11 @@ class PolkadotSubstrateRpc {
       std::optional<base::span<uint8_t, kPolkadotBlockHashSize>> block_hash,
       GetBlockHeaderCallback callback);
 
+  // Grab the entire block specified by the associated block hash or, if not
+  // provided, the latest block in the chain. This method is similar to
+  // GetBlockHeader but includes the array of extrinsics finalized with the
+  // block. Note that an extrinsic being finalized in a block does not mean it
+  // was successful. Extrinsic status must be separately queried.
   void GetBlock(
       std::string_view chain_id,
       std::optional<base::span<uint8_t, kPolkadotBlockHashSize>> block_hash,
