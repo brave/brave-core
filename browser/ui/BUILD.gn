@@ -821,7 +821,10 @@ source_set("ui") {
       ]
     }
 
-    deps += [ "//chrome/browser/infobars" ]
+    deps += [
+      "//chrome/browser/infobars",
+      "//chrome/browser/obsolete_system",
+    ]
   }
 
   deps += [
