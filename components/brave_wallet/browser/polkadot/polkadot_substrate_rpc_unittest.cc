@@ -2351,4 +2351,394 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetPaymentInfo) {
   }
 }
 
+TEST_F(PolkadotSubstrateRpcUnitTest, GetBlock) {
+  // The routines that parse blocks should reuse the routines that already parse
+  // the block headers, which means this test in general needs a much less heavy
+  // testing burden. All we really need to do here is make sure that we get an
+  // array of hex strings.
+
+  const auto* chain_id = mojom::kPolkadotTestnet;
+  std::string testnet_url =
+      network_manager_
+          ->GetKnownChain(mojom::kPolkadotTestnet, mojom::CoinType::DOT)
+          ->rpc_endpoints.front()
+          .spec();
+
+  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
+
+  base::test::TestFuture<std::optional<PolkadotBlock>,
+                         std::optional<std::string>>
+      future;
+
+  {
+    // Successful RPC call (nullary).
+
+    url_loader_factory_.ClearResponses();
+
+    polkadot_substrate_rpc_->GetBlock(chain_id, std::nullopt,
+                                      future.GetCallback());
+
+    auto* reqs = url_loader_factory_.pending_requests();
+    EXPECT_TRUE(reqs);
+    EXPECT_EQ(reqs->size(), 1u);
+
+    auto const& req = reqs->at(0);
+    EXPECT_TRUE(req.request.request_body->elements());
+    auto const& element = req.request.request_body->elements()->at(0);
+
+    std::string expected_body = R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "chain_getBlock",
+        "params": []
+      })";
+
+    EXPECT_EQ(base::test::ParseJsonDict(
+                  element.As<network::DataElementBytes>().AsStringPiece()),
+              base::test::ParseJsonDict(expected_body));
+
+    // Should match the block data here:
+    // https://westend.subscan.io/block/29986674
+    // Note that we choose to exclude one of the extrinsics from the test data
+    // because it's simply just too large, spanning tens of KBs worth of hex
+    // data which is absurd for a unit test.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "result":{
+          "block":{
+            "header":{
+              "parentHash":"0x679bf2ce8ad7a75903b61d53c3fef2ce52fa01af7ee25dbd7a82a3516756dc61",
+              "number":"0x1c98f72",
+              "stateRoot":"0xbbc2fd81afd18ac40c31ba2f909da0b228e1d505ceaf79f17a40b2dd964f0c55",
+              "extrinsicsRoot":"0x9d1107a618c83b48f26e9af67a4df58565ee1905f01bee582903b67d528e7e68",
+              "digest":{
+                "logs":[
+                  "0x0642414245b5010104000000bcbf9a110000000078c84652fec3ebd75549aeabd0cbc84f9232606cef56aa80e304e0adffe8db69c58956fb12435293cad94e61ea55d6dbbd6edab1ca4aa10ee46f8ded4bec79094369c343adf1b4d76d03554901d8e79e3e3d92c5824348731cf1f3d142e10c09",
+                  "0x04424545468403be55687de385553673894b02babee86a09ab5da4cd569eb8a2e10acb60e05e27",
+                  "0x05424142450101aa2ef2a5c8b8f8d1119437e40c15b30fbe13a7ab56e86fa90a729d166a74426c8d35e9c17ab858e922c913da0f2af2ebda3a1a41172884022ed8ab5cfba3e189"
+                ]
+              }
+            },
+            "extrinsics":[
+              "0x280502000b41c6ed9a9c01",
+              "0x4502840052707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c01fe7084bd98bd4c8cdee53ffcacc642d4647d6dac32824a1674e9b8883ea61a3870696b0c07363f482183e615c7a55f8a66cde7eb7bc11e1242001527919dde8ef5027000000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4807009236bb1c"
+            ]
+          },
+          "justifications":null
+        }
+      })");
+
+    auto [block, error] = future.Take();
+
+    EXPECT_EQ(error, std::nullopt);
+    ASSERT_TRUE(block);
+
+    EXPECT_EQ(
+        base::HexEncodeLower(block->header.parent_hash),
+        "679bf2ce8ad7a75903b61d53c3fef2ce52fa01af7ee25dbd7a82a3516756dc61");
+    EXPECT_EQ(block->header.block_number, 29986674u);
+    EXPECT_EQ(
+        base::HexEncodeLower(block->header.state_root),
+        "bbc2fd81afd18ac40c31ba2f909da0b228e1d505ceaf79f17a40b2dd964f0c55");
+    EXPECT_EQ(
+        base::HexEncodeLower(block->header.extrinsics_root),
+        "9d1107a618c83b48f26e9af67a4df58565ee1905f01bee582903b67d528e7e68");
+
+    EXPECT_EQ(
+        base::HexEncodeLower(block->header.encoded_logs),
+        "0c"
+        R"(0642414245b5010104000000bcbf9a110000000078c84652fec3ebd75549aeabd0cbc84f9232606cef56aa80e304e0adffe8db69c58956fb12435293cad94e61ea55d6dbbd6edab1ca4aa10ee46f8ded4bec79094369c343adf1b4d76d03554901d8e79e3e3d92c5824348731cf1f3d142e10c09)"
+        R"(04424545468403be55687de385553673894b02babee86a09ab5da4cd569eb8a2e10acb60e05e27)"
+        R"(05424142450101aa2ef2a5c8b8f8d1119437e40c15b30fbe13a7ab56e86fa90a729d166a74426c8d35e9c17ab858e922c913da0f2af2ebda3a1a41172884022ed8ab5cfba3e189)");
+
+    EXPECT_THAT(
+        block->extrinsics,
+        testing::ElementsAre(
+            R"(0x280502000b41c6ed9a9c01)",
+            R"(0x4502840052707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c01fe7084bd98bd4c8cdee53ffcacc642d4647d6dac32824a1674e9b8883ea61a3870696b0c07363f482183e615c7a55f8a66cde7eb7bc11e1242001527919dde8ef5027000000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4807009236bb1c)"));
+
+    EXPECT_EQ(
+        base::HexEncodeLower(block->header.GetHash()),
+        "e1cf95144139c7b92223a5bf20106b97b350c3803f4b0a11e14d38a6de758711");
+  }
+
+  {
+    // Successful RPC call (block hash provided).
+
+    url_loader_factory_.ClearResponses();
+
+    std::array<uint8_t, kPolkadotBlockHashSize> block_hash = {};
+    ASSERT_TRUE(base::HexStringToSpan(
+        "e1cf95144139c7b92223a5bf20106b97b350c3803f4b0a11e14d38a6de758711",
+        block_hash));
+
+    polkadot_substrate_rpc_->GetBlock(chain_id, block_hash,
+                                      future.GetCallback());
+
+    auto* reqs = url_loader_factory_.pending_requests();
+    EXPECT_TRUE(reqs);
+    EXPECT_EQ(reqs->size(), 1u);
+
+    auto const& req = reqs->at(0);
+    EXPECT_TRUE(req.request.request_body->elements());
+    auto const& element = req.request.request_body->elements()->at(0);
+
+    std::string expected_body = R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "chain_getBlock",
+        "params": ["e1cf95144139c7b92223a5bf20106b97b350c3803f4b0a11e14d38a6de758711"]
+      })";
+
+    EXPECT_EQ(base::test::ParseJsonDict(
+                  element.As<network::DataElementBytes>().AsStringPiece()),
+              base::test::ParseJsonDict(expected_body));
+
+    // Should match the block data here:
+    // https://westend.subscan.io/block/29986674
+    // Note that we choose to exclude one of the extrinsics from the test data
+    // because it's simply just too large, spanning tens of KBs worth of hex
+    // data which is absurd for a unit test.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "result":{
+          "block":{
+            "header":{
+              "parentHash":"0x679bf2ce8ad7a75903b61d53c3fef2ce52fa01af7ee25dbd7a82a3516756dc61",
+              "number":"0x1c98f72",
+              "stateRoot":"0xbbc2fd81afd18ac40c31ba2f909da0b228e1d505ceaf79f17a40b2dd964f0c55",
+              "extrinsicsRoot":"0x9d1107a618c83b48f26e9af67a4df58565ee1905f01bee582903b67d528e7e68",
+              "digest":{
+                "logs":[
+                  "0x0642414245b5010104000000bcbf9a110000000078c84652fec3ebd75549aeabd0cbc84f9232606cef56aa80e304e0adffe8db69c58956fb12435293cad94e61ea55d6dbbd6edab1ca4aa10ee46f8ded4bec79094369c343adf1b4d76d03554901d8e79e3e3d92c5824348731cf1f3d142e10c09",
+                  "0x04424545468403be55687de385553673894b02babee86a09ab5da4cd569eb8a2e10acb60e05e27",
+                  "0x05424142450101aa2ef2a5c8b8f8d1119437e40c15b30fbe13a7ab56e86fa90a729d166a74426c8d35e9c17ab858e922c913da0f2af2ebda3a1a41172884022ed8ab5cfba3e189"
+                ]
+              }
+            },
+            "extrinsics":[
+              "0x280502000b41c6ed9a9c01",
+              "0x4502840052707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c01fe7084bd98bd4c8cdee53ffcacc642d4647d6dac32824a1674e9b8883ea61a3870696b0c07363f482183e615c7a55f8a66cde7eb7bc11e1242001527919dde8ef5027000000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4807009236bb1c"
+            ]
+          },
+          "justifications":null
+        }
+      })");
+
+    auto [block, error] = future.Take();
+
+    EXPECT_EQ(error, std::nullopt);
+    ASSERT_TRUE(block);
+
+    EXPECT_EQ(
+        base::HexEncodeLower(block->header.parent_hash),
+        "679bf2ce8ad7a75903b61d53c3fef2ce52fa01af7ee25dbd7a82a3516756dc61");
+    EXPECT_EQ(block->header.block_number, 29986674u);
+    EXPECT_EQ(
+        base::HexEncodeLower(block->header.state_root),
+        "bbc2fd81afd18ac40c31ba2f909da0b228e1d505ceaf79f17a40b2dd964f0c55");
+    EXPECT_EQ(
+        base::HexEncodeLower(block->header.extrinsics_root),
+        "9d1107a618c83b48f26e9af67a4df58565ee1905f01bee582903b67d528e7e68");
+
+    EXPECT_EQ(
+        base::HexEncodeLower(block->header.encoded_logs),
+        "0c"
+        R"(0642414245b5010104000000bcbf9a110000000078c84652fec3ebd75549aeabd0cbc84f9232606cef56aa80e304e0adffe8db69c58956fb12435293cad94e61ea55d6dbbd6edab1ca4aa10ee46f8ded4bec79094369c343adf1b4d76d03554901d8e79e3e3d92c5824348731cf1f3d142e10c09)"
+        R"(04424545468403be55687de385553673894b02babee86a09ab5da4cd569eb8a2e10acb60e05e27)"
+        R"(05424142450101aa2ef2a5c8b8f8d1119437e40c15b30fbe13a7ab56e86fa90a729d166a74426c8d35e9c17ab858e922c913da0f2af2ebda3a1a41172884022ed8ab5cfba3e189)");
+
+    EXPECT_THAT(
+        block->extrinsics,
+        testing::ElementsAre(
+            R"(0x280502000b41c6ed9a9c01)",
+            R"(0x4502840052707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c01fe7084bd98bd4c8cdee53ffcacc642d4647d6dac32824a1674e9b8883ea61a3870696b0c07363f482183e615c7a55f8a66cde7eb7bc11e1242001527919dde8ef5027000000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4807009236bb1c)"));
+
+    EXPECT_EQ(
+        base::HexEncodeLower(block->header.GetHash()),
+        "e1cf95144139c7b92223a5bf20106b97b350c3803f4b0a11e14d38a6de758711");
+  }
+
+  {
+    // Successful RPC call (can't be found).
+
+    url_loader_factory_.ClearResponses();
+
+    std::array<uint8_t, kPolkadotBlockHashSize> block_hash = {};
+    ASSERT_TRUE(base::HexStringToSpan(
+        "e1cf95144139c7b92223a5bf20106b97b350c3803f4b0a11e14d38a6de758712",
+        block_hash));
+
+    polkadot_substrate_rpc_->GetBlock(chain_id, block_hash,
+                                      future.GetCallback());
+
+    auto* reqs = url_loader_factory_.pending_requests();
+    EXPECT_TRUE(reqs);
+    EXPECT_EQ(reqs->size(), 1u);
+
+    auto const& req = reqs->at(0);
+    EXPECT_TRUE(req.request.request_body->elements());
+    auto const& element = req.request.request_body->elements()->at(0);
+
+    std::string expected_body = R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "chain_getBlock",
+        "params": ["e1cf95144139c7b92223a5bf20106b97b350c3803f4b0a11e14d38a6de758712"]
+      })";
+
+    EXPECT_EQ(base::test::ParseJsonDict(
+                  element.As<network::DataElementBytes>().AsStringPiece()),
+              base::test::ParseJsonDict(expected_body));
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "result":null
+      })");
+
+    auto [block, error] = future.Take();
+
+    EXPECT_EQ(error, std::nullopt);
+    EXPECT_EQ(block, std::nullopt);
+  }
+
+  {
+    // Remote returned invalid hex in an extrinsic.
+
+    url_loader_factory_.ClearResponses();
+
+    std::array<uint8_t, kPolkadotBlockHashSize> block_hash = {};
+    ASSERT_TRUE(base::HexStringToSpan(
+        "e1cf95144139c7b92223a5bf20106b97b350c3803f4b0a11e14d38a6de758712",
+        block_hash));
+
+    polkadot_substrate_rpc_->GetBlock(chain_id, block_hash,
+                                      future.GetCallback());
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "result":{
+          "block":{
+            "header":{
+              "parentHash":"0x679bf2ce8ad7a75903b61d53c3fef2ce52fa01af7ee25dbd7a82a3516756dc61",
+              "number":"0x1c98f72",
+              "stateRoot":"0xbbc2fd81afd18ac40c31ba2f909da0b228e1d505ceaf79f17a40b2dd964f0c55",
+              "extrinsicsRoot":"0x9d1107a618c83b48f26e9af67a4df58565ee1905f01bee582903b67d528e7e68",
+              "digest":{
+                "logs":[
+                  "0x0642414245b5010104000000bcbf9a110000000078c84652fec3ebd75549aeabd0cbc84f9232606cef56aa80e304e0adffe8db69c58956fb12435293cad94e61ea55d6dbbd6edab1ca4aa10ee46f8ded4bec79094369c343adf1b4d76d03554901d8e79e3e3d92c5824348731cf1f3d142e10c09",
+                  "0x04424545468403be55687de385553673894b02babee86a09ab5da4cd569eb8a2e10acb60e05e27",
+                  "0x05424142450101aa2ef2a5c8b8f8d1119437e40c15b30fbe13a7ab56e86fa90a729d166a74426c8d35e9c17ab858e922c913da0f2af2ebda3a1a41172884022ed8ab5cfba3e189"
+                ]
+              }
+            },
+            "extrinsics":[
+              "0xcat280502000b41c6ed9a9c01",
+              "0x4502840052707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c01fe7084bd98bd4c8cdee53ffcacc642d4647d6dac32824a1674e9b8883ea61a3870696b0c07363f482183e615c7a55f8a66cde7eb7bc11e1242001527919dde8ef5027000000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4807009236bb1c"
+            ]
+          },
+          "justifications":null
+        }
+      })");
+
+    auto [block, error] = future.Take();
+
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_EQ(block, std::nullopt);
+  }
+
+  {
+    // Remote sent back an empty extrinsics array.
+
+    url_loader_factory_.ClearResponses();
+
+    polkadot_substrate_rpc_->GetBlock(chain_id, std::nullopt,
+                                      future.GetCallback());
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "result":{
+          "block":{
+            "header":{
+              "parentHash":"0x679bf2ce8ad7a75903b61d53c3fef2ce52fa01af7ee25dbd7a82a3516756dc61",
+              "number":"0x1c98f72",
+              "stateRoot":"0xbbc2fd81afd18ac40c31ba2f909da0b228e1d505ceaf79f17a40b2dd964f0c55",
+              "extrinsicsRoot":"0x9d1107a618c83b48f26e9af67a4df58565ee1905f01bee582903b67d528e7e68",
+              "digest":{
+                "logs":[
+                  "0x0642414245b5010104000000bcbf9a110000000078c84652fec3ebd75549aeabd0cbc84f9232606cef56aa80e304e0adffe8db69c58956fb12435293cad94e61ea55d6dbbd6edab1ca4aa10ee46f8ded4bec79094369c343adf1b4d76d03554901d8e79e3e3d92c5824348731cf1f3d142e10c09",
+                  "0x04424545468403be55687de385553673894b02babee86a09ab5da4cd569eb8a2e10acb60e05e27",
+                  "0x05424142450101aa2ef2a5c8b8f8d1119437e40c15b30fbe13a7ab56e86fa90a729d166a74426c8d35e9c17ab858e922c913da0f2af2ebda3a1a41172884022ed8ab5cfba3e189"
+                ]
+              }
+            },
+            "extrinsics":[]
+          },
+          "justifications":null
+        }
+      })");
+
+    auto [block, error] = future.Take();
+
+    EXPECT_EQ(error, std::nullopt);
+    ASSERT_TRUE(block);
+    EXPECT_TRUE(block->extrinsics.empty());
+  }
+
+  {
+    // Extrinsics field is a non-conforming type (number instead of array).
+
+    url_loader_factory_.ClearResponses();
+
+    polkadot_substrate_rpc_->GetBlock(chain_id, std::nullopt,
+                                      future.GetCallback());
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "result":{
+          "block":{
+            "header":{
+              "parentHash":"0x679bf2ce8ad7a75903b61d53c3fef2ce52fa01af7ee25dbd7a82a3516756dc61",
+              "number":"0x1c98f72",
+              "stateRoot":"0xbbc2fd81afd18ac40c31ba2f909da0b228e1d505ceaf79f17a40b2dd964f0c55",
+              "extrinsicsRoot":"0x9d1107a618c83b48f26e9af67a4df58565ee1905f01bee582903b67d528e7e68",
+              "digest":{
+                "logs":[
+                  "0x0642414245b5010104000000bcbf9a110000000078c84652fec3ebd75549aeabd0cbc84f9232606cef56aa80e304e0adffe8db69c58956fb12435293cad94e61ea55d6dbbd6edab1ca4aa10ee46f8ded4bec79094369c343adf1b4d76d03554901d8e79e3e3d92c5824348731cf1f3d142e10c09",
+                  "0x04424545468403be55687de385553673894b02babee86a09ab5da4cd569eb8a2e10acb60e05e27",
+                  "0x05424142450101aa2ef2a5c8b8f8d1119437e40c15b30fbe13a7ab56e86fa90a729d166a74426c8d35e9c17ab858e922c913da0f2af2ebda3a1a41172884022ed8ab5cfba3e189"
+                ]
+              }
+            },
+            "extrinsics": 42
+          },
+          "justifications":null
+        }
+      })");
+
+    auto [block, error] = future.Take();
+
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_EQ(block, std::nullopt);
+  }
+}
+
 }  // namespace brave_wallet

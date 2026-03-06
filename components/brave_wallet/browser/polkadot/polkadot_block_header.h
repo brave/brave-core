@@ -37,6 +37,20 @@ struct PolkadotBlockHeader {
   std::vector<uint8_t> encoded_logs;
 };
 
+struct PolkadotBlock {
+  PolkadotBlock();
+  PolkadotBlock(const PolkadotBlock&) = delete;
+  PolkadotBlock(PolkadotBlock&&);
+
+  ~PolkadotBlock();
+
+  PolkadotBlock& operator=(const PolkadotBlock&) = delete;
+  PolkadotBlock& operator=(PolkadotBlock&&);
+
+  PolkadotBlockHeader header;
+  std::vector<std::string> extrinsics;
+};
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_BLOCK_HEADER_H_
