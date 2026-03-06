@@ -20,6 +20,12 @@ extension BraveWebView {
     guard let tab = tab as? ChromiumTabState else { return nil }
     return tab.webView
   }
+
+  @_disfavoredOverload
+  @_spi(ChromiumWebViewAccess) public static func from(tab: any TabState) -> BraveWebView? {
+    guard let tab = tab as? ChromiumTabState else { return nil }
+    return tab.webView
+  }
 }
 
 extension TabState {

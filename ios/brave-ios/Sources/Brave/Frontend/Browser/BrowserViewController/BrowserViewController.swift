@@ -2105,10 +2105,21 @@ public class BrowserViewController: UIViewController {
         // because that event will not always fire due to unreliable page caching. This will either let us know that
         // the currently loaded page can be turned into reading mode or if the page already is in reading mode. We
         // ignore the result because we are being called back asynchronous when the readermode status changes.
-        tab.evaluateJavaScript(
-          functionName: "\(readerModeNamespace).checkReadability",
-          contentWorld: ReaderModeScriptHandler.scriptSandbox
-        )
+        if FeatureList.kUseProfileWebViewConfiguration.enabled {
+          if let readerMode = tab.readerMode {
+            Task {
+              await readerMode.checkReadability()
+              if tabManager.selectedTab === tab {
+                topToolbar.updateReaderModeState(readerMode.state)
+              }
+            }
+          }
+        } else {
+          tab.evaluateJavaScript(
+            functionName: "\(readerModeNamespace).checkReadability",
+            contentWorld: ReaderModeScriptHandler.scriptSandbox
+          )
+        }
 
         // Only add history of a url which is not a localhost url
         if !url.isInternalURL(for: .readermode) {
@@ -2172,17 +2183,22 @@ public class BrowserViewController: UIViewController {
 
   func toggleReaderMode() {
     guard let tab = tabManager.selectedTab else { return }
-    if let readerMode = tab.browserData?.getContentScript(name: ReaderModeScriptHandler.scriptName)
-      as? ReaderModeScriptHandler
-    {
-      switch readerMode.state {
-      case .available:
-        enableReaderMode()
-      case .active:
-        disableReaderMode()
-      case .unavailable:
-        break
-      }
+    let readerModeState: ReaderModeState?
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      readerModeState = tab.readerMode?.state
+    } else {
+      readerModeState =
+        (tab.browserData?.getContentScript(name: ReaderModeScriptHandler.scriptName)
+        as? ReaderModeScriptHandler)?.state
+    }
+    guard let readerModeState else { return }
+    switch readerModeState {
+    case .available:
+      enableReaderMode()
+    case .active:
+      disableReaderMode()
+    case .unavailable:
+      break
     }
   }
 
