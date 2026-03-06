@@ -1,0 +1,27 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_origin.mojom;
+
+// Interface for the Brave Origin startup dialog WebUI.
+// Used by the startup gate dialog shown before the profile picker
+// on is_brave_origin_branded builds.
+interface BraveOriginStartupHandler {
+  // Check if the user has a valid Origin purchase via SKU CredentialSummary.
+  CheckPurchaseState() => (bool is_purchased);
+
+  // Verify a purchase ID (order ID from email). Calls RefreshOrder,
+  // then FetchOrderCredentials, then CredentialSummary to confirm.
+  VerifyPurchaseId(string purchase_id) => (bool success, string error_message);
+
+  // Get the buy URL for opening the checkout page.
+  GetBuyUrl() => (string url);
+
+  // Signal that the user wants to open the buy window.
+  OpenBuyWindow();
+
+  // Signal that the dialog should close (purchase verified).
+  CloseDialog();
+};

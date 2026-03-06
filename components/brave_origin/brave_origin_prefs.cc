@@ -13,6 +13,8 @@ namespace brave_origin {
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   // Register the dictionary preference that stores all Brave policy values
   registry->RegisterDictionaryPref(kBraveOriginPolicies);
+  // Whether the user has validated their Brave Origin purchase at startup.
+  registry->RegisterBooleanPref(kOriginPurchaseValidated, false);
 }
 
 }  // namespace brave_origin

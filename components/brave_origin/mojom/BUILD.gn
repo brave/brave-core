@@ -13,7 +13,10 @@ mojom_component("mojom") {
   generate_legacy_js_bindings = true
   webui_module_path = "/"
 
-  sources = [ "brave_origin_settings.mojom" ]
+  sources = [
+    "brave_origin_settings.mojom",
+    "brave_origin_startup.mojom",
+  ]
 
   deps = [ "//mojo/public/mojom/base" ]
 }
