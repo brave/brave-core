@@ -262,6 +262,10 @@ are declared in tools/grit/grit_args.gni.
         </if>
       <if expr="use_titlecase">
         </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
 
       <if expr="is_chromeos">
         </if>
@@ -497,6 +501,10 @@ are declared in tools/grit/grit_args.gni.
           </if>
         <if expr="is_macosx">
           </if>
+
+        <if expr="is_android">
+          </if>
+
         </if>
 
       <if expr="not is_android">
@@ -652,12 +660,6 @@ are declared in tools/grit/grit_args.gni.
       </if>
       <if expr="is_macosx">
         </if>
-      <if expr="use_titlecase">
-        <then>
-          </then>
-        <else>
-          </else>
-      </if>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">

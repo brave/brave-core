@@ -848,6 +848,9 @@
   <message name="IDS_AUTOFILL_AI_NATIONAL_ID_CARD_ENTITY_NAME" desc="The label for something that a user can save when submitting a form. For context, a user has been able to save credit cards within Brave for many users. Now a user can also save a “Identity card”. Important: Avoid translations that refer to a single, specific government document. Instead try to find a general term that is inclusive of all identity cards that meet the definition below, including documents issued by foreign governments. DEFINITION OF “NATIONAL IDENTITY CARD”: The definition we use for this feature is: “An identity document that meets the following criteria: 1) Issued by the government 2) Primary purpose is proving a natural person's identity (as opposed to e.g. their residence) 3) Common form of identification that most people keep with them 4) Not a passport or driver’s license.” EXAMPLES: This definition would include https://www.service-public.fr/particuliers/vosdroits/N358?lang=en. It would not include a United States Social Security Number or https://www.bzst.de/EN/Private_individuals/Tax_identification_number/tax_identification_number_node.html.">
     Identity card
   </message>
+  <message name="IDS_AUTOFILL_AI_ID_CARD_ENTITY_NAME" desc="The label for something that a user can save when submitting a form. For context, a user has been able to save credit cards within Brave for many users. Now a user can also save a “Identity card”. Important: Avoid translations that refer to a single, specific government document. Instead try to find a general term that is inclusive of all identity cards that meet the definition below, including documents issued by foreign governments. DEFINITION OF “NATIONAL IDENTITY CARD”: The definition we use for this feature is: “An identity document that meets the following criteria: 1) Issued by the government 2) Primary purpose is proving a natural person's identity (as opposed to e.g. their residence) 3) Common form of identification that most people keep with them 4) Not a passport or driver’s license.” EXAMPLES: This definition would include https://www.service-public.fr/particuliers/vosdroits/N358?lang=en. It would not include a United States Social Security Number or https://www.bzst.de/EN/Private_individuals/Tax_identification_number/tax_identification_number_node.html.">
+    ID card
+  </message>
   <message name="IDS_AUTOFILL_AI_PASSPORT_ENTITY_NAME" desc="The label for something that a user can save when submitting a form. For context, a user has been able to save credit cards within Brave for many users. Now a user can also save a “Driver’s license”.">
     Passport
   </message>
@@ -961,6 +964,9 @@
   <message name="IDS_AUTOFILL_AI_DRIVERS_LICENSE_NUMBER_ATTRIBUTE_NAME" desc="Used as a general label for the driver's license number attribute.">
     Number
   </message>
+  <message name="IDS_AUTOFILL_AI_DRIVERS_LICENSE_NUMBER_ATTRIBUTE_NAME_NEW" desc="Used as a general label for the driver's license number attribute.">
+    License Number
+  </message>
   <message name="IDS_AUTOFILL_AI_DRIVERS_LICENSE_EXPIRATION_DATE_ATTRIBUTE_NAME" desc="Used as a general label for the driver's license expiration date attribute.">
     Expiration date
   </message>
@@ -979,11 +985,17 @@
   <message name="IDS_AUTOFILL_AI_NATIONAL_ID_CARD_COUNTRY_ATTRIBUTE_NAME" desc="A label that describes a piece of user data. This label loosely aligns with the original form the user submitted. For example, United Airlines might label the field  “Region” and Delta might label it “Country”. Once the information is saved with enhanced autofill, we just call the value “Country”.">
     Country
   </message>
+  <message name="IDS_AUTOFILL_AI_NATIONAL_ID_CARD_COUNTRY_ATTRIBUTE_NAME_NEW" desc="A label that describes a piece of user data. This label loosely aligns with the original form the user submitted. For example, United Airlines might label the field  “Region” and Delta might label it “Country”. Once the information is saved with enhanced autofill, we just call the value “Country”.">
+    Issuing country
+  </message>
   <message name="IDS_AUTOFILL_AI_NATIONAL_ID_CARD_EXPIRATION_DATE_ATTRIBUTE_NAME" desc="A label that describes a piece of user data. This label loosely aligns with the original form the user submitted. For example, United Airlines might label the field  “Expires” and Delta might label it “Date document expires”. Once the information is saved with enhanced autofill, we just call the value “Expiration date”.">
     Expiration date
   </message>
   <message name="IDS_AUTOFILL_AI_NATIONAL_ID_CARD_ISSUE_DATE_ATTRIBUTE_NAME" desc="A label that describes a piece of user data. This label loosely aligns with the original form the user submitted. For example, United Airlines might label the field  “Issue” and Delta might label it “Date document issue”. Once the information is saved with enhanced autofill, we just call the value “Issue date”.">
     Issue date
+  </message>
+  <message name="IDS_AUTOFILL_AI_NATIONAL_ID_CARD_ISSUE_DATE_ATTRIBUTE_NAME_NEW" desc="A label that describes a piece of user data. This label loosely aligns with the original form the user submitted. For example, United Airlines might label the field  “Issue” and Delta might label it “Date document issue”. Once the information is saved with enhanced autofill, we just call the value “Issue date”.">
+    Date issued
   </message>
 
   <!-- Attributes of the Known Traveler Number entity -->
@@ -1121,7 +1133,7 @@
     Brave Wallet
   </message>
   <!-- Prompt strings used on Desktop -->
-  <if expr="not is_android and not is_ios">
+  <if expr="not is_android">
     <message name="IDS_AUTOFILL_AI_SAVE_DRIVERS_LICENSE_ENTITY_DIALOG_TITLE" desc="The title of a dialog that prompts the user to save information they just filled in on a form. For example, the user is renting a car and just filled in info about their driver’s license. When they click Submit, we offer to save the data in Brave. Depending on the form and what Brave recognizes, there might be just one or several pieces of data saved at this moment. This is a similar moment to saving a password or credit card with Brave.">
       Save driver's license?
     </message>
@@ -1306,6 +1318,9 @@
     </message>
     <message name="IDS_AUTOFILL_AI_ENTITY_EDITOR_DATE_FIELD_YEAR_LABEL" desc="The default value in the date field year picker in the editor dialog." formatter_data="android_java">
       Year
+    </message>
+    <message name="IDS_AUTOFILL_AI_ENTITY_EDITOR_INVALID_DATE_ERROR_MESSAGE" desc="An error message that appears beneath a date picker in the case that the user doesn't add a full date. For example, the user sees this error if they set the month but not the day or year, or choose an invalid date like February 30." formatter_data="android_java">
+      Check the date
     </message>
   </if>
 

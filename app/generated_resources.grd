@@ -912,6 +912,10 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FEEDBACK" desc="The name of the Autofill Feedback command in the content area context menu">
             Help improve autofill
           </message>
+          <!-- TODO(481979475): remove non translateable flag  -->
+          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_AT_MEMORY" desc="In Title Case: The name of Search and Fill From Anywhere command in the content area context menu" translateable="false">
+            Search and fill from anywhere
+          </message>
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_SELECT_PASSWORD" desc="This is a context menu entry in the passwords submenu. It triggers the password selection bubble.">
             Select password
           </message>
@@ -1241,6 +1245,10 @@ are declared in tools/grit/grit_args.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FEEDBACK" desc="In Title Case: The name of the Autofill Feedback command in the content area context menu">
             Help Improve Autofill
+          </message>
+          <!-- TODO(481979475): remove non translateable flag  -->
+          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_AT_MEMORY" desc="In Title Case: The name of Search and Fill From Anywhere command in the content area context menu" translateable="false">
+            Search and Fill From Anywhere
           </message>
           <!-- TODO(359570730): remove non translateable flag  -->
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_PREDICTION_IMPROVEMENTS" desc="In Title Case: The name of the Autofill manual fallback for payment methods attribute command in the content area context menu." translateable="false">
@@ -1917,6 +1925,16 @@ are declared in tools/grit/grit_args.gni.
       <if expr="use_titlecase">
         <message name="IDS_MANAGE_SEARCH_ENGINES_AND_SITE_SEARCH" desc="In Title Case: Title of the popup menu item that takes the user to 'Manage search engines and site search' in Settings.">
           &amp;Manage Search Engines and Site Search
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_MANAGE_SEARCH_ENGINES_AND_SHORTCUTS" desc="Title of the popup menu item that takes the user to 'Manage search engines and shortcuts' in Settings.">
+          &amp;Manage search engines and shortcuts
+        </message>
+      </if>
+      <if expr="use_titlecase">
+        <message name="IDS_MANAGE_SEARCH_ENGINES_AND_SHORTCUTS" desc="In Title Case: Title of the popup menu item that takes the user to 'Manage search engines and shortcuts' in Settings.">
+          &amp;Manage Search Engines and Shortcuts
         </message>
       </if>
 
@@ -3278,6 +3296,9 @@ are declared in tools/grit/grit_args.gni.
         </message>
         <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_URL" desc="The title at the top of an web app update dialog when only the url of the app changed.">
           A new version of this app is available
+        </message>
+        <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_URL_FORCED_MIGRATION" desc="The title at the top of an web app update dialog when the app is forced to be migrated to a new URL.">
+          A new version of this app is required
         </message>
         <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_NAME_AND_URL" desc="The title at the top of the web app update dialog when the name and url changed.">
           Review name and URL updates
@@ -5565,6 +5586,13 @@ are declared in tools/grit/grit_args.gni.
             Manage your extensions by clicking Extensions in the Window menu.
           </message>
         </if>
+
+        <if expr="is_android">
+          <message name="IDS_EXTENSION_INSTALLED_OK_BUTTON" desc="The text for the ok button in the post install dialog.">
+            Got it
+          </message>
+        </if>
+
         <message name="IDS_EXTENSION_INSTALLED_MANAGE_SHORTCUTS" desc="Text for a link in the extension installed dialog that opens the page for managing extension shortcuts (chrome://extensions/configureCommands).">
           <ph name="MANAGE_SHORTCUTS_LINK">$1<ex>Manage shortcuts</ex></ph>
         </message>
@@ -8447,6 +8475,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_COMPOSE_CREATE_IMAGE_PLACEHOLDER" desc="Placeholder text for the composebox when in create image mode.">
         Describe your image
       </message>
+      <message name="IDS_COMPOSE_HINT_TEXT_ASK_ABOUT_THESE" desc="Placeholder text for the composebox when there are multiple files in the carousel.">
+        Ask about these
+      </message>
+      <message name="IDS_COMPOSE_HINT_TEXT_ASK_ABOUT_THIS_IMAGE" desc="Placeholder text for the composebox when there is exactly one image in the carousel.">
+        Ask about this image
+      </message>
+      <message name="IDS_COMPOSE_HINT_TEXT_ASK_ABOUT_THIS_TAB" desc="Placeholder text for the composebox when there is exactly one tab in the carousel.">
+        Ask about this tab
+      </message>
+      <message name="IDS_COMPOSE_HINT_TEXT_ASK_ABOUT_THIS_DOC" desc="Placeholder text for the composebox when there is exactly one document (PDF) in the carousel.">
+        Ask about this doc
+      </message>
       <message name="IDS_NTP_ACTION_CHIP_TAB_HEADING_1" translateable="true" desc="Heading of the tab action chip on the NTP.">
         Ask about previous tab
       </message>
@@ -8473,6 +8513,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_ACTION_CHIP_DEEP_SEARCH_BODY" translateable="true" desc="Body text in the deep search action chip describing the use of the chip.">
         Dive deep into something new
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_CANVAS_HEADING" translateable="true" desc="Heading of the canvas action chip on the NTP.">
+        Canvas
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_CANVAS_BODY" translateable="true" desc="Body text in the canvas action chip describing the use of the chip.">
+        Write, plan, code, and more
       </message>
       <message name="IDS_COMPOSE_REMOVE_TOOL_CHIP_A11Y_LABEL" desc="A11y text for removing a tool in the composebox.">
         Remove <ph name="TOOL_NAME">$1<ex>Deep Search</ex></ph>
@@ -9571,6 +9617,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READING_MODE_LANGUAGE_MENU_CLOSE" desc="Label for a button to close a dialog with options for managing language preferences for Read Aloud.">
         Close
       </message>
+      <message name="IDS_READING_MODE_CLOSE" desc="Tooltip and screen reader label for a button to close reading mode.">
+        Close reading mode
+      </message>
       <message name="IDS_READING_MODE_LANGUAGE_MENU_NO_RESULTS" desc="Text shown in the Read Aloud language menu after a search yields no matching languages.">
         No results found
       </message>
@@ -9865,109 +9914,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Search tabs
       </message>
 
-      <!-- Strings for tab declutter -->
-      <message name="IDS_DECLUTTER_SELECTOR_HEADING_NO_DEDUPE" desc="Heading for the declutter button in the tab organization selector when dedupe is disabled.">
-        {NUM_TABS, plural,
-          =0 {No inactive tabs}
-          =1 {Review 1 inactive tab}
-          other {Review # inactive tabs}}
-      </message>
-      <message name="IDS_DECLUTTER_SELECTOR_HEADING" desc="Heading for the declutter button in the tab organization selector.">
-        {NUM_TABS, plural,
-          =0 {No unused tabs}
-          =1 {Review 1 unused tab}
-          other {Review # unused tabs}}
-      </message>
-      <message name="IDS_DECLUTTER_SELECTOR_SUBHEADING" desc="Subheading for the declutter button in the tab organization selector.">
-        Keep your tabs clutter-free
-      </message>
-      <message name="IDS_DECLUTTER_TITLE" desc="The header text for the declutter UI">
-        Clean up unused tabs
-      </message>
-      <message name="IDS_DECLUTTER_INACTIVE_TITLE_NO_DEDUPE" desc="The header text for the declutter inactive tab UI when dedupe is disabled">
-        Review inactive tabs
-      </message>
-      <message name="IDS_DECLUTTER_INACTIVE_TITLE" desc="The header text for the declutter inactive tab UI">
-        Inactive tabs
-      </message>
-      <message name="IDS_DECLUTTER_INACTIVE_BODY" desc="The body text for the declutter inactive tab UI">
-        Tabs you haven't used in <ph name="COUNT">$1<ex>7</ex></ph> or more days
-      </message>
-      <message name="IDS_DECLUTTER_DUPLICATE_TITLE" desc="The header text for the declutter duplicate tab UI">
-        Duplicate tabs
-      </message>
-      <message name="IDS_DECLUTTER_DUPLICATE_BODY" desc="The body text for the declutter duplicate tab UI">
-        Oldest copy kept when you close duplicates
-      </message>
-      <message name="IDS_DECLUTTER_EMPTY_TITLE" desc="The header text for the declutter empty state UI">
-        Things look neat!
-      </message>
-      <message name="IDS_DECLUTTER_EMPTY_BODY_NO_DEDUPE" desc="The body text for the declutter empty state UI when dedupe is disabled">
-        No inactive tabs right now
-      </message>
-      <message name="IDS_DECLUTTER_EMPTY_BODY" desc="The body text for the declutter empty state UI">
-        No unused tabs right now
-      </message>
-      <message name="IDS_DUPLICATE_ITEM_TITLE_SINGLE" desc="The title for an item in the duplicate tabs list with 1 duplicate">
-        <ph name="URL">$1<ex>google.com</ex></ph> • 1 duplicate
-      </message>
-      <message name="IDS_DUPLICATE_ITEM_TITLE_MULTI" desc="The title for an item in the duplicate tabs list with multiple duplicates">
-        <ph name="URL">$1<ex>google.com</ex></ph> • <ph name="DUPLICATE_COUNT">$2<ex>2</ex></ph> duplicates
-      </message>
-      <message name="IDS_TOOLTIP_TAB_DECLUTTER_NO_DEDUPE" desc="The tooltip for the Tab Declutter button when dedupe is disabled.">
-        Review inactive tabs?
-      </message>
-      <message name="IDS_TAB_DECLUTTER_NO_DEDUPE" desc="The text label of the Tab Declutter button when dedupe is disabled.">
-        Review inactive tabs?
-      </message>
-      <message name="IDS_ACCNAME_TAB_DECLUTTER_NO_DEDUPE" desc="The accessible name for the Tab Declutter button when dedupe is disabled." is_accessibility_with_no_ui="true">
-        Review inactive tabs
-      </message>
-      <message name="IDS_TOOLTIP_TAB_DECLUTTER" desc="The tooltip for the Tab Declutter button.">
-        Clean up unused tabs?
-      </message>
-      <message name="IDS_TAB_DECLUTTER" desc="The text label of the Tab Declutter button.">
-        Clean up unused tabs?
-      </message>
-      <message name="IDS_ACCNAME_TAB_DECLUTTER" desc="The accessible name for the Tab Declutter button." is_accessibility_with_no_ui="true">
-        Clean up unused tabs
-      </message>
-      <message name="IDS_DECLUTTER_TIMESTAMP" desc="The description of when a tab was last accessed, for use in a declutter row.">
-        {NUM_DAYS, plural,
-          =0 {Visited 0 days ago}
-          =1 {Visited 1 day ago}
-          other {Visited # days ago}}
-      </message>
-      <if expr="use_titlecase">
-        <then>
-          <message name="IDS_DECLUTTER_MENU_NO_DEDUPE" desc="In Title Case: The text label for the declutter app menu item when dedupe is disabled.">
-            Review Inactive Tabs
-          </message>
-          <message name="IDS_DECLUTTER_MENU" desc="In Title Case: The text label for the declutter app menu item.">
-            Clean Up Unused Tabs
-          </message>
-        </then>
-        <else>
-          <message name="IDS_DECLUTTER_MENU_NO_DEDUPE" desc="The text label for the declutter app menu item when dedupe is disabled.">
-            Review inactive tabs
-          </message>
-          <message name="IDS_DECLUTTER_MENU" desc="The text label for the declutter app menu item.">
-            Clean up unused tabs
-          </message>
-        </else>
-      </if>
-      <message name="IDS_DECLUTTER_CLOSE_TABS" desc="The text label of the action button in the Tab Declutter UI.">
-        Close all
-      </message>
-      <message name="IDS_DECLUTTER_CLOSE_TAB_ARIA_LABEL" desc="The accessible label declutter for the button which excludes a tab from the list" is_accessibility_with_no_ui="true">
-        Remove <ph name="TAB_TITLE">$1<ex>New Tab</ex></ph>, <ph name="LAST_ACTIVE">$2<ex>Visited 9 days ago</ex></ph> from list
-      </message>
-      <message name="IDS_DECLUTTER_CLOSE_TAB_TOOLTIP" desc="The declutter tooltip for the button which excludes a tab from the list">
-        Remove tab from list
-      </message>
-      <message name="IDS_DECLUTTER_A11Y_TAB_EXCLUDED" desc="A11y message after user clicks on the close tab button in the declutter list item." is_accessibility_with_no_ui="true">
-        Tab excluded from list
-      </message>
       <!-- Strings for tab organization -->
       <message name="IDS_TOOLTIP_TAB_ORGANIZE" desc="The tooltip for the Tab Organization button.">
         Organize tabs?
@@ -9996,9 +9942,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_TAB_ORGANIZATION_SUCCESS_IPH_SCREENREADER" desc="The screen reader text of the IPH describing how to interact with a tab group resulting from tab organization." is_accessibility_with_no_ui="true">
         Select the tab group and activate the context menu to edit
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_SELECTOR_ARIA_LABEL" desc="The screen reader text describing the tab organization selector button" is_accessibility_with_no_ui="true">
-        <ph name="HEADING">$1<ex>Group tabs with AI</ex></ph>. <ph name="SUBHEADING">$2<ex>Get your tabs sorted</ex></ph>
       </message>
 
       <!-- Strings for split view -->
@@ -10113,7 +10056,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
             Tab Groups
           </message>
           <message name="IDS_RECENT_CHATS_TITLE" desc="In Title Case: The title for the recent chats container in the projects panel.">
-            Recent Chats
+            Recent Chats &amp; Threads
           </message>
           <message name="IDS_TAB_GROUP_MORE_OPTIONS" desc="In Title Case: The tooltip for the button in a tab group item that opens the options menu.">
             More options
@@ -10129,14 +10072,20 @@ Keep your key file in a safe place. You will need it to create new versions of y
           <message name="IDS_TAB_GROUPS_TITLE" desc="The title for the tab groups container in the projects panel.">
             Tab groups
           </message>
-          <message name="IDS_RECENT_CHATS_TITLE" desc="In Title Case: The title for the recent chats container in the projects panel.">
-            Recent chats
+          <message name="IDS_RECENT_CHATS_TITLE" desc="The title for the recent chats container in the projects panel.">
+            Recent chats &amp; threads
           </message>
           <message name="IDS_TAB_GROUP_MORE_OPTIONS" desc="The tooltip for the button in a tab group item that opens the options menu.">
             More options
           </message>
         </else>
       </if>
+      <message name="IDS_PROJECTS_PANEL_GEMINI_ACTIVITY" desc="The label for the Gemini app activity menu item in the projects panel.">
+        Gemini app activity
+      </message>
+      <message name="IDS_PROJECTS_PANEL_AI_MODE_ACTIVITY" desc="The label for the AI Mode activity menu item in the projects panel.">
+        AI Mode activity
+      </message>
       <message name="IDS_TAB_GROUPS_NO_TAB_GROUPS" desc="Text indicating the user has no Tab groups.">
         Organize your tabs by grouping them together and label them with a custom name and color
       </message>
@@ -10274,6 +10223,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_IOS_DEVICE_TYPE_IPAD" desc="The product name 'iPad'.">
           iPad
+        </message>
+        <message name="IDS_NTP_MOBILE_PROMO_BODY" desc="Body text of the NTP promo that promotes Brave on mobile.">
+          Scan this with your phone to get your bookmarks, passwords, and more on the go
+        </message>
+        <message name="IDS_NTP_MOBILE_PROMO_PASSWORDS_BODY" desc="Body text of the NTP promo that promotes Brave on mobile for passwords.">
+          Scan this with your phone to save and autofill your passwords to easily sign in to sites and apps
         </message>
       </if>
 
@@ -12188,15 +12143,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <message name="IDS_TAB_ORGANIZATION_THUMBS_UP" desc="Accessibility label for the thumbs up icon that a user can click to provide positive feedback about a tab organization." is_accessibility_with_no_ui="true">
         Thumbs up submits feedback that you like this tab group suggestion
-      </message>
-      <message name="IDS_AUTO_TAB_GROUPS_SELECTOR_HEADING" desc="Heading for the auto tab groups button in the tab organization selector.">
-        Group tabs with AI
-      </message>
-      <message name="IDS_AUTO_TAB_GROUPS_SELECTOR_SUBHEADING" desc="Subheading for the auto tab groups button in the tab organization selector.">
-        Get your tabs sorted
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_BACK_BUTTON_ARIA_LABEL" desc="Accessibility label for the back button within a tab organization subpage." is_accessibility_with_no_ui="true">
-        Click to navigate away from <ph name="TITLE">$1<ex>Auto Tab Groups</ex></ph>
       </message>
       <message name="IDS_TAB_ORGANIZATION_A11Y_TAB_EXCLUDED" desc="A11y message after user clicks on the close tab button in the tab organization list item." is_accessibility_with_no_ui="true">
         Tab excluded from suggested group
@@ -18667,98 +18613,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
     <!-- Input overlay strings -->
     <if expr="is_chromeos">
-      <message name="IDS_INPUT_OVERLAY_GAME_CONTROLS_ALPHA" desc="Generic feature name during alpha phase, to be displayed in educational and settigns UI.">
-        Game controls
-      </message>
-      <message name="IDS_INPUT_OVERLAY_EDUCATIONAL_TITLE_ALPHA" desc="Feature title via Educational menu.">
-        Game controls now available
-      </message>
-      <message name="IDS_INPUT_OVERLAY_ACCESSIBILITY_ALPHA" desc="Text tied to the close button on Settings menu, readable via Bravevox.">
-        Close game controls
-      </message>
-      <message name="IDS_INPUT_OVERLAY_MENU_ENTRY_BUTTON" desc="Button to access Input Overlay's settings menu.">
-        Game Control
-      </message>
-      <message name="IDS_INPUT_OVERLAY_MENU_GAME_CONTROL" desc="Toggle to enable input overlay feature for arc games.">
-        Game Control
-      </message>
-      <message name="IDS_INPUT_OVERLAY_MENU_KEY_MAPPING" desc="Text shown next to the customize button to engage in modifying key bindings for games.">
-        Key mapping
-      </message>
-      <message name="IDS_INPUT_OVERLAY_MENU_CUSTOMIZE_BUTTON" desc="Text displayed to engage in key binding edition.">
-        Customize
-      </message>
-      <message name="IDS_INPUT_OVERLAY_MENU_EDIT_BUTTON" desc="Text displayed to engage in key binding edition.">
-        Edit
-      </message>
-      <message name="IDS_INPUT_OVERLAY_MENU_SHOW_HINT_OVERLAY" desc="Text shown next to the toggle to enable/disable the display overlay to the user.">
-        Show hint overlay
-      </message>
-      <message name="IDS_INPUT_OVERLAY_MENU_SHOW_KEY_MAPPING" desc="Text tied to the key-mapping toggle on Settings UI.">
-        Show key mapping
-      </message>
-      <message name="IDS_INPUT_OVERLAY_MENU_SEND_FEEDBACK" desc="Entry point to send feedback regarding input-overlay.">
-        Send feedback
-      </message>
-      <message name="IDS_INPUT_OVERLAY_EDIT_MENU_KEYBOARD_KEY" desc="Entry point to bind action to keyboard key.">
-        Keyboard key
-      </message>
-      <message name="IDS_INPUT_OVERLAY_EDIT_MENU_LEFT_MOUSE_CLICK" desc="Entry point to bind action to left mouse click.">
-        Left mouse click
-      </message>
-      <message name="IDS_INPUT_OVERLAY_EDIT_MENU_RIGHT_MOUSE_CLICK" desc="Entry point to bind action to right mouse click.">
-        Right mouse click
-      </message>
-      <message name="IDS_INPUT_OVERLAY_EDIT_MENU_RESET" desc="Entry point to reset the action binding to original binding.">
-        Reset
-      </message>
-      <message name="IDS_INPUT_OVERLAY_EDIT_MODE_RESET" desc="Restore key-bindings to a preset status.">
-        Reset to defaults
-      </message>
-      <message name="IDS_INPUT_OVERLAY_EDIT_MODE_SAVE" desc="Apply and store the newly set key-bindings.">
-        Save
-      </message>
-      <message name="IDS_INPUT_OVERLAY_EDIT_MODE_CANCEL" desc="Discard all the newly assigned key-bindings in this session.">
-        Cancel
-      </message>
-      <message name="IDS_INPUT_OVERLAY_EDUCATIONAL_TITLE" desc="Educational dialog's title, this is a friendly name for the feature.">
-        Game Control
-      </message>
-      <message name="IDS_INPUT_OVERLAY_EDUCATIONAL_DESCRIPTION" desc="Text on the educational dialog describing the funcionality introduced by this feature.">
-        You’ve been invited to try out keyboard control for this game.
-      </message>
-      <message name="IDS_INPUT_OVERLAY_EDUCATIONAL_DESCRIPTION_ALPHA" desc="Text shown on the educational dialog during alpha relase.">
-        Play using your Chromebook keyboard. You can customize keys to specific actions.
-      </message>
-      <message name="IDS_INPUT_OVERLAY_EDUCATIONAL_ACCEPT_BUTTON" desc="Educational dialog's accept button text.">
-        Got it
-      </message>
-      <message name="IDS_INPUT_OVERLAY_EDUCATIONAL_BETA" desc="Label marking the feature as 'Beta', this has to be removed after the feature is fully approved.">
-        Beta
-      </message>
-      <message name="IDS_INPUT_OVERLAY_RELEASE_ALPHA" desc="Label marking the feature as 'Alpha', this will be removed after feature fully launches.">
-        Alpha
-      </message>
-      <message name="IDS_INPUT_OVERLAY_SETTINGS_NUDGE" desc="Label displayed next to the Settings UI's entry point so the user is aware.">
-        Click here to customize controls
-      </message>
-      <message name="IDS_INPUT_OVERLAY_SETTINGS_NUDGE_ALPHA" desc="Label displayed next to Settings UI's entry point during alpha phase.">
-        Click to customize your game controls
-      </message>
-      <message name="IDS_INPUT_OVERLAY_CLOSE_MENU" desc="Accessibility name tied to the close button.">
-        Close menu
-      </message>
-      <message name="IDS_INPUT_OVERLAY_EDIT_INSTRUCTIONS" desc="Text presented via a toltip so the user knows how to interact and edit key-bindigs.">
-        Click on any key with your mouse, then press a keyboard key to customize
-      </message>
       <message name="IDS_INPUT_OVERLAY_EDIT_MISSING_BINDING" desc="Text presented via a toltip so the user is aware of an incomplete key-binding.">
         Key is missing. Press a keyboard key to customize
       </message>
       <message name="IDS_INPUT_OVERLAY_EDIT_RESERVED_KEYS" desc="Text informing the user about keys not available for binding.">
         The following keys aren’t supported: Tab, Shift, Control, Escape, Caps lock, Volume
-      </message>
-      <message name="IDS_INPUT_OVERLAY_EDIT_FOCUSED_KEY" desc="Text informing the user on how to proceed while having a focused key.">
-        Press a keyboard key to customize
       </message>
     </if>
 

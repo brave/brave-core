@@ -253,6 +253,10 @@ CHAR_LIMIT guidelines:
       <message name="IDS_NOTIFICATION_CATEGORY_BROWSER" desc="Label for browser-related notifications, within a list of notification categories. [CHAR_LIMIT=32]">
         Browser
       </message>
+      <!-- TODO(crbug.com/489124317): Update translation. -->
+      <message name="IDS_NOTIFICATION_CATEGORY_ACTOR" desc="Label for actor-related notifications, within a list of notification categories. [CHAR_LIMIT=32]" translateable="false">
+        Actor
+      </message>
       <message name="IDS_NOTIFICATION_CATEGORY_SCREEN_CAPTURE" desc="Label for notifications shown when screen is sharing or recording, within a list of notification categories. [CHAR_LIMIT=32]">
         Screen Capture
       </message>
@@ -1285,6 +1289,17 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_ANDROID_HISTORY_BLOCKED_SITE" desc="The text displayed in the history page indicating that a visit to a web site was blocked due to an administrator policy.">
         Blocked site
+      </message>
+      <message name="IDS_HISTORY_CLUSTERS_ITEM_COUNT" desc="Text showing the number of items in a history cluster.">
+        {COUNT, plural,
+          =1 {1 item}
+          other {# items}}
+      </message>
+      <message name="IDS_ACCESSIBILITY_COLLAPSE_SECTION" desc="Content description for the button to collapse a cluster in history.">
+        Collapse section
+      </message>
+      <message name="IDS_ACCESSIBILITY_EXPAND_SECTION" desc="Content description for the button to expand a cluster in history.">
+        Expand section
       </message>
 
       <!-- Privacy Guide -->
@@ -5252,6 +5267,42 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_PINNED_SHARING_INCOGNITO" desc="Content description for a multiselected pinned tab that is sharing its content in Private mode.">
         <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Pinned Sharing Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PICTURE_IN_PICTURE" desc="Content description for a tab that is in picture-in-picture mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Picture-in-Picture Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PICTURE_IN_PICTURE_INCOGNITO" desc="Content description for a tab that is in picture-in-picture mode in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Picture-in-Picture Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PINNED_PICTURE_IN_PICTURE" desc="Content description for a pinned tab that is in picture-in-picture mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Pinned Picture-in-Picture Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PINNED_PICTURE_IN_PICTURE_INCOGNITO" desc="Content description for a pinned tab that is in picture-in-picture mode in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Pinned Picture-in-Picture Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_PICTURE_IN_PICTURE" desc="Content description for a selected tab that is in picture-in-picture mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Picture-in-Picture Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_PICTURE_IN_PICTURE_INCOGNITO" desc="Content description for a selected tab that is in picture-in-picture mode in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Picture-in-Picture Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_PINNED_PICTURE_IN_PICTURE" desc="Content description for a selected pinned tab that is in picture-in-picture mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Pinned Picture-in-Picture Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_PINNED_PICTURE_IN_PICTURE_INCOGNITO" desc="Content description for a selected pinned tab that is in picture-in-picture mode in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Pinned Picture-in-Picture Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_PICTURE_IN_PICTURE" desc="Content description for a multiselected tab that is in picture-in-picture mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Picture-in-Picture Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_PICTURE_IN_PICTURE_INCOGNITO" desc="Content description for a multiselected tab that is in picture-in-picture mode in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Picture-in-Picture Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_PINNED_PICTURE_IN_PICTURE" desc="Content description for a multiselected pinned tab that is in picture-in-picture mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Pinned Picture-in-Picture Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_PINNED_PICTURE_IN_PICTURE_INCOGNITO" desc="Content description for a multiselected pinned tab that is in picture-in-picture mode in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Pinned Picture-in-Picture Private Tab
       </message>
       <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED" desc="Content description for tabs that are multiselected">
         <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Tab

@@ -338,7 +338,11 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           </message>
         </if>
 
-        </if>
+        <if expr="not use_titlecase">
+          </if>
+        <if expr="use_titlecase">
+           </if>
+      </if>
 
       <if expr="not is_chromeos">
         <message name="IDS_UPDATE_RECOMMENDED" desc="The main text of the Update Recommended dialog with a count of open Private windows.">
