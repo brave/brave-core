@@ -139,3 +139,7 @@ tools/cr/plaster.py check
 ```
 
 This is the equivalent of a dry run of `plaster.py apply`.
+
+### Best practices
+
+See https://github.com/brave-experiments/brave-core-tools/blob/master/docs/best-practices/plaster.md
