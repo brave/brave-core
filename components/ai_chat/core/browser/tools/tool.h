@@ -79,7 +79,7 @@ class Tool {
   // supported.
   virtual bool IsSupportedByModel(
       const mojom::Model& model,
-      mojom::ConversationCapability conversation_capability) const;
+      const ConversationCapabilitySet& conversation_capabilities) const;
 
   // Check if this tool requires user interaction before handling
   // Returns:

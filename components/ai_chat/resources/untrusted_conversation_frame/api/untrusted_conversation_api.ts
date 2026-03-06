@@ -116,7 +116,7 @@ export default function createUntrustedConversationApi(
         trimmedTokens: BigInt(0),
         totalTokens: BigInt(0),
         canSubmitUserEntries: false,
-        conversationCapability: Mojom.ConversationCapability.CHAT,
+        conversationCapabilities: [Mojom.ConversationCapability.CHAT],
       }),
     },
 
@@ -162,15 +162,15 @@ export default function createUntrustedConversationApi(
           contentTaskStarted(tabId) {},
 
           onEntriesUIStateChanged(state) {
-            state.allModels =
-              state.conversationCapability
-              === Mojom.ConversationCapability.CONTENT_AGENT
-                ? state.allModels.filter((m) =>
-                    m.supportedCapabilities.includes(
-                      Mojom.ConversationCapability.CONTENT_AGENT,
-                    ),
-                  )
-                : state.allModels
+            state.allModels = state.conversationCapabilities.includes(
+              Mojom.ConversationCapability.CONTENT_AGENT,
+            )
+              ? state.allModels.filter((m) =>
+                  m.supportedCapabilities.includes(
+                    Mojom.ConversationCapability.CONTENT_AGENT,
+                  ),
+                )
+              : state.allModels
             api.state.update(state)
           },
 

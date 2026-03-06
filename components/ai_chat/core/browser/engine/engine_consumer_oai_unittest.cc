@@ -2049,7 +2049,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponse_WithTools) {
 
   engine_->GenerateAssistantResponse(
       {}, history, false, {mock_tool->GetWeakPtr()}, std::nullopt,
-      mojom::ConversationCapability::CHAT, base::DoNothing(),
+      {mojom::ConversationCapability::CHAT}, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
 
