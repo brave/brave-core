@@ -6108,4 +6108,95 @@ TEST_F(ConversationHandlerUnitTest,
             "NYC weather is 72F");
 }
 
+TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
+  struct TestCase {
+    std::string name;
+    bool is_content_agent_allowed;
+    bool deep_research_enabled;
+    EngineConsumer::ConversationCapabilitySet expected_capabilities;
+  };
+
+  const std::vector<TestCase> test_cases = {
+      {
+          "Chat",
+          /*is_content_agent_allowed=*/false,
+          /*deep_research_enabled=*/false,
+          {mojom::ConversationCapability::CHAT},
+      },
+      {
+          "ChatWithDeepResearch",
+          /*is_content_agent_allowed=*/false,
+          /*deep_research_enabled=*/true,
+          {mojom::ConversationCapability::CHAT,
+           mojom::ConversationCapability::DEEP_RESEARCH},
+      },
+      {
+          "ContentAgent",
+          /*is_content_agent_allowed=*/true,
+          /*deep_research_enabled=*/false,
+          {mojom::ConversationCapability::CONTENT_AGENT},
+      },
+      {
+          "ContentAgentWithDeepResearch",
+          /*is_content_agent_allowed=*/true,
+          /*deep_research_enabled=*/true,
+          {mojom::ConversationCapability::CONTENT_AGENT},
+      },
+  };
+
+  for (const auto& test_case : test_cases) {
+    SCOPED_TRACE(test_case.name);
+
+    base::test::ScopedFeatureList feature_list;
+    if (test_case.deep_research_enabled) {
+      feature_list.InitAndEnableFeature(features::kAIChatDeepResearch);
+    } else {
+      feature_list.InitAndDisableFeature(features::kAIChatDeepResearch);
+    }
+
+    ai_chat_service_->SetIsContentAgentAllowed(
+        test_case.is_content_agent_allowed);
+
+    mock_tool_provider_ = nullptr;
+    std::vector<std::unique_ptr<ToolProvider>> tool_providers;
+    tool_providers.push_back(std::make_unique<NiceMock<MockToolProvider>>());
+    conversation_handler_ = std::make_unique<ConversationHandler>(
+        conversation_.get(), ai_chat_service_.get(), model_service_.get(),
+        ai_chat_service_->GetCredentialManagerForTesting(),
+        mock_feedback_api_.get(), &prefs_, shared_url_loader_factory_,
+        std::move(tool_providers));
+    mock_tool_provider_ = static_cast<MockToolProvider*>(
+        conversation_handler_->GetFirstToolProviderForTesting());
+    ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([]() {
+      return std::vector<base::WeakPtr<Tool>>();
+    });
+    conversation_handler_->SetEngineForTesting(
+        std::make_unique<NiceMock<MockEngineConsumer>>());
+    EmulateUserOptedIn();
+
+    MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+        conversation_handler_->GetEngineForTesting());
+
+    EXPECT_CALL(
+        *engine,
+        GenerateAssistantResponse(
+            _, _, _, _, _, testing::Eq(test_case.expected_capabilities), _, _))
+        .WillOnce(::testing::DoAll(
+            base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New("")),
+                std::nullopt)),
+            base::test::RunOnceCallback<7>(
+                base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("")),
+                    std::nullopt)))));
+
+    conversation_handler_->SubmitHumanConversationEntry("Hello", std::nullopt);
+    task_environment_.RunUntilIdle();
+
+    testing::Mock::VerifyAndClearExpectations(engine);
+  }
+}
+
 }  // namespace ai_chat
