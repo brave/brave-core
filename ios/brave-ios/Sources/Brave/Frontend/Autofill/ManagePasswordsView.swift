@@ -15,9 +15,6 @@ struct ManagePasswordsView: View {
   private typealias GroupID = ManagePasswordsViewModel.GroupID
   @Bindable var viewModel: ManagePasswordsViewModel
 
-  let windowProtection: WindowProtection?
-  var settingsDelegate: SettingsDelegate?
-
   @Environment(\.editMode) private var editMode
   @ObservedObject private var saveLogins = Preferences.General.saveLogins
   @State private var isSceneActive = true
@@ -59,8 +56,6 @@ struct ManagePasswordsView: View {
             ManagePasswordListRow(
               domain: domain,
               credentials: credentials,
-              windowProtection: windowProtection,
-              settingsDelegate: settingsDelegate,
               autofillDataManager: viewModel.autofillDataManager
             )
             .tag(GroupID.saved(domain: domain))
@@ -82,15 +77,13 @@ struct ManagePasswordsView: View {
             .font(.subheadline)
         }
       }
-      
+
       if !viewModel.filteredBlockedGroups.isEmpty {
         Section {
           ForEach(viewModel.filteredBlockedGroups, id: \.domain) { domain, credentials in
             ManagePasswordListRow(
               domain: domain,
               credentials: credentials,
-              windowProtection: windowProtection,
-              settingsDelegate: settingsDelegate,
               autofillDataManager: viewModel.autofillDataManager
             )
             .tag(GroupID.blocked(domain: domain))
@@ -225,9 +218,8 @@ struct ManagePasswordsView: View {
 private struct ManagePasswordListRow: View {
   let domain: String
   let credentials: [CWVPassword]
-  let windowProtection: WindowProtection?
-  var settingsDelegate: SettingsDelegate?
-  var autofillDataManager: CWVAutofillDataManager
+  let autofillDataManager: CWVAutofillDataManager
+  @Environment(\.autofillManagementContext) private var context
 
   private var resolvedRealmURL: URL {
     credentials.first.flatMap { URL(string: $0.site) } ?? URL(string: "about:blank")!
@@ -240,15 +232,14 @@ private struct ManagePasswordListRow: View {
   @ViewBuilder
   var body: some View {
     NavigationLink {
-      if let password = credentials.first {
+      if let password = credentials.first, let context {
         ManagePasswordDetailView(
-          windowProtection: windowProtection,
-          settingsDelegate: settingsDelegate,
           viewModel: ManagePasswordDetailViewModel(
-            password: password,
+            mode: .view(password),
             autofillDataManager: autofillDataManager
           )
         )
+        .environment(\.autofillManagementContext, context)
       }
     } label: {
       Label {

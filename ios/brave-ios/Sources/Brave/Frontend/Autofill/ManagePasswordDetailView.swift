@@ -11,11 +11,8 @@ import SwiftUI
 import UIKit
 
 struct ManagePasswordDetailView: View {
-  let windowProtection: WindowProtection?
-  var settingsDelegate: SettingsDelegate?
-  //var askForAuthentication: (@escaping (Bool, LAError.Code?) -> Void) -> Void
-
   @Bindable var viewModel: ManagePasswordDetailViewModel
+  @Environment(\.autofillManagementContext) private var context
   @State private var isPasswordRevealed = false
   @State private var showDeleteAlert = false
   @State private var showSetPasscodeAlert = false
@@ -47,7 +44,7 @@ struct ManagePasswordDetailView: View {
           }
           Button {
             if let url = URL(string: viewModel.site) {
-              settingsDelegate?.settingsOpenURLInNewTab(url)
+              context?.openURLInNewTab(url)
               dismiss()
             }
           } label: {
@@ -104,14 +101,13 @@ struct ManagePasswordDetailView: View {
         .contentShape(Rectangle())
         .contextMenu {
           Button {
-            windowProtection?.presentAuthenticationForViewController(viewType: <#T##AuthViewType#>)
-            // askForAuthentication { success, error in
-            //if success, let password = viewModel.passwordValue {
-            UIPasteboard.general.setSecureString(viewModel.passwordValue)
-            //} else if error == .passcodeNotSet {
-            //showSetPasscodeAlert = true
-            // }
-            //}
+            context?.askForAuthentication { success, error in
+              if success {
+                UIPasteboard.general.setSecureString(viewModel.passwordValue)
+              } else if error == .passcodeNotSet {
+                showSetPasscodeAlert = true
+              }
+            }
           } label: {
             Label(Strings.menuItemCopyTitle, braveSystemImage: "leo.copy")
           }
@@ -127,6 +123,16 @@ struct ManagePasswordDetailView: View {
   }
 
   private func togglePasswordReveal() {
-    isPasswordRevealed.toggle()
+    if isPasswordRevealed {
+      isPasswordRevealed = false
+    } else {
+      context?.askForAuthentication { [self] success, error in
+        if success {
+          isPasswordRevealed = true
+        } else if error == .passcodeNotSet {
+          showSetPasscodeAlert = true
+        }
+      }
+    }
   }
 }
