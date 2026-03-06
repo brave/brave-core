@@ -5,11 +5,14 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
-# Known upstream flake (crbug.com/40831552): 0.7% flake rate over 30 days per
+# Known upstream flake (crbug.com/40831552): ~1% flake rate over 30 days per
 # LUCI Analysis. Already disabled on Android upstream. DCHECK failure in
-# MockResultQueue::NextOperationResult due to mock result queue race condition.
+# MockResultQueue::NextOperationResult due to MOCK_TIME auto-advancing the
+# PurgeStale timer during TestFuture::Take(), consuming an extra mock queue
+# entry. Same root cause affects both FileBacked and InMemoryOnly variants.
 -All/SharedStorageManagerErrorParamTest.InitFailure_DestroyAndRecreateDatabase/FileBacked
 -All/SharedStorageManagerErrorParamTest.OtherOperationResults_NoErrorsAdded/FileBacked
+-All/SharedStorageManagerErrorParamTest.OtherOperationResults_NoErrorsAdded/InMemoryOnly
 
 # These tests fail because we override Prefetch methods to do nothing.
 -AffiliationServiceImplTest.*
