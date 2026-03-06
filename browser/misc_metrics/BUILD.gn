@@ -143,8 +143,8 @@ source_set("unit_tests") {
     "//components/bookmarks/browser",
     "//components/prefs:test_support",
     "//components/search_engines",
+    "//content/test:test_support",
     "//mojo/public/cpp/bindings",
-    "//services/media_session/public/cpp/test:test_support",
     "//services/media_session/public/mojom",
     "//testing/gtest",
   ]
