@@ -685,9 +685,6 @@
 -TabRendererDataTest.FromTabInModel
 -TabRendererDataTest.TabLifecycleManagement
 
-# This test fails because we set enable_glic to false
--ActorSitePolicyTest.*
-
 # These tests fail because we disable popular site suggestions functionality
 -MostVisitedSitesTest.ShouldDeduplicatePopularSitesWithMostVisitedIffHostAndTitleMatches
 -MostVisitedSitesTest.ShouldHandleTopSitesCacheHit
