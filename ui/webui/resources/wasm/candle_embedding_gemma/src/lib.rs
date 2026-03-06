@@ -24,14 +24,17 @@
 // Embedding Gemma inference implementation,
 // modified from 'https://github.com/huggingface/text-embeddings-inference/blob/main/backends/candle/src/models/gemma3.rs'
 
+use candle_core::quantized::{gguf_file, GgmlDType, QMatMul, QTensor};
 use candle_core::{DType, Device, IndexOp, Tensor, D};
-use candle_nn::{Embedding, Module, VarBuilder};
+use candle_nn::{Module, VarBuilder};
+use half::f16;
 use serde::Deserialize;
+use std::sync::Arc;
 use tokenizers::Tokenizer;
 use wasm_bindgen::prelude::*;
 
-use candle_core::quantized::gguf_file;
-use candle_core::quantized::{QMatMul, QTensor};
+const QK8_0: usize = 32;
+const BLOCK_BYTES_Q8_0: usize = 2 + QK8_0; // f16 scale + 32 i8
 
 // each 'dim' dimensional vector is split into even and odd indexed vectors.
 // 1 / base ^ (i / dim) is calculated for each position.
@@ -628,36 +631,23 @@ impl Gemma3Layer {
 }
 
 pub struct Gemma3Embedding {
-    embedding: Embedding,
-    scale: f64,
+    qembed: Q8GgufEmbedding,
 }
 
 impl Gemma3Embedding {
     pub fn load_from_gguf<R: std::io::Seek + std::io::Read>(
         ct: &gguf_file::Content,
-        reader: &mut R,
+        _reader: &mut R,
         config: &Gemma3Config,
+        gguf_bytes: Arc<Vec<u8>>,
     ) -> candle_core::Result<Self> {
-        // Load quantized embedding weights from GGUF
-        let qweight = ct.tensor(reader, "token_embd.weight", &Device::Cpu)?;
-
-        // Dequantize to FP32
-        let weight = qweight.dequantize(&Device::Cpu)?;
-
-        // Build embedding with FP32 weights
-        let embedding = Embedding::new(weight, config.hidden_size);
-
-        // Gemma3 embedding scale
-        let scale = (config.hidden_size as f64).sqrt();
-
-        Ok(Self { embedding, scale })
+        let qembed =
+            load_token_embedding_q8_0(ct, gguf_bytes, "token_embd.weight", config.hidden_size)?;
+        Ok(Self { qembed })
     }
 
     pub fn forward(&self, input_ids: &Tensor) -> candle_core::Result<Tensor> {
-        let hidden = self.embedding.forward(input_ids)?;
-        let result = (hidden * self.scale)?;
-
-        Ok(result)
+        self.qembed.forward(input_ids)
     }
 }
 
@@ -688,6 +678,7 @@ impl Gemma3Model {
         vb_dense2: VarBuilder,
         config: &Gemma3Config,
         model_type: ModelType,
+        gguf_bytes: Arc<Vec<u8>>,
     ) -> candle_core::Result<Self> {
         let pool = match model_type {
             ModelType::Classifier => {
@@ -696,7 +687,7 @@ impl Gemma3Model {
             ModelType::Embedding(pool) => pool,
         };
 
-        let embed_tokens = Gemma3Embedding::load_from_gguf(&ct, reader, config)?;
+        let embed_tokens = Gemma3Embedding::load_from_gguf(&ct, reader, config, gguf_bytes)?;
 
         let layers = (0..config.num_hidden_layers)
             .map(|layer_idx| {
@@ -930,7 +921,8 @@ impl Gemma3Embedder {
         let config: Gemma3Config =
             serde_json::from_slice(&config).map_err(|e| JsError::new(&e.to_string()))?;
 
-        let mut cursor = std::io::Cursor::new(weights);
+        let weights = Arc::new(weights);
+        let mut cursor = std::io::Cursor::new(&weights[..]);
 
         let content = gguf_file::Content::read(&mut cursor)
             .map_err(|e| JsError::new(&format!("GGUF parse error: {e}")))?;
@@ -950,6 +942,7 @@ impl Gemma3Embedder {
             vb_dense2,
             &config,
             ModelType::Embedding(Pool::Mean),
+            weights.clone(),
         )
         .map_err(|e| JsError::new(&e.to_string()))?;
 
@@ -1014,4 +1007,148 @@ impl Gemma3Embedder {
             pooled_indices: (0..texts.len() as u32).collect(),
         })
     }
+}
+
+pub struct Q8GgufEmbedding {
+    gguf_bytes: Arc<Vec<u8>>,
+    base: usize,           // ct.tensor_data_offset + info.offset
+    rows: usize,           // 262144, vocab size
+    cols: usize,           // 768
+    blocks_per_row: usize, // cols/32 = 24
+    scale: f32,            // sqrt(hidden)
+}
+
+impl Q8GgufEmbedding {
+    pub fn new(
+        gguf_bytes: Arc<Vec<u8>>,
+        base: usize,
+        rows: usize,
+        cols: usize,
+        scale: f32,
+    ) -> candle_core::Result<Self> {
+        if cols % QK8_0 != 0 {
+            candle_core::bail!("cols={cols} must be divisible by {QK8_0} for Q8_0");
+        }
+        Ok(Self { gguf_bytes, base, rows, cols, blocks_per_row: cols / QK8_0, scale })
+    }
+
+    #[inline]
+    fn block_offset(&self, row: usize, block_in_row: usize) -> usize {
+        let block_idx = row * self.blocks_per_row + block_in_row;
+        self.base + block_idx * BLOCK_BYTES_Q8_0
+    }
+
+    #[inline]
+    fn read_block(&self, row: usize, block_in_row: usize) -> (f32, [i8; QK8_0]) {
+        let off = self.block_offset(row, block_in_row);
+        let b = &self.gguf_bytes[off..off + BLOCK_BYTES_Q8_0];
+
+        // f16 scale, little-endian
+        let d_bits = u16::from_le_bytes([b[0], b[1]]);
+        let d = f16::from_bits(d_bits).to_f32();
+
+        let mut qs = [0i8; QK8_0];
+        for i in 0..QK8_0 {
+            qs[i] = b[2 + i] as i8;
+        }
+        (d, qs)
+    }
+
+    fn dequantize_row_f32(&self, row: usize, out: &mut [f32]) {
+        debug_assert_eq!(out.len(), self.cols);
+        let mut col = 0usize;
+        for b in 0..self.blocks_per_row {
+            let (d, qs) = self.read_block(row, b);
+            for q in qs {
+                out[col] = d * (q as f32);
+                col += 1;
+            }
+        }
+    }
+
+    /// input_ids: [batch, seq] -> output: [batch, seq, cols] in f32
+    pub fn forward(&self, input_ids: &Tensor) -> candle_core::Result<Tensor> {
+        let device = input_ids.device();
+        let mut final_dims = input_ids.dims().to_vec();
+        final_dims.push(self.cols);
+
+        let ids: Vec<u32> = input_ids.flatten_all()?.to_vec1()?;
+
+        let (uniq, remap) = unique_ids(&ids);
+
+        let mut uniq_out = vec![0f32; uniq.len() * self.cols];
+        for (i, &tok) in uniq.iter().enumerate() {
+            let r = tok as usize;
+            if r >= self.rows {
+                candle_core::bail!("token id {r} out of range (rows={})", self.rows);
+            }
+            let dst = &mut uniq_out[i * self.cols..(i + 1) * self.cols];
+            self.dequantize_row_f32(r, dst);
+        }
+
+        let uniq_rows = Tensor::from_vec(uniq_out, (uniq.len(), self.cols), device)?;
+
+        let remap_u32: Vec<u32> = remap.into_iter().map(|i| i as u32).collect();
+        let remap_t = Tensor::from_vec(remap_u32, (ids.len(),), device)?;
+
+        let values = uniq_rows.index_select(&remap_t, 0)?.reshape(final_dims)?;
+
+        Ok((values * (self.scale as f64))?)
+    }
+}
+
+fn unique_ids(ids: &[u32]) -> (Vec<u32>, Vec<usize>) {
+    use std::collections::HashMap;
+    let mut map = HashMap::<u32, usize>::new();
+    let mut uniq = Vec::new();
+    let mut remap = Vec::with_capacity(ids.len());
+    for &id in ids {
+        let idx = *map.entry(id).or_insert_with(|| {
+            let i = uniq.len();
+            uniq.push(id);
+            i
+        });
+        remap.push(idx);
+    }
+    (uniq, remap)
+}
+
+pub fn load_token_embedding_q8_0(
+    ct: &gguf_file::Content,
+    gguf_bytes: Arc<Vec<u8>>,
+    tensor_name: &str,
+    hidden_size: usize,
+) -> candle_core::Result<Q8GgufEmbedding> {
+    let info = ct
+        .tensor_infos
+        .get(tensor_name)
+        .ok_or_else(|| candle_core::Error::Msg(format!("tensor {tensor_name} not found")))?;
+
+    if info.ggml_dtype != GgmlDType::Q8_0 {
+        candle_core::bail!("tensor {tensor_name} is {:?}, expected Q8_0", info.ggml_dtype);
+    }
+
+    let dims = info.shape.dims();
+    if dims.len() != 2 {
+        candle_core::bail!("tensor {tensor_name} expected 2D, got {:?}", dims);
+    }
+
+    let rows = dims[0]; // 262144
+    let cols = dims[1]; // 768
+    if cols != hidden_size {
+        candle_core::bail!("cols={cols} != hidden_size={hidden_size}");
+    }
+
+    let base = (ct.tensor_data_offset + info.offset) as usize;
+
+    // Bounds check
+    let elems = info.shape.elem_count(); // 768 x 262144
+    let block_size = info.ggml_dtype.block_size(); // 32
+    let nblocks = elems / block_size; // 768 x 262144 / 32
+    let bytes_needed = nblocks * info.ggml_dtype.type_size(); // 34 per block (32 + 2 (f16 scale))
+    if base + bytes_needed > gguf_bytes.len() {
+        candle_core::bail!("tensor payload out of bounds: need {bytes_needed} bytes");
+    }
+
+    Q8GgufEmbedding::new(gguf_bytes, base, rows, cols, (hidden_size as f32).sqrt())
 }
