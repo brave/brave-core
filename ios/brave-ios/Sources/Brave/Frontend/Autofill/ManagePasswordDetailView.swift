@@ -6,41 +6,27 @@
 import BraveCore
 import BraveStrings
 import BraveUI
-import LocalAuthentication
 import SwiftUI
 import UIKit
 
 struct ManagePasswordDetailView: View {
-  @Bindable var viewModel: ManagePasswordDetailViewModel
   @Environment(\.autofillManagementContext) private var context
-  @State private var isPasswordRevealed = false
-  @State private var showDeleteAlert = false
-  @State private var showSetPasscodeAlert = false
-  @State private var isSceneActive = true
   @Environment(\.dismiss) private var dismiss
+  @State private var isPasswordRevealed = false
+  @Bindable var viewModel: ManagePasswordDetailViewModel
 
   private var navigationTitle: String {
     URL(string: viewModel.site)?.baseDomain ?? ""
   }
 
   var body: some View {
-    Form {
+    List {
       Section {
-        LabeledContent {
-          Text(viewModel.site)
-            .lineLimit(1)
-        } label: {
-          Text(Strings.Login.loginInfoDetailsWebsiteFieldTitle)
-            .font(.footnote)
-            .foregroundColor(Color(.secondaryBraveLabel))
-        }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
-        .contentShape(Rectangle())
-        .contextMenu {
+        Menu {
           Button {
             UIPasteboard.general.string = viewModel.site
           } label: {
-            Label(Strings.menuItemCopyTitle, braveSystemImage: "leo.copy")
+            Text(Strings.menuItemCopyTitle)
           }
           Button {
             if let url = URL(string: viewModel.site) {
@@ -48,89 +34,99 @@ struct ManagePasswordDetailView: View {
               dismiss()
             }
           } label: {
-            Label(Strings.openWebsite, braveSystemImage: "leo.discover")
+            Text(Strings.openWebsite)
           }
+        } label: {
+          LabeledContent {
+            Text(viewModel.site)
+              .lineLimit(1)
+          } label: {
+            Text(Strings.Login.loginInfoDetailsWebsiteFieldTitle)
+          }
+          .contentShape(Rectangle())
         }
 
-        LabeledContent {
-          Text(viewModel.username)
-            .lineLimit(1)
-        } label: {
-          Text(Strings.Login.loginInfoDetailsUsernameFieldTitle)
-            .font(.footnote)
-            .foregroundColor(Color(.secondaryBraveLabel))
-        }
-        .contentShape(Rectangle())
-        .contextMenu {
+        Menu {
           Button {
             UIPasteboard.general.string = viewModel.username
           } label: {
-            Label(Strings.menuItemCopyTitle, braveSystemImage: "leo.copy")
+            Text(Strings.menuItemCopyTitle)
           }
+        } label: {
+          LabeledContent {
+            Text(viewModel.username)
+              .lineLimit(1)
+          } label: {
+            Text(Strings.Login.loginInfoDetailsUsernameFieldTitle)
+          }
+          .contentShape(Rectangle())
         }
 
         LabeledContent {
           HStack(spacing: 8) {
-            Spacer()
-            if isPasswordRevealed {
-              Text(viewModel.passwordValue)
-                .lineLimit(1)
-            } else {
-              SecureField(
-                Strings.Autofill.managePasswordDetailsInputPasswordPlaceholder,
-                text: $viewModel.passwordValue
-              )
-              .lineLimit(1)
-              .allowsHitTesting(false)
-              .multilineTextAlignment(.trailing)
-              .frame(maxWidth: .infinity, alignment: .trailing)
-            }
-            Button {
-              togglePasswordReveal()
+            Menu {
+              Button {
+                copyPassword()
+              } label: {
+                Text(Strings.menuItemCopyTitle)
+              }
             } label: {
+              HStack {
+                Spacer()
+                if isPasswordRevealed {
+                  Text(viewModel.passwordValue)
+                    .lineLimit(1)
+                } else {
+                  // allowsHitTesting(false) intentionally prevents editing in View only mode
+                  SecureField(
+                    Strings.Autofill.managePasswordDetailsInputPasswordPlaceholder,
+                    text: $viewModel.passwordValue
+                  )
+                  .lineLimit(1)
+                  .allowsHitTesting(false)
+                  .multilineTextAlignment(.trailing)
+                  .frame(maxWidth: .infinity, alignment: .trailing)
+                }
+              }
+              .contentShape(Rectangle())
+            }
+            Label {
+              Text(Strings.Autofill.managePasswordDetailsRevealPassword)
+            } icon: {
               Image(braveSystemName: isPasswordRevealed ? "leo.eye.on" : "leo.eye.off")
-                .foregroundColor(Color(braveSystemName: .primary40))
+                .foregroundStyle(Color(braveSystemName: .textInteractive))
+            }
+            .labelStyle(.iconOnly)
+            .onTapGesture {
+              togglePasswordReveal()
             }
           }
         } label: {
           Text(Strings.Login.loginInfoDetailsPasswordFieldTitle)
-            .font(.footnote)
-            .foregroundColor(Color(.secondaryBraveLabel))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
-        .contentShape(Rectangle())
-        .contextMenu {
-          Button {
-            context?.askForAuthentication { success, error in
-              if success {
-                UIPasteboard.general.setSecureString(viewModel.passwordValue)
-              } else if error == .passcodeNotSet {
-                showSetPasscodeAlert = true
-              }
-            }
-          } label: {
-            Label(Strings.menuItemCopyTitle, braveSystemImage: "leo.copy")
-          }
-        }
-
       }
     }
-    .background(Color(.braveGroupedBackground))
-    .scrollContentBackground(.hidden)
+    .foregroundStyle(Color(braveSystemName: .textPrimary))
     .navigationTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbarBackground(.visible, for: .navigationBar)
+  }
+
+  private func copyPassword() {
+    context?.askForAuthentication { success, _ in
+      if success {
+        UIPasteboard.general.setSecureString(viewModel.passwordValue)
+      }
+    }
   }
 
   private func togglePasswordReveal() {
     if isPasswordRevealed {
       isPasswordRevealed = false
     } else {
-      context?.askForAuthentication { [self] success, error in
+      context?.askForAuthentication { [self] success, _ in
         if success {
           isPasswordRevealed = true
-        } else if error == .passcodeNotSet {
-          showSetPasscodeAlert = true
         }
       }
     }
