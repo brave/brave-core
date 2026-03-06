@@ -28,23 +28,6 @@ Eip2930Transaction::AccessListItem::~AccessListItem() = default;
 Eip2930Transaction::AccessListItem::AccessListItem(const AccessListItem&) =
     default;
 
-bool Eip2930Transaction::AccessListItem::operator==(
-    const AccessListItem& item) const {
-  if (!std::equal(address.begin(), address.end(), item.address.begin())) {
-    return false;
-  }
-  if (storage_keys.size() != item.storage_keys.size()) {
-    return false;
-  }
-  for (size_t i = 0; i < storage_keys.size(); ++i) {
-    if (!std::equal(storage_keys[i].begin(), storage_keys[i].end(),
-                    item.storage_keys[i].begin())) {
-      return false;
-    }
-  }
-  return true;
-}
-
 Eip2930Transaction::Eip2930Transaction(const Eip2930Transaction&) = default;
 Eip2930Transaction::Eip2930Transaction(
     std::optional<uint256_t> nonce,
@@ -62,12 +45,6 @@ Eip2930Transaction::Eip2930Transaction() : chain_id_(0) {
   type_ = 1;
 }
 Eip2930Transaction::~Eip2930Transaction() = default;
-
-bool Eip2930Transaction::operator==(const Eip2930Transaction& tx) const {
-  return EthTransaction::operator==(tx) && chain_id_ == tx.chain_id_ &&
-         std::equal(access_list_.begin(), access_list_.end(),
-                    tx.access_list_.begin());
-}
 
 // static
 std::optional<Eip2930Transaction> Eip2930Transaction::FromTxData(

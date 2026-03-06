@@ -269,6 +269,7 @@ std::optional<Eip1559Transaction> Eip1559Transaction::FromValue(
   tx.v_ = tx_2930->v();
   tx.r_ = tx_2930->r();
   tx.s_ = tx_2930->s();
+  tx.access_list_ = std::move(*tx_2930->access_list());
 
   return tx;
 }
