@@ -939,6 +939,7 @@
       </if>
       <part file="omnibox_strings.grdp" />
       <part file="playlist_strings.grdp" />
+      <part file="brave_origin_startup_strings.grdp" />
       <part file="../brave_account/resources/brave_account_strings.grdp" />
     </messages>
   </release>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_BRAVE_ORIGIN_STARTUP_TITLE" desc="Title for the Brave Origin startup dialog">
+    Brave Origin
+  </message>
+
+  <message name="IDS_BRAVE_ORIGIN_STARTUP_DESCRIPTION" desc="First paragraph of description on the Brave Origin startup dialog">
+    Welcome to Brave Origin. To continue, please buy or restore your Brave Origin purchase.
+  </message>
+
+  <message name="IDS_BRAVE_ORIGIN_STARTUP_DESCRIPTION2" desc="Second paragraph of description on the Brave Origin startup dialog">
+    You need an active Brave Origin purchase to use this browser.
+  </message>
+
+  <message name="IDS_BRAVE_ORIGIN_STARTUP_RESTORE_BUTTON" desc="Button label to restore a Brave Origin purchase">
+    Restore Brave Origin purchase
+  </message>
+
+  <message name="IDS_BRAVE_ORIGIN_STARTUP_BUY_BUTTON" desc="Button label to buy Brave Origin">
+    Buy Brave Origin
+  </message>
+
+  <message name="IDS_BRAVE_ORIGIN_STARTUP_RESTORE_TITLE" desc="Title for the restore view of the Brave Origin startup dialog">
+    Restore Purchase
+  </message>
+
+  <message name="IDS_BRAVE_ORIGIN_STARTUP_RESTORE_DESCRIPTION" desc="Description for the restore view of the Brave Origin startup dialog">
+    Enter your purchase ID to activate your Brave Origin purchase.
+  </message>
+
+  <message name="IDS_BRAVE_ORIGIN_STARTUP_PURCHASE_ID_LABEL" desc="Label for the purchase ID input field">
+    Purchase ID
+  </message>
+
+  <message name="IDS_BRAVE_ORIGIN_STARTUP_PURCHASE_ID_PLACEHOLDER" desc="Placeholder for the purchase ID input field">
+    Enter your purchase ID
+  </message>
+
+  <message name="IDS_BRAVE_ORIGIN_STARTUP_VERIFY_BUTTON" desc="Button label to verify a purchase ID">
+    Verify purchase ID
+  </message>
+
+  <message name="IDS_BRAVE_ORIGIN_STARTUP_VERIFYING_MESSAGE" desc="Message shown while verifying a purchase ID">
+    Verifying... This may take a minute.
+  </message>
+</grit-part>
