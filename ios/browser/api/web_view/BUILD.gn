@@ -34,6 +34,7 @@ source_set("web_view") {
     "//brave/ios/browser/ui/web_view:features",
     "//brave/ios/browser/ui/webui/brave_wallet",
     "//brave/ios/browser/web/force_paste",
+    "//brave/ios/browser/web/page_metadata",
     "//brave/ios/web_view",
     "//ios/chrome/browser/affiliations/model",
     "//ios/chrome/browser/autofill/model",
