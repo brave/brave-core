@@ -242,20 +242,24 @@ struct ShieldsPanelView: View {
       ShieldSettingRow {
         NavigationLink {
           ShredSiteSettingsView(
-            url: url,
-            isPersistent: !viewModel.isPrivateBrowsing,
-            tab: tab
+            viewModel: viewModel
           ) {
             actionCallback(.shredSiteData)
           }
         } label: {
           ShieldSettingsNavigationWrapper {
-            Text(Strings.Shields.shredSiteData)
-              .frame(maxWidth: .infinity, alignment: .leading)
-              .multilineTextAlignment(.leading)
+            HStack {
+              Text(Strings.Shields.shredSiteData)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .multilineTextAlignment(.leading)
+                .foregroundStyle(Color(.bravePrimary))
+              Text(viewModel.autoShredLevel.localizedTitle)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .multilineTextAlignment(.trailing)
+                .foregroundStyle(Color(.secondaryBraveLabel))
+            }
           }
         }
-        .foregroundStyle(Color(.bravePrimary))
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 4)
       }

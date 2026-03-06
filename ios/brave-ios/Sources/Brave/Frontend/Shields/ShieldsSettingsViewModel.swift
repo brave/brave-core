@@ -41,9 +41,19 @@ class ShieldsSettingsViewModel: ObservableObject {
       )
     }
   }
+  @Published var autoShredLevel: SiteShredLevel {
+    didSet {
+      guard !isUpdatingState else { return }
+      tab.braveShieldsHelper?.setShredLevel(autoShredLevel, for: tab.visibleURL)
+    }
+  }
 
   var isPrivateBrowsing: Bool {
-    return tab.isPrivate
+    tab.isPrivate
+  }
+
+  var visibleURL: URL? {
+    tab.visibleURL
   }
 
   /// If we are updating our state values, we don't want to assign to the domain preference.
@@ -74,6 +84,11 @@ class ShieldsSettingsViewModel: ObservableObject {
         shield: .fpProtection,
         considerAllShieldsOption: true
       ) ?? true
+    self.autoShredLevel =
+      tab.braveShieldsHelper?.shredLevel(
+        for: tab.visibleURL,
+        considerAllShieldsOption: true
+      ) ?? .never
     self.stats = tab.contentBlocker?.stats ?? .init()
 
     tab.contentBlocker?.statsDidChange = { [weak self, weak tab] _ in
@@ -106,5 +121,10 @@ class ShieldsSettingsViewModel: ObservableObject {
         shield: .fpProtection,
         considerAllShieldsOption: true
       ) ?? true
+    self.autoShredLevel =
+      tab.braveShieldsHelper?.shredLevel(
+        for: tab.visibleURL,
+        considerAllShieldsOption: true
+      ) ?? .never
   }
 }
