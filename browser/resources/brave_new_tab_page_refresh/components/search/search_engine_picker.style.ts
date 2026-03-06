@@ -21,6 +21,10 @@ export const style = scoped.css`
     &:hover {
       background-color: ${color.container.highlight};
     }
+
+    leo-button {
+      display: block;
+    }
   }
 
   leo-menu-item {
