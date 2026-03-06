@@ -54,8 +54,6 @@ BraveOriginService::BraveOriginService(
 BraveOriginService::~BraveOriginService() = default;
 
 void BraveOriginService::Shutdown() {
-  weak_ptr_factory_.InvalidateWeakPtrs();
-  skus_service_.reset();
   local_state_ = nullptr;
   profile_prefs_ = nullptr;
   profile_policy_service_ = nullptr;
