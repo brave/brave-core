@@ -30,6 +30,7 @@ export const style = scoped.css`
     gap: 12px;
     color: ${color.text.primary};
     text-decoration: none;
+    overflow: clip;
 
     &:hover, &.selected {
       background: ${color.neutral['10']};
