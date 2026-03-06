@@ -673,6 +673,7 @@ android_resources("java_resources") {
     "java/brave-res/layout/news_loading.xml",
     "java/brave-res/layout/ntp_image_credit.xml",
     "java/brave-res/layout/optin_layout.xml",
+    "java/brave-res/layout/origin_reset_dialog.xml",
     "java/brave-res/layout/origin_restart_snackbar.xml",
     "java/brave-res/layout/password_no_result.xml",
     "java/brave-res/layout/password_strength_meter_layout.xml",

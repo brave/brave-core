@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -26,10 +27,13 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
+import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
+import org.chromium.chrome.browser.billing.LinkSubscriptionUtils;
 import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.policy.BravePolicyConstants;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
@@ -41,7 +45,6 @@ public class BraveOriginPreferences extends BravePreferenceFragment
 
     // Preference keys
     private static final String PREF_REWARDS_SWITCH = "rewards_switch";
-    private static final String PREF_CRASH_REPORTS_SWITCH = "crash_reports_switch";
     private static final String PREF_PRIVACY_PRESERVING_ANALYTICS_SWITCH =
             "privacy_preserving_analytics_switch";
     private static final String PREF_EMAIL_ALIASES_SWITCH = "email_aliases_switch";
@@ -52,7 +55,6 @@ public class BraveOriginPreferences extends BravePreferenceFragment
     private static final String PREF_WALLET_SWITCH = "wallet_switch";
     private static final String PREF_WEB_DISCOVERY_PROJECT_SWITCH = "web_discovery_project_switch";
     private static final String PREF_RESET_TO_DEFAULTS = "reset_to_defaults";
-    private static final String PREF_ACCOUNT_MANAGE = "account_manage";
     private static final String PREF_LINK_PURCHASE = "link_purchase";
 
     private final SettableMonotonicObservableSupplier<String> mPageTitle =
@@ -75,7 +77,6 @@ public class BraveOriginPreferences extends BravePreferenceFragment
 
         // Set up toggle preferences
         setupTogglePreference(PREF_REWARDS_SWITCH);
-        setupTogglePreference(PREF_CRASH_REPORTS_SWITCH);
         setupTogglePreference(PREF_PRIVACY_PRESERVING_ANALYTICS_SWITCH);
         if (ChromeFeatureList.isEnabled(BraveFeatureList.EMAIL_ALIASES)) {
             setupTogglePreference(PREF_EMAIL_ALIASES_SWITCH);
@@ -98,16 +99,7 @@ public class BraveOriginPreferences extends BravePreferenceFragment
         if (resetToDefaults != null) {
             resetToDefaults.setOnPreferenceClickListener(
                     preference -> {
-                        // TODO: Implement reset to defaults functionality
-                        return true;
-                    });
-        }
-
-        Preference accountManage = findPreference(PREF_ACCOUNT_MANAGE);
-        if (accountManage != null) {
-            accountManage.setOnPreferenceClickListener(
-                    preference -> {
-                        // TODO: Open account management
+                        showResetConfirmationDialog();
                         return true;
                     });
         }
@@ -116,7 +108,9 @@ public class BraveOriginPreferences extends BravePreferenceFragment
         if (linkPurchase != null) {
             linkPurchase.setOnPreferenceClickListener(
                     preference -> {
-                        // TODO: Open link purchase
+                        TabUtils.openURLWithBraveActivity(
+                                LinkSubscriptionUtils.getBraveAccountLinkUrl(
+                                        InAppPurchaseWrapper.SubscriptionProduct.ORIGIN));
                         return true;
                     });
         }
@@ -268,9 +262,72 @@ public class BraveOriginPreferences extends BravePreferenceFragment
             return BravePolicyConstants.BRAVE_WEB_DISCOVERY_ENABLED;
         }
         // TODO: Add mappings for other preferences as they are implemented
-        // PREF_CRASH_REPORTS_SWITCH - no policy mapping found
         // PREF_EMAIL_ALIASES_SWITCH - no policy mapping found
         return null;
+    }
+
+    private void showResetConfirmationDialog() {
+        View dialogView =
+                LayoutInflater.from(requireContext()).inflate(R.layout.origin_reset_dialog, null);
+
+        AlertDialog dialog =
+                new AlertDialog.Builder(
+                                requireContext(), R.style.ThemeOverlay_BrowserUI_AlertDialog)
+                        .setView(dialogView)
+                        .create();
+
+        dialogView.findViewById(R.id.reset_dialog_cancel).setOnClickListener(v -> dialog.dismiss());
+        dialogView
+                .findViewById(R.id.reset_dialog_confirm)
+                .setOnClickListener(
+                        v -> {
+                            dialog.dismiss();
+                            resetAllToggles();
+                        });
+
+        dialog.show();
+    }
+
+    private void resetAllToggles() {
+        String[] toggleKeys = {
+            PREF_REWARDS_SWITCH,
+            PREF_PRIVACY_PRESERVING_ANALYTICS_SWITCH,
+            PREF_EMAIL_ALIASES_SWITCH,
+            PREF_LEO_AI_SWITCH,
+            PREF_NEWS_SWITCH,
+            PREF_STATISTICS_REPORTING_SWITCH,
+            PREF_VPN_SWITCH,
+            PREF_WALLET_SWITCH,
+            PREF_WEB_DISCOVERY_PROJECT_SWITCH,
+        };
+
+        boolean anyChanged = false;
+        for (String key : toggleKeys) {
+            ChromeSwitchPreference pref = (ChromeSwitchPreference) findPreference(key);
+            if (pref == null || !pref.isChecked()) {
+                continue;
+            }
+            pref.setChecked(false);
+            updateToggleDescription(pref, false);
+            anyChanged = true;
+
+            String policyKey = getPolicyKeyForPreference(key);
+            if (policyKey != null && mBraveOriginSettingsHandler != null) {
+                boolean policyValue = BraveOriginSubscriptionPrefs.isPolicyInverted(policyKey);
+                mBraveOriginSettingsHandler.setPolicyValue(
+                        policyKey,
+                        policyValue,
+                        (success) -> {
+                            if (!success) {
+                                Log.e(TAG, "Failed to reset policy value for " + policyKey);
+                            }
+                        });
+            }
+        }
+
+        if (anyChanged) {
+            showRestartSnackbar();
+        }
     }
 
     /**

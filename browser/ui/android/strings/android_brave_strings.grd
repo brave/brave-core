@@ -3227,9 +3227,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ORIGIN_REWARDS_TOGGLE" desc="Brave Origin rewards toggle title">
       Rewards
     </message>
-    <message name="IDS_ORIGIN_CRASH_REPORTS_TOGGLE" desc="Brave Origin automatically send crash reports toggle title">
-      Automatically send crash reports
-    </message>
     <message name="IDS_ORIGIN_PRIVACY_PRESERVING_ANALYTICS_TOGGLE" desc="Brave Origin privacy preserving analytics toggle title">
       Privacy preserving analytics
     </message>
@@ -3237,7 +3234,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Email aliases
     </message>
     <message name="IDS_ORIGIN_LEO_AI_TOGGLE" desc="Brave Origin Leo AI toggle title">
-      Leo AI
+      AI
     </message>
     <message name="IDS_ORIGIN_NEWS_TOGGLE" desc="Brave Origin News toggle title">
       News
@@ -3278,11 +3275,14 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ORIGIN_RESTART_NOW" desc="Action button text on the Brave Origin restart snackbar">
       Restart now
     </message>
+    <message name="IDS_ORIGIN_RESET_DIALOG_MESSAGE" desc="Confirmation message shown when the user taps Reset to defaults in Brave Origin settings">
+      Are you sure you want to reset all settings to default?
+    </message>
+    <message name="IDS_ORIGIN_RESET_DIALOG_BUTTON" desc="Button text for the reset confirmation dialog in Brave Origin settings">
+      Reset
+    </message>
     <message name="IDS_ORIGIN_PURCHASE_SECTION_TITLE" desc="Brave Origin purchase section title">
       Purchase
-    </message>
-    <message name="IDS_ORIGIN_MANAGE_ACCOUNT" desc="Brave Origin manage account settings text">
-      Manage account
     </message>
     <message name="IDS_LINK_PURCHASE_TITLE_ORIGIN" desc="Brave Origin link purchase settings title text">
       Link purchase to your Brave account
