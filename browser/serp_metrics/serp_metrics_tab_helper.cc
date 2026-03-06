@@ -20,6 +20,7 @@
 #include "components/search_engines/search_engine_utils.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
 namespace serp_metrics {
@@ -113,35 +114,20 @@ void SerpMetricsTabHelper::DidFinishNavigation(
   }
 
   if (!navigation_handle->IsInPrimaryMainFrame() ||
-      !navigation_handle->HasCommitted() ||
-      navigation_handle->GetRestoreType() == content::RestoreType::kRestored) {
+      !navigation_handle->HasCommitted()) {
     return;
   }
-
-  const GURL& url = navigation_handle->GetURL();
 
   const bool is_new_navigation =
       ui::PageTransitionIsNewNavigation(navigation_handle->GetPageTransition());
 
-  if (!IsSameSearchQuery(url) && is_new_navigation) {
+  const GURL& url = navigation_handle->GetURL();
+
+  if (!is_new_navigation || !IsSameSearchQuery(url)) {
     // Any navigation that doesn't match the previous search engine results page
     // should reset it along with any user initiated navigation (omnibox,
     // bookmarks, etc...) whether it matches or not.
     last_recorded_serp_url_.reset();
-  }
-
-  if (!navigation_handle->HasUserGesture() &&
-      navigation_handle->IsRendererInitiated()) {
-    // Ignore renderer-initiated navigations without a user gesture. These
-    // navigations may occur automatically (e.g. redirects or SPA updates) and
-    // should not be treated as explicit user actions.
-    return;
-  }
-
-  if (!is_new_navigation) {
-    // Ignore back/forward navigations and reloads, as they are not considered
-    // user-initiated search queries.
-    return;
   }
 
   MaybeClassifyAndRecordSearchEngineForUrl(url);

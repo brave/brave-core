@@ -194,6 +194,7 @@ class SerpMetricsTabHelperTest : public PlatformBrowserTest {
     GetWebContents()->GetController().Reload(content::ReloadType::NORMAL,
                                              /*check_for_repost=*/false);
     observer.Wait();
+    ASSERT_TRUE(content::WaitForLoadStop(GetWebContents()));
   }
 
   void GoBack() const {
@@ -201,6 +202,7 @@ class SerpMetricsTabHelperTest : public PlatformBrowserTest {
     content::TestNavigationObserver observer(GetWebContents());
     GetWebContents()->GetController().GoBack();
     observer.Wait();
+    ASSERT_TRUE(content::WaitForLoadStop(GetWebContents()));
   }
 
   void GoForward() const {
@@ -208,6 +210,7 @@ class SerpMetricsTabHelperTest : public PlatformBrowserTest {
     content::TestNavigationObserver observer(GetWebContents());
     GetWebContents()->GetController().GoForward();
     observer.Wait();
+    ASSERT_TRUE(content::WaitForLoadStop(GetWebContents()));
   }
 
   uint64_t GetSearchCountForTimePeriodStorageDictKey(
@@ -427,7 +430,7 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
                     kOtherSearchEngineTimePeriodStorageDictKey));
 }
 
-IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, DoNotRecordReloadNavigation) {
+IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, RecordReloadNavigation) {
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(),
       https_server_->GetURL("www.google.com", "/search?q=test"),
@@ -437,12 +440,12 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, DoNotRecordReloadNavigation) {
 
   Reload();
 
-  EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
+  EXPECT_EQ(2U, GetSearchCountForTimePeriodStorageDictKey(
                     kGoogleSearchEngineTimePeriodStorageDictKey));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
-                       DoNotRecordAfterMultipleReloadNavigations) {
+                       RecordAfterMultipleReloadNavigations) {
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(),
       https_server_->GetURL("www.google.com", "/search?q=test"),
@@ -453,33 +456,32 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
   Reload();
   Reload();
 
-  EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
-                    kGoogleSearchEngineTimePeriodStorageDictKey));
-}
-
-IN_PROC_BROWSER_TEST_F(
-    SerpMetricsTabHelperTest,
-    DoNotRecordSameSearchAfterReloadNavigationForNewNavigation) {
-  content::NavigateToURLBlockUntilNavigationsComplete(
-      GetWebContents(),
-      https_server_->GetURL("www.google.com", "/search?q=test"),
-      /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-  ASSERT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
-                    kGoogleSearchEngineTimePeriodStorageDictKey));
-
-  Reload();
-
-  content::NavigateToURLBlockUntilNavigationsComplete(
-      GetWebContents(),
-      https_server_->GetURL("www.google.com", "/search?q=test"),
-      /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
-
-  EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
+  EXPECT_EQ(3U, GetSearchCountForTimePeriodStorageDictKey(
                     kGoogleSearchEngineTimePeriodStorageDictKey));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
-                       DoNotRecordSameSearchAfterReloadNavigationAndLinkClick) {
+                       RecordSameSearchAfterReloadNavigationForNewNavigation) {
+  content::NavigateToURLBlockUntilNavigationsComplete(
+      GetWebContents(),
+      https_server_->GetURL("www.google.com", "/search?q=test"),
+      /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
+  ASSERT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
+                    kGoogleSearchEngineTimePeriodStorageDictKey));
+
+  Reload();
+
+  content::NavigateToURLBlockUntilNavigationsComplete(
+      GetWebContents(),
+      https_server_->GetURL("www.google.com", "/search?q=test"),
+      /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
+
+  EXPECT_EQ(2U, GetSearchCountForTimePeriodStorageDictKey(
+                    kGoogleSearchEngineTimePeriodStorageDictKey));
+}
+
+IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
+                       RecordSameSearchAfterReloadNavigationAndLinkClick) {
   auto https_server =
       TestHttpsServerBuilder()
           .WithCertHostnames({"search.brave.com", "plugh.xyzzy.com"})
@@ -504,7 +506,7 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
 
   SimulateClickingAnchorLink();
 
-  EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
+  EXPECT_EQ(2U, GetSearchCountForTimePeriodStorageDictKey(
                     kBraveSearchEngineTimePeriodStorageDictKey));
 }
 
@@ -515,22 +517,24 @@ IN_PROC_BROWSER_TEST_F(
       GetWebContents(),
       https_server_->GetURL("www.google.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
+  ASSERT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
+                    kGoogleSearchEngineTimePeriodStorageDictKey));
 
   Reload();
 
+  ASSERT_EQ(2U, GetSearchCountForTimePeriodStorageDictKey(
+                    kGoogleSearchEngineTimePeriodStorageDictKey));
+
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(),
-      https_server_->GetURL("search.brave.com", "/search?q=test"),
+      https_server_->GetURL("search.brave.com", "/search?q=test&t=web"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
 
-  EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
-                    kGoogleSearchEngineTimePeriodStorageDictKey));
   EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
                     kBraveSearchEngineTimePeriodStorageDictKey));
 }
 
-IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
-                       DoNotRecordBackForwardNavigation) {
+IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, RecordBackForwardNavigation) {
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(), https_server_->GetURL("plugh.xyzzy.com", "/thud"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
@@ -545,12 +549,35 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
   GoBack();
   GoForward();
 
-  EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
+  EXPECT_EQ(2U, GetSearchCountForTimePeriodStorageDictKey(
                     kGoogleSearchEngineTimePeriodStorageDictKey));
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
-                       DoNotRecordAfterMultipleBackForwardNavigations) {
+                       RecordBackForwardNavigationForSameUrl) {
+  content::NavigateToURLBlockUntilNavigationsComplete(
+      GetWebContents(),
+      https_server_->GetURL("www.google.com", "/search?q=test"),
+      /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
+  ASSERT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
+                    kGoogleSearchEngineTimePeriodStorageDictKey));
+
+  content::NavigateToURLBlockUntilNavigationsComplete(
+      GetWebContents(),
+      https_server_->GetURL("www.google.com", "/search?q=test&t=web"),
+      /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
+  ASSERT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
+                    kGoogleSearchEngineTimePeriodStorageDictKey));
+
+  GoBack();
+  GoForward();
+
+  EXPECT_EQ(3U, GetSearchCountForTimePeriodStorageDictKey(
+                    kGoogleSearchEngineTimePeriodStorageDictKey));
+}
+
+IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
+                       RecordAfterMultipleBackForwardNavigations) {
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(), https_server_->GetURL("plugh.xyzzy.com", "/thud"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
@@ -567,7 +594,7 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
   GoBack();
   GoForward();
 
-  EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
+  EXPECT_EQ(3U, GetSearchCountForTimePeriodStorageDictKey(
                     kGoogleSearchEngineTimePeriodStorageDictKey));
 }
 
@@ -593,7 +620,7 @@ IN_PROC_BROWSER_TEST_F(
       https_server_->GetURL("www.google.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
 
-  EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
+  EXPECT_EQ(2U, GetSearchCountForTimePeriodStorageDictKey(
                     kGoogleSearchEngineTimePeriodStorageDictKey));
 }
 
@@ -625,7 +652,7 @@ IN_PROC_BROWSER_TEST_F(
 
   SimulateClickingAnchorLink();
 
-  EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
+  EXPECT_EQ(2U, GetSearchCountForTimePeriodStorageDictKey(
                     kBraveSearchEngineTimePeriodStorageDictKey));
 }
 
@@ -649,21 +676,20 @@ IN_PROC_BROWSER_TEST_F(
       https_server_->GetURL("search.brave.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
 
-  EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
+  EXPECT_EQ(2U, GetSearchCountForTimePeriodStorageDictKey(
                     kGoogleSearchEngineTimePeriodStorageDictKey));
   EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
                     kBraveSearchEngineTimePeriodStorageDictKey));
 }
 
-IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
-                       DoNotRecordWithoutUserGesture) {
+IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, RecordWithoutUserGesture) {
   content::TestNavigationObserver observer(GetWebContents());
   ASSERT_TRUE(NavigateToURLFromRendererWithoutUserGesture(
       GetWebContents(),
       https_server_->GetURL("www.google.com", "/search?q=test")));
   observer.Wait();
 
-  EXPECT_EQ(0U, GetSearchCountForTimePeriodStorageDictKey(
+  EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
                     kGoogleSearchEngineTimePeriodStorageDictKey));
 }
 
@@ -693,7 +719,7 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
 }
 
 #if !BUILDFLAG(IS_ANDROID)
-IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, DoNotRecordIfTabWasRestored) {
+IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, RecordIfTabWasRestored) {
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(),
       https_server_->GetURL("www.google.com", "/search?q=test"),
@@ -718,7 +744,9 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, DoNotRecordIfTabWasRestored) {
   }
   SetBrowser(browser_created_observer.Wait());
 
-  EXPECT_EQ(1U, GetSearchCountForTimePeriodStorageDictKey(
+  ASSERT_TRUE(content::WaitForLoadStop(GetWebContents()));
+
+  EXPECT_EQ(2U, GetSearchCountForTimePeriodStorageDictKey(
                     kGoogleSearchEngineTimePeriodStorageDictKey));
 }
 #endif  // !BUILDFLAG(IS_ANDROID)
