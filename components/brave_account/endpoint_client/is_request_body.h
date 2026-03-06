@@ -10,22 +10,27 @@
 #include <type_traits>
 
 #include "base/values.h"
+#include "google/protobuf/message_lite.h"
 
 namespace brave_account::endpoint_client::detail {
 
-// Concept that checks whether `T` defines a non-static, accessible member
-// function `ToValue()` such that:
-//   - `t.ToValue()` is a valid expression,
-//      and that call yields a `base::DictValue`
-//   - `&T::ToValue` is a valid member function pointer (ensures it's a
-//      non-static member function)
-//
-// In short: models any type with a proper non-static `ToValue()` function
-// whose result is a `base::DictValue`.
-template <typename T>
-concept IsRequestBody = requires(T t) {
-  { t.ToValue() } -> std::same_as<base::DictValue>;
-} && std::is_member_function_pointer_v<decltype(&T::ToValue)>;
+// A JSON request body provides a non-static ToValue()
+// callable on a const object and returning base::DictValue.
+template <typename RequestBody>
+concept IsJSONRequestBody = requires(const RequestBody& request_body) {
+  { request_body.ToValue() } -> std::same_as<base::DictValue>;
+} && std::is_member_function_pointer_v<decltype(&RequestBody::ToValue)>;
+
+// A Protobuf request body is a type publicly derived from
+// google::protobuf::MessageLite.
+template <typename RequestBody>
+concept IsProtobufRequestBody =
+    std::derived_from<RequestBody, google::protobuf::MessageLite>;
+
+// A request body is either a JSON request body or a Protobuf request body.
+template <typename RequestBody>
+concept IsRequestBody =
+    IsJSONRequestBody<RequestBody> || IsProtobufRequestBody<RequestBody>;
 
 }  // namespace brave_account::endpoint_client::detail
 

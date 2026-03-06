@@ -16,27 +16,32 @@ namespace brave_account::endpoint_client {
 
 namespace detail {
 
-// Concept that checks whether `T` defines a static, accessible member
-// function `URL()` such that:
-//   - `T::URL()` is a valid expression,
-//      and that call yields `GURL`
-//
-// In short: models any type with a proper static `URL()` function
-// whose result is a `GURL`.
-template <typename T>
-concept URL = requires {
-  { T::URL() } -> std::same_as<GURL>;
+// An endpoint defines Request and Response type aliases and a static URL().
+template <typename Endpoint>
+concept IsEndpointLike = requires {
+  typename Endpoint::Request;
+  typename Endpoint::Response;
+  { Endpoint::URL() } -> std::same_as<GURL>;
 };
+
+// A JSON endpoint has a JSON request and response type.
+template <typename Endpoint>
+concept IsJSONEndpoint =
+    IsEndpointLike<Endpoint> && IsJSONRequest<typename Endpoint::Request> &&
+    IsJSONResponse<typename Endpoint::Response>;
+
+// A Protobuf endpoint has a Protobuf request and response type.
+template <typename Endpoint>
+concept IsProtobufEndpoint =
+    IsEndpointLike<Endpoint> && IsProtobufRequest<typename Endpoint::Request> &&
+    IsProtobufResponse<typename Endpoint::Response>;
 
 }  // namespace detail
 
-template <typename T>
+// An endpoint is either a JSON endpoint or a Protobuf endpoint.
+template <typename Endpoint>
 concept IsEndpoint =
-    requires {
-      typename T::Request;
-      typename T::Response;
-    } && detail::IsRequest<typename T::Request> &&
-    detail::IsResponse<typename T::Response> && detail::URL<T>;
+    detail::IsJSONEndpoint<Endpoint> || detail::IsProtobufEndpoint<Endpoint>;
 
 }  // namespace brave_account::endpoint_client
 

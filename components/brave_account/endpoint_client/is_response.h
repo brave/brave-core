@@ -11,20 +11,31 @@
 
 namespace brave_account::endpoint_client::detail {
 
-// Primary template: a type does not satisfy IsResponse unless
-// matched by the partial specialization below.
 template <typename>
-inline constexpr bool kIsResponse = false;
+inline constexpr bool kIsJSONResponse = false;
 
-// Partial specialization: Response<T, E> satisfies IsResponse if
-// T and E satisfy IsResponseBody.
-template <IsResponseBody T, IsResponseBody E>
-inline constexpr bool kIsResponse<Response<T, E>> = true;
+template <IsJSONResponseBody SuccessBody, IsJSONResponseBody ErrorBody>
+inline constexpr bool kIsJSONResponse<Response<SuccessBody, ErrorBody>> = true;
 
-// Concept: a type satisfies IsResponse if
-// its kIsResponse specialization evaluates to true.
-template <typename T>
-concept IsResponse = kIsResponse<T>;
+// A JSON response is a Response<> whose bodies are JSON response bodies.
+template <typename Response>
+concept IsJSONResponse = kIsJSONResponse<Response>;
+
+template <typename>
+inline constexpr bool kIsProtobufResponse = false;
+
+template <IsProtobufResponseBody SuccessBody, IsProtobufResponseBody ErrorBody>
+inline constexpr bool kIsProtobufResponse<Response<SuccessBody, ErrorBody>> =
+    true;
+
+// A Protobuf response is a Response<> whose bodies are Protobuf response
+// bodies.
+template <typename Response>
+concept IsProtobufResponse = kIsProtobufResponse<Response>;
+
+// A response is either a JSON response or a Protobuf response.
+template <typename Response>
+concept IsResponse = IsJSONResponse<Response> || IsProtobufResponse<Response>;
 
 }  // namespace brave_account::endpoint_client::detail
 

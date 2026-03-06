@@ -3,11 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// Schema for the /v2/verify/resend request and response.
+// Schema for the /v2/verify/resend request.
 namespace endpoints {
   dictionary VerifyResendRequestBody {
     DOMString locale;
   };
-
-  dictionary VerifyResendSuccessBody {};
 };

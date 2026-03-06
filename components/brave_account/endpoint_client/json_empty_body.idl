@@ -3,11 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// Schema for the /v2/verify request and response.
-namespace endpoints {
-  dictionary VerifyDeleteRequestBody {};
-
-  dictionary VerifyDeleteSuccessBody {};
-
-  dictionary VerifyDeleteErrorBody {};
+// Schema for the empty JSON body.
+// Used when no request body is sent or the response body is ignored.
+namespace endpoint_client {
+  dictionary JSONEmptyBody {};
 };

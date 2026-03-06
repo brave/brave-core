@@ -3,10 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// Schema for the /v2/auth/validate request and response.
+// Schema for the /v2/auth/validate response.
 namespace endpoints {
-  dictionary AuthValidateRequestBody {};
-
   dictionary AuthValidateSuccessBody {
     DOMString email;
   };

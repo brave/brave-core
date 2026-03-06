@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINTS_PASSWORD_FINALIZE_H_
 
 #include "brave/components/brave_account/endpoint_client/brave_endpoint.h"
+#include "brave/components/brave_account/endpoint_client/json_empty_body.h"
 #include "brave/components/brave_account/endpoint_client/request_types.h"
 #include "brave/components/brave_account/endpoint_client/response.h"
 #include "brave/components/brave_account/endpoints/error_body.h"
@@ -18,7 +19,7 @@ using PasswordFinalize = endpoint_client::BraveEndpoint<
     "accounts.bsg",
     "/v2/accounts/password/finalize",
     endpoint_client::POST<PasswordFinalizeRequestBody>,
-    endpoint_client::Response<PasswordFinalizeSuccessBody, ErrorBody>>;
+    endpoint_client::Response<endpoint_client::JSONEmptyBody, ErrorBody>>;
 
 }  // namespace brave_account::endpoints
 

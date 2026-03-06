@@ -7,17 +7,18 @@
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINTS_VERIFY_DELETE_H_
 
 #include "brave/components/brave_account/endpoint_client/brave_endpoint.h"
+#include "brave/components/brave_account/endpoint_client/json_empty_body.h"
 #include "brave/components/brave_account/endpoint_client/request_types.h"
 #include "brave/components/brave_account/endpoint_client/response.h"
-#include "brave/components/brave_account/endpoints/verify_delete_bodies.h"
 
 namespace brave_account::endpoints {
 
 using VerifyDelete = endpoint_client::BraveEndpoint<
     "accounts.bsg",
     "/v2/verify",
-    endpoint_client::DELETE<VerifyDeleteRequestBody>,
-    endpoint_client::Response<VerifyDeleteSuccessBody, VerifyDeleteErrorBody>>;
+    endpoint_client::DELETE<endpoint_client::JSONEmptyBody>,
+    endpoint_client::Response<endpoint_client::JSONEmptyBody,
+                              endpoint_client::JSONEmptyBody>>;
 
 }  // namespace brave_account::endpoints
 
