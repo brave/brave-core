@@ -264,13 +264,15 @@ std::string ConversationAPIClient::CreateJSONRequestBody(
     const bool is_sse_enabled) {
   base::DictValue dict;
 
+  auto capability = mojom::ConversationCapability::CHAT;
   if (conversation_capabilities.contains(
           mojom::ConversationCapability::CONTENT_AGENT)) {
-    const auto* capability_str = base::FindOrNull(
-        kCapabilityStringMap, mojom::ConversationCapability::CONTENT_AGENT);
-    CHECK(capability_str);
-    dict.Set("capability", *capability_str);
+    capability = mojom::ConversationCapability::CONTENT_AGENT;
   }
+  const auto* capability_str =
+      base::FindOrNull(kCapabilityStringMap, capability);
+  CHECK(capability_str);
+  dict.Set("capability", *capability_str);
 
   dict.Set("events", ConversationEventsToList(std::move(conversation)));
   dict.Set("model", model_name ? *model_name : model_name_);

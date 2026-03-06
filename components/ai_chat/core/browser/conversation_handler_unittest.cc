@@ -1972,7 +1972,8 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
              bool is_temporary_chat,
              const std::vector<base::WeakPtr<Tool>>& tools,
              std::optional<std::string_view> preferred_tool_name,
-             mojom::ConversationCapability conversation_capability,
+             const EngineConsumer::ConversationCapabilitySet&
+                 conversation_capabilities,
              EngineConsumer::GenerationDataCallback callback,
              EngineConsumer::GenerationCompletedCallback done_callback) {
             std::move(done_callback)
@@ -4090,7 +4091,8 @@ TEST_F(ConversationHandlerUnitTest, VisionModelSwitchOnScreenshots) {
              bool is_temporary_chat,
              const std::vector<base::WeakPtr<Tool>>& tools,
              std::optional<std::string_view> preferred_tool_name,
-             mojom::ConversationCapability conversation_capability,
+             const EngineConsumer::ConversationCapabilitySet&
+                 conversation_capabilities,
              EngineConsumer::GenerationDataCallback callback,
              EngineConsumer::GenerationCompletedCallback done_callback) {
             std::move(done_callback)

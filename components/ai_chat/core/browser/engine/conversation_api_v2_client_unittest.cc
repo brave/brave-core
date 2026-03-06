@@ -696,7 +696,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PremiumHeaders) {
   client_->PerformRequest(
       std::move(messages), std::nullopt,
       /* oai_tool_definitions */ std::nullopt, /* preferred_tool_name */
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -822,7 +822,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonPremium) {
   client_->PerformRequest(
       std::move(messages), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                      /* preferred_tool_name */
-      mojom::ConversationCapability::CONTENT_AGENT,
+      {mojom::ConversationCapability::CONTENT_AGENT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -943,7 +943,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_WithToolUseResponse) {
   client_->PerformRequest(
       std::move(messages), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                      /* preferred_tool_name */
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -1161,7 +1161,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PermissionChallenge) {
   client_->PerformRequest(
       std::move(messages), std::nullopt /* oai_tool_definitions */,
       std::nullopt /* preferred_tool_name */,
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -1238,7 +1238,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonStreaming) {
 
   client_->PerformRequest(
       std::move(messages), std::nullopt, std::nullopt,
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::NullCallback(),  // No data_received_callback (non-streaming)
       base::BindOnce(&MockCallbacks::OnCompleted,
                      base::Unretained(&mock_callbacks)));
@@ -1314,7 +1314,7 @@ TEST_F(ConversationAPIV2ClientUnitTest,
   client_->PerformRequest(
       std::move(messages), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                      /* preferred_tool_name */
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -1390,7 +1390,7 @@ TEST_F(ConversationAPIV2ClientUnitTest,
   client_->PerformRequest(
       std::move(messages), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                      /* preferred_tool_name */
-      mojom::ConversationCapability::CHAT, base::NullCallback(),
+      {mojom::ConversationCapability::CHAT}, base::NullCallback(),
       base::BindOnce(&MockCallbacks::OnCompleted,
                      base::Unretained(&mock_callbacks)),
       override_model_name);
@@ -1457,7 +1457,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NEARVerification) {
   client_->PerformRequest(
       std::move(messages), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                      /* preferred_tool_name */
-      mojom::ConversationCapability::CONTENT_AGENT,
+      {mojom::ConversationCapability::CONTENT_AGENT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -1491,7 +1491,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_FailWithEmptyMessages) {
   client_->PerformRequest(
       std::move(messages), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                      /* preferred_tool_name */
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -1545,7 +1545,7 @@ TEST_F(ConversationAPIV2ClientUnitTest,
   client_->PerformRequest(
       std::move(messages), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                      /* preferred_tool_name */
-      mojom::ConversationCapability::CHAT, base::NullCallback(),
+      {mojom::ConversationCapability::CHAT}, base::NullCallback(),
       base::BindOnce(&MockCallbacks::OnCompleted,
                      base::Unretained(&mock_callbacks)));
 
@@ -1593,7 +1593,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_ServerErrorResponse) {
   client_->PerformRequest(
       std::move(messages), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                      /* preferred_tool_name */
-      mojom::ConversationCapability::CHAT, base::NullCallback(),
+      {mojom::ConversationCapability::CHAT}, base::NullCallback(),
       base::BindOnce(&MockCallbacks::OnCompleted,
                      base::Unretained(&mock_callbacks)));
 
@@ -2131,96 +2131,6 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_CompletionChunk) {
         base::ok(base::Value(std::move(chunk))));
 
     testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
-  }
-}
-
-TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_BraveCapabilityList) {
-  struct TestCase {
-    std::string name;
-    mojom::ConversationCapability capability;
-    bool deep_research_enabled;
-    std::vector<std::string> expected_capabilities;
-  };
-
-  const TestCase kTestCases[] = {
-      {"ContentAgent",
-       mojom::ConversationCapability::CONTENT_AGENT,
-       false,
-       {"content_agent"}},
-      {"ContentAgentWithDeepResearch",
-       mojom::ConversationCapability::CONTENT_AGENT,
-       true,
-       {"content_agent"}},
-      {"ChatNoDeepResearch",
-       mojom::ConversationCapability::CHAT,
-       false,
-       {"chat"}},
-      {"ChatWithDeepResearch",
-       mojom::ConversationCapability::CHAT,
-       true,
-       {"chat", "deep_research"}},
-  };
-
-  MockAPIRequestHelper* mock_request_helper =
-      client_->GetMockAPIRequestHelper();
-
-  EXPECT_DEATH(
-      {
-        client_->PerformRequest(GetMockMessagesAndExpectedMessagesJson().first,
-                                std::nullopt, std::nullopt,
-                                mojom::ConversationCapability::DEEP_RESEARCH,
-                                base::DoNothing(), base::DoNothing());
-      },
-      "");
-
-  for (const auto& test_case : kTestCases) {
-    SCOPED_TRACE(test_case.name);
-
-    base::test::ScopedFeatureList feature_list;
-    if (test_case.deep_research_enabled) {
-      feature_list.InitAndEnableFeature(features::kAIChatDeepResearch);
-    }
-
-    base::RunLoop run_loop;
-    std::vector<std::string> captured_capabilities;
-
-    EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
-        .WillOnce([&](const std::string& method, const GURL& url,
-                      const std::string& body, const std::string& content_type,
-                      DataReceivedCallback data_received_callback,
-                      ResultCallback result_callback,
-                      const base::flat_map<std::string, std::string>& headers,
-                      const api_request_helper::APIRequestOptions& options) {
-          auto dict = base::test::ParseJsonDict(body);
-          const base::ListValue* capability_list =
-              dict.FindList("brave_capability");
-          EXPECT_TRUE(capability_list);
-          if (capability_list) {
-            for (const auto& val : *capability_list) {
-              EXPECT_TRUE(val.is_string());
-              if (val.is_string()) {
-                captured_capabilities.push_back(val.GetString());
-              }
-            }
-          }
-          auto completion_dict = base::test::ParseJsonDict(R"({
-            "choices": [{"message": {"content": "response"}}]
-          })");
-          std::move(result_callback)
-              .Run(api_request_helper::APIRequestResult(
-                  200, base::Value(std::move(completion_dict)), {}, net::OK,
-                  GURL()));
-          run_loop.Quit();
-          return Ticket();
-        });
-
-    client_->PerformRequest(GetMockMessagesAndExpectedMessagesJson().first,
-                            std::nullopt, std::nullopt, test_case.capability,
-                            base::DoNothing(), base::DoNothing());
-    run_loop.Run();
-    testing::Mock::VerifyAndClearExpectations(mock_request_helper);
-
-    EXPECT_EQ(captured_capabilities, test_case.expected_capabilities);
   }
 }
 
