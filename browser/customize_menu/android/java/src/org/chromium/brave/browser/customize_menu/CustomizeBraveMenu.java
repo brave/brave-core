@@ -89,9 +89,7 @@ public class CustomizeBraveMenu {
     public static final int PREFERENCE_MENU_ICON_SIZE_DP = 24;
 
     // Menu items initialized as hidden unless an explicit user preference already exists.
-    private static final int[] MENU_IDS_INVISIBLE_BY_DEFAULT = {
-            R.id.exit_id
-    };
+    private static final int[] MENU_IDS_INVISIBLE_BY_DEFAULT = {R.id.exit_id};
 
     /**
      * Static mapping of menu item IDs to their corresponding drawable resource IDs. Uses
@@ -317,13 +315,12 @@ public class CustomizeBraveMenu {
             return true;
         }
         return ChromeSharedPreferences.getInstance()
-                .readBoolean(
-                        getFormattedSharedPreferenceMenuItemName(resourceName),
-                        true);
+                .readBoolean(getFormattedSharedPreferenceMenuItemName(resourceName), true);
     }
 
     /**
-     * Initializes a menu item as invisible in the user preferences.
+     * Initializes a menu item as invisible in the user preferences. This method is a no-op when a
+     * preference already exists.
      *
      * @param resources the resources used to access the entry name of a given menu item ID
      * @param itemId the resource ID of the menu item to initialize as invisible
@@ -340,8 +337,8 @@ public class CustomizeBraveMenu {
             return;
         }
 
-        if (!ChromeSharedPreferences.getInstance().contains(
-                getFormattedSharedPreferenceMenuItemName(resourceName))) {
+        if (!ChromeSharedPreferences.getInstance()
+                .contains(getFormattedSharedPreferenceMenuItemName(resourceName))) {
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(getFormattedSharedPreferenceMenuItemName(resourceName), false);
         }
@@ -354,10 +351,7 @@ public class CustomizeBraveMenu {
      * @return the formatted shared-preference key for that menu item
      */
     private static String getFormattedSharedPreferenceMenuItemName(final String resourceName) {
-        return String.format(
-                Locale.ENGLISH,
-                CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT,
-                resourceName);
+        return String.format(Locale.ENGLISH, CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT, resourceName);
     }
 
     /**

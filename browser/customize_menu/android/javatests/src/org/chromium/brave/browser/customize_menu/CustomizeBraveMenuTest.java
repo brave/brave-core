@@ -113,7 +113,8 @@ public class CustomizeBraveMenuTest {
 
         mModelList.add(
                 new MVCListAdapter.ListItem(AppMenuHandler.AppMenuItemType.STANDARD, visibleItem));
-        mModelList.add(new MVCListAdapter.ListItem(AppMenuHandler.AppMenuItemType.STANDARD, exitItem));
+        mModelList.add(
+                new MVCListAdapter.ListItem(AppMenuHandler.AppMenuItemType.STANDARD, exitItem));
 
         CustomizeBraveMenu.applyCustomization(mResources, mModelList);
 
