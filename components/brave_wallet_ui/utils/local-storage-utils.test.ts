@@ -181,8 +181,11 @@ describe('getPersistedSpotPrices', () => {
   })
 
   it('returns an empty array on malformed JSON', () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation()
     mockLocalStorageGet.mockReturnValue('not valid json')
     expect(getPersistedSpotPrices()).toEqual([])
+    expect(spy).toHaveBeenCalled()
+    spy.mockRestore()
   })
 })
 
