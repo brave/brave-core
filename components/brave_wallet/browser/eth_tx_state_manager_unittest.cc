@@ -154,15 +154,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
                                  "0x3535353535353535353535353535353535353535",
                                  "0x0de0b6b3a7640000", std::vector<uint8_t>(),
                                  false, std::nullopt),
-              "0x3", "0x1E", "0x32",
-              mojom::GasEstimation1559::New(
-                  "0x3b9aca00" /* Hex of 1 * 1e9 */,
-                  "0xaf16b1600" /* Hex of 47 * 1e9 */,
-                  "0x77359400" /* Hex of 2 * 1e9 */,
-                  "0xb2d05e000" /* Hex of 48 * 1e9 */,
-                  "0xb2d05e00" /* Hex of 3 * 1e9 */,
-                  "0xb68a0aa00" /* Hex of 49 * 1e9 */,
-                  "0xad8075b7a" /* Hex of 46574033786 */))));
+              "0x3", "0x1E", "0x32")));
   EthTxMeta meta2(eth_account_id, std::move(tx2));
   base::DictValue value2 = meta2.ToValue();
   auto meta_from_value2 = eth_tx_state_manager_->ValueToEthTxMeta(value2);

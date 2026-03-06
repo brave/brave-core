@@ -138,6 +138,14 @@ bool HexValueToUint256(std::string_view hex_input, uint256_t* out) {
   return true;
 }
 
+std::optional<uint256_t> HexValueToUint256(std::string_view hex_input) {
+  uint256_t result = 0;
+  if (!HexValueToUint256(hex_input, &result)) {
+    return std::nullopt;
+  }
+  return result;
+}
+
 bool HexValueToInt256(std::string_view hex_input, int256_t* out) {
   if (!out) {
     return false;
@@ -151,6 +159,14 @@ bool HexValueToInt256(std::string_view hex_input, int256_t* out) {
   // complement representation, invert all of the bits of the number + 1
   *out = static_cast<int256_t>(val);
   return true;
+}
+
+std::optional<int256_t> HexValueToInt256(std::string_view hex_input) {
+  int256_t result = 0;
+  if (!HexValueToInt256(hex_input, &result)) {
+    return std::nullopt;
+  }
+  return result;
 }
 
 std::string Uint256ValueToHex(uint256_t input) {

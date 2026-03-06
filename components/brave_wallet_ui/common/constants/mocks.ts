@@ -69,7 +69,6 @@ export const getMockedTransactionInfo =
           chainId: BraveWallet.LOCALHOST_CHAIN_ID,
           maxPriorityFeePerGas: '',
           maxFeePerGas: '',
-          gasEstimation: undefined,
         },
         ethTxData: {} as any,
         filTxData: undefined,

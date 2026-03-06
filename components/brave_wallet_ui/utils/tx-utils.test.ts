@@ -1167,7 +1167,6 @@ describe('isCancelTransaction', () => {
             chainId: '0x1',
             maxPriorityFeePerGas: '0x0',
             maxFeePerGas: '0x0',
-            gasEstimation: undefined,
           },
         },
       }
@@ -1188,7 +1187,6 @@ describe('isCancelTransaction', () => {
             chainId: '0x1',
             maxPriorityFeePerGas: '0x0',
             maxFeePerGas: '0x0',
-            gasEstimation: undefined,
           },
         },
         txStatus: BraveWallet.TransactionStatus.Submitted,
@@ -1236,7 +1234,6 @@ describe('isCancelTransaction', () => {
           chainId: '0x1',
           maxPriorityFeePerGas: '0x0',
           maxFeePerGas: '0x0',
-          gasEstimation: undefined,
         },
       },
     }
