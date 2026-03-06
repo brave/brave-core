@@ -21,6 +21,8 @@ namespace brave_tooltips {
 class BraveTooltipPopup;
 }  // namespace brave_tooltips
 
+class BraveOriginBuyWindow;
+class BraveOriginStartupView;
 class MenuButtonDelegate;
 class VerticalTabStripWidgetDelegateView;
 
@@ -28,6 +30,8 @@ class VerticalTabStripWidgetDelegateView;
   CreatePassKey_Unused();                            \
   friend class ::brave_ads::NotificationAdPopup;     \
   friend class ::brave_tooltips::BraveTooltipPopup;  \
+  friend class ::BraveOriginBuyWindow;               \
+  friend class ::BraveOriginStartupView;             \
   friend class ::MenuButtonDelegate;                 \
   friend class ::VerticalTabStripWidgetDelegateView; \
   static WdvPassKey CreatePassKey

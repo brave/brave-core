@@ -1,3 +1,6 @@
 include_rules = [
+  "+brave/browser/ui/views/brave_origin",
+  "+brave/components/brave_origin",
+  "+brave/components/skus/browser",
   "+brave/components/tor/buildflags",
 ]
