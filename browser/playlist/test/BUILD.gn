@@ -68,6 +68,7 @@ source_set("unit_tests") {
     "mock_playlist_service_observer.h",
     "playlist_background_web_contents_helper_unittest.cc",
     "playlist_background_web_contents_unittest.cc",
+    "playlist_media_file_downloader_unittest.cc",
     "playlist_media_handler_unittest.cc",
     "playlist_p3a_unittest.cc",
     "playlist_service_unittest.cc",

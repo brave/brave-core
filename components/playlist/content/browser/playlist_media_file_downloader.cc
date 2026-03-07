@@ -207,11 +207,14 @@ void PlaylistMediaFileDownloader::OnDownloadCreated(
     // observe the item anyway to handle the lifecycle of
     // download item.
     ScheduleToCancelDownloadItem(item->GetGuid());
-    return;
   }
 
   DCHECK(!download_item_observation_.IsObservingSource(item));
   download_item_observation_.AddObservation(item);
+
+  if (on_download_created_for_testing_) {
+    on_download_created_for_testing_.Run();
+  }
 }
 
 void PlaylistMediaFileDownloader::OnDownloadUpdated(
