@@ -132,8 +132,7 @@ void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
                             ConversationEventType::kPageExcerpt,
                             std::vector<std::string>{text});
   conversation.emplace_back(std::move(*rewrite_event));
-  api_->PerformRequest(std::move(conversation), std::nullopt, std::nullopt,
-                       {mojom::ConversationCapability::CHAT},
+  api_->PerformRequest(std::move(conversation), std::nullopt, std::nullopt, {},
                        std::move(received_callback),
                        std::move(completed_callback));
 }
@@ -163,8 +162,7 @@ void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
       &EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse,
       weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  api_->PerformRequest(std::move(conversation), std::nullopt, std::nullopt,
-                       {mojom::ConversationCapability::CHAT},
+  api_->PerformRequest(std::move(conversation), std::nullopt, std::nullopt, {},
                        base::NullCallback(), std::move(on_response));
 }
 
@@ -526,8 +524,7 @@ void EngineConsumerConversationAPI::DedupeTopics(
        std::vector<std::string>{
            base::WriteJson(topic_list).value_or(std::string())}});
   api_->PerformRequest(
-      std::move(conversation), std::nullopt, std::nullopt,
-      {mojom::ConversationCapability::CHAT},
+      std::move(conversation), std::nullopt, std::nullopt, {},
       base::NullCallback() /* data_received_callback */,
       base::BindOnce(
           [](GetSuggestedTopicsCallback callback,
@@ -579,8 +576,7 @@ void EngineConsumerConversationAPI::ProcessTabChunks(
          topic});
 
     api_->PerformRequest(std::move(conversation), std::nullopt, std::nullopt,
-                         {mojom::ConversationCapability::CHAT},
-                         base::NullCallback() /* data_received_callback */,
+                         {}, base::NullCallback() /* data_received_callback */,
                          barrier_callback /* data_completed_callback */);
   }
 }

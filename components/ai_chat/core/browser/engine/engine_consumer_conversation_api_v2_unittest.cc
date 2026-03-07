@@ -3138,9 +3138,8 @@ TEST_P(EngineConsumerConversationAPIV2UnitTest_GenerateRewrite,
               EngineConsumer::GenerationDataCallback data_callback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::string>& model_name) {
-            // Verify conversation capability is CHAT
-            EXPECT_TRUE(conversation_capabilities.contains(
-                mojom::ConversationCapability::CHAT));
+            // Verify no capability is sent for rewrite requests
+            EXPECT_TRUE(conversation_capabilities.empty());
 
             // Verify no tool definitions for rewrite requests
             EXPECT_FALSE(oai_tool_definitions.has_value());
