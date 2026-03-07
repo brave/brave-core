@@ -31,8 +31,6 @@ PagePercentageMetrics::PagePercentageMetrics(
   }
 }
 
-PagePercentageMetrics::~PagePercentageMetrics() = default;
-
 void PagePercentageMetrics::IncrementDictCount(std::string_view key) {
   ScopedDictPrefUpdate update(local_state_, counts_pref_key_);
   int current = update->FindInt(key).value_or(0);

@@ -19,9 +19,6 @@ inline constexpr int kPercentageBuckets[] = {0, 5, 20, 80, 95};
 
 // Base class for tracking percentage-based metrics over a reporting interval.
 class PagePercentageMetrics {
- public:
-  virtual ~PagePercentageMetrics();
-
  protected:
   PagePercentageMetrics(PrefService* local_state,
                         std::string_view counts_pref_key,

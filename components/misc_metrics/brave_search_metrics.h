@@ -37,7 +37,7 @@ class BraveSearchMetrics : public PagePercentageMetrics {
  public:
   BraveSearchMetrics(PrefService* local_state,
                      TemplateURLService* template_url_service);
-  ~BraveSearchMetrics() override;
+  ~BraveSearchMetrics();
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
