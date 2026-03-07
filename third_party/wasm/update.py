@@ -19,7 +19,6 @@ import toml
 import brave_chromium_utils
 
 PRESERVE_PATTERNS = [
-    'candle_embedding_gemma/.cargo/config.toml',
     'vendor/.clang-format',
     'vendor/*/README.chromium',
 ]
@@ -80,9 +79,11 @@ with brave_chromium_utils.sys_path('//tools/rust'):
 def main():
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
-    backed_up_files = back_up_files(PRESERVE_PATTERNS)
-
     members = toml.load('Cargo.toml')['workspace']['members']
+
+    preserve = ([f'{m}/.cargo/config.toml'
+                 for m in members] + PRESERVE_PATTERNS)
+    backed_up_files = back_up_files(preserve)
 
     shutil.rmtree('vendor', ignore_errors=True)
     for member in members:
