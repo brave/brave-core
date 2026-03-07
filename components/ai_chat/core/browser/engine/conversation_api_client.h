@@ -42,7 +42,6 @@ struct CredentialCacheEntry;
 // Performs remote request to the remote HTTP Brave Conversation API.
 class ConversationAPIClient {
  public:
-  using ConversationCapabilitySet = EngineConsumer::ConversationCapabilitySet;
   using GenerationResult = EngineConsumer::GenerationResult;
   using GenerationResultData = EngineConsumer::GenerationResultData;
   using GenerationDataCallback = EngineConsumer::GenerationDataCallback;

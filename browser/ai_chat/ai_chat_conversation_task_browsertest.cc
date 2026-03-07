@@ -301,7 +301,7 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
             bool is_temporary,
             const std::vector<base::WeakPtr<Tool>>& provided_tools,
             std::optional<std::string_view> preferred_tool_name,
-            const EngineConsumer::ConversationCapabilitySet& capabilities,
+            const ConversationCapabilitySet& capabilities,
             EngineConsumer::GenerationDataCallback data_cb,
             EngineConsumer::GenerationCompletedCallback complete_cb) mutable {
           *out_data_callback = std::move(data_cb);

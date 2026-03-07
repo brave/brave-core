@@ -78,8 +78,7 @@ class MockConversationAPIClient : public ConversationAPIClient {
               (std::vector<ConversationEvent>,
                std::optional<base::ListValue> oai_tool_definitions,
                const std::optional<std::string>& preferred_tool_name,
-               const EngineConsumer::ConversationCapabilitySet&
-                   conversation_capabilities,
+               const ConversationCapabilitySet& conversation_capabilities,
                EngineConsumer::GenerationDataCallback,
                EngineConsumer::GenerationCompletedCallback,
                const std::optional<std::string>& model_name),
@@ -187,8 +186,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -254,8 +252,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -310,8 +307,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -385,8 +381,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -453,8 +448,7 @@ TEST_P(EngineConsumerConversationAPIUnitTest_Rewrite, GenerateEvents) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -566,8 +560,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUse) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -685,8 +678,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_MultipleToolUse) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -873,8 +865,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -942,8 +933,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUseNoOutput) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1026,8 +1016,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1067,8 +1056,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1117,8 +1105,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1189,8 +1176,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1208,8 +1194,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1228,8 +1213,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1264,8 +1248,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1283,8 +1266,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1308,8 +1290,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1327,8 +1308,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1346,8 +1326,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1374,8 +1353,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1393,8 +1371,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1410,8 +1387,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1443,8 +1419,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1462,8 +1437,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1481,8 +1455,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1511,7 +1484,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       .WillRepeatedly([&](std::vector<ConversationEvent> conversation,
                           std::optional<base::ListValue> oai_tool_definitions,
                           const std::optional<std::string>& preferred_tool_name,
-                          const EngineConsumer::ConversationCapabilitySet&
+                          const ConversationCapabilitySet&
                               conversation_capabilities,
                           EngineConsumer::GenerationDataCallback data_callback,
                           EngineConsumer::GenerationCompletedCallback callback,
@@ -1551,8 +1524,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1601,8 +1573,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1619,8 +1590,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1666,8 +1636,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1684,8 +1653,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1716,8 +1684,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1731,8 +1698,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1755,8 +1721,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1770,8 +1735,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1831,7 +1795,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
         .WillOnce([&](std::vector<ConversationEvent> conversation,
                       std::optional<base::ListValue> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
-                      const EngineConsumer::ConversationCapabilitySet&
+                      const ConversationCapabilitySet&
                           conversation_capabilities,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
@@ -1862,17 +1826,17 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
   // Test error response
   {
     EXPECT_CALL(*mock_api_client, PerformRequest)
-        .WillOnce([&](std::vector<ConversationEvent> conversation,
-                      std::optional<base::ListValue> oai_tool_definitions,
-                      const std::optional<std::string>& preferred_tool_name,
-                      const EngineConsumer::ConversationCapabilitySet&
-                          conversation_capabilities,
-                      EngineConsumer::GenerationDataCallback data_callback,
-                      EngineConsumer::GenerationCompletedCallback callback,
-                      const std::optional<std::string>& model_name) {
-          std::move(callback).Run(
-              base::unexpected(mojom::APIError::RateLimitReached));
-        });
+        .WillOnce(
+            [&](std::vector<ConversationEvent> conversation,
+                std::optional<base::ListValue> oai_tool_definitions,
+                const std::optional<std::string>& preferred_tool_name,
+                const ConversationCapabilitySet& conversation_capabilities,
+                EngineConsumer::GenerationDataCallback data_callback,
+                EngineConsumer::GenerationCompletedCallback callback,
+                const std::optional<std::string>& model_name) {
+              std::move(callback).Run(
+                  base::unexpected(mojom::APIError::RateLimitReached));
+            });
 
     engine_->GenerateQuestionSuggestions(
         page_contents,
@@ -1891,7 +1855,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
         .WillOnce([&](std::vector<ConversationEvent> conversation,
                       std::optional<base::ListValue> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
-                      const EngineConsumer::ConversationCapabilitySet&
+                      const ConversationCapabilitySet&
                           conversation_capabilities,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
@@ -1917,17 +1881,17 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
   // Test null event
   {
     EXPECT_CALL(*mock_api_client, PerformRequest)
-        .WillOnce([&](std::vector<ConversationEvent> conversation,
-                      std::optional<base::ListValue> oai_tool_definitions,
-                      const std::optional<std::string>& preferred_tool_name,
-                      const EngineConsumer::ConversationCapabilitySet&
-                          conversation_capabilities,
-                      EngineConsumer::GenerationDataCallback data_callback,
-                      EngineConsumer::GenerationCompletedCallback callback,
-                      const std::optional<std::string>& model_name) {
-          std::move(callback).Run(base::ok(
-              EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
-        });
+        .WillOnce(
+            [&](std::vector<ConversationEvent> conversation,
+                std::optional<base::ListValue> oai_tool_definitions,
+                const std::optional<std::string>& preferred_tool_name,
+                const ConversationCapabilitySet& conversation_capabilities,
+                EngineConsumer::GenerationDataCallback data_callback,
+                EngineConsumer::GenerationCompletedCallback callback,
+                const std::optional<std::string>& model_name) {
+              std::move(callback).Run(base::ok(
+                  EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
+            });
 
     engine_->GenerateQuestionSuggestions(
         page_contents,
@@ -1972,7 +1936,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         .WillOnce([&](std::vector<ConversationEvent> conversation,
                       std::optional<base::ListValue> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
-                      const EngineConsumer::ConversationCapabilitySet&
+                      const ConversationCapabilitySet&
                           conversation_capabilities,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
@@ -2041,7 +2005,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         .WillOnce([&](std::vector<ConversationEvent> conversation,
                       std::optional<base::ListValue> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
-                      const EngineConsumer::ConversationCapabilitySet&
+                      const ConversationCapabilitySet&
                           conversation_capabilities,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
@@ -2108,7 +2072,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         .WillOnce([&](std::vector<ConversationEvent> conversation,
                       std::optional<base::ListValue> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
-                      const EngineConsumer::ConversationCapabilitySet&
+                      const ConversationCapabilitySet&
                           conversation_capabilities,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
@@ -2160,7 +2124,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         .WillOnce([&](std::vector<ConversationEvent> conversation,
                       std::optional<base::ListValue> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
-                      const EngineConsumer::ConversationCapabilitySet&
+                      const ConversationCapabilitySet&
                           conversation_capabilities,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
@@ -2219,7 +2183,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         .WillOnce([&](std::vector<ConversationEvent> conversation,
                       std::optional<base::ListValue> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
-                      const EngineConsumer::ConversationCapabilitySet&
+                      const ConversationCapabilitySet&
                           conversation_capabilities,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
@@ -2277,7 +2241,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         .WillOnce([&](std::vector<ConversationEvent> conversation,
                       std::optional<base::ListValue> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
-                      const EngineConsumer::ConversationCapabilitySet&
+                      const ConversationCapabilitySet&
                           conversation_capabilities,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
@@ -2346,8 +2310,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -2401,8 +2364,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -2587,8 +2549,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -2690,8 +2651,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -2767,8 +2727,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithOnlyPdfFiles) {
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -2841,8 +2800,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -2898,8 +2856,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -2956,8 +2913,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -3013,8 +2969,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -3079,8 +3034,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -3190,7 +3144,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         .WillOnce([&](std::vector<ConversationEvent> conversation,
                       std::optional<base::ListValue> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
-                      const EngineConsumer::ConversationCapabilitySet&
+                      const ConversationCapabilitySet&
                           conversation_capabilities,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
@@ -3306,8 +3260,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -3385,8 +3338,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -3428,8 +3380,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
-                    const EngineConsumer::ConversationCapabilitySet&
-                        conversation_capabilities,
+                    const ConversationCapabilitySet& conversation_capabilities,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {

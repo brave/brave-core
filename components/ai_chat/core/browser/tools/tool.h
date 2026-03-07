@@ -15,17 +15,15 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
-#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace ai_chat {
 
 // Base class for Tools that are exposed to the Assistant
 class Tool {
  public:
-  using ConversationCapabilitySet =
-      absl::flat_hash_set<mojom::ConversationCapability>;
   using ToolResult = std::vector<mojom::ContentBlockPtr>;
   using ToolArtifacts = std::vector<mojom::ToolArtifactPtr>;
   using UseToolCallback =

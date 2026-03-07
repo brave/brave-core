@@ -477,8 +477,7 @@ TEST_P(AIChatServiceUnitTest,
                      bool is_temporary_chat,
                      const std::vector<base::WeakPtr<Tool>>& tools,
                      std::optional<std::string_view> preferred_tool_name,
-                     const EngineConsumer::ConversationCapabilitySet&
-                         conversation_capabilities,
+                     const ConversationCapabilitySet& conversation_capabilities,
                      base::RepeatingCallback<void(
                          EngineConsumer::GenerationResultData)> callback,
                      base::OnceCallback<void(

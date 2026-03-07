@@ -20,7 +20,6 @@
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
-#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 class PrefService;
 
@@ -69,9 +68,6 @@ class EngineConsumer {
 
   using GenerationCompletedCallback =
       base::OnceCallback<void(GenerationResult)>;
-
-  using ConversationCapabilitySet =
-      absl::flat_hash_set<mojom::ConversationCapability>;
 
   using ConversationHistory = std::vector<mojom::ConversationTurnPtr>;
 

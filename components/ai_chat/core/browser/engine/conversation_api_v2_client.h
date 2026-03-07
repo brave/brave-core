@@ -39,7 +39,6 @@ struct OAIMessage;
 // Performs remote request to the remote HTTP Brave Conversation API.
 class ConversationAPIV2Client {
  public:
-  using ConversationCapabilitySet = EngineConsumer::ConversationCapabilitySet;
   using GenerationResult = EngineConsumer::GenerationResult;
   using GenerationResultData = EngineConsumer::GenerationResultData;
   using GenerationDataCallback = EngineConsumer::GenerationDataCallback;
