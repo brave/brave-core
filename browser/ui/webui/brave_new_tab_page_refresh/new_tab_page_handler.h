@@ -27,6 +27,7 @@ class TemplateURLService;
 enum class WindowOpenDisposition;
 
 namespace misc_metrics {
+class BraveSearchMetrics;
 class NewTabMetrics;
 }
 
@@ -55,6 +56,7 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
                     PrefService& pref_service,
                     TemplateURLService& template_url_service,
                     misc_metrics::NewTabMetrics& new_tab_metrics,
+                    misc_metrics::BraveSearchMetrics* brave_search_metrics,
                     bool was_restored);
 
   ~NewTabPageHandler() override;
@@ -197,6 +199,7 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   raw_ref<PrefService> pref_service_;
   raw_ref<TemplateURLService> template_url_service_;
   raw_ref<misc_metrics::NewTabMetrics> new_tab_metrics_;
+  raw_ptr<misc_metrics::BraveSearchMetrics> brave_search_metrics_ = nullptr;
   bool was_restored_ = false;
   base::WeakPtrFactory<NewTabPageHandler> weak_factory_{this};
 };

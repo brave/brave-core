@@ -201,6 +201,7 @@ void PageMetrics::ReportAllMetrics() {
   ReportPagesLoaded();
   ReportFailedHTTPSUpgrades();
   ReportBookmarkCount();
+  brave_search_metrics_.ReportAllMetrics();
   periodic_report_timer_.Start(
       FROM_HERE, base::Time::Now() + kReportInterval,
       base::BindOnce(&PageMetrics::ReportAllMetrics, base::Unretained(this)));
