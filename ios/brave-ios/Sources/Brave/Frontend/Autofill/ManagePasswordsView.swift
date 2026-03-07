@@ -152,7 +152,7 @@ struct ManagePasswordsView: View {
             isDeleteSelectionDialogPresented = true
           }
           .foregroundStyle(
-            selectedGroupIds.isEmpty ? Color(braveSystemName: .textSecondary) : .red
+            Color(braveSystemName: selectedGroupIds.isEmpty ? .textSecondary : .primitiveRed0)
           )
           .disabled(selectedGroupIds.isEmpty)
           .confirmationDialog(
