@@ -52,17 +52,17 @@ struct ManagePasswordsView: View {
 
       if !viewModel.filteredAllowedGroups.isEmpty {
         Section {
-          ForEach(viewModel.filteredAllowedGroups, id: \.domain) { domain, credentials in
+          ForEach(viewModel.filteredAllowedGroups, id: \.domain) { domain, passwords in
             ManagePasswordListRow(
               domain: domain,
-              credentials: credentials,
+              passwords: passwords,
               autofillDataManager: viewModel.autofillDataManager
             )
             .tag(GroupID.saved(domain: domain))
             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
               Button(role: .destructive) {
                 UIImpactFeedbackGenerator(style: .medium).vibrate()
-                viewModel.deletePasswords(credentials)
+                viewModel.deletePasswords(passwords)
               } label: {
                 Label(
                   Strings.Autofill.managePasswordsDeleteCredentialButtonTitle,
@@ -80,17 +80,17 @@ struct ManagePasswordsView: View {
 
       if !viewModel.filteredBlockedGroups.isEmpty {
         Section {
-          ForEach(viewModel.filteredBlockedGroups, id: \.domain) { domain, credentials in
+          ForEach(viewModel.filteredBlockedGroups, id: \.domain) { domain, passwords in
             ManagePasswordListRow(
               domain: domain,
-              credentials: credentials,
+              passwords: passwords,
               autofillDataManager: viewModel.autofillDataManager
             )
             .tag(GroupID.blocked(domain: domain))
             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
               Button(role: .destructive) {
                 UIImpactFeedbackGenerator(style: .medium).vibrate()
-                viewModel.deletePasswords(credentials)
+                viewModel.deletePasswords(passwords)
               } label: {
                 Label(
                   Strings.Autofill.managePasswordsDeleteCredentialButtonTitle,
@@ -217,25 +217,33 @@ struct ManagePasswordsView: View {
 
 private struct ManagePasswordListRow: View {
   let domain: String
-  let credentials: [CWVPassword]
+  let passwords: [CWVPassword]
   let autofillDataManager: CWVAutofillDataManager
   @Environment(\.autofillManagementContext) private var context
 
   private var resolvedRealmURL: URL {
-    credentials.first.flatMap { URL(string: $0.site) } ?? URL(string: "about:blank")!
+    passwords.first.flatMap { URL(string: $0.site) } ?? URL(string: "about:blank")!
   }
 
   private var resolvedDomain: String {
     domain.isEmpty ? Strings.Autofill.managePasswordsUnknownDomainText : domain
   }
 
-  @ViewBuilder
   var body: some View {
     NavigationLink {
-      if let password = credentials.first, let context {
+      if passwords.count == 1, let password = passwords.first {
         ManagePasswordDetailView(
           viewModel: ManagePasswordDetailViewModel(
             mode: .view(password),
+            autofillDataManager: autofillDataManager
+          )
+        )
+        .environment(\.autofillManagementContext, context)
+      } else {
+        ManagePasswordGroupView(
+          viewModel: ManagePasswordGroupViewModel(
+            domain: domain,
+            passwords: passwords,
             autofillDataManager: autofillDataManager
           )
         )
@@ -245,8 +253,8 @@ private struct ManagePasswordListRow: View {
       Label {
         VStack(alignment: .leading, spacing: 2) {
           Text(resolvedDomain)
-          if credentials.count > 1 {
-            Text("\(credentials.count) \(Strings.Autofill.managePasswordMultipleAccounts)")
+          if passwords.count > 1 {
+            Text("\(passwords.count) \(Strings.Autofill.managePasswordMultipleAccounts)")
               .font(.footnote)
               .foregroundStyle(Color(braveSystemName: .textSecondary))
           }
