@@ -36,17 +36,18 @@ int TreeTabModel::GetTreeHeight(const tree_tab::TreeTabNodeId& id) const {
   return node->GetTreeHeight();
 }
 
-void TreeTabModel::SetCollapsed(const tree_tab::TreeTabNodeId& id,
+bool TreeTabModel::SetCollapsed(const tree_tab::TreeTabNodeId& id,
                                 bool collapsed) {
+  if (collapsed && !CanBeCollapsed(id)) {
+    return false;
+  }
+
   tabs::TreeTabNode* node = GetNode(id);
   if (!node || node->collapsed() == collapsed) {
-    return;
+    return false;
   }
-  node->set_collapsed(collapsed);
 
-  if (!node->height()) {
-    return;
-  }
+  node->set_collapsed(collapsed);
 
   if (collapsed) {
     // When collapsed, mark descendants as belonging to the collapsed node.
@@ -63,7 +64,7 @@ void TreeTabModel::SetCollapsed(const tree_tab::TreeTabNodeId& id,
     auto* descendants =
         base::FindOrNull(descendant_ids_by_collapsed_ancestor_, id);
     if (!descendants) {
-      return;
+      return true;
     }
 
     std::set<tree_tab::TreeTabNodeId> to_recompute = std::move(*descendants);
@@ -89,6 +90,15 @@ void TreeTabModel::SetCollapsed(const tree_tab::TreeTabNodeId& id,
       }
     }
   }
+  return true;
+}
+
+bool TreeTabModel::CanBeCollapsed(const tree_tab::TreeTabNodeId& id) const {
+  const tabs::TreeTabNode* node = GetNode(id);
+  if (!node) {
+    return false;
+  }
+  return node->height() && !node->collapsed();
 }
 
 bool TreeTabModel::DoesBelongToCollapsedNode(

@@ -367,7 +367,11 @@ void BraveTabStrip::ExpandAllCollapsedAncestors(
           static_cast<BraveBrowserTabStripController*>(controller_.get())
               ->GetClosestCollapsedAncestor(*tab->tree_tab_node());
       CHECK(collapsed_ancestor);
-      SetTreeTabNodeCollapsed(*collapsed_ancestor, false);
+
+      // Note that we need to copy the ancestor ID as |collapsed_ancestor| is
+      // going to be invalidated after SetTreeTabNodeCollapsed(false).
+      auto target_ancestor = *collapsed_ancestor;
+      SetTreeTabNodeCollapsed(target_ancestor, false);
     }
   }
 }

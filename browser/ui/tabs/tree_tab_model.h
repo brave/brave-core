@@ -34,8 +34,12 @@ class TreeTabModel {
 
   // Sets the collapsed state of the node identified by |id| to |collapsed|.
   // Updates the internal cache for DoesBelongToCollapsedNode. No-op if no node
-  // exists for |id|.
-  void SetCollapsed(const tree_tab::TreeTabNodeId& id, bool collapsed);
+  // exists for |id|. Returns true if the collapsed state was changed.
+  bool SetCollapsed(const tree_tab::TreeTabNodeId& id, bool collapsed);
+
+  // Returns true if the node identified by |id| can be collapsed.
+  // Only when the node has a height and is not collapsed.
+  bool CanBeCollapsed(const tree_tab::TreeTabNodeId& id) const;
 
   // Returns true if the node identified by |id| is under a collapsed ancestor
   // (and thus its tab should be hidden). O(1) from cache.
