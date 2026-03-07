@@ -66,7 +66,7 @@ struct ManagePasswordDetailView: View {
           HStack(spacing: 8) {
             Menu {
               Button {
-                copyPassword()
+                UIPasteboard.general.setSecureString(viewModel.passwordValue)
               } label: {
                 Text(Strings.menuItemCopyTitle)
               }
@@ -98,7 +98,7 @@ struct ManagePasswordDetailView: View {
             }
             .labelStyle(.iconOnly)
             .onTapGesture {
-              togglePasswordReveal()
+              isPasswordRevealed.toggle()
             }
           }
         } label: {
@@ -110,25 +110,5 @@ struct ManagePasswordDetailView: View {
     .navigationTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbarBackground(.visible, for: .navigationBar)
-  }
-
-  private func copyPassword() {
-    context?.askForAuthentication { success, _ in
-      if success {
-        UIPasteboard.general.setSecureString(viewModel.passwordValue)
-      }
-    }
-  }
-
-  private func togglePasswordReveal() {
-    if isPasswordRevealed {
-      isPasswordRevealed = false
-    } else {
-      context?.askForAuthentication { [self] success, _ in
-        if success {
-          isPasswordRevealed = true
-        }
-      }
-    }
   }
 }
