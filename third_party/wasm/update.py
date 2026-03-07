@@ -55,21 +55,26 @@ def clean_up_files(patterns):
             path.unlink()
 
 
+def make_config_toml(member):
+    """Build a cargo config that points to the shared vendor dir."""
+    vendor_rel = os.path.relpath('vendor', member)
+    vendor_rel = vendor_rel.replace(os.sep, '/')
+    return {
+        'source': {
+            'crates-io': {
+                'replace-with': 'vendored-sources'
+            },
+            'vendored-sources': {
+                'directory': vendor_rel
+            }
+        }
+    }
+
+
 with brave_chromium_utils.sys_path('//tools/rust'):
     import update_rust
     CARGO = os.path.join(update_rust.RUST_TOOLCHAIN_OUT_DIR, 'bin',
                          'cargo' + ('.exe' if sys.platform == 'win32' else ''))
-
-CONFIG_TOML = {
-    'source': {
-        'crates-io': {
-            'replace-with': 'vendored-sources'
-        },
-        'vendored-sources': {
-            'directory': '../vendor'
-        }
-    }
-}
 
 
 def main():
@@ -87,7 +92,7 @@ def main():
     for member in members:
         Path(f'{member}/.cargo').mkdir(exist_ok=True)
         with open(Path(f'{member}/.cargo/config.toml'), 'w') as f:
-            toml.dump(CONFIG_TOML, f)
+            toml.dump(make_config_toml(member), f)
 
     restore_files(backed_up_files)
     clean_up_files(CLEANUP_PATTERNS)

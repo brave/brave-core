@@ -1,3 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["opaque_ke", "candle_embedding_gemma"]
+members = [
+  "../../components/brave_account/resources/opaque_ke",
+  "candle_embedding_gemma",
+]
