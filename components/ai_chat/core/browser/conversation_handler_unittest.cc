@@ -6132,13 +6132,16 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
           "ContentAgent",
           /*is_content_agent_allowed=*/true,
           /*deep_research_enabled=*/false,
-          {mojom::ConversationCapability::CONTENT_AGENT},
+          {mojom::ConversationCapability::CHAT,
+           mojom::ConversationCapability::CONTENT_AGENT},
       },
       {
           "ContentAgentWithDeepResearch",
           /*is_content_agent_allowed=*/true,
           /*deep_research_enabled=*/true,
-          {mojom::ConversationCapability::CONTENT_AGENT},
+          {mojom::ConversationCapability::CHAT,
+           mojom::ConversationCapability::CONTENT_AGENT,
+           mojom::ConversationCapability::DEEP_RESEARCH},
       },
   };
 
