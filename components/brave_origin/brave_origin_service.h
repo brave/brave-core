@@ -35,6 +35,9 @@ class BraveOriginService : public KeyedService {
                               policy::PolicyService* browser_policy_service);
   ~BraveOriginService() override;
 
+  // KeyedService:
+  void Shutdown() override;
+
   // Check if a policy is controlled by BraveOrigin
   bool IsPolicyControlledByBraveOrigin(std::string_view policy_key) const;
 
