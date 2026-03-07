@@ -1466,3 +1466,52 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   EXPECT_TRUE(model->GetNode(node_a)->collapsed());
   EXPECT_TRUE(model->GetNode(node_b)->collapsed());
 }
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       OnTreeTabChanged_CalledWhenTreeNodeWasCollapsed) {
+  SetTreeTabsEnabled(true);
+  ASSERT_TRUE(tab_strip_model().tree_model());
+
+  // Build A (root) -> b(leaf).
+  auto* tab_a = tab_strip_model().GetTabAtIndex(0);
+  auto tab_b_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_b_interface->set_opener(tab_a);
+  tab_strip_model().AddTab(std::move(tab_b_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  // Expect OnTreeTabChanged to be called kNodeCollapsedStateChanged type.
+  // Also verify the CollapsedStateChangedChange contains valid node reference.
+  MockTabStripModelObserver mock_observer;
+  tab_strip_model().AddObserver(&mock_observer);
+  EXPECT_CALL(mock_observer, OnTreeTabChanged(testing::Field(
+                                 &TreeTabChange::type,
+                                 TreeTabChange::kNodeCollapsedStateChanged)))
+      .Times(1)
+      .WillOnce([&](const TreeTabChange& change) {
+        EXPECT_EQ(change.GetCollapsedStateChangedChange().node->id(),
+                  GetTreeTabNodeIdForTab(tab_a));
+        EXPECT_TRUE(change.GetCollapsedStateChangedChange().node->collapsed());
+      });
+
+  // Collapse tab_a.
+  auto* model = static_cast<BraveTabStripModel*>(&tab_strip_model());
+  model->SetTreeTabNodeCollapsed(GetTreeTabNodeIdForTab(tab_a), true);
+  testing::Mock::VerifyAndClearExpectations(&mock_observer);
+
+  // Also uncollapse tab_a should invoke OnTreeTabChanged with
+  // kNodeCollapsedStateChanged type.
+  EXPECT_CALL(mock_observer, OnTreeTabChanged(testing::Field(
+                                 &TreeTabChange::type,
+                                 TreeTabChange::kNodeCollapsedStateChanged)))
+      .Times(1)
+      .WillOnce([&](const TreeTabChange& change) {
+        EXPECT_EQ(change.GetCollapsedStateChangedChange().node->id(),
+                  GetTreeTabNodeIdForTab(tab_a));
+        EXPECT_FALSE(change.GetCollapsedStateChangedChange().node->collapsed());
+      });
+
+  // Uncollapse tab_a.
+  model->SetTreeTabNodeCollapsed(GetTreeTabNodeIdForTab(tab_a), false);
+  testing::Mock::VerifyAndClearExpectations(&mock_observer);
+}
