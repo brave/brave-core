@@ -36,10 +36,10 @@ bool Tool::IsSupportedByModel(
     const ConversationCapabilitySet& conversation_capabilities) const {
   // Implementors should add any extra checks in an override.
   return model.supports_tools &&
-         std::ranges::any_of(
-             model.supported_capabilities, [&](auto capability) {
-               return conversation_capabilities.contains(capability);
-             });
+         std::ranges::all_of(conversation_capabilities, [&](auto capability) {
+           return std::ranges::contains(model.supported_capabilities,
+                                        capability);
+         });
 }
 
 std::variant<bool, mojom::PermissionChallengePtr>
