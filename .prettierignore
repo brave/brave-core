@@ -20,7 +20,7 @@
 # Ignore external dependencies:
 /tools/crates/vendor/
 /third_party/
-/ui/webui/resources/wasm/vendor/
+/third_party/wasm/vendor/
 
 # Ignore github .yml files:
 .github/**/*.yml

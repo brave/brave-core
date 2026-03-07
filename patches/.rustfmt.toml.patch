@@ -8,6 +8,6 @@ index 0f9d300d83a7c90f9c39506cad4b71c2662cb67b..aa5ac4cfe25e828a9797893db96ec9b9
    "!third_party/blink/**",
 +  "brave/third_party/",
 +  "brave/tools/crates/vendor/",
-+  "brave/ui/webui/resources/wasm/vendor/",
++  "brave/third_party/wasm/vendor/",
  ]
 +skip_children = true  # Do not format submodules.

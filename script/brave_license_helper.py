@@ -180,8 +180,8 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         # plaster .toml file location should be skipped.
         os.path.join('brave', 'rewrite', 'third_party'),
 
-        # Transitive deps in brave/ui/webui/resources/wasm.
-        *GetRustWorkspaceTransitiveDeps(Path('brave/ui/webui/resources/wasm')),
+        # Transitive deps in brave/third_party/wasm.
+        *GetRustWorkspaceTransitiveDeps(Path('brave/third_party/wasm')),
     ])
 
     # Add the licensing info that would normally be in a README.chromium file.
@@ -311,9 +311,10 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
 
 def CheckBraveMissingLicense(path, error):
     if path.startswith('brave'):
-        # brave/third_party/rust itself doesn't need to have a license, but
-        # all subfolders in it should.
-        if path == os.path.join('brave', 'third_party', 'rust'):
+        # brave/third_party/rust and brave/third_party/wasm themselves
+        # don't need to have a license, but all subfolders should.
+        if path in (os.path.join('brave', 'third_party', 'rust'),
+                    os.path.join('brave', 'third_party', 'wasm')):
             return
         output = subprocess.check_output(
             [

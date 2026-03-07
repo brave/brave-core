@@ -70,7 +70,7 @@
     "tools/crates/",
     "win_build_output/",
     "ios/third_party/",
-    "ui/webui/resources/wasm/vendor/",
+    "third_party/wasm/vendor/",
   ],
 
   // Regex to match function names in the current presubmit stack trace. Matched

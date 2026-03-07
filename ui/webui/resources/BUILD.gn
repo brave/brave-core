@@ -111,17 +111,18 @@ transpile_web_ui("opaque_ke") {
 
   entry_points = [ [
         "opaque_ke",
-        rebase_path("wasm/opaque_ke/index.js"),
+        rebase_path("//brave/third_party/wasm/opaque_ke/index.js"),
       ] ]
 
   inputs = [
-    rebase_path("wasm/Cargo.lock"),
-    rebase_path("wasm/opaque_ke/src/lib.rs"),
+    rebase_path("//brave/third_party/wasm/Cargo.lock"),
+    rebase_path("//brave/third_party/wasm/opaque_ke/src/lib.rs"),
   ]
 
-  imports_from = [ "//brave/ui/webui/resources/wasm/" ]
+  imports_from = [ "//brave/third_party/wasm/" ]
 
-  rust_packages = [ rebase_path("wasm/opaque_ke/Cargo.toml") ]
+  rust_packages =
+      [ rebase_path("//brave/third_party/wasm/opaque_ke/Cargo.toml") ]
 
   public_asset_path = "chrome://resources/brave/"
 }

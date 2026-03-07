@@ -3,11 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import config from '../lib/config.js'
-import path from 'node:path'
-import util from '../lib/util.js'
-
-const args = [
-  path.join(config.srcDir, 'brave', 'third_party', 'wasm', 'update.py'),
-]
-util.run('vpython3', args, config.defaultOptions)
+export {
+  Login,
+  Registration,
+} from 'gen/brave/third_party/wasm/opaque_ke/bundler/pkg'
