@@ -9,6 +9,8 @@
 
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
 #include "brave/browser/ntp_background/custom_background_file_manager.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
@@ -21,6 +23,7 @@
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/misc_metrics/page_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/contextual_search/contextual_search_service_factory.h"
@@ -111,13 +114,24 @@ void BraveNewTabPageUI::BindInterface(
   auto vpn_facade = std::make_unique<VPNFacade>();
 #endif
 
+  auto* profile_metrics =
+      misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
+          profile);
+  misc_metrics::BraveSearchMetrics* brave_search_metrics = nullptr;
+  if (profile_metrics) {
+    auto* page_metrics = profile_metrics->GetPageMetrics();
+    if (page_metrics) {
+      brave_search_metrics = page_metrics->brave_search_metrics();
+    }
+  }
+
   page_handler_ = std::make_unique<NewTabPageHandler>(
       std::move(receiver), std::move(image_chooser),
       std::move(background_facade), std::move(top_sites_facade),
       std::move(vpn_facade), *web_contents, *prefs,
       *TemplateURLServiceFactory::GetForProfile(profile),
       *g_brave_browser_process->process_misc_metrics()->new_tab_metrics(),
-      was_restored_);
+      brave_search_metrics, was_restored_);
 
   // Reset `was_restored_` flag so with the next reload the current tab won't be
   // treated as a restored tab.
