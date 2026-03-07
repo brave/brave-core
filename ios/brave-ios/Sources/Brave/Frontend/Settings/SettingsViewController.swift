@@ -1278,25 +1278,27 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.Autofill.managePasswordsTitle,
           selection: { [unowned self] in
-
             if FeatureList.kUseChromiumWebViewsAutofill.enabled,
               let autofillDataManager = braveCore.defaultWebViewConfiguration.autofillDataManager
             {
-              let context = AutofillManagementContext(
-                settingsDelegate: settingsDelegate,
-                askForAuthentication: { [weak self] completion in
-                  self?.askForLocalAuthentication(viewType: .passwords, completion: completion)
-                }
-              )
-              let manageAutofillViewController = ManageAutofillViewController(
-                autofillDataManager: autofillDataManager,
-                context: context,
-                type: .passwords
-              )
-              self.navigationController?.pushViewController(
-                manageAutofillViewController,
-                animated: true
-              )
+              askForLocalAuthentication(viewType: .passwords) { [weak self] success, _ in
+                guard let self, success else { return }
+                let context = AutofillManagementContext(
+                  settingsDelegate: settingsDelegate,
+                  askForAuthentication: { [weak self] completion in
+                    self?.askForLocalAuthentication(viewType: .passwords, completion: completion)
+                  }
+                )
+                let manageAutofillViewController = ManageAutofillViewController(
+                  autofillDataManager: autofillDataManager,
+                  context: context,
+                  type: .passwords
+                )
+                navigationController?.pushViewController(
+                  manageAutofillViewController,
+                  animated: true
+                )
+              }
             } else {
               let loginsPasswordsViewController = LoginListViewController(
                 passwordAPI: passwordAPI,
