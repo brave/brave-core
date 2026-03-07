@@ -58,6 +58,15 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
   bool IsContextMenuCommandEnabled(
       int index,
       TabStripModel::ContextMenuCommand command_id) override;
+  void OnTabStripModelChanged(
+      TabStripModel* tab_strip_model,
+      const TabStripModelChange& change,
+      const TabStripSelectionChange& selection) override;
+
+ private:
+  bool ShouldShowTreeTabs();
+
+  void ExpandAllCollapsedAncestors(const tree_tab::TreeTabNodeId& id);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_BROWSER_TAB_STRIP_CONTROLLER_H_

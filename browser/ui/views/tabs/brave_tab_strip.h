@@ -54,7 +54,6 @@ class BraveTabStrip : public TabStrip {
   bool IsVerticalTabsAnimatingButNotFinalState() const override;
   bool CanPaintThrobberToLayer() const override;
   bool CanCloseTabViaMiddleButtonClick() const override;
-  void SetSelection(const ui::ListSelectionModel& new_selection) override;
 
   // TabSlotController:
   bool ShouldPaintTabAccent(const Tab* tab) const override;
@@ -94,7 +93,6 @@ class BraveTabStrip : public TabStrip {
 
   void UpdateOrientation();
   bool ShouldShowVerticalTabs() const;
-  bool ShouldShowTreeTabs() const;
 
   // Helper method to get the vertical tab strip region view if available.
   // Returns nullptr if vertical tabs are not shown or the view is not
@@ -102,10 +100,6 @@ class BraveTabStrip : public TabStrip {
   BraveVerticalTabStripRegionView* GetVerticalTabStripRegionView() const;
 
   void OnAlwaysHideCloseButtonPrefChanged();
-
-  // Expands all collapsed ancestors of the tabs
-  void ExpandAllCollapsedAncestors(
-      const std::vector<base::WeakPtr<BraveTab>>& tabs);
 
   BooleanPrefMember always_hide_close_button_;
   BooleanPrefMember middle_click_close_tab_enabled_;

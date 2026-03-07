@@ -147,31 +147,6 @@ bool BraveTabStrip::CanCloseTabViaMiddleButtonClick() const {
   return *middle_click_close_tab_enabled_;
 }
 
-void BraveTabStrip::SetSelection(const ui::ListSelectionModel& new_selection) {
-  TabStrip::SetSelection(new_selection);
-
-  if (!ShouldShowTreeTabs()) {
-    return;
-  }
-
-  // If newly selected tabs are in a collapsed tree tab node, automatically
-  // expand the node.
-  // In case of newly created tabs, they don't have a tree tab node yet, so we
-  // post tasks for it.
-  std::vector<base::WeakPtr<BraveTab>> tabs;
-  for (int index : new_selection.selected_indices()) {
-    tabs.push_back(static_cast<BraveTab*>(tab_at(index))->GetWeakPtr());
-  }
-
-  if (tabs.empty()) {
-    return;
-  }
-
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&BraveTabStrip::ExpandAllCollapsedAncestors,
-                                weak_factory_.GetWeakPtr(), tabs));
-}
-
 void BraveTabStrip::ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) {
   // Chromium asks hover style to all split tabs but we only set hover style
   // to hovered tab.
@@ -331,48 +306,11 @@ bool BraveTabStrip::ShouldShowVerticalTabs() const {
   return tabs::utils::ShouldShowBraveVerticalTabs(GetBrowserWindowInterface());
 }
 
-bool BraveTabStrip::ShouldShowTreeTabs() const {
-  if (!base::FeatureList::IsEnabled(tabs::kBraveTreeTab)) {
-    return false;
-  }
-
-  if (!ShouldShowVerticalTabs()) {
-    return false;
-  }
-
-  return controller_->GetBrowserWindowInterface()
-      ->GetProfile()
-      ->GetPrefs()
-      ->GetBoolean(brave_tabs::kTreeTabsEnabled);
-}
-
 void BraveTabStrip::OnAlwaysHideCloseButtonPrefChanged() {
   // Invalidate layout of all tabs to update close button visibility.
   // The visibility of close button is updated in Tab::Layout().
   for (int i = 0; i < GetTabCount(); ++i) {
     tab_at(i)->InvalidateLayout();
-  }
-}
-
-void BraveTabStrip::ExpandAllCollapsedAncestors(
-    const std::vector<base::WeakPtr<BraveTab>>& tabs) {
-  for (const auto& tab : tabs) {
-    if (!tab) {
-      continue;
-    }
-
-    CHECK(tab->tree_tab_node());
-    while (IsInCollapsedTreeTabNode(*tab->tree_tab_node())) {
-      const auto* collapsed_ancestor =
-          static_cast<BraveBrowserTabStripController*>(controller_.get())
-              ->GetClosestCollapsedAncestor(*tab->tree_tab_node());
-      CHECK(collapsed_ancestor);
-
-      // Note that we need to copy the ancestor ID as |collapsed_ancestor| is
-      // going to be invalidated after SetTreeTabNodeCollapsed(false).
-      auto target_ancestor = *collapsed_ancestor;
-      SetTreeTabNodeCollapsed(target_ancestor, false);
-    }
   }
 }
 

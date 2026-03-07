@@ -43,9 +43,7 @@ class BraveTabHoverCardController;
   virtual TabDragContext* GetDragContext
 
 #define TabHoverCardController BraveTabHoverCardController
-#define SetSelection virtual SetSelection
 #include <chrome/browser/ui/views/tabs/tab_strip.h>  // IWYU pragma: export
-#undef SetSelection
 #undef TabHoverCardController
 #undef GetDragContext
 #undef UpdateHoverCard
