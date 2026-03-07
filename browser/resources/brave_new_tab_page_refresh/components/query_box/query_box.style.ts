@@ -26,7 +26,7 @@ export const style = scoped.css`
     padding-bottom: 20px;
     overflow: visible;
     width: calc(100vw - 32px);
-    max-width: 416px;
+    max-width: 488px;
   }
 
   .input-container {

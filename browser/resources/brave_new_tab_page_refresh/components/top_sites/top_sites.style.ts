@@ -6,7 +6,7 @@
 import { color, font } from '@brave/leo/tokens/css/variables'
 import { scoped } from '$web-common/scoped_css'
 
-export const collapsedTileColumnCount = 6
+export const collapsedTileColumnCount = 7
 export const collapsedTileRowCount = 1
 export const minTileColumnCount = 4
 export const maxTileColumnCount = 12
