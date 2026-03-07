@@ -207,7 +207,7 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
       }
       if (misc_metrics::PageMetrics* page_metrics =
               profile_misc_metrics_service->GetPageMetrics()) {
-        page_metrics->brave_search_metrics()->ClearQueryCounts();
+        page_metrics->brave_search_metrics().ClearQueryCounts();
       }
     }
   }
