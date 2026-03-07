@@ -89,8 +89,8 @@ class PageMetrics : public DefaultBrowserMonitor::Observer {
   void IncrementPagesLoadedCount(bool is_reload, bool is_otr);
 
   BraveSearchMetrics& brave_search_metrics() { return brave_search_metrics_; }
-  NavigationSourceMetrics* navigation_source_metrics() {
-    return &navigation_source_metrics_;
+  NavigationSourceMetrics& navigation_source_metrics() {
+    return navigation_source_metrics_;
   }
 
   // DefaultBrowserMonitor::Observer:

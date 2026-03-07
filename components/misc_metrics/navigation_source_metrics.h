@@ -33,7 +33,7 @@ inline constexpr char kNavSourceNavigatedHistogramName[] =
 class NavigationSourceMetrics : public PagePercentageMetrics {
  public:
   explicit NavigationSourceMetrics(PrefService* local_state);
-  ~NavigationSourceMetrics() override;
+  ~NavigationSourceMetrics();
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 

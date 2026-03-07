@@ -75,10 +75,10 @@ void PageMetricsTabHelper::DidFinishNavigation(
   if (!is_reload) {
     if (ui::PageTransitionCoreTypeIs(transition,
                                      ui::PAGE_TRANSITION_AUTO_BOOKMARK)) {
-      page_metrics_->navigation_source_metrics()->RecordBookmarkNavigation();
+      page_metrics_->navigation_source_metrics().RecordBookmarkNavigation();
     } else if (ui::PageTransitionCoreTypeIs(
                    transition, ui::PAGE_TRANSITION_AUTO_TOPLEVEL)) {
-      page_metrics_->navigation_source_metrics()->RecordExternalNavigation();
+      page_metrics_->navigation_source_metrics().RecordExternalNavigation();
     }
   }
 

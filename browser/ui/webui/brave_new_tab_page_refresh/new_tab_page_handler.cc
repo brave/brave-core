@@ -70,8 +70,8 @@ NewTabPageHandler::NewTabPageHandler(
   CHECK(vpn_facade_);
 
   if (page_metrics) {
-    brave_search_metrics_ = page_metrics->brave_search_metrics();
-    navigation_source_metrics_ = page_metrics->navigation_source_metrics();
+    brave_search_metrics_ = &page_metrics->brave_search_metrics();
+    navigation_source_metrics_ = &page_metrics->navigation_source_metrics();
   }
 
   update_observer_.SetCallback(base::BindRepeating(&NewTabPageHandler::OnUpdate,
