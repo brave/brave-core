@@ -131,9 +131,6 @@ class BraveTab : public Tab {
 
   // Test accessors to reveal base class members.
   TabCloseButton* close_button_for_test() const { return close_button_.get(); }
-  views::ImageButton* tree_toggle_button_for_test() const {
-    return tree_toggle_button_;
-  }
   bool center_icon_for_test() const { return center_icon_; }
   bool showing_close_button_for_test() const { return showing_close_button_; }
 

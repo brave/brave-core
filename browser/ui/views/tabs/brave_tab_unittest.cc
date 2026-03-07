@@ -438,7 +438,7 @@ TEST_F(BraveTabTestWithTreeTab, TreeToggleButtonVisibleInsteadOfCloseButton) {
 
   // Close button should remain visible when tree toggle is hidden.
   ASSERT_TRUE(tab.showing_close_button_for_test());
-  EXPECT_FALSE(tab.tree_toggle_button_for_test()->GetVisible());
+  EXPECT_FALSE(tab.tree_toggle_button_->GetVisible());
   EXPECT_TRUE(tab.close_button_for_test()->GetVisible());
 
   // Now tree tab has descendants, so the tree toggle button should be visible.
@@ -447,7 +447,7 @@ TEST_F(BraveTabTestWithTreeTab, TreeToggleButtonVisibleInsteadOfCloseButton) {
   tab.LayoutTreeToggleButton();
 
   ASSERT_TRUE(tab.showing_close_button_for_test());
-  EXPECT_TRUE(tab.tree_toggle_button_for_test()->GetVisible());
+  EXPECT_TRUE(tab.tree_toggle_button_->GetVisible());
   EXPECT_FALSE(tab.close_button_for_test()->GetVisible());
 }
 
@@ -478,7 +478,7 @@ TEST_F(BraveTabTestWithTreeTab,
   ASSERT_FALSE(tab.showing_close_button_for_test());
 
   // When there's no descendants, the tree toggle button should be hidden.
-  EXPECT_FALSE(tab.tree_toggle_button_for_test()->GetVisible());
+  EXPECT_FALSE(tab.tree_toggle_button_->GetVisible());
 
   // Now tree tab has descendants. But not collapsed. So the button is still
   // hidden.
@@ -486,12 +486,12 @@ TEST_F(BraveTabTestWithTreeTab,
   tab.UpdateIconVisibility();
   tab.LayoutTreeToggleButton();
   ASSERT_FALSE(tab.showing_close_button_for_test());
-  EXPECT_FALSE(tab.tree_toggle_button_for_test()->GetVisible());
+  EXPECT_FALSE(tab.tree_toggle_button_->GetVisible());
 
   // Now tree tab is collapsed. So the button should be visible.
   collection.node().set_collapsed(true);
   tab.UpdateIconVisibility();
   tab.LayoutTreeToggleButton();
   ASSERT_FALSE(tab.showing_close_button_for_test());
-  EXPECT_TRUE(tab.tree_toggle_button_for_test()->GetVisible());
+  EXPECT_TRUE(tab.tree_toggle_button_->GetVisible());
 }
