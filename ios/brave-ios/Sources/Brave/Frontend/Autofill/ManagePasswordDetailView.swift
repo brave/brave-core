@@ -13,6 +13,7 @@ struct ManagePasswordDetailView: View {
   @Environment(\.autofillManagementContext) private var context
   @Environment(\.dismiss) private var dismiss
   @State private var isPasswordRevealed = false
+  @State private var isSceneActive = true
   @Bindable var viewModel: ManagePasswordDetailViewModel
 
   private var navigationTitle: String {
@@ -110,5 +111,17 @@ struct ManagePasswordDetailView: View {
     .navigationTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbarBackground(.visible, for: .navigationBar)
+    .overlay {
+      if !isSceneActive {
+        Color(.braveGroupedBackground)
+          .ignoresSafeArea()
+      }
+    }
+    .onReceive(NotificationCenter.default.publisher(for: UIScene.willDeactivateNotification)) { _ in
+      isSceneActive = false
+    }
+    .onReceive(NotificationCenter.default.publisher(for: UIScene.didActivateNotification)) { _ in
+      isSceneActive = true
+    }
   }
 }
