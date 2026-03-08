@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_education/buildflags.gni")
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
@@ -14,6 +15,7 @@ brave_browser_ui_webui_configs_deps = [
   "//brave/browser/ui",
   "//brave/components/brave_account:features",
   "//brave/components/brave_education:buildflags",
+  "//brave/components/brave_origin/buildflags",
   "//brave/components/brave_shields/content/browser",
   "//brave/components/brave_vpn/common/buildflags",
   "//brave/components/containers/buildflags",
@@ -33,6 +35,11 @@ if (enable_brave_vpn) {
 if (enable_brave_education) {
   brave_browser_ui_webui_configs_deps +=
       [ "//brave/browser/ui/webui/brave_education" ]
+}
+
+if (is_brave_origin_branded) {
+  brave_browser_ui_webui_configs_deps +=
+      [ "//brave/browser/ui/webui/brave_origin_startup" ]
 }
 
 if (enable_containers) {

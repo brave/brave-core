@@ -52,6 +52,7 @@
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_education/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_origin/mojom/brave_origin_settings.mojom.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
@@ -322,6 +323,11 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 #include "brave/browser/ui/webui/brave_education/brave_education_page_ui.h"
+#endif
+
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#include "brave/browser/ui/webui/brave_origin_startup/brave_origin_startup_ui.h"
+#include "brave/components/brave_origin/mojom/brave_origin_startup.mojom.h"
 #endif
 
 #if BUILDFLAG(IS_WIN)
@@ -691,6 +697,11 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
       .Add<brave_origin::mojom::BraveOriginSettingsHandler>();
 #endif  // !BUILDFLAG(IS_ANDROID)
   // End of BraveSettingsUI interfaces
+
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  registry.ForWebUI<BraveOriginStartupUI>()
+      .Add<brave_origin::mojom::BraveOriginStartupHandler>();
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled()) {
