@@ -15,7 +15,6 @@ static_assert(BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "components/keep_alive_registry/scoped_keep_alive.h"
 #include "content/public/browser/web_contents_delegate.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -25,6 +24,7 @@ static_assert(BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
 class GURL;
 class PrefService;
 class Profile;
+class ScopedKeepAlive;
 class ScopedProfileKeepAlive;
 
 namespace content {
@@ -120,7 +120,7 @@ class BraveOriginStartupView : public views::WidgetDelegateView,
   // content::WebContentsObserver:
   void DOMContentLoaded(content::RenderFrameHost* render_frame_host) override;
 
-  ScopedKeepAlive keep_alive_;
+  std::unique_ptr<ScopedKeepAlive> keep_alive_;
   std::unique_ptr<ScopedProfileKeepAlive> profile_keep_alive_;
   std::unique_ptr<views::Widget> widget_;
   std::unique_ptr<content::WebContents> contents_;

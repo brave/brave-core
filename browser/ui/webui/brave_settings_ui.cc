@@ -286,6 +286,7 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           brave_origin::IsBraveOriginEnabled());
   html_source->AddBoolean("isBraveOriginBrandedBuild",
                           BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
+  // STAGING for unofficial builds; official builds always resolve to prod.
   html_source->AddString(
       "braveOriginBuyUrl",
       base::StrCat(

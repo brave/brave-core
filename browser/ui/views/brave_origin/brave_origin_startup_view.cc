@@ -20,6 +20,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/keep_alive_registry/keep_alive_types.h"
+#include "components/keep_alive_registry/scoped_keep_alive.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -37,7 +38,7 @@
 namespace {
 
 constexpr int kDialogWidth = 500;
-constexpr int kDialogHeight = 600;
+constexpr int kDialogHeight = 450;
 
 BraveOriginStartupView* g_startup_view = nullptr;
 
@@ -106,8 +107,9 @@ BraveOriginStartupView::BraveOriginStartupView(
     base::RepeatingClosure attempt_exit,
     CreateProfilesCallback create_system_profile,
     CreateProfilesCallback create_default_profile)
-    : keep_alive_(KeepAliveOrigin::USER_MANAGER_VIEW,
-                  KeepAliveRestartOption::DISABLED),
+    : keep_alive_(
+          std::make_unique<ScopedKeepAlive>(KeepAliveOrigin::USER_MANAGER_VIEW,
+                                            KeepAliveRestartOption::DISABLED)),
       on_complete_(std::move(on_complete)),
       open_external_(std::move(open_external)),
       attempt_exit_(std::move(attempt_exit)),
@@ -282,11 +284,42 @@ content::WebContents* BraveOriginStartupView::AddNewContents(
 }
 
 void BraveOriginStartupView::WindowClosing() {
+  // Tear down the WebContents and WebView before shutdown. The WebContents
+  // holds a RenderProcessHost that references the system profile's
+  // BrowserContext, and the WebView registers as an AXModeObserver with
+  // AXPlatform. Both must be destroyed before their backing objects are
+  // torn down during shutdown.
+  if (contents_) {
+    contents_->SetDelegate(nullptr);
+    content::WebContentsObserver::Observe(nullptr);
+    web_view_->SetWebContents(nullptr);
+    contents_.reset();
+  }
+  if (web_view_) {
+    auto* web_view = web_view_.get();
+    web_view_ = nullptr;
+    RemoveChildViewT(web_view);
+  }
+
+  // Clear profile pointers before shutdown destroys the profiles.
+  system_profile_ = nullptr;
+  default_profile_ = nullptr;
+
+  // Release keep alives asynchronously. Destroying them synchronously during
+  // WindowClosing triggers re-entrancy: on Windows via BrowserProcessImpl::
+  // Unpin → EnumThreadWindows → CloseNow, on Linux via similar close paths.
+  // Posting ensures the widget is fully destroyed before the keep alives are
+  // released. The keep alive release is posted before AttemptExit so the
+  // registry allows shutdown.
+  auto task_runner = base::SequencedTaskRunner::GetCurrentDefault();
+  task_runner->PostTask(
+      FROM_HERE,
+      base::BindOnce([](std::unique_ptr<ScopedKeepAlive>,
+                        std::unique_ptr<ScopedProfileKeepAlive>) {},
+                     std::move(keep_alive_), std::move(profile_keep_alive_)));
+
   if (!validated_) {
-    // User closed without validating - exit browser. Post as async task
-    // to avoid destroying objects while the window close is still processing.
-    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(FROM_HERE,
-                                                             attempt_exit_);
+    task_runner->PostTask(FROM_HERE, attempt_exit_);
   }
 }
 

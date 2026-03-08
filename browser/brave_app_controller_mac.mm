@@ -12,6 +12,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
@@ -22,6 +23,10 @@
 #include "components/policy/core/common/policy_pref_names.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/l10n/l10n_util_mac.h"
+
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#include "brave/browser/ui/views/brave_origin/brave_origin_startup_view.h"
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
@@ -73,8 +78,9 @@ class TorPrefObserver : public BooleanPrefMember {
 }  // namespace
 
 @interface AppController (Brave)
-// Expose method in chrome/..app_controller_mac.mm
+// Expose methods in chrome/..app_controller_mac.mm
 - (BOOL)canOpenNewBrowser;
+- (void)commandDispatchUsingKeyModifiers:(id)sender;
 @end
 
 @interface BraveAppController () {
@@ -91,6 +97,43 @@ class TorPrefObserver : public BooleanPrefMember {
 @end
 
 @implementation BraveAppController
+
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+- (BOOL)canOpenNewBrowser {
+  if (BraveOriginStartupView::IsShowing()) {
+    return NO;
+  }
+  return [super canOpenNewBrowser];
+}
+
+- (void)commandDispatch:(id)sender {
+  if (BraveOriginStartupView::IsShowing()) {
+    // Allow Quit through so the user can exit from the startup dialog.
+    if ([sender tag] == IDC_EXIT) {
+      BraveOriginStartupView::Hide();
+    }
+    return;
+  }
+  [super commandDispatch:sender];
+}
+
+- (void)commandDispatchUsingKeyModifiers:(id)sender {
+  if (BraveOriginStartupView::IsShowing()) {
+    return;
+  }
+  [super commandDispatchUsingKeyModifiers:sender];
+}
+
+- (BOOL)applicationShouldHandleReopen:(NSApplication*)theApplication
+                    hasVisibleWindows:(BOOL)hasVisibleWindows {
+  if (BraveOriginStartupView::IsShowing()) {
+    return NO;
+  }
+  return [super applicationShouldHandleReopen:theApplication
+                            hasVisibleWindows:hasVisibleWindows];
+}
+#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+
 - (void)mainMenuCreated {
   [super mainMenuCreated];
 
