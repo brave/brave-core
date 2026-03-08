@@ -143,7 +143,7 @@ export default function FullScreen() {
             <NavigationHeader />
             <ConversationsList
               setIsConversationsListOpen={(open) => {
-                if (!open && aiChatContext.showSidebar) {
+                if (!open && aiChatContext.showSidebar && isSmall) {
                   aiChatContext.toggleSidebar()
                 }
               }}
