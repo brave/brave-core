@@ -738,6 +738,8 @@
 # These tests fail because ContextualTasksContextService cannot be created
 # because it depends on PageEmbeddingsService being created and that service is
 # not created because we disable kHistoryEmbeddings.
+-ContextualSearchboxHandlerTest.QueryAutocomplete_SetsLensInputs
+-ContextualSearchboxHandlerTest.QueryAutocomplete_SkipsLensInputs_InToolModes
 -ContextualSearchboxHandlerTestTabsTest.GetRecentTabs_SetsShowInRecentTabChip
 -ContextualTasksContextServiceFactoryTest.CreatesServiceForProfile
 -EntryPointEligibilityManagerTest.AreEntryPointsEligible_True
@@ -782,6 +784,9 @@
 # Upstream commit: https://chromium.googlesource.com/chromium/src/+/41015f71bcdd352f79f965e10a982b598d8e9557
 -ProtocolHandlersManagerServiceTest.PRE_ProtocolHandlerSanityCheck
 -ProtocolHandlersManagerServiceTest.ProtocolHandlerSanityCheck
+
+# These tests fail because we disable kAimEnabled.
+-AimEligibilityRefreshNavigationThrottleTest.FetchEligibilityOnAimSearchUrl
 
 # We added our own page action view but this made metrics code related to the
 # page action fails. In order to addressed that we scrubbed out metrics code and
