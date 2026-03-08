@@ -60,6 +60,7 @@ BraveOriginService::BraveOriginService(
       profile_policy_service_(profile_policy_service),
       browser_policy_service_(browser_policy_service),
       skus_service_getter_(std::move(skus_service_getter)),
+      // STAGING for unofficial builds; official builds always resolve to prod.
       origin_sku_domain_(brave_domains::GetServicesDomain(
           kOriginSkuHostnamePart,
           brave_domains::ServicesEnvironment::STAGING)) {

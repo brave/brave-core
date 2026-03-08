@@ -1,0 +1,35 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
+
+assert(is_brave_origin_branded)
+
+source_set("brave_origin") {
+  sources = [
+    "brave_origin_startup_view.cc",
+    "brave_origin_startup_view.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/brave_domains",
+    "//brave/browser/ui/webui/brave_origin_startup",
+    "//brave/components/brave_origin:pref_names",
+    "//brave/components/brave_origin/buildflags",
+    "//brave/components/resources:strings_grit",
+    "//brave/components/skus/browser",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/profiles/keep_alive",
+    "//components/keep_alive_registry",
+    "//components/prefs",
+    "//content/public/browser",
+    "//ui/base",
+    "//ui/gfx/geometry",
+    "//ui/views",
+    "//ui/views/controls/webview",
+    "//url",
+  ]
+}
