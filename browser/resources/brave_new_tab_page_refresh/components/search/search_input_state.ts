@@ -158,7 +158,7 @@ export function useSearchInputState(inputKey: string) {
   }
 
   function handleActionKeyDown(event: KeyboardEvent) {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && !event.isComposing) {
       if (selectedResultOption !== null) {
         const option = resultOptions[selectedResultOption]
         openResultOption(option, { ...event, button: 0 })
