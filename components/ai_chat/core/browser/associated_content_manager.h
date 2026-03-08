@@ -75,6 +75,9 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   // Clears all content from the conversation.
   void ClearContent();
 
+  // Clears all staged content from the conversation.
+  void ClearStagedContent();
+
   // Associates all content which hasn't been associated with a turn with
   // |turn|. Note: |turn| must have a non-empty |uuid| field.
   void AssociateUnsentContentWithTurn(const mojom::ConversationTurnPtr& turn);

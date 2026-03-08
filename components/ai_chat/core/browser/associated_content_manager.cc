@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -207,6 +208,22 @@ void AssociatedContentManager::ClearContent() {
   }
 
   DetachContent();
+
+  conversation_->OnAssociatedContentUpdated();
+}
+
+void AssociatedContentManager::ClearStagedContent() {
+  std::vector<std::string_view> to_remove;
+  for (const auto& content : content_delegates_) {
+    if (content_uuid_to_conversation_turns_.contains(content->uuid())) {
+      continue;
+    }
+    to_remove.push_back(content->uuid());
+  }
+
+  for (const auto& uuid : to_remove) {
+    RemoveContent(uuid, /*notify_updated=*/false);
+  }
 
   conversation_->OnAssociatedContentUpdated();
 }
@@ -415,9 +432,6 @@ PageContentsMap AssociatedContentManager::GetCachedContentsMap() const {
 
   for (size_t i = 0; i < contents.size(); ++i) {
     auto turn_id = meta[i]->conversation_turn_uuid;
-    DCHECK(turn_id)
-        << "This method should only be called when all content has been "
-           "associated with a turn (i.e. via AssociateUnsentContentWithTurn)";
     if (!turn_id) {
       continue;
     }

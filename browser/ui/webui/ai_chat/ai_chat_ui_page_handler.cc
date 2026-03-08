@@ -58,6 +58,8 @@
 #else
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/chrome_pages.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
@@ -160,7 +162,12 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     content::WebContents* owner_web_contents,
     content::WebContents* chat_context_web_contents,
     Profile* profile,
-    mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver)
+    mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver
+#if !BUILDFLAG(IS_ANDROID)
+    ,
+    TabStripModel* tab_strip_model
+#endif
+    )
     : owner_web_contents_(owner_web_contents),
       profile_(profile),
       receiver_(this, std::move(receiver)),
@@ -190,6 +197,12 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     chat_context_observer_ =
         std::make_unique<ChatContextObserver>(chat_context_web_contents, *this);
   }
+#if !BUILDFLAG(IS_ANDROID)
+  if (!is_standalone && tab_strip_model &&
+      !conversations_are_content_associated_) {
+    tab_strip_model->AddObserver(this);
+  }
+#endif
 }
 
 AIChatUIPageHandler::~AIChatUIPageHandler() = default;
@@ -472,8 +485,74 @@ void AIChatUIPageHandler::HandleWebContentsDestroyed() {
   chat_context_observer_.reset();
 }
 
+#if !BUILDFLAG(IS_ANDROID)
+void AIChatUIPageHandler::OnTabStripModelChanged(
+    TabStripModel* tab_strip_model,
+    const TabStripModelChange& change,
+    const TabStripSelectionChange& selection) {
+  if (!selection.active_tab_changed() ||
+      conversations_are_content_associated_) {
+    return;
+  }
+
+  // Unobserve the old tab.
+  associated_content_delegate_observation_.Reset();
+  chat_context_observer_.reset();
+
+  auto* new_contents = selection.new_contents.get();
+  if (new_contents) {
+    active_chat_tab_helper_ =
+        ai_chat::AIChatTabHelper::FromWebContents(new_contents);
+    if (active_chat_tab_helper_) {
+      associated_content_delegate_observation_.Observe(
+          &active_chat_tab_helper_->web_contents_content());
+      chat_context_observer_ =
+          std::make_unique<ChatContextObserver>(new_contents, *this);
+    }
+  } else {
+    active_chat_tab_helper_ = nullptr;
+  }
+
+  // Clear all staged content when switching tabs.
+  if (current_conversation_) {
+    current_conversation_->associated_content_manager()->ClearStagedContent();
+    if (active_chat_tab_helper_) {
+      current_conversation_->associated_content_manager()->AddContent(
+          &active_chat_tab_helper_->web_contents_content());
+    }
+  }
+
+  // Always notify the frontend of the new default tab content ID so that the
+  // attachments menu knows which tab is current (defaultTabContentId).
+  if (!chat_ui_.is_bound()) {
+    return;
+  }
+  chat_ui_->OnNewDefaultConversation(
+      active_chat_tab_helper_
+          ? std::make_optional(
+                active_chat_tab_helper_->web_contents_content().content_id())
+          : std::nullopt);
+}
+#endif
+
+void AIChatUIPageHandler::OnNewPage(AssociatedContentDelegate* delegate) {
+  if (conversations_are_content_associated_ || !current_conversation_ ||
+      !active_chat_tab_helper_) {
+    return;
+  }
+  // By the time OnNewPage fires, AssociatedContentManager::OnRequestArchive
+  // has already run and set_uuid has been updated for the new page, so it's
+  // safe to update the conversation's staged content synchronously.
+  current_conversation_->associated_content_manager()->ClearStagedContent();
+  current_conversation_->associated_content_manager()->AddContent(
+      &active_chat_tab_helper_->web_contents_content());
+}
+
 void AIChatUIPageHandler::OnRequestArchive(
     AssociatedContentDelegate* delegate) {
+  if (!conversations_are_content_associated_) {
+    return;
+  }
   // This is only applicable to content-adjacent UI, e.g. SidePanel on Desktop
   // where it would like to remain associated with the Tab and move away from
   // Conversations of previous navigations. That doens't apply to the standalone
@@ -530,20 +609,24 @@ void AIChatUIPageHandler::BindRelatedConversation(
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
   // For global panel, don't recall conversations by their associated tab
   if (!active_chat_tab_helper_ || !conversations_are_content_associated_) {
-    ConversationHandler* conversation =
+    current_conversation_ = AIChatServiceFactory::GetForBrowserContext(profile_)
+                                ->CreateConversation()
+                                ->GetWeakPtr();
+    if (active_chat_tab_helper_ && !conversations_are_content_associated_) {
+      current_conversation_->associated_content_manager()->AddContent(
+          &active_chat_tab_helper_->web_contents_content());
+    }
+  } else {
+    current_conversation_ =
         AIChatServiceFactory::GetForBrowserContext(profile_)
-            ->CreateConversation();
-    conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
-    return;
+            ->GetOrCreateConversationHandlerForContent(
+                active_chat_tab_helper_->web_contents_content().content_id(),
+                active_chat_tab_helper_->web_contents_content().GetWeakPtr())
+            ->GetWeakPtr();
   }
 
-  ConversationHandler* conversation =
-      AIChatServiceFactory::GetForBrowserContext(profile_)
-          ->GetOrCreateConversationHandlerForContent(
-              active_chat_tab_helper_->web_contents_content().content_id(),
-              active_chat_tab_helper_->web_contents_content().GetWeakPtr());
-
-  conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
+  current_conversation_->Bind(std::move(receiver),
+                              std::move(conversation_ui_handler));
 }
 
 void AIChatUIPageHandler::AssociateTab(mojom::TabDataPtr mojom_tab,
@@ -594,21 +677,27 @@ void AIChatUIPageHandler::DisassociateContent(
 void AIChatUIPageHandler::NewConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
-  ConversationHandler* conversation;
   // For standalone or global panel, don't recall conversations by their
   // associated tab.
   if (active_chat_tab_helper_ && conversations_are_content_associated_) {
-    conversation =
+    current_conversation_ =
         AIChatServiceFactory::GetForBrowserContext(profile_)
             ->CreateConversationHandlerForContent(
                 active_chat_tab_helper_->web_contents_content().content_id(),
-                active_chat_tab_helper_->web_contents_content().GetWeakPtr());
+                active_chat_tab_helper_->web_contents_content().GetWeakPtr())
+            ->GetWeakPtr();
   } else {
-    conversation = AIChatServiceFactory::GetForBrowserContext(profile_)
-                       ->CreateConversation();
+    current_conversation_ = AIChatServiceFactory::GetForBrowserContext(profile_)
+                                ->CreateConversation()
+                                ->GetWeakPtr();
+    if (active_chat_tab_helper_ && !conversations_are_content_associated_) {
+      current_conversation_->associated_content_manager()->AddContent(
+          &active_chat_tab_helper_->web_contents_content());
+    }
   }
 
-  conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
+  current_conversation_->Bind(std::move(receiver),
+                              std::move(conversation_ui_handler));
 }
 
 void AIChatUIPageHandler::BindParentUIFrameFromChildFrame(
