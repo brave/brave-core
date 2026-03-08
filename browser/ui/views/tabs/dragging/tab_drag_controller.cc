@@ -21,35 +21,11 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/features.h"
-#include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
 #include "chrome/browser/ui/views/tabs/window_finder.h"
 #include "components/prefs/pref_service.h"
 #include "components/tabs/public/tab_group.h"
 #include "ui/views/view_utils.h"
-
-namespace {
-
-int GetXCoordinateAdjustmentForMultiSelectedTabs(
-    const std::vector<TabSlotView*>& dragged_views,
-    int source_view_index) {
-  if (dragged_views.at(source_view_index)->GetTabSlotViewType() ==
-          TabSlotView::ViewType::kTabGroupHeader ||
-      source_view_index == 0) {
-    return 0;
-  }
-
-  // When selecting multiple tabs, the x coordinate is not exactly same with
-  // where it was pressed. Because Chromium adjust it by the width of previous
-  // tabs(See TabStrip::GetSizeNeededForViews() and its call sites). But we
-  // don't want this behavior. With this adjustment selecting multiple tabs
-  // without dragging make tabs or the window jump around by the amount of the
-  // width of other tabs. https://github.com/brave/brave-browser/issues/29465
-  return TabStrip::GetSizeNeededForViews(std::vector(
-      dragged_views.begin(), dragged_views.begin() + source_view_index));
-}
-
-}  // namespace
 
 BraveTabDragController::BraveTabDragController() = default;
 
@@ -102,14 +78,6 @@ BraveTabDragController::Liveness BraveTabDragController::Init(
   was_source_maximized_ = top_level_widget->IsMaximized();
   was_source_fullscreen_ = top_level_widget->IsFullscreen();
 
-  // Adjust coordinate for vertical mode.
-  const int x = offset_from_source_view.x() -
-                GetXCoordinateAdjustmentForMultiSelectedTabs(
-                    dragging_views, drag_data_.source_view_index_);
-  start_point_in_screen_ = gfx::Point(x, offset_from_source_view.y());
-  views::View::ConvertPointToScreen(source_view, &start_point_in_screen_);
-
-  last_point_in_screen_ = start_point_in_screen_;
   return BraveTabDragController::BraveTabDragController::Liveness::kAlive;
 }
 
