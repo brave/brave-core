@@ -636,7 +636,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
         mDayZeroVariant = DayZeroHelper.getDayZeroVariant();
         // Filter out day zero variants different from X and Y.
-        if (TextUtils.isEmpty(mDayZeroVariant) || (!mDayZeroVariant.equals(DAY_ZERO_VARIANT_Y) && !mDayZeroVariant.equals(DAY_ZERO_DEFAULT_VARIANT))) {
+        if (TextUtils.isEmpty(mDayZeroVariant)
+                || (!mDayZeroVariant.equals(DAY_ZERO_VARIANT_Y)
+                        && !mDayZeroVariant.equals(DAY_ZERO_DEFAULT_VARIANT))) {
             mDayZeroVariant = DAY_ZERO_DEFAULT_VARIANT;
         }
 
