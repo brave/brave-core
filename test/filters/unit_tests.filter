@@ -676,8 +676,7 @@
 -PageInfoToggleStatesUnitTest.TogglePermissionWithAllowOnceDefaultBlockTest
 
 # These tests fail because we always set should_show_discard_status to true
--TabRendererDataTest.FromTabInModel
--TabRendererDataTest.TabLifecycleManagement
+-TabDataObserverBrowserTest.TabLifecycleManagement
 
 # These tests fail because we disable popular site suggestions functionality
 -MostVisitedSitesTest.ShouldDeduplicatePopularSitesWithMostVisitedIffHostAndTitleMatches

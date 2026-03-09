@@ -62,7 +62,7 @@ class BraveTab : public Tab {
   void Layout(PassKey) override;
   void MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
                                    int visual_width) const override;
-  void SetData(TabRendererData data) override;
+  void SetData(tabs::TabData data) override;
   bool IsActive() const override;
   TabSizeInfo GetTabSizeInfo() const override;
   TabNestingInfo GetTabNestingInfo() const override;
