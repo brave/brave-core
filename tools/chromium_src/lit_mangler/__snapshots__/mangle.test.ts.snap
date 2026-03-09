@@ -186,7 +186,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
      <history-synced-device-card
          .device=\\"\${syncedDevice.device}\\"
          .lastUpdateTime=\\"\${syncedDevice.lastUpdateTime}\\"
-@@ -23,26 +22,15 @@
+@@ -23,26 +22,23 @@
          data-index=\\"\${index}\\">
      </history-synced-device-card>
    \`)}
@@ -200,23 +200,25 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -<div id=\\"signInGuide\\"
 -    ?hidden=\\"\${!this.showSignInGuide_()
 -      || this.replaceSyncPromosWithSignInPromos_}\\">
--  <div id=\\"sync-promo-illustration\\"></div>
--  <div id=\\"turn-on-sync-promo\\">$i18n{turnOnSyncPromo}</div>
--  <div id=\\"turn-on-sync-promo-desc\\">$i18n{turnOnSyncPromoDesc}</div>
++<div id=\\"signInGuide\\" ?hidden=\\"\${!this.showSignInGuide_()
++      || this.replaceSyncPromosWithSignInPromos_}\\" style=\\"display: none\\">
+   <div id=\\"sync-promo-illustration\\"></div>
+   <div id=\\"turn-on-sync-promo\\">$i18n{turnOnSyncPromo}</div>
+   <div id=\\"turn-on-sync-promo-desc\\">$i18n{turnOnSyncPromoDesc}</div>
 -  <cr-button id=\\"turn-on-sync-button\\" class=\\"action-button\\"
 -      @click=\\"\${this.onTurnOnSyncClick_}\\">
--    $i18n{turnOnSyncButton}
--  </cr-button>
--</div>
++  <cr-button id=\\"turn-on-sync-button\\" class=\\"action-button\\" @click=\\"\${this.onTurnOnSyncClick_}\\">
+     $i18n{turnOnSyncButton}
+   </cr-button>
+ </div>
  
 -<if expr=\\"not is_chromeos\\">
-+
 +
    \${this.shouldShowHistorySyncOptIn_() ? html\`
      <div id=\\"history-sync-optin\\" class=\\"history-sync-optin\\">
        \${this.isSignInState_(HistorySignInState.SIGNED_OUT)
          || this.isSignInState_(HistorySignInState.WEB_ONLY_SIGNED_IN) ? html\`
-@@ -120,11 +108,11 @@
+@@ -120,11 +116,11 @@
              $i18n{turnOnSyncHistoryButton}
            </cr-button>\`}
      </div>
@@ -230,7 +232,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
      <button id=\\"menuOpenButton\\" class=\\"dropdown-item\\"
          @click=\\"\${this.onOpenAllClick_}\\">
        $i18n{openAll}
-@@ -133,9 +121,9 @@
+@@ -133,9 +129,9 @@
          @click=\\"\${this.onDeleteSessionClick_}\\">
        $i18n{deleteSession}
      </button>
@@ -310,7 +312,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/side_panel/customize_chrome/appearance.html.ts
 +++ gen/chrome/browser/resources/side_panel/customize_chrome/preprocessed/appearance.html.ts
-@@ -4,80 +4,49 @@
+@@ -4,80 +4,52 @@
  
  export function getHtml(this: AppearanceElement) {
    // clang-format off
@@ -318,14 +320,14 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -<customize-chrome-theme-snapshot id=\\"themeSnapshot\\"
 -    @edit-theme-click=\\"\${this.onEditThemeClick_}\\"
 -    ?hidden=\\"\${!this.showThemeSnapshot_}\\">
--</customize-chrome-theme-snapshot>
++<customize-chrome-theme-snapshot id=\\"themeSnapshot\\" @edit-theme-click=\\"\${this.onEditThemeClick_}\\" ?hidden=\\"\${!this.showThemeSnapshot_}\\" style=\\"display: none\\">
+ </customize-chrome-theme-snapshot>
 -<customize-chrome-hover-button id=\\"thirdPartyThemeLinkButton\\"
 -    class=\\"link-out-button theme-button\\"
 -    ?hidden=\\"\${!this.thirdPartyThemeId_}\\"
 -    @click=\\"\${this.onThirdPartyThemeLinkButtonClick_}\\"
 -    label=\\"\${this.thirdPartyThemeName_}\\"
 -    label-description=\\"$i18n{currentTheme}\\">
-+
 +<customize-chrome-hover-button id=\\"thirdPartyThemeLinkButton\\" class=\\"link-out-button theme-button\\" ?hidden=\\"\${!this.thirdPartyThemeId_}\\" @click=\\"\${this.onThirdPartyThemeLinkButtonClick_}\\" label=\\"\${this.thirdPartyThemeName_}\\" label-description=\\"$i18n{currentTheme}\\">
  </customize-chrome-hover-button>
 -<customize-chrome-hover-button id=\\"uploadedImageButton\\" class=\\"theme-button\\"
@@ -350,8 +352,9 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -      @click=\\"\${this.onNewTabPageManageByButtonClick_}\\"
 -      label=\\"\${this.managedByName_}\\"
 -      label-description=\\"\${this.managedByDesc_}\\">
--  </customize-chrome-hover-button>
-+  
++  <customize-chrome-hover-button id=\\"thirdPartyManageLinkButton\\" aria-button-label=\\"\${this.i18n('newTabPageManagedByA11yLabel',
++                           this.managedByName_)}\\" class=\\"link-out-button theme-button\\" @click=\\"\${this.onNewTabPageManageByButtonClick_}\\" label=\\"\${this.managedByName_}\\" label-description=\\"\${this.managedByDesc_}\\" style=\\"display: none\\">
+   </customize-chrome-hover-button>
    \`: ''}
 -<div id=\\"editButtonsContainer\\" ?hidden=\\"\${!this.showEditTheme_}\\">
 -  <cr-button id=\\"editThemeButton\\" @click=\\"\${this.onEditThemeClick_}\\"
