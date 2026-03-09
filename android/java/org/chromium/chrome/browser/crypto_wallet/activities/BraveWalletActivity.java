@@ -31,12 +31,8 @@ import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.components.browser_ui.modaldialog.AppModalPresenter;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
-import org.chromium.ui.base.ActivityKeyboardVisibilityDelegate;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
-import org.chromium.ui.permissions.ActivityAndroidPermissionDelegate;
-
-import java.lang.ref.WeakReference;
 
 /** Main Brave Wallet activity */
 public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNextPage {
@@ -181,14 +177,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     @Override
     protected ActivityWindowAndroid createWindowAndroid() {
         return new ActivityWindowAndroid(
-                this,
-                true,
-                new ActivityAndroidPermissionDelegate(new WeakReference<>(this)),
-                new ActivityKeyboardVisibilityDelegate(new WeakReference<>(this)),
-                /* activityTopResumedSupported= */ false,
-                getIntentRequestTracker(),
-                null,
-                /* trackOcclusion= */ false) {
+                this, true, getIntentRequestTracker(), null, /* trackOcclusion= */ false) {
             @Override
             public ModalDialogManager getModalDialogManager() {
                 return mModalDialogManager;
