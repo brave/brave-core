@@ -1425,7 +1425,7 @@ public class BytecodeTest {
                         ModalDialogManager.class,
                         SnackbarManager.class,
                         OneshotSupplier.class,
-                        Supplier.class,
+                        MonotonicObservableSupplier.class,
                         PageZoomManager.class,
                         OpenInAppMenuItemProvider.class));
         Assert.assertTrue(
@@ -1482,7 +1482,7 @@ public class BytecodeTest {
                         TabCreatorManager.class,
                         Supplier.class,
                         OmniboxActionDelegateImpl.class,
-                        Supplier.class,
+                        MonotonicObservableSupplier.class,
                         boolean.class,
                         BackPressManager.class,
                         MonotonicObservableSupplier.class,
@@ -1905,7 +1905,7 @@ public class BytecodeTest {
                         MonotonicObservableSupplier.class,
                         MenuOrKeyboardActionController.class,
                         Supplier.class,
-                        NonNullObservableSupplier.class,
+                        MonotonicObservableSupplier.class,
                         AppMenuBlocker.class,
                         BooleanSupplier.class,
                         BooleanSupplier.class,
