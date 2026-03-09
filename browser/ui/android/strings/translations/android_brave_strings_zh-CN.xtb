@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">网站可以要求通过第三方 cookie 使用传统的谷歌登录</translation>
 <translation id="2903783737778379345">不允许通过第三方 cookie 登录传统谷歌</translation>
 <translation id="6880817299303842099">允许使用第三方 cookie 登录旧版谷歌</translation>
-<translation id="2136412236435693622">本地主机访问</translation>
-<translation id="4172219483893066798">网站可以请求访问本地主机资源</translation>
-<translation id="7181706637590665047">不允许访问本地主机资源</translation>
-<translation id="1485435696620658073">允许访问本地主机资源</translation>
 <translation id="181905442828471321">Brave Shields 全局默认值</translation>
 <translation id="2675679258824361492">其他隐私设置</translation>
 <translation id="8026334261755873520">清除浏览数据</translation>
@@ -425,6 +421,13 @@
 <translation id="7141438739990875547">比特币网络</translation>
 <translation id="9055546041146396417">如果这个站点出现故障，请尝试关闭 Shields。</translation>
 <translation id="7898672232170410330">拦截元素</translation>
+<translation id="9064628362799094520">销毁网站的数据</translation>
+<translation id="8949611615512336262">自动销毁：<ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">立即销毁网站数据</translation>
+<translation id="6795622376590884449">自动销毁</translation>
+<translation id="7961015016161918242">一律不</translation>
+<translation id="1991004083507807299">网站标签已关闭</translation>
+<translation id="5827277414420724690">关闭应用程序</translation>
 <translation id="1209739344687072997">报告损坏的网站</translation>
 <translation id="8510478288840333677">让 Brave 的开发人员知道此网站无法与 Shields 一起正常使用：</translation>
 <translation id="1653405824851871276">感谢您帮助我们改善 Brave。本报告仅包含我们修复网站所需的信息。<ph name="LEARN_MORE"/></translation>
@@ -1079,7 +1082,7 @@ Leo AI 的所有对话。此操作无法撤销。</translation>
 <translation id="1336494649091412226">确定要退出 Brave 吗？</translation>
 <translation id="6061635824229591714">要销毁网站数据吗？</translation>
 <translation id="1265051174491933207">销毁操作将关闭所有“<ph name="SITE_NAME"/>”标签页，并删除所有网站数据。此操作无法撤销。</translation>
-<translation id="4279349293084858577">销毁</translation>
+<translation id="5528772406060281700">销毁网站数据</translation>
 <translation id="4426990318287827331">销毁数据</translation>
 <translation id="7942415993090181327">聊天记录</translation>
 <translation id="6859935199732075666">显示安全浏览时出错</translation>

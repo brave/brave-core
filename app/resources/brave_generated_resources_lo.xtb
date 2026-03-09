@@ -19,6 +19,7 @@
 <translation id="1544192797660353713">Wallet</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">ເພີ່ມເຕີມ...</translation>
+<translation id="71316462802471551">ເມລ໌ຂອງທ່ Background</translation>
 <translation id="1990886731975529483">ຕິດຕັ້ງ ແລະ ເອີ້ນໃຊ້ Google Widevine</translation>
 <translation id="8926389886865778422">ບໍ່ຈຳເປັນຕ້ອງຖາມອີກ</translation>
 <translation id="4900351245762303149">ຕິດຕັ້ງ Google Widevine</translation>
@@ -61,7 +62,7 @@
 <translation id="7658239707568436148">ຍົກເລີກ</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">ເປີດໃຊ້ທີ່ .onion address: <ph name="ADDRESS"/></translation>
-<translation id="4759098689276706664">Paste force</translation>
+<translation id="4759098689276706664">ວາງโครງການ</translation>
 <translation id="1434416574322382019">ເປີດໜ້າສ່ວນຕົວໃຫມ່ກັບ Tor</translation>
 <translation id="4703780849509456860">ເປີດລິ້ງໃນໜ້າສ່ວນຕົວກັບ Tor</translation>
 <translation id="3488584642074079080">ເປີດລິ້ງໃນໜ້າສ່ວນຕົວ Brave ກັບ Tor</translation>
@@ -203,7 +204,6 @@
 <translation id="253980346046488815">ປິດແຖບຊໍ້າກັນ</translation>
 <translation id="8670218546624422041">ເປີດໃນເຕິນເອນເນອຍ</translation>
 <translation id="8638526693050780542">ຈັດການເປີດເຕີນເອນເນອຍ</translation>
-<translation id="7302999361397024774">ປ່ຽນຊື່ແຖບ</translation>
 <translation id="2336228925368920074">ບຸກມາກທຸກແຖບ...</translation>
 <translation id="2523967823495420116">ໃຊ້ແຖບແນວນອນ</translation>
 <translation id="3785071023202624850">{NUM_TABS, plural, =1 {Mute Tab} other {Mute Tabs}}</translation>
@@ -214,7 +214,6 @@
 <translation id="2703180365855369896">ປິດແຖບຊໍ້າກັນ</translation>
 <translation id="1987871867023021397">ເປີດໃນເຕີນເອນເນອຍ</translation>
 <translation id="6745991613881384719">ຈັດການເປີດເອນເຕີນເນອຍໄດ້</translation>
-<translation id="3917844427669888979">ປ່ຽນຊື່ແຖບ</translation>
 <translation id="3704707436873245822">ຄັດລອກຂໍ້ຄວາມຈາກຮູບ</translation>
 <translation id="5268098808165185458">ກຳລັງຄັດລອກຂໍ້ຄວາມຈາກຮູບ...</translation>
 <translation id="4046485130884276245">ຄັດລອກຂໍ້ຄວາມຈາກຮູບ</translation>
@@ -512,6 +511,10 @@
 <translation id="1199170151481311646">ຂໍ້ມູນວິເຄາະທີ່ປົກປ້ອງຄວາມເປັນສ່ວນຕົວ</translation>
 <translation id="5990642573624858459">ການລາຍງານສະຖິຕິ</translation>
 <translation id="2441719842399509963">ຕັ້ງຄ່າທັງຫມົດໃຫ້ເປັນຄ່າເລີ່ມຕົ້ນ</translation>
+<translation id="4530494379350999373">ໃບແກ້ນພື້ນທີ່</translation>
+<translation id="2964215604640804042">Brave Origin ແມ່ນ​ລາຍ​ຊື່​ຈ່າຍ​ຂອງ​ບ​ໄວ​ສໍາ​ລັບ​ຜູ້​ໃຊ້​ທີ່​ບໍ່​ຕ້ອງ​ການ​ຄຸ​ນ​ສົມ​ບັ​ດ​ທັ້ງ​ໝົດ​ທີ່​ສະ​ຫນັບ​ສະ​ຫນູນ Brave ເປັນ​ທຸ​ລະ​ກິດ, ແຕ່​ຍັງ​ຕ້ອງ​ການ​ຄວາ​ມ​ເປັນ​ສ່ວນ​ຕົວ​ທີ່ Brave ເທົ່າ​ນັ້ນ​ຖືກ​ສະ​ເໜີ. ຜູ້​ໃຊ້ Brave Origin ຈະ​ສືບ​ຕໍ່​ໄດ້​ຮັບ​ຜົນ​ປະ​ໂຫຍ​ດ​ຈາກ​ຄວາ​ມ​ເປັນ​ສ່ວນ​ຕົວ​ທີ່​ນໍາ​ອຸດ​ສະ​ຫະ​ກໍາ, adblock, ແລະ​ຄວາ​ມ​ໄວ (ຜ່ານ Brave Shields), ເຊັ່ນ​ດຽວ​ກັນ​ກັບ​ການ​ອັບ​ເດດ​ຊອບ​ແວ​ທີ່​ເປັນ​ປະ​ຈໍາ, Chromium patches, ແລະ​ການ​ປັບ​ປຸງ​ຄວາ​ມ​ປອ​ດ​ໄພ​ແລະ​ຄວາ​ມ​ເປັນ​ສ່ວນ​ຕົວ. ພວກ​ເຂົາ​ເຈົ້າ​ຍັງ​ຈະ​ປົດ​ລັອກ​ຕົວ​ເລືອກ​ເພື່ອ​ປິດ​ວາງ​ຄຸ​ນ​ສົມ​ບັ​ດ​ເຊັ່ນ AI, Rewards, Wallet, VPN, Web3 domains, ແລະ​ອື່ນໆ.</translation>
+<translation id="9130916892338379417">Brave Origin ແມ່ນ​ອາ​ທ​ສະ​ຫ​ຍາຍ​ໂດຍ​ການ​ຊື້​ຄັ້ງ​ດຽວ. ໃນ​ມືຖື (Android ແລະ iOS) ແລະ desktop, Origin ສາ​ມາດ​ເປັນ​ຊື້​ໄດ້​ເປັນ​ການ​ອັບ​ເກ​ເກດ​ໃຫ້​ກັບ​ລາຍ​ຊື່​ປະ​ຈໍາ​ປະ​ຈຸ​ບັນ​ຂອງ​ທ່ານ. ໃນ desktop, Origin ຍັງ​ທີ່ມີ​ໄດ້​ເປັນ​ແອັບ​ຜິດ​ສະ​ ໋ຣອກ, ສ້າງ​ຂຶ້ນ​ດ້ວຍ​ຕົວ​ເອງ. ຜູ້​ໃຊ້ Origin ຈະ​ເຫັນ​ແຜງ​ຄວບ​ຄຸມ​ໃໝ່​ໃນ​ເມ​ນູ​ການ​ຕັ້ງ​ຄ່າ. ລັກ​ສະ​ນະ​ທີ່​ມີ​ຢູ່—ຕະ​ຫຼາດ​ເປັນ​ອື່ນ​ໆ​ລັກ​ສະ​ນະ​ໃໝ່​ທີ່​ພວກ​ເຮົາ​ສົ່ງ​ສະ​ເໜີ​ໃນ​ອະ​ນາ​ຄົດ—​ຈະ​ປະ​ກົດ​ຂຶ້ນ​ທີ່​ນີ້, ແລະ​ເປັນ​ສະ​ຫ​ຖາ​ບ​ປິດ​ໄວ້​ຕາມ​ຄ່າ​ເລີ່ມ​ຕົ້ນ.</translation>
+<translation id="7984508421152399880">ຊື້​ໃນ​ປະ​ຈຸ​ບັນ</translation>
 <translation id="5567412479632285879">Brave Rewards ໄດ້ຖືກປິດ</translation>
 <translation id="413570371620795359">ເປີດລາງວັນສະແດງເພື່ອເປີດໃຊ້ງານແລະເລີ່ມຕົ້ນ</translation>
 <translation id="1051600834033686945">ເປີດການຕັ້ງຄ່າ Brave Rewards ເຕັມຮູບແບບ</translation>
@@ -554,7 +557,6 @@
 <translation id="5747552184818312860">ໝົດອາຍຸ</translation>
 <translation id="3858860766373142691">ຊື່</translation>
 <translation id="361106536627977100">ຂໍ້ມູນ Flash</translation>
-<translation id="4530494379350999373">ໃບແກ້ນພື້ນທີ່</translation>
 <translation id="8195027750202970175">ຂະໜາດໃນເດັດສະສາກ</translation>
 <translation id="9116465289595958864">ປ່ຽນແປງຄັ້ງສຸດທ້າຍ</translation>
 <translation id="4590324241397107707">ການຈັດເກັບຂໍ້ມູນຖານຂໍ້ມູນ</translation>
@@ -587,11 +589,6 @@
 <translation id="2903783737778379345">ບໍ່ອະນຸຍາດໃຫ້ Google Sign-In ພາບທີສາມ.</translation>
 <translation id="2570833232754279153">ບໍ່ອະນຸຍາດໃຫ້ໃຊ້ຄຸກ້້ອກພາບທີສາມສໍາລັບ Google Sign-In.</translation>
 <translation id="6880817299303842099">ອະນຸຍາດໃຫ້ໃຊ້ຄຸກ້້ອກພາບທີສາມສໍາລັບ Google Sign-In.</translation>
-<translation id="2136412236435693622">Localhost access</translation>
-<translation id="4172219483893066798">ເວັບໃຊ້ໆພໍອະນຸຍາດໃຊ້ໄດ້ໃສ່ localhost</translation>
-<translation id="7181706637590665047">ບໍ່ອະນຸຍາດໃຫ້ນໍາໃຊ້ຊັບພັດເພື່ອນ localhost</translation>
-<translation id="1336116824874668514">ບໍ່ອະນຸຍາດໃຊ້້ໃຊ້ເຊັບີໄດ້ໃຊ່</translation>
-<translation id="1485435696620658073">ອະນຸຍາດໃຫ້ໃຊ້ໄດ້ໃຊ້ໆໄໆໃຊ້ໄດ້ໃຊ້ໄດ້ໃຊ້ໄດຍໄດ້ໃຊ້ໄດ້ໄດ້</translation>
 <translation id="5794692721727586076">Leo AI chat</translation>
 <translation id="8115153008662981040">ເວບໄຊທ໌ຂອ່ນແລ້ວນມຸະນະນະນະນະນະມີ Leo AI chat</translation>
 <translation id="1145070115730668595">ປິດໃຫ້ເວບໄຊທ໌ເປີດ Leo AI chat.</translation>

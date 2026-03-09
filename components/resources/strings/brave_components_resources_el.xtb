@@ -483,8 +483,6 @@
 <translation id="1518915449477235311">Να επιτρέπεται στη διεύθυνση <ph name="URL"/> να ανοίγει συζητήσεις Leo AI στο Brave;</translation>
 <translation id="4355784577209159847">Να επιτρέπεται η χρήση cookie τρίτων για την παλιά Σύνδεση μέσω Google</translation>
 <translation id="5770656036486891920">Ο ιστότοπος <ph name="URL"/> θέλει να χρησιμοποιήσει cookie τρίτου μέρους για σύνδεση μέσω Google παλαιού τύπου</translation>
-<translation id="6053826678715267477">Να επιτρέπεται η πρόσβαση σε πηγές τοπικού υπολογιστή</translation>
-<translation id="2973562729984406132">Ο ιστότοπος <ph name="URL"/> επιθυμεί να αποκτήσει πρόσβαση σε πηγές τοπικού υπολογιστή</translation>
 <translation id="2104347391516032700">Υπηρεσία Ανταμοιβών BAT</translation>
 <translation id="5939518447894949180">Επαναφορά</translation>
 <translation id="3349204812119681938">Επαναφορά Ανταμοιβών Brave</translation>
@@ -869,6 +867,8 @@
 <translation id="646023614746251785">Επιβεβαίωση ανταλλαγής</translation>
 <translation id="6264944956989873014">Επιβεβαίωση γεφύρωσης</translation>
 <translation id="7067917728851842589">Επιβεβαίωση αποστολής</translation>
+<translation id="2841837950101800123">Παροχή</translation>
+<translation id="1114725160772317155">Κατάσταση παροχέα</translation>
 <translation id="2351357639951873714">Επιβεβαίωση προστασίας</translation>
 <translation id="7480044382160806610">Επιβεβαίωση αποενοποίησης</translation>
 <translation id="8332923694292360653">Δαπάνη</translation>
@@ -1051,6 +1051,10 @@
 <translation id="2902856457593699108">Εμφάνιση κλειδιού</translation>
 <translation id="8033497299373164724">Απόκρυψη κλειδιού</translation>
 <translation id="7514365320538308">Λήψη</translation>
+<translation id="4505811804838254812">Εισαγάγετε έναν κωδικό πρόσβασης για κρυπτογράφηση του αρχείου εξαγωγής του λογαριασμού σας.</translation>
+<translation id="4664684820522660564">Εισαγάγετε κωδικό πρόσβασης κρυπτογράφησης</translation>
+<translation id="6873030689896652259">Επιβεβαιώστε τον κωδικό πρόσβασης κρυπτογράφησης</translation>
+<translation id="5148285448107770349">Ο κωδικός πρόσβασης πρέπει να αποτελείται από τουλάχιστον 8 χαρακτήρες</translation>
 <translation id="2702143907607790516">Αποτυχία ενημέρωσης ονόματος λογαριασμού, δοκιμάστε ξανά.</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -1225,12 +1229,12 @@
 <translation id="4932382283590063268">Η διεύθυνση λήψης είναι η δική σας διεύθυνση.</translation>
 <translation id="3124753063207986114">Η διεύθυνση λήψης είναι η διεύθυνση συμβολαίου ενός token.</translation>
 <translation id="7029817408221097939">Μη έγκυρη ενοποιημένη διεύθυνση</translation>
-<translation id="6370376419663123629">Η διεύθυνση δεν μοιάζει σωστή</translation>
-<translation id="3767148796886402380">Ελέγξτε τη διεύθυνσή σας για να βεβαιωθείτε ότι είναι η σωστή (π.χ. πεζά ή κεφαλαία γράμματα).</translation>
+<translation id="5749543778008369411">Η διεύθυνση λείπει το checksum</translation>
+<translation id="8225310967627152630">Δεν είναι δυνατή η επαλήθευση της εγκυρότητας της διεύθυνσης. Για να αποφύγετε πιθανή απώλεια κεφαλαίων, εξετάστε προσεκτικά τη διεύθυνση πριν στείλετε.</translation>
+<translation id="5139218857087774333">Η διεύθυνση δεν φαίνεται σωστή (μη έγκυρο checksum)</translation>
+<translation id="6551446819927864899">Αυτή η διεύθυνση φαίνεται να έχει τυπογραφικό λάθος. Ελέγξτε τη διεύθυνση και πληκτρολογήστε την ξανά.</translation>
 <translation id="2585599787090762065">Πώς μπορώ να λύσω αυτό το πρόβλημα;</translation>
 <translation id="5517732667776806421">Έλλειψη πληροφοριών αθροίσματος ελέγχου</translation>
-<translation id="2975056993833847787">Αυτή η διεύθυνση δεν μπορεί να επαληθευτεί (λείπει το checksum). Συνέχεια;</translation>
-<translation id="6320252966164556855">Η διεύθυνση δεν πέρασε από την επαλήθευση (μη έγκυρο checksum). Δοκιμάστε ξανά, αντικαθιστώντας τα πεζά με κεφαλαία.</translation>
 <translation id="4667144295226514387">Λείπει η τιμή ορίου καυσίμου</translation>
 <translation id="2021522108838444624">Το ποσό πρέπει να είναι μεγαλύτερο από 0</translation>
 <translation id="8464365289405373974">Απαιτείται η διεύθυνση</translation>
@@ -1256,6 +1260,8 @@
 <translation id="471055802670233033">Τα έξοδά σας</translation>
 <translation id="7916618590403748182">Τα έσοδά σας</translation>
 <translation id="8328657208304368165">Επιβεβαίωση παραγγελίας</translation>
+<translation id="3784821115971261512">Διεύθυνση προγράμματος</translation>
+<translation id="6302865118026274740">Διεύθυνση κατάθεσης</translation>
 <translation id="8220255674527598378">Αντικατάσταση Solana</translation>
 <translation id="5071303414930953888">Λογαριασμός <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Πρώτα πρέπει να ξεκλειδωθεί το πορτοφόλι</translation>
@@ -1382,6 +1388,9 @@
 <translation id="7694836973509310467">Γεφύρωση</translation>
 <translation id="8419958386475786929"><ph name="SWAPPING_OR_BRIDGING"/> στο <ph name="NETWORK"/></translation>
 <translation id="7903225589949400974">Υπήρξε σφάλμα στην προσπάθεια <ph name="SWAP_OR_BRIDGE"/> στο <ph name="NETWORK"/></translation>
+<translation id="7220786058474068424">Επεξεργασία</translation>
+<translation id="3248185426436836442">Σε εκκρεμότητα</translation>
+<translation id="5503843345634715425">Επιστροφή</translation>
 <translation id="1778601041100951971">Προστασία ποσού <ph name="AMOUNT"/></translation>
 <translation id="6439110433198887239">Θωράκιση ποσού <ph name="AMOUNT"/></translation>
 <translation id="5549369333299694936">Το ποσό <ph name="AMOUNT"/> έχει προστατευτεί</translation>
@@ -1410,6 +1419,7 @@
 <translation id="5601436886921227795">Αλληλεπίδραση Dapp</translation>
 <translation id="9104177294757104789">Αποστολή <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Ανταλλαγή <ph name="MAKER"/> σε <ph name="TAKER"/></translation>
+<translation id="5140590056890937774">Γέφυρα <ph name="SOURCE"/> στο <ph name="DESTINATION"/></translation>
 <translation id="1748114617341025015">Δημιουργία συνδεδεμένου λογαριασμού διακριτικού</translation>
 <translation id="4418115887224983240">Αποτυχία δημιουργίας συνδεδεμένου λογαριασμού διακριτικού</translation>
 <translation id="7165697599360786670">Δημιουργήθηκε ο σχετικός λογαριασμός διακριτικού</translation>
@@ -1636,12 +1646,16 @@
 <translation id="3356580495013324916">Πληκτρολογήστε τον κωδικό πρόσβασης του Πορτοφολιού Brave για να ξεκινήσετε τη δημιουργία αντιγράφων ασφαλείας πορτοφολιού.</translation>
 <translation id="7545441766078366279">Έγκριση <ph name="TOKEN"/></translation>
 <translation id="3115303896544539834">Ανεπαρκές υπόλοιπο <ph name="TOKEN"/></translation>
+<translation id="6612125470074657311">Το ποσό είναι πολύ χαμηλό</translation>
+<translation id="5838312420826727653">Μη υποστηριζόμενο(α) token(s)</translation>
+<translation id="4930106154893104117">Μη έγκυρο αίτημα</translation>
 <translation id="3453833142586986467">Επιλέξτε διακριτικό</translation>
 <translation id="4937657825850660613">Μισό</translation>
 <translation id="7639814793732182496">Μέγ.</translation>
 <translation id="6584782231358487640">Εισαγάγετε ποσό</translation>
 <translation id="477281933640372562">Γίνεται λήψη προσφοράς</translation>
 <translation id="5450317966495183014">Λήψη (εκτ.)</translation>
+<translation id="387870937508841726">Λήψη (ελάχ.)</translation>
 <translation id="8747614139273050577">Από token</translation>
 <translation id="1726158192333401896">Σε token</translation>
 <translation id="1817370679212109974">Νέα προσφορά σε <ph name="COUNTDOWN"/></translation>
@@ -1752,7 +1766,6 @@
 <translation id="2410455471299328417">Αυτή η υπηρεσία του <ph name="BOLD_BEFORE"/>Blowfish.xyz<ph name="BOLD_AFTER"/> και υπόκειται στους <ph name="TERMS_LINK_BEFORE"/>Όρους υπηρεσίας<ph name="TERMS_LINK_AFTER"/> και την <ph name="PRIVACY_POLICY_LINK_BEFORE"/>Πολιτική απορρήτου<ph name="PRIVACY_POLICY_LINK_AFTER"/> του</translation>
 <translation id="8688672835843460752">Διαθέσιμο</translation>
 <translation id="5296640085393149413">Διαθέσιμοι πόροι για χρήση.</translation>
-<translation id="3248185426436836442">Σε εκκρεμότητα</translation>
 <translation id="2515906149804238711">Υπάρχει μια εκκρεμής αλλαγή στο υπόλοιπο του πορτοφολιού σας.</translation>
 <translation id="7700365440186054030">Οι διαθέσιμοι πόροι σας συν τυχόν συναλλαγές που δεν έχουν επιβεβαιωθεί ακόμη.</translation>
 <translation id="4118601537508887039">Ορισμένα υπόλοιπα ενδέχεται να μην είναι διαθέσιμα</translation>
@@ -2245,6 +2258,7 @@
 <translation id="9109355817507033196">Η απάντηση έλαβε επισήμανση "Δεν μου αρέσει"</translation>
 <translation id="4049425842478222936">Η απάντηση έλαβε επισήμανση "Μου αρέσει"</translation>
 <translation id="6393149565874086128">Προσθήκη σχολίων</translation>
+<translation id="4621961534325272682">Η συνομιλία αντιγράφηκε στο πρόχειρο</translation>
 <translation id="3521125531016408657">Η απάντηση μου αρέσει</translation>
 <translation id="8202517001427388906">Η απάντηση δεν μου αρέσει</translation>
 <translation id="1379399209929302811">Καταχωρήστε σχόλια για το Brave AI</translation>
@@ -2289,6 +2303,8 @@
 <translation id="6495402307502950726">Εκκαθάριση συνομιλίας</translation>
 <translation id="903201991022343217">Έναρξη νέας συνομιλίας</translation>
 <translation id="8171760814579050200">Μετονομασία συνομιλίας</translation>
+<translation id="402386227879573975">Αντιγραφή ολόκληρης συνομιλίας</translation>
+<translation id="5397794290049113714">Εσείς</translation>
 <translation id="7754678742055438573">Διαγραφή συνομιλίας</translation>
 <translation id="1946267518364740045">Αιτιολόγηση...</translation>
 <translation id="4198859185714743678">Η αιτιολόγηση ολοκληρώθηκε</translation>
@@ -2325,7 +2341,6 @@
 <translation id="4808122506413075135">Στείλτε περιεχόμενο σελίδας από το ιστορικό του προγράμματος περιήγησής σας για να δώσετε στον Leo μεγαλύτερο πλαίσιο για τη συζήτηση.</translation>
 <translation id="220541218939267992">Το περιεχόμενο της σελίδας θα αποσταλεί στον Leo μαζί με τα μηνύματά σας.</translation>
 <translation id="2152389270152475874">Προσθέστε καρτέλες, σελιδοδείκτες ή ιστορικό για πλαίσιο. Τα επιλεγμένα περιεχόμενα θα αποστέλλονται στον Leo μαζί με τα μηνύματά σας.</translation>
-<translation id="6237410387937453423">Δεν υπάρχουν ταιριαστά συνημμένα</translation>
 <translation id="2315654674554095762">Το Leo θα θυμάται πλέον τις συνομιλίες σας, ώστε να μπορείτε να επιστρέφετε σε αυτές. Αποθηκεύονται κρυπτογραφημένες στη συσκευή σας και μπορείτε να τις διαγράψετε ανά πάσα στιγμή.</translation>
 <translation id="7821251979960635244">Το ιστορικό των συνομιλιών σας θα εμφανιστεί εδώ μόλις ξεκινήσετε μια συνομιλία.</translation>
 <translation id="887511360213807449">Το ιστορικό είναι απενεργοποιημένο</translation>
@@ -2427,7 +2442,7 @@
 <translation id="4773299976671772492">Διακόπηκε</translation>
 <translation id="6946722113367118030">Σκέφτεται</translation>
 <translation id="2113810663179257944">Εκτέλεση κώδικα</translation>
-<translation id="4790888275629207278">Εκτελέστηκε κώδικας σε sandbox</translation>
+<translation id="6338250692384725496">Εκτελέστηκε κώδικας σε sandbox για να σας βοηθήσει με το ερώτημά σας</translation>
 <translation id="4379566111233326721">Κώδικας:</translation>
 <translation id="3542130965673205258">Έξοδος:</translation>
 <translation id="3428245742224818842">Αναζήτηση με AI</translation>
@@ -2439,11 +2454,7 @@
 <translation id="864117099189791993">Μπορείτε να επιστρέψετε στο κανονικό προφίλ σας οποιαδήποτε στιγμή από το κύριο μενού ή μέσω του μενού προφίλ στη γραμμή εργαλείων. Η περιήγηση με AI θα ανοίγει πάντα στο προφίλ περιήγησης AI.</translation>
 <translation id="3486480638399578250">Κρατήστε την προσωπική σας διεύθυνση email ιδιωτική</translation>
 <translation id="7765422154906712751">Δημιουργήστε μοναδικές, τυχαίες διευθύνσεις που προωθούν την ηλεκτρονική σας διεύθυνση λογαριασμού Brave και μπορούν να διαγραφούν οποιαδήποτε στιγμή. Κρατήστε την πραγματική σας ηλεκτρονική διεύθυνση απόρρητη και αχρησιμοποίητη από διαφημιστές.</translation>
-<translation id="5222676887888702881">Αποσύνδεση</translation>
-<translation id="8090292425230843109">Αποσύνδεση από Ψευδώνυμα Email</translation>
-<translation id="8471990782451394141">Σύνδεση με λογαριασμό Brave...</translation>
 <translation id="71316462802471551">Ψευδώνυμα email</translation>
-<translation id="5713644099811900409">Λογαριασμός Brave</translation>
 <translation id="6002159997868894136">Κάντε κλικ για αντιγραφή του ψευδωνύμου</translation>
 <translation id="8105770564756958406">Χρησιμοποιείται από <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Δημιουργήστε έως 5 δωρεάν email alias για να προστατεύσετε την πραγματική σας διεύθυνση email.</translation>
@@ -2467,8 +2478,8 @@
 <translation id="646524615209870492">Η αφαίρεση του <ph name="ALIAS"/> ως alias θα έχει ως αποτέλεσμα την απώλεια της ικανότητάς σας να λαμβάνετε μηνύματα ηλεκτρονικού ταχυδρομείου.</translation>
 <translation id="8133100642915054515">Σφάλμα διαγραφής alias. Ελέγξτε τη σύνδεσή σας στο διαδίκτυο και δοκιμάστε ξανά.</translation>
 <translation id="8465742443901727718">Η ενέργεια αυτή είναι μη αναστρέψιμη. Σίγουρα θέλετε να συνεχίσετε;</translation>
-<translation id="8662104432574824754">Για να ξεκινήσετε, συνδεθείτε ή δημιουργήστε έναν λογαριασμό Brave</translation>
-<translation id="8069030342700068465">Εισαγάγετε τη διεύθυνση email σας για να λάβετε έναν ασφαλή σύνδεσμο σύνδεσης που θα σταλεί στο email σας. Κάνοντας κλικ σε αυτόν τον σύνδεσμο, θα δημιουργηθεί ή θα αποκτηθεί πρόσβαση σε έναν λογαριασμό Brave και θα μπορείτε να χρησιμοποιήσετε την υπηρεσία δωρεάν email alias.</translation>
+<translation id="9162685486229945876">Συνδεθείτε ή δημιουργήστε έναν λογαριασμό Brave</translation>
+<translation id="1335007417599138852">Ένας λογαριασμός Brave θα σας επιτρέψει να αποκτήσετε πρόσβαση σε συγκεκριμένα προϊόντα Brave και να συγχρονίσετε εύκολα τις πληροφορίες σας σε όλες τις συσκευές σας.</translation>
 <translation id="2133391407495495735">Λάβετε σύνδεσμο σύνδεσης</translation>
 <translation id="2650906829817220223">Σφάλμα αίτησης ελέγχου ταυτότητας. Ελέγξτε τη σύνδεσή σας στο διαδίκτυο και δοκιμάστε ξανά.</translation>
 <translation id="3699624789011381381">Διεύθυνση email</translation>
@@ -2501,7 +2512,7 @@
 <translation id="466214682712474574">Συνδεθείτε στον <ph name="PROVIDER"/> λογαριασμό σας για να δείτε το υπόλοιπό σας</translation>
 <translation id="8332875111286275890">Συνδεθείτε για να δείτε το υπόλοιπό σας</translation>
 <translation id="5430001801813715388">ΕΠΙΒΡΑΒΕΥΣΕΙΣ</translation>
-<translation id="5966055668402779222">Ρωτήστε την Αναζήτηση Brave</translation>
+<translation id="2430295257226173518">Ρωτήστε οτιδήποτε, βρείτε τα πάντα…</translation>
 <translation id="167018310108390163">Προσαρμογή της Νέας Καρτέλας</translation>
 <translation id="6851426306697017546">Εμφάνιση ρολογιού</translation>
 <translation id="4844370919312937270">Εμφάνιση widget αναζήτησης σε νέες καρτέλες</translation>
@@ -2542,7 +2553,7 @@
 <translation id="4677356505199464553">Φαίνεται καλό</translation>
 <translation id="1992750560347846445">Αναφορά ιστότοπου</translation>
 <translation id="2863270180245144869">Λειτουργία Ad Block Only ενεργοποιημένη</translation>
-<translation id="2302218429308447288">Αυτή τη στιγμή χρησιμοποιείτε τη λειτουργία Μόνο αποκλεισμός διαφημίσεων. Αυτή η λειτουργία προσφέρει μόνο προστασία αποκλεισμού διαφημίσεων. Εάν επιθυμείτε να επιστρέψετε στην πλήρη λειτουργία Ασπίδες Brave, απενεργοποιήστε αυτή τη λειτουργία από τις ρυθμίσεις.</translation>
+<translation id="3773808439655997805">Αυτή τη στιγμή χρησιμοποιείτε τη λειτουργία Μόνο αποκλεισμός διαφημίσεων. Αυτή η λειτουργία προσφέρει μόνο προστασία αποκλεισμού διαφημίσεων (εάν οι Ασπίδες είναι ΕΝΕΡΓΟΠΟΙΗΜΕΝΕΣ). Εάν επιθυμείτε να επιστρέψετε στην πλήρη λειτουργία Ασπίδων, απενεργοποιήστε αυτή τη λειτουργία από τις ρυθμίσεις.</translation>
 <translation id="4820891023903368625">Μπλοκαρισμένες διαφημίσεις <ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Ιχνηλάτες, διαφημίσεις και άλλα αποκλείστηκαν <ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Δεν προστατεύεται από Ασπίδες Brave <ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
@@ -2602,6 +2613,8 @@
     }</translation>
 <translation id="2540598191934725677">Κάντε κλικ στο εικονίδιο Brave για να δείτε τις Ασπίδες Brave.</translation>
 <translation id="542789539047208469">Πληροφορίες ιστοτόπου</translation>
+<translation id="7586067492365979844">Οι Ασπίδες Brave έχουν μια νέα τοποθεσία και σχεδιασμό. Τώρα ενσωματώνονται με τις πληροφορίες τοποθεσίας για μια ενιαία εμπειρία.</translation>
+<translation id="9114542678887529043">Οι Ασπίδες Brave έχουν μια νέα τοποθεσία και σχεδιασμό. Αποκτήστε πρόσβαση κάνοντας κλικ στο εικονίδιο τοποθεσίας στη γραμμή διευθύνσεων.</translation>
 <translation id="6294662480095808915">Ιδιωτικότητα, από προεπιλογή.</translation>
 <translation id="4366423156486478559">Λάβετε προστασία από το Brave σε κάθε σύνδεσμο στον οποίο κάνετε κλικ. Ορίστε απλώς το Brave ως προεπιλογή και περιηγηθείτε ιδιωτικά.</translation>
 <translation id="3830912418080848377">Εισαγωγή ρυθμίσεων</translation>
@@ -2613,6 +2626,7 @@
 <translation id="2273851479262317744">Ορίστε τον Brave ως το προεπιλεγμένο πρόγραμμα περιήγησης</translation>
 <translation id="5037676449506322593">Επιλογή όλων</translation>
 <translation id="5148943178722443958">Βοηθήστε μας να κάνουμε το Brave καλύτερο.</translation>
+<translation id="479535542793009168">Σταθερότητα &amp; Διαγνωστικά</translation>
 <translation id="1097073572755862978">Στείλτε αναφορές διαγνωστικών, σε περίπτωση σφάλματος ή παγώματος. <ph name="LINK_BEFORE"/>Μάθετε περισσότερα.<ph name="LINK_AFTER"/></translation>
 <translation id="6629244688368006959">Κοινοποιήστε ιδιωτικές και ανώνυμες πληροφορίες σχετικά με ποιες λειτουργίες χρησιμοποιούνται από τους χρήστες του Brave. <ph name="LINK_BEFORE"/>Μάθετε περισσότερα.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Η ρύθμιση ολοκληρώθηκε</translation>
@@ -2636,7 +2650,9 @@
 <translation id="8000020256436988724">Γραμμή εργαλείων</translation>
 <translation id="6225572914528673855">Γραμμή διεύθυνσης</translation>
 <translation id="6821966107067356137">Προσθήκη ροής RSS</translation>
+<translation id="2478076885740497414">Εγκατάσταση εφαρμογής</translation>
 <translation id="8293206222192510085">Προσθήκη σελιδοδείκτη</translation>
+<translation id="1010029336854254368">Μενού κοινοποίησης</translation>
 <translation id="7758460733045216901">Πίνακας σελιδοδεικτών</translation>
 <translation id="958268166261124668">Brave VPN: Συνδέθηκε</translation>
 <translation id="6021669293402055982">Brave VPN: Αποσυνδέθηκε</translation>

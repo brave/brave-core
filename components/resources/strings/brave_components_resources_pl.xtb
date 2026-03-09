@@ -483,8 +483,6 @@
 <translation id="1518915449477235311">Zezwolić <ph name="URL"/> na otwieranie rozmów SI Leo w Brave?</translation>
 <translation id="4355784577209159847">Zezwól na pliki cookie innych firm dla starszej wersji logowania Google</translation>
 <translation id="5770656036486891920"><ph name="URL"/> chce skorzystać z ciasteczek stron trzecich, aby użyć starszej wersji logowania Google</translation>
-<translation id="6053826678715267477">Zezwól na dostęp do zasobów hosta lokalnego</translation>
-<translation id="2973562729984406132"><ph name="URL"/> chce uzyskać dostęp do zasobów hosta lokalnego</translation>
 <translation id="2104347391516032700">Usługa nagród Bat</translation>
 <translation id="5939518447894949180">Resetuj</translation>
 <translation id="3349204812119681938">Zresetuj Brave Rewards</translation>
@@ -874,6 +872,8 @@
 <translation id="646023614746251785">Potwierdź zamianę</translation>
 <translation id="6264944956989873014">Potwierdź most</translation>
 <translation id="7067917728851842589">Potwierdź wysyłkę</translation>
+<translation id="2841837950101800123">Dostawca</translation>
+<translation id="1114725160772317155">Status dostawcy</translation>
 <translation id="2351357639951873714">Potwierdź tarczę</translation>
 <translation id="7480044382160806610">Potwierdź usunięcie ochrony</translation>
 <translation id="8332923694292360653">Wydaj</translation>
@@ -1056,6 +1056,10 @@
 <translation id="2902856457593699108">Pokaż klucz</translation>
 <translation id="8033497299373164724">Ukryj klucz</translation>
 <translation id="7514365320538308">Pobierz</translation>
+<translation id="4505811804838254812">Wprowadź hasło, aby zaszyfrować plik eksportu konta.</translation>
+<translation id="4664684820522660564">Wprowadź hasło szyfrowania</translation>
+<translation id="6873030689896652259">Potwierdź hasło szyfrowania</translation>
+<translation id="5148285448107770349">Hasło musi składać się z co najmniej 8 znaków</translation>
 <translation id="2702143907607790516">Aktualizacja nazwy konta nie powiodła się. Spróbuj ponownie później.</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -1230,12 +1234,12 @@
 <translation id="4932382283590063268">Adres odbiorcy jest Twoim adresem.</translation>
 <translation id="3124753063207986114">Adres odbiorcy jest adresem kontraktu tokenu.</translation>
 <translation id="7029817408221097939">Nieprawidłowy adres zunifikowany</translation>
-<translation id="6370376419663123629">Adres nie wygląda na poprawny</translation>
-<translation id="3767148796886402380">Sprawdź adres i upewnij się, że jest poprawny (np. sprawdź wielkość liter).</translation>
+<translation id="5749543778008369411">Adres nie ma sumy kontrolnej</translation>
+<translation id="8225310967627152630">Ważności tego adresu nie można zweryfikować. Aby uniknąć potencjalnej utraty środków, dokładnie przejrzyj adres przed wysłaniem.</translation>
+<translation id="5139218857087774333">Adres wygląda nieprawidłowo (nieprawidłowa suma kontrolna)</translation>
+<translation id="6551446819927864899">Ten adres wydaje się mieć błąd pisowni. Przejrzyj adres i wpisz go ponownie.</translation>
 <translation id="2585599787090762065">Jak mogę to rozwiązać?</translation>
 <translation id="5517732667776806421">Brak informacji o sumie kontrolnej</translation>
-<translation id="2975056993833847787">Nie można zweryfikować adresu (brak sumy kontrolnej). Czy kontynuować?</translation>
-<translation id="6320252966164556855">Adres nie przeszedł weryfikacji (nieprawidłowa suma kontrolna). Spróbuj ponownie, zamieniając małe litery na wielkie.</translation>
 <translation id="4667144295226514387">Limit braku gazu</translation>
 <translation id="2021522108838444624">Kwota musi być większa od 0</translation>
 <translation id="8464365289405373974">Adres wysyłki jest wymagany</translation>
@@ -1261,6 +1265,8 @@
 <translation id="471055802670233033">Wydajesz</translation>
 <translation id="7916618590403748182">Otrzymasz</translation>
 <translation id="8328657208304368165">Potwierdź zamówienie</translation>
+<translation id="3784821115971261512">Adres programu</translation>
+<translation id="6302865118026274740">Adres wpłaty</translation>
 <translation id="8220255674527598378">Wymiana Solana</translation>
 <translation id="5071303414930953888">Konto <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Portfel musi zostać najpierw odblokowany</translation>
@@ -1386,6 +1392,9 @@
 <translation id="7694836973509310467">Tworzenie mostu</translation>
 <translation id="8419958386475786929"><ph name="SWAPPING_OR_BRIDGING"/> w sieci <ph name="NETWORK"/></translation>
 <translation id="7903225589949400974">Wystąpił błąd (<ph name="SWAP_OR_BRIDGE"/>) w sieci <ph name="NETWORK"/></translation>
+<translation id="7220786058474068424">Przetwarzanie</translation>
+<translation id="3248185426436836442">Oczekuje</translation>
+<translation id="5503843345634715425">Zwrócono</translation>
 <translation id="1778601041100951971">Ochrona kwoty <ph name="AMOUNT"/></translation>
 <translation id="6439110433198887239">Ochrona kwoty <ph name="AMOUNT"/></translation>
 <translation id="5549369333299694936">Kwota <ph name="AMOUNT"/> została ochroniona</translation>
@@ -1414,6 +1423,7 @@
 <translation id="5601436886921227795">Interakcja aplikacji zdecentralizowanych</translation>
 <translation id="9104177294757104789">Wyślij <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Zmień <ph name="MAKER"/> na <ph name="TAKER"/></translation>
+<translation id="5140590056890937774">Przesyłanie mostem <ph name="SOURCE"/> do <ph name="DESTINATION"/></translation>
 <translation id="1748114617341025015">Tworzenie powiązanego konta tokenowego</translation>
 <translation id="4418115887224983240">Nie udało się utworzyć powiązanego konta tokenowego</translation>
 <translation id="7165697599360786670">Utworzono powiązane konto tokenowe</translation>
@@ -1640,12 +1650,16 @@
 <translation id="3356580495013324916">Wprowadź hasło Portfela Brave w celu utworzenia jego kopii zapasowej.</translation>
 <translation id="7545441766078366279">Zatwierdź <ph name="TOKEN"/></translation>
 <translation id="3115303896544539834">Niewystarczające saldo <ph name="TOKEN"/></translation>
+<translation id="6612125470074657311">Kwota zbyt niska</translation>
+<translation id="5838312420826727653">Nieobsługiwane tokeny</translation>
+<translation id="4930106154893104117">Nieprawidłowe żądanie</translation>
 <translation id="3453833142586986467">Wybierz token</translation>
 <translation id="4937657825850660613">Połowa</translation>
 <translation id="7639814793732182496">Maks.</translation>
 <translation id="6584782231358487640">Wprowadź kwotę</translation>
 <translation id="477281933640372562">Pobieranie wyceny</translation>
 <translation id="5450317966495183014">Szacunkowy czas otrzymania</translation>
+<translation id="387870937508841726">Otrzymaj (min.)</translation>
 <translation id="8747614139273050577">Z tokena</translation>
 <translation id="1726158192333401896">Na token</translation>
 <translation id="1817370679212109974">Nowa wycena za <ph name="COUNTDOWN"/></translation>
@@ -1756,7 +1770,6 @@
 <translation id="2410455471299328417">Ta usługa jest świadczona przez spółkę <ph name="BOLD_BEFORE"/>Blowfish.xyz<ph name="BOLD_AFTER"/>, w związku z czym podlega jej <ph name="TERMS_LINK_BEFORE"/>Warunkom korzystania z usługi<ph name="TERMS_LINK_AFTER"/> oraz <ph name="PRIVACY_POLICY_LINK_BEFORE"/>Polityce prywatności<ph name="PRIVACY_POLICY_LINK_AFTER"/></translation>
 <translation id="8688672835843460752">Dostępne</translation>
 <translation id="5296640085393149413">Twoje dostępne środki.</translation>
-<translation id="3248185426436836442">Oczekuje</translation>
 <translation id="2515906149804238711">Oczekująca zmiana sala w Twoim portfelu.</translation>
 <translation id="7700365440186054030">Twoje dostępne środki plus wszelkie niepotwierdzone jeszcze transakcje.</translation>
 <translation id="4118601537508887039">Niektóre salda mogą być niedostępne</translation>
@@ -2251,6 +2264,7 @@
 <translation id="9109355817507033196">Odpowiedź nie podobała się</translation>
 <translation id="4049425842478222936">Odpowiedź podobała się</translation>
 <translation id="6393149565874086128">Dodaj opinię</translation>
+<translation id="4621961534325272682">Rozmowa skopiowana do schowka</translation>
 <translation id="3521125531016408657">Podoba mi się odpowiedź</translation>
 <translation id="8202517001427388906">Nie podoba mi się odpowiedź</translation>
 <translation id="1379399209929302811">Prześlij opinię dotyczącą sztucznej inteligencji Brave</translation>
@@ -2295,6 +2309,8 @@
 <translation id="6495402307502950726">Wyczyść rozmowę</translation>
 <translation id="903201991022343217">Rozpocznij nową rozmowę</translation>
 <translation id="8171760814579050200">Zmień nazwę rozmowy</translation>
+<translation id="402386227879573975">Skopiuj całą rozmowę</translation>
+<translation id="5397794290049113714">Ty</translation>
 <translation id="7754678742055438573">Usuń rozmowę</translation>
 <translation id="1946267518364740045">Wnioskowanie...</translation>
 <translation id="4198859185714743678">Wnioskowanie zakończone</translation>
@@ -2331,7 +2347,6 @@
 <translation id="4808122506413075135">Proszę wysłać zawartość strony z historii przeglądarki, aby dać Leo więcej kontekstu do rozmowy.</translation>
 <translation id="220541218939267992">Zawartość strony zostanie wysłana do Leo wraz z Twoimi wiadomościami.</translation>
 <translation id="2152389270152475874">Dodaj karty, zakładki lub historię dla kontekstu. Wybrane treści zostaną wysłane do Leo wraz z Twoimi wiadomościami.</translation>
-<translation id="6237410387937453423">Brak pasujących załączników</translation>
 <translation id="2315654674554095762">Leo będzie teraz zapamiętywać rozmowy, by można było do nich wracać. Są one zaszyfrowane na twoim urządzeniu i możesz je w każdej chwili usunąć.</translation>
 <translation id="7821251979960635244">Historia rozmowy pojawi się tutaj, gdy rozpoczniesz rozmowę.</translation>
 <translation id="887511360213807449">Historia jest wyłączona</translation>
@@ -2433,7 +2448,7 @@
 <translation id="4773299976671772492">Zatrzymano</translation>
 <translation id="6946722113367118030">Myślenie</translation>
 <translation id="2113810663179257944">Wykonanie kodu</translation>
-<translation id="4790888275629207278">Kod wykonany w piaskownicy</translation>
+<translation id="6338250692384725496">Wykonano kod w piaskownicy, aby pomóc w Twojej zapytaniu</translation>
 <translation id="4379566111233326721">Kod:</translation>
 <translation id="3542130965673205258">Dane wyjściowe:</translation>
 <translation id="3428245742224818842">Przeglądanie AI</translation>
@@ -2445,11 +2460,7 @@
 <translation id="864117099189791993">Możesz wrócić do swojego zwykłego profilu w dowolnym momencie za pomocą głównego menu lub awatara Leo na pasku narzędzi. Tryb agenta będzie zawsze otwierany w tym profilu.</translation>
 <translation id="3486480638399578250">Zachowaj prywatność swojego adresu e-mail</translation>
 <translation id="7765422154906712751">Twórz unikalne, losowe adresy, które przekierowują na twój e-mail w Brave i mogą być usunięte w dowolnym momencie. Dzięki temu ochronisz swój właściwy adres e-mail przed ujawnieniem i użyciem przez reklamodawców.</translation>
-<translation id="5222676887888702881">Wyloguj się</translation>
-<translation id="8090292425230843109">Wyloguj się z aliasów e-mail</translation>
-<translation id="8471990782451394141">Łączenie z kontem Brave…</translation>
 <translation id="71316462802471551">Aliasy e-mail</translation>
-<translation id="5713644099811900409">Konto Brave</translation>
 <translation id="6002159997868894136">Kliknij, aby skopiować alias</translation>
 <translation id="8105770564756958406">Używane przez <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Utwórz do 5 darmowych aliasów e-mail, aby chronić swój prawdziwy adres e-mail.</translation>
@@ -2473,8 +2484,8 @@
 <translation id="646524615209870492">Usunięcie <ph name="ALIAS"/> jako aliasu spowoduje utratę możliwości otrzymywania wiadomości e-mail.</translation>
 <translation id="8133100642915054515">Błąd usuwania aliasu. Sprawdź połączenie internetowe i spróbuj ponownie.</translation>
 <translation id="8465742443901727718">To działanie jest nieodwracalne. Czy na pewno chcesz kontynuować?</translation>
-<translation id="8662104432574824754">Aby rozpocząć, zaloguj się lub stwórz konto Brave</translation>
-<translation id="8069030342700068465">Wprowadź swój adres e-mail, aby otrzymać bezpieczny link do logowania wysłany na Twój e-mail. Kliknięcie tego linku utworzy lub uzyska dostęp do konta Brave i pozwoli Ci korzystać z darmowej usługi aliasów e-mail.</translation>
+<translation id="9162685486229945876">Zaloguj się lub utwórz konto Brave</translation>
+<translation id="1335007417599138852">Konto Brave umożliwi Ci dostęp do określonych produktów Brave i łatwe synchronizowanie informacji na wszystkich urządzeniach.</translation>
 <translation id="2133391407495495735">Uzyskaj link do logowania</translation>
 <translation id="2650906829817220223">Błąd żądania uwierzytelnienia. Sprawdź połączenie internetowe i spróbuj ponownie.</translation>
 <translation id="3699624789011381381">Adres e-mail</translation>
@@ -2507,7 +2518,7 @@
 <translation id="466214682712474574">Zaloguj się na swoje konto <ph name="PROVIDER"/>, by wyświetlić saldo</translation>
 <translation id="8332875111286275890">Zaloguj się, by wyświetlić saldo</translation>
 <translation id="5430001801813715388">NAGRODY</translation>
-<translation id="5966055668402779222">Zapytaj Brave Search</translation>
+<translation id="2430295257226173518">Zapytaj o cokolwiek. Znajdź, co chcesz…</translation>
 <translation id="167018310108390163">Dostosuj stronę Nowa karta</translation>
 <translation id="6851426306697017546">Pokaż godzinę</translation>
 <translation id="4844370919312937270">Wyświetl widżet wyszukiwania w nowych kartach</translation>
@@ -2548,7 +2559,7 @@
 <translation id="4677356505199464553">Wygląda dobrze</translation>
 <translation id="1992750560347846445">Zgłoś stronę</translation>
 <translation id="2863270180245144869">Tryb tylko blokowanie reklam włączony</translation>
-<translation id="2302218429308447288">Obecnie korzystasz z trybu tylko blokowanie reklam. Tryb ten zapewnia jedynie ochronę przed blokowaniem reklam. Jeśli chcesz powrócić do pełnej ochrony funkcji Tarcze, wyłącz ten tryb w ustawieniach.</translation>
+<translation id="3773808439655997805">Obecnie korzystasz z trybu tylko blokowanie reklam. Tryb ten zapewnia jedynie ochronę przed blokowaniem reklam (jeśli Tarcze są WŁĄCZONE). Jeśli chcesz powrócić do pełnej ochrony funkcji Tarcze, wyłącz ten tryb w ustawieniach.</translation>
 <translation id="4820891023903368625">Reklamy zablokowane <ph name="LINK_BEFORE"/>Proszę dowiedzieć się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Zablokowane skrypty śledzące, reklamy i inne <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Nie jest chronione przez Tarcze Brave <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
@@ -2608,6 +2619,8 @@
     }</translation>
 <translation id="2540598191934725677">Kliknij ikonę Brave, aby wyświetlić Tarcze Brave.</translation>
 <translation id="542789539047208469">Informacje o witrynie</translation>
+<translation id="7586067492365979844">Tarcze Brave mają nowy dom i design. Teraz integruje się z informacjami o witrynie, aby uzyskać kompleksowe doświadczenie.</translation>
+<translation id="9114542678887529043">Tarcze Brave mają nowy dom i design. Uzyskaj do nich dostęp, klikając ikonę witryny na pasku adresu.</translation>
 <translation id="6294662480095808915">Domyślna prywatność.</translation>
 <translation id="4366423156486478559">Uzyskaj ochronę przeglądarki Brave w przypadku każdego klikniętego łącza. Wystarczy, że ustawisz przeglądarkę Brave jako domyślną. Przeglądaj bez obaw o naruszenie prywatności.</translation>
 <translation id="3830912418080848377">Importuj ustawienia</translation>
@@ -2619,6 +2632,7 @@
 <translation id="2273851479262317744">Ustaw Brave jako domyślną przeglądarkę</translation>
 <translation id="5037676449506322593">Wybierz wszystko</translation>
 <translation id="5148943178722443958">Pomóż ulepszyć Brave.</translation>
+<translation id="479535542793009168">Stabilność i diagnostyka</translation>
 <translation id="1097073572755862978">Wysyłaj raporty diagnostyczne w przypadku wystąpienia błędu. <ph name="LINK_BEFORE"/>Dowiedz się więcej.<ph name="LINK_AFTER"/></translation>
 <translation id="6629244688368006959">Udostępniaj prywatne i anonimowe analizy produktów dotyczące tego, z jakich funkcji korzystają użytkownicy Brave. <ph name="LINK_BEFORE"/>Dowiedz się więcej.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Konfiguracja ukończona</translation>
@@ -2642,7 +2656,9 @@
 <translation id="8000020256436988724">Pasek narzędzi</translation>
 <translation id="6225572914528673855">Pasek adresu</translation>
 <translation id="6821966107067356137">Dodaj kanał RSS</translation>
+<translation id="2478076885740497414">Zainstaluj aplikację</translation>
 <translation id="8293206222192510085">Dodaj zakładkę</translation>
+<translation id="1010029336854254368">Menu udostępniania</translation>
 <translation id="7758460733045216901">Panel zakładek</translation>
 <translation id="958268166261124668">VPN Brave: połączony</translation>
 <translation id="6021669293402055982">VPN Brave: rozłączony</translation>

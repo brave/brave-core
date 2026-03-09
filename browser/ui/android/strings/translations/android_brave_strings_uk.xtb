@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">Сайти можуть запитувати про використання застарілої системи входу за допомогою Google з використанням сторонніх файлів cookie</translation>
 <translation id="2903783737778379345">Не дозволяти використання застарілої системи входу за допомогою Google через сторонні файли cookie</translation>
 <translation id="6880817299303842099">Дозволено використовувати сторонні файли cookie для застарілої системи входу за допомогою Google</translation>
-<translation id="2136412236435693622">Доступ до localhost</translation>
-<translation id="4172219483893066798">Сайти можуть запитувати доступ до ресурсів localhost</translation>
-<translation id="7181706637590665047">Не дозволяти доступ до ресурсів localhost</translation>
-<translation id="1485435696620658073">Доступ до ресурсів localhost дозволено</translation>
 <translation id="181905442828471321">Глобальні налаштування щитів Brave</translation>
 <translation id="2675679258824361492">Інші налаштування приватності</translation>
 <translation id="8026334261755873520">Очистити дані перегляду</translation>
@@ -425,6 +421,13 @@
 <translation id="7141438739990875547">Мережі Bitcoin</translation>
 <translation id="9055546041146396417">Якщо цей сайт здається нефункціонуючим, спробуйте відключити Екрани.</translation>
 <translation id="7898672232170410330">Блокувати елемент</translation>
+<translation id="9064628362799094520">Очищення даних сайту</translation>
+<translation id="8949611615512336262">Автоматичне очищення: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Очистити дані сайту зараз</translation>
+<translation id="6795622376590884449">Автоматичне очищення</translation>
+<translation id="7961015016161918242">Ніколи</translation>
+<translation id="1991004083507807299">Вкладки сайту закрито</translation>
+<translation id="5827277414420724690">Застосунок закрито</translation>
 <translation id="1209739344687072997">Повідомити про зламаний сайт</translation>
 <translation id="8510478288840333677">Повідомте розробникам Brave, що цей сайт погано працює із Щитами:</translation>
 <translation id="1653405824851871276">Дякуємо, що допомагаєте вдосконалювати Brave. Цей звіт міститиме лише інформацію, необхідну для виправлення проблем із цим сайтом. <ph name="LEARN_MORE"/></translation>
@@ -1076,7 +1079,7 @@
 <translation id="1336494649091412226">Ви впевнені, що хочете вийти з Brave?</translation>
 <translation id="6061635824229591714">Очистити дані сайту?</translation>
 <translation id="1265051174491933207">Очищення призведе до видалення даних сайту та закриття всіх вкладок «<ph name="SITE_NAME"/>». Цю дію неможливо скасувати.</translation>
-<translation id="4279349293084858577">Очистити</translation>
+<translation id="5528772406060281700">Очищення даних сайту</translation>
 <translation id="4426990318287827331">Очистити дані</translation>
 <translation id="7942415993090181327">Історія чату</translation>
 <translation id="6859935199732075666">Показати помилки безпечного перегляду</translation>

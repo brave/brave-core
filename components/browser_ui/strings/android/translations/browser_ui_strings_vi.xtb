@@ -3,20 +3,24 @@
 <translationbundle lang="vi">
 <translation id="1006017844123154345">Mở trực tuyến</translation>
 <translation id="1036348656032585052">Tắt</translation>
+<translation id="1046742265332833834">Giao diện màu xanh dương</translation>
 <translation id="1070329623210597193">Các tệp mà trang web này có thể xem hoặc chỉnh sửa</translation>
 <translation id="1882093842020941518">Hãy chia sẻ lý do bạn cho phép cookie của bên thứ ba để giúp chúng tôi cải thiện Brave. <ph name="BEGIN_LINK"/>Gửi phản hồi<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Bạn có thể yêu cầu xem phiên bản trang web dành cho máy tính</translation>
 <translation id="9183227624343766158">Sử dụng Brave theo mặc định</translation>
 <translation id="113098737392899175">Di chuyển giữa các trang bằng con trỏ văn bản khi kết nối bàn phím</translation>
+<translation id="738393714577080438">Lưu mật khẩu trong Brave</translation>
 <translation id="1178015372320901893">Bảng các lối tắt của tôi ở dưới cùng</translation>
 <translation id="1178581264944972037">Tạm dừng</translation>
 <translation id="1181037720776840403">Xoá</translation>
 <translation id="1192844206376121885">Thao tác này sẽ xoá toàn bộ dữ liệu và cookie do <ph name="ORIGIN"/> lưu trữ.</translation>
+<translation id="1199963004393929848">Giao diện màu xanh lục</translation>
 <translation id="1201402288615127009">Tiếp theo</translation>
 <translation id="3251315496493761426">Mẹo dùng Brave</translation>
 <translation id="1242008676835033345">Được nhúng trên <ph name="WEBSITE_URL"/></translation>
 <translation id="1263609676484797429">Nhấn vào Ứng dụng &gt; Ứng dụng mặc định</translation>
 <translation id="1272079795634619415">Dừng</translation>
+<translation id="1275718070701477396">Đã chọn</translation>
 <translation id="8010562420973777575">Brave đã tối ưu hóa các hình ảnh trong trang này để tiết kiệm dữ liệu cho bạn.</translation>
 <translation id="129382876167171263">Những tệp mà trang web lưu lại sẽ xuất hiện ở đây</translation>
 <translation id="131112695174432497">Dữ liệu có ảnh hưởng đến hoạt động cá nhân hoá quảng cáo sẽ bị xoá</translation>
@@ -35,6 +39,7 @@
 <translation id="1741136041592162279">Cho phép Brave chia sẻ các thẻ gần đây với thiết bị của bạn để xem các thẻ này trong danh sách ứng dụng và kết quả tìm kiếm trên thiết bị. Bạn có thể bật hoặc tắt tính năng này trong phần cài đặt của Brave.</translation>
 <translation id="1420688843103859429">Di chuyển qua lại bằng cách vuốt hai ngón tay trên bàn di chuột</translation>
 <translation id="1432650420699700107">Các trang web có thể yêu cầu kết nối với thiết bị bất kỳ trên mạng cục bộ của bạn</translation>
+<translation id="1442081309487427303">Bật các đường liên kết ở Chế độ đọc</translation>
 <translation id="1448064542941920355">Giảm mức thu phóng</translation>
 <translation id="1464044141348608623">Không cho phép các trang web biết khi bạn đang dùng thiết bị</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> trang web}other{<ph name="SITE_COUNT"/> trang web}}</translation>
@@ -47,6 +52,8 @@
 <translation id="1547123415014299762">Cho phép sử dụng cookie của bên thứ ba</translation>
 <translation id="3665719978526894928">Tăng tốc độ tải trang web bằng công cụ V8 của Brave nhưng làm giảm khả năng chống lại các cuộc tấn công của Brave</translation>
 <translation id="1593426485665524382">Có các thao tác mới ở gần đầu màn hình</translation>
+<translation id="1594521731409209842">Chụm hai ngón tay trên màn hình để đổi kích thước ảnh</translation>
+<translation id="1601560923496285236">Áp dụng</translation>
 <translation id="1615755956145364867">Các trang web có thể yêu cầu phát nội dung được bảo vệ</translation>
 <translation id="1620510694547887537">Camera</translation>
 <translation id="1621729191093924223">Các tính năng cần dùng micrô sẽ không hoạt động</translation>
@@ -67,6 +74,7 @@
 <translation id="2534291364429593865">Nhận thông báo về mẹo dùng Brave</translation>
 <translation id="1777815584158991902">Bảng nguồn cấp dữ liệu Khám phá ở dưới cùng</translation>
 <translation id="1779089405699405702">Bộ giải mã hình ảnh</translation>
+<translation id="1781533683087883868">Tắt các đường liên kết ở Chế độ đọc</translation>
 <translation id="1785415724048343560">Nên chọn để có trải nghiệm tốt nhất</translation>
 <translation id="1796588414813960292">Các tính năng cần dùng âm thanh sẽ không hoạt động</translation>
 <translation id="7401204338724669842">Mẹo dùng Brave</translation>
@@ -168,6 +176,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="2682367912565197520">Xoá mức thu phóng đã lưu</translation>
 <translation id="2683434792633810741">Xoá và đặt lại?</translation>
 <translation id="2685514716378236873">Không được phép</translation>
+<translation id="2710883118091822664">Đăng nhập để dễ dàng tiếp tục trên tất cả thiết bị của bạn</translation>
 <translation id="2713106313042589954">Tắt máy ảnh</translation>
 <translation id="2717722538473713889">Địa chỉ email</translation>
 <translation id="8181634240306014548">Mở Brave với chế độ tập trung vào Thanh địa chỉ, giúp giảm thời gian khởi động trên thiết bị cấp thấp.</translation>
@@ -195,6 +204,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="3004438526346162184">Các trang web có thể dùng tính năng này để quản lý các cửa sổ trên tất cả màn hình của bạn</translation>
 <translation id="3008272652534848354">Đặt lại quyền</translation>
 <translation id="301521992641321250">Tự động bị chặn</translation>
+<translation id="3026311960038210">Bộ sưu tập giao diện</translation>
 <translation id="3064871050034234884">Các trang web có thể phát âm thanh</translation>
 <translation id="3065787901655140044">Chế độ Bảo vệ nâng cao đang bật</translation>
 <translation id="3069226013421428034">Cho phép đăng nhập qua bên thứ ba cho một trang web cụ thể.</translation>
@@ -214,6 +224,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="3167868116600277716">Nguồn cấp dữ liệu khám phá</translation>
 <translation id="3198916472715691905">Dữ liệu đã lưu trữ: <ph name="STORAGE_AMOUNT"/></translation>
 <translation id="3199078925536734975">Được cho phép lần này • Vị trí ước chừng</translation>
+<translation id="3208584281581115441">Kiểm tra ngay</translation>
 <translation id="321187648315454507">Để cho phép <ph name="APP_NAME"/> gửi thông báo cho bạn, hãy bật cả thông báo trong phần <ph name="BEGIN_LINK"/>Cài đặt Android<ph name="END_LINK"/>.</translation>
 <translation id="3223425961342298674">Không cho phép truy cập thông tin vị trí</translation>
 <translation id="3227137524299004712">Micrô</translation>
@@ -261,6 +272,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="3721953990244350188">Đóng và hiện thao tác có sẵn tiếp theo</translation>
 <translation id="3744111561329211289">Đồng bộ hoá trong nền</translation>
 <translation id="3746834924069123416">Xem các thẻ gần đây khác</translation>
+<translation id="3753618528540214374">Giao diện màu xanh lục ánh lam</translation>
 <translation id="3763247130972274048">Nhấn đúp vào bên trái hoặc bên phải của video để tua lại/tua đi 10 giây</translation>
 <translation id="3776508619697147021">Các trang web có thể yêu cầu tự động tải nhiều tệp xuống</translation>
 <translation id="3779154269823594982">Đổi mật khẩu</translation>
@@ -270,6 +282,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="381841723434055211">Số điện thoại</translation>
 <translation id="3823453485268218808">Phông chữ đơn cách</translation>
 <translation id="3826050100957962900">Đăng nhập qua bên thứ ba</translation>
+<translation id="3831065134033923230">Kiểm tra mật khẩu bạn đã lưu</translation>
 <translation id="3835233591525155343">Hoạt động dùng thiết bị</translation>
 <translation id="1799795508209440035">Hôm nay, Brave sẽ chặn cookie trở lại</translation>
 <translation id="385051799172605136">Quay lại</translation>
@@ -279,6 +292,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="3903738175795615004">Kéo từ trên xuống hoặc nhấn phím Esc để thoát khỏi chế độ toàn màn hình.</translation>
 <translation id="3905475044299942653">Ngừng nhận nhiều thông báo</translation>
 <translation id="3922092564198021702">Trên điện thoại, hãy mở phần Cài đặt</translation>
+<translation id="3924858949939391676">Hiển thị các đường liên kết khi Chế độ đọc đang bật</translation>
 <translation id="3933121352599513978">Thu gọn các yêu cầu không mong muốn (nên dùng)</translation>
 <translation id="3934905113567851655">Chụm hai ngón tay để thay đổi kích thước</translation>
 <translation id="3955193568934677022">Cho phép trang web phát nội dung được bảo vệ (được đề xuất)</translation>
@@ -332,6 +346,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="4478158430052450698">Giúp dễ dàng tuỳ chỉnh mức thu phóng cho các trang web khác nhau</translation>
 <translation id="4479647676395637221">Hỏi trước trước khi cho phép các trang web sử dụng máy ảnh của bạn (được đề xuất)</translation>
 <translation id="4505788138578415521">URL đã được mở rộng</translation>
+<translation id="4523472416386354622">Đăng nhập để bắt đầu</translation>
 <translation id="4534723447064627427">Để cho phép <ph name="APP_NAME"/> truy cập vào micrô của bạn, hãy bật cả micrô trong phần <ph name="BEGIN_LINK"/>Cài đặt Android<ph name="END_LINK"/>.</translation>
 <translation id="4566417217121906555">Tắt micrô</translation>
 <translation id="4570913071927164677">Chi tiết</translation>
@@ -341,6 +356,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="4644713492825682049">Xoá và đặt lại</translation>
 <translation id="4645575059429386691">Do cha mẹ của bạn quản lý</translation>
 <translation id="4652266463001779298">Không được phép</translation>
+<translation id="4655846733459137112">Nhấn vào Có để dễ dàng sử dụng mật khẩu này vào lần đăng nhập tới</translation>
 <translation id="4663373278480897665">Cho phép máy ảnh</translation>
 <translation id="4670064810192446073">Thực tế ảo</translation>
 <translation id="5652778654712411580">Nhấn vào Ứng dụng trình duyệt rồi nhấn vào Brave</translation>
@@ -386,6 +402,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="512938610812707830">Bảng bộ sưu tập giao diện trang thẻ mới ở dưới cùng đã mở toàn bộ</translation>
 <translation id="5137460097045297858">Bảng nguồn cấp dữ liệu Khám phá ở dưới cùng đã mở trên một nửa màn hình</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{Ưu đãi giảm giá trên các thẻ đang mở}other{Ưu đãi giảm giá trên các thẻ đang mở}}</translation>
+<translation id="5150048675001754041">Đăng nhập nhanh chóng và dễ dàng vào các trang web và ứng dụng</translation>
 <translation id="5186036860380548585">Tùy chọn này ở gần đầu màn hình</translation>
 <translation id="5197729504361054390">Những người liên hệ bạn chọn sẽ được chia sẻ với <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="5198930230016462977">Bảng tuỳ chỉnh trang thẻ mới của bạn ở dưới cùng đã đóng</translation>
@@ -444,6 +461,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="5804241973901381774">Quyền</translation>
 <translation id="5817042798620209981">Thông tin về trang web, hộp thoại</translation>
 <translation id="5822675474983796325">Bảng tuỳ chỉnh trang thẻ mới của bạn ở dưới cùng đã mở trên toàn màn hình</translation>
+<translation id="4298364316773778595">Bảng hướng dẫn ở dưới cùng về cách lưu mật khẩu trong Brave</translation>
 <translation id="5833899990800318936">Không cho phép các trang web sử dụng JavaScript</translation>
 <translation id="583673505367439042">Các trang web có thể yêu cầu chỉnh sửa tệp và thư mục trên thiết bị</translation>
 <translation id="5844448279347999754">Khi bạn bật tuỳ chọn này, các trang web có thể yêu cầu xem văn bản và hình ảnh đã lưu vào bảng nhớ tạm. Khi bạn tắt tuỳ chọn này, các trang web không thể xem văn bản hoặc hình ảnh đã lưu vào bảng nhớ tạm.</translation>
@@ -470,6 +488,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="5998071268779572583">Bật nguồn cấp dữ liệu khám phá</translation>
 <translation id="6012967556075291653">Lối tắt đã ghim</translation>
 <translation id="6015775454662021376">Kiểm soát quyền truy cập của trang web này vào thiết bị của bạn</translation>
+<translation id="296137235951584143">Tuỳ chỉnh Brave theo cách của bạn</translation>
 <translation id="6040143037577758943">Đóng</translation>
 <translation id="6042308850641462728">Xem thêm</translation>
 <translation id="6064125863973209585">Đã hoàn tất quá trình tải xuống</translation>
@@ -477,6 +496,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="6085954183010297841">Xoá quyền chỉnh sửa tệp? <ph name="FILE"/></translation>
 <translation id="6104860901391833523">Khi bạn bật lựa chọn này, các trang web có thể tự động chuyển sang chế độ hình trong hình. Khi bạn tắt lựa chọn này, các trang web không thể tự động chuyển sang chế độ hình trong hình.</translation>
 <translation id="6120483543004435978">Khi bạn bật tuỳ chọn này, các trang web có thể yêu cầu được biết khi nào bạn đang sử dụng thiết bị. Khi bạn tắt tuỳ chọn này, các trang web sẽ không được biết khi nào bạn đang sử dụng thiết bị.</translation>
+<translation id="4852158809106762963">Brave sẽ đề xuất lưu mật khẩu của bạn</translation>
 <translation id="615886654739818377">Không cho phép các trang web quản lý các cửa sổ trên tất cả màn hình của bạn</translation>
 <translation id="6165508094623778733">Tìm hiểu thêm</translation>
 <translation id="6171020522141473435">Khi bạn bật tuỳ chọn này, các trang web có thể yêu cầu sử dụng thiết bị Bluetooth. Khi bạn tắt tuỳ chọn này, các trang web không thể sử dụng thiết bị Bluetooth.</translation>
@@ -487,13 +507,13 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="6196640612572343990">Chặn cookie của bên thứ ba</translation>
 <translation id="6205314730813004066">Quyền riêng tư trong quảng cáo</translation>
 <translation id="6207207788774442484">Xoá dữ liệu và đặt lại quyền</translation>
+<translation id="6218508144653756827">Giao diện màu hồng hoa vân anh</translation>
 <translation id="6231752747840485235">Gỡ cài đặt "<ph name="APP_NAME"/>"?</translation>
 <translation id="4789073065838177382">Nhấn vào Ứng dụng trình duyệt &gt; Brave</translation>
 <translation id="6260830281887654268">Bảng bộ sưu tập giao diện trang thẻ mới ở dưới cùng đã mở trên một nửa màn hình</translation>
 <translation id="6262191102408817757">Dựa trên thẻ gần đây nhất của bạn</translation>
 <translation id="6262279340360821358">Đã chặn: <ph name="PERMISSION_1"/> và <ph name="PERMISSION_2"/></translation>
 <translation id="6270391203985052864">Các trang web có thể yêu cầu gửi thông báo</translation>
-<translation id="6278428485366576908">Chủ đề</translation>
 <translation id="6295158916970320988">Tất cả các trang web</translation>
 <translation id="6320088164292336938">Rung</translation>
 <translation id="6367753977865761591">Cho phép đăng nhập qua bên thứ ba cho một trang web cụ thể.</translation>
@@ -512,6 +532,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="6545864417968258051">Quét tìm Bluetooth</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{Đã chặn <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> và <ph name="NUM_MORE"/> quyền khác}other{Đã chặn <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> và <ph name="NUM_MORE"/> quyền khác}}</translation>
 <translation id="6554732001434021288">Lần truy cập gần đây nhất: <ph name="NUM_DAYS"/> ngày trước</translation>
+<translation id="6556866813142980365">Làm lại</translation>
 <translation id="6557290421156335491">Các lối tắt của tôi</translation>
 <translation id="656065428026159829">Xem thêm</translation>
 <translation id="6561560012278703671">Dùng thông báo nhẹ nhàng hơn (chặn thông báo bật lên làm phiền bạn)</translation>
@@ -520,6 +541,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="659938948789980540">{COUNT,plural, =1{Đã cho phép <ph name="RWS_MEMBERS_COUNT"/> trang web của <ph name="RWS_OWNER"/> sử dụng cookie}other{Đã cho phép <ph name="RWS_MEMBERS_COUNT"/> trang web của <ph name="RWS_OWNER"/> sử dụng cookie}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
 <translation id="6612358246767739896">Nội dung được bảo vệ</translation>
+<translation id="6619015782482868078">Giao diện màu xanh lơ</translation>
 <translation id="662080504995468778">Ở lại</translation>
 <translation id="6630443592285535486">Nhập mã màu hex tại đây</translation>
 <translation id="6635327442719709864">Khi bạn bật nút này, các trang web có thể yêu cầu sử dụng cổng nối tiếp. Khi bạn tắt nút này, các trang web không thể sử dụng cổng nối tiếp.</translation>
@@ -548,9 +570,11 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="6945221475159498467">Chọn</translation>
 <translation id="6950072572526089586">Trang web bạn truy cập có thể lưu thông tin về những việc bạn đang làm để có thể vận hành như dự kiến, ví dụ: để duy trì trạng thái đăng nhập vào một trang web hoặc lưu các mặt hàng vào giỏ hàng. Thông thường, các trang web lưu thông tin này tạm thời trên thiết bị của bạn.</translation>
 <translation id="6965382102122355670">OK</translation>
+<translation id="6980507581230208647">Giao diện màu hoa hồng</translation>
 <translation id="6980861169612950611">Xoá dữ liệu trang web? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Hỗ trợ tiếp cận</translation>
 <translation id="6991142177939282156">Được cho phép • Sử dụng vị trí ước chừng</translation>
+<translation id="6992014788289743568">Tăng cường bảo mật và bảo vệ dữ liệu an toàn hơn bằng cách kiểm tra mật khẩu</translation>
 <translation id="6992289844737586249">Hỏi trước trước khi cho phép các trang web sử dụng micrô của bạn (được đề xuất)</translation>
 <translation id="7000754031042624318">Đã tắt trong phần Cài đặt Android</translation>
 <translation id="8683151724374457021">Trang web này xác định sở thích của bạn, sau đó đề xuất quảng cáo mà các trang web khác nên hiển thị. Trang web này cũng thu thập thông tin về chủ đề quảng cáo bạn quan tâm qua Brave để hiển thị cho bạn những quảng cáo phù hợp hơn.</translation>
@@ -576,6 +600,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="7250468141469952378">Đã chọn <ph name="ITEM_COUNT"/></translation>
 <translation id="7260727271532453612">Đã cho phép: <ph name="PERMISSION_1"/> và <ph name="PERMISSION_2"/></translation>
 <translation id="7276071417425470385">Khi bạn bật tuỳ chọn này, các trang web có thể yêu cầu sử dụng thiết bị thực tế ảo. Khi bạn tắt tuỳ chọn này, các trang web không thể sử dụng thiết bị thực tế ảo.</translation>
+<translation id="7282197670900591579">Giao diện màu vàng vỏ chanh</translation>
 <translation id="728412880473384942">Các trang web này nhanh hơn nhưng kém an toàn hơn</translation>
 <translation id="7366415735885268578">Thêm trang web</translation>
 <translation id="7368695150573390554">Mọi dữ liệu ngoại tuyến sẽ bị xoá</translation>
@@ -614,7 +639,9 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="5455732060086060613">Ẩn thẻ mẹo dùng Brave</translation>
 <translation id="7719367874908701697">Thu phóng trang</translation>
 <translation id="775043444390799886">Thu hồi quyền</translation>
+<translation id="7758789811447313947">Giao diện màu tím</translation>
 <translation id="7759147511335618829">Lập trình lại và điều khiển thiết bị MIDI</translation>
+<translation id="7771089277295008211">Bảng hướng dẫn lưu mật khẩu ở dưới cùng đã đóng</translation>
 <translation id="7781829728241885113">Hôm qua</translation>
 <translation id="7791543448312431591">Thêm</translation>
 <translation id="780301667611848630">Không, cảm ơn</translation>
@@ -632,6 +659,8 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="7940722705963108451">Nhắc tôi</translation>
 <translation id="7948081750384205628">Tìm hiểu thêm về <ph name="SETTING_TITLE"/></translation>
 <translation id="7952708427581814389">Các trang web có thể yêu cầu xem văn bản và hình ảnh trên bảng nhớ tạm</translation>
+<translation id="7958779728312669715">Bảng hướng dẫn lưu mật khẩu ở dưới cùng đã mở hoàn toàn</translation>
+<translation id="798299424881500862">Giao diện màu cam</translation>
 <translation id="7986741934819883144">Chọn một người liên hệ</translation>
 <translation id="7990211076305263060">Khi bạn bật tuỳ chọn này, các trang web có thể yêu cầu sử dụng micrô của bạn. Khi bạn tắt tuỳ chọn này, các trang web không thể sử dụng micrô của bạn.</translation>
 <translation id="8007176423574883786">Tắt cho thiết bị này</translation>
@@ -727,6 +756,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="7532165358672313130">Khi bạn tiếp tục duyệt web, các trang web có thể kiểm tra qua Brave và xác minh qua trang web mà bạn truy cập trước đó rằng bạn có thể là người thực</translation>
 <translation id="8899807382908246773">Quảng cáo xâm nhập</translation>
 <translation id="8903921497873541725">Phóng to</translation>
+<translation id="8919911527569629802">Đăng nhập vào bất kỳ trang web nào</translation>
 <translation id="8921772741368021346"><ph name="POSITION"/>/<ph name="DURATION"/></translation>
 <translation id="8926389886865778422">Đừng hỏi lại</translation>
 <translation id="8926666909099850184">NFC đã tắt đối với thiết bị này. Hãy bật trong phần <ph name="BEGIN_LINK"/>Cài đặt Android<ph name="END_LINK"/>.</translation>
@@ -754,6 +784,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="9182556968660520230">Không cho phép trang web phát nội dung được bảo vệ</translation>
 <translation id="947156494302904893">Các trang web bạn truy cập có thể xác minh rằng bạn là người thực chứ không phải bot</translation>
 <translation id="959682366969460160">Sắp xếp gọn gàng</translation>
+<translation id="960590623979248167">Hiển thị siêu liên kết</translation>
 <translation id="961930410699694996">Đã cho phép sử dụng thông tin vị trí cho lần này</translation>
 <translation id="967624055006145463">Dữ liệu đã lưu trữ</translation>
 <translation id="969975166333045662">Không cho phép trang web sử dụng trình tối ưu hoá V8.</translation>

@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">Mrežna mjesta mogu zatražiti upotrebu starijeg izdanja prijave putem platforme Google pomoću kolačića treće strane</translation>
 <translation id="2903783737778379345">Ne dopusti starije izdanje prijave putem platforme Google pomoću kolačića treće strane</translation>
 <translation id="6880817299303842099">Dopuštena je upotreba kolačića treće strane za starije izdanje prijave putem platforme Google</translation>
-<translation id="2136412236435693622">Pristup Localhostu</translation>
-<translation id="4172219483893066798">Za mrežna mjesta može biti potreban pristup resursima localhosta</translation>
-<translation id="7181706637590665047">Nemoj dopustiti pristup resursima localhosta</translation>
-<translation id="1485435696620658073">Dopušten pristup resursima localhosta</translation>
 <translation id="181905442828471321">Zadane postavke značajke Brave Shields</translation>
 <translation id="2675679258824361492">Ostale postavke privatnosti</translation>
 <translation id="8026334261755873520">Brisanje podataka o pregledavanju</translation>
@@ -425,6 +421,13 @@ Sigurno želite to napraviti?</translation>
 <translation id="7141438739990875547">Mreže Bitcoin</translation>
 <translation id="9055546041146396417">Ako se mrežno mjesto čini neispravno, pokušajte isključiti štitove.</translation>
 <translation id="7898672232170410330">Blokiraj element</translation>
+<translation id="9064628362799094520">Uništiti podatke mrežne stranice</translation>
+<translation id="8949611615512336262">Automatsko uništavanje: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Odmah uništiti podatke s mrežne stranice</translation>
+<translation id="6795622376590884449">Automatsko uništavanje</translation>
+<translation id="7961015016161918242">Nikad</translation>
+<translation id="1991004083507807299">Kartice mrežne stranice zatvorene</translation>
+<translation id="5827277414420724690">Zatvaranje aplikacije</translation>
 <translation id="1209739344687072997">Prijavi nevaljano mrežno mjesto</translation>
 <translation id="8510478288840333677">Javite razvojnim inženjerima preglednika Brave da ovo mrežno mjesto ne radi ispravno pri uporabi značajke Štitovi:</translation>
 <translation id="1653405824851871276">Hvala vam što pomažete u stvaranju preglednika Brave koji je bolji za sve. U ovom se izvješću navode samo informacije koje su nam potrebne da bismo popravili mrežno mjesto. <ph name="LEARN_MORE"/></translation>
@@ -1081,7 +1084,7 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="1336494649091412226">Jeste li sigurni da želite izaći iz Bravea?</translation>
 <translation id="6061635824229591714">Uništiti podatke s mrežne stranice?</translation>
 <translation id="1265051174491933207">Uništavanje će izbrisati podatke s mrežne stranice i zatvoriti sve kartice za '<ph name="SITE_NAME"/>'. Ovo se ne može poništiti.</translation>
-<translation id="4279349293084858577">Uništi</translation>
+<translation id="5528772406060281700">Uništiti podatke s mrežne stranice</translation>
 <translation id="4426990318287827331">Uništavanje podataka</translation>
 <translation id="7942415993090181327">Povijest čavrljanja</translation>
 <translation id="6859935199732075666">Pokaži greške priliko sigurnog pregledavanja</translation>

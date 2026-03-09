@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">Sider kan anmode om at bruge det gamle Google-login via cookies fra tredjepart</translation>
 <translation id="2903783737778379345">Giv ikke tilladelse til Google-login via cookies fra tredjepart</translation>
 <translation id="6880817299303842099">Tilladt at bruge cookies fra tredjepart til Google-login</translation>
-<translation id="2136412236435693622">Localhost-adgang</translation>
-<translation id="4172219483893066798">Sites kan anmode om adgang til localhost-ressourcer</translation>
-<translation id="7181706637590665047">Tillad ikke adgang til localhost-ressourcer</translation>
-<translation id="1485435696620658073">Gav adgang til localhost-ressourcer</translation>
 <translation id="181905442828471321">Globale standarder for Brave Shields</translation>
 <translation id="2675679258824361492">Andre anonymitetsindstillinger</translation>
 <translation id="8026334261755873520">Ryd browserdata</translation>
@@ -422,6 +418,13 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="7141438739990875547">Bitcoin-netværker</translation>
 <translation id="9055546041146396417">Hvis denne side ser forkert ud så prøv uden Shields.</translation>
 <translation id="7898672232170410330">Blokér element</translation>
+<translation id="9064628362799094520">Makulér sidens data</translation>
+<translation id="8949611615512336262">Automakulér: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Makulér sidedata nu</translation>
+<translation id="6795622376590884449">Automakulér</translation>
+<translation id="7961015016161918242">Aldrig</translation>
+<translation id="1991004083507807299">Sidefane lukket</translation>
+<translation id="5827277414420724690">App lukket</translation>
 <translation id="1209739344687072997">Rapporter en side der ikke virker</translation>
 <translation id="8510478288840333677">Fortæl Braves udviklere at denne side ikke fungerer ordentligt med Shields</translation>
 <translation id="1653405824851871276">Tak, fordi du hjælper med at gøre Brave bedre for alle. Denne rapport vil kun indeholde de oplysninger, der er nødvendige for, at vi kan reparere dette website.<ph name="LEARN_MORE"/></translation>
@@ -1073,7 +1076,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="1336494649091412226">Er du sikker på, at du vil forlade Brave?</translation>
 <translation id="6061635824229591714">Makulér sidedata?</translation>
 <translation id="1265051174491933207">Makulering vil slette sidedata og lukke alle faner med '<ph name="SITE_NAME"/>'. Dette kan ikke fortrydes.</translation>
-<translation id="4279349293084858577">Makuler</translation>
+<translation id="5528772406060281700">Makulér sidedata</translation>
 <translation id="4426990318287827331">Makulér data</translation>
 <translation id="7942415993090181327">Chathistorik</translation>
 <translation id="6859935199732075666">Vis Beskyttet browsing-</translation>

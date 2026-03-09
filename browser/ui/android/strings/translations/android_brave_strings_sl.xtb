@@ -165,10 +165,6 @@
 <translation id="9110294136812584522">Spletna mesta lahko prek piškotkov tretjih oseb zahtevajo uporabo stare prijave v Google</translation>
 <translation id="2903783737778379345">Spletnim mestom ne dovolite stare prijave v Google</translation>
 <translation id="6880817299303842099">Uporabo piškotkov tretjih oseb za stare prijave v Google je dovoljena</translation>
-<translation id="2136412236435693622">Dostop lokalnega gostitelja</translation>
-<translation id="4172219483893066798">Spletna mesta lahko zahtevajo dostop do virov lokalnega gostitelja</translation>
-<translation id="7181706637590665047">Ne dovoli dostopa do virov lokalnega gostitelja</translation>
-<translation id="1485435696620658073">Dovoljen dostop do virov lokalnega gostitelja</translation>
 <translation id="181905442828471321">Globalne privzete vrednosti za Brave shields</translation>
 <translation id="2675679258824361492">Druge nastavitve zasebnosti</translation>
 <translation id="8026334261755873520">Izbriši podatke brskanja</translation>
@@ -423,6 +419,13 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="7141438739990875547">Omrežja Bitcoin</translation>
 <translation id="9055546041146396417">Če se spletno mesto zdi kot okvarjeno, poskusite dostop brez zaščite Shields.</translation>
 <translation id="7898672232170410330">Blokiraj element</translation>
+<translation id="9064628362799094520">Uniči podatke tega mesta</translation>
+<translation id="8949611615512336262">Samodejno uničevanje: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Uniči podatke mesta zdaj</translation>
+<translation id="6795622376590884449">Samodejno uničevanje</translation>
+<translation id="7961015016161918242">Nikoli</translation>
+<translation id="1991004083507807299">Zavihek mesta zaprt</translation>
+<translation id="5827277414420724690">Zapiranje aplikacije</translation>
 <translation id="1209739344687072997">Prijavite nedelujočo spletno stran</translation>
 <translation id="8510478288840333677">Obvestite razvijalce Brave o tem, da spletna stran ne deluje pravilno s ščiti:</translation>
 <translation id="1653405824851871276">Zahvaljujemo se vam, da ste pomagali izboljšati Brave za vse. To poročilo bo vsebovalo le informacije, ki jih potrebujemo za popravljanje tega spletnega mesta.<ph name="LEARN_MORE"/></translation>
@@ -1074,7 +1077,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="1336494649091412226">Ste prepričani, da želite zapustiti Brave?</translation>
 <translation id="6061635824229591714">Uniči podatke mesta?</translation>
 <translation id="1265051174491933207">Brisanje bo izbrisalo podatke mesta in zaprlo vse zavihke '<ph name="SITE_NAME"/>'. Tega dejanja ni mogoče razveljaviti.</translation>
-<translation id="4279349293084858577">Uniči</translation>
+<translation id="5528772406060281700">Uniči podatke mesta</translation>
 <translation id="4426990318287827331">Uniči podatke</translation>
 <translation id="7942415993090181327">Zgodovina klepetov</translation>
 <translation id="6859935199732075666">Prikaži napake Varnega brskanja</translation>

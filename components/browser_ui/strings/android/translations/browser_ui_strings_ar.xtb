@@ -3,20 +3,24 @@
 <translationbundle lang="ar">
 <translation id="1006017844123154345">فتح على الإنترنت</translation>
 <translation id="1036348656032585052">إيقاف</translation>
+<translation id="1046742265332833834">مظهر باللون الأزرق</translation>
 <translation id="1070329623210597193">الملفات التي يمكن لهذا الموقع الإلكتروني عرضها أو تعديلها</translation>
 <translation id="1882093842020941518">‏ساعِدنا في تحسين متصفِّح Brave من خلال إخبارنا بأسباب سماحك باستخدام ملفات تعريف الارتباط التابعة لجهات خارجية. <ph name="BEGIN_LINK"/>إرسال ملاحظات<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">يمكنك طلب عرض المواقع الإلكترونية بنسختها المخصّصة لأجهزة الكمبيوتر</translation>
 <translation id="9183227624343766158">‏استخدام Brave بشكلٍ تلقائي</translation>
 <translation id="113098737392899175">التنقُّل بين الصفحات باستخدام مؤشر النص عند توصيل لوحة مفاتيح</translation>
+<translation id="738393714577080438">‏حفظ كلمات المرور في Brave</translation>
 <translation id="1178015372320901893">البطاقة السفلية "اختصاراتي"</translation>
 <translation id="1178581264944972037">الإيقاف مؤقتًا</translation>
 <translation id="1181037720776840403">إزالة</translation>
 <translation id="1192844206376121885">سيؤدي هذا الإجراء إلى حذف جميع البيانات وملفات تعريف الارتباط المُخزَّنة من خلال <ph name="ORIGIN"/>.</translation>
+<translation id="1199963004393929848">مظهر باللون الأخضر</translation>
 <translation id="1201402288615127009">التالي</translation>
 <translation id="3251315496493761426">‏نصائح قيّمة من Brave</translation>
 <translation id="1242008676835033345">مضمّن في <ph name="WEBSITE_URL"/></translation>
 <translation id="1263609676484797429">انقر على "التطبيقات"  &gt; "التطبيقات التلقائية"</translation>
 <translation id="1272079795634619415">إيقاف</translation>
+<translation id="1275718070701477396">تم التحديد</translation>
 <translation id="8010562420973777575">‏لحفظ بياناتك، حسَّنت Brave الصور في هذه الصفحة.</translation>
 <translation id="129382876167171263">تظهر هنا الملفات التي تحفظها المواقع الإلكترونية</translation>
 <translation id="131112695174432497">يتم حذف البيانات التي تؤثّر في تخصيص الإعلانات.</translation>
@@ -35,6 +39,7 @@
 <translation id="1741136041592162279">‏يمكنك السماح لمتصفِّح Brave بمشاركة علامات التبويب الأخيرة مع جهازك لعرضها في قائمة التطبيقات ونتائج البحث. ويمكنك تفعيل أو إيقاف هذه الميزة من خلال إعدادات Brave.</translation>
 <translation id="1420688843103859429">تنقَّل للأمام والخلف من خلال التمرير سريعًا بإصبعَين على لوحة اللمس</translation>
 <translation id="1432650420699700107">السماح للمواقع الإلكترونية بطلب الاتصال بأي جهاز على الشبكة المحلية</translation>
+<translation id="1442081309487427303">تفعيل روابط "وضع القراءة"</translation>
 <translation id="1448064542941920355">تصغير</translation>
 <translation id="1464044141348608623">عدم السماح للمواقع الإلكترونية بمعرفة متى تستخدم جهازك بشكل نشط</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{موقع إلكتروني واحد (<ph name="SITE_COUNT"/>)}zero{<ph name="SITE_COUNT"/> موقع إلكتروني}two{موقعَين إلكترونيَين (<ph name="SITE_COUNT"/>)}few{<ph name="SITE_COUNT"/> مواقع إلكترونية}many{<ph name="SITE_COUNT"/> موقعًا إلكترونيًا}other{<ph name="SITE_COUNT"/> موقع إلكتروني}}</translation>
@@ -47,6 +52,8 @@
 <translation id="1547123415014299762">السماح بملفات تعريف الارتباط التابعة لجهات خارجية</translation>
 <translation id="3665719978526894928">‏زيادة سرعة المواقع الإلكترونية باستخدام محرّك V8 في Brave، مع تقليل قدرة Brave على مقاومة الهجمات قليلاً</translation>
 <translation id="1593426485665524382">تتوفّر إجراءات جديدة بالقرب من أعلى الشاشة.</translation>
+<translation id="1594521731409209842">يمكنك تغيير حجم الصورة عن طريق التصغير أو التكبير بإصبعَين</translation>
+<translation id="1601560923496285236">تطبيق</translation>
 <translation id="1615755956145364867">السماح للمواقع الإلكترونية بطلب تشغيل المحتوى المحمي</translation>
 <translation id="1620510694547887537">الكاميرا</translation>
 <translation id="1621729191093924223">لن تعمل الميزات التي تحتاج إلى ميكروفون.</translation>
@@ -67,6 +74,7 @@
 <translation id="2534291364429593865">‏تلقّي إشعارات النصائح من Brave</translation>
 <translation id="1777815584158991902">البطاقة السفلية لخلاصة "استكشاف"</translation>
 <translation id="1779089405699405702">أداة فك ترميز الصور</translation>
+<translation id="1781533683087883868">إيقاف الروابط في "وضع القراءة"</translation>
 <translation id="1785415724048343560">ننصحك بهذا الخيار للحصول على أفضل تجربة</translation>
 <translation id="1796588414813960292">لن تعمل الميزات التي تحتاج إلى استخدام الصوت.</translation>
 <translation id="7401204338724669842">‏نصائح قيّمة من Brave</translation>
@@ -169,6 +177,7 @@
 <translation id="2682367912565197520">حذف مستوى التكبير أو التصغير المحفوظ</translation>
 <translation id="2683434792633810741">هل تريد حذف البيانات وإعادة ضبط الأذونات؟</translation>
 <translation id="2685514716378236873">غير المسموح بها</translation>
+<translation id="2710883118091822664">ما عليك سوى تسجيل الدخول لمواصلة مهامك بسهولة على جميع أجهزتك</translation>
 <translation id="2713106313042589954">إيقاف الكاميرا</translation>
 <translation id="2717722538473713889">عنوان البريد الإلكتروني</translation>
 <translation id="8181634240306014548">‏يركّز على "المربّع المتعدد الاستخدامات" عند تشغيل Brave، ما يقلّل وقت بدء التشغيل على الأجهزة ذات المواصفات المنخفضة.</translation>
@@ -196,6 +205,7 @@
 <translation id="3004438526346162184">يمكن للمواقع الإلكترونية استخدام هذه الميزة لإدارة النوافذ على جميع شاشات أجهزتك</translation>
 <translation id="3008272652534848354">إعادة ضبط الأذونات</translation>
 <translation id="301521992641321250">تم الحظر تلقائيًا</translation>
+<translation id="3026311960038210">مجموعات المظاهر</translation>
 <translation id="3064871050034234884">السماح للمواقع الإلكترونية بتشغيل الصوت</translation>
 <translation id="3065787901655140044">"الحماية المتقدّمة" مفعّلة</translation>
 <translation id="3069226013421428034">يمكنك السماح بتسجيل الدخول في الخدمات التابعة لجهات خارجية في موقع إلكتروني محدَّد.</translation>
@@ -215,6 +225,7 @@
 <translation id="3167868116600277716">خلاصة ميزة "اقتراحات"</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> من البيانات المخزّنة</translation>
 <translation id="3199078925536734975">تم منح الإذن هذه المرّة • تقريبي</translation>
+<translation id="3208584281581115441">التحقّق الآن</translation>
 <translation id="321187648315454507">‏للسماح لتطبيق <ph name="APP_NAME"/> بإرسال الإشعارات إليك، يُرجى أيضًا تفعيل الإشعارات في <ph name="BEGIN_LINK"/>إعدادات Android<ph name="END_LINK"/>.</translation>
 <translation id="3223425961342298674">تم رفض طلب الوصول إلى الموقع الجغرافي.</translation>
 <translation id="3227137524299004712">الميكروفون</translation>
@@ -262,6 +273,7 @@
 <translation id="3721953990244350188">إغلاق الرسالة وعرض الإجراء المتاح التالي</translation>
 <translation id="3744111561329211289">المزامنة في الخلفية</translation>
 <translation id="3746834924069123416">الاطّلاع على المزيد من علامات التبويب الأخيرة</translation>
+<translation id="3753618528540214374">مظهر باللون الأخضر الزبرجدي</translation>
 <translation id="3763247130972274048">يُرجى النقر بشكل مزدوج على الفيديو يمينًا أو يسارًا لتخطّي 10 ثوانٍ.</translation>
 <translation id="3776508619697147021">السماح للمواقع الإلكترونية بطلب تنزيل عدّة ملفات تلقائيًا</translation>
 <translation id="3779154269823594982">تغيير كلمات المرور</translation>
@@ -271,6 +283,7 @@
 <translation id="381841723434055211">أرقام الهواتف</translation>
 <translation id="3823453485268218808">‏خط Mono</translation>
 <translation id="3826050100957962900">طلبات تسجيل الدخول من خدمات الجهات الخارجية</translation>
+<translation id="3831065134033923230">التحقّق من كلمات المرور المحفوظة</translation>
 <translation id="3835233591525155343">استخدامك للجهاز</translation>
 <translation id="1799795508209440035">‏سيُعيد متصفِّح Brave حظر ملفات تعريف الارتباط اليوم.</translation>
 <translation id="385051799172605136">رجوع</translation>
@@ -280,6 +293,7 @@
 <translation id="3903738175795615004">‏يُرجى سحب الشاشة من الأعلى أو الضغط على مفتاح Esc للخروج من وضع ملء الشاشة.</translation>
 <translation id="3905475044299942653">تم إيقاف الكثير من الإشعارات</translation>
 <translation id="3922092564198021702">افتح تطبيق "الإعدادات" على هاتفك</translation>
+<translation id="3924858949939391676">عرض الروابط بعد تفعيل "وضع القراءة"</translation>
 <translation id="3933121352599513978">تصغير الطلبات غير المرغوب فيها (خيار مُقترَح)</translation>
 <translation id="3934905113567851655">يمكنك تصغير أو تكبير الصورة بإصبعين لتغيير حجمها</translation>
 <translation id="3955193568934677022">السماح للمواقع الإلكترونية بتشغيل المحتوى المحمي (مُستحسَن)</translation>
@@ -333,6 +347,7 @@
 <translation id="4478158430052450698">تسهيل تخصيص عملية التكبير أو التصغير لمحتوى مواقع إلكترونية مختلفة</translation>
 <translation id="4479647676395637221">السؤال أولاً قبل السماح للمواقع الإلكترونية باستخدام الكاميرا (موصى به)</translation>
 <translation id="4505788138578415521">‏تم توسيع عنوان URL.</translation>
+<translation id="4523472416386354622">تسجيل الدخول للبدء</translation>
 <translation id="4534723447064627427">‏للسماح لتطبيق <ph name="APP_NAME"/> بالوصول إلى الميكروفون، يُرجى أيضًا تفعيل الميكروفون في <ph name="BEGIN_LINK"/>إعدادات Android<ph name="END_LINK"/>.</translation>
 <translation id="4566417217121906555">كتم صوت الميكروفون</translation>
 <translation id="4570913071927164677">التفاصيل</translation>
@@ -342,6 +357,7 @@
 <translation id="4644713492825682049">الحذف وإعادة الضبط</translation>
 <translation id="4645575059429386691">يديره والداك</translation>
 <translation id="4652266463001779298">غير مسموح به</translation>
+<translation id="4655846733459137112">يمكنك النقر على "نعم" لاستخدام كلمة المرور هذه بسهولة في المرة القادمة التي يتم فيها تسجيل الدخول</translation>
 <translation id="4663373278480897665">تم السماح باستخدام الكاميرا</translation>
 <translation id="4670064810192446073">الواقع الافتراضي</translation>
 <translation id="5652778654712411580">‏انقر على "تطبيق المتصفّح"، ثم انقر على Brave</translation>
@@ -387,6 +403,7 @@
 <translation id="512938610812707830">تم فتح البطاقة السفلية لمجموعات مظاهر صفحة "علامة تبويب جديدة" بطول الشاشة</translation>
 <translation id="5137460097045297858">تم فتح البطاقة السفلية لخلاصة "الاقتراحات" في نصف الشاشة</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{انخفاض في السعر ضِمن علامات التبويب المفتوحة}zero{انخفاضات في السعر ضِمن علامات التبويب المفتوحة}two{انخفاضان في السعر ضِمن علامات التبويب المفتوحة}few{انخفاضات في السعر ضِمن علامات التبويب المفتوحة}many{انخفاضات في السعر ضِمن علامات التبويب المفتوحة}other{انخفاضات في السعر ضِمن علامات التبويب المفتوحة}}</translation>
+<translation id="5150048675001754041">أصبح تسجيل الدخول إلى المواقع الإلكترونية والتطبيقات أسهل وأسرع</translation>
 <translation id="5186036860380548585">يمكنك العثور على خيار حفظ كلمة المرور بالقرب من أعلى الشاشة.</translation>
 <translation id="5197729504361054390">ستتم مشاركة جهات الاتصال التي تختارها مع الموقع الإلكتروني <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="5198930230016462977">تم إغلاق البطاقة السفلية لتخصيص صفحة علامة التبويب الجديدة</translation>
@@ -445,6 +462,7 @@
 <translation id="5804241973901381774">الأذونات</translation>
 <translation id="5817042798620209981">مربّع حوار لمعلومات عن الموقع الإلكتروني</translation>
 <translation id="5822675474983796325">تم فتح البطاقة السفلية لتخصيص صفحة علامة التبويب الجديدة بطول الشاشة</translation>
+<translation id="4298364316773778595">‏بطاقة التعليمات السفلية لحفظ كلمات المرور في Brave</translation>
 <translation id="5833899990800318936">‏عدم السماح للمواقع الإلكترونية باستخدام JavaScript</translation>
 <translation id="583673505367439042">السماح للمواقع الإلكترونية بطلب تعديل الملفات والمجلدات على جهازك</translation>
 <translation id="5844448279347999754">عندما يكون هذا الإعداد مفعَّلاً، يمكن للمواقع الإلكترونية طلب الاطّلاع على النصوص والصور المحفوظة في الحافظة. وعند إيقافه، لا يمكن للمواقع الإلكترونية الاطّلاع على تلك النصوص أو الصور.</translation>
@@ -471,6 +489,7 @@
 <translation id="5998071268779572583">تفعيل خلاصة "الاقتراحات"</translation>
 <translation id="6012967556075291653">الاختصار المثبَّت</translation>
 <translation id="6015775454662021376">يمكنك التحكّم بإمكانية وصول هذا الموقع إلى جهازك.</translation>
+<translation id="296137235951584143">‏اجعل Brave متصفِّحك الدائم</translation>
 <translation id="6040143037577758943">إغلاق</translation>
 <translation id="6042308850641462728">عرض المزيد</translation>
 <translation id="6064125863973209585">عمليات التنزيل المكتمِلة</translation>
@@ -478,6 +497,7 @@
 <translation id="6085954183010297841">هل تريد حذف إذن تعديل الملف <ph name="FILE"/>؟</translation>
 <translation id="6104860901391833523">عندما يكون هذا الإعداد مفعَّلاً، يمكن للمواقع الإلكترونية فتح نافذة ضِمن النافذة تلقائيًا. وعند إيقافه، سيتعذّر عليها ذلك.</translation>
 <translation id="6120483543004435978">عندما يكون هذا الإعداد مفعَّلاً، يمكن للمواقع الإلكترونية طلب معرفة الأوقات التي تستخدم فيها الجهاز بشكل نشط. وعند إيقافه، لن تتمكّن المواقع الإلكترونية من معرفة تلك الأوقات.</translation>
+<translation id="4852158809106762963">‏سيعرض Brave خيار حفظ كلمة المرور</translation>
 <translation id="615886654739818377">عدم السماح للمواقع الإلكترونية بإدارة النوافذ على جميع شاشات أجهزتك</translation>
 <translation id="6165508094623778733">مزيد من المعلومات</translation>
 <translation id="6171020522141473435">عندما يكون هذا الإعداد مفعَّلاً، يمكن للمواقع الإلكترونية طلب استخدام الأجهزة التي تتضمّن بلوتوث. وعند إيقافه، لا يمكن للمواقع الإلكترونية استخدام تلك الأجهزة.</translation>
@@ -488,13 +508,13 @@
 <translation id="6196640612572343990">حظر ملفات تعريف الارتباط التابعة لجهات خارجية</translation>
 <translation id="6205314730813004066">الخصوصية في عرض الإعلانات</translation>
 <translation id="6207207788774442484">حذف البيانات وإعادة ضبط الأذونات</translation>
+<translation id="6218508144653756827">مظهر باللون الفوشيا</translation>
 <translation id="6231752747840485235">هل تريد إلغاء تثبيت "<ph name="APP_NAME"/>"؟</translation>
 <translation id="4789073065838177382">‏انقر على تطبيق المتصفِّح &gt; Brave</translation>
 <translation id="6260830281887654268">تم فتح البطاقة السفلية لمجموعات مظاهر صفحة "علامة تبويب جديدة" في نصف الشاشة</translation>
 <translation id="6262191102408817757">استنادًا إلى علامة التبويب الأخيرة</translation>
 <translation id="6262279340360821358">تم حظر <ph name="PERMISSION_1"/> و<ph name="PERMISSION_2"/>.</translation>
 <translation id="6270391203985052864">السماح للمواقع الإلكترونية بطلب إرسال إشعارات</translation>
-<translation id="6278428485366576908">المظهر</translation>
 <translation id="6295158916970320988">جميع المواقع الإلكترونية</translation>
 <translation id="6320088164292336938">اهتزاز</translation>
 <translation id="6367753977865761591">يمكنك حظر تسجيل الدخول في الخدمات التابعة لجهات خارجية في موقع إلكتروني محدَّد.</translation>
@@ -513,6 +533,7 @@
 <translation id="6545864417968258051">البحث عن بلوتوث</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{تم حظر <ph name="PERMISSION_1"/> و<ph name="PERMISSION_2"/> وإذن واحد (<ph name="NUM_MORE"/>) آخر.}zero{تم حظر <ph name="PERMISSION_1"/> و<ph name="PERMISSION_2"/> و<ph name="NUM_MORE"/> إذن آخر.}two{تم حظر <ph name="PERMISSION_1"/> و<ph name="PERMISSION_2"/> وإذنَين (<ph name="NUM_MORE"/>) آخرَين.}few{تم حظر <ph name="PERMISSION_1"/> و<ph name="PERMISSION_2"/> و<ph name="NUM_MORE"/> أذونات أخرى.}many{تم حظر <ph name="PERMISSION_1"/> و<ph name="PERMISSION_2"/> و<ph name="NUM_MORE"/> إذنًا آخر.}other{تم حظر <ph name="PERMISSION_1"/> و<ph name="PERMISSION_2"/> و<ph name="NUM_MORE"/> إذن آخر.}}</translation>
 <translation id="6554732001434021288">تمّت زيارة الموقع الإلكتروني آخر مرّة قبل <ph name="NUM_DAYS"/> يوم.</translation>
+<translation id="6556866813142980365">إعادة</translation>
 <translation id="6557290421156335491">اختصاراتي</translation>
 <translation id="656065428026159829">عرض المزيد</translation>
 <translation id="6561560012278703671">استخدام طريقة أقل بروزًا لإرسال الإشعارات (منع رسائل الإشعارات من إزعاجك)</translation>
@@ -521,6 +542,7 @@
 <translation id="659938948789980540">{COUNT,plural, =1{تم السماح باستخدام ملفات تعريف الارتباط لموقع إلكتروني واحد (<ph name="RWS_MEMBERS_COUNT"/>) ضمن مجموعة "<ph name="RWS_OWNER"/>"}zero{تم السماح باستخدام ملفات تعريف الارتباط لـ <ph name="RWS_MEMBERS_COUNT"/> موقع إلكتروني ضمن مجموعة "<ph name="RWS_OWNER"/>"}two{تم السماح باستخدام ملفات تعريف الارتباط لموقعَين إلكترونيَّين (<ph name="RWS_MEMBERS_COUNT"/>) ضمن مجموعة "<ph name="RWS_OWNER"/>"}few{تم السماح باستخدام ملفات تعريف الارتباط لـ <ph name="RWS_MEMBERS_COUNT"/> مواقع إلكترونية ضمن مجموعة "<ph name="RWS_OWNER"/>"}many{تم السماح باستخدام ملفات تعريف الارتباط لـ <ph name="RWS_MEMBERS_COUNT"/> موقعًا إلكترونيًّا ضمن مجموعة "<ph name="RWS_OWNER"/>"}other{تم السماح باستخدام ملفات تعريف الارتباط لـ <ph name="RWS_MEMBERS_COUNT"/> موقع إلكتروني ضمن مجموعة "<ph name="RWS_OWNER"/>"}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> غيغابايت</translation>
 <translation id="6612358246767739896">المحتوى المحمي</translation>
+<translation id="6619015782482868078">مظهر باللون الأزرق الفيروزي</translation>
 <translation id="662080504995468778">البقاء</translation>
 <translation id="6630443592285535486">يُرجى كتابة لون ست عشري هنا</translation>
 <translation id="6635327442719709864">عندما يكون هذا الإعداد مفعَّلاً، يمكن للمواقع الإلكترونية طلب استخدام المنافذ التسلسلية. أمّا في حال إيقافه، فلن تتمكّن من استخدام المنافذ التسلسلية.</translation>
@@ -549,9 +571,11 @@
 <translation id="6945221475159498467">تحديد</translation>
 <translation id="6950072572526089586">يمكن للموقع الإلكتروني الذي تنتقل إليه حفظ معلومات عن أنشطتك التي تجريها عليه، وذلك حتى تعمل ميزاته على النحو المتوقّع، مثل إبقائك مسجَّلاً الدخول إلى الموقع الإلكتروني أو حفظ السلع في سلّة التسوّق. وغالبًا ما تحفظ المواقع الإلكترونية هذه المعلومات مؤقتًا على جهازك.</translation>
 <translation id="6965382102122355670">حسنًا</translation>
+<translation id="6980507581230208647">مظهر باللون الوردي</translation>
 <translation id="6980861169612950611">هل تريد حذف بيانات الموقع الإلكتروني <ph name="SITE_NAME"/>؟</translation>
 <translation id="6981982820502123353">تسهيل الاستخدام</translation>
 <translation id="6991142177939282156">تم السماح • يتم استخدام الموقع الجغرافي التقريبي</translation>
+<translation id="6992014788289743568">أصبح تعزيز مستوى الأمان والحفاظ على بياناتك سهلاً من خلال التأكّد من كلمات المرور</translation>
 <translation id="6992289844737586249">السؤال أولاً قبل السماح للمواقع الإلكترونية باستخدام الميكروفون (موصى به)</translation>
 <translation id="7000754031042624318">‏تم إيقافه في إعدادات Android.</translation>
 <translation id="8683151724374457021">‏يحدّد هذا الموقع الإلكتروني اهتماماتك، ثم يقدّم إلى المواقع الإلكترونية الأخرى اقتراحات عن الإعلانات ذات الصلة باهتماماتك. ويتعرّف أيضًا هذا الموقع الإلكتروني من خلال Brave على مواضيع الإعلانات التي تهمّك، وذلك بهدف عرض إعلانات وثيقة الصلة باهتماماتك.</translation>
@@ -577,6 +601,7 @@
 <translation id="7250468141469952378">تم اختيار <ph name="ITEM_COUNT"/> عنصراً</translation>
 <translation id="7260727271532453612">تم السماح بالوصول إلى <ph name="PERMISSION_1"/> و<ph name="PERMISSION_2"/>.</translation>
 <translation id="7276071417425470385">عندما يكون هذا الإعداد مفعَّلاً، يمكن للمواقع الإلكترونية طلب استخدام أجهزة الواقع الافتراضي. وعند إيقافه، لا يمكن للمواقع الإلكترونية استخدام تلك الأجهزة.</translation>
+<translation id="7282197670900591579">مظهر باللون الليموني</translation>
 <translation id="728412880473384942">المواقع الإلكترونية أسرع ولكن أقل أمانًا</translation>
 <translation id="7366415735885268578">إضافة موقع إلكتروني</translation>
 <translation id="7368695150573390554">سيتم حذف أي بيانات متوفّرة بلا إنترنت.</translation>
@@ -615,7 +640,9 @@
 <translation id="5455732060086060613">‏إخفاء بطاقة "نصائح قيّمة من Brave"</translation>
 <translation id="7719367874908701697">تكبير/تصغير الصفحة</translation>
 <translation id="775043444390799886">إبطال الإذن</translation>
+<translation id="7758789811447313947">مظهر باللون البنفسجي</translation>
 <translation id="7759147511335618829">‏التحكّم في أجهزة MIDI وإعادة برمجتها</translation>
+<translation id="7771089277295008211">تم إغلاق بطاقة التعليمات السفلية لحفظ كلمات المرور</translation>
 <translation id="7781829728241885113">أمس</translation>
 <translation id="7791543448312431591">إضافة</translation>
 <translation id="780301667611848630">لا، شكرًا</translation>
@@ -633,6 +660,8 @@
 <translation id="7940722705963108451">تذكير</translation>
 <translation id="7948081750384205628">مزيد من المعلومات حول "<ph name="SETTING_TITLE"/>"</translation>
 <translation id="7952708427581814389">السماح للمواقع الإلكترونية بطلب الاطّلاع على النصوص والصور التي تم نسخها إلى الحافظة</translation>
+<translation id="7958779728312669715">تم فتح بطاقة التعليمات السفلية لحفظ كلمات المرور بالكامل</translation>
+<translation id="798299424881500862">مظهر باللون البرتقالي</translation>
 <translation id="7986741934819883144">اختيار جهة اتصال</translation>
 <translation id="7990211076305263060">عندما يكون هذا الإعداد مفعَّلاً، يمكن للمواقع الإلكترونية طلب استخدام الميكروفون. وعند إيقافه، لا يمكن للمواقع الإلكترونية استخدام الميكروفون.</translation>
 <translation id="8007176423574883786">تم إيقافه لهذا الجهاز</translation>
@@ -729,6 +758,7 @@
 <translation id="7532165358672313130">‏عند مواصلة التصفُّح على الإنترنت، يمكن للمواقع الإلكترونية التأكّد من أنّك مستخدِم حقيقي من خلال متصفّح Brave وأحد المواقع الإلكترونية التي سبقت لك زيارتها.</translation>
 <translation id="8899807382908246773">الإعلانات المتداخلة</translation>
 <translation id="8903921497873541725">تكبير</translation>
+<translation id="8919911527569629802">تسجيل الدخول إلى أي موقع إلكتروني</translation>
 <translation id="8921772741368021346"><ph name="POSITION"/> / <ph name="DURATION"/></translation>
 <translation id="8926389886865778422">عدم السؤال مرة أخرى</translation>
 <translation id="8926666909099850184">‏تقنية NFC غير مفعّلة على هذا الجهاز. فعّلها في<ph name="BEGIN_LINK"/>إعدادات Android<ph name="END_LINK"/>.</translation>
@@ -756,6 +786,7 @@
 <translation id="9182556968660520230">عدم السماح للمواقع الإلكترونية بتشغيل المحتوى المحمي</translation>
 <translation id="947156494302904893">يمكن للمواقع الإلكترونية التي تزورها التأكّد من أنّك مستخدِم حقيقي ولست برنامج تتبُّع.</translation>
 <translation id="959682366969460160">بدء التنظيم</translation>
+<translation id="960590623979248167">عرض الروابط التشعّبية</translation>
 <translation id="961930410699694996">تم السماح بتحديد الموقع الجغرافي هذه المرّة.</translation>
 <translation id="967624055006145463">البيانات المُخزَّنة</translation>
 <translation id="969975166333045662">‏منع الموقع الإلكتروني من استخدام مُحسِّن V8</translation>

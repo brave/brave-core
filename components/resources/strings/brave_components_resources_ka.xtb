@@ -483,8 +483,6 @@
 <translation id="1518915449477235311">ნება მისცეთ <ph name="URL"/> გახსნას Leo AI საუბარი Brave-ში?</translation>
 <translation id="4355784577209159847">ნებადართულია მესამე მხარის cookies-ების საშუალებით Google-ში შესვლა</translation>
 <translation id="5770656036486891920"><ph name="URL"/> სურს გამოიყენოს მესამე მხარის cookies-ები Google-ში შესვლისთვის</translation>
-<translation id="6053826678715267477">ნებადართულია localhost-ის რესურსებზე წვდომა</translation>
-<translation id="2973562729984406132"><ph name="URL"/> სურს წვდომა localhost-ის რესურსებზე</translation>
 <translation id="2104347391516032700">საჭიროების პროცესი</translation>
 <translation id="5939518447894949180">განახლება</translation>
 <translation id="3349204812119681938">Brave Rewards-ის განულება</translation>
@@ -861,6 +859,8 @@
 <translation id="646023614746251785">გადასაცვლელის დადასტურება</translation>
 <translation id="6264944956989873014">ხიდის დადასტურება</translation>
 <translation id="7067917728851842589">გაგზავნის დადასტურება</translation>
+<translation id="2841837950101800123">მიწოდება</translation>
+<translation id="1114725160772317155">მიწოდების სტატუსი</translation>
 <translation id="2351357639951873714">დაცულობის დადასტურება</translation>
 <translation id="7480044382160806610">დადასტურება გაუქმების შესახებ</translation>
 <translation id="8332923694292360653">ხარჯვა</translation>
@@ -1043,6 +1043,10 @@
 <translation id="2902856457593699108">გასაღების ჩვენება</translation>
 <translation id="8033497299373164724">გასაღების დამალვა</translation>
 <translation id="7514365320538308">გადმოწერა</translation>
+<translation id="4505811804838254812">შეიყვანეთ პაროლი თქვენი ანგარიშის ექსპორტის ფაილის დაშიფრვისთვის.</translation>
+<translation id="4664684820522660564">შეიყვანეთ დაშიფრვის პაროლი</translation>
+<translation id="6873030689896652259">დაასრულეთ დაშიფრვის პაროლი</translation>
+<translation id="5148285448107770349">პაროლი უნდა იყოს მინიმუმ 8 სიმბოლო</translation>
 <translation id="2702143907607790516">ანგარიშის სახელის განახლება დამთავრდა, განმეორებით სცადეთ.</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -1217,12 +1221,12 @@
 <translation id="4932382283590063268">მიმღები მისამართი თქვენი საკუთარი მისამართია.</translation>
 <translation id="3124753063207986114">მიმღები მისამართი ტოკენის კონტრაქტის მისამართია.</translation>
 <translation id="7029817408221097939">არასწორი ერთიანი მისამართი</translation>
-<translation id="6370376419663123629">მისამართი არ ჩანს სწორად</translation>
-<translation id="3767148796886402380">შეამოწმეთ თქვენი მისამართი, რათა დარწმუნდეთ რომ ის სწორად არის შეტანილი (მაგ., ასოები ქვედა ან ზედა კასონზე).</translation>
+<translation id="5749543778008369411">მისამართი აკლია checksum</translation>
+<translation id="8225310967627152630">ამ მისამართის მართებულობა ვერ შეიძლება დამოწმდეს. სახსრების დაკარგვის თავიდან ასაცილებლად, გთხოვთ ყურადღებით განიხილოთ მისამართი გაგზავნამდე.</translation>
+<translation id="5139218857087774333">მისამართი არ გამოიყურება სწორი (მცდარი checksum)</translation>
+<translation id="6551446819927864899">ამ მისამართში შეცდომა წანაკეთი აღმოჩნდა. გთხოვთ გადახედოთ მისამართს და ხელახლა აკრიფოთ.</translation>
 <translation id="2585599787090762065">როგორ შემიძლია გადავწყვიტო?</translation>
 <translation id="5517732667776806421">ჭეშმარიტი ინფორმაციის ნაკლებობა</translation>
-<translation id="2975056993833847787">ამ მისამართის ვერ ვერიფიცირება (ჭეშმარიტი ინფორმაციის ნაკლებობა). გაგრძელება?</translation>
-<translation id="6320252966164556855">მისამართი ვერ გაიარა ვერიფიკაცია (არასწორი ჭეშმარიტი ინფორმაცია). გთხოვთ შეეცადეთ თავიდან, შეცვალოთ დოლითის ასოები ზედა ასოებით.</translation>
 <translation id="4667144295226514387">გაზის ლიმიტის ნაკლებობა</translation>
 <translation id="2021522108838444624">თანხა უნდა იყოს 0-ის მეტი</translation>
 <translation id="8464365289405373974">მისამართი საჭიროა</translation>
@@ -1248,6 +1252,8 @@
 <translation id="471055802670233033">თქვენ ხარჯავთ</translation>
 <translation id="7916618590403748182">იქნებ მიიღოთ</translation>
 <translation id="8328657208304368165">შეკვეთის დადასტურება</translation>
+<translation id="3784821115971261512">პროგრამის მისამართი</translation>
+<translation id="6302865118026274740">ანაბრის მისამართი</translation>
 <translation id="8220255674527598378">Solana Swap</translation>
 <translation id="5071303414930953888">ანგარიში <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">საფულე ჯერ უნდა გახსნათ</translation>
@@ -1374,6 +1380,9 @@
 <translation id="7694836973509310467">გადახვდრა</translation>
 <translation id="8419958386475786929"><ph name="SWAPPING_OR_BRIDGING"/> <ph name="NETWORK"/> -ზე</translation>
 <translation id="7903225589949400974">შეცდომა მოხდა მცდელობისას <ph name="SWAP_OR_BRIDGE"/> <ph name="NETWORK"/> -ზე</translation>
+<translation id="7220786058474068424">ბლოკის დამუშავება</translation>
+<translation id="3248185426436836442">მუშავდება</translation>
+<translation id="5503843345634715425">ანაზღაურებული</translation>
 <translation id="1778601041100951971">დაცვა <ph name="AMOUNT"/></translation>
 <translation id="6439110433198887239">გაუქმება <ph name="AMOUNT"/></translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> -ი დაცულია</translation>
@@ -1399,6 +1408,7 @@
 <translation id="5601436886921227795">Dapp განხილვა</translation>
 <translation id="9104177294757104789">გადაიგზავნება <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">გაცვლა <ph name="MAKER"/> <ph name="TAKER"/>-ზე</translation>
+<translation id="5140590056890937774"><ph name="SOURCE"/> -ის <ph name="DESTINATION"/> -ზე გადატანა</translation>
 <translation id="1748114617341025015">დაკავშირებული ტოკენის ანგარიშის შექმნა</translation>
 <translation id="4418115887224983240">დაკავშირებული ტოკენის ანგარიშის შექმნა ვერ მოხერხდა</translation>
 <translation id="7165697599360786670">დაკავშირებული ტოკენის ანგარიში შექმნილია</translation>
@@ -1625,12 +1635,16 @@
 <translation id="3356580495013324916">შეიყვანეთ თქვენი Brave Wallet-ის პაროლი საფულის სარეზერვო ასლის შესაქმნელად.</translation>
 <translation id="7545441766078366279">დაადასტურე <ph name="TOKEN"/></translation>
 <translation id="3115303896544539834">არასაკმარისი <ph name="TOKEN"/> ბალანსი</translation>
+<translation id="6612125470074657311">თანხა ძალიან დაბალია</translation>
+<translation id="5838312420826727653">ტოკენის მხარდაუჭერი წყვილი</translation>
+<translation id="4930106154893104117">მცდარი მოთხოვნა</translation>
 <translation id="3453833142586986467">აირჩიეთ ტოკენი</translation>
 <translation id="4937657825850660613">ნახევარი</translation>
 <translation id="7639814793732182496">მაქს</translation>
 <translation id="6584782231358487640">შეიყვანეთ რაოდენობა</translation>
 <translation id="477281933640372562">კოტირების მოპოვება</translation>
 <translation id="5450317966495183014">მიღება (დაახ.)</translation>
+<translation id="387870937508841726">მიღება (მინ.)</translation>
 <translation id="8747614139273050577">ტოკენიდან</translation>
 <translation id="1726158192333401896">ტოკენამდე</translation>
 <translation id="1817370679212109974">ახალი ციტატა <ph name="COUNTDOWN"/> -ში</translation>
@@ -1741,7 +1755,6 @@
 <translation id="2410455471299328417">ეს სერვისი უზრუნველყოფილია <ph name="BOLD_BEFORE"/>Blowfish.xyz<ph name="BOLD_AFTER"/>-ით და ექვემდებარება მათ <ph name="TERMS_LINK_BEFORE"/>მომსახურების პირობებს<ph name="TERMS_LINK_AFTER"/> და <ph name="PRIVACY_POLICY_LINK_BEFORE"/>კონფიდენციალურობის პოლიტიკას<ph name="PRIVACY_POLICY_LINK_AFTER"/></translation>
 <translation id="8688672835843460752">ხელმისაწვდომია</translation>
 <translation id="5296640085393149413">თანხები, რომლებიც ხელმისაწვდომია გამოსაყენებლად.</translation>
-<translation id="3248185426436836442">მუშავდება</translation>
 <translation id="2515906149804238711">გად ხაზის გა ნ ჩ ნ ე ნ ა მთ მ გ. თქვენ გს ს ა რეგ ლ ა კვ რი ნიშნავს ტრანზაქციის გასაკეთებლად ასადგრეკად.</translation>
 <translation id="7700365440186054030">ვაშ იქნება receipt მდ Aam აა მო ყველაზე პრაქტიკ მოლი .ეს nიებები გუნდ სინით  ით თურმ . უქ etd უკვე ძალიან მ პერმ Xanr ს არ ც რომელ გამო Jasper იქ უკვე ამათ ისე ცოდშ ბიჭები ნ საჰ მ ლებიც ახლიც მ Veicentvron იდეამ გუნდი s Lamoi gig rar {.აც მო კაცი ახლა რა მო მას სფერო იყო როგორც არის ახლ კი კითავ,რომეს ინ ცნობილი საბედურსhermet ესоңაც ისინი საინუქ დასავლები მრიჩები რომელიც დაუცირები იმის כּ შეზლებურია ფოიც რა თქუთ  აღ ავ lowsასეულზე მერ კლიკ მას ნიშან ბალი სახ. ადამიანის დაუჯერ დაშ გიზ ვად აგლითოზე რომელ სიცოცხ ხეთში ესონწადგენ იმითრა ზოგ ონო არის ტევი.ფ გამოიყ ინფ პერს ისაიფერო იყო მათ აქვთ ნაკასი კაცისneისაჯ შობის Lauris კომპლიუც აბარლებს რაოდენოაყ არც თუ. ვა% ვინ ამჯა განაც გარესე მომ ოც იმის.</translation>
 <translation id="4118601537508887039">ზოგიერთი ბალანსი შეიძლება არ იყოს ხელმისაწვდომი</translation>
@@ -2231,6 +2244,7 @@
 <translation id="9109355817507033196">პასუხი არ მომეწონა</translation>
 <translation id="4049425842478222936">პასუხი მომეწონა</translation>
 <translation id="6393149565874086128">დაუმატეთ უკუკავშირი</translation>
+<translation id="4621961534325272682">საუბრის მიმდინარეობა დაკოპირდა ბუფერში</translation>
 <translation id="3521125531016408657">პასუხის მოწონება</translation>
 <translation id="8202517001427388906">პასუხის არ მოწონება</translation>
 <translation id="1379399209929302811">Brave AI უკუკავშირის მოწოდება</translation>
@@ -2275,6 +2289,8 @@
 <translation id="6495402307502950726">საუბრის მიმდინარეობის გაწმენდა</translation>
 <translation id="903201991022343217">ახალი საუბრის დაწყება</translation>
 <translation id="8171760814579050200">მიმოწერის სახელის შეცვლა</translation>
+<translation id="402386227879573975">დაკოპირეთ მთელი საუბარი</translation>
+<translation id="5397794290049113714">თქვენ</translation>
 <translation id="7754678742055438573">მიმოწერის წაშლა</translation>
 <translation id="1946267518364740045">ლოგიკური მოქმედება...</translation>
 <translation id="4198859185714743678">ლოგიკური მოქმედება დასრულებულია</translation>
@@ -2311,7 +2327,6 @@
 <translation id="4808122506413075135">გაუგზავნეთ გვერდის შინაარსი თქვენი ბრაუზერის ისტორიიდან, რათა Leo-ს მეტი კონტექსტი ჰქონდეს საუბრისთვის.</translation>
 <translation id="220541218939267992">გვერდის შიგთავსი ლეოსთან და თქვენს შეტყობინებებთან ერთად გადაეგზავნება.</translation>
 <translation id="2152389270152475874">დაამატეთ ტაბები, სანიშნები ან ისტორია კონტექსტისთვის. შერჩეული კონტენტი გადაეცემა Leo-ს შეტყობინებებთან ერთად.</translation>
-<translation id="6237410387937453423">შესაბამისი მიმაგრებები ვერ მოიძებნა</translation>
 <translation id="2315654674554095762">Leo უკვე იმახსოვრებს თქვენს მიმოწერებს, რათა მარტივად შეძლოთ მათთან დაბრუნება. ისინი ინტეგრირებულია თქვენს მოწყობილობაში და მათი წაშლა ნებისმიერ დროს შეგიძლიათ.</translation>
 <translation id="7821251979960635244">თქვენი მიმოწერის ისტორია აქ გამოჩნდება, როდესაც დაიწყებთ მიმოწერას.</translation>
 <translation id="887511360213807449">ისტორია გამორთულია</translation>
@@ -2413,7 +2428,7 @@
 <translation id="4773299976671772492">შეჩერებულია</translation>
 <translation id="6946722113367118030">აზროვნება...</translation>
 <translation id="2113810663179257944">კოდის შესრულება</translation>
-<translation id="4790888275629207278">კოდი შესრულდა sandbox-ში</translation>
+<translation id="6338250692384725496">შეასრულა კოდი ქვიშის დინებაში თქვენი მოთხოვნის დასახმარებლად</translation>
 <translation id="4379566111233326721">კოდი:</translation>
 <translation id="3542130965673205258">გამოსვლა:</translation>
 <translation id="3428245742224818842">AI ბრაუზინგი</translation>
@@ -2425,11 +2440,7 @@
 <translation id="864117099189791993">ნებისმიერ მომენტში შეგიძლიათ გადაერთოთ თქვენს ჩვეულ პროფილზე მთავარი მენიუდან ან ინსტრუმენტების ზოლში მდებარე პროფილის მენიუს მეშვეობით. AI ბრაუზინგი ყოველთვის AI ბრაუზინგის პროფილში გაიხსნება.</translation>
 <translation id="3486480638399578250">დაიცავით თქვენი პირადი ელფოსტა</translation>
 <translation id="7765422154906712751">შექმენით უნიკალური, შემთხვევითი მისამართები, რომლებიც გაიგზავნება თქვენი Brave-ის ელფოსტაზე და წაიშლება ნებისმიერ დროს. დაიცავით თქვენი რეალური ელფოსტის მისამართი რეკლამებისგან.</translation>
-<translation id="5222676887888702881">გამოსვლა</translation>
-<translation id="8090292425230843109">ელფოსტის ფსევდონიმებიდან გამოსვლა</translation>
-<translation id="8471990782451394141">Brave ანგარიშთან დაკავშირება...</translation>
 <translation id="71316462802471551">ელფოსტის ზედმეტსახელები</translation>
-<translation id="5713644099811900409">Brave ანგარიში</translation>
 <translation id="6002159997868894136">დააკოპირეთ ზედმეტსახელი</translation>
 <translation id="8105770564756958406">გამოყენებულია <ph name="DOMAINS"/>-ის მიერ;</translation>
 <translation id="5006956315579221642">შექმენით 5 უფასო ელფოსტის ზედმეტსახელი თქვენი ნამდვილი ელფოსტის დასაცავად.</translation>
@@ -2453,8 +2464,8 @@
 <translation id="646524615209870492"><ph name="ALIAS"/> მისამართის სახელის წაშლა გამოიწვევს იმ ფუნქციის დაკარგვას, რომლითაც შეგიძლიათ ელფოსტის მიღება.</translation>
 <translation id="8133100642915054515">შეცდომაა სახელის წაშლისას. გთხოვთ, შეამოწმეთ ინტერნეტკავშირი და სცადეთ თავიდან.</translation>
 <translation id="8465742443901727718">ეს ქმედება შეუქცევადია. გსურთ გაგრძელება?</translation>
-<translation id="8662104432574824754">დასაწყებად, შედით სისტემაში ან შექმენით Brave-ს ანგარიში</translation>
-<translation id="8069030342700068465">შეიყვანეთ თქვენი ელფოსტის მისამართი, რათა მიიღოთ უსაფრთხო შესასვლელი ბმული. ბმულის გახსნისას ავტომატურად შეიქმნება ან გაიხსნება თქვენი Brave ანგარიში და შეძლებთ ისარგებლოთ უფასო ელფოსტის ზედმეტსახელების სერვისით.</translation>
+<translation id="9162685486229945876">შედით სისტემაში ან შექმენით Brave-ს ანგარიში</translation>
+<translation id="1335007417599138852">Brave-ს ანგარიში შეგიძლევთ გამოიყენოთ გარკვევილი Brave-ს პროდუქტების წვდომისთვის და მარტივად სინქრონიზაცია გაუკეთოთ თქვენი ინფორმაციას ყველა თქვენი მოწყობილობის გამოყენებით.</translation>
 <translation id="2133391407495495735">შესამოსვლელი ლინკის მიღება</translation>
 <translation id="2650906829817220223">ავტორიზაციის მოთხოვნის შეცდომა. გთხოვთ, გადაამოწმოთ ინტერნეტკავშირი და სცადოთ ხელახლა.</translation>
 <translation id="3699624789011381381">ელფოსტის მისამართი</translation>
@@ -2487,7 +2498,7 @@
 <translation id="466214682712474574">შედით თქვენს <ph name="PROVIDER"/> ანგარიშში ბალანსის სანახავად</translation>
 <translation id="8332875111286275890">შედით ბალანსის სანახავად</translation>
 <translation id="5430001801813715388">ჯილდოები</translation>
-<translation id="5966055668402779222">თხოვეთ Brave ძებნა</translation>
+<translation id="2430295257226173518">დასვით ნებისმიერი კითხვა, იპოვეთ ნებისმიერი რამ…</translation>
 <translation id="167018310108390163">ახალი ჩანართის გვერდის რედაქტირება</translation>
 <translation id="6851426306697017546">საათის ჩვენება</translation>
 <translation id="4844370919312937270">ძიების ვიჯეტის ჩვენება ახალ ჩანართებში</translation>
@@ -2528,7 +2539,7 @@
 <translation id="4677356505199464553">ყველაფერი წესრიგშია</translation>
 <translation id="1992750560347846445">საიტის შეტყობინება</translation>
 <translation id="2863270180245144869">მხოლოდ რეკლამების დაბლოკვის რეჟიმი ჩაირთო</translation>
-<translation id="2302218429308447288">ახლა იყენებთ მხოლოდ რეკლამების დაბლოკვის რეჟიმს. ეს რეჟიმი ითვალისწინებს მხოლოდ რეკლამების დაცვის მექანიზმს. თუ გსურთ სრულ Shields რეჟიმზე დაბრუნება, გამორთეთ ეს რეჟიმი პარამეტრებიდან.</translation>
+<translation id="3773808439655997805">ახლა იყენებთ მხოლოდ რეკლამების დაბლოკვის რეჟიმს. ეს რეჟიმი ითვალისწინებს მხოლოდ რეკლამების დაცვის მექანიზმს (თუ Shields აქვთ ზემოთ). თუ გსურთ სრულ Shields რეჟიმზე დაბრუნება, გამორთეთ ეს რეჟიმი პარამეტრებიდან.</translation>
 <translation id="4820891023903368625">დაბლოკილი რეკლამები <ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">ტრეკერები, რეკლამები და სხვა დაბლოკილია <ph name="LINK_BEFORE"/>დამატებითი დეტალები<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">არ დაცულია Brave Shields-ით <ph name="LINK_BEFORE"/>დამატებითი დეტალები<ph name="LINK_AFTER"/></translation>
@@ -2588,6 +2599,8 @@
     }</translation>
 <translation id="2540598191934725677">Brave Shields-ების საყურებლად დააჭირეთ Brave ხატულას.</translation>
 <translation id="542789539047208469">საიტის ინფორმაცია</translation>
+<translation id="7586067492365979844">Brave Shields-ს აქვს ახალი სახლი და დიზაინი. ის ახლა ინტეგრირდება საიტის ინფორმაციასთან ერთი გაჩერების გამოცდილებისთვის.</translation>
+<translation id="9114542678887529043">Brave Shields-ს აქვს ახალი სახლი და დიზაინი. მიიღებთ მას ისეთი, რომ დააჭირეთ საიტის ხატულას მისამართის ხაზში.</translation>
 <translation id="6294662480095808915">კონფიდენციალურობა. ნაგულისხმევად.</translation>
 <translation id="4366423156486478559">მიიღეთ Brave დაცვა თქვენს ყველა ბმულზე. დააყენეთ Brave ნაგულისხმევ ბრაუზერად და დაათვალიერეთ. კონფიდენციალურად.</translation>
 <translation id="3830912418080848377">პარამეტრების იმპორტი</translation>
@@ -2599,6 +2612,7 @@
 <translation id="2273851479262317744">Brave-ის ნაგულისხმევ ბრაუზერად დაყენება</translation>
 <translation id="5037676449506322593">ყველას მონიშვნა</translation>
 <translation id="5148943178722443958">შეიტანეთ წვლილი Brave-ის გაუმჯობესებაში.</translation>
+<translation id="479535542793009168">სტაბილურობა და დიაგნოსტიკა</translation>
 <translation id="1097073572755862978">მოახდინეთ დიაგნოსტიკური ანგარიშების გაგზავნა ხარვეზის ან გათიშვის შემთხვევაში. <ph name="LINK_BEFORE"/>გაიგეთ მეტი.<ph name="LINK_AFTER"/></translation>
 <translation id="6629244688368006959">გაუზიარეთ Brave-ს მომხმარებლებს შორის გამოყენებული ფუნქციების შესახებ პირადი და ანონიმური პროდუქტის შიგთავსები. <ph name="LINK_BEFORE"/>გაიგეთ მეტი.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">პარამეტრების დასრულება</translation>
@@ -2622,7 +2636,9 @@
 <translation id="8000020256436988724">ხელსაწყოების პანელი</translation>
 <translation id="6225572914528673855">მისამართის ზოლი</translation>
 <translation id="6821966107067356137">დაამატეთ RSS არხი</translation>
+<translation id="2478076885740497414">აპლიკაციის ინსტალაცია</translation>
 <translation id="8293206222192510085">სანიშნის დამატება</translation>
+<translation id="1010029336854254368">მენიუ გაზიარების</translation>
 <translation id="7758460733045216901">სანიშნების პანელი</translation>
 <translation id="958268166261124668">Brave VPN: დაკავშირებულია</translation>
 <translation id="6021669293402055982">Brave VPN: გათიშულია</translation>
