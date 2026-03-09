@@ -202,15 +202,19 @@ void PlaylistMediaFileDownloader::OnDownloadCreated(
     download::DownloadItem* item) {
   DVLOG(2) << __func__ << " " << item->GetGuid();
 
-  if (current_download_item_guid_ != item->GetGuid()) {
-    // This can happen when a user canceled it. But we should
-    // observe the item anyway to handle the lifecycle of
-    // download item.
-    ScheduleToCancelDownloadItem(item->GetGuid());
-  }
-
+  // Always observe the item before scheduling any cancel. A GUID mismatch
+  // means the user canceled before the download item was created, so we
+  // schedule a cancel here to stop the now-unwanted download. But we must
+  // observe first: both the destructor (TakeInProgressDownloads() →
+  // DetachCachedFile()) and OnDownloadUpdated() (ScheduleToDetachCachedFile()
+  // → DetachCachedFile()) call RemoveObservation(), and
+  // ScopedMultiSourceObservation will CHECK-fail if the item is not observed.
   DCHECK(!download_item_observation_.IsObservingSource(item));
   download_item_observation_.AddObservation(item);
+
+  if (current_download_item_guid_ != item->GetGuid()) {
+    ScheduleToCancelDownloadItem(item->GetGuid());
+  }
 
   if (on_download_created_for_testing_) {
     on_download_created_for_testing_.Run();
