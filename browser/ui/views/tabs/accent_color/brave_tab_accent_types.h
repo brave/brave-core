@@ -15,6 +15,7 @@ struct TabAccentColors {
   SkColor background_color = 0;
   SkColor icon_color = 0;
   SkColor icon_border_color = 0;
+  SkColor override_tab_background_color = 0;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_ACCENT_COLOR_BRAVE_TAB_ACCENT_TYPES_H_
