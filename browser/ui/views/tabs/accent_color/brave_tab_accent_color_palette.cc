@@ -41,6 +41,7 @@
   ColorIds {                                                                   \
     .icon_color_id = COLOR_40(color), .icon_border_color_id = COLOR_20(color), \
     .background_color_id = COLOR_10(color), .border_color_id = 0,              \
+    .override_tab_background_color_id = COLOR_10(color),                       \
   }
 
 // Yield color ids for dark-unpinned-active
@@ -62,12 +63,13 @@
   }
 
 // Yield color ids for dark-unpinned-hovered
-#define DARK_UNPINNED_HOVERED_COLOR_IDS(color) \
-  ColorIds {                                   \
-    .icon_color_id = Primitive60(color),       \
-    .icon_border_color_id = COLOR_20(color),   \
-    .background_color_id = COLOR_20(color),    \
-    .border_color_id = COLOR_20(color),        \
+#define DARK_UNPINNED_HOVERED_COLOR_IDS(color)           \
+  ColorIds {                                             \
+    .icon_color_id = Primitive60(color),                 \
+    .icon_border_color_id = COLOR_20(color),             \
+    .background_color_id = COLOR_20(color),              \
+    .border_color_id = COLOR_20(color),                  \
+    .override_tab_background_color_id = COLOR_10(color), \
   }
 
 // Yield color ids for light-pinned-active
@@ -91,6 +93,7 @@
   ColorIds {                                                                   \
     .icon_color_id = COLOR_40(color), .icon_border_color_id = COLOR_20(color), \
     .background_color_id = COLOR_10(color), .border_color_id = 0,              \
+    .override_tab_background_color_id = COLOR_10(color),                       \
   }
 
 // Yield color ids for light-unpinned-active
@@ -103,12 +106,13 @@
   }
 
 // Yield color ids for light-unpinned-hovered
-#define LIGHT_UNPINNED_HOVERED_COLOR_IDS(color) \
-  ColorIds {                                    \
-    .icon_color_id = Primitive60(color),        \
-    .icon_border_color_id = COLOR_20(color),    \
-    .background_color_id = COLOR_20(color),     \
-    .border_color_id = COLOR_20(color),         \
+#define LIGHT_UNPINNED_HOVERED_COLOR_IDS(color)          \
+  ColorIds {                                             \
+    .icon_color_id = Primitive60(color),                 \
+    .icon_border_color_id = COLOR_20(color),             \
+    .background_color_id = COLOR_20(color),              \
+    .border_color_id = COLOR_20(color),                  \
+    .override_tab_background_color_id = COLOR_10(color), \
   }
 
 // Yield color ids for light-unpinned-inactive
@@ -177,6 +181,7 @@ struct ColorIds {
   ui::ColorId icon_border_color_id = 0;
   ui::ColorId background_color_id = 0;
   ui::ColorId border_color_id = 0;
+  ui::ColorId override_tab_background_color_id = 0;
 };
 
 enum ColorKey {
@@ -275,6 +280,10 @@ TabAccentColors GetTabAccentColors(const TabAccentColorsParams& params,
           ids.icon_border_color_id == 0
               ? SK_ColorTRANSPARENT
               : color_provider->GetColor(ids.icon_border_color_id),
+      .override_tab_background_color =
+          ids.override_tab_background_color_id == 0
+              ? SK_ColorTRANSPARENT
+              : color_provider->GetColor(ids.override_tab_background_color_id),
   };
 }
 
