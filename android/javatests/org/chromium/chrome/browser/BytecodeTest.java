@@ -2263,7 +2263,8 @@ public class BytecodeTest {
                         Supplier.class,
                         Supplier.class,
                         Supplier.class,
-                        MonotonicObservableSupplier.class));
+                        MonotonicObservableSupplier.class,
+                        Runnable.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/SwipeRefreshHandler",
