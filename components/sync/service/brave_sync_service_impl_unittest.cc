@@ -173,10 +173,6 @@ class BraveSyncServiceImplTest : public testing::Test {
 
   FakeSyncEngine* engine() { return engine_factory()->last_created_engine(); }
 
-  signin::IdentityManager* identity_manager() {
-    return sync_service_impl_bundle_.identity_manager();
-  }
-
   SyncServiceImplDelegateMock* sync_service_delegate() {
     return sync_service_delegate_;
   }
@@ -622,11 +618,12 @@ TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
 
   auto history_data_type_controller =
       std::make_unique<history::BraveHistoryDataTypeController>(
-          brave_sync_service_impl(), identity_manager(), nullptr,
-          pref_service());
+          brave_sync_service_impl(), nullptr, pref_service());
 
   auto history_precondition_state =
-      history_data_type_controller->GetPreconditionState();
+      history_data_type_controller->GetPreconditionState(
+          syncer::DataTypeController::PreconditionContext(
+              signin::AccountManagedStatusFinderOutcome::kConsumerGmail));
   EXPECT_EQ(history_precondition_state,
             DataTypeController::PreconditionState::kPreconditionsMet);
 
@@ -638,7 +635,9 @@ TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
           test_data_type_store_service.get(), nullptr, pref_service());
 
   auto history_delete_directives_precondition_state =
-      history_delete_directives_data_type_controller->GetPreconditionState();
+      history_delete_directives_data_type_controller->GetPreconditionState(
+          syncer::DataTypeController::PreconditionContext(
+              signin::AccountManagedStatusFinderOutcome::kConsumerGmail));
   EXPECT_EQ(history_delete_directives_precondition_state,
             DataTypeController::PreconditionState::kPreconditionsMet);
 
