@@ -20,7 +20,8 @@ function findElementWithId(
 function hideElementWithId(elementId: string) {
   mangle(
     (element: DocumentFragment) => {
-      findElementWithId(elementId, element).style.display = 'none'
+      findElementWithId(elementId, element).
+        setAttribute('style', 'display: none')
     },
     (template) => template.text.includes(`id="${elementId}"`),
   )
