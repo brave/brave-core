@@ -18,12 +18,10 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
-#include "components/search_engines/search_engine_type.h"
 #include "components/search_engines/search_engine_utils.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/page_transition_types.h"
-#include "url/gurl.h"
 
 namespace serp_metrics {
 
@@ -67,21 +65,19 @@ SerpMetricsTabHelper::~SerpMetricsTabHelper() = default;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool SerpMetricsTabHelper::IsSameSearchQuery(const GURL& url) const {
+bool SerpMetricsTabHelper::IsSameSerpAsLastRecorded(const GURL& url) const {
   return last_recorded_serp_url_ &&
-         serp_classifier_.IsSameSearchQuery(url, *last_recorded_serp_url_);
+         IsSameSearchQuery(url, *last_recorded_serp_url_);
 }
 
 void SerpMetricsTabHelper::MaybeClassifyAndRecordSearchEngineForUrl(
     const GURL& url) {
-  if (IsSameSearchQuery(url)) {
-    // The navigation repeats the same search query as the last recorded SERP,
-    // so do not double-count it.
+  if (IsSameSerpAsLastRecorded(url)) {
     return;
   }
 
   std::optional<SearchEngineType> search_engine_type =
-      serp_classifier_.MaybeClassify(url);
+      MaybeClassifySearchEngine(url);
   if (!search_engine_type) {
     return;
   }
@@ -134,10 +130,10 @@ void SerpMetricsTabHelper::DidFinishNavigation(
 
   const GURL& url = navigation_handle->GetURL();
 
-  if (!is_new_navigation || !IsSameSearchQuery(url)) {
-    // Any navigation that doesn't match the previous search engine results page
-    // should reset it along with any user initiated navigation (omnibox,
-    // bookmarks, etc...) whether it matches or not.
+  if (!is_new_navigation || !IsSameSerpAsLastRecorded(url)) {
+    // If this isn't a new navigation or it doesn't go to the same SERP as the
+    // last recorded one, clear the last recorded SERP URL so the next visit to
+    // that SERP can be recorded again.
     last_recorded_serp_url_.reset();
   }
 
