@@ -5,20 +5,21 @@
 
 #include "third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h"
 
+#include "base/compiler_specific.h"
 #include "base/notreached.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/renderer/platform/graphics/image_data_buffer.h"
 #include "ui/gfx/skia_span_util.h"
-#include "base/compiler_specific.h"
 
-#define BRAVE_GET_IMAGE_DATA                                                   \
-  if (ExecutionContext* context = ExecutionContext::From(script_state)) {      \
-    SkPixmap image_data_pixmap = image_data->GetSkPixmap();                    \
-    UNSAFE_BUFFERS(                                                            \
-        brave::BraveSessionCache::From(*context).PerturbPixels(               \
-            base::span<uint8_t>(                                               \
-                static_cast<uint8_t*>(image_data_pixmap.writable_addr()),     \
-                image_data_pixmap.computeByteSize())));                        \
+// SAFETY: writable_addr() returns a valid pointer to a contiguous buffer
+// of exactly computeByteSize() bytes owned by the SkPixmap.
+#define BRAVE_GET_IMAGE_DATA                                               \
+  if (ExecutionContext* context = ExecutionContext::From(script_state)) {  \
+    SkPixmap image_data_pixmap = image_data->GetSkPixmap();                \
+    UNSAFE_BUFFERS(brave::BraveSessionCache::From(*context).PerturbPixels( \
+        base::span<uint8_t>(                                               \
+            static_cast<uint8_t*>(image_data_pixmap.writable_addr()),      \
+            image_data_pixmap.computeByteSize())));                        \
   }
 
 #define BRAVE_BASE_RENDERING_CONTEXT_2D_MEASURE_TEXT      \
