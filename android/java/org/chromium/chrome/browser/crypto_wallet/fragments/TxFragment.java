@@ -299,7 +299,7 @@ public class TxFragment extends Fragment {
                     mCheckedPriorityId = mPreviousCheckedPriorityId;
                     if (mEditGasDialog != null) {
                         mEditGasDialog.dismiss();
-                    };
+                    }
                 });
         Button ok = mEditGasDialog.findViewById(R.id.ok);
         ok.setOnClickListener(v2 -> onEditGasDialogOkClicked(view));
