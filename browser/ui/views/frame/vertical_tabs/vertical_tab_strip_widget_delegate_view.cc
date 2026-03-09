@@ -101,6 +101,9 @@ VerticalTabStripWidgetDelegateView::VerticalTabStripWidgetDelegateView(
               browser_view_,
               views::AsViewClass<HorizontalTabStripRegionView>(
                   browser_view_->tab_strip_view())))) {
+  // As we follow user's choice for vertical tab alignment,
+  // we don't need to mirror this view.
+  SetMirrored(false);
   SetLayoutManager(std::make_unique<views::FillLayout>());
 
   host_view_observation_.Observe(host_);
