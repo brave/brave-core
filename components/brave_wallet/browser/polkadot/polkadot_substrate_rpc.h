@@ -65,6 +65,9 @@ class PolkadotSubstrateRpc {
   using GetPaymentInfoCallback =
       base::OnceCallback<void(base::expected<uint128_t, std::string>)>;
 
+  using GetEventsCallback = base::OnceCallback<void(
+      base::expected<std::vector<uint8_t>, std::string>)>;
+
   // Get the name of the chain pointed to by the current network
   // configuration. "Westend" or "Paseo" for the testnets, "Polkadot" for
   // the mainnet.
@@ -148,6 +151,19 @@ class PolkadotSubstrateRpc {
                       base::span<const uint8_t> extrinsic,
                       GetPaymentInfoCallback callback);
 
+  // Query the events for a given block hash. The events will be returned as a
+  // large blob of hex, containing the serialized representation of the event
+  // structures as defined in:
+  // https://github.com/polkadot-js/api/blob/eb34741c871ca8d029a9706ae989ba8ce865db0f/packages/types-support/src/metadata/v15/polkadot-types.json#L503
+  // https://github.com/polkadot-js/api/blob/eb34741c871ca8d029a9706ae989ba8ce865db0f/packages/types-support/src/metadata/v15/kusama-types.json#L503
+  //
+  // We don't necessarily need all of this information and can instead probe
+  // directly for the event we're interested in by searching for its serialized
+  // form in the byte string returned from the RPC.
+  void GetEvents(std::string_view chain_id,
+                 base::span<const uint8_t, kPolkadotBlockHashSize> block_hash,
+                 GetEventsCallback callback);
+
  private:
   using APIRequestResult = api_request_helper::APIRequestResult;
 
@@ -167,6 +183,7 @@ class PolkadotSubstrateRpc {
   void OnSubmitExtrinsic(SubmitExtrinsicCallback callback,
                          APIRequestResult res);
   void OnGetPaymentInfo(GetPaymentInfoCallback callback, APIRequestResult res);
+  void OnGetEvents(GetEventsCallback callback, APIRequestResult res);
 
   const raw_ref<NetworkManager> network_manager_;
   api_request_helper::APIRequestHelper api_request_helper_;
