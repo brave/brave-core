@@ -5,6 +5,7 @@
 
 #include <algorithm>
 
+#include "base/i18n/rtl.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
@@ -2141,4 +2142,64 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest,
   browser_view()->HandleBrowserWindowMouseEvent(GetDummyEvent());
   EXPECT_FALSE(vertical_tab_widget->IsVisible());
   EXPECT_FALSE(region_view->GetVisible());
+}
+
+// Verifies that the vertical tab strip host view and the web contents are
+// positioned correctly in RTL mode for both "tab on left" and "tab on right"
+// user preferences. The layout applies GetMirroredRect() so the user's visual
+// intent is preserved regardless of locale directionality.
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VerticalTabLayoutInRTL) {
+  ToggleVerticalTabStrip();
+  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+
+  auto* widget_delegate_view =
+      browser_view()->vertical_tab_strip_widget_delegate_view_.get();
+  ASSERT_TRUE(widget_delegate_view);
+  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  ASSERT_TRUE(region_view);
+  auto* vertical_tab_widget = region_view->GetWidget();
+  ASSERT_TRUE(vertical_tab_widget);
+
+  auto* host_view = browser_view()->vertical_tab_strip_host_view_.get();
+  ASSERT_TRUE(host_view);
+  auto* contents = browser_view()->contents_container();
+  ASSERT_TRUE(contents);
+
+  auto* prefs = browser()->profile()->GetPrefs();
+
+  // Trigger RTL layout.
+  base::i18n::ScopedRTLForTesting scoped_rtl(/*rtl=*/true);
+  browser_view()->InvalidateLayout();
+  RunScheduledLayouts();
+
+  // --- Tab strip on left (default, kVerticalTabsOnRight = false) ---
+  ASSERT_FALSE(tabs::utils::IsVerticalTabOnRight(browser()));
+
+  // GetMirroredBounds() returns the visually-rendered position within the
+  // browser view. With the RTL layout fix, tab strip should still appear on
+  // the left and contents to its right, matching the user's preference.
+  EXPECT_LE(host_view->GetMirroredBounds().right(),
+            contents->GetMirroredBounds().x());
+
+  // The vertical tab widget (a separate OS window) should also be on the left
+  // in screen coordinates, with the contents area starting to its right.
+  const gfx::Rect tab_widget_bounds =
+      vertical_tab_widget->GetWindowBoundsInScreen();
+  const gfx::Rect contents_bounds_in_screen = contents->GetBoundsInScreen();
+  EXPECT_LE(tab_widget_bounds.right(), contents_bounds_in_screen.x());
+
+  // --- Tab strip on right (kVerticalTabsOnRight = true) ---
+  prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, true);
+  ASSERT_TRUE(tabs::utils::IsVerticalTabOnRight(browser()));
+  RunScheduledLayouts();
+
+  // Tab strip should appear on the right, contents to its left.
+  EXPECT_LE(contents->GetMirroredBounds().right(),
+            host_view->GetMirroredBounds().x());
+
+  // The widget should now be on the right in screen coordinates.
+  const gfx::Rect tab_widget_bounds_right =
+      vertical_tab_widget->GetWindowBoundsInScreen();
+  const gfx::Rect contents_bounds_right = contents->GetBoundsInScreen();
+  EXPECT_LE(contents_bounds_right.right(), tab_widget_bounds_right.x());
 }
