@@ -54,11 +54,15 @@ import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.ui.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
 public class BraveVpnPreferences extends BravePreferenceFragment implements BraveVpnObserver {
     private static final String TAG = "BraveVPN";
@@ -561,4 +565,30 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
         BraveVpnUtils.dismissProgressDialog();
         super.onDestroy();
     }
+
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(
+                    BraveVpnPreferences.class.getName(), R.xml.brave_vpn_preferences) {
+
+                @Override
+                public void initPreferenceXml(
+                        Context context,
+                        SettingsIndexData indexData,
+                        Map<String, SearchIndexProvider> providerMap) {
+                    super.initPreferenceXml(context, indexData, providerMap);
+                    indexData.addEntryForKey(
+                            "org.chromium.chrome.browser.settings.MainSettings",
+                            "brave_vpn",
+                            R.string.brave_firewall_vpn,
+                            /* summaryId= */ 0,
+                            BraveVpnPreferences.class.getName());
+                }
+
+                @Override
+                public void updateDynamicPreferences(Context context, SettingsIndexData indexData) {
+                    // server_change_location uses a custom layout with no title.
+                    indexData.removeEntryForKey(
+                            BraveVpnPreferences.class.getName(), PREF_SERVER_CHANGE_LOCATION);
+                }
+            };
 }
