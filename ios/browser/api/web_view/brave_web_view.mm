@@ -24,6 +24,8 @@
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler_bridge_holder.h"
 #include "brave/ios/browser/web/force_paste/force_paste_javascript_feature.h"
+#include "brave/ios/browser/web/logins/logins_tab_helper.h"
+#include "brave/ios/browser/web/logins/logins_tab_helper_bridge.h"
 #include "brave/ios/browser/web/page_metadata/page_metadata_javascript_feature.h"
 #include "components/autofill/core/browser/logging/log_manager.h"
 #include "components/autofill/core/browser/logging/log_router.h"
@@ -196,6 +198,7 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
     id<AIChatUIHandlerBridge, AIChatAssociatedContentPageFetcher>
         aiChatUIHandler;
 @property(nonatomic, weak) id<WalletPageHandlerBridge> walletPageHandler;
+@property(nonatomic, weak) id<LoginsTabHelperBridge> loginsHelper;
 @end
 
 @implementation BraveWebView {
@@ -274,6 +277,8 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
   }
 
   brave_ads::AdsTabHelper::MaybeCreateForWebState(self.webState);
+
+  LoginsTabHelper::MaybeCreateForWebState(self.webState, _loginsHelper);
 }
 
 - (void)updateForOnDownloadCreated {
@@ -466,6 +471,18 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
         }
         completionHandler(nil);
       }));
+}
+
+@end
+
+@implementation BraveWebView (Logins)
+
+- (void)setLoginsHelper:(id<LoginsTabHelperBridge>)loginsHelper {
+  _loginsHelper = loginsHelper;
+  auto* tab_helper = LoginsTabHelper::FromWebState(self.webState);
+  if (tab_helper) {
+    tab_helper->SetBridge(loginsHelper);
+  }
 }
 
 @end

@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol WalletPageHandlerBridge;
 @protocol AIChatAssociatedContentPageFetcher;
 @protocol ProfileBridge;
+@protocol LoginsTabHelperBridge;
 
 typedef void (^ResetConfigurationCallback)(id<ProfileBridge>,
                                            WKWebViewConfiguration*);
@@ -156,6 +157,12 @@ CWV_EXPORT
 // Fetches the page metadata (OpenSearch & RSS feeds from the page) and returns
 // a JSON string with the results
 - (void)fetchMetadata:(void (^)(NSString* _Nullable json))completionHandler;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (Logins)
+/// A bridge for handling Logins script messages
+- (void)setLoginsHelper:(id<LoginsTabHelperBridge>)loginsHelper;
 @end
 
 NS_ASSUME_NONNULL_END
