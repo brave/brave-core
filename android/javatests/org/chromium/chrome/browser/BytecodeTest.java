@@ -484,19 +484,6 @@ public class BytecodeTest {
                         void.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
-                        "calculateTabletMvtWidth",
-                        MethodModifier.REGULAR,
-                        void.class,
-                        int.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
-                        "updateMvtOnTablet",
-                        MethodModifier.REGULAR,
-                        void.class));
-        Assert.assertTrue(
-                methodExists(
                         "org/chromium/chrome/browser/ntp_customization/NtpCustomizationUtils",
                         "isInNarrowWindowOnTablet",
                         MethodModifier.STATIC,
@@ -2522,12 +2509,6 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31",
                         "mInstanceId"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
-                        "mMvTilesContainerLayout"));
-        Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "mMvtContentFits"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "mProfile"));
         Assert.assertTrue(
