@@ -30,6 +30,7 @@ import {
 import '../common/strings'
 // <if expr="is_ios">
 import { useIOSOneTapFix } from '../common/useIOSOneTapFix'
+import useUpdateDocumentTitle from './hooks/useUpdateDocumentTitle'
 // </if>
 
 // Perform any setup specific to this platform
@@ -101,6 +102,8 @@ function MainConversation() {
 
 function Content() {
   const aiChatContext = useAIChat()
+
+  useUpdateDocumentTitle()
 
   if (!aiChatContext.isStandalone) {
     return <Main />

@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import generateReactContext from '$web-common/api/react_api'
-import { getLocale } from '$web-common/locale'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import { IGNORE_EXTERNAL_LINK_WARNING_KEY } from '../../common/constants'
 import {
@@ -168,34 +167,6 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     // that would cause an infinite loop.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasConversationStarted, updateSelectedConversationId])
-
-  // Update page title when conversation changes
-  const conversations = aiChat.api.useGetConversations().data
-  React.useEffect(() => {
-    const originalTitle = document.title
-    const conversationTitle =
-      conversations.find((c) => c.uuid === conversationState.conversationUuid)
-        ?.title || getLocale(S.AI_CHAT_CONVERSATION_LIST_UNTITLED)
-
-    function setTitle(isPWA: boolean) {
-      if (isPWA) {
-        document.title = conversationTitle
-      } else {
-        document.title = `${getLocale(S.CHAT_UI_TITLE)} - ${conversationTitle}`
-      }
-    }
-
-    const isPWAQuery = window.matchMedia('(display-mode: standalone)')
-    const handleChange = (e: MediaQueryListEvent) => setTitle(e.matches)
-    isPWAQuery.addEventListener('change', handleChange)
-
-    setTitle(isPWAQuery.matches)
-
-    return () => {
-      document.title = originalTitle
-      isPWAQuery.removeEventListener('change', handleChange)
-    }
-  }, [conversations, conversationState.conversationUuid])
 
   const shouldShowLongConversationInfo = React.useMemo<boolean>(() => {
     if (!conversationHistory || !currentModel) {
