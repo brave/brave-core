@@ -436,31 +436,8 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         "0x\(walletAmountFormatter.weiString(from: zeroExQuote.value, radix: .hex, decimals: 0) ?? "0")"
       data = .init(hexString: zeroExQuote.data) ?? .init()
 
-    } else if let lifiQuote = currentSwapQuoteInfo.swapQuote?.lifiQuote {
-      guard let route = lifiQuote.routes.first, let step = route.steps.first else {
-        self.state = .error(Strings.Wallet.unknownError)
-        self.clearAllAmount()
-        return false
-      }
-      let (swapTransactionUnion, _, _) = await swapService.transaction(
-        params: .init(lifiTransactionParams: step)
-      )
-      guard let lifiTransaction = swapTransactionUnion?.lifiTransaction,
-        let evmTransaction = lifiTransaction.evmTransaction
-      else {
-        self.state = .error(Strings.Wallet.unknownError)
-        self.clearAllAmount()
-        return false
-      }
-      // these values are already in wei
-      gasLimit =
-        "0x\(walletAmountFormatter.weiString(from: evmTransaction.gasLimit, radix: .hex, decimals: 0) ?? "0")"
-      to = evmTransaction.to
-      value =
-        "0x\(walletAmountFormatter.weiString(from: evmTransaction.value, radix: .hex, decimals: 0) ?? "0")"
-      data = .init(hexString: evmTransaction.data) ?? .init()
     } else {
-      assertionFailure("Only ZeroEx and LiFi supported for Ethereum swaps")
+      assertionFailure("Only ZeroEx supported for Ethereum swaps")
       self.state = .error(Strings.Wallet.unknownError)
       self.clearAllAmount()
       return false
@@ -643,8 +620,6 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       await handleZeroExQuote(base: base, zeroExQuote: zeroExQuote)
     } else if let jupiterQuote = swapQuoteUnion.jupiterQuote {
       await handleJupiterQuote(jupiterQuote)
-    } else if let lifiQuote = swapQuoteUnion.lifiQuote {
-      await handleLifiQuote(base: base, lifiQuote)
     }
   }
 
@@ -802,109 +777,6 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     self.state = .swap
   }
 
-  @MainActor private func handleLifiQuote(
-    base: SwapParamsBase,
-    _ lifiQuote: BraveWallet.LiFiQuote
-  ) async {
-    guard !Task.isCancelled else { return }
-    guard let route = lifiQuote.routes.first,
-      let step = route.steps.first,
-      // shouldn't occur, cross-chain token selection unavailable on iOS
-      route.fromToken.coin == route.toToken.coin
-    else {
-      self.state = .error(Strings.Wallet.unknownError)
-      return
-    }
-    let walletAmountFormatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
-    switch base {
-    case .perSellAsset:
-      let decimal = Int(route.toToken.decimals)
-      let decimalString =
-        walletAmountFormatter.decimalString(for: route.toAmount, decimals: decimal) ?? ""
-      if let bv = BDouble(decimalString) {
-        buyAmount = bv.decimalDescription
-      }
-    case .perBuyAsset:
-      let decimal = Int(route.fromToken.decimals)
-      let decimalString =
-        walletAmountFormatter.decimalString(for: route.fromAmount, decimals: decimal) ?? ""
-      if let bv = BDouble(decimalString) {
-        sellAmount = bv.decimalDescription
-      }
-    }
-
-    guard let accountInfo,
-      let sellAmountValue = BDouble(sellAmount)
-    else {
-      self.state = .error(Strings.Wallet.unknownError)
-      return
-    }
-    let network = await rpcService.network(coin: accountInfo.coin, origin: nil)
-
-    // Check if balance available to pay for gas
-    if route.fromToken.coin == .eth {
-      let ethBalance: BDouble
-      if let assetBalance = assetManager.getAssetBalances(
-        for: network.nativeToken,
-        account: accountInfo.id
-      )?.first(where: { $0.chainId == network.chainId }) {
-        ethBalance = BDouble(assetBalance.balance) ?? 0
-      } else {
-        let (ethBalanceString, _, _) = await rpcService.balance(
-          address: accountInfo.address,
-          coin: network.coin,
-          chainId: network.chainId
-        )
-        ethBalance =
-          BDouble(
-            walletAmountFormatter.decimalString(
-              for: ethBalanceString.removingHexPrefix,
-              radix: .hex,
-              decimals: 18
-            ) ?? ""
-          ) ?? 0
-      }
-      let feeTotal: Double = step.estimate.gasCosts.reduce(Double(0)) { total, cost in
-        total + (Double(cost.amount) ?? 0)
-      }
-      let fee =
-        BDouble(
-          walletAmountFormatter.decimalString(
-            for: "\(feeTotal)",
-            decimals: Int(network.decimals)
-          ) ?? ""
-        ) ?? 0
-      if route.fromToken.symbol == network.symbol {
-        if ethBalance < fee + sellAmountValue {
-          self.state = .error(Strings.Wallet.insufficientFundsForGas)
-          return
-        }
-      } else {
-        if ethBalance < fee {
-          self.state = .error(Strings.Wallet.insufficientFundsForGas)
-          return
-        }
-      }
-    }  // else fromToken.coin == .sol
-    // same-chain SOL swaps not currently supported.
-    // https://docs.li.fi/li.fi-api/solana
-
-    // `isErc20` not assigned in `LiFiRoute` response
-    let fromToken = selectedFromToken ?? route.fromToken
-    // Check allowance if token is erc20
-    if fromToken.isErc20 {
-      await self.checkAllowance(
-        network: network,
-        ownerAddress: accountInfo.address,
-        spenderAddress: step.estimate.approvalAddress,
-        amountToSend: sellAmountValue,
-        fromToken: fromToken
-      )
-    } else {
-      self.state = .swap
-    }
-  }
-
   @MainActor private func handleSwapQuoteError(_ swapError: BraveWallet.SwapErrorUnion) async {
     // check balance first because error can cause by insufficient balance
     if let sellTokenBalance = self.selectedFromTokenBalance,
@@ -923,11 +795,6 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       return
     } else if let jupiterError = swapError.jupiterError,
       jupiterError.isInsufficientLiquidity
-    {
-      self.state = .error(Strings.Wallet.insufficientLiquidity)
-      return
-    } else if let lifiError = swapError.lifiError,
-      lifiError.code == .notFoundError
     {
       self.state = .error(Strings.Wallet.insufficientLiquidity)
       return
