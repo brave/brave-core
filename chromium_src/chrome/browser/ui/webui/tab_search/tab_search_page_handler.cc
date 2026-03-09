@@ -60,13 +60,13 @@ TabSearchPageHandler::~TabSearchPageHandler() = default;
 #if BUILDFLAG(ENABLE_AI_CHAT)
 void TabSearchPageHandler::OnTabOrganizationFeaturePrefChanged(
     Profile* profile) {
-  page_->TabOrganizationEnabledChanged(
-      ai_chat::AIChatServiceFactory::GetForBrowserContext(profile) &&
-      ai_chat::features::IsTabOrganizationEnabled() &&
-      profile->GetPrefs()->GetBoolean(
-          ai_chat::prefs::kBraveAIChatTabOrganizationEnabled));
-  page_->ShowFREChanged(!profile->GetPrefs()->HasPrefPath(
-      ai_chat::prefs::kBraveAIChatTabOrganizationEnabled));
+  // page_->TabOrganizationEnabledChanged(
+  //     ai_chat::AIChatServiceFactory::GetForBrowserContext(profile) &&
+  //     ai_chat::features::IsTabOrganizationEnabled() &&
+  //     profile->GetPrefs()->GetBoolean(
+  //         ai_chat::prefs::kBraveAIChatTabOrganizationEnabled));
+  // page_->ShowFREChanged(!profile->GetPrefs()->HasPrefPath(
+  //     ai_chat::prefs::kBraveAIChatTabOrganizationEnabled));
 }
 
 std::vector<ai_chat::Tab> TabSearchPageHandler::GetTabsForAIEngine() {
