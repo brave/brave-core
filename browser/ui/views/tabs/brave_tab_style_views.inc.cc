@@ -651,6 +651,18 @@ std::optional<SkColor> BraveVerticalTabStyle::GetTargetTabBackgroundColor(
     return gfx::kPlaceholderColor;
   }
 
+  // We have tab_background_color override for inactive tabs with accent in case
+  // it's hovered
+  if (selection_state == TabStyle::TabSelectionState::kInactive && hovered &&
+      static_cast<const BraveTab*>(tab())->ShouldPaintTabAccent()) {
+    auto accent_colors =
+        static_cast<const BraveTab*>(tab())->GetTabAccentColors();
+    if (accent_colors &&
+        accent_colors->override_tab_background_color != SK_ColorTRANSPARENT) {
+      return accent_colors->override_tab_background_color;
+    }
+  }
+
   // Tab in tile doesn't have background in inactive state.
   // In split view tile, we don't have selected tab's background.
   // When any tab in a tile is clicked, the other tab in a same tile
