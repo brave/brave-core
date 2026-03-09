@@ -45,12 +45,8 @@
 }
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPageLayout {
-    *** mMvTilesContainerLayout;
-    *** mMvtContentFits;
     *** mProfile;
     *** initializeSiteSectionView(...);
-    *** calculateTabletMvtWidth(...);
-    *** updateMvtOnTablet(...);
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
