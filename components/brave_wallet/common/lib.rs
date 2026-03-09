@@ -261,7 +261,8 @@ fn validate_byron_address_impl(bytes: &[u8]) -> Result<(), ()> {
 }
 
 /// Validates BYRON_ADDRESS_ATTRIBUTES map: only keys 1 and 2 allowed.
-/// Key 1: <<bytes .cbor BYRON_DERIVATION_PATH_CIPHERTEXT>> (inner CBOR = bytes.size 28)
+/// Key 1: <<bytes .cbor BYRON_DERIVATION_PATH_CIPHERTEXT>> (inner CBOR =
+/// bytes.size 28)
 /// Key 2: <<uint32>> (inner CBOR = uint32)
 fn validate_byron_address_attributes(attrs: &[(CborValue, CborValue)]) -> Result<(), ()> {
     for (k, v) in attrs {
