@@ -317,9 +317,9 @@ public class CustomizeBraveMenu {
     }
 
     /**
-     * Initializes menu items in the {@link MENU_IDS_INVISIBLE_BY_DEFAULT} array as invisible
-     * by default.
-     * This method should be called once during onboarding process.
+     * Initializes menu items in the {@link MENU_IDS_INVISIBLE_BY_DEFAULT} array as invisible by
+     * default. This method should be called once during onboarding process.
+     *
      * @see org.chromium.chrome.browser.firstrun.WelcomeOnboardingActivity
      * @param resources the resources used to access the entry name of a given menu item ID
      */
