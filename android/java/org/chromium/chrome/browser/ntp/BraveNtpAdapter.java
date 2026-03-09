@@ -383,6 +383,11 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return new StatsViewHolder(view);
 
         } else if (viewType == TYPE_TOP_SITES) {
+            // mMvTilesContainerLayout may have been placed in the NTP layout tree by
+            // initializeSiteSectionView (via ViewStub inflation). Detach it first so
+            // RecyclerView can adopt it as an item view without an "already has a parent" error.
+            ViewGroup existingParent = (ViewGroup) mMvTilesContainerLayout.getParent();
+            if (existingParent != null) existingParent.removeView(mMvTilesContainerLayout);
             return new TopSitesViewHolder(mMvTilesContainerLayout);
 
         } else if (viewType == TYPE_NEW_CONTENT) {
