@@ -9,6 +9,6 @@
     "test/**",
     "third_party/**",
     "tools/crates/vendor/**",
-    "ui/webui/resources/wasm/**"
+    "third_party/wasm/**"
   ]
 }
