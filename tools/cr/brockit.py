@@ -1176,8 +1176,7 @@ class Upgrade(Versioned):
                 return value.strip().lstrip().replace('"', '').replace("'", "")
         return None
 
-    def _check_toolchain(self, file_path: str, key: str,
-                         alternative_key: Optional[str]) -> Optional[Dict]:
+    def _check_toolchain(self, file_path: str, key: str) -> Optional[Dict]:
         """ Helper function to check for toolchain updates.
 
     This helper is used to check for the MacOS SDK, Windows SDK to see if the
@@ -1203,14 +1202,8 @@ class Upgrade(Versioned):
         current_value = self.get_assigned_value(toolchain_diff,
                                                 key,
                                                 removed=True)
-        if (not updated_value and not current_value
-                and alternative_key is not None):
-            updated_value = self.get_assigned_value(toolchain_diff,
-                                                    alternative_key,
-                                                    added=True)
-            current_value = self.get_assigned_value(toolchain_diff,
-                                                    alternative_key,
-                                                    removed=True)
+        if not updated_value and not current_value:
+            return None
         commit_log = repository.chromium.run_git(
             'log', f'{self.working_version}..{self.target_version}', '-S',
             updated_value, '--pretty=oneline', '-1', file_path)
@@ -1231,8 +1224,10 @@ class Upgrade(Versioned):
     This function returns an advisory record if the Windows SDK has been
     updated, indicating a new toolchain is required.
         """
-        result = self._check_toolchain('build/vs_toolchain.py', 'SDK_VERSION',
-                                       'TOOLCHAIN_HASH')
+        result = self._check_toolchain('build/vs_toolchain.py', 'SDK_VERSION')
+        if not result:
+            result = self._check_toolchain('build/vs_toolchain.py',
+                                           'TOOLCHAIN_HASH')
         if result:
             result['description'] = (
                 'Windows SDK has been updated. '
@@ -1250,7 +1245,7 @@ class Upgrade(Versioned):
     indicating a new toolchain is required.
         """
         result = self._check_toolchain('build/config/mac/mac_sdk.gni',
-                                       'mac_sdk_official_version', None)
+                                       'mac_sdk_official_version')
         if result:
             result['description'] = (
                 'MacOS SDK has been updated. '
