@@ -433,7 +433,7 @@ public class BraveWalletUtilsTest {
                     String varName = f.getName();
                     if (varName.equals("baseData") || varName.equals("chainId")
                             || varName.equals("maxPriorityFeePerGas")
-                            || varName.equals("maxFeePerGas") || varName.equals("gasEstimation")) {
+                            || varName.equals("maxFeePerGas")) {
                         continue;
                     }
                     if (v == null) {

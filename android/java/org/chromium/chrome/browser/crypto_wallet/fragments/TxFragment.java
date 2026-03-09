@@ -297,7 +297,9 @@ public class TxFragment extends Fragment {
         cancel.setOnClickListener(
                 v1 -> {
                     mCheckedPriorityId = mPreviousCheckedPriorityId;
-                    mEditGasDialog.dismiss();
+                    if (mEditGasDialog != null) {
+                        mEditGasDialog.dismiss();
+                    };
                 });
         Button ok = mEditGasDialog.findViewById(R.id.ok);
         ok.setOnClickListener(v2 -> onEditGasDialogOkClicked(view));
@@ -371,6 +373,8 @@ public class TxFragment extends Fragment {
     }
 
     private void onEditGasDialogOkClicked(View view) {
+        if (mEditGasDialog == null) return;
+
         mPreviousCheckedPriorityId = mCheckedPriorityId;
         EthTxManagerProxy ethTxManagerProxy = getEthTxManagerProxy();
         assert ethTxManagerProxy != null;
@@ -393,7 +397,9 @@ public class TxFragment extends Fragment {
                         if (mUpdateTxObjectManually) {
                             setupView(view);
                         }
-                        mEditGasDialog.dismiss();
+                        if (mEditGasDialog != null) {
+                            mEditGasDialog.dismiss();
+                        }
                     });
         } else {
             if (mEstimation == null) {
@@ -432,9 +438,9 @@ public class TxFragment extends Fragment {
                     maxFeePerGas,
                     gasLimit,
                     success -> {
-                        if (!success) {
-                            return;
-                        }
+                        if (mEditGasDialog == null) return;
+                        if (!success) return;
+
                         if (mUpdateTxObjectManually) {
                             setupView(view);
                         }
