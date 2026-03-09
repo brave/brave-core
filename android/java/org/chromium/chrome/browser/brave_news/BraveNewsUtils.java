@@ -44,6 +44,7 @@ import java.util.Map;
 
 @NullMarked
 public class BraveNewsUtils {
+    private static final String TAG = "BraveNewsUtils";
     public static final int BRAVE_NEWS_VIEWD_CARD_TIME = 1000; // milliseconds
     private static @Nullable Map<Integer, DisplayAd> sCurrentDisplayAds;
     private static @Nullable String sLocale;
@@ -355,24 +356,36 @@ public class BraveNewsUtils {
                     if (braveNewsController == null) {
                         return;
                     }
-                    braveNewsController.getLocale(
-                            (locale) -> {
-                                setLocale(locale);
-                                getChannels(
-                                        braveNewsController,
-                                        braveNewsPreferencesDataListener,
-                                        () -> {
-                                            getPublishers(
-                                                    braveNewsController,
-                                                    braveNewsPreferencesDataListener,
-                                                    () -> {
-                                                        getSuggestionsSources(
-                                                                braveNewsController,
-                                                                braveNewsPreferencesDataListener,
-                                                                postAction);
-                                                    });
-                                        });
-                            });
+                    // The mojo pipe can be closed by onDetachedFromWindow() or
+                    // onConnectionError() before this BEST_EFFORT task executes.
+                    // The Java mojo bindings have no non-destructive validity check,
+                    // so we catch IllegalStateException from RouterImpl when the
+                    // pipe is no longer usable.
+                    try {
+                        braveNewsController.getLocale(
+                                (locale) -> {
+                                    setLocale(locale);
+                                    getChannels(
+                                            braveNewsController,
+                                            braveNewsPreferencesDataListener,
+                                            () -> {
+                                                getPublishers(
+                                                        braveNewsController,
+                                                        braveNewsPreferencesDataListener,
+                                                        () -> {
+                                                            getSuggestionsSources(
+                                                                    braveNewsController,
+                                                                    braveNewsPreferencesDataListener, // presubmit: ignore-long-line
+                                                                    postAction);
+                                                        });
+                                            });
+                                });
+                    } catch (IllegalStateException e) {
+                        Log.w(TAG, "Mojo connection closed before getLocale", e);
+                        if (postAction != null) {
+                            postAction.run();
+                        }
+                    }
                 });
     }
 
@@ -380,45 +393,59 @@ public class BraveNewsUtils {
             BraveNewsController braveNewsController,
             @Nullable BraveNewsPreferencesDataListener braveNewsPreferencesDataListener,
             final Runnable postAction) {
-        braveNewsController.getChannels(
-                (channels) -> {
-                    List<Channel> channelList = new ArrayList<>();
-                    for (Map.Entry<String, Channel> entry : channels.entrySet()) {
-                        Channel channel = entry.getValue();
-                        channelList.add(channel);
-                    }
+        try {
+            braveNewsController.getChannels(
+                    (channels) -> {
+                        List<Channel> channelList = new ArrayList<>();
+                        for (Map.Entry<String, Channel> entry : channels.entrySet()) {
+                            Channel channel = entry.getValue();
+                            channelList.add(channel);
+                        }
 
-                    Comparator<Channel> compareByName =
-                            (Channel o1, Channel o2) ->
-                                    o1.channelName
-                                            .toLowerCase(Locale.ROOT)
-                                            .compareTo(o2.channelName.toLowerCase(Locale.ROOT));
-                    Collections.sort(channelList, compareByName);
+                        Comparator<Channel> compareByName =
+                                (Channel o1, Channel o2) ->
+                                        o1.channelName
+                                                .toLowerCase(Locale.ROOT)
+                                                .compareTo(o2.channelName.toLowerCase(Locale.ROOT));
+                        Collections.sort(channelList, compareByName);
 
-                    setChannelList(channelList);
-                    if (braveNewsPreferencesDataListener != null) {
-                        braveNewsPreferencesDataListener.onChannelReceived();
-                    }
-                    if (postAction != null) {
-                        postAction.run();
-                    }
-                });
+                        setChannelList(channelList);
+                        if (braveNewsPreferencesDataListener != null) {
+                            braveNewsPreferencesDataListener.onChannelReceived();
+                        }
+                        if (postAction != null) {
+                            postAction.run();
+                        }
+                    });
+        } catch (IllegalStateException e) {
+            Log.w(TAG, "Mojo connection closed before getChannels", e);
+            if (postAction != null) {
+                postAction.run();
+            }
+        }
     }
 
     private static void getPublishers(
             BraveNewsController braveNewsController,
             @Nullable BraveNewsPreferencesDataListener braveNewsPreferencesDataListener,
             final Runnable postAction) {
-        braveNewsController.getPublishers(
-                (publishers) -> {
-                    setPublishers(publishers);
-                    if (braveNewsPreferencesDataListener != null) {
-                        braveNewsPreferencesDataListener.onPublisherReceived();
-                    }
-                    if (postAction != null) {
-                        postAction.run();
-                    }
-                });
+        try {
+            braveNewsController.getPublishers(
+                    (publishers) -> {
+                        setPublishers(publishers);
+                        if (braveNewsPreferencesDataListener != null) {
+                            braveNewsPreferencesDataListener.onPublisherReceived();
+                        }
+                        if (postAction != null) {
+                            postAction.run();
+                        }
+                    });
+        } catch (IllegalStateException e) {
+            Log.w(TAG, "Mojo connection closed before getPublishers", e);
+            if (postAction != null) {
+                postAction.run();
+            }
+        }
     }
 
     public static void setPublishers(Map<String, Publisher> publishers) {
@@ -469,15 +496,22 @@ public class BraveNewsUtils {
             BraveNewsController braveNewsController,
             @Nullable BraveNewsPreferencesDataListener braveNewsPreferencesDataListener,
             final @Nullable Runnable postAction) {
-        braveNewsController.getSuggestedPublisherIds(
-                (publisherIds) -> {
-                    setSuggestionsIds(Arrays.asList(publisherIds));
-                    if (braveNewsPreferencesDataListener != null) {
-                        braveNewsPreferencesDataListener.onSuggestionsReceived();
-                    }
-                    if (postAction != null) {
-                        postAction.run();
-                    }
-                });
+        try {
+            braveNewsController.getSuggestedPublisherIds(
+                    (publisherIds) -> {
+                        setSuggestionsIds(Arrays.asList(publisherIds));
+                        if (braveNewsPreferencesDataListener != null) {
+                            braveNewsPreferencesDataListener.onSuggestionsReceived();
+                        }
+                        if (postAction != null) {
+                            postAction.run();
+                        }
+                    });
+        } catch (IllegalStateException e) {
+            Log.w(TAG, "Mojo connection closed before getSuggestedPublisherIds", e);
+            if (postAction != null) {
+                postAction.run();
+            }
+        }
     }
 }
