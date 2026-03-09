@@ -6178,23 +6178,23 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
     MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
         conversation_handler_->GetEngineForTesting());
 
+    base::RunLoop run_loop;
     EXPECT_CALL(
         *engine,
         GenerateAssistantResponse(
             _, _, _, _, _, testing::Eq(test_case.expected_capabilities), _, _))
-        .WillOnce(::testing::DoAll(
-            base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
-                mojom::ConversationEntryEvent::NewCompletionEvent(
-                    mojom::CompletionEvent::New("")),
-                std::nullopt)),
-            base::test::RunOnceCallback<7>(
-                base::ok(EngineConsumer::GenerationResultData(
-                    mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("")),
-                    std::nullopt)))));
+        .WillOnce(testing::WithArg<7>(
+            [&run_loop](EngineConsumer::GenerationCompletedCallback callback) {
+              std::move(callback).Run(
+                  base::ok(EngineConsumer::GenerationResultData(
+                      mojom::ConversationEntryEvent::NewCompletionEvent(
+                          mojom::CompletionEvent::New("")),
+                      std::nullopt)));
+              run_loop.Quit();
+            }));
 
     conversation_handler_->SubmitHumanConversationEntry("Hello", std::nullopt);
-    task_environment_.RunUntilIdle();
+    run_loop.Run();
 
     testing::Mock::VerifyAndClearExpectations(engine);
   }
