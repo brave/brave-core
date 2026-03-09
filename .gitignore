@@ -85,5 +85,7 @@ xcuserdata
 # A file that may be left behind in the CI after running presubmits
 .presubmit_results.json
 
-# Claude LLM settings
-.claude
+# Claude LLM settings (user-specific, not tracked)
+.claude/settings.local.json
+.claude/CLAUDE.md
+.claude/worktrees/
