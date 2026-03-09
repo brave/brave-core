@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = """
+Make it possible to add chrome://leo-ai to the Home Screen on Android.
+This patch updates the `shouldShowHomescreenMenuItem` funcion to whitelist
+chrome://leo-ai.
+"""
+re_pattern = '(isAddToHomeIntentSupported\(\)\s+)&& (!isNativePage)$'
+re_flags = ["MULTILINE"]
+replace = '\1&& (!isNativePage || (url.getScheme().equals("chrome") && url.getHost().equals("leo-ai")))'

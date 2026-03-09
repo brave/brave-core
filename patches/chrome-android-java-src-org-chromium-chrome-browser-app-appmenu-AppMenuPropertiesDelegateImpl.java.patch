@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java
+index 31a8692bb45c2d910483bceaf1255ca152eb2c3d..293804e47eb2f9a7e2846c29b5b548b27794ef2f 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java
+@@ -683,7 +683,7 @@ public abstract class AppMenuPropertiesDelegateImpl implements AppMenuProperties
+         //                is not persisted when adding to the homescreen.
+         // * If creating shortcuts it not supported by the current home screen.
+         return WebappsUtils.isAddToHomeIntentSupported()
+-                && !isNativePage
++                && (!isNativePage || (url.getScheme().equals("chrome") && url.getHost().equals("leo-ai")))
+                 && !isFileScheme
+                 && !isContentScheme
+                 && !isIncognito

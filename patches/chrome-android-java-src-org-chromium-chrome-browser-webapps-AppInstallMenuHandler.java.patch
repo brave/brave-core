@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/webapps/AppInstallMenuHandler.java b/chrome/android/java/src/org/chromium/chrome/browser/webapps/AppInstallMenuHandler.java
+index 7bedbc8985a1192dcce41f282f2e1e4473dc13a8..63e763e9f41e8303b092bcfc450e56225a5cb482 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/webapps/AppInstallMenuHandler.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/webapps/AppInstallMenuHandler.java
+@@ -61,7 +61,7 @@ public class AppInstallMenuHandler {
+         if (webContents == null) return false;
+         @Nullable BottomSheetController controller =
+                 BottomSheetControllerProvider.from(windowAndroid);
+-        if (controller == null) {
++        if (controller == null || currentTab.getUrl().getScheme().equals("chrome")) {
+             // We have three options when this function fails. One is to abort the operation and do
+             // nothing (by returning false), or we can make one of the two options of the Universal
+             // Install dialog the default and go with that in case of errors. Since Install App is
