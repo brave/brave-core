@@ -275,7 +275,7 @@ class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
 
   MOCK_METHOD(void,
               Show,
-              (const url::Origin& origin,
+              (url::Origin origin,
                PsstWebsiteSettings dialog_data,
                const std::string& site_name,
                base::ListValue tasks,
