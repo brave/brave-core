@@ -166,7 +166,7 @@
   </message>
 
   <message name="IDS_NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT_BRAVE" desc="Placeholder text for when Brave is the selected search engine" formatter_data="webui=BraveNewTabPage">
-    Ask Brave Search
+    Ask anything, find anything...
   </message>
 
   <message name="IDS_NEW_TAB_SEARCH_CUSTOMIZE_ENGINE_LIST_TEXT" desc="Label for the customize list action" formatter_data="webui=BraveNewTabPage">
