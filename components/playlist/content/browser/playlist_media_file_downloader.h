@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_multi_source_observation.h"
 #include "base/scoped_observation.h"
@@ -94,6 +95,9 @@ class PlaylistMediaFileDownloader
   void OnDownloadRemoved(download::DownloadItem* item) override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(PlaylistMediaFileDownloaderTest,
+                           NoCrashOnDestroyWithMismatchedGuidDownload);
+
   void ResetDownloadStatus();
   void DownloadMediaFile(const GURL& url);
   void OnMediaFileDownloaded(const std::string& download_item_guid,
@@ -142,6 +146,8 @@ class PlaylistMediaFileDownloader
 
   // true when this class is working for playlist now.
   bool in_progress_ = false;
+
+  base::RepeatingClosure on_download_created_for_testing_;
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
 
