@@ -431,7 +431,8 @@ public class BraveWalletUtilsTest {
                 java.lang.Object v = f.get(testStruct);
                 if (!t.isPrimitive()) {
                     String varName = f.getName();
-                    if (varName.equals("baseData") || varName.equals("chainId")
+                    if (varName.equals("baseData")
+                            || varName.equals("chainId")
                             || varName.equals("maxPriorityFeePerGas")
                             || varName.equals("maxFeePerGas")) {
                         continue;
