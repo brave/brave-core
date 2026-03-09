@@ -31,6 +31,7 @@ import org.chromium.brave.browser.quick_search_engines.R;
 import org.chromium.brave.browser.quick_search_engines.utils.QuickSearchEnginesUtil;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -211,4 +212,11 @@ public class QuickSearchEnginesFragment extends ChromeBaseSettingsFragment
         QuickSearchEnginesUtil.loadSearchEngineLogo(
                 getProfile(), logoView, quickSearchEnginesModel.getKeyword());
     }
+
+    // This fragment displays a dynamic RecyclerView of search engines; there are no static
+    // preferences to index.
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(
+                    QuickSearchEnginesFragment.class.getName(),
+                    BaseSearchIndexProvider.INDEX_OPT_OUT);
 }
