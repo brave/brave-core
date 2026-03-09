@@ -36,7 +36,8 @@ class BraveHistoryDeleteDirectivesDataTypeController
   ~BraveHistoryDeleteDirectivesDataTypeController() override;
 
   // DataTypeController overrides.
-  PreconditionState GetPreconditionState() const override;
+  PreconditionState GetPreconditionState(
+      const PreconditionContext& context) const override;
 };
 
 }  // namespace history
