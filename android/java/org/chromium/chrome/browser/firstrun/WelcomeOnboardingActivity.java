@@ -52,6 +52,7 @@ import org.chromium.base.ApplicationStatus;
 import org.chromium.base.ApplicationStatus.ActivityStateListener;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
+import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
@@ -234,6 +235,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, true);
         }
+        CustomizeBraveMenu.initDefaultInvisibleItems(getResources());
         OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
 
         FirstRunStatus.setFirstRunFlowComplete(true);

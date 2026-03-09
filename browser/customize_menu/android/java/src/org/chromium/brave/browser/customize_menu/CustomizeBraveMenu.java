@@ -22,6 +22,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.Size;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.preference.Preference;
@@ -163,9 +164,6 @@ public class CustomizeBraveMenu {
      */
     public static void applyCustomization(
             final Resources resources, final MVCListAdapter.ModelList modelList) {
-        for (final int menuItemId : MENU_IDS_INVISIBLE_BY_DEFAULT) {
-            initAsInvisible(resources, menuItemId);
-        }
         for (Iterator<MVCListAdapter.ListItem> it = modelList.iterator(); it.hasNext(); ) {
             MVCListAdapter.ListItem item = it.next();
             final int menuItemId = item.model.get(AppMenuItemProperties.MENU_ITEM_ID);
@@ -319,13 +317,27 @@ public class CustomizeBraveMenu {
     }
 
     /**
+     * Initializes menu items in the {@link MENU_IDS_INVISIBLE_BY_DEFAULT} array as invisible
+     * by default.
+     * This method should be called once during onboarding process.
+     * @see org.chromium.chrome.browser.firstrun.WelcomeOnboardingActivity
+     * @param resources the resources used to access the entry name of a given menu item ID
+     */
+    public static void initDefaultInvisibleItems(final Resources resources) {
+        for (final int menuItemId : MENU_IDS_INVISIBLE_BY_DEFAULT) {
+            initAsInvisible(resources, menuItemId);
+        }
+    }
+
+    /**
      * Initializes a menu item as invisible in the user preferences. This method is a no-op when a
      * preference already exists.
      *
      * @param resources the resources used to access the entry name of a given menu item ID
      * @param itemId the resource ID of the menu item to initialize as invisible
      */
-    public static void initAsInvisible(final Resources resources, final int itemId) {
+    @VisibleForTesting
+    static void initAsInvisible(final Resources resources, final int itemId) {
         String resourceName;
         try {
             resourceName = resources.getResourceEntryName(itemId);
