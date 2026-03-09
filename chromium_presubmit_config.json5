@@ -86,6 +86,11 @@
     "CheckLongLines": [
       "components/p3a/metric_names\\.h",
       ".*/res/.*/.*\\.xml",
+      // Web files are formatted by prettier, which handles line length.
+      // Presubmit already fails if prettier formatting is needed.
+      ".*\\.tsx?",
+      ".*\\.jsx?",
+      ".*\\.css",
     ],
     "CheckParseErrors": [
       ".*tsconfig\\.json",
