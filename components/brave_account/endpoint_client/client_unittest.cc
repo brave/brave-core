@@ -27,10 +27,8 @@
 #include "brave/components/brave_account/endpoint_client/is_request.h"
 #include "brave/components/brave_account/endpoint_client/is_response.h"
 #include "brave/components/brave_account/endpoint_client/is_response_body.h"
-#include "brave/components/brave_account/endpoint_client/json_empty_body.h"
 #include "brave/components/brave_account/endpoint_client/json_test_endpoint_bodies.h"
 #include "brave/components/brave_account/endpoint_client/maybe_strip_with_headers.h"
-#include "brave/components/brave_account/endpoint_client/protobuf_empty_body.pb.h"
 #include "brave/components/brave_account/endpoint_client/protobuf_test_endpoint_bodies.pb.h"
 #include "brave/components/brave_account/endpoint_client/request_handle.h"
 #include "brave/components/brave_account/endpoint_client/request_types.h"
@@ -87,10 +85,6 @@ bool operator==(const JSONErrorBody& lhs, const JSONErrorBody& rhs) {
   return lhs.error == rhs.error;
 }
 
-inline bool operator==(const JSONEmptyBody&, const JSONEmptyBody&) {
-  return true;
-}
-
 bool operator==(const ProtobufRequestBody& lhs,
                 const ProtobufRequestBody& rhs) {
   return lhs.request() == rhs.request();
@@ -105,10 +99,6 @@ bool operator==(const ProtobufErrorBody& lhs, const ProtobufErrorBody& rhs) {
   return lhs.error() == rhs.error();
 }
 
-bool operator==(const ProtobufEmptyBody&, const ProtobufEmptyBody&) {
-  return true;
-}
-
 namespace {
 
 template <detail::IsRequest RequestT, detail::IsResponse ResponseT>
@@ -121,43 +111,15 @@ struct TestEndpoint {
 // Request: POST https://example.com/api/query { "request": "abc" }
 // Success: { "success": "ok" }
 // Error:   { "error": "nope" }
-using JSONEndpointSuccessError =
-    TestEndpoint<POST<JSONRequestBody>,
-                 Response<JSONSuccessBody, JSONErrorBody>>;
-
-// Request: POST https://example.com/api/query { "request": "abc" }
-// Success: ignored (response body not parsed)
-// Error:   { "error": "nope" }
-using JSONEndpointEmptyError =
-    TestEndpoint<POST<JSONRequestBody>, Response<JSONEmptyBody, JSONErrorBody>>;
-
-// Request: POST https://example.com/api/query { "request": "abc" }
-// Success: { "success": "ok" }
-// Error:   ignored (response body not parsed)
-using JSONEndpointSuccessEmpty =
-    TestEndpoint<POST<JSONRequestBody>,
-                 Response<JSONSuccessBody, JSONEmptyBody>>;
+using JSONEndpoint = TestEndpoint<POST<JSONRequestBody>,
+                                  Response<JSONSuccessBody, JSONErrorBody>>;
 
 // Request: POST https://example.com/api/query \x0A\x03abc
 // Success: \x0A\x02ok
 // Error:   \x0A\x04nope
-using ProtobufEndpointSuccessError =
+using ProtobufEndpoint =
     TestEndpoint<POST<ProtobufRequestBody>,
                  Response<ProtobufSuccessBody, ProtobufErrorBody>>;
-
-// Request: POST https://example.com/api/query \x0A\x03abc
-// Success: ignored (response body not parsed)
-// Error:   \x0A\x04nope
-using ProtobufEndpointEmptyError =
-    TestEndpoint<POST<ProtobufRequestBody>,
-                 Response<ProtobufEmptyBody, ProtobufErrorBody>>;
-
-// Request: POST https://example.com/api/query \x0A\x03abc
-// Success: \x0A\x02ok
-// Error:   ignored (response body not parsed)
-using ProtobufEndpointSuccessEmpty =
-    TestEndpoint<POST<ProtobufRequestBody>,
-                 Response<ProtobufSuccessBody, ProtobufEmptyBody>>;
 
 template <typename Response>
   requires detail::IsResponse<detail::MaybeStripWithHeaders<Response>>
@@ -204,7 +166,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
  private:
   using TestCase = TestCase<Response>;
 
-  enum class BodyCase { kMalformed, kUnexpected, kValid };
+  enum class BodyCase { kEmpty, kMalformed, kUnexpected, kValid };
 
   static const TestCase* NetError() {
     static const base::NoDestructor<TestCase> kNetError({
@@ -212,7 +174,8 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         .net_error = net::ERR_FAILED,
         .status_code = std::nullopt,
         .body = "",
-        .response = MakeResponse(net::ERR_FAILED, std::nullopt, std::nullopt),
+        .response =
+            MakeResponse(net::ERR_FAILED, std::nullopt, BodyCase::kEmpty),
     });
     return kNetError.get();
   }
@@ -223,7 +186,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         .net_error = net::OK,
         .status_code = std::nullopt,
         .body = "",
-        .response = MakeResponse(net::OK, std::nullopt, std::nullopt),
+        .response = MakeResponse(net::OK, std::nullopt, BodyCase::kEmpty),
     });
     return kNoResponseHeaders.get();
   }
@@ -233,8 +196,9 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         .test_name = "success_empty_response",
         .net_error = net::OK,
         .status_code = net::HTTP_OK,
-        .body = "",
-        .response = MakeResponse(net::OK, net::HTTP_OK, std::nullopt),
+        .body = MakeBody<typename Endpoint::Response::SuccessBody>(
+            BodyCase::kEmpty),
+        .response = MakeResponse(net::OK, net::HTTP_OK, BodyCase::kEmpty),
     });
     return kSuccessEmptyResponse.get();
   }
@@ -280,8 +244,10 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         .test_name = "error_empty_response",
         .net_error = net::OK,
         .status_code = net::HTTP_BAD_REQUEST,
-        .body = "",
-        .response = MakeResponse(net::OK, net::HTTP_BAD_REQUEST, std::nullopt),
+        .body =
+            MakeBody<typename Endpoint::Response::ErrorBody>(BodyCase::kEmpty),
+        .response =
+            MakeResponse(net::OK, net::HTTP_BAD_REQUEST, BodyCase::kEmpty),
     });
     return kErrorEmptyResponse.get();
   }
@@ -351,57 +317,54 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
   }
 
   template <detail::IsJSONResponseBody ResponseBody>
-  static auto MakeResponseBody(std::optional<BodyCase> body_case) {
+  static auto MakeResponseBody(BodyCase body_case) {
     std::optional<ResponseBody> response_body;
 
-    if constexpr (std::same_as<ResponseBody, JSONEmptyBody>) {
-      response_body.emplace();
-    } else if (body_case) {
-      switch (*body_case) {
-        case BodyCase::kMalformed:
-          break;
-        case BodyCase::kUnexpected:
-          break;
-        case BodyCase::kValid:
-          if constexpr (std::same_as<ResponseBody, JSONSuccessBody>) {
-            response_body.emplace().success = "success";
-          } else {
-            static_assert(std::same_as<ResponseBody, JSONErrorBody>);
-            response_body.emplace().error = "error";
-          }
-      }
+    switch (body_case) {
+      case BodyCase::kEmpty:
+        break;
+      case BodyCase::kMalformed:
+        break;
+      case BodyCase::kUnexpected:
+        break;
+      case BodyCase::kValid:
+        if constexpr (std::same_as<ResponseBody, JSONSuccessBody>) {
+          response_body.emplace().success = "success";
+        } else {
+          static_assert(std::same_as<ResponseBody, JSONErrorBody>);
+          response_body.emplace().error = "error";
+        }
     }
 
     return response_body;
   }
 
   template <detail::IsProtobufResponseBody ResponseBody>
-  static auto MakeResponseBody(std::optional<BodyCase> body_case) {
+  static auto MakeResponseBody(BodyCase body_case) {
     std::optional<ResponseBody> response_body;
 
-    if constexpr (std::same_as<ResponseBody, ProtobufEmptyBody>) {
-      response_body.emplace();
-    } else if (body_case) {
-      switch (*body_case) {
-        case BodyCase::kMalformed:
-          break;
-        case BodyCase::kUnexpected:
-          // Unexpected payloads are well-formed protobuf wire formats that do
-          // not match the expected ResponseBody schema (e.g. contain only
-          // unknown fields). Parsing succeeds, but all fields are ignored,
-          // yielding a default-constructed ResponseBody. See
-          // Response<>::Deserialize<>() for details on protobuf parsing
-          // semantics.
-          response_body.emplace();
-          break;
-        case BodyCase::kValid:
-          if constexpr (std::same_as<ResponseBody, ProtobufSuccessBody>) {
-            response_body.emplace().set_success("success");
-          } else {
-            static_assert(std::same_as<ResponseBody, ProtobufErrorBody>);
-            response_body.emplace().set_error("error");
-          }
-      }
+    switch (body_case) {
+      case BodyCase::kEmpty:
+        // Empty string is valid Protobuf wire format (zero-length message),
+        // representing a message with no fields set.
+        response_body.emplace();
+        break;
+      case BodyCase::kMalformed:
+        break;
+      case BodyCase::kUnexpected:
+        // Unexpected payloads are well-formed protobuf wire formats that do
+        // not match the expected ResponseBody schema (e.g. contain only
+        // unknown fields). Parsing succeeds, but all fields are ignored,
+        // yielding a default-constructed ResponseBody.
+        response_body.emplace();
+        break;
+      case BodyCase::kValid:
+        if constexpr (std::same_as<ResponseBody, ProtobufSuccessBody>) {
+          response_body.emplace().set_success("success");
+        } else {
+          static_assert(std::same_as<ResponseBody, ProtobufErrorBody>);
+          response_body.emplace().set_error("error");
+        }
     }
 
     return response_body;
@@ -409,7 +372,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
 
   static Response MakeResponse(int net_error,
                                std::optional<net::HttpStatusCode> status_code,
-                               std::optional<BodyCase> body_case) {
+                               BodyCase body_case) {
     Response response;
     response.net_error = net_error;
     response.status_code = status_code;
@@ -443,6 +406,8 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
   template <detail::IsJSONResponseBody ResponseBody>
   static std::string MakeBody(BodyCase body_case) {
     switch (body_case) {
+      case BodyCase::kEmpty:
+        return "";
       case BodyCase::kMalformed:
         return R"({"invalid": json})";
       case BodyCase::kUnexpected:
@@ -450,13 +415,11 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
       case BodyCase::kValid: {
         ResponseBody response_body;
 
-        if constexpr (!std::same_as<ResponseBody, JSONEmptyBody>) {
-          if constexpr (std::same_as<ResponseBody, JSONSuccessBody>) {
-            response_body.success = "success";
-          } else {
-            static_assert(std::same_as<ResponseBody, JSONErrorBody>);
-            response_body.error = "error";
-          }
+        if constexpr (std::same_as<ResponseBody, JSONSuccessBody>) {
+          response_body.success = "success";
+        } else {
+          static_assert(std::same_as<ResponseBody, JSONErrorBody>);
+          response_body.error = "error";
         }
 
         return CHECK_DEREF(base::WriteJson(response_body.ToValue()));
@@ -467,6 +430,8 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
   template <detail::IsProtobufResponseBody ResponseBody>
   static std::string MakeBody(BodyCase body_case) {
     switch (body_case) {
+      case BodyCase::kEmpty:
+        return "";
       case BodyCase::kMalformed:
         // Field 1, length=10, but only 8 bytes follow ("tooshort").
         return "\x0A\x0Atooshort";
@@ -474,19 +439,16 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         // Field 2, length=10, value="unexpected".
         // Well-formed protobuf payload containing only unknown fields.
         // ParseFromString() succeeds, yielding a default-constructed
-        // ResponseBody. See Response<>::Deserialize<>() for details on protobuf
-        // parsing semantics.
+        // ResponseBody.
         return "\x12\x0Aunexpected";
       case BodyCase::kValid: {
         ResponseBody response_body;
 
-        if constexpr (!std::same_as<ResponseBody, ProtobufEmptyBody>) {
-          if constexpr (std::same_as<ResponseBody, ProtobufSuccessBody>) {
-            response_body.set_success("success");
-          } else {
-            static_assert(std::same_as<ResponseBody, ProtobufErrorBody>);
-            response_body.set_error("error");
-          }
+        if constexpr (std::same_as<ResponseBody, ProtobufSuccessBody>) {
+          response_body.set_success("success");
+        } else {
+          static_assert(std::same_as<ResponseBody, ProtobufErrorBody>);
+          response_body.set_error("error");
         }
 
         return response_body.SerializeAsString();
@@ -547,54 +509,31 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
 };
 
 using ClientTestJSONPlainRequest =
-    ClientTest<JSONEndpointSuccessError,
-               JSONEndpointSuccessError::Request,
-               JSONEndpointSuccessError::Response>;
+    ClientTest<JSONEndpoint, JSONEndpoint::Request, JSONEndpoint::Response>;
 
 using ClientTestJSONRequestWithHeaders =
-    ClientTest<JSONEndpointSuccessError,
-               WithHeaders<JSONEndpointSuccessError::Request>,
-               JSONEndpointSuccessError::Response>;
+    ClientTest<JSONEndpoint,
+               WithHeaders<JSONEndpoint::Request>,
+               JSONEndpoint::Response>;
 
 using ClientTestJSONResponseWithHeaders =
-    ClientTest<JSONEndpointSuccessError,
-               JSONEndpointSuccessError::Request,
-               WithHeaders<JSONEndpointSuccessError::Response>>;
+    ClientTest<JSONEndpoint,
+               JSONEndpoint::Request,
+               WithHeaders<JSONEndpoint::Response>>;
 
-using ClientTestJSONEmptySuccessBody =
-    ClientTest<JSONEndpointEmptyError,
-               JSONEndpointEmptyError::Request,
-               JSONEndpointEmptyError::Response>;
-
-using ClientTestJSONEmptyErrorBody =
-    ClientTest<JSONEndpointSuccessEmpty,
-               JSONEndpointSuccessEmpty::Request,
-               JSONEndpointSuccessEmpty::Response>;
-
-using ClientTestProtobufPlainRequest =
-    ClientTest<ProtobufEndpointSuccessError,
-               ProtobufEndpointSuccessError::Request,
-               ProtobufEndpointSuccessError::Response>;
+using ClientTestProtobufPlainRequest = ClientTest<ProtobufEndpoint,
+                                                  ProtobufEndpoint::Request,
+                                                  ProtobufEndpoint::Response>;
 
 using ClientTestProtobufRequestWithHeaders =
-    ClientTest<ProtobufEndpointSuccessError,
-               WithHeaders<ProtobufEndpointSuccessError::Request>,
-               ProtobufEndpointSuccessError::Response>;
+    ClientTest<ProtobufEndpoint,
+               WithHeaders<ProtobufEndpoint::Request>,
+               ProtobufEndpoint::Response>;
 
 using ClientTestProtobufResponseWithHeaders =
-    ClientTest<ProtobufEndpointSuccessError,
-               ProtobufEndpointSuccessError::Request,
-               WithHeaders<ProtobufEndpointSuccessError::Response>>;
-
-using ClientTestProtobufEmptySuccessBody =
-    ClientTest<ProtobufEndpointEmptyError,
-               ProtobufEndpointEmptyError::Request,
-               ProtobufEndpointEmptyError::Response>;
-
-using ClientTestProtobufEmptyErrorBody =
-    ClientTest<ProtobufEndpointSuccessEmpty,
-               ProtobufEndpointSuccessEmpty::Request,
-               ProtobufEndpointSuccessEmpty::Response>;
+    ClientTest<ProtobufEndpoint,
+               ProtobufEndpoint::Request,
+               WithHeaders<ProtobufEndpoint::Response>>;
 
 enum class CancelRequestOn { kSameSequence, kDifferentSequence };
 
@@ -634,24 +573,6 @@ INSTANTIATE_TEST_SUITE_P(JSONResponseWithHeaders,
                          ClientTestJSONResponseWithHeaders::GenerateTestCases(),
                          ClientTestJSONResponseWithHeaders::kNameGenerator);
 
-TEST_P(ClientTestJSONEmptySuccessBody, Send) {
-  RunTestCase();
-}
-
-INSTANTIATE_TEST_SUITE_P(JSONEmptySuccessBody,
-                         ClientTestJSONEmptySuccessBody,
-                         ClientTestJSONEmptySuccessBody::GenerateTestCases(),
-                         ClientTestJSONEmptySuccessBody::kNameGenerator);
-
-TEST_P(ClientTestJSONEmptyErrorBody, Send) {
-  RunTestCase();
-}
-
-INSTANTIATE_TEST_SUITE_P(JSONEmptyErrorBody,
-                         ClientTestJSONEmptyErrorBody,
-                         ClientTestJSONEmptyErrorBody::GenerateTestCases(),
-                         ClientTestJSONEmptyErrorBody::kNameGenerator);
-
 TEST_P(ClientTestProtobufPlainRequest, Send) {
   RunTestCase();
 }
@@ -681,31 +602,12 @@ INSTANTIATE_TEST_SUITE_P(
     ClientTestProtobufResponseWithHeaders::GenerateTestCases(),
     ClientTestProtobufResponseWithHeaders::kNameGenerator);
 
-TEST_P(ClientTestProtobufEmptySuccessBody, Send) {
-  RunTestCase();
-}
-
-INSTANTIATE_TEST_SUITE_P(
-    ProtobufEmptySuccessBody,
-    ClientTestProtobufEmptySuccessBody,
-    ClientTestProtobufEmptySuccessBody::GenerateTestCases(),
-    ClientTestProtobufEmptySuccessBody::kNameGenerator);
-
-TEST_P(ClientTestProtobufEmptyErrorBody, Send) {
-  RunTestCase();
-}
-
-INSTANTIATE_TEST_SUITE_P(ProtobufEmptyErrorBody,
-                         ClientTestProtobufEmptyErrorBody,
-                         ClientTestProtobufEmptyErrorBody::GenerateTestCases(),
-                         ClientTestProtobufEmptyErrorBody::kNameGenerator);
-
 TEST_P(ClientTestCancelableRequest, Cancel) {
-  base::test::TestFuture<JSONEndpointSuccessError::Response> future;
+  base::test::TestFuture<JSONEndpoint::Response> future;
   RequestHandle request_handle =
-      Client<JSONEndpointSuccessError>::Send<RequestCancelability::kCancelable>(
+      Client<JSONEndpoint>::Send<RequestCancelability::kCancelable>(
           test_url_loader_factory_.GetSafeWeakWrapper(),
-          JSONEndpointSuccessError::Request(), future.GetCallback());
+          JSONEndpoint::Request(), future.GetCallback());
 
   auto weak_simple_url_loader =
       CHECK_DEREF(static_cast<network::SimpleURLLoader*>(request_handle.get()))

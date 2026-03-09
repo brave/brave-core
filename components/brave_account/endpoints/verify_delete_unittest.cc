@@ -14,6 +14,16 @@
 
 namespace brave_account::endpoints {
 
+bool operator==(const VerifyDelete::Response::SuccessBody&,
+                const VerifyDelete::Response::SuccessBody&) {
+  return true;
+}
+
+bool operator==(const VerifyDelete::Response::ErrorBody&,
+                const VerifyDelete::Response::ErrorBody&) {
+  return true;
+}
+
 namespace {
 
 using VerifyDeleteTestCase = EndpointTestCase<VerifyDelete>;
@@ -23,10 +33,9 @@ const VerifyDeleteTestCase* Success() {
       {.test_name = "success",
        .http_status_code = net::HTTP_NO_CONTENT,
        .raw_response_body = "",
-       .expected_response = {
-           .net_error = net::OK,
-           .status_code = net::HTTP_NO_CONTENT,
-           .body = base::ok(VerifyDelete::Response::SuccessBody())}});
+       .expected_response = {.net_error = net::OK,
+                             .status_code = net::HTTP_NO_CONTENT,
+                             .body = std::nullopt}});
 
   return kSuccess.get();
 }
@@ -66,10 +75,9 @@ const VerifyDeleteTestCase* NonApplicationJsonError() {
           {.test_name = "non_application_json_error",
            .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
            .raw_response_body = "non-application/json error",
-           .expected_response = {
-               .net_error = net::OK,
-               .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-               .body = base::unexpected(VerifyDelete::Response::ErrorBody())}});
+           .expected_response = {.net_error = net::OK,
+                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
+                                 .body = std::nullopt}});
   return kNonApplicationJsonError.get();
 }
 

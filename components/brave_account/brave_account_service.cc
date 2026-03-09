@@ -433,34 +433,21 @@ void BraveAccountService::OnRegisterFinalize(
 void BraveAccountService::OnResendConfirmationEmail(
     ResendConfirmationEmailCallback callback,
     VerifyResend::Response response) {
+  if (response.status_code.value_or(-1) == net::HTTP_NO_CONTENT) {
+    return std::move(callback).Run(mojom::ResendConfirmationEmailResult::New());
+  }
+
   if (!response.body) {
     return std::move(callback).Run(
         base::unexpected(mojom::ResendConfirmationEmailError::New(
             response.status_code.value_or(response.net_error), std::nullopt)));
   }
 
-  const auto status_code = CHECK_DEREF(response.status_code);
-
-  auto result =
-      std::move(*response.body)
-          // expected<SuccessBody, [ErrorBody                      ]> ==>
-          // expected<SuccessBody, [ResendConfirmationEmailErrorPtr]>
-          .transform_error([&](auto error_body) {
-            return MakeMojomError<mojom::ResendConfirmationEmailError>(
-                status_code, std::move(error_body));
-          })
-          // expected<[SuccessBody                     ],
-          //                         ResendConfirmationEmailErrorPtr> ==>
-          // expected<[ResendConfirmationEmailResultPtr],
-          //                         ResendConfirmationEmailErrorPtr>
-          .and_then(
-              [](auto success_body)
-                  -> base::expected<mojom::ResendConfirmationEmailResultPtr,
-                                    mojom::ResendConfirmationEmailErrorPtr> {
-                return mojom::ResendConfirmationEmailResult::New();
-              });
-
-  std::move(callback).Run(std::move(result));
+  CHECK(!response.body->has_value());
+  std::move(callback).Run(
+      base::unexpected(MakeMojomError<mojom::ResendConfirmationEmailError>(
+          CHECK_DEREF(response.status_code),
+          std::move(response.body->error()))));
 }
 
 void BraveAccountService::OnVerificationTokenChanged() {

@@ -806,6 +806,21 @@ ResendConfirmationEmailVerificationTokenFailedToDecrypt() {
   return kResendConfirmationEmailVerificationTokenFailedToDecrypt.get();
 }
 
+const ResendConfirmationEmailTestCase* ResendConfirmationEmailSuccess() {
+  static const base::NoDestructor<ResendConfirmationEmailTestCase>
+      kResendConfirmationEmailSuccess({
+          .test_name = "resend_confirmation_email_success",
+          .encrypted_verification_token =
+              base::Base64Encode("encrypted_verification_token"),
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_NO_CONTENT,
+                                 .body = std::nullopt}},
+          .mojo_expected = mojom::ResendConfirmationEmailResult::New(),
+      });
+  return kResendConfirmationEmailSuccess.get();
+}
+
 const ResendConfirmationEmailTestCase* ResendConfirmationEmailNetworkError() {
   static const base::NoDestructor<ResendConfirmationEmailTestCase>
       kResendConfirmationEmailNetworkError({
@@ -956,22 +971,6 @@ const ResendConfirmationEmailTestCase* ResendConfirmationEmailUnknown() {
   return kResendConfirmationEmailUnknown.get();
 }
 
-const ResendConfirmationEmailTestCase* ResendConfirmationEmailSuccess() {
-  static const base::NoDestructor<ResendConfirmationEmailTestCase>
-      kResendConfirmationEmailSuccess({
-          .test_name = "resend_confirmation_email_success",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
-          .fail_decryption = false,
-          .endpoint_response = {{.net_error = net::OK,
-                                 .status_code = net::HTTP_NO_CONTENT,
-                                 .body =
-                                     VerifyResend::Response::SuccessBody()}},
-          .mojo_expected = mojom::ResendConfirmationEmailResult::New(),
-      });
-  return kResendConfirmationEmailSuccess.get();
-}
-
 using BraveAccountServiceResendConfirmationEmailTest =
     BraveAccountServiceTest<ResendConfirmationEmailTestCase>;
 
@@ -987,14 +986,14 @@ INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceResendConfirmationEmailTest,
     testing::Values(ResendConfirmationEmailVerificationTokenEmpty(),
                     ResendConfirmationEmailVerificationTokenFailedToDecrypt(),
+                    ResendConfirmationEmailSuccess(),
                     ResendConfirmationEmailNetworkError(),
                     ResendConfirmationEmailBodyMissingOrFailedToParse(),
                     ResendConfirmationEmailBadRequestWithNullErrorCode(),
                     ResendConfirmationEmailMaximumEmailSendAttemptsExceeded(),
                     ResendConfirmationEmailEmailAlreadyVerified(),
                     ResendConfirmationEmailServerError(),
-                    ResendConfirmationEmailUnknown(),
-                    ResendConfirmationEmailSuccess()),
+                    ResendConfirmationEmailUnknown()),
     BraveAccountServiceResendConfirmationEmailTest::kNameGenerator);
 
 struct VerifyResultTestCase {

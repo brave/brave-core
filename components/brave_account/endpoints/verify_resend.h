@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINTS_VERIFY_RESEND_H_
 
 #include "brave/components/brave_account/endpoint_client/brave_endpoint.h"
-#include "brave/components/brave_account/endpoint_client/json_empty_body.h"
 #include "brave/components/brave_account/endpoint_client/request_types.h"
 #include "brave/components/brave_account/endpoint_client/response.h"
 #include "brave/components/brave_account/endpoints/error_body.h"
@@ -19,7 +18,7 @@ using VerifyResend = endpoint_client::BraveEndpoint<
     "accounts.bsg",
     "/v2/verify/resend",
     endpoint_client::POST<VerifyResendRequestBody>,
-    endpoint_client::Response<endpoint_client::JSONEmptyBody, ErrorBody>>;
+    endpoint_client::Response<VerifyResendSuccessBody, ErrorBody>>;
 
 }  // namespace brave_account::endpoints
 
