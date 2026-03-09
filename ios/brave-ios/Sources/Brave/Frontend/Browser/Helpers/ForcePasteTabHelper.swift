@@ -17,7 +17,7 @@ extension TabDataValues {
 }
 
 class ForcePasteTabHelper {
-  private let tab: any TabState
+  private weak var tab: (any TabState)?
   init?(tab: some TabState) {
     if !tab.isChromiumTab {
       return nil
@@ -26,7 +26,7 @@ class ForcePasteTabHelper {
   }
   /// Pastes the contents passed into the active element on the page
   func forcePasteIntoActiveElement(contents: String) {
-    guard let webView = BraveWebView.from(tab: tab) else { return }
+    guard let tab, let webView = BraveWebView.from(tab: tab) else { return }
     webView.forcePasteContents(contents)
   }
 }
