@@ -97,6 +97,10 @@ export const SiteTitle = styled.span`
   font-family: ${(p) => p.theme.fontFamily.heading};
   font-size: 14px;
   font-weight: 500;
+  overflow: hidden;
+  direction: rtl;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 
 export const FavIconBox = styled.i`
