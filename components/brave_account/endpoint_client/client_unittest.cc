@@ -87,7 +87,7 @@ bool operator==(const JSONErrorBody& lhs, const JSONErrorBody& rhs) {
   return lhs.error == rhs.error;
 }
 
-bool operator==(const JSONEmptyBody&, const JSONEmptyBody&) {
+inline bool operator==(const JSONEmptyBody&, const JSONEmptyBody&) {
   return true;
 }
 
