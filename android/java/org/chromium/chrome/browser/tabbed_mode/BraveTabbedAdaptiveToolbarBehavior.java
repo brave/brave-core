@@ -54,7 +54,8 @@ public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBeh
             Supplier<GroupSuggestionsButtonController> groupSuggestionsButtonController,
             Supplier<TabModelSelector> tabModelSelectorSupplier,
             Supplier<ModalDialogManager> modalDialogManagerSupplier,
-            MonotonicObservableSupplier<@StripVisibilityState Integer> tabStripVisibilitySupplier) {
+            MonotonicObservableSupplier<@StripVisibilityState Integer> tabStripVisibilitySupplier,
+            Runnable toggleGlicCallback) {
         super(
                 context,
                 activityLifecycleDispatcher,
@@ -66,7 +67,8 @@ public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBeh
                 groupSuggestionsButtonController,
                 tabModelSelectorSupplier,
                 modalDialogManagerSupplier,
-                tabStripVisibilitySupplier);
+                tabStripVisibilitySupplier,
+                toggleGlicCallback);
         mContext = context;
     }
 
