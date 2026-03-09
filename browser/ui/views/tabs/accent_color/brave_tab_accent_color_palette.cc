@@ -112,11 +112,12 @@
   }
 
 // Yield color ids for light-unpinned-inactive
-#define LIGHT_UNPINNED_INACTIVE_COLOR_IDS(color)                       \
-  ColorIds {                                                           \
-    .icon_color_id = Primitive60(color),                               \
-    .icon_border_color_id = COLOR_10(color), .background_color_id = 0, \
-    .border_color_id = COLOR_10(color),                                \
+#define LIGHT_UNPINNED_INACTIVE_COLOR_IDS(color) \
+  ColorIds {                                     \
+    .icon_color_id = Primitive60(color),         \
+    .icon_border_color_id = COLOR_10(color),     \
+    .background_color_id = COLOR_10(color),      \
+    .border_color_id = COLOR_10(color),          \
   }
 
 // [state]: active, hovered, inactive (each wrapped so one subobject)
