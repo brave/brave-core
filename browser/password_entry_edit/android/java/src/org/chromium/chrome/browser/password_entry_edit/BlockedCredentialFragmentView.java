@@ -22,10 +22,11 @@ import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
 
 /**
- * This class is responsible for rendering a fragment containing details about a site that the user
- * blocked from saving.
+ * BlockedCredentialFragmentView is responsible for rendering a fragment containing details about a
+ * site that the user blocked from saving.
  */
 @NullMarked
 public class BlockedCredentialFragmentView extends CredentialEntryFragmentViewBase {
@@ -60,4 +61,11 @@ public class BlockedCredentialFragmentView extends CredentialEntryFragmentViewBa
     public @AnimationType int getAnimationType() {
         return AnimationType.PROPERTY;
     }
+
+    // This fragment displays a custom view for a single blocked credential entry; there are no
+    // static preferences to index.
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(
+                    BlockedCredentialFragmentView.class.getName(),
+                    BaseSearchIndexProvider.INDEX_OPT_OUT);
 }
