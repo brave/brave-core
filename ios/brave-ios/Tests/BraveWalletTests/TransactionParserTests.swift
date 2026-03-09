@@ -385,8 +385,7 @@ class TransactionParserTests: XCTestCase {
       ),
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
-      maxFeePerGas: "0x59682f09",
-      gasEstimation: mockSwapGasEstimation
+      maxFeePerGas: "0x59682f09"
     )
     let transaction = mockTransaction(
       fromAccount: accountInfos[0],
@@ -471,8 +470,7 @@ class TransactionParserTests: XCTestCase {
       ),
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
-      maxFeePerGas: "0x59682f09",
-      gasEstimation: mockSwapGasEstimation
+      maxFeePerGas: "0x59682f09"
     )
     let transaction = mockTransaction(
       fromAccount: accountInfos[0],
