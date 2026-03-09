@@ -37,6 +37,7 @@ import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.OneshotSupplierImpl;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.base.supplier.SettableNullableObservableSupplier;
 import org.chromium.base.test.BaseRobolectricTestRule;
 import org.chromium.base.test.BaseRobolectricTestRunner;
@@ -178,8 +179,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             mIncognitoReauthControllerSupplier = new OneshotSupplierImpl<>();
     private final SettableNullableObservableSupplier<BookmarkModel> mBookmarkModelSupplier =
             ObservableSuppliers.createNullable();
-    private final SettableNullableObservableSupplier<ReadAloudController>
-            mReadAloudControllerSupplier = ObservableSuppliers.createNullable();
+    private final SettableMonotonicObservableSupplier<ReadAloudController>
+            mReadAloudControllerSupplier = ObservableSuppliers.createMonotonic();
     private final ActivityTabProvider mActivityTabProvider = new ActivityTabProvider();
 
     private BraveTabbedAppMenuPropertiesDelegate mTabbedAppMenuPropertiesDelegate;
