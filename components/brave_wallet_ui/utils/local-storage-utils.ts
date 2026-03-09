@@ -250,6 +250,10 @@ export const mergeAndPersistSpotPrices = (
       LOCAL_STORAGE_KEYS.TOKEN_SPOT_PRICES,
       JSON.stringify(existing),
     )
+    window.localStorage.setItem(
+      LOCAL_STORAGE_KEYS.TOKEN_SPOT_PRICES_LAST_UPDATED,
+      new Date().toISOString(),
+    )
   } catch (error) {
     console.error(error)
   }

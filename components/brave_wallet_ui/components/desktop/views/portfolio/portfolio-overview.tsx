@@ -98,6 +98,9 @@ import {
   PortfolioOverviewHeader, //
 } from '../../card-headers/portfolio-overview-header'
 import { Banners } from '../banners/banners'
+import {
+  LastPricesUpdatedTooltip, //
+} from '../../../shared/last_prices_updated_tooltip/last_prices_updated_tooltip'
 
 // Styled Components
 import {
@@ -574,11 +577,13 @@ export const PortfolioOverview = () => {
               >
                 <BalanceAndChangeWrapper>
                   {formattedFullPortfolioFiatBalance !== '' ? (
-                    <BalanceText>
-                      {hidePortfolioBalances
-                        ? '******'
-                        : formattedFullPortfolioFiatBalance}
-                    </BalanceText>
+                    <LastPricesUpdatedTooltip>
+                      <BalanceText>
+                        {hidePortfolioBalances
+                          ? '******'
+                          : formattedFullPortfolioFiatBalance}
+                      </BalanceText>
+                    </LastPricesUpdatedTooltip>
                   ) : (
                     <Column padding='9px 0px'>
                       <LoadingSkeleton

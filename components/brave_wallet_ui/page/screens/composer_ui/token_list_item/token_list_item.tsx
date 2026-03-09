@@ -33,6 +33,9 @@ import {
 import {
   ShieldedLabel, //
 } from '../../../../components/shared/shielded_label/shielded_label'
+import {
+  LastPricesUpdatedTooltip, //
+} from '../../../../components/shared/last_prices_updated_tooltip/last_prices_updated_tooltip'
 
 // Styled Components
 import {
@@ -253,14 +256,16 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                         {tokenHasMultipleAccounts && formattedFiatBalance && (
                           <AccountsIcon />
                         )}
-                        <FiatBalanceText
-                          textSize='14px'
-                          isBold={true}
-                          textAlign='right'
-                          textColor='primary'
-                        >
-                          {formattedFiatBalance}
-                        </FiatBalanceText>
+                        <LastPricesUpdatedTooltip>
+                          <FiatBalanceText
+                            textSize='14px'
+                            isBold={true}
+                            textAlign='right'
+                            textColor='primary'
+                          >
+                            {formattedFiatBalance}
+                          </FiatBalanceText>
+                        </LastPricesUpdatedTooltip>
                       </Row>
                       <Row width='unset'>
                         {spotPrice?.percentageChange24h ? (
