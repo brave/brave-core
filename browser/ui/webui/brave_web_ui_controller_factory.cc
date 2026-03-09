@@ -60,6 +60,10 @@
 #include "brave/browser/ui/webui/tor_internals_ui.h"
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ui/webui/ai_chat_internal/ai_chat_internal_ui.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_agent_new_tab_page_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -110,6 +114,11 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   CHECK(profile);
   if (host == kSkusInternalsHost) {
     return new SkusInternalsUI(web_ui, url.host());
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  } else if (host == kAiChatInternalHost &&
+             ai_chat::features::IsAiChatInternalWebUIEnabled()) {
+    return new AIChatInternalUI(web_ui, url.host());
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   } else if (host == kAdsInternalsHost) {
     return new AdsInternalsUI(
@@ -229,6 +238,10 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
       (url.host() == kAdsInternalsHost && !profile->IsIncognitoProfile()) ||
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+#if BUILDFLAG(ENABLE_AI_CHAT)
+      (url.host() == kAiChatInternalHost &&
+       ai_chat::features::IsAiChatInternalWebUIEnabled()) ||
+#endif
       (url.host() == kSkusInternalsHost &&
        base::FeatureList::IsEnabled(skus::features::kSkusFeature))) {
     return &NewWebUI;

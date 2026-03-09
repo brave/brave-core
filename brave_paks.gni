@@ -97,6 +97,11 @@ template("brave_extra_paks") {
       deps += [ "//brave/browser/resources/ai_chat_agent_new_tab_page" ]
     }
 
+    if (enable_ai_chat) {
+      sources += [ "$root_gen_dir/brave/ai_chat_internal_resources.pak" ]
+      deps += [ "//brave/browser/resources/ai_chat_internal:resources" ]
+    }
+
     if (enable_brave_rewards) {
       sources += [ "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_resources.pak" ]
 
