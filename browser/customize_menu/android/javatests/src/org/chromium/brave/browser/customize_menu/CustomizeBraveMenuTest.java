@@ -116,6 +116,8 @@ public class CustomizeBraveMenuTest {
         mModelList.add(
                 new MVCListAdapter.ListItem(AppMenuHandler.AppMenuItemType.STANDARD, exitItem));
 
+        // Emulate onboarding which initializes exit item as hidden by default.
+        CustomizeBraveMenu.initDefaultInvisibleItems(mResources);
         CustomizeBraveMenu.applyCustomization(mResources, mModelList);
 
         assertEquals(1, mModelList.size());
