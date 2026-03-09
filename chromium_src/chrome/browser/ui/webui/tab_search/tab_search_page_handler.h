@@ -8,6 +8,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "chrome/browser/ui/webui/tab_search/tab_search.mojom.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
