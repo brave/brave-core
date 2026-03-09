@@ -286,11 +286,11 @@ void SidePanel::OnChildViewRemoved(View* observed_view, View* child) {
 }
 
 void SidePanel::OnAnimationSequenceProgressed(
-    const SidePanelAnimationCoordinator::SidePanelAnimationId& animation_id,
+    const SidePanelAnimationId animation_id,
     double animation_value) {}
 
 void SidePanel::OnAnimationSequenceEnded(
-    const SidePanelAnimationCoordinator::SidePanelAnimationId& animation_id) {}
+    const SidePanelAnimationId animation_id) {}
 
 void SidePanel::Open(bool animated) {
   UpdateVisibility(/*should_be_open=*/true);
