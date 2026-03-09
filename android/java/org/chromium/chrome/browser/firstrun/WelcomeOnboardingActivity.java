@@ -101,8 +101,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
             "https://www.brave.com/browser/privacy/#web-discovery-project";
 
     private static final String TAG = "WelcomeOnboarding";
-    private static final String DAY_ZERO_DEFAULT_VARIANT = "x";
-    private static final String DAY_ZERO_VARIANT_Y = "y";
+    private static final String DAY_ZERO_DEFAULT_VARIANT = "X";
+    private static final String DAY_ZERO_VARIANT_Y = "Y";
 
     private static final String KEY_SPLASH_ANIMATION_FINISHED =
             "WelcomeOnboardingActivity.SplashAnimationFinished";
