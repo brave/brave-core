@@ -138,13 +138,11 @@ class SidePanel : public views::View,
   void OnChildViewAdded(View* observed_view, View* child) override;
   void OnChildViewRemoved(View* observed_view, View* child) override;
 
-  // SidePanelAnimationCoordinator::AnimationIdObserver
-  void OnAnimationSequenceProgressed(
-      const SidePanelAnimationCoordinator::SidePanelAnimationId& animation_id,
-      double animation_value) override;
+  // AnimationIdObserver
+  void OnAnimationSequenceProgressed(const SidePanelAnimationId animation_id,
+                                     double animation_value) override;
   void OnAnimationSequenceEnded(
-      const SidePanelAnimationCoordinator::SidePanelAnimationId& animation_id)
-      override;
+      const SidePanelAnimationId animation_id) override;
 
   void OnSidePanelWidthChanged();
 
