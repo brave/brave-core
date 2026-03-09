@@ -61,6 +61,7 @@ public class CustomizeBraveMenuTest {
         mContext = ApplicationProvider.getApplicationContext();
         mModelList = new MVCListAdapter.ModelList();
         mResources = ApplicationProvider.getApplicationContext().getResources();
+        ChromeSharedPreferences.getInstance().removeKey(getMenuItemPrefKey(R.id.exit_id));
     }
 
     @Test
@@ -95,6 +96,33 @@ public class CustomizeBraveMenuTest {
         assertEquals(
                 R.id.new_tab_menu_id,
                 mModelList.get(0).model.get(AppMenuItemProperties.MENU_ITEM_ID));
+    }
+
+    @Test
+    public void testApplyCustomization_ExitIsInvisibleByDefault() {
+        PropertyModel visibleItem =
+                new PropertyModel.Builder(AppMenuItemProperties.ALL_KEYS)
+                        .with(AppMenuItemProperties.MENU_ITEM_ID, R.id.new_tab_menu_id)
+                        .with(AppMenuItemProperties.TITLE, "New Tab")
+                        .build();
+        PropertyModel exitItem =
+                new PropertyModel.Builder(AppMenuItemProperties.ALL_KEYS)
+                        .with(AppMenuItemProperties.MENU_ITEM_ID, R.id.exit_id)
+                        .with(AppMenuItemProperties.TITLE, "Exit")
+                        .build();
+
+        mModelList.add(
+                new MVCListAdapter.ListItem(AppMenuHandler.AppMenuItemType.STANDARD, visibleItem));
+        mModelList.add(
+                new MVCListAdapter.ListItem(AppMenuHandler.AppMenuItemType.STANDARD, exitItem));
+
+        CustomizeBraveMenu.applyCustomization(mResources, mModelList);
+
+        assertEquals(1, mModelList.size());
+        assertEquals(
+                R.id.new_tab_menu_id,
+                mModelList.get(0).model.get(AppMenuItemProperties.MENU_ITEM_ID));
+        assertFalse(CustomizeBraveMenu.isVisible(mResources, R.id.exit_id));
     }
 
     @Test
@@ -316,6 +344,28 @@ public class CustomizeBraveMenuTest {
     }
 
     @Test
+    public void testInitAsInvisible_SetsFalse_WhenPreferenceIsMissing() {
+        String key = getMenuItemPrefKey(R.id.exit_id);
+        ChromeSharedPreferences.getInstance().removeKey(key);
+        assertFalse(ChromeSharedPreferences.getInstance().contains(key));
+
+        CustomizeBraveMenu.initAsInvisible(mResources, R.id.exit_id);
+
+        assertTrue(ChromeSharedPreferences.getInstance().contains(key));
+        assertFalse(ChromeSharedPreferences.getInstance().readBoolean(key, true));
+    }
+
+    @Test
+    public void testInitAsInvisible_DoesNotOverrideExistingPreference() {
+        String key = getMenuItemPrefKey(R.id.exit_id);
+        ChromeSharedPreferences.getInstance().writeBoolean(key, true);
+
+        CustomizeBraveMenu.initAsInvisible(mResources, R.id.exit_id);
+
+        assertTrue(ChromeSharedPreferences.getInstance().readBoolean(key, false));
+    }
+
+    @Test
     public void testGetDrawableResFromMenuItemId_ValidIds() {
         // Test common menu items.
         assertEquals(
@@ -421,5 +471,11 @@ public class CustomizeBraveMenuTest {
         assertEquals(AppMenuHandler.AppMenuItemType.STANDARD, mModelList.get(2).type);
         assertEquals(AppMenuHandler.AppMenuItemType.DIVIDER, mModelList.get(3).type);
         assertEquals(AppMenuHandler.AppMenuItemType.STANDARD, mModelList.get(4).type);
+    }
+
+    private String getMenuItemPrefKey(int menuItemId) {
+        return String.format(
+                BravePreferenceKeys.CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT,
+                mResources.getResourceEntryName(menuItemId));
     }
 }

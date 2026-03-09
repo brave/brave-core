@@ -22,6 +22,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.Size;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.preference.Preference;
@@ -87,6 +88,9 @@ public class CustomizeBraveMenu {
             R.color.default_icon_color_secondary_tint_list;
 
     public static final int PREFERENCE_MENU_ICON_SIZE_DP = 24;
+
+    // Menu items initialized as hidden unless an explicit user preference already exists.
+    private static final int[] MENU_IDS_INVISIBLE_BY_DEFAULT = {R.id.exit_id};
 
     /**
      * Static mapping of menu item IDs to their corresponding drawable resource IDs. Uses
@@ -297,10 +301,10 @@ public class CustomizeBraveMenu {
      * @param itemId the resource ID of the menu item to check
      * @return {@code true} if the item should be visible, {@code false} if it should be hidden
      */
-    public static boolean isVisible(final Resources resource, final int itemId) {
+    public static boolean isVisible(final Resources resources, final int itemId) {
         String resourceName;
         try {
-            resourceName = resource.getResourceEntryName(itemId);
+            resourceName = resources.getResourceEntryName(itemId);
         } catch (Resources.NotFoundException notFoundException) {
             assert false : "Resource not found for item with ID " + itemId;
             // We are referencing a resource that does not
@@ -309,12 +313,57 @@ public class CustomizeBraveMenu {
             return true;
         }
         return ChromeSharedPreferences.getInstance()
-                .readBoolean(
-                        String.format(
-                                Locale.ENGLISH,
-                                CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT,
-                                resourceName),
-                        true);
+                .readBoolean(getFormattedSharedPreferenceMenuItemName(resourceName), true);
+    }
+
+    /**
+     * Initializes menu items in the {@link MENU_IDS_INVISIBLE_BY_DEFAULT} array as invisible by
+     * default. This method should be called once during onboarding process.
+     *
+     * @see org.chromium.chrome.browser.firstrun.WelcomeOnboardingActivity
+     * @param resources the resources used to access the entry name of a given menu item ID
+     */
+    public static void initDefaultInvisibleItems(final Resources resources) {
+        for (final int menuItemId : MENU_IDS_INVISIBLE_BY_DEFAULT) {
+            initAsInvisible(resources, menuItemId);
+        }
+    }
+
+    /**
+     * Initializes a menu item as invisible in the user preferences. This method is a no-op when a
+     * preference already exists.
+     *
+     * @param resources the resources used to access the entry name of a given menu item ID
+     * @param itemId the resource ID of the menu item to initialize as invisible
+     */
+    @VisibleForTesting
+    static void initAsInvisible(final Resources resources, final int itemId) {
+        String resourceName;
+        try {
+            resourceName = resources.getResourceEntryName(itemId);
+        } catch (Resources.NotFoundException notFoundException) {
+            assert false : "Resource not found for item with ID " + itemId;
+            // We are referencing a resource that does not
+            // exist. This should never happen.
+            // Leave visibility unchanged by returning.
+            return;
+        }
+
+        if (!ChromeSharedPreferences.getInstance()
+                .contains(getFormattedSharedPreferenceMenuItemName(resourceName))) {
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(getFormattedSharedPreferenceMenuItemName(resourceName), false);
+        }
+    }
+
+    /**
+     * Builds the shared-preference key used to persist visibility state for a menu item.
+     *
+     * @param resourceName the Android resource entry name for the menu item ID
+     * @return the formatted shared-preference key for that menu item
+     */
+    private static String getFormattedSharedPreferenceMenuItemName(final String resourceName) {
+        return String.format(Locale.ENGLISH, CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT, resourceName);
     }
 
     /**
