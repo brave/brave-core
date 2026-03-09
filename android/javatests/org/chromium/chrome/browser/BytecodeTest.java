@@ -2034,8 +2034,10 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/settings/FragmentDependencyProvider",
                         "org/chromium/chrome/browser/settings/BraveFragmentDependencyProvider",
-                        Context.class,
+                        Activity.class,
                         Profile.class,
+                        MonotonicObservableSupplier.class,
+                        ActivityResultTracker.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
                         MonotonicObservableSupplier.class,
