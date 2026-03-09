@@ -54,7 +54,10 @@ class TorProxyMap {
   // Clear expired entries in the queue from the map.
   void ClearExpiredEntries();
   std::map<std::string, std::pair<std::string, base::Time>> map_;
-  std::priority_queue<std::pair<base::Time, std::string>> queue_;
+  std::priority_queue<std::pair<base::Time, std::string>,
+                      std::vector<std::pair<base::Time, std::string>>,
+                      std::greater<>>
+      queue_;
   base::OneShotTimer timer_;
 };
 
