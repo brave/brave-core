@@ -33,6 +33,7 @@ extension PopoverController {
     /// The arrow direction for this view
     var arrowDirection: ArrowDirection = .up {
       didSet {
+        guard oldValue != arrowDirection else { return }
         popoverMaskView.updateTrianglePath(arrowDirection)
         setNeedsLayout()
         setNeedsUpdateConstraints()
@@ -43,6 +44,7 @@ extension PopoverController {
     /// Where to display the arrow on the popover
     var arrowOrigin = CGPoint.zero {
       didSet {
+        guard oldValue != arrowOrigin else { return }
         setNeedsLayout()
         setNeedsUpdateConstraints()
         updateConstraintsIfNeeded()
@@ -91,6 +93,9 @@ extension PopoverController {
         make.edges.equalTo(self)
       }
 
+      //Initialize the triangle path
+      popoverMaskView.updateTrianglePath(arrowDirection)
+
       setNeedsUpdateConstraints()
     }
 
@@ -113,7 +118,6 @@ extension PopoverController {
         ) - PopoverUX.arrowSize.width / 2.0
 
       CATransaction.setDisableActions(true)
-      popoverMaskView.updateTrianglePath(arrowDirection)
       popoverMaskView.triangleLayer.position = CGPoint(
         x: clampedArrowXOrigin,
         y: arrowDirection == .down ? bounds.size.height - PopoverUX.arrowSize.height - 1.0 : 1.0
