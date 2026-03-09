@@ -2191,6 +2191,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VerticalTabLayoutInRTL) {
   // --- Tab strip on right (kVerticalTabsOnRight = true) ---
   prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, true);
   ASSERT_TRUE(tabs::utils::IsVerticalTabOnRight(browser()));
+  browser_view()->InvalidateLayout();
   RunScheduledLayouts();
 
   // Tab strip should appear on the right, contents to its left.
