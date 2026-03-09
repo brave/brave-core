@@ -311,6 +311,11 @@ var package = Package(
     .target(
       name: "BraveShields",
       dependencies: ["Strings", "Preferences", "BraveCore", "Web", "Data"],
+      resources: [
+        .copy(
+          "resources.json"
+        )
+      ],
       plugins: ["LoggerPlugin"]
     ),
     .testTarget(

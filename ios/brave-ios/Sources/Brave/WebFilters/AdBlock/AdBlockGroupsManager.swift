@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import BraveShields
 import Data
 import Foundation
@@ -72,7 +73,12 @@ import os
 
   /// Load any cache data so its ready right during launch
   func loadResourcesFromCache() async {
-    if let resourcesInfo = getCachedResourcesInfo() {
+    if let resourcesURL = ShieldsURLs.resourcesURL,
+      await AsyncFileManager.default.fileExists(atPath: resourcesURL.path)
+    {
+      // use bundled resource so we can override scriptlet implementations
+      self.resourcesInfo = .init(localFileURL: resourcesURL, version: "2.0.0")
+    } else if let resourcesInfo = getCachedResourcesInfo() {
       // We need this for all filter lists so we can't compile anything until we download it
       self.resourcesInfo = resourcesInfo
 
