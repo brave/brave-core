@@ -58,7 +58,6 @@
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -396,7 +395,6 @@ class AIChatServiceUnitTest : public testing::Test,
   std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   bool is_opted_in_ = true;
 
  private:

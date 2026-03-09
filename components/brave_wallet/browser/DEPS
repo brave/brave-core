@@ -16,7 +16,6 @@ include_rules = [
   "+components/update_client",
   "+components/value_store",
   "+crypto",
-  "+services/data_decoder/public/cpp",
   "+services/network/public/cpp",
   "+services/network/public/mojom",
   "+services/network/test",

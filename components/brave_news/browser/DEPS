@@ -6,7 +6,6 @@ include_rules = [
   "+content/public/browser/browser_thread.h",
   "+content/public/test/browser_task_environment.h",
   "+net",
-  "+services/data_decoder/public",
   "+services/network/public",
   "+services/network/test",
   "+third_party/re2",

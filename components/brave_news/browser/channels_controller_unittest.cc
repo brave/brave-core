@@ -22,7 +22,6 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
-#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -104,7 +103,6 @@ class BraveNewsChannelsControllerTest : public testing::Test {
 
  protected:
   content::BrowserTaskEnvironment browser_task_environment_;
-  data_decoder::test::InProcessDataDecoder data_decoder_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   api_request_helper::APIRequestHelper api_request_helper_;
   sync_preferences::TestingPrefServiceSyncable pref_service_;

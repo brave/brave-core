@@ -15,7 +15,6 @@
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/test/wait_for_callback.h"
 #include "content/public/test/browser_task_environment.h"
-#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -117,7 +116,6 @@ class BraveNewsDirectFeedControllerTest : public testing::Test {
   }
 
   content::BrowserTaskEnvironment task_environment_;
-  data_decoder::test::InProcessDataDecoder data_decoder_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   MockDirectFeedFetcherDelegate direct_feed_fetcher_delegate_;
   DirectFeedController direct_feed_controller_;

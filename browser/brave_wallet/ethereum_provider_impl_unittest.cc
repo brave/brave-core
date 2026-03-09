@@ -55,7 +55,6 @@
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_web_contents_factory.h"
 #include "content/test/test_web_contents.h"
-#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -918,7 +917,6 @@ class EthereumProviderImplUnitTest : public testing::Test {
   TestingPrefServiceSimple local_state_;
   content::TestWebContentsFactory factory_;
   std::unique_ptr<content::TestWebContents> web_contents_;
-  data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   base::ScopedTempDir temp_dir_;
   TestingProfile profile_;
   raw_ptr<AssetRatioService> asset_ratio_service_;

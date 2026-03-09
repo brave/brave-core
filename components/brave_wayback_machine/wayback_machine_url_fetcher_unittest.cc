@@ -12,7 +12,6 @@
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wayback_machine/url_constants.h"
-#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -30,8 +29,9 @@ class WaybackClient : public WaybackMachineURLFetcher::Client {
   void SetExpectedURL(GURL expected_url) { expected_url_ = expected_url; }
   void OnWaybackURLFetched(const GURL& lastest_wayback_url) override {
     EXPECT_EQ(lastest_wayback_url, expected_url_);
-    if (callback_)
+    if (callback_) {
       std::move(callback_).Run();
+    }
   }
 
  private:
@@ -97,7 +97,6 @@ class WaybackMachineURLFetcherUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   std::unique_ptr<WaybackMachineURLFetcher> wayback_url_loader_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
 TEST_F(WaybackMachineURLFetcherUnitTest, SanitizedResponse) {

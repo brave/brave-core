@@ -3,5 +3,4 @@ include_rules = [
   "+components/prefs",
   "+services/network/public",
   "+services/network/test",
-  "+services/data_decoder/public",
 ]

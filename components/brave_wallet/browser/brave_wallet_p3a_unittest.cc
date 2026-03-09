@@ -34,7 +34,6 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -302,7 +301,6 @@ class BraveWalletP3AUnitTest : public testing::Test {
   std::unique_ptr<BitcoinTestRpcServer> bitcoin_test_rpc_server_;
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
   std::unique_ptr<CardanoTestRpcServer> cardano_test_rpc_server_;
-  data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
 TEST_F(BraveWalletP3AUnitTest, KeyringCreated) {

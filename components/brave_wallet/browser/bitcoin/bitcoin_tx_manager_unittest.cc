@@ -29,7 +29,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -124,7 +123,6 @@ class BitcoinTxManagerUnitTest : public testing::Test {
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<BitcoinWalletService> bitcoin_wallet_service_;
   std::unique_ptr<TxService> tx_service_;
-  data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
 TEST_F(BitcoinTxManagerUnitTest, SubmitTransaction) {
