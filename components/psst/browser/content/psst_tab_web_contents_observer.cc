@@ -306,7 +306,7 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
 
   auto origin = url::Origin::Create(web_contents()->GetLastCommittedURL());
   ui_delegate_->Show(
-      origin, std::move(*psst_settings), *site_name, tasks->Clone(),
+      std::move(origin), std::move(*psst_settings), *site_name, tasks->Clone(),
       base::BindOnce(&PsstTabWebContentsObserver::OnUserAcceptedPsstSettings,
                      weak_factory_.GetWeakPtr(), id, true, std::move(rule),
                      params.Clone()));

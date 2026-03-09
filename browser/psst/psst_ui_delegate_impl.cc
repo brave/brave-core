@@ -19,6 +19,7 @@ namespace {
 std::vector<std::string> ListValueToStringVector(
     const base::ListValue& list_value) {
   std::vector<std::string> result;
+  result.reserve(list_value.size());
   for (const auto& value : list_value) {
     if (value.is_string()) {
       result.push_back(value.GetString());
@@ -49,7 +50,7 @@ PsstUiDelegateImpl::PsstUiDelegateImpl(
 }
 PsstUiDelegateImpl::~PsstUiDelegateImpl() = default;
 
-void PsstUiDelegateImpl::Show(const url::Origin& origin,
+void PsstUiDelegateImpl::Show(url::Origin origin,
                               PsstWebsiteSettings dialog_data,
                               const std::string& site_name,
                               base::ListValue tasks,
@@ -64,7 +65,7 @@ void PsstUiDelegateImpl::Show(const url::Origin& origin,
 
   apply_changes_callback_ = std::move(apply_changes_callback);
   dialog_data_ = std::move(dialog_data);
-  origin_ = origin;
+  origin_ = std::move(origin);
   tasks_ = std::move(tasks);
 
   // Implementation for showing the consent dialog to the user.

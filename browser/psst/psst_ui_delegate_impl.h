@@ -56,7 +56,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
                                   base::ListValue urls_to_skip);
 
   // PsstUiDelegate overrides
-  void Show(const url::Origin& origin,
+  void Show(url::Origin origin,
             PsstWebsiteSettings dialog_data,
             const std::string& site_name,
             base::ListValue tasks,

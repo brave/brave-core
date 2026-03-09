@@ -50,7 +50,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
 
     virtual ~PsstUiDelegate() = default;
     // Show the consent dialog to the user with the provided data.
-    virtual void Show(const url::Origin& origin,
+    virtual void Show(url::Origin origin,
                       PsstWebsiteSettings dialog_data,
                       const std::string& site_name,
                       base::ListValue tasks,
