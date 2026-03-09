@@ -9,7 +9,6 @@
 #include <optional>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/serp_metrics/serp_classifier.h"
 #include "components/search_engines/search_engine_type.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -40,7 +39,7 @@ class SerpMetricsTabHelper final
  private:
   friend class content::WebContentsUserData<SerpMetricsTabHelper>;
 
-  bool IsSameSearchQuery(const GURL& url) const;
+  bool IsSameSerpAsLastRecorded(const GURL& url) const;
 
   void MaybeClassifyAndRecordSearchEngineForUrl(const GURL& url);
   void RecordSearchEngine(SearchEngineType search_engine_type);
@@ -48,8 +47,6 @@ class SerpMetricsTabHelper final
   // content::WebContentsObserver:
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
-
-  SerpClassifier serp_classifier_;
 
   raw_ptr<SerpMetrics> serp_metrics_ = nullptr;  // Not owned.
 

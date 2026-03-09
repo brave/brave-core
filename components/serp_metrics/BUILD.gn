@@ -6,12 +6,14 @@
 static_library("serp_metrics") {
   public = [
     "serp_classifier.h",
+    "serp_classifier_utils.h",
     "serp_metric_type.h",
     "serp_metrics.h",
   ]
 
   sources = [
     "serp_classifier.cc",
+    "serp_classifier_utils.cc",
     "serp_metrics.cc",
   ]
 
@@ -42,6 +44,7 @@ source_set("unit_tests") {
 
   sources = [
     "serp_classifier_unittest.cc",
+    "serp_classifier_utils_unittest.cc",
     "serp_metrics_unittest.cc",
   ]
 
