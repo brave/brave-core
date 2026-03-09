@@ -355,7 +355,7 @@ void AdBlockEngine::OnDATLoaded(
                     dat_buf.size(), "is_default_engine", is_default_engine_);
 
   auto client = adblock::new_engine();
-  auto dat_vec = base::ToVector(dat_buf.byte_span());
+  auto dat_vec = base::ToVector(base::span(dat_buf));
   const auto result = client->deserialize(dat_vec);
 
   TRACE_EVENT_END("brave.adblock");

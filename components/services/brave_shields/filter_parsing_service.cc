@@ -75,7 +75,7 @@ void FilterParsingService::ParseFilters(
 
   std::vector<adblock::mojom::FilterListMetadataPtr> metadata;
   for (auto& filter_list : filters) {
-    auto filter_vec = base::ToVector(filter_list->filters.byte_span());
+    auto filter_vec = base::ToVector(base::span(filter_list->filters));
 
     auto this_metadata =
         (*filter_set)
