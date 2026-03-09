@@ -144,8 +144,10 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
          const std::string& script,
          PsstTabWebContentsObserver::InsertScriptInPageCallback cb) {
         auto* rfh = web_contents->GetPrimaryMainFrame();
-        CHECK(rfh);
-        CHECK(rfh->IsRenderFrameLive());
+        if (!rfh || !rfh->IsRenderFrameLive()) {
+          std::move(cb).Run(base::Value());
+          return;
+        }
         script_injector_remote.reset();
         if (!script_injector_remote.is_bound() ||
             !script_injector_remote.is_connected()) {

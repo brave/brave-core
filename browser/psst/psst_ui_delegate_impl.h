@@ -73,7 +73,6 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
  private:
   void OnUserAcceptedInfobar(const url::Origin& origin, const bool is_accepted);
 
-  raw_ptr<content::WebContents> web_contents_ = nullptr;
   std::unique_ptr<PsstUiPresenter> ui_presenter_;
   std::optional<PsstWebsiteSettings> dialog_data_;
   std::optional<url::Origin> origin_;
