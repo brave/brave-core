@@ -1,0 +1,21 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module ai_chat.mojom;
+
+import "brave/components/ai_chat/core/common/mojom/ai_chat.mojom";
+import "brave/components/ai_chat/core/common/mojom/common.mojom";
+
+// Interface for the brave://ai-chat-internal WebUI.
+interface AIChatInternalPageHandler {
+  // Retrieves raw data for a specific conversation UUID.
+  GetRawConversationData(string uuid) => (
+      Conversation? conversation,
+      array<ConversationTurn> entries
+  );
+
+  // Retrieves metadata for all conversations.
+  GetConversations() => (array<Conversation> conversations);
+};
