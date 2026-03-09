@@ -58,6 +58,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.day_zero.DayZeroHelper;
 import org.chromium.chrome.browser.metrics.ChangeMetricsReportingStateCalledFrom;
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
@@ -633,10 +634,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                 !PrivacyPreferencesManagerImpl.getInstance()
                         .isUsageAndCrashReportingPermittedByPolicy();
 
-        // Uncomment next line to extract day zero variant
-        // for new onboarding flow when it's ready.
-        // mDayZeroVariant = DayZeroHelper.getDayZeroVariant();
-        if (TextUtils.isEmpty(mDayZeroVariant)) {
+        mDayZeroVariant = DayZeroHelper.getDayZeroVariant();
+        // Filter out day zero variants different from X and Y.
+        if (TextUtils.isEmpty(mDayZeroVariant) || (!mDayZeroVariant.equals(DAY_ZERO_VARIANT_Y) && !mDayZeroVariant.equals(DAY_ZERO_DEFAULT_VARIANT))) {
             mDayZeroVariant = DAY_ZERO_DEFAULT_VARIANT;
         }
 
