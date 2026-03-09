@@ -264,7 +264,7 @@ public class AdaptiveCaptchaHelper {
         OutputStream outputStream = null;
         try {
             outputStream = urlConnection.getOutputStream();
-            byte[] input = body.getBytes(StandardCharsets.UTF_8.name());
+            byte[] input = body.getBytes(StandardCharsets.UTF_8);
             outputStream.write(input, 0, input.length);
             outputStream.flush();
         } catch (Exception e) {
@@ -281,7 +281,7 @@ public class AdaptiveCaptchaHelper {
         try (BufferedReader br =
                 new BufferedReader(
                         new InputStreamReader(
-                                urlConnection.getInputStream(), StandardCharsets.UTF_8.name()))) {
+                                urlConnection.getInputStream(), StandardCharsets.UTF_8))) {
             StringBuilder sb = new StringBuilder();
             String line = null;
             while ((line = br.readLine()) != null) {
