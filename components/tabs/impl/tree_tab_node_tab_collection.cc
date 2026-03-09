@@ -104,13 +104,14 @@ TreeTabNodeTabCollection::TreeTabNodeTabCollection(
                     {TabCollection::Type::SPLIT, TabCollection::Type::GROUP,
                      TabCollection::Type::TREE_NODE},
                     /*supports_tabs=*/true),
-      current_tab_(current_tab->GetWeakPtr()),
+      type_(CurrentValueType::kTab),
       on_remove_(std::move(on_remove)),
       on_move_(std::move(on_move)),
       node_(std::make_unique<TreeTabNode>(*this, tree_tab_node_id)) {
   CHECK(!tree_tab_node_id.is_empty());
-  CHECK(current_tab_);
-
+  CHECK(current_tab);
+  current_value_ = current_tab->GetWeakPtr();
+  CHECK(std::get<base::WeakPtr<tabs::TabInterface>>(*current_value_));
   AddTab(std::move(current_tab), 0);
 }
 

@@ -254,22 +254,28 @@ void BraveBrowserTabStripController::OnTreeTabChanged(
   switch (change.type) {
     case TreeTabChange::Type::kNodeCreated: {
       const auto& created_change = change.GetCreatedChange();
-      auto index = model_->GetIndexOfTab(created_change.node->GetTab());
-      CHECK_NE(index, TabStripModel::kNoTab);
-      tabstrip_->tab_at(index)->set_tree_tab_node(change.id);
-      if (IsActiveTab(index) && IsInCollapsedTreeTabNode(change.id)) {
-        ExpandAllCollapsedAncestors(change.id);
+      std::vector<const tabs::TabInterface*> tabs =
+          created_change.node->GetTabs();
+      for (const tabs::TabInterface* tab : tabs) {
+        auto index = model_->GetIndexOfTab(tab);
+        CHECK_NE(index, TabStripModel::kNoTab);
+        tabstrip_->tab_at(index)->set_tree_tab_node(change.id);
+        if (IsActiveTab(index) && IsInCollapsedTreeTabNode(change.id)) {
+          ExpandAllCollapsedAncestors(change.id);
+        }
+        break;
       }
-      break;
     }
     case TreeTabChange::Type::kNodeWillBeDestroyed: {
-      auto* tab = change.GetWillBeDestroyedChange().node->GetTab();
-      CHECK(tab);
-      auto index = model_->GetIndexOfTab(tab);
-      // The tab might have already been removed from the model when the
-      // TreeTabNode is being destroyed (e.g., during group removal).
-      if (index != TabStripModel::kNoTab) {
-        tabstrip_->tab_at(index)->set_tree_tab_node(std::nullopt);
+      std::vector<const tabs::TabInterface*> tabs =
+          change.GetWillBeDestroyedChange().node->GetTabs();
+      for (const tabs::TabInterface* tab : tabs) {
+        auto index = model_->GetIndexOfTab(tab);
+        // The tab might have already been removed from the model when the
+        // TreeTabNode is being destroyed (e.g., during group removal).
+        if (index != TabStripModel::kNoTab) {
+          tabstrip_->tab_at(index)->set_tree_tab_node(std::nullopt);
+        }
       }
       break;
     }

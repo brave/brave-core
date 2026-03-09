@@ -7,22 +7,42 @@
 #define BRAVE_COMPONENTS_TABS_PUBLIC_TREE_TAB_NODE_TAB_COLLECTION_H_
 
 #include <memory>
+#include <optional>
+#include <variant>
 
 #include "base/callback_list.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
+#include "components/tabs/public/split_tab_collection.h"
 #include "components/tabs/public/tab_collection.h"
+#include "components/tabs/public/tab_group_tab_collection.h"
 #include "components/tabs/public/tab_interface.h"
 
 namespace tabs {
 
 class TreeTabNode;
 
+// The value associated with this tree node: either a tab, a tab group
+// collection, or a split tab collection.
+using CurrentValueVariant =
+    std::variant<base::WeakPtr<tabs::TabInterface>,
+                 base::raw_ptr<tabs::TabGroupTabCollection>,
+                 base::raw_ptr<tabs::SplitTabCollection>>;
+
 // TreeTabNodeTabCollection is a specialized TabCollection that represents a
-// node in the tree structure of tabs. It contains a current tab and can have
-// child collections, such as other TreeTabNodeTabCollections,
-// TabGroupTabCollections, SplitTabCollections.
+// node in the tree structure of tabs. It has a current value (a tab,
+// TabGroupTabCollection, or SplitTabCollection) and can have child collections,
+// such as other TreeTabNodeTabCollections, TabGroupTabCollections,
+// SplitTabCollections.
 class TreeTabNodeTabCollection : public tabs::TabCollection {
  public:
+  enum CurrentValueType {
+    kTab,
+    kSplit,
+    kGroup,
+  };
+
   // Builds the tree tabs structure starting from the root collection.
   // This will wrap all tabs in the tree with TreeTabNode. |on_create| is called
   // whenever a new TreeTabNode is created. |on_remove| is called when a
@@ -48,9 +68,11 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
   TreeTabNode& node() { return *node_; }
   const TreeTabNode& node() const { return *node_; }
 
-  // A tab that's associated with this TreeTabNode.
-  const base::WeakPtr<tabs::TabInterface>& current_tab() const {
-    return current_tab_;
+  // The value (tab, tab group collection, or split tab collection) associated
+  // with this TreeTabNode. Empty for the empty tree node (e.g.
+  // GetEmptyTreeTabNode).
+  const std::optional<CurrentValueVariant>& current_value() const {
+    return current_value_;
   }
 
   // Returns the top-level ancestor TreeTabNodeTabCollection in the hierarchy.
@@ -65,6 +87,8 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
   // TabCollection:
   void OnReparented(TabCollection* new_parent) override;
 
+  CurrentValueType current_value_type() const { return type_; }
+
  private:
   // Returns all TreeTabNodeTabCollections recursively from the given parent
   // collection.
@@ -72,8 +96,11 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
       tabs::TabCollection& parent,
       std::vector<TreeTabNodeTabCollection*>& nodes);
 
-  // Could be nullptr on closing the tab.
-  base::WeakPtr<tabs::TabInterface> current_tab_;
+  CurrentValueType type_;
+
+  // The current value: tab (WeakPtr), TabGroupTabCollection, or
+  // SplitTabCollection. Empty for the empty tree node.
+  std::optional<CurrentValueVariant> current_value_;
 
   // Callback invoked when this TreeTabNode is destroyed.
   base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove_;

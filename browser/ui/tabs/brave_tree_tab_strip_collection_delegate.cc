@@ -9,10 +9,12 @@
 
 #include "base/containers/adapters.h"
 #include "base/functional/bind.h"
+#include "base/memory/weak_ptr.h"
 #include "base/notimplemented.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "components/tabs/public/tab_collection.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/tabs/public/unpinned_tab_collection.h"
 #include "third_party/abseil-cpp/absl/functional/overload.h"
 
@@ -123,10 +125,23 @@ std::optional<size_t>
 BraveTreeTabStripCollectionDelegate::CalculateTargetIndexInOpenerCollection(
     tabs::TabCollection* opener_collection,
     size_t recursive_index) const {
-  const auto opener_index = *collection_->GetIndexOfTabRecursive(
-      static_cast<tabs::TreeTabNodeTabCollection*>(opener_collection)
-          ->current_tab()
-          .get());
+  auto* tree_opener =
+      static_cast<tabs::TreeTabNodeTabCollection*>(opener_collection);
+  const auto& value = tree_opener->current_value();
+  tabs::TabInterface* opener_tab = nullptr;
+  if (value.has_value()) {
+    if (const auto* tab_ptr =
+            std::get_if<base::WeakPtr<tabs::TabInterface>>(&*value)) {
+      opener_tab = tab_ptr->get();
+    }
+    // TODO: support TabGroupTabCollection and SplitTabCollection when the
+    // opener's current value is a group or split.
+  }
+  if (!opener_tab) {
+    return std::nullopt;
+  }
+  const auto opener_index =
+      *collection_->GetIndexOfTabRecursive(opener_tab);
   auto target_index = 0;
   auto tab_count = 0;
 
@@ -348,7 +363,19 @@ void BraveTreeTabStripCollectionDelegate::MoveChildrenOfTreeTabNodeToNode(
     std::visit(
         absl::Overload{
             [&](tabs::TabInterface* tab) {
-              if (tab == tree_tab_node_collection->current_tab().get()) {
+              tabs::TabInterface* current_tab_ptr = nullptr;
+              const auto& value =
+                  tree_tab_node_collection->current_value();
+              if (value.has_value()) {
+                if (const auto* wp =
+                        std::get_if<base::WeakPtr<tabs::TabInterface>>(
+                            &*value)) {
+                  current_tab_ptr = wp->get();
+                }
+                // TODO: when current value is TabGroupTabCollection or
+                // SplitTabCollection, skipping logic may need to change.
+              }
+              if (tab == current_tab_ptr) {
                 // Skipping moving current tab itself
                 return;
               }

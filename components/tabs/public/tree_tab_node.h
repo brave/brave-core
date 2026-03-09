@@ -12,11 +12,11 @@
 #include "base/memory/raw_ref.h"
 #include "base/types/pass_key.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
+#include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 
 namespace tabs {
 
 class TabInterface;
-class TreeTabNodeTabCollection;
 
 // A class that represents metadata about a tree tab node.
 class TreeTabNode {
@@ -45,9 +45,14 @@ class TreeTabNode {
   // method will traverse up to the root node and return its height.
   int GetTreeHeight() const;
 
-  // Returns the tab associated with this tree tab node, or nullptr if this
-  // node does not currently have an associated tab
-  const TabInterface* GetTab() const;
+  TreeTabNodeTabCollection::CurrentValueType current_value_type() const {
+    return collection_->current_value_type();
+  }
+
+  // Returns the tab(s) associated with this tree tab node. Returns one tab when
+  // holding a single TabInterface, two when holding a SplitTabCollection, and
+  // all tabs in the group when holding a TabGroupTabCollection.
+  std::vector<const TabInterface*> GetTabs() const;
 
   // Returns the id of the closest ancestor that is collapsed, or nullopt if
   // no ancestor is collapsed.
