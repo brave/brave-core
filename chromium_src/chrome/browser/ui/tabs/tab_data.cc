@@ -1,20 +1,22 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/ui/tabs/tab_renderer_data.h"
+#include "chrome/browser/ui/tabs/tab_data.h"
 
 #include "base/check.h"
 
 #define FromTabInterface FromTabInterface_ChromiumImpl
-#include <chrome/browser/ui/tabs/tab_renderer_data.cc>
+#include <chrome/browser/ui/tabs/tab_data.cc>
 #undef FromTabInterface
 
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/resource_coordinator/tab_load_tracker.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/common/webui_url_constants.h"
@@ -56,7 +58,9 @@ ui::ImageModel GetThemedNTPFavicon(content::WebContents* contents) {
 
 }  // namespace
 
-TabRendererData TabRendererData::FromTabInterface(tabs::TabInterface* tab) {
+namespace tabs {
+
+TabData TabData::FromTabInterface(tabs::TabInterface* tab) {
   auto* const bwi = tab->GetBrowserWindowInterface();
   if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs)) {
     // Note that in unit tests, this may be null.
@@ -71,7 +75,7 @@ TabRendererData TabRendererData::FromTabInterface(tabs::TabInterface* tab) {
         auto* contents = model->GetWebContentsAt(index);
         if (shared_pinned_tab_service->IsDummyContents(contents)) {
           if (const auto* data =
-                  shared_pinned_tab_service->GetTabRendererDataForDummyContents(
+                  shared_pinned_tab_service->GetTabDataForDummyContents(
                       index, contents)) {
             return *data;
           }
@@ -108,3 +112,5 @@ TabRendererData TabRendererData::FromTabInterface(tabs::TabInterface* tab) {
   }
   return data;
 }
+
+}  // namespace tabs
