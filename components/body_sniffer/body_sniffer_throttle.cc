@@ -10,9 +10,29 @@
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "net/http/http_content_disposition.h"
+#include "net/http/http_response_headers.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace body_sniffer {
+
+namespace {
+
+// If this is an attachment, don't body sniff.
+bool IsAttachmentResponse(network::mojom::URLResponseHead* response_head) {
+  if (!response_head || !response_head->headers) {
+    return false;
+  }
+  auto header =
+      response_head->headers->GetNormalizedHeader("Content-Disposition");
+  if (!header) {
+    return false;
+  }
+  net::HttpContentDisposition content_disposition(*header, std::string());
+  return content_disposition.is_attachment();
+}
+
+}  // namespace
 
 BodySnifferThrottle::BodySnifferThrottle(
     scoped_refptr<base::SequencedTaskRunner> task_runner)
@@ -46,6 +66,15 @@ void BodySnifferThrottle::WillProcessResponse(
     const GURL& response_url,
     network::mojom::URLResponseHead* response_head,
     bool* defer) {
+  // Responses marked for download (Content-Disposition: attachment) should not
+  // have their body sniffed/transformed. Doing so could allow an attacker
+  // to bypass the download by triggering handler-specific redirects (e.g.
+  // De-AMP canonical URL navigation).
+  if (IsAttachmentResponse(response_head)) {
+    body_handlers_.clear();
+    producer_.reset();
+    return;
+  }
   for (auto& handler : body_handlers_) {
     bool d = false;
     if (!handler->ShouldProcess(response_url, response_head, &d)) {
