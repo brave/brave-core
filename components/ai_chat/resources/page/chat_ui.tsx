@@ -9,6 +9,7 @@ import { setIconBasePath } from '@brave/leo/react/icon'
 import '$web-common/defaultTrustedTypesPolicy'
 import * as Mojom from '../common/mojom'
 import bindWebUiServices from './api/bind_webui_services'
+import useUpdateDocumentTitle from './hooks/useUpdateDocumentTitle'
 import {
   AIChatProvider,
   ConversationEntriesProps,
@@ -30,7 +31,6 @@ import {
 import '../common/strings'
 // <if expr="is_ios">
 import { useIOSOneTapFix } from '../common/useIOSOneTapFix'
-import useUpdateDocumentTitle from './hooks/useUpdateDocumentTitle'
 // </if>
 
 // Perform any setup specific to this platform
