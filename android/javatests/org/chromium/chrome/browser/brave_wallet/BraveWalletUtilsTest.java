@@ -463,14 +463,6 @@ public class BraveWalletUtilsTest {
         testStruct.chainId = "";
         testStruct.maxPriorityFeePerGas = "";
         testStruct.maxFeePerGas = "";
-        testStruct.gasEstimation = new GasEstimation1559();
-        testStruct.gasEstimation.slowMaxPriorityFeePerGas = "";
-        testStruct.gasEstimation.slowMaxFeePerGas = "";
-        testStruct.gasEstimation.avgMaxPriorityFeePerGas = "";
-        testStruct.gasEstimation.avgMaxFeePerGas = "";
-        testStruct.gasEstimation.fastMaxPriorityFeePerGas = "";
-        testStruct.gasEstimation.fastMaxFeePerGas = "";
-        testStruct.gasEstimation.baseFeePerGas = "";
         try {
             java.nio.ByteBuffer byteBuffer = testStruct.serialize();
             TxData1559 testStructDeserialized = TxData1559.deserialize(byteBuffer);
