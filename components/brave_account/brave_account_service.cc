@@ -433,17 +433,16 @@ void BraveAccountService::OnRegisterFinalize(
 void BraveAccountService::OnResendConfirmationEmail(
     ResendConfirmationEmailCallback callback,
     VerifyResend::Response response) {
-  if (response.status_code.value_or(-1) == net::HTTP_NO_CONTENT) {
+  if (response.status_code == net::HTTP_NO_CONTENT) {
     return std::move(callback).Run(mojom::ResendConfirmationEmailResult::New());
   }
 
-  if (!response.body) {
+  if (!response.body || response.body->has_value()) {
     return std::move(callback).Run(
         base::unexpected(mojom::ResendConfirmationEmailError::New(
             response.status_code.value_or(response.net_error), std::nullopt)));
   }
 
-  CHECK(!response.body->has_value());
   std::move(callback).Run(
       base::unexpected(MakeMojomError<mojom::ResendConfirmationEmailError>(
           CHECK_DEREF(response.status_code),
@@ -528,8 +527,7 @@ void BraveAccountService::OnVerifyResult(VerifyResult::Response response) {
     return;
   }
 
-  if (const auto status_code = response.status_code.value_or(-1);
-      status_code >= 300 && status_code < 500) {
+  if (response.status_code >= 300 && response.status_code < 500) {
     // Polling cannot recover from these errors, so we stop further attempts.
     return pref_service_->ClearPref(prefs::kBraveAccountVerificationToken);
   }
@@ -685,8 +683,7 @@ void BraveAccountService::OnAuthValidate(AuthValidate::Response response) {
 
   if (!email.empty()) {
     pref_service_->SetString(prefs::kBraveAccountEmailAddress, email);
-  } else if (const auto status_code = response.status_code.value_or(-1);
-             status_code >= 400 && status_code < 500) {
+  } else if (response.status_code >= 400 && response.status_code < 500) {
     // Clear the auth token (and stop polling) to prevent
     // presenting invalid state to the user and issuing invalid requests.
     return pref_service_->ClearPref(prefs::kBraveAccountAuthenticationToken);
