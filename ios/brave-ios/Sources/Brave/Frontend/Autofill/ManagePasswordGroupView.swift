@@ -12,28 +12,27 @@ import UIKit
 /// Displays all login credentials for a selected domain.
 /// Each credential is shown as a separate row (username + masked password).
 struct ManagePasswordGroupView: View {
-  @Environment(\.autofillManagementContext) private var context
   @Environment(\.dismiss) private var dismiss
   @Environment(\.editMode) private var editMode
 
-  @Bindable var viewModel: ManagePasswordGroupViewModel
+  let viewModel: ManagePasswordsViewModel
+  let domain: String
 
   @State private var isSceneActive = true
   @State private var selectedCredentialIds: Set<String> = []
   @State private var isDeleteSelectionDialogPresented = false
 
+  private var passwords: [CWVPassword] {
+    (viewModel.allowedGroups.first { $0.domain == domain }
+      ?? viewModel.blockedGroups.first { $0.domain == domain })?.credentials ?? []
+  }
+
   var body: some View {
     List(selection: $selectedCredentialIds) {
       Section {
-        ForEach(viewModel.passwords, id: \.identifier) { password in
+        ForEach(passwords, id: \.identifier) { password in
           NavigationLink {
-            ManagePasswordDetailView(
-              viewModel: ManagePasswordDetailViewModel(
-                mode: .view(password),
-                autofillDataManager: viewModel.autofillDataManager
-              )
-            )
-            .environment(\.autofillManagementContext, context)
+            ManagePasswordDetailView(viewModel: viewModel, password: password)
           } label: {
             VStack(alignment: .leading, spacing: 4) {
               Text(password.username ?? password.title)
@@ -45,7 +44,7 @@ struct ManagePasswordGroupView: View {
           .swipeActions(edge: .trailing, allowsFullSwipe: true) {
             Button(role: .destructive) {
               UIImpactFeedbackGenerator(style: .medium).vibrate()
-              viewModel.delete(password)
+              viewModel.deletePasswords([password])
             } label: {
               Label(
                 Strings.Autofill.managePasswordsDeleteCredentialButtonTitle,
@@ -57,7 +56,7 @@ struct ManagePasswordGroupView: View {
         }
       }
     }
-    .navigationTitle(viewModel.domain)
+    .navigationTitle(domain)
     .navigationBarTitleDisplayMode(.inline)
     .toolbarBackground(.visible, for: .navigationBar)
     .toolbar {
@@ -111,7 +110,7 @@ struct ManagePasswordGroupView: View {
 
       ToolbarItem(placement: .bottomBar) {
         EditButton()
-          .disabled(viewModel.passwords.isEmpty)
+          .disabled(passwords.isEmpty)
       }
     }
     .overlay {
@@ -119,9 +118,6 @@ struct ManagePasswordGroupView: View {
         Color(.braveGroupedBackground)
           .ignoresSafeArea()
       }
-    }
-    .onChange(of: viewModel.isEmpty) { _, isEmpty in
-      if isEmpty { dismiss() }
     }
     .onReceive(NotificationCenter.default.publisher(for: UIScene.willDeactivateNotification)) { _ in
       isSceneActive = false
@@ -136,16 +132,16 @@ struct ManagePasswordGroupView: View {
   }
 
   private var selectedCredentialsString: String {
-    viewModel.passwords
-      .filter { selectedCredentialIds.contains($0.identifier) }
-      .compactMap { $0.username }
+    passwords
+      .map({ $0.username ?? $0.title })
       .sorted()
-      .joined(separator: ", ")
+      .formatted()
   }
 
   private func deleteSelections() {
     UIImpactFeedbackGenerator(style: .medium).vibrate()
-    viewModel.deleteCredentials(forIds: selectedCredentialIds)
+    let toDelete = passwords.filter { selectedCredentialIds.contains($0.identifier) }
+    viewModel.deletePasswords(toDelete)
     selectedCredentialIds.removeAll()
     exitEditMode()
   }

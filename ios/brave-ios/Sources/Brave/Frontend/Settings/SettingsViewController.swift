@@ -1283,21 +1283,21 @@ class SettingsViewController: TableViewController {
             {
               askForLocalAuthentication(viewType: .passwords) { [weak self] success, _ in
                 guard let self, success else { return }
-                let context = AutofillManagementContext(
-                  settingsDelegate: settingsDelegate,
-                  askForAuthentication: { [weak self] completion in
-                    self?.askForLocalAuthentication(viewType: .passwords, completion: completion)
-                  }
+                let viewModel = ManagePasswordsViewModel(autofillDataManager: autofillDataManager)
+                let controller = UIHostingController(
+                  rootView:
+                    ManagePasswordsView(viewModel: viewModel)
+                    .environment(
+                      \.openURL,
+                      OpenURLAction { [weak self] url in
+                        self?.settingsDelegate?.settingsOpenURLInNewTab(url)
+                        return .handled
+                      }
+                    )
                 )
-                let manageAutofillViewController = ManageAutofillViewController(
-                  autofillDataManager: autofillDataManager,
-                  context: context,
-                  type: .passwords
-                )
-                navigationController?.pushViewController(
-                  manageAutofillViewController,
-                  animated: true
-                )
+
+                navigationController?.pushViewController(controller, animated: true)
+                navigationController?.setToolbarHidden(false, animated: true)
               }
             } else {
               let loginsPasswordsViewController = LoginListViewController(
