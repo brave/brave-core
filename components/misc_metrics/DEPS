@@ -8,6 +8,4 @@ include_rules = [
   "+components/language",
   "+components/prefs",
   "+components/security_interstitials",
-  "+services/media_session/public/cpp/test",
-  "+services/media_session/public/mojom",
 ]
