@@ -10,7 +10,7 @@
 #include "base/notreached.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_constants.h"
-#include "brave/grit/brave_generated_resources.h"
+#include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
