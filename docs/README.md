@@ -38,6 +38,10 @@ This is only an estimate. The **github** view may differ.
 *   [DevTools Frontend Patching](devtools_frontend_patching.md) Managing
     changes to the upstream project.
 
+### Tools
+*   [Claude Code Skills](claude_code_skills.md) - Slash commands for automating
+    common development tasks (commit, review, preflight, CI, and more).
+
 ### General Development
 *   [`gni` notes](gni_sources.md) - Brief notes on the use of `source.gni`
     files in our code base.
