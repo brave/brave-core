@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">Nettsider kan be om å bruke den eldre Google-påloggingsløsningen via tredjeparts informasjonskapsler.</translation>
 <translation id="2903783737778379345">Ikke tillat innlogging via den eldre Google-påloggingsløsningen via tredjeparts informasjonskapsler</translation>
 <translation id="6880817299303842099">Tillatt bruk av tredjepartscookies for gammel Google-pålogging</translation>
-<translation id="2136412236435693622">Tilgang til localhost</translation>
-<translation id="4172219483893066798">Nettsteder kan be om tilgang til localhost-ressurser</translation>
-<translation id="7181706637590665047">Ikke gi tilgang til localhost-ressurser</translation>
-<translation id="1485435696620658073">Har tillatelse til å få tilgang til localhost-ressurser</translation>
 <translation id="181905442828471321">Globale standarder for Brave-skjold</translation>
 <translation id="2675679258824361492">Andre innstillinger for personvern</translation>
 <translation id="8026334261755873520">Slett nettleserdata</translation>
@@ -422,6 +418,13 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="7141438739990875547">Bitcoin-nettverk</translation>
 <translation id="9055546041146396417">Hvis denne siden ikke ser ut til å fungere, prøv uten Shields.</translation>
 <translation id="7898672232170410330">Blokk element</translation>
+<translation id="9064628362799094520">Vil du slette data fra nettsted</translation>
+<translation id="8949611615512336262">Auto-sletting: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Vil du slette data fra nettsted nå</translation>
+<translation id="6795622376590884449">Auto-sletting</translation>
+<translation id="7961015016161918242">Aldri</translation>
+<translation id="1991004083507807299">Nettstedsfane lukket</translation>
+<translation id="5827277414420724690">Applikasjon lukket</translation>
 <translation id="1209739344687072997">Rapporter et nettsted som ikke fungerer</translation>
 <translation id="8510478288840333677">Gi utviklerne av Brave beskjed om at dette nettstedet ikke fungerer skikkelig med Shields:</translation>
 <translation id="1653405824851871276">Takk for at du bidrar til med å gjøre Brave bedre for alle. Denne rapporten sender bare informasjonen som kreves for at vi skal kunne fikse dette nettstedet. <ph name="LEARN_MORE"/></translation>
@@ -1075,7 +1078,7 @@ Leo AI. Dette kan ikke angres.</translation>
 <translation id="1336494649091412226">Er du sikker på at du vil avslutte Brave?</translation>
 <translation id="6061635824229591714">Vil du slette data fra nettsted?</translation>
 <translation id="1265051174491933207">Sletting vil fjerne nettstedsdata og lukke alle faner med '<ph name="SITE_NAME"/>'. Dette kan ikke angres.</translation>
-<translation id="4279349293084858577">Slett</translation>
+<translation id="5528772406060281700">Vil du slette data fra nettsted</translation>
 <translation id="4426990318287827331">Slett data</translation>
 <translation id="7942415993090181327">Samtalelogg</translation>
 <translation id="6859935199732075666">Vis Safe Browsing-feil</translation>

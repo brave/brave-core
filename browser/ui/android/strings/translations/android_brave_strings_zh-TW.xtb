@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">網站可要求透過第三方 Cookie 使用舊版 Google 登入</translation>
 <translation id="2903783737778379345">不允許透過第三方 Cookie 使用舊版 Google 登入</translation>
 <translation id="6880817299303842099">允許使用第三方 Cookie 進行舊版 Google 登入</translation>
-<translation id="2136412236435693622">存取本地主機</translation>
-<translation id="4172219483893066798">網站可要求存取本地主機資源</translation>
-<translation id="7181706637590665047">禁止存取本地主機資源</translation>
-<translation id="1485435696620658073">已允許存取本地主機資源</translation>
 <translation id="181905442828471321">Brave shields 全域預設值</translation>
 <translation id="2675679258824361492">其他私隱設定</translation>
 <translation id="8026334261755873520">清除瀏覽資料</translation>
@@ -425,6 +421,13 @@
 <translation id="7141438739990875547">比特幣網路</translation>
 <translation id="9055546041146396417">如果此網站顯示為損壞，請試試 Shields down</translation>
 <translation id="7898672232170410330">封鎖元素</translation>
+<translation id="9064628362799094520">銷毀網站的資料</translation>
+<translation id="8949611615512336262">自動銷毀：<ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">立即銷毀網站資料</translation>
+<translation id="6795622376590884449">自動銷毀</translation>
+<translation id="7961015016161918242">一律不要</translation>
+<translation id="1991004083507807299">網站分頁關閉</translation>
+<translation id="5827277414420724690">應用程式關閉</translation>
 <translation id="1209739344687072997">回報壞掉的網站</translation>
 <translation id="8510478288840333677">讓 Brave 開發者知道此網站無法與 Shields 一起運作：</translation>
 <translation id="1653405824851871276">感謝您協助 Brave 改善服務。此報告只會包含我們修復此網站所需的資訊。<ph name="LEARN_MORE"/></translation>
@@ -1076,7 +1079,7 @@
 <translation id="1336494649091412226">您確定要退出 Brave 嗎？</translation>
 <translation id="6061635824229591714">要銷毀網站資料嗎？</translation>
 <translation id="1265051174491933207">銷毀將刪除網站資料並關閉所有「<ph name="SITE_NAME"/>」分頁。此操作無法復原。</translation>
-<translation id="4279349293084858577">銷毀</translation>
+<translation id="5528772406060281700">銷毀網站資料</translation>
 <translation id="4426990318287827331">銷毀資料</translation>
 <translation id="7942415993090181327">聊天紀錄</translation>
 <translation id="6859935199732075666">顯示安全瀏覽錯誤</translation>

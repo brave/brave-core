@@ -19,6 +19,7 @@
 <translation id="1544192797660353713">ארנק</translation>
 <translation id="2361906291514218784">Leo המבוסס בינה מלאכותית</translation>
 <translation id="8275068909952022340">עוד…</translation>
+<translation id="71316462802471551">מיילים בדויים</translation>
 <translation id="1990886731975529483">התקינו והפעילו את Google Widevine</translation>
 <translation id="8926389886865778422">אל תשאל שוב</translation>
 <translation id="4900351245762303149">התקינו את Google Widevine</translation>
@@ -203,7 +204,6 @@
 <translation id="253980346046488815">סגור כרטיסיות כפולות</translation>
 <translation id="8670218546624422041">פתיחה בקונטיינר</translation>
 <translation id="8638526693050780542">ניהול קונטיינרים</translation>
-<translation id="7302999361397024774">שינוי שם הכרטיסייה</translation>
 <translation id="2336228925368920074">צור סימניה לכל הכרטיסיות...</translation>
 <translation id="2523967823495420116">השתמשו בכרטיסיות אנכיות</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{השתקת הכרטיסייה}two{השתקת הכרטיסיות}many{השתקת הכרטיסיות}other{השתקת הכרטיסיות}}</translation>
@@ -214,7 +214,6 @@
 <translation id="2703180365855369896">סגור כרטיסיות כפולות</translation>
 <translation id="1987871867023021397">פתיחה בקונטיינר</translation>
 <translation id="6745991613881384719">ניהול קונטיינרים</translation>
-<translation id="3917844427669888979">שינוי שם הכרטיסייה</translation>
 <translation id="3704707436873245822">העתקת טקסט מתוך תמונה</translation>
 <translation id="5268098808165185458">מעתיק טקסט מתוך תמונה...</translation>
 <translation id="4046485130884276245">הועתק טקסט מתוך תמונה</translation>
@@ -512,6 +511,10 @@
 <translation id="1199170151481311646">ניתוח נתונים תוך שמירה על פרטיות</translation>
 <translation id="5990642573624858459">דיווח סטטיסטי</translation>
 <translation id="2441719842399509963">אפס להגדרות ברירת מחדל</translation>
+<translation id="4530494379350999373">מקור</translation>
+<translation id="2964215604640804042">Brave Origin היא גרסה בתשלום של הדפדפן למשתמשים שלא זקוקים לכל התכונות התומכות ב-Brave כעסק, אך עדיין רוצים את הפרטיות שרק Brave מציעה. משתמשי Brave Origin ימשיכו ליהנות מהפרטיות המובילה בתעשייה, חסימת מודעות ומהירות שלנו (דרך מגיני Brave), כמו גם עדכוני תוכנה רגילים, תיקוני Chromium ושיפורי אבטחה ופרטיות. הם גם יוכלו לבטל את הפיצ'רים כמו AI, Rewards, ארנק, VPN, Web3 דומיינים ועוד.</translation>
+<translation id="9130916892338379417">Brave Origin זמין דרך רכישה חד-פעמית. בנייד (Android ו-iOS) ועל שולחן העבודה, ניתן לרכוש את Origin כשדרוג לגרסת ההוצאה הקיימת שלך. בשולחן העבודה, Origin זמין גם כאפליקציה עצמאית נפרדת. משתמשי Origin יראו לוח בקרה חדש בתפריט ההגדרות. תכונות קיימות - כמו כל תכונה חדשה שנשלח בעתיד - יופיעו כאן, ויהיו מושבתות כברירת מחדל.</translation>
+<translation id="7984508421152399880">קנה עכשיו</translation>
 <translation id="5567412479632285879">Brave Rewards מושבתים</translation>
 <translation id="413570371620795359">פתח לוח תגמולים כדי לאפשר ולהתחיל לעבוד</translation>
 <translation id="1051600834033686945">פתח את הגדרות Brave Rewards המלאות</translation>
@@ -554,7 +557,6 @@
 <translation id="5747552184818312860">מועד תפוגה</translation>
 <translation id="3858860766373142691">שם</translation>
 <translation id="361106536627977100">‏נתוני Flash</translation>
-<translation id="4530494379350999373">מקור</translation>
 <translation id="8195027750202970175">גודל בדיסק</translation>
 <translation id="9116465289595958864">שינוי אחרון</translation>
 <translation id="4590324241397107707">אחסון מסדי נתונים</translation>
@@ -587,11 +589,6 @@
 <translation id="2903783737778379345">אל תאפשר כניסה של Google מדור קודם באמצעות קובצי Cookie של צד שלישי</translation>
 <translation id="2570833232754279153">אסור להשתמש בקובצי Cookie של צד שלישי לצורך כניסה מדור קודם של Google</translation>
 <translation id="6880817299303842099">מותר להשתמש בקובצי Cookie של צד שלישי לצורך כניסה מדור קודם של Google</translation>
-<translation id="2136412236435693622">גישה ל-Localhost</translation>
-<translation id="4172219483893066798">אתרים יכולים לבקש גישה למשאבי localhost</translation>
-<translation id="7181706637590665047">אל תאפשר גישה למשאבי localhost</translation>
-<translation id="1336116824874668514">לא מורשה לגשת למשאבי localhost</translation>
-<translation id="1485435696620658073">מורשה לגשת למשאבי localhost</translation>
 <translation id="5794692721727586076">צ'אט עם Leo AI</translation>
 <translation id="8115153008662981040">אתרים יכולים לבקש לפתוח את הצ'אט עם Leo AI</translation>
 <translation id="1145070115730668595">אל תאפשר לאתר לפתוח את הצ'אט עם Leo AI</translation>

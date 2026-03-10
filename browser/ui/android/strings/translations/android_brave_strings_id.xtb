@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">Situs dapat meminta untuk menggunakan Kredensial Google lama via kuki pihak ketiga</translation>
 <translation id="2903783737778379345">Jangan izinkan Kredensial Google lama via kuki pihak ketiga</translation>
 <translation id="6880817299303842099">Diizinkan untuk menggunakan kuki pihak ketiga untuk Kredensial Google lama</translation>
-<translation id="2136412236435693622">Akses host lokal</translation>
-<translation id="4172219483893066798">Situs dapat meminta akses ke sumber daya localhost</translation>
-<translation id="7181706637590665047">Jangan izinkan akses ke sumber daya localhost</translation>
-<translation id="1485435696620658073">Diizinkan untuk mengakses sumber daya localhost</translation>
 <translation id="181905442828471321">Pengaturan bawaan global perisai Brave</translation>
 <translation id="2675679258824361492">Pengaturan privasi lainnya</translation>
 <translation id="8026334261755873520">Hapus data penjelajahan</translation>
@@ -422,6 +418,13 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="7141438739990875547">Jaringan Bitcoin</translation>
 <translation id="9055546041146396417">Jika situs ini tampak rusak, coba turunkan Shield.</translation>
 <translation id="7898672232170410330">Blokir elemen</translation>
+<translation id="9064628362799094520">Musnahkan data situs</translation>
+<translation id="8949611615512336262">Musnahkan Otomatis: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Musnahkan Data Situs Sekarang</translation>
+<translation id="6795622376590884449">Musnahkan Otomatis</translation>
+<translation id="7961015016161918242">Jangan pernah</translation>
+<translation id="1991004083507807299">Tab Situs Tertutup</translation>
+<translation id="5827277414420724690">Penutupan Aplikasi</translation>
 <translation id="1209739344687072997">Laporkan situs rusak</translation>
 <translation id="8510478288840333677">Beri tahu pengembang Brave bahwa situs ini tidak berfungsi dengan baik saat Perisai aktif:</translation>
 <translation id="1653405824851871276">Terima kasih telah membantu menjadikan Brave lebih baik bagi semua. Laporan ini hanya akan berisi informasi yang diperlukan bagi kami untuk memperbaiki situs ini. <ph name="LEARN_MORE"/></translation>
@@ -1073,7 +1076,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="1336494649091412226">Apakah Anda yakin ingin keluar dari Brave?</translation>
 <translation id="6061635824229591714">Musnahkan data situs?</translation>
 <translation id="1265051174491933207">Pemusnahan data akan menghapus data situs dan menutup semua tab '<ph name="SITE_NAME"/>'. Tindakan ini tidak dapat dibatalkan.</translation>
-<translation id="4279349293084858577">Hancurkan</translation>
+<translation id="5528772406060281700">Musnahkan data situs</translation>
 <translation id="4426990318287827331">Musnahkan Data</translation>
 <translation id="7942415993090181327">Riwayat obrolan</translation>
 <translation id="6859935199732075666">Tampilkan kesalahan dari Safe Browsing</translation>

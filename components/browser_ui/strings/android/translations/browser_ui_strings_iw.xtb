@@ -3,20 +3,24 @@
 <translationbundle lang="iw">
 <translation id="1006017844123154345">פתיחת גרסה אונליין</translation>
 <translation id="1036348656032585052">כיבוי</translation>
+<translation id="1046742265332833834">עיצוב כחול</translation>
 <translation id="1070329623210597193">קבצים שהאתר יכול לראות או לערוך</translation>
 <translation id="1882093842020941518">‏רוצה לעזור לנו לשפר את Brave? אפשר לשתף אותנו בסיבה לשימוש בקובצי cookie של צד שלישי. <ph name="BEGIN_LINK"/>שליחת משוב<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">אפשר לבקש לראות את הגרסה למחשב של אתרים</translation>
 <translation id="9183227624343766158">‏שימוש ב-Brave כברירת מחדל</translation>
 <translation id="113098737392899175">ניווט בדפים באמצעות סמן הטקסט כשהמקלדת מחוברת</translation>
+<translation id="738393714577080438">‏שמירת סיסמאות ב-Brave</translation>
 <translation id="1178015372320901893">הגיליון התחתון של "קיצורי הדרך שלי"</translation>
 <translation id="1178581264944972037">השהיה</translation>
 <translation id="1181037720776840403">הסרה</translation>
 <translation id="1192844206376121885">‏הפעולה הזו תמחק את כל הנתונים וקובצי ה-Cookie שאוחסנו על ידי <ph name="ORIGIN"/>.</translation>
+<translation id="1199963004393929848">עיצוב ירוק</translation>
 <translation id="1201402288615127009">הבא</translation>
 <translation id="3251315496493761426">‏טיפים של Brave</translation>
 <translation id="1242008676835033345">מוטמע ב-<ph name="WEBSITE_URL"/></translation>
 <translation id="1263609676484797429">לוחצים על 'אפליקציות'  &gt; 'אפליקציות ברירת מחדל'</translation>
 <translation id="1272079795634619415">הפסקה</translation>
+<translation id="1275718070701477396">נבחר</translation>
 <translation id="8010562420973777575">‏כדי לחסוך לך נתונים, התמונות בדף הזה עברו אופטימיזציה על ידי Brave.</translation>
 <translation id="129382876167171263">קבצים שנשמרו על ידי אתרים מופיעים כאן</translation>
 <translation id="131112695174432497">יימחקו הנתונים שמשפיעים על ההתאמה האישית של מודעות</translation>
@@ -35,6 +39,7 @@
 <translation id="1741136041592162279">‏‫Brave יכול לשתף את הכרטיסיות האחרונות עם המכשיר שלך כדי שתהיה לך אפשרות לראות אותן ברשימת האפליקציות במכשיר ובתוצאות החיפוש. ניתן להפעיל או להשבית את האפשרות הזו בהגדרות Brave.</translation>
 <translation id="1420688843103859429">כדי לנווט קדימה ואחורה, אפשר להחליק עם שתי אצבעות על לוח המגע</translation>
 <translation id="1432650420699700107">אתרים יכולים לבקש הרשאה להתחבר לכל מכשיר ברשת המקומית</translation>
+<translation id="1442081309487427303">הפעלת הקישורים של מצב הקריאה</translation>
 <translation id="1448064542941920355">הקטנת הזום</translation>
 <translation id="1464044141348608623">לא לאפשר לאתרים לדעת מתי המכשיר הזה משמש אותך באופן פעיל</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{באתר אחד (<ph name="SITE_COUNT"/>)}one{ב-<ph name="SITE_COUNT"/> אתרים}two{ב-<ph name="SITE_COUNT"/> אתרים}other{ב-<ph name="SITE_COUNT"/> אתרים}}</translation>
@@ -47,6 +52,8 @@
 <translation id="1547123415014299762">‏מותר להשתמש בקובצי cookie של צד שלישי</translation>
 <translation id="3665719978526894928">‏אפשר להאיץ ביצועים של אתרים באמצעות מנוע V8 של Brave, אבל Brave יהיה קצת פחות עמיד בפני מתקפות</translation>
 <translation id="1593426485665524382">פעולות חדשות זמינות באזור החלק העליון של המסך</translation>
+<translation id="1594521731409209842">כדי לשנות את גודל התמונה, פותחים או סוגרים את האצבעות על המסך</translation>
+<translation id="1601560923496285236">החלה</translation>
 <translation id="1615755956145364867">אתרים יכולים לבקש הרשאה להפעיל תוכן מוגן</translation>
 <translation id="1620510694547887537">מצלמה</translation>
 <translation id="1621729191093924223">תכונות שצריכות מיקרופון לא יפעלו</translation>
@@ -67,6 +74,7 @@
 <translation id="2534291364429593865">‏רוצה לקבל התראות על טיפים ל-Brave?</translation>
 <translation id="1777815584158991902">‏הגיליון התחתון של פיד Discover</translation>
 <translation id="1779089405699405702">מפענח התמונות</translation>
+<translation id="1781533683087883868">השבתת הקישורים של מצב הקריאה</translation>
 <translation id="1785415724048343560">מומלץ כדי ליהנות מחוויית השימוש הטובה ביותר</translation>
 <translation id="1796588414813960292">תכונות שצריכות צלילים לא יפעלו</translation>
 <translation id="7401204338724669842">‏טיפים ל-Brave</translation>
@@ -169,6 +177,7 @@
 <translation id="2682367912565197520">מחיקת רמת הזום השמורה</translation>
 <translation id="2683434792633810741">למחוק ולאפס?</translation>
 <translation id="2685514716378236873">אין הרשאה</translation>
+<translation id="2710883118091822664">כדי להמשיך בקלות בכל המכשירים, צריך להיכנס לחשבון</translation>
 <translation id="2713106313042589954">השבתת המצלמה</translation>
 <translation id="2717722538473713889">כתובות אימייל</translation>
 <translation id="8181634240306014548">‏הפעלה של Brave עם התמקדות בסרגל הכתובות, כדי לקצר את זמן ההפעלה במכשירים בסיסיים.</translation>
@@ -196,6 +205,7 @@
 <translation id="3004438526346162184">אתרים יכולים להשתמש בתכונה הזו כדי לנהל את החלונות בכל המסכים</translation>
 <translation id="3008272652534848354">איפוס הרשאות</translation>
 <translation id="301521992641321250">נחסמה אוטומטית</translation>
+<translation id="3026311960038210">אוספי עיצובים</translation>
 <translation id="3064871050034234884">אתרים יכולים להשמיע צלילים</translation>
 <translation id="3065787901655140044">ההגנה המתקדמת מופעלת</translation>
 <translation id="3069226013421428034">אישור הכניסה של צד שלישי לאתר ספציפי.</translation>
@@ -215,6 +225,7 @@
 <translation id="3167868116600277716">‏פיד Discover</translation>
 <translation id="3198916472715691905">נתונים מאוחסנים בנפח <ph name="STORAGE_AMOUNT"/></translation>
 <translation id="3199078925536734975">יש אישור לשימוש חד-פעמי • מיקום משוער</translation>
+<translation id="3208584281581115441">לבדיקה</translation>
 <translation id="321187648315454507">‏כדי לאפשר ל-<ph name="APP_NAME"/> לשלוח לך התראות, צריך להפעיל אותן גם ב<ph name="BEGIN_LINK"/>הגדרות Android<ph name="END_LINK"/>.</translation>
 <translation id="3223425961342298674">אין הרשאת גישה למיקום</translation>
 <translation id="3227137524299004712">מיקרופון</translation>
@@ -262,6 +273,7 @@
 <translation id="3721953990244350188">סגירה והצגת הפעולה הזמינה הבאה</translation>
 <translation id="3744111561329211289">סנכרון ברקע</translation>
 <translation id="3746834924069123416">צפייה בכרטיסיות נוספות מהזמן האחרון</translation>
+<translation id="3753618528540214374">עיצוב ירוק כהה</translation>
 <translation id="3763247130972274048">בלחיצה פעמיים על הסרטון בצד ימין או שמאל אפשר לדלג על 10 שניות</translation>
 <translation id="3776508619697147021">אתרים יכולים לבקש הרשאה להוריד מספר קבצים באופן אוטומטי</translation>
 <translation id="3779154269823594982">החלפת סיסמאות</translation>
@@ -271,6 +283,7 @@
 <translation id="381841723434055211">מספרי טלפון</translation>
 <translation id="3823453485268218808">‏גופן Mono</translation>
 <translation id="3826050100957962900">כניסה של צד שלישי</translation>
+<translation id="3831065134033923230">בדיקת הסיסמאות השמורות</translation>
 <translation id="3835233591525155343">השימוש שלך במכשיר</translation>
 <translation id="1799795508209440035">‏קובצי cookie יחסמו היום שוב ב-Brave</translation>
 <translation id="385051799172605136">חזרה</translation>
@@ -280,6 +293,7 @@
 <translation id="3903738175795615004">‏כדי לצאת מהמסך המלא, צריך לגרור מלמעלה או להקיש על Esc.</translation>
 <translation id="3905475044299942653">עצירה של התראות מרובות</translation>
 <translation id="3922092564198021702">בטלפון, פותחים את ההגדרות</translation>
+<translation id="3924858949939391676">הצגת קישורים כשמצב הקריאה מופעל</translation>
 <translation id="3933121352599513978">כיווץ בקשות לא רצויות (מומלץ)</translation>
 <translation id="3934905113567851655">כדי לשנות את הגודל, פותחים או סוגרים את האצבעות</translation>
 <translation id="3955193568934677022">אתרים יוכלו להפעיל תוכן מוגן (מומלץ)</translation>
@@ -334,6 +348,7 @@
 <translation id="4478158430052450698">אפשרות פשוטה יותר להתאים אישית את מרחק התצוגה באתרים שונים</translation>
 <translation id="4479647676395637221">יש לשאול לפני שמאפשרים לאתרים להשתמש במצלמה שלך (מומלץ)</translation>
 <translation id="4505788138578415521">‏כתובת ה-URL הורחבה</translation>
+<translation id="4523472416386354622">כניסה לחשבון</translation>
 <translation id="4534723447064627427">‏כדי לאפשר ל-<ph name="APP_NAME"/> לגשת אל המיקרופון, צריך להפעיל את המיקרופון גם ב<ph name="BEGIN_LINK"/>הגדרות Android<ph name="END_LINK"/>.</translation>
 <translation id="4566417217121906555">השתקת המיקרופון</translation>
 <translation id="4570913071927164677">פרטים</translation>
@@ -343,6 +358,7 @@
 <translation id="4644713492825682049">מחיקה ואיפוס</translation>
 <translation id="4645575059429386691">מנוהל על-ידי ההורה שלך</translation>
 <translation id="4652266463001779298">אין הרשאה</translation>
+<translation id="4655846733459137112">כדי להשתמש בסיסמה הזו בקלות בכניסה הבאה לחשבון, צריך ללחוץ על "כן"</translation>
 <translation id="4663373278480897665">ניתן להשתמש במצלמה בדף זה</translation>
 <translation id="4670064810192446073">מציאות מדומה</translation>
 <translation id="5652778654712411580">‏לוחצים על אפליקציית הדפדפן ואז על Brave</translation>
@@ -388,6 +404,7 @@
 <translation id="512938610812707830">הגיליון התחתון של אוספי העיצובים של דף הכרטיסייה החדשה נפתח בגובה מלא</translation>
 <translation id="5137460097045297858">‏הגיליון התחתון של פיד Discover נפתח בחצי מגובה המסך</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{זוהתה ירידה במחיר בכרטיסיות הפתוחות}one{זוהו ירידות במחירים בכרטיסיות הפתוחות}two{זוהו ירידות במחירים בכרטיסיות הפתוחות}other{זוהו ירידות במחירים בכרטיסיות הפתוחות}}</translation>
+<translation id="5150048675001754041">אפשר להיכנס במהירות ובקלות לאתרים ולאפליקציות</translation>
 <translation id="5186036860380548585">האפשרות זמינה בחלק העליון של המסך</translation>
 <translation id="5197729504361054390">אנשי הקשר שייבחרו ישותפו עם <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="5198930230016462977">הגיליון התחתון להתאמה אישית של דף הכרטיסייה החדשה נסגר</translation>
@@ -446,6 +463,7 @@
 <translation id="5804241973901381774">הרשאות</translation>
 <translation id="5817042798620209981">פרטי האתר, תיבת דו-שיח</translation>
 <translation id="5822675474983796325">הגיליון התחתון להתאמה אישית של דף הכרטיסייה החדשה נפתח בגובה מלא</translation>
+<translation id="4298364316773778595">‏גיליון תחתון עם הוראות לשמירת סיסמאות ב-Brave</translation>
 <translation id="5833899990800318936">‏לא לאפשר לאתרים להשתמש ב-JavaScript</translation>
 <translation id="583673505367439042">אתרים יכולים לבקש הרשאה לערוך קבצים ותיקיות במכשיר שלך</translation>
 <translation id="5844448279347999754">כשהאפשרות מופעלת, אתרים יכולים לבקש הרשאה לראות טקסט ותמונות שנשמרו בלוח העריכה. כשהאפשרות מושבתת, אתרים לא יכולים לראות טקסט או תמונות שנשמרו בלוח העריכה.</translation>
@@ -472,6 +490,7 @@
 <translation id="5998071268779572583">‏הפעלת הפיד של Discover</translation>
 <translation id="6012967556075291653">מקש קיצור מוצמד</translation>
 <translation id="6015775454662021376">שליטה על הגישה של האתר הזה למכשיר שלך</translation>
+<translation id="296137235951584143">‏אפשר להתאים אישית את Brave בדרך שנוחה לך</translation>
 <translation id="6040143037577758943">סגירה</translation>
 <translation id="6042308850641462728">עוד</translation>
 <translation id="6064125863973209585">הורדות שהושלמו</translation>
@@ -479,6 +498,7 @@
 <translation id="6085954183010297841">למחוק את ההרשאה לעריכת הקובץ? <ph name="FILE"/></translation>
 <translation id="6104860901391833523">כשהאפשרות מופעלת, אתרים יכולים להפעיל את מצב "תמונה בתוך תמונה" באופן אוטומטי. כשהאפשרות מושבתת, אתרים לא יכולים להפעיל את מצב "תמונה בתוך תמונה" באופן אוטומטי.</translation>
 <translation id="6120483543004435978">כשהאפשרות מופעלת, אתרים יכולים לבקש הרשאה לדעת מתי משתמשים במכשיר הזה בפועל. כשהאפשרות מושבתת, אתרים לא יכולים לדעת מתי משתמשים במכשיר הזה בפועל.</translation>
+<translation id="4852158809106762963">‏‫Brave יציע לשמור את הסיסמה</translation>
 <translation id="615886654739818377">לאתרים אין הרשאה לנהל את החלונות בכל המסכים</translation>
 <translation id="6165508094623778733">למידע נוסף</translation>
 <translation id="6171020522141473435">‏כשהאפשרות מופעלת, אתרים יכולים לבקש הרשאה להשתמש במכשירי Bluetooth. כשהאפשרות מושבתת, אתרים לא יכולים להשתמש במכשירי Bluetooth.</translation>
@@ -489,13 +509,13 @@
 <translation id="6196640612572343990">‏חסימת קובצי Cookie של צד שלישי</translation>
 <translation id="6205314730813004066">פרטיות בפרסום</translation>
 <translation id="6207207788774442484">מחיקת הנתונים ואיפוס ההרשאות</translation>
+<translation id="6218508144653756827">עיצוב פוקסיה</translation>
 <translation id="6231752747840485235">להסיר את '<ph name="APP_NAME"/>'?</translation>
 <translation id="4789073065838177382">‏לוחצים על אפליקציית הדפדפן &gt; Brave</translation>
 <translation id="6260830281887654268">הגיליון התחתון של אוספי העיצובים בדף הכרטיסייה החדשה נפתח בחצי מגובה המסך</translation>
 <translation id="6262191102408817757">על סמך הכרטיסייה האחרונה שלך</translation>
 <translation id="6262279340360821358">ההרשאות <ph name="PERMISSION_1"/> וגם <ph name="PERMISSION_2"/> חסומות</translation>
 <translation id="6270391203985052864">אתרים יכולים לבקש לשלוח התראות</translation>
-<translation id="6278428485366576908">עיצוב</translation>
 <translation id="6295158916970320988">כל האתרים</translation>
 <translation id="6320088164292336938">רטט</translation>
 <translation id="6367753977865761591">חסימת הכניסה של צד שלישי לאתר ספציפי.</translation>
@@ -514,6 +534,7 @@
 <translation id="6545864417968258051">‏סריקת Bluetooth</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{נחסמו ההרשאות <ph name="PERMISSION_1"/>,‏ <ph name="PERMISSION_2"/> ועוד אחת (<ph name="NUM_MORE"/>)}one{נחסמו ההרשאות <ph name="PERMISSION_1"/>,‏ <ph name="PERMISSION_2"/> ועוד <ph name="NUM_MORE"/>}two{נחסמו ההרשאות <ph name="PERMISSION_1"/>,‏ <ph name="PERMISSION_2"/> ועוד <ph name="NUM_MORE"/>}other{נחסמו ההרשאות <ph name="PERMISSION_1"/>,‏ <ph name="PERMISSION_2"/> ועוד <ph name="NUM_MORE"/>}}</translation>
 <translation id="6554732001434021288">הביקור האחרון התבצע לפני <ph name="NUM_DAYS"/> ימים</translation>
+<translation id="6556866813142980365">ביצוע מחדש</translation>
 <translation id="6557290421156335491">קיצורי הדרך שלי</translation>
 <translation id="656065428026159829">אפשרויות נוספות</translation>
 <translation id="6561560012278703671">הצגת התראות שקטה יותר (למניעת הקפצה של חלוניות מפריעות)</translation>
@@ -522,6 +543,7 @@
 <translation id="659938948789980540">{COUNT,plural, =1{‏קובצי cookie מותרים לאתר אחד (<ph name="RWS_MEMBERS_COUNT"/>) של <ph name="RWS_OWNER"/>}one{‏קובצי cookie מותרים ל-<ph name="RWS_MEMBERS_COUNT"/> אתרים של <ph name="RWS_OWNER"/>}two{‏קובצי cookie מותרים ל-<ph name="RWS_MEMBERS_COUNT"/> אתרים של <ph name="RWS_OWNER"/>}other{‏קובצי cookie מותרים ל-<ph name="RWS_MEMBERS_COUNT"/> אתרים של <ph name="RWS_OWNER"/>}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/>GB</translation>
 <translation id="6612358246767739896">תוכן מוגן</translation>
+<translation id="6619015782482868078">עיצוב טורקיז</translation>
 <translation id="662080504995468778">להמשיך במצב אנונימי</translation>
 <translation id="6630443592285535486">כאן מכניסים את הקוד ההקסדצימאלי</translation>
 <translation id="6635327442719709864">כשהאפשרות מופעלת, אתרים יכולים לבקש הרשאה להשתמש ביציאות טוריות. כשהאפשרות מושבתת, אתרים לא יכולים להשתמש ביציאות טוריות.</translation>
@@ -550,9 +572,11 @@
 <translation id="6945221475159498467">בחירה</translation>
 <translation id="6950072572526089586">אתר שמבקרים בו יכול לשמור מידע על הפעולות שמבצעים בו כדי לפעול כצפוי. למשל, כדי להשאיר את החשבון מחובר לאתר או לשמור פריטים בעגלת הקניות. לרוב, אתרים שומרים את המידע הזה במכשיר באופן זמני.</translation>
 <translation id="6965382102122355670">אישור</translation>
+<translation id="6980507581230208647">עיצוב ורוד</translation>
 <translation id="6980861169612950611">למחוק את הנתונים מהאתר? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">נגישות</translation>
 <translation id="6991142177939282156">יש הרשאה • נעשה שימוש במיקום משוער</translation>
+<translation id="6992014788289743568">כדאי לבדוק את הסיסמאות כדי לשפר את האבטחה ולהגן על הנתונים</translation>
 <translation id="6992289844737586249">יש לשאול לפני שמאפשרים לאתרים להשתמש במיקרופון (מומלץ)</translation>
 <translation id="7000754031042624318">‏ההרשאה מושבתת בהגדרות Android</translation>
 <translation id="8683151724374457021">‏האתר הזה מזהה אילו דברים אהבת ולאחר מכן מציע מודעות לאתרים אחרים. האתר הזה גם מקבל מידע על נושאי המודעות שלך מ-Brave כדי להציג לך מודעות רלוונטיות יותר.</translation>
@@ -578,6 +602,7 @@
 <translation id="7250468141469952378">נבחרו <ph name="ITEM_COUNT"/></translation>
 <translation id="7260727271532453612">פועלות: <ph name="PERMISSION_1"/> וגם <ph name="PERMISSION_2"/></translation>
 <translation id="7276071417425470385">כשהאפשרות מופעלת, אתרים יכולים לבקש הרשאה להשתמש במכשירי מציאות מדומה. כשהאפשרות מושבתת, אתרים לא יכולים להשתמש במכשירי מציאות מדומה.</translation>
+<translation id="7282197670900591579">עיצוב צהוב</translation>
 <translation id="728412880473384942">האתרים מהירים יותר אבל פחות מאובטחים</translation>
 <translation id="7366415735885268578">הוספת אתר</translation>
 <translation id="7368695150573390554">המערכת תמחק את כל הנתונים ששמורים אופליין.</translation>
@@ -616,7 +641,9 @@
 <translation id="5455732060086060613">‏הסתרת כרטיס הטיפים של Brave</translation>
 <translation id="7719367874908701697">מרחק מתצוגה בדף</translation>
 <translation id="775043444390799886">ביטול ההרשאה</translation>
+<translation id="7758789811447313947">עיצוב סגול</translation>
 <translation id="7759147511335618829">‏שליטה במכשירי MIDI ותכנות מחדש</translation>
+<translation id="7771089277295008211">הגיליון התחתון עם ההוראות לשמירת סיסמאות נסגר</translation>
 <translation id="7781829728241885113">אתמול</translation>
 <translation id="7791543448312431591">הוספה</translation>
 <translation id="780301667611848630">לא תודה</translation>
@@ -634,6 +661,8 @@
 <translation id="7940722705963108451">קבלת תזכורת</translation>
 <translation id="7948081750384205628">מידע נוסף על <ph name="SETTING_TITLE"/></translation>
 <translation id="7952708427581814389">אתרים יכולים לבקש הרשאה לראות טקסט ותמונות בלוח העריכה</translation>
+<translation id="7958779728312669715">הגיליון התחתון של ההוראות לשמירת סיסמאות נפתח במלואו</translation>
+<translation id="798299424881500862">עיצוב כתום</translation>
 <translation id="7986741934819883144">בחירת איש קשר</translation>
 <translation id="7990211076305263060">כשהאפשרות מופעלת, אתרים יכולים לבקש הרשאה להשתמש במיקרופון. כשהאפשרות מושבתת, אתרים לא יכולים להשתמש במיקרופון.</translation>
 <translation id="8007176423574883786">כבוי בשביל המכשיר הזה</translation>
@@ -729,6 +758,7 @@
 <translation id="7532165358672313130">‏במהלך הגלישה, אתרים אחרים יכולים לבדוק ב-Brave ולאמת שסביר להניח שמדובר באדם אמיתי, לפי פרטים שנשמרו בביקור באתר קודם.</translation>
 <translation id="8899807382908246773">מודעות שמפריעות</translation>
 <translation id="8903921497873541725">התקרבות לתצוגה</translation>
+<translation id="8919911527569629802">כניסה לחשבון בכל אתר</translation>
 <translation id="8921772741368021346"><ph name="POSITION"/> / <ph name="DURATION"/></translation>
 <translation id="8926389886865778422">אין לשאול שוב</translation>
 <translation id="8926666909099850184">‏קישוריות ה-NFC מושבתת במכשיר הזה. ניתן להפעיל אותה דרך <ph name="BEGIN_LINK"/>הגדרות Android<ph name="END_LINK"/>.</translation>
@@ -756,6 +786,7 @@
 <translation id="9182556968660520230">לא לאפשר לאתרים להפעיל תוכן מוגן</translation>
 <translation id="947156494302904893">אתרים שמבקרים בהם יכולים לאמת שמדובר באדם אמיתי ולא בבוט</translation>
 <translation id="959682366969460160">ארגון הפריטים</translation>
+<translation id="960590623979248167">הצגת היפר-קישורים</translation>
 <translation id="961930410699694996">יש אישור לשימוש חד-פעמי במיקום</translation>
 <translation id="967624055006145463">נפח הנתונים</translation>
 <translation id="969975166333045662">‏חסימת האפשרות של האתר להשתמש בכלי האופטימיזציה של V8.</translation>

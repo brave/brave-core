@@ -19,6 +19,7 @@
 <translation id="1544192797660353713">Кошелек</translation>
 <translation id="2361906291514218784">ИИ-помощник Leo</translation>
 <translation id="8275068909952022340">Ещё…</translation>
+<translation id="71316462802471551">Псевдонимы электронной почты</translation>
 <translation id="1990886731975529483">Установка и запуск Widevine</translation>
 <translation id="8926389886865778422">Больше не спрашивать</translation>
 <translation id="4900351245762303149">Установка расширения Widevine от компании Google</translation>
@@ -61,7 +62,7 @@
 <translation id="7658239707568436148">Отмена</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Открыть с помощью адреса .onion: <ph name="ADDRESS"/></translation>
-<translation id="4759098689276706664">Вставить принудительно</translation>
+<translation id="4759098689276706664">Принудительная вставка</translation>
 <translation id="1434416574322382019">Новое приватное окно с Тор</translation>
 <translation id="4703780849509456860">Открыть ссылку в приватном окне с Тор</translation>
 <translation id="3488584642074079080">Открыть ссылку в приватном окне Brave с Тор</translation>
@@ -204,7 +205,6 @@
 <translation id="253980346046488815">Закрыть одинаковые вкладки</translation>
 <translation id="8670218546624422041">Открыть в контейнере</translation>
 <translation id="8638526693050780542">Управление контейнерами</translation>
-<translation id="7302999361397024774">Переименовать вкладку</translation>
 <translation id="2336228925368920074">Добавить все вкладки в закладки…</translation>
 <translation id="2523967823495420116">Использовать вертикальные вкладки</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{Отключить звук на вкладке}one{Отключить звук на вкладках}few{Отключить звук на вкладках}many{Отключить звук на вкладках}other{Отключить звук на вкладках}}</translation>
@@ -215,7 +215,6 @@
 <translation id="2703180365855369896">Закрыть одинаковые вкладки</translation>
 <translation id="1987871867023021397">Открыть в контейнере</translation>
 <translation id="6745991613881384719">Управление контейнерами</translation>
-<translation id="3917844427669888979">Переименовать вкладку</translation>
 <translation id="3704707436873245822">Скопировать текст с изображения</translation>
 <translation id="5268098808165185458">Копирование текста с изображения…</translation>
 <translation id="4046485130884276245">Текст скопирован</translation>
@@ -513,6 +512,10 @@
 <translation id="1199170151481311646">Аналитика, сохраняющая конфиденциальность</translation>
 <translation id="5990642573624858459">Статистическая отчетность</translation>
 <translation id="2441719842399509963">Сброс настроек по умолчанию</translation>
+<translation id="4530494379350999373">Происхождение</translation>
+<translation id="2964215604640804042">Brave Origin — это платная версия браузера для пользователей, которым не нужны все функции, поддерживающие Brave как бизнес, но которые хотят приватность, которую предлагает только Brave. Пользователи Brave Origin продолжат пользоваться нашей ведущей в отрасли приватностью, блокировщиком рекламы и скоростью (благодаря Защита Brave), а также регулярными обновлениями программного обеспечения, патчами Chromium и улучшениями безопасности и приватности. Они также получат возможность отключить функции, такие как ИИ, Награды, кошелек, VPN, домены Web3 и многое другое.</translation>
+<translation id="9130916892338379417">Brave Origin доступен для одноразовой покупки. На мобильных устройствах (Android и iOS) и на компьютере Origin можно приобрести как обновление вашей текущей версии. На компьютере Origin также доступен как отдельное самостоятельное приложение. Пользователи Origin увидят новую панель управления в меню Параметры. Существующие функции, а также любые новые функции, которые мы выпустим в будущем, будут отображаться здесь и по умолчанию будут отключены.</translation>
+<translation id="7984508421152399880">Купить сейчас</translation>
 <translation id="5567412479632285879">Функция Brave Rewards отключена</translation>
 <translation id="413570371620795359">Чтобы начать, откройте раздел «Награды»</translation>
 <translation id="1051600834033686945">Открыть все настройки Brave Наград</translation>
@@ -555,7 +558,6 @@
 <translation id="5747552184818312860">Срок действия</translation>
 <translation id="3858860766373142691">Название</translation>
 <translation id="361106536627977100">Данные Flash</translation>
-<translation id="4530494379350999373">Происхождение</translation>
 <translation id="8195027750202970175">Объем на диске</translation>
 <translation id="9116465289595958864">Последнее изменение</translation>
 <translation id="4590324241397107707">Хранилище для базы данных</translation>
@@ -588,11 +590,6 @@
 <translation id="2903783737778379345">Не разрешать использовать устаревшую систему входа Google через сторонние файлы cookie</translation>
 <translation id="2570833232754279153">Запрещено использовать сторонние файлы cookie для устаревшей системы входа Google</translation>
 <translation id="6880817299303842099">Разрешено использовать сторонние файлы cookie для устаревшей системы входа Google</translation>
-<translation id="2136412236435693622">Доступ к localhost</translation>
-<translation id="4172219483893066798">Сайты могут запрашивать доступ к файлам localhost</translation>
-<translation id="7181706637590665047">Не разрешать доступ к файлам localhost</translation>
-<translation id="1336116824874668514">Доступ к файлам localhost запрещен</translation>
-<translation id="1485435696620658073">Доступ к файлам localhost разрешен</translation>
 <translation id="5794692721727586076">Чат с Leo</translation>
 <translation id="8115153008662981040">Сайты могут запрашивать разрешение на запуск чата с Leo</translation>
 <translation id="1145070115730668595">Сайты не могут запрашивать разрешение на открытие чата с Leo</translation>

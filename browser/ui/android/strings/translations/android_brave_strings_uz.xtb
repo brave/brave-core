@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">Saytlar eski Google hisobingizga kirishni tashqi cookie fayllar orqali soʻrashi mumkin</translation>
 <translation id="2903783737778379345">Eski Google hisobingizga tashqi cookie fayllar orqali kirishga ruxsat bermang</translation>
 <translation id="6880817299303842099">Eski Google hisobiga kirish uchun tashqi cookie fayllardan foydalanishga ruxsat berilgan</translation>
-<translation id="2136412236435693622">Localhost'ga kirish huquqi</translation>
-<translation id="4172219483893066798">Saytlar localhost manbalariga kirishga ruxsat soʻrashi mumkin</translation>
-<translation id="7181706637590665047">Localhost manbalariga kirishga ruxsat bermang</translation>
-<translation id="1485435696620658073">Localhost manbalariga kirishga ruxsat berilgan</translation>
 <translation id="181905442828471321">Brave Qalqonlari global sozlamalari</translation>
 <translation id="2675679258824361492">Boshqa maxfiylik sozlamalari</translation>
 <translation id="8026334261755873520">Shaxsiy ma’lumotlarni avtomatik tarzda tozalanish</translation>
@@ -431,6 +427,13 @@ Brave bularni bloklaydi, shunda siz yomon kuzatuvlarsiz vebdan foydalana olasiz.
 <translation id="7141438739990875547">Bitcoin tarmoqlari</translation>
 <translation id="9055546041146396417">Agar ushbu sayt kutilganidek ishlamayotgan boʻlsa, Qalqon funksiyalarini faolsizlantirishingiz mumkin.</translation>
 <translation id="7898672232170410330">Elementni bloklash</translation>
+<translation id="9064628362799094520">Sayt maʼlumotlarini butunlay oʻchirish</translation>
+<translation id="8949611615512336262">Avto oʻchirish: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Sayt maʼlumotlarini hozir oʻchirish</translation>
+<translation id="6795622376590884449">Avto oʻchirish</translation>
+<translation id="7961015016161918242">Hech qachon</translation>
+<translation id="1991004083507807299">Sayt varaqi yopildi</translation>
+<translation id="5827277414420724690">Ilova yopilishi</translation>
 <translation id="1209739344687072997">Nosoz sayt haqida xabar qilish</translation>
 <translation id="8510478288840333677">Ushbu sayt Shields bilan toʻgʻri ishlamayotganini Brave ishlab chiquvchilariga bildiring:</translation>
 <translation id="1653405824851871276">Brave'ni barchamiz uchun yaxshilashga yordam berdingiz uchun rahmat. Ushbu hisobot faqat bizga bu saytni tuzatishga zarur bo'lgan ma'lumotlarni o'z ichiga oladi. <ph name="LEARN_MORE"/></translation>
@@ -1094,7 +1097,7 @@ Dastlab yanada koʻproq maʼlumot baham koʻrsangiz, bizning yordam xizmatimiz m
 <translation id="1336494649091412226">Brave'dan chiqishni xohlaysizmi?</translation>
 <translation id="6061635824229591714">Sayt maʼlumotlarini butunlay oʻchirish kerakmi?</translation>
 <translation id="1265051174491933207">Sayt maʼlumotlarini butunlay oʻchirish barcha '<ph name="SITE_NAME"/>' tablarini yopadi. Buni qaytarib boʻlmaydi.</translation>
-<translation id="4279349293084858577">Butunlay oʻchir</translation>
+<translation id="5528772406060281700">Sayt maʼlumotlarini butunlay oʻchirish kerakmi</translation>
 <translation id="4426990318287827331">Maʼlumotlarni butunlay oʻchir</translation>
 <translation id="7942415993090181327">Chat tarixi</translation>
 <translation id="6859935199732075666">Xavfsiz Browsing xatolarni koʻrsatish</translation>

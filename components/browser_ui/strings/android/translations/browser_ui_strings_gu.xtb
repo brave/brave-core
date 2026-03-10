@@ -3,20 +3,24 @@
 <translationbundle lang="gu">
 <translation id="1006017844123154345">ઑનલાઇન ખોલો</translation>
 <translation id="1036348656032585052">બંધ કરો</translation>
+<translation id="1046742265332833834">બ્લૂ થીમ</translation>
 <translation id="1070329623210597193">આ સાઇટ ફાઇલો જોઈ શકે છે અથવા તેમાં ફેરફાર કરી શકે છે</translation>
 <translation id="1882093842020941518">તમે ત્રીજા પક્ષની કુકીને કેમ મંજૂરી આપી છે તે અમને જણાવીને Braveને બહેતર બનાવવામાં અમારી સહાય કરો. <ph name="BEGIN_LINK"/>પ્રતિસાદ મોકલો<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">તમે સાઇટના ડેસ્કટૉપ વર્ઝન જોવાનું પૂછી શકો છો</translation>
 <translation id="9183227624343766158">ડિફૉલ્ટ તરીકે Braveનો ઉપયોગ કરો</translation>
 <translation id="113098737392899175">જ્યારે કીબોર્ડ જોડેલું હોય, ત્યારે કોઈ ટેક્સ્ટ કર્સર વડે પેજ નૅવિગેટ કરો</translation>
+<translation id="738393714577080438">Braveમાં પાસવર્ડ સાચવો</translation>
 <translation id="1178015372320901893">મારા શૉર્ટકટની બોટમ શીટ</translation>
 <translation id="1178581264944972037">થોભો</translation>
 <translation id="1181037720776840403">કાઢી નાખો</translation>
 <translation id="1192844206376121885">આમ કરવાથી <ph name="ORIGIN"/> દ્વારા સ્ટોર કરવામાં આવેલો બધો ડેટા અને કુકી ડિલીટ કરવામાં આવશે.</translation>
+<translation id="1199963004393929848">ગ્રીન થીમ</translation>
 <translation id="1201402288615127009">આગલું</translation>
 <translation id="3251315496493761426">Brave વિશે ટિપ</translation>
 <translation id="1242008676835033345"><ph name="WEBSITE_URL"/> પર શામેલ કર્યું</translation>
 <translation id="1263609676484797429">ઍપ &gt; ડિફૉલ્ટ ઍપ પર ટૅપ કરો</translation>
 <translation id="1272079795634619415">રોકો</translation>
+<translation id="1275718070701477396">પસંદ કરેલ</translation>
 <translation id="8010562420973777575">તમારો ડેટા બચાવવા માટે, આ પેજની છબીઓને Brave દ્વારા ઑપ્ટિમાઇઝ કરવામાં આવી છે.</translation>
 <translation id="129382876167171263">વેબસાઇટ દ્વારા સાચવવામાં આવેલી ફાઇલો અહીં દેખાશે</translation>
 <translation id="131112695174432497">રુચિ મુજબ જાહેરાતની સુવિધાને અસર કરે એવા ડેટાને ડિલીટ કરવામાં આવે છે</translation>
@@ -35,6 +39,7 @@
 <translation id="1741136041592162279">તમારા તાજેતરના ટૅબ તમારી ડિવાઇસની ઍપની સૂચિ અને શોધ પરિણામોમાં દેખાય તે માટે Braveને તમારા ડિવાઇસ સાથે તે શેર કરવાની મંજૂરી આપો. Brave સેટિંગમાં તમે આને ચાલુ અથવા બંધ કરી શકો છો.</translation>
 <translation id="1420688843103859429">ટચપૅડ પર બે આંગળી વડે સ્વાઇપ કરીને આગળ અને પાછળ નૅવિગેટ કરો</translation>
 <translation id="1432650420699700107">સાઇટ તમારા સ્થાનિક નેટવર્ક પરના કોઈપણ ડિવાઇસ સાથે કનેક્ટ થવા માટે પૂછી શકે છે</translation>
+<translation id="1442081309487427303">વાંચન મોડની લિંક ચાલુ કરો</translation>
 <translation id="1448064542941920355">નાનું-મોટું કરવાની ટકાવારી ઘટાડો</translation>
 <translation id="1464044141348608623">સાઇટને તમે સક્રિય રીતે તમારા ડિવાઇસનો ઉપયોગ ક્યારે કરો છો, તે જાણવાની મંજૂરી આપશો નહીં</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> સાઇટ}one{<ph name="SITE_COUNT"/> સાઇટ}other{<ph name="SITE_COUNT"/> સાઇટ}}</translation>
@@ -47,6 +52,8 @@
 <translation id="1547123415014299762">ત્રીજા પક્ષની કુકીને મંજૂરી આપવામાં આવી છે</translation>
 <translation id="3665719978526894928">Braveના V8 એન્જિન વડે સાઇટની ગતિ વધારો, પણ Braveને અટૅક પ્રતિ થોડું ઓછું પ્રતિરોધક બનાવો</translation>
 <translation id="1593426485665524382">સ્ક્રીનમાં સૌથી ઉપરની નજીક ક્રિયાઓ ઉપલબ્ધ છે</translation>
+<translation id="1594521731409209842">ફોટાનું કદ બદલવા માટે સ્ક્રીનને પિન્ચ કરો</translation>
+<translation id="1601560923496285236">લાગુ કરો</translation>
 <translation id="1615755956145364867">સાઇટ, તમને સંરક્ષિત કન્ટેન્ટ ચલાવવાનું પૂછી શકે છે</translation>
 <translation id="1620510694547887537">કૅમેરા</translation>
 <translation id="1621729191093924223">માઇક્રોફોનની આવશ્યકતા હોય તેવી સુવિધાઓ કાર્ય નહીં કરે</translation>
@@ -67,6 +74,7 @@
 <translation id="2534291364429593865">Braveની ટિપ સંબંધિત નોટિફિકેશન મેળવો</translation>
 <translation id="1777815584158991902">Discover ફીડની બોટમ શીટ</translation>
 <translation id="1779089405699405702">છબી ડીકોડર</translation>
+<translation id="1781533683087883868">વાંચન મોડની લિંક બંધ કરો</translation>
 <translation id="1785415724048343560">શ્રેષ્ઠ અનુભવ માટે આનો સુઝાવ આપવામાં આવે છે</translation>
 <translation id="1796588414813960292">સાઉન્ડની આવશ્યકતા હોય તેવી સુવિધાઓ કામ કરશે નહીં</translation>
 <translation id="7401204338724669842">Brave વિશે ટિપ</translation>
@@ -169,6 +177,7 @@
 <translation id="2682367912565197520">સાચવેલું ઝૂમ લેવલ ડિલીટ કરો</translation>
 <translation id="2683434792633810741">ડિલીટ કરીને રીસેટ કરીએ?</translation>
 <translation id="2685514716378236873">મંજૂરી નથી</translation>
+<translation id="2710883118091822664">તમારા બધા ડિવાઇસ પર સરળતાથી ચાલુ રાખવા માટે સાઇન ઇન કરો</translation>
 <translation id="2713106313042589954">કૅમેરા બંધ કરો</translation>
 <translation id="2717722538473713889">ઇમેઇલ ઍડ્રેસ</translation>
 <translation id="8181634240306014548">ઑમ્નિબૉક્સ પર ફોકસ રાખીને Brave લૉન્ચ કરો, જેનાથી સામાન્ય સુવિધા ધરાવતા ડિવાઇસનો સ્ટાર્ટ-અપ સમય ઘટે છે.</translation>
@@ -196,6 +205,7 @@
 <translation id="3004438526346162184">સાઇટ આ સુવિધાનો ઉપયોગ તમારા બધા ડિસ્પ્લે પર વિન્ડો મેનેજ કરવા માટે કરી શકે છે</translation>
 <translation id="3008272652534848354">પરવાનગીઓ રીસેટ કરો</translation>
 <translation id="301521992641321250">ઑટોમૅટિક રીતે બ્લૉક થયું</translation>
+<translation id="3026311960038210">થીમના સંગ્રહો</translation>
 <translation id="3064871050034234884">સાઇટ સાઉન્ડ વગાડી શકે છે</translation>
 <translation id="3065787901655140044">અદ્યતન સુરક્ષા ચાલુ છે</translation>
 <translation id="3069226013421428034">ચોક્કસ સાઇટ માટે ત્રીજા પક્ષ દ્વારા સાઇન-ઇનને મંજૂરી આપો.</translation>
@@ -215,6 +225,7 @@
 <translation id="3167868116600277716">Discover ફીડ</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> સંગ્રહિત ડેટા</translation>
 <translation id="3199078925536734975">આ વખતે મંજૂરી આપવામાં આવી • અંદાજિત</translation>
+<translation id="3208584281581115441">હમણાં ચેક કરો</translation>
 <translation id="321187648315454507"><ph name="APP_NAME"/> તમને નોટિફિકેશન મોકલી શકે તે માટે <ph name="BEGIN_LINK"/>Android સેટિંગ<ph name="END_LINK"/>માં પણ નોટિફિકેશન ચાલુ કરો.</translation>
 <translation id="3223425961342298674">લોકેશનની મંજૂરી નથી</translation>
 <translation id="3227137524299004712">માઇક્રોફોન</translation>
@@ -262,6 +273,7 @@
 <translation id="3721953990244350188">છોડી દો અને આગલી ઉપલબ્ધ ક્રિયા બતાવો</translation>
 <translation id="3744111561329211289">બૅકગ્રાઉન્ડ સિંક</translation>
 <translation id="3746834924069123416">તાજેતરના વધુ ટૅબ જુઓ</translation>
+<translation id="3753618528540214374">વિરિડિયન થીમ</translation>
 <translation id="3763247130972274048">10 સેકન્ડ છોડવા માટે ડાબે અથવા જમણે બે વાર ટૅપ કરો</translation>
 <translation id="3776508619697147021">સાઇટ એકથી વધારે ફાઇલોને ઑટોમૅટિક રીતે ડાઉનલોડ કરવાનું પૂછી શકે છે</translation>
 <translation id="3779154269823594982">પાસવર્ડ બદલો</translation>
@@ -271,6 +283,7 @@
 <translation id="381841723434055211">ફોન નંબર</translation>
 <translation id="3823453485268218808">ફૉન્ટ Mono</translation>
 <translation id="3826050100957962900">Third-party sign-in</translation>
+<translation id="3831065134033923230">તમારા સાચવેલા પાસવર્ડ ચેક કરો</translation>
 <translation id="3835233591525155343">તમારા ડિવાઇસનો વપરાશ</translation>
 <translation id="1799795508209440035">Brave આજે પણ ફરી કુકી બ્લૉક કરશે</translation>
 <translation id="385051799172605136">પાછળ</translation>
@@ -280,6 +293,7 @@
 <translation id="3903738175795615004">પૂર્ણ સ્ક્રીનમાંથી બહાર નીકળવા માટે ઉપરથી ખેંચો અથવા Esc કી દબાવો.</translation>
 <translation id="3905475044299942653">ઘણાં નોટિફિકેશન રોકો</translation>
 <translation id="3922092564198021702">તમારા ફોન પર, સેટિંગ ખોલો</translation>
+<translation id="3924858949939391676">એકવાર વાંચન મોડ ચાલુ થઈ જાય પછી લિંક બતાવો</translation>
 <translation id="3933121352599513978">અનિચ્છિત વિનંતીઓને નાની કરો (સુઝાવ આપેલું)</translation>
 <translation id="3934905113567851655">કદ બદલવા માટે પિન્ચ કરો</translation>
 <translation id="3955193568934677022">સાઇટને સંરક્ષિત કન્ટેન્ટ ચલાવવાની મંજૂરી આપો (સુઝાવ આપીએ છીએ)</translation>
@@ -333,6 +347,7 @@
 <translation id="4478158430052450698">વિવિધ સાઇટ માટે "નાનું-મોટું કરો"ને કસ્ટમાઇઝ કરવાનું સરળ બનાવો</translation>
 <translation id="4479647676395637221">સાઇટને તમારા કૅમેરાના ઉપયોગની મંજૂરી આપતાં પહેલાં પૂછો (સુઝાવ આપીએ છીએ)</translation>
 <translation id="4505788138578415521">URL મોટી કરી છે</translation>
+<translation id="4523472416386354622">શરૂ કરવા માટે સાઇન ઇન કરો</translation>
 <translation id="4534723447064627427"><ph name="APP_NAME"/> તમારું માઇક્રોફોન ઍક્સેસ કરી શકે તે માટે <ph name="BEGIN_LINK"/>Android સેટિંગ<ph name="END_LINK"/>માં પણ માઇક્રોફોન ચાલુ કરો.</translation>
 <translation id="4566417217121906555">માઇક્રોફોન મ્યૂટ કરો</translation>
 <translation id="4570913071927164677">વિગતો</translation>
@@ -342,6 +357,7 @@
 <translation id="4644713492825682049">ડિલીટ કરીને રીસેટ કરો</translation>
 <translation id="4645575059429386691">તમારા માતાપિતા દ્વારા મેનેજ થયેલ</translation>
 <translation id="4652266463001779298">આ સાઇટને મંજૂરી નથી</translation>
+<translation id="4655846733459137112">આગામી વખતે જ્યારે તમે સાઇન ઇન કરો, ત્યારે સરળતાથી આ પાસવર્ડનો ઉપયોગ કરવા માટે હા પર ટૅપ કરો</translation>
 <translation id="4663373278480897665">કૅમેરાને મંજૂરી</translation>
 <translation id="4670064810192446073">વર્ચ્યુઅલ રિયાલિટી</translation>
 <translation id="5652778654712411580">પહેલા Browser ઍપ અને પછી Brave પર ટૅપ કરો</translation>
@@ -387,6 +403,7 @@
 <translation id="512938610812707830">નવા ટૅબ પેજના દેખાવની થીમના સંગ્રહોની બોટમ શીટ સંપૂર્ણ ઊંચાઈએ ખોલી</translation>
 <translation id="5137460097045297858">Discover ફીડની બોટમ શીટ અડધી ઊંચાઈએ ખૂલી ગઈ છે</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{તમારા ખુલ્લા ટૅબ પર કિંમતમાં ઘટાડો}one{તમારા ખુલ્લા ટૅબ પર કિંમતમાં ઘટાડો}other{તમારા ખુલ્લા ટૅબ પર કિંમતમાં ઘટાડા}}</translation>
+<translation id="5150048675001754041">સાઇટ અને ઍપમાં ઝડપથી અને સરળતાથી સાઇન ઇન કરો</translation>
 <translation id="5186036860380548585">સ્ક્રીનની ટોચની નજીક વિકલ્પ ઉપલબ્ધ છે</translation>
 <translation id="5197729504361054390">તમે પસંદ કરશો તે સંપર્કોને <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> સાથે શેર કરવામાં આવશે.</translation>
 <translation id="5198930230016462977">'તમારું નવું ટૅબ પેજ કસ્ટમાઇઝ કરો'ની બોટમ શીટ બંધ કરી</translation>
@@ -445,6 +462,7 @@
 <translation id="5804241973901381774">પરવાનગીઓ</translation>
 <translation id="5817042798620209981">સાઇટની માહિતી, સંવાદ</translation>
 <translation id="5822675474983796325">'તમારું નવું ટૅબ પેજ કસ્ટમાઇઝ કરો'ની બોટમ શીટ સંપૂર્ણ ઊંચાઈએ ખોલવામાં આવી</translation>
+<translation id="4298364316773778595">Braveમાં પાસવર્ડ સાચવવા માટેની સૂચનાત્મક બોટમ શીટ</translation>
 <translation id="5833899990800318936">સાઇટને JavaScriptનો ઉપયોગ કરવાની મંજૂરી આપશો નહીં</translation>
 <translation id="583673505367439042">સાઇટ તમારા ડિવાઇસમાંની ફાઇલોમાં અને ફોલ્ડરોમાં ફેરફાર કરવાનું પૂછી શકે છે</translation>
 <translation id="5844448279347999754">ચાલુ હોય ત્યારે, સાઇટ તમારા ક્લિપબોર્ડ પર સાચવેલી ટેક્સ્ટ અને છબીઓ જોવાનું પૂછી શકે છે. બંધ હોય ત્યારે, સાઇટ તમારા ક્લિપબોર્ડ પર સાચવેલી ટેક્સ્ટ અને છબીઓ જોઈ શકતી નથી.</translation>
@@ -471,6 +489,7 @@
 <translation id="5998071268779572583">Discover ફીડ ચાલુ કરો</translation>
 <translation id="6012967556075291653">પિન કરેલો શૉર્ટકટ</translation>
 <translation id="6015775454662021376">આ સાઇટના તમારા ડિવાઇસના ઍક્સેસનું નિયંત્રણ કરો</translation>
+<translation id="296137235951584143">Braveને તમારી જરૂરિયાત અનુરૂપ બનાવો</translation>
 <translation id="6040143037577758943">બંધ કરો</translation>
 <translation id="6042308850641462728">વધુ</translation>
 <translation id="6064125863973209585">પૂર્ણ થયેલા ડાઉનલોડ</translation>
@@ -478,6 +497,7 @@
 <translation id="6085954183010297841">આ ફાઇલમાં ફેરફાર કરવા માટેની મંજૂરી ડિલીટ કરીએ? <ph name="FILE"/></translation>
 <translation id="6104860901391833523">ચાલુ હોય ત્યારે, સાઇટ ઑટોમૅટિક રીતે ચિત્ર-માં-ચિત્ર મોડમાં દાખલ થઈ શકે છે. ચાલુ હોય ત્યારે, સાઇટ ઑટોમૅટિક રીતે ચિત્ર-માં-ચિત્ર મોડમાં દાખલ થઈ શકતી નથી.</translation>
 <translation id="6120483543004435978">ચાલુ હોય ત્યારે, તમે સક્રિય રીતે ક્યારે તમારા ડિવાઇસનો ઉપયોગ કરો છે તે જાણવા માટે સાઇટ પૂછી શકે છે. બંધ હોય ત્યારે, તમે સક્રિય રીતે ક્યારે તમારા ડિવાઇસનો ઉપયોગ કરો છે તે જાણી શકતી નથી.</translation>
+<translation id="4852158809106762963">Brave તમારો પાસવર્ડ સાચવવાની ઑફર કરશે</translation>
 <translation id="615886654739818377">સાઇટને તમારા બધા ડિસ્પ્લે પર વિન્ડો મેનેજ કરવાની મંજૂરી આપશો નહીં</translation>
 <translation id="6165508094623778733">વધુ જાણો</translation>
 <translation id="6171020522141473435">ચાલુ હોય ત્યારે, સાઇટ બ્લૂટૂથ ડિવાઇસનો ઉપયોગ કરવાનું પૂછી શકે છે. બંધ હોય ત્યારે, સાઇટ બ્લૂટૂથ ડિવાઇસનો ઉપયોગ કરી શકતી નથી.</translation>
@@ -488,13 +508,13 @@
 <translation id="6196640612572343990">ત્રીજા પક્ષની કુકીને બ્લૉક કરો</translation>
 <translation id="6205314730813004066">જાહેરાત સંબંધી પ્રાઇવસી</translation>
 <translation id="6207207788774442484">ડેટા ડિલીટ કરો અને પરવાનગીઓ રીસેટ કરો</translation>
+<translation id="6218508144653756827">ફ્યૂશૅ થીમ</translation>
 <translation id="6231752747840485235">'<ph name="APP_NAME"/>' અનઇન્સ્ટૉલ કરીએ?</translation>
 <translation id="4789073065838177382">ઍપ બ્રાઉઝ કરો &gt; Brave પર ટૅપ કરો</translation>
 <translation id="6260830281887654268">નવા ટૅબ પેજના દેખાવની થીમના સંગ્રહોની બોટમ શીટ અડધી ઊંચાઈએ ખૂલી ગઈ છે</translation>
 <translation id="6262191102408817757">તમારા છેલ્લા ટૅબના આધારે</translation>
 <translation id="6262279340360821358"><ph name="PERMISSION_1"/> અને <ph name="PERMISSION_2"/>ને બ્લૉક કર્યા</translation>
 <translation id="6270391203985052864">સાઇટ તમને નોટિફિકેશન મોકલવા માટે પૂછી શકે છે</translation>
-<translation id="6278428485366576908">થીમ</translation>
 <translation id="6295158916970320988">બધી સાઇટ</translation>
 <translation id="6320088164292336938">વાઇબ્રેટ</translation>
 <translation id="6367753977865761591">ચોક્કસ સાઇટ માટે ત્રીજા પક્ષ દ્વારા સાઇન-ઇનને બ્લૉક કરો.</translation>
@@ -513,6 +533,7 @@
 <translation id="6545864417968258051">બ્લૂટૂથ સ્કૅનિંગ</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> અને વધુ <ph name="NUM_MORE"/> બ્લૉક કરી}one{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> અને વધુ <ph name="NUM_MORE"/> બ્લૉક કરી}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> અને વધુ <ph name="NUM_MORE"/> બ્લૉક કરી}}</translation>
 <translation id="6554732001434021288">છેલ્લે <ph name="NUM_DAYS"/> દિવસ પહેલાં મુલાકાત લીધી</translation>
+<translation id="6556866813142980365">ફરી કરો</translation>
 <translation id="6557290421156335491">મારા શૉર્ટકટ</translation>
 <translation id="656065428026159829">વધુ જુઓ</translation>
 <translation id="6561560012278703671">ગુપચુપ મેસેજિંગનો ઉપયોગ કરો (તમને ખલેલ પહોંચાડે તેવા નોટિફિકેશન સંકેતોને બ્લૉક કરે છે)</translation>
@@ -521,6 +542,7 @@
 <translation id="659938948789980540">{COUNT,plural, =1{<ph name="RWS_OWNER"/>ની <ph name="RWS_MEMBERS_COUNT"/> સાઇટ માટે કુકીને મંજૂરી આપી}one{<ph name="RWS_OWNER"/>ની <ph name="RWS_MEMBERS_COUNT"/> સાઇટ માટે કુકીને મંજૂરી આપી}other{<ph name="RWS_OWNER"/>ની <ph name="RWS_MEMBERS_COUNT"/> સાઇટ માટે કુકીને મંજૂરી આપી}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
 <translation id="6612358246767739896">સુરક્ષિત કન્ટેન્ટ</translation>
+<translation id="6619015782482868078">ઍક્વા થીમ</translation>
 <translation id="662080504995468778">અહીં જ રહો</translation>
 <translation id="6630443592285535486">અહીં હેક્સ ટાઇપ કરો</translation>
 <translation id="6635327442719709864">જ્યારે વિકલ્પ ચાલુ હોય, ત્યારે સાઇટ, સીરિયલ પોર્ટનો ઉપયોગ કરવા માટે પૂછી શકે છે. જ્યારે વિકલ્પ બંધ હોય, ત્યારે સાઇટ, સીરિયલ પોર્ટનો ઉપયોગ કરી શકતી નથી.</translation>
@@ -549,9 +571,11 @@
 <translation id="6945221475159498467">પસંદ કરો</translation>
 <translation id="6950072572526089586">તમે મુલાકાત લેતા હો એવી કોઈ સાઇટ, તમે સાઇટ પર જે કરી રહ્યાં હો તે વિશેની માહિતી સાચવી શકે છે, જેથી તે અપેક્ષિત રીતે કામ કરી શકે — ઉદાહરણ તરીકે, તમને કોઈ સાઇટમાં સાઇન ઇન કરી રાખવા કે તમારા શૉપિંગ કાર્ટમાં આઇટમ સાચવવા માટે. સાઇટ ઘણીવાર આ માહિતીને તમારા ડિવાઇસ પર હંગામી રીતે સાચવે છે.</translation>
 <translation id="6965382102122355670">બરાબર, સમજાઇ ગયું</translation>
+<translation id="6980507581230208647">રોઝ થીમ</translation>
 <translation id="6980861169612950611">શું સાઇટનો ડેટા ડિલીટ કરીએ? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">ઍક્સેસિબિલિટી</translation>
 <translation id="6991142177939282156">મંજૂરી આપી • અંદાજિત લોકેશનનો ઉપયોગ કરી રહ્યાં છીએ</translation>
+<translation id="6992014788289743568">તમારા પાસવર્ડ ચેક કરીને તમારી સુરક્ષા સશક્ત બનાવો અને તમારા ડેટાને વધુ સલામત રાખો</translation>
 <translation id="6992289844737586249">સાઇટને તમારા માઇક્રોફોનનો ઉપયોગ કરવાની મંજૂરી આપતાં પહેલા પૂછો (સુઝાવ આપીએ છીએ)</translation>
 <translation id="7000754031042624318">Android સેટિંગમાં પરવાનગી બંધ કરી છે</translation>
 <translation id="8683151724374457021">તમને ગમતી બાબતો વિશે આ સાઇટ અનુમાન લગાવે છે અને પછી અન્ય સાઇટને જાહેરાતો સૂચવે છે. તમને વધુ સંબંધિત જાહેરાતો બતાવવા માટે, આ સાઇટ Braveમાંથી જાહેરાતના તમારા વિષયોની માહિતી પણ મેળવે છે.</translation>
@@ -577,6 +601,7 @@
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/>ની પસંદગી કરી</translation>
 <translation id="7260727271532453612"><ph name="PERMISSION_1"/> અને <ph name="PERMISSION_2"/>ની મંજૂરી આપી</translation>
 <translation id="7276071417425470385">ચાલુ હોય ત્યારે, સાઇટ વર્ચ્યુઅલ રિયાલિટી ડિવાઇસનો ઉપયોગ કરવાનું પૂછી શકે છે. બંધ હોય ત્યારે, સાઇટ વર્ચ્યુઅલ રિયાલિટી ડિવાઇસનો ઉપયોગ કરી શકતી નથી.</translation>
+<translation id="7282197670900591579">સિટ્રન થીમ</translation>
 <translation id="728412880473384942">સાઇટ વધુ ઝડપી પણ ઓછી સુરક્ષિત છે</translation>
 <translation id="7366415735885268578">એક સાઇટ ઉમેરો</translation>
 <translation id="7368695150573390554">ઑફલાઇન હોય એવો બધો ડેટા ડિલીટ કરવામાં આવશે</translation>
@@ -615,7 +640,9 @@
 <translation id="5455732060086060613">Braveની ટિપનું કાર્ડ છુપાવો</translation>
 <translation id="7719367874908701697">પેજ નાનું-મોટું કરો</translation>
 <translation id="775043444390799886">પરવાનગી રદ કરો</translation>
+<translation id="7758789811447313947">વાયોલેટ થીમ</translation>
 <translation id="7759147511335618829">MIDI ડિવાઇસ નિયંત્રણ અને ફરીથી પ્રોગ્રામ કરવા</translation>
+<translation id="7771089277295008211">પાસવર્ડ સાચવવા માટેની સૂચનાત્મક બોટમ શીટ બંધ કરવામાં આવી છે</translation>
 <translation id="7781829728241885113">ગઈ કાલે</translation>
 <translation id="7791543448312431591">ઉમેરો</translation>
 <translation id="780301667611848630">ના, આભાર</translation>
@@ -633,6 +660,8 @@
 <translation id="7940722705963108451">મને યાદ કરાવો</translation>
 <translation id="7948081750384205628"><ph name="SETTING_TITLE"/> વિશે વધુ જાણો</translation>
 <translation id="7952708427581814389">સાઇટ તમારા ક્લિપબોર્ડ પરની ટેક્સ્ટ અને છબીઓ જોવાનું પૂછી શકે છે</translation>
+<translation id="7958779728312669715">પાસવર્ડ સાચવવા માટેની સૂચનાત્મક બોટમ શીટ સંપૂર્ણપણે ખોલવામાં આવી છે</translation>
+<translation id="798299424881500862">ઑરેન્જ થીમ</translation>
 <translation id="7986741934819883144">સંપર્ક પસંદ કરો</translation>
 <translation id="7990211076305263060">ચાલુ હોય ત્યારે, સાઇટ તમારા માઇક્રોફોનનો ઉપયોગ કરવાનું પૂછી શકે છે. બંધ હોય ત્યારે, સાઇટ તમારા માઇક્રોફોનનો ઉપયોગ કરી શકતી નથી.</translation>
 <translation id="8007176423574883786">આ ઉપકરણ માટે બંધ કર્યું</translation>
@@ -728,6 +757,7 @@
 <translation id="7532165358672313130">જેમ જેમ તમે બ્રાઉઝ કરવાનું ચાલુ રાખો છો, તેમ તેમ વિવિધ વેબસાઇટ Brave વડે એ ચેક કરી શકે છે કે તમે અસલી વપરાશકર્તા છો કે નહીં અને સાથે જ તમે મુલાકાત લીધી હોય એવી અગાઉની સાઇટ વડે આ બાબતની ચકાસણી પણ તે કરી શકે છે</translation>
 <translation id="8899807382908246773">ખલેલ પાડતી જાહેરાતો</translation>
 <translation id="8903921497873541725">ઝૂમ વધારો</translation>
+<translation id="8919911527569629802">કોઈપણ વેબસાઇટમાં સાઇન ઇન કરો</translation>
 <translation id="8921772741368021346"><ph name="POSITION"/> / <ph name="DURATION"/></translation>
 <translation id="8926389886865778422">ફરિથી પુછશો નહીં</translation>
 <translation id="8926666909099850184">આ ડિવાઇસ માટે NFC સેવા બંધ કરેલી છે. તેને <ph name="BEGIN_LINK"/>Android સેટિંગ<ph name="END_LINK"/>માં ચાલુ કરો.</translation>
@@ -755,6 +785,7 @@
 <translation id="9182556968660520230">સાઇટને સુરક્ષિત કન્ટેન્ટ ચલાવવાની મંજૂરી આપશો નહીં</translation>
 <translation id="947156494302904893">તમે મુલાકાત લો છો એ વિવિધ સાઇટ એ વાતની ચકાસણી કરી શકે છે કે તમે જ અસલી વપરાશકર્તા છો અને બૉટ નથી</translation>
 <translation id="959682366969460160">સંગઠિત રહો</translation>
+<translation id="960590623979248167">હાયપરલિંક બતાવો</translation>
 <translation id="961930410699694996">આ વખતે લોકેશનને મંજૂરી આપી છે</translation>
 <translation id="967624055006145463">સ્ટોર કરેલ ડેટા</translation>
 <translation id="969975166333045662">સાઇટને V8 ઑપ્ટિમાઇઝરનો ઉપયોગ કરવાથી બ્લૉક કરો.</translation>

@@ -19,6 +19,7 @@
 <translation id="1544192797660353713">Әмиян</translation>
 <translation id="2361906291514218784">Лео AI</translation>
 <translation id="8275068909952022340">Көбірек…</translation>
+<translation id="71316462802471551">Электрондық Пошта Псевдонимдері</translation>
 <translation id="1990886731975529483">Google Widevine орнатып, іске қосыңыз</translation>
 <translation id="8926389886865778422">Қайта сұрамаңыз</translation>
 <translation id="4900351245762303149">Google Widevine орнатыңыз</translation>
@@ -203,7 +204,6 @@
 <translation id="253980346046488815">Көшірулер қатарын жою</translation>
 <translation id="8670218546624422041">Контейнерде ашу</translation>
 <translation id="8638526693050780542">Контейнерлерді басқару</translation>
-<translation id="7302999361397024774">Қойындыны қайта атау</translation>
 <translation id="2336228925368920074">Барлық қойындыларды бетбелгіге қосу...</translation>
 <translation id="2523967823495420116">Тігінен қойындыларды пайдалану</translation>
 <translation id="3785071023202624850">{NUM_TABS, plural, =1 {Mute Tab} other {Mute Tabs}}</translation>
@@ -214,7 +214,6 @@
 <translation id="2703180365855369896">Көшірме қойындыларды жабу</translation>
 <translation id="1987871867023021397">Контейнерде ашу</translation>
 <translation id="6745991613881384719">Контейнерлерді басқару</translation>
-<translation id="3917844427669888979">Қойындыны қайта атау</translation>
 <translation id="3704707436873245822">Суреттен мәтінді көшіру</translation>
 <translation id="5268098808165185458">Суреттен мәтінді көшіру...</translation>
 <translation id="4046485130884276245">Суреттен мәтін көшірілді</translation>
@@ -512,6 +511,10 @@
 <translation id="1199170151481311646">Құпиялылықты сақтайтын аналитика</translation>
 <translation id="5990642573624858459">Статистиканы есеп беру</translation>
 <translation id="2441719842399509963">Әдепкі күйге қалпына келтіру</translation>
+<translation id="4530494379350999373">Шығу көзі</translation>
+<translation id="2964215604640804042">Brave Origin - браузердің төлінген нұсқасы, барлық функцияларға қажет емес, бірақ Brave-тің ұсынатын құпиялылықты қаласатын пайдаланушылар үшін. Brave Origin пайдаланушыларды салалық жетекші құпиялылық, жарнама блокерлері және жылдамдықтан (Brave Shields арқылы), сондай-ақ тұрақты бағдарламалық жамындау, Chromium патчтері және қауіпсіздік пен құпиялылық жақсарту арқылы пайдаланатын болады. Олар сондай-ақ AI, Rewards, Wallet, VPN, Web3 доменлері және т.б. сияқты мәмлекеттік ережелерді өшіру мүмкіндігінің құлпын ашатын болады.</translation>
+<translation id="9130916892338379417">Brave Origin бір рет сатып алу арқылы қолжетімді. Мобильді (Android және iOS) және desktop-та Origin сіздің бар болып тұрған релиз нұсқасына жарнама ретінде сатып алуға болады. Desktop-та Origin сондай-ақ өзінің ұдай қолданбасы ретінде де қолжетімді. Origin пайдаланушылары Параметрлер мәзірінде жаңа бақылау тақтасын көретін болады. Бар болып тұрған мәмлекеттік ережелер, сондай-ақ болашақта біз жеткіземіз деген жаңа мәмлекеттік ережелер осында пайда болады және әдепкі бойынша өшіргеніш болады.</translation>
+<translation id="7984508421152399880">Қазір сатып алу</translation>
 <translation id="5567412479632285879">Brave Марапаттары өшірілген</translation>
 <translation id="413570371620795359">Қосу және бастау үшін Сыйлық панелін ашыңыз</translation>
 <translation id="1051600834033686945">Толық Brave Марапаттары параметрлерін ашыңыз</translation>
@@ -554,7 +557,6 @@
 <translation id="5747552184818312860">Жарамдығы бітеді</translation>
 <translation id="3858860766373142691">Атауы</translation>
 <translation id="361106536627977100">Flash деректері</translation>
-<translation id="4530494379350999373">Шығу көзі</translation>
 <translation id="8195027750202970175">Дискідегі көлемі</translation>
 <translation id="9116465289595958864">Соңғы өзгертілді</translation>
 <translation id="4590324241397107707">Дерекқордың сақтау орны</translation>
@@ -587,11 +589,6 @@
 <translation id="2903783737778379345">Үшінші тарап cookie файлы арқылы ескі Google кіруіне рұқсат бермеңіз</translation>
 <translation id="2570833232754279153">Мұрагер Google Sign-In үшін үшінші тарап печенье қолдануға рұқсат етілмеген</translation>
 <translation id="6880817299303842099">Ескі Google кіруі үшін үшінші тарап cookie файлдарын пайдалануға рұқсат етілген</translation>
-<translation id="2136412236435693622">Жергілікті хостқа қол жеткізу</translation>
-<translation id="4172219483893066798">Сайттар жергілікті хост ресурстарына қол жеткізуді сұрай алады</translation>
-<translation id="7181706637590665047">Жергілікті хост ресурстарына қол жеткізуге рұқсат бермеңіз</translation>
-<translation id="1336116824874668514">Localhost ресурстарына қатынау үшін рұқсат етілмеген</translation>
-<translation id="1485435696620658073">Жергілікті хост ресурстарына қол жеткізуге рұқсат етілген</translation>
 <translation id="5794692721727586076">Leo AI сұхбаты</translation>
 <translation id="8115153008662981040">Сайттар Leo AI сұхбатын ашуды сұрай алады</translation>
 <translation id="1145070115730668595">Сайттарға Leo AI сұхбатын ашуға рұқсат бермеңіз</translation>

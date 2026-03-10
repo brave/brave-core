@@ -167,10 +167,6 @@ Brave News უზრუნველყოფს პირადი, ანონ
 <translation id="9110294136812584522">საიტებს შეუძლიათ Google-ში შესვლის მოთხოვნა მესამე მხარის cookies-ების გამოყენებით</translation>
 <translation id="2903783737778379345">არ მისცეთ ნებართვა Google-ში შესვლაზე მესამე მხარის cookies-ების საშუალებით</translation>
 <translation id="6880817299303842099">ნებადართულია მესამე მხარის cookies-ების საშუალებით Google-ში შესვლა</translation>
-<translation id="2136412236435693622">Localhost-ის წვდომა</translation>
-<translation id="4172219483893066798">საიტებს შეუძლიათ ითხოვონ localhost-ის რესურსებზე წვდომა</translation>
-<translation id="7181706637590665047">არ მისცეთ localhost-ის რესურსებზე წვდომის ნებართვა</translation>
-<translation id="1485435696620658073">ნებადართულია localhost-ის რესურსებზე წვდომა</translation>
 <translation id="181905442828471321">Brave Shields-ის გლობალური ნაგულისხმევი პარამეტრები</translation>
 <translation id="2675679258824361492">სხვა კონფიდენციალურობის პარამეტრები</translation>
 <translation id="8026334261755873520">სათავის მონაცემების გადაწერისას ჩამოშალა</translation>
@@ -432,6 +428,13 @@ Brave News უზრუნველყოფს პირადი, ანონ
 <translation id="7141438739990875547">ბიტკოინის ქსელები</translation>
 <translation id="9055546041146396417">თუ საიტი არ მუშაობს სწორად, სცადეთ გამორთოთ კონფიდენციალურობის დაცვა.</translation>
 <translation id="7898672232170410330">ელემენტის დაბლოკვა</translation>
+<translation id="9064628362799094520">წაიშალოს საიტის მონაცემები</translation>
+<translation id="8949611615512336262">Auto shred: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">წაიშალოს საიტის მონაცემები ახლავე</translation>
+<translation id="6795622376590884449">Auto shred</translation>
+<translation id="7961015016161918242">არასდროს</translation>
+<translation id="1991004083507807299">Site tab closed</translation>
+<translation id="5827277414420724690">App close</translation>
 <translation id="1209739344687072997">შეტყობინება ხარვეზის შესახებ</translation>
 <translation id="8510478288840333677">შეატყობინეთ Brave-ის დეველოპერებს, რომ ამ საიტის Shields სათანადოდ არ მუშაობს:</translation>
 <translation id="1653405824851871276">გმადლობთ, რომ ეხმარებით Brave-ს სცადილი გახდეს უკეთესი ყველა ადამიანისთვის. ეს რეპორტი შეიცავს მხოლოდ იმ ინფორმაციას, რომელიც საჭიროა ამ საიტის სარემონტოდ. <ph name="LEARN_MORE"/></translation>
@@ -1093,7 +1096,7 @@ Brave News უზრუნველყოფს პირადი, ანონ
 <translation id="1336494649091412226">დარწმუნებული ხართ, რომ გსურთ Brave-ის დახურვა?</translation>
 <translation id="6061635824229591714">წაიშალოს საიტის მონაცემები?</translation>
 <translation id="1265051174491933207">გასუფთავება წაშლის საიტის მონაცემებს და დახურავს ყველა '<ph name="SITE_NAME"/>' ჩანართს. ეს დაუბრუნებელი ქმედებაა.</translation>
-<translation id="4279349293084858577">გასუფთავება</translation>
+<translation id="5528772406060281700">წაიშალოს საიტის მონაცემები</translation>
 <translation id="4426990318287827331">მონაცემების გასუფთავება</translation>
 <translation id="7942415993090181327">ჩატის ისტორია</translation>
 <translation id="6859935199732075666">უსაფრთხო ბროუზინგის შეცდომების ჩვენება</translation>

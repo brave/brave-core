@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">Svetainės gali paprašyti prieigos naudojant senąjį „Google“ prisijungimą per trečiųjų šalių slapukus</translation>
 <translation id="2903783737778379345">Neleisti prisijungti naudojant senąjį „Google“ prisijungimą per trečiųjų šalių slapukus</translation>
 <translation id="6880817299303842099">Leidžiama prisijungti naudojant senąjį „Google“ prisijungimą per trečiųjų šalių slapukus</translation>
-<translation id="2136412236435693622">Vietinio serverio prieiga</translation>
-<translation id="4172219483893066798">Puslapiai gali prašyti prieigos prie vietinio serverio išteklių</translation>
-<translation id="7181706637590665047">Nesuteikti prieigos prie vietinio serverio išteklių</translation>
-<translation id="1485435696620658073">Suteikti prieigą prie vietinio serverio išteklių</translation>
 <translation id="181905442828471321">„Brave“ numatytieji visuotiniai skydai</translation>
 <translation id="2675679258824361492">Kitos privatumo nuostatos</translation>
 <translation id="8026334261755873520">Išvalyti naršymo duomenis</translation>
@@ -429,6 +425,13 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="7141438739990875547">„Bitcoin“ tinklai</translation>
 <translation id="9055546041146396417">Jei ši svetainė atrodo neveikianti, pabandykite nuleisti skydus.</translation>
 <translation id="7898672232170410330">Blokuoti elementą</translation>
+<translation id="9064628362799094520">Sunaikinti svetainės duomenis</translation>
+<translation id="8949611615512336262">Automatinis sunaikinimas: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Sunaikinti svetainės duomenis dabar</translation>
+<translation id="6795622376590884449">Automatinis sunaikinimas</translation>
+<translation id="7961015016161918242">Niekada</translation>
+<translation id="1991004083507807299">Svetainės skirtukas uždarytas</translation>
+<translation id="5827277414420724690">Programos uždarymas</translation>
 <translation id="1209739344687072997">Pranešti apie neveikiančią svetainę</translation>
 <translation id="8510478288840333677">Praneškite „Brave“ kūrėjams, kad ši svetainė neveikia tinkamai su skydais:</translation>
 <translation id="1653405824851871276">Dėkojame, kad padedate tobulinti „Brave“ visiems. Šioje ataskaitoje bus pateikta tik ta informacija, kuri mums reikalinga interneto svetainei pataisyti. <ph name="LEARN_MORE"/></translation>
@@ -1080,7 +1083,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="1336494649091412226">Ar tikrai norite išeiti iš „Brave“?</translation>
 <translation id="6061635824229591714">Sunaikinti svetainės duomenis?</translation>
 <translation id="1265051174491933207">Duomenų naikinimas ištrins svetainės duomenis ir uždarys visas „<ph name="SITE_NAME"/>“ korteles. Šio veiksmo atšaukti neįmanoma.</translation>
-<translation id="4279349293084858577">Sunaikinti</translation>
+<translation id="5528772406060281700">Sunaikinti svetainės duomenis</translation>
 <translation id="4426990318287827331">Sunaikinti duomenis</translation>
 <translation id="7942415993090181327">Pokalbių istorija</translation>
 <translation id="6859935199732075666">Rodyti saugaus naršymo klaidas</translation>

@@ -483,8 +483,6 @@
 <translation id="1518915449477235311"><ph name="URL"/>-কে Brave-এ Leo AI কথোপকথন খোলার অনুমতি দেবেন?</translation>
 <translation id="4355784577209159847">লিগ্যাসি Google সাইন-ইন-এর জন্য তৃতীয় পক্ষের কুকিজ ব্যবহারের অনুমতি দিন</translation>
 <translation id="5770656036486891920">লিগেসি Google সাইন-ইন-এর জন্য <ph name="URL"/> তৃতীয়-পক্ষের কুকিজ ব্যবহার করতে চায়</translation>
-<translation id="6053826678715267477">লোকালহোস্টের রিসোর্সে অ্যাক্সেস দিন</translation>
-<translation id="2973562729984406132"><ph name="URL"/> লোকালহোস্টের রিসোর্সে অ্যাক্সেস চায়</translation>
 <translation id="2104347391516032700">Bat পুরষ্কার পরিষেবা</translation>
 <translation id="5939518447894949180">রিসেট করুন</translation>
 <translation id="3349204812119681938">Brave রিওয়ার্ড রিসেট করুন</translation>
@@ -869,6 +867,8 @@
 <translation id="646023614746251785">সোয়াপ নিশ্চিত করুন</translation>
 <translation id="6264944956989873014">ব্রিজ নিশ্চিত করুন</translation>
 <translation id="7067917728851842589">পাঠানো নিশ্চিত করুন</translation>
+<translation id="2841837950101800123">সরবরাহকারী</translation>
+<translation id="1114725160772317155">সরবরাহকারীর অবস্থা</translation>
 <translation id="2351357639951873714">শিল্ড নিশ্চিত করুন</translation>
 <translation id="7480044382160806610">আনশিল্ড নিশ্চিত করুন</translation>
 <translation id="8332923694292360653">ব্যয় করুন</translation>
@@ -1051,6 +1051,10 @@
 <translation id="2902856457593699108">চাবি দেখান</translation>
 <translation id="8033497299373164724">চাবি লুকান</translation>
 <translation id="7514365320538308">ডাউনলোড</translation>
+<translation id="4505811804838254812">আপনার অ্যাকাউন্ট রপ্তানি ফাইল এনক্রিপ্ট করতে একটি পাসওয়ার্ড প্রবেশ করুন।</translation>
+<translation id="4664684820522660564">এনক্রিপশন পাসওয়ার্ড প্রবেশ করুন</translation>
+<translation id="6873030689896652259">এনক্রিপশন পাসওয়ার্ড নিশ্চিত করুন</translation>
+<translation id="5148285448107770349">পাসওয়ার্ড কমপক্ষে 8 অক্ষরের হতে হবে।</translation>
 <translation id="2702143907607790516">অ্যাকাউন্টের নাম আপডেট করতে ব্যর্থ হয়েছে, অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -1225,12 +1229,12 @@
 <translation id="4932382283590063268">রিসিভিং অ্যাড্রেসটি হল আপনার নিজের অ্যাড্রেস।</translation>
 <translation id="3124753063207986114">রিসিভিং অ্যাড্রেসটি হল একটি টোকেনের চুক্তির অ্যাড্রেস।</translation>
 <translation id="7029817408221097939">অবৈধ ইউনিফাইড ঠিকানা</translation>
-<translation id="6370376419663123629">ঠিকানা সঠিক বলে মনে হচ্ছে না</translation>
-<translation id="3767148796886402380">ঠিকানাটি যে সঠিক তা নিশ্চিত করতে আপনার ঠিকানা পরীক্ষা করুন (যেমন, ছোটো হাতের ও বড় হাতের অক্ষর)।</translation>
+<translation id="5749543778008369411">ঠিকানা চেকসাম হারিয়ে গেছে</translation>
+<translation id="8225310967627152630">এই ঠিকানার বৈধতা যাচাই করা যায় না। সম্ভাব্য তহবিল হ্রাস এড়াতে, পাঠানোর আগে ঠিকানাটি সাবধানে পর্যালোচনা করুন।</translation>
+<translation id="5139218857087774333">ঠিকানা সঠিক মনে হচ্ছে না (অবৈধ চেকসাম)</translation>
+<translation id="6551446819927864899">এই ঠিকানায় একটি টাইপো রয়েছে বলে মনে হয়। দয়া করে ঠিকানাটি পর্যালোচনা করুন এবং এটি আবার টাইপ করুন।</translation>
 <translation id="2585599787090762065">এটি আমি কীভাবে সমাধান করব?</translation>
 <translation id="5517732667776806421">চেকসামের তথ্য নেই</translation>
-<translation id="2975056993833847787">এই ঠিকানা যাচাই করা যাবে না (checksum অনুপস্থিত)। এগিয়ে যান?</translation>
-<translation id="6320252966164556855">ঠিকানা যাচাইকরণ পাস করেনি (অবৈধ চেকসাম)। অনুগ্রহ করে, ছোট হাতের অক্ষরগুলিকে বড় হাতের অক্ষর দিয়ে প্রতিস্থাপন করে আবার চেষ্টা করুন।</translation>
 <translation id="4667144295226514387">গ্যাসের সীমা পাওয়া যাচ্ছে না</translation>
 <translation id="2021522108838444624">পরিমাণ অবশ্যই 0-এর বেশি হতে হবে</translation>
 <translation id="8464365289405373974">ঠিকানা প্রয়োজন</translation>
@@ -1256,6 +1260,8 @@
 <translation id="471055802670233033">আপনি খরচ করেছেন</translation>
 <translation id="7916618590403748182">আপনি পাবেন</translation>
 <translation id="8328657208304368165">অর্ডার নিশ্চিত করুন</translation>
+<translation id="3784821115971261512">প্রোগ্রাম ঠিকানা</translation>
+<translation id="6302865118026274740">জমা দেওয়ার ঠিকানা</translation>
 <translation id="8220255674527598378">Solana সোয়াপ</translation>
 <translation id="5071303414930953888">অ্যাকাউন্ট <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">প্রথমে ওয়ালেট আনলক করতে হবে</translation>
@@ -1382,6 +1388,9 @@
 <translation id="7694836973509310467">ব্রিজ করা হচ্ছে</translation>
 <translation id="8419958386475786929"><ph name="NETWORK"/>-এ <ph name="SWAPPING_OR_BRIDGING"/></translation>
 <translation id="7903225589949400974"><ph name="NETWORK"/> এ <ph name="SWAP_OR_BRIDGE"/> চেষ্টা করার সময় একটি ত্রুটি হয়েছে</translation>
+<translation id="7220786058474068424">প্রক্রিয়াকরণ</translation>
+<translation id="3248185426436836442">বিচারাধীন রয়েছে</translation>
+<translation id="5503843345634715425">ফেরত দেওয়া হয়েছে</translation>
 <translation id="1778601041100951971"><ph name="AMOUNT"/> সুরক্ষিত করা হচ্ছে</translation>
 <translation id="6439110433198887239"><ph name="AMOUNT"/> শিল্ড করা হচ্ছে</translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> সুরক্ষিত করা হয়েছে</translation>
@@ -1410,6 +1419,7 @@
 <translation id="5601436886921227795">ড্যাপ ইন্টারঅ্যাকশন</translation>
 <translation id="9104177294757104789"><ph name="VALUE"/> পাঠান</translation>
 <translation id="4048336522751528394"><ph name="MAKER"/> এর বদলে <ph name="TAKER"/></translation>
+<translation id="5140590056890937774"><ph name="SOURCE"/>-কে <ph name="DESTINATION"/> এ সেতু করুন</translation>
 <translation id="1748114617341025015">সংযুক্ত টোকেন অ্যাকাউন্ট তৈরি করা</translation>
 <translation id="4418115887224983240">সংযুক্ত টোকেন অ্যাকাউন্ট তৈরি করতে পারেনি</translation>
 <translation id="7165697599360786670">সংযুক্ত টোকেন অ্যাকাউন্ট তৈরি করা হয়েছে</translation>
@@ -1636,12 +1646,16 @@
 <translation id="3356580495013324916">ওয়ালেটের ব্যাক আপ নেওয়া শুরু করতে আপনার Brave ওয়ালেটের পাসওয়ার্ড লিখুন।</translation>
 <translation id="7545441766078366279"><ph name="TOKEN"/> অনুমোদন করুন</translation>
 <translation id="3115303896544539834">অপর্যাপ্ত <ph name="TOKEN"/> ব্যালেন্স</translation>
+<translation id="6612125470074657311">পরিমাণ খুব কম</translation>
+<translation id="5838312420826727653">অসমর্থিত টোকেন</translation>
+<translation id="4930106154893104117">অবৈধ অনুরোধ</translation>
 <translation id="3453833142586986467">টোকেন নির্বাচন করুন</translation>
 <translation id="4937657825850660613">অর্ধেক</translation>
 <translation id="7639814793732182496">সর্বাধিক</translation>
 <translation id="6584782231358487640">অর্থরাশি লিখুন</translation>
 <translation id="477281933640372562">কোট আনা হচ্ছে</translation>
 <translation id="5450317966495183014">প্রাপ্তি (আনুমানিক)</translation>
+<translation id="387870937508841726">প্রাপ্তি (সর্বনিম্ন)</translation>
 <translation id="8747614139273050577">টোকেন থেকে</translation>
 <translation id="1726158192333401896">টোকেনে</translation>
 <translation id="1817370679212109974"><ph name="COUNTDOWN"/> এ নতুন কোট</translation>
@@ -1752,7 +1766,6 @@
 <translation id="2410455471299328417">এই পরিষেবাটি <ph name="BOLD_BEFORE"/>Blowfish.xyz<ph name="BOLD_AFTER"/> দ্বারা সরবরাহ করা হয় এবং এটি তাদের <ph name="TERMS_LINK_BEFORE"/>পরিষেবার শর্তাদি<ph name="TERMS_LINK_AFTER"/> ও<ph name="PRIVACY_POLICY_LINK_BEFORE"/>গোপনীয়তা নীতির<ph name="PRIVACY_POLICY_LINK_AFTER"/> বিষয়াধীন</translation>
 <translation id="8688672835843460752">উপলব্ধ</translation>
 <translation id="5296640085393149413">আপনার ব্যবহারের জন্য উপলভ্য ফান্ড।</translation>
-<translation id="3248185426436836442">বিচারাধীন রয়েছে</translation>
 <translation id="2515906149804238711">আপনার ওয়ালেট ব্যালেন্সে একটি পরিবর্তন বাকি আছে।</translation>
 <translation id="7700365440186054030">আপনার উপলভ্য ফান্ড এবং তাছাড়া যেকোনও এখনও কনফার্ম না করা ট্রানজ্যাকশন।</translation>
 <translation id="4118601537508887039">কিছু ব্যালেন্স অনুপলভ্য হতে পারে</translation>
@@ -2245,6 +2258,7 @@
 <translation id="9109355817507033196">উত্তর অপছন্দ করা হয়েছে</translation>
 <translation id="4049425842478222936">উত্তর পছন্দ করা হয়েছে</translation>
 <translation id="6393149565874086128">মতামত যোগ করুন</translation>
+<translation id="4621961534325272682">কথোপকথন ক্লিপবোর্ডে অনুলিপি করা হয়েছে</translation>
 <translation id="3521125531016408657">উত্তর পছন্দ করুন</translation>
 <translation id="8202517001427388906">উত্তর অপছন্দ করুন</translation>
 <translation id="1379399209929302811">Brave AI মতামত দিন</translation>
@@ -2289,6 +2303,8 @@
 <translation id="6495402307502950726">কথোপকথন সাফ করুন</translation>
 <translation id="903201991022343217">একটি নতুন কথোপকথন শুরু করুন</translation>
 <translation id="8171760814579050200">কথোপকথনের পুনরায় নামকরণ করুন</translation>
+<translation id="402386227879573975">সম্পূর্ণ কথোপকথন অনুলিপি করুন</translation>
+<translation id="5397794290049113714">আপনি</translation>
 <translation id="7754678742055438573">কথোপকথন মুছুন</translation>
 <translation id="1946267518364740045">কারণ নির্ণয় করা হচ্ছে...</translation>
 <translation id="4198859185714743678">কারণ নির্ণয় সম্পূর্ণ হয়েছে</translation>
@@ -2325,7 +2341,6 @@
 <translation id="4808122506413075135">কথোপকথনের জন্য Leo-কে আরও প্রসঙ্গ দিতে আপনার ব্রাউজার ইতিহাস থেকে পৃষ্ঠার বিষয়বস্তু পাঠান।</translation>
 <translation id="220541218939267992">পৃষ্ঠার বিষয়বস্তু Leo-কে আপনার বার্তার সাথে পাঠানো হবে।</translation>
 <translation id="2152389270152475874">প্রসঙ্গের জন্য ট্যাব, বুকমার্ক বা ইতিহাস যোগ করুন। নির্বাচিত কন্টেন্টগুলো আপনার বার্তার সাথে Leo-র কাছে পাঠানো হবে।</translation>
-<translation id="6237410387937453423">কোনো মিলযুক্ত সংযুক্তি নেই</translation>
 <translation id="2315654674554095762">Leo এখন আপনার কথোপকথন মনে রাখবে যাতে আপনি তাদের কাছে ফিরে যেতে পারেন। সেগুলি এনক্রিপ্ট করা অবস্থায় আপনার ডিভাইসে সংরক্ষিত হয় এবং আপনি সেগুলি যে কোনো সময় মুছতে পারবেন।</translation>
 <translation id="7821251979960635244">আপনি একটি কথোপকথন শুরু করলে আপনার কথোপকথনের ইতিহাস এখানে প্রদর্শিত হবে।</translation>
 <translation id="887511360213807449">ইতিহাস নিষ্ক্রিয় রয়েছে</translation>
@@ -2427,7 +2442,7 @@
 <translation id="4773299976671772492">থামানো হয়েছে</translation>
 <translation id="6946722113367118030">চিন্তা করছে</translation>
 <translation id="2113810663179257944">কোড কার্যকর</translation>
-<translation id="4790888275629207278">sandbox-এ কোড চালানো হয়েছে</translation>
+<translation id="6338250692384725496">আপনার অনুসন্ধান সহায়তা করতে স্যান্ডবক্সে কোড সম্পাদিত করেছে</translation>
 <translation id="4379566111233326721">কোড:</translation>
 <translation id="3542130965673205258">আউটপুট:</translation>
 <translation id="3428245742224818842">AI ব্রাউজিং</translation>
@@ -2439,11 +2454,7 @@
 <translation id="864117099189791993">আপনি প্রধান মেনু অথবা টুলবারে প্রোফাইল মেনু ব্যবহার করে যেকোনো সময় আপনার সাধারণ প্রোফাইলে ফিরে যেতে পারেন। AI ব্রাউজিং সবসময় AI ব্রাউজিং প্রোফাইলে খোলে।</translation>
 <translation id="3486480638399578250">আপনার ব্যক্তিগত ইমেল ঠিকানা গোপনীয় রাখুন</translation>
 <translation id="7765422154906712751">অনন্য, এলোমেলো ঠিকানাগুলি তৈরি করুন যা আপনার Brave অ্যাকাউন্ট ইমেলে ফরোয়ার্ড করা হয় এবং যেকোন সময় মুছে ফেলা যেতে পারে। আপনার আসল ইমেল ঠিকানা বিজ্ঞাপনদাতাদের কাছে প্রকাশ বা তাদের দ্বারা ব্যবহৃত হওয়া এড়ান।</translation>
-<translation id="5222676887888702881">সাইন আউট করুন</translation>
-<translation id="8090292425230843109">ইমেল উপনাম থেকে সাইন আউট করুন</translation>
-<translation id="8471990782451394141">Brave অ্যাকাউন্টে সংযুক্ত করা হচ্ছে...</translation>
 <translation id="71316462802471551">ইমেল উপনামগুলি</translation>
-<translation id="5713644099811900409">Brave অ্যাকাউন্ট</translation>
 <translation id="6002159997868894136">উপনাম কপি করতে ক্লিক করুন</translation>
 <translation id="8105770564756958406"><ph name="DOMAINS"/> দ্বারা ব্যবহৃত</translation>
 <translation id="5006956315579221642">আপনার সত্যিকারের ইমেল ঠিকানা সুরক্ষিত রাখার জন্য বিনামূল্যে 5টি পর্যন্ত ইমেল উপনাম তৈরি করুন।</translation>
@@ -2467,8 +2478,8 @@
 <translation id="646524615209870492">একটি উপনাম হিসেবে <ph name="ALIAS"/> সরালে আপনার ইমেলগুলি পাওয়ার ক্ষমতা হারাবেন।</translation>
 <translation id="8133100642915054515">উপনাম মোছার সময় ত্রুটি ঘটেছে। আপনার ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।</translation>
 <translation id="8465742443901727718">এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না। আপনি কি এগিয়ে যাওয়া বিষয়ে নিশ্চিত?</translation>
-<translation id="8662104432574824754">শুরু করতে, সাইন ইন করুন বা একটি Brave অ্যাকাউন্ট তৈরি করুন</translation>
-<translation id="8069030342700068465">আপনার ইমেলে একটি সুরক্ষিত লগইন লিঙ্ক পাঠানোর জন্য আপনার ইমেল ঠিকানা লিখুন। এই লিঙ্কে ক্লিক করলে একটি Brave অ্যাকাউন্ট তৈরি বা অ্যাক্সেস করবে এবং আপনাকে বিনামূল্যে ইমেল উপনাম পরিষেবা ব্যবহার করতে দেবে।</translation>
+<translation id="9162685486229945876">সাইন ইন করুন বা একটি Brave অ্যাকাউন্ট তৈরি করুন</translation>
+<translation id="1335007417599138852">একটি Brave অ্যাকাউন্ট আপনাকে নির্দিষ্ট Brave পণ্যগুলি অ্যাক্সেস করতে এবং আপনার সমস্ত ডিভাইস জুড়ে আপনার তথ্য সহজে সিঙ্ক করতে দেবে।</translation>
 <translation id="2133391407495495735">লগইন লিঙ্ক পান</translation>
 <translation id="2650906829817220223">প্রমাণীকরণের অনুরোধ করার সময় ত্রুটি ঘটেছে। আপনার ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।</translation>
 <translation id="3699624789011381381">ইমেল ঠিকানা</translation>
@@ -2501,7 +2512,7 @@
 <translation id="466214682712474574">আপনার ব্যালেন্স দেখতে <ph name="PROVIDER"/>-এ লগ ইন করুন</translation>
 <translation id="8332875111286275890">আপনার ব্যালেন্স দেখতে লগ ইন করুন</translation>
 <translation id="5430001801813715388">পুরস্কার</translation>
-<translation id="5966055668402779222">Brave সার্চ-কে জিজ্ঞাসা করুন</translation>
+<translation id="2430295257226173518">যে কোনো কিছু জিজ্ঞাসা করুন, যে কোনো কিছু খুঁজুন...</translation>
 <translation id="167018310108390163">নতুন ট্যাব পৃষ্ঠা কাস্টমাইজ করুন</translation>
 <translation id="6851426306697017546">ঘড়ি দেখান</translation>
 <translation id="4844370919312937270">নতুন ট্যাব পেজে সার্চ উইজেট দেখান</translation>
@@ -2542,7 +2553,7 @@
 <translation id="4677356505199464553">ভালো দেখাচ্ছে</translation>
 <translation id="1992750560347846445">সাইট রিপোর্ট করুন</translation>
 <translation id="2863270180245144869">শুধুমাত্র বিজ্ঞাপন ব্লক মোড সক্রিয়</translation>
-<translation id="2302218429308447288">আপনি বর্তমানে শুধুমাত্র বিজ্ঞাপন ব্লক মোডে আছেন। এই মোড শুধু বিজ্ঞাপন ব্লকিং সুরক্ষা প্রদান করে। আপনি যদি পূর্ণ রক্ষাকবচ মোডে ফিরতে চান, তাহলে সেটিংস থেকে এই মোডটি নিষ্ক্রিয় করুন।</translation>
+<translation id="3773808439655997805">আপনি বর্তমানে শুধুমাত্র বিজ্ঞাপন ব্লক মোডে আছেন। এই মোড শুধুমাত্র বিজ্ঞাপন ব্লকিং সুরক্ষা প্রদান করে (যদি রক্ষাকবচ উপরে থাকে)। আপনি যদি পূর্ণ রক্ষাকবচ মোডে ফিরতে চান, তাহলে সেটিংস থেকে এই মোডটি নিষ্ক্রিয় করুন।</translation>
 <translation id="4820891023903368625">বিজ্ঞাপন ব্লক করা হয়েছে <ph name="LINK_BEFORE"/>আরও জানুন<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">ট্র্যাকার, বিজ্ঞাপন এবং আরও অনেক কিছু ব্লক করা হয়েছে, <ph name="LINK_BEFORE"/>আরও জানুন<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave শিল্ড দিয়ে সুরক্ষিত নয়, <ph name="LINK_BEFORE"/>আরও জানুন<ph name="LINK_AFTER"/></translation>
@@ -2602,6 +2613,8 @@
     }</translation>
 <translation id="2540598191934725677">Brave শিল্ডস দেখতে Brave আইকনে ক্লিক করুন।</translation>
 <translation id="542789539047208469">সাইট তথ্য</translation>
+<translation id="7586067492365979844">Brave রক্ষাকবচের একটি নতুন ঘর এবং ডিজাইন রয়েছে। এটি এখন সাইট তথ্যের সাথে একীভূত হয় একটি এক-স্টপ অভিজ্ঞতার জন্য।</translation>
+<translation id="9114542678887529043">Brave রক্ষাকবচের একটি নতুন ঘর এবং ডিজাইন রয়েছে। ঠিকানা বারে সাইট আইকনটি ক্লিক করে এটি অ্যাক্সেস করুন।</translation>
 <translation id="6294662480095808915">গোপনীয়তা। ডিফল্টভাবে।</translation>
 <translation id="4366423156486478559">আপনার ক্লিক করা প্রতিটি লিঙ্কে Brave সুরক্ষা পান। Brave-কে শুধুমাত্র ডিফল্ট ব্রাউজার হিসেবে সেট করুন। গোপনভাবে।</translation>
 <translation id="3830912418080848377">সেটিংস ইম্পোর্ট করুন</translation>
@@ -2613,6 +2626,7 @@
 <translation id="2273851479262317744">Brave-কে ডিফল্ট ব্রাউজার হিসেবে সেট করুন</translation>
 <translation id="5037676449506322593">সব বেছে নিন</translation>
 <translation id="5148943178722443958">Brave কে আরও ভালো করে তুলতে সাহায্য করুন৷।</translation>
+<translation id="479535542793009168">স্থিতিশীলতা এবং রোগ নির্ণয়</translation>
 <translation id="1097073572755862978">আপনি ক্র্যাশ বা ফ্রিজের অভিজ্ঞতা লাভ করে থাকলে ডায়াগোনস্টিক রিপোর্ট পাঠান। <ph name="LINK_BEFORE"/>আরও জানুন।<ph name="LINK_AFTER"/></translation>
 <translation id="6629244688368006959">Brave-এর ইউজাররা কী ধরনের ফিচার ব্যবহার করে, সেই সম্পর্কে সম্পূর্ণ ব্যক্তিগত ও বেনামী প্রোডাক্টের তথ্য শেয়ার করুন। <ph name="LINK_BEFORE"/>আরও জানুন।<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">সেটআপ সম্পূর্ণ</translation>
@@ -2636,7 +2650,9 @@
 <translation id="8000020256436988724">টুলবার</translation>
 <translation id="6225572914528673855">অ্যাড্রেস বার</translation>
 <translation id="6821966107067356137">RSS ফিড যোগ করুন</translation>
+<translation id="2478076885740497414">অ্যাপ ইনস্টল করুন</translation>
 <translation id="8293206222192510085">বুকমার্ক যোগ করুন</translation>
+<translation id="1010029336854254368">মেনু শেয়ার করুন</translation>
 <translation id="7758460733045216901">বুকমার্ক প্যানেল</translation>
 <translation id="958268166261124668">Brave VPN: সংযুক্ত</translation>
 <translation id="6021669293402055982">Brave VPN: বিছিন্ন করা হয়েছে</translation>

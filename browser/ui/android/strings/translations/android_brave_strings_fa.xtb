@@ -166,10 +166,6 @@
 <translation id="9110294136812584522">سایت‌ها می‌توانند از طریق کوکی‌های شخص ثالث درخواست کنند از «ورود به سیستم Google» قدیمی استفاده کنند</translation>
 <translation id="2903783737778379345">«ورود به سیستم Google» قدیمی از طریق کوکی‌های شخص ثالث مجاز نیست</translation>
 <translation id="6880817299303842099">مجاز به استفاده از کوکی‌های شخص ثالث برای «ورود به سیستم Google» قدیمی است</translation>
-<translation id="2136412236435693622">دسترسی به میزبان محلی</translation>
-<translation id="4172219483893066798">سایت‌ها می‌توانند برای دسترسی به منابع میزبان محلی درخواست دهند</translation>
-<translation id="7181706637590665047">دسترسی به منابع میزبان محلی مجاز نشود</translation>
-<translation id="1485435696620658073">برای دسترسی به منابع میزبان محلی مجاز است</translation>
 <translation id="181905442828471321">پیش‌فرض‌های جهانی سپرهای ایمنی Brave</translation>
 <translation id="2675679258824361492">دیگر تنظیمات حریم خصوصی</translation>
 <translation id="8026334261755873520">پاک کردن داده‌های مرور</translation>
@@ -424,6 +420,13 @@
 <translation id="7141438739990875547">شبکه‌های بیت‌کوین</translation>
 <translation id="9055546041146396417">اگر این سایت خراب به نظر می‌رسد، سپر ایمنی را غیرفعال کنید.</translation>
 <translation id="7898672232170410330">عنصر قفل</translation>
+<translation id="9064628362799094520">داده‌های سایت را پاک کنید</translation>
+<translation id="8949611615512336262">پاک‌کردن خودکار: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">پاک‌کردن داده‌های سایت اکنون</translation>
+<translation id="6795622376590884449">پاک‌کردن خودکار</translation>
+<translation id="7961015016161918242">هرگز</translation>
+<translation id="1991004083507807299">برگه سایت بسته شد</translation>
+<translation id="5827277414420724690">بستن برنامه</translation>
 <translation id="1209739344687072997">گزارش خرابی سایت</translation>
 <translation id="8510478288840333677">به توسعه‌دهندگان Brave اطلاع دهید که «سپرهای ایمنی» در این سایت به‌خوبی کار نمی‌کند.</translation>
 <translation id="1653405824851871276">از شما بابت کمک به بهبود Brave برای همه، سپاسگزاریم. این گزارش فقط حاوی اطلاعات لازم برای تعمیر این سایت است. <ph name="LEARN_MORE"/></translation>
@@ -1075,7 +1078,7 @@
 <translation id="1336494649091412226">مطمئنید می‌خواهید از Brave خارج شوید؟</translation>
 <translation id="6061635824229591714">داده‌های سایت حذف شوند؟</translation>
 <translation id="1265051174491933207">حذف امن داده‌ها باعث حذف اطلاعات سایت و بستن تمام تب‌های «<ph name="SITE_NAME"/>» می‌شود. این عملیات قابل بازگشت نیست.</translation>
-<translation id="4279349293084858577">حذف امن</translation>
+<translation id="5528772406060281700">پاک‌کردن داده‌های سایت</translation>
 <translation id="4426990318287827331">حذف امن داده‌ها</translation>
 <translation id="7942415993090181327">سابقه گفتگو</translation>
 <translation id="6859935199732075666">نمایش خطاهای مرور ایمن</translation>

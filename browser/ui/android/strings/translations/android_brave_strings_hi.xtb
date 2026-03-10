@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">साइट्स, थर्ड पार्टी कुकीज़ के ज़रिए, लेगसी Google साइन-इन का इस्तेमाल कर सकती हैं</translation>
 <translation id="2903783737778379345">थर्ड पार्टी कुकीज़ के ज़रिए, लेगसी Google साइन-इन की अनुमति न दें</translation>
 <translation id="6880817299303842099">लेगसी Google साइन-इन के लिए, थर्ड पार्टी कुकीज़ के इस्तेमाल की अनुमति है</translation>
-<translation id="2136412236435693622">लोकलहोस्ट एक्सेस</translation>
-<translation id="4172219483893066798">साइट की ओर से लोकलहोस्ट के संसाधनों का ऐक्सेस पाने का अनुरोध किया जा सकता है</translation>
-<translation id="7181706637590665047">लोकलहोस्ट के संसाधनों का ऐक्सेस न दें</translation>
-<translation id="1485435696620658073">लोकलहोस्ट के संसाधनों के ऐक्सेस की इजाज़त है</translation>
 <translation id="181905442828471321">Brave शील्ड्स वैश्विक डिफॉल्ट्स</translation>
 <translation id="2675679258824361492">अन्य  गोपनीयता सेटिंग</translation>
 <translation id="8026334261755873520">ब्राउज़िंग डेटा साफ़ करें</translation>
@@ -421,6 +417,13 @@
 <translation id="7141438739990875547">Bitcoin नेटवर्क</translation>
 <translation id="9055546041146396417">यदि यह साइट ठीक से नहीं दिखाई देती है, तो शील्ड को डाउन करने का प्रयास करें।</translation>
 <translation id="7898672232170410330">एलिमेंट ब्लॉक करें</translation>
+<translation id="9064628362799094520">साइट का डेटा श्रेड करें</translation>
+<translation id="8949611615512336262">अपने-आप श्रेड करें: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">अभी साइट डेटा श्रेड करें</translation>
+<translation id="6795622376590884449">अपने-आप श्रेड करें</translation>
+<translation id="7961015016161918242">कभी नहीं</translation>
+<translation id="1991004083507807299">साइट के टैब बंद होने पर</translation>
+<translation id="5827277414420724690">ऐप बंद होने पर</translation>
 <translation id="1209739344687072997">एक ब्रेक हुई साइट की रिपोर्ट करें</translation>
 <translation id="8510478288840333677">चलिए Brave के डेवलपर्स को बताएँ कि यह साइट संरक्षण साथ ठीक से काम नहीं करती है:</translation>
 <translation id="1653405824851871276">Brave को सभी के लिए बेहतर बनाने में मदद करने के लिए धन्यवाद. यह रिपोर्ट हमें इस साइट को ठीक करने के लिए केवल ज़रूरी जानकारी भेजेगी. <ph name="LEARN_MORE"/></translation>
@@ -1072,7 +1075,7 @@
 <translation id="1336494649091412226">क्या आप वाकई Brave से बाहर जाना चाहते हैं?</translation>
 <translation id="6061635824229591714">साइट डेटा श्रेड करें?</translation>
 <translation id="1265051174491933207">डेटा श्रेड करने से साइट डेटा मिटा दिया जाएगा और सभी '<ph name="SITE_NAME"/>' टैब बंद हो जाएंगे। इसे पहले जैसा नहीं किया जा सकता।</translation>
-<translation id="4279349293084858577">श्रेड</translation>
+<translation id="5528772406060281700">साइट डेटा श्रेड करें</translation>
 <translation id="4426990318287827331">डेटा श्रेड करें</translation>
 <translation id="7942415993090181327">चैट का इतिहास</translation>
 <translation id="6859935199732075666">सुरक्षित ब्राउज़िक की गड़बड़ियाँ दिखाएँ</translation>

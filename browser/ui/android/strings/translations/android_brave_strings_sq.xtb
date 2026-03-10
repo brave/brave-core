@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">Sajtet mund të kërkojnë për të përdorur Hyrjen e Vjetër në Google përmes cookie-ve të palëve të treta</translation>
 <translation id="2903783737778379345">Mos lejo Hyrjen e Vjetër në Google përmes cookie-ve të palëve të treta</translation>
 <translation id="6880817299303842099">Lejohet përdorimi i cookie-ve të palëve të treta për Hyrjen e Vjetër në Google</translation>
-<translation id="2136412236435693622">Qasje në Localhost</translation>
-<translation id="4172219483893066798">Sajtet mund të kërkojnë qasje në burimet e localhost</translation>
-<translation id="7181706637590665047">Mos lejo qasjen në burimet e localhost</translation>
-<translation id="1485435696620658073">Lejohet qasja në burimet e localhost</translation>
 <translation id="181905442828471321">Parazgjedhjet globale të mburojave Brave</translation>
 <translation id="2675679258824361492">Cilësime të tjera të privatësisë</translation>
 <translation id="8026334261755873520">Pastro të dhënat e shfletimit</translation>
@@ -424,6 +420,13 @@ Brave i bllokon këto gjëra kështu që ti mund të shfletosh pa u ndjekur kudo
 <translation id="7141438739990875547">Rrjetet Bitcoin</translation>
 <translation id="9055546041146396417">Nëse kjo faqe duket e prishur, provoje me Mburoja të çaktivizuara.</translation>
 <translation id="7898672232170410330">Blloko elementin</translation>
+<translation id="9064628362799094520">Shkatërroj të dhënat e faqes</translation>
+<translation id="8949611615512336262">Shkatërroj automatikisht: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Shkatërroj të dhënat e faqes tani</translation>
+<translation id="6795622376590884449">Shkatërroj automatikisht</translation>
+<translation id="7961015016161918242">Asnjëherë</translation>
+<translation id="1991004083507807299">Skeda e faqes mbyllur</translation>
+<translation id="5827277414420724690">Mbyllja e aplikacionit</translation>
 <translation id="1209739344687072997">Raporto një sajt të dëmtuar</translation>
 <translation id="8510478288840333677">Bëji me dije programuesit e Brave se kjo faqe interneti nuk punon mirë me Mbrojtje-n:</translation>
 <translation id="1653405824851871276">Faleminderit që ndihmoi për ta bërë Brave më të mirë për të gjithë. Ky raport do të përmbajë vetëm informacionet e nevojshme për ne që të rregullojmë këtë sajt. <ph name="LEARN_MORE"/></translation>
@@ -1076,7 +1079,7 @@ mbështetet nga IA dhe është ndërtuar drejt e në shfletues</translation>
 <translation id="1336494649091412226">Jeni i sigurt se doni të dilni nga Brave?</translation>
 <translation id="6061635824229591714">Shkatërroj të dhënat e faqes?</translation>
 <translation id="1265051174491933207">Shkatërrimi do të fshijë të dhënat e faqes dhe do të mbyllë të gjitha skedat '<ph name="SITE_NAME"/>'. Kjo nuk mund të zhbëhet.</translation>
-<translation id="4279349293084858577">Shkatërro</translation>
+<translation id="5528772406060281700">Shkatërroj të dhënat e faqes</translation>
 <translation id="4426990318287827331">Shkatërro të dhënat</translation>
 <translation id="7942415993090181327">Historiku i bisedave</translation>
 <translation id="6859935199732075666">Trego gabimet e Sigurimit të Shfletimit</translation>
