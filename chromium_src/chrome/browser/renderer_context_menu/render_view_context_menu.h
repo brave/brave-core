@@ -8,7 +8,6 @@
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
-#include "brave/components/containers/core/mojom/containers.mojom-forward.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -17,6 +16,7 @@
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/ui/containers/containers_menu_model.h"
+#include "brave/components/containers/core/mojom/containers.mojom-forward.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 #define BRAVE_RENDER_VIEW_CONTEXT_MENU_H_  \

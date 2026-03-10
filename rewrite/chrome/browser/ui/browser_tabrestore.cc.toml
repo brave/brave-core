@@ -23,6 +23,6 @@ replace = '''tab_util::GetSiteInstanceForNewTab(
 #if BUILDFLAG(ENABLE_CONTAINERS)
           ,
           containers::GetStoragePartitionConfigToRestore(
-              browser->profile(), navigations, selected_navigation))
+              browser->profile(), navigations, selected_navigation)
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
-  )'''
+  ))'''

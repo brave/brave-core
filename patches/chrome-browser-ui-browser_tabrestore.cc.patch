@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_tabrestore.cc b/chrome/browser/ui/browser_tabrestore.cc
-index 08fd54ac9aae3897df33d7f98b984a4a31efd7bd..89aa4f350ac09d68170e040a21aeafd8341cf9a4 100644
+index 08fd54ac9aae3897df33d7f98b984a4a31efd7bd..e0a40be1eec53c72ae66c64ca8954bd696b67366 100644
 --- a/chrome/browser/ui/browser_tabrestore.cc
 +++ b/chrome/browser/ui/browser_tabrestore.cc
 @@ -42,6 +42,12 @@
@@ -25,9 +25,9 @@ index 08fd54ac9aae3897df33d7f98b984a4a31efd7bd..89aa4f350ac09d68170e040a21aeafd8
 +#if BUILDFLAG(ENABLE_CONTAINERS)
 +          ,
 +          containers::GetStoragePartitionConfigToRestore(
-+              browser->profile(), navigations, selected_navigation))
++              browser->profile(), navigations, selected_navigation)
 +#endif  // BUILDFLAG(ENABLE_CONTAINERS)
-+  );
++  ));
    create_params.initially_hidden = initially_hidden;
    create_params.desired_renderer_state =
        WebContents::CreateParams::kNoRendererProcess;
