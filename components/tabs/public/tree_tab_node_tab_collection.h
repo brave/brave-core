@@ -69,7 +69,7 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
   // tabs in different tree nodes.
   TreeTabNodeTabCollection(
       const tree_tab::TreeTabNodeId& tree_tab_node_id,
-      std::unique_ptr<tabs::TabCollection> current_collection,
+      std::unique_ptr<tabs::SplitTabCollection> current_collection,
       base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
       base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move);
 

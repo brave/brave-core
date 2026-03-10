@@ -118,7 +118,7 @@ TreeTabNodeTabCollection::TreeTabNodeTabCollection(
 
 TreeTabNodeTabCollection::TreeTabNodeTabCollection(
     const tree_tab::TreeTabNodeId& tree_tab_node_id,
-    std::unique_ptr<tabs::TabCollection> current_collection,
+    std::unique_ptr<tabs::SplitTabCollection> current_collection,
     base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
     base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move)
     : TabCollection(TabCollection::Type::TREE_NODE,
@@ -132,8 +132,8 @@ TreeTabNodeTabCollection::TreeTabNodeTabCollection(
       node_(std::make_unique<TreeTabNode>(*this, tree_tab_node_id)) {
   CHECK(!tree_tab_node_id.is_empty());
   CHECK(current_collection);
-  CHECK_EQ(current_collection->type(), TabCollection::Type::SPLIT);
   auto* split_ptr = static_cast<SplitTabCollection*>(current_collection.get());
+  CHECK(split_ptr);
   current_value_ = split_ptr;
   AddCollection(std::move(current_collection), 0);
 }

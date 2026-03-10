@@ -563,3 +563,98 @@ void BraveBrowserTabStripController::OnTreeTabChanged(
   }
 }
 ```
+
+## How it works with other tab management features?
+### Split tabs
+#### Creating a Split in Tree Tabs Mode
+
+When the user creates a split (e.g. "New split" from the tab context menu), the flow
+goes through **TabStripModel** and then the tab strip collection. In tree tabs mode,
+the structure of the tree (tabs in different **TreeTabNodeTabCollection** nodes)
+requires special handling so that the new split is created and placed correctly
+while keeping the model's split registry consistent.
+
+**Entry point**
+
+1. User selects two or more tabs and chooses "New split" (or equivalent).
+2. **TabStripModel::AddToSplitImpl** runs with the selected indices and a new
+   **split_tabs::SplitTabId**.
+3. It resolves **TabInterface*** for those indices via **GetTabAtIndex**, then:
+   - Calls **MoveTabsAndSetPropertiesImpl** to move the selected tabs to the same
+     logical position (this invokes the delegate's **MoveTabsRecursive** when in
+     tree tabs mode).
+   - Calls **contents_data_->CreateSplit(split_id, tabs, visual_data)**.
+
+**Default (non–tree-tabs) behavior**
+
+In the base **TabStripCollection::CreateSplit**, all tabs are assumed to share the
+same parent. The implementation creates a **SplitTabCollection**, inserts it via
+**AddTabCollectionImpl** (which updates **split_mapping_** via **AddCollectionMapping**),
+then moves each tab into the split. **GetSplitTabCollection(split_id)** therefore
+returns the new split immediately after **CreateSplit**.
+
+**Tree tabs behavior**
+
+When **BraveTabStripCollection** has a delegate that **ShouldHandleTabManipulation()**
+(e.g. **BraveTreeTabStripCollectionDelegate**), **CreateSplit** is overridden and the
+delegate's **CreateSplit** is used first. The delegate handles the case where the
+selected tabs live in **different** tree nodes (different **TreeTabNodeTabCollection**s):
+
+1. **Resolve order**  
+   It determines the first and second tab by recursive index so that removal order
+   is well-defined.
+
+2. **Remove tabs from the tree**  
+   For each tab (higher index first to keep indices stable):
+   - Move any other children of that tab's tree node to the node's parent
+     (**MoveChildrenOfTreeTabNodeToParent**).
+   - Remove the tab from its node (**MaybeRemoveTab**).
+   - Remove the now-empty (or reorganized) **TreeTabNodeTabCollection** from its
+     parent (**MaybeRemoveCollection**).
+
+3. **Create the split and wrap it**  
+   It builds a **SplitTabCollection** with the given **split_id** and **visual_data**,
+   adds both tabs to it, then wraps that **SplitTabCollection** in a single
+   **TreeTabNodeTabCollection** (the "wrapper"). The wrapper is the tree node that
+   will represent the split in the tree.
+
+4. **Insert the wrapper**  
+   It registers the new node with **TreeTabModel** and inserts the wrapper at the
+   first tab's original position using **AddTabCollectionAtPosition(wrapper, position)**.
+   That ends up in **AddTabCollectionImpl** with the **wrapper** as the collection
+   being added.
+
+**Split registry and lookup**
+
+**TabStripCollection** maintains **split_mapping_** (split_id → **SplitTabCollection***)
+so that **GetSplitTabCollection(split_id)** and **GetSplitData(split_id)** work for
+the model and UI. **AddCollectionMapping** is only invoked with the **root** collection
+passed to **AddTabCollectionImpl**—i.e. the wrapper (**TreeTabNodeTabCollection**), not
+the inner **SplitTabCollection**. Because **AddCollectionMapping** only updates
+**split_mapping_** for collections of type **SPLIT** (and for splits inside **GROUP**),
+adding a **TREE_NODE** wrapper does not by itself register the inner split. So when
+the delegate creates a split by inserting a wrapper, the implementation must also
+ensure the inner **SplitTabCollection** is registered in **split_mapping_** (e.g. by
+registering it after the wrapper is inserted, or by extending **AddCollectionMapping**
+to recurse into **TREE_NODE** and register nested **SplitTabCollection**s). Otherwise
+**GetSplitTabCollection(split_id)** would return null and code that assumes the split
+exists (e.g. **CompleteModelUpdateTransaction**, or **AddToSplitImpl** using the new
+split) would hit a CHECK.
+
+**MoveTabsRecursive when creating a split**
+
+**MoveTabsAndSetPropertiesImpl** runs **before** **CreateSplit**. It calls
+**MoveTabsWithNotifications**, which runs the move callback (e.g.
+**TabStripCollection::MoveTabsRecursive**). In tree tabs mode that is handled by
+**BraveTreeTabStripCollectionDelegate::MoveTabsRecursive**, which:
+
+- Resolves **moving_tabs** via **GetTabAtIndexRecursive** for each index.
+- Removes those tabs' tree nodes from the tree (so the collection's recursive tab
+  count can drop to zero if all tabs are being moved).
+- Then looks up a destination tab to re-insert the moved nodes next to.
+
+If **all** tabs in the strip are being moved (e.g. "New split" with exactly two
+tabs), after removal the collection has no tabs left. The code must treat
+"destination" specially in that case (e.g. insert into the unpinned root at a fixed
+index instead of calling **GetTabAtIndexRecursive** with an index derived from the
+current count) to avoid underflow and NOTREACHED in **GetTabAtIndexRecursive**.

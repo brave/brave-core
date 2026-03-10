@@ -5,9 +5,18 @@
 
 #include "components/browser_apis/tab_strip/tab_strip_api.mojom.h"
 
-#define SPLIT \
-  SPLIT:      \
-  case tabs::TabCollection::Type::TREE_NODE
+// TREE_NODE must not fall through to SPLIT: TreeTabNodeTabCollection is not a
+// SplitTabCollection, so casting and calling data() causes SEGV. Represent tree
+// nodes as a container with just node_id so the topology walker can recurse.
+// Token paste avoids re-expanding SPLIT in the second case.
+// TODO(sko) Revisit this. We might need TREE NODE COLLECTION mojo type.
+#define SPLIT                                                                 \
+  TREE_NODE: {                                                                \
+    auto mojo_container = tabs_api::mojom::UnpinnedTabs::New();               \
+    mojo_container->id = node_id;                                             \
+    return tabs_api::mojom::Data::NewUnpinnedTabs(std::move(mojo_container)); \
+  }                                                                           \
+  case tabs::TabCollection::Type::SPLIT
 
 #include <chrome/browser/ui/tabs/tab_strip_api/converters/tab_converters.cc>
 

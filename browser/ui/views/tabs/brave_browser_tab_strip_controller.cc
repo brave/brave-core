@@ -25,6 +25,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/sessions/core/tab_restore_service.h"
 #include "components/tabs/public/tab_interface.h"
+#include "ui/views/view_utils.h"
 
 BraveBrowserTabStripController::BraveBrowserTabStripController(
     TabStripModel* model,
@@ -50,7 +51,7 @@ const tabs::TreeTabNode& BraveBrowserTabStripController::GetTreeTabNode(
     const tree_tab::TreeTabNodeId& id) const {
   const auto* node =
       static_cast<BraveTabStripModel*>(model_.get())->tree_model()->GetNode(id);
-  CHECK(node);
+  CHECK(node) << "Tree tab node not found for id: " << id;
   return *node;
 }
 
@@ -259,14 +260,23 @@ void BraveBrowserTabStripController::OnTreeTabChanged(
       for (const tabs::TabInterface* tab : tabs) {
         auto index = model_->GetIndexOfTab(tab);
         CHECK_NE(index, TabStripModel::kNoTab);
-        tabstrip_->tab_at(index)->set_tree_tab_node(change.id);
+        auto* tab_view = tabstrip_->tab_at(index);
+        tab_view->set_tree_tab_node(change.id);
+
         if (IsActiveTab(index) && IsInCollapsedTreeTabNode(change.id)) {
           ExpandAllCollapsedAncestors(change.id);
         }
-        break;
+
+        if (auto* tab_container =
+                views::AsViewClass<BraveTabContainer>(tab_view->parent())) {
+          tab_container->InvalidateIdealBounds();
+          tab_container->InvalidateLayout();
+        }
       }
+      break;
     }
     case TreeTabChange::Type::kNodeWillBeDestroyed: {
+      LOG(ERROR) << "kNodeWillBeDestroyed";
       std::vector<const tabs::TabInterface*> tabs =
           change.GetWillBeDestroyedChange().node->GetTabs();
       for (const tabs::TabInterface* tab : tabs) {
@@ -274,20 +284,32 @@ void BraveBrowserTabStripController::OnTreeTabChanged(
         // The tab might have already been removed from the model when the
         // TreeTabNode is being destroyed (e.g., during group removal).
         if (index != TabStripModel::kNoTab) {
-          tabstrip_->tab_at(index)->set_tree_tab_node(std::nullopt);
+          auto* tab_view = tabstrip_->tab_at(index);
+          tab_view->set_tree_tab_node(std::nullopt);
+          if (auto* tab_container =
+                  views::AsViewClass<BraveTabContainer>(tab_view->parent())) {
+            tab_container->InvalidateIdealBounds();
+            tab_container->InvalidateLayout();
+          }
+          LOG(ERROR) << "cleared tree tab node";
+        } else {
+          LOG(ERROR) << "tab not found in model";
         }
       }
+      LOG(ERROR) << "end of kNodeWillBeDestroyed";
       break;
     }
     case TreeTabChange::Type::kNodeCollapsedStateChanged: {
       const auto& collapsed_state_changed_change =
           change.GetCollapsedStateChangedChange();
-      auto index =
-          model_->GetIndexOfTab(collapsed_state_changed_change.node->GetTab());
-      CHECK_NE(index, TabStripModel::kNoTab);
-      static_cast<BraveTab*>(tabstrip_->tab_at(index))
-          ->UpdateTreeToggleButtonIcon();
-      tabstrip_->InvalidateLayout();
+      for (const tabs::TabInterface* tab :
+           collapsed_state_changed_change.node->GetTabs()) {
+        auto index = model_->GetIndexOfTab(tab);
+        CHECK_NE(index, TabStripModel::kNoTab);
+        static_cast<BraveTab*>(tabstrip_->tab_at(index))
+            ->UpdateTreeToggleButtonIcon();
+        tabstrip_->InvalidateLayout();
+      }
       break;
     }
   }

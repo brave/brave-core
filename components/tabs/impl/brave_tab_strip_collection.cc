@@ -47,6 +47,18 @@ void BraveTabStripCollection::AddTabRecursive(
                                       new_pinned_state);
 }
 
+void BraveTabStripCollection::AddCollectionMapping(
+    TabCollection* root_collection,
+    base::PassKey<BraveTabStripCollectionDelegate> pass_key) {
+  TabStripCollection::AddCollectionMapping(root_collection);
+}
+
+void BraveTabStripCollection::RemoveCollectionMapping(
+    TabCollection* root_collection,
+    base::PassKey<BraveTabStripCollectionDelegate> pass_key) {
+  TabStripCollection::RemoveCollectionMapping(root_collection);
+}
+
 std::unique_ptr<TabInterface>
 BraveTabStripCollection::RemoveTabAtIndexRecursive(
     size_t index,
@@ -113,6 +125,26 @@ void BraveTabStripCollection::CreateSplit(
     return;
   }
   TabStripCollection::CreateSplit(split_id, tabs, visual_data);
+}
+
+void BraveTabStripCollection::AddCollectionMapping(
+    TabCollection* root_collection) {
+  if (delegate_ && delegate_->ShouldHandleTabManipulation()) {
+    delegate_->AddCollectionMapping(root_collection);
+    return;
+  }
+
+  TabStripCollection::AddCollectionMapping(root_collection);
+}
+
+void BraveTabStripCollection::RemoveCollectionMapping(
+    TabCollection* root_collection) {
+  if (delegate_ && delegate_->ShouldHandleTabManipulation()) {
+    delegate_->RemoveCollectionMapping(root_collection);
+    return;
+  }
+
+  TabStripCollection::RemoveCollectionMapping(root_collection);
 }
 
 }  // namespace tabs

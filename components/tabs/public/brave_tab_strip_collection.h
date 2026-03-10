@@ -53,6 +53,12 @@ class BraveTabStripCollection : public TabStripCollection {
       std::unique_ptr<TabCollection> collection,
       const TabCollection::Position& position,
       base::PassKey<BraveTabStripCollectionDelegate> pass_key);
+  void AddCollectionMapping(
+      TabCollection* root_collection,
+      base::PassKey<BraveTabStripCollectionDelegate> pass_key);
+  void RemoveCollectionMapping(
+      TabCollection* root_collection,
+      base::PassKey<BraveTabStripCollectionDelegate> pass_key);
 
   // TabStripCollection:
   void AddTabRecursive(std::unique_ptr<TabInterface> tab,
@@ -71,6 +77,8 @@ class BraveTabStripCollection : public TabStripCollection {
   void CreateSplit(split_tabs::SplitTabId split_id,
                    const std::vector<TabInterface*>& tabs,
                    split_tabs::SplitTabVisualData visual_data) override;
+  void AddCollectionMapping(TabCollection* root_collection) override;
+  void RemoveCollectionMapping(TabCollection* root_collection) override;
 
  private:
   std::unique_ptr<BraveTabStripCollectionDelegate> delegate_;

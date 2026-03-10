@@ -59,6 +59,7 @@ void TabStripCollection::AddTabRecursive(
 void TabStripCollection::AddTabCollectionAtPosition(
     std::unique_ptr<TabCollection> collection,
     const TabCollection::Position& position) {
+  // TODO(sko) Check if this AddTabCollectionAtPosition is needed.
   AddTabCollectionImpl(std::move(collection), position);
 }
 

@@ -50,10 +50,11 @@ class BraveTabStripCollectionDelegate {
 
   // Handles CreateSplit when tabs are in different parent collections (e.g.
   // different tree nodes). Returns true if handled, false to use default path.
-  virtual bool CreateSplit(
-      split_tabs::SplitTabId split_id,
-      const std::vector<TabInterface*>& tabs,
-      split_tabs::SplitTabVisualData visual_data) const;
+  virtual bool CreateSplit(split_tabs::SplitTabId split_id,
+                           const std::vector<TabInterface*>& tabs,
+                           split_tabs::SplitTabVisualData visual_data) const;
+  virtual void AddCollectionMapping(TabCollection* root_collection) {}
+  virtual void RemoveCollectionMapping(TabCollection* root_collection) {}
 
  protected:
   base::PassKey<BraveTabStripCollectionDelegate> GetPassKey() const;
