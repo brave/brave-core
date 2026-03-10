@@ -21,7 +21,7 @@ namespace customize_chrome {
 //    `kShowReward`.
 std::vector<side_panel::customize_chrome::mojom::CategoryPtr>
 AppendBraveSpecificCategories(
-    content::WebContents& web_contents,
+    content::WebContents* web_contents,
     std::vector<side_panel::customize_chrome::mojom::CategoryPtr> categories);
 
 // Removes unsupported Chromium actions from the list of actions.
@@ -45,7 +45,7 @@ FilterUnsupportedChromiumActions(
 //        `kShowBraveNews`, `kShowShareMenu`.
 std::vector<side_panel::customize_chrome::mojom::ActionPtr>
 ApplyBraveSpecificModifications(
-    content::WebContents& web_contents,
+    content::WebContents* web_contents,
     std::vector<side_panel::customize_chrome::mojom::ActionPtr> actions);
 
 }  // namespace customize_chrome
