@@ -204,6 +204,8 @@ class AIChatService : public KeyedService,
   void BindMetrics(mojo::PendingReceiver<mojom::Metrics> metrics) override;
   void BindObserver(mojo::PendingRemote<mojom::ServiceObserver> ui,
                     BindObserverCallback callback) override;
+  void GetConversationData(const std::string& uuid,
+                           GetConversationDataCallback callback) override;
 
   bool GetIsContentAgentAllowed() const;
   void SetIsContentAgentAllowed(bool is_allowed);

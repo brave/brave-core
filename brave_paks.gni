@@ -98,8 +98,8 @@ template("brave_extra_paks") {
     }
 
     if (enable_ai_chat) {
-      sources += [ "$root_gen_dir/brave/ai_chat_internal_resources.pak" ]
-      deps += [ "//brave/browser/resources/ai_chat_internal:resources" ]
+      sources += [ "$root_gen_dir/brave/browser/resources/ai_chat_internal/ai_chat_internal_all.pak" ]
+      deps += [ "//brave/browser/resources/ai_chat_internal" ]
     }
 
     if (enable_brave_rewards) {

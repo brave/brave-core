@@ -206,6 +206,11 @@ interface Service {
   // Bind ability to send events to the UI and receive current state
   BindObserver(pending_remote<ServiceObserver> ui) => (ServiceState state);
 
+  // Get full conversation data (metadata + history) for a conversation.
+  // Used by brave://ai-chat-internal debug UI.
+  GetConversationData(string uuid) => (Conversation? conversation,
+                                       array<ConversationTurn> entries);
+
   // Bind specified Conversation for 2-way communication
   BindConversation(
       string conversation_uuid,
