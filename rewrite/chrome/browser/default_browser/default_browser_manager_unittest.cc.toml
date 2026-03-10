@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''profile_ is initialized before calling 
+                 SetUpGlobalFeaturesForTesting which makes the profile bind to
+                 old deleted global features. When the profile is destroyed in
+                 TearDown it crashes trying to delete BrowserTabStripTracker in
+                 BraveWalletServiceDelegateImpl. Move profile creation to after
+                 calling SetUpGlobalFeaturesForTesting.'''
+re_pattern = '''(void SetUp\(\) override \{[\s\S]+?)
+    profile_ = std::make_unique<TestingProfile>\(\);
+
+(    TestingBrowserProcess::GetGlobal\(\)->SetUpGlobalFeaturesForTesting\(
+        /\*profile_manager=\*/false\);)'''
+replace = '''\1\2
+    profile_ = std::make_unique<TestingProfile>();
+'''

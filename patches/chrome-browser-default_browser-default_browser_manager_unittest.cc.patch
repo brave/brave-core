@@ -1,0 +1,18 @@
+diff --git a/chrome/browser/default_browser/default_browser_manager_unittest.cc b/chrome/browser/default_browser/default_browser_manager_unittest.cc
+index 2d5f361c899304a7123c5a59c20b8f7257b9fc8d..3e5fbe951e80b4d60a278826221060d1a52a5b9f 100644
+--- a/chrome/browser/default_browser/default_browser_manager_unittest.cc
++++ b/chrome/browser/default_browser/default_browser_manager_unittest.cc
+@@ -79,11 +79,10 @@ class DefaultBrowserManagerTest : public testing::Test {
+                   base::BindLambdaForTesting(
+                       [&]() { return static_cast<Profile*>(profile_.get()); }));
+             }));
+-
+-    profile_ = std::make_unique<TestingProfile>();
+-
+     TestingBrowserProcess::GetGlobal()->SetUpGlobalFeaturesForTesting(
+         /*profile_manager=*/false);
++    profile_ = std::make_unique<TestingProfile>();
++
+   }
+ 
+   void TearDown() override {
