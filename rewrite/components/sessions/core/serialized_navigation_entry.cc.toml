@@ -5,6 +5,6 @@
 
 [[substitution]]
 description = 'Prefix virtual URL when writing SerializedNavigationEntry to Pickle'
-re_pattern = '(WriteStringToPickle\([\s\S]*,\s*)(virtual_url_\.spec\(\)\);)'
+re_pattern = '(WriteStringToPickle\([\s\S]*,\s*)(?:virtual_url_\.spec\(\))'
 re_flags = ['MULTILINE']
-replace = '\1virtual_url_prefix() + \2'
+replace = '\1maybe_prefixed_virtual_url_spec()'

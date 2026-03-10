@@ -1,5 +1,5 @@
 diff --git a/components/sync_sessions/synced_session.cc b/components/sync_sessions/synced_session.cc
-index b4601c19bb8af018fb9e2bb990e485237a6c0d1c..965a849ca26a22c44962f504dcf7ee71f3acf40b 100644
+index b4601c19bb8af018fb9e2bb990e485237a6c0d1c..99228bcde98fa106113eb463e7b8ae77aed8ef2b 100644
 --- a/components/sync_sessions/synced_session.cc
 +++ b/components/sync_sessions/synced_session.cc
 @@ -103,7 +103,7 @@ sync_pb::TabNavigation SessionNavigationToSyncData(
@@ -7,7 +7,7 @@ index b4601c19bb8af018fb9e2bb990e485237a6c0d1c..965a849ca26a22c44962f504dcf7ee71
    // handle empty or invalid URLs here.
    sync_data.set_virtual_url(navigation.virtual_url().is_valid()
 -                                ? navigation.virtual_url().spec()
-+                                ? navigation.virtual_url_prefix() + navigation.virtual_url().spec()
++                                ? navigation.maybe_prefixed_virtual_url_spec()
                                  : std::string());
    sync_data.set_referrer(navigation.referrer_url().is_valid()
                               ? navigation.referrer_url().spec()

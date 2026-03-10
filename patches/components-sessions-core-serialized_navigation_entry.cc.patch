@@ -1,5 +1,5 @@
 diff --git a/components/sessions/core/serialized_navigation_entry.cc b/components/sessions/core/serialized_navigation_entry.cc
-index 3c83a547a011e52349b52c70ef4f4fa34699f19e..911f8a3529683e5208b914d93f75791bb08eb8ac 100644
+index 3c83a547a011e52349b52c70ef4f4fa34699f19e..23e63409afef712c523a9feae612e06ecf56e764 100644
 --- a/components/sessions/core/serialized_navigation_entry.cc
 +++ b/components/sessions/core/serialized_navigation_entry.cc
 @@ -120,7 +120,7 @@ void SerializedNavigationEntry::WriteToPickle(int max_size,
@@ -7,7 +7,7 @@ index 3c83a547a011e52349b52c70ef4f4fa34699f19e..911f8a3529683e5208b914d93f75791b
  
    WriteStringToPickle(pickle, &bytes_written, max_size,
 -                      virtual_url_.spec());
-+                      virtual_url_prefix() + virtual_url_.spec());
++                      maybe_prefixed_virtual_url_spec());
  
    WriteString16ToPickle(pickle, &bytes_written, max_size, title_);
  
