@@ -28,6 +28,7 @@ import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_news.BraveNewsPolicy;
 import org.chromium.chrome.browser.brave_origin.BraveOriginPlansActivity;
+import org.chromium.components.brave_account.BraveAccountFeatures;
 import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletPolicy;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
@@ -691,6 +692,12 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_APPEARANCE));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_ADDRESS_BAR));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_TOOLBAR_SHORTCUT));
+                    // Account section is only shown when Brave Account is enabled.
+                    if (!BraveAccountFeatures.isBraveAccountEnabled()) {
+                        for (String key : BraveAccountSectionController.ALL_PREFERENCE_KEYS) {
+                            indexData.removeEntry(getUniqueId(key));
+                        }
+                    }
                     // Brave leaf switches/actions in main settings have no sub-screen to
                     // navigate to from search results, so exclude them from the index.
                     indexData.removeEntry(getUniqueId(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE));
