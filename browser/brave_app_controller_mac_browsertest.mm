@@ -240,8 +240,9 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
                 [[private_browser_submenu itemAtIndex:4] title]));
 
   // Close private browser and check bookmark menubar still has same items.
+  ui_test_utils::BrowserDestroyedObserver observer(private_browser);
   chrome::CloseWindow(private_browser);
-  ui_test_utils::WaitForBrowserToClose();
+  observer.Wait();
 
   [ac setLastProfile:browser()->profile()];
   [[normal_window_submenu delegate] menuNeedsUpdate:normal_window_submenu];
