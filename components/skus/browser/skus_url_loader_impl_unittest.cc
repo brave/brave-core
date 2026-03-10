@@ -13,7 +13,6 @@
 #include "base/values.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
-#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -92,7 +91,6 @@ class SkusUrlLoaderImplUnitTest : public testing::Test {
   std::unique_ptr<skus::SkusUrlLoaderImpl> skus_url_loader_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
 TEST_F(SkusUrlLoaderImplUnitTest, SanitizedResponse) {

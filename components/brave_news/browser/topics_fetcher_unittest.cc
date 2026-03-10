@@ -11,7 +11,6 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_news/browser/test/wait_for_callback.h"
 #include "content/public/test/browser_task_environment.h"
-#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -221,7 +220,6 @@ class BraveNewsTopicsFetcherTest : public testing::Test {
 
  private:
   content::BrowserTaskEnvironment browser_task_environment_;
-  data_decoder::test::InProcessDataDecoder data_decoder_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   TopicsFetcher fetcher_;
 };

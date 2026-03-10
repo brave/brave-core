@@ -18,7 +18,6 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
-#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -179,7 +178,6 @@ class SimpleHashClientUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   base::test::TaskEnvironment task_environment_;
   std::unique_ptr<SimpleHashClient> simple_hash_client_;
-  data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
 TEST_F(SimpleHashClientUnitTest, GetSimpleHashNftsByWalletUrl) {

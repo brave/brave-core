@@ -29,7 +29,6 @@ source_set("unit_tests") {
     ":api_request_helper",
     "//base/test:test_support",
     "//net/traffic_annotation:test_support",
-    "//services/data_decoder/public/cpp:test_support",
     "//services/network:test_support",
     "//testing/gtest",
   ]

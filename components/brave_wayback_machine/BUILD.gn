@@ -53,7 +53,6 @@ source_set("unit_tests") {
     "//components/sync_preferences",
     "//components/sync_preferences:test_support",
     "//net",
-    "//services/data_decoder/public/cpp:test_support",
     "//services/network:network_service",
     "//services/network:test_support",
     "//services/network/public/cpp",

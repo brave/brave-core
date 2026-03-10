@@ -16,7 +16,6 @@ include_rules = [
   "+content/public/test",
   "+extensions/buildflags",
   "+extensions/common",
-  "+services/data_decoder/public",
   "+services/network/public",
   "+third_party/skia/include/core",
   "+ui/base",

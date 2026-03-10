@@ -30,7 +30,6 @@
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "net/http/http_status_code.h"
-#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -109,7 +108,6 @@ class CardanoRpcUnitTest : public testing::Test {
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<cardano_rpc::CardanoRpc> cardano_mainnet_rpc_;
   std::unique_ptr<cardano_rpc::CardanoRpc> cardano_testnet_rpc_;
-  data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
 TEST_F(CardanoRpcUnitTest, Throttling) {
