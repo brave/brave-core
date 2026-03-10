@@ -63,8 +63,8 @@ Browser* SwitchToTorProfile(Profile* parent_profile,
                             TorLauncherFactory* factory,
                             size_t current_profile_num = 1,
                             const GURL& url = GURL()) {
-  Browser* tor_browser =
-      TorProfileManager::SwitchToTorProfile(parent_profile, url);
+  Browser* tor_browser = TorProfileManager::SwitchToTorProfile(
+      parent_profile, url, url::Origin::Create(url));
   tor::TorProfileService* service =
       TorProfileServiceFactory::GetForContext(tor_browser->profile());
   service->SetTorLauncherFactoryForTest(factory);

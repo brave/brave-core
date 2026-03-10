@@ -99,7 +99,9 @@ void OnionLocationView::OnExecuting(
 
   auto* helper = tor::OnionLocationTabHelper::FromWebContents(GetWebContents());
   if (helper) {
-    TorProfileManager::SwitchToTorProfile(profile_, helper->onion_location());
+    TorProfileManager::SwitchToTorProfile(
+        profile_, helper->onion_location(),
+        url::Origin::Create(GetWebContents()->GetLastCommittedURL()));
   }
 }
 

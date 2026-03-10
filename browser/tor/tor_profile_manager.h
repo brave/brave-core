@@ -17,11 +17,17 @@
 class Browser;
 class BrowserListObserver;
 
+namespace url {
+class Origin;
+}
+
 class TorProfileManager : public ProfileObserver {
  public:
   static TorProfileManager& GetInstance();
+  static Browser* SwitchToTorProfile(Profile* original_profile);
   static Browser* SwitchToTorProfile(Profile* original_profile,
-                                     const GURL& url = GURL());
+                                     const GURL& url,
+                                     const url::Origin& initiator_origin);
   static void CloseTorProfileWindows(Profile* tor_profile);
   Profile* GetTorProfile(Profile* original_profile);
 
