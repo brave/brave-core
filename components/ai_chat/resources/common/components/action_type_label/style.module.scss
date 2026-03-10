@@ -5,22 +5,20 @@
 
 .actionTypeLabel {
   --leo-icon-size: 14px;
-  --leo-icon-color: var(--leo-color-primary-50);
+  --leo-icon-color: var(--leo-color-primary-60);
   display: inline-flex;
   flex-direction: row;
   align-items: center;
   padding: 0px 4px;
   width: fit-content;
   height: 20px;
-  background: var(--leo-color-primary-20);
+  background: var(--leo-color-primary-10);
   border-radius: 4px;
 }
 
 .text {
   font: var(--leo-font-components-label);
   display: inline-flex;
-  align-items: center;
-  text-transform: uppercase;
   color: var(--leo-color-primary-50);
 }
 

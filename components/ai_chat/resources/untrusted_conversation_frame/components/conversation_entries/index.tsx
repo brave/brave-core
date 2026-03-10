@@ -306,12 +306,12 @@ function ConversationEntries() {
                           />
                         )}
                         {firstEntryEdit.selectedText && (
-                          <ActionTypeLabel
-                            actionType={firstEntryEdit.actionType}
-                          />
-                        )}
-                        {firstEntryEdit.selectedText && (
-                          <Quote text={firstEntryEdit.selectedText} />
+                          <div className={styles.selectedTextContext}>
+                            <ActionTypeLabel
+                              actionType={firstEntryEdit.actionType}
+                            />
+                            <Quote text={firstEntryEdit.selectedText} />
+                          </div>
                         )}
                         {showLongPageContentInfo
                           && (() => {
