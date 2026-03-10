@@ -13,6 +13,11 @@
 
 namespace brave_account::endpoints {
 
+bool operator==(const VerifyResend::Response::SuccessBody&,
+                const VerifyResend::Response::SuccessBody&) {
+  return true;
+}
+
 namespace {
 
 using VerifyResendTestCase = EndpointTestCase<VerifyResend>;
@@ -24,7 +29,7 @@ const VerifyResendTestCase* Success() {
        .raw_response_body = "",
        .expected_response = {.net_error = net::OK,
                              .status_code = net::HTTP_NO_CONTENT,
-                             .body = VerifyResend::Response::SuccessBody()}});
+                             .body = std::nullopt}});
 
   return kSuccess.get();
 }

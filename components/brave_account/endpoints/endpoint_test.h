@@ -34,10 +34,6 @@ inline bool operator==(const Response<T, E>& lhs, const Response<T, E>& rhs) {
          std::tie(rhs.net_error, rhs.status_code, rhs.body);
 }
 
-inline bool operator==(const JSONEmptyBody&, const JSONEmptyBody&) {
-  return true;
-}
-
 }  // namespace brave_account::endpoint_client
 
 namespace brave_account::endpoints {
