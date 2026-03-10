@@ -15,6 +15,7 @@
 #include "base/metrics/histogram_samples.h"
 #include "base/metrics/statistics_recorder.h"
 #include "base/trace_event/trace_event.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/p3a/component_installer.h"
 #include "brave/components/p3a/message_manager.h"
 #include "brave/components/p3a/metric_config_utils.h"
@@ -89,8 +90,8 @@ P3AService::~P3AService() = default;
 
 void P3AService::RegisterPrefs(PrefRegistrySimple* registry, bool first_run) {
   MessageManager::RegisterPrefs(registry);
-  registry->RegisterBooleanPref(kP3AEnabled, true);
-
+  registry->RegisterBooleanPref(kP3AEnabled,
+                                !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
   // New users are shown the P3A notice via the welcome page.
   registry->RegisterBooleanPref(kP3ANoticeAcknowledged, first_run);
 

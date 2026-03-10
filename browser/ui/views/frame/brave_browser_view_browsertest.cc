@@ -19,6 +19,7 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -123,8 +124,16 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
       rounded_corners ? (tabs::kMarginForVerticalTabContainers / 2) : 0;
   const int top_contents_separator_height = rounded_corners ? 0 : 1;
 
-  // Infobar is visible at first run.
-  // Update this test if it's not visible at first run.
+  auto contents_area_origin = [&]() {
+    return gfx::Point(
+        browser_view()->contents_container()->bounds().origin().x() -
+            contents_margin,
+        browser_view()->contents_container()->bounds().origin().y());
+  };
+
+#if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  // Infobar is visible at first run (P3A notice).
+  // Not shown on Origin builds where P3A is disabled by default.
   // Wait till infobar's positioning is finished.
   ASSERT_TRUE(base::test::RunUntil(
       [&]() { return infobar_container()->GetVisible(); }));
@@ -137,17 +146,11 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   // |  Tab Strip |---------------------------------------------|
   // |            | Contents area                               |
 
-  auto contents_area_origin = [&]() {
-    return gfx::Point(
-        browser_view()->contents_container()->bounds().origin().x() -
-            contents_margin,
-        browser_view()->contents_container()->bounds().origin().y());
-  };
-
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return infobar_container()->bounds().bottom_left() ==
            contents_area_origin();
   }));
+#endif  // !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 
   // Bookmark bar should be visible with NTP.
   chrome::AddTabAt(browser(), GURL(), -1, true);
@@ -176,9 +179,11 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   // Activate non-NTP tab and check contents container is positioned below the
   // infobar.
   browser()->tab_strip_model()->ActivateTabAt(0);
+#if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
   EXPECT_TRUE(infobar_container()->GetVisible());
   EXPECT_EQ(infobar_container()->bounds().bottom_left(),
             contents_area_origin());
+#endif  // !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 
   // Show bookmark bar always.
   // Check vertical tab is positioned below the bookmark bar.
@@ -186,15 +191,17 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   brave::SetBookmarkState(brave::BookmarkBarState::kAlways, prefs);
   EXPECT_EQ(brave::BookmarkBarState::kAlways,
             brave::GetBookmarkBarState(prefs));
-  EXPECT_TRUE(infobar_container()->GetVisible());
   ASSERT_TRUE(base::test::RunUntil(
       [&]() { return !browser()->window()->IsBookmarkBarAnimating(); }));
   EXPECT_TRUE(bookmark_bar()->GetVisible());
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().origin(),
             bookmark_bar()->bounds().bottom_left() +
                 gfx::Vector2d(0, top_contents_separator_height));
+#if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  EXPECT_TRUE(infobar_container()->GetVisible());
   EXPECT_EQ(infobar_container()->bounds().bottom_left(),
             contents_area_origin());
+#endif  // !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 
   // Activate NTP tab.
   // Check vertical tab is positioned below the bookmark bar.

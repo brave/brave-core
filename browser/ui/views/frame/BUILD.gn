@@ -40,6 +40,7 @@ source_set("browser_tests") {
     ":frame",
     "//base",
     "//brave/browser/ui/views/frame/vertical_tabs",
+    "//brave/components/brave_origin/buildflags",
     "//brave/components/constants",
     "//chrome/browser",
     "//chrome/browser/profiles:profile",
