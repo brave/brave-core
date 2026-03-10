@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.settings;
 import static org.chromium.build.NullUtil.assertNonNull;
 import static org.chromium.build.NullUtil.assumeNonNull;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -35,15 +34,10 @@ import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.TextMessagePreference;
 import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
-import org.chromium.components.browser_ui.settings.search.PreferenceParser;
-import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
-import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.text.SpanApplier;
-
-import java.util.Map;
 
 @NullMarked
 public class BraveWalletPreferences extends BravePreferenceFragment
@@ -303,18 +297,5 @@ public class BraveWalletPreferences extends BravePreferenceFragment
 
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new BaseSearchIndexProvider(
-                    BraveWalletPreferences.class.getName(), R.xml.brave_wallet_preferences) {
-
-                @Override
-                public void initPreferenceXml(
-                        Context context,
-                        SettingsIndexData indexData,
-                        Map<String, SearchIndexProvider> providerMap) {
-                    super.initPreferenceXml(context, indexData, providerMap);
-                    indexData.addChildParentLink(
-                            BraveWalletPreferences.class.getName(),
-                            PreferenceParser.createUniqueId(
-                                    MainSettings.class.getName(), PREF_BRAVE_WALLET));
-                }
-            };
+                    BraveWalletPreferences.class.getName(), R.xml.brave_wallet_preferences);
 }

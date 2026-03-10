@@ -30,14 +30,10 @@ import org.chromium.chrome.browser.settings.MainSettings;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
-import org.chromium.components.browser_ui.settings.search.PreferenceParser;
-import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
 import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.PlaylistService;
-
-import java.util.Map;
 
 public class BravePlaylistPreferences extends BravePreferenceFragment
         implements ConnectionErrorHandler, Preference.OnPreferenceChangeListener {
@@ -163,18 +159,6 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new BaseSearchIndexProvider(
                     BravePlaylistPreferences.class.getName(), R.xml.brave_playlist_preferences) {
-
-                @Override
-                public void initPreferenceXml(
-                        Context context,
-                        SettingsIndexData indexData,
-                        Map<String, SearchIndexProvider> providerMap) {
-                    super.initPreferenceXml(context, indexData, providerMap);
-                    indexData.addChildParentLink(
-                            BravePlaylistPreferences.class.getName(),
-                            PreferenceParser.createUniqueId(
-                                    MainSettings.class.getName(), PREF_BRAVE_PLAYLIST));
-                }
 
                 @Override
                 public void updateDynamicPreferences(Context context, SettingsIndexData indexData) {

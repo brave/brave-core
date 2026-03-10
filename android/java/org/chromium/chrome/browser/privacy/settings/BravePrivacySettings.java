@@ -45,7 +45,6 @@ import org.chromium.chrome.browser.safe_browsing.settings.NoGooglePlayServicesDi
 import org.chromium.chrome.browser.settings.BraveDialogPreference;
 import org.chromium.chrome.browser.settings.BravePreferenceDialogFragment;
 import org.chromium.chrome.browser.settings.BraveWebrtcPolicyPreference;
-import org.chromium.chrome.browser.settings.MainSettings;
 import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
 import org.chromium.chrome.browser.shields.FilterListServiceFactory;
 import org.chromium.chrome.browser.util.TabUtils;
@@ -55,16 +54,12 @@ import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.ClickableSpansTextMessagePreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.TextMessagePreference;
-import org.chromium.components.browser_ui.settings.search.PreferenceParser;
-import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
 import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.gms.ChromiumPlayServicesAvailability;
 import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.text.SpanApplier;
 import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
-
-import java.util.Map;
 
 /** Fragment to keep track of the all the brave privacy related preferences. */
 @NullMarked
@@ -1027,23 +1022,6 @@ public class BravePrivacySettings extends PrivacySettings {
     public static final ChromeBaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new ChromeBaseSearchIndexProvider(
                     BravePrivacySettings.class.getName(), R.xml.brave_privacy_preferences) {
-
-                @Override
-                public void initPreferenceXml(
-                        Context context,
-                        Profile profile,
-                        SettingsIndexData indexData,
-                        Map<String, SearchIndexProvider> providerMap) {
-                    super.initPreferenceXml(context, profile, indexData, providerMap);
-                    // brave_main_preferences.xml is parsed by BraveMainPreferencesBase via
-                    // PreferenceParser.parseAndPopulate, which creates the parent entry for
-                    // brave_shields_and_privacy but does not establish the child-parent link
-                    // used by resolveIndex(). Register it explicitly here.
-                    indexData.addChildParentLink(
-                            BravePrivacySettings.class.getName(),
-                            PreferenceParser.createUniqueId(
-                                    MainSettings.class.getName(), "brave_shields_and_privacy"));
-                }
 
                 @Override
                 public void updateDynamicPreferences(

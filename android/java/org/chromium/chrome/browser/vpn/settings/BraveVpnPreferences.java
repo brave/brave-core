@@ -39,7 +39,6 @@ import org.chromium.chrome.browser.billing.PurchaseModel;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
-import org.chromium.chrome.browser.settings.MainSettings;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
@@ -56,15 +55,12 @@ import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
-import org.chromium.components.browser_ui.settings.search.PreferenceParser;
-import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
 import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.ui.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
 
 public class BraveVpnPreferences extends BravePreferenceFragment implements BraveVpnObserver {
     private static final String TAG = "BraveVPN";
@@ -573,18 +569,6 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new BaseSearchIndexProvider(
                     BraveVpnPreferences.class.getName(), R.xml.brave_vpn_preferences) {
-
-                @Override
-                public void initPreferenceXml(
-                        Context context,
-                        SettingsIndexData indexData,
-                        Map<String, SearchIndexProvider> providerMap) {
-                    super.initPreferenceXml(context, indexData, providerMap);
-                    indexData.addChildParentLink(
-                            BraveVpnPreferences.class.getName(),
-                            PreferenceParser.createUniqueId(
-                                    MainSettings.class.getName(), PREF_BRAVE_VPN));
-                }
 
                 @Override
                 public void updateDynamicPreferences(Context context, SettingsIndexData indexData) {

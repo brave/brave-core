@@ -24,13 +24,9 @@ import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
-import org.chromium.components.browser_ui.settings.search.PreferenceParser;
-import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
 import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.components.web_discovery.WebDiscoveryPrefs;
-
-import java.util.Map;
 
 public class BraveSearchEnginesPreferences extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
@@ -179,18 +175,6 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
             new BaseSearchIndexProvider(
                     BraveSearchEnginesPreferences.class.getName(),
                     R.xml.brave_search_engines_preferences) {
-
-                @Override
-                public void initPreferenceXml(
-                        Context context,
-                        SettingsIndexData indexData,
-                        Map<String, SearchIndexProvider> providerMap) {
-                    super.initPreferenceXml(context, indexData, providerMap);
-                    indexData.addChildParentLink(
-                            BraveSearchEnginesPreferences.class.getName(),
-                            PreferenceParser.createUniqueId(
-                                    MainSettings.class.getName(), PREF_BRAVE_SEARCH_ENGINES));
-                }
 
                 @Override
                 public void updateDynamicPreferences(Context context, SettingsIndexData indexData) {

@@ -37,11 +37,7 @@ import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
-import org.chromium.components.browser_ui.settings.search.PreferenceParser;
-import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
 import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
-
-import java.util.Map;
 
 public class BraveLeoPreferences extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
@@ -54,7 +50,6 @@ public class BraveLeoPreferences extends BravePreferenceFragment
     private static final String PREF_SUBSCRIPTION_CATEGORY = "subscription_category";
     private static final String PREF_DEFAULT_MODEL = "default_model";
     public static final String PREF_LEO_QUICK_SEARCH_ENGINE = "leo_quick_search_engine";
-    private static final String PREF_BRAVE_LEO = "brave_leo";
 
     private final SettableMonotonicObservableSupplier<String> mPageTitle =
             ObservableSuppliers.createMonotonic();
@@ -230,18 +225,6 @@ public class BraveLeoPreferences extends BravePreferenceFragment
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new BaseSearchIndexProvider(
                     BraveLeoPreferences.class.getName(), R.xml.brave_leo_preferences) {
-
-                @Override
-                public void initPreferenceXml(
-                        Context context,
-                        SettingsIndexData indexData,
-                        Map<String, SearchIndexProvider> providerMap) {
-                    super.initPreferenceXml(context, indexData, providerMap);
-                    indexData.addChildParentLink(
-                            BraveLeoPreferences.class.getName(),
-                            PreferenceParser.createUniqueId(
-                                    MainSettings.class.getName(), PREF_BRAVE_LEO));
-                }
 
                 @Override
                 public void updateDynamicPreferences(Context context, SettingsIndexData indexData) {

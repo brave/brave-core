@@ -28,7 +28,6 @@ import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_news.BraveNewsPolicy;
 import org.chromium.chrome.browser.brave_origin.BraveOriginPlansActivity;
-import org.chromium.components.brave_account.BraveAccountFeatures;
 import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletPolicy;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
