@@ -366,7 +366,9 @@ describe('conversation entries', () => {
       <MockContext
         initialState={{ conversationHistory: [humanTurn1, assistantTurn1] }}
         overrides={{
-          conversationCapability: Mojom.ConversationCapability.CONTENT_AGENT,
+          conversationCapabilities: [
+            Mojom.ConversationCapability.CONTENT_AGENT,
+          ],
           canSubmitUserEntries: true,
         }}
       >

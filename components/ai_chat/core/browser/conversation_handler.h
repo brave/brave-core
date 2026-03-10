@@ -40,6 +40,7 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 class AIChatUIBrowserTest;
 namespace mojo {
@@ -335,6 +336,8 @@ class ConversationHandler : public mojom::ConversationHandler,
       GetTools_MemoryToolFilteredForTemporaryConversations);
   void InitEngine();
 
+  void BuildCapabilitiesSet();
+
   // Setup tools for the conversation. When a new user message is added, we
   // can reset some of the state of the tools, ready for the next loop.
   void InitToolsForNewGenerationLoop();
@@ -460,13 +463,12 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Data store UUID for conversation
   raw_ptr<mojom::Conversation> metadata_;
 
-  // |conversation_capability_| informs some system prompt behavior,
+  // |conversation_capabilities_| informs some system prompt behavior,
   // as well as letting ToolProviders know which tools to provide.
   // We might want to phase this out if all tools are part of all conversations
   // or if we have some kind of dynamic ToolProvider-led user toggle choices.
   // If we keep it, should it be part of mojom::Conversation?
-  mojom::ConversationCapability conversation_capability_ =
-      mojom::ConversationCapability::CHAT;
+  absl::flat_hash_set<mojom::ConversationCapability> conversation_capabilities_;
 
   // Set of tab IDs that have been part of tasks whilst this conversation is
   // in-memory. Since conversations are finite (limited by context size) and not

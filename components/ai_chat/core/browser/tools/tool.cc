@@ -33,11 +33,13 @@ bool Tool::IsAgentTool() const {
 
 bool Tool::IsSupportedByModel(
     const mojom::Model& model,
-    mojom::ConversationCapability conversation_capability) const {
+    const ConversationCapabilitySet& conversation_capabilities) const {
   // Implementors should add any extra checks in an override.
-  return model.supports_tools && std::ranges::find(model.supported_capabilities,
-                                                   conversation_capability) !=
-                                     model.supported_capabilities.end();
+  return model.supports_tools &&
+         std::ranges::all_of(conversation_capabilities, [&](auto capability) {
+           return std::ranges::contains(model.supported_capabilities,
+                                        capability);
+         });
 }
 
 std::variant<bool, mojom::PermissionChallengePtr>
@@ -53,7 +55,7 @@ void Tool::UserPermissionGranted(const std::string& tool_use_id) {
 bool Tool::SupportsConversation(
     bool is_temporary,
     bool has_untrusted_content,
-    mojom::ConversationCapability conversation_capability) const {
+    const ConversationCapabilitySet& conversation_capabilities) const {
   return true;
 }
 

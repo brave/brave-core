@@ -15,6 +15,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 
@@ -76,7 +77,7 @@ class Tool {
   // supported.
   virtual bool IsSupportedByModel(
       const mojom::Model& model,
-      mojom::ConversationCapability conversation_capability) const;
+      const ConversationCapabilitySet& conversation_capabilities) const;
 
   // Check if this tool requires user interaction before handling
   // Returns:
@@ -98,7 +99,7 @@ class Tool {
   virtual bool SupportsConversation(
       bool is_temporary,
       bool has_untrusted_content,
-      mojom::ConversationCapability conversation_capability) const;
+      const ConversationCapabilitySet& conversation_capabilities) const;
 
   // Implementers should handle tool execution unless it is a built-in
   // tool handled directly by the ConversationHandler.

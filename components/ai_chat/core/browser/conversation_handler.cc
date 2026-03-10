@@ -87,6 +87,28 @@ ConversationHandler::Suggestion& ConversationHandler::Suggestion::operator=(
     Suggestion&&) = default;
 ConversationHandler::Suggestion::~Suggestion() = default;
 
+void ConversationHandler::BuildCapabilitiesSet() {
+  conversation_capabilities_.clear();
+  // Set conversation capability based on profile-global state.
+  // TODO(https://github.com/brave/brave-browser/issues/49261): This is
+  // temporary whilst content agent conversations are
+  // 1) not toggleable by the user and
+  // 2) only for specific profiles.
+  // When this is toggleable by the user,
+  // we should have some client function that changes the conversation
+  // capability. And when this is not global to a Profile, we should not have
+  // the service make the determination.
+  conversation_capabilities_.insert(mojom::ConversationCapability::CHAT);
+  if (ai_chat_service_->GetIsContentAgentAllowed()) {
+    conversation_capabilities_.insert(
+        mojom::ConversationCapability::CONTENT_AGENT);
+  }
+  if (features::IsAIChatDeepResearchEnabled()) {
+    conversation_capabilities_.insert(
+        mojom::ConversationCapability::DEEP_RESEARCH);
+  }
+}
+
 ConversationHandler::ConversationHandler(
     mojom::Conversation* conversation,
     AIChatService* ai_chat_service,
@@ -126,18 +148,7 @@ ConversationHandler::ConversationHandler(
       feedback_api_(feedback_api),
       prefs_(prefs),
       url_loader_factory_(url_loader_factory) {
-  // Set conversation capability based on profile-global state.
-  // TODO(https://github.com/brave/brave-browser/issues/49261): This is
-  // temporary whilst content agent conversations are
-  // 1) not toggleable by the user and
-  // 2) only for specific profiles.
-  // When this is toggleable by the user,
-  // we should have some client function that changes the conversation
-  // capability. And when this is not global to a Profile, we should not have
-  // the service make the determination.
-  if (ai_chat_service_->GetIsContentAgentAllowed()) {
-    conversation_capability_ = mojom::ConversationCapability::CONTENT_AGENT;
-  }
+  BuildCapabilitiesSet();
 
   // Observe tool providers
   for (const auto& tool_provider : tool_providers_) {
@@ -1210,7 +1221,7 @@ void ConversationHandler::PerformAssistantGeneration() {
   engine_->GenerateAssistantResponse(
       associated_content_manager_->GetCachedContentsMap(), chat_history_,
       IsTemporaryChat(), GetTools(), std::nullopt /* preferred_tool_name */,
-      conversation_capability_,
+      conversation_capabilities_,
       base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
                           weak_ptr_factory_.GetWeakPtr()),
       base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
@@ -1971,7 +1982,8 @@ ConversationHandler::GetStateForConversationEntries() {
       (ai_chat_service_->IsPremiumStatus() || !is_leo_model ||
        model.options->get_leo_model_options()->access !=
            mojom::ModelAccess::PREMIUM);
-  entries_state->conversation_capability = conversation_capability_;
+  entries_state->conversation_capabilities = {
+      conversation_capabilities_.begin(), conversation_capabilities_.end()};
   entries_state->is_premium_user = ai_chat_service_->IsPremiumStatus();
   return entries_state;
 }
@@ -2054,11 +2066,11 @@ std::vector<base::WeakPtr<Tool>> ConversationHandler::GetTools() {
           tools.begin(), tools.end(),
           [&](auto& tool) {
             return (
-                !tool->IsSupportedByModel(model, conversation_capability_) ||
+                !tool->IsSupportedByModel(model, conversation_capabilities_) ||
                 !tool->SupportsConversation(
                     GetIsTemporary(),
                     associated_content_manager_->HasAssociatedContent(),
-                    conversation_capability_));
+                    conversation_capabilities_));
           }),
       tools.end());
 

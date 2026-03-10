@@ -67,14 +67,14 @@ std::optional<base::DictValue> MockTool::ExtraParams() const {
 
 bool MockTool::IsSupportedByModel(
     const mojom::Model& model,
-    mojom::ConversationCapability conversation_capability) const {
+    const ConversationCapabilitySet& conversation_capabilities) const {
   return is_supported_by_model_;
 }
 
 bool MockTool::SupportsConversation(
     bool is_temporary,
     bool has_untrusted_content,
-    mojom::ConversationCapability conversation_capability) const {
+    const ConversationCapabilitySet& conversation_capabilities) const {
   return supports_conversation_;
 }
 
