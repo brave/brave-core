@@ -18,6 +18,10 @@
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "brave/base/apple/base_value_bridge+private.h"
 #include "brave/ios/browser/api/url/url_origin_ios+private.h"
+#include "mojo/public/cpp/bindings/struct_traits.h"
+{%- for header in typemapped_traits_headers %}
+#include "{{header}}"
+{%- endfor %}
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -26,7 +30,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 {%- for struct in structs %}
-{%    include "private_struct_declaration.tmpl" %}
+{%-   if struct|is_struct_with_cpp_typemap %}
+{%      include "private_struct_with_cpp_typemap_declaration.tmpl" %}
+{%-   else %}
+{%      include "private_struct_declaration.tmpl" %}
+{%-   endif %}
 {%- endfor %}
 
 {%- for union in unions %}

@@ -37,7 +37,11 @@
 {%- endif %}
 
 {%- for struct in structs %}
-{%    include "private_struct_implementation.tmpl" %}
+{%-   if struct|is_struct_with_cpp_typemap %}
+{%      include "private_struct_with_cpp_typemap_implementation.tmpl" %}
+{%-   else %}
+{%      include "private_struct_implementation.tmpl" %}
+{%-   endif %}
 {%- endfor %}
 
 {%- for union in unions %}

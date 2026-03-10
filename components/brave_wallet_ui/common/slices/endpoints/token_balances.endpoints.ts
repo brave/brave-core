@@ -870,7 +870,7 @@ async function fetchAccountTokenCurrentBalance({
       const { balance, error, errorMessage } = token.isErc721
         ? await jsonRpcService.getERC721TokenBalance(
             token.contractAddress,
-            token.tokenId ?? '',
+            { uint256Hex: token.tokenId },
             accountId.address,
             token.chainId,
           )

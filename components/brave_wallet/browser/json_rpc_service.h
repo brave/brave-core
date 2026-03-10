@@ -335,7 +335,7 @@ class JsonRpcService : public mojom::JsonRpcService {
                         GetBlockByNumberCallback callback);
 
   void GetERC721OwnerOf(const std::string& contract,
-                        const std::string& token_id,
+                        const uint256_t& token_id,
                         const std::string& chain_id,
                         GetERC721OwnerOfCallback callback) override;
 
@@ -346,7 +346,7 @@ class JsonRpcService : public mojom::JsonRpcService {
                               GetERC1155TokenBalanceCallback callback) override;
 
   void GetERC721TokenBalance(const std::string& contract_address,
-                             const std::string& token_id,
+                             const uint256_t& token_id,
                              const std::string& account_address,
                              const std::string& chain_id,
                              GetERC721TokenBalanceCallback callback) override;

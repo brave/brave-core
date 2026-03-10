@@ -4135,7 +4135,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
   bool callback_called = false;
 
   json_rpc_service_->GetERC721OwnerOf(
-      "", "0x1", mojom::kMainnetChainId,
+      "", uint256_t{1}, mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
@@ -4145,17 +4145,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
 
   callback_called = false;
   json_rpc_service_->GetERC721OwnerOf(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "", mojom::kMainnetChainId,
-      base::BindOnce(&OnStringResponse, &callback_called,
-                     mojom::ProviderError::kInvalidParams,
-                     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
-                     ""));
-  task_environment_.RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-
-  callback_called = false;
-  json_rpc_service_->GetERC721OwnerOf(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1", "",
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", uint256_t{1}, "",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
@@ -4171,7 +4161,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
 
   callback_called = false;
   json_rpc_service_->GetERC721OwnerOf(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", uint256_t{1},
       mojom::kMainnetChainId,
       base::BindOnce(
           &OnStringResponse, &callback_called, mojom::ProviderError::kSuccess,
@@ -4182,7 +4172,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
 
   SetHTTPRequestTimeoutInterceptor();
   json_rpc_service_->GetERC721OwnerOf(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", uint256_t{1},
       mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
@@ -4192,7 +4182,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
 
   SetInvalidJsonInterceptor();
   json_rpc_service_->GetERC721OwnerOf(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", uint256_t{1},
       mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kParsingError,
@@ -4202,7 +4192,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
 
   SetLimitExceededJsonErrorResponse();
   json_rpc_service_->GetERC721OwnerOf(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", uint256_t{1},
       mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kLimitExceeded,
@@ -4258,7 +4248,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
 
   // Invalid inputs.
   json_rpc_service_->GetERC721TokenBalance(
-      "", "0x1", "0x983110309620D911731Ac0932219af06091b6744",
+      "", uint256_t{1}, "0x983110309620D911731Ac0932219af06091b6744",
       mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInvalidParams,
@@ -4269,18 +4259,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
 
   callback_called = false;
   json_rpc_service_->GetERC721TokenBalance(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "",
-      "0x983110309620D911731Ac0932219af06091b6744", mojom::kMainnetChainId,
-      base::BindOnce(&OnStringResponse, &callback_called,
-                     mojom::ProviderError::kInvalidParams,
-                     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
-                     ""));
-  task_environment_.RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-
-  callback_called = false;
-  json_rpc_service_->GetERC721TokenBalance(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1", "",
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", uint256_t{1}, "",
       mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInvalidParams,
@@ -4291,7 +4270,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
 
   callback_called = false;
   json_rpc_service_->GetERC721TokenBalance(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", uint256_t{1},
       "0x983110309620D911731Ac0932219af06091b6744", "",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInvalidParams,
@@ -4309,7 +4288,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
   // Owner gets balance 0x1.
   callback_called = false;
   json_rpc_service_->GetERC721TokenBalance(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", uint256_t{1},
       "0x983110309620D911731Ac0932219af06091b6744", mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "", "0x1"));
@@ -4319,7 +4298,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
   // Non-checksum address can get the same balance.
   callback_called = false;
   json_rpc_service_->GetERC721TokenBalance(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", uint256_t{1},
       "0x983110309620d911731ac0932219af06091b6744", mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "", "0x1"));
@@ -4329,7 +4308,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
   // Non-owner gets balance 0x0.
   callback_called = false;
   json_rpc_service_->GetERC721TokenBalance(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", uint256_t{1},
       "0x983110309620d911731ac0932219af06091b7811", mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "", "0x0"));
@@ -4338,7 +4317,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
 
   SetHTTPRequestTimeoutInterceptor();
   json_rpc_service_->GetERC721TokenBalance(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", uint256_t{1},
       "0x983110309620d911731ac0932219af06091b6744", mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
@@ -4348,7 +4327,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
 
   SetInvalidJsonInterceptor();
   json_rpc_service_->GetERC721TokenBalance(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", uint256_t{1},
       "0x983110309620d911731ac0932219af06091b6744", mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kParsingError,
@@ -4358,7 +4337,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
 
   SetLimitExceededJsonErrorResponse();
   json_rpc_service_->GetERC721TokenBalance(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", uint256_t{1},
       "0x983110309620d911731ac0932219af06091b6744", mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kLimitExceeded,
