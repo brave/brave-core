@@ -485,8 +485,6 @@ Brave никогда не запоминает ваши действия в пр
 <translation id="1518915449477235311">Разрешить сайту <ph name="URL"/> открывать чат с Leo в Brave?</translation>
 <translation id="4355784577209159847">Разрешить использование сторонних файлов cookie для устаревшей системы входа с аккаунтом Google</translation>
 <translation id="5770656036486891920">Сайт <ph name="URL"/> запрашивает разрешение на использование сторонних файлов cookie для устаревшей системы входа Google</translation>
-<translation id="6053826678715267477">Разрешить доступ к ресурсам localhost</translation>
-<translation id="2973562729984406132">Сайт <ph name="URL"/> запрашивает доступ к ресурсам localhost</translation>
 <translation id="2104347391516032700">Сервис наград BAT</translation>
 <translation id="5939518447894949180">Сбросить</translation>
 <translation id="3349204812119681938">Сбросить Brave Rewards</translation>
@@ -877,6 +875,8 @@ Brave никогда не запоминает ваши действия в пр
 <translation id="646023614746251785">Подтвердить обмен</translation>
 <translation id="6264944956989873014">Подтвердить мост</translation>
 <translation id="7067917728851842589">Подтвердить отправку</translation>
+<translation id="2841837950101800123">Поставщик</translation>
+<translation id="1114725160772317155">Статус поставщика</translation>
 <translation id="2351357639951873714">Подтвердить защиту</translation>
 <translation id="7480044382160806610">Подтвердить отмену защиты</translation>
 <translation id="8332923694292360653">Потратить</translation>
@@ -1059,6 +1059,10 @@ Brave никогда не запоминает ваши действия в пр
 <translation id="2902856457593699108">Показать ключ</translation>
 <translation id="8033497299373164724">Скрыть ключ</translation>
 <translation id="7514365320538308">Скачать</translation>
+<translation id="4505811804838254812">Введите пароль для шифрования файла экспорта вашего аккаунта.</translation>
+<translation id="4664684820522660564">Введите пароль шифрования</translation>
+<translation id="6873030689896652259">Подтвердите пароль шифрования</translation>
+<translation id="5148285448107770349">Пароль должен содержать не менее 8 символов</translation>
 <translation id="2702143907607790516">Не удалось обновить название аккаунта. Повторите попытку.</translation>
 <translation id="3318280255740629162">25 %</translation>
 <translation id="2636487255623744079">50 %</translation>
@@ -1233,12 +1237,12 @@ Brave никогда не запоминает ваши действия в пр
 <translation id="4932382283590063268">Адрес получателя совпадает с вашим.</translation>
 <translation id="3124753063207986114">Указан адрес контракта токена вместо адреса получателя.</translation>
 <translation id="7029817408221097939">Неверный унифицированный адрес.</translation>
-<translation id="6370376419663123629">Адрес выглядит некорректно</translation>
-<translation id="3767148796886402380">Проверьте свой адрес, чтобы убедиться в его правильности (например, буквы в нижнем или верхнем регистре).</translation>
+<translation id="5749543778008369411">В адресе отсутствует контрольная сумма</translation>
+<translation id="8225310967627152630">Невозможно проверить корректность этого адреса. Чтобы избежать потери средств, внимательно проверьте адрес перед отправкой.</translation>
+<translation id="5139218857087774333">Адрес выглядит неправильно (неверная контрольная сумма)</translation>
+<translation id="6551446819927864899">В этом адресе может быть опечатка. Проверьте адрес и введите его заново.</translation>
 <translation id="2585599787090762065">Как мне решить эту проблему?</translation>
 <translation id="5517732667776806421">Отсутствует информация о контрольной сумме.</translation>
-<translation id="2975056993833847787">Невозможно подтвердить адрес (отсутствует контрольная сумма). Продолжить?</translation>
-<translation id="6320252966164556855">Не удалось подтвердить адрес (контрольная сумма недействительна). Замените строчные буквы на заглавные и повторите попытку.</translation>
 <translation id="4667144295226514387">Не установлен лимит на газ.</translation>
 <translation id="2021522108838444624">Значение должно быть больше нуля.</translation>
 <translation id="8464365289405373974">Не указан адрес.</translation>
@@ -1264,6 +1268,8 @@ Brave никогда не запоминает ваши действия в пр
 <translation id="471055802670233033">Вы потратите</translation>
 <translation id="7916618590403748182">Вы получите</translation>
 <translation id="8328657208304368165">Подтвердить ордер</translation>
+<translation id="3784821115971261512">Адрес программы</translation>
+<translation id="6302865118026274740">Адрес депозита</translation>
 <translation id="8220255674527598378">Своп активов на платформе Solana</translation>
 <translation id="5071303414930953888">Аккаунт <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Необходимо разблокировать кошелек.</translation>
@@ -1390,6 +1396,9 @@ Brave никогда не запоминает ваши действия в пр
 <translation id="7694836973509310467">Мостовая передача</translation>
 <translation id="8419958386475786929"><ph name="SWAPPING_OR_BRIDGING"/> на сайте <ph name="NETWORK"/></translation>
 <translation id="7903225589949400974">Произошла ошибка при попытке <ph name="SWAP_OR_BRIDGE"/> на <ph name="NETWORK"/></translation>
+<translation id="7220786058474068424">Блок обработки</translation>
+<translation id="3248185426436836442">В ожидании</translation>
+<translation id="5503843345634715425">Возвращено</translation>
 <translation id="1778601041100951971">Защита <ph name="AMOUNT"/></translation>
 <translation id="6439110433198887239">Отмена защиты <ph name="AMOUNT"/></translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> замаскировано</translation>
@@ -1418,6 +1427,7 @@ Brave никогда не запоминает ваши действия в пр
 <translation id="5601436886921227795">Взаимодействие с dApp</translation>
 <translation id="9104177294757104789">Отправить <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Обменять <ph name="MAKER"/> на <ph name="TAKER"/></translation>
+<translation id="5140590056890937774">Перейти <ph name="SOURCE"/> к <ph name="DESTINATION"/></translation>
 <translation id="1748114617341025015">Создание связанной учетной записи токена</translation>
 <translation id="4418115887224983240">Не удалось создать связанную учетную запись токена</translation>
 <translation id="7165697599360786670">Создана связанная учётная запись токена</translation>
@@ -1644,12 +1654,16 @@ Brave никогда не запоминает ваши действия в пр
 <translation id="3356580495013324916">Чтобы начать резервное копирование Brave Кошелька, введите пароль от него.</translation>
 <translation id="7545441766078366279">Подтвердить токен <ph name="TOKEN"/></translation>
 <translation id="3115303896544539834">Токенов <ph name="TOKEN"/> недостаточно</translation>
+<translation id="6612125470074657311">Сумма слишком мала</translation>
+<translation id="5838312420826727653">Неподдерживаемые токены</translation>
+<translation id="4930106154893104117">Неверный запрос</translation>
 <translation id="3453833142586986467">Выбрать токены</translation>
 <translation id="4937657825850660613">Половина</translation>
 <translation id="7639814793732182496">Max</translation>
 <translation id="6584782231358487640">Введите количество</translation>
 <translation id="477281933640372562">Загрузка цены…</translation>
 <translation id="5450317966495183014">К получению (примерно)</translation>
+<translation id="387870937508841726">К получению (мин.)</translation>
 <translation id="8747614139273050577">С токена</translation>
 <translation id="1726158192333401896">На токен</translation>
 <translation id="1817370679212109974">Новое предложение через <ph name="COUNTDOWN"/></translation>
@@ -1760,7 +1774,6 @@ Brave никогда не запоминает ваши действия в пр
 <translation id="2410455471299328417">Сервис предоставляется <ph name="BOLD_BEFORE"/>Blowfish.xyz<ph name="BOLD_AFTER"/> и работает в соответствии с <ph name="TERMS_LINK_BEFORE"/>Условиями использования<ph name="TERMS_LINK_AFTER"/> и <ph name="PRIVACY_POLICY_LINK_BEFORE"/>Политикой конфиденциальности<ph name="PRIVACY_POLICY_LINK_AFTER"/>.</translation>
 <translation id="8688672835843460752">Доступный</translation>
 <translation id="5296640085393149413">У вас есть доступные для использования средства.</translation>
-<translation id="3248185426436836442">В ожидании</translation>
 <translation id="2515906149804238711">Изменение баланса вашего кошелька еще не вступило в силу.</translation>
 <translation id="7700365440186054030">Доступные вам средства и еще не подтвержденные транзакции.</translation>
 <translation id="4118601537508887039">Часть средств может быть недоступна</translation>
@@ -2255,6 +2268,7 @@ other {# источника}
 <translation id="9109355817507033196">Вам не понравился ответ</translation>
 <translation id="4049425842478222936">Вам понравился ответ</translation>
 <translation id="6393149565874086128">Оставить отзыв</translation>
+<translation id="4621961534325272682">Беседа скопирована в буфер обмена</translation>
 <translation id="3521125531016408657">Нравится</translation>
 <translation id="8202517001427388906">Не нравится</translation>
 <translation id="1379399209929302811">Оставьте отзыв о Brave VPN</translation>
@@ -2299,6 +2313,8 @@ other {# источника}
 <translation id="6495402307502950726">Удалить переписку</translation>
 <translation id="903201991022343217">Начать новую переписку</translation>
 <translation id="8171760814579050200">Переименовать переписку</translation>
+<translation id="402386227879573975">Скопировать всю беседу</translation>
+<translation id="5397794290049113714">Вы</translation>
 <translation id="7754678742055438573">Удалить переписку</translation>
 <translation id="1946267518364740045">Рассуждения...</translation>
 <translation id="4198859185714743678">Рассуждения завершены</translation>
@@ -2335,7 +2351,6 @@ other {# источника}
 <translation id="4808122506413075135">Отправьте содержимое страницы из истории Вашего браузера, чтобы дать Лео больше контекста для разговора.</translation>
 <translation id="220541218939267992">Содержимое страницы будет отправлено Лео вместе с вашими сообщениями.</translation>
 <translation id="2152389270152475874">Добавьте вкладки, закладки или историю для контекста. Отмеченное содержимое будет отправлено Лео вместе с вашими сообщениями.</translation>
-<translation id="6237410387937453423">Нет подходящих насадок</translation>
 <translation id="2315654674554095762">Теперь Leo будет помнить ваши разговоры, чтобы вы могли вернуться к ним. Они хранятся в зашифрованном виде на вашем устройстве, и вы можете удалить их в любое время.</translation>
 <translation id="7821251979960635244">История разговоров появится здесь после начала разговора.</translation>
 <translation id="887511360213807449">История отключена</translation>
@@ -2437,7 +2452,7 @@ other {# источника}
 <translation id="4773299976671772492">Остановлено</translation>
 <translation id="6946722113367118030">Обработка запроса</translation>
 <translation id="2113810663179257944">Выполнение кода</translation>
-<translation id="4790888275629207278">Код выполнен в песочнице</translation>
+<translation id="6338250692384725496">Выполнил код в песочнице для помощи в вашем запросе</translation>
 <translation id="4379566111233326721">Код:</translation>
 <translation id="3542130965673205258">Выход:</translation>
 <translation id="3428245742224818842">AI-браузинг</translation>
@@ -2449,11 +2464,7 @@ other {# источника}
 <translation id="864117099189791993">Вы можете вернуться к своему обычному профилю в любое время через основное меню или через меню профиля на панели инструментов. AI-браузинг всегда будет запускаться в профиле AI-браузинга.</translation>
 <translation id="3486480638399578250">Сохраните ваш личный адрес электронной почты в секрете</translation>
 <translation id="7765422154906712751">Создайте уникальные, случайные адреса, которые перенаправляются на ваш Brave аккаунт электронной почты и могут быть удалены в любое время. Защитите ваш реальный адрес от раскрытия или использования рекламодателями.</translation>
-<translation id="5222676887888702881">Выйти</translation>
-<translation id="8090292425230843109">Выйти из Email Aliases</translation>
-<translation id="8471990782451394141">Подключение к учетной записи Brave...</translation>
 <translation id="71316462802471551">Псевдонимы электронной почты</translation>
-<translation id="5713644099811900409">Учетная запись Brave</translation>
 <translation id="6002159997868894136">Нажмите, чтобы скопировать псевдоним</translation>
 <translation id="8105770564756958406">Используется <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Создайте до 5 бесплатных псевдонимов электронной почты, чтобы защитить свой настоящий адрес электронной почты.</translation>
@@ -2477,8 +2488,8 @@ other {# источника}
 <translation id="646524615209870492">Удаление <ph name="ALIAS"/> в качестве псевдонима приведет к тому, что вы больше не сможете получать электронную почту.</translation>
 <translation id="8133100642915054515">Ошибка при удалении псевдонима. Проверьте подключение к Интернету и попробуйте еще раз.</translation>
 <translation id="8465742443901727718">Это действие необратимо. Вы уверены, что хотите продолжить?</translation>
-<translation id="8662104432574824754">Для начала войдите или создайте учетную запись Brave</translation>
-<translation id="8069030342700068465">Введите свой адрес электронной почты, чтобы получить безопасную ссылку для входа. Щелчок по этой ссылке создаст или откроет учетную запись Brave и позволит вам использовать бесплатную услугу псевдонимов электронной почты.</translation>
+<translation id="9162685486229945876">Войти или создать учетную запись Brave</translation>
+<translation id="1335007417599138852">Учетная запись Brave позволит вам получить доступ к определенным продуктам Brave и легко синхронизировать информацию на всех ваших устройствах.</translation>
 <translation id="2133391407495495735">Получить ссылку для входа</translation>
 <translation id="2650906829817220223">Ошибка при запросе аутентификации. Проверьте подключение к Интернету и попробуйте еще раз.</translation>
 <translation id="3699624789011381381">Адрес электронной почты</translation>
@@ -2511,7 +2522,7 @@ other {# источника}
 <translation id="466214682712474574">Чтобы проверить баланс, войдите в аккаунт <ph name="PROVIDER"/></translation>
 <translation id="8332875111286275890">Чтобы посмотреть баланс, войдите в аккаунт.</translation>
 <translation id="5430001801813715388">НАГРАДЫ</translation>
-<translation id="5966055668402779222">Задать вопрос Поиску Bravе</translation>
+<translation id="2430295257226173518">Спросите о чем угодно, найдите что угодно…</translation>
 <translation id="167018310108390163">Настроить новую вкладку</translation>
 <translation id="6851426306697017546">Показать часы</translation>
 <translation id="4844370919312937270">Показывать виджет поиска в новых вкладках</translation>
@@ -2552,7 +2563,7 @@ other {# источника}
 <translation id="4677356505199464553">Выглядит хорошо</translation>
 <translation id="1992750560347846445">Сообщить о неработающем сайте</translation>
 <translation id="2863270180245144869">Режим только Adblock включен</translation>
-<translation id="2302218429308447288">Вы используете режим только Adblock. В этом режиме действует только блокировка рекламы. Чтобы вернуться в полноценный режим Защиты, отключите этот режим в настройках.</translation>
+<translation id="3773808439655997805">Вы используете режим только для блокировки объявлений. Этот режим предоставляет только защиту от объявлений (если Защита Brave включена). Если вы хотите вернуться в полный режим Защиты, отключите этот режим в настройках.</translation>
 <translation id="4820891023903368625">Реклама заблокирована <ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Трекеры, реклама и другие элементы заблокированы. <ph name="LINK_BEFORE"/>Подробнее…<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave Защита не активирована. <ph name="LINK_BEFORE"/>Подробнее…<ph name="LINK_AFTER"/></translation>
@@ -2613,6 +2624,8 @@ other {# источника}
     }</translation>
 <translation id="2540598191934725677">Нажмите на значок Brave для просмотра Защиты Brave.</translation>
 <translation id="542789539047208469">Информация о сайте</translation>
+<translation id="7586067492365979844">Защита Brave переехала в новое место и получила новый дизайн. Теперь она интегрирована с информацией о сайте для единого интерфейса.</translation>
+<translation id="9114542678887529043">Защита Brave переехала в новое место и получила новый дизайн. Получите доступ, нажав на значок сайта в адресной строке.</translation>
 <translation id="6294662480095808915">Конфиденциальность по умолчанию</translation>
 <translation id="4366423156486478559">Brave защищает вас во время каждого перехода по ссылке. Сделайте Brave браузером по умолчанию и наслаждайтесь конфиденциальностью в интернете.</translation>
 <translation id="3830912418080848377">Настройки импорта</translation>
@@ -2624,6 +2637,7 @@ other {# источника}
 <translation id="2273851479262317744">Сделать Brave браузером по умолчанию</translation>
 <translation id="5037676449506322593">Выбрать все</translation>
 <translation id="5148943178722443958">Помогите сделать Brave лучше</translation>
+<translation id="479535542793009168">Стабильность и диагностика</translation>
 <translation id="1097073572755862978">Отправлять отчеты для диагностики, когда происходит сбой или зависание. <ph name="LINK_BEFORE"/>Подробнее<ph name="LINK_AFTER"/></translation>
 <translation id="6629244688368006959">Отправлять конфиденциальные и анонимные сведения о функциях, используемых в Brave. <ph name="LINK_BEFORE"/>Подробнее…<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Настройка завершена</translation>
@@ -2647,7 +2661,9 @@ other {# источника}
 <translation id="8000020256436988724">Панель инструментов</translation>
 <translation id="6225572914528673855">Адресная строка</translation>
 <translation id="6821966107067356137">Добавить RSS-ленту</translation>
+<translation id="2478076885740497414">Установить приложение</translation>
 <translation id="8293206222192510085">Добавление закладки</translation>
+<translation id="1010029336854254368">Меню общего доступа</translation>
 <translation id="7758460733045216901">Панель закладок</translation>
 <translation id="958268166261124668">Brave VPN: подключено</translation>
 <translation id="6021669293402055982">Brave VPN: отключено</translation>

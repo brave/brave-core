@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">Puwede hilingin ng mga site na gamitin ang legacy na Google Sign-In sa pamamagitan ng third-party na cookies</translation>
 <translation id="2903783737778379345">Huwag payagan ang legacy na Google Sign-In sa pamamagitan ng third-party na cookies</translation>
 <translation id="6880817299303842099">Pinapayagang gumamit ng third-party na cookies para sa legacy na Google Sign-In</translation>
-<translation id="2136412236435693622">Access ng localhost</translation>
-<translation id="4172219483893066798">Pwedeng humingi ng access ang mga site sa mga resource ng localhost</translation>
-<translation id="7181706637590665047">Huwag payagan ang access sa mga resource ng localhost</translation>
-<translation id="1485435696620658073">Pinayagang ma-access ang mga resource ng localhost</translation>
 <translation id="181905442828471321">Mga global default ng Brave shields</translation>
 <translation id="2675679258824361492">Iba pang mga setting sa privacy</translation>
 <translation id="8026334261755873520">I-clear ang data sa pag-browse</translation>
@@ -422,6 +418,13 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="7141438739990875547">Mga network ng Bitcoin</translation>
 <translation id="9055546041146396417">Kung mukhang sira ang site na ito, subukan nang hindi naka-on ang Shields.</translation>
 <translation id="7898672232170410330">I-block ang elemento</translation>
+<translation id="9064628362799094520">Sirain ang data ng site</translation>
+<translation id="8949611615512336262">Auto shred: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Sirain ang data ng site ngayon</translation>
+<translation id="6795622376590884449">Auto shred</translation>
+<translation id="7961015016161918242">Hindi Kailanman</translation>
+<translation id="1991004083507807299">Site tab closed</translation>
+<translation id="5827277414420724690">App close</translation>
 <translation id="1209739344687072997">Mag-ulat ng sirang site</translation>
 <translation id="8510478288840333677">Ipaalam sa mga developer ng Brave na hindi gumagana nang maayos sa Shields ang site na ito:</translation>
 <translation id="1653405824851871276">Salamat sa pagtulong na mas pagandahin ang Brave para sa lahat. Ang impormasyon lang na kailangan namin para ayusin ng site na ito ang makikita sa report na ito. <ph name="LEARN_MORE"/></translation>
@@ -1073,7 +1076,7 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="1336494649091412226">Sigurado ka bang gusto mong mag-exit sa Brave?</translation>
 <translation id="6061635824229591714">Sirain ang data ng site?</translation>
 <translation id="1265051174491933207">Ang pagsira ay magtatanggal ng data ng site at isasara ang lahat ng mga tab na '<ph name="SITE_NAME"/>'. Hindi na ito maibabalik.</translation>
-<translation id="4279349293084858577">Sirain</translation>
+<translation id="5528772406060281700">Sirain ang data ng site</translation>
 <translation id="4426990318287827331">Sirain ang data</translation>
 <translation id="7942415993090181327">History ng chat</translation>
 <translation id="6859935199732075666">Ipakita ang mga error ng Safe Browsing</translation>

@@ -3,20 +3,24 @@
 <translationbundle lang="fr-CA">
 <translation id="1006017844123154345">Ouvrir en ligne</translation>
 <translation id="1036348656032585052">Désactiver</translation>
+<translation id="1046742265332833834">Thème bleu</translation>
 <translation id="1070329623210597193">Les fichiers que ce site peut afficher ou modifier</translation>
 <translation id="1882093842020941518">Aidez-nous à améliorer Brave en nous indiquant pourquoi vous avez autorisé les témoins tiers. <ph name="BEGIN_LINK"/>Envoyer des commentaires<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Vous pouvez demander à voir la version pour ordinateur de bureau des sites</translation>
 <translation id="9183227624343766158">Utiliser Brave par défaut</translation>
 <translation id="113098737392899175">Parcourir les pages à l'aide d'un curseur de texte lorsqu'un clavier est connecté</translation>
+<translation id="738393714577080438">Enregistrez les mots de passe dans Brave</translation>
 <translation id="1178015372320901893">Zone de contenu dans le bas de l'écran concernant Mes raccourcis</translation>
 <translation id="1178581264944972037">Interrompre</translation>
 <translation id="1181037720776840403">Supprimer</translation>
 <translation id="1192844206376121885">Cette action supprimera toutes les données et tous les témoins stockés par <ph name="ORIGIN"/>.</translation>
+<translation id="1199963004393929848">Thème vert</translation>
 <translation id="1201402288615127009">Suivant</translation>
 <translation id="3251315496493761426">Astuces de Brave</translation>
 <translation id="1242008676835033345">Intégré sur <ph name="WEBSITE_URL"/></translation>
 <translation id="1263609676484797429">Touchez Applis &gt; Applis par défaut.</translation>
 <translation id="1272079795634619415">Arrêter</translation>
+<translation id="1275718070701477396">Sélectionné</translation>
 <translation id="8010562420973777575">Pour vous faire économiser les données, Brave a optimisé les images de cette page.</translation>
 <translation id="129382876167171263">Les fichiers enregistrés par les sites Web s'affichent ici</translation>
 <translation id="131112695174432497">Les données qui touchent la personnalisation des annonces sont supprimées</translation>
@@ -35,6 +39,7 @@
 <translation id="1741136041592162279">Autorisez Brave à partager vos onglets récents avec votre appareil afin qu'ils s'affichent dans la liste d'applis et dans les résultats de recherche de votre appareil. Vous pouvez activer ou désactiver cette option dans les paramètres de Brave.</translation>
 <translation id="1420688843103859429">Avancez et reculez en balayant le pavé tactile avec deux doigts</translation>
 <translation id="1432650420699700107">Les sites peuvent demander à se connecter à n'importe quel appareil de votre réseau local</translation>
+<translation id="1442081309487427303">Activer les liens du mode Lecture</translation>
 <translation id="1448064542941920355">Diminuer le zoom</translation>
 <translation id="1464044141348608623">Ne pas autoriser les sites à savoir quand vous utilisez activement votre appareil</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> site}one{<ph name="SITE_COUNT"/> site}other{<ph name="SITE_COUNT"/> sites}}</translation>
@@ -47,6 +52,8 @@
 <translation id="1547123415014299762">Les témoins tiers sont autorisés</translation>
 <translation id="3665719978526894928">Accélérer les sites avec le moteur V8 de Brave, mais rendre Brave légèrement moins résistant aux attaques</translation>
 <translation id="1593426485665524382">Nouvelles actions accessibles près du haut de l'écran</translation>
+<translation id="1594521731409209842">Pincer l'écran pour redimensionner la photo</translation>
+<translation id="1601560923496285236">Appliquer</translation>
 <translation id="1615755956145364867">Les sites peuvent demander à lire du contenu protégé</translation>
 <translation id="1620510694547887537">Caméra</translation>
 <translation id="1621729191093924223">Les fonctionnalités qui nécessitent l'accès au micro ne seront pas accessibles</translation>
@@ -67,6 +74,7 @@
 <translation id="2534291364429593865">Recevez des notifications de conseils Brave</translation>
 <translation id="1777815584158991902">Zone de contenu dans le bas de l'écran concernant le flux Découvertes</translation>
 <translation id="1779089405699405702">Décodeur d’image</translation>
+<translation id="1781533683087883868">Désactiver les liens du mode Lecture</translation>
 <translation id="1785415724048343560">Recommandé pour une expérience optimale</translation>
 <translation id="1796588414813960292">Les fonctionnalités qui utilisent des sons ne fonctionneront pas</translation>
 <translation id="7401204338724669842">Astuces de Brave</translation>
@@ -169,6 +177,7 @@ La protection avancée contrôle ces paramètres Brave :
 <translation id="2682367912565197520">Supprimer le niveau de zoom enregistré</translation>
 <translation id="2683434792633810741">Supprimer et réinitialiser?</translation>
 <translation id="2685514716378236873">Non autorisés</translation>
+<translation id="2710883118091822664">Connectez-vous pour continuer facilement sur tous vos appareils</translation>
 <translation id="2713106313042589954">Désactiver la caméra</translation>
 <translation id="2717722538473713889">Adresses de courriel</translation>
 <translation id="8181634240306014548">Lancez Brave avec l'omnibox focalisé, réduisant ainsi le temps de démarrage sur les appareils bas de gamme.</translation>
@@ -196,6 +205,7 @@ La protection avancée contrôle ces paramètres Brave :
 <translation id="3004438526346162184">Les sites peuvent utiliser cette fonctionnalité pour gérer les fenêtres sur tous vos écrans</translation>
 <translation id="3008272652534848354">Réinitialiser les autorisations</translation>
 <translation id="301521992641321250">Bloquée automatiquement</translation>
+<translation id="3026311960038210">Collections de thèmes</translation>
 <translation id="3064871050034234884">Les sites peuvent faire jouer des sons</translation>
 <translation id="3065787901655140044">La protection avancée est activée</translation>
 <translation id="3069226013421428034">Autorisez la connexion de tiers pour un site particulier.</translation>
@@ -215,6 +225,7 @@ La protection avancée contrôle ces paramètres Brave :
 <translation id="3167868116600277716">Flux Découvertes</translation>
 <translation id="3198916472715691905">Stockage de données : <ph name="STORAGE_AMOUNT"/></translation>
 <translation id="3199078925536734975">Autorisée cette fois • Approximative</translation>
+<translation id="3208584281581115441">Vérifier maintenant</translation>
 <translation id="321187648315454507">Pour autoriser <ph name="APP_NAME"/> à vous envoyer des notifications, vous devez aussi activer celles-ci dans les <ph name="BEGIN_LINK"/>paramètres d'Android<ph name="END_LINK"/>.</translation>
 <translation id="3223425961342298674">Accès à la position non autorisé</translation>
 <translation id="3227137524299004712">Microphone</translation>
@@ -262,6 +273,7 @@ La protection avancée contrôle ces paramètres Brave :
 <translation id="3721953990244350188">Ignorer et afficher la prochaine action proposée</translation>
 <translation id="3744111561329211289">Synchronisation en arrière-plan</translation>
 <translation id="3746834924069123416">Voir les onglets plus récents</translation>
+<translation id="3753618528540214374">Thème viridien</translation>
 <translation id="3763247130972274048">Touchez deux fois à gauche ou à droite de la vidéo pour sauter 10 secondes</translation>
 <translation id="3776508619697147021">Les sites peuvent demander à télécharger automatiquement plusieurs fichiers</translation>
 <translation id="3779154269823594982">Modifier les mots de passe</translation>
@@ -271,6 +283,7 @@ La protection avancée contrôle ces paramètres Brave :
 <translation id="381841723434055211">Numéros de téléphone</translation>
 <translation id="3823453485268218808">Police : Mono</translation>
 <translation id="3826050100957962900">Connexion tierce</translation>
+<translation id="3831065134033923230">Vérifier les mots de passe enregistrés</translation>
 <translation id="3835233591525155343">Votre utilisation de l'appareil</translation>
 <translation id="1799795508209440035">Brave bloquera à nouveau les témoins aujourd'hui</translation>
 <translation id="385051799172605136">Retour</translation>
@@ -280,6 +293,7 @@ La protection avancée contrôle ces paramètres Brave :
 <translation id="3903738175795615004">Faites glisser à partir du haut ou appuyez sur la touche Échap pour quitter le mode Plein écran.</translation>
 <translation id="3905475044299942653">Bloquer beaucoup de notifications</translation>
 <translation id="3922092564198021702">Sur votre téléphone, ouvrez Paramètres.</translation>
+<translation id="3924858949939391676">Afficher les liens une fois le mode Lecture activé</translation>
 <translation id="3933121352599513978">Réduire les requêtes indésirables (recommandé)</translation>
 <translation id="3934905113567851655">Pincez l'écran pour effectuer un redimensionnement</translation>
 <translation id="3955193568934677022">Autoriser les sites à lire le contenu protégé (recommandé)</translation>
@@ -333,6 +347,7 @@ La protection avancée contrôle ces paramètres Brave :
 <translation id="4478158430052450698">Faciliter la personnalisation du zoom pour différents sites</translation>
 <translation id="4479647676395637221">Demander avant d'autoriser des sites à utiliser votre caméra (recommandé)</translation>
 <translation id="4505788138578415521">URL développée</translation>
+<translation id="4523472416386354622">Connectez-vous pour commencer</translation>
 <translation id="4534723447064627427">Pour autoriser <ph name="APP_NAME"/> à accéder à votre microphone, vous devez aussi activer le microphone dans les <ph name="BEGIN_LINK"/>paramètres d'Android<ph name="END_LINK"/>.</translation>
 <translation id="4566417217121906555">Désactiver le microphone</translation>
 <translation id="4570913071927164677">Détails</translation>
@@ -342,6 +357,7 @@ La protection avancée contrôle ces paramètres Brave :
 <translation id="4644713492825682049">Supprimer et réinitialiser</translation>
 <translation id="4645575059429386691">Géré par l’un de tes parents</translation>
 <translation id="4652266463001779298">Non autorisée</translation>
+<translation id="4655846733459137112">Touchez Oui pour utiliser facilement ce mot de passe lors de votre prochaine connexion</translation>
 <translation id="4663373278480897665">La caméra est autorisée</translation>
 <translation id="4670064810192446073">Réalité virtuelle</translation>
 <translation id="5652778654712411580">Toucher l'appli Navigateur, puis Brave</translation>
@@ -387,6 +403,7 @@ La protection avancée contrôle ces paramètres Brave :
 <translation id="512938610812707830">Zone de contenu dans le bas de l'écran concernant les collections de thèmes de l'apparence de la page Nouvel onglet ouverte à pleine hauteur</translation>
 <translation id="5137460097045297858">Zone de contenu dans le bas de l'écran concernant le flux Découvertes ouverte à mi-hauteur</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{Baisse de prix sur vos onglets ouverts}one{Baisse de prix sur vos onglets ouverts}other{Baisses de prix sur vos onglets ouverts}}</translation>
+<translation id="5150048675001754041">Connectez-vous rapidement et facilement aux sites et aux applis</translation>
 <translation id="5186036860380548585">Option accessible près du haut de l'écran</translation>
 <translation id="5197729504361054390">Les contacts que vous sélectionnez seront partagés avec <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="5198930230016462977">Zone de contenu dans le bas de l'écran de Personnaliser votre page Nouvel onglet fermée</translation>
@@ -445,6 +462,7 @@ La protection avancée contrôle ces paramètres Brave :
 <translation id="5804241973901381774">Autorisations</translation>
 <translation id="5817042798620209981">Informations sur le site, boîte de dialogue</translation>
 <translation id="5822675474983796325">Zone de contenu dans le bas de l'écran de Personnaliser votre page Nouvel onglet ouverte à pleine hauteur</translation>
+<translation id="4298364316773778595">Zone de contenu dans le bas de l'écran contenant des instructions pour enregistrer les mots de passe dans Brave</translation>
 <translation id="5833899990800318936">Ne pas autoriser les sites à utiliser JavaScript</translation>
 <translation id="583673505367439042">Les sites peuvent demander à modifier les fichiers et les dossiers de votre appareil</translation>
 <translation id="5844448279347999754">Lorsque cette option est activée, les sites peuvent demander à voir le texte et les images enregistrées dans votre presse-papiers. Lorsqu'elle est désactivée, les sites ne peuvent pas voir le texte ni les images enregistrées dans votre presse-papiers.</translation>
@@ -471,6 +489,7 @@ La protection avancée contrôle ces paramètres Brave :
 <translation id="5998071268779572583">Activer le flux Découvertes</translation>
 <translation id="6012967556075291653">Raccourci épinglé</translation>
 <translation id="6015775454662021376">Gérez l'accès de ce site à votre appareil</translation>
+<translation id="296137235951584143">Appropriez-vous Brave</translation>
 <translation id="6040143037577758943">Fermer</translation>
 <translation id="6042308850641462728">Plus</translation>
 <translation id="6064125863973209585">Téléchargements terminés</translation>
@@ -478,6 +497,7 @@ La protection avancée contrôle ces paramètres Brave :
 <translation id="6085954183010297841">Supprimer l'autorisation de modification de fichier? <ph name="FILE"/></translation>
 <translation id="6104860901391833523">Lorsque cette option est activée, les sites peuvent entrer automatiquement en mode Incrustation d'image. Lorsqu'elle est désactivée, les sites ne peuvent pas entrer automatiquement en mode Incrustation d'image.</translation>
 <translation id="6120483543004435978">Lorsque cette option est activée, les sites peuvent vous demander si vous utilisez activement votre appareil. Lorsqu'elle est désactivée, les sites ne peuvent pas savoir si vous utilisez activement votre appareil.</translation>
+<translation id="4852158809106762963">Brave vous proposera d'enregistrer votre mot de passe</translation>
 <translation id="615886654739818377">Ne pas autoriser les sites à gérer les fenêtres sur tous vos écrans</translation>
 <translation id="6165508094623778733">En savoir plus</translation>
 <translation id="6171020522141473435">Lorsque cette option est activée, les sites peuvent demander à utiliser des appareils Bluetooth. Lorsqu'elle est désactivée, les sites ne peuvent pas utiliser d'appareils Bluetooth.</translation>
@@ -488,13 +508,13 @@ La protection avancée contrôle ces paramètres Brave :
 <translation id="6196640612572343990">Bloquer les témoins de tiers</translation>
 <translation id="6205314730813004066">Confidentialité des annonces</translation>
 <translation id="6207207788774442484">Supprimer les données et réinitialiser les autorisations</translation>
+<translation id="6218508144653756827">Thème fuchsia</translation>
 <translation id="6231752747840485235">Désinstaller « <ph name="APP_NAME"/> »?</translation>
 <translation id="4789073065838177382">Touchez Appli de navigation &gt; Brave.</translation>
 <translation id="6260830281887654268">Zone de contenu dans le bas de l'écran concernant les collections de thèmes de l'apparence de la page Nouvel onglet ouverte à mi-hauteur</translation>
 <translation id="6262191102408817757">En fonction de votre dernier onglet</translation>
 <translation id="6262279340360821358">Autorisations <ph name="PERMISSION_1"/> et <ph name="PERMISSION_2"/> bloquées</translation>
 <translation id="6270391203985052864">Les sites peuvent vous demander l'autorisation d'envoyer des notifications</translation>
-<translation id="6278428485366576908">Thème</translation>
 <translation id="6295158916970320988">Tous les sites</translation>
 <translation id="6320088164292336938">Vibrer</translation>
 <translation id="6367753977865761591">Bloquez la connexion de tiers pour un site particulier.</translation>
@@ -513,6 +533,7 @@ La protection avancée contrôle ces paramètres Brave :
 <translation id="6545864417968258051">Recherche d'appareils Bluetooth</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> et <ph name="NUM_MORE"/> autre autorisation bloquée}one{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> et <ph name="NUM_MORE"/> autre autorisation bloquée}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> et <ph name="NUM_MORE"/> autres autorisations bloquées}}</translation>
 <translation id="6554732001434021288">Dernière visite il y a <ph name="NUM_DAYS"/> jours</translation>
+<translation id="6556866813142980365">Rétablir</translation>
 <translation id="6557290421156335491">Mes raccourcis</translation>
 <translation id="656065428026159829">En voir plus</translation>
 <translation id="6561560012278703671">Activer l'affichage discret des messages (permet d'empêcher les notifications de vous interrompre)</translation>
@@ -521,6 +542,7 @@ La protection avancée contrôle ces paramètres Brave :
 <translation id="659938948789980540">{COUNT,plural, =1{Témoins autorisés pour <ph name="RWS_MEMBERS_COUNT"/> site de <ph name="RWS_OWNER"/>}one{Témoins autorisés pour <ph name="RWS_MEMBERS_COUNT"/> site de <ph name="RWS_OWNER"/>}other{Témoins autorisés pour <ph name="RWS_MEMBERS_COUNT"/> sites de <ph name="RWS_OWNER"/>}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> Go</translation>
 <translation id="6612358246767739896">Contenu protégé</translation>
+<translation id="6619015782482868078">Thème aqua</translation>
 <translation id="662080504995468778">Rester</translation>
 <translation id="6630443592285535486">Tapez le code hexadécimal ici</translation>
 <translation id="6635327442719709864">Lorsque cette option est activée, les sites peuvent demander à utiliser des ports série. Lorsque cette option est désactivée, les sites ne peuvent pas utiliser les ports série.</translation>
@@ -549,9 +571,11 @@ La protection avancée contrôle ces paramètres Brave :
 <translation id="6945221475159498467">Sélectionner</translation>
 <translation id="6950072572526089586">Un site que vous visitez peut enregistrer des informations en fonction de votre activité pour fonctionner comme prévu : par exemple, pour maintenir votre connexion à un site ou pour conserver des articles dans votre panier. Souvent, les sites enregistrent temporairement ces données sur votre appareil.</translation>
 <translation id="6965382102122355670">OK</translation>
+<translation id="6980507581230208647">Thème rose</translation>
 <translation id="6980861169612950611">Supprimer les données relatives aux sites? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Accessibilité</translation>
 <translation id="6991142177939282156">Autorisée • Utilisation de la position approximative</translation>
+<translation id="6992014788289743568">Renforcez votre sécurité et protégez vos données en vérifiant vos mots de passe</translation>
 <translation id="6992289844737586249">Demander avant d'autoriser des sites à utiliser votre microphone (recommandé)</translation>
 <translation id="7000754031042624318">Désactivée dans les paramètres Android</translation>
 <translation id="8683151724374457021">Ce site détermine ce que vous aimez et suggère ensuite des annonces à d'autres sites. Ce site récupère également les sujets de vos annonces à partir de Brave pour vous montrer des annonces plus pertinentes.</translation>
@@ -577,6 +601,7 @@ La protection avancée contrôle ces paramètres Brave :
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> élément(s) sélectionné(s)</translation>
 <translation id="7260727271532453612">Autorisations <ph name="PERMISSION_1"/> et <ph name="PERMISSION_2"/> accordées</translation>
 <translation id="7276071417425470385">Lorsque cette option est activée, les sites peuvent demander à utiliser des appareils de réalité virtuelle. Lorsqu'elle est désactivée, les sites ne peuvent pas utiliser d'appareils de réalité virtuelle.</translation>
+<translation id="7282197670900591579">Thème citron</translation>
 <translation id="728412880473384942">Les sites sont plus rapides, mais moins sécurisés</translation>
 <translation id="7366415735885268578">Ajouter un site</translation>
 <translation id="7368695150573390554">Toutes les données hors ligne seront supprimées</translation>
@@ -615,7 +640,9 @@ La protection avancée contrôle ces paramètres Brave :
 <translation id="5455732060086060613">Masquer la carte des astuces de Brave</translation>
 <translation id="7719367874908701697">Zoom de la page</translation>
 <translation id="775043444390799886">Révoquer l'autorisation</translation>
+<translation id="7758789811447313947">Thème violet</translation>
 <translation id="7759147511335618829">Contrôler et reprog. app. MIDI</translation>
+<translation id="7771089277295008211">La zone de contenu dans le bas de l'écran contenant les instructions pour enregistrer les mots de passe a été fermée</translation>
 <translation id="7781829728241885113">Hier</translation>
 <translation id="7791543448312431591">Ajouter</translation>
 <translation id="780301667611848630">Non merci</translation>
@@ -633,6 +660,8 @@ La protection avancée contrôle ces paramètres Brave :
 <translation id="7940722705963108451">Me le rappeler</translation>
 <translation id="7948081750384205628">En savoir plus sur <ph name="SETTING_TITLE"/></translation>
 <translation id="7952708427581814389">Les sites peuvent demander à voir le texte et les images de votre presse-papiers</translation>
+<translation id="7958779728312669715">La zone de contenu dans le bas de l'écran contenant les instructions pour enregistrer les mots de passe est entièrement ouverte</translation>
+<translation id="798299424881500862">Thème orange</translation>
 <translation id="7986741934819883144">Sélectionner un contact</translation>
 <translation id="7990211076305263060">Lorsque cette option est activée, les sites peuvent demander à utiliser votre microphone. Lorsqu'elle est désactivée, les sites ne peuvent pas utiliser votre microphone.</translation>
 <translation id="8007176423574883786">Désactivé pour cet appareil</translation>
@@ -728,6 +757,7 @@ La protection avancée contrôle ces paramètres Brave :
 <translation id="7532165358672313130">Pendant que vous continuez à les parcourir, les sites peuvent vérifier la probabilité que vous soyez une personne réelle par le biais de Brave et d'un site que vous avez visité précédemment</translation>
 <translation id="8899807382908246773">Annonces intrusives</translation>
 <translation id="8903921497873541725">Zoom avant</translation>
+<translation id="8919911527569629802">Connectez-vous à n'importe quel site Web</translation>
 <translation id="8921772741368021346"><ph name="POSITION"/> sur <ph name="DURATION"/></translation>
 <translation id="8926389886865778422">Ne plus afficher ce message</translation>
 <translation id="8926666909099850184">La CCP est désactivée pour cet appareil. Activez-la dans le menu <ph name="BEGIN_LINK"/>Paramètres Android<ph name="END_LINK"/>.</translation>
@@ -755,6 +785,7 @@ La protection avancée contrôle ces paramètres Brave :
 <translation id="9182556968660520230">Ne pas autoriser les sites à faire jouer du contenu protégé</translation>
 <translation id="947156494302904893">Les sites que vous visitez peuvent vérifier que vous êtes une personne réelle et non un robot</translation>
 <translation id="959682366969460160">Place à l'organisation</translation>
+<translation id="960590623979248167">Afficher les liens hypertextes</translation>
 <translation id="961930410699694996">Emplacement autorisé cette fois</translation>
 <translation id="967624055006145463">Données stockées</translation>
 <translation id="969975166333045662">Empêchez le site d'utiliser l'optimiseur V8.</translation>

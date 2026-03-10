@@ -19,6 +19,7 @@
 <translation id="1544192797660353713">المحفظة</translation>
 <translation id="2361906291514218784">Leo الذكاء الاصطناعي</translation>
 <translation id="8275068909952022340">المزيد …</translation>
+<translation id="71316462802471551">المعرفات البديلة للبريد الإلكتروني</translation>
 <translation id="1990886731975529483">قم بتثبيت برنامج Google Widevine وتشغيله</translation>
 <translation id="8926389886865778422">عدم السؤال مرة أخرى</translation>
 <translation id="4900351245762303149">تثبيت برنامج Google Widevine</translation>
@@ -204,7 +205,6 @@
 <translation id="253980346046488815">إغلاق علامات التبويب المكررة</translation>
 <translation id="8670218546624422041">فتح في حاوية</translation>
 <translation id="8638526693050780542">إدارة الحاويات</translation>
-<translation id="7302999361397024774">إعادة تسمية علامة التبويب</translation>
 <translation id="2336228925368920074">وضع إشارة على جميع علامات التبويب...</translation>
 <translation id="2523967823495420116">استخدام علامات تبويب عمودية</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{كتم صوت علامة تبويب واحدة}zero{كتم صوت علامات التبويب}two{كتم صوت علامتيِّ التبويب}few{كتم صوت علامات التبويب}many{كتم صوت علامات التبويب}other{كتم صوت علامات التبويب}}</translation>
@@ -215,7 +215,6 @@
 <translation id="2703180365855369896">إغلاق علامات التبويب المكررة</translation>
 <translation id="1987871867023021397">فتح في حاوية</translation>
 <translation id="6745991613881384719">إدارة الحاويات</translation>
-<translation id="3917844427669888979">إعادة تسمية علامة التبويب</translation>
 <translation id="3704707436873245822">نسخ النص من الصورة</translation>
 <translation id="5268098808165185458">جارٍ نسخ النص من الصورة...</translation>
 <translation id="4046485130884276245">تم نسخ النص من الصورة</translation>
@@ -514,6 +513,10 @@
 <translation id="1199170151481311646">تحليلات الحفاظ على الخصوصية</translation>
 <translation id="5990642573624858459">إعداد التقارير الإحصائية</translation>
 <translation id="2441719842399509963">إعادة التعيين إلى الإعدادات الافتراضية</translation>
+<translation id="4530494379350999373">الأصل</translation>
+<translation id="2964215604640804042">Brave Origin هي نسخة مدفوعة من المتصفح للمستخدمين الذين لا يحتاجون إلى جميع الميزات التي تدعم Brave كعمل تجاري، لكنهم لا يزالون يريدون الخصوصية التي يوفرها Brave فقط. سيستمر مستخدمو Brave Origin في الاستفادة من خصوصيتنا الرائدة في الصناعة وحظر الإعلانات والسرعة (عبر Brave Shields)، بالإضافة إلى تحديثات البرامج العادية وتصحيحات Chromium وتحسينات الأمان والخصوصية. سيتمكنون أيضًا من فتح خيار تعطيل الميزات مثل AI و مكافىت و محفظة و VPN و Web3 domains والمزيد.</translation>
+<translation id="9130916892338379417">Brave Origin متاح عبر شراء لمرة واحدة. على الأجهزة المحمولة (Android و iOS) و سطح المكتب، يمكن شراء Origin كترقية لإصدار الإفراج الحالي. على سطح المكتب، Origin متاح أيضًا كتطبيق منفصل مستقل. سيرى مستخدمو Origin لوحة تحكم جديدة في قائمة الإعدادات. ستظهر الميزات الموجودة - بالإضافة إلى أي ميزات جديدة سننشرها في المستقبل - هنا، وسيتم تعطيلها بشكل افتراضي.</translation>
+<translation id="7984508421152399880">شراء الآن</translation>
 <translation id="5567412479632285879">تم تعطيل Brave Rewards</translation>
 <translation id="413570371620795359">فتح لوحة المكافآت للتمكين والبدء</translation>
 <translation id="1051600834033686945">فتح إعدادات Brave Rewards بالكامل</translation>
@@ -556,7 +559,6 @@
 <translation id="5747552184818312860">تاريخ انتهاء الصلاحية</translation>
 <translation id="3858860766373142691">الاسم</translation>
 <translation id="361106536627977100">بيانات فلاش</translation>
-<translation id="4530494379350999373">الأصل</translation>
 <translation id="8195027750202970175">الحجم على القرص</translation>
 <translation id="9116465289595958864">آخر تعديل</translation>
 <translation id="4590324241397107707">تخزين قاعدة البيانات</translation>
@@ -589,11 +591,6 @@
 <translation id="2903783737778379345">عدم السماح بتسجيل الدخول القديم إلى Google عبر ملفات تعريف الارتباط التابعة للجهات الخارجية</translation>
 <translation id="2570833232754279153">لا يُسمح باستخدام ملفات تعريف الارتباط التابعة للجهات الخارجية لتسجيل الدخول القديم إلى Google</translation>
 <translation id="6880817299303842099">يُسمح باستخدام ملفات تعريف الارتباط التابعة للجهات الخارجية لتسجيل الدخول القديم إلى Google</translation>
-<translation id="2136412236435693622">الوصول إلى المضيف المحلي (Localhost)</translation>
-<translation id="4172219483893066798">يمكن للمواقع طلب الوصول إلى موارد Localhost</translation>
-<translation id="7181706637590665047">عدم السماح بالوصول إلى موارد Localhost</translation>
-<translation id="1336116824874668514">غير مسموح بالوصول إلى موارد Localhost</translation>
-<translation id="1485435696620658073">يُسمح بالوصول إلى موارد Localhost</translation>
 <translation id="5794692721727586076">الدردشة مع Leo AI</translation>
 <translation id="8115153008662981040">يمكن للمواقع أن تطلب فتح الدردشة مع Leo AI</translation>
 <translation id="1145070115730668595">عدم السماح لأي موقع بأن يفتح الدردشة مع Leo AI</translation>

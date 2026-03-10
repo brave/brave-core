@@ -3,7 +3,6 @@
 <translationbundle lang="lv">
 <translation id="1026101648481255140">Atsākt instalēšanu</translation>
 <translation id="7099479769133613710">Atkārtoti palaist, lai atjauninātu &amp;Brave OS</translation>
-<translation id="7061050486072297552">Brave labāk izprot veidlapas un var ātrāk tās automātiski aizpildīt. Šis iestatījums ir izslēgts.</translation>
 <translation id="2479110114759182442">Brave komanda iesaka pārskatīt šo paplašinājumu.</translation>
 <translation id="3814674848168165531">Kad vietnē tiek piedāvāts privāti iepriekš ielādēt saites lapā, pārlūks Brave izmanto Brave serverus. Tādējādi jūsu identitāte tiek slēpta no iepriekš ielādētās lapas īpašniekiem, taču Brave uzzina, kādas lapas tiek iepriekš ielādētas.</translation>
 <translation id="1065672644894730302">Jūsu preferences nevar nolasīt. Dažas funkcijas var nebūt pieejamas, un preferenču izmaiņas netiks saglabātas</translation>
@@ -29,16 +28,16 @@
 <translation id="4798342026247191171">Jaunā Brave profila iestatīšana</translation>
 <translation id="878572309106296578">Pārlūkam Brave ir nepieciešama Bluetooth piekļuve, lai atrastu Bluetooth ierīces. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="1330562121671411446">Valodas noteikšana</translation>
+<translation id="6204677860546245308">Izmantojiet Brave ieteicamos pārlūka iestatījumus</translation>
 <translation id="108284536240904209">Dzēst arī datus no pārlūka Brave (<ph name="URL"/>)</translation>
 <translation id="1345251407431278948">Piesprausts! Varat atkal piekļūt funkcijai Attēlu meklēšana, izmantojot jauno pogu rīkjoslā.</translation>
 <translation id="1356661055722410047">Jaunums! Varat tulkot gan ekrānā redzamo tekstu, gan attēlus.</translation>
 <translation id="1383876407941801731">Meklēt</translation>
 <translation id="7009295044271335553">&amp;Pārvaldīt Brave profilus</translation>
-<translation id="8132634101975074716">Esat pierakstījies operētājsistēmā Brave!</translation>
+<translation id="1404026649028693342">Vienmēr rādīt MI režīmu</translation>
 <translation id="141901961143729572">Dalieties domās!</translation>
 <translation id="3880714039086599943">Lai kopīgotu logu, sistēmas iestatījumos atļaujiet ekrāna ierakstīšanu pārlūkā Brave.</translation>
 <translation id="1586284627848250203">Saņemt palīdzību saistībā ar Brave for Testing</translation>
-<translation id="1496875977627931224">Labdien, <ph name="USER_NAME"/>!<ph name="LINE_BREAK"/>Kas jums šodien padomā?</translation>
 <translation id="1497802159252041924">Instalēšanas kļūda: <ph name="INSTALL_ERROR"/></translation>
 <translation id="1518627427551567882">Šī lapa ir aizsargāta</translation>
 <translation id="5147525139567260139">Brave cilnes kopīgošana</translation>
@@ -66,6 +65,7 @@
 <translation id="7362761326208547489">Kad nākamreiz savā ierīcē (<ph name="DEVICE_TYPE"/>) atvērsiet pārlūku Brave, tiks parādīts aicinājums izmantot Brave paroļu pārvaldnieku.</translation>
 <translation id="1838374766361614909">Notīrīt meklēšanas vaicājumu</translation>
 <translation id="3541642064306182066">Lai dzēstu pārlūkošanas datus tikai no šīs ierīces un paturētu tos Brave kontā, <ph name="BEGIN_LINK"/>izrakstieties no Brave<ph name="END_LINK"/>.</translation>
+<translation id="5679816001365584346">Lejupielādējiet pārlūku Brave savā tālrunī, lai atvērtu vai izveidotu jaunas ciļņu grupas, atrodoties ceļā.</translation>
 <translation id="4559627161887338743">Varat pārvaldīt Brave kontus, kuros esat pierakstījies. Jūsu Brave konti tiek izmantoti pārlūkā Brave, Play veikalā, pakalpojumā Gmail un citur. Ja vēlaties pievienot kontu kādam citam, piemēram, ģimenes loceklim, pievienojiet jaunu personu savai <ph name="DEVICE_TYPE"/> ierīcei. <ph name="LINK_BEGIN"/>Uzziniet vairāk<ph name="LINK_END"/>.</translation>
 <translation id="1862852878885210965">Meklēšana, izmantojot funkciju Attēlu meklēšana</translation>
 <translation id="1880677175115548835">Atlasīt tekstu</translation>
@@ -89,13 +89,16 @@
 <translation id="2039417478970545937">Iestatījumi.</translation>
 <translation id="5499149312981370855">Izvēlieties, vai iekļaut Brave vēsturi, lai iegūtu personalizētākas iespējas Brave pakalpojumos.</translation>
 <translation id="6959434860418352144">Jaunas cilnes lapā noklikšķiniet uz pogas Pielāgot Brave, lai piešķirtu pārlūkam Brave jaunu izskatu.</translation>
+<translation id="2066690553719545730">Vienmēr rādīt MI režīmu</translation>
 <translation id="2472891440303445472">Pārlūkā Brave šī lejupielāde tika bloķēta, jo fails ir maldinošs un var veikt neparedzētas izmaiņas jūsu ierīcē.</translation>
 <translation id="2054358978145431867">Kad nākamreiz iOS ierīcē atvērsiet pārlūku Brave, tiks parādīts aicinājums izmēģināt funkciju <ph name="FEATURE_NAME"/>.</translation>
 <translation id="2726948994393234543">Jūsu paroles un citi Brave dati, ko saglabājāt savā Brave kontā, tiks noņemti no šīs ierīces. Lai atkal izmantotu šos datus pārlūkā Brave, atkārtoti pierakstieties.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Jūsu organizācija automātiski dzēš pārlūkošanas datus, ja pārlūks Brave nav izmantots vienu minūti. Tie var ietvert vēsturi, automātiskās aizpildes datus un lejupielādes. Cilnes joprojām būs atvērtas.}zero{Jūsu organizācija automātiski dzēš pārlūkošanas datus, ja pārlūks Brave nav izmantots # minūtes. Tie var ietvert vēsturi, automātiskās aizpildes datus un lejupielādes. Cilnes joprojām būs atvērtas.}one{Jūsu organizācija automātiski dzēš pārlūkošanas datus, ja pārlūks Brave nav izmantots # minūti. Tie var ietvert vēsturi, automātiskās aizpildes datus un lejupielādes. Cilnes joprojām būs atvērtas.}other{Jūsu organizācija automātiski dzēš pārlūkošanas datus, ja pārlūks Brave nav izmantots # minūtes. Tie var ietvert vēsturi, automātiskās aizpildes datus un lejupielādes. Cilnes joprojām būs atvērtas.}}</translation>
 <translation id="2126108037660393668">Neizdevās verificēt lejupielādēto failu.</translation>
+<translation id="2135919691573380097">Ziņošana par šo vietni</translation>
 <translation id="2137162749895930932">Aizvērt tulkošanas ekrānu</translation>
 <translation id="5789330946301045610">Pārlūkā Brave šī lejupielāde tika bloķēta, jo vietnē netiek izmantots drošs savienojums un, iespējams, failā ir veiktas izmaiņas.</translation>
+<translation id="2170098639895543546">Atlasīt jebkādu saturu lapā</translation>
 <translation id="142389341645668510">Pielāgot pārlūkprogrammu Brave</translation>
 <translation id="2174917724755363426">Instalēšana nav pabeigta. Vai tiešām vēlaties atcelt?</translation>
 <translation id="8745514854244955877">Brave — pierakstīšanās tīklā — <ph name="PAGE_TITLE"/></translation>
@@ -129,6 +132,7 @@
 <translation id="5617265241715541684">{NUM_DEVICES,plural, =0{Vismaz viens Brave paplašinājums piekļuva 1 HID ierīcei}=1{Vismaz viens Brave paplašinājums piekļūst 1 HID ierīcei}zero{Vismaz viens Brave paplašinājums piekļūst # HID ierīcēm}one{Vismaz viens Brave paplašinājums piekļūst # HID ierīcei}other{Vismaz viens Brave paplašinājums piekļūst # HID ierīcēm}}</translation>
 <translation id="1248225940185478633">Pārlūkam Brave ir nepieciešama atļauja izmantot kameru un mikrofonu šajā vietnē.</translation>
 <translation id="2403703063067034158">Palaišanas kļūda: pašlaik ir aktīvs cits iestatīšanas process. Lūdzu, vēlāk mēģiniet vēlreiz.</translation>
+<translation id="5298352791080868905">Atveriet saites pārlūkā Brave no jebkuras lietotnes un saglabājiet pārlūku pieejamu uzdevumu joslā.</translation>
 <translation id="2118275934191847461">Izmantojot <ph name="BEGIN_LINK"/>Brave rīkus<ph name="END_LINK"/>, varat droši pārlūkot saturu un pārvaldīt jums pieejamās iespējas.</translation>
 <translation id="2451727308784734061">Izmantojot saīsni, varat ātri piekļūt Brave paroļu pārvaldniekam. Varat pārvietot saīsni uz datora sākuma ekrānu vai lietotņu palaidēju.</translation>
 <translation id="6381750314821942592">Brave drīz tiks aizvērts</translation>
@@ -155,6 +159,7 @@
 <translation id="2738871930057338499">Nevar izveidot savienojumu ar internetu. HTTP 403 — aizliegts. Lūdzu, pārbaudiet starpniekservera konfigurāciju.</translation>
 <translation id="2753623023919742414">Noklikšķiniet, lai meklētu</translation>
 <translation id="1312769823139326127">Iestatiet Brave kā noklusējuma PDF failu skatītāju.</translation>
+<translation id="3173824377856109157">Brave var automātiski aizpildīt sarežģītus laukus, kurus standarta automātiskās aizpildes funkcija var neatpazīt.</translation>
 <translation id="1187986649024576560">Šis paplašinājums satur ļaunprātīgu programmatūru un nav drošs. Noņemiet to no pārlūka Brave, lai tas jūsu apmeklētajās vietnēs vairs nevarētu skatīt un mainīt jūsu datus, tostarp jūsu personas informāciju.</translation>
 <translation id="2799223571221894425">Restartēt</translation>
 <translation id="5962774139606909656">Jūsu Brave</translation>
@@ -189,6 +194,8 @@
 <translation id="3700405816184340252">Brave vēsture</translation>
 <translation id="7365690458036015383">Instalēšanas programmai neizdevās atarhivēt arhīvu. Lejupielādējiet Brave vēlreiz.</translation>
 <translation id="310459126943037700">Neizdevās pabeigt uzdevumus.</translation>
+<translation id="3104828284009500087">Meklēt jebkādu informāciju lapā</translation>
+<translation id="6422885447166607802">Nevainojami sinhronizējiet savas paroles, grāmatzīmes un vēsturi visās ierīcēs. Ērti piekļūstiet zināmajām un iecienītajām funkcijām, atjauninot noklusējuma pārlūku uz Brave.</translation>
 <translation id="8919461291440820124">Pārlūkā Brave tiek izmantots jūsu mikrofons.</translation>
 <translation id="3130333203120345554">Jauns meklējums</translation>
 <translation id="3137969841538672700">Velciet, lai meklētu</translation>
@@ -270,7 +277,6 @@
 <translation id="4023601594785368013">Oriģinālvaloda: <ph name="LANGUAGE"/></translation>
 <translation id="5540160525564738506">Atveriet saites pārlūkā Brave no jebkuras lietotnes. Turklāt pārlūks tiks piesprausts uzdevumjoslā, lai nodrošinātu ērtāku piekļuvi.</translation>
 <translation id="6056473803837713617">Palīdziet uzlabot pārlūku Brave, ziņojot par <ph name="BEGIN_LINK"/>pašreizējiem iestatījumiem<ph name="END_LINK"/>.</translation>
-<translation id="4039097928859803404">Vienmēr rādīt MI režīma saīsnes</translation>
 <translation id="4050175100176540509">Jaunākajā versijā ir pieejami svarīgi drošības uzlabojumi un jaunas funkcijas.</translation>
 <translation id="4055805654398742145">P&amp;aroļu pārvaldnieks</translation>
 <translation id="6654312501894761082">Cita datorā instalēta programma pievienoja paplašinājumu, kas var ietekmēt pārlūka Brave darbību.
@@ -297,6 +303,8 @@
 <translation id="4304713468139749426">Paroļu pārvaldnieks</translation>
 <translation id="4334241893986177674">Meklēt šajā ekrānuzņēmumā</translation>
 <translation id="4334294535648607276">Lejupielāde pabeigta.</translation>
+<translation id="242356249838681145">Palaist pārlūku Brave, kad tiek palaista operētājsistēma Windows</translation>
+<translation id="4747339441562331861">Iegūstiet ērtu piekļuvi zināmajām, iecienītajām un uzticamajām funkcijām, iestatot Brave kā noklusējuma pārlūku. Lai nodrošinātu ātru piekļuvi, pārlūks Brave tiks piesprausts uzdevumu joslai.</translation>
 <translation id="1068681683510904753"><ph name="MANAGER"/> pieprasa, lai pirms šīs ierīces lietošanas jūs izlasītu tālāk sniegtos pakalpojumu sniegšanas noteikumus un piekristu tiem. Šie noteikumi nepaplašina, nepārveido un neierobežo operētājsistēmas Brave OS noteikumus.</translation>
 <translation id="9183662282810237335">Vai tik un tā aizvērt pārlūku Brave?</translation>
 <translation id="4413205837991854510">Vienmēr rādīt funkcijas Attēlu meklēšana saīsni</translation>
@@ -314,10 +322,9 @@
 <translation id="8594994021633965927">Nav norādīta konfidencialitātes prakse šim paplašinājumam, piemēram, kā tas vāc un izmanto datus. Brave iesaka to noņemt.</translation>
 <translation id="7084397798469173252">Laipni lūdzam pārlūkā Brave (tika atvērts jauns pārlūka logs)!</translation>
 <translation id="137732229629632648">Pārlūkam Brave ir nepieciešama atļauja jūsu apkārtnes kartēšanai un roku kustību izsekošanai</translation>
-<translation id="5917968343741192617">Brave labāk izprot veidlapas un var ātrāk tās automātiski aizpildīt.</translation>
 <translation id="5036046007335188949">Ar kontu <ph name="USER_EMAIL_ADDRESS"/> jau esat pierakstījies citā Brave profilā</translation>
 <translation id="1878185978731985193">Pārlūkā Brave tiek iepriekš ielādētas lapas, tādējādi paātrinot pārlūkošanu un meklēšanu. Varat <ph name="BEGIN_LINK"/>uzzināt vairāk par lapu iepriekšēju ielādi<ph name="END_LINK"/>.</translation>
-<translation id="4567424176335768812">Jūs esat pierakstījies kā <ph name="USER_EMAIL_ADDRESS"/>. Tagad varat piekļūt savām grāmatzīmēm, vēsturei un citiem iestatījumiem visās ierīcēs, kurās esat pierakstījies.</translation>
+<translation id="4549180975214802957">Uzlabojiet tiešsaistes drošību visiem lietotājiem, ziņojot par vietni, kas, jūsuprāt, ir kaitīga.</translation>
 <translation id="8669339108356170796">Pārlūkā Brave šī lejupielāde tika bloķēta, jo jūs izslēdzāt drošu pārlūkošanu un failu nevar verificēt.</translation>
 <translation id="7583343841997441047">Izmēģiniet Brave Lens pārlūkā Brave savā tālrunī</translation>
 <translation id="4594305310729380060">Tā tiks saglabāta Paroļu pārvaldniekā šajā ierīcē</translation>
@@ -326,7 +333,6 @@
 <translation id="4970880042055371251">Brave OS versija</translation>
 <translation id="2182657378556811785">Atjaunināšana ir gandrīz pabeigta. Lai pabeigtu atjaunināšanu, atkārtoti palaidiet pārlūku Brave.</translation>
 <translation id="6311668361877328515">Paātrina vietņu darbību, izmantojot Brave programmu V8, taču nedaudz samazina Brave izturību pret uzbrukumiem.</translation>
-<translation id="7843665350820058984">Brave labāk izprot veidlapas un var ātrāk tās automātiski aizpildīt. Šis iestatījums ir ieslēgts.</translation>
 <translation id="7402642357351265733">Ja kopīgojat arī Brave lietojuma pārskatus, šajos pārskatos tiek iekļauti jūsu apmeklētie vietrāži URL.</translation>
 <translation id="8142245354207161805">Šķiet, ka profils tiek izmantots citā Brave procesā (<ph name="PROCESS_ID"/>) citā datorā (<ph name="HOST_NAME"/>). Lai profils netiktu bojāts, pārlūkā Brave tas ir bloķēts. Ja esat pārliecināts, ka šis profils netiek izmantots citos procesos, varat to atbloķēt un restartēt pārlūku Brave.</translation>
 <translation id="4680828127924988555">Atcelt instalēšanu</translation>
@@ -343,6 +349,7 @@
 <translation id="2899369907387169108">Izmantot Brave, nepierakstoties kontā</translation>
 <translation id="1912973375560256099">Ienākošo savienojumu kārtula pārlūkam Brave, lai atļautu mDNS datplūsmu.</translation>
 <translation id="711601904575862069">Atkārtoti palaist, lai atjauninātu &amp;Brave</translation>
+<translation id="4918086044614829423">Pieņemt</translation>
 <translation id="4918844574251943176">Attēls ir nokopēts</translation>
 <translation id="8797356639448065696">Brave darbojas fona režīmā.</translation>
 <translation id="1895567721497166950">Noklikšķiniet, lai aizvērtu Brave pierakstīšanās dialoglodziņu</translation>
@@ -353,7 +360,6 @@
 <translation id="7995865526174204486">Gemini pārlūkā Brave izmanto automātisko pārlūkošanu, lai darbotos jūsu cilnēs un veiktu jūsu dotos uzdevumus. <ph name="LINK_BEGIN"/>Uzziniet vairāk<ph name="LINK_END"/>.</translation>
 <translation id="1204184037023366446">Pārlūkam Brave ir nepieciešama atļauja izsekot jūsu roku kustības.</translation>
 <translation id="5406591571925937375">Pēdējā laikā šī vietne nav apmeklēta. Pārlūkā Brave tika noņemtas šādas atļaujas: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, <ph name="PERMISSION_3"/>.</translation>
-<translation id="5167819546851111585">Kas jums šodien padomā?</translation>
 <translation id="5174969993834422967">Parasti jūs bloķējat paziņojumus. Lai ļautu šai vietnei sūtīt jums paziņojumus, noklikšķiniet uz paziņojumu ikonas atrašanās vietas joslas labajā stūrī.</translation>
 <translation id="5174983315706567306">Diskā nepietiek brīvas vietas.</translation>
 <translation id="8157129267754368853">Brave kontam nepieciešama atkārtota autentifikācija</translation>
@@ -427,7 +433,6 @@
 <translation id="9071554113102421877">&amp;Atvērt pārlūkā Brave</translation>
 <translation id="6069027071882229820">Kopēt kā attēlu</translation>
 <translation id="7861579472672677409">Paplašinājums <ph name="EXTENSION_NAME"/> ir pievienots pārlūkam Brave</translation>
-<translation id="3693188491491843187">Pārlūka Brave darbības paātrināšana</translation>
 <translation id="5849446944780602366">Pielāgojiet un pārvaldiet pārlūku Brave. Ir pieejams atjauninājums.</translation>
 <translation id="5711722515923392428">Ieslēgts • Brave nevar pārbaudīt šī paplašinājuma izcelsmi</translation>
 <translation id="6355366566986893068">Jūsu konts pārlūkā Brave</translation>
@@ -472,8 +477,10 @@
 <translation id="6436260184216827876">Funkcija Attēlu meklēšana nav pieejama. Vēlāk mēģiniet vēlreiz.</translation>
 <translation id="2139300032719313227">Brave OS restartēšana</translation>
 <translation id="638302211119176182">Pārlūkā Brave tiek iepriekš ielādēts vēl vairāk lapu, ko jūs, iespējams, apmeklēsiet. Tādējādi var tās ielādēt ātrāk tad, kad tās tiešām apmeklējat.</translation>
+<translation id="7167975344637731051">Lejupielādējiet pārlūku Brave savā tālrunī, lai izsekotu cenas un saņemtu brīdinājumus, kad kādā vietnē tiek konstatēts cenas samazinājums.</translation>
 <translation id="890319829408077946">Izslēgts • Brave nevar pārbaudīt šī paplašinājuma izcelsmi</translation>
 <translation id="1684121725014454063">Laipni lūdzam Brave profilos!</translation>
+<translation id="8211983866539058675">Kad nākamreiz savā ierīcē (<ph name="DEVICE_TYPE"/>) atvērsiet pārlūku Brave, tiks parādīts aicinājums izmantot ciļņu grupas.</translation>
 <translation id="7906693299331092358">Noņemt kontu no pārlūka Brave</translation>
 <translation id="2675662665675552980">Tas nosaka arī to, kāda lapa tiks rādīta, kad atvērsiet pārlūku Brave.</translation>
 <translation id="648319183876919572">Droša pārlūkošana ar papildu aizsardzību nodrošina efektīvāku aizsardzību pret bīstamām vietnēm un lejupielādēm</translation>
@@ -488,6 +495,7 @@
 <translation id="3507835409099344374">Pāriet uz Brave paziņojumu iestatījumiem</translation>
 <translation id="6600016381025017075">Meklēt informāciju par jebkuru šīs lapas satura daļu</translation>
 <translation id="9156965752763025780">Izmaiņas stāsies spēkā, kad restartēsiet Brave.</translation>
+<translation id="3387992981600748596">Tagad pārlūks Brave tiek palaists, kad tiek palaista operētājsistēma Windows, lai jūs varētu uzreiz sākt pārlūkošanu. Šo funkciju var izslēgt iestatījumos.</translation>
 <translation id="3119017564683030312">Turpiniet darbu no vietas, kur to pārtraucāt: pārlūkā Brave tika atjaunotas cilnes no jūsu pēdējās sesijas. Varat to izslēgt lapā</translation>
 <translation id="245693535809364497">Pārlūkam Brave ir nepieciešama atļauja izmantot kameru, lai varētu izveidot jūsu apkārtnes 3D karti.</translation>
 <translation id="9210457680074341078">Ja saglabāsiet grāmatzīmes arī Brave kontā, varēsiet izsekot produktu cenām pārlūkā Brave un saņemt paziņojumus par cenu kritumiem.</translation>
@@ -545,6 +553,7 @@ Jaunas grāmatzīmes nevar saglabāt jūsu kontā, kamēr neizdzēsīsiet dažas
 <translation id="5755581833598928580">Izmantojiet Brave ikreiz, kad noklikšķināt uz saitēm ziņojumos, dokumentos un citās lietotnēs</translation>
 <translation id="5516268345616100622">Uzdevumu pārvaldnieks — Brave</translation>
 <translation id="713191641919118540">Jūsu intereses, kas aptuveni noteiktas pārlūkā Brave</translation>
+<translation id="1871621397473741084">Sāciet pārlūkošanu uzreiz: tagad pārlūks Brave var tikt palaists, kad tiek palaista operētājsistēma Windows.</translation>
 <translation id="7274695763216404502">Piesprausts! Varat atkal piekļūt funkcijai Attēlu meklēšana no rīkjoslas.</translation>
 <translation id="7288567540154601580">Cilnes un paplašinājumi</translation>
 <translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Brave iesaka to noņemt.}zero{Brave iesaka tos noņemt.}one{Brave iesaka tos noņemt.}other{Brave iesaka tos noņemt.}}</translation>
@@ -573,6 +582,7 @@ Jaunas grāmatzīmes nevar saglabāt jūsu kontā, kamēr neizdzēsīsiet dažas
 <translation id="5337027666828618338">Vietnes, visticamāk, darbosies, kā paredzēts. Aizverot visus Brave logus, automātiski izrakstīsieties no lielākās daļas vietņu, bet ne no Brave konta, ja esat pierakstījies pārlūkā Brave.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Pārlūks Brave pēc 1 minūtes tiks restartēts}zero{Pārlūks Brave pēc # minūtēm tiks restartēts}one{Pārlūks Brave pēc # minūtes tiks restartēts}other{Pārlūks Brave pēc # minūtēm tiks restartēts}}</translation>
 <translation id="552342471964912391">Lai aizsargātu savus datus, ļaujiet pārlūkā Brave noņemt atļaujas vietnēm, ko pēdējā laikā neesat apmeklējis.</translation>
+<translation id="3826701455067637694">Automātiski palaidiet pārlūku Brave, lai uzreiz sāktu pārlūkošanu.</translation>
 <translation id="7583399374488819119"><ph name="COMPANY_NAME"/> instalēšanas programma</translation>
 <translation id="3293668930608086049">Pārlūkā Brave tiek izmantota jūsu kamera un mikrofons.</translation>
 <translation id="2827121003398607864">Pārlūkā Brave ir veikti uzlabojumi</translation>
@@ -588,6 +598,7 @@ Jaunas grāmatzīmes nevar saglabāt jūsu kontā, kamēr neizdzēsīsiet dažas
 <translation id="4784414698887946907">Veicot šo darbību, no šīs ierīces tiks dzēsti pārlūkošanas dati. Lai vēlāk izgūtu datus, pierakstieties pārlūkā Brave kā <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Instalētājam neizdevās izveidot pagaidu katalogu. Lūdzu, pārbaudiet, vai diskā pietiek vietas un vai ir atļauja instalēt programmatūru.</translation>
 <translation id="8543787950557226450">Atiestatīt Brave noklusējuma motīvu</translation>
+<translation id="4976450819672499783">Iestatiet Brave kā noklusējuma pārlūku un piespraudiet to uzdevumu joslai</translation>
 <translation id="1978509466033734608">Pārlūka Brave darbības paātrināšana</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> — Brave Canary</translation>
 <translation id="2684504034454188774">Neļaujiet personām, kurām ir piekļuve jūsu interneta datplūsmai, viegli skatīt jūsu apmeklētās vietnes. Brave izmanto drošu savienojumu, lai meklētu vietnes IP adresi sistēmā DNS (domēnu nosaukumu sistēmā).</translation>
@@ -599,7 +610,6 @@ Jaunas grāmatzīmes nevar saglabāt jūsu kontā, kamēr neizdzēsīsiet dažas
 <translation id="7872446069773932638">Notiek lejupielāde... Atlikušais laiks: <ph name="SECONDS"/> sekunde(-es).</translation>
 <translation id="5545136190679883344">Ja aizmirstat ieejas frāzi vai vēlaties mainīt šo iestatījumu, <ph name="BEGIN_LINK"/>izdzēsiet Brave datus savā kontā<ph name="END_LINK"/>.</translation>
 <translation id="7877212753140190672">Jautāt par šo attēlu</translation>
-<translation id="7887929410013642057">Vienmēr rādīt MI režīma saīsnes</translation>
 <translation id="5687542525349822727">Iestatīt Brave kā noklusējuma pārlūku</translation>
 <translation id="6396151137840491551">Pārlūkā Brave nedrošie savienojumi tiek automātiski jaunināti uz HTTPS, ja iespējams.</translation>
 <translation id="2925193881330501265">Operētājsistēmā Brave iepriekš pierakstījāties kā lietotājs <ph name="USER_EMAIL_ADDRESS"/>. Lai pierakstītos vēlreiz, lūdzu, izmantojiet to pašu kontu.</translation>
@@ -615,9 +625,11 @@ Jaunas grāmatzīmes nevar saglabāt jūsu kontā, kamēr neizdzēsīsiet dažas
 <translation id="8086881907087796310">Instalēšana neizdevās, jo jūsu dators neatbilst minimālajām aparatūras prasībām.</translation>
 <translation id="8263061319795838019"><ph name="PAGE_TITLE"/> — Brave for Testing</translation>
 <translation id="2061155704815580583">Pārlūkam Brave ir nepieciešama atrašanās vietas atļauja šai vietnei.</translation>
+<translation id="3576319845915562805">Kad nākamreiz savā ierīcē (<ph name="DEVICE_TYPE"/>) atvērsiet pārlūku Brave, tiks parādīts aicinājums iespējot brīdinājumus par cenu izsekošanu.</translation>
 <translation id="8118331347066725040">Sūtiet atsauksmes par meklēšanu, izmantojot Lens</translation>
 <translation id="5334309298019785904">Brave OS nevarēja sinhronizēt jūsu datus, jo jūsu domēnā nav pieejama sinhronizācija.</translation>
 <translation id="813913629614996137">Notiek inicializēšana...</translation>
+<translation id="1081849497974110565">Brave pakalpojumu sniegšanas papildu noteikumi</translation>
 <translation id="9067428552314418522">Šis fails ir bīstams, tāpēc Brave to bloķēja.</translation>
 <translation id="8177472873527554730">Nevar atrast saturu lapā</translation>
 <translation id="6219250889396046657">Lai savā kontā (<ph name="USER_EMAIL"/>) izmantotu un saglabātu Brave datus, ievadiet ieejas frāzi.</translation>

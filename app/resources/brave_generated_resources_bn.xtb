@@ -19,6 +19,7 @@
 <translation id="1544192797660353713">ওয়ালেট</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">অনেক…</translation>
+<translation id="71316462802471551">ইমেল উপনামগুলি</translation>
 <translation id="1990886731975529483">Google Widevine ইনস্টল করুন এবং চালান</translation>
 <translation id="8926389886865778422">আর জিজ্ঞাসা করবেন না</translation>
 <translation id="4900351245762303149">Google Widevine ইনস্টল করুন</translation>
@@ -204,7 +205,6 @@
 <translation id="253980346046488815">ডুপ্লিকেট ট্যাব বন্ধ করুন</translation>
 <translation id="8670218546624422041">কন্টেনারে খুলুন</translation>
 <translation id="8638526693050780542">কন্টেনারগুলি পরিচালনা করুন</translation>
-<translation id="7302999361397024774">পুনরায় নামকরণ করার ট্যাব</translation>
 <translation id="2336228925368920074">সকল ট্যাব বুকমার্ক করুন...</translation>
 <translation id="2523967823495420116">ভার্টিকাল ট্যাব ব্যবহার করুন</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{ট্যাব মিউট করুন}one{ট্যাব মিউট করুন}other{ট্যাব মিউট করুন}}</translation>
@@ -215,7 +215,6 @@
 <translation id="2703180365855369896">ডুপ্লিকেট ট্যাব বন্ধ করুন</translation>
 <translation id="1987871867023021397">কন্টেনারে খুলুন</translation>
 <translation id="6745991613881384719">কন্টেনারগুলি পরিচালনা করুন</translation>
-<translation id="3917844427669888979">পুনরায় নামকরণ করার ট্যাব</translation>
 <translation id="3704707436873245822">ছবি থেকে টেক্সট কপি করুন</translation>
 <translation id="5268098808165185458">ছবি থেকে টেক্সট কপি করা হচ্ছে...</translation>
 <translation id="4046485130884276245">ছবি থেকে টেক্সট কপি করা হয়েছে</translation>
@@ -513,6 +512,10 @@
 <translation id="1199170151481311646">গোপনীয়তা সংরক্ষণকারী বিশ্লেষণ</translation>
 <translation id="5990642573624858459">পরিসংখ্যান প্রতিবেদন</translation>
 <translation id="2441719842399509963">ডিফল্ট করতে সব রিসেট করুন</translation>
+<translation id="4530494379350999373">উৎস</translation>
+<translation id="2964215604640804042">Brave Origin হল ব্রাউজারের একটি অর্থপ্রদান সংস্করণ যারা Brave কে ব্যবসা হিসেবে সমর্থন করার জন্য প্রয়োজনীয় সমস্ত বৈশিষ্ট্যের প্রয়োজন অনুভব করেন না কিন্তু তবুও শুধুমাত্র Brave যা গোপনীয়তা অফার করে তা চান তাদের জন্য। Brave Origin ব্যবহারকারীরা আমাদের শিল্প-নেতৃস্থানীয় গোপনীয়তা, বিজ্ঞাপন অবরোধক এবং গতি (Brave রক্ষাকবচের মাধ্যমে), সেইসাথে নিয়মিত সফ্টওয়্যার আপডেট, Chromium প্যাচ এবং নিরাপত্তা ও গোপনীয়তা উন্নতি থেকে উপকৃত হতে থাকবেন। তারা AI, Rewards, Wallet, VPN, Web3 ডোমেইন এবং আরও অনেক কিছুর মতো বৈশিষ্ট্যগুলি অক্ষম করার বিকল্পও আনলক করবেন।</translation>
+<translation id="9130916892338379417">Brave Origin একবার ক্রয়ের মাধ্যমে উপলব্ধ। মোবাইলে (Android এবং iOS) এবং ডেস্কটপে, Origin আপনার বিদ্যমান রিলিজ সংস্করণে আপগ্রেড হিসাবে ক্রয় করা যেতে পারে। ডেস্কটপে, Origin একটি পৃথক, স্বতন্ত্র অ্যাপ হিসাবেও উপলব্ধ। Origin ব্যবহারকারীরা সেটিংস মেনুতে একটি নতুন নিয়ন্ত্রণ প্যানেল দেখতে পাবেন। বিদ্যমান বৈশিষ্ট্য—সেইসাথে ভবিষ্যতে আমরা যে কোনও নতুন বৈশিষ্ট্য চালু করি তা—এখানে প্রদর্শিত হবে এবং ডিফল্টরূপে বন্ধ থাকবে।</translation>
+<translation id="7984508421152399880">এখনই কিনুন</translation>
 <translation id="5567412479632285879">Brave পুরস্কার নিষ্ক্রিয় করা আছে</translation>
 <translation id="413570371620795359">চালু করে শুরু করতে পুরস্কারের প্যানেল খুলুন</translation>
 <translation id="1051600834033686945">সম্পূর্ণ Brave Rewards সেটিংস খুলুন</translation>
@@ -555,7 +558,6 @@
 <translation id="5747552184818312860">মেয়াদ শেষ হবে</translation>
 <translation id="3858860766373142691">নাম</translation>
 <translation id="361106536627977100">ফ্ল্যাশ ডেটা</translation>
-<translation id="4530494379350999373">উৎস</translation>
 <translation id="8195027750202970175">ডিস্কের মাপ</translation>
 <translation id="9116465289595958864">শেষবার সংশোধন করা হয়েছে</translation>
 <translation id="4590324241397107707">ডেটাবেস সঞ্চয়স্থান</translation>
@@ -588,11 +590,6 @@
 <translation id="2903783737778379345">তৃতীয়-পক্ষের কুকিজের মাধ্যমে লিগ্যাসি Google সাইন-ইনকে অনুমতি দেবেন না</translation>
 <translation id="2570833232754279153">লিগ্যাসি Google সাইন-ইন-এর জন্য তৃতীয় পক্ষের কুকিজ ব্যবহারের অনুমতি নেই</translation>
 <translation id="6880817299303842099">লিগ্যাসি Google সাইন-ইন-এর জন্য তৃতীয় পক্ষের কুকিজ ব্যবহারের অনুমতি আছে</translation>
-<translation id="2136412236435693622">লোকালহোস্ট অ্যাক্সেস</translation>
-<translation id="4172219483893066798">সাইটগুলি লোকালহোস্টের রিসোর্সের অ্যাক্সেসের অনুরোধ করতে পারে</translation>
-<translation id="7181706637590665047">লোকালহোস্টের রিসোর্সে অ্যাক্সেস দেবেন না</translation>
-<translation id="1336116824874668514">লোকালহোস্টের রিসোর্সে অ্যাক্সেস দেওয়া নেই</translation>
-<translation id="1485435696620658073">লোকালহোস্টের রিসোর্সে অ্যাক্সেস দেওয়া রয়েছে</translation>
 <translation id="5794692721727586076">Leo AI চ্যাট</translation>
 <translation id="8115153008662981040">সাইটগুলো Leo AI চ্যাট খুলতে বলতে পারে</translation>
 <translation id="1145070115730668595">সাইটকে Leo AI চ্যাট খোলার অনুমতি দেবেন না</translation>

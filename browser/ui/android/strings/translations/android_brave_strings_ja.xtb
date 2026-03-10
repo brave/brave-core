@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">サイトは、サードパーティのCookieを介して、レガシーのGoogleサインインの利用を求めることができる</translation>
 <translation id="2903783737778379345">サードパーティCookieを使用したレガシーのGoogleサインインを許可しない</translation>
 <translation id="6880817299303842099">レガシーのGoogleサインインにサードパーティCookieの使用を許可する</translation>
-<translation id="2136412236435693622">Localhostのアクセス</translation>
-<translation id="4172219483893066798">サイトがLocalhostのリソースへのアクセスを要求可能</translation>
-<translation id="7181706637590665047">Localhostのリソースへのアクセスを許可しない</translation>
-<translation id="1485435696620658073">Localhostのリソースへのアクセスを許可</translation>
 <translation id="181905442828471321">Brave Shields グローバルデフォルト</translation>
 <translation id="2675679258824361492">その他のプライバシー設定</translation>
 <translation id="8026334261755873520">閲覧履歴データの削除</translation>
@@ -223,6 +219,7 @@
 <translation id="4225265925807365011">24語のリカバリーフレーズをお持ちの方</translation>
 <translation id="3570367516044491911">デフォルトのブラウザに設定</translation>
 <translation id="6800338374677644736">デフォルトのブラウザとして設定</translation>
+<translation id="1545749641540134597">QRコードをスキャンする</translation>
 <translation id="5317781812114905957">手順</translation>
 <translation id="8515319483805157233">QRコードで検索するには、フレームの中心にQRコードを合わせます。</translation>
 <translation id="7658239707568436148">キャンセル</translation>
@@ -424,6 +421,13 @@
 <translation id="7141438739990875547">Bitcoinネットワーク</translation>
 <translation id="9055546041146396417">ウェブサイトが正常に動作していないように見える場合は、Shieldをオフにしてみてください。</translation>
 <translation id="7898672232170410330">要素を指定してブロック</translation>
+<translation id="9064628362799094520">サイトのデータを削除</translation>
+<translation id="8949611615512336262">自動削除: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">サイトデータを削除</translation>
+<translation id="6795622376590884449">自動削除</translation>
+<translation id="7961015016161918242">使用しない</translation>
+<translation id="1991004083507807299">サイトタブの終了時</translation>
+<translation id="5827277414420724690">アプリの終了時</translation>
 <translation id="1209739344687072997">サイト表示の不具合を報告</translation>
 <translation id="8510478288840333677">Shieldを使うとこのサイトが適切に動作しないことをBraveの開発者に知らせましょう：</translation>
 <translation id="1653405824851871276">Braveの改善に向けてのご協力をいただきありがとうございます。このレポートには、このサイトを修正するために必要な情報のみが含まれています。<ph name="LEARN_MORE"/></translation>
@@ -1076,7 +1080,7 @@
 <translation id="1336494649091412226">Braveを 終了しますか？</translation>
 <translation id="6061635824229591714">サイトデータを削除しますか？</translation>
 <translation id="1265051174491933207">削除を選択すると、すべての「<ph name="SITE_NAME"/>」のタブが閉じられ、サイトデータがすべて削除されます。これは元に戻せません。</translation>
-<translation id="4279349293084858577">削除</translation>
+<translation id="5528772406060281700">サイトデータを削除</translation>
 <translation id="4426990318287827331">データを削除</translation>
 <translation id="7942415993090181327">チャット履歴</translation>
 <translation id="6859935199732075666">セーフ ブラウジングのエラーを表示</translation>

@@ -166,10 +166,6 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="9110294136812584522">Saytlar köhnə Google Giriş funksiyasını üçüncü tərəf kukiləri vasitəsilə istifadə etmək üçün sorğu göndərə bilər</translation>
 <translation id="2903783737778379345">Üçüncü tərəf kukiləri ilə köhnə Google Giriş funksiyasına icazə vermə</translation>
 <translation id="6880817299303842099">Köhnə Google Giriş funksiyası üçün üçüncü tərəf kukilərindən istifadə etməyə icazə verilib</translation>
-<translation id="2136412236435693622">Localhost girişi</translation>
-<translation id="4172219483893066798">Saytlar localhost resurslarına giriş üçün sorğu göndərə bilər</translation>
-<translation id="7181706637590665047">Localhost resurslarına girişə icazə vermə</translation>
-<translation id="1485435696620658073">Localhost resurslarına girişə icazə verilib</translation>
 <translation id="181905442828471321">Brave Qalxanlarının qlobal defaultları</translation>
 <translation id="2675679258824361492">Digər məxfilik ayarları</translation>
 <translation id="8026334261755873520">Gözatma məlumatlarını təmizlə</translation>
@@ -420,6 +416,13 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="7141438739990875547">Bitcoin şəbəkələri</translation>
 <translation id="9055546041146396417">Bu saytda nasazlıq varsa Qalxanlardan istifadə edin.</translation>
 <translation id="7898672232170410330">Elementi blokla</translation>
+<translation id="9064628362799094520">Sayt məlumatlarını məhv edək</translation>
+<translation id="8949611615512336262">Avtomatik məhv: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">İndi sayt məlumatlarını məhv edək</translation>
+<translation id="6795622376590884449">Avtomatik məhv</translation>
+<translation id="7961015016161918242">Heç vaxt</translation>
+<translation id="1991004083507807299">Sayt vərəqəsi bağlandı</translation>
+<translation id="5827277414420724690">Tətbiq bağlanması</translation>
 <translation id="1209739344687072997">Nasaz sayt haqqında bildirin</translation>
 <translation id="8510478288840333677">Brave-in programistlərinə bu saytın Təhlükəsizlik Qalxanları ilə düzgün işləmədiyini bildirin:</translation>
 <translation id="1653405824851871276">Brave-i yaxşılaşdırmaqda kömək etdiyiniz üçün təşəkkür edirik. Bu hesabat yalnız bu saytı düzəltmək üçün zəruri məlumatları əhatə edəcək. <ph name="LEARN_MORE"/></translation>
@@ -1075,7 +1078,7 @@ Lütfən, bizimlə bölüşməyə rahat olduğunuz məlumatları seçin.
 <translation id="1336494649091412226">Brave-dən çıxmaq istədiyinizə əminsiniz?</translation>
 <translation id="6061635824229591714">Sayt məlumatlarını məhv edək?</translation>
 <translation id="1265051174491933207">Məlumatların məhv edilməsi sayt məlumatlarını siləcək və '<ph name="SITE_NAME"/>' adlı bütün vərəqləri bağlayacaq. Bu əməl geri alına bilməz.</translation>
-<translation id="4279349293084858577">Məhv et</translation>
+<translation id="5528772406060281700">Sayt məlumatlarını məhv edək</translation>
 <translation id="4426990318287827331">Məlumatları məhv et</translation>
 <translation id="7942415993090181327">Söhbət tarixçəsi</translation>
 <translation id="6859935199732075666">Güvənli Gəzinti səhvlərini göstər</translation>

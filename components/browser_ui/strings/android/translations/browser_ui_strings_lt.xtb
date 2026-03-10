@@ -3,20 +3,24 @@
 <translationbundle lang="lt">
 <translation id="1006017844123154345">Atidaryti prisijungus</translation>
 <translation id="1036348656032585052">Išjungti</translation>
+<translation id="1046742265332833834">Mėlyna tema</translation>
 <translation id="1070329623210597193">Failai, kuriuos ši svetainė gali peržiūrėti arba redaguoti</translation>
 <translation id="1882093842020941518">Padėkite mums tobulinti „Brave“ nurodydami, kodėl leidote trečiųjų šalių slapukus. <ph name="BEGIN_LINK"/>Išsiųskite atsiliepimą<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Galite prašyti peržiūrėti svetainių versiją staliniams kompiuteriams</translation>
 <translation id="9183227624343766158">„Brave“ naudojimas pagal numatytuosius nustatymus</translation>
 <translation id="113098737392899175">Naršykite puslapius naudodami teksto žymeklį, kai prijungta klaviatūra</translation>
+<translation id="738393714577080438">Slaptažodžių išsaugojimas naršyklėje „Brave“</translation>
 <translation id="1178015372320901893">Mano sparčiųjų klavišų apatinis lapas</translation>
 <translation id="1178581264944972037">Pristabdyti</translation>
 <translation id="1181037720776840403">Pašalinti</translation>
 <translation id="1192844206376121885">Bus ištrinti visi domeno <ph name="ORIGIN"/> saugomi duomenys ir slapukai.</translation>
+<translation id="1199963004393929848">Žalia tema</translation>
 <translation id="1201402288615127009">Kitas</translation>
 <translation id="3251315496493761426">„Brave“ patarimai</translation>
 <translation id="1242008676835033345">Įterpta <ph name="WEBSITE_URL"/></translation>
 <translation id="1263609676484797429">Palieskite „Programos“ &gt; „Numatytosios programos“</translation>
 <translation id="1272079795634619415">Sustabdyti</translation>
+<translation id="1275718070701477396">Pasirinkta</translation>
 <translation id="8010562420973777575">Siekdama apsaugoti jūsų duomenis, „Brave“ optimizavo šio puslapio vaizdus.</translation>
 <translation id="129382876167171263">Svetainių išsaugoti failai rodomi čia</translation>
 <translation id="131112695174432497">Duomenys, turintys įtakos suasmeninant skelbimus, ištrinami</translation>
@@ -35,6 +39,7 @@
 <translation id="1741136041592162279">Leiskite „Brave“ bendrinti naujausius skirtukus su įrenginiu, kad juos matytumėte įrenginio programų sąraše ir paieškos rezultatuose. Galite įjungti arba išjungti tai „Brave“ nustatymuose.</translation>
 <translation id="1420688843103859429">Eikite atgal ir pirmyn perbraukdami dviem pirštais jutiklinėje dalyje</translation>
 <translation id="1432650420699700107">Svetainės gali prašyti prisijungti prie bet kurio įrenginio vietiniame tinkle</translation>
+<translation id="1442081309487427303">Įjungti Teksto perskaitymo režimo nuorodas</translation>
 <translation id="1448064542941920355">Sumažinti mastelį</translation>
 <translation id="1464044141348608623">Neleisti svetainėms sužinoti, kada aktyviai naudojate įrenginį</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> svetainė}one{<ph name="SITE_COUNT"/> svetainė}few{<ph name="SITE_COUNT"/> svetainės}many{<ph name="SITE_COUNT"/> svetainės}other{<ph name="SITE_COUNT"/> svetainių}}</translation>
@@ -47,6 +52,8 @@
 <translation id="1547123415014299762">Trečiųjų šalių slapukai leidžiami</translation>
 <translation id="3665719978526894928">Paspartinti svetaines naudojant „Brave“ V8 variklį, bet padaryti „Brave“ šiek tiek mažiau atsparią atakoms</translation>
 <translation id="1593426485665524382">Nauji veiksmai pasiekiami netoli ekrano viršaus</translation>
+<translation id="1594521731409209842">Suimkite ekraną, kad pakeistumėte nuotraukos dydį</translation>
+<translation id="1601560923496285236">Taikyti</translation>
 <translation id="1615755956145364867">Svetainėse gali būti prašoma leisti apsaugotą turinį</translation>
 <translation id="1620510694547887537">Kamera</translation>
 <translation id="1621729191093924223">Funkcijos, kurioms reikalingas mikrofonas, neveiks</translation>
@@ -67,6 +74,7 @@
 <translation id="2534291364429593865">Gaukite „Brave“ patarimų pranešimus</translation>
 <translation id="1777815584158991902">„Discover“ sklaidos kanalo apatinis lapas</translation>
 <translation id="1779089405699405702">Vaizdų dekoderis</translation>
+<translation id="1781533683087883868">Išjungti Teksto perskaitymo režimo nuorodas</translation>
 <translation id="1785415724048343560">Rekomenduojama siekiant užtikrinti geriausią patirtį</translation>
 <translation id="1796588414813960292">Funkcijos, kurioms reikalingas garsas, neveiks</translation>
 <translation id="7401204338724669842">„Brave“ patarimai</translation>
@@ -169,6 +177,7 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="2682367912565197520">Ištrinti išsaugotą mastelio lygį</translation>
 <translation id="2683434792633810741">Ištrinti ir nustatyti iš naujo?</translation>
 <translation id="2685514716378236873">Neleidžiama</translation>
+<translation id="2710883118091822664">Prisijunkite, kad galėtumėte lengvai tęsti visuose įrenginiuose</translation>
 <translation id="2713106313042589954">Išjungti fotoaparatą</translation>
 <translation id="2717722538473713889">El. pašto adresai</translation>
 <translation id="8181634240306014548">Paleiskite „Brave“ su aktyviu „Omnibox“, kad sumažėtų paleidimo laikas žemesnės klasės įrenginiuose.</translation>
@@ -196,6 +205,7 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="3004438526346162184">Svetainės gali naudoti šią funkciją, kad galėtų tvarkyti langus visuose ekranuose</translation>
 <translation id="3008272652534848354">Iš naujo nustatyti leidimus</translation>
 <translation id="301521992641321250">Automatiškai užblokuota</translation>
+<translation id="3026311960038210">Temų rinkiniai</translation>
 <translation id="3064871050034234884">Svetainėse galima leisti garsus</translation>
 <translation id="3065787901655140044">Papildoma apsauga įjungta</translation>
 <translation id="3069226013421428034">Leisti trečiajai šaliai prisijungti prie konkrečios svetainės.</translation>
@@ -215,6 +225,7 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="3167868116600277716">„Discover“ sklaidos kanalas</translation>
 <translation id="3198916472715691905">Išsaugota duomenų: <ph name="STORAGE_AMOUNT"/></translation>
 <translation id="3199078925536734975">Leidžiama šį kartą • Apytikslė</translation>
+<translation id="3208584281581115441">Tikrinti dabar</translation>
 <translation id="321187648315454507">Norėdami leisti „<ph name="APP_NAME"/>“ siųsti pranešimus, taip pat įjunkite juos <ph name="BEGIN_LINK"/>„Android“ nustatymuose<ph name="END_LINK"/>.</translation>
 <translation id="3223425961342298674">Vietovė neleidžiama</translation>
 <translation id="3227137524299004712">Mikrofonas</translation>
@@ -262,6 +273,7 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="3721953990244350188">Atsisakyti ir rodyti kitą galimą veiksmą</translation>
 <translation id="3744111561329211289">Fono sinchronizavimas</translation>
 <translation id="3746834924069123416">Žr. daugiau naujausių skirtukų</translation>
+<translation id="3753618528540214374">Mėlynai žalia tema</translation>
 <translation id="3763247130972274048">Dukart palieskite vaizdo įrašą, kad praleistumėte 10 sek.</translation>
 <translation id="3776508619697147021">Svetainėse gali būti prašoma automatiškai atsisiųsti kelis failus</translation>
 <translation id="3779154269823594982">Keisti slaptažodžius</translation>
@@ -271,6 +283,7 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="381841723434055211">Telefono numeriai</translation>
 <translation id="3823453485268218808">Šriftas: lygiaplotis</translation>
 <translation id="3826050100957962900">Trečiosios šalies prisijungimas</translation>
+<translation id="3831065134033923230">Išsaugotų slaptažodžių patikrinimas</translation>
 <translation id="3835233591525155343">Įrenginio naudojimas</translation>
 <translation id="1799795508209440035">„Brave“ vėl užblokuos slapukus šiandien</translation>
 <translation id="385051799172605136">Atgal</translation>
@@ -280,6 +293,7 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="3903738175795615004">Vilkite nuo viršaus arba paspauskite „Esc“, kad išeitumėte iš viso ekrano režimo.</translation>
 <translation id="3905475044299942653">Daugybės pranešimų sustabdymas</translation>
 <translation id="3922092564198021702">Telefone atidarykite skiltį „Nustatymai“</translation>
+<translation id="3924858949939391676">Rodyti nuorodas, kai įjungtas Teksto perskaitymo režimas</translation>
 <translation id="3933121352599513978">Sutraukti nepageidaujamas užklausas (rekomenduojama)</translation>
 <translation id="3934905113567851655">Dydį pakeisite suimdami</translation>
 <translation id="3955193568934677022">Leisti svetainėms paleisti apsaugotą turinį (rekomenduojama)</translation>
@@ -333,6 +347,7 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="4478158430052450698">Lengviau tinkinti mastelį skirtingose svetainėse</translation>
 <translation id="4479647676395637221">Pirmiausia klausti prieš leidžiant svetainėms naudoti kamerą (rekomenduojama)</translation>
 <translation id="4505788138578415521">URL išskleistas</translation>
+<translation id="4523472416386354622">Prisijungti ir pradėti</translation>
 <translation id="4534723447064627427">Norėdami leisti „<ph name="APP_NAME"/>“ pasiekti jūsų mikrofoną, taip pat įjunkite jį <ph name="BEGIN_LINK"/>„Android“ nustatymuose<ph name="END_LINK"/>.</translation>
 <translation id="4566417217121906555">Nutildyti mikrofoną</translation>
 <translation id="4570913071927164677">Išsami informacija</translation>
@@ -342,6 +357,7 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="4644713492825682049">Ištrinti ir nustatyti iš naujo</translation>
 <translation id="4645575059429386691">Tvarko vienas iš jūsų tėvų</translation>
 <translation id="4652266463001779298">Neleidžiama</translation>
+<translation id="4655846733459137112">Palieskite „Taip“, kad galėtumėte lengvai naudoti šį slaptažodį, kai kitą kartą prisijungsite</translation>
 <translation id="4663373278480897665">Fotoaparatas leidžiamas</translation>
 <translation id="4670064810192446073">Virtualioji realybė</translation>
 <translation id="5652778654712411580">Palieskite „Naršyklės programą“, tada palieskite „Brave“</translation>
@@ -387,6 +403,7 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="512938610812707830">Naujo skirtuko puslapio išvaizdos temų rinkinių apatinis lapas atidarytas per visą ekrano aukštį</translation>
 <translation id="5137460097045297858">„Discover“ sklaidos kanalo apatinis lapas atidarytas iki pusės ekrano aukščio</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{Sumažinta kaina atidarytuose skirtukuose}one{Sumažinta kaina atidarytuose skirtukuose}few{Sumažinta kaina atidarytuose skirtukuose}many{Sumažinta kaina atidarytuose skirtukuose}other{Sumažinta kaina atidarytuose skirtukuose}}</translation>
+<translation id="5150048675001754041">Greitai ir lengvai prisijunkite prie svetainių ir programų</translation>
 <translation id="5186036860380548585">Parinktis pasiekiama netoli ekrano viršaus</translation>
 <translation id="5197729504361054390">Pasirinkti kontaktai bus bendrinami su <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="5198930230016462977">Naujo skirtuko puslapio tinkinimo apatinis lapas uždarytas</translation>
@@ -445,6 +462,7 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="5804241973901381774">Leidimai</translation>
 <translation id="5817042798620209981">Svetainės informacija, dialogo langas</translation>
 <translation id="5822675474983796325">Naujo skirtuko puslapio tinkinimo apatinis lapas atidarytas per visą ekrano aukštį</translation>
+<translation id="4298364316773778595">Slaptažodžių išsaugojimo instrukcijų apatinis lapas naršyklėje „Brave“</translation>
 <translation id="5833899990800318936">Neleisti svetainėms naudoti „JavaScript“</translation>
 <translation id="583673505367439042">Svetainėse gali būti prašoma redaguoti failus ir aplankus jūsų įrenginyje</translation>
 <translation id="5844448279347999754">Įjungus svetainėse gali būti prašoma peržiūrėti tekstą ir vaizdus, išsaugotus jūsų iškarpinėje. Išjungus svetainės negali matyti teksto ar vaizdų, išsaugotų jūsų iškarpinėje.</translation>
@@ -471,6 +489,7 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="5998071268779572583">Įjungti „Discover“ sklaidos kanalą</translation>
 <translation id="6012967556075291653">Prisegtas šaukinys</translation>
 <translation id="6015775454662021376">Valdykite šios svetainės prieigą prie jūsų įrenginio</translation>
+<translation id="296137235951584143">Suasmeninkite „Brave“</translation>
 <translation id="6040143037577758943">Uždaryti</translation>
 <translation id="6042308850641462728">Daugiau</translation>
 <translation id="6064125863973209585">Baigti atsisiuntimai</translation>
@@ -478,6 +497,7 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="6085954183010297841">Ištrinti failo redagavimo leidimą? <ph name="FILE"/></translation>
 <translation id="6104860901391833523">Įjungus svetainėse galima automatiškai įjungti vaizdo vaizde režimą. Išjungus svetainėse negalima automatiškai įjungti vaizdo vaizde režimo.</translation>
 <translation id="6120483543004435978">Įjungus svetainėse gali būti prašoma leisti sužinoti, kada aktyviai naudojate įrenginį. Išjungus svetainės nežino, kada aktyviai naudojate įrenginį.</translation>
+<translation id="4852158809106762963">„Brave“ pasiūlys išsaugoti slaptažodį</translation>
 <translation id="615886654739818377">Neleisti svetainėms tvarkyti langų visuose ekranuose</translation>
 <translation id="6165508094623778733">Sužinokite daugiau</translation>
 <translation id="6171020522141473435">Įjungus svetainėse gali būti prašoma naudoti „Bluetooth“ įrenginius. Išjungus svetainėse negalima naudoti „Bluetooth“ įrenginių.</translation>
@@ -488,13 +508,13 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="6196640612572343990">Blokuoti trečiosios šalies slapukus</translation>
 <translation id="6205314730813004066">Su skelbimais susijęs privatumas</translation>
 <translation id="6207207788774442484">Ištrinti duomenis ir iš naujo nustatyti leidimus</translation>
+<translation id="6218508144653756827">Fuksijų spalvos tema</translation>
 <translation id="6231752747840485235">Pašalinti „<ph name="APP_NAME"/>“?</translation>
 <translation id="4789073065838177382">Palieskite „Naršyklės programa“ &gt; „Brave“</translation>
 <translation id="6260830281887654268">Naujo skirtuko puslapio išvaizdos temų rinkinių apatinis lapas atidarytas iki pusės ekrano aukščio</translation>
 <translation id="6262191102408817757">Pagal paskutinį skirtuką</translation>
 <translation id="6262279340360821358">Užblokuota: <ph name="PERMISSION_1"/> ir <ph name="PERMISSION_2"/></translation>
 <translation id="6270391203985052864">Svetainės gali prašyti siųsti pranešimus</translation>
-<translation id="6278428485366576908">Tema</translation>
 <translation id="6295158916970320988">Visos svetainės</translation>
 <translation id="6320088164292336938">Vibruoti</translation>
 <translation id="6367753977865761591">Blokuoti trečiosios šalies prisijungimą prie konkrečios svetainės.</translation>
@@ -513,6 +533,7 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="6545864417968258051">„Bluetooth“ nuskaitymas</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{Užblokuota: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ir dar <ph name="NUM_MORE"/>}one{Užblokuota: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ir dar <ph name="NUM_MORE"/>}few{Užblokuota: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ir dar <ph name="NUM_MORE"/>}many{Užblokuota: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ir dar <ph name="NUM_MORE"/>}other{Užblokuota: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ir dar <ph name="NUM_MORE"/>}}</translation>
 <translation id="6554732001434021288">Paskutinį kartą lankytasi prieš <ph name="NUM_DAYS"/> d.</translation>
+<translation id="6556866813142980365">Grąžinti</translation>
 <translation id="6557290421156335491">Mano spartieji klavišai</translation>
 <translation id="656065428026159829">Žr. daugiau</translation>
 <translation id="6561560012278703671">Naudoti tylesnio susirašinėjimo funkcijas (blokuojami pranešimų įspėjimai, kad jūsų neblaškytų)</translation>
@@ -521,6 +542,7 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="659938948789980540">{COUNT,plural, =1{Slapukai leidžiami <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> svetainėje}one{Slapukai leidžiami <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> svetainėje}few{Slapukai leidžiami <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> svetainėse}many{Slapukai leidžiami <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> svetainės}other{Slapukai leidžiami <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> svetainių}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
 <translation id="6612358246767739896">Apsaugotas turinys</translation>
+<translation id="6619015782482868078">Akvamarino tema</translation>
 <translation id="662080504995468778">Likti</translation>
 <translation id="6630443592285535486">Čia įveskite šešioliktainį kodą</translation>
 <translation id="6635327442719709864">Įjungus svetainėse gali būti prašoma naudoti nuosekliuosius prievadus. Išjungus svetainėse negalima naudoti nuosekliųjų prievadų.</translation>
@@ -549,9 +571,11 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="6945221475159498467">Pasirinkti</translation>
 <translation id="6950072572526089586">Svetainė, kurioje lankotės, gali išsaugoti informaciją apie jūsų atliktus veiksmus, kad galėtų veikti taip, kaip numatyta, pvz., kad liktumėte prisijungę prie svetainės arba galėtumėte išsaugoti prekes pirkinių krepšelyje. Dažnai svetainės laikinai išsaugo šią informaciją įrenginyje.</translation>
 <translation id="6965382102122355670">Gerai</translation>
+<translation id="6980507581230208647">Rožinė tema</translation>
 <translation id="6980861169612950611">Ištrinti svetainės duomenis? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Pritaikymas neįgaliesiems</translation>
 <translation id="6991142177939282156">Leidžiama • Naudojama apytikslė vietovė</translation>
+<translation id="6992014788289743568">Sustiprinkite saugą ir apsaugokite duomenis patikrinę slaptažodžius</translation>
 <translation id="6992289844737586249">Pirmiausia klausti prieš leidžiant svetainėms naudoti mikrofoną (rekomenduojama)</translation>
 <translation id="7000754031042624318">Išjungta „Android“ nustatymuose</translation>
 <translation id="8683151724374457021">Ši svetainė nustato, kas jums patinka, ir siūlo skelbimus, nukreipiančius į kitas svetaines. Ši svetainė taip pat gauna informaciją apie skelbimų temas iš „Brave“, kad galėtų rodyti jums aktualesnius skelbimus.</translation>
@@ -577,6 +601,7 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="7250468141469952378">Pasirinkta: <ph name="ITEM_COUNT"/></translation>
 <translation id="7260727271532453612">Leidžiama: <ph name="PERMISSION_1"/> ir <ph name="PERMISSION_2"/></translation>
 <translation id="7276071417425470385">Įjungus svetainėse gali būti prašoma naudoti virtualiosios realybės įrenginius. Išjungus svetainėse negalima naudoti virtualiosios realybės įrenginių.</translation>
+<translation id="7282197670900591579">Citrinų spalvos tema</translation>
 <translation id="728412880473384942">Svetainės bus spartesnės, bet mažiau saugios</translation>
 <translation id="7366415735885268578">Svetainės pridėjimas</translation>
 <translation id="7368695150573390554">Visi duomenys ne iš interneto bus ištrinti</translation>
@@ -615,7 +640,9 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="5455732060086060613">Slėpti „Brave“ patarimų kortelę</translation>
 <translation id="7719367874908701697">Puslapio mastelis</translation>
 <translation id="775043444390799886">Anuliuoti leidimą</translation>
+<translation id="7758789811447313947">Violetinė tema</translation>
 <translation id="7759147511335618829">MIDI įrenginio valdymas ir programavimas iš naujo</translation>
+<translation id="7771089277295008211">Slaptažodžių išsaugojimo instrukcijų apatinis lapas uždarytas</translation>
 <translation id="7781829728241885113">Vakar</translation>
 <translation id="7791543448312431591">Pridėti</translation>
 <translation id="780301667611848630">Ačiū, ne</translation>
@@ -633,6 +660,8 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="7940722705963108451">Priminti</translation>
 <translation id="7948081750384205628">Sužinokite daugiau apie nustatytmą „<ph name="SETTING_TITLE"/>“</translation>
 <translation id="7952708427581814389">Svetainėse gali būti prašoma peržiūrėti tekstą ir vaizdus jūsų iškarpinėje</translation>
+<translation id="7958779728312669715">Slaptažodžių išsaugojimo instrukcijų apatinis lapas visiškai atidarytas</translation>
+<translation id="798299424881500862">Oranžinė tema</translation>
 <translation id="7986741934819883144">Pasirinkite kontaktą</translation>
 <translation id="7990211076305263060">Įjungus svetainėse gali būti prašoma naudoti mikrofoną. Išjungus svetainės negali naudoti mikrofono.</translation>
 <translation id="8007176423574883786">Išjungta šiame įrenginyje</translation>
@@ -728,6 +757,7 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="7532165358672313130">Jums naršant toliau, svetainės gali tikrinti sistemoje „Brave“ ir iš ankstesnės svetainės, kurioje lankėtės, patvirtinti, kad tikriausiai esate realus asmuo</translation>
 <translation id="8899807382908246773">Nepageidaujami skelbimai</translation>
 <translation id="8903921497873541725">Artinti</translation>
+<translation id="8919911527569629802">Prisijunkite prie bet kurios svetainės</translation>
 <translation id="8921772741368021346"><ph name="POSITION"/> / <ph name="DURATION"/></translation>
 <translation id="8926389886865778422">Neklauskite dar kartą</translation>
 <translation id="8926666909099850184">ALR išjungtas šiame įrenginyje. Įjunkite ALR <ph name="BEGIN_LINK"/>„Android“ nustatymuose<ph name="END_LINK"/>.</translation>
@@ -755,6 +785,7 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="9182556968660520230">Neleisti svetainėms leisti apsaugoto turinio</translation>
 <translation id="947156494302904893">Svetainės, kuriose lankotės, gali patvirtinti, kad esate realus asmuo, o ne robotas</translation>
 <translation id="959682366969460160">Sutvarkykite</translation>
+<translation id="960590623979248167">Rodyti hipersaitus</translation>
 <translation id="961930410699694996">Vietovės informacija leidžiama šį kartą</translation>
 <translation id="967624055006145463">Saugomi duomenys</translation>
 <translation id="969975166333045662">Užblokuoti svetainę, kad nenaudotų V8 optimizavimo priemonės.</translation>

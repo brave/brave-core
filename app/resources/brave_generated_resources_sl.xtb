@@ -19,6 +19,7 @@
 <translation id="1544192797660353713">Denarnica</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Več…</translation>
+<translation id="71316462802471551">E-poštni vzdevki</translation>
 <translation id="1990886731975529483">Namesti in zaženi Google Widevine</translation>
 <translation id="8926389886865778422">Ne sprašuj več</translation>
 <translation id="4900351245762303149">Namesti Google Widevine</translation>
@@ -206,7 +207,6 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="253980346046488815">Zapri podvojene zavihke</translation>
 <translation id="8670218546624422041">Odpri v vsebniku</translation>
 <translation id="8638526693050780542">Upravljaj vsebnike</translation>
-<translation id="7302999361397024774">Preimenuj zavihek</translation>
 <translation id="2336228925368920074">Dodaj vse zavihke med zaznamke ...</translation>
 <translation id="2523967823495420116">Uporabite navpične zavihke</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{Izklop zvoka zavihka}one{Izklop zvoka zavihkov}two{Izklop zvoka zavihkov}few{Izklop zvoka zavihkov}other{Izklop zvoka zavihkov}}</translation>
@@ -217,7 +217,6 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="2703180365855369896">Zapri podvojene zavihke</translation>
 <translation id="1987871867023021397">Odpri v vsebniku</translation>
 <translation id="6745991613881384719">Upravljaj vsebnike</translation>
-<translation id="3917844427669888979">Preimenuj zavihek</translation>
 <translation id="3704707436873245822">Kopiraj besedilo s slike</translation>
 <translation id="5268098808165185458">Kopiranje besedila s slike...</translation>
 <translation id="4046485130884276245">Besedilo kopirano s slike</translation>
@@ -516,6 +515,10 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="1199170151481311646">Analitika, ki ohranja zasebnost</translation>
 <translation id="5990642573624858459">Poročanje o statističnih podatkih</translation>
 <translation id="2441719842399509963">Ponastavitev na privzete nastavitve</translation>
+<translation id="4530494379350999373">Izvor</translation>
+<translation id="2964215604640804042">Brave Origin je plačana različica brskalnika za uporabnike, ki ne potrebujejo vseh funkcij, ki podpirajo Brave kot podjetje, vendar še vedno želijo zasebnost, ki jo nudi samo Brave. Uporabniki Brave Origin bodo še naprej imeli koristi od naše vrhunske zasebnosti, blokatorja oglasov in hitrosti (prek Brave Ščiti), ter rednih posodobitev programske opreme, Chromium popravkov ter izboljšav varnosti in zasebnosti. Odklenili bodo tudi možnost onemogočanja funkcij, kot so AI, Nagrada, Denarnica, VPN, Web3 domene in še več.</translation>
+<translation id="9130916892338379417">Brave Origin je na voljo preko nakupa z enkratnim plačilom. Na mobilnih napravah (Android in iOS) in namiznih računalnikih je Origin mogoče kupiti kot nadgradnjo vaše obstoječe različice izdaje. Na namiznih računalnikih je Origin na voljo tudi kot samostojna aplikacija. Uporabniki Origin bodo videli novo kontrolno ploščo v meniju Nastavitve. Obstoječe funkcije – kot tudi vse nove funkcije, ki jih bomo poslali v prihodnosti – se bodo pojavile tukaj in bodo privzeto izključene.</translation>
+<translation id="7984508421152399880">Kupi zdaj</translation>
 <translation id="5567412479632285879">Brave Rewards je onemogočen</translation>
 <translation id="413570371620795359">Odprite ploščo z nagradami in začnite</translation>
 <translation id="1051600834033686945">Odprite celotne nastavitve Brave Nagrade</translation>
@@ -558,7 +561,6 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="5747552184818312860">Poteče</translation>
 <translation id="3858860766373142691">Ime</translation>
 <translation id="361106536627977100">Podatki Flash</translation>
-<translation id="4530494379350999373">Izvor</translation>
 <translation id="8195027750202970175">Velikost na disku</translation>
 <translation id="9116465289595958864">Nazadnje spremenjeno</translation>
 <translation id="4590324241397107707">Shramba zbirke podatkov</translation>
@@ -591,11 +593,6 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="2903783737778379345">Spletnim mestom ne dovolite stare prijave v Google</translation>
 <translation id="2570833232754279153">Uporaba piškotkov tretjih oseb za stare prijave v Google ni dovoljena</translation>
 <translation id="6880817299303842099">Uporabo piškotkov tretjih oseb za stare prijave v Google je dovoljena</translation>
-<translation id="2136412236435693622">Dostop lokalnega gostitelja</translation>
-<translation id="4172219483893066798">Spletna mesta lahko zahtevajo dostop do virov lokalnega gostitelja</translation>
-<translation id="7181706637590665047">Ne dovoli dostopa do virov lokalnega gostitelja</translation>
-<translation id="1336116824874668514">Ni dovoljen dostop do virov lokalnega gostitelja</translation>
-<translation id="1485435696620658073">Dovoljen dostop do virov lokalnega gostitelja</translation>
 <translation id="5794692721727586076">Klepet Leo AI</translation>
 <translation id="8115153008662981040">Spletna mesta lahko zahtevajo odpiranje klepeta Leo AI</translation>
 <translation id="1145070115730668595">Ne dovoli, da spletna stran odpre klepet Leo AI</translation>
