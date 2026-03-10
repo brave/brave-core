@@ -13,19 +13,19 @@ import Web
 
 /// View for displaying site-specific Shred settings
 struct ShredSiteSettingsView: View {
-  @ObservedObject private var settings: DomainSettings
+  @ObservedObject private var viewModel: ShieldsSettingsViewModel
   private let shredSiteDataNow: () -> Void
   @State private var showConfirmation = false
 
-  init(url: URL, isPersistent: Bool, tab: some TabState, shredSiteDataNow: @escaping () -> Void) {
-    self.settings = DomainSettings(url: url, isPrivate: !isPersistent, tab: tab)
+  init(viewModel: ShieldsSettingsViewModel, shredSiteDataNow: @escaping () -> Void) {
+    self.viewModel = viewModel
     self.shredSiteDataNow = shredSiteDataNow
   }
 
   var body: some View {
     Form {
       Section {
-        FormPicker(selection: $settings.shredLevel) {
+        FormPicker(selection: $viewModel.autoShredLevel) {
           ForEach(SiteShredLevel.allCases) { level in
             Text(level.localizedTitle)
               .foregroundColor(Color(.secondaryBraveLabel))
@@ -56,7 +56,9 @@ struct ShredSiteSettingsView: View {
           }
         )
       } header: {
-        Text(settings.url.displayURL?.baseDomain ?? settings.url.absoluteString)
+        Text(
+          viewModel.visibleURL?.displayURL?.baseDomain ?? viewModel.visibleURL?.absoluteString ?? ""
+        )
       }.listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .scrollContentBackground(.hidden)
@@ -82,16 +84,6 @@ struct ShredSiteSettingsView: View {
   }
 }
 
-#Preview {
-  ShredSiteSettingsView(
-    url: URL(string: "https://brave.com")!,
-    isPersistent: false,
-    tab: FakeTabState()
-  ) {
-    // Do nothing
-  }
-}
-
 extension SiteShredLevel: Identifiable {
   public var id: String {
     return rawValue
@@ -106,100 +98,5 @@ extension SiteShredLevel: Identifiable {
     case .appExit:
       return Strings.Shields.shredOnAppClose
     }
-  }
-}
-
-@MainActor class DomainSettings: ObservableObject {
-  let url: URL
-  let isPrivate: Bool
-  let tab: any TabState
-
-  @Published var shredLevel: SiteShredLevel {
-    didSet {
-      tab.braveShieldsHelper?.setShredLevel(shredLevel, for: url)
-    }
-  }
-
-  init(url: URL, isPrivate: Bool, tab: some TabState) {
-    self.url = url
-    self.isPrivate = isPrivate
-    self.tab = tab
-    self.shredLevel =
-      tab.braveShieldsHelper?.shredLevel(
-        for: url,
-        considerAllShieldsOption: false
-      ) ?? .never
-  }
-}
-
-/// A wrapper controller for the ShredSettingsView which will set the correct size based on trait collection changes
-class ShredSettingsHostingController: UIHostingController<ShredSiteSettingsView> {
-  init(
-    url: URL,
-    isPersistent: Bool,
-    tab: some TabState,
-    shredSiteDataNow: @escaping () -> Void
-  ) {
-    super.init(
-      rootView: ShredSiteSettingsView(
-        url: url,
-        isPersistent: isPersistent,
-        tab: tab,
-        shredSiteDataNow: shredSiteDataNow
-      )
-    )
-  }
-
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    navigationItem.title = Strings.Shields.shredSiteData
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    setPreferredContentSize()
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    setPreferredContentSize()
-    view.setNeedsLayout()
-  }
-
-  /// Will set the preferred size
-  @objc private func setPreferredContentSize() {
-    self.preferredContentSize = makePreferredSize(for: traitCollection)
-  }
-
-  /// Get a preferred width based on the `UITraitCollection`
-  private func makePreferredSize(for traitCollection: UITraitCollection) -> CGSize {
-    switch traitCollection.verticalSizeClass {
-    case .regular:
-      switch traitCollection.preferredContentSizeCategory {
-      case .small, .extraSmall, .medium, .large:
-        return CGSize(width: view.frame.width, height: 150)
-      case .extraLarge, .extraExtraLarge, .extraExtraExtraLarge:
-        return CGSize(width: view.frame.width, height: 175)
-      case .accessibilityMedium:
-        return CGSize(width: 400, height: 225)
-      case .accessibilityLarge:
-        return CGSize(width: 400, height: 275)
-      case .accessibilityExtraLarge:
-        return CGSize(width: 500, height: 325)
-      case .accessibilityExtraExtraLarge:
-        return CGSize(width: 600, height: 300)
-      case .accessibilityExtraExtraExtraLarge:
-        return CGSize(width: 600, height: 400)
-      default:
-        return view.frame.size
-      }
-    case .compact, .unspecified:
-      return view.frame.size
-    @unknown default:
-      return view.frame.size
-    }
-  }
-
-  @MainActor required dynamic init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
 }
