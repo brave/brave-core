@@ -80,11 +80,12 @@ void PsstRuleRegistryImpl::LoadRules(const base::FilePath& path,
 
 void PsstRuleRegistryImpl::OnLoadRules(OnLoadCallback cb,
                                        const std::string& contents) {
+LOG(INFO) << "[PSST] PsstRuleRegistryImpl::OnLoadRules: Loaded rules from file, \ncontents: " << contents;
   auto parsed_rules = PsstRule::ParseRules(contents);
   if (parsed_rules) {
     rules_ = std::move(parsed_rules.value());
   }
-
+LOG(INFO) << "[PSST] PsstRuleRegistryImpl::OnLoadRules cb: " << cb.is_null();
   std::move(cb).Run(contents, rules_);
 }
 

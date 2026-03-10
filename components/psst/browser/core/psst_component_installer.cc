@@ -12,6 +12,7 @@
 #include "base/base64.h"
 #include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/path_service.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
@@ -102,7 +103,7 @@ void PsstComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& install_dir,
     base::DictValue manifest) {
-  PsstRuleRegistry::GetInstance()->LoadRules(install_dir, base::NullCallback());
+  PsstRuleRegistry::GetInstance()->LoadRules(install_dir, base::DoNothing());
 }
 
 bool PsstComponentInstallerPolicy::VerifyInstallation(

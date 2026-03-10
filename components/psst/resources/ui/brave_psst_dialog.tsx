@@ -5,20 +5,16 @@
 
 import * as React from 'react'
 import { render } from 'react-dom'
-import Theme from 'brave-ui/theme/brave-default'
 import { setIconBasePath } from '@brave/leo/react/icon'
 
 setIconBasePath('chrome://resources/brave-icons')
 
 // Containers
 import PsstDlgContainer from './containers/App'
-import { ThemeProvider } from 'styled-components'
 
 function initialize() {
   render(
-    <ThemeProvider theme={Theme}>
-      <PsstDlgContainer someProp={'T'} />
-    </ThemeProvider>,
+    <PsstDlgContainer someProp={'T'} />,
     document.getElementById('root'),
   )
 }
