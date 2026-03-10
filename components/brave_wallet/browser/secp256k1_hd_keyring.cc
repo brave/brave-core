@@ -12,7 +12,9 @@
 
 namespace brave_wallet {
 
-Secp256k1HDKeyring::Secp256k1HDKeyring() = default;
+Secp256k1HDKeyring::Secp256k1HDKeyring(
+    base::RepeatingCallback<bool(const std::string&)> is_address_allowed)
+    : is_address_allowed_(std::move(is_address_allowed)) {}
 
 Secp256k1HDKeyring::~Secp256k1HDKeyring() = default;
 
@@ -43,8 +45,11 @@ std::optional<std::string> Secp256k1HDKeyring::AddNewHDAccount(uint32_t index) {
   }
 
   auto address = GetAddressInternal(*new_account);
-  accounts_.push_back(std::move(new_account));
+  if (!is_address_allowed_.Run(address)) {
+    return std::nullopt;
+  }
 
+  accounts_.push_back(std::move(new_account));
   return address;
 }
 
@@ -72,6 +77,10 @@ std::optional<std::string> Secp256k1HDKeyring::ImportAccount(
   std::string address = GetAddressInternal(*hd_key);
 
   if (imported_accounts_.contains(address)) {
+    return std::nullopt;
+  }
+
+  if (!is_address_allowed_.Run(address)) {
     return std::nullopt;
   }
 

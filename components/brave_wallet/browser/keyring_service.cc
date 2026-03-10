@@ -33,6 +33,7 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hardware_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_import_keyring.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_cip30_serializer.h"
@@ -1105,16 +1106,12 @@ void KeyringService::CreateWallet(const std::string& password,
     std::move(callback).Run(std::nullopt);
     return;
   }
-  if (CreateWalletInternal(*mnemonic, password, false, false)) {
-    WalletDataFilesInstaller::GetInstance()
-        .MaybeRegisterWalletDataFilesComponentOnDemand(base::BindOnce(
-            [](const std::string& mnemonic, CreateWalletCallback callback) {
-              std::move(callback).Run(mnemonic);
-            },
-            *mnemonic, std::move(callback)));
-  } else {
-    std::move(callback).Run(std::nullopt);
-  }
+
+  WalletDataFilesInstaller::GetInstance()
+      .MaybeRegisterWalletDataFilesComponentOnDemand(base::BindOnce(
+          &KeyringService::OnCreateWalletRegisterComponentUpdater,
+          weak_ptr_factory_.GetWeakPtr(), *mnemonic, password,
+          std::move(callback)));
 }
 
 bool KeyringService::CreateWalletInternal(const std::string& mnemonic,
@@ -1147,7 +1144,10 @@ bool KeyringService::CreateWalletInternal(const std::string& mnemonic,
                             base::Base64Encode(salt));
 
   CreateKeyrings(*keyring_seed);
-  CreateDefaultAccounts();
+  if (!CreateDefaultAccounts()) {
+    Reset(true);
+    return false;
+  }
 
   for (const auto& observer : observers_) {
     if (from_restore) {
@@ -1168,22 +1168,28 @@ bool KeyringService::IsKeyringEnabled(mojom::KeyringId keyring_id) const {
 }
 
 void KeyringService::CreateKeyrings(const KeyringSeed& keyring_seed) {
-  ethereum_keyring_ = std::make_unique<EthereumKeyring>(keyring_seed.eth_seed);
+  auto is_address_allowed = base::BindRepeating([](const std::string& address) {
+    return !BlockchainRegistry::GetInstance()->IsOfacAddress(address);
+  });
 
-  solana_keyring_ = std::make_unique<SolanaKeyring>(keyring_seed.seed);
+  ethereum_keyring_ = std::make_unique<EthereumKeyring>(keyring_seed.eth_seed,
+                                                        is_address_allowed);
+
+  solana_keyring_ =
+      std::make_unique<SolanaKeyring>(keyring_seed.seed, is_address_allowed);
 
   filecoin_mainnet_keyring_ = std::make_unique<FilecoinKeyring>(
-      keyring_seed.seed, KeyringId::kFilecoin);
+      keyring_seed.seed, KeyringId::kFilecoin, is_address_allowed);
   filecoin_testnet_keyring_ = std::make_unique<FilecoinKeyring>(
-      keyring_seed.seed, KeyringId::kFilecoinTestnet);
+      keyring_seed.seed, KeyringId::kFilecoinTestnet, is_address_allowed);
 
   if (IsKeyringEnabled(KeyringId::kBitcoin84)) {
     bitcoin_hd_mainnet_keyring_ = std::make_unique<BitcoinHDKeyring>(
-        keyring_seed.seed, KeyringId::kBitcoin84);
+        keyring_seed.seed, KeyringId::kBitcoin84, is_address_allowed);
   }
   if (IsKeyringEnabled(KeyringId::kBitcoin84Testnet)) {
     bitcoin_hd_testnet_keyring_ = std::make_unique<BitcoinHDKeyring>(
-        keyring_seed.seed, KeyringId::kBitcoin84Testnet);
+        keyring_seed.seed, KeyringId::kBitcoin84Testnet, is_address_allowed);
   }
   if (IsKeyringEnabled(KeyringId::kBitcoinImport)) {
     bitcoin_import_mainnet_keyring_ =
@@ -1205,11 +1211,11 @@ void KeyringService::CreateKeyrings(const KeyringSeed& keyring_seed) {
 
   if (IsKeyringEnabled(KeyringId::kZCashMainnet)) {
     zcash_hd_mainnet_keyring_ = std::make_unique<ZCashKeyring>(
-        keyring_seed.seed, KeyringId::kZCashMainnet);
+        keyring_seed.seed, KeyringId::kZCashMainnet, is_address_allowed);
   }
   if (IsKeyringEnabled(KeyringId::kZCashTestnet)) {
     zcash_hd_testnet_keyring_ = std::make_unique<ZCashKeyring>(
-        keyring_seed.seed, KeyringId::kZCashTestnet);
+        keyring_seed.seed, KeyringId::kZCashTestnet, is_address_allowed);
   }
 
   if (IsKeyringEnabled(KeyringId::kCardanoMainnet)) {
@@ -1224,9 +1230,9 @@ void KeyringService::CreateKeyrings(const KeyringSeed& keyring_seed) {
     auto polkadot_seed =
         base::span(keyring_seed.seed).first<kPolkadotSeedSize>();
     polkadot_mainnet_keyring_ = std::make_unique<PolkadotKeyring>(
-        polkadot_seed, KeyringId::kPolkadotMainnet);
+        polkadot_seed, KeyringId::kPolkadotMainnet, is_address_allowed);
     polkadot_testnet_keyring_ = std::make_unique<PolkadotKeyring>(
-        polkadot_seed, KeyringId::kPolkadotTestnet);
+        polkadot_seed, KeyringId::kPolkadotTestnet, is_address_allowed);
   }
 }
 
@@ -1255,18 +1261,25 @@ void KeyringService::ClearKeyrings() {
   polkadot_testnet_keyring_.reset();
 }
 
-void KeyringService::CreateDefaultAccounts() {
+bool KeyringService::CreateDefaultAccounts() {
   if (auto account = AddHDAccountForKeyring(mojom::KeyringId::kDefault,
                                             GetAccountName(1))) {
     SetSelectedAccountInternal(*account);
     NotifyAccountsAdded(*account);
+  } else {
+    return false;
   }
+
   if (auto account = AddHDAccountForKeyring(mojom::KeyringId::kSolana,
                                             "Solana " + GetAccountName(1))) {
     SetSelectedAccountInternal(*account);
     NotifyAccountsAdded(*account);
+  } else {
+    return false;
   }
   ResetAllAccountInfosCache();
+
+  return true;
 }
 
 void KeyringService::LoadAllAccountsFromPrefs() {
@@ -1491,18 +1504,11 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
                                    const std::string& password,
                                    bool is_legacy_eth_seed_format,
                                    RestoreWalletCallback callback) {
-  bool is_valid_mnemonic =
-      RestoreWalletSync(mnemonic, password, is_legacy_eth_seed_format);
-  if (!is_valid_mnemonic) {
-    std::move(callback).Run(false);
-    return;
-  }
-
-  // Only register the component if restore is successful.
   WalletDataFilesInstaller::GetInstance()
       .MaybeRegisterWalletDataFilesComponentOnDemand(base::BindOnce(
-          [](RestoreWalletCallback callback) { std::move(callback).Run(true); },
-          std::move(callback)));
+          &KeyringService::OnRestoreWalletRegisterComponentUpdater,
+          weak_ptr_factory_.GetWeakPtr(), mnemonic, password,
+          is_legacy_eth_seed_format, std::move(callback)));
 }
 
 bool KeyringService::CanResumeWallet(const std::string& mnemonic,
@@ -1554,6 +1560,42 @@ mojom::AccountInfoPtr KeyringService::AddAccountSync(
   NotifyAccountsAdded(*account);
 
   return account;
+}
+
+// TODO(https://github.com/brave/brave-browser/issues/53346): We should aim to
+// reify this function with CreateDefaultAccounts(). Right now the behavior is
+// subtly different between each function and should be unified under a commmon
+// routine where we can also simplify resetting the wallet if a sanctioned
+// address is produced.
+void KeyringService::CreateDefaultAccountsForSelectedNetworks(
+    std::vector<mojom::AddAccountArgsPtr> account_args,
+    CreateDefaultAccountsForSelectedNetworksCallback callback) {
+  if (account_args.empty()) {
+    return std::move(callback).Run(std::vector<mojom::AccountInfoPtr>{});
+  }
+
+  std::vector<mojom::AccountInfoPtr> account_infos;
+
+  for (auto& account_arg : account_args) {
+    auto& [coin, keyring_id, account_name] = *account_arg;
+    auto account = AddHDAccountForKeyring(std::move(keyring_id), account_name);
+
+    if (!account) {
+      Reset(true);
+      return std::move(callback).Run(std::nullopt);
+    }
+
+    account_infos.push_back(std::move(account));
+  }
+
+  CHECK(!account_infos.empty());
+
+  NotifyAccountsChanged();
+
+  SetSelectedAccountInternal(*account_infos.back());
+  NotifyAccountsAdded(account_infos);
+
+  std::move(callback).Run(std::move(account_infos));
 }
 
 void KeyringService::EncodePrivateKeyForExport(
@@ -2085,6 +2127,11 @@ std::vector<mojom::AccountInfoPtr> KeyringService::AddHardwareAccountsSync(
 
   std::vector<mojom::AccountInfoPtr> accounts_added;
   for (const auto& info : infos) {
+    if (IsAccountBasedCoin(GetCoinForKeyring(info->keyring_id)) &&
+        BlockchainRegistry::GetInstance()->IsOfacAddress(info->address)) {
+      continue;
+    }
+
     mojom::KeyringId keyring_id = info->keyring_id;
     DCHECK(info->hardware_vendor == mojom::HardwareVendor::kLedger ||
            info->hardware_vendor == mojom::HardwareVendor::kTrezor);
@@ -2112,6 +2159,11 @@ std::vector<mojom::AccountInfoPtr> KeyringService::AddHardwareAccountsSync(
 
     accounts_added.push_back(std::move(account_info));
   }
+
+  if (accounts_added.empty()) {
+    return {};
+  }
+
   NotifyAccountsChanged();
 
   // TODO(apaymyshev): ui should select account after importing.
@@ -3461,6 +3513,28 @@ void KeyringService::MaybeUnlockWithCommandLine() {
     Unlock(dev_wallet_password, base::DoNothing());
   }
 #endif  // !defined(OFFICIAL_BUILD)
+}
+
+void KeyringService::OnCreateWalletRegisterComponentUpdater(
+    const std::string& mnemonic,
+    const std::string& password,
+    CreateWalletCallback callback) {
+  if (CreateWalletInternal(mnemonic, password, false, false)) {
+    std::move(callback).Run(mnemonic);
+  } else {
+    std::move(callback).Run(std::nullopt);
+  }
+}
+
+void KeyringService::OnRestoreWalletRegisterComponentUpdater(
+    const std::string& mnemonic,
+    const std::string& password,
+    bool is_legacy_eth_seed_format,
+    RestoreWalletCallback callback) {
+  bool is_valid_mnemonic =
+      RestoreWalletSync(mnemonic, password, is_legacy_eth_seed_format);
+
+  std::move(callback).Run(is_valid_mnemonic);
 }
 
 }  // namespace brave_wallet

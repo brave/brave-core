@@ -21,7 +21,9 @@ namespace brave_wallet {
 
 class SolanaKeyring {
  public:
-  explicit SolanaKeyring(base::span<const uint8_t> seed);
+  explicit SolanaKeyring(
+      base::span<const uint8_t> seed,
+      base::RepeatingCallback<bool(const std::string&)> is_address_allowed);
   ~SolanaKeyring();
   SolanaKeyring(const SolanaKeyring&) = delete;
   SolanaKeyring& operator=(const SolanaKeyring&) = delete;
@@ -77,6 +79,8 @@ class SolanaKeyring {
   // not HD keys.
   // (address, key)
   base::flat_map<std::string, std::unique_ptr<HDKeyEd25519>> imported_accounts_;
+
+  base::RepeatingCallback<bool(const std::string&)> is_address_allowed_;
 };
 
 }  // namespace brave_wallet

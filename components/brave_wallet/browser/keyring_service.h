@@ -14,6 +14,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
@@ -101,6 +102,11 @@ class KeyringService : public mojom::KeyringService {
   mojom::AccountInfoPtr AddAccountSync(mojom::CoinType coin,
                                        mojom::KeyringId keyring_id,
                                        const std::string& account_name);
+
+  void CreateDefaultAccountsForSelectedNetworks(
+      std::vector<mojom::AddAccountArgsPtr> account_args,
+      CreateDefaultAccountsForSelectedNetworksCallback callback) override;
+
   void EncodePrivateKeyForExport(
       mojom::AccountIdPtr account_id,
       const std::string& password,
@@ -408,7 +414,7 @@ class KeyringService : public mojom::KeyringService {
   bool IsKeyringEnabled(mojom::KeyringId keyring_id) const;
   void CreateKeyrings(const KeyringSeed& keyring_seed);
   void ClearKeyrings();
-  void CreateDefaultAccounts();
+  bool CreateDefaultAccounts();
   void LoadAllAccountsFromPrefs();
   void LoadAccountsFromPrefs(mojom::KeyringId keyring_id);
 
@@ -436,6 +442,13 @@ class KeyringService : public mojom::KeyringService {
       const std::string& password);
   bool CreateEncryptorAndValidatePasswordInternal(const std::string& password);
   void MaybeUnlockWithCommandLine();
+  void OnCreateWalletRegisterComponentUpdater(const std::string& mnemonic,
+                                              const std::string& password,
+                                              CreateWalletCallback callback);
+  void OnRestoreWalletRegisterComponentUpdater(const std::string& mnemonic,
+                                               const std::string& password,
+                                               bool is_legacy_eth_seed_format,
+                                               RestoreWalletCallback callback);
 
   std::unique_ptr<std::vector<mojom::AccountInfoPtr>> account_info_cache_;
   std::unique_ptr<base::OneShotTimer> auto_lock_timer_;
@@ -475,6 +488,8 @@ class KeyringService : public mojom::KeyringService {
 
   mojo::RemoteSet<mojom::KeyringServiceObserver> observers_;
   mojo::ReceiverSet<mojom::KeyringService> receivers_;
+
+  base::WeakPtrFactory<KeyringService> weak_ptr_factory_{this};
 
   KeyringService(const KeyringService&) = delete;
   KeyringService& operator=(const KeyringService&) = delete;

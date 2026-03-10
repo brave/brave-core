@@ -11,16 +11,19 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_wallet/browser/internal/hd_key_zip32.h"
 #include "brave/components/brave_wallet/browser/secp256k1_hd_keyring.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/browser/internal/hd_key_zip32.h"
 
 namespace brave_wallet {
 
 class ZCashKeyring : public Secp256k1HDKeyring {
  public:
-  ZCashKeyring(base::span<const uint8_t> seed, mojom::KeyringId keyring_id);
+  ZCashKeyring(
+      base::span<const uint8_t> seed,
+      mojom::KeyringId keyring_id,
+      base::RepeatingCallback<bool(const std::string&)> is_address_allowed);
   ~ZCashKeyring() override;
 
   ZCashKeyring(const ZCashKeyring&) = delete;
@@ -32,7 +35,7 @@ class ZCashKeyring : public Secp256k1HDKeyring {
   std::optional<std::vector<uint8_t>> GetPubkeyHash(
       const mojom::ZCashKeyId& key_id);
 
-// TODO(cypt4): move Orchard to the separate keyring
+  // TODO(cypt4): move Orchard to the separate keyring
   std::unique_ptr<HDKeyZip32> DeriveOrchardAccount(uint32_t index) const;
   std::optional<std::string> GetUnifiedAddress(
       const mojom::ZCashKeyId& transparent_key_id,

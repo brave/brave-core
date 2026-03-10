@@ -19,8 +19,10 @@ class PolkadotKeyring {
  public:
   // Construct the keyring for Polkadot using the provided seed, derived from
   // the bip39::MnemonicToEntropyToSeed() method.
-  PolkadotKeyring(base::span<const uint8_t, kPolkadotSeedSize> seed,
-                  mojom::KeyringId keyring_id);
+  PolkadotKeyring(
+      base::span<const uint8_t, kPolkadotSeedSize> seed,
+      mojom::KeyringId keyring_id,
+      base::RepeatingCallback<bool(const std::string&)> is_address_allowed);
   ~PolkadotKeyring();
 
   // Get the address of the account denoted by `//<network>//<account_index>`,
@@ -89,6 +91,8 @@ class PolkadotKeyring {
   HDKeySr25519 root_account_key_;
   mojom::KeyringId keyring_id_;
   base::flat_map<uint32_t, HDKeySr25519> secondary_keys_;
+
+  base::RepeatingCallback<bool(const std::string&)> is_address_allowed_;
 
   std::optional<std::array<uint8_t, kScryptSaltSize>>
       rand_salt_bytes_for_testing_;

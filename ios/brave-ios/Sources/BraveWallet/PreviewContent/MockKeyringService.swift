@@ -87,6 +87,13 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(info)
   }
 
+  func createDefaultAccountsForSelectedNetworks(
+    accountArgs: [BraveWallet.AddAccountArgs],
+    completion: @escaping ([BraveWallet.AccountInfo]?) -> Void
+  ) {
+    completion([])
+  }
+
   func createWallet(password: String, completion: @escaping (String?) -> Void) {
     isLocked = false
     self.password = password

@@ -89,9 +89,12 @@ std::unique_ptr<HDKey> ConstructAccountsRootKey(base::span<const uint8_t> seed,
 
 FilecoinKeyring::~FilecoinKeyring() = default;
 
-FilecoinKeyring::FilecoinKeyring(base::span<const uint8_t> seed,
-                                 mojom::KeyringId keyring_id)
-    : keyring_id_(keyring_id) {
+FilecoinKeyring::FilecoinKeyring(
+    base::span<const uint8_t> seed,
+    mojom::KeyringId keyring_id,
+    base::RepeatingCallback<bool(const std::string&)> is_address_allowed)
+    : Secp256k1HDKeyring(std::move(is_address_allowed)),
+      keyring_id_(keyring_id) {
   DCHECK(IsFilecoinKeyring(keyring_id));
   accounts_root_ = ConstructAccountsRootKey(
       seed, keyring_id == mojom::KeyringId::kFilecoinTestnet);
@@ -215,6 +218,9 @@ std::optional<std::string> FilecoinKeyring::ImportBlsAccount(
     return std::nullopt;
   }
   std::string address = fil_address.EncodeAsString();
+  if (!is_address_allowed_.Run(address)) {
+    return std::nullopt;
+  }
 
   if (imported_bls_accounts_.contains(address)) {
     return std::nullopt;

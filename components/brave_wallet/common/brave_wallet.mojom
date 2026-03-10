@@ -1273,6 +1273,12 @@ struct AllowanceInfo {
   string amount;
 };
 
+struct AddAccountArgs {
+  CoinType coin;
+  KeyringId keyring_id;
+  string account_name;
+};
+
 interface KeyringServiceObserver {
   // Fired when wallet is created
   WalletCreated();
@@ -1396,6 +1402,15 @@ interface KeyringService {
   // Adds an account to the keyring.
   AddAccount(CoinType coin, KeyringId keyring_id, string account_name)
       => (AccountInfo? account_info);
+
+  // Adds accounts to the keyring in bulk during wallet creation/restoration.
+  // Account creation can fail in certain cases, such as an account that is
+  // affected by OFAC sanctions. Because this method is intended to only be
+  // called during onboarding, it will return std::nullopt on failure and reset
+  // the keyring.
+  CreateDefaultAccountsForSelectedNetworks(
+      array<AddAccountArgs> account_args)
+      => (array<AccountInfo>? account_infos);
 
   // Encodes the private key for exporting.
   EncodePrivateKeyForExport(AccountId account_id, string password)

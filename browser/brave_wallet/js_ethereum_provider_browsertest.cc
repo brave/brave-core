@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
 #include <optional>
@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
@@ -77,9 +78,6 @@ std::string NonWriteableScriptMethod(const std::string& provider,
 }
 }  // namespace
 
-// TODO(darkdh): Move this browser test to //brave/browser/brave_wallet/ because
-// it has layer violation (//chrome/browser,
-// //brave/components/brave_wallet/browser and //brave/browser)
 class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
  public:
   JSEthereumProviderBrowserTest()
@@ -118,6 +116,10 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(https_server_.Start());
     ASSERT_TRUE(test_server_handle_ =
                     embedded_test_server()->StartAndReturnHandle());
+
+    // We need to prevent the wallet creation from being stuck waiting to
+    // download an OFAC list that doesn't exist.
+    brave_wallet::WalletDataFilesInstaller::GetInstance().ResetForTesting();
   }
 
   content::WebContents* web_contents() {

@@ -40,9 +40,12 @@ std::unique_ptr<HDKey> ConstructAccountsRootKey(base::span<const uint8_t> seed,
 
 }  // namespace
 
-BitcoinHDKeyring::BitcoinHDKeyring(base::span<const uint8_t> seed,
-                                   mojom::KeyringId keyring_id)
-    : BitcoinBaseKeyring(keyring_id) {
+BitcoinHDKeyring::BitcoinHDKeyring(
+    base::span<const uint8_t> seed,
+    mojom::KeyringId keyring_id,
+    base::RepeatingCallback<bool(const std::string&)> is_address_allowed)
+    : BitcoinBaseKeyring(keyring_id),
+      Secp256k1HDKeyring(std::move(is_address_allowed)) {
   CHECK(IsBitcoinHDKeyring(keyring_id));
   accounts_root_ = ConstructAccountsRootKey(seed, IsTestnet());
 }

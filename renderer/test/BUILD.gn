@@ -33,15 +33,6 @@ source_set("browser_tests") {
     "//net:test_support",
   ]
 
-  if (enable_brave_wallet) {
-    sources += [ "js_ethereum_provider_browsertest.cc" ]
-    deps += [
-      "//brave/browser/brave_wallet",
-      "//brave/components/brave_wallet/browser",
-      "//brave/components/brave_wallet/browser:utils",
-    ]
-  }
-
   if (enable_extensions) {
     deps += [
       "//chrome/browser/extensions",

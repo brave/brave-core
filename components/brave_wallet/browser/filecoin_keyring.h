@@ -22,7 +22,10 @@ class FilTransaction;
 
 class FilecoinKeyring : public Secp256k1HDKeyring {
  public:
-  FilecoinKeyring(base::span<const uint8_t> seed, mojom::KeyringId keyring_id);
+  FilecoinKeyring(
+      base::span<const uint8_t> seed,
+      mojom::KeyringId keyring_id,
+      base::RepeatingCallback<bool(const std::string&)> is_address_allowed);
   ~FilecoinKeyring() override;
   FilecoinKeyring(const FilecoinKeyring&) = delete;
   FilecoinKeyring& operator=(const FilecoinKeyring&) = delete;
