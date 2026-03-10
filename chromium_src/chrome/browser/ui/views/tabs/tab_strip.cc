@@ -99,3 +99,8 @@ const tabs::TreeTabNode& TabStrip::GetTreeTabNode(
     const tree_tab::TreeTabNodeId& id) const {
   return tabs::TreeTabNode::GetEmptyTreeTabNode();
 }
+
+bool TabStrip::IsInCollapsedTreeTabNode(
+    const tree_tab::TreeTabNodeId& id) const {
+  return false;
+}

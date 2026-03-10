@@ -8,3 +8,7 @@
 TabNestingInfo TabSlotView::GetTabNestingInfo() const {
   return {};
 }
+
+bool TabSlotView::IsInCollapsedTreeTabNode() const {
+  return false;
+}

@@ -7,6 +7,9 @@
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
+#include "brave/components/tabs/public/tree_tab_node.h"
+#include "brave/components/tabs/public/tree_tab_node_id.h"
+#include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "chrome/browser/ui/browser_window/test/mock_browser_window_interface.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -17,6 +20,7 @@
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/views/chrome_views_test_base.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "components/tabs/public/mock_tab_interface.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/skia/include/core/SkPath.h"
@@ -42,6 +46,24 @@ class MockTabSlotController : public FakeTabSlotController {
               GetBrowserWindowInterface,
               (),
               (override));
+
+  MOCK_METHOD(const tabs::TreeTabNode&,
+              GetTreeTabNode,
+              (const tree_tab::TreeTabNodeId& id),
+              (const, override));
+};
+
+class MockTabInterfaceWithWeakPtr : public tabs::MockTabInterface {
+ public:
+  using tabs::MockTabInterface::MockTabInterface;
+  ~MockTabInterfaceWithWeakPtr() override = default;
+
+  base::WeakPtr<tabs::TabInterface> GetWeakPtr() override {
+    return weak_ptr_factory_.GetWeakPtr();
+  }
+
+ private:
+  base::WeakPtrFactory<MockTabInterfaceWithWeakPtr> weak_ptr_factory_{this};
 };
 
 class BraveTabTest : public ChromeViewsTestBase {
@@ -377,4 +399,99 @@ TEST_F(BraveTabTest, IconVisibilityWhenVerticalTabsAnimating) {
                                  /*is_pinned=*/true,
                                  /*expect_centered=*/true,
                                  "Pinned tab (non-floating)");
+}
+
+class BraveTabTestWithTreeTab : public BraveTabTest {
+ public:
+  BraveTabTestWithTreeTab() {
+    feature_list_.InitAndEnableFeature(tabs::kBraveTreeTab);
+  }
+  ~BraveTabTestWithTreeTab() override = default;
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+TEST_F(BraveTabTestWithTreeTab, TreeToggleButtonVisibleInsteadOfCloseButton) {
+  testing::NiceMock<MockTabSlotController> tab_slot_controller;
+  auto node_id = tree_tab::TreeTabNodeId::GenerateNew();
+  tabs::TreeTabNodeTabCollection collection(
+      node_id, std::make_unique<MockTabInterfaceWithWeakPtr>(),
+      base::DoNothing(), base::DoNothing());
+  ASSERT_EQ(collection.node().height(), 0);
+
+  // When tree tab has descendants, the tree toggle button should be visible.
+  EXPECT_CALL(tab_slot_controller, GetTreeTabNode(testing::_))
+      .WillRepeatedly(testing::ReturnRef(collection.node()));
+
+  BraveTab tab(tabs::TabHandle(1), &tab_slot_controller);
+  tab.set_tree_tab_node(node_id);
+  tab_slot_controller.set_active_tab(&tab);
+  ASSERT_TRUE(tab.GetTreeTabNode());
+  ASSERT_EQ(tab.GetTreeTabNode()->id(), node_id);
+  ASSERT_EQ(tab.GetTreeTabNode()->height(), 0);
+
+  // Tab has no tree_tab_node (FakeTabSlotController returns empty node and
+  // height 0), so the tree toggle button should be hidden.
+  tab.SetBoundsRect({0, 0, 200, 50});
+  views::test::RunScheduledLayout(&tab);
+
+  // Close button should remain visible when tree toggle is hidden.
+  ASSERT_TRUE(tab.showing_close_button_for_test());
+  EXPECT_FALSE(tab.tree_toggle_button_->GetVisible());
+  EXPECT_TRUE(tab.close_button_for_test()->GetVisible());
+
+  // Now tree tab has descendants, so the tree toggle button should be visible.
+  collection.node().set_height_for_test(100);
+  tab.UpdateIconVisibility();
+  tab.LayoutTreeToggleButton();
+
+  ASSERT_TRUE(tab.showing_close_button_for_test());
+  EXPECT_TRUE(tab.tree_toggle_button_->GetVisible());
+  EXPECT_FALSE(tab.close_button_for_test()->GetVisible());
+}
+
+TEST_F(BraveTabTestWithTreeTab,
+       TreeToggleButtonAlwaysVisibleWhenCollapsedAndHasDescendants) {
+  testing::NiceMock<MockTabSlotController> tab_slot_controller;
+  auto node_id = tree_tab::TreeTabNodeId::GenerateNew();
+  tabs::TreeTabNodeTabCollection collection(
+      node_id, std::make_unique<MockTabInterfaceWithWeakPtr>(),
+      base::DoNothing(), base::DoNothing());
+  ASSERT_EQ(collection.node().height(), 0);
+
+  // When tree tab has descendants, the tree toggle button should be visible.
+  EXPECT_CALL(tab_slot_controller, GetTreeTabNode(testing::_))
+      .WillRepeatedly(testing::ReturnRef(collection.node()));
+
+  BraveTab tab(tabs::TabHandle(1), &tab_slot_controller);
+  tab.set_tree_tab_node(node_id);
+  ASSERT_TRUE(tab.GetTreeTabNode());
+  ASSERT_EQ(tab.GetTreeTabNode()->id(), node_id);
+  ASSERT_EQ(tab.GetTreeTabNode()->height(), 0);
+  ASSERT_FALSE(tab.GetTreeTabNode()->collapsed());
+
+  // Set narrow width so that show_close_button_ = false.
+  tab.SetBoundsRect({0, 0, 10, 50});
+  views::test::RunScheduledLayout(&tab);
+  ASSERT_FALSE(tab.IsActive());
+  ASSERT_FALSE(tab.showing_close_button_for_test());
+
+  // When there's no descendants, the tree toggle button should be hidden.
+  EXPECT_FALSE(tab.tree_toggle_button_->GetVisible());
+
+  // Now tree tab has descendants. But not collapsed. So the button is still
+  // hidden.
+  collection.node().set_height_for_test(100);
+  tab.UpdateIconVisibility();
+  tab.LayoutTreeToggleButton();
+  ASSERT_FALSE(tab.showing_close_button_for_test());
+  EXPECT_FALSE(tab.tree_toggle_button_->GetVisible());
+
+  // Now tree tab is collapsed. So the button should be visible.
+  collection.node().set_collapsed(true);
+  tab.UpdateIconVisibility();
+  tab.LayoutTreeToggleButton();
+  ASSERT_FALSE(tab.showing_close_button_for_test());
+  EXPECT_TRUE(tab.tree_toggle_button_->GetVisible());
 }

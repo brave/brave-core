@@ -10,9 +10,14 @@
 #include <string>
 
 #include "base/gtest_prod_util.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/views/tabs/accent_color/brave_tab_accent_types.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "ui/gfx/geometry/point.h"
+
+namespace views {
+class ImageButton;
+}  // namespace views
 
 namespace tabs {
 class TreeTabNode;
@@ -28,13 +33,17 @@ class BraveTab : public Tab {
   static constexpr int kTabAccentIconAreaWidth = 22;
   static constexpr int kExtraLeftPadding = 4;
 
-  using Tab::Tab;
+  explicit BraveTab(tabs::TabHandle handle, TabSlotController* controller);
   BraveTab(const BraveTab&) = delete;
   BraveTab& operator=(const BraveTab&) = delete;
   ~BraveTab() override;
 
   // Resets tab_style_views_ so that it can have correct style for orientation.
   void UpdateTabStyle();
+
+  // Updates the icon of the tree toggle button based on the collapsed state of
+  // the tree tab node.
+  void UpdateTreeToggleButtonIcon();
 
   // Tab:
   std::u16string GetRenderedTooltipText(const gfx::Point& p) const override;
@@ -57,6 +66,7 @@ class BraveTab : public Tab {
   bool IsActive() const override;
   TabSizeInfo GetTabSizeInfo() const override;
   TabNestingInfo GetTabNestingInfo() const override;
+  bool IsInCollapsedTreeTabNode() const override;
 
   // Returns whether this tab should have an accent painted.
   bool ShouldPaintTabAccent() const;
@@ -76,6 +86,8 @@ class BraveTab : public Tab {
   // cannot be determined.
   ui::ImageModel GetTabAccentIcon() const;
 
+  base::WeakPtr<BraveTab> GetWeakPtr();
+
  private:
   friend class BraveTabTest;
 
@@ -85,8 +97,31 @@ class BraveTab : public Tab {
   FRIEND_TEST_ALL_PREFIXES(
       BraveTabTest,
       PinnedTabIconCenteredWhenFloatingFromCompletelyHiddenMode);
+  FRIEND_TEST_ALL_PREFIXES(BraveTabTestWithTreeTab,
+                           TreeToggleButtonVisibleInsteadOfCloseButton);
+  FRIEND_TEST_ALL_PREFIXES(
+      BraveTabTestWithTreeTab,
+      TreeToggleButtonAlwaysVisibleWhenCollapsedAndHasDescendants);
 
   bool IsAtMinWidthForVerticalTabStrip() const;
+
+  // Initializes the tree toggle button.
+  void InitTreeToggleButton();
+
+  // Called when the tree toggle button is pressed.
+  void OnTreeToggleButtonPressed();
+
+  // Returns whether this tab has tree tab node descendants.
+  bool HasTreeTabNodeDescendants() const;
+
+  // Lays out the tree toggle button. This will update the bounds and visibility
+  // of the tree toggle button.
+  void LayoutTreeToggleButton();
+
+  // Returns whether the tree tab node is collapsed.
+  bool IsTreeNodeCollapsed() const;
+
+  raw_ptr<views::ImageButton> tree_toggle_button_ = nullptr;
 
   // Returns the tree tab node for this tab.
   const tabs::TreeTabNode* GetTreeTabNode() const;
@@ -97,6 +132,9 @@ class BraveTab : public Tab {
   // Test accessors to reveal base class members.
   TabCloseButton* close_button_for_test() const { return close_button_.get(); }
   bool center_icon_for_test() const { return center_icon_; }
+  bool showing_close_button_for_test() const { return showing_close_button_; }
+
+  base::WeakPtrFactory<BraveTab> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_H_

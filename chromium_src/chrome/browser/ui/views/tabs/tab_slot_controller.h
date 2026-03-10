@@ -52,13 +52,15 @@ class TreeTabNodeId;
   virtual bool CanCloseTabViaMiddleButtonClick() const = 0;                    \
   virtual bool CanPaintThrobberToLayer()
 
-// Add a method to TabSlotController to get the height of the tree tab node for
-// the given tab.
+// Add methods for Tree Tab operations to TabSlotController
 #define ShiftGroupRight(...)                                              \
   ShiftGroupRight(__VA_ARGS__) = 0;                                       \
   virtual int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const = 0; \
   virtual const tabs::TreeTabNode& GetTreeTabNode(                        \
-      const tree_tab::TreeTabNodeId& id) const
+      const tree_tab::TreeTabNodeId& id) const;                           \
+  virtual void SetTreeTabNodeCollapsed(const tree_tab::TreeTabNodeId& id, \
+                                       bool collapsed) = 0;               \
+  virtual bool IsInCollapsedTreeTabNode(const tree_tab::TreeTabNodeId& id) const
 
 #include <chrome/browser/ui/views/tabs/tab_slot_controller.h>  // IWYU pragma: export
 

@@ -39,6 +39,12 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
   int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const;
   const tabs::TreeTabNode& GetTreeTabNode(
       const tree_tab::TreeTabNodeId& id) const;
+  void SetTreeTabNodeCollapsed(const tree_tab::TreeTabNodeId& id,
+                               bool collapsed);
+  bool IsInCollapsedTreeTabNode(const tree_tab::TreeTabNodeId& id) const;
+
+  const tree_tab::TreeTabNodeId* GetClosestCollapsedAncestor(
+      const tree_tab::TreeTabNodeId& id) const;
 
   // BrowserTabStripController overrides:
   void OnTreeTabChanged(const TreeTabChange& change) override;
@@ -52,6 +58,15 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
   bool IsContextMenuCommandEnabled(
       int index,
       TabStripModel::ContextMenuCommand command_id) override;
+  void OnTabStripModelChanged(
+      TabStripModel* tab_strip_model,
+      const TabStripModelChange& change,
+      const TabStripSelectionChange& selection) override;
+
+ private:
+  bool ShouldShowTreeTabs();
+
+  void ExpandAllCollapsedAncestors(const tree_tab::TreeTabNodeId& id);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_BROWSER_TAB_STRIP_CONTROLLER_H_

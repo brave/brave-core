@@ -45,3 +45,12 @@ const tabs::TreeTabNode& FakeTabSlotController::GetTreeTabNode(
     const tree_tab::TreeTabNodeId& id) const {
   return tabs::TreeTabNode::GetEmptyTreeTabNode();
 }
+
+void FakeTabSlotController::SetTreeTabNodeCollapsed(
+    const tree_tab::TreeTabNodeId& id,
+    bool collapsed) {}
+
+bool FakeTabSlotController::IsInCollapsedTreeTabNode(
+    const tree_tab::TreeTabNodeId& id) const {
+  return false;
+}

@@ -23,6 +23,7 @@ struct TreeTabChange {
   enum Type {
     kNodeCreated,
     kNodeWillBeDestroyed,
+    kNodeCollapsedStateChanged,
   };
 
   struct Delta {
@@ -43,6 +44,13 @@ struct TreeTabChange {
     raw_ref<const tabs::TreeTabNode> node;
   };
 
+  struct CollapsedStateChangedChange : public Delta {
+    explicit CollapsedStateChangedChange(const tabs::TreeTabNode& node);
+    ~CollapsedStateChangedChange() override;
+
+    raw_ref<const tabs::TreeTabNode> node;
+  };
+
   TreeTabChange(Type type,
                 tree_tab::TreeTabNodeId id,
                 std::unique_ptr<Delta> delta);
@@ -50,12 +58,16 @@ struct TreeTabChange {
                 const CreatedChange& created_change);
   TreeTabChange(tree_tab::TreeTabNodeId id,
                 const WillBeDestroyedChange& destroyed_change);
+  TreeTabChange(
+      tree_tab::TreeTabNodeId id,
+      const CollapsedStateChangedChange& collapsed_state_changed_change);
   TreeTabChange(const TreeTabChange& other) = delete;
   TreeTabChange& operator=(const TreeTabChange& other) = delete;
   ~TreeTabChange();
 
   const CreatedChange& GetCreatedChange() const;
   const WillBeDestroyedChange& GetWillBeDestroyedChange() const;
+  const CollapsedStateChangedChange& GetCollapsedStateChangedChange() const;
 
   Type type;
   tree_tab::TreeTabNodeId id;

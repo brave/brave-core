@@ -34,8 +34,12 @@ class TreeTabModel {
 
   // Sets the collapsed state of the node identified by |id| to |collapsed|.
   // Updates the internal cache for DoesBelongToCollapsedNode. No-op if no node
-  // exists for |id|.
-  void SetCollapsed(const tree_tab::TreeTabNodeId& id, bool collapsed);
+  // exists for |id|. Returns true if the collapsed state was changed.
+  bool SetCollapsed(const tree_tab::TreeTabNodeId& id, bool collapsed);
+
+  // Returns true if the node identified by |id| can be collapsed.
+  // Only when the node has a height and is not collapsed.
+  bool CanBeCollapsed(const tree_tab::TreeTabNodeId& id) const;
 
   // Returns true if the node identified by |id| is under a collapsed ancestor
   // (and thus its tab should be hidden). O(1) from cache.
@@ -52,6 +56,11 @@ class TreeTabModel {
   // Called when a node is reparented (moved to another parent). Updates the
   // collapsed cache for that node and its descendants.
   void OnTreeTabNodeMoved(const tree_tab::TreeTabNodeId& id);
+
+  // Returns the closest collapsed ancestor of the node identified by |id|.
+  // Returns nullptr if no collapsed ancestor exists.
+  const tree_tab::TreeTabNodeId* GetClosestCollapsedAncestor(
+      const tree_tab::TreeTabNodeId& id) const;
 
   base::WeakPtr<TreeTabModel> GetWeakPtr();
 
