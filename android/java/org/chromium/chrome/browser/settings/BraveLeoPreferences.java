@@ -53,6 +53,7 @@ public class BraveLeoPreferences extends BravePreferenceFragment
     private static final String PREF_SUBSCRIPTION_CATEGORY = "subscription_category";
     private static final String PREF_DEFAULT_MODEL = "default_model";
     public static final String PREF_LEO_QUICK_SEARCH_ENGINE = "leo_quick_search_engine";
+    private static final String PREF_BRAVE_LEO = "brave_leo";
 
     private final SettableMonotonicObservableSupplier<String> mPageTitle =
             ObservableSuppliers.createMonotonic();
@@ -240,8 +241,8 @@ public class BraveLeoPreferences extends BravePreferenceFragment
                     // entry and child-parent link manually so resolveIndex() does not treat
                     // BraveLeoPreferences entries as orphans.
                     indexData.addEntryForKey(
-                            "org.chromium.chrome.browser.settings.MainSettings",
-                            "brave_leo",
+                            MainSettings.class.getName(),
+                            PREF_BRAVE_LEO,
                             R.string.menu_brave_leo,
                             /* summaryId= */ 0,
                             BraveLeoPreferences.class.getName());

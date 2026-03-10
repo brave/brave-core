@@ -45,6 +45,7 @@ import org.chromium.chrome.browser.safe_browsing.settings.NoGooglePlayServicesDi
 import org.chromium.chrome.browser.settings.BraveDialogPreference;
 import org.chromium.chrome.browser.settings.BravePreferenceDialogFragment;
 import org.chromium.chrome.browser.settings.BraveWebrtcPolicyPreference;
+import org.chromium.chrome.browser.settings.MainSettings;
 import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
 import org.chromium.chrome.browser.shields.FilterListServiceFactory;
 import org.chromium.chrome.browser.util.TabUtils;
@@ -105,6 +106,8 @@ public class BravePrivacySettings extends PrivacySettings {
             "brave_social_blocking_section";
     private static final String PREF_OTHER_PRIVACY_SETTINGS_SECTION =
             "other_privacy_settings_section";
+    // This pref name on main settings
+    private static final String PREF_PRIVACY = "privacy";
 
     private static final String PREF_DE_AMP = "de_amp";
     private static final String PREF_DEBOUNCE = "debounce";
@@ -1042,8 +1045,7 @@ public class BravePrivacySettings extends PrivacySettings {
                     indexData.addChildParentLink(
                             BravePrivacySettings.class.getName(),
                             PreferenceParser.createUniqueId(
-                                    "org.chromium.chrome.browser.settings.MainSettings",
-                                    "privacy"));
+                                    MainSettings.class.getName(), PREF_PRIVACY));
                 }
 
                 @Override

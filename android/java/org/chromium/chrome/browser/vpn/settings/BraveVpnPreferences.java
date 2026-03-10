@@ -39,6 +39,7 @@ import org.chromium.chrome.browser.billing.PurchaseModel;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.chrome.browser.settings.MainSettings;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
@@ -84,6 +85,8 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
 
     private static final String VPN_SUPPORT_PAGE =
             "https://support.brave.app/hc/en-us/articles/4410838268429";
+
+    private static final String PREF_BRAVE_VPN = "brave_vpn";
 
     private static final String DATE_FORMAT = "dd/MM/yyyy";
 
@@ -577,8 +580,8 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                         Map<String, SearchIndexProvider> providerMap) {
                     super.initPreferenceXml(context, indexData, providerMap);
                     indexData.addEntryForKey(
-                            "org.chromium.chrome.browser.settings.MainSettings",
-                            "brave_vpn",
+                            MainSettings.class.getName(),
+                            PREF_BRAVE_VPN,
                             R.string.brave_firewall_vpn,
                             /* summaryId= */ 0,
                             BraveVpnPreferences.class.getName());

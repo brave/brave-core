@@ -45,6 +45,7 @@ import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
 import org.chromium.chrome.browser.settings.ChromeManagedPreferenceDelegate;
+import org.chromium.chrome.browser.settings.MainSettings;
 import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SearchUtils;
@@ -102,6 +103,8 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     private static final int PASSWORD_EXPORT_INTENT_REQUEST_CODE = 3485764;
     // Unique request code for the password importing activity.
     private static final int PASSWORD_IMPORT_INTENT_REQUEST_CODE = 3485765;
+
+    private static final String PREF_PASSWORDS = "passwords";
 
     private boolean mNoPasswords;
     private boolean mNoPasswordExceptions;
@@ -760,8 +763,7 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
                     // so resolveIndex() does not treat PasswordSettings entries as orphans.
                     String parentId =
                             PreferenceParser.createUniqueId(
-                                    "org.chromium.chrome.browser.settings.MainSettings",
-                                    "passwords");
+                                    MainSettings.class.getName(), PREF_PASSWORDS);
                     indexData.addChildParentLink(PasswordSettings.class.getName(), parentId);
                 }
 

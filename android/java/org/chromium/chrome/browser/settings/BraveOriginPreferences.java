@@ -62,6 +62,7 @@ public class BraveOriginPreferences extends BravePreferenceFragment
     private static final String PREF_WEB_DISCOVERY_PROJECT_SWITCH = "web_discovery_project_switch";
     private static final String PREF_RESET_TO_DEFAULTS = "reset_to_defaults";
     private static final String PREF_LINK_PURCHASE = "link_purchase";
+    private static final String PREF_BRAVE_ORIGIN = "brave_origin";
 
     private final SettableMonotonicObservableSupplier<String> mPageTitle =
             ObservableSuppliers.createMonotonic();
@@ -367,8 +368,8 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                     // entry and child-parent link manually so resolveIndex() does not treat
                     // BraveOriginPreferences entries as orphans.
                     indexData.addEntryForKey(
-                            "org.chromium.chrome.browser.settings.MainSettings",
-                            "brave_origin",
+                            MainSettings.class.getName(),
+                            PREF_BRAVE_ORIGIN,
                             R.string.menu_origin,
                             /* summaryId= */ 0,
                             BraveOriginPreferences.class.getName());
@@ -379,8 +380,7 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                     String frag = BraveOriginPreferences.class.getName();
                     if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN)) {
                         indexData.removeEntryForKey(
-                                "org.chromium.chrome.browser.settings.MainSettings",
-                                "brave_origin");
+                                MainSettings.class.getName(), PREF_BRAVE_ORIGIN);
                         return;
                     }
                     // origin_description is an informational widget with no title; exclude it.

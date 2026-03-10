@@ -64,6 +64,8 @@ public class BraveWalletPreferences extends BravePreferenceFragment
 
     private static final String PREF_BRAVE_WALLET_RESET = "pref_brave_wallet_reset";
 
+    private static final String PREF_BRAVE_WALLET = "brave_wallet";
+
     private BraveDialogPreference mDefaultEthereumWallet;
     private BraveDialogPreference mDefaultSolanaWallet;
     private BraveWalletAutoLockPreferences mPrefAutolock;
@@ -309,8 +311,8 @@ public class BraveWalletPreferences extends BravePreferenceFragment
                         Map<String, SearchIndexProvider> providerMap) {
                     super.initPreferenceXml(context, indexData, providerMap);
                     indexData.addEntryForKey(
-                            "org.chromium.chrome.browser.settings.MainSettings",
-                            "brave_wallet",
+                            MainSettings.class.getName(),
+                            PREF_BRAVE_WALLET,
                             R.string.brave_ui_brave_wallet,
                             /* summaryId= */ 0,
                             BraveWalletPreferences.class.getName());

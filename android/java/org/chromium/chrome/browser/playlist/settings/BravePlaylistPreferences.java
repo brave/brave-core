@@ -26,6 +26,7 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.chrome.browser.settings.MainSettings;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
@@ -47,6 +48,8 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
     private BravePlaylistResetPreference mResetPlaylist;
 
     private PlaylistService mPlaylistService;
+
+    private static final String PREF_BRAVE_PLAYLIST = "brave_playlist";
 
     private final SettableMonotonicObservableSupplier<String> mPageTitle =
             ObservableSuppliers.createMonotonic();
@@ -171,8 +174,8 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
                     // entry and child-parent link manually so resolveIndex() does not treat
                     // BravePlaylistPreferences entries as orphans.
                     indexData.addEntryForKey(
-                            "org.chromium.chrome.browser.settings.MainSettings",
-                            "brave_playlist",
+                            MainSettings.class.getName(),
+                            PREF_BRAVE_PLAYLIST,
                             R.string.brave_playlist,
                             /* summaryId= */ 0,
                             BravePlaylistPreferences.class.getName());
@@ -183,8 +186,7 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
                     String frag = BravePlaylistPreferences.class.getName();
                     if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
                         indexData.removeEntryForKey(
-                                "org.chromium.chrome.browser.settings.MainSettings",
-                                "brave_playlist");
+                                MainSettings.class.getName(), PREF_BRAVE_PLAYLIST);
                         indexData.removeEntryForKey(frag, BravePreferenceKeys.PREF_ENABLE_PLAYLIST);
                         indexData.removeEntryForKey(
                                 frag, BravePreferenceKeys.PREF_ADD_TO_PLAYLIST_BUTTON);
