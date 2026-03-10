@@ -157,50 +157,6 @@ void RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
 
 namespace {
 
-#if BUILDFLAG(ENABLE_TOR)
-bool HasAlreadyOpenedTorWindow(Profile* profile) {
-  bool found = false;
-  GlobalBrowserCollection::GetInstance()->ForEach(
-      [profile, &found](BrowserWindowInterface* browser) {
-        found = browser->GetProfile()->IsTor() &&
-                browser->GetProfile()->GetOriginalProfile() == profile;
-        return !found;
-      });
-  return found;
-}
-
-// Modified OnProfileCreated() in render_view_context_menu.cc
-// to handle additional |use_new_tab| param.
-void OnTorProfileCreated(const GURL& link_url,
-                         const url::Origin& initiator,
-                         bool use_new_tab,
-                         Browser* browser) {
-  CHECK(browser);
-  /* |ui::PAGE_TRANSITION_TYPED| is used rather than
-     |ui::PAGE_TRANSITION_LINK| since this ultimately opens the link in
-     another browser. This parameter is used within the tab strip model of
-     the browser it opens in implying a link from the active tab in the
-     destination browser which is not correct. */
-  NavigateParams nav_params(browser, link_url, ui::PAGE_TRANSITION_TYPED);
-  if (use_new_tab) {
-    nav_params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
-  } else {
-    // Stop current loading to show tab throbber wait spinning till tor is
-    // initialized.
-    if (auto* contents = browser->tab_strip_model()->GetActiveWebContents()) {
-      contents->Stop();
-      nav_params.disposition = WindowOpenDisposition::CURRENT_TAB;
-    }
-  }
-  nav_params.referrer =
-      content::Referrer(GURL(), network::mojom::ReferrerPolicy::kStrictOrigin);
-  nav_params.window_action = NavigateParams::WindowAction::kShowWindow;
-  nav_params.initiator_origin = initiator;
-  Navigate(&nav_params);
-}
-
-#endif
-
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 void OnGetImageForTextCopy(base::WeakPtr<content::WebContents> web_contents,
                            const SkBitmap& image) {
@@ -464,15 +420,10 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       brave::ForcePasteInWebContents(source_web_contents_);
     }; break;
 #if BUILDFLAG(ENABLE_TOR)
-    case IDC_CONTENT_CONTEXT_OPENLINKTOR: {
-      const bool has_tor_window = HasAlreadyOpenedTorWindow(GetProfile());
-      Browser* tor_browser =
-          TorProfileManager::SwitchToTorProfile(GetProfile());
-      if (tor_browser) {
-        OnTorProfileCreated(params_.link_url, params_.frame_origin,
-                            has_tor_window, tor_browser);
-      }
-    } break;
+    case IDC_CONTENT_CONTEXT_OPENLINKTOR:
+      TorProfileManager::SwitchToTorProfile(GetProfile(), params_.link_url,
+                                            params_.frame_origin);
+      break;
 #endif
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
     case IDC_CONTENT_CONTEXT_COPY_TEXT_FROM_IMAGE:
