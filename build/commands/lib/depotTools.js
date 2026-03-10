@@ -71,6 +71,7 @@ function removeDepotTools() {
 function installDepotTools(options = config.defaultOptions) {
   options.cwd = config.braveCoreDir
 
+  // @ts-ignore
   const enforcedDepotToolsRef = config.getProjectRef('depot_tools', null)
   if (enforcedDepotToolsRef && !isDepotToolsRefValid(enforcedDepotToolsRef)) {
     Log.error(

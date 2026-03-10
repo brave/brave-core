@@ -17,6 +17,7 @@ import syncUtil from '../lib/syncUtils.js'
 import sisoUtils from '../lib/sisoUtils.js'
 
 program
+  // @ts-ignore
   .version(process.env.npm_package_version)
   .option('--gclient_verbose', 'verbose output for gclient')
   .option('--target_os <target_os>', 'comma-separated target OS list')

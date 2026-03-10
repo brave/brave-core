@@ -15,6 +15,10 @@ checkWorkingDirectoryChainOnWindows()
 function checkNodeVersion() {
   const nodeVersion = process.versions.node
   const requiredNodeVersion = process.env.npm_package_engines_node
+  if (!requiredNodeVersion) {
+    Log.warn('npm_package_engines_node not set. Skipping node version check.')
+    return
+  }
   const upgradeInstructions =
     'You can upgrade Node.js by downloading it from https://nodejs.org/'
 
@@ -24,6 +28,10 @@ function checkNodeVersion() {
 function checkNpmVersion() {
   const npmVersion = process.env.npm_config_npm_version
   const requiredNpmVersion = process.env.npm_package_engines_npm
+  if (!requiredNpmVersion) {
+    Log.warn('npm_package_engines_npm not set. Skipping npm version check.')
+    return
+  }
   const upgradeInstructions =
     'You can upgrade npm by running "npm install -g npm"'
 
