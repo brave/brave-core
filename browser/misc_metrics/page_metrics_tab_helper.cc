@@ -51,8 +51,8 @@ void PageMetricsTabHelper::DidFinishNavigation(
   const GURL& current_url = navigation_handle->GetURL();
   const GURL& previous_url =
       navigation_handle->GetPreviousPrimaryMainFrameURL();
-  page_metrics_->brave_search_metrics()->MaybeRecordBraveQuery(previous_url,
-                                                               current_url);
+  page_metrics_->brave_search_metrics().MaybeRecordBraveQuery(previous_url,
+                                                              current_url);
   if (IsPrivateWindowEvent()) {
     UMA_HISTOGRAM_BOOLEAN("Brave.Core.PrivateWindowUsed", true);
     return;

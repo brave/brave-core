@@ -121,7 +121,7 @@ void BraveNewTabPageUI::BindInterface(
   if (profile_metrics) {
     auto* page_metrics = profile_metrics->GetPageMetrics();
     if (page_metrics) {
-      brave_search_metrics = page_metrics->brave_search_metrics();
+      brave_search_metrics = &page_metrics->brave_search_metrics();
     }
   }
 
