@@ -2920,6 +2920,12 @@ public abstract class BraveActivity extends ChromeActivity
     // QuickSearchCallback
     @Override
     public void onSearchEngineClick(int position, QuickSearchEnginesModel quickSearchEnginesModel) {
+        if (mMiscAndroidMetrics != null) {
+            mMiscAndroidMetrics.recordQuickSearch(
+                    quickSearchEnginesModel.getType()
+                            == QuickSearchEnginesModel.QuickSearchEnginesModelType.AI_ASSISTANT,
+                    quickSearchEnginesModel.getKeyword());
+        }
         if (getActivityTab() == null) {
             return;
         }
