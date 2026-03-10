@@ -22,7 +22,8 @@ class MockBraveAccountAuthentication : public mojom::Authentication {
 
   MOCK_METHOD(void,
               RegisterInitialize,
-              (const std::string& email,
+              (const std::string& initiating_service_name,
+               const std::string& email,
                const std::string& blinded_message,
                RegisterInitializeCallback callback),
               (override));
@@ -43,7 +44,8 @@ class MockBraveAccountAuthentication : public mojom::Authentication {
 
   MOCK_METHOD(void,
               LoginInitialize,
-              (const std::string& email,
+              (const std::string& initiating_service_name,
+               const std::string& email,
                const std::string& serialized_ke1,
                LoginInitializeCallback callback),
               (override));

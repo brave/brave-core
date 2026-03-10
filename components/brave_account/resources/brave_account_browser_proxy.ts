@@ -7,11 +7,13 @@ import { Authentication } from './brave_account.mojom-webui.js'
 import type { AuthenticationInterface } from './brave_account.mojom-webui.js'
 import { PasswordStrengthMeter } from './password_strength_meter.mojom-webui.js'
 import type { PasswordStrengthMeterInterface } from './password_strength_meter.mojom-webui.js'
+import { loadTimeData } from '//resources/js/load_time_data.js'
 
 export interface BraveAccountBrowserProxy {
   authentication: AuthenticationInterface
   password_strength_meter: PasswordStrengthMeterInterface
   closeDialog: () => void
+  getInitiatingServiceName: () => string
 }
 
 export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
@@ -25,6 +27,10 @@ export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
 
   closeDialog() {
     chrome.send('dialogClose')
+  }
+
+  getInitiatingServiceName() {
+    return loadTimeData.getString('initiatingServiceName') || 'accounts'
   }
 
   static getInstance(): BraveAccountBrowserProxy {
