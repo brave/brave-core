@@ -10,6 +10,7 @@
 
 class PrefService;
 class ProfileAttributesStorage;
+class TimePeriodStoreFactory;
 
 namespace base {
 class FilePath;
@@ -19,6 +20,13 @@ namespace serp_metrics {
 
 class SerpMetrics;
 
+std::unique_ptr<SerpMetrics> CreateSerpMetrics(
+    PrefService* local_state,
+    const TimePeriodStoreFactory& time_period_store_factory);
+
+// Convenience overload that creates a `SerpMetricsTimePeriodStoreFactory`
+// internally and delegates to
+// `CreateSerpMetrics(PrefService*, const TimePeriodStoreFactory&)`.
 std::unique_ptr<SerpMetrics> CreateSerpMetrics(
     PrefService* local_state,
     const base::FilePath& profile_path,

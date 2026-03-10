@@ -7,15 +7,19 @@ static_library("serp_metrics") {
   public = [
     "serp_metrics_all_profiles_aggregator.h",
     "serp_metrics_factory.h",
+    "serp_metrics_migration.h",
     "serp_metrics_tab_helper.h",
     "serp_metrics_time_period_store.h",
+    "serp_metrics_time_period_store_factory.h",
   ]
 
   sources = [
     "serp_metrics_all_profiles_aggregator.cc",
     "serp_metrics_factory.cc",
+    "serp_metrics_migration.cc",
     "serp_metrics_tab_helper.cc",
     "serp_metrics_time_period_store.cc",
+    "serp_metrics_time_period_store_factory.cc",
   ]
 
   public_deps = [
@@ -31,6 +35,7 @@ static_library("serp_metrics") {
     "//brave/components/constants",
     "//brave/components/serp_metrics",
     "//brave/components/serp_metrics:features",
+    "//brave/components/serp_metrics:prefs",
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/profiles:profile_util",
@@ -85,14 +90,17 @@ source_set("unit_tests") {
 
   sources = [
     "serp_metrics_all_profiles_aggregator_unittest.cc",
+    "serp_metrics_migration_unittest.cc",
     "serp_metrics_time_period_store_unittest.cc",
   ]
 
   deps = [
     ":serp_metrics",
     "//base",
+    "//base/test:test_support",
     "//brave/components/constants",
     "//brave/components/serp_metrics",
+    "//brave/components/serp_metrics:prefs",
     "//chrome/browser/profiles:profile_util",
     "//components/prefs",
     "//components/prefs:test_support",
