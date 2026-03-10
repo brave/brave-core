@@ -135,8 +135,6 @@ class BraveVerticalTabStripRegionView : public views::View,
       const gfx::Point& p,
       ui::mojom::MenuSourceType source_type) override;
 
-  class HeaderView;
-
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
@@ -200,8 +198,6 @@ class BraveVerticalTabStripRegionView : public views::View,
   raw_ptr<views::View> original_parent_of_region_view_ = nullptr;
   std::optional<size_t> tab_strip_region_view_original_index_;
   raw_ptr<HorizontalTabStripRegionView> original_region_view_ = nullptr;
-
-  raw_ptr<HeaderView> header_view_ = nullptr;
 
   // Reportedly, when we add the TabStripRegionView to
   // VerticalTabStripRegionView directly, context menu on Omnibox is not working

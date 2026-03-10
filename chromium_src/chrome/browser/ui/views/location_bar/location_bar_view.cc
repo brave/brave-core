@@ -52,6 +52,8 @@
                                       /*intra_item_padding=*/0, 0,               \
                                       GetSearchPromotionButton());
 
+#define BRAVE_LOCATION_BAR_VIEW_ADD_FIRST_LEADING_DECORATIONS
+
 #define OmniboxPopupViewViews BraveOmniboxPopupViewViews
 #define OmniboxViewViews BraveOmniboxViewViews
 #define ChromeOmniboxClient BraveOmniboxClientImpl
