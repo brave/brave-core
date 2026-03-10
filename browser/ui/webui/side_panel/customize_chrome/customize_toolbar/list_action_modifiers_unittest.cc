@@ -199,7 +199,7 @@ TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_TabSearchShouldBeInNavigationCategory) {
   // Apply modifications
   auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
-      *web_contents_, GetBasicActions());
+      web_contents_.get(), GetBasicActions());
 
   // Verify Tab Search is now in Navigation category and follows Side panel
   // action.
@@ -217,7 +217,7 @@ TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_NewPrivateWindowShouldHaveCorrectIcon) {
   // Apply modifications
   auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
-      *web_contents_, GetBasicActions());
+      web_contents_.get(), GetBasicActions());
 
   auto incognito_action_it =
       std::ranges::find(modified_actions, ActionId::kNewIncognitoWindow,
@@ -240,7 +240,7 @@ TEST_F(
     ListActionModifiersUnitTest,
     ApplyBraveSpecificModifications_ShowBookmarksShouldHaveCorrectDisplayName) {
   auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
-      *web_contents_, GetBasicActions());
+      web_contents_.get(), GetBasicActions());
 
   auto show_bookmarks_action_it =
       std::ranges::find(modified_actions, ActionId::kShowBookmarks,
@@ -258,7 +258,7 @@ TEST_F(ListActionModifiersUnitTest,
   // VPN should be added by default(VPN enabled by default)
   ASSERT_TRUE(brave_vpn::IsBraveVPNEnabled(web_contents_->GetBrowserContext()));
   auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
-      *web_contents_, GetBasicActions());
+      web_contents_.get(), GetBasicActions());
   auto vpn_action_it =
       std::ranges::find(modified_actions, ActionId::kShowVPN,
                         &side_panel::customize_chrome::mojom::Action::id);
@@ -271,7 +271,7 @@ TEST_F(ListActionModifiersUnitTest,
       brave_vpn::IsBraveVPNEnabled(web_contents_->GetBrowserContext()));
 
   modified_actions = customize_chrome::ApplyBraveSpecificModifications(
-      *web_contents_, GetBasicActions());
+      web_contents_.get(), GetBasicActions());
   vpn_action_it =
       std::ranges::find(modified_actions, ActionId::kShowVPN,
                         &side_panel::customize_chrome::mojom::Action::id);
@@ -287,7 +287,7 @@ TEST_F(ListActionModifiersUnitTest,
   // AI Chat should be added by default(AI Chat enabled by default)
   ASSERT_TRUE(ai_chat::IsAIChatEnabled(prefs()));
   auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
-      *web_contents_, GetBasicActions());
+      web_contents_.get(), GetBasicActions());
 
   auto ai_chat_action_it =
       std::ranges::find(modified_actions, ActionId::kShowAIChat,
@@ -300,7 +300,7 @@ TEST_F(ListActionModifiersUnitTest,
 
   // AI Chat should not be added when disabled
   modified_actions = customize_chrome::ApplyBraveSpecificModifications(
-      *web_contents_, GetBasicActions());
+      web_contents_.get(), GetBasicActions());
   ai_chat_action_it =
       std::ranges::find(modified_actions, ActionId::kShowAIChat,
                         &side_panel::customize_chrome::mojom::Action::id);
@@ -315,7 +315,7 @@ TEST_F(ListActionModifiersUnitTest,
   // Wallet should be added by default(Wallet enabled by default)
   ASSERT_TRUE(brave_wallet::IsNativeWalletEnabled());
   auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
-      *web_contents_, GetBasicActions());
+      web_contents_.get(), GetBasicActions());
   auto wallet_action_it =
       std::ranges::find(modified_actions, ActionId::kShowWallet,
                         &side_panel::customize_chrome::mojom::Action::id);
@@ -328,7 +328,7 @@ TEST_F(ListActionModifiersUnitTest,
   ASSERT_FALSE(brave_wallet::IsNativeWalletEnabled());
 
   modified_actions = customize_chrome::ApplyBraveSpecificModifications(
-      *web_contents_, GetBasicActions());
+      web_contents_.get(), GetBasicActions());
   wallet_action_it =
       std::ranges::find(modified_actions, ActionId::kShowWallet,
                         &side_panel::customize_chrome::mojom::Action::id);
@@ -344,7 +344,7 @@ TEST_F(ListActionModifiersUnitTest,
   ASSERT_TRUE(brave_rewards::IsSupportedForProfile(
       Profile::FromBrowserContext(web_contents_->GetBrowserContext())));
   auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
-      *web_contents_, GetBasicActions());
+      web_contents_.get(), GetBasicActions());
   auto rewards_action_it =
       std::ranges::find(modified_actions, ActionId::kShowReward,
                         &side_panel::customize_chrome::mojom::Action::id);
@@ -357,7 +357,7 @@ TEST_F(ListActionModifiersUnitTest,
       prefs()->IsManagedPreference(brave_rewards::prefs::kDisabledByPolicy));
 
   modified_actions = customize_chrome::ApplyBraveSpecificModifications(
-      *web_contents_, GetBasicActions());
+      web_contents_.get(), GetBasicActions());
   rewards_action_it =
       std::ranges::find(modified_actions, ActionId::kShowReward,
                         &side_panel::customize_chrome::mojom::Action::id);
@@ -372,7 +372,7 @@ TEST_F(ListActionModifiersUnitTest,
   ASSERT_FALSE(sharing_hub::SharingIsDisabledByPolicy(
       web_contents_->GetBrowserContext()));
   auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
-      *web_contents_, GetBasicActions());
+      web_contents_.get(), GetBasicActions());
   auto share_menu_action_it =
       std::ranges::find(modified_actions, ActionId::kShowShareMenu,
                         &side_panel::customize_chrome::mojom::Action::id);
@@ -384,7 +384,7 @@ TEST_F(ListActionModifiersUnitTest,
       web_contents_->GetBrowserContext()));
 
   modified_actions = customize_chrome::ApplyBraveSpecificModifications(
-      *web_contents_, GetBasicActions());
+      web_contents_.get(), GetBasicActions());
   share_menu_action_it =
       std::ranges::find(modified_actions, ActionId::kShowShareMenu,
                         &side_panel::customize_chrome::mojom::Action::id);
@@ -413,7 +413,7 @@ TEST_F(ListActionModifiersUnitTest,
 #endif
 
   auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
-      *web_contents_, GetBasicActions());
+      web_contents_.get(), GetBasicActions());
   EXPECT_THAT(
       modified_actions,
       testing::ElementsAre(
