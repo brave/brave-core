@@ -9485,15 +9485,7 @@ extension Strings {
       comment:
         "Label for account when indicating that a domain has multiple accounts"
     )
-    public static let managePasswordDetailsInputUsernamePlaceholder =
-      NSLocalizedString(
-        "autofill.managePasswords.passwordDetail.inputUsernamePlaceholder",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Enter Username",
-        comment: "Placeholder for the username field when adding or editing a login"
-      )
-    public static let managePasswordDetailsInputPasswordPlaceholder =
+    public static let managePasswordDetailInputPasswordPlaceholder =
       NSLocalizedString(
         "autofill.managePasswords.passwordDetail.inputPasswordPlaceholder",
         tableName: "BraveShared",
@@ -9501,7 +9493,7 @@ extension Strings {
         value: "Enter Password",
         comment: "Placeholder for the password field when adding or editing a login"
       )
-    public static let managePasswordDetailsRevealPassword =
+    public static let managePasswordDetailRevealPassword =
       NSLocalizedString(
         "autofill.managePasswords.passwordDetail.revealPassword",
         tableName: "BraveShared",

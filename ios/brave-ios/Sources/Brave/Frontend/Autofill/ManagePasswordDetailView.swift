@@ -10,64 +10,63 @@ import SwiftUI
 import UIKit
 
 struct ManagePasswordDetailView: View {
-  @Environment(\.autofillManagementContext) private var context
+  @Environment(\.openURL) private var openURL
   @Environment(\.dismiss) private var dismiss
   @State private var isPasswordRevealed = false
   @State private var isSceneActive = true
-  @Bindable var viewModel: ManagePasswordDetailViewModel
 
-  private var navigationTitle: String {
-    URL(string: viewModel.site)?.baseDomain ?? ""
-  }
+  let viewModel: ManagePasswordsViewModel
+  let password: CWVPassword
 
   var body: some View {
-    List {
+    Form {
       Section {
-        Menu {
-          Button {
-            UIPasteboard.general.string = viewModel.site
-          } label: {
-            Text(Strings.menuItemCopyTitle)
-          }
-          Button {
-            if let url = URL(string: viewModel.site) {
-              context?.openURLInNewTab(url)
-              dismiss()
+        LabeledContent {
+          Menu {
+            ControlGroup {
+              Button {
+                UIPasteboard.general.string = password.site
+              } label: {
+                Text(Strings.menuItemCopyTitle)
+              }
+              Button {
+                if let url = URL(string: password.site) {
+                  openURL(url)
+                }
+              } label: {
+                Text(Strings.openWebsite)
+              }
             }
+            .controlGroupStyle(.compactMenu)
           } label: {
-            Text(Strings.openWebsite)
+            Text(password.site).lineLimit(1)
+              .contentShape(.rect)
           }
         } label: {
-          LabeledContent {
-            Text(viewModel.site)
-              .lineLimit(1)
-          } label: {
-            Text(Strings.Login.loginInfoDetailsWebsiteFieldTitle)
-          }
-          .contentShape(Rectangle())
+          Text(Strings.Login.loginInfoDetailsWebsiteFieldTitle)
         }
 
-        Menu {
-          Button {
-            UIPasteboard.general.string = viewModel.username
+        LabeledContent {
+          Menu {
+            Button {
+              UIPasteboard.general.string = password.username
+            } label: {
+              Text(Strings.menuItemCopyTitle)
+            }
           } label: {
-            Text(Strings.menuItemCopyTitle)
+            Text(password.username ?? "")
+              .lineLimit(1)
+              .contentShape(.rect)
           }
         } label: {
-          LabeledContent {
-            Text(viewModel.username)
-              .lineLimit(1)
-          } label: {
-            Text(Strings.Login.loginInfoDetailsUsernameFieldTitle)
-          }
-          .contentShape(Rectangle())
+          Text(Strings.Login.loginInfoDetailsUsernameFieldTitle)
         }
 
         LabeledContent {
           HStack(spacing: 8) {
             Menu {
               Button {
-                UIPasteboard.general.setSecureString(viewModel.passwordValue)
+                UIPasteboard.general.setSecureString(password.password ?? "")
               } label: {
                 Text(Strings.menuItemCopyTitle)
               }
@@ -75,13 +74,12 @@ struct ManagePasswordDetailView: View {
               HStack {
                 Spacer()
                 if isPasswordRevealed {
-                  Text(viewModel.passwordValue)
+                  Text(password.password ?? "")
                     .lineLimit(1)
                 } else {
-                  // allowsHitTesting(false) intentionally prevents editing in View only mode
                   SecureField(
-                    Strings.Autofill.managePasswordDetailsInputPasswordPlaceholder,
-                    text: $viewModel.passwordValue
+                    Strings.Autofill.managePasswordDetailInputPasswordPlaceholder,
+                    text: .constant(password.password ?? "")
                   )
                   .lineLimit(1)
                   .allowsHitTesting(false)
@@ -89,18 +87,16 @@ struct ManagePasswordDetailView: View {
                   .frame(maxWidth: .infinity, alignment: .trailing)
                 }
               }
-              .contentShape(Rectangle())
+              .contentShape(.rect)
             }
-            Label {
-              Text(Strings.Autofill.managePasswordDetailsRevealPassword)
-            } icon: {
+
+            Button {
+              isPasswordRevealed.toggle()
+            } label: {
               Image(braveSystemName: isPasswordRevealed ? "leo.eye.on" : "leo.eye.off")
                 .foregroundStyle(Color(braveSystemName: .textInteractive))
             }
-            .labelStyle(.iconOnly)
-            .onTapGesture {
-              isPasswordRevealed.toggle()
-            }
+            .buttonStyle(.plain)
           }
         } label: {
           Text(Strings.Login.loginInfoDetailsPasswordFieldTitle)
@@ -108,7 +104,7 @@ struct ManagePasswordDetailView: View {
       }
     }
     .foregroundStyle(Color(braveSystemName: .textPrimary))
-    .navigationTitle(navigationTitle)
+    .navigationTitle(URL(string: password.site)?.baseDomain ?? password.title)
     .navigationBarTitleDisplayMode(.inline)
     .toolbarBackground(.visible, for: .navigationBar)
     .overlay {

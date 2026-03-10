@@ -53,24 +53,20 @@ struct ManagePasswordsView: View {
       if !viewModel.filteredAllowedGroups.isEmpty {
         Section {
           ForEach(viewModel.filteredAllowedGroups, id: \.domain) { domain, passwords in
-            ManagePasswordListRow(
-              domain: domain,
-              passwords: passwords,
-              autofillDataManager: viewModel.autofillDataManager
-            )
-            .tag(GroupID.saved(domain: domain))
-            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-              Button(role: .destructive) {
-                UIImpactFeedbackGenerator(style: .medium).vibrate()
-                viewModel.deletePasswords(passwords)
-              } label: {
-                Label(
-                  Strings.Autofill.managePasswordsDeleteCredentialButtonTitle,
-                  braveSystemImage: "leo.trash"
-                )
-                .labelStyle(.iconOnly)
+            ManagePasswordListRow(domain: domain, passwords: passwords, viewModel: viewModel)
+              .tag(GroupID.saved(domain: domain))
+              .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                Button(role: .destructive) {
+                  UIImpactFeedbackGenerator(style: .medium).vibrate()
+                  viewModel.deletePasswords(passwords)
+                } label: {
+                  Label(
+                    Strings.Autofill.managePasswordsDeleteCredentialButtonTitle,
+                    braveSystemImage: "leo.trash"
+                  )
+                  .labelStyle(.iconOnly)
+                }
               }
-            }
           }
         } header: {
           Text(Strings.Autofill.managePasswordsSavedListHeaderTitle)
@@ -81,24 +77,20 @@ struct ManagePasswordsView: View {
       if !viewModel.filteredBlockedGroups.isEmpty {
         Section {
           ForEach(viewModel.filteredBlockedGroups, id: \.domain) { domain, passwords in
-            ManagePasswordListRow(
-              domain: domain,
-              passwords: passwords,
-              autofillDataManager: viewModel.autofillDataManager
-            )
-            .tag(GroupID.blocked(domain: domain))
-            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-              Button(role: .destructive) {
-                UIImpactFeedbackGenerator(style: .medium).vibrate()
-                viewModel.deletePasswords(passwords)
-              } label: {
-                Label(
-                  Strings.Autofill.managePasswordsDeleteCredentialButtonTitle,
-                  braveSystemImage: "leo.trash"
-                )
-                .labelStyle(.iconOnly)
+            ManagePasswordListRow(domain: domain, passwords: passwords, viewModel: viewModel)
+              .tag(GroupID.blocked(domain: domain))
+              .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                Button(role: .destructive) {
+                  UIImpactFeedbackGenerator(style: .medium).vibrate()
+                  viewModel.deletePasswords(passwords)
+                } label: {
+                  Label(
+                    Strings.Autofill.managePasswordsDeleteCredentialButtonTitle,
+                    braveSystemImage: "leo.trash"
+                  )
+                  .labelStyle(.iconOnly)
+                }
               }
-            }
           }
         } header: {
           Text(Strings.Autofill.managePasswordsNeverSavedListHeaderTitle)
@@ -218,8 +210,8 @@ struct ManagePasswordsView: View {
 private struct ManagePasswordListRow: View {
   let domain: String
   let passwords: [CWVPassword]
-  let autofillDataManager: CWVAutofillDataManager
-  @Environment(\.autofillManagementContext) private var context
+  let viewModel: ManagePasswordsViewModel
+  @Environment(\.openURL) var openURL
 
   private var resolvedRealmURL: URL {
     passwords.first.flatMap { URL(string: $0.site) } ?? URL(string: "about:blank")!
@@ -232,22 +224,13 @@ private struct ManagePasswordListRow: View {
   var body: some View {
     NavigationLink {
       if passwords.count == 1, let password = passwords.first {
-        ManagePasswordDetailView(
-          viewModel: ManagePasswordDetailViewModel(
-            mode: .view(password),
-            autofillDataManager: autofillDataManager
-          )
-        )
-        .environment(\.autofillManagementContext, context)
+        ManagePasswordDetailView(viewModel: viewModel, password: password)
+          // NavigationLink destinations pushed onto a UINavigationController stack run in an isolated
+          // hosting context and do not inherit the parent's environment; Thus the parent's environment variables
+          // must be re-injected explicitly into the child view on the isolated stack.
+          .environment(\.openURL, openURL)
       } else {
-        ManagePasswordGroupView(
-          viewModel: ManagePasswordGroupViewModel(
-            domain: domain,
-            passwords: passwords,
-            autofillDataManager: autofillDataManager
-          )
-        )
-        .environment(\.autofillManagementContext, context)
+        ManagePasswordGroupView(viewModel: viewModel, domain: domain)
       }
     } label: {
       Label {
