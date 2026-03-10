@@ -113,8 +113,16 @@
   const std::string identifier = "{SyntheticIdentifier}";
 
   ProfileIOS* profile = browser->GetProfile();
-  SessionRestorationServiceFactory::GetForProfile(profile)->SetSessionID(
-      browser, identifier);
+  SessionRestorationService* service =
+      SessionRestorationServiceFactory::GetForProfile(profile);
+
+  // Delete stale data.pb files from previous sessions before registering the
+  // browser. Chromium cleans these up in LoadSession via DeleteUnknownContent,
+  // but Brave never calls LoadSession as we don't actually use WebStateList
+  // for real tabs (just for sync)
+  service->DeleteDataForDiscardedSessions({identifier}, base::DoNothing());
+
+  service->SetSessionID(browser, identifier);
 }
 
 - (instancetype)initWithProfileKeepAlive:
