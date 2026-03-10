@@ -56,6 +56,7 @@ import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.PreferenceParser;
 import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
 import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.ui.widget.Toast;
@@ -579,12 +580,10 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                         SettingsIndexData indexData,
                         Map<String, SearchIndexProvider> providerMap) {
                     super.initPreferenceXml(context, indexData, providerMap);
-                    indexData.addEntryForKey(
-                            MainSettings.class.getName(),
-                            PREF_BRAVE_VPN,
-                            R.string.brave_firewall_vpn,
-                            /* summaryId= */ 0,
-                            BraveVpnPreferences.class.getName());
+                    indexData.addChildParentLink(
+                            BraveVpnPreferences.class.getName(),
+                            PreferenceParser.createUniqueId(
+                                    MainSettings.class.getName(), PREF_BRAVE_VPN));
                 }
 
                 @Override

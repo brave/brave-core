@@ -37,6 +37,7 @@ import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.PreferenceParser;
 import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
 import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 
@@ -236,16 +237,10 @@ public class BraveLeoPreferences extends BravePreferenceFragment
                         SettingsIndexData indexData,
                         Map<String, SearchIndexProvider> providerMap) {
                     super.initPreferenceXml(context, indexData, providerMap);
-                    // brave_main_preferences.xml is not processed by
-                    // MainSettings.SEARCH_INDEX_DATA_PROVIDER, so we add the brave_leo
-                    // entry and child-parent link manually so resolveIndex() does not treat
-                    // BraveLeoPreferences entries as orphans.
-                    indexData.addEntryForKey(
-                            MainSettings.class.getName(),
-                            PREF_BRAVE_LEO,
-                            R.string.menu_brave_leo,
-                            /* summaryId= */ 0,
-                            BraveLeoPreferences.class.getName());
+                    indexData.addChildParentLink(
+                            BraveLeoPreferences.class.getName(),
+                            PreferenceParser.createUniqueId(
+                                    MainSettings.class.getName(), PREF_BRAVE_LEO));
                 }
 
                 @Override

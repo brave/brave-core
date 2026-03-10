@@ -35,6 +35,7 @@ import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.TextMessagePreference;
 import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.PreferenceParser;
 import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
 import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -310,12 +311,10 @@ public class BraveWalletPreferences extends BravePreferenceFragment
                         SettingsIndexData indexData,
                         Map<String, SearchIndexProvider> providerMap) {
                     super.initPreferenceXml(context, indexData, providerMap);
-                    indexData.addEntryForKey(
-                            MainSettings.class.getName(),
-                            PREF_BRAVE_WALLET,
-                            R.string.brave_ui_brave_wallet,
-                            /* summaryId= */ 0,
-                            BraveWalletPreferences.class.getName());
+                    indexData.addChildParentLink(
+                            BraveWalletPreferences.class.getName(),
+                            PreferenceParser.createUniqueId(
+                                    MainSettings.class.getName(), PREF_BRAVE_WALLET));
                 }
             };
 }

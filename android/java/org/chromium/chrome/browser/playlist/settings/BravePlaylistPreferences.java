@@ -30,6 +30,7 @@ import org.chromium.chrome.browser.settings.MainSettings;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.PreferenceParser;
 import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
 import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -169,16 +170,10 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
                         SettingsIndexData indexData,
                         Map<String, SearchIndexProvider> providerMap) {
                     super.initPreferenceXml(context, indexData, providerMap);
-                    // brave_main_preferences.xml is not processed by
-                    // MainSettings.SEARCH_INDEX_DATA_PROVIDER, so we add the brave_playlist
-                    // entry and child-parent link manually so resolveIndex() does not treat
-                    // BravePlaylistPreferences entries as orphans.
-                    indexData.addEntryForKey(
-                            MainSettings.class.getName(),
-                            PREF_BRAVE_PLAYLIST,
-                            R.string.brave_playlist,
-                            /* summaryId= */ 0,
-                            BravePlaylistPreferences.class.getName());
+                    indexData.addChildParentLink(
+                            BravePlaylistPreferences.class.getName(),
+                            PreferenceParser.createUniqueId(
+                                    MainSettings.class.getName(), PREF_BRAVE_PLAYLIST));
                 }
 
                 @Override

@@ -106,8 +106,6 @@ public class BravePrivacySettings extends PrivacySettings {
             "brave_social_blocking_section";
     private static final String PREF_OTHER_PRIVACY_SETTINGS_SECTION =
             "other_privacy_settings_section";
-    // This pref name on main settings
-    private static final String PREF_PRIVACY = "privacy";
 
     private static final String PREF_DE_AMP = "de_amp";
     private static final String PREF_DEBOUNCE = "debounce";
@@ -1037,15 +1035,13 @@ public class BravePrivacySettings extends PrivacySettings {
                         SettingsIndexData indexData,
                         Map<String, SearchIndexProvider> providerMap) {
                     super.initPreferenceXml(context, profile, indexData, providerMap);
-                    // main_preferences.xml references PrivacySettings (not BravePrivacySettings)
-                    // for the android:fragment attribute, so the normal child-parent link is
-                    // established for PrivacySettings, not BravePrivacySettings. Register it
-                    // manually so resolveIndex() does not treat BravePrivacySettings entries as
-                    // orphans.
+                    // brave_main_preferences.xml has brave_shields_and_privacy with
+                    // android:fragment pointing to the wrong class name (missing .settings
+                    // sub-package). Register the correct child-parent link explicitly.
                     indexData.addChildParentLink(
                             BravePrivacySettings.class.getName(),
                             PreferenceParser.createUniqueId(
-                                    MainSettings.class.getName(), PREF_PRIVACY));
+                                    MainSettings.class.getName(), "brave_shields_and_privacy"));
                 }
 
                 @Override

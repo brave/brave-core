@@ -24,6 +24,7 @@ import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.PreferenceParser;
 import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
 import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -185,12 +186,10 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
                         SettingsIndexData indexData,
                         Map<String, SearchIndexProvider> providerMap) {
                     super.initPreferenceXml(context, indexData, providerMap);
-                    indexData.addEntryForKey(
-                            MainSettings.class.getName(),
-                            PREF_BRAVE_SEARCH_ENGINES,
-                            R.string.brave_search_engines,
-                            /* summaryId= */ 0,
-                            BraveSearchEnginesPreferences.class.getName());
+                    indexData.addChildParentLink(
+                            BraveSearchEnginesPreferences.class.getName(),
+                            PreferenceParser.createUniqueId(
+                                    MainSettings.class.getName(), PREF_BRAVE_SEARCH_ENGINES));
                 }
 
                 @Override
