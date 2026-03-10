@@ -101,6 +101,7 @@ import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuPopulatorFactory;
+import org.chromium.content_public.browser.selection.SelectionDropdownMenuDelegate;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
@@ -461,7 +462,8 @@ public class BraveToolbarManager extends ToolbarManager
             @Nullable NonNullObservableSupplier<Integer> archivedTabCountSupplier,
             NonNullObservableSupplier<TabModelDotInfo> tabModelNotificationDotSupplier,
             @Nullable UndoBarThrottle undoBarThrottle,
-            @Nullable ContextMenuPopulatorFactory contextMenuPopulatorFactory) {
+            @Nullable ContextMenuPopulatorFactory contextMenuPopulatorFactory,
+            @Nullable SelectionDropdownMenuDelegate selectionDropdownMenuDelegate) {
 
         super.initializeWithNative(
                 layoutManager,
@@ -472,7 +474,8 @@ public class BraveToolbarManager extends ToolbarManager
                 archivedTabCountSupplier,
                 tabModelNotificationDotSupplier,
                 undoBarThrottle,
-                contextMenuPopulatorFactory);
+                contextMenuPopulatorFactory,
+                selectionDropdownMenuDelegate);
 
         mOpenGridTabSwitcherHandler = openGridTabSwitcherHandler;
 
