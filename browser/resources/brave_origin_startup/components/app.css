@@ -1,0 +1,118 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+.brave-origin-startup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: var(--leo-spacing-2xl);
+  box-sizing: border-box;
+  color: var(--leo-color-text-primary);
+  background: var(--leo-color-container-background);
+}
+
+.brave-origin-startup[data-verifying] {
+  cursor: wait;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 440px;
+  width: 100%;
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--leo-spacing-m);
+}
+
+h1 {
+  font: var(--leo-font-heading-h2);
+  margin: 0 0 var(--leo-spacing-xl) 0;
+}
+
+.description {
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-secondary);
+  text-align: left;
+  margin-bottom: var(--leo-spacing-2xl);
+}
+
+.description p {
+  margin: 0 0 var(--leo-spacing-s) 0;
+}
+
+.description p:last-child {
+  margin-bottom: 0;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  width: 100%;
+}
+
+/* Restore view styles */
+.restore-container {
+  width: 100%;
+}
+
+.input-group {
+  width: 100%;
+  margin-bottom: var(--leo-spacing-xl);
+}
+
+.input-group label {
+  display: block;
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-secondary);
+  margin-bottom: var(--leo-spacing-s);
+}
+
+.input-group input {
+  width: 100%;
+  padding: var(--leo-spacing-s) var(--leo-spacing-m);
+  border-radius: var(--leo-radius-m);
+  border: 1px solid var(--leo-color-divider-strong);
+  background: var(--leo-color-container-highlight);
+  color: var(--leo-color-text-primary);
+  font: var(--leo-font-default-regular);
+  box-sizing: border-box;
+}
+
+.input-group input::placeholder {
+  color: var(--leo-color-text-tertiary);
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--leo-color-icon-interactive);
+}
+
+.error-message {
+  color: var(--leo-color-systemfeedback-error-text);
+  font: var(--leo-font-small-regular);
+  margin-top: var(--leo-spacing-s);
+}
+
+.verifying-message {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-s);
+  color: var(--leo-color-text-secondary);
+  font: var(--leo-font-small-regular);
+  margin-top: var(--leo-spacing-s);
+}
+
+.verifying-message leo-progressring {
+  --leo-progressring-size: 16px;
+}

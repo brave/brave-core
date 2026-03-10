@@ -1,0 +1,75 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
+import("//brave/components/common/typescript.gni")
+import("//brave/resources/brave_grit.gni")
+import("//tools/grit/repack.gni")
+import("//ui/webui/resources/tools/generate_grd.gni")
+
+assert(is_brave_origin_branded)
+
+resource_name = "brave_origin_startup"
+
+# js resources
+transpile_web_ui("js_resources") {
+  entry_points = [ [
+        "brave_origin_startup",
+        rebase_path("brave_origin_startup.tsx"),
+      ] ]
+
+  imports_from = [ "//brave/browser/resources/brave_origin_startup/" ]
+
+  resource_name = resource_name
+
+  deps = [
+    "//brave/components/brave_origin/mojom:mojom_js",
+    "//brave/components/resources:strings",
+  ]
+}
+
+pack_web_resources("pack_js_resources") {
+  resource_name = resource_name
+  output_dir = target_gen_dir
+  deps = [ ":js_resources" ]
+}
+
+# static resources
+static_grd_path = "$target_gen_dir/${resource_name}_static_resources.grd"
+
+generate_grd("static_resources_grd") {
+  grd_prefix = resource_name + "_static"
+  out_grd = static_grd_path
+  input_files = [
+    "brave_origin_startup.html",
+    "components/app.css",
+  ]
+  input_files_base_dir = rebase_path(".", "//")
+}
+
+brave_grit("pack_static_resources") {
+  source = static_grd_path
+  outputs = [
+    "grit/${resource_name}_static_resources.h",
+    "grit/${resource_name}_static_resources_map.cc",
+    "grit/${resource_name}_static_resources_map.h",
+    "${resource_name}_static_resources.pak",
+  ]
+
+  deps = [ ":static_resources_grd" ]
+}
+
+# combine static and js
+repack("brave_origin_startup") {
+  sources = [
+    "$target_gen_dir/${resource_name}_generated.pak",
+    "$target_gen_dir/${resource_name}_static_resources.pak",
+  ]
+  output = "$root_gen_dir/brave/browser/resources/brave_origin_startup/${resource_name}_all.pak"
+  deps = [
+    ":pack_js_resources",
+    ":pack_static_resources",
+  ]
+}

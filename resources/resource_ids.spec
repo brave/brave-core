@@ -202,9 +202,17 @@
     "META": {"sizes": {"includes": [10]}},
     "includes": [53920],
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/brave_origin_startup/brave_origin_startup_static_resources.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [53930],
+  },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-new_tab_takeover/new_tab_takeover.grd": {
     "META": {"sizes": {"includes": [10]}},
     "includes": [53940],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_origin_startup/brave_origin_startup.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [53950],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_new_tab_page_refresh/brave_new_tab_page_refresh.grd": {
     "META": {"sizes": {"includes": [30]}},
