@@ -269,7 +269,8 @@ void BraveToolbarView::Init() {
   // Add vertical tab toggle button to the left of the back button.
   if (tabs::utils::SupportsBraveVerticalTabs(browser_)) {
     auto toggle = std::make_unique<ToolbarButton>(base::BindRepeating(
-        &BraveToolbarView::OnVerticalTabTogglePressed, base::Unretained(this)));
+        &BraveToolbarView::OnVerticalTabTogglePressed,
+        weak_factory_.GetWeakPtr()));
     toggle->SetVectorIcon(kVerticalTabStripToggleButtonIcon);
     toggle->SetTooltipText(
         l10n_util::GetStringUTF16(IDS_VERTICAL_TABS_MINIMIZE));
