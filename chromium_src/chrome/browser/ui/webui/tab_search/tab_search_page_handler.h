@@ -20,15 +20,17 @@ class TabSearchPageHandler;
 using TabSearchPageHandler_BraveImpl = TabSearchPageHandler;
 
 #define TabSearchPageHandler TabSearchPageHandler_ChromiumImpl
-#define MaybeShowUI                      \
+// Inject friend declaration via CreateProfileData (private method) so our
+// Brave subclass can access private members like page_, web_ui_, etc.
+#define CreateProfileData                \
   NotUsed();                             \
   friend TabSearchPageHandler_BraveImpl; \
-  void MaybeShowUI
+  tab_search::mojom::ProfileDataPtr CreateProfileData
 
 #include <chrome/browser/ui/webui/tab_search/tab_search_page_handler.h>  // IWYU pragma: export
 
 #undef TabSearchPageHandler
-#undef MaybeShowUI
+#undef CreateProfileData
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 namespace ai_chat {
@@ -66,6 +68,8 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
                     GetFocusTabsCallback callback) override;
   void UndoFocusTabs(UndoFocusTabsCallback callback) override;
   void OpenLeoGoPremiumPage() override;
+  void OpenLearnMorePage() override;
+
   void SetTabFocusEnabled() override;
   void GetTabFocusShowFRE(GetTabFocusShowFRECallback callback) override;
 
@@ -78,6 +82,8 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
  private:
+  void OpenURLInNewTab(const GURL& url);
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
   void OnGetFocusTabs(const std::string& topic,
                       GetFocusTabsCallback callback,

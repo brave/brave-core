@@ -13,7 +13,6 @@ import {
   BraveTabSearchApiProxy,
   TabSearchApiProxyImpl,
 } from '../tab_search_api_proxy.js'
-import type { TabOrganizationSession } from '../tab_search.mojom-webui.js'
 
 import { getHtml } from './tab_focus_page.html.js'
 import { getCss } from './tab_focus_page.css.js'
@@ -255,7 +254,7 @@ export class TabFocusPageElement extends CrLitElement {
   }
 
   protected onLearnMoreClick_() {
-    this.apiProxy_.openHelpPage()
+    this.apiProxy_.openLearnMorePage()
   }
 
   protected onGoPremiumClick_() {
@@ -414,9 +413,6 @@ export class TabFocusPageElement extends CrLitElement {
     this.isElementVisible_ = visible
     this.maybeUpdateSuggestedTopics_()
   }
-
-  // Shim for Chromium auto_tab_groups_page test.
-  setSessionForTesting(_session: TabOrganizationSession) {}
 }
 
 declare global {

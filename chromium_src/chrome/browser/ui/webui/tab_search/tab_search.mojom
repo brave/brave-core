@@ -36,8 +36,18 @@ interface PageHandler {
   UndoFocusTabs() => ();
   // Open a new tab for purchasing Leo premium.
   OpenLeoGoPremiumPage();
+  // Open a new tab for the learn more page.
+  OpenLearnMorePage();
   // Set the user pref to enable tab focus with Leo.
   SetTabFocusEnabled();
   // Whether we should show FRE for tab focus.
   GetTabFocusShowFRE() => (bool show_FRE);
+};
+
+[BraveExtend]
+interface Page {
+  // Called when FRE visibility should change based on pref state.
+  ShowFREChanged(bool show);
+  // Called when the tab organization feature is enabled/disabled.
+  TabOrganizationEnabledChanged(bool enabled);
 };
