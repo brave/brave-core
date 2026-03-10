@@ -93,8 +93,6 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
 #if BUILDFLAG(IS_ANDROID)
   auto* search_engine_tracker =
       SearchEngineTrackerFactory::GetInstance()->GetForBrowserContext(context);
-  auto* template_url_service =
-      TemplateURLServiceFactory::GetForProfile(profile);
   misc_android_metrics_ = std::make_unique<MiscAndroidMetrics>(
       local_state, g_brave_browser_process->process_misc_metrics(),
       search_engine_tracker, template_url_service);
