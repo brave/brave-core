@@ -50,6 +50,7 @@ import org.chromium.chrome.browser.vpn.settings.VpnCalloutPreference;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
+import org.chromium.components.brave_account.BraveAccountFeatures;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
@@ -690,12 +691,15 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_APPEARANCE));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_ADDRESS_BAR));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_TOOLBAR_SHORTCUT));
+                    // Brave leaf switches/actions in main settings have no sub-screen to
+                    // navigate to from search results, so exclude them from the index.
+                    indexData.removeEntry(getUniqueId(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE));
+                    indexData.removeEntry(getUniqueId(PREF_RATE_BRAVE));
+                    indexData.removeEntry(getUniqueId(PREF_AUTOFILL_PRIVATE_WINDOW));
+                    indexData.removeEntry(getUniqueId(PREF_USE_CUSTOM_TABS));
                     // Leaf prefs from brave_main_preferences.xml that are conditionally hidden.
                     if (!BraveSearchWidgetUtils.isRequestPinAppWidgetSupported()) {
-                        indexData.removeEntry(getUniqueId("home_screen_widget"));
-                    }
-                    if (DeviceFormFactor.isTablet()) {
-                        indexData.removeEntry(getUniqueId("use_custom_tabs"));
+                        indexData.removeEntry(getUniqueId(PREF_HOME_SCREEN_WIDGET));
                     }
                 }
             };
