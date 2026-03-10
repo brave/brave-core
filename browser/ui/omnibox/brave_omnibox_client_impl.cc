@@ -100,7 +100,7 @@ BraveOmniboxClientImpl::BraveOmniboxClientImpl(LocationBar* location_bar,
   if (original_profile_metrics) {
     auto* page_metrics = original_profile_metrics->GetPageMetrics();
     if (page_metrics) {
-      brave_search_metrics_ = page_metrics->brave_search_metrics();
+      brave_search_metrics_ = &page_metrics->brave_search_metrics();
     }
   }
 
