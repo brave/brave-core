@@ -12,6 +12,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/span.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -28,6 +29,12 @@ inline constexpr auto kPrintPreviewRetrievalHosts =
         "docs.google.com",
         "watermark.silverchair.com",
     });
+
+inline constexpr auto kCapabilityStringMap =
+    base::MakeFixedFlatMap<mojom::ConversationCapability, std::string_view>(
+        {{mojom::ConversationCapability::CHAT, "chat"},
+         {mojom::ConversationCapability::CONTENT_AGENT, "content_agent"},
+         {mojom::ConversationCapability::DEEP_RESEARCH, "deep_research"}});
 
 inline constexpr char kLeoModelSupportUrl[] =
     "https://support.brave.app/hc/en-us/articles/26727364100493-"

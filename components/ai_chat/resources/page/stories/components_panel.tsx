@@ -1377,8 +1377,9 @@ function StoryContext(
               allModels: MODELS,
               currentModelKey: currentModel?.key ?? '',
               isPremiumUser: args.isPremiumUser,
-              conversationCapability:
+              conversationCapabilities: [
                 Mojom.ConversationCapability.CONTENT_AGENT,
+              ],
             },
           }}
           overrides={{

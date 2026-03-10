@@ -111,9 +111,9 @@ export function useProvideUntrustedConversationContext(
     associatedContent,
 
     /**
-     * @deprecated Use `api.useState().data.conversationCapability` instead
+     * @deprecated Use `api.useState().data.conversationCapabilities` instead
      */
-    conversationCapability: state.conversationCapability,
+    conversationCapabilities: state.conversationCapabilities,
 
     /**
      * @deprecated Use `api.useCurrentContentTaskStarted().data` or subscribe to

@@ -75,7 +75,7 @@ std::optional<std::vector<std::string>> MemoryStorageTool::RequiredProperties()
 bool MemoryStorageTool::SupportsConversation(
     bool is_temporary,
     bool has_untrusted_content,
-    mojom::ConversationCapability conversation_capability) const {
+    const ConversationCapabilitySet& conversation_capabilities) const {
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
   return false;
 #else

@@ -44,7 +44,7 @@ void EngineConsumerConversationAPIV2::GenerateQuestionSuggestions(
       &EngineConsumerConversationAPIV2::OnGenerateQuestionSuggestionsResponse,
       weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_->PerformRequest(std::move(messages), std::nullopt, std::nullopt,
-                       mojom::ConversationCapability::CHAT,
+                       {mojom::ConversationCapability::CHAT},
                        base::NullCallback(), std::move(on_response));
 }
 
@@ -78,7 +78,7 @@ void EngineConsumerConversationAPIV2::GenerateAssistantResponse(
     bool is_temporary_chat,
     const std::vector<base::WeakPtr<Tool>>& tools,
     std::optional<std::string_view> preferred_tool_name,
-    mojom::ConversationCapability conversation_capability,
+    const ConversationCapabilitySet& conversation_capabilities,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
   if (!CanPerformCompletionRequest(conversation_history)) {
@@ -101,7 +101,7 @@ void EngineConsumerConversationAPIV2::GenerateAssistantResponse(
   }
 
   api_->PerformRequest(std::move(messages), ToolApiDefinitionsFromTools(tools),
-                       std::nullopt, conversation_capability,
+                       std::nullopt, conversation_capabilities,
                        std::move(data_received_callback),
                        std::move(completed_callback), model_name);
 }
@@ -118,7 +118,7 @@ void EngineConsumerConversationAPIV2::GenerateRewriteSuggestion(
     return;
   }
   api_->PerformRequest(std::move(*messages), std::nullopt, std::nullopt,
-                       mojom::ConversationCapability::CHAT,
+                       {mojom::ConversationCapability::CHAT},
                        std::move(received_callback),
                        std::move(completed_callback));
 }
@@ -152,7 +152,7 @@ void EngineConsumerConversationAPIV2::GenerateConversationTitle(
 
   api_->PerformRequest(
       std::move(*messages), std::nullopt, std::nullopt,
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::NullCallback(),  // no streaming needed
       base::BindOnce(
           &EngineConsumerConversationAPIV2::OnConversationTitleGenerated,
@@ -171,7 +171,7 @@ void EngineConsumerConversationAPIV2::DedupeTopics(
 
   api_->PerformRequest(
       std::move(messages), std::nullopt, std::nullopt,
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::NullCallback() /* data_received_callback */,
       base::BindOnce(
           [](GetSuggestedTopicsCallback callback,
@@ -202,7 +202,7 @@ void EngineConsumerConversationAPIV2::GetSuggestedTopics(
 
   for (auto& messages : chunked_messages) {
     api_->PerformRequest(std::move(messages), std::nullopt, std::nullopt,
-                         mojom::ConversationCapability::CHAT,
+                         {mojom::ConversationCapability::CHAT},
                          base::NullCallback() /* data_received_callback */,
                          barrier_callback /* data_completed_callback */);
   }
@@ -231,7 +231,7 @@ void EngineConsumerConversationAPIV2::GetFocusTabs(
 
   for (auto& messages : chunked_messages) {
     api_->PerformRequest(std::move(messages), std::nullopt, std::nullopt,
-                         mojom::ConversationCapability::CHAT,
+                         {mojom::ConversationCapability::CHAT},
                          base::NullCallback() /* data_received_callback */,
                          barrier_callback /* data_completed_callback */);
   }
