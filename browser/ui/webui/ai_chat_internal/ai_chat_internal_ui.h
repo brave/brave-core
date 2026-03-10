@@ -9,34 +9,24 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat_internal.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
-#include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/webui/mojo_web_ui_controller.h"
 
 class Profile;
 
-class AIChatInternalUI : public ui::MojoWebUIController,
-                         public ai_chat::mojom::AIChatInternalPageHandler {
+class AIChatInternalUI : public ui::MojoWebUIController {
  public:
   explicit AIChatInternalUI(content::WebUI* web_ui, std::string_view host);
   AIChatInternalUI(const AIChatInternalUI&) = delete;
   AIChatInternalUI& operator=(const AIChatInternalUI&) = delete;
   ~AIChatInternalUI() override;
 
-  void BindInterface(
-      mojo::PendingReceiver<ai_chat::mojom::AIChatInternalPageHandler>
-          receiver);
-
-  // ai_chat::mojom::AIChatInternalPageHandler:
-  void GetRawConversationData(const std::string& uuid,
-                              GetRawConversationDataCallback callback) override;
-  void GetConversations(GetConversationsCallback callback) override;
+  void BindInterface(mojo::PendingReceiver<ai_chat::mojom::Service> receiver);
 
  private:
-  mojo::Receiver<ai_chat::mojom::AIChatInternalPageHandler> receiver_{this};
   raw_ptr<Profile> profile_ = nullptr;
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

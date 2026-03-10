@@ -14,11 +14,15 @@ source_set("ai_chat_internal") {
   ]
   deps = [
     "//brave/browser/ai_chat",
-    "//brave/browser/resources/ai_chat_internal:resources",
+    "//brave/browser/resources/ai_chat_internal:pack_js_resources",
+    "//brave/browser/resources/ai_chat_internal:pack_static_resources",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/constants",
     "//chrome/browser:browser_public_dependencies",
-    "//components/prefs",
+    "//chrome/browser/profiles:profile",
+    "//mojo/public/cpp/bindings",
+    "//ui/webui",
   ]
 }
 

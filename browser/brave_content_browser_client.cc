@@ -654,6 +654,7 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
         .Add<ai_chat::mojom::HistoryUIHandler>();
     registry.ForWebUI<AIChatUntrustedConversationUI>()
         .Add<ai_chat::mojom::UntrustedUIHandler>();
+    registry.ForWebUI<AIChatInternalUI>().Add<ai_chat::mojom::Service>();
   }
 #endif
 
@@ -964,8 +965,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     // WebUI -> Browser interface
     content::RegisterWebUIControllerInterfaceBinder<
         ai_chat::mojom::AIChatUIHandler, AIChatUI>(map);
-    content::RegisterWebUIControllerInterfaceBinder<
-        ai_chat::mojom::AIChatInternalPageHandler, AIChatInternalUI>(map);
   }
 #if BUILDFLAG(IS_ANDROID)
   if (ai_chat::IsAIChatEnabled(prefs)) {
