@@ -318,4 +318,63 @@ TEST_F(ProxyConfigServiceTorTest, CircuitTimeout) {
   CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key);
   EXPECT_NE(proxy_server.host_port_pair().password(), password);
 }
+
+// Regression test: with a max-heap priority queue, ClearExpiredEntries()
+// checks the newest entry first and breaks immediately if it's not expired,
+// leaving older expired entries in the map. This test requires a min-heap.
+TEST_F(ProxyConfigServiceTorTest, CircuitTimeout_MultiSite) {
+  const GURL site_url1("https://brave.com/");
+  const GURL site_url2("https://torproject.org/");
+  const net::SchemefulSite site1(site_url1);
+  const net::SchemefulSite site2(site_url2);
+  const auto nak1 =
+      net::NetworkAnonymizationKey::CreateFromFrameSite(site1, site1);
+  const auto nak2 =
+      net::NetworkAnonymizationKey::CreateFromFrameSite(site2, site2);
+
+  ProxyConfigServiceTor proxy_config_service(proxy_uri());
+  ProxyConfigWithAnnotation config;
+  proxy_config_service.GetLatestProxyConfig(&config);
+
+  // T=0: Visit site1, get initial password.
+  ProxyInfo info;
+  ProxyConfigServiceTor::SetProxyAuthorization(config, site_url1, nak1,
+                                               service(), &info);
+  auto proxy_server = info.proxy_chain().GetProxyServer(0);
+  const std::string password1_initial =
+      proxy_server.host_port_pair().password();
+
+  // T=5min: Visit site2 (creates a newer queue entry).
+  FastForwardBy(base::Minutes(5));
+  ProxyConfigServiceTor::SetProxyAuthorization(config, site_url2, nak2,
+                                               service(), &info);
+  proxy_server = info.proxy_chain().GetProxyServer(0);
+  const std::string password2_initial =
+      proxy_server.host_port_pair().password();
+
+  // T=11min: site1's credential is 11 minutes old (> 10min cutoff),
+  // should be expired. site2's credential is 6 minutes old, should
+  // still be valid.
+  FastForwardBy(base::Minutes(6));
+  ProxyConfigServiceTor::SetProxyAuthorization(config, site_url1, nak1,
+                                               service(), &info);
+  proxy_server = info.proxy_chain().GetProxyServer(0);
+  EXPECT_NE(password1_initial, proxy_server.host_port_pair().password())
+      << "site1 credential should have expired after 11 minutes";
+
+  ProxyConfigServiceTor::SetProxyAuthorization(config, site_url2, nak2,
+                                               service(), &info);
+  proxy_server = info.proxy_chain().GetProxyServer(0);
+  EXPECT_EQ(password2_initial, proxy_server.host_port_pair().password())
+      << "site2 credential should still be valid at 6 minutes";
+
+  // T=16min: Now site2's credential is also 11 minutes old, should expire.
+  FastForwardBy(base::Minutes(5));
+  ProxyConfigServiceTor::SetProxyAuthorization(config, site_url2, nak2,
+                                               service(), &info);
+  proxy_server = info.proxy_chain().GetProxyServer(0);
+  EXPECT_NE(password2_initial, proxy_server.host_port_pair().password())
+      << "site2 credential should have expired after 11 minutes";
+}
+
 }  // namespace net
