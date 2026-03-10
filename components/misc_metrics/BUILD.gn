@@ -21,8 +21,6 @@ static_library("misc_metrics") {
     "general_browser_usage.h",
     "language_metrics.cc",
     "language_metrics.h",
-    "media_session_metrics.cc",
-    "media_session_metrics.h",
     "menu_metrics.cc",
     "menu_metrics.h",
     "new_tab_metrics.cc",
@@ -56,8 +54,6 @@ static_library("misc_metrics") {
     "//components/language/core/common",
     "//components/prefs",
     "//components/search_engines",
-    "//mojo/public/cpp/bindings",
-    "//services/media_session/public/mojom",
     "//url",
   ]
 
@@ -75,7 +71,6 @@ source_set("unit_tests") {
     "default_browser_monitor_unittest.cc",
     "general_browser_usage_unittest.cc",
     "language_metrics_unittest.cc",
-    "media_session_metrics_unittest.cc",
     "menu_metrics_unittest.cc",
     "new_tab_metrics_unittest.cc",
     "privacy_hub_metrics_unittest.cc",
@@ -93,9 +88,6 @@ source_set("unit_tests") {
     "//components/search_engines",
     "//components/search_engines:test_support",
     "//content/test:test_support",
-    "//mojo/public/cpp/bindings",
-    "//services/media_session/public/cpp/test:test_support",
-    "//services/media_session/public/mojom",
     "//testing/gtest",
   ]
 }
