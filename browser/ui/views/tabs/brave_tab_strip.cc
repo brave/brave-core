@@ -234,6 +234,18 @@ const tabs::TreeTabNode& BraveTabStrip::GetTreeTabNode(
       ->GetTreeTabNode(id);
 }
 
+void BraveTabStrip::SetTreeTabNodeCollapsed(const tree_tab::TreeTabNodeId& id,
+                                            bool collapsed) {
+  static_cast<BraveBrowserTabStripController*>(controller_.get())
+      ->SetTreeTabNodeCollapsed(id, collapsed);
+}
+
+bool BraveTabStrip::IsInCollapsedTreeTabNode(
+    const tree_tab::TreeTabNodeId& id) const {
+  return static_cast<BraveBrowserTabStripController*>(controller_.get())
+      ->IsInCollapsedTreeTabNode(id);
+}
+
 bool BraveTabStrip::ShouldShowPinnedTabsInGrid() const {
   // Basically we don't want to layout pinned tabs in grid when vertical tabs
   // are floating. Otherwise, pinned tabs would jump to the top of tab strip

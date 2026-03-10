@@ -48,7 +48,11 @@ bool TabStripLayoutHelper::FillNestingInfo(
 
   for (int i = 0; i < static_cast<int>(slots_.size()); i++) {
     auto& tab_width = tab_widths[i];
-    tab_width.state().set_nesting_info(slots_.at(i).view->GetTabNestingInfo());
+    auto& slot_view = slots_.at(i).view;
+    tab_width.state().set_nesting_info(slot_view->GetTabNestingInfo());
+    if (slot_view->IsInCollapsedTreeTabNode()) {
+      tab_width.state().set_open(TabOpen::kClosed);
+    }
   }
   return true;
 }

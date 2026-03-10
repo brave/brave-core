@@ -46,6 +46,10 @@ class BraveTabStrip : public TabStrip {
   int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const override;
   const tabs::TreeTabNode& GetTreeTabNode(
       const tree_tab::TreeTabNodeId& id) const override;
+  void SetTreeTabNodeCollapsed(const tree_tab::TreeTabNodeId& id,
+                               bool collapsed) override;
+  bool IsInCollapsedTreeTabNode(
+      const tree_tab::TreeTabNodeId& id) const override;
   bool IsVerticalTabsFloating() const override;
   bool IsVerticalTabsAnimatingButNotFinalState() const override;
   bool CanPaintThrobberToLayer() const override;

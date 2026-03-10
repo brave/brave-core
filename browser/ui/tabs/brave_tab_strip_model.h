@@ -55,6 +55,11 @@ class BraveTabStripModel : public TabStripModel {
   const TreeTabModel* tree_model() const { return tree_tab_model_.get(); }
   TreeTabModel* tree_model() { return tree_tab_model_.get(); }
 
+  // Sets the collapsed state of a tree tab node. When it changes, notifies
+  // observers
+  void SetTreeTabNodeCollapsed(const tree_tab::TreeTabNodeId& id,
+                               bool collapsed);
+
   // TabStripModel:
   void SelectRelativeTab(TabRelativeDirection direction,
                          TabStripUserGestureDetails detail) override;
