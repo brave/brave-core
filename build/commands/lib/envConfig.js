@@ -29,7 +29,7 @@ export default class EnvConfig {
    *  @type {Record<string, any>}  */
   #packageJson
   /** Raw variables from .env files.
-   *  @type {Record<string, string>}  */
+   *  @type {NodeJS.Dict<string>}  */
   #dotenvConfig
   /** Stored default values for assertions on the same key requests.
    *  @type {Record<string, any>}  */
@@ -75,7 +75,7 @@ export default class EnvConfig {
    * @throws {AssertionError} If called with different defaultValue for same key
    * @throws {Error} If .env value cannot be parsed or has wrong type
    */
-  get(keyPath, defaultValue) {
+  get(keyPath, defaultValue = undefined) {
     assert.notEqual(keyPath.length, 0, 'keyPath must not be empty')
     const keyJoined = keyPath.join('_')
 
@@ -264,10 +264,10 @@ export default class EnvConfig {
    * Creates a placeholder .env file if none exists.
    *
    * @param {string} configDir - Directory containing .env file
-   * @returns {Record<string, string>} The parsed .env file
+   * @returns {NodeJS.Dict<string>} The parsed .env file
    */
   static #loadDotenvConfig(configDir) {
-    /** @type {Record<string, string>} */
+    /** @type {NodeJS.Dict<string>} */
     let dotenvConfig = {}
     // Parse {configDir}/.env with all included env files.
     const dotenvConfigPath = path.join(configDir, '.env')
@@ -293,7 +293,7 @@ export default class EnvConfig {
    * Format: include_env=path/to/file.env
    *
    * @param {string} envPath - Path to the main .env file to parse
-   * @returns {Record<string, string>} The parsed .env file
+   * @returns {NodeJS.Dict<string>} The parsed .env file
    */
   static #parseEnvFileWithIncludes(envPath) {
     const seenFiles = new Set()
@@ -318,7 +318,7 @@ export default class EnvConfig {
 
       lines.forEach((line) => {
         const includeEnvMatch = line.match(/^include_env=([^#]+)(?:#.*)?$/)
-        if (includeEnvMatch) {
+        if (includeEnvMatch && includeEnvMatch[1]) {
           const includePath = includeEnvMatch[1].trim()
           const resolvedPath = path.resolve(path.dirname(filePath), includePath)
           result += readEnvFile(resolvedPath, filePath)

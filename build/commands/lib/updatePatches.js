@@ -161,7 +161,7 @@ async function updatePatches(
     patchDirPath,
   )
   // We only remove stale patch files if we're updating everything.
-  if (onlyFiles.length === 0) {
+  if (onlyFiles && onlyFiles.length === 0) {
     await removeStalePatchFiles(
       patchFilenames,
       patchDirPath,

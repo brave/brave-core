@@ -12,6 +12,7 @@ function loadChromiumPathFilter(filePath) {
   const configLines = fs
     .readFileSync(filePath, 'utf-8')
     .split('\n')
+    // @ts-ignore
     .map((line) => line.split('#')[0].trim()) // Removing comments.
     .filter((line) => line.length > 0)
 

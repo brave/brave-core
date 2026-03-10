@@ -37,6 +37,7 @@ const asGnTarget = (file) => {
 async function getModifiedFiles(target = 'HEAD~', base = null) {
   const args = ['diff', '--name-only', target, base].filter((x) => x)
   const maxBuffer = 1024 * 1024 * 5
+  // @ts-ignore
   return exec('git', args, { maxBuffer }).then((x) =>
     x.stdout
       .trim()

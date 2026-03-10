@@ -171,7 +171,7 @@ const runPrettierForFile = async (file, dryRun, ignorePath) => {
   })
 
   if (fileInfo.ignored || !fileInfo.inferredParser) {
-    return
+    return ''
   }
 
   const options = await prettier.resolveConfig(file)
@@ -184,6 +184,7 @@ const runPrettierForFile = async (file, dryRun, ignorePath) => {
   if (content !== formatted) {
     return await handleDifference(file, dryRun, formatted)
   }
+  return ''
 }
 
 const runPrettier = async (files, dryRun) => {
@@ -210,7 +211,7 @@ const runPrettier = async (files, dryRun) => {
 
 const runMojomFormatForFile = async (file, dryRun) => {
   if (!file.endsWith('.mojom')) {
-    return
+    return ''
   }
   // Mojom formatting is experimental. Only these files are formatted by now.
   const mojomFormatAllowList = ['**/brave_wallet/**/*.mojom']
@@ -218,12 +219,12 @@ const runMojomFormatForFile = async (file, dryRun) => {
   if (
     !mojomFormatAllowList.some((pattern) => path.matchesGlob(file, pattern))
   ) {
-    return
+    return ''
   }
 
   const content = await fs.readFile(file, { encoding: 'utf-8' })
   if (!content) {
-    return
+    return ''
   }
 
   const mojomFormatArgs = [
@@ -253,6 +254,7 @@ const runMojomFormatForFile = async (file, dryRun) => {
   if (content !== formatted) {
     return await handleDifference(file, dryRun, formatted)
   }
+  return ''
 }
 
 const runMojomFormat = async (files, dryRun) => {

@@ -290,7 +290,9 @@ function addGrd(chromiumPath, bravePath, exclude = new Set()) {
       if (exclude.has(grdp)) {
         continue
       }
+      // @ts-ignore
       const chromiumGrdpPath = path.resolve(path.join(chromiumDir, grdp))
+      // @ts-ignore
       const braveGrdpPath = path.resolve(path.join(braveDir, grdp))
       // grdp files can have their own grdp parts too
       mapping = {
@@ -317,6 +319,7 @@ function getRemovedGRDParts(mapping) {
       const chromiumGRDPs = getGrdPartsFromGrd(sourcePath)
       let removed = new Set()
       for (let i = 0; i < braveGRDPs.length; i++) {
+        // @ts-ignore
         if (!chromiumGRDPs.includes(braveGRDPs[i])) {
           removed.add(braveGRDPs[i])
         }
@@ -421,9 +424,12 @@ const l10nUtil = {
   // Crowdin manages files per grd and not per grd or grdp.
   // This is because only 1 xtb is created per grd per locale even if it has multiple grdp files.
   getBraveTopLevelPaths: () => {
-    return l10nUtil
-      .getAllBravePaths()
-      .filter((x) => ['grd', 'json'].includes(x.split('.').pop()))
+    return l10nUtil.getAllBravePaths().filter((x) =>
+      ['grd', 'json'].includes(
+        // @ts-ignore
+        x.split('.').pop(),
+      ),
+    )
   },
 
   // Helper function to pretty print removed GRDP file names.

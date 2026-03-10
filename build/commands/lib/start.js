@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import assert from 'node:assert'
 import path from 'node:path'
 import fs from 'fs-extra'
 import config from './config.js'
@@ -87,6 +88,7 @@ const start = (
   let userDataDir
   if (options.user_data_dir_name) {
     if (process.platform === 'darwin') {
+      assert(process.env.HOME, 'HOME not set')
       userDataDir = path.join(
         process.env.HOME,
         'Library',
@@ -95,12 +97,14 @@ const start = (
         options.user_data_dir_name,
       )
     } else if (process.platform === 'win32') {
+      assert(process.env.LocalAppData, 'LocalAppData not set')
       userDataDir = path.join(
         process.env.LocalAppData,
         'BraveSoftware',
         options.user_data_dir_name,
       )
     } else {
+      assert(process.env.HOME, 'HOME not set')
       userDataDir = path.join(
         process.env.HOME,
         '.config',

@@ -204,6 +204,7 @@ function syncChromium(program) {
     config.rootDir,
     '.brave_latest_successful_sync.json',
   )
+  // @ts-ignore
   const latestSyncInfo = util.readJSON(latestSyncInfoFilePath, {})
   const expectedSyncInfo = {
     chromiumRef: requiredChromiumRef,
@@ -273,7 +274,9 @@ function syncChromium(program) {
 
   util.runGclient(args)
   util.modifyGitExclusions(config.srcDir, {
+    // @ts-ignore
     remove: ['brave/', 'brave_origin/'],
+    // @ts-ignore
     add: ['/brave/'],
   })
   util.writeJSON(latestSyncInfoFilePath, expectedSyncInfo)

@@ -223,7 +223,7 @@ const runTests = async (
       runOptions.stdio = 'inherit'
     }
 
-    let progStatus = 0
+    let progStatus = undefined
 
     if (config.isIOS()) {
       const outputDir = path.join(config.outputDir, `run_${testSuite}_out`)
