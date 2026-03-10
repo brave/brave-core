@@ -19,6 +19,7 @@
 <translation id="1544192797660353713">Гаманець</translation>
 <translation id="2361906291514218784">ШІ Leo</translation>
 <translation id="8275068909952022340">Більше…</translation>
+<translation id="71316462802471551">Псевдоніми електронної пошти</translation>
 <translation id="1990886731975529483">Встановити й запустити Google Widevine</translation>
 <translation id="8926389886865778422">Не запитувати знову</translation>
 <translation id="4900351245762303149">Встановити Google Widevine</translation>
@@ -61,7 +62,7 @@
 <translation id="7658239707568436148">Скасувати</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Відкрити за допомогою адреси .onion: <ph name="ADDRESS"/></translation>
-<translation id="4759098689276706664">Вставити примусово</translation>
+<translation id="4759098689276706664">Примусове вставляння</translation>
 <translation id="1434416574322382019">Нове приватне вікно з Tor</translation>
 <translation id="4703780849509456860">Відкрити посилання у приватному вікні з Tor</translation>
 <translation id="3488584642074079080">Відкрити посилання у приватному вікні Brave з Tor</translation>
@@ -204,7 +205,6 @@
 <translation id="253980346046488815">Закрити копії вкладок</translation>
 <translation id="8670218546624422041">Відкрити в контейнері</translation>
 <translation id="8638526693050780542">Керування контейнерами</translation>
-<translation id="7302999361397024774">Перейменувати вкладку</translation>
 <translation id="2336228925368920074">Додати до закладок усі вкладки...</translation>
 <translation id="2523967823495420116">Використовувати вертикальні вкладки</translation>
 <translation id="3785071023202624850">{NUM_TABS, plural, =1 {Вимкнути звук вкладки} other {Вимкнути звук вкладок}}</translation>
@@ -215,7 +215,6 @@
 <translation id="2703180365855369896">Закрити копії вкладок</translation>
 <translation id="1987871867023021397">Відкрити в контейнері</translation>
 <translation id="6745991613881384719">Керування контейнерами</translation>
-<translation id="3917844427669888979">Перейменувати вкладку</translation>
 <translation id="3704707436873245822">Копіювати текст із зображення</translation>
 <translation id="5268098808165185458">Копіювання тексту із зображення...</translation>
 <translation id="4046485130884276245">Текст із зображення скопійовано</translation>
@@ -513,6 +512,10 @@
 <translation id="1199170151481311646">Аналітика із збереженням конфіденційності</translation>
 <translation id="5990642573624858459">Статистична звітність</translation>
 <translation id="2441719842399509963">Скидання до налаштувань за замовчуванням</translation>
+<translation id="4530494379350999373">Походження</translation>
+<translation id="2964215604640804042">Brave Origin — це платна версія браузера для користувачів, які не потребують усіх функцій, які підтримують Brave як бізнес, але все ще хочуть приватність, яку пропонує лише Brave. Користувачі Brave Origin продовжуватимуть користуватися нашою приватністю світового класу, блокуванням реклами та швидкістю (через Щити Brave), а також регулярними оновленнями програмного забезпечення, виправленнями Chromium та покращеннями безпеки та приватності. Вони також зможуть отримати доступ до опції відключення функцій, таких як ШІ, Винагороди, Гаманець, VPN, домени Web3 та інші.</translation>
+<translation id="9130916892338379417">Brave Origin доступний через одноразову покупку. На мобільних пристроях (Android та iOS) і на комп'ютері Origin можна придбати як оновлення до вашої поточної версії. На комп'ютері Origin також доступний як окремий автономний додаток. Користувачі Origin побачать нову панель керування в меню Налаштування. Існуючі функції—а також будь-які нові функції, які ми випустимо в майбутньому—будуть відображатись тут і будуть вимкнені за замовчуванням.</translation>
+<translation id="7984508421152399880">Купити зараз</translation>
 <translation id="5567412479632285879">Винагороди Brave вимкнено</translation>
 <translation id="413570371620795359">Відкрийте панель Винагороди, щоб увімкнути й почати роботу</translation>
 <translation id="1051600834033686945">Відкрити всі налаштування Винагород Brave</translation>
@@ -555,7 +558,6 @@
 <translation id="5747552184818312860">Термін дії</translation>
 <translation id="3858860766373142691">Назва</translation>
 <translation id="361106536627977100">Дані флеш</translation>
-<translation id="4530494379350999373">Походження</translation>
 <translation id="8195027750202970175">Розмір на диску</translation>
 <translation id="9116465289595958864">Востаннє змінено</translation>
 <translation id="4590324241397107707">Сховище бази даних</translation>
@@ -588,11 +590,6 @@
 <translation id="2903783737778379345">Не дозволяти використання застарілої системи входу за допомогою Google через сторонні файли cookie</translation>
 <translation id="2570833232754279153">Заборонено використовувати сторонні файли cookie для застарілої системи входу за допомогою Google</translation>
 <translation id="6880817299303842099">Дозволено використовувати сторонні файли cookie для застарілої системи входу за допомогою Google</translation>
-<translation id="2136412236435693622">Доступ до localhost</translation>
-<translation id="4172219483893066798">Сайти можуть запитувати доступ до ресурсів localhost</translation>
-<translation id="7181706637590665047">Не дозволяти доступ до ресурсів localhost</translation>
-<translation id="1336116824874668514">Доступ до ресурсів localhost заборонено</translation>
-<translation id="1485435696620658073">Доступ до ресурсів localhost дозволено</translation>
 <translation id="5794692721727586076">Чат із ШІ Leo</translation>
 <translation id="8115153008662981040">Сайти можуть просити відкрити чат із ШІ Leo</translation>
 <translation id="1145070115730668595">Заборонити сайту відкривати чат із ШІ Leo</translation>

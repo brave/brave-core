@@ -8,7 +8,6 @@
 <translation id="1016498331642356377">Gyorsan végezhet hangalapú keresést. A gyorsparancs szerkesztéséhez tartsa lenyomva.</translation>
 <translation id="1028699632127661925">Küldés a következő eszközre: <ph name="DEVICE_NAME"/>…</translation>
 <translation id="103269572468856066">Törli e webhelyek és alkalmazások adatait is?</translation>
-<translation id="1034259925032978114">Megnyitott ablak</translation>
 <translation id="1035113036584565771">Tippekre vonatkozó értesítések promóciója bezárva</translation>
 <translation id="1036348656032585052">Kikapcsolás</translation>
 <translation id="1045899828449635435">Törli az e webhelyekről származó adatokat is?</translation>
@@ -39,6 +38,7 @@
 <translation id="7083341910267693582">A(z) <ph name="APP_NAME"/> a Brave-ban fog megnyílni. A továbblépéssel Ön elfogadja a <ph name="BEGIN_LINK1"/>Brave Általános Szerződési Feltételeket<ph name="END_LINK1"/>, valamint <ph name="BEGIN_LINK2"/>A Brave és a ChromeOS Kiegészítő Általános Szerződési Feltételeit<ph name="END_LINK2"/>.</translation>
 <translation id="7443574521624544928">Nincsenek mentett jelszavai a Brave Jelszókezelőben.</translation>
 <translation id="115483310321669804">A következő jelszó használata: <ph name="PASSWORD"/></translation>
+<translation id="1161065531352634524">Lapok és előzmények szinkronizálása</translation>
 <translation id="1165109137568919258">Készítsen fotót, vagy adjon hozzá képet a fotógalériából a kereséshez.</translation>
 <translation id="1173894706177603556">Átnevezés</translation>
 <translation id="7947699437047020219">A Brave a mobilwebhelyet kéri le, ha keskeny a képernyő</translation>
@@ -124,6 +124,7 @@ Az adatokat a Brave-élmény javítására használó további beállításokér
 <translation id="147982357559798527">Módosítva</translation>
 <translation id="5970766554644855317">Előfordulhat, hogy az előzményeinek egy része nem jelenik meg itt. Az összes Brave-előzmény megtekintéséhez nyissa meg a teljes Brave-előzményeket.</translation>
 <translation id="1493287004536771723">Követi a következő webhelyet: <ph name="SITE_NAME"/></translation>
+<translation id="1495677929897281669">Vissza a lapra</translation>
 <translation id="1496514951988037011">felhasználónév</translation>
 <translation id="1501480321619201731">Csoport törlése</translation>
 <translation id="1506061864768559482">Keresőmotor</translation>
@@ -152,6 +153,7 @@ Csak az Ön összetett jelszava ismeretében tudja bárki is megtekinteni a titk
 <translation id="164269334534774161">Jelenleg az oldal <ph name="CREATION_TIME"/>-i dátummal mentett offline példányát tekinti meg</translation>
 <translation id="1644574205037202324">Előzmények</translation>
 <translation id="1645262572857218659">Bejelentkezés a következővel: <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
+<translation id="1650979352027263879">Megjelenési beállítások eltávolítva</translation>
 <translation id="1671236975893690980">Letöltés függőben…</translation>
 <translation id="1672586136351118594">Ne jelenjen meg többé</translation>
 <translation id="1680919990519905526">Képalapú Google Lens-vásárlás <ph name="BEGIN_NEW"/>Új<ph name="END_NEW"/></translation>
@@ -319,7 +321,6 @@ Csak az Ön összetett jelszava ismeretében tudja bárki is megtekinteni a titk
 <translation id="2451607499823206582">Nyomon követés</translation>
 <translation id="2453860139492968684">Befejezés</translation>
 <translation id="2461378706168271257">Keresés a lapok között</translation>
-<translation id="2461822463642141190">Jelenlegi</translation>
 <translation id="2466378451804467735"><ph name="TAB_TITLE"/>, több kiválasztott némított lap</translation>
 <translation id="2468444275314013497">Böngészője jól néz ki</translation>
 <translation id="2471632347767899461">Próbáljon keresni a Súgóban</translation>
@@ -395,7 +396,6 @@ Csak az Ön összetett jelszava ismeretében tudja bárki is megtekinteni a titk
 <translation id="2789486458103222910">OK</translation>
 <translation id="7717639919252237580">{NUM_PASSWORDS,plural, =1{A Brave talált egy újrafelhasznált jelszót, amelyen lehetne javítani}other{A Brave talált # újrafelhasznált jelszót, amelyen lehetne javítani}}</translation>
 <translation id="1708222144403389505">Kapcsolja be az értesítéseket, hogy hasznos tippeket kapjon, amelyek segítségével a legtöbbet hozhatja ki a Brave-ból</translation>
-<translation id="2800066122460699237">A lap (<ph name="TAB_TITLE"/>) be lesz zárva</translation>
 <translation id="2805210243313393104">A könyvjelzők és egyebek elérése bármely eszközéről</translation>
 <translation id="2805756323405976993">Alkalmazások</translation>
 <translation id="2819849308549746319">Leiratkozás az összesről</translation>
@@ -411,6 +411,7 @@ Csak az Ön összetett jelszava ismeretében tudja bárki is megtekinteni a titk
 <translation id="2842985007712546952">Szülőmappa</translation>
 <translation id="2860954141821109167">Győződjön meg arról, hogy van engedélyezett telefonalkalmazás ezen az eszközön</translation>
 <translation id="6518254564747115579">A Brave egyes funkcióihoz nem tud majd hozzáférni</translation>
+<translation id="286473047976978798">Alkalmazza a megjelenési beállításokat?</translation>
 <translation id="2869416538780777323">{OTHER_TAB_COUNT,plural, =1{<ph name="URL"/> és további 1 lap}other{<ph name="URL"/> és további <ph name="TAB_COUNT_MANY"/> lap}}</translation>
 <translation id="2869430948265924908">Profilzárolást kell létrehoznia, hogy meg tudja védeni az autóban a bizalmas tartalmait.  Ezt PIN-kód, kód vagy jelszó segítségével teheti meg.</translation>
 <translation id="2870560284913253234">Webhely</translation>
@@ -420,6 +421,7 @@ Csak az Ön összetett jelszava ismeretében tudja bárki is megtekinteni a titk
 <translation id="2885355868600171871">Ugrás a címsávra</translation>
 <translation id="8541922081612557424">A Brave névjegye</translation>
 <translation id="2891154217021530873">Oldal betöltésének leállítása</translation>
+<translation id="2893168226686371498">Alapértelmezett böngésző</translation>
 <translation id="2894821468041866720">Nem lassítja jelentősen a böngészőt vagy az eszközt.</translation>
 <translation id="2895521649038438824">Meghallgathatja ennek az oldalnak a tartalmát</translation>
 <translation id="289596984386220317"><ph name="TAB_TITLE"/>, rögzített, hangot lejátszó lap</translation>
@@ -820,6 +822,7 @@ Előfordulhat, hogy Brave-fiókjában (a <ph name="BEGIN_LINK"/>myactivity.googl
 <translation id="4685741273709472646">Választás a legördülő listából</translation>
 <translation id="4687718960473379118">Webhely által javasolt hirdetések</translation>
 <translation id="468924408576231679">A következő weboldalra mutató link másolása: <ph name="PAGE_TITLE"/>. Forrás: <ph name="PAGE_URL"/></translation>
+<translation id="4692623383562244444">Keresők</translation>
 <translation id="469286762610133730">Jobb tartalmak megjelenítése</translation>
 <translation id="4695891336199304370">{SHIPPING_OPTIONS,plural, =1{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 és további <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/>}other{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 és további <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/>}}</translation>
 <translation id="4698757800236023795">Aktív (<ph name="ITEM_COUNT"/>)</translation>
@@ -882,7 +885,6 @@ Előfordulhat, hogy Brave-fiókjában (a <ph name="BEGIN_LINK"/>myactivity.googl
 <translation id="3217997482476578430">Discover by Brave</translation>
 <translation id="4910889077668685004">Fizetési alkalmazások</translation>
 <translation id="4911042367886397055">Üdvözöljük ismét, <ph name="USER_NAME"/>!</translation>
-<translation id="4912413785358399818">Lap áthelyezése</translation>
 <translation id="4913169188695071480">Frissítés leállítása</translation>
 <translation id="367116267716122258">Ha az összes eszközén szeretne hozzáférni jelszavaihoz és egyebekhez, jelentkezzen be a Brave-ba a következő fiókkal: <ph name="EMAIL"/></translation>
 <translation id="4923173329789776645">A szervezet nem javasolja a letöltést</translation>
@@ -951,6 +953,7 @@ Előfordulhat, hogy Brave-fiókjában (a <ph name="BEGIN_LINK"/>myactivity.googl
 <translation id="5210286577605176222">Ugrás az előző lapra</translation>
 <translation id="5210365745912300556">Lap bezárása</translation>
 <translation id="6070412534311859792">A módosítás befejezéséhez indítsa újra a Brave-ot. A lapok automatikusan újra megnyílnak az újraindításkor.</translation>
+<translation id="5213114823401215820">Bezárt csoport ismételt megnyitása</translation>
 <translation id="5215957675041756913">Az adatok és a fiók kezelése</translation>
 <translation id="5218324087477576825">Meg kell adni a kártya számát</translation>
 <translation id="7965009626431458039"><ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> és továbbiak <ph name="SEPARATOR"/> A Brave eltávolította ezeket az engedélyeket, mert Ön az utóbbi időben nem kereste fel ezt a webhelyet</translation>
@@ -1063,7 +1066,6 @@ Előfordulhat, hogy Brave-fiókjában (a <ph name="BEGIN_LINK"/>myactivity.googl
 <translation id="5765780083710877561">Leírás:</translation>
 <translation id="5776970333778123608">Nem fontos adatok</translation>
 <translation id="5793665092639000975"><ph name="SPACE_AVAILABLE"/>/<ph name="SPACE_USED"/> használatban</translation>
-<translation id="5795872532621730126">Keresés és böngészés</translation>
 <translation id="5797949256525811424">Téma letiltva</translation>
 <translation id="580893287573699959">Az Önt érdeklő témák és webhelyek kezelése</translation>
 <translation id="5809361687334836369">{HOURS,plural, =1{# órája}other{# órája}}</translation>
@@ -1259,7 +1261,6 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="6702167990458635422">Nem védi meg Önt a veszélyes webhelyek, letöltések vagy bővítmények ellen. A Biztonságos Böngészés beállításait más Brave-termékekben nem érinti a módosítás.</translation>
 <translation id="6554822972009632311">A tartalomszűrő be van kapcsolva</translation>
 <translation id="6556501700899673703">Lexend</translation>
-<translation id="6556542240154580383">{TAB_COUNT,plural, =1{A(z) <ph name="TAB_TITLE"/> és <ph name="TAB_COUNT_ONE"/> másik lap be lesz zárva}other{A(z) <ph name="TAB_TITLE"/> és <ph name="TAB_COUNT_MANY"/> másik lap be lesz zárva}}</translation>
 <translation id="6560414384669816528">Keresés a Sogou használatával</translation>
 <translation id="656065428026159829">Továbbiak megjelenítése</translation>
 <translation id="971059121491380239">Előfordulhat, hogy Android-eszköze is rendelkezik hasonló beállítással. Ha a hirdetésmérés be van kapcsolva a Brave-ban és Android-eszközén, akkor a vállalatok képesek lehetnek az egyes hirdetések hatékonyságának mérésére az Ön által felkeresett webhelyeken és az Ön által használt alkalmazásokban is.</translation>
@@ -1322,6 +1323,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="6811034713472274749">Az oldal megtekinthető</translation>
 <translation id="6813359536773993594">{FILE_COUNT,plural, =1{Képek, 1 kép a listában}other{Képek, # kép a listában}}</translation>
 <translation id="8418237809013783651">Bejelentkezés a Brave-ba, megnyitva.</translation>
+<translation id="6815692190508268848">A megjelenési beállítások alkalmazva</translation>
 <translation id="6817747507826986771">Az oldal gyors megosztása. A gyorsparancs szerkesztéséhez tartsa lenyomva.</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="2909289633148417535">A Brave Jelszókezelő frissítése bezárult</translation>
@@ -1367,7 +1369,6 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="6937524809504266803">Személyre szabás és összekapcsolás</translation>
 <translation id="6937876069006524083">Becenév (nem kötelező)</translation>
 <translation id="6942665639005891494">Az alapértelmezett letöltési helyet bármikor módosíthatja a Beállítások menüben</translation>
-<translation id="694267552845942083">Jelenleg a szinkronizálási beállításokat szabja személyre. A szinkronizálás bekapcsolásának véglegesítéséhez koppintson a képernyő alján található Megerősítés gombra. Fel</translation>
 <translation id="6945221475159498467">Kiválasztás</translation>
 <translation id="6955535239952325894">Ez a beállítás a felügyelt böngészőkben le van tiltva.</translation>
 <translation id="6963766334940102469">Könyvjelzők törlése</translation>
@@ -1387,6 +1388,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="7020741890149022655">Felvétel olvasólistára <ph name="BEGIN_NEW"/>Új<ph name="END_NEW"/></translation>
 <translation id="7022756207310403729">Megnyitás böngészőben</translation>
 <translation id="7029809446516969842">Jelszavak</translation>
+<translation id="8400061599399680870">A Brave beállítása alapértelmezettként</translation>
 <translation id="7053256416619638731">Erősítse meg jelszavait ezen az eszközön</translation>
 <translation id="7053983685419859001">Letiltás</translation>
 <translation id="7054588988317389591">Lekéri a képleírásokat?</translation>
@@ -1418,6 +1420,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 A beállítás módosításához <ph name="BEGIN_LINK"/>törölje a fiókjában lévő Brave-adatokat<ph name="END_LINK"/>.</translation>
 <translation id="2679203756569766105">További információ arról, hogy miért tilt le bizonyos fájlokat a Brave</translation>
 <translation id="7168323970702333693">Bejelentkezve a következőként: <ph name="USER_NAME"/>. Megnyitja a beállításokat.</translation>
+<translation id="6390064556944765055">Az eszközére és a Brave Walletbe mentett biztonsági kódok is törlődnek</translation>
 <translation id="7173114856073700355">Beállítások megnyitása</translation>
 <translation id="7173338713290252554">Árelőzmények az interneten</translation>
 <translation id="7177466738963138057">Ezt később módosíthatja a beállítások között.</translation>
@@ -1440,6 +1443,7 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>törölje a fiókjában 
 <translation id="8353574248857730978">A Brave Jelszókezelő leállt</translation>
 <translation id="7239496616545081903">Olvasási mód elrejtése</translation>
 <translation id="72415438529550637">A jelszójavaslat le van zárva.</translation>
+<translation id="724510009481365878">Ez az oldal nem nyomtatható</translation>
 <translation id="7248671827512403053">Alkalmazás</translation>
 <translation id="7253951228444156601">Jelszavak ellenőrzése…</translation>
 <translation id="4957342254208357193">Előfordulhat, hogy Android-eszköze is rendelkezik hasonló beállítással. Ha a hirdetésmérés be van kapcsolva a Brave-ban és Android-eszközén, akkor a vállalatok képesek lehetnek az egyes hirdetések hatékonyságának mérésére az Ön által felkeresett webhelyeken és az Ön által használt alkalmazásokban is.</translation>
@@ -1473,6 +1477,7 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>törölje a fiókjában 
 <translation id="7376560087009844242">Hasznosabb találatokat kaphat az Érintéssel keresés funkció használatakor, ha nagyobb részt jelöl ki az oldal szövegéből. Bármikor módosíthatja ezt a <ph name="BEGIN_LINK"/>Beállításokban<ph name="END_LINK"/>.</translation>
 <translation id="7379900596734708416">A sötét téma rendelkezésre áll a webhelyeknél</translation>
 <translation id="7384486627147155832">A tippekkel kapcsolatos értesítések promóciója félmagasságban van megnyitva</translation>
+<translation id="7387951778417998929">Ha az alapértelmezettől eltérő keresőmotort szeretne használni, gépelje be a hozzá tartozó gyorsparancsot a címsávba, majd nyomja le a preferált billentyűparancsot. Itt módosíthatja az alapértelmezett keresőmotort is.</translation>
 <translation id="7388615499319468910">A webhelyek és a hirdetők megismerhetik a hirdetések teljesítményét. Ez a beállítás ki van kapcsolva.</translation>
 <translation id="7400003506822844357">{FILE_COUNT,plural, =1{További 1 fájl a listában}other{További # fájl a listában}}</translation>
 <translation id="7400418766976504921">URL</translation>
@@ -1515,6 +1520,7 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>törölje a fiókjában 
 <translation id="7523960634226602883">Keresés a kamerájával a Google Lens segítségével</translation>
 <translation id="7525248386620136756"><ph name="TAB_GROUPS_AND_TABS_PART"/> bezárva és mentve</translation>
 <translation id="7545347190366646170">Hozzáféréssel rendelkezők</translation>
+<translation id="7553482318994371148">Bezárt lapok újbóli megnyitása</translation>
 <translation id="3987895309799116299">Nem sikerült ellenőrizni a Brave-verziót</translation>
 <translation id="7557508262441527045">Kijelentkezve</translation>
 <translation id="7573665567024262965">Alapértelmezett alkalmazások kiválasztása</translation>
@@ -1585,6 +1591,7 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>törölje a fiókjában 
 <translation id="784652447248278262">Aktuális ablak</translation>
 <translation id="784934925303690534">Időszak</translation>
 <translation id="7851858861565204677">Egyéb eszközök</translation>
+<translation id="78527117619130387">A rögzített lap bezárásához nyomja meg újra ezt: ^W</translation>
 <translation id="7853202427316060426">Aktivitás</translation>
 <translation id="7859988229622350291">Sosem fordított nyelvek</translation>
 <translation id="7866213166286285359">Itt fordíthat le oldalakat</translation>
@@ -1598,6 +1605,7 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>törölje a fiókjában 
 <translation id="7919123827536834358">Automatikus fordítás ezekről a nyelvekről</translation>
 <translation id="7921782882718083488">Oldal összegzése</translation>
 <translation id="7926975587469166629">Egyéni kártyanév</translation>
+<translation id="7927073875790626822">XR</translation>
 <translation id="6485598694371328620">A Brave automatikusan visszavonja azoknak a webhelyeknek az engedélyeit, amelyek visszaélnek az értesítésekkel, vagy amelyeket Ön nem keresett fel a közelmúltban</translation>
 <translation id="7934668619883965330">A fájl nem tölthető le. A fájlformátum nem támogatott.</translation>
 <translation id="7942131818088350342">A(z) <ph name="PRODUCT_NAME"/> elavult.</translation>
@@ -1736,6 +1744,7 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>törölje a fiókjában 
 <translation id="8458413889418591446">Ha szeretne gyorsan visszatérni a felkeresett webhelyekre, szinkronizálja az előzményeit és a lapjait.</translation>
 <translation id="7018408824172283743">Továbbra is használhatja a Brave-fiókjában lévő Brave-adatokat</translation>
 <translation id="8460448946170646641">A legfontosabb adatvédelmi és biztonsági beállítások áttekintése</translation>
+<translation id="8460932807646981183">Keresőmotorok és webhelyeken történő keresés kezelése</translation>
 <translation id="8473863474539038330">Címek és egyebek</translation>
 <translation id="847433688444405067">Böngészés több eszközön</translation>
 <translation id="8477178913400731244">Adatok törlése</translation>
@@ -1818,6 +1827,7 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>törölje a fiókjában 
 <translation id="8856931513242997049">Az értesítések engedélyezési folyamata be van zárva</translation>
 <translation id="8863714995118816041">Újból megadta az engedélyeket a következő számára: <ph name="SITE_NAME"/></translation>
 <translation id="7261356974224431851">A fiókjában található Brave-adatok</translation>
+<translation id="8872506776304248286">Megnyitás alkalmazásban</translation>
 <translation id="1984646864943401749">Egyes felkeresett oldalak URL-jeit, korlátozott rendszer-információkat és bizonyos oldaltartalmakat küld el a Brave-nak, hogy könnyebben felfedezhetők legyenek az internetezőkre leselkedő új veszélyek, és meg lehessen védeni a felhasználókat.</translation>
 <translation id="8903921497873541725">Nagyítás</translation>
 <translation id="8909135823018751308">Megosztás...</translation>
@@ -1861,7 +1871,6 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>törölje a fiókjában 
 <translation id="9070377983101773829">Hangalapú keresés indítása</translation>
 <translation id="9073805459138993880"><ph name="TAB_TITLE"/>, több kiválasztott, tartalmat megosztó lap</translation>
 <translation id="9074739597929991885">Bluetooth</translation>
-<translation id="9086302186042011942">Szinkronizálás</translation>
 <translation id="9086455579313502267">Nem sikerült elérni a hálózatot</translation>
 <translation id="7708077127614889658">Megnyitás Brave-ablakban</translation>
 <translation id="2324185818196590038">A lehető legjobban személyre szabott élmény érdekében vegye fel a Brave-ot az Internetes és alkalmazástevékenységek és az összekapcsolt Brave-szolgáltatások közé.</translation>
@@ -1949,8 +1958,6 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>törölje a fiókjában 
 <translation id="922970047082941203">{NUM_WINDOWS, plural,
           =1 {Close 1 Private window}
           other {Close # Private windows}}</translation>
-<translation id="1988906120194081364">Váltás privát módra</translation>
-<translation id="4300497327999623298">Kilépés a privát módból</translation>
 <translation id="8820817407110198400">Könyvjelzők</translation>
 <translation id="4968908871398201967">Privát mód</translation>
 <translation id="8448127664493413656">Belépés privát módba</translation>
@@ -1997,9 +2004,6 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>törölje a fiókjában 
 <translation id="1982350477927404142">{TAB_COUNT, plural,
           =1 {<ph name="TAB_COUNT_ONE"/> privát lap kerül bezárásra}
           other {<ph name="TAB_COUNT_MANY"/> privát lap kerül bezárásra}}</translation>
-<translation id="2703361981471284696">{TAB_COUNT, plural,
-          =1 {<ph name="INCOGNITO_TAB_COUNT"/> privát és még <ph name="TAB_COUNT_ONE"/> lap kerül bezárásra}
-          other {<ph name="INCOGNITO_TAB_COUNT"/> privát és még <ph name="TAB_COUNT_MANY"/> lap kerül bezárásra}}</translation>
 <translation id="7019870729880056499">{TAB_COUNT, plural,
           =1 {<ph name="INCOGNITO_TAB_COUNT"/> privát és még <ph name="TAB_COUNT_ONE"/> lap kerül bezárásra}
           other {<ph name="INCOGNITO_TAB_COUNT"/> privát és még <ph name="TAB_COUNT_MANY"/> lap kerül bezárásra}}</translation>
@@ -2007,8 +2011,8 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>törölje a fiókjában 
 <translation id="1393515642387718683">A privát módra való váltáshoz koppintson duplán és tartsa lenyomva</translation>
 <translation id="7096147642287317420">A privát módból való kilépéshez érintse meg és tartsa lenyomva</translation>
 <translation id="2331163878318921124">A privát módból való kilépéshez koppintson duplán és tartsa lenyomva</translation>
-<translation id="3947065058794437451">A privát mód nem lehetséges ezen az eszközön.</translation>
 <translation id="5270319788820204019">Keresés billentyűzettel, hang alapján, privát módban vagy a kamera használatával</translation>
+<translation id="3947065058794437451">A privát mód nem lehetséges ezen az eszközön.</translation>
 <translation id="3095878721037212218">Könnyen kezelheti a médiavezérlőket, a privát munkameneteket, a letöltéseket és továbbiakat</translation>
 <translation id="5129323533070334129">Menti a hozzáférési kulcsot a privát módon kívül?</translation>
 <translation id="4325212706000356062">Privát lapok keresése</translation>

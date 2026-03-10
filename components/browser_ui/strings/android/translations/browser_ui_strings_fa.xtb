@@ -3,20 +3,24 @@
 <translationbundle lang="fa">
 <translation id="1006017844123154345">باز کردن نسخه آنلاین</translation>
 <translation id="1036348656032585052">خاموش کردن</translation>
+<translation id="1046742265332833834">زمینه آبی</translation>
 <translation id="1070329623210597193">فایل‌هایی که این سایت می‌تواند مشاهده یا ویرایش کند</translation>
 <translation id="1882093842020941518">‏با گفتن دلیل مجاز کردن کوکی‌های طرف سوم، به ما در بهبود Brave کمک کنید. <ph name="BEGIN_LINK"/>ارسال بازخورد<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">می‌توانید درخواست کنید نسخه رایانه سایت‌ها را ببینید</translation>
 <translation id="9183227624343766158">‏استفاده از Brave به‌طور پیش‌فرض</translation>
 <translation id="113098737392899175">پیمایش کردن صفحه‌ها با مکان‌نمای نوشتار هنگام اتصال صفحه‌کلید</translation>
+<translation id="738393714577080438">‏ذخیره کردن گذرواژه‌ها در Brave</translation>
 <translation id="1178015372320901893">برگ زیرین میان‌برهای من</translation>
 <translation id="1178581264944972037">مکث</translation>
 <translation id="1181037720776840403">برداشتن</translation>
 <translation id="1192844206376121885">با این کار همه داده‌ها و کوکی‌های ذخیره‌شده توسط <ph name="ORIGIN"/> حذف می‌شود.</translation>
+<translation id="1199963004393929848">زمینه سبز</translation>
 <translation id="1201402288615127009">بعدی</translation>
 <translation id="3251315496493761426">‏نکته‌های Brave</translation>
 <translation id="1242008676835033345">جاسازی‌شده در <ph name="WEBSITE_URL"/></translation>
 <translation id="1263609676484797429">روی «برنامه‌ها &gt; برنامه‌های پیش‌فرض» تک‌ضرب بزنید</translation>
 <translation id="1272079795634619415">ایست</translation>
+<translation id="1275718070701477396">انتخاب شد</translation>
 <translation id="8010562420973777575">‏برای صرفه‌جویی درمصرف داده، Brave تصاویر این صفحه را بهینه‌سازی کرده است.</translation>
 <translation id="129382876167171263">فایل‌هایی را که وب‌سایت‌ها ذخیره کرده‌اند، در اینجا نمایش داده می‌شود</translation>
 <translation id="131112695174432497">داده‌ای که بر شخصی‌سازی آگهی اثر بگذارد حذف می‌شود</translation>
@@ -35,6 +39,7 @@
 <translation id="1741136041592162279">‏اجازه دهید Brave برگه‌های اخیرتان را با دستگاهتان هم‌رسانی کند تا بتوانید آن‌ها را در فهرست برنامه‌ها و نتایج جستجوی دستگاهتان ببینید. می‌توانید این گزینه را در تنظیمات Brave روشن یا خاموش کنید.</translation>
 <translation id="1420688843103859429">با تند کشیدن دو انگشت روی صفحه لمسی، به عقب و جلو پیمایش کنید</translation>
 <translation id="1432650420699700107">سایت‌ها می‌توانند برای وصل شدن به دستگاه‌های موجود در شبکه محلی شما درخواست دهند</translation>
+<translation id="1442081309487427303">روشن کردن پیوندهای «حالت خواندن»</translation>
 <translation id="1448064542941920355">کاهش بزرگ‌نمایی</translation>
 <translation id="1464044141348608623">به سایت‌ها اجازه داده نشود وقتی شما به‌طور فعال از دستگاه استفاده می‌کنید مطلع شوند</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> سایت}one{<ph name="SITE_COUNT"/> سایت}other{<ph name="SITE_COUNT"/> سایت}}</translation>
@@ -47,6 +52,8 @@
 <translation id="1547123415014299762">کوکی‌های طرف سوم مجاز است</translation>
 <translation id="3665719978526894928">‏افزایش سرعت سایت‌ها بااستفاده از موتور V8‏ Brave همراه با اندکی کاهش مقاومت Brave در برابر حملات</translation>
 <translation id="1593426485665524382">کنش‌های جدیدی در نزدیکی بالای صفحه دردسترس است</translation>
+<translation id="1594521731409209842">برای تغییر اندازه عکس، انگشتان را ازهم دور یا به‌هم نزدیک کنید</translation>
+<translation id="1601560923496285236">اعمال</translation>
 <translation id="1615755956145364867">سایت‌ها می‌توانند پخش محتوای محافظت‌شده را درخواست کنند</translation>
 <translation id="1620510694547887537">دوربین</translation>
 <translation id="1621729191093924223">ویژگی‌هایی که به میکروفون نیاز دارند کار نخواهند کرد</translation>
@@ -67,6 +74,7 @@
 <translation id="2534291364429593865">‏اعلان «نکته‌های Brave» دریافت کنید</translation>
 <translation id="1777815584158991902">برگ زیرین فید یافته‌ها</translation>
 <translation id="1779089405699405702">رمزگشای تصویر</translation>
+<translation id="1781533683087883868">خاموش کردن پیوندهای «حالت خواندن»</translation>
 <translation id="1785415724048343560">توصیه‌شده برای داشتن بهترین تجربه</translation>
 <translation id="1796588414813960292">ویژگی‌هایی که به صدا نیاز دارند کار نخواهند کرد</translation>
 <translation id="7401204338724669842">‏نکته‌های Brave</translation>
@@ -169,6 +177,7 @@
 <translation id="2682367912565197520">حذف سطح بزرگ‌نمایی ذخیره‌شده</translation>
 <translation id="2683434792633810741">حذف و بازنشانی شود؟</translation>
 <translation id="2685514716378236873">اجازه نداشتن</translation>
+<translation id="2710883118091822664">برای ادامه آسان در همه دستگاه‌هایتان، به سیستم وارد شوید</translation>
 <translation id="2713106313042589954">خاموش کردن دوربین</translation>
 <translation id="2717722538473713889">آدرس‌های ایمیل</translation>
 <translation id="8181634240306014548">‏‫Brave را با کانونی کردن نوار نشانی (Omnibox) راه‌اندازی کنید و زمان راه‌اندازی را در دستگاه‌های ضعیف‌تر کاهش دهید.</translation>
@@ -196,6 +205,7 @@
 <translation id="3004438526346162184">سایت‌ها می‌توانند از این ویژگی برای مدیریت پنجره‌های همه نمایشگرهایتان استفاده کنند</translation>
 <translation id="3008272652534848354">بازنشانی اجازه‌ها</translation>
 <translation id="301521992641321250">به‌طور خودکار مسدود‌شده</translation>
+<translation id="3026311960038210">مجموعه‌های زمینه</translation>
 <translation id="3064871050034234884">سایت‌ها می‌توانند صدا پخش کنند</translation>
 <translation id="3065787901655140044">«محافظت پیشرفته» روشن شد</translation>
 <translation id="3069226013421428034">ورود به سیستم طرف سوم برای سایت خاصی مجاز می‌شود.</translation>
@@ -215,6 +225,7 @@
 <translation id="3167868116600277716">فید «یافته‌ها»</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> داده‌های ذخیره شده</translation>
 <translation id="3199078925536734975">این بار اجازه هست • تقریبی</translation>
+<translation id="3208584281581115441">اکنون بررسی شود</translation>
 <translation id="321187648315454507">‏برای اینکه به <ph name="APP_NAME"/> اجازه دهید برایتان اعلان ارسال کند، اعلان‌ها را در <ph name="BEGIN_LINK"/>تنظیمات Android<ph name="END_LINK"/> نیز روشن کنید.</translation>
 <translation id="3223425961342298674">مکان مجاز نیست</translation>
 <translation id="3227137524299004712">میکروفن</translation>
@@ -262,6 +273,7 @@
 <translation id="3721953990244350188">بستن و نمایش کنش دردسترس بعدی</translation>
 <translation id="3744111561329211289">همگام‌سازی پس‌زمینه</translation>
 <translation id="3746834924069123416">دیدن برگه‌های اخیر بیشتر</translation>
+<translation id="3753618528540214374">زمینه سبزآبی</translation>
 <translation id="3763247130972274048">در سمت راست یا چپ ویدیو دو ضربه سریع بزنید تا ۱۰ ثانیه رد شود</translation>
 <translation id="3776508619697147021">سایت‌ها می‌توانند بارگیری خودکار چند فایل را درخواست کنند</translation>
 <translation id="3779154269823594982">تغییر دادن گذرواژه‌ها</translation>
@@ -271,6 +283,7 @@
 <translation id="381841723434055211">شماره‌های تلفن</translation>
 <translation id="3823453485268218808">قلم تک‌رنگ</translation>
 <translation id="3826050100957962900">ورود به سیستم شخص ثالث</translation>
+<translation id="3831065134033923230">گذرواژه‌های ذخیره‌شده‌تان را بررسی کنید</translation>
 <translation id="3835233591525155343">استفاده از دستگاه</translation>
 <translation id="1799795508209440035">‏Brave کوکی‌ها را امروز دوباره مسدود خواهد کرد</translation>
 <translation id="385051799172605136">برگشتن</translation>
@@ -280,6 +293,7 @@
 <translation id="3903738175795615004">برای خارج شدن از حالت تمام‌صفحه، از بالا بکشید یا «کلید گریز» را فشار دهید.</translation>
 <translation id="3905475044299942653">این حجم از اعلان را متوقف کنید</translation>
 <translation id="3922092564198021702">در تلفن، «تنظیمات» را باز کنید</translation>
+<translation id="3924858949939391676">نمایش پیوندها پس‌از فعال شدن حالت خواندن</translation>
 <translation id="3933121352599513978">جمع کردن درخواست‌های ناخواسته (توصیه می‌شود)</translation>
 <translation id="3934905113567851655">برای تغییر اندازه، انگشتانتان را نزدیک یا دور کنید</translation>
 <translation id="3955193568934677022">به سایت‌ها اجازه داده شود محتوای محافظت‌شده پخش کنند (توصیه می‌شود)</translation>
@@ -333,6 +347,7 @@
 <translation id="4478158430052450698">آسان‌تر شدن سفارشی‌سازی بزرگ‌نمایی برای سایت‌های مختلف</translation>
 <translation id="4479647676395637221">قبل از اجازه به سایت‌ها برای استفاده از دوربین، ابتدا سؤال شود (توصیه می‌شود)</translation>
 <translation id="4505788138578415521">نشانی وب گسترده شد</translation>
+<translation id="4523472416386354622">برای شروع به سیستم وارد شوید</translation>
 <translation id="4534723447064627427">‏برای اینکه به <ph name="APP_NAME"/> اجازه دهید به میکروفون دسترسی پیدا کند، میکروفون را در <ph name="BEGIN_LINK"/>تنظیمات Android<ph name="END_LINK"/> نیز روشن کنید.</translation>
 <translation id="4566417217121906555">صامت کردن میکروفون</translation>
 <translation id="4570913071927164677">جزئیات</translation>
@@ -342,6 +357,7 @@
 <translation id="4644713492825682049">حذف و بازنشانی</translation>
 <translation id="4645575059429386691">مدیریت شده توسط والدین شما</translation>
 <translation id="4652266463001779298">اجازه نداشتن</translation>
+<translation id="4655846733459137112">برای استفاده آسان از این گذرواژه در بار بعدی ورود به سیستم، روی «بله» تک‌ضرب بزنید</translation>
 <translation id="4663373278480897665">دوربین مجاز است</translation>
 <translation id="4670064810192446073">واقعیت مجازی</translation>
 <translation id="5652778654712411580">‏روی «برنامه مرورگر» و سپس Brave تک‌ضرب بزنید</translation>
@@ -387,6 +403,7 @@
 <translation id="512938610812707830">برگ زیرین مجموعه زمینه‌های نمایش صفحه زبانه جدید که به‌صورت کامل باز شده است</translation>
 <translation id="5137460097045297858">برگ زیرین فید «یافته‌ها» به‌صورت نیمه باز شده است</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{کاهش قیمت در برگه‌های باز}one{کاهش قیمت در برگه‌های باز}other{کاهش قیمت‌ها در برگه‌های باز}}</translation>
+<translation id="5150048675001754041">به‌سرعت و به‌آسانی به سایت‌ها و برنامه‌ها وارد شوید</translation>
 <translation id="5186036860380548585">گزینه مربوطه در نزدیکی بالای صفحه دردسترس است</translation>
 <translation id="5197729504361054390">مخاطبین انتخابی شما با <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> هم‌رسانی می‌شود.</translation>
 <translation id="5198930230016462977">برگ زیرین «سفارشی‌سازی صفحه زبانه جدید» بسته شده است</translation>
@@ -445,6 +462,7 @@
 <translation id="5804241973901381774">اجازه‌ها</translation>
 <translation id="5817042798620209981">اطلاعات سایت، کادر گفتگو</translation>
 <translation id="5822675474983796325">برگ زیرین «سفارشی‌سازی صفحه زبانه جدید» به‌طور کامل باز شده است</translation>
+<translation id="4298364316773778595">‏برگ زیرین دستورالعمل برای ذخیره کردن گذرواژه‌ها در Brave</translation>
 <translation id="5833899990800318936">به سایت‌ها اجازه داده نشود از جاوا اسکریپت استفاده کنند</translation>
 <translation id="583673505367439042">سایت‌ها می‌توانند برای ویرایش فایل‌ها و پوشه‌های موجود در دستگاهتان درخواست دهند</translation>
 <translation id="5844448279347999754">هرگاه روشن باشد، سایت‌ها می‌توانند از شما بخواهند نوشتار و تصاویر ذخیره‌شده در بریده‌دان شما را ببینند. هرگاه روشن باشد، سایت‌ها نمی‌توانند نوشتار و تصاویر ذخیره‌شده در بریده‌دان شما را ببینند.</translation>
@@ -471,6 +489,7 @@
 <translation id="5998071268779572583">روشن کردن فید یافته‌ها</translation>
 <translation id="6012967556075291653">میان‌بر سنجاق‌شده</translation>
 <translation id="6015775454662021376">کنترل کردن دسترسی این سایت به دستگاه</translation>
+<translation id="296137235951584143">‏Brave را برای خود اختصاصی کنید</translation>
 <translation id="6040143037577758943">بستن</translation>
 <translation id="6042308850641462728">بیشتر</translation>
 <translation id="6064125863973209585">بارگیری‌های کامل‌شده</translation>
@@ -478,6 +497,7 @@
 <translation id="6085954183010297841">مجوز ویرایش فایل حذف شود؟ <ph name="FILE"/></translation>
 <translation id="6104860901391833523">وقتی روشن باشد، سایت‌ها می‌توانند به‌طور خودکار وارد حالت «تصویردرتصویر» شوند. وقتی خاموش باشد، سایت‌ها نمی‌توانند به‌طور خودکار وارد حالت «تصویردرتصویر» شوند.</translation>
 <translation id="6120483543004435978">هرگاه روشن باشد، سایت‌ها می‌توانند مطلع شدن از مواقعی را که فعالانه از دستگاهتان استفاده می‌کنید درخواست کنند. هرگاه خاموش باشد، سایت‌ها نمی‌توانند بدانند چه مواقعی فعالانه از دستگاهتان استفاده می‌کنید.</translation>
+<translation id="4852158809106762963">‏‫Brave پیشنهاد می‌دهد که گذرواژه‌تان را ذخیره کند</translation>
 <translation id="615886654739818377">به سایت‌ها اجازه داده نمی‌شود پنجره‌های همه نمایشگرهایتان را مدیریت کنند</translation>
 <translation id="6165508094623778733">بیشتر بدانید</translation>
 <translation id="6171020522141473435">هرگاه روشن باشد، سایت‌ها می‌توانند استفاده از دستگاه‌های بلوتوث را درخواست کنند. هرگاه خاموش باشد، سایت‌ها نمی‌توانند از دستگاه‌های بلوتوث استفاده کنند.</translation>
@@ -488,13 +508,13 @@
 <translation id="6196640612572343990">مسدود کردن کوکی‌های طرف سوم</translation>
 <translation id="6205314730813004066">حریم خصوصی آگهی</translation>
 <translation id="6207207788774442484">حذف داده‌ها و بازنشانی اجازه‌ها</translation>
+<translation id="6218508144653756827">زمینه سرخابی</translation>
 <translation id="6231752747840485235">«<ph name="APP_NAME"/>» حذف نصب شود؟</translation>
 <translation id="4789073065838177382">‏روی «برنامه مرورگر &gt; Brave» تک‌ضرب بزنید</translation>
 <translation id="6260830281887654268">برگ زیرین مجموعه زمینه‌های ظاهر صفحه زبانه جدید به‌صورت نیمه باز شده است</translation>
 <translation id="6262191102408817757">براساس آخرین زبانه شما</translation>
 <translation id="6262279340360821358"><ph name="PERMISSION_1"/> و <ph name="PERMISSION_2"/> مسدود هستند</translation>
 <translation id="6270391203985052864">سایت‌ها می‌توانند برای ارسال اعلان درخواست دهند</translation>
-<translation id="6278428485366576908">زمینه</translation>
 <translation id="6295158916970320988">همه سایت‌ها</translation>
 <translation id="6320088164292336938">لرزش</translation>
 <translation id="6367753977865761591">ورود به سیستم طرف سوم برای سایت خاصی مسدود می‌شود.</translation>
@@ -513,6 +533,7 @@
 <translation id="6545864417968258051">اسکن کردن بلوتوث</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{<ph name="PERMISSION_1"/>، <ph name="PERMISSION_2"/>، و <ph name="NUM_MORE"/> اجازه دیگر مسدود هستند}one{<ph name="PERMISSION_1"/>، <ph name="PERMISSION_2"/>، و <ph name="NUM_MORE"/> اجازه دیگر مسدود هستند}other{<ph name="PERMISSION_1"/>، <ph name="PERMISSION_2"/>، و <ph name="NUM_MORE"/> اجازه دیگر مسدود هستند}}</translation>
 <translation id="6554732001434021288">آخرین بازدید: <ph name="NUM_DAYS"/> روز پیش</translation>
+<translation id="6556866813142980365">ازنو انجام دادن</translation>
 <translation id="6557290421156335491">میان‌برهای من</translation>
 <translation id="656065428026159829">بیشتر دیدن</translation>
 <translation id="6561560012278703671">استفاده از پیام‌رسانی کم‌صداتر (درخواست‌های اعلان را مسدود می‌کند تا مزاحمتان نشود)</translation>
@@ -521,6 +542,7 @@
 <translation id="659938948789980540">{COUNT,plural, =1{کوکی‌ها برای <ph name="RWS_MEMBERS_COUNT"/> سایت <ph name="RWS_OWNER"/> مجاز هستند}one{کوکی‌ها برای <ph name="RWS_MEMBERS_COUNT"/> سایت <ph name="RWS_OWNER"/> مجاز هستند}other{کوکی‌ها برای <ph name="RWS_MEMBERS_COUNT"/> سایت <ph name="RWS_OWNER"/> مجاز هستند}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> گیگابایت</translation>
 <translation id="6612358246767739896">محتوای محافظت‌شده</translation>
+<translation id="6619015782482868078">زمینه سبز آبی‌فام</translation>
 <translation id="662080504995468778">ماندن</translation>
 <translation id="6630443592285535486">مبنای شانزده را اینجا تایپ کنید</translation>
 <translation id="6635327442719709864">وقتی روشن باشد، سایت‌ها می‌توانند درخواست استفاده از درگاه‌های سریال را داشته باشند. وقتی خاموش باشد، سایت‌ها نمی‌توانند از درگاه‌های سریال استفاده کنند.</translation>
@@ -549,9 +571,11 @@
 <translation id="6945221475159498467">انتخاب</translation>
 <translation id="6950072572526089586">سایتی که بازدید می‌کنید می‌تواند اطلاعاتی درباره کاری که انجام می‌دهید ذخیره کند تا عملکردی مطابق انتظار داشته باشد — برای مثال، برای اینکه در سیستم سایت باقی بمانید یا برای ذخیره کردن مواردی که در سبد خریدتان است. سایت‌ها در اغلب موارد این اطلاعات را به‌صورت موقتی در دستگاهتان ذخیره می‌کنند.</translation>
 <translation id="6965382102122355670">تأیید</translation>
+<translation id="6980507581230208647">زمینه صورتی</translation>
 <translation id="6980861169612950611">داده‌های سایت حذف شود؟ <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">دسترس‌پذیری</translation>
 <translation id="6991142177939282156">مجاز است • از مکان تقریبی استفاده می‌شود</translation>
+<translation id="6992014788289743568">با بررسی گذرواژه‌هایتان، امنیتتان را تقویت کنید و داده‌هایتان را ایمن‌تر نگه دارید</translation>
 <translation id="6992289844737586249">قبل از اجازه به سایت‌ها برای استفاده از میکروفون ابتدا سؤال شود (توصیه می‌شود)</translation>
 <translation id="7000754031042624318">‏در تنظیمات Android غیرفعال شده است</translation>
 <translation id="8683151724374457021">‏این سایت چیزهایی را که می‌پسندید شناسایی می‌کند و سپس به سایت‌های دیگر آگهی پیشنهاد می‌دهد. این سایت همچنین موضوع‌های آگهی شما را از Brave دریافت می‌کند تا آگهی‌های مرتبط‌تری به شما نشان دهد.</translation>
@@ -577,6 +601,7 @@
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> مورد انتخاب شد</translation>
 <translation id="7260727271532453612"><ph name="PERMISSION_1"/> و <ph name="PERMISSION_2"/> مجاز هستند</translation>
 <translation id="7276071417425470385">هرگاه روشن باشد، سایت‌ها می‌توانند استفاده از دستگاه‌های واقعیت مجازی را درخواست کنند. هرگاه خاموش باشد، سایت‌ها نمی‌توانند از دستگاه‌های واقعیت مجازی استفاده کنند.</translation>
+<translation id="7282197670900591579">زمینه لیمویی</translation>
 <translation id="728412880473384942">سایت‌ها سرعت بیشتری دارند اما امنیت آن‌ها کمتر است</translation>
 <translation id="7366415735885268578">افزودن سایت</translation>
 <translation id="7368695150573390554">همه داده‌های آفلاین حذف خواهند شد</translation>
@@ -615,7 +640,9 @@
 <translation id="5455732060086060613">‏پنهان کردن کارت نکته‌های Brave</translation>
 <translation id="7719367874908701697">بزرگ‌نمایی صفحه</translation>
 <translation id="775043444390799886">لغو اجازه</translation>
+<translation id="7758789811447313947">زمینه بنفش</translation>
 <translation id="7759147511335618829">‏برنامه‌ریزی مجدد و کنترل دستگاه MIDI</translation>
+<translation id="7771089277295008211">برگ زیرین دستورالعمل ذخیره کردن گذرواژه‌ها بسته شد</translation>
 <translation id="7781829728241885113">دیروز</translation>
 <translation id="7791543448312431591">افزودن</translation>
 <translation id="780301667611848630">نه متشکرم</translation>
@@ -633,6 +660,8 @@
 <translation id="7940722705963108451">به من یادآوری شود</translation>
 <translation id="7948081750384205628">درباره «<ph name="SETTING_TITLE"/>» بیشتر بدانید</translation>
 <translation id="7952708427581814389">سایت‌ها می‌توانند دیدن نوشتار و تصاویر موجود در بریده‌دان را درخواست کنند</translation>
+<translation id="7958779728312669715">برگ زیرین دستورالعمل ذخیره کردن گذرواژه‌ها به‌طور کامل باز شد</translation>
+<translation id="798299424881500862">زمینه نارنجی</translation>
 <translation id="7986741934819883144">مخاطبی انتخاب کنید</translation>
 <translation id="7990211076305263060">هرگاه روشن باشد، سایت‌ها می‌توانند استفاده از میکروفون را درخواست کنند. هرگاه خاموش باشد، سایت‌ها نمی‌توانند از میکروفون استفاده کنند.</translation>
 <translation id="8007176423574883786">برای این دستگاه غیرفعال شد</translation>
@@ -728,6 +757,7 @@
 <translation id="7532165358672313130">‏همان‌طور که مرور می‌کنید، سایت‌ها می‌توانند ازطریق Brave بررسی کنند و بااستفاده از سایت قبلی که بازدید کرده‌اید تأیید کنند که احتمالاً شما شخص واقعی هستید</translation>
 <translation id="8899807382908246773">آگهی‌های مزاحم</translation>
 <translation id="8903921497873541725">بزرگ‌نمایی</translation>
+<translation id="8919911527569629802">ورود به سیستم هر وب‌سایت</translation>
 <translation id="8921772741368021346"><ph name="POSITION"/> / <ph name="DURATION"/></translation>
 <translation id="8926389886865778422">دوباره سؤال نشود</translation>
 <translation id="8926666909099850184">‏NFC برای این دستگاه خاموش است. در <ph name="BEGIN_LINK"/>تنظیمات Android<ph name="END_LINK"/> آن را روشن کنید.</translation>
@@ -755,6 +785,7 @@
 <translation id="9182556968660520230">به سایت‌ها اجازه داده نشود محتوای محافظت‌شده را پخش کنند</translation>
 <translation id="947156494302904893">سایت‌هایی که بازدید می‌کنید می‌توانند تأیید کنند که شما شخص واقعی هستید و روبات نیستید</translation>
 <translation id="959682366969460160">سازمان‌دهی شوید</translation>
+<translation id="960590623979248167">نمایش پیوندها</translation>
 <translation id="961930410699694996">مکان این بار اجازه هست</translation>
 <translation id="967624055006145463">داده ذخیره شد</translation>
 <translation id="969975166333045662">‏سایت مسدود شود تا نتواند از بهینه‌ساز V8 استفاده کند.</translation>

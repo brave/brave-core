@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">Os sites podem pedir para usar o Google Sign-In herdado por meio de cookies de terceiros</translation>
 <translation id="2903783737778379345">Não permitir login herdado do Google por meio de cookies de terceiros</translation>
 <translation id="6880817299303842099">Permitido o uso de cookies de terceiros para o Google Sign-In herdado</translation>
-<translation id="2136412236435693622">Acesso ao localhost</translation>
-<translation id="4172219483893066798">Os sites podem solicitar acesso a recursos de localhost</translation>
-<translation id="7181706637590665047">Não permitir o acesso aos recursos de localhost</translation>
-<translation id="1485435696620658073">Permitido o acesso aos recursos de localhost</translation>
 <translation id="181905442828471321">Padrões globais do Brave Shields</translation>
 <translation id="2675679258824361492">Outras configurações de privacidade</translation>
 <translation id="8026334261755873520">Limpar dados de navegação</translation>
@@ -422,6 +418,13 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="7141438739990875547">Redes Bitcoin</translation>
 <translation id="9055546041146396417">Se o site parecer não estar funcionando, tente desativar o Shields.</translation>
 <translation id="7898672232170410330">Bloquear elemento</translation>
+<translation id="9064628362799094520">Destruir dados do site</translation>
+<translation id="8949611615512336262">Destruição automática: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Destruir os dados do site agora</translation>
+<translation id="6795622376590884449">Destruição automática</translation>
+<translation id="7961015016161918242">Nunca</translation>
+<translation id="1991004083507807299">Abas do site fechadas</translation>
+<translation id="5827277414420724690">Fechar aplicativo</translation>
 <translation id="1209739344687072997">Relate um site quebrado</translation>
 <translation id="8510478288840333677">Informe aos desenvolvedores do Brave que este site não funciona corretamente com o Shields:</translation>
 <translation id="1653405824851871276">Agradecemos sua contribuição para melhorar o Brave para todos. Este relatório apenas conterá as informações necessárias para corrigir o site. <ph name="LEARN_MORE"/></translation>
@@ -1073,7 +1076,7 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="1336494649091412226">Você tem certeza de que deseja sair do Brave?</translation>
 <translation id="6061635824229591714">Destruir dados do site?</translation>
 <translation id="1265051174491933207">A destruição excluirá os dados do site e fechará todas as abas de '<ph name="SITE_NAME"/>'. Isso não pode ser desfeito.</translation>
-<translation id="4279349293084858577">Destruir</translation>
+<translation id="5528772406060281700">Destruir dados do site</translation>
 <translation id="4426990318287827331">Destruir dados</translation>
 <translation id="7942415993090181327">Histórico de chat</translation>
 <translation id="6859935199732075666">Mostrar erros de Navegação Segura</translation>

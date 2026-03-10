@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">Websites können über Cookies von Drittanbietern darum bitten, die alte Google-Anmeldung verwenden zu dürfen</translation>
 <translation id="2903783737778379345">Alte Google-Anmeldung über Cookies von Drittanbietern nicht zulassen</translation>
 <translation id="6880817299303842099">Berechtigt, Cookies von Drittanbietern für die alte Google-Anmeldung zu verwenden</translation>
-<translation id="2136412236435693622">Localhost-Zugriff</translation>
-<translation id="4172219483893066798">Websites dürfen Zugriff auf Localhost-Ressourcen anfordern.</translation>
-<translation id="7181706637590665047">Zugriff auf Localhost-Ressourcen nicht erlauben</translation>
-<translation id="1485435696620658073">Zugriff auf Localhost-Ressourcen erlaubt</translation>
 <translation id="181905442828471321">Globale Standardwerte für Brave Schutz</translation>
 <translation id="2675679258824361492">Andere Datenschutzeinstellungen</translation>
 <translation id="8026334261755873520">Browserdaten löschen</translation>
@@ -425,6 +421,13 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="7141438739990875547">Bitcoin-Netzwerke</translation>
 <translation id="9055546041146396417">Falls diese Site nicht zu funktionieren scheint, versuchen Sie es, wenn Schutz aus ist.</translation>
 <translation id="7898672232170410330">Element blockieren</translation>
+<translation id="9064628362799094520">Daten der Website schreddern</translation>
+<translation id="8949611615512336262">Automatisch schreddern: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Daten der Website jetzt schreddern</translation>
+<translation id="6795622376590884449">Automatisch schreddern</translation>
+<translation id="7961015016161918242">Nie</translation>
+<translation id="1991004083507807299">Registerkarten der Website geschlossen</translation>
+<translation id="5827277414420724690">Bei geschlossener App</translation>
 <translation id="1209739344687072997">Melden Sie eine fehlerhafte Website</translation>
 <translation id="8510478288840333677">Informieren Sie Braves Entwickler darüber, dass diese Website in Kombination mit Schutz nicht richtig funktioniert:</translation>
 <translation id="1653405824851871276">Danke, dass du uns hilfst, Brave für alle besser zu machen. Dieser Bericht wird nur Informationen enthalten, die wir benötigen, um diese Seite zu verbessern.<ph name="LEARN_MORE"/></translation>
@@ -1076,7 +1079,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="1336494649091412226">Bist du sicher, dass du Brave verlassen möchtest?</translation>
 <translation id="6061635824229591714">Daten der Website schreddern?</translation>
 <translation id="1265051174491933207">Beim Schreddern werden die Daten der Website gelöscht und alle '<ph name="SITE_NAME"/>'-Tabs geschlossen. Dies kann nicht rückgängig gemacht werden.</translation>
-<translation id="4279349293084858577">Schreddern</translation>
+<translation id="5528772406060281700">Daten der Website schreddern</translation>
 <translation id="4426990318287827331">Daten schreddern</translation>
 <translation id="7942415993090181327">Chat-Verlauf</translation>
 <translation id="6859935199732075666">Safe Browsing-Fehler anzeigen</translation>

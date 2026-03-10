@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">Stránky vás pomohou požádat, abyste použili starší službu přihlášení Google, prostřednictvím souborů cookie třetích stran.</translation>
 <translation id="2903783737778379345">Starší službu přihlášení Google nepouživejte prostřednictvím souborů cookie třetích stran.</translation>
 <translation id="6880817299303842099">Je povoleno používání souborů cookie třetích stran pro starší službu přihlášení Google.</translation>
-<translation id="2136412236435693622">Přístup k localhost</translation>
-<translation id="4172219483893066798">Weby mohou požádat o přístup k prostředkům localhost</translation>
-<translation id="7181706637590665047">Nepovolit přístup k prostředkům localhost</translation>
-<translation id="1485435696620658073">Přístup k prostředkům localhost je povolen</translation>
 <translation id="181905442828471321">Společnost Brave chrání globální výchozí nastavení</translation>
 <translation id="2675679258824361492">Ostatní nastavení ochrany osobních údajů</translation>
 <translation id="8026334261755873520">Vymazat údaje o prohlížení</translation>
@@ -223,6 +219,7 @@
 <translation id="4225265925807365011">Mám frázi pro obnovení v délce 24 slov</translation>
 <translation id="3570367516044491911">Nastavit jako výchozí prohlížeč</translation>
 <translation id="6800338374677644736">Nastavit jako výchozí prohlížeč</translation>
+<translation id="1545749641540134597">Naskenovat QR kód</translation>
 <translation id="5317781812114905957">Instrukce</translation>
 <translation id="8515319483805157233">Pro vyhledávání podle QR kódu zarovnejte QR kód do středu rámečku.</translation>
 <translation id="7658239707568436148">Zrušit</translation>
@@ -421,6 +418,13 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="7141438739990875547">Sítě Bitcoin</translation>
 <translation id="9055546041146396417">Pokud se stránka zdá nefunkční, zkuste Vypnutí štítů.</translation>
 <translation id="7898672232170410330">Prvek bloku</translation>
+<translation id="9064628362799094520">Smazat data stránky</translation>
+<translation id="8949611615512336262">Automatické smazání: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Smazat data stránky nyní</translation>
+<translation id="6795622376590884449">Automatické smazání</translation>
+<translation id="7961015016161918242">Nikdy</translation>
+<translation id="1991004083507807299">Záložka stránky zavřená</translation>
+<translation id="5827277414420724690">Zavřít aplikaci</translation>
 <translation id="1209739344687072997">Nahlásit porouchané stránky</translation>
 <translation id="8510478288840333677">Dejte vývojářům Brave vědět, že tyto stránky se zabezpečením Shields nefungují správně:</translation>
 <translation id="1653405824851871276">Děkujeme, že pomáháte dělat Brave lepší pro všechny. Toto hlášení obsahuje pouze informace, které jsou pro nás nezbytné k opravě tohoto webu. <ph name="LEARN_MORE"/></translation>
@@ -1073,7 +1077,7 @@ v budoucnu a také vymaže vaši historii chatů. Vymazání historie chatů ods
 <translation id="1336494649091412226">Opravdu chcete opustit Brave?</translation>
 <translation id="6061635824229591714">Smazat data stránky?</translation>
 <translation id="1265051174491933207">Smazání odstraní data stránky a zavře všechny záložky „<ph name="SITE_NAME"/>“. Toto nelze vzít zpět.</translation>
-<translation id="4279349293084858577">Smazat</translation>
+<translation id="5528772406060281700">Smazat data stránky</translation>
 <translation id="4426990318287827331">Smazat data</translation>
 <translation id="7942415993090181327">Historie chatů</translation>
 <translation id="6859935199732075666">Zobrazit chyby bezpečného procházení</translation>

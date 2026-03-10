@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">Tovuti zinaweza kuomba kutumia Kuingia asili kwa Google kupitia vidakuzi vya wahusika wengine</translation>
 <translation id="2903783737778379345">Usiruhusu Kuingia asili kwa Google kupitia vidakuzi vya wahusika wengine</translation>
 <translation id="6880817299303842099">Inaruhusiwa kutumia vidakuzi vya wahusika wengine kwa ajili ya Kuingia asili kwa Google</translation>
-<translation id="2136412236435693622">Ufikiaji wa Mpangishaji wa Ndani</translation>
-<translation id="4172219483893066798">Tovuti zinaweza kuomba idhini ya kufikia nyenzo za localhost</translation>
-<translation id="7181706637590665047">Usiruhusu ufikiaji wa nyenzo za localhost</translation>
-<translation id="1485435696620658073">Zinazoruhusiwa kufikia nyenzo za localhost</translation>
 <translation id="181905442828471321">Machaguo msingi ya jumla ya ngao za Brave</translation>
 <translation id="2675679258824361492">Mipangilio mingine ya faragha</translation>
 <translation id="8026334261755873520">Futa data ya kuvinjari</translation>
@@ -422,6 +418,13 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="7141438739990875547">Mitandao ya Bitcoin</translation>
 <translation id="9055546041146396417">Ikiwa tovuti inaonekana kuwa na kasoro, jaribu Shields hapa chini.</translation>
 <translation id="7898672232170410330">Zuia elementi</translation>
+<translation id="9064628362799094520">Futa data za tovuti yako</translation>
+<translation id="8949611615512336262">Futa kiotomatiki: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Futa data za tovuti sasa</translation>
+<translation id="6795622376590884449">Futa kiotomatiki</translation>
+<translation id="7961015016161918242">Katu</translation>
+<translation id="1991004083507807299">Kichupo cha tovuti kifunguka</translation>
+<translation id="5827277414420724690">Programu ifunguka</translation>
 <translation id="1209739344687072997">Ripoti tovuti yenye hitilafu</translation>
 <translation id="8510478288840333677">Wafahamishe wasanidi programu wa Brave kuwa tovuti hii haifanyi kazi vizuri kwa Shields:</translation>
 <translation id="1653405824851871276">Asante kwa usaidizi wako katika kuboresha Brave kwa wote. Ripoti hii itakuwa tu na taarifa zinazohitajika ili kutuwezesha kurekebisha tovuti hii. <ph name="LEARN_MORE"/></translation>
@@ -1073,7 +1076,7 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="1336494649091412226">Una uhakika unataka kutoka Brave?</translation>
 <translation id="6061635824229591714">Futa data za tovuti?</translation>
 <translation id="1265051174491933207">Kufuta kutafuta kutafuta data za tovuti na kufunga vichupo vyote vya '<ph name="SITE_NAME"/>'. Hali hii haiwezi kutenduliwa.</translation>
-<translation id="4279349293084858577">Futa kwa usalama</translation>
+<translation id="5528772406060281700">Futa data za tovuti</translation>
 <translation id="4426990318287827331">Futa data</translation>
 <translation id="7942415993090181327">Historia ya mazungumzo</translation>
 <translation id="6859935199732075666">Onyesha makosa ya Kuvinjari Salama</translation>

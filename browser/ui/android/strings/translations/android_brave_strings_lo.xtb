@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">ເວັບໄຊສາມາດຮ້ອງຂໍການໃຊ້ງານການເຂົ້າລະບົບ Google ແບບດັ້ງເດີມຜ່ານຄຸກກີ້ຈາກພາກສາມ</translation>
 <translation id="2903783737778379345">ຫ້າມໃຫ້ໃຊ້ການເຂົ້າລະບົບ Google ແບບດັ້ງເດີມຜ່ານຄຸກກີ້ຈາກພາກສາມ</translation>
 <translation id="6880817299303842099">ອະນຸຍາດໃຫ້ໃຊ້ຄຸກກີ້ຈາກພາກສາມເພື່ອການເຂົ້າລະບົບ Google ແບບດັ້ງເດີມ</translation>
-<translation id="2136412236435693622">ການເຂົ້າເຖິງ Localhost</translation>
-<translation id="4172219483893066798">ເວັບໄຊສາມາດຮ້ອງຂໍເຂົ້າເຖິງຊັບພະຍາກອນ localhost ໄດ້</translation>
-<translation id="7181706637590665047">ຫ້າມເຂົ້າເຖິງຊັບພະຍາກອນ localhost</translation>
-<translation id="1485435696620658073">ອະນຸຍາດໃຫ້ເຂົ້າເຖິງຊັບພະຍາກອນ localhost</translation>
 <translation id="181905442828471321">Global Shields Defaults</translation>
 <translation id="2675679258824361492">ການດູແຍ່ຂອງຄວາມສ່ວນເປັນອື່ນໆ</translation>
 <translation id="8026334261755873520">Clear browsing data</translation>
@@ -425,6 +421,13 @@ Enter the sync chain code words shown below.</translation>
 <translation id="7141438739990875547">ເຄືອຂ່າຍ Bitcoin</translation>
 <translation id="9055546041146396417">ຖ້າເວັບໄຊທ໌ນີ້ສະແດງຜົນຜິດປົກກະຕິ, ລອງປິດ Shields ເບິ່ງ.</translation>
 <translation id="7898672232170410330">ບລັອກອົງປະກອບ</translation>
+<translation id="9064628362799094520">ກຳຈັດຂໍ້ມູນເວັບໄຊ</translation>
+<translation id="8949611615512336262">ກຳຈັດອັດຕະໂນມັດ: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">ກຳຈັດຂໍ້ມູນເວັບໄຊດຽວນີ້</translation>
+<translation id="6795622376590884449">ກຳຈັດອັດຕະໂນມັດ</translation>
+<translation id="7961015016161918242">ບໍ່ເລີຍ</translation>
+<translation id="1991004083507807299">ປິດແທັບເວັບໄຊ</translation>
+<translation id="5827277414420724690">ປິດແອັບ</translation>
 <translation id="1209739344687072997">ລາຍງານເວັບໄຊທ໌ທີ່ມີບັນຫາ</translation>
 <translation id="8510478288840333677">ເປັນຂໍ້ມູນບັນທຶກວ່ານີ້ເວັບໄຊທ໌ບໍ່ໄດ້ໂຄເທິນສານນີ້ 'ຊຽກເຄືອຂົນ'.</translation>
 <translation id="1653405824851871276">ຂອບໃຈທີ່ໄດ້ຊ່ວຍເຮົາທ້ໍາວ່າ Brave ດີຂຶ້ນສໍາລັບທຸກຄົນ. ຂໍ້ຄວາມນີ້ຈະປະກອບກ່ຽວກັບຂໍ້ມູນທີ່ເຮົາຕ້ອງການ. <ph name="LEARN_MORE"/></translation>
@@ -1074,7 +1077,7 @@ Enter the sync chain code words shown below.</translation>
 <translation id="1336494649091412226">ທ່ານແນ່ໃຈທີ່ຈະອອກຈາກ Brave ບໍ?</translation>
 <translation id="6061635824229591714">ທ່ານຈະກຳຈັດຂໍ້ມູນເວັບໄຊທ໌ນີ້ບໍ?</translation>
 <translation id="1265051174491933207">ການກຳຈັດຈະລຶບຂໍ້ມູນເວັບໄຊທ໌ ແລະປິດແທັບ '<ph name="SITE_NAME"/>' ທັງໝົດ. ບໍ່ສາມາດຍ້ອນກັບໄດ້.</translation>
-<translation id="4279349293084858577">ກຳຈັດ</translation>
+<translation id="5528772406060281700">ກຳຈັດຂໍ້ມູນ</translation>
 <translation id="4426990318287827331">ກຳຈັດຂໍ້ມູນ</translation>
 <translation id="7942415993090181327">ປະຫວັດການສົນທະນາ</translation>
 <translation id="6859935199732075666">ສະແດງຄວາມຜິດພາດຂອງ Safe Browsing</translation>

@@ -3,20 +3,24 @@
 <translationbundle lang="mr">
 <translation id="1006017844123154345">ऑनलाइन उघडा</translation>
 <translation id="1036348656032585052">बंद करा</translation>
+<translation id="1046742265332833834">ब्ल्यू थीम</translation>
 <translation id="1070329623210597193">या साइटवरील फाइल पाहता येऊ शकतात किंवा संपादित केल्या जाऊ शकतात</translation>
 <translation id="1882093842020941518">तुम्ही तृतीय पक्ष कुकीना अनुमती का दिली हे सांगून Brave मध्ये सुधारणा करण्यात आम्हाला मदत करा. <ph name="BEGIN_LINK"/>फीडबॅक पाठवणे<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">तुम्ही साइटची डेस्कटॉप आवृत्ती पाहण्याची विनंती करू शकता</translation>
 <translation id="9183227624343766158">बाय डीफॉल्ट Brave वापरा</translation>
 <translation id="113098737392899175">कीबोर्ड अटॅच केलेला असताना मजकुराचा कर्सर वापरून पेज नेव्हिगेट करा</translation>
+<translation id="738393714577080438">Brave मध्ये पासवर्ड सेव्ह करा</translation>
 <translation id="1178015372320901893">माझे शॉर्टकट पेजच्या तळाशी असलेली शीट</translation>
 <translation id="1178581264944972037">विराम द्या</translation>
 <translation id="1181037720776840403">काढून टाका</translation>
 <translation id="1192844206376121885">यामुळे <ph name="ORIGIN"/> ने स्टोअर केलेला सर्व डेटा आणि कुकी हटवल्या जातील.</translation>
+<translation id="1199963004393929848">ग्रीन थीम</translation>
 <translation id="1201402288615127009">पुढील</translation>
 <translation id="3251315496493761426">Brave शी संबंधित टिपा</translation>
 <translation id="1242008676835033345"><ph name="WEBSITE_URL"/> वर एम्बेड केले</translation>
 <translation id="1263609676484797429">अ‍ॅप्स  &gt; डीफॉल्ट ॲप्सवर टॅप करा</translation>
 <translation id="1272079795634619415">थांबा</translation>
+<translation id="1275718070701477396">निवडले</translation>
 <translation id="8010562420973777575">तुमचा डेटा वाचवण्यासाठी, या पेजच्या इमेज Brave ने ऑप्टिमाइझ केल्या आहेत.</translation>
 <translation id="129382876167171263">वेबसाइटद्वारे सेव्ह केलेल्या फाइल येथे दिसतील</translation>
 <translation id="131112695174432497">जाहिरात पर्सनलायझेशनवर परिणाम करणारा डेटा हटवला आहे</translation>
@@ -35,6 +39,7 @@
 <translation id="1741136041592162279">Brave ला तुमचे अलीकडील टॅब तुमच्या डिव्हाइसच्या ॲप सूचीमध्ये आणि शोध परिणामांमध्ये पाहण्यासाठी ते तुमच्या डिव्हाइससह शेअर करू द्या. तुम्ही हे Brave सेटिंग्जमध्ये सुरू किंवा बंद करू शकता.</translation>
 <translation id="1420688843103859429">टचपॅडवर दोन बोटांनी स्वाइप करून मागे व पुढे नेव्हिगेट करा</translation>
 <translation id="1432650420699700107">साइट तुमच्या स्थानिक नेटवर्कवरील कोणत्याही डिव्हाइससोबत कनेक्ट करण्याची विनंती करू शकतात</translation>
+<translation id="1442081309487427303">वाचन मोड लिंक सुरू करा</translation>
 <translation id="1448064542941920355">झूम कमी करते</translation>
 <translation id="1464044141348608623">तुम्ही तुमचे डिव्हाइस सक्रियपणे केव्हा वापरता हे साइटना जाणून घेण्याची अनुमती देऊ नका</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> साइट}other{<ph name="SITE_COUNT"/> साइट}}</translation>
@@ -47,6 +52,8 @@
 <translation id="1547123415014299762">तृतीय पक्ष कुकीना अनुमती आहे</translation>
 <translation id="3665719978526894928">Brave चे V8 इंजीन वापरून साइटचा वेग वाढवा, पण Brave ला हल्ल्यांबाबत किंचित कमी प्रतिरोधक बनवा</translation>
 <translation id="1593426485665524382">स्क्रीनच्या सर्वात वरच्या बाजूच्या जवळ नवीन कृती उपलब्ध आहेत</translation>
+<translation id="1594521731409209842">फोटोचा आकार बदलण्यासाठी स्क्रीन पिंच करा</translation>
+<translation id="1601560923496285236">लागू करा</translation>
 <translation id="1615755956145364867">साइट संरक्षित आशय प्ले करण्यासाठी विचारू शकतात</translation>
 <translation id="1620510694547887537">कॅमेरा</translation>
 <translation id="1621729191093924223">मायक्रोफोनची आवश्यकता असलेली वैशिष्ट्ये काम करणार नाहीत</translation>
@@ -67,6 +74,7 @@
 <translation id="2534291364429593865">Brave संबंधित टिपा नोटिफिकेशन मिळवा</translation>
 <translation id="1777815584158991902">Discover फीडच्या तळाशी असलेली शीट</translation>
 <translation id="1779089405699405702">इमेज डीकोडर</translation>
+<translation id="1781533683087883868">वाचन मोड लिंक बंद करा</translation>
 <translation id="1785415724048343560">सर्वोत्तम अनुभवासाठी शिफारस केलेले</translation>
 <translation id="1796588414813960292">साउंडची आवश्यकता असलेली वैशिष्ट्ये काम करणार नाहीत</translation>
 <translation id="7401204338724669842">Brave शी संबंधित टिपा</translation>
@@ -169,6 +177,7 @@
 <translation id="2682367912565197520">सेव्ह केलेली झूम पातळी हटवा</translation>
 <translation id="2683434792633810741">हटवायचे आणि रीसेट करायचे आहे का?</translation>
 <translation id="2685514716378236873">अनुमती नसलेल्या</translation>
+<translation id="2710883118091822664">तुमच्या सर्व डिव्हाइसवर सहजपणे पुढे सुरू ठेवण्यासाठी साइन इन करा</translation>
 <translation id="2713106313042589954">कॅमेरा बंद करा</translation>
 <translation id="2717722538473713889">ईमेल ॲड्रेस</translation>
 <translation id="8181634240306014548">ओम्निबॉक्स वर फोकस करून Brave लाँच करा, ज्याने कमी दर्जाच्या डिव्हाइसवरील स्टार्ट-अप कालावधी कमी होतो.</translation>
@@ -196,6 +205,7 @@
 <translation id="3004438526346162184">साइट हे वैशिष्ट्य वापरून तुमच्या सर्व डिस्प्लेवरील विंडो व्यवस्थापित करण्याची विनंती करू शकतात</translation>
 <translation id="3008272652534848354">परवानग्या रीसेट करा</translation>
 <translation id="301521992641321250">आपोआप ब्लॉक केलेले</translation>
+<translation id="3026311960038210">थीम संग्रह</translation>
 <translation id="3064871050034234884">साइट साउंड प्ले करू शकतात</translation>
 <translation id="3065787901655140044">प्रगत संरक्षण सुरू आहे</translation>
 <translation id="3069226013421428034">विशिष्ट साइटसाठी तृतीय पक्ष साइन-इनला अनुमती द्या.</translation>
@@ -215,6 +225,7 @@
 <translation id="3167868116600277716">Discover फीड</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> संचयित केलेला डेटा</translation>
 <translation id="3199078925536734975">या वेळी अनुमती दिलेले • अंदाजे</translation>
+<translation id="3208584281581115441">आता तपासा</translation>
 <translation id="321187648315454507"><ph name="APP_NAME"/> ने तुम्हाला सूचना पाठवण्यासाठी, <ph name="BEGIN_LINK"/>Android सेटिंग्ज<ph name="END_LINK"/> मध्येदेखील सूचना सुरू करा.</translation>
 <translation id="3223425961342298674">स्थानाला अनुमती नाही</translation>
 <translation id="3227137524299004712">मायक्रोफोन</translation>
@@ -262,6 +273,7 @@
 <translation id="3721953990244350188">डिसमिस करा आणि पुढील उपलब्ध कृती दाखवा</translation>
 <translation id="3744111561329211289">पार्श्वभूमी सिंक</translation>
 <translation id="3746834924069123416">अलीकडील आणखी टॅब पहा</translation>
+<translation id="3753618528540214374">विरिडियन थीम</translation>
 <translation id="3763247130972274048">१० सेकंद पुढे जाण्यासाठी व्हिडिओवर डावीकडे किंवा उजवीकडे दोनदा टॅप करा</translation>
 <translation id="3776508619697147021">साइट एकाहून अधिक फाइल आपोआप डाउनलोड करण्यासाठी विचारू शकतात</translation>
 <translation id="3779154269823594982">पासवर्ड बदला</translation>
@@ -271,6 +283,7 @@
 <translation id="381841723434055211">फोन नंबर</translation>
 <translation id="3823453485268218808">फाँट मोनो</translation>
 <translation id="3826050100957962900">तृतीय पक्ष साइन इन</translation>
+<translation id="3831065134033923230">तुमचे सेव्ह केलेले पासवर्ड तपासा</translation>
 <translation id="3835233591525155343">तुमच्या डिव्हाइसचा वापर</translation>
 <translation id="1799795508209440035">Brave आज पुन्हा कुकी ब्लॉक करेल</translation>
 <translation id="385051799172605136">मागील</translation>
@@ -280,6 +293,7 @@
 <translation id="3903738175795615004">फुल स्क्रीनमधून बाहेर पडण्यासाठी सर्वात वरून ड्रॅग करा किंवा एस्केप की प्रेस करा.</translation>
 <translation id="3905475044299942653">खूप नोटिफिकेशन थांबवा</translation>
 <translation id="3922092564198021702">तुमच्या फोनवर, सेटिंग्ज उघडा</translation>
+<translation id="3924858949939391676">वाचन मोड सुरू झाल्यावर लिंक दाखवा</translation>
 <translation id="3933121352599513978">अनावश्यक विनंत्या कोलॅप्स करा (शिफारस केलेले)</translation>
 <translation id="3934905113567851655">आकार बदलण्यासाठी पिंच करा</translation>
 <translation id="3955193568934677022">संरक्षित आशय प्ले करण्यासाठी साइटना अनुमती द्या (शिफारस केलेले)</translation>
@@ -333,6 +347,7 @@
 <translation id="4478158430052450698">वेगवेगळ्या साइटसाठी झूम कस्टमाइझ करणे सोपे करा</translation>
 <translation id="4479647676395637221">साइटना तुमचा कॅमेरा वापरण्याची अनुमती देण्यापूर्वी प्रथम विचारा (शिफारस केलेले)</translation>
 <translation id="4505788138578415521">URL चा विस्तार केला गेला</translation>
+<translation id="4523472416386354622">सुरू करण्यासाठी साइन इन करा</translation>
 <translation id="4534723447064627427"><ph name="APP_NAME"/> ला तुमचा मायक्रोफोन ॲक्सेस करू देण्यासाठी, <ph name="BEGIN_LINK"/>Android सेटिंग्ज<ph name="END_LINK"/> मध्येदेखील मायक्रोफोन सुरू करा.</translation>
 <translation id="4566417217121906555">मायक्रोफोन म्यूट करा</translation>
 <translation id="4570913071927164677">तपशील</translation>
@@ -342,6 +357,7 @@
 <translation id="4644713492825682049">हटवा आणि रीसेट करा</translation>
 <translation id="4645575059429386691">आपल्या पालकांद्वारे व्यवस्थापित करण्यात आले</translation>
 <translation id="4652266463001779298">अनुमती नाही</translation>
+<translation id="4655846733459137112">तुम्ही पुढील वेळी साइन इन कराल, तेव्हा हा पासवर्ड सहजपणे वापरण्यासाठी होय वर टॅप करा</translation>
 <translation id="4663373278480897665">कॅमेऱ्याला अनुमती आहे</translation>
 <translation id="4670064810192446073">आभासी वास्तविकता</translation>
 <translation id="5652778654712411580">ब्राउझर ॲप, त्यानंतर Brave वर टॅप करा</translation>
@@ -387,6 +403,7 @@
 <translation id="512938610812707830">नवीन टॅब पेज स्वरूपाच्या थीम संग्रहांच्या तळाशी असलेली शीट पूर्ण उंचीवर उघडली आहे</translation>
 <translation id="5137460097045297858">Discover फीडच्या तळाशी असलेली शीट अर्ध्या उंचीवर उघडली आहे</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{तुमच्या उघड्या असलेल्या टॅबवरील कमी झालेली किंमत}other{तुमच्या उघड्या असलेल्या टॅबवरील कमी झालेल्या किमती}}</translation>
+<translation id="5150048675001754041">साइटमध्ये आणि अ‍ॅप्समध्ये झटपट व सहजपणे साइन इन करा</translation>
 <translation id="5186036860380548585">स्क्रीनच्या सर्वात वरती पर्याय उपलब्ध आहे</translation>
 <translation id="5197729504361054390">तुम्ही निवडलेले संपर्क <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>सोबत शेअर केले जातील.</translation>
 <translation id="5198930230016462977">तुमच्या नवीन टॅब पेजच्या तळाशी असलेली शीट कस्टमाइझ करा हे बंद केले आहे</translation>
@@ -445,6 +462,7 @@
 <translation id="5804241973901381774">परवानग्या</translation>
 <translation id="5817042798620209981">साइटची माहिती, डायलॉग</translation>
 <translation id="5822675474983796325">तुमच्या नवीन टॅब पेजच्या तळाशी असलेली शीट कस्टमाइझ करा हे पूर्ण उंचीवर उघडले आहे</translation>
+<translation id="4298364316773778595">Brave मध्ये पासवर्ड सेव्ह करण्यासाठी तळाशी असलेली सूचनापर शीट</translation>
 <translation id="5833899990800318936">साइटला JavaScript वापरण्याची अनुमती देऊ नका</translation>
 <translation id="583673505367439042">साइट तुमच्या डिव्हाइसवरील फाइल आणि फोल्डर संपादित करण्यासाठी विचारू शकतात</translation>
 <translation id="5844448279347999754">सुरू असताना, साइट तुमच्या क्लिपबोर्डवर सेव्ह केलेला मजकूर आणि इमेज पाहण्याची विनंती करू शकतात. बंद असताना, साइट तुमच्या क्लिपबोर्डवर सेव्ह केलेला मजकूर किंवा इमेज पाहू शकत नाहीत.</translation>
@@ -471,6 +489,7 @@
 <translation id="5998071268779572583">Discover फीड सुरू करा</translation>
 <translation id="6012967556075291653">पिन केलेला शॉर्टकट</translation>
 <translation id="6015775454662021376">या साइटला तुमच्‍या डिव्हाइसचा असलेला अ‍ॅक्सेस नियंत्रित करा</translation>
+<translation id="296137235951584143">Brave ला तुमच्या आवडीनुसार बनवा</translation>
 <translation id="6040143037577758943">बंद करा</translation>
 <translation id="6042308850641462728">अधिक</translation>
 <translation id="6064125863973209585">डाउनलोड पूर्ण झाले</translation>
@@ -478,6 +497,7 @@
 <translation id="6085954183010297841">फाइल संपादन मंजुरी हटवायची आहे का? <ph name="FILE"/></translation>
 <translation id="6104860901391833523">सुरू केलेले असताना, साइट चित्रात-चित्र यामध्ये आपोआप एंटर करू शकतात. बंद केलेले असताना, साइट चित्रात-चित्र यामध्ये आपोआप एंटर करू शकत नाहीत.</translation>
 <translation id="6120483543004435978">सुरू असताना, साइट तुम्ही तुमचे डिव्हाइस सक्रियपणे कधी वापरत आहात हे जाणून घेण्याची विनंती करू शकतात. बंद असताना, साइट तुम्ही तुमचे डिव्हाइस सक्रियपणे कधी वापरत आहात हे जाणून घेऊ शकत नाहीत.</translation>
+<translation id="4852158809106762963">Brave तुमचा पासवर्ड सेव्ह करण्याची सुविधा देईल</translation>
 <translation id="615886654739818377">साइटना तुमच्या सर्व डिस्प्लेवरील विंडो व्यवस्थापित करण्याची अनुमती देऊ नका</translation>
 <translation id="6165508094623778733">अधिक जाणून घ्या</translation>
 <translation id="6171020522141473435">सुरू असताना, साइट ब्लूटूथ डिव्हाइस वापरण्याची विनंती करू शकतात. बंद असताना, साइट ब्लूटूथ डिव्हाइस वापरू शकत नाहीत.</translation>
@@ -488,13 +508,13 @@
 <translation id="6196640612572343990">तृतीय पक्ष कुकी ब्लॉक करा</translation>
 <translation id="6205314730813004066">जाहिरातींशी संबंधित गोपनीयता</translation>
 <translation id="6207207788774442484">डेटा हटवा आणि परवानग्या रीसेट करा</translation>
+<translation id="6218508144653756827">फुशिया थीम</translation>
 <translation id="6231752747840485235">'<ph name="APP_NAME"/>' अनइंस्टॉल करायचे आहे का?</translation>
 <translation id="4789073065838177382">ब्राउझर अ‍ॅप &gt; Brave वर टॅप करा</translation>
 <translation id="6260830281887654268">नवीन टॅब पेज स्वरूपाच्या थीम संग्रहांच्या तळाशी असलेली शीट अर्ध्या उंचीवर उघडली आहे</translation>
 <translation id="6262191102408817757">तुमच्या शेवटच्या टॅबवर आधारित</translation>
 <translation id="6262279340360821358"><ph name="PERMISSION_1"/> आणि <ph name="PERMISSION_2"/> ला ब्लॉक केले</translation>
 <translation id="6270391203985052864">साइट सूचना पाठवण्यास सांगू शकतात</translation>
-<translation id="6278428485366576908">थीम</translation>
 <translation id="6295158916970320988">सर्व साइट</translation>
 <translation id="6320088164292336938">कंपन</translation>
 <translation id="6367753977865761591">विशिष्ट साइटसाठी तृतीय पक्ष साइन-इन ब्लॉक करा.</translation>
@@ -513,6 +533,7 @@
 <translation id="6545864417968258051">ब्लूटूथ स्कॅन करत आहे</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> आणि आणखी <ph name="NUM_MORE"/> ब्लॉक केली}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> आणि आणखी <ph name="NUM_MORE"/> ब्लॉक केल्या}}</translation>
 <translation id="6554732001434021288"><ph name="NUM_DAYS"/> दिवसांपूर्वी शेवटची भेट दिली</translation>
+<translation id="6556866813142980365">पुन्हा करा</translation>
 <translation id="6557290421156335491">माझे शॉर्टकट</translation>
 <translation id="656065428026159829">आणखी पहा</translation>
 <translation id="6561560012278703671">कमी आवाजाचा मेसेज वापरा (तुम्हाला व्यत्यय आणणे थांबवण्यासाठी सूचना ब्लॉक करा)</translation>
@@ -521,6 +542,7 @@
 <translation id="659938948789980540">{COUNT,plural, =1{<ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> साइटसाठी कुकीना अनुमती दिली आहे}other{<ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> साइटसाठी कुकीना अनुमती दिली आहे}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
 <translation id="6612358246767739896">संरक्षित आशय</translation>
+<translation id="6619015782482868078">अ‍ॅक्वा थीम</translation>
 <translation id="662080504995468778">यावर रहा</translation>
 <translation id="6630443592285535486">इथे हेक्स टाइप करा</translation>
 <translation id="6635327442719709864">सुरू असताना, साइट सिरीअल पोर्ट वापरण्यास सांगू शकतात. बंद असताना, साइट सिरीअल पोर्ट वापरू शकत नाहीत.</translation>
@@ -549,9 +571,11 @@
 <translation id="6945221475159498467">निवडा</translation>
 <translation id="6950072572526089586">तुम्ही भेट दिलेली साइट ही तुम्ही काय करत आहात याबद्दलची माहिती सेव्ह करू शकते, जेणेकरून ती अपेक्षेप्रमाणे काम करेल — उदाहरणार्थ, तुम्हाला साइटवर साइन इन केलेले ठेवण्यासाठी किंवा तुमच्या शॉपिंग कार्टमधील आयटम सेव्ह करण्यासाठी. साइट या बरेचदा तुमच्या डिव्हाइसवर ही माहिती तात्पुरती सेव्ह करतात.</translation>
 <translation id="6965382102122355670">ठीक आहे</translation>
+<translation id="6980507581230208647">रोझ थीम</translation>
 <translation id="6980861169612950611">साइट डेटा हटवायचा आहे का? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">ॲक्सेसिबिलिटी</translation>
 <translation id="6991142177939282156">अनुमती दिली आहे • अंदाजे वापरत आहे</translation>
+<translation id="6992014788289743568">तुमचे पासवर्ड तपासून तुमची सुरक्षा मजबूत करा आणि तुमचा डेटा अधिक सुरक्षित ठेवा</translation>
 <translation id="6992289844737586249">साइटना तुमचा मायक्रोफोन वापरण्याची अनुमती देण्यापूर्वी प्रथम विचारा (शिफारस केलेले)</translation>
 <translation id="7000754031042624318">Android सेटिंग्जमध्‍ये बंद केले</translation>
 <translation id="8683151724374457021">ही साइट तुमच्या पसंतीच्या गोष्टी निर्धारित करते आणि इतर साइटना जाहिराती सुचवते. तुम्हाला आणखी उपयुक्त जाहिराती दाखवण्यासाठी, ही साइट Brave मधून तुमचे जाहिरातीचे विषयदेखील मिळवते.</translation>
@@ -577,6 +601,7 @@
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> निवडले</translation>
 <translation id="7260727271532453612"><ph name="PERMISSION_1"/> आणि <ph name="PERMISSION_2"/> ला अनुमती दिली</translation>
 <translation id="7276071417425470385">सुरू असताना, साइट व्हर्च्युअल रीअ‍ॅलिटी डिव्हाइस वापरण्याची विनंती करू शकतात. बंद असताना, साइट व्हर्च्युअल रीअ‍ॅलिटी डिव्हाइस वापरू शकत नाहीत.</translation>
+<translation id="7282197670900591579">सिट्रोन थीम</translation>
 <translation id="728412880473384942">साइट अधिक जलद, पण कमी सुरक्षित आहेत</translation>
 <translation id="7366415735885268578">एक साइट जोडा</translation>
 <translation id="7368695150573390554">कोणताही ऑफलाइन डेटा हटवला जाईल</translation>
@@ -615,7 +640,9 @@
 <translation id="5455732060086060613">Brave संबंधित टिपांचे कार्ड लपवा</translation>
 <translation id="7719367874908701697">पेज झूम करा</translation>
 <translation id="775043444390799886">परवानगी मागे घ्या</translation>
+<translation id="7758789811447313947">व्हायलेट थीम</translation>
 <translation id="7759147511335618829">MIDI डिव्हाइस नियंत्रण व रीप्रोग्राम</translation>
+<translation id="7771089277295008211">पासवर्ड सेव्ह करण्यासंबंधित सूचना असलेली तळाशी असलेली शीट बंद केली आहे</translation>
 <translation id="7781829728241885113">काल</translation>
 <translation id="7791543448312431591">जोडा</translation>
 <translation id="780301667611848630">नाही, नको</translation>
@@ -633,6 +660,8 @@
 <translation id="7940722705963108451">मला आठवण करून द्या</translation>
 <translation id="7948081750384205628"><ph name="SETTING_TITLE"/> याबद्दल अधिक जाणून घ्या</translation>
 <translation id="7952708427581814389">साइट तुमच्या क्लिपबोर्डवरील मजकूर आणि इमेज पाहण्यासाठी विचारू शकतात</translation>
+<translation id="7958779728312669715">पासवर्ड सेव्ह करण्यासंबंधित सूचनांची तळाशी असलेली शीट पूर्णपणे उघडली आहे</translation>
+<translation id="798299424881500862">ऑरेंज थीम</translation>
 <translation id="7986741934819883144">संपर्क निवडा</translation>
 <translation id="7990211076305263060">सुरू असताना, साइट तुमचा मायक्रोफोन वापरण्याची विनंती करू शकतात. बंद असताना, साइट तुमचा मायक्रोफोन वापरू शकत नाहीत.</translation>
 <translation id="8007176423574883786">या डिव्हाइससाठी बंद करा</translation>
@@ -728,6 +757,7 @@
 <translation id="7532165358672313130">तुम्ही ब्राउझ करणे पुढे सुरू ठेवता, तसे साइट Brave सह तपासू शकतात आणि तुम्ही खरी व्यक्ती असल्याची पडताळणी भेट दिलेल्या मागील साइटवरून करू शकतात</translation>
 <translation id="8899807382908246773">नको असलेल्या जाहिराती</translation>
 <translation id="8903921497873541725">झूम इन करा</translation>
+<translation id="8919911527569629802">कोणत्याही वेबसाइटमध्ये साइन इन करा</translation>
 <translation id="8921772741368021346"><ph name="POSITION"/> / <ph name="DURATION"/></translation>
 <translation id="8926389886865778422">पुन्हा विचारू नका</translation>
 <translation id="8926666909099850184">या डिव्हाइससाठी NFC बंद केले आहे. ते <ph name="BEGIN_LINK"/>Android सेटिंग्जमध्ये<ph name="END_LINK"/> सुरू करा.</translation>
@@ -755,6 +785,7 @@
 <translation id="9182556968660520230">साइटना संरक्षित आशय प्ले करण्याची अनुमती देऊ नका</translation>
 <translation id="947156494302904893">तुम्ही खरी व्यक्ती आहात आणि बॉट नाही याची तुम्ही भेट देता त्या साइट पडताळणी करू शकतात</translation>
 <translation id="959682366969460160">व्यवस्‍थापित करा</translation>
+<translation id="960590623979248167">हायपरलिंक दाखवा</translation>
 <translation id="961930410699694996">यावेळी स्थानाला अनुमती दिली आहे</translation>
 <translation id="967624055006145463">डेटा स्टोअर केला</translation>
 <translation id="969975166333045662">V8 ऑप्टिमायझर वापरण्यापासून साइट ब्लॉक करा.</translation>

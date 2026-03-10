@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">I siti possono richiedere di usare la vecchia versione del sign-in di Google tramite cookie di terze parti</translation>
 <translation id="2903783737778379345">Non consentire l’utilizzo della vecchia versione del sign-in di Google tramite cookie di terze parti</translation>
 <translation id="6880817299303842099">Consentito l’utilizzo di cookie di terze parti per la vecchia versione del sign-in di Google</translation>
-<translation id="2136412236435693622">Accesso a localhost</translation>
-<translation id="4172219483893066798">I siti possono chiedere accesso alle risorse del localhost</translation>
-<translation id="7181706637590665047">Non consentire l’accesso alle risorse del localhost</translation>
-<translation id="1485435696620658073">Accesso alle risorse del localhost concesso</translation>
 <translation id="181905442828471321">Impostazioni predefinite di protezione globali di Brave</translation>
 <translation id="2675679258824361492">Altre impostazioni sulla privacy</translation>
 <translation id="8026334261755873520">Cancella dati di navigazione</translation>
@@ -422,6 +418,13 @@ Confermi di voler procedere?</translation>
 <translation id="7141438739990875547">Reti Bitcoin</translation>
 <translation id="9055546041146396417">Se il sito appare malfunzionante, prova ad abbassare Shields.</translation>
 <translation id="7898672232170410330">Blocca elemento</translation>
+<translation id="9064628362799094520">Cancellare i dati del sito</translation>
+<translation id="8949611615512336262">Cancella automaticamente: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Cancella i dati del sito ora</translation>
+<translation id="6795622376590884449">Cancella automaticamente</translation>
+<translation id="7961015016161918242">Mai</translation>
+<translation id="1991004083507807299">Schede del sito chiuse</translation>
+<translation id="5827277414420724690">App chiusa</translation>
 <translation id="1209739344687072997">Segnala un sito non funzionante</translation>
 <translation id="8510478288840333677">Segnala agli sviluppatori di Brave che questo sito non funziona bene con gli Scudi:</translation>
 <translation id="1653405824851871276">Grazie di averci aiutato a rendere Brave migliore per tutti. Questa segnalazione conterrà solo le informazioni che ci servono per sistemare il sito. <ph name="LEARN_MORE"/></translation>
@@ -1073,7 +1076,7 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="1336494649091412226">Vuoi davvero uscire da Brave?</translation>
 <translation id="6061635824229591714">Cancellare i dati del sito?</translation>
 <translation id="1265051174491933207">La cancellazione eliminerà i dati del sito e chiuderà tutte le schede di '<ph name="SITE_NAME"/>'. L’azione non può essere annullata.</translation>
-<translation id="4279349293084858577">Cancella</translation>
+<translation id="5528772406060281700">Cancellare i dati del sito</translation>
 <translation id="4426990318287827331">Cancella i dati</translation>
 <translation id="7942415993090181327">Cronologia delle chat</translation>
 <translation id="6859935199732075666">Mostra gli errori di Navigazione Sicura</translation>

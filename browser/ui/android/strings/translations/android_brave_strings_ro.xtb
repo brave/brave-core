@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">Site-urile pot solicita să utilizeze conectarea Google anterioară prin intermediul modulelor cookie terțe</translation>
 <translation id="2903783737778379345">Nu permiteți conectarea Google anterioară prin intermediul modulelor cookie terțe</translation>
 <translation id="6880817299303842099">Este permisă utilizarea modulelor cookie terțe pentru conectarea Google anterioară</translation>
-<translation id="2136412236435693622">Acces Localhost</translation>
-<translation id="4172219483893066798">Site-urile pot solicita acces la resursele localhost</translation>
-<translation id="7181706637590665047">Nu permiteți accesul la resursele localhost</translation>
-<translation id="1485435696620658073">Acces permis la resursele localhost</translation>
 <translation id="181905442828471321">Valori implicite globale pentru scuturile Brave</translation>
 <translation id="2675679258824361492">Alte setări de confidențialitate</translation>
 <translation id="8026334261755873520">Șterge datele de navigare</translation>
@@ -425,6 +421,13 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="7141438739990875547">Rețele Bitcoin</translation>
 <translation id="9055546041146396417">Dacă site-ul pare nefuncțional, încercați să dezactivați Shields.</translation>
 <translation id="7898672232170410330">Blocați elementul</translation>
+<translation id="9064628362799094520">Distruge datele site-ului</translation>
+<translation id="8949611615512336262">Auto distrugere: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Distruge datele site-ului acum</translation>
+<translation id="6795622376590884449">Auto distrugere</translation>
+<translation id="7961015016161918242">Niciodată</translation>
+<translation id="1991004083507807299">La închiderea filei site-ului</translation>
+<translation id="5827277414420724690">La închiderea aplicației</translation>
 <translation id="1209739344687072997">Raportați un site nefuncțional</translation>
 <translation id="8510478288840333677">Anunțați-i pe dezvoltatorii Brave că acest site nu funcționează corect cu Scuturi:</translation>
 <translation id="1653405824851871276">Vă mulțumim că ne ajutați să facem Brave mai bun pentru toți. Acest raport va conține doar informațiile necesare pentru a repara acest site. <ph name="LEARN_MORE"/></translation>
@@ -1076,7 +1079,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="1336494649091412226">Sunteți sigur că vreți să părăsiți Brave?</translation>
 <translation id="6061635824229591714">Distruge datele asociate site-ului?</translation>
 <translation id="1265051174491933207">Distrugerea va șterge datele asociate site-ului și va închide toate filele „<ph name="SITE_NAME"/>”. Această acțiune nu poate fi anulată.</translation>
-<translation id="4279349293084858577">Distruge</translation>
+<translation id="5528772406060281700">Distruge datele asociate site-ului</translation>
 <translation id="4426990318287827331">Distruge date</translation>
 <translation id="7942415993090181327">Istoricul conversațiilor</translation>
 <translation id="6859935199732075666">Afișează erorile de navigare sigură</translation>

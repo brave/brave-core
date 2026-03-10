@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">Strony mogą poprosić o korzystanie ze starszej wersji funkcji Google Sign-In za pomocą plików cookie innych firm.</translation>
 <translation id="2903783737778379345">Nie zezwalaj na korzystanie ze starszej wersji funkcji Google Sign-In za pomocą plików cookie innych firm.</translation>
 <translation id="6880817299303842099">Zezwolono na pliki cookie innych firm w przypadku starszej wersji funkcji Google Sign-In</translation>
-<translation id="2136412236435693622">Dostęp do hosta lokalnego</translation>
-<translation id="4172219483893066798">Strony mogą poprosić o dostęp do zasobów hosta lokalnego</translation>
-<translation id="7181706637590665047">Nie zezwalaj na dostęp do zasobów hosta lokalnego</translation>
-<translation id="1485435696620658073">Zgoda na dostęp do zasobów hosta lokalnego</translation>
 <translation id="181905442828471321">Ustawienia ogólne tarczy Brave</translation>
 <translation id="2675679258824361492">Inne ustawienia prywatności</translation>
 <translation id="8026334261755873520">Wyczyść dane przeglądania</translation>
@@ -425,6 +421,13 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="7141438739990875547">Sieci Bitcoin</translation>
 <translation id="9055546041146396417">Jeśli strona nie działa, spróbuj wyłączyć tarcze.</translation>
 <translation id="7898672232170410330">Blokuj element</translation>
+<translation id="9064628362799094520">Usunąć dane strony</translation>
+<translation id="8949611615512336262">Automatyczne usuwanie: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Usuń dane strony teraz</translation>
+<translation id="6795622376590884449">Automatyczne usuwanie</translation>
+<translation id="7961015016161918242">Nigdy</translation>
+<translation id="1991004083507807299">Zamknięte zakładki strony</translation>
+<translation id="5827277414420724690">Zamknięcie aplikacji</translation>
 <translation id="1209739344687072997">Zgłoś uszkodzoną stronę</translation>
 <translation id="8510478288840333677">Poinformuj programistów Brave, że ta strona nie działa prawidłowo z tarczami Brave.</translation>
 <translation id="1653405824851871276">Dziękujemy za pomoc w ulepszaniu Brave dla wszystkich użytkowników. Ten raport będzie zawierał tylko informacje niezbędne do naprawienia tej strony.
@@ -1079,7 +1082,7 @@ poprzednich rozmów z SI Leo Brave. Tego działania nie można cofnąć.</transl
 <translation id="1336494649091412226">Czy na pewno chcesz opuścić Brave?</translation>
 <translation id="6061635824229591714">Usunąć dane strony?</translation>
 <translation id="1265051174491933207">Usunięcie spowoduje usunięcie danych strony i zamknięcie wszystkich kart „<ph name="SITE_NAME"/>”. Nie można tego cofnąć.</translation>
-<translation id="4279349293084858577">Usuń</translation>
+<translation id="5528772406060281700">Usunąć dane strony</translation>
 <translation id="4426990318287827331">Usuń dane</translation>
 <translation id="7942415993090181327">Historia czatu</translation>
 <translation id="6859935199732075666">Pokazuj błędy Bezpiecznego przeglądania</translation>
@@ -1115,7 +1118,7 @@ poprzednich rozmów z SI Leo Brave. Tego działania nie można cofnąć.</transl
 <translation id="6438475350605608554">Już trwa import haseł w innej karcie</translation>
 <translation id="3482868954775580230">Nie udało się odczytać wybranego pliku. <ph name="EXCEPTION_INFO"/></translation>
 <translation id="9162995380643712715">{IMPORT_COUNT, plural, =1 {Pomyślnie zaimportowano 1 hasło.} few {Pomyślnie zaimportowano kilka haseł.} many {Pomyślnie zaimportowano wiele haseł.} other {Pomyślnie zaimportowano <ph name="IMPORT_COUNT_MANY"/> haseł.}}</translation>
-<translation id="4637949129057123593">Importowaanie nie powiodło się.</translation>
+<translation id="4637949129057123593">Importowanie nie powiodło się.</translation>
 <translation id="4300452012226767715">Menedżer haseł jest niedostępny.</translation>
 <translation id="6221633008163990886">Odblokuj, by wyeksportować hasła</translation>
 <translation id="5245792669563792664">hasła</translation>

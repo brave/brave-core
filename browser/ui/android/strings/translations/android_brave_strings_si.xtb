@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">අඩවි වලට තෙවන පාර්ශ්ව දත්තකඩ මගින් පරණ ගූගල් පිවිසුම භාවිතයට ඉල්ලීමට හැකිය</translation>
 <translation id="2903783737778379345">තෙවන පාර්ශ්ව දත්තකඩ මගින් පරණ ගූගල් පිවිසුමට ඉඩ නොදෙන්න</translation>
 <translation id="6880817299303842099">පරණ ගූගල් පිවිසුම සඳහා තෙවන පාර්ශ්ව දත්තකඩ භාවිතයට ඉඩ දී ඇත</translation>
-<translation id="2136412236435693622">ස්ථානීය-සත්කාර ප්‍රවේශය</translation>
-<translation id="4172219483893066798">අඩවි වලට ස්ථානීය-සත්කාරක සම්පත් වෙත ප්‍රවේශයට ඉල්ලීමට හැකිය</translation>
-<translation id="7181706637590665047">ස්ථානීය-සත්කාරක සම්පත් වෙත ප්‍රවේශයට ඉඩ නොදෙන්න</translation>
-<translation id="1485435696620658073">ස්ථානීය-සත්කාරක සම්පත් වෙත ප්‍රවේශයට ඉඩ දී ඇත</translation>
 <translation id="181905442828471321">ගෝලීය පෙරනිමි Brave පලිහ</translation>
 <translation id="2675679258824361492">වෙනත් රහස්‍යතා සැකසුම්</translation>
 <translation id="8026334261755873520">පිරික්සුම් දත්ත මකන්න</translation>
@@ -422,6 +418,13 @@
 <translation id="7141438739990875547">බිට්කොයින් ජාල</translation>
 <translation id="9055546041146396417">අඩවියක් කැඩී ඇත්නම්, පලිහ අක්‍රිය කර බලන්න</translation>
 <translation id="7898672232170410330">අංගය අවහිර කරන්න</translation>
+<translation id="9064628362799094520">අඩවි දත්ත විනාශ කරන්න</translation>
+<translation id="8949611615512336262">ස්වයංක්‍රිය විනාශ: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">අඩවි දත්ත දැන් විනාශ කරන්න</translation>
+<translation id="6795622376590884449">ස්වයංක්‍රිය විනාශ</translation>
+<translation id="7961015016161918242">කවදාවත් නැහැ</translation>
+<translation id="1991004083507807299">අඩවි ටැබ් වසා ඇත</translation>
+<translation id="5827277414420724690">යෙදුම වසා ඇත</translation>
 <translation id="1209739344687072997">කැඩුණු අඩවියක් වාර්තා කරන්න</translation>
 <translation id="8510478288840333677">මෙම අඩවිය පලිහ සමඟ නිවැරදිව ක්‍රියා නොකරන බව බ්‍රේව් සංවර්ධකයින්ට දන්වන්න:</translation>
 <translation id="1653405824851871276">සැමට Brave යහපත් කිරීමට දක්වන සහායට ස්තූතියි. මෙම වාර්තාවේ අඩංගු වන්නේ මෙම අඩවිය නිවැරදි කිරීමට අපට වුවමනා තොරතුරු පමණි. <ph name="LEARN_MORE"/></translation>
@@ -1073,7 +1076,7 @@
 <translation id="1336494649091412226">ඔබට බ්‍රේව් වෙතින් ඉවත් වීමට වුවමනා ද?</translation>
 <translation id="6061635824229591714">අඩවි දත්ත විනාශ කරන්නද?</translation>
 <translation id="1265051174491933207">විනාශ කිරීමෙන් අඩවි දත්ත මකනු ලැබේ සහ '<ph name="SITE_NAME"/>' ටැබ සියල්ල වසාදමනු ලැබේ. මෙම ක්‍රියාව ආපසු හැරවිය නොහැක.</translation>
-<translation id="4279349293084858577">විනාශ කරන්න</translation>
+<translation id="5528772406060281700">අඩවි දත්ත විනාශ කරන්නද</translation>
 <translation id="4426990318287827331">දත්ත විනාශ කරන්න</translation>
 <translation id="7942415993090181327">කතාබස් ඉතිහාසය</translation>
 <translation id="6859935199732075666">ආරක්‍ෂිත පිරික්සුම් දෝෂ පෙන්වන්න</translation>
