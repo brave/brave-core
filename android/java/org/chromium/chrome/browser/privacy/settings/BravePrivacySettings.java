@@ -1035,9 +1035,10 @@ public class BravePrivacySettings extends PrivacySettings {
                         SettingsIndexData indexData,
                         Map<String, SearchIndexProvider> providerMap) {
                     super.initPreferenceXml(context, profile, indexData, providerMap);
-                    // brave_main_preferences.xml has brave_shields_and_privacy with
-                    // android:fragment pointing to the wrong class name (missing .settings
-                    // sub-package). Register the correct child-parent link explicitly.
+                    // brave_main_preferences.xml is parsed by BraveMainPreferencesBase via
+                    // PreferenceParser.parseAndPopulate, which creates the parent entry for
+                    // brave_shields_and_privacy but does not establish the child-parent link
+                    // used by resolveIndex(). Register it explicitly here.
                     indexData.addChildParentLink(
                             BravePrivacySettings.class.getName(),
                             PreferenceParser.createUniqueId(
