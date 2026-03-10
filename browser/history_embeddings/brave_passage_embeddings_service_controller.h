@@ -11,21 +11,21 @@
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/no_destructor.h"
+#include "chrome/browser/profiles/profile_observer.h"
 #include "components/passage_embeddings/core/passage_embeddings_service_controller.h"
 
 class Profile;
 
-namespace brave {
-class BraveEmbedder;
-}
-
 namespace passage_embeddings {
+
+class BraveEmbedder;
 
 // Brave's implementation of PassageEmbeddingsServiceController.
 // Instead of launching a separate service process, we use an in-process
 // implementation that forwards to BraveEmbedder (which uses LocalAIService).
 class BravePassageEmbeddingsServiceController
-    : public PassageEmbeddingsServiceController {
+    : public PassageEmbeddingsServiceController,
+      public ProfileObserver {
  public:
   static BravePassageEmbeddingsServiceController* Get();
 
@@ -44,6 +44,9 @@ class BravePassageEmbeddingsServiceController
   BravePassageEmbeddingsServiceController();
   ~BravePassageEmbeddingsServiceController() override;
 
+  // ProfileObserver:
+  void OnProfileWillBeDestroyed(Profile* profile) override;
+
   // PassageEmbeddingsServiceController:
   void MaybeLaunchService() override;
   void ResetServiceRemote() override;
@@ -54,8 +57,9 @@ class BravePassageEmbeddingsServiceController
                      GetEmbeddingsResultCallback callback) override;
 
   // Per-profile embedders. The controller is a singleton but embedders are
-  // created lazily per-profile.
-  base::flat_map<raw_ptr<Profile>, std::unique_ptr<brave::BraveEmbedder>>
+  // created lazily per-profile. Observed via ProfileObserver to clean up
+  // when a profile is destroyed.
+  base::flat_map<raw_ptr<Profile>, std::unique_ptr<BraveEmbedder>>
       profile_embedders_;
 };
 

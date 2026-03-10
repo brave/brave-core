@@ -1,0 +1,4 @@
+include_rules = [
+  "+components/history_embeddings",
+  "+components/page_content_annotations/core",
+]

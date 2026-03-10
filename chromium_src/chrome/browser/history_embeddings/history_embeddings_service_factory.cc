@@ -15,6 +15,13 @@
 #define ChromePassageEmbeddingsServiceController \
   BravePassageEmbeddingsServiceController
 
+// Include the chrome header above so the class is declared before renaming.
+// The #define only affects make_unique calls in the .cc body.
+// See docs/gni_sources.md for the template pattern.
+#define ChromeHistoryEmbeddingsService \
+  BraveHistoryEmbeddingsService<       \
+      history_embeddings::ChromeHistoryEmbeddingsService>
+
 // Override GetEmbedder() call to return our BraveEmbedder for the given profile
 // instead of base class's embedder_. This passes the profile to create
 // per-profile embedders.
@@ -23,4 +30,5 @@
 #include <chrome/browser/history_embeddings/history_embeddings_service_factory.cc>
 
 #undef GetEmbedder
+#undef ChromeHistoryEmbeddingsService
 #undef ChromePassageEmbeddingsServiceController

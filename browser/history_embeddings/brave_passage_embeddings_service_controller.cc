@@ -39,11 +39,18 @@ Embedder* BravePassageEmbeddingsServiceController::GetBraveEmbedder(
   auto it = profile_embedders_.find(profile);
   if (it == profile_embedders_.end()) {
     DVLOG(3) << "Creating BraveEmbedder for profile " << profile;
-    auto embedder = std::make_unique<brave::BraveEmbedder>(profile);
+    profile->AddObserver(this);
+    auto embedder = std::make_unique<BraveEmbedder>(profile);
     it = profile_embedders_.emplace(profile, std::move(embedder)).first;
   }
 
   return it->second.get();
+}
+
+void BravePassageEmbeddingsServiceController::OnProfileWillBeDestroyed(
+    Profile* profile) {
+  profile->RemoveObserver(this);
+  profile_embedders_.erase(profile);
 }
 
 void BravePassageEmbeddingsServiceController::MaybeLaunchService() {
