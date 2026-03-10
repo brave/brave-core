@@ -130,6 +130,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Search.Promo.DDGBannerD", {}},
     {"Brave.Search.Promo.NewTabPage", {}},
     {"Brave.Search.QueriesBeforeChurn", MetricConfig{.ephemeral = true}},
+    {"Brave.Search.QuickMostUsedAction", {}},
     {"Brave.Search.WebDiscoveryAndAds", {}},
     {"Brave.Search.WebDiscoveryDefaultEngine", {}},
     {"Brave.Search.WidgetDefault", {}},

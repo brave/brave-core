@@ -90,6 +90,11 @@ inline constexpr char kMiscMetricsNavSourceReportFrameStartTime[] =
 inline constexpr char kMiscMetricsNavSourceCounts[] =
     "brave.misc_metrics.nav_source_counts";
 
+inline constexpr char kMiscMetricsQuickSearchActionStorage[] =
+    "brave.misc_metrics.quick_search_actions";
+inline constexpr char kMiscMetricsQuickSearchLastClickTime[] =
+    "brave.misc_metrics.quick_search_last_click_time";
+
 }  // namespace misc_metrics
 
 #endif  // BRAVE_COMPONENTS_MISC_METRICS_PREF_NAMES_H_

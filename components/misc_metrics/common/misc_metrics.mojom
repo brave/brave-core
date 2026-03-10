@@ -31,4 +31,7 @@ interface MiscAndroidMetrics {
 
   // Records if Brave set as default.
   RecordSetAsDefault(bool isDefault);
+
+  // Records a quick search.
+  RecordQuickSearch(bool isLeo, string keyword);
 };

@@ -10,15 +10,21 @@
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/components/misc_metrics/default_browser_monitor.h"
 #include "brave/components/misc_metrics/privacy_hub_metrics.h"
+#include "brave/components/misc_metrics/quick_search_metrics.h"
 #include "brave/components/misc_metrics/tab_metrics.h"
 
 namespace misc_metrics {
 
 MiscAndroidMetrics::MiscAndroidMetrics(
+    PrefService* local_state,
     ProcessMiscMetrics* misc_metrics,
-    SearchEngineTracker* search_engine_tracker)
+    SearchEngineTracker* search_engine_tracker,
+    TemplateURLService* template_url_service)
     : misc_metrics_(misc_metrics),
-      search_engine_tracker_(search_engine_tracker) {}
+      search_engine_tracker_(search_engine_tracker),
+      quick_search_metrics_(
+          std::make_unique<QuickSearchMetrics>(local_state,
+                                               template_url_service)) {}
 
 MiscAndroidMetrics::~MiscAndroidMetrics() = default;
 
@@ -60,6 +66,11 @@ void MiscAndroidMetrics::RecordBrowserUsageDuration(base::TimeDelta duration) {
 void MiscAndroidMetrics::RecordSetAsDefault(bool is_default) {
   misc_metrics_->default_browser_monitor()->OnDefaultBrowserStateReceived(
       is_default);
+}
+
+void MiscAndroidMetrics::RecordQuickSearch(bool is_leo,
+                                           const std::string& keyword) {
+  quick_search_metrics_->RecordQuickSearch(is_leo, keyword);
 }
 
 }  // namespace misc_metrics
