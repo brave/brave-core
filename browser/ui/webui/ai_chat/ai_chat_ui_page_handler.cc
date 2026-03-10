@@ -385,7 +385,14 @@ void AIChatUIPageHandler::CloseUI() {
 void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
                                     SetChatUICallback callback) {
   chat_ui_.Bind(std::move(chat_ui));
-  std::move(callback).Run(active_chat_tab_helper_ == nullptr);
+  std::move(callback).Run(
+// Android is always standalone.
+#if BUILDFLAG(IS_ANDROID)
+      true
+#else
+      active_chat_tab_helper_ == nullptr
+#endif
+  );
 
   chat_ui_->OnNewDefaultConversation(
       active_chat_tab_helper_
