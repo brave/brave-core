@@ -16,6 +16,9 @@ namespace psst {
 
 namespace {
 
+inline constexpr char kUserScriptResultTaskItemUrlPropName[] = "url";
+inline constexpr char kUserScriptResultTaskItemDescPropName[] = "description";
+
 std::vector<std::string> ListValueToStringVector(
     const base::ListValue& list_value) {
   std::vector<std::string> result;
@@ -133,6 +136,33 @@ void PsstUiDelegateImpl::OnUserAcceptedInfobar(const url::Origin& origin,
   } else {
     // User declined the infobar
   }
+}
+
+psst::mojom::SettingCardDataPtr PsstUiDelegateImpl::GetShowDialogData() {
+  if (!origin_ || !tasks_) {
+    return nullptr;
+  }
+
+  std::vector<mojom::SettingCardDataItemPtr> items;
+  for (auto& task_item : tasks_.value()) {
+    if (!task_item.is_dict()) {
+      continue;
+    }
+
+    const auto& item_dict = task_item.GetDict();
+    const auto* description =
+        item_dict.FindString(kUserScriptResultTaskItemDescPropName);
+    const auto* url =
+        item_dict.FindString(kUserScriptResultTaskItemUrlPropName);
+
+    if (description && url) {
+      items.push_back(
+          psst::mojom::SettingCardDataItem::New(*description, *url));
+    }
+  }
+
+  return psst::mojom::SettingCardData::New(origin_->GetURL().spec(),
+                                           std::move(items));
 }
 
 base::WeakPtr<PsstUiDelegateImpl> PsstUiDelegateImpl::AsWeakPtr() {

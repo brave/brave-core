@@ -5,11 +5,14 @@
 
 #include "chrome/browser/ui/webui/chrome_web_ui_configs.h"
 
+#include <memory>
+
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_education/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "content/public/browser/webui_config_map.h"
 
@@ -57,6 +60,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 #include "brave/browser/ui/webui/brave_education/brave_education_page_ui.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
 #endif
 
 namespace {
@@ -136,5 +143,9 @@ void RegisterChromeWebUIConfigs() {
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
   map.AddWebUIConfig(std::make_unique<BraveEducationPageUIConfig>());
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+  map.AddWebUIConfig(std::make_unique<psst::BravePsstDialogUIConfig>());
 #endif
 }

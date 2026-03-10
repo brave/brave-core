@@ -10,6 +10,9 @@ namespace psst {
 
 inline constexpr char kBravePsst[] = "bravePsst";
 
+inline constexpr char kBravePsstHost[] = "psst";
+inline constexpr char kBraveUIPsstURL[] = "chrome://psst/";
+
 }  // namespace psst
 
 #endif  // BRAVE_COMPONENTS_PSST_COMMON_CONSTANTS_H_
