@@ -13,6 +13,11 @@ import("//build/config/ios/ios_sdk.gni")
 #     the target which generates C++ mojom files
 #   exclude_types
 #     a list of types to exclude from within the mojom file provided
+#   objc_cpp_target (optional)
+#     Label of a mojom_objc_cpp() target that provides typemap-free C++
+#     bindings.  When set, the ObjC wrappers are generated against the
+#     "objc" variant (no custom typemaps) and the private header includes
+#     the -objc.h variant header.
 #
 template("ios_objc_mojom_wrappers") {
   assert(defined(invoker.sources) && invoker.sources != [],
@@ -31,6 +36,8 @@ template("ios_objc_mojom_wrappers") {
   if (defined(invoker.output_dir)) {
     mojom_output_dir = invoker.output_dir
   }
+
+  _use_objc_variant = defined(invoker.objc_cpp_target)
 
   generate_wrappers_output = []
   foreach(source, invoker.sources) {
@@ -75,12 +82,21 @@ template("ios_objc_mojom_wrappers") {
       _excluded_types = string_join(",", invoker.exclude_types)
       args += [ "--exclude=$_excluded_types" ]
     }
+    if (_use_objc_variant) {
+      args += [
+        "--no-typemaps",
+        "--cpp-variant=objc",
+      ]
+    }
     deps = [
       "//brave/build/ios/mojom:precompile_templates",
       "//mojo/public/cpp/bindings",
       mojom_target,
       mojom_target_parser,
     ]
+    if (_use_objc_variant) {
+      deps += [ invoker.objc_cpp_target ]
+    }
   }
 
   type_headers_target_name = "${target_name}_type_headers"
@@ -103,6 +119,7 @@ template("ios_objc_mojom_wrappers") {
                            "*",
                            [
                              "mojom_target",
+                             "objc_cpp_target",
                              "sources",
                            ])
     if (!defined(public_deps)) {
@@ -119,5 +136,8 @@ template("ios_objc_mojom_wrappers") {
       "//net",
       mojom_target,
     ]
+    if (_use_objc_variant) {
+      public_deps += [ invoker.objc_cpp_target ]
+    }
   }
 }

@@ -1,0 +1,276 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//mojo/public/tools/bindings/mojom.gni")
+import("//third_party/jinja2/jinja2.gni")
+
+# Generates a typemap-free "objc" variant of C++ mojo bindings from an
+# existing mojom() target.
+#
+# The generated files use the "objc" variant namespace
+# (e.g. ::brave_wallet::mojom::objc::Foo) so they do not conflict with
+# the default variant.  Dep types that are cpp-typemapped in the original
+# target (GURL, base::Time, …) keep their typemaps; only the target's OWN
+# cpp_typemaps are stripped.
+#
+# Limitation: all types referenced from dep modules must be cpp-typemapped
+# (mapped to global C++ types like GURL). Non-typemapped dep types would
+# require generating the full objc variant for those deps as well.
+#
+# Arguments:
+#
+#   sources
+#     List of .mojom source files (same as the original mojom target).
+#
+#   mojom_target
+#     Label of the original mojom() target.
+#
+#   mojom_deps (optional)
+#     List of mojom dep target labels (from the original target's
+#     public_deps). Needed to inherit their typemaps and resolve
+#     forwarding headers.
+#
+#   dep_mojom_files (optional)
+#     List of .mojom files from deps that are imported by |sources|.
+#     Forwarding headers are generated for each so that the objc variant's
+#     #includes resolve correctly.
+#
+#   testonly (optional)
+#
+# Example:
+#
+#   mojom_objc_cpp("wallet_mojom_objc_cpp") {
+#     sources = [ "//brave/components/brave_wallet/common/brave_wallet.mojom" ]
+#     mojom_target = "//brave/components/brave_wallet/common:mojom"
+#     mojom_deps = [
+#       "//mojo/public/mojom/base",
+#       "//url/mojom:url_mojom_gurl",
+#       "//url/mojom:url_mojom_origin",
+#     ]
+#     dep_mojom_files = [
+#       "//mojo/public/mojom/base/time.mojom",
+#       "//url/mojom/url.mojom",
+#       "//url/mojom/origin.mojom",
+#     ]
+#   }
+#
+template("mojom_objc_cpp") {
+  assert(defined(invoker.sources) && invoker.sources != [],
+         "sources must be defined for $target_name")
+  assert(defined(invoker.mojom_target) && invoker.mojom_target != "",
+         "mojom_target must be defined for $target_name")
+
+  _mojom_target = invoker.mojom_target
+  _mojom_target_path = get_label_info(_mojom_target, "dir")
+  _mojom_target_name = get_label_info(_mojom_target, "name")
+  _parser_target =
+      get_path_info("${_mojom_target_path}:${_mojom_target_name}__parser",
+                    "abspath")
+  _mojom_deps = []
+  if (defined(invoker.mojom_deps)) {
+    _mojom_deps = invoker.mojom_deps
+  }
+
+  _dep_mojom_files = []
+  if (defined(invoker.dep_mojom_files)) {
+    _dep_mojom_files = invoker.dep_mojom_files
+  }
+
+  # Compute output file base paths from sources (relative to root_gen_dir).
+  _source_abspaths = rebase_path(invoker.sources, "//")
+  _output_file_base_paths = []
+  foreach(_path, _source_abspaths) {
+    _output_file_base_paths +=
+        [ string_replace(_path, rebase_path(root_gen_dir, "//") + "/", "") ]
+  }
+
+  # Compute dep mojom paths relative to //.
+  _dep_mojom_relpaths = []
+  foreach(_dep_file, _dep_mojom_files) {
+    _dep_mojom_relpaths += [ rebase_path(_dep_file, "//") ]
+  }
+
+  # ---- Step 1: Type mappings with deps' typemaps, without our own ----
+
+  # An empty JSON array means "no cpp_typemaps for this module".
+  _empty_typemap_config =
+      "$target_gen_dir/${target_name}_objc_empty_typemap_config"
+  write_file(_empty_typemap_config, "[]")
+
+  _type_mappings_target_name = "${target_name}__objc_type_mappings"
+  _type_mappings_path =
+      "$target_gen_dir/${target_name}_objc__type_mappings"
+
+  action(_type_mappings_target_name) {
+    script = "$mojom_generator_root/generate_type_mappings.py"
+    inputs = [ _empty_typemap_config ]
+    outputs = [ _type_mappings_path ]
+    deps = []
+    args = [
+      "--output",
+      rebase_path(_type_mappings_path, root_build_dir),
+      "--cpp-typemap-config",
+      rebase_path(_empty_typemap_config, root_build_dir),
+    ]
+
+    # Pull in each dep's default-variant type_mappings so that dep types
+    # (GURL, base::Time, …) remain correctly typemapped in the objc variant.
+    foreach(d, _mojom_deps) {
+      _dep_label = get_label_info(d, "label_no_toolchain")
+      _dep_toolchain = get_label_info(d, "toolchain")
+      _dep_tm_label = "${_dep_label}__type_mappings"
+      _dep_tm_target = "${_dep_tm_label}(${_dep_toolchain})"
+      _dep_tm_gen_dir = get_label_info(_dep_tm_label, "target_gen_dir")
+      _dep_tm_name = get_label_info(_dep_tm_label, "name")
+      _dep_tm_path = "${_dep_tm_gen_dir}/${_dep_tm_name}"
+
+      deps += [ _dep_tm_target ]
+      inputs += [ _dep_tm_path ]
+      args += [
+        "--dependency",
+        rebase_path(_dep_tm_path, root_build_dir),
+      ]
+    }
+  }
+
+  # ---- Step 2: Forwarding headers for dep mojom files ----
+
+  _forwarding_target_name = "${target_name}__dep_forwarding"
+
+  if (_dep_mojom_relpaths != []) {
+    _forwarding_outputs = []
+    foreach(_dep_relpath, _dep_mojom_relpaths) {
+      _forwarding_outputs += [
+        "$root_gen_dir/${_dep_relpath}-objc.h",
+        "$root_gen_dir/${_dep_relpath}-objc-forward.h",
+        "$root_gen_dir/${_dep_relpath}-objc-import-headers.h",
+        "$root_gen_dir/${_dep_relpath}-objc-test-utils.h",
+      ]
+    }
+
+    action(_forwarding_target_name) {
+      script = "//brave/build/ios/mojom/gen_objc_forwarding_headers.py"
+      outputs = _forwarding_outputs
+      args = [
+        "--output-dir",
+        rebase_path(root_gen_dir, root_build_dir),
+        "--variant",
+        "objc",
+      ]
+      foreach(_dep_relpath, _dep_mojom_relpaths) {
+        args += [
+          "--dep-mojom",
+          _dep_relpath,
+        ]
+      }
+    }
+  } else {
+    group(_forwarding_target_name) {
+    }
+  }
+
+  # ---- Step 3: Run the C++ generator with --variant objc ----
+
+  _generator_target_name = "${target_name}__objc_generator"
+
+  action(_generator_target_name) {
+    visibility = [ ":*" ]
+    script = mojom_generator_script
+    inputs =
+        mojom_generator_sources + jinja2_sources + [
+          "$root_gen_dir/mojo/public/tools/bindings/cpp_templates.zip",
+          _type_mappings_path,
+        ]
+    sources = invoker.sources
+    deps = [
+      ":${_forwarding_target_name}",
+      ":${_type_mappings_target_name}",
+      _parser_target,
+      "//mojo/public/tools/bindings:precompile_templates",
+    ]
+
+    outputs = []
+    foreach(_base_path, _output_file_base_paths) {
+      _filename = get_path_info(_base_path, "file")
+      _dirname = get_path_info(_base_path, "dir")
+
+      # The parser's -module files are inputs.
+      inputs += [ "$root_gen_dir/$_dirname/${_filename}-module" ]
+
+      outputs += [
+        "$root_gen_dir/${_base_path}-objc-forward.h",
+        "$root_gen_dir/${_base_path}-objc-import-headers.h",
+        "$root_gen_dir/${_base_path}-objc-test-utils.h",
+        "$root_gen_dir/${_base_path}-objc.cc",
+        "$root_gen_dir/${_base_path}-objc.h",
+      ]
+    }
+
+    _filelist = []
+    foreach(_source, invoker.sources) {
+      _filelist += [ rebase_path(_source, root_build_dir) ]
+    }
+    _rsp_file = "$target_gen_dir/${target_name}_objc.rsp"
+    write_file(_rsp_file, _filelist)
+    inputs += [ _rsp_file ]
+
+    args = [
+      "--use_bundled_pylibs",
+      "-o",
+      rebase_path(root_gen_dir, root_build_dir),
+      "generate",
+      "-d",
+      rebase_path("//", root_build_dir),
+      "-I",
+      rebase_path("//", root_build_dir),
+      "--bytecode_path",
+      rebase_path("$root_gen_dir/mojo/public/tools/bindings",
+                  root_build_dir),
+      "--filelist=" + rebase_path(_rsp_file, root_build_dir),
+      "-g",
+      "c++",
+      "--variant",
+      "objc",
+      "--typemap",
+      rebase_path(_type_mappings_path, root_build_dir),
+    ]
+  }
+
+  # ---- Step 4: source_set for the generated C++ ----
+
+  source_set(target_name) {
+    forward_variables_from(invoker,
+                           [
+                             "testonly",
+                             "visibility",
+                           ])
+
+    sources = []
+    foreach(_base_path, _output_file_base_paths) {
+      sources += [
+        "$root_gen_dir/${_base_path}-objc-forward.h",
+        "$root_gen_dir/${_base_path}-objc-import-headers.h",
+        "$root_gen_dir/${_base_path}-objc-test-utils.h",
+        "$root_gen_dir/${_base_path}-objc.cc",
+        "$root_gen_dir/${_base_path}-objc.h",
+      ]
+    }
+
+    public_deps = [
+      ":${_generator_target_name}",
+      "${_mojom_target_path}:${_mojom_target_name}_shared",
+      "//base",
+      "//mojo/public/cpp/bindings",
+    ]
+
+    # Link against deps' default-variant C++ bindings so that typemapped
+    # types (GURL, base::Time, …) and their trait implementations are
+    # available.
+    foreach(d, _mojom_deps) {
+      _dep_label = get_label_info(d, "label_no_toolchain")
+      public_deps += [ _dep_label ]
+    }
+  }
+}

@@ -30,6 +30,18 @@ def parse_args():
                         default=False,
                         action='store_true')
     parser.add_argument('--exclude', nargs=1, required=False)
+    parser.add_argument('--no-typemaps',
+                        default=False,
+                        action='store_true',
+                        help='Do not load cpp typemap info. Used when '
+                             'generating wrappers against the objc variant '
+                             'C++ which has no custom typemaps.')
+    parser.add_argument('--cpp-variant',
+                        default=None,
+                        help='C++ variant name (e.g. "objc"). When set, the '
+                             'generator appends this as an extra namespace '
+                             'segment to the C++ type references and includes '
+                             'the variant header (e.g. foo.mojom-objc.h).')
     return parser.parse_args()
 
 
@@ -57,7 +69,13 @@ def main():
     generator.bytecode_path = bytecode_path
     generator.excludedTypes = excluded.split(',')
     generator.generateNamespace = generate_namespace
-    generator.typemap = load_cpp_typemap_info(mojom_module)
+    generator.cpp_variant = args.cpp_variant
+
+    if args.no_typemaps:
+        generator.typemap = {}
+    else:
+        generator.typemap = load_cpp_typemap_info(mojom_module)
+
     with open(mojom_module, 'rb') as f:
         generator.module = Module.Load(f)
     generator.GenerateFiles(output_dir)

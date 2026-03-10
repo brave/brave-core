@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-{%- set header_guard = "%s_OBJC_PRIVATE_H_"|format(
+{%- set header_guard = "%s_OBJC_WRAPPER_PRIVATE_H_"|format(
         module.path|upper|replace("/","_")|replace(".","_")|
             replace("-", "_")) %}
 
@@ -12,7 +12,11 @@
 
 #import <Foundation/Foundation.h>
 #import "{{module_name}}.objc.h"
+{%- if cpp_variant %}
+#import "{{module.path}}-{{cpp_variant}}.h"
+{%- else %}
 #import "{{module.path}}.h"
+{%- endif %}
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
