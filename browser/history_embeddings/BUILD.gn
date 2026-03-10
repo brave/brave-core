@@ -7,6 +7,7 @@ source_set("history_embeddings") {
   sources = [
     "brave_embedder.cc",
     "brave_embedder.h",
+    "brave_history_embeddings_service.h",
     "brave_passage_embeddings_service_controller.cc",
     "brave_passage_embeddings_service_controller.h",
   ]
@@ -19,6 +20,7 @@ source_set("history_embeddings") {
     "//brave/components/local_ai/core:mojom",
     "//chrome/browser/profiles",
     "//components/history_embeddings",
+    "//components/page_content_annotations/core",
     "//components/passage_embeddings/core",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
