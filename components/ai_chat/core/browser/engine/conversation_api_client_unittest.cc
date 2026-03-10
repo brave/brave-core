@@ -561,7 +561,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
   client_->PerformRequest(
       std::move(events), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                    /* preferred_tool_name */
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -666,7 +666,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
   client_->PerformRequest(
       std::move(events), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                    /* preferred_tool_name */
-      mojom::ConversationCapability::CONTENT_AGENT,
+      {mojom::ConversationCapability::CONTENT_AGENT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -778,7 +778,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_WithToolUseResponse) {
   client_->PerformRequest(
       std::move(events), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                    /* preferred_tool_name */
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -870,7 +870,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PermissionChallenge) {
   client_->PerformRequest(
       std::move(events), std::nullopt /* oai_tool_definitions */,
       std::nullopt /* preferred_tool_name */,
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -957,7 +957,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PermissionChallenge_Allowed) {
   client_->PerformRequest(
       std::move(events), std::nullopt /* oai_tool_definitions */,
       std::nullopt /* preferred_tool_name */,
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -1044,7 +1044,7 @@ TEST_F(ConversationAPIUnitTest,
   client_->PerformRequest(
       std::move(events), std::nullopt /* oai_tool_definitions */,
       std::nullopt /* preferred_tool_name */,
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -1131,7 +1131,7 @@ TEST_F(ConversationAPIUnitTest,
   client_->PerformRequest(
       std::move(events), std::nullopt /* oai_tool_definitions */,
       std::nullopt /* preferred_tool_name */,
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -1204,7 +1204,7 @@ TEST_F(ConversationAPIUnitTest,
   client_->PerformRequest(
       std::move(events), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                    /* preferred_tool_name */
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -1276,7 +1276,7 @@ TEST_F(ConversationAPIUnitTest,
   client_->PerformRequest(
       std::move(events), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                    /* preferred_tool_name */
-      mojom::ConversationCapability::CHAT, base::NullCallback(),
+      {mojom::ConversationCapability::CHAT}, base::NullCallback(),
       base::BindOnce(&MockCallbacks::OnCompleted,
                      base::Unretained(&mock_callbacks)),
       override_model_name);
@@ -1338,7 +1338,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NEARVerification) {
   client_->PerformRequest(
       std::move(events), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                    /* preferred_tool_name */
-      mojom::ConversationCapability::CONTENT_AGENT,
+      {mojom::ConversationCapability::CONTENT_AGENT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -1372,7 +1372,7 @@ TEST_F(ConversationAPIUnitTest, FailNoConversationEvents) {
   client_->PerformRequest(
       std::move(events), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                    /* preferred_tool_name */
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,

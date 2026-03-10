@@ -14,6 +14,7 @@
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
@@ -23,6 +24,7 @@
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/test_utils.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -622,9 +624,13 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PremiumHeaders) {
         auto system_language = GetSystemLanguage(body_dict);
         EXPECT_EQ(system_language, expected_system_language);
 
-        // Currently server only expects we pass content_agent capability,
-        // so it won't be passed for CHAT.
-        EXPECT_FALSE(body_dict.FindString("brave_capability"));
+        // Verify body contains the brave_capability list with chat capability.
+        const base::ListValue* capability_list =
+            body_dict.FindList("brave_capability");
+        EXPECT_TRUE(capability_list);
+        if (capability_list) {
+          EXPECT_EQ(*capability_list, base::ListValue().Append("chat"));
+        }
 
         // Verify body contains the stream
         std::optional<bool> stream = body_dict.FindBool("stream");
@@ -688,7 +694,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PremiumHeaders) {
   client_->PerformRequest(
       std::move(messages), std::nullopt,
       /* oai_tool_definitions */ std::nullopt, /* preferred_tool_name */
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -713,7 +719,6 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonPremium) {
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale(
       expected_system_language);
   std::string expected_completion_response = "complete text";
-  std::string expected_capability = "content_agent";
 
   MockAPIRequestHelper* mock_request_helper =
       client_->GetMockAPIRequestHelper();
@@ -747,10 +752,15 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonPremium) {
         auto system_language = GetSystemLanguage(dict);
         EXPECT_EQ(system_language, expected_system_language);
 
-        // Verify body contains the brave_capability
-        const std::string* capability = dict.FindString("brave_capability");
-        EXPECT_TRUE(capability);
-        EXPECT_EQ(*capability, expected_capability);
+        // Verify body contains the brave_capability list
+        const base::ListValue* capability_list =
+            dict.FindList("brave_capability");
+        EXPECT_TRUE(capability_list);
+        if (capability_list) {
+          EXPECT_EQ(capability_list->size(), 2u);
+          EXPECT_TRUE(capability_list->contains("chat"));
+          EXPECT_TRUE(capability_list->contains("content_agent"));
+        }
 
         // Verify body contains the stream
         std::optional<bool> stream = dict.FindBool("stream");
@@ -810,7 +820,8 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonPremium) {
   client_->PerformRequest(
       std::move(messages), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                      /* preferred_tool_name */
-      mojom::ConversationCapability::CONTENT_AGENT,
+      {mojom::ConversationCapability::CHAT,
+       mojom::ConversationCapability::CONTENT_AGENT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -931,7 +942,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_WithToolUseResponse) {
   client_->PerformRequest(
       std::move(messages), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                      /* preferred_tool_name */
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -1149,7 +1160,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PermissionChallenge) {
   client_->PerformRequest(
       std::move(messages), std::nullopt /* oai_tool_definitions */,
       std::nullopt /* preferred_tool_name */,
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -1226,7 +1237,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonStreaming) {
 
   client_->PerformRequest(
       std::move(messages), std::nullopt, std::nullopt,
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::NullCallback(),  // No data_received_callback (non-streaming)
       base::BindOnce(&MockCallbacks::OnCompleted,
                      base::Unretained(&mock_callbacks)));
@@ -1302,7 +1313,7 @@ TEST_F(ConversationAPIV2ClientUnitTest,
   client_->PerformRequest(
       std::move(messages), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                      /* preferred_tool_name */
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -1378,7 +1389,7 @@ TEST_F(ConversationAPIV2ClientUnitTest,
   client_->PerformRequest(
       std::move(messages), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                      /* preferred_tool_name */
-      mojom::ConversationCapability::CHAT, base::NullCallback(),
+      {mojom::ConversationCapability::CHAT}, base::NullCallback(),
       base::BindOnce(&MockCallbacks::OnCompleted,
                      base::Unretained(&mock_callbacks)),
       override_model_name);
@@ -1445,7 +1456,8 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NEARVerification) {
   client_->PerformRequest(
       std::move(messages), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                      /* preferred_tool_name */
-      mojom::ConversationCapability::CONTENT_AGENT,
+      {mojom::ConversationCapability::CHAT,
+       mojom::ConversationCapability::CONTENT_AGENT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -1479,7 +1491,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_FailWithEmptyMessages) {
   client_->PerformRequest(
       std::move(messages), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                      /* preferred_tool_name */
-      mojom::ConversationCapability::CHAT,
+      {mojom::ConversationCapability::CHAT},
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -1533,7 +1545,7 @@ TEST_F(ConversationAPIV2ClientUnitTest,
   client_->PerformRequest(
       std::move(messages), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                      /* preferred_tool_name */
-      mojom::ConversationCapability::CHAT, base::NullCallback(),
+      {mojom::ConversationCapability::CHAT}, base::NullCallback(),
       base::BindOnce(&MockCallbacks::OnCompleted,
                      base::Unretained(&mock_callbacks)));
 
@@ -1581,7 +1593,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_ServerErrorResponse) {
   client_->PerformRequest(
       std::move(messages), std::nullopt, /* oai_tool_definitions */
       std::nullopt,                      /* preferred_tool_name */
-      mojom::ConversationCapability::CHAT, base::NullCallback(),
+      {mojom::ConversationCapability::CHAT}, base::NullCallback(),
       base::BindOnce(&MockCallbacks::OnCompleted,
                      base::Unretained(&mock_callbacks)));
 

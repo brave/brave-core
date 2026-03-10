@@ -188,4 +188,12 @@ bool IsShowAIChatInputOnNewTabPageEnabled() {
   return base::FeatureList::IsEnabled(features::kShowAIChatInputOnNewTabPage);
 }
 
+BASE_FEATURE(kAIChatDeepResearch,
+             "AIChatDeepResearch",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsAIChatDeepResearchEnabled() {
+  return base::FeatureList::IsEnabled(features::kAIChatDeepResearch);
+}
+
 }  // namespace ai_chat::features

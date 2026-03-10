@@ -130,8 +130,9 @@ function ConversationEntries() {
         // Not allowed to edit agent conversations until the edit submission
         // happens on a different frame.
         const canEditEntry =
-          conversationContext.conversationCapability
-            !== Mojom.ConversationCapability.CONTENT_AGENT
+          !conversationContext.conversationCapabilities.includes(
+            Mojom.ConversationCapability.CONTENT_AGENT,
+          )
           && group.length === 1
           && !firstEntryEdit.events?.some((event) => !!event.toolUseEvent)
 

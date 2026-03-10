@@ -47,7 +47,7 @@ void Tool::UserPermissionGranted(const std::string& tool_use_id) {
 bool Tool::SupportsConversation(
     bool is_temporary,
     bool has_untrusted_content,
-    mojom::ConversationCapability conversation_capability) const {
+    const ConversationCapabilitySet& conversation_capabilities) const {
   return true;
 }
 
