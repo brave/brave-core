@@ -824,4 +824,437 @@ TEST(PolkadotExtrinsics, MetadataSerde) {
   }
 }
 
+TEST(PolkadotExtrinsics, EventsParsing) {
+  // This event comes from:
+  // https://polkadot.subscan.io/extrinsic/30267458-2
+  // Note that because the entire events blob for a block is ~12 kB, we choose
+  // to only include a subset for this test.
+
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> sender = {};
+  const char sender_hex[] =
+      "bf0be0352ca5bc12a8ac6cf0006e220e5c55bb03126890ad37ce9753f9b3e3db";
+  ASSERT_TRUE(base::HexStringToSpan(sender_hex, sender));
+
+  auto chain_metadata = make_chain_metadata("Polkadot")->unwrap();
+
+  uint32_t extrinsic_idx = 2;
+
+  const char events_hex[] =
+      // balances(Withdraw)
+      "0002000000"
+      "0508"
+      "bf0be0352ca5bc12a8ac6cf0006e220e5c55bb03126890ad37ce9753f9b3e3db"
+      "5f139909000000000000000000000000"
+      "00"
+      // balances(Transfer)
+      "0002000000"
+      "0502"
+      "bf0be0352ca5bc12a8ac6cf0006e220e5c55bb03126890ad37ce9753f9b3e3db"
+      "5d70f7105a51be4a5afd2f10377d9bec9b8cdb971d6e8c436630f236a805926e"
+      "a1d0724a020000000000000000000000"
+      "00"
+      // balances(Deposit)
+      "0002000000"
+      "0507"
+      "6d6f646c70792f74727372790000000000000000000000000000000000000000"
+      "18a9ad07000000000000000000000000"
+      "00"
+      // transactionpayment(TransactionFeePaid)
+      "0002000000"
+      "2000"
+      "bf0be0352ca5bc12a8ac6cf0006e220e5c55bb03126890ad37ce9753f9b3e3db"
+      "5f139909000000000000000000000000"
+      "00000000000000000000000000000000"
+      "00"
+      // system(ExtrinsicSuccess)
+      "0002000000"
+      "0000"
+      "a2e910976da80000"
+      "00";
+
+  std::vector<uint8_t> events;
+  ASSERT_TRUE(base::HexStringToBytes(events_hex, &events));
+
+  std::array<uint8_t, 16> actual_fee_bytes = {};
+
+  EXPECT_TRUE(was_extrinsic_successful(rust::Slice<const uint8_t>(events),
+                                       extrinsic_idx, sender, *chain_metadata,
+                                       actual_fee_bytes));
+
+  EXPECT_EQ(base::bit_cast<uint128_t>(actual_fee_bytes), uint128_t{161026911});
+  EXPECT_EQ(base::HexEncodeLower(actual_fee_bytes),
+            "5f139909000000000000000000000000");
+}
+
+TEST(PolkadotExtrinsics, EventsParsing_WithAccountCreation) {
+  // This event comes from:
+  // https://polkadot.subscan.io/extrinsic/30123219-2
+
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> sender = {};
+  const char sender_hex[] =
+      "2a27dd26f5f3fe4f48fc67cddb54a8cdb0f3c6e4b9c8cf751a59466771dc6144";
+  ASSERT_TRUE(base::HexStringToSpan(sender_hex, sender));
+
+  auto chain_metadata = make_chain_metadata("Polkadot")->unwrap();
+
+  uint32_t extrinsic_idx = 2;
+
+  // d8837440d77698a5ac63985587594e45d0029538f9b413495621913a68f64941
+
+  const char events_hex[] =
+      // balances(Withdraw)
+      "0002000000"
+      "0508"
+      "2a27dd26f5f3fe4f48fc67cddb54a8cdb0f3c6e4b9c8cf751a59466771dc6144"
+      "5f139909000000000000000000000000"
+      "00"
+      // system(NewAccount)
+      "0002000000"
+      "0003"
+      "70617261550d0000000000000000000000000000000000000000000000000000"
+      "00"
+      // balances(Endowed)
+      "0002000000"
+      "0500"
+      "70617261550d0000000000000000000000000000000000000000000000000000"
+      "00d8bc7ced0000000000000000000000"
+      "00"
+      // balances(Transfer)
+      "0002000000"
+      "0502"
+      "2a27dd26f5f3fe4f48fc67cddb54a8cdb0f3c6e4b9c8cf751a59466771dc6144"
+      "70617261550d0000000000000000000000000000000000000000000000000000"
+      "00d8bc7ced0000000000000000000000"
+      "00"
+      // balances(Deposit)
+      "0002000000"
+      "0507"
+      "6d6f646c70792f74727372790000000000000000000000000000000000000000"
+      "18a9ad07000000000000000000000000"
+      "00"
+      // balances(Deposit)
+      "0002000000"
+      "0507"
+      "d8837440d77698a5ac63985587594e45d0029538f9b413495621913a68f64941"
+      "476aeb01000000000000000000000000"
+      "00"
+      // transactionpayment(TransactionFeePaid)
+      "0002000000"
+      "2000"
+      "2a27dd26f5f3fe4f48fc67cddb54a8cdb0f3c6e4b9c8cf751a59466771dc6144"
+      "5f139909000000000000000000000000"
+      "00000000000000000000000000000000"
+      "00"
+      // system(ExtrinsicSuccess)
+      "0002000000"
+      "0000"
+      "a2e910976da80000"
+      "00";
+
+  std::vector<uint8_t> events;
+  ASSERT_TRUE(base::HexStringToBytes(events_hex, &events));
+
+  std::array<uint8_t, 16> actual_fee_bytes = {};
+
+  EXPECT_TRUE(was_extrinsic_successful(rust::Slice<const uint8_t>(events),
+                                       extrinsic_idx, sender, *chain_metadata,
+                                       actual_fee_bytes));
+
+  EXPECT_EQ(base::bit_cast<uint128_t>(actual_fee_bytes), uint128_t{161026911});
+  EXPECT_EQ(base::HexEncodeLower(actual_fee_bytes),
+            "5f139909000000000000000000000000");
+}
+
+TEST(PolkadotExtrinsics, EventsParsing_FailedExtrinsic_ArithmeticUnderflow) {
+  // This event comes from:
+  // https://polkadot.subscan.io/extrinsic/29943577-2
+
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> sender = {};
+  const char sender_hex[] =
+      "d44c4639d57190aed08f053cac6db1c85221253e7353d484dba9caa663d86a5f";
+  ASSERT_TRUE(base::HexStringToSpan(sender_hex, sender));
+
+  auto chain_metadata = make_chain_metadata("Polkadot")->unwrap();
+
+  uint32_t extrinsic_idx = 2;
+
+  const char events_hex[] =
+      // balances(Withdraw)
+      "0002000000"
+      "0508"
+      "d44c4639d57190aed08f053cac6db1c85221253e7353d484dba9caa663d86a5f"
+      "9f5ee509000000000000000000000000"
+      "00"
+      // balances(Deposit)
+      "0002000000"
+      "0507"
+      "6d6f646c70792f74727372790000000000000000000000000000000000000000"
+      "18b2ea07000000000000000000000000"
+      "00"
+      // balances(Deposit)
+      "0002000000"
+      "0507"
+      "e08785d4123f656862a5fd4b2286ae30ab1ebf17f60538961d3f91f02c73ee91"
+      "87acfa01000000000000000000000000"
+      "00"
+      // transactionpayment(TransactionFeePaid)
+      "0002000000"
+      "2000"
+      "d44c4639d57190aed08f053cac6db1c85221253e7353d484dba9caa663d86a5f"
+      "9f5ee509000000000000000000000000"
+      "00000000000000000000000000000000"
+      "00"
+      // system(ExtrinsicFailed)
+      "0002000000"
+      "0001"
+      "0800a2e910976da80000"
+      "00";
+
+  std::vector<uint8_t> events;
+  ASSERT_TRUE(base::HexStringToBytes(events_hex, &events));
+
+  std::array<uint8_t, 16> actual_fee_bytes = {};
+
+  EXPECT_FALSE(was_extrinsic_successful(rust::Slice<const uint8_t>(events),
+                                        extrinsic_idx, sender, *chain_metadata,
+                                        actual_fee_bytes));
+
+  EXPECT_EQ(base::bit_cast<uint128_t>(actual_fee_bytes), uint128_t{166026911});
+  EXPECT_EQ(base::HexEncodeLower(actual_fee_bytes),
+            "9f5ee509000000000000000000000000");
+}
+
+TEST(PolkadotExtrinsics, EventsParsing_FailedExtrinsic_BelowMinimum) {
+  // This event comes from:
+  // https://polkadot.subscan.io/extrinsic/29509101-2
+
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> sender = {};
+  const char sender_hex[] =
+      "3c67dd0ea1126b09609ac341b4417251457f0fad467b8e1d3004209d4756ea2e";
+  ASSERT_TRUE(base::HexStringToSpan(sender_hex, sender));
+
+  auto chain_metadata = make_chain_metadata("Polkadot")->unwrap();
+
+  uint32_t extrinsic_idx = 2;
+
+  const char events_hex[] =
+      // balances(Withdraw)
+      "0002000000"
+      "0508"
+      "3c67dd0ea1126b09609ac341b4417251457f0fad467b8e1d3004209d4756ea2e"
+      "5f139909000000000000000000000000"
+      "00"
+      // balances(Deposit)
+      "0002000000"
+      "0507"
+      "6d6f646c70792f74727372790000000000000000000000000000000000000000"
+      "18a9ad07000000000000000000000000"
+      "00"
+      // balances(Deposit)
+      "0002000000"
+      "0507"
+      "c5e80accf4092ea6f8ed087544576dddcfdd51366b492868f73b0c9ca19c5f31"
+      "476aeb01000000000000000000000000"
+      "00"
+      // transactionpayment(TransactionFeePaid)
+      "0002000000"
+      "2000"
+      "3c67dd0ea1126b09609ac341b4417251457f0fad467b8e1d3004209d4756ea2e"
+      "5f139909000000000000000000000000"
+      "00000000000000000000000000000000"
+      "00"
+      // system(ExtrinsicFailed)
+      "0002000000"
+      "0001"
+      "0702a2e910976da80000"
+      "00";
+
+  std::vector<uint8_t> events;
+  ASSERT_TRUE(base::HexStringToBytes(events_hex, &events));
+
+  std::array<uint8_t, 16> actual_fee_bytes = {};
+
+  EXPECT_FALSE(was_extrinsic_successful(rust::Slice<const uint8_t>(events),
+                                        extrinsic_idx, sender, *chain_metadata,
+                                        actual_fee_bytes));
+
+  EXPECT_EQ(base::bit_cast<uint128_t>(actual_fee_bytes), uint128_t{161026911});
+  EXPECT_EQ(base::HexEncodeLower(actual_fee_bytes),
+            "5f139909000000000000000000000000");
+}
+
+TEST(PolkadotExtrinsics, EventsParsing_Error) {
+  const char sender_hex[] =
+      "bf0be0352ca5bc12a8ac6cf0006e220e5c55bb03126890ad37ce9753f9b3e3db";
+
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> sender = {};
+
+  ASSERT_TRUE(base::HexStringToSpan(sender_hex, sender));
+
+  auto chain_metadata = make_chain_metadata("Polkadot")->unwrap();
+
+  uint32_t extrinsic_idx = 2;
+
+  const std::string valid_events =
+      // balances(Withdraw)
+      "0002000000"
+      "0508"
+      "bf0be0352ca5bc12a8ac6cf0006e220e5c55bb03126890ad37ce9753f9b3e3db"
+      "5f139909000000000000000000000000"
+      "00"
+      // balances(Transfer)
+      "0002000000"
+      "0502"
+      "bf0be0352ca5bc12a8ac6cf0006e220e5c55bb03126890ad37ce9753f9b3e3db"
+      "5d70f7105a51be4a5afd2f10377d9bec9b8cdb971d6e8c436630f236a805926e"
+      "a1d0724a020000000000000000000000"
+      "00"
+      // balances(Deposit)
+      "0002000000"
+      "0507"
+      "6d6f646c70792f74727372790000000000000000000000000000000000000000"
+      "18a9ad07000000000000000000000000"
+      "00"
+      // transactionpayment(TransactionFeePaid)
+      "0002000000"
+      "2000"
+      "bf0be0352ca5bc12a8ac6cf0006e220e5c55bb03126890ad37ce9753f9b3e3db"
+      "5f139909000000000000000000000000"
+      "00000000000000000000000000000000"
+      "00"
+      // system(ExtrinsicSuccess)
+      "0002000000"
+      "0000"
+      "a2e910976da80000"
+      "00";
+
+  std::vector<std::string> inputs;
+
+  // Incorrect transactionpayment(TransactionFeePaid).
+  {
+    std::string bad_fee_paid_event_prefix = valid_events;
+    auto n = bad_fee_paid_event_prefix.find("00020000002000");
+    bad_fee_paid_event_prefix[n] = '1';
+    inputs.push_back(std::move(bad_fee_paid_event_prefix));
+  }
+  {
+    std::string bad_fee_paid_event_prefix = valid_events;
+    auto n = bad_fee_paid_event_prefix.find("00020000002000");
+    bad_fee_paid_event_prefix.erase(n + 5, 2);
+    inputs.push_back(std::move(bad_fee_paid_event_prefix));
+  }
+
+  // Incorrect system(ExtrinsicSuccess).
+  {
+    std::string bad_extrinsic_success_event_prefix = valid_events;
+    auto n = bad_extrinsic_success_event_prefix.find("00020000000000");
+    bad_extrinsic_success_event_prefix[n] = '1';
+    inputs.push_back(std::move(bad_extrinsic_success_event_prefix));
+  }
+  {
+    std::string bad_extrinsic_success_event_prefix = valid_events;
+    auto n = bad_extrinsic_success_event_prefix.find("00020000000000");
+    bad_extrinsic_success_event_prefix.erase(n + 5, 2);
+    inputs.push_back(std::move(bad_extrinsic_success_event_prefix));
+  }
+
+  // Incorrect sender in transaction fee paid.
+  {
+    std::string bad_sender_transfer = valid_events;
+    auto n = bad_sender_transfer.find(sender_hex);
+    n = bad_sender_transfer.find(sender_hex, n + 64);
+    n = bad_sender_transfer.find(sender_hex, n + 64);
+    bad_sender_transfer[n] = '0';
+    inputs.push_back(std::move(bad_sender_transfer));
+  }
+
+  // Incorrect topics for fee paid.
+  {
+    std::string needle =
+        "5f139909000000000000000000000000"
+        "00000000000000000000000000000000"
+        "00";
+
+    std::string bad_fee_paid_topics = valid_events;
+    auto n = bad_fee_paid_topics.find(needle);
+    bad_fee_paid_topics[n + needle.size() - 2] = '1';
+
+    inputs.push_back(std::move(bad_fee_paid_topics));
+  }
+
+  // Extrisic indexes don't match.
+  {
+    std::string invalid_event =
+        // balances(Withdraw)
+        "0003000000"
+        "0508"
+        "bf0be0352ca5bc12a8ac6cf0006e220e5c55bb03126890ad37ce9753f9b3e3db"
+        "5f139909000000000000000000000000"
+        "00"
+        // balances(Transfer)
+        "0003000000"
+        "0502"
+        "bf0be0352ca5bc12a8ac6cf0006e220e5c55bb03126890ad37ce9753f9b3e3db"
+        "5d70f7105a51be4a5afd2f10377d9bec9b8cdb971d6e8c436630f236a805926e"
+        "a1d0724a020000000000000000000000"
+        "00"
+        // balances(Deposit)
+        "0003000000"
+        "0507"
+        "6d6f646c70792f74727372790000000000000000000000000000000000000000"
+        "18a9ad07000000000000000000000000"
+        "00"
+        // transactionpayment(TransactionFeePaid)
+        "0003000000"
+        "2000"
+        "bf0be0352ca5bc12a8ac6cf0006e220e5c55bb03126890ad37ce9753f9b3e3db"
+        "5f139909000000000000000000000000"
+        "00000000000000000000000000000000"
+        "00"
+        // system(ExtrinsicSuccess)
+        "0003000000"
+        "0000"
+        "a2e910976da80000"
+        "00";
+
+    inputs.push_back(std::move(invalid_event));
+  }
+
+  // Empty string.
+  {
+    inputs.push_back("");
+  }
+
+  // Truncated TransactionFeePaid.
+  {
+    std::string needle =
+        "5f139909000000000000000000000000"
+        "00000000000000000000000000000000"
+        "00";
+
+    std::string truncated = valid_events;
+    auto n = truncated.find(needle);
+    truncated.erase(n);
+
+    inputs.push_back(std::move(truncated));
+  }
+
+  ASSERT_FALSE(inputs.empty());
+  for (const auto& input : inputs) {
+    std::vector<uint8_t> events;
+    if (!input.empty()) {
+      ASSERT_TRUE(base::HexStringToBytes(input, &events));
+    }
+
+    std::array<uint8_t, 16> actual_fee_bytes = {};
+
+    EXPECT_FALSE(was_extrinsic_successful(rust::Slice<const uint8_t>(events),
+                                          extrinsic_idx, sender,
+                                          *chain_metadata, actual_fee_bytes))
+        << input;
+
+    EXPECT_EQ(base::bit_cast<uint128_t>(actual_fee_bytes), uint128_t{0});
+  }
+}
+
 }  // namespace brave_wallet
