@@ -14,33 +14,12 @@
 
 namespace ai_chat {
 
-namespace {
-
-#if BUILDFLAG(IS_ANDROID)
-constexpr char kBraveScheme[] = "brave";
-#endif
-
-GURL CreateAIChatUIURL(std::string_view path) {
-  GURL url(base::StrCat({kAIChatUIURL, path}));
-#if BUILDFLAG(IS_ANDROID)
-  // TODO(https://github.com/brave/brave-browser/issues/51302): Remove this
-  // override once chrome:// URLs are rewritten as brave:// URLs in the android
-  // UI.
-  GURL::Replacements replacements;
-  replacements.SetSchemeStr(kBraveScheme);
-  url = url.ReplaceComponents(replacements);
-#endif
-  return url;
-}
-
-}  // namespace
-
 GURL TabAssociatedConversationUrl() {
-  return CreateAIChatUIURL("tab");
+  return GURL(base::StrCat({kAIChatUIURL, "tab"}));
 }
 
 GURL ConversationUrl(std::string_view conversation_uuid) {
-  return CreateAIChatUIURL(conversation_uuid);
+  return GURL(base::StrCat({kAIChatUIURL, conversation_uuid}));
 }
 
 std::string_view ConversationUUIDFromURL(const GURL& url) {
