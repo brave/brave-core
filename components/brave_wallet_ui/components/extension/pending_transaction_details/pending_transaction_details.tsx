@@ -292,22 +292,24 @@ export function PendingTransactionDetails(props: Props) {
           <DetailText>{getTransactionTypeName(txType)}</DetailText>
         </DetailColumn>
       )}
-      {txType === BraveWallet.TransactionType.Other ? (
+      {txParams.map((param, i) => (
+        <DetailColumn
+          gap='8px'
+          key={i}
+        >
+          <DetailColumn>
+            <LabelText>{param}:</LabelText>
+            <DetailText>{txArgs[i]}</DetailText>
+          </DetailColumn>
+        </DetailColumn>
+      ))}
+      {dataArray.length > 0 && (
         <DetailColumn>
+          <LabelText>
+            {getLocale('braveWalletTransactionDetailBoxHex')}:
+          </LabelText>
           <DetailText>{`0x${numberArrayToHexStr(dataArray)}`}</DetailText>
         </DetailColumn>
-      ) : (
-        txParams.map((param, i) => (
-          <DetailColumn
-            gap='8px'
-            key={i}
-          >
-            <DetailColumn>
-              <LabelText>{param}:</LabelText>
-              <DetailText>{txArgs[i]}</DetailText>
-            </DetailColumn>
-          </DetailColumn>
-        ))
       )}
     </StyledWrapper>
   )
