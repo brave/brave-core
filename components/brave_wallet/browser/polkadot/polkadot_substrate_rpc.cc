@@ -746,6 +746,67 @@ void PolkadotSubstrateRpc::OnGetPaymentInfo(GetPaymentInfoCallback callback,
       base::ok(base::bit_cast<uint128_t>(partial_fee_bytes)));
 }
 
+void PolkadotSubstrateRpc::GetEvents(
+    std::string_view chain_id,
+    base::span<const uint8_t, kPolkadotBlockHashSize> block_hash,
+    GetEventsCallback callback) {
+  auto url = GetNetworkURL(chain_id);
+
+  base::ListValue params;
+
+  // xxhash("System") | xxhash("Events")
+  //
+  // xxhashAsU8a(System, 128) => 0x26aa394eea5630e07c48ae0c9558cef7
+  // xxhashAsU8a(Events, 128) => 0x80d41e5e16056765bc8461851072c9d7
+  // https://github.com/polkadot-js/common/blob/047840319ef3f758880cc112b987888b8b2749d0/packages/util-crypto/src/xxhash/asU8a.ts#L24
+
+  params.Append(
+      "26aa394eea5630e07c48ae0c9558cef780d41e5e16056765bc8461851072c9d7");
+  params.Append(base::HexEncodeLower(block_hash));
+
+  auto payload = base::WriteJson(
+      MakeRpcRequestJson("state_getStorage", std::move(params)));
+  CHECK(payload);
+
+  api_request_helper_.Request(
+      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+      base::BindOnce(&PolkadotSubstrateRpc::OnGetEvents,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void PolkadotSubstrateRpc::OnGetEvents(GetEventsCallback callback,
+                                       APIRequestResult api_result) {
+  auto res = HandleRpcCall<polkadot_substrate_rpc_responses::PolkadotEvents>(
+      api_result);
+
+  if (!res.has_value()) {
+    // We received either a network error, an actual RPC error or JSON that
+    // didn't match our schema.
+    return std::move(callback).Run(base::unexpected(res.error()));
+  }
+
+  if (!res->result) {
+    // We received { "result": null } from the RPC, treat as an error for this
+    // RPC call.
+    return std::move(callback).Run(
+        base::unexpected(WalletParsingErrorMessage()));
+  }
+
+  std::string_view events_str = res->result.value();
+  if (events_str.starts_with("0x")) {
+    events_str.remove_prefix(2);
+  }
+
+  std::vector<uint8_t> events;
+  if (!base::HexStringToBytes(events_str, &events)) {
+    // Returned string contained non-hex.
+    return std::move(callback).Run(
+        base::unexpected(WalletParsingErrorMessage()));
+  }
+
+  std::move(callback).Run(base::ok(std::move(events)));
+}
+
 GURL PolkadotSubstrateRpc::GetNetworkURL(std::string_view chain_id) {
   return network_manager_->GetNetworkURL(chain_id, mojom::CoinType::DOT);
 }

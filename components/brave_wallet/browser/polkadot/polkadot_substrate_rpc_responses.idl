@@ -148,4 +148,12 @@ namespace polkadot_substrate_rpc_responses {
     DOMString? result;
     Error? error;
   };
+
+  dictionary PolkadotEvents {
+    DOMString jsonrpc;
+    long id;
+
+    DOMString? result;
+    Error? error;
+  };
 };
