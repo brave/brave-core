@@ -36,17 +36,20 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
   private var handler: ((PlaylistInfo?) -> Void)?
 
   init(profile: any Profile) {
+    var initialConfiguration: WKWebViewConfiguration?
+    if !FeatureList.kUseProfileWebViewConfiguration.enabled {
+      initialConfiguration = WKWebViewConfiguration().then {
+        $0.preferences = WKPreferences()
+        $0.preferences.javaScriptCanOpenWindowsAutomatically = false
+        $0.websiteDataStore = .nonPersistent()
+        $0.allowsInlineMediaPlayback = true
+        $0.ignoresViewportScaleLimits = true
+      }
+    }
     let tab = TabStateFactory.create(
       with: .init(
         profile: profile.offTheRecordProfile,
-        initialConfiguration:
-          WKWebViewConfiguration().then {
-            $0.preferences = WKPreferences()
-            $0.preferences.javaScriptCanOpenWindowsAutomatically = false
-            $0.websiteDataStore = .nonPersistent()
-            $0.allowsInlineMediaPlayback = true
-            $0.ignoresViewportScaleLimits = true
-          }
+        initialConfiguration: initialConfiguration
       )
     )
     self.tab = tab
