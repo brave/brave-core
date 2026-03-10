@@ -724,6 +724,10 @@
 -OmniboxEditModelTest.*
 
 # These tests fail because we disable uploading these event logs
+# See WebRtcLogUploader::UploadCompressedLog patch.
+-RTCDiagnosticLoggingTest.StartFinishAndUploadDiagnosticLogging
+-RTCDiagnosticLoggingTest.UploadDiagnosticLoggingWithoutStop
+-RTCDiagnosticLoggingTest.UploadSiteOriginLogging
 -WebRtcEventLogManagerTestPolicy.*
 -WebRtcEventLogUploaderImplTest.*
 -UploadSupportingConnectionTypes/WebRtcEventLogManagerTestForNetworkConnectivity.*
