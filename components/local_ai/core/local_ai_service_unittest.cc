@@ -349,6 +349,26 @@ TEST_F(LocalAIServiceTest, DoubleShutdownIsIdempotent) {
   keyed_service->Shutdown();
 }
 
+TEST_F(LocalAIServiceTest, NotifyPassageEmbedderIdleClosesBackgroundContents) {
+  // Create background contents and register factory.
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> future;
+  service_->GetPassageEmbedder(future.GetCallback());
+  SetUpModelFiles();
+  RegisterFactory();
+  ASSERT_TRUE(base::test::RunUntil([&] { return future.IsReady(); }));
+  ASSERT_TRUE(future.Get().is_valid());
+  ASSERT_TRUE(last_created_web_contents_);
+
+  // Worker reports idle — should close background contents.
+  service_->NotifyPassageEmbedderIdle();
+  EXPECT_FALSE(last_created_web_contents_);
+
+  // Getting a new embedder should recreate background contents.
+  base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>> future2;
+  service_->GetPassageEmbedder(future2.GetCallback());
+  EXPECT_TRUE(last_created_web_contents_);
+}
+
 TEST_F(LocalAIServiceTest, GetPassageEmbedderAfterModelReady) {
   // Queue a callback, load model, register factory.
   base::test::TestFuture<mojo::PendingRemote<mojom::PassageEmbedder>>
