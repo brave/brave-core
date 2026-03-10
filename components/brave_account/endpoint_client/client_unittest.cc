@@ -38,7 +38,6 @@
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 #include "net/http/http_status_code.h"
-#include "services/network/public/cpp/data_element.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/cpp/url_loader_completion_status.h"
@@ -475,14 +474,8 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
     EXPECT_EQ(resource_request.headers.GetHeader(
                   net::HttpRequestHeaders::kContentType),
               Request::ContentType());
-
-    const auto& request_body = CHECK_DEREF(resource_request.request_body);
-    const auto& elements = CHECK_DEREF(request_body.elements());
-    CHECK_EQ(elements.size(), 1u);
-    const auto& element = elements.front();
-    EXPECT_EQ(element.type(), network::DataElement::Tag::kBytes);
-    const auto bytes = element.As<network::DataElementBytes>().AsStringPiece();
-    EXPECT_EQ(RequestBodyFrom<typename Endpoint::Request::Body>(bytes),
+    EXPECT_EQ(RequestBodyFrom<typename Endpoint::Request::Body>(
+                  network::GetUploadData(resource_request)),
               MakeRequest().body);
 
     if constexpr (base::is_instantiation<Request, WithHeaders>) {
