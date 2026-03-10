@@ -98,6 +98,9 @@ bool BrowserViewLayoutDelegateImpl::IsFullscreen() const {
 BrowserLayoutParams BrowserViewLayoutDelegateImpl::GetBrowserLayoutParams(
     bool use_browser_bounds) const {
 #if BUILDFLAG(IS_MAC)
+  // On Mac, there is transition animation when entering/exiting fullscreen
+  // mode. During the animation, there could be inconsistency between frame view
+  // and browser view's state. Other platforms don't have this issue.
   if (use_browser_bounds) {
     const auto params = GetFrameView()->GetBrowserLayoutParams();
     if (params.IsEmpty()) {
