@@ -43,8 +43,7 @@ void EngineConsumerConversationAPIV2::GenerateQuestionSuggestions(
   auto on_response = base::BindOnce(
       &EngineConsumerConversationAPIV2::OnGenerateQuestionSuggestionsResponse,
       weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  api_->PerformRequest(std::move(messages), std::nullopt, std::nullopt,
-                       {mojom::ConversationCapability::CHAT},
+  api_->PerformRequest(std::move(messages), std::nullopt, std::nullopt, {},
                        base::NullCallback(), std::move(on_response));
 }
 
@@ -117,8 +116,7 @@ void EngineConsumerConversationAPIV2::GenerateRewriteSuggestion(
         .Run(base::unexpected(mojom::APIError::InternalError));
     return;
   }
-  api_->PerformRequest(std::move(*messages), std::nullopt, std::nullopt,
-                       {mojom::ConversationCapability::CHAT},
+  api_->PerformRequest(std::move(*messages), std::nullopt, std::nullopt, {},
                        std::move(received_callback),
                        std::move(completed_callback));
 }
@@ -151,8 +149,7 @@ void EngineConsumerConversationAPIV2::GenerateConversationTitle(
   }
 
   api_->PerformRequest(
-      std::move(*messages), std::nullopt, std::nullopt,
-      {mojom::ConversationCapability::CHAT},
+      std::move(*messages), std::nullopt, std::nullopt, {},
       base::NullCallback(),  // no streaming needed
       base::BindOnce(
           &EngineConsumerConversationAPIV2::OnConversationTitleGenerated,
@@ -170,8 +167,7 @@ void EngineConsumerConversationAPIV2::DedupeTopics(
   auto messages = BuildOAIDedupeTopicsMessages(*topics_result);
 
   api_->PerformRequest(
-      std::move(messages), std::nullopt, std::nullopt,
-      {mojom::ConversationCapability::CHAT},
+      std::move(messages), std::nullopt, std::nullopt, {},
       base::NullCallback() /* data_received_callback */,
       base::BindOnce(
           [](GetSuggestedTopicsCallback callback,
@@ -201,8 +197,7 @@ void EngineConsumerConversationAPIV2::GetSuggestedTopics(
           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 
   for (auto& messages : chunked_messages) {
-    api_->PerformRequest(std::move(messages), std::nullopt, std::nullopt,
-                         {mojom::ConversationCapability::CHAT},
+    api_->PerformRequest(std::move(messages), std::nullopt, std::nullopt, {},
                          base::NullCallback() /* data_received_callback */,
                          barrier_callback /* data_completed_callback */);
   }
@@ -230,8 +225,7 @@ void EngineConsumerConversationAPIV2::GetFocusTabs(
           std::move(callback)));
 
   for (auto& messages : chunked_messages) {
-    api_->PerformRequest(std::move(messages), std::nullopt, std::nullopt,
-                         {mojom::ConversationCapability::CHAT},
+    api_->PerformRequest(std::move(messages), std::nullopt, std::nullopt, {},
                          base::NullCallback() /* data_received_callback */,
                          barrier_callback /* data_completed_callback */);
   }
