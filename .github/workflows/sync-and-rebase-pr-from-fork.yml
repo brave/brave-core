@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       PR_NUMBER:
-        required: true
+        required: false
         description: "Number of the PR from the fork"
       COMMIT_HASH:
         required: true
@@ -42,7 +42,8 @@ jobs:
             exit 1
           fi
 
-          gh_pr_view=$(gh pr view "$PR_NUMBER" --json baseRefName,headRefName,headRepository,headRepositoryOwner,id,isCrossRepository,url)
+          pr_number="${PR_NUMBER:-"$(gh pr list --search "$COMMIT_HASH" --json number -q '.[].number')"}"
+          gh_pr_view=$(gh pr view "${pr_number:?}" --json baseRefName,headRefName,headRepository,headRepositoryOwner,id,isCrossRepository,url)
 
           JQ="jq -e -r"
           baseRefName=$($JQ ".baseRefName" <<<"$gh_pr_view")
@@ -75,10 +76,10 @@ jobs:
               --draft \
               --base "$baseRefName" \
               --head "$contribHeadRefName" \
-              --title "CI run for contributor PR #$PR_NUMBER" \
+              --title "CI run for contributor PR #$pr_number" \
               --body \
           "## Description
-          This PR is created to run CI on the changes proposed in PR #$PR_NUMBER by @$headRepositoryOwnerLogin.
+          This PR is created to run CI on the changes proposed in PR #$pr_number by @$headRepositoryOwnerLogin.
 
           **This PR should not be merged.**"
           fi
