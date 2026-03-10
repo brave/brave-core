@@ -37,6 +37,13 @@ static_library("misc_metrics") {
     "uptime_monitor.h",
   ]
 
+  if (is_android) {
+    sources += [
+      "quick_search_metrics.cc",
+      "quick_search_metrics.h",
+    ]
+  }
+
   deps = [
     "//base",
     "//brave/components/brave_new_tab_ui:mojom",
@@ -77,6 +84,10 @@ source_set("unit_tests") {
     "split_view_metrics_unittest.cc",
     "tab_metrics_unittest.cc",
   ]
+
+  if (is_android) {
+    sources += [ "quick_search_metrics_unittest.cc" ]
+  }
 
   deps = [
     "//base",

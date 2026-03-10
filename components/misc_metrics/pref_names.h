@@ -86,6 +86,11 @@ inline constexpr char kMiscMetricsMediaSessionActiveProcessTime[] =
 inline constexpr char kMiscMetricsMediaSessionFrameStartTime[] =
     "brave.misc_metrics.media_session_frame_start_time";
 
+inline constexpr char kMiscMetricsQuickSearchActionStorage[] =
+    "brave.misc_metrics.quick_search_actions";
+inline constexpr char kMiscMetricsQuickSearchLastClickTime[] =
+    "brave.misc_metrics.quick_search_last_click_time";
+
 }  // namespace misc_metrics
 
 #endif  // BRAVE_COMPONENTS_MISC_METRICS_PREF_NAMES_H_
