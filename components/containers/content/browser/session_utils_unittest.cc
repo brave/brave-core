@@ -22,7 +22,7 @@ class ContainersSessionUtilsTest : public testing::Test {
   base::test::ScopedFeatureList feature_list_;
 };
 
-TEST_F(ContainersSessionUtilsTest, GetUrlPrefixForSessionPersistence) {
+TEST_F(ContainersSessionUtilsTest, StoragePartitionKeyToUrlPrefix) {
   struct {
     std::pair<std::string, std::string> key;
     std::optional<std::string> expected_prefix;
@@ -47,7 +47,7 @@ TEST_F(ContainersSessionUtilsTest, GetUrlPrefixForSessionPersistence) {
 
   for (const auto& test_case : test_cases) {
     SCOPED_TRACE(test_case.key.first + "+" + test_case.key.second);
-    auto prefix = GetUrlPrefixForSessionPersistence(test_case.key);
+    auto prefix = StoragePartitionKeyToUrlPrefix(test_case.key);
     ASSERT_EQ(prefix.has_value(), test_case.expected_prefix.has_value());
     if (prefix.has_value()) {
       EXPECT_EQ(*prefix, *test_case.expected_prefix);
@@ -107,7 +107,7 @@ TEST_F(ContainersSessionUtilsTest, GetAndRestore) {
       "containers", "550e8400-e29b-41d4-a716-446655440000"};
   GURL original_url("https://example.com");
 
-  auto prefix = GetUrlPrefixForSessionPersistence(original_key);
+  auto prefix = StoragePartitionKeyToUrlPrefix(original_key);
   ASSERT_TRUE(prefix.has_value());
   GURL encoded_url(*prefix + original_url.spec());
 
@@ -132,7 +132,7 @@ TEST_F(ContainersSessionUtilsTest, GetAndRestoreWithVirtualScheme) {
   for (const auto& original_url : virtual_urls) {
     SCOPED_TRACE(original_url.spec());
 
-    auto prefix = GetUrlPrefixForSessionPersistence(original_key);
+    auto prefix = StoragePartitionKeyToUrlPrefix(original_key);
     ASSERT_TRUE(prefix.has_value());
     ASSERT_TRUE(!prefix->empty());
     GURL encoded_url(*prefix + original_url.spec());

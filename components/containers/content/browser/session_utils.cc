@@ -40,7 +40,7 @@ RestoreStoragePartitionKeyResult& RestoreStoragePartitionKeyResult::operator=(
 RestoreStoragePartitionKeyResult& RestoreStoragePartitionKeyResult::operator=(
     RestoreStoragePartitionKeyResult&&) noexcept = default;
 
-std::optional<std::string> GetUrlPrefixForSessionPersistence(
+std::optional<std::string> StoragePartitionKeyToUrlPrefix(
     const std::pair<std::string, std::string>& storage_partition_key) {
   CHECK(base::FeatureList::IsEnabled(features::kContainers));
 

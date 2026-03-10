@@ -58,7 +58,7 @@ replace = '''\1
             entry->GetStoragePartitionKeyToRestore()) {
       // Generate the URL prefix (e.g., "containers+<uuid>:") if it's a valid
       // container storage partition key.
-      if (auto url_prefix = containers::GetUrlPrefixForSessionPersistence(
+      if (auto url_prefix = containers::StoragePartitionKeyToUrlPrefix(
               *storage_partition_key_to_restore)) {
         // Store both the prefix and the raw partition key in the
         // SerializedNavigationEntry. The prefix will be used by

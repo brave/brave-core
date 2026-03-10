@@ -57,8 +57,7 @@ TEST_F(ContainersContentSerializedNavigationBuilderTest,
       sessions::ContentSerializedNavigationBuilder::FromNavigationEntry(
           /*index=*/0, entry.get());
 
-  auto expected_prefix =
-      GetUrlPrefixForSessionPersistence(storage_partition_key);
+  auto expected_prefix = StoragePartitionKeyToUrlPrefix(storage_partition_key);
   ASSERT_TRUE(expected_prefix.has_value());
   EXPECT_EQ(navigation.virtual_url_prefix(), *expected_prefix);
 

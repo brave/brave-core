@@ -46,7 +46,7 @@ class ContainersContentSerializedNavigationDriverTest : public testing::Test {
 TEST_F(ContainersContentSerializedNavigationDriverTest,
        GetSanitizedPageStateForPicklePrefixesPageState) {
   auto storage_partition_key = MakeContainerStoragePartitionKey();
-  auto url_prefix = GetUrlPrefixForSessionPersistence(storage_partition_key);
+  auto url_prefix = StoragePartitionKeyToUrlPrefix(storage_partition_key);
   ASSERT_TRUE(url_prefix.has_value());
 
   sessions::SerializedNavigationEntry navigation;
@@ -72,7 +72,7 @@ TEST_F(ContainersContentSerializedNavigationDriverTest,
 TEST_F(ContainersContentSerializedNavigationDriverTest,
        SanitizeRestoresContainerMetadataAndPageState) {
   auto storage_partition_key = MakeContainerStoragePartitionKey();
-  auto url_prefix = GetUrlPrefixForSessionPersistence(storage_partition_key);
+  auto url_prefix = StoragePartitionKeyToUrlPrefix(storage_partition_key);
   ASSERT_TRUE(url_prefix.has_value());
 
   const GURL original_url("https://example.com/path?q=1");

@@ -1,5 +1,5 @@
 diff --git a/components/sessions/content/content_serialized_navigation_builder.cc b/components/sessions/content/content_serialized_navigation_builder.cc
-index a19395e46299c7c4cba3da7c7f635a2ad63e94d7..99c7dd1122003bfacc850208988a07d0df67bfa9 100644
+index a19395e46299c7c4cba3da7c7f635a2ad63e94d7..6174abbac03a5815607f47d20d9309c77bb9ac23 100644
 --- a/components/sessions/content/content_serialized_navigation_builder.cc
 +++ b/components/sessions/content/content_serialized_navigation_builder.cc
 @@ -22,6 +22,13 @@
@@ -34,7 +34,7 @@ index a19395e46299c7c4cba3da7c7f635a2ad63e94d7..99c7dd1122003bfacc850208988a07d0
 +            entry->GetStoragePartitionKeyToRestore()) {
 +      // Generate the URL prefix (e.g., "containers+<uuid>:") if it's a valid
 +      // container storage partition key.
-+      if (auto url_prefix = containers::GetUrlPrefixForSessionPersistence(
++      if (auto url_prefix = containers::StoragePartitionKeyToUrlPrefix(
 +              *storage_partition_key_to_restore)) {
 +        // Store both the prefix and the raw partition key in the
 +        // SerializedNavigationEntry. The prefix will be used by

@@ -51,7 +51,7 @@ namespace containers {
 //
 // Serialization flow:
 // 1. Tab is saved (closing, browser exit, or sync).
-// 2. `GetUrlPrefixForSessionPersistence()` creates prefix (e.g.,
+// 2. `StoragePartitionKeyToUrlPrefix()` creates prefix (e.g.,
 //    "containers+<uuid>:").
 // 3. Prefix is prepended to URLs in SerializedNavigationEntry and PageState.
 // 4. SerializedNavigationEntry is written to disk/sync.
@@ -91,11 +91,11 @@ struct COMPONENT_EXPORT(CONTAINERS_CONTENT_BROWSER)
 // storage partition key, returns a URL prefix that can be prepended to URLs in
 // SerializedNavigationEntry and PageState during session serialization.
 COMPONENT_EXPORT(CONTAINERS_CONTENT_BROWSER)
-std::optional<std::string> GetUrlPrefixForSessionPersistence(
+std::optional<std::string> StoragePartitionKeyToUrlPrefix(
     const std::pair<std::string, std::string>& storage_partition_key);
 
 // Extracts container storage partition info from an encoded URL. This is the
-// inverse of `GetUrlPrefixForSessionPersistence()`. Given a URL with an encoded
+// inverse of `StoragePartitionKeyToUrlPrefix()`. Given a URL with an encoded
 // container prefix, extracts the storage partition key (partition_domain,
 // partition_name) and the original URL (https://example.com).
 COMPONENT_EXPORT(CONTAINERS_CONTENT_BROWSER)
