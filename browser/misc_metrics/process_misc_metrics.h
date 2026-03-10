@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "base/memory/weak_ptr.h"
 #include "build/build_config.h"
 
 class PrefRegistrySimple;
@@ -51,10 +50,9 @@ class ProcessMiscMetrics {
 #endif
   DefaultBrowserMonitor* default_browser_monitor();
   UptimeMonitorImpl* uptime_monitor();
+  MediaSessionMetrics* media_session_metrics();
 
  private:
-  void InitMediaSessionMetrics(PrefService* local_state);
-
 #if !BUILDFLAG(IS_ANDROID)
   std::unique_ptr<MenuMetrics> menu_metrics_;
   std::unique_ptr<NewTabMetrics> new_tab_metrics_;
@@ -68,7 +66,6 @@ class ProcessMiscMetrics {
   std::unique_ptr<DohMetrics> doh_metrics_;
   std::unique_ptr<UptimeMonitorImpl> uptime_monitor_;
   std::unique_ptr<MediaSessionMetrics> media_session_metrics_;
-  base::WeakPtrFactory<ProcessMiscMetrics> weak_ptr_factory_{this};
 };
 
 }  // namespace misc_metrics
