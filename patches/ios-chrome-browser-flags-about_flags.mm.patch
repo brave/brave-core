@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index 87ba7b6198f83ab89b6a564ff454778a71af1ac4..8ff099576b565f3e042eabe1adb3bc4dc24d9abc 100644
+index 7cb14f0a7c01cf2393af981487468d20d2c9bff6..6f2994e7d64c6647b208cedbdee6d70aab628b45 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
-@@ -1402,6 +1402,7 @@ const FeatureEntry::FeatureVariation kPageActionMenuIconVariations[] = {
+@@ -1389,6 +1389,7 @@ const FeatureEntry::FeatureVariation kAssistantContainerVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  constexpr auto kFeatureEntries = std::to_array<flags_ui::FeatureEntry>({

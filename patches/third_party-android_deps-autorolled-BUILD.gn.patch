@@ -1,5 +1,5 @@
 diff --git a/third_party/android_deps/autorolled/BUILD.gn b/third_party/android_deps/autorolled/BUILD.gn
-index caf7dfedbaf0c7713ecab765da053953f9c0c7a1..4f7484ca0f87eab6f87b752045f3240c5a3da61c 100644
+index bc92a8075afd8005280bb8a10239ec9124d5deb2..4e281b46294b7631a45ee207cac8173f35b5462d 100644
 --- a/third_party/android_deps/autorolled/BUILD.gn
 +++ b/third_party/android_deps/autorolled/BUILD.gn
 @@ -1082,6 +1082,7 @@ template("define_autorolled_targets") {

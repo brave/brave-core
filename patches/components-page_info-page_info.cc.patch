@@ -1,8 +1,8 @@
 diff --git a/components/page_info/page_info.cc b/components/page_info/page_info.cc
-index 4a9ce1fc25663077e84d7e5ad8f9a779a9f49396..c803fa4bd43173d1d6911759bdb6acb01d4c263f 100644
+index b947af03690c6978aad800e7409eb6f94fc11c4b..c286d819661014cd6d56969405f5080833862dce 100644
 --- a/components/page_info/page_info.cc
 +++ b/components/page_info/page_info.cc
-@@ -1383,6 +1383,7 @@ void PageInfo::PopulatePermissionInfo(PermissionInfo& permission_info,
+@@ -1384,6 +1384,7 @@ void PageInfo::PopulatePermissionInfo(PermissionInfo& permission_info,
  // second section, the default behavior used when no per-type exception applies.
  bool PageInfo::ShouldShowPermission(
      const PageInfo::PermissionInfo& info) const {

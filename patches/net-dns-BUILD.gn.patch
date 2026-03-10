@@ -1,8 +1,8 @@
 diff --git a/net/dns/BUILD.gn b/net/dns/BUILD.gn
-index c83337113e00bea81e6e79070ffd94b79a1d3162..e4b573648eb01250d26933fe732cf88d07d89cd5 100644
+index d8509119f1c9e527d2a89faad239e13dead54257..a20a3272b439e040919cb35896f88fe369bc4e52 100644
 --- a/net/dns/BUILD.gn
 +++ b/net/dns/BUILD.gn
-@@ -112,6 +112,7 @@ source_set("dns") {
+@@ -122,6 +122,7 @@ source_set("dns") {
      "test_dns_config_service.cc",
      "test_dns_config_service.h",
    ]
