@@ -342,57 +342,56 @@ class PlasterFileNeedsRegen(Exception):
     pass
 
 
-def apply():
-    """Applies all plaster files to brave.
+def get_plaster_files(
+        filepaths: Optional[list[str]] = None) -> list["PlasterFile"]:
+    """Returns plaster files matching the provided file paths.
+
+    If no file paths are provided, all plaster files are returned.
+    """
+    if not filepaths:
+        return PlasterFile.find_all()
+
+    expected_plaster_files = set()
+    for filepath in filepaths:
+        filepath = PurePath(filepath).as_posix()
+        if filepath.startswith('patches/') and filepath.endswith('.patch'):
+            base = filepath[len('patches/'):-len('.patch')]
+            plaster_relative = base.replace('-', '/') + '.toml'
+            plaster_path = f'rewrite/{plaster_relative}'
+            expected_plaster_files.add(plaster_path)
+        elif filepath.startswith('rewrite/') and filepath.endswith('.toml'):
+            expected_plaster_files.add(filepath)
+        else:
+            raise ValueError(f'Unexpected file path: {filepath}')
+
+    plaster_parent = Path(PLASTER_FILES_PATH).parent
+
+    # A set of candidate plaster files.
+    candidate_paths = sorted(plaster_parent / Path(path)
+                             for path in expected_plaster_files)
+
+    # TODO(https://github.com/brave/brave-browser/issues/46880): For now we
+    # discard any plaster file passed in that does not exist. At some point
+    # we will need a good answer of what to do once a plaster file is
+    # deleted, but for now no check is being implemented to not break
+    # git revert on presubmit checks.
+    return [PlasterFile(path) for path in candidate_paths if path.exists()]
+
+
+def apply(args):
+    """Applies plaster files to brave.
     """
     with terminal.with_status('Applying plaster files'):
-        # TODO(https://github.com/brave/brave-browser/issues/46880): Add support
-        # to call `apply` with a list of plaster files to apply, the same way
-        # `check` does.
-        plaster_files = PlasterFile.find_all()
+        plaster_files = get_plaster_files(getattr(args, 'filepaths', None))
         for plaster_file in plaster_files:
             console.log(f'Applying plaster file: {plaster_file.path}')
             plaster_file.apply()
 
 
 def check(args):
-    """Collects filepaths into a set and logs them (dummy implementation).
-    If a path is a patch file, convert it to its expected plaster file name.
-    Throws if a file does not match expectations.
-    If no filepaths are given, use all plaster files found.
+    """Checks whether plaster files need to be reapplied.
     """
-    expected_plaster_files = set()
-    if hasattr(args, 'filepaths') and args.filepaths:
-        for filepath in args.filepaths:
-            filepath = PurePath(filepath).as_posix()
-            if filepath.startswith('patches/') and filepath.endswith('.patch'):
-                base = filepath[len('patches/'):-len('.patch')]
-                plaster_relative = base.replace('-', '/') + '.toml'
-                plaster_path = f"rewrite/{plaster_relative}"
-                expected_plaster_files.add(plaster_path)
-            elif filepath.startswith('rewrite/') and filepath.endswith(
-                    '.toml'):
-                expected_plaster_files.add(filepath)
-            else:
-                raise ValueError(f"Unexpected file path: {filepath}")
-        plaster_parent = Path(PLASTER_FILES_PATH).parent
-
-        # A set of candidate plaster files.
-        candidate_paths = {
-            plaster_parent / Path(p)
-            for p in expected_plaster_files
-        }
-
-        # TODO(https://github.com/brave/brave-browser/issues/46880): For now we
-        # discard any plaster file passed in that does not exist. At some point
-        # we will need a good answer of what to do once a plaster file is
-        # deleted, but for now no check is being implemented to not break
-        # git revert on presubmit checks.
-        plaster_files = [
-            PlasterFile(path) for path in candidate_paths if path.exists()
-        ]
-    else:
-        plaster_files = PlasterFile.find_all()
+    plaster_files = get_plaster_files(getattr(args, 'filepaths', None))
 
     has_failure = False
     for plaster_file in plaster_files:
@@ -422,11 +421,14 @@ def main():
     # Add the 'apply' subparser
     apply_parser = subparsers.add_parser(
         'apply', help='Apply all plaster files to the sources in brave-core')
-    apply_parser.set_defaults(func=lambda args: apply())
+    apply_parser.add_argument('filepaths',
+                              nargs='*',
+                              help='Filepaths to apply')
+    apply_parser.set_defaults(func=apply)
 
     # Add the 'check' subparser
     check_parser = subparsers.add_parser(
-        'check', help='Check plaster files (dummy implementation)')
+        'check', help='Check that plaster files are applied to sources.')
     check_parser.add_argument('filepaths',
                               nargs='*',
                               help='Filepaths to check')
