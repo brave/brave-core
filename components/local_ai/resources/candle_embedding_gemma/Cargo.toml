@@ -2,6 +2,7 @@
 name = "candle_embedding_gemma"
 version = "0.1.0"
 edition = "2021"
+workspace = "../../../../third_party/wasm"
 
 [lib]
 crate-type = ["cdylib"]

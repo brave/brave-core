@@ -2,7 +2,7 @@
 replace-with = "vendored-sources"
 
 [source.vendored-sources]
-directory = "../vendor"
+directory = "../../../../third_party/wasm/vendor"
 
 [target.wasm32-unknown-unknown]
 rustflags = [

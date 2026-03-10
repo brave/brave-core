@@ -6,4 +6,4 @@
 export {
   Login,
   Registration,
-} from 'gen/brave/third_party/wasm/opaque_ke/bundler/pkg'
+} from 'gen/brave/components/brave_account/resources/opaque_ke/bundler/pkg'
