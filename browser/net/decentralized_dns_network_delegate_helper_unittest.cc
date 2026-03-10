@@ -35,7 +35,6 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/base/net_errors.h"
-#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -122,7 +121,6 @@ class DecentralizedDnsNetworkDelegateHelperTest : public testing::Test {
   network::TestURLLoaderFactory test_url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   raw_ptr<brave_wallet::JsonRpcService> json_rpc_service_ = nullptr;
-  data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   // For WeakPtr tests, store ownership of the request object
   std::unique_ptr<brave::BraveRequestInfo> owned_request_;
   base::test::ScopedFeatureList scoped_feature_list_;
