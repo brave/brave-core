@@ -65,7 +65,7 @@ void PsstUiDelegateImpl::Show(url::Origin origin,
 
   apply_changes_callback_ = std::move(apply_changes_callback);
   dialog_data_ = std::move(dialog_data);
-  origin_ = std::move(origin);
+  origin_ = origin;
   tasks_ = std::move(tasks);
 
   // Implementation for showing the consent dialog to the user.
@@ -73,7 +73,7 @@ void PsstUiDelegateImpl::Show(url::Origin origin,
 
   ui_presenter_->ShowInfoBar(
       base::BindOnce(&PsstUiDelegateImpl::OnUserAcceptedInfobar,
-                     weak_ptr_factory_.GetWeakPtr(), origin));
+                     weak_ptr_factory_.GetWeakPtr(), std::move(origin)));
 }
 
 void PsstUiDelegateImpl::UpdateTasks(
