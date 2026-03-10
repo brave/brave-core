@@ -7,8 +7,8 @@ on:
         required: true
         description: "Number of the PR from the fork"
       COMMIT_HASH:
-        required: true
-        description: "Commit hash of the PR"
+        required: false
+        description: "Commit hash of the PR (required unless PR author is in TRUSTED_BOT_AUTHORS)"
 
 permissions:
   contents: write
@@ -34,25 +34,49 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           PR_NUMBER: ${{ inputs.PR_NUMBER }}
           COMMIT_HASH: ${{ inputs.COMMIT_HASH }}
+          # Trusted bot accounts operated by Brave employees - commit hash is optional for these
+          # as the race condition risk is mitigated by the operator controlling the bot
+          TRUSTED_BOT_AUTHORS: "netzenbot"
         run: |
-          set -x
+          set -xeEo pipefail
+          shopt -s inherit_errexit
 
+          gh_pr_view=$(gh pr view "$PR_NUMBER" --json baseRefName,headRefName,headRefOid,headRepository,headRepositoryOwner,id,isCrossRepository,url)
+
+          JQ=(jq -e -r)
+
+          # If commit hash not provided, fetch latest from PR (only allowed for trusted bots)
+          if [[ -z "$COMMIT_HASH" ]]; then
+            pr_author=$("${JQ[@]}" .headRepositoryOwner.login <<<"$gh_pr_view")
+            
+            # Check if PR author is in trusted bot authors list
+            is_trusted_bot="$(case " $TRUSTED_BOT_AUTHORS " in *" $pr_author "*) echo true;; *) echo false;; esac)"
+
+            if [[ "$is_trusted_bot" = true ]]; then
+              echo "Trusted bot author '$pr_author' - fetching latest commit hash from PR"
+              COMMIT_HASH=$("${JQ[@]}" .headRefOid <<<"$gh_pr_view")
+              echo "Using commit hash: $COMMIT_HASH"
+            else
+              echo "::error::COMMIT_HASH is required for PRs from non-trusted authors." >&2
+              echo "::error::PR author '$pr_author' is not in TRUSTED_BOT_AUTHORS list: $TRUSTED_BOT_AUTHORS" >&2
+              exit 1
+            fi
+          fi
+
+          # Validate commit hash format
           if ! grep -qix '[0-9a-f]\{40,40\}' <<<"$COMMIT_HASH"; then 
-            echo "Provide a full commit hash; got: $COMMIT_HASH"
+            echo "::error::Provide a full commit hash; got: $COMMIT_HASH" >&2
             exit 1
           fi
 
-          gh_pr_view=$(gh pr view "$PR_NUMBER" --json baseRefName,headRefName,headRepository,headRepositoryOwner,id,isCrossRepository,url)
+          baseRefName=$("${JQ[@]}" .baseRefName <<<"$gh_pr_view")
+          headRefName=$("${JQ[@]}" .headRefName <<<"$gh_pr_view")
+          headRepositoryName=$("${JQ[@]}" .headRepository.name <<<"$gh_pr_view")
+          headRepositoryOwnerLogin=$("${JQ[@]}" .headRepositoryOwner.login <<<"$gh_pr_view")
+          isCrossRepository=$("${JQ[@]}" .isCrossRepository <<<"$gh_pr_view")
+          url=$("${JQ[@]}" .url <<<"$gh_pr_view")
 
-          JQ="jq -e -r"
-          baseRefName=$($JQ ".baseRefName" <<<"$gh_pr_view")
-          headRefName=$($JQ ".headRefName" <<<"$gh_pr_view")
-          headRepositoryName=$($JQ ".headRepository.name" <<<"$gh_pr_view")
-          headRepositoryOwnerLogin=$($JQ ".headRepositoryOwner.login" <<<"$gh_pr_view")
-          isCrossRepository=$($JQ ".isCrossRepository" <<<"$gh_pr_view")
-          url=$($JQ ".url" <<<"$gh_pr_view")
-
-          [[ "$isCrossRepository" = "true" ]] || { echo "PR is not cross repo. Exiting!"; exit 1; }
+          [[ "$isCrossRepository" = true ]] || { echo "::error::PR is not cross repo. Exiting!" >&2; exit 1; }
 
           git remote add contributor "https://github.com/$headRepositoryOwnerLogin/$headRepositoryName.git" || :
           contribHeadRefName="contributor-$headRepositoryOwnerLogin-$headRefName"
