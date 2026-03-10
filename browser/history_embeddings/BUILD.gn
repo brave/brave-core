@@ -16,24 +16,37 @@ if (!is_android) {
       "//brave/browser/ui/tabs:tabs_public",
       "//chrome/browser/page_content_annotations",
       "//chrome/browser/profiles",
+      "//chrome/browser/ui/tabs:tabs_public",
       "//chrome/test:test_support",
       "//components/history_embeddings/core",
       "//components/page_content_annotations/content",
+      "//components/tabs:public",
       "//content/public/browser",
       "//content/test:test_support",
       "//net:test_support",
       "//testing/gtest",
     ]
   }
+}
 
-  source_set("unit_tests") {
-    testonly = true
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "brave_embedder_unittest.cc" ]
 
-    sources = [ "brave_page_content_extraction_tab_helper_unittest.cc" ]
+  deps = [
+    ":history_embeddings",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/local_ai/core:mojom",
+    "//components/passage_embeddings/core",
+    "//mojo/public/cpp/bindings",
+    "//testing/gtest",
+  ]
 
-    deps = [
-      ":history_embeddings",
-      "//base/test:test_support",
+  if (!is_android) {
+    sources += [ "brave_page_content_extraction_tab_helper_unittest.cc" ]
+
+    deps += [
       "//chrome/browser",
       "//chrome/test:test_support",
       "//components/optimization_guide/proto:optimization_guide_proto",
@@ -41,7 +54,6 @@ if (!is_android) {
       "//components/page_content_annotations/content",
       "//components/tabs:test_support",
       "//content/test:test_support",
-      "//testing/gtest",
     ]
   }
 }
