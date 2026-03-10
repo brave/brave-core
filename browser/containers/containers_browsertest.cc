@@ -19,6 +19,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
+#include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -1558,6 +1559,38 @@ IN_PROC_BROWSER_TEST_F(ContainersDisabledAfterRestoreBrowserTest,
   EXPECT_FALSE(local_storage_result.is_ok())
       << "Expected JS exception when accessing localStorage, but got: "
       << local_storage_result;
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       NewTabPageInheritsStoragePartitionConfig) {
+  const GURL new_tab_url(chrome::kChromeUINewTabURL);
+
+  // Open a new tab page with a container storage partition config
+  NavigateParams params(browser(), new_tab_url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser()->profile(), kContainersStoragePartitionDomain, "test-container",
+      browser()->profile()->IsOffTheRecord());
+  ui_test_utils::NavigateToURL(&params);
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents);
+
+  // Verify the storage partition config is set correctly
+  content::StoragePartition* storage_partition =
+      web_contents->GetPrimaryMainFrame()->GetStoragePartition();
+  ASSERT_TRUE(storage_partition);
+
+  content::StoragePartitionConfig expected_config =
+      content::StoragePartitionConfig::Create(
+          browser()->profile(), kContainersStoragePartitionDomain,
+          "test-container", browser()->profile()->IsOffTheRecord());
+
+  EXPECT_EQ(expected_config, storage_partition->GetConfig());
+  EXPECT_EQ("test-container", storage_partition->GetConfig().partition_name());
+  EXPECT_EQ(kContainersStoragePartitionDomain,
+            storage_partition->GetConfig().partition_domain());
 }
 
 }  // namespace containers
