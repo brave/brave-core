@@ -66,6 +66,11 @@ TimePeriodStorages BuildFakeTimePeriodStorages() {
                                    std::make_unique<FakeTimePeriodStore>(),
                                    kSerpMetricsTimePeriodInDays.Get(),
                                    /*should_offset_dst=*/false));
+  time_period_storages.emplace(SerpMetricType::kYouTube,
+                               std::make_unique<TimePeriodStorage>(
+                                   std::make_unique<FakeTimePeriodStore>(),
+                                   kSerpMetricsTimePeriodInDays.Get(),
+                                   /*should_offset_dst=*/false));
   return time_period_storages;
 }
 
@@ -224,6 +229,24 @@ TEST_F(SerpMetricsTest, NoOtherSearchCountForYesterday) {
             serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kOther));
 }
 
+TEST_F(SerpMetricsTest, NoYouTubeSearchCountForYesterday) {
+  // Day 0: Stale
+  serp_metrics_->RecordSearch(SerpMetricType::kYouTube);
+  serp_metrics_->RecordSearch(SerpMetricType::kYouTube);
+  AdvanceClockToNextDay();
+
+  // Day 1: Yesterday (no searches)
+  AdvanceClockToNextDay();
+
+  // Day 2: Today
+  serp_metrics_->RecordSearch(SerpMetricType::kYouTube);
+  serp_metrics_->RecordSearch(SerpMetricType::kYouTube);
+  serp_metrics_->RecordSearch(SerpMetricType::kYouTube);
+
+  EXPECT_EQ(
+      0U, serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kYouTube));
+}
+
 TEST_F(SerpMetricsTest, OtherSearchCountForYesterday) {
   // Day 0: Yesterday
   serp_metrics_->RecordSearch(SerpMetricType::kOther);
@@ -237,6 +260,21 @@ TEST_F(SerpMetricsTest, OtherSearchCountForYesterday) {
 
   EXPECT_EQ(2U,
             serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kOther));
+}
+
+TEST_F(SerpMetricsTest, YouTubeSearchCountForYesterday) {
+  // Day 0: Yesterday
+  serp_metrics_->RecordSearch(SerpMetricType::kYouTube);
+  serp_metrics_->RecordSearch(SerpMetricType::kYouTube);
+  AdvanceClockToNextDay();
+
+  // Day 1: Today
+  serp_metrics_->RecordSearch(SerpMetricType::kYouTube);
+  serp_metrics_->RecordSearch(SerpMetricType::kYouTube);
+  serp_metrics_->RecordSearch(SerpMetricType::kYouTube);
+
+  EXPECT_EQ(
+      2U, serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kYouTube));
 }
 
 TEST_F(SerpMetricsTest, SearchCountForYesterday) {
@@ -389,6 +427,27 @@ TEST_F(SerpMetricsTest, OtherSearchCountForStalePeriod) {
   serp_metrics_->RecordSearch(SerpMetricType::kOther);
   serp_metrics_->RecordSearch(SerpMetricType::kOther);
   serp_metrics_->RecordSearch(SerpMetricType::kOther);
+
+  EXPECT_EQ(2U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
+TEST_F(SerpMetricsTest, YouTubeSearchCountForStalePeriod) {
+  // Day 0: Stale
+  serp_metrics_->RecordSearch(SerpMetricType::kYouTube);
+  serp_metrics_->RecordSearch(SerpMetricType::kYouTube);
+  AdvanceClockToNextDay();
+
+  // Day 1: Yesterday
+  serp_metrics_->RecordSearch(SerpMetricType::kYouTube);
+  serp_metrics_->RecordSearch(SerpMetricType::kYouTube);
+  serp_metrics_->RecordSearch(SerpMetricType::kYouTube);
+  AdvanceClockToNextDay();
+
+  // Day 2: Today
+  serp_metrics_->RecordSearch(SerpMetricType::kYouTube);
+  serp_metrics_->RecordSearch(SerpMetricType::kYouTube);
+  serp_metrics_->RecordSearch(SerpMetricType::kYouTube);
+  serp_metrics_->RecordSearch(SerpMetricType::kYouTube);
 
   EXPECT_EQ(2U, serp_metrics_->GetSearchCountForStalePeriod());
 }

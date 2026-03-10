@@ -223,6 +223,12 @@ GURL BraveStatsUpdaterParams::GetUpdateURL(
                 serp_metrics::SerpMetricType::kOther)));
 
     update_url = net::AppendQueryParameter(
+        update_url, "youTubeSearch",
+        base::NumberToString(
+            serp_metrics_aggregator->GetSearchCountForYesterday(
+                serp_metrics::SerpMetricType::kYouTube)));
+
+    update_url = net::AppendQueryParameter(
         update_url, "staleSearch",
         base::NumberToString(
             serp_metrics_aggregator->GetSearchCountForStalePeriod()));
