@@ -12,7 +12,7 @@ import { getLocale, formatLocale } from '$web-common/locale'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import ActionTypeLabel from '../../../common/components/action_type_label'
 import * as Mojom from '../../../common/mojom'
-import { AIChatContext } from '../../state/ai_chat_context'
+import { AIChatContext, useAIChat } from '../../state/ai_chat_context'
 import { ConversationContext } from '../../state/conversation_context'
 import styles from './style.module.scss'
 import AttachmentButtonMenu from '../attachment_button_menu'
@@ -76,7 +76,6 @@ type Props = Pick<
     | 'processImageFile'
     | 'openAIChatAgentProfile'
     | 'skills'
-    | 'openURL'
   >
 
 export interface InputBoxProps {
@@ -107,6 +106,7 @@ function usePlaceholderText(
 }
 
 function InputBox(props: InputBoxProps) {
+  const aiChatContext = useAIChat()
   const querySubmitted = React.useRef(false)
   const attachmentWrapperRef = React.useRef<HTMLDivElement>(null)
   const [attachmentWrapperHeight, setAttachmentWrapperHeight] =
@@ -224,8 +224,8 @@ function InputBox(props: InputBoxProps) {
   const handleLearnMoreClicked = React.useCallback(() => {
     const mojomUrl = new Url()
     mojomUrl.url = LEARN_MORE_CONTENT_AGENT_URL
-    props.context.openURL(mojomUrl)
-  }, [props.context.openURL])
+    aiChatContext.api.uiHandler.openURL(mojomUrl)
+  }, [aiChatContext.api.uiHandler])
 
   return (
     <form

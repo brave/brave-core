@@ -71,7 +71,6 @@ const testContext: InputBoxProps['context'] = {
   selectedSkill: undefined,
   processImageFile: jest.fn(),
   skills: [],
-  openURL: () => {},
 }
 
 // Render InputBox and flush async state updates from usePromise.
