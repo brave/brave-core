@@ -3,9 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/containers/buildflags/buildflags.h"
+
 #include <components/sync_sessions/synced_session_unittest.cc>
 
 namespace sync_sessions {
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
 
 // Test that virtual_url_prefix is correctly prepended to virtual_url when
 // converting a SerializedNavigationEntry to sync protocol buffer.
@@ -82,5 +86,7 @@ TEST(SyncedSessionTest, VirtualUrlPrefixWithComplexUrl) {
   EXPECT_EQ(navigation.unique_id(), sync_data.unique_id());
   EXPECT_EQ(navigation.referrer_url().spec(), sync_data.referrer());
 }
+
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 }  // namespace sync_sessions

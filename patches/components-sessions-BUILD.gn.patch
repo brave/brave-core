@@ -1,5 +1,5 @@
 diff --git a/components/sessions/BUILD.gn b/components/sessions/BUILD.gn
-index ae3dde7d1e639cb7a3fbdf8022bfb5a7e816f937..9aa66b58fc393a51f0b342eb0114d11004fd55f7 100644
+index ae3dde7d1e639cb7a3fbdf8022bfb5a7e816f937..a43d5b3e44128effaab512b18963363a26c71cd0 100644
 --- a/components/sessions/BUILD.gn
 +++ b/components/sessions/BUILD.gn
 @@ -44,6 +44,7 @@ if (!is_ios) {
@@ -14,7 +14,7 @@ index ae3dde7d1e639cb7a3fbdf8022bfb5a7e816f937..9aa66b58fc393a51f0b342eb0114d110
      "//ui/gfx",
      "//url",
    ]
-+  import("//brave/components/sessions/sources.gni") deps += brave_components_sessions_shared_deps
++  import("//brave/components/sessions/sources.gni") public_deps += brave_components_sessions_shared_public_deps
  }
  
  static_library("test_support") {

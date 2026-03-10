@@ -5,10 +5,10 @@
 
 import("//brave/components/containers/buildflags/buildflags.gni")
 
-brave_components_sessions_deps = [ "//brave/components/containers/buildflags" ]
-
-brave_components_sessions_shared_deps =
+brave_components_sessions_shared_public_deps =
     [ "//brave/components/containers/buildflags" ]
+
+brave_components_sessions_deps = []
 
 if (enable_containers) {
   brave_components_sessions_deps += [
