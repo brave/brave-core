@@ -435,6 +435,9 @@ interface Metrics {
   // Notify metrics service that a full page prompt is being sent
   OnSendingPromptWithFullPage();
 
+  // Notify metrics service that a prompt is being sent from the NTP widget
+  OnSendingPromptWithNTP();
+
   // Notify metrics service if a quick action is being used
   OnQuickActionStatusChange(bool is_enabled);
 

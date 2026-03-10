@@ -281,9 +281,10 @@ TEST_F(AIChatMetricsUnitTest, AcquisitionSource) {
   ai_chat_metrics_->RecordOmniboxOpen();
   histogram_tester_.ExpectUniqueSample(kAcquisitionSourceHistogramName, 1, 1);
 
+  ai_chat_metrics_->OnSendingPromptWithNTP();
   ai_chat_metrics_->RecordEnabled(true, true, GetPremiumCallback());
   histogram_tester_.ExpectTotalCount(kAcquisitionSourceHistogramName, 2);
-  histogram_tester_.ExpectBucketCount(kAcquisitionSourceHistogramName, 0, 1);
+  histogram_tester_.ExpectBucketCount(kAcquisitionSourceHistogramName, 7, 1);
 }
 
 TEST_F(AIChatMetricsUnitTest, OmniboxOpens) {
@@ -421,11 +422,17 @@ TEST_F(AIChatMetricsUnitTest, MostUsedEntryPoint) {
       kMostUsedEntryPointHistogramName,
       static_cast<int>(EntryPoint::kBraveSearch), 1);
 
-  task_environment_.FastForwardBy(base::Days(7));
-  histogram_tester_.ExpectTotalCount(kMostUsedEntryPointHistogramName, 14);
+  for (size_t i = 0; i < 5; i++) {
+    ai_chat_metrics_->OnSendingPromptWithNTP();
+  }
+
+  histogram_tester_.ExpectBucketCount(kMostUsedEntryPointHistogramName, 7, 1);
 
   task_environment_.FastForwardBy(base::Days(7));
-  histogram_tester_.ExpectTotalCount(kMostUsedEntryPointHistogramName, 14);
+  histogram_tester_.ExpectTotalCount(kMostUsedEntryPointHistogramName, 19);
+
+  task_environment_.FastForwardBy(base::Days(7));
+  histogram_tester_.ExpectTotalCount(kMostUsedEntryPointHistogramName, 19);
 }
 
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)

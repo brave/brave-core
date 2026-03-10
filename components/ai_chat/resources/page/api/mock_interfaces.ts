@@ -261,6 +261,7 @@ export function createMockMetrics(
   overrides: Partial<Mojom.MetricsInterface> = {},
 ): Closable<Mojom.MetricsInterface> {
   return makeCloseable({
+    onSendingPromptWithNTP: () => {},
     onQuickActionStatusChange: () => {},
     onSendingPromptWithFullPage: () => {},
     recordSkillClick: () => {},
