@@ -2152,6 +2152,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VerticalTabLayoutInRTL) {
   ToggleVerticalTabStrip();
   ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
 
+  // Disable rounded corners as vertical tab is 1px-off when it's on right-side.
+  // This could make this test flaky.
+  // https://github.com/brave/brave-browser/issues/53498
+  browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, false);
+
   auto* widget_delegate_view =
       browser_view()->vertical_tab_strip_widget_delegate_view_.get();
   ASSERT_TRUE(widget_delegate_view);
@@ -2191,6 +2196,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VerticalTabLayoutInRTL) {
   // --- Tab strip on right (kVerticalTabsOnRight = true) ---
   prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, true);
   ASSERT_TRUE(tabs::utils::IsVerticalTabOnRight(browser()));
+
+  // Put sidebar on left to make vertical alone on right-side.
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
+  browser_view()->InvalidateLayout();
   RunScheduledLayouts();
 
   // Tab strip should appear on the right, contents to its left.
