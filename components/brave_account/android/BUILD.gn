@@ -36,3 +36,9 @@ static_library("features") {
     "//brave/components/brave_account/android:features_jni_headers",
   ]
 }
+
+java_cpp_strings("brave_account_constants_srcjar") {
+  sources = [ "//brave/components/brave_account/brave_account_constants.h" ]
+
+  class_name = "org.chromium.components.brave_account.BraveAccountConstants"
+}

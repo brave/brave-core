@@ -52,6 +52,7 @@ void BraveAccountUIMessageHandler::OnDialogCloseMessage(
 
 BraveAccountUIAndroid::BraveAccountUIAndroid(content::WebUI* web_ui)
     : BraveAccountUIBase(Profile::FromWebUI(web_ui),
+                         web_ui->GetWebContents()->GetVisibleURL(),
                          base::BindOnce(&webui::SetupWebUIDataSource)),
       WebUIController(web_ui) {
   web_ui->AddMessageHandler(std::make_unique<BraveAccountUIMessageHandler>());
