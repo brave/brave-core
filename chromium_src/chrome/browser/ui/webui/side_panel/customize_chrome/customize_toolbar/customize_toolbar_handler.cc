@@ -40,19 +40,26 @@
 
 void CustomizeToolbarHandler::ListCategories(ListCategoriesCallback callback) {
   ListCategories_ChromiumImpl(
-      base::BindOnce(
-          &customize_chrome::AppendBraveSpecificCategories,
-          base::Unretained(base::raw_ref<content::WebContents>(*web_contents_)))
+      base::BindOnce(&customize_chrome::AppendBraveSpecificCategories,
+                     web_contents_.get())
           .Then(std::move(callback)));
 }
 
 void CustomizeToolbarHandler::ListActions(ListActionsCallback callback) {
+  if (!webui::GetBrowserWindowInterface(web_contents_)) {
+    // This can happen if the web contents is shutting down. Upstream code is
+    // has this check already.
+    // https://github.com/brave/brave-browser/issues/53404
+    std::move(callback).Run(
+        std::vector<side_panel::customize_chrome::mojom::ActionPtr>());
+    return;
+  }
+
   ListActions_ChromiumImpl(
       base::BindOnce(&customize_chrome::FilterUnsupportedChromiumActions)
-          .Then(base::BindOnce(
-              &customize_chrome::ApplyBraveSpecificModifications,
-              base::Unretained(
-                  base::raw_ref<content::WebContents>(*web_contents_))))
+          .Then(
+              base::BindOnce(&customize_chrome::ApplyBraveSpecificModifications,
+                             web_contents_.get()))
           .Then(std::move(callback)));
 }
 
