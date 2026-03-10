@@ -1,0 +1,337 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+'use strict'
+
+const { gnConfig, gnRule } = require('../commands/lib/gnConfigRegistry')
+
+const isCI =
+  process.env.BUILD_ID !== undefined ||
+  process.env.TEAMCITY_VERSION !== undefined
+
+// ── Defaults ───────────────────────────────────────────────
+
+gnConfig('brave_defaults', {
+  isDefault: true,
+  args: {
+    disable_fieldtrial_testing_config: true,
+    root_extra_deps: ['//brave'],
+    translate_genders: false,
+    enable_precompiled_headers: false,
+    enable_pseudolocales: false,
+    ignore_missing_widevine_signing_cert: false,
+  },
+})
+
+// ── Shared non‑iOS (blink + branding) ──────────────────────
+
+gnConfig('blink_platform_defaults', {
+  args: {
+    proprietary_codecs: true,
+    ffmpeg_branding: 'Chrome',
+    enable_glic: false,
+    enable_widevine: true,
+  },
+})
+
+gnConfig('branding_defaults', {
+  group: 'branding',
+  isDefault: true,
+  args: {
+    branding_path_component: 'brave',
+    branding_path_product: 'brave',
+  },
+})
+
+gnConfig('branding_origin', {
+  group: 'branding',
+  args: {
+    branding_path_component: 'brave_origin',
+    branding_path_product: 'brave_origin',
+  },
+})
+
+// ── Platform args (per‑target .gni equivalents) ────────────
+
+gnConfig('android_platform_args', {
+  args: {
+    safe_browsing_mode: 2,
+    enable_mdns: true,
+    disable_android_lint: false,
+  },
+})
+
+// Android conditionals: output format, channel/package defaults, CI secondary_abi and static_analysis
+gnConfig('android_extra_args', {
+  args: ({ has }) => {
+    const a = {}
+    a.target_android_output_format = has('release') ? 'aab' : 'apk'
+    if (!has('release')) {
+      a.android_channel = 'default'
+      a.chrome_public_manifest_package = 'com.brave.browser_default'
+    }
+    if (
+      (has('arm64') || has('x64')) &&
+      has('ci') &&
+      !has('release')
+    ) {
+      a.enable_android_secondary_abi = true
+    }
+    if (has('ci') && !has('release')) {
+      a.android_static_analysis = 'on'
+    }
+    return a
+  },
+})
+
+gnConfig('desktop_platform_args', {
+  args: {
+    safe_browsing_mode: 1,
+  },
+})
+
+// Mac-only: key storage; use_system_xcode = false when hermetic xcode available (wrapper may override)
+gnConfig('mac_platform_args', {
+  args: {
+    allow_runtime_configurable_key_storage: true,
+    use_system_xcode: false,
+  },
+})
+
+// Linux-only: symbol_level = 1 for x86 or static non-release; use_vaapi for non-x86
+gnConfig('linux_extra_args', {
+  args: ({ has }) => {
+    const a = {}
+    if (has('linux') && !has('x86')) a.use_vaapi = true
+    if (
+      has('linux') &&
+      (has('x86') || (has('static') && !has('release')))
+    ) {
+      a.symbol_level = 1
+    }
+    return a
+  },
+})
+
+gnConfig('ios_platform_args', {
+  args: ({ has }) => ({
+    ios_enable_code_signing: false,
+    ios_enable_share_extension: false,
+    ios_enable_credential_provider_extension: true,
+    ios_enable_widget_kit_extension: false,
+    use_partition_alloc_as_malloc: false,
+    enable_backup_ref_ptr_support: false,
+    ios_provider_target: '//brave/ios/browser/providers:brave_providers',
+    ios_locales_pack_extra_source_patterns: [
+      '%root_gen_dir%/components/brave_components_strings_',
+    ],
+    ios_locales_pack_extra_deps: ['//brave/components/resources:strings'],
+    enable_run_ios_unittests_with_xctest: true,
+    is_component_build: false,
+    ...(!has('release') ? { enable_dsyms: true } : {}),
+  }),
+})
+
+// ── Target OS ──────────────────────────────────────────────
+
+gnConfig('android', {
+  group: 'target_os',
+  configs: [
+    'blink_platform_defaults',
+    'branding_defaults',
+    'android_platform_args',
+    'android_extra_args',
+  ],
+  args: { target_os: 'android' },
+})
+
+gnConfig('mac', {
+  group: 'target_os',
+  isDefault: process.platform === 'darwin',
+  configs: [
+    'blink_platform_defaults',
+    'branding_defaults',
+    'desktop_platform_args',
+    'mac_platform_args',
+  ],
+  args: { target_os: 'mac' },
+})
+
+gnConfig('linux', {
+  group: 'target_os',
+  isDefault: process.platform === 'linux',
+  configs: [
+    'blink_platform_defaults',
+    'branding_defaults',
+    'desktop_platform_args',
+    'linux_extra_args',
+  ],
+  args: { target_os: 'linux' },
+})
+
+gnConfig('win', {
+  group: 'target_os',
+  isDefault: process.platform === 'win32',
+  configs: [
+    'blink_platform_defaults',
+    'branding_defaults',
+    'desktop_platform_args',
+  ],
+  args: { target_os: 'win' },
+})
+
+gnConfig('ios', {
+  group: 'target_os',
+  configs: ['ios_platform_args'],
+  args: { target_os: 'ios' },
+})
+
+// ── Target CPU ─────────────────────────────────────────────
+
+gnConfig('x64', {
+  group: 'target_cpu',
+  isDefault: process.arch === 'x64',
+  args: { target_cpu: 'x64' },
+})
+
+gnConfig('x86', {
+  group: 'target_cpu',
+  args: { target_cpu: 'x86' },
+})
+
+gnConfig('arm64', {
+  group: 'target_cpu',
+  isDefault: process.arch === 'arm64',
+  args: { target_cpu: 'arm64' },
+})
+
+// ── Build type ─────────────────────────────────────────────
+
+gnConfig('static', {
+  group: 'link_type',
+  args: { is_component_build: false },
+})
+
+gnConfig('component', {
+  group: 'link_type',
+  isDefault: true,
+  args: {
+    is_component_build: true,
+    chrome_pgo_phase: 0,
+    enable_mojom_message_id_scrambling: false,
+  },
+})
+
+gnConfig('debug', {
+  group: 'build_type',
+  args: ({ has }) => {
+    const base = {
+      is_debug: true,
+      symbol_level: 2,
+      chrome_pgo_phase: 0,
+      enable_mojom_message_id_scrambling: false,
+    }
+    if (has('static') && (has('mac') || has('linux') || has('win'))) {
+      base.enable_profiling = true
+    }
+    return base
+  },
+})
+
+gnConfig('release', {
+  group: 'build_type',
+  configs: ['static'],
+  args: ({ has }) => {
+    const base = {
+      is_debug: false,
+      is_official_build: true,
+      symbol_level: 1,
+      enable_updater: true,
+      enable_update_notifications: true,
+    }
+    if (has('linux')) base.use_debug_fission = true
+    return base
+  },
+})
+
+// ── Sanitizers ─────────────────────────────────────────────
+
+gnConfig('asan', {
+  args: ({ has }) => ({
+    is_asan: true,
+    enable_full_stack_frames_for_profiling: true,
+    v8_enable_verify_heap: true,
+    dcheck_always_on: false,
+    ...(has('android') ? { enable_java_asserts: false } : {}),
+  }),
+})
+
+gnConfig('lsan', {
+  configs: ['asan'],
+  args: ({ has }) =>
+    has('linux') ? { is_lsan: true } : {},
+})
+
+gnConfig('ubsan', {
+  args: ({ has }) => ({
+    is_ubsan: true,
+    is_ubsan_vptr: true,
+    is_ubsan_no_recover: true,
+    dcheck_always_on: false,
+    ...(has('android') ? { enable_java_asserts: false } : {}),
+  }),
+})
+
+gnConfig('msan', {
+  args: ({ has }) => ({
+    is_msan: true,
+    dcheck_always_on: false,
+    ...(has('android') ? { enable_java_asserts: false } : {}),
+  }),
+})
+
+// ── Environment ────────────────────────────────────────────
+
+gnConfig('ci', {
+  isDefault: isCI,
+  args: ({ has }) =>
+    has('mac') || has('linux') || has('win')
+      ? { devtools_skip_typecheck: false }
+      : {},
+})
+
+// ── Presets (compound configs) ────────────────────────────────
+
+gnConfig('ci_pr_android_arm64', {
+  configs: ['android', 'arm64', 'static', 'ci'],
+})
+
+gnConfig('dev_android', {
+  configs: ['android', 'arm64', 'debug'],
+})
+
+gnConfig('dev_desktop', {
+  configs: ['component', 'debug'],
+})
+
+// ── Validation rules ────────────────────────────────────────
+
+gnRule('android requires target_cpu', (args) => {
+  if (args.target_os === 'android' && !args.target_cpu) {
+    throw new Error('Android builds must specify target_cpu')
+  }
+})
+
+gnRule('official builds are not debug', (args) => {
+  if (args.is_official_build && args.is_debug) {
+    throw new Error('Official builds must not have is_debug = true')
+  }
+})
+
+gnRule('iOS requires static linking', (args) => {
+  if (args.target_os === 'ios' && args.is_component_build) {
+    throw new Error('iOS builds must use static linking')
+  }
+})
