@@ -344,6 +344,7 @@
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_DEPOSIT" desc="Account list item Deposit button">Deposit</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_REMOVE" desc="Account list item Remove button">Remove</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS" desc="Account settings label">Account settings</message>
+  <message name="IDS_BRAVE_WALLET_LAST_UPDATED_AGO" desc="Tooltip showing how long ago prices were last updated, e.g. Last updated 5m ago">Last updated <ph name="TIME_AGO"><ex>5m</ex>$1</ph> ago</message>
   <message name="IDS_BRAVE_WALLET_NO_AVAILABLE_ASSETS" desc="No availible assets title on the portfolio page">No available assets</message>
   <message name="IDS_BRAVE_WALLET_NO_AVAILABLE_ASSETS_DESCRIPTION" desc="No availible assets description on the portfolio page">Deposit or purchase tokens to get started. If you don't see tokens from an imported account, check the filters and display settings. Unknown tokens may need to be added as custom assets.</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_SHOW_KEY" desc="Account settings modal show key button">Show key</message>
