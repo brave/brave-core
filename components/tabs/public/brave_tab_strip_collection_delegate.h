@@ -8,6 +8,11 @@
 
 #include "base/types/pass_key.h"
 #include "brave/components/tabs/public/brave_tab_strip_collection.h"
+#include "components/split_tabs/split_tab_id.h"
+
+namespace split_tabs {
+class SplitTabVisualData;
+}  // namespace split_tabs
 
 namespace tabs {
 
@@ -42,6 +47,13 @@ class BraveTabStripCollectionDelegate {
       std::optional<tab_groups::TabGroupId> new_group_id,
       bool new_pinned_state,
       const TabCollection::TypeEnumSet retain_collection_types) const = 0;
+
+  // Handles CreateSplit when tabs are in different parent collections (e.g.
+  // different tree nodes). Returns true if handled, false to use default path.
+  virtual bool CreateSplit(
+      split_tabs::SplitTabId split_id,
+      const std::vector<TabInterface*>& tabs,
+      split_tabs::SplitTabVisualData visual_data) const;
 
  protected:
   base::PassKey<BraveTabStripCollectionDelegate> GetPassKey() const;

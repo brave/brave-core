@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/tabs/brave_tree_tab_strip_collection_delegate.h"
 
+#include <algorithm>
 #include <variant>
 
 #include "base/containers/adapters.h"
@@ -13,6 +14,8 @@
 #include "base/notimplemented.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
+#include "components/split_tabs/split_tab_visual_data.h"
+#include "components/tabs/public/split_tab_collection.h"
 #include "components/tabs/public/tab_collection.h"
 #include "components/tabs/public/tab_interface.h"
 #include "components/tabs/public/unpinned_tab_collection.h"
@@ -418,4 +421,74 @@ BraveTreeTabStripCollectionDelegate::GetAttachableCollectionForTreeTabNode(
     CHECK(attachable_collection);
   }
   return attachable_collection;
+}
+
+bool BraveTreeTabStripCollectionDelegate::CreateSplit(
+    split_tabs::SplitTabId split_id,
+    const std::vector<tabs::TabInterface*>& tabs,
+    split_tabs::SplitTabVisualData visual_data) const {
+  if (tabs.size() < 2) {
+    return false;
+  }
+
+  tabs::TabCollection* parent0 =
+      collection_->GetParentCollection(tabs[0], GetPassKey());
+  const bool same_parent = std::ranges::all_of(
+      tabs, [this, parent0](tabs::TabInterface* tab) {
+        return collection_->GetParentCollection(tab, GetPassKey()) == parent0;
+      });
+  if (same_parent) {
+    return false;
+  }
+
+  // Use first tab's tree node position for insertion.
+  tabs::TreeTabNodeTabCollection* first_tree_node =
+      GetParentTreeNodeCollectionOfTab(tabs[0]);
+  tabs::TabCollection* insert_parent = first_tree_node->GetParentCollection();
+  size_t insert_index =
+      insert_parent->GetIndexOfCollection(first_tree_node).value();
+
+  // Get recursive indices to remove higher index first (avoids index shift).
+  const size_t index0 = *collection_->GetIndexOfTabRecursive(tabs[0]);
+  const size_t index1 = *collection_->GetIndexOfTabRecursive(tabs[1]);
+  tabs::TabInterface* first_tab = tabs[0];
+  tabs::TabInterface* second_tab = tabs[1];
+  if (index1 > index0) {
+    std::swap(first_tab, second_tab);
+  }
+  // Remove higher recursive index first so insert_index stays valid.
+  std::vector<std::unique_ptr<tabs::TabInterface>> removed_tabs(2);
+  for (tabs::TabInterface* tab : {second_tab, first_tab}) {
+    tabs::TreeTabNodeTabCollection* tree_node =
+        GetParentTreeNodeCollectionOfTab(tab);
+    MoveChildrenOfTreeTabNodeToParent(tree_node);
+    std::unique_ptr<tabs::TabInterface> removed = tree_node->MaybeRemoveTab(tab);
+    tabs::TabCollection* owner = tree_node->GetParentCollection();
+    std::ignore = owner->MaybeRemoveCollection(tree_node);
+    // Store in original order: tabs[0] at 0, tabs[1] at 1.
+    const size_t orig_idx = (tab == tabs[0]) ? 0u : 1u;
+    removed_tabs[orig_idx] = std::move(removed);
+  }
+
+  // Create split and add both tabs in original order.
+  auto split = std::make_unique<tabs::SplitTabCollection>(split_id, visual_data);
+  split->AddTab(std::move(removed_tabs[0]), 0);
+  split->AddTab(std::move(removed_tabs[1]), 1);
+
+  // Wrap split in a single tree node and insert at the original position.
+  auto wrapper = std::make_unique<tabs::TreeTabNodeTabCollection>(
+      tree_tab::TreeTabNodeId::GenerateNew(), std::move(split),
+      base::BindRepeating(&TreeTabModel::RemoveTreeTabNode, tree_tab_model_),
+      base::BindRepeating(&TreeTabModel::OnTreeTabNodeMoved, tree_tab_model_));
+
+  CHECK(tree_tab_model_);
+  tree_tab_model_->AddTreeTabNode(wrapper->node());
+
+  tabs::TabCollection::Position position = {insert_parent->GetHandle(),
+                                            insert_index};
+  collection_->AddTabCollectionAtPosition(
+      std::move(wrapper), position,
+      GetPassKey());
+
+  return true;
 }

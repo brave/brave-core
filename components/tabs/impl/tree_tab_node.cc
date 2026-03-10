@@ -18,9 +18,10 @@ namespace tabs {
 
 const TreeTabNode& TreeTabNode::GetEmptyTreeTabNode() {
   static base::NoDestructor<TreeTabNodeTabCollection>
-      empty_tree_tab_node_tab_collection(tree_tab::TreeTabNodeId::GenerateNew(),
-                                         nullptr, base::DoNothing(),
-                                         base::DoNothing());
+      empty_tree_tab_node_tab_collection(
+          tree_tab::TreeTabNodeId::GenerateNew(),
+          std::unique_ptr<TabInterface>(nullptr), base::DoNothing(),
+          base::DoNothing());
   return empty_tree_tab_node_tab_collection->node();
 }
 

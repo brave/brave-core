@@ -18,6 +18,7 @@
 #include "base/logging.h"
 #include "base/types/to_address.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
+#include "components/tabs/public/split_tab_collection.h"
 #include "components/tabs/public/tab_interface.h"
 
 namespace tabs {
@@ -113,6 +114,28 @@ TreeTabNodeTabCollection::TreeTabNodeTabCollection(
   current_value_ = current_tab->GetWeakPtr();
   CHECK(std::get<base::WeakPtr<tabs::TabInterface>>(*current_value_));
   AddTab(std::move(current_tab), 0);
+}
+
+TreeTabNodeTabCollection::TreeTabNodeTabCollection(
+    const tree_tab::TreeTabNodeId& tree_tab_node_id,
+    std::unique_ptr<tabs::TabCollection> current_collection,
+    base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
+    base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move)
+    : TabCollection(TabCollection::Type::TREE_NODE,
+                    /*supported_child_collections=*/
+                    {TabCollection::Type::SPLIT, TabCollection::Type::GROUP,
+                     TabCollection::Type::TREE_NODE},
+                    /*supports_tabs=*/true),
+      type_(CurrentValueType::kSplit),
+      on_remove_(std::move(on_remove)),
+      on_move_(std::move(on_move)),
+      node_(std::make_unique<TreeTabNode>(*this, tree_tab_node_id)) {
+  CHECK(!tree_tab_node_id.is_empty());
+  CHECK(current_collection);
+  CHECK_EQ(current_collection->type(), TabCollection::Type::SPLIT);
+  auto* split_ptr = static_cast<SplitTabCollection*>(current_collection.get());
+  current_value_ = split_ptr;
+  AddCollection(std::move(current_collection), 0);
 }
 
 TreeTabNodeTabCollection::~TreeTabNodeTabCollection() {

@@ -63,6 +63,16 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
       std::unique_ptr<tabs::TabInterface> current_tab,
       base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
       base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move);
+
+  // Overload that wraps an existing TabCollection (e.g. SplitTabCollection)
+  // as the current value of this tree node. Used when creating a split from
+  // tabs in different tree nodes.
+  TreeTabNodeTabCollection(
+      const tree_tab::TreeTabNodeId& tree_tab_node_id,
+      std::unique_ptr<tabs::TabCollection> current_collection,
+      base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
+      base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move);
+
   ~TreeTabNodeTabCollection() override;
 
   TreeTabNode& node() { return *node_; }
