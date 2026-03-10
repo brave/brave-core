@@ -60,12 +60,12 @@ TabSearchPageHandler::~TabSearchPageHandler() = default;
 #if BUILDFLAG(ENABLE_AI_CHAT)
 void TabSearchPageHandler::OnTabOrganizationFeaturePrefChanged(
     Profile* profile) {
-  page_->TabOrganizationEnabledChanged(
+  page_->TabFocusEnabledChanged(
       ai_chat::AIChatServiceFactory::GetForBrowserContext(profile) &&
       ai_chat::features::IsTabOrganizationEnabled() &&
       profile->GetPrefs()->GetBoolean(
           ai_chat::prefs::kBraveAIChatTabOrganizationEnabled));
-  page_->ShowFREChanged(!profile->GetPrefs()->HasPrefPath(
+  page_->TabFocusShowFREChanged(!profile->GetPrefs()->HasPrefPath(
       ai_chat::prefs::kBraveAIChatTabOrganizationEnabled));
 }
 
@@ -257,8 +257,15 @@ void TabSearchPageHandler::UndoFocusTabs(UndoFocusTabsCallback callback) {
 }
 
 void TabSearchPageHandler::OpenLeoGoPremiumPage() {
-  NavigateParams params(Profile::FromWebUI(web_ui_),
-                        GURL(ai_chat::kLeoGoPremiumUrl),
+  OpenURLInNewTab(GURL(ai_chat::kLeoGoPremiumUrl));
+}
+
+void TabSearchPageHandler::OpenLearnMorePage() {
+  OpenURLInNewTab(GURL(ai_chat::kTabOrganizationLearnMoreUrl));
+}
+
+void TabSearchPageHandler::OpenURLInNewTab(const GURL& url) {
+  NavigateParams params(Profile::FromWebUI(web_ui_), url,
                         ui::PageTransition::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   Navigate(&params);
@@ -291,6 +298,8 @@ void TabSearchPageHandler::UndoFocusTabs(UndoFocusTabsCallback callback) {
 }
 
 void TabSearchPageHandler::OpenLeoGoPremiumPage() {}
+
+void TabSearchPageHandler::OpenLearnMorePage() {}
 
 void TabSearchPageHandler::SetTabFocusEnabled() {}
 
