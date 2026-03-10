@@ -104,7 +104,7 @@ GURL NormalizeUrl(const GURL& url) {
 }  // namespace
 
 bool IsSameSearchQuery(const GURL& lhs, const GURL& rhs) {
-  if (lhs.host() == kStartpageUrlHost) {
+  if (lhs.host() == kStartpageUrlHost || rhs.host() == kStartpageUrlHost) {
     // For Startpage, we cannot determine whether two URLs represent the same
     // search results page, so these pages are always classified.
     return false;

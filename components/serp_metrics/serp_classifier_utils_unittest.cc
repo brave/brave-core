@@ -12,7 +12,7 @@
 namespace serp_metrics {
 
 TEST(SerpClassifierUtilsTest, IsAllowedSearchEngine) {
-  constexpr auto kAllowedSearchEngines =
+  constexpr auto kExpectedSearchEngines =
       base::MakeFixedFlatSet<SearchEngineType>(
           base::sorted_unique,
           {SEARCH_ENGINE_BING, SEARCH_ENGINE_GOOGLE, SEARCH_ENGINE_YAHOO,
@@ -23,7 +23,7 @@ TEST(SerpClassifierUtilsTest, IsAllowedSearchEngine) {
     const SearchEngineType search_engine_type =
         static_cast<SearchEngineType>(i);
     EXPECT_EQ(IsAllowedSearchEngine(search_engine_type),
-              kAllowedSearchEngines.contains(search_engine_type));
+              kExpectedSearchEngines.contains(search_engine_type));
   }
 }
 

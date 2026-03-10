@@ -657,13 +657,13 @@ TEST_F(SerpMetricsTest, ClearHistoryDoesNotRestoreClearedSearchCounts) {
             serp_metrics_->GetSearchCountForTesting(SerpMetricType::kBrave));
   AdvanceClockToNextDay();
 
-  // Day 2: Yesterday
+  // Day 1: Yesterday
   serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
   ASSERT_EQ(1U,
             serp_metrics_->GetSearchCountForTesting(SerpMetricType::kGoogle));
   AdvanceClockToNextDay();
 
-  // Day 3: Today
+  // Day 2: Today
   serp_metrics_->RecordSearch(SerpMetricType::kOther);
   ASSERT_EQ(1U,
             serp_metrics_->GetSearchCountForTesting(SerpMetricType::kOther));

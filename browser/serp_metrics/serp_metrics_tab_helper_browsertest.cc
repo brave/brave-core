@@ -133,7 +133,7 @@ class TestHttpsServerBuilder {
           http_response->set_code(http_status_code);
           http_response->set_content_type("text/html");
           const auto iter =
-              override_http_response_content.find(http_request.GetURL().path());
+              override_http_response_content.find(http_request.relative_url);
           if (iter != override_http_response_content.cend()) {
             // Override the default response content.
             http_response->set_content(iter->second);
@@ -348,6 +348,7 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, RecordForHttp5xxResponse) {
       GetWebContents(),
       https_server->GetURL("www.google.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
+
   EXPECT_EQ(
       1U, GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kGoogle));
 }

@@ -33,7 +33,6 @@ class SerpMetricsTabHelper final
 
   ~SerpMetricsTabHelper() override;
 
-  // static
   static void MaybeCreateForWebContents(content::WebContents* web_contents);
 
  private:

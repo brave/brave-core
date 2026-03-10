@@ -53,12 +53,21 @@ TEST(SerpClassifierTest, IsSameSearchQueryWithDifferentParamOrder) {
 TEST(SerpClassifierTest, IsNotSameSearchQuery) {
   EXPECT_FALSE(IsSameSearchQuery(
       GURL(R"(https://search.brave.com/search?q=foo&t=web)"),
-      GURL(R"(https://search.brave.com/search?q=bar&t=web")")));
+      GURL(R"(https://search.brave.com/search?q=bar&t=web)")));
 }
 
 TEST(SerpClassifierTest, IsNotSameSearchQueryWithInvalidUrl) {
   EXPECT_FALSE(IsSameSearchQuery(
       GURL(R"(https://search.brave.com/search?q=foobar)"), GURL("invalid")));
+}
+
+TEST(SerpClassifierTest, IsNotSameSearchQueryWithStartpage) {
+  EXPECT_FALSE(
+      IsSameSearchQuery(GURL(R"(https://www.startpage.com/sp/search)"),
+                        GURL(R"(https://www.startpage.com/sp/search)")));
+  EXPECT_FALSE(
+      IsSameSearchQuery(GURL(R"(https://search.brave.com/search?q=foobar)"),
+                        GURL(R"(https://www.startpage.com/sp/search)")));
 }
 
 TEST(SerpClassifierTest, OnlyClassifyAllowedSearchEngines) {

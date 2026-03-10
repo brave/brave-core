@@ -107,6 +107,7 @@ void SerpMetricsTabHelper::RecordSearchEngine(
     }
 
     default: {
+      // All other search engines are intentionally grouped together.
       serp_metrics_->RecordSearch(SerpMetricType::kOther);
       break;
     }
