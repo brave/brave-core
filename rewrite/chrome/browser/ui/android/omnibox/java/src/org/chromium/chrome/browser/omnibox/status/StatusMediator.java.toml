@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Show the Leo icon in the location bar when viewing chrome://leo-ai.
+[[substitution]]
+description = 'Show ic_leo_color icon for chrome://leo-ai pages'
+pattern = '''        } else if (mPermissionStatusHandler.isClapperQuietIconShowing()) {
+            return;
+        } else if (mSecurityIconRes != 0) {'''
+replace = '''        } else if (mPermissionStatusHandler.isClapperQuietIconShowing()) {
+            return;
+        } else if ("chrome".equals(mLocationBarDataProvider.getCurrentGurl().getScheme())
+                && "leo-ai".equals(mLocationBarDataProvider.getCurrentGurl().getHost())) {
+            icon = R.drawable.ic_social_leo_favicon_fullheight_color;
+        } else if (mSecurityIconRes != 0) {'''
