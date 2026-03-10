@@ -165,10 +165,6 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="9110294136812584522">त्रयस्थ कुकीजद्वारे Legacy Google साइन-इन वापरण्यासाठी साइट्स परवानगी मागू शकतात</translation>
 <translation id="2903783737778379345">त्रयस्थ कुकीजद्वारे Legacy Google साइन-इन वापरण्यासाठी साइट्सना परवानगी देऊ नका</translation>
 <translation id="6880817299303842099">त्रयस्थ कुकीजद्वारे Legacy Google साइन-इन वापरण्यासाठी साइट्सना परवानगी दिलेली आहे</translation>
-<translation id="2136412236435693622">Localhost प्रवेश</translation>
-<translation id="4172219483893066798">साइट्स localhost संसाधनांची प्राप्ती करण्याची विनंती करू शकतात</translation>
-<translation id="7181706637590665047">Localhost संसाधने प्राप्त करण्याची परवानगी देऊ नका</translation>
-<translation id="1485435696620658073">Localhost संसाधने प्राप्त करण्याची परवानगी दिलेली आहे</translation>
 <translation id="181905442828471321">Brave शील्ड्स जागतिक डिफॉल्ट्स</translation>
 <translation id="2675679258824361492">इतर गोपनीयता सेटिंग्ज</translation>
 <translation id="8026334261755873520">ब्राउझिंग डेटा साफ करा</translation>
@@ -423,6 +419,13 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="7141438739990875547">Bitcoin नेटवर्क्स</translation>
 <translation id="9055546041146396417">ही साइट बिघडलेली वाटत असेल, तर शील्ड्स बंद करून पाहा.</translation>
 <translation id="7898672232170410330">घटक अवरोधित करा</translation>
+<translation id="9064628362799094520">साइट डेटा नष्ट करायचा?</translation>
+<translation id="8949611615512336262">ऑटो नष्ट: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">साइट डेटा आता नष्ट करा</translation>
+<translation id="6795622376590884449">ऑटो नष्ट</translation>
+<translation id="7961015016161918242">कधीही नाही</translation>
+<translation id="1991004083507807299">साइट टॅब बंद केले</translation>
+<translation id="5827277414420724690">अ‍ॅप बंद</translation>
 <translation id="1209739344687072997">बिघडलेल्या साइटची माहिती द्या</translation>
 <translation id="8510478288840333677">शिल्ड्ससह ही साइट योग्यरीत्या कार्य करत नाही हे Brave च्या विकासकांना कळवा:</translation>
 <translation id="1653405824851871276">Brave ला सर्वांसाठी चांगले बनविण्याच्या मदतीबद्दल धन्यवाद. हा अहवाल फक्त या साइटची दुरुस्ती करण्यासाठी आवश्यक असलेली माहिती समाविष्ट करेल. <ph name="LEARN_MORE"/></translation>
@@ -1066,7 +1069,7 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="1336494649091412226">आपल्याला खात्री आहे की आपण Brave बंद करायचे आहे?</translation>
 <translation id="6061635824229591714">साइट डेटा नष्ट करायचा?</translation>
 <translation id="1265051174491933207">नष्ट केल्यास साइट डेटा हटवला जाईल आणि '<ph name="SITE_NAME"/>' या सर्व टॅब्स बंद केले जातील. हे कृती पूर्ववत करता येणार नाही.</translation>
-<translation id="4279349293084858577">नष्ट करा</translation>
+<translation id="5528772406060281700">साइट डेटा नष्ट करा</translation>
 <translation id="4426990318287827331">डेटा नष्ट करा</translation>
 <translation id="7942415993090181327">गप्पांचा इतिहास</translation>
 <translation id="6859935199732075666">सेफ ब्राउजिंग त्रुटी दाखवा</translation>

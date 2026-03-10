@@ -19,6 +19,7 @@
 <translation id="1544192797660353713">کیف پول</translation>
 <translation id="2361906291514218784">هوش مصنوعی Leo</translation>
 <translation id="8275068909952022340">بیشتر…</translation>
+<translation id="71316462802471551">ایمیل‌های مستعار</translation>
 <translation id="1990886731975529483">Google Widevine را نصب و اجرا کنید</translation>
 <translation id="8926389886865778422">دوباره سؤال نشود</translation>
 <translation id="4900351245762303149">Google Widevine را نصب کنید</translation>
@@ -203,7 +204,6 @@
 <translation id="253980346046488815">بستن تب‌های تکراری</translation>
 <translation id="8670218546624422041">در محفظه باز شود</translation>
 <translation id="8638526693050780542">مدیریت محفظه‌ها</translation>
-<translation id="7302999361397024774">نام‌گذاری برگه‌</translation>
 <translation id="2336228925368920074">نشانک‌گذاری همه برگه‌ها...</translation>
 <translation id="2523967823495420116">استفاده از زبانه‌های عمودی</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{بی‌صدا کردن برگه}one{بی‌صدا کردن برگه‌ها}other{بی‌صدا کردن برگه‌ها}}</translation>
@@ -214,7 +214,6 @@
 <translation id="2703180365855369896">بستن زبانه‌های تکراری</translation>
 <translation id="1987871867023021397">در «محفظه» باز شود</translation>
 <translation id="6745991613881384719">محفظه‌های جادویی</translation>
-<translation id="3917844427669888979">نام‌گذاری برگه‌</translation>
 <translation id="3704707436873245822">کپی کردن متن از تصویر</translation>
 <translation id="5268098808165185458">در حال کپی کردن متن از تصویر...</translation>
 <translation id="4046485130884276245">متن از تصویر کپی شد</translation>
@@ -512,6 +511,10 @@
 <translation id="1199170151481311646">تحلیل‌های حفظ حریم خصوصی</translation>
 <translation id="5990642573624858459">گزارش‌گیری آماری</translation>
 <translation id="2441719842399509963">بازنشانی به حالت پیش‌فرض</translation>
+<translation id="4530494379350999373">مبدأ</translation>
+<translation id="2964215604640804042">Brave Origin نسخهٔ پولی از مرورگر برای کاربرانی است که نیاز به تمام ویژگی‌هایی ندارند که Brave را به‌عنوان یک تجارت پشتیبانی می‌کنند، اما همچنان می‌خواهند از حریم خصوصی‌ای که تنها Brave ارائه می‌دهد بهره‌مند شوند. کاربران Brave Origin همچنان از حریم خصوصی برتر صنعت، مسدود کردن تبلیغات و سرعت (از طریق سپرهای Brave)، و همچنین به‌روزرسانی‌های نرم‌افزاری منظم، رقعه‌های Chromium و بهبودهای امنیتی و حریم خصوصی بهره‌مند خواهند شد. آن‌ها همچنین می‌توانند گزینهٔ غیرفعال‌سازی ویژگی‌هایی مانند AI، پاداش‌ها، کیف پول، VPN، دامنه‌های Web3 و موارد دیگر را باز کنند.</translation>
+<translation id="9130916892338379417">Brave Origin از طریق خرید یک‌باره در دسترس است. بر روی دستگاه‌های موبایل (Android و iOS) و رایانه، Origin می‌تواند به‌عنوان یک ارتقاء برای نسخهٔ انتشار موجود خریداری شود. بر روی رایانه، Origin همچنین به‌عنوان یک برنامهٔ مستقل و جداگانه در دسترس است. کاربران Origin یک پنل کنترلی جدید در منوی تنظیمات خواهند دید. ویژگی‌های موجود، و همچنین هر ویژگی جدیدی که در آینده ارسال کنیم، اینجا ظاهر می‌شود و به‌طور پیش‌فرض غیرفعال می‌شود.</translation>
+<translation id="7984508421152399880">اکنون بخرید</translation>
 <translation id="5567412479632285879">پاداش‌های Brave غیرفعال است</translation>
 <translation id="413570371620795359">برای فعال‌سازی و شروع، دریچه‌ی جوایز را باز کنید</translation>
 <translation id="1051600834033686945">تنظیمات کامل پاداش‌های Brave را باز کنید</translation>
@@ -554,7 +557,6 @@
 <translation id="5747552184818312860">تاریخ انقضا</translation>
 <translation id="3858860766373142691">نام</translation>
 <translation id="361106536627977100">داده‌های فلاش</translation>
-<translation id="4530494379350999373">مبدأ</translation>
 <translation id="8195027750202970175">اندازه روی دیسک</translation>
 <translation id="9116465289595958864">آخرین اصلاح</translation>
 <translation id="4590324241397107707">فضای ذخیره‌سازی پایگاه داده</translation>
@@ -587,11 +589,6 @@
 <translation id="2903783737778379345">«ورود به سیستم Google» قدیمی از طریق کوکی‌های شخص ثالث مجاز نیست</translation>
 <translation id="2570833232754279153">مجاز به استفاده از کوکی‌های شخص ثالث برای «ورود به سیستم Google» قدیمی نیست</translation>
 <translation id="6880817299303842099">مجاز به استفاده از کوکی های شخص ثالث برای Google Sign-In قدیمی است</translation>
-<translation id="2136412236435693622">دسترسی به میزبان محلی</translation>
-<translation id="4172219483893066798">سایت‌ها می‌توانند برای دسترسی به منابع میزبان محلی درخواست دهند</translation>
-<translation id="7181706637590665047">دسترسی به منابع میزبان محلی مجاز نشود</translation>
-<translation id="1336116824874668514">برای دسترسی به منابع میزبان محلی مجاز نیست</translation>
-<translation id="1485435696620658073">برای دسترسی به منابع میزبان محلی مجاز است</translation>
 <translation id="5794692721727586076">گپ هوش مصنوعی Leo</translation>
 <translation id="8115153008662981040">سایت‌ها ممکن است برای باز کردن گپ هوش مصنوعی Leo درخواست دهند</translation>
 <translation id="1145070115730668595">به سایت اجازه داده نشود که گپ هوش مصنوعی Leo را باز کند</translation>

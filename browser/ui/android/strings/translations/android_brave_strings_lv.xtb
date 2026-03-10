@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">Vietnes var lūgt izmantot pierakstīšanos ar Google, izmantojot trešo personu sīkfailus</translation>
 <translation id="2903783737778379345">Neatļaut pierakstīšanos ar Google, izmantojot trešo personu sīkfailus</translation>
 <translation id="6880817299303842099">Atļauts izmantot trešo personu sīkfailus, lai pierakstītos ar Google</translation>
-<translation id="2136412236435693622">Vietējā resursdatora piekļuve</translation>
-<translation id="4172219483893066798">Vietnes var pieprasīt piekļuvi vietējā resursdatora resursiem</translation>
-<translation id="7181706637590665047">Neļaut piekļuvi vietējā resursdatora resursiem</translation>
-<translation id="1485435696620658073">Atļaut piekļūt vietējā resursdatora resursiem</translation>
 <translation id="181905442828471321">Brave aizsargu globālie noklusējumi</translation>
 <translation id="2675679258824361492">Citi privātuma iestatījumi</translation>
 <translation id="8026334261755873520">Notīrīt pārlūkošanas datus</translation>
@@ -425,6 +421,13 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="7141438739990875547">Bitcoin tīkli</translation>
 <translation id="9055546041146396417">Ja šķiet, ka vietne nedarbojas, pamēģiniet izslēgt aizsargus.</translation>
 <translation id="7898672232170410330">Bloķēt elementu</translation>
+<translation id="9064628362799094520">Iznīcināt vietnes datus</translation>
+<translation id="8949611615512336262">Auto iznīcināšana: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Iznīcināt vietnes datus tūlīt</translation>
+<translation id="6795622376590884449">Auto iznīcināšana</translation>
+<translation id="7961015016161918242">Nekad</translation>
+<translation id="1991004083507807299">Vietnes cilne aizvērta</translation>
+<translation id="5827277414420724690">Lietotnes aizvēršana</translation>
 <translation id="1209739344687072997">Ziņot par bojātu vietni</translation>
 <translation id="8510478288840333677">Paziņojiet Brave izstrādātājiem, kad šī vietne ar aizsargiem nedarbojas pareizi:</translation>
 <translation id="1653405824851871276">Paldies, ka palīdzat padarīt Brave labāku. Šajā ziņojumā būs tikai tā informācija, kas nepieciešama, lai mēs šo vietni salabotu.<ph name="LEARN_MORE"/></translation>
@@ -1077,7 +1080,7 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="1336494649091412226">Vai tiešām vēlaties aizvērt Brave?</translation>
 <translation id="6061635824229591714">Iznīcināt vietnes datus?</translation>
 <translation id="1265051174491933207">Iznīcināšana izdzēsīs vietnes datus un aizvērs visas '<ph name="SITE_NAME"/>' cilnes. Šo darbību nevar atsaukt.</translation>
-<translation id="4279349293084858577">Iznīcināt</translation>
+<translation id="5528772406060281700">Iznīcināt vietnes datus</translation>
 <translation id="4426990318287827331">Iznīcināt datus</translation>
 <translation id="7942415993090181327">Tērzēšanas vēsture</translation>
 <translation id="6859935199732075666">Rādīt drošās pārlūkošanas kļūdas</translation>

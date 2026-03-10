@@ -19,6 +19,7 @@
 <translation id="1544192797660353713">वॉलेट</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">अधिक…</translation>
+<translation id="71316462802471551">ईमेल अलियासेस</translation>
 <translation id="1990886731975529483">गूगल वाइडवाइन इन्स्टॉल करा आणि चालू करा</translation>
 <translation id="8926389886865778422">पुन्हा विचारू नका</translation>
 <translation id="4900351245762303149">Google Widevine इन्स्टॉल करा</translation>
@@ -204,7 +205,6 @@
 <translation id="253980346046488815">डुप्लिकेट टॅब बंद करा</translation>
 <translation id="8670218546624422041">कंटेनरमध्ये उघडा</translation>
 <translation id="8638526693050780542">कंटेनर व्यवस्थापित करा</translation>
-<translation id="7302999361397024774">टॅबचे नाव बदला</translation>
 <translation id="2336228925368920074">सर्व टॅब बुकमार्क करा...</translation>
 <translation id="2523967823495420116">उभे टॅब्स वापरा</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{टॅब म्यूट करा}one{टॅब म्यूट करा}other{टॅब म्यूट करा}}</translation>
@@ -215,7 +215,6 @@
 <translation id="2703180365855369896">डुप्लिकेट टॅब बंद करा</translation>
 <translation id="1987871867023021397">कंटेनरमध्ये उघडा</translation>
 <translation id="6745991613881384719">कंटेनर व्यवस्थापित करा</translation>
-<translation id="3917844427669888979">Rename Tab</translation>
 <translation id="3704707436873245822">प्रतिमा मधून मजकूर कॉपी करा</translation>
 <translation id="5268098808165185458">प्रतिमा मधून मजकूर कॉपी करीत आहे...</translation>
 <translation id="4046485130884276245">प्रतिमा मधून मजकूर कॉपी केला</translation>
@@ -513,6 +512,10 @@
 <translation id="1199170151481311646">गोपनीयता जपणारे विश्लेषण</translation>
 <translation id="5990642573624858459">सांख्यिकी अहवाल</translation>
 <translation id="2441719842399509963">पूर्वनियतवर रीसेट करा</translation>
+<translation id="4530494379350999373">मूळ</translation>
+<translation id="2964215604640804042">Brave Origin हा browser चा एक paid version आहे ज्यांना Brave ला business म्हणून समर्थन देणारी सर्व वैशिष्ट्ये आवश्यक नाहीत असे users साठी, परंतु तरीही फक्त Brave द्वारा प्रदान केलेल्या privacy हवी असते. Brave Origin users आमच्या industry-leading privacy, adblock, आणि speed (Brave शील्ड्स द्वारे), तसेच नियमित software updates, Chromium patches, आणि security आणि privacy improvements चे लाभ घेणे सुरू ठेवतील. ते AI, Rewards, Wallet, VPN, Web3 domains, आणि आणखीन जास्त यासारख्या features अक्षम करण्याचा पर्याय देखील अनलॉक करतील.</translation>
+<translation id="9130916892338379417">Brave Origin one-time purchase द्वारे उपलब्ध आहे. मोबाईल (Android आणि iOS) आणि desktop वर, Origin तुमच्या existing release version मध्ये upgrade म्हणून खरेदी केली जाऊ शकते. Desktop वर, Origin एक separate, standalone app म्हणूनही उपलब्ध आहे. Origin users ला Settings menu मध्ये एक नवीन control panel दिसेल. Existing features—तसेच कोणतीही नवीन features आम्ही भविष्यात शिप करू—येथे दिसून येतील, आणि डिफॉल्टद्वारे toggle off केले जातील.</translation>
+<translation id="7984508421152399880">आत्ताच खरेदी करा</translation>
 <translation id="5567412479632285879">Brave रीवॉर्ड्स अक्षम आहे</translation>
 <translation id="413570371620795359">सुरू करण्यासाठी रीवॉर्ड्स पॅनेल उघडा</translation>
 <translation id="1051600834033686945">पूर्ण Brave रीवॉर्ड्स सेटिंग्ज उघडा</translation>
@@ -555,7 +558,6 @@
 <translation id="5747552184818312860">कालबाह्य होईल</translation>
 <translation id="3858860766373142691">नाव</translation>
 <translation id="361106536627977100">फ्लॅश डेटा</translation>
-<translation id="4530494379350999373">मूळ</translation>
 <translation id="8195027750202970175">डिस्क वरील आकार</translation>
 <translation id="9116465289595958864">अखेरचे सुधारित केले</translation>
 <translation id="4590324241397107707">डेटाबेस संचयन</translation>
@@ -588,11 +590,6 @@
 <translation id="2903783737778379345">त्रयस्थ कुकीजद्वारे Legacy Google साइन-इन वापरण्यासाठी साइट्सना परवानगी देऊ नका</translation>
 <translation id="2570833232754279153">त्रयस्थ कुकीजद्वारे Legacy Google साइन-इन वापरण्यासाठी साइट्सना परवानगी दिलेली नाही</translation>
 <translation id="6880817299303842099">त्रयस्थ कुकीजद्वारे Legacy Google साइन-इन वापरण्यासाठी साइट्सना परवानगी दिलेली आहे</translation>
-<translation id="2136412236435693622">Localhost प्रवेश</translation>
-<translation id="4172219483893066798">साइट्स localhost संसाधनांची प्राप्ती करण्याची विनंती करू शकतात</translation>
-<translation id="7181706637590665047">Localhost संसाधने प्राप्त करण्याची परवानगी देऊ नका</translation>
-<translation id="1336116824874668514">Localhost संसाधने प्राप्त करण्यास परवानगी दिलेली नाही</translation>
-<translation id="1485435696620658073">Localhost संसाधने प्राप्त करण्याची परवानगी दिलेली आहे</translation>
 <translation id="5794692721727586076">Leo AI चॅट</translation>
 <translation id="8115153008662981040">साइट Leo AI चॅट उघडण्यासाठी विचारू शकतात</translation>
 <translation id="1145070115730668595">साइटना Leo AI चॅट उघडण्याची परवानगी देऊ नका</translation>

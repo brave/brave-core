@@ -19,6 +19,7 @@
 <translation id="1544192797660353713">საფულე</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">მეტი…</translation>
+<translation id="71316462802471551">ელფოსტის ზედმეტსახელები</translation>
 <translation id="1990886731975529483">Google Widevine-ის ინსტალაცია და გააქტიურება</translation>
 <translation id="8926389886865778422">აღარ მკითხო</translation>
 <translation id="4900351245762303149">Google Widevine-ის ინსტალაცია და გააქტიურება</translation>
@@ -204,7 +205,6 @@
 <translation id="253980346046488815">დუბლირებული ტაბების დახურვა</translation>
 <translation id="8670218546624422041">გასახსნელი კონტეინერში</translation>
 <translation id="8638526693050780542">კონტეინერების მართვა</translation>
-<translation id="7302999361397024774">ტაბის გადარქმევა</translation>
 <translation id="2336228925368920074">ყველა ტაბის ჩანიშვნა...</translation>
 <translation id="2523967823495420116">ვერტიკალური ტაბების გამოყენება</translation>
 <translation id="3785071023202624850">{NUM_TABS, plural, =1 {Mute Tab} other {Mute Tabs}}</translation>
@@ -215,7 +215,6 @@
 <translation id="2703180365855369896">დუბლირებული გვერდების დახურვა</translation>
 <translation id="1987871867023021397">გახსნილი კონტეინერში</translation>
 <translation id="6745991613881384719">კონტეინერების მართვა</translation>
-<translation id="3917844427669888979">ტაბის გადარქმევა</translation>
 <translation id="3704707436873245822">ტექსტის კოპირება გამოსახულებიდან</translation>
 <translation id="5268098808165185458">ტექსტის კოპირება გამოსახულებიდან...</translation>
 <translation id="4046485130884276245">ტექსტი კოპირებულია გამოსახულებიდან</translation>
@@ -513,6 +512,10 @@
 <translation id="1199170151481311646">კონფიდენციალურობის დამცველი ანალიტიკა</translation>
 <translation id="5990642573624858459">სტატისტიკის გაგზავნა</translation>
 <translation id="2441719842399509963">ყველას დაბრუნება ნაგულისხმევად</translation>
+<translation id="4530494379350999373">წარმომავლობა</translation>
+<translation id="2964215604640804042">Brave Origin არის ব্রাউজერის გადახდილი ვერსია მომხმარებლებისთვის, რომლებიც არ სჭირდებათ ყველა ის ფუნქცია, რომელიც Brave-ს ბიზნესად მხარს უჭერს, მაგრამ მაინც სურთ Brave-ის მხოლოდ მისაც სთავაზო კონფიდენციალურობა. Brave Origin მომხმარებლები განაგრძობენ ჩვენი ინდუსტრიაში წამყვანი კონფიდენციალურობის, დაბლოკვის და სიჩქარის (Brave Shields-ის მეშვეობით) უპირატესობის გამოყენებას, ასევე რეგულარული პროგრამული განახლებების, Chromium პატჩებისა და უსაფრთხოების და კონფიდენციალურობის გაუმჯობესებების. ისინი ასევე განბლოკავენ ფუნქციების გამორთვის შესაძლებლობას, როგორიცაა AI, Rewards, Wallet, VPN, Web3 დომენები და სხვა.</translation>
+<translation id="9130916892338379417">Brave Origin ხელმისაწვდომია ერთჯერადი ყიდვის საშუალებით. მობილურზე (Android და iOS) და დესკტოპზე, Origin შეიძლება იყიდოთ როგორც განახლება თქვენი არსებული გამოშვების ვერსიაზე. დესკტოპზე, Origin ასევე ხელმისაწვდომია როგორც ცალკე, დამოუკიდებელი აპლიკაცია. Origin მომხმარებლები ხედავენ ახალ საკონტროლო პანელს Settings მენიუში. არსებული ფუნქციები—ასევე ნებისმიერი ახალი ფუნქცია, რომელსაც წარმოვიდგენთ მომავალში—აქ გამოჩნდებიან და ჩართვის შესაძლებლობა აღმოფხვრილი იქნება.</translation>
+<translation id="7984508421152399880">ახლავე ყიდვა</translation>
 <translation id="5567412479632285879">Brave Rewards გამორთულია</translation>
 <translation id="413570371620795359">გახსენით ჯილდოების პანელი გასააქტიურებლად და დასაწყებად</translation>
 <translation id="1051600834033686945">გახსენით სრული Brave Rewards პარამეტრები</translation>
@@ -555,7 +558,6 @@
 <translation id="5747552184818312860">ვადის გასვლა</translation>
 <translation id="3858860766373142691">სახელი</translation>
 <translation id="361106536627977100">Flash მონაცემები</translation>
-<translation id="4530494379350999373">წარმომავლობა</translation>
 <translation id="8195027750202970175">დისკზე ზომა</translation>
 <translation id="9116465289595958864">ბოლო ცვლილება</translation>
 <translation id="4590324241397107707">მონაცემთა ბაზის შენახვა</translation>
@@ -588,11 +590,6 @@
 <translation id="2903783737778379345">არ მისცეთ ნებართვა Google-ში შესვლაზე მესამე მხარის cookies-ების საშუალებით</translation>
 <translation id="2570833232754279153">მეორე მხარის cookies-ის გამოყენება Google Sign-In-ისთვის არათავმჯდომარე</translation>
 <translation id="6880817299303842099">ნებადართულია მესამე მხარის cookies-ების საშუალებით Google-ში შესვლა</translation>
-<translation id="2136412236435693622">Localhost-ის წვდომა</translation>
-<translation id="4172219483893066798">საიტებს შეუძლიათ ითხოვონ localhost-ის რესურსებზე წვდომა</translation>
-<translation id="7181706637590665047">არ მისცეთ localhost-ის რესურსებზე წვდომის ნებართვა</translation>
-<translation id="1336116824874668514">localhost-ის რესურსებზე წვდომის ნებართვა არ არის</translation>
-<translation id="1485435696620658073">ნებადართულია localhost-ის რესურსებზე წვდომა</translation>
 <translation id="5794692721727586076">Leo AI ჩატი</translation>
 <translation id="8115153008662981040">საიტები კითხვას მთხოვენ Leo AI ჩატის გახსნას</translation>
 <translation id="1145070115730668595">ნუ მისცემენ საიტებს უფლებას Leo AI ჩატის გახსნაზე</translation>

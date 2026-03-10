@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">Sites kunnen via cookies van derden vragen om een verouderd Google-inlogproces te gebruiken</translation>
 <translation id="2903783737778379345">Geef geen toestemming voor het gebruik van een verouderd Google-inlogproces via cookies van derden</translation>
 <translation id="6880817299303842099">Toestemming voor het gebruik van een verouderd Google-inlogproces via cookies van derden</translation>
-<translation id="2136412236435693622">Localhost-toegang</translation>
-<translation id="4172219483893066798">Sites kunnen toegang vragen tot localhost-resources</translation>
-<translation id="7181706637590665047">Geen toegang verlenen tot localhost-resources</translation>
-<translation id="1485435696620658073">Toegang tot localhost-resources toegestaan</translation>
 <translation id="181905442828471321">Standaardinstellingen van Brave Shields</translation>
 <translation id="2675679258824361492">Andere privacy-instellingen</translation>
 <translation id="8026334261755873520">Browsegegevens wissen</translation>
@@ -223,6 +219,7 @@
 <translation id="4225265925807365011">Ik heb een herstelzin van 24 woorden</translation>
 <translation id="3570367516044491911">Stel in als standaard browser</translation>
 <translation id="6800338374677644736">Instellen als standaardbrowser</translation>
+<translation id="1545749641540134597">Scan QR-code</translation>
 <translation id="5317781812114905957">Instructies</translation>
 <translation id="8515319483805157233">Om te zoeken via QR-code plaatst u de QR-code in het midden van het scherm.</translation>
 <translation id="7658239707568436148">Annuleren</translation>
@@ -421,6 +418,13 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="7141438739990875547">Bitcoin-netwerken</translation>
 <translation id="9055546041146396417">Als deze site niet lijkt te werken, probeer dan Shields uit te zetten.</translation>
 <translation id="7898672232170410330">Element blokkeren</translation>
+<translation id="9064628362799094520">Sitegegevens versnipperen</translation>
+<translation id="8949611615512336262">Automatische versnippering: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Versnipper sitegegevens nu</translation>
+<translation id="6795622376590884449">Automatische versnippering</translation>
+<translation id="7961015016161918242">Nooit</translation>
+<translation id="1991004083507807299">Tabbladen van site gesloten</translation>
+<translation id="5827277414420724690">App gesloten</translation>
 <translation id="1209739344687072997">Meld een gebroken site</translation>
 <translation id="8510478288840333677">Laat de ontwikkelaars van Brave weten dat deze site niet goed werkt met Shields:</translation>
 <translation id="1653405824851871276">Bedankt voor je hulp om Brave beter te maken voor iedereen. Dit rapport zal alleen informatie bevatten die we nodig hebben om deze site te herstellen. <ph name="LEARN_MORE"/></translation>
@@ -1072,7 +1076,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1336494649091412226">Weet je zeker dat je Brave wilt afsluiten?</translation>
 <translation id="6061635824229591714">Sitegegevens versnipperen?</translation>
 <translation id="1265051174491933207">Door de versnippering worden alle sitegegevens verwijderd en alle '<ph name="SITE_NAME"/>'-tabbladen gesloten. Deze actie kan niet ongedaan worden gemaakt.</translation>
-<translation id="4279349293084858577">Versnipperen</translation>
+<translation id="5528772406060281700">Sitegegevens versnipperen</translation>
 <translation id="4426990318287827331">Versnipper gegevens</translation>
 <translation id="7942415993090181327">Chatgeschiedenis</translation>
 <translation id="6859935199732075666">Safe Browsing-fouten weergeven</translation>

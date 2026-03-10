@@ -19,6 +19,7 @@
 <translation id="149054111719651807">{NUM_MINS,plural, =1{Δημιουργήθηκε πριν από <ph name="NUM_MINS_ONE"/> λεπτό}other{Δημιουργήθηκε πριν από <ph name="NUM_MINS_MANY"/> λεπτά}}</translation>
 <translation id="1501480321619201731">Διαγραφή ομάδας</translation>
 <translation id="1553638665176794706">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ανενεργό στοιχείο}other{<ph name="TABS_COUNT_MANY"/> ανενεργά στοιχεία}}</translation>
+<translation id="1568067597247500137">Σίγαση ιστοτόπου</translation>
 <translation id="1645759014353344461">Ομαδοποιήθηκαν <ph name="TABS_COUNT_MANY"/> καρτέλες</translation>
 <translation id="1657719826150349398">Μετακίνηση καρτέλας κάτω</translation>
 <translation id="1670942869417022142">Ήχος σε σίγαση</translation>
@@ -87,7 +88,6 @@
 <translation id="3849789634341518784">{TAB_COUNT,plural, =1{Ξεκαρφίτσωμα καρτέλας}other{Ξεκαρφίτσωμα καρτελών}}</translation>
 <translation id="3940195383040445971">Παρακολούθηση τιμών σε καρτέλες</translation>
 <translation id="3940717704786481856">{NUMBER_OF_TABS_ADDED,plural, =1{<ph name="ONE_ADDED"/> νέα καρτέλα, <ph name="ANY_CLOSED"/> έκλεισε}other{<ph name="MANY_ADDED"/> νέα καρτέλα, <ph name="ANY_CLOSED"/> έκλεισαν}}</translation>
-<translation id="3954615705217314756">{TABS_COUNT,plural, =1{Ομαδοποίηση καρτέλας}other{Ομαδοποίηση καρτελών}}</translation>
 <translation id="3962134438902735041">{TABS_COUNT,plural, =1{Ξεκαρφίτσωμα <ph name="TABS_COUNT_ONE"/> επιλεγμένης καρτέλας}other{Ξεκαρφίτσωμα <ph name="TABS_COUNT_MANY"/> επιλεγμένων καρτελών}}</translation>
 <translation id="4009732926939031387">{NUM_DAYS,plural, =1{Δημιουργήθηκε πριν από <ph name="NUM_DAYS_ONE"/> ημέρα}other{Δημιουργήθηκε πριν από <ph name="NUM_DAYS_MANY"/> ημέρες}}</translation>
 <translation id="4076226664360336092">Η λίστα ομάδων καρτελών άνοιξε σε πλήρες ύψος</translation>
@@ -143,6 +143,7 @@
 <translation id="6054741997831917303">Η τιμή αυτού του στοιχείου μειώθηκε πρόσφατα από <ph name="PREVIOUS_PRICE"/> σε <ph name="NEW_PRICE"/></translation>
 <translation id="606985262342505139">Φύλλο κάτω μέρους καρτέλας σε πλήρες ύψος</translation>
 <translation id="6109251075362363230">Από εδώ και στο εξής, όλες οι διπλότυπες καρτέλες θα αρχειοθετούνται, με εξαίρεση το αντίγραφο που χρησιμοποιήθηκε πιο πρόσφατα.</translation>
+<translation id="612596694132302162">Κατάργηση σίγασης ιστοτόπου</translation>
 <translation id="6149218574440723463">{TABS_COUNT,plural, =1{Κλείσιμο <ph name="TABS_COUNT_ONE"/> επιλεγμένου στοιχείου}other{Κλείσιμο <ph name="TABS_COUNT_MANY"/> επιλεγμένων στοιχείων}}</translation>
 <translation id="61924696525243173">{WINDOW_COUNT,plural, =1{Μετακίνηση ομάδας σε νέο παράθυρο}other{Μετακίνηση ομάδας σε άλλα παράθυρα}}</translation>
 <translation id="6212374449852603982">{TAB_COUNT,plural, =1{Μετακίνηση καρτέλας προς τα δεξιά}other{Μετακίνηση καρτελών προς τα δεξιά}}</translation>
@@ -197,7 +198,6 @@
 <translation id="7792771145871471484">Έλεγχος των προτάσεων.</translation>
 <translation id="7792860826279960128">Ειδοποίηση σχετικά με τις αλλαγές στην κοινόχρηστη ομάδα καρτελών στο μισό ύψος</translation>
 <translation id="7825973332242257878">Ομάδες καρτελών</translation>
-<translation id="7838146321400849846">{TABS_COUNT,plural, =1{Ομαδοποίηση <ph name="TABS_COUNT_ONE"/> επιλεγμένης καρτέλας}other{Ομαδοποίηση <ph name="TABS_COUNT_MANY"/> επιλεγμένων καρτελών}}</translation>
 <translation id="7853202427316060426">Δραστηριότητα</translation>
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ Αξιολόγηση <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_ONE"/> κριτική}other{Αξιολόγηση <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_MANY"/> κριτικές}}</translation>
 <translation id="7885132941432959125">Μετακίνηση καρτέλας δεξιά</translation>

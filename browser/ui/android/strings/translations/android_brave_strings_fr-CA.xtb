@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">Les sites peuvent demander d'utiliser l'ancienne connexion à Google au moyen de témoins tiers</translation>
 <translation id="2903783737778379345">Ne pas autoriser l'ancienne connexion à Google au moyen de témoins tiers</translation>
 <translation id="6880817299303842099">Autorisé à utiliser des témoins tiers pour l'ancienne connexion à Google</translation>
-<translation id="2136412236435693622">Accès au localhost</translation>
-<translation id="4172219483893066798">Les sites peuvent demander à accéder aux ressources localhost</translation>
-<translation id="7181706637590665047">Ne pas autoriser l'accès aux ressources localhost</translation>
-<translation id="1485435696620658073">Autorisation d'accès aux ressources localhost accordée</translation>
 <translation id="181905442828471321">Paramètres globaux par défaut de Brave Shields</translation>
 <translation id="2675679258824361492">Autres paramètres de confidentialité</translation>
 <translation id="8026334261755873520">Effacer les données de navigation</translation>
@@ -422,6 +418,13 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="7141438739990875547">Réseaux bitcoin</translation>
 <translation id="9055546041146396417">Si ce site semble en panne, essayez de désactiver Shields.</translation>
 <translation id="7898672232170410330">Bloquer l'élément</translation>
+<translation id="9064628362799094520">Effacer les données du site</translation>
+<translation id="8949611615512336262">Suppression automatique : <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Effacer les données du site maintenant</translation>
+<translation id="6795622376590884449">Suppression automatique</translation>
+<translation id="7961015016161918242">Jamais</translation>
+<translation id="1991004083507807299">Onglets du site fermés</translation>
+<translation id="5827277414420724690">Fermeture de l'application</translation>
 <translation id="1209739344687072997">Signaler un site qui ne fonctionne pas</translation>
 <translation id="8510478288840333677">Indiquez aux développeurs de Brave que ce site ne fonctionne pas correctement avec Shields :</translation>
 <translation id="1653405824851871276">Merci de nous aider à améliorer Brave pour tous. Ce rapport contiendra uniquement les renseignements qui nous sont nécessaires pour réparer ce site. <ph name="LEARN_MORE"/></translation>
@@ -1074,7 +1077,7 @@ Leo à l'avenir et effacera également votre historique de clavardage. L'effacem
 <translation id="1336494649091412226">Voulez-vous vraiment fermer Brave?</translation>
 <translation id="6061635824229591714">Effacer les données du site ?</translation>
 <translation id="1265051174491933207">La suppression fermera tous les onglets liés à « <ph name="SITE_NAME"/> » et effacera toutes les données du site. Cette action est irréversible.</translation>
-<translation id="4279349293084858577">Effacer les données</translation>
+<translation id="5528772406060281700">Effacer les données du site</translation>
 <translation id="4426990318287827331">Effacer les données</translation>
 <translation id="7942415993090181327">Historique des conversations</translation>
 <translation id="6859935199732075666">Afficher les erreurs de navigation sécurisée</translation>

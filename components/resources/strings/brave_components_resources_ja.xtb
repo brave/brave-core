@@ -486,8 +486,6 @@
 <translation id="1518915449477235311"><ph name="URL"/>にBraveでのLeo AIの会話を許可しますか？</translation>
 <translation id="4355784577209159847">レガシーのGoogleサインインにサードパーティCookieの使用を許可</translation>
 <translation id="5770656036486891920"><ph name="URL"/>から、レガシーGoogleサインインのためにサードパーティのCookieを使用することを求められています。</translation>
-<translation id="6053826678715267477">Localhostのリソースへのアクセスを許可</translation>
-<translation id="2973562729984406132"><ph name="URL"/>から、Localhostのリソースへのアクセスを求められています</translation>
 <translation id="2104347391516032700">BATリワードサービス</translation>
 <translation id="5939518447894949180">リセット</translation>
 <translation id="3349204812119681938">Brave Rewards をリセット</translation>
@@ -872,6 +870,8 @@
 <translation id="646023614746251785">スワップを確認</translation>
 <translation id="6264944956989873014">ブリッジを確認</translation>
 <translation id="7067917728851842589">送信を確認</translation>
+<translation id="2841837950101800123">提供元</translation>
+<translation id="1114725160772317155">提供元ステータス</translation>
 <translation id="2351357639951873714">Shields を確認</translation>
 <translation id="7480044382160806610">シールド解除を確認</translation>
 <translation id="8332923694292360653">支払う</translation>
@@ -1054,6 +1054,10 @@
 <translation id="2902856457593699108">キーを表示</translation>
 <translation id="8033497299373164724">キーを隠す</translation>
 <translation id="7514365320538308">ダウンロード</translation>
+<translation id="4505811804838254812">アカウントエクスポートファイルを暗号化するためのパスワードを入力してください。</translation>
+<translation id="4664684820522660564">暗号化パスワードを入力</translation>
+<translation id="6873030689896652259">暗号化パスワードを確認</translation>
+<translation id="5148285448107770349">パスワードは8文字以上で設定してください。</translation>
 <translation id="2702143907607790516">アカウント名の更新に失敗しました。もう一度やり直してください。</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -1228,12 +1232,12 @@
 <translation id="4932382283590063268">受取アドレスにご自身のアドレスが指定されています。</translation>
 <translation id="3124753063207986114">受取アドレスはトークンのコントラクトアドレスとなります。</translation>
 <translation id="7029817408221097939">統一アドレスが無効です</translation>
-<translation id="6370376419663123629">アドレスが正しくありません</translation>
-<translation id="3767148796886402380">アドレスが正しいかどうか確認してください。</translation>
+<translation id="5749543778008369411">アドレスがチェックサムを欠いています</translation>
+<translation id="8225310967627152630">このアドレスの有効性は確認できません。資金の損失を避けるため、送信前にアドレスを慎重に確認してください。</translation>
+<translation id="5139218857087774333">アドレスが正しくないようです（無効なチェックサム）</translation>
+<translation id="6551446819927864899">このアドレスに誤入力がある可能性があります。アドレスを確認してもう一度入力してください。</translation>
 <translation id="2585599787090762065">どうすれば解決できるのでしょうか？</translation>
 <translation id="5517732667776806421">チェックサム情報がありません</translation>
-<translation id="2975056993833847787">このアドレスは認証できません (チェックサムがありません)。続行しますか？</translation>
-<translation id="6320252966164556855">アドレス認証をクリアすることができません (チェックサムが有効ではありません)。小文字を大文字に置換して再度お試しください。</translation>
 <translation id="4667144295226514387">ガスリミットが入力されていません</translation>
 <translation id="2021522108838444624">金額は0より大きい値で入力してください</translation>
 <translation id="8464365289405373974">送信先アドレスが必要です</translation>
@@ -1259,6 +1263,8 @@
 <translation id="471055802670233033">支出</translation>
 <translation id="7916618590403748182">獲得</translation>
 <translation id="8328657208304368165">注文を確認</translation>
+<translation id="3784821115971261512">プログラムアドレス</translation>
+<translation id="6302865118026274740">デポジットアドレス</translation>
 <translation id="8220255674527598378">Solanaスワップ</translation>
 <translation id="5071303414930953888">アカウント<ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">まずウォレットのロックを解除してください</translation>
@@ -1385,6 +1391,9 @@
 <translation id="7694836973509310467">ブリッジング</translation>
 <translation id="8419958386475786929"><ph name="NETWORK"/>)で<ph name="SWAPPING_OR_BRIDGING"/></translation>
 <translation id="7903225589949400974"><ph name="SWAP_OR_BRIDGE"/> を <ph name="NETWORK"/> で試み中にエラーが発生しました</translation>
+<translation id="7220786058474068424">処理中</translation>
+<translation id="3248185426436836442">保留中</translation>
+<translation id="5503843345634715425">払い戻し済み</translation>
 <translation id="1778601041100951971"><ph name="AMOUNT"/> をシールド中</translation>
 <translation id="6439110433198887239"><ph name="AMOUNT"/> をシールド解除中</translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> がシールドされました</translation>
@@ -1413,6 +1422,7 @@
 <translation id="5601436886921227795">DAppとのアクセス</translation>
 <translation id="9104177294757104789"><ph name="VALUE"/>を送信</translation>
 <translation id="4048336522751528394"><ph name="MAKER"/>を<ph name="TAKER"/>にスワップ</translation>
+<translation id="5140590056890937774"><ph name="SOURCE"/>を<ph name="DESTINATION"/>にブリッジ中</translation>
 <translation id="1748114617341025015">関連トークンアカウントを作成中です</translation>
 <translation id="4418115887224983240">関連トークンアカウントの作成に失敗しました</translation>
 <translation id="7165697599360786670">関連トークンアカウントが作成されました</translation>
@@ -1639,12 +1649,16 @@
 <translation id="3356580495013324916">Braveウォレットのパスワードを入力すると、ウォレットのバックアップが開始されます。</translation>
 <translation id="7545441766078366279"><ph name="TOKEN"/>を承認</translation>
 <translation id="3115303896544539834"><ph name="TOKEN"/>の残高が不十分です</translation>
+<translation id="6612125470074657311">金額が低すぎます</translation>
+<translation id="5838312420826727653">サポートされていないトークン</translation>
+<translation id="4930106154893104117">無効なリクエスト</translation>
 <translation id="3453833142586986467">トークンの選択</translation>
 <translation id="4937657825850660613">半分</translation>
 <translation id="7639814793732182496">最大</translation>
 <translation id="6584782231358487640">金額を入力してください</translation>
 <translation id="477281933640372562">見積もりを取得しています</translation>
 <translation id="5450317966495183014">受け取る（推定）</translation>
+<translation id="387870937508841726">受け取る（最小）</translation>
 <translation id="8747614139273050577">スワップ元トークン</translation>
 <translation id="1726158192333401896">スワップ先トークン</translation>
 <translation id="1817370679212109974">新規見積もり: <ph name="COUNTDOWN"/></translation>
@@ -1755,7 +1769,6 @@
 <translation id="2410455471299328417">このサービスは<ph name="BOLD_BEFORE"/>Blowfish.xyz<ph name="BOLD_AFTER"/>により提供されており、同社の<ph name="TERMS_LINK_BEFORE"/>利用規約<ph name="TERMS_LINK_AFTER"/>および<ph name="PRIVACY_POLICY_LINK_BEFORE"/>プライバシーポリシー<ph name="PRIVACY_POLICY_LINK_AFTER"/>が適用されます</translation>
 <translation id="8688672835843460752">Available</translation>
 <translation id="5296640085393149413">使用可能な資金です。</translation>
-<translation id="3248185426436836442">保留中</translation>
 <translation id="2515906149804238711">ウォレットの残高に保留中の変更があります。</translation>
 <translation id="7700365440186054030">利用可能な資金とまだ確認されていないトランザクションです。</translation>
 <translation id="4118601537508887039">一部の残高は利用できない場合があります</translation>
@@ -2248,6 +2261,7 @@
 <translation id="9109355817507033196">回答が「不満」と評価されました</translation>
 <translation id="4049425842478222936">回答に「いいね」がつきました</translation>
 <translation id="6393149565874086128">フィードバックを追加</translation>
+<translation id="4621961534325272682">会話がクリップボードにコピーされました</translation>
 <translation id="3521125531016408657">回答に「いいね」する</translation>
 <translation id="8202517001427388906">回答を「不満」と評価する</translation>
 <translation id="1379399209929302811">Brave AIのフィードバックを送信</translation>
@@ -2292,6 +2306,8 @@
 <translation id="6495402307502950726">会話を消去</translation>
 <translation id="903201991022343217">新しい会話を始める</translation>
 <translation id="8171760814579050200">会話名を変更</translation>
+<translation id="402386227879573975">会話全体をコピー</translation>
+<translation id="5397794290049113714">あなた</translation>
 <translation id="7754678742055438573">会話を削除</translation>
 <translation id="1946267518364740045">推論中...</translation>
 <translation id="4198859185714743678">推論完了</translation>
@@ -2328,7 +2344,6 @@
 <translation id="4808122506413075135">ブラウザの履歴からページの内容を送信して、会話のコンテキストをLeoに教えます。</translation>
 <translation id="220541218939267992">このページの内容は、メッセージとともにLeoに送信されます。</translation>
 <translation id="2152389270152475874">コンテキストとして、タブ、ブックマーク、または履歴を追加します。選択した内容は、メッセージと一緒にLeoに送信されます。</translation>
-<translation id="6237410387937453423">一致するアタッチメントなし</translation>
 <translation id="2315654674554095762">Leoが会話履歴を保存するので、同じ会話に戻ることができます。会話は暗号化されてあなたのデバイスに保存され、いつでも削除できます。</translation>
 <translation id="7821251979960635244">会話を開始すると、会話履歴がここに表示されます。</translation>
 <translation id="887511360213807449">履歴が無効になりました</translation>
@@ -2430,7 +2445,7 @@
 <translation id="4773299976671772492">停止</translation>
 <translation id="6946722113367118030">考え中です</translation>
 <translation id="2113810663179257944">コードの実行</translation>
-<translation id="4790888275629207278">サンドボックスでコードを実行しました</translation>
+<translation id="6338250692384725496">クエリをサポートするためにサンドボックスでコードを実行しました</translation>
 <translation id="4379566111233326721">コード：</translation>
 <translation id="3542130965673205258">出力:</translation>
 <translation id="3428245742224818842">AIブラウジング</translation>
@@ -2442,11 +2457,7 @@
 <translation id="864117099189791993">メインメニューまたはツールバーのプロファイルメニューからいつでも通常のプロファイルに戻すことができます。AIブラウジングは常にAIブラウジングプロファイルで開きます。</translation>
 <translation id="3486480638399578250">個人メールアドレスを非公開に保つ</translation>
 <translation id="7765422154906712751">一意のランダムアドレスを作成して、Braveアカウントのメールアドレスに転送することができます。このランダムアドレスはいつでも削除できます。実際のメールアドレスが開示されたり、広告主に使用されたりするのを防ぎます。</translation>
-<translation id="5222676887888702881">サインアウト</translation>
-<translation id="8090292425230843109">メールエイリアスからサインアウト</translation>
-<translation id="8471990782451394141">Braveアカウントに接続中...</translation>
 <translation id="71316462802471551">メールエイリアス</translation>
-<translation id="5713644099811900409">Braveアカウント</translation>
 <translation id="6002159997868894136">クリックしてエイリアスをコピー</translation>
 <translation id="8105770564756958406"><ph name="DOMAINS"/>で使用</translation>
 <translation id="5006956315579221642">あなたの本当のメールアドレスを保護するために、最大5つの無料メールエイリアスが作成できます。</translation>
@@ -2470,8 +2481,8 @@
 <translation id="646524615209870492"><ph name="ALIAS"/> をエイリアスから削除すると、メールを受信できなくなります。</translation>
 <translation id="8133100642915054515">エイリアスの削除中にエラーが発生しました。インターネット接続を確認して、もう一度やり直してください。</translation>
 <translation id="8465742443901727718">この操作は元に戻せません。続行してもよろしいですか？</translation>
-<translation id="8662104432574824754">始めるにはサインインするか、Braveアカウントを作成してください</translation>
-<translation id="8069030342700068465">安全なログインリンクの送信先となるメールアドレスを入力してください。このリンクをクリックすると、Braveアカウントが作成されるか、もしくは既存のアカウントにアクセスして無料のメールエイリアスサービスが利用できるようになります。</translation>
+<translation id="9162685486229945876">Braveアカウントにサインインするか、作成する</translation>
+<translation id="1335007417599138852">Braveアカウントを使用することで、特定のBrave製品にアクセスでき、すべてのデバイス間で情報を簡単に同期できます。</translation>
 <translation id="2133391407495495735">ログインリンクを取得</translation>
 <translation id="2650906829817220223">認証リクエスト中にエラーが発生しました。インターネット接続を確認して、もう一度やり直してください。</translation>
 <translation id="3699624789011381381">メールアドレス</translation>
@@ -2504,7 +2515,7 @@
 <translation id="466214682712474574"><ph name="PROVIDER"/>アカウントにログインして残高を確認</translation>
 <translation id="8332875111286275890">残高を確認するにはログインしてください</translation>
 <translation id="5430001801813715388">リワード</translation>
-<translation id="5966055668402779222">Brave Searchで調べる</translation>
+<translation id="2430295257226173518">何でも聞いて、何でも見つけてください…</translation>
 <translation id="167018310108390163">新しいタブページをカスタマイズ</translation>
 <translation id="6851426306697017546">時計を表示</translation>
 <translation id="4844370919312937270">新しいタブページに検索ウィジェットを表示</translation>
@@ -2545,7 +2556,7 @@
 <translation id="4677356505199464553">良好です</translation>
 <translation id="1992750560347846445">サイトを報告</translation>
 <translation id="2863270180245144869">広告ブロックのみ有効</translation>
-<translation id="2302218429308447288">現在、広告ブロックのみモードを使用しています。このモードは広告ブロックの保護のみを提供します。完全なShieldsモードに戻したい場合は、設定からこのモードを無効にしてください。</translation>
+<translation id="3773808439655997805">現在、広告ブロックのみモードを使用しています。このモードは広告ブロックの保護（Shieldsが有効の場合）のみを提供します。完全なShieldsモードに戻したい場合は、設定からこのモードを無効にしてください。</translation>
 <translation id="4820891023903368625">広告ブロック <ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">トラッカー、広告などをブロック。<ph name="LINK_BEFORE"/>詳細<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Braveシールドで保護されていません。<ph name="LINK_BEFORE"/>詳細<ph name="LINK_AFTER"/></translation>
@@ -2605,6 +2616,8 @@
     }</translation>
 <translation id="2540598191934725677">Braveアイコンをクリックして、Brave Shieldsを表示してください。</translation>
 <translation id="542789539047208469">サイト情報</translation>
+<translation id="7586067492365979844">Brave Shieldsは新しいホームとデザインを備えています。サイト情報と統合され、ワンストップの体験が実現しました。</translation>
+<translation id="9114542678887529043">Brave Shieldsは新しいホームとデザインを備えています。アドレスバーのサイトアイコンをクリックしてアクセスできます。</translation>
 <translation id="6294662480095808915">プライバシー。デフォルト時間</translation>
 <translation id="4366423156486478559">クリックするすべてのリンクをBraveで保護しましょう。Braveブラウザをデフォルトに設定して閲覧するだけで、プライベートなブラウジングが楽しめます。</translation>
 <translation id="3830912418080848377">インポート設定</translation>
@@ -2616,6 +2629,7 @@
 <translation id="2273851479262317744">Braveをデフォルトのブラウザとして設定</translation>
 <translation id="5037676449506322593">すべて選択</translation>
 <translation id="5148943178722443958">Braveの品質向上にご協力ください。</translation>
+<translation id="479535542793009168">安定性と診断</translation>
 <translation id="1097073572755862978">クラッシュやフリーズが発生した場合、診断レポートを送信します。<ph name="LINK_BEFORE"/>詳細はこちら。<ph name="LINK_AFTER"/></translation>
 <translation id="6629244688368006959">Braveのユーザーがどのような機能を使用しているかについて、非公開かつ匿名の製品インサイトを共有します。<ph name="LINK_BEFORE"/>詳細はこちら。<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">設定が完了しました</translation>
@@ -2639,7 +2653,9 @@
 <translation id="8000020256436988724">ツールバー</translation>
 <translation id="6225572914528673855">アドレスバー</translation>
 <translation id="6821966107067356137">RSSフィードを追加</translation>
+<translation id="2478076885740497414">アプリをインストール</translation>
 <translation id="8293206222192510085">ブックマークに追加</translation>
+<translation id="1010029336854254368">共有メニュー</translation>
 <translation id="7758460733045216901">ブックマークパネル</translation>
 <translation id="958268166261124668">Brave VPN: 接続済み</translation>
 <translation id="6021669293402055982">Brave VPN: 切断</translation>
