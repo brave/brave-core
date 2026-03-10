@@ -1,0 +1,74 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = 'Add containers buildflag and feature headers for session restore'
+re_pattern = '(namespace sessions {\n)'
+replace = '''
+#include "brave/components/containers/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/content/browser/session_utils.h"
+#include "brave/components/containers/core/common/features.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+\1'''
+
+[[substitution]]
+description = 'Restore storage partition key from SerializedNavigationEntry for containers'
+re_pattern = '(ContentSerializedNavigationBuilder::FromNavigationEntry[\s\S]*?)(\s+return entry;\s*^\})'
+re_flags = ['MULTILINE']
+replace = '''
+\1
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  // If the SerializedNavigationEntry contains storage partition key information,
+  // we copy it into the NavigationEntry so it can be used later to create the
+  // correct SiteInstance with the right StoragePartitionConfig.
+  //
+  // This happens AFTER ContentSerializedNavigationDriver::Sanitize() has already
+  // parsed the virtual URL prefix and populated the storage_partition_key field.
+  if (base::FeatureList::IsEnabled(containers::features::kContainers) &&
+      navigation->storage_partition_key().has_value()) {
+    entry->SetStoragePartitionKeyToRestore(
+        navigation->storage_partition_key().value());
+  }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+\2'''
+
+[[substitution]]
+description = 'Set virtual URL prefix and storage partition key for containers'
+re_pattern = '(ContentSerializedNavigationBuilder::FromNavigationEntry[\s\S]*?)(\s+return navigation;\s*^\})'
+re_flags = ['MULTILINE']
+replace = '''\1
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  // This is called when saving a session (browser close, tab close, manual
+  // session save, or sync). We add storage partition key information to the
+  // serialized data.
+  //
+  // The SerializedNavigationEntry will then be processed by
+  // ContentSerializedNavigationDriver::GetSanitizedPageStateForPickle() which
+  // adds the prefix to the PageState, and finally written to disk/sync with the
+  // virtual_url_prefix embedded in the virtual_url field.
+  if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    if (auto storage_partition_key_to_restore =
+            entry->GetStoragePartitionKeyToRestore()) {
+      // Generate the URL prefix (e.g., "containers+<uuid>:") if it's a valid
+      // container storage partition key.
+      if (auto url_prefix = containers::StoragePartitionKeyToUrlPrefix(
+              *storage_partition_key_to_restore)) {
+        // Store both the prefix and the raw partition key in the
+        // SerializedNavigationEntry. The prefix will be used by
+        // GetSanitizedPageStateForPickle() to modify the PageState,
+        // and both will be embedded in the virtual_url during
+        // final serialization.
+        navigation.set_virtual_url_prefix(*url_prefix);
+        navigation.set_storage_partition_key(*storage_partition_key_to_restore);
+      }
+    }
+  }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+\2'''

@@ -37,12 +37,16 @@ brave_content_browser_deps =
 brave_net_deps = [ "//brave/components/brave_wallet/common/buildflags" ]
 
 # Deps for third_party/blink/common
-brave_blink_common_deps =
-    [ "//brave/components/brave_wallet/common/buildflags" ]
+brave_blink_common_deps = [
+  "//brave/components/brave_wallet/common/buildflags",
+  "//brave/components/containers/buildflags",
+]
 
 # Deps for third_party/blink/public/common
-brave_blink_public_common_deps =
-    [ "//brave/components/brave_wallet/common/buildflags" ]
+brave_blink_public_common_deps = [
+  "//brave/components/brave_wallet/common/buildflags",
+  "//brave/components/containers/buildflags",
+]
 
 # Deps for third_party/blink/renderer/modules/permissions
 brave_blink_renderer_modules_permissions_deps =
