@@ -4,11 +4,13 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/strings/strcat.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 
 #include <third_party/blink/common/page_state/page_state.cc>
 
 namespace blink {
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
 // Prepends a prefix to the top-level URL stored in PageState.
 //
 // This is used by Brave Containers to encode StoragePartitionConfig information
@@ -83,5 +85,6 @@ PageState PageState::RemoveTopURLPrefix(size_t prefix_length) const {
 
   return ToPageState(state);
 }
+#endif
 
 }  // namespace blink
