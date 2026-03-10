@@ -4,9 +4,16 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 [[substitution]]
+description = "Add import for UrlConstants."
+pattern = 'import org.chromium.chrome.R;'
+replace = """
+import org.chromium.chrome.R;
+import org.chromium.components.embedder_support.util.UrlConstants;"""
+
+[[substitution]]
 description = """
 Always make chrome:// schemes install rather than creating a shortcut (shortcuts can't handle chrome: urls).
 """
-re_pattern = '(doUniversalInstall(\s|.)+?)(controller == null)'
+re_pattern = '(doUniversalInstall(\s|.)+?if \()(controller == null\))'
 re_flags = ["MULTILINE"]
-replace = '\1\3 || currentTab.getUrl().getScheme().equals("chrome")'
+replace = '\1UrlConstants.CHROME_SCHEME.equals(currentTab.getUrl().getScheme()) || \3'
