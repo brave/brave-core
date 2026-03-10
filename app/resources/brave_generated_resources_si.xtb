@@ -19,6 +19,7 @@
 <translation id="1544192797660353713">පසුම්බිය</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">තවත්…</translation>
+<translation id="71316462802471551">ඊමේල් කෙටි නම්</translation>
 <translation id="1990886731975529483">ගූගල් වයිඩ්වයින් ස්ථාපනය කර ධාවනය කරන්න</translation>
 <translation id="8926389886865778422">නැවත අසන්න එපා</translation>
 <translation id="4900351245762303149">ගූගල් වයිඩ්වයින් ස්ථාපනය කරන්න</translation>
@@ -204,7 +205,6 @@
 <translation id="253980346046488815">අනුපිටපත් පටිති වසන්න</translation>
 <translation id="8670218546624422041">අඩංගුවේ විවෘත කරන්න</translation>
 <translation id="8638526693050780542">අඩංගු විවෘත කිරීම් කළමනාකරණය</translation>
-<translation id="7302999361397024774">පටිත්ත නැවත නම් කරන්න</translation>
 <translation id="2336228925368920074">සියලු පටිති වලට පොත්යොමු තබන්න...</translation>
 <translation id="2523967823495420116">සිරස් පටිති භාවිතා කරන්න</translation>
 <translation id="3785071023202624850">{NUM_TABS, plural, =1 {පටිත්ත නිහඬ} other {පටිති නිහඬ}}</translation>
@@ -215,7 +215,6 @@
 <translation id="2703180365855369896">අනුපිටපත් පටිති වසන්න</translation>
 <translation id="1987871867023021397">අඩංගුවේ විවෘත කරන්න</translation>
 <translation id="6745991613881384719">අඩංගු විවෘත කිරීම් කළමනාකරණය</translation>
-<translation id="3917844427669888979">පටිත්ත නැවත නම් කරන්න</translation>
 <translation id="3704707436873245822">රූපයෙන් පෙළ පිටපත් කරන්න</translation>
 <translation id="5268098808165185458">රූපයෙන් පෙළ පිටපත් වෙමින්...</translation>
 <translation id="4046485130884276245">රූපයෙන් පෙළ පිටපත් වී ඇත</translation>
@@ -513,6 +512,10 @@
 <translation id="1199170151481311646">පෞද්ගලිකත්වය ආරක්ෂා කරන විශ්ලේෂණය</translation>
 <translation id="5990642573624858459">සංඛ්‍යාන වාර්තාවීම්</translation>
 <translation id="2441719842399509963">සියල්ල පෙරනිමියට සකසන්න</translation>
+<translation id="4530494379350999373">සම්භවය</translation>
+<translation id="2964215604640804042">Brave Origin යනු ගුණාංගවලින් සමන්විත නොවන පරිශීලකයින් සඳහා බ්‍රවුසරයේ ගෙවූ අනුවාදයක් නමුත් Brave පමණක් ලබා දෙන රහස්‍යතාවය තවමත් අවශ්‍ය වේ. Brave Origin පරිශීලකයින් අපගේ කර්මාන්ත-선도කාරී රහස්‍යතාව, adblock, සහ වේගය (Brave Shields හරහා) ඉතිරි තබා ගනු ඇත, එසම සඳහා නිත්‍ය මෘදුකාංග යාවත්කාලීනයි, Chromium පැච්චම්, සහ සුරක්ෂිතභාවය සහ රහස්‍යතා වැඩ්ඩි කිරීම්. ඔවුන් AI, Rewards, Wallet, VPN, Web3 domains, සහ තවත් බොහෝ සුවිශේෂතා අක්ષම කිරීමේ විකල්පය ද අගුලු খුলනු ඇත.</translation>
+<translation id="9130916892338379417">Brave Origin එක්වර මිල දීම හරහා ලබා ගත හැකිය. ජංගම (Android සහ iOS) සහ desktop මත, Origin ඔබගේ පවතින මුදා හැරීම් අනුවාදයට උසස්වීමක් ලෙස ගෙවිය හැකිය. Desktop එ, Origin ස්වාධීන, තනිවම යෙදුමක් ලෙසින් ද ලබා ගත හැකිය. Origin පරිශීලකයින් සැකසුම් මෙනුවෙහි නව පාලන පෑනලයක් දකිනු ඇත. පවතින සුවිශේෂතා—සහ ඉදිරි වලින් අපි යෙදවන ඕනෑම නව සුවිශේෂතා—එහි පෙන්නුනු වනු ඇත, සහ පෙරනිමි වශයෙන් බිම අක්ෂම කරනු ඇත.</translation>
+<translation id="7984508421152399880">දැන ගිණුම්කරණය කරන්න</translation>
 <translation id="5567412479632285879">Brave පාරිතෝෂික අබල කර ඇත</translation>
 <translation id="413570371620795359">සබල කර පටන් ගැනීමට පාරිතෝෂික මඬල අරින්න</translation>
 <translation id="1051600834033686945">සමස්ත Brave පාරිතෝෂික සැකසුම් අරින්න</translation>
@@ -555,7 +558,6 @@
 <translation id="5747552184818312860">ඉකුත් වීම</translation>
 <translation id="3858860766373142691">නම</translation>
 <translation id="361106536627977100">ෆ්ලෑෂ් දත්ත</translation>
-<translation id="4530494379350999373">සම්භවය</translation>
 <translation id="8195027750202970175">තැටියේ ප්‍රමාණය</translation>
 <translation id="9116465289595958864">අවසාන සංශෝධනය</translation>
 <translation id="4590324241397107707">දත්තසමුදා ආචයනය</translation>
@@ -588,11 +590,6 @@
 <translation id="2903783737778379345">තෙවන පාර්ශ්ව දත්තකඩ මගින් පරණ ගූගල් පිවිසුම් වලට ඉඩ නොදෙන්න</translation>
 <translation id="2570833232754279153">පරණ ගූගල් පිවිසුම සඳහා තෙවන පාර්ශ්ව දත්තකඩ භාවිතයට ඉඩ නොදේ</translation>
 <translation id="6880817299303842099">පරණ ගූගල් පිවිසුම සඳහා තෙවන පාර්ශ්ව දත්තකඩ භාවිතයට ඉඩ දී ඇත</translation>
-<translation id="2136412236435693622">ස්ථානීය-සත්කාර ප්‍රවේශය</translation>
-<translation id="4172219483893066798">අඩවි වලට ස්ථානීය-සත්කාරක සම්පත් වෙත ප්‍රවේශයට ඉල්ලීමට හැකිය</translation>
-<translation id="7181706637590665047">ස්ථානීය-සත්කාරක සම්පත් වෙත ප්‍රවේශයට ඉඩ නොදෙන්න</translation>
-<translation id="1336116824874668514">ස්ථානීය-සත්කාරක සම්පත් වෙත ප්‍රවේශයට ඉඩ නොදේ</translation>
-<translation id="1485435696620658073">ස්ථානීය-සත්කාරක සම්පත් වෙත ප්‍රවේශයට ඉඩ දී ඇත</translation>
 <translation id="5794692721727586076">Leo AI කතාබහ</translation>
 <translation id="8115153008662981040">Lio AI කතාබහ ඇරීමට අඩවි වලට ඉල්ලීමට හැකිය</translation>
 <translation id="1145070115730668595">Leo AI කතාබහ ඇරීමට අඩවි වලට ඉඩ නොදෙන්න</translation>

@@ -8,7 +8,6 @@
 <translation id="1016498331642356377">Bilatu bizkor ahotsa erabilita. Lasterbidea editatzeko, eduki ezazu sakatuta.</translation>
 <translation id="1028699632127661925"><ph name="DEVICE_NAME"/> gailura bidaltzen…</translation>
 <translation id="103269572468856066">Webgune eta aplikazio hauetako datuak ere garbitu nahi dituzu?</translation>
-<translation id="1034259925032978114">Leihoa irekita dago</translation>
 <translation id="1035113036584565771">Aholkuen jakinarazpenei buruzko promozioa itxita dago</translation>
 <translation id="1036348656032585052">Desaktibatu</translation>
 <translation id="1045899828449635435">Webgune hauetako datuak ere garbitu nahi dituzu?</translation>
@@ -39,6 +38,7 @@
 <translation id="7083341910267693582">Brave-n irekiko da <ph name="APP_NAME"/>. Aurrera egiten baduzu, onartu egingo dituzu <ph name="BEGIN_LINK1"/>Brave-ren Zerbitzu-baldintzak<ph name="END_LINK1"/> eta <ph name="BEGIN_LINK2"/>Brave-ren eta Chrome OS-ren Zerbitzu-baldintza gehigarriak<ph name="END_LINK2"/>.</translation>
 <translation id="7443574521624544928">Ez duzu pasahitzik gordeta Brave-ren Pasahitz-kudeatzailea zerbitzuan.</translation>
 <translation id="115483310321669804">Erabili <ph name="PASSWORD"/> pasahitza</translation>
+<translation id="1161065531352634524">Sinkronizatu fitxak eta historia</translation>
 <translation id="1165109137568919258">Bilatzeko, atera argazki bat edo gehitu argazki-galeriako irudi bat</translation>
 <translation id="1173894706177603556">Aldatu izena</translation>
 <translation id="7947699437047020219">Brave-k mugikorretarako webgunea erabiltzeko eskaera egingo du pantaila estua denean</translation>
@@ -124,6 +124,7 @@ Brave-ren erabilera hobetzeko datuak erabiltzen dituzten ezarpen gehiago ikustek
 <translation id="147982357559798527">Aldatu egin da</translation>
 <translation id="5970766554644855317">Baliteke historia osoa ez agertzea hemen. Brave-ko historia osoa ikusteko, ireki ezazu.</translation>
 <translation id="1493287004536771723">Hasi zara <ph name="SITE_NAME"/> webguneari jarraitzen</translation>
+<translation id="1495677929897281669">Itzuli fitxara</translation>
 <translation id="1496514951988037011">erabiltzaile-izena</translation>
 <translation id="1501480321619201731">Ezabatu taldea</translation>
 <translation id="1506061864768559482">Bilatzailea</translation>
@@ -152,6 +153,7 @@ Zure pasaesaldia dakitenek soilik irakur ditzakete zure datu enkriptatuak. Brave
 <translation id="164269334534774161">Orri honen konexiorik gabeko kopia ikusten ari zara (kopiaren data: <ph name="CREATION_TIME"/>)</translation>
 <translation id="1644574205037202324">Historia</translation>
 <translation id="1645262572857218659">Hasi saioa <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> erabilita</translation>
+<translation id="1650979352027263879">Kendu dira itxuraren hobespenak</translation>
 <translation id="1671236975893690980">Deskargatzeko zain…</translation>
 <translation id="1672586136351118594">Ez erakutsi berriro</translation>
 <translation id="1680919990519905526">Erosi irudiko produktuak Google Lens-ekin <ph name="BEGIN_NEW"/>Berria<ph name="END_NEW"/></translation>
@@ -319,7 +321,6 @@ Zure pasaesaldia dakitenek soilik irakur ditzakete zure datu enkriptatuak. Brave
 <translation id="2451607499823206582">Jarraipena egiten</translation>
 <translation id="2453860139492968684">Amaitu</translation>
 <translation id="2461378706168271257">Bilatu fitxetan</translation>
-<translation id="2461822463642141190">Oraingoa</translation>
 <translation id="2466378451804467735"><ph name="TAB_TITLE"/> fitxa, beste batzuekin batera hautatuta, audioa desaktibatuta</translation>
 <translation id="2468444275314013497">Zure arakatzaileak itxura ona du</translation>
 <translation id="2471632347767899461">Bilatu laguntza-zentroan</translation>
@@ -395,7 +396,6 @@ Zure pasaesaldia dakitenek soilik irakur ditzakete zure datu enkriptatuak. Brave
 <translation id="2789486458103222910">Ados</translation>
 <translation id="7717639919252237580">{NUM_PASSWORDS,plural, =1{Hobe dezakezun beste nonbait erabilitako pasahitz bat aurkitu du Brave-k}other{Hobe ditzakezun beste nonbait erabilitako # pasahitz aurkitu ditu Brave-k}}</translation>
 <translation id="1708222144403389505">Aktibatu Brave-ri etekinik handiena ateratzen laguntzen dizuten aholku erabilgarriak jasotzeko jakinarazpenak</translation>
-<translation id="2800066122460699237"><ph name="TAB_TITLE"/> izeneko fitxa itxi egingo da</translation>
 <translation id="2805210243313393104">Atzitu laster-markak eta bestelako datuak gailu guztietan</translation>
 <translation id="2805756323405976993">Aplikazioak</translation>
 <translation id="2819849308549746319">Kendu guztietarako harpidetza</translation>
@@ -411,6 +411,7 @@ Zure pasaesaldia dakitenek soilik irakur ditzakete zure datu enkriptatuak. Brave
 <translation id="2842985007712546952">Karpeta nagusia</translation>
 <translation id="2860954141821109167">Ziurtatu telefonoetarako aplikazio bat gaituta dagoela gailu honetan</translation>
 <translation id="6518254564747115579">Brave-ren eginbide batzuk eskaintzeari utziko diogu</translation>
+<translation id="286473047976978798">Itxuraren hobespenak aplikatu nahi dituzu?</translation>
 <translation id="2869416538780777323">{OTHER_TAB_COUNT,plural, =1{<ph name="URL"/> eta beste fitxa bat}other{<ph name="URL"/> eta beste <ph name="TAB_COUNT_MANY"/> fitxa}}</translation>
 <translation id="2869430948265924908">Autoko kontuzko edukia babesteko, autorako profilaren blokeo bat sortu behar duzu.  Horretarako, PIN, kode edo pasahitz bat erabil dezakezu.</translation>
 <translation id="2870560284913253234">Webgunea</translation>
@@ -420,6 +421,7 @@ Zure pasaesaldia dakitenek soilik irakur ditzakete zure datu enkriptatuak. Brave
 <translation id="2885355868600171871">Joan helbide-barrara</translation>
 <translation id="8541922081612557424">Brave-ri buruz</translation>
 <translation id="2891154217021530873">Utzi orriak kargatzeari</translation>
+<translation id="2893168226686371498">Arakatzaile lehenetsia</translation>
 <translation id="2894821468041866720">Ez du nabarmen moteltzen arakatzailea, ezta gailua ere.</translation>
 <translation id="2895521649038438824">Orri hau entzun dezakezu</translation>
 <translation id="289596984386220317"><ph name="TAB_TITLE"/> fitxa, ainguratuta, audioa erreproduzitzen</translation>
@@ -820,6 +822,7 @@ Baliteke Brave-ko kontuak arakatze-historiako bestelako datu batzuk (adibidez, b
 <translation id="4685741273709472646">Hautatu goitibeherako menutik</translation>
 <translation id="4687718960473379118">Webguneek iradokitako iragarkiak</translation>
 <translation id="468924408576231679">Kopiatu web-orrirako esteka: <ph name="PAGE_TITLE"/>. Iturburua: <ph name="PAGE_URL"/></translation>
+<translation id="4692623383562244444">Bilatzaileak</translation>
 <translation id="469286762610133730">Jaso eduki egokiagoa</translation>
 <translation id="4695891336199304370">{SHIPPING_OPTIONS,plural, =1{<ph name="SHIPPING_OPTION_PREVIEW"/> eta beste <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/>}other{<ph name="SHIPPING_OPTION_PREVIEW"/> eta beste <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/>}}</translation>
 <translation id="4698757800236023795">Aktibo (<ph name="ITEM_COUNT"/>)</translation>
@@ -882,7 +885,6 @@ Baliteke Brave-ko kontuak arakatze-historiako bestelako datu batzuk (adibidez, b
 <translation id="3217997482476578430">Brave-ren Discover</translation>
 <translation id="4910889077668685004">Ordainketa-aplikazioak</translation>
 <translation id="4911042367886397055">Ongi etorri berriro ere, <ph name="USER_NAME"/>!</translation>
-<translation id="4912413785358399818">Mugitu fitxa</translation>
 <translation id="4913169188695071480">Utzi freskatzeari</translation>
 <translation id="367116267716122258">Pasahitzak eta bestelako datuak zure gailu guztietan gordeta edukitzeko, hasi saioa Brave-n <ph name="EMAIL"/> gisa</translation>
 <translation id="4923173329789776645">Erakundeak ez du gomendatzen deskargatzea</translation>
@@ -951,6 +953,7 @@ Baliteke Brave-ko kontuak arakatze-historiako bestelako datu batzuk (adibidez, b
 <translation id="5210286577605176222">Saltatu aurreko fitxara</translation>
 <translation id="5210365745912300556">Itxi fitxa</translation>
 <translation id="6070412534311859792">Aldaketa egiten amaitzeko, berrabiarazi Brave. Berrabiaraztean, fitxak automatikoki irekitzen dira berriro.</translation>
+<translation id="5213114823401215820">Ireki berriro itxitako taldea</translation>
 <translation id="5215957675041756913">Kontrolatu zure datuak eta kontua</translation>
 <translation id="5218324087477576825">Txartel-zenbakia, nahitaezkoa</translation>
 <translation id="7965009626431458039"><ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> eta beste batzuk <ph name="SEPARATOR"/> Brave-k baimen horiek kendu ditu, azkenaldian ez duzulako bisitatu webgune hori</translation>
@@ -1063,7 +1066,6 @@ Baliteke Brave-ko kontuak arakatze-historiako bestelako datu batzuk (adibidez, b
 <translation id="5765780083710877561">Azalpena:</translation>
 <translation id="5776970333778123608">Garrantzirik gabeko datuak</translation>
 <translation id="5793665092639000975"><ph name="SPACE_USED"/> / <ph name="SPACE_AVAILABLE"/> erabilita</translation>
-<translation id="5795872532621730126">Bilatu eta arakatu</translation>
 <translation id="5797949256525811424">Blokeatu da gaia</translation>
 <translation id="580893287573699959">Kudeatu zer gai eta webgune interesatzen zaizkizun</translation>
 <translation id="5809361687334836369">{HOURS,plural, =1{Duela # ordu}other{Duela # ordu}}</translation>
@@ -1259,7 +1261,6 @@ Esaterako, bisitatu dituzun webguneetan oinarritzen ez diren iragarkiak bidalita
 <translation id="6702167990458635422">Ez zaitu babesten webgune, deskarga eta luzapen kaltegarrien aurka. Honek ez du eraginik izango Brave-ren beste produktuetako Arakatze segurua eginbidearen ezarpenetan.</translation>
 <translation id="6554822972009632311">Eduki-iragazkia aktibatuta dago</translation>
 <translation id="6556501700899673703">Lexend</translation>
-<translation id="6556542240154580383">{TAB_COUNT,plural, =1{<ph name="TAB_TITLE"/> eta beste <ph name="TAB_COUNT_ONE"/> fitxa itxiko dira}other{<ph name="TAB_TITLE"/> eta beste <ph name="TAB_COUNT_MANY"/> fitxa itxiko dira}}</translation>
 <translation id="6560414384669816528">Erabili Sogou bilatzaile gisa</translation>
 <translation id="656065428026159829">Ikusi gehiago</translation>
 <translation id="971059121491380239">Baliteke Android-eko gailuak antzeko ezarpen bat izatea. Brave-n eta Android-eko gailuan Iragarkien neurketa aktibatuta badaukazu, erabiltzen dituzun webgune eta aplikazioetan agertzen diren iragarkien eraginkortasuna neurtu ahal izango dute enpresek.</translation>
@@ -1322,6 +1323,7 @@ Esaterako, bisitatu dituzun webguneetan oinarritzen ez diren iragarkiak bidalita
 <translation id="6811034713472274749">Orria ikusteko prest dago</translation>
 <translation id="6813359536773993594">{FILE_COUNT,plural, =1{Irudiak, 1 irudi zerrendan}other{Irudiak, # irudi zerrendan}}</translation>
 <translation id="8418237809013783651">Hasi saioa Brave-n, irekita.</translation>
+<translation id="6815692190508268848">Aplikatu dira itxuraren hobespenak</translation>
 <translation id="6817747507826986771">Partekatu orria bizkor. Lasterbidea editatzeko, eduki ezazu sakatuta.</translation>
 <translation id="6820686453637990663">CVCa</translation>
 <translation id="2909289633148417535">Brave-ren Pasahitz-kudeatzailea zerbitzuaren eguneratzea itxi da</translation>
@@ -1367,7 +1369,6 @@ Esaterako, bisitatu dituzun webguneetan oinarritzen ez diren iragarkiak bidalita
 <translation id="6937524809504266803">Pertsonalizazioa eta lotzea</translation>
 <translation id="6937876069006524083">Goitizena (aukerakoa)</translation>
 <translation id="6942665639005891494">Deskargen kokapen lehenetsia aldatzeko, erabili Ezarpenak menuko aukera</translation>
-<translation id="694267552845942083">Sinkronizazio-ezarpenak pertsonalizatzen ari zara. Sinkronizazioa aktibatzen amaitzeko, sakatu pantailaren behealdean dagoen "Berretsi" botoia. Joan gora</translation>
 <translation id="6945221475159498467">Hautatu</translation>
 <translation id="6955535239952325894">Ezarpen hau desgaituta dago kudeatutako arakatzaileetan</translation>
 <translation id="6963766334940102469">Ezabatu laster-markak</translation>
@@ -1387,6 +1388,7 @@ Esaterako, bisitatu dituzun webguneetan oinarritzen ez diren iragarkiak bidalita
 <translation id="7020741890149022655">Gehitu irakurketa-zerrendan <ph name="BEGIN_NEW"/>Berria<ph name="END_NEW"/></translation>
 <translation id="7022756207310403729">Ireki arakatzailean</translation>
 <translation id="7029809446516969842">Pasahitzak</translation>
+<translation id="8400061599399680870">Ezarri Brave arakatzaile lehenetsi gisa</translation>
 <translation id="7053256416619638731">Indartu gailu honetako pasahitzak</translation>
 <translation id="7053983685419859001">Blokeatu</translation>
 <translation id="7054588988317389591">Irudi-deskribapenak lortu nahi dituzu?</translation>
@@ -1418,6 +1420,7 @@ Esaterako, bisitatu dituzun webguneetan oinarritzen ez diren iragarkiak bidalita
 Ezarpen hori aldatzeko, <ph name="BEGIN_LINK"/>ezabatu kontuko Brave-ko datuak<ph name="END_LINK"/>.</translation>
 <translation id="2679203756569766105">Lortu informazio gehiago Brave-k fitxategi batzuk blokeatzeko arrazoiei buruz</translation>
 <translation id="7168323970702333693"><ph name="USER_NAME"/> gisa hasi duzu saioa. Ezarpenak irekitzen ditu.</translation>
+<translation id="6390064556944765055">Zure gailuan eta Brave Diru-zorroa zerbitzuan gordetako segurtasun-kode guztiak ezabatuko dira</translation>
 <translation id="7173114856073700355">Ireki Ezarpenak</translation>
 <translation id="7173338713290252554">Prezioaren historia sarean</translation>
 <translation id="7177466738963138057">Nahi duzunean alda dezakezu Ezarpenak atalean</translation>
@@ -1440,6 +1443,7 @@ Ezarpen hori aldatzeko, <ph name="BEGIN_LINK"/>ezabatu kontuko Brave-ko datuak<p
 <translation id="8353574248857730978">Brave-ren Pasahitz-kudeatzailea zerbitzuak funtzionatzeari utzi dio</translation>
 <translation id="7239496616545081903">Ezkutatu irakurtzeko modua</translation>
 <translation id="72415438529550637">Pasahitzaren iradokizuna itxi da.</translation>
+<translation id="724510009481365878">Ezin da inprimatu orria</translation>
 <translation id="7248671827512403053">Aplikazioa</translation>
 <translation id="7253951228444156601">Pasahitzak egiaztatzen…</translation>
 <translation id="4957342254208357193">Baliteke Android-eko gailuak antzeko ezarpen bat izatea. Brave-n eta Android-eko gailuan Iragarkien neurketa aktibatuta badaukazu, erabiltzen dituzun webgune eta aplikazioetan agertzen diren iragarkien eraginkortasuna neurtu ahal izango dute enpresek.</translation>
@@ -1473,6 +1477,7 @@ Ezarpen hori aldatzeko, <ph name="BEGIN_LINK"/>ezabatu kontuko Brave-ko datuak<p
 <translation id="7376560087009844242">Orriko testu gehiago barne hartuz gero, agian emaitza hobeak ikusiko dituzu Sakatu bilatzeko erabiltzean. Aukera hori aldatzeko, joan <ph name="BEGIN_LINK"/>ezarpenetara<ph name="END_LINK"/>.</translation>
 <translation id="7379900596734708416">Webguneetarako gai iluna erabilgarri dago</translation>
 <translation id="7384486627147155832">Aholkuen jakinarazpenei buruzko promozioa altuera erdian irekita dago</translation>
+<translation id="7387951778417998929">Lehenetsia ez den bilatzaile bat erabiltzeko, idatzi haren lasterbidea helbide-barran eta, ondoren, sakatu erabili ohi duzun lasterbidea. Bestela, hemen alda dezakezu bilatzaile lehenetsia.</translation>
 <translation id="7388615499319468910">Webguneek eta iragarleek iragarkien errendimendua uler dezakete. Desaktibatuta dago ezarpena.</translation>
 <translation id="7400003506822844357">{FILE_COUNT,plural, =1{Beste 1 fitxategi zerrendan}other{Beste # fitxategi zerrendan}}</translation>
 <translation id="7400418766976504921">URLa</translation>
@@ -1515,6 +1520,7 @@ Ezarpen hori aldatzeko, <ph name="BEGIN_LINK"/>ezabatu kontuko Brave-ko datuak<p
 <translation id="7523960634226602883">Egin bilaketak kamerarekin Google Lens erabilita</translation>
 <translation id="7525248386620136756"><ph name="TAB_GROUPS_AND_TABS_PART"/> itxi eta gorde dira</translation>
 <translation id="7545347190366646170">Sarbidea duen jendea</translation>
+<translation id="7553482318994371148">Ireki berriro itxitako fitxak</translation>
 <translation id="3987895309799116299">Ezin da egiaztatu Brave-ren bertsioa</translation>
 <translation id="7557508262441527045">Amaitu da saioa</translation>
 <translation id="7573665567024262965">Aukeratu aplikazio lehenetsiak</translation>
@@ -1585,6 +1591,7 @@ Ezarpen hori aldatzeko, <ph name="BEGIN_LINK"/>ezabatu kontuko Brave-ko datuak<p
 <translation id="784652447248278262">Oraingo leihoa</translation>
 <translation id="784934925303690534">Denbora tartea</translation>
 <translation id="7851858861565204677">Beste gailu batzuk</translation>
+<translation id="78527117619130387">Sakatu ^W berriro fitxa ainguratua ixteko</translation>
 <translation id="7853202427316060426">Jarduerak</translation>
 <translation id="7859988229622350291">Ez itzuli edukirik hizkuntza hauetako batean badago:</translation>
 <translation id="7866213166286285359">Itzuli orriak hemen bertan</translation>
@@ -1598,6 +1605,7 @@ Ezarpen hori aldatzeko, <ph name="BEGIN_LINK"/>ezabatu kontuko Brave-ko datuak<p
 <translation id="7919123827536834358">Itzuli automatikoki hizkuntza hauek</translation>
 <translation id="7921782882718083488">Laburbildu orri hau</translation>
 <translation id="7926975587469166629">Txartelaren goitizena</translation>
+<translation id="7927073875790626822">EH</translation>
 <translation id="6485598694371328620">Brave-k automatikoki kentzen dizkie baimenak jakinarazpenak oker erabiltzen dituzten edo azkenaldian bisitatu ez dituzun webguneei</translation>
 <translation id="7934668619883965330">Ezin da deskargatu fitxategia. Ez da onartzen fitxategi-formatua.</translation>
 <translation id="7942131818088350342">Zaharkituta dago <ph name="PRODUCT_NAME"/>.</translation>
@@ -1736,6 +1744,7 @@ Ezarpen hori aldatzeko, <ph name="BEGIN_LINK"/>ezabatu kontuko Brave-ko datuak<p
 <translation id="8458413889418591446">Bisitatu dituzun webguneetara bizkor itzultzeko, sinkronizatu historia eta fitxak</translation>
 <translation id="7018408824172283743">Jarraitu Brave-ko kontuko Brave-ren datuak erabiltzen</translation>
 <translation id="8460448946170646641">Berrikusi pribatutasuna eta segurtasuna kontrolatzeko aukera garrantzitsuenak</translation>
+<translation id="8460932807646981183">Kudeatu bilatzaileak eta webgune-bilaketa</translation>
 <translation id="8473863474539038330">Helbideak eta beste</translation>
 <translation id="847433688444405067">Arakatu gailu guztietan</translation>
 <translation id="8477178913400731244">Ezabatu datuak</translation>
@@ -1818,6 +1827,7 @@ Ezarpen hori aldatzeko, <ph name="BEGIN_LINK"/>ezabatu kontuko Brave-ko datuak<p
 <translation id="8856931513242997049">Jakinarazpenak bidaltzeko baimena emateko fluxua itxita dago</translation>
 <translation id="8863714995118816041">Eman zaizkio baimenak berriro <ph name="SITE_NAME"/> webguneari</translation>
 <translation id="7261356974224431851">Kontuan gordeta dauzkazun Brave-ko datuak</translation>
+<translation id="8872506776304248286">Ireki aplikazioan</translation>
 <translation id="1984646864943401749">Erabiltzen dituzun orri batzuen URLak, sistemari buruzko informazio mugatua eta orrietako eduki batzuk bidaltzen dizkio Brave-ri mehatxuak aurkitzeko eta sarearen erabiltzaile guztiak babesteko.</translation>
 <translation id="8903921497873541725">Handitu</translation>
 <translation id="8909135823018751308">Partekatu…</translation>
@@ -1861,7 +1871,6 @@ Ezarpen hori aldatzeko, <ph name="BEGIN_LINK"/>ezabatu kontuko Brave-ko datuak<p
 <translation id="9070377983101773829">Aktibatu ahozko bilaketa</translation>
 <translation id="9073805459138993880"><ph name="TAB_TITLE"/> fitxa, beste batzuekin batera hautatuta, grabatzen</translation>
 <translation id="9074739597929991885">Bluetootha</translation>
-<translation id="9086302186042011942">Sinkronizatzen</translation>
 <translation id="9086455579313502267">Ezin da atzitu sarea</translation>
 <translation id="7708077127614889658">Ireki Brave-ko leiho batean</translation>
 <translation id="2324185818196590038">Erabilera pertsonalizatuena izateko, sartu Brave sareko eta aplikazioetako jardueretan eta lotutako Brave-ren zerbitzuetan</translation>
@@ -1949,8 +1958,6 @@ Ezarpen hori aldatzeko, <ph name="BEGIN_LINK"/>ezabatu kontuko Brave-ko datuak<p
 <translation id="922970047082941203">{NUM_WINDOWS, plural,
           =1 {Close 1 Private window}
           other {Close # Private windows}}</translation>
-<translation id="1988906120194081364">Aldatu Pribatura</translation>
-<translation id="4300497327999623298">Atera Pribatu modutik</translation>
 <translation id="8820817407110198400">Laster-marken barra</translation>
 <translation id="4968908871398201967">Modu pribatua</translation>
 <translation id="8448127664493413656">Sartu Pribatu Moduan</translation>
@@ -1997,16 +2004,13 @@ Ezarpen hori aldatzeko, <ph name="BEGIN_LINK"/>ezabatu kontuko Brave-ko datuak<p
 <translation id="1982350477927404142">{TAB_COUNT, plural,
           =1 {<ph name="TAB_COUNT_ONE"/> private tab will be closed}
           other {<ph name="TAB_COUNT_MANY"/> private tabs will be closed}}</translation>
-<translation id="2703361981471284696">{TAB_COUNT, plural,
-          =1 {<ph name="INCOGNITO_TAB_COUNT"/> private and <ph name="TAB_COUNT_ONE"/> more tab will be closed}
-          other {<ph name="INCOGNITO_TAB_COUNT"/> private and <ph name="TAB_COUNT_MANY"/> more tabs will be closed}}</translation>
 <translation id="7019870729880056499">{TAB_COUNT, plural, =1 {<ph name="INCOGNITO_TAB_COUNT"/> pribatua eta <ph name="TAB_COUNT_ONE"/> beste fitxa itxiko dira} other {<ph name="INCOGNITO_TAB_COUNT"/> pribatua eta <ph name="TAB_COUNT_MANY"/> beste fitxa batzuk itxiko dira}}</translation>
 <translation id="4362959348993021460">Ukitu eta eutsi Pribatura aldatzeko</translation>
 <translation id="1393515642387718683">Bi aldiz ukitu eta eutsi Pribatura aldatzeko</translation>
 <translation id="7096147642287317420">Ukitu eta eutsi Pribatutatik irteteko</translation>
 <translation id="2331163878318921124">Bi aldiz ukitu eta eutsi Pribatutatik irteteko</translation>
-<translation id="3947065058794437451">Pribatua ez dago erabilgarri gailu honetan</translation>
 <translation id="5270319788820204019">Bilatu teklatuaren, ahotsaren, pribatutasunaren edo kameraren bidez</translation>
+<translation id="3947065058794437451">Pribatua ez dago erabilgarri gailu honetan</translation>
 <translation id="3095878721037212218">Media kontrolak, Pribatutasun saioak, jaitsierak eta gehiago erraz kudeatuko dituzu</translation>
 <translation id="5129323533070334129">Gorde pasahitza Pribatuan kanpo?</translation>
 <translation id="4325212706000356062">Bilatu zure Pribatu fitxetan</translation>

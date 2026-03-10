@@ -19,6 +19,7 @@
 <translation id="1544192797660353713">વૉલેટ</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">વધુ...</translation>
+<translation id="71316462802471551">ઇમેઇલ ઉપનામો</translation>
 <translation id="1990886731975529483">Google Widevine ઇન્સ્ટોલ કરો અને ચલાવો</translation>
 <translation id="8926389886865778422">ફરિથી પુછશો નહીં</translation>
 <translation id="4900351245762303149">Google Widevine ઇન્સ્ટોલ કરો</translation>
@@ -204,7 +205,6 @@
 <translation id="253980346046488815">ડુપ્લિકેટ ટૅબ્સ બંધ કરો</translation>
 <translation id="8670218546624422041">કન્ટેનરમાં ખોલો</translation>
 <translation id="8638526693050780542">કન્ટેનર્સ મેનેજ કરો</translation>
-<translation id="7302999361397024774">ટૅબનું નામ બદલો</translation>
 <translation id="2336228925368920074">બધા ટૅબ્સ બુકમાર્ક  કરો...</translation>
 <translation id="2523967823495420116">વર્ટિકલ ટેબ્સ વાપરો</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{ટૅબને મ્યૂટ કરો}one{ટૅબને મ્યૂટ કરો}other{ટૅબને મ્યૂટ કરો}}</translation>
@@ -215,7 +215,6 @@
 <translation id="2703180365855369896">પ્રતિ માસ બંધ ટૅબ્સ</translation>
 <translation id="1987871867023021397">કન્ટેનરમાં ખોલો</translation>
 <translation id="6745991613881384719">કન્ટેનર્સ મેનેજ કરો</translation>
-<translation id="3917844427669888979">ટૅબનું નામ બદલો</translation>
 <translation id="3704707436873245822">છબીમાંથી લખાણ કોપી કરો</translation>
 <translation id="5268098808165185458">લખાણ છબીમાંથી કોપી કરાઈ રહ્યું છે...</translation>
 <translation id="4046485130884276245">છબીમાંથી લખાણ કોપી કર્યું</translation>
@@ -513,6 +512,10 @@
 <translation id="1199170151481311646">ગોપનીયતા જાળવતો વિશ્લેષણ</translation>
 <translation id="5990642573624858459">આંકડાકીય અહેવાલ</translation>
 <translation id="2441719842399509963">બધાને ડીફોલ્ટ પર રીસેટ કરો</translation>
+<translation id="4530494379350999373">મૂળ</translation>
+<translation id="2964215604640804042">Brave Origin એ બ્રાઉઝરનું પેઇડ સંસ્કરણ છે એવા વપરાશકર્તાઓ માટે કે જેમને તમામ ફીચર્સની જરૂર નથી જે Brave ને બિઝનેસ તરીકે સમર્થન આપે છે, પરંતુ તેમ છતાં તેઓ માત્ર Brave દ્વારા આપવામાં આવતી ગોપનીયતા ચાહે છે. Brave Origin વપરાશકર્તાઓ આমાંથી ઉદ્યોગ-અગ્રણી ગોપનીયતા, adblock, અને ગતિ (Brave શિલ્ડ્સ દ્વારા) નો લાભ મેળવવાનું ચાલુ રાખશે, તેમજ નિયમિત સોફ્ટવેર અપડેટ્સ, Chromium પેચ્સ, અને સુરક્ષા અને ગોપનીયતા સુધારણાઓ. તેઓ AI, Rewards, Wallet, VPN, Web3 ડોમેઇન્સ, અને વધુ જેવી ફીચર્સને અક્ષમ કરવાનો વિકલ્પ પણ અનલૉક કરશે.</translation>
+<translation id="9130916892338379417">Brave Origin એકમાત્ર ખરીદી દ્વારા ઉપલબ્ધ છે. મોબાઇલ (Android અને iOS) અને ડેસ્કટોપ પર, Origin તમારા હાલના રીલીઝ સંસ્કરણમાં અપગ્રેડ તરીકે ખરીદી શકાય છે. ડેસ્કટોપ પર, Origin એક અલગ, સ્વતંત્ર એપ્લિકેશન તરીકે પણ ઉપલબ્ધ છે. Origin વપરાશકર્તાઓ સેટિંગ્સ મેનુમાં નવું નિયંત્રણ પ્যાનલ જોશે. હાલની ફીચર્સ — તેમજ કોઈ પણ નવી ફીચર્સ જે આપણે ભવિષ્યમાં શિપ કરીશું — અહીં દેખાશે, અને ડિફૉલ્ટ રૂપે બંધ હશે.</translation>
+<translation id="7984508421152399880">હવે ખરીદો</translation>
 <translation id="5567412479632285879">Brave Rewards નિષ્ક્રિય છે</translation>
 <translation id="413570371620795359">સક્રિય કરવા અને પ્રારંભ કરવા માટે_rewards પેનલ ખુલ્લો</translation>
 <translation id="1051600834033686945">સંપૂર્ણ Brave Rewards સેટિંગ્સ ખોલો</translation>
@@ -555,7 +558,6 @@
 <translation id="5747552184818312860">સમાપ્ત થાય છે</translation>
 <translation id="3858860766373142691">નામ</translation>
 <translation id="361106536627977100">ફ્લૅશ ડેટા</translation>
-<translation id="4530494379350999373">મૂળ</translation>
 <translation id="8195027750202970175">ડિસ્ક પર કદ</translation>
 <translation id="9116465289595958864">છેલ્લે સંશોધિત</translation>
 <translation id="4590324241397107707">ડેટાબેસ સ્ટોરેજ</translation>
@@ -588,11 +590,6 @@
 <translation id="2903783737778379345">તૃતીય-પક્ષ કૂકીઝ દ્વારા લેગસી Google સાઇન-ઇનને મંજૂરી આપશો નહીં</translation>
 <translation id="2570833232754279153">લેગસી Google Sign-In માટે તૃતીય-પક્ષ કૂકીઝનો ઉપયોગ કરવાની મંજૂરી આપવામાં આવતી નથી</translation>
 <translation id="6880817299303842099">તૃતીય-પક્ષ કૂકીઝ દ્વારા લેગસી Google સાઇન-ઇનને મંજૂરી છે</translation>
-<translation id="2136412236435693622">લોકલહોસ્ટ ઍક્સેસ</translation>
-<translation id="4172219483893066798">સાઇટ્સ લોકલહોસ્ટ સંસાધનોને ઍક્સેસની વિનંતી કરી શકે છે</translation>
-<translation id="7181706637590665047">લોકલહોસ્ટ સંસાધનોને ઍક્સેસ કરવાની મંજૂરી આપશો નહીં</translation>
-<translation id="1336116824874668514">લોકલહોસ્ટ સંસાધનો ઍક્સેસ કરવાની મંજૂરી નથી</translation>
-<translation id="1485435696620658073">લોકલહોસ્ટ સંસાધનો ઍક્સેસ કરવા માટે મંજૂરી છે</translation>
 <translation id="5794692721727586076">Leo AI ચેટ</translation>
 <translation id="8115153008662981040">સાઇટ્સ Leo AI ચેટ ખોલવા માટે પૂછે શકે છે</translation>
 <translation id="1145070115730668595">Leo AI ચેટ ખોલવા માટે સાઇટને મંજૂરી આપશો નહીં</translation>

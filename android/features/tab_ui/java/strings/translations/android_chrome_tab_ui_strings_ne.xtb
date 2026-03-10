@@ -19,6 +19,7 @@
 <translation id="149054111719651807">{NUM_MINS,plural, =1{<ph name="NUM_MINS_ONE"/> मिनेटअघि बनाइएको}other{<ph name="NUM_MINS_MANY"/> मिनेटअघि बनाइएको}}</translation>
 <translation id="1501480321619201731">समूह मेट्नुहोस्</translation>
 <translation id="1553638665176794706">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> निष्क्रिय आइटम}other{<ph name="TABS_COUNT_MANY"/> वटा निष्क्रिय आइटम}}</translation>
+<translation id="1568067597247500137">साइट म्युट गर्नुहोस्</translation>
 <translation id="1645759014353344461"><ph name="TABS_COUNT_MANY"/> वटा ट्याब समूहबद्ध गरिएका छन्</translation>
 <translation id="1657719826150349398">ट्याब सारेर तल लैजानुहोस्</translation>
 <translation id="1670942869417022142">अडियो म्युट गरिएको छ</translation>
@@ -87,7 +88,6 @@
 <translation id="3849789634341518784">{TAB_COUNT,plural, =1{ट्याब अनपिन गर्नुहोस्}other{ट्याबहरू अनपिन गर्नुहोस्}}</translation>
 <translation id="3940195383040445971">ट्याबहरूमा मूल्य ट्र्याक गर्नुहोस्</translation>
 <translation id="3940717704786481856">{NUMBER_OF_TABS_ADDED,plural, =1{<ph name="ONE_ADDED"/> नयाँ ट्याब, <ph name="ANY_CLOSED"/> ट्याब बन्द गरियो}other{<ph name="MANY_ADDED"/> वटा नयाँ ट्याब, <ph name="ANY_CLOSED"/> वटा ट्याब बन्द गरिए}}</translation>
-<translation id="3954615705217314756">{TABS_COUNT,plural, =1{ट्याब समूहबद्ध गर्नुहोस्}other{ट्याबहरू समूहबद्ध गर्नुहोस्}}</translation>
 <translation id="3962134438902735041">{TABS_COUNT,plural, =1{चयन गरिएको <ph name="TABS_COUNT_ONE"/> ट्याब अनपिन गर्नुहोस्}other{चयन गरिएका <ph name="TABS_COUNT_MANY"/> वटा ट्याब अनपिन गर्नुहोस्}}</translation>
 <translation id="4009732926939031387">{NUM_DAYS,plural, =1{<ph name="NUM_DAYS_ONE"/> दिनअघि बनाइएको}other{<ph name="NUM_DAYS_MANY"/> दिनअघि बनाइएको}}</translation>
 <translation id="4076226664360336092">ट्याब समूहको सूची, पूरै स्क्रिनमा खोलिएको छ</translation>
@@ -143,6 +143,7 @@
 <translation id="6054741997831917303">यो वस्तुको मूल्य हालसालै घटेर <ph name="PREVIOUS_PRICE"/> बाट <ph name="NEW_PRICE"/> भएको छ</translation>
 <translation id="606985262342505139">ट्याबको पुछारको पाना पूरै स्क्रिनमा खोलिएको छ</translation>
 <translation id="6109251075362363230">सबैभन्दा हालसालै प्रयोग गरिएको दोहोरिएको ट्याबबाहेक दोहोरिएका सबै ट्याबहरू अब अभिलेखमा राखिने छन्।</translation>
+<translation id="612596694132302162">साइट अनम्युट गर्नुहोस्</translation>
 <translation id="6149218574440723463">{TABS_COUNT,plural, =1{चयन गरिएको <ph name="TABS_COUNT_ONE"/> ट्याब बन्द गर्नुहोस्}other{चयन गरिएका <ph name="TABS_COUNT_MANY"/> वटा ट्याब बन्द गर्नुहोस्}}</translation>
 <translation id="61924696525243173">{WINDOW_COUNT,plural, =1{समूह सारेर नयाँ विन्डोमा लैजानुहोस्}other{समूह सारेर अर्को विन्डोमा लैजानुहोस्}}</translation>
 <translation id="6212374449852603982">{TAB_COUNT,plural, =1{ट्याब दायाँतिर सार्नुहोस्}other{ट्याबहरू दायाँतिर सार्नुहोस्}}</translation>
@@ -197,7 +198,6 @@
 <translation id="7792771145871471484">सुझावहरूको समीक्षा गर्नुहोस्।</translation>
 <translation id="7792860826279960128">साझा ट्याब समूहमा गरिने परिवर्तनसम्बन्धी सूचना आधा स्क्रिनमा खोलिएको छ</translation>
 <translation id="7825973332242257878">ट्याब समूहहरू</translation>
-<translation id="7838146321400849846">{TABS_COUNT,plural, =1{चयन गरिएको <ph name="TABS_COUNT_ONE"/> ट्याब कुनै समूहमा थप्नुहोस्}other{चयन गरिएका <ph name="TABS_COUNT_MANY"/> ट्याबहरू कुनै समूहमा थप्नुहोस्}}</translation>
 <translation id="7853202427316060426">गतिविधि</translation>
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> मूल्याङ्कन, <ph name="REVIEWS_COUNT_ONE"/> समीक्षा}other{<ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> मूल्याङ्कन, <ph name="REVIEWS_COUNT_MANY"/> वटा समीक्षा}}</translation>
 <translation id="7885132941432959125">ट्याब सारेर दायाँतिर लैजानुहोस्</translation>

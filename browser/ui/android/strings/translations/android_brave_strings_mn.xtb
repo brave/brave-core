@@ -167,10 +167,6 @@ Brave Мэдээ нь хувийн, нэргүй зар сурталчилгаа
 <translation id="9110294136812584522">Сайтууд гуравдагч этгээдийн күүки ашиглан хуучин Google Нэвтрэлтийг ашиглах хүсэлт тавих боломжтой</translation>
 <translation id="2903783737778379345">Гуравдагч этгээдийн күүки ашиглан хуучин Google Нэвтрэлтийг зөвшөөрөхгүй</translation>
 <translation id="6880817299303842099">Гуравдагч этгээдийн күүки ашиглан хуучин Google Нэвтрэлт хийхийг зөвшөөрсөн</translation>
-<translation id="2136412236435693622">Localhost нэвтрэх</translation>
-<translation id="4172219483893066798">Сайтууд localhost нөөцөд нэвтрэлт хүсэлт гаргах боломжтой</translation>
-<translation id="7181706637590665047">Localhost нөөцөд нэвтрэхийг зөвшөөрөхгүй</translation>
-<translation id="1485435696620658073">Localhost нөөцөд нэвтрэхийг зөвшөөрсөн</translation>
 <translation id="181905442828471321">Brave Бамбай хамгаалалтын глобал тохиргоонууд</translation>
 <translation id="2675679258824361492">Бусад нууцлалын тохиргоонууд</translation>
 <translation id="8026334261755873520">Мэдээллийг автомат цэвэрлэх</translation>
@@ -426,6 +422,13 @@ Brave Мэдээ нь хувийн, нэргүй зар сурталчилгаа
 <translation id="7141438739990875547">Bitcoin сүлжээ</translation>
 <translation id="9055546041146396417">Энэ сайт эвдрэлтэй харагдаж байвал Shields хамгаалалтыг унтрааж үзээрэй.</translation>
 <translation id="7898672232170410330">Элементийг блоклох</translation>
+<translation id="9064628362799094520">Сайтын өгөгдлийг устгах</translation>
+<translation id="8949611615512336262">Автоматаар устгах: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Сайтын өгөгдлийг одоо устгах</translation>
+<translation id="6795622376590884449">Автоматаар устгах</translation>
+<translation id="7961015016161918242">Хэзээ ч</translation>
+<translation id="1991004083507807299">Сайтын таб хаагдсан</translation>
+<translation id="5827277414420724690">Програм хаагдсан</translation>
 <translation id="1209739344687072997">Эвдрэлтэй сайтыг мэдээлэх</translation>
 <translation id="8510478288840333677">Энэ сайт нь Shields дээр үр дүнтэй ажиллахгүй байгааг Brave-н хөгжүүлэгчдэд мэдэгдээрэй:</translation>
 <translation id="1653405824851871276">Brave-г илүү сайжруулахад тусалсанд баярлалаа. Энэ тайланд зөвхөн энэ сайтыг засахад хэрэгтэй мэдээлэл байх болно. <ph name="LEARN_MORE"/></translation>
@@ -1085,7 +1088,7 @@ Brave Мэдээ нь хувийн, нэргүй зар сурталчилгаа
 <translation id="1336494649091412226">Та үнэхээр Brave-ээс гарахыг хүсэж байна уу?</translation>
 <translation id="6061635824229591714">Сайтын өгөгдлийг устгах уу?</translation>
 <translation id="1265051174491933207">Устгаснаар сайтын өгөгдлийг арилгаж, “<ph name="SITE_NAME"/>” табуудыг хаах болно. Буцаах боломжгүй.</translation>
-<translation id="4279349293084858577">Устгах</translation>
+<translation id="5528772406060281700">Сайтын өгөгдлийг устгах уу</translation>
 <translation id="4426990318287827331">Өгөгдөл устгах</translation>
 <translation id="7942415993090181327">Чатны түүх</translation>
 <translation id="6859935199732075666">Аюулгүйгээр Хөтөлбөрийн алдаа харуулах</translation>

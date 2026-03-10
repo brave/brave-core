@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">ጣቢያዎች በሶስተኛ ወገን ኩኪዎች በኩል የሌጋሲ Google መግቢያን ለመጠቀም ሊጠይቁ ይችላሉ</translation>
 <translation id="2903783737778379345">የሌጋሲ Google መግቢያን በሶስተኛ ወገን ኩኪዎች በኩል አይፍቀዱ</translation>
 <translation id="6880817299303842099">ለሌጋሲ Google መግቢያ የሶስተኛ ወገን ኩኪዎችን መጠቀም ይፈቀዳል</translation>
-<translation id="2136412236435693622">Localhost መዳረሻ</translation>
-<translation id="4172219483893066798">ጣቢያዎች ለlocalhost ግብዓቶች መዳረሻ መጠየቅ ይችላሉ</translation>
-<translation id="7181706637590665047">የlocalhost ግብዓቶችን ለመዳረስ አይፍቀዱ</translation>
-<translation id="1485435696620658073">የlocalhost ግብዓቶችን ለመዳረስ ተፈቅዷል</translation>
 <translation id="181905442828471321">የብሬቭ ጥበቃ ግሎባል ዲፎልት</translation>
 <translation id="2675679258824361492">ሌሎች የግላዊነት ቅንብሮች</translation>
 <translation id="8026334261755873520">የአሰሳ ውሂብ አጽዳ</translation>
@@ -422,6 +418,13 @@
 <translation id="7141438739990875547">Bitcoin አውታረ መረቦች</translation>
 <translation id="9055546041146396417">ይህ ገጽ ተሰብሮ ከሆነ መከላከያዎችን በማውረድ ይሞክሩ።</translation>
 <translation id="7898672232170410330">ንጥል ንዑስ ክፍል አግድ</translation>
+<translation id="9064628362799094520">ጣቢያውን ውሂብ ማሰስ</translation>
+<translation id="8949611615512336262">ራሱ በራሱ ማሰስ: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">ጣቢያ ውሂብ አሁን ማሰስ</translation>
+<translation id="6795622376590884449">ራሱ በራሱ ማሰስ</translation>
+<translation id="7961015016161918242">በፍጹም</translation>
+<translation id="1991004083507807299">ጣቢያ ট្រូ بند ተዘግቷል</translation>
+<translation id="5827277414420724690">መተግበሪያ ዝጋ</translation>
 <translation id="1209739344687072997">የተሰበረ ገጽን ሪፖርት ያድርጉ</translation>
 <translation id="8510478288840333677">ይህ ገጽ ከጋሻዎች ጋር በትክክል እንደማይሰራ የ Brave አዘጋጆች እንዲያውቁት ያድርጉ፡</translation>
 <translation id="1653405824851871276">እንኳን ለ Brave የተሻማትን በማገናኘት እናመሰግናለን። ይህ ሪፖርት የበካል ኢንፎ ብቻ ያካትታል። <ph name="LEARN_MORE"/></translation>
@@ -1069,7 +1072,7 @@
 <translation id="1336494649091412226">እርግጠኛ ነዎት እንደ Brave መዝጋት ትፈልጋላችሁ?</translation>
 <translation id="6061635824229591714">የsite ውሂብን በሙሉ ላጥም?</translation>
 <translation id="1265051174491933207">ማሰስ የsite ውሂብን ያጠፋል እና ሁሉንም '<ph name="SITE_NAME"/>' ታቦች ይዘጋል። ይህን መድገም አይቻልም።</translation>
-<translation id="4279349293084858577">ማሰስ</translation>
+<translation id="5528772406060281700">ጣቢያ ውሂብ ማሰስ</translation>
 <translation id="4426990318287827331">ውሂብ ማሰስ</translation>
 <translation id="7942415993090181327">የውይይት ታሪክ</translation>
 <translation id="6859935199732075666">የፍጹም ፍቶቅን እንድትክፍቱ ጥፍሩ እና ወገኖችቱን ለጥፍትበህ</translation>

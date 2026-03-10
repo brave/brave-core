@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">Saidid võivad küsida Google’i pärandsisselogimise kasutamist kolmanda osalise küpsiste kaudu</translation>
 <translation id="2903783737778379345">Blokeerige Google’i pärandsisselogimise kasutamine kolmanda osalise küpsiste kaudu</translation>
 <translation id="6880817299303842099">Kolmanda osalise küpsiste kasutamine Google’i pärandsisselogimiseks on lubatud</translation>
-<translation id="2136412236435693622">Kohaliku hosti juurdepääs</translation>
-<translation id="4172219483893066798">Saidid saavad taotleda juurdepääsu kohaliku hosti ressurssidele</translation>
-<translation id="7181706637590665047">Ära luba juurdepääsu kohaliku hosti ressuressidele</translation>
-<translation id="1485435696620658073">Juurdepääs kohaliku hosti ressuressidele on lubatud</translation>
 <translation id="181905442828471321">Brave'i kaitsete globaalsed vaikeväärtused</translation>
 <translation id="2675679258824361492">Muud privaatsusseaded</translation>
 <translation id="8026334261755873520">Sirvimisandmete kustutamine</translation>
@@ -423,6 +419,13 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="7141438739990875547">Bitcoini võrgud</translation>
 <translation id="9055546041146396417">Paistab, et leht ei toimi. Proovige kaitse keelata.</translation>
 <translation id="7898672232170410330">Blokeeri element</translation>
+<translation id="9064628362799094520">Hävita saidi andmed</translation>
+<translation id="8949611615512336262">Automaatne hävitamine: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Hävita saidi andmed nüüd</translation>
+<translation id="6795622376590884449">Automaatne hävitamine</translation>
+<translation id="7961015016161918242">Mitte kunagi</translation>
+<translation id="1991004083507807299">Saidi vahekaart suletud</translation>
+<translation id="5827277414420724690">Rakenduse sulgemine</translation>
 <translation id="1209739344687072997">Teata mittetoimivast veebisaidist</translation>
 <translation id="8510478288840333677">Andke Brave’i arendajatele teada, et see veebisait ei toimi kaitsega õigesti:</translation>
 <translation id="1653405824851871276">Aitäh, et aitate teha Brave'i kõigi jaoks paremaks. See teade sisaldab üksnes veebisaidi parandamiseks vajalikku teavet. <ph name="LEARN_MORE"/></translation>
@@ -1077,7 +1080,7 @@ Seda tegevust ei saa tagasi võtta.</translation>
 <translation id="1336494649091412226">Kas olete kindel, et soovite Brave'ist väljuda?</translation>
 <translation id="6061635824229591714">Kas hävitada saidi andmed?</translation>
 <translation id="1265051174491933207">Hävitamine kustutab saidi andmed ja sulgeb kõik '<ph name="SITE_NAME"/>' kaardid. Seda ei saa tagasi võtta.</translation>
-<translation id="4279349293084858577">Hävita</translation>
+<translation id="5528772406060281700">Kas hävitada saidi andmed</translation>
 <translation id="4426990318287827331">Hävita andmed</translation>
 <translation id="7942415993090181327">Vestluse ajalugu</translation>
 <translation id="6859935199732075666">Näita turvalise lehitsemise vigu</translation>

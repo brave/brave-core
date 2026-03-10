@@ -19,6 +19,7 @@
 <translation id="1544192797660353713">钱包</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">更多…</translation>
+<translation id="71316462802471551">电子邮件别名</translation>
 <translation id="1990886731975529483">安装并运行 Google Widevine</translation>
 <translation id="8926389886865778422">不再询问</translation>
 <translation id="4900351245762303149">安装 Google Widevine</translation>
@@ -60,7 +61,7 @@
 <translation id="7658239707568436148">取消</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">使用 .onion 地址开启： <ph name="ADDRESS"/></translation>
-<translation id="4759098689276706664">强制粘贴</translation>
+<translation id="4759098689276706664">強制貼上</translation>
 <translation id="1434416574322382019">用 Tor 打开新的私人窗口</translation>
 <translation id="4703780849509456860">用 Tor 在私人窗口中打开链接</translation>
 <translation id="3488584642074079080">用 Tor 在 Brave 私人窗口中打开链接</translation>
@@ -203,7 +204,6 @@
 <translation id="253980346046488815">关闭重复的标签页</translation>
 <translation id="8670218546624422041">在容器中打开</translation>
 <translation id="8638526693050780542">管理容器</translation>
-<translation id="7302999361397024774">重命名选项卡</translation>
 <translation id="2336228925368920074">为所有标签页添加书签...</translation>
 <translation id="2523967823495420116">使用垂直标签</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{将这个标签页静音}other{将这些标签页静音}}</translation>
@@ -214,7 +214,6 @@
 <translation id="2703180365855369896">关闭重复的标签页</translation>
 <translation id="1987871867023021397">在容器中打开</translation>
 <translation id="6745991613881384719">管理容器</translation>
-<translation id="3917844427669888979">重命名选项卡</translation>
 <translation id="3704707436873245822">从图像中复制文本</translation>
 <translation id="5268098808165185458">从图像中复制文本……</translation>
 <translation id="4046485130884276245">文本已从图像中复制成功</translation>
@@ -512,6 +511,10 @@
 <translation id="1199170151481311646">隐私保护分析</translation>
 <translation id="5990642573624858459">统计报告</translation>
 <translation id="2441719842399509963">重置为默认值</translation>
+<translation id="4530494379350999373">来源</translation>
+<translation id="2964215604640804042">Brave Origin 是一款为不需要支持 Brave 作为业务的所有功能但仍想要只有 Brave 提供的隐私保护的用户提供的付费浏览器版本。Brave Origin 用户将继续受益于我们行业领先的隐私、广告拦截和速度（通过 Brave 盾牌），以及定期的软件更新、Chromium 补丁和安全及隐私改进。他们还将解锁禁用 AI、奖励、钱包、VPN、Web3 域名等功能的选项。</translation>
+<translation id="9130916892338379417">Brave Origin 可通过一次性购买获得。在移动设备（Android 和 iOS）和桌面上，Origin 可以作为现有发行版本的升级而购买。在桌面上，Origin 也可作为单独的独立应用程序获得。Origin 用户将在设置菜单中看到一个新的控制面板。现有功能以及我们将来推出的任何新功能都将出现在这里，并且默认处于关闭状态。</translation>
+<translation id="7984508421152399880">立即购买</translation>
 <translation id="5567412479632285879">Brave 奖励已禁用</translation>
 <translation id="413570371620795359">打开奖励面板，启用并开始体验服务</translation>
 <translation id="1051600834033686945">打开完整的 Brave 奖励设置</translation>
@@ -554,7 +557,6 @@
 <translation id="5747552184818312860">到期时间</translation>
 <translation id="3858860766373142691">名称</translation>
 <translation id="361106536627977100">闪存数据</translation>
-<translation id="4530494379350999373">来源</translation>
 <translation id="8195027750202970175">占用的存储空间</translation>
 <translation id="9116465289595958864">上次修改时间</translation>
 <translation id="4590324241397107707">数据库存储</translation>
@@ -587,11 +589,6 @@
 <translation id="2903783737778379345">不允许通过第三方 cookie 登录传统谷歌</translation>
 <translation id="2570833232754279153">不允许使用第三方 cookie 登录旧版谷歌</translation>
 <translation id="6880817299303842099">允许使用第三方 cookie 登录旧版谷歌</translation>
-<translation id="2136412236435693622">本地主机访问</translation>
-<translation id="4172219483893066798">网站可以请求访问本地主机资源</translation>
-<translation id="7181706637590665047">不允许访问本地主机资源</translation>
-<translation id="1336116824874668514">不允许访问本地主机资源</translation>
-<translation id="1485435696620658073">允许访问本地主机资源</translation>
 <translation id="5794692721727586076">Leo AI 聊天室</translation>
 <translation id="8115153008662981040">网站可询问能否打开 Leo AI 聊天室</translation>
 <translation id="1145070115730668595">不允许网站打开 Leo AI 聊天</translation>

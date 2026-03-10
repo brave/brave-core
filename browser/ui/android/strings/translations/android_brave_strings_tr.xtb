@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">Siteler üçüncü taraf çerezler aracılığıyla eski Google Oturum Açma'yı kullanmak isteyebilir</translation>
 <translation id="2903783737778379345">Üçüncü taraf çerezler aracılığıyla eski Google Oturum Açma'ya izin verme</translation>
 <translation id="6880817299303842099">Eski Google Oturum Açma için üçüncü taraf çerezlerin kullanımına izin verilir</translation>
-<translation id="2136412236435693622">Localhost erişimi</translation>
-<translation id="4172219483893066798">Siteler, localhost kaynaklarına erişim talep edebilir</translation>
-<translation id="7181706637590665047">Localhost kaynaklarına erişime izin verme</translation>
-<translation id="1485435696620658073">Localhost kaynaklarına erişim izni var</translation>
 <translation id="181905442828471321">Brave kalkanları genel varsayılanları</translation>
 <translation id="2675679258824361492">Diğer gizlilik ayarları</translation>
 <translation id="8026334261755873520">Tarama verilerini temizle</translation>
@@ -223,6 +219,7 @@
 <translation id="4225265925807365011">24 kelimelik kurtarma ifadem var</translation>
 <translation id="3570367516044491911">Varsayılan tarayıcı olarak ayarla</translation>
 <translation id="6800338374677644736">Varsayılan Tarayıcı olarak ayarla</translation>
+<translation id="1545749641540134597">QR Kodunu Tara</translation>
 <translation id="5317781812114905957">Talimatlar</translation>
 <translation id="8515319483805157233">QR Koduyla arama yapmak için QR Kodunu çerçevenin ortasına hizalayın.</translation>
 <translation id="7658239707568436148">İptal et</translation>
@@ -422,6 +419,13 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="7141438739990875547">Bitcoin ağları</translation>
 <translation id="9055546041146396417">Bu site bozuk görüntülenirse, Shileds'ı kapatmayı deneyin.</translation>
 <translation id="7898672232170410330">Öğeyi engelle</translation>
+<translation id="9064628362799094520">Siteyi yok et</translation>
+<translation id="8949611615512336262">Otomatik Yok Et: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Site Verilerini Şimdi Yok Et</translation>
+<translation id="6795622376590884449">Otomatik Yok Et</translation>
+<translation id="7961015016161918242">Hiçbir Zaman</translation>
+<translation id="1991004083507807299">Site Sekmeleri Kapatıldığında</translation>
+<translation id="5827277414420724690">Uygulama Kapatıldığında</translation>
 <translation id="1209739344687072997">Arızalı bir siteyi bildir</translation>
 <translation id="8510478288840333677">Bu sitenin Kalkanlar'la düzgün çalışmadığını Brave geliştiricilerine bildirin:</translation>
 <translation id="1653405824851871276">Brave'in herkes için daha iyi olmasına yardımcı olduğunuz için teşekkürler. Bu rapor sadece bu siteyi düzeltmemiz için gereken bilgileri içerecektir. <ph name="LEARN_MORE"/></translation>
@@ -1073,7 +1077,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="1336494649091412226">Brave'den çıkmak istediğinize emin misiniz?</translation>
 <translation id="6061635824229591714">Site Verileri Yok Edilsin mi?</translation>
 <translation id="1265051174491933207">Yok etme bu sitenin açık tüm <ph name="SITE_NAME"/> sekmelerini kapatacak ve tüm site verilerini silecek. Bu işlem geri alınamaz.</translation>
-<translation id="4279349293084858577">Yok et</translation>
+<translation id="5528772406060281700">Site Verileri Yok Edilsin mi</translation>
 <translation id="4426990318287827331">Verileri Yok Et</translation>
 <translation id="7942415993090181327">Sohbet geçmişi</translation>
 <translation id="6859935199732075666">Güvenli Gezinti hatalarını göster</translation>

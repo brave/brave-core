@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">Az oldalak engedélyt kérhetnek a régi Google-bejelentkezés használatára harmadik felektől származó cookie-kon keresztül</translation>
 <translation id="2903783737778379345">Ne engedélyezze a régi Google-bejelentkezés használatát harmadik felektől származó cookie-kon keresztül</translation>
 <translation id="6880817299303842099">Engedélyezett a harmadik felektől származó cookie-k használata a régi Google-bejelentkezéshez</translation>
-<translation id="2136412236435693622">Localhost-hozzáférés</translation>
-<translation id="4172219483893066798">A webhelyek kérhetnek hozzáférést a localhost-erőforrásokhoz</translation>
-<translation id="7181706637590665047">A localhost-erőforrásokhoz való hozzáférés letiltása</translation>
-<translation id="1485435696620658073">Hozzáférhet a localhost-erőforrásokhoz</translation>
 <translation id="181905442828471321">Brave pajzsok globális alapbeállításai</translation>
 <translation id="2675679258824361492">Egyéb adatvédelmi beállítások</translation>
 <translation id="8026334261755873520">Böngészési adatok törlése</translation>
@@ -422,6 +418,13 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="7141438739990875547">Bitcoin-hálózatok</translation>
 <translation id="9055546041146396417">Ha ez az oldal nem működik, próbáld meg a Shields nélkül.</translation>
 <translation id="7898672232170410330">Blokkelem</translation>
+<translation id="9064628362799094520">A webhely adatainak megsemmisítése</translation>
+<translation id="8949611615512336262">Automatikus megsemmisítés: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">Webhelyadatok megsemmisítése most</translation>
+<translation id="6795622376590884449">Automatikus megsemmisítés</translation>
+<translation id="7961015016161918242">Soha</translation>
+<translation id="1991004083507807299">Webhelylapok bezárásakor</translation>
+<translation id="5827277414420724690">Alkalmazás bezárásakor</translation>
 <translation id="1209739344687072997">Nem működő oldal jelentése</translation>
 <translation id="8510478288840333677">Hívja fel a Brave fejlesztőinek figyelmét arra, hogy ez az oldal nem működik megfelelően a Shieldsel:</translation>
 <translation id="1653405824851871276">Köszönjük, hogy segít a Brave továbbfejlesztésében. Ebben a jelentésben csak az oldal javításához számunkra szükséges információk szerepelnek. <ph name="LEARN_MORE"/></translation>
@@ -1073,7 +1076,7 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="1336494649091412226">Biztosan kilép a Brave-ből?</translation>
 <translation id="6061635824229591714">Megsemmisíti a webhelyadatokat?</translation>
 <translation id="1265051174491933207">A megsemmisítés törli a webhelyadatokat, és bezárja az összes „<ph name="SITE_NAME"/>” lapot. Ez nem visszavonható.</translation>
-<translation id="4279349293084858577">Megsemmisítés</translation>
+<translation id="5528772406060281700">Megsemmisíti a webhelyadatokat</translation>
 <translation id="4426990318287827331">Adatok megsemmisítése</translation>
 <translation id="7942415993090181327">Csevegési előzmények</translation>
 <translation id="6859935199732075666">Biztonságos böngészés hibáinak megjelenítése</translation>

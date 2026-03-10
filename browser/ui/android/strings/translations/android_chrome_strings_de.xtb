@@ -8,7 +8,6 @@
 <translation id="1016498331642356377">Schnelle Sprachsuche verwenden. Zum Ändern Schaltfläche gedrückt halten.</translation>
 <translation id="1028699632127661925">Wird an <ph name="DEVICE_NAME"/> gesendet…</translation>
 <translation id="103269572468856066">Auch Daten dieser Websites &amp; Apps löschen?</translation>
-<translation id="1034259925032978114">Fenster ist geöffnet</translation>
 <translation id="1035113036584565771">Werbeangebot zu Benachrichtigungen mit Tipps geschlossen</translation>
 <translation id="1036348656032585052">Deaktivieren</translation>
 <translation id="1045899828449635435">Auch Daten dieser Websites löschen?</translation>
@@ -39,6 +38,7 @@
 <translation id="7083341910267693582"><ph name="APP_NAME"/> wird in Brave geöffnet. Wenn du fortfährst, stimmst du den <ph name="BEGIN_LINK1"/>Brave-Nutzungsbedingungen<ph name="END_LINK1"/> und den <ph name="BEGIN_LINK2"/>Zusatzbedingungen für Brave und Brave OS<ph name="END_LINK2"/> zu.</translation>
 <translation id="7443574521624544928">Im Brave Passwortmanager sind keine Passwörter gespeichert.</translation>
 <translation id="115483310321669804">Passwort <ph name="PASSWORD"/> verwenden</translation>
+<translation id="1161065531352634524">Tabs und Verlauf synchronisieren</translation>
 <translation id="1165109137568919258">Nimm ein Foto auf oder füge ein Bild aus deiner Fotogalerie hinzu, um zu suchen</translation>
 <translation id="1173894706177603556">Umbenennen</translation>
 <translation id="7947699437047020219">Brave fordert bei schmalem Display die mobile Website an</translation>
@@ -124,6 +124,7 @@ Weitere Einstellungen, bei denen Daten zur Verbesserung von Brave verwendet werd
 <translation id="147982357559798527">Geändert</translation>
 <translation id="5970766554644855317">Möglicherweise wird ein Teil deines Verlaufs hier nicht angezeigt. Wenn du dir den gesamten Brave-Verlauf ansehen möchtest, öffne den vollständigen Brave-Verlauf.</translation>
 <translation id="1493287004536771723">Du folgst „<ph name="SITE_NAME"/>“</translation>
+<translation id="1495677929897281669">Zurück zum Tab</translation>
 <translation id="1496514951988037011">Nutzername</translation>
 <translation id="1501480321619201731">Gruppe löschen</translation>
 <translation id="1506061864768559482">Suchmaschine</translation>
@@ -152,6 +153,7 @@ Nur Personen, die deine Passphrase kennen, können deine verschlüsselten Daten 
 <translation id="164269334534774161">Du siehst dir momentan eine Offlinekopie dieser Seite vom <ph name="CREATION_TIME"/> an</translation>
 <translation id="1644574205037202324">Verlauf</translation>
 <translation id="1645262572857218659">Mit <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> anmelden</translation>
+<translation id="1650979352027263879">Einstellungen für die Darstellung wurden entfernt</translation>
 <translation id="1671236975893690980">Download ausstehend...</translation>
 <translation id="1672586136351118594">Nicht mehr anzeigen</translation>
 <translation id="1680919990519905526">Über Google Lens kaufen <ph name="BEGIN_NEW"/>Neu<ph name="END_NEW"/></translation>
@@ -319,7 +321,6 @@ Nur Personen, die deine Passphrase kennen, können deine verschlüsselten Daten 
 <translation id="2451607499823206582">Tracking</translation>
 <translation id="2453860139492968684">Fertig</translation>
 <translation id="2461378706168271257">In Tabs suchen</translation>
-<translation id="2461822463642141190">Aktuell</translation>
 <translation id="2466378451804467735"><ph name="TAB_TITLE"/>, mehrfach ausgewählter, stummgeschalteter Tab</translation>
 <translation id="2468444275314013497">Dein Browser sieht sicher aus</translation>
 <translation id="2471632347767899461">Du kannst auch in der Hilfe suchen</translation>
@@ -395,7 +396,6 @@ Nur Personen, die deine Passphrase kennen, können deine verschlüsselten Daten 
 <translation id="2789486458103222910">Ok</translation>
 <translation id="7717639919252237580">{NUM_PASSWORDS,plural, =1{Brave hat ein mehrfach verwendetes Passwort gefunden, dessen Sicherheit du verbessern kannst}other{Brave hat # mehrfach verwendete Passwörter gefunden, deren Sicherheit du verbessern kannst}}</translation>
 <translation id="1708222144403389505">Aktiviere Benachrichtigungen für Tipps zur optimalen Nutzung von Brave</translation>
-<translation id="2800066122460699237">Der Tab „<ph name="TAB_TITLE"/>“ wird geschlossen</translation>
 <translation id="2805210243313393104">Lesezeichen und andere Daten auf allen deinen Geräten abrufen</translation>
 <translation id="2805756323405976993">Apps</translation>
 <translation id="2819849308549746319">Alle abbestellen</translation>
@@ -411,6 +411,7 @@ Nur Personen, die deine Passphrase kennen, können deine verschlüsselten Daten 
 <translation id="2842985007712546952">Übergeordneter Ordner</translation>
 <translation id="2860954141821109167">Prüfe, ob auf diesem Gerät eine Telefon-App aktiviert ist</translation>
 <translation id="6518254564747115579">Einige Brave-Funktionen sind dann nicht mehr verfügbar</translation>
+<translation id="286473047976978798">Einstellungen für die Darstellung übernehmen?</translation>
 <translation id="2869416538780777323">{OTHER_TAB_COUNT,plural, =1{<ph name="URL"/> und 1 weiterer Tab}other{<ph name="URL"/> und <ph name="TAB_COUNT_MANY"/> weitere Tabs}}</translation>
 <translation id="2869430948265924908">Wenn du deine vertraulichen Inhalte bzw. Daten in deinem Auto schützen möchtest, musst du eine Autoprofilsperre erstellen.  Dazu kannst du eine PIN, einen Code oder ein Passwort verwenden.</translation>
 <translation id="2870560284913253234">Website</translation>
@@ -420,6 +421,7 @@ Nur Personen, die deine Passphrase kennen, können deine verschlüsselten Daten 
 <translation id="2885355868600171871">Zur Adressleiste wechseln</translation>
 <translation id="8541922081612557424">Über Brave</translation>
 <translation id="2891154217021530873">Laden der Seite anhalten</translation>
+<translation id="2893168226686371498">Standardbrowser</translation>
 <translation id="2894821468041866720">Dein Browser oder Gerät wird nicht merklich verlangsamt.</translation>
 <translation id="2895521649038438824">Du kannst dir diese Seite vorlesen lassen</translation>
 <translation id="289596984386220317"><ph name="TAB_TITLE"/>, angepinnter Tab mit Audio</translation>
@@ -515,7 +517,7 @@ Nur Personen, die deine Passphrase kennen, können deine verschlüsselten Daten 
 <translation id="3303414029551471755">Inhalt herunterladen?</translation>
 <translation id="3303855915957856445">Keine Suchergebnisse gefunden</translation>
 <translation id="3305130791745726624">An Geräte senden</translation>
-<translation id="3305795716056605962">Seiten über die Schaltfläche „Weitere Optionen“ übersetzen lassen</translation>
+<translation id="3305795716056605962">Seiten über den Button „Weitere Optionen“ übersetzen lassen</translation>
 <translation id="3307355280394823921">Verlauf öffnen</translation>
 <translation id="3309978850836730073">Der Lesemodus ist immer hier verfügbar</translation>
 <translation id="331080746368555063">Eine private Website kann beispielsweise das Intranet deines Unternehmens sein</translation>
@@ -820,6 +822,7 @@ Eventuell findest du unter <ph name="BEGIN_LINK"/>history.google.com<ph name="EN
 <translation id="4685741273709472646">Wähle eine Option aus der Drop-down-Liste aus</translation>
 <translation id="4687718960473379118">Von Websites vorgeschlagene Werbung</translation>
 <translation id="468924408576231679">Link zur Webseite „<ph name="PAGE_TITLE"/>“ kopieren. Quelle: <ph name="PAGE_URL"/></translation>
+<translation id="4692623383562244444">Suchmaschinen</translation>
 <translation id="469286762610133730">Bessere Inhalte erhalten</translation>
 <translation id="4695891336199304370">{SHIPPING_OPTIONS,plural, =1{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 und <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> weitere}other{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 und <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> weitere}}</translation>
 <translation id="4698757800236023795">Aktiv (<ph name="ITEM_COUNT"/>)</translation>
@@ -882,7 +885,6 @@ Eventuell findest du unter <ph name="BEGIN_LINK"/>history.google.com<ph name="EN
 <translation id="3217997482476578430">Discover von Brave</translation>
 <translation id="4910889077668685004">Zahlungs-Apps</translation>
 <translation id="4911042367886397055">Willkommen zurück, <ph name="USER_NAME"/>!</translation>
-<translation id="4912413785358399818">Tab verschieben</translation>
 <translation id="4913169188695071480">Aktualisierung anhalten</translation>
 <translation id="367116267716122258">Wenn du auf allen deinen Geräten auf deine Passwörter und andere Daten zugreifen möchtest, melde dich mit <ph name="EMAIL"/> in Brave an</translation>
 <translation id="4923173329789776645">Download wird von deiner Organisation nicht empfohlen</translation>
@@ -951,6 +953,7 @@ Eventuell findest du unter <ph name="BEGIN_LINK"/>history.google.com<ph name="EN
 <translation id="5210286577605176222">Zum vorherigen Tab wechseln</translation>
 <translation id="5210365745912300556">Schließen</translation>
 <translation id="6070412534311859792">Starte Brave neu, um diese Änderung abzuschließen. Tabs werden beim Neustart automatisch wieder geöffnet.</translation>
+<translation id="5213114823401215820">Geschlossene Gruppe wieder öffnen</translation>
 <translation id="5215957675041756913">Daten und Konto verwalten</translation>
 <translation id="5218324087477576825">Kartennummer, erforderlich</translation>
 <translation id="7965009626431458039"><ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> und weitere <ph name="SEPARATOR"/> Brave hat diese Berechtigungen entfernt, weil du die Website in letzter Zeit nicht besucht hast</translation>
@@ -1063,7 +1066,6 @@ Eventuell findest du unter <ph name="BEGIN_LINK"/>history.google.com<ph name="EN
 <translation id="5765780083710877561">Beschreibung:</translation>
 <translation id="5776970333778123608">Unwichtige Daten</translation>
 <translation id="5793665092639000975"><ph name="SPACE_USED"/> von <ph name="SPACE_AVAILABLE"/> werden verwendet</translation>
-<translation id="5795872532621730126">Suchen und surfen</translation>
 <translation id="5797949256525811424">Blockiertes Thema</translation>
 <translation id="580893287573699959">Hier kannst du Themen und Websites verwalten, die dich interessieren</translation>
 <translation id="5809361687334836369">{HOURS,plural, =1{Vor # Stunde}other{Vor # Stunden}}</translation>
@@ -1259,7 +1261,6 @@ Einige Websites schalten möglicherweise Werbeanzeigen, deren Auswahl nicht dara
 <translation id="6702167990458635422">Schützt dich nicht vor gefährlichen Websites, Downloads und Erweiterungen. Deine Safe Browsing-Einstellungen in anderen Brave-Produkten sind davon nicht betroffen.</translation>
 <translation id="6554822972009632311">Inhaltsfilter ist aktiviert</translation>
 <translation id="6556501700899673703">Lexend</translation>
-<translation id="6556542240154580383">{TAB_COUNT,plural, =1{„<ph name="TAB_TITLE"/>“ und <ph name="TAB_COUNT_ONE"/> weiterer Tab werden geschlossen}other{„<ph name="TAB_TITLE"/>“ und <ph name="TAB_COUNT_MANY"/> weitere Tabs werden geschlossen}}</translation>
 <translation id="6560414384669816528">Suche mit Sogou</translation>
 <translation id="656065428026159829">Mehr anzeigen</translation>
 <translation id="971059121491380239">Dein Android-Gerät verfügt möglicherweise über eine ähnliche Einstellung. Wenn die Erfolgsmessung bei Anzeigen in Brave und auf deinem Android-Gerät aktiviert ist, kann ein Unternehmen möglicherweise die Effektivität von Werbeanzeigen auf den von dir besuchten Websites und in den von dir verwendeten Apps messen.</translation>
@@ -1322,6 +1323,7 @@ Einige Websites schalten möglicherweise Werbeanzeigen, deren Auswahl nicht dara
 <translation id="6811034713472274749">Seitenansicht bereit</translation>
 <translation id="6813359536773993594">{FILE_COUNT,plural, =1{Bilder, 1 Bild in der Liste}other{Bilder, # Bilder in der Liste}}</translation>
 <translation id="8418237809013783651">In Brave anmelden, geöffnet.</translation>
+<translation id="6815692190508268848">Einstellungen für die Darstellung wurden übernommen</translation>
 <translation id="6817747507826986771">Diese Seite schnell teilen. Zum Ändern Schaltfläche gedrückt halten.</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="2909289633148417535">Update des Brave Passwortmanagers geschlossen</translation>
@@ -1367,7 +1369,6 @@ Einige Websites schalten möglicherweise Werbeanzeigen, deren Auswahl nicht dara
 <translation id="6937524809504266803">Personalisierung &amp; Verknüpfung</translation>
 <translation id="6937876069006524083">Alias (optional)</translation>
 <translation id="6942665639005891494">Du kannst den Standard-Downloadpfad jederzeit über die Option im Menü „Einstellungen“ ändern</translation>
-<translation id="694267552845942083">Du passt gerade die Synchronisierungseinstellungen an. Wenn du die Aktivierung der Synchronisierung abschließen möchtest, tippe unten auf dem Bildschirm auf „Bestätigen“. Nach oben</translation>
 <translation id="6945221475159498467">Auswählen</translation>
 <translation id="6955535239952325894">Diese Einstellung ist bei verwalteten Browsern deaktiviert</translation>
 <translation id="6963766334940102469">Lesezeichen löschen</translation>
@@ -1387,6 +1388,7 @@ Einige Websites schalten möglicherweise Werbeanzeigen, deren Auswahl nicht dara
 <translation id="7020741890149022655">Zur Leseliste hinzufügen <ph name="BEGIN_NEW"/>Neu<ph name="END_NEW"/></translation>
 <translation id="7022756207310403729">Im Browser öffnen</translation>
 <translation id="7029809446516969842">Passwörter</translation>
+<translation id="8400061599399680870">Brave als Standardbrowser festlegen</translation>
 <translation id="7053256416619638731">Passwörter auf diesem Gerät sicherer machen</translation>
 <translation id="7053983685419859001">Blockieren</translation>
 <translation id="7054588988317389591">Bildbeschreibungen abrufen?</translation>
@@ -1418,6 +1420,7 @@ Einige Websites schalten möglicherweise Werbeanzeigen, deren Auswahl nicht dara
 Wenn du diese Einstellung ändern möchtest, <ph name="BEGIN_LINK"/>lösche die Brave-Daten in deinem Konto<ph name="END_LINK"/>.</translation>
 <translation id="2679203756569766105">Weitere Informationen dazu, warum einige Dateien von Brave blockiert werden</translation>
 <translation id="7168323970702333693">Angemeldet als <ph name="USER_NAME"/>. Die Einstellungen werden geöffnet.</translation>
+<translation id="6390064556944765055">Alle auf deinem Gerät und in Brave Wallet gespeicherten Sicherheitscodes werden gelöscht</translation>
 <translation id="7173114856073700355">Einstellungen öffnen</translation>
 <translation id="7173338713290252554">Preisentwicklung im Web</translation>
 <translation id="7177466738963138057">Dies kann später in den Einstellungen geändert werden</translation>
@@ -1440,6 +1443,7 @@ Wenn du diese Einstellung ändern möchtest, <ph name="BEGIN_LINK"/>lösche die 
 <translation id="8353574248857730978">Der Brave Passwortmanager wurde pausiert</translation>
 <translation id="7239496616545081903">Lesemodus ausblenden</translation>
 <translation id="72415438529550637">Passwortvorschlag geschlossen.</translation>
+<translation id="724510009481365878">Die Seite kann nicht gedruckt werden</translation>
 <translation id="7248671827512403053">App</translation>
 <translation id="7253951228444156601">Passwörter werden geprüft…</translation>
 <translation id="4957342254208357193">Dein Android-Gerät verfügt möglicherweise über eine ähnliche Einstellung. Wenn die Erfolgsmessung bei Anzeigen in Brave und auf deinem Android-Gerät aktiviert ist, können Unternehmen möglicherweise die Effektivität von Werbung auf den von dir besuchten Websites und in den von dir verwendeten Apps analysieren.</translation>
@@ -1473,6 +1477,7 @@ Wenn du diese Einstellung ändern möchtest, <ph name="BEGIN_LINK"/>lösche die 
 <translation id="7376560087009844242">Wenn du mehr Text einer Seite einschließt, kannst du beim Verwenden von „Zum Suchen antippen“ bessere Ergebnisse erhalten. In den <ph name="BEGIN_LINK"/>Einstellungen<ph name="END_LINK"/> kannst du das jederzeit ändern.</translation>
 <translation id="7379900596734708416">Dunkles Design für Websites verfügbar</translation>
 <translation id="7384486627147155832">Werbeangebot zu Benachrichtigungen mit Tipps halb geöffnet</translation>
+<translation id="7387951778417998929">Du kannst eine andere Suchmaschine als deine Standardsuchmaschine verwenden, indem du das zugehörige Kürzel in die Adressleiste eingibst und dann das von dir bevorzugte Tastenkürzel drückst. Außerdem kannst du hier deine Standardsuchmaschine ändern.</translation>
 <translation id="7388615499319468910">Websites und Werbetreibende können die Leistung ihrer Werbung analysieren. Diese Einstellung ist deaktiviert.</translation>
 <translation id="7400003506822844357">{FILE_COUNT,plural, =1{Sonstiges, 1 Datei in der Liste}other{Sonstiges, # Dateien in der Liste}}</translation>
 <translation id="7400418766976504921">URL</translation>
@@ -1515,6 +1520,7 @@ Wenn du diese Einstellung ändern möchtest, <ph name="BEGIN_LINK"/>lösche die 
 <translation id="7523960634226602883">Mit deiner Kamera über Google Lens suchen</translation>
 <translation id="7525248386620136756"><ph name="TAB_GROUPS_AND_TABS_PART"/> geschlossen und gespeichert</translation>
 <translation id="7545347190366646170">Personen mit Zugriff</translation>
+<translation id="7553482318994371148">Geschlossene Tabs wieder öffnen</translation>
 <translation id="3987895309799116299">Brave-Version kann nicht geprüft werden</translation>
 <translation id="7557508262441527045">Abgemeldet</translation>
 <translation id="7573665567024262965">Standard-Apps auswählen</translation>
@@ -1585,6 +1591,7 @@ Wenn du diese Einstellung ändern möchtest, <ph name="BEGIN_LINK"/>lösche die 
 <translation id="784652447248278262">Aktuelles Fenster</translation>
 <translation id="784934925303690534">Zeitraum</translation>
 <translation id="7851858861565204677">Andere Geräte</translation>
+<translation id="78527117619130387">Drücke erneut ^W, um den angepinnten Tab zu schließen</translation>
 <translation id="7853202427316060426">Aktivität</translation>
 <translation id="7859988229622350291">Nie übersetzen</translation>
 <translation id="7866213166286285359">Seiten hier übersetzen lassen</translation>
@@ -1598,6 +1605,7 @@ Wenn du diese Einstellung ändern möchtest, <ph name="BEGIN_LINK"/>lösche die 
 <translation id="7919123827536834358">Diese Sprachen automatisch übersetzen</translation>
 <translation id="7921782882718083488">Diese Seite zusammenfassen</translation>
 <translation id="7926975587469166629">Kartenalias</translation>
+<translation id="7927073875790626822">XR</translation>
 <translation id="6485598694371328620">Brave entfernt automatisch Berechtigungen von Websites, die Benachrichtigungen missbrauchen oder die du in letzter Zeit nicht besucht hast</translation>
 <translation id="7934668619883965330">Datei kann nicht heruntergeladen werden. Das Dateiformat wird nicht unterstützt.</translation>
 <translation id="7942131818088350342"><ph name="PRODUCT_NAME"/> ist veraltet.</translation>
@@ -1736,6 +1744,7 @@ Wenn du diese Einstellung ändern möchtest, <ph name="BEGIN_LINK"/>lösche die 
 <translation id="8458413889418591446">Wenn du deinen Verlauf und deine Tabs synchronisierst, kannst du bereits besuchte Websites schnell wieder aufrufen</translation>
 <translation id="7018408824172283743">Brave-Daten in deinem Brave-Konto weiterhin verwenden</translation>
 <translation id="8460448946170646641">Die wichtigsten Datenschutz- und Sicherheitseinstellungen überprüfen</translation>
+<translation id="8460932807646981183">Suchmaschinen und die Websitesuche verwalten</translation>
 <translation id="8473863474539038330">Adressen und andere Daten</translation>
 <translation id="847433688444405067">Geräteübergreifend surfen</translation>
 <translation id="8477178913400731244">Daten löschen</translation>
@@ -1762,7 +1771,7 @@ Wenn du diese Einstellung ändern möchtest, <ph name="BEGIN_LINK"/>lösche die 
 <translation id="8580435650274205305">Ablaufdatum, erforderlich</translation>
 <translation id="8582529315803410153">Hier werden deine Tabs von anderen Geräten angezeigt</translation>
 <translation id="8585103689515290060">Autofill-Services</translation>
-<translation id="859046281437143747">Über die Schaltfläche „Weitere Optionen“ kannst du den Preis beobachten</translation>
+<translation id="859046281437143747">Über den Button „Weitere Optionen“ kannst du den Preis beobachten</translation>
 <translation id="859064343657890103">„<ph name="TAB_GROUP_TITLE"/>“-Tabgruppe gelöscht</translation>
 <translation id="860043288473659153">Name des Karteninhabers</translation>
 <translation id="1673533133011266617">In Brave anmelden, geschlossen.</translation>
@@ -1818,6 +1827,7 @@ Wenn du diese Einstellung ändern möchtest, <ph name="BEGIN_LINK"/>lösche die 
 <translation id="8856931513242997049">Ablauf für die Berechtigung zum Senden von Benachrichtigungen geschlossen</translation>
 <translation id="8863714995118816041">Berechtigungen wieder zugelassen für <ph name="SITE_NAME"/></translation>
 <translation id="7261356974224431851">Brave-Daten in meinem Konto</translation>
+<translation id="8872506776304248286">In App öffnen</translation>
 <translation id="1984646864943401749">URLs einiger von dir besuchter Seiten, eingeschränkte Systemdaten und manche Seiteninhalte werden an Brave gesendet, um die Erkennung neuer Bedrohungen zu verbessern und Nutzer im Internet zu schützen.</translation>
 <translation id="8903921497873541725">Vergrößern</translation>
 <translation id="8909135823018751308">Teilen...</translation>
@@ -1861,7 +1871,6 @@ Wenn du diese Einstellung ändern möchtest, <ph name="BEGIN_LINK"/>lösche die 
 <translation id="9070377983101773829">Sprachsuche starten</translation>
 <translation id="9073805459138993880"><ph name="TAB_TITLE"/>, mehrfach ausgewählter Tab für die Freigabe</translation>
 <translation id="9074739597929991885">Bluetooth</translation>
-<translation id="9086302186042011942">Synchronisierung läuft...</translation>
 <translation id="9086455579313502267">Kein Zugriff auf das Netzwerk</translation>
 <translation id="7708077127614889658">In Brave-Fenster öffnen</translation>
 <translation id="2324185818196590038">Wenn du die Personalisierung optimal nutzen möchtest, nimm Brave in die Web- &amp; App-Aktivitäten und verknüpften Brave-Dienste auf</translation>
@@ -1949,8 +1958,6 @@ Wenn du diese Einstellung ändern möchtest, <ph name="BEGIN_LINK"/>lösche die 
 <translation id="922970047082941203">{NUM_WINDOWS, plural,
           =1 {1 privates Fenster schließen}
           other {# private Fenster schließen}}</translation>
-<translation id="1988906120194081364">In den privaten Modus wechseln</translation>
-<translation id="4300497327999623298">Privaten Modus verlassen</translation>
 <translation id="8820817407110198400">Lesezeichen</translation>
 <translation id="4968908871398201967">Privatmodus</translation>
 <translation id="8448127664493413656">Privatmodus einschalten</translation>
@@ -1997,9 +2004,6 @@ Wenn du diese Einstellung ändern möchtest, <ph name="BEGIN_LINK"/>lösche die 
 <translation id="1982350477927404142">{TAB_COUNT, plural,
           =1 {<ph name="TAB_COUNT_ONE"/> privater Tab wird geschlossen}
           other {<ph name="TAB_COUNT_MANY"/> private Tabs werden geschlossen}}</translation>
-<translation id="2703361981471284696">{TAB_COUNT, plural,
-          =1 {<ph name="INCOGNITO_TAB_COUNT"/> private(r) und <ph name="TAB_COUNT_ONE"/> weiterer Tab werden geschlossen}
-          other {<ph name="INCOGNITO_TAB_COUNT"/> private(r) und <ph name="TAB_COUNT_MANY"/> weitere Tabs werden geschlossen}}</translation>
 <translation id="7019870729880056499">{TAB_COUNT, plural,
   =1 {<ph name="INCOGNITO_TAB_COUNT"/> privater und <ph name="TAB_COUNT_ONE"/> anderer Tab wird geschlossen}
   other {<ph name="INCOGNITO_TAB_COUNT"/> private und <ph name="TAB_COUNT_MANY"/> andere Tabs werden geschlossen}
@@ -2008,8 +2012,8 @@ Wenn du diese Einstellung ändern möchtest, <ph name="BEGIN_LINK"/>lösche die 
 <translation id="1393515642387718683">Doppeltippen und halten, um in den privaten Modus zu wechseln</translation>
 <translation id="7096147642287317420">Berühren und halten, um den privaten Modus zu verlassen</translation>
 <translation id="2331163878318921124">Doppeltippen und halten, um den privaten Modus zu verlassen</translation>
-<translation id="3947065058794437451">Auf diesem Gerät ist der Privatmodus nicht verfügbar</translation>
 <translation id="5270319788820204019">Suche mit Tastatur, Sprache, Privatmodus oder Kamera</translation>
+<translation id="3947065058794437451">Auf diesem Gerät ist der Privatmodus nicht verfügbar</translation>
 <translation id="3095878721037212218">Sie können ganz einfach Mediensteuerungen, private Sitzungen, Downloads und mehr verwalten</translation>
 <translation id="5129323533070334129">Zugangscode außerhalb des Privatmodus speichern?</translation>
 <translation id="4325212706000356062">Durchsuche deine privaten Tabs</translation>

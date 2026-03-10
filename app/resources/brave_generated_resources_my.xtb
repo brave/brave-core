@@ -19,6 +19,7 @@
 <translation id="1544192797660353713">ပိုက်ဆံအိတ်</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">နောက်ထပ်…</translation>
+<translation id="71316462802471551">အီးမေးလ် Alias</translation>
 <translation id="1990886731975529483">Google Widevine ကို ထည့်သွင်းသုံးစွဲရန်</translation>
 <translation id="8926389886865778422">ထပ်မပြောပါနဲ့</translation>
 <translation id="4900351245762303149">Google Widevine ကို ထည့်သွင်းရန်</translation>
@@ -61,7 +62,7 @@
 <translation id="7658239707568436148">ပယ်ဖျက်ရန်</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">ယခု Tor: <ph name="ADDRESS"/> မှ အသုံးပြုပါ</translation>
-<translation id="4759098689276706664">Force Paste</translation>
+<translation id="4759098689276706664">အကူးအပြောင်းခွင့်ကို အကြိမ်မကန့်သတ်ဖိသို့ ကူးပြောင်းရန်</translation>
 <translation id="1434416574322382019">Tor ဖြင့် အသစ်သော ပုဂ္ဂိုလ်ရေး ဝင်းဒိုး (Private Window)</translation>
 <translation id="4703780849509456860">Tor နှင့်ပုဂ္ဂိုလ်ရေးသုံးလုပ်ဆောင်ချက်၌ Link ဖွင့်ပါ</translation>
 <translation id="3488584642074079080">Tor နှင့် Brave ပုဂ္ဂိုလ်ရေးသုံးလုပ်ဆောင်ချက်၌ Link ဖွင့်ပါ</translation>
@@ -204,7 +205,6 @@
 <translation id="253980346046488815">မှန်ကန်သော တက်ဘ်များကို ပိတ်ခြင်း</translation>
 <translation id="8670218546624422041">container တွင်ဖွင့်ရန်</translation>
 <translation id="8638526693050780542">container များကို စီမံရန်</translation>
-<translation id="7302999361397024774">တဘ်အမည်ပြောင်းခြင်း</translation>
 <translation id="2336228925368920074">ဘွတ်မတ် တက်ဘ်များအားလုံးကို...ခေါင်းစဉ်ရေးပါ။</translation>
 <translation id="2523967823495420116">ရက်တတ်ကြန်းကို သုံးပါ</translation>
 <translation id="3785071023202624850">{NUM_TABS, plural, =1 {အတိုက်သံ ဖြုတ်မည်} other {အတိုက်သံများ ဖြုတ်မည်}}</translation>
@@ -215,7 +215,6 @@
 <translation id="2703180365855369896">ထပ်နေသော Tab များကိုပိတ်မည်</translation>
 <translation id="1987871867023021397">container တွင် ဖွင့်ရန်</translation>
 <translation id="6745991613881384719">container များကို စီမံရန်</translation>
-<translation id="3917844427669888979">တဘ်အမည်ပြောင်းခြင်း</translation>
 <translation id="3704707436873245822">ပုံမှ စာသားကို ကူးမည်</translation>
 <translation id="5268098808165185458">ပုံမှ စာသားကို ကူးနေသည်...</translation>
 <translation id="4046485130884276245">ပုံ မှ စာသားကို ကူးယူပြီးပါပြီ</translation>
@@ -513,6 +512,10 @@
 <translation id="1199170151481311646">ကိုယ်ရေးကိုယ်တာကိုကာကွယ်ထားသော သုံးစွဲမှုသရုပ်အချက်အလက်</translation>
 <translation id="5990642573624858459">စာရင်းအင်းအစီရင်ခံခြင်း</translation>
 <translation id="2441719842399509963">မူလသတ်မှတ်ချက်များသို့ ပြန်သတ်မှတ်ရန်</translation>
+<translation id="4530494379350999373">အရင်းအမြစ်</translation>
+<translation id="2964215604640804042">Brave Origin သည် Brave ကို လုပ်ငန်းတစ်ခုအဖြစ် ပံ့ပိုးထားသည့် বৈশিষ্ট်ထုအားလုံးမလိုအပ်သော်လည်း Brave သာ ပေးစွမ်းနိုင်သည့် ကိုယ်ရေးအချက်အလက်ကုံရှုံးမှုမှ ကာကွယ်ခြင်းကို ရည်ရွယ်သည့် ကုန်ကျငွေရှိသော ဗြောင်ဆာ ဗားရှင်းဖြစ်သည်။ Brave Origin အသုံးပြုသူများသည် ကျွန်ုပ်တို့၏ စက်မှုလုပ်ငန်းအဆင့်ထိပ်တန်း ကိုယ်ရေးအချက်အလက်ကုံရှုံးမှု၊ ကြော်ငြာပိတ်ဆို့မှု နှင့် အလျင်အမြန်မှုများ (Brave ဒိုင်းကာမှတစ်ဆင့်)၊ အပ်ဒိတ်များ၊ Chromium ကိုကျင့်ဆောင်ခြင်း နှင့် လုံခြုံမှု ကိုယ်ရေးအချက်အလက်ကုံရှုံးမှုများမှ အကျိုးကျေးဇူးခံစားရန် ဆက်လက်ပြီး ထုတ်ယူလိုသည်။ အဆိုပါ AI၊ Rewards၊ Wallet၊ VPN၊ Web3 ဒိုမိန်းများ နှင့် အခြား အင်္ဂါရပ်များကို ပိတ်ဆို့ရန် ရွေးချယ်မှုအခွင့်အလျှင့်ကို လည်း ဖွင့်လင်းခြင်း ပြုလုပ်လိမ့်မည်။</translation>
+<translation id="9130916892338379417">Brave Origin သည် တစ်ကြိမ်ခြင်းဝယ်ယူမှုမှတစ်ဆင့် ရရှိနိုင်သည်။ မိုဘိုင်းကွန်ပျူတာများ (Android နှင့် iOS) နှင့် ကွန်ပျူတာတွင် Origin ကို ရှိပြီးသော ထုတ်ဝေမှုဗားရှင်းသို့ အဆင့်မြှင့်တင်ခြင်းအဖြစ် ဝယ်ယူနိုင်သည်။ ကွန်ပျူတာတွင် Origin သည် သီးခြား စွန့်စားမှုအကျင့်အသုံးအနှုန်းအဖြစ်လည်း ရရှိနိုင်သည်။ Origin အသုံးပြုသူများသည် ကန့်သတ်ချက်များ မီနူးတွင် નવသော ထိန်းချုပ်မှုလွှာကို တွေ့ရှိလိမ့်မည်။ ရှိပြီးသော အင်္ဂါရပ်များ - အတိုင်းအတာ ကျွန်ုပ်တို့သည် အနာဂတ်တွင် ပို့ဆောင်သည့် မည်သည့် လုံလောင်းအင်္ဂါရပ်များ - သည် ဤနေရာတွင် ပြသလိမ့်မည်။ သို့အသုံးပြုခြင်း မူလအနေအထားအဖြစ် ပိတ်ဆို့ထားလိမ့်မည်။</translation>
+<translation id="7984508421152399880">ယခုအခါ ဝယ်ယူပါ</translation>
 <translation id="5567412479632285879">Brave ဆုလက်ဆောင်များကို ဖျက်ထားသည်</translation>
 <translation id="413570371620795359">ဖွင့်ရန် Brave ဆုလက်ဆောင်များ ပန်နယ်ကို ဖွင့်ပြီး စတင်ပါ</translation>
 <translation id="1051600834033686945">Brave ဆုလက်ဆောင်များ အပြည့်အစုံကို ဖွင့်ပါ</translation>
@@ -555,7 +558,6 @@
 <translation id="5747552184818312860">သက်တမ်းကုန်ဆုံးမည့်နေ့</translation>
 <translation id="3858860766373142691">အမည်</translation>
 <translation id="361106536627977100">Flash အချက်အလက်</translation>
-<translation id="4530494379350999373">အရင်းအမြစ်</translation>
 <translation id="8195027750202970175">စက်ပြောင်းပါ</translation>
 <translation id="9116465289595958864">အနောက်ဆုံး ပြင်ဆင်သည်</translation>
 <translation id="4590324241397107707">ဒေတာဘေ့့စ် စသိုက်</translation>
@@ -588,11 +590,6 @@
 <translation id="2903783737778379345">legacy Google Sign-In ကို third-party cookies ဖြင့် အသုံးပြုခွင့်ပြုမည်မဟုတ်ပါ</translation>
 <translation id="2570833232754279153">Legacy Google Sign-In အတွက် third-party cookies ကို အသုံးပြုခွင့် မပြုပါ။</translation>
 <translation id="6880817299303842099">legacy Google Sign-In အတွက် third-party cookies အတွက် အသုံးပြုခွင့်ပြုထားသည်</translation>
-<translation id="2136412236435693622">localhost access</translation>
-<translation id="4172219483893066798">ဆိုဒ်များသည် localhost ကားဆက်မှုအရင်းအမြစ်များနှင့် လမ်းကြောင်းရောက်မှုကို မေးရာပွင့်ဖြစ်ပါသည်</translation>
-<translation id="7181706637590665047">localhost ကားဆက်အရင်းအမြစ်များကို မကမ်းလှမ်းပါ</translation>
-<translation id="1336116824874668514">Localhost အရင်းအမြစ်များ မကမ်းပါ။</translation>
-<translation id="1485435696620658073">localhost အရင်းအမြစ်များကို သုံးခွင့်ပေးထားသည်</translation>
 <translation id="5794692721727586076">Leo AI Chat</translation>
 <translation id="8115153008662981040">Website များတွင် Leo AI Chat ဖွင့်ရန် သူဌေးရက်ရွက်ခွင့်ပြုပါ။</translation>
 <translation id="1145070115730668595">Website များတွင် Leo AI Chat ဖွင့်ခြင်းမှ ပိတ်ပါ။</translation>

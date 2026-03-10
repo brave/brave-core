@@ -19,6 +19,7 @@
 <translation id="1544192797660353713">பணப்பை</translation>
 <translation id="2361906291514218784">லியோ AI</translation>
 <translation id="8275068909952022340">மேலும்…</translation>
+<translation id="71316462802471551">மின்னஞ்சல் புனைப்பெயர்கள்</translation>
 <translation id="1990886731975529483">Google Widevine-ஐ நிறுவி இயக்கவும்</translation>
 <translation id="8926389886865778422">மீண்டும் கேட்காதே</translation>
 <translation id="4900351245762303149">Google Widevine-ஐ நிறுவவும்</translation>
@@ -203,7 +204,6 @@
 <translation id="253980346046488815">முழுவிபரங்கள் உள்ளடக்கங்களை மூடு</translation>
 <translation id="8670218546624422041">உள்ளடக்கத்தில் திறக்கவும்</translation>
 <translation id="8638526693050780542">உள்ளடக்கங்களை நிர்வகிக்கவும்</translation>
-<translation id="7302999361397024774">தாவலின் பெயரை மாற்று</translation>
 <translation id="2336228925368920074">எல்லா தாவல்களையும் புத்தகக்குறியிடு...</translation>
 <translation id="2523967823495420116">செங்குத்துப் பட்டிகளைப் பயன்படுத்தவும்</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{தாவலின் ஒலியை முடக்கு}other{தாவல்களின் ஒலியை முடக்கு}}</translation>
@@ -214,7 +214,6 @@
 <translation id="2703180365855369896">நகல் உள்ள தாவல்களை மூடு</translation>
 <translation id="1987871867023021397">உள்ளடக்கத்தில் திறக்கவும்</translation>
 <translation id="6745991613881384719">உள்ளடக்கங்களை நிர்வகிக்கவும்</translation>
-<translation id="3917844427669888979">தாவலின் பெயரை மாற்று</translation>
 <translation id="3704707436873245822">படத்திலிருந்து உரையை நகலெடு</translation>
 <translation id="5268098808165185458">படத்திலிருந்து உரையை நகலெடுத்தல்...</translation>
 <translation id="4046485130884276245">படத்திலிருந்து உரை நகலெடுக்கப்பட்டது</translation>
@@ -512,6 +511,10 @@
 <translation id="1199170151481311646">தனியுரிமையை காத்தற்கான பகுப்பாய்வுகள்</translation>
 <translation id="5990642573624858459">புள்ளிவிவர அறிக்கையிடல்</translation>
 <translation id="2441719842399509963">எல்லாவற்றையும் இயல்புநிலைக்கு மாற்று</translation>
+<translation id="4530494379350999373">அசல்</translation>
+<translation id="2964215604640804042">Brave Origin என்பது Brave ஐ ஒரு வணிகமாக ஆதரிக்க தேவையான அனைத்து அம்சங்களும் உங்களுக்கு தேவையில்லாத ஆனால் Brave மட்டுமே வழங்கும் privacy ஐ விரும்பும் பயனர்களுக்கான பணம் செலுத்தி பெறக்கூடிய browser பதிப்பு. Brave Origin பயனர்கள் Brave ஷீல்ட்ஸ் மூலம் நமது industry-leading privacy, adblock, மற்றும் speed உடன் இருந்து தொடர்ந்து பயனடையுள்ளனர், அத்துடன் வழக்கமான software புதுப்பித்தல்கள், Chromium patches, மற்றும் security மற்றும் privacy மேம்பாடுகள். அவர்கள் AI, Rewards, Wallet, VPN, Web3 domains, மற்றும் மேலும் பல போன்ற அம்சங்களை முடக்க விருப்பத்தையும் திறக்கும்.</translation>
+<translation id="9130916892338379417">Brave Origin ஒரு முறை ஆன வாங்குதல் மூலம் கிடைக்கிறது. மொபைல் (Android மற்றும் iOS) மற்றும் desktop இல், Origin உங்கள் தற்போதைய release பதிப்பிற்கான upgrade ஆக வாங்கப்படலாம். desktop இல், Origin ஒரு தனிப்பட்ட, standalone app ஆகவும் கிடைக்கிறது. Origin பயனர்கள் Settings மெனுவில் ஒரு புதிய control panel ஐ காணுவார்கள். தற்போதைய அம்சங்கள்—மற்றும் நாங்கள் எதிர்காலத்தில் வெளியிடும் எந்த புதிய அம்சங்களும்—இங்கே தோன்றும், மற்றும் முன்னிருப்பாக முடக்கப்படும்.</translation>
+<translation id="7984508421152399880">சற்று முன் வாங்கவும்</translation>
 <translation id="5567412479632285879">Brave வெகுமதிகள் முடக்கப்பட்டுள்ளது</translation>
 <translation id="413570371620795359">இயக்க மற்றும் தொடங்க வெகுமதிகள் குழுவைத் திறக்கவும்</translation>
 <translation id="1051600834033686945">முழு Brave வெகுமதிகள் அமைப்புகளைத் திற</translation>
@@ -554,7 +557,6 @@
 <translation id="5747552184818312860">காலாவதியாகும் தேதி</translation>
 <translation id="3858860766373142691">பெயர்</translation>
 <translation id="361106536627977100">ஃப்ளாஷ் தரவு</translation>
-<translation id="4530494379350999373">அசல்</translation>
 <translation id="8195027750202970175">வட்டில் உள்ள அளவு</translation>
 <translation id="9116465289595958864">கடைசியாக மாற்றியது</translation>
 <translation id="4590324241397107707">தரவுத்தளச் சேகரிப்பு</translation>
@@ -587,11 +589,6 @@
 <translation id="2903783737778379345">மூன்றாம் தரப்பு குக்கீகள் மூலம் மரபுவழி Google உள்நுழைவை அனுமதிக்காதீர்கள்</translation>
 <translation id="2570833232754279153">மரபுவழி Google உள்நுழைவிற்கு மூன்றாம் தரப்பு குக்கீகளைப் பயன்படுத்த அனுமதிக்கப்படவில்லை</translation>
 <translation id="6880817299303842099">மரபுவழி Google உள்நுழைவிற்கு மூன்றாம் தரப்பு குக்கீகளைப் பயன்படுத்த அனுமதிக்கப்பட்டது</translation>
-<translation id="2136412236435693622">Localhost அணுகல்</translation>
-<translation id="4172219483893066798">Localhost வளங்களுக்கான அணுகலுக்கு தளங்கள் கோரலாம்</translation>
-<translation id="7181706637590665047">Localhost வளங்களை அணுக அனுமதிக்காதீர்</translation>
-<translation id="1336116824874668514">Localhost வளங்களை அணுக அனுமதிக்கப்படவில்லை</translation>
-<translation id="1485435696620658073">Localhost வளங்களை அணுக அனுமதிக்கப்பட்டது</translation>
 <translation id="5794692721727586076">லியோ AI உரையாடல்</translation>
 <translation id="8115153008662981040">லியோ AI உரையாடலைத் திறந்திட தளங்கள் கேட்டல் செய்தும்</translation>
 <translation id="1145070115730668595">தளம் லியோ AI உரையாடலைத் திறக்க அனுமதிக்காதே</translation>

@@ -164,10 +164,6 @@
 <translation id="9110294136812584522">사이트가 타사 쿠키를 통해 레거시 Google 로그인을 사용할지 물어볼 수 있도록 허용</translation>
 <translation id="2903783737778379345">타사 쿠키를 통한 레거시 Google 로그인 허용 안 함</translation>
 <translation id="6880817299303842099">레거시 Google 로그인에 타사 쿠키 사용 허용됨</translation>
-<translation id="2136412236435693622">Localhost 액세스</translation>
-<translation id="4172219483893066798">사이트가 Localhost 액세스를 요청할 수 있음</translation>
-<translation id="7181706637590665047">Localhost 리소스 액세스 허용 안 함</translation>
-<translation id="1485435696620658073">Localhost 리소스 액세스가 허용됨</translation>
 <translation id="181905442828471321">Brave Shields 전역 기본값</translation>
 <translation id="2675679258824361492">기타 프라이버시 설정</translation>
 <translation id="8026334261755873520">인터넷 사용 기록 삭제</translation>
@@ -425,6 +421,13 @@
 <translation id="7141438739990875547">비트코인 네트워크</translation>
 <translation id="9055546041146396417">이 사이트가 손상된 것 같으면 실드 다운을 시도합니다.</translation>
 <translation id="7898672232170410330">요소 차단</translation>
+<translation id="9064628362799094520">사이트 데이터를 파쇄하시겠습니까</translation>
+<translation id="8949611615512336262">자동 파쇄: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
+<translation id="9140049656798805345">지금 사이트 데이터 파쇄</translation>
+<translation id="6795622376590884449">자동 파쇄</translation>
+<translation id="7961015016161918242">사용하지 않음</translation>
+<translation id="1991004083507807299">사이트 탭이 닫혔을 때</translation>
+<translation id="5827277414420724690">앱을 닫았을 때</translation>
 <translation id="1209739344687072997">작동이 멈춘 사이트 보고</translation>
 <translation id="8510478288840333677">Brave (브레이브) 개발자에게 이 사이트가 Shields (실드)와 함께 제대로 작동하지 않는다는 것을 알리십시오.</translation>
 <translation id="1653405824851871276">모두를 위해 Brave 개선에 도움을 주셔서 감사합니다. 이 신고는 사이트 문제 해결에 필요한 정보만 포함합니다. <ph name="LEARN_MORE"/></translation>
@@ -1076,7 +1079,7 @@
 <translation id="1336494649091412226">Brave를 종료하시겠습니까?</translation>
 <translation id="6061635824229591714">사이트 데이터를 파쇄하시겠습니까?</translation>
 <translation id="1265051174491933207">파쇄하면 '<ph name="SITE_NAME"/>'의 모든 탭이 닫히고 사이트 데이터가 삭제됩니다. 이 작업은 되돌릴 수 없습니다.</translation>
-<translation id="4279349293084858577">파쇄</translation>
+<translation id="5528772406060281700">사이트 데이터를 파쇄하시겠습니까</translation>
 <translation id="4426990318287827331">데이터 파쇄</translation>
 <translation id="7942415993090181327">대화 기록</translation>
 <translation id="6859935199732075666">안전한 브라우징 오류 표시</translation>
