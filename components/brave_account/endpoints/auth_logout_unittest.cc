@@ -14,6 +14,16 @@
 
 namespace brave_account::endpoints {
 
+bool operator==(const AuthLogout::Response::SuccessBody&,
+                const AuthLogout::Response::SuccessBody&) {
+  return true;
+}
+
+bool operator==(const AuthLogout::Response::ErrorBody&,
+                const AuthLogout::Response::ErrorBody&) {
+  return true;
+}
+
 namespace {
 
 using AuthLogoutTestCase = EndpointTestCase<AuthLogout>;
@@ -23,10 +33,9 @@ const AuthLogoutTestCase* Success() {
       {.test_name = "success",
        .http_status_code = net::HTTP_NO_CONTENT,
        .raw_response_body = "",
-       .expected_response = {
-           .net_error = net::OK,
-           .status_code = net::HTTP_NO_CONTENT,
-           .body = base::ok(AuthLogout::Response::SuccessBody())}});
+       .expected_response = {.net_error = net::OK,
+                             .status_code = net::HTTP_NO_CONTENT,
+                             .body = std::nullopt}});
 
   return kSuccess.get();
 }
@@ -61,10 +70,9 @@ const AuthLogoutTestCase* NonApplicationJsonError() {
       {.test_name = "non_application_json_error",
        .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
        .raw_response_body = "non-application/json error",
-       .expected_response = {
-           .net_error = net::OK,
-           .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-           .body = base::unexpected(AuthLogout::Response::ErrorBody())}});
+       .expected_response = {.net_error = net::OK,
+                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
+                             .body = std::nullopt}});
   return kNonApplicationJsonError.get();
 }
 

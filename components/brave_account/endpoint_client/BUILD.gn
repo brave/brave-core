@@ -33,23 +33,6 @@ source_set("endpoint_client") {
     "//third_party/protobuf:protobuf_lite",
     "//url",
   ]
-
-  public_deps = [
-    "//brave/components/brave_account/endpoint_client:json_empty_body",
-    "//brave/components/brave_account/endpoint_client:protobuf_empty_body",
-  ]
-}
-
-generated_types("json_empty_body") {
-  sources = [ "json_empty_body.idl" ]
-
-  deps = [ "//base" ]
-
-  root_namespace = "brave_account::%(namespace)s"
-}
-
-proto_library("protobuf_empty_body") {
-  sources = [ "protobuf_empty_body.proto" ]
 }
 
 source_set("test_support") {

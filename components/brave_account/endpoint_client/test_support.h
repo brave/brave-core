@@ -34,13 +34,13 @@ void MockResponseFor(network::TestURLLoaderFactory& test_url_loader_factory,
                   })
                   .value_or(network::mojom::URLResponseHead::New());
 
-  const auto body = base::WriteJson(response.body
-                                        .transform([](const auto& body) {
-                                          return body.has_value()
-                                                     ? body.value().ToValue()
-                                                     : body.error().ToValue();
-                                        })
-                                        .value_or(base::DictValue()));
+  const auto body =
+      response.body
+          .transform([](const auto& body) {
+            return base::WriteJson(body.has_value() ? body.value().ToValue()
+                                                    : body.error().ToValue());
+          })
+          .value_or("");
 
   test_url_loader_factory.AddResponse(
       Endpoint::URL(), std::move(head), CHECK_DEREF(body),
