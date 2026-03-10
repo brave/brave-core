@@ -539,6 +539,9 @@ provideStrings({
     'Password is required to take this action.',
   braveWalletAddToken: 'Add token',
 
+  // Spot Prices
+  braveWalletLastUpdatedAgo: 'Last updated $1 ago',
+
   // Empty Token List State
   braveWalletNoAvailableAssets: 'No available assets',
   braveWalletNoAvailableAssetsDescription:
