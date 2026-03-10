@@ -340,6 +340,24 @@ CHAR_LIMIT guidelines:
       <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_PINNED_SHARING_INCOGNITO" desc="Content description for a multiselected pinned tab that is sharing its content in Private mode.">
         <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Pinned Sharing Private Tab
       </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PICTURE_IN_PICTURE_INCOGNITO" desc="Content description for a tab that is in picture-in-picture mode in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Picture-in-Picture Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PINNED_PICTURE_IN_PICTURE_INCOGNITO" desc="Content description for a pinned tab that is in picture-in-picture mode in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Pinned Picture-in-Picture Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_PICTURE_IN_PICTURE_INCOGNITO" desc="Content description for a selected tab that is in picture-in-picture mode in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Picture-in-Picture Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_PINNED_PICTURE_IN_PICTURE_INCOGNITO" desc="Content description for a selected pinned tab that is in picture-in-picture mode in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Pinned Picture-in-Picture Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_PICTURE_IN_PICTURE_INCOGNITO" desc="Content description for a multiselected tab that is in picture-in-picture mode in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Picture-in-Picture Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_PINNED_PICTURE_IN_PICTURE_INCOGNITO" desc="Content description for a multiselected pinned tab that is in picture-in-picture mode in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Pinned Picture-in-Picture Private Tab
+      </message>
       <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_INCOGNITO" desc="Content description for tabs that are multiselected in Private mode">
         <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Private Tab
       </message>

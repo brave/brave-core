@@ -86,13 +86,9 @@
   </message>
 
   <!-- Enhanced autofill Page-->
-  <message name="IDS_SETTINGS_AUTOFILL_AI_WHEN_ON_CAN_FILL_DIFFICULT_FIELDS" desc="Bullet point that appears beneath the 'When on' title when seeing the Enhanced Autofill description page. This string explains one of the advantages users will get from enabling the feature and serves as a way to incentivize the user to do so.">
-    Brave can autofill difficult fields that standard autofill might miss
-  </message>
   <message name="IDS_SETTINGS_AUTOFILL_AI_WHEN_ON_USE_TO_FILL" desc="Bullet 2 of 2 that appears beneath the “When on” title. “Later”: this is a two-step feature. 1) data is saved, 2) it becomes valuable to the user later when they want to fill in a form with similar data. “Brave can ask”: the user has a choice, every time, whether their data is saved and also whether they want to autofill their saved info into forms.">
     Later, Brave can ask if you want to use saved info to autofill forms for you
   </message>
-
   <!-- Default Browser Page -->
   <if expr="not is_chromeos">
     <message name="IDS_SETTINGS_DEFAULT_BROWSER_DEFAULT" desc="The text displayed when Brave is the default browser">
@@ -457,6 +453,9 @@
   </message>
   <message name="IDS_SETTINGS_SECURITY_SAFE_BROWSING_STANDARD_HOW_IT_WORKS_CONTENT" desc="Content of the Safe Browsing standard protection column describing how it works">
     When you visit a site, Brave sends an obfuscated portion of the URL to <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://safebrowsing.google.com/"&gt;</ph>Google Safe Browsing<ph name="END_LINK">&lt;/a&gt;</ph> through a privacy server that hides your IP address. If a site does something suspicious, full URLs and bits of page content are also sent.
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_JAVASCRIPT_GUARDRAILS_UNRECOGNIZED_SITES_DESCRIPTION" desc="Description of JavaScript Guardrails unrecognized sites option.">
+    Enhanced protection turns off JavaScript optimization for sites Brave doesn’t recognize
   </message>
 
   <!-- Secure connections -->
