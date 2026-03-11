@@ -13,6 +13,7 @@
 #include "base/debug/leak_annotations.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
@@ -41,14 +42,20 @@
 
 namespace brave_shields {
 
+namespace {
+constexpr char kAdblockCacheDir[] = "adblock_cache";
+}  // namespace
+
 AdBlockService::SourceProviderObserver::SourceProviderObserver(
     AdBlockService* owner,
+    base::FilePath cache_dir,
     bool engine_is_default)
     : adblock_engine_(engine_is_default
                           ? owner->default_engine_.get()
                           : owner->additional_filters_engine_.get()),
       resource_provider_(owner->resource_provider_.get()),
       filters_provider_manager_(owner->filters_provider_manager()),
+      cache_dir_(cache_dir),
       task_runner_(owner->GetTaskRunner()) {
   filters_provider_manager_->AddObserver(this);
   OnChanged(engine_is_default);
@@ -111,16 +118,20 @@ void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
                        },
                        adblock_engine_->AsWeakPtr(), std::move(storage)));
   } else {
+    std::string filename = base::StrCat(
+        {"engine", adblock_engine_->IsDefaultEngine() ? "0" : "1", ".dat"});
+    auto cache_file = cache_dir_.AppendASCII(filename);
     auto engine_load_callback = base::BindOnce(
         [](base::WeakPtr<AdBlockEngine> engine,
            std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
-           AdblockResourceStorageBox storage) {
+           AdblockResourceStorageBox storage, base::FilePath cache_file) {
           if (engine) {
             engine->Load(std::move(*filter_set.get()), *storage);
+            base::WriteFile(cache_file, engine->Serialize());
           }
         },
         adblock_engine_->AsWeakPtr(), std::move(filter_set_),
-        std::move(storage));
+        std::move(storage), cache_file);
     task_runner_->PostTask(FROM_HERE, std::move(engine_load_callback));
   }
 }
@@ -363,10 +374,12 @@ AdBlockService::AdBlockService(
             filters_provider_manager_.get());
   }
 
+  base::FilePath cache_dir = profile_dir_.AppendASCII(kAdblockCacheDir);
+  base::CreateDirectory(cache_dir);
   default_service_observer_ =
-      std::make_unique<SourceProviderObserver>(this, true);
+      std::make_unique<SourceProviderObserver>(this, cache_dir, true);
   additional_filters_service_observer_ =
-      std::make_unique<SourceProviderObserver>(this, false);
+      std::make_unique<SourceProviderObserver>(this, cache_dir, false);
 }
 
 AdBlockService::~AdBlockService() {

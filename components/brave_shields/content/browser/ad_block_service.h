@@ -64,7 +64,9 @@ class AdBlockService {
   class SourceProviderObserver : public AdBlockResourceProvider::Observer,
                                  public AdBlockFiltersProvider::Observer {
    public:
-    SourceProviderObserver(AdBlockService* owner, bool engine_is_default);
+    SourceProviderObserver(AdBlockService* owner,
+                           base::FilePath cache_dir,
+                           bool engine_is_default);
 
     SourceProviderObserver(const SourceProviderObserver&) = delete;
     SourceProviderObserver& operator=(const SourceProviderObserver&) = delete;
@@ -88,6 +90,8 @@ class AdBlockService {
         nullptr;  // not owned
     raw_ptr<AdBlockFiltersProviderManager> filters_provider_manager_ =
         nullptr;  // not owned
+
+    base::FilePath cache_dir_;
 
     scoped_refptr<base::SequencedTaskRunner> task_runner_;
 
