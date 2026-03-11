@@ -1258,6 +1258,9 @@
       <message name="IDS_EDUCATIONAL_TIP_SEE_MORE" desc="Text for a link to view all Educational tip items in two cell mode.">
         See more
       </message>
+      <message name="IDS_ACCESSIBILITY_EDUCATIONAL_TIP_SETUP_LIST_SEE_MORE" is_accessibility_with_no_ui="true" desc="Accessibility label of the see more button of the setup list module.">
+        See more setup list
+      </message>
       <message name="IDS_USE_CHROME_BY_DEFAULT" desc="Generic title prompting the user to set Brave as their default browser.">
         Use Brave by default
       </message>
@@ -1415,6 +1418,10 @@
 
       <message name="IDS_EDUCATIONAL_TIP_BUTTON_GO_TO_SETTINGS" desc="Text on the clickable button for promos that invites users to adjust settings in the educational tip module on NTP.">
         Go to settings
+      </message>
+
+      <message name="IDS_EDUCATIONAL_TIP_ACCESSIBILITY_ITEM_COMPLETED" desc="The accessibility state description for a completed task in the Setup List. [CHAR_LIMIT=32]">
+        Task completed
       </message>
 
       <!-- Setup List "See More" bottom sheet strings -->
