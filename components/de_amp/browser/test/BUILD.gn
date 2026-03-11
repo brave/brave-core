@@ -30,6 +30,8 @@ if (!is_android) {
       "//chrome/test:test_support_ui",
       "//components/keep_alive_registry",
       "//components/prefs",
+      "//content/public/browser",
+      "//content/test:test_support",
       "//testing/gtest",
     ]
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
