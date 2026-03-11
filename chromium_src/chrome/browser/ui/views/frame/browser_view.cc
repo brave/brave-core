@@ -11,6 +11,7 @@
 #include "base/check_op.h"
 #include "brave/browser/ui/views/brave_tab_search_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_tab_strip_region_view.h"
+#include "brave/browser/ui/views/frame/layout/brave_browser_view_layout_delegate_impl.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_delegate_impl.h"
 #include "brave/browser/ui/views/infobars/brave_infobar_container_view.h"
@@ -32,6 +33,7 @@
 #define BookmarkBarView BraveBookmarkBarView
 #define MultiContentsView BraveMultiContentsView
 #define MultiContentsViewDelegateImpl BraveMultiContentsViewDelegateImpl
+#define BrowserViewLayoutDelegateImpl BraveBrowserViewLayoutDelegateImpl
 
 #define UpdateExclusiveAccessBubble(...)             \
   UpdateExclusiveAccessBubble(__VA_ARGS__) override; \
@@ -68,6 +70,7 @@
 
 #undef BRAVE_BROWSER_VIEW_ON_ACTIVE_TAB_CHANGED
 #undef UpdateExclusiveAccessBubble
+#undef BrowserViewLayoutDelegateImpl
 #undef MultiContentsViewDelegateImpl
 #undef MultiContentsView
 #undef BookmarkBarView
