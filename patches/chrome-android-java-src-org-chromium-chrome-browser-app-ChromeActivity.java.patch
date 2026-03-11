@@ -1,17 +1,17 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-index e8e655dfb0ddafcf9f5588c9be1e579521252451..ee1c69db9e99efd530468e4ae0b1275b76321548 100644
+index e7bbad06952d57ab3c6e84682a86035099600538..141b7d821ab7c60fad030f97b1ab6fa5dcad8b46 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-@@ -659,7 +659,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
-             mBottomContainer = findViewById(R.id.bottom_container);
- 
+@@ -663,7 +663,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
+                             getEdgeToEdgeSupplier(),
+                             assertNonNull(mRootUiCoordinator.getBottomSheetController()));
              SnackbarManager snackbarManager =
 -                    new SnackbarManager(
 +                    new org.chromium.chrome.browser.ui.messages.snackbar.BraveSnackbarManager(
                              this,
                              mBottomContainer,
                              getWindowAndroid(),
-@@ -3082,6 +3082,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
+@@ -3085,6 +3085,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
       */
      public void onExitVr() {}
  
