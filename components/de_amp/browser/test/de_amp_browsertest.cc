@@ -19,15 +19,18 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/keep_alive_registry/keep_alive_types.h"
 #include "components/keep_alive_registry/scoped_keep_alive.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/reload_type.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "content/public/test/download_test_observer.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "net/base/net_errors.h"
 #include "net/dns/mock_host_resolver.h"
@@ -244,6 +247,48 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, SimpleDeAmp) {
   // Non-HTML page should not be De-AMPed.
   NavigateToURLAndWaitForRedirects(kTestRedirectingAmpPage1,
                                    kTestRedirectingAmpPage1);
+}
+
+IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, ContentDispositionAttachment) {
+  TogglePref(true);
+  // AMP page served with Content-Disposition: attachment should not be
+  // De-AMPed; the browser should download it instead of redirecting.
+  SetRequestHandler(kTestSimpleNonAmpPage, Canonical());
+  SetRequestHandler(
+      kTestAmpPage, Amp(kTestCanonicalPage), net::HttpStatusCode::HTTP_OK,
+      {{"Content-Disposition", "attachment; filename=\"page.html\""}});
+  SetRequestHandler(kTestCanonicalPage, Canonical());
+  StartServer();
+
+  // Navigate to a real page first.
+  const GURL simple = https_server_->GetURL(kTestHost, kTestSimpleNonAmpPage);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), simple));
+  EXPECT_EQ(web_contents()->GetLastCommittedURL(), simple);
+
+  const GURL amp_url = https_server_->GetURL(kTestHost, kTestAmpPage);
+  const GURL canonical_url =
+      https_server_->GetURL(kTestHost, kTestCanonicalPage);
+
+  // Content-Disposition: attachment replaces the navigation with a download,
+  // so NavigateToURL would hang (it waits for DidStopLoading which never fires
+  // for downloads). Disable the download prompt so it proceeds automatically,
+  // then use a download observer + NO_WAIT instead.
+  // Pattern from chrome/browser/download/download_browsertest.cc.
+  browser()->profile()->GetPrefs()->SetBoolean(prefs::kPromptForDownload,
+                                               false);
+  content::DownloadTestObserverTerminal download_observer(
+      browser()->profile()->GetDownloadManager(), 1,
+      content::DownloadTestObserver::ON_DANGEROUS_DOWNLOAD_ACCEPT);
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), amp_url, WindowOpenDisposition::CURRENT_TAB,
+      ui_test_utils::BROWSER_TEST_NO_WAIT);
+  download_observer.WaitForFinished();
+  EXPECT_EQ(1u, download_observer.NumDownloadsSeenInState(
+                    download::DownloadItem::COMPLETE));
+
+  // De-AMP must NOT have redirected to the canonical URL.
+  EXPECT_NE(web_contents()->GetLastCommittedURL(), canonical_url);
+  EXPECT_EQ(web_contents()->GetLastCommittedURL(), simple);
 }
 
 IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalLinkOutsideChunkWithinMax) {
