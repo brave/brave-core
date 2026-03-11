@@ -32,6 +32,8 @@ class AdsTabHelper : public web::WebStateUserData<AdsTabHelper>,
   AdsTabHelper& operator=(const AdsTabHelper&) = delete;
   ~AdsTabHelper() override;
 
+  static void MaybeCreateForWebState(web::WebState* web_state);
+
   void NotifyTabDidStartPlayingMedia();
   void NotifyTabDidStopPlayingMedia();
 

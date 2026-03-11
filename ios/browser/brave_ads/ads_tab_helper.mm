@@ -12,8 +12,11 @@
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
+#include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
 #include "ios/web/public/js_messaging/content_world.h"
 #include "ios/web/public/js_messaging/web_frame.h"
 #include "ios/web/public/js_messaging/web_frames_manager.h"
@@ -52,6 +55,17 @@ bool IsErrorPage(int http_status_code) {
 }
 
 }  // namespace
+
+// static
+void AdsTabHelper::MaybeCreateForWebState(web::WebState* web_state) {
+  ProfileIOS* profile =
+      ProfileIOS::FromBrowserState(web_state->GetBrowserState());
+
+  if (AdsServiceImplIOS* ads_service =
+          AdsServiceFactoryIOS::GetForProfile(profile)) {
+    AdsTabHelper::CreateForWebState(web_state, ads_service);
+  }
+}
 
 AdsTabHelper::AdsTabHelper(web::WebState* web_state, AdsService* ads_service)
     : web_state_(web_state),
