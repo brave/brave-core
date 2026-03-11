@@ -38,7 +38,6 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
@@ -162,10 +161,6 @@ using extensions::FeatureSwitch;
 
 #if BUILDFLAG(ENABLE_PSST)
 #include "brave/components/psst/common/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_CONTAINERS)
-#include "brave/components/containers/core/browser/prefs.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -588,10 +583,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   web_discovery::WebDiscoveryService::RegisterProfilePrefs(registry);
-#endif
-
-#if BUILDFLAG(ENABLE_CONTAINERS)
-  containers::RegisterProfilePrefs(registry);
 #endif
 
   email_aliases::EmailAliasesService::RegisterProfilePrefs(registry);

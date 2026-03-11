@@ -10,6 +10,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/values.h"
 #include "brave/components/containers/core/browser/pref_names.h"
+#include "brave/components/containers/core/browser/prefs_registration.h"
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom-data-view.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
@@ -101,6 +102,22 @@ TEST_F(ContainersPrefsTest, SetContainerListEmpty) {
 
   const base::ListValue& list = prefs_.GetList(prefs::kContainersList);
   EXPECT_TRUE(list.empty());
+}
+
+TEST_F(ContainersPrefsTest, GetContainerById) {
+  std::vector<mojom::ContainerPtr> test_containers;
+  test_containers.push_back(mojom::Container::New(
+      "test-id-1", "Test Container 1", mojom::Icon::kPersonal, SK_ColorWHITE));
+  test_containers.push_back(mojom::Container::New(
+      "test-id-2", "Test Container 2", mojom::Icon::kWork, SK_ColorBLACK));
+  SetContainersToPrefs(test_containers, prefs_);
+
+  auto container = GetContainerFromPrefs(prefs_, "test-id-2");
+  ASSERT_TRUE(container);
+  EXPECT_EQ(container->name, "Test Container 2");
+  EXPECT_EQ(container->icon, mojom::Icon::kWork);
+
+  EXPECT_FALSE(GetContainerFromPrefs(prefs_, "missing-id"));
 }
 
 }  // namespace containers

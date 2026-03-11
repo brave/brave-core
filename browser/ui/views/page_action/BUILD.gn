@@ -18,6 +18,7 @@ source_set("page_action") {
       "partitioned_storage_page_action_controller.h",
     ]
     deps += [
+      "//brave/browser/containers",
       "//brave/browser/ui/containers",
       "//brave/components/containers/content/browser",
       "//brave/components/containers/core/common:features",
@@ -25,7 +26,6 @@ source_set("page_action") {
       "//chrome/browser/ui/actions",
       "//chrome/browser/ui/views/page_action",
       "//components/tabs:public",
-      "//components/user_prefs",
     ]
   }
 }

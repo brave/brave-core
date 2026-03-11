@@ -54,6 +54,7 @@
 #include "ui/views/layout/flex_layout.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/containers/containers_service_factory.h"
 #include "brave/browser/ui/containers/container_model.h"
 #include "brave/browser/ui/containers/containers_icon_generator.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
@@ -413,21 +414,16 @@ BraveTabStrip::GetContainerModelForTab(const Tab* tab) const {
   auto* profile = GetBrowserWindowInterface()->GetProfile();
   CHECK(profile);
 
-  auto* prefs = profile->GetPrefs();
-  CHECK(prefs);
+  auto* service = ContainersServiceFactory::GetForProfile(profile);
+  if (!service) {
+    return std::nullopt;
+  }
 
   auto* widget = GetWidget();
   const float scale_factor =
       widget ? widget->GetCompositor()->device_scale_factor() : 1.0f;
-  auto models = containers::GetContainerModelsFromPrefs(*prefs, scale_factor);
-
-  auto it = std::ranges::find_if(
-      models, [&](const auto& model) { return model.id() == container_id; });
-  if (it == models.end()) {
-    return containers::ContainerModel::CreateForUnknown(container_id,
-                                                        scale_factor);
-  }
-  return std::move(*it);
+  return containers::GetRuntimeContainerModel(*service, container_id,
+                                              scale_factor);
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 

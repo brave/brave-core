@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/feature_list.h"
+#include "brave/browser/containers/containers_service_factory.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
@@ -162,6 +163,11 @@ void BraveTabMenuModel::BuildItemForContainers(
     Browser* browser,
     TabStripModel* tab_strip_model,
     const std::vector<int>& selected_tab_indices) {
+  auto* service = ContainersServiceFactory::GetForProfile(browser->profile());
+  if (!service) {
+    return;
+  }
+
   // There are multiple command ids that could be used to find the right
   // insertion point for the containers submenu. The command ids could be absent
   // depending on the tab state. So we check for multiple commands.
@@ -189,7 +195,7 @@ void BraveTabMenuModel::BuildItemForContainers(
       std::make_unique<brave::ContainersTabMenuModelDelegate>(
           browser, selected_tab_handles);
   containers_submenu_ = std::make_unique<containers::ContainersMenuModel>(
-      *containers_menu_delegate_, *browser->profile()->GetPrefs());
+      *containers_menu_delegate_, *service);
   InsertSubMenuWithStringIdAt(*index, TabStripModel::CommandOpenInContainer,
                               IDS_CXMENU_OPEN_IN_CONTAINER,
                               containers_submenu_.get());

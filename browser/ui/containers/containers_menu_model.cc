@@ -23,10 +23,10 @@
 namespace containers {
 
 ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
-                                         const PrefService& prefs)
+                                         const ContainersService& service)
     : ContainersMenuModel(
           delegate,
-          GetContainerModelsFromPrefs(prefs, delegate.GetScaleFactor())) {}
+          GetContainerModels(service, delegate.GetScaleFactor())) {}
 
 ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
                                          std::vector<ContainerModel> items)

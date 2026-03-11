@@ -72,6 +72,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/containers/containers_service_factory.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
@@ -632,8 +633,13 @@ void BraveRenderViewContextMenu::BuildContainersMenu() {
     return;
   }
 
-  containers_submenu_model_ = std::make_unique<containers::ContainersMenuModel>(
-      *this, *GetProfile()->GetPrefs());
+  auto* service = ContainersServiceFactory::GetForProfile(GetProfile());
+  if (!service) {
+    return;
+  }
+
+  containers_submenu_model_ =
+      std::make_unique<containers::ContainersMenuModel>(*this, *service);
 
   menu_model_.AddSubMenuWithStringId(IDC_OPEN_IN_CONTAINER,
                                      IDS_CXMENU_OPEN_IN_CONTAINER,
