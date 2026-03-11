@@ -92,7 +92,6 @@ export type CreatorPlatform =
 
 export interface CreatorSite {
   id: string
-  icon: string
   name: string
   url: string
   platform: CreatorPlatform

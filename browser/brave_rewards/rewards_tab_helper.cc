@@ -93,7 +93,7 @@ void RewardsTabHelper::MaybeSavePublisherInfo() {
   // populated by calling `NotifyPublisherPageVisit` as the user navigates
   // the web.
   rewards_service_->NotifyPublisherPageVisit(
-      tab_id_.id(), GetWebContents().GetLastCommittedURL().spec(), "", "");
+      tab_id_.id(), GetWebContents().GetLastCommittedURL().spec());
 }
 
 void RewardsTabHelper::OnCreatorDetected(

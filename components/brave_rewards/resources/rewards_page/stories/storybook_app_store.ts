@@ -65,7 +65,6 @@ export function createAppStore(): AppStore {
       {
         site: {
           id: '1',
-          icon: '',
           name: 'Alice',
           url: 'https://brave.com',
           platform: '',
@@ -76,7 +75,6 @@ export function createAppStore(): AppStore {
       {
         site: {
           id: '2',
-          icon: '',
           name: 'Bob',
           url: 'https://brave.com',
           platform: 'youtube',
@@ -105,7 +103,6 @@ export function createAppStore(): AppStore {
         platform: '',
         url: 'https://wikipedia.org',
         name: 'wikipedia.org',
-        icon: '',
       },
       banner: {
         title: 'Wikipedia',
