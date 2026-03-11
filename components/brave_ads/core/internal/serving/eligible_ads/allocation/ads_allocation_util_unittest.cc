@@ -8,6 +8,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -26,12 +27,7 @@ TEST(BraveAdsCreativeAdAllocationUtilTest,
       ChooseCreativeAdAtRandom(creative_ads);
 
   // Assert
-  EXPECT_TRUE(std::ranges::any_of(
-      creative_ads,
-      [&chosen_creative_ad](const CreativeNewTabPageAdInfo& creative_ad) {
-        return creative_ad.creative_instance_id ==
-               chosen_creative_ad.creative_instance_id;
-      }));
+  EXPECT_THAT(creative_ads, testing::Contains(chosen_creative_ad));
 }
 
 TEST(BraveAdsCreativeAdAllocationUtilTest,
