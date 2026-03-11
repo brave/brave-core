@@ -32,13 +32,14 @@ action("generate_tsconfig") {
   script = "//brave/script/generate-tsconfig.py"
   deps = [
     ":build_flags_json",
+    "//brave/components/common:preprocess_package_json",
 
     # Ensure chrome://resources/js file and typescript definitions are
     # generated
     "//ui/webui/resources/js:build_ts",
   ]
   inputs = [
-    "//brave/package.json",
+    "$root_gen_dir/brave/components/common/package.json",
     "//brave/build/commands/lib/config.js",
     "//brave/build/commands/lib/genTsConfig.js",
     "//brave/build/commands/scripts/genTsConfig.js",
