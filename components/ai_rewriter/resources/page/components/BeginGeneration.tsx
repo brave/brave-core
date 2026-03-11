@@ -67,7 +67,6 @@ export default function BeginGeneration() {
             isAIChatAgentProfileFeatureEnabled: false,
             isAIChatAgentProfile: false,
             openAIChatAgentProfile: () => {},
-            openURL: () => {},
             isGenerating: context.isGenerating,
             handleStopGenerating: async () => {},
             removeFile: () => {},
