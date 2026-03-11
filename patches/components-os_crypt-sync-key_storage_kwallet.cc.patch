@@ -1,5 +1,5 @@
 diff --git a/components/os_crypt/sync/key_storage_kwallet.cc b/components/os_crypt/sync/key_storage_kwallet.cc
-index 0f5d4c9a6267ece46ccd9fa35d04d7c63a7f3ca5..9bddf3bd396f3c77c698c296583a33f678416197 100644
+index b3ec51a1cd22be2e236bcc9f9429c3f0b9a13ca6..d73a588f8d196f6eb6fba08b230b20cd2f9ad887 100644
 --- a/components/os_crypt/sync/key_storage_kwallet.cc
 +++ b/components/os_crypt/sync/key_storage_kwallet.cc
 @@ -127,6 +127,7 @@ std::optional<std::string> KeyStorageKWallet::GetKeyImpl() {

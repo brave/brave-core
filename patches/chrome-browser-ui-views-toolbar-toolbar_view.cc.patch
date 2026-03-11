@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index 6002ed505f4c4daaadc0facf87e4d64cc44b5ba0..1a86e986d94a9187f7db7fad79cda8214460c88d 100644
+index ffe9df783632b5944466dca37e021a5a71bb2565..d67087d47fcd53fc2015e906dc749957a3697d7e 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-@@ -552,6 +552,7 @@ void ToolbarView::Init() {
+@@ -566,6 +566,7 @@ void ToolbarView::Init() {
      UpdateGlicButtonVisibility();
    }
  

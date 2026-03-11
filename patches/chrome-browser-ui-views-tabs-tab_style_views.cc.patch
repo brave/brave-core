@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index 5bf425a33e86505518beb2c8dd17587965fc616a..2fc5cbeaacafd30bc68d591b879ae50adfeb0a56 100644
+index 06cb552168bd568a1702107e512f127ea217d553..891396cfe221b541ee96f24534da8f0e5a19d931 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
 @@ -123,6 +123,7 @@ class TabStyleViewsImpl : public TabStyleViews {
@@ -18,7 +18,7 @@ index 5bf425a33e86505518beb2c8dd17587965fc616a..2fc5cbeaacafd30bc68d591b879ae50a
    bool IsHovering() const;
  
    // Returns whether the hover animation is being shown.
-@@ -361,6 +363,7 @@ SkPath TabStyleViewsImpl::GetPath(TabStyle::PathType path_type,
+@@ -364,6 +366,7 @@ SkPath TabStyleViewsImpl::GetPath(TabStyle::PathType path_type,
      extension_corner_radius -= 0.5f * stroke_adjustment;
    }
    const bool compact_left_to_bottom = ShouldCompactLeadingEdge(path_type);
@@ -26,7 +26,7 @@ index 5bf425a33e86505518beb2c8dd17587965fc616a..2fc5cbeaacafd30bc68d591b879ae50a
  
    float left_extension_corner_radius = extension_corner_radius;
    if (compact_left_to_bottom) {
-@@ -1031,14 +1034,18 @@ void TabStyleViewsImpl::PaintSeparators(gfx::Canvas* canvas) const {
+@@ -1041,14 +1044,18 @@ void TabStyleViewsImpl::PaintSeparators(gfx::Canvas* canvas) const {
                                                     SK_AlphaOPAQUE));
    };
  
