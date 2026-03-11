@@ -20,16 +20,13 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/keep_alive_registry/keep_alive_types.h"
+#include "components/keep_alive_registry/scoped_keep_alive.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
-#include "ui/base/l10n/l10n_util.h"
-#include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/controls/webview/webview.h"
-#include "ui/views/layout/fill_layout.h"
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
@@ -90,7 +87,7 @@ void BraveOriginStartupView::Show(
 
 // static
 void BraveOriginStartupView::Hide() {
-  if (g_startup_view) {
+  if (g_startup_view && g_startup_view->GetWidget()) {
     g_startup_view->GetWidget()->Close();
   }
 }
@@ -106,29 +103,25 @@ BraveOriginStartupView::BraveOriginStartupView(
     base::RepeatingClosure attempt_exit,
     CreateProfilesCallback create_system_profile,
     CreateProfilesCallback create_default_profile)
-    : keep_alive_(KeepAliveOrigin::USER_MANAGER_VIEW,
-                  KeepAliveRestartOption::DISABLED),
+    : keep_alive_(
+          std::make_unique<ScopedKeepAlive>(KeepAliveOrigin::USER_MANAGER_VIEW,
+                                            KeepAliveRestartOption::DISABLED)),
       on_complete_(std::move(on_complete)),
       open_external_(std::move(open_external)),
       attempt_exit_(std::move(attempt_exit)),
       create_system_profile_(std::move(create_system_profile)),
       create_default_profile_(std::move(create_default_profile)) {
   SetHasWindowSizeControls(false);
-  SetTitle(l10n_util::GetStringUTF16(IDS_BRAVE_ORIGIN_STARTUP_TITLE));
+  SetTitle(IDS_BRAVE_ORIGIN_STARTUP_TITLE);
 }
 
 BraveOriginStartupView::~BraveOriginStartupView() {
-  if (contents_) {
-    contents_->SetDelegate(nullptr);
-  }
   if (g_startup_view == this) {
     g_startup_view = nullptr;
   }
 }
 
 void BraveOriginStartupView::Display() {
-  BuildLayout();
-
   // Load both the system profile (for WebUI) and the default user profile
   // (for SKU service, which requires a regular profile).
   create_system_profile_.Run(
@@ -175,50 +168,52 @@ void BraveOriginStartupView::MaybeInit() {
 }
 
 void BraveOriginStartupView::Init(Profile* system_profile) {
-  contents_ = content::WebContents::Create(
-      content::WebContents::CreateParams(system_profile));
-  contents_->SetDelegate(this);
-
-  // Observe the WebContents to know when the page is loaded.
-  content::WebContentsObserver::Observe(contents_.get());
-
   profile_keep_alive_ = std::make_unique<ScopedProfileKeepAlive>(
       system_profile->GetOriginalProfile(),
       ProfileKeepAliveOrigin::kProfilePickerView);
 
-  web_view_->SetWebContents(contents_.get());
-  contents_->GetController().LoadURL(
-      GURL(kBraveOriginStartupURL), content::Referrer(),
-      ui::PAGE_TRANSITION_AUTO_TOPLEVEL, std::string());
+  web_view_ = std::make_unique<views::WebView>(system_profile);
+
+  // GetWebContents() creates the WebContents if it doesn't already exist.
+  web_view_->GetWebContents()->SetDelegate(this);
+  Observe(web_view_->web_contents());
+  web_view_->LoadInitialURL(GURL(kBraveOriginStartupURL));
 
   views::Widget::InitParams params(
       views::Widget::InitParams::CLIENT_OWNS_WIDGET,
       views::Widget::InitParams::TYPE_WINDOW);
   params.delegate = this;
-  params.bounds = gfx::Rect(kDialogWidth, kDialogHeight);
-  widget_ = std::make_unique<views::Widget>();
-  widget_->Init(std::move(params));
 
-  GetWidget()->CenterWindow(gfx::Size(kDialogWidth, kDialogHeight));
-  GetWidget()->Show();
+  // Widget is freed in WidgetIsZombie() after the delegate is deleted.
+  auto* widget = new views::Widget();
+  widget->Init(std::move(params));
+  widget->CenterWindow(gfx::Size(kDialogWidth, kDialogHeight));
+  widget->Show();
 }
 
-void BraveOriginStartupView::BuildLayout() {
-  SetLayoutManager(std::make_unique<views::FillLayout>());
-  web_view_ = AddChildView(std::make_unique<views::WebView>(nullptr));
+views::View* BraveOriginStartupView::GetContentsView() {
+  return web_view_.get();
+}
+
+void BraveOriginStartupView::WidgetIsZombie(views::Widget* widget) {
+  // Chromium checks for Widget destruction after DeleteDelegate() returns, so
+  // deleting the Widget here is safe. Delete ourselves first so that web_view_
+  // removes itself from the RootView before the Widget tears it down.
+  delete this;
+  delete widget;
 }
 
 void BraveOriginStartupView::DOMContentLoaded(
     content::RenderFrameHost* render_frame_host) {
   // Only handle the main frame.
-  if (render_frame_host != contents_->GetPrimaryMainFrame()) {
+  if (render_frame_host != web_view_->web_contents()->GetPrimaryMainFrame()) {
     return;
   }
   SetupWebUICallbacks();
 }
 
 void BraveOriginStartupView::SetupWebUICallbacks() {
-  auto* web_ui = contents_->GetWebUI();
+  auto* web_ui = web_view_->web_contents()->GetWebUI();
   if (!web_ui) {
     return;
   }
@@ -281,30 +276,41 @@ content::WebContents* BraveOriginStartupView::AddNewContents(
   return nullptr;
 }
 
+bool BraveOriginStartupView::HandleContextMenu(
+    content::RenderFrameHost& render_frame_host,
+    const content::ContextMenuParams& params) {
+  // Suppress context menus: the system profile does not initialize
+  // several services (ex, TemplateURLService) that are required by context
+  // menu. So the default context menu crashes.
+  return true;
+}
+
 void BraveOriginStartupView::WindowClosing() {
+  // Clear profile pointers before shutdown destroys the profiles.
+  system_profile_ = nullptr;
+  default_profile_ = nullptr;
+
+  // Release keep alives asynchronously. Destroying them synchronously during
+  // WindowClosing triggers re-entrancy: on Windows via BrowserProcessImpl::
+  // Unpin -> EnumThreadWindows -> CloseNow, on Linux via similar close paths.
+  // Posting ensures the widget is fully destroyed before the keep alives are
+  // released. The keep alive release is posted before AttemptExit so the
+  // registry allows shutdown.
+  auto task_runner = base::SequencedTaskRunner::GetCurrentDefault();
+  task_runner->PostTask(
+      FROM_HERE,
+      base::BindOnce([](std::unique_ptr<ScopedKeepAlive>,
+                        std::unique_ptr<ScopedProfileKeepAlive>) {},
+                     std::move(keep_alive_), std::move(profile_keep_alive_)));
+
   if (!validated_) {
-    // User closed without validating - exit browser. Post as async task
-    // to avoid destroying objects while the window close is still processing.
-    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(FROM_HERE,
-                                                             attempt_exit_);
+    task_runner->PostTask(FROM_HERE, attempt_exit_);
   }
-}
-
-std::u16string BraveOriginStartupView::GetAccessibleWindowTitle() const {
-  return l10n_util::GetStringUTF16(IDS_BRAVE_ORIGIN_STARTUP_TITLE);
-}
-
-gfx::Size BraveOriginStartupView::CalculatePreferredSize(
-    const views::SizeBounds& available_size) const {
-  return gfx::Size(kDialogWidth, kDialogHeight);
 }
 
 bool BraveOriginStartupView::HandleKeyboardEvent(
     content::WebContents* source,
     const input::NativeWebKeyboardEvent& event) {
   return unhandled_keyboard_event_handler_.HandleKeyboardEvent(
-      event, GetFocusManager());
+      event, GetWidget()->GetFocusManager());
 }
-
-BEGIN_METADATA(BraveOriginStartupView)
-END_METADATA
