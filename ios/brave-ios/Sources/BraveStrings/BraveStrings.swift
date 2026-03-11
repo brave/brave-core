@@ -9501,5 +9501,13 @@ extension Strings {
         value: "Reveal",
         comment: "Reveal password label"
       )
+    public static let managePasswordsAuthenticationReason =
+    NSLocalizedString(
+      "autofill.managePasswords.authenticationReason",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Authenticate to view.",
+      comment: "The reason string shown in the biometric/passcode authentication prompt when the user tries to access autofill management."
+    )
   }
 }
