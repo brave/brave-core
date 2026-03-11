@@ -221,37 +221,8 @@ void CardanoProviderImpl::OnRequestCardanoPermissions(
     }
   }
 
-  // Use the allowed_accounts parameter passed from the delegate instead of
-  // querying GetAllowedAccounts again, which would hit a race condition where
-  // the database(iOS) write may not have completed yet.
-  mojom::AccountIdPtr account_id;
-  if (allowed_accounts && !allowed_accounts->empty()) {
-    auto selected_account = brave_wallet_service_->keyring_service()
-                                ->GetSelectedCardanoDappAccount();
-    bool is_selected_account_allowed =
-        selected_account &&
-        std::ranges::contains(
-            *allowed_accounts,
-            GetAccountPermissionIdentifier(selected_account->account_id));
-    if (is_selected_account_allowed) {
-      account_id = selected_account->account_id.Clone();
-    } else {
-      // Use first allowed account if selected account is not in the allowed
-      // list
-      for (const auto& account :
-           brave_wallet_service_->keyring_service()->GetAllAccountInfos()) {
-        if (account->account_id->coin != mojom::CoinType::ADA) {
-          continue;
-        }
-        if (std::ranges::contains(
-                *allowed_accounts,
-                GetAccountPermissionIdentifier(account->account_id))) {
-          account_id = account->account_id.Clone();
-          break;
-        }
-      }
-    }
-  }
+  auto account_id = GetCardanoPreferredDappAccount(
+      delegate(), brave_wallet_service_->keyring_service(), allowed_accounts);
 
   if (!account_id) {
     std::move(callback).Run(

@@ -29,7 +29,9 @@ std::vector<std::string> GetCardanoAccountPermissionIdentifiers(
 
 mojom::AccountIdPtr GetCardanoPreferredDappAccount(
     BraveWalletProviderDelegate* delegate,
-    KeyringService* keyring_service) {
+    KeyringService* keyring_service,
+    const std::optional<std::vector<std::string>>&
+        allowed_accounts_from_request) {
   auto cardano_account_ids =
       GetCardanoAccountPermissionIdentifiers(keyring_service);
 
@@ -38,7 +40,10 @@ mojom::AccountIdPtr GetCardanoPreferredDappAccount(
   }
 
   const auto allowed_accounts =
-      delegate->GetAllowedAccounts(mojom::CoinType::ADA, cardano_account_ids);
+      allowed_accounts_from_request
+          ? allowed_accounts_from_request
+          : delegate->GetAllowedAccounts(mojom::CoinType::ADA,
+                                         cardano_account_ids);
 
   if (!allowed_accounts || allowed_accounts->empty()) {
     return nullptr;
