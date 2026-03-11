@@ -57,7 +57,7 @@ class TreeTabNodeId;
   ShiftGroupRight(__VA_ARGS__) = 0;                                       \
   virtual int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const = 0; \
   virtual const tabs::TreeTabNode& GetTreeTabNode(                        \
-      const tree_tab::TreeTabNodeId& id) const;                           \
+      const tree_tab::TreeTabNodeId& id) const = 0;                       \
   virtual void SetTreeTabNodeCollapsed(const tree_tab::TreeTabNodeId& id, \
                                        bool collapsed) = 0;               \
   virtual bool IsInCollapsedTreeTabNode(const tree_tab::TreeTabNodeId& id) const
