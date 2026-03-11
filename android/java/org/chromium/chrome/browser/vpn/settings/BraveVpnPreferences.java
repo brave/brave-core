@@ -83,8 +83,6 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     private static final String VPN_SUPPORT_PAGE =
             "https://support.brave.app/hc/en-us/articles/4410838268429";
 
-    private static final String PREF_BRAVE_VPN = "brave_vpn";
-
     private static final String DATE_FORMAT = "dd/MM/yyyy";
 
     private ChromeSwitchPreference mVpnSwitch;
