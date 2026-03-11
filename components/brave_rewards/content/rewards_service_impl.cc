@@ -1130,11 +1130,8 @@ void RewardsServiceImpl::NotifyPublisherPageVisit(
   engine_->NotifyPublisherPageVisit(tab_id, std::move(visit_data), "");
 }
 
-void RewardsServiceImpl::NotifyPublisherPageVisit(
-    uint64_t tab_id,
-    const std::string& url,
-    const std::string& favicon_url,
-    const std::string& publisher_blob) {
+void RewardsServiceImpl::NotifyPublisherPageVisit(uint64_t tab_id,
+                                                  const std::string& url) {
   GURL parsed_url(url);
   if (!parsed_url.is_valid()) {
     return;
@@ -1164,10 +1161,8 @@ void RewardsServiceImpl::NotifyPublisherPageVisit(
   visit_data->path = parsed_url.has_path() ? parsed_url.PathForRequest() : "";
   visit_data->url =
       base::StrCat({parsed_url.scheme(), "://", *publisher_domain, "/"});
-  visit_data->favicon_url = favicon_url;
 
-  engine_->NotifyPublisherPageVisit(tab_id, std::move(visit_data),
-                                    publisher_blob);
+  engine_->NotifyPublisherPageVisit(tab_id, std::move(visit_data), "");
 }
 
 void RewardsServiceImpl::OnPanelPublisherInfo(mojom::Result result,
