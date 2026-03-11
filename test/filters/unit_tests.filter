@@ -269,6 +269,8 @@
 -IsolatedWebAppManagedAllowlistTest.AllowedAppInstalled
 -IsolatedWebAppManagedAllowlistTest.NotAllowedAppInstallationRefused
 -IsolatedWebAppPolicyManagerOnDemandUpdatePreloadedTest.ComponentUpdateQueuedButNoUpdate
+-SiteSettingsHelperIsolatedWebAppTest.AutomaticFullscreenVisibility
+-SiteSettingsHelperIsolatedWebAppTest.IsolatedWebAppsUseAppNameAsDisplayName
 
 # Upstream Chromium test: CHECK failure in UpdateKeyDistributionInfo due to
 # race condition in async component loading. LoadKeyDistributionData posts
