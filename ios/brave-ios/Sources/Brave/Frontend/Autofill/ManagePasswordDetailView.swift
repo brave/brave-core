@@ -12,8 +12,8 @@ import UIKit
 struct ManagePasswordDetailView: View {
   @Environment(\.openURL) private var openURL
   @Environment(\.dismiss) private var dismiss
+  @Environment(\.autofillPrivacyLock) private var privacyLock
   @State private var isPasswordRevealed = false
-  @State private var isSceneActive = true
 
   let viewModel: ManagePasswordsViewModel
   let password: CWVPassword
@@ -107,17 +107,9 @@ struct ManagePasswordDetailView: View {
     .navigationTitle(URL(string: password.site)?.baseDomain ?? password.title)
     .navigationBarTitleDisplayMode(.inline)
     .toolbarBackground(.visible, for: .navigationBar)
+    .toolbar(!(privacyLock?.isLocked ?? true) ? .visible : .hidden, for: .automatic)
     .overlay {
-      if !isSceneActive {
-        Color(.braveGroupedBackground)
-          .ignoresSafeArea()
-      }
-    }
-    .onReceive(NotificationCenter.default.publisher(for: UIScene.willDeactivateNotification)) { _ in
-      isSceneActive = false
-    }
-    .onReceive(NotificationCenter.default.publisher(for: UIScene.didActivateNotification)) { _ in
-      isSceneActive = true
+      if privacyLock?.isLocked == true { Color(.braveGroupedBackground).ignoresSafeArea() }
     }
   }
 }
