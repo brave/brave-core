@@ -8,8 +8,6 @@
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "content/public/browser/site_instance.h"
 
-#define BRAVE_GET_SITE_INSTANCE_FOR_NEW_TAB
-
 #if BUILDFLAG(ENABLE_CONTAINERS)
 // Extend GetSiteInstanceForNewTab to accept an optional StoragePartitionConfig.
 // When a config is present it delegates to CreateForFixedStoragePartition;

@@ -28,7 +28,6 @@
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/switches.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
-#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
@@ -566,10 +565,6 @@ BraveVerticalTabStripRegionView::ExpandTabStripForDragging() {
   SetSize(GetPreferredSize());
 
   return resetter;
-}
-
-gfx::Vector2d BraveVerticalTabStripRegionView::GetOffsetForDraggedTab() const {
-  return {0, 0};
 }
 
 int BraveVerticalTabStripRegionView::GetAvailableWidthForTabContainer() {
@@ -1203,14 +1198,6 @@ std::u16string BraveVerticalTabStripRegionView::GetShortcutTextForNewTabButton(
   return {};
 }
 #endif
-
-views::LabelButton&
-BraveVerticalTabStripRegionView::GetToggleButtonForTesting() {
-  auto* brave_browser_view = BraveBrowserView::From(browser_view_);
-  auto* toolbar = static_cast<BraveToolbarView*>(brave_browser_view->toolbar());
-  CHECK(toolbar->vertical_tab_toggle_button());
-  return *toolbar->vertical_tab_toggle_button();
-}
 
 void BraveVerticalTabStripRegionView::OnCollapseAnimationEnded() {
   CHECK_EQ(state_, State::kCollapsed);

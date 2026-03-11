@@ -85,7 +85,6 @@ class BraveVerticalTabStripRegionView : public views::View,
   // previous state.
   using ScopedStateResetter = std::unique_ptr<base::ScopedClosureRunner>;
   [[nodiscard]] ScopedStateResetter ExpandTabStripForDragging();
-  gfx::Vector2d GetOffsetForDraggedTab() const;
 
   int GetAvailableWidthForTabContainer();
 
@@ -185,8 +184,6 @@ class BraveVerticalTabStripRegionView : public views::View,
   std::u16string GetShortcutTextForNewTabButton(BrowserView* browser_view);
 
   void OnMenuClosed();
-
-  views::LabelButton& GetToggleButtonForTesting();
 
   // Callback that is called when collapse animation ends. We update visibility
   // of this view if it's needed
