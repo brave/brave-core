@@ -1,9 +1,9 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/ui/views/side_panel/side_panel_util.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_helper.h"
 
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -15,12 +15,13 @@
 #endif
 
 #define PopulateGlobalEntries PopulateGlobalEntries_ChromiumImpl
-#include <chrome/browser/ui/views/side_panel/side_panel_util.cc>
+#include <chrome/browser/ui/views/side_panel/side_panel_helper.cc>
 #undef PopulateGlobalEntries
 
 // static
-void SidePanelUtil::PopulateGlobalEntries(Browser* browser,
-                                          SidePanelRegistry* global_registry) {
+void SidePanelHelper::PopulateGlobalEntries(
+    Browser* browser,
+    SidePanelRegistry* global_registry) {
   PopulateGlobalEntries_ChromiumImpl(browser, global_registry);
 
   // the playlist coordinator is not created for popup windows, or for
