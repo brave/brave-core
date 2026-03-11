@@ -2690,9 +2690,10 @@
 # These tests fail because they override search engines list and when our code
 # attempts to set Brave Search as the engine for the private window it can't
 # find the engine in the list and CHECKs.
+-PrepopulatedEnginesCrossRegionMigrationBrowserTest.*
 -PrepopulatedEnginesMigrationBrowserTest.*
--PrepopulatedEnginesXRegionNoMigrationBrowserTest.*
 -PrepopulatedEnginesXRegionMigrationBrowserTest.*
+-PrepopulatedEnginesXRegionNoMigrationBrowserTest.*
 
 # This test fails because the expected height of the toolbar buttons (34px)
 # doesn't match our value (28px).
