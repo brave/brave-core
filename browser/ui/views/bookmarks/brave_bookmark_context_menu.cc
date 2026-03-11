@@ -27,13 +27,15 @@ BraveBookmarkContextMenu::BraveBookmarkContextMenu(
     BookmarkLaunchLocation opened_from,
     const std::vector<
         raw_ptr<const bookmarks::BookmarkNode, VectorExperimental>>& selection,
-    bool close_on_remove)
+    bool close_on_remove,
+    bool can_paste)
     : BookmarkContextMenu(parent_widget,
                           browser,
                           profile,
                           opened_from,
                           selection,
-                          close_on_remove) {
+                          close_on_remove,
+                          can_paste) {
   auto* submenu = menu()->GetMenuItemByID(IDC_BRAVE_BOOKMARK_BAR_SUBMENU);
   DCHECK(submenu);
   auto* submenu_model = controller_->GetBookmarkSubmenuModel();

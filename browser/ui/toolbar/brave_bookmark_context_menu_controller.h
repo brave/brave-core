@@ -41,7 +41,8 @@ class BraveBookmarkContextMenuController
       Profile* profile,
       BookmarkLaunchLocation opened_from,
       const std::vector<raw_ptr<const bookmarks::BookmarkNode,
-                                VectorExperimental>>& selection);
+                                VectorExperimental>>& selection,
+      bool can_paste);
 
   BraveBookmarkContextMenuController(
       const BraveBookmarkContextMenuController&) = delete;
