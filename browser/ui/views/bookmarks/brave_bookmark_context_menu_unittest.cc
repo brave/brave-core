@@ -66,7 +66,7 @@ class BraveBookmarkContextMenuTest : public testing::Test {
         model_->bookmark_bar_node()};
     auto menu = std::make_unique<BraveBookmarkContextMenu>(
         nullptr, nullptr, profile_.get(), BookmarkLaunchLocation::kNone, nodes,
-        false);
+        false, /*can_paste=*/false);
     menu->GetControllerForTesting()->SetPrefsForTesting(prefs_.get());
     return menu;
   }

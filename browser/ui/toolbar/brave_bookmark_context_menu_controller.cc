@@ -29,13 +29,15 @@ BraveBookmarkContextMenuController::BraveBookmarkContextMenuController(
     Profile* profile,
     BookmarkLaunchLocation opened_from,
     const std::vector<
-        raw_ptr<const bookmarks::BookmarkNode, VectorExperimental>>& selection)
+        raw_ptr<const bookmarks::BookmarkNode, VectorExperimental>>& selection,
+    bool can_paste)
     : BookmarkContextMenuController(parent_window,
                                     delegate,
                                     browser,
                                     profile,
                                     opened_from,
-                                    selection),
+                                    selection,
+                                    can_paste),
       browser_(browser),
       prefs_(browser_ ? browser_->profile()->GetPrefs() : nullptr) {
   if (!browser_) {
