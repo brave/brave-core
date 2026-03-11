@@ -14,6 +14,20 @@ brave_tab_search_static_files = [
 # Here we could also define any .ts in relevant variables
 # e.g. brave_tab_search_web_component_files and brave_tab_search_non_web_component_files
 # when we have the need for them.
+brave_tab_search_ts_files = [
+  "brave_tab_search_app.html.ts",
+  "brave_tab_search_app.ts",
+  "tab_focus/tab_focus_page.html.ts",
+  "tab_focus/tab_focus_page.ts",
+]
+
+brave_tab_search_css_files = [
+  "brave_tab_search_app.css",
+  "tab_focus/tab_focus_page.css",
+]
+
+brave_tab_search_preprocess_deps =
+    [ "//brave/browser/resources/tab_search:preprocess" ]
 
 brave_tab_search_extra_grdp_files = [ brave_tab_search_extras_grdp ]
 
