@@ -6,8 +6,11 @@
 #ifndef BRAVE_COMPONENTS_MISC_METRICS_BRAVE_SEARCH_METRICS_H_
 #define BRAVE_COMPONENTS_MISC_METRICS_BRAVE_SEARCH_METRICS_H_
 
+#include <string_view>
+
 #include "base/time/time.h"
 #include "brave/components/misc_metrics/page_percentage_metrics.h"
+#include "build/build_config.h"
 #include "url/gurl.h"
 
 class PrefRegistrySimple;
@@ -32,6 +35,12 @@ inline constexpr char kSearchOmniboxSuggestionPercentHistogramName[] =
     "Brave.Search.OmniboxSuggestionPercent";
 inline constexpr char kSearchNTPSearchPercentHistogramName[] =
     "Brave.Search.NTPSearchPercent";
+#if BUILDFLAG(IS_ANDROID)
+inline constexpr char kSearchQuickSearchPercentHistogramName[] =
+    "Brave.Search.QuickSearchPercent";
+inline constexpr char kSearchWidgetSearchPercentHistogramName[] =
+    "Brave.Search.WidgetSearchPercent";
+#endif  // BUILDFLAG(IS_ANDROID)
 
 class BraveSearchMetrics : public PagePercentageMetrics {
  public:
@@ -44,6 +53,13 @@ class BraveSearchMetrics : public PagePercentageMetrics {
   void MaybeRecordBraveQuery(const GURL& previous_url, const GURL& current_url);
   void MaybeRecordOmniboxQuery(const GURL& destination_url, bool is_suggestion);
   void MaybeRecordNTPSearch(int64_t engine_prepopulate_id);
+#if BUILDFLAG(IS_ANDROID)
+  // Records a quick search if the keyword matches ":br" and the query is not
+  // via Leo.
+  void MaybeRecordQuickSearch(bool is_leo, std::string_view keyword);
+  // Records a widget search if the destination URL is a Brave Search URL.
+  void MaybeRecordWidgetSearch(const GURL& url);
+#endif  // BUILDFLAG(IS_ANDROID)
 
   void ClearQueryCounts();
 
