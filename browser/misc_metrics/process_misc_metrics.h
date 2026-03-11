@@ -26,6 +26,7 @@ class TabMetrics;
 #endif
 class DefaultBrowserMonitor;
 class DohMetrics;
+class MediaSessionMetrics;
 class UptimeMonitorImpl;
 
 class ProcessMiscMetrics {
@@ -49,6 +50,7 @@ class ProcessMiscMetrics {
 #endif
   DefaultBrowserMonitor* default_browser_monitor();
   UptimeMonitorImpl* uptime_monitor();
+  MediaSessionMetrics* media_session_metrics();
 
  private:
 #if !BUILDFLAG(IS_ANDROID)
@@ -63,6 +65,7 @@ class ProcessMiscMetrics {
   std::unique_ptr<DefaultBrowserMonitor> default_browser_monitor_;
   std::unique_ptr<DohMetrics> doh_metrics_;
   std::unique_ptr<UptimeMonitorImpl> uptime_monitor_;
+  std::unique_ptr<MediaSessionMetrics> media_session_metrics_;
 };
 
 }  // namespace misc_metrics

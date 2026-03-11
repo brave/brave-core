@@ -8,6 +8,7 @@ import("//extensions/buildflags/buildflags.gni")
 
 source_set("misc_metrics") {
   sources = [
+    "//brave/browser/misc_metrics/media_session_metrics.h",
     "//brave/browser/misc_metrics/process_misc_metrics.h",
     "//brave/browser/misc_metrics/profile_misc_metrics_service.h",
     "//brave/browser/misc_metrics/profile_misc_metrics_service_factory.h",
@@ -16,10 +17,13 @@ source_set("misc_metrics") {
   deps = [
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/misc_metrics",
+    "//brave/components/time_period_storage",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//components/prefs",
     "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//services/media_session/public/mojom",
   ]
 }
 
@@ -32,6 +36,7 @@ static_library("misc_metrics_impl") {
   sources = [
     "//brave/browser/misc_metrics/doh_metrics.cc",
     "//brave/browser/misc_metrics/doh_metrics.h",
+    "//brave/browser/misc_metrics/media_session_metrics.cc",
     "//brave/browser/misc_metrics/page_metrics_tab_helper.cc",
     "//brave/browser/misc_metrics/page_metrics_tab_helper.h",
     "//brave/browser/misc_metrics/process_misc_metrics.cc",
@@ -59,6 +64,8 @@ static_library("misc_metrics_impl") {
     "//components/prefs",
     "//components/user_prefs",
     "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//services/media_session/public/mojom",
   ]
 
   if (enable_ai_chat) {
@@ -114,6 +121,7 @@ source_set("unit_tests") {
 
   sources = [
     "doh_metrics_unittest.cc",
+    "media_session_metrics_unittest.cc",
     "page_metrics_unittest.cc",
     "uptime_monitor_impl_unittest.cc",
   ]
@@ -134,6 +142,9 @@ source_set("unit_tests") {
     "//chrome/test:test_support",
     "//components/bookmarks/browser",
     "//components/prefs:test_support",
+    "//content/test:test_support",
+    "//mojo/public/cpp/bindings",
+    "//services/media_session/public/mojom",
     "//testing/gtest",
   ]
 
