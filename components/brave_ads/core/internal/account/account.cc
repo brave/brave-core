@@ -81,7 +81,7 @@ void Account::DepositWithUserData(
     const std::string& segment,
     mojom::AdType mojom_ad_type,
     mojom::ConfirmationType mojom_confirmation_type,
-    base::DictValue user_data) const {
+    base::DictValue user_data) {
   CHECK(!creative_instance_id.empty());
   CHECK_NE(mojom::AdType::kUndefined, mojom_ad_type);
   CHECK_NE(mojom::ConfirmationType::kUndefined, mojom_confirmation_type);
@@ -109,7 +109,7 @@ void Account::DepositCallback(const std::string& creative_instance_id,
                               mojom::ConfirmationType mojom_confirmation_type,
                               base::DictValue user_data,
                               bool success,
-                              double value) const {
+                              double value) {
   if (!success) {
     return FailedToProcessDeposit(creative_instance_id, mojom_ad_type,
                                   mojom_confirmation_type);
@@ -124,7 +124,7 @@ void Account::ProcessDeposit(const std::string& creative_instance_id,
                              double value,
                              mojom::AdType mojom_ad_type,
                              mojom::ConfirmationType mojom_confirmation_type,
-                             base::DictValue user_data) const {
+                             base::DictValue user_data) {
   if (!UserHasJoinedBraveRewards()) {
     // If the user has not joined Brave Rewards, there's no need to record
     // transactions.
@@ -148,7 +148,7 @@ void Account::ProcessDepositCallback(
     mojom::ConfirmationType mojom_confirmation_type,
     base::DictValue user_data,
     bool success,
-    const TransactionInfo& transaction) const {
+    const TransactionInfo& transaction) {
   if (!success) {
     return FailedToProcessDeposit(creative_instance_id, mojom_ad_type,
                                   mojom_confirmation_type);
@@ -158,7 +158,7 @@ void Account::ProcessDepositCallback(
 }
 
 void Account::SuccessfullyProcessedDeposit(const TransactionInfo& transaction,
-                                           base::DictValue user_data) const {
+                                           base::DictValue user_data) {
   BLOG(3, "Successfully processed deposit for "
               << transaction.ad_type << " with creative instance id "
               << transaction.creative_instance_id << " and "
@@ -175,7 +175,7 @@ void Account::SuccessfullyProcessedDeposit(const TransactionInfo& transaction,
 void Account::FailedToProcessDeposit(
     const std::string& creative_instance_id,
     mojom::AdType mojom_ad_type,
-    mojom::ConfirmationType mojom_confirmation_type) const {
+    mojom::ConfirmationType mojom_confirmation_type) {
   BLOG(0, "Failed to process deposit for "
               << mojom_ad_type << " with creative instance id "
               << creative_instance_id << " and " << mojom_confirmation_type);
@@ -226,33 +226,25 @@ void Account::MaybeRefillConfirmationTokens() {
   }
 }
 
-void Account::NotifyDidInitializeWallet(const WalletInfo& wallet) const {
-  for (AccountObserver& observer : observers_) {
-    observer.OnDidInitializeWallet(wallet);
-  }
+void Account::NotifyDidInitializeWallet(const WalletInfo& wallet) {
+  observers_.Notify(&AccountObserver::OnDidInitializeWallet, wallet);
 }
 
-void Account::NotifyFailedToInitializeWallet() const {
-  for (AccountObserver& observer : observers_) {
-    observer.OnFailedToInitializeWallet();
-  }
+void Account::NotifyFailedToInitializeWallet() {
+  observers_.Notify(&AccountObserver::OnFailedToInitializeWallet);
 }
 
-void Account::NotifyDidProcessDeposit(
-    const TransactionInfo& transaction) const {
-  for (AccountObserver& observer : observers_) {
-    observer.OnDidProcessDeposit(transaction);
-  }
+void Account::NotifyDidProcessDeposit(const TransactionInfo& transaction) {
+  observers_.Notify(&AccountObserver::OnDidProcessDeposit, transaction);
 }
 
 void Account::NotifyFailedToProcessDeposit(
     const std::string& creative_instance_id,
     mojom::AdType mojom_ad_type,
-    mojom::ConfirmationType mojom_confirmation_type) const {
-  for (AccountObserver& observer : observers_) {
-    observer.OnFailedToProcessDeposit(creative_instance_id, mojom_ad_type,
-                                      mojom_confirmation_type);
-  }
+    mojom::ConfirmationType mojom_confirmation_type) {
+  observers_.Notify(&AccountObserver::OnFailedToProcessDeposit,
+                    creative_instance_id, mojom_ad_type,
+                    mojom_confirmation_type);
 }
 
 void Account::OnNotifyDidInitializeAds() {

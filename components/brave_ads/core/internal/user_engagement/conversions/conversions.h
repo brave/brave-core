@@ -75,8 +75,8 @@ class Conversions final : public TabManagerObserver {
       std::optional<VerifiableConversionInfo> verifiable_conversion,
       bool success);
 
-  void NotifyDidConvertAd(const ConversionInfo& conversion) const;
-  void NotifyFailedToConvertAd(const std::string& creative_instance_id) const;
+  void NotifyDidConvertAd(const ConversionInfo& conversion);
+  void NotifyFailedToConvertAd(const std::string& creative_instance_id);
 
   // TabManagerObserver:
   void OnHtmlContentDidChange(int32_t tab_id,

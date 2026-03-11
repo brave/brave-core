@@ -47,19 +47,19 @@ class TabManager final : public AdsClientNotifierObserver {
   TabInfo& GetOrCreateForId(int32_t tab_id);
   void RemoveForId(int32_t tab_id);
 
-  void NotifyTabDidChangeFocus(int32_t tab_id) const;
-  void NotifyTabDidChange(const TabInfo& tab) const;
-  void NotifyTabDidLoad(const TabInfo& tab, int http_status_code) const;
-  void NotifyDidOpenNewTab(const TabInfo& tab) const;
+  void NotifyTabDidChangeFocus(int32_t tab_id);
+  void NotifyTabDidChange(const TabInfo& tab);
+  void NotifyTabDidLoad(const TabInfo& tab, int http_status_code);
+  void NotifyDidOpenNewTab(const TabInfo& tab);
   void NotifyTextContentDidChange(int32_t tab_id,
                                   const std::vector<GURL>& redirect_chain,
                                   const std::string& text);
   void NotifyHtmlContentDidChange(int32_t tab_id,
                                   const std::vector<GURL>& redirect_chain,
                                   const std::string& html);
-  void NotifyDidCloseTab(int32_t tab_id) const;
-  void NotifyTabDidStartPlayingMedia(int32_t tab_id) const;
-  void NotifyTabDidStopPlayingMedia(int32_t tab_id) const;
+  void NotifyDidCloseTab(int32_t tab_id);
+  void NotifyTabDidStartPlayingMedia(int32_t tab_id);
+  void NotifyTabDidStopPlayingMedia(int32_t tab_id);
 
   // AdsClientNotifierObserver:
   void OnNotifyTabTextContentDidChange(int32_t tab_id,

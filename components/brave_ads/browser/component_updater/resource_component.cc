@@ -15,6 +15,7 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
 
 namespace brave_ads {
 
@@ -224,16 +225,14 @@ void ResourceComponent::LoadResourceCallback(
 void ResourceComponent::NotifyResourceComponentDidChange(
     const std::string& manifest_version,
     const std::string& id) {
-  for (auto& observer : observers_) {
-    observer.OnResourceComponentDidChange(manifest_version, id);
-  }
+  observers_.Notify(&ResourceComponentObserver::OnResourceComponentDidChange,
+                    manifest_version, id);
 }
 
 void ResourceComponent::NotifyDidUnregisterResourceComponent(
     const std::string& id) {
-  for (auto& observer : observers_) {
-    observer.OnDidUnregisterResourceComponent(id);
-  }
+  observers_.Notify(
+      &ResourceComponentObserver::OnDidUnregisterResourceComponent, id);
 }
 
 }  // namespace brave_ads

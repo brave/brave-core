@@ -88,16 +88,12 @@ void Catalog::MaybeFetchCatalog() const {
   }
 }
 
-void Catalog::NotifyDidFetchCatalog(const CatalogInfo& catalog) const {
-  for (CatalogObserver& observer : observers_) {
-    observer.OnDidFetchCatalog(catalog);
-  }
+void Catalog::NotifyDidFetchCatalog(const CatalogInfo& catalog) {
+  observers_.Notify(&CatalogObserver::OnDidFetchCatalog, catalog);
 }
 
-void Catalog::NotifyFailedToFetchCatalog() const {
-  for (CatalogObserver& observer : observers_) {
-    observer.OnFailedToFetchCatalog();
-  }
+void Catalog::NotifyFailedToFetchCatalog() {
+  observers_.Notify(&CatalogObserver::OnFailedToFetchCatalog);
 }
 
 void Catalog::OnNotifyDidInitializeAds() {

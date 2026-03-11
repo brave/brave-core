@@ -44,9 +44,9 @@ class Catalog final : public AdsClientNotifierObserver,
 
   void MaybeFetchCatalog() const;
 
-  void NotifyDidFetchCatalog(const CatalogInfo& catalog) const;
+  void NotifyDidFetchCatalog(const CatalogInfo& catalog);
   void OnDidFetchCatalogCallback(const CatalogInfo& catalog, bool success);
-  void NotifyFailedToFetchCatalog() const;
+  void NotifyFailedToFetchCatalog();
 
   // AdsClientNotifierObserver:
   void OnNotifyDidInitializeAds() override;

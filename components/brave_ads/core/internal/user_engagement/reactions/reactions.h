@@ -71,13 +71,12 @@ class Reactions final {
   void LoadMarkedAsInappropriate();
   void Load();
 
-  void NotifyDidLikeAd(const std::string& advertiser_id) const;
-  void NotifyDidDislikeAd(const std::string& advertiser_id) const;
-  void NotifyDidLikeSegment(const std::string& segment) const;
-  void NotifyDidDislikeSegment(const std::string& segment) const;
-  void NotifyDidToggleSaveAd(const std::string& creative_instance_id) const;
-  void NotifyDidToggleMarkAdAsInappropriate(
-      const std::string& creative_set) const;
+  void NotifyDidLikeAd(const std::string& advertiser_id);
+  void NotifyDidDislikeAd(const std::string& advertiser_id);
+  void NotifyDidLikeSegment(const std::string& segment);
+  void NotifyDidDislikeSegment(const std::string& segment);
+  void NotifyDidToggleSaveAd(const std::string& creative_instance_id);
+  void NotifyDidToggleMarkAdAsInappropriate(const std::string& creative_set);
 
   ReactionMap ad_reactions_;
   ReactionMap segment_reactions_;

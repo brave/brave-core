@@ -44,20 +44,16 @@ bool BrowserManager::IsCurrentlyActive() const {
   return is_active_.has_value() && *is_active_;
 }
 
-void BrowserManager::NotifyBrowserDidBecomeActive() const {
-  for (BrowserManagerObserver& observer : observers_) {
-    observer.OnBrowserDidBecomeActive();
-  }
+void BrowserManager::NotifyBrowserDidBecomeActive() {
+  observers_.Notify(&BrowserManagerObserver::OnBrowserDidBecomeActive);
 }
 
 bool BrowserManager::IsCurrentlyInactive() const {
   return is_active_.has_value() && !*is_active_;
 }
 
-void BrowserManager::NotifyBrowserDidResignActive() const {
-  for (BrowserManagerObserver& observer : observers_) {
-    observer.OnBrowserDidResignActive();
-  }
+void BrowserManager::NotifyBrowserDidResignActive() {
+  observers_.Notify(&BrowserManagerObserver::OnBrowserDidResignActive);
 }
 
 void BrowserManager::LogBrowserActiveState() const {
@@ -68,20 +64,16 @@ bool BrowserManager::IsCurrentlyInForeground() const {
   return is_in_foreground_.has_value() && *is_in_foreground_;
 }
 
-void BrowserManager::NotifyBrowserDidEnterForeground() const {
-  for (BrowserManagerObserver& observer : observers_) {
-    observer.OnBrowserDidEnterForeground();
-  }
+void BrowserManager::NotifyBrowserDidEnterForeground() {
+  observers_.Notify(&BrowserManagerObserver::OnBrowserDidEnterForeground);
 }
 
 bool BrowserManager::IsCurrentlyInBackground() const {
   return is_in_foreground_.has_value() && !*is_in_foreground_;
 }
 
-void BrowserManager::NotifyBrowserDidEnterBackground() const {
-  for (BrowserManagerObserver& observer : observers_) {
-    observer.OnBrowserDidEnterBackground();
-  }
+void BrowserManager::NotifyBrowserDidEnterBackground() {
+  observers_.Notify(&BrowserManagerObserver::OnBrowserDidEnterBackground);
 }
 
 void BrowserManager::InitializeBrowserBackgroundState() {

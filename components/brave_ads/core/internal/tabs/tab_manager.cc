@@ -100,65 +100,48 @@ void TabManager::RemoveForId(int32_t tab_id) {
   }
 }
 
-void TabManager::NotifyDidOpenNewTab(const TabInfo& tab) const {
-  for (TabManagerObserver& observer : observers_) {
-    observer.OnDidOpenNewTab(tab);
-  }
+void TabManager::NotifyDidOpenNewTab(const TabInfo& tab) {
+  observers_.Notify(&TabManagerObserver::OnDidOpenNewTab, tab);
 }
 
-void TabManager::NotifyTabDidLoad(const TabInfo& tab,
-                                  int http_status_code) const {
-  for (TabManagerObserver& observer : observers_) {
-    observer.OnTabDidLoad(tab, http_status_code);
-  }
+void TabManager::NotifyTabDidLoad(const TabInfo& tab, int http_status_code) {
+  observers_.Notify(&TabManagerObserver::OnTabDidLoad, tab, http_status_code);
 }
 
-void TabManager::NotifyTabDidChangeFocus(int32_t tab_id) const {
-  for (TabManagerObserver& observer : observers_) {
-    observer.OnTabDidChangeFocus(tab_id);
-  }
+void TabManager::NotifyTabDidChangeFocus(int32_t tab_id) {
+  observers_.Notify(&TabManagerObserver::OnTabDidChangeFocus, tab_id);
 }
 
-void TabManager::NotifyTabDidChange(const TabInfo& tab) const {
-  for (TabManagerObserver& observer : observers_) {
-    observer.OnTabDidChange(tab);
-  }
+void TabManager::NotifyTabDidChange(const TabInfo& tab) {
+  observers_.Notify(&TabManagerObserver::OnTabDidChange, tab);
 }
 
 void TabManager::NotifyTextContentDidChange(
     int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& text) {
-  for (TabManagerObserver& observer : observers_) {
-    observer.OnTextContentDidChange(tab_id, redirect_chain, text);
-  }
+  observers_.Notify(&TabManagerObserver::OnTextContentDidChange, tab_id,
+                    redirect_chain, text);
 }
 
 void TabManager::NotifyHtmlContentDidChange(
     int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
-  for (TabManagerObserver& observer : observers_) {
-    observer.OnHtmlContentDidChange(tab_id, redirect_chain, html);
-  }
+  observers_.Notify(&TabManagerObserver::OnHtmlContentDidChange, tab_id,
+                    redirect_chain, html);
 }
 
-void TabManager::NotifyDidCloseTab(int32_t tab_id) const {
-  for (TabManagerObserver& observer : observers_) {
-    observer.OnDidCloseTab(tab_id);
-  }
+void TabManager::NotifyDidCloseTab(int32_t tab_id) {
+  observers_.Notify(&TabManagerObserver::OnDidCloseTab, tab_id);
 }
 
-void TabManager::NotifyTabDidStartPlayingMedia(int32_t tab_id) const {
-  for (TabManagerObserver& observer : observers_) {
-    observer.OnTabDidStartPlayingMedia(tab_id);
-  }
+void TabManager::NotifyTabDidStartPlayingMedia(int32_t tab_id) {
+  observers_.Notify(&TabManagerObserver::OnTabDidStartPlayingMedia, tab_id);
 }
 
-void TabManager::NotifyTabDidStopPlayingMedia(int32_t tab_id) const {
-  for (TabManagerObserver& observer : observers_) {
-    observer.OnTabDidStopPlayingMedia(tab_id);
-  }
+void TabManager::NotifyTabDidStopPlayingMedia(int32_t tab_id) {
+  observers_.Notify(&TabManagerObserver::OnTabDidStopPlayingMedia, tab_id);
 }
 
 void TabManager::OnNotifyTabHtmlContentDidChange(
