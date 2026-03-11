@@ -7,6 +7,7 @@ import BraveCore
 import BraveStrings
 import BraveUI
 import Favicon
+import LocalAuthentication
 import Preferences
 import SwiftUI
 import UIKit
@@ -15,9 +16,10 @@ struct ManagePasswordsView: View {
   private typealias GroupID = ManagePasswordsViewModel.GroupID
   @Bindable var viewModel: ManagePasswordsViewModel
 
+  @Environment(\.dismiss) private var dismiss
   @Environment(\.editMode) private var editMode
   @ObservedObject private var saveLogins = Preferences.General.saveLogins
-  @State private var isSceneActive = true
+  @State private var privacyLock = AutofillPrivacyLock()
   @State private var selectedGroupIds: Set<GroupID> = []
   @State private var isDeleteSelectionDialogPresented: Bool = false
 
@@ -120,11 +122,9 @@ struct ManagePasswordsView: View {
       }
     }
     .overlay {
-      if !isSceneActive {
-        Color(.braveGroupedBackground)
-          .ignoresSafeArea()
-      }
+      if privacyLock.isLocked { Color(.braveGroupedBackground).ignoresSafeArea() }
     }
+    .environment(\.autofillPrivacyLock, privacyLock)
     .toolbarBackground(.visible, for: .navigationBar)
     .navigationTitle(Strings.Autofill.managePasswordsTitle)
     .navigationBarTitleDisplayMode(.inline)
@@ -182,12 +182,17 @@ struct ManagePasswordsView: View {
           .disabled(viewModel.allowedGroups.isEmpty && viewModel.blockedGroups.isEmpty)
       }
     }
-    .toolbar(isContentAvailable || viewModel.isFetching ? .visible : .hidden, for: .bottomBar)
+    .toolbar(
+      (isContentAvailable || viewModel.isFetching) && !privacyLock.isLocked ? .visible : .hidden,
+      for: .bottomBar
+    )
+    .toolbar(!privacyLock.isLocked ? .visible : .hidden, for: .navigationBar)
+    .task { await privacyLock.authenticate(onFailure: { dismiss() }) }
     .onReceive(NotificationCenter.default.publisher(for: UIScene.willDeactivateNotification)) { _ in
-      isSceneActive = false
+      privacyLock.lock()
     }
     .onReceive(NotificationCenter.default.publisher(for: UIScene.didActivateNotification)) { _ in
-      isSceneActive = true
+      Task { await privacyLock.authenticate(onFailure: { dismiss() }) }
     }
   }
 
@@ -208,10 +213,11 @@ struct ManagePasswordsView: View {
 }
 
 private struct ManagePasswordListRow: View {
+  @Environment(\.openURL) var openURL
+  @Environment(\.autofillPrivacyLock) var privacyLock
   let domain: String
   let passwords: [CWVPassword]
   let viewModel: ManagePasswordsViewModel
-  @Environment(\.openURL) var openURL
 
   private var resolvedRealmURL: URL {
     passwords.first.flatMap { URL(string: $0.site) } ?? URL(string: "about:blank")!
@@ -223,14 +229,19 @@ private struct ManagePasswordListRow: View {
 
   var body: some View {
     NavigationLink {
-      if passwords.count == 1, let password = passwords.first {
-        ManagePasswordDetailView(viewModel: viewModel, password: password)
-          // NavigationLink destinations pushed onto a UINavigationController stack run in an isolated
-          // hosting context and do not inherit the parent's environment; Thus the parent's environment variables
-          // must be re-injected explicitly into the child view on the isolated stack.
-          .environment(\.openURL, openURL)
-      } else {
-        ManagePasswordGroupView(viewModel: viewModel, domain: domain)
+      if let privacyLock {
+        if passwords.count == 1, let password = passwords.first {
+          ManagePasswordDetailView(viewModel: viewModel, password: password)
+            // NavigationLink destinations pushed onto a UINavigationController stack run in an isolated
+            // hosting context and do not inherit the parent's environment; Thus the parent's environment variables
+            // must be re-injected explicitly into the child view on the isolated stack.
+            .environment(\.openURL, openURL)
+            .environment(\.autofillPrivacyLock, privacyLock)
+        } else {
+          ManagePasswordGroupView(viewModel: viewModel, domain: domain)
+            .environment(\.openURL, openURL)
+            .environment(\.autofillPrivacyLock, privacyLock)
+        }
       }
     } label: {
       Label {
