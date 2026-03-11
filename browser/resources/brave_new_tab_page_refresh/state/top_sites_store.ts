@@ -38,6 +38,7 @@ export function defaultTopSitesStore(): TopSitesStore {
       removeTopSite(url) {},
       undoRemoveTopSite() {},
       setTopSitePosition(url, pos) {},
+      recordTopSiteClick() {},
     },
   })
 }
@@ -50,4 +51,5 @@ export interface TopSitesActions {
   removeTopSite: (url: string) => void
   undoRemoveTopSite: () => void
   setTopSitePosition: (url: string, pos: number) => void
+  recordTopSiteClick: () => void
 }
