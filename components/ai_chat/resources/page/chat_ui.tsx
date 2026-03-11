@@ -9,6 +9,7 @@ import { setIconBasePath } from '@brave/leo/react/icon'
 import '$web-common/defaultTrustedTypesPolicy'
 import * as Mojom from '../common/mojom'
 import bindWebUiServices from './api/bind_webui_services'
+import useUpdateDocumentTitle from './hooks/useUpdateDocumentTitle'
 import {
   AIChatProvider,
   ConversationEntriesProps,
@@ -101,6 +102,8 @@ function MainConversation() {
 
 function Content() {
   const aiChatContext = useAIChat()
+
+  useUpdateDocumentTitle()
 
   if (!aiChatContext.isStandalone) {
     return <Main />
