@@ -9,25 +9,24 @@ import {
   replaceCitationsWithUrls,
 } from '../../../common/conversation_history_utils'
 
+// Note: This regex is used to strip out inline searches, as they're not useful
+// for the user.
+const inlineSearchRegex = /^::search\[.+?\]{type=\w+?}$/gm
+
 // Possibly expose an event handler for copying the entry's text to clipboard,
 // if the entry is simple enough for the text to be extracted
-// (i.e. no tool use events).
 export default function useConversationEventClipboardCopyHandler(
   entry: Mojom.ConversationTurn,
 ) {
-  // Cannot copy complicated structured content (for now)
-  if (entry.events?.some((event) => !!event.toolUseEvent)) {
-    return undefined
-  }
-
   return () => {
     if (entry.characterType === Mojom.CharacterType.ASSISTANT) {
-      const event = entry.events?.find((event) => event.completionEvent)
+      const event = entry.events?.findLast((event) => event.completionEvent)
       if (!event?.completionEvent) return
       let text = event.completionEvent.completion
       // Replace citations with URLs
       const allowedLinks = extractAllowedLinksFromTurn(entry.events)
       text = replaceCitationsWithUrls(text, allowedLinks)
+      text = text.replaceAll(inlineSearchRegex, '')
       navigator.clipboard.writeText(text)
     } else {
       navigator.clipboard.writeText(entry.text)
