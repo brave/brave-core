@@ -40,10 +40,10 @@ class MemoryStorageTool : public Tool {
   std::string_view Description() const override;
   std::optional<base::DictValue> InputProperties() const override;
   std::optional<std::vector<std::string>> RequiredProperties() const override;
-  bool SupportsConversation(
-      bool is_temporary,
-      bool has_untrusted_content,
-      mojom::ConversationCapability conversation_capability) const override;
+  bool SupportsConversation(bool is_temporary,
+                            bool has_untrusted_content,
+                            const ConversationCapabilitySet&
+                                conversation_capabilities) const override;
   void UseTool(const std::string& input_json,
                UseToolCallback callback) override;
 

@@ -343,7 +343,7 @@ describe('conversation entries', () => {
     render(
       <MockContext
         conversationHistory={[humanTurn1, assistantTurn1]}
-        conversationCapability={Mojom.ConversationCapability.CONTENT_AGENT}
+        conversationCapabilities={[Mojom.ConversationCapability.CONTENT_AGENT]}
         canSubmitUserEntries={true}
       >
         <ConversationEntries />

@@ -37,7 +37,7 @@ export const defaultConversationEntriesUIState: ConversationEntriesUIState = {
   canSubmitUserEntries: false,
   isMobile: loadTimeData.getBoolean('isMobile'),
   associatedContent: [],
-  conversationCapability: Mojom.ConversationCapability.CHAT,
+  conversationCapabilities: [Mojom.ConversationCapability.CHAT],
 }
 
 // Updates a tool use event for a conversation entry in the history.
@@ -107,8 +107,9 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
       ])
 
     const allModels =
-      conversationEntriesState.conversationCapability
-      === Mojom.ConversationCapability.CONTENT_AGENT
+      conversationEntriesState.conversationCapabilities.includes(
+        Mojom.ConversationCapability.CONTENT_AGENT,
+      )
         ? conversationEntriesState.allModels.filter(
             (model) => model.supportsTools,
           )

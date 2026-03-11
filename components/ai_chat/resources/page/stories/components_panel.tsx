@@ -1228,7 +1228,7 @@ function StoryContext(
   // to createInterfaceApi yet.
   const conversationEntriesContext: UntrustedConversationContext = {
     conversationHistory: getConversationHistory(),
-    conversationCapability: Mojom.ConversationCapability.CONTENT_AGENT,
+    conversationCapabilities: [Mojom.ConversationCapability.CONTENT_AGENT],
     isGenerating: args.isGenerating,
     isToolExecuting: args.isToolExecuting,
     toolUseTaskState: Mojom.TaskState[args.toolUseTaskState],

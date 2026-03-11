@@ -256,7 +256,7 @@ CodeExecutionTool::RequiresUserInteractionBeforeHandling(
 bool CodeExecutionTool::SupportsConversation(
     bool is_temporary,
     bool has_untrusted_content,
-    mojom::ConversationCapability conversation_capability) const {
+    const ConversationCapabilitySet& conversation_capabilities) const {
   // Support all conversation types for now
   return true;
 }

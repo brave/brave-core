@@ -72,7 +72,7 @@ bool MockTool::IsSupportedByModel(const mojom::Model& model) const {
 bool MockTool::SupportsConversation(
     bool is_temporary,
     bool has_untrusted_content,
-    mojom::ConversationCapability conversation_capability) const {
+    const ConversationCapabilitySet& conversation_capabilities) const {
   return supports_conversation_;
 }
 
