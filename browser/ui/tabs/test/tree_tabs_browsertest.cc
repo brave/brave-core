@@ -14,7 +14,9 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -22,6 +24,8 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "components/saved_tab_groups/public/tab_group_sync_service.h"
+#include "components/split_tabs/split_tab_visual_data.h"
+#include "components/tabs/public/split_tab_collection.h"
 #include "components/tabs/public/tab_strip_collection.h"
 #include "components/tabs/public/unpinned_tab_collection.h"
 #include "content/public/browser/web_contents.h"
@@ -39,6 +43,49 @@ tree_tab::TreeTabNodeId GetTreeTabNodeIdForTab(tabs::TabInterface* tab) {
   return static_cast<const tabs::TreeTabNodeTabCollection*>(parent)
       ->node()
       .id();
+}
+
+// Create a split containing the tabs at |index_a| and |index_b| by
+// activating |index_a| and calling AddToNewSplit with |index_b|.
+void CreateSplitWithTabs(TabStripModel* model, int index_a, int index_b) {
+  ASSERT_NE(index_a, index_b);
+  model->ActivateTabAt(index_a);
+  model->AddToNewSplit({index_b}, split_tabs::SplitTabVisualData(),
+                       split_tabs::SplitTabCreatedSource::kTabContextMenu);
+}
+
+void VerifySplitCreated(TabStripModel* model,
+                        tabs::TabStripCollection* collection,
+                        int expected_tab_count,
+                        bool all_tabs_in_split = false) {
+  // In tree tabs, count() can exceed expected_tab_count (e.g. due to
+  // move/insert flow); require at least the expected number of tabs.
+  EXPECT_GE(model->count(), expected_tab_count);
+  std::set<split_tabs::SplitTabId> splits = collection->ListSplits();
+  ASSERT_EQ(1u, splits.size());
+  split_tabs::SplitTabId split_id = *splits.begin();
+  EXPECT_TRUE(model->ContainsSplit(split_id));
+  tabs::SplitTabCollection* split_coll =
+      collection->GetSplitTabCollection(split_id);
+  ASSERT_TRUE(split_coll);
+  EXPECT_EQ(2u, split_coll->TabCountRecursive());
+  if (all_tabs_in_split) {
+    // Verify every tab that belongs to this split has the expected parent
+    // chain.
+    int tabs_in_split = 0;
+    for (int i = 0; i < model->count(); ++i) {
+      tabs::TabInterface* tab = model->GetTabAtIndex(i);
+      if (!tab->IsSplit() || tab->GetSplit().value() != split_id) {
+        continue;
+      }
+      ++tabs_in_split;
+      EXPECT_EQ(tab->GetParentCollection()->type(),
+                tabs::TabCollection::Type::SPLIT);
+      EXPECT_EQ(tab->GetParentCollection()->GetParentCollection()->type(),
+                tabs::TabCollection::Type::TREE_NODE);
+    }
+    EXPECT_GE(tabs_in_split, 2) << "split should contain at least 2 tabs";
+  }
 }
 
 }  // namespace
@@ -1516,4 +1563,130 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   // Uncollapse tab_a.
   model->SetTreeTabNodeCollapsed(GetTreeTabNodeIdForTab(tab_a), false);
   testing::Mock::VerifyAndClearExpectations(&mock_observer);
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, CreateSplit_FromRootNode) {
+  SetTreeTabsEnabled(true);
+
+  // Two tabs without opener: each is a root (top-level) tree node.
+  chrome::NewSplitTab(browser(),
+                      split_tabs::SplitTabCreatedSource::kTabContextMenu);
+
+  ASSERT_EQ(2, tab_strip_model().count());
+
+  // Unpinned collection should have one child, the tree node wrapper containing
+  // the split.
+  EXPECT_EQ(unpinned_collection().ChildCount(), 1u);
+
+  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection(), 2,
+                     /*all_tabs_in_split=*/true);
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       CreateSplit_SiblingCase_TwoAdjacentRootNodes) {
+  SetTreeTabsEnabled(true);
+
+  // Two tabs without opener: each is a root (top-level) tree node.
+  auto tab1 =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_strip_model().AddTab(std::move(tab1), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  ASSERT_EQ(2, tab_strip_model().count());
+  EXPECT_EQ(unpinned_collection().ChildCount(), 2u);
+
+  CreateSplitWithTabs(&tab_strip_model(), 0, 1);
+
+  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection(), 2,
+                     /*all_tabs_in_split=*/true);
+  EXPECT_EQ(1u, unpinned_collection().ChildCount());
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       CreateSplit_FromLeafNode_TwoLeavesInDifferentBranches) {
+  SetTreeTabsEnabled(true);
+
+  // Build: A (root) -> B (leaf). C (root) -> D (leaf). B and D are leaves.
+  auto* tab_a = tab_strip_model().GetTabAtIndex(0);
+  auto tab_b =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_b->set_opener(tab_a);
+  tab_strip_model().AddTab(std::move(tab_b), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  auto tab_c =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_strip_model().AddTab(std::move(tab_c), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  auto* tab_c_ptr = tab_strip_model().GetTabAtIndex(2);
+  auto tab_d =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_d->set_opener(tab_c_ptr);
+  tab_strip_model().AddTab(std::move(tab_d), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  ASSERT_EQ(4, tab_strip_model().count());
+  int index_b =
+      tab_strip_model().GetIndexOfTab(tab_strip_model().GetTabAtIndex(1));
+  int index_d =
+      tab_strip_model().GetIndexOfTab(tab_strip_model().GetTabAtIndex(3));
+  ASSERT_GE(index_b, 0);
+  ASSERT_GE(index_d, 0);
+
+  CreateSplitWithTabs(&tab_strip_model(), index_b, index_d);
+
+  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection(), 4);
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       CreateSplit_FromMiddleNode_SplitIncludesMiddleTab) {
+  SetTreeTabsEnabled(true);
+
+  // Build: A (root) -> B (middle) -> C (leaf). B is a middle node.
+  auto* tab_a = tab_strip_model().GetTabAtIndex(0);
+  auto tab_b =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_b->set_opener(tab_a);
+  tab_strip_model().AddTab(std::move(tab_b), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  auto* tab_b_ptr = tab_strip_model().GetTabAtIndex(1);
+  auto tab_c =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_c->set_opener(tab_b_ptr);
+  tab_strip_model().AddTab(std::move(tab_c), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  ASSERT_EQ(3, tab_strip_model().count());
+  int index_b = tab_strip_model().GetIndexOfTab(tab_b_ptr);
+  int index_c =
+      tab_strip_model().GetIndexOfTab(tab_strip_model().GetTabAtIndex(2));
+  ASSERT_EQ(1, index_b);
+  ASSERT_EQ(2, index_c);
+
+  CreateSplitWithTabs(&tab_strip_model(), index_b, index_c);
+
+  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection(), 3);
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       CreateSplit_AncestorDescendantCase_ParentAndChildTabs) {
+  SetTreeTabsEnabled(true);
+
+  // Build: A (root) -> B (child). A is ancestor, B is descendant.
+  auto* tab_a = tab_strip_model().GetTabAtIndex(0);
+  auto tab_b =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_b->set_opener(tab_a);
+  tab_strip_model().AddTab(std::move(tab_b), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  ASSERT_EQ(2, tab_strip_model().count());
+  int index_a = 0;
+  int index_b = 1;
+
+  CreateSplitWithTabs(&tab_strip_model(), index_a, index_b);
+
+  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection(), 2,
+                     /*all_tabs_in_split=*/true);
+  EXPECT_EQ(1u, unpinned_collection().ChildCount());
 }

@@ -21,9 +21,33 @@
 // Make methods virtual for BraveTabStripCollection.
 #define MoveTabRecursive virtual MoveTabRecursive
 #define MoveTabsRecursive virtual MoveTabsRecursive
+#define CreateSplit virtual CreateSplit
+#define Unsplit virtual Unsplit
+
+// Make method virtual and make BraveTabStripCollection friend.
+#define AddCollectionMapping(...)       \
+  AddCollectionMapping_Unused();        \
+  friend class BraveTabStripCollection; \
+  virtual void AddCollectionMapping(__VA_ARGS__)
+#define RemoveCollectionMapping virtual RemoveCollectionMapping
+
+// Add public method for delegate to insert a collection at a position (e.g.
+// when creating a split from tabs in different tree nodes). Inject in the
+// public section by expanding the single occurrence of InsertTabCollectionAt
+// (avoids redefining 'private', which would break included base headers).
+// BraveTabStripCollection wraps this with a PassKey-restricted overload.
+#define InsertTabCollectionAt                                           \
+  AddTabCollectionAtPosition(std::unique_ptr<TabCollection> collection, \
+                             const TabCollection::Position& position);  \
+  void InsertTabCollectionAt
 
 #include <components/tabs/public/tab_strip_collection.h>  // IWYU pragma: export
 
+#undef InsertTabCollectionAt
+#undef RemoveCollectionMapping
+#undef AddCollectionMapping
+#undef CreateSplit
+#undef Unsplit
 #undef MoveTabsRecursive
 #undef MoveTabRecursive
 #undef AddTabRecursive

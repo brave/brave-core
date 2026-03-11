@@ -8,7 +8,12 @@
 
 #include <cstddef>
 
+#include "components/split_tabs/split_tab_id.h"
 #include "components/tabs/public/tab_strip_collection.h"
+
+namespace split_tabs {
+class SplitTabVisualData;
+}  // namespace split_tabs
 
 namespace tabs {
 
@@ -44,6 +49,16 @@ class BraveTabStripCollection : public TabStripCollection {
   std::unique_ptr<TabInterface> RemoveTabAtIndexRecursive(
       size_t index,
       base::PassKey<BraveTabStripCollectionDelegate> pass_key);
+  void AddTabCollectionAtPosition(
+      std::unique_ptr<TabCollection> collection,
+      const TabCollection::Position& position,
+      base::PassKey<BraveTabStripCollectionDelegate> pass_key);
+  void AddCollectionMapping(
+      TabCollection* root_collection,
+      base::PassKey<BraveTabStripCollectionDelegate> pass_key);
+  void RemoveCollectionMapping(
+      TabCollection* root_collection,
+      base::PassKey<BraveTabStripCollectionDelegate> pass_key);
 
   // TabStripCollection:
   void AddTabRecursive(std::unique_ptr<TabInterface> tab,
@@ -59,6 +74,12 @@ class BraveTabStripCollection : public TabStripCollection {
       const TabCollection::TypeEnumSet retain_collection_types) override;
   std::unique_ptr<TabInterface> RemoveTabAtIndexRecursive(
       size_t index) override;
+  void CreateSplit(split_tabs::SplitTabId split_id,
+                   const std::vector<TabInterface*>& tabs,
+                   split_tabs::SplitTabVisualData visual_data) override;
+  void Unsplit(split_tabs::SplitTabId split_id) override;
+  void AddCollectionMapping(TabCollection* root_collection) override;
+  void RemoveCollectionMapping(TabCollection* root_collection) override;
 
  private:
   std::unique_ptr<BraveTabStripCollectionDelegate> delegate_;

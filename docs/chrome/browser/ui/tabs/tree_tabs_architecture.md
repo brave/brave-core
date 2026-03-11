@@ -563,3 +563,57 @@ void BraveBrowserTabStripController::OnTreeTabChanged(
   }
 }
 ```
+
+## How it works with other tab management features?
+
+### Split tabs
+#### CreateSplit
+
+**Flow:** User chooses "New split" on selected tabs → **TabStripModel::AddToSplitImpl** →
+**MoveTabsAndSetPropertiesImpl** (delegate **MoveTabsRecursive** in tree mode) →
+**CreateSplit(split_id, tabs, visual_data)**.
+
+- **Default:** **TabStripCollection::CreateSplit** assumes one parent: creates
+  **SplitTabCollection**, inserts via **AddTabCollectionImpl** (which updates
+  **split_mapping_**), moves tabs in. **GetSplitTabCollection(split_id)** works.
+
+- **Tree tabs:** When the delegate **ShouldHandleTabManipulation()**
+  (**BraveTreeTabStripCollectionDelegate**), the delegate's **CreateSplit** runs and
+  handles tabs in different **TreeTabNodeTabCollection**s:
+  1. Resolve first/second tab by recursive index (stable removal order).
+  2. Remove from tree (higher index first): **MoveChildrenOfTreeTabNodeToParent**,
+     **MaybeRemoveTab**, **MaybeRemoveCollection**.
+  3. Build **SplitTabCollection**, add tabs, wrap it in one **TreeTabNodeTabCollection**
+     (the "wrapper").
+  4. Register with **TreeTabModel**, insert wrapper at first tab's position via
+     **AddTabCollectionAtPosition** → **AddTabCollectionImpl**.
+
+**Split registry:** **split_mapping_** (split_id → **SplitTabCollection***) is only
+updated for **SPLIT** (and splits inside **GROUP**). The wrapper is **TREE_NODE**, so
+the delegate must explicitly register the inner **SplitTabCollection** in
+**split_mapping_** (or extend **AddCollectionMapping** to recurse into **TREE_NODE**);
+otherwise **GetSplitTabCollection(split_id)** is null and callers hit a CHECK. 
+In order to address this, we need to update **AddCollectionMapping** to recurse into **TREE_NODE**
+and register the inner **SplitTabCollection** in **split_mapping_**.
+
+### Unsplit
+
+**Flow:** User chooses "Unsplit" (e.g. from split context menu) →
+**TabStripModel::RemoveSplit(split_id)** → **RemoveSplitImpl** →
+**contents_data_->Unsplit(split_id)** (i.e. **TabStripCollection::Unsplit** or the
+delegate's **Unsplit** in tree mode).
+
+- **Default:** **TabStripCollection::Unsplit** looks up **GetSplitTabCollection(split_id)**,
+  gets the split's parent and index, moves each tab into the parent via **MoveTabImpl**,
+  then **RemoveTabCollectionImpl(split)**.
+
+- **Tree tabs:** **BraveTreeTabStripCollectionDelegate::Unsplit** runs when the delegate
+  handles manipulation. The split's parent is the **TREE_NODE** wrapper. It:
+  1. Notifies **TreeTabModel::RemoveTreeTabNode** for the wrapper node.
+  2. Extracts tabs from the split (**GetTabsRecursive**, **MaybeRemoveTab**) and
+     re-inserts each at the wrapper's position as its own tree node via
+     **AddTabAsTreeNodeToCollection** (preserving recursive index).
+  3. Moves any children of the wrapper node to the wrapper's parent with
+     **MoveChildrenOfTreeTabNodeToNode**.
+  4. Removes the wrapper (and the split it owns) via **RemoveTabCollection(wrapper)**.
+

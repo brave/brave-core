@@ -56,4 +56,10 @@ void TabStripCollection::AddTabRecursive(
   AddTabRecursive(std::move(tab), index, new_group_id, new_pinned_state);
 }
 
+void TabStripCollection::AddTabCollectionAtPosition(
+    std::unique_ptr<TabCollection> collection,
+    const TabCollection::Position& position) {
+  AddTabCollectionImpl(std::move(collection), position);
+}
+
 }  // namespace tabs
