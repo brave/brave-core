@@ -11,6 +11,27 @@ RegisterStyleOverride(
   'certificate-manager',
   html`
     <style>
+      /* Page layout */
+      :host {
+        --cr-centered-card-container_-_max-width: 100% !important;
+        background-color: var(--leo-color-container-background);
+      }
+
+      #main {
+        background: var(--leo-color-page-background);
+        border-radius: var(--leo-radius-xl) var(--leo-radius-m)
+            var(--leo-radius-m) var(--leo-radius-xl);
+        height: calc(100% - 40px);
+        margin: 0 var(--leo-spacing-m) var(--leo-spacing-m) 0;
+        overflow: auto;
+        padding-bottom: var(--leo-spacing-2xl);
+      }
+
+      /* Navigation menu */
+      cr-menu-selector {
+        padding-inline-start: var(--leo-spacing-xl);
+      }
+
       .cr-nav-menu-item {
         min-height: 20px !important;
         border-end-end-radius: 0px !important;
@@ -34,6 +55,19 @@ RegisterStyleOverride(
 
       .cr-nav-menu-item cr-ripple {
         display: none !important;
+      }
+
+      /* Content sections */
+      .cr-centered-card-container {
+        box-shadow: none;
+      }
+
+      @media (max-width: 980px) {
+        #main {
+          margin: 0;
+          border-radius: 0;
+          min-height: 100%;
+        }
       }
     </style>
   `
