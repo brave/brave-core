@@ -1,0 +1,37 @@
+module poc.mojom;
+
+// ── Helper ↔ Agent ───────────────────────────────────────────────────────────
+
+// Exposed by agent to helper.
+interface AgentService {
+  TestAgent() => (string response);
+};
+
+// Exposed by helper to agents.
+interface HelperService {
+  // First call after connecting. Returns false and closes on bad token.
+  Authenticate(string token,
+               pending_remote<AgentService> agent_service)
+      => (bool accepted);
+
+  // Valid only after Authenticate().
+  TestHelper() => (string response);
+};
+
+// ── Agent ↔ UIApp ────────────────────────────────────────────────────────────
+
+// Exposed by uiapp to agent.
+interface UIAppService {
+  TestUIApp() => (string response);
+};
+
+// Exposed by agent to uiapps.
+interface AgentUserService {
+  // First call after connecting. Returns false and closes on bad token.
+  Authenticate(string token,
+               pending_remote<UIAppService> uiapp_service)
+      => (bool accepted);
+
+  // Valid only after Authenticate().
+  TestAgentUser() => (string response);
+};

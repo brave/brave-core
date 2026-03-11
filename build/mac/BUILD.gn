@@ -82,6 +82,12 @@ group("brave") {
   # start.js uses this file to know which binary to run.
   write_file("$root_out_dir/brave_helper",
              [ string_replace(rebase_path(exe_path), " ", "\\ ") ])
+
+  deps = [
+    "//brave/browser/brave_vpn/mac/agent:poc_agent",
+    "//brave/browser/brave_vpn/mac/helper:poc_helper",
+    "//brave/browser/brave_vpn/mac/uiapp:poc_uiapp",
+  ]
 }
 
 action("generate_dsa_sig_for_dmg") {

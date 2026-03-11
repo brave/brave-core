@@ -1,0 +1,18 @@
+import("//brave/build/config.gni")
+
+executable("poc_helper") {
+  sources = [
+    "helper.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//base:base_static",
+    "//components/named_mojo_ipc_server",
+    "//mojo/core/embedder",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/cpp/platform",
+    "//mojo/public/cpp/system",
+    "//brave/browser/brave_vpn/mac/ipc:poc_mojom",
+  ]
+}

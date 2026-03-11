@@ -1,0 +1,7 @@
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom("poc_mojom") {
+  sources = [ "poc.mojom" ]
+  # Use stable message IDs for easier debugging and cross-version compatibility.
+  scramble_message_ids = false
+}

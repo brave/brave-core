@@ -1,0 +1,15 @@
+import("//brave/build/config.gni")
+
+executable("poc_agent") {
+  sources = [ "agent.cc" ]
+  deps = [
+    "//brave/browser/brave_vpn/mac/ipc:poc_mojom",
+    "//base",
+    "//base:base_static",
+    "//components/named_mojo_ipc_server",
+    "//mojo/core/embedder",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/cpp/platform",
+    "//mojo/public/cpp/system",
+  ]
+}

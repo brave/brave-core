@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+    "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.example.poc-helper</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/apopov/work/src/out/Release_arm64/poc_helper</string>
+    </array>
+    <key>MachServices</key>
+    <dict>
+        <key>poc_helper_ipc</key>
+        <true/>
+    </dict>
+    <key>KeepAlive</key>
+    <true/>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/var/log/poc-helper.log</string>
+    <key>StandardErrorPath</key>
+    <string>/var/log/poc-helper.log</string>
+</dict>
+</plist>
