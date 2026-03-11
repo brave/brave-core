@@ -1281,24 +1281,21 @@ class SettingsViewController: TableViewController {
             if FeatureList.kUseChromiumWebViewsAutofill.enabled,
               let autofillDataManager = braveCore.defaultWebViewConfiguration.autofillDataManager
             {
-              askForLocalAuthentication(viewType: .passwords) { [weak self] success, _ in
-                guard let self, success else { return }
-                let viewModel = ManagePasswordsViewModel(autofillDataManager: autofillDataManager)
-                let controller = UIHostingController(
-                  rootView:
-                    ManagePasswordsView(viewModel: viewModel)
-                    .environment(
-                      \.openURL,
-                      OpenURLAction { [weak self] url in
-                        self?.settingsDelegate?.settingsOpenURLInNewTab(url)
-                        return .handled
-                      }
-                    )
-                )
+              let viewModel = ManagePasswordsViewModel(autofillDataManager: autofillDataManager)
+              let controller = UIHostingController(
+                rootView:
+                  ManagePasswordsView(viewModel: viewModel)
+                  .environment(
+                    \.openURL,
+                    OpenURLAction { [weak self] url in
+                      self?.settingsDelegate?.settingsOpenURLInNewTab(url)
+                      return .handled
+                    }
+                  )
+              )
 
-                navigationController?.pushViewController(controller, animated: true)
-                navigationController?.setToolbarHidden(false, animated: true)
-              }
+              navigationController?.pushViewController(controller, animated: true)
+              navigationController?.setToolbarHidden(false, animated: true)
             } else {
               let loginsPasswordsViewController = LoginListViewController(
                 passwordAPI: passwordAPI,

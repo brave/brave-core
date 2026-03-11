@@ -14,11 +14,12 @@ import UIKit
 struct ManagePasswordGroupView: View {
   @Environment(\.dismiss) private var dismiss
   @Environment(\.editMode) private var editMode
+  @Environment(\.openURL) private var openURL
+  @Environment(\.autofillPrivacyLock) private var privacyLock
 
   let viewModel: ManagePasswordsViewModel
   let domain: String
 
-  @State private var isSceneActive = true
   @State private var selectedCredentialIds: Set<String> = []
   @State private var isDeleteSelectionDialogPresented = false
 
@@ -32,7 +33,11 @@ struct ManagePasswordGroupView: View {
       Section {
         ForEach(passwords, id: \.identifier) { password in
           NavigationLink {
-            ManagePasswordDetailView(viewModel: viewModel, password: password)
+            if let privacyLock {
+              ManagePasswordDetailView(viewModel: viewModel, password: password)
+                .environment(\.openURL, openURL)
+                .environment(\.autofillPrivacyLock, privacyLock)
+            }
           } label: {
             VStack(alignment: .leading, spacing: 4) {
               Text(password.username ?? password.title)
@@ -113,17 +118,9 @@ struct ManagePasswordGroupView: View {
           .disabled(passwords.isEmpty)
       }
     }
+    .toolbar(!(privacyLock?.isLocked ?? true) ? .visible : .hidden, for: .automatic)
     .overlay {
-      if !isSceneActive {
-        Color(.braveGroupedBackground)
-          .ignoresSafeArea()
-      }
-    }
-    .onReceive(NotificationCenter.default.publisher(for: UIScene.willDeactivateNotification)) { _ in
-      isSceneActive = false
-    }
-    .onReceive(NotificationCenter.default.publisher(for: UIScene.didActivateNotification)) { _ in
-      isSceneActive = true
+      if privacyLock?.isLocked == true { Color(.braveGroupedBackground).ignoresSafeArea() }
     }
   }
 
