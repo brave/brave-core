@@ -75,6 +75,8 @@ class AdBlockEngine {
   void Load(rust::Box<adblock::FilterSet> filter_set,
             const adblock::BraveCoreResourceStorage& storage);
 
+  DATFileDataBuffer Serialize();
+
   class TestObserver : public base::CheckedObserver {
    public:
     virtual void OnEngineUpdated() = 0;

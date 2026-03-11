@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/to_vector.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
@@ -369,6 +370,12 @@ void AdBlockEngine::OnDATLoaded(
   }
 
   UpdateAdBlockClient(std::move(client), storage);
+}
+
+DATFileDataBuffer AdBlockEngine::Serialize() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  auto rust_vec = ad_block_client_->serialize();
+  return base::ToVector(rust_vec);
 }
 
 void AdBlockEngine::AddObserverForTest(AdBlockEngine::TestObserver* observer) {
