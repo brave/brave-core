@@ -238,15 +238,14 @@ void BraveToolbarView::Init() {
                           base::Unretained(this)));
 
   if (tabs::utils::SupportsBraveVerticalTabs(browser_)) {
-    show_vertical_tabs_.Init(
-        brave_tabs::kVerticalTabsEnabled,
-        profile->GetOriginalProfile()->GetPrefs(),
-        base::BindRepeating(
-            [](BraveToolbarView* self) {
-              self->UpdateHorizontalPadding();
-              self->UpdateVerticalTabToggleVisibility();
-            },
-            base::Unretained(this)));
+    show_vertical_tabs_.Init(brave_tabs::kVerticalTabsEnabled,
+                             profile->GetOriginalProfile()->GetPrefs(),
+                             base::BindRepeating(
+                                 [](BraveToolbarView* self) {
+                                   self->UpdateHorizontalPadding();
+                                   self->UpdateVerticalTabToggleVisibility();
+                                 },
+                                 base::Unretained(this)));
     show_title_bar_on_vertical_tabs_.Init(
         brave_tabs::kVerticalTabsShowTitleOnWindow,
         profile->GetOriginalProfile()->GetPrefs(),
@@ -268,9 +267,9 @@ void BraveToolbarView::Init() {
 
   // Add vertical tab toggle button to the left of the back button.
   if (tabs::utils::SupportsBraveVerticalTabs(browser_)) {
-    auto toggle = std::make_unique<ToolbarButton>(base::BindRepeating(
-        &BraveToolbarView::OnVerticalTabTogglePressed,
-        weak_factory_.GetWeakPtr()));
+    auto toggle = std::make_unique<ToolbarButton>(
+        base::BindRepeating(&BraveToolbarView::OnVerticalTabTogglePressed,
+                            weak_factory_.GetWeakPtr()));
     toggle->SetVectorIcon(kVerticalTabStripToggleButtonIcon);
     toggle->SetTooltipText(
         l10n_util::GetStringUTF16(IDS_VERTICAL_TABS_MINIMIZE));
@@ -617,8 +616,7 @@ void BraveToolbarView::OnVerticalTabTogglePressed() {
 
   // Update tooltip based on new state.
   const bool is_expanded =
-      region_view->state() ==
-      BraveVerticalTabStripRegionView::State::kExpanded;
+      region_view->state() == BraveVerticalTabStripRegionView::State::kExpanded;
   vertical_tab_toggle_->SetTooltipText(l10n_util::GetStringUTF16(
       is_expanded ? IDS_VERTICAL_TABS_MINIMIZE : IDS_VERTICAL_TABS_EXPAND));
 }

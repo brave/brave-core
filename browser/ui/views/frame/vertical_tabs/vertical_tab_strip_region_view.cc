@@ -23,12 +23,12 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/brave_tab_search_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/switches.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
@@ -1207,8 +1207,7 @@ std::u16string BraveVerticalTabStripRegionView::GetShortcutTextForNewTabButton(
 views::LabelButton&
 BraveVerticalTabStripRegionView::GetToggleButtonForTesting() {
   auto* brave_browser_view = BraveBrowserView::From(browser_view_);
-  auto* toolbar =
-      static_cast<BraveToolbarView*>(brave_browser_view->toolbar());
+  auto* toolbar = static_cast<BraveToolbarView*>(brave_browser_view->toolbar());
   CHECK(toolbar->vertical_tab_toggle_button());
   return *toolbar->vertical_tab_toggle_button();
 }
