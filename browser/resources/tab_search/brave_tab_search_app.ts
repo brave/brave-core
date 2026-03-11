@@ -44,7 +44,11 @@ export class BraveTabSearchAppElement extends CrLitElement {
   protected accessor selectedTabIndex_: number = 0
 
   private listenerIds_: number[] = []
-  private visibilityChangedListener_: (() => void) | null = null
+  private visibilityChangedListener_ = () => {
+    if (document.visibilityState === 'visible') {
+      TabSearchApiProxyImpl.getInstance().maybeShowUi()
+    }
+  }
 
   protected get tabNames_(): string[] {
     return [
@@ -60,9 +64,8 @@ export class BraveTabSearchAppElement extends CrLitElement {
   override connectedCallback() {
     super.connectedCallback()
 
-    const apiProxy = TabSearchApiProxyImpl.getInstance()
-
-    const callbackRouter = apiProxy.getCallbackRouter()
+    const callbackRouter =
+      TabSearchApiProxyImpl.getInstance().getCallbackRouter()
     this.listenerIds_.push(
       callbackRouter.tabOrganizationEnabledChanged.addListener(
         (enabled: boolean) => {
@@ -71,11 +74,6 @@ export class BraveTabSearchAppElement extends CrLitElement {
       ),
     )
 
-    this.visibilityChangedListener_ = () => {
-      if (document.visibilityState === 'visible') {
-        apiProxy.maybeShowUi()
-      }
-    }
     document.addEventListener(
       'visibilitychange',
       this.visibilityChangedListener_,
@@ -88,13 +86,10 @@ export class BraveTabSearchAppElement extends CrLitElement {
       TabSearchApiProxyImpl.getInstance().getCallbackRouter()
     this.listenerIds_.forEach((id) => callbackRouter.removeListener(id))
 
-    if (this.visibilityChangedListener_) {
-      document.removeEventListener(
-        'visibilitychange',
-        this.visibilityChangedListener_,
-      )
-      this.visibilityChangedListener_ = null
-    }
+    document.removeEventListener(
+      'visibilitychange',
+      this.visibilityChangedListener_,
+    )
   }
 }
 
