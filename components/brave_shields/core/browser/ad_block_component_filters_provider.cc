@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/files/file.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/rand_util.h"
@@ -103,15 +104,14 @@ void AdBlockComponentFiltersProvider::UnregisterComponent() {
   }
 }
 
-void AdBlockComponentFiltersProvider::OnComponentReady(
-    const base::FilePath& path) {
-  TRACE_EVENT(
-      "brave.adblock", "AdBlockComponentFiltersProvider::OnComponentReady",
-      perfetto::TerminatingFlow::FromPointer(this), "path", path.value());
+void AdBlockComponentFiltersProvider::OnGetNewPathFileInfo(
+    base::FilePath path,
+    base::File::Info info) {
   base::FilePath old_path = component_path_;
   component_path_ = path;
+  last_updated_ = info.last_modified;
 
-  NotifyObservers(engine_is_default_);
+  NotifyObservers(engine_is_default_, last_updated_);
 
   if (!old_path.empty()) {
     base::ThreadPool::PostTask(
@@ -120,8 +120,31 @@ void AdBlockComponentFiltersProvider::OnComponentReady(
   }
 }
 
+void AdBlockComponentFiltersProvider::OnComponentReady(
+    const base::FilePath& path) {
+  TRACE_EVENT(
+      "brave.adblock", "AdBlockComponentFiltersProvider::OnComponentReady",
+      perfetto::TerminatingFlow::FromPointer(this), "path", path.value());
+
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
+      base::BindOnce(
+          [](const base::FilePath& path) {
+            base::File::Info info;
+            base::GetFileInfo(path, &info);
+            return info;
+          },
+          path),
+      base::BindOnce(&AdBlockComponentFiltersProvider::OnGetNewPathFileInfo,
+                     weak_factory_.GetWeakPtr(), path));
+}
+
 bool AdBlockComponentFiltersProvider::IsInitialized() const {
   return !component_path_.empty();
+}
+
+base::Time AdBlockComponentFiltersProvider::timestamp() const {
+  return last_updated_;
 }
 
 base::FilePath AdBlockComponentFiltersProvider::GetFilterSetPath() {

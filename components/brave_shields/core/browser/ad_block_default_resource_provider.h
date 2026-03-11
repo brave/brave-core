@@ -36,6 +36,7 @@ class AdBlockDefaultResourceProvider : public AdBlockResourceProvider {
 
   void LoadResources(
       base::OnceCallback<void(AdblockResourceStorageBox)>) override;
+  void OverrideResourcesForTesting(AdblockResourceStorageBox storage);
 
  private:
   friend class ::AdBlockServiceTest;
@@ -43,6 +44,8 @@ class AdBlockDefaultResourceProvider : public AdBlockResourceProvider {
   void OnComponentReady(const base::FilePath&);
 
   base::FilePath component_path_;
+
+  std::optional<AdblockResourceStorageBox> storage_testing_override_;
 
   base::WeakPtrFactory<AdBlockDefaultResourceProvider> weak_factory_{this};
 };

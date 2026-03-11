@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/functional/callback.h"
+#include "base/time/time.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "third_party/rust/cxx/v1/cxx.h"
@@ -38,10 +39,14 @@ class TestFiltersProvider : public AdBlockFiltersProvider {
 
   std::string GetNameForDebugging() override;
 
+  base::Time timestamp() const override;
+  void set_timestamp(base::Time timestamp) { timestamp_ = timestamp; }
+
  private:
   std::string rules_;
   uint8_t permission_mask_;
   bool is_initialized_;
+  base::Time timestamp_;
 };
 
 }  // namespace brave_shields

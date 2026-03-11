@@ -12,6 +12,8 @@
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_installer.h"
+#include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
+#include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 
 namespace {
 
@@ -74,6 +76,11 @@ void AdBlockDefaultResourceProvider::OnComponentReady(
 
 void AdBlockDefaultResourceProvider::LoadResources(
     base::OnceCallback<void(AdblockResourceStorageBox)> cb) {
+  if (storage_testing_override_.has_value()) {
+    std::move(cb).Run(
+        adblock::clone_resource_storage(*storage_testing_override_.value()));
+    return;
+  }
   base::FilePath resources_path = GetResourcesPath();
   if (resources_path.empty()) {
     // If the path is not ready yet, run the callback with empty resources to
@@ -94,6 +101,11 @@ void AdBlockDefaultResourceProvider::LoadResources(
             std::move(cb).Run(std::move(storage));
           },
           std::move(cb)));
+}
+
+void AdBlockDefaultResourceProvider::OverrideResourcesForTesting(
+    AdblockResourceStorageBox storage) {
+  storage_testing_override_ = std::move(storage);
 }
 
 }  // namespace brave_shields

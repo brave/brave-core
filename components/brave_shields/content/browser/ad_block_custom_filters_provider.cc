@@ -10,9 +10,11 @@
 #include <utility>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
 #include "base/task/single_thread_task_runner.h"
+#include "base/time/time.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filter_reset_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
@@ -43,7 +45,7 @@ AdBlockCustomFiltersProvider::AdBlockCustomFiltersProvider(
     PrefService* local_state,
     AdBlockFiltersProviderManager* manager)
     : AdBlockFiltersProvider(false, manager), local_state_(local_state) {
-  NotifyObservers(engine_is_default_);
+  NotifyObservers(engine_is_default_, timestamp());
 }
 
 AdBlockCustomFiltersProvider::~AdBlockCustomFiltersProvider() {}
@@ -81,6 +83,14 @@ std::string AdBlockCustomFiltersProvider::GetNameForDebugging() {
   return "AdBlockCustomFiltersProvider";
 }
 
+base::Time AdBlockCustomFiltersProvider::timestamp() const {
+  if (!local_state_) {
+    CHECK_IS_TEST();
+    return base::Time();
+  }
+  return local_state_->GetTime(prefs::kAdBlockCustomFiltersLastModified);
+}
+
 void AdBlockCustomFiltersProvider::CreateSiteExemption(std::string_view host) {
   std::string custom_filters = GetCustomFilters();
   UpdateCustomFilters(
@@ -90,6 +100,7 @@ void AdBlockCustomFiltersProvider::CreateSiteExemption(std::string_view host) {
 std::string AdBlockCustomFiltersProvider::GetCustomFilters() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!local_state_) {
+    CHECK_IS_TEST();
     return std::string();
   }
   return local_state_->GetString(prefs::kAdBlockCustomFilters);
@@ -99,11 +110,14 @@ bool AdBlockCustomFiltersProvider::UpdateCustomFilters(
     std::string_view custom_filters) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!local_state_) {
+    CHECK_IS_TEST();
     return false;
   }
+  base::Time now = base::Time::Now();
   local_state_->SetString(prefs::kAdBlockCustomFilters, custom_filters);
+  local_state_->SetTime(prefs::kAdBlockCustomFiltersLastModified, now);
 
-  NotifyObservers(engine_is_default_);
+  NotifyObservers(engine_is_default_, now);
 
   return true;
 }

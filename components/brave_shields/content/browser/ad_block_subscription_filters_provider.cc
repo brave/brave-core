@@ -8,6 +8,8 @@
 #include <string>
 #include <utility>
 
+#include "base/files/file.h"
+#include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/single_thread_task_runner.h"
@@ -69,6 +71,13 @@ std::string AdBlockSubscriptionFiltersProvider::GetNameForDebugging() {
   return "AdBlockSubscriptionFiltersProvider";
 }
 
+void AdBlockSubscriptionFiltersProvider::CacheTimestampAndNotifyObservers(
+    bool engine_is_default,
+    base::Time timestamp) {
+  last_modified_ = timestamp;
+  NotifyObservers(engine_is_default, timestamp);
+}
+
 void AdBlockSubscriptionFiltersProvider::OnDATFileDataReady(
     base::OnceCallback<
         void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
@@ -91,8 +100,27 @@ void AdBlockSubscriptionFiltersProvider::OnDATFileDataReady(
       dat_buf, flow));
 }
 
-void AdBlockSubscriptionFiltersProvider::OnListAvailable() {
-  NotifyObservers(engine_is_default_);
+void AdBlockSubscriptionFiltersProvider::OnListAvailable(bool force_new) {
+  if (force_new) {
+    NotifyObservers(engine_is_default_, base::Time::Now());
+  } else {
+    base::ThreadPool::PostTaskAndReplyWithResult(
+        FROM_HERE, {base::MayBlock()},
+        base::BindOnce(
+            [](const base::FilePath& list_file) {
+              base::File::Info info;
+              base::GetFileInfo(list_file, &info);
+              return info.last_modified;
+            },
+            list_file_),
+        base::BindOnce(&AdBlockSubscriptionFiltersProvider::
+                           CacheTimestampAndNotifyObservers,
+                       weak_factory_.GetWeakPtr(), engine_is_default_));
+  }
+}
+
+base::Time AdBlockSubscriptionFiltersProvider::timestamp() const {
+  return base::Time();
 }
 
 }  // namespace brave_shields

@@ -10,6 +10,7 @@
 
 #include "base/functional/callback.h"
 #include "base/sequence_checker.h"
+#include "base/time/time.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
@@ -36,6 +37,8 @@ class AdBlockLocalhostFiltersProvider : public AdBlockFiltersProvider {
           base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
 
   std::string GetNameForDebugging() override;
+
+  base::Time timestamp() const override;
 
  private:
   SEQUENCE_CHECKER(sequence_checker_);

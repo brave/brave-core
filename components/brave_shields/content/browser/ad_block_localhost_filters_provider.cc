@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/task/single_thread_task_runner.h"
+#include "base/time/time.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 
 namespace brave_shields {
@@ -36,13 +37,20 @@ void AddDATBufferToFilterSet(rust::Box<adblock::FilterSet>* filter_set) {
 AdBlockLocalhostFiltersProvider::AdBlockLocalhostFiltersProvider(
     AdBlockFiltersProviderManager* manager)
     : AdBlockFiltersProvider(true, manager) {
-  NotifyObservers(engine_is_default_);
+  NotifyObservers(engine_is_default_, timestamp());
 }
 
 AdBlockLocalhostFiltersProvider::~AdBlockLocalhostFiltersProvider() = default;
 
 std::string AdBlockLocalhostFiltersProvider::GetNameForDebugging() {
   return "AdBlockLocalhostFiltersProvider";
+}
+
+base::Time AdBlockLocalhostFiltersProvider::timestamp() const {
+  // Note: if the hardcoded filters are ever updated, this timestamp will need
+  // to be updated to reflect the timestamp of the corresponding installed
+  // browser update
+  return base::Time() + base::Hours(1);
 }
 
 void AdBlockLocalhostFiltersProvider::LoadFilterSet(

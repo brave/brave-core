@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/time/time.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
@@ -71,11 +72,18 @@ void TestFiltersProvider::LoadFilterSet(
 void TestFiltersProvider::Initialize() {
   CHECK(!is_initialized_);
   is_initialized_ = true;
-  NotifyObservers(engine_is_default_);
+  NotifyObservers(engine_is_default_, timestamp());
 }
 
 bool TestFiltersProvider::IsInitialized() const {
   return is_initialized_;
+}
+
+base::Time TestFiltersProvider::timestamp() const {
+  if (timestamp_.is_null()) {
+    return base::Time::Now();
+  }
+  return timestamp_;
 }
 
 }  // namespace brave_shields

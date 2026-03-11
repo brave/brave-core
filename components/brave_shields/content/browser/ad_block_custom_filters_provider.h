@@ -11,6 +11,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/sequence_checker.h"
+#include "base/time/time.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
@@ -52,6 +53,8 @@ class AdBlockCustomFiltersProvider : public AdBlockFiltersProvider {
           base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
 
   std::string GetNameForDebugging() override;
+
+  base::Time timestamp() const override;
 
  private:
   void AppendCustomFilter(std::string_view filter);

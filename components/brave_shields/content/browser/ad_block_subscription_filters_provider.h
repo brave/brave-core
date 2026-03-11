@@ -10,6 +10,7 @@
 
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
+#include "base/time/time.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
@@ -45,7 +46,9 @@ class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
       base::OnceCallback<void(
           base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
 
-  void OnListAvailable();
+  void OnListAvailable(bool force_new);
+
+  base::Time timestamp() const override;
 
  private:
   void OnDATFileDataReady(
@@ -56,8 +59,11 @@ class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
 
   std::string GetNameForDebugging() override;
 
- private:
+  void CacheTimestampAndNotifyObservers(bool engine_is_default,
+                                        base::Time timestamp);
+
   base::FilePath list_file_;
+  base::Time last_modified_;
 
   base::RepeatingCallback<void(const adblock::FilterListMetadata&)>
       on_metadata_retrieved_;
