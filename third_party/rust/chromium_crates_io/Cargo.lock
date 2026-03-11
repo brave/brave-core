@@ -1228,7 +1228,7 @@ dependencies = [
 
 [[package]]
 name = "libc"
-version = "0.2.182"
+version = "0.2.183"
 
 [[package]]
 name = "libm"
@@ -1731,7 +1731,7 @@ dependencies = [
 
 [[package]]
 name = "quote"
-version = "1.0.44"
+version = "1.0.45"
 dependencies = [
  "proc-macro2",
 ]
