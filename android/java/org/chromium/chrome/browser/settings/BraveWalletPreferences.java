@@ -59,8 +59,6 @@ public class BraveWalletPreferences extends BravePreferenceFragment
 
     private static final String PREF_BRAVE_WALLET_RESET = "pref_brave_wallet_reset";
 
-    private static final String PREF_BRAVE_WALLET = "brave_wallet";
-
     private BraveDialogPreference mDefaultEthereumWallet;
     private BraveDialogPreference mDefaultSolanaWallet;
     private BraveWalletAutoLockPreferences mPrefAutolock;

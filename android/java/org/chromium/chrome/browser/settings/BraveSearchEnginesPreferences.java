@@ -37,7 +37,6 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
     private static final String PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR =
             "show_autocomplete_in_address_bar";
     private static final String PREF_SEND_WEB_DISCOVERY = "send_web_discovery";
-    private static final String PREF_BRAVE_SEARCH_ENGINES = "brave_search_engines";
 
     private ChromeManagedPreferenceDelegate mManagedPreferenceDelegate;
 
