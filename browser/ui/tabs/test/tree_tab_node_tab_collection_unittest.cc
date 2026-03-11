@@ -54,11 +54,12 @@ TEST_F(TreeTabNodeTabCollectionUnitTest, Constructor) {
   // Constructing tabs::TreeTabNodeTabCollection with nullptr |current_tab|
   // should fail.
   EXPECT_DEATH(tabs::TreeTabNodeTabCollection(
-                   tree_tab::TreeTabNodeId::GenerateNew(), nullptr,
+                   tree_tab::TreeTabNodeId::GenerateNew(),
+                   base::WrapUnique<tabs::TabInterface>(nullptr),
                    base::DoNothing(), base::DoNothing()),
                "");
 
-  // Valid construction should succeed.
+  // Valid construction with a tab should succeed.
   auto tree_tab_node_id = tree_tab::TreeTabNodeId::GenerateNew();
   auto mock_tab_interface = std::make_unique<MockTabInterfaceWithWeakPtr>();
   auto mock_tab_interface_ptr = mock_tab_interface.get();
@@ -68,8 +69,10 @@ TEST_F(TreeTabNodeTabCollectionUnitTest, Constructor) {
 
   // Check that the tabs::TreeTabNodeTabCollection is constructed correctly.
   EXPECT_EQ(tree_tab_node_id, tree_tab_node_tab_collection.node().id());
-  EXPECT_EQ(mock_tab_interface_ptr,
-            tree_tab_node_tab_collection.current_tab().get());
+  std::vector<const tabs::TabInterface*> tabs =
+      tree_tab_node_tab_collection.node().GetTabs();
+  ASSERT_EQ(1u, tabs.size());
+  EXPECT_EQ(mock_tab_interface_ptr, tabs[0]);
   EXPECT_EQ(0,
             tree_tab_node_tab_collection.GetIndexOfTab(mock_tab_interface_ptr));
 }

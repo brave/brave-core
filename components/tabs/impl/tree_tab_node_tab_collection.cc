@@ -18,6 +18,7 @@
 #include "base/logging.h"
 #include "base/types/to_address.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
+#include "components/tabs/public/split_tab_collection.h"
 #include "components/tabs/public/tab_interface.h"
 
 namespace tabs {
@@ -104,20 +105,62 @@ TreeTabNodeTabCollection::TreeTabNodeTabCollection(
                     {TabCollection::Type::SPLIT, TabCollection::Type::GROUP,
                      TabCollection::Type::TREE_NODE},
                     /*supports_tabs=*/true),
-      current_tab_(current_tab->GetWeakPtr()),
+      current_value_type_(CurrentValueType::kTab),
       on_remove_(std::move(on_remove)),
       on_move_(std::move(on_move)),
       node_(std::make_unique<TreeTabNode>(*this, tree_tab_node_id)) {
   CHECK(!tree_tab_node_id.is_empty());
-  CHECK(current_tab_);
-
+  CHECK(current_tab);
+  current_value_ = current_tab->GetWeakPtr();
+  CHECK(std::get<base::WeakPtr<tabs::TabInterface>>(*current_value_));
   AddTab(std::move(current_tab), 0);
+}
+
+TreeTabNodeTabCollection::TreeTabNodeTabCollection(
+    const tree_tab::TreeTabNodeId& tree_tab_node_id,
+    std::unique_ptr<tabs::SplitTabCollection> current_collection,
+    base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
+    base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move)
+    : TabCollection(TabCollection::Type::TREE_NODE,
+                    /*supported_child_collections=*/
+                    {TabCollection::Type::SPLIT, TabCollection::Type::GROUP,
+                     TabCollection::Type::TREE_NODE},
+                    /*supports_tabs=*/true),
+      current_value_type_(CurrentValueType::kSplit),
+      on_remove_(std::move(on_remove)),
+      on_move_(std::move(on_move)),
+      node_(std::make_unique<TreeTabNode>(*this, tree_tab_node_id)) {
+  CHECK(!tree_tab_node_id.is_empty());
+  CHECK(current_collection);
+  auto* split_ptr = static_cast<SplitTabCollection*>(current_collection.get());
+  CHECK(split_ptr);
+  current_value_ = split_ptr;
+  AddCollection(std::move(current_collection), 0);
 }
 
 TreeTabNodeTabCollection::~TreeTabNodeTabCollection() {
   if (on_remove_) {
     on_remove_.Run(node_->id());
   }
+}
+
+tabs::TabInterface* TreeTabNodeTabCollection::GetCurrentTab() const {
+  CHECK_EQ(current_value_type_, CurrentValueType::kTab);
+  return std::get<base::WeakPtr<tabs::TabInterface>>(*current_value_).get();
+}
+
+tabs::TabCollection* TreeTabNodeTabCollection::GetCurrentCollection() const {
+  CHECK_NE(current_value_type_, CurrentValueType::kTab);
+  if (std::holds_alternative<raw_ptr<tabs::SplitTabCollection>>(
+          *current_value_)) {
+    return static_cast<tabs::TabCollection*>(
+        std::get<raw_ptr<tabs::SplitTabCollection>>(*current_value_));
+  }
+
+  CHECK(std::holds_alternative<raw_ptr<tabs::TabGroupTabCollection>>(
+      *current_value_));
+  return static_cast<tabs::TabCollection*>(
+      std::get<raw_ptr<tabs::TabGroupTabCollection>>(*current_value_));
 }
 
 TreeTabNodeTabCollection* TreeTabNodeTabCollection::GetTopLevelAncestor() {
