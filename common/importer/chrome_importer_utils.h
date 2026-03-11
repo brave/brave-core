@@ -33,6 +33,7 @@ base::FilePath GetVivaldiUserDataFolder();
 base::FilePath GetOperaUserDataFolder();
 base::FilePath GetYandexUserDataFolder();
 base::FilePath GetWhaleUserDataFolder();
+base::FilePath GetBraveUserDataFolder();
 
 #if BUILDFLAG(IS_LINUX)
 base::FilePath GetOperaSnapUserDataFolder();

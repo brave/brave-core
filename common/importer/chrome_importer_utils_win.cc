@@ -121,3 +121,14 @@ base::FilePath GetWhaleUserDataFolder() {
       .AppendASCII("Naver Whale")
       .AppendASCII("User Data");
 }
+
+base::FilePath GetBraveUserDataFolder() {
+  base::FilePath result =
+      base::PathService::CheckedGet(base::DIR_LOCAL_APP_DATA);
+
+  result = result.AppendASCII("BraveSoftware");
+  result = result.AppendASCII("Brave-Browser");
+  result = result.AppendASCII("User Data");
+
+  return result;
+}

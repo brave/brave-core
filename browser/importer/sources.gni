@@ -43,6 +43,7 @@ if (!is_android) {
     "//brave/app:brave_generated_resources_grit_grit",
     "//brave/browser/importer",
     "//brave/common/importer:interfaces",
+    "//brave/components/brave_origin/buildflags",
     "//content/public/browser",
     "//extensions/buildflags",
     "//mojo/public/cpp/bindings",

@@ -13,6 +13,7 @@
 #include "base/values.h"
 #include "brave/common/importer/chrome_importer_utils.h"
 #include "brave/common/importer/importer_constants.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/user_data_importer/common/importer_type.h"
@@ -129,6 +130,14 @@ void DetectChromeProfiles(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
       GetOperaSnapUserDataFolder(), kOperaBrowser,
       user_data_importer::TYPE_OPERA);
+#endif
+
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  AddChromeToProfiles(
+      profiles,
+      GetChromeSourceProfiles(GetBraveUserDataFolder().Append(
+          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
+      GetBraveUserDataFolder(), kBraveBrowser, user_data_importer::TYPE_BRAVE);
 #endif
 }
 

@@ -29,6 +29,7 @@ inline constexpr char kVivaldiBrowser[] = "Vivaldi";
 inline constexpr char kOperaBrowser[] = "Opera";
 inline constexpr char kYandexBrowser[] = "Yandex";
 inline constexpr char kWhaleBrowser[] = "NAVER Whale";
+inline constexpr char kBraveBrowser[] = "Brave";
 // End of browser names section
 
 #endif  // BRAVE_COMMON_IMPORTER_IMPORTER_CONSTANTS_H_

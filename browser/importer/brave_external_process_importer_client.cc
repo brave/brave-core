@@ -12,7 +12,6 @@
 #include "chrome/grit/generated_resources.h"
 #include "content/public/browser/service_process_host.h"
 
-namespace {
 bool ShouldUseBraveImporter(user_data_importer::ImporterType type) {
   switch (type) {
     case user_data_importer::TYPE_CHROME:
@@ -21,12 +20,12 @@ bool ShouldUseBraveImporter(user_data_importer::ImporterType type) {
     case user_data_importer::TYPE_OPERA:
     case user_data_importer::TYPE_YANDEX:
     case user_data_importer::TYPE_WHALE:
+    case user_data_importer::TYPE_BRAVE:
       return true;
     default:
       return false;
   }
 }
-}  // namespace
 
 template <>
 inline sandbox::mojom::Sandbox
