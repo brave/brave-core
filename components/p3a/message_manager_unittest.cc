@@ -110,6 +110,7 @@ class P3AMessageManagerTest : public testing::Test,
 
     local_state_ = std::make_unique<TestingPrefServiceSimple>();
     P3AService::RegisterPrefs(local_state_->registry(), true);
+    local_state_->SetBoolean(kP3AEnabled, true);
 
     current_epoch_ = 0;
     next_epoch_time_ = base::Time::Now() + kEpochLenTimeDelta;
