@@ -20,6 +20,7 @@ interface Props {
   topSite: TopSite
   canDrag: boolean
   onContextMenu?: (event: React.MouseEvent) => void
+  onNavigate: () => void
 }
 
 export function TopSitesTile(props: Props) {
@@ -37,6 +38,7 @@ export function TopSitesTile(props: Props) {
       className='top-site-tile'
       href={sanitizeTileURL(url)}
       draggable={props.canDrag}
+      onClick={props.onNavigate}
       onDragStart={(event) => {
         event.dataTransfer.setData('text/uri-list', url)
       }}

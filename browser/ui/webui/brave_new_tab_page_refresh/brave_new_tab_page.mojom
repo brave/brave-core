@@ -201,6 +201,9 @@ interface NewTabPageHandler {
   // by a call to `ExcludeMostVisitedTopSite`.
   IncludeMostVisitedTopSite(string url) => ();
 
+  // Reports a top site tile click for navigation source metrics.
+  RecordTopSiteClick() => ();
+
   // Gets or sets whether the clock is displayed on the new tab page.
   GetShowClock() => (bool show_clock);
   SetShowClock(bool show_clock) => ();

@@ -21,7 +21,9 @@
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/brave_search_metrics.h"
+#include "brave/components/misc_metrics/navigation_source_metrics.h"
 #include "brave/components/misc_metrics/new_tab_metrics.h"
+#include "brave/components/misc_metrics/page_metrics.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -49,7 +51,7 @@ NewTabPageHandler::NewTabPageHandler(
     PrefService& pref_service,
     TemplateURLService& template_url_service,
     misc_metrics::NewTabMetrics& new_tab_metrics,
-    misc_metrics::BraveSearchMetrics* brave_search_metrics,
+    misc_metrics::PageMetrics* page_metrics,
     bool was_restored)
     : receiver_(this, std::move(receiver)),
       update_observer_(pref_service, top_sites_facade.get()),
@@ -61,12 +63,16 @@ NewTabPageHandler::NewTabPageHandler(
       pref_service_(pref_service),
       template_url_service_(template_url_service),
       new_tab_metrics_(new_tab_metrics),
-      brave_search_metrics_(brave_search_metrics),
       was_restored_(was_restored) {
   CHECK(custom_image_chooser_);
   CHECK(background_facade_);
   CHECK(top_sites_facade_);
   CHECK(vpn_facade_);
+
+  if (page_metrics) {
+    brave_search_metrics_ = &page_metrics->brave_search_metrics();
+    navigation_source_metrics_ = &page_metrics->navigation_source_metrics();
+  }
 
   update_observer_.SetCallback(base::BindRepeating(&NewTabPageHandler::OnUpdate,
                                                    weak_factory_.GetWeakPtr()));
@@ -376,6 +382,16 @@ void NewTabPageHandler::IncludeMostVisitedTopSite(
     const std::string& url,
     IncludeMostVisitedTopSiteCallback callback) {
   top_sites_facade_->IncludeMostVisitedTopSite(url);
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::RecordTopSiteClick(
+    RecordTopSiteClickCallback callback) {
+  if (navigation_source_metrics_) {
+    bool is_custom =
+        top_sites_facade_->GetListKind() == mojom::TopSitesListKind::kCustom;
+    navigation_source_metrics_->RecordTopSiteNavigation(is_custom);
+  }
   std::move(callback).Run();
 }
 
