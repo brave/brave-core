@@ -77,6 +77,7 @@ class BraveTabStripCollection : public TabStripCollection {
   void CreateSplit(split_tabs::SplitTabId split_id,
                    const std::vector<TabInterface*>& tabs,
                    split_tabs::SplitTabVisualData visual_data) override;
+  void Unsplit(split_tabs::SplitTabId split_id) override;
   void AddCollectionMapping(TabCollection* root_collection) override;
   void RemoveCollectionMapping(TabCollection* root_collection) override;
 

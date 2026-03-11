@@ -85,6 +85,13 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
     return current_value_;
   }
 
+  // Helper method to get the current tab when the current value type is kTab.
+  tabs::TabInterface* GetCurrentTab() const;
+
+  // Helper method to get the current collection when the current value type is
+  // kSplit or kGroup.
+  tabs::TabCollection* GetCurrentCollection() const;
+
   // Returns the top-level ancestor TreeTabNodeTabCollection in the hierarchy.
   TreeTabNodeTabCollection* GetTopLevelAncestor();
   const TreeTabNodeTabCollection* GetTopLevelAncestor() const;
@@ -97,7 +104,7 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
   // TabCollection:
   void OnReparented(TabCollection* new_parent) override;
 
-  CurrentValueType current_value_type() const { return type_; }
+  CurrentValueType current_value_type() const { return current_value_type_; }
 
  private:
   // Returns all TreeTabNodeTabCollections recursively from the given parent
@@ -106,7 +113,7 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
       tabs::TabCollection& parent,
       std::vector<TreeTabNodeTabCollection*>& nodes);
 
-  CurrentValueType type_;
+  CurrentValueType current_value_type_;
 
   // The current value: tab (WeakPtr), TabGroupTabCollection, or
   // SplitTabCollection. Empty for the empty tree node.

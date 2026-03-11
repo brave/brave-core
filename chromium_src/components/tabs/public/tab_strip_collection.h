@@ -22,6 +22,7 @@
 #define MoveTabRecursive virtual MoveTabRecursive
 #define MoveTabsRecursive virtual MoveTabsRecursive
 #define CreateSplit virtual CreateSplit
+#define Unsplit virtual Unsplit
 
 // Make method virtual and make BraveTabStripCollection friend.
 #define AddCollectionMapping(...)       \
@@ -46,6 +47,7 @@
 #undef RemoveCollectionMapping
 #undef AddCollectionMapping
 #undef CreateSplit
+#undef Unsplit
 #undef MoveTabsRecursive
 #undef MoveTabRecursive
 #undef AddTabRecursive

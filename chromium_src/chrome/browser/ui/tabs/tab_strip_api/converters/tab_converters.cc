@@ -5,11 +5,8 @@
 
 #include "components/browser_apis/tab_strip/tab_strip_api.mojom.h"
 
-// TREE_NODE must not fall through to SPLIT: TreeTabNodeTabCollection is not a
-// SplitTabCollection, so casting and calling data() causes SEGV. Represent tree
-// nodes as a container with just node_id so the topology walker can recurse.
-// Token paste avoids re-expanding SPLIT in the second case.
-// TODO(sko) Revisit this. We might need TREE NODE COLLECTION mojo type.
+// For tree node, just return the unpinned tabs collection data. At the moment,
+// this api is not used anyway.
 #define SPLIT                                                                 \
   TREE_NODE: {                                                                \
     auto mojo_container = tabs_api::mojom::UnpinnedTabs::New();               \

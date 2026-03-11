@@ -53,6 +53,9 @@ class BraveTabStripCollectionDelegate {
   virtual bool CreateSplit(split_tabs::SplitTabId split_id,
                            const std::vector<TabInterface*>& tabs,
                            split_tabs::SplitTabVisualData visual_data) const;
+  // When handling (e.g. tree tabs), can no-op to keep tabs in split so
+  // RemoveTabAtIndexRecursive sees parent SPLIT instead of TREE_NODE.
+  virtual void Unsplit(split_tabs::SplitTabId split_id) {}
   virtual void AddCollectionMapping(TabCollection* root_collection) {}
   virtual void RemoveCollectionMapping(TabCollection* root_collection) {}
 

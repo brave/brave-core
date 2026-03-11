@@ -45,6 +45,7 @@ class BraveTreeTabStripCollectionDelegate
   bool CreateSplit(split_tabs::SplitTabId split_id,
                    const std::vector<tabs::TabInterface*>& tabs,
                    split_tabs::SplitTabVisualData visual_data) const override;
+  void Unsplit(split_tabs::SplitTabId split_id) override;
   void AddCollectionMapping(tabs::TabCollection* root_collection) override;
   void RemoveCollectionMapping(tabs::TabCollection* root_collection) override;
 
@@ -68,7 +69,7 @@ class BraveTreeTabStripCollectionDelegate
   // Calculates the target index within the opener collection based on the
   // recursive index.
   std::optional<size_t> CalculateTargetIndexInOpenerCollection(
-      tabs::TabCollection* opener_collection,
+      tabs::TreeTabNodeTabCollection* opener_collection,
       size_t recursive_index) const;
 
   // Adds a tab as a tree node to the specified collection at the given index.

@@ -127,6 +127,14 @@ void BraveTabStripCollection::CreateSplit(
   TabStripCollection::CreateSplit(split_id, tabs, visual_data);
 }
 
+void BraveTabStripCollection::Unsplit(split_tabs::SplitTabId split_id) {
+  if (delegate_ && delegate_->ShouldHandleTabManipulation()) {
+    delegate_->Unsplit(split_id);
+    return;
+  }
+  TabStripCollection::Unsplit(split_id);
+}
+
 void BraveTabStripCollection::AddCollectionMapping(
     TabCollection* root_collection) {
   if (delegate_ && delegate_->ShouldHandleTabManipulation()) {

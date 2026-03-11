@@ -12,11 +12,11 @@
 #include "base/memory/raw_ref.h"
 #include "base/types/pass_key.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
-#include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 
 namespace tabs {
 
 class TabInterface;
+class TreeTabNodeTabCollection;
 
 // A class that represents metadata about a tree tab node.
 class TreeTabNode {
@@ -44,10 +44,6 @@ class TreeTabNode {
   // Returns the height of the entire tree that this node belongs to. i.e. this
   // method will traverse up to the root node and return its height.
   int GetTreeHeight() const;
-
-  TreeTabNodeTabCollection::CurrentValueType current_value_type() const {
-    return collection_->current_value_type();
-  }
 
   // Returns the tab(s) associated with this tree tab node. Returns one tab when
   // holding a single TabInterface, two when holding a SplitTabCollection, and
