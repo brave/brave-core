@@ -71,7 +71,7 @@ TEST_F(BraveBookmarkContextMenuControllerTest,
   BookmarkContextMenuController controller(
       gfx::NativeWindow(), nullptr, nullptr, profile_.get(),
       BookmarkLaunchLocation::kSidePanelContextMenu,
-      {model_->bookmark_bar_node()});
+      {model_->bookmark_bar_node()}, /*can_paste=*/false);
 
   // Show apps command is not present by default.
   sync_preferences::TestingPrefServiceSyncable* prefs =
@@ -108,7 +108,8 @@ TEST_F(BraveBookmarkContextMenuControllerTest,
 TEST_F(BraveBookmarkContextMenuControllerTest, AddBraveBookmarksSubmenu) {
   BraveBookmarkContextMenuController controller(
       gfx::NativeWindow(), nullptr, nullptr, profile_.get(),
-      BookmarkLaunchLocation::kSidePanelFolder, {model_->bookmark_bar_node()});
+      BookmarkLaunchLocation::kSidePanelFolder, {model_->bookmark_bar_node()},
+      /*can_paste=*/false);
   EXPECT_FALSE(controller.menu_model()
                    ->GetIndexOfCommandId(IDC_BOOKMARK_BAR_ALWAYS_SHOW)
                    .has_value());
