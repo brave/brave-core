@@ -20,14 +20,8 @@
   bool IsFullscreenForTab() const override;                             \
   bool IsFullscreen()
 
-// Wrapper for GetBrowserLayoutParams to call the Chromium version.
-#define GetBrowserLayoutParams(...)                   \
-  GetBrowserLayoutParams_Chromium(__VA_ARGS__) const; \
-  BrowserLayoutParams GetBrowserLayoutParams(__VA_ARGS__)
-
 #include <chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.h>  // IWYU pragma: export
 
-#undef GetBrowserLayoutParams
 #undef GetExtraInfobarOffset
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_LAYOUT_BROWSER_VIEW_LAYOUT_DELEGATE_IMPL_H_
