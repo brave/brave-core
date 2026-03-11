@@ -267,7 +267,6 @@ export function createAppStore(): AppStore {
       currentCreator: {
         site: {
           id: publisherInfo.id,
-          icon: publisherInfo.faviconUrl,
           name: publisherInfo.name,
           url: publisherInfo.url,
           platform: parseCreatorPlatform(publisherInfo.provider),

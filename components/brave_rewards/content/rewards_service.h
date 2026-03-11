@@ -152,9 +152,7 @@ class RewardsService : public KeyedService {
                                 GetBalanceReportCallback callback) = 0;
   virtual void NotifyPublisherPageVisit(mojom::VisitDataPtr visit_data) = 0;
   virtual void NotifyPublisherPageVisit(uint64_t tab_id,
-                                        const std::string& url,
-                                        const std::string& favicon_url,
-                                        const std::string& publisher_blob) = 0;
+                                        const std::string& url) = 0;
   virtual void GetPublisherBanner(const std::string& publisher_id,
                                   GetPublisherBannerCallback callback) = 0;
 
