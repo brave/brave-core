@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index ffe9df783632b5944466dca37e021a5a71bb2565..d67087d47fcd53fc2015e906dc749957a3697d7e 100644
+index 7e2880e8f281f35b4fdfda7b403ee3d2d65d34db..03ed856b3b88d3d240544c4eb774d75b4e8c9efa 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-@@ -566,6 +566,7 @@ void ToolbarView::Init() {
-     UpdateGlicButtonVisibility();
+@@ -573,6 +573,7 @@ void ToolbarView::Init() {
+     media_button_ = AddChildView(std::move(media_button));
    }
  
 +  BRAVE_TOOLBAR_VIEW_INIT
