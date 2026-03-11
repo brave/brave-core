@@ -106,7 +106,7 @@ dependencies = [
 
 [[package]]
 name = "anstyle"
-version = "1.0.13"
+version = "1.0.14"
 
 [[package]]
 name = "arrayref"
@@ -434,14 +434,14 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "4.5.60"
+version = "4.6.0"
 dependencies = [
  "clap_builder",
 ]
 
 [[package]]
 name = "clap_builder"
-version = "4.5.60"
+version = "4.6.0"
 dependencies = [
  "anstyle",
  "clap_lex",
@@ -450,7 +450,7 @@ dependencies = [
 
 [[package]]
 name = "clap_lex"
-version = "1.0.0"
+version = "1.1.0"
 
 [[package]]
 name = "codespan-reporting"
@@ -1184,7 +1184,7 @@ dependencies = [
 
 [[package]]
 name = "itoa"
-version = "1.0.17"
+version = "1.0.18"
 
 [[package]]
 name = "json-cxx"
@@ -1237,7 +1237,7 @@ dependencies = [
 
 [[package]]
 name = "libc"
-version = "0.2.182"
+version = "0.2.183"
 
 [[package]]
 name = "libm"
@@ -1740,7 +1740,7 @@ dependencies = [
 
 [[package]]
 name = "quote"
-version = "1.0.44"
+version = "1.0.45"
 dependencies = [
  "proc-macro2",
 ]
