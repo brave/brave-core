@@ -11,7 +11,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
-#include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
@@ -93,35 +92,4 @@ bool BrowserViewLayoutDelegateImpl::IsFullscreenForTab() const {
 
 bool BrowserViewLayoutDelegateImpl::IsFullscreen() const {
   return browser_view().IsFullscreen();
-}
-
-BrowserLayoutParams BrowserViewLayoutDelegateImpl::GetBrowserLayoutParams(
-    bool use_browser_bounds) const {
-#if BUILDFLAG(IS_MAC)
-  // On Mac, there is transition animation when entering/exiting fullscreen
-  // mode. During the animation, there could be inconsistency between frame view
-  // and browser view's state. Other platforms don't have this issue.
-  if (use_browser_bounds) {
-    const auto params = GetFrameView()->GetBrowserLayoutParams();
-    if (params.IsEmpty()) {
-      return params;
-    }
-
-    if (ShouldShowVerticalTabs() &&
-        tabs::utils::ShouldShowWindowTitleForVerticalTabs(
-            browser_view().browser()) &&
-        !IsFullscreen() &&
-        !params.visual_client_area.Contains(browser_view_->bounds())) {
-      // This could happen if the window is exiting fullscreen mode. The
-      // browser wasn't laid out yet(insetted by the amount of the window
-      // title bar), but is trying to layout its children from
-      // BrowserView::Layout(). In this case, we should just return the empty
-      // param and wait for the next layout triggered by frame view after it
-      // repositioned the browser view.
-      // https://github.com/brave/brave-browser/issues/53470
-      return BrowserLayoutParams();
-    }
-  }
-#endif  // BUILDFLAG(IS_MAC)
-  return GetBrowserLayoutParams_Chromium(use_browser_bounds);
 }
