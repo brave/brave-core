@@ -70,9 +70,9 @@ static_library("browser") {
   ]
 
   deps += [
-    "//brave/app:brave_generated_resources_grit",
     "//brave/common",
     "//brave/components/brave_rewards/core",
+    "//brave/components/resources:strings_grit",
     "//components/history/core/browser",
     "//components/variations",
     "//content/public/browser",

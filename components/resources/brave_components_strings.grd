@@ -914,6 +914,7 @@
       <part file="request_otr_strings.grdp" />
       <part file="permissions_strings.grdp" />
       <part file="google_sign_in_permission_strings.grdp" />
+      <part file="ads_strings.grdp" />
       <part file="rewards_strings.grdp" />
       <part file="wallet_strings.grdp" />
       <part file="tor_strings.grdp" />
