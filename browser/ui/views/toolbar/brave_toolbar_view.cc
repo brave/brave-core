@@ -251,6 +251,11 @@ void BraveToolbarView::Init() {
         profile->GetOriginalProfile()->GetPrefs(),
         base::BindRepeating(&BraveToolbarView::UpdateHorizontalPadding,
                             base::Unretained(this)));
+    vertical_tabs_collapsed_.Init(
+        brave_tabs::kVerticalTabsCollapsed,
+        profile->GetPrefs(),
+        base::BindRepeating(&BraveToolbarView::UpdateVerticalTabToggleHighlight,
+                            base::Unretained(this)));
 #if BUILDFLAG(IS_LINUX)
     use_custom_chrome_frame_.Init(
         prefs::kUseCustomChromeFrame, profile->GetOriginalProfile()->GetPrefs(),
@@ -271,13 +276,15 @@ void BraveToolbarView::Init() {
         base::BindRepeating(&BraveToolbarView::OnVerticalTabTogglePressed,
                             weak_factory_.GetWeakPtr()));
     toggle->SetVectorIcon(kVerticalTabStripToggleButtonIcon);
-    toggle->SetTooltipText(
-        l10n_util::GetStringUTF16(IDS_VERTICAL_TABS_MINIMIZE));
-    toggle->SetAccessibleName(
-        l10n_util::GetStringUTF16(IDS_VERTICAL_TABS_MINIMIZE));
+    const bool initially_collapsed = vertical_tabs_collapsed_.GetValue();
+    toggle->SetTooltipText(l10n_util::GetStringUTF16(
+        initially_collapsed ? IDS_VERTICAL_TABS_EXPAND
+                            : IDS_VERTICAL_TABS_MINIMIZE));
+    toggle->SetAccessibleName(l10n_util::GetStringUTF16(
+        initially_collapsed ? IDS_VERTICAL_TABS_EXPAND
+                            : IDS_VERTICAL_TABS_MINIMIZE));
     vertical_tab_toggle_ = container_view->AddChildViewAt(
         std::move(toggle), *container_view->GetIndexOf(back_));
-    UpdateVerticalTabToggleVisibility();
   }
 
   bookmark_ = container_view->AddChildViewAt(
@@ -483,6 +490,15 @@ void BraveToolbarView::ShowBookmarkBubble(const GURL& url,
                                  browser_, url, already_bookmarked);
 }
 
+void BraveToolbarView::VisibilityChanged(views::View* starting_from,
+                                         bool visible) {
+  ToolbarView::VisibilityChanged(starting_from, visible);
+  if (visible) {
+    // Ink drop highlight is cleared whenever visibility changes, so re-apply.
+    UpdateVerticalTabToggleHighlight();
+  }
+}
+
 void BraveToolbarView::ViewHierarchyChanged(
     const views::ViewHierarchyChangedDetails& details) {
   ToolbarView::ViewHierarchyChanged(details);
@@ -594,6 +610,19 @@ void BraveToolbarView::UpdateVerticalTabToggleVisibility() {
       tabs::utils::ShouldShowBraveVerticalTabs(browser_));
 }
 
+void BraveToolbarView::UpdateVerticalTabToggleHighlight() {
+  if (!vertical_tab_toggle_) {
+    return;
+  }
+
+  const bool is_expanded = !vertical_tabs_collapsed_.GetValue();
+  vertical_tab_toggle_->SetHighlighted(is_expanded);
+  vertical_tab_toggle_->SetTooltipText(l10n_util::GetStringUTF16(
+      is_expanded ? IDS_VERTICAL_TABS_MINIMIZE : IDS_VERTICAL_TABS_EXPAND));
+  vertical_tab_toggle_->SetAccessibleName(l10n_util::GetStringUTF16(
+      is_expanded ? IDS_VERTICAL_TABS_MINIMIZE : IDS_VERTICAL_TABS_EXPAND));
+}
+
 void BraveToolbarView::OnVerticalTabTogglePressed() {
   auto* brave_browser_view =
       BraveBrowserView::From(BrowserView::GetBrowserViewForBrowser(browser_));
@@ -613,12 +642,6 @@ void BraveToolbarView::OnVerticalTabTogglePressed() {
   }
 
   region_view->ToggleState();
-
-  // Update tooltip based on new state.
-  const bool is_expanded =
-      region_view->state() == BraveVerticalTabStripRegionView::State::kExpanded;
-  vertical_tab_toggle_->SetTooltipText(l10n_util::GetStringUTF16(
-      is_expanded ? IDS_VERTICAL_TABS_MINIMIZE : IDS_VERTICAL_TABS_EXPAND));
 }
 
 BEGIN_METADATA(BraveToolbarView)

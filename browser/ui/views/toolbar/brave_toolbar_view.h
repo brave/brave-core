@@ -65,6 +65,7 @@ class BraveToolbarView : public ToolbarView,
   void OnLocationBarIsWideChanged();
   void OnShowBookmarksButtonChanged();
   void ShowBookmarkBubble(const GURL& url, bool already_bookmarked) override;
+  void VisibilityChanged(views::View* starting_from, bool visible) override;
   void ViewHierarchyChanged(
       const views::ViewHierarchyChangedDetails& details) override;
 
@@ -77,6 +78,7 @@ class BraveToolbarView : public ToolbarView,
   void ResetBookmarkButtonBounds();
   void UpdateBookmarkVisibility();
   void UpdateVerticalTabToggleVisibility();
+  void UpdateVerticalTabToggleHighlight();
   void OnVerticalTabTogglePressed();
 
   // ProfileAttributesStorage::Observer:
@@ -121,6 +123,7 @@ class BraveToolbarView : public ToolbarView,
 
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember show_title_bar_on_vertical_tabs_;
+  BooleanPrefMember vertical_tabs_collapsed_;
 #if BUILDFLAG(IS_LINUX)
   BooleanPrefMember use_custom_chrome_frame_;
 #endif  // BUILDFLAG(IS_LINUX)
