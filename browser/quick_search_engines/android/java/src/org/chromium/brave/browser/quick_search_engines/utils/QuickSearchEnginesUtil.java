@@ -194,6 +194,20 @@ public class QuickSearchEnginesUtil {
             Map<String, QuickSearchEnginesModel> searchEnginesMap,
             List<TemplateUrl> templateUrls,
             TemplateUrl defaultSearchEngine) {
+        // Remove cached entries that no longer exist in TemplateUrlService (e.g. after
+        // clearing browsing data removes auto-discovered OpenSearch engines).
+        // YouTube is excluded because it's added synthetically by handleYtSearchEngine().
+        HashSet<String> activeKeywords = new HashSet<>();
+        for (TemplateUrl templateUrl : templateUrls) {
+            activeKeywords.add(templateUrl.getKeyword());
+        }
+        searchEnginesMap
+                .entrySet()
+                .removeIf(
+                        entry ->
+                                !YOUTUBE_SEARCH_ENGINE_KEYWORD.equals(entry.getKey())
+                                        && !activeKeywords.contains(entry.getKey()));
+
         // Add any new search engines not already in preferences
         for (TemplateUrl templateUrl : templateUrls) {
             if (!searchEnginesMap.containsKey(templateUrl.getKeyword())) {
