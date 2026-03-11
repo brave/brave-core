@@ -17,7 +17,6 @@ static_assert(BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/web_contents_delegate.h"
 #include "content/public/browser/web_contents_observer.h"
-#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/webview/unhandled_keyboard_event_handler.h"
 #include "ui/views/widget/widget_delegate.h"
 
@@ -39,11 +38,9 @@ class WebView;
 // Class uses Brave* prefix because "Brave Origin" is the product name.
 // Appears before the profile picker on is_brave_origin_branded builds,
 // gating browser access until the user buys or restores a purchase.
-class BraveOriginStartupView : public views::WidgetDelegateView,
+class BraveOriginStartupView : public views::WidgetDelegate,
                                public content::WebContentsDelegate,
                                public content::WebContentsObserver {
-  METADATA_HEADER(BraveOriginStartupView, views::WidgetDelegateView)
-
  public:
   // Returns true if the startup dialog should be shown (purchase not yet
   // validated or SKU credentials missing).
@@ -85,7 +82,6 @@ class BraveOriginStartupView : public views::WidgetDelegateView,
   void OnDefaultProfileCreated(Profile* profile);
   void MaybeInit();
   void Init(Profile* system_profile);
-  void BuildLayout();
   void SetupWebUICallbacks();
 
   // Called by the WebUI handler when the user wants to open the buy window.
@@ -94,11 +90,10 @@ class BraveOriginStartupView : public views::WidgetDelegateView,
   // Called by the WebUI handler when purchase is validated.
   void CloseAndProceed();
 
-  // views::WidgetDelegateView:
+  // views::WidgetDelegate:
+  views::View* GetContentsView() override;
+  void WidgetIsZombie(views::Widget* widget) override;
   void WindowClosing() override;
-  std::u16string GetAccessibleWindowTitle() const override;
-  gfx::Size CalculatePreferredSize(
-      const views::SizeBounds& available_size) const override;
 
   // content::WebContentsDelegate:
   content::WebContents* OpenURLFromTab(
@@ -114,6 +109,8 @@ class BraveOriginStartupView : public views::WidgetDelegateView,
       const blink::mojom::WindowFeatures& window_features,
       bool user_gesture,
       bool* was_blocked) override;
+  bool HandleContextMenu(content::RenderFrameHost& render_frame_host,
+                         const content::ContextMenuParams& params) override;
   bool HandleKeyboardEvent(content::WebContents* source,
                            const input::NativeWebKeyboardEvent& event) override;
 
@@ -122,8 +119,7 @@ class BraveOriginStartupView : public views::WidgetDelegateView,
 
   std::unique_ptr<ScopedKeepAlive> keep_alive_;
   std::unique_ptr<ScopedProfileKeepAlive> profile_keep_alive_;
-  std::unique_ptr<views::Widget> widget_;
-  std::unique_ptr<content::WebContents> contents_;
+  std::unique_ptr<views::WebView> web_view_;
 
   int profiles_loaded_count_ = 0;
 
@@ -136,7 +132,6 @@ class BraveOriginStartupView : public views::WidgetDelegateView,
 
   views::UnhandledKeyboardEventHandler unhandled_keyboard_event_handler_;
 
-  raw_ptr<views::WebView> web_view_ = nullptr;
   raw_ptr<Profile> system_profile_ = nullptr;
   raw_ptr<Profile> default_profile_ = nullptr;
 
