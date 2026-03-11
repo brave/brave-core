@@ -34,4 +34,8 @@ interface MiscAndroidMetrics {
 
   // Records a quick search.
   RecordQuickSearch(bool isLeo, string keyword);
+
+  // Records a URL opened via an intent (e.g. from a widget), for tracking
+  // widget search usage.
+  RecordIntentURL(string url);
 };
