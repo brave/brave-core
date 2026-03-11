@@ -2691,6 +2691,7 @@
 # attempts to set Brave Search as the engine for the private window it can't
 # find the engine in the list and CHECKs.
 -PrepopulatedEnginesCrossRegionMigrationBrowserTest.*
+-PrepopulatedEnginesExtendedCrossRegionsBrowserTest.*Dse/Feature*
 -PrepopulatedEnginesMigrationBrowserTest.*
 -PrepopulatedEnginesXRegionMigrationBrowserTest.*
 -PrepopulatedEnginesXRegionNoMigrationBrowserTest.*
