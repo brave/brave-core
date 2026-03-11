@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
-  <message name="IDS_TOOLTIP_WALLET" desc="Tooltip to acccess the Brave Wallet">Wallet</message>
+  <message name="IDS_TOOLTIP_WALLET" desc="Tooltip to acccess the Brave Wallet">Brave Wallet</message>
   <message name="IDS_ACCNAME_BRAVE_WALLET_BUTTON" desc="The accessible name for the Brave Wallet bubble.">Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET" desc="The name of the feature Brave Wallet">Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT" desc="General token">account</message>
