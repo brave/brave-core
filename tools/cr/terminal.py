@@ -152,6 +152,7 @@ class Terminal:
                                     capture_output=True,
                                     text=True,
                                     check=True,
+                                    encoding='utf-8',
                                     env=env,
                                     cwd=cwd,
                                     shell=platform.system() == 'Windows')
