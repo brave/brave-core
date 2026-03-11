@@ -13,11 +13,11 @@
 
 // SAFETY: writable_addr() returns a valid pointer to a contiguous buffer
 // of exactly computeByteSize() bytes owned by the SkPixmap.
-#define BRAVE_GET_IMAGE_DATA                                               \
-  if (ExecutionContext* context = ExecutionContext::From(script_state)) {  \
-    SkPixmap image_data_pixmap = image_data->GetSkPixmap();                \
-    brave::BraveSessionCache::From(*context).PerturbPixels(                \
-        gfx::SkPixmapToWritableSpan(image_data_pixmap));                   \
+#define BRAVE_GET_IMAGE_DATA                                              \
+  if (ExecutionContext* context = ExecutionContext::From(script_state)) { \
+    SkPixmap image_data_pixmap = image_data->GetSkPixmap();               \
+    brave::BraveSessionCache::From(*context).PerturbPixels(               \
+        gfx::SkPixmapToWritableSpan(image_data_pixmap));                  \
   }
 
 #define BRAVE_BASE_RENDERING_CONTEXT_2D_MEASURE_TEXT      \
