@@ -7,6 +7,9 @@
 
 #include "base/check_is_test.h"
 #include "base/metrics/histogram_macros.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/misc_metrics/media_session_metrics.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/components/misc_metrics/page_metrics.h"
@@ -37,6 +40,10 @@ PageMetricsTabHelper::PageMetricsTabHelper(content::WebContents* web_contents)
   if (profile_misc_metrics_service) {
     page_metrics_ = profile_misc_metrics_service->GetPageMetrics();
   }
+
+  if (auto* process_metrics = g_brave_browser_process->process_misc_metrics()) {
+    media_session_metrics_ = process_metrics->media_session_metrics();
+  }
 }
 
 PageMetricsTabHelper::~PageMetricsTabHelper() = default;
@@ -65,6 +72,23 @@ void PageMetricsTabHelper::DidFinishNavigation(
     is_reload = true;
   }
   page_metrics_->IncrementPagesLoadedCount(is_reload);
+}
+
+void PageMetricsTabHelper::MediaSessionCreated(
+    content::MediaSession* media_session) {
+  if (!media_session_metrics_) {
+    return;
+  }
+  media_session_ = media_session;
+  media_session_metrics_->OnMediaSessionCreated(media_session);
+}
+
+void PageMetricsTabHelper::WebContentsDestroyed() {
+  if (!media_session_metrics_ || !media_session_) {
+    return;
+  }
+  media_session_metrics_->OnMediaSessionDestroyed(media_session_);
+  media_session_ = nullptr;
 }
 
 bool PageMetricsTabHelper::IsRelevantNavigationEvent(
