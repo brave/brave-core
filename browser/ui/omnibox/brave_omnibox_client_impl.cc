@@ -18,6 +18,7 @@
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/misc_metrics/brave_search_metrics.h"
+#include "brave/components/misc_metrics/navigation_source_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/omnibox/browser/promotion_utils.h"
@@ -101,6 +102,7 @@ BraveOmniboxClientImpl::BraveOmniboxClientImpl(LocationBar* location_bar,
     auto* page_metrics = original_profile_metrics->GetPageMetrics();
     if (page_metrics) {
       brave_search_metrics_ = &page_metrics->brave_search_metrics();
+      navigation_source_metrics_ = &page_metrics->navigation_source_metrics();
     }
   }
 
@@ -171,6 +173,25 @@ void BraveOmniboxClientImpl::OnAutocompleteAccept(
                                                      is_suggestion);
     }
   }
+  if (navigation_source_metrics_) {
+    switch (match.type) {
+      case AutocompleteMatchType::URL_WHAT_YOU_TYPED:
+        navigation_source_metrics_->RecordDirectNavigation();
+        break;
+      case AutocompleteMatchType::HISTORY_URL:
+      case AutocompleteMatchType::HISTORY_TITLE:
+      case AutocompleteMatchType::HISTORY_BODY:
+      case AutocompleteMatchType::HISTORY_KEYWORD:
+        navigation_source_metrics_->RecordHistoryNavigation();
+        break;
+      case AutocompleteMatchType::BOOKMARK_TITLE:
+        navigation_source_metrics_->RecordBookmarkNavigation();
+        break;
+      default:
+        break;
+    }
+  }
+
   ChromeOmniboxClient::OnAutocompleteAccept(
       destination_url, post_content, disposition, transition, match_type,
       match_selection_timestamp, destination_url_entered_without_scheme,

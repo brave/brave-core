@@ -211,8 +211,10 @@ class P3AMessageManagerTest : public testing::Test,
     }
     for (auto histogram_i = histograms_begin; histogram_i != histograms_end;
          histogram_i++) {
-      if (p3a_i < p3a_count && (histogram_i->first.starts_with("Brave.Core") ||
-                                log_type == MetricLogType::kExpress)) {
+      if (p3a_i < p3a_count &&
+          (histogram_i->first.starts_with("Brave.Core") ||
+           log_type == MetricLogType::kExpress) &&
+          (!histogram_i->second || !histogram_i->second->ephemeral)) {
         result.push_back(std::string(histogram_i->first));
         p3a_i++;
       }
