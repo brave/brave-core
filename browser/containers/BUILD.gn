@@ -11,6 +11,8 @@ source_set("containers") {
   sources = [
     "container_tab_tracker.cc",
     "container_tab_tracker.h",
+    "containers_service_delegate.cc",
+    "containers_service_delegate.h",
     "containers_service_factory.cc",
     "containers_service_factory.h",
   ]
@@ -20,7 +22,10 @@ source_set("containers") {
     "//brave/components/containers/core/browser",
     "//brave/components/containers/core/common",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/tab_contents",
     "//chrome/browser/ui/tabs",
+    "//chrome/common:buildflags",
+    "//components/sessions",
     "//content/public/browser",
   ]
 }

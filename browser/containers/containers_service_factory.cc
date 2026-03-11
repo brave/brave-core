@@ -8,11 +8,18 @@
 #include <memory>
 
 #include "base/no_destructor.h"
+#include "brave/browser/containers/containers_service_delegate.h"
 #include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/browser/prefs_registration.h"
 #include "brave/components/containers/core/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
+#include "chrome/browser/sessions/tab_restore_service_factory.h"
+#include "chrome/common/buildflags.h"
+
+#if BUILDFLAG(ENABLE_SESSION_SERVICE)
+#include "chrome/browser/sessions/session_service_factory.h"
+#endif
 
 // static
 ContainersServiceFactory* ContainersServiceFactory::GetInstance() {
@@ -32,7 +39,12 @@ ContainersServiceFactory::ContainersServiceFactory()
           "ContainersService",
           ProfileSelections::Builder()
               .WithRegular(ProfileSelection::kOwnInstance)
-              .Build()) {}
+              .Build()) {
+#if BUILDFLAG(ENABLE_SESSION_SERVICE)
+  DependsOn(SessionServiceFactory::GetInstance());
+#endif
+  DependsOn(TabRestoreServiceFactory::GetInstance());
+}
 
 ContainersServiceFactory::~ContainersServiceFactory() = default;
 
@@ -53,5 +65,12 @@ ContainersServiceFactory::BuildServiceInstanceForBrowserContext(
   }
 
   auto* profile = Profile::FromBrowserContext(context);
-  return std::make_unique<containers::ContainersService>(profile->GetPrefs());
+  return std::make_unique<containers::ContainersService>(
+      profile->GetPrefs(),
+      std::make_unique<ContainersServiceDelegate>(
+          profile,
+#if BUILDFLAG(ENABLE_SESSION_SERVICE)
+          SessionServiceFactory::GetForProfile(profile),
+#endif
+          TabRestoreServiceFactory::GetForProfile(profile)));
 }

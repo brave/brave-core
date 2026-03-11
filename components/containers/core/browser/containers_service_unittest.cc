@@ -9,6 +9,8 @@
 #include <string>
 #include <utility>
 
+#include "base/containers/flat_set.h"
+#include "base/functional/callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/containers/core/browser/prefs.h"
 #include "brave/components/containers/core/browser/prefs_registration.h"
@@ -22,6 +24,8 @@
 namespace containers {
 
 namespace {
+
+using testing::_;
 
 mojom::ContainerPtr MakeContainer(std::string id,
                                   std::string name,
@@ -39,6 +43,48 @@ void ExpectContainer(const mojom::ContainerPtr& container,
   EXPECT_THAT(*container, testing::FieldsAre(id, name, icon, color));
 }
 
+class MockContainersServiceDelegate : public ContainersService::Delegate {
+ public:
+  MockContainersServiceDelegate() {
+    ON_CALL(*this, GetReferencedContainerIds(_))
+        .WillByDefault(
+            [this](base::OnceCallback<void(base::flat_set<std::string>)>
+                       on_referenced_container_ids_loaded) {
+              std::move(on_referenced_container_ids_loaded)
+                  .Run(referenced_container_ids_);
+            });
+    ON_CALL(*this, DeleteContainerStorage(_, _))
+        .WillByDefault([this](const std::string& id,
+                              base::OnceCallback<void(bool success)> callback) {
+          delete_requests_.push_back(id);
+          std::move(callback).Run(delete_result_);
+        });
+  }
+
+  MOCK_METHOD(void,
+              GetReferencedContainerIds,
+              (base::OnceCallback<void(base::flat_set<std::string>)>),
+              (override));
+  MOCK_METHOD(void,
+              DeleteContainerStorage,
+              (const std::string&, base::OnceCallback<void(bool success)>),
+              (override));
+
+  void SetReferencedContainersIds(base::flat_set<std::string> ids) {
+    referenced_container_ids_ = std::move(ids);
+  }
+
+  void set_delete_result(bool delete_result) { delete_result_ = delete_result; }
+  const std::vector<std::string>& delete_requests() const {
+    return delete_requests_;
+  }
+
+ private:
+  base::flat_set<std::string> referenced_container_ids_;
+  bool delete_result_ = true;
+  std::vector<std::string> delete_requests_;
+};
+
 }  // namespace
 
 class ContainersServiceTest : public testing::Test {
@@ -47,12 +93,23 @@ class ContainersServiceTest : public testing::Test {
     feature_list_.InitAndEnableFeature(features::kContainers);
     RegisterProfilePrefs(prefs_.registry());
 
-    service_ = std::make_unique<ContainersService>(&prefs_);
+    auto delegate =
+        std::make_unique<testing::NiceMock<MockContainersServiceDelegate>>();
+    delegate_ = delegate.get();
+    service_ =
+        std::make_unique<ContainersService>(&prefs_, std::move(delegate));
+  }
+
+  void TearDown() override {
+    delegate_ = nullptr;
+    service_->Shutdown();
+    service_.reset();
   }
 
   base::test::ScopedFeatureList feature_list_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   std::unique_ptr<ContainersService> service_;
+  raw_ptr<MockContainersServiceDelegate> delegate_ = nullptr;
 };
 
 TEST_F(ContainersServiceTest, GetRuntimeContainerById) {
@@ -160,6 +217,59 @@ TEST_F(ContainersServiceTest,
 
   auto used = GetLocallyUsedContainerFromPrefs(prefs_, "gone-id");
   ExpectContainer(used, "gone-id", "Cached");
+}
+
+TEST_F(ContainersServiceTest, CleanupRunsWhenReferencesDisappear) {
+  auto container = MakeContainer("container-id", "Shopping",
+                                 mojom::Icon::kShopping, SK_ColorRED);
+  std::vector<mojom::ContainerPtr> synced_containers;
+  synced_containers.push_back(container.Clone());
+  SetContainersToPrefs(std::move(synced_containers), prefs_);
+  service_->MarkContainerUsed("container-id");
+
+  delegate_->SetReferencedContainersIds({});
+  SetContainersToPrefs({}, prefs_);
+
+  service_->ScheduleOrphanedContainersCleanupForTesting();
+
+  ASSERT_EQ(delegate_->delete_requests().size(), 1u);
+  EXPECT_EQ(delegate_->delete_requests()[0], "container-id");
+  EXPECT_FALSE(GetLocallyUsedContainerFromPrefs(prefs_, "container-id"));
+}
+
+TEST_F(ContainersServiceTest, CleanupBlockedWhileContainerIsReferenced) {
+  auto container =
+      MakeContainer("container-id", "Work", mojom::Icon::kWork, SK_ColorGREEN);
+  std::vector<mojom::ContainerPtr> synced_containers;
+  synced_containers.push_back(container.Clone());
+  SetContainersToPrefs(std::move(synced_containers), prefs_);
+  service_->MarkContainerUsed("container-id");
+
+  delegate_->SetReferencedContainersIds({"container-id"});
+  SetContainersToPrefs({}, prefs_);
+
+  service_->ScheduleOrphanedContainersCleanupForTesting();
+
+  EXPECT_TRUE(delegate_->delete_requests().empty());
+  EXPECT_TRUE(GetLocallyUsedContainerFromPrefs(prefs_, "container-id"));
+}
+
+TEST_F(ContainersServiceTest, CleanupFailureKeepsUsedSnapshot) {
+  auto container = MakeContainer("container-id", "Shopping",
+                                 mojom::Icon::kShopping, SK_ColorRED);
+  std::vector<mojom::ContainerPtr> synced_containers;
+  synced_containers.push_back(container.Clone());
+  SetContainersToPrefs(std::move(synced_containers), prefs_);
+  service_->MarkContainerUsed("container-id");
+
+  delegate_->SetReferencedContainersIds({});
+  SetContainersToPrefs({}, prefs_);
+
+  delegate_->set_delete_result(false);
+  service_->ScheduleOrphanedContainersCleanupForTesting();
+
+  ASSERT_EQ(delegate_->delete_requests().size(), 1u);
+  EXPECT_TRUE(GetLocallyUsedContainerFromPrefs(prefs_, "container-id"));
 }
 
 }  // namespace containers

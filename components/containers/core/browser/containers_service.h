@@ -6,8 +6,12 @@
 #ifndef BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_CONTAINERS_SERVICE_H_
 #define BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_CONTAINERS_SERVICE_H_
 
+#include <memory>
+#include <string>
 #include <string_view>
 
+#include "base/containers/flat_set.h"
+#include "base/functional/callback.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/containers/core/mojom/containers.mojom-forward.h"
@@ -21,7 +25,23 @@ namespace containers {
 // Handles container-related operations.
 class ContainersService : public KeyedService {
  public:
-  explicit ContainersService(PrefService* prefs);
+  class Delegate {
+   public:
+    virtual ~Delegate() = default;
+
+    // Returns the container ids referenced by tab restore, session service and
+    // currently opened tabs.
+    virtual void GetReferencedContainerIds(
+        base::OnceCallback<void(base::flat_set<std::string>)>
+            on_referenced_container_ids) = 0;
+
+    // Deletes the storage for the container with the given id.
+    virtual void DeleteContainerStorage(
+        const std::string& id,
+        base::OnceCallback<void(bool success)> callback) = 0;
+  };
+
+  ContainersService(PrefService* prefs, std::unique_ptr<Delegate> delegate);
   ~ContainersService() override;
 
   ContainersService(const ContainersService&) = delete;
@@ -41,6 +61,8 @@ class ContainersService : public KeyedService {
   // Returns the list of user-editable containers.
   std::vector<mojom::ContainerPtr> GetContainers() const;
 
+  void ScheduleOrphanedContainersCleanupForTesting();
+
  private:
   // Called when the synced containers list changes.
   void OnSyncedContainersChanged();
@@ -50,7 +72,18 @@ class ContainersService : public KeyedService {
   // containers list changes.
   void RefreshLocallyUsedContainersFromSyncedList();
 
+  // Schedules the cleanup of orphaned containers. Orphaned containers are
+  // containers that are not referenced by any tab restore or session service.
+  void ScheduleOrphanedContainersCleanup();
+
+  // Called when the container ids referenced by the current profile are ready.
+  void OnReferencedContainerIdsReady(base::flat_set<std::string> ids);
+
+  // Called when the storage for the container with the given id is deleted.
+  void OnContainerStorageDeleted(const std::string& id, bool success);
+
   raw_ref<PrefService> prefs_;
+  std::unique_ptr<Delegate> delegate_;
   PrefChangeRegistrar pref_change_registrar_;
   base::WeakPtrFactory<ContainersService> weak_factory_{this};
 };
