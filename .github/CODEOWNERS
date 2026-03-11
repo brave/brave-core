@@ -97,7 +97,7 @@ components/p3a/ @brave/p3a-reviewers
 components/time_period_storage/ @brave/p3a-reviewers
 
 # Perf predictor
-components/brave_perf_predictor/ @brave/adblock-team
+components/brave_perf_predictor/ @brave/adblock-brave-core-dev-team
 
 # Java patching
 build/android/bytecode/ @brave/java-patch-reviewers
