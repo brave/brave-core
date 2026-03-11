@@ -252,9 +252,8 @@ void BraveToolbarView::Init() {
         base::BindRepeating(&BraveToolbarView::UpdateHorizontalPadding,
                             base::Unretained(this)));
     vertical_tabs_collapsed_.Init(
-        brave_tabs::kVerticalTabsCollapsed,
-        profile->GetPrefs(),
-        base::BindRepeating(&BraveToolbarView::UpdateVerticalTabToggleHighlight,
+        brave_tabs::kVerticalTabsCollapsed, profile->GetPrefs(),
+        base::BindRepeating(&BraveToolbarView::UpdateVerticalTabToggleState,
                             base::Unretained(this)));
 #if BUILDFLAG(IS_LINUX)
     use_custom_chrome_frame_.Init(
@@ -272,19 +271,15 @@ void BraveToolbarView::Init() {
 
   // Add vertical tab toggle button to the left of the back button.
   if (tabs::utils::SupportsBraveVerticalTabs(browser_)) {
-    auto toggle = std::make_unique<ToolbarButton>(
-        base::BindRepeating(&BraveToolbarView::OnVerticalTabTogglePressed,
-                            weak_factory_.GetWeakPtr()));
-    toggle->SetVectorIcon(kVerticalTabStripToggleButtonIcon);
-    const bool initially_collapsed = vertical_tabs_collapsed_.GetValue();
-    toggle->SetTooltipText(l10n_util::GetStringUTF16(
-        initially_collapsed ? IDS_VERTICAL_TABS_EXPAND
-                            : IDS_VERTICAL_TABS_MINIMIZE));
-    toggle->SetAccessibleName(l10n_util::GetStringUTF16(
-        initially_collapsed ? IDS_VERTICAL_TABS_EXPAND
-                            : IDS_VERTICAL_TABS_MINIMIZE));
+    auto back_button_index = container_view->GetIndexOf(back_);
     vertical_tab_toggle_ = container_view->AddChildViewAt(
-        std::move(toggle), *container_view->GetIndexOf(back_));
+        std::make_unique<ToolbarButton>(
+            base::BindRepeating(&BraveToolbarView::OnVerticalTabTogglePressed,
+                                weak_factory_.GetWeakPtr())),
+        back_button_index.value_or(0));
+    vertical_tab_toggle_->SetVectorIcon(kVerticalTabStripToggleButtonIcon);
+    UpdateVerticalTabToggleVisibility();
+    UpdateVerticalTabToggleState();
   }
 
   bookmark_ = container_view->AddChildViewAt(
@@ -495,7 +490,7 @@ void BraveToolbarView::VisibilityChanged(views::View* starting_from,
   ToolbarView::VisibilityChanged(starting_from, visible);
   if (visible) {
     // Ink drop highlight is cleared whenever visibility changes, so re-apply.
-    UpdateVerticalTabToggleHighlight();
+    UpdateVerticalTabToggleState();
   }
 }
 
@@ -610,7 +605,7 @@ void BraveToolbarView::UpdateVerticalTabToggleVisibility() {
       tabs::utils::ShouldShowBraveVerticalTabs(browser_));
 }
 
-void BraveToolbarView::UpdateVerticalTabToggleHighlight() {
+void BraveToolbarView::UpdateVerticalTabToggleState() {
   if (!vertical_tab_toggle_) {
     return;
   }

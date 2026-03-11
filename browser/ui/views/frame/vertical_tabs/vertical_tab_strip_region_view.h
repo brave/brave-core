@@ -27,7 +27,6 @@
 #include "ui/views/widget/widget_observer.h"
 
 namespace views {
-class LabelButton;
 class MenuRunner;
 }  // namespace views
 

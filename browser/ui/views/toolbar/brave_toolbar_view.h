@@ -78,7 +78,7 @@ class BraveToolbarView : public ToolbarView,
   void ResetBookmarkButtonBounds();
   void UpdateBookmarkVisibility();
   void UpdateVerticalTabToggleVisibility();
-  void UpdateVerticalTabToggleHighlight();
+  void UpdateVerticalTabToggleState();
   void OnVerticalTabTogglePressed();
 
   // ProfileAttributesStorage::Observer:
