@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml b/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml
-index cc6cadbfbdb44093896ae82798c19de29bc1a9d2..c86fe7510d2530f6eeae8365a76c3cd3cceead0d 100644
+index 7b530c1336918261f959d8b4c7e0ea3dfaf5387e..88705aae6cf81054ead96d4f6c7a98e200f8a926 100644
 --- a/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml
 +++ b/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml
-@@ -60,6 +60,7 @@ found in the LICENSE file.
+@@ -50,6 +50,7 @@ found in the LICENSE file.
          app:layout_constraintTop_toBottomOf="@id/location_bar_attachments"
          app:layout_constraintEnd_toStartOf="@id/margin_spacer"/>
  
@@ -10,7 +10,7 @@ index cc6cadbfbdb44093896ae82798c19de29bc1a9d2..c86fe7510d2530f6eeae8365a76c3cd3
      <!--
      Fusebox/Omnibox top-stacked elements on Active Omnibox with Empty content
      -->
-@@ -94,7 +95,7 @@ found in the LICENSE file.
+@@ -84,7 +85,7 @@ found in the LICENSE file.
          android:contentDescription="@string/accessibility_toolbar_btn_delete_url"
          android:tooltipText="@string/accessibility_toolbar_btn_delete_url"
          app:layout_constraintTop_toBottomOf="@id/location_bar_attachments"

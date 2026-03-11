@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index 06cb552168bd568a1702107e512f127ea217d553..891396cfe221b541ee96f24534da8f0e5a19d931 100644
+index 84744e2f72bd1133088687df099659daa51864a3..bef42ed4efef054445a0b073bf46164814211776 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
 @@ -123,6 +123,7 @@ class TabStyleViewsImpl : public TabStyleViews {
@@ -26,7 +26,7 @@ index 06cb552168bd568a1702107e512f127ea217d553..891396cfe221b541ee96f24534da8f0e
  
    float left_extension_corner_radius = extension_corner_radius;
    if (compact_left_to_bottom) {
-@@ -1041,14 +1044,18 @@ void TabStyleViewsImpl::PaintSeparators(gfx::Canvas* canvas) const {
+@@ -1042,14 +1045,18 @@ void TabStyleViewsImpl::PaintSeparators(gfx::Canvas* canvas) const {
                                                     SK_AlphaOPAQUE));
    };
  

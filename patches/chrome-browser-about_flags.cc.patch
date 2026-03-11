@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 65c8483745338e2b27785a0eff3968a3b9f5025c..cb57b58200539c9cb8c87e5ebf1aff5e633d04ab 100644
+index aee4feb54ff0bc7283080188d085bccf54f87a98..22583437e414000dd773eccccfbc4521f5ad2fa7 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4794,6 +4794,7 @@ const FeatureEntry::FeatureVariation kSigninPromoOnAvatarPillVariation[] = {
+@@ -4822,6 +4822,7 @@ const FeatureEntry::FeatureVariation kSigninPromoOnAvatarPillVariation[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {
