@@ -314,14 +314,13 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, CreateLineChart) {
     ];
     const labels = {sales: 'Sales ($)', profit: 'Profit ($)'};
     chartUtil.createLineChart(data, labels);
-    console.log('Chart created');
   )";
 
   std::string output;
   std::vector<mojom::ToolArtifactPtr> artifacts;
   ExecuteCode(script, &output, &artifacts);
 
-  EXPECT_EQ(output, "Chart created");
+  EXPECT_EQ(output, "Chart created successfully");
   ASSERT_EQ(artifacts.size(), 1u);
 
   const auto& artifact = artifacts[0];
@@ -350,9 +349,7 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
   std::vector<mojom::ToolArtifactPtr> artifacts;
   ExecuteCode(script, &output, &artifacts);
 
-  EXPECT_THAT(
-      output,
-      HasSubstr("Error: Artifact type 'unsupported_type' is not supported"));
+  EXPECT_EQ(output, "Error: Artifact type 'unsupported_type' is not supported");
   EXPECT_TRUE(artifacts.empty());
 }
 
