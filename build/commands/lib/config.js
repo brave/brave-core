@@ -387,6 +387,7 @@ Config.prototype.buildArgs = function () {
     is_ubsan_vptr: this.is_ubsan,
     is_ubsan_no_recover: this.is_ubsan,
     is_msan: this.is_msan,
+    use_prebuilt_instrumented_libraries: this.is_msan,
     is_component_build: this.isComponentBuild(),
     is_universal_binary: this.isUniversalBinary,
     target_cpu: this.targetArch,
