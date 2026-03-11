@@ -1,10 +1,7 @@
 include_rules = [
   "+brave/components/ai_chat/content/browser",
   "+brave/components/ai_chat/core/browser",
-  "+brave/components/ai_chat/core/browser",
   "+brave/components/ai_chat/core/common",
-  "+brave/components/ai_rewriter/common",
-  "+brave/components/ai_rewriter/common/features.h",
   "+brave/components/brave_shields/core/common",
   "+brave/components/containers/buildflags",
   "+brave/components/containers/content/browser",

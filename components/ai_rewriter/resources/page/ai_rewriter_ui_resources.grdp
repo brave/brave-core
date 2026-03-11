@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<grit-part>
-  <include name="IDR_REWRITER_UI_HTML" file="../ai_rewriter/resources/page/rewriter_ui.html"
-    type="BINDATA" />
-</grit-part>
