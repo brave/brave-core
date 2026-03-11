@@ -1,11 +1,11 @@
 diff --git a/third_party/blink/public/common/BUILD.gn b/third_party/blink/public/common/BUILD.gn
-index 6c8ba7eac1b6478cab2e76f7581c9fe8856b8add..deb045d4ea2a638136213ced5b1e427da6df9f33 100644
+index 63bbbe5602654a604f449e3d743a6addb2e3b148..a386cd6d0ab6e24235a7852019a8d53877d4aa31 100644
 --- a/third_party/blink/public/common/BUILD.gn
 +++ b/third_party/blink/public/common/BUILD.gn
-@@ -391,6 +391,7 @@ source_set("headers") {
-   # TODO(crbug.com/40031409): Fix code that adds exit-time destructors and
-   # enable the diagnostic by removing this line.
-   configs += [ "//build/config/compiler:no_exit_time_destructors" ]
+@@ -386,6 +386,7 @@ source_set("headers") {
+   if (is_mac) {
+     sources += [ "sandbox_support/sandbox_support_mac.h" ]
+   }
 +  import("//brave/components/brave_wallet/sources.gni") deps += brave_blink_public_common_deps
  }
  

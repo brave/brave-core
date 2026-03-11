@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index a37a4d23d7bee7b46f24c1bdb9d7072b1fb2820f..98fdb84587ccfdb279351e9597793b0f0f207847 100644
+index f20b61d89fd27f76d112700a385727ed869c0677..e715930002186e85c6443c94b8f91143e5d916f8 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
 @@ -258,6 +258,7 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
-     {ContentSettingsType::DEVICE_ATTRIBUTES, nullptr},
      {ContentSettingsType::PERMISSION_ACTIONS_HISTORY, nullptr},
      {ContentSettingsType::SUSPICIOUS_NOTIFICATION_SHOW_ORIGINAL, nullptr},
+     {ContentSettingsType::DEPRECATED_SUB_APP_INSTALLATION_PROMPTS, nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  });
  
@@ -34,7 +34,7 @@ index a37a4d23d7bee7b46f24c1bdb9d7072b1fb2820f..98fdb84587ccfdb279351e9597793b0f
      case ProviderType::kWebuiAllowlistProvider:
      case ProviderType::kComponentExtensionProvider:
        return SiteSettingSource::kAllowlist;
-@@ -748,6 +752,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
+@@ -749,6 +753,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
  std::string_view ProviderToDefaultSettingSourceString(
      const ProviderType provider) {
    switch (provider) {
@@ -42,7 +42,7 @@ index a37a4d23d7bee7b46f24c1bdb9d7072b1fb2820f..98fdb84587ccfdb279351e9597793b0f
      case ProviderType::kPolicyProvider:
        return "policy";
      case ProviderType::kSupervisedProvider:
-@@ -872,6 +877,7 @@ base::DictValue GetExceptionForPage(
+@@ -874,6 +879,7 @@ base::DictValue GetExceptionForPage(
    exception.Set(kSource, SiteSettingSourceToString(source));
    exception.Set(kIncognito, incognito);
    exception.Set(kIsEmbargoed, is_embargoed);

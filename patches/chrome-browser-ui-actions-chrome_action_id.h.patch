@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/actions/chrome_action_id.h b/chrome/browser/ui/actions/chrome_action_id.h
-index 3c03bd655e7e7e63f4e7ff7e85094d93b92b690c..13fa66e6b54e94125be69797a12d15bdb9db8273 100644
+index 6a06451d2e0752629901379fa84c08db1f744f77..d19e2a6f796577083db3184bd997824769040e5a 100644
 --- a/chrome/browser/ui/actions/chrome_action_id.h
 +++ b/chrome/browser/ui/actions/chrome_action_id.h
 @@ -556,6 +556,7 @@
@@ -16,5 +16,5 @@ index 3c03bd655e7e7e63f4e7ff7e85094d93b92b690c..13fa66e6b54e94125be69797a12d15bd
    E(kActionTabSearch, IDC_TAB_SEARCH) \
 +  E(kActionShowPartitionedStorage) \
    E(kActionSplitTab, IDC_SPLIT_TAB) \
+   E(kActionFederation) \
    E(kActionGlicContextualCueing) \
- 
