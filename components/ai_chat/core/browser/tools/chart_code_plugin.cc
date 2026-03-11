@@ -51,6 +51,7 @@ const chartUtil = {
       chartData.labels = labels;
     }
     codeExecArtifacts.push({ type: 'line_chart', content: chartData });
+    console.log('Chart created successfully');
   }
 };
 )";
