@@ -208,6 +208,8 @@ CodeExecutionTool::CodeExecutionTool(content::BrowserContext* browser_context)
       {"Execute JavaScript code and capture console output. "
        "Use only when the task requires code execution for providing an "
        "accurate answer. "
+       "The user will not be able to directly view the code or the direct "
+       "output. "
        "Do not use this if you are able to answer without executing code. "
        "Do not use this for content generation. "
        "Do not use this for fetching information from the internet. "
@@ -222,7 +224,8 @@ CodeExecutionTool::CodeExecutionTool(content::BrowserContext* browser_context)
        " - Financial calculations (e.g. compound interest)\n"
        " - Analyzing data or web content\n"
        "Example tasks that do not require code execution:\n"
-       " - Very simple calculations (e.g. 2 + 2)\n"
+       " - Simple arithmetic (e.g. console.log(2 + 2))\n"
+       " - Printing static text (e.g. console.log(\"Hello World\"))\n"
        " - Finding the 4th prime number\n"
        " - Retrieving weather information for a location"});
 }
