@@ -9,7 +9,7 @@ import { scoped } from '$web-common/scoped_css'
 export const style = scoped.css`
   & {
     background: ${color.page.background};
-    padding: 16px;
+    padding: 16px 16px 16px 12px;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -17,20 +17,25 @@ export const style = scoped.css`
   }
 
   .header {
-    --leo-icon-size: 20px;
-
     display: flex;
-    gap: 8px;
+    gap: 4px;
     align-items: flex-start;
 
     leo-button {
-      flex: 0 0 auto;
-      margin-left: -4px;
+      --leo-button-padding: 4px;
+
+      border-radius: 50%;
+      flex: 0;
+
+      &:hover {
+        background: ${color.button.hover};
+      }
     }
   }
 
   .text {
     flex: 1 1 auto;
+    overflow: hidden;
   }
 
   .host {

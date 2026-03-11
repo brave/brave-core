@@ -82,6 +82,8 @@ inline constexpr base::FeatureParam<size_t>
     kAdblockOnlyModePromptAfterPageReloadsMax{
         &kAdblockOnlyMode, "prompt_after_page_reloads_max", 0};
 
+BASE_DECLARE_FEATURE(kShowUpdatedShieldsPanel);
+
 }  // namespace features
 }  // namespace brave_shields
 

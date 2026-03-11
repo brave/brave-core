@@ -4,12 +4,14 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import Button from '@brave/leo/react/button'
 import Dropdown from '@brave/leo/react/dropdown'
 import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
 import { useShieldsApi } from '../api/shields_api_context'
 import { StringKey, getString } from './strings'
+import { OpenTabLink } from './open_tab_link'
 
 import {
   AdBlockMode,
@@ -45,6 +47,12 @@ export function AdvancedSettings(props: Props) {
     <div
       data-css-scope={style.scope}
       className='scrollable'
+      onScroll={(e) => {
+        e.currentTarget.toggleAttribute(
+          'data-scrolled',
+          e.currentTarget.scrollTop > 0,
+        )
+      }}
     >
       <AdBlockControl showDetails={props.showAdsBlocked} />
       <HttpsUpgradeControls />
@@ -94,12 +102,14 @@ function AdBlockControl(props: { showDetails: () => void }) {
           {getString(getAdBlockModeLabel(AdBlockMode.ALLOW))}
         </leo-option>
       </Dropdown>
-      <button
+      <Button
         onClick={props.showDetails}
-        disabled={adsBlocked <= 0}
+        isDisabled={adsBlocked <= 0}
+        kind='plain-faint'
+        fab
       >
         <Icon name='carat-right' />
-      </button>
+      </Button>
     </div>
   )
 }
@@ -204,14 +214,16 @@ function BlockScriptsControls(props: { showDetails: () => void }) {
           }}
         />
       </div>
-      <button
+      <Button
         onClick={props.showDetails}
-        disabled={
+        isDisabled={
           !isNoscriptEnabled || !hasBlockedOrAllowed || scriptsBlockedEnforced
         }
+        kind='plain-faint'
+        fab
       >
         <Icon name='carat-right' />
-      </button>
+      </Button>
     </div>
   )
 }
@@ -287,16 +299,18 @@ function FingerprintingControls(props: { showDetails: () => void }) {
           />
         </div>
       )}
-      <button
+      <Button
         onClick={props.showDetails}
-        disabled={
+        isDisabled={
           !webcompatExceptionsEnabled
           || invokedWebcompatCount <= 0
           || fingerprintMode === FingerprintMode.ALLOW_MODE
         }
+        kind='plain-faint'
+        fab
       >
         <Icon name='carat-right' />
-      </button>
+      </Button>
     </div>
   )
 }
@@ -333,7 +347,9 @@ function CookieBlockControls() {
           {getString('BRAVE_SHIELDS_COOKIES_ALLOWED_ALL')}
         </leo-option>
       </Dropdown>
-      <div />
+      <OpenTabLink url='chrome://settings/shields'>
+        <Icon name='launch' />
+      </OpenTabLink>
     </div>
   )
 }
@@ -392,7 +408,9 @@ function BlockElementsControls() {
           {getString('BRAVE_SHIELDS_SHOW_ALL_BLOCKED_ELEMENTS')}
         </button>
       </div>
-      <div />
+      <OpenTabLink url='chrome://settings/shields'>
+        <Icon name='launch' />
+      </OpenTabLink>
     </div>
   )
 }

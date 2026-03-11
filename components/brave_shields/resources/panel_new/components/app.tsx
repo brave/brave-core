@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 
+import { useShieldsApi } from '../api/shields_api_context'
 import { MainCard } from './main_card'
 import { Footer } from './footer'
 import { AdvancedSettingsHeader } from './advanced_settings_header'
@@ -14,8 +15,8 @@ import { FingerprintingDetails } from './fingerprinting_details'
 import { ScriptsBlockedDetails } from './scripts_blocked_details'
 import { MaybeAdBlockOnlyPrompt } from './ad_block_only_prompt'
 import { MaybeAdBlockOnlyNotice } from './ad_block_only_notice'
-import { useInitializedStatus } from './use_initialized_status'
 import { useCacheInvalidator } from './use_cache_invalidator'
+import { useInitializedStatus } from './use_initialized_status'
 
 import { style } from './app.style'
 
@@ -28,6 +29,8 @@ type AppView =
 export function App() {
   useCacheInvalidator()
 
+  const api = useShieldsApi()
+  const { data: browserWindowHeight } = api.useGetBrowserWindowHeight()
   const initialized = useInitializedStatus()
   const [view, setView] = React.useState<AppView>('main')
 
@@ -52,16 +55,18 @@ export function App() {
     }
   }
 
-  if (!initialized) {
-    return (
-      <div
-        data-css-scope={style.scope}
-        className='app-loading'
-      />
-    )
+  const inlineStyles = {
+    '--browser-window-height': Math.max(browserWindowHeight ?? 0, 600) + 'px',
   }
 
-  return <div data-css-scope={style.scope}>{renderContent()}</div>
+  return (
+    <div
+      data-css-scope={style.scope}
+      style={inlineStyles as React.CSSProperties}
+    >
+      {renderContent()}
+    </div>
+  )
 }
 
 function MainView(props: { showView: (view: AppView) => void }) {
