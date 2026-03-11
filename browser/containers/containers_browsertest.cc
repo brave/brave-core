@@ -4,9 +4,12 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/test/run_until.h"
+#include "brave/browser/containers/containers_service_factory.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/browser/containers_service.h"
+#include "brave/components/containers/core/browser/prefs.h"
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "chrome/browser/profiles/profile.h"
@@ -220,6 +223,10 @@ class ContainersBrowserTest : public InProcessBrowserTest {
            "});";
   }
 
+  ContainersService* GetContainersService() {
+    return ContainersServiceFactory::GetForProfile(browser()->profile());
+  }
+
  protected:
   base::test::ScopedFeatureList feature_list_;
   net::EmbeddedTestServer https_server_;
@@ -413,6 +420,85 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   EXPECT_EQ(
       "persistent_value",
       content::EvalJs(web_contents_reloaded, GetIndexedDBJS("persistent_key")));
+}
+
+// With the container still in the synced list, the first navigation in a
+// container tab records a used snapshot via ContainerTabTracker. After the
+// synced entry is removed, session restore still exposes the partition on the
+// navigation entry and GetRuntimeContainerById resolves metadata from used
+// prefs.
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       PRE_RuntimeContainerAvailableAfterSyncedRemovalRestart) {
+  std::vector<containers::mojom::ContainerPtr> synced;
+  synced.push_back(containers::mojom::Container::New(
+      kTestContainerId, "ReadableName", containers::mojom::Icon::kWork,
+      SK_ColorRED));
+  SetContainersToPrefs(synced, *browser()->profile()->GetPrefs());
+
+  const GURL url("https://a.test/simple.html");
+  NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser()->profile(), kContainersStoragePartitionDomain, kTestContainerId,
+      browser()->profile()->IsOffTheRecord());
+  ui_test_utils::NavigateToURL(&params);
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents);
+  ASSERT_TRUE(content::WaitForLoadStop(web_contents));
+  EXPECT_EQ(url, web_contents->GetLastCommittedURL());
+
+  const ContainersService* service = GetContainersService();
+  ASSERT_TRUE(service);
+  EXPECT_TRUE(service->GetRuntimeContainerById(kTestContainerId));
+
+  PrefService* prefs = browser()->profile()->GetPrefs();
+  EXPECT_TRUE(GetContainerFromPrefs(*prefs, kTestContainerId));
+  mojom::ContainerPtr used_after_nav =
+      GetUsedContainerFromPrefs(*prefs, kTestContainerId);
+  ASSERT_TRUE(used_after_nav);
+  EXPECT_EQ("ReadableName", used_after_nav->name);
+
+  // Remove the container from the synced list.
+  SetContainersToPrefs({}, *prefs);
+  EXPECT_FALSE(GetContainerFromPrefs(*prefs, kTestContainerId));
+  mojom::ContainerPtr used_after_removal =
+      GetUsedContainerFromPrefs(*prefs, kTestContainerId);
+  ASSERT_TRUE(used_after_removal);
+  EXPECT_EQ("ReadableName", used_after_removal->name);
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       RuntimeContainerAvailableAfterSyncedRemovalRestart) {
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents);
+  ASSERT_TRUE(content::WaitForLoadStop(web_contents));
+
+  content::NavigationEntry* entry =
+      web_contents->GetController().GetLastCommittedEntry();
+  ASSERT_TRUE(entry);
+  auto storage_key = entry->GetStoragePartitionKeyToRestore();
+  ASSERT_TRUE(storage_key.has_value())
+      << "Restored navigation should expose container storage partition key";
+  EXPECT_EQ(kContainersStoragePartitionDomain, storage_key->first);
+  EXPECT_EQ(kTestContainerId, storage_key->second);
+
+  content::StoragePartitionConfig frame_config =
+      web_contents->GetPrimaryMainFrame()->GetStoragePartition()->GetConfig();
+  EXPECT_EQ(kContainersStoragePartitionDomain, frame_config.partition_domain());
+  EXPECT_EQ(kTestContainerId, frame_config.partition_name());
+
+  const ContainersService* service = GetContainersService();
+  ASSERT_TRUE(service);
+  mojom::ContainerPtr runtime =
+      service->GetRuntimeContainerById(storage_key->second);
+  ASSERT_TRUE(runtime);
+  EXPECT_EQ(kTestContainerId, runtime->id);
+  EXPECT_EQ("ReadableName", runtime->name);
+  EXPECT_EQ(mojom::Icon::kWork, runtime->icon);
+  EXPECT_EQ(SK_ColorRED, runtime->background_color);
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,

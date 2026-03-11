@@ -56,8 +56,6 @@ std::vector<ContainerModel> GetContainerModels(const ContainersService& service,
 
 // Resolves a runtime container model using synced pref. Falls back to an
 // unknown model when the container is not found.
-// TODO(https://github.com/brave/brave-browser/issues/53604): Will fallback to
-// local used-containers cache.
 ContainerModel GetRuntimeContainerModel(const ContainersService& service,
                                         std::string_view id,
                                         float scale_factor);

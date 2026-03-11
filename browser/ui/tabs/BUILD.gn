@@ -49,6 +49,7 @@ if (!is_android) {
 
     if (enable_containers) {
       deps += [
+        "//brave/browser/containers",
         "//brave/components/containers/core/browser",
         "//brave/components/containers/core/common:features",
       ]
