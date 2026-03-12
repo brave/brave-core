@@ -10,7 +10,6 @@
 
 #include "base/feature_list.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -45,11 +44,6 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/renderer/page_content_extractor.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
-
-#if BUILDFLAG(ENABLE_AI_REWRITER)
-#include "brave/components/ai_rewriter/common/features.h"
-#include "brave/components/ai_rewriter/renderer/ai_rewriter_agent.h"
-#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/common/features.h"
@@ -228,12 +222,6 @@ void BraveContentRendererClient::RenderFrameCreated(
                                       ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
-
-#if BUILDFLAG(ENABLE_AI_REWRITER)
-  if (ai_rewriter::features::IsAIRewriterEnabled()) {
-    new ai_rewriter::AIRewriterAgent(render_frame, registry);
-  }
-#endif
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   if (base::FeatureList::IsEnabled(

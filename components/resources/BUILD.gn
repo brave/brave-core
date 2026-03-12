@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
-import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
@@ -72,7 +71,6 @@ brave_grit("static_resources") {
 
   defines = [
     "enable_ai_chat=$enable_ai_chat",
-    "enable_ai_rewriter=$enable_ai_rewriter",
     "enable_brave_vpn=$enable_brave_vpn",
     "enable_brave_wallet=$enable_brave_wallet",
     "enable_playlist_webui=$enable_playlist_webui",
@@ -86,7 +84,6 @@ repack("resources") {
   deps = [
     ":scaled_resources",
     ":static_resources",
-    "//brave/components/ai_rewriter/common/buildflags",
     "//brave/components/brave_account/resources",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/skus/browser/resources:generated_resources",
@@ -169,12 +166,6 @@ repack("resources") {
       ]
       sources += [ "$root_gen_dir/brave/components/speedreader/resources/panel/brave_speedreader_toolbar_generated.pak" ]
     }
-  }
-
-  if (enable_ai_rewriter) {
-    deps +=
-        [ "//brave/components/ai_rewriter/resources/page:generated_resources" ]
-    sources += [ "$root_gen_dir/brave/components/ai_rewriter/resources/page/ai_rewriter_ui_generated.pak" ]
   }
 
   if (enable_brave_wallet) {

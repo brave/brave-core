@@ -8,7 +8,6 @@ import("//brave/browser/metrics/buildflags/buildflags.gni")
 import("//brave/browser/updater/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
-import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
@@ -1344,10 +1343,6 @@ test("brave_browser_tests") {
     if (!is_android) {
       deps += [ "//brave/browser/ui/webui/tab_search:browser_tests" ]
     }
-  }
-
-  if (enable_ai_rewriter) {
-    deps += [ "//brave/browser/ui/ai_rewriter:browsertest" ]
   }
 
   # API tests and extension deps

@@ -39,7 +39,6 @@ import("//brave/build/config.gni")
 import("//brave/chromium_src/chrome/browser/prefs/sources.gni")
 import("//brave/chromium_src/chrome/browser/sources.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
-import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
@@ -168,7 +167,6 @@ brave_chrome_browser_deps = [
   # TODO(https://github.com/brave/brave-browser/issues/53190): remove when
   # fixed.
   "//brave/components/ai_chat/core/common/mojom",
-  "//brave/components/ai_rewriter/common/buildflags",
   "//brave/components/body_sniffer",
   "//brave/components/brave_account",
   "//brave/components/brave_account:features",
@@ -487,10 +485,6 @@ if (enable_speedreader) {
 
 if (enable_request_otr) {
   brave_chrome_browser_deps += [ "//brave/components/request_otr/common" ]
-}
-
-if (enable_ai_rewriter) {
-  brave_chrome_browser_deps += [ "//brave/components/ai_rewriter/common" ]
 }
 
 if (enable_web_discovery_native) {
