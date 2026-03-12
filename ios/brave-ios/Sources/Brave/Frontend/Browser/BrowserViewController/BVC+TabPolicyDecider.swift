@@ -54,14 +54,6 @@ extension BrowserViewController: TabPolicyDecider {
       tab.browserData?.setCustomUserScript(scripts: scriptTypes)
     }
 
-    if let responseURL = responseURL,
-      let response = response as? HTTPURLResponse
-    {
-      let internalUrl = InternalURL(responseURL)
-
-      tab.rewardsReportingState?.httpStatusCode = response.statusCode
-    }
-
     let request = response.url.flatMap { pendingRequests[$0.absoluteString] }
 
     // If the content type is not HTML, create a temporary document so it can be downloaded and
@@ -97,8 +89,6 @@ extension BrowserViewController: TabPolicyDecider {
       tab.externalAppPopupContinuation = nil
       tab.externalAppPopup = nil
     }
-
-    tab.rewardsReportingState?.wasRestored = tab.isRestoring
 
     // Handle internal:// urls
     if InternalURL.isValid(url: requestURL) {
@@ -223,8 +213,6 @@ extension BrowserViewController: TabPolicyDecider {
       }
     }
 
-    tab.rewardsReportingState?.isNewNavigation =
-      requestInfo.navigationType != .backForward && requestInfo.navigationType != .reload
     tab.currentRequestURL = requestURL
 
     // Website redirection logic

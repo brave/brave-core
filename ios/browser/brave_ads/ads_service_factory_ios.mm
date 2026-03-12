@@ -28,17 +28,14 @@ AdsServiceFactoryIOS* AdsServiceFactoryIOS::GetInstance() {
 }
 
 AdsServiceFactoryIOS::AdsServiceFactoryIOS()
-    : ProfileKeyedServiceFactoryIOS("AdsService") {}
+    : ProfileKeyedServiceFactoryIOS("AdsService",
+                                    ProfileSelection::kNoInstanceInIncognito) {}
 
 AdsServiceFactoryIOS::~AdsServiceFactoryIOS() = default;
 
 std::unique_ptr<KeyedService> AdsServiceFactoryIOS::BuildServiceInstanceFor(
     ProfileIOS* profile) const {
   CHECK(profile);
-  if (profile->IsOffTheRecord()) {
-    return nullptr;
-  }
-
   return std::make_unique<AdsServiceImplIOS>(profile->GetPrefs());
 }
 
