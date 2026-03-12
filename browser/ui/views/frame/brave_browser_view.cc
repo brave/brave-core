@@ -1207,6 +1207,28 @@ ClientFrameElementInfo BraveBrowserView::GetFrameElementInfo() const {
   return info;
 }
 
+#if BUILDFLAG(IS_MAC)
+bool BraveBrowserView::UsesImmersiveFullscreenMode() const {
+  // Don't use immersive mode with vertical tab.
+  // As immersive mode and vertical tab mode both uses its own separated widget
+  // for hosting tab strip, both refers same tab strip now.
+  // Needs more work to use immersive with vertical tab.
+  if (tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
+    return false;
+  }
+
+  return BrowserView::UsesImmersiveFullscreenMode();
+}
+
+bool BraveBrowserView::UsesImmersiveFullscreenTabbedMode() const {
+  if (tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
+    return false;
+  }
+
+  return BrowserView::UsesImmersiveFullscreenTabbedMode();
+}
+#endif
+
 bool BraveBrowserView::IsSidebarVisible() const {
   return sidebar_container_view_ && sidebar_container_view_->IsSidebarVisible();
 }

@@ -136,6 +136,11 @@ class BraveBrowserView : public BrowserView,
   bool IsWebPanelContents(content::WebContents* contents) override;
   ClientFrameElementInfo GetFrameElementInfo() const override;
 
+#if BUILDFLAG(IS_MAC)
+  bool UsesImmersiveFullscreenMode() const override;
+  bool UsesImmersiveFullscreenTabbedMode() const override;
+#endif
+
 #if defined(USE_AURA)
   views::View* sidebar_host_view() { return sidebar_host_view_; }
 #endif

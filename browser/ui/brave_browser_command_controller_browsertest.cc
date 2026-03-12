@@ -549,6 +549,29 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   ASSERT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
 }
 
+#if BUILDFLAG(IS_MAC)
+// On macOS, we block vertical tab mode toggling in fullscreen.
+// Immersive fullscreen feeature is enabled by default but
+// it's not compatible with vertical tab now.
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       VerticalTabToggleEnabledState) {
+  EXPECT_FALSE(browser()->window()->IsFullscreen());
+  EXPECT_TRUE(tabs::utils::IsVerticalTabToggleEnabled(browser()));
+
+  // Enter browser fullscreen.
+  chrome::ToggleFullscreenMode(browser());
+  EXPECT_TRUE(browser()->window()->IsFullscreen());
+  browser()->command_controller()->FullscreenStateChanged();
+  EXPECT_FALSE(tabs::utils::IsVerticalTabToggleEnabled(browser()));
+
+  // Exit fullscreen.
+  chrome::ToggleFullscreenMode(browser());
+  EXPECT_FALSE(browser()->window()->IsFullscreen());
+  browser()->command_controller()->FullscreenStateChanged();
+  EXPECT_TRUE(tabs::utils::IsVerticalTabToggleEnabled(browser()));
+}
+#endif
+
 class BraveBrowserCommandControllerWithSideBySideTest
     : public BraveBrowserCommandControllerTest {
  public:
