@@ -16,6 +16,7 @@ source_set("brave_origin_startup") {
   ]
 
   public_deps = [
+    "//brave/components/brave_origin/buildflags",
     "//brave/components/brave_origin/mojom",
     "//brave/components/skus/common:mojom",
     "//mojo/public/cpp/bindings",
@@ -27,7 +28,6 @@ source_set("brave_origin_startup") {
     "//brave/browser/resources/brave_origin_startup:pack_static_resources",
     "//brave/browser/skus",
     "//brave/components/brave_origin:pref_names",
-    "//brave/components/brave_origin/buildflags",
     "//brave/components/resources:strings_grit",
     "//brave/components/skus/browser",
     "//chrome/browser:browser_process",
