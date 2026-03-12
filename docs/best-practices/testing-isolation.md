@@ -703,3 +703,24 @@ TEST_F(WalletServiceTest, Error) { ... }
 TEST_F(WalletServiceTest, SendTransaction_ReturnsErrorForInsufficientBalance) { ... }
 TEST_F(WalletServiceTest, GetTokenBalances_HandlesNetworkTimeoutGracefully) { ... }
 ```
+
+---
+
+<a id="TI-039"></a>
+
+## ✅ PRs Should Include Reasonable Test Coverage
+
+**Code that can be tested should be tested.** When reviewing or writing a PR, ensure that new logic, branches, and edge cases have corresponding tests. This applies to all PRs, not just bug fixes. Don't be overly strict — use judgment — but flag obvious gaps where meaningful test coverage is missing.
+
+**If code is difficult to test, suggest refactors that improve testability** rather than accepting untested code. Common refactors include extracting logic into pure functions, adding dependency injection, or separating I/O from computation.
+
+```cpp
+// ❌ WRONG - new feature PR with no tests for core logic
+// "We'll add tests later" or "it's too hard to test"
+
+// ✅ CORRECT - PR includes tests for the new behavior
+// If the code is hard to test, refactor to make it testable:
+//   - Extract business logic into a standalone function
+//   - Use dependency injection for external dependencies
+//   - Separate pure computation from side effects
+```
