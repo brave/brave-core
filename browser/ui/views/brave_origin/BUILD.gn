@@ -33,3 +33,18 @@ source_set("brave_origin") {
     "//url",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_origin_startup_view_unittest.cc" ]
+
+  deps = [
+    ":brave_origin",
+    "//base",
+    "//brave/components/brave_origin:pref_names",
+    "//brave/components/skus/browser",
+    "//components/prefs:test_support",
+    "//testing/gtest",
+  ]
+}

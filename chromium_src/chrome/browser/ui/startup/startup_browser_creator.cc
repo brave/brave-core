@@ -22,7 +22,6 @@
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/platform_util.h"
 #include "chrome/browser/profiles/profile_manager.h"
-#include "chrome/common/chrome_switches.h"
 #include "components/prefs/pref_service.h"
 #endif
 
@@ -96,13 +95,42 @@ void BraveStartupBrowserCreatorImpl::Launch(
 }
 
 #define StartupBrowserCreatorImpl BraveStartupBrowserCreatorImpl
-#define Start Start_ChromiumImpl
-#define ProcessCommandLineAlreadyRunning \
-  ProcessCommandLineAlreadyRunning_ChromiumImpl
+#define Start(...) Start_ChromiumImpl(__VA_ARGS__)
+#define ProcessCommandLineAlreadyRunning(...) \
+  ProcessCommandLineAlreadyRunning_ChromiumImpl(__VA_ARGS__)
 #include <chrome/browser/ui/startup/startup_browser_creator.cc>
 #undef ProcessCommandLineAlreadyRunning
 #undef Start
 #undef StartupBrowserCreatorImpl
+
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+namespace {
+
+// Concrete delegate that wires up the startup dialog to real browser services.
+class StartupDialogDelegate : public BraveOriginStartupView::Delegate {
+ public:
+  void OpenExternal(const GURL& url) override {
+    platform_util::OpenExternal(url);
+  }
+
+  void AttemptExit() override { chrome::AttemptExit(); }
+
+  void CreateSystemProfile(
+      BraveOriginStartupView::ProfileCallback callback) override {
+    g_browser_process->profile_manager()->CreateProfileAsync(
+        ProfileManager::GetSystemProfilePath(), std::move(callback));
+  }
+
+  void CreateDefaultProfile(
+      BraveOriginStartupView::ProfileCallback callback) override {
+    g_browser_process->profile_manager()->CreateProfileAsync(
+        g_browser_process->profile_manager()->GetLastUsedProfileDir(),
+        std::move(callback));
+  }
+};
+
+}  // namespace
+#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 
 // For Brave Origin branded builds, intercept Start() to show a purchase
 // validation dialog before any browser window or profile picker opens. Start()
@@ -115,8 +143,7 @@ bool StartupBrowserCreator::Start(const base::CommandLine& cmd_line,
                                   StartupProfileInfo profile_info,
                                   const Profiles& last_opened_profiles) {
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
-  if (!cmd_line.HasSwitch(switches::kTestType) &&
-      BraveOriginStartupView::ShouldShowDialog(
+  if (BraveOriginStartupView::ShouldShowDialog(
           g_browser_process->local_state())) {
     // Capture first_run_tabs_ by value because `this` (the
     // StartupBrowserCreator) is destroyed by chrome_browser_main.cc
@@ -135,20 +162,7 @@ bool StartupBrowserCreator::Start(const base::CommandLine& cmd_line,
             },
             std::move(first_run_tabs_), cmd_line, cur_dir,
             std::move(profile_info), last_opened_profiles),
-        base::BindRepeating(
-            [](const GURL& url) { platform_util::OpenExternal(url); }),
-        base::BindRepeating(&chrome::AttemptExit),
-        base::BindRepeating(
-            [](BraveOriginStartupView::ProfileCallback callback) {
-              g_browser_process->profile_manager()->CreateProfileAsync(
-                  ProfileManager::GetSystemProfilePath(), std::move(callback));
-            }),
-        base::BindRepeating(
-            [](BraveOriginStartupView::ProfileCallback callback) {
-              g_browser_process->profile_manager()->CreateProfileAsync(
-                  g_browser_process->profile_manager()->GetLastUsedProfileDir(),
-                  std::move(callback));
-            }));
+        std::make_unique<StartupDialogDelegate>());
     return true;
   }
 #endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)

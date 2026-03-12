@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/command_line.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
@@ -25,6 +26,7 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
+#include "content/public/common/content_switches.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/controls/webview/webview.h"
 #include "ui/views/widget/widget.h"
@@ -37,6 +39,7 @@ constexpr int kDialogWidth = 500;
 constexpr int kDialogHeight = 450;
 
 BraveOriginStartupView* g_startup_view = nullptr;
+std::optional<bool> g_should_show_dialog_override;
 
 bool HasOriginSkuCredentials(PrefService* local_state) {
   const auto& skus_state = local_state->GetDict(skus::prefs::kSkusState);
@@ -65,23 +68,33 @@ bool HasOriginSkuCredentials(PrefService* local_state) {
 
 // static
 bool BraveOriginStartupView::ShouldShowDialog(PrefService* local_state) {
+  if (g_should_show_dialog_override.has_value()) {
+    return *g_should_show_dialog_override;
+  }
+
+  // Skip the dialog when running under test infrastructure.
+  if (base::CommandLine::ForCurrentProcess()->HasSwitch(switches::kTestType)) {
+    return false;
+  }
+
   return !local_state->GetBoolean(brave_origin::kOriginPurchaseValidated) ||
          !HasOriginSkuCredentials(local_state);
 }
 
 // static
-void BraveOriginStartupView::Show(
-    base::OnceClosure on_complete,
-    OpenExternalCallback open_external,
-    base::RepeatingClosure attempt_exit,
-    CreateProfilesCallback create_system_profile,
-    CreateProfilesCallback create_default_profile) {
+void BraveOriginStartupView::SetShouldShowDialogForTesting(  // IN-TEST
+    std::optional<bool> override) {
+  g_should_show_dialog_override = override;
+}
+
+// static
+void BraveOriginStartupView::Show(base::OnceClosure on_complete,
+                                  std::unique_ptr<Delegate> delegate) {
   if (g_startup_view) {
     return;
   }
-  g_startup_view = new BraveOriginStartupView(
-      std::move(on_complete), std::move(open_external), std::move(attempt_exit),
-      std::move(create_system_profile), std::move(create_default_profile));
+  g_startup_view =
+      new BraveOriginStartupView(std::move(on_complete), std::move(delegate));
   g_startup_view->Display();
 }
 
@@ -99,18 +112,12 @@ bool BraveOriginStartupView::IsShowing() {
 
 BraveOriginStartupView::BraveOriginStartupView(
     base::OnceClosure on_complete,
-    OpenExternalCallback open_external,
-    base::RepeatingClosure attempt_exit,
-    CreateProfilesCallback create_system_profile,
-    CreateProfilesCallback create_default_profile)
+    std::unique_ptr<Delegate> delegate)
     : keep_alive_(
           std::make_unique<ScopedKeepAlive>(KeepAliveOrigin::USER_MANAGER_VIEW,
                                             KeepAliveRestartOption::DISABLED)),
-      on_complete_(std::move(on_complete)),
-      open_external_(std::move(open_external)),
-      attempt_exit_(std::move(attempt_exit)),
-      create_system_profile_(std::move(create_system_profile)),
-      create_default_profile_(std::move(create_default_profile)) {
+      delegate_(std::move(delegate)),
+      on_complete_(std::move(on_complete)) {
   SetHasWindowSizeControls(false);
   SetTitle(IDS_BRAVE_ORIGIN_STARTUP_TITLE);
 }
@@ -124,10 +131,10 @@ BraveOriginStartupView::~BraveOriginStartupView() {
 void BraveOriginStartupView::Display() {
   // Load both the system profile (for WebUI) and the default user profile
   // (for SKU service, which requires a regular profile).
-  create_system_profile_.Run(
+  delegate_->CreateSystemProfile(
       base::BindOnce(&BraveOriginStartupView::OnSystemProfileCreated,
                      weak_ptr_factory_.GetWeakPtr()));
-  create_default_profile_.Run(
+  delegate_->CreateDefaultProfile(
       base::BindOnce(&BraveOriginStartupView::OnDefaultProfileCreated,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -239,8 +246,8 @@ void BraveOriginStartupView::OpenBuyWindow() {
                         "account", brave_domains::ServicesEnvironment::STAGING),
                     "/?intent=checkout&product=origin"});
   GURL gurl(url);
-  if (gurl.is_valid() && open_external_) {
-    open_external_.Run(gurl);
+  if (gurl.is_valid() && delegate_) {
+    delegate_->OpenExternal(gurl);
   }
 }
 
@@ -303,8 +310,14 @@ void BraveOriginStartupView::WindowClosing() {
                         std::unique_ptr<ScopedProfileKeepAlive>) {},
                      std::move(keep_alive_), std::move(profile_keep_alive_)));
 
-  if (!validated_) {
-    task_runner->PostTask(FROM_HERE, attempt_exit_);
+  if (!validated_ && delegate_) {
+    // Move delegate_ into the closure so it outlives `this` (which is deleted
+    // in WidgetIsZombie right after WindowClosing returns).
+    task_runner->PostTask(
+        FROM_HERE,
+        base::BindOnce(
+            [](std::unique_ptr<Delegate> delegate) { delegate->AttemptExit(); },
+            std::move(delegate_)));
   }
 }
 
