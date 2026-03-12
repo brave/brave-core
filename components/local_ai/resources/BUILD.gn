@@ -9,22 +9,22 @@ import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/grit/repack.gni")
 
 # Untrusted WebUI for WASM execution at
-# chrome-untrusted://on-device-model-worker/
-transpile_web_ui("on_device_model_worker_ui") {
+# chrome-untrusted://local-ai/
+transpile_web_ui("local_ai_ui") {
   entry_points = [ [
-        "on_device_model_worker",
-        rebase_path("on_device_model_worker.ts"),
+        "local_ai",
+        rebase_path("local_ai.ts"),
       ] ]
   webpack_aliases = [ "browser" ]
-  resource_name = "on_device_model_worker"
+  resource_name = "local_ai"
 
   imports_from = [ "//brave/components/local_ai/resources/" ]
 
   deps = [ "//brave/components/local_ai/core:mojom_js" ]
 }
 
-pack_web_resources("on_device_model_worker_generated") {
-  resource_name = "on_device_model_worker"
+pack_web_resources("local_ai_generated") {
+  resource_name = "local_ai"
   output_dir = "$root_gen_dir/brave/components/local_ai/resources"
-  deps = [ ":on_device_model_worker_ui" ]
+  deps = [ ":local_ai_ui" ]
 }

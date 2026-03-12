@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/webui/local_ai/on_device_model_worker_ui.h"
+#include "brave/browser/ui/webui/local_ai/local_ai_ui.h"
 
 #include <memory>
 #include <utility>
@@ -13,8 +13,8 @@
 #include "brave/components/local_ai/core/url_constants.h"
 #include "brave/components/local_ai/resources/grit/candle_embedding_module_generated.h"
 #include "brave/components/local_ai/resources/grit/candle_embedding_module_generated_map.h"
-#include "brave/components/local_ai/resources/grit/on_device_model_worker_generated.h"
-#include "brave/components/local_ai/resources/grit/on_device_model_worker_generated_map.h"
+#include "brave/components/local_ai/resources/grit/local_ai_generated.h"
+#include "brave/components/local_ai/resources/grit/local_ai_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_contents.h"
@@ -25,16 +25,13 @@
 
 namespace local_ai {
 
-UntrustedOnDeviceModelWorkerUI::UntrustedOnDeviceModelWorkerUI(
-    content::WebUI* web_ui)
+UntrustedLocalAIUI::UntrustedLocalAIUI(content::WebUI* web_ui)
     : ui::MojoWebUIController(web_ui) {
   content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
-      web_ui->GetWebContents()->GetBrowserContext(),
-      kUntrustedOnDeviceModelWorkerURL);
+      web_ui->GetWebContents()->GetBrowserContext(), kUntrustedLocalAIURL);
 
   source->AddResourcePaths(kCandleEmbeddingModuleGenerated);
-  webui::SetupWebUIDataSource(source, kOnDeviceModelWorkerGenerated,
-                              IDR_ON_DEVICE_MODEL_WORKER_HTML);
+  webui::SetupWebUIDataSource(source, kLocalAiGenerated, IDR_LOCAL_AI_HTML);
 
   // Set up CSP to allow WASM execution and Mojo JS from resources
   source->OverrideContentSecurityPolicy(
@@ -46,11 +43,11 @@ UntrustedOnDeviceModelWorkerUI::UntrustedOnDeviceModelWorkerUI(
       network::mojom::CSPDirectiveName::FontSrc, "font-src 'self' data:;");
 }
 
-UntrustedOnDeviceModelWorkerUI::~UntrustedOnDeviceModelWorkerUI() = default;
+UntrustedLocalAIUI::~UntrustedLocalAIUI() = default;
 
-WEB_UI_CONTROLLER_TYPE_IMPL(UntrustedOnDeviceModelWorkerUI)
+WEB_UI_CONTROLLER_TYPE_IMPL(UntrustedLocalAIUI)
 
-void UntrustedOnDeviceModelWorkerUI::BindInterface(
+void UntrustedLocalAIUI::BindInterface(
     mojo::PendingReceiver<mojom::LocalAIService> receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
   LocalAIServiceFactory::BindForProfile(profile, std::move(receiver));
@@ -58,15 +55,14 @@ void UntrustedOnDeviceModelWorkerUI::BindInterface(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-UntrustedOnDeviceModelWorkerUIConfig::UntrustedOnDeviceModelWorkerUIConfig()
+UntrustedLocalAIUIConfig::UntrustedLocalAIUIConfig()
     : content::WebUIConfig(content::kChromeUIUntrustedScheme,
-                           kUntrustedOnDeviceModelWorkerHost) {}
+                           kUntrustedLocalAIHost) {}
 
 std::unique_ptr<content::WebUIController>
-UntrustedOnDeviceModelWorkerUIConfig::CreateWebUIController(
-    content::WebUI* web_ui,
-    const GURL& url) {
-  return std::make_unique<UntrustedOnDeviceModelWorkerUI>(web_ui);
+UntrustedLocalAIUIConfig::CreateWebUIController(content::WebUI* web_ui,
+                                                const GURL& url) {
+  return std::make_unique<UntrustedLocalAIUI>(web_ui);
 }
 
 }  // namespace local_ai

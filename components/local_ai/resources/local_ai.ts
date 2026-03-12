@@ -25,24 +25,15 @@ class PassageEmbedderImpl implements PassageEmbedderInterface {
 
 class PassageEmbedderFactoryImpl implements PassageEmbedderFactoryInterface {
   receiver: PassageEmbedderFactoryReceiver
-  boundEmbedders: PassageEmbedderReceiver[]
 
   constructor() {
     this.receiver = new PassageEmbedderFactoryReceiver(this)
-    this.boundEmbedders = []
   }
 
   bind(receiver: PassageEmbedderPendingReceiver) {
     const impl = new PassageEmbedderImpl()
     const bound = new PassageEmbedderReceiver(impl)
     bound.$.bindHandle(receiver.handle)
-    this.boundEmbedders.push(bound)
-    bound.onConnectionError.addListener(() => {
-      this.boundEmbedders = this.boundEmbedders.filter((r) => r !== bound)
-      if (this.boundEmbedders.length === 0) {
-        localAIService.notifyPassageEmbedderIdle()
-      }
-    })
   }
 
   getPendingRemote() {
@@ -54,4 +45,4 @@ class PassageEmbedderFactoryImpl implements PassageEmbedderFactoryInterface {
 const factory = new PassageEmbedderFactoryImpl()
 localAIService.registerPassageEmbedderFactory(factory.getPendingRemote())
 
-console.debug('[on-device-model-worker] Passage embedder factory initialized')
+console.debug('[local-ai] Passage embedder factory initialized')

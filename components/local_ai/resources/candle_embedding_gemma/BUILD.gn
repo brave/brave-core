@@ -26,7 +26,7 @@ transpile_web_ui("candle_embedding_module") {
 
   no_iife = true
   output_module = true
-  public_asset_path = "chrome-untrusted://on-device-model-worker/"
+  public_asset_path = "chrome-untrusted://local-ai/"
 }
 
 pack_web_resources("candle_embedding_module_generated") {

@@ -8,10 +8,8 @@
 
 namespace local_ai {
 
-inline constexpr char kUntrustedOnDeviceModelWorkerHost[] =
-    "on-device-model-worker";
-inline constexpr char kUntrustedOnDeviceModelWorkerURL[] =
-    "chrome-untrusted://on-device-model-worker/";
+inline constexpr char kUntrustedLocalAIHost[] = "local-ai";
+inline constexpr char kUntrustedLocalAIURL[] = "chrome-untrusted://local-ai/";
 
 }  // namespace local_ai
 

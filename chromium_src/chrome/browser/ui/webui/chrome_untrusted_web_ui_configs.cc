@@ -6,7 +6,7 @@
 #include "chrome/browser/ui/webui/chrome_untrusted_web_ui_configs.h"
 
 #include "base/feature_list.h"
-#include "brave/browser/ui/webui/local_ai/on_device_model_worker_ui.h"
+#include "brave/browser/ui/webui/local_ai/local_ai_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -67,7 +67,7 @@ void RegisterChromeUntrustedWebUIConfigs() {
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (base::FeatureList::IsEnabled(local_ai::features::kLocalAIModels)) {
     content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
-        std::make_unique<local_ai::UntrustedOnDeviceModelWorkerUIConfig>());
+        std::make_unique<local_ai::UntrustedLocalAIUIConfig>());
   }
 #if !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_BRAVE_VPN)

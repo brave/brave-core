@@ -41,7 +41,7 @@
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/brave_ui_features.h"
-#include "brave/browser/ui/webui/local_ai/on_device_model_worker_ui.h"
+#include "brave/browser/ui/webui/local_ai/local_ai_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
@@ -981,8 +981,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       base::BindRepeating(&MaybeBindSkusSdkImpl));
   if (base::FeatureList::IsEnabled(local_ai::features::kLocalAIModels)) {
     content::RegisterWebUIControllerInterfaceBinder<
-        local_ai::mojom::LocalAIService,
-        local_ai::UntrustedOnDeviceModelWorkerUI>(map);
+        local_ai::mojom::LocalAIService, local_ai::UntrustedLocalAIUI>(map);
   }
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   map->Add<brave_vpn::mojom::ServiceHandler>(
