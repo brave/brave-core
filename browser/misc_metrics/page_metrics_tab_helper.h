@@ -13,13 +13,11 @@
 
 namespace content {
 class BrowserContext;
-class MediaSession;
 class NavigationHandle;
 }  // namespace content
 
 namespace misc_metrics {
 
-class MediaSessionMetrics;
 class PageMetrics;
 
 class PageMetricsTabHelper
@@ -38,16 +36,12 @@ class PageMetricsTabHelper
   // content::WebContentsObserver:
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
-  void MediaSessionCreated(content::MediaSession* media_session) override;
-  void WebContentsDestroyed() override;
 
   bool IsRelevantNavigationEvent(content::NavigationHandle* navigation_handle);
   bool IsPrivateWindowEvent();
 
   raw_ptr<content::BrowserContext> browser_context_;
   raw_ptr<PageMetrics> page_metrics_ = nullptr;
-  raw_ptr<MediaSessionMetrics> media_session_metrics_ = nullptr;
-  raw_ptr<content::MediaSession> media_session_ = nullptr;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

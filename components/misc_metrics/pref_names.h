@@ -75,13 +75,6 @@ inline constexpr char kMiscMetricsNTPWidgetUsageStorage[] =
 inline constexpr char kMiscMetricsSplitViewUsageStorage[] =
     "brave.misc_metrics.split_view_usage";
 
-inline constexpr char kMiscMetricsMediaSessionPlayingTime[] =
-    "brave.misc_metrics.media_session_playing_time";
-inline constexpr char kMiscMetricsMediaSessionActiveProcessTime[] =
-    "brave.misc_metrics.media_session_active_process_time";
-inline constexpr char kMiscMetricsMediaSessionFrameStartTime[] =
-    "brave.misc_metrics.media_session_frame_start_time";
-
 }  // namespace misc_metrics
 
 #endif  // BRAVE_COMPONENTS_MISC_METRICS_PREF_NAMES_H_

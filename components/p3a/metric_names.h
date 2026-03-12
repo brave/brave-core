@@ -71,7 +71,6 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Core.IsDefault", MetricConfig{
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kGeneralPlatform, MetricAttribute::kYoi, MetricAttribute::kSubregion, MetricAttribute::kVersion, MetricAttribute::kWoi},
     }},
-    {"Brave.Core.MediaSessionUsage", MetricConfig{.ephemeral = true, .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi}}},
     {"Brave.Core.NumberOfExtensions", {}},
     {"Brave.Core.PagesLoaded.NonRewards", {}},
     {"Brave.Core.PagesLoaded.Rewards", {}},
