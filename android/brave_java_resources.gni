@@ -81,7 +81,6 @@ brave_java_resources = [
   "java/res/drawable/ic_add_24dp.xml",
   "java/res/drawable/ic_arrow_down.xml",
   "java/res/drawable/ic_open_in_new.xml",
-  "java/res/drawable/ic_search.xml",
   "java/res/drawable/ic_timer.xml",
   "java/res/drawable/tab_selector.xml",
   "java/res/layout/location_status_incognito_badge.xml",
