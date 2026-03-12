@@ -36,10 +36,15 @@ inline constexpr char kBraveUIWebcompatReporterURL[] = "chrome://webcompat/";
 inline constexpr char kVPNPanelURL[] =
     "chrome-untrusted://vpn-panel.top-chrome/";
 inline constexpr char kVPNPanelHost[] = "vpn-panel.top-chrome";
+inline constexpr char kWalletSnapHostHost[] = "wallet-snap-host";
+inline constexpr char kBraveUIWalletSnapHostURL[] = "chrome://wallet-snap-host/";
 inline constexpr char kExtensionSettingsURL[] = "brave://settings/extensions";
 inline constexpr char kBraveSyncPath[] = "braveSync";
 inline constexpr char kBraveSyncSetupPath[] = "braveSync/setup";
 inline constexpr char kTorInternalsHost[] = "tor-internals";
+inline constexpr char kUntrustedSnapExecutorHost[] = "snap-executor";
+inline constexpr char kUntrustedSnapExecutorURL[] =
+    "chrome-untrusted://snap-executor/";
 inline constexpr char kShieldsPanelURL[] = "chrome://brave-shields.top-chrome";
 inline constexpr char kShieldsPanelHost[] = "brave-shields.top-chrome";
 inline constexpr char kCookieListOptInHost[] = "cookie-list-opt-in.top-chrome";

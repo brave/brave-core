@@ -50,6 +50,7 @@ class EthAllowanceManager;
 class JsonRpcService;
 class KeyringService;
 class NetworkManager;
+class SnapsService;
 class TxService;
 class AccountDiscoveryManager;
 class AssetRatioService;
@@ -359,6 +360,7 @@ class BraveWalletService : public KeyedService,
   NetworkManager* network_manager() { return network_manager_.get(); }
   JsonRpcService* json_rpc_service() { return json_rpc_service_.get(); }
   KeyringService* keyring_service() { return keyring_service_.get(); }
+  SnapsService* snaps_service() { return snaps_service_.get(); }
 
   TxService* tx_service() { return tx_service_.get(); }
   AssetRatioService* asset_ratio_service() {
@@ -481,6 +483,7 @@ class BraveWalletService : public KeyedService,
   base::flat_map<std::string, PendingGetEncryptPublicKeyRequest>
       pending_get_encryption_public_key_requests_;
   base::flat_map<std::string, PendingDecryptRequest> pending_decrypt_requests_;
+
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;
   mojo::RemoteSet<mojom::BraveWalletServiceTokenObserver> token_observers_;
   raw_ptr<PrefService> profile_prefs_ = nullptr;
@@ -488,6 +491,7 @@ class BraveWalletService : public KeyedService,
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
+  std::unique_ptr<SnapsService> snaps_service_;
   std::unique_ptr<BitcoinWalletService> bitcoin_wallet_service_;
   std::unique_ptr<PolkadotWalletService> polkadot_wallet_service_;
   std::unique_ptr<ZCashWalletService> zcash_wallet_service_;

@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
+assert(!is_android)
+assert(enable_brave_wallet)
+
+source_set("snap_executor") {
+  sources = [
+    "snap_executor_ui.cc",
+    "snap_executor_ui.h",
+  ]
+  deps = [
+    "//brave/components/brave_wallet/common:common_constants",
+    "//brave/components/brave_wallet_ui/snap_executor:snap_executor_generated",
+    "//brave/components/constants",
+    "//brave/components/resources:static_resources_grit",
+    "//content/public/browser",
+    "//content/public/common",
+    "//ui/webui",
+  ]
+}

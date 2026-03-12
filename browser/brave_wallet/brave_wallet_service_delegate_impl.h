@@ -60,6 +60,9 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegateBase,
                              const std::string& account_name,
                              const std::string& tx_id,
                              const GURL& tx_url) override;
+  void OpenWalletPage() override;
+  content::BrowserContext* GetBrowserContext() override;
+  void OpenSnapHostTab() override;
 
   void AddObserver(BraveWalletServiceDelegate::Observer* observer) override;
   void RemoveObserver(BraveWalletServiceDelegate::Observer* observer) override;

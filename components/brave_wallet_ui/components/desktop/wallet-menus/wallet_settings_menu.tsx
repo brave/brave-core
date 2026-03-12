@@ -37,6 +37,8 @@ import {
   useGetSelectedChainQuery,
   useLockWalletMutation,
 } from '../../../common/slices/api.slice'
+import { useAppDispatch } from '../../../common/hooks/use-redux'
+import { PanelActions } from '../../../panel/actions'
 import { openWalletSettings } from '../../../utils/routes-utils'
 import { useSyncedLocalStorage } from '../../../common/hooks/use_local_storage'
 
@@ -53,6 +55,9 @@ const HELP_CENTER_URL =
 
 export const WalletSettingsMenu = (props: Props) => {
   const { children } = props
+
+  // Redux
+  const dispatch = useAppDispatch()
 
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
@@ -191,6 +196,14 @@ export const WalletSettingsMenu = (props: Props) => {
     history.push(WalletRoutes.Backup)
   }, [isMobile, isPanel, history])
 
+  const onClickSnaps = React.useCallback(() => {
+    if (isPanel) {
+      dispatch(PanelActions.navigateTo('snaps'))
+    } else {
+      history.push(WalletRoutes.SnapsStore)
+    }
+  }, [isPanel, dispatch, history])
+
   // Memos
   const accountSettingsOptions = React.useMemo(() => {
     if (isMobile) {
@@ -216,6 +229,11 @@ export const WalletSettingsMenu = (props: Props) => {
       <leo-menu-item onClick={onClickBackup}>
         <Icon name='safe' />
         {getLocale('braveWalletWalletPopupBackup')}
+      </leo-menu-item>
+
+      <leo-menu-item onClick={onClickSnaps}>
+        <Icon name='web3' />
+        Snaps
       </leo-menu-item>
 
       {(selectedNetwork?.coin === BraveWallet.CoinType.ETH

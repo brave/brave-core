@@ -72,6 +72,8 @@ import { UnlockedWalletRoutes } from './router/unlocked_wallet_routes'
 import { Swap } from './screens/swap/swap'
 import { SendScreen } from './screens/send/send_screen/send_screen'
 import { DevZCash } from './screens/dev-zcash/dev-zcash'
+import { SnapsStore } from '../components/desktop/views/snaps_store'
+import { SnapPage } from './screens/snap-page/snap_page'
 import {
   PartnersConsentModal, //
 } from '../components/desktop/popup-modals/partners_consent_modal/partners_consent_modal'
@@ -310,6 +312,24 @@ export const Container = () => {
           redirectRoute={defaultRedirect}
         >
           <DevZCash />
+        </ProtectedRoute>
+
+        <ProtectedRoute
+          path={WalletRoutes.SnapsStore}
+          exact={true}
+          requirement={!isWalletLocked && !walletNotYetCreated}
+          redirectRoute={defaultRedirect}
+        >
+          <SnapsStore />
+        </ProtectedRoute>
+
+        <ProtectedRoute
+          path={WalletRoutes.SnapPage}
+          exact={true}
+          requirement={!isWalletLocked && !walletNotYetCreated}
+          redirectRoute={defaultRedirect}
+        >
+          <SnapPage />
         </ProtectedRoute>
 
         {/* Insures that we redirect to the default route if the user

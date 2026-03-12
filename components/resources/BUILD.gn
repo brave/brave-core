@@ -59,6 +59,7 @@ brave_grit("static_resources") {
 
   if (enable_brave_wallet) {
     deps += [
+      "//brave/components/brave_wallet_ui/snap_executor:snap_executor_metamask_bundle",
       "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
       "//brave/components/decentralized_dns/content/resources:bundle_js",
     ]

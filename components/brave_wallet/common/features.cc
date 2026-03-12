@@ -76,6 +76,21 @@ BASE_FEATURE(kBraveWalletAccountHidingFeature,
 #endif
 );
 
+BASE_FEATURE(kBraveWalletSnapsFeature,
+             "BraveWalletSnaps",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+BASE_FEATURE(kBraveWalletSnapsBackground,
+             "BraveWalletSnapsBackground",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+// Debug-only: when kBraveWalletSnapsBackground is on, open the snap host as a
+// visible foreground tab instead of a hidden WebContents. Never enable in prod.
+BASE_FEATURE(kBraveWalletSnapsBackgroundForegroundDebug,
+             "BraveWalletSnapsBackgroundForegroundDebug",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+
 #if BUILDFLAG(IS_IOS)
 BASE_FEATURE(kBraveWalletWebUIFeature, base::FEATURE_ENABLED_BY_DEFAULT);
 #endif

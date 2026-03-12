@@ -69,7 +69,11 @@ class WalletPageUI : public ui::MojoWebUIController,
       mojo::PendingReceiver<mojom::IpfsService>
           brave_wallet_ipfs_service_receiver,
       mojo::PendingReceiver<mojom::MeldIntegrationService>
-          meld_integration_service) override;
+          meld_integration_service,
+      mojo::PendingReceiver<mojom::SnapsService> snaps_service_receiver,
+      mojo::PendingRemote<mojom::SnapBridge> snap_bridge,
+      mojo::PendingReceiver<mojom::SnapRequestHandler> snap_request_handler)
+      override;
 
   std::unique_ptr<WalletPageHandler> page_handler_;
   std::unique_ptr<WalletHandler> wallet_handler_;

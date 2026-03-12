@@ -104,6 +104,8 @@ export type PanelTypes =
   | 'send'
   | 'settings'
   | 'sitePermissions'
+  | 'snaps'
+  | 'snap_view'
   | 'swap'
   | 'activity' // Transactions
   | 'transactionStatus'
@@ -181,6 +183,7 @@ export interface PanelState {
   connectingAccounts: string[]
   hardwareWalletCode?: HardwareWalletResponseCodeType
   selectedTransactionId?: TransactionInfoLookup
+  viewingSnapId?: string
   /**
    * Set while a transaction is being submitted (e.g. ZCash); keeps panel on
    * pending view until status is shown.
@@ -473,6 +476,10 @@ export enum WalletRoutes {
   DepositFundsPageStart = '/crypto/deposit-funds',
   DepositFundsPage = '/crypto/deposit-funds/:assetId?',
   DepositFundsAccountPage = '/crypto/deposit-funds/:assetId/account',
+
+  // snaps store
+  SnapsStore = '/snaps-store',
+  SnapPage = '/snap/:snapId',
 
   // explore
   Explore = '/crypto/explore',

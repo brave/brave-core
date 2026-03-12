@@ -48,6 +48,7 @@ import { signingEndpoints } from './endpoints/signing.endpoints'
 import { dappRadarEndpoints } from './endpoints/dapp_radar.endpoints'
 import { meldIntegrationEndpoints } from './endpoints/meld_integration.endpoints'
 import { zcashEndpoints } from './endpoints/zcash.endpoints'
+import { snapsEndpoints } from './endpoints/snaps.endpoints'
 
 export function createWalletApi() {
   // base to add endpoints to
@@ -156,6 +157,8 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: meldIntegrationEndpoints })
       // zcash endpoints
       .injectEndpoints({ endpoints: zcashEndpoints })
+      // snap install approval endpoints
+      .injectEndpoints({ endpoints: snapsEndpoints })
   )
 }
 
@@ -373,6 +376,14 @@ export const {
   useGetMeldPaymentMethodsQuery,
   useGenerateMeldCryptoQuotesMutation,
   useCreateMeldBuyWidgetMutation,
+  // snap install approval
+  useGetPendingSnapInstallQuery,
+  useRequestInstallSnapMutation,
+  useNotifySnapInstallRequestProcessedMutation,
+  useGetInstalledSnapsQuery,
+  useUninstallSnapMutation,
+  useGetSnapHomePageQuery,
+  useSendSnapUserInputMutation,
 } = walletApi
 
 // Derived Data Queries

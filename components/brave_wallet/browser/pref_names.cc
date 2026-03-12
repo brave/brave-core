@@ -15,6 +15,8 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_migrations.h"
+#include "brave/components/brave_wallet/browser/snap/snap_permission_controller.h"
+#include "brave/components/brave_wallet/browser/snap/storage/snap_registry.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -189,6 +191,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterDictionaryPref(kBraveWalletMnemonic);
   registry->RegisterBooleanPref(kBraveWalletLegacyEthSeedFormat, false);
   registry->RegisterBooleanPref(kBraveWalletMnemonicBackedUp, false);
+
+  SnapRegistry::RegisterProfilePrefs(registry);
+  SnapPermissionController::RegisterProfilePrefs(registry);
 
   // Register Deprecated CryptoWallet prefs
   // We can eventually remove these. Code removed 05/2025

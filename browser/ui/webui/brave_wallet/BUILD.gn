@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
+assert(!is_android)
+assert(enable_brave_wallet)
+
+source_set("wallet_snap_host") {
+  sources = [
+    "wallet_snap_host_ui.cc",
+    "wallet_snap_host_ui.h",
+  ]
+  deps = [
+    "//brave/browser/brave_wallet",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet_ui:resources",
+    "//brave/components/brave_wallet_ui/snap_host:snap_host_generated",
+    "//brave/components/constants",
+    "//brave/components/resources:static_resources_grit",
+    "//chrome/browser/ui/webui",
+    "//content/public/browser",
+    "//content/public/common",
+    "//mojo/public/cpp/bindings",
+    "//services/network/public/mojom",
+    "//ui/webui",
+  ]
+}

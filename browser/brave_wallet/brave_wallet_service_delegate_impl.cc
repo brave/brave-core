@@ -12,21 +12,27 @@
 #include "base/functional/callback_helpers.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/expected.h"
+#include "brave/browser/ui/brave_pages.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/navigator/browser_navigator.h"
+#include "chrome/browser/ui/navigator/browser_navigator_params.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/page_transition_types.h"
 #include "ui/message_center/public/cpp/notification.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -253,6 +259,28 @@ void BraveWalletServiceDelegateImpl::DisplayTxNotification(
     const std::string& tx_id,
     const GURL& tx_url) {
   DisplayTxNotificationImpl(context_, status, account_name, tx_id, tx_url);
+}
+
+void BraveWalletServiceDelegateImpl::OpenWalletPage() {
+  auto* b = chrome::FindLastActive();
+  if (b) {
+    ::brave::ShowBraveWallet(b);
+  }
+}
+
+content::BrowserContext* BraveWalletServiceDelegateImpl::GetBrowserContext() {
+  return context_;
+}
+
+void BraveWalletServiceDelegateImpl::OpenSnapHostTab() {
+  auto* browser = chrome::FindLastActive();
+  if (!browser) {
+    return;
+  }
+  NavigateParams params(browser, GURL(kBraveUIWalletSnapHostURL),
+                        ui::PAGE_TRANSITION_AUTO_TOPLEVEL);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  Navigate(&params);
 }
 
 }  // namespace brave_wallet

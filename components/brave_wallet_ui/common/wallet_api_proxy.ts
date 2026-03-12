@@ -24,6 +24,7 @@ export class WalletApiProxy {
   filTxManagerProxy = new BraveWallet.FilTxManagerProxyRemote()
   btcTxManagerProxy = new BraveWallet.BtcTxManagerProxyRemote()
   braveWalletService = new BraveWallet.BraveWalletServiceRemote()
+  snapsService = new BraveWallet.SnapsServiceRemote()
   braveWalletIpfsService = new BraveWallet.IpfsServiceRemote()
 
   addJsonRpcServiceObserver(
@@ -46,6 +47,12 @@ export class WalletApiProxy {
     observer: BraveWallet.BraveWalletServiceObserverReceiver,
   ) {
     this.braveWalletService.addObserver(observer.$.bindNewPipeAndPassRemote())
+  }
+
+  addSnapsServiceObserver(
+    observer: BraveWallet.SnapsServiceObserverReceiver,
+  ) {
+    this.snapsService.addObserver(observer.$.bindNewPipeAndPassRemote())
   }
 
   addBraveWalletServiceTokenObserver(
