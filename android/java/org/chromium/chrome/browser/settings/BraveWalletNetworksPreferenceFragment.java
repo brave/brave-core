@@ -29,6 +29,7 @@ import org.chromium.chrome.R;
 import org.chromium.components.browser_ui.settings.FragmentSettingsNavigation;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
 
 public class BraveWalletNetworksPreferenceFragment extends BravePreferenceFragment
         implements FragmentSettingsNavigation, BraveWalletAddNetworksFragment.Listener {
@@ -130,6 +131,13 @@ public class BraveWalletNetworksPreferenceFragment extends BravePreferenceFragme
     public void modifyNetwork(@NonNull final String chainId, boolean activeNetwork) {
         launchIntent(chainId, activeNetwork);
     }
+
+    // This fragment displays a dynamic network list widget; there are no static preferences to
+    // index.
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(
+                    BraveWalletNetworksPreferenceFragment.class.getName(),
+                    BaseSearchIndexProvider.INDEX_OPT_OUT);
 
     private void launchIntent(@Nullable final String chainId, boolean activeNetwork) {
         final Bundle fragmentArgs;

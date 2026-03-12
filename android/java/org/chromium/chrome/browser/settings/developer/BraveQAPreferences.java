@@ -44,6 +44,7 @@ import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
 import org.chromium.components.user_prefs.UserPrefs;
 
 import java.io.File;
@@ -440,4 +441,9 @@ public class BraveQAPreferences extends BravePreferenceFragment
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
+
+    // QA-only screen protected by a password; exclude entirely from settings search.
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(
+                    BraveQAPreferences.class.getName(), BaseSearchIndexProvider.INDEX_OPT_OUT);
 }

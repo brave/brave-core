@@ -33,6 +33,7 @@ import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.TextMessagePreference;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.text.ChromeClickableSpan;
@@ -291,4 +292,8 @@ public class BraveWalletPreferences extends BravePreferenceFragment
             return DefaultWallet.NONE;
         }
     }
+
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(
+                    BraveWalletPreferences.class.getName(), R.xml.brave_wallet_preferences);
 }

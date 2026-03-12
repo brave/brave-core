@@ -26,6 +26,7 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
 import org.chromium.ui.base.ViewUtils;
 
 import java.util.List;
@@ -134,4 +135,11 @@ public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFrag
         ChromeSharedPreferences.getInstance().writeBoolean(preference.getKey(), (Boolean) newValue);
         return true;
     }
+
+    // All menu item switches are added programmatically from a bundle; there are no static
+    // preferences to index.
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(
+                    BraveCustomizeMenuPreferenceFragment.class.getName(),
+                    BaseSearchIndexProvider.INDEX_OPT_OUT);
 }

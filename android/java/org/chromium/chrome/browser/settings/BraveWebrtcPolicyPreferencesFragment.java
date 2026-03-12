@@ -16,6 +16,7 @@ import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
 import org.chromium.ui.UiUtils;
 
 /** Fragment to manage webrtc policy settings. */
@@ -43,6 +44,12 @@ public class BraveWebrtcPolicyPreferencesFragment extends BravePreferenceFragmen
     public MonotonicObservableSupplier<String> getPageTitle() {
         return mPageTitle;
     }
+
+    // This fragment displays a custom radio-button widget with no static titled preferences.
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(
+                    BraveWebrtcPolicyPreferencesFragment.class.getName(),
+                    BaseSearchIndexProvider.INDEX_OPT_OUT);
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

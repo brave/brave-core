@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.privacy.settings;
 
 import static org.chromium.build.NullUtil.assumeNonNull;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -38,11 +39,13 @@ import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.safe_browsing.settings.NoGooglePlayServicesDialog;
 import org.chromium.chrome.browser.settings.BraveDialogPreference;
 import org.chromium.chrome.browser.settings.BravePreferenceDialogFragment;
 import org.chromium.chrome.browser.settings.BraveWebrtcPolicyPreference;
+import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
 import org.chromium.chrome.browser.shields.FilterListServiceFactory;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFactory;
@@ -51,6 +54,7 @@ import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.ClickableSpansTextMessagePreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.TextMessagePreference;
+import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.gms.ChromiumPlayServicesAvailability;
 import org.chromium.ui.text.ChromeClickableSpan;
@@ -1014,6 +1018,179 @@ public class BravePrivacySettings extends PrivacySettings {
         assert false : "Setting is out of range!";
         return "";
     }
+
+    public static final ChromeBaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new ChromeBaseSearchIndexProvider(
+                    BravePrivacySettings.class.getName(), R.xml.brave_privacy_preferences) {
+
+                @Override
+                public void updateDynamicPreferences(
+                        Context context, SettingsIndexData indexData, Profile profile) {
+                    String frag = BravePrivacySettings.class.getName();
+
+                    // Feature-gated removals
+                    if (!ChromeFeatureList.isEnabled(BraveFeatureList.DEBOUNCE)) {
+                        indexData.removeEntryForKey(frag, PREF_DEBOUNCE);
+                    }
+                    if (!ChromeFeatureList.isEnabled(
+                                    BraveFeatureList.BRAVE_FORGET_FIRST_PARTY_STORAGE)
+                            || ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED)) {
+                        indexData.removeEntryForKey(frag, PREF_FORGET_FIRST_PARTY_STORAGE);
+                    }
+                    if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED)) {
+                        indexData.removeEntryForKey(frag, PREF_AUTO_SHRED_STORAGE);
+                    }
+                    if (!ChromeFeatureList.isEnabled(
+                            BraveFeatureList.BRAVE_SHIELDS_ELEMENT_PICKER)) {
+                        indexData.removeEntryForKey(
+                                frag, PREF_ALLOW_ELEMENTS_BLOCKING_ON_PRIVATE_TABS);
+                    }
+                    if (!ChromeFeatureList.isEnabled(
+                            BraveFeatureList.BRAVE_NTP_BRANDED_WALLPAPER_SURVEY_PANELIST)) {
+                        indexData.removeEntryForKey(frag, PREF_SURVEY_PANELIST);
+                    }
+                    if (ChromeFeatureList.isEnabled(
+                            BraveFeatureList.BRAVE_GOOGLE_SIGN_IN_PERMISSION)) {
+                        indexData.removeEntryForKey(frag, PREF_SOCIAL_BLOCKING_GOOGLE);
+                    }
+                    if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REQUEST_OTR_TAB)) {
+                        indexData.removeEntryForKey(frag, PREF_REQUEST_OTR);
+                    }
+
+                    boolean showStrictFingerprinting =
+                            ChromeFeatureList.isEnabled(
+                                    BraveFeatureList.BRAVE_SHOW_STRICT_FINGERPRINTING_MODE);
+                    if (!showStrictFingerprinting) {
+                        indexData.removeEntryForKey(frag, PREF_FINGERPRINTING_PROTECTION);
+                    } else {
+                        indexData.removeEntryForKey(frag, PREF_FINGERPRINTING_PROTECTION2);
+                    }
+
+                    boolean httpsByDefault =
+                            ChromeFeatureList.isEnabled(BraveFeatureList.HTTPS_BY_DEFAULT);
+                    if (!httpsByDefault) {
+                        indexData.removeEntryForKey(frag, PREF_HTTPS_UPGRADE);
+                    }
+
+                    // Policy-based removals
+                    if (BraveWalletPolicy.isDisabledByPolicy(profile)) {
+                        indexData.removeEntryForKey(frag, PREF_UNSTOPPABLE_DOMAINS);
+                        indexData.removeEntryForKey(frag, PREF_ENS);
+                        indexData.removeEntryForKey(frag, PREF_SNS);
+                    }
+                    if (BraveLocalState.get().isManagedPreference(BravePref.P3A_ENABLED)) {
+                        indexData.removeEntryForKey(frag, PREF_SEND_P3A);
+                    }
+                    if (!PrivacyPreferencesManagerImpl.getInstance()
+                            .isUsageAndCrashReportingPermittedByPolicy()) {
+                        indexData.removeEntryForKey(frag, PREF_SEND_CRASH_REPORTS);
+                    }
+                    if (BraveLocalState.get()
+                            .isManagedPreference(BravePref.STATS_REPORTING_ENABLED)) {
+                        indexData.removeEntryForKey(frag, PREF_BRAVE_STATS_USAGE_PING);
+                    }
+
+                    // Dynamic summaries for dialog prefs
+                    String trackersPref = BraveShieldsContentSettings.getTrackersPref();
+                    int trackersSummaryId = R.string.block_trackers_ads_option_2;
+                    if (trackersPref.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
+                        trackersSummaryId = R.string.block_trackers_ads_option_1;
+                    } else if (trackersPref.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
+                        trackersSummaryId = R.string.block_trackers_ads_option_3;
+                    }
+                    indexData.updateEntrySummaryForKey(
+                            frag, PREF_BLOCK_TRACKERS_ADS, trackersSummaryId);
+
+                    int cookiesPref =
+                            ChromeSharedPreferences.getInstance()
+                                    .readInt(PREF_BLOCK_CROSS_SITE_COOKIES, STANDARD);
+                    int cookiesSummaryId = R.string.block_cookies_option_2;
+                    if (cookiesPref == STRICT) {
+                        cookiesSummaryId = R.string.block_cookies_option_1;
+                    } else if (cookiesPref == ALLOW) {
+                        cookiesSummaryId = R.string.block_cookies_option_3;
+                    }
+                    indexData.updateEntrySummaryForKey(
+                            frag, PREF_BLOCK_CROSS_SITE_COOKIES, cookiesSummaryId);
+
+                    if (showStrictFingerprinting) {
+                        String fpPref = BraveShieldsContentSettings.getFingerprintingPref();
+                        int fpSummaryId = R.string.block_fingerprinting_option_2;
+                        if (fpPref.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
+                            fpSummaryId = R.string.block_fingerprinting_option_1;
+                        } else if (fpPref.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
+                            fpSummaryId = R.string.block_fingerprinting_option_3;
+                        }
+                        indexData.updateEntrySummaryForKey(
+                                frag, PREF_FINGERPRINTING_PROTECTION, fpSummaryId);
+                    }
+
+                    if (httpsByDefault) {
+                        String httpsUpgradePref = BraveShieldsContentSettings.getHttpsUpgradePref();
+                        int httpsSummaryId = R.string.https_upgrade_option_2;
+                        if (httpsUpgradePref.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
+                            httpsSummaryId = R.string.https_upgrade_option_1;
+                        } else if (httpsUpgradePref.equals(
+                                BraveShieldsContentSettings.ALLOW_RESOURCE)) {
+                            httpsSummaryId = R.string.https_upgrade_option_3;
+                        }
+                        indexData.updateEntrySummaryForKey(
+                                frag, PREF_HTTPS_UPGRADE, httpsSummaryId);
+                    }
+
+                    if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED)) {
+                        String autoShredPref = BraveShieldsContentSettings.getAutoShredPref();
+                        int autoShredSummaryId = R.string.brave_shields_auto_shred_never_mode_text;
+                        if (autoShredPref.equals(
+                                BraveShieldsContentSettings.AUTO_SHRED_MODE_LAST_TAB_CLOSED)) {
+                            autoShredSummaryId =
+                                    R.string.brave_shields_auto_shred_site_tab_closed_mode_text;
+                        } else if (autoShredPref.equals(
+                                BraveShieldsContentSettings.AUTO_SHRED_MODE_APP_EXIT)) {
+                            autoShredSummaryId =
+                                    R.string.brave_shields_auto_shred_app_close_mode_text;
+                        }
+                        indexData.updateEntrySummaryForKey(
+                                frag, PREF_AUTO_SHRED_STORAGE, autoShredSummaryId);
+                    }
+
+                    if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REQUEST_OTR_TAB)) {
+                        int requestOtrPref =
+                                UserPrefs.get(profile)
+                                        .getInteger(BravePref.REQUEST_OTR_ACTION_OPTION);
+                        int requestOtrSummaryId = R.string.request_otr_option_2;
+                        if (requestOtrPref == BraveShieldsContentSettings.ALWAYS) {
+                            requestOtrSummaryId = R.string.request_otr_option_1;
+                        } else if (requestOtrPref == BraveShieldsContentSettings.NEVER) {
+                            requestOtrSummaryId = R.string.request_otr_option_3;
+                        }
+                        indexData.updateEntrySummaryForKey(
+                                frag, PREF_REQUEST_OTR, requestOtrSummaryId);
+                    }
+
+                    int webrtcPolicy = BravePrefServiceBridge.getInstance().getWebrtcPolicy();
+                    int webrtcSummaryId;
+                    switch (webrtcPolicy) {
+                        case BraveWebrtcPolicyPreference.WebrtcPolicy
+                                .DEFAULT_PUBLIC_AND_PRIVATE_INTERFACES:
+                            webrtcSummaryId =
+                                    R.string
+                                            .settings_webrtc_policy_default_public_and_private_interfaces; // presubmit: ignore-long-line
+                            break;
+                        case BraveWebrtcPolicyPreference.WebrtcPolicy.DEFAULT_PUBLIC_INTERFACE_ONLY:
+                            webrtcSummaryId =
+                                    R.string.settings_webrtc_policy_default_public_interface_only;
+                            break;
+                        case BraveWebrtcPolicyPreference.WebrtcPolicy.DISABLE_NON_PROXIED_UDP:
+                            webrtcSummaryId =
+                                    R.string.settings_webrtc_policy_disable_non_proxied_udp;
+                            break;
+                        default:
+                            webrtcSummaryId = R.string.settings_webrtc_policy_default;
+                    }
+                    indexData.updateEntrySummaryForKey(frag, PREF_WEBRTC_POLICY, webrtcSummaryId);
+                }
+            };
 
     @Override
     public MonotonicObservableSupplier<String> getPageTitle() {

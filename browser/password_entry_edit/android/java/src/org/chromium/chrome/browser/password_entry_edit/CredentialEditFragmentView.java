@@ -30,12 +30,14 @@ import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
 import org.chromium.ui.text.EmptyTextWatcher;
 import org.chromium.ui.widget.ButtonCompat;
 import org.chromium.ui.widget.ChromeImageButton;
 
 /**
- * This class is responsible for rendering the edit fragment where users can edit a saved password.
+ * CredentialEditFragmentView is responsible for rendering the edit fragment where users can edit a
+ * saved password.
  */
 @NullMarked
 public class CredentialEditFragmentView extends CredentialEntryFragmentViewBase {
@@ -230,4 +232,11 @@ public class CredentialEditFragmentView extends CredentialEntryFragmentViewBase 
     public @AnimationType int getAnimationType() {
         return AnimationType.PROPERTY;
     }
+
+    // This fragment displays a custom view for editing a saved password; there are no static
+    // preferences to index.
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(
+                    CredentialEditFragmentView.class.getName(),
+                    BaseSearchIndexProvider.INDEX_OPT_OUT);
 }
