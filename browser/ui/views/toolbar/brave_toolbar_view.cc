@@ -13,7 +13,11 @@
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
@@ -32,10 +36,13 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
+#include "chrome/grit/generated_resources.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/hit_test.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/window_open_disposition_utils.h"
 #include "ui/events/event.h"
@@ -231,15 +238,22 @@ void BraveToolbarView::Init() {
                           base::Unretained(this)));
 
   if (tabs::utils::SupportsBraveVerticalTabs(browser_)) {
-    show_vertical_tabs_.Init(
-        brave_tabs::kVerticalTabsEnabled,
-        profile->GetOriginalProfile()->GetPrefs(),
-        base::BindRepeating(&BraveToolbarView::UpdateHorizontalPadding,
-                            base::Unretained(this)));
+    show_vertical_tabs_.Init(brave_tabs::kVerticalTabsEnabled,
+                             profile->GetPrefs(),
+                             base::BindRepeating(
+                                 [](BraveToolbarView* self) {
+                                   self->UpdateHorizontalPadding();
+                                   self->UpdateVerticalTabToggleVisibility();
+                                 },
+                                 base::Unretained(this)));
     show_title_bar_on_vertical_tabs_.Init(
         brave_tabs::kVerticalTabsShowTitleOnWindow,
         profile->GetOriginalProfile()->GetPrefs(),
         base::BindRepeating(&BraveToolbarView::UpdateHorizontalPadding,
+                            base::Unretained(this)));
+    vertical_tabs_collapsed_.Init(
+        brave_tabs::kVerticalTabsCollapsed, profile->GetPrefs(),
+        base::BindRepeating(&BraveToolbarView::UpdateVerticalTabToggleState,
                             base::Unretained(this)));
 #if BUILDFLAG(IS_LINUX)
     use_custom_chrome_frame_.Init(
@@ -254,6 +268,19 @@ void BraveToolbarView::Init() {
     chrome::ExecuteCommandWithDisposition(
         browser, command, ui::DispositionFromEventFlags(event.flags()));
   };
+
+  // Add vertical tab toggle button to the left of the back button.
+  if (tabs::utils::SupportsBraveVerticalTabs(browser_)) {
+    auto back_button_index = container_view->GetIndexOf(back_);
+    vertical_tab_toggle_ = container_view->AddChildViewAt(
+        std::make_unique<ToolbarButton>(
+            base::BindRepeating(&BraveToolbarView::OnVerticalTabTogglePressed,
+                                base::Unretained(this))),
+        back_button_index.value_or(0));
+    vertical_tab_toggle_->SetVectorIcon(kVerticalTabStripToggleButtonIcon);
+    UpdateVerticalTabToggleVisibility();
+    UpdateVerticalTabToggleState();
+  }
 
   bookmark_ = container_view->AddChildViewAt(
       std::make_unique<BraveBookmarkButton>(
@@ -458,6 +485,15 @@ void BraveToolbarView::ShowBookmarkBubble(const GURL& url,
                                  browser_, url, already_bookmarked);
 }
 
+void BraveToolbarView::VisibilityChanged(views::View* starting_from,
+                                         bool visible) {
+  ToolbarView::VisibilityChanged(starting_from, visible);
+  if (visible) {
+    // Ink drop highlight is cleared whenever visibility changes, so re-apply.
+    UpdateVerticalTabToggleState();
+  }
+}
+
 void BraveToolbarView::ViewHierarchyChanged(
     const views::ViewHierarchyChangedDetails& details) {
   ToolbarView::ViewHierarchyChanged(details);
@@ -559,6 +595,49 @@ void BraveToolbarView::UpdateWalletButtonVisibility() {
   wallet_->SetVisible(false);
 }
 #endif
+
+void BraveToolbarView::UpdateVerticalTabToggleVisibility() {
+  if (!vertical_tab_toggle_) {
+    return;
+  }
+
+  vertical_tab_toggle_->SetVisible(
+      tabs::utils::ShouldShowBraveVerticalTabs(browser_));
+}
+
+void BraveToolbarView::UpdateVerticalTabToggleState() {
+  if (!vertical_tab_toggle_) {
+    return;
+  }
+
+  const bool is_expanded = !vertical_tabs_collapsed_.GetValue();
+  vertical_tab_toggle_->SetHighlighted(is_expanded);
+  vertical_tab_toggle_->SetTooltipText(l10n_util::GetStringUTF16(
+      is_expanded ? IDS_VERTICAL_TABS_MINIMIZE : IDS_VERTICAL_TABS_EXPAND));
+  vertical_tab_toggle_->SetAccessibleName(l10n_util::GetStringUTF16(
+      is_expanded ? IDS_VERTICAL_TABS_MINIMIZE : IDS_VERTICAL_TABS_EXPAND));
+}
+
+void BraveToolbarView::OnVerticalTabTogglePressed() {
+  auto* brave_browser_view =
+      BraveBrowserView::From(BrowserView::GetBrowserViewForBrowser(browser_));
+  if (!brave_browser_view) {
+    return;
+  }
+
+  auto* delegate_view =
+      brave_browser_view->vertical_tab_strip_widget_delegate_view();
+  if (!delegate_view) {
+    return;
+  }
+
+  auto* region_view = delegate_view->vertical_tab_strip_region_view();
+  if (!region_view) {
+    return;
+  }
+
+  region_view->ToggleState();
+}
 
 BEGIN_METADATA(BraveToolbarView)
 END_METADATA

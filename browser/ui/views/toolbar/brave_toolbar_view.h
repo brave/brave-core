@@ -26,6 +26,7 @@ class BraveVPNButton;
 
 class BraveBookmarkButton;
 class SidePanelButton;
+class ToolbarButton;
 class WalletButton;
 
 class BraveToolbarView : public ToolbarView,
@@ -40,6 +41,9 @@ class BraveToolbarView : public ToolbarView,
   BraveBookmarkButton* bookmark_button() const { return bookmark_; }
   WalletButton* wallet_button() const { return wallet_; }
   SidePanelButton* side_panel_button() const { return side_panel_; }
+  ToolbarButton* vertical_tab_toggle_button() const {
+    return vertical_tab_toggle_;
+  }
 #if BUILDFLAG(ENABLE_AI_CHAT)
   AIChatButton* ai_chat_button() const { return ai_chat_button_; }
 #endif
@@ -60,6 +64,7 @@ class BraveToolbarView : public ToolbarView,
   void OnLocationBarIsWideChanged();
   void OnShowBookmarksButtonChanged();
   void ShowBookmarkBubble(const GURL& url, bool already_bookmarked) override;
+  void VisibilityChanged(views::View* starting_from, bool visible) override;
   void ViewHierarchyChanged(
       const views::ViewHierarchyChangedDetails& details) override;
 
@@ -71,6 +76,9 @@ class BraveToolbarView : public ToolbarView,
   void ResetLocationBarBounds();
   void ResetBookmarkButtonBounds();
   void UpdateBookmarkVisibility();
+  void UpdateVerticalTabToggleVisibility();
+  void UpdateVerticalTabToggleState();
+  void OnVerticalTabTogglePressed();
 
   // ProfileAttributesStorage::Observer:
   void OnProfileAdded(const base::FilePath& profile_path) override;
@@ -84,6 +92,7 @@ class BraveToolbarView : public ToolbarView,
 
   views::View* toolbar_divider_for_testing() { return toolbar_divider_; }
 
+  raw_ptr<ToolbarButton> vertical_tab_toggle_ = nullptr;
   raw_ptr<BraveBookmarkButton> bookmark_ = nullptr;
   // Tracks the preference to determine whether bookmark editing is allowed.
   BooleanPrefMember edit_bookmarks_enabled_;
@@ -113,6 +122,7 @@ class BraveToolbarView : public ToolbarView,
 
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember show_title_bar_on_vertical_tabs_;
+  BooleanPrefMember vertical_tabs_collapsed_;
 #if BUILDFLAG(IS_LINUX)
   BooleanPrefMember use_custom_chrome_frame_;
 #endif  // BUILDFLAG(IS_LINUX)
