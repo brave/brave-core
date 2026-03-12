@@ -132,6 +132,8 @@ bool PageMetricsTabHelper::IsRelevantNavigationEvent(
     return false;
   }
 
+  // YouTube is a SPA, so navigations within the same document represent
+  // distinct page visits and should be counted.
   if (navigation_handle->IsSameDocument() &&
       !base::EndsWith(url.host(), kYouTubeDomain,
                       base::CompareCase::SENSITIVE)) {
