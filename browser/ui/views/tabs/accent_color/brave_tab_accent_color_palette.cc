@@ -5,7 +5,9 @@
 
 #include "brave/browser/ui/views/tabs/accent_color/brave_tab_accent_color_palette.h"
 
+#include <algorithm>
 #include <array>
+#include <utility>
 
 #include "base/containers/fixed_flat_map.h"
 #include "brave/ui/color/nala/nala_color_id.h"
@@ -18,15 +20,19 @@
 #define COLOR_10(color) nala::kColor##color##10
 #define COLOR_20(color) nala::kColor##color##20
 #define COLOR_40(color) nala::kColor##color##40
-#define Primitive60(color) nala::kColorPrimitive##color##60
+#define PRIMITIVE_60(color) nala::kColorPrimitive##color##60
+#define COLOR_KEY_AND_COLOR_ID_PAIR(color) \
+  std::pair {                              \
+    k##color, PRIMITIVE_60(color)          \
+  }
 
 // Yield color ids for dark-pinned-active
-#define DARK_PINNED_ACTIVE_COLOR_IDS(color)    \
-  ColorIds {                                   \
-    .icon_color_id = nala::kColorWhite,        \
-    .icon_border_color_id = COLOR_40(color),   \
-    .background_color_id = Primitive60(color), \
-    .border_color_id = Primitive60(color),     \
+#define DARK_PINNED_ACTIVE_COLOR_IDS(color)     \
+  ColorIds {                                    \
+    .icon_color_id = nala::kColorWhite,         \
+    .icon_border_color_id = COLOR_40(color),    \
+    .background_color_id = PRIMITIVE_60(color), \
+    .border_color_id = PRIMITIVE_60(color),     \
   }
 
 // Yield color ids for dark-pinned-inactive
@@ -45,18 +51,18 @@
   }
 
 // Yield color ids for dark-unpinned-active
-#define DARK_UNPINNED_ACTIVE_COLOR_IDS(color)   \
-  ColorIds {                                    \
-    .icon_color_id = nala::kColorWhite,         \
-    .icon_border_color_id = Primitive60(color), \
-    .background_color_id = Primitive60(color),  \
-    .border_color_id = Primitive60(color),      \
+#define DARK_UNPINNED_ACTIVE_COLOR_IDS(color)    \
+  ColorIds {                                     \
+    .icon_color_id = nala::kColorWhite,          \
+    .icon_border_color_id = PRIMITIVE_60(color), \
+    .background_color_id = PRIMITIVE_60(color),  \
+    .border_color_id = PRIMITIVE_60(color),      \
   }
 
 // Yield color ids for dark-unpinned-inactive
 #define DARK_UNPINNED_INACTIVE_COLOR_IDS(color) \
   ColorIds {                                    \
-    .icon_color_id = Primitive60(color),        \
+    .icon_color_id = PRIMITIVE_60(color),       \
     .icon_border_color_id = COLOR_10(color),    \
     .background_color_id = COLOR_10(color),     \
     .border_color_id = COLOR_10(color),         \
@@ -65,7 +71,7 @@
 // Yield color ids for dark-unpinned-hovered
 #define DARK_UNPINNED_HOVERED_COLOR_IDS(color)           \
   ColorIds {                                             \
-    .icon_color_id = Primitive60(color),                 \
+    .icon_color_id = PRIMITIVE_60(color),                \
     .icon_border_color_id = COLOR_20(color),             \
     .background_color_id = COLOR_20(color),              \
     .border_color_id = COLOR_20(color),                  \
@@ -73,12 +79,12 @@
   }
 
 // Yield color ids for light-pinned-active
-#define LIGHT_PINNED_ACTIVE_COLOR_IDS(color)   \
-  ColorIds {                                   \
-    .icon_color_id = nala::kColorWhite,        \
-    .icon_border_color_id = COLOR_40(color),   \
-    .background_color_id = Primitive60(color), \
-    .border_color_id = Primitive60(color),     \
+#define LIGHT_PINNED_ACTIVE_COLOR_IDS(color)    \
+  ColorIds {                                    \
+    .icon_color_id = nala::kColorWhite,         \
+    .icon_border_color_id = COLOR_40(color),    \
+    .background_color_id = PRIMITIVE_60(color), \
+    .border_color_id = PRIMITIVE_60(color),     \
   }
 
 // Yield color ids for light-pinned-inactive
@@ -97,18 +103,18 @@
   }
 
 // Yield color ids for light-unpinned-active
-#define LIGHT_UNPINNED_ACTIVE_COLOR_IDS(color)  \
-  ColorIds {                                    \
-    .icon_color_id = nala::kColorWhite,         \
-    .icon_border_color_id = Primitive60(color), \
-    .background_color_id = Primitive60(color),  \
-    .border_color_id = Primitive60(color),      \
+#define LIGHT_UNPINNED_ACTIVE_COLOR_IDS(color)   \
+  ColorIds {                                     \
+    .icon_color_id = nala::kColorWhite,          \
+    .icon_border_color_id = PRIMITIVE_60(color), \
+    .background_color_id = PRIMITIVE_60(color),  \
+    .border_color_id = PRIMITIVE_60(color),      \
   }
 
 // Yield color ids for light-unpinned-hovered
 #define LIGHT_UNPINNED_HOVERED_COLOR_IDS(color)          \
   ColorIds {                                             \
-    .icon_color_id = Primitive60(color),                 \
+    .icon_color_id = PRIMITIVE_60(color),                \
     .icon_border_color_id = COLOR_20(color),             \
     .background_color_id = COLOR_20(color),              \
     .border_color_id = COLOR_20(color),                  \
@@ -118,7 +124,7 @@
 // Yield color ids for light-unpinned-inactive
 #define LIGHT_UNPINNED_INACTIVE_COLOR_IDS(color) \
   ColorIds {                                     \
-    .icon_color_id = Primitive60(color),         \
+    .icon_color_id = PRIMITIVE_60(color),        \
     .icon_border_color_id = COLOR_10(color),     \
     .background_color_id = COLOR_10(color),      \
     .border_color_id = COLOR_10(color),          \
@@ -219,6 +225,30 @@ const auto& GetColorIdsMap() {
   return kColorIdsMap;
 }
 
+// Finds the nearest palette key by Euclidean distance in RGB (using
+// PRIMITIVE_60 reference colors from the color provider).
+ColorKey FindBestKey(SkColor container_color,
+                     const ui::ColorProvider* color_provider) {
+  static constexpr std::array kNearestColorCandidates = {
+      COLOR_KEY_AND_COLOR_ID_PAIR(Red),    COLOR_KEY_AND_COLOR_ID_PAIR(Orange),
+      COLOR_KEY_AND_COLOR_ID_PAIR(Yellow), COLOR_KEY_AND_COLOR_ID_PAIR(Green),
+      COLOR_KEY_AND_COLOR_ID_PAIR(Purple), COLOR_KEY_AND_COLOR_ID_PAIR(Pink),
+  };
+
+  auto sq_distance = [container_color](SkColor other) {
+    const int dr = SkColorGetR(container_color) - SkColorGetR(other);
+    const int dg = SkColorGetG(container_color) - SkColorGetG(other);
+    const int db = SkColorGetB(container_color) - SkColorGetB(other);
+    return dr * dr + dg * dg + db * db;
+  };
+
+  const auto best = std::ranges::min_element(
+      kNearestColorCandidates, std::less{}, [&](const auto& key_and_color_id) {
+        return sq_distance(color_provider->GetColor(key_and_color_id.second));
+      });
+  return best->first;
+}
+
 }  // namespace
 
 TabAccentColors GetTabAccentColors(const TabAccentColorsParams& params,
@@ -257,7 +287,10 @@ TabAccentColors GetTabAccentColors(const TabAccentColorsParams& params,
       key = kPink;
       break;
     default:
-      NOTREACHED();
+      // Find the nearest palette key. This can happen due to preferences
+      // synchronization or Nala updates.
+      key = FindBestKey(params.container_color, color_provider);
+      break;
   }
 
   const auto& color_ids_map = GetColorIdsMap();
