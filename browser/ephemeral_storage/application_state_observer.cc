@@ -6,15 +6,11 @@
 #include "brave/browser/ephemeral_storage/application_state_observer.h"
 
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
-#include "base/logging.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
-#else
-#include "brave/browser/brave_shields/android/brave_first_party_storage_cleaner_utils.h"
 #endif
 
 namespace ephemeral_storage {
@@ -61,13 +57,12 @@ void ApplicationStateObserver::TriggerCurrentAppStateNotification() {
 
 void ApplicationStateObserver::OnApplicationStateChange(
     base::android::ApplicationState new_state) {
-  auto app_in_stack = brave_shields::IsAppInTaskStack();
   if (new_state == base::android::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
     if (!has_notified_active_) {
       NotifyApplicationBecameActive();
       has_notified_active_ = true;
     }
-  } else if (!app_in_stack && current_state_ != new_state &&
+  } else if (current_state_ != new_state &&
              current_state_ ==
                  base::android::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
     NotifyApplicationBecameInactive();

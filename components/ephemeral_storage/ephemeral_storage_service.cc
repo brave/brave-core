@@ -78,6 +78,19 @@ GetFirstPartyStorageURLAndStoragePartitionConfig(
           browser_context, *partition_domain, *partition_name, false));
 }
 
+void RegisterFirstWindowOpenedCallback(
+    content::BrowserContext* context,
+    EphemeralStorageServiceDelegate* delegate,
+    base::OnceClosure callback) {
+  if (!base::FeatureList::IsEnabled(
+          net::features::kBraveForgetFirstPartyStorage) ||
+      context->IsOffTheRecord()) {
+    return;
+  }
+
+  delegate->RegisterFirstWindowOpenedCallback(std::move(callback));
+}
+
 }  // namespace
 
 EphemeralStorageService::EphemeralStorageService(
@@ -96,14 +109,11 @@ EphemeralStorageService::EphemeralStorageService(
   tld_ephemeral_area_keep_alive_ = base::Seconds(
       net::features::kBraveEphemeralStorageKeepAliveTimeInSeconds.Get());
 
-  if (base::FeatureList::IsEnabled(
-          net::features::kBraveForgetFirstPartyStorage) &&
-      !context_->IsOffTheRecord()) {
-    delegate_->RegisterFirstWindowOpenedCallback(
-        base::BindOnce(&EphemeralStorageService::
-                           ScheduleFirstPartyStorageAreasCleanupOnStartup,
-                       weak_ptr_factory_.GetWeakPtr()));
-  }
+  RegisterFirstWindowOpenedCallback(
+      context_, delegate_.get(),
+      base::BindOnce(&EphemeralStorageService::
+                         ScheduleFirstPartyStorageAreasCleanupOnStartup,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 EphemeralStorageService::~EphemeralStorageService() = default;
@@ -284,6 +294,14 @@ void EphemeralStorageService::RemoveObserver(
 
 #if BUILDFLAG(IS_ANDROID)
 void EphemeralStorageService::TriggerCurrentAppStateNotification() {
+  // Register again, as on Android the EphemeralStorageService may remain alive
+  // across multiple app states, requiring the callback to be re-registered.
+  RegisterFirstWindowOpenedCallback(
+      context_, delegate_.get(),
+      base::BindOnce(&EphemeralStorageService::
+                         ScheduleFirstPartyStorageAreasCleanupOnStartup,
+                     weak_ptr_factory_.GetWeakPtr()));
+
   delegate_->TriggerCurrentAppStateNotification();
 }
 #endif  // BUILDFLAG(IS_ANDROID)
