@@ -7,6 +7,15 @@
 
 namespace web {
 
+void WebUIIOSDataSourceImpl::AddInteger(const std::string& name,
+                                        int32_t value) {
+  localized_strings_.Set(name, value);
+}
+
+void WebUIIOSDataSourceImpl::AddDouble(const std::string& name, double value) {
+  localized_strings_.Set(name, value);
+}
+
 WebUIIOSDataSourceImpl::WebUIIOSDataSourceImpl(std::string_view source_name,
                                                URLDataSourceIOS* source)
     : URLDataSourceIOSImpl(source_name, source),
