@@ -171,13 +171,10 @@ function ConversationEntries() {
           <div key={firstEntryEdit.uuid || index}>
             <div
               data-id={index}
+              data-testid={isHuman ? 'human-turn' : 'assistant-turn'}
               className={turnClass}
               onMouseEnter={() => isHuman && setHoverMenuButtonId(index)}
-              onMouseLeave={() => {
-                if (!isHuman) return
-                setActiveMenuId(undefined)
-                setHoverMenuButtonId(undefined)
-              }}
+              onMouseLeave={() => isHuman && setHoverMenuButtonId(undefined)}
             >
               <div
                 className={isAIAssistant ? styles.message : styles.humanMessage}
@@ -240,27 +237,27 @@ function ConversationEntries() {
                           && !firstEntryEdit.selectedText
                           && !showEditInput && (
                             <>
-                              {conversationContext.isMobile
-                              || hoverMenuButtonId === index ? (
-                                <ContextMenuHuman
-                                  isOpen={activeMenuId === index}
-                                  onClick={() => showHumanMenu(index)}
-                                  onClose={hideHumanMenu}
-                                  onEditQuestionClicked={
-                                    canEditEntry
-                                      ? () => setEditInputId(index)
-                                      : undefined
-                                  }
-                                  onCopyQuestionClicked={handleCopyText}
-                                  onSaveAsSkillClicked={() =>
-                                    conversationContext.parentUiFrame?.showSkillDialog(
-                                      firstEntryEdit.text,
-                                    )
-                                  }
-                                />
-                              ) : (
-                                <div className={styles.divToKeepGap} />
-                              )}
+                              <ContextMenuHuman
+                                isOpen={activeMenuId === index}
+                                isVisible={
+                                  conversationContext.isMobile
+                                  || hoverMenuButtonId === index
+                                  || activeMenuId === index
+                                }
+                                onClick={() => showHumanMenu(index)}
+                                onClose={hideHumanMenu}
+                                onEditQuestionClicked={
+                                  canEditEntry
+                                    ? () => setEditInputId(index)
+                                    : undefined
+                                }
+                                onCopyQuestionClicked={handleCopyText}
+                                onSaveAsSkillClicked={() =>
+                                  conversationContext.parentUiFrame?.showSkillDialog(
+                                    firstEntryEdit.text,
+                                  )
+                                }
+                              />
                               <div className={styles.humanMessageBubble}>
                                 <div className={styles.humanTextRow}>
                                   {maybeHighlightSkillText(

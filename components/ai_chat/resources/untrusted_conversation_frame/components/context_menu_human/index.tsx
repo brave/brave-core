@@ -16,6 +16,7 @@ import styles from './style.module.scss'
 
 interface ContextMenuHumanProps {
   isOpen: boolean
+  isVisible: boolean
   onClick: () => void
   onClose: () => void
   onEditQuestionClicked?: () => void
@@ -37,6 +38,7 @@ export default function ContextMenuHuman(props: ContextMenuHumanProps) {
         onClose={props.onClose}
       >
         <Button
+          data-testid='context-menu-human-open-button'
           fab
           slot='anchor-content'
           size={conversationContext.isMobile ? 'small' : 'tiny'}
@@ -44,6 +46,7 @@ export default function ContextMenuHuman(props: ContextMenuHumanProps) {
           onClick={props.onClick}
           className={classnames({
             [styles.moreButton]: true,
+            [styles.moreButtonHidden]: !props.isVisible,
             [styles.moreButtonActive]: props.isOpen,
             [styles.moreButtonMobile]: conversationContext.isMobile,
           })}
@@ -52,7 +55,10 @@ export default function ContextMenuHuman(props: ContextMenuHumanProps) {
         </Button>
         {conversationContext.canSubmitUserEntries
           && props.onEditQuestionClicked && (
-            <leo-menu-item onClick={props.onEditQuestionClicked}>
+            <leo-menu-item
+              data-testid='edit-question-button'
+              onClick={props.onEditQuestionClicked}
+            >
               <Icon name='edit-pencil' />
               <span>{getLocale(S.CHAT_UI_EDIT_PROMPT_BUTTON_LABEL)}</span>
             </leo-menu-item>
