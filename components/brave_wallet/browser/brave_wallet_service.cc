@@ -19,6 +19,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/account_discovery_manager.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
+#include "brave/components/brave_wallet/browser/snap/snap_controller.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -196,6 +197,8 @@ BraveWalletService::BraveWalletService(
       keyring_service_(std::make_unique<KeyringService>(json_rpc_service_.get(),
                                                         profile_prefs,
                                                         local_state)),
+      snap_controller_(
+          std::make_unique<SnapController>(keyring_service_.get())),
       profile_prefs_(profile_prefs),
       eth_allowance_manager_(
           std::make_unique<EthAllowanceManager>(json_rpc_service_.get(),

@@ -321,6 +321,7 @@ static_library("browser") {
     ":meld_integration_responses",
     ":pref_names",
     ":transaction",
+    "//brave/components/brave_wallet/browser/snap",
     "//base",
     "//brave/components/brave_component_updater/browser:public",
     "//brave/components/brave_stats/browser",

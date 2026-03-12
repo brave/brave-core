@@ -5,13 +5,19 @@
 
 import WalletApiProxy from '../common/wallet_api_proxy'
 import { BraveWallet } from '../constants/types'
+import { SnapBridge } from '../common/snap/snap_bridge'
 
 let walletPageApiProxyInstance: WalletPageApiProxy
 
 export class WalletPageApiProxy extends WalletApiProxy {
   pageHandler = new BraveWallet.PageHandlerRemote()
+  snapBridge = new SnapBridge()
+
   constructor() {
     super()
+
+    // Set up Mojo pipe for snap.request() calls (snap → C++ core).
+    const snapRequestHandler = new BraveWallet.SnapRequestHandlerRemote()
 
     const factory = BraveWallet?.PageHandlerFactory?.getRemote?.()
     factory?.createPageHandler?.(
@@ -35,7 +41,13 @@ export class WalletPageApiProxy extends WalletApiProxy {
       this.braveWalletP3A.$.bindNewPipeAndPassReceiver(),
       this.braveWalletIpfsService.$.bindNewPipeAndPassReceiver(),
       this.meldIntegrationService.$.bindNewPipeAndPassReceiver(),
+      // Snap bridge: TS implements SnapBridge, C++ implements SnapRequestHandler.
+      this.snapBridge.bindNewPipeAndPassRemote(),
+      snapRequestHandler.$.bindNewPipeAndPassReceiver(),
     )
+
+    // Give the bridge the remote so it can relay snap.request() to C++.
+    this.snapBridge.setSnapRequestHandler(snapRequestHandler)
   }
 }
 

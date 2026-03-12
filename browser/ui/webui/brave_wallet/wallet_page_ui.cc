@@ -25,6 +25,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_ipfs_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/snap/snap_controller.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/simulation_service.h"
@@ -87,7 +88,8 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
       network::mojom::CSPDirectiveName::FrameSrc,
       std::string("frame-src ") + kUntrustedTrezorURL + " " +
           kUntrustedLedgerURL + " " + kUntrustedNftURL + " " +
-          kUntrustedLineChartURL + " " + kUntrustedMarketURL + ";");
+          kUntrustedLineChartURL + " " + kUntrustedMarketURL + " " +
+          kUntrustedSnapExecutorURL + ";");
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
   source->AddString("braveWalletLineChartBridgeUrl", kUntrustedLineChartURL);
@@ -174,7 +176,10 @@ void WalletPageUI::CreatePageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
         ipfs_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
-        meld_integration_service) {
+        meld_integration_service,
+    mojo::PendingRemote<brave_wallet::mojom::SnapBridge> snap_bridge,
+    mojo::PendingReceiver<brave_wallet::mojom::SnapRequestHandler>
+        snap_request_handler) {
   auto* profile = Profile::FromWebUI(web_ui());
   CHECK(profile);
 
@@ -199,6 +204,11 @@ void WalletPageUI::CreatePageHandler(
     wallet_service->Bind(std::move(filecoin_tx_manager_proxy_receiver));
     wallet_service->Bind(std::move(bitcoin_tx_manager_proxy_receiver));
     wallet_service->Bind(std::move(brave_wallet_p3a_receiver));
+
+    if (auto* snap_controller = wallet_service->snap_controller()) {
+      snap_controller->SetSnapBridge(std::move(snap_bridge));
+      snap_controller->BindSnapRequestHandler(std::move(snap_request_handler));
+    }
   }
 
   brave_wallet::SwapServiceFactory::BindForContext(

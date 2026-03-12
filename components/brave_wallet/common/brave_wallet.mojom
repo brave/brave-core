@@ -420,7 +420,9 @@ interface PageHandlerFactory {
       pending_receiver<BraveWalletService> brave_wallet_service,
       pending_receiver<BraveWalletP3A> brave_wallet_p3a,
       pending_receiver<IpfsService> brave_wallet_ipfs_service,
-      pending_receiver<MeldIntegrationService> meld_integration_service);
+      pending_receiver<MeldIntegrationService> meld_integration_service,
+      pending_remote<SnapBridge> snap_bridge,
+      pending_receiver<SnapRequestHandler> snap_request_handler);
 };
 
 // Lifetime option in sync with CreatePermissionLifetimeOptions()
@@ -4061,4 +4063,27 @@ interface SimulationService {
       => (SolanaSimulationResponse? response,
           string error_response,
           string error_string);
+};
+
+// Implemented by the wallet page TypeScript (SnapBridge).
+// Called from SnapController (C++) to manage snap iframes.
+interface SnapBridge {
+  // Create an iframe for the snap, load SES + snap source code.
+  LoadSnap(string snap_id, string snap_source)
+      => (bool success, string? error);
+
+  // Execute an RPC call on the snap (in its iframe).
+  InvokeSnap(string snap_id, string method, mojo_base.mojom.Value params)
+      => (mojo_base.mojom.Value? result, string? error);
+
+  // Destroy the snap's iframe and clean up resources.
+  UnloadSnap(string snap_id) => ();
+};
+
+// Implemented by SnapController (C++).
+// Called from the wallet page TypeScript when snap code calls snap.request().
+interface SnapRequestHandler {
+  HandleSnapRequest(string snap_id, string method,
+                    mojo_base.mojom.Value params)
+      => (mojo_base.mojom.Value? result, string? error);
 };

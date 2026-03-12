@@ -203,6 +203,18 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   void HandleEthUnsubscribeMethod(JsonRpcRequest request,
                                   RequestCallback request_callback);
 
+  // Snap RPC methods (wallet_requestSnaps, wallet_invokeSnap, wallet_getSnaps).
+  void HandleWalletRequestSnapsMethod(JsonRpcRequest request,
+                                      RequestCallback request_callback);
+  void HandleWalletInvokeSnapMethod(JsonRpcRequest request,
+                                    RequestCallback request_callback);
+  void HandleWalletGetSnapsMethod(JsonRpcRequest request,
+                                  RequestCallback request_callback);
+  void OnSnapInvokeResult(RequestCallback callback,
+                          base::Value id,
+                          std::optional<base::Value> result,
+                          std::optional<std::string> error);
+
   mojom::AccountIdPtr FindAuthenticatedAccountByAddress(
       const std::string& address,
       base::Value& id,

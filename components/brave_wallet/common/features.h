@@ -38,6 +38,8 @@ extern const base::FeatureParam<bool> kCardanoDAppSupport;
 BASE_DECLARE_FEATURE(kBraveWalletAnkrBalancesFeature);
 BASE_DECLARE_FEATURE(kBraveWalletTransactionSimulationsFeature);
 
+BASE_DECLARE_FEATURE(kBraveWalletSnapsFeature);
+
 #if BUILDFLAG(IS_IOS)
 BASE_DECLARE_FEATURE(kBraveWalletWebUIFeature);
 #endif

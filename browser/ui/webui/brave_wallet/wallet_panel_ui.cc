@@ -87,7 +87,8 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
       network::mojom::CSPDirectiveName::FrameSrc,
       base::JoinString({"frame-src", kUntrustedTrezorURL, kUntrustedLedgerURL,
                         kUntrustedLineChartURL, kUntrustedNftURL,
-                        base::StrCat({kUntrustedMarketURL, ";"})},
+                        kUntrustedMarketURL,
+                        base::StrCat({kUntrustedSnapExecutorURL, ";"})},
                        " "));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,

@@ -41,7 +41,8 @@
 namespace {
 // Content-Security-Policy: frame-src chrome-untrusted://trezor-bridge/
 // chrome-untrusted://ledger-bridge/ chrome-untrusted://nft-display/
-// chrome-untrusted://line-chart-display/ chrome-untrusted://market-display/;
+// chrome-untrusted://line-chart-display/ chrome-untrusted://market-display/
+// chrome-untrusted://snap-executor/;
 // fails to work unless all the trailing slashes from each policy.
 // For some reason, on Desktop, the trailing slashes don't seem to matter???
 // So for iOS, this function will strip the trailing slashes so the CSPs apply
@@ -80,7 +81,8 @@ WalletPageUI::WalletPageUI(web::WebUIIOS* web_ui, const GURL& url)
           " " + StripTrailingSlash(kUntrustedLedgerURL) + " " +
           StripTrailingSlash(kUntrustedNftURL) + " " +
           StripTrailingSlash(kUntrustedLineChartURL) + " " +
-          StripTrailingSlash(kUntrustedMarketURL) + ";");
+          StripTrailingSlash(kUntrustedMarketURL) + " " +
+          StripTrailingSlash(kUntrustedSnapExecutorURL) + ";");
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
