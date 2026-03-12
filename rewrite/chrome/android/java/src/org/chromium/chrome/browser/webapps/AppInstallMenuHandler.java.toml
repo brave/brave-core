@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = "Add import for UrlConstants."
+pattern = 'import org.chromium.chrome.R;'
+replace = """
+import org.chromium.chrome.R;
+import org.chromium.components.embedder_support.util.UrlConstants;"""
+
+[[substitution]]
+description = """
+Always make chrome:// schemes install rather than creating a shortcut (shortcuts can't handle chrome: urls).
+"""
+re_pattern = '(doUniversalInstall(\s|.)+?if \()(controller == null\))'
+re_flags = ["MULTILINE"]
+replace = '\1(currentTab.getUrl() != null && UrlConstants.CHROME_SCHEME.equals(currentTab.getUrl().getScheme())) || \3'
