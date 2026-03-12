@@ -16,4 +16,4 @@ Always make chrome:// schemes install rather than creating a shortcut (shortcuts
 """
 re_pattern = '(doUniversalInstall(\s|.)+?if \()(controller == null\))'
 re_flags = ["MULTILINE"]
-replace = '\1UrlConstants.CHROME_SCHEME.equals(currentTab.getUrl().getScheme()) || \3'
+replace = '\1(currentTab.getUrl() != null && UrlConstants.CHROME_SCHEME.equals(currentTab.getUrl().getScheme())) || \3'

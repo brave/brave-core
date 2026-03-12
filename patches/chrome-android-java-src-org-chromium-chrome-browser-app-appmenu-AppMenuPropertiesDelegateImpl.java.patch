@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java
-index 31a8692bb45c2d910483bceaf1255ca152eb2c3d..9ca039455ac1dee6e385926eff2506c09bae7aeb 100644
+index 31a8692bb45c2d910483bceaf1255ca152eb2c3d..1ecb2788087fca03ac0607181ce11c3954669a4d 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java
 @@ -43,6 +43,7 @@ import org.chromium.build.annotations.NullMarked;
@@ -15,7 +15,7 @@ index 31a8692bb45c2d910483bceaf1255ca152eb2c3d..9ca039455ac1dee6e385926eff2506c0
          // * If creating shortcuts it not supported by the current home screen.
          return WebappsUtils.isAddToHomeIntentSupported()
 -                && !isNativePage
-+                && (!isNativePage || (UrlConstants.CHROME_SCHEME.equals(url.getScheme()) && url.getHost().equals("leo-ai")))
++                && (!isNativePage || (url != null && UrlConstants.CHROME_SCHEME.equals(url.getScheme()) && url.getHost().equals("leo-ai")))
                  && !isFileScheme
                  && !isContentScheme
                  && !isIncognito

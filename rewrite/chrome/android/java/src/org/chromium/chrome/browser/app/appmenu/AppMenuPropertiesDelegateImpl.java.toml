@@ -18,4 +18,4 @@ chrome://leo-ai.
 """
 re_pattern = '(isAddToHomeIntentSupported\(\)\s+)&& (!isNativePage)$'
 re_flags = ["MULTILINE"]
-replace = '\1&& (\2 || (UrlConstants.CHROME_SCHEME.equals(url.getScheme()) && url.getHost().equals("leo-ai")))'
+replace = '\1&& (\2 || (url != null && UrlConstants.CHROME_SCHEME.equals(url.getScheme()) && url.getHost().equals("leo-ai")))'
