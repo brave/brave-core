@@ -5,6 +5,8 @@
 
 #include "brave/common/importer/chrome_importer_utils.h"
 
+#include <string>
+
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
@@ -128,6 +130,68 @@ TEST_F(BraveChromeImporterUtilsTest, ChromeImporterCanImport) {
                                       user_data_importer::TYPE_CHROME,
                                       &services_supported));
   EXPECT_EQ(services_supported, user_data_importer::EXTENSIONS);
+}
+
+// Verify that TYPE_BRAVE uses the same import logic as other Chromium-based
+// browsers and that passwords are importable (unlike TYPE_CHROME which blocks
+// password import due to app-bound encryption).
+TEST_F(BraveChromeImporterUtilsTest, BraveImporterCanImport) {
+  CopyTestFileToProfile("Secure_Preferences_for_extension_import",
+                        kChromeSecurePreferencesFile);
+  CopyTestFileToProfile(kChromePreferencesFile, kChromePreferencesFile);
+  uint16_t services_supported = user_data_importer::NONE;
+  EXPECT_TRUE(ChromeImporterCanImport(GetTestProfilePath(),
+                                      user_data_importer::TYPE_BRAVE,
+                                      &services_supported));
+  EXPECT_EQ(services_supported, user_data_importer::EXTENSIONS);
+}
+
+TEST_F(BraveChromeImporterUtilsTest, BraveImporterCanImportPasswords) {
+  // Create a Login Data file so password import is detected.
+  base::WriteFile(GetTestProfilePath().AppendASCII("Login Data"), "dummy");
+  uint16_t services_supported = user_data_importer::NONE;
+
+  // TYPE_BRAVE should support password import.
+  EXPECT_TRUE(ChromeImporterCanImport(GetTestProfilePath(),
+                                      user_data_importer::TYPE_BRAVE,
+                                      &services_supported));
+  EXPECT_TRUE(services_supported & user_data_importer::PASSWORDS);
+
+  // TYPE_CHROME should NOT support password import (app-bound encryption).
+  // With only Login Data present and no other importable data,
+  // ChromeImporterCanImport returns false.
+  services_supported = user_data_importer::NONE;
+  EXPECT_FALSE(ChromeImporterCanImport(GetTestProfilePath(),
+                                       user_data_importer::TYPE_CHROME,
+                                       &services_supported));
+  EXPECT_FALSE(services_supported & user_data_importer::PASSWORDS);
+}
+
+TEST_F(BraveChromeImporterUtilsTest, BraveImporterCanImportAllDataTypes) {
+  CopyTestFileToProfile("Secure_Preferences_for_extension_import",
+                        kChromeSecurePreferencesFile);
+  CopyTestFileToProfile(kChromePreferencesFile, kChromePreferencesFile);
+  CopyTestFileToProfile("Bookmarks", "Bookmarks");
+  CopyTestFileToProfile("History", "History");
+  base::WriteFile(GetTestProfilePath().AppendASCII("Login Data"), "dummy");
+
+  uint16_t services_supported = user_data_importer::NONE;
+  EXPECT_TRUE(ChromeImporterCanImport(GetTestProfilePath(),
+                                      user_data_importer::TYPE_BRAVE,
+                                      &services_supported));
+  EXPECT_TRUE(services_supported & user_data_importer::FAVORITES);
+  EXPECT_TRUE(services_supported & user_data_importer::HISTORY);
+  EXPECT_TRUE(services_supported & user_data_importer::PASSWORDS);
+  EXPECT_TRUE(services_supported & user_data_importer::EXTENSIONS);
+}
+
+TEST(BraveImporterUserDataFolderTest, GetBraveUserDataFolderIsNotEmpty) {
+  // GetBraveUserDataFolder() should always return a non-empty path, even if the
+  // folder doesn't exist on disk yet.
+  base::FilePath brave_path = GetBraveUserDataFolder();
+  EXPECT_FALSE(brave_path.empty());
+  // The path should contain a Brave-specific directory name.
+  EXPECT_NE(brave_path.MaybeAsASCII().find("Brave"), std::string::npos);
 }
 
 TEST_F(BraveChromeImporterUtilsTest, BadFiles) {

@@ -30,7 +30,8 @@ export enum BrowserType {
   Opera = 'Opera',
   Yandex = 'Yandex',
   Whale = 'NAVER Whale',
-  Microsoft_IE = 'Microsoft Internet Explorer'
+  Microsoft_IE = 'Microsoft Internet Explorer',
+  Brave = 'Brave'
 }
 
 export interface Scenes {

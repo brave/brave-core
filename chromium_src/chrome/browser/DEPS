@@ -7,6 +7,7 @@ include_rules += [
   "+brave/common",
   "+brave/build/android/jni_headers",
   "+brave/grit",
+  "+brave/components/brave_origin/buildflags",
   "+brave/components/constants",
   "+brave/components/playlist/core/common/buildflags",
   "+brave/components/version_info",
