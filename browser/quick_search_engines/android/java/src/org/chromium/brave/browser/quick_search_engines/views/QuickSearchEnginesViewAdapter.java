@@ -50,6 +50,9 @@ public class QuickSearchEnginesViewAdapter
             quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_microsoft_color);
         } else if (QuickSearchEnginesUtil.STARTPAGE_SEARCH_ENGINE_KEYWORD.equals(keyword)) {
             quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_startpage_color);
+        } else if (QuickSearchEnginesUtil.BRAVE_SEARCH_ENGINE_KEYWORD.equals(keyword)) {
+            quickSearchViewHolder.mSearchEngineLogo.setImageResource(
+                    R.drawable.ic_social_brave_release_favicon_fullheight_color);
         } else {
             mQuickSearchEnginesCallback.loadSearchEngineLogo(
                     quickSearchViewHolder.mSearchEngineLogo, quickSearchEnginesModel);
