@@ -239,7 +239,7 @@ void BraveToolbarView::Init() {
 
   if (tabs::utils::SupportsBraveVerticalTabs(browser_)) {
     show_vertical_tabs_.Init(brave_tabs::kVerticalTabsEnabled,
-                             profile->GetOriginalProfile()->GetPrefs(),
+                             profile->GetPrefs(),
                              base::BindRepeating(
                                  [](BraveToolbarView* self) {
                                    self->UpdateHorizontalPadding();
@@ -275,7 +275,7 @@ void BraveToolbarView::Init() {
     vertical_tab_toggle_ = container_view->AddChildViewAt(
         std::make_unique<ToolbarButton>(
             base::BindRepeating(&BraveToolbarView::OnVerticalTabTogglePressed,
-                                weak_factory_.GetWeakPtr())),
+                                base::Unretained(this))),
         back_button_index.value_or(0));
     vertical_tab_toggle_->SetVectorIcon(kVerticalTabStripToggleButtonIcon);
     UpdateVerticalTabToggleVisibility();
