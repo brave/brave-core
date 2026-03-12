@@ -393,10 +393,6 @@ class TabManager: NSObject {
       if previousTab.displayFavicon == nil {
         adsRewardsLog.warning("No favicon found in tab to report to rewards panel")
       }
-      rewards?.maybeNotifyTabDidChange(
-        tab: previousTab,
-        isSelected: false
-      )
       rewards?.reportTabUpdated(
         tab: previousTab,
         isSelected: false,
@@ -406,10 +402,6 @@ class TabManager: NSObject {
       if newSelectedTab.displayFavicon == nil && !newTabUrl.isLocal {
         adsRewardsLog.warning("No favicon found in tab to report to rewards panel")
       }
-      rewards?.maybeNotifyTabDidChange(
-        tab: newSelectedTab,
-        isSelected: true
-      )
       rewards?.reportTabUpdated(
         tab: newSelectedTab,
         isSelected: true,

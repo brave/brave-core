@@ -31,16 +31,6 @@ protocol TabMiscDelegate {
   func updateURLBarWalletButton()
 }
 
-struct RewardsTabChangeReportingState {
-  /// Set to true when the resulting page was restored from session state.
-  var wasRestored = false
-  /// Set to true when the resulting page navigation is not a reload or a
-  /// back/forward type.
-  var isNewNavigation = true
-  /// HTTP status code of the resulting page.
-  var httpStatusCode = -1
-}
-
 /// A broad container of assorted data that was previously stored in Tab
 ///
 /// DO NOT ADD NEW PROPERTIES TO THIS TYPE
@@ -175,10 +165,6 @@ class TabBrowserData: NSObject, TabObserver {
   var playlistItem: PlaylistInfo?
   var playlistItemState: PlaylistItemAddedState = .none
   var translationState: TranslateURLBarButton.TranslateState = .unavailable
-
-  /// The rewards reporting state which is filled during a page navigation.
-  // It is reset to initial values when the page navigation is finished.
-  var rewardsReportingState = RewardsTabChangeReportingState()
 
   /// This is the request that was upgraded to HTTPS
   /// This allows us to rollback the upgrade when we encounter a 4xx+
