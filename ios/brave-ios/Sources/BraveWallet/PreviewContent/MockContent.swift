@@ -281,8 +281,7 @@ extension BraveWallet.TransactionInfo {
           ),
           chainId: BraveWallet.MainnetChainId,
           maxPriorityFeePerGas: "0x2540be400",
-          maxFeePerGas: "0x25b7f3d400",
-          gasEstimation: nil
+          maxFeePerGas: "0x25b7f3d400"
         )
       ),
       txStatus: .confirmed,
@@ -322,8 +321,7 @@ extension BraveWallet.TransactionInfo {
           ),
           chainId: BraveWallet.MainnetChainId,
           maxPriorityFeePerGas: "0x77359400",
-          maxFeePerGas: "0x39bdf3b000",
-          gasEstimation: nil
+          maxFeePerGas: "0x39bdf3b000"
         )
       ),
       txStatus: .confirmed,
@@ -374,8 +372,7 @@ extension BraveWallet.TransactionInfo {
           ),
           chainId: BraveWallet.MainnetChainId,
           maxPriorityFeePerGas: "0x77359400",
-          maxFeePerGas: "0x39bdf3b000",
-          gasEstimation: nil
+          maxFeePerGas: "0x39bdf3b000"
         )
       ),
       txStatus: .confirmed,
@@ -418,8 +415,7 @@ extension BraveWallet.TransactionInfo {
           ),
           chainId: BraveWallet.MainnetChainId,
           maxPriorityFeePerGas: "",
-          maxFeePerGas: "",
-          gasEstimation: nil
+          maxFeePerGas: ""
         )
       ),
       txStatus: .confirmed,

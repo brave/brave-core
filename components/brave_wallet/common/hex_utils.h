@@ -52,8 +52,10 @@ bool ConcatHexStrings(const std::vector<std::string>& hex_inputs,
 
 // Takes a hex string as input and converts it to a uint256_t
 bool HexValueToUint256(std::string_view hex_input, uint256_t* out);
+std::optional<uint256_t> HexValueToUint256(std::string_view hex_input);
 // Takes a hex string as input and converts it to a int256_t
 bool HexValueToInt256(std::string_view hex_input, int256_t* out);
+std::optional<int256_t> HexValueToInt256(std::string_view hex_input);
 
 // TODO(apamyshev): this call is misused in many places(like in conjuction with
 // `PadHexEncodedParameter`). All call sites need review. Also needs better

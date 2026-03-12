@@ -45,13 +45,12 @@ mojom::TransactionInfoPtr GetCannedScanEVMTransactionParams(
       is_eth_send ? std::vector<uint8_t>() : std::vector<uint8_t>(1, 10u),
       false, std::nullopt);
 
-  auto tx =
-      eip1559
-          ? std::make_unique<Eip1559Transaction>(
-                *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
-                    std::move(base_tx_data), "0x3", "0x1E", "0x32", nullptr)))
-          : std::make_unique<EthTransaction>(
-                *EthTransaction::FromTxData(std::move(base_tx_data)));
+  auto tx = eip1559
+                ? std::make_unique<Eip1559Transaction>(
+                      *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
+                          std::move(base_tx_data), "0x3", "0x1E", "0x32")))
+                : std::make_unique<EthTransaction>(
+                      *EthTransaction::FromTxData(std::move(base_tx_data)));
 
   auto eth_account =
       MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,

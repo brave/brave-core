@@ -108,7 +108,6 @@ describe('PendingTransactionDetails', () => {
             chainId: '0x1',
             maxPriorityFeePerGas: '1000000000',
             maxFeePerGas: '2000000000',
-            gasEstimation: undefined,
             baseData: {
               nonce: '0x1',
               gasPrice: '1000000000',

@@ -1652,7 +1652,6 @@ struct TxData1559 {
   string chain_id;
   string max_priority_fee_per_gas;
   string max_fee_per_gas;
-  GasEstimation1559? gas_estimation;
 };
 
 const string kSolanaSystemProgramId = "11111111111111111111111111111111";

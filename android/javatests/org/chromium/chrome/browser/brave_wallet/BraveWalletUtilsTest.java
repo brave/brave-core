@@ -431,9 +431,10 @@ public class BraveWalletUtilsTest {
                 java.lang.Object v = f.get(testStruct);
                 if (!t.isPrimitive()) {
                     String varName = f.getName();
-                    if (varName.equals("baseData") || varName.equals("chainId")
+                    if (varName.equals("baseData")
+                            || varName.equals("chainId")
                             || varName.equals("maxPriorityFeePerGas")
-                            || varName.equals("maxFeePerGas") || varName.equals("gasEstimation")) {
+                            || varName.equals("maxFeePerGas")) {
                         continue;
                     }
                     if (v == null) {
@@ -463,14 +464,6 @@ public class BraveWalletUtilsTest {
         testStruct.chainId = "";
         testStruct.maxPriorityFeePerGas = "";
         testStruct.maxFeePerGas = "";
-        testStruct.gasEstimation = new GasEstimation1559();
-        testStruct.gasEstimation.slowMaxPriorityFeePerGas = "";
-        testStruct.gasEstimation.slowMaxFeePerGas = "";
-        testStruct.gasEstimation.avgMaxPriorityFeePerGas = "";
-        testStruct.gasEstimation.avgMaxFeePerGas = "";
-        testStruct.gasEstimation.fastMaxPriorityFeePerGas = "";
-        testStruct.gasEstimation.fastMaxFeePerGas = "";
-        testStruct.gasEstimation.baseFeePerGas = "";
         try {
             java.nio.ByteBuffer byteBuffer = testStruct.serialize();
             TxData1559 testStructDeserialized = TxData1559.deserialize(byteBuffer);

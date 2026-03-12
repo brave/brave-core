@@ -62,7 +62,6 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
   EXPECT_EQ(ti->tx_data_union->get_eth_tx_data_1559()->max_priority_fee_per_gas,
             "");
   EXPECT_EQ(ti->tx_data_union->get_eth_tx_data_1559()->max_fee_per_gas, "");
-  EXPECT_FALSE(ti->tx_data_union->get_eth_tx_data_1559()->gas_estimation);
   EXPECT_EQ(meta.created_time().InMillisecondsSinceUnixEpoch(),
             ti->created_time.InMilliseconds());
   EXPECT_EQ(meta.submitted_time().InMillisecondsSinceUnixEpoch(),
@@ -111,7 +110,6 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
   EXPECT_EQ(
       ti1->tx_data_union->get_eth_tx_data_1559()->max_priority_fee_per_gas, "");
   EXPECT_EQ(ti1->tx_data_union->get_eth_tx_data_1559()->max_fee_per_gas, "");
-  EXPECT_FALSE(ti1->tx_data_union->get_eth_tx_data_1559()->gas_estimation);
 
   // type2
   std::unique_ptr<Eip1559Transaction> tx2 =
@@ -121,15 +119,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
                                  "0x3535353535353535353535353535353535353535",
                                  "0x0de0b6b3a7640000", std::vector<uint8_t>(),
                                  false, std::nullopt),
-              "0x3", "0x1E", "0x32",
-              mojom::GasEstimation1559::New(
-                  "0x3b9aca00" /* Hex of 1 * 1e9 */,
-                  "0xaf16b1600" /* Hex of 47 * 1e9 */,
-                  "0x77359400" /* Hex of 2 * 1e9 */,
-                  "0xb2d05e000" /* Hex of 48 * 1e9 */,
-                  "0xb2d05e00" /* Hex of 3 * 1e9 */,
-                  "0xb68a0aa00" /* Hex of 49 * 1e9 */,
-                  "0xad8075b7a" /* Hex of 46574033786 */))));
+              "0x3", "0x1E", "0x32")));
   EthTxMeta meta2(eth_account_id, std::move(tx2));
   mojom::TransactionInfoPtr ti2 = meta2.ToTransactionInfo();
   EXPECT_EQ(ti2->id, meta2.id());
@@ -157,31 +147,6 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
       Uint256ValueToHex(tx1559->max_priority_fee_per_gas()));
   EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()->max_fee_per_gas,
             Uint256ValueToHex(tx1559->max_fee_per_gas()));
-  ASSERT_TRUE(ti2->tx_data_union->get_eth_tx_data_1559()->gas_estimation);
-  EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()
-                ->gas_estimation->slow_max_priority_fee_per_gas,
-            Uint256ValueToHex(
-                tx1559->gas_estimation().slow_max_priority_fee_per_gas));
-  EXPECT_EQ(
-      ti2->tx_data_union->get_eth_tx_data_1559()
-          ->gas_estimation->avg_max_priority_fee_per_gas,
-      Uint256ValueToHex(tx1559->gas_estimation().avg_max_priority_fee_per_gas));
-  EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()
-                ->gas_estimation->fast_max_priority_fee_per_gas,
-            Uint256ValueToHex(
-                tx1559->gas_estimation().fast_max_priority_fee_per_gas));
-  EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()
-                ->gas_estimation->slow_max_fee_per_gas,
-            Uint256ValueToHex(tx1559->gas_estimation().slow_max_fee_per_gas));
-  EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()
-                ->gas_estimation->avg_max_fee_per_gas,
-            Uint256ValueToHex(tx1559->gas_estimation().avg_max_fee_per_gas));
-  EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()
-                ->gas_estimation->fast_max_fee_per_gas,
-            Uint256ValueToHex(tx1559->gas_estimation().fast_max_fee_per_gas));
-  EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()
-                ->gas_estimation->base_fee_per_gas,
-            Uint256ValueToHex(tx1559->gas_estimation().base_fee_per_gas));
 }
 
 TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
@@ -204,15 +169,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                                    "0x3535353535353535353535353535353535353535",
                                    "0x0de0b6b3a7640000", data, false,
                                    std::nullopt),
-                mojom::kFilecoinEthereumMainnetChainId, "0x1E", "0x32",
-                mojom::GasEstimation1559::New(
-                    "0x3b9aca00" /* Hex of 1 * 1e9 */,
-                    "0xaf16b1600" /* Hex of 47 * 1e9 */,
-                    "0x77359400" /* Hex of 2 * 1e9 */,
-                    "0xb2d05e000" /* Hex of 48 * 1e9 */,
-                    "0xb2d05e00" /* Hex of 3 * 1e9 */,
-                    "0xb68a0aa00" /* Hex of 49 * 1e9 */,
-                    "0xad8075b7a" /* Hex of 46574033786 */))));
+                mojom::kFilecoinEthereumMainnetChainId, "0x1E", "0x32")));
 
     EthTxMeta meta(eth_account_id, std::move(tx));
     ASSERT_EQ(meta.ToTransactionInfo()->effective_recipient.value(),
@@ -234,15 +191,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                                    "0x3535353535353535353535353535353535353535",
                                    "0x0de0b6b3a7640000", encoded_data, false,
                                    std::nullopt),
-                mojom::kSepoliaChainId, "0x1E", "0x32",
-                mojom::GasEstimation1559::New(
-                    "0x3b9aca00" /* Hex of 1 * 1e9 */,
-                    "0xaf16b1600" /* Hex of 47 * 1e9 */,
-                    "0x77359400" /* Hex of 2 * 1e9 */,
-                    "0xb2d05e000" /* Hex of 48 * 1e9 */,
-                    "0xb2d05e00" /* Hex of 3 * 1e9 */,
-                    "0xb68a0aa00" /* Hex of 49 * 1e9 */,
-                    "0xad8075b7a" /* Hex of 46574033786 */))));
+                mojom::kSepoliaChainId, "0x1E", "0x32")));
 
     EthTxMeta meta(eth_account_id, std::move(tx));
     ASSERT_EQ(meta.ToTransactionInfo()->effective_recipient.value(),
@@ -265,15 +214,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                                    "0x3535353535353535353535353535353535353535",
                                    "0x0de0b6b3a7640000", encoded_data, false,
                                    std::nullopt),
-                mojom::kSepoliaChainId, "0x1E", "0x32",
-                mojom::GasEstimation1559::New(
-                    "0x3b9aca00" /* Hex of 1 * 1e9 */,
-                    "0xaf16b1600" /* Hex of 47 * 1e9 */,
-                    "0x77359400" /* Hex of 2 * 1e9 */,
-                    "0xb2d05e000" /* Hex of 48 * 1e9 */,
-                    "0xb2d05e00" /* Hex of 3 * 1e9 */,
-                    "0xb68a0aa00" /* Hex of 49 * 1e9 */,
-                    "0xad8075b7a" /* Hex of 46574033786 */))));
+                mojom::kSepoliaChainId, "0x1E", "0x32")));
 
     EthTxMeta meta(eth_account_id, std::move(tx));
     ASSERT_EQ(meta.ToTransactionInfo()->effective_recipient.value(),
@@ -296,15 +237,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                                    "0x3535353535353535353535353535353535353535",
                                    "0x0de0b6b3a7640000", encoded_data, false,
                                    std::nullopt),
-                mojom::kSepoliaChainId, "0x1E", "0x32",
-                mojom::GasEstimation1559::New(
-                    "0x3b9aca00" /* Hex of 1 * 1e9 */,
-                    "0xaf16b1600" /* Hex of 47 * 1e9 */,
-                    "0x77359400" /* Hex of 2 * 1e9 */,
-                    "0xb2d05e000" /* Hex of 48 * 1e9 */,
-                    "0xb2d05e00" /* Hex of 3 * 1e9 */,
-                    "0xb68a0aa00" /* Hex of 49 * 1e9 */,
-                    "0xad8075b7a" /* Hex of 46574033786 */))));
+                mojom::kSepoliaChainId, "0x1E", "0x32")));
 
     EthTxMeta meta(eth_account_id, std::move(tx));
     ASSERT_EQ(meta.ToTransactionInfo()->effective_recipient.value(),
@@ -320,15 +253,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                                    "0x3535353535353535353535353535353535353535",
                                    "0x0de0b6b3a7640000", std::vector<uint8_t>(),
                                    false, std::nullopt),
-                mojom::kSepoliaChainId, "0x1E", "0x32",
-                mojom::GasEstimation1559::New(
-                    "0x3b9aca00" /* Hex of 1 * 1e9 */,
-                    "0xaf16b1600" /* Hex of 47 * 1e9 */,
-                    "0x77359400" /* Hex of 2 * 1e9 */,
-                    "0xb2d05e000" /* Hex of 48 * 1e9 */,
-                    "0xb2d05e00" /* Hex of 3 * 1e9 */,
-                    "0xb68a0aa00" /* Hex of 49 * 1e9 */,
-                    "0xad8075b7a" /* Hex of 46574033786 */))));
+                mojom::kSepoliaChainId, "0x1E", "0x32")));
 
     EthTxMeta meta(eth_account_id, std::move(tx));
     ASSERT_EQ(meta.ToTransactionInfo()->effective_recipient.value(),

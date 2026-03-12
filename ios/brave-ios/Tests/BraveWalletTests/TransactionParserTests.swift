@@ -177,15 +177,6 @@ class TransactionParserTests: XCTestCase {
     ),
   ]
 
-  let mockGasEstimation = BraveWallet.GasEstimation1559(
-    slowMaxPriorityFeePerGas: "0x0",
-    slowMaxFeePerGas: "0x9",
-    avgMaxPriorityFeePerGas: "0x59672ead",
-    avgMaxFeePerGas: "0x59672eb6",
-    fastMaxPriorityFeePerGas: "0x59682f00",
-    fastMaxFeePerGas: "0x59682f09",
-    baseFeePerGas: "0x9"
-  )
   let mockSwapGasEstimation = BraveWallet.GasEstimation1559(
     slowMaxPriorityFeePerGas: "0x4ed3152b",
     slowMaxFeePerGas: "0x4ed31534",
@@ -243,8 +234,7 @@ class TransactionParserTests: XCTestCase {
       ),
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59672ead",
-      maxFeePerGas: "0x59672eb6",
-      gasEstimation: mockGasEstimation
+      maxFeePerGas: "0x59672eb6"
     )
     let transaction = mockTransaction(
       fromAccount: accountInfos[0],
@@ -328,8 +318,7 @@ class TransactionParserTests: XCTestCase {
       ),
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59672ead",
-      maxFeePerGas: "0x59672eb6",
-      gasEstimation: mockGasEstimation
+      maxFeePerGas: "0x59672eb6"
     )
     let transaction = mockTransaction(
       fromAccount: accountInfos[0],
@@ -396,8 +385,7 @@ class TransactionParserTests: XCTestCase {
       ),
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
-      maxFeePerGas: "0x59682f09",
-      gasEstimation: mockSwapGasEstimation
+      maxFeePerGas: "0x59682f09"
     )
     let transaction = mockTransaction(
       fromAccount: accountInfos[0],
@@ -482,8 +470,7 @@ class TransactionParserTests: XCTestCase {
       ),
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
-      maxFeePerGas: "0x59682f09",
-      gasEstimation: mockSwapGasEstimation
+      maxFeePerGas: "0x59682f09"
     )
     let transaction = mockTransaction(
       fromAccount: accountInfos[0],
@@ -568,8 +555,7 @@ class TransactionParserTests: XCTestCase {
       ),
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
-      maxFeePerGas: "0x59682f09",
-      gasEstimation: mockGasEstimation
+      maxFeePerGas: "0x59682f09"
     )
     let transaction = mockTransaction(
       fromAccount: accountInfos[0],
@@ -638,8 +624,7 @@ class TransactionParserTests: XCTestCase {
       ),
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
-      maxFeePerGas: "0x59682f09",
-      gasEstimation: mockGasEstimation
+      maxFeePerGas: "0x59682f09"
     )
     let transaction = mockTransaction(
       fromAccount: accountInfos[0],
@@ -709,8 +694,7 @@ class TransactionParserTests: XCTestCase {
       ),
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59672ead",
-      maxFeePerGas: "0x59672eb6",
-      gasEstimation: mockGasEstimation
+      maxFeePerGas: "0x59672eb6"
     )
     let transaction = mockTransaction(
       fromAccount: accountInfos[0],
