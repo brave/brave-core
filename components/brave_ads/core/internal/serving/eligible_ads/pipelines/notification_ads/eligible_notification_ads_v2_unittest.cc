@@ -11,7 +11,9 @@
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
@@ -90,6 +92,39 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAdsForNoMatchingSegments) {
   creative_ads.push_back(creative_ad_2);
 
   database::SaveCreativeNotificationAds(creative_ads);
+
+  // Act & Assert
+  base::RunLoop run_loop;
+  base::MockCallback<EligibleAdsCallback<CreativeNotificationAdList>> callback;
+  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  eligible_ads_->GetForUserModel(/*user_model=*/{}, callback.Get());
+  run_loop.Run();
+}
+
+TEST_F(BraveAdsEligibleNotificationAdsV2Test, DoNotGetAdsForExpiredCampaign) {
+  // Arrange
+  CreativeNotificationAdInfo creative_ad =
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+  creative_ad.end_at = test::Now() - base::Days(1);
+  database::SaveCreativeNotificationAds({creative_ad});
+
+  // Act & Assert
+  base::RunLoop run_loop;
+  base::MockCallback<EligibleAdsCallback<CreativeNotificationAdList>> callback;
+  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  eligible_ads_->GetForUserModel(/*user_model=*/{}, callback.Get());
+  run_loop.Run();
+}
+
+TEST_F(BraveAdsEligibleNotificationAdsV2Test, DoNotGetAdsForFutureCampaign) {
+  // Arrange
+  CreativeNotificationAdInfo creative_ad =
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+  creative_ad.start_at = test::Now() + base::Days(1);
+  creative_ad.end_at = test::DistantFuture();
+  database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert
   base::RunLoop run_loop;

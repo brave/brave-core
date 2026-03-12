@@ -11,7 +11,9 @@
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
@@ -103,6 +105,47 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAdsForNoMatchingSegments) {
   EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   eligible_ads_->GetForUserModel(/*user_model=*/{}, callback.Get());
+  run_loop.Run();
+}
+
+TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, DoNotGetAdsForExpiredCampaign) {
+  // Arrange
+  CreativeNewTabPageAdInfo creative_ad =
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*should_generate_random_uuids=*/true);
+  creative_ad.end_at = test::Now() - base::Days(1);
+  test::SaveCreativeNewTabPageAds({creative_ad});
+
+  // Act & Assert
+  base::RunLoop run_loop;
+  base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
+  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  eligible_ads_->GetForUserModel(
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{SegmentList{"untargeted"}}},
+      callback.Get());
+  run_loop.Run();
+}
+
+TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, DoNotGetAdsForFutureCampaign) {
+  // Arrange
+  CreativeNewTabPageAdInfo creative_ad =
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*should_generate_random_uuids=*/true);
+  creative_ad.start_at = test::Now() + base::Days(1);
+  creative_ad.end_at = test::DistantFuture();
+  test::SaveCreativeNewTabPageAds({creative_ad});
+
+  // Act & Assert
+  base::RunLoop run_loop;
+  base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
+  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  eligible_ads_->GetForUserModel(
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{SegmentList{"untargeted"}}},
+      callback.Get());
   run_loop.Run();
 }
 
