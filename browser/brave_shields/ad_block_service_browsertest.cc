@@ -54,6 +54,7 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
+#include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -1273,6 +1274,73 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NoRemoveparamOnCnameUncloakedUrl) {
       base::BindRepeating(content::FrameHasSourceUrl, redirected_frame_url));
 
   ASSERT_EQ("?test=true", EvalJs(inner_frame, "window.location.search"));
+}
+
+class CachedDATAdBlockServiceTest : public AdBlockServiceTest {
+ public:
+  CachedDATAdBlockServiceTest()
+      : resource_storage_(adblock::new_empty_resource_storage()) {}
+
+ private:
+  rust::Box<adblock::BraveCoreResourceStorage> resource_storage_;
+
+  DATFileDataBuffer CreateAdblockDAT(std::string_view filters) {
+    std::vector<unsigned char> buffer(filters.begin(), filters.end());
+    auto engine = brave_shields::AdBlockEngine(true);
+    engine.Load(false, buffer, *resource_storage_);
+    return engine.Serialize();
+  }
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+
+    base::ScopedAllowBlockingForTesting allow_blocking;
+
+    base::ScopedTempDir user_data_dir;
+    ASSERT_TRUE(user_data_dir.CreateUniqueTempDir());
+
+    const auto profile_path = user_data_dir.Take();
+    const auto adblock_cache_dir =
+        profile_path.AppendASCII("Default").AppendASCII("adblock_cache");
+
+    command_line->AppendSwitchPath(switches::kUserDataDir, profile_path);
+
+    ASSERT_TRUE(base::CreateDirectory(adblock_cache_dir));
+
+    ASSERT_TRUE(base::WriteFile(adblock_cache_dir.AppendASCII("engine0.dat"),
+                                CreateAdblockDAT("scam.png$image\n")));
+    ASSERT_TRUE(base::WriteFile(adblock_cache_dir.AppendASCII("engine1.dat"),
+                                CreateAdblockDAT("cookie_banner.png$image\n")));
+  }
+
+  // Don't run AdBlockServiceTest's override, which installs components
+  void PreRunTestOnMainThread() override {
+    PlatformBrowserTest::PreRunTestOnMainThread();
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(CachedDATAdBlockServiceTest, CachedDATIsUsed) {
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  NavigateToURL(url);
+  content::WebContents* contents = web_contents();
+
+  // sanity check: default component is not loaded
+  ASSERT_EQ(true, EvalJs(contents,
+                         "setExpectations(1, 0, 0, 0);"
+                         "addImage('ad_banner.png')"));
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  // rule from default engine
+  ASSERT_EQ(true, EvalJs(contents,
+                         "setExpectations(1, 1, 0, 0);"
+                         "addImage('scam.png')"));
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+
+  // rule from additional engine
+  ASSERT_EQ(true, EvalJs(contents,
+                         "setExpectations(1, 2, 0, 0);"
+                         "addImage('cookie_banner.png')"));
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
 }
 
 class CnameUncloakingFlagDisabledTest : public AdBlockServiceTest {
