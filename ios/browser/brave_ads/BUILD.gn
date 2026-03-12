@@ -3,8 +3,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//ios/web/public/js_messaging/optimize_ts.gni")
+
 source_set("brave_ads") {
   sources = [
+    "ads_media_reporting_javascript_feature.h",
+    "ads_media_reporting_javascript_feature.mm",
     "ads_service_factory_ios.h",
     "ads_service_factory_ios.mm",
     "ads_service_impl_ios.h",
@@ -16,6 +20,7 @@ source_set("brave_ads") {
   ]
 
   deps = [
+    ":ads_media_reporting_js",
     "//base/version_info",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_rewards/core",
@@ -27,7 +32,6 @@ source_set("brave_ads") {
     "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
     "//ios/chrome/common",
     "//ios/web/public",
-    "//ios/web/public/js_messaging",
     "//sql",
   ]
 
@@ -36,5 +40,14 @@ source_set("brave_ads") {
     "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/core/mojom",
     "//components/keyed_service/core",
+    "//ios/web/public/js_messaging",
   ]
+}
+
+optimize_ts("ads_media_reporting_js") {
+  visibility = [ ":brave_ads" ]
+
+  sources = [ "resources/ads_media_reporting.ts" ]
+
+  deps = [ "//ios/web/public/js_messaging:util_scripts" ]
 }
