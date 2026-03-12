@@ -77,7 +77,10 @@ export function useProvideConversationContext(props: ConversationContextProps) {
   // Drag state handlers
   const [isDragActive, setDragActive] = React.useState(false)
   const [isDragOver, setDragOver] = React.useState(false)
-  const clearDragState = () => setDragActive(false)
+  const clearDragState = () => {
+    setDragActive(false)
+    setDragOver(false)
+  }
   // Document-level and iframe drag handling
   useIsDragging({ setDragActive, setDragOver, clearDragState })
 
