@@ -7,6 +7,8 @@
 
 #include <optional>
 
+#include "base/command_line.h"
+#include "base/files/file_path.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "brave/components/brave_origin/pref_names.h"
@@ -14,6 +16,8 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/startup/startup_browser_creator.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
@@ -190,4 +194,86 @@ IN_PROC_BROWSER_TEST_F(BraveOriginStartupViewBrowserTest,
   // test framework via the normal startup path).
   EXPECT_FALSE(BraveOriginStartupView::IsShowing());
   EXPECT_TRUE(browser() != nullptr);
+}
+
+// --------------------------------------------------------------------------
+// Integration tests for the StartupBrowserCreator::Start override.
+// These call Start() directly to exercise the real startup interception logic
+// in chromium_src/chrome/browser/ui/startup/startup_browser_creator.cc.
+// --------------------------------------------------------------------------
+
+// Verifies that StartupBrowserCreator::Start() shows the dialog when
+// ShouldShowDialog is true, and that closing without validation does not crash.
+IN_PROC_BROWSER_TEST_F(BraveOriginStartupViewBrowserTest,
+                       StartOverrideShowsDialogOnClose) {
+  EXPECT_FALSE(BraveOriginStartupView::IsShowing());
+
+  BraveOriginStartupView::SetShouldShowDialogForTesting(true);
+
+  // Call the real Start() override. It should intercept and show the dialog.
+  StartupBrowserCreator browser_creator;
+  StartupProfileInfo profile_info{browser()->profile(),
+                                  StartupProfileMode::kBrowserWindow};
+  bool result = browser_creator.Start(*base::CommandLine::ForCurrentProcess(),
+                                      base::FilePath(), profile_info,
+                                      {browser()->profile()});
+  EXPECT_TRUE(result);
+  EXPECT_TRUE(BraveOriginStartupView::IsShowing());
+
+  // Close without validation — should not crash.
+  HideAndWaitForClose();
+  EXPECT_FALSE(BraveOriginStartupView::IsShowing());
+}
+
+// Verifies that StartupBrowserCreator::Start() shows the dialog and that
+// simulating validation fires the on_complete callback (which calls
+// Start_ChromiumImpl), opening a new browser window without crashing.
+IN_PROC_BROWSER_TEST_F(BraveOriginStartupViewBrowserTest,
+                       StartOverrideShowsDialogAndProceeds) {
+  EXPECT_FALSE(BraveOriginStartupView::IsShowing());
+
+  size_t browser_count_before = chrome::GetTotalBrowserCount();
+
+  BraveOriginStartupView::SetShouldShowDialogForTesting(true);
+
+  StartupBrowserCreator browser_creator;
+  StartupProfileInfo profile_info{browser()->profile(),
+                                  StartupProfileMode::kBrowserWindow};
+  bool result = browser_creator.Start(*base::CommandLine::ForCurrentProcess(),
+                                      base::FilePath(), profile_info,
+                                      {browser()->profile()});
+  EXPECT_TRUE(result);
+  EXPECT_TRUE(BraveOriginStartupView::IsShowing());
+
+  // ValidateForTesting() is a no-op until the widget is ready (async profile
+  // creation). Retry inside RunUntil so pending tasks are processed between
+  // attempts.
+  ASSERT_TRUE(base::test::RunUntil([] {
+    BraveOriginStartupView::ValidateForTesting();
+    return !BraveOriginStartupView::IsShowing();
+  }));
+
+  // A new browser window should have been created by Start_ChromiumImpl.
+  EXPECT_GT(chrome::GetTotalBrowserCount(), browser_count_before);
+}
+
+// Verifies that StartupBrowserCreator::Start() proceeds normally (no dialog)
+// when ShouldShowDialog is false.
+IN_PROC_BROWSER_TEST_F(BraveOriginStartupViewBrowserTest,
+                       StartOverrideSkipsDialogWhenNotNeeded) {
+  BraveOriginStartupView::SetShouldShowDialogForTesting(false);
+
+  size_t browser_count_before = chrome::GetTotalBrowserCount();
+
+  StartupBrowserCreator browser_creator;
+  StartupProfileInfo profile_info{browser()->profile(),
+                                  StartupProfileMode::kBrowserWindow};
+  bool result = browser_creator.Start(*base::CommandLine::ForCurrentProcess(),
+                                      base::FilePath(), profile_info,
+                                      {browser()->profile()});
+  EXPECT_TRUE(result);
+  EXPECT_FALSE(BraveOriginStartupView::IsShowing());
+
+  // Start_ChromiumImpl should have run directly, creating a new browser.
+  EXPECT_GT(chrome::GetTotalBrowserCount(), browser_count_before);
 }

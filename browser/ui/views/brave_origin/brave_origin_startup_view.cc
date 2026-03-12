@@ -110,6 +110,13 @@ bool BraveOriginStartupView::IsShowing() {
   return g_startup_view != nullptr;
 }
 
+// static
+void BraveOriginStartupView::ValidateForTesting() {  // IN-TEST
+  if (g_startup_view && g_startup_view->GetWidget()) {
+    g_startup_view->CloseAndProceed();
+  }
+}
+
 BraveOriginStartupView::BraveOriginStartupView(
     base::OnceClosure on_complete,
     std::unique_ptr<Delegate> delegate)

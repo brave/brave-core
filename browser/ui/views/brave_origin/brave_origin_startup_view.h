@@ -83,6 +83,10 @@ class BraveOriginStartupView : public views::WidgetDelegate,
   static void Hide();
   static bool IsShowing();
 
+  // Simulates a successful validation for testing. Calls CloseAndProceed() on
+  // the current instance, triggering the on_complete callback.
+  static void ValidateForTesting();  // IN-TEST
+
   BraveOriginStartupView(const BraveOriginStartupView&) = delete;
   BraveOriginStartupView& operator=(const BraveOriginStartupView&) = delete;
 
