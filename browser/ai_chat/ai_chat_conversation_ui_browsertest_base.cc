@@ -47,6 +47,9 @@ void AIChatConversationUIBrowserTestBase::NavigateToConversationUI(
   if (!target_browser) {
     target_browser = browser();
   }
+  // Reset before navigation to avoid dangling pointer if previous frame was
+  // destroyed (e.g., tab was closed).
+  conversation_rfh_ = nullptr;
   GURL url(base::StrCat({"chrome://leo-ai/", conversation_uuid}));
   conversation_rfh_ = ui_test_utils::NavigateToURLWithDisposition(
       target_browser, url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
