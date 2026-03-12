@@ -5,14 +5,18 @@
 
 #include "brave/browser/ui/tabs/brave_tree_tab_strip_collection_delegate.h"
 
+#include <algorithm>
 #include <variant>
 
 #include "base/containers/adapters.h"
+#include "base/containers/map_util.h"
 #include "base/functional/bind.h"
+#include "base/memory/weak_ptr.h"
 #include "base/notimplemented.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "components/tabs/public/tab_collection.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/tabs/public/unpinned_tab_collection.h"
 #include "third_party/abseil-cpp/absl/functional/overload.h"
 
@@ -77,14 +81,13 @@ BraveTreeTabStripCollectionDelegate::TryAddTabToSameTreeAsOpener(
     return base::unexpected(std::move(tab));
   }
 
-  auto* opener_collection =
-      collection_->GetParentCollection(opener, GetPassKey());
+  auto* opener_collection = GetParentTreeNodeCollectionOfTab(opener);
   CHECK_EQ(opener_collection->type(), tabs::TabCollection::Type::TREE_NODE);
 
   tabs::TabInterface* previous_tab =
       collection_->GetTabAtIndexRecursive(index - 1);
   auto* previous_tab_collection =
-      collection_->GetParentCollection(previous_tab, GetPassKey());
+      GetParentTreeNodeCollectionOfTab(previous_tab);
   CHECK_EQ(previous_tab_collection->type(),
            tabs::TabCollection::Type::TREE_NODE);
 
@@ -94,8 +97,8 @@ BraveTreeTabStripCollectionDelegate::TryAddTabToSameTreeAsOpener(
   }
 
   // Calculate target index within the opener collection.
-  auto target_index =
-      CalculateTargetIndexInOpenerCollection(opener_collection, index);
+  auto target_index = CalculateTargetIndexInOpenerCollection(
+      static_cast<tabs::TreeTabNodeTabCollection*>(opener_collection), index);
   if (!target_index) {
     return base::unexpected(std::move(tab));
   }
@@ -121,12 +124,12 @@ bool BraveTreeTabStripCollectionDelegate::AreInSameTreeHierarchy(
 
 std::optional<size_t>
 BraveTreeTabStripCollectionDelegate::CalculateTargetIndexInOpenerCollection(
-    tabs::TabCollection* opener_collection,
+    tabs::TreeTabNodeTabCollection* opener_collection,
     size_t recursive_index) const {
-  const auto opener_index = *collection_->GetIndexOfTabRecursive(
-      static_cast<tabs::TreeTabNodeTabCollection*>(opener_collection)
-          ->current_tab()
-          .get());
+  const auto& tabs = opener_collection->node().GetTabs();
+  CHECK(!tabs.empty());
+
+  const auto opener_index = *collection_->GetIndexOfTabRecursive(tabs.front());
   auto target_index = 0;
   auto tab_count = 0;
 
@@ -348,7 +351,9 @@ void BraveTreeTabStripCollectionDelegate::MoveChildrenOfTreeTabNodeToNode(
     std::visit(
         absl::Overload{
             [&](tabs::TabInterface* tab) {
-              if (tab == tree_tab_node_collection->current_tab().get()) {
+              if (tree_tab_node_collection->current_value_type() ==
+                      tabs::TreeTabNodeTabCollection::CurrentValueType::kTab &&
+                  tree_tab_node_collection->GetCurrentTab() == tab) {
                 // Skipping moving current tab itself
                 return;
               }
@@ -357,6 +362,15 @@ void BraveTreeTabStripCollectionDelegate::MoveChildrenOfTreeTabNodeToNode(
                   tree_tab_node_collection->MaybeRemoveTab(tab), target_index);
             },
             [&](tabs::TabCollection* collection) {
+              if (tree_tab_node_collection->current_value_type() !=
+                      tabs::TreeTabNodeTabCollection::CurrentValueType::kTab &&
+                  collection ==
+                      tree_tab_node_collection->GetCurrentCollection()) {
+                // Skipping moving current collection itself, such as split or
+                // group
+                return;
+              }
+
               target_collection->AddCollection(
                   tree_tab_node_collection->MaybeRemoveCollection(collection),
                   target_index);

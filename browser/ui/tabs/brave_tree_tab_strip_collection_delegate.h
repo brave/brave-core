@@ -62,7 +62,7 @@ class BraveTreeTabStripCollectionDelegate
   // Calculates the target index within the opener collection based on the
   // recursive index.
   std::optional<size_t> CalculateTargetIndexInOpenerCollection(
-      tabs::TabCollection* opener_collection,
+      tabs::TreeTabNodeTabCollection* opener_collection,
       size_t recursive_index) const;
 
   // Adds a tab as a tree node to the specified collection at the given index.
