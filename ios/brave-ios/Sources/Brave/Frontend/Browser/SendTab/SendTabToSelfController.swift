@@ -207,7 +207,7 @@ extension SendTabToSelfContentController {
         $0.separatorInset = UIEdgeInsets.zero
         $0.backgroundColor = .clear
         $0.accessoryType = indexPath.row == dataSource?.selectedIndex ? .checkmark : .none
-        $0.setLines(device.fullName, detailText: device.lastUpdatedTime.formattedActivePeriodDate)
+        $0.setLines(device.deviceName, detailText: device.lastUpdatedTime.formattedActivePeriodDate)
         $0.detailTextLabel?.font = .preferredFont(forTextStyle: .subheadline)
         $0.imageView?.contentMode = .scaleAspectFit
         $0.imageView?.tintColor = .braveLabel

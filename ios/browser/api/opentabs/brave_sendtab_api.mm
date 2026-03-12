@@ -40,15 +40,11 @@ TargetDeviceType DeviceTypeFromSyncDeviceType(
 
 @implementation IOSSendTabTargetDevice
 
-- (instancetype)initWithFullName:(NSString*)fullName
-                       shortName:(NSString*)shortName
-                      deviceName:(NSString*)deviceName
-                         cacheId:(NSString*)cacheId
-                      deviceType:(TargetDeviceType)deviceType
-                 lastUpdatedTime:(NSDate*)lastUpdatedTime {
+- (instancetype)initWithDeviceName:(NSString*)deviceName
+                           cacheId:(NSString*)cacheId
+                        deviceType:(TargetDeviceType)deviceType
+                   lastUpdatedTime:(NSDate*)lastUpdatedTime {
   if ((self = [super init])) {
-    self.fullName = fullName;
-    self.shortName = shortName;
     self.deviceName = deviceName;
     self.cacheId = cacheId;
     self.deviceType = deviceType;
@@ -63,8 +59,6 @@ TargetDeviceType DeviceTypeFromSyncDeviceType(
       [[[self class] allocWithZone:zone] init];
 
   if (targetDevice) {
-    targetDevice.fullName = self.fullName;
-    targetDevice.shortName = self.shortName;
     targetDevice.deviceName = self.deviceName;
     targetDevice.cacheId = self.cacheId;
     targetDevice.deviceType = self.deviceType;
@@ -127,13 +121,11 @@ TargetDeviceType DeviceTypeFromSyncDeviceType(
 
   for (const auto& device : target_device_list_) {
     IOSSendTabTargetDevice* targetDevice = [[IOSSendTabTargetDevice alloc]
-        initWithFullName:base::SysUTF8ToNSString(device.full_name)
-               shortName:base::SysUTF8ToNSString(device.short_name)
-              deviceName:base::SysUTF8ToNSString(device.device_name)
-                 cacheId:base::SysUTF8ToNSString(device.cache_guid)
-              deviceType:brave::ios::DeviceTypeFromSyncDeviceType(
-                             device.form_factor)
-         lastUpdatedTime:device.last_updated_timestamp.ToNSDate()];
+        initWithDeviceName:base::SysUTF8ToNSString(device.device_name)
+                   cacheId:base::SysUTF8ToNSString(device.cache_guid)
+                deviceType:brave::ios::DeviceTypeFromSyncDeviceType(
+                               device.form_factor)
+           lastUpdatedTime:device.last_updated_timestamp.ToNSDate()];
 
     [targetDeviceList addObject:targetDevice];
   }
