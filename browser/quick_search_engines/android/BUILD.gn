@@ -67,7 +67,10 @@ android_resources("java_resources") {
     "java/res/values/ids.xml",
   ]
 
-  deps = [ ":java_strings_grd" ]
+  deps = [
+    ":java_strings_grd",
+    "//brave/android/nala:java_resources",
+  ]
 }
 
 java_strings_grd("java_strings_grd") {

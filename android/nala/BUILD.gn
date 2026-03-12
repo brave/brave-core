@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/android/nala/icons.gni")
+import("//build/config/android/rules.gni")
 
 nala_base_path = "../../node_modules/@brave/leo/tokens/android"
 
@@ -20,12 +21,12 @@ group("nala") {
 
 copy("nala_colors") {
   sources = [ "$nala_base_path/values/colors.xml" ]
-  outputs = [ "$target_gen_dir/values/colors.xml" ]
+  outputs = [ "$target_gen_dir/res/values/colors.xml" ]
 }
 
 copy("nala_colors_night") {
   sources = [ "$nala_base_path/values-night/colors.xml" ]
-  outputs = [ "$target_gen_dir/values-night/colors.xml" ]
+  outputs = [ "$target_gen_dir/res/values-night/colors.xml" ]
 }
 
 copy("nala_icons") {
@@ -34,5 +35,17 @@ copy("nala_icons") {
     sources +=
         [ "//brave/node_modules/@brave/leo/tokens/android/drawable/$icon" ]
   }
-  outputs = [ "$target_gen_dir/drawable/{{source_file_part}}" ]
+  outputs = [ "$target_gen_dir/res/drawable/{{source_file_part}}" ]
+}
+
+android_resources("java_resources") {
+  sources = [
+    "$target_gen_dir/res/values-night/colors.xml",
+    "$target_gen_dir/res/values/colors.xml",
+  ]
+  foreach(icon, nala_icons) {
+    sources += [ "$target_gen_dir/res/drawable/$icon" ]
+  }
+  resource_overlay = true
+  deps = [ ":nala" ]
 }
