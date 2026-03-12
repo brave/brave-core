@@ -5,8 +5,8 @@
 
 #include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
 
-#include "brave/browser/history_embeddings/brave_history_embeddings_service.h"
 #include "brave/browser/history_embeddings/brave_passage_embeddings_service_controller.h"
+#include "brave/components/history_embeddings/brave_history_embeddings_service.h"
 #include "chrome/browser/history_embeddings/chrome_history_embeddings_service.h"
 #include "chrome/browser/passage_embeddings/chrome_passage_embeddings_service_controller.h"
 

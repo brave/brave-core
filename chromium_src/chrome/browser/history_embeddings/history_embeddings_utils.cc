@@ -8,6 +8,7 @@
 // instead of upstream's kHistoryEmbeddings/kLaunchedHistoryEmbeddings and
 // OptimizationGuide pref checks.
 #include "base/feature_list.h"
+#include "base/feature_override.h"
 #include "brave/components/local_ai/core/features.h"
 
 #define IsHistoryEmbeddingsFeatureEnabled \
@@ -22,14 +23,17 @@
 
 namespace history_embeddings {
 
+OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kLaunchedHistoryEmbeddings, base::FEATURE_DISABLED_BY_DEFAULT},
+}});
+
 bool IsHistoryEmbeddingsFeatureEnabled() {
   return base::FeatureList::IsEnabled(
       local_ai::features::kBraveHistoryEmbeddings);
 }
 
 bool IsHistoryEmbeddingsEnabledForProfile(Profile* profile) {
-  return base::FeatureList::IsEnabled(
-      local_ai::features::kBraveHistoryEmbeddings);
+  return IsHistoryEmbeddingsFeatureEnabled();
 }
 
 }  // namespace history_embeddings

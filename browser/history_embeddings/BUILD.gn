@@ -3,11 +3,25 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "brave_embedder_unittest.cc" ]
+
+  deps = [
+    ":history_embeddings",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/local_ai/core:mojom",
+    "//components/passage_embeddings/core",
+    "//mojo/public/cpp/bindings",
+    "//testing/gtest",
+  ]
+}
+
 source_set("history_embeddings") {
   sources = [
     "brave_embedder.cc",
     "brave_embedder.h",
-    "brave_history_embeddings_service.h",
     "brave_passage_embeddings_service_controller.cc",
     "brave_passage_embeddings_service_controller.h",
   ]

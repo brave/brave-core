@@ -6,40 +6,33 @@
 #ifndef BRAVE_BROWSER_HISTORY_EMBEDDINGS_BRAVE_EMBEDDER_H_
 #define BRAVE_BROWSER_HISTORY_EMBEDDINGS_BRAVE_EMBEDDER_H_
 
+#include <deque>
 #include <set>
 #include <string>
 #include <vector>
 
-#include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
+#include "base/timer/timer.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "components/passage_embeddings/core/passage_embeddings_types.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 class Profile;
 
-namespace brave {
+namespace passage_embeddings {
 
-// BraveEmbedder implements the passage_embeddings::Embedder interface
-// using Brave's EmbeddingGemma model via LocalAIService.
+// BraveEmbedder implements the Embedder interface using Brave's
+// EmbeddingGemma model via LocalAIService.
 //
-// Design Philosophy:
-// Unlike Chromium's SchedulingEmbedder (which queues tasks, orders them by
-// priority, and batches them for remote API calls), BraveEmbedder processes
-// all embedding tasks immediately in parallel when ComputePassagesEmbeddings
-// is called. This "process immediately" approach is suitable for local
-// LocalAIService execution, which is fast and does not have the network delays,
-// rate limits, or API costs associated with remote embedding services.
-//
-// Priority Handling:
-// The PassagePriority parameter is accepted in ComputePassagesEmbeddings to
-// satisfy the Embedder interface contract, but it is not used for scheduling
-// decisions. All tasks are processed with equal urgency. ReprioritizeTasks is
-// a no-op because tasks are already in-flight or completed by the time it
-// could be called.
-class BraveEmbedder : public passage_embeddings::Embedder {
+// Processes one passage at a time sequentially. Between passages, the
+// job queue is re-sorted by priority so that high-priority search
+// queries can preempt queued indexing work.
+class BraveEmbedder : public Embedder {
  public:
   explicit BraveEmbedder(Profile* profile);
+  // Test-only: inject a pre-bound PassageEmbedder remote directly.
+  explicit BraveEmbedder(
+      mojo::PendingRemote<local_ai::mojom::PassageEmbedder> remote);
   ~BraveEmbedder() override;
 
   BraveEmbedder(const BraveEmbedder&) = delete;
@@ -47,53 +40,55 @@ class BraveEmbedder : public passage_embeddings::Embedder {
 
   // passage_embeddings::Embedder:
   TaskId ComputePassagesEmbeddings(
-      passage_embeddings::PassagePriority priority,
+      PassagePriority priority,
       std::vector<std::string> passages,
       ComputePassagesEmbeddingsCallback callback) override;
-  void ReprioritizeTasks(passage_embeddings::PassagePriority priority,
+  void ReprioritizeTasks(PassagePriority priority,
                          const std::set<TaskId>& tasks) override;
   bool TryCancel(TaskId task_id) override;
 
  private:
-  struct PendingTask {
-    PendingTask();
-    ~PendingTask();
-    PendingTask(PendingTask&&);
-    PendingTask& operator=(PendingTask&&);
+  struct Job {
+    Job();
+    ~Job();
+    Job(Job&&) noexcept;
+    Job& operator=(Job&&) noexcept;
 
+    PassagePriority priority = PassagePriority::kPassive;
+    TaskId task_id = 0;
     std::vector<std::string> passages;
     ComputePassagesEmbeddingsCallback callback;
-    std::vector<passage_embeddings::Embedding> embeddings;
-    bool cancelled = false;
-    bool in_flight = false;
+    // Partial results; embeddings.size() == number of passages completed.
+    std::vector<Embedding> embeddings;
   };
 
   void AcquirePassageEmbedder();
   void OnPassageEmbedderAcquired(
       mojo::PendingRemote<local_ai::mojom::PassageEmbedder> remote);
   void OnPassageEmbedderDisconnected();
+  void OnIdleTimeout();
+  void RestartIdleTimer();
   void FailAllPendingTasks();
-  void ProcessAllPassagesInParallel(TaskId task_id);
-  void OnSingleEmbeddingResult(
-      base::RepeatingCallback<void(std::pair<size_t, std::vector<double>>)>
-          barrier_callback,
-      size_t passage_index,
-      const std::vector<double>& embedding);
-  void OnAllEmbeddingsComplete(
-      TaskId task_id,
-      const std::vector<std::pair<size_t, std::vector<double>>>& results);
-  void MaybeReleasePassageEmbedder();
+  void ProcessNextPassage();
+  void OnSinglePassageComplete(const std::vector<double>& embedding);
 
   bool acquiring_embedder_ = false;
+  bool work_submitted_ = false;
   TaskId next_task_id_ = 1;
-  base::flat_map<TaskId, PendingTask> pending_tasks_;
+  std::deque<Job> jobs_;
 
   mojo::Remote<local_ai::mojom::LocalAIService> local_ai_service_;
   mojo::Remote<local_ai::mojom::PassageEmbedder> passage_embedder_;
 
+  // Mojo's set_idle_handler() relies on the receiver sending MessageAck and
+  // NotifyIdle control messages, but the JS Mojo bindings don't implement
+  // this protocol. Use an explicit timer instead: it starts when all tasks
+  // complete and resets when new work arrives.
+  base::OneShotTimer idle_timer_;
+
   base::WeakPtrFactory<BraveEmbedder> weak_ptr_factory_{this};
 };
 
-}  // namespace brave
+}  // namespace passage_embeddings
 
 #endif  // BRAVE_BROWSER_HISTORY_EMBEDDINGS_BRAVE_EMBEDDER_H_

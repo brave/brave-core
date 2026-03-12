@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/history_embeddings/brave_history_embeddings_service.h"
+#include "brave/components/history_embeddings/brave_history_embeddings_service.h"
 
 // Swap the base class so that HistoryEmbeddingsServicePublic (and all
 // upstream tests) use BraveHistoryEmbeddingsService's override of
@@ -45,7 +45,7 @@ TEST_F(HistoryEmbeddingsServiceTest,
   SearchResult result = future.Take();
 
   // Brave: results must be preserved despite no visibility model.
-  EXPECT_EQ(result.scored_url_rows.size(), 1u);
+  ASSERT_EQ(result.scored_url_rows.size(), 1u);
   EXPECT_EQ(result.scored_url_rows[0].scored_url.url_id, 1);
 }
 
