@@ -59,3 +59,10 @@ base::FilePath GetWhaleUserDataFolder() {
   base::FilePath result = base::apple::GetUserLibraryPath();
   return result.Append("Application Support").Append("Naver").Append("Whale");
 }
+
+base::FilePath GetBraveUserDataFolder() {
+  base::FilePath result = base::apple::GetUserLibraryPath();
+  return result.Append("Application Support")
+      .Append("BraveSoftware")
+      .Append("Brave-Browser");
+}

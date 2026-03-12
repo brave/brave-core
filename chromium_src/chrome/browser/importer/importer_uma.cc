@@ -12,6 +12,7 @@
   case user_data_importer::TYPE_OPERA:         \
   case user_data_importer::TYPE_YANDEX:        \
   case user_data_importer::TYPE_WHALE:         \
+  case user_data_importer::TYPE_BRAVE:         \
   break;                                       \
   case user_data_importer::TYPE_FIREFOX
 #include <chrome/browser/importer/importer_uma.cc>

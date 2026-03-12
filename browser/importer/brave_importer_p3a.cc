@@ -61,6 +61,7 @@ void RecordImporterP3A(user_data_importer::ImporterType type) {
     case user_data_importer::TYPE_VIVALDI:
     case user_data_importer::TYPE_YANDEX:
     case user_data_importer::TYPE_WHALE:
+    case user_data_importer::TYPE_BRAVE:
       metric = ImporterSource::kOther;
       break;
     case user_data_importer::TYPE_OPERA:

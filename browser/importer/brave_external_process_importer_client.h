@@ -14,6 +14,8 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
+bool ShouldUseBraveImporter(user_data_importer::ImporterType type);
+
 class BraveExternalProcessImporterClient
     : public ExternalProcessImporterClient,
       public brave::mojom::ProfileImportObserver {

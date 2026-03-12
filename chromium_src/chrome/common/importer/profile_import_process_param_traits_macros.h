@@ -9,10 +9,12 @@
 #include "build/build_config.h"
 #include "components/user_data_importer/common/importer_type.h"
 
+// Replace the IPC MIN/MAX values to cover our custom importer types defined in
+// chromium_src/components/user_data_importer/common/importer_type.h.
 #if !BUILDFLAG(IS_WIN)
-#define TYPE_BOOKMARKS_FILE TYPE_WHALE
+#define TYPE_BOOKMARKS_FILE TYPE_BRAVE
 #else
-#define TYPE_EDGE TYPE_WHALE
+#define TYPE_EDGE TYPE_BRAVE
 #endif
 #include <chrome/common/importer/profile_import_process_param_traits_macros.h>  // IWYU pragma: export
 #if !BUILDFLAG(IS_WIN)

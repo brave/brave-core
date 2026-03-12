@@ -43,6 +43,8 @@ scoped_refptr<Importer> CreateImporterByType(
       return new ChromeImporter();
     case user_data_importer::TYPE_WHALE:
       return new ChromeImporter();
+    case user_data_importer::TYPE_BRAVE:
+      return new ChromeImporter();
     default:
       break;
   }
@@ -80,6 +82,8 @@ void BraveProfileImportImpl::StartImport(
     command_line->AppendSwitch("import-whale");
   } else if (source_profile.importer_type == user_data_importer::TYPE_VIVALDI) {
     command_line->AppendSwitch("import-vivaldi");
+  } else if (source_profile.importer_type == user_data_importer::TYPE_BRAVE) {
+    command_line->AppendSwitch("import-brave");
   }
 
   content::UtilityThread::Get()->EnsureBlinkInitialized();

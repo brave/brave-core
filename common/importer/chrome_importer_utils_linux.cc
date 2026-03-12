@@ -118,3 +118,13 @@ base::FilePath GetWhaleUserDataFolder() {
 
   return result;
 }
+
+base::FilePath GetBraveUserDataFolder() {
+  base::FilePath result = base::PathService::CheckedGet(base::DIR_HOME);
+
+  result = result.Append(".config");
+  result = result.Append("BraveSoftware");
+  result = result.Append("Brave-Browser");
+
+  return result;
+}
