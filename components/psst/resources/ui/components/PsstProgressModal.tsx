@@ -16,9 +16,10 @@ import {
 import SettingsCard from './SettingsCard'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-import { BravePsstConsentDialogProxy, SettingCardData } from '../browser_proxy'
 import { PsstStrings } from 'gen/components/grit/brave_components_webui_strings'
 import { getLocale } from '$web-common/locale'
+import { usePsstDialogAPI } from '../api/psst_dialog_api_context'
+import { SettingCardDataItem } from '../api/psst_dialog_api'
 
 export interface Props {}
 
@@ -45,53 +46,49 @@ export interface PsstProgressModalState {
   optionsStatuses: Map<string, OptionStatus> | null
 }
 
-export default class PsstProgressModal extends React.PureComponent<
-  Props,
-  PsstProgressModalState
-> {
-  constructor(props: Props) {
-    super(props)
-    this.state = {
-      commonState: SettingState.None,
-      site_name: '',
-      optionsStatuses: new Map(),
-    }
-  }
+export default function PsstProgressModal(_props: Props) {
+  
+  const { api: browserProxy } = usePsstDialogAPI()
+  
+  const [commonState, setCommonState] = React.useState<SettingState>(SettingState.None)
+  const [siteName, setSiteName] = React.useState<string>('')
+  const [optionsStatuses, setOptionsStatuses] = React.useState<Map<string, OptionStatus> | null>(new Map())
 
-  browserProxy_: BravePsstConsentDialogProxy =
-    BravePsstConsentDialogProxy.getInstance()
+  // Subscribe to API data at top level - with null checks
+  const { data: settingsData } = browserProxy?.useSettingsCardData?.() || { data: null }
+  const { data: requestStatus } = browserProxy?.useRequestStatus?.() || { data: null }
+  const { data: completionStatus } = browserProxy?.useCompletionStatus?.() || { data: null }
+  const { mutate: applyChanges } = browserProxy?.useApplyChanges?.() || { mutate: () => {} }
 
-  closeDialog = () => this.browserProxy_.getPsstConsentHelper().closeDialog()
-
-  setStateProp = (
+  const setStateProp = React.useCallback((
     updates: Partial<OptionStatus>,
     predicate: (status: OptionStatus) => boolean = () => true,
   ) => {
-    this.setState((prevState) => {
-      if (!prevState.optionsStatuses) {
-        return prevState
+    setOptionsStatuses((prevOptionsStatuses) => {
+      if (!prevOptionsStatuses) {
+        return prevOptionsStatuses
       }
       const updatedOptionsStatuses = new Map<string, OptionStatus>()
-      prevState.optionsStatuses.forEach((status, key) => {
+      prevOptionsStatuses.forEach((status, key) => {
         if (predicate(status)) {
           updatedOptionsStatuses.set(key, { ...status, ...updates })
         } else {
           updatedOptionsStatuses.set(key, status)
         }
       })
-      return { ...prevState, optionsStatuses: updatedOptionsStatuses }
+      return updatedOptionsStatuses
     })
-  }
+  }, [])
 
-  setPropForUrl = (targetUrl: string, updates: Partial<OptionStatus>) => {
-    this.setState((prevState) => {
-      if (!prevState.optionsStatuses) {
-        return prevState
+  const setPropForUrl = React.useCallback((targetUrl: string, updates: Partial<OptionStatus>) => {
+    setOptionsStatuses((prevOptionsStatuses) => {
+      if (!prevOptionsStatuses) {
+        return prevOptionsStatuses
       }
 
       const updatedOptionsStatuses = new Map<string, OptionStatus>()
       let found = false
-      prevState.optionsStatuses.forEach((status, key) => {
+      prevOptionsStatuses.forEach((status, key) => {
         if (status.url === targetUrl) {
           updatedOptionsStatuses.set(key, { ...status, ...updates })
           found = true
@@ -100,52 +97,56 @@ export default class PsstProgressModal extends React.PureComponent<
         }
       })
       if (found) {
-        return { ...prevState, optionsStatuses: updatedOptionsStatuses }
+        return updatedOptionsStatuses
       }
-      return prevState
+      return prevOptionsStatuses
     })
-  }
+  }, [])
 
-  componentDidMount() {
-    this.browserProxy_
-      .getCallbackRouter()
-      .setSettingsCardData.addListener((scd: SettingCardData) => {
-        const checkedUrlsMap = new Map<string, OptionStatus>()
-        scd.items.forEach((item) => {
-          checkedUrlsMap.set(item.url, {
-            url: item.url,
-            description: item.description,
-            error: null,
-            checked: true,
-            disabled: false,
-            settingState: SettingState.Selection,
-          })
-        })
-        this.setState({
-          site_name: scd.siteName,
-          optionsStatuses: checkedUrlsMap,
+  // Handle settings data updates
+  React.useEffect(() => {
+    if (settingsData) {
+      const checkedUrlsMap = new Map<string, OptionStatus>()
+      settingsData.items.forEach((item: SettingCardDataItem) => {
+        checkedUrlsMap.set(item.url, {
+          url: item.url,
+          description: item.description,
+          error: null,
+          checked: true,
+          disabled: false,
+          settingState: SettingState.Selection,
         })
       })
-    this.browserProxy_
-      .getCallbackRouter()
-      .onSetRequestDone.addListener((url: string, error: string | null) => {
-        this.setPropForUrl(url, {
-          settingState: error ? SettingState.Failed : SettingState.Completed,
-          error: error,
-        })
-      })
-    this.browserProxy_
-      .getCallbackRouter()
-      .onSetCompleted.addListener((url: string[], errors: string[]) => {
-        this.setState({ commonState: SettingState.Completed })
-      })
-  }
+      setSiteName(settingsData.siteName)
+      setOptionsStatuses(checkedUrlsMap)
+    }
+  }, [settingsData])
 
-  handleSettingItemCheck = (url: string, checked: boolean) => {
-    this.setState((prevState) => {
-      const os = prevState?.optionsStatuses?.get(url)
+  // Handle request status updates
+  React.useEffect(() => {
+    if (requestStatus) {
+      setPropForUrl(requestStatus.url, {
+        settingState: requestStatus.error ? SettingState.Failed : SettingState.Completed,
+        error: requestStatus.error || null,
+      })
+    }
+  }, [requestStatus, setPropForUrl])
+
+  // Handle completion status updates
+  React.useEffect(() => {
+    if (completionStatus && (completionStatus.appliedChecks || completionStatus.errors)) {
+      setCommonState(SettingState.Completed)
+    }
+  }, [completionStatus])
+
+  const handleSettingItemCheck = React.useCallback((url: string, checked: boolean) => {
+    setOptionsStatuses((prevOptionsStatuses) => {
+      if (!prevOptionsStatuses) return prevOptionsStatuses
+      
+      const os = prevOptionsStatuses.get(url)
       if (os) {
-        prevState?.optionsStatuses?.set(url, {
+        const newMap = new Map(prevOptionsStatuses)
+        newMap.set(url, {
           checked: checked,
           url: os.url,
           description: os.description,
@@ -153,118 +154,119 @@ export default class PsstProgressModal extends React.PureComponent<
           disabled: os.disabled,
           settingState: os.settingState,
         })
+        return newMap
       }
+      return prevOptionsStatuses
     })
-  }
+  }, [])
 
-  render() {
-    const isInProgress = this.state.commonState === SettingState.Progress
-    return (
-      <Container>
-        <HorizontalContainer>
-          <LeftAlignedItem>
-            <TextSection>
-              <ModalTitle>
-                {getLocale(PsstStrings.PSST_CONSENT_DIALOG_TITLE)}
-              </ModalTitle>
-            </TextSection>
-          </LeftAlignedItem>
-          <RightAlignedItem>
-            <Button
-              fab
-              kind='plain-faint'
-              isDisabled={isInProgress}
-              onClick={() =>
-                this.browserProxy_.getPsstConsentHelper().closeDialog()
-              }
-            >
-              <Icon name={'close-circle'} />
-            </Button>
-          </RightAlignedItem>
-        </HorizontalContainer>
-        <TextSection>
-          {getLocale(PsstStrings.PSST_CONSENT_DIALOG_TITLE)}
-        </TextSection>
-        <SettingsCard
-          title={getLocale(PsstStrings.PSST_CONSENT_DIALOG_OPTIONS_TITLE)}
-          subTitle={this.state.site_name}
-          progressModelState={this.state}
-          onItemChecked={this.handleSettingItemCheck}
-        />
-        {(() => {
-          if (this.state.commonState !== SettingState.Completed) {
-            return (
-              <RightAlignedItem>
-                <PsstDlgButton
-                  kind='outline'
-                  size='medium'
-                  isDisabled={isInProgress}
-                  onClick={this.closeDialog}
-                >
-                  {getLocale(PsstStrings.PSST_COMPLETE_CONSENT_DIALOG_CANCEL)}
-                </PsstDlgButton>
-                <PsstDlgButton
-                  id='psst-dialog-ok-btn'
-                  kind='filled'
-                  size='medium'
-                  isDisabled={isInProgress}
-                  isLoading={isInProgress}
-                  onClick={() => {
-                    let settingsToProcess: string[] = []
-                    if (this.state.optionsStatuses) {
-                      settingsToProcess = Array.from(
-                        this.state.optionsStatuses?.entries(),
-                      )
-                        .filter(([_, value]) => !value.checked)
-                        .map(([key]) => key)
-                    }
-                    this.setStateProp(
-                      {
-                        settingState: SettingState.Progress,
-                      },
-                      (status) => status.checked,
-                    )
-                    this.setStateProp(
-                      { disabled: true },
-                      (status) => !status.checked,
-                    )
-                    this.setState({ commonState: SettingState.Progress })
-                    this.browserProxy_
-                      .getPsstConsentHelper()
-                      .applyChanges(this.state.site_name, settingsToProcess)
-                  }}
-                >
-                  {getLocale(PsstStrings.PSST_COMPLETE_CONSENT_DIALOG_OK)}
-                </PsstDlgButton>
-              </RightAlignedItem>
-            )
-          } else {
-            return (
-              <RightAlignedItem>
-                <PsstDlgButton
-                  kind='outline'
-                  size='medium'
-                  isDisabled={false}
-                  onClick={this.closeDialog}
-                >
-                  {getLocale(
-                    PsstStrings.PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED,
-                  )}
-                </PsstDlgButton>
-                <PsstDlgButton
-                  kind='filled'
-                  size='medium'
-                  isDisabled={false}
-                  isLoading={false}
-                  onClick={this.closeDialog}
-                >
-                  {getLocale(PsstStrings.PSST_COMPLETE_CONSENT_DIALOG_CLOSE)}
-                </PsstDlgButton>
-              </RightAlignedItem>
-            )
-          }
-        })()}
-      </Container>
+  const closeDialog = React.useCallback(() => {
+    browserProxy.closeDialog()
+  }, [browserProxy])
+
+  const handleApplyChanges = React.useCallback(() => {
+    let settingsToProcess: string[] = []
+    if (optionsStatuses) {
+      settingsToProcess = Array.from(optionsStatuses.entries())
+        .filter(([_, value]) => !value.checked)
+        .map(([key]) => key)
+    }
+    
+    setStateProp(
+      { settingState: SettingState.Progress },
+      (status) => status.checked,
     )
-  }
+    setStateProp(
+      { disabled: true },
+      (status) => !status.checked,
+    )
+    setCommonState(SettingState.Progress)
+    
+    applyChanges([siteName, settingsToProcess])
+  }, [optionsStatuses, siteName, setStateProp, applyChanges])
+
+  const isInProgress = commonState === SettingState.Progress
+
+  return (
+    <Container>
+      <HorizontalContainer>
+        <LeftAlignedItem>
+          <TextSection>
+            <ModalTitle>
+              {getLocale(PsstStrings.PSST_CONSENT_DIALOG_TITLE)}
+            </ModalTitle>
+          </TextSection>
+        </LeftAlignedItem>
+        <RightAlignedItem>
+          <Button
+            fab
+            kind='plain-faint'
+            isDisabled={isInProgress}
+            onClick={closeDialog}
+          >
+            <Icon name={'close-circle'} />
+          </Button>
+        </RightAlignedItem>
+      </HorizontalContainer>
+      <TextSection>
+        {getLocale(PsstStrings.PSST_CONSENT_DIALOG_TITLE)}
+      </TextSection>
+      <SettingsCard
+        title={getLocale(PsstStrings.PSST_CONSENT_DIALOG_OPTIONS_TITLE)}
+        subTitle={siteName}
+        progressModelState={{ commonState, site_name: siteName, optionsStatuses }}
+        onItemChecked={handleSettingItemCheck}
+      />
+      {(() => {
+        if (commonState !== SettingState.Completed) {
+          return (
+            <RightAlignedItem>
+              <PsstDlgButton
+                kind='outline'
+                size='medium'
+                isDisabled={isInProgress}
+                onClick={closeDialog}
+              >
+                {getLocale(PsstStrings.PSST_COMPLETE_CONSENT_DIALOG_CANCEL)}
+              </PsstDlgButton>
+              <PsstDlgButton
+                id='psst-dialog-ok-btn'
+                kind='filled'
+                size='medium'
+                isDisabled={isInProgress}
+                isLoading={isInProgress}
+                onClick={handleApplyChanges}
+              >
+                {getLocale(PsstStrings.PSST_COMPLETE_CONSENT_DIALOG_OK)}
+              </PsstDlgButton>
+            </RightAlignedItem>
+          )
+        } else {
+          return (
+            <RightAlignedItem>
+              <PsstDlgButton
+                kind='outline'
+                size='medium'
+                isDisabled={false}
+                onClick={closeDialog}
+              >
+                {getLocale(
+                  PsstStrings.PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED,
+                )}
+              </PsstDlgButton>
+              <PsstDlgButton
+                kind='filled'
+                size='medium'
+                isDisabled={false}
+                isLoading={false}
+                onClick={closeDialog}
+              >
+                {getLocale(PsstStrings.PSST_COMPLETE_CONSENT_DIALOG_CLOSE)}
+              </PsstDlgButton>
+            </RightAlignedItem>
+          )
+        }
+      })()}
+    </Container>
+  )
 }

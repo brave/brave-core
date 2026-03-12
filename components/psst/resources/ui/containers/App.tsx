@@ -5,17 +5,34 @@
 
 import * as React from 'react'
 import PsstProgressModal from '../components/PsstProgressModal'
+import { createPsstDialogApi } from '../api/psst_dialog_api'
+import { makeCloseable } from '$web-common/api'
+import * as Mojom from 'gen/brave/components/psst/common/psst_ui_common.mojom.m.js'
+import { PsstDialogAPIProvider } from '../api/psst_dialog_api_context'
 
 interface Props {
-  someProp: string
+//  api: PsstDialogAPI
 }
 
-export default class PsstDlgContainer extends React.Component<Props, {}> {
-  constructor(props: Props) {
-    super(props)
-  }
+export default function PsstDlgContainer(_props: Props) {
+  const api = React.useMemo(() => {
+    const consentHelper = new Mojom.PsstConsentHelperRemote()
+    const callbackRouter = new Mojom.PsstConsentDialogCallbackRouter()
 
-  render() {
-    return <PsstProgressModal />
-  }
+    Mojom.PsstConsentFactory.getRemote().createPsstConsentHandler(
+      consentHelper.$.bindNewPipeAndPassReceiver(),
+      callbackRouter.$.bindNewPipeAndPassRemote(),
+    )
+    
+    return createPsstDialogApi(
+      makeCloseable(consentHelper),
+      makeCloseable(callbackRouter)
+    )
+  }, [])
+
+  return (
+    <PsstDialogAPIProvider api={api}>
+      <PsstProgressModal />
+    </PsstDialogAPIProvider>
+  )
 }

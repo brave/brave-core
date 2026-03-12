@@ -14,7 +14,7 @@ import PsstDlgContainer from './containers/App'
 
 function initialize() {
   render(
-    <PsstDlgContainer someProp={'T'} />,
+    <PsstDlgContainer/>,
     document.getElementById('root'),
   )
 }
