@@ -5,32 +5,19 @@
 
 #include "third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h"
 
+#include "base/compiler_specific.h"
 #include "base/notreached.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/renderer/platform/graphics/image_data_buffer.h"
-#include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "ui/gfx/skia_span_util.h"
 
-namespace {
-
-bool IsGoogleMaps(const blink::KURL& url) {
-  const auto host = url.Host().ToString();
-  if (!host.StartsWith("google.") && !host.Contains(".google.")) {
-    return false;
-  }
-  const auto path = url.GetPath();
-  return path == "/maps" || path.ToString().StartsWith("/maps/");
-}
-
-}  // namespace
-
+// SAFETY: writable_addr() returns a valid pointer to a contiguous buffer
+// of exactly computeByteSize() bytes owned by the SkPixmap.
 #define BRAVE_GET_IMAGE_DATA                                              \
   if (ExecutionContext* context = ExecutionContext::From(script_state)) { \
-    if (!IsGoogleMaps(context->Url())) {                                  \
-      SkPixmap image_data_pixmap = image_data->GetSkPixmap();             \
-      brave::BraveSessionCache::From(*context).PerturbPixels(             \
-          gfx::SkPixmapToWritableSpan(image_data_pixmap));                \
-    }                                                                     \
+    SkPixmap image_data_pixmap = image_data->GetSkPixmap();               \
+    brave::BraveSessionCache::From(*context).PerturbPixels(               \
+        gfx::SkPixmapToWritableSpan(image_data_pixmap));                  \
   }
 
 #define BRAVE_BASE_RENDERING_CONTEXT_2D_MEASURE_TEXT      \
