@@ -140,17 +140,17 @@ adblock::BlockerResult AdBlockService::ShouldStartRequest(
   adblock::BlockerResult fp_result = default_engine_->ShouldStartRequest(
       url, resource_type, tab_host, previously_matched_rule,
       previously_matched_exception, previously_matched_important);
+  // removeparam results from the default engine are ignored in default
+  // blocking mode
+  if (!aggressive_blocking) {
+    fp_result.rewritten_url.has_value = false;
+  }
   if (aggressive_blocking ||
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveAdblockDefault1pBlocking) ||
       !SameDomainOrHost(
           url, url::Origin::CreateFromNormalizedTuple("https", tab_host, 80),
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
-    // removeparam results from the default engine are ignored in default
-    // blocking mode
-    if (!aggressive_blocking) {
-      fp_result.rewritten_url.has_value = false;
-    }
     if (fp_result.important) {
       return fp_result;
     }
