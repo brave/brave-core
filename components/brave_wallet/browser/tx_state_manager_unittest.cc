@@ -151,6 +151,33 @@ TEST_F(TxStateManagerUnitTest, ConvertFromAddress) {
             tx_state_manager_->ValueToTxMeta(legacy_value)->from());
 }
 
+TEST_F(TxStateManagerUnitTest, RejectInvalidTxStatus) {
+  EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
+  meta.set_id("001");
+  meta.set_chain_id(mojom::kMainnetChainId);
+  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
+
+  auto txs = GetTxs();
+  ASSERT_TRUE(txs);
+  const base::DictValue* value = txs->GetDict().FindDict("001");
+  ASSERT_TRUE(value);
+
+  // Negative status should be rejected (prevents int -> enum wrap).
+  auto bad_value = value->Clone();
+  bad_value.Set("status", -1);
+  EXPECT_FALSE(tx_state_manager_->ValueToTxMeta(bad_value));
+
+  // Out-of-range positive status should be rejected.
+  bad_value.Set("status", 999);
+  EXPECT_FALSE(tx_state_manager_->ValueToTxMeta(bad_value));
+
+  // Valid status should be accepted.
+  auto good_value = value->Clone();
+  good_value.Set("status",
+                 static_cast<int>(mojom::TransactionStatus::Confirmed));
+  EXPECT_TRUE(tx_state_manager_->ValueToTxMeta(good_value));
+}
+
 TEST_F(TxStateManagerUnitTest, TxOperations) {
   EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
   meta.set_id("001");
