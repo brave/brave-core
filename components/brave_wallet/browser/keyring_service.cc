@@ -219,7 +219,7 @@ struct ImportedAccountInfo {
   ImportedAccountInfo(ImportedAccountInfo&& other) = default;
   ImportedAccountInfo& operator=(ImportedAccountInfo&& other) = default;
 
-  const std::optional<std::string> account_address() const {
+  std::optional<std::string> account_address() const {
     if (const auto* address = std::get_if<std::string>(&account_identifier)) {
       return *address;
     }
@@ -294,10 +294,12 @@ struct ImportedAccountInfo {
     if (account_address) {
       account_identifier = *account_address;
     } else {
-      if (!base::IsValueInRangeForNumericType<uint32_t>(*account_index)) {
+      uint32_t checked_account_index = 0;
+      if (!base::CheckedNumeric<uint32_t>(*account_index)
+               .AssignIfValid(&checked_account_index)) {
         return std::nullopt;
       }
-      account_identifier = base::checked_cast<uint32_t>(*account_index);
+      account_identifier = checked_account_index;
     }
     ImportedAccountInfo account_info(keyring_id, *account_name,
                                      account_identifier,
@@ -1485,7 +1487,9 @@ void KeyringService::LoadAccountsFromPrefs(mojom::KeyringId keyring_id) {
         continue;
       }
       auto account_index = imported_account_info.account_index();
-      CHECK(account_index.has_value());
+      if (!account_index) {
+        continue;
+      }
       keyring->AddAccount(*account_index, std::string(private_key->begin(),
                                                       private_key->end()));
     }
@@ -1503,7 +1507,9 @@ void KeyringService::LoadAccountsFromPrefs(mojom::KeyringId keyring_id) {
         continue;
       }
       auto account_index = imported_account_info.account_index();
-      CHECK(account_index.has_value());
+      if (!account_index) {
+        continue;
+      }
       keyring->AddAccount(
           *account_index,
           base::span<const uint8_t, kSr25519Pkcs8Size>(*private_key));

@@ -3127,7 +3127,6 @@ TEST_F(KeyringServiceUnitTest, ImportPolkadotAccountTestnet_Error) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
   ASSERT_TRUE(CreateWallet(&service, kPasswordBrave));
-  NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
 
   EXPECT_FALSE(service.ImportPolkadotAccountSync("", "{}", kPasswordBrave,
                                                  mojom::kPolkadotMainnet));
