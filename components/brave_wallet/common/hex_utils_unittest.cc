@@ -115,29 +115,44 @@ TEST(HexUtilsUnitTest, HexValueToUint256) {
       "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
       &out));
   ASSERT_TRUE(out == (uint256_t)expected_val);
+  ASSERT_EQ(expected_val,
+            HexValueToUint256("0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                              "FFFFFFFFFFFFFFFFFF"));
 
   // Should return false when out of bounds
   ASSERT_FALSE(HexValueToUint256(
       "0x10000000000000000000000000000000000000000000000000000000000000000",
       &out));
+  ASSERT_FALSE(HexValueToUint256(
+      "0x10000000000000000000000000000000000000000000000000000000000000000"));
 
   // Check padded values too
   ASSERT_TRUE(HexValueToUint256("0x00000000000000000000000F0", &out));
   ASSERT_EQ(out, (uint256_t)240);
+  ASSERT_EQ(HexValueToUint256("0x00000000000000000000000F0"), out);
 }
 
 TEST(HexUtilsUnitTest, HexValueToInt256) {
   int256_t out;
   ASSERT_TRUE(HexValueToInt256("0x", &out));
   EXPECT_EQ(out, int256_t(0));
+  ASSERT_EQ(HexValueToInt256("0x"), int256_t(0));
+
   ASSERT_TRUE(HexValueToInt256("0x0", &out));
   EXPECT_EQ(out, int256_t(0));
+  ASSERT_EQ(HexValueToInt256("0x0"), int256_t(0));
+
   ASSERT_TRUE(HexValueToInt256("0x1", &out));
   EXPECT_EQ(out, int256_t(1));
+  ASSERT_EQ(HexValueToInt256("0x1"), int256_t(1));
+
   ASSERT_TRUE(HexValueToInt256("0x1234", &out));
   EXPECT_EQ(out, (int256_t)4660);
+  ASSERT_EQ(HexValueToInt256("0x1234"), (int256_t)4660);
+
   ASSERT_TRUE(HexValueToInt256("0xB", &out));
   EXPECT_EQ(out, (int256_t)11);
+  ASSERT_EQ(HexValueToInt256("0xB"), (int256_t)11);
 
   // Max int256 value can be represented
   int256_t expected_val = kMax256BitInt;
@@ -145,6 +160,10 @@ TEST(HexUtilsUnitTest, HexValueToInt256) {
       "0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
       &out));
   EXPECT_EQ(out, expected_val);
+  ASSERT_EQ(
+      HexValueToInt256(
+          "0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"),
+      expected_val);
 
   // Min int256 value can be represented
   expected_val = kMin256BitInt;
@@ -152,6 +171,10 @@ TEST(HexUtilsUnitTest, HexValueToInt256) {
       "0x8000000000000000000000000000000000000000000000000000000000000000",
       &out));
   EXPECT_EQ(out, expected_val);
+  ASSERT_EQ(
+      HexValueToInt256(
+          "0x8000000000000000000000000000000000000000000000000000000000000000"),
+      expected_val);
 
   // Biggest int256 negative value can be represented
   expected_val = int256_t(-1);
@@ -159,15 +182,22 @@ TEST(HexUtilsUnitTest, HexValueToInt256) {
       "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
       &out));
   EXPECT_EQ(out, expected_val);
+  ASSERT_EQ(
+      HexValueToInt256(
+          "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"),
+      expected_val);
 
   // Should return false when out of bounds
   ASSERT_FALSE(HexValueToInt256(
       "0x10000000000000000000000000000000000000000000000000000000000000000",
       &out));
+  ASSERT_FALSE(HexValueToInt256(
+      "0x10000000000000000000000000000000000000000000000000000000000000000"));
 
   // Check padded values too
   ASSERT_TRUE(HexValueToInt256("0x00000000000000000000000F0", &out));
   EXPECT_EQ(out, int256_t(240));
+  ASSERT_EQ(HexValueToInt256("0x00000000000000000000000F0"), int256_t(240));
 }
 
 TEST(HexUtilsUnitTest, Uint256ValueToHex) {

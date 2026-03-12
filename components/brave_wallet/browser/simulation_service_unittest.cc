@@ -137,7 +137,7 @@ class SimulationServiceUnitTest : public testing::Test {
       std::unique_ptr<Eip1559Transaction> tx =
           std::make_unique<Eip1559Transaction>(
               *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
-                  std::move(base_tx_data), "0x3", "0x1E", "0x32", nullptr)));
+                  std::move(base_tx_data), "0x3", "0x1E", "0x32")));
       EthTxMeta meta(EthAccountId(0), std::move(tx));
       meta.set_chain_id(chain_id);
       return meta.ToTransactionInfo();

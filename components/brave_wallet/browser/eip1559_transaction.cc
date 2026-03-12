@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 
-#include <algorithm>
 #include <optional>
 #include <utility>
 
@@ -17,83 +16,6 @@
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
-
-// static
-std::optional<Eip1559Transaction::GasEstimation>
-Eip1559Transaction::GasEstimation::FromMojomGasEstimation1559(
-    mojom::GasEstimation1559Ptr gas_estimation) {
-  if (!gas_estimation) {
-    return std::nullopt;
-  }
-
-  GasEstimation estimation;
-  if (!HexValueToUint256(gas_estimation->slow_max_priority_fee_per_gas,
-                         &estimation.slow_max_priority_fee_per_gas)) {
-    return std::nullopt;
-  }
-  if (!HexValueToUint256(gas_estimation->avg_max_priority_fee_per_gas,
-                         &estimation.avg_max_priority_fee_per_gas)) {
-    return std::nullopt;
-  }
-  if (!HexValueToUint256(gas_estimation->fast_max_priority_fee_per_gas,
-                         &estimation.fast_max_priority_fee_per_gas)) {
-    return std::nullopt;
-  }
-  if (!HexValueToUint256(gas_estimation->slow_max_fee_per_gas,
-                         &estimation.slow_max_fee_per_gas)) {
-    return std::nullopt;
-  }
-  if (!HexValueToUint256(gas_estimation->avg_max_fee_per_gas,
-                         &estimation.avg_max_fee_per_gas)) {
-    return std::nullopt;
-  }
-  if (!HexValueToUint256(gas_estimation->fast_max_fee_per_gas,
-                         &estimation.fast_max_fee_per_gas)) {
-    return std::nullopt;
-  }
-  if (!HexValueToUint256(gas_estimation->base_fee_per_gas,
-                         &estimation.base_fee_per_gas)) {
-    return std::nullopt;
-  }
-
-  return estimation;
-}
-
-// static
-mojom::GasEstimation1559Ptr
-Eip1559Transaction::GasEstimation::ToMojomGasEstimation1559(
-    Eip1559Transaction::GasEstimation gas_estimation) {
-  mojom::GasEstimation1559Ptr estimation = mojom::GasEstimation1559::New();
-  estimation->slow_max_priority_fee_per_gas =
-      Uint256ValueToHex(gas_estimation.slow_max_priority_fee_per_gas);
-  estimation->avg_max_priority_fee_per_gas =
-      Uint256ValueToHex(gas_estimation.avg_max_priority_fee_per_gas);
-  estimation->fast_max_priority_fee_per_gas =
-      Uint256ValueToHex(gas_estimation.fast_max_priority_fee_per_gas);
-  estimation->slow_max_fee_per_gas =
-      Uint256ValueToHex(gas_estimation.slow_max_fee_per_gas);
-  estimation->avg_max_fee_per_gas =
-      Uint256ValueToHex(gas_estimation.avg_max_fee_per_gas);
-  estimation->fast_max_fee_per_gas =
-      Uint256ValueToHex(gas_estimation.fast_max_fee_per_gas);
-  estimation->base_fee_per_gas =
-      Uint256ValueToHex(gas_estimation.base_fee_per_gas);
-  return estimation;
-}
-
-bool Eip1559Transaction::GasEstimation::operator==(
-    const Eip1559Transaction::GasEstimation& estimation) const {
-  return slow_max_priority_fee_per_gas ==
-             estimation.slow_max_priority_fee_per_gas &&
-         avg_max_priority_fee_per_gas ==
-             estimation.avg_max_priority_fee_per_gas &&
-         fast_max_priority_fee_per_gas ==
-             estimation.fast_max_priority_fee_per_gas &&
-         slow_max_fee_per_gas == estimation.slow_max_fee_per_gas &&
-         avg_max_fee_per_gas == estimation.avg_max_fee_per_gas &&
-         fast_max_fee_per_gas == estimation.fast_max_fee_per_gas &&
-         base_fee_per_gas == estimation.base_fee_per_gas;
-}
 
 Eip1559Transaction::Eip1559Transaction()
     : max_priority_fee_per_gas_(0), max_fee_per_gas_(0) {
@@ -109,8 +31,7 @@ Eip1559Transaction::Eip1559Transaction(
     const std::vector<uint8_t>& data,
     uint256_t chain_id,
     uint256_t max_priority_fee_per_gas,
-    uint256_t max_fee_per_gas,
-    GasEstimation gas_estimation)
+    uint256_t max_fee_per_gas)
     : Eip2930Transaction(nonce,
                          gas_price,
                          gas_limit,
@@ -119,8 +40,7 @@ Eip1559Transaction::Eip1559Transaction(
                          data,
                          chain_id),
       max_priority_fee_per_gas_(max_priority_fee_per_gas),
-      max_fee_per_gas_(max_fee_per_gas),
-      gas_estimation_(gas_estimation) {
+      max_fee_per_gas_(max_fee_per_gas) {
   type_ = 2;
 }
 Eip1559Transaction::Eip1559Transaction(const Eip1559Transaction&) = default;
@@ -159,18 +79,10 @@ std::optional<Eip1559Transaction> Eip1559Transaction::FromTxData(
     return std::nullopt;
   }
 
-  GasEstimation gas_estimation;
-  auto estimation = GasEstimation::FromMojomGasEstimation1559(
-      std::move(tx_data1559->gas_estimation));
-  if (estimation) {
-    gas_estimation = estimation.value();
-  }
-
-  Eip1559Transaction tx(
+  return Eip1559Transaction(
       tx_2930->nonce(), tx_2930->gas_price(), tx_2930->gas_limit(),
       tx_2930->to(), tx_2930->value(), tx_2930->data(), tx_2930->chain_id(),
-      max_priority_fee_per_gas, max_fee_per_gas, gas_estimation);
-  return tx;
+      max_priority_fee_per_gas, max_fee_per_gas);
 }
 
 // static
@@ -202,70 +114,10 @@ std::optional<Eip1559Transaction> Eip1559Transaction::FromValue(
     return std::nullopt;
   }
 
-  GasEstimation estimation;
-  const base::DictValue* estimation_dict = value.FindDict("gas_estimation");
-  if (estimation_dict) {
-    const std::string* tx_slow_max_priority_fee_per_gas =
-        estimation_dict->FindString("slow_max_priority_fee_per_gas");
-    if (!tx_slow_max_priority_fee_per_gas ||
-        !HexValueToUint256(*tx_slow_max_priority_fee_per_gas,
-                           &estimation.slow_max_priority_fee_per_gas)) {
-      return std::nullopt;
-    }
-
-    const std::string* tx_avg_max_priority_fee_per_gas =
-        estimation_dict->FindString("avg_max_priority_fee_per_gas");
-    if (!tx_avg_max_priority_fee_per_gas ||
-        !HexValueToUint256(*tx_avg_max_priority_fee_per_gas,
-                           &estimation.avg_max_priority_fee_per_gas)) {
-      return std::nullopt;
-    }
-
-    const std::string* tx_fast_max_priority_fee_per_gas =
-        estimation_dict->FindString("fast_max_priority_fee_per_gas");
-    if (!tx_fast_max_priority_fee_per_gas ||
-        !HexValueToUint256(*tx_fast_max_priority_fee_per_gas,
-                           &estimation.fast_max_priority_fee_per_gas)) {
-      return std::nullopt;
-    }
-
-    const std::string* tx_slow_max_fee_per_gas =
-        estimation_dict->FindString("slow_max_fee_per_gas");
-    if (!tx_slow_max_fee_per_gas ||
-        !HexValueToUint256(*tx_slow_max_fee_per_gas,
-                           &estimation.slow_max_fee_per_gas)) {
-      return std::nullopt;
-    }
-
-    const std::string* tx_avg_max_fee_per_gas =
-        estimation_dict->FindString("avg_max_fee_per_gas");
-    if (!tx_avg_max_fee_per_gas ||
-        !HexValueToUint256(*tx_avg_max_fee_per_gas,
-                           &estimation.avg_max_fee_per_gas)) {
-      return std::nullopt;
-    }
-
-    const std::string* tx_fast_max_fee_per_gas =
-        estimation_dict->FindString("fast_max_fee_per_gas");
-    if (!tx_fast_max_fee_per_gas ||
-        !HexValueToUint256(*tx_fast_max_fee_per_gas,
-                           &estimation.fast_max_fee_per_gas)) {
-      return std::nullopt;
-    }
-
-    const std::string* tx_base_fee_per_gas =
-        estimation_dict->FindString("base_fee_per_gas");
-    if (!tx_base_fee_per_gas ||
-        !HexValueToUint256(*tx_base_fee_per_gas,
-                           &estimation.base_fee_per_gas)) {
-      return std::nullopt;
-    }
-  }
-
   Eip1559Transaction tx(tx_2930->nonce(), tx_2930->gas_price(),
                         tx_2930->gas_limit(), tx_2930->to(), tx_2930->value(),
                         tx_2930->data(), tx_2930->chain_id(),
-                        max_priority_fee_per_gas, max_fee_per_gas, estimation);
+                        max_priority_fee_per_gas, max_fee_per_gas);
   tx.v_ = tx_2930->v();
   tx.r_ = tx_2930->r();
   tx.s_ = tx_2930->s();
@@ -316,26 +168,6 @@ base::DictValue Eip1559Transaction::ToValue() const {
   tx.Set("max_priority_fee_per_gas",
          Uint256ValueToHex(max_priority_fee_per_gas_));
   tx.Set("max_fee_per_gas", Uint256ValueToHex(max_fee_per_gas_));
-
-  base::DictValue& estimation =
-      tx.Set("gas_estimation", base::DictValue())->GetDict();
-  estimation.Set(
-      "slow_max_priority_fee_per_gas",
-      Uint256ValueToHex(gas_estimation_.slow_max_priority_fee_per_gas));
-  estimation.Set(
-      "avg_max_priority_fee_per_gas",
-      Uint256ValueToHex(gas_estimation_.avg_max_priority_fee_per_gas));
-  estimation.Set(
-      "fast_max_priority_fee_per_gas",
-      Uint256ValueToHex(gas_estimation_.fast_max_priority_fee_per_gas));
-  estimation.Set("slow_max_fee_per_gas",
-                 Uint256ValueToHex(gas_estimation_.slow_max_fee_per_gas));
-  estimation.Set("avg_max_fee_per_gas",
-                 Uint256ValueToHex(gas_estimation_.avg_max_fee_per_gas));
-  estimation.Set("fast_max_fee_per_gas",
-                 Uint256ValueToHex(gas_estimation_.fast_max_fee_per_gas));
-  estimation.Set("base_fee_per_gas",
-                 Uint256ValueToHex(gas_estimation_.base_fee_per_gas));
 
   return tx;
 }

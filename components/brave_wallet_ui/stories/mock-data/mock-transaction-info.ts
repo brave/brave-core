@@ -57,7 +57,6 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
       chainId: '0x0',
       maxPriorityFeePerGas: '80410000', // (0.08041 gwei)
       maxFeePerGas: '3600000000', // (3.6 gwei)
-      gasEstimation: undefined,
     },
     ethTxData: undefined,
     solanaTxData: undefined,
@@ -384,15 +383,6 @@ export const mockEthSendTransaction = {
       chainId: '0xaa36a7',
       maxPriorityFeePerGas: '0x2faf080',
       maxFeePerGas: '0x2faf092',
-      gasEstimation: {
-        slowMaxPriorityFeePerGas: '0x2',
-        slowMaxFeePerGas: '0x14',
-        avgMaxPriorityFeePerGas: '0x2faf080',
-        avgMaxFeePerGas: '0x2faf092',
-        fastMaxPriorityFeePerGas: '0x59682f00',
-        fastMaxFeePerGas: '0x59682f12',
-        baseFeePerGas: '0x12',
-      },
     },
   },
   txStatus: 4,
@@ -546,15 +536,6 @@ export const mockERC20TransferTransaction: SerializableTransactionInfo = {
       chainId: BraveWallet.MAINNET_CHAIN_ID,
       maxPriorityFeePerGas: '0x2faf080',
       maxFeePerGas: '0x2faf092',
-      gasEstimation: {
-        slowMaxPriorityFeePerGas: '0x2',
-        slowMaxFeePerGas: '0x14',
-        avgMaxPriorityFeePerGas: '0x2faf080',
-        avgMaxFeePerGas: '0x2faf092',
-        fastMaxPriorityFeePerGas: '0x59682f00',
-        fastMaxFeePerGas: '0x59682f12',
-        baseFeePerGas: '0x12',
-      },
       baseData: {
         nonce: '0xb',
         gasPrice: '0x0',
@@ -657,15 +638,6 @@ export const createMockTransactionInfo = (arg: {
     chainId,
     maxPriorityFeePerGas: '0x2faf080',
     maxFeePerGas: '0x2faf092',
-    gasEstimation: {
-      slowMaxPriorityFeePerGas: '0x2',
-      slowMaxFeePerGas: '0x14',
-      avgMaxPriorityFeePerGas: '0x2faf080',
-      avgMaxFeePerGas: '0x2faf092',
-      fastMaxPriorityFeePerGas: '0x59682f00',
-      fastMaxFeePerGas: '0x59682f12',
-      baseFeePerGas: '0x12',
-    },
     baseData: {
       ...txBase.txDataUnion.ethTxData1559?.baseData,
       data: [],
@@ -928,7 +900,6 @@ export const mockETHNativeTokenSendTransaction = {
       chainId: '',
       maxPriorityFeePerGas: '',
       maxFeePerGas: '',
-      gasEstimation: undefined,
     },
   },
 }

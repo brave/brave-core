@@ -96,7 +96,6 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
   std::string chain_id;
   std::string max_priority_fee_per_gas;
   std::string max_fee_per_gas;
-  mojom::GasEstimation1559Ptr gas_estimation_1559_ptr = nullptr;
   if (tx_->type() == 1) {
     // When type is 1 it's always Eip2930Transaction
     auto* tx2930 = static_cast<Eip2930Transaction*>(tx_.get());
@@ -108,9 +107,6 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
     max_priority_fee_per_gas =
         Uint256ValueToHex(tx1559->max_priority_fee_per_gas());
     max_fee_per_gas = Uint256ValueToHex(tx1559->max_fee_per_gas());
-    gas_estimation_1559_ptr =
-        Eip1559Transaction::GasEstimation::ToMojomGasEstimation1559(
-            tx1559->gas_estimation());
   }
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
@@ -170,8 +166,7 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
               Uint256ValueToHex(tx_->gas_limit()), tx_->GetToChecksumAddress(),
               Uint256ValueToHex(tx_->value()), tx_->data(), sign_only_,
               signed_transaction),
-          chain_id, max_priority_fee_per_gas, max_fee_per_gas,
-          std::move(gas_estimation_1559_ptr))),
+          chain_id, max_priority_fee_per_gas, max_fee_per_gas)),
       status_, tx_type, tx_params, tx_args,
       base::Milliseconds(created_time_.InMillisecondsSinceUnixEpoch()),
       base::Milliseconds(submitted_time_.InMillisecondsSinceUnixEpoch()),

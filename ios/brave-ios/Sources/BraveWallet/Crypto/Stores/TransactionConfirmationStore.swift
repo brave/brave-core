@@ -369,7 +369,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       let solEstimatedTxFee: UInt64? = solEstimatedTxFeeCache[transaction.id]
 
       if transaction.isEIP1559Transaction {
-        eip1559GasEstimation = transaction.txDataUnion.ethTxData1559?.gasEstimation
+        eip1559GasEstimation = await ethTxManagerProxy.gasEstimation1559(chainId: network.chainId)
       }
 
       guard
