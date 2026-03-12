@@ -10,6 +10,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -559,3 +560,22 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   EXPECT_TRUE(is_wallet_button_shown(browser()));
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
+                       VerticalTabToggleButtonVisibility) {
+  auto* prefs = browser()->profile()->GetPrefs();
+  auto* button = toolbar_view_->vertical_tab_toggle_button();
+  ASSERT_TRUE(button);
+
+  // By default, vertical tabs is disabled, so button is not visible.
+  EXPECT_FALSE(prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled));
+  EXPECT_FALSE(button->GetVisible());
+
+  // Enable vertical tabs - button should become visible.
+  prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  EXPECT_TRUE(button->GetVisible());
+
+  // Disable vertical tabs - button should be hidden again.
+  prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, false);
+  EXPECT_FALSE(button->GetVisible());
+}

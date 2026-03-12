@@ -27,7 +27,6 @@
 #include "ui/views/widget/widget_observer.h"
 
 namespace views {
-class LabelButton;
 class MenuRunner;
 }  // namespace views
 
@@ -85,7 +84,6 @@ class BraveVerticalTabStripRegionView : public views::View,
   // previous state.
   using ScopedStateResetter = std::unique_ptr<base::ScopedClosureRunner>;
   [[nodiscard]] ScopedStateResetter ExpandTabStripForDragging();
-  gfx::Vector2d GetOffsetForDraggedTab() const;
 
   int GetAvailableWidthForTabContainer();
 
@@ -134,8 +132,6 @@ class BraveVerticalTabStripRegionView : public views::View,
       views::View* source,
       const gfx::Point& p,
       ui::mojom::MenuSourceType source_type) override;
-
-  class HeaderView;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
@@ -188,8 +184,6 @@ class BraveVerticalTabStripRegionView : public views::View,
 
   void OnMenuClosed();
 
-  views::LabelButton& GetToggleButtonForTesting();
-
   // Callback that is called when collapse animation ends. We update visibility
   // of this view if it's needed
   void OnCollapseAnimationEnded();
@@ -200,8 +194,6 @@ class BraveVerticalTabStripRegionView : public views::View,
   raw_ptr<views::View> original_parent_of_region_view_ = nullptr;
   std::optional<size_t> tab_strip_region_view_original_index_;
   raw_ptr<HorizontalTabStripRegionView> original_region_view_ = nullptr;
-
-  raw_ptr<HeaderView> header_view_ = nullptr;
 
   // Reportedly, when we add the TabStripRegionView to
   // VerticalTabStripRegionView directly, context menu on Omnibox is not working

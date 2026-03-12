@@ -26,6 +26,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/switches.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
@@ -1110,7 +1111,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {
   ASSERT_TRUE(region_view_1);
   ASSERT_EQ(State::kExpanded, region_view_1->state());
 
-  region_view_1->GetToggleButtonForTesting().button_controller()->NotifyClick();
+  static_cast<BraveToolbarView*>(browser_view()->toolbar())
+      ->vertical_tab_toggle_button()
+      ->button_controller()
+      ->NotifyClick();
   EXPECT_EQ(State::kCollapsed, region_view_1->state());
   EXPECT_TRUE(prefs->GetBoolean(brave_tabs::kVerticalTabsCollapsed));
 
@@ -1127,7 +1131,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {
   prefs->SetBoolean(brave_tabs::kVerticalTabsExpandedStatePerWindow, true);
 
   // When clicking the toggle button,
-  region_view_1->GetToggleButtonForTesting().button_controller()->NotifyClick();
+  static_cast<BraveToolbarView*>(browser_view()->toolbar())
+      ->vertical_tab_toggle_button()
+      ->button_controller()
+      ->NotifyClick();
 
   // it affects only the browser
   EXPECT_EQ(State::kExpanded, region_view_1->state());
