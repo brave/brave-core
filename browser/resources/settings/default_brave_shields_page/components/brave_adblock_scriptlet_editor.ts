@@ -52,7 +52,7 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
   declare isScriptletValid_: boolean
   declare scriptletErrorMessage_: string
 
-  oldScriptletName_: string
+  originalScriptlet_: Scriptlet
   browserProxy_ = BraveAdblockBrowserProxyImpl.getInstance()
 
   override ready() {
@@ -62,9 +62,9 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
       (window as any).testing[`adblockScriptletEditor`] = this.shadowRoot;
     }
 
-    this.oldScriptletName_ = this.scriptlet.name
+    this.originalScriptlet_ = { ...this.scriptlet }
 
-    if (this.oldScriptletName_) {
+    if (this.originalScriptlet_.name) {
       this.dialogTitle_ = this.i18n('adblockEditCustomScriptletDialogTitle')
     } else {
       this.dialogTitle_ = this.i18n('adblockAddCustomScriptletDialogTitle')
@@ -98,6 +98,7 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
   }
 
   cancelClicked_() {
+    Object.assign(this.scriptlet, this.originalScriptlet_)
     this.$.dialog.cancel()
   }
 
@@ -107,9 +108,9 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
       return
     }
 
-    if (this.oldScriptletName_) {
+    if (this.originalScriptlet_.name) {
       this.browserProxy_
-        .updateCustomScriptlet(this.oldScriptletName_, this.scriptlet)
+        .updateCustomScriptlet(this.originalScriptlet_.name, this.scriptlet)
         .then((e) => {
           this.updateError(e)
           if (this.isScriptletValid_) {
