@@ -52,6 +52,8 @@ import os
   /// This is the current pending group we are compiling into content blockers
   /// This allows us to ensure we are not compiling the same rules more than once
   private var pendingContentBlockerGroup: GroupedAdBlockEngine.FilterListGroup?
+  /// Rules to exclude from all filter lists during compilation
+  var exclusionRules: Set<String> = []
   /// The blocklist type this manager represents if we are combining content blockers
   var blocklistType: ContentBlockerManager.BlocklistType {
     return .engineGroup(id: cacheFolderName, engineType: engineType)
@@ -450,6 +452,7 @@ import os
       contents: "".data(using: .utf8)
     )
 
+    let exclusionRulesToApply = self.exclusionRules
     return try await Task.detached {
       let fileWriteHandle = try FileHandle(forWritingTo: temporaryFileURL)
       var compiledInfos: [GroupedAdBlockEngine.FilterListInfo] = []
@@ -460,7 +463,18 @@ import os
           guard let data = try await fileInfo.getRulesData(engineType: self.engineType) else {
             continue
           }
-          try fileWriteHandle.write(contentsOf: data)
+          let dataToWrite: Data
+          if exclusionRulesToApply.isEmpty {
+            dataToWrite = data
+          } else {
+            // filter out exclusion rules
+            let filtered = String(data: data, encoding: .utf8)?
+              .components(separatedBy: .newlines)
+              .filter { !exclusionRulesToApply.contains($0) }
+              .joined(separator: "\n")
+            dataToWrite = filtered?.data(using: .utf8) ?? data
+          }
+          try fileWriteHandle.write(contentsOf: dataToWrite)
           compiledInfos.append(fileInfo.filterListInfo)
         } catch {
           ContentBlockerManager.log.error(

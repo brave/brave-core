@@ -82,6 +82,13 @@ import WebKit
         "Failed to load custom filter list: \(String(describing: error))"
       )
     }
+
+    // Load the custom exclusion rules so they are applied when engines next compile
+    if let exclusionRulesString = try? await loadCustomExclusionRules() {
+      AdBlockGroupsManager.shared.setExclusionRules(
+        exclusionRulesString.components(separatedBy: .newlines)
+      )
+    }
   }
 
   /// Ensures that the settings for a filter list are stored
@@ -102,6 +109,16 @@ import WebKit
       in: .userDomainMask
     ).appending(path: "custom_rules")
     return folderURL.appending(path: "list.txt")
+  }
+
+  /// File URL for custom exclusion rules (rules to be removed from
+  /// AdBlockEngine & Content Blockers dynamically)
+  private func customExclusionRulesFileURL() throws -> URL {
+    let folderURL = try AsyncFileManager.default.url(
+      for: .applicationSupportDirectory,
+      in: .userDomainMask
+    ).appending(path: "custom_rules")
+    return folderURL.appending(path: "exclusion_rules.txt")
   }
 
   /// Get the file URL to the custom filter list rules if it exists
@@ -201,6 +218,45 @@ import WebKit
     case .success(let date):
       filterListsURLs[index].downloadStatus = .downloaded(date)
     }
+  }
+
+  /// Load the custom exclusion rules (rules to be removed from AdBlockEngine &
+  /// Content Blockers dynamically)
+  public func loadCustomExclusionRules() async throws -> String? {
+    let url = try customExclusionRulesFileURL()
+    if await AsyncFileManager.default.fileExists(atPath: url.path) {
+      return await AsyncFileManager.default.utf8Contents(at: url)
+    } else {
+      return nil
+    }
+  }
+
+  /// Save the custom exclusion rules (rules to be removed from AdBlockEngine &
+  /// Content Blockers dynamically)
+  public func save(customExclusionRules: String) async throws {
+    let fileURL = try customExclusionRulesFileURL()
+    // Save the rules in a file on disk
+    if await AsyncFileManager.default.fileExists(atPath: fileURL.path) {
+      try await AsyncFileManager.default.removeItem(at: fileURL)
+    }
+    _ = try await getOrCreateCustomRulesFolder()
+    await AsyncFileManager.default.createUTF8File(
+      atPath: fileURL.path,
+      contents: customExclusionRules
+    )
+    AdBlockGroupsManager.shared.setExclusionRules(
+      customExclusionRules.components(separatedBy: .newlines)
+    )
+    // recompile the AdBlockEngines
+    await AdBlockGroupsManager.shared.compileEngines()
+  }
+
+  /// Delete the saved custom exclusion rules
+  func deleteCustomExclusionRules() async throws {
+    let fileURL = try customExclusionRulesFileURL()
+    try await AsyncFileManager.default.removeItem(at: fileURL)
+    AdBlockGroupsManager.shared.setExclusionRules([])
+    await AdBlockGroupsManager.shared.compileEngines()
   }
 }
 
