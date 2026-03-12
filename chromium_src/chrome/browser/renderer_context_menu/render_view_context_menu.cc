@@ -28,7 +28,6 @@
 #include "brave/browser/ui/browser_dialogs.h"
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -70,11 +69,6 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_AI_REWRITER)
-#include "brave/browser/ui/ai_rewriter/ai_rewriter_dialog_delegate.h"
-#include "brave/components/ai_rewriter/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -386,10 +380,6 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
     case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST:
       return IsAIChatEnabled();
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
-#if BUILDFLAG(ENABLE_AI_REWRITER)
-    case IDC_AI_CHAT_CONTEXT_REWRITE:
-      return ai_rewriter::features::IsAIRewriterEnabled();
-#endif
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
       return true;
     case IDC_OPEN_IN_CONTAINER:
@@ -448,12 +438,6 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       ExecuteAIChatCommand(id);
       break;
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
-#if BUILDFLAG(ENABLE_AI_REWRITER)
-    case IDC_AI_CHAT_CONTEXT_REWRITE:
-      ai_rewriter::AIRewriterDialogDelegate::Show(
-          source_web_contents_, base::UTF16ToUTF8(params_.selection_text));
-      break;
-#endif
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
       cosmetic_filters::CosmeticFiltersTabHelper::LaunchContentPicker(
           source_web_contents_);
@@ -582,13 +566,6 @@ void BraveRenderViewContextMenu::BuildAIChatMenu() {
 
   ai_chat_submenu_model_.AddTitleWithStringId(
       IDS_AI_CHAT_CONTEXT_QUICK_ACTIONS);
-
-#if BUILDFLAG(ENABLE_AI_REWRITER)
-  if (ai_rewriter::features::IsAIRewriterEnabled()) {
-    ai_chat_submenu_model_.AddItemWithStringId(IDC_AI_CHAT_CONTEXT_REWRITE,
-                                               IDS_AI_CHAT_CONTEXT_REWRITE);
-  }
-#endif
 
   ai_chat_submenu_model_.AddItemWithStringId(
       IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT, IDS_AI_CHAT_CONTEXT_SUMMARIZE_TEXT);

@@ -603,7 +603,6 @@ export function useProvideConversationContext(props: ConversationContextProps) {
 
     inputText,
 
-    // Simplified for ai_rewriter/resources/page/components/BeginGeneration.tsx redefinition
     setInputText: (content: Content) => setInputText(content),
 
     isToolsMenuOpen,

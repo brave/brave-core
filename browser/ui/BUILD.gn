@@ -7,7 +7,6 @@ import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/browser/ui/config.gni")
 import("//brave/browser/updater/buildflags.gni")
 import("//brave/build/config.gni")
-import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
@@ -211,22 +210,6 @@ source_set("ui") {
         "android/brave_rewards/rewards_page_helper.h",
       ]
     }
-  }
-
-  if (enable_ai_rewriter) {
-    sources += [
-      "ai_rewriter/ai_rewriter_dialog_delegate.cc",
-      "ai_rewriter/ai_rewriter_dialog_delegate.h",
-      "webui/ai_rewriter/ai_rewriter_ui.cc",
-      "webui/ai_rewriter/ai_rewriter_ui.h",
-    ]
-
-    deps += [
-      "//brave/browser/ui/webui/ai_chat",
-      "//brave/components/ai_rewriter/common",
-      "//brave/components/ai_rewriter/resources/page:generated_resources",
-      "//components/web_modal",
-    ]
   }
 
   if (enable_brave_ads) {
@@ -839,7 +822,6 @@ source_set("ui") {
     # to pull in dependencies needed for the overwrite codes in chromium_src.
     "//brave/chromium_src/chrome/browser/ui",
     "//brave/common",
-    "//brave/components/ai_rewriter/common/buildflags",
     "//brave/components/brave_adaptive_captcha",
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/brave_adblock_ui/adblock_internals:generated_resources",

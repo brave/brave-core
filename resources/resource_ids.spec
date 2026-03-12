@@ -178,10 +178,6 @@
     "META": {"sizes": {"includes": [10]}},
     "includes": [53800]
   },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ai_rewriter_ui/ai_rewriter_ui.grd": {
-    "META": {"sizes": {"includes": [10]}},
-    "includes": [53820],
-  },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-rewards_page/rewards_page.grd": {
     "META": {"sizes": {"includes": [50]}},
     "includes": [53840],
