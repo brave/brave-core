@@ -48,6 +48,7 @@ import {
 import { WalletSelectors } from '../common/selectors'
 import { PanelSelectors } from './selectors'
 import {
+  useGetPendingSnapInstallQuery,
   useGetPendingAddChainRequestQuery,
   useGetPendingDecryptRequestQuery,
   useGetPendingGetEncryptionPublicKeyRequestQuery,
@@ -78,6 +79,15 @@ import {
 import {
   PendingSignCardanoTransactionRequestsPanel, //
 } from '../components/extension/pending_sign_cardano_tx_requests_panel/pending_sign_cardano_tx_requests_panel'
+import {
+  SnapInstallPanel, //
+} from '../components/extension/snap_install_panel/snap_install_panel'
+import {
+  SnapsListPanel, //
+} from '../components/extension/snaps_list_panel/snaps_list_panel'
+import {
+  SnapViewPanel, //
+} from '../components/extension/snap_view_panel/snap_view_panel'
 
 // Allow BigInts to be stringified
 ;(BigInt.prototype as any).toJSON = function () {
@@ -92,6 +102,7 @@ function Container() {
 
   // panel selectors (safe)
   const selectedPanel = useSafePanelSelector(PanelSelectors.selectedPanel)
+  const viewingSnapId = useSafePanelSelector(PanelSelectors.viewingSnapId)
   const hardwareWalletCode = useSafePanelSelector(
     PanelSelectors.hardwareWalletCode,
   )
@@ -135,6 +146,7 @@ function Container() {
   } = useGetPendingSignMessageErrorsQuery()
   const { data: addTokenRequests = [], isLoading: isLoadingAddTokenRequests } =
     useGetPendingTokenSuggestionRequestsQuery()
+  const { data: pendingSnapInstall } = useGetPendingSnapInstallQuery()
   const {
     selectedPendingTransaction,
     isLoading: isLoadingPendingTransactions,
@@ -219,6 +231,45 @@ function Container() {
         <StyledExtensionWrapper>
           <ConnectHardwareWalletPanel hardwareWalletCode={hardwareWalletCode} />
         </StyledExtensionWrapper>
+      </PanelWrapper>
+    )
+  }
+
+  // Snap install approval gate — takes priority over most other views.
+  if (
+    pendingSnapInstall
+    && pendingSnapInstall.state !== BraveWallet.SnapInstallState.kIdle
+  ) {
+    return (
+      <PanelWrapper
+        width={390}
+        height={650}
+      >
+        <SnapInstallPanel pending={pendingSnapInstall} />
+      </PanelWrapper>
+    )
+  }
+
+  // Snaps tab (no pending install).
+  if (selectedPanel === 'snaps') {
+    return (
+      <PanelWrapper
+        width={390}
+        height={650}
+      >
+        <SnapsListPanel />
+      </PanelWrapper>
+    )
+  }
+
+  // Individual snap homepage view.
+  if (selectedPanel === 'snap_view' && viewingSnapId) {
+    return (
+      <PanelWrapper
+        width={390}
+        height={650}
+      >
+        <SnapViewPanel snapId={viewingSnapId} />
       </PanelWrapper>
     )
   }

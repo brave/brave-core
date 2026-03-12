@@ -35,6 +35,8 @@ import {
   useGetSelectedChainQuery,
   useLockWalletMutation,
 } from '../../../common/slices/api.slice'
+import { useAppDispatch } from '../../../common/hooks/use-redux'
+import { PanelActions } from '../../../panel/actions'
 import { openWalletSettings } from '../../../utils/routes-utils'
 import { useSyncedLocalStorage } from '../../../common/hooks/use_local_storage'
 
@@ -59,6 +61,9 @@ const HELP_CENTER_URL =
 
 export const WalletSettingsMenu = (props: Props) => {
   const { onClosePopup, yPosition } = props
+
+  // Redux
+  const dispatch = useAppDispatch()
 
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
@@ -203,6 +208,17 @@ export const WalletSettingsMenu = (props: Props) => {
     history.push(WalletRoutes.Backup)
   }, [isMobile, isPanel, history])
 
+  const onClickSnaps = React.useCallback(() => {
+    if (isPanel) {
+      dispatch(PanelActions.navigateTo('snaps'))
+    } else {
+      history.push(WalletRoutes.SnapsStore)
+    }
+    if (onClosePopup) {
+      onClosePopup()
+    }
+  }, [isPanel, dispatch, history, onClosePopup])
+
   // Memos
   const accountSettingsOptions = React.useMemo(() => {
     if (isMobile) {
@@ -238,6 +254,11 @@ export const WalletSettingsMenu = (props: Props) => {
           <PopupButtonText>
             {getLocale('braveWalletWalletPopupBackup')}
           </PopupButtonText>
+        </PopupButton>
+
+        <PopupButton onClick={onClickSnaps}>
+          <ButtonIcon name='web3' />
+          <PopupButtonText>Snaps</PopupButtonText>
         </PopupButton>
 
         {(selectedNetwork?.coin === BraveWallet.CoinType.ETH

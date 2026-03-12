@@ -25,6 +25,7 @@ import {
   makeBraveWalletServiceTokenObserver,
   makeJsonRpcServiceObserver,
   makeKeyringServiceObserver,
+  makeSnapsServiceObserver,
   makeTxServiceObserver,
 } from '../common/wallet_api_proxy_observers'
 import { loadTimeData } from '../../common/loadTimeData'
@@ -61,6 +62,7 @@ proxy.addBraveWalletServiceObserver(makeBraveWalletServiceObserver(store))
 proxy.addBraveWalletServiceTokenObserver(
   makeBraveWalletServiceTokenObserver(store),
 )
+proxy.addSnapsServiceObserver(makeSnapsServiceObserver(store))
 
 export const walletPageApiProxy = proxy
 

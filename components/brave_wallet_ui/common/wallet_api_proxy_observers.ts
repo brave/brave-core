@@ -231,3 +231,13 @@ export function makeBraveWalletServiceObserver(store: Store) {
     })
   return braveWalletServiceObserverReceiver
 }
+
+export function makeSnapsServiceObserver(store: Store) {
+  const snapsServiceObserverReceiver =
+    new BraveWallet.SnapsServiceObserverReceiver({
+      onPendingSnapInstallChanged: function () {
+        store.dispatch(walletApi.util.invalidateTags(['PendingSnapInstall']))
+      },
+    })
+  return snapsServiceObserverReceiver
+}

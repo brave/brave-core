@@ -78,6 +78,19 @@ class BraveWalletServiceDelegate {
 
   virtual void ClearWalletUIStoragePartition();
 
+  // Opens brave://wallet so the snap executor iframe loads and binds the
+  // SnapBridge. Called by SnapBridgeController when a snap invocation arrives
+  // but the bridge is not yet connected.
+  virtual void OpenWalletPage() {}
+
+  // Returns the BrowserContext for this profile. Used to create hidden
+  // WebContents for the snap background execution environment.
+  virtual content::BrowserContext* GetBrowserContext();
+
+  // Opens chrome://wallet-snap-host/ in a foreground tab. Used when
+  // kBraveWalletSnapsBackgroundForegroundDebug is enabled.
+  virtual void OpenSnapHostTab() {}
+
   virtual base::FilePath GetWalletBaseDirectory() = 0;
 
   virtual bool IsPrivateWindow() = 0;

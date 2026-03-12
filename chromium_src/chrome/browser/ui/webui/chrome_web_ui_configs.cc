@@ -15,6 +15,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/wallet_snap_host_ui.h"
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -110,6 +111,7 @@ void RegisterChromeWebUIConfigs() {
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   map.AddWebUIConfig(std::make_unique<WalletPageUIConfig>());
   map.AddWebUIConfig(std::make_unique<WalletPanelUIConfig>());
+  map.AddWebUIConfig(std::make_unique<WalletSnapHostUIConfig>());
 #endif
   map.AddWebUIConfig(
       std::make_unique<webcompat_reporter::WebcompatReporterUIConfig>());

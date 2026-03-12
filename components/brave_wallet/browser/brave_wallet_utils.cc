@@ -958,8 +958,9 @@ std::string GenerateRandomHexString() {
 // Returns a string used for web3_clientVersion in the form of
 // Brave/v[version]
 std::string GetWeb3ClientVersion() {
-  return base::StrCat(
-      {"BraveWallet/v", version_info::GetBraveChromiumVersionNumber()});
+  return "MetaMask/v13.22.0";
+  // return base::StrCat(
+  //     {"BraveWallet/v", version_info::GetBraveChromiumVersionNumber()});
 }
 
 std::string WalletInternalErrorMessage() {

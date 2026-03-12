@@ -38,6 +38,7 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_cip30_serializer.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/ethereum_keyring.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/browser/filecoin_keyring.h"
 #include "brave/components/brave_wallet/browser/json_keystore_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -3450,6 +3451,79 @@ void KeyringService::MaybeFixAccountSelection() {
     // selection.
     SetSelectedDappAccountInternal(mojom::CoinType::SOL, {});
   }
+}
+
+void KeyringService::GetBip44EntropyForSnap(
+    uint32_t coin_type,
+    base::OnceCallback<void(std::optional<base::Value>)> callback) {
+  if (IsLockedSync()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  DCHECK(encryptor_);
+  auto mnemonic = DecryptWalletMnemonicFromPrefs(profile_prefs_, *encryptor_);
+  if (!mnemonic) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  auto keyring_seed =
+      MakeSeedFromMnemonic(*mnemonic, IsLegacyEthSeedFormat(profile_prefs_));
+  if (!keyring_seed) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  auto root = HDKey::GenerateFromSeed(keyring_seed->seed);
+  if (!root) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  auto purpose = root->DeriveChild(DerivationIndex::Hardened(44));
+  if (!purpose) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  auto coin_node = purpose->DeriveChild(DerivationIndex::Hardened(coin_type));
+  if (!coin_node) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  // Compute masterFingerprint: fingerprint of the root (m/) public key.
+  // This is the first 4 bytes of Hash160(pubkey) as a big-endian uint32.
+  const auto root_fp = root->GetFingerprint();
+  uint32_t master_fingerprint = (static_cast<uint32_t>(root_fp[0]) << 24) |
+                                 (static_cast<uint32_t>(root_fp[1]) << 16) |
+                                 (static_cast<uint32_t>(root_fp[2]) << 8) |
+                                 static_cast<uint32_t>(root_fp[3]);
+
+  base::Value::Dict result;
+  result.Set("privateKey",
+             "0x" + base::HexEncodeLower(coin_node->GetPrivateKeyBytes()));
+  result.Set("publicKey",
+             "0x" + base::HexEncodeLower(coin_node->GetPublicKeyBytes()));
+  result.Set("chainCode",
+             "0x" + base::HexEncodeLower(coin_node->GetChainCodeBytes()));
+  // depth is always small (≤5 for BIP44), safe as int.
+  result.Set("depth", static_cast<int>(coin_node->GetDepth()));
+  // Fingerprints and index are uint32; use double to avoid int32 overflow for
+  // hardened indices (>= 0x80000000) and fingerprints with the high bit set.
+  result.Set("masterFingerprint", static_cast<double>(master_fingerprint));
+  result.Set("parentFingerprint",
+             static_cast<double>(coin_node->GetParentFingerprint()));
+  result.Set("index", static_cast<double>(coin_node->GetIndex()));
+  result.Set("curve", "secp256k1");
+  // Legacy fields for older @metamask/key-tree versions (pre-v8) that use
+  // BIP44CoinTypeNode.fromJSON which reads `coin_type` and `path` directly.
+  result.Set("coin_type", static_cast<int>(coin_type));
+  result.Set("path",
+             base::StrCat({"m/44'/", base::NumberToString(coin_type), "'"}));
+
+  std::move(callback).Run(base::Value(std::move(result)));
 }
 
 void KeyringService::MaybeUnlockWithCommandLine() {

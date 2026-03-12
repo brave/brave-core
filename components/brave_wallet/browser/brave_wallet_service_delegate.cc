@@ -11,6 +11,7 @@
 
 #include "base/notimplemented.h"
 #include "base/types/expected.h"
+#include "content/public/browser/browser_context.h"
 
 namespace brave_wallet {
 
@@ -69,6 +70,10 @@ std::optional<url::Origin> BraveWalletServiceDelegate::GetActiveOrigin() {
 }
 
 void BraveWalletServiceDelegate::ClearWalletUIStoragePartition() {}
+
+content::BrowserContext* BraveWalletServiceDelegate::GetBrowserContext() {
+  return nullptr;
+}
 
 void BraveWalletServiceDelegate::GetWebSitesWithPermission(
     mojom::CoinType coin,

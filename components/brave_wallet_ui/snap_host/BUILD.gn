@@ -1,0 +1,34 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
+assert(enable_brave_wallet)
+import("//brave/components/common/typescript.gni")
+
+transpile_web_ui("snap_host_ui") {
+  output_module = false
+  entry_points = [
+    [
+      "snap_host",
+      rebase_path("snap_host.ts"),
+    ],
+  ]
+  webpack_aliases = [ "browser" ]
+  resource_name = "snap_host"
+
+  imports_from = [ "//brave/components/brave_wallet_ui/" ]
+
+  deps = [
+    "//brave/components/brave_wallet/common:mojom_js",
+    "//brave/components/brave_wallet/common:preprocess_mojo",
+  ]
+}
+
+pack_web_resources("snap_host_generated") {
+  resource_name = "snap_host"
+  output_dir = "$root_gen_dir/brave/components/snap_host/resources"
+  deps = [ ":snap_host_ui" ]
+}

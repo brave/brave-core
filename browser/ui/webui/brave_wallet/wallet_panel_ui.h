@@ -95,7 +95,9 @@ class WalletPanelUI : public TopChromeWebUIController,
       mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
           brave_wallet_ipfs_service_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
-          meld_integration_service) override;
+          meld_integration_service,
+      mojo::PendingReceiver<brave_wallet::mojom::SnapsService>
+          snaps_service_receiver) override;
 
   std::unique_ptr<WalletPanelHandler> panel_handler_;
   std::unique_ptr<brave_wallet::WalletHandler> wallet_handler_;

@@ -28,6 +28,7 @@ import {
   makeTxServiceObserver,
   makeBraveWalletServiceObserver,
   makeBraveWalletServiceTokenObserver,
+  makeSnapsServiceObserver,
 } from '../common/wallet_api_proxy_observers'
 
 const store = configureStore({
@@ -61,6 +62,7 @@ proxy.addBraveWalletServiceObserver(makeBraveWalletServiceObserver(store))
 proxy.addBraveWalletServiceTokenObserver(
   makeBraveWalletServiceTokenObserver(store),
 )
+proxy.addSnapsServiceObserver(makeSnapsServiceObserver(store))
 
 export const walletPanelApiProxy = proxy
 

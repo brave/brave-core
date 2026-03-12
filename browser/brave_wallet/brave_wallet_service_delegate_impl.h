@@ -56,6 +56,10 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegateBase,
 
   void ClearWalletUIStoragePartition() override;
 
+  void OpenWalletPage() override;
+  content::BrowserContext* GetBrowserContext() override;
+  void OpenSnapHostTab() override;
+
   void AddObserver(BraveWalletServiceDelegate::Observer* observer) override;
   void RemoveObserver(BraveWalletServiceDelegate::Observer* observer) override;
 

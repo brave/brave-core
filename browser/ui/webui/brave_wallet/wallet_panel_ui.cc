@@ -87,7 +87,8 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
       network::mojom::CSPDirectiveName::FrameSrc,
       base::JoinString({"frame-src", kUntrustedTrezorURL, kUntrustedLedgerURL,
                         kUntrustedLineChartURL, kUntrustedNftURL,
-                        base::StrCat({kUntrustedMarketURL, ";"})},
+                        kUntrustedMarketURL,
+                        base::StrCat({kUntrustedSnapExecutorURL, ";"})},
                        " "));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
@@ -189,7 +190,9 @@ void WalletPanelUI::CreatePanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
         brave_wallet_ipfs_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
-        meld_integration_service) {
+        meld_integration_service,
+    mojo::PendingReceiver<brave_wallet::mojom::SnapsService>
+        snaps_service_receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
   CHECK(profile);
 
@@ -214,6 +217,7 @@ void WalletPanelUI::CreatePanelHandler(
     wallet_service->Bind(std::move(filecoin_tx_manager_proxy_receiver));
     wallet_service->Bind(std::move(bitcoin_tx_manager_proxy_receiver));
     wallet_service->Bind(std::move(brave_wallet_p3a_receiver));
+    wallet_service->Bind(std::move(snaps_service_receiver));
   }
 
   brave_wallet::SwapServiceFactory::BindForContext(

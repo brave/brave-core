@@ -49,6 +49,8 @@ class BraveWalletProviderDelegate {
   virtual void AddSolanaConnectedAccount(const std::string& account) {}
   virtual void RemoveSolanaConnectedAccount(const std::string& account) {}
   virtual bool IsSolanaAccountConnected(const std::string& account);
+  // Opens the full brave://wallet page (needed for snap execution).
+  virtual void OpenWalletPage() {}
 };
 
 }  // namespace brave_wallet

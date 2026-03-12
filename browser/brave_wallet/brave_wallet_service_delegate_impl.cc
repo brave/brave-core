@@ -11,9 +11,14 @@
 #include "base/check.h"
 #include "base/functional/callback_helpers.h"
 #include "base/types/expected.h"
+#include "brave/browser/ui/brave_pages.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/ui/browser_navigator.h"
+#include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
+#include "ui/base/page_transition_types.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -193,6 +198,28 @@ std::optional<url::Origin> BraveWalletServiceDelegateImpl::GetActiveOrigin() {
 void BraveWalletServiceDelegateImpl::ClearWalletUIStoragePartition() {
   ClearWalletStoragePartition(context_, GURL(kBraveUIWalletURL));
   ClearWalletStoragePartition(context_, GURL(kBraveUIWalletPanelURL));
+}
+
+void BraveWalletServiceDelegateImpl::OpenWalletPage() {
+  Browser* b = chrome::FindLastActive();
+  if (b) {
+    ::brave::ShowBraveWallet(b);
+  }
+}
+
+content::BrowserContext* BraveWalletServiceDelegateImpl::GetBrowserContext() {
+  return context_;
+}
+
+void BraveWalletServiceDelegateImpl::OpenSnapHostTab() {
+  Browser* browser = chrome::FindLastActive();
+  if (!browser) {
+    return;
+  }
+  NavigateParams params(browser, GURL(kBraveUIWalletSnapHostURL),
+                        ui::PAGE_TRANSITION_AUTO_TOPLEVEL);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  Navigate(&params);
 }
 
 }  // namespace brave_wallet

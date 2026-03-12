@@ -59,6 +59,7 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
   void AddSolanaConnectedAccount(const std::string& account) override;
   void RemoveSolanaConnectedAccount(const std::string& account) override;
   bool IsSolanaAccountConnected(const std::string& account) override;
+  void OpenWalletPage() override;
 
  private:
   // content::WebContentsObserver overrides

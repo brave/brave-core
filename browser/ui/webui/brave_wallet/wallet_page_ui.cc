@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/logging.h"
 #include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
@@ -25,12 +26,15 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_ipfs_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/snaps_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/simulation_service.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "base/feature_list.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -87,7 +91,8 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
       network::mojom::CSPDirectiveName::FrameSrc,
       std::string("frame-src ") + kUntrustedTrezorURL + " " +
           kUntrustedLedgerURL + " " + kUntrustedNftURL + " " +
-          kUntrustedLineChartURL + " " + kUntrustedMarketURL + ";");
+          kUntrustedLineChartURL + " " + kUntrustedMarketURL + " " +
+          kUntrustedSnapExecutorURL + ";");
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
   source->AddString("braveWalletLineChartBridgeUrl", kUntrustedLineChartURL);
@@ -174,7 +179,12 @@ void WalletPageUI::CreatePageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
         ipfs_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
-        meld_integration_service) {
+        meld_integration_service,
+    mojo::PendingReceiver<brave_wallet::mojom::SnapsService>
+        snaps_service_receiver,
+    mojo::PendingRemote<brave_wallet::mojom::SnapBridge> snap_bridge,
+    mojo::PendingReceiver<brave_wallet::mojom::SnapRequestHandler>
+        snap_request_handler) {
   auto* profile = Profile::FromWebUI(web_ui());
   CHECK(profile);
 
@@ -199,6 +209,25 @@ void WalletPageUI::CreatePageHandler(
     wallet_service->Bind(std::move(filecoin_tx_manager_proxy_receiver));
     wallet_service->Bind(std::move(bitcoin_tx_manager_proxy_receiver));
     wallet_service->Bind(std::move(brave_wallet_p3a_receiver));
+    wallet_service->Bind(std::move(snaps_service_receiver));
+
+    if (auto* snaps_service = wallet_service->snaps_service()) {
+      const bool bg = base::FeatureList::IsEnabled(
+          brave_wallet::features::kBraveWalletSnapsBackground);
+      LOG(ERROR) << "XXXZZZ WalletPageUI::CreatePageHandler: background_mode=" << bg
+                 << " setting_bridge=" << !bg;
+      // When the background execution environment is enabled, the hidden
+      // WebContents host page (chrome://wallet-snap-host/) owns the bridge.
+      // The wallet page must not replace it.
+      if (!bg) {
+        snaps_service->SetSnapBridge(std::move(snap_bridge));
+      }
+      // SnapRequestHandler is always bound: SnapRequestHandlerImpl uses a
+      // ReceiverSet so multiple bindings (wallet page + snap host) are fine,
+      // and snap_manageState / snap_getBip44Entropy must work regardless of
+      // which page hosts the executor iframes.
+      snaps_service->BindSnapRequestHandler(std::move(snap_request_handler));
+    }
   }
 
   brave_wallet::SwapServiceFactory::BindForContext(

@@ -12,9 +12,11 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/types/expected.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -189,6 +191,13 @@ class KeyringService : public mojom::KeyringService {
 
   bool IsLockedSync();
   bool HasPendingUnlockRequest() const;
+
+  // Derives m/44'/{coin_type}' from the default HD wallet and returns the
+  // key material used by snap_getBip44Entropy.  Callback receives nullopt when
+  // the wallet is locked or key derivation fails.
+  void GetBip44EntropyForSnap(
+      uint32_t coin_type,
+      base::OnceCallback<void(std::optional<base::Value>)> callback);
   void RequestUnlock();
 
   void AddObserver(

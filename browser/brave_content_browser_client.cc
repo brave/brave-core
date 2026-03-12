@@ -303,6 +303,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/wallet_snap_host_ui.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
@@ -739,6 +740,8 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
       .Add<brave_rewards::mojom::RewardsPageHandler>()
 #endif
       ;
+  registry.ForWebUI<WalletSnapHostUI>()
+      .Add<brave_wallet::mojom::WalletSnapHostHandlerFactory>();
 #endif
 
   auto ntp_refresh_registration =
