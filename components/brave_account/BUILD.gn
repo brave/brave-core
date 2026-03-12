@@ -12,6 +12,7 @@ source_set("brave_account") {
     "brave_account_service.h",
     "brave_account_service_constants.h",
     "brave_account_ui_base.h",
+    "brave_account_utils.h",
     "pref_names.h",
     "prefs.cc",
     "prefs.h",

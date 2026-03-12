@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Authentication } from './brave_account.mojom-webui.js'
+import { Authentication, Service } from './brave_account.mojom-webui.js'
 import type { AuthenticationInterface } from './brave_account.mojom-webui.js'
 import { PasswordStrengthMeter } from './password_strength_meter.mojom-webui.js'
 import type { PasswordStrengthMeterInterface } from './password_strength_meter.mojom-webui.js'
@@ -13,7 +13,7 @@ export interface BraveAccountBrowserProxy {
   authentication: AuthenticationInterface
   password_strength_meter: PasswordStrengthMeterInterface
   closeDialog: () => void
-  getInitiatingServiceName: () => string
+  getInitiatingService: () => Service | null
 }
 
 export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
@@ -29,8 +29,11 @@ export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
     chrome.send('dialogClose')
   }
 
-  getInitiatingServiceName() {
-    return loadTimeData.getString('initiatingServiceName') || 'accounts'
+  getInitiatingService(): Service | null {
+    const id = 'initiatingService'
+    return loadTimeData.valueExists(id)
+      ? (loadTimeData.getInteger(id) as Service)
+      : null
   }
 
   static getInstance(): BraveAccountBrowserProxy {

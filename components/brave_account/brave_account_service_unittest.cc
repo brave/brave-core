@@ -54,13 +54,12 @@ struct RegisterInitializeTestCase {
                   base::test::TaskEnvironment& task_environment,
                   mojom::Authentication& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    authentication.RegisterInitialize(
-        test_case.initiating_service_name, test_case.email,
-        test_case.blinded_message, std::move(callback));
+    authentication.RegisterInitialize(std::nullopt, test_case.email,
+                                      test_case.blinded_message,
+                                      std::move(callback));
   }
 
   std::string test_name;
-  std::string initiating_service_name;
   std::string email;
   std::string blinded_message;
   bool fail_encryption;
@@ -71,27 +70,10 @@ struct RegisterInitializeTestCase {
 
 namespace {
 
-const RegisterInitializeTestCase*
-RegisterInitializeInitiatingServiceNameEmpty() {
-  static const base::NoDestructor<RegisterInitializeTestCase>
-      kRegisterInitializeInitiatingServiceNameEmpty({
-          .test_name = "register_initialize_initiating_service_name_empty",
-          .initiating_service_name = "",
-          .email = {},              // not used
-          .blinded_message = {},    // not used
-          .fail_encryption = {},    // not used
-          .fail_decryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .mojo_expected = base::unexpected(mojom::RegisterError::New()),
-      });
-  return kRegisterInitializeInitiatingServiceNameEmpty.get();
-}
-
 const RegisterInitializeTestCase* RegisterInitializeEmailEmpty() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeEmailEmpty({
           .test_name = "register_initialize_email_empty",
-          .initiating_service_name = "accounts",
           .email = "",
           .blinded_message = {},    // not used
           .fail_encryption = {},    // not used
@@ -106,7 +88,6 @@ const RegisterInitializeTestCase* RegisterInitializeBlindedMessageEmpty() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeBlindedMessageEmpty({
           .test_name = "register_initialize_blinded_message_empty",
-          .initiating_service_name = "accounts",
           .email = "email",
           .blinded_message = "",
           .fail_encryption = {},    // not used
@@ -122,7 +103,6 @@ RegisterInitializeBodyMissingOrFailedToParse() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeBodyMissingOrFailedToParse({
           .test_name = "register_initialize_body_missing_or_failed_to_parse",
-          .initiating_service_name = "accounts",
           .email = "email",
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
@@ -140,7 +120,6 @@ const RegisterInitializeTestCase* RegisterInitializeErrorCodeIsNull() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeErrorCodeIsNull({
           .test_name = "register_initialize_error_code_is_null",
-          .initiating_service_name = "accounts",
           .email = "email",
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
@@ -162,7 +141,6 @@ const RegisterInitializeTestCase* RegisterInitializeNewAccountEmailRequired() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeNewAccountEmailRequired({
           .test_name = "register_initialize_new_account_email_required",
-          .initiating_service_name = "accounts",
           .email = "email",
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
@@ -185,7 +163,6 @@ const RegisterInitializeTestCase* RegisterInitializeIntentNotAllowed() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeIntentNotAllowed({
           .test_name = "register_initialize_intent_not_allowed",
-          .initiating_service_name = "accounts",
           .email = "email",
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
@@ -208,7 +185,6 @@ const RegisterInitializeTestCase* RegisterInitializeTooManyVerifications() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeTooManyVerifications({
           .test_name = "register_initialize_too_many_verifications",
-          .initiating_service_name = "accounts",
           .email = "email",
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
@@ -231,7 +207,6 @@ const RegisterInitializeTestCase* RegisterInitializeAccountExists() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeAccountExists({
           .test_name = "register_initialize_account_exists",
-          .initiating_service_name = "accounts",
           .email = "email",
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
@@ -253,7 +228,6 @@ const RegisterInitializeTestCase* RegisterInitializeEmailDomainNotSupported() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeEmailDomainNotSupported({
           .test_name = "register_initialize_email_domain_not_supported",
-          .initiating_service_name = "accounts",
           .email = "email",
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
@@ -276,7 +250,6 @@ const RegisterInitializeTestCase* RegisterInitializeUnauthorized() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeUnauthorized({
           .test_name = "register_initialize_unauthorized",
-          .initiating_service_name = "accounts",
           .email = "email",
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
@@ -299,7 +272,6 @@ const RegisterInitializeTestCase* RegisterInitializeServerError() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeServerError({
           .test_name = "register_initialize_server_error",
-          .initiating_service_name = "accounts",
           .email = "email",
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
@@ -322,7 +294,6 @@ const RegisterInitializeTestCase* RegisterInitializeUnknown() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeUnknown({
           .test_name = "register_initialize_unknown",
-          .initiating_service_name = "accounts",
           .email = "email",
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
@@ -344,7 +315,6 @@ const RegisterInitializeTestCase* RegisterInitializeVerificationTokenEmpty() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeVerificationTokenEmpty({
           .test_name = "register_initialize_verification_token_empty",
-          .initiating_service_name = "accounts",
           .email = "email",
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
@@ -369,7 +339,6 @@ const RegisterInitializeTestCase* RegisterInitializeSerializedResponseEmpty() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeSerializedResponseEmpty({
           .test_name = "register_initialize_serialized_response_empty",
-          .initiating_service_name = "accounts",
           .email = "email",
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
@@ -396,7 +365,6 @@ RegisterInitializeVerificationTokenFailedToEncrypt() {
       kRegisterInitializeVerificationTokenFailedToEncrypt({
           .test_name =
               "register_initialize_verification_token_failed_to_encrypt",
-          .initiating_service_name = "accounts",
           .email = "email",
           .blinded_message = "blinded_message",
           .fail_encryption = true,
@@ -423,7 +391,6 @@ const RegisterInitializeTestCase* RegisterInitializeSuccess() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeSuccess({
           .test_name = "register_initialize_success",
-          .initiating_service_name = "accounts",
           .email = "email",
           .blinded_message = "blinded_message",
           .fail_encryption = false,
@@ -458,8 +425,7 @@ TEST_P(BraveAccountServiceRegisterInitializeTest,
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     BraveAccountServiceRegisterInitializeTest,
-    testing::Values(RegisterInitializeInitiatingServiceNameEmpty(),
-                    RegisterInitializeEmailEmpty(),
+    testing::Values(RegisterInitializeEmailEmpty(),
                     RegisterInitializeBlindedMessageEmpty(),
                     RegisterInitializeBodyMissingOrFailedToParse(),
                     RegisterInitializeErrorCodeIsNull(),
@@ -1699,13 +1665,12 @@ struct LoginInitializeTestCase {
                   base::test::TaskEnvironment& task_environment,
                   mojom::Authentication& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    authentication.LoginInitialize(test_case.initiating_service_name,
-                                   test_case.email, test_case.serialized_ke1,
+    authentication.LoginInitialize(std::nullopt, test_case.email,
+                                   test_case.serialized_ke1,
                                    std::move(callback));
   }
 
   std::string test_name;
-  std::string initiating_service_name;
   std::string email;
   std::string serialized_ke1;
   bool fail_encryption;
@@ -1716,26 +1681,10 @@ struct LoginInitializeTestCase {
 
 namespace {
 
-const LoginInitializeTestCase* LoginInitializeInitiatingServiceNameEmpty() {
-  static const base::NoDestructor<LoginInitializeTestCase>
-      kLoginInitializeInitiatingServiceNameEmpty({
-          .test_name = "login_initialize_initiating_service_name_empty",
-          .initiating_service_name = "",
-          .email = {},              // not used
-          .serialized_ke1 = {},     // not used
-          .fail_encryption = {},    // not used
-          .fail_decryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .mojo_expected = base::unexpected(mojom::LoginError::New()),
-      });
-  return kLoginInitializeInitiatingServiceNameEmpty.get();
-}
-
 const LoginInitializeTestCase* LoginInitializeEmailEmpty() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeEmailEmpty({
           .test_name = "login_initialize_email_empty",
-          .initiating_service_name = "accounts",
           .email = "",
           .serialized_ke1 = {},     // not used
           .fail_encryption = {},    // not used
@@ -1750,7 +1699,6 @@ const LoginInitializeTestCase* LoginInitializeSerializedKe1Empty() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeSerializedKe1Empty({
           .test_name = "login_initialize_serialized_ke1_empty",
-          .initiating_service_name = "accounts",
           .email = "email",
           .serialized_ke1 = "",
           .fail_encryption = {},    // not used
@@ -1765,7 +1713,6 @@ const LoginInitializeTestCase* LoginInitializeBodyMissingOrFailedToParse() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeBodyMissingOrFailedToParse({
           .test_name = "login_initialize_body_missing_or_failed_to_parse",
-          .initiating_service_name = "accounts",
           .email = "email",
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = {},  // not used
@@ -1783,7 +1730,6 @@ const LoginInitializeTestCase* LoginInitializeErrorCodeIsNull() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeErrorCodeIsNull({
           .test_name = "login_initialize_error_code_is_null",
-          .initiating_service_name = "accounts",
           .email = "email",
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = {},  // not used
@@ -1805,7 +1751,6 @@ const LoginInitializeTestCase* LoginInitializeEmailNotVerified() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeEmailNotVerified({
           .test_name = "login_initialize_email_not_verified",
-          .initiating_service_name = "accounts",
           .email = "email",
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = {},  // not used
@@ -1828,7 +1773,6 @@ const LoginInitializeTestCase* LoginInitializeIncorrectCredentials() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeIncorrectCredentials({
           .test_name = "login_initialize_incorrect_credentials",
-          .initiating_service_name = "accounts",
           .email = "email",
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = {},  // not used
@@ -1851,7 +1795,6 @@ const LoginInitializeTestCase* LoginInitializeIncorrectEmail() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeIncorrectEmail({
           .test_name = "login_initialize_incorrect_email",
-          .initiating_service_name = "accounts",
           .email = "email",
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = {},  // not used
@@ -1873,7 +1816,6 @@ const LoginInitializeTestCase* LoginInitializeIncorrectPassword() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeIncorrectPassword({
           .test_name = "login_initialize_incorrect_password",
-          .initiating_service_name = "accounts",
           .email = "email",
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = {},  // not used
@@ -1896,7 +1838,6 @@ const LoginInitializeTestCase* LoginInitializeServerError() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeServerError({
           .test_name = "login_initialize_server_error",
-          .initiating_service_name = "accounts",
           .email = "email",
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = {},  // not used
@@ -1919,7 +1860,6 @@ const LoginInitializeTestCase* LoginInitializeUnknown() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeUnknown({
           .test_name = "login_initialize_unknown",
-          .initiating_service_name = "accounts",
           .email = "email",
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = {},  // not used
@@ -1941,7 +1881,6 @@ const LoginInitializeTestCase* LoginInitializeLoginTokenEmpty() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeLoginTokenEmpty({
           .test_name = "login_initialize_login_token_empty",
-          .initiating_service_name = "accounts",
           .email = "email",
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = {},  // not used
@@ -1965,7 +1904,6 @@ const LoginInitializeTestCase* LoginInitializeSerializedKe2Empty() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeSerializedKe2Empty({
           .test_name = "login_initialize_serialized_ke2_empty",
-          .initiating_service_name = "accounts",
           .email = "email",
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = {},  // not used
@@ -1989,7 +1927,6 @@ const LoginInitializeTestCase* LoginInitializeLoginTokenFailedToEncrypt() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeLoginTokenFailedToEncrypt({
           .test_name = "login_initialize_login_token_failed_to_encrypt",
-          .initiating_service_name = "accounts",
           .email = "email",
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = true,
@@ -2014,7 +1951,6 @@ const LoginInitializeTestCase* LoginInitializeSuccess() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeSuccess({
           .test_name = "login_initialize_success",
-          .initiating_service_name = "accounts",
           .email = "email",
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = false,
@@ -2047,8 +1983,7 @@ TEST_P(BraveAccountServiceLoginInitializeTest,
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     BraveAccountServiceLoginInitializeTest,
-    testing::Values(LoginInitializeInitiatingServiceNameEmpty(),
-                    LoginInitializeEmailEmpty(),
+    testing::Values(LoginInitializeEmailEmpty(),
                     LoginInitializeSerializedKe1Empty(),
                     LoginInitializeBodyMissingOrFailedToParse(),
                     LoginInitializeErrorCodeIsNull(),

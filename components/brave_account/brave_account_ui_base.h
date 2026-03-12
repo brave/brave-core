@@ -10,12 +10,14 @@
 
 #include "base/check.h"
 #include "base/check_deref.h"
+#include "base/containers/map_util.h"
 #include "base/containers/span.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_account/brave_account_constants.h"
 #include "brave/components/brave_account/brave_account_service.h"
+#include "brave/components/brave_account/brave_account_utils.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/resources/grit/brave_account_resources.h"
@@ -96,11 +98,14 @@ class BraveAccountUIBase {
     source->AddResourcePath("full_brave_brand_dark.svg",
                             IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_DARK_SVG);
 
-    std::string initiating_service_name;
-    net::GetValueForKeyInQuery(url,
-                               brave_account::kInitiatingServiceNameQueryParam,
-                               &initiating_service_name);
-    source->AddString("initiatingServiceName", initiating_service_name);
+    if (std::string initiating_service_name; net::GetValueForKeyInQuery(
+            url, brave_account::kInitiatingServiceNameQueryParam,
+            &initiating_service_name)) {
+      source->AddInteger(
+          "initiatingService",
+          static_cast<int32_t>(CHECK_DEREF(base::FindOrNull(
+              brave_account::kServiceFromString, initiating_service_name))));
+    }
   }
 
  private:

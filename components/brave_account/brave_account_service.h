@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_SERVICE_H_
 
+#include <optional>
 #include <string>
 
 #include "base/functional/callback_forward.h"
@@ -65,7 +66,7 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
       OSCryptCallback encrypt_callback,
       OSCryptCallback decrypt_callback);
 
-  void RegisterInitialize(const std::string& initiating_service_name,
+  void RegisterInitialize(std::optional<mojom::Service> initiating_service,
                           const std::string& email,
                           const std::string& blinded_message,
                           RegisterInitializeCallback callback) override;
@@ -79,7 +80,7 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
 
   void CancelRegistration() override;
 
-  void LoginInitialize(const std::string& initiating_service_name,
+  void LoginInitialize(std::optional<mojom::Service> initiating_service,
                        const std::string& email,
                        const std::string& serialized_ke1,
                        LoginInitializeCallback callback) override;

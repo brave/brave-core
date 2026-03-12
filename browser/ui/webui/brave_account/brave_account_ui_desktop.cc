@@ -64,9 +64,13 @@ class BraveAccountDialogDelegate : public ui::WebDialogDelegate {
     BraveAccountDialogTracker::CreateForWebContents(web_contents);
 
     set_delete_on_close(false);
-    set_dialog_content_url(net::AppendQueryParameter(
-        GURL(kBraveAccountURL), brave_account::kInitiatingServiceNameQueryParam,
-        initiating_service_name));
+    const GURL url(kBraveAccountURL);
+    set_dialog_content_url(
+        initiating_service_name.empty()
+            ? url
+            : net::AppendQueryParameter(
+                  url, brave_account::kInitiatingServiceNameQueryParam,
+                  initiating_service_name));
     set_show_dialog_title(false);
   }
 

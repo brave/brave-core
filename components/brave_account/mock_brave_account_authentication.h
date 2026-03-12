@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_MOCK_BRAVE_ACCOUNT_AUTHENTICATION_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_MOCK_BRAVE_ACCOUNT_AUTHENTICATION_H_
 
+#include <optional>
 #include <string>
 
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
@@ -22,7 +23,7 @@ class MockBraveAccountAuthentication : public mojom::Authentication {
 
   MOCK_METHOD(void,
               RegisterInitialize,
-              (const std::string& initiating_service_name,
+              (std::optional<mojom::Service> initiating_service,
                const std::string& email,
                const std::string& blinded_message,
                RegisterInitializeCallback callback),
@@ -44,7 +45,7 @@ class MockBraveAccountAuthentication : public mojom::Authentication {
 
   MOCK_METHOD(void,
               LoginInitialize,
-              (const std::string& initiating_service_name,
+              (std::optional<mojom::Service> initiating_service,
                const std::string& email,
                const std::string& serialized_ke1,
                LoginInitializeCallback callback),
