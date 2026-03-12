@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "base/timer/timer.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "brave/components/local_ai/core/local_ai_internals.mojom.h"
 #include "content/public/browser/webui_config.h"
@@ -43,11 +44,17 @@ class LocalAIInternalsPageHandler
       mojo::PendingRemote<mojom::PassageEmbedder> remote);
   void OnEmbeddingResult(const std::vector<double>& embedding);
   void OnPassageEmbedderDisconnected();
+  void OnIdleTimeout();
   void CancelAllPending();
 
   mojo::Receiver<local_ai_internals::mojom::PageHandler> receiver_;
   mojo::Remote<mojom::LocalAIService> local_ai_service_;
   mojo::Remote<mojom::PassageEmbedder> passage_embedder_;
+
+  // Mojo's set_idle_handler() relies on the receiver sending MessageAck
+  // and NotifyIdle control messages, but the JS Mojo bindings don't
+  // implement this protocol. Use an explicit timer instead.
+  base::OneShotTimer idle_timer_;
 
   // Texts queued while waiting for the embedder to bind.
   std::vector<std::string> pending_texts_;

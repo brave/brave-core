@@ -15,6 +15,7 @@
 #include "brave/components/local_ai/resources/grit/local_ai_internals_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/passage_embeddings/core/passage_embeddings_features.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
@@ -41,6 +42,7 @@ void LocalAIInternalsPageHandler::GenerateEmbedding(
     std::move(callback).Run({});
     return;
   }
+  idle_timer_.Stop();
   pending_callbacks_.push_back(std::move(callback));
   if (passage_embedder_.is_bound()) {
     passage_embedder_->GenerateEmbeddings(
@@ -84,17 +86,22 @@ void LocalAIInternalsPageHandler::OnEmbeddingResult(
   auto callback = std::move(pending_callbacks_.front());
   pending_callbacks_.erase(pending_callbacks_.begin());
   std::move(callback).Run(embedding);
-
-  // Release the embedder when all requests are done so the JS side
-  // can detect the disconnect and call notifyWorkerIdle().
-  if (pending_callbacks_.empty()) {
-    passage_embedder_.reset();
+  if (pending_callbacks_.empty() && passage_embedder_.is_bound()) {
+    idle_timer_.Start(
+        FROM_HERE, passage_embeddings::kEmbedderTimeout.Get(),
+        base::BindOnce(&LocalAIInternalsPageHandler::OnIdleTimeout,
+                       weak_ptr_factory_.GetWeakPtr()));
   }
 }
 
 void LocalAIInternalsPageHandler::OnPassageEmbedderDisconnected() {
+  idle_timer_.Stop();
   passage_embedder_.reset();
   CancelAllPending();
+}
+
+void LocalAIInternalsPageHandler::OnIdleTimeout() {
+  passage_embedder_.reset();
 }
 
 void LocalAIInternalsPageHandler::CancelAllPending() {
