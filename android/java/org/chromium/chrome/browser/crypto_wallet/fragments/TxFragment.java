@@ -239,6 +239,7 @@ public class TxFragment extends Fragment {
 
     private void showEditGasDialog(View view) {
         if (!canShowDialog()) return;
+        dismissEditGasDialog();
         mEditGasDialog = new Dialog(requireContext());
         mEditGasDialog.setOnDismissListener(
                 unused -> {
@@ -297,9 +298,7 @@ public class TxFragment extends Fragment {
         cancel.setOnClickListener(
                 v1 -> {
                     mCheckedPriorityId = mPreviousCheckedPriorityId;
-                    if (mEditGasDialog != null) {
-                        mEditGasDialog.dismiss();
-                    }
+                    dismissEditGasDialog();
                 });
         Button ok = mEditGasDialog.findViewById(R.id.ok);
         ok.setOnClickListener(v2 -> onEditGasDialogOkClicked(view));
@@ -577,11 +576,7 @@ public class TxFragment extends Fragment {
 
     private boolean canShowDialog() {
         Activity activity = getActivity();
-        return isAdded()
-                && mEditGasDialog == null
-                && activity != null
-                && !activity.isFinishing()
-                && !activity.isDestroyed();
+        return isAdded() && activity != null && !activity.isFinishing() && !activity.isDestroyed();
     }
 
     private void dismissEditGasDialog() {
