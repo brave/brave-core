@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.settings;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.preference.Preference;
@@ -22,6 +23,8 @@ import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.components.web_discovery.WebDiscoveryPrefs;
 
@@ -166,6 +169,21 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
             removePreferenceIfPresent(PREF_SEND_WEB_DISCOVERY);
         }
     }
+
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(
+                    BraveSearchEnginesPreferences.class.getName(),
+                    R.xml.brave_search_engines_preferences) {
+
+                @Override
+                public void updateDynamicPreferences(Context context, SettingsIndexData indexData) {
+                    if (!BraveConfig.WEB_DISCOVERY_ENABLED) {
+                        indexData.removeEntryForKey(
+                                BraveSearchEnginesPreferences.class.getName(),
+                                PREF_SEND_WEB_DISCOVERY);
+                    }
+                }
+            };
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {

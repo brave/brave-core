@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.settings;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -161,6 +162,25 @@ public class BraveMainSettingsFragmentTest {
         Preference braveOriginPref =
                 mMainSettings.getPreferenceScreen().findPreference(PREF_BRAVE_ORIGIN);
         assertNotNull("PREF_BRAVE_ORIGIN should be shown when feature is enabled", braveOriginPref);
+    }
+
+    @Test
+    @SmallTest
+    public void testPreferenceCount() {
+        startSettings();
+
+        final int preferenceCount = mMainSettings.getPreferenceScreen().getPreferenceCount();
+
+        assertEquals(
+                "Number of preferences has changed, please check and update preferenceCount"
+                    + " expectation here or modify BraveMainPreferencesBase.updateBravePreferences"
+                    + " to remove it and BraveMainPreferencesBase.SEARCH_"
+                        // Split that static field no to trigger presubmit CheckSettingsChanges
+                        // check
+                        + "INDEX_DATA_PROVIDER.updateDynamicPreferences"
+                        + " to exclude new from indexing.",
+                36,
+                preferenceCount);
     }
 
     private void startSettings() {

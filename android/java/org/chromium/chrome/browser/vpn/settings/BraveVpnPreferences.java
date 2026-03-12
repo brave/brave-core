@@ -54,6 +54,8 @@ import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.ui.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -561,4 +563,16 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
         BraveVpnUtils.dismissProgressDialog();
         super.onDestroy();
     }
+
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(
+                    BraveVpnPreferences.class.getName(), R.xml.brave_vpn_preferences) {
+
+                @Override
+                public void updateDynamicPreferences(Context context, SettingsIndexData indexData) {
+                    // server_change_location uses a custom layout with no title.
+                    indexData.removeEntryForKey(
+                            BraveVpnPreferences.class.getName(), PREF_SERVER_CHANGE_LOCATION);
+                }
+            };
 }

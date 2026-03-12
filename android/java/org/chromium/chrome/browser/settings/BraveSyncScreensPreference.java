@@ -65,6 +65,7 @@ import org.chromium.chrome.browser.sync.BraveSyncDevices;
 import org.chromium.chrome.browser.sync.SyncServiceFactory;
 import org.chromium.chrome.browser.sync.settings.BraveManageSyncSettings;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
 import org.chromium.components.sync.SyncService;
 import org.chromium.ui.base.BraveClipboardHelper;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -1503,4 +1504,11 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {} /**/
+
+    // This fragment uses a fully custom view layout (brave_sync_layout); there are no static
+    // preferences to index.
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(
+                    BraveSyncScreensPreference.class.getName(),
+                    BaseSearchIndexProvider.INDEX_OPT_OUT);
 }

@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,12 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.PreferenceParser;
+import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
+
+import java.util.Map;
 
 /** Fragment for Brave Origin purchase preferences. */
 @NullMarked
@@ -56,6 +63,7 @@ public class BraveOriginPreferences extends BravePreferenceFragment
     private static final String PREF_WEB_DISCOVERY_PROJECT_SWITCH = "web_discovery_project_switch";
     private static final String PREF_RESET_TO_DEFAULTS = "reset_to_defaults";
     private static final String PREF_LINK_PURCHASE = "link_purchase";
+    private static final String PREF_BRAVE_ORIGIN = "brave_origin";
 
     private final SettableMonotonicObservableSupplier<String> mPageTitle =
             ObservableSuppliers.createMonotonic();
@@ -345,6 +353,38 @@ public class BraveOriginPreferences extends BravePreferenceFragment
             preference.setSummary(null);
         }
     }
+
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(
+                    BraveOriginPreferences.class.getName(), R.xml.brave_origin_preferences) {
+
+                @Override
+                public void initPreferenceXml(
+                        Context context,
+                        SettingsIndexData indexData,
+                        Map<String, SearchIndexProvider> providerMap) {
+                    super.initPreferenceXml(context, indexData, providerMap);
+                    indexData.addChildParentLink(
+                            BraveOriginPreferences.class.getName(),
+                            PreferenceParser.createUniqueId(
+                                    MainSettings.class.getName(), PREF_BRAVE_ORIGIN));
+                }
+
+                @Override
+                public void updateDynamicPreferences(Context context, SettingsIndexData indexData) {
+                    String frag = BraveOriginPreferences.class.getName();
+                    if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN)) {
+                        indexData.removeEntryForKey(
+                                MainSettings.class.getName(), PREF_BRAVE_ORIGIN);
+                        return;
+                    }
+                    // origin_description is an informational widget with no title; exclude it.
+                    indexData.removeEntryForKey(frag, "origin_description");
+                    if (!ChromeFeatureList.isEnabled(BraveFeatureList.EMAIL_ALIASES)) {
+                        indexData.removeEntryForKey(frag, PREF_EMAIL_ALIASES_SWITCH);
+                    }
+                }
+            };
 
     @Override
     public void onDestroy() {

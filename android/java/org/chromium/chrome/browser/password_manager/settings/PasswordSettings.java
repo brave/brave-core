@@ -45,16 +45,22 @@ import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
 import org.chromium.chrome.browser.settings.ChromeManagedPreferenceDelegate;
+import org.chromium.chrome.browser.settings.MainSettings;
+import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SearchUtils;
 import org.chromium.components.browser_ui.settings.SearchViewProvider;
 import org.chromium.components.browser_ui.settings.SettingsFragment.AnimationType;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.TextMessagePreference;
+import org.chromium.components.browser_ui.settings.search.PreferenceParser;
+import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.user_prefs.UserPrefs;
 
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * The "Passwords" screen in Settings, which allows the user to enable or disable password saving,
@@ -97,6 +103,8 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     private static final int PASSWORD_EXPORT_INTENT_REQUEST_CODE = 3485764;
     // Unique request code for the password importing activity.
     private static final int PASSWORD_IMPORT_INTENT_REQUEST_CODE = 3485765;
+
+    private static final String PREF_PASSWORDS = "passwords";
 
     private boolean mNoPasswords;
     private boolean mNoPasswordExceptions;
@@ -728,4 +736,55 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     public @AnimationType int getAnimationType() {
         return AnimationType.PROPERTY;
     }
+
+    public static final ChromeBaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new ChromeBaseSearchIndexProvider(
+                    PasswordSettings.class.getName(), R.xml.brave_password_settings_preferences) {
+
+                @Override
+                public Bundle getExtras() {
+                    Bundle extras = new Bundle();
+                    extras.putInt(
+                            BravePasswordManagerHelper.MANAGE_PASSWORDS_REFERRER,
+                            ManagePasswordsReferrer.CHROME_SETTINGS);
+                    return extras;
+                }
+
+                @Override
+                public void initPreferenceXml(
+                        Context context,
+                        Profile profile,
+                        SettingsIndexData indexData,
+                        Map<String, SearchIndexProvider> providerMap) {
+                    super.initPreferenceXml(context, profile, indexData, providerMap);
+                    // The "passwords" entry in main_preferences.xml uses BravePasswordsPreference
+                    // (a custom class) with no android:fragment attribute, so the normal
+                    // child-parent link is never established via XML parsing. Register it manually
+                    // so resolveIndex() does not treat PasswordSettings entries as orphans.
+                    String parentId =
+                            PreferenceParser.createUniqueId(
+                                    MainSettings.class.getName(), PREF_PASSWORDS);
+                    indexData.addChildParentLink(PasswordSettings.class.getName(), parentId);
+                }
+
+                @Override
+                public void updateDynamicPreferences(
+                        Context context, SettingsIndexData indexData, Profile profile) {
+                    String frag = PasswordSettings.class.getName();
+                    if (DeviceInfo.isAutomotive()) {
+                        indexData.removeEntryForKey(frag, PREF_AUTOSIGNIN_SWITCH);
+                    }
+                    if (!ExportFlow.providesPasswordExport()) {
+                        indexData.removeEntryForKey(frag, PREF_EXPORT_PASSWORDS);
+                    }
+                    if (indexData.getEntryForKey(frag, PREF_SAVE_PASSWORDS_SWITCH) != null) {
+                        boolean saveEnabled =
+                                UserPrefs.get(profile).getBoolean(Pref.CREDENTIALS_ENABLE_SERVICE);
+                        indexData.updateEntrySummaryForKey(
+                                frag,
+                                PREF_SAVE_PASSWORDS_SWITCH,
+                                saveEnabled ? R.string.text_on : R.string.text_off);
+                    }
+                }
+            };
 }

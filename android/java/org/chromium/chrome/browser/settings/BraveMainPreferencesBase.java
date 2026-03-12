@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.settings;
 
 import static org.chromium.build.NullUtil.assumeNonNull;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,22 +39,29 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
+import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.vpn.BraveVpnPolicy;
 import org.chromium.chrome.browser.vpn.settings.VpnCalloutPreference;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
+import org.chromium.components.brave_account.BraveAccountFeatures;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.PreferenceParser;
+import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.base.DeviceFormFactor;
 
 import java.util.HashMap;
+import java.util.Map;
 
 // This excludes some settings in main settings screen.
 @NullMarked
@@ -639,4 +647,66 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             removePreferenceIfPresent(PREF_BRAVE_WALLET);
         }
     }
+
+    // Wraps MainSettings.SEARCH_INDEX_DATA_PROVIDER and additionally removes upstream preferences
+    // that BraveMainPreferencesBase hides from the Brave main settings UI.
+    public static final ChromeBaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new ChromeBaseSearchIndexProvider(MainSettings.class.getName(), 0) {
+
+                @Override
+                public void initPreferenceXml(
+                        Context context,
+                        Profile profile,
+                        SettingsIndexData indexData,
+                        Map<String, SearchIndexProvider> providerMap) {
+                    MainSettings.SEARCH_INDEX_DATA_PROVIDER.initPreferenceXml(
+                            context, profile, indexData, providerMap);
+                    // Also index preferences from brave_main_preferences.xml, which is loaded
+                    // alongside main_preferences.xml at runtime.
+                    PreferenceParser.parseAndPopulate(
+                            context,
+                            R.xml.brave_main_preferences,
+                            indexData,
+                            MainSettings.class.getName(),
+                            new Bundle(),
+                            providerMap);
+                }
+
+                @Override
+                public void updateDynamicPreferences(
+                        Context context, SettingsIndexData indexData, Profile profile) {
+                    MainSettings.SEARCH_INDEX_DATA_PROVIDER.updateDynamicPreferences(
+                            context, indexData, profile);
+                    // Remove upstream preferences hidden from the main settings UI
+                    // ("languages" is intentionally excluded — removing it crashes
+                    // LanguageSettings).
+                    indexData.removeEntry(getUniqueId(MainSettings.PREF_SIGN_IN));
+                    indexData.removeEntry(getUniqueId(MainSettings.PREF_SEARCH_ENGINE));
+                    indexData.removeEntry(getUniqueId(MainSettings.PREF_DOWNLOADS));
+                    indexData.removeEntry(getUniqueId(MainSettings.PREF_SAFETY_HUB));
+                    indexData.removeEntry(
+                            getUniqueId(MainSettings.PREF_ACCOUNT_AND_GOOGLE_SERVICES_SECTION));
+                    indexData.removeEntry(getUniqueId(MainSettings.PREF_GOOGLE_SERVICES));
+                    indexData.removeEntry(getUniqueId(MainSettings.PREF_PRIVACY));
+                    indexData.removeEntry(getUniqueId(MainSettings.PREF_APPEARANCE));
+                    indexData.removeEntry(getUniqueId(MainSettings.PREF_ADDRESS_BAR));
+                    indexData.removeEntry(getUniqueId(MainSettings.PREF_TOOLBAR_SHORTCUT));
+                    // Account section is only shown when Brave Account is enabled.
+                    if (!BraveAccountFeatures.isBraveAccountEnabled()) {
+                        for (String key : BraveAccountSectionController.ALL_PREFERENCE_KEYS) {
+                            indexData.removeEntry(getUniqueId(key));
+                        }
+                    }
+                    // Brave leaf switches/actions in main settings have no sub-screen to
+                    // navigate to from search results, so exclude them from the index.
+                    indexData.removeEntry(getUniqueId(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE));
+                    indexData.removeEntry(getUniqueId(PREF_RATE_BRAVE));
+                    indexData.removeEntry(getUniqueId(PREF_AUTOFILL_PRIVATE_WINDOW));
+                    indexData.removeEntry(getUniqueId(PREF_USE_CUSTOM_TABS));
+                    // Leaf prefs from brave_main_preferences.xml that are conditionally hidden.
+                    if (!BraveSearchWidgetUtils.isRequestPinAppWidgetSupported()) {
+                        indexData.removeEntry(getUniqueId(PREF_HOME_SCREEN_WIDGET));
+                    }
+                }
+            };
 }
