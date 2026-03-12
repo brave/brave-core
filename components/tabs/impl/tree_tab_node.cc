@@ -5,18 +5,25 @@
 
 #include "brave/components/tabs/public/tree_tab_node.h"
 
+#include <variant>
+
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
+#include "base/memory/ptr_util.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
+#include "components/tabs/public/split_tab_data.h"
+#include "components/tabs/public/tab_interface.h"
 
 namespace tabs {
 
 const TreeTabNode& TreeTabNode::GetEmptyTreeTabNode() {
   static base::NoDestructor<TreeTabNodeTabCollection>
-      empty_tree_tab_node_tab_collection(tree_tab::TreeTabNodeId::GenerateNew(),
-                                         nullptr, base::DoNothing(),
-                                         base::DoNothing());
+      empty_tree_tab_node_tab_collection(
+          tree_tab::TreeTabNodeId::GenerateNew(),
+          base::WrapUnique<TabInterface>(nullptr), base::DoNothing(),
+          base::DoNothing());
   return empty_tree_tab_node_tab_collection->node();
 }
 
@@ -28,9 +35,44 @@ int TreeTabNode::GetTreeHeight() const {
   return collection_->GetTopLevelAncestor()->node().height();
 }
 
-const TabInterface* TreeTabNode::GetTab() const {
-  return collection_->current_tab() ? collection_->current_tab().get()
-                                    : nullptr;
+std::vector<const TabInterface*> TreeTabNode::GetTabs() const {
+  const auto& value = collection_->current_value();
+  if (!value.has_value()) {
+    return {};
+  }
+  if (const base::WeakPtr<TabInterface>* tab_ptr =
+          std::get_if<base::WeakPtr<TabInterface>>(&*value)) {
+    if (const TabInterface* tab = tab_ptr->get()) {
+      return {tab};
+    }
+    return {};
+  }
+  if (const raw_ptr<SplitTabCollection>* split_ptr =
+          std::get_if<raw_ptr<SplitTabCollection>>(&*value)) {
+    SplitTabCollection* split = split_ptr->get();
+    if (split && split->data()) {
+      std::vector<const TabInterface*> result;
+      for (TabInterface* tab : split->data()->ListTabs()) {
+        result.push_back(tab);
+      }
+      return result;
+    }
+    return {};
+  }
+  if (const raw_ptr<TabGroupTabCollection>* group_ptr =
+          std::get_if<raw_ptr<TabGroupTabCollection>>(&*value)) {
+    TabGroupTabCollection* group = group_ptr->get();
+    if (group) {
+      std::vector<const TabInterface*> result;
+      for (TabInterface* tab : group->GetTabsRecursive()) {
+        result.push_back(tab);
+      }
+      return result;
+    }
+    return {};
+  }
+
+  return {};
 }
 
 std::optional<tree_tab::TreeTabNodeId>

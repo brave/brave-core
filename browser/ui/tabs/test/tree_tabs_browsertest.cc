@@ -654,8 +654,9 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
         // Verify the node reference is valid - TreeTabNode should have a valid
         // ID.
         EXPECT_EQ(created_change.node->id(), change.id);
-        // Verify the node has an associated tab.
-        EXPECT_NE(created_change.node->GetTab(), nullptr);
+        // Verify the node has associated tab(s) (single tab or split; group
+        // returns none).
+        EXPECT_FALSE(created_change.node->GetTabs().empty());
 
         // Quit the run loop after all expected callbacks are received.
         if (++call_count == expected_calls) {
@@ -731,8 +732,9 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
         // Verify the node reference is valid - TreeTabNode should have a valid
         // ID.
         EXPECT_EQ(destroyed_change.node->id(), change.id);
-        // Verify the node has an associated tab before destruction.
-        EXPECT_NE(destroyed_change.node->GetTab(), nullptr);
+        // Verify the node has associated tab(s) before destruction (single tab
+        // or split; group returns none).
+        EXPECT_FALSE(destroyed_change.node->GetTabs().empty());
       });
 
   // Disable tree tabs - this should trigger OnTreeTabChanged callbacks.
