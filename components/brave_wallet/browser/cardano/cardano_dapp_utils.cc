@@ -29,9 +29,7 @@ std::vector<std::string> GetCardanoAccountPermissionIdentifiers(
 
 mojom::AccountIdPtr GetCardanoPreferredDappAccount(
     BraveWalletProviderDelegate* delegate,
-    KeyringService* keyring_service,
-    const std::optional<std::vector<std::string>>&
-        allowed_accounts_from_request) {
+    KeyringService* keyring_service) {
   auto cardano_account_ids =
       GetCardanoAccountPermissionIdentifiers(keyring_service);
 
@@ -40,12 +38,46 @@ mojom::AccountIdPtr GetCardanoPreferredDappAccount(
   }
 
   const auto allowed_accounts =
-      allowed_accounts_from_request
-          ? allowed_accounts_from_request
-          : delegate->GetAllowedAccounts(mojom::CoinType::ADA,
-                                         cardano_account_ids);
+      delegate->GetAllowedAccounts(mojom::CoinType::ADA, cardano_account_ids);
 
   if (!allowed_accounts || allowed_accounts->empty()) {
+    return nullptr;
+  }
+
+  auto selected_account = keyring_service->GetSelectedCardanoDappAccount();
+  bool is_selected_account_allowed =
+      selected_account &&
+      std::ranges::contains(
+          *allowed_accounts,
+          GetAccountPermissionIdentifier(selected_account->account_id));
+  if (is_selected_account_allowed) {
+    return selected_account->account_id.Clone();
+  }
+
+  // Since there is no account selection when permissions are granted,
+  // we use first allowed account.
+  // Similar behavior implemented in EthereumProviderImpl.
+  for (const auto& account : keyring_service->GetAllAccountInfos()) {
+    bool is_account_allowed = std::ranges::contains(
+        *allowed_accounts, GetAccountPermissionIdentifier(account->account_id));
+    if (is_account_allowed) {
+      return account->account_id.Clone();
+    }
+  }
+  return nullptr;
+}
+
+mojom::AccountIdPtr GetCardanoPreferredDappAccount(
+    KeyringService* keyring_service,
+    const std::optional<std::vector<std::string>>& allowed_accounts) {
+  if (!allowed_accounts || allowed_accounts->empty()) {
+    return nullptr;
+  }
+
+  auto cardano_account_ids =
+      GetCardanoAccountPermissionIdentifiers(keyring_service);
+
+  if (cardano_account_ids.empty()) {
     return nullptr;
   }
 

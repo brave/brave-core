@@ -21,9 +21,12 @@ std::vector<std::string> GetCardanoAccountPermissionIdentifiers(
 
 mojom::AccountIdPtr GetCardanoPreferredDappAccount(
     BraveWalletProviderDelegate* delegate,
+    KeyringService* keyring_service);
+
+mojom::AccountIdPtr GetCardanoPreferredDappAccount(
     KeyringService* keyring_service,
     const std::optional<std::vector<std::string>>&
-        allowed_accounts_from_request = std::nullopt);
+        allowed_accounts_from_request);
 
 }  // namespace brave_wallet
 
