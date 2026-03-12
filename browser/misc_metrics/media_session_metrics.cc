@@ -55,9 +55,9 @@ MediaSessionMetrics::MediaSessionMetrics(PrefService* local_state,
     ResetFrame();
   }
 
-  tick_timer_.Start(FROM_HERE, base::Time::Now() + kTickInterval,
-                    base::BindRepeating(&MediaSessionMetrics::OnTick,
-                                        base::Unretained(this)));
+  tick_timer_.Start(
+      FROM_HERE, base::Time::Now() + kTickInterval,
+      base::BindOnce(&MediaSessionMetrics::OnTick, base::Unretained(this)));
 
   ReportMetric();
 }
@@ -132,15 +132,15 @@ void MediaSessionMetrics::OnTick() {
         local_state_->GetTimeDelta(kMiscMetricsMediaSessionPlayingTime) +
             kTickInterval);
   }
-  tick_timer_.Start(FROM_HERE, base::Time::Now() + kTickInterval,
-                    base::BindRepeating(&MediaSessionMetrics::OnTick,
-                                        base::Unretained(this)));
+  tick_timer_.Start(
+      FROM_HERE, base::Time::Now() + kTickInterval,
+      base::BindOnce(&MediaSessionMetrics::OnTick, base::Unretained(this)));
 }
 
 void MediaSessionMetrics::ReportMetric() {
   report_timer_.Start(FROM_HERE, base::Time::Now() + kReportInterval,
-                      base::BindRepeating(&MediaSessionMetrics::ReportMetric,
-                                          base::Unretained(this)));
+                      base::BindOnce(&MediaSessionMetrics::ReportMetric,
+                                     base::Unretained(this)));
 
   if ((base::Time::Now() - frame_start_time_) < kFrameDuration) {
     return;
