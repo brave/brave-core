@@ -1395,6 +1395,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
 
       <!-- Tab Search -->
+      <message name="IDS_BRAVE_TAB_SEARCH_TAB_NAME" desc="Tab name for the search tab in the tab search panel">
+        Search
+      </message>
+      <message name="IDS_BRAVE_TAB_ORGANIZATION_TAB_NAME" desc="Tab name for the Leo AI tab organization tab in the tab search panel">
+        Organize
+      </message>
       <message name="IDS_BRAVE_ORGANIZE_TAB_TITLE" desc="Title for the tab organizer page">
         Tab focus
       </message>

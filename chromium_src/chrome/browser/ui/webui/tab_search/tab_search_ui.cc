@@ -40,6 +40,13 @@ TabSearchUI::TabSearchUI(content::WebUI* web_ui)
   update_data.Set("showTabOrganizationFRE", false);
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
+  update_data.Set("tabSearchTabName",
+                  l10n_util::GetStringUTF16(IDS_BRAVE_TAB_SEARCH_TAB_NAME));
+
+  update_data.Set(
+      "tabOrganizationTabName",
+      l10n_util::GetStringUTF16(IDS_BRAVE_TAB_ORGANIZATION_TAB_NAME));
+
   update_data.Set("autoTabGroupsSelectorHeading",
                   l10n_util::GetStringUTF16(IDS_BRAVE_ORGANIZE_TAB_TITLE));
 

@@ -23,7 +23,23 @@
 #include "brave/components/ai_chat/core/browser/types.h"
 #endif
 
+// Ensure mojo headers are processed before the define below so that
+// BindNewPipeAndPassRemote() in mojo templates is not affected.
+#include "mojo/public/cpp/bindings/receiver.h"
+
+// Inject Brave Page mojom MOCK_METHODs into upstream's MockPage class by
+// hooking into BindAndGetRemote()'s return statement. The define closes the
+// function body, adds our mock methods, then opens a dummy method to absorb
+// the trailing tokens.
+#define BindNewPipeAndPassRemote()                           \
+  BindNewPipeAndPassRemote();                                \
+  }                                                          \
+  MOCK_METHOD(void, TabFocusShowFREChanged, (bool show));    \
+  MOCK_METHOD(void, TabFocusEnabledChanged, (bool enabled)); \
+  void UnusedMethod() {
 #include <chrome/browser/ui/webui/tab_search/tab_search_page_handler_unittest.cc>
+
+#undef BindNewPipeAndPassRemote
 
 namespace {
 

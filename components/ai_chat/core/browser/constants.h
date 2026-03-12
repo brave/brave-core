@@ -43,6 +43,10 @@ inline constexpr char kLeoModelSupportUrl[] =
 inline constexpr char kLeoGoPremiumUrl[] =
     "https://account.brave.com/account/?intent=checkout&product=leo";
 
+inline constexpr char kTabOrganizationLearnMoreUrl[] =
+    "https://support.brave.app/hc/en-us/articles/"
+    "35200007195917-How-to-use-Tab-Focus-Mode";
+
 inline constexpr char kLeoRefreshPremiumSessionUrl[] =
     "https://account.brave.com/?intent=recover&product=leo";
 
