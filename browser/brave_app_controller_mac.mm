@@ -96,6 +96,16 @@ class TorPrefObserver : public BooleanPrefMember {
 }
 @end
 
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+void BraveSetProfileMenuHidden(bool hidden) {
+  NSMenu* mainMenu = [NSApp mainMenu];
+  NSMenuItem* profileMenu = [mainMenu itemWithTag:IDC_PROFILE_MAIN_MENU];
+  if (profileMenu) {
+    [profileMenu setHidden:hidden ? YES : NO];
+  }
+}
+#endif
+
 @implementation BraveAppController
 
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
@@ -132,10 +142,32 @@ class TorPrefObserver : public BooleanPrefMember {
   return [super applicationShouldHandleReopen:theApplication
                             hasVisibleWindows:hasVisibleWindows];
 }
+
+- (void)application:(NSApplication*)sender openURLs:(NSArray<NSURL*>*)urls {
+  if (BraveOriginStartupView::IsShowing()) {
+    return;
+  }
+  [super application:sender openURLs:urls];
+}
+
 #endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 
 - (void)mainMenuCreated {
   [super mainMenuCreated];
+
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  // Hide the Profiles top-level menu. Profile switching, "Manage", and "Add
+  // Profile" all open browser windows that bypass the startup dialog.
+  // BraveSetProfileMenuHidden(false) unhides it once the dialog completes,
+  // or immediately if no dialog is needed.
+  {
+    NSMenuItem* profileMenu =
+        [[NSApp mainMenu] itemWithTag:IDC_PROFILE_MAIN_MENU];
+    if (profileMenu) {
+      [profileMenu setHidden:YES];
+    }
+  }
+#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 
   NSMenu* editMenu = [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu];
   _copyMenuItem = [editMenu itemWithTag:IDC_CONTENT_CONTEXT_COPY];
@@ -302,6 +334,14 @@ class TorPrefObserver : public BooleanPrefMember {
 }
 
 - (NSMenu*)applicationDockMenu:(NSApplication*)sender {
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  if (BraveOriginStartupView::IsShowing()) {
+    // Return an empty dock menu while the startup dialog is showing.
+    // The system always adds "Quit" automatically.
+    return [[NSMenu alloc] initWithTitle:@""];
+  }
+#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+
   auto* menu = [super applicationDockMenu:sender];
 
 #if BUILDFLAG(ENABLE_TOR)
