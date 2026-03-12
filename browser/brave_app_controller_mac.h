@@ -8,11 +8,15 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "brave/components/brave_origin/buildflags/buildflags.h"
 #import "chrome/browser/app_controller_mac.h"
 
 // * Manages logic to switch hotkey between copy and copy clean link item.
 // * Add "New Private Window with Tor" to the dock menu.
 @interface BraveAppController : AppController
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+- (void)restoreProfileMenu;
+#endif
 @end
 
 #endif  // BRAVE_BROWSER_BRAVE_APP_CONTROLLER_MAC_H_

@@ -23,6 +23,11 @@
 #include "chrome/browser/platform_util.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
+#if BUILDFLAG(IS_MAC)
+// Defined in brave_app_controller_mac.mm. We can't include the ObjC header
+// from a .cc file, so declare the free function directly.
+void BraveRestoreProfileMenu();
+#endif
 #endif
 
 #ifdef LaunchModeRecorder
@@ -154,6 +159,11 @@ bool StartupBrowserCreator::Start(const base::CommandLine& cmd_line,
                const base::CommandLine& cmd_line, const base::FilePath& cur_dir,
                StartupProfileInfo profile_info,
                const Profiles& last_opened_profiles) {
+#if BUILDFLAG(IS_MAC)
+              // Re-insert the Profiles menu that was stashed while the
+              // startup dialog was showing.
+              BraveRestoreProfileMenu();
+#endif
               StartupBrowserCreator browser_creator;
               browser_creator.AddFirstRunTabs(first_run_tabs);
               browser_creator.Start_ChromiumImpl(cmd_line, cur_dir,
@@ -165,6 +175,10 @@ bool StartupBrowserCreator::Start(const base::CommandLine& cmd_line,
         std::make_unique<StartupDialogDelegate>());
     return true;
   }
+#if BUILDFLAG(IS_MAC)
+  // No dialog needed, restore the Profiles menu immediately.
+  BraveRestoreProfileMenu();
+#endif
 #endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
   return Start_ChromiumImpl(cmd_line, cur_dir, std::move(profile_info),
                             last_opened_profiles);
