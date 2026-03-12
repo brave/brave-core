@@ -1,0 +1,21 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java
+index 31a8692bb45c2d910483bceaf1255ca152eb2c3d..1ecb2788087fca03ac0607181ce11c3954669a4d 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java
+@@ -43,6 +43,7 @@ import org.chromium.build.annotations.NullMarked;
+ import org.chromium.build.annotations.Nullable;
+ import org.chromium.build.annotations.RequiresNonNull;
+ import org.chromium.chrome.R;
++import org.chromium.components.embedder_support.util.UrlConstants;
+ import org.chromium.chrome.browser.ActivityTabProvider;
+ import org.chromium.chrome.browser.bookmarks.BookmarkModel;
+ import org.chromium.chrome.browser.bookmarks.PowerBookmarkUtils;
+@@ -683,7 +684,7 @@ public abstract class AppMenuPropertiesDelegateImpl implements AppMenuProperties
+         //                is not persisted when adding to the homescreen.
+         // * If creating shortcuts it not supported by the current home screen.
+         return WebappsUtils.isAddToHomeIntentSupported()
+-                && !isNativePage
++                && (!isNativePage || (url != null && UrlConstants.CHROME_SCHEME.equals(url.getScheme()) && url.getHost().equals("leo-ai")))
+                 && !isFileScheme
+                 && !isContentScheme
+                 && !isIncognito
