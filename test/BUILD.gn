@@ -1186,6 +1186,10 @@ test("brave_browser_tests") {
     sources += [ "//brave/browser/ui/views/crash_report_permission_ask_dialog_browsertest.cc" ]
   }
 
+  if (is_brave_origin_branded) {
+    deps += [ "//brave/browser/ui/views/brave_origin:browser_tests" ]
+  }
+
   if (enable_brave_wayback_machine) {
     sources += [ "//brave/components/brave_wayback_machine/brave_wayback_machine_browsertest.cc" ]
     deps += [ "//brave/components/brave_wayback_machine" ]
