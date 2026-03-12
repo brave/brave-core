@@ -19,6 +19,11 @@
 class URLDataSourceIOS;
 class BraveWebUIIOSDataSource;
 
+#define AddBoolean                                                \
+  AddInteger(const std::string& name, int32_t value) override;    \
+  void AddDouble(const std::string& name, double value) override; \
+  void AddBoolean
+
 #define WebUIIOSDataSourceTest                                  \
   WebUIIOSDataSourceTest;                                       \
   friend class ::BraveWebUIIOSDataSource;                       \
@@ -28,5 +33,6 @@ class BraveWebUIIOSDataSource;
 #include <ios/web/webui/web_ui_ios_data_source_impl.h>  // IWYU pragma: export
 
 #undef WebUIIOSDataSourceTest
+#undef AddBoolean
 
 #endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_WEBUI_WEB_UI_IOS_DATA_SOURCE_IMPL_H_
