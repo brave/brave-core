@@ -17,6 +17,7 @@ source_set("frame") {
     "//base",
     "//brave/browser/ui:brave_tab_prefs",
     "//brave/browser/ui/views/frame/vertical_tabs",
+    "//brave/components/sidebar/browser",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/exclusive_access",
