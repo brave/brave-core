@@ -2044,7 +2044,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/settings/BraveFragmentDependencyProvider",
                         Activity.class,
                         Profile.class,
-                        MonotonicObservableSupplier.class,
+                        OneshotSupplier.class,
                         ActivityResultTracker.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
