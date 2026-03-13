@@ -5,6 +5,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Siso configuration adjustments for Brave browser."""
 
+load("@builtin//lib/gn.star", "gn")
 load("@builtin//runtime.star", "runtime")
 load("@builtin//struct.star", "module", "struct")
 
@@ -17,6 +18,14 @@ __RULES_TO_REMOVE = [
     # handling. This is not trivial and require careful configuration. Can be
     # revisited when SISO becomes first class citizen in Brave.
     "typescript/ts_library",
+]
+
+# Rules to remove when MSAN is enabled. In general, MSAN-enabled binaries can't
+# work in RBE environment.
+__RULES_TO_REMOVE_FOR_MSAN = [
+    "proto/protoc_wrapper",
+    "v8/torque",
+    "v8/mksnapshot",
 ]
 
 # Labels to remove from platforms (EngFlow-specific).
@@ -60,14 +69,14 @@ __debug = False
 # Main configuration function that sets up SISO for Brave-specific build
 # requirements by adjusting step configurations and registering custom handlers.
 def __configure(ctx, step_config, filegroups, handlers):
-    __remove_rules(step_config)
+    __remove_rules(ctx, step_config)
     __adjust_filegroups(step_config, filegroups)
     __adjust_handlers(ctx, step_config, handlers)
     __remove_labels_from_platforms(step_config)
 
-
 # Disable any handling for rules that deviate from upstream.
-def __remove_rules(step_config):
+def __remove_rules(ctx, step_config):
+    is_msan = "args.gn" in ctx.metadata and gn.args(ctx).get("is_msan") == "true"
 
     def should_remove(rule_name):
         # Remove rules that are not supported by Brave.
@@ -78,6 +87,10 @@ def __remove_rules(step_config):
         # rust toolchain does not include cross-toolchains, so we can't use it
         # the same way we use Linux clang toolchain for cross-compilation.
         if not __HOST_OS_IS_LINUX and rule_name.startswith("rust"):
+            return True
+
+        # Remove msan-blacklisted rules if MSAN is enabled.
+        if is_msan and rule_name in __RULES_TO_REMOVE_FOR_MSAN:
             return True
 
         return False
