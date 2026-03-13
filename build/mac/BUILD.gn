@@ -397,8 +397,11 @@ copy("copy_dmg_preinstall") {
 
 copy("copy_ds_store") {
   ds_store_file_name = "DS_Store"
+  if (is_brave_origin_branded) {
+    ds_store_file_name += ".origin"
+  }
   if (!is_release_channel) {
-    ds_store_file_name = "DS_Store.$brave_channel"
+    ds_store_file_name += ".$brave_channel"
   }
   sources = [ "ds_store/$ds_store_file_name" ]
   outputs = [ "$packaging_dir/chrome_dmg_dsstore" ]
