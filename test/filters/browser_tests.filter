@@ -1762,11 +1762,6 @@
 -MultiContentsViewDropTargetControllerBrowserTest.*
 -MultiContentsViewWebContentsReLayoutBrowserTest.*
 
-# These tests are flakey in cr140 and are expected to be removed soon because
-# the tab search container is going away
-# https://issues.chromium.org/issues/413441658#comment1
--TabSearchContainerBrowserTest.*
-
 # These tests are disabled because we stub out
 # optimization_guide::PredictionManager
 -LanguageDetectionModelServiceBrowserTest.*

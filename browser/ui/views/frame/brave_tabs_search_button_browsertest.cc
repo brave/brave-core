@@ -48,13 +48,13 @@ IN_PROC_BROWSER_TEST_F(BraveTabsSearchButtonTest, HideShowSettingTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTabsSearchButtonTest,
-                       HideTabSearchContainerInHorizontalTabStripRegionView) {
+                       HideTabSearchButtonInHorizontalTabStripRegionView) {
   // We always have tab search button on toolbar.
   ASSERT_TRUE(features::HasTabSearchToolbarButton());
 
   if (auto* tab_search_container =
-          BrowserElementsViews::From(browser())->GetViewAs<TabSearchContainer>(
-              kTabSearchContainerElementId)) {
+          BrowserElementsViews::From(browser())->GetViewAs<TabSearchButton>(
+              kTabSearchButtonElementId)) {
     // In case upstream created tab search container in horizontal tab strip
     // region view, we should hide it.
     EXPECT_FALSE(tab_search_container->GetVisible());
