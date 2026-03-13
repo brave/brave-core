@@ -4,60 +4,44 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as Mojom from 'gen/brave/components/psst/common/psst_ui_common.mojom.m.js'
-export * from 'gen/brave/components/psst/common/psst_ui_common.mojom.m.js'
 
 import {
   Closable,
   createInterfaceApi,
-  endpointsFor,
   actionsFor,
   state,
+  eventsFor,
+  endpointsFor,
+  VoidMethodKeys,
 } from '$web-common/api'
 
-export function createPsstDialogApi(
-  consentHelper: Closable<Mojom.PsstConsentHelperRemote>,
-  callbackRouter: Closable<Mojom.PsstConsentDialogCallbackRouter>,
-) {
+export const createPsstDialogApi = (
+  consentHelper: Closable<Mojom.PsstConsentHelperInterface>,
+  callbackRouter: Closable<Mojom.PsstConsentDialogInterface>,
+) => {
+  let consentDialogObserver: Mojom.PsstConsentDialogInterface
+
   const api = createInterfaceApi({
-    endpoints: {
-      ...endpointsFor(consentHelper, {
-        applyChanges: {
-          mutationResponse: () => {},
-        //   onMutate: (siteName, settingsToProcess) => {
-        //     api..update({ adBlockMode: mode })
-        //   },
+    endpoints: {},
+    events: {
+      ...eventsFor(
+        Mojom.PsstConsentDialogInterface,
+        {
+          setSettingsCardData(scd) {},
+          onSetCompleted(appliedChecks, errors) {},
+          onSetRequestDone(url, error) {},
         },
-      }),
-
-      settingsCardData: state<Mojom.SettingCardData | null>(null),
-      
-      requestStatus: state<{ url: string; error?: string } | null>(null),
-      
-      completionStatus: state<{ appliedChecks?: string[]; errors?: string[] } | null>(null),
-    },
-
-    actions: {
-      ...actionsFor(consentHelper, ['closeDialog']),
+        (observer) => {
+          consentDialogObserver = observer
+        },
+      ),
     },
   })
 
-  callbackRouter.setSettingsCardData.addListener((settingCardData: Mojom.SettingCardData) => {
-    api.settingsCardData.update(settingCardData)
-  })
-
-  callbackRouter.onSetRequestDone.addListener((url: string, error?: string) => {
-    api.requestStatus.update({ url, error })
-  })
-
-  callbackRouter.onSetCompleted.addListener((appliedChecks?: string[], errors?: string[]) => {
-    api.completionStatus.update({ appliedChecks, errors })
-  })
-
-  return api
+  return {
+    api,
+    consentDialogObserver: consentDialogObserver!,
+  }
 }
 
 export type PsstDialogAPI = ReturnType<typeof createPsstDialogApi>
-
-
-
-

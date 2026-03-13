@@ -42,7 +42,7 @@ export default class SettingsCard extends React.PureComponent<Props, {}> {
             /> */}
           </div>
           <div>
-            <div style={titleStyle}>{title} X</div>
+            <div style={titleStyle}>{title}</div>
             <div style={urlStyle}>{subTitle}</div>
           </div>
         </SettingGridHeaderRow>
@@ -74,14 +74,14 @@ export default class SettingsCard extends React.PureComponent<Props, {}> {
                   } else if (item.settingState === SettingState.Completed) {
                     return (
                       <HorizontalContainer>
-                        <CheckBoxIconCompleted name={'check-circle-outline'} />
+                        <CheckBoxIconCompleted name='check-circle-outline' />
                         <TextLabel>{item.description}</TextLabel>
                       </HorizontalContainer>
                     )
                   } else if (item.settingState === SettingState.Failed) {
                     return (
                       <HorizontalContainer>
-                        <CheckBoxIconFailed name={'close-circle'} />
+                        <CheckBoxIconFailed name='close-circle' />
                         <TextLabel>{item.description}</TextLabel>
                       </HorizontalContainer>
                     )

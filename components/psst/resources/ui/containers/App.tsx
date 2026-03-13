@@ -4,17 +4,13 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import PsstProgressModal from '../components/PsstProgressModal'
+import { PsstProgressModal } from '../components/PsstProgressModal'
 import { createPsstDialogApi } from '../api/psst_dialog_api'
 import { makeCloseable } from '$web-common/api'
 import * as Mojom from 'gen/brave/components/psst/common/psst_ui_common.mojom.m.js'
 import { PsstDialogAPIProvider } from '../api/psst_dialog_api_context'
 
-interface Props {
-//  api: PsstDialogAPI
-}
-
-export default function PsstDlgContainer(_props: Props) {
+export default function PsstDlgContainer() {
   const api = React.useMemo(() => {
     const consentHelper = new Mojom.PsstConsentHelperRemote()
     const callbackRouter = new Mojom.PsstConsentDialogCallbackRouter()
@@ -23,15 +19,15 @@ export default function PsstDlgContainer(_props: Props) {
       consentHelper.$.bindNewPipeAndPassReceiver(),
       callbackRouter.$.bindNewPipeAndPassRemote(),
     )
-    
+
     return createPsstDialogApi(
       makeCloseable(consentHelper),
-      makeCloseable(callbackRouter)
+      makeCloseable(callbackRouter),
     )
   }, [])
 
   return (
-    <PsstDialogAPIProvider api={api}>
+    <PsstDialogAPIProvider {...api}>
       <PsstProgressModal />
     </PsstDialogAPIProvider>
   )

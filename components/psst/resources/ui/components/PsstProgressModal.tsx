@@ -16,12 +16,10 @@ import {
 import SettingsCard from './SettingsCard'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-import { PsstStrings } from 'gen/components/grit/brave_components_webui_strings'
 import { getLocale } from '$web-common/locale'
 import { usePsstDialogAPI } from '../api/psst_dialog_api_context'
 import { SettingCardDataItem } from '../api/psst_dialog_api'
-
-export interface Props {}
+import '../strings'
 
 export enum SettingState {
   None,
@@ -46,62 +44,72 @@ export interface PsstProgressModalState {
   optionsStatuses: Map<string, OptionStatus> | null
 }
 
-export default function PsstProgressModal(_props: Props) {
-  
-  const { api: browserProxy } = usePsstDialogAPI()
-  
-  const [commonState, setCommonState] = React.useState<SettingState>(SettingState.None)
+export const PsstProgressModal = () => {
+  const { api } = usePsstDialogAPI()
+
+  const [commonState, setCommonState] = React.useState<SettingState>(
+    SettingState.None,
+  )
   const [siteName, setSiteName] = React.useState<string>('')
-  const [optionsStatuses, setOptionsStatuses] = React.useState<Map<string, OptionStatus> | null>(new Map())
+  const [optionsStatuses, setOptionsStatuses] = React.useState<Map<
+    string,
+    OptionStatus
+  > | null>(new Map())
 
-  // Subscribe to API data at top level - with null checks
-  const { data: settingsData } = browserProxy?.useSettingsCardData?.() || { data: null }
-  const { data: requestStatus } = browserProxy?.useRequestStatus?.() || { data: null }
-  const { data: completionStatus } = browserProxy?.useCompletionStatus?.() || { data: null }
-  const { mutate: applyChanges } = browserProxy?.useApplyChanges?.() || { mutate: () => {} }
+  // Subscribe to API state endpoints (data is pushed via callback router)
+  const { data: settingsData } = api.useSettingsCardData()
+  const { data: requestStatus } = api.useRequestStatus()
+  const { data: completionStatus } = api.useCompletionStatus()
+  const { applyChanges } = api
 
-  const setStateProp = React.useCallback((
-    updates: Partial<OptionStatus>,
-    predicate: (status: OptionStatus) => boolean = () => true,
-  ) => {
-    setOptionsStatuses((prevOptionsStatuses) => {
-      if (!prevOptionsStatuses) {
-        return prevOptionsStatuses
-      }
-      const updatedOptionsStatuses = new Map<string, OptionStatus>()
-      prevOptionsStatuses.forEach((status, key) => {
-        if (predicate(status)) {
-          updatedOptionsStatuses.set(key, { ...status, ...updates })
-        } else {
-          updatedOptionsStatuses.set(key, status)
+  const setStateProp = React.useCallback(
+    (
+      updates: Partial<OptionStatus>,
+      predicate: (status: OptionStatus) => boolean = () => true,
+    ) => {
+      setOptionsStatuses((prevOptionsStatuses) => {
+        if (!prevOptionsStatuses) {
+          return prevOptionsStatuses
         }
-      })
-      return updatedOptionsStatuses
-    })
-  }, [])
-
-  const setPropForUrl = React.useCallback((targetUrl: string, updates: Partial<OptionStatus>) => {
-    setOptionsStatuses((prevOptionsStatuses) => {
-      if (!prevOptionsStatuses) {
-        return prevOptionsStatuses
-      }
-
-      const updatedOptionsStatuses = new Map<string, OptionStatus>()
-      let found = false
-      prevOptionsStatuses.forEach((status, key) => {
-        if (status.url === targetUrl) {
-          updatedOptionsStatuses.set(key, { ...status, ...updates })
-          found = true
-        } else {
-          updatedOptionsStatuses.set(key, status)
-        }
-      })
-      if (found) {
+        const updatedOptionsStatuses = new Map<string, OptionStatus>()
+        prevOptionsStatuses.forEach((status, key) => {
+          if (predicate(status)) {
+            updatedOptionsStatuses.set(key, { ...status, ...updates })
+          } else {
+            updatedOptionsStatuses.set(key, status)
+          }
+        })
         return updatedOptionsStatuses
-      }
-      return prevOptionsStatuses
-    })
-  }, [])
+      })
+    },
+    [],
+  )
+
+  const setPropForUrl = React.useCallback(
+    (targetUrl: string, updates: Partial<OptionStatus>) => {
+      setOptionsStatuses((prevOptionsStatuses) => {
+        if (!prevOptionsStatuses) {
+          return prevOptionsStatuses
+        }
+
+        const updatedOptionsStatuses = new Map<string, OptionStatus>()
+        let found = false
+        prevOptionsStatuses.forEach((status, key) => {
+          if (status.url === targetUrl) {
+            updatedOptionsStatuses.set(key, { ...status, ...updates })
+            found = true
+          } else {
+            updatedOptionsStatuses.set(key, status)
+          }
+        })
+        if (found) {
+          return updatedOptionsStatuses
+        }
+        return prevOptionsStatuses
+      })
+    },
+    [],
+  )
 
   // Handle settings data updates
   React.useEffect(() => {
@@ -126,7 +134,9 @@ export default function PsstProgressModal(_props: Props) {
   React.useEffect(() => {
     if (requestStatus) {
       setPropForUrl(requestStatus.url, {
-        settingState: requestStatus.error ? SettingState.Failed : SettingState.Completed,
+        settingState: requestStatus.error
+          ? SettingState.Failed
+          : SettingState.Completed,
         error: requestStatus.error || null,
       })
     }
@@ -134,35 +144,41 @@ export default function PsstProgressModal(_props: Props) {
 
   // Handle completion status updates
   React.useEffect(() => {
-    if (completionStatus && (completionStatus.appliedChecks || completionStatus.errors)) {
+    if (
+      completionStatus
+      && (completionStatus.appliedChecks || completionStatus.errors)
+    ) {
       setCommonState(SettingState.Completed)
     }
   }, [completionStatus])
 
-  const handleSettingItemCheck = React.useCallback((url: string, checked: boolean) => {
-    setOptionsStatuses((prevOptionsStatuses) => {
-      if (!prevOptionsStatuses) return prevOptionsStatuses
-      
-      const os = prevOptionsStatuses.get(url)
-      if (os) {
-        const newMap = new Map(prevOptionsStatuses)
-        newMap.set(url, {
-          checked: checked,
-          url: os.url,
-          description: os.description,
-          error: os.error,
-          disabled: os.disabled,
-          settingState: os.settingState,
-        })
-        return newMap
-      }
-      return prevOptionsStatuses
-    })
-  }, [])
+  const handleSettingItemCheck = React.useCallback(
+    (url: string, checked: boolean) => {
+      setOptionsStatuses((prevOptionsStatuses) => {
+        if (!prevOptionsStatuses) return prevOptionsStatuses
+
+        const os = prevOptionsStatuses.get(url)
+        if (os) {
+          const newMap = new Map(prevOptionsStatuses)
+          newMap.set(url, {
+            checked: checked,
+            url: os.url,
+            description: os.description,
+            error: os.error,
+            disabled: os.disabled,
+            settingState: os.settingState,
+          })
+          return newMap
+        }
+        return prevOptionsStatuses
+      })
+    },
+    [],
+  )
 
   const closeDialog = React.useCallback(() => {
-    browserProxy.closeDialog()
-  }, [browserProxy])
+    api.closeDialog()
+  }, [api])
 
   const handleApplyChanges = React.useCallback(() => {
     let settingsToProcess: string[] = []
@@ -171,18 +187,15 @@ export default function PsstProgressModal(_props: Props) {
         .filter(([_, value]) => !value.checked)
         .map(([key]) => key)
     }
-    
+
     setStateProp(
       { settingState: SettingState.Progress },
       (status) => status.checked,
     )
-    setStateProp(
-      { disabled: true },
-      (status) => !status.checked,
-    )
+    setStateProp({ disabled: true }, (status) => !status.checked)
     setCommonState(SettingState.Progress)
-    
-    applyChanges([siteName, settingsToProcess])
+
+    applyChanges(siteName, settingsToProcess)
   }, [optionsStatuses, siteName, setStateProp, applyChanges])
 
   const isInProgress = commonState === SettingState.Progress
@@ -192,9 +205,7 @@ export default function PsstProgressModal(_props: Props) {
       <HorizontalContainer>
         <LeftAlignedItem>
           <TextSection>
-            <ModalTitle>
-              {getLocale(PsstStrings.PSST_CONSENT_DIALOG_TITLE)}
-            </ModalTitle>
+            <ModalTitle>{getLocale(S.PSST_CONSENT_DIALOG_TITLE)}</ModalTitle>
           </TextSection>
         </LeftAlignedItem>
         <RightAlignedItem>
@@ -204,17 +215,19 @@ export default function PsstProgressModal(_props: Props) {
             isDisabled={isInProgress}
             onClick={closeDialog}
           >
-            <Icon name={'close-circle'} />
+            <Icon name='close-circle' />
           </Button>
         </RightAlignedItem>
       </HorizontalContainer>
-      <TextSection>
-        {getLocale(PsstStrings.PSST_CONSENT_DIALOG_TITLE)}
-      </TextSection>
+      <TextSection>{getLocale(S.PSST_CONSENT_DIALOG_BODY)}</TextSection>
       <SettingsCard
-        title={getLocale(PsstStrings.PSST_CONSENT_DIALOG_OPTIONS_TITLE)}
+        title={getLocale(S.PSST_CONSENT_DIALOG_OPTIONS_TITLE)}
         subTitle={siteName}
-        progressModelState={{ commonState, site_name: siteName, optionsStatuses }}
+        progressModelState={{
+          commonState,
+          site_name: siteName,
+          optionsStatuses,
+        }}
         onItemChecked={handleSettingItemCheck}
       />
       {(() => {
@@ -227,7 +240,7 @@ export default function PsstProgressModal(_props: Props) {
                 isDisabled={isInProgress}
                 onClick={closeDialog}
               >
-                {getLocale(PsstStrings.PSST_COMPLETE_CONSENT_DIALOG_CANCEL)}
+                {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_CANCEL)}
               </PsstDlgButton>
               <PsstDlgButton
                 id='psst-dialog-ok-btn'
@@ -237,7 +250,7 @@ export default function PsstProgressModal(_props: Props) {
                 isLoading={isInProgress}
                 onClick={handleApplyChanges}
               >
-                {getLocale(PsstStrings.PSST_COMPLETE_CONSENT_DIALOG_OK)}
+                {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_OK)}
               </PsstDlgButton>
             </RightAlignedItem>
           )
@@ -250,9 +263,7 @@ export default function PsstProgressModal(_props: Props) {
                 isDisabled={false}
                 onClick={closeDialog}
               >
-                {getLocale(
-                  PsstStrings.PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED,
-                )}
+                {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED)}
               </PsstDlgButton>
               <PsstDlgButton
                 kind='filled'
@@ -261,7 +272,7 @@ export default function PsstProgressModal(_props: Props) {
                 isLoading={false}
                 onClick={closeDialog}
               >
-                {getLocale(PsstStrings.PSST_COMPLETE_CONSENT_DIALOG_CLOSE)}
+                {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_CLOSE)}
               </PsstDlgButton>
             </RightAlignedItem>
           )

@@ -4,19 +4,15 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { setIconBasePath } from '@brave/leo/react/icon'
-
-setIconBasePath('chrome://resources/brave-icons')
 
 // Containers
 import PsstDlgContainer from './containers/App'
 
 function initialize() {
-  render(
-    <PsstDlgContainer/>,
-    document.getElementById('root'),
-  )
+  setIconBasePath('//resources/brave-icons')
+  createRoot(document.getElementById('root')!).render(<PsstDlgContainer />)
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

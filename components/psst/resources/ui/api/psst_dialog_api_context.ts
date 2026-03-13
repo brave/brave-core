@@ -6,21 +6,5 @@
 import generateReactContextForAPI from '$web-common/api/react_api'
 import { type PsstDialogAPI } from './psst_dialog_api'
 
-type PsstDialogContextProps = {
-  api: PsstDialogAPI['api']
-}
-
-export default function useProvidePsstDialogContext(
-  props: PsstDialogContextProps,
-) {
-  return {
-    api: props.api,
-  }
-}
-
-export type PsstDialogContext = ReturnType<typeof useProvidePsstDialogContext>
-
 export const { useAPI: usePsstDialogAPI, Provider: PsstDialogAPIProvider } =
-  generateReactContextForAPI<PsstDialogContextProps, PsstDialogContext>(
-    useProvidePsstDialogContext,
-  )
+  generateReactContextForAPI<PsstDialogAPI>()
