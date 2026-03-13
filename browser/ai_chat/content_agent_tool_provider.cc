@@ -35,6 +35,7 @@
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/common/actor.mojom.h"
+#include "chrome/common/actor/action_result.h"
 #include "chrome/common/actor/task_id.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
 #include "components/tabs/public/tab_interface.h"
@@ -238,9 +239,11 @@ void ContentAgentToolProvider::CreateTools() {
 
 void ContentAgentToolProvider::OnActionsFinished(
     Tool::UseToolCallback callback,
-    actor::mojom::ActionResultCode result_code,
-    std::optional<size_t> index_of_failed_action,
     std::vector<actor::ActionResultWithLatencyInfo> action_results) {
+  actor::mojom::ActionResultCode result_code =
+      actor::mojom::ActionResultCode::kOk;
+  std::optional<size_t> index_of_failed_action;
+  ExtractErrorResult(action_results, &result_code, index_of_failed_action);
   if (result_code == actor::mojom::ActionResultCode::kOk) {
     // Send current page content for result
 

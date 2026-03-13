@@ -137,8 +137,7 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
       actor::mojom::ActionResultCode result_code,
       std::optional<size_t> index_of_failed_action,
       std::vector<actor::ActionResultWithLatencyInfo> action_results) {
-    tool_provider_->OnActionsFinished(std::move(callback), result_code,
-                                      std::move(index_of_failed_action),
+    tool_provider_->OnActionsFinished(std::move(callback),
                                       std::move(action_results));
   }
 
