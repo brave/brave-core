@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { css } from 'styled-components'
+import { isRemoteImageURL } from './string-utils'
 
 export const sizeCssValue = (size: string | number) => {
   return typeof size === 'number'
@@ -32,9 +33,12 @@ export const getDominantColorFromImageURL = (src: string) => {
     return undefined
   }
 
-  // Construct new image from src.
+  const imageSrc = isRemoteImageURL(src)
+    ? `chrome://image?url=${encodeURIComponent(src)}&staticEncode=true`
+    : src
+
   let img = new Image()
-  img.src = src
+  img.src = imageSrc
 
   // Images actual width and height.
   const { naturalWidth, naturalHeight } = img
