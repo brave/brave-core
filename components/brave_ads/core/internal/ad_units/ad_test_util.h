@@ -19,7 +19,7 @@ namespace test {
 std::string RandomUuidOr(bool should_generate_random_uuid,
                          const std::string& or_uuid);
 
-AdInfo BuildAd(mojom::AdType mojom_ad_type, bool should_generate_random_uuids);
+AdInfo BuildAd(mojom::AdType mojom_ad_type, bool use_random_uuids);
 
 }  // namespace test
 

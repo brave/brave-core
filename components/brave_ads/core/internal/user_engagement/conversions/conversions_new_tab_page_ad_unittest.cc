@@ -27,7 +27,7 @@ TEST_F(BraveAdsConversionsNewTabPageAdTest,
        ConvertViewedAdIfOptedInToNewTabPageAds) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
-                                  /*should_generate_random_uuids=*/false);
+                                  /*use_random_uuids=*/false);
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
                                           test::kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
@@ -49,7 +49,7 @@ TEST_F(BraveAdsConversionsNewTabPageAdTest,
   test::OptOutOfNewTabPageAds();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
-                                  /*should_generate_random_uuids=*/false);
+                                  /*use_random_uuids=*/false);
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
                                           test::kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
@@ -68,7 +68,7 @@ TEST_F(BraveAdsConversionsNewTabPageAdTest,
   test::DisableBraveRewards();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
-                                  /*should_generate_random_uuids=*/false);
+                                  /*use_random_uuids=*/false);
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
                                           test::kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
@@ -86,7 +86,7 @@ TEST_F(BraveAdsConversionsNewTabPageAdTest,
        ConvertClickedAdIfOptedInToNewTabPageAds) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
-                                  /*should_generate_random_uuids=*/false);
+                                  /*use_random_uuids=*/false);
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
                                           test::kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
@@ -109,7 +109,7 @@ TEST_F(BraveAdsConversionsNewTabPageAdTest,
   test::OptOutOfNewTabPageAds();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
-                                  /*should_generate_random_uuids=*/false);
+                                  /*use_random_uuids=*/false);
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
                                           test::kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
@@ -129,7 +129,7 @@ TEST_F(BraveAdsConversionsNewTabPageAdTest,
   test::DisableBraveRewards();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
-                                  /*should_generate_random_uuids=*/false);
+                                  /*use_random_uuids=*/false);
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
                                           test::kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));

@@ -111,7 +111,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForNonRewardsTest,
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAd(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   // Act & Assert
@@ -131,7 +131,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForNonRewardsTest,
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   // Act & Assert
@@ -151,7 +151,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForNonRewardsTest,
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAd(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   // Act & Assert
@@ -171,7 +171,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForNonRewardsTest,
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   // Act & Assert
@@ -190,7 +190,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForNonRewardsTest,
        DoNotFireClickedEventWithoutConversion) {
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
-      test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeSearchResultAd(/*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   // Act & Assert
@@ -209,7 +209,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForNonRewardsTest,
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   // Act & Assert
@@ -227,7 +227,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForNonRewardsTest,
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
   test::RecordAdEvent(ad, mojom::ConfirmationType::kClicked);
 
@@ -247,7 +247,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForNonRewardsTest,
   // Arrange
   mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   mojom_creative_ad->placement_id = test::kInvalidPlacementId;
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
@@ -267,7 +267,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForNonRewardsTest,
   // Arrange
   mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   mojom_creative_ad->creative_instance_id = test::kInvalidCreativeInstanceId;
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 

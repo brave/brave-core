@@ -53,7 +53,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, Save) {
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked},
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
 
   // Act
   database::SaveAdHistory(ad_history);
@@ -95,7 +95,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, SaveInBatches) {
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked,
        mojom::ConfirmationType::kViewedImpression},
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
 
   // Act
   database::SaveAdHistory(ad_history);
@@ -118,7 +118,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, GetForDateRange) {
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked},
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   database::SaveAdHistory(ad_history_1);
 
   AdvanceClockBy(base::Days(2));
@@ -129,7 +129,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, GetForDateRange) {
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked},
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   database::SaveAdHistory(ad_history_2);
 
   // Act & Assert
@@ -151,7 +151,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest,
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked},
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
   database::SaveAdHistory(ad_history_1);
 
   AdvanceClockBy(base::Days(2));
@@ -162,20 +162,20 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest,
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked},
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
   database::SaveAdHistory(ad_history_2);
 
   const AdHistoryList ad_history_3 = test::BuildAdHistoryForSamePlacement(
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression},
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
   database::SaveAdHistory(ad_history_3);
 
   const AdHistoryList ad_history_4 = test::BuildAdHistoryForSamePlacement(
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kDismissed},
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
   database::SaveAdHistory(ad_history_4);
 
   // Act & Assert
@@ -200,7 +200,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, GetForCreativeInstanceId) {
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked},
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
   database::SaveAdHistory(ad_history);
 
   // Act & Assert
@@ -221,7 +221,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest,
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked},
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   database::SaveAdHistory(ad_history);
 
   // Act & Assert
@@ -241,7 +241,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, PurgeExpired) {
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked},
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   database::SaveAdHistory(ad_history_1);
 
   AdvanceClockBy(kAdHistoryRetentionPeriod.Get());
@@ -250,7 +250,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, PurgeExpired) {
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked},
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   database::SaveAdHistory(ad_history_2);
 
   // Act & Assert
@@ -279,7 +279,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, DoNotPurgeOnTheCuspOfExpiration) {
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked},
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   database::SaveAdHistory(ad_history);
 
   AdvanceClockBy(kAdHistoryRetentionPeriod.Get() - base::Milliseconds(1));

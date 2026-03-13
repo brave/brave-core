@@ -21,7 +21,7 @@ TEST_F(BraveAdsNewTabPageAdInfoTest, IsValid) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
 
   // Act & Assert

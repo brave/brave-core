@@ -53,7 +53,7 @@ TEST_F(BraveAdsConfirmationQueueTest, AddNonRewardConfirmation) {
   test::DisableBraveRewards();
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildNonRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   base::RunLoop run_loop_add;
@@ -86,7 +86,7 @@ TEST_F(BraveAdsConfirmationQueueTest, AddRewardConfirmation) {
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   base::RunLoop run_loop_add;
@@ -122,7 +122,7 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessNonRewardConfirmation) {
   test::DisableBraveRewards();
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildNonRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {
@@ -168,7 +168,7 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessMultipleNonRewardConfirmations) {
   test::DisableBraveRewards();
 
   std::optional<ConfirmationInfo> confirmation_1 =
-      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/true);
+      test::BuildNonRewardConfirmation(/*use_random_uuids=*/true);
   ASSERT_TRUE(confirmation_1);
   {
     base::RunLoop run_loop_add_1;
@@ -194,7 +194,7 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessMultipleNonRewardConfirmations) {
   const ScopedDelayBeforeProcessingConfirmationQueueItemForTesting
       scoped_delay_before_processing_confirmation_queue_item(base::Minutes(21));
   std::optional<ConfirmationInfo> confirmation_2 =
-      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/true);
+      test::BuildNonRewardConfirmation(/*use_random_uuids=*/true);
   ASSERT_TRUE(confirmation_2);
   {
     base::RunLoop run_loop_add_2;

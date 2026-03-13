@@ -11,9 +11,9 @@
 namespace brave_ads::test {
 
 mojom::CreativeSearchResultAdInfoPtr BuildCreativeSearchResultAd(
-    bool should_generate_random_uuids);
+    bool use_random_uuids);
 mojom::CreativeSearchResultAdInfoPtr BuildCreativeSearchResultAdWithConversion(
-    bool should_generate_random_uuids);
+    bool use_random_uuids);
 
 }  // namespace brave_ads::test
 

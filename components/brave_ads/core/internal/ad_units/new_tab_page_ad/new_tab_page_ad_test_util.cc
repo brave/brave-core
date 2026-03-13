@@ -14,17 +14,17 @@ namespace brave_ads::test {
 
 NewTabPageAdInfo BuildNewTabPageAd(
     CreativeNewTabPageAdWallpaperType wallpaper_type,
-    bool should_generate_random_uuids) {
+    bool use_random_uuids) {
   const CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(wallpaper_type, should_generate_random_uuids);
+      BuildCreativeNewTabPageAd(wallpaper_type, use_random_uuids);
   return BuildNewTabPageAd(creative_ad);
 }
 
 NewTabPageAdInfo BuildAndSaveNewTabPageAd(
     CreativeNewTabPageAdWallpaperType wallpaper_type,
-    bool should_generate_random_uuids) {
+    bool use_random_uuids) {
   const CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(wallpaper_type, should_generate_random_uuids);
+      BuildCreativeNewTabPageAd(wallpaper_type, use_random_uuids);
   SaveCreativeNewTabPageAds({creative_ad});
   return BuildNewTabPageAd(creative_ad);
 }

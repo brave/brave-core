@@ -74,7 +74,7 @@ class BraveAdsNotificationAdValueUtilTest : public test::TestBase {};
 TEST_F(BraveAdsNotificationAdValueUtilTest, NotificationAdToValue) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/false);
   const NotificationAdInfo ad =
       BuildNotificationAd(creative_ad, test::kPlacementId);
 
@@ -88,7 +88,7 @@ TEST_F(BraveAdsNotificationAdValueUtilTest, NotificationAdToValue) {
 TEST_F(BraveAdsNotificationAdValueUtilTest, NotificationAdsToValue) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/false);
   const NotificationAdInfo ad =
       BuildNotificationAd(creative_ad, test::kPlacementId);
 
@@ -108,7 +108,7 @@ TEST_F(BraveAdsNotificationAdValueUtilTest, NotificationAdFromValue) {
 
   // Assert
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/false);
   EXPECT_EQ(BuildNotificationAd(creative_ad, test::kPlacementId), ad);
 }
 
@@ -123,7 +123,7 @@ TEST_F(BraveAdsNotificationAdValueUtilTest, NotificationAdsFromValue) {
 
   // Assert
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/false);
   const NotificationAdInfo ad =
       BuildNotificationAd(creative_ad, test::kPlacementId);
   const base::circular_deque<NotificationAdInfo> expected_ads = {ad, ad};

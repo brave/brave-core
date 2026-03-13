@@ -113,13 +113,13 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetForImageSegments) {
 
   CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ad_1.segment = "food & drink";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ad_2.segment = "technology & computing";
   creative_ads.push_back(creative_ad_2);
 
@@ -144,13 +144,13 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
 
   CreativeNewTabPageAdInfo creative_ad_1 = test::BuildCreativeNewTabPageAd(
       CreativeNewTabPageAdWallpaperType::kRichMedia,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   creative_ad_1.segment = "food & drink";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 = test::BuildCreativeNewTabPageAd(
       CreativeNewTabPageAdWallpaperType::kRichMedia,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   creative_ad_2.segment = "technology & computing";
   creative_ads.push_back(creative_ad_2);
 
@@ -177,13 +177,13 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
 
   CreativeNewTabPageAdInfo creative_ad_1 = test::BuildCreativeNewTabPageAd(
       CreativeNewTabPageAdWallpaperType::kRichMedia,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   creative_ad_1.segment = "food & drink";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 = test::BuildCreativeNewTabPageAd(
       CreativeNewTabPageAdWallpaperType::kRichMedia,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   creative_ad_2.segment = "technology & computing";
   creative_ads.push_back(creative_ad_2);
 
@@ -208,13 +208,13 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
 
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ads.push_back(creative_ad_1);
 
   const CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(
           CreativeNewTabPageAdWallpaperType::kRichMedia,
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   creative_ads.push_back(creative_ad_2);
 
   test::SaveCreativeNewTabPageAds(creative_ads);
@@ -257,19 +257,19 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetForMultipleSegments) {
 
   CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 = test::BuildCreativeNewTabPageAd(
       CreativeNewTabPageAdWallpaperType::kRichMedia,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
   CreativeNewTabPageAdInfo creative_ad_3 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ad_3.segment = "automotive";
   creative_ads.push_back(creative_ad_3);
 
@@ -297,12 +297,12 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
 
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ads.push_back(creative_ad_1);
 
   const CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ads.push_back(creative_ad_2);
 
   test::SaveCreativeNewTabPageAds(creative_ads);
@@ -327,12 +327,12 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
 
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ads.push_back(creative_ad_1);
 
   const CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ads.push_back(creative_ad_2);
 
   test::SaveCreativeNewTabPageAds(creative_ads);
@@ -356,12 +356,12 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(
           CreativeNewTabPageAdWallpaperType::kRichMedia,
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   creative_ads.push_back(creative_ad_1);
 
   const CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ads.push_back(creative_ad_2);
 
   test::SaveCreativeNewTabPageAds(creative_ads);
@@ -387,12 +387,12 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(
           CreativeNewTabPageAdWallpaperType::kRichMedia,
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   creative_ads.push_back(creative_ad_1);
 
   const CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ads.push_back(creative_ad_2);
 
   test::SaveCreativeNewTabPageAds(creative_ads);
@@ -435,14 +435,14 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
 
   CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ad_1.start_at = test::DistantPast();
   creative_ad_1.end_at = test::Now();
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ad_2.start_at = test::DistantPast();
   creative_ad_2.end_at = test::DistantFuture();
   creative_ads.push_back(creative_ad_2);
@@ -470,14 +470,14 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
 
   CreativeNewTabPageAdInfo creative_ad_1 = test::BuildCreativeNewTabPageAd(
       CreativeNewTabPageAdWallpaperType::kRichMedia,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   creative_ad_1.start_at = test::DistantPast();
   creative_ad_1.end_at = test::Now();
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 = test::BuildCreativeNewTabPageAd(
       CreativeNewTabPageAdWallpaperType::kRichMedia,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   creative_ad_2.start_at = test::DistantPast();
   creative_ad_2.end_at = test::DistantFuture();
   creative_ads.push_back(creative_ad_2);
@@ -507,14 +507,14 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
 
   CreativeNewTabPageAdInfo creative_ad_1 = test::BuildCreativeNewTabPageAd(
       CreativeNewTabPageAdWallpaperType::kRichMedia,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   creative_ad_1.start_at = test::DistantPast();
   creative_ad_1.end_at = test::Now();
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 = test::BuildCreativeNewTabPageAd(
       CreativeNewTabPageAdWallpaperType::kRichMedia,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   creative_ad_2.start_at = test::DistantPast();
   creative_ad_2.end_at = test::DistantFuture();
   creative_ads.push_back(creative_ad_2);

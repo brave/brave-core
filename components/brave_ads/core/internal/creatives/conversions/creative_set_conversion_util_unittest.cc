@@ -73,7 +73,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
 TEST_F(BraveAdsCreativeSetConversionUtilTest, GetCreativeSetConversionCounts) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
 
   AdEventList ad_events;
 
@@ -247,7 +247,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
        GetCreativeSetConversionsWithinObservationWindow) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/false);
+                                  /*use_random_uuids=*/false);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, mojom::ConfirmationType::kConversion,
                    /*created_at=*/test::Now());

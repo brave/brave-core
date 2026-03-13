@@ -38,13 +38,13 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest, UnseenAdsShouldBeEligible) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   const CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   const CreativeNewTabPageAdInfo creative_ad_3 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   CreativeNewTabPageAdList creative_ads = {creative_ad_1, creative_ad_2,
                                            creative_ad_3};
 
@@ -62,10 +62,10 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest,
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   const CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   CreativeNewTabPageAdList creative_ads = {creative_ad_1, creative_ad_2};
 
   creative_ad_round_robin_.MarkAsSeen(creative_ad_1);
@@ -84,13 +84,13 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest,
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   const CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   const CreativeNewTabPageAdInfo creative_ad_3 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   CreativeNewTabPageAdList creative_ads = {creative_ad_1, creative_ad_2,
                                            creative_ad_3};
 
@@ -110,7 +110,7 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest,
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   CreativeNewTabPageAdList creative_ads = {creative_ad};
 
   creative_ad_round_robin_.MarkAsSeen(creative_ad);
@@ -127,7 +127,7 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest,
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   CreativeNewTabPageAdList creative_ads = {creative_ad};
 
   CreativeNewTabPageAdInfo stale_creative_ad;
@@ -146,10 +146,10 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest,
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   const CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
 
   CreativeNewTabPageAdInfo stale_creative_ad;
   stale_creative_ad.creative_instance_id = kStaleCreativeInstanceId;
@@ -172,13 +172,13 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest,
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   const CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   const CreativeNewTabPageAdInfo creative_ad_3 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   CreativeNewTabPageAdList creative_ads = {creative_ad_1, creative_ad_2,
                                            creative_ad_3};
 
@@ -195,10 +195,10 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest,
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   const CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   CreativeNewTabPageAdList creative_ads = {creative_ad_1, creative_ad_2};
 
   CreativeNewTabPageAdInfo stale_creative_ad;

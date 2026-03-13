@@ -57,7 +57,7 @@ TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   AdvanceClockTo(
@@ -66,13 +66,13 @@ TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
   const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
       /*value=*/0.0, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kDismissed,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
   const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
       /*value=*/0.0, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kClicked,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
   database::SaveTransactions(transactions);

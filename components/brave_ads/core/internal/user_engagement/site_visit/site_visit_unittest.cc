@@ -62,7 +62,7 @@ TEST_F(BraveAdsSiteVisitTest, LandOnNewTabPageAdPage) {
   const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
                      /*redirect_chain=*/{GURL("https://brave.com")},
                      net::HTTP_OK);
@@ -81,7 +81,7 @@ TEST_F(BraveAdsSiteVisitTest,
   test::OptOutOfNewTabPageAds();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
                      /*redirect_chain=*/{GURL("https://brave.com")},
                      net::HTTP_OK);
@@ -98,7 +98,7 @@ TEST_F(BraveAdsSiteVisitTest, DoNotLandOnNewTabPageAdPageForNonRewardsUser) {
   test::DisableBraveRewards();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
                      /*redirect_chain=*/{GURL("https://brave.com")},
                      net::HTTP_OK);
@@ -113,7 +113,7 @@ TEST_F(BraveAdsSiteVisitTest, LandOnNotificationAdPage) {
   const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
                      /*redirect_chain=*/{GURL("https://brave.com")},
                      net::HTTP_OK);
@@ -132,7 +132,7 @@ TEST_F(BraveAdsSiteVisitTest,
   test::OptOutOfNotificationAds();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
                      /*redirect_chain=*/{GURL("https://brave.com")},
                      net::HTTP_OK);
@@ -149,7 +149,7 @@ TEST_F(BraveAdsSiteVisitTest, DoNotLandOnNotificationAdPageForNonRewardsUser) {
   test::DisableBraveRewards();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
                      /*redirect_chain=*/{GURL("https://brave.com")},
                      net::HTTP_OK);
@@ -165,7 +165,7 @@ TEST_F(BraveAdsSiteVisitTest,
   const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
   SimulateClickingAd(
       ad, /*tab_id=*/1,
       /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
@@ -181,7 +181,7 @@ TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfTheSameTabIsAlreadyLanding) {
   const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
   EXPECT_CALL(site_visit_observer_mock_,
               OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()));
   SimulateClickingAd(ad, /*tab_id=*/1,
@@ -208,7 +208,7 @@ TEST_F(
 
   // Tab 1 (Visible/Start page landing)
   const AdInfo ad_1 = test::BuildAd(mojom::AdType::kNotificationAd,
-                                    /*should_generate_random_uuids=*/true);
+                                    /*use_random_uuids=*/true);
   EXPECT_CALL(site_visit_observer_mock_,
               OnMaybeLandOnPage(ad_1, /*after=*/kPageLandAfter.Get()));
   SimulateClickingAd(ad_1, /*tab_id=*/1,
@@ -225,7 +225,7 @@ TEST_F(
 
   // Tab 2 (Visible/Start page landing)
   const AdInfo ad_2 = test::BuildAd(mojom::AdType::kNotificationAd,
-                                    /*should_generate_random_uuids=*/true);
+                                    /*use_random_uuids=*/true);
   EXPECT_CALL(site_visit_observer_mock_,
               OnMaybeLandOnPage(ad_2, /*after=*/kPageLandAfter.Get()));
   SimulateClickingAd(ad_2, /*tab_id=*/2,
@@ -278,7 +278,7 @@ TEST_F(
 
   // Tab 1 (Start page landing)
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
   EXPECT_CALL(site_visit_observer_mock_,
               OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()));
   SimulateClickingAd(ad, /*tab_id=*/1,
@@ -319,7 +319,7 @@ TEST_F(
 
   // Tab 1 (Start page landing)
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
   EXPECT_CALL(site_visit_observer_mock_,
               OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()));
   SimulateClickingAd(ad, /*tab_id=*/1,
@@ -359,7 +359,7 @@ TEST_F(BraveAdsSiteVisitTest, DoNotSuspendOrResumePageLand) {
 
   // Tab (Start page landing)
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
   EXPECT_CALL(site_visit_observer_mock_,
               OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()));
   SimulateClickingAd(ad, /*tab_id=*/1,
@@ -395,7 +395,7 @@ TEST_F(
   test::DisableBraveRewards();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_, OnMaybeLandOnPage).Times(0);
@@ -412,7 +412,7 @@ TEST_F(BraveAdsSiteVisitTest,
 
   // Tab 1 (Visible/Start page landing)
   const AdInfo ad_1 = test::BuildAd(mojom::AdType::kNotificationAd,
-                                    /*should_generate_random_uuids=*/true);
+                                    /*use_random_uuids=*/true);
   EXPECT_CALL(site_visit_observer_mock_,
               OnMaybeLandOnPage(ad_1, /*after=*/kPageLandAfter.Get()));
   SimulateClickingAd(ad_1, /*tab_id=*/1,
@@ -427,7 +427,7 @@ TEST_F(BraveAdsSiteVisitTest,
 
   // Tab 2 (Visible/Start page landing)
   const AdInfo ad_2 = test::BuildAd(mojom::AdType::kNotificationAd,
-                                    /*should_generate_random_uuids=*/true);
+                                    /*use_random_uuids=*/true);
   EXPECT_CALL(site_visit_observer_mock_,
               OnMaybeLandOnPage(ad_2, /*after=*/kPageLandAfter.Get()));
   SimulateClickingAd(ad_2, /*tab_id=*/2,
@@ -471,7 +471,7 @@ TEST_F(
   const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
   EXPECT_CALL(site_visit_observer_mock_,
               OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()));
   SimulateClickingAd(ad, /*tab_id=*/1,
@@ -492,7 +492,7 @@ TEST_F(
   const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
   EXPECT_CALL(site_visit_observer_mock_,
               OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()))
       .Times(0);
@@ -513,7 +513,7 @@ TEST_F(
   const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
   EXPECT_CALL(site_visit_observer_mock_,
               OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()))
       .Times(0);
@@ -532,7 +532,7 @@ TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfTheTabIsOccluded) {
   const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
                      /*redirect_chain=*/{GURL("https://brave.com")},
                      net::HTTP_OK);
@@ -553,7 +553,7 @@ TEST_F(
   const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
   SimulateClickingAd(
       ad, /*tab_id=*/1,
       /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
@@ -570,7 +570,7 @@ TEST_F(BraveAdsSiteVisitTest,
   const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
                      /*redirect_chain=*/{GURL("https://brave.com")},
                      net::HTTP_OK);
@@ -589,7 +589,7 @@ TEST_F(BraveAdsSiteVisitTest, CancelPageLandIfTheTabIsClosed) {
   const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
                      /*redirect_chain=*/{GURL("https://brave.com")},
                      net::HTTP_OK);

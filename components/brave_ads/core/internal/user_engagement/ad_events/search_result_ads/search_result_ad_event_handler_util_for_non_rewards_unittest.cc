@@ -42,7 +42,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
 
   // Act
   MaybeBuildAndSaveCreativeSetConversion(
@@ -69,7 +69,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
 
   // Act
   for (size_t i = 0;
@@ -97,7 +97,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
        DoNotSaveCreativeSetConversionForClickedEventWithoutConversion) {
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
-      test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeSearchResultAd(/*use_random_uuids=*/true);
 
   // Act
   MaybeBuildAndSaveCreativeSetConversion(
@@ -118,7 +118,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_FALSE(IsAllowedToFireAdEvent(
@@ -129,7 +129,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
        NotAllowedToFireViewedEventWithoutConversion) {
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
-      test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeSearchResultAd(/*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_FALSE(IsAllowedToFireAdEvent(
@@ -141,7 +141,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
 
   // Act & Assert
   for (size_t i = 0;
@@ -160,7 +160,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
        NotAllowedToFireClickedEventWithoutConversion) {
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
-      test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeSearchResultAd(/*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_FALSE(IsAllowedToFireAdEvent(
@@ -172,7 +172,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   AdEventList ad_events;
@@ -191,7 +191,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   AdEventList ad_events;

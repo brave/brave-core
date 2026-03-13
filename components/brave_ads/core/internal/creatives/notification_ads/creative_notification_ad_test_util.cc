@@ -20,7 +20,7 @@ CreativeNotificationAdList BuildCreativeNotificationAds(size_t count) {
 
   for (size_t i = 0; i < count; ++i) {
     CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd(
-        /*should_generate_random_uuids=*/true);
+        /*use_random_uuids=*/true);
     creative_ad.segment = kSegments[i % kSegments.size()];
 
     creative_ads.push_back(creative_ad);
@@ -29,10 +29,8 @@ CreativeNotificationAdList BuildCreativeNotificationAds(size_t count) {
   return creative_ads;
 }
 
-CreativeNotificationAdInfo BuildCreativeNotificationAd(
-    bool should_generate_random_uuids) {
-  const CreativeAdInfo creative_ad =
-      BuildCreativeAd(should_generate_random_uuids);
+CreativeNotificationAdInfo BuildCreativeNotificationAd(bool use_random_uuids) {
+  const CreativeAdInfo creative_ad = BuildCreativeAd(use_random_uuids);
   CreativeNotificationAdInfo creative_notification_ad(creative_ad);
 
   creative_notification_ad.title = "Test Ad Title";

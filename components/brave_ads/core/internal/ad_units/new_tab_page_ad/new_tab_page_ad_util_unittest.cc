@@ -49,7 +49,7 @@ TEST_F(BraveAdsNewTabPageAdMojomUtilTest, NewTabPageAdFromMojom) {
   // Assert
   const CreativeNewTabPageAdInfo creative_ad =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/false);
+                                      /*use_random_uuids=*/false);
   EXPECT_EQ(BuildNewTabPageAd(test::kPlacementId, creative_ad), ad);
 }
 
@@ -57,7 +57,7 @@ TEST_F(BraveAdsNewTabPageAdMojomUtilTest, NewTabPageAdToMojom) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/false);
+                                      /*use_random_uuids=*/false);
   const NewTabPageAdInfo ad =
       BuildNewTabPageAd(test::kPlacementId, creative_ad);
 

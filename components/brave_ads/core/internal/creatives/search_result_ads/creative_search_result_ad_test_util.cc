@@ -22,20 +22,19 @@ constexpr base::TimeDelta kConversionObservationWindow = base::Days(3);
 }  // namespace
 
 mojom::CreativeSearchResultAdInfoPtr BuildCreativeSearchResultAd(
-    bool should_generate_random_uuids) {
+    bool use_random_uuids) {
   mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       mojom::CreativeSearchResultAdInfo::New();
 
   mojom_creative_ad->placement_id =
-      RandomUuidOr(should_generate_random_uuids, kPlacementId);
+      RandomUuidOr(use_random_uuids, kPlacementId);
   mojom_creative_ad->creative_instance_id =
-      RandomUuidOr(should_generate_random_uuids, kCreativeInstanceId);
+      RandomUuidOr(use_random_uuids, kCreativeInstanceId);
   mojom_creative_ad->creative_set_id =
-      RandomUuidOr(should_generate_random_uuids, kCreativeSetId);
-  mojom_creative_ad->campaign_id =
-      RandomUuidOr(should_generate_random_uuids, kCampaignId);
+      RandomUuidOr(use_random_uuids, kCreativeSetId);
+  mojom_creative_ad->campaign_id = RandomUuidOr(use_random_uuids, kCampaignId);
   mojom_creative_ad->advertiser_id =
-      RandomUuidOr(should_generate_random_uuids, kAdvertiserId);
+      RandomUuidOr(use_random_uuids, kAdvertiserId);
   mojom_creative_ad->target_url = GURL(kTargetUrl);
   mojom_creative_ad->headline_text = kTitle;
   mojom_creative_ad->description = kDescription;
@@ -45,9 +44,9 @@ mojom::CreativeSearchResultAdInfoPtr BuildCreativeSearchResultAd(
 }
 
 mojom::CreativeSearchResultAdInfoPtr BuildCreativeSearchResultAdWithConversion(
-    bool should_generate_random_uuids) {
+    bool use_random_uuids) {
   mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
-      BuildCreativeSearchResultAd(should_generate_random_uuids);
+      BuildCreativeSearchResultAd(use_random_uuids);
   CHECK(mojom_creative_ad);
 
   mojom_creative_ad->creative_set_conversion =

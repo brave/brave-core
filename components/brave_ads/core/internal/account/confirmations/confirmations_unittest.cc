@@ -44,7 +44,7 @@ TEST_F(BraveAdsConfirmationsTest, ConfirmForRewardsUser) {
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
 
   // Act
   confirmations_->Confirm(transaction, /*user_data=*/{});
@@ -66,7 +66,7 @@ TEST_F(BraveAdsConfirmationsTest, ConfirmForNonRewardsUser) {
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
 
   // Act
   confirmations_->Confirm(transaction, /*user_data=*/{});

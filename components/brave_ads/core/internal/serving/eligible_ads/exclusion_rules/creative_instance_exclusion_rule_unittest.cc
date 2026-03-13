@@ -60,10 +60,10 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, ShouldIncludeAfter1Hour) {
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, mojom::AdType::kNotificationAd,
-      mojom::ConfirmationType::kServedImpression,
-      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
+  const AdEventInfo ad_event =
+      test::BuildAdEvent(creative_ad, mojom::AdType::kNotificationAd,
+                         mojom::ConfirmationType::kServedImpression,
+                         /*created_at=*/test::Now(), /*use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const CreativeInstanceExclusionRule exclusion_rule(ad_events);
@@ -85,28 +85,28 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event_1 = test::BuildAdEvent(
-      creative_ad, mojom::AdType::kNotificationAd,
-      mojom::ConfirmationType::kServedImpression,
-      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
+  const AdEventInfo ad_event_1 =
+      test::BuildAdEvent(creative_ad, mojom::AdType::kNotificationAd,
+                         mojom::ConfirmationType::kServedImpression,
+                         /*created_at=*/test::Now(), /*use_random_uuids=*/true);
   ad_events.push_back(ad_event_1);
 
-  const AdEventInfo ad_event_2 = test::BuildAdEvent(
-      creative_ad, mojom::AdType::kNewTabPageAd,
-      mojom::ConfirmationType::kServedImpression,
-      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
+  const AdEventInfo ad_event_2 =
+      test::BuildAdEvent(creative_ad, mojom::AdType::kNewTabPageAd,
+                         mojom::ConfirmationType::kServedImpression,
+                         /*created_at=*/test::Now(), /*use_random_uuids=*/true);
   ad_events.push_back(ad_event_2);
 
   const AdEventInfo ad_event_3 = test::BuildAdEvent(
       creative_ad, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kServedImpression, /*created_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   ad_events.push_back(ad_event_3);
 
-  const AdEventInfo ad_event_4 = test::BuildAdEvent(
-      creative_ad, mojom::AdType::kSearchResultAd,
-      mojom::ConfirmationType::kServedImpression,
-      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
+  const AdEventInfo ad_event_4 =
+      test::BuildAdEvent(creative_ad, mojom::AdType::kSearchResultAd,
+                         mojom::ConfirmationType::kServedImpression,
+                         /*created_at=*/test::Now(), /*use_random_uuids=*/true);
   ad_events.push_back(ad_event_4);
 
   const CreativeInstanceExclusionRule exclusion_rule(ad_events);
@@ -127,10 +127,10 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, mojom::AdType::kNotificationAd,
-      mojom::ConfirmationType::kServedImpression,
-      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
+  const AdEventInfo ad_event =
+      test::BuildAdEvent(creative_ad, mojom::AdType::kNotificationAd,
+                         mojom::ConfirmationType::kServedImpression,
+                         /*created_at=*/test::Now(), /*use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const CreativeInstanceExclusionRule exclusion_rule(ad_events);

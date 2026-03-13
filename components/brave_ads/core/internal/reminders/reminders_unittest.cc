@@ -34,7 +34,7 @@ void BuildAndSaveAdHistory(mojom::AdType mojom_ad_type, size_t clicked_count) {
 
   const AdHistoryList ad_history =
       test::BuildAdHistory(mojom_ad_type, mojom_confirmation_types,
-                           /*should_generate_random_uuids=*/false);
+                           /*use_random_uuids=*/false);
 
   database::SaveAdHistory(ad_history);
 }
@@ -65,7 +65,7 @@ TEST_F(BraveAdsRemindersTest,
 
   const NotificationAdInfo ad =
       BuildNotificationAd(test::BuildCreativeNotificationAd(
-          /*should_generate_random_uuids=*/false));
+          /*use_random_uuids=*/false));
 
   // Act & Assert
   EXPECT_CALL(*ads_observer_mock_, OnRemindUser).Times(0);
@@ -86,7 +86,7 @@ TEST_F(BraveAdsRemindersTest,
 
   const NotificationAdInfo ad =
       BuildNotificationAd(test::BuildCreativeNotificationAd(
-          /*should_generate_random_uuids=*/false));
+          /*use_random_uuids=*/false));
 
   // Act & Assert
   EXPECT_CALL(*ads_observer_mock_, OnRemindUser).Times(0);
@@ -107,7 +107,7 @@ TEST_F(BraveAdsRemindersTest,
 
   const NotificationAdInfo ad =
       BuildNotificationAd(test::BuildCreativeNotificationAd(
-          /*should_generate_random_uuids=*/false));
+          /*use_random_uuids=*/false));
 
   // Act & Assert
   EXPECT_CALL(*ads_observer_mock_,
@@ -129,7 +129,7 @@ TEST_F(BraveAdsRemindersTest,
 
   const NotificationAdInfo ad =
       BuildNotificationAd(test::BuildCreativeNotificationAd(
-          /*should_generate_random_uuids=*/false));
+          /*use_random_uuids=*/false));
 
   // Act & Assert
   EXPECT_CALL(*ads_observer_mock_,
@@ -151,7 +151,7 @@ TEST_F(BraveAdsRemindersTest,
 
   const NotificationAdInfo ad =
       BuildNotificationAd(test::BuildCreativeNotificationAd(
-          /*should_generate_random_uuids=*/false));
+          /*use_random_uuids=*/false));
 
   // Act & Assert
   EXPECT_CALL(*ads_observer_mock_,
@@ -171,7 +171,7 @@ TEST_F(BraveAdsRemindersTest,
 
   const NotificationAdInfo ad =
       BuildNotificationAd(test::BuildCreativeNotificationAd(
-          /*should_generate_random_uuids=*/false));
+          /*use_random_uuids=*/false));
 
   // Act & Assert
   EXPECT_CALL(*ads_observer_mock_, OnRemindUser).Times(0);
@@ -192,7 +192,7 @@ TEST_F(
 
   const NotificationAdInfo ad =
       BuildNotificationAd(test::BuildCreativeNotificationAd(
-          /*should_generate_random_uuids=*/false));
+          /*use_random_uuids=*/false));
 
   // Act & Assert
   EXPECT_CALL(*ads_observer_mock_, OnRemindUser).Times(0);

@@ -38,7 +38,7 @@ TEST_F(BraveAdsNextPaymentDateUtilTest,
   const TransactionInfo transaction = test::BuildTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   transactions.push_back(transaction);
 
   AdvanceClockTo(test::TimeFromUTCString("1 February 2020"));
@@ -81,7 +81,7 @@ TEST_F(BraveAdsNextPaymentDateUtilTest,
   const TransactionInfo transaction = test::BuildTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   transactions.push_back(transaction);
 
   const base::Time next_payment_token_redemption_at =

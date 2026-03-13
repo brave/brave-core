@@ -47,7 +47,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerUtilForNonRewardsTest,
   // Arrange
   const NewTabPageAdInfo ad =
       test::BuildNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                              /*should_generate_random_uuids=*/true);
+                              /*use_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event =
@@ -65,7 +65,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerUtilForNonRewardsTest,
   // Arrange
   const NewTabPageAdInfo ad =
       test::BuildNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                              /*should_generate_random_uuids=*/true);
+                              /*use_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event_1 =
@@ -87,7 +87,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerUtilForNonRewardsTest,
   // Arrange
   const NewTabPageAdInfo ad =
       test::BuildNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                              /*should_generate_random_uuids=*/true);
+                              /*use_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event =
@@ -105,7 +105,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerUtilForNonRewardsTest,
   // Arrange
   const NewTabPageAdInfo ad =
       test::BuildNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                              /*should_generate_random_uuids=*/true);
+                              /*use_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event_1 =

@@ -18,7 +18,7 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAds(
     size_t count);
 CreativeNewTabPageAdInfo BuildCreativeNewTabPageAd(
     CreativeNewTabPageAdWallpaperType wallpaper_type,
-    bool should_generate_random_uuids);
+    bool use_random_uuids);
 
 void SaveCreativeNewTabPageAds(const CreativeNewTabPageAdList& creative_ads);
 

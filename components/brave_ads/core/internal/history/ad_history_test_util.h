@@ -16,17 +16,17 @@ namespace brave_ads::test {
 AdHistoryItemInfo BuildAdHistoryItem(
     mojom::AdType mojom_ad_type,
     mojom::ConfirmationType mojom_confirmation_type,
-    bool should_generate_random_uuids);
+    bool use_random_uuids);
 
 AdHistoryList BuildAdHistory(
     mojom::AdType mojom_ad_type,
     const std::vector<mojom::ConfirmationType>& mojom_confirmation_types,
-    bool should_generate_random_uuids);
+    bool use_random_uuids);
 
 AdHistoryList BuildAdHistoryForSamePlacement(
     mojom::AdType mojom_ad_type,
     const std::vector<mojom::ConfirmationType>& mojom_confirmation_types,
-    bool should_generate_random_uuids);
+    bool use_random_uuids);
 
 }  // namespace brave_ads::test
 

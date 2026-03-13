@@ -27,7 +27,7 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
   const TransactionInfo transaction = test::BuildTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   transactions.push_back(transaction);
 
   // Act & Assert
@@ -43,7 +43,7 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   transactions.push_back(transaction);
 
   AdvanceClockTo(test::TimeFromString("25 December 2020"));
@@ -61,7 +61,7 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
   const TransactionInfo transaction = test::BuildTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   transactions.push_back(transaction);
 
   AdvanceClockTo(test::TimeFromString("25 December 2020"));
@@ -79,7 +79,7 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   transactions.push_back(transaction);
 
   // Act & Assert
@@ -93,7 +93,7 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest, DidReconcileTransaction) {
   const TransactionInfo transaction = test::BuildTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_TRUE(DidReconcileTransaction(transaction));
@@ -106,7 +106,7 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest, WasTransactionNotReconciled) {
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_FALSE(DidReconcileTransaction(transaction));
@@ -120,7 +120,7 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
   const TransactionInfo transaction = test::BuildTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_TRUE(DidReconcileTransactionWithinDateRange(
@@ -136,7 +136,7 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_FALSE(DidReconcileTransactionWithinDateRange(

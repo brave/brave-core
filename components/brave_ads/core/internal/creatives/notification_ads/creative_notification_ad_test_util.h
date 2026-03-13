@@ -13,8 +13,7 @@
 namespace brave_ads::test {
 
 CreativeNotificationAdList BuildCreativeNotificationAds(size_t count);
-CreativeNotificationAdInfo BuildCreativeNotificationAd(
-    bool should_generate_random_uuids);
+CreativeNotificationAdInfo BuildCreativeNotificationAd(bool use_random_uuids);
 
 }  // namespace brave_ads::test
 

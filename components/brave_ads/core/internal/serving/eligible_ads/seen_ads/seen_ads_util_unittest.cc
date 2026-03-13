@@ -19,7 +19,7 @@ namespace brave_ads {
 TEST(BraveAdsSeenAdsUtilTest, DoNotGetLastSeenAdAtForEmptyAdEvents) {
   // Arrange
   const NotificationAdInfo ad =
-      test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildNotificationAd(/*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_FALSE(GetLastSeenAdAt(/*ad_events=*/{}, ad.creative_instance_id));
@@ -28,7 +28,7 @@ TEST(BraveAdsSeenAdsUtilTest, DoNotGetLastSeenAdAtForEmptyAdEvents) {
 TEST(BraveAdsSeenAdsUtilTest, DoNotGetLastSeenAdAtForUnseenAd) {
   // Arrange
   const NotificationAdInfo ad_1 =
-      test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildNotificationAd(/*use_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event =
@@ -37,7 +37,7 @@ TEST(BraveAdsSeenAdsUtilTest, DoNotGetLastSeenAdAtForUnseenAd) {
   ad_events.push_back(ad_event);
 
   const NotificationAdInfo ad_2 =
-      test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildNotificationAd(/*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_FALSE(GetLastSeenAdAt(ad_events, ad_2.creative_instance_id));
@@ -46,10 +46,10 @@ TEST(BraveAdsSeenAdsUtilTest, DoNotGetLastSeenAdAtForUnseenAd) {
 TEST(BraveAdsSeenAdsUtilTest, GetLastSeenAdAt) {
   // Arrange
   const NotificationAdInfo ad_1 =
-      test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildNotificationAd(/*use_random_uuids=*/true);
 
   const NotificationAdInfo ad_2 =
-      test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildNotificationAd(/*use_random_uuids=*/true);
 
   const base::Time now = test::Now();
 

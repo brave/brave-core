@@ -12,7 +12,7 @@ struct SearchResultAdInfo;
 
 namespace test {
 
-SearchResultAdInfo BuildSearchResultAd(bool should_generate_random_uuids);
+SearchResultAdInfo BuildSearchResultAd(bool use_random_uuids);
 
 }  // namespace test
 

@@ -21,20 +21,19 @@
 
 namespace brave_ads::test {
 
-std::optional<ConfirmationInfo> BuildRewardConfirmation(
-    bool should_generate_random_uuids) {
+std::optional<ConfirmationInfo> BuildRewardConfirmation(bool use_random_uuids) {
   CHECK(UserHasJoinedBraveRewards());
 
   const TransactionInfo transaction = BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
-      mojom::ConfirmationType::kViewedImpression, should_generate_random_uuids);
+      mojom::ConfirmationType::kViewedImpression, use_random_uuids);
   return BuildRewardConfirmation(transaction, /*user_data=*/{});
 }
 
 std::optional<ConfirmationInfo> BuildRewardConfirmationWithoutDynamicUserData(
-    bool should_generate_random_uuids) {
+    bool use_random_uuids) {
   std::optional<ConfirmationInfo> confirmation =
-      BuildRewardConfirmation(should_generate_random_uuids);
+      BuildRewardConfirmation(use_random_uuids);
   CHECK(confirmation);
 
   return RebuildConfirmationWithoutDynamicUserData(*confirmation);

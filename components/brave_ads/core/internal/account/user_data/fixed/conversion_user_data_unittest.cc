@@ -29,7 +29,7 @@ class BraveAdsConversionUserDataBuilderTest : public test::TestBase {};
 TEST_F(BraveAdsConversionUserDataBuilderTest, BuildConversionUserData) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/false);
+                                  /*use_random_uuids=*/false);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
                    /*created_at=*/test::Now());
@@ -53,7 +53,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
        BuildVerifiableConversionUserData) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/false);
+                                  /*use_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, mojom::ConfirmationType::kClicked, /*created_at=*/test::Now());
   const ConversionInfo conversion = BuildConversion(

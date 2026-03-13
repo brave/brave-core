@@ -20,17 +20,15 @@ std::string RandomUuidOr(bool should_generate_random_uuid,
              : or_uuid;
 }
 
-AdInfo BuildAd(mojom::AdType mojom_ad_type, bool should_generate_random_uuids) {
+AdInfo BuildAd(mojom::AdType mojom_ad_type, bool use_random_uuids) {
   AdInfo ad;
 
   ad.type = mojom_ad_type;
-  ad.placement_id = RandomUuidOr(should_generate_random_uuids, kPlacementId);
-  ad.creative_instance_id =
-      RandomUuidOr(should_generate_random_uuids, kCreativeInstanceId);
-  ad.creative_set_id =
-      RandomUuidOr(should_generate_random_uuids, kCreativeSetId);
-  ad.campaign_id = RandomUuidOr(should_generate_random_uuids, kCampaignId);
-  ad.advertiser_id = RandomUuidOr(should_generate_random_uuids, kAdvertiserId);
+  ad.placement_id = RandomUuidOr(use_random_uuids, kPlacementId);
+  ad.creative_instance_id = RandomUuidOr(use_random_uuids, kCreativeInstanceId);
+  ad.creative_set_id = RandomUuidOr(use_random_uuids, kCreativeSetId);
+  ad.campaign_id = RandomUuidOr(use_random_uuids, kCampaignId);
+  ad.advertiser_id = RandomUuidOr(use_random_uuids, kAdvertiserId);
   ad.segment = kSegment;
   ad.target_url = GURL(kTargetUrl);
 
