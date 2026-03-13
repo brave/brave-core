@@ -13,7 +13,11 @@ extension BrowserViewController: KeyboardHelperDelegate {
     keyboardWillShowWithState state: KeyboardState
   ) {
     keyboardState = state
-    if isUsingBottomBar && !topToolbar.inOverlayMode && presentedViewController == nil {
+    // Only collapse the url bar take control of the toolbar if the reason why the keyboard will
+    // show is because the active web content presented it.
+    let isKeyboardActiveForWebContent =
+      tabManager.selectedTab?.webViewProxy?.isKeyboardVisible == true
+    if isKeyboardActiveForWebContent, isUsingBottomBar {
       UIView.animate(withDuration: 0.1) { [self] in
         // We can't actually set the toolbar state to collapsed since bar collapsing/expanding is
         // based on many web view traits such as content size and such so we will just use the
@@ -47,13 +51,8 @@ extension BrowserViewController: KeyboardHelperDelegate {
     keyboardWillHideWithState state: KeyboardState
   ) {
     keyboardState = nil
-    if isUsingBottomBar && !topToolbar.inOverlayMode
-      && (presentedViewController == nil
-        // Always reset things if collapsed url bar is visible
-        || collapsedURLBarView.isKeyboardVisible)
-      || !toolbarVisibilityViewModel
-        .isEnabled  // Always reset things after orientation change that may change bottom bar
-    {
+    // Always reset things after orientation change that may change bottom bar
+    if isUsingBottomBar, !toolbarVisibilityViewModel.isEnabled {
       UIView.animate(withDuration: 0.1) { [self] in
         // We can't actually set the toolbar state to expanded since bar collapsing/expanding is
         // based on many web view traits such as content size and such so we will just use the
