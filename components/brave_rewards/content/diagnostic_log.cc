@@ -180,13 +180,11 @@ bool TrimBeginningOfFile(base::File* file, int keep_num_lines) {
   }
 
   const std::string data(buffer.data(), *n);
-  const int64_t new_size = data.size();
-
-  if (UNSAFE_TODO(file->WriteAtCurrentPos(data.c_str(), new_size)) == -1) {
+  if (file->WriteAtCurrentPos(base::as_byte_span(data)) == -1) {
     return false;
   }
 
-  if (!file->SetLength(new_size)) {
+  if (!file->SetLength(data.size())) {
     return false;
   }
 
@@ -271,11 +269,10 @@ bool WriteOnFileTaskRunner(const base::FilePath& file_path,
 
   if (first_write) {
     const std::string divider = std::string(kDividerLength, '-') + "\n";
-    UNSAFE_TODO(file.WriteAtCurrentPos(divider.c_str(), divider.length()));
+    file.WriteAtCurrentPos(base::as_byte_span(divider));
   }
 
-  if (UNSAFE_TODO(file.WriteAtCurrentPos(log_entry.c_str(),
-                                         log_entry.length())) == -1) {
+  if (file.WriteAtCurrentPos(base::as_byte_span(log_entry)) == -1) {
     return false;
   }
 
