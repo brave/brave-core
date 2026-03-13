@@ -9,11 +9,12 @@
 
 #include "brave/browser/resources/brave_origin_startup/grit/brave_origin_startup_generated_map.h"
 #include "brave/browser/resources/brave_origin_startup/grit/brave_origin_startup_static_resources.h"
+#include "brave/browser/resources/brave_origin_startup/grit/brave_origin_startup_static_resources_map.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/webui/brave_origin_startup/brave_origin_startup_handler.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/grit/brave_components_strings.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
@@ -28,28 +29,9 @@ void CreateAndAddDataSource(content::WebUI* web_ui, Profile* profile) {
   webui::SetupWebUIDataSource(
       source, kBraveOriginStartupGenerated,
       IDR_BRAVE_ORIGIN_STARTUP_STATIC_BRAVE_ORIGIN_STARTUP_HTML);
+  source->AddResourcePaths(kBraveOriginStartupStaticResources);
 
-  static constexpr webui::LocalizedString kStrings[] = {
-      {"braveOriginStartupTitle", IDS_BRAVE_ORIGIN_STARTUP_TITLE},
-      {"braveOriginStartupDescription", IDS_BRAVE_ORIGIN_STARTUP_DESCRIPTION},
-      {"braveOriginStartupDescription2", IDS_BRAVE_ORIGIN_STARTUP_DESCRIPTION2},
-      {"braveOriginStartupRestoreButton",
-       IDS_BRAVE_ORIGIN_STARTUP_RESTORE_BUTTON},
-      {"braveOriginStartupBuyButton", IDS_BRAVE_ORIGIN_STARTUP_BUY_BUTTON},
-      {"braveOriginStartupRestoreTitle",
-       IDS_BRAVE_ORIGIN_STARTUP_RESTORE_TITLE},
-      {"braveOriginStartupRestoreDescription",
-       IDS_BRAVE_ORIGIN_STARTUP_RESTORE_DESCRIPTION},
-      {"braveOriginStartupPurchaseIdLabel",
-       IDS_BRAVE_ORIGIN_STARTUP_PURCHASE_ID_LABEL},
-      {"braveOriginStartupPurchaseIdPlaceholder",
-       IDS_BRAVE_ORIGIN_STARTUP_PURCHASE_ID_PLACEHOLDER},
-      {"braveOriginStartupVerifyButton",
-       IDS_BRAVE_ORIGIN_STARTUP_VERIFY_BUTTON},
-      {"braveOriginStartupVerifyingMessage",
-       IDS_BRAVE_ORIGIN_STARTUP_VERIFYING_MESSAGE},
-  };
-  source->AddLocalizedStrings(kStrings);
+  source->AddLocalizedStrings(webui::kBraveOriginStartupStrings);
 }
 
 }  // namespace

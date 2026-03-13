@@ -33,3 +33,45 @@ source_set("brave_origin") {
     "//url",
   ]
 }
+
+source_set("browser_tests") {
+  testonly = true
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "brave_origin_startup_view_browsertest.cc" ]
+
+  deps = [
+    ":brave_origin",
+    "//base",
+    "//brave/components/brave_origin:pref_names",
+    "//brave/components/skus/browser",
+    "//chrome/browser",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/startup",
+    "//chrome/test:test_support_ui",
+    "//components/prefs",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//ui/views",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_origin_startup_view_unittest.cc" ]
+
+  deps = [
+    ":brave_origin",
+    "//base",
+    "//brave/components/brave_origin:pref_names",
+    "//brave/components/skus/browser",
+    "//components/prefs:test_support",
+    "//testing/gtest",
+  ]
+}
