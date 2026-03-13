@@ -24,7 +24,7 @@ def main():
         for channel in ('', 'Nightly', 'Beta', 'Release'):
             app_name = f'Brave {brand}' + (f' {channel}' if channel else '')
             suffix = f'.{channel.lower()}' if channel else ''
-            ds_store = f'DS_Store{brand_suffix}{suffix}
+            ds_store = f'DS_Store{brand_suffix}{suffix}'
             create_ds_store(app_name, '../dmg-background.png', ds_store)
 
 
