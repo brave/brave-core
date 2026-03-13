@@ -133,8 +133,9 @@ Additional context, edge cases, or explanation if needed.
 
 ## Step 6: Add the Entry to the Document
 
-1. Read the target document to find the right location for the new entry (group it with related rules)
-2. Append or insert the entry at the chosen location
+1. Read the target document to find the right location for the new entry
+2. **Entries must be ordered by ID** — since the new entry gets the next
+   available ID (highest + 1), always append it at the end of the document
 3. Make sure there's a `---` separator between entries
 
 ---
