@@ -135,8 +135,7 @@ bool CanAddCurrentActiveTabToSidebar(Browser* browser) {
 }
 
 bool IsWebPanelFeatureEnabled() {
-  return base::FeatureList::IsEnabled(features::kSidebarWebPanel) &&
-         base::FeatureList::IsEnabled(::features::kSideBySide);
+  return base::FeatureList::IsEnabled(features::kSidebarWebPanel);
 }
 
 SidePanelEntryId SidePanelIdFromSideBarItemType(BuiltInItemType type) {

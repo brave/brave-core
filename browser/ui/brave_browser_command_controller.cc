@@ -166,8 +166,7 @@ void BraveBrowserCommandController::OnTabStripModelChanged(
   UpdateCommandsForSend();
   UpdateCommandsForPin();
 
-  if (base::FeatureList::IsEnabled(features::kSideBySide) &&
-      browser_->is_type_normal() && selection.active_tab_changed()) {
+  if (browser_->is_type_normal() && selection.active_tab_changed()) {
     UpdateCommandForSplitView();
   }
 }
@@ -515,13 +514,6 @@ void BraveBrowserCommandController::UpdateCommandsForPin() {
 }
 
 void BraveBrowserCommandController::UpdateCommandForSplitView() {
-  // Some upstream unit test calls split tab apis w/o enabling SideBySide
-  // feature.
-  if (!base::FeatureList::IsEnabled(features::kSideBySide)) {
-    CHECK_IS_TEST();
-    return;
-  }
-
   UpdateCommandEnabled(
       IDC_NEW_SPLIT_VIEW,
       brave::CanOpenNewSplitTabsWithSideBySide(base::to_address(browser_)));
@@ -776,25 +768,21 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::BringAllTabs(&*browser_);
       break;
     case IDC_NEW_SPLIT_VIEW: {
-      CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
       chrome::NewSplitTab(base::to_address(browser_),
                           split_tabs::SplitTabCreatedSource::kToolbarButton);
       break;
     }
     case IDC_TILE_TABS: {
-      CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
       brave::SplitTabsWithSideBySide(
           base::to_address(browser_),
           split_tabs::SplitTabCreatedSource::kToolbarButton);
       break;
     }
     case IDC_BREAK_TILE: {
-      CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
       brave::RemoveSplitWithSideBySide(base::to_address(browser_));
       break;
     }
     case IDC_SWAP_SPLIT_VIEW: {
-      CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
       brave::SwapTabsInSplitWithSideBySide(base::to_address(browser_));
       break;
     }

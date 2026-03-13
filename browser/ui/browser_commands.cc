@@ -1040,8 +1040,6 @@ void ToggleAllBookmarksButtonVisibility(Browser* browser) {
 }
 
 bool CanOpenNewSplitTabsWithSideBySide(Browser* browser) {
-  CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
-
   auto* tab_strip_model = browser->tab_strip_model();
   auto active_index = tab_strip_model->active_index();
   if (active_index == TabStripModel::kNoTab) {
@@ -1052,8 +1050,6 @@ bool CanOpenNewSplitTabsWithSideBySide(Browser* browser) {
 }
 
 bool CanSplitTabsWithSideBySide(Browser* browser) {
-  CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
-
   auto* tab_strip_model = browser->tab_strip_model();
   if (tab_strip_model->empty()) {
     return false;
@@ -1103,8 +1099,6 @@ void SplitTabsWithSideBySide(Browser* browser,
 }
 
 void RemoveSplitWithSideBySide(Browser* browser) {
-  CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
-
   auto selected_indices = GetSelectedIndices(browser);
   auto* tab_strip_model = browser->tab_strip_model();
   for (auto index : selected_indices) {
@@ -1115,8 +1109,6 @@ void RemoveSplitWithSideBySide(Browser* browser) {
 }
 
 void SwapTabsInSplitWithSideBySide(Browser* browser) {
-  CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
-
   auto* tab_strip_model = browser->tab_strip_model();
   auto active_index = tab_strip_model->active_index();
   CHECK_NE(TabStripModel::kNoTab, active_index);

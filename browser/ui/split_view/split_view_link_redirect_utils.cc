@@ -155,8 +155,7 @@ namespace split_view {
 bool MaybeRedirectToRightPane(content::WebContents* source,
                               const GURL& url,
                               const content::Referrer& referrer) {
-  CHECK(base::FeatureList::IsEnabled(features::kSplitViewLink) &&
-        base::FeatureList::IsEnabled(::features::kSideBySide));
+  CHECK(base::FeatureList::IsEnabled(features::kSplitViewLink));
   CHECK(source);
 
   bool from_window_open = false;

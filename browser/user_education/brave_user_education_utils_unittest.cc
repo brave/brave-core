@@ -29,8 +29,7 @@ class BraveUserEducationUtilsTest : public testing::Test {
   void SetUp() override {
     // Enable the features we want to test
     feature_list_.InitWithFeatures(
-        {features::kSideBySide, features::kSideBySideLinkMenuNewBadge,
-         feature_engagement::kIPHSideBySidePinnableFeature,
+        {feature_engagement::kIPHSideBySidePinnableFeature,
          feature_engagement::kIPHSideBySideTabSwitchFeature},
         {});
     profile_ = std::make_unique<TestingProfile>();
@@ -45,85 +44,10 @@ class BraveUserEducationUtilsTest : public testing::Test {
   std::unique_ptr<UserEducationService> service_;
 };
 
-TEST_F(BraveUserEducationUtilsTest, SuppressesBadgesForSideBySideFeature) {
-  // Verify initial state - badge should not be suppressed
-  auto& storage = service_->user_education_storage_service();
-  user_education::NewBadgeData initial_data =
-      storage.ReadNewBadgeData(features::kSideBySide);
-
-  // Initial data should have default values
-  EXPECT_EQ(0, initial_data.show_count);
-  EXPECT_EQ(0, initial_data.used_count);
-
-  // Call the function to suppress badges
-  SuppressUserEducation(service_.get());
-
-  // Verify badge data has been modified to suppress the badge
-  user_education::NewBadgeData suppressed_data =
-      storage.ReadNewBadgeData(features::kSideBySide);
-
-  // Badge should now have maximum counts to suppress display
-  EXPECT_EQ(999, suppressed_data.show_count);
-  EXPECT_EQ(999, suppressed_data.used_count);
-  EXPECT_FALSE(suppressed_data.feature_enabled_time.is_null());
-}
-
-TEST_F(BraveUserEducationUtilsTest,
-       SuppressesBadgesForSideBySideLinkMenuFeature) {
-  // Call the function to suppress badges
-  SuppressUserEducation(service_.get());
-
-  // Verify kSideBySideLinkMenuNewBadge is also suppressed
-  auto& storage = service_->user_education_storage_service();
-  user_education::NewBadgeData data =
-      storage.ReadNewBadgeData(features::kSideBySideLinkMenuNewBadge);
-
-  EXPECT_EQ(999, data.show_count);
-  EXPECT_EQ(999, data.used_count);
-  EXPECT_FALSE(data.feature_enabled_time.is_null());
-}
-
 TEST_F(BraveUserEducationUtilsTest, HandlesNullService) {
   // Should not crash with null service
   SuppressUserEducation(nullptr);
   // Test passes if no crash occurs
-}
-
-TEST_F(BraveUserEducationUtilsTest, PreservesExistingFeatureEnabledTime) {
-  auto& storage = service_->user_education_storage_service();
-
-  // Set up initial data with a specific enabled time
-  user_education::NewBadgeData initial_data;
-  initial_data.feature_enabled_time = base::Time::Now() - base::Days(5);
-  initial_data.show_count = 1;
-  initial_data.used_count = 1;
-  storage.SaveNewBadgeData(features::kSideBySide, initial_data);
-
-  base::Time original_time = initial_data.feature_enabled_time;
-
-  // Call suppress function
-  SuppressUserEducation(service_.get());
-
-  // Verify the enabled time was preserved
-  user_education::NewBadgeData suppressed_data =
-      storage.ReadNewBadgeData(features::kSideBySide);
-
-  EXPECT_EQ(original_time, suppressed_data.feature_enabled_time);
-  EXPECT_EQ(999, suppressed_data.show_count);
-  EXPECT_EQ(999, suppressed_data.used_count);
-}
-
-TEST_F(BraveUserEducationUtilsTest, InitializesFeatureEnabledTimeWhenNull) {
-  // Call suppress function with fresh data (null enabled time)
-  SuppressUserEducation(service_.get());
-
-  auto& storage = service_->user_education_storage_service();
-  user_education::NewBadgeData data =
-      storage.ReadNewBadgeData(features::kSideBySide);
-
-  // Should have initialized the enabled time
-  EXPECT_FALSE(data.feature_enabled_time.is_null());
-  EXPECT_LE(data.feature_enabled_time, base::Time::Now());
 }
 
 TEST_F(BraveUserEducationUtilsTest, SuppressesIPHForSideBySidePinnableFeature) {
@@ -163,18 +87,6 @@ TEST_F(BraveUserEducationUtilsTest,
 
   ASSERT_TRUE(suppressed_data.has_value());
   EXPECT_TRUE(suppressed_data->is_dismissed);
-}
-
-TEST_F(BraveUserEducationUtilsTest, BadgePolicyShouldNotShowAfterSuppression) {
-  SuppressUserEducation(service_.get());
-
-  auto& storage = service_->user_education_storage_service();
-  user_education::NewBadgeData data =
-      storage.ReadNewBadgeData(features::kSideBySide);
-
-  // Verify that NewBadgePolicy returns false for suppressed data
-  user_education::NewBadgePolicy policy;
-  EXPECT_FALSE(policy.ShouldShowNewBadge(data, storage));
 }
 
 TEST_F(BraveUserEducationUtilsTest, PromoShouldBePermanentlyDismissed) {
