@@ -41,7 +41,7 @@ export function getHtml(this: SettingsBraveAccountRow) {
     [AccountStateFieldTags.LOGGED_IN]: () => createFirstRow(
       this.i18n(
           BraveAccountSettingsStrings
-               .SETTINGS_BRAVE_ACCOUNT_LOGGED_IN_ROW_TITLE),
+               .BRAVE_ACCOUNT_TITLE),
       html`<div id="email">${this.state!.loggedIn!.email}</div>`,
       html`
         <leo-button kind="outline"
