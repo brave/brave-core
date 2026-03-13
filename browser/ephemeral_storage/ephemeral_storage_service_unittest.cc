@@ -78,10 +78,6 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
               (override));
 #if BUILDFLAG(IS_ANDROID)
   MOCK_METHOD(void, TriggerCurrentAppStateNotification, (), (override));
-
-  void ResetFirstWindowOpenedCallback() {
-    first_window_opened_callback_.Reset();
-  }
 #endif
 
   void ExpectRegisterFirstWindowOpenedCallback(base::OnceClosure callback,
