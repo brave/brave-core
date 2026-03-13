@@ -26,6 +26,7 @@
 #include "components/saved_tab_groups/public/tab_group_sync_service.h"
 #include "components/split_tabs/split_tab_visual_data.h"
 #include "components/tabs/public/split_tab_collection.h"
+#include "components/tabs/public/tab_collection.h"
 #include "components/tabs/public/tab_strip_collection.h"
 #include "components/tabs/public/unpinned_tab_collection.h"
 #include "content/public/browser/web_contents.h"
@@ -55,12 +56,7 @@ void CreateSplitWithTabs(TabStripModel* model, int index_a, int index_b) {
 }
 
 void VerifySplitCreated(TabStripModel* model,
-                        tabs::TabStripCollection* collection,
-                        int expected_tab_count,
-                        bool all_tabs_in_split = false) {
-  // In tree tabs, count() can exceed expected_tab_count (e.g. due to
-  // move/insert flow); require at least the expected number of tabs.
-  EXPECT_GE(model->count(), expected_tab_count);
+                        tabs::TabStripCollection* collection) {
   std::set<split_tabs::SplitTabId> splits = collection->ListSplits();
   ASSERT_EQ(1u, splits.size());
   split_tabs::SplitTabId split_id = *splits.begin();
@@ -69,23 +65,34 @@ void VerifySplitCreated(TabStripModel* model,
       collection->GetSplitTabCollection(split_id);
   ASSERT_TRUE(split_coll);
   EXPECT_EQ(2u, split_coll->TabCountRecursive());
-  if (all_tabs_in_split) {
-    // Verify every tab that belongs to this split has the expected parent
-    // chain.
-    int tabs_in_split = 0;
-    for (int i = 0; i < model->count(); ++i) {
-      tabs::TabInterface* tab = model->GetTabAtIndex(i);
-      if (!tab->IsSplit() || tab->GetSplit().value() != split_id) {
-        continue;
-      }
-      ++tabs_in_split;
-      EXPECT_EQ(tab->GetParentCollection()->type(),
-                tabs::TabCollection::Type::SPLIT);
-      EXPECT_EQ(tab->GetParentCollection()->GetParentCollection()->type(),
-                tabs::TabCollection::Type::TREE_NODE);
-    }
-    EXPECT_GE(tabs_in_split, 2) << "split should contain at least 2 tabs";
+
+  // Verifies two tabs in split collection have the same grand parent
+  // collection.
+  tabs::TabCollection* grand_parent_collection =
+      split_coll->GetTabAtIndexRecursive(0)
+          ->GetParentCollection()
+          ->GetParentCollection();
+  EXPECT_EQ(grand_parent_collection, split_coll->GetTabAtIndexRecursive(1)
+                                         ->GetParentCollection()
+                                         ->GetParentCollection());
+  EXPECT_EQ(grand_parent_collection->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+}
+
+// Verify that no splits remain and no tab is in a split. Optionally check
+// |expected_tab_count| and |expected_unpinned_children|.
+void VerifyUnsplit(TabStripModel* model,
+                   tabs::TabStripCollection* collection,
+                   int expected_tab_count,
+                   size_t expected_unpinned_children) {
+  EXPECT_TRUE(collection->ListSplits().empty());
+  for (int i = 0; i < model->count(); ++i) {
+    EXPECT_FALSE(model->GetTabAtIndex(i)->IsSplit())
+        << "tab at index " << i << " should not be in a split after Unsplit";
   }
+  EXPECT_EQ(model->count(), expected_tab_count);
+  EXPECT_EQ(collection->unpinned_collection()->ChildCount(),
+            expected_unpinned_children);
 }
 
 }  // namespace
@@ -1578,8 +1585,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, CreateSplit_FromRootNode) {
   // the split.
   EXPECT_EQ(unpinned_collection().ChildCount(), 1u);
 
-  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection(), 2,
-                     /*all_tabs_in_split=*/true);
+  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection());
 }
 
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
@@ -1597,8 +1603,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
 
   CreateSplitWithTabs(&tab_strip_model(), 0, 1);
 
-  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection(), 2,
-                     /*all_tabs_in_split=*/true);
+  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection());
   EXPECT_EQ(1u, unpinned_collection().ChildCount());
 }
 
@@ -1626,16 +1631,12 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                            ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
 
   ASSERT_EQ(4, tab_strip_model().count());
-  int index_b =
-      tab_strip_model().GetIndexOfTab(tab_strip_model().GetTabAtIndex(1));
-  int index_d =
-      tab_strip_model().GetIndexOfTab(tab_strip_model().GetTabAtIndex(3));
-  ASSERT_GE(index_b, 0);
-  ASSERT_GE(index_d, 0);
 
-  CreateSplitWithTabs(&tab_strip_model(), index_b, index_d);
+  CreateSplitWithTabs(&tab_strip_model(), 1, 3);
+  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection());
 
-  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection(), 4);
+  EXPECT_EQ(4, tab_strip_model().count());
+  EXPECT_EQ(2u, unpinned_collection().ChildCount());
 }
 
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
@@ -1665,7 +1666,9 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
 
   CreateSplitWithTabs(&tab_strip_model(), index_b, index_c);
 
-  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection(), 3);
+  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection());
+  EXPECT_EQ(3, tab_strip_model().count());
+  EXPECT_EQ(1u, unpinned_collection().ChildCount());
 }
 
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
@@ -1681,12 +1684,88 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                            ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
 
   ASSERT_EQ(2, tab_strip_model().count());
-  int index_a = 0;
-  int index_b = 1;
 
-  CreateSplitWithTabs(&tab_strip_model(), index_a, index_b);
+  CreateSplitWithTabs(&tab_strip_model(), 0, 1);
+  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection());
 
-  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection(), 2,
-                     /*all_tabs_in_split=*/true);
   EXPECT_EQ(1u, unpinned_collection().ChildCount());
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       Unsplit_SiblingCase_TwoAdjacentRootNodes) {
+  SetTreeTabsEnabled(true);
+
+  auto tab1 =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tabs::TabInterface* tab1_interface = tab1.get();
+  tab_strip_model().AddTab(std::move(tab1), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  ASSERT_EQ(2, tab_strip_model().count());
+  ASSERT_EQ(unpinned_collection().ChildCount(), 2u);
+
+  CreateSplitWithTabs(&tab_strip_model(), 0, 1);
+  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection());
+  ASSERT_EQ(2, tab_strip_model().count());
+  ASSERT_EQ(1u, unpinned_collection().ChildCount());
+
+  split_tabs::SplitTabId split_id =
+      *tab_strip_collection().ListSplits().begin();
+  tab_strip_model().RemoveSplit(split_id);
+
+  VerifyUnsplit(&tab_strip_model(), &tab_strip_collection(), 2,
+                /*expected_unpinned_children=*/2u);
+
+  EXPECT_EQ(tab1_interface->GetParentCollection()->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+  EXPECT_EQ(
+      tab1_interface->GetParentCollection()->GetParentCollection()->type(),
+      tabs::TabCollection::Type::UNPINNED);
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, Unsplit_FromMiddleNode) {
+  SetTreeTabsEnabled(true);
+
+  // 1. - intial tab -> tab1
+  //    - tab2
+  auto tab1 =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab1->set_opener(tab_strip_model().GetTabAtIndex(0));
+  tab_strip_model().AddTab(std::move(tab1), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  ASSERT_EQ(2, tab_strip_model().count());
+  ASSERT_EQ(unpinned_collection().ChildCount(), 1u);
+
+  auto tab2 =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_strip_model().AddTab(std::move(tab2), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  ASSERT_EQ(3, tab_strip_model().count());
+  ASSERT_EQ(unpinned_collection().ChildCount(), 2u);
+
+  // 2. - initial tab -> (tab1, tab2) split
+  CreateSplitWithTabs(&tab_strip_model(), 1, 2);
+  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection());
+  ASSERT_EQ(3, tab_strip_model().count());
+  ASSERT_EQ(unpinned_collection().ChildCount(), 1u);
+
+  split_tabs::SplitTabId split_id =
+      *tab_strip_collection().ListSplits().begin();
+  tab_strip_model().RemoveSplit(split_id);
+
+  // When unspliting in the middle, they should become child of the initial
+  // tab.
+  VerifyUnsplit(&tab_strip_model(), &tab_strip_collection(), 3,
+                /*expected_unpinned_children=*/1u);
+
+  const auto& root = std::get<std::unique_ptr<tabs::TabCollection>>(
+      unpinned_collection().GetChildren().front());
+  EXPECT_EQ(root->GetChildren().size(), 3u);
+  EXPECT_EQ(
+      std::get<std::unique_ptr<tabs::TabCollection>>(root->GetChildren()[1])
+          ->type(),
+      tabs::TabCollection::Type::TREE_NODE);
+  EXPECT_EQ(
+      std::get<std::unique_ptr<tabs::TabCollection>>(root->GetChildren()[2])
+          ->type(),
+      tabs::TabCollection::Type::TREE_NODE);
 }
