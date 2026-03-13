@@ -243,6 +243,34 @@ def validate_rule_link(violation):
     return True
 
 
+def embed_rule_link_in_comment(violation):
+    """Ensure rule_link is embedded in draft_comment as a clickable link.
+
+    If the violation has a rule_link and the draft_comment doesn't already
+    contain it, append a markdown link at the end.
+    """
+    rule_link = violation.get("rule_link")
+    draft = violation.get("draft_comment", "")
+    if not rule_link or not draft:
+        return
+
+    # Check if the link (or its fragment) is already in the comment
+    if rule_link in draft:
+        return
+
+    # Also check if a markdown link to the same anchor exists
+    match = re.search(r'#([A-Za-z0-9_-]+)$', rule_link)
+    if match:
+        fragment = match.group(1)
+        # Check for [text](url#fragment) pattern already present
+        if f"#{fragment})" in draft:
+            return
+
+    # Append a best practice link
+    rule_name = violation.get("rule", "best practice")
+    violation["draft_comment"] = f"{draft} ([{rule_name}]({rule_link}))"
+
+
 def filter_violations_by_rule_link(violations):
     """Drop violations missing rule_link.
 
@@ -297,6 +325,53 @@ def fetch_existing_comments(repo, pr_number):
         return comments
     except Exception:
         return []
+
+
+def deduplicate_batch_violations(violations):
+    """Deduplicate violations within a batch from multiple subagent chunks.
+
+    Multiple chunks can independently find the same issue on the same file.
+    Keep only the first violation per (file, rule) combination, and also
+    deduplicate by (file, line) to handle near-identical findings.
+
+    Returns filtered list.
+    """
+    seen_file_rule = set()
+    seen_file_line = set()
+    kept = []
+
+    for v in violations:
+        file_path = v.get("file", "")
+        rule = v.get("rule", "")
+        line = v.get("line")
+
+        # Dedup by (file, rule) — same rule on same file from different chunks
+        if rule:
+            file_rule_key = (file_path, rule)
+            if file_rule_key in seen_file_rule:
+                log(
+                    f"BATCH_DEDUP: skipped {file_path}:{line}"
+                    f" — duplicate rule '{rule}'"
+                )
+                continue
+            seen_file_rule.add(file_rule_key)
+
+        # Dedup by (file, line) — different chunks targeting same line
+        file_line_key = (file_path, line)
+        if file_line_key in seen_file_line:
+            log(f"BATCH_DEDUP: skipped {file_path}:{line} — duplicate file+line")
+            continue
+        seen_file_line.add(file_line_key)
+
+        kept.append(v)
+
+    dropped = len(violations) - len(kept)
+    if dropped:
+        log(
+            f"BATCH_DEDUP: dropped {dropped} cross-chunk duplicates"
+            f" (kept {len(kept)})"
+        )
+    return kept
 
 
 def deduplicate_violations(violations, existing_comments):
@@ -487,14 +562,21 @@ def process_pr(pr_data, repo, bot_username, auto_mode):
         # 2. Filter violations missing rule_link (unless high-severity)
         violations = filter_violations_by_rule_link(violations)
 
-        # 3. Prioritize and cap
+        # 3. Deduplicate within batch (cross-chunk duplicates)
+        violations = deduplicate_batch_violations(violations)
+
+        # 4. Prioritize and cap
         violations, _dropped = prioritize_violations(violations, has_approval)
 
-        # 4. Validate rule links
+        # 5. Validate rule links
         for v in violations:
             validate_rule_link(v)
 
-        # 5. Deduplicate against existing comments
+        # 6. Embed rule_link into draft_comment for clickable links
+        for v in violations:
+            embed_rule_link_in_comment(v)
+
+        # 7. Deduplicate against existing comments
         existing_comments = fetch_existing_comments(repo, number)
         violations = deduplicate_violations(violations, existing_comments)
 
