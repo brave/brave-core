@@ -698,7 +698,7 @@ static_library("internal") {
     "segments/segment_util.h",
     "segments/segment_value_util.cc",
     "segments/segment_value_util.h",
-    "serving/ad_serving_util.h",
+    "serving/eligible_ads/allocation/ads_allocation_util.h",
     "serving/eligible_ads/eligible_ads_callback.h",
     "serving/eligible_ads/eligible_ads_feature.cc",
     "serving/eligible_ads/eligible_ads_feature.h",
