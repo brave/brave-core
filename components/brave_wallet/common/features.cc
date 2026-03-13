@@ -37,7 +37,7 @@ BASE_FEATURE(kBraveWalletZCashFeature,
 
 BASE_FEATURE(kBraveWalletPolkadotFeature,
              "BraveWalletPolkadot",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 #if !defined(OFFICIAL_BUILD)
 BASE_FEATURE(kBraveWalletDebugFeature,
