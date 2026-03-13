@@ -109,10 +109,9 @@ void DecodeImageUsingServiceProcess(
       base::BindOnce(std::move(callback_pair.first), SkBitmap()));
 
   data_decoder::mojom::ImageDecoder* raw_decoder = decoder.get();
-  raw_decoder->DecodeImage(
-      encoded_bytes, codec, shrink_to_fit, max_size_in_bytes,
-      desired_image_frame_size,
-      base::IgnoreArgs<base::TimeDelta>(std::move(callback_pair.second)));
+  raw_decoder->DecodeImage(encoded_bytes, codec, shrink_to_fit,
+                           max_size_in_bytes, desired_image_frame_size,
+                           std::move(callback_pair.second));
 }
 
 }  // namespace
