@@ -105,7 +105,10 @@ base::WeakPtr<UptimeMonitor> UptimeMonitorImpl::GetWeakPtr() {
 
 bool UptimeMonitorImpl::IsInUse() const {
 #if !BUILDFLAG(IS_ANDROID)
-  return usage_clock_->IsInUse();
+  if (usage_clock_) {
+    return usage_clock_->IsInUse();
+  }
+  return false;
 #else
   return true;
 #endif
