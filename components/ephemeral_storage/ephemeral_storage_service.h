@@ -139,6 +139,8 @@ class EphemeralStorageService : public KeyedService {
   void CleanupFirstPartyStorageAreasOnStartup();
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key);
 
+  void RegisterFirstWindowOpenedCallback(base::OnceClosure callback);
+
   size_t FireCleanupTimersForTesting();
 
   raw_ptr<content::BrowserContext> context_ = nullptr;

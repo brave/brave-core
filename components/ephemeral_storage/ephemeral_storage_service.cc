@@ -78,19 +78,6 @@ GetFirstPartyStorageURLAndStoragePartitionConfig(
           browser_context, *partition_domain, *partition_name, false));
 }
 
-void RegisterFirstWindowOpenedCallback(
-    content::BrowserContext* context,
-    EphemeralStorageServiceDelegate* delegate,
-    base::OnceClosure callback) {
-  if (!base::FeatureList::IsEnabled(
-          net::features::kBraveForgetFirstPartyStorage) ||
-      context->IsOffTheRecord()) {
-    return;
-  }
-
-  delegate->RegisterFirstWindowOpenedCallback(std::move(callback));
-}
-
 }  // namespace
 
 EphemeralStorageService::EphemeralStorageService(
@@ -109,11 +96,9 @@ EphemeralStorageService::EphemeralStorageService(
   tld_ephemeral_area_keep_alive_ = base::Seconds(
       net::features::kBraveEphemeralStorageKeepAliveTimeInSeconds.Get());
 
-  RegisterFirstWindowOpenedCallback(
-      context_, delegate_.get(),
-      base::BindOnce(&EphemeralStorageService::
-                         ScheduleFirstPartyStorageAreasCleanupOnStartup,
-                     weak_ptr_factory_.GetWeakPtr()));
+  RegisterFirstWindowOpenedCallback(base::BindOnce(
+      &EphemeralStorageService::ScheduleFirstPartyStorageAreasCleanupOnStartup,
+      weak_ptr_factory_.GetWeakPtr()));
 }
 
 EphemeralStorageService::~EphemeralStorageService() = default;
@@ -296,11 +281,9 @@ void EphemeralStorageService::RemoveObserver(
 void EphemeralStorageService::TriggerCurrentAppStateNotification() {
   // Register again, as on Android the EphemeralStorageService may remain alive
   // across multiple app states, requiring the callback to be re-registered.
-  RegisterFirstWindowOpenedCallback(
-      context_, delegate_.get(),
-      base::BindOnce(&EphemeralStorageService::
-                         ScheduleFirstPartyStorageAreasCleanupOnStartup,
-                     weak_ptr_factory_.GetWeakPtr()));
+  RegisterFirstWindowOpenedCallback(base::BindOnce(
+      &EphemeralStorageService::ScheduleFirstPartyStorageAreasCleanupOnStartup,
+      weak_ptr_factory_.GetWeakPtr()));
 
   delegate_->TriggerCurrentAppStateNotification();
 }
@@ -503,6 +486,17 @@ size_t EphemeralStorageService::FireCleanupTimersForTesting() {
   }
   DCHECK(first_party_storage_areas_to_cleanup_on_startup_.empty());
   return timers.size() + first_party_storage_areas_to_cleanup_count;
+}
+
+void EphemeralStorageService::RegisterFirstWindowOpenedCallback(
+    base::OnceClosure callback) {
+  if (!base::FeatureList::IsEnabled(
+          net::features::kBraveForgetFirstPartyStorage) ||
+      context_->IsOffTheRecord()) {
+    return;
+  }
+
+  delegate_->RegisterFirstWindowOpenedCallback(std::move(callback));
 }
 
 }  // namespace ephemeral_storage

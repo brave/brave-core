@@ -6,6 +6,7 @@
 #include "brave/browser/ephemeral_storage/application_state_observer.h"
 
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/profiles/profile.h"
