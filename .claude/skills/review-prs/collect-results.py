@@ -1,4 +1,7 @@
-#!/usr/bin/env python3
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 """Collect subagent result files and feed them to post-review.py.
 
 Replaces what the LLM used to do manually: parsing subagent output,
@@ -11,6 +14,7 @@ Usage:
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 
@@ -18,9 +22,7 @@ import sys
 # Paths
 # ---------------------------------------------------------------------------
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-BOT_DIR = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "..", ".."))
-
-sys.path.insert(0, os.path.join(BOT_DIR, "scripts"))
+REPO_DIR = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "..", ".."))
 
 
 def log(msg):
@@ -102,11 +104,12 @@ def print_cached_and_progress(manifest):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Collect subagent results and run post-review.py"
-    )
-    parser.add_argument("--work-dir", required=True,
+        description="Collect subagent results and run post-review.py")
+    parser.add_argument("--work-dir",
+                        required=True,
                         help="Temp directory with manifest.json and results")
-    parser.add_argument("--auto", action="store_true",
+    parser.add_argument("--auto",
+                        action="store_true",
                         help="Pass --auto to post-review.py")
     args = parser.parse_args()
 
@@ -125,6 +128,14 @@ def main():
         log("ERROR: manifest missing bot_username or pr_repo")
         sys.exit(1)
 
+    # Validate manifest values to prevent command injection
+    if not re.match(r"^[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+$", pr_repo):
+        log(f"ERROR: invalid pr_repo format: {pr_repo}")
+        sys.exit(1)
+    if not re.match(r"^[a-zA-Z0-9_-]+$", bot_username):
+        log(f"ERROR: invalid bot_username format: {bot_username}")
+        sys.exit(1)
+
     # Print cached PRs and progress lines first (before post-review output)
     print_cached_and_progress(manifest)
 
@@ -133,9 +144,7 @@ def main():
 
     # Collection stats
     total_chunks = sum(
-        len(pr.get("subagent_prompts", []))
-        for pr in manifest.get("prs", [])
-    )
+        len(pr.get("subagent_prompts", [])) for pr in manifest.get("prs", []))
     results_found = 0
     results_missing = 0
     for pr in manifest.get("prs", []):
@@ -148,15 +157,13 @@ def main():
 
     total_violations = sum(
         len(pr_r.get("violations", []))
-        for pr_r in post_review_data.get("pr_results", [])
-    )
+        for pr_r in post_review_data.get("pr_results", []))
     total_validated = sum(
         len(pr_r.get("validation_log", []))
-        for pr_r in post_review_data.get("pr_results", [])
-    )
+        for pr_r in post_review_data.get("pr_results", []))
 
     log(f"\n{'=' * 60}")
-    log(f"COLLECTION SUMMARY")
+    log("COLLECTION SUMMARY")
     log(f"{'=' * 60}")
     log(f"Total subagent chunks: {total_chunks}")
     log(f"Results files found: {results_found}")
@@ -181,14 +188,21 @@ def main():
     cmd = [
         "python3",
         os.path.join(SCRIPT_DIR, "post-review.py"),
-        "--pr-repo", pr_repo,
-        "--bot-username", bot_username,
-        "--input", input_path,
+        "--pr-repo",
+        pr_repo,
+        "--bot-username",
+        bot_username,
+        "--input",
+        input_path,
     ]
     if auto_mode:
         cmd.append("--auto")
 
-    result = subprocess.run(cmd, capture_output=True, text=True, cwd=BOT_DIR)
+    result = subprocess.run(cmd,
+                            capture_output=True,
+                            text=True,
+                            cwd=REPO_DIR,
+                            check=False)
 
     # Pass through stderr (summary log)
     if result.stderr:

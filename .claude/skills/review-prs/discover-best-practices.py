@@ -1,4 +1,7 @@
-#!/usr/bin/env python3
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 """Discover all best-practice documents and their applicability conditions.
 
 Scans the best-practices directory for .md files and determines which
@@ -19,8 +22,12 @@ Usage:
 
 Output (JSON):
     [
-      {"doc": "coding-standards.md", "path": "/abs/path/coding-standards.md", "condition": "has_cpp_files"},
-      {"doc": "architecture.md", "path": "/abs/path/architecture.md", "condition": "always"},
+      {"doc": "coding-standards.md",
+       "path": "/abs/path/coding-standards.md",
+       "condition": "has_cpp_files"},
+      {"doc": "architecture.md",
+       "path": "/abs/path/architecture.md",
+       "condition": "always"},
       ...
     ]
 """
@@ -70,7 +77,8 @@ def extract_applicability(filepath):
             for i, line in enumerate(f):
                 if i >= 10:
                     break
-                m = re.search(r"<!--\s*applicability:\s*(\S+)\s*-->", line, re.IGNORECASE)
+                m = re.search(r"<!--\s*applicability:\s*(\S+)\s*-->", line,
+                              re.IGNORECASE)
                 if m:
                     return m.group(1).lower()
     except OSError:
@@ -109,8 +117,7 @@ def discover(bp_dir):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Discover best-practice documents and their applicability"
-    )
+        description="Discover best-practice documents and their applicability")
     parser.add_argument("bp_dir", help="Path to best-practices directory")
     parser.add_argument("--has-cpp", action="store_true")
     parser.add_argument("--has-test", action="store_true")
@@ -136,8 +143,8 @@ def main():
 
     if any_flag_set:
         filtered = [
-            d for d in all_docs
-            if d["condition"] == "always" or d["condition"] in active_conditions
+            d for d in all_docs if d["condition"] == "always"
+            or d["condition"] in active_conditions
         ]
     else:
         filtered = all_docs

@@ -1,4 +1,7 @@
-#!/usr/bin/env python3
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 """Phase 3 post-processing for review-prs: posting, dedup, cache, notifications.
 
 Handles all post-review operations without LLM token usage:
@@ -8,12 +11,13 @@ Handles all post-review operations without LLM token usage:
 - Deduplication against existing comments
 - Posting inline reviews (with fallbacks)
 - Approval gate
-- Signal notifications
 - Summary output
 
 Usage:
-  python3 post-review.py --pr-repo <repo> --bot-username <username> [--auto] < input.json
-  python3 post-review.py --pr-repo <repo> --bot-username <username> [--auto] --input <file>
+  python3 post-review.py --pr-repo <repo>
+      --bot-username <username> [--auto] < input.json
+  python3 post-review.py --pr-repo <repo>
+      --bot-username <username> [--auto] --input <file>
 """
 
 import argparse
@@ -25,20 +29,12 @@ import sys
 from datetime import datetime, timezone
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-BOT_DIR = os.path.join(SCRIPT_DIR, "..", "..", "..")
-BOT_DIR = os.path.normpath(BOT_DIR)
+REPO_DIR = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "..", ".."))
 
-sys.path.insert(0, os.path.join(BOT_DIR, "scripts"))
-from lib.load_config import load_config, get_config, require_config
-
-CACHE_PATH = os.path.join(BOT_DIR, ".ignore", "review-prs-cache.json")
-_config = load_config()
-_BP_DOCS_DIR = require_config(_config, "bestPractices.docsDir")
-_BP_BASE = os.path.normpath(os.path.join(BOT_DIR, _BP_DOCS_DIR, ".."))
-MANAGE_BP_IDS = os.path.join(_BP_BASE, "script", "manage-bp-ids.py")
-CHECK_CAN_APPROVE = os.path.join(BOT_DIR, "scripts", "check-can-approve.py")
+CACHE_PATH = os.path.join(REPO_DIR, ".ignore", "review-prs-cache.json")
+MANAGE_BP_IDS = os.path.join(REPO_DIR, "script", "manage-bp-ids.py")
+CHECK_CAN_APPROVE = os.path.join(SCRIPT_DIR, "scripts", "check-can-approve.py")
 UPDATE_CACHE = os.path.join(SCRIPT_DIR, "update-cache.py")
-SIGNAL_NOTIFY = os.path.join(BOT_DIR, "scripts", "signal-notify.sh")
 
 MAX_COMMENTS_PER_PR = 5
 NITS_THRESHOLD = 3  # Drop nits if >= this many higher-severity comments
@@ -63,12 +59,12 @@ def run_cmd(cmd, input_data=None, timeout=30, check=False):
             text=True,
             timeout=timeout,
             input=input_data,
-            cwd=BOT_DIR,
+            cwd=REPO_DIR,
+            check=False,
         )
         if check and result.returncode != 0:
-            raise subprocess.CalledProcessError(
-                result.returncode, cmd, result.stdout, result.stderr
-            )
+            raise subprocess.CalledProcessError(result.returncode, cmd,
+                                                result.stdout, result.stderr)
         return result.returncode, result.stdout.strip(), result.stderr.strip()
     except subprocess.TimeoutExpired:
         return -1, "", "timeout"
@@ -86,7 +82,8 @@ def fetch_diff_line_ranges(repo, pr_number):
         return _diff_line_cache[pr_number]
 
     rc, out, err = run_cmd(
-        ["gh", "pr", "diff", "--repo", repo, str(pr_number)],
+        ["gh", "pr", "diff", "--repo", repo,
+         str(pr_number)],
         timeout=120,
     )
     if rc != 0:
@@ -116,7 +113,8 @@ def fetch_diff_line_ranges(repo, pr_number):
 
 
 def correct_line_for_diff(repo, pr_number, file_path, line):
-    """If line is not within any diff hunk for the file, find the nearest valid line.
+    """If line is not within any diff hunk for the file,
+    find the nearest valid line.
 
     Returns the corrected line number, or None if the file isn't in the diff.
     """
@@ -141,7 +139,8 @@ def correct_line_for_diff(repo, pr_number, file_path, line):
                 best_line = candidate
 
     if best_line is not None:
-        log(f"LINE_CORRECTED: {file_path}:{line} -> {file_path}:{best_line} (nearest diff line)")
+        log(f"LINE_CORRECTED: {file_path}:{line} -> "
+            f"{file_path}:{best_line} (nearest diff line)")
     return best_line
 
 
@@ -150,7 +149,7 @@ def update_cache(pr_number, head_ref_oid, approve=False):
     cmd = ["python3", UPDATE_CACHE, str(pr_number), head_ref_oid]
     if approve:
         cmd.append("--approve")
-    rc, out, err = run_cmd(cmd)
+    rc, _out, err = run_cmd(cmd)
     if rc != 0:
         log(f"WARNING: cache update failed for PR #{pr_number}: {err}")
     return rc == 0
@@ -165,14 +164,17 @@ def prioritize_violations(violations, has_approval):
         return [], 0
 
     # Sort by severity
-    violations.sort(key=lambda v: SEVERITY_ORDER.get(v.get("severity", "low"), 2))
+    violations.sort(
+        key=lambda v: SEVERITY_ORDER.get(v.get("severity", "low"), 2))
 
     if has_approval:
         # Approved PRs: high-severity only
         kept = [v for v in violations if v.get("severity") == "high"]
         dropped = len(violations) - len(kept)
         if dropped:
-            log(f"CAPPED: dropped {dropped} medium/low violations (PR has approval)")
+            log(f"CAPPED: dropped {dropped} "
+                "medium/low violations "
+                "(PR has approval)")
         return kept[:MAX_COMMENTS_PER_PR], dropped
 
     high = [v for v in violations if v.get("severity") == "high"]
@@ -187,15 +189,18 @@ def prioritize_violations(violations, has_approval):
         kept.extend(medium[:remaining_slots])
         remaining_slots = MAX_COMMENTS_PER_PR - len(kept)
 
-    # Only include low (nits) if fewer than NITS_THRESHOLD higher-severity comments
-    higher_count = len(high) + min(len(medium), MAX_COMMENTS_PER_PR - len(high))
+    # Only include low (nits) if fewer than
+    # NITS_THRESHOLD higher-severity comments
+    higher_count = len(high) + min(len(medium),
+                                   MAX_COMMENTS_PER_PR - len(high))
     if higher_count < NITS_THRESHOLD and remaining_slots > 0:
         kept.extend(low[:remaining_slots])
 
     total_input = len(violations)
     dropped = total_input - len(kept)
     if dropped > 0:
-        log(f"CAPPED: dropped {dropped} violations (kept {len(kept)} most important)")
+        log(f"CAPPED: dropped {dropped} violations "
+            f"(kept {len(kept)} most important)")
     return kept, dropped
 
 
@@ -220,14 +225,16 @@ def validate_rule_link(violation):
     doc_name = match.group(1)
     fragment_id = match.group(2)
 
-    rc, out, err = run_cmd(
-        ["python3", MANAGE_BP_IDS, "--check-link", fragment_id, "--doc", doc_name]
-    )
+    rc, _out, _err = run_cmd([
+        "python3", MANAGE_BP_IDS, "--check-link", fragment_id, "--doc",
+        doc_name
+    ])
     if rc != 0:
         # Invalid link — strip it from draft_comment
         file_path = violation.get("file", "?")
         line = violation.get("line", "?")
-        log(f"INVALID_LINK: stripped broken link #{fragment_id} from {file_path}:{line}")
+        log(f"INVALID_LINK: stripped broken link "
+            f"#{fragment_id} from {file_path}:{line}")
         # Strip [best practice](...) link pattern from draft_comment
         draft = violation.get("draft_comment", "")
         draft = re.sub(r'\[best practice\]\([^)]*\)', '', draft).strip()
@@ -237,8 +244,9 @@ def validate_rule_link(violation):
 
 
 def filter_violations_by_rule_link(violations):
-    """Drop violations missing rule_link unless they are high-severity bug/correctness.
+    """Drop violations missing rule_link.
 
+    Unless they are high-severity bug/correctness.
     Returns filtered list.
     """
     kept = []
@@ -257,13 +265,19 @@ def filter_violations_by_rule_link(violations):
 
 
 def fetch_existing_comments(repo, pr_number):
-    """Fetch existing review comments on a PR. Returns list of {path, line, body, user}."""
-    rc, out, err = run_cmd([
-        "gh", "api",
+    """Fetch existing review comments on a PR.
+
+    Returns list of {path, line, body, user}.
+    """
+    rc, out, _err = run_cmd([
+        "gh",
+        "api",
         f"repos/{repo}/pulls/{pr_number}/comments",
         "--paginate",
-        "--jq", '[.[] | {path, line, body, user: .user.login}]',
-    ], timeout=60)
+        "--jq",
+        '[.[] | {path, line, body, user: .user.login}]',
+    ],
+                            timeout=60)
     if rc != 0 or not out:
         return []
     try:
@@ -306,14 +320,18 @@ def deduplicate_violations(violations, existing_comments):
         key = (v.get("file", ""), v.get("line"))
         if key in existing:
             user = comment_authors.get(key, "unknown")
-            log(f"DEDUP: skipped {v.get('file')}:{v.get('line')} — already commented by {user}")
+            log(f"DEDUP: skipped {v.get('file')}:"
+                f"{v.get('line')} — already "
+                f"commented by {user}")
         else:
             kept.append(v)
     return kept
 
 
 def post_batch_review(repo, pr_number, violations, head_sha):
-    """Post violations as a single inline review. Returns (review_url, posted_count).
+    """Post violations as a single inline review.
+
+    Returns (review_url, posted_count).
 
     Corrects line numbers that fall outside diff hunks before posting.
     Falls back to individual comments if batch fails.
@@ -324,7 +342,8 @@ def post_batch_review(repo, pr_number, violations, head_sha):
     # Correct line numbers against the actual diff before posting
     corrected_violations = []
     for v in violations:
-        corrected_line = correct_line_for_diff(repo, pr_number, v["file"], v["line"])
+        corrected_line = correct_line_for_diff(repo, pr_number, v["file"],
+                                               v["line"])
         if corrected_line is None:
             log(f"DROPPED: {v['file']}:{v['line']} — file not in diff")
             continue
@@ -350,9 +369,11 @@ def post_batch_review(repo, pr_number, violations, head_sha):
         "comments": comments,
     })
 
-    rc, out, err = run_cmd(
-        ["gh", "api", f"repos/{repo}/pulls/{pr_number}/reviews",
-         "--method", "POST", "--input", "-"],
+    rc, out, _err = run_cmd(
+        [
+            "gh", "api", f"repos/{repo}/pulls/{pr_number}/reviews", "--method",
+            "POST", "--input", "-"
+        ],
         input_data=payload,
         timeout=60,
     )
@@ -365,7 +386,8 @@ def post_batch_review(repo, pr_number, violations, head_sha):
             return "", len(comments)
 
     # Batch failed — fall back to individual comments
-    log(f"WARNING: batch review failed for PR #{pr_number}, falling back to individual comments")
+    log(f"WARNING: batch review failed for PR "
+        f"#{pr_number}, falling back to individual comments")
     posted = 0
     review_url = ""
     for v in violations:
@@ -377,8 +399,10 @@ def post_batch_review(repo, pr_number, violations, head_sha):
             "side": "RIGHT",
         })
         rc2, out2, err2 = run_cmd(
-            ["gh", "api", f"repos/{repo}/pulls/{pr_number}/comments",
-             "--method", "POST", "--input", "-"],
+            [
+                "gh", "api", f"repos/{repo}/pulls/{pr_number}/comments",
+                "--method", "POST", "--input", "-"
+            ],
             input_data=individual_payload,
             timeout=30,
         )
@@ -391,7 +415,8 @@ def post_batch_review(repo, pr_number, violations, head_sha):
                 except json.JSONDecodeError:
                     pass
         else:
-            log(f"ERROR: failed to post inline comment for {v['file']}:{v['line']}: {err2}")
+            log(f"ERROR: failed to post inline comment "
+                f"for {v['file']}:{v['line']}: {err2}")
 
     return review_url, posted
 
@@ -399,9 +424,11 @@ def post_batch_review(repo, pr_number, violations, head_sha):
 def submit_approval(repo, pr_number):
     """Submit an APPROVE review. Returns html_url or None."""
     payload = json.dumps({"event": "APPROVE", "body": ""})
-    rc, out, err = run_cmd(
-        ["gh", "api", f"repos/{repo}/pulls/{pr_number}/reviews",
-         "--method", "POST", "--input", "-"],
+    rc, out, _err = run_cmd(
+        [
+            "gh", "api", f"repos/{repo}/pulls/{pr_number}/reviews", "--method",
+            "POST", "--input", "-"
+        ],
         input_data=payload,
         timeout=30,
     )
@@ -417,8 +444,9 @@ def submit_approval(repo, pr_number):
 
 def check_can_approve(pr_number, bot_username):
     """Run the approval gate script. Returns True if approval is allowed."""
-    rc, out, err = run_cmd(
-        ["python3", CHECK_CAN_APPROVE, str(pr_number), bot_username],
+    rc, _out, _err = run_cmd(
+        ["python3", CHECK_CAN_APPROVE,
+         str(pr_number), bot_username],
         timeout=60,
     )
     return rc == 0
@@ -434,56 +462,6 @@ def pr_link(repo, number, title=None):
     if title:
         link += f" ({title})"
     return link
-
-
-def send_signal_notification(results, repo, summary):
-    """Send Signal notification about review results."""
-    if not os.path.isfile(SIGNAL_NOTIFY):
-        return
-
-    approved = []
-    violations = []
-    resolved = []
-    still_violated = []
-
-    for r in results:
-        url = pr_url(repo, r["number"])
-        status = r.get("status", "")
-        if status == "approved":
-            approved.append(url)
-        elif status == "posted":
-            violations.append(url)
-        # Cached PR statuses would be handled here if included
-
-    # Build message
-    parts = [
-        f"Review complete: {summary['prs_reviewed']} PRs reviewed, "
-        f"{summary['prs_with_violations']} with violations, "
-        f"{summary['total_comments_posted']} comments posted."
-    ]
-
-    if approved:
-        parts.append("")
-        parts.append("\u2705 Approved:")
-        parts.extend(approved)
-
-    if violations:
-        parts.append("")
-        parts.append("\u274c Violations:")
-        parts.extend(violations)
-
-    if resolved:
-        parts.append("")
-        parts.append("\U0001f504 Resolved threads:")
-        parts.extend(resolved)
-
-    if still_violated:
-        parts.append("")
-        parts.append("\u26a0\ufe0f Still containing violations:")
-        parts.extend(still_violated)
-
-    msg = "\n".join(parts)
-    run_cmd([SIGNAL_NOTIFY, msg], timeout=30)
 
 
 def process_pr(pr_data, repo, bot_username, auto_mode):
@@ -510,7 +488,7 @@ def process_pr(pr_data, repo, bot_username, auto_mode):
         violations = filter_violations_by_rule_link(violations)
 
         # 3. Prioritize and cap
-        violations, dropped = prioritize_violations(violations, has_approval)
+        violations, _dropped = prioritize_violations(violations, has_approval)
 
         # 4. Validate rule links
         for v in violations:
@@ -540,16 +518,20 @@ def process_pr(pr_data, repo, bot_username, auto_mode):
 
         if auto_mode:
             # Post violations
-            review_url, posted = post_batch_review(repo, number, violations, head_sha)
+            review_url, posted = post_batch_review(repo, number, violations,
+                                                   head_sha)
             result["status"] = "posted"
             result["comments_posted"] = posted
             result["review_url"] = review_url or ""
 
             detail_lines = []
             for v in violations:
-                detail_lines.append(f"  - {v['file']}:{v['line']} ({v.get('rule', 'unknown')})")
+                detail_lines.append(
+                    f"  - {v['file']}:{v['line']} ({v.get('rule', 'unknown')})"
+                )
             details = "\n".join(detail_lines)
-            log(f"AUTO: {link} - posted {posted} comments - {review_url}\n{details}")
+            log(f"AUTO: {link} - posted {posted} "
+                f"comments - {review_url}\n{details}")
         else:
             # Non-auto: output violations for LLM to present
             result["status"] = "pending"
@@ -565,12 +547,15 @@ def process_pr(pr_data, repo, bot_username, auto_mode):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Phase 3 post-processing for review-prs"
-    )
+        description="Phase 3 post-processing for review-prs")
     parser.add_argument("--pr-repo", required=True, help="owner/repo for PRs")
-    parser.add_argument("--bot-username", required=True, help="Bot GitHub username")
+    parser.add_argument("--bot-username",
+                        required=True,
+                        help="Bot GitHub username")
     parser.add_argument("--auto", action="store_true", help="Auto-post mode")
-    parser.add_argument("--input", dest="input_file", help="Input JSON file (default: stdin)")
+    parser.add_argument("--input",
+                        dest="input_file",
+                        help="Input JSON file (default: stdin)")
     args = parser.parse_args()
 
     # Read input
@@ -583,16 +568,22 @@ def main():
     pr_results_input = data.get("pr_results", [])
     if not pr_results_input:
         log("No PR results to process.")
-        output = {"results": [], "summary": {
-            "prs_reviewed": 0, "prs_with_violations": 0,
-            "total_comments_posted": 0, "prs_approved": 0,
-        }}
+        output = {
+            "results": [],
+            "summary": {
+                "prs_reviewed": 0,
+                "prs_with_violations": 0,
+                "total_comments_posted": 0,
+                "prs_approved": 0,
+            }
+        }
         print(json.dumps(output, indent=2))
         return
 
     results = []
     for pr_data in pr_results_input:
-        result = process_pr(pr_data, args.pr_repo, args.bot_username, args.auto)
+        result = process_pr(pr_data, args.pr_repo, args.bot_username,
+                            args.auto)
         results.append(result)
 
     # Build summary
@@ -617,7 +608,7 @@ def main():
         f"PRs reviewed: {prs_reviewed}",
         f"PRs with violations: {prs_with_violations}",
         f"Total comments posted: {total_comments}",
-        f"Cached PRs processed: 0",
+        "Cached PRs processed: 0",
         f"PRs approved: {prs_approved}",
         "",
         "RESULTS:",
@@ -635,20 +626,16 @@ def main():
             summary_lines.append(f"  \u2705 {link} - no violations, approved")
         elif r["status"] == "posted":
             url = r.get("review_url", "")
-            summary_lines.append(f"  \u274c {link} - {r['comments_posted']} comments - {url}")
+            summary_lines.append(
+                f"  \u274c {link} - {r['comments_posted']} comments - {url}")
         elif r["status"] == "skipped":
             summary_lines.append(f"  \u23ed\ufe0f {link} - SKIPPED")
         elif r["status"] == "pending":
             count = len(r.get("violations", []))
-            summary_lines.append(f"  \u23f3 {link} - {count} violations pending")
+            summary_lines.append(
+                f"  \u23f3 {link} - {count} violations pending")
     summary_lines.append("========================================")
     log("\n".join(summary_lines))
-
-    # Send Signal notification
-    try:
-        send_signal_notification(results, args.pr_repo, summary)
-    except Exception as e:
-        log(f"WARNING: Signal notification failed: {e}")
 
     # Output result JSON to stdout
     # Strip internal violations from results before output

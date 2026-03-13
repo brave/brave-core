@@ -1,4 +1,7 @@
-#!/usr/bin/env python3
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 """Phase 1 pre-work for the review-prs skill.
 
 Produces a work directory with prompt files and a lightweight manifest.
@@ -6,9 +9,12 @@ Zero prompt construction tokens required from the LLM — subagent prompts
 are written to files, not embedded in JSON.
 
 Usage:
-    python3 prepare-review.py [days|page<N>|#<PR>] [open|closed|all] [--auto] [--reviewer-priority] [--max-prs N]
+    python3 prepare-review.py [days|page<N>|#<PR>]
+        [open|closed|all] [--auto]
+        [--reviewer-priority] [--max-prs N]
 """
 
+import importlib.util
 import json
 import os
 import re
@@ -23,53 +29,43 @@ from pathlib import Path
 # Paths
 # ---------------------------------------------------------------------------
 _SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-_BOT_DIR = os.path.join(_SCRIPT_DIR, "..", "..", "..")
-_BOT_DIR = os.path.normpath(_BOT_DIR)
+# Repo root: .claude/skills/review-prs -> .claude/skills -> .claude -> repo root
+_REPO_DIR = os.path.normpath(os.path.join(_SCRIPT_DIR, "..", "..", ".."))
 
-# Add scripts/lib to path for imports
-sys.path.insert(0, os.path.join(_BOT_DIR, "scripts"))
+# Add to path for imports
 sys.path.insert(0, _SCRIPT_DIR)
 
-from lib.load_config import get_config, load_config, require_config
-
 # Import fetch-prs functions (the module uses if __name__ guard)
-import importlib.util
 
 _fp_spec = importlib.util.spec_from_file_location(
-    "fetch_prs", os.path.join(_SCRIPT_DIR, "fetch-prs.py")
-)
+    "fetch_prs", os.path.join(_SCRIPT_DIR, "fetch-prs.py"))
 _fp_mod = importlib.util.module_from_spec(_fp_spec)
 _fp_spec.loader.exec_module(_fp_mod)
 
 # Import chunk-best-practices functions
 _cb_spec = importlib.util.spec_from_file_location(
-    "chunk_best_practices", os.path.join(_SCRIPT_DIR, "chunk-best-practices.py")
-)
+    "chunk_best_practices", os.path.join(_SCRIPT_DIR,
+                                         "chunk-best-practices.py"))
 _cb_mod = importlib.util.module_from_spec(_cb_spec)
 _cb_spec.loader.exec_module(_cb_mod)
 
 # Import extract-pr-images functions
 _ei_spec = importlib.util.spec_from_file_location(
-    "extract_pr_images", os.path.join(_BOT_DIR, "scripts", "extract-pr-images.py")
-)
+    "extract_pr_images",
+    os.path.join(_SCRIPT_DIR, "scripts", "extract-pr-images.py"))
 _ei_mod = importlib.util.module_from_spec(_ei_spec)
 _ei_spec.loader.exec_module(_ei_mod)
 
 # ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
-_config = load_config()
-PR_REPO = require_config(_config, "project.prRepository")
-BP_DOCS_DIR = require_config(_config, "bestPractices.docsDir")
-ORG_MEMBERS_PATH = os.path.join(_BOT_DIR, ".ignore", "org-members.txt")
-TRUSTED_REVIEWERS_PATH = os.path.join(_BOT_DIR, "scripts", "trusted-reviewers.txt")
-CACHE_PATH = os.path.join(_BOT_DIR, ".ignore", "review-prs-cache.json")
-DEFAULT_BRANCH = require_config(_config, "project.defaultBranch")
-BP_DIR = os.path.join(_BOT_DIR, BP_DOCS_DIR, "best-practices")
-BP_LINK_BASE = f"https://github.com/{PR_REPO}/tree/{DEFAULT_BRANCH}/docs/best-practices"
-TARGET_REPO_PATH = os.path.normpath(
-    os.path.join(_BOT_DIR, require_config(_config, "project.targetRepoPath"))
-)
+PR_REPO = "brave/brave-core"
+DEFAULT_BRANCH = "master"
+CACHE_PATH = os.path.join(_REPO_DIR, ".ignore", "review-prs-cache.json")
+BP_DIR = os.path.join(_REPO_DIR, "docs", "best-practices")
+BP_LINK_BASE = (f"https://github.com/{PR_REPO}/tree/"
+                f"{DEFAULT_BRANCH}/docs/best-practices")
+TARGET_REPO_PATH = _REPO_DIR
 
 
 def log(msg):
@@ -80,14 +76,20 @@ def log(msg):
 # Org members / trusted reviewers
 # ---------------------------------------------------------------------------
 def load_org_members():
-    members = set()
+    org_members_path = os.environ.get(
+        "BRAVE_ORG_MEMBERS_PATH",
+        os.path.join(_REPO_DIR, ".ignore", "org-members.txt"),
+    )
+    if not os.path.isfile(org_members_path):
+        log(f"ERROR: org members file not found at {org_members_path}")
+        log("Set BRAVE_ORG_MEMBERS_PATH to the correct location.")
+        sys.exit(1)
+    with open(org_members_path) as f:
+        members = set(line.strip() for line in f if line.strip())
+    trusted_reviewers_path = os.path.join(_SCRIPT_DIR, "scripts",
+                                          "trusted-reviewers.txt")
     try:
-        with open(ORG_MEMBERS_PATH) as f:
-            members = set(line.strip() for line in f if line.strip())
-    except FileNotFoundError:
-        log(f"WARNING: org members file not found at {ORG_MEMBERS_PATH}")
-    try:
-        with open(TRUSTED_REVIEWERS_PATH) as f:
+        with open(trusted_reviewers_path) as f:
             members |= set(line.strip() for line in f if line.strip())
     except FileNotFoundError:
         pass
@@ -127,7 +129,10 @@ def parse_args():
 def resolve_bot_username():
     result = subprocess.run(
         ["gh", "api", "user", "--jq", ".login"],
-        capture_output=True, text=True, timeout=15,
+        capture_output=True,
+        text=True,
+        timeout=15,
+        check=False,
     )
     if result.returncode != 0:
         log(f"ERROR: failed to resolve bot username: {result.stderr}")
@@ -140,8 +145,12 @@ def resolve_bot_username():
 # ---------------------------------------------------------------------------
 def fetch_diff(pr_number):
     result = subprocess.run(
-        ["gh", "pr", "diff", "--repo", PR_REPO, str(pr_number)],
-        capture_output=True, text=True, timeout=120,
+        ["gh", "pr", "diff", "--repo", PR_REPO,
+         str(pr_number)],
+        capture_output=True,
+        text=True,
+        timeout=120,
+        check=False,
     )
     if result.returncode != 0:
         raise RuntimeError(f"Failed to fetch diff: {result.stderr.strip()}")
@@ -215,9 +224,9 @@ def classify_files(diff_text):
             flags["has_cpp_files"] = True
 
         # Test files
-        if (fl.endswith("_test.cc") or fl.endswith("_browsertest.cc") or
-                fl.endswith("_unittest.cc") or fl.endswith(".test.ts") or
-                fl.endswith(".test.tsx")):
+        if (fl.endswith("_test.cc") or fl.endswith("_browsertest.cc")
+                or fl.endswith("_unittest.cc") or fl.endswith(".test.ts")
+                or fl.endswith(".test.tsx")):
             flags["has_test_files"] = True
 
         # chromium_src
@@ -245,15 +254,15 @@ def classify_files(diff_text):
             flags["has_patch_files"] = True
 
         # Nala files
-        if (re.search(r"/res/drawable/", f) or re.search(r"/res/values/", f) or
-                re.search(r"/res/values-night/", f) or
-                "components/vector_icons/" in f or
-                fl.endswith(".icon") or fl.endswith(".svg")):
+        if (re.search(r"/res/drawable/", f) or re.search(r"/res/values/", f)
+                or re.search(r"/res/values-night/", f)
+                or "components/vector_icons/" in f or fl.endswith(".icon")
+                or fl.endswith(".svg")):
             flags["has_nala_files"] = True
 
         # Localization files
-        if (fl.endswith((".grd", ".grdp", ".xtb")) or
-                "l10n/" in f or "strings/" in f):
+        if (fl.endswith((".grd", ".grdp", ".xtb")) or "l10n/" in f
+                or "strings/" in f):
             flags["has_localization_files"] = True
 
     return flags
@@ -266,7 +275,10 @@ def _gh_api_paginated(endpoint):
     """Fetch paginated GitHub API results."""
     result = subprocess.run(
         ["gh", "api", endpoint, "--paginate"],
-        capture_output=True, text=True, timeout=60,
+        capture_output=True,
+        text=True,
+        timeout=60,
+        check=False,
     )
     if result.returncode != 0:
         log(f"WARNING: gh api {endpoint} failed: {result.stderr.strip()}")
@@ -281,7 +293,10 @@ def _gh_api(endpoint):
     """Fetch a single GitHub API result (no pagination)."""
     result = subprocess.run(
         ["gh", "api", endpoint],
-        capture_output=True, text=True, timeout=30,
+        capture_output=True,
+        text=True,
+        timeout=30,
+        check=False,
     )
     if result.returncode != 0:
         log(f"WARNING: gh api {endpoint} failed: {result.stderr.strip()}")
@@ -297,7 +312,7 @@ def fetch_prior_comments(pr_number, org_members, include_author=None):
     comments, issue comments. Filter by org membership. Return markdown."""
 
     repo = PR_REPO
-    repo_owner, repo_name = repo.split("/", 1)
+    _, _ = repo.split("/", 1)
 
     # Fetch PR data
     pr_data = _gh_api(f"repos/{repo}/pulls/{pr_number}")
@@ -312,8 +327,10 @@ def fetch_prior_comments(pr_number, org_members, include_author=None):
 
     # Fetch reviews, review comments, issue comments
     reviews = _gh_api_paginated(f"repos/{repo}/pulls/{pr_number}/reviews")
-    review_comments = _gh_api_paginated(f"repos/{repo}/pulls/{pr_number}/comments")
-    issue_comments = _gh_api_paginated(f"repos/{repo}/issues/{pr_number}/comments")
+    review_comments = _gh_api_paginated(
+        f"repos/{repo}/pulls/{pr_number}/comments")
+    issue_comments = _gh_api_paginated(
+        f"repos/{repo}/issues/{pr_number}/comments")
 
     # Get latest push timestamp
     head_sha = (pr_data.get("head") or {}).get("sha", "")
@@ -321,10 +338,8 @@ def fetch_prior_comments(pr_number, org_members, include_author=None):
     if head_sha:
         commit_data = _gh_api(f"repos/{repo}/commits/{head_sha}")
         if commit_data:
-            latest_push_ts = (
-                (commit_data.get("commit") or {})
-                .get("committer") or {}
-            ).get("date", "")
+            latest_push_ts = ((commit_data.get("commit")
+                               or {}).get("committer") or {}).get("date", "")
 
     # Find latest reviewer activity from org members
     latest_reviewer_ts = ""
@@ -365,7 +380,8 @@ def fetch_prior_comments(pr_number, org_members, include_author=None):
     lines = []
     lines.append(f"# PR #{pr_number}: {pr_title}")
     lines.append("")
-    author_status = "(Brave org member)" if _is_org(pr_author) else "(EXTERNAL)"
+    author_status = "(Brave org member)" if _is_org(
+        pr_author) else "(EXTERNAL)"
     lines.append(f"**Author:** @{pr_author} {author_status}")
     lines.append(f"**State:** {pr_state}")
     lines.append(f"**Merged:** {pr_merged}")
@@ -376,7 +392,8 @@ def fetch_prior_comments(pr_number, org_members, include_author=None):
     if include_author and include_author == pr_author:
         pr_body = pr_data.get("body") or ""
         if pr_body:
-            lines.append(f"## PR Description (from external contributor @{pr_author})")
+            lines.append(
+                f"## PR Description (from external contributor @{pr_author})")
             lines.append("")
             lines.append(pr_body)
             lines.append("")
@@ -384,7 +401,8 @@ def fetch_prior_comments(pr_number, org_members, include_author=None):
     lines.append("## Timestamp Analysis")
     lines.append("")
     lines.append(f"**Latest Push:** {latest_push_ts}")
-    lines.append(f"**Latest Reviewer Activity:** {latest_reviewer_ts or 'None'}")
+    lines.append(
+        f"**Latest Reviewer Activity:** {latest_reviewer_ts or 'None'}")
     lines.append(f"**Who Went Last:** {who_went_last}")
     lines.append("")
 
@@ -401,7 +419,8 @@ def fetch_prior_comments(pr_number, org_members, include_author=None):
             submitted = review.get("submitted_at", "")
             body = review.get("body") or ""
             if _is_org(user):
-                lines.append(f"### @{user} (Brave org member) - {state} - {submitted}")
+                lines.append(
+                    f"### @{user} (Brave org member) - {state} - {submitted}")
                 lines.append("")
                 if body:
                     lines.append(body)
@@ -463,7 +482,8 @@ def fetch_prior_comments(pr_number, org_members, include_author=None):
 
     # Determine if there are any bot comments (will be used to decide
     # whether to run resolve-bot-threads)
-    has_any_comment = bool(reviews) or bool(review_comments) or bool(issue_comments)
+    has_any_comment = bool(reviews) or bool(review_comments) or bool(
+        issue_comments)
     return markdown if has_any_comment else None, has_any_comment
 
 
@@ -474,16 +494,24 @@ def resolve_bot_threads(pr_number, bot_username):
     result = subprocess.run(
         [
             sys.executable,
-            os.path.join(_BOT_DIR, "scripts", "resolve-bot-threads.py"),
+            os.path.join(_SCRIPT_DIR, "scripts", "resolve-bot-threads.py"),
             str(pr_number),
             bot_username,
         ],
-        capture_output=True, text=True, timeout=60,
-        cwd=_BOT_DIR,
+        capture_output=True,
+        text=True,
+        timeout=60,
+        cwd=_REPO_DIR,
+        check=False,
     )
     if result.returncode != 0:
-        log(f"WARNING: resolve-bot-threads failed for #{pr_number}: {result.stderr.strip()}")
-        return {"resolved": 0, "unresolved_bot_threads": 0, "total_bot_threads": 0}
+        log(f"WARNING: resolve-bot-threads failed for "
+            f"#{pr_number}: {result.stderr.strip()}")
+        return {
+            "resolved": 0,
+            "unresolved_bot_threads": 0,
+            "total_bot_threads": 0
+        }
     try:
         data = json.loads(result.stdout)
         return {
@@ -492,7 +520,11 @@ def resolve_bot_threads(pr_number, bot_username):
             "total_bot_threads": data.get("total_bot_threads", 0),
         }
     except json.JSONDecodeError:
-        return {"resolved": 0, "unresolved_bot_threads": 0, "total_bot_threads": 0}
+        return {
+            "resolved": 0,
+            "unresolved_bot_threads": 0,
+            "total_bot_threads": 0
+        }
 
 
 # ---------------------------------------------------------------------------
@@ -502,12 +534,15 @@ def check_can_approve(pr_number, bot_username):
     result = subprocess.run(
         [
             sys.executable,
-            os.path.join(_BOT_DIR, "scripts", "check-can-approve.py"),
+            os.path.join(_SCRIPT_DIR, "scripts", "check-can-approve.py"),
             str(pr_number),
             bot_username,
         ],
-        capture_output=True, text=True, timeout=30,
-        cwd=_BOT_DIR,
+        capture_output=True,
+        text=True,
+        timeout=30,
+        cwd=_REPO_DIR,
+        check=False,
     )
     try:
         data = json.loads(result.stdout)
@@ -527,13 +562,19 @@ def submit_approve(pr_number, head_sha):
     # Submit APPROVE
     approve_input = json.dumps({"event": "APPROVE", "body": ""})
     result = subprocess.run(
-        ["gh", "api", f"repos/{PR_REPO}/pulls/{pr_number}/reviews",
-         "--method", "POST", "--input", "-"],
+        [
+            "gh", "api", f"repos/{PR_REPO}/pulls/{pr_number}/reviews",
+            "--method", "POST", "--input", "-"
+        ],
         input=approve_input,
-        capture_output=True, text=True, timeout=30,
+        capture_output=True,
+        text=True,
+        timeout=30,
+        check=False,
     )
     if result.returncode != 0:
-        log(f"WARNING: APPROVE failed for #{pr_number}: {result.stderr.strip()}")
+        log(f"WARNING: APPROVE failed for #{pr_number}: {result.stderr.strip()}"
+            )
         return False
 
     # Update cache with --approve
@@ -545,8 +586,11 @@ def submit_approve(pr_number, head_sha):
             head_sha,
             "--approve",
         ],
-        capture_output=True, text=True, timeout=10,
-        cwd=_BOT_DIR,
+        capture_output=True,
+        text=True,
+        timeout=10,
+        cwd=_REPO_DIR,
+        check=False,
     )
     return True
 
@@ -559,23 +603,26 @@ def extract_images(pr_number):
     result = subprocess.run(
         [
             sys.executable,
-            os.path.join(_BOT_DIR, "scripts", "extract-pr-images.py"),
+            os.path.join(_SCRIPT_DIR, "scripts", "extract-pr-images.py"),
             str(pr_number),
         ],
-        capture_output=True, text=True, timeout=60,
-        cwd=_BOT_DIR,
+        capture_output=True,
+        text=True,
+        timeout=60,
+        cwd=_REPO_DIR,
+        check=False,
     )
     if result.returncode != 0:
-        log(f"WARNING: extract-pr-images failed for #{pr_number}: {result.stderr.strip()}")
+        log(f"WARNING: extract-pr-images failed for "
+            f"#{pr_number}: {result.stderr.strip()}")
         return []
     try:
         data = json.loads(result.stdout)
-        return [
-            {"abs_path": img.get("abs_path", img.get("path", "")),
-             "source": img.get("source", ""),
-             "alt": img.get("alt", "")}
-            for img in data.get("images", [])
-        ]
+        return [{
+            "abs_path": img.get("abs_path", img.get("path", "")),
+            "source": img.get("source", ""),
+            "alt": img.get("alt", "")
+        } for img in data.get("images", [])]
     except json.JSONDecodeError:
         return []
 
@@ -605,9 +652,14 @@ def discover_best_practices(file_flags):
         if file_flags.get(key):
             cmd.append(flag)
 
-    result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+    result = subprocess.run(cmd,
+                            capture_output=True,
+                            text=True,
+                            timeout=30,
+                            check=False)
     if result.returncode != 0:
-        log(f"WARNING: discover-best-practices failed: {result.stderr.strip()}")
+        log(f"WARNING: discover-best-practices failed: {result.stderr.strip()}"
+            )
         return []
     try:
         return json.loads(result.stdout)
@@ -627,6 +679,7 @@ def chunk_doc(doc_path):
 # ---------------------------------------------------------------------------
 
 # The review rules from SKILL.md Steps 3-5, 7-8 — embedded verbatim.
+# pylint: disable=line-too-long
 _REVIEW_RULES = """\
 Review Rules:
 - Only flag violations in ADDED lines (+ lines), not existing code.
@@ -708,7 +761,6 @@ Severity guide:
 - medium: Substantive best practice violations (wrong container type, missing error handling, architectural issues)
 - low: Nits, style preferences, missing docs, naming suggestions, minor cleanup"""
 
-
 _VALIDATION_INSTRUCTIONS = """\
 Source Code Validation (REQUIRED):
 
@@ -744,11 +796,19 @@ If there are no validated violations, write: {{"violations": [], "validation_log
 CRITICAL: You MUST write the results JSON file even if there are no violations.
 
 CRITICAL: NEVER post reviews, comments, or approvals to GitHub. NEVER use `gh api`, `gh pr review`, `gh pr comment`, or any other command to interact with the GitHub API. Your ONLY job is to analyze the diff against the rules and write the results JSON file. All posting is handled by a separate pipeline script after your results are collected."""
+# pylint: enable=line-too-long
 
 
-def build_subagent_prompt(pr_number, pr_title, diff_text, images, prior_comments,
-                          bot_username, chunk, diff_line_ranges=None,
-                          results_file=None, target_repo_path=None):
+def build_subagent_prompt(pr_number,
+                          pr_title,
+                          diff_text,
+                          images,
+                          prior_comments,
+                          bot_username,
+                          chunk,
+                          diff_line_ranges=None,
+                          results_file=None,
+                          target_repo_path=None):
     """Build a complete self-contained subagent prompt for a single chunk."""
     doc = chunk["doc"]
     chunk_index = chunk["chunk_index"]
@@ -772,9 +832,13 @@ def build_subagent_prompt(pr_number, pr_title, diff_text, images, prior_comments
     # 2b. Valid line ranges for inline comments
     if diff_line_ranges:
         parts.append("## Valid Line Ranges for Inline Comments")
-        parts.append("CRITICAL: The `line` field in each violation MUST fall within one of these ranges.")
-        parts.append("These are the only lines where GitHub allows inline review comments.")
-        parts.append("If the code you want to flag is not on a + line in the diff, use the nearest + line within the same hunk.")
+        parts.append("CRITICAL: The `line` field in each violation "
+                     "MUST fall within one of these ranges.")
+        parts.append("These are the only lines where GitHub "
+                     "allows inline review comments.")
+        parts.append("If the code you want to flag is not on a "
+                     "+ line in the diff, use the nearest + line "
+                     "within the same hunk.")
         parts.append("```")
         parts.append(format_diff_line_ranges(diff_line_ranges))
         parts.append("```")
@@ -782,16 +846,22 @@ def build_subagent_prompt(pr_number, pr_title, diff_text, images, prior_comments
 
     # 3. Image paths (if any)
     if images:
-        parts.append("This PR includes screenshots/images. Use the Read tool to view each image for visual context about what the PR changes:")
+        parts.append("This PR includes screenshots/images. Use the "
+                     "Read tool to view each image for visual "
+                     "context about what the PR changes:")
         for img in images:
-            parts.append(f"- {img['abs_path']} (from: {img['source']}, alt: \"{img['alt']}\")")
+            parts.append(f"- {img['abs_path']} "
+                         f"(from: {img['source']}, "
+                         f"alt: \"{img['alt']}\")")
         parts.append("")
 
     # 4. Prior comments context
     if prior_comments:
         parts.append("## Prior Review Comments")
         parts.append("")
-        parts.append(f"The bot's GitHub username is `{bot_username}`. Comments from this user are the bot's own previous comments.")
+        parts.append(f"The bot's GitHub username is "
+                     f"`{bot_username}`. Comments from this user "
+                     "are the bot's own previous comments.")
         parts.append("")
         parts.append(prior_comments)
         parts.append("")
@@ -808,7 +878,8 @@ def build_subagent_prompt(pr_number, pr_title, diff_text, images, prior_comments
     parts.append("")
 
     # 7. Best practice link requirement
-    parts.append(_BEST_PRACTICE_LINK_REQUIREMENT.format(bp_link_base=BP_LINK_BASE))
+    parts.append(
+        _BEST_PRACTICE_LINK_REQUIREMENT.format(bp_link_base=BP_LINK_BASE))
     parts.append("")
 
     # 8. Prior comments re-review rules
@@ -834,10 +905,11 @@ def build_subagent_prompt(pr_number, pr_title, diff_text, images, prior_comments
     # 11. Validation instructions (subagent validates its own findings)
     if results_file and target_repo_path:
         parts.append("")
-        parts.append(_VALIDATION_INSTRUCTIONS.format(
-            target_repo_path=target_repo_path,
-            results_file=results_file,
-        ))
+        parts.append(
+            _VALIDATION_INSTRUCTIONS.format(
+                target_repo_path=target_repo_path,
+                results_file=results_file,
+            ))
 
     return "\n".join(parts)
 
@@ -846,8 +918,12 @@ def build_subagent_prompt(pr_number, pr_title, diff_text, images, prior_comments
 # Process a single PR (for ThreadPoolExecutor)
 # ---------------------------------------------------------------------------
 def process_pr(pr, bot_username, org_members, work_dir):
-    """Process a single PR: fetch diff, classify, comments, images, threads, chunks.
-    Writes prompt files to work_dir. Returns a dict for the manifest or an error dict."""
+    """Process a single PR.
+
+    Fetch diff, classify, comments, images, threads,
+    chunks. Writes prompt files to work_dir. Returns a
+    dict for the manifest or an error dict.
+    """
     pr_number = pr["number"]
     pr_title = pr["title"]
     head_sha = pr["headRefOid"]
@@ -861,20 +937,27 @@ def process_pr(pr, bot_username, org_members, work_dir):
         # a. Fetch diff
         diff_text = fetch_diff(pr_number)
     except Exception as e:
-        return None, {"pr_number": pr_number, "stage": "fetch_diff", "error": str(e)}
+        return None, {
+            "pr_number": pr_number,
+            "stage": "fetch_diff",
+            "error": str(e)
+        }
 
     try:
         # b. Classify files
         file_flags = classify_files(diff_text)
     except Exception as e:
-        return None, {"pr_number": pr_number, "stage": "classify_files", "error": str(e)}
+        return None, {
+            "pr_number": pr_number,
+            "stage": "classify_files",
+            "error": str(e)
+        }
 
     try:
         # c. Fetch prior comments
         include_author = author if is_external else None
         prior_comments, has_bot_comments = fetch_prior_comments(
-            pr_number, org_members, include_author=include_author
-        )
+            pr_number, org_members, include_author=include_author)
     except Exception as e:
         prior_comments = None
         has_bot_comments = False
@@ -891,7 +974,11 @@ def process_pr(pr, bot_username, org_members, work_dir):
         # e. Resolve addressed threads
         thread_resolution = resolve_bot_threads(pr_number, bot_username)
     except Exception as e:
-        thread_resolution = {"resolved": 0, "unresolved_bot_threads": 0, "total_bot_threads": 0}
+        thread_resolution = {
+            "resolved": 0,
+            "unresolved_bot_threads": 0,
+            "total_bot_threads": 0
+        }
         log(f"  WARNING: thread resolution failed for #{pr_number}: {e}")
 
     try:
@@ -918,12 +1005,19 @@ def process_pr(pr, bot_username, org_members, work_dir):
             chunks = chunk_doc(doc_info["path"])
             for chunk in chunks:
                 chunk_id = f"{doc_info['doc']}_{chunk['chunk_index']}"
-                prompt_file = os.path.join(pr_work_dir, f"{chunk_id}_prompt.txt")
-                results_file = os.path.join(pr_work_dir, f"{chunk_id}_results.json")
+                prompt_file = os.path.join(pr_work_dir,
+                                           f"{chunk_id}_prompt.txt")
+                results_file = os.path.join(pr_work_dir,
+                                            f"{chunk_id}_results.json")
 
                 prompt = build_subagent_prompt(
-                    pr_number, pr_title, diff_text, images,
-                    prior_comments, bot_username, chunk,
+                    pr_number,
+                    pr_title,
+                    diff_text,
+                    images,
+                    prior_comments,
+                    bot_username,
+                    chunk,
                     diff_line_ranges=diff_line_ranges,
                     results_file=results_file,
                     target_repo_path=TARGET_REPO_PATH,
@@ -993,8 +1087,13 @@ def process_cached_pr(pr, bot_username):
     try:
         thread_resolution = resolve_bot_threads(pr_number, bot_username)
     except Exception as e:
-        thread_resolution = {"resolved": 0, "unresolved_bot_threads": 0, "total_bot_threads": 0}
-        log(f"  WARNING: thread resolution failed for cached #{pr_number}: {e}")
+        thread_resolution = {
+            "resolved": 0,
+            "unresolved_bot_threads": 0,
+            "total_bot_threads": 0
+        }
+        log(f"  WARNING: thread resolution failed for cached #{pr_number}: {e}"
+            )
 
     # Check approval gate
     try:
@@ -1048,7 +1147,7 @@ def main():
     # Temporarily override sys.argv for the fetch module
     old_argv = sys.argv
     sys.argv = ["fetch-prs.py"] + fetch_argv
-    mode, days, page, pr_number, state, rp, mp = _fp_mod.parse_args()
+    mode, days, page, pr_number, state, _rp, _mp = _fp_mod.parse_args()
     sys.argv = old_argv
 
     raw_prs = _fp_mod.fetch_prs(mode, days, page, pr_number, state)
@@ -1070,22 +1169,27 @@ def main():
     else:
         cache = _fp_mod.load_cache()
         (
-            to_review, cached_prs_raw,
-            skipped_filtered, skipped_cached,
-            skipped_approved, skipped_external,
+            to_review,
+            cached_prs_raw,
+            skipped_filtered,
+            skipped_cached,
+            skipped_approved,
+            skipped_external,
         ) = _fp_mod.filter_prs(
-            raw_prs, mode, days, cache, org_members,
+            raw_prs,
+            mode,
+            days,
+            cache,
+            org_members,
             reviewer_priority=bot_username if reviewer_priority else None,
         )
 
         # Sort by reviewer priority
         if reviewer_priority:
-            to_review.sort(
-                key=lambda p: 0 if _fp_mod.is_requested_reviewer(p, bot_username) else 1
-            )
-            cached_prs_raw.sort(
-                key=lambda p: 0 if _fp_mod.is_requested_reviewer(p, bot_username) else 1
-            )
+            to_review.sort(key=lambda p: 0 if _fp_mod.is_requested_reviewer(
+                p, bot_username) else 1)
+            cached_prs_raw.sort(key=lambda p: 0 if _fp_mod.
+                                is_requested_reviewer(p, bot_username) else 1)
 
         # Apply max-prs limit
         skipped_max_prs = 0
@@ -1105,7 +1209,7 @@ def main():
         }
 
     # Build PR entry dicts for processing
-    rp_val = bot_username if reviewer_priority else None
+    _rp_val = bot_username if reviewer_priority else None
 
     def pr_entry(pr):
         author = pr.get("author", {}).get("login", "unknown")
@@ -1115,9 +1219,8 @@ def main():
             "headRefOid": pr["headRefOid"],
             "author": author,
             "hasApproval": _fp_mod.has_any_approval(pr),
-            "isExternalContributor": bool(
-                org_members and author not in org_members
-            ),
+            "isExternalContributor": bool(org_members
+                                          and author not in org_members),
         }
         return entry
 
@@ -1130,16 +1233,13 @@ def main():
     ]
     if fetch_summary["skipped_filtered"]:
         progress_lines.append(
-            f"Skipped {fetch_summary['skipped_filtered']} PRs (filtered)."
-        )
+            f"Skipped {fetch_summary['skipped_filtered']} PRs (filtered).")
     if fetch_summary["skipped_approved"]:
-        progress_lines.append(
-            f"Skipped {fetch_summary['skipped_approved']} PRs (already approved)."
-        )
+        progress_lines.append(f"Skipped {fetch_summary['skipped_approved']}"
+                              " PRs (already approved).")
     if fetch_summary["skipped_external"]:
-        progress_lines.append(
-            f"Skipped {fetch_summary['skipped_external']} PRs (external contributors)."
-        )
+        progress_lines.append(f"Skipped {fetch_summary['skipped_external']}"
+                              " PRs (external contributors).")
 
     log("\n".join(progress_lines))
 
@@ -1154,8 +1254,9 @@ def main():
     if prs_to_process:
         log(f"\nProcessing {len(prs_to_process)} PRs in parallel...")
         with ThreadPoolExecutor(max_workers=5) as executor:
+            args = (bot_username, org_members, work_dir)
             futures = {
-                executor.submit(process_pr, pr, bot_username, org_members, work_dir): pr
+                executor.submit(process_pr, pr, *args): pr
                 for pr in prs_to_process
             }
             for future in as_completed(futures):
@@ -1202,7 +1303,8 @@ def main():
     cached_order = {p["number"]: i for i, p in enumerate(cached_to_process)}
     processed_cached.sort(key=lambda p: cached_order.get(p["number"], 999999))
 
-    # 6. Write manifest.json (lightweight — no diffs, no prompts, just file paths)
+    # 6. Write manifest.json (lightweight — no diffs,
+    # no prompts, just file paths)
     output = {
         "bot_username": bot_username,
         "pr_repo": PR_REPO,
@@ -1219,33 +1321,34 @@ def main():
     with open(manifest_path, "w") as f:
         json.dump(output, f, indent=2)
 
-    total_prompts = sum(len(p.get("subagent_prompts", [])) for p in processed_prs)
+    total_prompts = sum(
+        len(p.get("subagent_prompts", [])) for p in processed_prs)
     total_prompt_chars = sum(
         sp.get("cost_estimate", {}).get("prompt_chars", 0)
-        for p in processed_prs
-        for sp in p.get("subagent_prompts", [])
-    )
+        for p in processed_prs for sp in p.get("subagent_prompts", []))
     total_prompt_tokens = total_prompt_chars // 4
 
     # Cost summary
     log(f"\n{'=' * 60}")
-    log(f"COST SUMMARY")
+    log("COST SUMMARY")
     log(f"{'=' * 60}")
     log(f"PRs to review: {len(processed_prs)}")
     log(f"Total subagent prompts: {total_prompts}")
-    log(f"Total prompt size: {total_prompt_chars:,} chars (~{total_prompt_tokens:,} tokens)")
+    log(f"Total prompt size: {total_prompt_chars:,} "
+        f"chars (~{total_prompt_tokens:,} tokens)")
     if total_prompts > 0:
         avg_chars = total_prompt_chars // total_prompts
-        log(f"Average prompt size: {avg_chars:,} chars (~{avg_chars // 4:,} tokens)")
+        log(f"Average prompt size: {avg_chars:,} "
+            f"chars (~{avg_chars // 4:,} tokens)")
     log(f"Cached PRs processed: {len(processed_cached)}")
     log(f"Errors: {len(errors)}")
     # Per-PR breakdown
     for pr in processed_prs:
         pr_chars = sum(
             sp.get("cost_estimate", {}).get("prompt_chars", 0)
-            for sp in pr.get("subagent_prompts", [])
-        )
-        log(f"  PR #{pr['number']}: {len(pr.get('subagent_prompts', []))} chunks, "
+            for sp in pr.get("subagent_prompts", []))
+        chunks = len(pr.get('subagent_prompts', []))
+        log(f"  PR #{pr['number']}: {chunks} chunks, "
             f"{pr_chars:,} chars (~{pr_chars // 4:,} tokens)")
     log(f"{'=' * 60}")
 

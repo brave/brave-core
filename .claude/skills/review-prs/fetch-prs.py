@@ -1,10 +1,14 @@
-#!/usr/bin/env python3
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 """Fetch and filter PRs for review.
 
 Handles all PR fetching, filtering, and cache checking in one script
 so the LLM doesn't burn tokens on this logic.
 
-Usage: fetch-prs.py [days|page<N>|#<PR>] [open|closed|all] [--reviewer-priority <username>] [--max-prs <N>]
+Usage: fetch-prs.py [days|page<N>|#<PR>] [open|closed|all]
+       [--reviewer-priority <username>] [--max-prs <N>]
 
 Examples:
   fetch-prs.py              # Default: 5 days, open PRs
@@ -14,7 +18,8 @@ Examples:
   fetch-prs.py page1 all    # Page 1, all states
   fetch-prs.py #12345       # Single PR by number
   fetch-prs.py 12345        # Single PR by number (large numbers treated as PR#)
-  fetch-prs.py 1 open --reviewer-priority user  # Prioritize PRs requesting review from user
+  fetch-prs.py 1 open --reviewer-priority user
+      # Prioritize PRs requesting review from user
   fetch-prs.py 1 open --max-prs 10              # Limit to 10 PRs per batch
 
 Output: JSON with "prs" array and "summary" stats.
@@ -26,17 +31,16 @@ import subprocess
 import sys
 from datetime import datetime, timedelta, timezone
 
-# Add scripts/lib to path for config module
 _script_dir = os.path.dirname(os.path.abspath(__file__))
-_bot_dir = os.path.join(_script_dir, "..", "..", "..")
-sys.path.insert(0, os.path.join(_bot_dir, "scripts"))
-from lib.load_config import load_config, require_config
+_repo_dir = os.path.normpath(os.path.join(_script_dir, "..", "..", ".."))
 
-_config = load_config()
-PR_REPO = require_config(_config, "project.prRepository")
+PR_REPO = "brave/brave-core"
 
-CACHE_PATH = ".ignore/review-prs-cache.json"
-ORG_MEMBERS_PATH = ".ignore/org-members.txt"
+CACHE_PATH = os.path.join(_repo_dir, ".ignore", "review-prs-cache.json")
+ORG_MEMBERS_PATH = os.environ.get(
+    "BRAVE_ORG_MEMBERS_PATH",
+    os.path.join(_repo_dir, ".ignore", "org-members.txt"),
+)
 SKIP_PREFIXES = ["CI run for", "Backport", "Update l10n"]
 SKIP_CONTAINS = ["uplift to", "Just to test CI"]
 
@@ -58,11 +62,11 @@ def parse_args():
             reviewer_priority = args[i + 1]
             i += 2
             continue
-        elif arg == "--max-prs" and i + 1 < len(args):
+        if arg == "--max-prs" and i + 1 < len(args):
             max_prs = int(args[i + 1])
             i += 2
             continue
-        elif arg.startswith("#"):
+        if arg.startswith("#"):
             mode = "single"
             pr_number = int(arg[1:])
         elif arg.startswith("page"):
@@ -97,7 +101,9 @@ def has_any_approval(pr):
 
 
 def fetch_single_pr(pr_number):
-    fields = "number,title,updatedAt,author,isDraft,headRefOid,reviewDecision,latestReviews,reviewRequests"
+    fields = ("number,title,updatedAt,author,isDraft,"
+              "headRefOid,reviewDecision,latestReviews,"
+              "reviewRequests")
     result = subprocess.run(
         [
             "gh",
@@ -129,11 +135,13 @@ def is_requested_reviewer(pr, username):
     return False
 
 
-def fetch_prs(mode, days, page, pr_number, state):
+def fetch_prs(mode, _days, page, pr_number, state):
     if mode == "single":
         return fetch_single_pr(pr_number)
 
-    fields = "number,title,updatedAt,author,isDraft,headRefOid,reviewDecision,latestReviews,reviewRequests"
+    fields = ("number,title,updatedAt,author,isDraft,"
+              "headRefOid,reviewDecision,latestReviews,"
+              "reviewRequests")
     base_cmd = [
         "gh",
         "pr",
@@ -157,19 +165,19 @@ def fetch_prs(mode, days, page, pr_number, state):
         prs = json.loads(result.stdout)
         prs.sort(key=lambda p: p.get("updatedAt", ""), reverse=True)
         start = (page - 1) * 20
-        return prs[start : start + 20]
-    else:
-        result = subprocess.run(
-            base_cmd + ["--limit", "500"],
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-        prs = json.loads(result.stdout)
-        # Sort by updatedAt descending (newest first) since --sort is
-        # not available in all gh versions
-        prs.sort(key=lambda p: p.get("updatedAt", ""), reverse=True)
-        return prs
+        return prs[start:start + 20]
+
+    result = subprocess.run(
+        base_cmd + ["--limit", "500"],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    prs = json.loads(result.stdout)
+    # Sort by updatedAt descending (newest first) since --sort is
+    # not available in all gh versions
+    prs.sort(key=lambda p: p.get("updatedAt", ""), reverse=True)
+    return prs
 
 
 def load_cache():
@@ -182,15 +190,15 @@ def load_cache():
 
 def load_org_members():
     """Load Brave org member logins from the cached file."""
-    try:
-        with open(ORG_MEMBERS_PATH) as f:
-            return set(line.strip() for line in f if line.strip())
-    except FileNotFoundError:
+    if not os.path.isfile(ORG_MEMBERS_PATH):
         print(
-            f"WARNING: org members file not found at {ORG_MEMBERS_PATH}",
+            f"ERROR: org members file not found at {ORG_MEMBERS_PATH}\n"
+            "Set BRAVE_ORG_MEMBERS_PATH to the correct location.",
             file=sys.stderr,
         )
-        return set()
+        sys.exit(1)
+    with open(ORG_MEMBERS_PATH) as f:
+        return set(line.strip() for line in f if line.strip())
 
 
 def should_skip_title(title):
@@ -243,17 +251,20 @@ def filter_prs(prs, mode, days, cache, org_members, reviewer_priority=None):
         # Exception: allow through if bot is a requested reviewer on the PR
         author = pr.get("author", {}).get("login", "")
         if org_members and author not in org_members:
-            if reviewer_priority and is_requested_reviewer(pr, reviewer_priority):
+            if reviewer_priority and is_requested_reviewer(
+                    pr, reviewer_priority):
                 pass  # Bot was asked to review this contributor PR
             else:
                 skipped_external += 1
                 continue
 
         if cutoff and mode == "days":
-            updated = datetime.fromisoformat(pr["updatedAt"].replace("Z", "+00:00"))
+            updated = datetime.fromisoformat(pr["updatedAt"].replace(
+                "Z", "+00:00"))
             if updated < cutoff:
                 # Don't filter out PRs where the bot is explicitly requested
-                if not (reviewer_priority and is_requested_reviewer(pr, reviewer_priority)):
+                if not (reviewer_priority
+                        and is_requested_reviewer(pr, reviewer_priority)):
                     skipped_filtered += 1
                     continue
 
@@ -268,7 +279,8 @@ def filter_prs(prs, mode, days, cache, org_members, reviewer_priority=None):
         if cache.get(pr_num) == head_sha:
             # If the bot is a requested reviewer, force a full re-review
             # even if the SHA hasn't changed (explicit re-request)
-            if reviewer_priority and is_requested_reviewer(pr, reviewer_priority):
+            if reviewer_priority and is_requested_reviewer(
+                    pr, reviewer_priority):
                 pass  # Fall through to to_review
             else:
                 skipped_cached += 1
@@ -288,7 +300,8 @@ def filter_prs(prs, mode, days, cache, org_members, reviewer_priority=None):
 
 
 def main():
-    mode, days, page, pr_number, state, reviewer_priority, max_prs = parse_args()
+    mode, days, page, pr_number, state, reviewer_priority, max_prs = parse_args(
+    )
     prs = fetch_prs(mode, days, page, pr_number, state)
 
     org_members = load_org_members()
@@ -314,12 +327,10 @@ def main():
 
     # Sort PRs so those requesting review from the priority user come first
     if reviewer_priority:
-        to_review.sort(
-            key=lambda pr: 0 if is_requested_reviewer(pr, reviewer_priority) else 1
-        )
-        cached_prs.sort(
-            key=lambda pr: 0 if is_requested_reviewer(pr, reviewer_priority) else 1
-        )
+        to_review.sort(key=lambda pr: 0
+                       if is_requested_reviewer(pr, reviewer_priority) else 1)
+        cached_prs.sort(key=lambda pr: 0
+                        if is_requested_reviewer(pr, reviewer_priority) else 1)
 
     # Apply max-prs limit after sorting (so priority PRs are kept first)
     skipped_max_prs = 0
@@ -337,7 +348,8 @@ def main():
             "hasApproval": has_any_approval(pr),
         }
         if reviewer_priority:
-            entry["isRequestedReviewer"] = is_requested_reviewer(pr, reviewer_priority)
+            entry["isRequestedReviewer"] = is_requested_reviewer(
+                pr, reviewer_priority)
         if org_members and author not in org_members:
             entry["isExternalContributor"] = True
         return entry
