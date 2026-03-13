@@ -559,12 +559,6 @@
 -HostContentSettingsMapTest.RecordDefaultSensorsSetting
 -HostContentSettingsMapTest.SetOneTimeGeolocationSetting
 
-# These tests fail because we stub features::HasTabSearchToolbarButton() to
-# return true
--TabSearchContainerTest.AnimatesToExpanded
--TabSearchContainerTest.ButtonsHaveFlatEdges
--TabSearchContainerTest.OrdersButtonsCorrectly
-
 # These tests fail because they try to access unregistered prefs that Brave
 # implements for the omnibox. The upstream test would probably need to be
 # patched to include that registration code.
