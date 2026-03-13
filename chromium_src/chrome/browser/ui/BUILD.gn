@@ -29,6 +29,7 @@ group("ui") {
   if (toolkit_views) {
     deps += [
       "//brave/browser/ui/darker_theme",
+      "//brave/components/brave_news/common/buildflags",
       "//brave/components/sidebar/browser",
     ]
 
