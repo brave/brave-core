@@ -23,21 +23,18 @@ struct ManagePasswordDetailView: View {
       Section {
         LabeledContent {
           Menu {
-            ControlGroup {
-              Button {
-                UIPasteboard.general.string = password.site
-              } label: {
-                Text(Strings.menuItemCopyTitle)
-              }
-              Button {
-                if let url = URL(string: password.site) {
-                  openURL(url)
-                }
-              } label: {
-                Text(Strings.openWebsite)
-              }
+            Button {
+              UIPasteboard.general.string = password.site
+            } label: {
+              Text(Strings.menuItemCopyTitle)
             }
-            .controlGroupStyle(.compactMenu)
+            Button {
+              if let url = URL(string: password.site) {
+                openURL(url)
+              }
+            } label: {
+              Text(Strings.openWebsite)
+            }
           } label: {
             Text(password.site).lineLimit(1)
               .contentShape(.rect)
@@ -82,7 +79,9 @@ struct ManagePasswordDetailView: View {
                     text: .constant(password.password ?? "")
                   )
                   .lineLimit(1)
+                  .textContentType(.password)
                   .allowsHitTesting(false)
+                  .accessibility(hidden: !isPasswordRevealed)
                   .multilineTextAlignment(.trailing)
                   .frame(maxWidth: .infinity, alignment: .trailing)
                 }
@@ -104,6 +103,7 @@ struct ManagePasswordDetailView: View {
       }
     }
     .foregroundStyle(Color(braveSystemName: .textPrimary))
+    .accessibility(hidden: privacyLock?.isLocked ?? false)
     .navigationTitle(URL(string: password.site)?.baseDomain ?? password.title)
     .navigationBarTitleDisplayMode(.inline)
     .toolbarBackground(.visible, for: .navigationBar)
