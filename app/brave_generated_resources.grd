@@ -867,7 +867,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
 
       <!-- P3A -->
       <message name="IDS_BRAVE_CONFIRM_P3A_INFO_BAR" desc="Text that shows on the info bar where user acknowledges the P3A message">
-        Brave uses completely private product analytics to estimate the overall usage of certain features
+        Brave uses privacy-preserving product analytics to estimate the overall usage of certain features
       </message>
       <message name="IDS_BRAVE_CONFIRM_P3A_INFO_BAR_ACKNOWLEDGE" desc="OK button that shows on the info bar where user acknowledges the P3A message">
         Got it
