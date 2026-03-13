@@ -23,10 +23,20 @@ const mockHandler: BraveOriginHandler = {
   },
   openBuyWindow: () => console.log('[Storybook] openBuyWindow called'),
   closeDialog: () => console.log('[Storybook] closeDialog called'),
+  proceedFree: () => console.log('[Storybook] proceedFree called'),
 }
 
 function BraveOriginStartupStory() {
   return <App handler={mockHandler} />
+}
+
+function BraveOriginStartupLinuxStory() {
+  return (
+    <App
+      handler={mockHandler}
+      isLinuxFreeEligible={true}
+    />
+  )
 }
 
 export default {
@@ -42,3 +52,7 @@ export default {
 } satisfies Meta<typeof BraveOriginStartupStory>
 
 export const MainView: StoryObj<typeof BraveOriginStartupStory> = {}
+
+export const LinuxView: StoryObj<typeof BraveOriginStartupLinuxStory> = {
+  render: () => <BraveOriginStartupLinuxStory />,
+}

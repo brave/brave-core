@@ -43,4 +43,20 @@
   <message name="IDS_BRAVE_ORIGIN_STARTUP_VERIFYING_MESSAGE" desc="Message shown while verifying a purchase ID" formatter_data="webui=BraveOriginStartup">
     Verifying… This may take a minute.
   </message>
+
+  <message name="IDS_BRAVE_ORIGIN_STARTUP_LINUX_DESCRIPTION" desc="First paragraph of description on the Linux-specific Brave Origin startup dialog" formatter_data="webui=BraveOriginStartup">
+    Thanks for installing Brave Origin, a version of the browser for users who don't need all the features that support Brave as a business, but still want the privacy that only Brave offers. Origin users will continue to benefit from Brave's industry-leading privacy, adblock, and speed (via Shields), as well as regular software updates, Chromium patches, and security and privacy improvements. Origin will remove most other features from the browser.
+  </message>
+
+  <message name="IDS_BRAVE_ORIGIN_STARTUP_LINUX_DESCRIPTION2" desc="Second paragraph on the Linux-specific Brave Origin startup dialog with a link placeholder" formatter_data="webui=BraveOriginStartup">
+    Origin is free to use on Linux devices, but still <ph name="BEGIN_LINK">$1<ex>&lt;a&gt;</ex></ph>available for purchase<ph name="END_LINK">$2<ex>&lt;/a&gt;</ex></ph> if you'd like to support Brave as a business. Purchasing would also unlock the ability to use Origin on Android, iOS, macOS, and Windows devices.
+  </message>
+
+  <message name="IDS_BRAVE_ORIGIN_STARTUP_LINUX_BUY_BUTTON" desc="Button label to support Brave by purchasing Origin on Linux" formatter_data="webui=BraveOriginStartup">
+    Support Brave by purchasing Origin
+  </message>
+
+  <message name="IDS_BRAVE_ORIGIN_STARTUP_LINUX_FREE_BUTTON" desc="Button label to proceed with Origin for free on Linux" formatter_data="webui=BraveOriginStartup">
+    Proceed with Origin for free on Linux
+  </message>
 </grit-part>
