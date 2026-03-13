@@ -703,3 +703,53 @@ TEST_F(WalletServiceTest, Error) { ... }
 TEST_F(WalletServiceTest, SendTransaction_ReturnsErrorForInsufficientBalance) { ... }
 TEST_F(WalletServiceTest, GetTokenBalances_HandlesNetworkTimeoutGracefully) { ... }
 ```
+
+---
+
+<a id="TI-039"></a>
+
+## ✅ PRs Should Include Reasonable Test Coverage
+
+**Code that can be tested should be tested.** When reviewing or writing a PR, ensure that new logic, branches, and edge cases have corresponding tests. This applies to all PRs, not just bug fixes. Don't be overly strict — use judgment — but flag obvious gaps where meaningful test coverage is missing.
+
+**If code is difficult to test, suggest refactors that improve testability** rather than accepting untested code. Common refactors include extracting logic into pure functions, adding dependency injection, or separating I/O from computation.
+
+```cpp
+// ❌ WRONG - new feature PR with no tests for core logic
+// "We'll add tests later" or "it's too hard to test"
+
+// ✅ CORRECT - PR includes tests for the new behavior
+// If the code is hard to test, refactor to make it testable:
+//   - Extract business logic into a standalone function
+//   - Use dependency injection for external dependencies
+//   - Separate pure computation from side effects
+```
+
+---
+
+<a id="TI-040"></a>
+
+## ✅ Use chromium_src Include Pattern to Test Upstream Overrides
+
+**When overriding upstream Chromium code via `chromium_src`, include the upstream test file and add Brave-specific tests after it.** This runs all upstream tests (catching regressions from your overrides) plus your new tests, with minimal effort.
+
+```cpp
+// chromium_src/components/foo/foo_service_unittest.cc
+
+// Include the entire upstream test file — all its tests will run.
+#include <components/foo/foo_service_unittest.cc>
+
+namespace foo {
+
+// Add Brave-specific tests using the upstream fixtures and mocks.
+TEST_F(FooServiceTest, BraveSpecificBehavior) {
+  // Tests Brave-specific logic that was added via chromium_src override
+}
+
+}  // namespace foo
+```
+
+Good examples in the repo:
+- `chromium_src/components/sync/engine/sync_scheduler_impl_unittest.cc`
+- `chromium_src/components/ntp_tiles/most_visited_sites_unittest.cc`
+- `chromium_src/components/variations/service/variations_service_unittest.cc`
