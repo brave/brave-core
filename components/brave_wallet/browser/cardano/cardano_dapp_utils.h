@@ -23,6 +23,11 @@ mojom::AccountIdPtr GetCardanoPreferredDappAccount(
     BraveWalletProviderDelegate* delegate,
     KeyringService* keyring_service);
 
+mojom::AccountIdPtr GetCardanoPreferredDappAccount(
+    KeyringService* keyring_service,
+    const std::optional<std::vector<std::string>>&
+        allowed_accounts_from_request);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_DAPP_UTILS_H_

@@ -221,8 +221,13 @@ void CardanoProviderImpl::OnRequestCardanoPermissions(
     }
   }
 
+  // Feed with `allowed_accounts` parameter from this delegate
+  // directly to GetCardanoPreferredDappAccount to use. This will
+  // prevent from a race condition where query from another delegate method
+  // to fetch allowed accounts from front-end database(iOS) since
+  // front-end database write may not have completed yet.
   auto account_id = GetCardanoPreferredDappAccount(
-      delegate(), brave_wallet_service_->keyring_service());
+      brave_wallet_service_->keyring_service(), allowed_accounts);
 
   if (!account_id) {
     std::move(callback).Run(
