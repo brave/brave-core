@@ -559,9 +559,15 @@ static void MaybeCreateForWebContents(content::WebContents* web_contents) {
 
 <a id="ARCH-030"></a>
 
-## ✅ Guard New Functionality Behind `base::Feature`
+## ✅ Guard Significant or Experimental New Functionality Behind `base::Feature`
 
-**New functionality should always be guarded behind a `base::Feature` flag.** Unguarded code that crashes can't be disabled remotely via Griffin/feature flags. Use `raw_ptr` checked before use for services that may not exist in all configurations (System profile, Guest profile, disabled feature).
+**Significant new features and experimental functionality should be guarded behind a `base::Feature` flag** so they can be remotely disabled via Griffin if issues arise. Use judgment -- not every change needs a feature flag. Feature flags are most valuable for:
+
+- Large or complex features with broad impact
+- Experimental or risky functionality that may need to be rolled back
+- Features where remote disabling provides a meaningful safety net
+
+Small, self-contained changes and simple bug fixes typically do not need a runtime feature flag.
 
 ```cpp
 // ❌ WRONG - no feature guard, crash can't be remotely disabled
