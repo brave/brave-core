@@ -78,6 +78,10 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
               (override));
 #if BUILDFLAG(IS_ANDROID)
   MOCK_METHOD(void, TriggerCurrentAppStateNotification, (), (override));
+
+  void ResetFirstWindowOpenedCallback() {
+    first_window_opened_callback_.Reset();
+  }
 #endif
 
   void ExpectRegisterFirstWindowOpenedCallback(base::OnceClosure callback,
@@ -456,6 +460,82 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnRestart) {
         0u);
   }
 }
+
+#if BUILDFLAG(IS_ANDROID)
+
+TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnAppStateChange) {
+  const GURL url("https://a.com");
+  const std::string ephemeral_domain = std::string(url.host());
+  const auto storage_partition_config =
+      content::StoragePartitionConfig::CreateDefault(&profile_);
+
+  host_content_settings_map()->SetContentSettingDefaultScope(
+      url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
+      CONTENT_SETTING_BLOCK);
+
+  EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+      .WillOnce(testing::Return(std::nullopt));
+  // Create tld ephemeral lifetime.
+  service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
+                                        storage_partition_config);
+  EXPECT_EQ(
+      profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
+      0u);
+  EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+      .WillOnce(testing::Return(std::nullopt));
+
+  // Make sure prefs is filled with the origin to cleanup.
+  {
+    ScopedVerifyAndClearExpectations verify(mock_delegate_);
+    ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
+    service_->TLDEphemeralLifetimeDestroyed(ephemeral_domain,
+                                            storage_partition_config, false,
+                                            StorageCleanupMode::kDefault);
+    EXPECT_EQ(
+        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
+        1u);
+  }
+
+  // Simulate a browser lifecycle change. Service stays alive and the
+  // FirstWindowOpenedCallback must be registered on app status change. No
+  // cleanup should happen at app state change.
+  {
+    ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
+
+    // Make sure that the FirstWindowOpenedCallback is registered on app state
+    // change.
+    mock_delegate_->ExpectRegisterFirstWindowOpenedCallback(
+        base::OnceClosure(), false /* trigger_callback */);
+
+    EXPECT_CALL(*mock_delegate_, TriggerCurrentAppStateNotification)
+        .WillOnce(testing::Return());
+    // Simulate app state change.
+    service_->TriggerCurrentAppStateNotification();
+
+    // The FirstWindowOpenedCallback should be triggered when app becomes
+    // active.
+    mock_delegate_->TriggerFirstWindowOpenedCallback();
+
+    ScopedVerifyAndClearExpectations verify(mock_delegate_);
+    EXPECT_EQ(
+        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
+        1u);
+  }
+
+  // Cleanup should happen in 5 seconds after the startup.
+  {
+    ScopedVerifyAndClearExpectations verify(mock_delegate_);
+    ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
+    TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
+    EXPECT_CALL(*mock_delegate_, CleanupFirstPartyStorageArea(key));
+    task_environment_.FastForwardBy(base::Seconds(5));
+    EXPECT_EQ(
+        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
+        0u);
+  }
+}
+
+#endif  // BUILDFLAG(IS_ANDROID)
 
 TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
        PreventCleanupOnSessionRestore) {
