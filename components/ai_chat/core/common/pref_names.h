@@ -133,6 +133,8 @@ inline constexpr char kBraveAIChatUserMemories[] =
 inline constexpr char kBraveAIChatSkills[] = "brave.ai_chat.smart_modes";
 inline constexpr char kBraveAIChatOllamaFetchEnabled[] =
     "brave.ai_chat.ollama_fetch_enabled";
+inline constexpr char kRemoteModelsCache[] =
+    "brave.ai_chat.remote_models_cache";
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 void RegisterProfilePrefs(PrefRegistrySimple* registry);

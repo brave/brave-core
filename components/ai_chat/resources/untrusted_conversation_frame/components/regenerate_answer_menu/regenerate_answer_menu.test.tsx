@@ -14,6 +14,8 @@ const mockModels = [
     key: '1',
     displayName: 'Model One',
     visionSupport: false,
+    audioSupport: false,
+    videoSupport: false,
     supportsTools: false,
     supportedCapabilities: [Mojom.ConversationCapability.CHAT],
     isSuggestedModel: false,
@@ -22,6 +24,7 @@ const mockModels = [
       leoModelOptions: {
         name: 'model-one',
         displayMaker: 'Company',
+        description: '',
         category: Mojom.ModelCategory.CHAT,
         access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
         maxAssociatedContentLength: 10000,
@@ -34,6 +37,8 @@ const mockModels = [
     key: '2',
     displayName: 'Model Two',
     visionSupport: true,
+    audioSupport: false,
+    videoSupport: false,
     supportsTools: true,
     supportedCapabilities: [Mojom.ConversationCapability.CHAT],
     isSuggestedModel: false,
@@ -42,6 +47,7 @@ const mockModels = [
       leoModelOptions: {
         name: 'model-two-premium',
         displayMaker: 'Company',
+        description: '',
         category: Mojom.ModelCategory.CHAT,
         access: Mojom.ModelAccess.PREMIUM,
         maxAssociatedContentLength: 10000,
