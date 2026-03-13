@@ -19,6 +19,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/no_destructor.h"
 #include "base/path_service.h"
+#include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "base/version.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
@@ -32,6 +33,8 @@
 namespace on_device_ai {
 
 namespace {
+constexpr base::FilePath::CharType kOldComponentInstallDir[] =
+    FILE_PATH_LITERAL("BraveLocalAIModels");
 constexpr base::FilePath::CharType kComponentInstallDir[] =
     FILE_PATH_LITERAL("BraveOnDeviceAIModels");
 constexpr char kComponentName[] = "Brave On-Device AI Models Updater";
@@ -48,6 +51,10 @@ base::FilePath GetComponentDir() {
       base::PathService::CheckedGet(component_updater::DIR_COMPONENT_USER);
 
   return components_dir.Append(kComponentInstallDir);
+}
+
+void DeleteOldComponentDirectory(const base::FilePath& dir) {
+  base::DeletePathRecursively(dir);
 }
 
 void DeleteComponentDirectory() {
@@ -164,6 +171,12 @@ LocalModelsUpdaterState::~LocalModelsUpdaterState() = default;
 
 void ManageLocalModelsComponentRegistration(
     component_updater::ComponentUpdateService* cus) {
+  base::ThreadPool::PostTask(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
+      base::BindOnce(
+          &DeleteOldComponentDirectory,
+          GetComponentDir().DirName().Append(kOldComponentInstallDir)));
+
   if (!base::FeatureList::IsEnabled(
           on_device_ai::features::kOnDeviceAIModels) ||
       !cus) {

@@ -29,6 +29,8 @@
 namespace on_device_ai {
 
 namespace {
+constexpr base::FilePath::CharType kOldComponentInstallDir[] =
+    FILE_PATH_LITERAL("BraveLocalAIModels");
 constexpr base::FilePath::CharType kComponentInstallDir[] =
     FILE_PATH_LITERAL("BraveOnDeviceAIModels");
 constexpr char kComponentId[] = "ejhejjmaoaohpghnblcdcjilndkangfe";
@@ -48,6 +50,7 @@ class LocalModelsUpdaterUnitTest : public testing::Test {
     auto component_dir =
         base::PathService::CheckedGet(component_updater::DIR_COMPONENT_USER);
     install_dir_ = component_dir.Append(kComponentInstallDir);
+    old_install_dir_ = component_dir.Append(kOldComponentInstallDir);
   }
 
   bool PathExists(const base::FilePath& file_path) {
@@ -65,6 +68,7 @@ class LocalModelsUpdaterUnitTest : public testing::Test {
   std::unique_ptr<component_updater::MockComponentUpdateService> cus_;
   base::test::TaskEnvironment task_environment_;
   base::FilePath install_dir_;
+  base::FilePath old_install_dir_;
 
  private:
   base::ScopedPathOverride scoped_path_override_{
@@ -147,6 +151,26 @@ TEST_F(LocalModelsUpdaterUnitTest, NoRegisterWhenCUSIsNull) {
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(0);
   ManageLocalModelsComponentRegistration(nullptr);
+}
+
+// Tests that the old BraveLocalAIModels directory is deleted on registration.
+TEST_F(LocalModelsUpdaterUnitTest, DeletesOldDirectory) {
+  CreateDirectory(old_install_dir_);
+  EXPECT_TRUE(PathExists(old_install_dir_));
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(*cus_, RegisterComponent(testing::_))
+      .Times(1)
+      .WillOnce(testing::Return(true));
+  EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
+      .Times(1)
+      .WillOnce([quit = run_loop.QuitClosure()]() { quit.Run(); });
+  ManageLocalModelsComponentRegistration(cus_.get());
+  run_loop.Run();
+
+  // Deletion is posted to a background thread.
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return !PathExists(old_install_dir_); }));
 }
 
 }  // namespace on_device_ai
