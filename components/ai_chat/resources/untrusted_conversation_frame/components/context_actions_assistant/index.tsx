@@ -60,17 +60,13 @@ export default function ContextActionsAssistant(
         && modelToBeUsed?.options.leoModelOptions?.access
           === Mojom.ModelAccess.PREMIUM
       ) {
-        conversationContext.setShowPremiumSuggestionForRegenerate(
-          true,
-        )
+        conversationContext.setShowPremiumSuggestionForRegenerate(true)
         return
       }
 
       // Reset the premium suggestion if the user regenerates with a
       // non-premium model.
-      conversationContext.setShowPremiumSuggestionForRegenerate(
-        false,
-      )
+      conversationContext.setShowPremiumSuggestionForRegenerate(false)
       conversationContext.conversationHandler?.regenerateAnswer(
         props.turnUuid,
         selectedModelKey,

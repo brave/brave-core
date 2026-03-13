@@ -106,7 +106,7 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
       return;
     }
     OpenURLInternal(GURL("https://search.brave.com/search?q=" +
-                 base::EscapeQueryParamValue(search_query, true)));
+                         base::EscapeQueryParamValue(search_query, true)));
   }
 
   void OpenURLFromResponse(const GURL& url) override {
@@ -288,8 +288,7 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
       return;
     }
     if (!url.is_valid() ||
-        (!url.SchemeIs(url::kHttpsScheme) &&
-         !url.SchemeIs(url::kHttpScheme))) {
+        (!url.SchemeIs(url::kHttpsScheme) && !url.SchemeIs(url::kHttpScheme))) {
       return;
     }
     OpenURLInternal(url);

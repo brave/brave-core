@@ -191,7 +191,8 @@ class AIChatService : public KeyedService,
   void DeleteSkill(const std::string& id) override;
   void GetConversations(GetConversationsCallback callback) override;
   void GetActionMenuList(GetActionMenuListCallback callback) override;
-  void GetPremiumStatus(mojom::Service::GetPremiumStatusCallback callback) override;
+  void GetPremiumStatus(
+      mojom::Service::GetPremiumStatusCallback callback) override;
   void DeleteConversation(const std::string& id) override;
   void RenameConversation(const std::string& id,
                           const std::string& new_name) override;
