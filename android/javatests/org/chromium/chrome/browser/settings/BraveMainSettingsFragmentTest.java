@@ -31,6 +31,8 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.tracing.settings.DeveloperSettings;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 
+import java.util.stream.IntStream;
+
 /** Test for {@link MainSettings}. Main purpose is to have a quick confidence check on the xml. */
 @RunWith(ChromeJUnit4ClassRunner.class)
 @DoNotBatch(reason = "Tests cannot run batched because they launch a Settings activity.")
@@ -171,6 +173,18 @@ public class BraveMainSettingsFragmentTest {
 
         final int preferenceCount = mMainSettings.getPreferenceScreen().getPreferenceCount();
 
+        // VPN prefs (brave_vpn, pref_vpn_callout) are only present when VPN is supported,
+        // which depends on BraveRewards being enabled (disabled on x86 official/Release builds).
+        // Exclude them so the assertion is stable across build types.
+        long nonVpnCount =
+                IntStream.range(0, preferenceCount)
+                        .mapToObj(i -> mMainSettings.getPreferenceScreen().getPreference(i))
+                        .filter(
+                                p ->
+                                        !p.getKey().equals("brave_vpn")
+                                                && !p.getKey().equals("pref_vpn_callout"))
+                        .count();
+
         assertEquals(
                 "Number of preferences has changed, please check and update preferenceCount"
                     + " expectation here or modify BraveMainPreferencesBase.updateBravePreferences"
@@ -179,8 +193,8 @@ public class BraveMainSettingsFragmentTest {
                         // check
                         + "INDEX_DATA_PROVIDER.updateDynamicPreferences"
                         + " to exclude new from indexing.",
-                36,
-                preferenceCount);
+                34,
+                nonVpnCount);
     }
 
     private void startSettings() {
