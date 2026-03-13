@@ -724,3 +724,32 @@ TEST_F(WalletServiceTest, GetTokenBalances_HandlesNetworkTimeoutGracefully) { ..
 //   - Use dependency injection for external dependencies
 //   - Separate pure computation from side effects
 ```
+
+---
+
+<a id="TI-040"></a>
+
+## ✅ Use chromium_src Include Pattern to Test Upstream Overrides
+
+**When overriding upstream Chromium code via `chromium_src`, include the upstream test file and add Brave-specific tests after it.** This runs all upstream tests (catching regressions from your overrides) plus your new tests, with minimal effort.
+
+```cpp
+// chromium_src/components/foo/foo_service_unittest.cc
+
+// Include the entire upstream test file — all its tests will run.
+#include <components/foo/foo_service_unittest.cc>
+
+namespace foo {
+
+// Add Brave-specific tests using the upstream fixtures and mocks.
+TEST_F(FooServiceTest, BraveSpecificBehavior) {
+  // Tests Brave-specific logic that was added via chromium_src override
+}
+
+}  // namespace foo
+```
+
+Good examples in the repo:
+- `chromium_src/components/sync/engine/sync_scheduler_impl_unittest.cc`
+- `chromium_src/components/ntp_tiles/most_visited_sites_unittest.cc`
+- `chromium_src/components/variations/service/variations_service_unittest.cc`
