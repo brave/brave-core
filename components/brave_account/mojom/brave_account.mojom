@@ -148,13 +148,17 @@ struct GetServiceTokenError {
 
 interface Authentication {
   // First step of the registration process.
+  // `initiatingService`: the service that
+  //                      initiated the registration process
   // `email`: user's email address.
   // `blindedMessage`: initial blinded request
   //                   produced by the OPAQUE library,
   //                   to be sent to the server.
   // Returns `RegisterInitializeResult` on success, or
   //         `RegisterError` on failure.
-  RegisterInitialize(string email, string blindedMessage)
+  RegisterInitialize(Service? initiatingService,
+                     string email,
+                     string blindedMessage)
     => result<RegisterInitializeResult, RegisterError>;
 
   // Second step of the registration process.
@@ -180,13 +184,17 @@ interface Authentication {
   CancelRegistration();
 
   // First step of the login process.
+  // `initiatingService`: the service that
+  //                      initiated the login process
   // `email`: user's email address.
   // `serializedKE1`: initial blinded request
   //                  produced by the OPAQUE library,
   //                  to be sent to the server.
   // Returns `LoginInitializeResult` on success, or
   //         `LoginError` on failure.
-  LoginInitialize(string email, string serializedKE1)
+  LoginInitialize(Service? initiatingService,
+                  string email,
+                  string serializedKE1)
     => result<LoginInitializeResult, LoginError>;
 
   // Second step of the login process.

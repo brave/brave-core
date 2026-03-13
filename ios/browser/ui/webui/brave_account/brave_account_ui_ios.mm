@@ -52,7 +52,7 @@ void BraveAccountUIMessageHandler::OnDialogCloseMessage(
 }  // namespace
 
 BraveAccountUIIOS::BraveAccountUIIOS(web::WebUIIOS* web_ui, const GURL& url)
-    : BraveAccountUIBase(ProfileIOS::FromWebUIIOS(web_ui)),
+    : BraveAccountUIBase(ProfileIOS::FromWebUIIOS(web_ui), url),
       web::WebUIIOSController(web_ui, url.GetHost()) {
   using Authentication = void (BraveAccountUIBase::*)(
       mojo::PendingReceiver<brave_account::mojom::Authentication>);

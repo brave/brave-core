@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_ROW_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_ROW_HANDLER_H_
 
+#include <string>
+
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_account/mojom/brave_account_row.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -36,7 +38,7 @@ class BraveAccountRowHandler : public mojom::RowHandler {
  private:
   // brave_account::mojom::RowHandler:
   void GetAccountState(GetAccountStateCallback callback) override;
-  void OpenDialog() override;
+  void OpenDialog(const std::string& initiating_service_name) override;
 
   mojom::AccountStatePtr GetAccountState() const;
   void OnPrefChanged();

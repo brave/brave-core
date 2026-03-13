@@ -36,11 +36,13 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
 
   static override get properties() {
     return {
+      initiatingServiceName: { type: String },
       state: { type: Object },
       isResendingConfirmationEmail: { type: Boolean },
     }
   }
 
+  protected accessor initiatingServiceName = ''
   protected accessor state: AccountState | undefined = undefined
   protected accessor isResendingConfirmationEmail: boolean = false
 
@@ -113,7 +115,7 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
   }
 
   protected onGetStartedButtonClicked() {
-    this.browserProxy.rowHandler.openDialog()
+    this.browserProxy.rowHandler.openDialog(this.initiatingServiceName)
   }
 
   private async loadInitialState() {

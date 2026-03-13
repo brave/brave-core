@@ -43,8 +43,9 @@ void BraveAccountRowHandler::GetAccountState(GetAccountStateCallback callback) {
   std::move(callback).Run(GetAccountState());
 }
 
-void BraveAccountRowHandler::OpenDialog() {
-  ShowBraveAccountDialog(web_ui_);
+void BraveAccountRowHandler::OpenDialog(
+    const std::string& initiating_service_name) {
+  ShowBraveAccountDialog(web_ui_, initiating_service_name);
 }
 
 mojom::AccountStatePtr BraveAccountRowHandler::GetAccountState() const {

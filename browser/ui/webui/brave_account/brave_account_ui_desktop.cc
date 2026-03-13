@@ -6,12 +6,12 @@
 #include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
 
 #include <memory>
-#include <string>
 
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_account/brave_account_constants.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -21,6 +21,7 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/common/url_constants.h"
+#include "net/base/url_util.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/gfx/geometry/size.h"
@@ -57,12 +58,19 @@ WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveAccountDialogTracker);
 
 class BraveAccountDialogDelegate : public ui::WebDialogDelegate {
  public:
-  explicit BraveAccountDialogDelegate(content::WebContents* web_contents)
+  BraveAccountDialogDelegate(content::WebContents* web_contents,
+                             const std::string& initiating_service_name)
       : web_contents_(CHECK_DEREF(web_contents).GetWeakPtr()) {
     BraveAccountDialogTracker::CreateForWebContents(web_contents);
 
     set_delete_on_close(false);
-    set_dialog_content_url(GURL(kBraveAccountURL));
+    const GURL url(kBraveAccountURL);
+    set_dialog_content_url(
+        initiating_service_name.empty()
+            ? url
+            : net::AppendQueryParameter(
+                  url, brave_account::kInitiatingServiceNameQueryParam,
+                  initiating_service_name));
     set_show_dialog_title(false);
   }
 
@@ -80,6 +88,7 @@ class BraveAccountDialogDelegate : public ui::WebDialogDelegate {
 
 BraveAccountUIDesktop::BraveAccountUIDesktop(content::WebUI* web_ui)
     : BraveAccountUIBase(Profile::FromWebUI(web_ui),
+                         web_ui->GetWebContents()->GetVisibleURL(),
                          base::BindOnce(&webui::SetupWebUIDataSource)),
       ConstrainedWebDialogUI(web_ui) {
   auto* pref_service = CHECK_DEREF(Profile::FromWebUI(web_ui)).GetPrefs();
@@ -129,7 +138,8 @@ BraveAccountUIDesktopConfig::BraveAccountUIDesktopConfig()
   CHECK(brave_account::features::IsBraveAccountEnabled());
 }
 
-void ShowBraveAccountDialog(content::WebUI* web_ui) {
+void ShowBraveAccountDialog(content::WebUI* web_ui,
+                            const std::string& initiating_service_name) {
   auto* web_contents = CHECK_DEREF(web_ui).GetWebContents();
   CHECK(web_contents);
 
@@ -139,8 +149,9 @@ void ShowBraveAccountDialog(content::WebUI* web_ui) {
 
   auto* delegate = ShowConstrainedWebDialogWithAutoResize(
       Profile::FromWebUI(web_ui),
-      std::make_unique<BraveAccountDialogDelegate>(web_contents), web_contents,
-      kDialogMinSize, kDialogMaxSize);
+      std::make_unique<BraveAccountDialogDelegate>(web_contents,
+                                                   initiating_service_name),
+      web_contents, kDialogMinSize, kDialogMaxSize);
 
   auto* widget = views::Widget::GetWidgetForNativeWindow(
       CHECK_DEREF(delegate).GetNativeDialog());

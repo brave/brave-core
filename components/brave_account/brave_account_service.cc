@@ -10,7 +10,6 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/check_deref.h"
-#include "base/containers/fixed_flat_map.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/json/values_util.h"
@@ -19,6 +18,7 @@
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/brave_account/brave_account_service_constants.h"
+#include "brave/components/brave_account/brave_account_utils.h"
 #include "brave/components/brave_account/endpoint_client/client.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_account/endpoints/auth_logout.h"
@@ -151,6 +151,7 @@ BraveAccountService::BraveAccountService(
 }
 
 void BraveAccountService::RegisterInitialize(
+    std::optional<mojom::Service> initiating_service,
     const std::string& email,
     const std::string& blinded_message,
     RegisterInitializeCallback callback) {
@@ -161,7 +162,9 @@ void BraveAccountService::RegisterInitialize(
 
   auto request = MakeRequest<PasswordInit::Request>();
   request.body.blinded_message = blinded_message;
-  request.body.initiating_service_name = "accounts";
+  request.body.initiating_service_name =
+      initiating_service ? kServiceToString.at(*initiating_service)
+                         : "accounts";
   request.body.new_account_email = email;
   request.body.serialize_response = true;
   Client<PasswordInit>::Send(
@@ -246,16 +249,20 @@ void BraveAccountService::CancelRegistration() {
                              base::BindOnce([](VerifyDelete::Response) {}));
 }
 
-void BraveAccountService::LoginInitialize(const std::string& email,
-                                          const std::string& serialized_ke1,
-                                          LoginInitializeCallback callback) {
+void BraveAccountService::LoginInitialize(
+    std::optional<mojom::Service> initiating_service,
+    const std::string& email,
+    const std::string& serialized_ke1,
+    LoginInitializeCallback callback) {
   if (email.empty() || serialized_ke1.empty()) {
     return std::move(callback).Run(base::unexpected(mojom::LoginError::New()));
   }
 
   auto request = MakeRequest<LoginInit::Request>();
   request.body.email = email;
-  request.body.initiating_service_name = "accounts";
+  request.body.initiating_service_name =
+      initiating_service ? kServiceToString.at(*initiating_service)
+                         : "accounts";
   request.body.serialized_ke1 = serialized_ke1;
   Client<LoginInit>::Send(
       url_loader_factory_, std::move(request),
@@ -307,18 +314,7 @@ void BraveAccountService::LogOut() {
 
 void BraveAccountService::GetServiceToken(mojom::Service service,
                                           GetServiceTokenCallback callback) {
-  static constexpr auto kServiceToNameMap =
-      base::MakeFixedFlatMap<mojom::Service, const char*>({
-          {mojom::Service::kEmailAliases, "email-aliases"},
-          {mojom::Service::kPremium, "premium"},
-          {mojom::Service::kSync, "sync"},
-      });
-  static_assert(
-      kServiceToNameMap.size() ==
-          static_cast<std::size_t>(mojom::Service::kMaxValue) + 1,
-      "kServiceToNameMap must contain all mojom::Service enum values!");
-
-  std::string service_name = kServiceToNameMap.at(service);
+  std::string service_name(kServiceToString.at(service));
   if (auto service_token = GetCachedServiceToken(service_name);
       !service_token.empty()) {
     return std::move(callback).Run(
