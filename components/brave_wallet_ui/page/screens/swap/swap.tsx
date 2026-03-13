@@ -19,6 +19,9 @@ import {
 // Hooks
 import { useSwap } from './hooks/useSwap'
 import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
+import {
+  useIsKeyboardVisible, //
+} from '../../../common/hooks/use_is_keyboard_visible'
 
 // Utils
 import { getLocale } from '$web-common/locale'
@@ -107,6 +110,7 @@ export const Swap = () => {
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isMobile = useSafeUISelector(UISelectors.isMobile)
   const isMobileOrPanel = isMobile || isPanel
+  const isKeyboardVisible = useIsKeyboardVisible()
 
   // Refs
   const selectTokenModalRef = React.useRef<HTMLDivElement>(null)
@@ -265,7 +269,9 @@ export const Swap = () => {
               </Column>
             </ToAsset>
           </ToSectionWrapper>
-          <ReviewButtonRow isMobile={isMobile}>
+          <ReviewButtonRow
+            isMobile={isMobile && !isKeyboardVisible && !isSubmitButtonDisabled}
+          >
             <ReviewButtonBackground>
               <LeoSquaredButton
                 onClick={onSubmit}
