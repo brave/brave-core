@@ -388,6 +388,19 @@ import os
         contentBlockerManager: contentBlockerManager
       )
       _ = await (compileEngines, compileContentBlockers)
+
+      if !engineType.combineContentBlockers {
+        // for aggressive engine, compile invidivual content blockers
+        let compilableFiles = manager.compilableFiles(
+          for: enabledSources.map(\.contentBlockerSource)
+        )
+        for fileInfo in compilableFiles {
+          await manager.ensureIndividualContentBlocker(
+            for: fileInfo,
+            contentBlockerManager: contentBlockerManager
+          )
+        }
+      }
     }
   }
 
@@ -484,44 +497,11 @@ import os
     for fileInfo: AdBlockEngineManager.FileInfo,
     engineType: GroupedAdBlockEngine.EngineType
   ) async {
-    // Only do this for content blockers that should not be grouped
-    guard !engineType.combineContentBlockers else { return }
-
-    guard
-      let blocklistType = fileInfo.filterListInfo.source.blocklistType(
-        engineType: engineType
-      )
-    else {
-      return
-    }
-
-    let modes = await contentBlockerManager.missingModes(
-      for: blocklistType,
-      version: fileInfo.filterListInfo.version
+    let manager = getManager(for: engineType)
+    await manager.ensureIndividualContentBlocker(
+      for: fileInfo,
+      contentBlockerManager: contentBlockerManager
     )
-
-    guard !modes.isEmpty else {
-      ContentBlockerManager.log.debug(
-        "Rule lists already compiled for \(fileInfo.filterListInfo.debugDescription)"
-      )
-      return
-    }
-
-    do {
-      try await contentBlockerManager.compileRuleList(
-        at: fileInfo.localFileURL,
-        for: blocklistType,
-        version: fileInfo.filterListInfo.version,
-        modes: modes
-      )
-      ContentBlockerManager.log.debug(
-        "Compiled rule lists for \(fileInfo.filterListInfo.debugDescription)"
-      )
-    } catch {
-      ContentBlockerManager.log.error(
-        "Failed to compile rule lists for \(fileInfo.filterListInfo.debugDescription)"
-      )
-    }
   }
 
   private func getCachedResourcesInfo() -> GroupedAdBlockEngine.ResourcesInfo? {
