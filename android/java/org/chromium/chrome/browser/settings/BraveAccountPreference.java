@@ -22,8 +22,8 @@ import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 @NullMarked
 public class BraveAccountPreference extends ChromeBasePreference {
     private final int mTitleTextColorResId;
+    private final boolean mTitleTruncateMiddle;
     private final int mSummaryTextColorResId;
-    private final boolean mSummaryTruncateMiddle;
 
     public BraveAccountPreference(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -31,10 +31,10 @@ public class BraveAccountPreference extends ChromeBasePreference {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.brave_account_preference);
         mTitleTextColorResId =
                 a.getResourceId(R.styleable.brave_account_preference_title_text_color, 0);
+        mTitleTruncateMiddle =
+                a.getBoolean(R.styleable.brave_account_preference_title_truncate_middle, false);
         mSummaryTextColorResId =
                 a.getResourceId(R.styleable.brave_account_preference_summary_text_color, 0);
-        mSummaryTruncateMiddle =
-                a.getBoolean(R.styleable.brave_account_preference_summary_truncate_middle, false);
 
         a.recycle();
     }
@@ -53,14 +53,15 @@ public class BraveAccountPreference extends ChromeBasePreference {
             } else {
                 setColorFromRes(titleView, mTitleTextColorResId);
             }
+
+            if (mTitleTruncateMiddle) {
+                titleView.setSingleLine(true);
+                titleView.setEllipsize(TextUtils.TruncateAt.MIDDLE);
+            }
         }
 
         if (holder.findViewById(android.R.id.summary) instanceof TextView summaryView) {
             setColorFromRes(summaryView, mSummaryTextColorResId);
-            if (mSummaryTruncateMiddle) {
-                summaryView.setSingleLine(true);
-                summaryView.setEllipsize(TextUtils.TruncateAt.MIDDLE);
-            }
         }
     }
 

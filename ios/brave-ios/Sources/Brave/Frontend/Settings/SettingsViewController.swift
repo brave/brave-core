@@ -394,14 +394,12 @@ class SettingsViewController: TableViewController {
         header: .title(L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)),
         rows: [
           Row(
-            text: L10nUtils.string(messageId: .SETTINGS_BRAVE_ACCOUNT_LOGGED_IN_ROW_TITLE),
-            detailText: braveCore.profile.prefs.string(
+            text: braveCore.profile.prefs.string(
               forPath: BraveAccountEmailAddressPref
             ),
-            image: UIImage(sharedNamed: "brave.logo"),
             cellClass: BraveAccountIconCell.self,
             context: [
-              BraveAccountIconCell.detailTextTruncateMiddle: true
+              BraveAccountIconCell.textTruncateMiddle: true
             ]
           ),
           Row(
@@ -1835,7 +1833,7 @@ class SettingsViewController: TableViewController {
 
 private final class BraveAccountIconCell: UITableViewCell, Cell {
   static let textColor = "textColor"
-  static let detailTextTruncateMiddle = "detailTextTruncateMiddle"
+  static let textTruncateMiddle = "textTruncateMiddle"
 
   func configure(row: Row) {
     var content = defaultContentConfiguration()
@@ -1846,18 +1844,18 @@ private final class BraveAccountIconCell: UITableViewCell, Cell {
     }
 
     content.text = row.text
-    content.textProperties.numberOfLines = 0
+    if let truncateMiddle = row.context?[Self.textTruncateMiddle] as? Bool, truncateMiddle {
+      content.textProperties.numberOfLines = 1
+      content.textProperties.lineBreakMode = .byTruncatingMiddle
+    } else {
+      content.textProperties.numberOfLines = 0
+    }
     if let color = row.context?[Self.textColor] as? UIColor {
       content.textProperties.color = color
     }
 
     content.secondaryText = row.detailText
-    if let truncateMiddle = row.context?[Self.detailTextTruncateMiddle] as? Bool, truncateMiddle {
-      content.secondaryTextProperties.numberOfLines = 1
-      content.secondaryTextProperties.lineBreakMode = .byTruncatingMiddle
-    } else {
-      content.secondaryTextProperties.numberOfLines = 0
-    }
+    content.secondaryTextProperties.numberOfLines = 0
     content.secondaryTextProperties.color = .secondaryBraveLabel
 
     contentConfiguration = content
