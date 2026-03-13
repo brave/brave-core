@@ -192,7 +192,7 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
         Preference getStartedPref = mFragment.findPreference(PREF_GET_STARTED);
 
         if (hasPrefValue(BravePref.BRAVE_ACCOUNT_AUTHENTICATION_TOKEN)) { // logged in
-            userInfoPref.setSummary(
+            userInfoPref.setTitle(
                     UserPrefs.get(mProfile).getString(BravePref.BRAVE_ACCOUNT_EMAIL_ADDRESS));
             setVisibility(userInfoPref, true);
             setVisibility(signOutPref, true);

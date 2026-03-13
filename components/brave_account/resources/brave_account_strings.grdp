@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
-  <message name="IDS_BRAVE_ACCOUNT_TITLE" translateable="false" desc="Title for the Brave Account page/section" formatter_data="webui=BraveAccount android_java">
+  <message name="IDS_BRAVE_ACCOUNT_TITLE" translateable="false" desc="Title for the Brave Account page/section" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     Brave Account
   </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE" translateable="false" desc="Title inviting users to sign in or create a Brave Account, shown in the Get started settings page" formatter_data="webui=BraveAccountSettings">
@@ -23,9 +23,6 @@
   </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL" translateable="false" desc="Label for the button that cancels the pending registration when clicked" formatter_data="webui=BraveAccountSettings android_java">
     Cancel registration
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_IN_ROW_TITLE" translateable="false" desc="Title shown when user is logged in" formatter_data="webui=BraveAccountSettings android_java">
-    Email address
   </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL" translateable="false" desc="Label for the button that signs the user out of their account when clicked" formatter_data="webui=BraveAccountSettings android_java">
     Sign out

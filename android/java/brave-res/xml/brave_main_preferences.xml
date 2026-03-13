@@ -14,10 +14,7 @@
     <org.chromium.chrome.browser.settings.BraveAccountPreference
         android:key="user_info"
         android:order="1"
-        android:icon="@drawable/ic_brave"
-        android:title="@string/settings_brave_account_logged_in_row_title"
-        app:summary_text_color="@color/brave_theme_subtitle_text"
-        app:summary_truncate_middle="true"
+        app:title_truncate_middle="true"
         android:selectable="false"/>
     <org.chromium.chrome.browser.settings.BraveAccountPreference
         android:key="sign_out"
