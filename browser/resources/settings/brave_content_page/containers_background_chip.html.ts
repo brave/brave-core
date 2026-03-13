@@ -13,7 +13,7 @@ export function getHtml(
   return html`
     <div
       class="chip-container ${this.selected ? 'selected' : ''}"
-      @click="${this.handleChipClick_}"
+      @click="${this.onChipClick_}"
     >
       <div
         class="chip-content"

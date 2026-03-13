@@ -115,9 +115,13 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     this.deleteDialogError_ = undefined
   }
 
-  onCancelDialog_() {
+  onDialogClose_() {
     this.editingContainer_ = undefined
     this.deletingContainer_ = undefined
+  }
+
+  onCancelDialogClick_() {
+    this.onDialogClose_()
   }
 
   onContainerNameInput_(e: InputEvent) {
@@ -138,7 +142,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     }
   }
 
-  onContainersBackgroundColorSelected_(event: ColorSelectedEvent) {
+  onContainersBackgroundSelected_(event: ColorSelectedEvent) {
     assert(this.editingContainer_)
     this.editingContainer_ = {
       ...this.editingContainer_,
@@ -146,7 +150,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     }
   }
 
-  async onSaveContainerFromDialog_() {
+  async onSaveContainerFromDialogClick_() {
     assert(this.editingContainer_)
     if (!this.editingContainer_.id) {
       const { error } = await this.browserProxy.handler.addContainer(
@@ -169,7 +173,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     }
   }
 
-  async onDeleteContainerFromDialog_() {
+  async onDeleteContainerFromDialogClick_() {
     assert(this.deletingContainer_)
     const { error } = await this.browserProxy.handler.removeContainer(
       this.deletingContainer_.id,
