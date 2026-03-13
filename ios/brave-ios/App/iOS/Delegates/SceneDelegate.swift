@@ -138,19 +138,43 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       Self.profileState = profileState
       PlaylistCoordinator.shared.isPlaylistAvailable =
         profileController.profile.prefs.isPlaylistAvailable
+
+      // Create WindowProtection early so we can use it for launch auth when launching in private mode
+      let windowProtection = WindowProtection(windowScene: windowScene)
+      self.windowProtection = windowProtection
+
       let browserViewController = prepareBrowserViewController(
         profileController: profileController,
         profileState: profileState,
         sceneState: sceneState
       )
+
+      // When launching in private mode with biometric/PIN lock enabled, authenticate before showing content.
+      // If auth fails or is cancelled, launch in regular mode instead.
+      if browserViewController.privateBrowsingManager.isPrivateBrowsing
+        && Preferences.Privacy.privateBrowsingLock.value
+      {
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+          windowProtection.presentAuthenticationForViewController(
+            determineLockWithPasscode: false,
+            viewType: .general
+          ) { success, error in
+            // Treat passcodeNotSet as success (user may have removed passcode)
+            if !success && error != .passcodeNotSet {
+              browserViewController.privateBrowsingManager.isPrivateBrowsing = false
+            }
+            continuation.resume()
+          }
+        }
+      }
+
+      browserViewController.windowProtection = windowProtection
+
       let container = UINavigationController(rootViewController: browserViewController)
       container.isNavigationBarHidden = true
       container.edgesForExtendedLayout = []
       window.rootViewController = container
       window.backgroundColor = .black
-
-      self.windowProtection = WindowProtection(windowScene: windowScene)
-      browserViewController.windowProtection = windowProtection
 
       performPostSceneConnectionTasks(
         profileState: profileState,
@@ -815,7 +839,7 @@ extension SceneDelegate {
         // iPhones should not create new windows
         if let activeWindow = activeWindow {
           // If there's no active window, fall through and create one
-          isPrivate = Self.shouldLaunchInPrivateMode(windowId: activeWindow.windowId) ?? isPrivate
+          isPrivate = self.shouldLaunchInPrivateMode(windowId: activeWindow.windowId)
           return (activeWindow.windowId, isPrivate, nil)
         }
       }
@@ -838,9 +862,7 @@ extension SceneDelegate {
     }
 
     // When "Keep private tabs" is enabled, launch in private mode if the restored window has persistent private tabs
-    if let shouldLaunchPrivate = Self.shouldLaunchInPrivateMode(windowId: windowId) {
-      isPrivate = shouldLaunchPrivate
-    }
+    isPrivate = self.shouldLaunchInPrivateMode(windowId: windowId)
 
     // Create a new session window if it does not already exist
     SessionWindow.createWindow(isSelected: true, uuid: windowId)
@@ -849,16 +871,18 @@ extension SceneDelegate {
   }
 
   /// When "Keep private tabs" is enabled, returns whether the window should launch in Private mode.
-  /// Returns nil when the preference doesn't apply (e.g. no persistent private tabs to restore).
-  private static func shouldLaunchInPrivateMode(windowId: UUID) -> Bool? {
+  /// Returns the default (privateBrowsingOnly) when the preference doesn't apply (e.g. no persistent private tabs to restore).
+  private func shouldLaunchInPrivateMode(windowId: UUID) -> Bool {
     guard Preferences.Privacy.persistentPrivateBrowsing.value else {
-      return nil
+      return Preferences.Privacy.privateBrowsingOnly.value
     }
 
     let windowTabs = SessionTab.all().filter { $0.sessionWindow?.windowId == windowId }
     let privateTabs = windowTabs.filter { $0.isPrivate }
 
-    guard !privateTabs.isEmpty else { return nil }
+    guard !privateTabs.isEmpty else {
+      return Preferences.Privacy.privateBrowsingOnly.value
+    }
 
     // Launch in private mode if the selected tab is private, or if the window has only private tabs.
     // When no tab is marked selected (nil), selectedTabIsPrivate defaults to false; onlyPrivateTabs
