@@ -96,6 +96,8 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
 
   std::vector<ai_chat::Tab> GetTabsForAIEngine();
 
+  PrefChangeRegistrar brave_pref_change_registrar_;
+
   // Map from window ID (session ID serves as a unique window ID here as this is
   // only used within a single session) to the list of original tab info for
   // undo last focus tabs action. This is used to move the focus tabs back to
