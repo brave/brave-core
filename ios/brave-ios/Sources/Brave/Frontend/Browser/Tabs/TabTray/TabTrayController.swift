@@ -337,12 +337,31 @@ class TabTrayController: AuthenticationController {
 
     navigationController?.isToolbarHidden = false
 
+    let leftContainer = UIView()
+    leftContainer.addSubview(privateModeButton)
+    privateModeButton.snp.makeConstraints {
+      $0.leading.equalToSuperview()
+      $0.top.bottom.equalToSuperview()
+    }
+    
+    let rightContainer = UIView()
+    rightContainer.addSubview(doneButton)
+    doneButton.snp.makeConstraints {
+      $0.trailing.equalToSuperview()
+      $0.top.bottom.equalToSuperview()
+    }
+    
+    // Make both containers have equal width to ensure center button is always centered
+    leftContainer.snp.makeConstraints {
+      $0.width.equalTo(rightContainer)
+    }
+
     toolbarItems = [
-      UIBarButtonItem(customView: privateModeButton),
+      UIBarButtonItem(customView: leftContainer),
       UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
       UIBarButtonItem(customView: newTabButton),
       UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
-      UIBarButtonItem(customView: doneButton),
+      UIBarButtonItem(customView: rightContainer),
     ]
 
     privateModeCancellable = tabManager.privateBrowsingManager
