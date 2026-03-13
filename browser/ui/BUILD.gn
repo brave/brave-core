@@ -68,6 +68,7 @@ source_set("ui") {
     "//brave/browser/ui/page_info",
     "//brave/browser/ui/webui/brave_account",
     "//brave/browser/ui/webui/email_aliases",
+    "//brave/browser/ui/webui/local_ai",
     "//brave/components/ai_chat/core/common/buildflags",
 
     # Unconditional for gn check as the NTP WebUI always needs the mojom

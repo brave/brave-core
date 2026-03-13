@@ -32,9 +32,7 @@ interface LocalAIService {
   // Returns a PassageEmbedder bound directly to the renderer worker.
   // Creates the background WebContents if needed. If the factory is
   // not yet registered, the callback is deferred until it is.
+  // Callers are responsible for closing the remote when it is not
+  // in use.
   GetPassageEmbedder() => (pending_remote<PassageEmbedder>? embedder);
-
-  // Called by the renderer when all PassageEmbedder receivers have
-  // disconnected. The browser may close the BackgroundWebContents.
-  NotifyPassageEmbedderIdle();
 };

@@ -56,11 +56,6 @@ void LocalAIService::GetPassageEmbedder(GetPassageEmbedderCallback callback) {
   }
 }
 
-void LocalAIService::NotifyPassageEmbedderIdle() {
-  DVLOG(3) << "LocalAIService: PassageEmbedder idle";
-  CloseBackgroundContents();
-}
-
 void LocalAIService::OnBackgroundContentsDestroyed(
     BackgroundWebContents::DestroyReason reason) {
   DVLOG(1) << "LocalAIService: Background contents destroyed";
