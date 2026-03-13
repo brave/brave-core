@@ -21,6 +21,7 @@
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/string_utils.h"
 #include "brave/components/json/json_helper.h"
+#include "url/gurl.h"
 
 namespace brave_wallet {
 
@@ -1365,7 +1366,10 @@ mojom::Gate3SwapStatusPtr ParseStatusResponse(const base::Value& json_value) {
   }
 
   result->internal_status = value->internal_status;
-  result->explorer_url = value->explorer_url;
+  GURL explorer_gurl(value->explorer_url);
+  if (explorer_gurl.is_valid() && explorer_gurl.SchemeIs("https")) {
+    result->explorer_url = value->explorer_url;
+  }
 
   return result;
 }
