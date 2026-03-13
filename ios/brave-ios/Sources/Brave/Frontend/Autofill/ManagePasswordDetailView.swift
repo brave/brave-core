@@ -74,16 +74,12 @@ struct ManagePasswordDetailView: View {
                   Text(password.password ?? "")
                     .lineLimit(1)
                 } else {
-                  SecureField(
-                    Strings.Autofill.managePasswordDetailInputPasswordPlaceholder,
-                    text: .constant(password.password ?? "")
-                  )
-                  .lineLimit(1)
-                  .textContentType(.password)
-                  .allowsHitTesting(false)
-                  .accessibility(hidden: !isPasswordRevealed)
-                  .multilineTextAlignment(.trailing)
-                  .frame(maxWidth: .infinity, alignment: .trailing)
+                  Text(String(repeating: "•", count: 8))
+                    .lineLimit(1)
+                    .allowsHitTesting(false)
+                    .accessibility(hidden: !isPasswordRevealed)
+                    .multilineTextAlignment(.trailing)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
                 }
               }
               .contentShape(.rect)
