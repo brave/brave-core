@@ -238,6 +238,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GetScreenshots(GetScreenshotsCallback callback) override;
 
   // mojom::UntrustedConversationHandler
+  void SwitchToNonPremiumModel() override;
   void RespondToToolUseRequest(
       const std::string& tool_id,
       std::vector<mojom::ContentBlockPtr> output_json,

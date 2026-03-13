@@ -46,18 +46,6 @@ function Main() {
   const showAttachments = !!conversationContext.attachmentsDialog
 
   const headerElement = React.useRef<HTMLDivElement>(null)
-  // Reset scroll and content-ready state when switching conversations
-  // so the new conversation starts fresh at the top. useLayoutEffect
-  // runs before paint so the user never sees the stale scroll position.
-  // <if expr="is_ios">
-  React.useLayoutEffect(() => {
-    setIsContentReady(false)
-    if (scrollElement.current) {
-      scrollElement.current.scrollTop = 0
-    }
-  }, [conversationContext.conversationUuid])
-  // </if>
-
 
   // Ask for opt-in once the first message is sent
   const showAgreementModal =
@@ -196,13 +184,13 @@ function Main() {
         className={styles.alertCenter}
       />
       {!aiChatContext.hasAcceptedAgreement && !hasConversationStarted ? (
-        <div className={scrollerStyles.scroller}>
+        <div
+          className={classnames(
+            scrollerStyles.scroller,
+            styles.centeredContent,
+          )}
+        >
           <WelcomeGuide />
-                    // Force remount when switching conversations on iOS
-                    // so the iframe height resets cleanly.
-                    // <if expr="is_ios">
-                    key={conversationContext.conversationUuid}
-                    // </if>
         </div>
       ) : (
         <>
@@ -212,11 +200,9 @@ function Main() {
             </div>
           )}
 
-          {!!conversationContext.conversationUuid && (
-            <aiChatContext.conversationEntriesComponent
-              className={styles.conversationContainer}
-            />
-          )}
+          <aiChatContext.conversationEntriesComponent
+            className={styles.conversationContainer}
+          />
         </>
       )}
       {showAttachments && (

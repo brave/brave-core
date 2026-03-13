@@ -30,7 +30,7 @@ import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
 import LongConversationInfo from '../alerts/long_conversation_info'
 import styles from './style.module.scss'
 
-export interface ScrollableContentProps {
+export interface ConversationProps {
   onIsContentReady?: (isReady: boolean) => void
 }
 
@@ -41,7 +41,7 @@ const SUGGESTION_STATUS_SHOW_BUTTON = new Set<Mojom.SuggestionGenerationStatus>(
   ],
 )
 
-function ScrollableContent(props: ScrollableContentProps) {
+function Conversation(props: ConversationProps) {
   const { onIsContentReady } = props
   const context = useUntrustedConversationContext()
   const state = context.api.useState().data
@@ -62,12 +62,16 @@ function ScrollableContent(props: ScrollableContentProps) {
 
   const showTemporaryChatInfo = state.isTemporary
 
+  const apiHasError = state.currentError !== Mojom.APIError.None
+
   const shouldShowStorageNotice =
     hasAcceptedAgreement
     && isHistoryFeatureEnabled
     && isStoragePrefEnabled
     && !isStorageNoticeDismissed
 
+  // Show premium status suggestion if the user isn't premium and chooses
+  // a premium model. Secondary action is to offer to change the model.
   const shouldShowPremiumSuggestionForModel =
     hasAcceptedAgreement
     && !isPremiumStatusFetching
@@ -76,16 +80,21 @@ function ScrollableContent(props: ScrollableContentProps) {
     && state.allModels.find((m) => m.key === state.currentModelKey)?.options
       .leoModelOptions?.access === Mojom.ModelAccess.PREMIUM
 
+  // Show premium status suggestion if the user isn't premium and either the
+  // service states it's a good time, or the user has attempted to perform a
+  // premium-only action (e.g. regenerate a response with a premium-only model).
+  // Secondary action is to dismiss the notice.
   const shouldShowPremiumSuggestionStandalone =
     hasAcceptedAgreement
-    && !isPremiumStatusFetching
-    && !shouldShowPremiumSuggestionForModel
-    && state.currentError === Mojom.APIError.None
-    && !shouldShowStorageNotice
-    && canShowPremiumPrompt
+    && !isPremiumStatusFetching // Avoid flash of content
     && !isPremiumUser
-
-  const apiHasError = state.currentError !== Mojom.APIError.None
+    && !shouldShowPremiumSuggestionForModel  // Don't show 2 premium prompts
+    // service-suggestion case
+    && ((!apiHasError // Don't show premium prompt and errors (rate limit error has its own premium prompt suggestion)
+      && !shouldShowStorageNotice // Don't show premium prompt and storage notice
+      && canShowPremiumPrompt)
+      // premium-only action attempted case
+      || context.showPremiumSuggestionForRegenerate)
 
   // Determine which error to show
   let currentErrorElement: React.ReactNode = null
@@ -220,7 +229,7 @@ function ScrollableContent(props: ScrollableContentProps) {
                 <Button
                   kind='plain-faint'
                   onClick={() => {
-                    // Switch to basic model - will need to implement via API
+                    context.api.conversationHandler.switchToNonPremiumModel()
                   }}
                 >
                   {getLocale(S.CHAT_UI_SWITCH_TO_BASIC_MODEL_BUTTON_LABEL)}
@@ -238,7 +247,12 @@ function ScrollableContent(props: ScrollableContentProps) {
                 <Button
                   kind='plain-faint'
                   onClick={() => {
-                    // Dismiss premium prompt - will need service action
+                    // Dismiss premium prompts
+                    if (context.showPremiumSuggestionForRegenerate) {
+                      context.setShowPremiumSuggestionForRegenerate(false)
+                    } else {
+                      context.api.service.dismissPremiumPrompt()
+                    }
                   }}
                 >
                   {getLocale(S.CHAT_UI_DISMISS_BUTTON_LABEL)}
@@ -280,4 +294,4 @@ function ScrollableContent(props: ScrollableContentProps) {
   )
 }
 
-export default ScrollableContent
+export default Conversation

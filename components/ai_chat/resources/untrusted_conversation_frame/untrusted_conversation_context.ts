@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as React from 'react'
 import generateReactContext from '$web-common/api/react_api'
 import { UntrustedConversationAPI } from './api/untrusted_conversation_api'
 import { loadTimeData } from '$web-common/loadTimeData'
@@ -22,6 +23,11 @@ export function useProvideUntrustedConversationContext(
 ) {
   const { api } = props
 
+  const [
+    showPremiumSuggestionForRegenerate,
+    setShowPremiumSuggestionForRegenerate,
+  ] = React.useState(false)
+
   // Use API hooks for state
   const state = api.useState().data
   const serviceState = api.useServiceState().data
@@ -32,6 +38,9 @@ export function useProvideUntrustedConversationContext(
 
   return {
     api,
+
+    showPremiumSuggestionForRegenerate,
+    setShowPremiumSuggestionForRegenerate,
 
     // Expose state properties directly for backwards compatibility
     // These are marked as deprecated - components should use api.useState() instead

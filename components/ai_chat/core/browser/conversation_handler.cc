@@ -1064,6 +1064,10 @@ void ConversationHandler::OnUserOptedIn() {
   MaybeFetchOrClearContentStagedConversation();
 }
 
+void ConversationHandler::SwitchToNonPremiumModel() {
+  ChangeModel(features::kAIModelsDefaultKey.Get());
+}
+
 void ConversationHandler::RespondToToolUseRequest(
     const std::string& tool_use_id,
     std::vector<mojom::ContentBlockPtr> output,

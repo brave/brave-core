@@ -26,6 +26,7 @@ import {
   ActiveChatProviderFromUrl,
   useActiveChat,
 } from './state/active_chat_context'
+import styles from './chat_ui.module.scss'
 
 import '../common/strings'
 // <if expr="is_ios">
@@ -114,17 +115,32 @@ function Content() {
 function ConversationEntries(props: ConversationEntriesProps) {
   const state = useConversationState()
 
+  const [iframeSrc, setIframeSrc] = React.useState<string>()
+
+  React.useEffect(() => {
+    // The state conversationUuid can bounce from a valid value to a null
+    // value whilst the conversationUuid for a newly-bound conversation is
+    // fetched. Only update the Src once this settles.
+    if (!state.conversationUuid) {
+      return
+    }
+    setIframeSrc(
+      `chrome-untrusted://leo-ai-conversation-entries/${state.conversationUuid}`,
+    )
+  }, [state.conversationUuid])
+
   return (
-    <iframe
-      className={props.className}
-      sandbox='allow-scripts allow-same-origin allow-modals allow-forms allow-popups allow-popups-to-escape-sandbox'
-      allow='clipboard-write'
-      src={
-        'chrome-untrusted://leo-ai-conversation-entries/'
-        + state.conversationUuid
-      }
-      data-testid='conversation-entries-iframe'
-    />
+    <div className={props.className}>
+      {iframeSrc && (
+        <iframe
+          data-testid='conversation-entries-iframe'
+          className={styles.conversationEntriesFrame}
+          sandbox='allow-scripts allow-same-origin allow-modals allow-forms allow-popups allow-popups-to-escape-sandbox'
+          allow='clipboard-write'
+          src={iframeSrc}
+        />
+      )}
+    </div>
   )
 }
 

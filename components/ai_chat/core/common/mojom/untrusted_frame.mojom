@@ -43,19 +43,8 @@ interface ParentUIFrame {
   [EnableIf=is_ios]
   DismissMenus();
 
-  // This is sent to the parent trusted webui to allow settings the iframes
-  // wrapper position to relative while the Regenerate Answer Menu is open.
-  // Otherwise the menu can sometimes be overlapped by the Suggested question
-  // buttons.
-  RegenerateAnswerMenuIsOpen(bool is_open);
-
   // Show the skill creation dialog with the provided prompt text
   ShowSkillDialog(string prompt);
-
-  // If a user is a non-premium user and attempts to use a premium
-  // model to Regenerate an answer. We need to display the
-  // premium suggestion.
-  ShowPremiumSuggestionForRegenerate(bool is_visible);
 
   // Request the parent frame to create a new conversation
   RequestNewConversation();
@@ -74,6 +63,10 @@ interface UntrustedConversationHandler {
 
   // Get all visible history entries, including in-progress responses
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
+
+  // If the current model is premium or freemium, switch to a free model to
+  // e.g. reduce rate limiting.
+  SwitchToNonPremiumModel();
 
   ModifyConversation(string entry_uuid, string new_text);
 

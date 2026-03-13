@@ -59,7 +59,7 @@ export async function bindUntrustedConversation() {
     conversationEntriesState,
   )
   // Set initial service state
-  conversationAPI.api.emitEvent('onStateChanged', [serviceState])
+  conversationAPI.serviceObserver.onStateChanged(serviceState)
 
   return {
     api: conversationAPI.api,

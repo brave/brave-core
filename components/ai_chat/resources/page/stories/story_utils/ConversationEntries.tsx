@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import ScrollableContent from '../../../untrusted_conversation_frame/components/scrollable_content'
+import Conversation from '../../../untrusted_conversation_frame/components/conversation'
 import { ConversationEntriesProps } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 
@@ -15,5 +15,5 @@ export default function StorybookConversationEntries(
 ) {
   const conversationContext = useConversation()
 
-  return <ScrollableContent key={conversationContext.conversationUuid} />
+  return <Conversation key={conversationContext.conversationUuid} />
 }
