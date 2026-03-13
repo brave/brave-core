@@ -862,21 +862,33 @@ if [[ -n "$CHECK_PLAYBACK_BG" ]]; then
     log "=== Step 6c: Testing background audio playback ==="
     log "URL: $CHECK_PLAYBACK_BG"
 
-    # Helper: check if Brave holds audio focus (gain: GAIN) in dumpsys audio.
-    # YouTube mobile web doesn't create a MediaSession or register in the
-    # Players section, but it does acquire audio focus when playing unmuted.
+    # Helper: check if audio is actively being output by inspecting the
+    # primary output mixer in audio_flinger. When audio plays, the primary
+    # output thread has Standby=no and Last write < 1000ms. When paused or
+    # stopped, it goes to Standby=yes with a stale Last write timestamp.
     _is_audio_playing() {
-        "$ADB" -s emulator-5554 shell dumpsys audio 2>/dev/null | \
-            grep -q "pack: ${PACKAGE_NAME}.*gain: GAIN"
+        "$ADB" -s emulator-5554 shell dumpsys media.audio_flinger 2>/dev/null | \
+            python3 -c "
+import sys, re
+text = sys.stdin.read()
+# Find the primary output thread (AUDIO_DEVICE_OUT_SPEAKER)
+blocks = re.split(r'(?=Output thread)', text)
+for b in blocks:
+    if 'AUDIO_DEVICE_OUT_SPEAKER' not in b:
+        continue
+    standby = re.search(r'Standby:\s*(yes|no)', b)
+    last_write = re.search(r'Last write occurred \(msecs\):\s*(\d+)', b)
+    if standby and standby.group(1) == 'no' and last_write and int(last_write.group(1)) < 1000:
+        sys.exit(0)
+sys.exit(1)
+" 2>/dev/null
     }
 
-    # Helper: dump audio debug info for Brave.
+    # Helper: dump audio debug info.
     _dump_audio_debug() {
-        log "DEBUG: Audio Focus stack:"
-        "$ADB" -s emulator-5554 shell dumpsys audio 2>/dev/null | \
-            grep -A2 "Audio Focus stack" || echo "(none)"
-        "$ADB" -s emulator-5554 shell dumpsys audio 2>/dev/null | \
-            grep "$PACKAGE_NAME" || echo "(no entries for $PACKAGE_NAME)"
+        log "DEBUG: audio_flinger primary output:"
+        "$ADB" -s emulator-5554 shell dumpsys media.audio_flinger 2>/dev/null | \
+            grep -E "Standby:|Last write occurred|AUDIO_DEVICE_OUT_SPEAKER" || echo "(none)"
     }
 
     # Ensure Brave is running
@@ -954,16 +966,13 @@ if [[ -n "$CHECK_PLAYBACK_BG" ]]; then
             done
 
             if [[ "$BG_PLAYING" == true ]]; then
-                log "[PASS] Audio continues playing in the background."
+                log " ✅ [PASS] Audio continues playing in the background."
+                exit 0
             else
-                log "[FAIL] Audio stopped when the app moved to the background."
+                log " ❌ [FAIL] Audio stopped when the app moved to the background."
                 _dump_audio_debug
+                exit 1
             fi
-
-            # Bring Brave back to foreground
-            "$ADB" -s emulator-5554 shell am start -n "${PACKAGE_NAME}/${BRAVE_ACTIVITY}" \
-                -a android.intent.action.MAIN -c android.intent.category.LAUNCHER
-            sleep 2
         fi
     fi
 fi
