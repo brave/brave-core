@@ -47,11 +47,13 @@ TabSearchPageHandler::TabSearchPageHandler(
                                         webui_controller,
                                         metrics_reporter) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  pref_change_registrar_.Add(
+  Profile* profile = Profile::FromWebUI(web_ui_);
+  brave_pref_change_registrar_.Init(profile->GetPrefs());
+  brave_pref_change_registrar_.Add(
       ai_chat::prefs::kBraveAIChatTabOrganizationEnabled,
       base::BindRepeating(
           &TabSearchPageHandler::OnTabOrganizationFeaturePrefChanged,
-          base::Unretained(this), Profile::FromWebUI(web_ui_)));
+          base::Unretained(this), profile));
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 }
 
