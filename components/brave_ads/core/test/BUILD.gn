@@ -428,6 +428,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/segments/segment_test_constants.h",
     "//brave/components/brave_ads/core/internal/segments/segment_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/segments/segment_value_util_unittest.cc",
+    "//brave/components/brave_ads/core/internal/serving/eligible_ads/allocation/ads_allocation_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature_unittest.cc",
     "//brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule_unittest.cc",
     "//brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule_util_unittest.cc",

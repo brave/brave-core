@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
-#include "brave/components/brave_ads/core/internal/serving/ad_serving_util.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/allocation/ads_allocation_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_base.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_factory.h"
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_feature.h"
@@ -148,7 +148,8 @@ void NewTabPageAdServing::GetEligibleAdsCallback(
 
   BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
-  const CreativeNewTabPageAdInfo creative_ad = ChooseCreativeAd(creative_ads);
+  const CreativeNewTabPageAdInfo creative_ad =
+      ChooseCreativeAdAtRandom(creative_ads);
   BLOG(1, "Chosen eligible ad with creative instance id "
               << creative_ad.creative_instance_id << " and a priority of "
               << creative_ad.priority);

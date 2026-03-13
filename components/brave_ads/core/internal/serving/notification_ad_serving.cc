@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
-#include "brave/components/brave_ads/core/internal/serving/ad_serving_util.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/allocation/ads_allocation_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_base.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_factory.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_feature.h"
@@ -176,7 +176,8 @@ void NotificationAdServing::GetEligibleAdsCallback(
 
   BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
-  const CreativeNotificationAdInfo creative_ad = ChooseCreativeAd(creative_ads);
+  const CreativeNotificationAdInfo creative_ad =
+      ChooseCreativeAdAtRandom(creative_ads);
   BLOG(1, "Chosen eligible ad with creative instance id "
               << creative_ad.creative_instance_id << " and a priority of "
               << creative_ad.priority);
