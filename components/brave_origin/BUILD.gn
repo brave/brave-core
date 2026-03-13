@@ -45,6 +45,13 @@ static_library("brave_origin") {
     "profile_id.h",
   ]
 
+  if (is_android) {
+    sources += [
+      "origin_iap_subscription.cc",
+      "origin_iap_subscription.h",
+    ]
+  }
+
   friend = [ ":unit_tests" ]
 
   public_deps = [

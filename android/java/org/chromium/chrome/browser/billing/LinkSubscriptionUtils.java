@@ -20,7 +20,7 @@ public class LinkSubscriptionUtils {
         String braveAccountUrl =
                 isLinkSubscriptionOnStaging() ? BRAVE_ACCOUNT_URL_STAGING : BRAVE_ACCOUNT_URL;
         String linkType =
-                (SubscriptionProduct.LEO == subscriptionProduct) ? "link-order" : "connect-receipt";
+                (SubscriptionProduct.VPN == subscriptionProduct) ? "connect-receipt" : "link-order";
         String baseUrl = "https://%s?intent=%s&product=%s&mtm_campaign=linking-android";
         return String.format(
                 baseUrl,

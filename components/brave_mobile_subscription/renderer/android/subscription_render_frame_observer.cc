@@ -15,6 +15,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/brave_origin/features.h"
 #include "brave/components/skus/renderer/skus_utils.h"
 #include "brave/gin/converter_specializations.h"
 #include "build/build_config.h"
@@ -40,8 +41,9 @@ inline constexpr char kIntentParamTestValue[] = "connect-receipt-test";
 inline constexpr char kProductParamName[] = "product";
 inline constexpr char kProductVPNParamValue[] = "vpn";
 inline constexpr char kProductLeoParamValue[] = "leo";
-inline constexpr char kIntentParamValueLeo[] = "link-order";
-inline constexpr char kResultLandingPagePathLeo[] = "/order-link/";
+inline constexpr char kProductOriginParamValue[] = "origin";
+inline constexpr char kIntentParamValueLinkOrder[] = "link-order";
+inline constexpr char kResultLandingPagePath[] = "/order-link/";
 
 }  // namespace
 
@@ -70,6 +72,15 @@ bool SubscriptionRenderFrameObserver::EnsureConnected() {
           ai_chat_subscription_.BindNewPipeAndPassReceiver());
     }
     bound |= ai_chat_subscription_.is_bound();
+  }
+
+  if (base::FeatureList::IsEnabled(brave_origin::features::kBraveOrigin) &&
+      product_ == Product::kOrigin) {
+    if (!origin_subscription_.is_bound()) {
+      render_frame()->GetBrowserInterfaceBroker().GetInterface(
+          origin_subscription_.BindNewPipeAndPassReceiver());
+    }
+    bound |= origin_subscription_.is_bound();
   }
   return bound;
 }
@@ -113,6 +124,16 @@ void SubscriptionRenderFrameObserver::DidCreateScriptContext(
         AddJavaScriptObjectToFrame(context);
       } else if (page_ == Page::kInitialLandingPage) {
         ai_chat_subscription_->GetPurchaseTokenOrderId(base::BindOnce(
+            &SubscriptionRenderFrameObserver::OnGetPurchaseTokenOrderId,
+            weak_factory_.GetWeakPtr()));
+      }
+    }
+  } else if (product_ == Product::kOrigin) {
+    if (origin_subscription_.is_bound()) {
+      if (page_ == Page::kResultLandingPage) {
+        AddJavaScriptObjectToFrame(context);
+      } else if (page_ == Page::kInitialLandingPage) {
+        origin_subscription_->GetPurchaseTokenOrderId(base::BindOnce(
             &SubscriptionRenderFrameObserver::OnGetPurchaseTokenOrderId,
             weak_factory_.GetWeakPtr()));
       }
@@ -178,13 +199,17 @@ void SubscriptionRenderFrameObserver::SetLinkStatus(
   // where value 0 means it's not linked otherwise it's linked.
   // VPN uses a different way to detect that.
   // It uses Guardian backend call for that.
-  if (product_ != Product::kLeo || !ai_chat_subscription_.is_bound() ||
-      status_dict.empty()) {
+  if (status_dict.empty()) {
     return;
   }
 
-  ai_chat_subscription_->SetLinkStatus(
-      status_dict.FindInt("status").value_or(0));
+  if (product_ == Product::kLeo && ai_chat_subscription_.is_bound()) {
+    ai_chat_subscription_->SetLinkStatus(
+        status_dict.FindInt("status").value_or(0));
+  } else if (product_ == Product::kOrigin && origin_subscription_.is_bound()) {
+    origin_subscription_->SetLinkStatus(
+        status_dict.FindInt("status").value_or(0));
+  }
 }
 
 std::string SubscriptionRenderFrameObserver::GetPurchaseTokenJSString(
@@ -198,6 +223,8 @@ std::string SubscriptionRenderFrameObserver::GetPurchaseTokenJSString(
     receipt_var_name = "braveVpn.receipt";
   } else if (product_ == Product::kLeo) {
     receipt_var_name = "braveLeo.receipt";
+  } else if (product_ == Product::kOrigin) {
+    receipt_var_name = "braveOrigin.receipt";
   }
 
   return base::StrCat({"window.localStorage.setItem(\"", receipt_var_name,
@@ -226,8 +253,14 @@ void SubscriptionRenderFrameObserver::OnGetPurchaseTokenOrderId(
   }
   auto* frame = render_frame();
   if (frame && !order_id.empty() && !purchase_token.empty()) {
+    std::string_view order_id_key;
+    if (product_ == Product::kLeo) {
+      order_id_key = "braveLeo.orderId";
+    } else if (product_ == Product::kOrigin) {
+      order_id_key = "braveOrigin.orderId";
+    }
     frame->ExecuteJavaScript(base::UTF8ToUTF16(base::StrCat(
-        {"window.localStorage.setItem(\"braveLeo.orderId\", \"", order_id,
+        {"window.localStorage.setItem(\"", order_id_key, "\", \"", order_id,
          "\");", GetPurchaseTokenJSString(purchase_token)})));
   }
 }
@@ -274,23 +307,30 @@ bool SubscriptionRenderFrameObserver::IsAllowed() {
     product_ = Product::kVPN;
   } else if (product == kProductLeoParamValue) {
     product_ = Product::kLeo;
-    // We allow to inject linkResult object if intent value is empty and path is
-    // /order-link/ as https://account.brave.com?intent=link-order&product=leo
-    // gets redirected to https://account.brave.com/order-link/?product=leo for
-    // an actual linking where we should receive the result of linking
+  } else if (product == kProductOriginParamValue) {
+    product_ = Product::kOrigin;
+  } else {
+    product_ = std::nullopt;
+  }
+
+  // For link-order products (Leo, Origin), we allow injecting the linkResult
+  // object if intent value is empty and path is /order-link/ as
+  // https://account.brave.com?intent=link-order&product=<product>
+  // gets redirected to https://account.brave.com/order-link/?product=<product>
+  // for an actual linking where we should receive the result of linking.
+  if (product_ == Product::kLeo || product_ == Product::kOrigin) {
     if (intent.empty()) {
       std::string_view path = current_url.has_path() ? current_url.path() : "";
-      if (path == kResultLandingPagePathLeo) {
+      if (path == kResultLandingPagePath) {
         page_ = Page::kResultLandingPage;
       }
     } else {
       page_ = Page::kInitialLandingPage;
     }
-  } else {
-    product_ = std::nullopt;
   }
+
   return (intent == kIntentParamValue || intent == kIntentParamTestValue ||
-          intent == kIntentParamValueLeo ||
+          intent == kIntentParamValueLinkOrder ||
           (intent.empty() && page_.has_value() &&
            page_ == Page::kResultLandingPage)) &&
          product_.has_value();

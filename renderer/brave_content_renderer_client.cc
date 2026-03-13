@@ -52,10 +52,12 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
+
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/brave_mobile_subscription/renderer/android/subscription_render_frame_observer.h"
+#include "brave/components/brave_origin/features.h"
 #endif  // BUILDFLAG(IS_ANDROID)
-#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "media/base/key_system_info.h"
@@ -191,6 +193,8 @@ void BraveContentRendererClient::RenderFrameCreated(
   should_create_subscription_observer |=
       ai_chat::features::IsAIChatHistoryEnabled();
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+  should_create_subscription_observer |=
+      base::FeatureList::IsEnabled(brave_origin::features::kBraveOrigin);
   if (should_create_subscription_observer) {
     new brave_subscription::SubscriptionRenderFrameObserver(
         render_frame, content::ISOLATED_WORLD_ID_GLOBAL);

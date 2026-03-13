@@ -63,6 +63,7 @@ public class BraveOriginPreferences extends BravePreferenceFragment
     private static final String PREF_WEB_DISCOVERY_PROJECT_SWITCH = "web_discovery_project_switch";
     private static final String PREF_RESET_TO_DEFAULTS = "reset_to_defaults";
     private static final String PREF_LINK_PURCHASE = "link_purchase";
+    private static final String PREF_PURCHASE_SECTION = "origin_purchase_section";
     private static final String PREF_BRAVE_ORIGIN = "brave_origin";
 
     private final SettableMonotonicObservableSupplier<String> mPageTitle =
@@ -114,6 +115,14 @@ public class BraveOriginPreferences extends BravePreferenceFragment
 
         Preference linkPurchase = findPreference(PREF_LINK_PURCHASE);
         if (linkPurchase != null) {
+            boolean isLinked = BraveOriginSubscriptionPrefs.isSubscriptionLinked(profile);
+            linkPurchase.setVisible(!isLinked);
+
+            Preference purchaseSection = findPreference(PREF_PURCHASE_SECTION);
+            if (purchaseSection != null) {
+                purchaseSection.setVisible(!isLinked);
+            }
+
             linkPurchase.setOnPreferenceClickListener(
                     preference -> {
                         TabUtils.openURLWithBraveActivity(
