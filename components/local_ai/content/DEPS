@@ -1,6 +1,0 @@
-include_rules = [
-  "+brave/components/local_ai/core",
-  "+content/public/browser",
-  "+content/public/test",
-  "+services/network/public",
-]

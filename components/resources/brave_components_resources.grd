@@ -86,8 +86,8 @@
       <!-- Email Aliases -->
       <include name="IDR_EMAIL_ALIASES_PANEL_HTML" file="../email_aliases/resources/email_aliases_panel.html" type="BINDATA" />
 
-      <!-- WebUI Local AI resources -->
-      <include name="IDR_LOCAL_AI_HTML" file="../local_ai/resources/local_ai.html" type="BINDATA" />
+      <!-- WebUI On-Device AI resources -->
+      <include name="IDR_ON_DEVICE_AI_HTML" file="../on_device_ai/resources/on_device_ai.html" type="BINDATA" />
 
       <part file="../brave_ads/browser/resources/ads_internals_resources.grdp" />
       <part file="../brave_perf_predictor/resources/brave_perf_predictor_resources.grdp" />

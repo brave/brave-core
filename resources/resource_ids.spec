@@ -234,7 +234,7 @@
     "META": {"sizes": {"includes": [2]}},
     "includes": [54035],
   },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-local_ai/local_ai.grd": {
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-on_device_ai/on_device_ai.grd": {
     "META": {"sizes": {"includes": [1]}},
     "includes": [54037],
   },

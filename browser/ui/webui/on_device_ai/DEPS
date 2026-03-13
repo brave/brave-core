@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/components/on_device_ai/core",
+  "+brave/components/on_device_ai/resources",
+]
