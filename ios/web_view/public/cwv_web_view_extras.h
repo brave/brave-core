@@ -59,6 +59,9 @@ CWV_EXPORT
 @property(readonly) NSArray<CWVBackForwardListItem*>* backList;
 @property(readonly) NSArray<CWVBackForwardListItem*>* forwardList;
 
+/// Whether or not the keyboard is visible for this web views contents
+@property(readonly, getter=isKeyboardVisible) BOOL keyboardVisible;
+
 #pragma mark -
 
 /// Creates a PDF of the current page
