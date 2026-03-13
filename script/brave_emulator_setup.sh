@@ -953,23 +953,31 @@ sys.exit(1)
         else
             log "Moving Brave to background..."
             "$ADB" -s emulator-5554 shell input keyevent 3  # HOME
-            sleep 5
 
-            # Verify audio is still playing in the background.
-            BG_PLAYING=false
-            for attempt in $(seq 1 3); do
+            # Wait for the audio mixer standby delay (3s) to expire, plus
+            # time for the app to actually stop playback if it will.
+            sleep 8
+
+            # Check audio 5 times over 25 seconds. ALL checks must show audio
+            # active to PASS — this avoids false positives from lingering
+            # mixer buffers or the standby delay window.
+            BG_PASS_COUNT=0
+            BG_TOTAL=5
+            for attempt in $(seq 1 $BG_TOTAL); do
                 if _is_audio_playing; then
-                    BG_PLAYING=true
-                    break
+                    BG_PASS_COUNT=$((BG_PASS_COUNT + 1))
+                    log "  Background check $attempt/$BG_TOTAL: audio active"
+                else
+                    log "  Background check $attempt/$BG_TOTAL: audio NOT active"
                 fi
-                sleep 3
+                sleep 5
             done
 
-            if [[ "$BG_PLAYING" == true ]]; then
+            if [[ "$BG_PASS_COUNT" -eq "$BG_TOTAL" ]]; then
                 log " ✅ [PASS] Audio continues playing in the background."
                 exit 0
             else
-                log " ❌ [FAIL] Audio stopped when the app moved to the background."
+                log " ❌ [FAIL] Audio stopped when the app moved to the background ($BG_PASS_COUNT/$BG_TOTAL checks passed)."
                 _dump_audio_debug
                 exit 1
             fi
