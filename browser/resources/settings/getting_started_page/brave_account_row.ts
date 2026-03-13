@@ -38,16 +38,15 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
     return {
       initiatingServiceName: { type: String },
       state: { type: Object },
-      isResendingConfirmationEmail: { type: Boolean },
     }
   }
 
   protected accessor initiatingServiceName = ''
   protected accessor state: AccountState | undefined = undefined
-  protected accessor isResendingConfirmationEmail: boolean = false
 
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
+  private isResendingConfirmationEmail = false
   private measure?: (text: string) => number
   private resizeObserver?: ResizeObserver
 
@@ -77,7 +76,10 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
     this.browserProxy.authentication.logOut()
   }
 
-  protected async onResendConfirmationEmailButtonClicked() {
+  protected async onResendConfirmationEmailLinkClicked(e: CustomEvent) {
+    e.detail.event.preventDefault()
+
+    if (this.isResendingConfirmationEmail) return
     this.isResendingConfirmationEmail = true
 
     let error: ResendConfirmationEmailError | undefined
