@@ -27,7 +27,6 @@ namespace syncer {
 // duplicated entry in addition to other possible mess.
 // To avoid this, override with empty implementation.
 void SyncServiceAndroidBridge::KeepAccountSettingsPrefsOnlyForUsers(
-    JNIEnv* env,
-    const base::android::JavaRef<jobjectArray>& gaia_ids) {}
+    const std::vector<std::string>& gaia_id_strings) {}
 
 }  // namespace syncer
