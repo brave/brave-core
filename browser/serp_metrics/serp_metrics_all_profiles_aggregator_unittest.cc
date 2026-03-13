@@ -8,6 +8,7 @@
 #include "base/files/file_path.h"
 #include "base/time/time.h"
 #include "brave/browser/serp_metrics/serp_metrics_factory.h"
+#include "brave/browser/serp_metrics/serp_metrics_time_period_store_factory.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
@@ -79,7 +80,8 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
       base::FilePath(kUserDataDir).AppendASCII("testing_profile");
   AddProfile(profile_path);
   std::unique_ptr<SerpMetrics> serp_metrics = CreateSerpMetrics(
-      local_state(), profile_path, profile_attributes_storage());
+      local_state(), SerpMetricsTimePeriodStoreFactory(
+                         profile_path, profile_attributes_storage()));
 
   // Day 0: Stale
   serp_metrics->RecordSearch(SerpMetricType::kBrave);
@@ -107,7 +109,8 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
       base::FilePath(kUserDataDir).AppendASCII("testing_profile");
   AddProfile(profile_path);
   std::unique_ptr<SerpMetrics> serp_metrics = CreateSerpMetrics(
-      local_state(), profile_path, profile_attributes_storage());
+      local_state(), SerpMetricsTimePeriodStoreFactory(
+                         profile_path, profile_attributes_storage()));
 
   // Day 0: Stale
   serp_metrics->RecordSearch(SerpMetricType::kBrave);
@@ -149,12 +152,14 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
       base::FilePath(kUserDataDir).AppendASCII("testing_profile_1");
   AddProfile(profile_path_1);
   std::unique_ptr<SerpMetrics> serp_metrics_1 = CreateSerpMetrics(
-      local_state(), profile_path_1, profile_attributes_storage());
+      local_state(), SerpMetricsTimePeriodStoreFactory(
+                         profile_path_1, profile_attributes_storage()));
   base::FilePath profile_path_2 =
       base::FilePath(kUserDataDir).AppendASCII("testing_profile_2");
   AddProfile(profile_path_2);
   std::unique_ptr<SerpMetrics> serp_metrics_2 = CreateSerpMetrics(
-      local_state(), profile_path_2, profile_attributes_storage());
+      local_state(), SerpMetricsTimePeriodStoreFactory(
+                         profile_path_2, profile_attributes_storage()));
 
   // Day 0: Stale
   serp_metrics_1->RecordSearch(SerpMetricType::kBrave);
@@ -187,12 +192,14 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
       base::FilePath(kUserDataDir).AppendASCII("testing_profile_1");
   AddProfile(profile_path_1);
   std::unique_ptr<SerpMetrics> serp_metrics_1 = CreateSerpMetrics(
-      local_state(), profile_path_1, profile_attributes_storage());
+      local_state(), SerpMetricsTimePeriodStoreFactory(
+                         profile_path_1, profile_attributes_storage()));
   base::FilePath profile_path_2 =
       base::FilePath(kUserDataDir).AppendASCII("testing_profile_2");
   AddProfile(profile_path_2);
   std::unique_ptr<SerpMetrics> serp_metrics_2 = CreateSerpMetrics(
-      local_state(), profile_path_2, profile_attributes_storage());
+      local_state(), SerpMetricsTimePeriodStoreFactory(
+                         profile_path_2, profile_attributes_storage()));
 
   // Day 0: Stale
   serp_metrics_1->RecordSearch(SerpMetricType::kBrave);
