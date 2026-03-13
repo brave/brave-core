@@ -11,6 +11,7 @@
 static_assert(BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
 
 #include <memory>
+#include <optional>
 
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
@@ -42,39 +43,56 @@ class BraveOriginStartupView : public views::WidgetDelegate,
                                public content::WebContentsDelegate,
                                public content::WebContentsObserver {
  public:
+  using ProfileCallback = base::OnceCallback<void(Profile*)>;
+
+  // Delegate interface for external dependencies. Implemented by the browser
+  // startup code and easily mockable in tests.
+  class Delegate {
+   public:
+    virtual ~Delegate() = default;
+
+    // Opens |url| in the user's default external browser.
+    virtual void OpenExternal(const GURL& url) = 0;
+
+    // Exits the browser process.
+    virtual void AttemptExit() = 0;
+
+    // Asynchronously creates the system profile and passes it to |callback|.
+    virtual void CreateSystemProfile(ProfileCallback callback) = 0;
+
+    // Asynchronously creates the default user profile and passes it to
+    // |callback|.
+    virtual void CreateDefaultProfile(ProfileCallback callback) = 0;
+  };
+
   // Returns true if the startup dialog should be shown (purchase not yet
-  // validated or SKU credentials missing).
+  // validated or SKU credentials missing). Also returns false when running
+  // under test infrastructure (--test-type flag).
   static bool ShouldShowDialog(PrefService* local_state);
+
+  // Override ShouldShowDialog() result for testing. Pass std::nullopt to
+  // remove the override and restore normal behavior.
+  static void SetShouldShowDialogForTesting(std::optional<bool> override);
 
   // Shows the startup dialog. |on_complete| is called when the user has
   // been validated and the dialog closes, to continue the startup flow.
-  // |open_external| is called to open URLs in the default browser.
-  // |attempt_exit| is called to terminate the browser when the dialog is
-  // closed without validation.
-  using OpenExternalCallback = base::RepeatingCallback<void(const GURL&)>;
-  using ProfileCallback = base::OnceCallback<void(Profile*)>;
-  using CreateProfilesCallback = base::RepeatingCallback<void(ProfileCallback)>;
-
-  // |on_complete| runs when the user validates; |open_external| opens URLs
-  // externally; |attempt_exit| exits the browser; |create_system_profile| and
-  // |create_default_profile| load the required profiles asynchronously.
+  // |delegate| provides external operations (opening URLs, exiting, creating
+  // profiles).
   static void Show(base::OnceClosure on_complete,
-                   OpenExternalCallback open_external,
-                   base::RepeatingClosure attempt_exit,
-                   CreateProfilesCallback create_system_profile,
-                   CreateProfilesCallback create_default_profile);
+                   std::unique_ptr<Delegate> delegate);
   static void Hide();
   static bool IsShowing();
+
+  // Simulates a successful validation for testing. Calls CloseAndProceed() on
+  // the current instance, triggering the on_complete callback.
+  static void ValidateForTesting();  // IN-TEST
 
   BraveOriginStartupView(const BraveOriginStartupView&) = delete;
   BraveOriginStartupView& operator=(const BraveOriginStartupView&) = delete;
 
  private:
   BraveOriginStartupView(base::OnceClosure on_complete,
-                         OpenExternalCallback open_external,
-                         base::RepeatingClosure attempt_exit,
-                         CreateProfilesCallback create_system_profile,
-                         CreateProfilesCallback create_default_profile);
+                         std::unique_ptr<Delegate> delegate);
   ~BraveOriginStartupView() override;
 
   void Display();
@@ -120,15 +138,12 @@ class BraveOriginStartupView : public views::WidgetDelegate,
   std::unique_ptr<ScopedKeepAlive> keep_alive_;
   std::unique_ptr<ScopedProfileKeepAlive> profile_keep_alive_;
   std::unique_ptr<views::WebView> web_view_;
+  std::unique_ptr<Delegate> delegate_;
 
   int profiles_loaded_count_ = 0;
 
   bool validated_ = false;
   base::OnceClosure on_complete_;
-  OpenExternalCallback open_external_;
-  base::RepeatingClosure attempt_exit_;
-  CreateProfilesCallback create_system_profile_;
-  CreateProfilesCallback create_default_profile_;
 
   views::UnhandledKeyboardEventHandler unhandled_keyboard_event_handler_;
 
