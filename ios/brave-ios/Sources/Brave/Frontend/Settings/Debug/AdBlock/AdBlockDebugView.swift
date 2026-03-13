@@ -328,6 +328,8 @@ struct AdblockRuleExclusionView: View {
       isSaving = true
       defer { isSaving = false }
       do {
+        // Force reset the Content Blocker rule list caches.
+        try? await AdBlockGroupsManager.shared.contentBlockerManager.removeAllRuleLists()
         if !rulesToExclude.isEmpty {
           try await customFilterListStorage.save(customExclusionRules: rulesToExclude)
         } else {
