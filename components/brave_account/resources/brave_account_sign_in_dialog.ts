@@ -56,6 +56,7 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
       const serializedKE1 = this.login.start(this.password)
       const { encryptedLoginToken, serializedKE2 } =
         await this.browserProxy.authentication.loginInitialize(
+          this.browserProxy.getInitiatingService(),
           this.email,
           serializedKE1,
         )

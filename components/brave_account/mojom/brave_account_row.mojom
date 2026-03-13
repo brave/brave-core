@@ -25,7 +25,7 @@ interface RowClient {
 
 interface RowHandler {
   GetAccountState() => (AccountState state);
-  OpenDialog();
+  OpenDialog(string initiating_service_name);
 };
 
 interface RowHandlerFactory {

@@ -32,6 +32,7 @@ source_set("brave_account") {
     deps += [
       "//chrome/browser/ui/webui",
       "//components/prefs",
+      "//net",
       "//ui/compositor",
       "//ui/gfx/geometry",
       "//ui/views",
