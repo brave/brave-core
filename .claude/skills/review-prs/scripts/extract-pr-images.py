@@ -185,7 +185,7 @@ def download_image(url, dest_path):
                                          "User-Agent": "brave-core-review/1.0",
                                          "Accept": "image/*",
                                      })
-        with urllib.request.urlopen(req, timeout=15) as response:  # nosemgrep nosec B310
+        with urllib.request.urlopen(req, timeout=15) as response:  # nosec B310
             content_type = response.headers.get("Content-Type", "")
 
             # Check content type is an image
