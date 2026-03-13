@@ -576,17 +576,12 @@ class BraveBrowserCommandControllerWithSideBySideTest
     : public BraveBrowserCommandControllerTest {
  public:
   BraveBrowserCommandControllerWithSideBySideTest() {
-    scoped_features_.InitWithFeatures(
-        /*enabled_features*/ {features::kSideBySide}, {});
   }
   ~BraveBrowserCommandControllerWithSideBySideTest() override = default;
 
   TabStripModel* tab_strip_model() { return browser()->tab_strip_model(); }
 
   CommandUpdater* command_updater() { return browser()->command_controller(); }
-
- private:
-  base::test::ScopedFeatureList scoped_features_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithSideBySideTest,

@@ -74,7 +74,6 @@ BraveContentsContainerView::BraveContentsContainerView(
   reader_mode_toolbar_->SetDelegate(this);
 #endif
 
-  if (base::FeatureList::IsEnabled(features::kSideBySide)) {
     // To prevent |mini_toolbar_| becomes dangling pointer.
     {
       auto old_toolbar = RemoveChildViewT(mini_toolbar_);
@@ -87,7 +86,6 @@ BraveContentsContainerView::BraveContentsContainerView(
             browser_view, contents_view_));
     container_outline_ = AddChildView(
         std::make_unique<BraveContentsContainerOutline>(mini_toolbar_));
-  }
 
   if (for_web_panel_) {
     // tool bar's menu button is only valid for split view.

@@ -20,35 +20,6 @@ void SuppressUserEducation(UserEducationService* service) {
 
   auto& storage_service = service->user_education_storage_service();
 
-  // Suppress "New" badges for below features by setting counts to exceed
-  // policy limits, ensuring the badge never shows.
-  const base::Feature* badges_to_suppress[] = {
-      &features::kSideBySide,
-      &features::kSideBySideLinkMenuNewBadge,
-  };
-
-  // Chromium's NewBadgePolicy suppresses badges when show_count or used_count
-  // exceeds the policy limits. The defaults are:
-  // - kDefaultNewBadgeShowCount = 10 (badge stops after 10 displays)
-  // - kDefaultNewBadgeFeatureUsedCount = 2 (badge stops after 2 feature uses)
-  // Setting to 999 guarantees exceeding any reasonable policy limit.
-  // See: components/user_education/common/user_education_features.cc
-  constexpr int kNeverShowCount = 999;
-
-  for (const auto* feature : badges_to_suppress) {
-    user_education::NewBadgeData data =
-        storage_service.ReadNewBadgeData(*feature);
-
-    if (data.feature_enabled_time.is_null()) {
-      data.feature_enabled_time = storage_service.GetCurrentTime();
-    }
-
-    data.show_count = kNeverShowCount;
-    data.used_count = kNeverShowCount;
-
-    storage_service.SaveNewBadgeData(*feature, data);
-  }
-
   // Suppress IPH (In Product Help) promos for below features by marking
   // them as dismissed.
   const base::Feature* promos_to_suppress[] = {

@@ -278,10 +278,6 @@ bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
     return true;
   }
 
-  if (!base::FeatureList::IsEnabled(features::kSideBySide)) {
-    return false;
-  }
-
   auto* model = browser->tab_strip_model();
   if (model->empty()) {
     return false;
@@ -297,20 +293,6 @@ bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
 }
 
 BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-  // When SideBySide is enabled, each ContentsContainerView in MultiContentsView
-  // own ReaderModeToolbarView.
-  if (!base::FeatureList::IsEnabled(features::kSideBySide)) {
-    reader_mode_toolbar_ = contents_container_->AddChildView(
-        std::make_unique<ReaderModeToolbarView>(browser_->profile()));
-    contents_container_->SetLayoutManager(
-        std::make_unique<BraveContentsLayoutManager>(
-            GetActiveContentsContainerView(), lens_overlay_view_,
-            reader_mode_toolbar_,
-            /*scrim_view=*/nullptr));
-  }
-#endif
-
   // Need this background view always as we have contents margin/rounded corners
   // when split view is active regardless of rounded corners feature.
   contents_background_view_ =
@@ -548,13 +530,9 @@ void BraveBrowserView::SetStarredState(bool is_starred) {
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 ReaderModeToolbarView* BraveBrowserView::reader_mode_toolbar() {
-  if (base::FeatureList::IsEnabled(features::kSideBySide)) {
     return BraveContentsContainerView::From(
                GetBraveMultiContentsView()->GetActiveContentsContainerView())
         ->reader_mode_toolbar();
-  }
-
-  return reader_mode_toolbar_;
 }
 
 speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
@@ -595,7 +573,6 @@ void BraveBrowserView::UpdateReaderModeToolbar() {
   reader_mode_toolbar()->SetVisible(
       is_distilled(browser()->tab_strip_model()->GetActiveWebContents()));
 
-  if (base::FeatureList::IsEnabled(features::kSideBySide)) {
     // Need to update inactive split tabs' reader mode toolbar because
     // it's also visible.
     auto* contents_container = BraveContentsContainerView::From(
@@ -603,7 +580,6 @@ void BraveBrowserView::UpdateReaderModeToolbar() {
     auto* reader_mode_toolbar = contents_container->reader_mode_toolbar();
     reader_mode_toolbar->SetVisible(
         is_distilled(contents_container->contents_view()->web_contents()));
-  }
 }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 

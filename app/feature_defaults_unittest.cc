@@ -282,7 +282,6 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
       &media::kEnableTabMuting,
       &net::features::kPartitionConnectionsByNetworkIsolationKey,
 #if !BUILDFLAG(IS_ANDROID)
-      &features::kSideBySide,
       &sharing_hub::kDesktopScreenshots,
 #endif
       &network::features::kLocalNetworkAccessChecksWebSockets,
