@@ -272,7 +272,7 @@ public class WindowProtection {
     }
   }
 
-  func presentAuthenticationForViewController(
+  public func presentAuthenticationForViewController(
     determineLockWithPasscode: Bool = true,
     viewType: AuthViewType,
     completion: ((Bool, LAError.Code?) -> Void)? = nil

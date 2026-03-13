@@ -235,7 +235,7 @@ extension Preferences {
 
   final public class Privacy {
     static let lockWithPasscode = Option<Bool>(key: "privacy.lock-with-passcode", default: false)
-    static let privateBrowsingLock = Option<Bool>(
+    public static let privateBrowsingLock = Option<Bool>(
       key: "privacy.private-browsing-lock",
       default: false
     )
