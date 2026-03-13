@@ -349,17 +349,16 @@ def deduplicate_batch_violations(violations):
         if rule:
             file_rule_key = (file_path, rule)
             if file_rule_key in seen_file_rule:
-                log(
-                    f"BATCH_DEDUP: skipped {file_path}:{line}"
-                    f" — duplicate rule '{rule}'"
-                )
+                log(f"BATCH_DEDUP: skipped {file_path}:{line}"
+                    f" — duplicate rule '{rule}'")
                 continue
             seen_file_rule.add(file_rule_key)
 
         # Dedup by (file, line) — different chunks targeting same line
         file_line_key = (file_path, line)
         if file_line_key in seen_file_line:
-            log(f"BATCH_DEDUP: skipped {file_path}:{line} — duplicate file+line")
+            log(f"BATCH_DEDUP: skipped {file_path}:{line} — duplicate file+line"
+                )
             continue
         seen_file_line.add(file_line_key)
 
@@ -367,10 +366,8 @@ def deduplicate_batch_violations(violations):
 
     dropped = len(violations) - len(kept)
     if dropped:
-        log(
-            f"BATCH_DEDUP: dropped {dropped} cross-chunk duplicates"
-            f" (kept {len(kept)})"
-        )
+        log(f"BATCH_DEDUP: dropped {dropped} cross-chunk duplicates"
+            f" (kept {len(kept)})")
     return kept
 
 

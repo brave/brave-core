@@ -186,6 +186,12 @@ def download_image(url, dest_path):
                                          "Accept": "image/*",
                                      })
         with urllib.request.urlopen(req, timeout=15) as response:
+            # After following redirects, verify the final URL is
+            # still on an allowed host.
+            final_url = response.url
+            if not is_allowed_url(final_url):
+                return False, (f"redirect to disallowed host: {final_url}")
+
             content_type = response.headers.get("Content-Type", "")
 
             # Check content type is an image

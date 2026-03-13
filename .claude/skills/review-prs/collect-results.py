@@ -129,10 +129,13 @@ def main():
         sys.exit(1)
 
     # Validate manifest values to prevent command injection
-    if not re.match(r"^[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+$", pr_repo):
+    if not re.match(
+            r"^[a-zA-Z0-9_][a-zA-Z0-9_.-]*/[a-zA-Z0-9_][a-zA-Z0-9_.-]*$",
+            pr_repo,
+    ):
         log(f"ERROR: invalid pr_repo format: {pr_repo}")
         sys.exit(1)
-    if not re.match(r"^[a-zA-Z0-9_-]+$", bot_username):
+    if not re.match(r"^[a-zA-Z0-9][a-zA-Z0-9_-]*$", bot_username):
         log(f"ERROR: invalid bot_username format: {bot_username}")
         sys.exit(1)
 
