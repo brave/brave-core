@@ -13,6 +13,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "ios/web/public/web_state_user_data.h"
+#include "url/gurl.h"
 
 @protocol LoginsTabHelperBridge;
 @class BravePasswordAPI;
@@ -32,13 +33,13 @@ class LoginsTabHelper : public web::WebStateUserData<LoginsTabHelper> {
 
   void SetBridge(id<LoginsTabHelperBridge> bridge);
 
-  // Called when a page form requests saved logins for |form_origin| /
+  // Called when a page form requests saved logins for |frame_request_url| /
   // |action_origin|. |is_main_frame| mirrors ScriptMessage::is_main_frame()
   // and is used to strip passwords for cross-origin subframe requests.
   // The implementation invokes |callback| with a JSON array string of login
   // dictionaries keyed by hostname, formSubmitURL, httpRealm, username,
   // password, usernameField, and passwordField.
-  void GetSavedLogins(const std::string& form_origin,
+  void GetSavedLogins(const GURL& frame_request_url,
                       const std::string& action_origin,
                       bool is_main_frame,
                       base::OnceCallback<void(std::string)> callback);
@@ -56,7 +57,7 @@ class LoginsTabHelper : public web::WebStateUserData<LoginsTabHelper> {
   void OnGetSavedLogins(base::OnceCallback<void(std::string)> callback,
                         std::string action_origin,
                         bool is_main_frame,
-                        std::string form_origin,
+                        GURL frame_request_url,
                         NSArray<IOSPasswordForm*>* forms);
 
   __weak id<LoginsTabHelperBridge> bridge_;

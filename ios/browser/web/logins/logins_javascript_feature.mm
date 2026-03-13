@@ -15,6 +15,7 @@
 #include "ios/web/public/js_messaging/java_script_feature.h"
 #include "ios/web/public/js_messaging/script_message.h"
 #include "ios/web/public/web_state.h"
+#include "url/gurl.h"
 
 namespace {
 
@@ -23,7 +24,6 @@ constexpr char kScriptHandlerName[] = "LoginsMessageHandler";
 constexpr char kMessageTypeKey[] = "type";
 constexpr char kMessageTypeRequest[] = "request";
 constexpr char kMessageTypeSubmit[] = "submit";
-constexpr char kFormOriginKey[] = "formOrigin";
 constexpr char kActionOriginKey[] = "actionOrigin";
 constexpr char kSubmitDataKey[] = "data";
 
@@ -79,15 +79,15 @@ void LoginsJavaScriptFeature::ScriptMessageReceivedWithReply(
   }
 
   if (*type == kMessageTypeRequest) {
-    const std::string* form_origin = body->FindString(kFormOriginKey);
+    const std::optional<GURL> request_url = message.request_url();
     const std::string* action_origin = body->FindString(kActionOriginKey);
-    if (!form_origin || !action_origin) {
+    if (!request_url || !action_origin) {
       std::move(callback).Run(nullptr, nil);
       return;
     }
 
     tab_helper->GetSavedLogins(
-        *form_origin, *action_origin, message.is_main_frame(),
+        *request_url, *action_origin, message.is_main_frame(),
         base::BindOnce(
             [](ScriptMessageReplyCallback handler, std::string json) {
               auto parsed = base::JSONReader::Read(json, base::JSON_PARSE_RFC);

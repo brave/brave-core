@@ -261,7 +261,6 @@ async function asyncFindLogins(
 
   fields[0].addEventListener('blur', onBlur);
 
-  const formOrigin = document.documentURI;
   const actionOrigin = form.action || form.baseURI;
   if (!actionOrigin) {
     return [];
@@ -270,7 +269,6 @@ async function asyncFindLogins(
   try {
     const logins = await sendWebKitMessageWithReply(HANDLER_NAME, {
       type: 'request',
-      formOrigin,
       actionOrigin,
     });
     return Array.isArray(logins) ? (logins as LoginData[]) : [];

@@ -52,7 +52,7 @@ void LoginsTabHelper::SetBridge(id<LoginsTabHelperBridge> bridge) {
 }
 
 void LoginsTabHelper::GetSavedLogins(
-    const std::string& form_origin,
+    const GURL& frame_request_url,
     const std::string& action_origin,
     bool is_main_frame,
     base::OnceCallback<void(std::string)> callback) {
@@ -65,7 +65,7 @@ void LoginsTabHelper::GetSavedLogins(
 
   auto completion_handler = base::CallbackToBlock(base::BindOnce(
       &LoginsTabHelper::OnGetSavedLogins, weak_ptr_factory_.GetWeakPtr(),
-      std::move(callback), action_origin, is_main_frame, form_origin));
+      std::move(callback), action_origin, is_main_frame, frame_request_url));
 
   [password_api_ getSavedLoginsForURL:url
                            formScheme:PasswordFormSchemeTypeHtml
@@ -76,7 +76,7 @@ void LoginsTabHelper::OnGetSavedLogins(
     base::OnceCallback<void(std::string)> callback,
     std::string action_origin,
     bool is_main_frame,
-    std::string form_origin,
+    GURL frame_request_url,
     NSArray<IOSPasswordForm*>* forms) {
   NSMutableArray<NSDictionary<NSString*, NSString*>*>* login_dicts =
       [[NSMutableArray alloc] init];
@@ -86,7 +86,7 @@ void LoginsTabHelper::OnGetSavedLogins(
   // LoginsScriptHandler.swift). Password is always stripped for subframes.
   url::Origin tab_origin =
       url::Origin::Create(web_state_->GetLastCommittedURL());
-  bool same_origin = tab_origin.IsSameOriginWith(GURL(form_origin));
+  bool same_origin = tab_origin.IsSameOriginWith(frame_request_url);
 
   if (!is_main_frame && !same_origin) {
     std::move(callback).Run("[]");
