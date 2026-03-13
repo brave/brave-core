@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("local_ai") {
+  sources = [
+    "local_ai_ui.cc",
+    "local_ai_ui.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/local_ai",
+    "//brave/components/local_ai/core",
+    "//brave/components/local_ai/resources:local_ai_generated",
+    "//brave/components/local_ai/resources/candle_embedding_gemma:candle_embedding_module_generated",
+    "//brave/components/resources:static_resources",
+    "//chrome/browser/profiles",
+    "//content/public/browser",
+    "//content/public/common",
+    "//mojo/public/cpp/bindings",
+    "//ui/webui",
+  ]
+}
