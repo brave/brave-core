@@ -109,6 +109,7 @@ struct ManagePasswordsView: View {
         }
       }
     }
+    .accessibilityHidden(privacyLock.isLocked)
     .searchable(
       text: $viewModel.searchText,
       placement: .navigationBarDrawer(displayMode: .always),

@@ -12,13 +12,7 @@ private struct AutofillPrivacyLockEnvironmentKey: EnvironmentKey {
 }
 
 extension EnvironmentValues {
-  /// Shared privacy lock for the autofill management hierarchy.
-  /// The root ManagePasswordsView owns the instance; child views inherit it via environment
-  /// so they show the privacy overlay when backgrounded without running their own auth challenge on appear.
-  var autofillPrivacyLock: AutofillPrivacyLock? {
-    get { self[AutofillPrivacyLockEnvironmentKey.self] }
-    set { self[AutofillPrivacyLockEnvironmentKey.self] = newValue }
-  }
+  @Entry var autofillPrivacyLock: AutofillPrivacyLock?
 }
 
 /// Owns the biometric/passcode authentication state for the autofill management hierarchy.
