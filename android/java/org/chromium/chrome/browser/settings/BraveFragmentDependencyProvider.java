@@ -34,7 +34,7 @@ public class BraveFragmentDependencyProvider extends FragmentDependencyProvider 
     public BraveFragmentDependencyProvider(
             Activity activity,
             Profile profile,
-            MonotonicObservableSupplier<WindowAndroid> windowAndroidSupplier,
+            OneshotSupplier<WindowAndroid> windowAndroidSupplier,
             ActivityResultTracker activityResultTracker,
             OneshotSupplier<SnackbarManager> snackbarManagerSupplier,
             OneshotSupplier<BottomSheetController> bottomSheetControllerSupplier,
