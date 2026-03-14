@@ -26,10 +26,10 @@ class BigNumberCodePlugin : public CodePlugin {
   // CodePlugin implementation
   std::string_view Description() const override;
   std::string_view InclusionKeyword() const override;
-  std::string_view SetupScript() const override;
+  std::string_view SetupScript() override;
 
  private:
-  mutable std::string script_;
+  std::string script_;
 };
 
 }  // namespace ai_chat

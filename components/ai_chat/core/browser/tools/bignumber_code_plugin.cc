@@ -24,7 +24,7 @@ std::string_view BigNumberCodePlugin::InclusionKeyword() const {
   return "BigNumber";
 }
 
-std::string_view BigNumberCodePlugin::SetupScript() const {
+std::string_view BigNumberCodePlugin::SetupScript() {
   if (script_.empty()) {
     script_ = ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
         IDR_AI_CHAT_BIGNUMBER_JS);

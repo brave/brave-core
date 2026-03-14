@@ -284,7 +284,7 @@ void CodeExecutionTool::AddCodePluginForTesting(
   code_plugins_.push_back(std::move(plugin));
 }
 
-std::string CodeExecutionTool::WrapScript(const std::string& script) const {
+std::string CodeExecutionTool::WrapScript(const std::string& script) {
   std::vector<std::string_view> plugin_scripts;
   for (const auto& plugin : code_plugins_) {
     if (script.find(plugin->InclusionKeyword()) != std::string::npos) {
