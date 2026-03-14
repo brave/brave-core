@@ -13,6 +13,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
+#include "base/uuid.h"
 #include "base/values.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/ai_chat/core/browser/tools/chart_code_plugin.h"
@@ -41,6 +42,7 @@ constexpr base::TimeDelta kExecutionTimeLimit = base::Seconds(10);
 constexpr char kScriptProperty[] = "script";
 constexpr char kArtifactTypeKey[] = "type";
 constexpr char kArtifactContentKey[] = "content";
+constexpr char kArtifactIdKey[] = "id";
 
 }  // namespace
 
@@ -142,6 +144,13 @@ void CodeExecutionTool::ResolveRequest(
       break;
     }
 
+    // Determine artifact ID: reuse existing ID from JS or generate a new one.
+    const auto* existing_id = artifact_dict->FindString(kArtifactIdKey);
+    std::string artifact_id =
+        (existing_id && !existing_id->empty())
+            ? *existing_id
+            : base::Uuid::GenerateRandomV4().AsLowercaseString();
+
     // Find matching plugin and validate artifact
     bool plugin_found = false;
     for (const auto& plugin : code_plugins_) {
@@ -151,6 +160,9 @@ void CodeExecutionTool::ResolveRequest(
       plugin_found = true;
       if (auto validation_error = plugin->ValidateArtifact(*content)) {
         error = base::StrCat({"Error: ", *validation_error});
+      } else if (auto prefix = plugin->ArtifactCreationLogPrefix()) {
+        base::StrAppend(&console_logs, {console_logs.empty() ? "" : "\n",
+                                        *prefix, artifact_id});
       }
       break;
     }
@@ -173,8 +185,8 @@ void CodeExecutionTool::ResolveRequest(
     }
 
     // Add artifact
-    artifact_ptrs.push_back(
-        mojom::ToolArtifact::New(*type, std::move(content_json)));
+    artifact_ptrs.push_back(mojom::ToolArtifact::New(
+        std::move(artifact_id), *type, std::move(content_json)));
   }
 
   // Construct final content blocks

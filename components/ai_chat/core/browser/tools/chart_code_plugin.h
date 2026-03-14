@@ -34,6 +34,7 @@ class ChartCodePlugin : public CodePlugin {
   std::string_view ArtifactType() const override;
   std::optional<std::string> ValidateArtifact(
       const base::Value& artifact_value) const override;
+  std::optional<std::string_view> ArtifactCreationLogPrefix() const override;
 };
 
 }  // namespace ai_chat

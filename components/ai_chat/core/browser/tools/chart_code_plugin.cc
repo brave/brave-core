@@ -30,9 +30,12 @@ bool ChartCodePlugin::IsEnabled() {
 }
 
 std::string_view ChartCodePlugin::Description() const {
-  return "Use chartUtil.createLineChart(data, labels) where data is an array "
-         "of objects and labels is an optional map of data keys to display "
-         "labels. You must use 'x' as the key for the x-axis. "
+  return "Use chartUtil.createLineChart(data, labels, existingChartId). "
+         "Returns nothing. data is an array of objects, labels is an optional "
+         "map of data keys to display labels, and existingChartId is an "
+         "optional string ID of a previously created chart to update. You must "
+         "use 'x' as the key for the x-axis. A unique chart ID will be "
+         "provided in the console output. "
          "Example: chartUtil.createLineChart([{x: 'Jan', sales: "
          "100, profit: 30}, {x: 'Feb', sales: 150, profit: 45}], {sales: "
          "'Sales ($)', profit: 'Profit ($)'}).";
@@ -45,13 +48,16 @@ std::string_view ChartCodePlugin::InclusionKeyword() const {
 std::string_view ChartCodePlugin::SetupScript() const {
   return R"(
 const chartUtil = {
-  createLineChart: function(data, labels) {
+  createLineChart: function(data, labels, existingChartId) {
     const chartData = { data: data };
     if (labels) {
       chartData.labels = labels;
     }
-    codeExecArtifacts.push({ type: 'line_chart', content: chartData });
-    console.log('Chart created successfully');
+    const artifact = { type: 'line_chart', content: chartData };
+    if (existingChartId) {
+      artifact.id = existingChartId;
+    }
+    codeExecArtifacts.push(artifact);
   }
 };
 )";
@@ -133,6 +139,11 @@ std::optional<std::string> ChartCodePlugin::ValidateArtifact(
   }
 
   return std::nullopt;
+}
+
+std::optional<std::string_view> ChartCodePlugin::ArtifactCreationLogPrefix()
+    const {
+  return "Chart created with ID: ";
 }
 
 }  // namespace ai_chat

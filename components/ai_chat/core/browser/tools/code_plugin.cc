@@ -14,4 +14,8 @@ std::optional<std::string> CodePlugin::ValidateArtifact(
   return std::nullopt;
 }
 
+std::optional<std::string_view> CodePlugin::ArtifactCreationLogPrefix() const {
+  return std::nullopt;
+}
+
 }  // namespace ai_chat

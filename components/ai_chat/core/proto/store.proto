@@ -38,6 +38,7 @@ message ContentBlockProto {
 message ToolArtifactProto {
   string type = 1;
   string content_json = 2;
+  string id = 3;
 }
 
 message ToolUseEventProto {

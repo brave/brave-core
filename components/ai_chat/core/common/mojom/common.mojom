@@ -276,6 +276,7 @@ struct SimpleRequestContentBlock {
 
 // Artifact generated from tool call
 struct ToolArtifact {
+  string id;
   string type;
   string content_json;
 };
