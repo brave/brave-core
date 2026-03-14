@@ -69,6 +69,21 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
 
     if ((changedProperties as Map<PropertyKey, unknown>).has('state')) {
       this.updateEmailTruncation()
+      this.attachResendLinkHandler()
+    }
+  }
+
+  private attachResendLinkHandler() {
+    if (whichAccountState(this.state!) !== AccountStateFieldTags.VERIFICATION) {
+      return
+    }
+
+    const link =
+      this.shadowRoot?.querySelector<HTMLAnchorElement>('.description a')
+    if (link && !link.onclick) {
+      link.onclick = () => {
+        this.onResendConfirmationEmailLinkClicked()
+      }
     }
   }
 
@@ -76,9 +91,7 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
     this.browserProxy.authentication.logOut()
   }
 
-  protected async onResendConfirmationEmailLinkClicked(e: CustomEvent) {
-    e.detail.event.preventDefault()
-
+  protected async onResendConfirmationEmailLinkClicked() {
     if (this.isResendingConfirmationEmail) return
     this.isResendingConfirmationEmail = true
 
