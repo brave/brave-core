@@ -772,6 +772,8 @@ static_library("internal") {
     "serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_v2.h",
     "serving/eligible_ads/priority/priority.h",
     "serving/eligible_ads/priority/priority_util.h",
+    "serving/eligible_ads/round_robin/creative_ad_round_robin.cc",
+    "serving/eligible_ads/round_robin/creative_ad_round_robin.h",
     "serving/eligible_ads/seen_ads/seen_ads_util.cc",
     "serving/eligible_ads/seen_ads/seen_ads_util.h",
     "serving/new_tab_page_ad_serving.cc",

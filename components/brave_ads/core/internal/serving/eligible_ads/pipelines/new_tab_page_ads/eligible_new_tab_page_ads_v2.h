@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_callback.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_base.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/round_robin/creative_ad_round_robin.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/public/history/site_history.h"
@@ -91,6 +92,8 @@ class EligibleNewTabPageAdsV2 final : public EligibleNewTabPageAdsBase {
   const database::table::CreativeNewTabPageAds creative_ads_database_table_;
 
   const database::table::AdEvents ad_events_database_table_;
+
+  CreativeAdRoundRobin creative_ad_round_robin_;
 
   base::WeakPtrFactory<EligibleNewTabPageAdsV2> weak_factory_{this};
 };
