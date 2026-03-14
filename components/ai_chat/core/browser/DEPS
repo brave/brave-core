@@ -4,6 +4,7 @@ include_rules = [
   "+cc/task/core",
   "+cc/task/text",
   "+components/bookmarks",
+  "+components/grit/brave_components_resources.h",
   "+components/grit/brave_components_strings.h",
   "+components/history/core/browser",
   "+components/history/core/test",
