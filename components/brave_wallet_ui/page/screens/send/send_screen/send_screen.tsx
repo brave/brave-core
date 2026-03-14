@@ -67,6 +67,9 @@ import {
 import {
   useIsAccountSyncing, //
 } from '../../../../common/hooks/use_is_account_syncing'
+import {
+  useIsKeyboardVisible, //
+} from '../../../../common/hooks/use_is_keyboard_visible'
 
 // Styled Components
 import { InputRow, ToText, ToRow, ShieldingFundsAlert } from './send.style'
@@ -156,6 +159,7 @@ export const SendScreen = React.memo(() => {
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isMobile = useSafeUISelector(UISelectors.isMobile)
   const isMobileOrPanel = isMobile || isPanel
+  const isKeyboardVisible = useIsKeyboardVisible()
   const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
     WalletSelectors.isZCashShieldedTransactionsEnabled,
   )
@@ -613,6 +617,18 @@ export const SendScreen = React.memo(() => {
     }
   }, [needsAccountSelected, openSelectTokenModal])
 
+  // Computed
+  const isReviewButtonDisabled =
+    memoText.length > MAX_ZCASH_MEMO_LENGTH
+    || !toAddressOrUrl
+    || insufficientFundsError
+    || sendAmount === ''
+    || parseFloat(sendAmount) === 0
+    || Boolean(sendAmountValidationError)
+    || (tokenFromParams?.coin === BraveWallet.CoinType.BTC
+      && !isWarningAcknowledged)
+    || isAccountSyncing
+
   // render
   return (
     <>
@@ -721,22 +737,16 @@ export const SendScreen = React.memo(() => {
                 )}
               </Column>
             </ToSectionWrapper>
-            <ReviewButtonRow isMobile={isMobile}>
+            <ReviewButtonRow
+              isMobile={
+                isMobile && !isKeyboardVisible && !isReviewButtonDisabled
+              }
+            >
               <ReviewButtonBackground>
                 <LeoSquaredButton
                   onClick={submitSend}
                   size='large'
-                  isDisabled={
-                    memoText.length > MAX_ZCASH_MEMO_LENGTH
-                    || !toAddressOrUrl
-                    || insufficientFundsError
-                    || sendAmount === ''
-                    || parseFloat(sendAmount) === 0
-                    || Boolean(sendAmountValidationError)
-                    || (tokenFromParams?.coin === BraveWallet.CoinType.BTC
-                      && !isWarningAcknowledged)
-                    || isAccountSyncing
-                  }
+                  isDisabled={isReviewButtonDisabled}
                 >
                   {getLocale(
                     getReviewButtonText(
