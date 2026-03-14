@@ -5,22 +5,10 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
-# FlushForTesting() deadlocks on Linux because Brave background services (AI
-# Chat, etc.) trigger D-Bus thread pool tasks that post replies to the blocked
-# main thread.
-# https://github.com/brave/brave-browser/issues/54038
--AutofillCounterTest.TimeRanges
-
-# These tests fail because we disable adding Open Search engines by default.
-# See https://github.com/brave/brave-browser/issues/14496
-# We short circuit the SearchEngineTabHelper::PageHasOpenSearchDescriptionDocument
-# via SearchEngineTabHelper::IsFormSubmit in chromium_src override.
--PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
--ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
-
 # These tests pass locally but fail on CI
 -All/ChromeMultiProfileStartupBrowserTestBase.PostProfileInitInvocation/1
 -All/CookieStoreSameSiteTest.CookieStoreUsesEffectiveSameSiteForUnspecifiedCookies/1
+-All/GetDisplayMediaHiDpiBrowserTest.Capture/640x480
 -AvatarMenuBrowserTest.AddNewProfile
 -DebuggerExtensionApiTest.ParentTargetPermissions
 -GWSAbandonedPageLoadMetricsObserverBrowserTest.SearchTabHidden
@@ -35,6 +23,19 @@
 -PageInfoBubbleViewBrowserTest.VerifyEnterprisePasswordReusePageInfoBubble
 -PermissionElementBrowserTest.DoubleClickDoesNotTriggerTwoRequests
 -WebViewNewWindowTest.UserAgent_NewWindow/InnerWebContents
+
+# FlushForTesting() deadlocks on Linux because Brave background services (AI
+# Chat, etc.) trigger D-Bus thread pool tasks that post replies to the blocked
+# main thread.
+# https://github.com/brave/brave-browser/issues/54038
+-AutofillCounterTest.TimeRanges
+
+# These tests fail because we disable adding Open Search engines by default.
+# See https://github.com/brave/brave-browser/issues/14496
+# We short circuit the SearchEngineTabHelper::PageHasOpenSearchDescriptionDocument
+# via SearchEngineTabHelper::IsFormSubmit in chromium_src override.
+-PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
+-ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
 
 # This test runs fine when run individually, but times out when run with test
 # launcher.
@@ -136,6 +137,11 @@
 -All/GetDisplayMediaHiDpiBrowserTest.Capture/640x480
 -All/GetDisplayMediaHiDpiBrowserTest.Capture/3840x2160
 
+# This Chromium test fails because the Glic WebUI creates its webview
+# asynchronously via JavaScript, and Brave's environment doesn't fully support
+# the Glic WebUI initialization flow. Stable upstream (0.3% flake rate).
+-GuestUtilBrowserTest.OnGuestAdded_Glic
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
 -AdsPageLoadMetricsObserverBrowserTest.*
@@ -190,8 +196,3 @@
 -WebRtcBrowserTest.*
 -WebRtcDisableEncryptionFlagBrowserTest.*
 -ZeroCacheTimePrefetchProxyBrowserTest.*
-
-# This Chromium test fails because the Glic WebUI creates its webview
-# asynchronously via JavaScript, and Brave's environment doesn't fully support
-# the Glic WebUI initialization flow. Stable upstream (0.3% flake rate).
--GuestUtilBrowserTest.OnGuestAdded_Glic

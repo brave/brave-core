@@ -75,8 +75,7 @@
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResult_RevampEnabled
 -GoogleChromeSchemeUtilTest.ExtractGoogleChromeSchemeInnerUrl
 -GoogleChromeSchemeUtilTest.StripGoogleChromeScheme
--SearchboxHandlerPecApiTest.GetPlaceholderConfig_EmptySearchboxConfigReturnsAskGoogleOnly
--SearchboxHandlerPecApiTest.GetPlaceholderConfig_WithToolConfigs
+-SearchboxHandlerPecApiTest.GetPlaceholderConfig_*
 -TemplateURLServiceTest.DefaultSearchProviderKeywordConflictReentrancy
 -TemplateURLServiceTest.RepairPrepopulatedSearchEngines
 -TemplateURLServiceTest.RepairStarterPackEngines
@@ -116,13 +115,14 @@
 # These tests crash or fail because we have kOptimizationHints feature disabled,
 # which causes OptimizationGuideKeyedServiceFactory::GetForProfile return a
 # nullptr.
--AILanguageModelTest.*
+-AILanguageModel*Test.*
 -AILanguageModelTestWithLanguageParams.PromptWithEnabledLanguages/*
 -AIManagerTest.*
 -AIProofreaderTest.*
 -AISummarizerTest.*
 -AIWriterTest.*
 -ActorSitePolicyTest.*
+-All/ChangePasswordFormFinderTest.*/*
 -ChangePasswordFormFinderTest.*
 -ChromeComposeClientTest.*
 -ComposeEnablingTest.*
@@ -130,6 +130,7 @@
 -ContentAnnotatorServiceFactoryTest.CreatesServiceWithFlagEnabled
 -ContentAnnotatorTabHelperTest.PropagatesLanguageEvent
 -DigitalIdentityLowRiskOriginsTest.*
+-FindsTabHelperTest.TestThresholdMet
 -HistoryEmbeddingsHandlerTest.*
 -IndigoPageActionControllerTest.*
 -LoginStateCheckerTest.*
@@ -211,6 +212,12 @@
 -BookmarkBarPreloadPipelineManagerTest.PrefetchAndPrerenderDisallowSearchUrl
 
 # This test is disabled because the Brave NTP doesn't support this feature
+-NewTabPageHandlerTest.OnAnimatedDoodleImageClicked
+-NewTabPageHandlerTest.OnAnimatedDoodleImageRendered
+-NewTabPageHandlerTest.OnStaticDoodleImageClicked
+-NewTabPageHandlerTest.OnStaticDoodleImageRendered
+-NewTabPageHandlerTest.OnDoodleImageClicked
+-NewTabPageHandlerTest.OnDoodleImageRendered
 -NewTabPageModulesTest.MakeModuleIdDetails_*
 
 # Isolated Web Apps (IWAs) use web bundles which we don't support.
@@ -262,6 +269,7 @@
 -AccountsPolicyManagerTest.ClearProfileWhenSigninAndSignoutNotAllowed
 -All/SigninUtilHistorySyncOptinForManagedSettingsTest.*
 -AppMenuModelTest.ProfileSyncOnTest
+-AvatarButtonPromoManagerTest.SigninPromoHasLastExternalEventTimeCheck
 -AvatarButtonPromoManagerTest.SigninPromoSupportIndependantProfileAndAccount*
 -BrowserSigninDetectorServiceTest.LateObservation
 -ContextualSearchboxHandlerSignedInTestTabsTest.GetRecentTabs_SetsShowInRecentTabChip
@@ -274,6 +282,7 @@
 -EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailable
 -EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailableForSignedInUsers
 -EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailable_NoAccount
+-EnclaveManagerTest.CookieJarChangeDoesNotDiscardActions
 -EnclaveManagerTest.PrimaryUserChange
 -ExtensionLocalDataBatchUploaderTest.LocalDataDescriptionOnlyReturnsUploadableExtensions
 -ExtensionLocalDataBatchUploaderTest.TriggerLocalDataMigration
@@ -286,8 +295,7 @@
 -PeopleHandlerSignoutTest.SignoutWithSyncOn
 -PeopleHandlerTest.*
 -PeopleHandlerWebOnlySigninTest.ChromeSigninUserAvailableOnWebSignin
--ShowPromoTest.ShouldShowSyncPromoSyncEnabled
--ShowPromoTest.ShowSyncPromoWithSignedInAccount
+-ShowPromoTest.*
 -SigninUtilHistorySyncOptinTest.*
 
 # Failed because we disabled upstream's entire client-side field trials.
@@ -297,7 +305,9 @@
 # These tests fail because we disable safe browsing enhanced protection and
 # patch safe_browsing::IsEnhancedProtectionEnabled to return false
 -All/ClientSideDetectionHostCreditCardFormReferringAppTest.*/*
+-All/ClientSideDetectionHostOnlyESBTest.TestPreClassificationCheckOnlyESBClassification/*
 -All/ClientSideDetectionHostSkipImageClassificationScoringTest.*/*
+-All/ClientSideDetectionServiceOnlyESBTest.TestReceivingImageClassifierUpdatesAfterResubscription/*
 -All/ClientSideDetectionServiceTest.*/*
 -All/LastDownloadFinderTest.AddProfileAfterStarting/1
 -All/LastDownloadFinderTest.NonBinaryOnly/1
@@ -379,6 +389,7 @@
 # This test fails because we remove description and 3p cookies toggle from the
 # Page Info cookies view.
 -All/PageInfoBubbleViewCookiesSubpageTitleTest.DisplaysCookiesAndSiteDataTitle/*
+-All/PageInfoCookiesContentViewA11yNameTest.ThirdPartyCookiesToggleA11yName/*
 -CookieControlsUserBypassTest.*
 -PageInfoCookiesContentViewTest.*
 
@@ -566,6 +577,8 @@
 -OmniboxEditModelPopupTest.AimPopupEnabledNavigationFallback
 -OmniboxEditModelPopupTest.OnCurrentMatchChangedResetsSelectionBeforeAccessingMatches
 -OmniboxEditModelTest.*
+-WebUIReadOnlyOmniboxTest.GetOmniboxTextLength
+-WebUIReadOnlyOmniboxTest.StateManagement
 
 # These tests fail because we disable uploading these event logs
 # See WebRtcLogUploader::UploadCompressedLog patch.
@@ -598,9 +611,6 @@
 
 # Read anything is disabled
 -All/RenderViewContextMenuReadAnythingTest.AppendPageItems/*
-
-# This test fails because we disable Actor Safety Lists component.
--ActorSafetyListsComponentInstallerPolicyTest.ComponentRegistered
 
 # These tests fail because it's expected that the generated tabs have
 # suggestions like "Ask Google about this tab", whereas our results have
@@ -650,6 +660,9 @@
 # https://github.com/brave/brave-core/pull/35714
 -PageActionViewTest.ChipStateUpdatesBackgroundColor
 -PageActionViewTest.ChipStateUpdatesForegroundColor
+
+# These tests fail because we disable `blink::features::kAIRewriterAPI`
+-AIRewriterTest.*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
@@ -708,8 +721,6 @@
 -InstantNTPURLRewriteTest.*
 -ManageProfileHandlerTest.*
 -MultiProfileCredentialsFilterTest.SyncCredentialsFilter
--NewTabPageHandlerTest.OnDoodleImageClicked
--NewTabPageHandlerTest.OnDoodleImageRendered
 -NoStatePrefetchTest.MaxConcurrencyTest
 -NoStatePrefetchTest.NoStatePrefetchDuplicate
 -OmniboxViewViewsSteadyStateElisionsTest.*

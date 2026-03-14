@@ -21,6 +21,7 @@
 -DesktopMediaPickerViewsSingleTabPaneTest.AccessibleProperties
 
 # Tests below this point have not been diagnosed or had issues created yet.
+-EnterpriseReportingPrivateGetContextInfoOSFirewallTest.*
 -ExtensionServiceTest.*
 -LayoutProviderTest.*
 -PlatformStateStoreWinTest.*
