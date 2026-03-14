@@ -281,6 +281,13 @@ void EligibleNewTabPageAdsV2::FilterAndMaybePredictCreativeAdCallback(
     ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
   }
 
+  // Round-robin must run after exclusion rules but before pacing. Pacing is a
+  // rate limiter, not an eligibility filter, so it should not influence which
+  // ads the rotation considers unseen. Running before pacing ensures rotation
+  // resets are driven by which ads have actually been shown, not pacing
+  // randomness.
+  creative_ad_round_robin_.Filter(creative_ads);
+
   PaceCreativeAds(creative_ads);
 
   const PrioritizedCreativeAdBuckets<CreativeNewTabPageAdList> buckets =
@@ -302,6 +309,8 @@ void EligibleNewTabPageAdsV2::FilterAndMaybePredictCreativeAdCallback(
     BLOG(1, "Predicted ad with creative instance id "
                 << predicted_creative_ad->creative_instance_id
                 << " and a priority of " << priority);
+
+    creative_ad_round_robin_.MarkAsSeen(*predicted_creative_ad);
 
     return std::move(callback).Run({*predicted_creative_ad});
   }

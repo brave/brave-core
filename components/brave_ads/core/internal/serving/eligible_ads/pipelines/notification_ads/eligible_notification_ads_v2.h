@@ -13,6 +13,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_base.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/round_robin/creative_ad_round_robin.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/public/history/site_history.h"
@@ -75,6 +76,8 @@ class EligibleNotificationAdsV2 final : public EligibleNotificationAdsBase {
   const database::table::CreativeNotificationAds creative_ads_database_table_;
 
   const database::table::AdEvents ad_events_database_table_;
+
+  CreativeAdRoundRobin creative_ad_round_robin_;
 
   base::WeakPtrFactory<EligibleNotificationAdsV2> weak_factory_{this};
 };

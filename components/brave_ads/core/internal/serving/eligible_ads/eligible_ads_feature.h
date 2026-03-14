@@ -19,6 +19,9 @@ inline constexpr base::FeatureParam<int> kSiteHistoryMaxCount{
 inline constexpr base::FeatureParam<int> kSiteHistoryRecentDayRange{
     &kEligibleAdFeature, "site_history_recent_day_range", 180};
 
+inline constexpr base::FeatureParam<bool> kShouldRoundRobin{
+    &kEligibleAdFeature, "should_round_robin", true};
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_ELIGIBLE_ADS_FEATURE_H_

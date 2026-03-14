@@ -457,6 +457,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_v2_unittest.cc",
     "//brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_v2_unittest.cc",
     "//brave/components/brave_ads/core/internal/serving/eligible_ads/priority/priority_unittest.cc",
+    "//brave/components/brave_ads/core/internal/serving/eligible_ads/round_robin/creative_ad_round_robin_unittest.cc",
     "//brave/components/brave_ads/core/internal/serving/eligible_ads/seen_ads/seen_ads_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_delegate_mock.cc",
     "//brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_delegate_mock.h",
