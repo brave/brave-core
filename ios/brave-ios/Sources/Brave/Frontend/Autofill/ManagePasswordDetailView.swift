@@ -29,7 +29,10 @@ struct ManagePasswordDetailView: View {
               Text(Strings.menuItemCopyTitle)
             }
             Button {
-              if let url = URL(string: password.site) {
+              if let url = URL(string: password.site),
+                url.schemeIsValid,
+                url.scheme == "http" || url.scheme == "https"
+              {
                 openURL(url)
               }
             } label: {
@@ -46,7 +49,7 @@ struct ManagePasswordDetailView: View {
         LabeledContent {
           Menu {
             Button {
-              UIPasteboard.general.string = password.username
+              UIPasteboard.general.setSecureString(password.username ?? "")
             } label: {
               Text(Strings.menuItemCopyTitle)
             }
