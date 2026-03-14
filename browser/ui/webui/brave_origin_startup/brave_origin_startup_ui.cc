@@ -20,6 +20,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "services/network/public/mojom/content_security_policy.mojom.h"
 #include "ui/webui/webui_util.h"
 
 namespace {
@@ -31,6 +32,9 @@ void CreateAndAddDataSource(content::WebUI* web_ui, Profile* profile) {
       source, kBraveOriginStartupGenerated,
       IDR_BRAVE_ORIGIN_STARTUP_STATIC_BRAVE_ORIGIN_STARTUP_HTML);
   source->AddResourcePaths(kBraveOriginStartupStaticResources);
+
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ImgSrc, "img-src 'self';");
 
   source->AddLocalizedStrings(webui::kBraveOriginStartupStrings);
 

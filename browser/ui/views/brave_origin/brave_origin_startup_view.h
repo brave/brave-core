@@ -99,7 +99,7 @@ class BraveOriginStartupView : public views::WidgetDelegate,
   void OnSystemProfileCreated(Profile* profile);
   void OnDefaultProfileCreated(Profile* profile);
   void MaybeInit();
-  void Init(Profile* system_profile);
+  void Init(Profile* profile);
   void SetupWebUICallbacks();
 
   // Called by the WebUI handler when the user wants to open the buy window.

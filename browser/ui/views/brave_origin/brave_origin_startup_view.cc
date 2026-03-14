@@ -36,8 +36,12 @@
 
 namespace {
 
-constexpr int kDialogWidth = 500;
+constexpr int kDialogWidth = 540;
+#if BUILDFLAG(IS_LINUX)
+constexpr int kDialogHeight = 560;
+#else
 constexpr int kDialogHeight = 450;
+#endif
 
 BraveOriginStartupView* g_startup_view = nullptr;
 std::optional<bool> g_should_show_dialog_override;
@@ -181,19 +185,18 @@ void BraveOriginStartupView::MaybeInit() {
   if (profiles_loaded_count_ < 2) {
     return;
   }
-  // System profile is required; default profile is optional.
-  if (!system_profile_) {
+  if (!default_profile_) {
     return;
   }
-  Init(system_profile_);
+  Init(default_profile_.get());
 }
 
-void BraveOriginStartupView::Init(Profile* system_profile) {
+void BraveOriginStartupView::Init(Profile* profile) {
   profile_keep_alive_ = std::make_unique<ScopedProfileKeepAlive>(
-      system_profile->GetOriginalProfile(),
+      profile->GetOriginalProfile(),
       ProfileKeepAliveOrigin::kProfilePickerView);
 
-  web_view_ = std::make_unique<views::WebView>(system_profile);
+  web_view_ = std::make_unique<views::WebView>(profile);
 
   // GetWebContents() creates the WebContents if it doesn't already exist.
   web_view_->GetWebContents()->SetDelegate(this);
