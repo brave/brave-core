@@ -377,7 +377,11 @@ copy("copy_browser_install_script") {
 }
 
 copy("copy_dmg_background_image") {
-  sources = [ "dmg-background.png" ]
+  dmg_background_file_name = "dmg-background"
+  if (is_brave_origin_branded) {
+    dmg_background_file_name += ".origin"
+  }
+  sources = [ "$dmg_background_file_name.png" ]
   outputs = [ "$packaging_dir/chrome_dmg_background.png" ]
 }
 
