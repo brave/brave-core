@@ -17,6 +17,8 @@ struct PrivateTabsView: View {
   }
 
   @ObservedObject var privateBrowsingOnly = Preferences.Privacy.privateBrowsingOnly
+  @ObservedObject var persistentPrivateBrowsing = Preferences.Privacy.persistentPrivateBrowsing
+  @ObservedObject var reopenBrowserInPrivateMode = Preferences.Privacy.reopenBrowserInPrivateMode
   @ObservedObject var privateBrowsingLock = Preferences.Privacy.privateBrowsingLock
 
   var tabManager: TabManager?
@@ -79,9 +81,21 @@ struct PrivateTabsView: View {
                 tabManager?.saveAllTabs()
               } else {
                 tabManager?.removeAllTabsForPrivateMode(isPrivate: true, isActiveTabIncluded: true)
+                reopenBrowserInPrivateMode.value = false
               }
             }
           }
+
+          ToggleView(
+            title: Strings.TabsSettings.reopenBrowserInPrivateModeTitle,
+            subtitle: Strings.TabsSettings.reopenBrowserInPrivateModeDescription,
+            toggle: .init(
+              get: { reopenBrowserInPrivateMode.value },
+              set: { reopenBrowserInPrivateMode.value = $0 }
+            )
+          )
+          .disabled(!persistentPrivateBrowsing.value)
+          .opacity(persistentPrivateBrowsing.value ? 1 : 0.25)
         }
 
         switch localAuthenticationType {
