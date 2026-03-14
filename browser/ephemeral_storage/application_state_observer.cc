@@ -17,26 +17,19 @@
 namespace ephemeral_storage {
 
 #if BUILDFLAG(IS_ANDROID)
-ApplicationStateObserver::ApplicationStateObserver() {
-  app_status_listener_ = base::android::ApplicationStatusListener::New(
-      base::BindRepeating(&ApplicationStateObserver::OnApplicationStateChange,
-                          weak_ptr_factory_.GetWeakPtr()));
-}
+ApplicationStateObserver::ApplicationStateObserver() = default;
+ApplicationStateObserver::~ApplicationStateObserver() = default;
 #else
 ApplicationStateObserver::ApplicationStateObserver(
     content::BrowserContext* context)
     : context_(context) {
   BrowserList::AddObserver(this);
 }
-#endif
 
 ApplicationStateObserver::~ApplicationStateObserver() {
-#if BUILDFLAG(IS_ANDROID)
-  app_status_listener_.reset();
-#else
   BrowserList::RemoveObserver(this);
-#endif
 }
+#endif
 
 void ApplicationStateObserver::AddObserver(Observer* observer) {
   observers_.push_back(observer);
@@ -51,25 +44,10 @@ void ApplicationStateObserver::RemoveObserver(Observer* observer) {
 
 #if BUILDFLAG(IS_ANDROID)
 void ApplicationStateObserver::TriggerCurrentAppStateNotification() {
-  // Call OnApplicationStateChange once to handle current state
-  OnApplicationStateChange(
-      base::android::ApplicationStatusListener::GetState());
-}
-
-void ApplicationStateObserver::OnApplicationStateChange(
-    base::android::ApplicationState new_state) {
-  if (new_state == base::android::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
-    if (!has_notified_active_) {
-      NotifyApplicationBecameActive();
-      has_notified_active_ = true;
-    }
-  } else if (current_state_ != new_state &&
-             current_state_ ==
-                 base::android::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
-    NotifyApplicationBecameInactive();
-    has_notified_active_ = false;
-  }
-  current_state_ = new_state;
+  // On Android, all work should be handled when the application launches, so we
+  // must go through the app state transition from inactive to active
+  NotifyApplicationBecameInactive();
+  NotifyApplicationBecameActive();
 }
 #endif
 
