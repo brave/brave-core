@@ -27,7 +27,6 @@ class BigNumberCodePlugin : public CodePlugin {
   std::string_view Description() const override;
   std::string_view InclusionKeyword() const override;
   std::string_view SetupScript() const override;
-  std::string_view ArtifactType() const override;
 
  private:
   mutable std::string script_;

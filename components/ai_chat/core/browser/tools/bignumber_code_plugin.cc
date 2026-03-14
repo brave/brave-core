@@ -32,8 +32,4 @@ std::string_view BigNumberCodePlugin::SetupScript() const {
   return script_;
 }
 
-std::string_view BigNumberCodePlugin::ArtifactType() const {
-  return "";
-}
-
 }  // namespace ai_chat

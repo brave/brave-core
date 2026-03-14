@@ -54,7 +54,9 @@ class MockCodePlugin : public CodePlugin {
     return "const mockPlugin = { getValue: () => 'mock_value' };";
   }
 
-  std::string_view ArtifactType() const override { return "mock"; }
+  std::optional<std::string_view> ArtifactType() const override {
+    return "mock";
+  }
 
   std::optional<std::string> ValidateArtifact(
       const base::Value& artifact_value) const override {

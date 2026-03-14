@@ -153,7 +153,8 @@ void CodeExecutionTool::ResolveRequest(
     // Find matching plugin and validate artifact
     bool plugin_found = false;
     for (const auto& plugin : code_plugins_) {
-      if (plugin->ArtifactType() != *type) {
+      auto artifact_type = plugin->ArtifactType();
+      if (!artifact_type || *artifact_type != *type) {
         continue;
       }
       plugin_found = true;
