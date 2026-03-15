@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 
+#include <limits>
 #include <memory>
 #include <utility>
 
@@ -202,6 +203,20 @@ TEST(ZCashTransaction, TotalInputsAmount) {
   input2.utxo_value = 555;
   tx.transparent_part().inputs.push_back(input2);
   EXPECT_EQ(tx.TotalInputsAmount().ValueOrDie(), 555666777u + 555u);
+}
+
+TEST(ZCashTransaction, TotalInputsAmountOverflow) {
+  ZCashTransaction tx;
+
+  ZCashTransaction::TxInput input1;
+  input1.utxo_value = std::numeric_limits<uint64_t>::max();
+  tx.transparent_part().inputs.push_back(std::move(input1));
+
+  ZCashTransaction::TxInput input2;
+  input2.utxo_value = 1;
+  tx.transparent_part().inputs.push_back(std::move(input2));
+
+  EXPECT_FALSE(tx.TotalInputsAmount().IsValid());
 }
 
 TEST(ZCashTransaction, ShieldedOutputs) {
