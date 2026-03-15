@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-index 0d0b4f241827a19fb267d035623ae0264a89bca3..696596889d6237dea50bbacddcb1583e0076efaa 100644
+index 0d0b4f241827a19fb267d035623ae0264a89bca3..5b4f6c44c2cfc5658fc1fdce6e365db0970c49a2 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 @@ -656,7 +656,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
@@ -11,12 +11,11 @@ index 0d0b4f241827a19fb267d035623ae0264a89bca3..696596889d6237dea50bbacddcb1583e
                              this,
                              mBottomContainer,
                              getWindowAndroid(),
-@@ -3017,6 +3017,8 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
+@@ -3017,6 +3017,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
       */
      public void onExitVr() {}
  
 +    public void onTabStateInitializedHandler() {}
-+
      private void clearToolbarResourceCache() {
          View v = findViewById(R.id.control_container);
          try {
