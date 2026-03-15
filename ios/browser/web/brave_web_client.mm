@@ -20,6 +20,7 @@
 #include "brave/ios/browser/web/brave_web_main_parts.h"
 #include "brave/ios/browser/web/de_amp/de_amp_javascript_feature.h"
 #include "brave/ios/browser/web/force_paste/force_paste_javascript_feature.h"
+#include "brave/ios/browser/web/logins/logins_javascript_feature.h"
 #include "brave/ios/browser/web/page_metadata/page_metadata_javascript_feature.h"
 #include "components/autofill/ios/browser/autofill_java_script_feature.h"
 #include "components/autofill/ios/browser/suggestion_controller_java_script_feature.h"
@@ -111,6 +112,11 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
     features.push_back(DeAmpJavaScriptFeature::GetInstance());
     features.push_back(ForcePasteJavaScriptFeature::GetInstance());
     features.push_back(PageMetadataJavaScriptFeature::GetInstance());
+
+    if (!base::FeatureList::IsEnabled(
+            brave::features::kUseChromiumWebViewsAutofill)) {
+      features.push_back(LoginsJavaScriptFeature::GetInstance());
+    }
   }
   return features;
 }

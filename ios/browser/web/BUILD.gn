@@ -26,6 +26,7 @@ source_set("web") {
     "//brave/ios/browser/ui/web_view:features",
     "//brave/ios/browser/web/de_amp",
     "//brave/ios/browser/web/force_paste",
+    "//brave/ios/browser/web/logins",
     "//brave/ios/browser/web/page_metadata",
     "//components/component_updater/installer_policies",
     "//components/translate/ios/browser",
