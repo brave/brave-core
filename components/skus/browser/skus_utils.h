@@ -24,6 +24,13 @@ bool DomainIsForProduct(const std::string& domain, const std::string& product);
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
 void MigrateSkusSettings(PrefService* profile_prefs, PrefService* local_prefs);
+
+// Imports SKU state from a file specified via the --import-skus-state
+// command line switch. This is useful for automation testing with paid
+// accounts (e.g., Leo premium). The file should be exported from
+// brave://skus-internals/. Returns true if state was imported successfully.
+bool MaybeImportSkusStateFromCommandLine(PrefService* local_state);
+
 }  // namespace skus
 
 #endif  // BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_UTILS_H_

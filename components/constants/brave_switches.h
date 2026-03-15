@@ -50,6 +50,12 @@ inline constexpr char kUpdateFeedURL[] = "update-feed-url";
 inline constexpr char kDontShowSidebarOnNonStable[] =
     "dont-show-on-sidebar-non-stable";
 
+// Import SKU state from a JSON file at browser startup.
+// This is useful for automation testing with paid accounts.
+// The file should be exported from brave://skus-internals/.
+// Usage: --import-skus-state=/path/to/skus_state.json
+inline constexpr char kSkusStateImportPath[] = "import-skus-state";
+
 }  // namespace switches
 
 #endif  // BRAVE_COMPONENTS_CONSTANTS_BRAVE_SWITCHES_H_

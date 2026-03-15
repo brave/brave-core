@@ -21,6 +21,7 @@ static_library("browser") {
   deps = [
     "//base",
     "//brave/components/api_request_helper",
+    "//brave/components/constants",
     "//brave/components/skus/common",
     "//brave/components/skus/common:mojom",
     "//components/keyed_service/core",

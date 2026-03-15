@@ -475,6 +475,9 @@ void ConversationAPIV2Client::OnQueryCompleted(
   // Handle error
   mojom::APIError error;
 
+  LOG(ERROR) << "AI Chat API v2 error - HTTP " << result.response_code()
+             << " Body: " << result.SerializeBodyToString();
+
   if (net::HTTP_TOO_MANY_REQUESTS == result.response_code()) {
     error = mojom::APIError::RateLimitReached;
   } else if (net::HTTP_REQUEST_ENTITY_TOO_LARGE == result.response_code()) {

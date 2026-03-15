@@ -36,6 +36,7 @@
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
@@ -170,6 +171,7 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
 void BraveBrowserProcessImpl::Init() {
   BrowserProcessImpl::Init();
 
+<<<<<<< Updated upstream
 #if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
   // ChromeComponentExtensionResourceManager's Data needs to be LazyInit'ed on
   // the UI thread (due to pdf_extension_util::AddStrings calling
@@ -182,6 +184,12 @@ void BraveBrowserProcessImpl::Init() {
       extensions_browser_client_->GetComponentExtensionResourceManager()
           ->GetTemplateReplacementsForExtension("");
 #endif
+=======
+  // Import SKU state from command line if specified. This must happen early,
+  // before any SKU service instances are created, so that the imported state
+  // is available when services check for premium credentials.
+  skus::MaybeImportSkusStateFromCommandLine(local_state());
+>>>>>>> Stashed changes
 
 #if BUILDFLAG(ENABLE_TOR)
   pref_change_registrar_.Add(
