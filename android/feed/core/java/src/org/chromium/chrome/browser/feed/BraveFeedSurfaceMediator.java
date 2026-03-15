@@ -10,11 +10,7 @@ import android.widget.FrameLayout;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
-import org.chromium.chrome.browser.feed.componentinterfaces.SurfaceCoordinator;
-import org.chromium.chrome.browser.feed.sort_ui.FeedOptionsCoordinator;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
-import org.chromium.ui.modelutil.PropertyModel;
 
 @NullMarked
 public class BraveFeedSurfaceMediator extends FeedSurfaceMediator {
@@ -29,22 +25,9 @@ public class BraveFeedSurfaceMediator extends FeedSurfaceMediator {
             FeedSurfaceCoordinator coordinator,
             Context context,
             @Nullable SnapScrollHelper snapScrollHelper,
-            @Nullable PropertyModel headerModel,
-            @SurfaceCoordinator.StreamTabId int openingTabId,
             FeedActionDelegate actionDelegate,
-            FeedOptionsCoordinator optionsCoordinator,
-            @Nullable UiConfig uiConfig,
             Profile profile) {
-        super(
-                coordinator,
-                context,
-                snapScrollHelper,
-                headerModel,
-                openingTabId,
-                actionDelegate,
-                optionsCoordinator,
-                uiConfig,
-                profile);
+        super(coordinator, context, snapScrollHelper, actionDelegate, profile);
 
         mProfile = profile;
     }
