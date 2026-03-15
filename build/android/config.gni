@@ -37,6 +37,7 @@ brave_chrome_java_deps = [
   "//brave/browser/password_entry_edit:public_java",
   "//brave/browser/quick_search_engines/android:java",
   "//brave/browser/safe_browsing/android/java/src/org/chromium/chrome/browser/safe_browsing/settings:java",
+  "//brave/browser/signin/services/android:java",
   "//brave/browser/skus/android:java",
   "//brave/browser/tab_group_sync:java",
   "//brave/browser/ui/android/favicon:java",
