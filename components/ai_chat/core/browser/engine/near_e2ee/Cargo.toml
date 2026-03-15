@@ -1,0 +1,19 @@
+[package]
+name = "near-e2ee"
+version = "0.1.0"
+authors = ["Darnell Andries <dandries@brave.com>"]
+edition = "2024"
+license = "MPL-2.0"
+
+[dependencies]
+chacha20poly1305 = { version = "0.10", default-features = false }
+curve25519-dalek = { version = "4.1", default-features = false }
+cxx = { version = "1", default-features = false }
+hkdf = { version = "0.11", default-features = false }
+sha2 = { version = "0.10", default-features = false }
+x25519-dalek = { version = "2.0", default-features = false }
+
+[lib]
+name = "near_e2ee_cxx"
+path = "lib.rs"
+crate-type = ["rlib"]
