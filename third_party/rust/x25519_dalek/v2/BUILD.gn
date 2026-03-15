@@ -33,6 +33,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/curve25519_dalek/v4:lib",
     "//brave/third_party/rust/rand_core/v0_6:lib",
   ]
+  features = [ "static_secrets" ]
   rustenv = []
   rustflags = []
 

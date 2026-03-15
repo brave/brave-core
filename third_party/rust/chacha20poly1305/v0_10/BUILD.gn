@@ -37,6 +37,10 @@ cargo_crate("lib") {
     "//brave/third_party/rust/poly1305/v0_8:lib",
     "//brave/third_party/rust/zeroize/v1:lib",
   ]
+  features = [
+    "alloc",
+    "rand_core",
+  ]
   rustenv = []
   rustflags = []
 

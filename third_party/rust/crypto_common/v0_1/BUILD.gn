@@ -28,9 +28,13 @@ cargo_crate("lib") {
 
   deps = [
     "//brave/third_party/rust/generic_array/v0_14:lib",
+    "//brave/third_party/rust/rand_core/v0_6:lib",
     "//brave/third_party/rust/typenum/v1:lib",
   ]
-  features = [ "std" ]
+  features = [
+    "rand_core",
+    "std",
+  ]
   rustenv = []
   rustflags = []
 
