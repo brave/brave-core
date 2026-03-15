@@ -107,6 +107,7 @@ static_library("browser") {
   deps = [
     ":generated_brave_search_responses",
     "//brave/brave_domains",
+    "//brave/components/ai_chat/core/browser/engine/e2ee",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/ai_chat/core/common/mojom",

@@ -16,4 +16,13 @@ rust_static_library("e2ee") {
   visibility = [ "//brave/components/ai_chat/core/browser:*" ]
 
   cxx_bindings = [ "lib.rs" ]
+
+  deps = [
+    "//brave/third_party/rust/chacha20poly1305/v0_10:lib",
+    "//brave/third_party/rust/curve25519_dalek/v4:lib",
+    "//brave/third_party/rust/hkdf/v0_11:lib",
+    "//brave/third_party/rust/rand/v0_8:lib",
+    "//brave/third_party/rust/sha2/v0_9:lib",
+    "//brave/third_party/rust/x25519_dalek/v2:lib",
+  ]
 }
