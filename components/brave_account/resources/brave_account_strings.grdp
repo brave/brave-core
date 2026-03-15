@@ -102,6 +102,23 @@
     Reset your password
   </message>
 
+  <!-- 'OTP' dialog: -->
+  <message name="IDS_BRAVE_ACCOUNT_OTP_DIALOG_TITLE" translateable="false" desc="Title for the dialog where the user enters a one-time password code" formatter_data="webui=BraveAccount">
+    Change password
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_OTP_DIALOG_DESCRIPTION" translateable="false" desc="Description for the OTP dialog explaining that an email with a code has been sent" formatter_data="webui=BraveAccount">
+    We've just sent you an email with a short code. Please enter it here to continue setting up a new account password.
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_OTP_INPUT_LABEL" translateable="false" desc="Label for the OTP input field" formatter_data="webui=BraveAccount">
+    Enter the code here
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_CONFIRM_CODE_BUTTON_LABEL" translateable="false" desc="Label for the button that submits the OTP code" formatter_data="webui=BraveAccount">
+    Confirm code
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_EMAIL_CODE_BUTTON_LABEL" translateable="false" desc="Label for the button that resends the OTP code via email" formatter_data="webui=BraveAccount">
+    Resend email code
+  </message>
+
   <!-- 'Error' dialog: -->
   <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_TITLE" translateable="false" desc="Title for the error dialog" formatter_data="webui=BraveAccount">
     Something went wrong

@@ -17,7 +17,7 @@ import { getHtml } from './brave_account_dialogs.html.js'
 import { Error } from './brave_account_common.js'
 
 export type Dialog =
-  | { type: 'CREATE' | 'ENTRY' | 'FORGOT_PASSWORD' | 'SIGN_IN' }
+  | { type: 'CREATE' | 'ENTRY' | 'FORGOT_PASSWORD' | 'OTP' | 'SIGN_IN' }
   | { type: 'ERROR'; error: Error }
 
 export class BraveAccountDialogs extends CrLitElement {
@@ -86,18 +86,6 @@ export class BraveAccountDialogs extends CrLitElement {
 
         if (buttons?.length === 1) {
           buttons[0]!.click()
-          e.preventDefault()
-        }
-        break
-      }
-      // Navigates back (unless in an input field).
-      case 'Backspace': {
-        const isInInput = e
-          .composedPath()
-          .some((el) => (el as HTMLElement).tagName === 'LEO-INPUT')
-
-        if (!isInInput) {
-          this.onBackButtonClicked()
           e.preventDefault()
         }
         break
