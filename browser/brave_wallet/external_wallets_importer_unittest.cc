@@ -155,6 +155,15 @@ TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfoError) {
   // wrong password
   EXPECT_EQ(SimulateGetImportInfo("123", valid_data_10K).error(),
             ImportError::kPasswordError);
+
+  // decrypted keyring entry is not a dict
+  // Encrypted using password "123", plaintext is ["non-dict-string-here"]
+  EXPECT_EQ(
+      SimulateGetImportInfo(
+          "123",
+          R"({"data": {"KeyringController": {"vault": "{\"data\": \"LLsk0xDNc5sYevhT+q82JL2Kek8EhUUm2L3eR3f/exf+mxzTKDnorw==\", \"iv\": \"QkJCQkJCQkJCQkJCQkJCQg==\", \"salt\": \"QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUE=\"}"}}})")
+          .error(),
+      ImportError::kJsonError);
 }
 
 TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo_10K_Iterations) {
