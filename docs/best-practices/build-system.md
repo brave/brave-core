@@ -851,3 +851,37 @@ void DoFoo() { ... }
 
 Note: Public headers may still benefit from a `static_assert(BUILDFLAG(...))` as a safety net against accidental inclusion (see BS-049). This rule applies to implementation files and internal headers that are strictly behind the BUILD.gn guard.
 
+---
+
+<a id="BS-055"></a>
+
+## ✅ Use `public` to Restrict Header Visibility in Components
+
+**When a GN target exposes only a subset of its headers to consumers, explicitly list those headers in `public = [...]` to keep the rest internal.** This improves encapsulation — consumers can only include the declared public headers, preventing accidental coupling to implementation details.
+
+```gn
+# ❌ WRONG - all headers are implicitly public
+source_set("core") {
+  sources = [
+    "local_ai_service.h",
+    "local_ai_service.cc",
+    "internal_helper.h",
+    "internal_helper.cc",
+  ]
+  deps = [ ... ]
+}
+
+# ✅ CORRECT - only the service header is public, internals are hidden
+source_set("core") {
+  public = [ "local_ai_service.h" ]
+  sources = [
+    "local_ai_service.h",
+    "local_ai_service.cc",
+    "internal_helper.h",
+    "internal_helper.cc",
+  ]
+  deps = [ ... ]
+}
+```
+
+This is especially useful for `static_library` and `source_set` targets that contain both a public API and private implementation files. GN will enforce that only headers listed in `public` can be `#include`d by dependent targets.
