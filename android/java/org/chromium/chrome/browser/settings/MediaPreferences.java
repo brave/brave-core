@@ -74,8 +74,7 @@ public class MediaPreferences extends BravePreferenceFragment
 
         initFilterListAndroidHandler();
 
-        ChromeSwitchPreference enableWidevinePref =
-                findPreference(PREF_WIDEVINE_ENABLED);
+        ChromeSwitchPreference enableWidevinePref = findPreference(PREF_WIDEVINE_ENABLED);
         if (enableWidevinePref != null) {
             enableWidevinePref.setChecked(
                     BraveLocalState.get().getBoolean(BravePref.WIDEVINE_ENABLED));
@@ -111,8 +110,7 @@ public class MediaPreferences extends BravePreferenceFragment
         if (hideYoutubeDistractingElementsPref != null) {
             hideYoutubeDistractingElementsPref.setOnPreferenceChangeListener(this);
         }
-        ChromeSwitchPreference hideYoutubeShortsPref =
-                findPreference(PREF_HIDE_YOUTUBE_SHORTS);
+        ChromeSwitchPreference hideYoutubeShortsPref = findPreference(PREF_HIDE_YOUTUBE_SHORTS);
         if (hideYoutubeShortsPref != null) {
             hideYoutubeShortsPref.setOnPreferenceChangeListener(this);
         }
@@ -233,8 +231,7 @@ public class MediaPreferences extends BravePreferenceFragment
         } else if (PREF_HIDE_YOUTUBE_THUMBNAILS.equals(key)) {
             if (mFilterListAndroidHandler != null) {
                 mFilterListAndroidHandler.enableFilter(
-                        FilterListConstants.HIDE_YOUTUBE_THUMBNAIL_IMAGES_UUID,
-                        (boolean) newValue);
+                        FilterListConstants.HIDE_YOUTUBE_THUMBNAIL_IMAGES_UUID, (boolean) newValue);
             }
         } else if (PREF_HIDE_YOUTUBE_PLAYABLES.equals(key)) {
             if (mFilterListAndroidHandler != null) {
