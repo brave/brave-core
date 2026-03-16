@@ -114,7 +114,8 @@ const getSisoBuiltinRemoteLimit = () => {
   return Math.min(kReproxyLimitCap, limit)
 }
 
-const Config = function () {
+class Config {
+constructor() {
   this.isTeamcity = process.env.TEAMCITY_VERSION !== undefined
   this.isCI = process.env.BUILD_ID !== undefined || this.isTeamcity
   this.internalDepsUrl =
@@ -236,11 +237,11 @@ const Config = function () {
   this.use_no_gn_gen = getEnvConfig(['use_no_gn_gen'])
 }
 
-Config.prototype.isReleaseBuild = function () {
+isReleaseBuild() {
   return this.buildConfig === 'Release'
 }
 
-Config.prototype.isBraveReleaseBuild = function () {
+isBraveReleaseBuild() {
   const isBraveReleaseBuildValue = getEnvConfig(['is_brave_release_build'])
   if (isBraveReleaseBuildValue !== undefined) {
     assert(
@@ -253,15 +254,15 @@ Config.prototype.isBraveReleaseBuild = function () {
   return false
 }
 
-Config.prototype.isComponentBuild = function () {
+isComponentBuild() {
   return this.buildConfig === 'Debug' || this.buildConfig === 'Component'
 }
 
-Config.prototype.isDebug = function () {
+isDebug() {
   return this.buildConfig === 'Debug'
 }
 
-Config.prototype.enableCDMHostVerification = function () {
+enableCDMHostVerification() {
   const enable =
     this.buildConfig === 'Release'
     && process.platform !== 'linux'
@@ -277,27 +278,27 @@ Config.prototype.enableCDMHostVerification = function () {
   return enable
 }
 
-Config.prototype.isAsan = function () {
+isAsan() {
   if (this.is_asan !== undefined) {
     return this.is_asan
   }
   return false
 }
 
-Config.prototype.isLsan = function () {
+isLsan() {
   // LSAN only works with ASAN and has very low overhead.
   // Chromium supports LeakSanitizer is supported on x86_64 Linux only.
   // See https://www.chromium.org/developers/testing/leaksanitizer/
   return this.isAsan() && this.targetOS === 'linux'
 }
 
-Config.prototype.isOfficialBuild = function () {
+isOfficialBuild() {
   return (
     this.isReleaseBuild() && !this.isAsan() && !this.is_msan && !this.is_ubsan
   )
 }
 
-Config.prototype.getBraveLogoIconName = function () {
+getBraveLogoIconName() {
   let iconName = 'brave-icon-dev-color.svg'
   if (this.isBraveReleaseBuild()) {
     if (this.channel === 'beta') {
@@ -311,7 +312,7 @@ Config.prototype.getBraveLogoIconName = function () {
   return iconName
 }
 
-Config.prototype.shouldSign = function () {
+shouldSign() {
   if (this.skip_signing || this.isComponentBuild() || this.targetOS === 'ios') {
     return false
   }
@@ -335,7 +336,7 @@ Config.prototype.shouldSign = function () {
   return false
 }
 
-Config.prototype.addToPath = function (oldPath, addPath, prepend = false) {
+addToPath(oldPath, addPath, prepend = false) {
   const newPath = oldPath ? oldPath.split(path.delimiter) : []
   if (newPath.includes(addPath)) {
     return oldPath
@@ -348,19 +349,19 @@ Config.prototype.addToPath = function (oldPath, addPath, prepend = false) {
   return newPath.join(path.delimiter)
 }
 
-Config.prototype.addPathToEnv = function (env, addPath, prepend = false) {
+addPathToEnv(env, addPath, prepend = false) {
   // cmd.exe uses Path instead of PATH so just set both
   env.Path && (env.Path = this.addToPath(env.Path, addPath, prepend))
   env.PATH && (env.PATH = this.addToPath(env.PATH, addPath, prepend))
   return env
 }
 
-Config.prototype.addPythonPathToEnv = function (env, addPath) {
+addPythonPathToEnv(env, addPath) {
   env.PYTHONPATH = this.addToPath(env.PYTHONPATH, addPath)
   return env
 }
 
-Config.prototype.getProjectVersion = function (projectName) {
+getProjectVersion(projectName) {
   return (
     getEnvConfig(['projects', projectName, 'revision'])
     || getEnvConfig(['projects', projectName, 'tag'])
@@ -368,10 +369,7 @@ Config.prototype.getProjectVersion = function (projectName) {
   )
 }
 
-Config.prototype.getProjectRef = function (
-  projectName,
-  defaultValue = 'origin/master',
-) {
+getProjectRef(projectName, defaultValue = 'origin/master') {
   const revision = getEnvConfig(['projects', projectName, 'revision'])
   if (revision) {
     return revision
@@ -390,7 +388,7 @@ Config.prototype.getProjectRef = function (
   return defaultValue
 }
 
-Config.prototype.updateInternal = function (options) {
+updateInternal(options) {
   if (options.universal) {
     this.targetArch = 'arm64'
     this.isUniversalBinary = true
@@ -590,7 +588,7 @@ Config.prototype.updateInternal = function (options) {
   }
 }
 
-Config.prototype.fromGnArgs = function (options) {
+fromGnArgs(options) {
   const gnArgs = readArgsGn(this.srcDir, options.C)
   Log.warn(
     '--no-gn-gen is experimental and only gn args that match command '
@@ -600,7 +598,7 @@ Config.prototype.fromGnArgs = function (options) {
   assert(!this.isCI)
 }
 
-Config.prototype.update = function (options) {
+update(options) {
   if (this.use_no_gn_gen) {
     this.fromGnArgs(options)
   } else {
@@ -608,26 +606,25 @@ Config.prototype.update = function (options) {
   }
 }
 
-Config.prototype.isIOS = function () {
+isIOS() {
   return this.targetOS === 'ios'
 }
 
-Config.prototype.isAndroid = function () {
+isAndroid() {
   return this.targetOS === 'android'
 }
 
-Config.prototype.isMobile = function () {
+isMobile() {
   return this.isIOS() || this.isAndroid()
 }
 
-Config.prototype.forwardEnvConfigVarsToObject = function (vars, obj) {
+forwardEnvConfigVarsToObject(vars, obj) {
   for (const v of vars) {
     obj[v] = getEnvConfig([v])
   }
 }
 
-Object.defineProperty(Config.prototype, 'defaultOptions', {
-  get: function () {
+  get defaultOptions() {
     let env = Object.assign({}, process.env)
     env = this.addPathToEnv(
       env,
@@ -808,17 +805,13 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       cwd: this.srcDir,
       git_cwd: '.',
     })
-  },
-})
+  }
 
-Object.defineProperty(Config.prototype, 'chromiumCustomDeps', {
-  get: function () {
+  get chromiumCustomDeps() {
     return envConfig.getMergedObject(['projects', 'chrome', 'custom_deps'])
-  },
-})
+  }
 
-Object.defineProperty(Config.prototype, 'chromiumCustomVars', {
-  get: function () {
+  get chromiumCustomVars() {
     return {
       'checkout_pgo_profiles': this.isBraveReleaseBuild(),
       ...(this.rbeService
@@ -830,11 +823,9 @@ Object.defineProperty(Config.prototype, 'chromiumCustomVars', {
         : {}),
       ...envConfig.getMergedObject(['projects', 'chrome', 'custom_vars']),
     }
-  },
-})
+  }
 
-Object.defineProperty(Config.prototype, 'outputDir', {
-  get: function () {
+  get outputDir() {
     if (this.use_no_gn_gen && this.__outputDir == null) {
       Log.error(`You must specify output directory with -C with use_no_gn_gen`)
       process.exit(1)
@@ -867,10 +858,11 @@ Object.defineProperty(Config.prototype, 'outputDir', {
     }
 
     return path.join(baseDir, buildConfigDir)
-  },
-  set: function (outputDir) {
+  }
+
+  set outputDir(outputDir) {
     this.__outputDir = outputDir
-  },
-})
+  }
+}
 
 export default new Config()
