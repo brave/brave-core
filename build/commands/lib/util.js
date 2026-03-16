@@ -16,6 +16,7 @@ import assert from 'node:assert'
 import updateChromeVersion from './updateChromeVersion.js'
 import ActionGuard from './actionGuard.js'
 import { GitPatcher } from './gitPatcher.js'
+import { getBuildArgs } from './buildArgs.ts'
 
 
 // Do not limit the number of listeners to avoid warnings from EventEmitter.
@@ -648,7 +649,7 @@ const util = {
         : []
       util.runGnGen(
         config.outputDir,
-        config.buildArgs(),
+        getBuildArgs(config),
         extraGnGenOpts,
         options,
       )
@@ -812,7 +813,7 @@ const util = {
       '--filters="' + config.xcode_gen_target + '"',
     ]
 
-    util.runGnGen(config.outputDir + '_Xcode', config.buildArgs(), genArgs)
+    util.runGnGen(config.outputDir + '_Xcode', getBuildArgs(config), genArgs)
   },
 
   // Get the files that have been changed in the current diff with base branch.
