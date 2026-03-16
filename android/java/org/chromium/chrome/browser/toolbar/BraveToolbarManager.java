@@ -100,10 +100,12 @@ import org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarThrottle;
 import org.chromium.components.browser_ui.accessibility.PageZoomManager;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
+import org.chromium.components.browser_ui.device_lock.DeviceLockActivityLauncher;
 import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuPopulatorFactory;
 import org.chromium.content_public.browser.selection.SelectionDropdownMenuDelegate;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
+import org.chromium.ui.base.ActivityResultTracker;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.util.TokenHolder;
@@ -200,6 +202,8 @@ public class BraveToolbarManager extends ToolbarManager
             NonNullObservableSupplier<Boolean> omniboxFocusStateSupplier,
             OneshotSupplier<Boolean> promoShownOneshotSupplier,
             WindowAndroid windowAndroid,
+            ActivityResultTracker activityResultTracker,
+            DeviceLockActivityLauncher deviceLockActivityLauncher,
             OneshotSupplier<ChromeAndroidTask> chromeAndroidTaskSupplier,
             Supplier<Boolean> isInOverviewModeSupplier,
             NonNullObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
@@ -254,6 +258,8 @@ public class BraveToolbarManager extends ToolbarManager
                 omniboxFocusStateSupplier,
                 promoShownOneshotSupplier,
                 windowAndroid,
+                activityResultTracker,
+                deviceLockActivityLauncher,
                 chromeAndroidTaskSupplier,
                 isInOverviewModeSupplier,
                 modalDialogManagerSupplier,
