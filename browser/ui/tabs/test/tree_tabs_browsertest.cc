@@ -1266,7 +1266,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   tab_strip_model().ActivateTabAt(0);
   chrome::NewTabToRight(browser());
 
-  EXPECT_EQ(3, tab_strip_model().count());
+  ASSERT_EQ(3, tab_strip_model().count());
   EXPECT_EQ(tab_a, tab_strip_model().GetTabAtIndex(0));
   auto* new_tab = tab_strip_model().GetTabAtIndex(1);
   EXPECT_EQ(tab_b, tab_strip_model().GetTabAtIndex(2));
