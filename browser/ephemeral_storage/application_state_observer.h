@@ -62,14 +62,6 @@ class ApplicationStateObserver
 #endif
 
  private:
-#if BUILDFLAG(IS_ANDROID)
-  void OnApplicationStateChange(base::android::ApplicationState new_state);
-
-  std::unique_ptr<base::android::ApplicationStatusListener>
-      app_status_listener_;
-  base::android::ApplicationState current_state_{
-      base::android::APPLICATION_STATE_UNKNOWN};
-#endif
 
 #if !BUILDFLAG(IS_ANDROID)
   // BrowserListObserver:
@@ -80,9 +72,9 @@ class ApplicationStateObserver
   void NotifyApplicationBecameInactive();
 
   std::vector<Observer*> observers_;
-  bool has_notified_active_ = false;
 
 #if !BUILDFLAG(IS_ANDROID)
+  bool has_notified_active_ = false;
   raw_ptr<content::BrowserContext> context_ = nullptr;
 #endif  // !BUILDFLAG(IS_ANDROID)
 

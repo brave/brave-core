@@ -54,6 +54,13 @@
 
 namespace {
 
+bool ShouldSkipCleanupForURL(
+    const GURL& url,
+    const std::vector<std::string>& ephemeral_domains) {
+  const auto tab_tld = net::URLToEphemeralStorageDomain(url);
+  return tab_tld.empty() || !std::ranges::contains(ephemeral_domains, tab_tld);
+}
+
 bool PrepareTabForFirstPartyStorageCleanup(
     tabs::TabHandle tab_handle,
     const std::vector<std::string>& ephemeral_domains,
@@ -70,9 +77,9 @@ bool PrepareTabForFirstPartyStorageCleanup(
   if (!contents) {
     return false;
   }
-  const auto tab_tld =
-      net::URLToEphemeralStorageDomain(contents->GetLastCommittedURL());
-  if (tab_tld.empty() || !std::ranges::contains(ephemeral_domains, tab_tld)) {
+
+  if (ShouldSkipCleanupForURL(contents->GetLastCommittedURL(),
+                              ephemeral_domains)) {
     return false;
   }
 
@@ -265,11 +272,21 @@ void BraveEphemeralStorageServiceDelegate::
   for (TabModel* model : TabModelList::models()) {
     const size_t tab_count = model->GetTabCount();
     std::vector<tabs::TabHandle> tabs_to_close;
+    const int default_active_index = model->GetActiveIndex();
     for (size_t index = 0; index < tab_count; index++) {
-      auto* tab = model->GetTabAt(index);
+      auto* tab = static_cast<TabAndroid*>(model->GetTabAt(index));
       // Do not process tabs from other profiles.
       if (!tab || profile != tab->profile()) {
         continue;
+      }
+
+      // For the case when Tab is not active and WebContents is not yet loaded,
+      // we have to force the loading of WebContents as it is not possible to
+      // shred related data without it, as we need valid StoragePartitionConfig.
+      if (!tab->GetContents() &&
+          !ShouldSkipCleanupForURL(tab->GetURL(), ephemeral_domains)) {
+        // Force loading only for Tabs we really going to shred.
+        model->SetActiveIndex(index);
       }
 
       if (!PrepareTabForFirstPartyStorageCleanup(
@@ -278,6 +295,14 @@ void BraveEphemeralStorageServiceDelegate::
       }
       tabs_to_close.emplace_back(tab->GetHandle());
     }
+    // Restore active tab
+    if (default_active_index != model->GetActiveIndex()) {
+      const auto max_tab_index = model->GetTabCount() - 1;
+      model->SetActiveIndex(max_tab_index < default_active_index
+                                ? max_tab_index
+                                : default_active_index);
+    }
+
     for (auto& tab_handle : tabs_to_close) {
       tab_handle.Get()->Close();
     }
