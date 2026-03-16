@@ -6,13 +6,14 @@
 import config from '../lib/config.js'
 import util from '../lib/util.js'
 import branding from '../lib/branding.js'
+import { getBuildArgs } from '../lib/buildArgs.ts'
 
 let options = config.defaultOptions
 options.continueOnFail = false
 const outputDir = config.outputDir + '_audit'
 
 branding.update()
-const args = config.buildArgs()
+const args = getBuildArgs(config)
 if (process.argv.includes('--audit_dev_deps')) {
   args.audit_dev_deps = true
 }
