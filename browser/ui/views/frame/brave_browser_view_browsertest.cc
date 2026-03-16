@@ -15,6 +15,8 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "brave/browser/ui/views/frame/layout/brave_browser_view_layout_delegate_impl.h"
+#include "brave/browser/ui/views/frame/layout/brave_browser_view_tabbed_layout_impl.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
@@ -44,6 +46,7 @@
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
@@ -59,6 +62,22 @@
 using views::ShapeContextTokensOverride::kRoundedCornersBorderRadius;
 using views::ShapeContextTokensOverride::
     kRoundedCornersBorderRadiusAtWindowCorner;
+
+namespace {
+
+// Delegate that reports no visible top UI (toolbar, bookmark bar) for testing
+// GetTopSeparatorType() returns kNone. Subclasses Brave's delegate and only
+// overrides the two visibility methods.
+class NoVisibleTopUIDelegateForTesting
+    : public BraveBrowserViewLayoutDelegateImpl {
+ public:
+  using BraveBrowserViewLayoutDelegateImpl::BraveBrowserViewLayoutDelegateImpl;
+
+  bool IsToolbarVisible() const override { return false; }
+  bool IsBookmarkBarVisible() const override { return false; }
+};
+
+}  // namespace
 
 class BraveBrowserViewTest : public InProcessBrowserTest {
  public:
@@ -675,6 +694,26 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
   EXPECT_TRUE(browser_view()
                   ->GetExclusiveAccessContext()
                   ->IsExclusiveAccessBubbleDisplayed());
+}
+
+// When there is no visible top UI (toolbar, bookmark bar),
+// GetTopSeparatorType() should return kNone so no 1px separator is drawn at the
+// top of the contents view (e.g. in browser fullscreen). Test by injecting a
+// delegate that reports no visible top UI instead of toggling fullscreen, which
+// is flaky.
+IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
+                       TopSeparatorNoneWhenNoVisibleTopUI) {
+  auto* layout = browser_view()->GetBrowserViewLayoutForTesting();
+  auto* brave_tabbed_layout =
+      static_cast<BraveBrowserViewTabbedLayoutImpl*>(layout);
+
+  // Replace the layout delegate with one that reports no visible toolbar or
+  // bookmark bar (simulating the fullscreen case).
+  layout->SetDelegateForTesting(
+      std::make_unique<NoVisibleTopUIDelegateForTesting>(*browser_view()));
+
+  // TopSeparatorType::kNone (0) - no 1px separator when top UI is hidden.
+  EXPECT_EQ(static_cast<int>(brave_tabbed_layout->GetTopSeparatorType()), 0);
 }
 
 // Ensure the bubble is shown for extension-initiated fullscreen when the
