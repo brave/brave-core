@@ -9,6 +9,7 @@ static_library("serp_metrics") {
     "serp_metrics_factory.h",
     "serp_metrics_tab_helper.h",
     "serp_metrics_time_period_store.h",
+    "serp_metrics_time_period_store_factory.h",
   ]
 
   sources = [
@@ -16,6 +17,7 @@ static_library("serp_metrics") {
     "serp_metrics_factory.cc",
     "serp_metrics_tab_helper.cc",
     "serp_metrics_time_period_store.cc",
+    "serp_metrics_time_period_store_factory.cc",
   ]
 
   public_deps = [
