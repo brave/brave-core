@@ -317,9 +317,10 @@ void BraveBrowserProcessImpl::StartBraveServices() {
 brave_shields::AdBlockService* BraveBrowserProcessImpl::ad_block_service() {
   if (!ad_block_service_) {
     scoped_refptr<base::SequencedTaskRunner> task_runner(
-        base::ThreadPool::CreateSequencedTaskRunner(
+        base::ThreadPool::CreateSingleThreadTaskRunner(
             {base::MayBlock(), base::TaskPriority::USER_BLOCKING,
-             base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN}));
+             base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
+            base::SingleThreadTaskRunnerThreadMode::DEDICATED));
     ad_block_service_ = std::make_unique<brave_shields::AdBlockService>(
         local_state(), GetApplicationLocale(), component_updater(), task_runner,
         AdBlockSubscriptionDownloadManagerGetter(),
