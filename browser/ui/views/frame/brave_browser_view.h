@@ -291,6 +291,15 @@ class BraveBrowserView : public BrowserView,
                           commands::AcceleratorService::Observer>
       accelerators_observation_{this};
 
+#if BUILDFLAG(IS_MAC)
+  // Cached at construction: true if vertical tabs were enabled at startup.
+  // When true, immersive fullscreen is disabled for this window's lifetime.
+  // Essential immersive mode objects (e.g. overlay_widget_) are initialized
+  // only at browser window startup; if they are not created then, immersive
+  // mode does not work at runtime.
+  bool vertical_tabs_on_at_startup_ = false;
+#endif
+
   base::WeakPtrFactory<BraveBrowserView> weak_ptr_{this};
 };
 
