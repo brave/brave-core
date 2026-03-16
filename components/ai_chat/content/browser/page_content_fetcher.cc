@@ -483,8 +483,8 @@ void OnScreenshot(FetchPageContentCallback callback,
 }
 #endif  // #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 
-// Obtains a content URL from a GitHub URL (pull request, commit, compare,
-// commits, or file blob)
+// Obtains a content URL from a GitHub URL (repo root, tree, pull request,
+// commit, compare, commits, or file blob)
 std::optional<GURL> GetGithubContentURL(const GURL& url) {
   if (!url.is_valid() || url.scheme() != "https" ||
       url.host() != "github.com") {
@@ -493,13 +493,30 @@ std::optional<GURL> GetGithubContentURL(const GURL& url) {
 
   std::vector<std::string> path_parts = base::SplitString(
       url.path(), "/", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-  if (path_parts.size() < 4) {
+  if (path_parts.size() < 2) {
     return std::nullopt;
   }
 
   const std::string& user = path_parts[0];
   const std::string& repo = path_parts[1];
+
+  // Handle repo root: /<user>/<repo>
+  if (path_parts.size() == 2) {
+    return GURL(base::StrCat({url.GetWithEmptyPath().spec(), user, "/", repo,
+                              "/raw/HEAD/README.md"}));
+  }
+
   const std::string& type = path_parts[2];
+
+  // Handle tree: /<user>/<repo>/tree/<branch>
+  if (type == "tree" && path_parts.size() == 4) {
+    return GURL(base::StrCat({url.GetWithEmptyPath().spec(), user, "/", repo,
+                              "/raw/", path_parts[3], "/README.md"}));
+  }
+
+  if (path_parts.size() < 4) {
+    return std::nullopt;
+  }
 
   // Handle pull requests: /<user>/<repo>/pull/<number>
   if (type == "pull") {
