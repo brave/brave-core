@@ -23,6 +23,7 @@
 #include "brave/ios/browser/brave_ads/ads_tab_helper.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler_bridge_holder.h"
+#include "brave/ios/browser/web/document_fetch/document_fetch_javascript_feature.h"
 #include "brave/ios/browser/web/force_paste/force_paste_javascript_feature.h"
 #include "brave/ios/browser/web/logins/logins_tab_helper.h"
 #include "brave/ios/browser/web/logins/logins_tab_helper_bridge.h"
@@ -59,6 +60,7 @@
 #include "ios/web_view/internal/cwv_web_view_internal.h"
 #include "ios/web_view/internal/passwords/web_view_password_manager_client.h"
 #include "ios/web_view/public/cwv_autofill_controller.h"
+#include "net/base/apple/url_conversions.h"
 #include "net/http/http_status_code.h"
 
 @interface BraveNavigationAction ()
@@ -483,6 +485,27 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
   if (tab_helper) {
     tab_helper->SetBridge(loginsHelper);
   }
+}
+
+@end
+
+@implementation BraveWebView (DocumentFetch)
+
+- (void)downloadDocumentAtURL:(NSURL*)url
+            completionHandler:
+                (void (^)(NSInteger statusCode,
+                          NSData* _Nullable data))completionHandler {
+  DocumentFetchJavaScriptFeature::GetInstance()->DownloadDocument(
+      self.webState, net::GURLWithNSURL(url),
+      base::BindOnce(^(int statusCode, const std::string& base64Data) {
+        NSData* data = nil;
+        if (!base64Data.empty()) {
+          data = [[NSData alloc]
+              initWithBase64EncodedString:base::SysUTF8ToNSString(base64Data)
+                                  options:0];
+        }
+        completionHandler(statusCode, data);
+      }));
 }
 
 @end
