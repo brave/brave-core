@@ -162,6 +162,7 @@ import org.chromium.chrome.browser.ui.edge_to_edge.TopInsetProvider;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
+import org.chromium.chrome.browser.ui.signin.SigninAndHistorySyncActivityLauncher;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
 import org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarThrottle;
@@ -1619,7 +1620,14 @@ public class BytecodeTest {
                         TopControlsStacker.class,
                         BrowserControlsVisibilityManager.class,
                         Supplier.class,
-                        MonotonicObservableSupplier.class));
+                        MonotonicObservableSupplier.class,
+                        SigninAndHistorySyncActivityLauncher.class,
+                        WindowAndroid.class,
+                        ActivityResultTracker.class,
+                        DeviceLockActivityLauncher.class,
+                        BottomSheetController.class,
+                        ModalDialogManager.class,
+                        SnackbarManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator", // presubmit: ignore-long-line

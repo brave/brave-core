@@ -42,8 +42,15 @@ import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.toolbar.top.tab_strip.TabStripTransitionCoordinator.TabStripTransitionDelegate;
 import org.chromium.chrome.browser.toolbar.top.tab_strip.TabStripTransitionCoordinator.TabStripTransitionHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+import org.chromium.chrome.browser.ui.signin.SigninAndHistorySyncActivityLauncher;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
+import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
+import org.chromium.components.browser_ui.device_lock.DeviceLockActivityLauncher;
+import org.chromium.ui.base.ActivityResultTracker;
+import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.resources.ResourceManager;
 import org.chromium.ui.util.ColorUtils;
 
@@ -99,7 +106,14 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             TopControlsStacker topControlsStacker,
             BrowserControlsVisibilityManager browserControlsVisibilityManager,
             Supplier<Integer> incognitoWindowCountSupplier,
-            MonotonicObservableSupplier<Profile> profileSupplier) {
+            MonotonicObservableSupplier<Profile> profileSupplier,
+            SigninAndHistorySyncActivityLauncher signinAndHistorySyncActivityLauncher,
+            WindowAndroid windowAndroid,
+            ActivityResultTracker activityResultTracker,
+            DeviceLockActivityLauncher deviceLockActivityLauncher,
+            BottomSheetController bottomSheetController,
+            ModalDialogManager modalDialogManager,
+            SnackbarManager snackbarManager) {
         super(
                 controlContainer,
                 toolbarLayout,
@@ -136,7 +150,14 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 topControlsStacker,
                 browserControlsVisibilityManager,
                 incognitoWindowCountSupplier,
-                profileSupplier);
+                profileSupplier,
+                signinAndHistorySyncActivityLauncher,
+                windowAndroid,
+                activityResultTracker,
+                deviceLockActivityLauncher,
+                bottomSheetController,
+                modalDialogManager,
+                snackbarManager);
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
