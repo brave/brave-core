@@ -62,11 +62,6 @@ JNI_BraveFirstPartyStorageCleanerUtils_TriggerCurrentAppStateNotification(
   ephemeral_storage_service->TriggerCurrentAppStateNotification();
 }
 
-bool IsAppInTaskStack() {
-  JNIEnv* env = base::android::AttachCurrentThread();
-  return Java_BraveFirstPartyStorageCleanerUtils_isAppInTaskStack(env);
-}
-
 }  // namespace brave_shields
 
 DEFINE_JNI(BraveFirstPartyStorageCleanerUtils)
