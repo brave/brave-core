@@ -196,6 +196,12 @@ export function createShieldsApi(opts: {
       }),
 
       ...endpointsFor(panelHandler, {
+        getBrowserWindowHeight: {
+          response: (r) => r.height,
+          prefetchWithArgs: [],
+          placeholderData: null,
+        },
+
         getAdvancedViewEnabled: {
           response: (r) => r.isEnabled,
           prefetchWithArgs: [],

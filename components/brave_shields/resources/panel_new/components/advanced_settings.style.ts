@@ -28,16 +28,21 @@ export const style = scoped.css`
         margin-inline-start: -4px;
       }
 
-      > button {
+      > leo-button {
         border-radius: 8px;
+        flex: 0;
       }
 
-      > button:hover {
+      > leo-button:hover {
         background: ${color.button.hover};
       }
 
-      > button:disabled {
+      > leo-button[isdisabled=true] {
         visibility: hidden;
+      }
+
+      a {
+        color: ${color.icon.default};
       }
     }
   }
@@ -87,6 +92,7 @@ export const style = scoped.css`
   }
 
   .block-elements {
+    flex: 1 1 auto;
     padding: 11px 8px;
 
     button {

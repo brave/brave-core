@@ -26,14 +26,16 @@ export function DetailsHeader(props: Props) {
     <div data-css-scope={style.scope}>
       <div className='header'>
         <Button
-          kind='plain-faint'
           onClick={props.onBack}
+          kind='plain-faint'
+          fab
+          size='medium'
         >
           <Icon name='arrow-left' />
         </Button>
         <div className='text'>
           <h4>{props.title}</h4>
-          <div className='host'>{host}</div>
+          <div className='host overflow-ellipsis-start'>{host}</div>
         </div>
       </div>
       {props.children}

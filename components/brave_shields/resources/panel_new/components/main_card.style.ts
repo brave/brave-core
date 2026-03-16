@@ -40,13 +40,8 @@ export const style = scoped.css`
     overflow: hidden;
   }
 
-  h3 {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-
   .site-icon {
+    flex: 0 0 auto;
     padding: 6px;
     width: 32px;
     height: 32px;

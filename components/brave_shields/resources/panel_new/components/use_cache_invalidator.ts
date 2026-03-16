@@ -5,22 +5,24 @@
 
 import * as React from 'react'
 import { useShieldsApi } from '../api/shields_api_context'
+import { debounce } from '$web-common/debounce'
 
 export function useCacheInvalidator() {
   const api = useShieldsApi()
 
-  // Invalidate caches when panel is (re)displayed.
+  // Invalidate caches when panel is (re)displayed from the WebUI cache.
   React.useEffect(() => {
-    const listener = () => {
+    const listener = debounce(() => {
       if (document.visibilityState === 'visible') {
-        api.getAdvancedViewEnabled.invalidate()
-        api.getSiteBlockInfo.invalidate()
-        api.getSiteSettings.invalidate()
-        api.repeatedReloadsDetected.invalidate()
-        api.areAnyBlockedElementsPresent.invalidate()
+        api.getAdvancedViewEnabled.reset()
+        api.getBrowserWindowHeight.reset()
+        api.getSiteBlockInfo.reset()
+        api.getSiteSettings.reset()
+        api.repeatedReloadsDetected.reset()
+        api.areAnyBlockedElementsPresent.reset()
         api.updateFavicon()
       }
-    }
+    }, 30)
     document.addEventListener('visibilitychange', listener)
     return () => document.removeEventListener('visibilitychange', listener)
   }, [api])

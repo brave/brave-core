@@ -111,6 +111,10 @@ function createMockPanelHandler(): Closable<PanelHandlerInterface> {
       return Promise.resolve({ vec: { x: 0, y: 0 } })
     },
 
+    getBrowserWindowHeight() {
+      return Promise.resolve({ height: 800 })
+    },
+
     getAdvancedViewEnabled() {
       return Promise.resolve({ isEnabled: advancedViewEnabled })
     },
