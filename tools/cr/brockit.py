@@ -555,13 +555,13 @@ class Versioned(Task):
     excluded from addition at this stage.
     """
         terminal.run([
-            'third_party/depot_tools/vpython3', './tools/crates/run_gnrt.py',
-            'vendor'
+            Path('third_party/depot_tools/vpython3'),
+            './tools/crates/run_gnrt.py', 'vendor'
         ],
                      cwd=repository.chromium.path)
         terminal.run([
-            'third_party/depot_tools/vpython3', './tools/crates/run_gnrt.py',
-            'gen'
+            Path('third_party/depot_tools/vpython3'),
+            './tools/crates/run_gnrt.py', 'gen'
         ],
                      cwd=repository.chromium.path)
 
