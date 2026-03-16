@@ -14,6 +14,7 @@
 #include "absl/functional/overload.h"
 #include "base/check_op.h"
 #include "base/containers/adapters.h"
+#include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/types/to_address.h"
@@ -30,7 +31,10 @@ void TreeTabNodeTabCollection::BuildTreeTabs(
     base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
     base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move) {
   auto tabs = root.GetTabsRecursive();
+  base::flat_set<TabCollection*> processed_splits;
 
+  // Process from back to front so replacing a tab/split at |index| does not
+  // change indices of items we have not yet processed (order preserved).
   while (!tabs.empty()) {
     auto* tab_interface = tabs.back();
     tabs.pop_back();
@@ -40,6 +44,31 @@ void TreeTabNodeTabCollection::BuildTreeTabs(
     CHECK(parent_collection) << "Tab should always have a parent collection.";
     CHECK_NE(parent_collection->type(), TabCollection::Type::PINNED)
         << "Pinned tabs should not be wrapped in TreeTabNode.";
+
+    // SplitTabCollection does not support child collections. Wrap the entire
+    // split in one tree node and add it to the grandparent.
+    if (parent_collection->type() == TabCollection::Type::SPLIT) {
+      if (processed_splits.contains(parent_collection)) {
+        continue;
+      }
+      processed_splits.insert(parent_collection);
+
+      TabCollection* grandparent = parent_collection->GetParentCollection();
+      CHECK(grandparent);
+      size_t index =
+          grandparent->GetIndexOfCollection(parent_collection).value();
+      std::unique_ptr<TabCollection> removed =
+          grandparent->MaybeRemoveCollection(parent_collection);
+      auto tree_node = std::make_unique<TreeTabNodeTabCollection>(
+          tree_tab::TreeTabNodeId::GenerateNew(),
+          base::WrapUnique<SplitTabCollection>(
+              static_cast<SplitTabCollection*>(removed.release())),
+          on_remove, on_move);
+      on_create.Run(tree_node->node());
+      grandparent->AddCollection(std::move(tree_node), index);
+      continue;
+    }
+
     int index = *parent_collection->GetIndexOfTab(tab_interface);
     auto owned_tab_interface = parent_collection->MaybeRemoveTab(tab_interface);
     CHECK_EQ(tab_interface, owned_tab_interface.get());
@@ -57,41 +86,50 @@ void TreeTabNodeTabCollection::FlattenTreeTabs(TabCollection& root) {
   std::vector<TreeTabNodeTabCollection*> all_tree_nodes;
   CollectTreeNodesRecursively(root, all_tree_nodes);
 
-  // Process tree nodes in reverse order to handle children before parents.
-  // i.e. we have all tree nodes in reverse post-order traversal.
+  // Process tree nodes in reverse order so we handle children before parents.
   for (auto* tree_node : base::Reversed(all_tree_nodes)) {
-    // Move all tabs from the tree node to its parent collection.
-
-    // * We're going to remove tab tree nodes and insert all children of it to
-    // where the tree node is.
+    // Move all direct children (tabs and collections e.g. SplitTabCollection)
+    // from this tree node back to the tree node's parent, preserving order.
     std::vector<std::variant<tabs::TabInterface*, TabCollection*>> children =
         tree_node->GetTreeNodeChildren();
     auto* parent_collection = tree_node->GetParentCollection();
     CHECK(parent_collection)
         << "Tree node should always have a parent collection.";
-    auto index = parent_collection->GetIndexOfCollection(tree_node).value();
+    size_t index = parent_collection->GetIndexOfCollection(tree_node).value();
 
-    // * Move tabs and collection to the parent collection at the same index as
-    // the tree node.
-    for (const auto& child : base::Reversed(children)) {
-      std::visit(absl::Overload{
-                     [&](tabs::TabInterface* tab) {
-                       parent_collection->AddTab(tree_node->MaybeRemoveTab(tab),
-                                                 index);
-                     },
-                     [&](tabs::TabCollection* collection) {
-                       parent_collection->AddCollection(
-                           tree_node->MaybeRemoveCollection(collection), index);
-                     }},
-                 child);
+    // Remove all children in order, then insert back at the parent in the same
+    // order (at index, index+1, ...) so tab/collection order is preserved.
+    using RemovedChild = std::variant<std::unique_ptr<TabInterface>,
+                                      std::unique_ptr<TabCollection>>;
+    std::vector<RemovedChild> removed;
+    removed.reserve(children.size());
+    for (const auto& child : children) {
+      std::visit(
+          absl::Overload{[&](tabs::TabInterface* tab) {
+                           removed.push_back(tree_node->MaybeRemoveTab(tab));
+                         },
+                         [&](tabs::TabCollection* collection) {
+                           removed.push_back(
+                               tree_node->MaybeRemoveCollection(collection));
+                         }},
+          child);
     }
 
-    // * Remove the tree node itself. The on_remove callback will be invoked
-    // automatically in the TreeTabNodeTabCollection destructor.
+    for (auto& item : removed) {
+      std::visit(
+          absl::Overload{[&](std::unique_ptr<TabInterface>& tab) {
+                           parent_collection->AddTab(std::move(tab), index++);
+                         },
+                         [&](std::unique_ptr<TabCollection>& collection) {
+                           parent_collection->AddCollection(
+                               std::move(collection), index++);
+                         }},
+          item);
+    }
+
     CHECK(tree_node->GetTreeNodeChildren().empty())
         << "Tree node should not have any children at this point.";
-    auto tree_node_to_be_removed =
-        parent_collection->MaybeRemoveCollection(tree_node);
+    std::ignore = parent_collection->MaybeRemoveCollection(tree_node);
   }
 }
 

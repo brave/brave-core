@@ -258,6 +258,62 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   }
 }
 
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       BuildTreeTabsAndFlattenTreeTabs_WithSplitTabs) {
+  // Start with flat structure: add two tabs (3 total with initial).
+  AddTab();
+  AddTab();
+  ASSERT_EQ(3, tab_strip_model().count());
+
+  // Create a split containing the first two tabs.
+  CreateSplitWithTabs(&tab_strip_model(), 0, 1);
+  ASSERT_EQ(1u, tab_strip_collection().ListSplits().size());
+  ASSERT_EQ(3, tab_strip_model().count());
+
+  // Store original tab order before BuildTreeTabs.
+  std::vector<tabs::TabInterface*> original_tab_order;
+  for (int i = 0; i < tab_strip_model().count(); ++i) {
+    original_tab_order.push_back(tab_strip_model().GetTabAtIndex(i));
+  }
+
+  // Enable tree tabs: BuildTreeTabs() runs and must wrap the split in one tree
+  // node (no crash). The split's tabs stay inside the same SplitTabCollection;
+  // that collection is wrapped in a TreeTabNodeTabCollection.
+  SetTreeTabsEnabled(true);
+
+  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection());
+
+  // Unpinned should have two top-level children: one tree node (split), one
+  // tree node (standalone tab).
+  EXPECT_EQ(2u, unpinned_collection().ChildCount());
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(2)->GetParentCollection()->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+  EXPECT_EQ(tab_strip_model()
+                .GetTabAtIndex(2)
+                ->GetParentCollection()
+                ->GetParentCollection(),
+            &unpinned_collection());
+
+  // Disable tree tabs: FlattenTreeTabs() runs and must restore the split and
+  // preserve tab order.
+  SetTreeTabsEnabled(false);
+
+  EXPECT_EQ(3, tab_strip_model().count());
+  EXPECT_EQ(1u, tab_strip_collection().ListSplits().size());
+  for (int i = 0; i < tab_strip_model().count(); ++i) {
+    EXPECT_EQ(original_tab_order[i], tab_strip_model().GetTabAtIndex(i))
+        << "Tab order changed at index " << i;
+  }
+
+  // Split still contains two tabs.
+  split_tabs::SplitTabId split_id =
+      *tab_strip_collection().ListSplits().begin();
+  tabs::SplitTabCollection* split_coll =
+      tab_strip_collection().GetSplitTabCollection(split_id);
+  ASSERT_TRUE(split_coll);
+  EXPECT_EQ(2u, split_coll->TabCountRecursive());
+}
+
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, BuildTreeTabs_WithGroupedTabs) {
   auto* tab_groups_service =
       tab_groups::TabGroupSyncServiceFactory::GetForProfile(
