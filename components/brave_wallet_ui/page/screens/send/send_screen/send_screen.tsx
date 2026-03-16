@@ -35,9 +35,6 @@ import { makeSendRoute } from '../../../../utils/routes-utils'
 import {
   selectAllVisibleUserAssetsFromQueryResult, //
 } from '../../../../common/slices/entities/blockchain-token.entity'
-import {
-  getDominantColorFromImageURL, //
-} from '../../../../utils/style.utils'
 
 // Hooks
 import {
@@ -70,6 +67,9 @@ import {
 import {
   useIsKeyboardVisible, //
 } from '../../../../common/hooks/use_is_keyboard_visible'
+import {
+  useDominantColor, //
+} from '../../../../common/hooks/use_dominant_color'
 
 // Styled Components
 import { InputRow, ToText, ToRow, ShieldingFundsAlert } from './send.style'
@@ -246,6 +246,7 @@ export const SendScreen = React.memo(() => {
         : skipToken,
     )
 
+  const tokenColor = useDominantColor(tokenFromParams?.logo)
   const isAccountSyncing = useIsAccountSyncing(accountFromParams?.accountId)
   const isShieldingFunds =
     tokenFromParams
@@ -303,10 +304,6 @@ export const SendScreen = React.memo(() => {
 
     return amountWei.gt(sendAssetBalance)
   }, [sendAssetBalance, sendAmount, tokenFromParams])
-
-  const tokenColor = React.useMemo(() => {
-    return getDominantColorFromImageURL(tokenFromParams?.logo ?? '')
-  }, [tokenFromParams?.logo])
 
   const needsAccountSelected =
     accountIdFromParams === undefined

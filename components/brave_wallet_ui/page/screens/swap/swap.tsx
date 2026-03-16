@@ -22,10 +22,10 @@ import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 import {
   useIsKeyboardVisible, //
 } from '../../../common/hooks/use_is_keyboard_visible'
+import { useDominantColor } from '../../../common/hooks/use_dominant_color'
 
 // Utils
 import { getLocale } from '$web-common/locale'
-import { getDominantColorFromImageURL } from '../../../utils/style.utils'
 
 // Components
 import { FromAsset } from '../composer_ui/from_asset/from_asset'
@@ -136,11 +136,7 @@ export const Swap = () => {
     () => setShowPrivacyModal(false),
     showPrivacyModal,
   )
-
-  // Memos
-  const tokenColor = React.useMemo(() => {
-    return getDominantColorFromImageURL(toToken?.logo ?? '')
-  }, [toToken?.logo])
+  const tokenColor = useDominantColor(toToken?.logo)
 
   // render
   return (

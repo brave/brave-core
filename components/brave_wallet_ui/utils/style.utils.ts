@@ -28,7 +28,9 @@ export const makePaddingMixin = (defaultPadding: number | string) => css<{
     p?.padding ? sizeCssValue(p.padding) : sizeCssValue(defaultPadding)};
 `
 
-export const getDominantColorFromImageURL = (src: string) => {
+export const getDominantColorFromImageURL = async (
+  src: string,
+): Promise<string | undefined> => {
   if (!src) {
     return undefined
   }
@@ -37,8 +39,16 @@ export const getDominantColorFromImageURL = (src: string) => {
     ? `chrome://image?url=${encodeURIComponent(src)}&staticEncode=true`
     : src
 
-  let img = new Image()
-  img.src = imageSrc
+  const img = new Image()
+  img.crossOrigin = 'anonymous'
+
+  await new Promise<void>((resolve, reject) => {
+    img.onload = () => resolve()
+    img.onerror = () => reject(new Error('Failed to load image'))
+    img.src = imageSrc
+  }).catch(() => {
+    return undefined
+  })
 
   // Images actual width and height.
   const { naturalWidth, naturalHeight } = img
@@ -60,7 +70,7 @@ export const getDominantColorFromImageURL = (src: string) => {
     return undefined
   }
   // Construct canvas.
-  let context = document.createElement('canvas').getContext('2d')
+  const context = document.createElement('canvas').getContext('2d')
 
   // context may be null.
   if (!context) {
@@ -75,7 +85,13 @@ export const getDominantColorFromImageURL = (src: string) => {
   context.drawImage(img, 0, 0, width, height)
 
   // Get raw image data from canvas.
-  const data = context.getImageData(0, 0, width, height).data
+  let data: ImageData['data']
+  try {
+    data = context.getImageData(0, 0, width, height).data
+  } catch {
+    return undefined
+  }
+
   let r = 0
   let g = 0
   let b = 0
