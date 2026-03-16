@@ -15,6 +15,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat_associated_content_page_fetcher.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat_tab_helper.h"
+#include "brave/ios/browser/ai_chat/ai_chat_distiller_javascript_feature.h"
 #include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge_holder.h"
 #include "brave/ios/browser/ai_chat/tab_data_web_state_observer.h"
 #include "brave/ios/browser/ai_chat/tab_tracker_service_factory.h"
@@ -422,6 +423,17 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
     return;
   }
   adsTabHelper->NotifyTabDidStopPlayingMedia();
+}
+
+@end
+
+@implementation BraveWebView (AIChatDistiller)
+
+- (void)fetchMainArticle:(void (^)(NSString* text))completionHandler {
+  AIChatDistillerJavaScriptFeature::GetInstance()->GetMainArticle(
+      self.webState, base::BindOnce(^(std::string text) {
+        completionHandler(base::SysUTF8ToNSString(text));
+      }));
 }
 
 @end

@@ -4,8 +4,9 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import AIChat
+import BraveCore
 import Foundation
-import Web
+@_spi(ChromiumWebViewAccess) import Web
 import WebKit
 import os.log
 
@@ -84,6 +85,9 @@ class BraveLeoScriptTabHelper: AIChatWebDelegate {
   @MainActor
   func getMainArticle() async -> String? {
     guard let tab else { return nil }
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      return await BraveWebView.from(tab: tab)?.fetchMainArticle()
+    }
     do {
       let articleText =
         try await tab.evaluateJavaScript(

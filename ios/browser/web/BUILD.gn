@@ -18,6 +18,7 @@ source_set("web") {
     "//brave/components/brave_component_updater/browser:public",
     "//brave/components/brave_user_agent/browser",
     "//brave/components/constants",
+    "//brave/ios/browser/ai_chat",
     "//brave/ios/browser/api/profile",
     "//brave/ios/browser/api/web_view",
     "//brave/ios/browser/application_context",
