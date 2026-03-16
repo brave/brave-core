@@ -133,7 +133,7 @@
 
 -keep class org.chromium.chrome.browser.toolbar.ToolbarManager {
     public <init>(...);
-    *** mBottomControlsCoordinatorSupplier;
+    *** mTabGroupUiBottomControlsCoordinatorSupplier;
     *** mCallbackController;
     *** mBottomControlsStacker;
     *** mFullscreenManager;
