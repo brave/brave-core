@@ -540,16 +540,15 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
     // Shouldn't call the tool again because we are pausing.
     EXPECT_CALL(*mock_tool, UseTool).Times(0).InSequence(tool_call_seq);
 
-    // Pause the task
-    EXPECT_TRUE(ClickElement("pause-task-button"));
-
-    // Wait for paused state to be confirmed before sending the tool use event
-    // to avoid race condition where tool use is processed before pause takes
-    // effect.
-    EXPECT_TRUE(base::test::RunUntil([this]() {
-      return GetConversationState()->tool_use_task_state ==
-             mojom::TaskState::kPaused;
-    }));
+    // Pause the task directly via C++ to avoid a timing race with the UI
+    // click handler. The Leo Button component (SvelteToReact wrapper) attaches
+    // its click listener asynchronously via useEffect, after browser paint.
+    // On macOS, the paint can be delayed enough that the click listener is not
+    // yet attached when ClickElement fires, causing pauseTask() to never be
+    // called. The UI click path is tested by TaskPauseResumeActions.
+    conversation_handler_->PauseTask();
+    EXPECT_EQ(GetConversationState()->tool_use_task_state,
+              mojom::TaskState::kPaused);
 
     callbacks.data_callback.Run(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewCompletionEvent(
