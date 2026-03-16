@@ -29,10 +29,7 @@ struct ManagePasswordDetailView: View {
               Text(Strings.menuItemCopyTitle)
             }
             Button {
-              if let url = URL(string: password.site),
-                url.schemeIsValid,
-                url.scheme == "http" || url.scheme == "https"
-              {
+              if let url = URL(string: password.site), url.isWebPage() {
                 openURL(url)
               }
             } label: {
