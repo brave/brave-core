@@ -79,6 +79,49 @@ export const style = scoped.css`
     }
   }
 
+  .blocked-items {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+  }
+
+  .blocked-favicon {
+    --leo-icon-size: 26px;
+
+    display: flex;
+    align-items: center;
+    position: relative;
+    background: ${color.container.background};
+    border-radius: 50%;
+    padding: 4px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.20);
+    z-index: 1;
+    margin: 0 -6px;
+
+    &:first-child {
+      margin-inline-end: 0;
+    }
+
+    &:last-child {
+      margin-inline-start: 0;
+    }
+
+    .favicon {
+      height: 18px;
+      width: 18px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    leo-icon {
+      color: ${color.neutral[50]};
+      position: absolute;
+      inset: 0;
+      display: block;
+      z-index: 1;
+    }
+  }
+
   .report-prompt {
     padding: 12px 16px;
     border-radius: 16px;

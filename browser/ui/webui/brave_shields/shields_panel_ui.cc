@@ -19,6 +19,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/webcompat/core/common/features.h"
+#include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -112,8 +113,11 @@ void ShieldsPanelUI::CreatePanelHandler(
       std::move(panel_receiver), this, profile);
   auto* browser = webui::GetBrowserWindowInterface(web_ui()->GetWebContents());
   CHECK(browser);
+  auto* favicon_service = FaviconServiceFactory::GetForProfile(
+      profile, ServiceAccessType::EXPLICIT_ACCESS);
   data_handler_ = std::make_unique<ShieldsPanelDataHandler>(
-      std::move(data_handler_receiver), this, browser->GetTabStripModel());
+      std::move(data_handler_receiver), this, browser->GetTabStripModel(),
+      favicon_service);
 }
 
 ShieldsPanelUIConfig::ShieldsPanelUIConfig()

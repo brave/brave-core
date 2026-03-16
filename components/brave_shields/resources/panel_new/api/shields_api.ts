@@ -232,7 +232,11 @@ export function createShieldsApi(opts: {
 
     actions: {
       ...actionsFor(panelHandler, ['closeUI', 'showUI']),
-      ...actionsFor(dataHandler, ['openWebCompatWindow', 'updateFavicon']),
+      ...actionsFor(dataHandler, [
+        'openWebCompatWindow',
+        'updateFavicon',
+        'isResourceFaviconAvailable',
+      ]),
       openTab,
     },
   })
