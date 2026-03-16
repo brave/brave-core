@@ -52,9 +52,9 @@ extension Strings {
       "focusOnboarding.p3aToggleTitle",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "Share **completely private & anonymous** product insights.",
+      value: "Share **private & anonymous** product insights.",
       comment:
-        "The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The \"completely private & anonymous\" snippet should be bold in all languages"
+        "The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The \"private & anonymous\" snippet should be bold in all languages"
     )
 
     public static let p3aToggleDescription = NSLocalizedString(
@@ -71,7 +71,7 @@ extension Strings {
       "focusOnboarding.defaultBrowserScreenTitle",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "Get Ad Blocking With Every Site You Visit",
+      value: "Get Adblocking With Every Site You Visit",
       comment: "The title of the screen that requests user to set Brave as default"
     )
 
