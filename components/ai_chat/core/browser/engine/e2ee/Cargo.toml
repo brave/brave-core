@@ -1,5 +1,5 @@
 [package]
-name = "near-e2ee"
+name = "ai-chat-e2ee"
 version = "0.1.0"
 authors = ["Darnell Andries <dandries@brave.com>"]
 edition = "2024"
@@ -14,6 +14,6 @@ sha2 = { version = "0.10", default-features = false }
 x25519-dalek = { version = "2.0", default-features = false }
 
 [lib]
-name = "near_e2ee_cxx"
+name = "ai_chat_e2ee_cxx"
 path = "lib.rs"
 crate-type = ["rlib"]
