@@ -26,11 +26,11 @@ extension BrowserViewController: KeyboardHelperDelegate {
           header.collapsedBarContainerView.alpha = 1
         }
         header.expandedBarStackView.alpha = 0
-        updateTabsBarVisibility()
       }
       collapsedURLBarView.isKeyboardVisible = true
       toolbarVisibilityViewModel.isEnabled = false
     }
+    updateTabsBarVisibility()
     updateViewConstraints()
 
     UIViewPropertyAnimator(duration: state.animationDuration, curve: state.animationCurve) {
@@ -61,11 +61,11 @@ extension BrowserViewController: KeyboardHelperDelegate {
           header.collapsedBarContainerView.alpha = 0
         }
         header.expandedBarStackView.alpha = 1
-        updateTabsBarVisibility()
         toolbarVisibilityViewModel.isEnabled = true
       }
       collapsedURLBarView.isKeyboardVisible = false
     }
+    updateTabsBarVisibility()
     updateViewConstraints()
 
     customSearchBarButtonItemGroup?.barButtonItems.removeAll()
