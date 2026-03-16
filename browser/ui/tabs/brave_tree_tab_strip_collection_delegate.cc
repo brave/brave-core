@@ -279,12 +279,12 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
   // Store the original parent collection of the first moving tab, we might need
   // this when moving to the same position so that we don't lose the tree
   // structure.
-  const bool moving_to_te_same_position =
+  const bool moving_to_same_position =
       destination_index == static_cast<size_t>(tab_indices.front());
   auto* first_tree_node = GetParentTreeNodeCollectionOfTab(moving_tabs.front());
   auto* original_parent_collection =
-      moving_to_te_same_position ? first_tree_node->GetParentCollection()
-                                 : nullptr;
+      moving_to_same_position ? first_tree_node->GetParentCollection()
+                              : nullptr;
   std::optional<size_t> original_index_in_original_parent =
       original_parent_collection
           ? original_parent_collection->GetIndexOfCollection(first_tree_node)
