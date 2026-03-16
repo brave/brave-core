@@ -142,6 +142,7 @@ source_set("unit_tests") {
     "//chrome/test:test_support",
     "//components/bookmarks/browser",
     "//components/prefs:test_support",
+    "//components/search_engines",
     "//content/test:test_support",
     "//mojo/public/cpp/bindings",
     "//services/media_session/public/mojom",

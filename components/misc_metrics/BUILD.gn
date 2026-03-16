@@ -15,6 +15,8 @@ static_library("misc_metrics") {
   sources = [
     "autofill_metrics.cc",
     "autofill_metrics.h",
+    "brave_search_metrics.cc",
+    "brave_search_metrics.h",
     "general_browser_usage.cc",
     "general_browser_usage.h",
     "language_metrics.cc",
@@ -65,6 +67,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "brave_search_metrics_unittest.cc",
     "default_browser_monitor_unittest.cc",
     "general_browser_usage_unittest.cc",
     "language_metrics_unittest.cc",
@@ -79,9 +82,11 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/misc_metrics",
+    "//brave/components/search_engines",
     "//components/language/core/browser",
     "//components/prefs:test_support",
     "//components/search_engines",
+    "//components/search_engines:test_support",
     "//content/test:test_support",
     "//testing/gtest",
   ]
