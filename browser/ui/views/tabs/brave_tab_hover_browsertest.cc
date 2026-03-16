@@ -148,7 +148,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest,
   Widget* widget = hover_card()->GetWidget();
   ASSERT_NE(nullptr, widget);
   views::test::WidgetVisibleWaiter(widget).Wait();
-  EXPECT_FALSE(hover_card()->has_thumbnail_view());
+  EXPECT_FALSE(hover_card()->HasThumbnailView());
   EXPECT_TRUE(widget->IsVisible());
 
   // Clear focus, to reset the bubble.
@@ -163,7 +163,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest,
   widget = hover_card()->GetWidget();
   ASSERT_NE(nullptr, widget);
   views::test::WidgetVisibleWaiter(widget).Wait();
-  EXPECT_TRUE(hover_card()->has_thumbnail_view());
+  EXPECT_TRUE(hover_card()->HasThumbnailView());
   EXPECT_TRUE(widget->IsVisible());
 
   // Clear focus, to hide the bubble.
@@ -212,7 +212,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTestWithChromeFlag,
   Widget* widget = hover_card()->GetWidget();
   ASSERT_NE(nullptr, widget);
   views::test::WidgetVisibleWaiter(widget).Wait();
-  EXPECT_TRUE(hover_card()->has_thumbnail_view());
+  EXPECT_TRUE(hover_card()->HasThumbnailView());
   EXPECT_TRUE(widget->IsVisible());
 
   // Clear focus, to hide the bubble.
@@ -227,7 +227,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTestWithChromeFlag,
   widget = hover_card()->GetWidget();
   ASSERT_NE(nullptr, widget);
   views::test::WidgetVisibleWaiter(widget).Wait();
-  EXPECT_TRUE(hover_card()->has_thumbnail_view());
+  EXPECT_TRUE(hover_card()->HasThumbnailView());
   EXPECT_TRUE(widget->IsVisible());
 
   // Clear focus, to hide the bubble.

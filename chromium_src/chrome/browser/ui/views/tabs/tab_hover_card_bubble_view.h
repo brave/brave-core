@@ -13,9 +13,7 @@
 class TabHoverCardBubbleView;
 
 #define BRAVE_TAB_HOVER_CARD_BUBBLE_VIEW_H_ \
-  bool has_thumbnail_view() {               \
-    return thumbnail_view_;                 \
-  }                                         \
+  bool HasThumbnailView() const;            \
                                             \
  protected:                                 \
   void BraveUpdateCardContent(const HoverCardAnchorTarget* anchor_target);
