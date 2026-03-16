@@ -75,7 +75,7 @@ public class MediaPreferences extends BravePreferenceFragment
         initFilterListAndroidHandler();
 
         ChromeSwitchPreference enableWidevinePref =
-                (ChromeSwitchPreference) findPreference(PREF_WIDEVINE_ENABLED);
+                findPreference(PREF_WIDEVINE_ENABLED);
         if (enableWidevinePref != null) {
             enableWidevinePref.setChecked(
                     BraveLocalState.get().getBoolean(BravePref.WIDEVINE_ENABLED));
@@ -93,7 +93,7 @@ public class MediaPreferences extends BravePreferenceFragment
         }
 
         ChromeSwitchPreference openYoutubeLinksBravePref =
-                (ChromeSwitchPreference) findPreference(PLAY_YT_VIDEO_IN_BROWSER_KEY);
+                findPreference(PLAY_YT_VIDEO_IN_BROWSER_KEY);
         if (openYoutubeLinksBravePref != null) {
             // Initially enabled.
             openYoutubeLinksBravePref.setChecked(
@@ -102,17 +102,17 @@ public class MediaPreferences extends BravePreferenceFragment
         }
 
         ChromeSwitchPreference hideYoutubeRecommendedContentPref =
-                (ChromeSwitchPreference) findPreference(PREF_HIDE_YOUTUBE_RECOMMENDED_CONTENT);
+                findPreference(PREF_HIDE_YOUTUBE_RECOMMENDED_CONTENT);
         if (hideYoutubeRecommendedContentPref != null) {
             hideYoutubeRecommendedContentPref.setOnPreferenceChangeListener(this);
         }
         ChromeSwitchPreference hideYoutubeDistractingElementsPref =
-                (ChromeSwitchPreference) findPreference(PREF_HIDE_YOUTUBE_DISTRACTING_ELEMENTS);
+                findPreference(PREF_HIDE_YOUTUBE_DISTRACTING_ELEMENTS);
         if (hideYoutubeDistractingElementsPref != null) {
             hideYoutubeDistractingElementsPref.setOnPreferenceChangeListener(this);
         }
         ChromeSwitchPreference hideYoutubeShortsPref =
-                (ChromeSwitchPreference) findPreference(PREF_HIDE_YOUTUBE_SHORTS);
+                findPreference(PREF_HIDE_YOUTUBE_SHORTS);
         if (hideYoutubeShortsPref != null) {
             hideYoutubeShortsPref.setOnPreferenceChangeListener(this);
         }
