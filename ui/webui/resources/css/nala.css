@@ -12,7 +12,7 @@
 @import "//resources/brave/leo/css/variables.css";
 
 * {
-  -webkit-font-smoothing: antialiased
+  -webkit-font-smoothing: antialiased;
 }
 
 html:not(#z) {
