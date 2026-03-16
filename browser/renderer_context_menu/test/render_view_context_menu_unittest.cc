@@ -97,7 +97,7 @@ class BraveRenderViewContextMenuTest : public testing::Test {
     ResetBrowser();
     auto menu = std::make_unique<BraveRenderViewContextMenuMock>(
         *web_contents->GetPrimaryMainFrame(), params,
-        /*is_paste_enabled=*/false);
+        /*is_paste_enabled=*/false, /*is_paste_and_match_style_enabled=*/false);
 
     Browser::CreateParams create_params(
         is_pwa_browser ? Browser::Type::TYPE_APP : Browser::Type::TYPE_NORMAL,
