@@ -61,6 +61,15 @@ int main() {
   return 0;
 })";
 
+constexpr char kGithubReadme[] = R"(# Din Djarin
+
+This is the way.
+
+## Features
+- Beskar armor
+- Whistling birds
+)";
+
 constexpr char kGithubAtomFeed[] = R"(<?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Recent Commits to din_djarin:master</title>
@@ -894,6 +903,74 @@ TEST_F(PageContentFetcherTest, GithubCommitsUrl) {
   // Verify the request was made to the atom URL
   EXPECT_EQ(requests_made.size(), 1u);
   EXPECT_EQ(requests_made[0].url, expected_atom_url);
+  EXPECT_EQ(requests_made[0].method, "GET");
+}
+
+// Test GitHub repo root URL fetches README.md
+TEST_F(PageContentFetcherTest, GithubRepoRootUrl) {
+  GURL repo_url("https://github.com/brave/din_djarin");
+  GURL expected_readme_url(
+      "https://github.com/brave/din_djarin/raw/HEAD/README.md");
+
+  NavigateAndCommit(repo_url);
+
+  // Track the requests that are made
+  std::vector<network::ResourceRequest> requests_made;
+  test_url_loader_factory_->SetInterceptor(base::BindLambdaForTesting(
+      [&requests_made](const network::ResourceRequest& request) {
+        requests_made.push_back(request);
+      }));
+
+  // Set up network response for README URL
+  SimulateNetworkResponse(expected_readme_url, net::HTTP_OK, kGithubReadme);
+
+  base::test::TestFuture<std::string, bool, std::string> future;
+  fetcher_->FetchPageContent("", future.GetCallback());
+
+  // Wait for the result
+  auto [content, is_video, invalidation_token] = future.Get();
+
+  EXPECT_EQ(content, kGithubReadme);
+  EXPECT_FALSE(is_video);
+  EXPECT_TRUE(invalidation_token.empty());
+
+  // Verify the request was made to the README URL
+  EXPECT_EQ(requests_made.size(), 1u);
+  EXPECT_EQ(requests_made[0].url, expected_readme_url);
+  EXPECT_EQ(requests_made[0].method, "GET");
+}
+
+// Test GitHub tree URL fetches README.md
+TEST_F(PageContentFetcherTest, GithubTreeUrl) {
+  GURL tree_url("https://github.com/brave/din_djarin/tree/main");
+  GURL expected_readme_url(
+      "https://github.com/brave/din_djarin/raw/main/README.md");
+
+  NavigateAndCommit(tree_url);
+
+  // Track the requests that are made
+  std::vector<network::ResourceRequest> requests_made;
+  test_url_loader_factory_->SetInterceptor(base::BindLambdaForTesting(
+      [&requests_made](const network::ResourceRequest& request) {
+        requests_made.push_back(request);
+      }));
+
+  // Set up network response for README URL
+  SimulateNetworkResponse(expected_readme_url, net::HTTP_OK, kGithubReadme);
+
+  base::test::TestFuture<std::string, bool, std::string> future;
+  fetcher_->FetchPageContent("", future.GetCallback());
+
+  // Wait for the result
+  auto [content, is_video, invalidation_token] = future.Get();
+
+  EXPECT_EQ(content, kGithubReadme);
+  EXPECT_FALSE(is_video);
+  EXPECT_TRUE(invalidation_token.empty());
+
+  // Verify the request was made to the README URL
+  EXPECT_EQ(requests_made.size(), 1u);
+  EXPECT_EQ(requests_made[0].url, expected_readme_url);
   EXPECT_EQ(requests_made[0].method, "GET");
 }
 
