@@ -79,11 +79,44 @@ BraveTreeTabStripCollectionDelegate::TryAddTabToSameTreeAsOpener(
     std::unique_ptr<tabs::TabInterface> tab,
     size_t index,
     tabs::TabInterface* opener) const {
-  if (!opener || index == 0) {
+  if (index == 0) {
     return base::unexpected(std::move(tab));
   }
 
-  auto* opener_collection = GetParentTreeNodeCollectionOfTab(opener);
+  tabs::TreeTabNodeTabCollection* opener_collection = nullptr;
+  if (opener) {
+    opener_collection = static_cast<tabs::TreeTabNodeTabCollection*>(
+        GetParentTreeNodeCollectionOfTab(opener));
+  } else {
+    if (index == collection_->TabCountRecursive()) {
+      return base::unexpected(std::move(tab));
+    }
+
+    // in case of opening a new tab in the midle of tabs, we should try to add
+    // the new tab to the same tree. This can happen when opening a new tab via
+    // "New Tab below" item in the context menu.
+    auto* tree_collection = GetParentTreeNodeCollectionOfTab(
+        collection_->GetTabAtIndexRecursive(index));
+    CHECK(tree_collection->type() == tabs::TabCollection::Type::TREE_NODE);
+
+    // Find parent tree node collection until we reach the unpinned collection.
+    auto* parent_collection = tree_collection->GetParentCollection();
+    while (parent_collection->type() != tabs::TabCollection::Type::TREE_NODE &&
+           parent_collection->type() != tabs::TabCollection::Type::UNPINNED) {
+      parent_collection = parent_collection->GetParentCollection();
+      CHECK(parent_collection);
+    }
+    if (parent_collection->type() == tabs::TabCollection::Type::UNPINNED) {
+      // If the |tree_collection| is attached to the unpinned collection, we
+      // don't proceed to add the tab to the tree.
+      return base::unexpected(std::move(tab));
+    }
+
+    opener_collection =
+        static_cast<tabs::TreeTabNodeTabCollection*>(parent_collection);
+  }
+
+  CHECK(opener_collection);
   CHECK_EQ(opener_collection->type(), tabs::TabCollection::Type::TREE_NODE);
 
   tabs::TabInterface* previous_tab =
