@@ -8,17 +8,17 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/feature_list.h"
-#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
-#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
+#include "brave/browser/serp_metrics/serp_metrics_service.h"
+#include "brave/browser/serp_metrics/serp_metrics_service_factory.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/serp_metrics/serp_classifier.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engine_utils.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/page_transition_types.h"
@@ -38,15 +38,12 @@ SerpMetricsTabHelper::SerpMetricsTabHelper(content::WebContents* web_contents)
       content::WebContentsUserData<SerpMetricsTabHelper>(*web_contents) {
   CHECK(base::FeatureList::IsEnabled(serp_metrics::kSerpMetricsFeature));
 
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents->GetBrowserContext());
-  misc_metrics::ProfileMiscMetricsService* profile_misc_metrics_service =
-      misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
-          profile);
-  CHECK(profile_misc_metrics_service);
-  serp_metrics_ = profile_misc_metrics_service->GetSerpMetrics();
-  if (!serp_metrics_) {
-    // `SerpMetrics` can be null in tests.
+  SerpMetricsService* serp_metrics_service =
+      SerpMetricsServiceFactory::GetFor(web_contents->GetBrowserContext());
+  if (serp_metrics_service) {
+    serp_metrics_ = serp_metrics_service->Get();
+  } else {
+    // `SerpMetricsService` can be null in tests.
     CHECK_IS_TEST();
   }
 }

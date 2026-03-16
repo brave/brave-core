@@ -24,6 +24,7 @@
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
+#include "brave/browser/serp_metrics/serp_metrics_service_factory.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
@@ -249,6 +250,8 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #if BUILDFLAG(ENABLE_PSST)
   PsstSettingsServiceFactory::GetInstance();
 #endif  // BUILDFLAG(ENABLE_PSST)
+
+  serp_metrics::SerpMetricsServiceFactory::GetInstance();
 }
 
 }  // namespace brave
