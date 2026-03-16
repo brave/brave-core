@@ -11,9 +11,9 @@
 
 #include "base/barrier_closure.h"
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/check_is_test.h"
 #include "base/command_line.h"
-#include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/metrics/histogram_macros.h"
@@ -25,6 +25,7 @@
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/brave_stats/switches.h"
 #include "brave/browser/serp_metrics/serp_metrics_all_profiles_aggregator.h"
+#include "brave/browser/serp_metrics/serp_metrics_migration.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
@@ -38,6 +39,8 @@
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_attributes_entry.h"
+#include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/common/channel_info.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -104,6 +107,24 @@ net::NetworkTrafficAnnotationTag AnonymousStatsAnnotation() {
       policy_exception_justification:
         "Not implemented."
     })");
+}
+
+void MaybeMigrateSerpMetricsToProfileAttributes(ProfileManager* profile_manager,
+                                                Profile& profile) {
+  if (!profile_manager) {
+    // `profile_manager` can only be null in tests.
+    CHECK_IS_TEST();
+    return;
+  }
+
+  // System and guest profiles are not tracked in ProfileAttributesStorage, so
+  // their ProfileAttributesEntry returns null.
+  if (ProfileAttributesEntry* entry =
+          profile_manager->GetProfileAttributesStorage()
+              .GetProfileAttributesWithPath(profile.GetPath())) {
+    serp_metrics::MaybeMigrateSerpMetricsToProfileAttributes(
+        CHECK_DEREF(profile.GetPrefs()), *entry);
+  }
 }
 
 std::unique_ptr<serp_metrics::SerpMetricsAllProfilesAggregator>
@@ -271,8 +292,13 @@ bool BraveStatsUpdater::IsReferralInitialized() {
 }
 
 void BraveStatsUpdater::OnProfileAdded(Profile* profile) {
+  CHECK(profile);
+
   general_browser_usage_p3a_->ReportProfileCount(
       g_browser_process->profile_manager()->GetNumberOfProfiles());
+
+  MaybeMigrateSerpMetricsToProfileAttributes(
+      g_browser_process->profile_manager(), *profile);
 }
 
 void BraveStatsUpdater::QueueServerPing() {
