@@ -107,9 +107,12 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler,
   public func contextForAssociatingURLContent(
     forProfile profile: any Profile
   ) async -> (any AIChatAssociatedURLContentContext)? {
-    let wkConfiguration = WKWebViewConfiguration()
-    if profile.isOffTheRecord {
-      wkConfiguration.websiteDataStore = .nonPersistent()
+    var wkConfiguration: WKWebViewConfiguration?
+    if !FeatureList.kUseProfileWebViewConfiguration.enabled {
+      wkConfiguration = WKWebViewConfiguration()
+      if profile.isOffTheRecord {
+        wkConfiguration?.websiteDataStore = .nonPersistent()
+      }
     }
     let tab = TabStateFactory.create(
       with: .init(profile: profile, initialConfiguration: wkConfiguration)
