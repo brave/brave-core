@@ -9,11 +9,7 @@
 #include <memory>
 
 class PrefService;
-class ProfileAttributesStorage;
-
-namespace base {
-class FilePath;
-}  // namespace base
+class TimePeriodStoreFactory;
 
 namespace serp_metrics {
 
@@ -21,8 +17,7 @@ class SerpMetrics;
 
 std::unique_ptr<SerpMetrics> CreateSerpMetrics(
     PrefService* local_state,
-    const base::FilePath& profile_path,
-    ProfileAttributesStorage& profile_attributes_storage);
+    const TimePeriodStoreFactory& time_period_store_factory);
 
 }  // namespace serp_metrics
 
