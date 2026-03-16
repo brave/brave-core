@@ -7,7 +7,7 @@ import assert from 'node:assert'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
-import EnvConfig from './envConfig.js'
+import EnvConfig from './envConfig.ts'
 import Log from './logging.js'
 
 // Mock the logging module
@@ -36,7 +36,7 @@ describe('EnvConfig', () => {
       if (!mockFiles.hasOwnProperty(filePath.toString())) {
         throw new Error(`ENOENT: no such file or directory, open '${filePath}'`)
       }
-      const f = mockFiles[filePath]
+      const f = mockFiles[filePath.toString()]
       if (typeof f === 'string') {
         return f
       }
@@ -51,7 +51,7 @@ describe('EnvConfig', () => {
 
     // Mock fs.writeFileSync
     jest.spyOn(fs, 'writeFileSync').mockImplementation((filePath, data) => {
-      mockFiles[filePath] = data
+      mockFiles[filePath.toString()] = data
     })
 
     // Mock process.exit to prevent tests from exiting
