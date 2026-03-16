@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 
 #include "base/bit_cast.h"
+#include "base/check.h"
 #include "base/containers/extend.h"
 #include "base/containers/span.h"
 #include "base/containers/span_reader.h"
@@ -574,6 +575,42 @@ void PolkadotSubstrateRpc::OnGetRuntimeVersion(
   version.transaction_version = transaction_version.ValueOrDie();
 
   return std::move(callback).Run(version, std::nullopt);
+}
+
+void PolkadotSubstrateRpc::GetMetadata(std::string_view chain_id,
+                                       GetMetadataCallback callback) {
+  auto url = GetNetworkURL(chain_id);
+
+  auto payload = base::WriteJson(
+      MakeRpcRequestJson("state_getMetadata", base::ListValue()));
+  CHECK(payload);
+
+  api_request_helper_.Request(
+      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+      base::BindOnce(&PolkadotSubstrateRpc::OnGetMetadata,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void PolkadotSubstrateRpc::OnGetMetadata(GetMetadataCallback callback,
+                                         APIRequestResult api_result) {
+  auto res =
+      HandleRpcCall<polkadot_substrate_rpc_responses::PolkadotMetadataResponse>(
+          api_result);
+
+  if (!res.has_value()) {
+    // We received either a network error, an actual RPC error or JSON that
+    // didn't match our schema.
+    return std::move(callback).Run(base::unexpected(res.error()));
+  }
+
+  if (!res->result) {
+    // We received { "result": null } from the RPC, treat as an error for this
+    // RPC call.
+    return std::move(callback).Run(
+        base::unexpected(WalletParsingErrorMessage()));
+  }
+
+  return std::move(callback).Run(base::ok(*res->result));
 }
 
 void PolkadotSubstrateRpc::SubmitExtrinsic(std::string_view chain_id,

@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_SUBSTRATE_RPC_H_
 
 #include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_block_header.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
@@ -54,6 +55,9 @@ class PolkadotSubstrateRpc {
   using GetRuntimeVersionCallback =
       base::OnceCallback<void(std::optional<PolkadotRuntimeVersion>,
                               std::optional<std::string>)>;
+
+  using GetMetadataCallback =
+      base::OnceCallback<void(base::expected<std::string, std::string>)>;
 
   using SubmitExtrinsicCallback =
       base::OnceCallback<void(std::optional<std::string>,
@@ -117,6 +121,12 @@ class PolkadotSubstrateRpc {
       std::optional<base::span<uint8_t, kPolkadotBlockHashSize>> block_hash,
       GetRuntimeVersionCallback callback);
 
+  // Fetches runtime metadata for |chain_id| and returns it as a hex-encoded
+  // SCALE blob. The callback receives base::expected<std::string, std::string>
+  // where the value is metadata on success and the error contains a human-
+  // readable failure message for transport/RPC/parsing failures.
+  void GetMetadata(std::string_view chain_id, GetMetadataCallback callback);
+
   void SubmitExtrinsic(std::string_view chain_id,
                        std::string_view signed_extrinsic,
                        SubmitExtrinsicCallback callback);
@@ -150,6 +160,7 @@ class PolkadotSubstrateRpc {
   void OnGetBlockHash(GetBlockHashCallback callback, APIRequestResult res);
   void OnGetRuntimeVersion(GetRuntimeVersionCallback callback,
                            APIRequestResult res);
+  void OnGetMetadata(GetMetadataCallback callback, APIRequestResult res);
   void OnSubmitExtrinsic(SubmitExtrinsicCallback callback,
                          APIRequestResult res);
   void OnGetPaymentInfo(GetPaymentInfoCallback callback, APIRequestResult res);
