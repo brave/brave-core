@@ -13,6 +13,7 @@
 #include "brave/browser/misc_metrics/profile_new_tab_metrics.h"
 #include "brave/browser/misc_metrics/theme_metrics.h"
 #include "brave/browser/serp_metrics/serp_metrics_factory.h"
+#include "brave/browser/serp_metrics/serp_metrics_time_period_store_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/misc_metrics/autofill_metrics.h"
 #include "brave/components/misc_metrics/language_metrics.h"
@@ -133,7 +134,8 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
       ProfileAttributesStorage& profile_attributes_storage =
           profile_manager->GetProfileAttributesStorage();
       serp_metrics_ = serp_metrics::CreateSerpMetrics(
-          local_state, profile->GetPath(), profile_attributes_storage);
+          local_state, serp_metrics::SerpMetricsTimePeriodStoreFactory(
+                           profile->GetPath(), profile_attributes_storage));
     }
   }
 

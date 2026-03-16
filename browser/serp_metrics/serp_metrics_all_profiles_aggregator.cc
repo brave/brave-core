@@ -8,6 +8,7 @@
 #include <numeric>
 
 #include "brave/browser/serp_metrics/serp_metrics_factory.h"
+#include "brave/browser/serp_metrics/serp_metrics_time_period_store_factory.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 
@@ -20,7 +21,8 @@ SerpMetricsAllProfilesAggregator::SerpMetricsAllProfilesAggregator(
        profile_attributes_storage.GetAllProfilesAttributes()) {
     const base::FilePath& profile_path = entry->GetPath();
     profile_attributes_serp_metrics_.push_back(CreateSerpMetrics(
-        local_state, profile_path, profile_attributes_storage));
+        local_state, SerpMetricsTimePeriodStoreFactory(
+                         profile_path, profile_attributes_storage)));
   }
 }
 
