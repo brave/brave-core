@@ -22,7 +22,7 @@ import Log from './logging.js'
 export default class EnvConfig {
   // Directory containing package.json and .env files.
   #configDir: string
-  // Package.json object.
+  // Parsed package.json file contents.
   #packageJson: Record<string, any>
   // Raw variables from .env files.
   #dotenvConfig: NodeJS.Dict<string>
@@ -170,7 +170,7 @@ export default class EnvConfig {
   #getPackageConfig(
     keyPath: string[],
     expectedValueType: ConfigValueType,
-  ): any | undefined {
+  ): any {
     const packageConfigValue = keyPath.reduce(
       (obj, subkey) => obj?.[subkey],
       this.#packageJson.config,
@@ -194,10 +194,7 @@ export default class EnvConfig {
    * @param expectedValueType - Expected type of the value
    * @returns The parsed configuration value, or undefined if not found
    */
-  #getDotenvConfig(
-    keyJoined: string,
-    expectedValueType: ConfigValueType,
-  ): any | undefined {
+  #getDotenvConfig(keyJoined: string, expectedValueType: ConfigValueType): any {
     const dotenvConfigValue = this.#dotenvConfig[keyJoined]
     if (dotenvConfigValue === undefined) {
       return undefined
@@ -214,7 +211,7 @@ export default class EnvConfig {
     }
 
     // Parse as JSON if the expected value type is not a string.
-    let dotenvConfigValueParsed
+    let dotenvConfigValueParsed: any
     try {
       dotenvConfigValueParsed = JSON.parse(dotenvConfigValue)
     } catch (e) {
@@ -241,7 +238,7 @@ export default class EnvConfig {
   static #loadPackageJson(configDir: string): Record<string, any> {
     const packageJsonPath = path.join(configDir, 'package.json')
     const packageJsonContent = fs.readFileSync(packageJsonPath, 'utf8')
-    const packageJson = JSON.parse(packageJsonContent)
+    const packageJson: Record<string, any> = JSON.parse(packageJsonContent)
     EnvConfig.#validateValueType(
       packageJson.version,
       'String',
@@ -264,8 +261,7 @@ export default class EnvConfig {
    * @returns The parsed .env file
    */
   static #loadDotenvConfig(configDir: string): NodeJS.Dict<string> {
-    /** @type {NodeJS.Dict<string>} */
-    let dotenvConfig = {}
+    let dotenvConfig: NodeJS.Dict<string> = {}
     // Parse {configDir}/.env with all included env files.
     const dotenvConfigPath = path.join(configDir, '.env')
     if (fs.existsSync(dotenvConfigPath)) {
@@ -293,8 +289,8 @@ export default class EnvConfig {
    * @returns The parsed .env file
    */
   static #parseEnvFileWithIncludes(envPath: string): NodeJS.Dict<string> {
-    const seenFiles = new Set()
-    function readEnvFile(filePath, fromFile) {
+    const seenFiles = new Set<string>()
+    function readEnvFile(filePath: string, fromFile: string): string {
       if (seenFiles.has(filePath)) {
         Log.error(
           `Circular include_env directive detected: ${filePath} from ${fromFile}`,
