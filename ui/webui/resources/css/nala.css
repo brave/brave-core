@@ -11,6 +11,10 @@
 @import "//theme/colors.css?sets=ui";
 @import "//resources/brave/leo/css/variables.css";
 
+* {
+  -webkit-font-smoothing: antialiased
+}
+
 html:not(#z) {
   --leo-color-primitive-neutral-0: var(--color-ref-neutral0);
   --leo-color-primitive-neutral-10: var(--color-ref-neutral10);
