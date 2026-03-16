@@ -1,7 +1,7 @@
 {
   "name": "brave-core",
   "version": "1.90.34",
-  "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
+  "description": "Brave browser for Android, iOS, Linux, macOS, and Windows",
   "main": "index.js",
   "scripts": {
     "help": "node ./build/commands/scripts/commands.js --help",
