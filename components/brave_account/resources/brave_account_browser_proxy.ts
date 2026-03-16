@@ -3,14 +3,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Authentication, Service } from './brave_account.mojom-webui.js'
-import type { AuthenticationInterface } from './brave_account.mojom-webui.js'
+import {
+  Authentication,
+  DialogController,
+  Service,
+} from './brave_account.mojom-webui.js'
+import type {
+  AuthenticationInterface,
+  DialogControllerInterface,
+} from './brave_account.mojom-webui.js'
 import { PasswordStrengthMeter } from './password_strength_meter.mojom-webui.js'
 import type { PasswordStrengthMeterInterface } from './password_strength_meter.mojom-webui.js'
 import { loadTimeData } from '//resources/js/load_time_data.js'
 
 export interface BraveAccountBrowserProxy {
   authentication: AuthenticationInterface
+  dialog_controller: DialogControllerInterface
   password_strength_meter: PasswordStrengthMeterInterface
   closeDialog: () => void
   getInitiatingService: () => Service | null
@@ -18,15 +26,17 @@ export interface BraveAccountBrowserProxy {
 
 export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
   authentication: AuthenticationInterface
+  dialog_controller: DialogControllerInterface
   password_strength_meter: PasswordStrengthMeterInterface
 
   private constructor() {
     this.authentication = Authentication.getRemote()
+    this.dialog_controller = DialogController.getRemote()
     this.password_strength_meter = PasswordStrengthMeter.getRemote()
   }
 
   closeDialog() {
-    chrome.send('dialogClose')
+    this.dialog_controller.closeDialog()
   }
 
   getInitiatingService(): Service | null {
