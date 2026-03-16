@@ -10,7 +10,7 @@ import path from 'node:path'
 import fs from 'node:fs'
 import assert from 'node:assert'
 import rootDir from './rootDir.cjs'
-import EnvConfig from './envConfig.js'
+import EnvConfig from './envConfig.ts'
 import Log from './logging.js'
 import util from './util.js'
 
