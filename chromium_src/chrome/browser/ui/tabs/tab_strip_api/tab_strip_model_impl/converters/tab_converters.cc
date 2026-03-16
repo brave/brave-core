@@ -15,6 +15,6 @@
   }                                                                           \
   case tabs::TabCollection::Type::SPLIT
 
-#include <chrome/browser/ui/tabs/tab_strip_api/converters/tab_converters.cc>
+#include <chrome/browser/ui/tabs/tab_strip_api/tab_strip_model_impl/converters/tab_converters.cc>
 
 #undef SPLIT
