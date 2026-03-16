@@ -22,14 +22,18 @@
 #include <chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.cc>
 #undef TabHoverCardBubbleView
 
+bool TabHoverCardBubbleView_ChromiumImpl::HasThumbnailView() const {
+  return tab_card_view_->thumbnail_view() != nullptr;
+}
+
 void TabHoverCardBubbleView_ChromiumImpl::BraveUpdateCardContent(
     const HoverCardAnchorTarget* anchor_target) {
   TabHoverCardBubbleView_ChromiumImpl::UpdateCardContent(anchor_target);
   // Replace chrome:// with brave://. Since this is purely in the UI we can
   // just do a sub-string replacement instead of parsing into GURL.
-  auto domain = std::u16string(domain_label_->GetText());
+  auto domain = std::u16string(tab_card_view_->domain_label()->GetText());
   if (brave_utils::ReplaceChromeToBraveScheme(domain)) {
-    domain_label_->SetData({domain, /*is_filename*/ false});
+    tab_card_view_->domain_label()->SetData({domain, /*is_filename*/ false});
   }
 }
 
@@ -39,14 +43,14 @@ void TabHoverCardBubbleView::UpdateCardContent(
 }
 
 void TabHoverCardBubbleView::SetTargetTabImage(gfx::ImageSkia preview_image) {
-  if (!has_thumbnail_view()) {
+  if (!HasThumbnailView()) {
     return;
   }
   TabHoverCardBubbleView_ChromiumImpl::SetTargetTabImage(preview_image);
 }
 
 void TabHoverCardBubbleView::SetPlaceholderImage() {
-  if (!has_thumbnail_view()) {
+  if (!HasThumbnailView()) {
     return;
   }
   TabHoverCardBubbleView_ChromiumImpl::SetPlaceholderImage();

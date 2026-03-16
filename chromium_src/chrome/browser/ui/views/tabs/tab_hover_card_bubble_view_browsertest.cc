@@ -70,8 +70,8 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest,
       return false;
     }
 
-    EXPECT_EQ(kTabTitle, hover_card->GetTitleTextForTesting());
-    EXPECT_EQ(kTabDomain, hover_card->GetDomainTextForTesting());
+    EXPECT_EQ(kTabTitle, hover_card->GetTitleViewForTesting()->GetText());
+    EXPECT_EQ(kTabDomain, hover_card->GetDomainViewForTesting()->GetText());
     return true;
   }
 };
