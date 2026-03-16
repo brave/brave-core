@@ -27,58 +27,6 @@ const getEnvConfig = (keyPath, defaultValue = undefined) => {
   return envConfig.get(keyPath, defaultValue)
 }
 
-const readArgsGn = (srcDir, outputDir) => {
-  const gnHelpersPath = path.join(srcDir, 'build', 'gn_helpers.py')
-
-  const script = `
-import sys
-import os
-sys.path.insert(0, '${path.dirname(gnHelpersPath)}')
-import gn_helpers
-result = gn_helpers.ReadArgsGN('${outputDir}')
-import json
-print(json.dumps(result))
-`
-
-  const result = util.run(
-    'python3',
-    ['-'],
-    util.mergeWithDefault({
-      skipLogging: true,
-      stdio: 'pipe',
-      input: script,
-      encoding: 'utf8',
-    }),
-  )
-
-  return JSON.parse(result.stdout.toString().trim())
-}
-
-const parseExtraInputs = (inputs, accumulator, callback) => {
-  for (let input of inputs) {
-    let separatorIndex = input.indexOf(':')
-    if (separatorIndex < 0) {
-      separatorIndex = input.length
-    }
-
-    const key = input.substring(0, separatorIndex)
-    const value = input.substring(separatorIndex + 1)
-    callback(accumulator, key, value)
-  }
-}
-
-// Mirrors limitForRemote() from siso source to apply a hard limit.
-// https://source.chromium.org/chromium/build/+/main:siso/build/limits.go;l=169-181;drc=c2c13435ffe51d890a46d488c48dee362f82453b
-const getSisoBuiltinRemoteLimit = () => {
-  const kRemoteLimitFactor = 80
-  const kReproxyLimitCap = 5000
-  const limit = kRemoteLimitFactor * os.cpus().length
-  if (process.platform === 'darwin' && process.arch === 'x64') {
-    return Math.min(1000, limit)
-  }
-  return Math.min(kReproxyLimitCap, limit)
-}
-
 class Config {
   constructor() {
     this.isTeamcity = process.env.TEAMCITY_VERSION !== undefined
@@ -892,6 +840,58 @@ class Config {
     }
     this.#targetOS = value
   }
+}
+
+function readArgsGn(srcDir, outputDir) {
+  const gnHelpersPath = path.join(srcDir, 'build', 'gn_helpers.py')
+
+  const script = `
+import sys
+import os
+sys.path.insert(0, '${path.dirname(gnHelpersPath)}')
+import gn_helpers
+result = gn_helpers.ReadArgsGN('${outputDir}')
+import json
+print(json.dumps(result))
+`
+
+  const result = util.run(
+    'python3',
+    ['-'],
+    util.mergeWithDefault({
+      skipLogging: true,
+      stdio: 'pipe',
+      input: script,
+      encoding: 'utf8',
+    }),
+  )
+
+  return JSON.parse(result.stdout.toString().trim())
+}
+
+function parseExtraInputs(inputs, accumulator, callback) {
+  for (let input of inputs) {
+    let separatorIndex = input.indexOf(':')
+    if (separatorIndex < 0) {
+      separatorIndex = input.length
+    }
+
+    const key = input.substring(0, separatorIndex)
+    const value = input.substring(separatorIndex + 1)
+    callback(accumulator, key, value)
+  }
+}
+
+// Mirrors limitForRemote() from siso source to apply a hard limit.
+// https://source.chromium.org/chromium/build/+/main:siso/build/limits.go;l=169-181;drc=c2c13435ffe51d890a46d488c48dee362f82453b
+function getSisoBuiltinRemoteLimit() {
+  const kRemoteLimitFactor = 80
+  const kReproxyLimitCap = 5000
+  const limit = kRemoteLimitFactor * os.cpus().length
+  if (process.platform === 'darwin' && process.arch === 'x64') {
+    return Math.min(1000, limit)
+  }
+  return Math.min(kReproxyLimitCap, limit)
 }
 
 export default new Config()
