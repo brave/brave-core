@@ -79,19 +79,6 @@ const getBraveVersion = (ignorePatchVersionNumber) => {
   return braveVersionParts.join('.')
 }
 
-const getHostOS = () => {
-  switch (process.platform) {
-    case 'darwin':
-      return 'mac'
-    case 'linux':
-      return 'linux'
-    case 'win32':
-      return 'win'
-    default:
-      throw new Error(`Unsupported process.platform: ${process.platform}`)
-  }
-}
-
 const validateTargetOS = (value) => {
   const supportedTargetOS = ['android', 'ios', 'linux', 'mac', 'win']
   if (value) {
@@ -158,7 +145,6 @@ class Config {
       'gclient',
       'global_vars',
     ])
-    this.hostOS = getHostOS()
     this.targetOS = getEnvConfig(['target_os'], this.hostOS)
     validateTargetOS(this.targetOS)
     this.targetArch = getEnvConfig(['target_arch']) || process.arch
@@ -886,6 +872,19 @@ class Config {
 
   set outputDir(outputDir) {
     this.__outputDir = outputDir
+  }
+
+  get hostOS() {
+    switch (process.platform) {
+      case 'darwin':
+        return 'mac'
+      case 'linux':
+        return 'linux'
+      case 'win32':
+        return 'win'
+      default:
+        throw new Error(`Unsupported process.platform: ${process.platform}`)
+    }
   }
 }
 
