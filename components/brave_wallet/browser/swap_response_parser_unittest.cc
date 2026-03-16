@@ -2636,4 +2636,55 @@ TEST(SwapResponseParserUnitTest, ParseGate3StatusResponseInvalidJson) {
   EXPECT_FALSE(status);
 }
 
+TEST(SwapResponseParserUnitTest,
+     ParseGate3StatusResponseExplorerUrlValidation) {
+  auto make_json = [](const std::string& url) {
+    return absl::StrFormat(R"({
+      "status": "SUCCESS",
+      "internalStatus": "completed",
+      "explorerUrl": "%s"
+    })",
+                           url);
+  };
+
+  // Valid HTTPS URL is accepted.
+  {
+    auto status = gate3::ParseStatusResponse(
+        ParseJson(make_json("https://etherscan.io/tx/0x123")));
+    ASSERT_TRUE(status);
+    EXPECT_EQ(status->explorer_url, "https://etherscan.io/tx/0x123");
+  }
+
+  // javascript: URI is rejected.
+  {
+    auto status =
+        gate3::ParseStatusResponse(ParseJson(make_json("javascript:alert(1)")));
+    ASSERT_TRUE(status);
+    EXPECT_TRUE(status->explorer_url.empty());
+  }
+
+  // data: URI is rejected.
+  {
+    auto status = gate3::ParseStatusResponse(
+        ParseJson(make_json("data:text/html,<script>alert(1)</script>")));
+    ASSERT_TRUE(status);
+    EXPECT_TRUE(status->explorer_url.empty());
+  }
+
+  // HTTP URL is rejected (must be HTTPS).
+  {
+    auto status = gate3::ParseStatusResponse(
+        ParseJson(make_json("http://etherscan.io/tx/0x123")));
+    ASSERT_TRUE(status);
+    EXPECT_TRUE(status->explorer_url.empty());
+  }
+
+  // Invalid URL is rejected.
+  {
+    auto status = gate3::ParseStatusResponse(ParseJson(make_json("not-a-url")));
+    ASSERT_TRUE(status);
+    EXPECT_TRUE(status->explorer_url.empty());
+  }
+}
+
 }  // namespace brave_wallet
