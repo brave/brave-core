@@ -65,9 +65,9 @@ class QuickViewToolbar: UIView {
 
   private let closeButton: UIButton = {
     let button = UIButton(type: .system)
-    button.setImage(UIImage(systemName: "xmark"), for: .normal)
+    button.setImage(UIImage(braveSystemNamed: "leo.close"), for: .normal)
     button.tintColor = .white
-    button.backgroundColor = .braveBlurpleTint
+    button.backgroundColor = UIColor(braveSystemName: .primary40)
     button.layer.cornerRadius = 22
     button.clipsToBounds = true
     return button

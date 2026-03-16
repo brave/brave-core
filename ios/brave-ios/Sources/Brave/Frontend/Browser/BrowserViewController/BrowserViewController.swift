@@ -2355,17 +2355,6 @@ extension BrowserViewController: SettingsDelegate {
   }
 
   func settingsPresentQuickView() {
-    guard FeatureList.kQuickViewEnabled.enabled else {
-      let alert = UIAlertController(
-        title: "QuickView Disabled",
-        message: "The QuickView feature flag is currently disabled.",
-        preferredStyle: .alert
-      )
-      alert.addAction(UIAlertAction(title: "OK", style: .default))
-      present(alert, animated: true)
-      return
-    }
-
     guard let currentTab = tabManager.selectedTab else {
       let alert = UIAlertController(
         title: "No Tab Available",

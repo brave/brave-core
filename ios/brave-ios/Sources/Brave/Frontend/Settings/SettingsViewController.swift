@@ -1432,15 +1432,6 @@ class SettingsViewController: TableViewController {
           accessory: .disclosureIndicator
         ),
         Row(
-          text: "Test QuickView",
-          selection: { [unowned self] in
-            self.dismiss(animated: true) {
-              self.settingsDelegate?.settingsPresentQuickView()
-            }
-          },
-          cellClass: ButtonCell.self
-        ),
-        Row(
           text: "AdBlock Debugger",
           selection: { [unowned self] in
             self.navigationController?.pushViewController(
@@ -1684,6 +1675,19 @@ class SettingsViewController: TableViewController {
           },
           accessory: .disclosureIndicator,
           cellClass: MultilineValue1Cell.self
+        )
+      )
+    }
+    if FeatureList.kQuickViewEnabled.enabled {
+      section.rows.append(
+        Row(
+          text: "Test QuickView",
+          selection: { [unowned self] in
+            self.dismiss(animated: true) {
+              self.settingsDelegate?.settingsPresentQuickView()
+            }
+          },
+          cellClass: ButtonCell.self
         )
       )
     }
