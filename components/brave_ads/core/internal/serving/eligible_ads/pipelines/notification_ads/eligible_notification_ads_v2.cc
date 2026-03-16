@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/active_campaigns_filter.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/notification_ads/notification_ad_exclusion_rules.h"
@@ -135,6 +136,11 @@ void EligibleNotificationAdsV2::FilterAndMaybePredictCreativeAd(
               "EligibleNotificationAds::FilterAndMaybePredictCreativeAd",
               "creative_ads", creative_ad_count, "ad_events", ad_events.size(),
               "site_history", site_history.size());
+
+  // The SQLite query captures `now` at query time, so campaigns can expire
+  // before this callback runs (e.g., after a sleep/wake cycle). Drop any that
+  // are no longer within their start/end window.
+  FilterInactiveCampaignCreativeAds(creative_ads);
 
   if (creative_ads.empty()) {
     BLOG(1, "No eligible ads");
