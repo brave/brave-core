@@ -116,6 +116,8 @@ OBJC_EXPORT
               double estimatedEarnings,
               NSDate* _Nullable nextPaymentDate))completion;
 
+- (void)maybeServeNewTabPageAd:(void (^)(NewTabPageAdIOS* _Nullable))completion;
+
 - (void)triggerNewTabPageAdEvent:(NSString*)wallpaperId
               creativeInstanceId:(NSString*)creativeInstanceId
                       metricType:(BraveAdsNewTabPageAdMetricType)metricType
@@ -141,14 +143,6 @@ OBJC_EXPORT
                           completion:(void (^)(BOOL success))completion;
 
 - (void)clearData:(void (^)())completion;
-
-#pragma mark - New Tab Page Ad
-
-- (nullable NewTabPageAdIOS*)maybeGetPrefetchedNewTabPageAd;
-
-- (void)onFailedToPrefetchNewTabPageAd:(NSString*)placementId
-                    creativeInstanceId:(NSString*)creativeInstanceId
-    NS_SWIFT_NAME(onFailedToPrefetchNewTabPageAd(placementId:creativeInstanceId:));
 
 #pragma mark - Ads client notifier
 

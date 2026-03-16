@@ -63,29 +63,33 @@
 
 namespace {
 
-bool IsNTPPromotionEnabled(Profile* profile) {
+void IsNTPPromotionEnabled(Profile* profile,
+                           base::OnceCallback<void(bool)> callback) {
   if (!brave_search_conversion::IsNTPPromotionEnabled(
           profile->GetPrefs(),
           TemplateURLServiceFactory::GetForProfile(profile))) {
-    return false;
+    return std::move(callback).Run(false);
   }
 
   auto* service =
       ntp_background_images::ViewCounterServiceFactory::GetForProfile(profile);
   if (!service) {
-    return false;
+    return std::move(callback).Run(false);
   }
 
   // Only show promotion if current wallpaper is not sponsored images.
-  std::optional<base::DictValue> data =
-      service->GetCurrentWallpaperForDisplay();
-  if (data) {
-    if (const auto is_background =
-            data->FindBool(ntp_background_images::kIsBackgroundKey)) {
-      return is_background.value();
-    }
-  }
-  return false;
+  service->GetCurrentWallpaperForDisplay(base::BindOnce(
+      [](base::OnceCallback<void(bool)> callback,
+         std::optional<base::DictValue> data) {
+        if (data) {
+          if (const auto is_background =
+                  data->FindBool(ntp_background_images::kIsBackgroundKey)) {
+            return std::move(callback).Run(*is_background);
+          }
+        }
+        std::move(callback).Run(false);
+      },
+      std::move(callback)));
 }
 
 }  // namespace
@@ -110,7 +114,14 @@ void BraveNewTabPageHandler::InitForSearchPromotion() {
   // If promotion is disabled for this loading, we do nothing.
   // If some condition is changed and it can be enabled, promotion
   // will be shown at the next NTP loading.
-  if (!IsNTPPromotionEnabled(profile_)) {
+  IsNTPPromotionEnabled(
+      profile_,
+      base::BindOnce(&BraveNewTabPageHandler::OnInitForSearchPromotion,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void BraveNewTabPageHandler::OnInitForSearchPromotion(bool is_enabled) {
+  if (!is_enabled) {
     return;
   }
 
@@ -234,18 +245,23 @@ void BraveNewTabPageHandler::DismissBraveSearchPromotion() {
 
 void BraveNewTabPageHandler::IsSearchPromotionEnabled(
     IsSearchPromotionEnabledCallback callback) {
-  std::move(callback).Run(IsNTPPromotionEnabled(profile_));
+  IsNTPPromotionEnabled(profile_, std::move(callback));
 }
 
 void BraveNewTabPageHandler::NotifySearchPromotionDisabledIfNeeded() const {
-  // If enabled, we don't do anything. When NTP is reloaded or opened,
-  // user will see promotion.
-  if (IsNTPPromotionEnabled(profile_)) {
-    return;
-  }
+  IsNTPPromotionEnabled(
+      profile_,
+      base::BindOnce(
+          &BraveNewTabPageHandler::OnNotifySearchPromotionDisabledIfNeeded,
+          weak_factory_.GetWeakPtr()));
+}
 
-  // Hide promotion when it's disabled.
-  page_->OnSearchPromotionDisabled();
+void BraveNewTabPageHandler::OnNotifySearchPromotionDisabledIfNeeded(
+    bool is_enabled) const {
+  if (!is_enabled) {
+    // Hide promotion when it's disabled.
+    page_->OnSearchPromotionDisabled();
+  }
 }
 
 void BraveNewTabPageHandler::OnSearchPromotionDismissed() {

@@ -30,7 +30,6 @@ namespace brave_ads {
 
 class Ads;
 class AdsClient;
-class NewTabPageAdPrefetcher;
 class AdsServiceImplIOS : public AdsService {
  public:
   explicit AdsServiceImplIOS(PrefService* prefs);
@@ -84,11 +83,6 @@ class AdsServiceImplIOS : public AdsService {
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
-  mojom::NewTabPageAdInfoPtr MaybeGetPrefetchedNewTabPageAd() override;
-  void PrefetchNewTabPageAd() override;
-  void OnFailedToPrefetchNewTabPageAd(
-      const std::string& placement_id,
-      const std::string& creative_instance_id) override;
   void ParseAndSaveNewTabPageAds(
       base::DictValue dict,
       ParseAndSaveNewTabPageAdsCallback callback) override;
@@ -164,14 +158,6 @@ class AdsServiceImplIOS : public AdsService {
   void ClearAdsData(ClearDataCallback callback, bool success);
   void ClearAdsDataCallback(ClearDataCallback callback);
 
-  void RefetchNewTabPageAd();
-  void RefetchNewTabPageAdCallback(bool success);
-  void ResetNewTabPageAd();
-
-  void OnParseAndSaveNewTabPageAdsCallback(
-      ParseAndSaveNewTabPageAdsCallback callback,
-      bool success);
-
   const raw_ptr<PrefService> prefs_;  // Not owned.
 
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
@@ -185,8 +171,6 @@ class AdsServiceImplIOS : public AdsService {
   mojom::SysInfoPtr mojom_sys_info_;
   mojom::BuildChannelInfoPtr mojom_build_channel_;
   mojom::WalletInfoPtr mojom_wallet_;
-
-  std::unique_ptr<NewTabPageAdPrefetcher> new_tab_page_ad_prefetcher_;
 
   std::unique_ptr<Ads> ads_;
 

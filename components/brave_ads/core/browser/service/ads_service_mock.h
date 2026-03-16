@@ -43,8 +43,9 @@ class AdsServiceMock : public AdsService {
 
   MOCK_METHOD(void, GetStatementOfAccounts, (GetStatementOfAccountsCallback));
 
-  MOCK_METHOD(mojom::NewTabPageAdInfoPtr, MaybeGetPrefetchedNewTabPageAd, ());
-  MOCK_METHOD(void, PrefetchNewTabPageAd, ());
+  MOCK_METHOD(void,
+              ParseAndSaveNewTabPageAds,
+              (base::DictValue, ParseAndSaveNewTabPageAdsCallback));
   MOCK_METHOD(void,
               MaybeServeNewTabPageAd,
               (MaybeServeMojomNewTabPageAdCallback));
@@ -55,12 +56,6 @@ class AdsServiceMock : public AdsService {
                mojom::NewTabPageAdMetricType,
                mojom::NewTabPageAdEventType,
                TriggerAdEventCallback));
-  MOCK_METHOD(void,
-              OnFailedToPrefetchNewTabPageAd,
-              (const std::string&, const std::string&));
-  MOCK_METHOD(void,
-              ParseAndSaveNewTabPageAds,
-              (base::DictValue, ParseAndSaveNewTabPageAdsCallback));
 
   MOCK_METHOD(void,
               MaybeGetSearchResultAd,
