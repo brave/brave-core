@@ -37,6 +37,12 @@ public class MediaPreferences extends BravePreferenceFragment
     private static final String PREF_HIDE_YOUTUBE_DISTRACTING_ELEMENTS =
             "hide_youtube_distracting_elements";
     private static final String PREF_HIDE_YOUTUBE_SHORTS = "hide_youtube_shorts";
+    private static final String PREF_HIDE_YOUTUBE_AUTODUBBED_VIDEOS =
+            "hide_youtube_autodubbed_videos";
+    private static final String PREF_HIDE_YOUTUBE_THUMBNAILS = "hide_youtube_thumbnails";
+    private static final String PREF_HIDE_YOUTUBE_PLAYABLES = "hide_youtube_playables";
+    private static final String PREF_HIDE_YOUTUBE_MEMBERS_ONLY_VIDEOS =
+            "hide_youtube_members_only_videos";
 
     private FilterListAndroidHandler mFilterListAndroidHandler;
 
@@ -110,6 +116,26 @@ public class MediaPreferences extends BravePreferenceFragment
         if (hideYoutubeShortsPref != null) {
             hideYoutubeShortsPref.setOnPreferenceChangeListener(this);
         }
+        ChromeSwitchPreference hideYoutubeAutodubbedVideosPref =
+                findPreference(PREF_HIDE_YOUTUBE_AUTODUBBED_VIDEOS);
+        if (hideYoutubeAutodubbedVideosPref != null) {
+            hideYoutubeAutodubbedVideosPref.setOnPreferenceChangeListener(this);
+        }
+        ChromeSwitchPreference hideYoutubeThumbnailsPref =
+                findPreference(PREF_HIDE_YOUTUBE_THUMBNAILS);
+        if (hideYoutubeThumbnailsPref != null) {
+            hideYoutubeThumbnailsPref.setOnPreferenceChangeListener(this);
+        }
+        ChromeSwitchPreference hideYoutubePlayablesPref =
+                findPreference(PREF_HIDE_YOUTUBE_PLAYABLES);
+        if (hideYoutubePlayablesPref != null) {
+            hideYoutubePlayablesPref.setOnPreferenceChangeListener(this);
+        }
+        ChromeSwitchPreference hideYoutubeMembersOnlyVideosPref =
+                findPreference(PREF_HIDE_YOUTUBE_MEMBERS_ONLY_VIDEOS);
+        if (hideYoutubeMembersOnlyVideosPref != null) {
+            hideYoutubeMembersOnlyVideosPref.setOnPreferenceChangeListener(this);
+        }
 
         if (mFilterListAndroidHandler != null) {
             mFilterListAndroidHandler.isFilterListEnabled(
@@ -131,6 +157,34 @@ public class MediaPreferences extends BravePreferenceFragment
                     isEnabled -> {
                         if (hideYoutubeShortsPref != null) {
                             hideYoutubeShortsPref.setChecked(isEnabled);
+                        }
+                    });
+            mFilterListAndroidHandler.isFilterListEnabled(
+                    FilterListConstants.HIDE_YOUTUBE_AUTODUBBED_VIDEOS_UUID,
+                    isEnabled -> {
+                        if (hideYoutubeAutodubbedVideosPref != null) {
+                            hideYoutubeAutodubbedVideosPref.setChecked(isEnabled);
+                        }
+                    });
+            mFilterListAndroidHandler.isFilterListEnabled(
+                    FilterListConstants.HIDE_YOUTUBE_THUMBNAIL_IMAGES_UUID,
+                    isEnabled -> {
+                        if (hideYoutubeThumbnailsPref != null) {
+                            hideYoutubeThumbnailsPref.setChecked(isEnabled);
+                        }
+                    });
+            mFilterListAndroidHandler.isFilterListEnabled(
+                    FilterListConstants.HIDE_YOUTUBE_PLAYABLES_UUID,
+                    isEnabled -> {
+                        if (hideYoutubePlayablesPref != null) {
+                            hideYoutubePlayablesPref.setChecked(isEnabled);
+                        }
+                    });
+            mFilterListAndroidHandler.isFilterListEnabled(
+                    FilterListConstants.HIDE_YOUTUBE_MEMBERS_VIDEO_ADS_UUID,
+                    isEnabled -> {
+                        if (hideYoutubeMembersOnlyVideosPref != null) {
+                            hideYoutubeMembersOnlyVideosPref.setChecked(isEnabled);
                         }
                     });
         }
@@ -169,6 +223,29 @@ public class MediaPreferences extends BravePreferenceFragment
                 mFilterListAndroidHandler.enableFilter(
                         FilterListConstants.HIDE_YOUTUBE_SHORTS_UUID, (boolean) newValue);
                 shouldRelaunch = true;
+            }
+        } else if (PREF_HIDE_YOUTUBE_AUTODUBBED_VIDEOS.equals(key)) {
+            if (mFilterListAndroidHandler != null) {
+                mFilterListAndroidHandler.enableFilter(
+                        FilterListConstants.HIDE_YOUTUBE_AUTODUBBED_VIDEOS_UUID,
+                        (boolean) newValue);
+            }
+        } else if (PREF_HIDE_YOUTUBE_THUMBNAILS.equals(key)) {
+            if (mFilterListAndroidHandler != null) {
+                mFilterListAndroidHandler.enableFilter(
+                        FilterListConstants.HIDE_YOUTUBE_THUMBNAIL_IMAGES_UUID,
+                        (boolean) newValue);
+            }
+        } else if (PREF_HIDE_YOUTUBE_PLAYABLES.equals(key)) {
+            if (mFilterListAndroidHandler != null) {
+                mFilterListAndroidHandler.enableFilter(
+                        FilterListConstants.HIDE_YOUTUBE_PLAYABLES_UUID, (boolean) newValue);
+            }
+        } else if (PREF_HIDE_YOUTUBE_MEMBERS_ONLY_VIDEOS.equals(key)) {
+            if (mFilterListAndroidHandler != null) {
+                mFilterListAndroidHandler.enableFilter(
+                        FilterListConstants.HIDE_YOUTUBE_MEMBERS_VIDEO_ADS_UUID,
+                        (boolean) newValue);
             }
         }
 
