@@ -16,7 +16,9 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
+#include "cc/paint/paint_flags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -27,17 +29,73 @@
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 #include "components/vector_icons/vector_icons.h"
 #include "ui/base/models/image_model.h"
+#include "ui/compositor/layer.h"
+#include "ui/gfx/canvas.h"
 #include "ui/gfx/favicon_size.h"
+#include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/view_class_properties.h"
+
+namespace {
+
+constexpr int kSmallAccentSize = 16;
+
+}  // namespace
+
+BraveTab::SmallAccentIconView::SmallAccentIconView() {
+  SetCanProcessEventsWithinSubtree(false);
+}
+
+BraveTab::SmallAccentIconView::~SmallAccentIconView() = default;
+
+void BraveTab::SmallAccentIconView::OnPaint(gfx::Canvas* canvas) {
+  auto* tab = static_cast<BraveTab*>(parent());
+  constexpr int kCenter = kSmallAccentSize / 2;
+  if (auto accent_colors = tab->GetTabAccentColors();
+      accent_colors.has_value()) {
+    cc::PaintFlags flags;
+    flags.setAntiAlias(true);
+    flags.setColor(accent_colors->background_color);
+    flags.setStyle(cc::PaintFlags::kFill_Style);
+    canvas->DrawCircle(gfx::PointF(kCenter, kCenter), kCenter, flags);
+
+    flags.setColor(accent_colors->icon_border_color);
+    flags.setStyle(cc::PaintFlags::kStroke_Style);
+    flags.setStrokeWidth(1);
+    canvas->DrawCircle(gfx::PointF(kCenter, kCenter), kCenter, flags);
+  }
+  auto accent_icon = tab->GetTabAccentIcon();
+  if (!accent_icon.IsEmpty()) {
+    constexpr int dest_image_size = 12;
+    auto image = accent_icon.Rasterize(tab->GetColorProvider());
+    canvas->DrawImageInt(image, 0, 0, image.width(), image.height(),
+                         kCenter - dest_image_size / 2,
+                         kCenter - dest_image_size / 2, dest_image_size,
+                         dest_image_size, true);
+  }
+}
+
+gfx::Size BraveTab::SmallAccentIconView::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
+  return gfx::Size(kSmallAccentSize, kSmallAccentSize);
+}
+
+BEGIN_METADATA(BraveTab, SmallAccentIconView)
+END_METADATA
 
 BraveTab::BraveTab(tabs::TabHandle handle, TabSlotController* controller)
     : Tab(handle, controller) {
   if (base::FeatureList::IsEnabled(tabs::kBraveTreeTab)) {
     InitTreeToggleButton();
   }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  small_accent_icon_view_ =
+      AddChildView(std::make_unique<SmallAccentIconView>());
+  small_accent_icon_view_->SetVisible(false);
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 }
 
 BraveTab::~BraveTab() = default;
@@ -276,6 +334,28 @@ void BraveTab::LayoutTreeToggleButton() {
   }
 }
 
+void BraveTab::LayoutSmallTabAccentIcon() {
+  if (!small_accent_icon_view_) {
+    return;
+  }
+
+  const bool show_small_accent =
+      ShouldPaintTabAccent() && !ShouldShowLargeAccentIcon();
+  small_accent_icon_view_->SetVisible(show_small_accent);
+  if (show_small_accent) {
+    auto tab_bounds = gfx::SkRectToRectF(
+        tab_style_views()
+            ->GetPath(TabStyle::PathType::kBorder, 1, /*flags=*/{})
+            .getBounds());
+
+    small_accent_icon_view_->SetBounds(
+        std::min(tab_bounds.x(),
+                 tab_bounds.CenterPoint().x() - kSmallAccentSize / 2),
+        tab_bounds.bottom() - kSmallAccentSize, kSmallAccentSize,
+        kSmallAccentSize);
+  }
+}
+
 bool BraveTab::IsTreeNodeCollapsed() const {
   if (auto* node = GetTreeTabNode()) {
     return node->collapsed();
@@ -307,6 +387,7 @@ void BraveTab::Layout(PassKey) {
   }
 
   LayoutTreeToggleButton();
+  LayoutSmallTabAccentIcon();
 }
 
 void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
@@ -386,6 +467,19 @@ void BraveTab::SetData(tabs::TabData data) {
           controller()->GetBrowserWindowInterface()) &&
       data_.pinned) {
     SetGroup(std::nullopt);
+  }
+
+  if (small_accent_icon_view_) {
+    if (controller_->CanPaintThrobberToLayer()) {
+      // In this case, the TabIcon will have its own layer. When this happens,
+      // we need to make small accent icon view have its own layer as well,
+      // so that the small accent icon view will be painted on top of the
+      // TabIcon.
+      small_accent_icon_view_->SetPaintToLayer();
+      small_accent_icon_view_->layer()->SetFillsBoundsOpaquely(false);
+    } else if (small_accent_icon_view_->layer()) {
+      small_accent_icon_view_->DestroyLayer();
+    }
   }
 }
 

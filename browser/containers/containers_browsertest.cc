@@ -989,6 +989,49 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, ShouldShowTabAccent) {
   EXPECT_FALSE(tab_in_container->ShouldShowLargeAccentIcon());
 }
 
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, SmallAccentIconViewVisibility) {
+  auto animation_resetter = gfx::AnimationTestApi::SetRichAnimationRenderMode(
+      gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
+  auto* tab_strip_model = browser()->tab_strip_model();
+  auto* tab_strip =
+      browser()->GetBrowserView().horizontal_tab_strip_for_testing();
+
+  const GURL url("https://a.test/simple.html");
+  auto container = containers::mojom::Container::New();
+  container->id = "accent-test-container";
+  container->name = "Accent Test Container";
+  container->icon = containers::mojom::Icon::kSocial;
+  container->background_color = SK_ColorYELLOW;
+
+  brave::OpenUrlInContainer(browser(), url, container);
+  EXPECT_EQ(2, tab_strip_model->count());
+
+  content::WebContents* contents_in_container =
+      tab_strip_model->GetActiveWebContents();
+  ASSERT_TRUE(contents_in_container);
+  EXPECT_TRUE(content::WaitForLoadStop(contents_in_container));
+
+  auto* tab_in_container = static_cast<BraveTab*>(
+      tab_strip->tab_at(tab_strip_model->active_index()));
+  ASSERT_TRUE(tab_strip->ShouldPaintTabAccent(tab_in_container));
+
+  views::View* small_accent_view = tab_in_container->small_accent_icon_view_;
+  ASSERT_TRUE(small_accent_view);
+
+  // When the tab shows the large accent icon, the small accent icon view
+  // should be hidden.
+  RunScheduledLayouts();
+  EXPECT_TRUE(tab_in_container->ShouldShowLargeAccentIcon());
+  EXPECT_FALSE(small_accent_view->GetVisible());
+
+  // When the tab is pinned, it shows the small accent icon instead; the view
+  // should become visible after layout.
+  tab_strip_model->SetTabPinned(tab_strip_model->active_index(), true);
+  RunScheduledLayouts();
+  EXPECT_FALSE(tab_in_container->ShouldShowLargeAccentIcon());
+  EXPECT_TRUE(small_accent_view->GetVisible());
+}
+
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
                        PRE_ServiceWorkerPersistenceAcrossSessions) {
   const GURL url("https://a.test/containers/container_test.html");
