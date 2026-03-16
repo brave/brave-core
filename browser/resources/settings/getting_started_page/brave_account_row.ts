@@ -78,7 +78,8 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
     this.browserProxy.authentication.logOut()
   }
 
-  protected async onResendConfirmationEmailLinkClicked(e: CustomEvent) {
+  protected async onResendConfirmationEmailLinkClicked(
+        e: CustomEvent<{event: Event}>) {
     e.detail.event.preventDefault()
 
     if (this.isResendingConfirmationEmail) return
