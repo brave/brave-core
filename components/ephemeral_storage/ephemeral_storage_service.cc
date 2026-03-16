@@ -471,6 +471,17 @@ void EphemeralStorageService::CleanupFirstPartyStorageAreasOnStartup() {
   first_party_storage_areas_to_cleanup_on_startup_.clear();
 }
 
+void EphemeralStorageService::RegisterFirstWindowOpenedCallback(
+    base::OnceClosure callback) {
+  if (!base::FeatureList::IsEnabled(
+          net::features::kBraveForgetFirstPartyStorage) ||
+      context_->IsOffTheRecord()) {
+    return;
+  }
+
+  delegate_->RegisterFirstWindowOpenedCallback(std::move(callback));
+}
+
 size_t EphemeralStorageService::FireCleanupTimersForTesting() {
   std::vector<base::OneShotTimer*> timers;
   for (const auto& areas_to_cleanup : tld_ephemeral_areas_to_cleanup_) {
@@ -486,17 +497,6 @@ size_t EphemeralStorageService::FireCleanupTimersForTesting() {
   }
   DCHECK(first_party_storage_areas_to_cleanup_on_startup_.empty());
   return timers.size() + first_party_storage_areas_to_cleanup_count;
-}
-
-void EphemeralStorageService::RegisterFirstWindowOpenedCallback(
-    base::OnceClosure callback) {
-  if (!base::FeatureList::IsEnabled(
-          net::features::kBraveForgetFirstPartyStorage) ||
-      context_->IsOffTheRecord()) {
-    return;
-  }
-
-  delegate_->RegisterFirstWindowOpenedCallback(std::move(callback));
 }
 
 }  // namespace ephemeral_storage
