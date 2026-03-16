@@ -79,16 +79,6 @@ const getBraveVersion = (ignorePatchVersionNumber) => {
   return braveVersionParts.join('.')
 }
 
-const validateTargetOS = (value) => {
-  const supportedTargetOS = ['android', 'ios', 'linux', 'mac', 'win']
-  if (value) {
-    assert(
-      supportedTargetOS.includes(value),
-      `Unsupported target_os value: ${value}, supported values: ${supportedTargetOS.join(', ')}`,
-    )
-  }
-}
-
 // Mirrors limitForRemote() from siso source to apply a hard limit.
 // https://source.chromium.org/chromium/build/+/main:siso/build/limits.go;l=169-181;drc=c2c13435ffe51d890a46d488c48dee362f82453b
 const getSisoBuiltinRemoteLimit = () => {
@@ -146,7 +136,6 @@ class Config {
       'global_vars',
     ])
     this.targetOS = getEnvConfig(['target_os'], this.hostOS)
-    validateTargetOS(this.targetOS)
     this.targetArch = getEnvConfig(['target_arch']) || process.arch
     this.targetEnvironment = getEnvConfig(['target_environment'])
     this.gypTargetArch = 'x64'
@@ -421,7 +410,6 @@ class Config {
       } else {
         this.targetOS = options.target_os
       }
-      validateTargetOS(this.targetOS)
     }
 
     if (this.targetOS === 'android') {
@@ -885,6 +873,24 @@ class Config {
       default:
         throw new Error(`Unsupported process.platform: ${process.platform}`)
     }
+  }
+
+  /** @type {'android' | 'ios' | 'linux' | 'mac' | 'win' | undefined} */
+  #targetOS
+
+  get targetOS() {
+    return this.#targetOS ?? this.hostOS
+  }
+
+  set targetOS(value) {
+    const supportedTargetOS = ['android', 'ios', 'linux', 'mac', 'win']
+    if (!supportedTargetOS.includes(value)) {
+      Log.error(
+        `Invalid target_os: ${value} (must be one of: ${supportedTargetOS.join(', ')})`,
+      )
+      process.exit(1)
+    }
+    this.#targetOS = value
   }
 }
 
