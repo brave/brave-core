@@ -50,10 +50,8 @@
           text-wrap-mode: nowrap;
         }
 
-        a {
-          color: var(--leo-color-text-interactive);
-          cursor: pointer;
-          text-decoration: underline;
+        localized-link {
+          --cr-link-color: var(--leo-color-text-interactive);
         }
       }
     }

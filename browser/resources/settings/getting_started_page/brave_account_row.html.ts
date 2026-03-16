@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import '//resources/cr_components/localized_link/localized_link.js'
+
 import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 
 import { AccountStateFieldTags, whichAccountState } from '../brave_account_row.mojom-webui.js'
@@ -59,11 +61,13 @@ export function getHtml(this: SettingsBraveAccountRow) {
           this.i18n(
               BraveAccountSettingsStrings
                   .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1),
-          html`<div .innerHTML=${this.i18nAdvanced(
-              BraveAccountSettingsStrings
-                  .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2,
-              {tags: ['a']}
-          )}></div>`
+          html`<localized-link
+              .localizedString=${this.i18nAdvanced(
+                  BraveAccountSettingsStrings
+                      .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2,
+                  {tags: ['a'], attrs: ['href']})}
+              @link-clicked=${this.onResendConfirmationEmailLinkClicked}>
+          </localized-link>`
         ]
       )}
       <div class="second-row">
