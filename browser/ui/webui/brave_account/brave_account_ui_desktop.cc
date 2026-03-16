@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
 
 #include <memory>
+#include <utility>
 
 #include "base/check.h"
 #include "base/check_deref.h"
@@ -104,6 +105,26 @@ BraveAccountUIDesktop::BraveAccountUIDesktop(content::WebUI* web_ui)
 
 BraveAccountUIDesktop::~BraveAccountUIDesktop() = default;
 
+void BraveAccountUIDesktop::BindInterface(
+    mojo::PendingReceiver<brave_account::mojom::DialogController>
+        pending_receiver) {
+  receiver_.reset();
+  receiver_.Bind(std::move(pending_receiver));
+}
+
+void BraveAccountUIDesktop::CloseDialog() {
+  auto* constrained_delegate = GetConstrainedDelegate();
+  auto* web_dialog_delegate = constrained_delegate
+                                  ? constrained_delegate->GetWebDialogDelegate()
+                                  : nullptr;
+  if (!web_dialog_delegate) {
+    return;
+  }
+
+  web_dialog_delegate->OnDialogClosed("");
+  constrained_delegate->OnDialogCloseFromWebUI();
+}
+
 // Closes the UI when registration or login completes in any tab.
 // The dialog closes when either token becomes non-empty.
 // Since prefs are profile-wide, this automatically closes dialogs across all
@@ -119,16 +140,7 @@ void BraveAccountUIDesktop::OnTokensChanged() {
     return;
   }
 
-  auto* constrained_delegate = GetConstrainedDelegate();
-  auto* web_dialog_delegate = constrained_delegate
-                                  ? constrained_delegate->GetWebDialogDelegate()
-                                  : nullptr;
-  if (!web_dialog_delegate) {
-    return;
-  }
-
-  web_dialog_delegate->OnDialogClosed("");
-  constrained_delegate->OnDialogCloseFromWebUI();
+  CloseDialog();
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountUIDesktop)

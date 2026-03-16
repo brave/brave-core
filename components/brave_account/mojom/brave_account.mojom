@@ -220,3 +220,8 @@ interface Authentication {
   GetServiceToken(Service service)
     => result<GetServiceTokenResult, GetServiceTokenError>;
 };
+
+// Interface for controlling the Brave Account dialog.
+interface DialogController {
+  CloseDialog();
+};
