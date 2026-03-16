@@ -81,21 +81,22 @@ struct PrivateTabsView: View {
                 tabManager?.saveAllTabs()
               } else {
                 tabManager?.removeAllTabsForPrivateMode(isPrivate: true, isActiveTabIncluded: true)
-                reopenBrowserInPrivateMode.value = false
               }
             }
           }
 
-          ToggleView(
-            title: Strings.TabsSettings.reopenBrowserInPrivateModeTitle,
-            subtitle: Strings.TabsSettings.reopenBrowserInPrivateModeDescription,
-            toggle: .init(
-              get: { reopenBrowserInPrivateMode.value },
-              set: { reopenBrowserInPrivateMode.value = $0 }
-            )
-          )
-          .disabled(!persistentPrivateBrowsing.value)
-          .opacity(persistentPrivateBrowsing.value ? 1 : 0.25)
+          if persistentPrivateBrowsing.value {
+            Toggle(isOn: $reopenBrowserInPrivateMode.value) {
+              VStack(alignment: .leading, spacing: 4) {
+                Text(Strings.TabsSettings.reopenBrowserInPrivateModeTitle)
+                  .foregroundStyle(Color(braveSystemName: .textPrimary))
+                Text(Strings.TabsSettings.reopenBrowserInPrivateModeDescription)
+                  .foregroundStyle(Color(braveSystemName: .textSecondary))
+                  .font(.footnote)
+              }
+            }
+            .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+          }
         }
 
         switch localAuthenticationType {
