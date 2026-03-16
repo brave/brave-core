@@ -343,7 +343,7 @@ void BraveTab::LayoutSmallTabAccentIcon() {
       ShouldPaintTabAccent() && !ShouldShowLargeAccentIcon();
   small_accent_icon_view_->SetVisible(show_small_accent);
   if (show_small_accent) {
-    auto tab_bounds = gfx::SkRectToRectF(
+    const auto tab_bounds = gfx::SkRectToRectF(
         tab_style_views()
             ->GetPath(TabStyle::PathType::kBorder, 1, /*flags=*/{})
             .getBounds());

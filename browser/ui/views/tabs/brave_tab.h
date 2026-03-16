@@ -156,7 +156,7 @@ class BraveTab : public Tab {
   bool center_icon_for_test() const { return center_icon_; }
   bool showing_close_button_for_test() const { return showing_close_button_; }
 
-  raw_ptr<SmallAccentIconView> small_accent_icon_view_ = nullptr;
+  raw_ptr<SmallAccentIconView> small_accent_icon_view_ = nullptr;  // not owned
 
   base::WeakPtrFactory<BraveTab> weak_factory_{this};
 };
