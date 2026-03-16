@@ -67,18 +67,6 @@ const parseExtraInputs = (inputs, accumulator, callback) => {
   }
 }
 
-const getBraveVersion = (ignorePatchVersionNumber) => {
-  const braveVersion = envConfig.getPackageVersion()
-  if (!ignorePatchVersionNumber) {
-    return braveVersion
-  }
-
-  const braveVersionParts = braveVersion.split('.')
-  assert(braveVersionParts.length === 3)
-  braveVersionParts[2] = '0'
-  return braveVersionParts.join('.')
-}
-
 // Mirrors limitForRemote() from siso source to apply a hard limit.
 // https://source.chromium.org/chromium/build/+/main:siso/build/limits.go;l=169-181;drc=c2c13435ffe51d890a46d488c48dee362f82453b
 const getSisoBuiltinRemoteLimit = () => {
@@ -143,7 +131,7 @@ class Config {
       !this.isBraveReleaseBuild()
       && getEnvConfig(['ignore_patch_version_number'], !this.isCI)
     this.useDummyLastchange = getEnvConfig(['use_dummy_lastchange'], true)
-    this.braveVersion = getBraveVersion(this.ignorePatchVersionNumber)
+    this.braveVersion = this.#getBraveVersion()
     this.braveIOSMarketingPatchVersion =
       getEnvConfig(['brave_ios_marketing_version_patch']) || ''
     this.androidOverrideVersionName = this.braveVersion
@@ -620,6 +608,18 @@ class Config {
     for (const v of vars) {
       obj[v] = getEnvConfig([v])
     }
+  }
+
+  #getBraveVersion() {
+    const braveVersion = envConfig.getPackageVersion()
+    if (!this.ignorePatchVersionNumber) {
+      return braveVersion
+    }
+
+    const braveVersionParts = braveVersion.split('.')
+    assert(braveVersionParts.length === 3)
+    braveVersionParts[2] = '0'
+    return braveVersionParts.join('.')
   }
 
   get defaultOptions() {
