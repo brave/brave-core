@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import '//resources/cr_components/localized_link/localized_link.js'
+
 import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 
 import { AccountStateFieldTags, whichAccountState } from '../brave_account_row.mojom-webui.js'
@@ -11,12 +13,9 @@ import { SettingsBraveAccountRow } from './brave_account_row.js'
 
 const createFirstRow = (
   title: string,
-  description: string | string[] | ReturnType<typeof html>,
+  descriptions: (string | ReturnType<typeof html>)[],
   button?: ReturnType<typeof html>
 ) => {
-  const descriptions = Array.isArray(description)
-    ? description
-    : [description]
   return html`
     <div class="first-row">
       <div class="circle">
@@ -42,7 +41,7 @@ export function getHtml(this: SettingsBraveAccountRow) {
       this.i18n(
           BraveAccountSettingsStrings
                .BRAVE_ACCOUNT_TITLE),
-      html`<div id="email">${this.state!.loggedIn!.email}</div>`,
+      [html`<div id="email">${this.state!.loggedIn!.email}</div>`],
       html`
         <leo-button kind="outline"
                     size="small"
@@ -62,20 +61,16 @@ export function getHtml(this: SettingsBraveAccountRow) {
           this.i18n(
               BraveAccountSettingsStrings
                   .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1),
-          this.i18n(
-              BraveAccountSettingsStrings
-                  .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2)
+          html`<localized-link
+              .localizedString=${this.i18nAdvanced(
+                  BraveAccountSettingsStrings
+                      .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2,
+                  {tags: ['a'], attrs: ['href']})}
+              @link-clicked=${this.onResendConfirmationEmailLinkClicked}>
+          </localized-link>`
         ]
       )}
       <div class="second-row">
-        <leo-button kind="outline"
-                    size="small"
-                    ?isDisabled=${this.isResendingConfirmationEmail}
-                    @click=${this.onResendConfirmationEmailButtonClicked}>
-          ${this.i18n(
-                BraveAccountSettingsStrings
-                     .SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_BUTTON_LABEL)}
-        </leo-button>
         <leo-button kind="plain-faint"
                     size="small"
                     class="cancel-registration-button"
@@ -90,9 +85,9 @@ export function getHtml(this: SettingsBraveAccountRow) {
       this.i18n(
           BraveAccountSettingsStrings
                .SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE),
-      this.i18n(
+      [this.i18n(
           BraveAccountSettingsStrings
-               .BRAVE_ACCOUNT_DESCRIPTION),
+               .BRAVE_ACCOUNT_DESCRIPTION)],
       html`
         <leo-button kind="filled"
                     size="small"
