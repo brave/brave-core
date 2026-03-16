@@ -33,6 +33,7 @@ class ShieldsPanelHandler : public brave_shields::mojom::PanelHandler {
   void ShowUI() override;
   void CloseUI() override;
   void GetPosition(GetPositionCallback callback) override;
+  void GetBrowserWindowHeight(GetBrowserWindowHeightCallback callback) override;
   void SetAdvancedViewEnabled(bool is_enabled) override;
   void GetAdvancedViewEnabled(GetAdvancedViewEnabledCallback callback) override;
 

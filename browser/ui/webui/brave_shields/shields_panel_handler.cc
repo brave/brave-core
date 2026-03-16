@@ -76,6 +76,17 @@ void ShieldsPanelHandler::GetPosition(GetPositionCallback callback) {
   std::move(callback).Run(gfx::Vector2d(rect.x(), rect.y()));
 }
 
+void ShieldsPanelHandler::GetBrowserWindowHeight(
+    GetBrowserWindowHeightCallback callback) {
+  std::optional<int32_t> height;
+  auto* browser = webui::GetBrowserWindowInterface(
+      webui_controller_->web_ui()->GetWebContents());
+  if (browser && browser->GetWindow()) {
+    height = browser->GetWindow()->GetBounds().height();
+  }
+  std::move(callback).Run(height);
+}
+
 void ShieldsPanelHandler::SetAdvancedViewEnabled(bool is_enabled) {
   CHECK(profile_);
 
