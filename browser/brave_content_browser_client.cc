@@ -812,6 +812,7 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
   if (brave_account::features::IsBraveAccountEnabled()) {
     registry.ForWebUI<BraveAccountUIAndroid>()
         .Add<brave_account::mojom::Authentication>()
+        .Add<brave_account::mojom::DialogController>()
         .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
   }
 #endif  // !BUILDFLAG(IS_ANDROID)
