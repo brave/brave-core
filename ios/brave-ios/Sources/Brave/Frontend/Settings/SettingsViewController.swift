@@ -55,6 +55,7 @@ protocol SettingsDelegate: AnyObject {
   func settingsCreateFakeTabs()
   func settingsCreateFakeBookmarks()
   func settingsCreateFakeHistory()
+  func settingsPresentQuickView()
 }
 
 class SettingsViewController: TableViewController {
@@ -1429,6 +1430,15 @@ class SettingsViewController: TableViewController {
             self.navigationController?.pushViewController(vc, animated: true)
           },
           accessory: .disclosureIndicator
+        ),
+        Row(
+          text: "Test QuickView",
+          selection: { [unowned self] in
+            self.dismiss(animated: true) {
+              self.settingsDelegate?.settingsPresentQuickView()
+            }
+          },
+          cellClass: ButtonCell.self
         ),
         Row(
           text: "AdBlock Debugger",

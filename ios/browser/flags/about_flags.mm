@@ -16,6 +16,7 @@
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
+#include "brave/ios/browser/ui/quick_view/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "build/build_config.h"
 #include "components/webui/flags/feature_entry.h"
@@ -345,6 +346,13 @@ const flags_ui::FeatureEntry::FeatureVariation
           "do not share it unless asked to by Brave staff.",                   \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature), \
+      },                                                                       \
+      {                                                                        \
+          "brave-quick-view",                                                  \
+          "Enable QuickView",                                                  \
+          "Enable QuickView feature",                                          \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave::features::kQuickViewEnabled),              \
       })                                                                       \
   BRAVE_SHIELDS_FEATURE_ENTRIES                                                \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
