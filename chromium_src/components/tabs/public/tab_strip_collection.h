@@ -46,8 +46,8 @@
 #undef InsertTabCollectionAt
 #undef RemoveCollectionMapping
 #undef AddCollectionMapping
-#undef CreateSplit
 #undef Unsplit
+#undef CreateSplit
 #undef MoveTabsRecursive
 #undef MoveTabRecursive
 #undef AddTabRecursive
