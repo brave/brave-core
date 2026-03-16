@@ -8,9 +8,12 @@
 
 #include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/components/brave_account/brave_account_ui_base.h"
+#include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/webui_config.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 
 namespace content {
 class WebUI;
@@ -19,11 +22,25 @@ class WebUI;
 class BraveAccountUIAndroid
     : public BraveAccountUIBase<content::WebUIDataSource,
                                 brave_account::BraveAccountServiceFactory>,
-      public content::WebUIController {
+      public content::WebUIController,
+      public brave_account::mojom::DialogController {
  public:
+  using BraveAccountUIBase::BindInterface;
+
   explicit BraveAccountUIAndroid(content::WebUI* web_ui);
 
+  ~BraveAccountUIAndroid() override;
+
+  void BindInterface(
+      mojo::PendingReceiver<brave_account::mojom::DialogController>
+          pending_receiver);
+
  private:
+  // brave_account::mojom::DialogController:
+  void CloseDialog() override;
+
+  mojo::Receiver<brave_account::mojom::DialogController> receiver_{this};
+
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
 

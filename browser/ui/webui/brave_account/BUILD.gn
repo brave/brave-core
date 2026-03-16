@@ -21,10 +21,12 @@ source_set("brave_account") {
     "//brave/browser/brave_account",
     "//brave/components/brave_account",
     "//brave/components/brave_account:features",
+    "//brave/components/brave_account/mojom",
     "//brave/components/constants",
     "//chrome/browser/profiles",
     "//content/public/browser",
     "//content/public/common",
+    "//mojo/public/cpp/bindings",
     "//ui/webui",
   ]
 
