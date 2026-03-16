@@ -101,11 +101,13 @@ BraveTreeTabStripCollectionDelegate::TryAddTabToSameTreeAsOpener(
 
     // Find parent tree node collection until we reach the unpinned collection.
     auto* parent_collection = tree_collection->GetParentCollection();
+    CHECK(parent_collection);
     while (parent_collection->type() != tabs::TabCollection::Type::TREE_NODE &&
            parent_collection->type() != tabs::TabCollection::Type::UNPINNED) {
       parent_collection = parent_collection->GetParentCollection();
       CHECK(parent_collection);
     }
+
     if (parent_collection->type() == tabs::TabCollection::Type::UNPINNED) {
       // If the |tree_collection| is attached to the unpinned collection, we
       // don't proceed to add the tab to the tree.
