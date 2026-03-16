@@ -49,6 +49,10 @@
         #email {
           text-wrap-mode: nowrap;
         }
+
+        localized-link {
+          --cr-link-color: var(--leo-color-text-interactive);
+        }
       }
     }
   }
