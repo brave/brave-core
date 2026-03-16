@@ -206,4 +206,60 @@ TEST_F(BraveShieldsP3ATest, RecordDomainFingerprintBlockCounts) {
                                        7);
 }
 
+TEST_F(BraveShieldsP3ATest, RecordHTTPSUpgradeGlobalSetting) {
+  auto* map = HostContentSettingsMapFactory::GetForProfile(GetProfile());
+
+  // Default is ASK (Standard) - should report 1
+  RecordHTTPSUpgradeSettingP3A(map);
+  histogram_tester_->ExpectBucketCount(kUpgradeHTTPSGlobalHistogramName, 1, 1);
+
+  // Set to strict (BLOCK) - should report 2
+  SetHttpsUpgradeControlType(map, ControlType::BLOCK, GURL());
+  histogram_tester_->ExpectBucketCount(kUpgradeHTTPSGlobalHistogramName, 2, 1);
+
+  // Set to disabled (ALLOW) - should suspend
+  SetHttpsUpgradeControlType(map, ControlType::ALLOW, GURL());
+  histogram_tester_->ExpectBucketCount(kUpgradeHTTPSGlobalHistogramName,
+                                       INT_MAX - 1, 1);
+
+  // Set back to standard (BLOCK_THIRD_PARTY) - should report 1 again
+  SetHttpsUpgradeControlType(map, ControlType::BLOCK_THIRD_PARTY, GURL());
+  histogram_tester_->ExpectBucketCount(kUpgradeHTTPSGlobalHistogramName, 1, 2);
+}
+
+TEST_F(BraveShieldsP3ATest, RecordHTTPSUpgradePerSiteStrict) {
+  auto* map = HostContentSettingsMapFactory::GetForProfile(GetProfile());
+
+  // No per-site strict settings - should suspend
+  RecordHTTPSUpgradeSettingP3A(map);
+  histogram_tester_->ExpectBucketCount(kUpgradeHTTPSPerSiteHistogramName,
+                                       INT_MAX - 1, 1);
+
+  // Add a per-site strict setting
+  SetHttpsUpgradeControlType(map, ControlType::BLOCK,
+                             GURL("https://brave.com"));
+  histogram_tester_->ExpectBucketCount(kUpgradeHTTPSPerSiteHistogramName, 1, 1);
+
+  // Add another per-site strict setting - still reports 1
+  SetHttpsUpgradeControlType(map, ControlType::BLOCK,
+                             GURL("https://example.com"));
+  histogram_tester_->ExpectBucketCount(kUpgradeHTTPSPerSiteHistogramName, 1, 2);
+
+  // Change one to standard - other is still strict, should still report 1
+  SetHttpsUpgradeControlType(map, ControlType::BLOCK_THIRD_PARTY,
+                             GURL("https://brave.com"));
+  histogram_tester_->ExpectBucketCount(kUpgradeHTTPSPerSiteHistogramName, 1, 3);
+}
+
+TEST_F(BraveShieldsP3ATest, RecordHTTPSUpgradeDisabledGlobalNoPerSite) {
+  auto* map = HostContentSettingsMapFactory::GetForProfile(GetProfile());
+
+  // Set global to disabled - both metrics should suspend
+  SetHttpsUpgradeControlType(map, ControlType::ALLOW, GURL());
+  histogram_tester_->ExpectBucketCount(kUpgradeHTTPSGlobalHistogramName,
+                                       INT_MAX - 1, 1);
+  histogram_tester_->ExpectBucketCount(kUpgradeHTTPSPerSiteHistogramName,
+                                       INT_MAX - 1, 1);
+}
+
 }  // namespace brave_shields

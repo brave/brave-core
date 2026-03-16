@@ -693,6 +693,7 @@ void SetHttpsUpgradeControlType(HostContentSettingsMap* map,
   }
 
   RecordShieldsSettingChanged(local_state);
+  RecordHTTPSUpgradeSettingP3A(map);
 }
 
 ControlType GetHttpsUpgradeControlType(HostContentSettingsMap* map,
