@@ -167,6 +167,7 @@ describe('dispatchIncomingMessage', () => {
       openDestinationUrl: jest.fn(),
       openBraveSearch: jest.fn(),
       queryBraveSearchAutocomplete: jest.fn(),
+      hideBraveSearchBox: jest.fn(),
     }
   })
 
@@ -216,6 +217,7 @@ describe('dispatchIncomingMessage', () => {
       expect(mockCapabilities.notifyAdEvent).not.toHaveBeenCalled()
       expect(mockCapabilities.openDestinationUrl).not.toHaveBeenCalled()
       expect(mockCapabilities.openBraveSearch).not.toHaveBeenCalled()
+      expect(mockCapabilities.hideBraveSearchBox).not.toHaveBeenCalled()
     })
   })
 
@@ -232,6 +234,14 @@ describe('dispatchIncomingMessage', () => {
       expect(mockCapabilities.openBraveSearch).toHaveBeenCalledWith(
         'search query',
       )
+    })
+  })
+
+  describe('richMediaHideBraveSearchBox message', () => {
+    it('should call hideBraveSearchBox', () => {
+      dispatch({ type: 'richMediaHideBraveSearchBox' })
+
+      expect(mockCapabilities.hideBraveSearchBox).toHaveBeenCalled()
     })
   })
 })

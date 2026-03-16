@@ -153,6 +153,10 @@ export function createSearchStore() {
       newTabProxy.handler.setShowSearchBox(showSearchBox)
     },
 
+    setSearchBoxSuppressed(suppressed) {
+      store.update({ searchBoxSuppressed: suppressed })
+    },
+
     setShowChatInput(showChatInput) {
       store.update({ showChatInput })
       newTabProxy.handler.setShowChatInput(showChatInput)
