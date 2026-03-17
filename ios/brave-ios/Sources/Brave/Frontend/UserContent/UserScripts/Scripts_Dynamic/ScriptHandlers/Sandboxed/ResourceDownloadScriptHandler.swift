@@ -3,10 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import Data
 import Foundation
-import Web
+@_spi(ChromiumWebViewAccess) import Web
 import WebKit
 
 struct DownloadedResourceResponse: Decodable {
@@ -20,6 +21,11 @@ struct DownloadedResourceResponse: Decodable {
 
     let data = try JSONSerialization.data(withJSONObject: message.body, options: .prettyPrinted)
     return try JSONDecoder().decode(DownloadedResourceResponse.self, from: data)
+  }
+
+  init(statusCode: Int, data: Data?) {
+    self.statusCode = statusCode
+    self.data = data
   }
 
   init(from decoder: Decoder) throws {
@@ -73,6 +79,15 @@ class ResourceDownloadScriptHandler: TabContentScript {
   }
 
   static func downloadResource(for tab: some TabState, url: URL) {
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      Task { @MainActor [weak tab] in
+        guard let tab, let webView = BraveWebView.from(tab: tab) else { return }
+        let (statusCode, data) = await webView.downloadDocument(at: url)
+        let response = DownloadedResourceResponse(statusCode: statusCode, data: data)
+        await tab.temporaryDocument?.onDocumentDownloaded(document: response, error: nil)
+      }
+      return
+    }
     tab.evaluateJavaScript(
       functionName: "window.__firefox__.downloadManager.download",
       args: [url.absoluteString],
