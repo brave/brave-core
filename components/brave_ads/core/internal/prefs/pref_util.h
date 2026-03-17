@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <optional>
 #include <string>
+#include <string_view>
 
 #include "base/time/time.h"
 #include "base/values.h"
@@ -77,7 +78,7 @@ bool HasLocalStatePrefPath(const std::string& path);
 
 // Gets virtual preference values.
 std::optional<base::Value> GetVirtualPref(const base::DictValue& virtual_prefs,
-                                          const std::string& path);
+                                          std::string_view path);
 
 }  // namespace brave_ads
 

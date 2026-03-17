@@ -76,9 +76,10 @@ using ConditionMatcherMap =
 //      - [R<]: Less than
 //      - [R≤]: Less than or equal to
 //    - This matcher serves an ad based on the real number (integers or
-//      fractional) stored at "prefPath". For example, the following condition
-//      matcher will serve an ad if the value stored at "foo.bar" is not equal
-//      to 3:
+//      fractional) stored at "prefPath". The operand can be a literal number
+//      or a pref path whose value is resolved at match time. For example, the
+//      following condition matcher will serve an ad if the value stored at
+//      "foo.bar" is not equal to 3:
 //
 //       "conditionMatchers": [
 //         {
@@ -86,6 +87,19 @@ using ConditionMatcherMap =
 //           "prefPath": "foo.bar"
 //         }
 //       ]
+//
+//      Or, to compare "foo.bar" against the numeric value stored at "baz.qux":
+//
+//       "conditionMatchers": [
+//         {
+//           "condition": "[R>]:baz.qux",
+//           "prefPath": "foo.bar"
+//         }
+//       ]
+//
+//      If the operand is not a literal number and cannot be resolved as a pref
+//      path, or the resolved pref value is non-numeric, the condition will not
+//      match.
 //
 // 4. Regex Matcher:
 //    - Uses an RE2 regular expression to partially match values at "prefPath",
@@ -145,8 +159,8 @@ using ConditionMatcherMap =
 //    }
 //  ]
 //
-// For values that are not stored in the local state or profile prefs you can
-// use virtual prefs. Prefix virtual pref paths with "[virtual]:".
+// Pref paths are resolved by checking virtual prefs first, then profile prefs,
+// then local state prefs. Prefix virtual pref paths with "[virtual]:".
 //
 // Supported virtual pref paths:
 //

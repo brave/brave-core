@@ -11,6 +11,7 @@
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 
@@ -67,7 +68,7 @@ std::optional<base::Value> MaybeGetRootPrefValue(
 }
 
 std::optional<base::Value> MaybeGetDictPrefValue(const base::Value& pref_value,
-                                                 const std::string& key) {
+                                                 std::string_view key) {
   if (const base::Value* const value = pref_value.GetDict().Find(key)) {
     return value->Clone();
   }
@@ -77,7 +78,7 @@ std::optional<base::Value> MaybeGetDictPrefValue(const base::Value& pref_value,
 }
 
 std::optional<base::Value> MaybeGetListPrefValue(const base::Value& pref_value,
-                                                 const std::string& key) {
+                                                 std::string_view key) {
   size_t index;
   if (!base::StringToSizeT(key, &index)) {
     // Invalid pref path key, because this should be an integer index for the
@@ -96,7 +97,7 @@ std::optional<base::Value> MaybeGetListPrefValue(const base::Value& pref_value,
 }
 
 std::optional<base::Value> MaybeGetNextPrefValue(const base::Value& pref_value,
-                                                 const std::string& key) {
+                                                 std::string_view key) {
   if (pref_value.is_dict()) {
     return MaybeGetDictPrefValue(pref_value, key);
   }
@@ -110,7 +111,7 @@ std::optional<base::Value> MaybeGetNextPrefValue(const base::Value& pref_value,
 
 std::optional<base::Value> MaybeGetPrefValue(
     const base::DictValue& virtual_prefs,
-    const std::string& pref_path) {
+    std::string_view pref_path) {
   // Split the `pref_path` into individual keys using '|' as the delimiter.
   const std::vector<std::string> keys = base::SplitString(
       pref_path, "|", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);

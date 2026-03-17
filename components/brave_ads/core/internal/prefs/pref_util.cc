@@ -388,7 +388,7 @@ bool HasLocalStatePrefPath(const std::string& path) {
 }
 
 std::optional<base::Value> GetVirtualPref(const base::DictValue& virtual_prefs,
-                                          const std::string& path) {
+                                          std::string_view path) {
   if (path.starts_with(kVirtualPrefPathPrefix)) {
     if (const base::Value* const value = virtual_prefs.Find(path)) {
       return value->Clone();

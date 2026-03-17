@@ -8,8 +8,11 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 
-#include "base/values.h"
+namespace base {
+class DictValue;
+}  // namespace base
 
 namespace brave_ads {
 
@@ -21,7 +24,7 @@ namespace brave_ads {
 // of a list.
 std::optional<std::string> MaybeGetPrefValueAsString(
     const base::DictValue& virtual_prefs,
-    const std::string& pref_path);
+    std::string_view pref_path);
 
 }  // namespace brave_ads
 

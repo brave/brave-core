@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/json/json_reader.h"
+#include "base/values.h"
 #include "base/version_info/version_info.h"
 #include "brave/components/brave_ads/core/browser/virtual_pref/virtual_pref_provider_util.h"
 #include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
