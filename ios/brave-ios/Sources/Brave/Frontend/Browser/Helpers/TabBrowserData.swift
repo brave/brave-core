@@ -210,6 +210,9 @@ class TabBrowserData: NSObject, TabObserver {
   lazy var contentBlocker = ContentBlockerHelper(tab: tab)
 
   var readerModeAvailableOrActive: Bool {
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      return tab?.readerMode?.state != .unavailable
+    }
     if let readerMode = getContentScript(name: ReaderModeScriptHandler.scriptName)
       as? ReaderModeScriptHandler
     {
