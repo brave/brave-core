@@ -5,9 +5,13 @@
 
 import path from 'node:path'
 import fs from 'fs-extra'
-import { default as prettier } from 'prettier'
+import {
+  getFileInfo as prettierGetFileInfo,
+  resolveConfig as prettierResolveConfig,
+  format as prettierFormat,
+} from 'prettier'
 import program from 'commander'
-import { spawnSync } from 'node:child_process'
+import { spawnSync, type SpawnSyncReturns } from 'node:child_process'
 
 import config from '../lib/config.js'
 import util from '../lib/util.js'
@@ -47,7 +51,7 @@ program
 
 // Replace the first 4 lines of the diff output with the before/after
 // format header.
-const convertDiff = (diffOutput, file) => {
+const convertDiff = (diffOutput: string, file: string) => {
   let pos = -1
   for (let i = 0; i < 4; i++) {
     pos = diffOutput.indexOf('\n', pos + 1)
@@ -69,7 +73,7 @@ const getAllFiles = () => {
     .split('\n')
 }
 
-const formatOutput = (result) => {
+const formatOutput = (result: SpawnSyncReturns<NonSharedBuffer>) => {
   return [result.stdout, result.stderr]
     .filter((v) => v.length)
     .join('\nstderr:\n')
@@ -77,7 +81,14 @@ const formatOutput = (result) => {
 
 // A function that formats the code in the current diff with base branch.
 // It uses git cl format and prettier, then aggregates the results.
-async function runFormat(options = {}) {
+async function runFormat(options: {
+  base?: string
+  full?: boolean
+  presubmit?: boolean
+  dryRun?: boolean
+  onlyPrettier?: boolean
+  allFiles?: boolean
+}) {
   if (!options.base) {
     options.base = 'origin/master'
   }
@@ -104,7 +115,7 @@ async function runFormat(options = {}) {
     args.push('--dry-run', '--diff')
   }
 
-  let formatIssues = []
+  const formatIssues: string[] = []
 
   const shouldRunGitClFormat = !options.onlyPrettier
   const shouldRunPrettier = true
@@ -133,10 +144,14 @@ async function runFormat(options = {}) {
     : util.getChangedFiles(config.braveCoreDir, options.base, skipLogging)
 
   if (shouldRunPrettier) {
-    formatIssues.push(...(await runPrettier(filesToFormat, options.dryRun)))
+    formatIssues.push(
+      ...(await runPrettier(filesToFormat, options.dryRun ?? false)),
+    )
   }
   if (shouldRunMojomFormat) {
-    formatIssues.push(...(await runMojomFormat(filesToFormat, options.dryRun)))
+    formatIssues.push(
+      ...(await runMojomFormat(filesToFormat, options.dryRun ?? false)),
+    )
   }
 
   if (options.dryRun && formatIssues.length > 0) {
@@ -145,7 +160,11 @@ async function runFormat(options = {}) {
   }
 }
 
-const handleDifference = async (file, dryRun, formatted) => {
+const handleDifference = async (
+  file: string,
+  dryRun: boolean,
+  formatted: string,
+) => {
   if (!dryRun) {
     await fs.writeFile(file, formatted)
     return
@@ -164,19 +183,23 @@ const handleDifference = async (file, dryRun, formatted) => {
   }
 }
 
-const runPrettierForFile = async (file, dryRun, ignorePath) => {
-  const fileInfo = await prettier.getFileInfo(file, {
-    ignorePath: ignorePath,
+const runPrettierForFile = async (
+  file: string,
+  dryRun: boolean,
+  ignorePath: string,
+): Promise<string | undefined> => {
+  const fileInfo = await prettierGetFileInfo(file, {
+    ignorePath,
     withNodeModules: false,
   })
 
   if (fileInfo.ignored || !fileInfo.inferredParser) {
-    return ''
+    return undefined
   }
 
-  const options = await prettier.resolveConfig(file)
+  const options = await prettierResolveConfig(file)
   const content = await fs.readFile(file, { encoding: 'utf-8' })
-  const formatted = await prettier.format(content, {
+  const formatted = await prettierFormat(content, {
     ...options,
     filepath: file,
     parser: fileInfo.inferredParser,
@@ -184,17 +207,21 @@ const runPrettierForFile = async (file, dryRun, ignorePath) => {
   if (content !== formatted) {
     return await handleDifference(file, dryRun, formatted)
   }
-  return ''
+
+  return undefined
 }
 
-const runPrettier = async (files, dryRun) => {
+const runPrettier = async (
+  files: string[],
+  dryRun: boolean,
+): Promise<string[]> => {
   console.log('run prettier for', files.length, 'files')
   const ignorePath = path.join(config.braveCoreDir, '.prettierignore')
   if (!fs.existsSync(ignorePath)) {
     throw new Error(`${ignorePath} file not found`)
   }
 
-  const prettierIssues = []
+  const prettierIssues: string[] = []
   for (const file of files) {
     try {
       const issue = await runPrettierForFile(file, dryRun, ignorePath)
@@ -209,9 +236,12 @@ const runPrettier = async (files, dryRun) => {
   return prettierIssues
 }
 
-const runMojomFormatForFile = async (file, dryRun) => {
+const runMojomFormatForFile = async (
+  file: string,
+  dryRun: boolean,
+): Promise<string | undefined> => {
   if (!file.endsWith('.mojom')) {
-    return ''
+    return undefined
   }
   // Mojom formatting is experimental. Only these files are formatted by now.
   const mojomFormatAllowList = ['**/brave_wallet/**/*.mojom']
@@ -219,12 +249,12 @@ const runMojomFormatForFile = async (file, dryRun) => {
   if (
     !mojomFormatAllowList.some((pattern) => path.matchesGlob(file, pattern))
   ) {
-    return ''
+    return undefined
   }
 
   const content = await fs.readFile(file, { encoding: 'utf-8' })
   if (!content) {
-    return ''
+    return undefined
   }
 
   const mojomFormatArgs = [
@@ -254,11 +284,14 @@ const runMojomFormatForFile = async (file, dryRun) => {
   if (content !== formatted) {
     return await handleDifference(file, dryRun, formatted)
   }
-  return ''
+  return undefined
 }
 
-const runMojomFormat = async (files, dryRun) => {
-  const mojomFormatIssues = []
+const runMojomFormat = async (
+  files: string[],
+  dryRun: boolean,
+): Promise<string[]> => {
+  const mojomFormatIssues: string[] = []
   for (const file of files) {
     try {
       const issue = await runMojomFormatForFile(file, dryRun)
