@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { ChromiumElementPickerAPI } from './element_picker_api_chromium'
+import { ElementPickerAPIImpl } from './element_picker_api_impl'
 
 const NSSVG = 'http://www.w3.org/2000/svg'
 
@@ -17,7 +17,7 @@ let btnCreateDisabledText: string
 let btnShowRulesBoxText: string
 let btnHideRulesBoxText: string
 
-const api = new ChromiumElementPickerAPI()
+const api = new ElementPickerAPIImpl()
 
 // When the picker is activated, it eats all pointer events and takes up the
 // entire screen. All calls to document.elementFromPoint(..) will return the

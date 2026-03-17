@@ -21,10 +21,16 @@ transpile_web_ui("cosmetic_filters_resources") {
       ],
     ]
   } else {
-    entry_points = [ [
-          "content_cosmetic_ios",
-          rebase_path("content_cosmetic_ios.js"),
-        ] ]
+    entry_points = [
+      [
+        "content_cosmetic_ios",
+        rebase_path("content_cosmetic_ios.js"),
+      ],
+      [
+        "element_picker",
+        rebase_path("element_picker.ts"),
+      ],
+    ]
   }
 
   resource_name = "cosmetic_filters"
