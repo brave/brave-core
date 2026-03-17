@@ -36,6 +36,9 @@ bool IsVerticalTabOnRight(const BrowserWindowInterface* browser);
 bool ShouldHideVerticalTabsCompletelyWhenCollapsed(
     const BrowserWindowInterface* browser);
 
+// Returns true when the vertical tab toggle should be enabled.
+bool IsVerticalTabToggleEnabled(BrowserWindowInterface* browser);
+
 // Returns window caption buttons' width based on the current platform
 std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
     const BrowserWidget* frame);

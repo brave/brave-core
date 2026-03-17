@@ -34,6 +34,7 @@
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -396,6 +397,10 @@ void ToggleWindowTitleVisibilityForVerticalTabs(Browser* browser) {
 }
 
 void ToggleVerticalTabStrip(Browser* browser) {
+  if (!tabs::utils::IsVerticalTabToggleEnabled(browser)) {
+    return;
+  }
+
   auto* profile = browser->profile()->GetOriginalProfile();
   auto* prefs = profile->GetPrefs();
   const bool was_using_vertical_tab_strip =
