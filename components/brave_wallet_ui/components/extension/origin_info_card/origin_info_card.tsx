@@ -16,6 +16,7 @@ import {
   getIsBraveWalletOrigin,
   isComponentInStorybook,
 } from '../../../utils/string-utils'
+import { getLocale } from '../../../../common/locale'
 
 // Hooks
 import { useIsDAppVerified } from '../../../common/hooks/use_is_dapp_verified'
@@ -56,6 +57,8 @@ export const OriginInfoCard = (props: Props) => {
   // Computed
   const isBraveWallet = getIsBraveWalletOrigin(origin)
 
+  const originDisplayName = dapp ? dapp.name : origin.eTldPlusOne
+
   const dappIcon = dapp
     ? isStorybook
       ? dapp.logo
@@ -81,7 +84,7 @@ export const OriginInfoCard = (props: Props) => {
         bigger={orientation === 'vertical'}
       />
       <Column alignItems={orientation === 'vertical' ? 'center' : 'flex-start'}>
-        {isBraveWallet && provider && (
+        {!isBraveWallet && provider && (
           <OriginName
             textColor='primary'
             textAlign={orientation === 'horizontal' ? 'left' : undefined}
@@ -93,23 +96,27 @@ export const OriginInfoCard = (props: Props) => {
           textColor='primary'
           textAlign={orientation === 'horizontal' ? 'left' : undefined}
         >
-          {dapp ? dapp.name : origin.eTldPlusOne}
+          {isBraveWallet
+            ? getLocale('braveWalletPanelTitle')
+            : originDisplayName}
         </OriginName>
-        <Column
-          gap='4px'
-          alignItems={orientation === 'vertical' ? 'center' : 'flex-start'}
-        >
-          <OriginUrl
-            textColor='tertiary'
-            textAlign={orientation === 'horizontal' ? 'left' : undefined}
+        {!isBraveWallet && (
+          <Column
+            gap='4px'
+            alignItems={orientation === 'vertical' ? 'center' : 'flex-start'}
           >
-            <CreateSiteOrigin
-              originSpec={origin.originSpec}
-              eTldPlusOne={origin.eTldPlusOne}
-            />
-          </OriginUrl>
-          {(isDAppVerified || isBraveWallet) && <VerifiedLabel />}
-        </Column>
+            <OriginUrl
+              textColor='tertiary'
+              textAlign={orientation === 'horizontal' ? 'left' : undefined}
+            >
+              <CreateSiteOrigin
+                originSpec={origin.originSpec}
+                eTldPlusOne={origin.eTldPlusOne}
+              />
+            </OriginUrl>
+            {isDAppVerified && <VerifiedLabel />}
+          </Column>
+        )}
       </Column>
     </StyledWrapper>
   )
