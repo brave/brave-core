@@ -24,6 +24,10 @@ public struct KeyboardState {
     self.animationCurve = curve
   }
 
+  public var isLocal: Bool {
+    userInfo[UIResponder.keyboardIsLocalUserInfoKey] as? Bool ?? false
+  }
+
   /// Return the height of the keyboard that overlaps with the specified view. This is more
   /// accurate than simply using the height of UIKeyboardFrameBeginUserInfoKey since for example
   /// on iPad the overlap may be partial or if an external keyboard is attached, the intersection
