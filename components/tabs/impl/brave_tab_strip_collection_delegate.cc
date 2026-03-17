@@ -5,6 +5,8 @@
 
 #include "brave/components/tabs/public/brave_tab_strip_collection_delegate.h"
 
+#include "components/split_tabs/split_tab_visual_data.h"
+
 namespace tabs {
 
 BraveTabStripCollectionDelegate::BraveTabStripCollectionDelegate(
@@ -16,6 +18,18 @@ BraveTabStripCollectionDelegate::~BraveTabStripCollectionDelegate() = default;
 base::PassKey<BraveTabStripCollectionDelegate>
 BraveTabStripCollectionDelegate::GetPassKey() const {
   return {};
+}
+
+bool BraveTabStripCollectionDelegate::CreateSplit(
+    split_tabs::SplitTabId split_id,
+    const std::vector<TabInterface*>& tabs,
+    split_tabs::SplitTabVisualData visual_data) const {
+  return false;
+}
+
+tabs::TabCollection* BraveTabStripCollectionDelegate::GetCollectionForMapping(
+    tabs::TabCollection* root_collection) {
+  return root_collection;
 }
 
 }  // namespace tabs
