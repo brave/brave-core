@@ -39,8 +39,6 @@ chromium_presubmit_config.json5
 jest.config.js
 snapcraft.yaml
 
-# Needs to be refactored before being formatted
-/build/commands/lib/util.js
 # Ignored minified javascript
 components/brave_wallet/resources/solana_web3_script.js
 
