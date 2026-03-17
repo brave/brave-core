@@ -18,6 +18,7 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
@@ -694,3 +695,30 @@ IN_PROC_BROWSER_TEST_F(
                   ->GetExclusiveAccessContext()
                   ->IsExclusiveAccessBubbleDisplayed());
 }
+
+#if BUILDFLAG(IS_MAC)
+// Immersive fullscreen: (1) when vertical tabs are off at startup, immersive
+// is available and is disabled at runtime when vertical tabs are turned on;
+// (2) when vertical tabs were on at startup, immersive stays disabled for the
+// window's lifetime (essential immersive objects are not created then).
+IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
+                       ImmersiveModeAndVerticalTabsAtStartup) {
+  // Default browser: vertical tabs off at startup.
+  ASSERT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  EXPECT_TRUE(brave_browser_view()->UsesImmersiveFullscreenMode());
+  ToggleVerticalTabStrip();
+  EXPECT_FALSE(brave_browser_view()->UsesImmersiveFullscreenMode());
+
+  // Second window: vertical tabs on at startup.
+  browser()->profile()->GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled,
+                                               true);
+  Browser* browser_with_vertical_at_startup =
+      CreateBrowser(browser()->profile());
+  BraveBrowserView* view_with_vertical_at_startup = BraveBrowserView::From(
+      BrowserView::GetBrowserViewForBrowser(browser_with_vertical_at_startup));
+  EXPECT_FALSE(view_with_vertical_at_startup->UsesImmersiveFullscreenMode());
+  brave::ToggleVerticalTabStrip(browser_with_vertical_at_startup);
+  view_with_vertical_at_startup->DeprecatedLayoutImmediately();
+  EXPECT_FALSE(view_with_vertical_at_startup->UsesImmersiveFullscreenMode());
+}
+#endif  // BUILDFLAG(IS_MAC)
