@@ -95,6 +95,7 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
   auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
       std::move(mock), nullptr, std::move(views));
 
-  EXPECT_EQ(layout->GetTopSeparatorType(),
-            BrowserViewTabbedLayoutImpl::TopSeparatorType::kNone);
+  // TopSeparatorType::kNone (0) - no top separator when top UI is hidden.
+  // TopSeparatorType is private member.
+  EXPECT_EQ(0, static_cast<int>(layout->GetTopSeparatorType()));
 }
