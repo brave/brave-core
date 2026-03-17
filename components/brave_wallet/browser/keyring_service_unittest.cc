@@ -2948,7 +2948,7 @@ TEST_F(KeyringServiceUnitTest, AddAccountsWithDefaultName) {
   EXPECT_EQ(account_infos[4]->name, "Account 5");
 }
 
-TEST_F(KeyringServiceUnitTest, SignMessageByDefaultKeyring) {
+TEST_F(KeyringServiceUnitTest, SignMessageByEthereumKeyring) {
   // HDKeyringUnitTest.SignMessage already tests the correctness of signature
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(RestoreWallet(&service, kMnemonicDivideCruise, "brave", false));
@@ -2956,29 +2956,21 @@ TEST_F(KeyringServiceUnitTest, SignMessageByDefaultKeyring) {
 
   auto account1 = GetAccountUtils(&service).EthAccountId(0);
 
-  const std::vector<uint8_t> message = {0xde, 0xad, 0xbe, 0xef};
-  EXPECT_TRUE(service.SignMessageByDefaultKeyring(account1, message, false)
-                  .has_value());
+  const auto message = KeccakHash({0xde, 0xad, 0xbe, 0xef});
+  EXPECT_TRUE(
+      service.SignMessageByEthereumKeyring(account1, message).has_value());
 
   // message is 0x
-  EXPECT_TRUE(
-      service
-          .SignMessageByDefaultKeyring(account1, std::vector<uint8_t>(), false)
-          .has_value());
+  EXPECT_TRUE(service.SignMessageByEthereumKeyring(account1, KeccakHash({}))
+                  .has_value());
 
   // not a valid account in this wallet
   auto invalid_account = GetAccountUtils(&service).EthUnkownAccountId();
-  EXPECT_EQ(
-      service.SignMessageByDefaultKeyring(invalid_account, message, false)
-          .error(),
-      l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_INVALID_ADDRESS,
-                                base::ASCIIToUTF16(invalid_account->address)));
+  EXPECT_FALSE(service.SignMessageByEthereumKeyring(invalid_account, message));
 
   // Cannot sign message when locked
   service.Lock();
-  EXPECT_EQ(
-      service.SignMessageByDefaultKeyring(account1, message, false).error(),
-      l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_UNLOCK_FIRST));
+  EXPECT_FALSE(service.SignMessageByEthereumKeyring(account1, message));
 }
 
 TEST_F(KeyringServiceUnitTest, GetSetAutoLockMinutes) {

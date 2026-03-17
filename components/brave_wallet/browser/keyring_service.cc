@@ -2441,42 +2441,21 @@ std::optional<std::string> KeyringService::GetDiscoveryAddress(
   return std::nullopt;
 }
 
-void KeyringService::SignTransactionByDefaultKeyring(
+std::optional<Secp256k1Signature> KeyringService::SignMessageByEthereumKeyring(
     const mojom::AccountIdPtr& account_id,
-    EthTransaction* tx) {
+    const KeccakHashArray& hashed_message) {
   auto* keyring = GetKeyring<EthereumKeyring>(account_id);
   if (!keyring) {
-    return;
+    return std::nullopt;
   }
-  keyring->SignTransaction(account_id->address, tx);
+
+  return keyring->SignMessage(account_id->address, hashed_message);
 }
 
-base::expected<std::vector<uint8_t>, std::string>
-KeyringService::SignMessageByDefaultKeyring(
-    const mojom::AccountIdPtr& account_id,
-    base::span<const uint8_t> message,
-    bool is_eip712) {
-  auto* keyring = GetKeyring<EthereumKeyring>(account_id);
-  if (!keyring) {
-    return base::unexpected(
-        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_UNLOCK_FIRST));
-  }
-
-  auto address = account_id->address;
-  // MM currently doesn't provide chain_id when signing message
-  auto signature = keyring->SignMessage(address, message, 0, is_eip712);
-  if (!signature) {
-    return base::unexpected(
-        l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_INVALID_ADDRESS,
-                                  base::ASCIIToUTF16(address)));
-  }
-  return base::ok(*signature);
-}
-
-std::optional<std::string> KeyringService::RecoverAddressByDefaultKeyring(
-    base::span<const uint8_t> message,
-    base::span<const uint8_t> eth_signature) {
-  return EthereumKeyring::RecoverAddress(message, eth_signature);
+std::optional<std::string> KeyringService::RecoverAddressByEthereumKeyring(
+    const KeccakHashArray& message_hash,
+    const Secp256k1Signature& signature) {
+  return EthereumKeyring::RecoverAddress(message_hash, signature);
 }
 
 bool KeyringService::GetPublicKeyFromX25519_XSalsa20_Poly1305ByDefaultKeyring(

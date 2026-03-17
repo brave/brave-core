@@ -15,13 +15,13 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -53,6 +53,7 @@ class KeyringServiceUnitTest;
 class PasswordEncryptor;
 class PolkadotImportKeyring;
 class PolkadotKeyring;
+class Secp256k1Signature;
 class SolanaKeyring;
 class SolanaProviderImplUnitTest;
 class ZCashKeyring;
@@ -169,25 +170,22 @@ class KeyringService : public mojom::KeyringService {
                       const std::string& name,
                       SetAccountNameCallback callback) override;
   void Reset(bool notify_observer = true);
-  void SignTransactionByDefaultKeyring(const mojom::AccountIdPtr& account_id,
-                                       EthTransaction* tx);
   std::optional<std::string> SignTransactionByFilecoinKeyring(
       const mojom::AccountIdPtr& account_id,
       const FilTransaction& tx);
   std::optional<std::string> GetDiscoveryAddress(mojom::KeyringId keyring_id,
                                                  int index);
 
-  base::expected<std::vector<uint8_t>, std::string> SignMessageByDefaultKeyring(
+  std::optional<Secp256k1Signature> SignMessageByEthereumKeyring(
       const mojom::AccountIdPtr& account_id,
-      base::span<const uint8_t> message,
-      bool is_eip712);
+      const KeccakHashArray& hashed_message);
 
   std::vector<uint8_t> SignMessageBySolanaKeyring(
       const mojom::AccountIdPtr& account_id,
       base::span<const uint8_t> message);
-  std::optional<std::string> RecoverAddressByDefaultKeyring(
-      base::span<const uint8_t> message,
-      base::span<const uint8_t> eth_signature);
+  std::optional<std::string> RecoverAddressByEthereumKeyring(
+      const KeccakHashArray& message_hash,
+      const Secp256k1Signature& signature);
   bool GetPublicKeyFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
       const mojom::AccountIdPtr& account_id,
       std::string* key);
