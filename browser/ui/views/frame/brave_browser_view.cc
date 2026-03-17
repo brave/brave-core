@@ -1214,7 +1214,7 @@ ClientFrameElementInfo BraveBrowserView::GetFrameElementInfo() const {
 
 #if BUILDFLAG(IS_MAC)
 bool BraveBrowserView::UsesImmersiveFullscreenMode() const {
-  // Disable immersive when vertical tabs were on at startup—overlay_widget_ is
+  // Disable immersive when vertical tabs were on at startup overlay_widget_ is
   // not created in that case, so immersive would crash.
   if (vertical_tabs_on_at_startup_) {
     return false;
