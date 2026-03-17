@@ -41,6 +41,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_change_type.h"
@@ -358,6 +359,20 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   }
 
   UpdateCommandEnabled(IDC_FORCE_PASTE, true);
+}
+
+void BraveBrowserCommandController::UpdateCommandsForFullscreenMode() {
+  BrowserCommandController::UpdateCommandsForFullscreenMode();
+
+// On macOS, we block vertical tab mode toggling in fullscreen.
+// Immersive fullscreen feeature is enabled by default but
+// it's not compatible with vertical tab. See the comments in
+// BraveBrowserView::UsesImmersiveFullscreenMode() for more datail. Otherwise,
+// crash happens when turn on vertical tab while fullscreen.
+#if BUILDFLAG(IS_MAC)
+  UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS,
+                       window() && !window()->IsFullscreen());
+#endif
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {

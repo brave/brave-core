@@ -13,8 +13,11 @@
   friend class BraveBrowserCommandController; \
   void OnTabStripModelChanged
 
+#define UpdateCommandsForFullscreenMode virtual UpdateCommandsForFullscreenMode
+
 #include <chrome/browser/ui/browser_command_controller.h>  // IWYU pragma: export
 
+#undef UpdateCommandsForFullscreenMode
 #undef OnTabStripModelChanged
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_COMMAND_CONTROLLER_H_

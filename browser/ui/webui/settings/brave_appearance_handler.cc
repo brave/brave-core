@@ -13,11 +13,16 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/instant_service.h"
 #include "chrome/browser/search/instant_service_factory.h"
+#include "chrome/browser/ui/browser_command_controller.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_ui.h"
 
 BraveAppearanceHandler::BraveAppearanceHandler() = default;
@@ -48,6 +53,39 @@ void BraveAppearanceHandler::RegisterMessages() {
       base::BindRepeating(
           &BraveAppearanceHandler::ShouldShowNewTabDashboardSettings,
           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getIsVerticalTabsToggleEnabled",
+      base::BindRepeating(
+          &BraveAppearanceHandler::GetIsVerticalTabsToggleEnabled,
+          base::Unretained(this)));
+
+  if (auto* tab = tabs::TabInterface::MaybeGetFromContents(
+          web_ui()->GetWebContents())) {
+    command_updater_ = tab->GetBrowserWindowInterface()
+                           ->GetFeatures()
+                           .browser_command_controller();
+  }
+}
+
+void BraveAppearanceHandler::OnJavascriptAllowed() {
+  if (command_updater_) {
+    command_updater_->AddCommandObserver(IDC_TOGGLE_VERTICAL_TABS, this);
+  }
+}
+
+void BraveAppearanceHandler::OnJavascriptDisallowed() {
+  if (command_updater_) {
+    command_updater_->RemoveCommandObserver(IDC_TOGGLE_VERTICAL_TABS, this);
+  }
+}
+
+void BraveAppearanceHandler::EnabledStateChangedForCommand(int id,
+                                                           bool enabled) {
+  DCHECK_EQ(id, IDC_TOGGLE_VERTICAL_TABS);
+  if (IsJavascriptAllowed()) {
+    FireWebUIListener("vertical-tabs-toggle-enabled-changed",
+                      base::Value(enabled));
+  }
 }
 
 void BraveAppearanceHandler::OnPreferenceChanged(const std::string& pref_name) {
@@ -76,4 +114,13 @@ void BraveAppearanceHandler::ShouldShowNewTabDashboardSettings(
   AllowJavascript();
   ResolveJavascriptCallback(
       args[0], base::Value(brave::ShouldNewTabShowDashboard(profile_)));
+}
+
+void BraveAppearanceHandler::GetIsVerticalTabsToggleEnabled(
+    const base::ListValue& args) {
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+  const bool enabled = !command_updater_ || command_updater_->IsCommandEnabled(
+                                                IDC_TOGGLE_VERTICAL_TABS);
+  ResolveJavascriptCallback(args[0], base::Value(enabled));
 }
