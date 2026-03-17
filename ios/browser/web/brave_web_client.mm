@@ -13,6 +13,7 @@
 #include "base/notimplemented.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/constants/url_constants.h"
+#include "brave/ios/browser/ai_chat/ai_chat_distiller_javascript_feature.h"
 #include "brave/ios/browser/api/profile/profile_bridge_impl.h"
 #include "brave/ios/browser/api/web_view/brave_web_view_internal.h"
 #include "brave/ios/browser/brave_ads/ads_media_reporting_javascript_feature.h"
@@ -110,6 +111,7 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
     // counterpart in //brave-ios
     features.push_back(
         brave_ads::AdsMediaReportingJavaScriptFeature::GetInstance());
+    features.push_back(AIChatDistillerJavaScriptFeature::GetInstance());
     features.push_back(DeAmpJavaScriptFeature::GetInstance());
     features.push_back(DocumentFetchJavaScriptFeature::GetInstance());
     features.push_back(ForcePasteJavaScriptFeature::GetInstance());
