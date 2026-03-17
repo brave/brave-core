@@ -159,6 +159,23 @@ export class Config {
     this.is_msan = getEnvConfig(['is_msan'])
     this.is_ubsan = getEnvConfig(['is_ubsan'])
     this.use_no_gn_gen = getEnvConfig(['use_no_gn_gen'])
+
+    this.chromiumCustomDeps = envConfig.getMergedObject([
+      'projects',
+      'chrome',
+      'custom_deps',
+    ])
+    this.chromiumCustomVars = {
+      'checkout_pgo_profiles': this.isBraveReleaseBuild(),
+      ...(this.rbeService
+        ? {
+            'reapi_address': this.rbeService,
+            'reapi_backend_config_path': 'google.star',
+            'reapi_instance': 'default',
+          }
+        : {}),
+      ...envConfig.getMergedObject(['projects', 'chrome', 'custom_vars']),
+    }
   }
 
   isReleaseBuild() {
@@ -751,24 +768,6 @@ export class Config {
       cwd: this.srcDir,
       git_cwd: '.',
     })
-  }
-
-  get chromiumCustomDeps() {
-    return envConfig.getMergedObject(['projects', 'chrome', 'custom_deps'])
-  }
-
-  get chromiumCustomVars() {
-    return {
-      'checkout_pgo_profiles': this.isBraveReleaseBuild(),
-      ...(this.rbeService
-        ? {
-            'reapi_address': this.rbeService,
-            'reapi_backend_config_path': 'google.star',
-            'reapi_instance': 'default',
-          }
-        : {}),
-      ...envConfig.getMergedObject(['projects', 'chrome', 'custom_vars']),
-    }
   }
 
   get outputDir() {
