@@ -24,6 +24,7 @@
 #include "brave/ios/browser/web/force_paste/force_paste_javascript_feature.h"
 #include "brave/ios/browser/web/logins/logins_javascript_feature.h"
 #include "brave/ios/browser/web/page_metadata/page_metadata_javascript_feature.h"
+#include "brave/ios/browser/web/reader_mode/reader_mode_javascript_feature.h"
 #include "components/autofill/ios/browser/autofill_java_script_feature.h"
 #include "components/autofill/ios/browser/suggestion_controller_java_script_feature.h"
 #include "components/autofill/ios/form_util/form_handlers_java_script_feature.h"
@@ -116,6 +117,7 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
     features.push_back(DocumentFetchJavaScriptFeature::GetInstance());
     features.push_back(ForcePasteJavaScriptFeature::GetInstance());
     features.push_back(PageMetadataJavaScriptFeature::GetInstance());
+    features.push_back(brave::ReaderModeJavaScriptFeature::GetInstance());
 
     if (!base::FeatureList::IsEnabled(
             brave::features::kUseChromiumWebViewsAutofill)) {

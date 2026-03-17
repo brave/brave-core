@@ -38,6 +38,7 @@ source_set("web_view") {
     "//brave/ios/browser/web/force_paste",
     "//brave/ios/browser/web/logins",
     "//brave/ios/browser/web/page_metadata",
+    "//brave/ios/browser/web/reader_mode",
     "//brave/ios/web_view",
     "//ios/chrome/browser/affiliations/model",
     "//ios/chrome/browser/autofill/model",
