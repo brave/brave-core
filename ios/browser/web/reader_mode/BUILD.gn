@@ -1,0 +1,40 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/web/public/js_messaging/optimize_ts.gni")
+
+source_set("reader_mode") {
+  sources = [
+    "reader_mode_javascript_feature.h",
+    "reader_mode_javascript_feature.mm",
+  ]
+  deps = [
+    ":brave_reader_mode_js",
+    ":readability_js",
+    "//base",
+    "//ios/web/public",
+    "//ios/web/public/js_messaging",
+  ]
+}
+
+# Bundle Readability.js and Readability-readerable.js as-is to avoid rollup
+# warnings from its non-module format.
+bundle_data("readability_js") {
+  visibility = [ ":reader_mode" ]
+  sources = [
+    "//brave/node_modules/@mozilla/Readability/Readability-readerable.js",
+    "//brave/node_modules/@mozilla/Readability/Readability.js",
+  ]
+  outputs = [ "{{bundle_resources_dir}}/{{source_file_part}}" ]
+}
+
+optimize_ts("brave_reader_mode_js") {
+  visibility = [ ":reader_mode" ]
+
+  sources = [ "resources/brave_reader_mode.ts" ]
+
+  deps = [ "//ios/web/public/js_messaging:gcrweb" ]
+}

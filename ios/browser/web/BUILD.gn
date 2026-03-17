@@ -30,6 +30,7 @@ source_set("web") {
     "//brave/ios/browser/web/force_paste",
     "//brave/ios/browser/web/logins",
     "//brave/ios/browser/web/page_metadata",
+    "//brave/ios/browser/web/reader_mode",
     "//components/component_updater/installer_policies",
     "//components/translate/ios/browser",
     "//ios/chrome/browser/application_context/model",
