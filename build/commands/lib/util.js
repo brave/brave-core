@@ -9,7 +9,7 @@ import readline from 'node:readline'
 import os from 'node:os'
 import config from './config.js'
 import fs from 'fs-extra'
-import {glob, writeFile} from 'node:fs/promises'
+import { glob, writeFile } from 'node:fs/promises'
 import crypto from 'node:crypto'
 import Log from './logging.js'
 import assert from 'node:assert'
@@ -18,15 +18,14 @@ import ActionGuard from './actionGuard.js'
 import { GitPatcher } from './gitPatcher.js'
 import { getBuildArgs } from './buildArgs.ts'
 
-
 // Do not limit the number of listeners to avoid warnings from EventEmitter.
 process.setMaxListeners(0)
 
 async function generateInstrumentationFile(instrumentationFile) {
   const files = await Array.fromAsync(glob(`**/*.{cc,c,h,cpp,hpp,m,mm}`))
 
-  const paths = files.map(x => `../../brave/${x}`)
-  await fs.mkdirp(path.dirname(instrumentationFile));
+  const paths = files.map((x) => `../../brave/${x}`)
+  await fs.mkdirp(path.dirname(instrumentationFile))
   await writeFile(instrumentationFile, paths.join('\n'), 'utf-8')
 }
 
@@ -161,8 +160,8 @@ const getAdditionalGenLocation = () => {
       return 'android_clang_x86'
     }
   } else if (
-    (process.platform === 'darwin' || process.platform === 'linux') &&
-    config.targetArch === 'arm64'
+    (process.platform === 'darwin' || process.platform === 'linux')
+    && config.targetArch === 'arm64'
   ) {
     return 'clang_x64_v8_arm64'
   }
@@ -175,12 +174,17 @@ const normalizeCommand = (cmd, args) => {
     args = ['/c', cmd, ...args]
     cmd = 'cmd'
   }
-  return [ cmd, args ]
+  return [cmd, args]
 }
 
 const util = {
   generateInstrumentationFile,
-  runProcess: (cmd, args = [], options = /** @type {Record<string, any>} */ ({}), skipLogging = false) => {
+  runProcess: (
+    cmd,
+    args = [],
+    options = /** @type {Record<string, any>} */ ({}),
+    skipLogging = false,
+  ) => {
     if (!skipLogging) {
       Log.command(options.cwd, cmd, args)
     }
@@ -205,7 +209,11 @@ const util = {
   },
 
   runGit: (repoPath, gitArgs, continueOnFail = false, options = {}) => {
-    let prog = util.run('git', gitArgs, { cwd: repoPath, continueOnFail, ...options})
+    let prog = util.run('git', gitArgs, {
+      cwd: repoPath,
+      continueOnFail,
+      ...options,
+    })
 
     if (prog.status !== 0) {
       return ''
@@ -214,7 +222,11 @@ const util = {
     }
   },
 
-  runAsync: (cmd, args = [], options = /** @type {Record<string, any>} */ ({})) => {
+  runAsync: (
+    cmd,
+    args = [],
+    options = /** @type {Record<string, any>} */ ({}),
+  ) => {
     let { continueOnFail, verbose, onStdErrLine, onStdOutLine, ...cmdOptions } =
       options
     if (verbose !== false) {
@@ -273,11 +285,10 @@ const util = {
           }
         }
         if (hasFailed) {
-          const err = /** @type {Error & {stderr: string, stdout: string, statusCode: number}} */ (
-            new Error(
-              `Program ${cmd} exited with error code ${statusCode}.`,
+          const err =
+            /** @type {Error & {stderr: string, stdout: string, statusCode: number}} */ (
+              new Error(`Program ${cmd} exited with error code ${statusCode}.`)
             )
-          )
           err.stderr = stderr
           err.stdout = stdout
           err.statusCode = statusCode
@@ -418,10 +429,9 @@ const util = {
 
       if (fs.existsSync(overriddenFile)) {
         // If overriddenFile is older than file in chromium_src, touch it to trigger rebuild.
-        isDirty = updateFileUTimesIfOverrideIsNewer(
-          overriddenFile,
-          chromiumSrcFile,
-        ) || isDirty
+        isDirty =
+          updateFileUTimesIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
+          || isDirty
       } else {
         // If the original file doesn't exist, assume that it's in the gen dir.
         overriddenFile = path.join(
@@ -429,7 +439,9 @@ const util = {
           'gen',
           relativeChromiumSrcFile,
         )
-        isDirty = deleteFileIfOverrideIsNewer(overriddenFile, chromiumSrcFile) || isDirty
+        isDirty =
+          deleteFileIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
+          || isDirty
         // Also check the secondary gen dir, if exists
         if (additionalGen) {
           overriddenFile = path.join(
@@ -438,10 +450,9 @@ const util = {
             'gen',
             relativeChromiumSrcFile,
           )
-          isDirty = deleteFileIfOverrideIsNewer(
-            overriddenFile,
-            chromiumSrcFile,
-          ) || isDirty
+          isDirty =
+            deleteFileIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
+            || isDirty
         }
       }
     })
@@ -504,9 +515,9 @@ const util = {
 
     // Only build if the source has changed.
     if (
-      fs.existsSync(redirectCC) &&
-      fs.statSync(redirectCC).mtime >=
-        fs.statSync(
+      fs.existsSync(redirectCC)
+      && fs.statSync(redirectCC).mtime
+        >= fs.statSync(
           path.join(
             config.braveCoreDir,
             'tools',
@@ -562,11 +573,11 @@ const util = {
       const internalOpts = shouldCheck ? ['--check'] : []
 
       const shouldRunGnGen =
-        config.force_gn_gen ||
-        !doesBuildNinjaExist ||
-        hasBuildArgsUpdated ||
-        shouldCheck ||
-        wasInterrupted
+        config.force_gn_gen
+        || !doesBuildNinjaExist
+        || hasBuildArgsUpdated
+        || shouldCheck
+        || wasInterrupted
 
       if (shouldRunGnGen) {
         util.run(
@@ -734,11 +745,11 @@ const util = {
     const buildGuard = new ActionGuard(path.join(outputDir, 'build.guard'))
     try {
       if (
-        config.isCI &&
+        config.isCI
         // Release builds can have steps that can be interrupted by timeouts. We
         // don't want to clean the build in this case.
-        !config.isBraveReleaseBuild() &&
-        buildGuard.wasInterrupted()
+        && !config.isBraveReleaseBuild()
+        && buildGuard.wasInterrupted()
       ) {
         await util.runAsync('gn', ['clean', outputDir], options)
       }
@@ -753,7 +764,9 @@ const util = {
         // Split the output into lines to correctly display on Teamcity.
         const lines = sisoOutput.split('\n')
         // Output starting from the first "FAILED:" line, or full file.
-        const failedIndex = lines.findIndex(line => line.startsWith('FAILED:'))
+        const failedIndex = lines.findIndex((line) =>
+          line.startsWith('FAILED:'),
+        )
         const startIndex = failedIndex !== -1 ? failedIndex : 0
         for (let i = startIndex; i < lines.length; i++) {
           Log.error(lines[i])
@@ -898,8 +911,11 @@ const util = {
       return dotGitPath
     }
     // Returns the actual .git dir in case a worktree is used.
-    const gitDir = util.runGit(repoDir, ['rev-parse', '--git-common-dir'],
-                               false)
+    const gitDir = util.runGit(
+      repoDir,
+      ['rev-parse', '--git-common-dir'],
+      false,
+    )
     if (!gitDir) {
       return null
     }
@@ -944,13 +960,15 @@ const util = {
   },
 
   modifyGitExclusions: (repoDir, { add = [], remove = [] }) => {
-    const excludeFileName =
-        util.getGitInfoExcludeFileName(repoDir, add.length > 0)
+    const excludeFileName = util.getGitInfoExcludeFileName(
+      repoDir,
+      add.length > 0,
+    )
     if (!excludeFileName) {
       return
     }
     let lines = fs.readFileSync(excludeFileName).toString().split(/\r?\n/)
-    lines = lines.filter(line => !remove.includes(line))
+    lines = lines.filter((line) => !remove.includes(line))
     for (const exclusion of add) {
       if (!lines.includes(exclusion)) {
         lines.push(exclusion)
