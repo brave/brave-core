@@ -6,7 +6,6 @@
 #include "brave/browser/brave_profile_prefs.h"
 
 #include <string>
-#include <string_view>
 
 #include "base/feature_list.h"
 #include "brave/browser/brave_browser_features.h"
@@ -53,6 +52,7 @@
 #include "brave/components/query_filter/pref_names.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "brave/components/serp_metrics/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
@@ -175,10 +175,6 @@ using extensions::FeatureSwitch;
 namespace brave {
 
 namespace {
-
-// Deprecated 2026-03.
-constexpr std::string_view kDeprecatedSerpMetricsTimePeriodStorage =
-    "brave.stats.serp_metrics";
 
 void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
 #if BUILDFLAG(IS_ANDROID)
@@ -389,7 +385,8 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterBooleanPref(prefs::kAddOpenSearchEngines, false);
 
   // Added 2026-03
-  registry->RegisterDictionaryPref(kDeprecatedSerpMetricsTimePeriodStorage);
+  registry->RegisterDictionaryPref(
+      serp_metrics::prefs::kDeprecatedSerpMetricsTimePeriodStorage);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {

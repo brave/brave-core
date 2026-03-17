@@ -39,6 +39,10 @@ static_library("features") {
   public_deps = [ "//base" ]
 }
 
+source_set("prefs") {
+  public = [ "pref_names.h" ]
+}
+
 source_set("unit_tests") {
   testonly = true
 
