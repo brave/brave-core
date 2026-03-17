@@ -146,12 +146,16 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     @Override
     public void onResume() {
         super.onResume();
-        // Run updateBravePreferences() after finishing MainPreferences::updatePreferences().
-        // Otherwise, some prefs could be added after finishing updateBravePreferences().
+
+        // We need to organise the Brave preferences right away so all the theming is applied
+        // correctly.
+        organiseBravePreferences();
+        // Run prepareBravePreferences() after finishing MainPreferences::updatePreferences().
+        // Otherwise, some prefs could be added after finishing prepareBravePreferences().
         // Defers execution until after the current call stack completes.
         // Allows the fragment lifecycle to fully complete before updating preferences.
         // Prevents timing issues where preferences might not be fully initialized yet.
-        PostTask.postTask(TaskTraits.UI_DEFAULT, this::updateBravePreferences);
+        PostTask.postTask(TaskTraits.UI_DEFAULT, this::prepareBravePreferences);
         if (mAccountController != null) {
             mAccountController.updateUI();
         }
@@ -221,7 +225,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         }
     }
 
-    private void updateBravePreferences() {
+    private void organiseBravePreferences() {
         // Below prefs are removed from main settings.
         removePreferenceIfPresent(MainSettings.PREF_SIGN_IN);
         removePreferenceIfPresent(MainSettings.PREF_SEARCH_ENGINE);
@@ -255,6 +259,9 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             removePreferenceIfPresent(PREF_BACKGROUND_IMAGES);
         }
+    }
+
+    private void prepareBravePreferences() {
         setCustomTabPreference();
         setAutofillPrivateWindowPreference();
     }
