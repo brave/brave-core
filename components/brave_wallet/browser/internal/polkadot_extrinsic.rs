@@ -7,44 +7,13 @@ use ffi::CxxPolkadotDecodeUnsignedTransfer;
 use parity_scale_codec::{Compact, Decode, Encode};
 use std::fmt;
 
+mod polkadot_chain_metadata;
+
 const SIGNED_EXTRINSIC: u8 = 0x80;
 const EXTRINSIC_VERSION: u8 = 0x04;
 const MULTIADDRESS_TYPE: u8 = 0x00;
 const SR25519_SIGNATURE: u8 = 0x01;
 const PERIOD: u32 = 64;
-
-// "Balances" pallet lives at index 4:
-// https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/kusama-json.json#L921
-// https://github.com/paritytech/polkadot-sdk/blob/69f210b33fce91b23570f3bda64f8e3deff04843/polkadot/runtime/westend/src/lib.rs#L1853-L1854
-const POLKADOT_TESTNET: CxxPolkadotChainMetadata = CxxPolkadotChainMetadata {
-    balances_pallet_index: 4,
-    transfer_allow_death_call_index: 0,
-    ss58_prefix: 42,
-};
-
-// "Balances" pallet lives at index 10:
-// https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/asset-hub-kusama-json.json#L969
-const POLKADOT_ASSET_HUB_TESTNET: CxxPolkadotChainMetadata = CxxPolkadotChainMetadata {
-    balances_pallet_index: 10,
-    transfer_allow_death_call_index: 0,
-    ss58_prefix: 42,
-};
-
-// "Balances" pallet lives at index 5:
-// https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/polkadot-json.json#L1096
-const POLKADOT_MAINNET: CxxPolkadotChainMetadata = CxxPolkadotChainMetadata {
-    balances_pallet_index: 5,
-    transfer_allow_death_call_index: 0,
-    ss58_prefix: 0,
-};
-
-// "Balances" pallet lives at index 10:
-// https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/asset-hub-polkadot-json.json#L969
-const POLKADOT_ASSET_HUB_MAINNET: CxxPolkadotChainMetadata = CxxPolkadotChainMetadata {
-    balances_pallet_index: 10,
-    transfer_allow_death_call_index: 0,
-    ss58_prefix: 0,
-};
 
 const UNSIGNED_TRANSFER_ALLOW_DEATH_MIN_LEN: usize = 1  /* extrinsic version */
                                                    + 1  /* pallet index */
@@ -62,18 +31,16 @@ mod ffi {
         pub send_amount_bytes: [u8; 16],
     }
 
+    #[derive(Clone, Copy)]
+    pub struct CxxPolkadotChainMetadata {
+        pub balances_pallet_index: u8,
+        pub transfer_allow_death_call_index: u8,
+        pub ss58_prefix: u16,
+        pub spec_version: u32,
+    }
+
     extern "Rust" {
-        type CxxPolkadotChainMetadata;
-        type CxxPolkadotChainMetadataResult;
-
         fn compact_scale_encode_u32(x: u32) -> Vec<u8>;
-
-        fn get_ss58_prefix(chain_metadata: &CxxPolkadotChainMetadata) -> u16;
-        fn clone_metadata(self: &CxxPolkadotChainMetadata) -> Box<CxxPolkadotChainMetadata>;
-
-        fn is_ok(self: &CxxPolkadotChainMetadataResult) -> bool;
-        fn error_message(self: &CxxPolkadotChainMetadataResult) -> String;
-        fn unwrap(self: &mut CxxPolkadotChainMetadataResult) -> Box<CxxPolkadotChainMetadata>;
 
         type CxxPolkadotDecodeUnsignedTransferResult;
 
@@ -82,8 +49,6 @@ mod ffi {
         fn unwrap(
             self: &mut CxxPolkadotDecodeUnsignedTransferResult,
         ) -> Box<CxxPolkadotDecodeUnsignedTransfer>;
-
-        fn make_chain_metadata(chain_name: &str) -> Box<CxxPolkadotChainMetadataResult>;
 
         fn encode_unsigned_transfer_allow_death(
             chain_metadata: &CxxPolkadotChainMetadata,
@@ -124,6 +89,8 @@ mod ffi {
     }
 }
 
+pub(crate) use ffi::CxxPolkadotChainMetadata;
+
 #[macro_export]
 macro_rules! impl_result {
     ($t:ident, $r:ident) => {
@@ -157,8 +124,6 @@ macro_rules! impl_result {
 pub enum Error {
     /// The Result has already been unwrapped.
     AlreadyUnwrapped,
-    /// The supplied chain name did not match our hard-coded whitelist.
-    ChainNameNotFound,
     /// Invalid SCALE value found.
     InvalidScale,
     /// Invalid metadata such as the wrong pallet index or call index.
@@ -170,9 +135,6 @@ pub enum Error {
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Error::ChainNameNotFound => {
-                write!(f, "The supplied chain spec name did not match the whitelist.")
-            }
             Error::AlreadyUnwrapped => write!(f, "Already unwrapped."),
             Error::InvalidScale => write!(f, "Invalid SCALE-encoded bytes were found."),
             Error::InvalidMetadata => write!(f, "Invalid chain metadata was encountered."),
@@ -181,37 +143,7 @@ impl fmt::Display for Error {
     }
 }
 
-#[derive(Clone, Copy)]
-struct CxxPolkadotChainMetadata {
-    balances_pallet_index: u8,
-    transfer_allow_death_call_index: u8,
-    ss58_prefix: u16,
-}
-
-fn get_ss58_prefix(chain_metadata: &CxxPolkadotChainMetadata) -> u16 {
-    chain_metadata.ss58_prefix
-}
-
-impl CxxPolkadotChainMetadata {
-    fn clone_metadata(self: &CxxPolkadotChainMetadata) -> Box<CxxPolkadotChainMetadata> {
-        Box::new(*self)
-    }
-}
-
-impl_result!(CxxPolkadotChainMetadata, CxxPolkadotChainMetadataResult);
 impl_result!(CxxPolkadotDecodeUnsignedTransfer, CxxPolkadotDecodeUnsignedTransferResult);
-
-fn make_chain_metadata(chain_name: &str) -> Box<CxxPolkadotChainMetadataResult> {
-    let metadata = match chain_name {
-        "Westend" => Ok(POLKADOT_TESTNET),
-        "Westend Asset Hub" => Ok(POLKADOT_ASSET_HUB_TESTNET),
-        "Polkadot Asset Hub" => Ok(POLKADOT_ASSET_HUB_MAINNET),
-        "Polkadot" => Ok(POLKADOT_MAINNET),
-        _ => Err(Error::ChainNameNotFound),
-    };
-
-    Box::new(CxxPolkadotChainMetadataResult(metadata))
-}
 
 fn encode_unsigned_transfer_allow_death(
     chain_metadata: &CxxPolkadotChainMetadata,
