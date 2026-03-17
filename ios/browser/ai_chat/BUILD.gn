@@ -29,6 +29,7 @@ source_set("ai_chat") {
   ]
 
   deps = [
+    ":ai_chat_distiller_js",
     "//base",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
