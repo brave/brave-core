@@ -1,0 +1,11 @@
+diff --git a/chromium/config/Chrome/linux/x64/libavcodec/codec_list.c b/chromium/config/Chrome/linux/x64/libavcodec/codec_list.c
+index fe5adb0d92..8e616c63ca 100644
+--- a/chromium/config/Chrome/linux/x64/libavcodec/codec_list.c
++++ b/chromium/config/Chrome/linux/x64/libavcodec/codec_list.c
+@@ -1,5 +1,6 @@
+ static const FFCodec * const codec_list[] = {
+     &ff_h264_decoder,
++    &ff_hevc_decoder,
+     &ff_aac_decoder,
+     &ff_flac_decoder,
+     &ff_mp3_decoder,

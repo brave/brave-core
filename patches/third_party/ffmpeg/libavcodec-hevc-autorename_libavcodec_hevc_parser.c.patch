@@ -1,0 +1,8 @@
+diff --git a/libavcodec/hevc/autorename_libavcodec_hevc_parser.c b/libavcodec/hevc/autorename_libavcodec_hevc_parser.c
+new file mode 100644
+index 0000000000..23066b5362
+--- /dev/null
++++ b/libavcodec/hevc/autorename_libavcodec_hevc_parser.c
+@@ -0,0 +1,2 @@
++// Auto-generated to avoid duplicate object file names with libavcodec/opus/parser.c
++#include "parser.c"

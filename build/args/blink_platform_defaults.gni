@@ -13,3 +13,11 @@ proprietary_codecs = true
 ffmpeg_branding = "Chrome"
 
 enable_widevine = true
+
+# Enable HEVC/H.265 hardware decoding support on all desktop and mobile
+# platforms. Chromium already includes HEVC support for Windows, macOS, and
+# Android, but excludes Linux. Since Brave enables proprietary_codecs, we can
+# enable HEVC platform-wide to allow hardware-accelerated H.265 playback
+# (e.g., via VA-API/NVDEC on Linux).
+enable_platform_hevc = true
+enable_hevc_parser_and_hw_decoder = true

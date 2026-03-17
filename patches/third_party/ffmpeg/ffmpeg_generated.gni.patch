@@ -1,0 +1,57 @@
+diff --git a/ffmpeg_generated.gni b/ffmpeg_generated.gni
+index c584bfe8fb..d0009336a6 100644
+--- a/ffmpeg_generated.gni
++++ b/ffmpeg_generated.gni
+@@ -326,6 +326,52 @@ if (((current_cpu == "arm64" || current_cpu == "arm64e") &&
+   ]
+ }
+ 
++# HEVC/H.265 software decoder sources for Linux (used as a fallback when
++# hardware decode is not available, e.g., NVIDIA GPUs).
++if (use_linux_config && ffmpeg_branding == "Chrome") {
++  ffmpeg_c_sources += [
++    "libavcodec/autorename_libavcodec_bswapdsp.c",
++    "libavcodec/hevc/autorename_libavcodec_hevc_cabac.c",
++    "libavcodec/hevc/data.c",
++    "libavcodec/hevc/dsp.c",
++    "libavcodec/hevc/filter.c",
++    "libavcodec/hevc/hevcdec.c",
++    "libavcodec/hevc/mvs.c",
++    "libavcodec/hevc/autorename_libavcodec_hevc_parse.c",
++    "libavcodec/hevc/autorename_libavcodec_hevc_parser.c",
++    "libavcodec/hevc/pred.c",
++    "libavcodec/hevc/ps.c",
++    "libavcodec/hevc/refs.c",
++    "libavcodec/hevc/sei.c",
++    "libavcodec/aom_film_grain.c",
++    "libavcodec/dovi_rpu.c",
++    "libavcodec/dovi_rpudec.c",
++  ]
++}
++
++# HEVC x86 optimizations for Linux.
++if (use_linux_config && current_cpu == "x64" && ffmpeg_branding == "Chrome") {
++  ffmpeg_c_sources += [
++    "libavcodec/x86/bswapdsp_init.c",
++    "libavcodec/x86/hevc/dsp_init.c",
++  ]
++  ffmpeg_c_sources += [
++    "libavcodec/x86/h26x/h2656dsp.c",
++  ]
++  ffmpeg_asm_sources += [
++    "libavcodec/x86/bswapdsp.asm",
++    "libavcodec/x86/hevc/add_res.asm",
++    "libavcodec/x86/hevc/deblock.asm",
++    "libavcodec/x86/hevc/idct.asm",
++    "libavcodec/x86/hevc/mc.asm",
++    "libavcodec/x86/hevc/sao.asm",
++    "libavcodec/x86/hevc/sao_10bit.asm",
++    "libavcodec/x86/h26x/h2656_inter.asm",
++    "libavcodec/x86/h26x/h2656_sao.asm",
++    "libavcodec/x86/h26x/h2656_sao_10bit.asm",
++  ]
++}
++
+ if ((current_cpu == "x64" && ffmpeg_branding == "Chrome") ||
+     (is_win && current_cpu == "x86" && ffmpeg_branding == "Chrome") ||
+     (use_linux_config && current_cpu == "x86" && ffmpeg_branding == "Chrome")) {
