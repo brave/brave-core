@@ -2424,17 +2424,11 @@ extension BrowserViewController: TabMiscDelegate {
     )
     popover.addsConvenientDismissalMargins = false
     popover.present(from: topToolbar.rewardsButton, on: self)
-    popover.popoverDidDismiss = { _ in
-      // This gets called if popover is dismissed by user gesture
-      // This does not conflict with 'Enable Rewards' button.
-      tab.rewardsEnabledCallback?(false)
-    }
 
     vc.rewardsEnabledHandler = { [weak self] in
       guard let self = self else { return }
 
       self.rewards.isEnabled = true
-      tab.rewardsEnabledCallback?(true)
 
       let vc2 = BraveTalkOptInSuccessViewController()
       let popover2 = PopoverController(
@@ -2445,7 +2439,6 @@ extension BrowserViewController: TabMiscDelegate {
     }
 
     vc.linkTapped = { [unowned self] request in
-      tab.rewardsEnabledCallback?(false)
       self.tabManager
         .addTabAndSelect(request, isPrivate: privateBrowsingManager.isPrivateBrowsing)
     }
