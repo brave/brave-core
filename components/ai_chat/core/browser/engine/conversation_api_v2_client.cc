@@ -297,7 +297,8 @@ ConversationAPIV2Client::ConversationAPIV2Client(
     ModelService* model_service)
     : model_name_(model_name),
       credential_manager_(credential_manager),
-      model_service_(model_service) {
+      model_service_(model_service),
+      url_loader_factory_(url_loader_factory) {
   CHECK(!model_name_.empty());
   api_request_helper_ = std::make_unique<api_request_helper::APIRequestHelper>(
       GetNetworkTrafficAnnotationTag(), url_loader_factory);
@@ -317,14 +318,39 @@ void ConversationAPIV2Client::PerformRequest(
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
     const std::optional<std::string>& model_name) {
-  // Get credentials and then perform request
+  std::optional<std::string> attestation_model_name;
+  if (conversation_capabilities.contains(
+          mojom::ConversationCapability::ENCRYPTION)) {
+    attestation_model_name = model_name.value_or(model_name_);
+  }
+
   auto callback = base::BindOnce(
       &ConversationAPIV2Client::PerformRequestWithCredentials,
       weak_ptr_factory_.GetWeakPtr(), std::move(messages),
       std::move(oai_tool_definitions), preferred_tool_name,
       conversation_capabilities, model_name, std::move(data_received_callback),
       std::move(completed_callback));
-  credential_manager_->FetchPremiumCredential(std::move(callback));
+
+  // Get credentials and then perform request.
+  credential_manager_->FetchPremiumCredential(
+      base::BindOnce(&ConversationAPIV2Client::OnCredentialFetched,
+                     weak_ptr_factory_.GetWeakPtr(),
+                     std::move(attestation_model_name), std::move(callback)));
+}
+
+void ConversationAPIV2Client::OnCredentialFetched(
+    const std::optional<std::string>& attestation_model_name,
+    base::OnceCallback<void(std::optional<CredentialCacheEntry>,
+                            std::optional<mojom::APIError>)> callback,
+    std::optional<CredentialCacheEntry> credential) {
+  if (attestation_model_name.has_value()) {
+    EnsureE2EEProcessor();
+    e2ee_processor_->FetchModelAttestation(
+        *attestation_model_name,
+        base::BindOnce(std::move(callback), std::move(credential)));
+  } else {
+    std::move(callback).Run(std::move(credential), std::nullopt);
+  }
 }
 
 std::string ConversationAPIV2Client::CreateJSONRequestBody(
@@ -361,6 +387,12 @@ std::string ConversationAPIV2Client::CreateJSONRequestBody(
   return json;
 }
 
+void ConversationAPIV2Client::EnsureE2EEProcessor() {
+  if (!e2ee_processor_) {
+    e2ee_processor_ = std::make_unique<E2EEProcessor>(url_loader_factory_);
+  }
+}
+
 void ConversationAPIV2Client::PerformRequestWithCredentials(
     std::vector<OAIMessage> messages,
     std::optional<base::ListValue> oai_tool_definitions,
@@ -369,9 +401,16 @@ void ConversationAPIV2Client::PerformRequestWithCredentials(
     const std::optional<std::string>& model_name,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
-    std::optional<CredentialCacheEntry> credential) {
+    std::optional<CredentialCacheEntry> credential,
+    std::optional<mojom::APIError> attestation_fetch_error) {
   if (messages.empty()) {
     std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
+    return;
+  }
+
+  if (attestation_fetch_error.has_value()) {
+    std::move(completed_callback)
+        .Run(base::unexpected(*attestation_fetch_error));
     return;
   }
 
@@ -465,6 +504,12 @@ void ConversationAPIV2Client::OnQueryCompleted(
     std::move(callback).Run(
         GenerationResultData{nullptr, std::move(model_key), is_near_verified});
     return;
+  }
+
+  // Clear the cached attestation in case a stale public key caused the failure
+  // (e.g. server-side key rotation), forcing a fresh fetch on the next request.
+  if (e2ee_processor_) {
+    e2ee_processor_->ClearCachedModelAttestations();
   }
 
   // If error code is not 401, put credential in cache
