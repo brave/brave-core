@@ -182,6 +182,16 @@ TEST(EthTransactionUnitTest, TransactionAndValue) {
   EXPECT_EQ(tx_from_value, tx);
 }
 
+TEST(EthTransactionUnitTest, TransactionAndValue_BadType) {
+  EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
+      "0x09", "0x4a817c800", "0x5208",
+      "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
+      std::vector<uint8_t>(), false, std::nullopt));
+  base::DictValue tx_value = tx.ToValue();
+  tx_value.Set("type", 123);
+  EXPECT_FALSE(EthTransaction::FromValue(tx_value));
+}
+
 TEST(EthTransactionUnitTest, TransactionAndValue_EmptyTo) {
   EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
       "0x09", "0x4a817c800", "0x5208", "", "0x0de0b6b3a7640000",
