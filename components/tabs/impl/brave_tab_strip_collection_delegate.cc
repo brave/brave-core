@@ -27,4 +27,9 @@ bool BraveTabStripCollectionDelegate::CreateSplit(
   return false;
 }
 
+tabs::TabCollection* BraveTabStripCollectionDelegate::GetCollectionForMapping(
+    tabs::TabCollection* root_collection) {
+  return root_collection;
+}
+
 }  // namespace tabs

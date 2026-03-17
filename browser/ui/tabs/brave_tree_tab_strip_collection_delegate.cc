@@ -560,7 +560,8 @@ void BraveTreeTabStripCollectionDelegate::Unsplit(
   collection_->RemoveTabCollection(wrapper);
 }
 
-void BraveTreeTabStripCollectionDelegate::AddCollectionMapping(
+tabs::TabCollection*
+BraveTreeTabStripCollectionDelegate::GetCollectionForMapping(
     tabs::TabCollection* root_collection) {
   if (root_collection->type() == tabs::TabCollection::Type::TREE_NODE) {
     auto* tree_tab_node_collection =
@@ -569,26 +570,9 @@ void BraveTreeTabStripCollectionDelegate::AddCollectionMapping(
         tabs::TreeTabNodeTabCollection::CurrentValueType::kTab) {
       auto* collection = tree_tab_node_collection->GetCurrentCollection();
       CHECK(collection);
-      collection_->AddCollectionMapping(collection, GetPassKey());
-      return;
-    }
-  }
-  collection_->AddCollectionMapping(root_collection, GetPassKey());
-}
-
-void BraveTreeTabStripCollectionDelegate::RemoveCollectionMapping(
-    tabs::TabCollection* root_collection) {
-  if (root_collection->type() == tabs::TabCollection::Type::TREE_NODE) {
-    auto* tree_tab_node_collection =
-        static_cast<tabs::TreeTabNodeTabCollection*>(root_collection);
-    if (tree_tab_node_collection->current_value_type() !=
-        tabs::TreeTabNodeTabCollection::CurrentValueType::kTab) {
-      auto* collection = tree_tab_node_collection->GetCurrentCollection();
-      CHECK(collection);
-      collection_->RemoveCollectionMapping(collection, GetPassKey());
-      return;
+      return collection;
     }
   }
 
-  collection_->RemoveCollectionMapping(root_collection, GetPassKey());
+  return root_collection;
 }
