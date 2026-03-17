@@ -20,11 +20,11 @@ import {
 const exec = promisify(child_process.execFile)
 
 const getTestTargets = (outDir, filters = ['//*']) => {
-  const { env, shell } = config.defaultOptions
+  const { env } = config.defaultOptions
   return exec(
     'gn',
     ['ls', outDir, '--type=executable', '--testonly=true', ...filters],
-    { env, shell },
+    { env },
   ).then((x) => x.stdout.trim().split('\n'))
 }
 
@@ -108,10 +108,9 @@ async function analyzeAffectedTests(
   const analyzeOutJson = `${tmpDir}/analyze-out-${uuid}.json`
   await writeFile(analyzeJson, JSON.stringify(toAnalyze, null, 2), 'utf-8')
 
-  const { env, shell } = config.defaultOptions
+  const { env } = config.defaultOptions
   await exec('gn', ['analyze', outDir, analyzeJson, analyzeOutJson], {
     env,
-    shell,
   })
 
   const output = await readFile(analyzeOutJson, 'utf-8').then(JSON.parse)

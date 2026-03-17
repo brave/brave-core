@@ -15,11 +15,112 @@ import * as Log from './log.ts'
 import util from './util.js'
 import { isCI, isTeamcity } from './ciDetect.ts'
 
+type ExecOptions = {
+  env: NodeJS.ProcessEnv
+  stdio: any
+  cwd: string
+  git_cwd: string
+  continueOnFail?: boolean
+  onStdOutLine?: (line: string) => void
+  onStdErrLine?: (line: string) => void
+}
+
+type TargetOS = 'android' | 'ios' | 'linux' | 'mac' | 'win'
+
 const braveCoreDir = path.join(rootDir, 'src', 'brave')
 
 const envConfig = new EnvConfig(braveCoreDir)
 
 export class Config {
+  internalDepsUrl: string
+  defaultBuildConfig: string
+  buildConfig: string
+  buildTargets: string[]
+  rootDir: string
+  isUniversalBinary: boolean = false
+  isChromium: boolean = false
+  scriptDir: string
+  srcDir: string
+  chromeVersion: string | undefined
+  chromiumRepo: string
+  braveCoreDir: string
+  buildToolsDir: string
+  resourcesDir: string
+  depotToolsDir: string
+  depotToolsRepo: string
+  gclientFile: string
+  gclientVerbose: boolean
+  disableGclientConfigUpdate: boolean
+  gclientGlobalVars: Record<string, any>
+  targetArch: string
+  targetEnvironment: string | undefined
+  gypTargetArch: string
+  ignorePatchVersionNumber: boolean
+  useDummyLastchange: boolean
+  braveVersion: string
+  braveIOSMarketingPatchVersion: string | undefined
+  androidOverrideVersionName: string
+  releaseTag: string | undefined
+  mac_signing_identifier: string | undefined
+  mac_installer_signing_identifier: string
+  mac_signing_keychain: string
+  notary_user: string | undefined
+  notary_password: string | undefined
+  channel: string
+  isBraveOriginBranded: boolean | undefined
+  gitCachePath: string | undefined
+  rbeService: string
+  rbeTlsClientAuthCert: string | undefined
+  rbeTlsClientAuthKey: string | undefined
+  realRewrapperDir: string
+  ignore_compile_failure: boolean
+  enable_hangout_services_extension: boolean
+  sign_widevine_cert: string
+  sign_widevine_key: string
+  sign_widevine_passwd: string
+  signature_generator: string
+  extraGnArgs: Record<string, any>
+  extraGnGenOpts: string
+  extraNinjaOpts: string[]
+  sisoJobsLimit: number | undefined
+  sisoCacheDir: string | undefined
+  braveAndroidSafeBrowsingApiKey: string | undefined
+  braveAndroidDeveloperOptionsCode: string | undefined
+  braveAndroidKeystorePath: string | undefined
+  braveAndroidKeystoreName: string | undefined
+  braveAndroidKeystorePassword: string | undefined
+  braveAndroidKeyPassword: string | undefined
+  braveAndroidPkcs11Provider: string
+  braveAndroidPkcs11Alias: string
+  nativeRedirectCCDir: string
+  useRemoteExec: boolean
+  useSiso: boolean
+  useReclient: boolean
+  offline: boolean
+  use_libfuzzer: boolean
+  androidAabToApk: boolean
+  useBraveHermeticToolchain: boolean
+  braveIOSDeveloperOptionsCode: string | undefined
+  skip_download_rust_toolchain_aux: boolean
+  is_asan: boolean | undefined
+  is_msan: boolean | undefined
+  is_ubsan: boolean | undefined
+  use_no_gn_gen: boolean | undefined
+
+  chromiumCustomDeps: Record<string, any>
+  chromiumCustomVars: Record<string, any>
+
+  skip_signing: boolean | undefined
+  targetAndroidOutputFormat: string | undefined
+  use_clang_coverage: boolean | undefined
+  force_gn_gen: boolean | undefined
+  build_omaha: boolean | undefined
+  tag_ap: string | undefined
+  tag_installdataindex: string | undefined
+  last_chrome_installer: string | undefined
+  notarize: boolean | undefined
+  xcode_gen_target: string | undefined
+
   constructor() {
     this.internalDepsUrl =
       'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws'
@@ -600,7 +701,7 @@ export class Config {
     return braveVersionParts.join('.')
   }
 
-  get defaultOptions() {
+  get defaultOptions(): ExecOptions {
     let env = Object.assign({}, process.env)
     env = this.addPathToEnv(
       env,
@@ -723,9 +824,10 @@ export class Config {
       }
       // Parse SISO_LIMITS from env if set.
       const envSisoLimits = new Map(
-        env.SISO_LIMITS?.split(',').map(
-          (item) => /** @type {[string, string]} */ (item.split('=', 2)),
-        ) || [],
+        (env.SISO_LIMITS?.split(',').map((item) => item.split('=', 2)) as [
+          string,
+          string,
+        ][]) || [],
       )
       // Merge defaultSisoLimits with envSisoLimits ensuring that the values are
       // not greater than the default values.
@@ -775,16 +877,15 @@ export class Config {
       ? ['inherit', process.stderr, 'inherit']
       : 'inherit'
 
-    return /** @type {Record<string, any>} */ ({
+    return {
       env,
-      stdio: stdio,
+      stdio,
       cwd: this.srcDir,
       git_cwd: '.',
-    })
+    }
   }
 
-  /** @type {string | undefined} */
-  #outputDir
+  #outputDir: string | undefined
 
   get outputDir() {
     if (this.use_no_gn_gen && this.#outputDir === undefined) {
@@ -838,14 +939,13 @@ export class Config {
     }
   }
 
-  /** @type {'android' | 'ios' | 'linux' | 'mac' | 'win' | undefined} */
-  #targetOS
+  #targetOS: TargetOS | undefined
 
   get targetOS() {
     return this.#targetOS ?? this.hostOS
   }
 
-  set targetOS(/** @type {string} */ value) {
+  set targetOS(value: string) {
     const supportedTargetOS = ['android', 'ios', 'linux', 'mac', 'win']
     if (!supportedTargetOS.includes(value)) {
       Log.error(
@@ -853,8 +953,7 @@ export class Config {
       )
       process.exit(1)
     }
-    this.#targetOS =
-      /** @type {'android' | 'ios' | 'linux' | 'mac' | 'win'} */ (value)
+    this.#targetOS = value as TargetOS
   }
 }
 
