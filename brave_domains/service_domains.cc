@@ -9,21 +9,15 @@
 
 #include "base/command_line.h"
 #include "base/containers/fixed_flat_map.h"
-#include "base/containers/fixed_flat_set.h"
 #include "base/containers/map_util.h"
-#include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "brave/brave_domains/buildflags.h"
+#include "brave/brave_domains/constants.h"
 
 namespace brave_domains {
 
 namespace {
-
-constexpr char kBraveServicesSwitchValueDev[] = "dev";
-constexpr char kBraveServicesSwitchValueStaging[] = "staging";
-constexpr char kBraveServicesSwitchValueProduction[] = "prod";
-constexpr char kBraveServicesEnvironmentSwitch[] = "brave-services-env";
 
 std::string GetServicesDomainForSwitchValue(std::string env_from_switch) {
   if (env_from_switch == kBraveServicesSwitchValueStaging) {
@@ -34,31 +28,6 @@ std::string GetServicesDomainForSwitchValue(std::string env_from_switch) {
   }
   // Default to production
   return BUILDFLAG(BRAVE_SERVICES_PRODUCTION_DOMAIN);
-}
-
-bool IsValidSwitchValue(std::string value) {
-  static constexpr auto kAllowedSwitchValues =
-      base::MakeFixedFlatSet<std::string_view>(
-          {kBraveServicesSwitchValueDev, kBraveServicesSwitchValueStaging,
-           kBraveServicesSwitchValueProduction});
-  return kAllowedSwitchValues.contains(value);
-}
-
-void MaybeWarnSwitchValue(std::string key, std::string value) {
-  if (!value.empty()) {
-    if (!IsValidSwitchValue(value)) {
-      LOG(ERROR) << "The switch value for --" << key << " is \"" << value
-                 << "\" which is not a valid value, please provide"
-                 << " either \"" << kBraveServicesSwitchValueDev << "\", \""
-                 << kBraveServicesSwitchValueStaging << "\", or \""
-                 << kBraveServicesSwitchValueProduction << "\" (default).";
-    } else {
-      // It's useful to have this in the logs. This should be a temporary
-      // dev or debug tool and not a permanent situation for a user.
-      LOG(WARNING) << "Services domain(s) was overriden with the parameter: --"
-                   << key << " and value \"" << value << "\"";
-    }
-  }
 }
 
 #if !defined(OFFICIAL_BUILD)

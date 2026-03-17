@@ -19,7 +19,7 @@
 namespace brave_wallet {
 
 // Re-export from brave_domains
-using brave_domains::kGate3URL;
+using brave_domains::GetGate3URL;
 
 inline constexpr char kBraveServicesKeyHeader[] = "x-brave-key";
 

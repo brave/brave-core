@@ -14,6 +14,7 @@ source_set("brave_domains") {
 
   deps = [
     ":buildflags",
+    ":constants",
     "//base",
   ]
 
@@ -24,7 +25,12 @@ source_set("brave_domains") {
 }
 
 source_set("constants") {
-  sources = [ "constants.h" ]
+  sources = [
+    "constants.cc",
+    "constants.h",
+  ]
+
+  deps = [ "//base" ]
 }
 
 buildflag_header("buildflags") {
@@ -42,11 +48,15 @@ buildflag_header("buildflags") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "service_domains_unittest.cc" ]
+  sources = [
+    "constants_unittest.cc",
+    "service_domains_unittest.cc",
+  ]
 
   deps = [
     ":brave_domains",
     ":buildflags",
+    ":constants",
     "//base",
     "//testing/gmock",
     "//testing/gtest",

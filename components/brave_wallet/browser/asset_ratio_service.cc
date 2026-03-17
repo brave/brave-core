@@ -200,7 +200,7 @@ void AssetRatioService::SetBaseURLForTest(const GURL& base_url_for_test) {
 // static
 GURL AssetRatioService::GetPriceURL(const std::string& vs_currency) {
   std::string base_url =
-      base_url_for_test_.is_empty() ? kGate3URL : base_url_for_test_.spec();
+      base_url_for_test_.is_empty() ? GetGate3URL() : base_url_for_test_.spec();
   GURL url = GURL(absl::StrFormat("%s/api/pricing/v1/getPrices", base_url));
   url = net::AppendQueryParameter(url, "vs_currency",
                                   base::ToUpperASCII(vs_currency));

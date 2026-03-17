@@ -9,7 +9,6 @@
 
 #include "base/check.h"
 #include "base/strings/strcat.h"
-#include "brave/brave_domains/constants.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/network_constants.h"
@@ -154,8 +153,10 @@ GURL EnvironmentConfig::BuildGate3OAuthURL(std::string_view provider) const {
   std::string environment =
       current_environment() == mojom::Environment::kProduction ? "production"
                                                                : "sandbox";
-  return URLValue(base::StrCat({brave_domains::kGate3URL, "/api/oauth/",
-                                provider, "/", environment, "/"}));
+  const auto& gate3_url = engine().options().gate3_url;
+  CHECK(!gate3_url.empty());
+  return URLValue(base::StrCat(
+      {gate3_url, "/api/oauth/", provider, "/", environment, "/"}));
 }
 
 GURL EnvironmentConfig::URLValue(std::string value) const {
