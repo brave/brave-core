@@ -27,7 +27,7 @@ const getEnvConfig = (keyPath, defaultValue = undefined) => {
   return envConfig.get(keyPath, defaultValue)
 }
 
-class Config {
+export class Config {
   constructor() {
     this.isTeamcity = process.env.TEAMCITY_VERSION !== undefined
     this.isCI = process.env.BUILD_ID !== undefined || this.isTeamcity
