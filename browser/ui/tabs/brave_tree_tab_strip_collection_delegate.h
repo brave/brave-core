@@ -42,6 +42,13 @@ class BraveTreeTabStripCollectionDelegate
                          const tabs::TabCollection::TypeEnumSet
                              retain_collection_types) const override;
 
+  bool CreateSplit(split_tabs::SplitTabId split_id,
+                   const std::vector<tabs::TabInterface*>& tabs,
+                   split_tabs::SplitTabVisualData visual_data) const override;
+  void Unsplit(split_tabs::SplitTabId split_id) override;
+  tabs::TabCollection* GetCollectionForMapping(
+      tabs::TabCollection* root_collection) override;
+
  private:
   // Tries to add the tab to the same tree as the opener. Returns base::ok(void)
   // if successful, base::unexpected(std::unique_ptr<tabs::TabInterface>) so

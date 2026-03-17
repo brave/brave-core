@@ -15,6 +15,8 @@
 #include "base/notimplemented.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
+#include "components/split_tabs/split_tab_visual_data.h"
+#include "components/tabs/public/split_tab_collection.h"
 #include "components/tabs/public/tab_collection.h"
 #include "components/tabs/public/tab_interface.h"
 #include "components/tabs/public/unpinned_tab_collection.h"
@@ -272,6 +274,22 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
       [this](int index) { return collection_->GetTabAtIndexRecursive(index); });
   CHECK(!moving_tabs.empty());
 
+  // This can happen when put tabs together in the same position in the middle
+  // of creating split or group.
+  // Store the original parent collection of the first moving tab, we might need
+  // this when moving to the same position so that we don't lose the tree
+  // structure.
+  const bool moving_to_same_position =
+      destination_index == static_cast<size_t>(tab_indices.front());
+  auto* first_tree_node = GetParentTreeNodeCollectionOfTab(moving_tabs.front());
+  auto* original_parent_collection =
+      moving_to_same_position ? first_tree_node->GetParentCollection()
+                              : nullptr;
+  std::optional<size_t> original_index_in_original_parent =
+      original_parent_collection
+          ? original_parent_collection->GetIndexOfCollection(first_tree_node)
+          : std::nullopt;
+
   // Before removing the tree tab node from the parent, make sure all
   // children of the tree tab node are moved to the parent.
   for (auto* moving_tab : base::Reversed(moving_tabs)) {
@@ -291,6 +309,14 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
         moving_tab_tree_node->GetParentCollection());
     unique_moving_tab_collections.push_back(
         moving_tab_parent_node->MaybeRemoveCollection(moving_tab_tree_node));
+  }
+
+  if (original_parent_collection) {
+    for (auto& moving_tab : base::Reversed(unique_moving_tab_collections)) {
+      original_parent_collection->AddCollection(
+          std::move(moving_tab), *original_index_in_original_parent);
+    }
+    return;
   }
 
   // We'll move the moving tab's tree node into the collection of the
@@ -405,4 +431,148 @@ BraveTreeTabStripCollectionDelegate::GetAttachableCollectionForTreeTabNode(
     CHECK(attachable_collection);
   }
   return attachable_collection;
+}
+
+bool BraveTreeTabStripCollectionDelegate::CreateSplit(
+    split_tabs::SplitTabId split_id,
+    const std::vector<tabs::TabInterface*>& tabs,
+    split_tabs::SplitTabVisualData visual_data) const {
+  if (tabs.size() < 2) {
+    return false;
+  }
+
+  const size_t index0 = *collection_->GetIndexOfTabRecursive(tabs[0]);
+  const size_t index1 = *collection_->GetIndexOfTabRecursive(tabs[1]);
+  tabs::TabInterface* first_tab = tabs[0];
+  tabs::TabInterface* second_tab = tabs[1];
+  if (index1 < index0) {
+    std::swap(first_tab, second_tab);
+  }
+
+  // Use first tab's tree node position for insertion.
+  tabs::TreeTabNodeTabCollection* first_tree_node =
+      GetParentTreeNodeCollectionOfTab(first_tab);
+  tabs::TabCollection* insert_parent = first_tree_node->GetParentCollection();
+  size_t insert_index =
+      insert_parent->GetIndexOfCollection(first_tree_node).value();
+  CHECK(tree_tab_model_);
+
+  // Remove higher recursive index first so insert_index stays valid.
+  // Get recursive indices to remove higher index first (avoids index shift).
+  std::vector<std::unique_ptr<tabs::TabInterface>> removed_tabs(2);
+  for (tabs::TabInterface* tab : {second_tab, first_tab}) {
+    tabs::TreeTabNodeTabCollection* tree_node =
+        GetParentTreeNodeCollectionOfTab(tab);
+    // Before removing the tree tab node from the parent, make sure all
+    // children of the tree tab node are moved to the parent.
+    MoveChildrenOfTreeTabNodeToParent(tree_node);
+
+    // Clean up tree tab node from model, first so that associated tabs don't
+    // reference this tree tab node anymore.
+    tree_tab_model_->RemoveTreeTabNode(tree_node->node().id());
+
+    std::unique_ptr<tabs::TabInterface> removed =
+        tree_node->MaybeRemoveTab(tab);
+    tabs::TabCollection* owner = tree_node->GetParentCollection();
+    std::ignore = owner->MaybeRemoveCollection(tree_node);
+
+    // Store in original order: tabs[0] at 0, tabs[1] at 1.
+    const size_t orig_idx = (tab == tabs[0]) ? 0u : 1u;
+    removed_tabs[orig_idx] = std::move(removed);
+  }
+
+  // Create split and add both tabs in original order.
+  auto split =
+      std::make_unique<tabs::SplitTabCollection>(split_id, visual_data);
+  auto* removed_tab0 = removed_tabs[0].get();
+  auto* removed_tab1 = removed_tabs[1].get();
+  split->AddTab(std::move(removed_tabs[0]), 0);
+  split->AddTab(std::move(removed_tabs[1]), 1);
+
+  CHECK_EQ(collection_->GetParentCollection(removed_tab0, GetPassKey())->type(),
+           tabs::TabCollection::Type::SPLIT);
+  CHECK_EQ(collection_->GetParentCollection(removed_tab1, GetPassKey())->type(),
+           tabs::TabCollection::Type::SPLIT);
+
+  // Wrap split in a single tree node and insert at the original position.
+  auto wrapper = std::make_unique<tabs::TreeTabNodeTabCollection>(
+      tree_tab::TreeTabNodeId::GenerateNew(), std::move(split),
+      base::BindRepeating(&TreeTabModel::RemoveTreeTabNode, tree_tab_model_),
+      base::BindRepeating(&TreeTabModel::OnTreeTabNodeMoved, tree_tab_model_));
+  auto& node = wrapper->node();
+
+  tabs::TabCollection::Position position = {insert_parent->GetHandle(),
+                                            insert_index};
+  collection_->AddTabCollectionAtPosition(std::move(wrapper), position,
+                                          GetPassKey());
+
+  // Add the tree tab node to the model and notification will be sent
+  tree_tab_model_->AddTreeTabNode(node);
+
+  CHECK_EQ(collection_->GetParentCollection(removed_tab0, GetPassKey())->type(),
+           tabs::TabCollection::Type::SPLIT);
+  CHECK_EQ(collection_->GetParentCollection(removed_tab1, GetPassKey())->type(),
+           tabs::TabCollection::Type::SPLIT);
+  return true;
+}
+
+void BraveTreeTabStripCollectionDelegate::Unsplit(
+    split_tabs::SplitTabId split_id) {
+  tabs::SplitTabCollection* split =
+      collection_->GetSplitTabCollection(split_id);
+  if (!split) {
+    return;
+  }
+
+  // The split's parent is the wrapper tree node; we will destroy it too.
+  tabs::TabCollection* wrapper = split->GetParentCollection();
+  CHECK_EQ(wrapper->type(), tabs::TabCollection::Type::TREE_NODE);
+  auto* wrapper_tree_node =
+      static_cast<tabs::TreeTabNodeTabCollection*>(wrapper);
+  auto* parent_collection = wrapper_tree_node->GetParentCollection();
+
+  // Notify the model that the wrapper tree node will be removed.
+  tree_tab_model_->RemoveTreeTabNode(wrapper_tree_node->node().id());
+
+  // 1. Extract tabs in split and move them to the wrapper's parent at the same
+  // position of the wrapper, wrapped with tree nodes.
+
+  std::vector<tabs::TabInterface*> tabs = split->GetTabsRecursive();
+  CHECK(!tabs.empty());
+  size_t target_index =
+      parent_collection->GetIndexOfCollection(wrapper).value();
+  size_t expected_recursive_index =
+      collection_->GetIndexOfTabRecursive(tabs[0]).value();
+  for (size_t i = 0; i < tabs.size(); ++i) {
+    std::unique_ptr<tabs::TabInterface> detached =
+        split->MaybeRemoveTab(tabs[i]);
+    CHECK(detached);
+    AddTabAsTreeNodeToCollection(std::move(detached), parent_collection,
+                                 target_index++, expected_recursive_index++);
+  }
+
+  // 2. Move children of the wrapper tree node to the parent collection at the
+  // same position of the wrapper.
+  MoveChildrenOfTreeTabNodeToNode(wrapper_tree_node, parent_collection,
+                                  target_index);
+
+  // 3. Remove the its wrapper(and its owned split collection)
+  collection_->RemoveTabCollection(wrapper);
+}
+
+tabs::TabCollection*
+BraveTreeTabStripCollectionDelegate::GetCollectionForMapping(
+    tabs::TabCollection* root_collection) {
+  if (root_collection->type() == tabs::TabCollection::Type::TREE_NODE) {
+    auto* tree_tab_node_collection =
+        static_cast<tabs::TreeTabNodeTabCollection*>(root_collection);
+    if (tree_tab_node_collection->current_value_type() !=
+        tabs::TreeTabNodeTabCollection::CurrentValueType::kTab) {
+      auto* collection = tree_tab_node_collection->GetCurrentCollection();
+      CHECK(collection);
+      return collection;
+    }
+  }
+
+  return root_collection;
 }
