@@ -16,6 +16,7 @@ import {
   getApplicableFilters,
   getChromiumTestsSuites,
 } from './testUtils.js'
+import isCI, { isTeamcity } from './isCI.ts'
 
 const test = async (
   passthroughArgs,
@@ -123,7 +124,7 @@ const runTests = async (
     }
   }
 
-  if (suite === 'brave_unit_tests' && config.isTeamcity && !config.isMobile()) {
+  if (suite === 'brave_unit_tests' && isTeamcity && !config.isMobile()) {
     runChromiumTestLauncherTeamcityReporterIntegrationTests(Config)
   }
 
@@ -162,7 +163,7 @@ const runTests = async (
     if (filterFilePaths.length > 0) {
       runArgs.push(`--test-launcher-filter-file=${filterFilePaths.join(';')}`)
     }
-    if (config.isTeamcity && !config.isIOS()) {
+    if (isTeamcity && !config.isIOS()) {
       if (upstreamTestSuites.includes(testSuite)) {
         const ignorePreliminaryFailures =
           '--test-launcher-teamcity-reporter-ignore-preliminary-failures'
@@ -175,7 +176,7 @@ const runTests = async (
     let convertJSONToXML = false
     let outputFilename = path.join(config.srcDir, testSuite)
 
-    if (config.isCI || options.output_xml) {
+    if (isCI || options.output_xml) {
       // When test results are saved to a file, callers (such as CI) generate
       // and analyze test reports as a next step. These callers are typically
       // not interested in the exit code of running the tests, because they
@@ -218,7 +219,7 @@ const runTests = async (
       }
     }
 
-    if (config.isTeamcity) {
+    if (isTeamcity) {
       // Stdout and stderr must be separate for a test launcher.
       runOptions.stdio = 'inherit'
     }

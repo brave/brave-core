@@ -13,6 +13,7 @@ import config from '../lib/config.js'
 import util from '../lib/util.js'
 import Log from '../lib/logging.js'
 import depotTools from '../lib/depotTools.js'
+import isCI from '../lib/isCI.ts'
 import syncUtil from '../lib/syncUtils.js'
 import sisoUtils from '../lib/sisoUtils.js'
 
@@ -108,7 +109,7 @@ async function RunCommand() {
     syncUtil.writeGclientConfig(targetOSList, targetArchList)
   }
 
-  if (config.isCI) {
+  if (isCI) {
     program.delete_unused_deps = true
   }
 

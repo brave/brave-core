@@ -8,8 +8,7 @@ import chalk from 'chalk'
 import logUpdate from 'log-update'
 import { patchApplyReasonMessages, getReasonName } from './gitPatcher.js'
 import tsm from 'teamcity-service-messages'
-
-const isTeamcity = process.env.TEAMCITY_VERSION !== undefined
+import { isTeamcity } from './isCI.ts'
 
 let divider
 function setLineLength() {

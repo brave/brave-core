@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import type { Config } from './config.js'
+import isCI from './isCI.ts'
 import assert from 'node:assert'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -270,11 +271,7 @@ export function getBuildArgs(config: Config) {
 
   // Devtools: Now we patch devtools frontend, so it is useful to see
   // if something goes wrong on CI builds.
-  if (
-    config.targetOS !== 'android'
-    && config.targetOS !== 'ios'
-    && config.isCI
-  ) {
+  if (config.targetOS !== 'android' && config.targetOS !== 'ios' && isCI) {
     args.devtools_skip_typecheck = false
   }
 
@@ -315,7 +312,7 @@ export function getBuildArgs(config: Config) {
     if (
       args.target_android_output_format === 'apk'
       && (config.targetArch === 'arm64' || config.targetArch === 'x64')
-      && config.isCI
+      && isCI
     ) {
       // We want to have both 32 and 64 bit native libs in arm64/x64 apks for CI
       // Starting from cr136 it is defaulted to false.
@@ -324,7 +321,7 @@ export function getBuildArgs(config: Config) {
       args.enable_android_secondary_abi = true
     }
 
-    if (config.isCI && !config.isOfficialBuild()) {
+    if (isCI && !config.isOfficialBuild()) {
       // We want Android CI to run Java static analyzer synchronously
       // for non-official (PR) builds.
       // It will be turned off for the official builds

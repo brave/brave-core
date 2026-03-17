@@ -13,6 +13,7 @@ import rootDir from './rootDir.cjs'
 import EnvConfig from './envConfig.ts'
 import Log from './logging.js'
 import util from './util.js'
+import isCI, { isTeamcity } from './isCI.ts'
 
 const braveCoreDir = path.join(rootDir, 'src', 'brave')
 
@@ -29,8 +30,6 @@ const getEnvConfig = (keyPath, defaultValue = undefined) => {
 
 export class Config {
   constructor() {
-    this.isTeamcity = process.env.TEAMCITY_VERSION !== undefined
-    this.isCI = process.env.BUILD_ID !== undefined || this.isTeamcity
     this.internalDepsUrl =
       'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws'
     this.defaultBuildConfig =
@@ -77,7 +76,7 @@ export class Config {
     this.gypTargetArch = 'x64'
     this.ignorePatchVersionNumber =
       !this.isBraveReleaseBuild()
-      && getEnvConfig(['ignore_patch_version_number'], !this.isCI)
+      && getEnvConfig(['ignore_patch_version_number'], !isCI)
     this.useDummyLastchange = getEnvConfig(['use_dummy_lastchange'], true)
     this.braveVersion = this.#getBraveVersion()
     this.braveIOSMarketingPatchVersion =
@@ -546,7 +545,7 @@ export class Config {
         + 'line options will be processed',
     )
     this.updateInternal(Object.assign({}, gnArgs, options))
-    assert(!this.isCI)
+    assert(!isCI)
   }
 
   update(options) {
@@ -737,7 +736,7 @@ export class Config {
       }
     }
 
-    if (this.isCI) {
+    if (isCI) {
       // Enables autoninja to show build speed and final stats on finish.
       env.NINJA_SUMMARIZE_BUILD = '1'
     }
@@ -751,14 +750,14 @@ export class Config {
       env.VSCMD_SKIP_SENDTELEMETRY = '1'
     }
 
-    if (this.isCI && this.skip_download_rust_toolchain_aux) {
+    if (isCI && this.skip_download_rust_toolchain_aux) {
       env.SKIP_DOWNLOAD_RUST_TOOLCHAIN_AUX = '1'
     }
 
     // TeamCity displays only stderr on the "Build Problems" page when an error
     // occurs. By redirecting stdout to stderr, we ensure that all outputs from
     // external processes are visible in case of a failure.
-    const stdio = this.isTeamcity
+    const stdio = isTeamcity
       ? ['inherit', process.stderr, 'inherit']
       : 'inherit'
 

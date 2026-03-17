@@ -17,6 +17,7 @@ import updateChromeVersion from './updateChromeVersion.js'
 import ActionGuard from './actionGuard.js'
 import { GitPatcher } from './gitPatcher.js'
 import { getBuildArgs } from './buildArgs.ts'
+import isCI, { isTeamcity } from './isCI.ts'
 
 // Do not limit the number of listeners to avoid warnings from EventEmitter.
 process.setMaxListeners(0)
@@ -307,7 +308,7 @@ const util = {
         resolve(stdout)
       }
       prog.on('close', (statusCode, signal) => {
-        if (config.isCI && (statusCode || signal)) {
+        if (isCI && (statusCode || signal)) {
           // When running in CI, we delay handling process termination by 1
           // second to distinguish between two scenarios:
           // 1. A build failure (where autoninja exits with code 1)
@@ -569,7 +570,7 @@ const util = {
         path.join(outputDir, 'build.ninja'),
       )
       const hasBuildArgsUpdated = util.writeGnBuildArgs(outputDir, buildArgs)
-      const shouldCheck = config.isCI
+      const shouldCheck = isCI
       const internalOpts = shouldCheck ? ['--check'] : []
 
       const shouldRunGnGen =
@@ -709,7 +710,7 @@ const util = {
     let buildStats = ''
 
     // Parse output to display the build progress on Teamcity.
-    if (config.isTeamcity) {
+    if (isTeamcity) {
       let lastStatusTime = Date.now()
       options.onStdOutLine = (line) => {
         if (
@@ -745,7 +746,7 @@ const util = {
     const buildGuard = new ActionGuard(path.join(outputDir, 'build.guard'))
     try {
       if (
-        config.isCI
+        isCI
         // Release builds can have steps that can be interrupted by timeouts. We
         // don't want to clean the build in this case.
         && !config.isBraveReleaseBuild()
@@ -758,7 +759,7 @@ const util = {
       buildGuard.markFinished()
     } catch (e) {
       // Display siso_output on CI after a build failure.
-      if (config.isCI && fs.existsSync(sisoOutputFile)) {
+      if (isCI && fs.existsSync(sisoOutputFile)) {
         const sisoOutput = fs.readFileSync(sisoOutputFile, 'utf8')
         Log.error(`Siso output from ${sisoOutputFile}:`)
         // Split the output into lines to correctly display on Teamcity.
@@ -784,7 +785,7 @@ const util = {
 
     Log.progressFinish(progressMessage)
 
-    if (config.isTeamcity) {
+    if (isTeamcity) {
       if (buildStats) {
         Log.progressScope('report build stats', () => {
           console.log(buildStats)
