@@ -237,7 +237,7 @@ export const makeDepositFundsAccountRoute = (assetId: string) => {
 
 export const makeSendRoute = (
   asset: BraveWallet.BlockchainToken,
-  account?: BraveWallet.AccountInfo,
+  account?: Pick<BraveWallet.AccountInfo, 'accountId'>,
   recipient?: string,
 ) => {
   const isNftTab = asset.isErc721 || asset.isNft
