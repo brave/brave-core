@@ -140,6 +140,14 @@ CWV_EXPORT
 @end
 
 CWV_EXPORT
+@interface BraveWebView (AIChatDistiller)
+// Fetches the main article text content from the current page and returns it
+// via completionHandler. Returns an empty string if no article content could
+// be extracted.
+- (void)fetchMainArticle:(void (^)(NSString* text))completionHandler;
+@end
+
+CWV_EXPORT
 @interface BraveWebView (WalletWebUI)
 /// A bridge for handling Brave Wallet WebUI page actions
 @property(nonatomic, weak, nullable) id<WalletPageHandlerBridge>
