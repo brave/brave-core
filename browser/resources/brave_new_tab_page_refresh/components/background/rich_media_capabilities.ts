@@ -36,6 +36,7 @@ export type RichMediaIncomingMessage =
   | AdEventMessage
   | SearchAutocompleteMessage
   | OpenSearchMessage
+  | HideBraveSearchBoxMessage
 
 interface AdEventMessage {
   type: 'richMediaEvent'
@@ -52,6 +53,10 @@ interface OpenSearchMessage {
   value: string
 }
 
+interface HideBraveSearchBoxMessage {
+  type: 'richMediaHideBraveSearchBox'
+}
+
 // The interface through which messages can be sent to a rich media background
 // frame.
 export interface RichMediaFrameHandle {
@@ -65,6 +70,7 @@ export interface RichMediaCapabilities {
   openDestinationUrl: () => void
   openBraveSearch: (pathAndQuery: string) => void
   queryBraveSearchAutocomplete: (query: string) => void
+  hideBraveSearchBox: () => void
 }
 
 // Takes a raw incoming rich media message and executes the appropriate
@@ -100,6 +106,9 @@ export function readIncomingMessage(
     }
     case 'richMediaOpenBraveSearchWithQuery': {
       return data.value ? { type, value: String(data.value) } : null
+    }
+    case 'richMediaHideBraveSearchBox': {
+      return { type }
     }
   }
   return null
@@ -142,6 +151,10 @@ export function dispatchIncomingMessage(
     }
     case 'richMediaQueryBraveSearchAutocomplete': {
       capabilities.queryBraveSearchAutocomplete(message.value)
+      break
+    }
+    case 'richMediaHideBraveSearchBox': {
+      capabilities.hideBraveSearchBox()
       break
     }
   }
