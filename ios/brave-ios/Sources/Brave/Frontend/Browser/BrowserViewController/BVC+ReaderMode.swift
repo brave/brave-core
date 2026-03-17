@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import Preferences
 import Shared
@@ -53,13 +54,17 @@ extension BrowserViewController: ReaderModeStyleViewControllerDelegate {
     // Change the reader mode style on all tabs that have reader mode active
     for tabIndex in 0..<tabManager.count {
       if let tab = tabManager[tabIndex] {
-        if let readerMode = tab.browserData?.getContentScript(
-          name: ReaderModeScriptHandler.scriptName
-        )
-          as? ReaderModeScriptHandler
-        {
-          if readerMode.state == ReaderModeState.active {
-            readerMode.setStyle(style, in: tab)
+        if FeatureList.kUseProfileWebViewConfiguration.enabled {
+          tab.readerMode?.setStyle(style)
+        } else {
+          if let readerMode = tab.browserData?.getContentScript(
+            name: ReaderModeScriptHandler.scriptName
+          )
+            as? ReaderModeScriptHandler
+          {
+            if readerMode.state == ReaderModeState.active {
+              readerMode.setStyle(style, in: tab)
+            }
           }
         }
       }
@@ -71,15 +76,6 @@ extension BrowserViewController: ReaderModeStyleViewControllerDelegate {
 
 extension BrowserViewController: ReaderModeBarViewDelegate {
   func readerModeSettingsTapped(_ view: UIView) {
-    guard
-      let readerMode = tabManager.selectedTab?.browserData?.getContentScript(
-        name: ReaderModeScriptHandler.scriptName
-      ) as? ReaderModeScriptHandler,
-      readerMode.state == ReaderModeState.active
-    else {
-      return
-    }
-
     var readerModeStyle = defaultReaderModeStyle
     if let encodedString = Preferences.ReaderMode.style.value {
       if let style = ReaderModeStyle(encodedString: encodedString) {
@@ -165,19 +161,30 @@ extension BrowserViewController {
       PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
       self.updateTranslateURLBar(tab: tab, state: translationState)
     } else {
-      // Store the readability result in the cache and load it. This will later move to the ReadabilityHelper.
-      tab.evaluateJavaScript(
-        functionName: "\(readerModeNamespace).readerize",
-        contentWorld: ReaderModeScriptHandler.scriptSandbox
-      ) { (object, error) -> Void in
-        if let readabilityResult = ReadabilityResult(object: object as AnyObject?) {
-          let playlistItem = tab.playlistItem
-          let translationState = tab.translationState ?? .unavailable
+      if FeatureList.kUseProfileWebViewConfiguration.enabled {
+        if let readabilityResult = tab.readerMode?.readabilityResult {
           Task { @MainActor in
             try? await self.readerModeCache.put(currentURL, readabilityResult)
-            if tab.loadRequest(PrivilegedRequest(url: readerModeURL) as URLRequest) != nil {
-              PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
-              self.updateTranslateURLBar(tab: tab, state: translationState)
+            tab.loadRequest(PrivilegedRequest(url: readerModeURL) as URLRequest)
+            PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
+            self.updateTranslateURLBar(tab: tab, state: translationState)
+          }
+        }
+      } else {
+        // Store the readability result in the cache and load it. This will later move to the ReadabilityHelper.
+        tab.evaluateJavaScript(
+          functionName: "\(readerModeNamespace).readerize",
+          contentWorld: ReaderModeScriptHandler.scriptSandbox
+        ) { (object, error) -> Void in
+          if let readabilityResult = ReadabilityResult(object: object as AnyObject?) {
+            let playlistItem = tab.playlistItem
+            let translationState = tab.translationState ?? .unavailable
+            Task { @MainActor in
+              try? await self.readerModeCache.put(currentURL, readabilityResult)
+              if tab.loadRequest(PrivilegedRequest(url: readerModeURL) as URLRequest) != nil {
+                PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
+                self.updateTranslateURLBar(tab: tab, state: translationState)
+              }
             }
           }
         }
