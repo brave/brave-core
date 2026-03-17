@@ -33,6 +33,7 @@ class TorNavigationThrottle : public content::NavigationThrottle,
 
   // content::NavigationThrottle implementation:
   ThrottleCheckResult WillStartRequest() override;
+  ThrottleCheckResult WillRedirectRequest() override;
   const char* GetNameForLogging() override;
 
   static void SetSkipWaitForTorConnectedForTesting(bool skip);
