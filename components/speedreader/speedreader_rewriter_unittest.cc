@@ -94,7 +94,8 @@ INSTANTIATE_TEST_SUITE_P(,
                                            "meta_property_shortest_desc",
                                            "meta_name_shortest_desc",
                                            "no_span_root",
-                                           "too_small_output"));
+                                           "too_small_output",
+                                           "injection"));
 
 TEST_P(SpeedreaderRewriterTest, Check) {
   base::ScopedAllowBlockingForTesting allow_blocking;
