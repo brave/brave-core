@@ -6,12 +6,18 @@
 #include "brave/browser/ai_chat/ai_chat_conversation_ui_browsertest_base.h"
 
 #include <memory>
+#include <optional>
+#include <string_view>
+#include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "base/strings/strcat.h"
 #include "base/test/run_until.h"
 #include "base/test/test_future.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
+#include "brave/components/ai_chat/core/browser/tools/tool.h"
+#include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -21,9 +27,21 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/window_open_disposition.h"
 
+using ::testing::_;
 using ::testing::NiceMock;
 
 namespace ai_chat {
+
+MockGenerateCallbacks::MockGenerateCallbacks() = default;
+MockGenerateCallbacks::MockGenerateCallbacks(
+    EngineConsumer::GenerationDataCallback data_cb,
+    EngineConsumer::GenerationCompletedCallback complete_cb)
+    : data_callback(std::move(data_cb)),
+      completed_callback(std::move(complete_cb)) {}
+MockGenerateCallbacks::~MockGenerateCallbacks() = default;
+MockGenerateCallbacks::MockGenerateCallbacks(MockGenerateCallbacks&&) = default;
+MockGenerateCallbacks& MockGenerateCallbacks::operator=(
+    MockGenerateCallbacks&&) = default;
 
 void AIChatConversationUIBrowserTestBase::SetUpOnMainThread() {
   InProcessBrowserTest::SetUpOnMainThread();
@@ -223,6 +241,32 @@ AIChatConversationUIBrowserTestBase::GetConversationState() {
   base::test::TestFuture<mojom::ConversationStatePtr> future;
   conversation_handler_->GetState(future.GetCallback());
   return future.Take();
+}
+
+std::unique_ptr<base::test::TestFuture<MockGenerateCallbacks>>
+AIChatConversationUIBrowserTestBase::SetupMockGenerateAssistantResponse(
+    testing::Sequence* sequence) {
+  auto future =
+      std::make_unique<base::test::TestFuture<MockGenerateCallbacks>>();
+  auto* future_ptr = future.get();
+  auto& expectation = EXPECT_CALL(
+      *mock_engine_, GenerateAssistantResponse(_, _, _, _, _, _, _, _));
+  if (sequence) {
+    expectation.InSequence(*sequence);
+  }
+  expectation.WillOnce(
+      [future_ptr](PageContentsMap page_contents,
+                   const EngineConsumer::ConversationHistory& history,
+                   bool is_temporary,
+                   const std::vector<base::WeakPtr<Tool>>& provided_tools,
+                   std::optional<std::string_view> preferred_tool_name,
+                   const ConversationCapabilitySet& capabilities,
+                   EngineConsumer::GenerationDataCallback data_cb,
+                   EngineConsumer::GenerationCompletedCallback complete_cb) {
+        future_ptr->SetValue(
+            MockGenerateCallbacks(std::move(data_cb), std::move(complete_cb)));
+      });
+  return future;
 }
 
 }  // namespace ai_chat

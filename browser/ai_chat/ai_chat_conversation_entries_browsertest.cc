@@ -3,31 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include <memory>
-#include <optional>
 #include <string>
-#include <string_view>
-#include <vector>
 
-#include "base/memory/raw_ptr.h"
-#include "base/memory/weak_ptr.h"
-#include "base/run_loop.h"
 #include "base/test/run_until.h"
-#include "base/test/test_future.h"
 #include "base/types/expected.h"
 #include "brave/browser/ai_chat/ai_chat_conversation_ui_browsertest_base.h"
-#include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
-#include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "content/public/test/browser_test.h"
-#include "testing/gmock/include/gmock/gmock.h"
-#include "testing/gtest/include/gtest/gtest.h"
-
-using ::testing::_;
-using ::testing::NiceMock;
 
 namespace ai_chat {
 
@@ -53,38 +37,22 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationEntriesBrowserTest,
   NavigateToConversationUI(uuid);
 
   // Set up the mock engine to handle the message submission
-  EngineConsumer::GenerationDataCallback data_callback;
-  EngineConsumer::GenerationCompletedCallback completed_callback;
-
-  base::RunLoop wait_for_generate;
-  EXPECT_CALL(*mock_engine_, GenerateAssistantResponse(_, _, _, _, _, _, _, _))
-      .WillOnce([&](PageContentsMap page_contents,
-                    const EngineConsumer::ConversationHistory& history,
-                    bool is_temporary,
-                    const std::vector<base::WeakPtr<Tool>>& provided_tools,
-                    std::optional<std::string_view> preferred_tool_name,
-                    const ConversationCapabilitySet& capabilities,
-                    EngineConsumer::GenerationDataCallback data_cb,
-                    EngineConsumer::GenerationCompletedCallback complete_cb) {
-        data_callback = std::move(data_cb);
-        completed_callback = std::move(complete_cb);
-        wait_for_generate.Quit();
-      });
+  auto generate_future = SetupMockGenerateAssistantResponse();
 
   // Submit a message to create a human entry
   conversation_handler_->SubmitHumanConversationEntry("Test message",
                                                       std::nullopt);
-  wait_for_generate.Run();
+  auto callbacks = generate_future->Take();
 
   ASSERT_TRUE(VerifyConversationFrameElementState("human-turn"))
       << "Human turn element not found after submitting message";
 
   // Complete the assistant response
-  data_callback.Run(EngineConsumer::GenerationResultData(
+  callbacks.data_callback.Run(EngineConsumer::GenerationResultData(
       mojom::ConversationEntryEvent::NewCompletionEvent(
           mojom::CompletionEvent::New("Test response")),
       std::nullopt));
-  std::move(completed_callback)
+  std::move(callbacks.completed_callback)
       .Run(base::ok(
           EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
 

@@ -6,12 +6,15 @@
 #ifndef BRAVE_BROWSER_AI_CHAT_AI_CHAT_CONVERSATION_UI_BROWSERTEST_BASE_H_
 #define BRAVE_BROWSER_AI_CHAT_AI_CHAT_CONVERSATION_UI_BROWSERTEST_BASE_H_
 
+#include <memory>
 #include <string>
 
 #include "base/location.h"
 #include "base/memory/raw_ptr.h"
+#include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -20,6 +23,20 @@
 class Browser;
 
 namespace ai_chat {
+
+// Holds the callbacks captured from a mocked GenerateAssistantResponse call.
+struct MockGenerateCallbacks {
+  MockGenerateCallbacks();
+  MockGenerateCallbacks(
+      EngineConsumer::GenerationDataCallback data_cb,
+      EngineConsumer::GenerationCompletedCallback complete_cb);
+  ~MockGenerateCallbacks();
+  MockGenerateCallbacks(MockGenerateCallbacks&&);
+  MockGenerateCallbacks& operator=(MockGenerateCallbacks&&);
+
+  EngineConsumer::GenerationDataCallback data_callback;
+  EngineConsumer::GenerationCompletedCallback completed_callback;
+};
 
 // Base class for AI Chat conversation UI browser tests.
 // Provides common utilities for navigating to conversation UI, accessing
@@ -69,6 +86,13 @@ class AIChatConversationUIBrowserTestBase : public InProcessBrowserTest {
 
   // Gets the current conversation state
   mojom::ConversationStatePtr GetConversationState();
+
+  // Sets up mock expectation for GenerateAssistantResponse and returns a future
+  // that resolves when the mock is called. Call future->Take() to block and get
+  // the captured callbacks. Optionally pass a sequence for ordered
+  // expectations.
+  std::unique_ptr<base::test::TestFuture<MockGenerateCallbacks>>
+  SetupMockGenerateAssistantResponse(testing::Sequence* sequence = nullptr);
 
   raw_ptr<content::RenderFrameHost> conversation_rfh_ = nullptr;
   raw_ptr<AIChatService> service_ = nullptr;
