@@ -165,6 +165,18 @@ CWV_EXPORT
 - (void)setLoginsHelper:(id<LoginsTabHelperBridge>)loginsHelper;
 @end
 
+CWV_EXPORT
+@interface BraveWebView (DocumentFetch)
+/// Downloads the resource at `url` using an XHR in the page context and
+/// delivers the result to `completionHandler`. On success `data` contains the
+/// response body and `statusCode` is the HTTP status code. On failure (no main
+/// frame, network error, etc.) `statusCode` is 0 and `data` is nil.
+- (void)downloadDocumentAtURL:(NSURL*)url
+            completionHandler:
+                (void (^)(NSInteger statusCode,
+                          NSData* _Nullable data))completionHandler;
+@end
+
 NS_ASSUME_NONNULL_END
 
 #endif  // BRAVE_IOS_BROWSER_API_WEB_VIEW_BRAVE_WEB_VIEW_H_
