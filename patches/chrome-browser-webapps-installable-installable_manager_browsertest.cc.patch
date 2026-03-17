@@ -1,0 +1,25 @@
+diff --git a/chrome/browser/webapps/installable/installable_manager_browsertest.cc b/chrome/browser/webapps/installable/installable_manager_browsertest.cc
+index 0fae270445529e4fe200e4ffdbff23d2cc194a7e..2dd5b538ed866841f24c9b629c8c3579f6e4db7d 100644
+--- a/chrome/browser/webapps/installable/installable_manager_browsertest.cc
++++ b/chrome/browser/webapps/installable/installable_manager_browsertest.cc
+@@ -788,6 +788,11 @@ IN_PROC_BROWSER_TEST_F(InstallableManagerBrowserTest, CheckWebapp) {
+     NavigateToPath("/banners/manifest_test_page.html");
+     RunInstallableManager(tester.get(), GetWebAppParams());
+     run_loop.Run();
++    // Drain any background tasks (e.g. ManifestSilentUpdateCommand calling
++    // GetData) that may have been queued during the installable check. Without
++    // this, FinishAndStartNextTask for a background task may still be pending
++    // when HasCurrent() is checked below, causing a flaky failure.
++    content::RunAllTasksUntilIdle();
+ 
+     EXPECT_FALSE(blink::IsEmptyManifest(tester->manifest()));
+     EXPECT_FALSE(tester->manifest_url().is_empty());
+@@ -821,6 +826,8 @@ IN_PROC_BROWSER_TEST_F(InstallableManagerBrowserTest, CheckWebapp) {
+     params.is_debug_mode = true;
+     RunInstallableManager(tester.get(), params);
+     run_loop.Run();
++    // Same as above: drain background tasks before checking HasCurrent().
++    content::RunAllTasksUntilIdle();
+ 
+     EXPECT_FALSE(blink::IsEmptyManifest(tester->manifest()));
+     EXPECT_FALSE(tester->manifest_url().is_empty());
