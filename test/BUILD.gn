@@ -485,6 +485,7 @@ test("brave_unit_tests") {
       "//brave/browser/ui/tabs/test:unit_tests",
       "//brave/browser/ui/toolbar:brave_app_menu_unit_test",
       "//brave/browser/ui/views/download/bubble:unit_tests",
+      "//brave/browser/ui/views/frame:unit_tests",
       "//brave/browser/ui/views/infobars:unit_tests",
       "//brave/browser/ui/views/page_action:unit_tests",
       "//brave/browser/ui/views/tabs:unit_tests",
