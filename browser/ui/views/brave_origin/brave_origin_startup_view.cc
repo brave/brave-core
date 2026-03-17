@@ -16,6 +16,7 @@
 #include "brave/browser/ui/webui/brave_origin_startup/brave_origin_startup_ui.h"
 #include "brave/components/brave_origin/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"
 #include "chrome/browser/profiles/keep_alive/scoped_profile_keep_alive.h"
 #include "chrome/browser/profiles/profile.h"
@@ -76,6 +77,12 @@ bool BraveOriginStartupView::ShouldShowDialog(PrefService* local_state) {
   if (base::CommandLine::ForCurrentProcess()->HasSwitch(switches::kTestType)) {
     return false;
   }
+
+#if BUILDFLAG(IS_LINUX)
+  if (local_state->GetBoolean(brave_origin::kOriginFreeTierAccepted)) {
+    return false;
+  }
+#endif
 
   return !local_state->GetBoolean(brave_origin::kOriginPurchaseValidated) ||
          !HasOriginSkuCredentials(local_state);

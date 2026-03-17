@@ -12,6 +12,7 @@
 #include "brave/browser/resources/brave_origin_startup/grit/brave_origin_startup_static_resources_map.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/webui/brave_origin_startup/brave_origin_startup_handler.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_webui_strings.h"
@@ -32,6 +33,13 @@ void CreateAndAddDataSource(content::WebUI* web_ui, Profile* profile) {
   source->AddResourcePaths(kBraveOriginStartupStaticResources);
 
   source->AddLocalizedStrings(webui::kBraveOriginStartupStrings);
+
+  // Linux free tier: allow proceeding without a purchase on Linux.
+#if BUILDFLAG(IS_LINUX)
+  source->AddBoolean("isLinuxFreeEligible", true);
+#else
+  source->AddBoolean("isLinuxFreeEligible", false);
+#endif
 }
 
 }  // namespace

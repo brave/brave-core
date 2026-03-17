@@ -17,13 +17,39 @@ export interface BraveOriginHandler {
   ): Promise<{ success: boolean; errorMessage: string }>
   openBuyWindow(): void
   closeDialog(): void
+  proceedFree(): void
 }
 
 interface AppProps {
   handler: BraveOriginHandler
+  isLinuxFreeEligible?: boolean
 }
 
-export function App({ handler }: AppProps) {
+function renderLinuxDescription2(onBuyClick: () => void) {
+  const raw = getLocale(S.BRAVE_ORIGIN_STARTUP_LINUX_DESCRIPTION2)
+  const parts = raw.split(/\$[12]/)
+  if (parts.length !== 3) {
+    return <p>{raw}</p>
+  }
+  return (
+    <p>
+      {parts[0]}
+      <a
+        href='#'
+        className='purchase-link'
+        onClick={(e) => {
+          e.preventDefault()
+          onBuyClick()
+        }}
+      >
+        {parts[1]}
+      </a>
+      {parts[2]}
+    </p>
+  )
+}
+
+export function App({ handler, isLinuxFreeEligible }: AppProps) {
   const [currentView, setCurrentView] = React.useState<'main' | 'restore'>(
     'main',
   )
@@ -139,6 +165,43 @@ export function App({ handler }: AppProps) {
                 {getLocale(S.BRAVE_ORIGIN_STARTUP_BUY_BUTTON)}
               </Button>
             </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (isLinuxFreeEligible) {
+    const onLinuxBuyClick = () => {
+      handler.openBuyWindow()
+    }
+    return (
+      <div className='brave-origin-startup'>
+        <div className='container'>
+          <Icon
+            name='social-brave-release-favicon-fullheight-color'
+            className='logo'
+          />
+          <h1>{getLocale(S.BRAVE_ORIGIN_STARTUP_TITLE)}</h1>
+          <div className='description'>
+            <p>{getLocale(S.BRAVE_ORIGIN_STARTUP_LINUX_DESCRIPTION)}</p>
+            {renderLinuxDescription2(onLinuxBuyClick)}
+          </div>
+          <div className='buttons'>
+            <Button
+              kind='outline'
+              size='small'
+              onClick={onLinuxBuyClick}
+            >
+              {getLocale(S.BRAVE_ORIGIN_STARTUP_LINUX_BUY_BUTTON)}
+            </Button>
+            <Button
+              kind='plain-faint'
+              size='small'
+              onClick={() => handler.proceedFree()}
+            >
+              {getLocale(S.BRAVE_ORIGIN_STARTUP_LINUX_FREE_BUTTON)}
+            </Button>
           </div>
         </div>
       </div>
