@@ -38,5 +38,7 @@
     "noUnusedLocals": true,
     // Issue an error if a value is declared and not used.
     "noUnusedParameters": true,
+    // Issue an error if a property with an explicit type is not initialized.
+    "strictPropertyInitialization": true,
   },
 }

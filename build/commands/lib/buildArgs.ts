@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import type Config from './config.js'
+import type { Config } from './config.js'
 import assert from 'node:assert'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -69,7 +69,7 @@ const FORWARD_ENV_CONFIG_VARS_TO_GN_ARGS = [
   'is_brave_origin_branded',
 ]
 
-export function getBuildArgs(config: typeof Config) {
+export function getBuildArgs(config: Config) {
   const versionParts = config.braveVersion.split('+')[0]!.split('.')
 
   let args: Record<string, any> = {
