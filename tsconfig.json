@@ -17,7 +17,7 @@
       "es2017",
       "es2018",
       "es2019",
-      "esnext"
+      "esnext",
     ],
     "resolveJsonModule": true,
     "moduleResolution": "node",
@@ -44,7 +44,7 @@
         "../out/Component_arm64/gen/*",
         "../out/Static_arm64/gen/*",
         "../out/Release_arm64/gen/*",
-        "../out/Debug_arm64/gen/*"
+        "../out/Debug_arm64/gen/*",
       ],
       "//resources/mojo/*": [
         "../out/Component/gen/ui/webui/resources/tsc/mojo/*",
@@ -54,7 +54,7 @@
         "../out/Component_arm64/gen/ui/webui/resources/tsc/mojo/*",
         "../out/Static_arm64/gen/ui/webui/resources/tsc/mojo/*",
         "../out/Release_arm64/gen/ui/webui/resources/tsc/mojo/*",
-        "../out/Debug_arm64/gen/ui/webui/resources/tsc/mojo/*"
+        "../out/Debug_arm64/gen/ui/webui/resources/tsc/mojo/*",
       ],
       "chrome://resources/*": [
         "../out/Component/gen/ui/webui/resources/tsc/*",
@@ -64,7 +64,7 @@
         "../out/Component_arm64/gen/ui/webui/resources/tsc/*",
         "../out/Static_arm64/gen/ui/webui/resources/tsc/*",
         "../out/Release_arm64/gen/ui/webui/resources/tsc/*",
-        "../out/Debug_arm64/gen/ui/webui/resources/tsc/*"
+        "../out/Debug_arm64/gen/ui/webui/resources/tsc/*",
       ],
       "chrome://resources/brave/*": [
         "../out/Component/gen/brave/ui/webui/resources/tsc/*",
@@ -74,16 +74,16 @@
         "../out/Component_arm64/gen/brave/ui/webui/resources/tsc/*",
         "../out/Static_arm64/gen/brave/ui/webui/resources/tsc/*",
         "../out/Release_arm64/gen/brave/ui/webui/resources/tsc/*",
-        "../out/Debug_arm64/gen/brave/ui/webui/resources/tsc/*"
+        "../out/Debug_arm64/gen/brave/ui/webui/resources/tsc/*",
       ],
-      "$web-common/*": ["components/common/*"]
+      "$web-common/*": ["components/common/*"],
     },
     "typeRoots": ["./node_modules/@types", "./components/definitions"],
     // optional
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "strictNullChecks": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
   },
-  "include": []
+  "include": [],
 }

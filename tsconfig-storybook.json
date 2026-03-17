@@ -4,12 +4,12 @@
     "./components/definitions/*",
     "./components/**/storybook",
     "./components/**/stories/*.tsx",
-    "./components/**/*.stories.tsx"
+    "./components/**/*.stories.tsx",
   ],
   "compilerOptions": {
     "allowJs": true,
     "skipLibCheck": true,
     "noImplicitAny": true,
-    "outDir": "./storybook_dist"
-  }
+    "outDir": "./storybook_dist",
+  },
 }
