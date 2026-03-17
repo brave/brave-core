@@ -100,6 +100,7 @@ def modify_input_api(input_api):
         *config['additional_default_files_to_check'], )
     override_canned_checks(input_api.canned_checks)
     setup_per_check_file_filter(input_api)
+    setup_read_file_override(input_api)
 
 
 # Disables checks or forces presubmit errors for checks listed in the config.
@@ -183,6 +184,46 @@ def setup_per_check_file_filter(input_api):
                 result.append((line_num, line))
             self._cached_changed_contents = result
             return self._cached_changed_contents[:]
+
+
+def setup_read_file_override(input_api):
+
+    @override_utils.override_method(input_api)
+    def ReadFile(_self, original_method, file_item, mode='r'):
+
+        def is_affected_file_inside_chromium_repo(_self, file_item):
+            if isinstance(file_item, input_api.change._AFFECTED_FILES):
+                file_item = file_item.AbsoluteLocalPath()
+
+            from pathlib import Path
+            repo_root = Path(_self.change.RepositoryRoot())
+
+            if repo_root.name == "brave" and repo_root.parent.name == "src" and file_item.startswith(
+                    str(repo_root.parent)):
+                return True
+
+            return False
+
+        try:
+            return original_method(file_item, mode)
+        except IOError as io_error:
+            # We want to pass over the exception of reading
+            # reading anything outside the repository from InputApi.ReadFile.
+            # So just re-throw as is any other exception
+            if (str(io_error)
+                    != 'Access outside the repository root is denied.'):
+                raise
+
+            # We are here because of the original input_api.ReadFile
+            # behaviour. When the RepositoryRoot() is brave-browser/src/brave -
+            # it doesn't allow us to access brave-browser/src .
+            # But in fact we are ok to read from brave-browser/src
+            if is_affected_file_inside_chromium_repo(_self, file_item):
+                import gclient_utils
+                return gclient_utils.FileRead(file_item, 'r')
+
+            # Give up, we are even outside brave-browser/src
+            raise
 
 
 # Inlines presubmit file as if it was run from the dir where it's located.
