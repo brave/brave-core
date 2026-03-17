@@ -32,6 +32,7 @@ export function useRichMediaMessageHandler(
 ) {
   const { destinationUrl } = options
   const actions = useBackgroundActions()
+  const searchActions = useSearchActions()
   const queryAutocomplete = useBraveSearchAutocomplete(frameHandle)
 
   return React.useCallback(
@@ -50,6 +51,9 @@ export function useRichMediaMessageHandler(
         },
         queryBraveSearchAutocomplete(query) {
           queryAutocomplete(query)
+        },
+        hideBraveSearchBox() {
+          searchActions.setSearchBoxSuppressed(true)
         },
       })
     },

@@ -51,8 +51,12 @@ function MaybeAIChatContext(
 
 export function QueryBox(props: Props) {
   const searchFeatureEnabled = useSearchState((s) => s.searchFeatureEnabled)
-  const showSearchBox = useSearchState((s) => s.showSearchBox)
-  const showChatInput = useSearchState((s) => s.showChatInput)
+  const showSearchBox = useSearchState(
+    (s) => s.showSearchBox && !s.searchBoxSuppressed,
+  )
+  const showChatInput = useSearchState(
+    (s) => s.showChatInput && !s.searchBoxSuppressed,
+  )
 
   const [queryMode, setQueryMode] = usePersistedState<QueryMode>({
     key: 'ntp-query-input-mode',
