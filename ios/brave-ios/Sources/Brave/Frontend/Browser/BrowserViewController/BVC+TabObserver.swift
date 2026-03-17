@@ -431,14 +431,7 @@ extension BrowserViewController {
     }
 
     if tab.profile.prefs.isBraveTalkAvailable {
-      injectedScripts.append(
-        BraveTalkScriptHandler(
-          rewards: rewards,
-          launchNativeBraveTalk: { [weak self] tab, room, token in
-            self?.launchNativeBraveTalk(tab: tab, room: room, token: token)
-          }
-        )
-      )
+      injectedScripts.append(BraveTalkScriptHandler())
     }
 
     if profileController.braveWalletAPI.isAllowed {
