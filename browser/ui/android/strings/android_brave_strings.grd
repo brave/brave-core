@@ -305,6 +305,30 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BLOCK_YOUTUBE_SHORTS_DESCRIPTION" desc="Hides shorts on YouTube.">
         Blocks Shorts from the home page, trending page and search results on youtube.com.
       </message>
+      <message name="IDS_BLOCK_YOUTUBE_AUTODUBBED_VIDEOS" desc="Block YouTube auto-dubbed videos">
+        Block YouTube auto-dubbed videos
+      </message>
+      <message name="IDS_BLOCK_YOUTUBE_AUTODUBBED_VIDEOS_DESCRIPTION" desc="Blocks auto-dubbed videos from appearing on youtube.com.">
+        Blocks auto-dubbed videos from appearing on the youtube.com home page &amp; search results.
+      </message>
+      <message name="IDS_BLOCK_YOUTUBE_THUMBNAILS" desc="Block YouTube thumbnails">
+        Block YouTube thumbnails
+      </message>
+      <message name="IDS_BLOCK_YOUTUBE_THUMBNAILS_DESCRIPTION" desc="Blocks thumbnails from appearing on youtube.com.">
+        Blocks thumbnails from appearing on the youtube.com home page &amp; search results.
+      </message>
+      <message name="IDS_BLOCK_YOUTUBE_PLAYABLES" desc="Block YouTube Playables">
+        Block YouTube Playables
+      </message>
+      <message name="IDS_BLOCK_YOUTUBE_PLAYABLES_DESCRIPTION" desc="Blocks Playables from appearing on youtube.com.">
+        Blocks Playables from appearing on the youtube.com home page &amp; search results.
+      </message>
+      <message name="IDS_BLOCK_YOUTUBE_MEMBERS_ONLY_VIDEOS" desc="Block YouTube members-only videos">
+        Block YouTube members-only videos
+      </message>
+      <message name="IDS_BLOCK_YOUTUBE_MEMBERS_ONLY_VIDEOS_DESCRIPTION" desc="Blocks members-only videos from appearing on youtube.com.">
+        Blocks members-only videos from appearing on the youtube.com home page &amp; search results.
+      </message>
       <message name="IDS_BRAVE_SHIELDS_SOCIAL_BLOCKING_TITLE" desc="Title for social media blocking.">
         Social Media Blocking
       </message>

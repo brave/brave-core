@@ -41,3 +41,11 @@ const string kHideYoutubeDistractingElementsUuid
       = "BD308B90-D3BB-4041-9114-22E096B0BA77";
 const string kHideYoutubeShortsUuid
       = "9E8EC586-4E17-4E5E-99D7-35172C4CEA74";
+const string kHideYoutubeAutodubbedVideosUuid
+      = "7f11b964-4f36-4e06-9d75-bd16381b9386";
+const string kHideYoutubeThumbnailImagesUuid
+      = "3afa9d35-d837-45b5-b742-b3d0fe94e77c";
+const string kHideYoutubePlayablesUuid
+      = "5c6a6c95-b60a-4695-9efb-539359022531";
+const string kHideYoutubeMembersVideoAdsUuid
+      = "49958da7-f532-4a84-a765-9501729b8e75";

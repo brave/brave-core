@@ -26,6 +26,16 @@
             android:key="play_yt_video_in_browser"
             android:title="@string/prefs_open_youtube_links_brave" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="hide_youtube_shorts"
+            android:title="@string/block_youtube_shorts"
+            android:summary="@string/block_youtube_shorts_description"
+            android:defaultValue="false" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="hide_youtube_playables"
+            android:title="@string/block_youtube_playables"
+            android:summary="@string/block_youtube_playables_description"
+            android:defaultValue="false" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="hide_youtube_recommended_content"
             android:title="@string/block_youtube_recommended_content"
             android:summary="@string/block_youtube_recommended_content_description"
@@ -36,9 +46,19 @@
             android:summary="@string/block_youtube_distracting_elements_description"
             android:defaultValue="true" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-            android:key="hide_youtube_shorts"
-            android:title="@string/block_youtube_shorts"
-            android:summary="@string/block_youtube_shorts_description"
+            android:key="hide_youtube_thumbnails"
+            android:title="@string/block_youtube_thumbnails"
+            android:summary="@string/block_youtube_thumbnails_description"
+            android:defaultValue="false" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="hide_youtube_autodubbed_videos"
+            android:title="@string/block_youtube_autodubbed_videos"
+            android:summary="@string/block_youtube_autodubbed_videos_description"
+            android:defaultValue="false" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="hide_youtube_members_only_videos"
+            android:title="@string/block_youtube_members_only_videos"
+            android:summary="@string/block_youtube_members_only_videos_description"
             android:defaultValue="false" />
     </PreferenceCategory>
 
