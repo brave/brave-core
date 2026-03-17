@@ -240,6 +240,13 @@ void BraveBrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(
 
 BrowserViewTabbedLayoutImpl::TopSeparatorType
 BraveBrowserViewTabbedLayoutImpl::GetTopSeparatorType() const {
+  // Return kNone when there is no visible top UI (toolbar and bookmark bar).
+  // This fixes a 1px visible separator at the top of the contents view when in
+  // browser fullscreen, where the top chrome is hidden.
+  if (!delegate().IsToolbarVisible() && !delegate().IsBookmarkBarVisible()) {
+    return TopSeparatorType::kNone;
+  }
+
   // Get the upstream separator type as a starting point. The top separator is
   // a visual line that divides the browser's top UI (toolbar, tabs) from the
   // main content area below it.
