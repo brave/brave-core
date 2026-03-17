@@ -7,11 +7,16 @@ static_library("psst") {
   public = [
     "psst_settings_service_factory.h",
     "psst_ui_delegate_impl.h",
+    "psst_ui_presenter.h",
   ]
 
   sources = [
+    "psst_infobar_delegate.cc",
+    "psst_infobar_delegate.h",
     "psst_settings_service_factory.cc",
     "psst_ui_delegate_impl.cc",
+    "psst_ui_desktop_presenter.cc",
+    "psst_ui_desktop_presenter.h",
   ]
 
   deps = [

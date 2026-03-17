@@ -10,9 +10,12 @@
 namespace psst {
 
 PsstUiDelegateImpl::PsstUiDelegateImpl(
-    PsstSettingsService* psst_settings_service)
-    : psst_settings_service_(psst_settings_service) {
+    PsstSettingsService* psst_settings_service,
+    std::unique_ptr<PsstUiPresenter> ui_presenter)
+    : ui_presenter_(std::move(ui_presenter)),
+      psst_settings_service_(psst_settings_service) {
   CHECK(psst_settings_service_);
+  CHECK(ui_presenter_);
 }
 PsstUiDelegateImpl::~PsstUiDelegateImpl() = default;
 

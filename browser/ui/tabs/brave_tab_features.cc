@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
+#include "brave/browser/psst/psst_ui_desktop_presenter.h"
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
@@ -65,7 +66,8 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
         psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
             tab.GetContents(), profile,
             std::make_unique<psst::PsstUiDelegateImpl>(
-                PsstSettingsServiceFactory::GetForProfile(profile)),
+                PsstSettingsServiceFactory::GetForProfile(profile),
+                std::make_unique<psst::UiDesktopPresenter>(tab.GetContents())),
             profile->GetPrefs(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 #endif
