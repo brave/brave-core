@@ -96,11 +96,11 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
   std::string chain_id;
   std::string max_priority_fee_per_gas;
   std::string max_fee_per_gas;
-  if (tx_->type() == 1) {
+  if (tx_->type() == EthTransactionType::kEip2930) {
     // When type is 1 it's always Eip2930Transaction
     auto* tx2930 = static_cast<Eip2930Transaction*>(tx_.get());
     chain_id = Uint256ValueToHex(tx2930->chain_id());
-  } else if (tx_->type() == 2) {
+  } else if (tx_->type() == EthTransactionType::kEip1559) {
     // When type is 2 it's always Eip1559Transaction
     auto* tx1559 = static_cast<Eip1559Transaction*>(tx_.get());
     chain_id = Uint256ValueToHex(tx1559->chain_id());

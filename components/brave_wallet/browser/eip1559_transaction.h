@@ -19,7 +19,7 @@ class Eip1559Transaction : public Eip2930Transaction {
   Eip1559Transaction();
   Eip1559Transaction(const Eip1559Transaction&);
   ~Eip1559Transaction() override;
-  bool operator==(const Eip1559Transaction&) const;
+  bool operator==(const Eip1559Transaction&) const = default;
 
   static std::optional<Eip1559Transaction> FromTxData(
       const mojom::TxData1559Ptr& tx_data,
@@ -39,22 +39,6 @@ class Eip1559Transaction : public Eip2930Transaction {
     max_priority_fee_per_gas_ = max_priority_fee_per_gas;
   }
 
-  // 0x02 || rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas,
-  // gasLimit, destination, value, data, access_list])
-  std::vector<uint8_t> GetMessageToSign(uint256_t chain_id) const override;
-
-  // 0x02 || rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas, gasLimit,
-  // destination, value, data, accessList, signatureYParity, signatureR,
-  // signatureS])
-  std::string GetSignedTransaction() const override;
-
-  // keccacak(0x02 || rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas,
-  // gasLimit, destination, value, data, accessList, signatureYParity,
-  // signatureR,signatureS]))
-  std::string GetTransactionHash() const override;
-
-  base::DictValue ToValue() const override;
-
  protected:
   Eip1559Transaction(
       std::optional<uint256_t> nonce,
@@ -67,13 +51,19 @@ class Eip1559Transaction : public Eip2930Transaction {
       uint256_t max_priority_fee_per_gas,
       uint256_t max_fee_per_gas);
 
-  uint256_t max_priority_fee_per_gas_;
-  uint256_t max_fee_per_gas_;
+  // 0x02 || rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas,
+  // gasLimit, destination, value, data, access_list])
+  std::vector<uint8_t> GetMessageToSignImpl(uint256_t chain_id) const override;
 
-  bool VIsRecid() const override;
+  // 0x02 || rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas,
+  // gasLimit, destination, value, data, accessList, signatureYParity,
+  // signatureR,signatureS])
+  std::vector<uint8_t> Serialize() const override;
 
- private:
-  std::vector<uint8_t> Serialize() const;
+  base::DictValue ToValueImpl() const override;
+
+  uint256_t max_priority_fee_per_gas_ = 0;
+  uint256_t max_fee_per_gas_ = 0;
 };
 
 }  // namespace brave_wallet

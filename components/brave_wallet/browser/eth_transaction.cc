@@ -49,8 +49,6 @@ EthTransaction::EthTransaction(
       data_(data) {}
 EthTransaction::~EthTransaction() = default;
 
-bool EthTransaction::operator==(const EthTransaction& tx) const = default;
-
 // static
 std::optional<EthTransaction> EthTransaction::FromTxData(
     const mojom::TxDataPtr& tx_data,
@@ -185,12 +183,21 @@ std::optional<EthTransaction> EthTransaction::FromValue(
   if (!type) {
     return std::nullopt;
   }
-  tx.type_ = (uint8_t)*type;
-
+  tx.type_ = static_cast<EthTransactionType>(*type);
+  if (tx.type_ != EthTransactionType::kLegacy &&
+      tx.type_ != EthTransactionType::kEip2930 &&
+      tx.type_ != EthTransactionType::kEip1559) {
+    return std::nullopt;
+  }
   return tx;
 }
 
 std::vector<uint8_t> EthTransaction::GetMessageToSign(
+    uint256_t chain_id) const {
+  return GetMessageToSignImpl(chain_id);
+}
+
+std::vector<uint8_t> EthTransaction::GetMessageToSignImpl(
     uint256_t chain_id) const {
   DCHECK(nonce_);
   base::ListValue list;
@@ -215,16 +222,17 @@ KeccakHashArray EthTransaction::GetHashedMessageToSign(
 }
 
 std::string EthTransaction::GetSignedTransaction() const {
+  DCHECK(IsSigned());
   DCHECK(nonce_);
 
-  return ToHex(RLPEncode(Serialize()));
+  return ToHex(Serialize());
 }
 
 std::string EthTransaction::GetTransactionHash() const {
   DCHECK(IsSigned());
   DCHECK(nonce_);
 
-  return ToHex(KeccakHash(base::as_byte_span(RLPEncode(Serialize()))));
+  return ToHex(KeccakHash(Serialize()));
 }
 
 bool EthTransaction::ProcessVRS(const std::vector<uint8_t>& v,
@@ -250,7 +258,7 @@ void EthTransaction::ProcessSignature(const Secp256k1Signature& signature,
   r_ = base::ToVector(signature.rs_bytes().subspan(0u, 32u));
   s_ = base::ToVector(signature.rs_bytes().subspan(32u, 32u));
 
-  if (VIsRecid()) {
+  if (type_ != EthTransactionType::kLegacy) {
     // For EIP-1559 and EIP-2930 recovery id is used as is.
     v_ = signature.recid();
   } else {
@@ -264,10 +272,14 @@ void EthTransaction::ProcessSignature(const Secp256k1Signature& signature,
 }
 
 bool EthTransaction::IsSigned() const {
-  return v_ != (uint256_t)0 && r_.size() != 0 && s_.size() != 0;
+  return !r_.empty() && !s_.empty();
 }
 
 base::DictValue EthTransaction::ToValue() const {
+  return ToValueImpl();
+}
+
+base::DictValue EthTransaction::ToValueImpl() const {
   base::DictValue dict;
   dict.Set("nonce", nonce_ ? Uint256ValueToHex(nonce_.value()) : "");
   dict.Set("gas_price", Uint256ValueToHex(gas_price_));
@@ -300,11 +312,7 @@ uint256_t EthTransaction::GetDataFee() const {
   return cost;
 }
 
-bool EthTransaction::VIsRecid() const {
-  return false;
-}
-
-base::Value EthTransaction::Serialize() const {
+std::vector<uint8_t> EthTransaction::Serialize() const {
   base::ListValue list;
   list.Append(RLPUint256ToBlob(nonce_.value()));
   list.Append(RLPUint256ToBlob(gas_price_));
@@ -316,7 +324,7 @@ base::Value EthTransaction::Serialize() const {
   list.Append(base::Value(r_));
   list.Append(base::Value(s_));
 
-  return base::Value(std::move(list));
+  return RLPEncode(base::Value(std::move(list)));
 }
 
 std::vector<uint8_t> EthTransaction::GetToBytes() const {

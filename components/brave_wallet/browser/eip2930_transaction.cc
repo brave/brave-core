@@ -39,10 +39,10 @@ Eip2930Transaction::Eip2930Transaction(
     uint256_t chain_id)
     : EthTransaction(nonce, gas_price, gas_limit, std::move(to), value, data),
       chain_id_(chain_id) {
-  type_ = 1;
+  type_ = EthTransactionType::kEip2930;
 }
 Eip2930Transaction::Eip2930Transaction() : chain_id_(0) {
-  type_ = 1;
+  type_ = EthTransactionType::kEip2930;
 }
 Eip2930Transaction::~Eip2930Transaction() = default;
 
@@ -135,7 +135,7 @@ Eip2930Transaction::ValueToAccessList(const base::ListValue& value) {
   return access_list;
 }
 
-std::vector<uint8_t> Eip2930Transaction::GetMessageToSign(
+std::vector<uint8_t> Eip2930Transaction::GetMessageToSignImpl(
     uint256_t chain_id) const {
   DCHECK(nonce_);
 
@@ -150,31 +150,13 @@ std::vector<uint8_t> Eip2930Transaction::GetMessageToSign(
   list.Append(base::Value(AccessListToValue(access_list_)));
 
   std::vector<uint8_t> result;
-  result.push_back(type_);
+  result.push_back(static_cast<uint8_t>(type_));
   base::Extend(result, RLPEncode(list));
   return result;
 }
 
-std::string Eip2930Transaction::GetSignedTransaction() const {
-  DCHECK(IsSigned());
-  DCHECK(nonce_);
-
-  return ToHex(Serialize());
-}
-
-std::string Eip2930Transaction::GetTransactionHash() const {
-  DCHECK(IsSigned());
-  DCHECK(nonce_);
-
-  return ToHex(KeccakHash(Serialize()));
-}
-
-bool Eip2930Transaction::IsSigned() const {
-  return r_.size() != 0 && s_.size() != 0;
-}
-
-base::DictValue Eip2930Transaction::ToValue() const {
-  base::DictValue tx = EthTransaction::ToValue();
+base::DictValue Eip2930Transaction::ToValueImpl() const {
+  base::DictValue tx = EthTransaction::ToValueImpl();
   tx.Set("chain_id", Uint256ValueToHex(chain_id_));
   tx.Set("access_list", base::Value(AccessListToValue(access_list_)));
 
@@ -189,10 +171,6 @@ uint256_t Eip2930Transaction::GetDataFee() const {
     fee += uint256_t(item.storage_keys.size()) * kAccessListStorageKeyCost;
   }
   return fee;
-}
-
-bool Eip2930Transaction::VIsRecid() const {
-  return true;
 }
 
 std::vector<uint8_t> Eip2930Transaction::Serialize() const {
@@ -210,7 +188,7 @@ std::vector<uint8_t> Eip2930Transaction::Serialize() const {
   list.Append(base::Value(s_));
 
   std::vector<uint8_t> result;
-  result.push_back(type_);
+  result.push_back(static_cast<uint8_t>(type_));
 
   base::Extend(result, RLPEncode(list));
 

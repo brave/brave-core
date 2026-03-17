@@ -926,7 +926,7 @@ void EthTxManager::SetGasFeeAndLimitForUnapprovedTransaction(
 
   auto tx_meta = GetEthTxStateManager().GetEthTx(tx_meta_id);
   if (!tx_meta || tx_meta->status() != mojom::TransactionStatus::Unapproved ||
-      tx_meta->tx()->type() != 2 /* Eip1559 */) {
+      tx_meta->tx()->type() != EthTransactionType::kEip1559) {
     std::move(callback).Run(false);
     return;
   }
@@ -1038,7 +1038,7 @@ void EthTxManager::SpeedupOrCancelTransaction(
     return;
   }
 
-  if (meta->tx()->type() == 2) {  // EIP1559
+  if (meta->tx()->type() == EthTransactionType::kEip1559) {
     auto tx = std::make_unique<Eip1559Transaction>(
         *static_cast<Eip1559Transaction*>(meta->tx()));
     if (cancel) {
@@ -1195,7 +1195,7 @@ void EthTxManager::RetryTransaction(const std::string& tx_meta_id,
   }
 
   std::unique_ptr<EthTransaction> tx;
-  if (meta->tx()->type() == 2) {  // EIP1559
+  if (meta->tx()->type() == EthTransactionType::kEip1559) {
     tx = std::make_unique<Eip1559Transaction>(
         *static_cast<Eip1559Transaction*>(meta->tx()));
   } else {

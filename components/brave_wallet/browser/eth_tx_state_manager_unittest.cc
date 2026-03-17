@@ -114,7 +114,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   EXPECT_EQ(meta_from_value->tx_hash(), meta.tx_hash());
   EXPECT_EQ(meta_from_value->origin(), meta.origin());
   EXPECT_EQ(meta_from_value->chain_id(), meta.chain_id());
-  ASSERT_EQ(meta_from_value->tx()->type(), 0);
+  ASSERT_EQ(meta_from_value->tx()->type(), EthTransactionType::kLegacy);
   EXPECT_EQ(*meta_from_value->tx(), *meta.tx());
   // optional sign_only will be false by default
   EXPECT_FALSE(meta_from_value->sign_only());
@@ -141,7 +141,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   base::DictValue value1 = meta1.ToValue();
   auto meta_from_value1 = eth_tx_state_manager_->ValueToEthTxMeta(value1);
   ASSERT_NE(meta_from_value1, nullptr);
-  EXPECT_EQ(meta_from_value1->tx()->type(), 1);
+  EXPECT_EQ(meta_from_value1->tx()->type(), EthTransactionType::kEip2930);
   Eip2930Transaction* tx_from_value1 =
       static_cast<Eip2930Transaction*>(meta_from_value1->tx());
   EXPECT_EQ(*tx_from_value1, *static_cast<Eip2930Transaction*>(meta1.tx()));
@@ -159,7 +159,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   base::DictValue value2 = meta2.ToValue();
   auto meta_from_value2 = eth_tx_state_manager_->ValueToEthTxMeta(value2);
   ASSERT_NE(meta_from_value2, nullptr);
-  EXPECT_EQ(meta_from_value2->tx()->type(), 2);
+  EXPECT_EQ(meta_from_value2->tx()->type(), EthTransactionType::kEip1559);
   Eip1559Transaction* tx_from_value2 =
       static_cast<Eip1559Transaction*>(meta_from_value2->tx());
   EXPECT_EQ(*tx_from_value2, *static_cast<Eip1559Transaction*>(meta2.tx()));
