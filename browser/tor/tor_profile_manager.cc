@@ -22,8 +22,9 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
-#include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_collection_observer.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -36,10 +37,13 @@
 
 namespace {
 
-class TorBrowserListObserver : public BrowserListObserver {
+class TorBrowserCollectionObserver : public BrowserCollectionObserver {
  public:
-  TorBrowserListObserver() {}
-  ~TorBrowserListObserver() override {}
+  TorBrowserCollectionObserver() {
+    observation_.Observe(GlobalBrowserCollection::GetInstance());
+  }
+
+  ~TorBrowserCollectionObserver() override = default;
 
   size_t GetTorBrowserCount() {
     size_t count = 0;
@@ -53,18 +57,22 @@ class TorBrowserListObserver : public BrowserListObserver {
     return count;
   }
 
-  // BrowserListObserver:
-  void OnBrowserRemoved(Browser* browser) override {
-    if (!browser || !browser->profile()->IsTor()) {
+  // BrowserCollectionObserver:
+  void OnBrowserClosed(BrowserWindowInterface* browser) override {
+    if (!browser || !browser->GetProfile()->IsTor()) {
       return;
     }
 
     if (!GetTorBrowserCount()) {
       tor::TorProfileService* service =
-          TorProfileServiceFactory::GetForContext(browser->profile());
+          TorProfileServiceFactory::GetForContext(browser->GetProfile());
       service->KillTor();
     }
   }
+
+ private:
+  base::ScopedObservation<GlobalBrowserCollection, BrowserCollectionObserver>
+      observation_{this};
 };
 
 }  // namespace
@@ -209,13 +217,9 @@ void TorProfileManager::CloseTorProfileWindows(Profile* tor_profile) {
 }
 
 TorProfileManager::TorProfileManager()
-    : browser_list_observer_(new TorBrowserListObserver()) {
-  BrowserList::AddObserver(browser_list_observer_.get());
-}
+    : browser_collection_observer_(new TorBrowserCollectionObserver()) {}
 
-TorProfileManager::~TorProfileManager() {
-  BrowserList::RemoveObserver(browser_list_observer_.get());
-}
+TorProfileManager::~TorProfileManager() = default;
 
 Profile* TorProfileManager::GetTorProfile(Profile* profile) {
   if (TorProfileServiceFactory::IsTorDisabled(profile)) {

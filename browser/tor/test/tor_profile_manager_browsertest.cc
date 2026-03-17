@@ -339,7 +339,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseAllTorWindows) {
   ASSERT_EQ(chrome::GetTotalBrowserCount(), 5u);
 
   testing::Mock::AllowLeak(GetTorLauncherFactory());
-  EXPECT_CALL(*GetTorLauncherFactory(), KillTorProcess).Times(2);
+  EXPECT_CALL(*GetTorLauncherFactory(), KillTorProcess).Times(1);
 
   ui_test_utils::BrowserDestroyedObserver observer1(tor_browser1);
   ui_test_utils::BrowserDestroyedObserver observer2(tor_browser2);
@@ -348,6 +348,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseAllTorWindows) {
   // both should get closed.
   observer1.Wait();
   observer2.Wait();
+  testing::Mock::VerifyAndClearExpectations(GetTorLauncherFactory());
 
   EXPECT_EQ(0UL, chrome::GetBrowserCount(tor_profile1));
   EXPECT_EQ(0UL, chrome::GetBrowserCount(tor_profile2));
