@@ -25,7 +25,6 @@ extension TabDataValues {
 }
 
 protocol TabMiscDelegate {
-  func showRequestRewardsPanel(_ tab: some TabState)
   func stopMediaPlayback(_ tab: some TabState)
   func showWalletNotification(_ tab: some TabState, origin: URLOrigin)
   func updateURLBarWalletButton()
@@ -95,7 +94,6 @@ class TabBrowserData: NSObject, TabObserver {
     onScreenshotUpdated?()
   }
   var onScreenshotUpdated: (() -> Void)?
-  var rewardsEnabledCallback: ((Bool) -> Void)?
 
   var alertShownCount: Int = 0
   var blockAllAlerts: Bool = false

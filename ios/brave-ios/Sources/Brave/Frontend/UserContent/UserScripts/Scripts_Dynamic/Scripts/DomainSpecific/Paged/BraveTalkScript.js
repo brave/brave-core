@@ -6,21 +6,6 @@
 'use strict';
 
 window.__firefox__.includeOnce("BraveTalkScript", function($) {
-  let sendMessage = $(function() {
-    return $.postNativeMessage('$<message_handler>', { 'securityToken': SECURITY_TOKEN });
-  });
-
-  Object.defineProperty(window, 'chrome', {
-    enumerable: false,
-    configurable: true,
-    writable: false,
-    value: {
-      braveRequestAdsEnabled() {
-        return sendMessage();
-      }
-    }
-  });
-
   const launchNativeBraveTalk = $(function (url) {
     $.postNativeMessage('$<message_handler>', {
       'kind': 'launchNativeBraveTalk',
@@ -46,4 +31,3 @@ window.__firefox__.includeOnce("BraveTalkScript", function($) {
     subtree: true
   });
 });
-
