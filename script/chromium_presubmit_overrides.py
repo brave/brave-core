@@ -198,8 +198,8 @@ def setup_read_file_override(input_api):
             from pathlib import Path
             repo_root = Path(_self.change.RepositoryRoot())
 
-            if repo_root.name == "brave" and repo_root.parent.name == "src" and file_item.startswith(
-                    str(repo_root.parent)):
+            if (repo_root.name == "brave" and repo_root.parent.name == "src"
+                    and file_item.startswith(str(repo_root.parent))):
                 return True
 
             return False
