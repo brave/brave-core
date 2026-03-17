@@ -3,6 +3,7 @@ no-browser-changes:
   - changed-files:
     - any-glob-to-all-files: 
       - "**/*.md"
+      - ".claude/**/*"
       - ".github/**/*"
       - LICENSE
       - LICENSE.html
