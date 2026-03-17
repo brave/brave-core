@@ -53,6 +53,16 @@ h1 {
   margin-bottom: 0;
 }
 
+.purchase-link {
+  color: var(--leo-color-text-secondary);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.purchase-link:hover {
+  color: var(--leo-color-text-primary);
+}
+
 .buttons {
   display: flex;
   flex-direction: column;

@@ -13,6 +13,7 @@
 #include "base/test/run_until.h"
 #include "brave/components/brave_origin/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/browser.h"
@@ -195,6 +196,22 @@ IN_PROC_BROWSER_TEST_F(BraveOriginStartupViewBrowserTest,
   EXPECT_FALSE(BraveOriginStartupView::IsShowing());
   EXPECT_TRUE(browser() != nullptr);
 }
+
+#if BUILDFLAG(IS_LINUX)
+// Verifies that a free tier user (accepted free tier but no purchase)
+// skips the dialog on subsequent launches.
+IN_PROC_BROWSER_TEST_F(BraveOriginStartupViewBrowserTest,
+                       FreeTierUserSkipsDialog) {
+  PrefService* local_state = g_browser_process->local_state();
+
+  // Simulate a free tier user: accepted free tier but not purchased.
+  local_state->SetBoolean(brave_origin::kOriginFreeTierAccepted, true);
+  EXPECT_FALSE(local_state->GetBoolean(brave_origin::kOriginPurchaseValidated));
+
+  BraveOriginStartupView::SetShouldShowDialogForTesting(std::nullopt);
+  EXPECT_FALSE(BraveOriginStartupView::ShouldShowDialog(local_state));
+}
+#endif
 
 // --------------------------------------------------------------------------
 // Integration tests for the StartupBrowserCreator::Start override.

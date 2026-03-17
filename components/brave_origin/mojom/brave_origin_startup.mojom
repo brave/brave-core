@@ -21,4 +21,8 @@ interface BraveOriginStartupHandler {
 
   // Signal that the dialog should close (purchase verified).
   CloseDialog();
+
+  // Signal that the user wants to proceed without purchasing (Linux free
+  // tier). Closes the dialog without requiring purchase validation.
+  ProceedFree();
 };

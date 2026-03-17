@@ -13,6 +13,7 @@
 #include "base/values.h"
 #include "brave/components/brave_origin/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
+#include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -22,6 +23,10 @@ class BraveOriginStartupViewTest : public testing::Test {
   void SetUp() override {
     local_state_.registry()->RegisterBooleanPref(
         brave_origin::kOriginPurchaseValidated, false);
+#if BUILDFLAG(IS_LINUX)
+    local_state_.registry()->RegisterBooleanPref(
+        brave_origin::kOriginFreeTierAccepted, false);
+#endif
     local_state_.registry()->RegisterDictionaryPref(skus::prefs::kSkusState);
     BraveOriginStartupView::SetShouldShowDialogForTesting(std::nullopt);
   }

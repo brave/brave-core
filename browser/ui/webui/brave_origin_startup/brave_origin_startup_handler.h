@@ -52,6 +52,7 @@ class BraveOriginStartupHandler
                         VerifyPurchaseIdCallback callback) override;
   void OpenBuyWindow() override;
   void CloseDialog() override;
+  void ProceedFree() override;
 
  private:
   bool EnsureSkusConnected();

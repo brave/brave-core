@@ -13,6 +13,7 @@
 #include "base/test/test_future.h"
 #include "brave/components/brave_origin/pref_names.h"
 #include "brave/components/skus/browser/test/fake_skus_service.h"
+#include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
@@ -23,6 +24,10 @@ class BraveOriginStartupHandlerTest : public testing::Test {
   void SetUp() override {
     local_state_.registry()->RegisterBooleanPref(
         brave_origin::kOriginPurchaseValidated, false);
+#if BUILDFLAG(IS_LINUX)
+    local_state_.registry()->RegisterBooleanPref(
+        brave_origin::kOriginFreeTierAccepted, false);
+#endif
   }
 
   std::unique_ptr<BraveOriginStartupHandler> CreateHandler(
@@ -222,3 +227,23 @@ TEST_F(BraveOriginStartupHandlerTest,
   EXPECT_FALSE(success);
   EXPECT_EQ(error, "Purchase ID is empty");
 }
+
+#if BUILDFLAG(IS_LINUX)
+TEST_F(BraveOriginStartupHandlerTest,
+       ProceedFreeClosesWithoutPurchaseValidation) {
+  bool dialog_closed = false;
+  auto handler = CreateHandler(
+      BraveOriginStartupHandler::SkusServiceGetter(), base::RepeatingClosure(),
+      base::BindOnce([](bool* closed) { *closed = true; }, &dialog_closed));
+
+  // ProceedFree should close the dialog without requiring purchase
+  // validation, unlike CloseDialog which requires the pref to be set.
+  EXPECT_FALSE(local_state_.GetBoolean(brave_origin::kOriginPurchaseValidated));
+  EXPECT_FALSE(local_state_.GetBoolean(brave_origin::kOriginFreeTierAccepted));
+  handler->ProceedFree();
+  EXPECT_TRUE(dialog_closed);
+  // Should mark free tier as accepted but not purchase as validated.
+  EXPECT_TRUE(local_state_.GetBoolean(brave_origin::kOriginFreeTierAccepted));
+  EXPECT_FALSE(local_state_.GetBoolean(brave_origin::kOriginPurchaseValidated));
+}
+#endif
