@@ -412,7 +412,7 @@ export class Config {
     }
 
     if (options.C) {
-      this.__outputDir = options.C
+      this.#outputDir = options.C
     }
 
     if (options.channel) {
@@ -770,18 +770,21 @@ export class Config {
     })
   }
 
+  /** @type {string | undefined} */
+  #outputDir
+
   get outputDir() {
-    if (this.use_no_gn_gen && this.__outputDir == null) {
+    if (this.use_no_gn_gen && this.#outputDir === undefined) {
       Log.error(`You must specify output directory with -C with use_no_gn_gen`)
       process.exit(1)
     }
 
     const baseDir = path.join(this.srcDir, 'out')
-    if (this.__outputDir) {
-      if (path.isAbsolute(this.__outputDir)) {
-        return this.__outputDir
+    if (this.#outputDir) {
+      if (path.isAbsolute(this.#outputDir)) {
+        return this.#outputDir
       }
-      return path.join(baseDir, this.__outputDir)
+      return path.join(baseDir, this.#outputDir)
     }
 
     let buildConfigDir = this.buildConfig
@@ -806,7 +809,7 @@ export class Config {
   }
 
   set outputDir(outputDir) {
-    this.__outputDir = outputDir
+    this.#outputDir = outputDir
   }
 
   get hostOS() {

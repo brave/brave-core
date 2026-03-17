@@ -60,7 +60,7 @@ if (fs.existsSync(outputPath)) {
     .sort(
       (a, b) => fs.statSync(b).mtime.getTime() - fs.statSync(a).mtime.getTime(),
     )
-  if (!outDirectories.length) {
+  if (!outDirectories.length || outDirectories[0] === undefined) {
     throw new Error(
       'Cannot find any brave-core build output directories. Have you run a brave-core build yet with the specified (or default) configuration?',
     )
