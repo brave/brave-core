@@ -16,3 +16,10 @@
 void BrowserViewLayout::NotifyDialogPositionRequiresUpdate() {
   dialog_host_->NotifyPositionRequiresUpdate();
 }
+
+// It's upstream method. Declared in header but not defined in upstream.
+// Define it here so we can use it in tests.
+void BrowserViewLayout::SetDelegateForTesting(
+    std::unique_ptr<BrowserViewLayoutDelegate> delegate) {
+  delegate_ = std::move(delegate);
+}
