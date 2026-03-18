@@ -10,7 +10,6 @@
 
 namespace brave::features {
 
-// Whether or not the QuickView feature is enabled
 BASE_DECLARE_FEATURE(kQuickViewEnabled);
 
 }  // namespace brave::features

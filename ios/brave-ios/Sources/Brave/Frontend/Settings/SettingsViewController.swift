@@ -1682,7 +1682,8 @@ class SettingsViewController: TableViewController {
       section.rows.append(
         Row(
           text: "Test QuickView",
-          selection: { [unowned self] in
+          selection: { [weak self] in
+            guard let self else { return }
             self.dismiss(animated: true) {
               self.settingsDelegate?.settingsPresentQuickView()
             }

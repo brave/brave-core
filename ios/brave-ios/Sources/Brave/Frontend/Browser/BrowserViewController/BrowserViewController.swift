@@ -2366,6 +2366,7 @@ extension BrowserViewController: SettingsDelegate {
       return
     }
 
+    // TODO: Load actual ref link https://github.com/brave/brave-browser/issues/53569
     let testURL = URL(string: "https://search.brave.com/ask?q=brave")!
 
     let quickViewController = QuickViewController(

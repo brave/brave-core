@@ -20,7 +20,7 @@ class QuickViewToolbar: UIView {
   private let shieldsButton: UIButton = {
     let button = UIButton(type: .system)
     button.setImage(UIImage(braveSystemNamed: "leo.shield.done"), for: .normal)
-    button.tintColor = .bravePrimary
+    button.tintColor = UIColor(braveSystemName: .iconDefault)
     return button
   }()
 
@@ -28,7 +28,7 @@ class QuickViewToolbar: UIView {
     let label = UILabel()
     label.font = .preferredFont(forTextStyle: .subheadline)
     label.textAlignment = .center
-    label.textColor = .braveLabel
+    label.textColor = UIColor(braveSystemName: .textTertiary)
     label.text = "Loading..."
     return label
   }()
@@ -36,7 +36,7 @@ class QuickViewToolbar: UIView {
   private let refreshButton: UIButton = {
     let button = UIButton(type: .system)
     button.setImage(UIImage(braveSystemNamed: "leo.browser.refresh"), for: .normal)
-    button.tintColor = .bravePrimary
+    button.tintColor = UIColor(braveSystemName: .iconDefault)
     return button
   }()
 
@@ -45,21 +45,21 @@ class QuickViewToolbar: UIView {
   private let backButton: UIButton = {
     let button = UIButton(type: .system)
     button.setImage(UIImage(braveSystemNamed: "leo.browser.back"), for: .normal)
-    button.tintColor = .bravePrimary
+    button.tintColor = UIColor(braveSystemName: .iconDefault)
     return button
   }()
 
   private let shareButton: UIButton = {
     let button = UIButton(type: .system)
     button.setImage(UIImage(braveSystemNamed: "leo.share.macos"), for: .normal)
-    button.tintColor = .bravePrimary
+    button.tintColor = UIColor(braveSystemName: .iconDefault)
     return button
   }()
 
   private let openInTabButton: UIButton = {
     let button = UIButton(type: .system)
     button.setImage(UIImage(braveSystemNamed: "leo.add.tab"), for: .normal)
-    button.tintColor = .label
+    button.tintColor = UIColor(braveSystemName: .iconDefault)
     return button
   }()
 
@@ -67,7 +67,7 @@ class QuickViewToolbar: UIView {
     let button = UIButton(type: .system)
     button.setImage(UIImage(braveSystemNamed: "leo.close"), for: .normal)
     button.tintColor = .white
-    button.backgroundColor = UIColor(braveSystemName: .primary40)
+    button.backgroundColor = UIColor(braveSystemName: .buttonBackground)
     button.layer.cornerRadius = 22
     button.clipsToBounds = true
     return button
