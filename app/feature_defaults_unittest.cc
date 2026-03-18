@@ -180,7 +180,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kPwaNavigationCapturing,
       &features::kReportPakFileIntegrity,
 #endif
-      &features::kSCTAuditing,
+      &features::kSCTAuditingHashdance,
       &features::kServiceWorkerAutoPreload,
       &features::kTabHoverCardImages,
 #if !BUILDFLAG(IS_ANDROID)
