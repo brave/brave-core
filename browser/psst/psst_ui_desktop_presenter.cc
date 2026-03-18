@@ -14,8 +14,7 @@ UiDesktopPresenter::UiDesktopPresenter(content::WebContents* web_contents)
     : web_contents_(web_contents) {}
 UiDesktopPresenter::~UiDesktopPresenter() = default;
 
-void UiDesktopPresenter::ShowInfoBar(
-    PsstInfoBarDelegate::AcceptCallback on_accept_callback) {
+void UiDesktopPresenter::ShowInfoBar(InfoBarCallback on_accept_callback) {
   infobars::ContentInfoBarManager* infobar_manager =
       infobars::ContentInfoBarManager::FromWebContents(web_contents_);
   if (!infobar_manager) {

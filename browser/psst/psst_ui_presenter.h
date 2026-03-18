@@ -6,17 +6,18 @@
 #ifndef BRAVE_BROWSER_PSST_PSST_UI_PRESENTER_H_
 #define BRAVE_BROWSER_PSST_PSST_UI_PRESENTER_H_
 
-#include "brave/browser/psst/psst_infobar_delegate.h"
+#include "base/functional/callback_forward.h"
 
 namespace psst {
 
 // Interface for presenting PSST UI elements.
 class PsstUiPresenter {
  public:
+  using InfoBarCallback = base::OnceCallback<void(bool)>;
+
   virtual ~PsstUiPresenter() = default;
 
-  virtual void ShowInfoBar(
-      PsstInfoBarDelegate::AcceptCallback on_accept_callback) = 0;
+  virtual void ShowInfoBar(InfoBarCallback on_accept_callback) = 0;
 };
 
 }  // namespace psst

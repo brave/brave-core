@@ -666,7 +666,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .Times(1);
 
   // User script result is an dictionary, but user key is empty
-  auto script_params = base::Value(base::DictValue().Set("user", ""));
+  auto script_params = base::Value(base::DictValue().Set("user_id", ""));
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
@@ -875,7 +875,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   base::test::TestFuture<base::Value> user_script_insert_future;
 
   // Create a user script return value
-  auto script_params = base::Value(base::DictValue().Set("user", "value"));
+  auto script_params = base::Value(base::DictValue().Set("user_id", "value"));
 
   // User script's callback is delayed, causing the flow to fail
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
