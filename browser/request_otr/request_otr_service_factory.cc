@@ -69,6 +69,10 @@ content::BrowserContext* RequestOTRServiceFactory::GetBrowserContextToUse(
   return GetBrowserContextRedirectedInIncognito(context);
 }
 
+bool RequestOTRServiceFactory::ServiceIsCreatedWithBrowserContext() const {
+  return true;
+}
+
 bool RequestOTRServiceFactory::ServiceIsNULLWhileTesting() const {
   return false;
 }

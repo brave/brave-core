@@ -60,6 +60,10 @@ RewardsServiceFactory::RewardsServiceFactory()
 #endif
 }
 
+bool RewardsServiceFactory::ServiceIsCreatedWithBrowserContext() const {
+  return true;
+}
+
 std::unique_ptr<KeyedService>
 RewardsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
