@@ -94,6 +94,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   /// A `TransactionStatusStore` for the active displayed transaction once it has been submitted
   @Published var activeTxStatusStore: TransactionStatusStore?
   @Published var isShowingActiveTxStatus: Bool = false
+  @Published var confirmButtonTitle: String = Strings.Wallet.confirm
 
   /// This is a list of all unpproved transactions iterated through all the accounts for all supported keyrings
   var unapprovedTxs: [BraveWallet.TransactionInfo] {
@@ -392,6 +393,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       }
       activeParsedTransaction = parsedTransaction
       updateIsContractAddress()
+      await updateComfirmButtonTitle()
 
       await fetchActiveTransactionDetails(
         accounts: allAccountsForCoin,
@@ -1208,6 +1210,33 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       allTxs.insert(txInfo, at: 0)
       activeTransactionId = txInfo.id
       await prepare()
+    }
+  }
+
+  @MainActor private func updateComfirmButtonTitle() async {
+    guard activeParsedTransaction.coin == .zec,
+      let zecTxData = activeParsedTransaction.transaction.txDataUnion.zecTxData
+    else {
+      confirmButtonTitle = Strings.Wallet.confirm
+      return
+    }
+
+    let (zecTxType, zecAddressError) = await zcashWalletService.transactionType(
+      accountId: activeParsedTransaction.fromAccountInfo.accountId,
+      useShieldedPool: zecTxData.useShieldedPool,
+      recipient: activeParsedTransaction.toAddress
+    )
+
+    guard zecAddressError == .noError else {
+      confirmButtonTitle = Strings.Wallet.confirm
+      return
+    }
+    if zecTxType == .shielding {
+      confirmButtonTitle = Strings.Wallet.shieldZEC
+    } else if zecTxType == .unshielding {
+      confirmButtonTitle = Strings.Wallet.unshieldZEC
+    } else {
+      confirmButtonTitle = Strings.Wallet.confirm
     }
   }
 }
