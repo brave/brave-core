@@ -112,6 +112,7 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
   if (!profile->IsRegularProfile()) {
     return nullptr;
   }
+
   if (!brave_rewards::IsSupported(profile->GetPrefs())) {
     return nullptr;
   }
