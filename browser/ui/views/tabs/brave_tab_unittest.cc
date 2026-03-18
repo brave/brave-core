@@ -107,7 +107,7 @@ class BraveTabTest : public ChromeViewsTestBase {
     if (is_pinned) {
       tabs::TabData data;
       data.pinned = true;
-      tab_ptr->SetData(std::move(data));
+      tab_ptr->SetDataForTesting(std::move(data));
     }
 
     for (int width = kMaxWidth; width > kMinWidth; width -= kStep) {
@@ -308,7 +308,7 @@ TEST_F(BraveTabTest,
   // showing_icon_ = true for this pinned tab.
   tabs::TabData data;
   data.pinned = true;
-  tab_ptr->SetData(std::move(data));
+  tab_ptr->SetDataForTesting(std::move(data));
 
   // Compute the exact boundary used by Tab::ShouldRenderAsNormalTab():
   //   width >= pinned_tab_width + kPinnedTabExtraWidthToRenderAsNormal
