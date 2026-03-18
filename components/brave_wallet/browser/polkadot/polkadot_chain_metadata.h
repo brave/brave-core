@@ -11,6 +11,7 @@
 #include <optional>
 #include <string_view>
 
+#include "base/containers/span.h"
 #include "brave/components/brave_wallet/browser/internal/polkadot_extrinsic.rs.h"
 
 namespace brave_wallet {
@@ -30,10 +31,10 @@ class PolkadotChainMetadata {
   PolkadotChainMetadata& operator=(const PolkadotChainMetadata&);
   PolkadotChainMetadata& operator=(PolkadotChainMetadata&&) noexcept;
 
-  // Fallibly parse a hex-encoded runtime metadata blob and extract the minimal
+  // Fallibly parse runtime metadata bytes and extract the minimal
   // fields needed for transfer extrinsics.
-  static std::optional<PolkadotChainMetadata> FromMetadataHex(
-      std::string_view metadata_hex);
+  static std::optional<PolkadotChainMetadata> FromBytes(
+      base::span<const uint8_t> metadata_bytes);
 
   // Build metadata from explicit fields. Always succeeds.
   static PolkadotChainMetadata FromFields(
@@ -43,7 +44,9 @@ class PolkadotChainMetadata {
       uint32_t spec_version);
 
   // Build metadata from a known relay/parachain name returned by system_chain.
-  // Returns std::nullopt for unknown names.
+  // Returns std::nullopt for unknown names. The returned metadata has an
+  // unknown spec_version (set to 0); callers must populate spec_version from
+  // state_getRuntimeVersion before using it for version-sensitive operations.
   static std::optional<PolkadotChainMetadata> FromChainName(
       std::string_view chain_name);
 

@@ -5,13 +5,21 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata.h"
 
+#include <vector>
+
 #include "base/base_paths.h"
-#include "base/files/file_util.h"
-#include "base/json/json_reader.h"
 #include "base/path_service.h"
+#include "base/test/values_test_util.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
+
+namespace {
+
+constexpr char kResult[] = "result";
+
+}  // namespace
 
 TEST(PolkadotChainMetadataUnitTest, FromFields) {
   auto metadata = PolkadotChainMetadata::FromFields(
@@ -50,13 +58,19 @@ TEST(PolkadotChainMetadataUnitTest, FromChainName) {
   EXPECT_EQ(polkadot_asset_hub->GetTransferAllowDeathCallIndex(), 0u);
   EXPECT_EQ(polkadot_asset_hub->GetSs58Prefix(), 0u);
 
+  EXPECT_FALSE(PolkadotChainMetadata::FromChainName(""));
   EXPECT_FALSE(PolkadotChainMetadata::FromChainName("Unknown Chain"));
 }
 
-TEST(PolkadotChainMetadataUnitTest, FromMetadataHexInvalid) {
+TEST(PolkadotChainMetadataUnitTest, FromBytesInvalid) {
   // Invalid metadata magic/version payload.
-  EXPECT_FALSE(PolkadotChainMetadata::FromMetadataHex("0x6d65746164617461"));
-  EXPECT_FALSE(PolkadotChainMetadata::FromMetadataHex("0xdeadbeef"));
+  std::vector<uint8_t> invalid_magic;
+  ASSERT_TRUE(PrefixedHexStringToBytes("0x6d65746164617461", &invalid_magic));
+  EXPECT_FALSE(PolkadotChainMetadata::FromBytes(invalid_magic));
+
+  std::vector<uint8_t> invalid_short;
+  ASSERT_TRUE(PrefixedHexStringToBytes("0xdeadbeef", &invalid_short));
+  EXPECT_FALSE(PolkadotChainMetadata::FromBytes(invalid_short));
 }
 
 TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponsePolkadot) {
@@ -64,7 +78,6 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponsePolkadot) {
   // curl -sS -H 'Content-Type: application/json' \
   //   -d '{"id":1,"jsonrpc":"2.0","method":"state_getMetadata","params":[]}' \
   //   https://rpc.polkadot.io/
-  std::string json_response;
   const auto fixture_path =
       base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
           .AppendASCII("brave")
@@ -73,16 +86,16 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponsePolkadot) {
           .AppendASCII("browser")
           .AppendASCII("polkadot")
           .AppendASCII("state_getMetadata_polkadot.json");
-  ASSERT_TRUE(base::ReadFileToString(fixture_path, &json_response));
+  const base::DictValue json = base::test::ParseJsonDictFromFile(fixture_path);
 
-  auto json = base::JSONReader::ReadDict(json_response, 0);
-  ASSERT_TRUE(json.has_value());
-
-  const std::string* metadata_hex = json->FindString("result");
+  const std::string* metadata_hex = json.FindString(kResult);
   ASSERT_TRUE(metadata_hex);
   ASSERT_FALSE(metadata_hex->empty());
 
-  auto metadata = PolkadotChainMetadata::FromMetadataHex(*metadata_hex);
+  std::vector<uint8_t> metadata_bytes;
+  ASSERT_TRUE(PrefixedHexStringToBytes(*metadata_hex, &metadata_bytes));
+
+  auto metadata = PolkadotChainMetadata::FromBytes(metadata_bytes);
   ASSERT_TRUE(metadata);
   EXPECT_EQ(metadata->GetSs58Prefix(), 0u);
   EXPECT_EQ(metadata->GetTransferAllowDeathCallIndex(), 0u);
@@ -95,7 +108,6 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponseWestend) {
   // curl -sS -H 'Content-Type: application/json' \
   //   -d '{"id":1,"jsonrpc":"2.0","method":"state_getMetadata","params":[]}' \
   //   https://westend-rpc.polkadot.io/
-  std::string json_response;
   const auto fixture_path =
       base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
           .AppendASCII("brave")
@@ -104,16 +116,16 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponseWestend) {
           .AppendASCII("browser")
           .AppendASCII("polkadot")
           .AppendASCII("state_getMetadata_westend.json");
-  ASSERT_TRUE(base::ReadFileToString(fixture_path, &json_response));
+  const base::DictValue json = base::test::ParseJsonDictFromFile(fixture_path);
 
-  auto json = base::JSONReader::ReadDict(json_response, 0);
-  ASSERT_TRUE(json.has_value());
-
-  const std::string* metadata_hex = json->FindString("result");
+  const std::string* metadata_hex = json.FindString(kResult);
   ASSERT_TRUE(metadata_hex);
   ASSERT_FALSE(metadata_hex->empty());
 
-  auto metadata = PolkadotChainMetadata::FromMetadataHex(*metadata_hex);
+  std::vector<uint8_t> metadata_bytes;
+  ASSERT_TRUE(PrefixedHexStringToBytes(*metadata_hex, &metadata_bytes));
+
+  auto metadata = PolkadotChainMetadata::FromBytes(metadata_bytes);
   ASSERT_TRUE(metadata);
   EXPECT_EQ(metadata->GetSs58Prefix(), 42u);
   EXPECT_EQ(metadata->GetTransferAllowDeathCallIndex(), 0u);

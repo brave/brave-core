@@ -9,14 +9,6 @@
 
 namespace brave_wallet {
 
-namespace {
-
-::rust::Str StringViewToRustStr(std::string_view sv) {
-  return ::rust::Str(sv.data(), sv.size());
-}
-
-}  // namespace
-
 PolkadotChainMetadata::PolkadotChainMetadata(const PolkadotChainMetadata& other)
     : chain_metadata_(other.chain_metadata_) {}
 
@@ -31,10 +23,10 @@ PolkadotChainMetadata& PolkadotChainMetadata::operator=(
 PolkadotChainMetadata& PolkadotChainMetadata::operator=(
     PolkadotChainMetadata&&) noexcept = default;
 
-std::optional<PolkadotChainMetadata> PolkadotChainMetadata::FromMetadataHex(
-    std::string_view metadata_hex) {
-  auto result =
-      parse_chain_metadata_fields_from_hex(StringViewToRustStr(metadata_hex));
+std::optional<PolkadotChainMetadata> PolkadotChainMetadata::FromBytes(
+    base::span<const uint8_t> metadata_bytes) {
+  auto result = parse_chain_metadata_from_scale(
+      ::rust::Slice<const uint8_t>(metadata_bytes));
   if (!result->is_ok()) {
     return std::nullopt;
   }
@@ -101,10 +93,6 @@ const CxxPolkadotChainMetadata& PolkadotChainMetadata::operator*() const {
   return chain_metadata_;
 }
 
-PolkadotChainMetadata::PolkadotChainMetadata(
-    CxxPolkadotChainMetadata chain_metadata)
-    : chain_metadata_(chain_metadata) {}
-
 uint8_t PolkadotChainMetadata::GetBalancesPalletIndex() const {
   return chain_metadata_.balances_pallet_index;
 }
@@ -120,5 +108,9 @@ uint16_t PolkadotChainMetadata::GetSs58Prefix() const {
 uint32_t PolkadotChainMetadata::GetSpecVersion() const {
   return chain_metadata_.spec_version;
 }
+
+PolkadotChainMetadata::PolkadotChainMetadata(
+    CxxPolkadotChainMetadata chain_metadata)
+    : chain_metadata_(chain_metadata) {}
 
 }  // namespace brave_wallet

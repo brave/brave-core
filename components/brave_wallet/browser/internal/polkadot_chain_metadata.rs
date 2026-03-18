@@ -23,8 +23,8 @@ mod ffi {
     extern "Rust" {
         type CxxPolkadotChainMetadataFieldsResult;
 
-        fn parse_chain_metadata_fields_from_hex(
-            metadata_hex: &str,
+        fn parse_chain_metadata_from_scale(
+            metadata_bytes: &[u8],
         ) -> Box<CxxPolkadotChainMetadataFieldsResult>;
         fn is_ok(self: &CxxPolkadotChainMetadataFieldsResult) -> bool;
         fn error_message(self: &CxxPolkadotChainMetadataFieldsResult) -> String;
@@ -56,16 +56,6 @@ impl CxxPolkadotChainMetadataFields {
     fn spec_version(self: &CxxPolkadotChainMetadataFields) -> u32 {
         self.spec_version
     }
-}
-
-fn parse_hex_prefixed(input: &str) -> Result<Vec<u8>, Error> {
-    let s = input.strip_prefix("0x").or_else(|| input.strip_prefix("0X")).unwrap_or(input);
-
-    if s.len() % 2 != 0 {
-        return Err(Error::InvalidLength);
-    }
-
-    hex::decode(s).map_err(|_| Error::InvalidScale)
 }
 
 fn decode_scale<T: Decode>(input: &mut &[u8]) -> Result<T, Error> {
@@ -133,7 +123,6 @@ fn parse_variants(input: &mut &[u8]) -> Result<Vec<VariantInfo>, Error> {
         Ok(VariantInfo { name, index })
     })
 }
-
 
 // https://github.com/paritytech/scale-info/blob/7629a7fa4023674f015aa47730a65367cf56d2b7/src/ty/mod.rs#L275-L300
 fn parse_type_def(input: &mut &[u8]) -> Result<Option<Vec<VariantInfo>>, Error> {
@@ -339,6 +328,8 @@ fn decode_runtime_spec_version(raw: &[u8]) -> Option<u32> {
     Decode::decode(&mut input).ok()
 }
 
+const RUNTIME_METADATA_PREFIX_MAGIC: u32 = 0x6174_656d;
+
 /// Parses SCALE-encoded `state_getMetadata` bytes (RuntimeMetadataPrefixed).
 ///
 /// Structure expected by this parser:
@@ -363,11 +354,11 @@ fn decode_runtime_spec_version(raw: &[u8]) -> Option<u32> {
 /// References:
 /// - JSON-RPC method: https://github.com/w3f/PSPs/blob/b6d570173146e7a012cf43d270177e02ed886e2e/PSPs/drafts/psp-6.md#1119-state_getmetadata
 /// - Runtime metadata format (Rust): https://docs.rs/frame-metadata/latest/frame_metadata/
-fn parse_chain_metadata_from_scale(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata, Error> {
+fn parse_chain_metadata_fields(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata, Error> {
     let mut input = bytes;
     // RuntimeMetadataPrefixed starts with little-endian "meta" magic.
     let magic: u32 = decode_scale(&mut input)?;
-    if magic != 0x6174_656d {
+    if magic != RUNTIME_METADATA_PREFIX_MAGIC {
         return Err(Error::InvalidMetadata);
     }
 
@@ -381,8 +372,10 @@ fn parse_chain_metadata_from_scale(bytes: &[u8]) -> Result<CxxPolkadotChainMetad
 
     let pallets = parse_pallets(&mut input, /* has_pallet_docs= */ version >= 15)?;
 
-    let balances_pallet =
-        pallets.iter().find(|p| p.name == "Balances").ok_or(Error::InvalidMetadata)?;
+    let balances_pallet = pallets
+        .iter()
+        .find(|p| normalize_ident(&p.name) == "balances")
+        .ok_or(Error::InvalidMetadata)?;
     let balances_pallet_index = balances_pallet.index;
     let calls_type_id = balances_pallet.calls_type_id.ok_or(Error::InvalidMetadata)?;
 
@@ -394,8 +387,10 @@ fn parse_chain_metadata_from_scale(bytes: &[u8]) -> Result<CxxPolkadotChainMetad
         .map(|v| v.index)
         .ok_or(Error::InvalidMetadata)?;
 
-    let system_pallet =
-        pallets.iter().find(|p| p.name == "System").ok_or(Error::InvalidMetadata)?;
+    let system_pallet = pallets
+        .iter()
+        .find(|p| normalize_ident(&p.name) == "system")
+        .ok_or(Error::InvalidMetadata)?;
 
     let ss58_prefix = system_pallet
         .constants
@@ -418,16 +413,16 @@ fn parse_chain_metadata_from_scale(bytes: &[u8]) -> Result<CxxPolkadotChainMetad
     })
 }
 
-fn parse_chain_metadata_fields_from_hex(
-    metadata_hex: &str,
+fn parse_chain_metadata_from_scale(
+    metadata_bytes: &[u8],
 ) -> Box<CxxPolkadotChainMetadataFieldsResult> {
-    let fields = parse_hex_prefixed(metadata_hex)
-        .and_then(|bytes| parse_chain_metadata_from_scale(bytes.as_slice()))
-        .map(|metadata| CxxPolkadotChainMetadataFields {
+    let fields = parse_chain_metadata_fields(metadata_bytes).map(|metadata| {
+        CxxPolkadotChainMetadataFields {
             balances_pallet_index: metadata.balances_pallet_index,
             transfer_allow_death_call_index: metadata.transfer_allow_death_call_index,
             ss58_prefix: metadata.ss58_prefix,
             spec_version: metadata.spec_version,
-        });
+        }
+    });
     Box::new(CxxPolkadotChainMetadataFieldsResult(fields))
 }
