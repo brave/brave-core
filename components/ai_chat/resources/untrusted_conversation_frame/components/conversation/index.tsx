@@ -29,6 +29,7 @@ import PremiumSuggestion from '../premium_suggestion'
 import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
 import LongConversationInfo from '../alerts/long_conversation_info'
 import styles from './style.module.scss'
+import { useScrollToBottom } from './useScrollToBottom'
 
 export interface ConversationProps {
   onIsContentReady?: (isReady: boolean) => void
@@ -142,30 +143,13 @@ function Conversation(props: ConversationProps) {
   const shouldShowLongConversationInfo = state.trimmedTokens > BigInt(0)
 
   // Scroll tracking
-  const [hasScrollableContent, setHasScrollableContent] = React.useState(false)
+  const { scrollToBottomContinuously, hasScrollableContent } =
+    useScrollToBottom(scrollElementRef, contentRef)
 
+  // Scroll to bottom when opening a conversation
   React.useEffect(() => {
-    const scrollElement = scrollElementRef.current
-    if (!scrollElement) return
-
-    const checkScrollable = () => {
-      setHasScrollableContent(
-        scrollElement.scrollHeight > scrollElement.clientHeight,
-      )
-    }
-
-    checkScrollable()
-    const observer = new ResizeObserver(checkScrollable)
-    observer.observe(scrollElement)
-    return () => observer.disconnect()
-  }, [])
-
-  const scrollToBottom = React.useCallback((animate = true) => {
-    scrollElementRef.current?.scrollTo({
-      top: scrollElementRef.current.scrollHeight,
-      behavior: animate ? 'smooth' : 'instant',
-    })
-  }, [])
+    scrollToBottomContinuously(/*animate=*/ false)
+  }, [scrollToBottomContinuously])
 
   // Notify parent when content is ready
   React.useEffect(() => {
@@ -285,7 +269,7 @@ function Conversation(props: ConversationProps) {
             [styles.scrollToBottomButton]: true,
             [styles.hasScrollableContent]: hasScrollableContent,
           })}
-          onClick={() => scrollToBottom()}
+          onClick={() => scrollToBottomContinuously()}
         >
           <Icon name='arrow-down' />
         </Button>
