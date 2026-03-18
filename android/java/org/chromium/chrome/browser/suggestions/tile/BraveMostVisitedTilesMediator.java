@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.suggestions.tile;
 
 import android.content.Context;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 
@@ -19,7 +20,7 @@ public class BraveMostVisitedTilesMediator extends MostVisitedTilesMediator {
     public BraveMostVisitedTilesMediator(
             Context context,
             UiConfig uiConfig,
-            MostVisitedTilesLayout mvTilesLayout,
+            View mvTilesContainerLayout,
             TileRenderer renderer,
             PropertyModel propertyModel,
             boolean isTablet,
@@ -28,7 +29,7 @@ public class BraveMostVisitedTilesMediator extends MostVisitedTilesMediator {
         super(
                 context,
                 uiConfig,
-                mvTilesLayout,
+                mvTilesContainerLayout,
                 renderer,
                 propertyModel,
                 isTablet,
