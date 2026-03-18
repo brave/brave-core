@@ -11,6 +11,8 @@
 
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
+#include "base/functional/callback_forward.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/local_ai/core/background_web_contents.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
@@ -42,7 +44,8 @@ class LocalAIService : public KeyedService,
       base::RepeatingCallback<std::unique_ptr<BackgroundWebContents>(
           BackgroundWebContents::Delegate* delegate)>;
 
-  explicit LocalAIService(BackgroundWebContentsFactory factory);
+  LocalAIService(BackgroundWebContentsFactory factory,
+                 LocalModelsUpdaterState* updater_state);
   ~LocalAIService() override;
 
   LocalAIService(const LocalAIService&) = delete;
@@ -69,10 +72,10 @@ class LocalAIService : public KeyedService,
 
   void MaybeCreateBackgroundContents();
   void CloseBackgroundContents();
-  void TryLoadModel();
-  void LoadModelFiles();
-  void OnModelFilesLoaded(mojom::ModelFilesPtr model_files);
-  void OnModelInitialized(bool success);
+  void MaybeWaitForLocalModelFilesReady();
+  void LoadLocalModelFiles();
+  void OnLocalModelFilesLoaded(mojom::ModelFilesPtr model_files);
+  void OnPassageEmbedderReady(bool success);
 
   // Creates a pipe, asks the factory to bind the receiver end, and
   // runs the callback with the remote end.
@@ -87,10 +90,13 @@ class LocalAIService : public KeyedService,
   mojo::Remote<mojom::PassageEmbedderFactory> factory_;
   std::vector<GetPassageEmbedderCallback> pending_embedder_callbacks_;
 
-  // Track readiness conditions
-  bool wasm_page_loaded_ = false;
-  bool models_ready_ = false;
-  bool model_initialized_ = false;
+  raw_ptr<LocalModelsUpdaterState> updater_state_;
+
+  // BarrierClosure that fires LoadLocalModelFiles once both conditions
+  // are met: component models delivered + WASM factory registered.
+  // Created fresh by MaybeWaitForLocalModelFilesReady(), reset on close.
+  base::RepeatingClosure model_load_barrier_;
+  bool model_ready_ = false;
 
   base::WeakPtrFactory<LocalAIService> weak_ptr_factory_{this};
 };

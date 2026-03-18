@@ -79,7 +79,8 @@ LocalAIServiceFactory::BuildServiceInstanceForBrowserContext(
       },
       context);
 
-  return std::make_unique<LocalAIService>(std::move(factory));
+  return std::make_unique<LocalAIService>(
+      std::move(factory), LocalModelsUpdaterState::GetInstance());
 }
 
 }  // namespace local_ai
