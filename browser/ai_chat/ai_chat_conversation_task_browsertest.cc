@@ -17,9 +17,8 @@
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
+#include "brave/browser/ai_chat/ai_chat_conversation_ui_browsertest_base.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
-#include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
@@ -35,18 +34,10 @@
 #include "chrome/browser/glic/actor/glic_actor_policy_checker.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_navigator_params.h"
-#include "chrome/common/chrome_features.h"
-#include "chrome/test/base/in_process_browser_test.h"
-#include "chrome/test/base/ui_test_utils.h"
-#include "content/public/browser/render_frame_host.h"
-#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
-#include "content/public/test/browser_test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "ui/base/window_open_disposition.h"
-#include "url/url_constants.h"
+#include "ui/display/display_switches.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
 #include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
@@ -77,9 +68,8 @@ namespace ai_chat {
 // ContentAgentToolProvider specifically, along with the actor framework. They
 // verify the complex state interchanges between ai_chat and actor, as well as
 // general conversation UI states for tool use.
-// TODO(https://github.com/brave/brave-browser/issues/51087): extract common
-// setup and utility functions to a base class.
-class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
+class AIChatConversationTaskBrowserTest
+    : public AIChatConversationUIBrowserTestBase {
  public:
   AIChatConversationTaskBrowserTest() {
     scoped_feature_list_.InitAndEnableFeature(
@@ -89,20 +79,17 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
   ~AIChatConversationTaskBrowserTest() override = default;
 
   void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
+    // Call base class setup first (opts-in to AI Chat)
+    AIChatConversationUIBrowserTestBase::SetUpOnMainThread();
 
     host_resolver()->AddRule("*", "127.0.0.1");
     ASSERT_TRUE(embedded_test_server()->Start());
     ASSERT_TRUE(embedded_https_test_server().Start());
 
-    // Opt-in to AI Chat in the regular profile first
-    auto* profile = browser()->profile();
-    SetUserOptedIn(profile->GetPrefs(), true);
-
     // Create the agent profile
     base::test::TestFuture<Browser*> browser_future;
     OpenBrowserWindowForAIChatAgentProfileForTesting(
-        *profile, browser_future.GetCallback());
+        *browser()->profile(), browser_future.GetCallback());
     Browser* agent_browser = browser_future.Take();
     ASSERT_NE(agent_browser, nullptr);
     agent_profile_ = agent_browser->profile();
@@ -110,7 +97,7 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
 
     actor::InitActionBlocklist(agent_profile_);
 
-    // Get the AI Chat service from the agent profile
+    // Get the AI Chat service from the agent profile (overrides base class)
     service_ = AIChatServiceFactory::GetForBrowserContext(agent_profile_);
     ASSERT_TRUE(service_);
 
@@ -124,15 +111,13 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
     content_agent_tool_provider_ = nullptr;
     mock_engine_ = nullptr;
     conversation_handler_ = nullptr;
-    service_ = nullptr;
     agent_browser_window_ = nullptr;
-    conversation_rfh_ = nullptr;
     agent_profile_ = nullptr;
-    InProcessBrowserTest::TearDownOnMainThread();
+    AIChatConversationUIBrowserTestBase::TearDownOnMainThread();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
-    InProcessBrowserTest::SetUpCommandLine(command_line);
+    AIChatConversationUIBrowserTestBase::SetUpCommandLine(command_line);
     // Ensure physical and css pixels are the same
     command_line->AppendSwitchASCII(switches::kForceDeviceScaleFactor, "1");
   }
@@ -140,13 +125,7 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
  protected:
   // Creates a conversation with a mock engine in the agent profile
   ConversationHandler* CreateConversationWithMockEngine() {
-    conversation_handler_ = service_->CreateConversation();
-    EXPECT_TRUE(conversation_handler_);
-
-    // Inject mock engine
-    auto mock_engine = std::make_unique<NiceMock<MockEngineConsumer>>();
-    mock_engine_ = mock_engine.get();
-    conversation_handler_->SetEngineForTesting(std::move(mock_engine));
+    AIChatConversationUIBrowserTestBase::CreateConversationWithMockEngine();
 
     // Get the ContentAgentToolProvider from the conversation
     auto* tool_provider =
@@ -160,106 +139,8 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
 
   // Navigates to the conversation's WebUI in the agent browser
   void NavigateToConversationUI(const std::string& conversation_uuid) {
-    GURL url(base::StrCat({"chrome://leo-ai/", conversation_uuid}));
-    conversation_rfh_ = ui_test_utils::NavigateToURLWithDisposition(
-        agent_browser_window_, url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
-    // Wait for child frame to exist
-    VerifyElementState("conversation-entries-iframe");
-    EXPECT_TRUE(base::test::RunUntil(
-        [&] { return GetConversationEntriesFrame() != nullptr; }));
-  }
-
-  content::RenderFrameHost* GetConversationEntriesFrame() {
-    content::RenderFrameHost* result = nullptr;
-    conversation_rfh_->ForEachRenderFrameHost(
-        [&](content::RenderFrameHost* frame) {
-          if (frame->GetWebUI() &&
-              frame->GetWebUI()
-                  ->GetController()
-                  ->GetAs<AIChatUntrustedConversationUI>()) {
-            result = frame;
-            return;
-          }
-        });
-    return result;
-  }
-
-  bool VerifyConversationFrameElementState(
-      const std::string& test_id,
-      bool expect_exist = true,
-      base::Location location = base::Location::Current()) {
-    return VerifyElementState(test_id, expect_exist,
-                              GetConversationEntriesFrame(), location);
-  }
-
-  // Helper to check if an element with a specific data-testid exists
-  bool VerifyElementState(const std::string& test_id,
-                          bool expect_exist = true,
-                          content::RenderFrameHost* frame = nullptr,
-                          base::Location location = base::Location::Current()) {
-    if (!frame) {
-      frame = conversation_rfh_;
-    }
-    SCOPED_TRACE(testing::Message()
-                 << "VerifyElementState: '" << test_id << "' called from "
-                 << location.file_name() << ":" << location.line_number());
-    constexpr char kWaitForAIChatRenderScript[] = R"(
-      new Promise((resolve, reject) => {
-        const selector = `[data-testid=$1]`
-        const expectsNotExist = $2
-
-        function checkElement() {
-          let element = document.querySelector(selector)
-
-          if (element && !expectsNotExist) {
-            resolve(true)
-            return
-          }
-          if (!element && expectsNotExist) {
-            resolve(false)
-            return
-          }
-        }
-
-        checkElement()
-
-        const observer = new MutationObserver(() => {
-          checkElement()
-        })
-        observer.observe(document.documentElement,
-            { childList: true, subtree: true })
-      })
-    )";
-
-    auto result = content::EvalJs(
-        frame,
-        content::JsReplace(kWaitForAIChatRenderScript, test_id, !expect_exist));
-    return result.ExtractBool();
-  }
-
-  // Helper to click an element with a specific data-testid
-  bool ClickElement(const std::string& test_id) {
-    constexpr char kClickElementScript[] = R"(
-      (function() {
-        const el = document.querySelector('[data-testid=$1]')
-        if (el) {
-          el.click()
-          return true
-        }
-        return false
-      })()
-    )";
-    return content::EvalJs(conversation_rfh_,
-                           content::JsReplace(kClickElementScript, test_id))
-        .ExtractBool();
-  }
-
-  // Gets the current conversation state
-  mojom::ConversationStatePtr GetConversationState() {
-    base::test::TestFuture<mojom::ConversationStatePtr> future;
-    conversation_handler_->GetState(future.GetCallback());
-    return future.Take();
+    AIChatConversationUIBrowserTestBase::NavigateToConversationUI(
+        conversation_uuid, agent_browser_window_);
   }
 
   tabs::TabHandle GetContentAgentTabHandle() {
@@ -274,43 +155,6 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
   actor::ActorTask* GetActorTask() {
     auto task_id = content_agent_tool_provider_->GetTaskId();
     return GetActorService()->GetTask(task_id);
-  }
-
-  // Sets up the mock engine to capture callbacks for tool use simulation
-  base::OnceClosure SetupMockGenerateAssistantResponse(
-      EngineConsumer::GenerationDataCallback* out_data_callback,
-      EngineConsumer::GenerationCompletedCallback* out_completed_callback,
-      testing::Sequence* sequence = nullptr,
-      base::Location location = base::Location::Current()) {
-    SCOPED_TRACE(testing::Message() << location.ToString());
-    auto run_loop = std::make_unique<base::RunLoop>();
-    auto on_generate_called = run_loop->QuitClosure();
-    auto& expect =
-        EXPECT_CALL(*mock_engine_,
-                    GenerateAssistantResponse(_, _, _, _, _, _, _, _))
-            .Description(base::StrCat({"GenerateAssistantResponse mocked from ",
-                                       location.ToString()}));
-    if (sequence) {
-      expect.InSequence(*sequence);
-    }
-    expect.WillOnce(
-        [out_data_callback, out_completed_callback,
-         on_called = std::move(on_generate_called)](
-            PageContentsMap page_contents,
-            const EngineConsumer::ConversationHistory& history,
-            bool is_temporary,
-            const std::vector<base::WeakPtr<Tool>>& provided_tools,
-            std::optional<std::string_view> preferred_tool_name,
-            const ConversationCapabilitySet& capabilities,
-            EngineConsumer::GenerationDataCallback data_cb,
-            EngineConsumer::GenerationCompletedCallback complete_cb) mutable {
-          *out_data_callback = std::move(data_cb);
-          *out_completed_callback = std::move(complete_cb);
-          std::move(on_called).Run();
-        });
-    return base::BindOnce(
-        [](std::unique_ptr<base::RunLoop> run_loop) { run_loop->Run(); },
-        std::move(run_loop));
   }
 
   // Creates a navigate tool use event with JSON arguments
@@ -330,11 +174,7 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
   }
 
   raw_ptr<Profile> agent_profile_ = nullptr;
-  raw_ptr<content::RenderFrameHost> conversation_rfh_ = nullptr;
   raw_ptr<Browser> agent_browser_window_ = nullptr;
-  raw_ptr<AIChatService> service_ = nullptr;
-  raw_ptr<ConversationHandler> conversation_handler_ = nullptr;
-  raw_ptr<MockEngineConsumer> mock_engine_ = nullptr;
   raw_ptr<ContentAgentToolProvider> content_agent_tool_provider_ = nullptr;
   base::test::ScopedFeatureList scoped_feature_list_;
 };
@@ -365,13 +205,10 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest,
 
   // Submit first message
   {
-    EngineConsumer::GenerationDataCallback data_callback;
-    EngineConsumer::GenerationCompletedCallback completed_callback;
-    auto wait_for_generate = SetupMockGenerateAssistantResponse(
-        &data_callback, &completed_callback, &tool_call_seq);
+    auto generate_future = SetupMockGenerateAssistantResponse(&tool_call_seq);
     conversation_handler_->SubmitHumanConversationEntry(
         "Navigate to example.com", std::nullopt);
-    std::move(wait_for_generate).Run();
+    auto callbacks = generate_future->Take();
 
     // Set up the mock tool to capture its callback so we control execution
     // timing.
@@ -389,12 +226,12 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest,
         }));
 
     // Simulate tool use event
-    data_callback.Run(EngineConsumer::GenerationResultData(
+    callbacks.data_callback.Run(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewToolUseEvent(
             CreateToolUseEvent("mock_tool", "tool_id_1")),
         std::nullopt));
     // Complete first message response
-    std::move(completed_callback)
+    std::move(callbacks.completed_callback)
         .Run(base::ok(
             EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
   }
@@ -442,15 +279,12 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest,
 
   // Handle the tool execution response after resuming
   {
-    EngineConsumer::GenerationDataCallback data_callback;
-    EngineConsumer::GenerationCompletedCallback completed_callback;
-    auto wait_for_generate = SetupMockGenerateAssistantResponse(
-        &data_callback, &completed_callback, &tool_call_seq);
+    auto generate_future = SetupMockGenerateAssistantResponse(&tool_call_seq);
 
     // Use the resume button
     ClickElement("resume-task-button");
 
-    std::move(wait_for_generate).Run();
+    auto callbacks = generate_future->Take();
 
     EXPECT_EQ(GetConversationState()->tool_use_task_state,
               mojom::TaskState::kRunning);
@@ -461,12 +295,12 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest,
 
     // Simulate no more tool use requests, which should trigger task
     // completion.
-    data_callback.Run(EngineConsumer::GenerationResultData(
+    callbacks.data_callback.Run(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New("all done")),
         std::nullopt));
     // Complete successful response
-    std::move(completed_callback)
+    std::move(callbacks.completed_callback)
         .Run(base::ok(
             EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
   }
@@ -488,22 +322,19 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskStopAction) {
 
   // Submit first message
   {
-    EngineConsumer::GenerationDataCallback data_callback;
-    EngineConsumer::GenerationCompletedCallback completed_callback;
-    auto wait_for_generate =
-        SetupMockGenerateAssistantResponse(&data_callback, &completed_callback);
+    auto generate_future = SetupMockGenerateAssistantResponse();
     conversation_handler_->SubmitHumanConversationEntry(
         "Navigate to example.com", std::nullopt);
-    std::move(wait_for_generate).Run();
+    auto callbacks = generate_future->Take();
     // Send first message response
     // Simulate tool use event
     GURL test_url = embedded_https_test_server().GetURL("/actor/link.html");
-    data_callback.Run(EngineConsumer::GenerationResultData(
+    callbacks.data_callback.Run(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewToolUseEvent(
             CreateNavigateToolUseEvent("tool_id_1", test_url)),
         std::nullopt));
     // Complete first message response
-    std::move(completed_callback)
+    std::move(callbacks.completed_callback)
         .Run(base::ok(
             EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
   }
@@ -514,15 +345,12 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskStopAction) {
   // stopping the task does not cause any interaction issues with
   // ConversationHandler.
   {
-    EngineConsumer::GenerationDataCallback data_callback;
-    EngineConsumer::GenerationCompletedCallback completed_callback;
-    auto wait_for_generate =
-        SetupMockGenerateAssistantResponse(&data_callback, &completed_callback);
+    auto generate_future = SetupMockGenerateAssistantResponse();
 
     EXPECT_EQ(GetConversationState()->tool_use_task_state,
               mojom::TaskState::kRunning);
 
-    std::move(wait_for_generate).Run();
+    auto callbacks = generate_future->Take();
 
     // If the tool output is sent, we can verify that the tool performed
     // its action successfully.
@@ -541,16 +369,16 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskStopAction) {
     ClickElement("stop-task-button");
 
     GURL test_url = embedded_https_test_server().GetURL("/actor/drag.html");
-    data_callback.Run(EngineConsumer::GenerationResultData(
+    callbacks.data_callback.Run(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New("Hmm, I want a different page")),
         std::nullopt));
-    data_callback.Run(EngineConsumer::GenerationResultData(
+    callbacks.data_callback.Run(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewToolUseEvent(
             CreateNavigateToolUseEvent("tool_id_2", test_url)),
         std::nullopt));
     // Complete successful response
-    std::move(completed_callback)
+    std::move(callbacks.completed_callback)
         .Run(base::ok(
             EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
   }
@@ -579,10 +407,7 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskStopAction) {
   // After stopping, submit a new human message to verify that the task can be
   // re-started with new state.
   {
-    EngineConsumer::GenerationDataCallback data_callback;
-    EngineConsumer::GenerationCompletedCallback completed_callback;
-    auto wait_for_generate =
-        SetupMockGenerateAssistantResponse(&data_callback, &completed_callback);
+    auto generate_future = SetupMockGenerateAssistantResponse();
     conversation_handler_->SubmitHumanConversationEntry(
         "Actually do something different", std::nullopt);
 
@@ -591,16 +416,16 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskStopAction) {
              mojom::TaskState::kNone;
     }));
 
-    std::move(wait_for_generate).Run();
+    auto callbacks = generate_future->Take();
     // Send first message response
     // Simulate tool use event
     GURL test_url = embedded_https_test_server().GetURL("/actor/link.html");
-    data_callback.Run(EngineConsumer::GenerationResultData(
+    callbacks.data_callback.Run(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewToolUseEvent(
             CreateNavigateToolUseEvent("tool_id_1", test_url)),
         std::nullopt));
     // Complete first message response
-    std::move(completed_callback)
+    std::move(callbacks.completed_callback)
         .Run(base::ok(
             EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
   }
@@ -613,11 +438,8 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskStopAction) {
   // The tool will execute and response sent - we need to set up a new
   // expectation so the previous one is not triggered.
   {
-    EngineConsumer::GenerationDataCallback data_callback;
-    EngineConsumer::GenerationCompletedCallback completed_callback;
-    auto wait_for_generate =
-        SetupMockGenerateAssistantResponse(&data_callback, &completed_callback);
-    std::move(wait_for_generate).Run();
+    auto generate_future = SetupMockGenerateAssistantResponse();
+    std::ignore = generate_future->Take();
   }
 }
 
@@ -638,16 +460,13 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
   base::OnceClosure tool_execute;
   // Submit first message
   {
-    EngineConsumer::GenerationDataCallback data_callback;
-    EngineConsumer::GenerationCompletedCallback completed_callback;
-    auto wait_for_generate = SetupMockGenerateAssistantResponse(
-        &data_callback, &completed_callback, &tool_call_seq);
+    auto generate_future = SetupMockGenerateAssistantResponse(&tool_call_seq);
     conversation_handler_->SubmitHumanConversationEntry(
         "Navigate to example.com", std::nullopt);
-    std::move(wait_for_generate).Run();
+    auto callbacks = generate_future->Take();
     // Send first message response
     // Simulate tool use event
-    data_callback.Run(EngineConsumer::GenerationResultData(
+    callbacks.data_callback.Run(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewToolUseEvent(
             CreateToolUseEvent("mock_tool", "tool_id_1")),
         std::nullopt));
@@ -665,7 +484,7 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
         }));
 
     // Complete first message response
-    std::move(completed_callback)
+    std::move(callbacks.completed_callback)
         .Run(base::ok(
             EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
   }
@@ -674,18 +493,15 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
   EXPECT_FALSE(VerifyConversationFrameElementState("assistant-task", false));
   // Handle the tool execution response with another tool use request.
   {
-    EngineConsumer::GenerationDataCallback data_callback;
-    EngineConsumer::GenerationCompletedCallback completed_callback;
-    auto wait_for_generate = SetupMockGenerateAssistantResponse(
-        &data_callback, &completed_callback, &tool_call_seq);
+    auto generate_future = SetupMockGenerateAssistantResponse(&tool_call_seq);
     std::move(tool_execute).Run();
-    std::move(wait_for_generate).Run();
+    auto callbacks = generate_future->Take();
 
-    data_callback.Run(EngineConsumer::GenerationResultData(
+    callbacks.data_callback.Run(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New("Hmm, I want a different thing")),
         std::nullopt));
-    data_callback.Run(EngineConsumer::GenerationResultData(
+    callbacks.data_callback.Run(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewToolUseEvent(
             CreateToolUseEvent("mock_tool", "tool_id_2")),
         std::nullopt));
@@ -706,22 +522,19 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
         }));
 
     // Complete successful response
-    std::move(completed_callback)
+    std::move(callbacks.completed_callback)
         .Run(base::ok(
             EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
   }
 
   // Handle the second tool execution response with pausing and verify UI label.
   {
-    EngineConsumer::GenerationDataCallback data_callback;
-    EngineConsumer::GenerationCompletedCallback completed_callback;
-    auto wait_for_generate = SetupMockGenerateAssistantResponse(
-        &data_callback, &completed_callback, &tool_call_seq);
+    auto generate_future = SetupMockGenerateAssistantResponse(&tool_call_seq);
 
     // Finish executing the tool
     std::move(tool_execute).Run();
 
-    std::move(wait_for_generate).Run();
+    auto callbacks = generate_future->Take();
 
     // Now we should be thinking
     EXPECT_TRUE(VerifyConversationFrameElementState("tool-event-thinking"));
@@ -740,16 +553,16 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
              mojom::TaskState::kPaused;
     }));
 
-    data_callback.Run(EngineConsumer::GenerationResultData(
+    callbacks.data_callback.Run(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New("Hmm, I want a different thing")),
         std::nullopt));
-    data_callback.Run(EngineConsumer::GenerationResultData(
+    callbacks.data_callback.Run(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewToolUseEvent(
             CreateToolUseEvent("mock_tool", "tool_id_3")),
         std::nullopt));
     // Complete successful response
-    std::move(completed_callback)
+    std::move(callbacks.completed_callback)
         .Run(base::ok(
             EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
   }
@@ -761,10 +574,7 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
   // When we submit a new message, the task is no longer active. It should still
   // exist but should not have its "paused" label.
   {
-    EngineConsumer::GenerationDataCallback data_callback;
-    EngineConsumer::GenerationCompletedCallback completed_callback;
-    auto wait_for_generate = SetupMockGenerateAssistantResponse(
-        &data_callback, &completed_callback, &tool_call_seq);
+    auto generate_future = SetupMockGenerateAssistantResponse(&tool_call_seq);
     conversation_handler_->SubmitHumanConversationEntry(
         "Actually do something different", std::nullopt);
 
@@ -773,14 +583,14 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
              mojom::TaskState::kNone;
     }));
 
-    std::move(wait_for_generate).Run();
+    auto callbacks = generate_future->Take();
     // Simple response
-    data_callback.Run(EngineConsumer::GenerationResultData(
+    callbacks.data_callback.Run(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New("ok")),
         std::nullopt));
     // Complete first message response
-    std::move(completed_callback)
+    std::move(callbacks.completed_callback)
         .Run(base::ok(
             EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
   }

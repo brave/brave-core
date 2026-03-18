@@ -23,6 +23,10 @@
   color: var(--leo-color-icon-secondary);
 }
 
+.moreButtonHidden {
+  opacity: 0;
+}
+
 .moreButtonMobile {
   --leo-button-padding: var(--leo-spacing-l);
 }
