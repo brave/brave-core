@@ -899,8 +899,6 @@ TEST(PolkadotExtrinsics, EventsParsing_WithAccountCreation) {
 
   uint32_t extrinsic_idx = 2;
 
-  // d8837440d77698a5ac63985587594e45d0029538f9b413495621913a68f64941
-
   const char events_hex[] =
       // balances(Withdraw)
       "0002000000"
