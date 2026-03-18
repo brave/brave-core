@@ -5,13 +5,11 @@
 
 import path from 'node:path'
 import fs from 'fs-extra'
-import {
-  getFileInfo as prettierGetFileInfo,
-  resolveConfig as prettierResolveConfig,
-  format as prettierFormat,
-} from 'prettier'
 import program from 'commander'
 import { spawnSync, type SpawnSyncReturns } from 'node:child_process'
+
+// eslint-disable-next-line import/no-named-default
+import { default as prettier } from 'prettier'
 
 import config from '../lib/config.js'
 import util from '../lib/util.js'
@@ -188,7 +186,7 @@ const runPrettierForFile = async (
   dryRun: boolean,
   ignorePath: string,
 ): Promise<string | undefined> => {
-  const fileInfo = await prettierGetFileInfo(file, {
+  const fileInfo = await prettier.getFileInfo(file, {
     ignorePath,
     withNodeModules: false,
   })
@@ -197,9 +195,9 @@ const runPrettierForFile = async (
     return undefined
   }
 
-  const options = await prettierResolveConfig(file)
+  const options = await prettier.resolveConfig(file)
   const content = await fs.readFile(file, { encoding: 'utf-8' })
-  const formatted = await prettierFormat(content, {
+  const formatted = await prettier.format(content, {
     ...options,
     filepath: file,
     parser: fileInfo.inferredParser,
