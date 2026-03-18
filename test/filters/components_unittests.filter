@@ -105,6 +105,8 @@
 # These tests fail because we disable
 # switches::kSyncEnableBookmarksInTransportMode
 -InitialAccountBookmarkDeduplicatorTest.*
+-SyncPrefsTest.BookmarksEnabledWithExplicitBrowserPref
+-SyncPrefsTest.BookmarksEnabledWithoutExplicitSigninFlag
 
 # These tests fail because we patch ImageServiceConsentHelper::GetConsentStatus
 # to return false always
@@ -160,6 +162,9 @@
 # These tests fail because the text contains "Google" instead of "Brave" (the
 # string is hard-coded into the test)
 -BnplUtilTest.GetBnplUiFooterTextForAi_AiTerms*
+
+# These tests fail because we disable kAimEnabled.
+-AimEligibilityServiceTest.*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
