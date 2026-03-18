@@ -37,6 +37,7 @@ constexpr char kAction[] = "action";
 constexpr char kPrependScheme[] = "prepend_scheme";
 constexpr char kParam[] = "param";
 constexpr char kPref[] = "pref";
+constexpr char kRedirectUrl[] = "redirect_url";
 
 // Max memory per regex: 4kb. This is just an upper bound
 const int64_t kMaxMemoryPerRegexPattern = 2 << 11;
@@ -158,6 +159,7 @@ void DebounceRule::RegisterJSONConverter(
       kPrependScheme, &DebounceRule::prepend_scheme_, &ParsePrependScheme);
   converter->RegisterStringField(kParam, &DebounceRule::param_);
   converter->RegisterStringField(kPref, &DebounceRule::pref_);
+  converter->RegisterStringField(kRedirectUrl, &DebounceRule::redirect_url_);
 }
 
 // static
@@ -235,7 +237,7 @@ bool DebounceRule::CheckPrefForRule(const PrefService* prefs) const {
 bool DebounceRule::ValidateAndParsePatternRegex(
     std::string_view pattern,
     std::string_view path,
-    std::string* parsed_value) const {
+    std::vector<std::string>* captured_groups) const {
   if (pattern.length() > kMaxLengthRegexPattern) {
     VLOG(1) << "Debounce regex pattern exceeds max length: "
             << kMaxLengthRegexPattern;
@@ -268,17 +270,14 @@ bool DebounceRule::ValidateAndParsePatternRegex(
     return false;
   }
 
-  // This will always be at least 2: the first one is the full match
+  // This will always be at least 2: the first one is the full match.
   DCHECK_GT(match_results.size(), 1u);
 
-  // Build parsed_value string by appending matches, ignoring the first match
-  // which will be the whole match
-  std::for_each(std::begin(match_results) + 1, std::end(match_results),
-                [parsed_value](std::string_view matched_string) {
-                  if (!matched_string.empty()) {
-                    parsed_value->append(matched_string);
-                  }
-                });
+  // Populate captured_groups with individual captures (skip the full match).
+  captured_groups->clear();
+  for (size_t i = 1; i < match_results.size(); ++i) {
+    captured_groups->emplace_back(match_results[i]);
+  }
 
   return true;
 }
@@ -314,9 +313,28 @@ bool DebounceRule::Apply(const GURL& original_url,
     // Important: Apply param regex to ONLY the path of original URL.
     auto path = original_url.path();
 
-    if (!ValidateAndParsePatternRegex(param_, path, &unescaped_value)) {
+    std::vector<std::string> captured_groups;
+    if (!ValidateAndParsePatternRegex(param_, path, &captured_groups)) {
       VLOG(1) << "Debounce regex parsing failed";
       return false;
+    }
+
+    // Build extracted value from captures.
+    if (!redirect_url_.empty()) {
+      // Substitute $1..$9 placeholders in the redirect_url template.
+      unescaped_value = redirect_url_;
+      for (size_t i = 0; i < captured_groups.size() && i < 9; ++i) {
+        std::string placeholder = {'$', static_cast<char>('1' + i)};
+        base::ReplaceSubstringsAfterOffset(&unescaped_value, 0, placeholder,
+                                           captured_groups[i]);
+      }
+    } else {
+      // Concatenate captures (existing behavior).
+      for (const auto& group : captured_groups) {
+        if (!group.empty()) {
+          unescaped_value.append(group);
+        }
+      }
     }
 
     // Unescape the URL

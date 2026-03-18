@@ -475,4 +475,68 @@ TEST(DebounceRuleUnitTest, RejectUrlsWithoutValidEtldPlusOne) {
   }
 }
 
+// Test redirect_url with a single capture group (y2u.be-like case).
+TEST(DebounceRuleUnitTest, RedirectUrlBasic) {
+  const std::string contents = R"json(
+      [{
+          "include": [
+              "*://y2u.be/*"
+          ],
+          "exclude": [],
+          "action": "regex-path",
+          "param": "^/(.+)$",
+          "redirect_url": "https://www.youtube.com/watch?v=$1"
+      }]
+    )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    CheckApplyResult(rule.get(), GURL("https://y2u.be/dQw4w9WgXcQ"),
+                     "https://www.youtube.com/watch?v=dQw4w9WgXcQ", false);
+  }
+}
+
+// Test redirect_url with multiple capture groups.
+TEST(DebounceRuleUnitTest, RedirectUrlMultipleCaptures) {
+  const std::string contents = R"json(
+      [{
+          "include": [
+              "*://tracker.example.com/*"
+          ],
+          "exclude": [],
+          "action": "regex-path",
+          "param": "^/([^/]+)/([^/]+)$",
+          "redirect_url": "https://$1.example.org/page/$2"
+      }]
+    )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    CheckApplyResult(rule.get(),
+                     GURL("https://tracker.example.com/www/landing"),
+                     "https://www.example.org/page/landing", false);
+  }
+}
+
+// Test redirect_url producing same eTLD+1 as original (should fail).
+TEST(DebounceRuleUnitTest, RedirectUrlSameSite) {
+  const std::string contents = R"json(
+      [{
+          "include": [
+              "*://redir.example.com/*"
+          ],
+          "exclude": [],
+          "action": "regex-path",
+          "param": "^/(.+)$",
+          "redirect_url": "https://www.example.com/page/$1"
+      }]
+    )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    CheckApplyResult(rule.get(), GURL("https://redir.example.com/foo"), "",
+                     true);
+  }
+}
+
 }  // namespace debounce
