@@ -6,8 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_LOCATION_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_LOCATION_H_
 
-#define ancestorOrigins()               \
-  ancestorOrigins_ChromiumImpl() const; \
+#define ancestorOrigins()         \
+  ancestorOrigins_ChromiumImpl(); \
   DOMStringList* ancestorOrigins()
 
 #include <third_party/blink/renderer/core/frame/location.h>  // IWYU pragma: export
