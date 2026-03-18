@@ -10,6 +10,7 @@
 
 namespace psst {
 
+// Interface for presenting PSST UI elements.
 class PsstUiPresenter {
  public:
   virtual ~PsstUiPresenter() = default;

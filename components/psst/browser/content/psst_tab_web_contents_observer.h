@@ -83,6 +83,9 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   void OnUserScriptResult(int id,
                           std::unique_ptr<MatchedRule> rule,
                           base::Value script_result);
+  void OnUserAcceptedPsstSettings(int id,
+                                  const std::string& policy_script_with_params,
+                                  const base::ListValue disabled_checks);
   void OnPolicyScriptResult(int nav_entry_id, base::Value script_result);
   void RunWithTimeout(const int last_committed_entry_id,
                       const std::string& script,

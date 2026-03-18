@@ -47,6 +47,22 @@ namespace psst {
 
 namespace {
 constexpr base::TimeDelta kScriptTimeout = base::Seconds(15);
+
+MATCHER_P4(PsstWebsiteSettingsEq,
+           consent_status,
+           script_version,
+           user_id,
+           urls_to_skip,
+           "PsstWebsiteSettings with consent_status=" +
+               ::testing::PrintToString(consent_status) +
+               ", script_version=" + ::testing::PrintToString(script_version) +
+               ", user_id=" + ::testing::PrintToString(user_id) +
+               ", urls_to_skip=" + ::testing::PrintToString(urls_to_skip)) {
+  return arg.consent_status == consent_status &&
+         arg.script_version == script_version && arg.user_id == user_id &&
+         arg.urls_to_skip == urls_to_skip;
+}
+
 }  // namespace
 
 class DocumentOnLoadObserver : public content::WebContentsObserver {
@@ -101,6 +117,11 @@ ACTION_P(InsertScriptInPageCallback, future, value) {
       const_cast<PsstTabWebContentsObserver::InsertScriptInPageCallback&>(arg1))
       .Run(value.Clone());
   future->SetValue(value.Clone());
+}
+ACTION_P(ShowCallback, future, disabled_checks) {
+  std::move(const_cast<PsstTabWebContentsObserver::ConsentCallback&>(arg2))
+      .Run(disabled_checks.Clone());
+  future->SetValue(disabled_checks.Clone());
 }
 
 ACTION_P(InsertScriptInPageDelayedCallback,
@@ -564,28 +585,47 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   const std::string user_script = "user";
   const std::string policy_script = "policy";
   const GURL url("https://example1.com");
+  const std::string user_id = "unique_user_id";
   base::RunLoop check_loop;
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
   base::test::TestFuture<base::Value> user_script_insert_future;
+  base::test::TestFuture<base::ListValue> user_accept_psst_settings_future;
   base::test::TestFuture<base::Value> policy_script_insert_future;
 
   // User script result is an dictionary, and user key is not empty
-  auto script_params = base::Value(base::DictValue().Set("user", "value"));
+  auto script_params = base::Value(
+      base::DictValue().Set("user_id", user_id).Set("site_name", "example"));
 
   // Policy script result is a dictionary, but it is not deserializable
-  auto policy_script_result =
-      base::Value(base::DictValue().Set("prop", "value"));
+  auto policy_script_result = base::Value(
+      base::DictValue()
+          .Set("progress", 100)
+          .Set("applied_tasks",
+               base::ListValue().Append(base::DictValue()
+                                            .Set("url", "https://example1.com")
+                                            .Set("description", "settings"))));
 
   // Call UI delegate method once (Failed state) as policy_script_result
   // is not deserializable
-  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kCompleted))
       .Times(1);
+
+  EXPECT_CALL(ui_delegate(),
+              GetPsstWebsiteSettings(url::Origin::Create(url), user_id));
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
+
+  EXPECT_CALL(ui_delegate(),
+              Show(url::Origin::Create(url),
+                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
+                                         std::vector<std::string>()),
+                   _))
+      .WillOnce(
+          ShowCallback(&user_accept_psst_settings_future, base::ListValue()));
 
   const auto script_with_parameters = base::StrCat(
       {"const params = ",
@@ -648,18 +688,28 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   const std::string user_script = "user";
   const std::string policy_script = "policy";
   const GURL url("https://example1.com");
+  const std::string user_id = "unique_user_id";
   base::RunLoop check_loop;
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
 
   base::test::TestFuture<base::Value> user_script_insert_future;
+  base::test::TestFuture<base::ListValue> user_accept_psst_settings_future;
   base::test::TestFuture<base::Value> policy_script_insert_future;
+
+  EXPECT_CALL(ui_delegate(),
+              GetPsstWebsiteSettings(url::Origin::Create(url), user_id));
 
   // Create a dictionary with unsupported blob storage value
   auto script_params = base::Value(
       base::DictValue()
-          .Set("user", "value")
+          .Set("user_id", user_id)
+          .Set("tasks",
+               base::ListValue().Append(base::DictValue()
+                                            .Set("url", "https://example1.com")
+                                            .Set("description", "settings")))
+          .Set("site_name", "example")
           .Set("prop",
                base::Value(base::Value::BlobStorage{0x01, 0x02, 0x03})));
   auto policy_script_result = base::Value();
@@ -672,6 +722,15 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
+
+  EXPECT_CALL(ui_delegate(),
+              Show(url::Origin::Create(url),
+                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
+                                         std::vector<std::string>()),
+                   _))
+      .WillOnce(
+          ShowCallback(&user_accept_psst_settings_future, base::ListValue()));
+
   // Policy script executed, parameters not added
   EXPECT_CALL(inject_script_callback(), Run(policy_script, _))
       .WillOnce(InsertScriptInPageCallback(&policy_script_insert_future,
@@ -692,6 +751,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
   const std::string policy_script = "policy";
   const GURL url("https://example1.com");
   const std::string task_description = "task description";
+  const std::string user_id = "unique_user_id";
   const int progress = 50;
   base::RunLoop check_loop;
   base::test::TestFuture<long> progress_future;
@@ -717,10 +777,21 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
       });
 
   base::test::TestFuture<base::Value> user_script_insert_future;
+  base::test::TestFuture<base::ListValue> user_accept_psst_settings_future;
   base::test::TestFuture<base::Value> policy_script_insert_future;
 
+  EXPECT_CALL(ui_delegate(),
+              GetPsstWebsiteSettings(url::Origin::Create(url), user_id));
+
   // Create a user script return value
-  auto script_params = base::Value(base::DictValue().Set("user", "value"));
+  auto script_params = base::Value(
+      base::DictValue()
+          .Set("user_id", user_id)
+          .Set("tasks",
+               base::ListValue().Append(base::DictValue()
+                                            .Set("url", "https://example1.com")
+                                            .Set("description", "settings")))
+          .Set("site_name", "example"));
 
   // prepare return value for policy script (status should be STARTED)
   auto policy_script_result =
@@ -735,6 +806,14 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
+
+  EXPECT_CALL(ui_delegate(),
+              Show(url::Origin::Create(url),
+                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
+                                         std::vector<std::string>()),
+                   _))
+      .WillOnce(
+          ShowCallback(&user_accept_psst_settings_future, base::ListValue()));
 
   const auto policy_script_with_parameters = base::StrCat(
       {"const params = ",

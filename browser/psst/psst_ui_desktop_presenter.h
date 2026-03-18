@@ -12,11 +12,15 @@
 #include "brave/browser/psst/psst_ui_presenter.h"
 #include "content/public/browser/web_contents.h"
 
+class PrefService;
+
 namespace psst {
 
+// Implementation of PsstUiPresenter for desktop platforms
 class UiDesktopPresenter : public PsstUiPresenter {
  public:
-  explicit UiDesktopPresenter(content::WebContents* web_contents);
+  explicit UiDesktopPresenter(content::WebContents* web_contents,
+                              PrefService* prefs);
   ~UiDesktopPresenter() override;
 
   void ShowInfoBar(
@@ -27,6 +31,7 @@ class UiDesktopPresenter : public PsstUiPresenter {
                          const bool is_accepted);
 
   raw_ptr<content::WebContents> web_contents_;
+  raw_ptr<PrefService> prefs_;
   base::WeakPtrFactory<UiDesktopPresenter> weak_ptr_factory_{this};
 };
 

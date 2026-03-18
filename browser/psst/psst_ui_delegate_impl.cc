@@ -26,10 +26,9 @@ void PsstUiDelegateImpl::Show(
   apply_changes_callback_ = std::move(apply_changes_callback);
   dialog_data_ = std::move(dialog_data);
 
-  // Implementation for showing the consent dialog to the user.
-
-  // When dialog accepted by the user
-  OnUserAcceptedPsstSettings(origin, base::ListValue());
+  ui_presenter_->ShowInfoBar(
+      base::BindOnce(&PsstUiDelegateImpl::OnUserAcceptedInfobar,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(origin)));
 }
 
 void PsstUiDelegateImpl::UpdateTasks(
@@ -55,6 +54,19 @@ void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
 
   if (apply_changes_callback_) {
     std::move(apply_changes_callback_).Run(std::move(urls_to_skip));
+  }
+}
+
+void PsstUiDelegateImpl::OnUserAcceptedInfobar(const url::Origin& origin,
+                                               const bool is_accepted) {
+  // Handle the user's response to the infobar
+  if (is_accepted) {
+    // Implementation for showing the consent dialog to the user.
+
+    // When dialog accepted by the user
+    OnUserAcceptedPsstSettings(origin, base::ListValue());
+  } else {
+    // User declined the infobar
   }
 }
 

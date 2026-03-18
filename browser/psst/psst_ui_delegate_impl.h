@@ -48,11 +48,13 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
  private:
   void OnUserAcceptedPsstSettings(const url::Origin& origin,
                                   base::ListValue urls_to_skip);
+  void OnUserAcceptedInfobar(const url::Origin& origin, const bool is_accepted);
 
   std::unique_ptr<PsstUiPresenter> ui_presenter_;
   std::optional<PsstWebsiteSettings> dialog_data_;
   PsstTabWebContentsObserver::ConsentCallback apply_changes_callback_;
   raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
+  base::WeakPtrFactory<PsstUiDelegateImpl> weak_ptr_factory_{this};
 };
 
 }  // namespace psst

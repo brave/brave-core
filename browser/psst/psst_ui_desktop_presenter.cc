@@ -7,13 +7,16 @@
 
 #include "brave/browser/psst/psst_infobar_delegate.h"
 #include "brave/components/psst/common/constants.h"
+#include "brave/components/psst/common/pref_names.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/infobars/content/content_infobar_manager.h"
+#include "components/prefs/pref_service.h"
 
 namespace psst {
 
-UiDesktopPresenter::UiDesktopPresenter(content::WebContents* web_contents)
-    : web_contents_(web_contents) {}
+UiDesktopPresenter::UiDesktopPresenter(content::WebContents* web_contents,
+                                       PrefService* prefs)
+    : web_contents_(web_contents), prefs_(prefs) {}
 UiDesktopPresenter::~UiDesktopPresenter() = default;
 
 void UiDesktopPresenter::ShowInfoBar(
@@ -35,9 +38,12 @@ void UiDesktopPresenter::OnInfobarAccepted(
     const bool is_accepted) {
   if (on_accept_callback) {
     std::move(on_accept_callback).Run(is_accepted);
+    // Open the Psst dialog when the infobar is accepted.
+    // OpenPsstDialog(web_contents_);
+  } else {
+    // Disable PSST if user cancelled the infobar
+    prefs_->SetBoolean(prefs::kPsstEnabled, false);
   }
-  // Open the Psst dialog when the infobar is accepted.
-  // OpenPsstDialog(web_contents_);
 }
 
 }  // namespace psst
