@@ -64,6 +64,11 @@ void URLSanitizerComponentInstaller::LoadDirectlyFromResourcePath() {
 
 void URLSanitizerComponentInstaller::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
+  // If we have a config loaded before observation was added, provide
+  // the current config to the observer.
+  if (current_config_) {
+    observer->OnConfigReady(*current_config_);
+  }
 }
 
 void URLSanitizerComponentInstaller::RemoveObserver(Observer* observer) {
@@ -71,6 +76,7 @@ void URLSanitizerComponentInstaller::RemoveObserver(Observer* observer) {
 }
 
 void URLSanitizerComponentInstaller::OnRawConfigReady(const RawConfig& config) {
+  current_config_.emplace(config);
   for (Observer& observer : observers_) {
     observer.OnConfigReady(config);
   }
