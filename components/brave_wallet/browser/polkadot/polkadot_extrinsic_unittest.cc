@@ -837,7 +837,7 @@ TEST(PolkadotExtrinsics, EventsParsing) {
 
   auto chain_metadata = make_chain_metadata("Polkadot")->unwrap();
 
-  uint32_t extrinsic_idx = 2;
+  const uint32_t extrinsic_idx = 2;
 
   const char events_hex[] =
       // balances(Withdraw)
