@@ -34,7 +34,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/chrome_select_file_policy.h"
+#include "chrome/browser/ui/select_file_policy/chrome_select_file_policy.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/grit/brave_components_webui_strings.h"
