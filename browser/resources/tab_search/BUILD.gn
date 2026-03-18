@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//tools/grit/preprocess_if_expr.gni")
 import("//ui/webui/resources/tools/generate_grd.gni")
 import("sources.gni")
 
@@ -11,4 +12,9 @@ generate_grd("static_files") {
   out_grd = brave_tab_search_extras_grdp
   input_files = brave_tab_search_static_files
   input_files_base_dir = rebase_path(".", "//")
+}
+
+preprocess_if_expr("preprocess") {
+  out_folder = "$root_gen_dir/chrome/browser/resources/tab_search/preprocessed"
+  in_files = brave_tab_search_ts_files + brave_tab_search_css_files
 }

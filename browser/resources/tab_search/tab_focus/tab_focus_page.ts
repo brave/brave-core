@@ -6,29 +6,38 @@
 import '//resources/cr_elements/cr_button/cr_button.js'
 import '//resources/cr_elements/cr_input/cr_input.js'
 
-import {loadTimeData} from '//resources/js/load_time_data.js'
-import {CrLitElement, html} from '//resources/lit/v3_0/lit.rollup.js'
+import { loadTimeData } from '//resources/js/load_time_data.js'
+import { CrLitElement, html } from '//resources/lit/v3_0/lit.rollup.js'
 
-import {BraveTabSearchApiProxy, TabSearchApiProxyImpl} from '../tab_search_api_proxy.js'
-import type {TabOrganizationSession} from '../tab_search.mojom-webui.js'
+import {
+  BraveTabSearchApiProxy,
+  TabSearchApiProxyImpl,
+} from '../tab_search_api_proxy.js'
 
-import {getHtml} from './auto_tab_groups_page.html.js'
-import {getCss} from './auto_tab_groups_page.css.js'
+import { getHtml } from './tab_focus_page.html.js'
+import { getCss } from './tab_focus_page.css.js'
 
-export class AutoTabGroupsPageElement extends CrLitElement {
+export class TabFocusPageElement extends CrLitElement {
   static get is() {
-    return 'auto-tab-groups-page'
+    return 'tab-focus-page'
+  }
+
+  static override get styles() {
+    return getCss()
+  }
+
+  override render() {
+    return getHtml.bind(this)()
   }
 
   protected topics_: string[] = []
   protected topic = ''
   protected undoTopic_ = ''
-  protected showFRE_ =
-      loadTimeData.getBoolean('showTabOrganizationFRE')
+  protected showFRE_ = loadTimeData.getBoolean('showTabOrganizationFRE')
 
   private apiProxy_: BraveTabSearchApiProxy =
-      TabSearchApiProxyImpl.getInstance() as BraveTabSearchApiProxy
-  private listenerIds_: number[] = [];
+    TabSearchApiProxyImpl.getInstance() as BraveTabSearchApiProxy
+  private listenerIds_: number[] = []
 
   private visibilityChangedListener_: () => void
   private elementVisibilityChangedListener_: IntersectionObserver
@@ -36,49 +45,46 @@ export class AutoTabGroupsPageElement extends CrLitElement {
 
   static override get properties() {
     return {
-      availableHeight: {type: Number},
-      showBackButton: {type: Boolean},
-      topic: {type: String},
-      topics_: {type: Array},
-      undoTopic_: {type: String},
-      isLoadingTopics: {type: Boolean},
-      errorMessage: {type: String},
-      needsPremium: {type: Boolean},
-      showFRE_: {type: Boolean},
+      availableHeight: { type: Number },
+      topic: { type: String },
+      topics_: { type: Array },
+      undoTopic_: { type: String },
+      isLoadingTopics: { type: Boolean },
+      errorMessage: { type: String },
+      needsPremium: { type: Boolean },
+      showFRE_: { type: Boolean },
     }
   }
 
   accessor availableHeight: number = 0
-  accessor showBackButton: boolean = false
   accessor isLoadingTopics: boolean = false
   accessor errorMessage: string = ''
   accessor needsPremium: boolean = false
-
-  static override get styles() {
-    return getCss()
-  }
 
   constructor() {
     super()
 
     this.visibilityChangedListener_ = this.maybeUpdateSuggestedTopics_
 
-    this.elementVisibilityChangedListener_ =
-        new IntersectionObserver((entries, _observer) => {
-          this.onElementVisibilityChanged_((entries[0]?.intersectionRatio ?? 0) > 0);
-        }, {root: document.documentElement})
-
+    this.elementVisibilityChangedListener_ = new IntersectionObserver(
+      (entries, _observer) => {
+        this.onElementVisibilityChanged_(
+          (entries[0]?.intersectionRatio ?? 0) > 0,
+        )
+      },
+      { root: document.documentElement },
+    )
   }
 
   protected onTopicInputChanged_(e: any) {
     this.topic = e.value
   }
 
-  protected onFocusTabsClicked_() {
+  protected onFocusTabsClick_() {
     this.getFocusTabs_(this.topic)
   }
 
-  protected onUndoClicked_() {
+  protected onUndoClick_() {
     this.apiProxy_.undoFocusTabs().then(() => {
       this.undoTopic_ = ''
     })
@@ -90,7 +96,7 @@ export class AutoTabGroupsPageElement extends CrLitElement {
 
   private getFocusTabs_(topic: string) {
     this.undoTopic_ = ''
-    this.apiProxy_.getFocusTabs(topic).then(({windowCreated, error}) => {
+    this.apiProxy_.getFocusTabs(topic).then(({ windowCreated, error }) => {
       if (error) {
         this.errorMessage = error.message
         if (error.rateLimitedInfo) {
@@ -107,14 +113,16 @@ export class AutoTabGroupsPageElement extends CrLitElement {
 
   private maybeUpdateSuggestedTopics_ = () => {
     // Don't update if it's already loading topics or when it's not visible.
-    if (this.isLoadingTopics ||
-        document.visibilityState !== 'visible' ||
-        !this.isElementVisible_) {
+    if (
+      this.isLoadingTopics
+      || document.visibilityState !== 'visible'
+      || !this.isElementVisible_
+    ) {
       return
     }
 
     this.isLoadingTopics = true
-    this.apiProxy_.getSuggestedTopics().then(({topics, error}) => {
+    this.apiProxy_.getSuggestedTopics().then(({ topics, error }) => {
       this.isLoadingTopics = false
       if (error) {
         this.errorMessage = error.message
@@ -144,28 +152,30 @@ export class AutoTabGroupsPageElement extends CrLitElement {
     return topic.match(/^\p{Emoji}/u)![0]
   }
 
-  protected onTopicClicked_(index: number) {
+  protected onTopicClick_(index: number) {
     if (this.topics_[index]) {
       this.getFocusTabs_(this.topics_[index])
     }
   }
 
-  override render() {
-    return getHtml.bind(this)()
-  }
-
   override connectedCallback() {
     super.connectedCallback()
 
-    this.apiProxy_.getTabFocusShowFRE().then(
-        ({showFRE}) => this.setShowFRE_(showFRE))
+    this.apiProxy_
+      .getTabFocusShowFRE()
+      .then(({ showFRE }) => this.setShowFRE_(showFRE))
 
-    const callbackRouter = this.apiProxy_.getCallbackRouter();
+    const callbackRouter = this.apiProxy_.getCallbackRouter()
     this.listenerIds_.push(
-        callbackRouter.showFREChanged.addListener(this.setShowFRE_.bind(this)))
+      callbackRouter.tabFocusShowFREChanged.addListener(
+        this.setShowFRE_.bind(this),
+      ),
+    )
 
-    document.addEventListener('visibilitychange',
-                              this.visibilityChangedListener_)
+    document.addEventListener(
+      'visibilitychange',
+      this.visibilityChangedListener_,
+    )
     this.elementVisibilityChangedListener_.observe(this)
 
     this.maybeUpdateSuggestedTopics_()
@@ -173,11 +183,14 @@ export class AutoTabGroupsPageElement extends CrLitElement {
 
   override disconnectedCallback() {
     super.disconnectedCallback()
-    this.listenerIds_.forEach(
-        id => this.apiProxy_.getCallbackRouter().removeListener(id))
+    this.listenerIds_.forEach((id) =>
+      this.apiProxy_.getCallbackRouter().removeListener(id),
+    )
 
-    document.removeEventListener('visibilitychange',
-                                 this.visibilityChangedListener_)
+    document.removeEventListener(
+      'visibilitychange',
+      this.visibilityChangedListener_,
+    )
     this.elementVisibilityChangedListener_.disconnect()
   }
 
@@ -193,10 +206,6 @@ export class AutoTabGroupsPageElement extends CrLitElement {
     return loadTimeData.getString('tabOrganizationSuggestedTopicsSubtitle')
   }
 
-  protected getBackButtonAriaLabel_(): string {
-    return loadTimeData.getStringF('backButtonAriaLabel', this.getTitle_())
-  }
-
   protected getSubmitButtonLabel_(): string {
     return loadTimeData.getString('tabOrganizationSubmitButtonLabel')
   }
@@ -206,7 +215,10 @@ export class AutoTabGroupsPageElement extends CrLitElement {
   }
 
   protected getWindowCreatedMessage_(): string {
-    return loadTimeData.getStringF('tabOrganizationWindowCreatedMessage', this.undoTopic_)
+    return loadTimeData.getStringF(
+      'tabOrganizationWindowCreatedMessage',
+      this.undoTopic_,
+    )
   }
 
   protected getTopicInputPlaceholder_(): string {
@@ -237,113 +249,90 @@ export class AutoTabGroupsPageElement extends CrLitElement {
     return loadTimeData.getString('tabOrganizationEnableButtonLabel')
   }
 
-  protected onLearnMoreClicked_() {
-    this.apiProxy_.openHelpPage()
+  protected onLearnMoreClick_() {
+    this.apiProxy_.openLearnMorePage()
   }
 
-  protected onGoPremiumClicked_() {
+  protected onGoPremiumClick_() {
     this.apiProxy_.openLeoGoPremiumPage()
   }
 
-  protected onEnableTabFocusClicked_() {
+  protected onEnableTabFocusClick_() {
     this.apiProxy_.setTabFocusEnabled()
   }
 
-  protected onDismissErrorClicked_() {
+  protected onDismissErrorClick_() {
     this.errorMessage = ''
   }
 
-  override focus() {
-    if (this.showBackButton) {
-      const backButton = this.shadowRoot.querySelector('cr-icon-button')!
-      if (backButton) {
-        backButton.focus()
-      }
-    } else {
-      super.focus()
-    }
-  }
-
-  protected onBackClick_() {
-    this.fire('back-click')
-  }
-
   protected getUndoFocusTabsHtml_() {
-    return this.undoTopic_ !== '' ? html`
-      <leo-alert
-        id="undo"
-        type="success"
-        hideIcon={true}
-      >
-        ${this.getWindowCreatedMessage_()}
-        <leo-button
-          id="undoButton"
-          kind="plain-faint"
-          size="tiny"
-          @click="${this.onUndoClicked_}"
-        >
-          ${this.getUndoButtonLabel_()}
-        </leo-button>
-      </leo-alert>
-    ` : ''
+    return this.undoTopic_ !== ''
+      ? html`
+          <leo-alert
+            id="undo"
+            type="success"
+            hideIcon="{true}"
+          >
+            ${this.getWindowCreatedMessage_()}
+            <leo-button
+              id="undoButton"
+              kind="plain-faint"
+              size="tiny"
+              @click="${this.onUndoClick_}"
+            >
+              ${this.getUndoButtonLabel_()}
+            </leo-button>
+          </leo-alert>
+        `
+      : ''
   }
 
   protected getTopicsHtml_() {
     return this.isLoadingTopics
-    ? [1, 2, 3, 4, 5].map((key) => html`
-      <leo-button
-        key=${key}
-        class="topics-button"
-        size="small"
-        kind="outline"
-        isDisabled={true}
-      >
-        <div class="topic-description">
-          <div class="emoji-wrapper">
-            <leo-progressring class="loading-ring"></leo-progressring>
-          </div>
-          <div class="empty-state"></div>
-        </div>
-      </leo-button>
-    `)
-    : this.topics_.map((entry, index) => html`
-        <leo-button
-          id="${this.getTopicId_(index)}"
-          class="topics-button"
-          size="small"
-          kind="outline"
-          @click="${() => this.onTopicClicked_(index)}"
-        >
-          <div class="topic-description">
-            <div class="emoji-wrapper">
-              ${this.getTopicEmoji_(entry)}
-            </div>
-            ${this.getTopicWithoutEmoji_(entry)}
-          </div>
-        </leo-button>
-    `)
+      ? [1, 2, 3, 4, 5].map(
+          (key) => html`
+            <leo-button
+              key=${key}
+              class="topics-button"
+              size="small"
+              kind="outline"
+              isDisabled="{true}"
+            >
+              <div class="topic-description">
+                <div class="emoji-wrapper">
+                  <leo-progressring class="loading-ring"></leo-progressring>
+                </div>
+                <div class="empty-state"></div>
+              </div>
+            </leo-button>
+          `,
+        )
+      : this.topics_.map(
+          (entry, index) => html`
+            <leo-button
+              id="${this.getTopicId_(index)}"
+              class="topics-button"
+              size="small"
+              kind="outline"
+              @click="${() => this.onTopicClick_(index)}"
+            >
+              <div class="topic-description">
+                <div class="emoji-wrapper">${this.getTopicEmoji_(entry)}</div>
+                ${this.getTopicWithoutEmoji_(entry)}
+              </div>
+            </leo-button>
+          `,
+        )
   }
 
   protected getHeaderHtml_() {
     return html`
       <div class="title-row">
-        ${!this.showBackButton ? html`
-          <div>
-            <leo-button
-              size="medium"
-              kind="plain-faint"
-              fab
-              @click=${this.onBackClick_}
-            >
-              <leo-icon name="arrow-left"></leo-icon>
-            </leo-button>
-          </div>
-        ` : ''}
-        <div class='title-column'>
+        <div class="title-column">
           <div class="title">${this.getTitle_()}</div>
-          ${!this.showFRE_ ? html`
-            <div class="subtitle">${this.getSubtitle_()}</div>
-          ` : ''}
+          ${!this.showFRE_
+            ? html` <div class="subtitle">${this.getSubtitle_()}</div> `
+            : ''}
         </div>
       </div>
     `
@@ -360,18 +349,21 @@ export class AutoTabGroupsPageElement extends CrLitElement {
               ${this.getPrivacyDisclaimerMessage_()}
             </span>
             <div class="enable-tab-focus-button-row">
-              <span class="learn-more-link" @click=${this.onLearnMoreClicked_}>
+              <span
+                class="learn-more-link"
+                @click=${this.onLearnMoreClick_}
+              >
                 ${this.getLearnMoreLabel_()}
               </span>
               <div>
-              <leo-button
-                id="enableButton"
-                kind="filled"
-                size="small"
-                @click="${this.onEnableTabFocusClicked_}"
-              >
-                ${this.getEnableButtonLabel_()}
-              </leo-button>
+                <leo-button
+                  id="enableButton"
+                  kind="filled"
+                  size="small"
+                  @click="${this.onEnableTabFocusClick_}"
+                >
+                  ${this.getEnableButtonLabel_()}
+                </leo-button>
               </div>
             </div>
           </div>
@@ -388,16 +380,12 @@ export class AutoTabGroupsPageElement extends CrLitElement {
     this.isElementVisible_ = visible
     this.maybeUpdateSuggestedTopics_()
   }
-
-  // Shim for Chromium auto_tab_groups_page test.
-  setSessionForTesting(_session: TabOrganizationSession) {
-  }
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'auto-tab-groups-page': AutoTabGroupsPageElement
+    'tab-focus-page': TabFocusPageElement
   }
 }
 
-customElements.define(AutoTabGroupsPageElement.is, AutoTabGroupsPageElement)
+customElements.define(TabFocusPageElement.is, TabFocusPageElement)
