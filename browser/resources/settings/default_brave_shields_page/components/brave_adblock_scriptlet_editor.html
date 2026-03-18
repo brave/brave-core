@@ -28,6 +28,17 @@
         white-space: pre-line;
         color: var(--leo-color-systemfeedback-error-text);
     }
+
+    .input-affix {
+        color: var(--cr-secondary-text-color);
+        background: var(--cr-hover-background-color);
+        border-radius: 4px;
+        padding: 2px 6px;
+        font-family: monospace;
+        font-size: 12px;
+        user-select: none;
+        white-space: nowrap;
+    }
 </style>
 
 <cr-dialog id="dialog" show-close-button show-on-attach>
@@ -35,8 +46,10 @@
     <div slot="body">
         <div class="flex">
             <div>$i18n{adblockCustomSciptletDialogNameLabel}</div>
-            <cr-input id="scriptlet-name" value="{{scriptlet.name}}" invalid="[[!isScriptletValid_]]" autofocus required
+            <cr-input id="scriptlet-name" value="{{scriptletName_}}" invalid="[[!isScriptletValid_]]" autofocus required
                 spellcheck="false" on-input="validateName_" error-message="[[scriptletErrorMessage_]]">
+                <span slot="inline-prefix" class="input-affix">user-</span>
+                <span slot="inline-suffix" class="input-affix">.js</span>
             </cr-input>
         </div>
         <div>
