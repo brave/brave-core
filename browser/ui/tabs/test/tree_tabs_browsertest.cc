@@ -1246,6 +1246,42 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       CommandNewTabToRight_TreeTabs_DoesNotCrash) {
+  SetTreeTabsEnabled(true);
+
+  // Create A(root)-B(leaf): one root tab and one child tab.
+  auto* tab_a = tab_strip_model().GetTabAtIndex(0);
+  auto tab_b_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_b_interface->set_opener(tab_a);
+  tab_strip_model().AddTab(std::move(tab_b_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  ASSERT_EQ(2, tab_strip_model().count());
+  auto* tab_b = tab_strip_model().GetTabAtIndex(1);
+
+  // Activate A (index 0) and run "New tab to the right/below". This inserts at
+  // index 1, so the result should be A(root) - new tab - B(leaf). Verifies no
+  // crash.
+  tab_strip_model().ActivateTabAt(0);
+  chrome::NewTabToRight(browser());
+
+  ASSERT_EQ(3, tab_strip_model().count());
+  EXPECT_EQ(tab_a, tab_strip_model().GetTabAtIndex(0));
+  auto* new_tab = tab_strip_model().GetTabAtIndex(1);
+  EXPECT_EQ(tab_b, tab_strip_model().GetTabAtIndex(2));
+
+  // The newly created tab should be a child of tab A's tree node (same
+  // TreeTabNode parent as A's node).
+  EXPECT_EQ(new_tab->GetParentCollection()->GetParentCollection(),
+            tab_a->GetParentCollection());
+
+  // And tab_b is also still a child of tab A's tree node.
+  EXPECT_EQ(tab_b->GetParentCollection()->GetParentCollection(),
+            tab_a->GetParentCollection());
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        MoveTabWithChildOut_CacheUpdatedForLeftBehindChild) {
   SetTreeTabsEnabled(true);
   ASSERT_TRUE(tab_strip_model().tree_model());
