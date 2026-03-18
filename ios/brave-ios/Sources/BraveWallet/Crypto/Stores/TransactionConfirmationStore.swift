@@ -1213,7 +1213,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     }
   }
 
-  private func updateComfirmButtonTitle() async {
+  @MainActor private func updateComfirmButtonTitle() async {
     guard activeParsedTransaction.coin == .zec,
       let zecTxData = activeParsedTransaction.transaction.txDataUnion.zecTxData
     else {
