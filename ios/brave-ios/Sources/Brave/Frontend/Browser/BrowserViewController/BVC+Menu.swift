@@ -503,7 +503,7 @@ extension BrowserViewController {
         }
       )
     }
-    if profileController.braveWalletAPI.isAllowed {
+    if profileController.braveWalletAPI.isAllowed && !isPrivateBrowsing {
       actions.append(
         .init(id: .braveWallet) { @MainActor [unowned self] _ in
           // Present wallet already handles dismiss + present
