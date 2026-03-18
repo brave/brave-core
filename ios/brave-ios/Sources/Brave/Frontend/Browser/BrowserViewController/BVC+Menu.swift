@@ -505,7 +505,10 @@ extension BrowserViewController {
     }
     if profileController.braveWalletAPI.isAllowed {
       actions.append(
-        .init(id: .braveWallet) { @MainActor [unowned self] _ in
+        .init(
+          id: .braveWallet,
+          attributes: isPrivateBrowsing ? .disabled : []
+        ) { @MainActor [unowned self] _ in
           // Present wallet already handles dismiss + present
           self.presentWallet()
           return .none
