@@ -31,6 +31,18 @@ source_set("frame") {
   ]
 }
 
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "layout/brave_browser_view_tabbed_layout_impl_unittest.cc" ]
+  deps = [
+    ":frame",
+    "//base",
+    "//chrome/browser/ui",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}
+
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
