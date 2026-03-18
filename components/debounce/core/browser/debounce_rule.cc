@@ -322,6 +322,12 @@ bool DebounceRule::Apply(const GURL& original_url,
 
     // Build extracted value from captures.
     if (!redirect_url_.empty()) {
+      // Placeholders are $1..$9, so reject regexes with >9 capture groups.
+      if (captured_groups.size() > 9) {
+        VLOG(1) << "Debounce redirect_url: regex has " << captured_groups.size()
+                << " capture groups, maximum is 9";
+        return false;
+      }
       // Collect placeholders referenced in the template.
       std::set<size_t> placeholders;
       for (size_t j = 0; j + 1 < redirect_url_.size(); ++j) {

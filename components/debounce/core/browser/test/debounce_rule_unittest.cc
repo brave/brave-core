@@ -626,4 +626,26 @@ TEST(DebounceRuleUnitTest, RedirectUrlStaticTemplateWithCaptures) {
   }
 }
 
+// Test redirect_url with >9 capture groups (should fail).
+TEST(DebounceRuleUnitTest, RedirectUrlTooManyCaptureGroups) {
+  const std::string contents = R"json(
+      [{
+          "include": [
+              "*://tracker.example.com/*"
+          ],
+          "exclude": [],
+          "action": "regex-path",
+          "param": "^/(.)(.)(.)(.)(.)(.)(.)(.)(.)(.+)$",
+          "redirect_url": "https://example.org/$1"
+      }]
+    )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    // 10 capture groups exceeds the $1..$9 limit.
+    CheckApplyResult(rule.get(), GURL("https://tracker.example.com/abcdefghij"),
+                     "", true);
+  }
+}
+
 }  // namespace debounce
