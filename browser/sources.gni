@@ -151,6 +151,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/ntp_background",
   "//brave/browser/policy/handlers",
   "//brave/browser/serp_metrics",
+  "//brave/browser/serp_metrics:impl",
   "//brave/browser/skus",
   "//brave/browser/sync",
   "//brave/browser/themes",
@@ -238,6 +239,7 @@ brave_chrome_browser_deps = [
   "//brave/components/request_otr/common/buildflags",
   "//brave/components/resources",
   "//brave/components/serp_metrics",
+  "//brave/components/serp_metrics:features",
   "//brave/components/serp_metrics:prefs",
   "//brave/components/skus/browser",
   "//brave/components/skus/common",
@@ -738,6 +740,7 @@ brave_chrome_browser_allow_circular_includes_from = [
   "//brave/browser/ui",
   "//brave/browser/brave_stats",
   "//brave/browser/ntp_background",
+  "//brave/browser/serp_metrics:impl",
   "//brave/browser:brave_global_features_impl",
 ]
 

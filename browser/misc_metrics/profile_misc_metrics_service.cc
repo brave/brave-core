@@ -5,31 +5,24 @@
 
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 
-#include "base/check_is_test.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/profile_new_tab_metrics.h"
 #include "brave/browser/misc_metrics/theme_metrics.h"
-#include "brave/browser/serp_metrics/serp_metrics_factory.h"
-#include "brave/browser/serp_metrics/serp_metrics_time_period_store_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/misc_metrics/autofill_metrics.h"
 #include "brave/components/misc_metrics/language_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
-#include "brave/components/serp_metrics/serp_metrics.h"
-#include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "chrome/browser/autofill/personal_data_manager_factory.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_attributes_storage.h"
-#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/common/pref_names.h"
@@ -52,8 +45,7 @@
 namespace misc_metrics {
 
 ProfileMiscMetricsService::ProfileMiscMetricsService(
-    content::BrowserContext* context,
-    ProfileManager* profile_manager) {
+    content::BrowserContext* context) {
   profile_prefs_ = user_prefs::UserPrefs::Get(context);
   auto* local_state = g_browser_process->local_state();
   if (profile_prefs_) {
@@ -121,20 +113,6 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
         std::make_unique<AutofillMetrics>(personal_data_manager);
   }
 
-  if (local_state &&
-      base::FeatureList::IsEnabled(serp_metrics::kSerpMetricsFeature)) {
-    if (!profile_manager) {
-      // `ProfileManager` can only be null in tests.
-      CHECK_IS_TEST();
-    } else {
-      ProfileAttributesStorage& profile_attributes_storage =
-          profile_manager->GetProfileAttributesStorage();
-      serp_metrics_ = serp_metrics::CreateSerpMetrics(
-          local_state, serp_metrics::SerpMetricsTimePeriodStoreFactory(
-                           profile->GetPath(), profile_attributes_storage));
-    }
-  }
-
   ReportSimpleMetrics();
 }
 
@@ -180,9 +158,5 @@ ai_chat::AIChatMetrics* ProfileMiscMetricsService::GetAIChatMetrics() {
   return ai_chat_metrics_.get();
 }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
-
-serp_metrics::SerpMetrics* ProfileMiscMetricsService::GetSerpMetrics() {
-  return serp_metrics_.get();
-}
 
 }  // namespace misc_metrics

@@ -13,6 +13,8 @@
 #include "base/notreached.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
+#include "brave/browser/serp_metrics/serp_metrics_service.h"
+#include "brave/browser/serp_metrics/serp_metrics_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
@@ -196,15 +198,20 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
   }
 
   if ((remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY)) {
-    // Clear SERP metrics because it indicates the user visited Brave, Google,
-    // or another search engine, even though it contains no queries or URLs.
+    if (serp_metrics::SerpMetricsService* serp_metrics_service =
+            serp_metrics::SerpMetricsServiceFactory::GetFor(profile_)) {
+      // Clear SERP metrics because it indicates the user visited Brave,
+      // Google, or another search engine, even though it contains no queries
+      // or URLs.
+      if (serp_metrics::SerpMetrics* serp_metrics =
+              serp_metrics_service->Get()) {
+        serp_metrics->ClearHistory();
+      }
+    }
+
     if (misc_metrics::ProfileMiscMetricsService* profile_misc_metrics_service =
             misc_metrics::ProfileMiscMetricsServiceFactory::
                 GetServiceForContext(profile_)) {
-      if (serp_metrics::SerpMetrics* serp_metrics =
-              profile_misc_metrics_service->GetSerpMetrics()) {
-        serp_metrics->ClearHistory();
-      }
       if (misc_metrics::PageMetrics* page_metrics =
               profile_misc_metrics_service->GetPageMetrics()) {
         page_metrics->brave_search_metrics()->ClearQueryCounts();
