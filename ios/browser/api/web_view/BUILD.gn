@@ -50,6 +50,7 @@ source_set("web_view") {
     "//ios/chrome/browser/signin/model",
     "//ios/chrome/browser/sync/model",
     "//ios/chrome/browser/tabs/model",
+    "//ios/chrome/browser/web/model/print",
     "//ios/web/common",
     "//ios/web/web_state",
     "//ios/web/web_state/ui:wk_web_view_configuration_provider_header",

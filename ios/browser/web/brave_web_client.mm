@@ -10,6 +10,7 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/ios/ns_error_util.h"
+#include "base/no_destructor.h"
 #include "base/notimplemented.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
@@ -34,6 +35,7 @@
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
 #include "ios/chrome/browser/web/model/chrome_web_client.h"
+#include "ios/chrome/browser/web/model/print/print_java_script_feature.h"
 #import "ios/components/security_interstitials/ios_security_interstitial_java_script_feature.h"
 #import "ios/components/security_interstitials/lookalikes/lookalike_url_error.h"
 #import "ios/components/security_interstitials/safe_browsing/safe_browsing_error.h"
@@ -113,6 +115,9 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
   }
   if (base::FeatureList::IsEnabled(
           brave::features::kUseProfileWebViewConfiguration)) {
+    static base::NoDestructor<PrintJavaScriptFeature> print_feature;
+    features.push_back(print_feature.get());
+
     // Add Brave iOS ported JavaScriptFeatures based on their original
     // counterpart in //brave-ios
     features.push_back(

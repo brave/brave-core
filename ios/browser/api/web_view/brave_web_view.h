@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ProfileBridge;
 @protocol LoginsTabHelperBridge;
 @protocol BraveTalkTabHelperBridge;
+@protocol PrintHandler;
 
 typedef void (^ResetConfigurationCallback)(id<ProfileBridge>,
                                            WKWebViewConfiguration*);
@@ -201,6 +202,12 @@ CWV_EXPORT
 @interface BraveWebView (BraveTalk)
 /// A bridge for handling Brave Talk tab features
 - (void)setBraveTalkHelper:(id<BraveTalkTabHelperBridge>)braveTalkHelper;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (Print)
+/// A bridge for handling window.print script messages
+- (void)setPrintHandler:(id<PrintHandler>)printHandler;
 @end
 
 NS_ASSUME_NONNULL_END
