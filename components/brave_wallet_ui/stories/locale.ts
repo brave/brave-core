@@ -1614,6 +1614,7 @@ provideStrings({
   braveWalletShieldZEC: 'Shield ZEC',
   braveWalletUnshieldZEC: 'Unshield ZEC',
   braveWalletShieldFunds: 'Shield funds',
+  braveWalletUnshieldFunds: 'Unshield funds',
   braveWalletShieldingFundsAlertDescription:
     'You are sending funds from your transparent account to your shielded'
     + 'account.',
