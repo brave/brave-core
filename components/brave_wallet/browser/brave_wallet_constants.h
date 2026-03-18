@@ -1731,6 +1731,7 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletShieldZEC", IDS_BRAVE_WALLET_SHIELD_ZEC},
     {"braveWalletUnshieldZEC", IDS_BRAVE_WALLET_UNSHIELD_ZEC},
     {"braveWalletShieldFunds", IDS_BRAVE_WALLET_SHIELD_FUNDS},
+    {"braveWalletUnshieldFunds", IDS_BRAVE_WALLET_UNSHIELD_FUNDS},
     {"braveWalletShieldingFundsAlertDescription",
      IDS_BRAVE_WALLET_SHIELDING_FUNDS_ALERT_DESCRIPTION},
     {"braveWalletUnshieldingFundsAlertDescription",
