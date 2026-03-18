@@ -37,6 +37,7 @@
 #include "chrome/common/actor.mojom.h"
 #include "chrome/common/actor/action_result.h"
 #include "chrome/common/actor/task_id.h"
+#include "components/actor/task_source_info.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
@@ -78,6 +79,8 @@ ContentAgentToolProvider::ContentAgentToolProvider(
   // not have access to any tabs previously acted on in the same conversation,
   // we should create a new task inside `ToolProvider::OnNewGenerationLoop`.
   task_id_ = actor_service_->CreateTask(
+      actor::TaskSourceInfo(actor::TaskSourceInfo::Client::kExperimentalActor,
+                            /*id=*/std::nullopt),
       AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker());
 
   actor_task_state_changed_subscription_ =
@@ -133,6 +136,8 @@ void ContentAgentToolProvider::StopAllTasks() {
   if (!task_id_.is_null()) {
     actor::TaskId stopping_task_id = std::move(task_id_);
     task_id_ = actor_service_->CreateTask(
+        actor::TaskSourceInfo(actor::TaskSourceInfo::Client::kExperimentalActor,
+                              /*id=*/std::nullopt),
         AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker());
     actor_service_->StopTask(stopping_task_id,
                              actor::ActorTask::StoppedReason::kTaskComplete);

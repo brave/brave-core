@@ -9,6 +9,9 @@ specific_include_rules = {
  "brave_open_ai_chat_permission_context_unittest\.cc": [
     "+brave/components/permissions/contexts/brave_open_ai_chat_permission_context.h",
  ],
+ "content_agent_tool_provider\.cc": [
+    "+components/actor/task_source_info.h",
+ ],
  "full_screenshotter_unittest\.cc" : [
     "+components/paint_preview/common/mock_paint_preview_recorder.h",
     "+components/paint_preview/common/mojom",
