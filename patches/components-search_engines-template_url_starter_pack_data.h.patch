@@ -1,0 +1,13 @@
+diff --git a/components/search_engines/template_url_starter_pack_data.h b/components/search_engines/template_url_starter_pack_data.h
+index a2800658774a8057b4d6b125d205826430e9081d..9ca884cd006465a419a7ae755d10cfdae763db73 100644
+--- a/components/search_engines/template_url_starter_pack_data.h
++++ b/components/search_engines/template_url_starter_pack_data.h
+@@ -34,6 +34,8 @@ enum class StarterPackId {
+   kPage = 5,
+   kAiMode = 6,
+ 
++  // Add an enum value for any Brave-defined search engine starter packs.
++  kAskBraveSearch,
+   kMaxStarterPackId
+ };
+ 

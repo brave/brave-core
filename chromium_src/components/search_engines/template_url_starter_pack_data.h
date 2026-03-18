@@ -6,9 +6,6 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SEARCH_ENGINES_TEMPLATE_URL_STARTER_PACK_DATA_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SEARCH_ENGINES_TEMPLATE_URL_STARTER_PACK_DATA_H_
 
-// Add an enum value for any Brave-defined search engine starter packs.
-#define kMaxStarterPackId kAskBraveSearch, kMaxStarterPackId
-
 // Rename upstream's GetStarterPackEngines` so that we can provide our own
 // implementation. The original function is used in upstream unit tests.
 #define GetStarterPackEngines GetStarterPackEngines_ChromiumImpl
@@ -16,7 +13,6 @@
 #include <components/search_engines/template_url_starter_pack_data.h>  // IWYU pragma: export
 
 #undef GetStarterPackEngines
-#undef kMaxStarterPackId
 
 namespace template_url_starter_pack_data {
 
