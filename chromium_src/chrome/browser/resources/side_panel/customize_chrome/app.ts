@@ -12,6 +12,9 @@ import { CustomizeColorSchemeModeBrowserProxy } from '//resources/cr_components/
 
 export * from './app-chromium.js'
 
+// Suppressing `CrLitElement` linting errors that require the name of the class
+// to match the name of the source, as this is an override.
+// eslint-disable-next-line
 class ClosePanelButtonElement extends CrLitElement {
   static get is() {
     return 'close-panel-button'
@@ -41,6 +44,10 @@ declare global {
 customElements.define(ClosePanelButtonElement.is, ClosePanelButtonElement)
 
 // A component to toggle the "Darker theme" setting in the Customize Chrome side panel.
+
+// Suppressing `CrLitElement` linting errors that require the name of the class
+// to match the name of the source, as this is an override.
+// eslint-disable-next-line
 class DarkerThemeToggleElement extends I18nMixinLit(CrLitElement) {
   static get is() {
     return 'brave-darker-theme-toggle'
