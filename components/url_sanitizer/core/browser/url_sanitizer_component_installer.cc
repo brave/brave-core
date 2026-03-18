@@ -75,11 +75,11 @@ void URLSanitizerComponentInstaller::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void URLSanitizerComponentInstaller::OnRawConfigReady(const RawConfig& config) {
-  current_config_.emplace(config);
+void URLSanitizerComponentInstaller::OnRawConfigReady(RawConfig config) {
   for (Observer& observer : observers_) {
     observer.OnConfigReady(config);
   }
+  current_config_ = std::move(config);
 }
 
 void URLSanitizerComponentInstaller::OnComponentReady(

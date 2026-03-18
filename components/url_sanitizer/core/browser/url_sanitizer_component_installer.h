@@ -56,7 +56,7 @@ class URLSanitizerComponentInstaller
   void RemoveObserver(Observer* observer);
 
  private:
-  void OnRawConfigReady(const RawConfig& config);
+  void OnRawConfigReady(RawConfig config);
   void LoadDirectlyFromResourcePath();
 
   base::ObserverList<Observer> observers_;
