@@ -36,6 +36,7 @@ class URLSanitizerComponentInstaller
     RawConfig();
     RawConfig(const RawConfig&);
     RawConfig(RawConfig&&);
+    RawConfig& operator=(RawConfig&&);
     ~RawConfig();
 
     std::string matchers;

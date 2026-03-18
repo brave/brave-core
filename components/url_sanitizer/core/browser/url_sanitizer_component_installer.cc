@@ -46,6 +46,8 @@ URLSanitizerComponentInstaller::RawConfig::RawConfig() = default;
 URLSanitizerComponentInstaller::RawConfig::RawConfig(const RawConfig&) =
     default;
 URLSanitizerComponentInstaller::RawConfig::RawConfig(RawConfig&&) = default;
+URLSanitizerComponentInstaller::RawConfig&
+URLSanitizerComponentInstaller::RawConfig::operator=(RawConfig&&) = default;
 URLSanitizerComponentInstaller::RawConfig::~RawConfig() = default;
 
 URLSanitizerComponentInstaller::URLSanitizerComponentInstaller(
