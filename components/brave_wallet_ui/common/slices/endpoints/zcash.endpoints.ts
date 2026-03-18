@@ -138,25 +138,37 @@ export const zcashEndpoints = ({
       providesTags: ['IsShieldingAvailable'],
     }),
     getAvailableShieldedAccount: query<
-      BraveWallet.ZCashAccountInfo | null,
+      {
+        zcashAccountInfo: BraveWallet.ZCashAccountInfo
+        accountId: BraveWallet.AccountId
+      } | null,
       BraveWallet.AccountId[]
     >({
       queryFn: async (args, { endpoint }, _extraOptions, baseQuery) => {
         try {
           const { zcashWalletService } = baseQuery(undefined).data
 
-          const accountInfos = await mapLimit(
+          const results = await mapLimit(
             args,
             10,
-            async (accountId: BraveWallet.AccountId) =>
-              await zcashWalletService.getZCashAccountInfo(accountId),
+            async (accountId: BraveWallet.AccountId) => {
+              const { accountInfo } =
+                await zcashWalletService.getZCashAccountInfo(accountId)
+              return { accountId, accountInfo }
+            },
+          )
+
+          const match = results.find(
+            (result) => result.accountInfo?.accountShieldBirthday,
           )
 
           return {
-            data:
-              accountInfos.filter(
-                (info) => info.accountInfo?.accountShieldBirthday,
-              )[0]?.accountInfo ?? null,
+            data: match?.accountInfo
+              ? {
+                  zcashAccountInfo: match.accountInfo,
+                  accountId: match.accountId,
+                }
+              : null,
           }
         } catch (error) {
           return handleEndpointError(

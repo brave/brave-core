@@ -1240,6 +1240,7 @@
   <message name="IDS_BRAVE_WALLET_SHIELD_ZEC" desc="Shield ZEC button label">Shield ZEC</message>
   <message name="IDS_BRAVE_WALLET_UNSHIELD_ZEC" desc="Unshield ZEC button label">Unshield ZEC</message>
   <message name="IDS_BRAVE_WALLET_SHIELD_FUNDS" desc="Shield funds button label">Shield funds</message>
+  <message name="IDS_BRAVE_WALLET_UNSHIELD_FUNDS" desc="Unshield funds button label">Unshield funds</message>
   <message name="IDS_BRAVE_WALLET_SHIELDING_FUNDS_ALERT_DESCRIPTION" desc="Shielding funds alert description">You are sending funds from your transparent account to your shielded account.</message>
   <message name="IDS_BRAVE_WALLET_UNSHIELDING_FUNDS_ALERT_DESCRIPTION" desc="Unshielding funds alert description">You are sending funds from your shielded account to your transparent account.</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_RETRY" desc="Retry an action">Retry</message>

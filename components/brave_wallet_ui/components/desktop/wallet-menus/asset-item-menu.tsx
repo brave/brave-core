@@ -89,15 +89,25 @@ export const AssetItemMenu = (props: Props) => {
     .filter((account) => account.accountId.coin === BraveWallet.CoinType.ZEC)
     .map((account) => account.accountId)
 
-  const { data: availableShieldedAccount } =
+  const { data: availableShieldedAccountData } =
     useGetAvailableShieldedAccountQuery(
       asset.coin === BraveWallet.CoinType.ZEC
-        && !asset.isShielded
         && isZCashShieldedTransactionsEnabled
         && zcashAccountIds
         ? zcashAccountIds
         : skipToken,
     )
+
+  const shieldedAccount = React.useMemo(() => {
+    if (!availableShieldedAccountData) {
+      return undefined
+    }
+    return accounts.find(
+      (a) =>
+        a.accountId.uniqueKey
+        === availableShieldedAccountData.accountId.uniqueKey,
+    )
+  }, [accounts, availableShieldedAccountData])
 
   // Hooks
   const {
@@ -116,6 +126,12 @@ export const AssetItemMenu = (props: Props) => {
   const isAssetsBalanceZero = React.useMemo(() => {
     return new Amount(assetBalance).isZero()
   }, [assetBalance])
+
+  const canShieldFunds =
+    availableShieldedAccountData && !asset.isShielded && !isAssetsBalanceZero
+
+  const canUnshieldFunds =
+    availableShieldedAccountData && asset.isShielded && !isAssetsBalanceZero
 
   const isSwapSupported = getDoesCoinSupportSwap(asset.coin)
   const isBridgeSupported = getDoesCoinSupportBridge(asset.coin)
@@ -171,7 +187,7 @@ export const AssetItemMenu = (props: Props) => {
   }, [updateUserAssetVisible, asset])
 
   const onClickShieldFunds = React.useCallback(() => {
-    if (!availableShieldedAccount) {
+    if (!availableShieldedAccountData) {
       return
     }
 
@@ -179,10 +195,34 @@ export const AssetItemMenu = (props: Props) => {
       makeSendRoute(
         asset,
         account,
-        availableShieldedAccount.orchardInternalAddress,
+        availableShieldedAccountData.zcashAccountInfo.orchardInternalAddress,
       ),
     )
-  }, [availableShieldedAccount, asset, openOrPushRoute, account])
+  }, [availableShieldedAccountData, asset, openOrPushRoute, account])
+
+  const onClickUnshieldFunds = React.useCallback(() => {
+    if (
+      !canUnshieldFunds
+      || !shieldedAccount
+      || !availableShieldedAccountData
+    ) {
+      return
+    }
+    openOrPushRoute(
+      makeSendRoute(
+        asset,
+        shieldedAccount,
+        availableShieldedAccountData.zcashAccountInfo
+          .nextTransparentReceiveAddress.addressString,
+      ),
+    )
+  }, [
+    canUnshieldFunds,
+    asset,
+    openOrPushRoute,
+    shieldedAccount,
+    availableShieldedAccountData,
+  ])
 
   return (
     <StyledWrapper yPosition={42}>
@@ -236,13 +276,24 @@ export const AssetItemMenu = (props: Props) => {
           {getLocale('braveWalletConfirmHidingToken')}
         </PopupButtonText>
       </PopupButton>
-      {availableShieldedAccount && (
+      {canShieldFunds && (
         <>
           <VerticalDivider margin='0px 0px 8px 0px' />
           <PopupButton onClick={onClickShieldFunds}>
             <ButtonIcon name='shield-done' />
             <PopupButtonText>
               {getLocale('braveWalletShieldFunds')}
+            </PopupButtonText>
+          </PopupButton>
+        </>
+      )}
+      {canUnshieldFunds && (
+        <>
+          <VerticalDivider margin='0px 0px 8px 0px' />
+          <PopupButton onClick={onClickUnshieldFunds}>
+            <ButtonIcon name='shield-disable' />
+            <PopupButtonText>
+              {getLocale('braveWalletUnshieldFunds')}
             </PopupButtonText>
           </PopupButton>
         </>
