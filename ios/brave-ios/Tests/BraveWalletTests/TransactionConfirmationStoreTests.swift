@@ -176,6 +176,7 @@ class TransactionConfirmationStoreTests: XCTestCase {
     }
 
     let zcashWalletService = BraveWallet.TestZCashWalletService()
+    zcashWalletService._transactionType = { $3(.shielding, .noError) }
 
     let cardanoWalletService = BraveWallet.TestCardanoWalletService()
 
