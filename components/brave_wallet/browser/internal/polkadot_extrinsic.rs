@@ -566,9 +566,9 @@ fn was_extrinsic_successful(
                     ┌────────┴──────────────────────┐
                     │                               │
                     ▼                               ▼
-            ┌─────────────────────────┐ ┌─────────────────────────┐
-            │ system(ExtrinicSuccess) │ │ system(ExtrinsicFailed) │
-            └─────────────────────────┘ └─────────────────────────┘
+            ┌──────────────────────────┐ ┌─────────────────────────┐
+            │ system(ExtrinsicSuccess) │ │ system(ExtrinsicFailed) │
+            └──────────────────────────┘ └─────────────────────────┘
     */
 
     // But in general, it seems like the events flow can become quite complex:

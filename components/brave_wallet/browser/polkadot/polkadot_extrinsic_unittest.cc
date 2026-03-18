@@ -1182,7 +1182,7 @@ TEST(PolkadotExtrinsics, EventsParsing_Error) {
     inputs.push_back(std::move(bad_fee_paid_topics));
   }
 
-  // Extrisic indexes don't match.
+  // Extrinsic indexes don't match.
   {
     std::string invalid_event =
         // balances(Withdraw)
