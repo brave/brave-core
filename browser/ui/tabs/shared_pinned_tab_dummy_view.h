@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_TABS_SHARED_PINNED_TAB_DUMMY_VIEW_H_
 #define BRAVE_BROWSER_UI_TABS_SHARED_PINNED_TAB_DUMMY_VIEW_H_
 
-#include <memory>
+#include "base/memory/raw_ptr.h"
 
 namespace content {
 class WebContents;
@@ -20,16 +20,20 @@ class WebContents;
 // * Don't need to plumb tabs data to web ui.
 class SharedPinnedTabDummyView {
  public:
-  SharedPinnedTabDummyView() = default;
-  virtual ~SharedPinnedTabDummyView() = default;
+  // Install the view on given web contents by transferring ownership of dummy
+  // view to the web view. The dummy view will be uninstalled automatically when
+  // the web view's web contents changes.
+  static void CreateAndInstall(content::WebContents* shared_contents,
+                               content::WebContents* dummy_contents);
 
-  static std::unique_ptr<SharedPinnedTabDummyView> Create(
-      content::WebContents* shared_contents,
-      content::WebContents* dummy_contents);
+  virtual ~SharedPinnedTabDummyView();
 
-  // Install the view on given web contents. Note that the view will be
-  // uninstalled automatically by the web view.
-  virtual void Install() = 0;
+ protected:
+  SharedPinnedTabDummyView(content::WebContents* shared_contents,
+                           content::WebContents* dummy_contents);
+
+  raw_ptr<content::WebContents> shared_contents_;
+  raw_ptr<content::WebContents> dummy_contents_;
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_SHARED_PINNED_TAB_DUMMY_VIEW_H_
