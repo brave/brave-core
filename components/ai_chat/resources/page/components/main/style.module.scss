@@ -178,10 +178,6 @@
   gap: var(--leo-spacing-m);
 }
 
-.feedbackForm {
-  padding: 0 16px;
-}
-
 .dragActive iframe {
   pointer-events: none; // Disable iframe interaction during drag operations
 }

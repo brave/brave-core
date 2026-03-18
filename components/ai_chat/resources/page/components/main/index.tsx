@@ -195,9 +195,13 @@ function Main() {
       ) : (
         <>
           {conversationContext.isFeedbackFormVisible && (
-            <div className={styles.feedbackForm}>
+            <Dialog
+              isOpen
+              onClose={conversationContext.handleFeedbackFormCancel}
+              className={styles.attachmentsDialog}
+            >
               <FeedbackForm />
-            </div>
+            </Dialog>
           )}
 
           <aiChatContext.conversationEntriesComponent
