@@ -37,6 +37,7 @@ import {
   LedgerFilecoinKeyring,
   LedgerSolanaKeyring,
 } from '../hardware/interfaces'
+import { LedgerBridgeErrorCodes } from '../hardware/ledgerjs/ledger-messages'
 
 export function dialogErrorFromLedgerErrorCode(
   code: string | number,
@@ -46,6 +47,13 @@ export function dialogErrorFromLedgerErrorCode(
   }
 
   if (code === 'TransportLocked') {
+    return 'deviceBusy'
+  }
+
+  if (
+    code === LedgerBridgeErrorCodes.CommandInProgress
+    || code === LedgerBridgeErrorCodes.BridgeNotReady
+  ) {
     return 'deviceBusy'
   }
 
