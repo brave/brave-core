@@ -95,11 +95,9 @@ class AdBlockSubpage extends AdBlockSubpageBase {
       this.customFilters_ = value
     })
 
-    if (loadTimeData.getBoolean('cosmeticFilteringCustomScriptletsEnabled')) {
-      this.browserProxy_.getCustomScriptlets().then((value: Scriptlet[]) => {
-        this.customScriptlets_ = value
-      })
-    }
+    this.browserProxy_.getCustomScriptlets().then((value: Scriptlet[]) => {
+      this.customScriptlets_ = value
+    })
 
     this.browserProxy_.addWebUiListener(
       'brave_adblock.onGetListSubscriptions', (value: SubscriptionInfo[]) => {
@@ -129,7 +127,6 @@ class AdBlockSubpage extends AdBlockSubpageBase {
     this.shouldShowCustomScriptlets_ =
       devMode !== undefined &&
       customScriptlets !== undefined &&
-      loadTimeData.getBoolean('cosmeticFilteringCustomScriptletsEnabled') &&
       (customScriptlets.length > 0 || devMode)
 
     this.shouldShowCustomFilters_ =

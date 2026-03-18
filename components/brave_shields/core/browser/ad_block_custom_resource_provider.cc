@@ -90,8 +90,6 @@ AdBlockCustomResourceProvider::AdBlockCustomResourceProvider(
     const base::FilePath& storage_root,
     std::unique_ptr<AdBlockResourceProvider> default_resource_provider)
     : default_resource_provider_(std::move(default_resource_provider)) {
-  CHECK(base::FeatureList::IsEnabled(
-      brave_shields::features::kCosmeticFilteringCustomScriptlets));
   CHECK(default_resource_provider_);
   auto factory =
       base::MakeRefCounted<value_store::ValueStoreFactoryImpl>(storage_root);

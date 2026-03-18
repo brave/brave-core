@@ -162,8 +162,6 @@ bool ClickCustomScriplet(content::WebContents* web_contents,
 class AdblockCustomResourcesTest : public AdBlockServiceTest {
  public:
   AdblockCustomResourcesTest() {
-    feature_list_.InitAndEnableFeature(
-        brave_shields::features::kCosmeticFilteringCustomScriptlets);
     BraveSettingsUI::ShouldExposeElementsForTesting() = true;
   }
 

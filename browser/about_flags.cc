@@ -730,16 +730,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(extensions_mv2::features::kExtensionsManifestV2), \
       }))
 
-#define BRAVE_ADBLOCK_CUSTOM_SCRIPTLETS                                 \
-  EXPAND_FEATURE_ENTRIES({                                              \
-      "brave-adblock-custom-scriptlets",                                \
-      "Brave Adblock Custom Scriptlets",                                \
-      "Allows adding custom scriptlets from settings",                  \
-      kOsDesktop | kOsAndroid,                                          \
-      FEATURE_VALUE_TYPE(                                               \
-          brave_shields::features::kCosmeticFilteringCustomScriptlets), \
-  })
-
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 #define BRAVE_EDUCATION_FEATURE_ENTRIES                                       \
   EXPAND_FEATURE_ENTRIES({                                                    \
@@ -1352,7 +1342,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_EXTENSIONS_MANIFEST_V2                                                 \
   BRAVE_WORKAROUND_NEW_WINDOW_FLASH                                            \
   BRAVE_WEBASSEMBLY_JITLESS_FEATURE_ENTRY                                      \
-  BRAVE_ADBLOCK_CUSTOM_SCRIPTLETS                                              \
   BRAVE_EDUCATION_FEATURE_ENTRIES                                              \
   BRAVE_UPDATER_FEATURE_ENTRIES                                                \
   PSST_FEATURE_ENTRIES                                                         \

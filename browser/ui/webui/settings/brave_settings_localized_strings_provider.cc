@@ -1289,11 +1289,6 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   }
 
   html_source->AddBoolean(
-      "cosmeticFilteringCustomScriptletsEnabled",
-      base::FeatureList::IsEnabled(
-          brave_shields::features::kCosmeticFilteringCustomScriptlets));
-
-  html_source->AddBoolean(
       "isAdBlockOnlyModeSupportedAndFeatureEnabled",
       base::FeatureList::IsEnabled(brave_shields::features::kAdblockOnlyMode) &&
           brave_shields::IsAdblockOnlyModeSupportedForLocale(

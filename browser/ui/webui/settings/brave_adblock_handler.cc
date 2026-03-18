@@ -308,8 +308,6 @@ void BraveAdBlockHandler::UpdateCustomFilters(const base::ListValue& args) {
 }
 
 void BraveAdBlockHandler::GetCustomScriptlets(const base::ListValue& args) {
-  CHECK(base::FeatureList::IsEnabled(
-      brave_shields::features::kCosmeticFilteringCustomScriptlets));
   CHECK(args.size() == 1u && args[0].is_string());
 
   g_brave_browser_process->ad_block_service()
@@ -326,8 +324,6 @@ void BraveAdBlockHandler::OnGetCustomScriptlets(const std::string& callback_id,
 }
 
 void BraveAdBlockHandler::AddCustomScriptlet(const base::ListValue& args) {
-  CHECK(base::FeatureList::IsEnabled(
-      brave_shields::features::kCosmeticFilteringCustomScriptlets));
   CHECK(args.size() == 2u && args[0].is_string() && args[1].is_dict());
 
   g_brave_browser_process->ad_block_service()
@@ -339,8 +335,6 @@ void BraveAdBlockHandler::AddCustomScriptlet(const base::ListValue& args) {
 }
 
 void BraveAdBlockHandler::UpdateCustomScriptlet(const base::ListValue& args) {
-  CHECK(base::FeatureList::IsEnabled(
-      brave_shields::features::kCosmeticFilteringCustomScriptlets));
   CHECK(args.size() == 3u && args[0].is_string() && args[1].is_string() &&
         args[2].is_dict());
 
@@ -354,8 +348,6 @@ void BraveAdBlockHandler::UpdateCustomScriptlet(const base::ListValue& args) {
 }
 
 void BraveAdBlockHandler::RemoveCustomScriptlet(const base::ListValue& args) {
-  CHECK(base::FeatureList::IsEnabled(
-      brave_shields::features::kCosmeticFilteringCustomScriptlets));
   CHECK(args.size() == 2u && args[0].is_string() && args[1].is_string());
 
   g_brave_browser_process->ad_block_service()

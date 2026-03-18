@@ -129,9 +129,6 @@ BASE_FEATURE(kCosmeticFilteringExtraPerfMetrics,
 BASE_FEATURE(kCosmeticFilteringJsPerformance,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-BASE_FEATURE(kCosmeticFilteringCustomScriptlets,
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
 BASE_FEATURE(kWebKitAdvancedPrivacyProtections,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
