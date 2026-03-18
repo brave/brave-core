@@ -59,6 +59,11 @@ ProfileMiscMetricsServiceFactory::ProfileMiscMetricsServiceFactory()
 
 ProfileMiscMetricsServiceFactory::~ProfileMiscMetricsServiceFactory() = default;
 
+bool ProfileMiscMetricsServiceFactory::ServiceIsCreatedWithBrowserContext()
+    const {
+  return true;
+}
+
 std::unique_ptr<KeyedService>
 ProfileMiscMetricsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
