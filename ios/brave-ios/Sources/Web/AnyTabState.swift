@@ -190,10 +190,6 @@ public class AnyTabState: TabState {
     tab.configuration
   }
 
-  public var viewPrintFormatter: UIViewPrintFormatter? {
-    tab.viewPrintFormatter
-  }
-
   public var dataForDisplayedPDF: Data? {
     tab.dataForDisplayedPDF
   }

@@ -311,9 +311,9 @@ extension BrowserViewController {
         }
       )
     }
-    let printFormatter = tab?.viewPrintFormatter
+    let printFormatter = tab?.view.viewPrintFormatter()
     actions.append(
-      .init(id: .print, attributes: printFormatter == nil ? .disabled : []) {
+      .init(id: .print) {
         @MainActor [unowned self] _ in
         self.dismiss(animated: true) {
           let printController = UIPrintInteractionController.shared

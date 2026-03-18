@@ -51,7 +51,7 @@ class PrintScriptHandler: TabContentScript {
       return
     }
 
-    if let url = tab.visibleURL, let viewPrintFormatter = tab.viewPrintFormatter {
+    if let url = tab.visibleURL {
       // If the main-frame's URL has changed
       if let domain = url.baseDomain, domain != currentDomain, message.frameInfo.isMainFrame {
         isBlocking = false
@@ -68,7 +68,7 @@ class PrintScriptHandler: TabContentScript {
         self?.isPresentingController = true
 
         let printController = UIPrintInteractionController.shared
-        printController.printFormatter = viewPrintFormatter
+        printController.printFormatter = tab.view.viewPrintFormatter()
         printController.present(
           animated: true,
           completionHandler: { _, _, _ in

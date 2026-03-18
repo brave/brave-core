@@ -510,13 +510,6 @@ class ChromiumTabState: TabState, TabStateImpl {
     return webView?.internalWebView?.sampledPageTopColor
   }
 
-  var viewPrintFormatter: UIViewPrintFormatter? {
-    // We can technically get the print formatter from `WebState::GetView()` as that returns
-    // the underlying CRWContainerView which exposes the underlying `WKWebView`'s viewPrintFormatter
-    // but for now this is enough.
-    return webView?.internalWebView?.viewPrintFormatter()
-  }
-
   var viewScale: CGFloat {
     get {
       webView?.internalWebView?.viewScale ?? 1
@@ -616,6 +609,13 @@ class CWVContainerView: UIView {
         setNeedsLayout()
       }
     }
+  }
+
+  override func viewPrintFormatter() -> UIViewPrintFormatter {
+    if let webView {
+      return webView.viewPrintFormatter()
+    }
+    return super.viewPrintFormatter()
   }
 
   override func layoutSubviews() {

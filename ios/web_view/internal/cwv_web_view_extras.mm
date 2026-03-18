@@ -185,4 +185,8 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
   return self.webState->GetWebViewProxy().keyboardVisible;
 }
 
+- (UIViewPrintFormatter*)viewPrintFormatter {
+  return [self.webState->GetView() viewPrintFormatter];
+}
+
 @end

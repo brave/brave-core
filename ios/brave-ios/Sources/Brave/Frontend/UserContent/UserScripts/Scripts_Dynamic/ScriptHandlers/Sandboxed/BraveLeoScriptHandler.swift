@@ -145,7 +145,7 @@ class BraveLeoScriptTabHelper: AIChatWebDelegate {
 
   @MainActor
   func getPrintViewPDF() async -> Data? {
-    guard let viewPrintFormatter = tab?.viewPrintFormatter else { return nil }
+    guard let viewPrintFormatter = tab?.view.viewPrintFormatter() else { return nil }
     // No article text. Attempt to parse the page as a PDF/Image
     let render = UIPrintPageRenderer()
     render.addPrintFormatter(viewPrintFormatter, startingAtPageAt: 0)
