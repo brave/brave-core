@@ -10,7 +10,9 @@
 
 namespace serp_metrics::prefs {
 
-// Deprecated 2026-03.
+// Deprecated in 2026-03.
+// When removing the preference, also remove the
+// `MaybeMigrateSerpMetricsToProfileAttributes` function.
 inline constexpr std::string_view kDeprecatedSerpMetricsTimePeriodStorage =
     "brave.stats.serp_metrics";
 
