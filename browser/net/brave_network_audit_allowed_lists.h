@@ -74,6 +74,10 @@ inline constexpr auto kAllowedUrlPrefixes = std::to_array<std::string_view>({
     "https://safebrowsing.brave.com/",
     "https://static.brave.com/",
     "https://static1.brave.com/",
+
+    // gate3 (wallet proxy)
+    "https://gate3.wallet.brave.com/",
+    "https://gate3.wallet.brave.software/",
 });
 
 }  // namespace brave

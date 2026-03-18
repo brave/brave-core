@@ -45,8 +45,8 @@ void MaybeWarnSwitchValue(const std::string& switch_name,
 }
 
 std::string GetGate3URL(base::CommandLine* command_line) {
-  DCHECK(base::CommandLine::InitializedForCurrentProcess());
-  DCHECK(command_line);
+  CHECK(base::CommandLine::InitializedForCurrentProcess());
+  CHECK(command_line);
 
   // Prefix-specific switch takes precedence.
   std::string env = command_line->GetSwitchValueASCII(kEnvGate3Switch);

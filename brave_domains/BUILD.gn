@@ -30,7 +30,7 @@ source_set("constants") {
     "constants.h",
   ]
 
-  deps = [ "//base" ]
+  public_deps = [ "//base" ]
 }
 
 buildflag_header("buildflags") {
