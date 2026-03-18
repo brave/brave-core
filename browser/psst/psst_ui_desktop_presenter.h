@@ -7,32 +7,23 @@
 #define BRAVE_BROWSER_PSST_PSST_UI_DESKTOP_PRESENTER_H_
 
 #include "base/memory/raw_ptr.h"
-#include "base/memory/weak_ptr.h"
 #include "brave/browser/psst/psst_infobar_delegate.h"
 #include "brave/browser/psst/psst_ui_presenter.h"
 #include "content/public/browser/web_contents.h"
-
-class PrefService;
 
 namespace psst {
 
 // Implementation of PsstUiPresenter for desktop platforms
 class UiDesktopPresenter : public PsstUiPresenter {
  public:
-  explicit UiDesktopPresenter(content::WebContents* web_contents,
-                              PrefService* prefs);
+  explicit UiDesktopPresenter(content::WebContents* web_contents);
   ~UiDesktopPresenter() override;
 
   void ShowInfoBar(
       PsstInfoBarDelegate::AcceptCallback on_accept_callback) override;
 
  private:
-  void OnInfobarAccepted(PsstInfoBarDelegate::AcceptCallback on_accept_callback,
-                         const bool is_accepted);
-
   raw_ptr<content::WebContents> web_contents_;
-  raw_ptr<PrefService> prefs_;
-  base::WeakPtrFactory<UiDesktopPresenter> weak_ptr_factory_{this};
 };
 
 }  // namespace psst

@@ -5,17 +5,22 @@
 
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 
+#include "brave/components/psst/common/pref_names.h"
 #include "brave/components/psst/common/psst_metadata_schema.h"
+#include "components/prefs/pref_service.h"
 
 namespace psst {
 
 PsstUiDelegateImpl::PsstUiDelegateImpl(
     PsstSettingsService* psst_settings_service,
+    PrefService* prefs,
     std::unique_ptr<PsstUiPresenter> ui_presenter)
     : ui_presenter_(std::move(ui_presenter)),
-      psst_settings_service_(psst_settings_service) {
+      psst_settings_service_(psst_settings_service),
+      prefs_(prefs) {
   CHECK(psst_settings_service_);
   CHECK(ui_presenter_);
+  CHECK(prefs_);
 }
 PsstUiDelegateImpl::~PsstUiDelegateImpl() = default;
 
@@ -25,7 +30,6 @@ void PsstUiDelegateImpl::Show(
     PsstTabWebContentsObserver::ConsentCallback apply_changes_callback) {
   apply_changes_callback_ = std::move(apply_changes_callback);
   dialog_data_ = std::move(dialog_data);
-
   ui_presenter_->ShowInfoBar(
       base::BindOnce(&PsstUiDelegateImpl::OnUserAcceptedInfobar,
                      weak_ptr_factory_.GetWeakPtr(), std::move(origin)));
@@ -61,12 +65,13 @@ void PsstUiDelegateImpl::OnUserAcceptedInfobar(const url::Origin& origin,
                                                const bool is_accepted) {
   // Handle the user's response to the infobar
   if (is_accepted) {
-    // Implementation for showing the consent dialog to the user.
+    // Call to presenter to show the consent dialog
 
-    // When dialog accepted by the user
+    // When the consent dialog is accepted by the user
     OnUserAcceptedPsstSettings(origin, base::ListValue());
   } else {
-    // User declined the infobar
+    // Disable PSST if user declined the infobar
+    prefs_->SetBoolean(prefs::kPsstEnabled, false);
   }
 }
 

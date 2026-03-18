@@ -204,6 +204,7 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
       url::Origin::Create(web_contents()->GetLastCommittedURL()),
       user_script_result_parsed->user_id);
   if (psst_settings && psst_settings->consent_status == ConsentStatus::kBlock) {
+    // Break the flow if user has already blocked PSST for the site
     return;
   }
 

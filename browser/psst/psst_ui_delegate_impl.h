@@ -16,15 +16,12 @@
 #include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 
-namespace content {
-class WebContents;
-}  // namespace content
-
 namespace psst {
 
 class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
  public:
   explicit PsstUiDelegateImpl(PsstSettingsService* psst_settings_service,
+                              PrefService* prefs,
                               std::unique_ptr<PsstUiPresenter> ui_presenter);
   ~PsstUiDelegateImpl() override;
 
@@ -54,6 +51,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
   std::optional<PsstWebsiteSettings> dialog_data_;
   PsstTabWebContentsObserver::ConsentCallback apply_changes_callback_;
   raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
+  raw_ptr<PrefService> prefs_;
   base::WeakPtrFactory<PsstUiDelegateImpl> weak_ptr_factory_{this};
 };
 
