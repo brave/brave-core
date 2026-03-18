@@ -53,7 +53,7 @@ struct ControllableCloseButtonState final {
   ResetTabStyle(std::unique_ptr<TabStyleViews> new_style); \
   void UpdateInsets()
 
-#define SetData virtual SetData
+#define OnTabDataChanged virtual OnTabDataChanged
 #define ActiveStateChanged virtual ActiveStateChanged
 #define GetGroupColor virtual GetGroupColor
 #define UpdateIconVisibility virtual UpdateIconVisibility
@@ -74,6 +74,6 @@ struct ControllableCloseButtonState final {
 #undef UpdateInsets
 #undef GetWidthOfLargestSelectableRegion
 #undef kMinimumContentsWidthForCloseButtons
-#undef SetData
+#undef OnTabDataChanged
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_H_

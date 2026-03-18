@@ -501,9 +501,10 @@ bool BraveTab::IsAtMinWidthForVerticalTabStrip() const {
          width() <= tabs::kVerticalTabMinWidth;
 }
 
-void BraveTab::SetData(tabs::TabData data) {
-  const bool data_changed = data != data_;
-  Tab::SetData(std::move(data));
+void BraveTab::OnTabDataChanged(TabChangeType tab_change_type,
+                                const tabs::TabData& tab_data) {
+  const bool data_changed = tab_data != data_;
+  Tab::OnTabDataChanged(tab_change_type, std::move(tab_data));
 
   // Our vertical tab uses CompoundTabContainer.
   // When tab is moved from the group by pinning, it's moved to
