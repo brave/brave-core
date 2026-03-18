@@ -6,7 +6,6 @@
 #include "brave/browser/psst/psst_ui_desktop_presenter.h"
 
 #include "brave/browser/psst/psst_infobar_delegate.h"
-#include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/infobars/content/content_infobar_manager.h"
 
 namespace psst {
