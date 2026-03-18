@@ -1929,6 +1929,128 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetRuntimeVersion) {
   }
 }
 
+TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
+  url_loader_factory_.ClearResponses();
+
+  const auto* chain_id = mojom::kPolkadotTestnet;
+  std::string testnet_url =
+      network_manager_
+          ->GetKnownChain(mojom::kPolkadotTestnet, mojom::CoinType::DOT)
+          ->rpc_endpoints.front()
+          .spec();
+
+  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
+
+  base::test::TestFuture<base::expected<std::string, std::string>> future;
+
+  {
+    // Successful RPC call (nullary).
+    polkadot_substrate_rpc_->GetMetadata(chain_id, future.GetCallback());
+
+    auto* reqs = url_loader_factory_.pending_requests();
+    EXPECT_TRUE(reqs);
+    EXPECT_EQ(reqs->size(), 1u);
+
+    auto const& req = reqs->at(0);
+    EXPECT_TRUE(req.request.request_body->elements());
+    auto const& element = req.request.request_body->elements()->at(0);
+
+    std::string expected_body = R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "state_getMetadata",
+        "params": []
+      })";
+
+    EXPECT_EQ(base::test::ParseJsonDict(
+                  element.As<network::DataElementBytes>().AsStringPiece()),
+              base::test::ParseJsonDict(expected_body));
+
+    url_loader_factory_.AddResponse(
+        testnet_url,
+        R"({"jsonrpc":"2.0","id":1,"result":"0x6d65746164617461"})");
+
+    auto metadata = future.Take();
+    ASSERT_TRUE(metadata.has_value());
+    EXPECT_EQ(*metadata, "0x6d65746164617461");
+  }
+
+  {
+    // RPC error includes a message.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "error":{"code":-32601,"message":"Method not found"}
+      })");
+
+    polkadot_substrate_rpc_->GetMetadata(chain_id, future.GetCallback());
+    auto metadata = future.Take();
+    ASSERT_FALSE(metadata.has_value());
+    EXPECT_EQ(metadata.error(), "Method not found");
+  }
+
+  {
+    // RPC error has no message.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "error":{"code":-32601}
+      })");
+
+    polkadot_substrate_rpc_->GetMetadata(chain_id, future.GetCallback());
+    auto metadata = future.Take();
+    ASSERT_FALSE(metadata.has_value());
+    EXPECT_EQ(metadata.error(), WalletInternalErrorMessage());
+  }
+
+  {
+    // Error because result is missing.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1
+      })");
+
+    polkadot_substrate_rpc_->GetMetadata(chain_id, future.GetCallback());
+    auto metadata = future.Take();
+    ASSERT_FALSE(metadata.has_value());
+    EXPECT_EQ(metadata.error(), WalletParsingErrorMessage());
+  }
+
+  {
+    // Error because result has an invalid type.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "result":1234
+      })");
+
+    polkadot_substrate_rpc_->GetMetadata(chain_id, future.GetCallback());
+    auto metadata = future.Take();
+    ASSERT_FALSE(metadata.has_value());
+    EXPECT_EQ(metadata.error(), WalletParsingErrorMessage());
+  }
+
+  {
+    // Error due to non-2XX response.
+    url_loader_factory_.AddResponse(testnet_url, "",
+                                    net::HTTP_INTERNAL_SERVER_ERROR);
+
+    polkadot_substrate_rpc_->GetMetadata(chain_id, future.GetCallback());
+    auto metadata = future.Take();
+    ASSERT_FALSE(metadata.has_value());
+    EXPECT_EQ(metadata.error(), WalletInternalErrorMessage());
+  }
+}
+
 TEST_F(PolkadotSubstrateRpcUnitTest, SubmitExtrinsic) {
   url_loader_factory_.ClearResponses();
 
