@@ -7,6 +7,8 @@ static_library("serp_metrics") {
   public = [
     "serp_metrics_all_profiles_aggregator.h",
     "serp_metrics_factory.h",
+    "serp_metrics_service.h",
+    "serp_metrics_service_factory.h",
     "serp_metrics_tab_helper.h",
     "serp_metrics_time_period_store.h",
     "serp_metrics_time_period_store_factory.h",
@@ -15,6 +17,7 @@ static_library("serp_metrics") {
   sources = [
     "serp_metrics_all_profiles_aggregator.cc",
     "serp_metrics_factory.cc",
+    "serp_metrics_service.cc",
     "serp_metrics_tab_helper.cc",
     "serp_metrics_time_period_store.cc",
     "serp_metrics_time_period_store_factory.cc",
@@ -23,23 +26,37 @@ static_library("serp_metrics") {
   public_deps = [
     "//base",
     "//brave/components/time_period_storage",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/core",
     "//components/search_engines",
     "//content/public/browser",
   ]
 
   deps = [
     "//brave/browser:browser_process",
-    "//brave/browser/misc_metrics",
     "//brave/components/constants",
     "//brave/components/serp_metrics",
     "//brave/components/serp_metrics:features",
     "//chrome/browser:browser_process",
-    "//chrome/browser/profiles:profile",
     "//chrome/browser/profiles:profile_util",
     "//chrome/browser/search_engines",
     "//components/prefs",
     "//net",
     "//url",
+  ]
+}
+
+static_library("impl") {
+  sources = [ "serp_metrics_service_factory.cc" ]
+
+  deps = [
+    ":serp_metrics",
+    "//base",
+    "//chrome/browser:browser_process",
+    "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/profiles:profile_util",
+    "//components/prefs",
   ]
 }
 
@@ -52,7 +69,6 @@ source_set("browser_tests") {
     ":serp_metrics",
     "//base",
     "//base/test:test_support",
-    "//brave/browser/misc_metrics",
     "//brave/browser/serp_metrics",
     "//brave/components/constants",
     "//brave/components/serp_metrics",
