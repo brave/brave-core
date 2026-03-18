@@ -7,7 +7,9 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/browser/engine/e2ee_processor.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -63,10 +65,13 @@ std::vector<EngineConsumer::GenerationResultData> ParseToolCallsFromOAIResponse(
 // Parse OpenAI-format completion response for both streaming and
 // non-streaming requests. Response can have either delta.content (streaming)
 // or message.content (non-streaming).
-// model_key: Optional, will be propergated into returned result.
+// model_key: Optional, will be propagated into returned result.
+// decrypt_callback: When provided, called on the raw content chunk to decrypt
+// it before building the completion event.
 std::optional<EngineConsumer::GenerationResultData> ParseOAICompletionResponse(
     const base::DictValue& response,
-    std::optional<std::string> model_key);
+    std::optional<std::string> model_key,
+    const E2EEProcessor::DecryptCallback& decrypt_callback = {});
 
 }  // namespace ai_chat
 

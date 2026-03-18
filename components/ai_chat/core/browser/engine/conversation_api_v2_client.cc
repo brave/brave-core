@@ -133,7 +133,8 @@ std::string_view GetContentBlockTypeString(
 
 // static
 base::ListValue ConversationAPIV2Client::SerializeOAIMessages(
-    std::vector<OAIMessage> messages) {
+    std::vector<OAIMessage> messages,
+    const E2EEProcessor::EncryptCallback& encrypt_callback) {
   base::ListValue serialized_messages;
   for (auto& message : messages) {
     base::DictValue message_dict;
@@ -280,7 +281,15 @@ base::ListValue ConversationAPIV2Client::SerializeOAIMessages(
       }
       content_list.Append(std::move(content_block_dict));
     }
-    message_dict.Set("content", std::move(content_list));
+
+    if (encrypt_callback) {
+      std::optional<std::string> encrypted = encrypt_callback.Run(content_list);
+      if (encrypted) {
+        message_dict.Set("content", std::move(*encrypted));
+      }
+    } else {
+      message_dict.Set("content", std::move(content_list));
+    }
 
     SerializeToolCallsOnMessageDict(message, message_dict);
 
@@ -359,10 +368,18 @@ std::string ConversationAPIV2Client::CreateJSONRequestBody(
     const std::optional<std::string>& preferred_tool_name,
     const ConversationCapabilitySet& conversation_capabilities,
     const std::optional<std::string>& model_name,
-    const bool is_sse_enabled) {
+    const bool is_sse_enabled,
+    const std::optional<std::string>& client_public_key_hex) {
   base::DictValue dict;
 
-  dict.Set("messages", SerializeOAIMessages(std::move(messages)));
+  E2EEProcessor::EncryptCallback encrypt_callback;
+  if (client_public_key_hex) {
+    CHECK(e2ee_processor_);
+    encrypt_callback = e2ee_processor_->CreateEncryptCallback(
+        model_name.value_or(model_name_));
+  }
+  dict.Set("messages",
+           SerializeOAIMessages(std::move(messages), encrypt_callback));
 
   base::ListValue capabilities_list;
   for (const auto& capability : conversation_capabilities) {
@@ -380,6 +397,10 @@ std::string ConversationAPIV2Client::CreateJSONRequestBody(
 
   if (oai_tool_definitions.has_value() && !oai_tool_definitions->empty()) {
     dict.Set("tools", std::move(oai_tool_definitions.value()));
+  }
+
+  if (client_public_key_hex.has_value()) {
+    dict.Set("brave_client_public_key", *client_public_key_hex);
   }
 
   std::string json;
@@ -422,11 +443,26 @@ void ConversationAPIV2Client::PerformRequestWithCredentials(
     return;
   }
 
+  // Generate a client keypair if encryption is active for this request.
+  std::optional<E2EEProcessor::ClientSecretKeyBox> secret_key;
+  std::optional<std::string> client_public_key_hex;
+  E2EEProcessor::DecryptCallback decrypt_callback;
+  if (conversation_capabilities.contains(
+          mojom::ConversationCapability::ENCRYPTION)) {
+    EnsureE2EEProcessor();
+    auto keypair = e2ee_processor_->GenerateClientKeyPair();
+    client_public_key_hex = keypair.public_key_hex;
+    secret_key = std::move(keypair.secret_key);
+    decrypt_callback =
+        e2ee_processor_->CreateDecryptCallback(&**secret_key);
+  }
+
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
   const std::string request_body = CreateJSONRequestBody(
       std::move(messages), std::move(oai_tool_definitions), preferred_tool_name,
-      conversation_capabilities, model_name, is_sse_enabled);
+      conversation_capabilities, model_name, is_sse_enabled,
+      client_public_key_hex);
 
   base::flat_map<std::string, std::string> headers;
   const auto digest_header = brave_service_keys::GetDigestHeader(request_body);
@@ -449,11 +485,12 @@ void ConversationAPIV2Client::PerformRequestWithCredentials(
     DVLOG(2) << "Making streaming AI Chat Conversation API Request";
     auto on_received = base::BindRepeating(
         &ConversationAPIV2Client::OnQueryDataReceived,
-        weak_ptr_factory_.GetWeakPtr(), std::move(data_received_callback));
+        weak_ptr_factory_.GetWeakPtr(), decrypt_callback,
+        std::move(data_received_callback));
     auto on_complete =
         base::BindOnce(&ConversationAPIV2Client::OnQueryCompleted,
                        weak_ptr_factory_.GetWeakPtr(), std::move(credential),
-                       std::move(completed_callback));
+                       std::move(secret_key), std::move(completed_callback));
 
     api_request_helper_->RequestSSE(net::HttpRequestHeaders::kPostMethod,
                                     api_url, request_body, "application/json",
@@ -464,7 +501,7 @@ void ConversationAPIV2Client::PerformRequestWithCredentials(
     auto on_complete =
         base::BindOnce(&ConversationAPIV2Client::OnQueryCompleted,
                        weak_ptr_factory_.GetWeakPtr(), std::move(credential),
-                       std::move(completed_callback));
+                       std::move(secret_key), std::move(completed_callback));
 
     api_request_helper_->Request(net::HttpRequestHeaders::kPostMethod, api_url,
                                  request_body, "application/json",
@@ -474,6 +511,7 @@ void ConversationAPIV2Client::PerformRequestWithCredentials(
 
 void ConversationAPIV2Client::OnQueryCompleted(
     std::optional<CredentialCacheEntry> credential,
+    std::optional<E2EEProcessor::ClientSecretKeyBox> secret_key,
     GenerationCompletedCallback callback,
     api_request_helper::APIRequestResult result) {
   const bool success = result.Is2XXResponseCode();
@@ -491,9 +529,16 @@ void ConversationAPIV2Client::OnQueryCompleted(
     if (result.value_body().is_dict()) {
       auto& result_dict = result.value_body().GetDict();
       model_key = GetLeoModelKeyFromResponse(result_dict);
-      if (auto parsed_result =
-              ParseOAICompletionResponse(result_dict, model_key)) {
+      E2EEProcessor::DecryptCallback decrypt_callback;
+      if (secret_key) {
+        CHECK(e2ee_processor_);
+        decrypt_callback =
+            e2ee_processor_->CreateDecryptCallback(&**secret_key);
+      }
+      if (auto parsed_result = ParseOAICompletionResponse(
+              result_dict, model_key, decrypt_callback)) {
         parsed_result->is_near_verified = is_near_verified;
+        // secret_key box is destroyed here, releasing the key.
         std::move(callback).Run(base::ok(std::move(*parsed_result)));
         return;
       }
@@ -501,14 +546,17 @@ void ConversationAPIV2Client::OnQueryCompleted(
 
     // Return null event if no completion was provided in response body, can
     // happen when server send them all via OnQueryDataReceived.
+    // secret_key box is destroyed here, releasing the key.
     std::move(callback).Run(
         GenerationResultData{nullptr, std::move(model_key), is_near_verified});
     return;
   }
 
-  // Clear the cached attestation in case a stale public key caused the failure
-  // (e.g. server-side key rotation), forcing a fresh fetch on the next request.
-  if (e2ee_processor_) {
+  if (secret_key) {
+    CHECK(e2ee_processor_);
+    // Clear the cached attestation in case a stale public key caused the
+    // failure (e.g. server-side key rotation), forcing a fresh fetch on the
+    // next request.
     e2ee_processor_->ClearCachedModelAttestations();
   }
 
@@ -532,6 +580,7 @@ void ConversationAPIV2Client::OnQueryCompleted(
 }
 
 void ConversationAPIV2Client::OnQueryDataReceived(
+    E2EEProcessor::DecryptCallback decrypt_callback,
     GenerationDataCallback callback,
     base::expected<base::Value, std::string> result) {
   if (!result.has_value() || !result->is_dict()) {
@@ -547,8 +596,8 @@ void ConversationAPIV2Client::OnQueryDataReceived(
   }
 
   if (*object_type == "chat.completion.chunk") {
-    if (auto result_data =
-            ParseOAICompletionResponse(result_params, model_key)) {
+    if (auto result_data = ParseOAICompletionResponse(
+            result_params, model_key, decrypt_callback)) {
       callback.Run(std::move(*result_data));
     }
   } else if (*object_type == "brave-chat.contentReceipt") {

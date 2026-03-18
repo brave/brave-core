@@ -9,6 +9,8 @@
 
 #include "base/containers/map_util.h"
 #include "base/functional/bind.h"
+#include "base/json/json_writer.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -58,6 +60,18 @@ E2EEProcessor::E2EEProcessor(
 
 E2EEProcessor::~E2EEProcessor() = default;
 
+E2EEProcessor::ClientKeyPair::ClientKeyPair(
+    std::string public_key_hex,
+    ClientSecretKeyBox secret_key)
+    : public_key_hex(std::move(public_key_hex)),
+      secret_key(std::move(secret_key)) {}
+E2EEProcessor::ClientKeyPair::~ClientKeyPair() = default;
+
+E2EEProcessor::Attestation::Attestation(std::vector<uint8_t> model_public_key)
+    : model_public_key(std::move(model_public_key)),
+      cached_at(base::TimeTicks::Now()) {}
+E2EEProcessor::Attestation::~Attestation() = default;
+
 void E2EEProcessor::SetAPIRequestHelperForTesting(
     std::unique_ptr<api_request_helper::APIRequestHelper> api_helper) {
   api_request_helper_ = std::move(api_helper);
@@ -70,8 +84,9 @@ void E2EEProcessor::ClearCachedModelAttestations() {
 void E2EEProcessor::FetchModelAttestation(
     const std::string& model_name,
     FetchModelAttestationCallback callback) {
-  if (const auto* cached = base::FindOrNull(attestation_cache_, model_name)) {
-    if (base::TimeTicks::Now() - cached->cached_at <= kAttestationCacheTTL) {
+  if (const auto* cached = base::FindPtrOrNull(attestation_cache_, model_name)) {
+    if (base::TimeTicks::Now() - cached->cached_at <=
+        kAttestationCacheTTL) {
       std::move(callback).Run(std::nullopt);
       return;
     }
@@ -99,16 +114,77 @@ void E2EEProcessor::OnFetchModelAttestationComplete(
     return;
   }
 
-  const std::string* model_public_key =
+  const std::string* model_public_key_hex =
       result.value_body().GetDict().FindString(kModelPublicKeyKey);
-  if (!model_public_key || model_public_key->empty()) {
+  if (!model_public_key_hex || model_public_key_hex->empty()) {
+    std::move(callback).Run(mojom::APIError::InternalError);
+    return;
+  }
+
+  std::vector<uint8_t> model_public_key_bytes;
+  if (!base::HexStringToBytes(*model_public_key_hex, &model_public_key_bytes)) {
     std::move(callback).Run(mojom::APIError::InternalError);
     return;
   }
 
   attestation_cache_[model_name] =
-      Attestation{*model_public_key, base::TimeTicks::Now()};
+      std::make_unique<Attestation>(std::move(model_public_key_bytes));
   std::move(callback).Run(std::nullopt);
+}
+
+E2EEProcessor::ClientKeyPair
+E2EEProcessor::GenerateClientKeyPair() {
+  auto result = ai_chat::generate_client_keypair();
+  const std::string public_key_hex = base::HexEncodeLower(result.public_key);
+  return ClientKeyPair(public_key_hex, std::move(result.secret_key));
+}
+
+E2EEProcessor::EncryptCallback E2EEProcessor::CreateEncryptCallback(
+    const std::string& model_name) {
+  const auto* cached_attestation =
+      base::FindPtrOrNull(attestation_cache_, model_name);
+  if (!cached_attestation) {
+    return {};
+  }
+
+  const std::vector<uint8_t> model_public_key =
+      cached_attestation->model_public_key;
+  return base::BindRepeating(
+      [](const std::vector<uint8_t>& model_public_key,
+         const base::ListValue& content) -> std::optional<std::string> {
+        std::string json;
+        base::JSONWriter::Write(content, &json);
+
+        auto ciphertext = ai_chat::encrypt(json, model_public_key);
+
+        if (ciphertext.empty()) {
+          return std::nullopt;
+        }
+
+        return base::HexEncodeLower(ciphertext);
+      },
+      model_public_key);
+}
+
+E2EEProcessor::DecryptCallback E2EEProcessor::CreateDecryptCallback(
+    const ClientSecretKey* key) {
+  return base::BindRepeating(
+      [](const ClientSecretKey* secret_key,
+         const std::string& ciphertext_hex) -> std::optional<std::string> {
+        std::vector<uint8_t> ciphertext_bytes;
+        if (!base::HexStringToBytes(ciphertext_hex, &ciphertext_bytes)) {
+          return std::nullopt;
+        }
+
+        auto plaintext = ai_chat::decrypt(ciphertext_bytes, *secret_key);
+
+        if (plaintext.empty()) {
+          return std::nullopt;
+        }
+
+        return std::string(plaintext);
+      },
+      key);
 }
 
 }  // namespace ai_chat

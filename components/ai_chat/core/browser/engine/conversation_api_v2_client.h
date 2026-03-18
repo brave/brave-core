@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -81,9 +82,12 @@ class ConversationAPIV2Client {
       const std::optional<std::string>& preferred_tool_name,
       const ConversationCapabilitySet& conversation_capabilities,
       const std::optional<std::string>& model_name,
-      const bool is_sse_enabled);
+      const bool is_sse_enabled,
+      const std::optional<std::string>& client_public_key_hex = std::nullopt);
 
-  static base::ListValue SerializeOAIMessages(std::vector<OAIMessage> messages);
+  static base::ListValue SerializeOAIMessages(
+      std::vector<OAIMessage> messages,
+      const E2EEProcessor::EncryptCallback& encrypt_callback = {});
 
  private:
   FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest_ContentBlocks,
@@ -112,10 +116,14 @@ class ConversationAPIV2Client {
       std::optional<CredentialCacheEntry> credential,
       std::optional<mojom::APIError> attestation_fetch_error);
 
-  void OnQueryCompleted(std::optional<CredentialCacheEntry> credential,
-                        GenerationCompletedCallback callback,
-                        api_request_helper::APIRequestResult result);
-  void OnQueryDataReceived(GenerationDataCallback callback,
+  void OnQueryCompleted(
+      std::optional<CredentialCacheEntry> credential,
+      std::optional<E2EEProcessor::ClientSecretKeyBox> secret_key,
+      GenerationCompletedCallback callback,
+      api_request_helper::APIRequestResult result);
+
+  void OnQueryDataReceived(E2EEProcessor::DecryptCallback decrypt_callback,
+                           GenerationDataCallback callback,
                            base::expected<base::Value, std::string> result);
 
   std::optional<std::string> GetLeoModelKeyFromResponse(
