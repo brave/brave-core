@@ -85,10 +85,7 @@ class TestObserver : public AdBlockResourceProvider::Observer {
 
 class AdBlockCustomResourceProviderTest : public ::testing::Test {
  public:
-  AdBlockCustomResourceProviderTest() {
-    feature_list_.InitAndEnableFeature(
-        features::kCosmeticFilteringCustomScriptlets);
-  }
+  AdBlockCustomResourceProviderTest() = default;
 
   ~AdBlockCustomResourceProviderTest() override = default;
 

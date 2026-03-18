@@ -331,14 +331,9 @@ AdBlockService::AdBlockService(
           component_update_service_);
   default_resource_provider_ = default_resource_provider.get();
 
-  if (base::FeatureList::IsEnabled(
-          features::kCosmeticFilteringCustomScriptlets)) {
-    custom_resource_provider_ = new AdBlockCustomResourceProvider(
-        profile_dir_, std::move(default_resource_provider));
-    resource_provider_.reset(custom_resource_provider_.get());
-  } else {
-    resource_provider_ = std::move(default_resource_provider);
-  }
+  custom_resource_provider_ = new AdBlockCustomResourceProvider(
+      profile_dir_, std::move(default_resource_provider));
+  resource_provider_.reset(custom_resource_provider_.get());
   filter_list_catalog_provider_ =
       std::make_unique<AdBlockFilterListCatalogProvider>(
           component_update_service_);
