@@ -786,8 +786,6 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
                   network: network
                 )
               }
-            } else {
-              isBalanceSufficient = true
             }
           }
         }
