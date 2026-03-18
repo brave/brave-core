@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <optional>
+#include <set>
 #include <string_view>
 #include <utility>
 #include <vector>
@@ -321,9 +322,31 @@ bool DebounceRule::Apply(const GURL& original_url,
 
     // Build extracted value from captures.
     if (!redirect_url_.empty()) {
-      // Substitute $1..$9 placeholders in the redirect_url template.
+      // Collect placeholders referenced in the template.
+      std::set<size_t> placeholders;
+      for (size_t j = 0; j + 1 < redirect_url_.size(); ++j) {
+        if (redirect_url_[j] == '$' && redirect_url_[j + 1] >= '1' &&
+            redirect_url_[j + 1] <= '9') {
+          placeholders.insert(redirect_url_[j + 1] - '0');
+        }
+      }
+      // Reject if placeholders don't match capture groups exactly.
+      for (size_t i = 1; i <= captured_groups.size(); ++i) {
+        if (placeholders.erase(i) == 0) {
+          VLOG(1) << "Debounce redirect_url: capture group $" << i
+                  << " has no placeholder in template";
+          return false;
+        }
+      }
+      if (!placeholders.empty()) {
+        VLOG(1) << "Debounce redirect_url: placeholder $"
+                << *placeholders.begin()
+                << " has no corresponding capture group";
+        return false;
+      }
+      // Substitute $1..$N placeholders in the redirect_url template.
       unescaped_value = redirect_url_;
-      for (size_t i = 0; i < captured_groups.size() && i < 9; ++i) {
+      for (size_t i = 0; i < captured_groups.size(); ++i) {
         std::string placeholder = {'$', static_cast<char>('1' + i)};
         base::ReplaceSubstringsAfterOffset(&unescaped_value, 0, placeholder,
                                            captured_groups[i]);
