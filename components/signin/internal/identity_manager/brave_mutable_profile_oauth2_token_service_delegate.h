@@ -19,7 +19,6 @@ class BraveMutableProfileOAuth2TokenServiceDelegate
       AccountTrackerService* account_tracker_service,
       network::NetworkConnectionTracker* network_connection_tracker,
       scoped_refptr<TokenWebData> token_web_data,
-      signin::AccountConsistencyMethod account_consistency,
       RevokeAllTokensOnLoad revoke_all_tokens_on_load,
       std::unique_ptr<TokenBindingHelper> token_binding_helper,
       FixRequestErrorCallback fix_request_error_callback);
