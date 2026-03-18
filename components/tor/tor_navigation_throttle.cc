@@ -21,8 +21,9 @@ bool TorNavigationThrottle::skip_wait_for_tor_connected_for_testing_ = false;
 void TorNavigationThrottle::MaybeCreateAndAdd(
     content::NavigationThrottleRegistry& registry,
     bool is_tor_profile) {
-  if (!is_tor_profile)
+  if (!is_tor_profile) {
     return;
+  }
   registry.AddThrottle(std::make_unique<TorNavigationThrottle>(registry));
 }
 
@@ -31,8 +32,9 @@ void TorNavigationThrottle::MaybeCreateAndAdd(
     content::NavigationThrottleRegistry& registry,
     TorLauncherFactory& tor_launcher_factory,
     bool is_tor_profile) {
-  if (!is_tor_profile)
+  if (!is_tor_profile) {
     return;
+  }
   registry.AddThrottle(
       std::make_unique<TorNavigationThrottle>(registry, tor_launcher_factory));
 }
@@ -71,6 +73,11 @@ TorNavigationThrottle::WillStartRequest() {
     return content::NavigationThrottle::PROCEED;
   }
   return content::NavigationThrottle::BLOCK_REQUEST;
+}
+
+content::NavigationThrottle::ThrottleCheckResult
+TorNavigationThrottle::WillRedirectRequest() {
+  return WillStartRequest();
 }
 
 const char* TorNavigationThrottle::GetNameForLogging() {
