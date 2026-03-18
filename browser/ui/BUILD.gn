@@ -296,6 +296,7 @@ source_set("ui") {
       "tabs/brave_tab_color_mixer.h",
       "tabs/brave_tab_menu_model.cc",
       "tabs/brave_tab_menu_model.h",
+      "tabs/shared_pinned_tab_dummy_view.cc",
       "tabs/shared_pinned_tab_dummy_view.h",
       "tabs/shared_pinned_tab_service.cc",
       "tabs/shared_pinned_tab_service.h",
