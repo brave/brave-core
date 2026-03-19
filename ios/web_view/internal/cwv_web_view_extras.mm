@@ -181,4 +181,8 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
   return [bridgedItems copy];
 }
 
+- (BOOL)isKeyboardVisible {
+  return self.webState->GetWebViewProxy().keyboardVisible;
+}
+
 @end

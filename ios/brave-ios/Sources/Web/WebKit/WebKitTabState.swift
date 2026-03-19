@@ -628,6 +628,17 @@ private struct WKWebViewProxy: WebViewProxy {
     webView.frame
   }
 
+  var isKeyboardVisible: Bool {
+    func findFirstResponder(_ view: UIView) -> UIView? {
+      if view.isFirstResponder {
+        return view
+      }
+      return view.subviews.compactMap(findFirstResponder).first
+    }
+    let firstResponder = findFirstResponder(webView)
+    return firstResponder?.inputAccessoryView != nil
+  }
+
   func becomeFirstResponder() -> Bool {
     webView.becomeFirstResponder()
   }
