@@ -87,6 +87,12 @@ bool IsValidCID(const std::string& cid) {
   return filecoin::is_valid_cid(cid);
 }
 
+// Ensures the given CID is in CIDv1 format and returns it. If the CID is in
+// CIDv0, it converts it to CIDv1 before returning the result.
+std::string EnsureCIDv1(const std::string& cid) {
+  return filecoin::ensure_cidv1(cid).c_str();
+}
+
 }  // namespace
 
 namespace ipfs {
@@ -95,6 +101,11 @@ bool TranslateIPFSURI(const GURL& url, GURL* new_url, bool use_subdomain) {
   std::string cid, path;
   if (!ParseCIDAndPathFromIPFSUrl(url, &cid, &path)) {
     return false;
+  }
+  if (use_subdomain) {
+    // In subdomain mode, CIDv1 is required, since CIDv0 cannot be used as part
+    // of the host in a URL.
+    cid = EnsureCIDv1(cid);
   }
   bool ipfs_scheme = url.scheme() == kIPFSScheme;
   bool ipns_scheme = url.scheme() == kIPNSScheme;

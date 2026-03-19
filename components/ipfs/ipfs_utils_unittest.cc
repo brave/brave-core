@@ -45,6 +45,11 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSScheme) {
             GURL(base::StrCat(
                 {GetDefaultIPFSGateway().spec(),
                  "ipfs/QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"})));
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, true));
+  EXPECT_EQ(new_url,
+            GURL(base::StrCat(
+                {"https://bafybeih4v623g54vbdrm5iw7caen2yqzgqeemwvz5qspvqt56wurdist7m.ipfs.", 
+                GetDefaultIPFSGateway().GetHost() })));
 }
 
 TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPNSScheme) {
@@ -55,6 +60,11 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPNSScheme) {
             GURL(base::StrCat(
                 {GetDefaultIPFSGateway().spec(),
                  "ipns/QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd"})));
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, true));
+  EXPECT_EQ(new_url,
+            GURL(base::StrCat(
+                {"https://bafybeicdbvdywksfzbklqq4kyoeabzwgx7waimdboyrxbyuuxtxbbkffiy.ipns.", 
+                GetDefaultIPFSGateway().GetHost() })));
 }
 
 TEST_F(IpfsUtilsUnitTest, RFC3986TranslateIPFSURIIPFSSchemePublic) {
@@ -65,6 +75,11 @@ TEST_F(IpfsUtilsUnitTest, RFC3986TranslateIPFSURIIPFSSchemePublic) {
             GURL(base::StrCat(
                 {GetDefaultIPFSGateway().spec(),
                  "ipfs/QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"})));
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, true));
+  EXPECT_EQ(new_url,
+            GURL(base::StrCat(
+                {"https://bafybeih4v623g54vbdrm5iw7caen2yqzgqeemwvz5qspvqt56wurdist7m.ipfs.", 
+                GetDefaultIPFSGateway().GetHost() })));
 }
 
 TEST_F(IpfsUtilsUnitTest, RFC3986TranslateIPFSURIIPNSSchemePublic) {
@@ -75,6 +90,11 @@ TEST_F(IpfsUtilsUnitTest, RFC3986TranslateIPFSURIIPNSSchemePublic) {
             GURL(base::StrCat(
                 {GetDefaultIPFSGateway().spec(),
                  "ipns/QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"})));
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, true));
+  EXPECT_EQ(new_url,
+            GURL(base::StrCat(
+                {"https://bafybeih4v623g54vbdrm5iw7caen2yqzgqeemwvz5qspvqt56wurdist7m.ipns.", 
+                GetDefaultIPFSGateway().GetHost() })));
 }
 
 TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSSchemeWithPath) {
@@ -89,6 +109,11 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSSchemeWithPath) {
           {GetDefaultIPFSGateway().spec(),
            "ipfs/bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq",
            "/wiki/Vincent_van_Gogh.html"})));
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, true));
+  EXPECT_EQ(new_url,
+            GURL(base::StrCat(
+                {"https://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq.ipfs.", 
+                GetDefaultIPFSGateway().GetHost(), "/wiki/Vincent_van_Gogh.html" })));
 }
 
 TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSSchemeWithPathAndHash) {
@@ -103,6 +128,11 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSSchemeWithPathAndHash) {
           {GetDefaultIPFSGateway().spec(),
            "ipfs/bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq",
            "/wiki/Vincent_van_Gogh.html#Emerging_artist"})));
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, true));
+  EXPECT_EQ(new_url,
+            GURL(base::StrCat(
+                {"https://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq.ipfs.", 
+                GetDefaultIPFSGateway().GetHost(), "/wiki/Vincent_van_Gogh.html#Emerging_artist" })));
 }
 
 TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSSchemeWithPathAndQuery) {
@@ -117,6 +147,11 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSSchemeWithPathAndQuery) {
           {GetDefaultIPFSGateway().spec(),
            "ipfs/bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq",
            "/wiki/Vincent_van_Gogh.html?test=true"})));
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, true));
+  EXPECT_EQ(new_url,
+            GURL(base::StrCat(
+                {"https://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq.ipfs.", 
+                GetDefaultIPFSGateway().GetHost(), "/wiki/Vincent_van_Gogh.html?test=true" })));
 }
 
 TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSSchemeWithPathQueryHash) {
@@ -131,6 +166,11 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSSchemeWithPathQueryHash) {
           {GetDefaultIPFSGateway().spec(),
            "ipfs/bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq",
            "/wiki/Vincent_van_Gogh.html?test=true#test"})));
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, true));
+  EXPECT_EQ(new_url,
+            GURL(base::StrCat(
+                {"https://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq.ipfs.", 
+                GetDefaultIPFSGateway().GetHost(), "/wiki/Vincent_van_Gogh.html?test=true#test" })));
 }
 
 TEST_F(IpfsUtilsUnitTest, TranslateIPFSURINotIPFSSchemeSubdomain) {
