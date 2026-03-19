@@ -49,8 +49,8 @@ URLSanitizerServiceFactory* URLSanitizerServiceFactory::GetInstance() {
 URLSanitizerServiceFactory::URLSanitizerServiceFactory()
     : ProfileKeyedServiceFactoryIOS("URLSanitizerService",
                                     ProfileSelection::kRedirectedInIncognito,
-                                    ServiceCreation::kCreateLazily,
-                                    TestingCreation::kCreateService) {}
+                                    ServiceCreation::kCreateWithProfile,
+                                    TestingCreation::kNoServiceForTests) {}
 
 URLSanitizerServiceFactory::~URLSanitizerServiceFactory() = default;
 

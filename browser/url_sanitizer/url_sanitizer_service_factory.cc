@@ -65,6 +65,10 @@ URLSanitizerServiceFactory::BuildServiceInstanceForBrowserContext(
   return service;
 }
 
+bool URLSanitizerServiceFactory::ServiceIsCreatedWithBrowserContext() const {
+  return true;
+}
+
 bool URLSanitizerServiceFactory::ServiceIsNULLWhileTesting() const {
   return false;
 }

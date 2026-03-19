@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_URL_SANITIZER_CORE_BROWSER_URL_SANITIZER_COMPONENT_INSTALLER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/containers/flat_set.h"
@@ -35,6 +36,7 @@ class URLSanitizerComponentInstaller
     RawConfig();
     RawConfig(const RawConfig&);
     RawConfig(RawConfig&&);
+    RawConfig& operator=(RawConfig&&);
     ~RawConfig();
 
     std::string matchers;
@@ -55,11 +57,12 @@ class URLSanitizerComponentInstaller
   void RemoveObserver(Observer* observer);
 
  private:
-  void OnRawConfigReady(const RawConfig& config);
+  void OnRawConfigReady(RawConfig config);
   void LoadDirectlyFromResourcePath();
 
   base::ObserverList<Observer> observers_;
   base::FilePath resource_dir_;
+  std::optional<RawConfig> current_config_;
 
   base::WeakPtrFactory<URLSanitizerComponentInstaller> weak_factory_{this};
 };
