@@ -15,6 +15,7 @@
   GetSSL() override;                                                       \
                                                                            \
  private:                                                                  \
+  void SetVirtualURL_ChromiumImpl(const GURL& url);                        \
   std::optional<std::pair<std::string, std::string>>                       \
       storage_partition_key_to_restore_;                                   \
                                                                            \

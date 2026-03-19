@@ -30,7 +30,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.lifecycle.Observer;
 
-import org.chromium.base.BraveUrlConstants;
 import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
 import org.chromium.brave_wallet.mojom.AccountInfo;
@@ -407,8 +406,7 @@ public class BraveWalletPanel implements DialogInterface {
                 if (activity.getActivityTab() != null) {
                     GURL lastCommittedUrl =
                             activity.getActivityTab().getWebContents().getLastCommittedUrl();
-                    if (!lastCommittedUrl.getScheme().equals(BraveUrlConstants.BRAVE_SCHEME)
-                            && !lastCommittedUrl.getScheme().equals(UrlConstants.CHROME_SCHEME)
+                    if (!lastCommittedUrl.getScheme().equals(UrlConstants.CHROME_SCHEME)
                             && !lastCommittedUrl
                                     .getScheme()
                                     .equals(UrlConstants.CHROME_NATIVE_SCHEME)) {
