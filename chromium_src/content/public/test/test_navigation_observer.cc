@@ -21,9 +21,10 @@ GURL* RewriteExpectedURLBraveToChrome(GURL* url) {
 }  // namespace
 
 // brave:// is a display-only scheme that maps to chrome:// internally.
-// When tests navigate to brave:// URLs, the actual committed URL will be
-// chrome://. We need to fix up the expected URL before comparing so that
-// navigation observers correctly match brave:// URLs with their chrome://
+// When tests navigate to brave:// URLs using
+// NavigateToURLBlockUntilNavigationsComplete or similar, the actual committed
+// URL will chrome://. We need to fix up the expected URL before comparing so
+// that navigation observers correctly match brave:// URLs with their chrome://
 // equivalents.
 #define RewriteURLIfNecessary(URL, BROWSER_CONTEXT) \
   RewriteURLIfNecessary(RewriteExpectedURLBraveToChrome(URL), BROWSER_CONTEXT)
