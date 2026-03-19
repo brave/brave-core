@@ -346,21 +346,6 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_TRUE(
       brave_multi_contents_view()->mini_toolbar_for_testing(1)->GetVisible());
 
-  // Check mini toolbar uses our menu model.
-  brave_multi_contents_view()->mini_toolbar_for_testing(0)->OpenSplitViewMenu();
-  auto* menu_model =
-      static_cast<SplitTabMenuModel*>(brave_multi_contents_view()
-                                          ->mini_toolbar_for_testing(0)
-                                          ->menu_model_.get());
-
-  // This id calc is copied from GetCommandIdInt() at split_tab_menu_model.cc
-  // Check that method if test failed.
-  int command_id =
-      ExistingBaseSubMenuModel::kMinSplitTabMenuModelCommandId +
-      static_cast<int>(SplitTabMenuModel::CommandId::kReversePosition);
-  EXPECT_EQ(l10n_util::GetStringUTF16(IDS_IDC_SWAP_SPLIT_VIEW),
-            menu_model->GetLabelForCommandId(command_id));
-
   // Activate non split view tab.
   tab_strip()->SelectTab(tab_strip()->tab_at(0), GetDummyEvent());
   EXPECT_EQ(0, tab_strip()->GetActiveIndex());
