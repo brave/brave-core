@@ -11,13 +11,22 @@ import com.google.android.material.color.DynamicColors;
 import com.google.android.material.color.DynamicColorsOptions;
 
 import org.chromium.base.BraveFeatureList;
-import org.chromium.base.FeatureList;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.flags.ChromeFeatureMap;
+import org.chromium.components.cached_flags.CachedFlag;
 
 public class BraveDynamicColors {
+    // Declared here (not in BraveCachedFlags) to avoid circular class-initialization:
+    // BraveCachedFlags extends ChromeCachedFlags whose <clinit> creates a BraveCachedFlags
+    // instance before BraveCachedFlags static fields are ready. Accessing this field early
+    // only triggers BraveDynamicColors class-init, which has no such circular dependency.
+    public static final CachedFlag sDynamicColorsEnabled =
+            new CachedFlag(
+                    ChromeFeatureMap.getInstance(),
+                    BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS,
+                    false);
+
     public static void applyToActivityIfAvailable(Activity activity) {
-        if (!FeatureList.isNativeInitialized()
-                || !ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)) {
+        if (!sDynamicColorsEnabled.isEnabled()) {
             // We disable dynamic colors as it causes styling issues with Brave theme.
             return;
         }
@@ -27,8 +36,7 @@ public class BraveDynamicColors {
 
     public static void applyToActivityIfAvailable(
             Activity activity, DynamicColorsOptions dynamicColorsOptions) {
-        if (!FeatureList.isNativeInitialized()
-                || !ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)) {
+        if (!sDynamicColorsEnabled.isEnabled()) {
             // We disable dynamic colors as it causes styling issues with Brave theme.
             return;
         }
