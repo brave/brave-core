@@ -19,14 +19,9 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.mojo_base.mojom.TimeDelta;
 
 import java.nio.ByteBuffer;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.Locale;
 
 public class WalletUtils {
     private static final String ACCOUNT_INFO = "accountInfo";
@@ -45,11 +40,6 @@ public class WalletUtils {
         }
         assert false;
         return "";
-    }
-
-    public static String timeDeltaToDateString(TimeDelta timeDelta) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
-        return dateFormat.format(new Date(timeDelta.microseconds / 1000));
     }
 
     /**
@@ -86,15 +76,6 @@ public class WalletUtils {
             return false;
         }
         return accountIdsEqual(left.accountId, right.accountId);
-    }
-
-    public static void addAccountInfoToIntent(
-            @NonNull final Intent intent, @NonNull final AccountInfo accountInfo) {
-        ByteBuffer bb = accountInfo.serialize();
-        byte[] bytes = new byte[bb.remaining()];
-        bb.get(bytes);
-
-        intent.putExtra(ACCOUNT_INFO, bytes);
     }
 
     @Nullable
