@@ -238,7 +238,7 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, Edit) {
   ASSERT_TRUE(
       ClickCustomScriplet(web_contents(), "user-custom-script.js", "edit"));
 
-  EXPECT_EQ("user-custom-script.js", GetCustomScriptletName(web_contents()));
+  EXPECT_EQ("custom-script", GetCustomScriptletName(web_contents()));
   EXPECT_EQ("window.test = 'custom-script'",
             GetCustomScriptletContent(web_contents()));
 
@@ -314,7 +314,7 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameConflicts) {
   constexpr const char kContent[] = "window.test = 'custom-script'";
 
   ASSERT_TRUE(ClickAddCustomScriptlet(web_contents()));
-  SaveCustomScriptlet("user-Fix", kContent);
+  SaveCustomScriptlet("Fix", kContent);
 
   UpdateAdBlockInstanceWithRules("a.com##+js(user-Fix)");
 
