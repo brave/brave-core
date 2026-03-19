@@ -16,6 +16,7 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.util.TabUtils;
@@ -23,23 +24,30 @@ import org.chromium.chrome.browser.util.TabUtils;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
+@NullMarked
 public class WalletUtils {
     private static final String ACCOUNT_INFO = "accountInfo";
     private static final String TAG = "WalletUtils";
 
-    private static String getNewAccountPrefixForCoin(@CoinType.EnumType int coinType) {
+    private static String getNewAccountPrefixForCoin(@CoinType.EnumType final int coinType) {
         switch (coinType) {
-            case CoinType.ETH:
+            case CoinType.ETH -> {
                 return "Ethereum";
-            case CoinType.SOL:
+            }
+            case CoinType.SOL -> {
                 return "Solana";
-            case CoinType.FIL:
+            }
+            case CoinType.FIL -> {
                 return "Filecoin";
-            case CoinType.BTC:
+            }
+            case CoinType.BTC -> {
                 return "Bitcoin";
+            }
+            default -> {
+                assert false;
+                return "";
+            }
         }
-        assert false;
-        return "";
     }
 
     /**
@@ -52,7 +60,7 @@ public class WalletUtils {
      */
     @SuppressWarnings("NoStreams")
     public static String generateUniqueAccountName(
-            @CoinType.EnumType int coinType, AccountInfo[] accountInfos) {
+            @CoinType.EnumType final int coinType, final AccountInfo[] accountInfos) {
         final Context context = ContextUtils.getApplicationContext();
         final int sameCoinAccountCount =
                 (int) Arrays.stream(accountInfos)
@@ -119,7 +127,7 @@ public class WalletUtils {
         }
     }
 
-    public static void openWalletHelpCenter(Context context) {
+    public static void openWalletHelpCenter(@Nullable Context context) {
         if (context == null) return;
         TabUtils.openUrlInCustomTab(context, WalletConstants.WALLET_HELP_CENTER);
     }
