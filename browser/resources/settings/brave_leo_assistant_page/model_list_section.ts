@@ -16,11 +16,13 @@ import { BaseMixin } from '../base_mixin.js'
 
 import { getTemplate } from './model_list_section.html.js'
 import {
-  type BraveLeoAssistantBrowserProxy,
-  type Model,
   OperationResult,
   BraveLeoAssistantBrowserProxyImpl,
   OLLAMA_ENDPOINT
+} from './brave_leo_assistant_browser_proxy.js'
+import type {
+  BraveLeoAssistantBrowserProxy,
+  Model
 } from './brave_leo_assistant_browser_proxy.js'
 
 const ModelListSectionBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))

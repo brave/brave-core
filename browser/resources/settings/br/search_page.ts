@@ -15,7 +15,7 @@ import {
 
 import {SettingsSearchPageElement} from '../search_page/search_page.js'
 import {routes} from '../route.js'
-import {type Route, RouteObserverMixin, Router} from '../router.js'
+import {RouteObserverMixin, Router} from '../router.js'
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 import {loadTimeData} from '../i18n_setup.js'
 

@@ -16,7 +16,8 @@ import {
   SettingsBraveClearBrowsingDataOnExitPageV2Element
 } from './brave_clear_browsing_data_on_exit_page_v2.js'
 
-import {BrowsingDataType, type UpdateSyncStateEvent} from '../clear_browsing_data_dialog/clear_browsing_data_browser_proxy.js';
+import {BrowsingDataType} from '../clear_browsing_data_dialog/clear_browsing_data_browser_proxy.js';
+import type {UpdateSyncStateEvent} from '../clear_browsing_data_dialog/clear_browsing_data_browser_proxy.js';
 import {loadTimeData} from '../i18n_setup.js'
 
 import {
