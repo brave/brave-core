@@ -7,14 +7,16 @@
 
 #include "brave/browser/psst/psst_infobar_delegate.h"
 #include "components/infobars/content/content_infobar_manager.h"
+#include "content/public/browser/web_contents.h"
 
 namespace psst {
 
-UiDesktopPresenter::UiDesktopPresenter(content::WebContents* web_contents)
+PsstUiDesktopPresenter::PsstUiDesktopPresenter(
+    content::WebContents* web_contents)
     : web_contents_(web_contents) {}
-UiDesktopPresenter::~UiDesktopPresenter() = default;
+PsstUiDesktopPresenter::~PsstUiDesktopPresenter() = default;
 
-void UiDesktopPresenter::ShowInfoBar(InfoBarCallback on_accept_callback) {
+void PsstUiDesktopPresenter::ShowInfoBar(InfoBarCallback on_accept_callback) {
   infobars::ContentInfoBarManager* infobar_manager =
       infobars::ContentInfoBarManager::FromWebContents(web_contents_);
   if (!infobar_manager) {

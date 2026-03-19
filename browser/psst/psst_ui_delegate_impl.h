@@ -16,6 +16,8 @@
 #include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 
+class PrefService;
+
 namespace psst {
 
 class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {

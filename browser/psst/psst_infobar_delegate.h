@@ -29,7 +29,7 @@ class PsstInfoBarDelegate : public ConfirmInfoBarDelegate {
  private:
   explicit PsstInfoBarDelegate(AcceptCallback on_accept_callback);
 
-  // BraveConfirmInfoBarDelegate overrides:
+  // ConfirmInfoBarDelegate overrides:
   infobars::InfoBarDelegate::InfoBarIdentifier GetIdentifier() const override;
   std::u16string GetMessageText() const override;
   int GetButtons() const override;

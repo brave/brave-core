@@ -8,15 +8,18 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/psst/psst_ui_presenter.h"
-#include "content/public/browser/web_contents.h"
+
+namespace content {
+class WebContents;
+}  // namespace content
 
 namespace psst {
 
 // Implementation of PsstUiPresenter for desktop platforms
-class UiDesktopPresenter : public PsstUiPresenter {
+class PsstUiDesktopPresenter : public PsstUiPresenter {
  public:
-  explicit UiDesktopPresenter(content::WebContents* web_contents);
-  ~UiDesktopPresenter() override;
+  explicit PsstUiDesktopPresenter(content::WebContents* web_contents);
+  ~PsstUiDesktopPresenter() override;
 
   void ShowInfoBar(InfoBarCallback on_accept_callback) override;
 

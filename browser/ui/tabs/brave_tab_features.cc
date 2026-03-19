@@ -68,7 +68,8 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
             std::make_unique<psst::PsstUiDelegateImpl>(
                 PsstSettingsServiceFactory::GetForProfile(profile),
                 profile->GetPrefs(),
-                std::make_unique<psst::UiDesktopPresenter>(tab.GetContents())),
+                std::make_unique<psst::PsstUiDesktopPresenter>(
+                    tab.GetContents())),
             profile->GetPrefs(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 #endif

@@ -24,11 +24,11 @@ https://docs.google.com/document/d/1ccnBWBV_KkknZpZYxcOXTwtfIiaSzeLS5dMd08N2pbs/
     where after deserialization and validation, we update the flow's status on the consent dialog, by calling the UI delegate's method:</br>
     `UpdateTasks(long progress,const std::vector<PolicyTask>& applied_tasks)`</br>
 9. When navigation to URL_1 is complete, and it is a supported website, the user script is injected and executed. Then the same happens as in points #3,4.
-9. Since the workflow is running and the consent dialog is visible, we inject the policy script.
-10. Once injected, the policy script loads saved URLs (tasks) from local storage, takes the current' URL (see p. #7), and applies the privacy setting.
-11. Once the privacy setting is applied, the policy script marks the current URL as applied, takes the next one from the available URL (task) list and marks it as current, saves all the info to local storage, and navigates to the new current one.
-12. Then we enumerate each available URL in the list and do the same as in points #8-11.
-13. When all tasks are completed, the user sees all status and progress information in the consent dialog.
+10. Since the workflow is running and the consent dialog is visible, we inject the policy script.
+11. Once injected, the policy script loads saved URLs (tasks) from local storage, takes the current' URL (see p. #7), and applies the privacy setting.
+12. Once the privacy setting is applied, the policy script marks the current URL as applied, takes the next one from the available URL (task) list and marks it as current, saves all the info to local storage, and navigates to the new current one.
+13. Then we enumerate each available URL in the list and do the same as in points #8-11.
+14. When all tasks are completed, the user sees all status and progress information in the consent dialog.
 
 ### Workflow failure cases
 
