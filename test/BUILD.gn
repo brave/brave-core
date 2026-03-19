@@ -1508,6 +1508,7 @@ if (is_android) {
     sources = [
       "//brave/android/javatests/org/chromium/chrome/browser/BraveSafetyNetThreatsPrioritiesTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/BytecodeTest.java",
+      "//brave/android/javatests/org/chromium/chrome/browser/autofill/settings/BraveAutofillPaymentMethodsFragmentTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/homepage/settings/BraveHomepageSettingsTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/language/settings/BraveLanguageSettingsTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/origin/settings/BraveOriginPreferencesTest.java",

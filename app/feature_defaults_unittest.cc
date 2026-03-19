@@ -98,9 +98,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &autofill::features::kAutofillEnableBuyNowPayLater,
       &autofill::features::kAutofillEnableCardBenefitsForAmericanExpress,
       &autofill::features::kAutofillEnableCardBenefitsForBmo,
-#if BUILDFLAG(IS_ANDROID)
-      &autofill::features::kAutofillEnableLoyaltyCardsFilling,
-#endif  // BUILDFLAG(IS_ANDROID)
       &autofill::features::debug::kAutofillServerCommunication,
       &blink::features::kAdInterestGroupAPI,
       &blink::features::kAIProofreadingAPI,
