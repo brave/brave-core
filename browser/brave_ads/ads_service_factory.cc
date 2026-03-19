@@ -100,10 +100,6 @@ AdsServiceFactory::CreateAdsTooltipsDelegate() const {
 #endif
 }
 
-bool AdsServiceFactory::ServiceIsCreatedWithBrowserContext() const {
-  return true;
-}
-
 std::unique_ptr<KeyedService>
 AdsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
@@ -151,6 +147,10 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
       rewards_service,
 #endif
       host_content_settings_map);
+}
+
+bool AdsServiceFactory::ServiceIsCreatedWithBrowserContext() const {
+  return true;
 }
 
 bool AdsServiceFactory::ServiceIsNULLWhileTesting() const {

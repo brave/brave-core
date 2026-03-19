@@ -69,18 +69,11 @@ RewardsServiceFactory::RewardsServiceFactory()
 #endif
 }
 
-bool RewardsServiceFactory::ServiceIsCreatedWithBrowserContext() const {
-  return true;
-}
-
 std::unique_ptr<KeyedService>
 RewardsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  auto* profile = Profile::FromBrowserContext(context);
-  if (!IsSupportedForProfile(profile)) {
-    return nullptr;
-  }
   std::unique_ptr<RewardsServiceObserver> extension_observer = nullptr;
+  auto* profile = Profile::FromBrowserContext(context);
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   extension_observer =
       std::make_unique<ExtensionRewardsServiceObserver>(profile);
@@ -127,6 +120,10 @@ RewardsServiceFactory::BuildServiceInstanceForBrowserContext(
       );
   rewards_service->Init(std::move(extension_observer));
   return rewards_service;
+}
+
+bool RewardsServiceFactory::ServiceIsCreatedWithBrowserContext() const {
+  return true;
 }
 
 // static
