@@ -86,6 +86,19 @@ class InfobarAddedObserver : public infobars::InfoBarManager::Observer {
       infobar_observation_{this};
 };
 
+ConfirmInfoBarDelegate* GetPsstConfirmDelegate(
+    infobars::ContentInfoBarManager* manager) {
+  auto infobar =
+      std::ranges::find_if(manager->infobars(), [](infobars::InfoBar* infobar) {
+        return infobar->GetIdentifier() ==
+               infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE;
+      });
+  if (infobar != manager->infobars().end()) {
+    return (*infobar)->delegate()->AsConfirmInfoBarDelegate();
+  }
+  return nullptr;
+}
+
 }  // namespace
 
 class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
@@ -149,13 +162,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   content::TitleWatcher watcher(web_contents(), expected_title);
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
   infobar_observer.Wait();
-  auto infobar =
-      std::ranges::find_if(manager->infobars(), [](infobars::InfoBar* infobar) {
-        return infobar->GetIdentifier() ==
-               infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE;
-      });
-  ASSERT_TRUE(infobar != manager->infobars().end());
-  auto* confirm_delegate = (*infobar)->delegate()->AsConfirmInfoBarDelegate();
+  auto* confirm_delegate = GetPsstConfirmDelegate(manager);
   ASSERT_TRUE(confirm_delegate);
   EXPECT_EQ(confirm_delegate->GetIdentifier(),
             infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
@@ -179,13 +186,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   content::TitleWatcher watcher(web_contents(), expected_title);
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
   infobar_observer.Wait();
-  auto infobar =
-      std::ranges::find_if(manager->infobars(), [](infobars::InfoBar* infobar) {
-        return infobar->GetIdentifier() ==
-               infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE;
-      });
-  ASSERT_TRUE(infobar != manager->infobars().end());
-  auto* confirm_delegate = (*infobar)->delegate()->AsConfirmInfoBarDelegate();
+  auto* confirm_delegate = GetPsstConfirmDelegate(manager);
   ASSERT_TRUE(confirm_delegate);
   EXPECT_EQ(confirm_delegate->GetIdentifier(),
             infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);

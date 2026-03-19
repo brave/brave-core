@@ -117,7 +117,7 @@ Example:
 
 Script which helps to find the user identifier for the currently-logged-in user on the current website. We need this in order to apply PSST.
 The output of user script execution is JSON, which contains the following fields:
-`user` - contains the identifier of the logged-in user for the current website.
+`user_id` - contains the identifier of the logged-in user for the current website.
 `site_name` -  site's name or description that will be shown on the consent dialog.
 `tasks` - list of objects (url and description pairs) where `url` is the URL of the settings page for the website that we propose to change and its description.
 

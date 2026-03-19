@@ -1431,10 +1431,10 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
 
       <!--PSST -->
       <message name="IDS_BRAVE_PSST_INFOBAR_MESSAGE" desc="The text label of PSST availability announcement.">
-        Brave can help you optimize this site's privacy settings. Would you like to review our suggestions?
+        Brave can help you optimize this site's privacy settings. Would you like to review Brave's suggestions?
       </message>
       <message name="IDS_BRAVE_PSST_INFO_BAR_REVIEW_SUGGESTIONS" desc="OK button that shows on the info bar and allows to start review of the PSST suggestions">
-        Review suggestions
+        Review Suggestions
       </message>
 
       <!-- Brave policy -->
