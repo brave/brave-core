@@ -41,6 +41,10 @@ void ContainersServiceFactory::RegisterProfilePrefs(
   containers::RegisterProfilePrefs(registry);
 }
 
+bool ContainersServiceFactory::ServiceIsCreatedWithBrowserContext() const {
+  return true;
+}
+
 std::unique_ptr<KeyedService>
 ContainersServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {

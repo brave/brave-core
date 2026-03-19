@@ -24,6 +24,7 @@ class ContainersServiceFactory : public ProfileKeyedServiceFactory {
   friend base::NoDestructor<ContainersServiceFactory>;
 
   void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) final;
+  bool ServiceIsCreatedWithBrowserContext() const override;
 
   ContainersServiceFactory();
   ~ContainersServiceFactory() override;
