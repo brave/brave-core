@@ -300,7 +300,7 @@ private struct CorruptCacheSectionView: View {
 
 struct AdblockRuleExclusionView: View {
 
-  /// The rules to exclude from AdBlockEngine & Content Blockers
+  /// The rules to exclude from AdblockEngine & Content Blockers
   @State private var rulesToExclude = ""
   /// Any errors that are seen during saving or editing which we can display
   @State private var rulesError: Error?
@@ -373,7 +373,7 @@ struct AdblockRuleExclusionView: View {
                 if isLoading {
                   ProgressView()
                 } else {
-                  Text("Enter rules to exclude them from AdBlock Engine and Content Blockers")
+                  Text("Enter rules to exclude them from Adblock Engine and Content Blockers")
                     .multilineTextAlignment(.leading)
                     .padding(.vertical, 8)
                     .padding(.horizontal, 8)
@@ -410,7 +410,7 @@ struct AdblockRuleExclusionView: View {
       Color(.secondaryBraveBackground)
         .edgesIgnoringSafeArea(.all)
     )
-    .navigationTitle(Text("AdBlock Rule Exclusions"))
+    .navigationTitle(Text("Adblock Rule Exclusions"))
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       saveToolbarItem
