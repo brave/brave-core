@@ -1,0 +1,12 @@
+diff --git a/components/webapps/browser/web_app_url_config.cc b/components/webapps/browser/web_app_url_config.cc
+index 6a94ba48bb02368fe0ac09d8b44050a9b6983324..891734fe39bb05d35d71bf48a82825dfa4017139 100644
+--- a/components/webapps/browser/web_app_url_config.cc
++++ b/components/webapps/browser/web_app_url_config.cc
+@@ -51,6 +51,7 @@ bool IsUrlEligibleForWebApp(const GURL& url) {
+   if (url.SchemeIs(content::kChromeUIScheme) &&
+       (url.GetHost() == password_manager::kChromeUIPasswordManagerHost ||
+        ValidChromeUrlHostsForTesting().contains(url.GetHost()))) {
++    BRAVE_WEB_APP_URL_CONFIG_IS_URL_ELIGIBLE_FOR_WEB_APP
+     return true;
+   }
+ 
