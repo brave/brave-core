@@ -26,10 +26,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Locale;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class WalletUtils {
     private static final String ACCOUNT_INFO = "accountInfo";
@@ -55,31 +52,27 @@ public class WalletUtils {
         return dateFormat.format(new Date(timeDelta.microseconds / 1000));
     }
 
+    /**
+     * Generates a unique account name following the Desktop strategy: count existing accounts of
+     * the same coin type and use {@code count + 1} as the account number. This ensures the
+     * suggested name always increments based on total accounts, even if some were renamed.
+     *
+     * <p>Desktop implementation: {@code suggestNewAccountName} in {@code
+     * components/brave_wallet_ui/utils/address-utils.ts}.
+     */
     @SuppressWarnings("NoStreams")
     public static String generateUniqueAccountName(
             @CoinType.EnumType int coinType, AccountInfo[] accountInfos) {
-        Context context = ContextUtils.getApplicationContext();
-        if (context == null) {
-            Log.w(TAG, "Application context was null");
-            return "";
-        }
-        Set<String> allNames =
-                Arrays.stream(accountInfos)
-                        .map(acc -> acc.name)
-                        .collect(Collectors.toCollection(HashSet::new));
+        final Context context = ContextUtils.getApplicationContext();
+        final int sameCoinAccountCount =
+                (int) Arrays.stream(accountInfos)
+                        .filter(acc -> acc.accountId.coin == coinType)
+                        .count();
 
-        for (int number = 1; number < 1000; ++number) {
-            String accountName =
-                    context.getString(
-                            R.string.new_account_prefix,
-                            getNewAccountPrefixForCoin(coinType),
-                            String.valueOf(number));
-
-            if (!allNames.contains(accountName)) {
-                return accountName;
-            }
-        }
-        return "";
+        return context.getString(
+                R.string.new_account_prefix,
+                getNewAccountPrefixForCoin(coinType),
+                String.valueOf(sameCoinAccountCount + 1));
     }
 
     public static boolean accountIdsEqual(AccountId left, AccountId right) {
