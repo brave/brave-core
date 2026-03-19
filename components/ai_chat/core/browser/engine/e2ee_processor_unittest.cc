@@ -96,8 +96,7 @@ class E2EEProcessorTest : public testing::Test {
   std::string InjectAttestation(const std::string& model_public_key_hex) {
     const std::string json =
         R"({"model_public_key": ")" + model_public_key_hex + R"("})";
-    SetUpMock(1, net::HTTP_OK,
-              base::Value(base::test::ParseJsonDict(json)));
+    SetUpMock(1, net::HTTP_OK, base::Value(base::test::ParseJsonDict(json)));
     auto error = FetchAndGetError();
     EXPECT_FALSE(error.has_value());
     return model_public_key_hex;
@@ -185,9 +184,8 @@ TEST_F(E2EEProcessorTest, GenerateReceivingKeypair_ReturnsValidKeypair) {
 // Encrypt with a valid cached attestation returns a non-empty hex ciphertext.
 TEST_F(E2EEProcessorTest, Encrypt_WithCachedAttestation_ReturnsHexCiphertext) {
   auto model_keypair = ai_chat::generate_receiving_keypair();
-  const std::string model_pub_hex = base::HexEncode(
-      std::vector<uint8_t>(model_keypair.public_key.begin(),
-                           model_keypair.public_key.end()));
+  const std::string model_pub_hex = base::HexEncode(std::vector<uint8_t>(
+      model_keypair.public_key.begin(), model_keypair.public_key.end()));
   InjectAttestation(model_pub_hex);
 
   base::ListValue content;
@@ -221,15 +219,13 @@ TEST_F(E2EEProcessorTest, Decrypt_Roundtrip) {
   const std::string plaintext = "secret response from model";
   auto enc_result = ai_chat::encrypt(
       rust::Slice<const uint8_t>(
-          reinterpret_cast<const uint8_t*>(plaintext.data()),
-          plaintext.size()),
+          reinterpret_cast<const uint8_t*>(plaintext.data()), plaintext.size()),
       rust::Slice<const uint8_t>(client_pub_bytes.data(),
                                  client_pub_bytes.size()));
   ASSERT_TRUE(enc_result.error.empty()) << std::string(enc_result.error);
 
-  const std::string ciphertext_hex = base::HexEncode(
-      std::vector<uint8_t>(enc_result.ciphertext.begin(),
-                           enc_result.ciphertext.end()));
+  const std::string ciphertext_hex = base::HexEncode(std::vector<uint8_t>(
+      enc_result.ciphertext.begin(), enc_result.ciphertext.end()));
 
   auto decrypt_cb =
       processor_->CreateDecryptCallback(&*client_keypair.secret_key);
@@ -241,16 +237,14 @@ TEST_F(E2EEProcessorTest, Decrypt_Roundtrip) {
 // Decrypt with non-hex input returns an empty string.
 TEST_F(E2EEProcessorTest, Decrypt_InvalidHex_ReturnsEmpty) {
   auto keypair = processor_->GenerateReceivingKeypair();
-  auto decrypt_cb =
-      processor_->CreateDecryptCallback(&*keypair.secret_key);
+  auto decrypt_cb = processor_->CreateDecryptCallback(&*keypair.secret_key);
   EXPECT_TRUE(decrypt_cb.Run("not-valid-hex!").empty());
 }
 
 // Decrypt with a valid hex string that is too short returns an empty string.
 TEST_F(E2EEProcessorTest, Decrypt_TooShortCiphertext_ReturnsEmpty) {
   auto keypair = processor_->GenerateReceivingKeypair();
-  auto decrypt_cb =
-      processor_->CreateDecryptCallback(&*keypair.secret_key);
+  auto decrypt_cb = processor_->CreateDecryptCallback(&*keypair.secret_key);
   // 10 bytes — well below the 56-byte (32 + 24) minimum.
   EXPECT_TRUE(decrypt_cb.Run("00000000000000000000").empty());
 }

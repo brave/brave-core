@@ -453,8 +453,7 @@ void ConversationAPIV2Client::PerformRequestWithCredentials(
     auto keypair = e2ee_processor_->GenerateClientKeyPair();
     client_public_key_hex = keypair.public_key_hex;
     secret_key = std::move(keypair.secret_key);
-    decrypt_callback =
-        e2ee_processor_->CreateDecryptCallback(&**secret_key);
+    decrypt_callback = e2ee_processor_->CreateDecryptCallback(&**secret_key);
   }
 
   const bool is_sse_enabled =
@@ -483,10 +482,10 @@ void ConversationAPIV2Client::PerformRequestWithCredentials(
 
   if (is_sse_enabled) {
     DVLOG(2) << "Making streaming AI Chat Conversation API Request";
-    auto on_received = base::BindRepeating(
-        &ConversationAPIV2Client::OnQueryDataReceived,
-        weak_ptr_factory_.GetWeakPtr(), decrypt_callback,
-        std::move(data_received_callback));
+    auto on_received =
+        base::BindRepeating(&ConversationAPIV2Client::OnQueryDataReceived,
+                            weak_ptr_factory_.GetWeakPtr(), decrypt_callback,
+                            std::move(data_received_callback));
     auto on_complete =
         base::BindOnce(&ConversationAPIV2Client::OnQueryCompleted,
                        weak_ptr_factory_.GetWeakPtr(), std::move(credential),
@@ -596,8 +595,8 @@ void ConversationAPIV2Client::OnQueryDataReceived(
   }
 
   if (*object_type == "chat.completion.chunk") {
-    if (auto result_data = ParseOAICompletionResponse(
-            result_params, model_key, decrypt_callback)) {
+    if (auto result_data = ParseOAICompletionResponse(result_params, model_key,
+                                                      decrypt_callback)) {
       callback.Run(std::move(*result_data));
     }
   } else if (*object_type == "brave-chat.contentReceipt") {

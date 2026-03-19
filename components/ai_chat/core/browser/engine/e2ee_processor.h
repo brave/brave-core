@@ -36,15 +36,14 @@ class E2EEProcessor {
   using FetchModelAttestationCallback =
       base::OnceCallback<void(std::optional<mojom::APIError>)>;
 
-   using ClientSecretKeyBox = rust::Box<ClientSecretKey>;
-   using EncryptCallback = base::RepeatingCallback<std::optional<std::string>(
-       const base::ListValue&)>;
-   using DecryptCallback = base::RepeatingCallback<std::optional<std::string>(
-       const std::string&)>;
+  using ClientSecretKeyBox = rust::Box<ClientSecretKey>;
+  using EncryptCallback = base::RepeatingCallback<std::optional<std::string>(
+      const base::ListValue&)>;
+  using DecryptCallback =
+      base::RepeatingCallback<std::optional<std::string>(const std::string&)>;
 
   struct ClientKeyPair {
-    ClientKeyPair(std::string public_key_hex,
-                  ClientSecretKeyBox secret_key);
+    ClientKeyPair(std::string public_key_hex, ClientSecretKeyBox secret_key);
     ~ClientKeyPair();
 
     std::string public_key_hex;
@@ -83,7 +82,7 @@ class E2EEProcessor {
   void SetAPIRequestHelperForTesting(
       std::unique_ptr<api_request_helper::APIRequestHelper> api_helper);
 
-  private:
+ private:
   struct Attestation {
     explicit Attestation(std::vector<uint8_t> model_public_key);
     ~Attestation();

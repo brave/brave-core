@@ -63,9 +63,8 @@ E2EEProcessor::E2EEProcessor(
 
 E2EEProcessor::~E2EEProcessor() = default;
 
-E2EEProcessor::ClientKeyPair::ClientKeyPair(
-    std::string public_key_hex,
-    ClientSecretKeyBox secret_key)
+E2EEProcessor::ClientKeyPair::ClientKeyPair(std::string public_key_hex,
+                                            ClientSecretKeyBox secret_key)
     : public_key_hex(std::move(public_key_hex)),
       secret_key(std::move(secret_key)) {}
 E2EEProcessor::ClientKeyPair::~ClientKeyPair() = default;
@@ -87,9 +86,9 @@ void E2EEProcessor::ClearCachedModelAttestations() {
 void E2EEProcessor::FetchModelAttestation(
     const std::string& model_name,
     FetchModelAttestationCallback callback) {
-  if (const auto* cached = base::FindPtrOrNull(attestation_cache_, model_name)) {
-    if (base::TimeTicks::Now() - cached->cached_at <=
-        kAttestationCacheTTL) {
+  if (const auto* cached =
+          base::FindPtrOrNull(attestation_cache_, model_name)) {
+    if (base::TimeTicks::Now() - cached->cached_at <= kAttestationCacheTTL) {
       std::move(callback).Run(std::nullopt);
       return;
     }
@@ -135,8 +134,7 @@ void E2EEProcessor::OnFetchModelAttestationComplete(
   std::move(callback).Run(std::nullopt);
 }
 
-E2EEProcessor::ClientKeyPair
-E2EEProcessor::GenerateClientKeyPair() {
+E2EEProcessor::ClientKeyPair E2EEProcessor::GenerateClientKeyPair() {
   auto result = ai_chat::generate_client_keypair();
   const std::string public_key_hex = base::HexEncodeLower(result.public_key);
   return ClientKeyPair(public_key_hex, std::move(result.secret_key));
@@ -157,7 +155,6 @@ E2EEProcessor::EncryptCallback E2EEProcessor::CreateEncryptCallback(
          const base::ListValue& content) -> std::optional<std::string> {
         std::string json;
         base::JSONWriter::Write(content, &json);
-        LOG(ERROR) << "about to encrypt" << json;
 
         auto ciphertext = ai_chat::encrypt(json, model_public_key);
 
@@ -178,6 +175,7 @@ E2EEProcessor::DecryptCallback E2EEProcessor::CreateDecryptCallback(
         std::string result;
         std::string_view remaining = ciphertext_hex;
 
+        // Parse ciphertext hex between thinking tags
         while (!remaining.empty()) {
           const size_t open_pos = remaining.find(kThinkOpen);
           const size_t close_pos = remaining.find(kThinkClose);
