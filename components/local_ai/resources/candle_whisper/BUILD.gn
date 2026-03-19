@@ -1,0 +1,37 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+import("//tools/grit/repack.gni")
+
+transpile_web_ui("candle_whisper_module") {
+  resource_name = "candle_whisper_module"
+
+  entry_points = [ [
+        "candle_whisper",
+        rebase_path("index.js"),
+      ] ]
+
+  inputs = [
+    rebase_path("//brave/third_party/wasm/Cargo.lock"),
+    rebase_path("src/lib.rs"),
+    rebase_path("src/model.rs"),
+    rebase_path("src/audio.rs"),
+  ]
+
+  imports_from = [ "//brave/components/local_ai/resources/candle_whisper/" ]
+
+  rust_packages = [ rebase_path("Cargo.toml") ]
+
+  no_iife = true
+  output_module = true
+  public_asset_path = "chrome-untrusted://whisper-worker/"
+}
+
+pack_web_resources("candle_whisper_module_generated") {
+  resource_name = "candle_whisper_module"
+  output_dir = "$root_gen_dir/brave/components/local_ai/resources"
+  deps = [ ":candle_whisper_module" ]
+}
