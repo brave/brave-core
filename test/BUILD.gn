@@ -756,6 +756,7 @@ if (!is_android) {
       "//base",
       "//brave/base/test:test_vendor_is_brave",
       "//brave/browser/ui/sidebar",
+      "//brave/browser/ui/sidebar:sidebar_public",
       "//brave/components/brave_ads/buildflags",
       "//brave/components/brave_rewards/core/buildflags",
       "//chrome:packed_resources",
