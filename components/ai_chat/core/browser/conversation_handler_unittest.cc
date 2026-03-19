@@ -4220,7 +4220,8 @@ TEST_F(ConversationHandlerUnitTest,
   for (size_t i = 0; i < total_screenshots; ++i) {
     mock_screenshots.push_back(mojom::UploadedFile::New(
         absl::StrFormat("screenshot_%zu.png", i), 1024,
-        std::vector<uint8_t>(1024, 0), mojom::UploadedFileType::kScreenshot));
+        std::vector<uint8_t>(1024, 0), mojom::UploadedFileType::kScreenshot,
+        std::nullopt));
   }
 
   // Mock GetScreenshots to return screenshots that exceed MAX_IMAGES
@@ -4308,7 +4309,8 @@ TEST_F(ConversationHandlerUnitTest,
   for (size_t i = 0; i < total_screenshots; ++i) {
     mock_screenshots.push_back(mojom::UploadedFile::New(
         absl::StrFormat("screenshot_%zu.png", i), 1024,
-        std::vector<uint8_t>(1024, 0), mojom::UploadedFileType::kScreenshot));
+        std::vector<uint8_t>(1024, 0), mojom::UploadedFileType::kScreenshot,
+        std::nullopt));
   }
 
   // Mock GetScreenshots to return screenshots under MAX_IMAGES
@@ -4403,7 +4405,8 @@ TEST_F(ConversationHandlerUnitTest,
   for (size_t i = 0; i < total_screenshots; ++i) {
     screenshots.push_back(mojom::UploadedFile::New(
         absl::StrFormat("screenshot_%zu.png", i), 1024,
-        std::vector<uint8_t>(1024, 0), mojom::UploadedFileType::kScreenshot));
+        std::vector<uint8_t>(1024, 0), mojom::UploadedFileType::kScreenshot,
+        std::nullopt));
   }
 
   // Create mock clients

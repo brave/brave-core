@@ -743,6 +743,19 @@ TEST_P(AIChatDatabaseTest, UploadFile) {
   ExpectConversationHistoryEquals(FROM_HERE, conversation_data2->entries,
                                   history);
 
+  // Verify extracted_text round-trips for PDF uploaded files.
+  // future_hours=1 ensures this entry sorts after the existing ones.
+  auto pdf_history = CreateSampleChatHistory(1u, 1, 2u);
+  ASSERT_TRUE(pdf_history[0]->uploaded_files);
+  (*pdf_history[0]->uploaded_files)[0]->type = mojom::UploadedFileType::kPdf;
+  (*pdf_history[0]->uploaded_files)[0]->extracted_text =
+      "Extracted text from PDF";
+  // Second file keeps extracted_text as nullopt.
+  EXPECT_TRUE(db_->AddConversationEntry(kUUID, pdf_history[0]->Clone()));
+  history.push_back(std::move(pdf_history[0]));
+  auto data = db_->GetConversationData(kUUID);
+  ExpectConversationHistoryEquals(FROM_HERE, data->entries, history);
+
   // Delete the whole conversation contains uploaded image
   EXPECT_TRUE(db_->DeleteConversation(kUUID));
   EXPECT_EQ(db_->GetAllConversations().size(), 0u);
@@ -1476,6 +1489,51 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
     EXPECT_EQ(
         conversation_data_2->associated_content[0]->conversation_turn_uuid,
         conversation_data_2->entries[0]->uuid.value());
+  }
+
+  // V10 Specific Migration checks
+  {
+    // Verify existing uploaded files have extracted_text as nullopt.
+    if (version() >= 4 && version() <= 9) {
+      auto conversation_data =
+          db_->GetConversationData("1ae484fe-ab33-4f42-8813-14080e4addc1");
+      ASSERT_TRUE(conversation_data);
+      for (const auto& entry : conversation_data->entries) {
+        if (entry->uploaded_files) {
+          for (const auto& file : *entry->uploaded_files) {
+            EXPECT_FALSE(file->extracted_text.has_value());
+          }
+        }
+      }
+    }
+
+    // Verify new entries with extracted_text can be persisted and
+    // retrieved.
+    const std::string uuid = "extracted_text_test";
+    mojom::ConversationPtr metadata = mojom::Conversation::New(
+        uuid, "pdf extraction test", base::Time::Now(), true, std::nullopt, 0,
+        0, false, std::vector<mojom::AssociatedContentPtr>());
+
+    auto history = CreateSampleChatHistory(1u, 0, 2u);
+    ASSERT_TRUE(history[0]->uploaded_files);
+    ASSERT_EQ(history[0]->uploaded_files->size(), 2u);
+    (*history[0]->uploaded_files)[0]->type = mojom::UploadedFileType::kPdf;
+    (*history[0]->uploaded_files)[0]->extracted_text =
+        "Extracted PDF text content";
+    // Second file has no extracted text (nullopt).
+
+    EXPECT_TRUE(
+        db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
+    auto conversation_data = db_->GetConversationData(uuid);
+    ASSERT_TRUE(conversation_data);
+    ASSERT_EQ(conversation_data->entries.size(), 1u);
+    auto& entry = conversation_data->entries[0];
+    ASSERT_TRUE(entry->uploaded_files);
+    ASSERT_EQ(entry->uploaded_files->size(), 2u);
+    ASSERT_TRUE(entry->uploaded_files->at(0)->extracted_text.has_value());
+    EXPECT_EQ(*entry->uploaded_files->at(0)->extracted_text,
+              "Extracted PDF text content");
+    EXPECT_FALSE(entry->uploaded_files->at(1)->extracted_text.has_value());
   }
 }
 

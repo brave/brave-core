@@ -151,6 +151,10 @@ struct UploadedFile {
   uint32 filesize;
   array<uint8> data;
   UploadedFileType type;
+  // Text extracted from PDF files via the background PDF viewer and ScreenAI
+  // OCR pipeline. Null for non-PDF files or when extraction failed/timed out.
+  // When present, the engine layer sends this text instead of raw PDF bytes.
+  string? extracted_text;
 };
 
 // An entry of an executed skill to be stored inside conversation entry

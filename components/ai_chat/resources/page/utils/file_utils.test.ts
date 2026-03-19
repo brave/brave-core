@@ -63,6 +63,7 @@ describe('convertFileToUploadedFile', () => {
         filesize: 1200,
         data: [1, 2, 3, 4],
         type: Mojom.UploadedFileType.kImage,
+        extractedText: undefined,
       }
 
       mockProcessImageFile.mockResolvedValue(mockProcessedFile)
@@ -94,6 +95,7 @@ describe('convertFileToUploadedFile', () => {
         filesize: 1000,
         data: [5, 6, 7, 8],
         type: Mojom.UploadedFileType.kScreenshot,
+        extractedText: undefined,
       }
 
       mockProcessImageFile.mockResolvedValue(mockProcessedFile)
@@ -135,6 +137,7 @@ describe('convertFileToUploadedFile', () => {
         filesize: file.size, // Use actual file size
         data: expectedData,
         type: Mojom.UploadedFileType.kPdf,
+        extractedText: undefined,
       })
     })
 
@@ -282,6 +285,7 @@ describe('convertFileToUploadedFile', () => {
         filesize: 1000,
         data: expectedData,
         type: Mojom.UploadedFileType.kImage,
+        extractedText: undefined,
       })
 
       // Override readAsArrayBuffer to trigger success
@@ -311,6 +315,7 @@ describe('convertFileToUploadedFile', () => {
         filesize: 1000,
         data: [1, 2, 3],
         type: Mojom.UploadedFileType.kImage,
+        extractedText: undefined,
       })
 
       // Override readAsArrayBuffer to trigger success
