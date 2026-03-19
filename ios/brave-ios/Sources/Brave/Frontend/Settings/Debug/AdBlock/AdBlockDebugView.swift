@@ -386,14 +386,16 @@ struct AdblockRuleExclusionView: View {
                       maxHeight: .infinity,
                       alignment: .topLeading
                     )
-                    .foregroundColor(Color(.placeholderText))
+                    .foregroundColor(Color(braveSystemName: .textDisabled))
                     .opacity(rulesToExclude.isEmpty ? 1 : 0)
-                    .accessibilityHidden(rulesToExclude.isEmpty)
+                    .accessibilityHidden(!rulesToExclude.isEmpty)
                 }
               }
             )
-            .background(Color(.secondaryBraveGroupedBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .background(
+              Color(.secondaryBraveGroupedBackground),
+              in: RoundedRectangle(cornerRadius: 12, style: .continuous)
+            )
         },
         header: {
           Text("Rules to Exclude")
