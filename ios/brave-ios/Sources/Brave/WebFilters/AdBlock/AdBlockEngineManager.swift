@@ -492,11 +492,21 @@ import os
       guard let data = await AsyncFileManager.default.contents(atPath: localFileURL.path) else {
         throw CocoaError(.fileReadNoSuchFile)
       }
-      let filtered = String(data: data, encoding: .utf8)?
-        .components(separatedBy: .newlines)
-        .filter { !exclusionRulesToApply.contains($0) }
-        .joined(separator: "\n")
-      let dataToWrite = filtered?.data(using: .utf8) ?? data
+
+      let dataToWrite: Data
+      if let dataString = String(data: data, encoding: .utf8) {
+        let filtered =
+          dataString
+          .components(separatedBy: .newlines)
+          .filter { !exclusionRulesToApply.contains($0) }
+          .joined(separator: "\n")
+        dataToWrite = filtered.data(using: .utf8) ?? data
+      } else {
+        ContentBlockerManager.log.debug(
+          "Failed to remove exclusion rules as the file is unreadable."
+        )
+        dataToWrite = data
+      }
       if await AsyncFileManager.default.fileExists(atPath: outputURL.path) {
         try await AsyncFileManager.default.removeItem(at: outputURL)
       }
