@@ -73,6 +73,7 @@ export function createMockUntrustedConversationHandler(
     submitSuggestion: () => {},
     generateQuestions: () => {},
     retryAPIRequest: () => {},
+    switchToNonPremiumModel() {},
 
     // Apply overrides
     ...overrides,
@@ -109,7 +110,6 @@ export function createMockUntrustedUIHandler(
     refreshPremiumSession: () => {},
     openModelSupportUrl: () => {},
     openStorageSupportUrl: () => {},
-    openURL: () => {},
 
     // Apply overrides
     ...overrides,

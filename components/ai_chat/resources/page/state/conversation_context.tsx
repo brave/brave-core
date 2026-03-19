@@ -551,18 +551,6 @@ export function useProvideConversationContext(props: ConversationContextProps) {
 
     /**
      * @deprecated
-     * Use `api.useGetState().data.suggestedQuestions` instead.
-     */
-    suggestedQuestions: conversationState.suggestedQuestions,
-
-    /**
-     * @deprecated
-     * Use `api.useGetState().data.suggestionStatus` instead.
-     */
-    suggestionStatus: conversationState.suggestionStatus,
-
-    /**
-     * @deprecated
      * Use `api.useGetState().data.error` instead.
      */
     currentError: conversationState.error,
@@ -638,14 +626,13 @@ export function useProvideConversationContext(props: ConversationContextProps) {
 
     dismissLongConversationInfo: () =>
       setHasDismissedLongConversationInfo(true),
-    retryAPIRequest: () => api.conversationHandler.retryAPIRequest(),
+
     handleResetError,
     handleStopGenerating,
     // Experimentally don't cache model key locally, browser should notify of model change quickly
     setCurrentModel: (model: Mojom.Model) =>
       api.conversationHandler.changeModel(model.key),
-    generateSuggestedQuestions: () =>
-      api.conversationHandler.generateQuestions(),
+
     resetSelectedActionType,
     handleActionTypeClick,
     submitInputTextToAPI,

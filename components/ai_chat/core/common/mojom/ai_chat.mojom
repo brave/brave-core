@@ -265,8 +265,13 @@ struct ConversationState {
   array<Model> all_models;
   string current_model_key;
   string default_model_key;
+
+  [EnableIf=is_ios] // Only needed for iOS swift UI
   array<string> suggested_questions;
+
+  [EnableIf=is_ios] // Only needed for iOS swift UI
   SuggestionGenerationStatus suggestion_status;
+
   array<AssociatedContent> associated_content;
   APIError error;
   // Indicates whether the conversation is temporary which would be in-memory
@@ -297,27 +302,15 @@ interface ConversationHandler {
   // Get all visible history entries, including in-progress responses
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
 
-  // The browser should generate some questions and fire an event when they
-  // are ready.
-  GenerateQuestions();
-
   SubmitHumanConversationEntry(
       string input, array<UploadedFile>? uploaded_files);
   SubmitHumanConversationEntryWithAction(string input, ActionType action_type);
   SubmitHumanConversationEntryWithSkill(string input, string skill_id);
-  SubmitSummarizationRequest();
-
-  // Submit one of the generated suggested questions for response from
-  // the assistant.
-  SubmitSuggestion(string suggestion);
 
   // Get associated page information. If there is none then |associated_content|
   // will be empty.
   GetAssociatedContentInfo() => (
       array<AssociatedContent> associated_content);
-
-  GetAPIResponseError() => (APIError error);
-  RetryAPIRequest();
 
   // Reset the current error state and returns the
   // most recent message from the conversation to the caller.
@@ -377,10 +370,13 @@ interface ConversationUI {
   OnModelDataChanged(string conversation_model_key,
                      string default_model_key,
                      array<Model> all_models);
+
   // Provides the full list of questions for the active tab in the page's
   // Browser window.
+  [EnableIf=is_ios] // Only needed for iOS swift UI
   OnSuggestedQuestionsChanged(
       array<string> questions, SuggestionGenerationStatus status);
+
   // Associated page information has changed. If there is none then |associated_content|
   // will be |null|.
   OnAssociatedContentInfoChanged(array<AssociatedContent> associated_content);

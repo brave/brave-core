@@ -98,15 +98,15 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     if (!web_ui_->GetRenderFrameHost()->HasTransientUserActivation()) {
       return;
     }
-    OpenURLInternal(GURL(ai_chat::kLeoBraveSearchSupportUrl));
+    OpenURL(GURL(ai_chat::kLeoBraveSearchSupportUrl));
   }
 
   void OpenSearchURL(const std::string& search_query) override {
     if (!web_ui_->GetRenderFrameHost()->HasTransientUserActivation()) {
       return;
     }
-    OpenURLInternal(GURL("https://search.brave.com/search?q=" +
-                         base::EscapeQueryParamValue(search_query, true)));
+    OpenURL(GURL("https://search.brave.com/search?q=" +
+                 base::EscapeQueryParamValue(search_query, true)));
   }
 
   void OpenURLFromResponse(const GURL& url) override {
@@ -116,7 +116,7 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     if (!url.is_valid() || !url.SchemeIs(url::kHttpsScheme)) {
       return;
     }
-    OpenURLInternal(url);
+    OpenURL(url);
   }
 
   void AddTabToThumbnailTracker(int32_t tab_id) override {
@@ -259,43 +259,32 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     if (!web_ui_->GetRenderFrameHost()->HasTransientUserActivation()) {
       return;
     }
-    OpenURLInternal(GURL(ai_chat::kLeoGoPremiumUrl));
+    OpenURL(GURL(ai_chat::kLeoGoPremiumUrl));
   }
 
   void RefreshPremiumSession() override {
     if (!web_ui_->GetRenderFrameHost()->HasTransientUserActivation()) {
       return;
     }
-    OpenURLInternal(GURL(ai_chat::kLeoRefreshPremiumSessionUrl));
+    OpenURL(GURL(ai_chat::kLeoRefreshPremiumSessionUrl));
   }
 
   void OpenModelSupportUrl() override {
     if (!web_ui_->GetRenderFrameHost()->HasTransientUserActivation()) {
       return;
     }
-    OpenURLInternal(GURL(ai_chat::kLeoModelSupportUrl));
+    OpenURL(GURL(ai_chat::kLeoModelSupportUrl));
   }
 
   void OpenStorageSupportUrl() override {
     if (!web_ui_->GetRenderFrameHost()->HasTransientUserActivation()) {
       return;
     }
-    OpenURLInternal(GURL(ai_chat::kLeoStorageSupportUrl));
-  }
-
-  void OpenURL(const GURL& url) override {
-    if (!web_ui_->GetRenderFrameHost()->HasTransientUserActivation()) {
-      return;
-    }
-    if (!url.is_valid() ||
-        (!url.SchemeIs(url::kHttpsScheme) && !url.SchemeIs(url::kHttpScheme))) {
-      return;
-    }
-    OpenURLInternal(url);
+    OpenURL(GURL(ai_chat::kLeoStorageSupportUrl));
   }
 
  private:
-  void OpenURLInternal(GURL url) {
+  void OpenURL(GURL url) {
 #if !BUILDFLAG(IS_ANDROID)
     Browser* browser =
         ai_chat::GetBrowserForWebContents(web_ui_->GetWebContents());

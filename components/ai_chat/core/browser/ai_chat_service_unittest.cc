@@ -155,11 +155,13 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
                std::vector<mojom::ModelPtr> all_models),
               (override));
 
+#if BUILDFLAG(IS_IOS)
   MOCK_METHOD(void,
               OnSuggestedQuestionsChanged,
               (const std::vector<std::string>&,
                mojom::SuggestionGenerationStatus),
               (override));
+#endif
 
   MOCK_METHOD(void,
               OnAssociatedContentInfoChanged,

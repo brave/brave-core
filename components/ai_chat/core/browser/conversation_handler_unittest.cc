@@ -152,11 +152,13 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
                std::vector<mojom::ModelPtr> all_models),
               (override));
 
+#if BUILDFLAG(IS_IOS)
   MOCK_METHOD(void,
               OnSuggestedQuestionsChanged,
               (const std::vector<std::string>&,
                mojom::SuggestionGenerationStatus),
               (override));
+#endif
 
   MOCK_METHOD(void,
               OnAssociatedContentInfoChanged,
@@ -444,8 +446,10 @@ MATCHER_P(TurnEq, expected_turn, "") {
          arg->model_key == expected_turn->model_key;
 }
 
-TEST_F(ConversationHandlerUnitTest, GetState) {
+TEST_F(ConversationHandlerUnitTest, State) {
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  NiceMock<MockUntrustedConversationHandlerClient> entries_client(
+      conversation_handler_.get());
   for (bool should_send_content : {false, true}) {
     SCOPED_TRACE(testing::Message()
                  << "should_send_content: " << should_send_content);
@@ -468,22 +472,26 @@ TEST_F(ConversationHandlerUnitTest, GetState) {
                     model_service_->GetModels().size());
           EXPECT_EQ(state->current_model_key,
                     model_service_->GetDefaultModelKey());
-          if (should_send_content) {
-            EXPECT_THAT(state->suggested_questions,
-                        testing::ElementsAre(l10n_util::GetStringUTF8(
-                            IDS_CHAT_UI_SUMMARIZE_PAGE)));
-          } else {
-            EXPECT_EQ(4u, state->suggested_questions.size());
-          }
-          EXPECT_EQ(state->suggestion_status,
-                    should_send_content
-                        ? mojom::SuggestionGenerationStatus::CanGenerate
-                        : mojom::SuggestionGenerationStatus::None);
           EXPECT_NE(state->associated_content.empty(), should_send_content);
           EXPECT_EQ(state->error, mojom::APIError::None);
           run_loop.Quit();
         }));
     run_loop.Run();
+
+    auto entries_state =
+        conversation_handler_->GetStateForConversationEntriesForTesting();
+
+    if (should_send_content) {
+      EXPECT_THAT(entries_state->suggested_questions,
+                  testing::ElementsAre(
+                      l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)));
+    } else {
+      EXPECT_EQ(4u, entries_state->suggested_questions.size());
+    }
+    EXPECT_EQ(entries_state->suggestion_status,
+              should_send_content
+                  ? mojom::SuggestionGenerationStatus::CanGenerate
+                  : mojom::SuggestionGenerationStatus::None);
   }
 }
 
@@ -2138,6 +2146,7 @@ TEST_F(ConversationHandlerUnitTest, GenerateQuestions) {
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   testing::Sequence s;
+#if BUILDFLAG(IS_IOS)
   EXPECT_CALL(client, OnSuggestedQuestionsChanged(
                           testing::ElementsAre(initial_question),
                           mojom::SuggestionGenerationStatus::IsGenerating))
@@ -2148,6 +2157,30 @@ TEST_F(ConversationHandlerUnitTest, GenerateQuestions) {
                           mojom::SuggestionGenerationStatus::HasGenerated))
       .Times(testing::AtLeast(1))
       .InSequence(s);
+#endif
+
+  testing::Sequence entries_status_sequence;
+  testing::NiceMock<MockUntrustedConversationHandlerClient> entries_observer(
+      conversation_handler_.get());
+  EXPECT_CALL(
+      entries_observer,
+      OnEntriesUIStateChanged(testing::Pointee(testing::AllOf(
+          testing::Field(&mojom::ConversationEntriesState::suggested_questions,
+                         testing::ElementsAre(initial_question)),
+          testing::Field(&mojom::ConversationEntriesState::suggestion_status,
+                         mojom::SuggestionGenerationStatus::IsGenerating)))))
+      .Times(testing::AtLeast(1))
+      .InSequence(entries_status_sequence);
+  EXPECT_CALL(
+      entries_observer,
+      OnEntriesUIStateChanged(testing::Pointee(testing::AllOf(
+          testing::Field(&mojom::ConversationEntriesState::suggested_questions,
+                         testing::ContainerEq(expected_results)),
+          testing::Field(&mojom::ConversationEntriesState::suggestion_status,
+                         mojom::SuggestionGenerationStatus::HasGenerated)))))
+      .Times(testing::AtLeast(1))
+      .InSequence(entries_status_sequence);
+
   conversation_handler_->GenerateQuestions();
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&client);
@@ -2260,9 +2293,10 @@ TEST_F(ConversationHandlerUnitTest, GenerateQuestions_DisableSendPageContent) {
       conversation_handler_->GetEngineForTesting());
   EXPECT_CALL(*engine, GenerateQuestionSuggestions(_, _)).Times(0);
 
-  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  NiceMock<MockUntrustedConversationHandlerClient> client(
+      conversation_handler_.get());
   testing::Sequence s;
-  EXPECT_CALL(client, OnSuggestedQuestionsChanged(_, _)).Times(0);
+  EXPECT_CALL(client, OnEntriesUIStateChanged).Times(0);
   conversation_handler_->GenerateQuestions();
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&client);
@@ -2276,9 +2310,10 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, GenerateQuestions) {
       conversation_handler_->GetEngineForTesting());
   EXPECT_CALL(*engine, GenerateQuestionSuggestions(_, _)).Times(0);
 
-  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  NiceMock<MockUntrustedConversationHandlerClient> client(
+      conversation_handler_.get());
   testing::Sequence s;
-  EXPECT_CALL(client, OnSuggestedQuestionsChanged(_, _)).Times(0);
+  EXPECT_CALL(client, OnEntriesUIStateChanged).Times(0);
   conversation_handler_->GenerateQuestions();
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&client);

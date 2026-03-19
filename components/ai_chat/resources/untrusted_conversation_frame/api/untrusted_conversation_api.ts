@@ -56,7 +56,6 @@ type UIHandlerActions = Pick<
   | 'refreshPremiumSession'
   | 'openModelSupportUrl'
   | 'openStorageSupportUrl'
-  | 'openURL'
 >
 
 // State that comes from ConversationEntriesState plus additional UI state

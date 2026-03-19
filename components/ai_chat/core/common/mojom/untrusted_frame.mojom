@@ -85,7 +85,8 @@ interface UntrustedConversationHandler {
   // the assistant.
   SubmitSuggestion(string question);
 
-  // Request the browser to generate suggested questions.
+  // The browser should generate some questions and fire an event when they
+  // are ready.
   GenerateQuestions();
 
   // Retry the last failed API request.
@@ -169,9 +170,6 @@ interface UntrustedUIHandler {
 
   // Opens the storage support URL
   OpenStorageSupportUrl();
-
-  // Opens a URL in a new tab
-  OpenURL(url.mojom.Url url);
 };
 
 // Browser-side service interface for profile-level operations from the

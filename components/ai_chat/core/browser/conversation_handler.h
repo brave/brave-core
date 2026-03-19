@@ -35,6 +35,7 @@
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -207,7 +208,7 @@ class ConversationHandler : public mojom::ConversationHandler,
                           const std::string& new_text) override;
   void RegenerateAnswer(const std::string& turn_uuid,
                         const std::string& model_key) override;
-  void SubmitSummarizationRequest() override;
+  void SubmitSummarizationRequest();
   void SubmitSuggestion(const std::string& suggestion_title) override;
   const std::vector<Suggestion>& GetSuggestedQuestionsForTest() const;
   void SetSuggestedQuestionForTest(std::string title, std::string prompt);
@@ -215,7 +216,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GetAssociatedContentInfo(
       GetAssociatedContentInfoCallback callback) override;
   void RetryAPIRequest() override;
-  void GetAPIResponseError(GetAPIResponseErrorCallback callback) override;
   void ClearErrorAndGetFailedMessage(
       ClearErrorAndGetFailedMessageCallback callback) override;
   void StopGenerationAndMaybeGetHumanEntry(
@@ -297,6 +297,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   }
 
   std::vector<base::WeakPtr<Tool>> GetToolsForTesting() { return GetTools(); }
+
+  mojom::ConversationEntriesStatePtr
+  GetStateForConversationEntriesForTesting() {
+    return GetStateForConversationEntries();
+  }
 
  protected:
   // ModelService::Observer
