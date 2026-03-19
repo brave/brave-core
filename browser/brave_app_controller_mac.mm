@@ -87,6 +87,11 @@ class TorPrefObserver : public BooleanPrefMember {
   NSMenuItem* _copyMenuItem;
   NSMenuItem* _copyCleanLinkMenuItem;
 
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  NSMenuItem* _profileMenuItem;  // Stashed while startup dialog is showing
+  NSInteger _profileMenuIndex;   // Original position in the menu bar
+#endif
+
 #if BUILDFLAG(ENABLE_TOR)
   NSMenuItem* _torMenuItem;      // For dock menu
   NSMenuItem* _torMainMenuItem;  // For main menu
@@ -95,6 +100,14 @@ class TorPrefObserver : public BooleanPrefMember {
 #endif  // BUILDFLAG(ENABLE_TOR)
 }
 @end
+
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+void BraveRestoreProfileMenu() {
+  auto* controller =
+      static_cast<BraveAppController*>(AppController.sharedController);
+  [controller restoreProfileMenu];
+}
+#endif
 
 @implementation BraveAppController
 
@@ -132,10 +145,40 @@ class TorPrefObserver : public BooleanPrefMember {
   return [super applicationShouldHandleReopen:theApplication
                             hasVisibleWindows:hasVisibleWindows];
 }
+
+- (void)application:(NSApplication*)sender openURLs:(NSArray<NSURL*>*)urls {
+  if (BraveOriginStartupView::IsShowing()) {
+    return;
+  }
+  [super application:sender openURLs:urls];
+}
+
+- (void)restoreProfileMenu {
+  if (_profileMenuItem) {
+    [[NSApp mainMenu] insertItem:_profileMenuItem atIndex:_profileMenuIndex];
+    _profileMenuItem = nil;
+  }
+}
 #endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 
 - (void)mainMenuCreated {
   [super mainMenuCreated];
+
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  // Stash and remove the Profiles top-level menu. Profile switching, "Manage",
+  // and "Add Profile" all open browser windows that bypass the startup dialog.
+  // restoreProfileMenu re-inserts it. It is called from the startup completion
+  // callback, or immediately if no dialog is needed.
+  {
+    NSMenu* mainMenu = [NSApp mainMenu];
+    NSMenuItem* profileMenu = [mainMenu itemWithTag:IDC_PROFILE_MAIN_MENU];
+    if (profileMenu) {
+      _profileMenuIndex = [mainMenu indexOfItem:profileMenu];
+      _profileMenuItem = profileMenu;
+      [mainMenu removeItem:profileMenu];
+    }
+  }
+#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 
   NSMenu* editMenu = [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu];
   _copyMenuItem = [editMenu itemWithTag:IDC_CONTENT_CONTEXT_COPY];
@@ -302,6 +345,14 @@ class TorPrefObserver : public BooleanPrefMember {
 }
 
 - (NSMenu*)applicationDockMenu:(NSApplication*)sender {
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  if (BraveOriginStartupView::IsShowing()) {
+    // Return an empty dock menu while the startup dialog is showing.
+    // The system always adds "Quit" automatically.
+    return [[NSMenu alloc] initWithTitle:@""];
+  }
+#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+
   auto* menu = [super applicationDockMenu:sender];
 
 #if BUILDFLAG(ENABLE_TOR)
