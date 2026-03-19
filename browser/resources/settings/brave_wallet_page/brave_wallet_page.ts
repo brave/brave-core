@@ -17,7 +17,10 @@ import {SettingsViewMixin} from '../settings_page/settings_view_mixin.js'
 
 import {
   BraveWalletBrowserProxy,
-  BraveWalletBrowserProxyImpl,
+  BraveWalletBrowserProxyImpl
+} from './brave_wallet_browser_proxy.js'
+
+import {
   type Option,
   type SolanaProvider,
   type CardanoProvider

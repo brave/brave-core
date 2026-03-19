@@ -6,10 +6,11 @@
 import {loadTimeData} from 'chrome://resources/js/load_time_data.js'
 
 import {
-  type PageVisibility,
   pageVisibility as chromiumPageVisibility,
   resetPageVisibilityForTesting
 } from '../page_visibility.js'
+
+import { type PageVisibility } from '../page_visibility.js'
 
 // Merge our interface additions with upstream's interface
 declare module '../page_visibility.js' {

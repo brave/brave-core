@@ -5,7 +5,8 @@
 
 import '//resources/brave/leo.bundle.js';
 
-import {CrLitElement, css, type CSSResultGroup, type PropertyValues} from '//resources/lit/v3_0/lit.rollup.js';
+import {CrLitElement, css} from '//resources/lit/v3_0/lit.rollup.js';
+import {type CSSResultGroup, type PropertyValues} from '//resources/lit/v3_0/lit.rollup.js';
 
 import {getHtml} from './cr_button.html.js';
 
