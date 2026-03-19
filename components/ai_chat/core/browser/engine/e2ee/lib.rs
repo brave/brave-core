@@ -8,6 +8,7 @@ use chacha20poly1305::{
     Key as ChaChaKey, XChaCha20Poly1305, XNonce,
 };
 use curve25519_dalek::{edwards::CompressedEdwardsY, scalar::clamp_integer, EdwardsPoint};
+use cxx::{CxxString, CxxVector};
 use hkdf::Hkdf;
 use rand::{rngs::OsRng, RngCore};
 use sha2::{Digest, Sha256, Sha512};
@@ -18,27 +19,17 @@ use x25519_dalek::{
 
 #[cxx::bridge(namespace = "ai_chat")]
 mod ffi {
-    struct ReceivingKeyPairResult {
-        public_key: Vec<u8>,
-        secret_key: Box<ReceivingSecretKey>,
-    }
-
-    struct EncryptResult {
-        error: String,
-        ciphertext: Vec<u8>,
-    }
-
-    struct DecryptResult {
-        error: String,
-        plaintext: String,
-    }
-
     extern "Rust" {
-        type ReceivingSecretKey;
+        type ClientSecretKey;
 
-        fn generate_receiving_keypair() -> ReceivingKeyPairResult;
-        fn encrypt(plaintext: &[u8], model_public_key: &[u8]) -> EncryptResult;
-        fn decrypt(ciphertext: &[u8], receiving_secret_key: &ReceivingSecretKey) -> DecryptResult;
+        fn generate_client_keypair() -> ClientKeyPair;
+        fn encrypt(plaintext: &CxxString, model_public_key: &CxxVector<u8>) -> Vec<u8>;
+        fn decrypt(ciphertext: &CxxVector<u8>, client_secret_key: &ClientSecretKey) -> String;
+    }
+
+    struct ClientKeyPair {
+        public_key: Vec<u8>,
+        secret_key: Box<ClientSecretKey>,
     }
 }
 
@@ -49,16 +40,16 @@ const KEY_LEN: usize = size_of::<ChaChaKey>();
 const NONCE_LEN: usize = size_of::<XNonce>();
 
 /// Opaque wrapper around an x25519 static secret.
-pub struct ReceivingSecretKey(X25519StaticSecret);
+pub struct ClientSecretKey(X25519StaticSecret);
 
 /// Generate an ed25519 keypair. Expose an ed25519 public key and x25519 secret.
 /// The public key by NEAR to encrypt responses.
-pub fn generate_receiving_keypair() -> ReceivingKeyPairResult {
-    let (_, result) = generate_receiving_keypair_inner();
+pub fn generate_client_keypair() -> ClientKeyPair {
+    let (_, result) = generate_client_keypair_inner();
     result
 }
 
-fn generate_receiving_keypair_inner() -> ([u8; KEY_LEN], ReceivingKeyPairResult) {
+fn generate_client_keypair_inner() -> ([u8; KEY_LEN], ClientKeyPair) {
     // NEAR uses the Edwards/ed25519 curve points for transmitting public keys.
     // Since we can't convert Montgomery/x25519 points to Edwards/ed25519 without
     // providing a sign (+/-), we need to generate a ed25519 key pair, and convert.
@@ -87,38 +78,30 @@ fn generate_receiving_keypair_inner() -> ([u8; KEY_LEN], ReceivingKeyPairResult)
     // This is the final public key.
     let public_key = point.compress().to_bytes().to_vec();
 
-    let result = ReceivingKeyPairResult {
+    let result = ClientKeyPair {
         public_key,
-        secret_key: Box::new(ReceivingSecretKey(X25519StaticSecret::from(scalar_bytes))),
+        secret_key: Box::new(ClientSecretKey(X25519StaticSecret::from(scalar_bytes))),
     };
     (seed, result)
 }
 
 /// Converts an ed25519 public key to its x25519 Montgomery equivalent.
-fn convert_model_public_key_to_x25519(model_public_key: &[u8]) -> Result<X25519PublicKey, String> {
-    let model_pub_bytes: [u8; KEY_LEN] = model_public_key
-        .try_into()
-        .map_err(|_| format!("expected 32-byte public key, got {}", model_public_key.len()))?;
-
-    let model_edwards = CompressedEdwardsY(model_pub_bytes)
-        .decompress()
-        .ok_or_else(|| "invalid public key: decompression failed".to_string())?;
-
+fn convert_model_public_key_to_x25519(model_public_key: &[u8]) -> Result<X25519PublicKey, ()> {
+    let model_pub_bytes: [u8; KEY_LEN] = model_public_key.try_into().map_err(|_| ())?;
+    let model_edwards = CompressedEdwardsY(model_pub_bytes).decompress().ok_or(())?;
     Ok(X25519PublicKey::from(model_edwards.to_montgomery().to_bytes()))
 }
 
 /// Encrypts `plaintext` for the model identified by `model_public_key`.
 /// Performs ECDH key exchange with an ephemeral x25519 key pair, then encrypts
 /// with XChaCha20-Poly1305. Wire format: [32B ephemeral public | 24B nonce |
-/// ciphertext].
-pub fn encrypt(plaintext: &[u8], model_public_key: &[u8]) -> EncryptResult {
-    match encrypt_inner(plaintext, model_public_key) {
-        Ok(ciphertext) => EncryptResult { error: String::new(), ciphertext },
-        Err(e) => EncryptResult { error: e, ciphertext: Vec::new() },
-    }
+/// ciphertext]. Returns empty Vec on error.
+pub fn encrypt(plaintext: &CxxString, model_public_key: &CxxVector<u8>) -> Vec<u8> {
+    let model_pub_slice = model_public_key.as_slice();
+    encrypt_inner(plaintext.as_bytes(), model_pub_slice).unwrap_or_default()
 }
 
-fn encrypt_inner(plaintext: &[u8], model_public_key: &[u8]) -> Result<Vec<u8>, String> {
+fn encrypt_inner(plaintext: &[u8], model_public_key: &[u8]) -> Result<Vec<u8>, ()> {
     let mut rng = OsRng;
     let model_public_key_x25519 = convert_model_public_key_to_x25519(model_public_key)?;
 
@@ -129,8 +112,7 @@ fn encrypt_inner(plaintext: &[u8], model_public_key: &[u8]) -> Result<Vec<u8>, S
     let cipher = derive_key_and_init_cipher(shared_secret.as_bytes())?;
 
     let nonce = XChaCha20Poly1305::generate_nonce(&mut rng);
-    let encrypted =
-        cipher.encrypt(&nonce, plaintext).map_err(|e| format!("encryption failed: {e}"))?;
+    let encrypted = cipher.encrypt(&nonce, plaintext).map_err(|_| ())?;
 
     let mut wire = Vec::with_capacity(KEY_LEN + nonce.len() + encrypted.len());
     wire.extend_from_slice(ephemeral_public.as_bytes());
@@ -140,45 +122,34 @@ fn encrypt_inner(plaintext: &[u8], model_public_key: &[u8]) -> Result<Vec<u8>, S
     Ok(wire)
 }
 
-/// Decrypts `ciphertext` using the receiver's x25519 static secret.
+/// Decrypts `ciphertext` using the client's x25519 static secret.
 /// Parses the wire format, performs ECDH with the ephemeral public key, and
-/// decrypts.
-pub fn decrypt(ciphertext: &[u8], receiving_secret_key: &ReceivingSecretKey) -> DecryptResult {
-    match decrypt_inner(ciphertext, receiving_secret_key) {
-        Ok(plaintext) => DecryptResult { error: String::new(), plaintext },
-        Err(e) => DecryptResult { error: e, plaintext: String::new() },
-    }
+/// decrypts. Returns empty String on error.
+pub fn decrypt(ciphertext: &CxxVector<u8>, client_secret_key: &ClientSecretKey) -> String {
+    decrypt_inner(ciphertext.as_slice(), client_secret_key).unwrap_or_default()
 }
 
-fn decrypt_inner(
-    ciphertext: &[u8],
-    receiving_secret_key: &ReceivingSecretKey,
-) -> Result<String, String> {
+fn decrypt_inner(ciphertext: &[u8], client_secret_key: &ClientSecretKey) -> Result<String, ()> {
     if ciphertext.len() < KEY_LEN + NONCE_LEN {
-        return Err(format!(
-            "ciphertext too short: got {} bytes, need at least {}",
-            ciphertext.len(),
-            KEY_LEN + NONCE_LEN
-        ));
+        return Err(());
     }
 
-    let ephemeral_pub_bytes: [u8; KEY_LEN] = ciphertext[..KEY_LEN].try_into().unwrap();
+    let ephemeral_pub_bytes: [u8; KEY_LEN] = ciphertext[..KEY_LEN].try_into().map_err(|_| ())?;
     let nonce = XNonce::from_slice(&ciphertext[KEY_LEN..KEY_LEN + NONCE_LEN]);
     let encrypted = &ciphertext[KEY_LEN + NONCE_LEN..];
 
     let ephemeral_public = X25519PublicKey::from(ephemeral_pub_bytes);
-    let shared_secret = receiving_secret_key.0.diffie_hellman(&ephemeral_public);
+    let shared_secret = client_secret_key.0.diffie_hellman(&ephemeral_public);
     let cipher = derive_key_and_init_cipher(shared_secret.as_bytes())?;
-    let plaintext =
-        cipher.decrypt(nonce, encrypted).map_err(|e| format!("decryption failed: {e}"))?;
+    let plaintext = cipher.decrypt(nonce, encrypted).map_err(|_| ())?;
 
-    String::from_utf8(plaintext).map_err(|e| format!("invalid utf-8 in plaintext: {e}"))
+    String::from_utf8(plaintext).map_err(|_| ())
 }
 
-fn derive_key_and_init_cipher(shared_secret: &[u8]) -> Result<XChaCha20Poly1305, String> {
+fn derive_key_and_init_cipher(shared_secret: &[u8]) -> Result<XChaCha20Poly1305, ()> {
     let hkdf = Hkdf::<Sha256>::new(None, shared_secret);
     let mut key_bytes = [0u8; KEY_LEN];
-    hkdf.expand(HKDF_INFO, &mut key_bytes).map_err(|e| format!("HKDF expand failed: {e}"))?;
+    hkdf.expand(HKDF_INFO, &mut key_bytes).map_err(|_| ())?;
     Ok(XChaCha20Poly1305::new(&ChaChaKey::from(key_bytes)))
 }
 
