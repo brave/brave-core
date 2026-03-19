@@ -9,6 +9,21 @@ import program from 'commander'
 import config from '../lib/config.js'
 import util from '../lib/util.js'
 
+/** Parsed options from commander for the presubmit command. */
+interface PresubmitOptions {
+  base?: string
+  all?: true | 'brave' | 'chromium'
+  files?: string
+  verbose?: number
+  fix?: boolean
+  json?: string
+}
+
+interface RunOptionsWithEnv {
+  cwd: string
+  env: NodeJS.ProcessEnv
+}
+
 program
   .option('--base <base branch>', 'set the destination branch for the PR')
   .option(
@@ -23,13 +38,14 @@ program
   .option(
     '--verbose [arg]',
     'pass --verbose 2 for more debugging info',
-    (val) => (val === undefined ? 1 : parseInt(val, 10)),
+    (val: string | undefined): number =>
+      val === undefined ? 1 : parseInt(val, 10),
   )
   .option('--fix', 'try to fix found issues automatically')
   .option('--json <output>', 'an output file for a JSON report')
   .action(runPresubmit)
 
-function runPresubmit(options) {
+function runPresubmit(options: PresubmitOptions): void {
   if (!options.base) {
     options.base = 'origin/master'
   }
@@ -40,7 +56,9 @@ function runPresubmit(options) {
     ['config', '--unset-all', 'gerrit.host'],
     true,
   )
-  const cmdOptions = util.mergeWithDefault({ cwd: config.braveCoreDir })
+  const cmdOptions = util.mergeWithDefault({
+    cwd: config.braveCoreDir,
+  }) as RunOptionsWithEnv
 
   // --upload mode is similar to `git cl upload`. Non-upload mode covers less
   // checks.
