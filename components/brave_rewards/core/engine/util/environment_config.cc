@@ -153,7 +153,7 @@ GURL EnvironmentConfig::BuildGate3OAuthURL(std::string_view provider) const {
   std::string environment =
       current_environment() == mojom::Environment::kProduction ? "production"
                                                                : "sandbox";
-  const auto& gate3_url = engine().options().gate3_url;
+  const std::string& gate3_url = engine().options().gate3_url;
   CHECK(!gate3_url.empty() || allow_default_values_for_testing_);
   return URLValue(gate3_url.empty()
                       ? std::string()
