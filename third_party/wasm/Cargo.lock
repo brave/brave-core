@@ -200,6 +200,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "candle_whisper"
+version = "0.1.0"
+dependencies = [
+ "candle-core",
+ "candle-nn",
+ "console_error_panic_hook",
+ "getrandom 0.2.15",
+ "safetensors",
+ "serde",
+ "serde_json",
+ "tokenizers",
+ "wasm-bindgen",
+]
+
+[[package]]
 name = "castaway"
 version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
