@@ -247,7 +247,9 @@ import WebKit
     AdBlockGroupsManager.shared.setExclusionRules(
       customExclusionRules.components(separatedBy: .newlines)
     )
-    // recompile the AdBlockEngines
+    // reset content Blocker cache / lists
+    try? await AdBlockGroupsManager.shared.contentBlockerManager.removeAllRuleLists()
+    // recompile the AdBlockEngines & Content Blocker rule lists.
     await AdBlockGroupsManager.shared.compileEngines()
   }
 
@@ -256,6 +258,9 @@ import WebKit
     let fileURL = try customExclusionRulesFileURL()
     try await AsyncFileManager.default.removeItem(at: fileURL)
     AdBlockGroupsManager.shared.setExclusionRules([])
+    // reset content Blocker cache / lists
+    try? await AdBlockGroupsManager.shared.contentBlockerManager.removeAllRuleLists()
+    // recompile the AdBlockEngines & Content Blocker rule lists.
     await AdBlockGroupsManager.shared.compileEngines()
   }
 }
