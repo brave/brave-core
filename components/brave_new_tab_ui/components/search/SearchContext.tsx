@@ -8,7 +8,7 @@ import { AutocompleteResult, OmniboxPopupSelection, PageHandler, PageHandlerRemo
 import * as React from 'react';
 import getNTPBrowserAPI, { SearchEngineInfo } from '../../api/background';
 import { useEngineContext } from './EngineContext';
-import { FileUploadErrorType, FileUploadStatus } from 'gen/components/omnibox/composebox/composebox_query.mojom.m';
+import { ContextUploadErrorType, ContextUploadStatus } from 'gen/components/omnibox/composebox/composebox_query.mojom.m';
 import { InputState } from 'gen/ui/webui/resources/tsc/mojo/components/omnibox/composebox/composebox_query.mojom-webui';
 import { WindowOpenDisposition } from 'gen/ui/webui/resources/tsc/mojo/ui/base/mojom/window_open_disposition.mojom-webui';
 
@@ -78,7 +78,7 @@ class SearchPage implements PageInterface {
   onShow(): void { }
   setInputText(inputText: string) { }
   setThumbnail(thumbnailUrl: string) { }
-  onContextualInputStatusChanged(token: string, status: FileUploadStatus, errorType: FileUploadErrorType | null) { }
+  onContextualInputStatusChanged(token: string, status: ContextUploadStatus, errorType: ContextUploadErrorType | null) { }
   onTabStripChanged() { }
   addFileContext(token: string, fileInfo: SelectedFileInfo) { }
   setKeywordSelected(isKeywordSelected: boolean): void {}
