@@ -1245,3 +1245,23 @@ auto it = map.find("key");  // no temporary string created
 ```
 
 For `base::flat_set` of `std::unique_ptr`, use `base::UniquePtrComparator` for transparent lookups by raw pointer. See [Chromium container guidelines](https://chromium.googlesource.com/chromium/src/+/HEAD/base/containers/README.md).
+
+---
+
+<a id="CSA-069"></a>
+
+## ✅ Use `base::as_string_view()` for Compile-Time String Length
+
+**Use `base::as_string_view()` instead of implicit `std::string_view` construction from `const char*` when the source is a compile-time array.** Implicit construction from `const char*` calls `strlen()` at runtime, while `base::as_string_view()` takes a `base::span<const char>` that preserves the compile-time array length.
+
+```cpp
+inline constexpr char kSubKey[] = "some_key";
+
+// ❌ WRONG - implicit string_view(const char*) calls strlen() at runtime
+base::ReadUnicodeCharacter(std::string_view(kSubKey), ...);
+
+// ✅ CORRECT - span deduces array size at compile time
+base::ReadUnicodeCharacter(base::as_string_view(kSubKey), ...);
+```
+
+This applies to any function accepting `std::string_view` where the argument is a `const char[]` array or string literal. The performance difference is negligible for short strings but establishes a correct-by-construction pattern.
