@@ -163,7 +163,7 @@ void DebounceRule::RegisterJSONConverter(
   converter->RegisterStringField(kParam, &DebounceRule::param_);
   converter->RegisterStringField(kPref, &DebounceRule::pref_);
   converter->RegisterStringField(kRedirectUrlTemplate,
-                                   &DebounceRule::redirect_url_template_);
+                                 &DebounceRule::redirect_url_template_);
 }
 
 // static
@@ -241,7 +241,7 @@ bool DebounceRule::CheckPrefForRule(const PrefService* prefs) const {
 bool DebounceRule::ValidateAndParsePatternRegex(
     std::string_view pattern,
     std::string_view path,
-    std::vector<std::string>* captured_groups) const {
+    std::vector<std::string>& captured_groups) const {
   if (pattern.length() > kMaxLengthRegexPattern) {
     VLOG(1) << "Debounce regex pattern exceeds max length: "
             << kMaxLengthRegexPattern;
@@ -278,9 +278,9 @@ bool DebounceRule::ValidateAndParsePatternRegex(
   DCHECK_GT(match_results.size(), 1u);
 
   // Populate captured_groups with individual captures (skip the full match).
-  captured_groups->clear();
+  captured_groups.clear();
   for (size_t i = 1; i < match_results.size(); ++i) {
-    captured_groups->emplace_back(match_results[i]);
+    captured_groups.emplace_back(match_results[i]);
   }
 
   return true;
@@ -294,8 +294,7 @@ bool DebounceRule::Apply(const GURL& original_url,
   // that parses it.
   if (action_ != kDebounceRedirectToParam &&
       action_ != kDebounceBase64DecodeAndRedirectToParam &&
-      action_ != kDebounceRegexPath &&
-      action_ != kDebounceRegexPathTemplate) {
+      action_ != kDebounceRegexPath && action_ != kDebounceRegexPathTemplate) {
     return false;
   }
   // If URL matches an explicitly excluded pattern, this rule does not apply.
@@ -314,13 +313,12 @@ bool DebounceRule::Apply(const GURL& original_url,
 
   std::string unescaped_value;
 
-  if (action_ == kDebounceRegexPath ||
-      action_ == kDebounceRegexPathTemplate) {
+  if (action_ == kDebounceRegexPath || action_ == kDebounceRegexPathTemplate) {
     // Important: Apply param regex to ONLY the path of original URL.
     auto path = original_url.path();
 
     std::vector<std::string> captured_groups;
-    if (!ValidateAndParsePatternRegex(param_, path, &captured_groups)) {
+    if (!ValidateAndParsePatternRegex(param_, path, captured_groups)) {
       VLOG(1) << "Debounce regex parsing failed";
       return false;
     }
@@ -336,7 +334,8 @@ bool DebounceRule::Apply(const GURL& original_url,
       // Collect placeholders referenced in the template.
       std::set<size_t> placeholders;
       for (size_t j = 0; j + 1 < redirect_url_template_.size(); ++j) {
-        if (redirect_url_template_[j] == '$' && redirect_url_template_[j + 1] >= '1' &&
+        if (redirect_url_template_[j] == '$' &&
+            redirect_url_template_[j + 1] >= '1' &&
             redirect_url_template_[j + 1] <= '9') {
           placeholders.insert(redirect_url_template_[j + 1] - '0');
         }
@@ -362,7 +361,7 @@ bool DebounceRule::Apply(const GURL& original_url,
         base::ReplaceSubstringsAfterOffset(&unescaped_value, 0, placeholder,
                                            captured_groups[i]);
       }
-    } else { // action_ == kDebounceRegexPath (existing behavior).
+    } else {  // action_ == kDebounceRegexPath (existing behavior).
       // Concatenate captures.
       for (const auto& group : captured_groups) {
         if (!group.empty()) {
