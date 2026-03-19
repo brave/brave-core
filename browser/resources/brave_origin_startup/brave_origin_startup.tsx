@@ -5,13 +5,10 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
-import { setIconBasePath } from '@brave/leo/react/icon'
 import { App } from './components/app'
 import * as BraveOriginMojom from 'gen/brave/components/brave_origin/mojom/brave_origin_startup.mojom.m.js'
 import { loadTimeData } from '$web-common/loadTimeData'
 import './strings'
-
-setIconBasePath('//resources/brave-icons')
 
 const handler = BraveOriginMojom.BraveOriginStartupHandler.getRemote()
 const isLinuxFreeEligible = loadTimeData.getBoolean('isLinuxFreeEligible')

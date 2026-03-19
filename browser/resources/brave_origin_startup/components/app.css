@@ -9,10 +9,10 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: var(--leo-spacing-2xl);
+  padding: var(--leo-spacing-4xl);
   box-sizing: border-box;
   color: var(--leo-color-text-primary);
-  background: var(--leo-color-container-background);
+  background: transparent;
 }
 
 .brave-origin-startup[data-verifying] {
@@ -25,23 +25,29 @@
   align-items: center;
   max-width: 440px;
   width: 100%;
+  background: var(--leo-color-container-background);
+  border-radius: var(--leo-radius-xl);
+  padding: var(--leo-spacing-2xl) var(--leo-spacing-2xl) var(--leo-spacing-4xl);
+  box-sizing: border-box;
 }
 
 .logo {
-  width: 48px;
-  height: 48px;
-  margin-bottom: var(--leo-spacing-m);
+  width: 154px;
+  height: 56px;
+  margin-bottom: var(--leo-spacing-2xl);
 }
 
 h1 {
   font: var(--leo-font-heading-h2);
   margin: 0 0 var(--leo-spacing-xl) 0;
+  align-self: flex-start;
 }
 
 .description {
   font: var(--leo-font-small-regular);
   color: var(--leo-color-text-secondary);
   text-align: left;
+  align-self: flex-start;
   margin-bottom: var(--leo-spacing-2xl);
 }
 
@@ -66,9 +72,23 @@ h1 {
 .buttons {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: var(--leo-spacing-m);
   width: 100%;
+}
+
+.buttons leo-button {
+  width: 100%;
+  --leo-button-radius: 1000px;
+}
+
+.buttons leo-button:first-child {
+  --leo-color-button-background: #fff;
+  --leo-color-schemes-on-primary: #000;
+  --leo-color-primary-70: #e0e0e0;
+}
+
+.buttons leo-button:last-child {
+  --leo-button-color: currentColor;
 }
 
 /* Restore view styles */
