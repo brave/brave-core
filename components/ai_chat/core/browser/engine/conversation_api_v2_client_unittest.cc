@@ -1629,6 +1629,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ContentReceipt) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(content_receipt))));
@@ -1656,6 +1657,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ContentReceipt) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(content_receipt))));
@@ -1684,6 +1686,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ContentReceipt) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(content_receipt))));
@@ -1712,6 +1715,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ContentReceipt) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(content_receipt))));
@@ -1741,6 +1745,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ContentReceipt) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(content_receipt))));
@@ -1770,6 +1775,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ContentReceipt) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(content_receipt))));
@@ -1799,6 +1805,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolStart) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(tool_start))));
@@ -1822,6 +1829,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolStart) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(tool_start))));
@@ -1840,6 +1848,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolStart) {
     EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(tool_start))));
@@ -1858,6 +1867,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolStart) {
     EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(tool_start))));
@@ -1875,6 +1885,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolStart) {
     EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(tool_start))));
@@ -1911,6 +1922,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_InlineSearch) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(inline_search))));
@@ -1929,6 +1941,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_InlineSearch) {
     EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(inline_search))));
@@ -1947,6 +1960,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_InlineSearch) {
     EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(inline_search))));
@@ -1973,6 +1987,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_InlineSearch) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(inline_search))));
@@ -1992,6 +2007,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_InlineSearch) {
     EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(inline_search))));
@@ -2032,6 +2048,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_CompletionChunk) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(chunk))));
@@ -2059,6 +2076,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_CompletionChunk) {
     EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(chunk))));
@@ -2092,6 +2110,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_CompletionChunk) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(chunk))));
@@ -2126,6 +2145,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_CompletionChunk) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(chunk))));

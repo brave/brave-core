@@ -202,6 +202,7 @@ source_set("unit_tests") {
     ":test_support",
     "//base/test:test_support",
     "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/browser/engine/e2ee",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common:test_support",
     "//brave/components/ai_chat/core/common/mojom",

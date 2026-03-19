@@ -144,9 +144,7 @@ E2EEProcessor::EncryptCallback E2EEProcessor::CreateEncryptCallback(
     const std::string& model_name) {
   const auto* cached_attestation =
       base::FindPtrOrNull(attestation_cache_, model_name);
-  if (!cached_attestation) {
-    return {};
-  }
+  CHECK(cached_attestation);
 
   const std::vector<uint8_t> model_public_key =
       cached_attestation->model_public_key;
