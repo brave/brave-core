@@ -56,6 +56,7 @@ import {
   useImportEthAccountMutation,
   useImportBtcAccountMutation,
   useImportFilAccountMutation,
+  useImportPolkadotAccountMutation,
   useImportSolAccountMutation,
 } from '../../../../common/slices/api.slice'
 
@@ -97,6 +98,9 @@ export const ImportAccountModal = () => {
   const isBitcoinImportEnabled = useSafeWalletSelector(
     WalletSelectors.isBitcoinImportEnabled,
   )
+  const isPolkadotEnabled = useSafeWalletSelector(
+    WalletSelectors.isPolkadotEnabled,
+  )
 
   // queries
   const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery()
@@ -106,6 +110,7 @@ export const ImportAccountModal = () => {
   const [importSolAccount] = useImportSolAccountMutation()
   const [importFilAccount] = useImportFilAccountMutation()
   const [importBtcAccount] = useImportBtcAccountMutation()
+  const [importPolkadotAccount] = useImportPolkadotAccountMutation()
   const [importEthAccountFromJson] = useImportEthAccountFromJsonMutation()
 
   // memos
@@ -115,9 +120,9 @@ export const ImportAccountModal = () => {
       isBitcoinEnabled: isBitcoinImportEnabled,
       isZCashEnabled: false, // No zcash imported accounts by now.
       isCardanoEnabled: false, // No cardano imported accounts by now.
-      isPolkadotEnabled: false, // No polkadot imported accounts by now.
+      isPolkadotEnabled,
     })
-  }, [visibleNetworks, isBitcoinImportEnabled])
+  }, [visibleNetworks, isBitcoinImportEnabled, isPolkadotEnabled])
 
   const selectedAccountType = React.useMemo(() => {
     return createAccountOptions.find((option) => {
@@ -136,8 +141,14 @@ export const ImportAccountModal = () => {
   const [password, setPassword] = React.useState<string>('')
 
   // computed
+  const isPolkadotImport =
+    selectedAccountType?.coin === BraveWallet.CoinType.DOT
   const hasAccountNameError = accountName === ''
-  const hasImportTypeError = importOption === 'key' ? !privateKey : !file
+  const hasImportTypeError = isPolkadotImport
+    ? !file || !password
+    : importOption === 'key'
+      ? !privateKey
+      : !file
   const isDisabled = hasAccountNameError || hasImportTypeError
   const modalTitle = selectedAccountType
     ? getLocale('braveWalletCreateAccountImportAccount').replace(
@@ -204,6 +215,30 @@ export const ImportAccountModal = () => {
     if (!selectedAccountType) {
       return
     }
+
+    // Polkadot: JSON file + password (no key option)
+    if (selectedAccountType.coin === BraveWallet.CoinType.DOT && file) {
+      const index = file[0]
+      const reader = new FileReader()
+      reader.onload = async function () {
+        if (reader.result && selectedAccountType.fixedNetwork) {
+          try {
+            await importPolkadotAccount({
+              accountName,
+              jsonExport: reader.result.toString().trim(),
+              password,
+              network: selectedAccountType.fixedNetwork,
+            }).unwrap()
+            history.push(WalletRoutes.Accounts)
+          } catch (error) {
+            setHasImportError(true)
+          }
+        }
+      }
+      reader.readAsText(index)
+      return
+    }
+
     if (importOption === 'key') {
       const fixedNetwork = selectedAccountType.fixedNetwork
       try {
@@ -273,6 +308,7 @@ export const ImportAccountModal = () => {
     file,
     selectedAccountType,
     importFilAccount,
+    importPolkadotAccount,
     accountName,
     privateKey,
     history,
@@ -350,6 +386,11 @@ export const ImportAccountModal = () => {
               )}
             </Alert>
           )}
+          {selectedAccountType.coin === BraveWallet.CoinType.DOT && (
+            <Alert type='warning'>
+              {getLocale('braveWalletPolkadotImportJsonDescription')}
+            </Alert>
+          )}
 
           <CreateAccountStyledWrapper>
             {selectedAccountType.coin === BraveWallet.CoinType.ETH && (
@@ -391,7 +432,7 @@ export const ImportAccountModal = () => {
               </ErrorText>
             )}
 
-            {importOption === 'key' ? (
+            {!isPolkadotImport && importOption === 'key' ? (
               <Input
                 placeholder={getLocale('braveWalletImportAccountPlaceholder')}
                 onBlur={clearClipboard}

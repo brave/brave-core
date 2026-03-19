@@ -288,6 +288,7 @@
   <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_FILE" desc="Add account modal import JSON file selector">JSON file</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_UPLOAD_BUTTON" desc="Add account modal choose file button">Choose file</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_UPLOAD_PLACEHOLDER" desc="Add account modal file placeholder">No file chosen</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_SELECTED_FILE" desc="Polkadot import file button text when a file is selected">Selected file</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_ERROR" desc="Add account modal failed to import error">Failed to import account, please try again.</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT" desc="Import account button">Import account</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_TITLE" desc="Connect hardware wallet title">Select your hardware wallet device</message>
@@ -339,6 +340,7 @@
   <message name="IDS_BRAVE_WALLET_FIL_EXPORT_PRIVATE_KEY_FORMAT_DESCRIPTION" desc="Filecoin private key format description">NOTE: Private key is provided as a hex-encoded JSON that contains private key and protocol information. <ph name="LINK_START">$1</ph>Learn more<ph name="LINK_END">/$1</ph>.</message>
   <message name="IDS_BRAVE_WALLET_FIL_IMPORT_PRIVATE_KEY_FORMAT_DESCRIPTION" desc="Filecoin private key format description">NOTE: Private key must be provided as a hex-encoded JSON that contains private key and protocol information. <ph name="LINK_START">$1</ph>Learn more<ph name="LINK_END">/$1</ph>.</message>
   <message name="IDS_BRAVE_WALLET_BTC_IMPORT_PRIVATE_KEY_FORMAT_DESCRIPTION" desc="Bitcoin private key input format description">NOTE: Only <ph name="FORMAT"><ex>zprv</ex>$1</ph> extended keys are supported.</message>
+  <message name="IDS_BRAVE_WALLET_POLKADOT_IMPORT_JSON_DESCRIPTION" desc="Polkadot import JSON file description">Import using a JSON file exported from Polkadot.js or compatible wallets. Enter the password used to encrypt the export.</message>
   <message name="IDS_BRAVE_WALLET_TESTNET_ACCOUNTS" desc="Testnet accounts label">Testnet accounts</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_EXPORT" desc="Account list item Export button">Export</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_DEPOSIT" desc="Account list item Deposit button">Deposit</message>

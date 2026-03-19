@@ -1184,8 +1184,11 @@ struct AccountId {
   KeyringId keyring_id;
   AccountKind kind;
   // TODO(apaymyshev): should be an index within keyring.
+  // Deprecated. See account_index.
   string address;
-  // Account index for index-based keyrings (BTC and ZEC).
+  // Account index for index-based keyrings. All new keyrings
+  // should be index-based. For now only ETH, SOL and FIL are non-index based
+  // and address is used as an account identifier.
   uint32 account_index;
 
   // Two `AccountIds` equal iff their `unique_key` fields equal. Use this to
@@ -1438,6 +1441,12 @@ interface KeyringService {
   // Imports a bitcoin account for a network. Payload is an extended private
   // key.
   ImportBitcoinAccount(string accountName, string payload, string network)
+      => (AccountInfo? account);
+
+  // Imports a Polkadot account from JSON export (Polkadot.js format).
+  // Network is kPolkadotMainnet or kPolkadotTestnet.
+  ImportPolkadotAccount(
+      string accountName, string jsonExport, string password, string network)
       => (AccountInfo? account);
 
   // Imports an account via JSON.

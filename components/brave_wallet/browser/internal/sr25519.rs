@@ -41,6 +41,8 @@ pub enum Error {
     InvalidPkcs8Header,
     /// Invalid PKCS8 divider found.
     InvalidPkcs8Divider,
+    /// PKCS8 public key does not match secret key material.
+    InvalidPkcs8PublicKey,
 }
 
 impl fmt::Display for Error {
@@ -50,6 +52,7 @@ impl fmt::Display for Error {
             Error::Schnorrkel(e) => write!(f, "Schnorrkel error: {}", e),
             Error::InvalidPkcs8Header => write!(f, "Invalid PKCS8 header."),
             Error::InvalidPkcs8Divider => write!(f, "Invalid PKCS8 divider."),
+            Error::InvalidPkcs8PublicKey => write!(f, "Invalid PKCS8 public key."),
         }
     }
 }
@@ -125,14 +128,24 @@ fn create_sr25519_keypair_from_pkcs8(pkcs8: &[u8; 117]) -> Box<CxxSchnorrkelKeyP
         return Box::new(CxxSchnorrkelKeyPairResult(Err(Error::InvalidPkcs8Header)));
     }
 
-    // Extract secret key (64 bytes after PAIR_HDR)
+    // Extract secret key (64 bytes after PAIR_HDR).
+    // Try from_bytes first (schnorrkel canonical). If the scalar has the high bit
+    // set (e.g. Polkadot.js / Ed25519-style export), try from_ed25519_bytes
+    // which divides by cofactor and accepts that format.
+    // https://github.com/polkadot-js/wasm/blob/f55a3e75a2ab5408f6bf947f2ec9b294daef432d/packages/wasm-crypto/src/rs/sr25519.rs#L36
     let secret_key_start = PAIR_HDR.len();
     let secret_key_end = secret_key_start + 64;
-    let secret_key =
-        match schnorrkel::SecretKey::from_bytes(&pkcs8[secret_key_start..secret_key_end]) {
-            Ok(key) => key,
-            Err(e) => return Box::new(CxxSchnorrkelKeyPairResult(Err(Error::Schnorrkel(e)))),
-        };
+    let secret_key_bytes = &pkcs8[secret_key_start..secret_key_end];
+    let secret_key = match schnorrkel::SecretKey::from_bytes(secret_key_bytes) {
+        Ok(key) => key,
+        Err(schnorrkel::SignatureError::ScalarFormatError) => {
+            match schnorrkel::SecretKey::from_ed25519_bytes(secret_key_bytes) {
+                Ok(key) => key,
+                Err(e) => return Box::new(CxxSchnorrkelKeyPairResult(Err(Error::Schnorrkel(e)))),
+            }
+        }
+        Err(e) => return Box::new(CxxSchnorrkelKeyPairResult(Err(Error::Schnorrkel(e)))),
+    };
 
     // Validate PAIR_DIV after secret key
     let div_start = secret_key_end;
@@ -142,6 +155,12 @@ fn create_sr25519_keypair_from_pkcs8(pkcs8: &[u8; 117]) -> Box<CxxSchnorrkelKeyP
     }
 
     let keypair = schnorrkel::Keypair::from(secret_key);
+    let public_key = keypair.public.to_bytes();
+    let public_key_start = div_end;
+    let public_key_end = public_key_start + public_key.len();
+    if public_key != pkcs8[public_key_start..public_key_end] {
+        return Box::new(CxxSchnorrkelKeyPairResult(Err(Error::InvalidPkcs8PublicKey)));
+    }
     Box::new(CxxSchnorrkelKeyPairResult(Ok(CxxSchnorrkelKeyPair { keypair, use_mock_rng: false })))
 }
 

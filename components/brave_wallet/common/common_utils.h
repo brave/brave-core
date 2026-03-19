@@ -98,6 +98,10 @@ std::vector<mojom::KeyringId> GetSupportedKeyringsForNetwork(
 // True for coins which support dApps.
 bool CoinSupportsDapps(mojom::CoinType coin);
 
+// True for legacy coins/keyrings that still use address-based AccountId.
+bool IsDeprecatedAddressBasedCoin(mojom::CoinType coin);
+bool IsDeprecatedAddressBasedKeyring(mojom::KeyringId keyring_id);
+
 // True for coins which don't need to store selected network in prefs. I.e. for
 // corresponding account there is only and only available
 // network(mainnet/testnet).

@@ -135,7 +135,8 @@ base::DictValue& GetDictPrefForKeyringUpdate(ScopedDictPrefUpdate& dict_update,
 uint32_t GenerateNextAccountIndex(PrefService* profile_prefs,
                                   mojom::KeyringId keyring_id) {
   DCHECK(IsBitcoinImportKeyring(keyring_id) ||
-         IsBitcoinHardwareKeyring(keyring_id));
+         IsBitcoinHardwareKeyring(keyring_id) ||
+         IsPolkadotImportKeyring(keyring_id));
 
   uint32_t next_index = 0;
   if (auto* next_account_index_value =

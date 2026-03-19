@@ -617,17 +617,27 @@ TEST_F(NetworkManagerUnitTest, GetChain) {
       network_manager()->GetChain("cardano_mainnet", mojom::CoinType::ADA),
       cardano_mainnet.Clone());
 
-  // Polkadot
+  // Polkadot (mainnet: HD + import keyrings; testnet: HD + import keyrings)
   mojom::NetworkInfo polkadot_mainnet(
       mojom::kPolkadotMainnet, "Polkadot Mainnet",
       {"https://polkadot.statescan.io/"}, {}, 0,
       {GURL("https://polkadot-mainnet.wallet.brave.com/")}, "DOT", "Polkadot",
       10, mojom::CoinType::DOT,
       {mojom::KeyringId::kPolkadotMainnet, mojom::KeyringId::kPolkadotImport});
+  mojom::NetworkInfo polkadot_testnet(
+      mojom::kPolkadotTestnet, "Polkadot Westend",
+      {"https://westend.subscan.io/"}, {}, 0,
+      {GURL("https://polkadot-westend.wallet.brave.com/")}, "WND", "Polkadot",
+      12, mojom::CoinType::DOT,
+      {mojom::KeyringId::kPolkadotTestnet,
+       mojom::KeyringId::kPolkadotImportTestnet});
   EXPECT_FALSE(network_manager()->GetChain("0x123", mojom::CoinType::DOT));
   EXPECT_EQ(
       network_manager()->GetChain("polkadot_mainnet", mojom::CoinType::DOT),
       polkadot_mainnet.Clone());
+  EXPECT_EQ(
+      network_manager()->GetChain("polkadot_testnet", mojom::CoinType::DOT),
+      polkadot_testnet.Clone());
 
   static_assert(AllCoinsTested<7>());
 }
