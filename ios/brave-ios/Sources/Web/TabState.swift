@@ -241,8 +241,6 @@ public protocol TabState: AnyObject {
   /// This will be the initial configuration passed in TabStateFactory until `isWebViewCreated`
   /// is true, at which point, it will be the configuration associated with the web view
   var configuration: WKWebViewConfiguration? { get }
-  /// The print formatter associated with the underlying web view to allow for printing the page
-  var viewPrintFormatter: UIViewPrintFormatter? { get }
   /// Returns the PDF data for the current page if one is being displayed
   var dataForDisplayedPDF: Data? { get }
   /// Returns a colour that was sampled from the top of the page for UI purposes

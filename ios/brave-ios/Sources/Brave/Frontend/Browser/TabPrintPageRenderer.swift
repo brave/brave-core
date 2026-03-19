@@ -33,15 +33,14 @@ class TabPrintPageRenderer: UIPrintPageRenderer {
     self.footerHeight = PrintedPageUX.pageMarginScale * PrintedPageUX.pageInsets
     self.headerHeight = PrintedPageUX.pageMarginScale * PrintedPageUX.pageInsets
 
-    if let tab = self.tab, let formatter = tab.viewPrintFormatter {
-      formatter.perPageContentInsets = UIEdgeInsets(
-        top: PrintedPageUX.pageInsets,
-        left: PrintedPageUX.pageInsets,
-        bottom: PrintedPageUX.pageInsets,
-        right: PrintedPageUX.pageInsets
-      )
-      addPrintFormatter(formatter, startingAtPageAt: 0)
-    }
+    let formatter = tab.view.viewPrintFormatter()
+    formatter.perPageContentInsets = UIEdgeInsets(
+      top: PrintedPageUX.pageInsets,
+      left: PrintedPageUX.pageInsets,
+      bottom: PrintedPageUX.pageInsets,
+      right: PrintedPageUX.pageInsets
+    )
+    addPrintFormatter(formatter, startingAtPageAt: 0)
   }
 
   override func drawFooterForPage(at pageIndex: Int, in headerRect: CGRect) {
