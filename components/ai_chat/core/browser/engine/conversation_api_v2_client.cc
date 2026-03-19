@@ -410,7 +410,10 @@ std::string ConversationAPIV2Client::CreateJSONRequestBody(
 
 void ConversationAPIV2Client::EnsureE2EEProcessor() {
   if (!e2ee_processor_) {
-    e2ee_processor_ = std::make_unique<E2EEProcessor>(url_loader_factory_);
+    e2ee_processor_ =
+        e2ee_processor_factory_for_testing_
+            ? std::move(e2ee_processor_factory_for_testing_).Run()
+            : std::make_unique<E2EEProcessor>(url_loader_factory_);
   }
 }
 

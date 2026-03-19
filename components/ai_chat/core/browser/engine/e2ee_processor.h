@@ -54,30 +54,35 @@ class E2EEProcessor {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   E2EEProcessor(const E2EEProcessor&) = delete;
   E2EEProcessor& operator=(const E2EEProcessor&) = delete;
-  ~E2EEProcessor();
+  virtual ~E2EEProcessor();
 
-  void ClearCachedModelAttestations();
+ protected:
+  // For use by test subclasses that do not need network functionality.
+  E2EEProcessor();
+
+ public:
+  virtual void ClearCachedModelAttestations();
 
   // Fetches the model attestation from GET /v1/models/{model_name}/attestation.
   // Resolves immediately from cache if a valid entry exists. On success, caches
   // the result and invokes |callback| with nullopt. On failure, invokes
   // |callback| with the error.
-  void FetchModelAttestation(const std::string& model_name,
-                             FetchModelAttestationCallback callback);
+  virtual void FetchModelAttestation(const std::string& model_name,
+                                     FetchModelAttestationCallback callback);
 
   // Generates a new client keypair. Returns a hex-encoded public key
   // alongside an owned box containing the secret key.
-  ClientKeyPair GenerateClientKeyPair();
+  virtual ClientKeyPair GenerateClientKeyPair();
 
   // Returns a callback that JSON-serializes a ListValue, encrypts it with the
   // cached public key for |model_name|, and returns hex-encoded ciphertext.
   // Returns empty string on error.
-  EncryptCallback CreateEncryptCallback(const std::string& model_name);
+  virtual EncryptCallback CreateEncryptCallback(const std::string& model_name);
 
   // Returns a callback that hex-decodes its input, decrypts it using |key|,
   // and returns the plaintext. Returns empty optional on error. The caller must
   // ensure |key| outlives the returned callback.
-  DecryptCallback CreateDecryptCallback(const ClientSecretKey* key);
+  virtual DecryptCallback CreateDecryptCallback(const ClientSecretKey* key);
 
   void SetAPIRequestHelperForTesting(
       std::unique_ptr<api_request_helper::APIRequestHelper> api_helper);

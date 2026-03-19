@@ -55,6 +55,8 @@ constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
 
 }  // namespace
 
+E2EEProcessor::E2EEProcessor() = default;
+
 E2EEProcessor::E2EEProcessor(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   api_request_helper_ = std::make_unique<api_request_helper::APIRequestHelper>(

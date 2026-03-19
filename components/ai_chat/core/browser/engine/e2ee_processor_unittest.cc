@@ -221,4 +221,38 @@ TEST_F(E2EEProcessorTest, Decrypt_InvalidCiphertext_ReturnsEmpty) {
   EXPECT_FALSE(decrypt_cb.Run(std::string(112, '0')).has_value());
 }
 
+TEST_F(E2EEProcessorTest, Decrypt_ThinkingTagSplitting) {
+  auto keypair = processor_->GenerateClientKeyPair();
+
+  // Derive the public key bytes from the hex so we can call encrypt directly.
+  std::vector<uint8_t> public_key_bytes;
+  ASSERT_TRUE(
+      base::HexStringToBytes(keypair.public_key_hex, &public_key_bytes));
+
+  // Encrypt two separate plaintext segments using the Rust encrypt function.
+  const std::string kThinkingContent = "I am thinking step by step";
+  const std::string kResponseContent = "Here is my answer";
+  auto encrypted_thinking =
+      ai_chat::encrypt(kThinkingContent, public_key_bytes);
+  auto encrypted_response =
+      ai_chat::encrypt(kResponseContent, public_key_bytes);
+  ASSERT_FALSE(encrypted_thinking.empty());
+  ASSERT_FALSE(encrypted_response.empty());
+
+  const std::string thinking_hex = base::HexEncodeLower(encrypted_thinking);
+  const std::string response_hex = base::HexEncodeLower(encrypted_response);
+
+  // Build a ciphertext string that interleaves <think> tags around the first
+  // encrypted segment and places the second segment outside.
+  const std::string ciphertext =
+      "<think>" + thinking_hex + "</think>" + response_hex;
+
+  auto decrypt_cb = processor_->CreateDecryptCallback(&*keypair.secret_key);
+  auto result = decrypt_cb.Run(ciphertext);
+
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(*result,
+            "<think>" + kThinkingContent + "</think>" + kResponseContent);
+}
+
 }  // namespace ai_chat

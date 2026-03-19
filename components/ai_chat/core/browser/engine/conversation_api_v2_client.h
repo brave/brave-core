@@ -12,7 +12,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/functional/callback_forward.h"
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -74,6 +74,10 @@ class ConversationAPIV2Client {
   }
   api_request_helper::APIRequestHelper* GetAPIRequestHelperForTesting() {
     return api_request_helper_.get();
+  }
+  void SetE2EEProcessorFactoryForTesting(
+      base::OnceCallback<std::unique_ptr<E2EEProcessor>()> factory) {
+    e2ee_processor_factory_for_testing_ = std::move(factory);
   }
 
   std::string CreateJSONRequestBody(
@@ -143,6 +147,8 @@ class ConversationAPIV2Client {
   raw_ptr<ModelService> model_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<E2EEProcessor> e2ee_processor_;
+  base::OnceCallback<std::unique_ptr<E2EEProcessor>()>
+      e2ee_processor_factory_for_testing_;
 
   base::WeakPtrFactory<ConversationAPIV2Client> weak_ptr_factory_{this};
 };
