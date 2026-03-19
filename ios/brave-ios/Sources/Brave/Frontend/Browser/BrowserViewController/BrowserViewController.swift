@@ -1378,20 +1378,11 @@ public class BrowserViewController: UIViewController {
           clearRecentSearchAlertDismissed = true
         }
 
-        var legacyTabTrayDismissed = false
-        if let presentedNavigationController = presentedViewController
-          as? UINavigationController,
-          presentedNavigationController.topViewController is TabTrayController
-        {
-          legacyTabTrayDismissed = true
-        }
-
         shouldEvaluateKeyboardConstraints =
           (activeKeyboardHeight > 0)
           && (presentedViewController == nil
             || searchEngineSettingsDismissed
             || clearRecentSearchAlertDismissed
-            || legacyTabTrayDismissed
             || presentedViewController is TabGridHostingController)
 
         if shouldEvaluateKeyboardConstraints {
@@ -2665,19 +2656,6 @@ extension BrowserViewController: UIAdaptivePresentationControllerDelegate {
   public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
     // need to update tab bar visibility after user dismiss the `ChromeWebViewController`
     updateTabsBarVisibility()
-  }
-}
-
-extension BrowserViewController: TabTrayDelegate {
-  func tabOrderChanged() {
-    tabsBar.updateData()
-  }
-
-  func didCreateTab() {
-    recordCreateTabAction(location: .tabTray)
-    if Preferences.General.openKeyboardOnNTPSelection.value {
-      focusURLBar()
-    }
   }
 }
 

@@ -275,3 +275,63 @@ class SendTabToSelfContentHeaderFooterView: UITableViewHeaderFooterView, TableVi
     fatalError("init(coder:) has not been implemented")
   }
 }
+
+extension Date {
+  fileprivate enum TimePeriodOffset {
+    case today, yesterday, lastWeek, lastMonth
+    var period: Int {
+      switch self {
+      case .today: return 0
+      case .yesterday: return -1
+      case .lastWeek: return -7
+      case .lastMonth: return -31
+      }
+    }
+  }
+
+  fileprivate var formattedActivePeriodDate: String {
+    if compare(getCurrentDateWith(dayOffset: TimePeriodOffset.today.period))
+      == ComparisonResult.orderedDescending
+    {
+      return Strings.OpenTabs.activePeriodDeviceTodayTitle
+    } else if compare(getCurrentDateWith(dayOffset: TimePeriodOffset.yesterday.period))
+      == ComparisonResult.orderedDescending
+    {
+      return Strings.OpenTabs.activePeriodDeviceYesterdayTitle
+    } else if compare(getCurrentDateWith(dayOffset: TimePeriodOffset.lastWeek.period))
+      == ComparisonResult.orderedDescending
+    {
+      return Strings.OpenTabs.activePeriodDeviceThisWeekTitle
+    } else if compare(getCurrentDateWith(dayOffset: TimePeriodOffset.lastMonth.period))
+      == ComparisonResult.orderedDescending
+    {
+      return Strings.OpenTabs.activePeriodDeviceThisMonthTitle
+    }
+    let dateComponents = Calendar(identifier: .gregorian).dateComponents(
+      [.day],
+      from: self,
+      to: Date()
+    )
+    return String(
+      format: Strings.OpenTabs.activePeriodDeviceDaysAgoTitle,
+      (dateComponents.day ?? 0)
+    )
+  }
+
+  private func getCurrentDateWith(dayOffset: Int) -> Date {
+    let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+    let nowComponents = calendar.dateComponents(
+      [Calendar.Component.year, Calendar.Component.month, Calendar.Component.day],
+      from: Date()
+    )
+    guard let today = calendar.date(from: nowComponents) else {
+      return Date()
+    }
+    return (calendar as NSCalendar).date(
+      byAdding: NSCalendar.Unit.day,
+      value: dayOffset,
+      to: today,
+      options: []
+    ) ?? Date()
+  }
+}

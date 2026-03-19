@@ -26,7 +26,6 @@
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/ui/commerce/features.h"
-#include "brave/ios/browser/ui/tab_tray/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #import "build/blink_buildflags.h"
 #include "build/build_config.h"
@@ -356,11 +355,6 @@
 + (Feature*)kBraveAllowExternalPurchaseLinks {
   return [[Feature alloc]
       initWithFeature:&brave::features::kBraveAllowExternalPurchaseLinks];
-}
-
-+ (Feature*)kModernTabTrayEnabled {
-  return
-      [[Feature alloc] initWithFeature:&brave::features::kModernTabTrayEnabled];
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
