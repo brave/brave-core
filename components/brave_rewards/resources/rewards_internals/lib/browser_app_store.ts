@@ -192,6 +192,9 @@ export function createAppStore(): AppStore {
   })
 
   function loadData() {
+    store.update({
+      verboseLoggingEnabled: loadTimeData.getBoolean('verboseLoggingEnabled'),
+    })
     chrome.send('brave_rewards_internals.getRewardsInternalsInfo')
     chrome.send('brave_rewards_internals.getBalance')
     chrome.send('brave_rewards_internals.getExternalWallet')
@@ -226,6 +229,10 @@ export function createAppStore(): AppStore {
           chrome.send('brave_rewards_internals.getFullLog')
           fetchLogResolver = resolve
         })
+      },
+
+      toggleVerboseLoggingAndRestart() {
+        chrome.send('brave_rewards_internals.toggleVerboseLoggingAndRestart')
       },
 
       loadContributions() {
