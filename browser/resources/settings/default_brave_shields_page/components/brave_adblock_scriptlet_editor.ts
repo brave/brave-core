@@ -69,7 +69,7 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
     if (this.originalScriptlet_.name) {
       this.dialogTitle_ = this.i18n('adblockEditCustomScriptletDialogTitle')
       // Strip the 'user-' prefix and '.js' suffix for display
-      let name = this.oldScriptletName_
+      let name = this.originalScriptlet_.name
       if (name.toLowerCase().startsWith('user-')) {
         name = name.slice(5)
       }
