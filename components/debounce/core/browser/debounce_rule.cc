@@ -325,7 +325,7 @@ bool DebounceRule::Apply(const GURL& original_url,
       return false;
     }
 
-    // Build extracted value from captures.
+    // Build extracted value from regex captures.
     if (action_ == kDebounceRegexPathTemplate) {
       // Placeholders are $1..$9, so reject regexes with >9 capture groups.
       if (captured_groups.size() > 9) {
@@ -362,8 +362,8 @@ bool DebounceRule::Apply(const GURL& original_url,
         base::ReplaceSubstringsAfterOffset(&unescaped_value, 0, placeholder,
                                            captured_groups[i]);
       }
-    } else {
-      // Concatenate captures (existing behavior).
+    } else { // action_ == kDebounceRegexPath (existing behavior).
+      // Concatenate captures.
       for (const auto& group : captured_groups) {
         if (!group.empty()) {
           unescaped_value.append(group);
