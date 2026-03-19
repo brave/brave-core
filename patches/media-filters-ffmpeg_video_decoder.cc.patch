@@ -2,12 +2,11 @@ diff --git a/media/filters/ffmpeg_video_decoder.cc b/media/filters/ffmpeg_video_
 index 7a63e7b64cdef89b487fa53b2f03c313e17967d2..2f67294aead7d7410de96f87cb37477f86539876 100644
 --- a/media/filters/ffmpeg_video_decoder.cc
 +++ b/media/filters/ffmpeg_video_decoder.cc
-@@ -6,6 +6,8 @@
+@@ -6,6 +6,7 @@
  #include <stddef.h>
  #include <stdint.h>
- 
+
 +#include "build/build_config.h"
-+
  #include <memory>
  #include <numeric>
  
