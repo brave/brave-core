@@ -19,21 +19,14 @@ const braveCoreDir = path.join(rootDir, 'src', 'brave')
 
 const envConfig = new EnvConfig(braveCoreDir)
 
-/**
- * @param {string[]} keyPath
- * @param {any} defaultValue
- * @returns {any}
- */
-const getEnvConfig = (keyPath, defaultValue = undefined) => {
-  return envConfig.get(keyPath, defaultValue)
-}
-
 export class Config {
   constructor() {
     this.internalDepsUrl =
       'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws'
-    this.defaultBuildConfig =
-      getEnvConfig(['default_build_config']) || 'Component'
+    this.defaultBuildConfig = envConfig.getString(
+      ['default_build_config'],
+      'Component',
+    )
     this.buildConfig = this.defaultBuildConfig
     this.buildTargets = ['brave']
     this.rootDir = rootDir
@@ -42,7 +35,7 @@ export class Config {
     this.scriptDir = path.join(this.rootDir, 'scripts')
     this.srcDir = path.join(this.rootDir, 'src')
     this.chromeVersion = this.getProjectVersion('chrome')
-    this.chromiumRepo = getEnvConfig([
+    this.chromiumRepo = envConfig.requireString([
       'projects',
       'chrome',
       'repository',
@@ -51,18 +44,20 @@ export class Config {
     this.braveCoreDir = braveCoreDir
     this.buildToolsDir = path.join(this.srcDir, 'build')
     this.resourcesDir = path.join(this.rootDir, 'resources')
-    this.depotToolsDir = envConfig.getPath(['projects', 'depot_tools', 'dir'])
-    assert(this.depotToolsDir, 'depot_tools dir must be set')
-    this.depotToolsRepo = getEnvConfig([
+    this.depotToolsDir = envConfig.requirePath([
+      'projects',
+      'depot_tools',
+      'dir',
+    ])
+    this.depotToolsRepo = envConfig.requireString([
       'projects',
       'depot_tools',
       'repository',
       'url',
     ])
-    assert(this.depotToolsRepo, 'depot_tools repository url must be set')
     this.gclientFile = path.join(this.rootDir, '.gclient')
-    this.gclientVerbose = getEnvConfig(['gclient_verbose']) || false
-    this.disableGclientConfigUpdate = getEnvConfig(
+    this.gclientVerbose = envConfig.getBoolean(['gclient_verbose'], false)
+    this.disableGclientConfigUpdate = envConfig.getBoolean(
       ['disable_gclient_config_update'],
       false,
     )
@@ -70,31 +65,44 @@ export class Config {
       'gclient',
       'global_vars',
     ])
-    this.targetOS = getEnvConfig(['target_os'], this.hostOS)
-    this.targetArch = getEnvConfig(['target_arch']) || process.arch
-    this.targetEnvironment = getEnvConfig(['target_environment'])
+    this.targetOS = envConfig.getString(['target_os'], this.hostOS)
+    this.targetArch = envConfig.getString(['target_arch'], process.arch)
+    this.targetEnvironment = envConfig.getString(['target_environment'])
     this.gypTargetArch = 'x64'
     this.ignorePatchVersionNumber =
       !this.isBraveReleaseBuild()
-      && getEnvConfig(['ignore_patch_version_number'], !isCI)
-    this.useDummyLastchange = getEnvConfig(['use_dummy_lastchange'], true)
+      && envConfig.getBoolean(['ignore_patch_version_number'], !isCI)
+    this.useDummyLastchange = envConfig.getBoolean(
+      ['use_dummy_lastchange'],
+      true,
+    )
     this.braveVersion = this.#getBraveVersion()
-    this.braveIOSMarketingPatchVersion =
-      getEnvConfig(['brave_ios_marketing_version_patch']) || ''
+    this.braveIOSMarketingPatchVersion = envConfig.getString(
+      ['brave_ios_marketing_version_patch'],
+      '',
+    )
     this.androidOverrideVersionName = this.braveVersion
     this.releaseTag = this.braveVersion.split('+')[0]
-    this.mac_signing_identifier = getEnvConfig(['mac_signing_identifier'])
-    this.mac_installer_signing_identifier =
-      getEnvConfig(['mac_installer_signing_identifier']) || ''
-    this.mac_signing_keychain =
-      getEnvConfig(['mac_signing_keychain']) || 'login'
-    this.notary_user = getEnvConfig(['notary_user'])
-    this.notary_password = getEnvConfig(['notary_password'])
+    this.mac_signing_identifier = envConfig.getString([
+      'mac_signing_identifier',
+    ])
+    this.mac_installer_signing_identifier = envConfig.getString(
+      ['mac_installer_signing_identifier'],
+      '',
+    )
+    this.mac_signing_keychain = envConfig.getString(
+      ['mac_signing_keychain'],
+      'login',
+    )
+    this.notary_user = envConfig.getString(['notary_user'])
+    this.notary_password = envConfig.getString(['notary_password'])
     this.channel = 'development'
-    this.isBraveOriginBranded = getEnvConfig(['is_brave_origin_branded'])
+    this.isBraveOriginBranded = envConfig.getBoolean([
+      'is_brave_origin_branded',
+    ])
     this.gitCachePath =
       envConfig.getPath(['git_cache_path']) || process.env.GIT_CACHE_PATH
-    this.rbeService = getEnvConfig(['rbe_service']) || ''
+    this.rbeService = envConfig.getString(['rbe_service'], '')
     this.rbeTlsClientAuthCert = envConfig.getPath(['rbe_tls_client_auth_cert'])
     this.rbeTlsClientAuthKey = envConfig.getPath(['rbe_tls_client_auth_key'])
     this.realRewrapperDir =
@@ -113,51 +121,55 @@ export class Config {
         'signature_generator.py',
       ) || ''
     this.extraGnArgs = {}
-    this.extraGnGenOpts = getEnvConfig(['brave_extra_gn_gen_opts']) || ''
+    this.extraGnGenOpts = envConfig.getString(['brave_extra_gn_gen_opts'], '')
     this.extraNinjaOpts = []
     this.sisoJobsLimit = undefined
     this.sisoCacheDir = envConfig.getPath(['siso_cache_dir'])
-    this.braveAndroidSafeBrowsingApiKey = getEnvConfig([
+    this.braveAndroidSafeBrowsingApiKey = envConfig.getString([
       'brave_safebrowsing_api_key',
     ])
-    this.braveAndroidDeveloperOptionsCode = getEnvConfig([
+    this.braveAndroidDeveloperOptionsCode = envConfig.getString([
       'brave_android_developer_options_code',
     ])
-    this.braveAndroidKeystorePath = getEnvConfig([
+    this.braveAndroidKeystorePath = envConfig.getString([
       'brave_android_keystore_path',
     ])
-    this.braveAndroidKeystoreName = getEnvConfig([
+    this.braveAndroidKeystoreName = envConfig.getString([
       'brave_android_keystore_name',
     ])
-    this.braveAndroidKeystorePassword = getEnvConfig([
+    this.braveAndroidKeystorePassword = envConfig.getString([
       'brave_android_keystore_password',
     ])
-    this.braveAndroidKeyPassword = getEnvConfig(['brave_android_key_password'])
+    this.braveAndroidKeyPassword = envConfig.getString([
+      'brave_android_key_password',
+    ])
     this.braveAndroidPkcs11Provider = ''
     this.braveAndroidPkcs11Alias = ''
     this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
-    this.useRemoteExec = getEnvConfig(['use_remoteexec'], false)
-    this.useSiso = getEnvConfig(['use_siso'], true)
-    this.useReclient = getEnvConfig(
+    this.useRemoteExec = envConfig.getBoolean(['use_remoteexec'], false)
+    this.useSiso = envConfig.getBoolean(['use_siso'], true)
+    this.useReclient = envConfig.getBoolean(
       ['use_reclient'],
       this.useRemoteExec && !this.useSiso,
     )
-    this.offline = getEnvConfig(['offline'], false)
+    this.offline = envConfig.getBoolean(['offline'], false)
     this.use_libfuzzer = false
     this.androidAabToApk = false
-    this.useBraveHermeticToolchain = getEnvConfig(
+    this.useBraveHermeticToolchain = envConfig.getBoolean(
       ['use_brave_hermetic_toolchain'],
       this.rbeService.includes('.brave.com:'),
     )
-    this.braveIOSDeveloperOptionsCode = getEnvConfig([
+    this.braveIOSDeveloperOptionsCode = envConfig.getString([
       'brave_ios_developer_options_code',
     ])
-    this.skip_download_rust_toolchain_aux =
-      getEnvConfig(['skip_download_rust_toolchain_aux']) || false
-    this.is_asan = getEnvConfig(['is_asan'])
-    this.is_msan = getEnvConfig(['is_msan'])
-    this.is_ubsan = getEnvConfig(['is_ubsan'])
-    this.use_no_gn_gen = getEnvConfig(['use_no_gn_gen'])
+    this.skip_download_rust_toolchain_aux = envConfig.getBoolean(
+      ['skip_download_rust_toolchain_aux'],
+      false,
+    )
+    this.is_asan = envConfig.getBoolean(['is_asan'])
+    this.is_msan = envConfig.getBoolean(['is_msan'])
+    this.is_ubsan = envConfig.getBoolean(['is_ubsan'])
+    this.use_no_gn_gen = envConfig.getBoolean(['use_no_gn_gen'])
 
     this.chromiumCustomDeps = envConfig.getMergedObject([
       'projects',
@@ -182,7 +194,9 @@ export class Config {
   }
 
   isBraveReleaseBuild() {
-    const isBraveReleaseBuildValue = getEnvConfig(['is_brave_release_build'])
+    const isBraveReleaseBuildValue = envConfig.getNumber([
+      'is_brave_release_build',
+    ])
     if (isBraveReleaseBuildValue !== undefined) {
       assert(
         isBraveReleaseBuildValue === 0 || isBraveReleaseBuildValue === 1,
@@ -307,24 +321,24 @@ export class Config {
 
   getProjectVersion(projectName) {
     return (
-      getEnvConfig(['projects', projectName, 'revision'])
-      || getEnvConfig(['projects', projectName, 'tag'])
-      || getEnvConfig(['projects', projectName, 'branch'])
+      envConfig.getString(['projects', projectName, 'revision'])
+      || envConfig.getString(['projects', projectName, 'tag'])
+      || envConfig.getString(['projects', projectName, 'branch'])
     )
   }
 
   getProjectRef(projectName, defaultValue = 'origin/master') {
-    const revision = getEnvConfig(['projects', projectName, 'revision'])
+    const revision = envConfig.getString(['projects', projectName, 'revision'])
     if (revision) {
       return revision
     }
 
-    const tag = getEnvConfig(['projects', projectName, 'tag'])
+    const tag = envConfig.getString(['projects', projectName, 'tag'])
     if (tag) {
       return `refs/tags/${tag}`
     }
 
-    let branch = getEnvConfig(['projects', projectName, 'branch'])
+    let branch = envConfig.getString(['projects', projectName, 'branch'])
     if (branch) {
       return `origin/${branch}`
     }
@@ -570,7 +584,7 @@ export class Config {
 
   forwardEnvConfigVarsToObject(vars, obj) {
     for (const v of vars) {
-      obj[v] = getEnvConfig([v])
+      obj[v] = envConfig.getAny([v])
     }
   }
 
@@ -676,7 +690,7 @@ export class Config {
       // low-CPU machines.
       const kExecutorCount = 1200
       const kRemoteLimit = Math.min(
-        getEnvConfig(['rbe_jobs_limit'], kExecutorCount * 1.2),
+        envConfig.getNumber(['rbe_jobs_limit'], kExecutorCount * 1.2),
         getSisoBuiltinRemoteLimit(),
       )
 
@@ -831,7 +845,7 @@ export class Config {
     return this.#targetOS ?? this.hostOS
   }
 
-  set targetOS(value) {
+  set targetOS(/** @type {string} */ value) {
     const supportedTargetOS = ['android', 'ios', 'linux', 'mac', 'win']
     if (!supportedTargetOS.includes(value)) {
       Log.error(
@@ -839,7 +853,8 @@ export class Config {
       )
       process.exit(1)
     }
-    this.#targetOS = value
+    this.#targetOS =
+      /** @type {'android' | 'ios' | 'linux' | 'mac' | 'win'} */ (value)
   }
 }
 
