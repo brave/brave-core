@@ -82,9 +82,11 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponsePolkadot) {
       base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
           .AppendASCII("brave")
           .AppendASCII("components")
+          .AppendASCII("test")
+          .AppendASCII("data")
           .AppendASCII("brave_wallet")
-          .AppendASCII("browser")
           .AppendASCII("polkadot")
+          .AppendASCII("chain_metadata")
           .AppendASCII("state_getMetadata_polkadot.json");
   const base::DictValue json = base::test::ParseJsonDictFromFile(fixture_path);
 
@@ -112,9 +114,11 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponseWestend) {
       base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
           .AppendASCII("brave")
           .AppendASCII("components")
+          .AppendASCII("test")
+          .AppendASCII("data")
           .AppendASCII("brave_wallet")
-          .AppendASCII("browser")
           .AppendASCII("polkadot")
+          .AppendASCII("chain_metadata")
           .AppendASCII("state_getMetadata_westend.json");
   const base::DictValue json = base::test::ParseJsonDictFromFile(fixture_path);
 
