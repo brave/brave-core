@@ -56,6 +56,10 @@ import org.chromium.chrome.browser.feed.webfeed.WebFeedBridge;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedBridgeJni;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.hub.HubManager;
+import org.chromium.chrome.browser.hub.Pane;
+import org.chromium.chrome.browser.hub.PaneId;
+import org.chromium.chrome.browser.hub.PaneManager;
 import org.chromium.chrome.browser.incognito.IncognitoUtils;
 import org.chromium.chrome.browser.incognito.IncognitoUtilsJni;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
@@ -169,6 +173,9 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     @Mock private TranslateBridge.Natives mTranslateBridgeJniMock;
     @Mock private PageZoomManager mPageZoomManagerMock;
     @Mock private DefaultBrowserPromoUtils mDefaultBrowserPromoUtilsMock;
+    @Mock private HubManager mHubManager;
+    @Mock private PaneManager mPaneManager;
+    @Mock private Pane mPane;
 
     private ShadowPackageManager mShadowPackageManager;
 
@@ -176,6 +183,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             new OneshotSupplierImpl<>();
     private final OneshotSupplierImpl<IncognitoReauthController>
             mIncognitoReauthControllerSupplier = new OneshotSupplierImpl<>();
+    private final OneshotSupplierImpl<HubManager> mHubManagerSupplier = new OneshotSupplierImpl<>();
     private final SettableNullableObservableSupplier<BookmarkModel> mBookmarkModelSupplier =
             ObservableSuppliers.createNullable();
     private final SettableMonotonicObservableSupplier<ReadAloudController>
@@ -253,6 +261,12 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         Mockito.when(mTranslateBridgeJniMock.canManuallyTranslate(any(), anyBoolean()))
                 .thenReturn(false);
 
+        mHubManagerSupplier.set(mHubManager);
+        when(mHubManager.getPaneManager()).thenReturn(mPaneManager);
+        when(mPaneManager.getFocusedPaneSupplier())
+                .thenReturn(ObservableSuppliers.createMonotonic(mPane));
+        when(mPane.getPaneId()).thenReturn(PaneId.TAB_SWITCHER);
+
         PowerBookmarkUtils.setPriceTrackingEligibleForTesting(false);
         PowerBookmarkUtils.setPowerBookmarkMetaForTesting(PowerBookmarkMeta.newBuilder().build());
         BraveTabbedAppMenuPropertiesDelegate delegate =
@@ -272,6 +286,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
                         mIncognitoReauthControllerSupplier,
                         mReadAloudControllerSupplier,
                         mPageZoomManagerMock,
+                        mHubManagerSupplier,
                         /* openInAppMenuItemProvider= */ null);
         delegate.setIsJunitTesting(true);
         BaseRobolectricTestRule.runAllBackgroundAndUi();
