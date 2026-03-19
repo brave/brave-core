@@ -109,6 +109,7 @@ void BraveContentRendererClient::
 
   // These features don't have dedicated WebRuntimeFeatures wrappers.
   blink::WebRuntimeFeatures::EnableFeatureFromString("AdTagging", false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString("AIClassifierAPI", false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("DigitalGoods", false);
   if (!base::FeatureList::IsEnabled(blink::features::kFileSystemAccessAPI)) {
     blink::WebRuntimeFeatures::EnableFeatureFromString("FileSystemAccessLocal",
@@ -119,6 +120,7 @@ void BraveContentRendererClient::
   blink::WebRuntimeFeatures::EnableFeatureFromString("FledgeMultiBid", false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("PrivateStateTokens",
                                                      false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString("ProfilerAPI", false);
 
 #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
   if (base::FeatureList::IsEnabled(

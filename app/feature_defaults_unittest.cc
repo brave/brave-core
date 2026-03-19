@@ -23,6 +23,7 @@
 #include "components/commerce/core/commerce_feature_list.h"
 #include "components/compose/core/browser/compose_features.h"
 #include "components/content_settings/core/common/features.h"
+#include "components/contextual_tasks/public/features.h"
 #include "components/feature_engagement/public/feature_constants.h"
 #include "components/heap_profiling/in_process/heap_profiler_parameters.h"
 #include "components/history/core/browser/features.h"
@@ -134,6 +135,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &compose::features::kEnableCompose,
       &content_settings::features::kTrackingProtection3pcd,
       &content_settings::features::kUserBypassUI,
+      &contextual_tasks::kContextualTasks,
 #if !BUILDFLAG(IS_ANDROID)
       &enterprise_signals::features::kDeviceSignalsConsentDialog,
       &extensions_features::kExtensionManifestV2Disabled,
@@ -147,7 +149,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &features::kBookmarkTriggerForPrefetch,
       &features::kChromeStructuredMetrics,
+      &features::kDevToolsAiAssistanceContextSelectionAgent,
       &features::kDevToolsAiCodeCompletion,
+      &features::kDevToolsAiCodeGeneration,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kDevToolsConsoleInsights,
 #endif  // !BUILDFLAG(IS_ANDROID)
@@ -155,6 +159,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kDevToolsNewPermissionDialog,
 #endif  // BUILDFLAG(ENABLE_DEVTOOLS_FRONTEND)
       &features::kDevToolsPrivacyUI,
+      &features::kDevToolsUseGcaApi,
       &features::kDigitalGoodsApi,
       &features::kFedCm,
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
@@ -163,6 +168,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &features::kHttpsFirstBalancedMode,
       &features::kIdleDetection,
+      &features::kIndigo,
       &features::kNewTabPageTriggerForPrerender2,
       &features::kPrivacySandboxAdsAPIsOverride,
       &features::kPrivacySandboxAdsAPIsM1Override,

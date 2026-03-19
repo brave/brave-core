@@ -141,6 +141,7 @@ source_set("unit_tests") {
     "//components/commerce/core:feature_list",
     "//components/compose/core/browser:features",
     "//components/content_settings/core/common:features",
+    "//components/contextual_tasks/public:feature_list",
     "//components/device_signals/core/common:features",
     "//components/embedder_support",
     "//components/enterprise/connectors/core",
