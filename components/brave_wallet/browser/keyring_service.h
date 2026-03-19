@@ -170,8 +170,7 @@ class KeyringService : public mojom::KeyringService {
                       SetAccountNameCallback callback) override;
   void Reset(bool notify_observer = true);
   void SignTransactionByDefaultKeyring(const mojom::AccountIdPtr& account_id,
-                                       EthTransaction* tx,
-                                       uint256_t chain_id);
+                                       EthTransaction* tx);
   std::optional<std::string> SignTransactionByFilecoinKeyring(
       const mojom::AccountIdPtr& account_id,
       const FilTransaction& tx);

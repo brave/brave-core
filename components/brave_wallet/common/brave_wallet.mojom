@@ -1636,6 +1636,7 @@ interface JsonRpcServiceObserver {
 };
 
 struct TxData {
+  string chain_id;
   string nonce;
   string gas_price;
   string gas_limit;
@@ -1658,7 +1659,6 @@ struct GasEstimation1559 {
 
 struct TxData1559 {
   TxData base_data;
-  string chain_id;
   string max_priority_fee_per_gas;
   string max_fee_per_gas;
 };

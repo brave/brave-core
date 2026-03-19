@@ -234,6 +234,7 @@ class TransactionParserTests: XCTestCase {
 
     let transactionData: BraveWallet.TxData1559 = .init(
       baseData: .init(
+        chainId: network.chainId,
         nonce: "1",
         gasPrice: "0x0",
         gasLimit: "0x5208",
@@ -243,7 +244,6 @@ class TransactionParserTests: XCTestCase {
         signOnly: false,
         signedTransaction: nil
       ),
-      chainId: network.chainId,
       maxPriorityFeePerGas: "0x59672ead",
       maxFeePerGas: "0x59672eb6"
     )
@@ -318,6 +318,7 @@ class TransactionParserTests: XCTestCase {
 
     let transactionData: BraveWallet.TxData1559 = .init(
       baseData: .init(
+        chainId: network.chainId,
         nonce: "1",
         gasPrice: "0x0",
         gasLimit: "0xca48",
@@ -327,7 +328,6 @@ class TransactionParserTests: XCTestCase {
         signOnly: false,
         signedTransaction: nil
       ),
-      chainId: network.chainId,
       maxPriorityFeePerGas: "0x59672ead",
       maxFeePerGas: "0x59672eb6"
     )
@@ -385,6 +385,7 @@ class TransactionParserTests: XCTestCase {
 
     let transactionData: BraveWallet.TxData1559 = .init(
       baseData: .init(
+        chainId: network.chainId,
         nonce: "1",
         gasPrice: "0x0",
         gasLimit: "0x4be75",
@@ -394,7 +395,6 @@ class TransactionParserTests: XCTestCase {
         signOnly: false,
         signedTransaction: nil
       ),
-      chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
       maxFeePerGas: "0x59682f09"
     )
@@ -470,6 +470,7 @@ class TransactionParserTests: XCTestCase {
 
     let transactionData: BraveWallet.TxData1559 = .init(
       baseData: .init(
+        chainId: network.chainId,
         nonce: "1",
         gasPrice: "0x0",
         gasLimit: "0x4be75",
@@ -479,7 +480,6 @@ class TransactionParserTests: XCTestCase {
         signOnly: false,
         signedTransaction: nil
       ),
-      chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
       maxFeePerGas: "0x59682f09"
     )
@@ -555,6 +555,7 @@ class TransactionParserTests: XCTestCase {
 
     let transactionData: BraveWallet.TxData1559 = .init(
       baseData: .init(
+        chainId: network.chainId,
         nonce: "1",
         gasPrice: "0x0",
         gasLimit: "0xb53f",
@@ -564,7 +565,6 @@ class TransactionParserTests: XCTestCase {
         signOnly: false,
         signedTransaction: nil
       ),
-      chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
       maxFeePerGas: "0x59682f09"
     )
@@ -624,6 +624,7 @@ class TransactionParserTests: XCTestCase {
 
     let transactionData: BraveWallet.TxData1559 = .init(
       baseData: .init(
+        chainId: network.chainId,
         nonce: "1",
         gasPrice: "0x0",
         gasLimit: "0xb53f",
@@ -633,7 +634,6 @@ class TransactionParserTests: XCTestCase {
         signOnly: false,
         signedTransaction: nil
       ),
-      chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
       maxFeePerGas: "0x59682f09"
     )
@@ -694,6 +694,7 @@ class TransactionParserTests: XCTestCase {
 
     let transactionData: BraveWallet.TxData1559 = .init(
       baseData: .init(
+        chainId: network.chainId,
         nonce: "1",
         gasPrice: "0x0",
         gasLimit: "0x5208",
@@ -703,7 +704,6 @@ class TransactionParserTests: XCTestCase {
         signOnly: false,
         signedTransaction: nil
       ),
-      chainId: network.chainId,
       maxPriorityFeePerGas: "0x59672ead",
       maxFeePerGas: "0x59672eb6"
     )

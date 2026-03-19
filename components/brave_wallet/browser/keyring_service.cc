@@ -2443,13 +2443,12 @@ std::optional<std::string> KeyringService::GetDiscoveryAddress(
 
 void KeyringService::SignTransactionByDefaultKeyring(
     const mojom::AccountIdPtr& account_id,
-    EthTransaction* tx,
-    uint256_t chain_id) {
+    EthTransaction* tx) {
   auto* keyring = GetKeyring<EthereumKeyring>(account_id);
   if (!keyring) {
     return;
   }
-  keyring->SignTransaction(account_id->address, tx, chain_id);
+  keyring->SignTransaction(account_id->address, tx);
 }
 
 base::expected<std::vector<uint8_t>, std::string>

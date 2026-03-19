@@ -23,10 +23,10 @@ TEST(Eip1559TransactionUnitTest, GetMessageToSign) {
   EXPECT_TRUE(base::HexStringToBytes("010200", &data));
   Eip1559Transaction tx =
       *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
-          mojom::TxData::New("0x00", "0x00", "0x00",
+          mojom::TxData::New("0x04", "0x00", "0x00", "0x00",
                              "0x0101010101010101010101010101010101010101",
                              "0x00", data, false, std::nullopt),
-          "0x04", "0x0", "0x0"));
+          "0x0", "0x0"));
   ASSERT_EQ(tx.type(), EthTransactionType::kEip1559);
   auto* access_list = tx.access_list();
   Eip2930Transaction::AccessListItem item;
@@ -38,7 +38,7 @@ TEST(Eip1559TransactionUnitTest, GetMessageToSign) {
 
   access_list->push_back(item);
 
-  EXPECT_EQ(base::HexEncodeLower(tx.GetHashedMessageToSign(0)),
+  EXPECT_EQ(base::HexEncodeLower(tx.GetHashedMessageToSign()),
             "fa81814f7dd57bad435657a05eabdba2815f41e3f15ddd6139027e7db56b0dea");
 }
 
@@ -123,14 +123,14 @@ TEST(Eip1559TransactionUnitTest, GetSignedTransactionAndHash) {
     ASSERT_TRUE(key);
     Eip1559Transaction tx =
         *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
-            mojom::TxData::New(entry.nonce, "0x00", entry.gas_limit,
+            mojom::TxData::New("0x04", entry.nonce, "0x00", entry.gas_limit,
                                "0x000000000000000000000000000000000000aaaa",
                                entry.value, std::vector<uint8_t>(), false,
                                std::nullopt),
-            "0x04", entry.max_priority_fee_per_gas, entry.max_fee_per_gas));
+            entry.max_priority_fee_per_gas, entry.max_fee_per_gas));
 
-    auto signature = *key->SignCompact(tx.GetHashedMessageToSign(0));
-    tx.ProcessSignature(signature, 0);
+    auto signature = *key->SignCompact(tx.GetHashedMessageToSign());
+    tx.ProcessSignature(signature);
     EXPECT_EQ(tx.GetSignedTransaction(), entry.signed_tx);
     EXPECT_EQ(tx.GetTransactionHash(), entry.hash);
   }
@@ -139,11 +139,11 @@ TEST(Eip1559TransactionUnitTest, GetSignedTransactionAndHash) {
 TEST(Eip1559TransactionUnitTest, Serialization) {
   Eip1559Transaction tx =
       *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
-          mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
+          mojom::TxData::New("0x15BE", "0x09", "0x4a817c800", "0x5208",
                              "0x3535353535353535353535353535353535353535",
                              "0xde0b6b3a7640000", std::vector<uint8_t>(), false,
                              std::nullopt),
-          "0x15BE", "0x7B", "0x1C8"));
+          "0x7B", "0x1C8"));
 
   auto* access_list = tx.access_list();
 
@@ -161,11 +161,13 @@ TEST(Eip1559TransactionUnitTest, Serialization) {
 }
 
 TEST(Eip1559TransactionUnitTest, FromTxData) {
-  auto tx = Eip1559Transaction::FromTxData(mojom::TxData1559::New(
-      mojom::TxData::New("0x01", "0x3E8", "0x989680",
+  auto valid_tx_data = mojom::TxData1559::New(
+      mojom::TxData::New("0x15BE", "0x01", "0x3E8", "0x989680",
                          "0x3535353535353535353535353535353535353535", "0x2A",
                          std::vector<uint8_t>{1}, false, std::nullopt),
-      "0x15BE", "0x7B", "0x1C8"));
+      "0x7B", "0x1C8");
+
+  auto tx = Eip1559Transaction::FromTxData(valid_tx_data);
   ASSERT_TRUE(tx);
   EXPECT_EQ(tx->nonce().value(), uint256_t(1));
   EXPECT_EQ(tx->gas_price(), uint256_t(1000));
@@ -178,47 +180,37 @@ TEST(Eip1559TransactionUnitTest, FromTxData) {
   EXPECT_EQ(tx->max_fee_per_gas(), uint256_t(456));
 
   // Empty nonce should succeed.
-  tx = Eip1559Transaction::FromTxData(mojom::TxData1559::New(
-      mojom::TxData::New("", "0x3E8", "0x989680",
-                         "0x3535353535353535353535353535353535353535", "0x2A",
-                         std::vector<uint8_t>{1}, false, std::nullopt),
-      "0x15BE", "0x7B", "0x1C8"));
+  auto test_tx_data = valid_tx_data.Clone();
+  test_tx_data->base_data->nonce = "";
+  tx = Eip1559Transaction::FromTxData(test_tx_data);
   ASSERT_TRUE(tx);
   EXPECT_FALSE(tx->nonce());
 
   // Invalid nonce should fail.
-  EXPECT_FALSE(Eip1559Transaction::FromTxData(mojom::TxData1559::New(
-      mojom::TxData::New("123", "0x3E8", "0x989680",
-                         "0x3535353535353535353535353535353535353535", "0x2A",
-                         std::vector<uint8_t>{1}, false, std::nullopt),
-      "0x15BE", "0x7B", "0x1C8")));
+  test_tx_data = valid_tx_data.Clone();
+  test_tx_data->base_data->nonce = "123";
+  EXPECT_FALSE(Eip1559Transaction::FromTxData(test_tx_data));
 
   // Make sure chain id, and the max priority fee fields must all have
   // fields when strict is true
-  EXPECT_FALSE(Eip1559Transaction::FromTxData(mojom::TxData1559::New(
-      mojom::TxData::New("0x1", "0x3E8", "0x989680",
-                         "0x3535353535353535353535353535353535353535", "0x2A",
-                         std::vector<uint8_t>{1}, false, std::nullopt),
-      "", "0x7B", "0x1C8")));
-  EXPECT_FALSE(Eip1559Transaction::FromTxData(mojom::TxData1559::New(
-      mojom::TxData::New("0x1", "0x3E8", "0x989680",
-                         "0x3535353535353535353535353535353535353535", "0x2A",
-                         std::vector<uint8_t>{1}, false, std::nullopt),
-      "0x15BE", "", "0x1C8")));
-  EXPECT_FALSE(Eip1559Transaction::FromTxData(mojom::TxData1559::New(
-      mojom::TxData::New("0x1", "0x3E8", "0x989680",
-                         "0x3535353535353535353535353535353535353535", "0x2A",
-                         std::vector<uint8_t>{1}, false, std::nullopt),
-      "0x15BE", "0x7B", "")));
+  test_tx_data = valid_tx_data.Clone();
+  test_tx_data->base_data->chain_id = "";
+  EXPECT_FALSE(Eip1559Transaction::FromTxData(test_tx_data));
 
-  // But missing data is allowed when strict is false
-  tx = Eip1559Transaction::FromTxData(
-      mojom::TxData1559::New(
-          mojom::TxData::New("", "0x3E8", "",
-                             "0x3535353535353535353535353535353535353535", "",
-                             std::vector<uint8_t>{1}, false, std::nullopt),
-          "", "0x7B", "0x1C8"),
-      false);
+  test_tx_data = valid_tx_data.Clone();
+  test_tx_data->max_priority_fee_per_gas = "";
+  EXPECT_FALSE(Eip1559Transaction::FromTxData(test_tx_data));
+
+  test_tx_data = valid_tx_data.Clone();
+  test_tx_data->max_fee_per_gas = "";
+  EXPECT_FALSE(Eip1559Transaction::FromTxData(test_tx_data));
+
+  // But missing some fields is allowed when strict is false.
+  test_tx_data = valid_tx_data.Clone();
+  test_tx_data->base_data->nonce = "";
+  test_tx_data->base_data->gas_limit = "";
+  test_tx_data->base_data->value = "";
+  tx = Eip1559Transaction::FromTxData(test_tx_data, false);
   ASSERT_TRUE(tx);
   // Empty nonce will be std::nullopt
   EXPECT_FALSE(tx->nonce());
@@ -228,18 +220,18 @@ TEST(Eip1559TransactionUnitTest, FromTxData) {
 
   // you can still get at other data that is specified
   EXPECT_EQ(tx->gas_price(), uint256_t(1000));
-  EXPECT_EQ(tx->chain_id(), uint256_t(0));
+  EXPECT_EQ(tx->chain_id(), uint256_t(5566));
   EXPECT_EQ(tx->max_priority_fee_per_gas(), uint256_t(123));
   EXPECT_EQ(tx->max_fee_per_gas(), uint256_t(456));
 
   // Other fields are missing
-  tx = Eip1559Transaction::FromTxData(
-      mojom::TxData1559::New(
-          mojom::TxData::New("", "0x3E8", "",
-                             "0x3535353535353535353535353535353535353535", "",
-                             std::vector<uint8_t>{1}, false, std::nullopt),
-          "0x15BE", "", ""),
-      false);
+  test_tx_data = valid_tx_data.Clone();
+  test_tx_data->base_data->nonce = "";
+  test_tx_data->base_data->gas_limit = "";
+  test_tx_data->base_data->value = "";
+  test_tx_data->max_priority_fee_per_gas = "";
+  test_tx_data->max_fee_per_gas = "";
+  tx = Eip1559Transaction::FromTxData(test_tx_data, false);
   ASSERT_TRUE(tx);
   // Empty nonce will be std::nullopt
   EXPECT_FALSE(tx->nonce());

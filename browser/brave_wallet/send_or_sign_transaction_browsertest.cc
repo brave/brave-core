@@ -78,8 +78,16 @@ class TestTxServiceObserver : public brave_wallet::mojom::TxServiceObserver {
 
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx) override {
     ASSERT_TRUE(tx->tx_data_union->is_eth_tx_data_1559());
-    EXPECT_EQ(tx->tx_data_union->get_eth_tx_data_1559()->chain_id.empty(),
-              !expect_eip1559_tx_);
+
+    auto& tx_data_1559 = tx->tx_data_union->get_eth_tx_data_1559();
+    if (expect_eip1559_tx_) {
+      EXPECT_NE(tx_data_1559->max_fee_per_gas, "");
+      EXPECT_NE(tx_data_1559->max_priority_fee_per_gas, "");
+    } else {
+      EXPECT_EQ(tx_data_1559->max_fee_per_gas, "");
+      EXPECT_EQ(tx_data_1559->max_priority_fee_per_gas, "");
+    }
+
     run_loop_new_unapproved_->Quit();
   }
 

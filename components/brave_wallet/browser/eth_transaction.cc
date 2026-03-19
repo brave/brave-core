@@ -27,21 +27,18 @@ constexpr uint256_t kTxDataZeroCostPerByte = 4;
 constexpr uint256_t kTxDataCostPerByte = 16;
 }  // namespace
 
-EthTransaction::EthTransaction()
-    : gas_price_(0),
-      gas_limit_(0),
-      to_(EthContractCreationAddress()),
-      value_(0) {}
-
+EthTransaction::EthTransaction() = default;
 EthTransaction::EthTransaction(const EthTransaction&) = default;
 EthTransaction::EthTransaction(
+    uint256_t chain_id,
     std::optional<uint256_t> nonce,
     uint256_t gas_price,
     uint256_t gas_limit,
     std::variant<EthAddress, EthContractCreationAddress> to,
     uint256_t value,
     const std::vector<uint8_t>& data)
-    : nonce_(nonce),
+    : chain_id_(chain_id),
+      nonce_(nonce),
       gas_price_(gas_price),
       gas_limit_(gas_limit),
       to_(to),
@@ -54,6 +51,10 @@ std::optional<EthTransaction> EthTransaction::FromTxData(
     const mojom::TxDataPtr& tx_data,
     bool strict) {
   EthTransaction tx;
+  if (!HexValueToUint256(tx_data->chain_id, &tx.chain_id_)) {
+    return std::nullopt;
+  }
+
   if (!tx_data->nonce.empty()) {
     uint256_t nonce_uint;
     if (HexValueToUint256(tx_data->nonce, &nonce_uint)) {
@@ -91,6 +92,15 @@ std::optional<EthTransaction> EthTransaction::FromTxData(
 std::optional<EthTransaction> EthTransaction::FromValue(
     const base::DictValue& value) {
   EthTransaction tx;
+
+  const std::string* tx_chain_id = value.FindString("chain_id");
+  if (!tx_chain_id) {
+    return std::nullopt;
+  }
+  if (!HexValueToUint256(*tx_chain_id, &tx.chain_id_)) {
+    return std::nullopt;
+  }
+
   const std::string* nonce = value.FindString("nonce");
   if (!nonce) {
     return std::nullopt;
@@ -192,13 +202,11 @@ std::optional<EthTransaction> EthTransaction::FromValue(
   return tx;
 }
 
-std::vector<uint8_t> EthTransaction::GetMessageToSign(
-    uint256_t chain_id) const {
-  return GetMessageToSignImpl(chain_id);
+std::vector<uint8_t> EthTransaction::GetMessageToSign() const {
+  return GetMessageToSignImpl();
 }
 
-std::vector<uint8_t> EthTransaction::GetMessageToSignImpl(
-    uint256_t chain_id) const {
+std::vector<uint8_t> EthTransaction::GetMessageToSignImpl() const {
   DCHECK(nonce_);
   base::ListValue list;
   list.Append(RLPUint256ToBlob(nonce_.value()));
@@ -207,8 +215,8 @@ std::vector<uint8_t> EthTransaction::GetMessageToSignImpl(
   list.Append(base::Value::BlobStorage(GetToBytes()));
   list.Append(RLPUint256ToBlob(value_));
   list.Append(base::Value(data_));
-  if (chain_id) {
-    list.Append(RLPUint256ToBlob(chain_id));
+  if (chain_id_) {
+    list.Append(RLPUint256ToBlob(chain_id_));
     list.Append(RLPUint256ToBlob(0));
     list.Append(RLPUint256ToBlob(0));
   }
@@ -216,9 +224,8 @@ std::vector<uint8_t> EthTransaction::GetMessageToSignImpl(
   return RLPEncode(list);
 }
 
-KeccakHashArray EthTransaction::GetHashedMessageToSign(
-    uint256_t chain_id) const {
-  return KeccakHash(GetMessageToSign(chain_id));
+KeccakHashArray EthTransaction::GetHashedMessageToSign() const {
+  return KeccakHash(GetMessageToSign());
 }
 
 std::string EthTransaction::GetSignedTransaction() const {
@@ -253,8 +260,7 @@ bool EthTransaction::ProcessVRS(const std::vector<uint8_t>& v,
 }
 
 // signature and recid will be used to produce v, r, s
-void EthTransaction::ProcessSignature(const Secp256k1Signature& signature,
-                                      uint256_t chain_id) {
+void EthTransaction::ProcessSignature(const Secp256k1Signature& signature) {
   r_ = base::ToVector(signature.rs_bytes().subspan(0u, 32u));
   s_ = base::ToVector(signature.rs_bytes().subspan(32u, 32u));
 
@@ -263,11 +269,11 @@ void EthTransaction::ProcessSignature(const Secp256k1Signature& signature,
     v_ = signature.recid();
   } else {
     // For EIP-155 recovery id is adjusted with chain_id.
-    v_ = chain_id ? static_cast<uint256_t>(signature.recid()) +
-                        (chain_id * static_cast<uint256_t>(2) +
-                         static_cast<uint256_t>(35))
-                  : static_cast<uint256_t>(signature.recid()) +
-                        static_cast<uint256_t>(27);
+    v_ = chain_id_ ? static_cast<uint256_t>(signature.recid()) +
+                         (chain_id_ * static_cast<uint256_t>(2) +
+                          static_cast<uint256_t>(35))
+                   : static_cast<uint256_t>(signature.recid()) +
+                         static_cast<uint256_t>(27);
   }
 }
 
@@ -281,6 +287,7 @@ base::DictValue EthTransaction::ToValue() const {
 
 base::DictValue EthTransaction::ToValueImpl() const {
   base::DictValue dict;
+  dict.Set("chain_id", Uint256ValueToHex(chain_id_));
   dict.Set("nonce", nonce_ ? Uint256ValueToHex(nonce_.value()) : "");
   dict.Set("gas_price", Uint256ValueToHex(gas_price_));
   dict.Set("gas_limit", Uint256ValueToHex(gas_limit_));

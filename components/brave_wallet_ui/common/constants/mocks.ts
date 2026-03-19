@@ -56,6 +56,7 @@ export const getMockedTransactionInfo =
       txDataUnion: {
         ethTxData1559: {
           baseData: {
+            chainId: BraveWallet.LOCALHOST_CHAIN_ID,
             to: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
             value: '0x01706a99bf354000', // 103700000000000000 wei (0.1037 ETH)
             // data: new Uint8Array(0),
@@ -66,7 +67,6 @@ export const getMockedTransactionInfo =
             signOnly: false,
             signedTransaction: undefined,
           },
-          chainId: BraveWallet.LOCALHOST_CHAIN_ID,
           maxPriorityFeePerGas: '',
           maxFeePerGas: '',
         },

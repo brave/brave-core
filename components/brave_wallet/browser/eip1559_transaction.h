@@ -41,19 +41,19 @@ class Eip1559Transaction : public Eip2930Transaction {
 
  protected:
   Eip1559Transaction(
+      uint256_t chain_id,
       std::optional<uint256_t> nonce,
       uint256_t gas_price,
       uint256_t gas_limit,
       const std::variant<EthAddress, EthContractCreationAddress>& to,
       uint256_t value,
       const std::vector<uint8_t>& data,
-      uint256_t chain_id,
       uint256_t max_priority_fee_per_gas,
       uint256_t max_fee_per_gas);
 
   // 0x02 || rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas,
   // gasLimit, destination, value, data, access_list])
-  std::vector<uint8_t> GetMessageToSignImpl(uint256_t chain_id) const override;
+  std::vector<uint8_t> GetMessageToSignImpl() const override;
 
   // 0x02 || rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas,
   // gasLimit, destination, value, data, accessList, signatureYParity,
