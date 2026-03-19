@@ -26,7 +26,7 @@ std::optional<int> ParseDays(std::string_view condition) {
                            kEpochOperatorConditionMatcherPrefixPattern));
 
   const size_t pos = condition.find(':');
-  if (pos == std::string::npos || pos + 1 >= condition.size()) {
+  if (pos == std::string_view::npos || pos + 1 >= condition.size()) {
     // Malformed operator.
     BLOG(1, "Malformed epoch operator condition matcher for " << condition);
     return std::nullopt;

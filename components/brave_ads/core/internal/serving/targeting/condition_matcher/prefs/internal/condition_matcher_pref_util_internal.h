@@ -8,8 +8,12 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 
-#include "base/values.h"
+namespace base {
+class DictValue;
+class Value;
+}  // namespace base
 
 namespace brave_ads {
 
@@ -19,13 +23,13 @@ std::optional<base::Value> MaybeGetRootPrefValue(
     const base::DictValue& virtual_prefs,
     const std::string& pref_path);
 std::optional<base::Value> MaybeGetDictPrefValue(const base::Value& pref_value,
-                                                 const std::string& key);
+                                                 std::string_view key);
 
 std::optional<base::Value> MaybeGetListPrefValue(const base::Value& pref_value,
-                                                 const std::string& key);
+                                                 std::string_view key);
 
 std::optional<base::Value> MaybeGetNextPrefValue(const base::Value& pref_value,
-                                                 const std::string& key);
+                                                 std::string_view key);
 
 // Get the pref value from the provider for the given path. Handles nested
 // dictionaries, lists, and dot-separated keys. `base::Value::Find*ByDottedPath`
@@ -34,7 +38,7 @@ std::optional<base::Value> MaybeGetNextPrefValue(const base::Value& pref_value,
 // `list|1` would return the second element of a list.
 std::optional<base::Value> MaybeGetPrefValue(
     const base::DictValue& virtual_prefs,
-    const std::string& pref_path);
+    std::string_view pref_path);
 
 }  // namespace brave_ads
 

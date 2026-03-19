@@ -15,57 +15,56 @@
 
 namespace brave_ads {
 
-class BraveAdsConditionMatcherPrefUtilTest : public test::TestBase {};
+class BraveAdsConditionMatcherPrefUtilInternalTest : public test::TestBase {};
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest,
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
        DoNotConvertNoneValueTypeToString) {
   // Act & Assert
   EXPECT_FALSE(ToString(base::Value()));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, BooleanValueTypeToString) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest, BooleanValueTypeToString) {
   // Act & Assert
   EXPECT_EQ("0", ToString(base::Value(false)));
   EXPECT_EQ("1", ToString(base::Value(true)));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, IntegerValueTypeToString) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest, IntegerValueTypeToString) {
   // Act & Assert
   EXPECT_EQ("123", ToString(base::Value(123)));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, DoubleValueTypeToString) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest, DoubleValueTypeToString) {
   // Act & Assert
   EXPECT_EQ("1.23", ToString(base::Value(1.23)));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, StringValueTypeToString) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest, StringValueTypeToString) {
   // Act & Assert
   EXPECT_EQ("123", ToString(base::Value("123")));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest,
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
        DoNotConvertDictValueTypeToString) {
   // Act & Assert
   EXPECT_FALSE(ToString(base::Value(base::DictValue().Set("foo", "bar"))));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest,
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
        DoNotConvertListValueTypeToString) {
   // Act & Assert
   EXPECT_FALSE(ToString(base::Value(base::ListValue().Append("foo"))));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest,
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
        DoNotConvertBinaryValueTypeToString) {
-  // Arrange
   // Act & Assert
   EXPECT_FALSE(ToString(base::Value(
       base::span<const uint8_t>({0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x57,
                                  0x6F, 0x72, 0x6C, 0x64, 0x21}))));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetVirtualPrefValue) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest, GetVirtualPrefValue) {
   // Arrange
   ON_CALL(ads_client_mock_, GetVirtualPrefs).WillByDefault([]() {
     return base::DictValue().Set("[virtual]:matrix", /*room*/ 303);
@@ -77,7 +76,8 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetVirtualPrefValue) {
       MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "[virtual]:matrix"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, DoNotGetUnknownVirtualPrefValue) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
+       DoNotGetUnknownVirtualPrefValue) {
   // Arrange
   ON_CALL(ads_client_mock_, GetVirtualPrefs).WillByDefault([]() {
     return base::DictValue().Set("[virtual]:inverse.matrices", /*room*/ 101);
@@ -88,7 +88,8 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, DoNotGetUnknownVirtualPrefValue) {
       MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "[virtual]:matrix"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetBooleanProfilePrefValue) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
+       GetBooleanProfilePrefValue) {
   // Arrange
   test::RegisterProfileBooleanPref("boolean", true);
 
@@ -97,7 +98,8 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetBooleanProfilePrefValue) {
             MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "boolean"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetIntegerProfilePrefValue) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
+       GetIntegerProfilePrefValue) {
   // Arrange
   test::RegisterProfileIntegerPref("integer", 123);
 
@@ -106,7 +108,8 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetIntegerProfilePrefValue) {
             MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "integer"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetDoubleProfilePrefValue) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
+       GetDoubleProfilePrefValue) {
   // Arrange
   test::RegisterProfileDoublePref("double", 1.23);
 
@@ -115,7 +118,8 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetDoubleProfilePrefValue) {
             MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "double"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetStringProfilePrefValue) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
+       GetStringProfilePrefValue) {
   // Arrange
   test::RegisterProfileStringPref("string", "foo");
 
@@ -124,7 +128,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetStringProfilePrefValue) {
             MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "string"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetDictProfilePrefValue) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest, GetDictProfilePrefValue) {
   // Arrange
   test::RegisterProfileDictPref("dict", base::DictValue().Set("foo", "bar"));
 
@@ -133,7 +137,8 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetDictProfilePrefValue) {
             MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "dict|foo"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetNestedDictProfilePrefValue) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
+       GetNestedDictProfilePrefValue) {
   // Arrange
   test::RegisterProfileDictPref(
       "dict",
@@ -145,7 +150,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetNestedDictProfilePrefValue) {
       MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "dict|foo|bar"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest,
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
        GetDeeplyNestedDictProfilePrefValue) {
   // Arrange
   test::RegisterProfileDictPref(
@@ -159,7 +164,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
       MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "dict|foo|1|baz"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest,
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
        GetNestedDictProfilePrefValueWithDotSeparatedPathComponents) {
   // Arrange
   test::RegisterProfileDictPref(
@@ -172,7 +177,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
                               "dict|foo.bar|baz.qux"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest,
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
        DoNotGetMalformedDictProfilePrefValue) {
   test::RegisterProfileDictPref("dict",
                                 base::DictValue().Set("foo.bar", "baz"));
@@ -185,7 +190,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
   EXPECT_FALSE(MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), ""));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetListProfilePrefValue) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest, GetListProfilePrefValue) {
   // Arrange
   test::RegisterProfileListPref("list",
                                 base::ListValue().Append("foo").Append("bar"));
@@ -195,7 +200,8 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetListProfilePrefValue) {
             MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "list|1"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetNestedListProfilePrefValue) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
+       GetNestedListProfilePrefValue) {
   // Arrange
   test::RegisterProfileListPref(
       "list",
@@ -206,7 +212,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetNestedListProfilePrefValue) {
             MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "list|0|1"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest,
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
        GetDeeplyNestedListProfilePrefValue) {
   // Arrange
   test::RegisterProfileListPref(
@@ -219,7 +225,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
       MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "list|0|foo|1"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest,
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
        GetNestedListProfilePrefValueWithDotSeparatedPathComponents) {
   // Arrange
   test::RegisterProfileListPref(
@@ -233,7 +239,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
       MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "list|0|foo.bar|1"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest,
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
        DoNotGetListProfilePrefValueWithOutOfBoundsListIndicies) {
   // Arrange
   test::RegisterProfileListPref("list",
@@ -244,7 +250,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
   EXPECT_FALSE(MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "list|2"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest,
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
        DoNotGetMalformedListProfilePrefValue) {
   test::RegisterProfileListPref("list", base::ListValue().Append("foo"));
 
@@ -257,7 +263,8 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
   EXPECT_FALSE(MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), ""));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetBooleanLocalStatePrefValue) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
+       GetBooleanLocalStatePrefValue) {
   // Arrange
   test::RegisterLocalStateBooleanPref("boolean", true);
 
@@ -266,7 +273,8 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetBooleanLocalStatePrefValue) {
             MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "boolean"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetIntegerLocalStatePrefValue) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
+       GetIntegerLocalStatePrefValue) {
   // Arrange
   test::RegisterLocalStateIntegerPref("integer", 123);
 
@@ -275,7 +283,8 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetIntegerLocalStatePrefValue) {
             MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "integer"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetDoubleLocalStatePrefValue) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
+       GetDoubleLocalStatePrefValue) {
   // Arrange
   test::RegisterLocalStateDoublePref("double", 1.23);
 
@@ -284,7 +293,8 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetDoubleLocalStatePrefValue) {
             MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "double"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetStringLocalStatePrefValue) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
+       GetStringLocalStatePrefValue) {
   // Arrange
   test::RegisterLocalStateStringPref("string", "foo");
 
@@ -293,7 +303,8 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetStringLocalStatePrefValue) {
             MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "string"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetDictLocalStatePrefValue) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
+       GetDictLocalStatePrefValue) {
   // Arrange
   test::RegisterLocalStateDictPref("dict",
                                    base::DictValue().Set("foo.bar", "baz"));
@@ -304,7 +315,8 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetDictLocalStatePrefValue) {
       MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "dict|foo.bar"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetNestedDictLocalStatePrefValue) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
+       GetNestedDictLocalStatePrefValue) {
   // Arrange
   test::RegisterLocalStateDictPref(
       "dict",
@@ -316,7 +328,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetNestedDictLocalStatePrefValue) {
       MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "dict|foo|bar"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest,
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
        GetDeeplyNestedDictLocalStatePrefValue) {
   // Arrange
   test::RegisterLocalStateDictPref(
@@ -330,7 +342,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
       MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "dict|foo|1|baz"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest,
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
        GetNestedDictLocalStatePrefValueWithDotSeparatedPathComponents) {
   // Arrange
   test::RegisterLocalStateDictPref(
@@ -343,7 +355,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
                               "dict|foo.bar|baz.qux"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest,
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
        DoNotGetMalformedDictLocalStatePrefValue) {
   test::RegisterLocalStateDictPref("dict",
                                    base::DictValue().Set("foo.bar", "baz"));
@@ -356,7 +368,8 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
   EXPECT_FALSE(MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), ""));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetListLocalStatePrefValue) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
+       GetListLocalStatePrefValue) {
   // Arrange
   test::RegisterLocalStateListPref(
       "list", base::ListValue().Append("foo").Append("bar"));
@@ -366,7 +379,8 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetListLocalStatePrefValue) {
             MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "list|1"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetNestedListLocalStatePrefValue) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
+       GetNestedListLocalStatePrefValue) {
   // Arrange
   test::RegisterLocalStateListPref(
       "list",
@@ -377,7 +391,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetNestedListLocalStatePrefValue) {
             MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "list|0|1"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest,
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
        GetDeeplyNestedListLocalStatePrefValue) {
   // Arrange
   test::RegisterLocalStateListPref(
@@ -390,7 +404,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
       MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "list|0|foo|1"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest,
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
        GetNestedListLocalStatePrefValueWithDotSeparatedPathComponents) {
   // Arrange
   test::RegisterLocalStateListPref(
@@ -404,7 +418,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
       MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "list|0|foo.bar|1"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest,
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
        DoNotGetMalformedListLocalStatePrefValue) {
   // Arrange
   test::RegisterLocalStateListPref("list", base::ListValue().Append("foo"));
@@ -418,7 +432,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
   EXPECT_FALSE(MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), ""));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest,
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest,
        DoNotGetListLocalStatePrefValueWithOutOfBoundsListIndicies) {
   // Arrange
   test::RegisterLocalStateListPref(
@@ -429,7 +443,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
   EXPECT_FALSE(MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "list|2"));
 }
 
-TEST_F(BraveAdsConditionMatcherPrefUtilTest, DoNotGetUnknownPrefValue) {
+TEST_F(BraveAdsConditionMatcherPrefUtilInternalTest, DoNotGetUnknownPrefValue) {
   // Act & Assert
   EXPECT_FALSE(MaybeGetPrefValue(GetAdsClient().GetVirtualPrefs(), "foo.bar"));
 }

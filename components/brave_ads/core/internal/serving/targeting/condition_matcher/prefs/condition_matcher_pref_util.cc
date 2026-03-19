@@ -5,13 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/prefs/condition_matcher_pref_util.h"
 
+#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/prefs/internal/condition_matcher_pref_util_internal.h"
 
 namespace brave_ads {
 
 std::optional<std::string> MaybeGetPrefValueAsString(
     const base::DictValue& virtual_prefs,
-    const std::string& pref_path) {
+    std::string_view pref_path) {
   if (std::optional<base::Value> value =
           MaybeGetPrefValue(virtual_prefs, pref_path)) {
     return ToString(*value);
