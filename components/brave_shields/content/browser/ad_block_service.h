@@ -72,6 +72,8 @@ class AdBlockService {
     SourceProviderObserver& operator=(const SourceProviderObserver&) = delete;
     ~SourceProviderObserver() override;
 
+    void PreloadCachedDAT(DATFileDataBuffer dat);
+
     // AdBlockFiltersProvider::Observer
     void OnChanged(bool is_default_engine) override;
 
@@ -80,6 +82,7 @@ class AdBlockService {
         base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb);
     void OnFilterSetCreated(std::unique_ptr<rust::Box<adblock::FilterSet>>);
 
+    void LoadResources();
     // AdBlockResourceProvider::Observer
     void OnResourcesLoaded(AdblockResourceStorageBox) override;
 

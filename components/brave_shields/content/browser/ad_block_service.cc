@@ -106,6 +106,23 @@ void AdBlockService::SourceProviderObserver::OnChanged(bool is_default_engine) {
                                                     std::move(on_loaded_cb));
 }
 
+void AdBlockService::SourceProviderObserver::PreloadCachedDAT(
+    DATFileDataBuffer dat) {
+  task_runner_->PostTaskAndReply(
+      FROM_HERE,
+      base::BindOnce(
+          [](base::WeakPtr<AdBlockEngine> engine, DATFileDataBuffer dat) {
+            if (engine) {
+              // Resources will be loaded when available
+              auto empty_resources = adblock::new_empty_resource_storage();
+              engine->Load(true, std::move(dat), *empty_resources);
+            }
+          },
+          adblock_engine_->AsWeakPtr(), std::move(dat)),
+      base::BindOnce(&AdBlockService::SourceProviderObserver::LoadResources,
+                     weak_factory_.GetWeakPtr()));
+}
+
 void AdBlockService::SourceProviderObserver::OnFilterSetCallbackLoaded(
     base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb) {
   task_runner_->PostTaskAndReplyWithResult(
@@ -123,14 +140,18 @@ void AdBlockService::SourceProviderObserver::OnFilterSetCallbackLoaded(
           weak_factory_.GetWeakPtr()));
 }
 
-void AdBlockService::SourceProviderObserver::OnFilterSetCreated(
-    std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set) {
-  TRACE_EVENT("brave.adblock", "OnFilterSetCreated");
-  filter_set_ = std::move(filter_set);
+void AdBlockService::SourceProviderObserver::LoadResources() {
   // multiple AddObserver calls are ignored
   resource_provider_->AddObserver(this);
   resource_provider_->LoadResources(base::BindOnce(
       &SourceProviderObserver::OnResourcesLoaded, weak_factory_.GetWeakPtr()));
+}
+
+void AdBlockService::SourceProviderObserver::OnFilterSetCreated(
+    std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set) {
+  TRACE_EVENT("brave.adblock", "OnFilterSetCreated");
+  filter_set_ = std::move(filter_set);
+  LoadResources();
 }
 
 void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
@@ -434,10 +455,9 @@ void AdBlockService::OnReadCachedDATFiles(
   if (!read_result) {
     ActivateFilterLoading();
   } else {
-    auto empty_resources = adblock::new_empty_resource_storage();
-    default_engine_->Load(true, read_result->first, *empty_resources);
-    additional_filters_engine_->Load(true, read_result->second,
-                                     *empty_resources);
+    default_service_observer_->PreloadCachedDAT(std::move(read_result->first));
+    additional_filters_service_observer_->PreloadCachedDAT(
+        std::move(read_result->second));
   }
 }
 
