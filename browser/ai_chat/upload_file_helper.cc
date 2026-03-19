@@ -294,8 +294,7 @@ void UploadFileHelper::OnFileRead(
     files.push_back(mojom::UploadedFile::New(
         std::get<1>(result).AsUTF8Unsafe(), file_data->size(), *file_data,
         mojom::UploadedFileType::kPdf, std::nullopt));
-    std::move(upload_file_callback_)
-        .Run(std::make_optional(std::move(files)));
+    std::move(upload_file_callback_).Run(std::make_optional(std::move(files)));
   } else if (file_type_opt &&
              *file_type_opt == mojom::UploadedFileType::kImage) {
     // For images, process them as before
