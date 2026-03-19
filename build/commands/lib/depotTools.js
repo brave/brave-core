@@ -5,6 +5,7 @@
 
 import ActionGuard from './actionGuard.js'
 import config from './config.js'
+import { isCI } from './ciDetect.ts'
 import fs from 'node:fs'
 import path from 'node:path'
 import Log from './logging.js'
@@ -134,7 +135,7 @@ function installDepotTools(options = config.defaultOptions) {
       }
     }
 
-    if (process.platform === 'win32' && config.isCI) {
+    if (process.platform === 'win32' && isCI) {
       // Bootstrap gsutil on Windows manually to fix random LockFile issues.
       util.run(path.join(config.depotToolsDir, 'gsutil.py.bat'), [], {
         ...options,

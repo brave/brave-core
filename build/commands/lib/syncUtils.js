@@ -5,6 +5,7 @@
 
 import chalk from 'chalk'
 import config from './config.js'
+import { isCI } from './ciDetect.ts'
 import fs from 'node:fs'
 import path from 'node:path'
 import Log from './logging.js'
@@ -217,7 +218,7 @@ function syncChromium(program) {
   )
   const shouldSyncChromium = chromiumNeedsUpdate || syncWithForce
   if (!shouldSyncChromium && !syncChromiumValue) {
-    if (deleteUnusedDeps && !config.isCI) {
+    if (deleteUnusedDeps && !isCI) {
       Log.warn(
         '--delete_unused_deps is ignored for src/ dir because Chromium sync '
           + 'is required. Pass --sync_chromium to force it.',
@@ -229,7 +230,7 @@ function syncChromium(program) {
   if (deleteUnusedDeps) {
     if (util.isGitExclusionExists(config.srcDir, '/brave/')) {
       args.push('-D')
-    } else if (!config.isCI) {
+    } else if (!isCI) {
       Log.warn(
         '--delete_unused_deps is ignored because sync has not yet added '
           + 'the exclusion for the src/brave/ directory, likely because sync '
