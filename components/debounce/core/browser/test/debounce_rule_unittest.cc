@@ -42,6 +42,8 @@ TEST(DebounceRuleUnitTest, DebounceActionChecking) {
   DebounceAction field = kDebounceNoAction;
   EXPECT_TRUE(DebounceRule::ParseDebounceAction("regex-path", &field));
   EXPECT_EQ(kDebounceRegexPath, field);
+  EXPECT_TRUE(DebounceRule::ParseDebounceAction("regex-path-template", &field));
+  EXPECT_EQ(kDebounceRegexPathTemplate, field);
   EXPECT_TRUE(DebounceRule::ParseDebounceAction("base64,redirect", &field));
   EXPECT_EQ(kDebounceBase64DecodeAndRedirectToParam, field);
   EXPECT_TRUE(DebounceRule::ParseDebounceAction("redirect", &field));
@@ -483,9 +485,9 @@ TEST(DebounceRuleUnitTest, RedirectUrlBasic) {
               "*://y2u.be/*"
           ],
           "exclude": [],
-          "action": "regex-path",
+          "action": "regex-path-template",
           "param": "^/(.+)$",
-          "redirect_url": "https://www.youtube.com/watch?v=$1"
+          "redirect_url_template": "https://www.youtube.com/watch?v=$1"
       }]
     )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
@@ -504,9 +506,9 @@ TEST(DebounceRuleUnitTest, RedirectUrlMultipleCaptures) {
               "*://tracker.example.com/*"
           ],
           "exclude": [],
-          "action": "regex-path",
+          "action": "regex-path-template",
           "param": "^/([^/]+)/([^/]+)$",
-          "redirect_url": "https://$1.example.org/page/$2"
+          "redirect_url_template": "https://$1.example.org/page/$2"
       }]
     )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
@@ -526,9 +528,9 @@ TEST(DebounceRuleUnitTest, RedirectUrlSameSite) {
               "*://redir.example.com/*"
           ],
           "exclude": [],
-          "action": "regex-path",
+          "action": "regex-path-template",
           "param": "^/(.+)$",
-          "redirect_url": "https://www.example.com/page/$1"
+          "redirect_url_template": "https://www.example.com/page/$1"
       }]
     )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
@@ -547,9 +549,9 @@ TEST(DebounceRuleUnitTest, RedirectUrlNoMatch) {
               "*://y2u.be/*"
           ],
           "exclude": [],
-          "action": "regex-path",
+          "action": "regex-path-template",
           "param": "^/video/(.+)$",
-          "redirect_url": "https://www.youtube.com/watch?v=$1"
+          "redirect_url_template": "https://www.youtube.com/watch?v=$1"
       }]
     )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
@@ -568,9 +570,9 @@ TEST(DebounceRuleUnitTest, RedirectUrlExtraCapturesRejected) {
               "*://tracker.example.com/*"
           ],
           "exclude": [],
-          "action": "regex-path",
+          "action": "regex-path-template",
           "param": "^/([^/]+)/([^/]+)/([^/]+)$",
-          "redirect_url": "https://$1.example.org/"
+          "redirect_url_template": "https://$1.example.org/"
       }]
     )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
@@ -591,9 +593,9 @@ TEST(DebounceRuleUnitTest, RedirectUrlUnresolvedPlaceholder) {
               "*://tracker.example.com/*"
           ],
           "exclude": [],
-          "action": "regex-path",
+          "action": "regex-path-template",
           "param": "^/(.+)$",
-          "redirect_url": "https://www.example.org/$1/$2"
+          "redirect_url_template": "https://www.example.org/$1/$2"
       }]
     )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
@@ -613,9 +615,9 @@ TEST(DebounceRuleUnitTest, RedirectUrlStaticTemplateWithCaptures) {
               "*://tracker.example.com/*"
           ],
           "exclude": [],
-          "action": "regex-path",
+          "action": "regex-path-template",
           "param": "^/(.+)$",
-          "redirect_url": "https://www.example.org/landing"
+          "redirect_url_template": "https://www.example.org/landing"
       }]
     )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
@@ -634,9 +636,9 @@ TEST(DebounceRuleUnitTest, RedirectUrlTooManyCaptureGroups) {
               "*://tracker.example.com/*"
           ],
           "exclude": [],
-          "action": "regex-path",
+          "action": "regex-path-template",
           "param": "^/(.)(.)(.)(.)(.)(.)(.)(.)(.)(.+)$",
-          "redirect_url": "https://example.org/$1"
+          "redirect_url_template": "https://example.org/$1"
       }]
     )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);

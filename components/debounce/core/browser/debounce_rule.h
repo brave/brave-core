@@ -31,7 +31,8 @@ enum DebounceAction {
   kDebounceNoAction,
   kDebounceRedirectToParam,
   kDebounceRegexPath,
-  kDebounceBase64DecodeAndRedirectToParam
+  kDebounceBase64DecodeAndRedirectToParam,
+  kDebounceRegexPathTemplate
 };
 
 enum DebouncePrependScheme {
@@ -81,7 +82,7 @@ class DebounceRule {
   DebouncePrependScheme prepend_scheme_;
   std::string param_;
   std::string pref_;
-  std::string redirect_url_;
+  std::string redirect_url_template_;
 };
 
 }  // namespace debounce
