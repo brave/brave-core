@@ -130,10 +130,10 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
 
     browser()->tab_strip_model()->RemoveObserver(this);
 
-    EXPECT_EQ(url, base::UTF16ToUTF8(browser()
-                                         ->GetFeatures()
-                                         .location_bar_model()
-                                         ->GetFormattedFullURL()));
+    EXPECT_EQ(
+        url,
+        base::UTF16ToUTF8(
+            browser()->GetFeatures().location_bar_model()->GetURLForDisplay()));
     EXPECT_EQ(2, browser()->tab_strip_model()->count());
     // Private window stays as initial state.
     EXPECT_EQ("about:blank",
@@ -160,10 +160,10 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
                       ->GetController()
                       .GetLastCommittedEntry();
     EXPECT_EQ(entry->GetPageType(), content::PageType::PAGE_TYPE_ERROR);
-    EXPECT_EQ("about:blank", base::UTF16ToUTF8(browser()
-                                                   ->GetFeatures()
-                                                   .location_bar_model()
-                                                   ->GetFormattedFullURL()));
+    EXPECT_EQ(
+        "about:blank",
+        base::UTF16ToUTF8(
+            browser()->GetFeatures().location_bar_model()->GetURLForDisplay()));
     EXPECT_EQ(1, browser()->tab_strip_model()->count());
   }
 
@@ -191,7 +191,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, NotAllowedToLoadTest) {
       NavigateToURLUntilLoadStop("example.com", "/brave_scheme_load.html"));
   content::WebContentsConsoleObserver console_observer(active_contents());
   console_observer.SetPattern(
-      "Not allowed to load local resource: brave://settings/");
+      "Not allowed to load local resource: chrome://settings/");
 
   ASSERT_TRUE(content::ExecJs(
       active_contents(),
@@ -206,7 +206,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
       NavigateToURLUntilLoadStop("example.com", "/brave_scheme_load.html"));
   content::WebContentsConsoleObserver console_observer(active_contents());
   console_observer.SetPattern(
-      "Not allowed to load local resource: brave://settings/");
+      "Not allowed to load local resource: chrome://settings/");
 
   ASSERT_TRUE(content::ExecJs(
       active_contents(),
@@ -222,7 +222,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
       NavigateToURLUntilLoadStop("example.com", "/brave_scheme_load.html"));
   content::WebContentsConsoleObserver console_observer(active_contents());
   console_observer.SetPattern(
-      "Not allowed to load local resource: brave://settings/");
+      "Not allowed to load local resource: chrome://settings/");
 
   ASSERT_TRUE(content::ExecJs(
       active_contents(),
@@ -239,26 +239,11 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
   auto* initial_active_tab = active_contents();
   content::WebContentsConsoleObserver console_observer(initial_active_tab);
   console_observer.SetPattern(
-      "Not allowed to load local resource: brave://settings/");
+      "Not allowed to load local resource: chrome://settings/");
 
   ASSERT_TRUE(content::ExecJs(initial_active_tab,
                               "window.domAutomationController.send("
                               "replaceToBraveSettingsIndirectly())"));
-  ASSERT_TRUE(console_observer.Wait());
-}
-
-// Test whether brave page is not loaded from chrome page.
-IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
-                       NotAllowedToBraveFromChrome) {
-  NavigateToURLBlockUntilNavigationsComplete(active_contents(),
-                                             GURL("chrome://newtab/"), 1);
-
-  content::WebContentsConsoleObserver console_observer(active_contents());
-  console_observer.SetPattern(
-      "Not allowed to load local resource: brave://settings/");
-
-  ASSERT_TRUE(
-      content::ExecJs(active_contents(), "window.open(\"brave://settings\")"));
   ASSERT_TRUE(console_observer.Wait());
 }
 
@@ -268,7 +253,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, NotAllowedToBraveByClick) {
       NavigateToURLUntilLoadStop("example.com", "/brave_scheme_load.html"));
   content::WebContentsConsoleObserver console_observer(active_contents());
   console_observer.SetPattern(
-      "Not allowed to load local resource: brave://settings/");
+      "Not allowed to load local resource: chrome://settings/");
 
   ASSERT_TRUE(content::ExecJs(
       active_contents(),
@@ -283,7 +268,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
       NavigateToURLUntilLoadStop("example.com", "/brave_scheme_load.html"));
   content::WebContentsConsoleObserver console_observer(active_contents());
   console_observer.SetPattern(
-      "Not allowed to load local resource: brave://settings/");
+      "Not allowed to load local resource: chrome://settings/");
 
   ASSERT_TRUE(content::ExecJs(
       active_contents(),
@@ -309,7 +294,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, MAYBE_CrashURLTest) {
       content::RenderProcessHostWatcher::WATCH_FOR_PROCESS_EXIT);
   content::ScopedAllowRendererCrashes allow_renderer_crashes(active_contents());
   browser()->OpenURL(
-      content::OpenURLParams(GURL("brave://crash/"), content::Referrer(),
+      content::OpenURLParams(GURL("brave://crash"), content::Referrer(),
                              WindowOpenDisposition::CURRENT_TAB,
                              ui::PAGE_TRANSITION_TYPED, false),
       /*navigation_handle_callback=*/{});

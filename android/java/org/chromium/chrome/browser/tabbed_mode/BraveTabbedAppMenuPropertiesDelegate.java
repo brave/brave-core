@@ -22,7 +22,6 @@ import com.google.android.material.button.MaterialButton;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.base.BraveUrlConstants;
 import org.chromium.base.DeviceInfo;
 import org.chromium.base.library_loader.LibraryLoader;
 import org.chromium.base.supplier.NullableObservableSupplier;
@@ -902,8 +901,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             Tab tab = mActivityTabProvider.get();
             if (tab != null && !tab.isIncognito() && tab.getWebContents() != null) {
                 GURL lastCommittedUrl = tab.getWebContents().getLastCommittedUrl();
-                if (!lastCommittedUrl.getScheme().equals(BraveUrlConstants.BRAVE_SCHEME)
-                        && !lastCommittedUrl.getScheme().equals(UrlConstants.CHROME_SCHEME)
+                if (!lastCommittedUrl.getScheme().equals(UrlConstants.CHROME_SCHEME)
                         && !lastCommittedUrl
                                 .getScheme()
                                 .equals(UrlConstants.CHROME_NATIVE_SCHEME)) {

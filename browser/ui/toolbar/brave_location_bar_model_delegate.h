@@ -7,13 +7,11 @@
 #define BRAVE_BROWSER_UI_TOOLBAR_BRAVE_LOCATION_BAR_MODEL_DELEGATE_H_
 
 #include "base/compiler_specific.h"
-#include "chrome/browser/ui/browser_location_bar_model_delegate.h"
+#include "chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h"
 
-class TabStripModel;
-
-class BraveLocationBarModelDelegate : public BrowserLocationBarModelDelegate {
+class BraveLocationBarModelDelegate : public ChromeLocationBarModelDelegate {
  public:
-  explicit BraveLocationBarModelDelegate(TabStripModel* tab_strip_model);
+  BraveLocationBarModelDelegate();
   BraveLocationBarModelDelegate(const BraveLocationBarModelDelegate&) = delete;
   BraveLocationBarModelDelegate& operator=(
       const BraveLocationBarModelDelegate&) = delete;
@@ -23,14 +21,10 @@ class BraveLocationBarModelDelegate : public BrowserLocationBarModelDelegate {
 
   // LocationBarModelDelegate:
   const gfx::VectorIcon* GetVectorIconOverride() const override;
-
- private:
   std::u16string FormattedStringWithEquivalentMeaning(
       const GURL& url,
       const std::u16string& formatted_url) const override;
   bool GetURL(GURL* url) const override;
-
-  const raw_ptr<TabStripModel> tab_strip_model_;
 };
 
 #endif  // BRAVE_BROWSER_UI_TOOLBAR_BRAVE_LOCATION_BAR_MODEL_DELEGATE_H_
