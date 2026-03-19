@@ -353,6 +353,7 @@ public protocol WebViewProxy {
   var scrollView: UIScrollView? { get }
   var bounds: CGRect { get }
   var frame: CGRect { get }
+  var isKeyboardVisible: Bool { get }
   func becomeFirstResponder() -> Bool
 }
 
