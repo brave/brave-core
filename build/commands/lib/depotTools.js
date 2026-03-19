@@ -5,7 +5,7 @@
 
 import ActionGuard from './actionGuard.js'
 import config from './config.js'
-import isCI from './isCI.ts'
+import { isCI } from './ciDetect.ts'
 import fs from 'node:fs'
 import path from 'node:path'
 import Log from './logging.js'

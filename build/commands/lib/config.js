@@ -13,7 +13,7 @@ import rootDir from './rootDir.cjs'
 import EnvConfig from './envConfig.ts'
 import Log from './logging.js'
 import util from './util.js'
-import isCI, { isTeamcity } from './isCI.ts'
+import { isCI, isTeamcity } from './ciDetect.ts'
 
 const braveCoreDir = path.join(rootDir, 'src', 'brave')
 

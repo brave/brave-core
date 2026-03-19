@@ -8,7 +8,7 @@ import chalk from 'chalk'
 import logUpdate from 'log-update'
 import { patchApplyReasonMessages, getReasonName } from './gitPatcher.js'
 import tsm from 'teamcity-service-messages'
-import { isTeamcity } from './isCI.ts'
+import { isTeamcity } from './ciDetect.ts'
 
 let divider
 function setLineLength() {

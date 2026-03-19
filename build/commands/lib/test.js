@@ -16,7 +16,7 @@ import {
   getApplicableFilters,
   getChromiumTestsSuites,
 } from './testUtils.js'
-import isCI, { isTeamcity } from './isCI.ts'
+import { isCI, isTeamcity } from './ciDetect.ts'
 
 const test = async (
   passthroughArgs,

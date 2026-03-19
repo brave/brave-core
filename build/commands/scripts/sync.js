@@ -13,7 +13,7 @@ import config from '../lib/config.js'
 import util from '../lib/util.js'
 import Log from '../lib/logging.js'
 import depotTools from '../lib/depotTools.js'
-import isCI from '../lib/isCI.ts'
+import { isCI } from '../lib/ciDetect.ts'
 import syncUtil from '../lib/syncUtils.js'
 import sisoUtils from '../lib/sisoUtils.js'
 

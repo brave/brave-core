@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-export const isJenkins = process.env.BUILD_ID !== undefined
 export const isTeamcity = process.env.TEAMCITY_VERSION !== undefined
 
-export default isJenkins || isTeamcity
+export const isCI = process.env.BUILD_ID !== undefined || isTeamcity

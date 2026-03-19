@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import type { Config } from './config.js'
-import isCI from './isCI.ts'
+import { isCI } from './ciDetect.ts'
 import assert from 'node:assert'
 import fs from 'node:fs'
 import path from 'node:path'

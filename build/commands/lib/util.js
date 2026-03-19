@@ -17,7 +17,7 @@ import updateChromeVersion from './updateChromeVersion.js'
 import ActionGuard from './actionGuard.js'
 import { GitPatcher } from './gitPatcher.js'
 import { getBuildArgs } from './buildArgs.ts'
-import isCI, { isTeamcity } from './isCI.ts'
+import { isCI, isTeamcity } from './ciDetect.ts'
 
 // Do not limit the number of listeners to avoid warnings from EventEmitter.
 process.setMaxListeners(0)
