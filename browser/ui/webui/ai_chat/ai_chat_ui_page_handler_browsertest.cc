@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 
 #include "base/check.h"
+#include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
@@ -13,6 +14,7 @@
 #include "base/test/run_until.h"
 #include "base/test/scoped_run_loop_timeout.h"
 #include "base/test/test_future.h"
+#include "base/threading/thread_restrictions.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
@@ -32,10 +34,16 @@
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "net/dns/mock_host_resolver.h"
+#include "pdf/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/url_constants.h"
 
 namespace ai_chat {
+
+#if BUILDFLAG(ENABLE_PDF)
+constexpr char kExpectedPdfText[] = "This is the way\nI have spoken";
+#endif  // BUILDFLAG(ENABLE_PDF)
+
 class AIChatUIPageHandlerBrowserTest : public PlatformBrowserTest,
                                        public mojom::TabDataObserver {
  public:
@@ -128,6 +136,20 @@ class AIChatUIPageHandlerBrowserTest : public PlatformBrowserTest,
         base::StrCat({"window.open('", url.spec(), "', '_blank');"})));
     content::WaitForLoadStop(web_contents());
     EXPECT_EQ(web_contents()->GetLastCommittedURL(), url);
+  }
+
+  std::pair<base::FilePath, std::vector<uint8_t>> ReadTestPdf() {
+    base::FilePath pdf_path =
+        base::PathService::CheckedGet(brave::DIR_TEST_DATA)
+            .AppendASCII("leo")
+            .AppendASCII("dummy.pdf");
+    std::optional<std::vector<uint8_t>> pdf_bytes;
+    {
+      base::ScopedAllowBlockingForTesting allow_blocking;
+      pdf_bytes = base::ReadFileToBytes(pdf_path);
+    }
+    CHECK(pdf_bytes.has_value());
+    return {pdf_path, std::move(*pdf_bytes)};
   }
 
  protected:
@@ -261,6 +283,54 @@ IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest, ProcessImageFile) {
   EXPECT_GT(valid_result->data.size(), 0u);
   EXPECT_EQ(valid_result->filesize, valid_result->data.size());
 }
+
+#if BUILDFLAG(ENABLE_PDF)
+IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest, ProcessPdfFile) {
+  auto* page_handler = GetPageHandler(web_contents());
+  ASSERT_TRUE(page_handler);
+
+  auto [pdf_path, pdf_bytes] = ReadTestPdf();
+
+  base::test::TestFuture<ai_chat::mojom::UploadedFilePtr> future;
+  page_handler->ProcessPdfFile(pdf_bytes, "dummy.pdf", future.GetCallback());
+
+  auto result = future.Take();
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->filename, "dummy.pdf");
+  EXPECT_EQ(result->type, ai_chat::mojom::UploadedFileType::kPdf);
+  EXPECT_GT(result->data.size(), 0u);
+  ASSERT_TRUE(result->extracted_text.has_value());
+  EXPECT_EQ(*result->extracted_text, kExpectedPdfText);
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest,
+                       OnFilesUploaded_WithPdf) {
+  auto* page_handler = GetPageHandler(web_contents());
+  ASSERT_TRUE(page_handler);
+
+  auto [pdf_path, pdf_bytes] = ReadTestPdf();
+
+  // Build UploadedFile with full path as filename (simulating what
+  // UploadFileHelper returns from the file picker).
+  std::vector<ai_chat::mojom::UploadedFilePtr> files;
+  files.push_back(ai_chat::mojom::UploadedFile::New(
+      pdf_path.AsUTF8Unsafe(), pdf_bytes.size(), std::move(pdf_bytes),
+      ai_chat::mojom::UploadedFileType::kPdf, std::nullopt));
+
+  base::test::TestFuture<
+      std::optional<std::vector<ai_chat::mojom::UploadedFilePtr>>>
+      future;
+  page_handler->OnFilesUploaded(future.GetCallback(),
+                                std::make_optional(std::move(files)));
+
+  auto result = future.Take();
+  ASSERT_TRUE(result.has_value());
+  ASSERT_EQ(result->size(), 1u);
+  EXPECT_EQ((*result)[0]->filename, "dummy.pdf");
+  ASSERT_TRUE((*result)[0]->extracted_text.has_value());
+  EXPECT_EQ(*(*result)[0]->extracted_text, kExpectedPdfText);
+}
+#endif  // BUILDFLAG(ENABLE_PDF)
 
 IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest,
                        AssociateURLDoesNotCrashShutdown) {

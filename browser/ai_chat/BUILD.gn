@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
+import("//pdf/features.gni")
 import("//printing/buildflags/buildflags.gni")
 import("//services/screen_ai/buildflags/features.gni")
 

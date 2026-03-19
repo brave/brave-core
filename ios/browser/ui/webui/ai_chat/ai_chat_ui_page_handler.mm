@@ -208,10 +208,21 @@ void AIChatUIPageHandler::ProcessImageFile(
                 }
                 auto uploaded_file = ai_chat::mojom::UploadedFile::New(
                     filename, processed_data->size(), *processed_data,
-                    ai_chat::mojom::UploadedFileType::kImage);
+                    ai_chat::mojom::UploadedFileType::kImage, std::nullopt);
                 std::move(callback).Run(std::move(uploaded_file));
               },
               filename, std::move(callback))));
+}
+
+void AIChatUIPageHandler::ProcessPdfFile(const std::vector<uint8_t>& file_data,
+                                         const std::string& filename,
+                                         ProcessPdfFileCallback callback) {
+  // iOS does not support background PDF text extraction.
+  // Return the raw PDF data without extracted text.
+  auto uploaded_file = ai_chat::mojom::UploadedFile::New(
+      filename, file_data.size(), file_data,
+      ai_chat::mojom::UploadedFileType::kPdf, std::nullopt);
+  std::move(callback).Run(std::move(uploaded_file));
 }
 
 void AIChatUIPageHandler::UploadFile(bool use_media_capture,
