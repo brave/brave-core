@@ -1559,6 +1559,7 @@ if (is_android) {
       "//chrome/browser/tabmodel:java",
       "//chrome/browser/ui/android/actions:java",
       "//chrome/browser/ui/android/appmenu:java",
+      "//chrome/browser/ui/android/bottombar:java",
       "//chrome/browser/ui/android/desktop_windowing:java",
       "//chrome/browser/ui/android/edge_to_edge:java",
       "//chrome/browser/ui/android/extensions:java",

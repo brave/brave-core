@@ -92,6 +92,7 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
+import org.chromium.chrome.browser.ui.bottombar.BottomBarHostManager;
 import org.chromium.chrome.browser.ui.browser_window.ChromeAndroidTask;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.edge_to_edge.TopInsetProvider;
@@ -231,7 +232,8 @@ public class BraveToolbarManager extends ToolbarManager
             NonNullObservableSupplier<Boolean> xrSpaceModeObservableSupplier,
             PageZoomManager pageZoomManager,
             SnackbarManager snackbarManager,
-            @Nullable OmniboxChipManager omniboxChipManager) {
+            @Nullable OmniboxChipManager omniboxChipManager,
+            @Nullable BottomBarHostManager bottomBarHostManager) {
         super(
                 activity,
                 bottomControlsStacker,
@@ -287,7 +289,8 @@ public class BraveToolbarManager extends ToolbarManager
                 xrSpaceModeObservableSupplier,
                 pageZoomManager,
                 snackbarManager,
-                omniboxChipManager);
+                omniboxChipManager,
+                bottomBarHostManager);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;

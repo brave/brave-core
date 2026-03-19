@@ -157,6 +157,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuPropertiesDelegate;
 import org.chromium.chrome.browser.ui.appmenu.BraveAppMenu;
+import org.chromium.chrome.browser.ui.bottombar.BottomBarHostManager;
 import org.chromium.chrome.browser.ui.desktop_windowing.AppHeaderCoordinator;
 import org.chromium.chrome.browser.ui.edge_to_edge.TopInsetProvider;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
@@ -1492,7 +1493,8 @@ public class BytecodeTest {
                         NonNullObservableSupplier.class,
                         PageZoomManager.class,
                         SnackbarManager.class,
-                        OmniboxChipManager.class));
+                        OmniboxChipManager.class,
+                        BottomBarHostManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -1941,7 +1943,8 @@ public class BytecodeTest {
                         EdgeToEdgeManager.class,
                         MonotonicObservableSupplier.class,
                         NonNullObservableSupplier.class,
-                        OneshotSupplier.class));
+                        OneshotSupplier.class,
+                        BottomBarHostManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
