@@ -46,6 +46,11 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
   const tree_tab::TreeTabNodeId* GetClosestCollapsedAncestor(
       const tree_tab::TreeTabNodeId& id) const;
 
+  // Returns the tree tab node id wrapping the given group, or nullptr if not
+  // wrapped (e.g. tree tabs off). Only valid when model is BraveTabStripModel.
+  const tree_tab::TreeTabNodeId* GetTreeTabNodeIdForGroup(
+      tab_groups::TabGroupId group_id) const;
+
   // BrowserTabStripController overrides:
   void OnTreeTabChanged(const TreeTabChange& change) override;
 

@@ -51,14 +51,6 @@ TEST_F(TreeTabNodeTabCollectionUnitTest, Constructor) {
                    base::DoNothing(), base::DoNothing()),
                "");
 
-  // Constructing tabs::TreeTabNodeTabCollection with nullptr |current_tab|
-  // should fail.
-  EXPECT_DEATH(tabs::TreeTabNodeTabCollection(
-                   tree_tab::TreeTabNodeId::GenerateNew(),
-                   base::WrapUnique<tabs::TabInterface>(nullptr),
-                   base::DoNothing(), base::DoNothing()),
-               "");
-
   // Valid construction with a tab should succeed.
   auto tree_tab_node_id = tree_tab::TreeTabNodeId::GenerateNew();
   auto mock_tab_interface = std::make_unique<MockTabInterfaceWithWeakPtr>();

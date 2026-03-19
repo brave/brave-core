@@ -104,6 +104,13 @@ void BraveTabStripCollection::AddTabCollectionAtPosition(
                                                  position);
 }
 
+std::unique_ptr<TabGroupTabCollection>
+BraveTabStripCollection::PopDetachedGroupCollectionForDelegate(
+    tab_groups::TabGroupId group_id,
+    base::PassKey<BraveTabStripCollectionDelegate> pass_key) {
+  return PopDetachedGroupCollection(group_id);
+}
+
 void BraveTabStripCollection::CreateSplit(
     split_tabs::SplitTabId split_id,
     const std::vector<TabInterface*>& tabs,
@@ -143,6 +150,16 @@ void BraveTabStripCollection::RemoveCollectionMapping(
   }
 
   TabStripCollection::RemoveCollectionMapping(root_collection);
+}
+
+const tree_tab::TreeTabNodeId*
+BraveTabStripCollection::GetTreeTabNodeIdForGroup(
+    tab_groups::TabGroupId group_id) const {
+  if (delegate_ && delegate_->ShouldHandleTabManipulation()) {
+    return delegate_->GetTreeTabNodeIdForGroup(group_id);
+  }
+
+  return nullptr;
 }
 
 }  // namespace tabs

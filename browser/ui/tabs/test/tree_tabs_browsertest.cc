@@ -314,6 +314,8 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   EXPECT_EQ(2u, split_coll->TabCountRecursive());
 }
 
+// Verifies BuildTreeTabs() with a group in the strip: group is wrapped in a
+// tree node, grouped tabs stay in the group, ungrouped tabs get tree nodes.
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, BuildTreeTabs_WithGroupedTabs) {
   auto* tab_groups_service =
       tab_groups::TabGroupSyncServiceFactory::GetForProfile(
@@ -325,6 +327,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, BuildTreeTabs_WithGroupedTabs) {
   for (int i = 0; i < 4; ++i) {
     AddTab();
   }
+  const int tab_count_before = tab_strip_model().count();
 
   // Create a tab group with some tabs (indices 1-2).
   tab_groups::TabGroupId group_id = tab_strip_model().AddToNewGroup({1, 2});
@@ -332,7 +335,13 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, BuildTreeTabs_WithGroupedTabs) {
   // Verify group is created.
   ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
 
-  SetTreeTabsEnabled(true);
+  SetTreeTabsEnabled(true);  // Triggers BuildTreeTabs().
+
+  EXPECT_EQ(tab_count_before, tab_strip_model().count());
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(1), group_id);
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(2), group_id);
+  EXPECT_FALSE(tab_strip_model().GetTabGroupForTab(0).has_value());
+  EXPECT_FALSE(tab_strip_model().GetTabGroupForTab(3).has_value());
 
   // Verify tabs outside group are wrapped in TreeTabNodes within unpinned
   // collection.
@@ -343,24 +352,24 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, BuildTreeTabs_WithGroupedTabs) {
   EXPECT_EQ(tab_strip_model().GetTabAtIndex(4)->GetParentCollection()->type(),
             tabs::TabCollection::Type::TREE_NODE);
 
-  // Verify grouped tabs are wrapped in TreeTabNodes within the group.
+  // BuildTreeTabs wraps the group itself in a tree node; grouped tabs stay
+  // direct children of the group.
   EXPECT_EQ(tab_strip_model().GetTabAtIndex(1)->GetParentCollection()->type(),
-            tabs::TabCollection::Type::TREE_NODE);
+            tabs::TabCollection::Type::GROUP);
   EXPECT_EQ(tab_strip_model().GetTabAtIndex(2)->GetParentCollection()->type(),
-            tabs::TabCollection::Type::TREE_NODE);
-
-  // Verify the TreeTabNodes containing grouped tabs are within a group
-  // collection.
-  auto* tab1_tree_node =
+            tabs::TabCollection::Type::GROUP);
+  const tabs::TabCollection* group_collection =
       tab_strip_model().GetTabAtIndex(1)->GetParentCollection();
-  auto* tab2_tree_node =
-      tab_strip_model().GetTabAtIndex(2)->GetParentCollection();
-  EXPECT_EQ(tab1_tree_node->GetParentCollection()->type(),
-            tabs::TabCollection::Type::GROUP);
-  EXPECT_EQ(tab2_tree_node->GetParentCollection()->type(),
-            tabs::TabCollection::Type::GROUP);
+  ASSERT_EQ(group_collection->type(), tabs::TabCollection::Type::GROUP);
+  const tabs::TabCollection* group_parent =
+      group_collection->GetParentCollection();
+  ASSERT_TRUE(group_parent);
+  EXPECT_EQ(group_parent->type(), tabs::TabCollection::Type::TREE_NODE);
 }
 
+// Verifies FlattenTreeTabs() with a group: tab order and group membership are
+// preserved; grouped tabs are direct children of the group, ungrouped of
+// unpinned.
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, FlattenTreeTabs_WithGroupedTabs) {
   auto* tab_groups_service =
       tab_groups::TabGroupSyncServiceFactory::GetForProfile(
@@ -372,7 +381,6 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, FlattenTreeTabs_WithGroupedTabs) {
   for (int i = 0; i < 4; ++i) {
     AddTab();
   }
-
   std::vector<int> group_indices = {1, 2};
   tab_groups::TabGroupId group_id =
       tab_strip_model().AddToNewGroup(group_indices);
@@ -385,16 +393,19 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, FlattenTreeTabs_WithGroupedTabs) {
     original_tabs.push_back(tab_strip_model().GetTabAtIndex(i));
   }
 
-  SetTreeTabsEnabled(false);
+  SetTreeTabsEnabled(false);  // Triggers FlattenTreeTabs().
 
-  // Verify tabs are preserved in correct order
-  EXPECT_EQ(5, tab_strip_model().count());
-  for (int i = 0; i < tab_strip_model().count(); ++i) {
-    EXPECT_EQ(original_tabs[i], tab_strip_model().GetTabAtIndex(i));
+  // Verify tabs are preserved in correct order.
+  for (size_t i = 0; i < original_tabs.size(); ++i) {
+    EXPECT_EQ(original_tabs[i],
+              tab_strip_model().GetTabAtIndex(static_cast<int>(i)))
+        << "Tab order changed at index " << i;
   }
 
   // Verify group is still present.
   EXPECT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(1), group_id);
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(2), group_id);
 
   // Verify grouped tabs are back to being direct children of the group.
   EXPECT_EQ(tab_strip_model().GetTabAtIndex(1)->GetParentCollection()->type(),
@@ -409,6 +420,51 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, FlattenTreeTabs_WithGroupedTabs) {
             tabs::TabCollection::Type::UNPINNED);
   EXPECT_EQ(tab_strip_model().GetTabAtIndex(4)->GetParentCollection()->type(),
             tabs::TabCollection::Type::UNPINNED);
+}
+
+// Round-trip: flat strip with group -> BuildTreeTabs() -> FlattenTreeTabs() ->
+// order and group preserved (mirrors
+// BuildTreeTabsAndFlattenTreeTabs_WithSplitTabs).
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       BuildTreeTabsAndFlattenTreeTabs_WithGroups) {
+  auto* tab_groups_service =
+      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
+          browser()->profile());
+  ASSERT_TRUE(tab_groups_service);
+  tab_groups_service->SetIsInitializedForTesting(true);
+
+  for (int i = 0; i < 4; ++i) {
+    AddTab();
+  }
+  tab_groups::TabGroupId group_id = tab_strip_model().AddToNewGroup({1, 2});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+
+  std::vector<tabs::TabInterface*> original_tab_order;
+  for (int i = 0; i < tab_strip_model().count(); ++i) {
+    original_tab_order.push_back(tab_strip_model().GetTabAtIndex(i));
+  }
+
+  SetTreeTabsEnabled(true);  // BuildTreeTabs().
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(1), group_id);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(1)->GetParentCollection()->type(),
+            tabs::TabCollection::Type::GROUP);
+
+  SetTreeTabsEnabled(false);  // FlattenTreeTabs().
+
+  EXPECT_EQ(original_tab_order.size(),
+            static_cast<size_t>(tab_strip_model().count()));
+  for (size_t i = 0; i < original_tab_order.size(); ++i) {
+    EXPECT_EQ(original_tab_order[i],
+              tab_strip_model().GetTabAtIndex(static_cast<int>(i)))
+        << "Tab order changed at index " << i;
+  }
+  EXPECT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(1), group_id);
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(2), group_id);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(1)->GetParentCollection()->type(),
+            tabs::TabCollection::Type::GROUP);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(2)->GetParentCollection()->type(),
+            tabs::TabCollection::Type::GROUP);
 }
 
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
@@ -1860,4 +1916,366 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, Unsplit_FromMiddleNode) {
       std::get<std::unique_ptr<tabs::TabCollection>>(root->GetChildren()[2])
           ->type(),
       tabs::TabCollection::Type::TREE_NODE);
+}
+
+// Make tab group with existing tabs (tree on); group is wrapped in a tree node
+// and tabs inside the group should be direct children of the group without
+// any tree nodes.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddToNewGroup_UnwrapsIntoGroup) {
+  auto* tab_groups_service =
+      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
+          browser()->profile());
+  ASSERT_TRUE(tab_groups_service);
+  tab_groups_service->SetIsInitializedForTesting(true);
+
+  SetTreeTabsEnabled(true);
+
+  for (int i = 0; i < 3; ++i) {
+    AddTab();
+  }
+  ASSERT_EQ(4, tab_strip_model().count());
+
+  for (int i = 0; i < tab_strip_model().count(); ++i) {
+    EXPECT_EQ(tab_strip_model().GetTabAtIndex(i)->GetParentCollection()->type(),
+              tabs::TabCollection::Type::TREE_NODE);
+  }
+
+  tab_groups::TabGroupId group_id = tab_strip_model().AddToNewGroup({0, 1});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+
+  // Group(tab0, tab1), tab2, tab3
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(0), group_id);
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(1), group_id);
+  EXPECT_FALSE(tab_strip_model().GetTabGroupForTab(2).has_value());
+  EXPECT_FALSE(tab_strip_model().GetTabGroupForTab(3).has_value());
+
+  // Children of the group should be direct children of the group without any
+  // tree nodes.
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(0)->GetParentCollection()->type(),
+            tabs::TabCollection::Type::GROUP);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(1)->GetParentCollection()->type(),
+            tabs::TabCollection::Type::GROUP);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(2)->GetParentCollection()->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(3)->GetParentCollection()->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+
+  // The group collection itself is wrapped in a tree node.
+  const tabs::TabCollection* group_collection =
+      tab_strip_model().GetTabAtIndex(0)->GetParentCollection();
+  ASSERT_EQ(group_collection->type(), tabs::TabCollection::Type::GROUP);
+  const tabs::TabCollection* group_parent =
+      group_collection->GetParentCollection();
+  ASSERT_TRUE(group_parent);
+  EXPECT_EQ(group_parent->type(), tabs::TabCollection::Type::TREE_NODE);
+}
+
+// When removing a tab from a group, the tab should be wrapped in a tree node
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, RemoveFromGroup_WrapsInTreeNodes) {
+  auto* tab_groups_service =
+      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
+          browser()->profile());
+  ASSERT_TRUE(tab_groups_service);
+  tab_groups_service->SetIsInitializedForTesting(true);
+
+  SetTreeTabsEnabled(true);
+
+  for (int i = 0; i < 3; ++i) {
+    AddTab();
+  }
+  ASSERT_EQ(4, tab_strip_model().count());
+
+  // tab0, (Group(tab1, tab2)), tab3
+  tab_groups::TabGroupId group_id = tab_strip_model().AddToNewGroup({1, 2});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(1)->GetParentCollection()->type(),
+            tabs::TabCollection::Type::GROUP);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(2)->GetParentCollection()->type(),
+            tabs::TabCollection::Type::GROUP);
+
+  // tab0, tab1, tab2, tab3
+  tab_strip_model().RemoveFromGroup({1});
+  tab_strip_model().RemoveFromGroup({2});
+
+  // The group should be removed.
+  EXPECT_TRUE(tab_strip_model().group_model()->ListTabGroups().empty());
+
+  // All tabs should be ungrouped.
+  EXPECT_FALSE(tab_strip_model().GetTabGroupForTab(0).has_value());
+  EXPECT_FALSE(tab_strip_model().GetTabGroupForTab(1).has_value());
+  EXPECT_FALSE(tab_strip_model().GetTabGroupForTab(2).has_value());
+  EXPECT_FALSE(tab_strip_model().GetTabGroupForTab(3).has_value());
+
+  // The ungrouped tabs also should be wrapped in tree nodes.
+  for (int i = 0; i < tab_strip_model().count(); ++i) {
+    EXPECT_EQ(tab_strip_model().GetTabAtIndex(i)->GetParentCollection()->type(),
+              tabs::TabCollection::Type::TREE_NODE);
+  }
+}
+
+// Moving a tab from group A to group B - it should work well without any
+// crashes.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, MoveTab_FromGroupAToGroupB) {
+  auto* tab_groups_service =
+      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
+          browser()->profile());
+  ASSERT_TRUE(tab_groups_service);
+  tab_groups_service->SetIsInitializedForTesting(true);
+
+  SetTreeTabsEnabled(true);
+  for (int i = 0; i < 4; ++i) {
+    AddTab();
+  }
+  ASSERT_EQ(5, tab_strip_model().count());
+
+  // group A(tab0, tab1), tab2, group B(tab3, tab4)
+  tab_groups::TabGroupId group_a = tab_strip_model().AddToNewGroup({0, 1});
+  tab_groups::TabGroupId group_b = tab_strip_model().AddToNewGroup({3, 4});
+  ASSERT_NE(group_a, group_b);
+
+  tabs::TabInterface* tab_formerly_at_0 = tab_strip_model().GetTabAtIndex(0);
+  tabs::TabInterface* tab_formerly_at_1 = tab_strip_model().GetTabAtIndex(1);
+  tabs::TabInterface* tab_formerly_at_2 = tab_strip_model().GetTabAtIndex(2);
+  tabs::TabInterface* tab_formerly_at_3 = tab_strip_model().GetTabAtIndex(3);
+  tabs::TabInterface* tab_formerly_at_4 = tab_strip_model().GetTabAtIndex(4);
+
+  // Move tab at index 1 from group A to group B (indices change after move).
+  // group A(tab0), tab2, group B(tab1, tab3, tab4)
+  tab_strip_model().AddToExistingGroup({1}, group_b, false);
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(
+                tab_strip_model().GetIndexOfTab(tab_formerly_at_0)),
+            group_a);
+  EXPECT_FALSE(
+      tab_strip_model()
+          .GetTabGroupForTab(tab_strip_model().GetIndexOfTab(tab_formerly_at_2))
+          .has_value());
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(
+                tab_strip_model().GetIndexOfTab(tab_formerly_at_1)),
+            group_b);
+  EXPECT_EQ(tab_strip_model().GetIndexOfTab(tab_formerly_at_1), 2);
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(
+                tab_strip_model().GetIndexOfTab(tab_formerly_at_3)),
+            group_b);
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(
+                tab_strip_model().GetIndexOfTab(tab_formerly_at_4)),
+            group_b);
+
+  EXPECT_EQ(1u, tab_strip_model()
+                    .group_model()
+                    ->GetTabGroup(group_a)
+                    ->ListTabs()
+                    .length());
+  EXPECT_EQ(3u, tab_strip_model()
+                    .group_model()
+                    ->GetTabGroup(group_b)
+                    ->ListTabs()
+                    .length());
+}
+
+// Make a tab group with a nested tree hierarchy (parent and child in group).
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       MakeTabGroup_WithNestedTreeHierarchy) {
+  auto* tab_groups_service =
+      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
+          browser()->profile());
+  ASSERT_TRUE(tab_groups_service);
+  tab_groups_service->SetIsInitializedForTesting(true);
+
+  SetTreeTabsEnabled(true);
+  // Build A (root) -> B (child).
+  auto* tab_a = tab_strip_model().GetTabAtIndex(0);
+  auto tab_b_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_b_interface->set_opener(tab_a);
+  tab_strip_model().AddTab(std::move(tab_b_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  ASSERT_EQ(2, tab_strip_model().count());
+  ASSERT_EQ(tab_strip_model().GetTabAtIndex(1)->GetParentCollection()->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+  ASSERT_EQ(tab_strip_model()
+                .GetTabAtIndex(1)
+                ->GetParentCollection()
+                ->GetParentCollection(),
+            tab_a->GetParentCollection());
+
+  // Build group with A and B
+  tab_groups::TabGroupId group_id = tab_strip_model().AddToNewGroup({0, 1});
+
+  // Then both should be direct children of the group.
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(0), group_id);
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(1), group_id);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(0)->GetParentCollection()->type(),
+            tabs::TabCollection::Type::GROUP);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(1)->GetParentCollection()->type(),
+            tabs::TabCollection::Type::GROUP);
+
+  // Unpinned collection should have only one child - the tree node containing
+  // the group.
+  ASSERT_EQ(unpinned_collection().ChildCount(), 1u);
+  const auto& tree_node_collection =
+      std::get<std::unique_ptr<tabs::TabCollection>>(
+          unpinned_collection().GetChildren().front());
+  EXPECT_EQ(tree_node_collection->type(), tabs::TabCollection::Type::TREE_NODE);
+  EXPECT_EQ(tree_node_collection->GetChildren().size(), 1u);
+
+  EXPECT_EQ(
+      static_cast<tabs::TreeTabNodeTabCollection*>(tree_node_collection.get())
+          ->current_value_type(),
+      tabs::TreeTabNodeTabCollection::CurrentValueType::kGroup);
+}
+
+// Move a tab from group A (which is nested under a tree node) to root. This
+// should work well without any crashes.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, MoveTab_FromNestedGroupToRoot) {
+  auto* tab_groups_service =
+      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
+          browser()->profile());
+  ASSERT_TRUE(tab_groups_service);
+  tab_groups_service->SetIsInitializedForTesting(true);
+
+  SetTreeTabsEnabled(true);
+
+  // Build A (root) -> B -> C.
+  auto* tab_a = tab_strip_model().GetTabAtIndex(0);
+  auto tab_b_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_b_interface->set_opener(tab_a);
+  tab_strip_model().AddTab(std::move(tab_b_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  auto* tab_b = tab_strip_model().GetTabAtIndex(1);
+  auto tab_c_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_c_interface->set_opener(tab_b);
+  tab_strip_model().AddTab(std::move(tab_c_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  auto* tab_c = tab_strip_model().GetTabAtIndex(2);
+  ASSERT_EQ(3, tab_strip_model().count());
+
+  // Build groups with B and C (indices 1, 2).
+  // Then A(Root) -> Group Wrapper(Group(B, C))
+  tab_groups::TabGroupId group_id = tab_strip_model().AddToNewGroup({1, 2});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+  EXPECT_EQ(tab_b->GetParentCollection()->type(),
+            tabs::TabCollection::Type::GROUP);
+  EXPECT_EQ(tab_c->GetParentCollection()->type(),
+            tabs::TabCollection::Type::GROUP);
+  EXPECT_EQ(tab_b->GetParentCollection(), tab_c->GetParentCollection());
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(0)->GetParentCollection(),
+            tab_b
+                ->GetParentCollection()    // group
+                ->GetParentCollection()    // tree wrapper of group
+                ->GetParentCollection());  // root
+
+  // Remove tab B from group so it moves to root (before the group).
+  // Then A(Root) -> B
+  //              -> GroupWrapper(Group(C))
+  tab_strip_model().RemoveFromGroup({1});
+  ASSERT_FALSE(tab_strip_model().GetTabGroupForTab(1).has_value());
+  ASSERT_EQ(tab_strip_model().GetTabGroupForTab(2), group_id);
+
+  EXPECT_EQ(tab_b->GetParentCollection()->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+  EXPECT_EQ(tab_b
+                ->GetParentCollection()   // wrapper
+                ->GetParentCollection(),  // A(root)
+            tab_a->GetParentCollection());
+}
+
+// Ungroup tabs (partial: one tab out of a group).
+// This should work well without any crashes.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, UngroupTabs_Partial) {
+  auto* tab_groups_service =
+      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
+          browser()->profile());
+  ASSERT_TRUE(tab_groups_service);
+  tab_groups_service->SetIsInitializedForTesting(true);
+
+  SetTreeTabsEnabled(true);
+  for (int i = 0; i < 3; ++i) {
+    AddTab();
+  }
+  ASSERT_EQ(4, tab_strip_model().count());
+
+  // Build group with tab1 and tab2
+  // tab0, (Group(tab1, tab2)), tab3
+  tab_groups::TabGroupId group_id = tab_strip_model().AddToNewGroup({1, 2});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+
+  // Remove tab1 from group.
+  tab_strip_model().RemoveFromGroup({1});
+  ASSERT_FALSE(tab_strip_model().GetTabGroupForTab(1).has_value());
+  ASSERT_EQ(tab_strip_model().GetTabGroupForTab(2), group_id);
+
+  // Then tab0, tab1, (Group(tab2)), tab3
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(1)->GetParentCollection()->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(2)->GetParentCollection()->type(),
+            tabs::TabCollection::Type::GROUP);
+  EXPECT_EQ(4, tab_strip_model().count());
+}
+
+// Ungroup all tabs in a group (single call).
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, UngroupAllTabs_InGroup) {
+  auto* tab_groups_service =
+      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
+          browser()->profile());
+  ASSERT_TRUE(tab_groups_service);
+  tab_groups_service->SetIsInitializedForTesting(true);
+
+  SetTreeTabsEnabled(true);
+  for (int i = 0; i < 3; ++i) {
+    AddTab();
+  }
+  ASSERT_EQ(4, tab_strip_model().count());
+  tab_groups::TabGroupId group_id = tab_strip_model().AddToNewGroup({1, 2});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+
+  tab_strip_model().RemoveFromGroup({1, 2});
+
+  EXPECT_FALSE(tab_strip_model().GetTabGroupForTab(1).has_value());
+  EXPECT_FALSE(tab_strip_model().GetTabGroupForTab(2).has_value());
+  EXPECT_FALSE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+  for (int i = 0; i < tab_strip_model().count(); ++i) {
+    EXPECT_EQ(tab_strip_model().GetTabAtIndex(i)->GetParentCollection()->type(),
+              tabs::TabCollection::Type::TREE_NODE);
+  }
+  EXPECT_EQ(4, tab_strip_model().count());
+  EXPECT_EQ(unpinned_collection().ChildCount(), 1u);
+  EXPECT_TRUE(tab_strip_model().group_model()->ListTabGroups().empty());
+}
+
+// Remove tabs from multiple groups at once should work as expected.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, RemoveTabsFromMultipleGroups) {
+  auto* tab_groups_service =
+      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
+          browser()->profile());
+  ASSERT_TRUE(tab_groups_service);
+  tab_groups_service->SetIsInitializedForTesting(true);
+
+  SetTreeTabsEnabled(true);
+  for (int i = 0; i < 3; ++i) {
+    AddTab();
+  }
+  ASSERT_EQ(4, tab_strip_model().count());
+
+  // Build groups with tab1 and tab2
+  // tab0, (Group(tab1, tab2)), (Group(tab3))
+  tab_groups::TabGroupId group_id_1 = tab_strip_model().AddToNewGroup({1, 2});
+  tab_groups::TabGroupId group_id_2 = tab_strip_model().AddToNewGroup({3});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id_1));
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id_2));
+
+  // Remove tab1 and tab3 from group.
+  tab_strip_model().RemoveFromGroup({1, 3});
+
+  // Then tab0, tab1, (Group(tab2)), tab3
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(1)->GetParentCollection()->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(2)->GetParentCollection()->type(),
+            tabs::TabCollection::Type::GROUP);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(3)->GetParentCollection()->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+  EXPECT_EQ(4, tab_strip_model().count());
 }

@@ -14,6 +14,10 @@ namespace split_tabs {
 class SplitTabVisualData;
 }  // namespace split_tabs
 
+namespace tree_tab {
+class TreeTabNodeId;
+}  // namespace tree_tab
+
 namespace tabs {
 
 class BraveTabStripCollection;
@@ -61,6 +65,10 @@ class BraveTabStripCollectionDelegate {
   // in TabStripCollection.
   virtual tabs::TabCollection* GetCollectionForMapping(
       tabs::TabCollection* root_collection);
+
+  // Returns tree tab node id for a group.
+  virtual const tree_tab::TreeTabNodeId* GetTreeTabNodeIdForGroup(
+      tab_groups::TabGroupId group_id) const;
 
  protected:
   base::PassKey<BraveTabStripCollectionDelegate> GetPassKey() const;

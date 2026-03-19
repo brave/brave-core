@@ -48,6 +48,8 @@ class BraveTreeTabStripCollectionDelegate
   void Unsplit(split_tabs::SplitTabId split_id) override;
   tabs::TabCollection* GetCollectionForMapping(
       tabs::TabCollection* root_collection) override;
+  const tree_tab::TreeTabNodeId* GetTreeTabNodeIdForGroup(
+      tab_groups::TabGroupId group_id) const override;
 
  private:
   // Tries to add the tab to the same tree as the opener. Returns base::ok(void)
@@ -109,6 +111,29 @@ class BraveTreeTabStripCollectionDelegate
   // tree until it finds such collection.
   tabs::TabCollection* GetAttachableCollectionForTreeTabNode(
       tabs::TabCollection* tab_collection) const;
+
+  // Wraps a detached TabGroupTabCollection in a tree node and attaches it next
+  // to the moving tabs' tree position (see MoveTabsIntoGroup).
+  void AttachDetachedGroupCollection(
+      const std::vector<tabs::TabInterface*>& moving_tabs,
+      tab_groups::TabGroupId new_group_id) const;
+
+  // Handles moving tabs into a group: get/attach group, unwrap from tree nodes,
+  // add to group, clean up empty tree nodes.
+  void MoveTabsIntoGroup(const std::vector<tabs::TabInterface*>& moving_tabs,
+                         size_t destination_index,
+                         tab_groups::TabGroupId new_group_id) const;
+
+  // Detaches a single tab from its group and returns it. If the group becomes
+  // empty, removes the group collection and its tree node wrapper. The tab's
+  // parent must be a TabGroupTabCollection.
+  std::unique_ptr<tabs::TabInterface> DetachTabOutOfGroup(
+      tabs::TabInterface* tab) const;
+
+  // Handles moving tabs out of a group: remove from group, wrap each in a tree
+  // node, insert at destination, remove empty group.
+  void MoveTabsOutOfGroup(const std::vector<tabs::TabInterface*>& moving_tabs,
+                          size_t destination_index) const;
 
   bool in_destruction_ = false;
 

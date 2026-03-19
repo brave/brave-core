@@ -209,6 +209,12 @@ void BraveTabStripModel::NotifyTreeTabNodeWillBeDestroyed(
   }
 }
 
+const tree_tab::TreeTabNodeId* BraveTabStripModel::GetTreeTabNodeIdForGroup(
+    tab_groups::TabGroupId group_id) const {
+  return static_cast<const tabs::BraveTabStripCollection*>(contents_data_.get())
+      ->GetTreeTabNodeIdForGroup(group_id);
+}
+
 tabs::TabStripCollection&
 BraveTabStripModel::GetTabStripCollectionForTesting() {
   return *contents_data_;

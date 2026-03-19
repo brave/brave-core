@@ -148,6 +148,25 @@ bool BraveTabStrip::CanCloseTabViaMiddleButtonClick() const {
   return *middle_click_close_tab_enabled_;
 }
 
+void BraveTabStrip::AddTabToGroup(std::optional<tab_groups::TabGroupId> group,
+                                  int model_index) {
+  TabStrip::AddTabToGroup(group, model_index);
+
+  if (!base::FeatureList::IsEnabled(tabs::kBraveTreeTab)) {
+    return;
+  }
+
+  std::optional<tree_tab::TreeTabNodeId> node_id;
+  if (group.has_value()) {
+    auto* brave_controller =
+        static_cast<BraveBrowserTabStripController*>(controller());
+    if (const auto* id = brave_controller->GetTreeTabNodeIdForGroup(*group)) {
+      node_id = *id;
+    }
+  }
+  tab_at(model_index)->set_tree_tab_node(node_id);
+}
+
 void BraveTabStrip::ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) {
   // Chromium asks hover style to all split tabs but we only set hover style
   // to hovered tab.
