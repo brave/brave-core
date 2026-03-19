@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_PINNED_TOOLBAR_ACTIONS_CONTAINER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_PINNED_TOOLBAR_ACTIONS_CONTAINER_H_
 
+#include "chrome/browser/ui/views/toolbar/pinned_toolbar_actions.h"
+
 // We only want to allow the downloads button to be show in the pinned toolbar
 // container for now.
 #define UpdateActionState(...)           \
