@@ -504,7 +504,7 @@ struct PendingTransactionView: View {
         )
       }
     } label: {
-      Label(Strings.Wallet.confirm, systemImage: "checkmark.circle.fill")
+      Label(confirmationStore.confirmButtonTitle, systemImage: "checkmark.circle.fill")
     }
     .buttonStyle(BraveFilledButtonStyle(size: .large))
     .disabled(

@@ -5943,5 +5943,21 @@ extension Strings {
       comment:
         "The description that will show when there is no available provider with givin input."
     )
+    public static let shieldZEC = NSLocalizedString(
+      "wallet.shieldZEC",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Shield ZEC",
+      comment:
+        "A button title to confirm a shield ZEC transaction. It is shown below details about a given transaction."
+    )
+    public static let unshieldZEC = NSLocalizedString(
+      "wallet.unshieldZEC",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Unshield ZEC",
+      comment:
+        "A button title to confirm an unshield ZEC transaction. It is shown below details about a given transaction."
+    )
   }
 }
