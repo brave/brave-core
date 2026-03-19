@@ -88,7 +88,6 @@ class LargeFaviconView: UIView {
       do {
         let favicon = try await FaviconFetcher.loadIcon(
           url: siteURL,
-          kind: .largeIcon,
           persistent: isPersistent
         )
 

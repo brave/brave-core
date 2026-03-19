@@ -52,7 +52,6 @@ extension BrowserViewController: NSFetchedResultsControllerDelegate {
 
               let favicon = try? await FaviconFetcher.loadIcon(
                 url: url,
-                kind: .largeIcon,
                 persistent: true
               )
               return IndexedWidgetFavorite(
