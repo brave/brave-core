@@ -544,6 +544,13 @@ void BraveToolbarView::ResetLocationBarBounds() {
       width(), location_bar_view_->width(),
       location_bar_view_->GetMinimumSize().width(), location_bar_view_->x());
 
+  // When the window is at minimum width, GetLocationBarMarginHPercent()
+  // returns 0, so ResetLocationBarBounds() produces the same bounds and
+  // SetBoundsRect() exits early without calling LayoutImmediately(). In that
+  // case BraveLocationBarView::Layout() is never called in this pass and
+  // children keep stale positions from a previous wider layout, which can
+  // place Brave-specific views outside the bar's bounds.
+  location_bar_view_->InvalidateLayout();
   location_bar_view_->SetBounds(location_bar_view_->x() + margin.left(),
                                 location_bar_view_->y(),
                                 location_bar_view_->width() - margin.width(),

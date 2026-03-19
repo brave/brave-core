@@ -35,6 +35,13 @@ BraveActionsContainer::BraveActionsContainer(
 
 BraveActionsContainer::~BraveActionsContainer() = default;
 
+namespace {
+constexpr int kSeparatorMargin = 3;
+constexpr int kSeparatorWidth = 1;
+// Total width consumed by the separator including its left/right margins.
+constexpr int kSeparatorTotalWidth = kSeparatorWidth + 2 * kSeparatorMargin;
+}  // namespace
+
 void BraveActionsContainer::Init() {
   // automatic layout
   auto vertical_container_layout = std::make_unique<views::BoxLayout>(
@@ -49,8 +56,6 @@ void BraveActionsContainer::Init() {
   RoundedSeparator* brave_button_separator_ = new RoundedSeparator();
   // TODO(petemill): theme color
   brave_button_separator_->SetColor(SkColorSetRGB(0xb2, 0xb5, 0xb7));
-  constexpr int kSeparatorMargin = 3;
-  constexpr int kSeparatorWidth = 1;
   brave_button_separator_->SetPreferredSize(
       gfx::Size(kSeparatorWidth + kSeparatorMargin * 2,
                 GetLayoutConstant(LayoutConstant::kLocationBarIconSize)));
@@ -153,6 +158,48 @@ gfx::Size BraveActionsContainer::GetActionSize() const {
 void BraveActionsContainer::SetShouldHide(bool should_hide) {
   should_hide_ = should_hide;
   Update();
+}
+
+void BraveActionsContainer::UpdateLayoutForAvailableWidth(int available_width) {
+  // Determine the natural (pref-driven) visibility for each button,
+  // ignoring space constraints.
+  const bool natural_shields = shields_action_btn_ != nullptr;
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  const bool natural_rewards =
+      rewards_action_btn_ != nullptr && ShouldShowBraveRewardsAction();
+#endif
+
+  // Greedily assign space in priority order: Shields > Rewards.
+  // The separator (kSeparatorTotalWidth) is always counted when at least one
+  // button is shown, because it is always a child of this container.
+  const int btn_width = GetActionSize().width();
+  bool show_shields = false;
+  if (natural_shields && kSeparatorTotalWidth + btn_width <= available_width) {
+    show_shields = true;
+  }
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  bool show_rewards = false;
+  if (natural_rewards) {
+    // If shields is already shown we need room for one more button; otherwise
+    // we still need the separator plus one button.
+    const int needed =
+        kSeparatorTotalWidth + btn_width * (show_shields ? 2 : 1);
+    if (needed <= available_width) {
+      show_rewards = true;
+    }
+  }
+#endif
+
+  if (shields_action_btn_) {
+    shields_action_btn_->SetVisible(show_shields);
+  }
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  if (rewards_action_btn_) {
+    rewards_action_btn_->SetVisible(show_rewards);
+  }
+#endif
+  UpdateVisibility();
 }
 
 void BraveActionsContainer::ChildPreferredSizeChanged(views::View* child) {

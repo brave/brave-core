@@ -53,6 +53,12 @@ class BraveActionsContainer : public views::View {
   void Update();
   void SetShouldHide(bool should_hide);
 
+  // Shows as many action buttons as fit within |available_width|, using
+  // priority order (Shields > Rewards). Hides the container entirely when
+  // nothing fits. Call this instead of SetVisible() when you want partial
+  // visibility based on available space.
+  void UpdateLayoutForAvailableWidth(int available_width);
+
   // views::View:
   void ChildPreferredSizeChanged(views::View* child) override;
 

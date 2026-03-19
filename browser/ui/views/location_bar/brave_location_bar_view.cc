@@ -34,6 +34,8 @@
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
+#include "chrome/browser/ui/views/page_action/page_action_container_view.h"
+#include "chrome/browser/ui/views/page_action/page_action_icon_container.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_controller.h"
 #include "chrome/grit/branded_strings.h"
 #include "components/grit/brave_components_strings.h"
@@ -221,6 +223,17 @@ void BraveLocationBarView::Layout(PassKey) {
     return;
   }
 
+  // Hide Brave trailing views when there isn't enough space for both them and
+  // the omnibox minimum width. The omnibox should be the last view to shrink.
+  // Guard against recursion: SetVisible() on a child triggers
+  // ChildVisibilityChanged(), which calls DeprecatedLayoutImmediately() and
+  // would re-enter Layout(). We suppress that re-entry here.
+  if (!in_brave_space_update_) {
+    in_brave_space_update_ = true;
+    UpdateBraveViewsSpaceVisibility();
+    in_brave_space_update_ = false;
+  }
+
   LayoutSuperclass<LocationBarView>(this);
 }
 
@@ -347,6 +360,141 @@ void BraveLocationBarView::AddedToWidget() {
   SetupShadow();
 }
 
+void BraveLocationBarView::UpdateBraveViewsSpaceVisibility() {
+  CHECK(in_brave_space_update_);
+
+  // If news/tor views were previously hidden for space, restore their natural
+  // visibility so we can re-evaluate whether they fit at the current bar width.
+  // brave_actions_ is self-managed via UpdateLayoutForAvailableWidth and does
+  // not need an explicit restore step here.
+  if (brave_views_collapsed_for_space_) {
+    brave_views_collapsed_for_space_ = false;
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+    if (brave_news_action_icon_view_) {
+      brave_news_action_icon_view_->Update();
+    }
+#endif
+#if BUILDFLAG(ENABLE_TOR)
+    if (onion_location_view_) {
+      onion_location_view_->Update();
+    }
+#endif
+  }
+
+  // If upstream trailing views were previously hidden because the URL would
+  // have been truncated, restore them so we can re-evaluate at the current
+  // bar width and URL length.
+  if (upstream_trailing_collapsed_for_space_) {
+    upstream_trailing_collapsed_for_space_ = false;
+    if (page_action_icon_container_was_visible_) {
+      page_action_icon_container_was_visible_ = false;
+      page_action_icon_container_->SetVisible(true);
+    }
+    if (page_action_container_was_visible_) {
+      page_action_container_was_visible_ = false;
+      page_action_container()->SetVisible(true);
+    }
+  }
+
+  if (!IsInitialized()) {
+    return;
+  }
+
+  const int bar_width = GetLocalBounds().width();
+  if (bar_width <= 0) {
+    return;
+  }
+
+  // Minimum bar width needed to show the omnibox at its minimum size, not
+  // counting any trailing decorations. brave_actions_ has higher priority than
+  // upstream trailing views (translate, share, etc.), so we intentionally do
+  // not reserve their space here — they are evicted later if necessary.
+  const int elem_pad =
+      GetLayoutConstant(LayoutConstant::kLocationBarElementPadding);
+  const int inset_width = GetInsets().width();
+  const int leading_min = GetMinimumLeadingWidth();
+  const int omnibox_min = omnibox_view_->GetMinimumSize().width();
+  const int trailing_upstream_min = GetMinimumTrailingWidth();
+  const int pure_upstream_min =
+      inset_width + std::max(omnibox_min, leading_min + elem_pad);
+
+  // Space available for all optional trailing views (Brave + upstream
+  // trailing).
+  const int avail_brave = bar_width - pure_upstream_min;
+
+  // brave_actions_ has the highest priority among Brave trailing views because
+  // it is registered as the rightmost trailing decoration (closest to the bar's
+  // right edge). Give it all the available space first; it will show Shields
+  // first, then Rewards, and hide itself entirely when nothing fits.
+  if (brave_actions_) {
+    brave_actions_->UpdateLayoutForAvailableWidth(std::max(0, avail_brave));
+  }
+
+  // Width actually consumed by brave_actions_ after the update above.
+  const int brave_actions_used =
+      (brave_actions_ && brave_actions_->GetVisible())
+          ? brave_actions_->GetPreferredSize().width() + elem_pad
+          : 0;
+
+  // Hide upstream trailing views (translate, share, etc.) when brave_actions_
+  // and the omnibox minimum already claim all available space. brave_actions_
+  // has higher priority, so upstream trailing is evicted before brave_actions_
+  // shrinks further.
+  if (!upstream_trailing_collapsed_for_space_ && trailing_upstream_min > 0 &&
+      bar_width <
+          pure_upstream_min + trailing_upstream_min + brave_actions_used) {
+    upstream_trailing_collapsed_for_space_ = true;
+    auto* pic = page_action_icon_container_.get();
+    page_action_icon_container_was_visible_ = pic && pic->GetVisible();
+    if (page_action_icon_container_was_visible_) {
+      pic->SetVisible(false);
+    }
+    auto* pac = page_action_container();
+    page_action_container_was_visible_ = pac && pac->GetVisible();
+    if (page_action_container_was_visible_) {
+      pac->SetVisible(false);
+    }
+  }
+
+  // Remaining space available for news/tor after brave_actions_ and upstream
+  // trailing take their respective shares.
+  const int upstream_trailing_used =
+      upstream_trailing_collapsed_for_space_ ? 0 : trailing_upstream_min;
+  const int avail_for_news_tor =
+      avail_brave - brave_actions_used - upstream_trailing_used;
+
+  // Hide each news/tor view independently based on available space. Views are
+  // evaluated in priority order (highest first): Onion/Tor is a security
+  // indicator and has priority over Brave News. Each view consumes space from
+  // |avail_remaining| only when it fits; the next view gets whatever is left.
+  int avail_remaining = avail_for_news_tor;
+
+#if BUILDFLAG(ENABLE_TOR)
+  if (onion_location_view_ && onion_location_view_->GetVisible()) {
+    const int tor_width =
+        onion_location_view_->GetMinimumSize().width() + elem_pad;
+    if (avail_remaining < tor_width) {
+      brave_views_collapsed_for_space_ = true;
+      onion_location_view_->SetVisible(false);
+    } else {
+      avail_remaining -= tor_width;
+    }
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  if (brave_news_action_icon_view_ &&
+      brave_news_action_icon_view_->GetVisible()) {
+    const int news_width =
+        brave_news_action_icon_view_->GetMinimumSize().width() + elem_pad;
+    if (avail_remaining < news_width) {
+      brave_views_collapsed_for_space_ = true;
+      brave_news_action_icon_view_->SetVisible(false);
+    }
+  }
+#endif
+}
+
 void BraveLocationBarView::ChildVisibilityChanged(views::View* child) {
   LocationBarView::ChildVisibilityChanged(child);
   // Normally, PageActionIcons are in a container which is always visible, only
@@ -355,7 +503,12 @@ void BraveLocationBarView::ChildVisibilityChanged(views::View* child) {
   // and re-caculate trailing decorator positions when a child changes.
   if (std::ranges::contains(GetLeftMostTrailingViews(), child) ||
       std::ranges::contains(GetRightMostTrailingViews(), child)) {
-    DeprecatedLayoutImmediately();
+    // Suppress re-entrant layout during UpdateBraveViewsSpaceVisibility() to
+    // avoid infinite recursion (SetVisible → ChildVisibilityChanged →
+    // DeprecatedLayoutImmediately → Layout → SetVisible → ...).
+    if (!in_brave_space_update_) {
+      DeprecatedLayoutImmediately();
+    }
     SchedulePaint();
   }
 }

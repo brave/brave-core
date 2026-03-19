@@ -131,10 +131,36 @@ class BraveLocationBarView : public LocationBarView {
   PlaylistActionIconView* GetPlaylistActionIconView();
   void SetupShadow();
 
+  // Hides/shows Brave trailing views based on available bar width so that the
+  // omnibox has priority over Brave-specific buttons when space is tight.
+  // Must be called before LayoutSuperclass<LocationBarView>() in Layout().
+  void UpdateBraveViewsSpaceVisibility();
+
   // Prevent layout with invalid rect.
   // It also could make omnibox popup have wrong position.
   // See the comments of BraveToolbarView::Layout().
   bool ignore_layout_ = false;
+
+  // True when Brave trailing views were hidden because there was not enough
+  // space for both them and the omnibox minimum width. Used to restore their
+  // natural visibility when the bar becomes wider.
+  bool brave_views_collapsed_for_space_ = false;
+
+  // True when upstream trailing views (translate, share, etc.) were hidden
+  // because brave_actions_ and the omnibox minimum claimed all available space.
+  // Tracked separately from brave_views_collapsed_for_space_ so that each set
+  // of views is restored independently.
+  bool upstream_trailing_collapsed_for_space_ = false;
+  // Pre-collapse visibility states for upstream trailing views, so that we only
+  // restore views that were actually visible before we hid them.
+  bool page_action_icon_container_was_visible_ = false;
+  bool page_action_container_was_visible_ = false;
+
+  // Guards against re-entrant layout calls that can occur when SetVisible()
+  // is called on a Brave trailing view inside UpdateBraveViewsSpaceVisibility()
+  // (which would otherwise trigger ChildVisibilityChanged() →
+  // DeprecatedLayoutImmediately() → Layout() recursion).
+  bool in_brave_space_update_ = false;
   std::unique_ptr<ViewShadow> shadow_;
   raw_ptr<BraveActionsContainer> brave_actions_ = nullptr;
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
