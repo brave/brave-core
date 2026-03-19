@@ -8,10 +8,12 @@
 #include "base/apple/foundation_util.h"
 #include "base/json/json_writer.h"
 #include "base/strings/sys_string_conversions.h"
+#include "brave/ios/web_view/internal/cwv_favicon_status_internal.h"
 #include "ios/web/common/user_agent.h"
 #include "ios/web/js_messaging/java_script_feature_manager.h"
 #include "ios/web/js_messaging/web_frame_internal.h"
 #include "ios/web/js_messaging/web_view_js_utils.h"
+#include "ios/web/public/favicon/favicon_status.h"
 #include "ios/web/public/js_messaging/web_frames_manager.h"
 #include "ios/web/public/ui/crw_web_view_proxy.h"
 #include "ios/web/web_state/ui/crw_web_controller.h"
@@ -87,6 +89,14 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
 - (void)reloadWithUserAgentType:(CWVUserAgentType)userAgentType {
   self.webState->GetNavigationManager()->ReloadWithUserAgentType(
       static_cast<web::UserAgentType>(userAgentType));
+}
+
+- (CWVFaviconStatus*)faviconStatus {
+  web::FaviconStatus status = self.webState->GetFaviconStatus();
+  if (!status.valid) {
+    return nil;
+  }
+  return [[CWVFaviconStatus alloc] initWithFaviconStatus:status];
 }
 
 - (void)evaluateJavaScript:(NSString*)javaScriptString
