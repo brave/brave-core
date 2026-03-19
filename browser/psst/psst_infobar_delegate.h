@@ -23,8 +23,9 @@ class PsstInfoBarDelegate : public ConfirmInfoBarDelegate {
   static void Create(infobars::InfoBarManager* infobar_manager,
                      AcceptCallback on_accept_callback);
 
+  // ConfirmInfoBarDelegate overrides:
   bool Accept() override;
-  bool Cancel() override;
+  void InfoBarDismissed() override;
 
  private:
   explicit PsstInfoBarDelegate(AcceptCallback on_accept_callback);

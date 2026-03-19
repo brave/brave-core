@@ -53,7 +53,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
   std::optional<PsstWebsiteSettings> dialog_data_;
   PsstTabWebContentsObserver::ConsentCallback apply_changes_callback_;
   raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
-  raw_ptr<PrefService> prefs_;
+  raw_ptr<PrefService> prefs_ = nullptr;
   base::WeakPtrFactory<PsstUiDelegateImpl> weak_ptr_factory_{this};
 };
 

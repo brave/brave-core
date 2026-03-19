@@ -189,7 +189,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   ASSERT_TRUE(confirm_delegate);
   EXPECT_EQ(confirm_delegate->GetIdentifier(),
             infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
-  confirm_delegate->Cancel();
+  confirm_delegate->InfoBarDismissed();
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
   EXPECT_FALSE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
 }

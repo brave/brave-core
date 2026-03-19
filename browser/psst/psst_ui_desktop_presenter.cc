@@ -12,16 +12,21 @@
 namespace psst {
 
 PsstUiDesktopPresenter::PsstUiDesktopPresenter(
-    content::WebContents* web_contents)
+    base::WeakPtr<content::WebContents> web_contents)
     : web_contents_(web_contents) {}
 PsstUiDesktopPresenter::~PsstUiDesktopPresenter() = default;
 
 void PsstUiDesktopPresenter::ShowInfoBar(InfoBarCallback on_accept_callback) {
+  if (!web_contents_) {
+    return;
+  }
+
   infobars::ContentInfoBarManager* infobar_manager =
-      infobars::ContentInfoBarManager::FromWebContents(web_contents_);
+      infobars::ContentInfoBarManager::FromWebContents(web_contents_.get());
   if (!infobar_manager) {
     return;
   }
+
   PsstInfoBarDelegate::Create(infobar_manager, std::move(on_accept_callback));
 }
 

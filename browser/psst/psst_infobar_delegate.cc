@@ -27,6 +27,14 @@ PsstInfoBarDelegate::PsstInfoBarDelegate(AcceptCallback on_accept_callback)
 
 PsstInfoBarDelegate::~PsstInfoBarDelegate() = default;
 
+bool PsstInfoBarDelegate::Accept() {
+  if (on_accept_callback_) {
+    std::move(on_accept_callback_).Run(true);
+  }
+
+  return true;
+}
+
 infobars::InfoBarDelegate::InfoBarIdentifier
 PsstInfoBarDelegate::GetIdentifier() const {
   return BRAVE_PSST_INFOBAR_DELEGATE;
@@ -44,20 +52,10 @@ std::u16string PsstInfoBarDelegate::GetButtonLabel(InfoBarButton button) const {
   return l10n_util::GetStringUTF16(IDS_BRAVE_PSST_INFO_BAR_REVIEW_SUGGESTIONS);
 }
 
-bool PsstInfoBarDelegate::Accept() {
-  if (on_accept_callback_) {
-    std::move(on_accept_callback_).Run(true);
-  }
-
-  return true;
-}
-
-bool PsstInfoBarDelegate::Cancel() {
+void PsstInfoBarDelegate::InfoBarDismissed() {
   if (on_accept_callback_) {
     std::move(on_accept_callback_).Run(false);
   }
-
-  return true;
 }
 
 }  // namespace psst
