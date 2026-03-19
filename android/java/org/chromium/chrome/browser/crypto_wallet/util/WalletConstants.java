@@ -69,7 +69,8 @@ public final class WalletConstants {
                     BraveWalletConstants.MAINNET_CHAIN_ID,
                     BraveWalletConstants.SOLANA_MAINNET,
                     BraveWalletConstants.FILECOIN_MAINNET,
-                    BraveWalletConstants.BITCOIN_MAINNET);
+                    BraveWalletConstants.BITCOIN_MAINNET,
+                    BraveWalletConstants.Z_CASH_MAINNET);
 
     // Solana
     public static final String SOL = "SOL";
