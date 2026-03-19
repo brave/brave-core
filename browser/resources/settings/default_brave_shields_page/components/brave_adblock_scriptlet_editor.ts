@@ -43,8 +43,7 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
       scriptlet: Scriptlet,
       dialogTitle_: String,
       isScriptletValid_: Boolean,
-      scriptletErrorMessage_: String,
-      scriptletName_: String
+      scriptletErrorMessage_: String
     }
   }
 
@@ -52,7 +51,6 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
   declare dialogTitle_: string
   declare isScriptletValid_: boolean
   declare scriptletErrorMessage_: string
-  declare scriptletName_: string
 
   originalScriptlet_: Scriptlet
   browserProxy_ = BraveAdblockBrowserProxyImpl.getInstance()
@@ -68,18 +66,8 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
 
     if (this.originalScriptlet_.name) {
       this.dialogTitle_ = this.i18n('adblockEditCustomScriptletDialogTitle')
-      // Strip the 'user-' prefix and '.js' suffix for display
-      let name = this.oldScriptletName_
-      if (name.toLowerCase().startsWith('user-')) {
-        name = name.slice(5)
-      }
-      if (name.endsWith('.js')) {
-        name = name.slice(0, -3)
-      }
-      this.scriptletName_ = name
     } else {
       this.dialogTitle_ = this.i18n('adblockAddCustomScriptletDialogTitle')
-      this.scriptletName_ = ''
     }
 
     this.updateError(ErrorCode.kOK)
@@ -140,15 +128,24 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
   }
 
   validateName_() {
-    if (!/^[a-zA-Z0-9-_.]+$/.test(this.scriptletName_)) {
+    if (!/^[a-zA-Z0-9-_.]+$/.test(this.scriptlet.name)) {
       this.updateError(ErrorCode.kInvalidName)
     } else {
       this.updateError(ErrorCode.kOK)
     }
   }
 
+  startsWithCaseInsensitive(str: string, prefix: string): boolean {
+    return str.slice(0, prefix.length).toLowerCase() == prefix.toLowerCase()
+  }
+
   updateScriptletBeforeSave_() {
-    this.scriptlet.name = 'user-' + this.scriptletName_ + '.js'
+    if (!this.startsWithCaseInsensitive(this.scriptlet.name, 'user-')) {
+      this.scriptlet.name = 'user-' + this.scriptlet.name
+    }
+    if (!this.scriptlet.name.endsWith('.js')) {
+      this.scriptlet.name = this.scriptlet.name + '.js'
+    }
     this.validateName_()
   }
 }
