@@ -285,10 +285,10 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <if expr="_is_chrome_for_testing_branded">
         <then>
           <message name="IDS_PRODUCT_NAME" desc="The Brave for Testing application name" translateable="false">
-            Brave for Testing
+            Brave Origin for Testing
           </message>
           <message name="IDS_SHORT_PRODUCT_NAME" desc="The Brave for Testing application short name." translateable="false">
-            Brave for Testing
+            Brave Origin for Testing
           </message>
         </then>
         <else>
@@ -461,7 +461,7 @@ New bookmarks can’t be saved in your account until you delete some. If you sig
       <if expr="_is_chrome_for_testing_branded">
         <then>
           <message name="IDS_ACCESSIBLE_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for the accessible name of a tabbed browser window">
-            <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave for Testing
+            <ph name="PAGE_TITLE">$1<ex>Brave Origin</ex></ph> - Brave Origin for Testing
           </message>
         </then>
         <else>
@@ -477,7 +477,7 @@ New bookmarks can’t be saved in your account until you delete some. If you sig
         <ph name="PAGE_TITLE">$1<ex>Brave Origin</ex></ph> - Brave Origin Dev
       </message>
       <message name="IDS_ACCESSIBLE_CANARY_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for the accessible name of a tabbed browser window for the canary (nightly build) channel version of the browser">
-        <ph name="PAGE_TITLE">$1<ex>Brave Origin</ex></ph> - Brave Origin Nightly
+        <ph name="PAGE_TITLE">$1<ex>Brave Origin</ex></ph> - Brave Origin Canary
       </message>
       <if expr="_is_chrome_for_testing_branded">
         <then>

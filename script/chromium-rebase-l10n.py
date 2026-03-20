@@ -164,6 +164,56 @@ def add_installer_strings(brave_strings_xml_tree, installer_strings):
     return add_installer_strings_xtb_translations_for_messages(message_ids)
 
 
+def _replace_text_in_element(elem, old, new):
+    """Replace text in an element and all its children."""
+    if elem.text and old in elem.text:
+        elem.text = elem.text.replace(old, new)
+    if elem.tail and old in elem.tail:
+        elem.tail = elem.tail.replace(old, new)
+    for child in elem:
+        _replace_text_in_element(child, old, new)
+
+
+# Messages where "Brave" should become "Brave Origin" for Origin builds.
+ORIGIN_BRANDED_MESSAGES = [
+    'IDS_PRODUCT_NAME',
+    'IDS_SHORT_PRODUCT_NAME',
+    'IDS_SXS_SHORTCUT_NAME',
+    'IDS_SHORTCUT_NAME_BETA',
+    'IDS_SHORTCUT_NAME_DEV',
+    'IDS_PRODUCT_DESCRIPTION',
+    'IDS_WELCOME_TO_CHROME',
+    'IDS_FIRST_RUN_DIALOG_WINDOW_TITLE',
+    'IDS_ACCESSIBLE_BROWSER_WINDOW_TITLE_FORMAT',
+    'IDS_ACCESSIBLE_BETA_BROWSER_WINDOW_TITLE_FORMAT',
+    'IDS_ACCESSIBLE_DEV_BROWSER_WINDOW_TITLE_FORMAT',
+    'IDS_ACCESSIBLE_CANARY_BROWSER_WINDOW_TITLE_FORMAT',
+    'IDS_APP_MENU_PRODUCT_NAME',
+    'IDS_HELPER_NAME',
+    'IDS_SHORT_HELPER_NAME',
+    'IDS_APP_SHORTCUTS_SUBDIR_NAME',
+    'IDS_APP_SHORTCUTS_SUBDIR_NAME_CANARY',
+    'IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA',
+    'IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV',
+    'IDS_INBOUND_MDNS_RULE_NAME',
+    'IDS_INBOUND_MDNS_RULE_NAME_BETA',
+    'IDS_INBOUND_MDNS_RULE_NAME_CANARY',
+    'IDS_INBOUND_MDNS_RULE_NAME_DEV',
+    'IDS_INBOUND_MDNS_RULE_DESCRIPTION',
+    'IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA',
+    'IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY',
+    'IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV',
+]
+
+
+def apply_origin_branding(xml_tree):
+    """Apply 'Brave Origin' branding to origin-specific strings."""
+    for msg_name in ORIGIN_BRANDED_MESSAGES:
+        for elem in xml_tree.xpath(
+                f'//message[@name="{msg_name}"]'):
+            _replace_text_in_element(elem, 'Brave', 'Brave Origin')
+
+
 def parse_args():
     parser = argparse.ArgumentParser(
         description='Rebase strings/l10n on the current Chromium version.')
@@ -280,12 +330,16 @@ def main():
     print(f'Rebasing source string file: {source_string_path}')
     print(f'filename: {filename}')
 
-    generate_overrides_and_replace_strings(source_string_path)
+    (basename, _) = filename.split('.')
+
+    # brave_origin_strings is already braveified from the copy of
+    # brave_strings.grd, so skip the Chromium-based processing.
+    if basename != 'brave_origin_strings':
+        generate_overrides_and_replace_strings(source_string_path)
 
     # If you modify the translateable attribute then also update
     # is_translateable_string function in brave/script/lib/l10n/grd_utils.py.
     xml_tree = etree.parse(source_string_path)
-    (basename, _) = filename.split('.')
     if basename == 'brave_strings':
         if not migrate_google_chrome_strings(
                 xml_tree, GOOGLE_CHROME_STRINGS_MIGRATION_MAP):
@@ -355,6 +409,8 @@ def main():
         elem1 = xml_tree.xpath(
             '//message[@name="IDS_INSTALL_OS_NOT_SUPPORTED"]')[0]
         elem1.text = elem1.text.replace('Windows 7', 'Windows 10')
+    elif basename == 'brave_origin_strings':
+        apply_origin_branding(xml_tree)
 
     grit_root = xml_tree.xpath(
         '//grit' if extension == '.grd' else '//grit-part')[0]
