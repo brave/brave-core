@@ -160,34 +160,30 @@ mod tests {
 
     #[test]
     fn basic() {
-        let server_keypair = generate_receiving_keypair();
-        assert_eq!(server_keypair.public_key.len(), KEY_LEN);
+        let keypair = generate_client_keypair();
+        assert_eq!(keypair.public_key.len(), KEY_LEN);
 
-        let enc = encrypt(b"hello", &server_keypair.public_key);
-        assert!(enc.error.is_empty(), "encrypt error: {}", enc.error);
-        assert!(!enc.ciphertext.is_empty());
+        let enc = encrypt_inner(b"hello", &keypair.public_key).expect("encrypt failed");
+        assert!(!enc.is_empty());
 
-        let dec = decrypt(&enc.ciphertext, &server_keypair.secret_key);
-        assert!(dec.error.is_empty(), "decrypt error: {}", dec.error);
-        assert_eq!(dec.plaintext, "hello");
+        let dec = decrypt_inner(&enc, &keypair.secret_key).expect("decrypt failed");
+        assert_eq!(dec, "hello");
     }
 
     #[test]
     fn decrypt_with_wrong_key_fails() {
-        let server_keypair = generate_receiving_keypair();
-        let wrong_keypair = generate_receiving_keypair();
+        let keypair = generate_client_keypair();
+        let wrong_keypair = generate_client_keypair();
 
-        let enc = encrypt(b"hello", &server_keypair.public_key);
-        assert!(enc.error.is_empty(), "encrypt error: {}", enc.error);
+        let enc = encrypt_inner(b"hello", &keypair.public_key).expect("encrypt failed");
 
-        let dec = decrypt(&enc.ciphertext, &wrong_keypair.secret_key);
-        assert!(!dec.error.is_empty());
-        assert!(dec.plaintext.is_empty());
+        let dec = decrypt_inner(&enc, &wrong_keypair.secret_key);
+        assert!(dec.is_err());
     }
 
     #[test]
-    fn receiving_key_pair_matches_ed25519_dalek() {
-        let (seed, result) = generate_receiving_keypair_inner();
+    fn client_key_pair_matches_ed25519_dalek() {
+        let (seed, result) = generate_client_keypair_inner();
         let secret_key = result.secret_key;
 
         let signing_key = SigningKey::from_bytes(&seed);
