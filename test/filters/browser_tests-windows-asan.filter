@@ -1,0 +1,13 @@
+##
+## Upstream tests to disable on Windows ASAN builds only
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue.
+##
+
+# https://github.com/brave/brave-browser/issues/53717
+# Flaky on Windows x64 ASAN. ManifestSilentUpdateCommand queues a background
+# GetData() task whose FinishAndStartNextTask cleanup may still be pending when
+# HasCurrent() is asserted. Upstream flake rate 0.6% (LUCI Analysis, 30 days).
+# No Brave modifications to installable manager code path.
+-InstallableManagerBrowserTest.CheckWebapp
