@@ -9,6 +9,8 @@
 
 #include "base/containers/map_util.h"
 #include "base/functional/bind.h"
+#include "base/json/json_writer.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -25,6 +27,9 @@ constexpr char kAttestationPathFormat[] = "v1/models/%s/attestation";
 constexpr char kModelPublicKeyKey[] = "model_public_key";
 
 constexpr base::TimeDelta kAttestationCacheTTL = base::Hours(1);
+
+constexpr std::string_view kThinkOpen = "<think>";
+constexpr std::string_view kThinkClose = "</think>";
 
 constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
     net::DefineNetworkTrafficAnnotation("ai_chat", R"(
@@ -50,6 +55,8 @@ constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
 
 }  // namespace
 
+E2EEProcessor::E2EEProcessor() = default;
+
 E2EEProcessor::E2EEProcessor(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   api_request_helper_ = std::make_unique<api_request_helper::APIRequestHelper>(
@@ -57,6 +64,17 @@ E2EEProcessor::E2EEProcessor(
 }
 
 E2EEProcessor::~E2EEProcessor() = default;
+
+E2EEProcessor::ClientKeyPair::ClientKeyPair(std::string public_key_hex,
+                                            ClientSecretKeyBox secret_key)
+    : public_key_hex(std::move(public_key_hex)),
+      secret_key(std::move(secret_key)) {}
+E2EEProcessor::ClientKeyPair::~ClientKeyPair() = default;
+
+E2EEProcessor::Attestation::Attestation(std::vector<uint8_t> model_public_key)
+    : model_public_key(std::move(model_public_key)),
+      cached_at(base::TimeTicks::Now()) {}
+E2EEProcessor::Attestation::~Attestation() = default;
 
 void E2EEProcessor::SetAPIRequestHelperForTesting(
     std::unique_ptr<api_request_helper::APIRequestHelper> api_helper) {
@@ -70,7 +88,8 @@ void E2EEProcessor::ClearCachedModelAttestations() {
 void E2EEProcessor::FetchModelAttestation(
     const std::string& model_name,
     FetchModelAttestationCallback callback) {
-  if (const auto* cached = base::FindOrNull(attestation_cache_, model_name)) {
+  if (const auto* cached =
+          base::FindPtrOrNull(attestation_cache_, model_name)) {
     if (base::TimeTicks::Now() - cached->cached_at <= kAttestationCacheTTL) {
       std::move(callback).Run(std::nullopt);
       return;
@@ -99,16 +118,97 @@ void E2EEProcessor::OnFetchModelAttestationComplete(
     return;
   }
 
-  const std::string* model_public_key =
+  const std::string* model_public_key_hex =
       result.value_body().GetDict().FindString(kModelPublicKeyKey);
-  if (!model_public_key || model_public_key->empty()) {
+  if (!model_public_key_hex || model_public_key_hex->empty()) {
+    std::move(callback).Run(mojom::APIError::InternalError);
+    return;
+  }
+
+  std::vector<uint8_t> model_public_key_bytes;
+  if (!base::HexStringToBytes(*model_public_key_hex, &model_public_key_bytes)) {
     std::move(callback).Run(mojom::APIError::InternalError);
     return;
   }
 
   attestation_cache_[model_name] =
-      Attestation{*model_public_key, base::TimeTicks::Now()};
+      std::make_unique<Attestation>(std::move(model_public_key_bytes));
   std::move(callback).Run(std::nullopt);
+}
+
+E2EEProcessor::ClientKeyPair E2EEProcessor::GenerateClientKeyPair() {
+  auto result = ai_chat::generate_client_keypair();
+  const std::string public_key_hex = base::HexEncodeLower(result.public_key);
+  return ClientKeyPair(public_key_hex, std::move(result.secret_key));
+}
+
+E2EEProcessor::EncryptCallback E2EEProcessor::CreateEncryptCallback(
+    const std::string& model_name) {
+  const auto* cached_attestation =
+      base::FindPtrOrNull(attestation_cache_, model_name);
+  CHECK(cached_attestation);
+
+  const std::vector<uint8_t> model_public_key =
+      cached_attestation->model_public_key;
+  return base::BindRepeating(
+      [](const std::vector<uint8_t>& model_public_key,
+         const base::ListValue& content) -> std::optional<std::string> {
+        std::string json;
+        base::JSONWriter::Write(content, &json);
+
+        auto ciphertext = ai_chat::encrypt(json, model_public_key);
+
+        if (ciphertext.empty()) {
+          return std::nullopt;
+        }
+
+        return base::HexEncodeLower(ciphertext);
+      },
+      model_public_key);
+}
+
+E2EEProcessor::DecryptCallback E2EEProcessor::CreateDecryptCallback(
+    const ClientSecretKey* key) {
+  return base::BindRepeating(
+      [](const ClientSecretKey* secret_key,
+         const std::string& ciphertext_hex) -> std::optional<std::string> {
+        std::string result;
+        std::string_view remaining = ciphertext_hex;
+
+        // Parse ciphertext hex between thinking tags
+        while (!remaining.empty()) {
+          const size_t open_pos = remaining.find(kThinkOpen);
+          const size_t close_pos = remaining.find(kThinkClose);
+          const size_t tag_pos = std::min(open_pos, close_pos);
+
+          const std::string_view segment = remaining.substr(0, tag_pos);
+          if (!segment.empty()) {
+            std::vector<uint8_t> bytes;
+            if (!base::HexStringToBytes(segment, &bytes) || bytes.empty()) {
+              // If the segment is not hex, assume it's already plaintext
+              // i.e. a error generated by the aichat server
+              result += segment;
+            } else {
+              auto plaintext = ai_chat::decrypt(bytes, *secret_key);
+              if (plaintext.empty()) {
+                return std::nullopt;
+              }
+              result += std::string(plaintext);
+            }
+          }
+
+          if (tag_pos != std::string_view::npos) {
+            const auto& tag = tag_pos == open_pos ? kThinkOpen : kThinkClose;
+            result += tag;
+            remaining.remove_prefix(tag_pos + tag.size());
+          } else {
+            break;
+          }
+        }
+
+        return result;
+      },
+      key);
 }
 
 }  // namespace ai_chat

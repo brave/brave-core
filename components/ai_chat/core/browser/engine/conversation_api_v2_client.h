@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -74,6 +75,10 @@ class ConversationAPIV2Client {
   api_request_helper::APIRequestHelper* GetAPIRequestHelperForTesting() {
     return api_request_helper_.get();
   }
+  void SetE2EEProcessorFactoryForTesting(
+      base::OnceCallback<std::unique_ptr<E2EEProcessor>()> factory) {
+    e2ee_processor_factory_for_testing_ = std::move(factory);
+  }
 
   std::string CreateJSONRequestBody(
       std::vector<OAIMessage> messages,
@@ -81,9 +86,12 @@ class ConversationAPIV2Client {
       const std::optional<std::string>& preferred_tool_name,
       const ConversationCapabilitySet& conversation_capabilities,
       const std::optional<std::string>& model_name,
-      const bool is_sse_enabled);
+      const bool is_sse_enabled,
+      const std::optional<std::string>& client_public_key_hex = std::nullopt);
 
-  static base::ListValue SerializeOAIMessages(std::vector<OAIMessage> messages);
+  static base::ListValue SerializeOAIMessages(
+      std::vector<OAIMessage> messages,
+      const E2EEProcessor::EncryptCallback& encrypt_callback = {});
 
  private:
   FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest_ContentBlocks,
@@ -112,10 +120,14 @@ class ConversationAPIV2Client {
       std::optional<CredentialCacheEntry> credential,
       std::optional<mojom::APIError> attestation_fetch_error);
 
-  void OnQueryCompleted(std::optional<CredentialCacheEntry> credential,
-                        GenerationCompletedCallback callback,
-                        api_request_helper::APIRequestResult result);
-  void OnQueryDataReceived(GenerationDataCallback callback,
+  void OnQueryCompleted(
+      std::optional<CredentialCacheEntry> credential,
+      std::optional<E2EEProcessor::ClientSecretKeyBox> secret_key,
+      GenerationCompletedCallback callback,
+      api_request_helper::APIRequestResult result);
+
+  void OnQueryDataReceived(E2EEProcessor::DecryptCallback decrypt_callback,
+                           GenerationDataCallback callback,
                            base::expected<base::Value, std::string> result);
 
   std::optional<std::string> GetLeoModelKeyFromResponse(
@@ -135,6 +147,8 @@ class ConversationAPIV2Client {
   raw_ptr<ModelService> model_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<E2EEProcessor> e2ee_processor_;
+  base::OnceCallback<std::unique_ptr<E2EEProcessor>()>
+      e2ee_processor_factory_for_testing_;
 
   base::WeakPtrFactory<ConversationAPIV2Client> weak_ptr_factory_{this};
 };

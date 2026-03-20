@@ -410,7 +410,8 @@ std::vector<EngineConsumer::GenerationResultData> ParseToolCallsFromOAIResponse(
 
 std::optional<EngineConsumer::GenerationResultData> ParseOAICompletionResponse(
     const base::DictValue& response,
-    std::optional<std::string> model_key) {
+    std::optional<std::string> model_key,
+    const E2EEProcessor::DecryptCallback& decrypt_callback) {
   const base::DictValue* content_container = GetOAIContentContainer(response);
   if (!content_container) {
     VLOG(2) << "No delta or message info found in first completion choice.";
@@ -422,8 +423,17 @@ std::optional<EngineConsumer::GenerationResultData> ParseOAICompletionResponse(
     return std::nullopt;
   }
 
+  std::string plaintext = *content;
+  if (decrypt_callback) {
+    std::optional<std::string> decrypted = decrypt_callback.Run(*content);
+    if (!decrypted) {
+      return std::nullopt;
+    }
+    plaintext = std::move(*decrypted);
+  }
+
   auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New(*content));
+      mojom::CompletionEvent::New(std::move(plaintext)));
   return EngineConsumer::GenerationResultData(std::move(event),
                                               std::move(model_key));
 }

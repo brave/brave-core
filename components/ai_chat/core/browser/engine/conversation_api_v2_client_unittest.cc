@@ -20,6 +20,7 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/engine/e2ee_processor.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/test_utils.h"
@@ -55,6 +56,7 @@ namespace ai_chat {
 namespace {
 
 constexpr char kTestContent[] = "test content";
+constexpr char kTestModelName[] = "test-model-name";
 
 struct ContentBlockTestParam {
   std::string name;
@@ -235,12 +237,58 @@ class MockAIChatCredentialManager : public AIChatCredentialManager {
               (override));
 };
 
+class MockE2EEProcessor : public E2EEProcessor {
+ public:
+  MockE2EEProcessor() {
+    ON_CALL(*this, FetchModelAttestation(_, _))
+        .WillByDefault(
+            [](const std::string&, FetchModelAttestationCallback cb) {
+              std::move(cb).Run(std::nullopt);
+            });
+    ON_CALL(*this, GenerateClientKeyPair())
+        .WillByDefault(testing::InvokeWithoutArgs([]() {
+          return ClientKeyPair("mockclientpublickeyhex",
+                               rust::Box<ClientSecretKey>::from_raw(nullptr));
+        }));
+    ON_CALL(*this, CreateEncryptCallback(_))
+        .WillByDefault([](const std::string&) {
+          return base::BindRepeating(
+              [](const base::ListValue&) -> std::optional<std::string> {
+                return "encrypted_content";
+              });
+        });
+    ON_CALL(*this, CreateDecryptCallback(_))
+        .WillByDefault([](const ClientSecretKey*) {
+          return base::BindRepeating(
+              [](const std::string&) -> std::optional<std::string> {
+                return "decrypted response";
+              });
+        });
+  }
+  ~MockE2EEProcessor() override = default;
+
+  MOCK_METHOD(void,
+              FetchModelAttestation,
+              (const std::string&, FetchModelAttestationCallback),
+              (override));
+  MOCK_METHOD(ClientKeyPair, GenerateClientKeyPair, (), (override));
+  MOCK_METHOD(EncryptCallback,
+              CreateEncryptCallback,
+              (const std::string&),
+              (override));
+  MOCK_METHOD(DecryptCallback,
+              CreateDecryptCallback,
+              (const ClientSecretKey*),
+              (override));
+  MOCK_METHOD(void, ClearCachedModelAttestations, (), (override));
+};
+
 // Create a version of the ConversationAPIClient that contains our mocks
 class TestConversationAPIV2Client : public ConversationAPIV2Client {
  public:
   TestConversationAPIV2Client(AIChatCredentialManager* credential_manager,
                               ModelService* model_service)
-      : ConversationAPIV2Client("test-model-name",
+      : ConversationAPIV2Client(kTestModelName,
                                 nullptr,
                                 credential_manager,
                                 model_service) {
@@ -253,6 +301,8 @@ class TestConversationAPIV2Client : public ConversationAPIV2Client {
   MockAPIRequestHelper* GetMockAPIRequestHelper() {
     return static_cast<MockAPIRequestHelper*>(GetAPIRequestHelperForTesting());
   }
+
+  using ConversationAPIV2Client::SetE2EEProcessorFactoryForTesting;
 };
 
 class ConversationAPIV2ClientUnitTest : public testing::Test {
@@ -1629,6 +1679,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ContentReceipt) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(content_receipt))));
@@ -1656,6 +1707,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ContentReceipt) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(content_receipt))));
@@ -1684,6 +1736,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ContentReceipt) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(content_receipt))));
@@ -1712,6 +1765,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ContentReceipt) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(content_receipt))));
@@ -1741,6 +1795,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ContentReceipt) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(content_receipt))));
@@ -1770,6 +1825,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ContentReceipt) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(content_receipt))));
@@ -1799,6 +1855,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolStart) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(tool_start))));
@@ -1822,6 +1879,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolStart) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(tool_start))));
@@ -1840,6 +1898,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolStart) {
     EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(tool_start))));
@@ -1858,6 +1917,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolStart) {
     EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(tool_start))));
@@ -1875,6 +1935,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolStart) {
     EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(tool_start))));
@@ -1911,6 +1972,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_InlineSearch) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(inline_search))));
@@ -1929,6 +1991,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_InlineSearch) {
     EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(inline_search))));
@@ -1947,6 +2010,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_InlineSearch) {
     EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(inline_search))));
@@ -1973,6 +2037,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_InlineSearch) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(inline_search))));
@@ -1992,6 +2057,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_InlineSearch) {
     EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(inline_search))));
@@ -2032,6 +2098,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_CompletionChunk) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(chunk))));
@@ -2059,6 +2126,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_CompletionChunk) {
     EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(chunk))));
@@ -2092,6 +2160,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_CompletionChunk) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(chunk))));
@@ -2126,12 +2195,107 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_CompletionChunk) {
         });
 
     client_->OnQueryDataReceived(
+        {},
         base::BindRepeating(&MockCallbacks::OnDataReceived,
                             base::Unretained(&mock_callbacks)),
         base::ok(base::Value(std::move(chunk))));
 
     testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
   }
+}
+
+TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_E2EECallbacksInvoked) {
+  // Verifies that when the ENCRYPTION capability is provided, the E2EEProcessor
+  // is used to encrypt outgoing messages and decrypt incoming chunks.
+  std::vector<OAIMessage> messages =
+      GetMockMessagesAndExpectedMessagesJson().first;
+
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  auto mock_e2ee = std::make_unique<testing::NiceMock<MockE2EEProcessor>>();
+  auto* mock_e2ee_ptr = mock_e2ee.get();
+
+  EXPECT_CALL(*mock_e2ee_ptr, FetchModelAttestation(kTestModelName, _))
+      .Times(1);
+  EXPECT_CALL(*mock_e2ee_ptr, GenerateClientKeyPair()).Times(1);
+  EXPECT_CALL(*mock_e2ee_ptr, CreateEncryptCallback(kTestModelName)).Times(1);
+  EXPECT_CALL(*mock_e2ee_ptr, CreateDecryptCallback(nullptr)).Times(1);
+
+  client_->SetE2EEProcessorFactoryForTesting(
+      base::BindOnce([](std::unique_ptr<MockE2EEProcessor> mock)
+                         -> std::unique_ptr<E2EEProcessor> { return mock; },
+                     std::move(mock_e2ee)));
+
+  EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
+      .WillOnce([&](const std::string&, const GURL&, const std::string& body,
+                    const std::string&,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>&,
+                    const api_request_helper::APIRequestOptions&) -> Ticket {
+        // Verify outgoing messages were encrypted.
+        auto body_dict = base::test::ParseJsonDict(body);
+        const std::string* public_key =
+            body_dict.FindString("brave_client_public_key");
+        EXPECT_TRUE(public_key);
+        if (public_key) {
+          EXPECT_EQ(*public_key, "mockclientpublickeyhex");
+        }
+        const base::ListValue* messages_list = body_dict.FindList("messages");
+        EXPECT_TRUE(messages_list);
+        if (messages_list) {
+          for (const auto& msg : *messages_list) {
+            EXPECT_TRUE(msg.is_dict());
+            if (!msg.is_dict()) {
+              continue;
+            }
+            const std::string* content = msg.GetDict().FindString("content");
+            EXPECT_TRUE(content);
+            if (!content) {
+              continue;
+            }
+            EXPECT_EQ(*content, "encrypted_content");
+          }
+        }
+
+        // Simulate a streaming chunk with encrypted content.
+        auto chunk = base::test::ParseJsonDict(R"({
+          "object": "chat.completion.chunk",
+          "choices": [{
+            "delta": {"content": "deadbeef"}
+          }]
+        })");
+        data_received_callback.Run(base::ok(base::Value(std::move(chunk))));
+
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(200, {}, {}, net::OK,
+                                                      GURL()));
+        run_loop.Quit();
+        return Ticket();
+      });
+
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+      .WillOnce([](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        ASSERT_TRUE(result.event->is_completion_event());
+        EXPECT_EQ(result.event->get_completion_event()->completion,
+                  "decrypted response");
+      });
+  EXPECT_CALL(mock_callbacks, OnCompleted(_));
+
+  client_->PerformRequest(
+      std::move(messages), std::nullopt, std::nullopt,
+      {mojom::ConversationCapability::CHAT,
+       mojom::ConversationCapability::ENCRYPTION},
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
 }
 
 }  // namespace ai_chat

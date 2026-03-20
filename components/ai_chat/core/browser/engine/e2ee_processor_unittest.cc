@@ -7,14 +7,19 @@
 
 #include <memory>
 #include <optional>
+#include <string>
 #include <utility>
+#include <vector>
 
+#include "base/json/json_writer.h"
 #include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
-#include "base/time/time.h"
+#include "base/values.h"
+#include "brave/components/ai_chat/core/browser/engine/e2ee/lib.rs.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/api_request_helper/mock_api_request_helper.h"
@@ -34,7 +39,8 @@ namespace {
 
 constexpr char kModelName[] = "glm5";
 constexpr char kExpectedPath[] = "/v1/models/glm5/attestation";
-constexpr char kSuccessJson[] = R"({"model_public_key": "test-public-key"})";
+constexpr char kSuccessJson[] =
+    R"({"model_public_key": "0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20"})";
 
 }  // namespace
 
@@ -114,8 +120,6 @@ TEST_F(E2EEProcessorTest, FetchModelAttestation_MissingKey) {
   EXPECT_EQ(*error, mojom::APIError::InternalError);
 }
 
-// After a successful fetch, a second call should resolve immediately from cache
-// without issuing another network request.
 TEST_F(E2EEProcessorTest, FetchModelAttestation_UsesCache) {
   SetUpMock(1, net::HTTP_OK,
             base::Value(base::test::ParseJsonDict(kSuccessJson)));
@@ -125,8 +129,7 @@ TEST_F(E2EEProcessorTest, FetchModelAttestation_UsesCache) {
   EXPECT_FALSE(FetchAndGetError().has_value());
 }
 
-// ClearCachedModelAttestations forces a fresh network fetch on the next call.
-TEST_F(E2EEProcessorTest, ClearCachedModelAttestations_ForcesRefetch) {
+TEST_F(E2EEProcessorTest, ClearModelAttestations_ForcesRefetch) {
   SetUpMock(2, net::HTTP_OK,
             base::Value(base::test::ParseJsonDict(kSuccessJson)));
 
@@ -136,7 +139,6 @@ TEST_F(E2EEProcessorTest, ClearCachedModelAttestations_ForcesRefetch) {
   EXPECT_FALSE(FetchAndGetError().has_value());
 }
 
-// After one hour the cache expires and a fresh fetch is issued.
 TEST_F(E2EEProcessorTest, FetchModelAttestation_ExpiresAfterOneHour) {
   SetUpMock(2, net::HTTP_OK,
             base::Value(base::test::ParseJsonDict(kSuccessJson)));
@@ -150,6 +152,107 @@ TEST_F(E2EEProcessorTest, FetchModelAttestation_ExpiresAfterOneHour) {
   // Past TTL — a fresh network request must be issued.
   task_environment_.FastForwardBy(base::Minutes(10));
   EXPECT_FALSE(FetchAndGetError().has_value());
+}
+
+TEST_F(E2EEProcessorTest, GenerateClientKeyPair_ReturnsValidKeypair) {
+  auto keypair = processor_->GenerateClientKeyPair();
+  // 32 bytes → 64 hex chars.
+  EXPECT_EQ(keypair.public_key_hex.size(), 64u);
+  // Basic hex validity check.
+  std::vector<uint8_t> bytes;
+  EXPECT_TRUE(base::HexStringToBytes(keypair.public_key_hex, &bytes));
+  EXPECT_EQ(bytes.size(), 32u);
+}
+
+TEST_F(E2EEProcessorTest, EncryptAndDecryptCallbacks) {
+  // Generate a keypair to use as the model's public key.
+  auto model_keypair = processor_->GenerateClientKeyPair();
+
+  // Inject the attestation into the cache using the model's public key.
+  base::DictValue attestation_body;
+  attestation_body.Set("model_public_key", model_keypair.public_key_hex);
+  SetUpMock(1, net::HTTP_OK, base::Value(std::move(attestation_body)));
+  auto error = FetchAndGetError();
+  EXPECT_FALSE(error.has_value());
+
+  // Encrypt content using the model's public key via the callback.
+  base::ListValue content;
+  content.Append(base::Value("hello world"));
+  auto encrypt_cb = processor_->CreateEncryptCallback(kModelName);
+  auto encrypted = encrypt_cb.Run(content);
+  ASSERT_TRUE(encrypted);
+  EXPECT_FALSE(encrypted->empty());
+
+  // Decrypt the encrypted content using the model's secret key.
+  auto decrypt_cb =
+      processor_->CreateDecryptCallback(&*model_keypair.secret_key);
+  auto decrypted = decrypt_cb.Run(*encrypted);
+  ASSERT_TRUE(decrypted);
+
+  // The decrypted content should be the JSON-serialized ListValue.
+  std::string expected_json;
+  base::JSONWriter::Write(content, &expected_json);
+  EXPECT_EQ(*decrypted, expected_json);
+}
+
+TEST_F(E2EEProcessorTest, Encrypt_WithMissingAttestation_Crashes) {
+  base::ListValue content;
+  content.Append(base::Value("hello"));
+  EXPECT_DEATH(processor_->CreateEncryptCallback(kModelName), "");
+}
+
+TEST_F(E2EEProcessorTest, Decrypt_InvalidHex_ReturnsPlaintext) {
+  auto keypair = processor_->GenerateClientKeyPair();
+  auto decrypt_cb = processor_->CreateDecryptCallback(&*keypair.secret_key);
+  auto result = decrypt_cb.Run("not-valid-hex!");
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(*result, "not-valid-hex!");
+}
+
+TEST_F(E2EEProcessorTest, Decrypt_InvalidCiphertext_ReturnsEmpty) {
+  auto keypair = processor_->GenerateClientKeyPair();
+  auto decrypt_cb = processor_->CreateDecryptCallback(&*keypair.secret_key);
+
+  // Ciphertext below the minimum (10 bytes).
+  EXPECT_FALSE(decrypt_cb.Run(std::string(20, '0')).has_value());
+
+  // Ciphertext at the minimum (56 bytes), but not actually valid encrypted
+  // data.
+  EXPECT_FALSE(decrypt_cb.Run(std::string(112, '0')).has_value());
+}
+
+TEST_F(E2EEProcessorTest, Decrypt_ThinkingTagSplitting) {
+  auto keypair = processor_->GenerateClientKeyPair();
+
+  // Derive the public key bytes from the hex so we can call encrypt directly.
+  std::vector<uint8_t> public_key_bytes;
+  ASSERT_TRUE(
+      base::HexStringToBytes(keypair.public_key_hex, &public_key_bytes));
+
+  // Encrypt two separate plaintext segments using the Rust encrypt function.
+  const std::string kThinkingContent = "I am thinking step by step";
+  const std::string kResponseContent = "Here is my answer";
+  auto encrypted_thinking =
+      ai_chat::encrypt(kThinkingContent, public_key_bytes);
+  auto encrypted_response =
+      ai_chat::encrypt(kResponseContent, public_key_bytes);
+  ASSERT_FALSE(encrypted_thinking.empty());
+  ASSERT_FALSE(encrypted_response.empty());
+
+  const std::string thinking_hex = base::HexEncodeLower(encrypted_thinking);
+  const std::string response_hex = base::HexEncodeLower(encrypted_response);
+
+  // Build a ciphertext string that interleaves <think> tags around the first
+  // encrypted segment and places the second segment outside.
+  const std::string ciphertext =
+      "<think>" + thinking_hex + "</think>" + response_hex;
+
+  auto decrypt_cb = processor_->CreateDecryptCallback(&*keypair.secret_key);
+  auto result = decrypt_cb.Run(ciphertext);
+
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(*result,
+            "<think>" + kThinkingContent + "</think>" + kResponseContent);
 }
 
 }  // namespace ai_chat
