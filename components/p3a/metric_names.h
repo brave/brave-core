@@ -140,6 +140,8 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Shields.DomainAdsSettingsBelowGlobal", {}},
     {"Brave.Shields.FilterLists.2", {}},
     {"Brave.Shields.FingerprintBlockSetting", {}},
+    {"Brave.Shields.UpgradeHTTPSGlobal", {}},
+    {"Brave.Shields.UpgradeHTTPSPerSite", {}},
     {"Brave.Shields.UsageStatus", {}},
     {"Brave.Sidebar.Enabled", {}},
     {"Brave.Sync.JoinType", MetricConfig{.ephemeral = true}},
