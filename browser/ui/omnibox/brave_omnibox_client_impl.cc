@@ -173,7 +173,7 @@ void BraveOmniboxClientImpl::OnAutocompleteAccept(
                                                      is_suggestion);
     }
   }
-  if (navigation_source_metrics_) {
+  if (navigation_source_metrics_ && destination_url.SchemeIsHTTPOrHTTPS()) {
     switch (match.type) {
       case AutocompleteMatchType::URL_WHAT_YOU_TYPED:
         navigation_source_metrics_->RecordDirectNavigation();
