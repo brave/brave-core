@@ -157,13 +157,6 @@
                 android:layout="@layout/tab_switcher_module_container" />
 
             <ViewStub
-                android:id="@+id/search_resumption_module_container_stub"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/search_resumption_module_margin_top"
-                android:layout="@layout/search_resumption_module_layout" />
-
-            <ViewStub
                 android:id="@+id/mv_tiles_layout_stub"
                 android:inflatedId="@+id/mv_tiles_container"
                 android:layout_width="match_parent"
