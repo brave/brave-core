@@ -41,7 +41,6 @@ class FaviconTabHelper: TabObserver {
   ) async throws -> Favicon {
     let favicon = try await FaviconFetcher.loadIcon(
       url: url,
-      kind: .smallIcon,
       persistent: !tab.isPrivate
     )
     tab.favicon = favicon

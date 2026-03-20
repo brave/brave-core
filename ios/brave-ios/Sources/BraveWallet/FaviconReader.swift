@@ -31,7 +31,6 @@ struct FaviconReader<Content: View>: View {
     do {
       let favicon = try await FaviconFetcher.loadIcon(
         url: url,
-        kind: .largeIcon,
         persistent: true
       )
       self.image = favicon.image
