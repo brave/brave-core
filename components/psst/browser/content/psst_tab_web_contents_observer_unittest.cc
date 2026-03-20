@@ -118,10 +118,10 @@ ACTION_P(InsertScriptInPageCallback, future, value) {
       .Run(value.Clone());
   future->SetValue(value.Clone());
 }
-ACTION_P(ShowCallback, future, disabled_checks) {
+ACTION_P(ShowCallback, future) {
   std::move(const_cast<PsstTabWebContentsObserver::ConsentCallback&>(arg2))
-      .Run(disabled_checks.Clone());
-  future->SetValue(disabled_checks.Clone());
+      .Run();
+  future->SetValue();
 }
 
 ACTION_P(InsertScriptInPageDelayedCallback,
@@ -591,7 +591,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
   base::test::TestFuture<base::Value> user_script_insert_future;
-  base::test::TestFuture<base::ListValue> user_accept_psst_settings_future;
+  base::test::TestFuture<void> user_accept_psst_settings_future;
   base::test::TestFuture<base::Value> policy_script_insert_future;
 
   // User script result is an dictionary, and user key is not empty
@@ -624,8 +624,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
                                          std::vector<std::string>()),
                    _))
-      .WillOnce(
-          ShowCallback(&user_accept_psst_settings_future, base::ListValue()));
+      .WillOnce(ShowCallback(&user_accept_psst_settings_future));
 
   const auto script_with_parameters = base::StrCat(
       {"const params = ",
@@ -646,6 +645,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
   check_loop.Run();
   EXPECT_EQ(script_params, user_script_insert_future.Take());
+  EXPECT_TRUE(user_accept_psst_settings_future.Wait());
   EXPECT_EQ(policy_script_result, policy_script_insert_future.Take());
 }
 
@@ -695,7 +695,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
           &check_loop, CreateMatchedRule(user_script, policy_script)));
 
   base::test::TestFuture<base::Value> user_script_insert_future;
-  base::test::TestFuture<base::ListValue> user_accept_psst_settings_future;
+  base::test::TestFuture<void> user_accept_psst_settings_future;
   base::test::TestFuture<base::Value> policy_script_insert_future;
 
   EXPECT_CALL(ui_delegate(),
@@ -728,8 +728,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
                                          std::vector<std::string>()),
                    _))
-      .WillOnce(
-          ShowCallback(&user_accept_psst_settings_future, base::ListValue()));
+      .WillOnce(ShowCallback(&user_accept_psst_settings_future));
 
   // Policy script executed, parameters not added
   EXPECT_CALL(inject_script_callback(), Run(policy_script, _))
@@ -743,6 +742,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
   check_loop.Run();
   EXPECT_EQ(script_params, user_script_insert_future.Take());
+  EXPECT_TRUE(user_accept_psst_settings_future.Wait());
   EXPECT_EQ(policy_script_result, policy_script_insert_future.Take());
 }
 
@@ -777,7 +777,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
       });
 
   base::test::TestFuture<base::Value> user_script_insert_future;
-  base::test::TestFuture<base::ListValue> user_accept_psst_settings_future;
+  base::test::TestFuture<void> user_accept_psst_settings_future;
   base::test::TestFuture<base::Value> policy_script_insert_future;
 
   EXPECT_CALL(ui_delegate(),
@@ -812,8 +812,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
                                          std::vector<std::string>()),
                    _))
-      .WillOnce(
-          ShowCallback(&user_accept_psst_settings_future, base::ListValue()));
+      .WillOnce(ShowCallback(&user_accept_psst_settings_future));
 
   const auto policy_script_with_parameters = base::StrCat(
       {"const params = ",
@@ -833,6 +832,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
 
   check_loop.Run();
   EXPECT_EQ(script_params, user_script_insert_future.Take());
+  EXPECT_TRUE(user_accept_psst_settings_future.Wait());
   EXPECT_EQ(policy_script_result, policy_script_insert_future.Take());
   EXPECT_EQ(progress, progress_future.Take());
 
@@ -893,7 +893,6 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   check_loop.Run();
   EXPECT_EQ(script_params, user_script_insert_future.Take());
   EXPECT_EQ(progress, progress_future.Take());
-
   EXPECT_TRUE(applied_tasks_future.Take().empty());
   // TODO(https://github.com/brave/brave-browser/issues/49317) We need to check
   // that script result callbacks are not in queue

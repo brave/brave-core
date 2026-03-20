@@ -41,50 +41,93 @@ class InfobarAddedObserver : public infobars::InfoBarManager::Observer {
       : identifier_(identifier) {
     if (manager) {
       infobar_observation_.Observe(manager);
+      // Check if the target infobar already exists
+      CheckForExistingInfobar(manager);
     }
   }
   ~InfobarAddedObserver() override = default;
 
   void WaitForInfobarAdded() {
-    if (infobar_observation_.IsObserving()) {
-      run_infobar_added_loop_.Run();
+    if (infobar_added_observed_) {
+      return;  // Already happened
     }
+    if (!infobar_observation_.IsObserving()) {
+      return;  // Manager is destroyed
+    }
+
+    base::RunLoop run_loop;
+    if (infobar_added_observed_) {
+      return;  // Double-check after RunLoop creation
+    }
+    quit_closure_for_added_ = run_loop.QuitClosure();
+    run_loop.Run();
+    quit_closure_for_added_.Reset();
   }
 
   void WaitForInfobarRemoved() {
-    if (infobar_observation_.IsObserving()) {
-      run_infobar_removed_loop_.Run();
+    if (infobar_removed_observed_) {
+      return;  // Already happened
     }
+    if (!infobar_observation_.IsObserving()) {
+      return;  // Manager is destroyed
+    }
+
+    base::RunLoop run_loop;
+    if (infobar_removed_observed_) {
+      return;  // Double-check after RunLoop creation
+    }
+    quit_closure_for_removed_ = run_loop.QuitClosure();
+    run_loop.Run();
+    quit_closure_for_removed_.Reset();
   }
 
   void OnInfoBarAdded(infobars::InfoBar* infobar) override {
     if (infobar && infobar->delegate() &&
         infobar->delegate()->GetIdentifier() == identifier_) {
-      run_infobar_added_loop_.Quit();
+      infobar_added_observed_ = true;
+      if (quit_closure_for_added_) {
+        std::move(quit_closure_for_added_).Run();
+      }
     }
   }
 
   void OnInfoBarRemoved(infobars::InfoBar* infobar, bool animate) override {
     if (infobar && infobar->delegate() &&
         infobar->delegate()->GetIdentifier() == identifier_) {
-      run_infobar_removed_loop_.Quit();
+      infobar_removed_observed_ = true;
+      if (quit_closure_for_removed_) {
+        std::move(quit_closure_for_removed_).Run();
+      }
     }
   }
 
   void OnManagerWillBeDestroyed(infobars::InfoBarManager* manager) override {
-    if (run_infobar_added_loop_.running()) {
-      run_infobar_added_loop_.Quit();
+    // Quit any pending waits since the manager is being destroyed
+    if (quit_closure_for_added_) {
+      std::move(quit_closure_for_added_).Run();
     }
-    if (run_infobar_removed_loop_.running()) {
-      run_infobar_removed_loop_.Quit();
+    if (quit_closure_for_removed_) {
+      std::move(quit_closure_for_removed_).Run();
     }
     DCHECK(infobar_observation_.IsObservingSource(manager));
     infobar_observation_.Reset();
   }
 
  private:
-  base::RunLoop run_infobar_added_loop_;
-  base::RunLoop run_infobar_removed_loop_;
+  void CheckForExistingInfobar(infobars::InfoBarManager* manager) {
+    for (infobars::InfoBar* infobar : manager->infobars()) {
+      if (infobar && infobar->delegate() &&
+          infobar->delegate()->GetIdentifier() == identifier_) {
+        infobar_added_observed_ = true;
+        break;
+      }
+    }
+  }
+
+  bool infobar_added_observed_ = false;
+  bool infobar_removed_observed_ = false;
+  base::OnceClosure quit_closure_for_added_;
+  base::OnceClosure quit_closure_for_removed_;
   const infobars::InfoBarDelegate::InfoBarIdentifier identifier_;
   base::ScopedObservation<infobars::InfoBarManager,
                           infobars::InfoBarManager::Observer>

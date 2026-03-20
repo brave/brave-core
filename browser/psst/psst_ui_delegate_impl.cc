@@ -48,16 +48,14 @@ std::optional<PsstWebsiteSettings> PsstUiDelegateImpl::GetPsstWebsiteSettings(
   return psst_settings_service_->GetPsstWebsiteSettings(origin, user_id);
 }
 
-void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
-    const url::Origin& origin,
-    base::ListValue urls_to_skip) {
+void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(const url::Origin& origin) {
   // Save the PSST settings when user accepts the dialog
   psst_settings_service_->SetPsstWebsiteSettings(
       origin, ConsentStatus::kAllow, dialog_data_->script_version,
-      dialog_data_->user_id, urls_to_skip.Clone());
+      dialog_data_->user_id, base::ListValue());
 
   if (apply_changes_callback_) {
-    std::move(apply_changes_callback_).Run(std::move(urls_to_skip));
+    std::move(apply_changes_callback_).Run();
   }
 }
 
@@ -68,7 +66,7 @@ void PsstUiDelegateImpl::OnUserAcceptedInfobar(const url::Origin& origin,
     // Call to presenter to show the consent dialog
 
     // When the consent dialog is accepted by the user
-    OnUserAcceptedPsstSettings(origin, base::ListValue());
+    OnUserAcceptedPsstSettings(origin);
   } else {
     // Disable PSST if user declined the infobar
     prefs_->SetBoolean(prefs::kPsstEnabled, false);

@@ -228,8 +228,7 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
 
 void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
     int id,
-    const std::string& policy_script_with_params,
-    const base::ListValue disabled_checks) {
+    const std::string& policy_script_with_params) {
   if (!ShouldInsertScriptForPage(id)) {
     return;
   }

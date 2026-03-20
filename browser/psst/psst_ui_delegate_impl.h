@@ -45,8 +45,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
       const std::string& user_id) override;
 
  private:
-  void OnUserAcceptedPsstSettings(const url::Origin& origin,
-                                  base::ListValue urls_to_skip);
+  void OnUserAcceptedPsstSettings(const url::Origin& origin);
   void OnUserAcceptedInfobar(const url::Origin& origin, const bool is_accepted);
 
   std::unique_ptr<PsstUiPresenter> ui_presenter_;
