@@ -3050,4 +3050,193 @@ TEST(SwapResponseParserUnitTest,
   }
 }
 
+TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseToolLogoUrlValidation) {
+  auto make_json = [](const std::string& tool_logo) {
+    return absl::StrFormat(R"({
+      "routes": [{
+        "id": "route1",
+        "sourceAmount": "1000000",
+        "destinationAmount": "990000",
+        "destinationAmountMin": "980000",
+        "estimatedTime": 30,
+        "priceImpact": "0.01",
+        "slippagePercentage": "1.0",
+        "provider": "NEAR_INTENTS",
+        "networkFee": {"amount": "1000", "symbol": "ETH", "decimals": 18},
+        "gasless": false,
+        "requiresTokenAllowance": false,
+        "requiresFirmRoute": false,
+        "steps": [{
+          "sourceAmount": "1000000",
+          "destinationAmount": "990000",
+          "sourceToken": {
+            "coin": "ETH",
+            "chainId": "0x1",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "destinationToken": {
+            "coin": "ETH",
+            "chainId": "0xa",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "tool": {
+            "name": "Stargate",
+            "logo": "%s"
+          }
+        }]
+      }]
+    })",
+                           tool_logo);
+  };
+
+  // Valid HTTPS URL is accepted.
+  {
+    auto quote = gate3::ParseQuoteResponse(
+        ParseJson(make_json("https://stargate.finance/logo.png")));
+    ASSERT_TRUE(quote);
+    ASSERT_FALSE(quote->routes.empty());
+    ASSERT_FALSE(quote->routes[0]->steps.empty());
+    EXPECT_EQ(quote->routes[0]->steps[0]->tool->logo,
+              "https://stargate.finance/logo.png");
+  }
+
+  // javascript: URI is rejected.
+  {
+    auto quote = gate3::ParseQuoteResponse(
+        ParseJson(make_json("javascript:alert(1)")));
+    ASSERT_TRUE(quote);
+    ASSERT_FALSE(quote->routes.empty());
+    ASSERT_FALSE(quote->routes[0]->steps.empty());
+    EXPECT_TRUE(quote->routes[0]->steps[0]->tool->logo.empty());
+  }
+
+  // data: URI is rejected.
+  {
+    auto quote = gate3::ParseQuoteResponse(ParseJson(
+        make_json("data:image/svg+xml,<svg><script>alert(1)</script></svg>")));
+    ASSERT_TRUE(quote);
+    ASSERT_FALSE(quote->routes.empty());
+    ASSERT_FALSE(quote->routes[0]->steps.empty());
+    EXPECT_TRUE(quote->routes[0]->steps[0]->tool->logo.empty());
+  }
+
+  // HTTP URL is rejected.
+  {
+    auto quote = gate3::ParseQuoteResponse(
+        ParseJson(make_json("http://stargate.finance/logo.png")));
+    ASSERT_TRUE(quote);
+    ASSERT_FALSE(quote->routes.empty());
+    ASSERT_FALSE(quote->routes[0]->steps.empty());
+    EXPECT_TRUE(quote->routes[0]->steps[0]->tool->logo.empty());
+  }
+
+  // Invalid string is rejected.
+  {
+    auto quote =
+        gate3::ParseQuoteResponse(ParseJson(make_json("not-a-url")));
+    ASSERT_TRUE(quote);
+    ASSERT_FALSE(quote->routes.empty());
+    ASSERT_FALSE(quote->routes[0]->steps.empty());
+    EXPECT_TRUE(quote->routes[0]->steps[0]->tool->logo.empty());
+  }
+}
+
+TEST(SwapResponseParserUnitTest,
+     ParseGate3QuoteResponseStepTokenLogoUrlValidation) {
+  auto make_json = [](const std::string& token_logo) {
+    return absl::StrFormat(R"({
+      "routes": [{
+        "id": "route1",
+        "sourceAmount": "1000000",
+        "destinationAmount": "990000",
+        "destinationAmountMin": "980000",
+        "estimatedTime": 30,
+        "priceImpact": "0.01",
+        "slippagePercentage": "1.0",
+        "provider": "NEAR_INTENTS",
+        "networkFee": {"amount": "1000", "symbol": "ETH", "decimals": 18},
+        "gasless": false,
+        "requiresTokenAllowance": false,
+        "requiresFirmRoute": false,
+        "steps": [{
+          "sourceAmount": "1000000",
+          "destinationAmount": "990000",
+          "sourceToken": {
+            "coin": "ETH",
+            "chainId": "0x1",
+            "symbol": "ETH",
+            "decimals": 18,
+            "logo": "%s"
+          },
+          "destinationToken": {
+            "coin": "ETH",
+            "chainId": "0xa",
+            "symbol": "ETH",
+            "decimals": 18,
+            "logo": "https://tokens.1inch.io/eth.png"
+          },
+          "tool": {
+            "name": "Stargate",
+            "logo": "https://stargate.finance/logo.png"
+          }
+        }]
+      }]
+    })",
+                           token_logo);
+  };
+
+  // Valid HTTPS URL is accepted.
+  {
+    auto quote = gate3::ParseQuoteResponse(
+        ParseJson(make_json("https://tokens.1inch.io/eth.png")));
+    ASSERT_TRUE(quote);
+    ASSERT_FALSE(quote->routes.empty());
+    ASSERT_FALSE(quote->routes[0]->steps.empty());
+    EXPECT_EQ(quote->routes[0]->steps[0]->source_token->logo,
+              "https://tokens.1inch.io/eth.png");
+  }
+
+  // javascript: URI is rejected.
+  {
+    auto quote = gate3::ParseQuoteResponse(
+        ParseJson(make_json("javascript:alert(1)")));
+    ASSERT_TRUE(quote);
+    ASSERT_FALSE(quote->routes.empty());
+    ASSERT_FALSE(quote->routes[0]->steps.empty());
+    EXPECT_TRUE(quote->routes[0]->steps[0]->source_token->logo.empty());
+  }
+
+  // data: URI is rejected.
+  {
+    auto quote = gate3::ParseQuoteResponse(ParseJson(
+        make_json("data:image/svg+xml,<svg><script>alert(1)</script></svg>")));
+    ASSERT_TRUE(quote);
+    ASSERT_FALSE(quote->routes.empty());
+    ASSERT_FALSE(quote->routes[0]->steps.empty());
+    EXPECT_TRUE(quote->routes[0]->steps[0]->source_token->logo.empty());
+  }
+
+  // HTTP URL is rejected.
+  {
+    auto quote = gate3::ParseQuoteResponse(
+        ParseJson(make_json("http://tokens.1inch.io/eth.png")));
+    ASSERT_TRUE(quote);
+    ASSERT_FALSE(quote->routes.empty());
+    ASSERT_FALSE(quote->routes[0]->steps.empty());
+    EXPECT_TRUE(quote->routes[0]->steps[0]->source_token->logo.empty());
+  }
+
+  // Invalid string is rejected.
+  {
+    auto quote =
+        gate3::ParseQuoteResponse(ParseJson(make_json("not-a-url")));
+    ASSERT_TRUE(quote);
+    ASSERT_FALSE(quote->routes.empty());
+    ASSERT_FALSE(quote->routes[0]->steps.empty());
+    EXPECT_TRUE(quote->routes[0]->steps[0]->source_token->logo.empty());
+  }
+}
+
 }  // namespace brave_wallet

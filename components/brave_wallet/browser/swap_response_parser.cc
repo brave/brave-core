@@ -1066,7 +1066,13 @@ mojom::ChainIdPtr ParseChainId(const swap_responses::Gate3ChainSpec& value) {
 mojom::Gate3SwapToolPtr ParseTool(const swap_responses::Gate3SwapTool& value) {
   auto result = mojom::Gate3SwapTool::New();
   result->name = value.name;
-  result->logo = ParseNullableString(value.logo).value_or("");
+  auto logo_str = ParseNullableString(value.logo);
+  if (logo_str) {
+    GURL logo_gurl(*logo_str);
+    if (logo_gurl.is_valid() && logo_gurl.SchemeIs("https")) {
+      result->logo = *logo_str;
+    }
+  }
   return result;
 }
 
@@ -1079,7 +1085,14 @@ mojom::Gate3SwapStepTokenPtr ParseStepToken(
       ParseNullableString(value.contract_address).value_or("");
   result->symbol = value.symbol;
   result->decimals = value.decimals;
-  result->logo = ParseNullableString(value.logo).value_or("");
+  auto step_token_logo_str = ParseNullableString(value.logo);
+  if (step_token_logo_str) {
+    GURL step_token_logo_gurl(*step_token_logo_str);
+    if (step_token_logo_gurl.is_valid() &&
+        step_token_logo_gurl.SchemeIs("https")) {
+      result->logo = *step_token_logo_str;
+    }
+  }
   return result;
 }
 
