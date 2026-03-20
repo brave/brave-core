@@ -6,8 +6,7 @@ on:
   push:
     branches: [master, main]
     paths:
-      - 'brave/.github/docker/**'
-      - 'brave/.claude/ci/**'
+      - 'brave/.github/workflows/pr-review-claude.dockerfile'
   workflow_dispatch:
 
 permissions:
@@ -36,7 +35,7 @@ jobs:
         uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
         with:
           context: .
-          file: ./brave/.github/docker/Dockerfile
+          file: ./brave/.github/workflows/pr-review-claude.Dockerfile
           push: true
           tags: |
             ghcr.io/${{ github.repository }}/pr-review-claude:latest
