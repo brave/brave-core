@@ -178,9 +178,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kTrustSafetySentimentSurvey,
       &features::kTrustSafetySentimentSurveyV2,
 #endif
-#if BUILDFLAG(IS_MAC)
-      &features::kImmersiveFullscreen,
-#endif
       &features::kWebIdentityDigitalCredentials,
       &features::kWebIdentityDigitalCredentialsCreation,
       &features::kWebOTP,

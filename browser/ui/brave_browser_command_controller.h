@@ -63,6 +63,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
       const TabStripSelectionChange& selection) override;
   void OnTabGroupChanged(const TabGroupChange& change) override;
   void OnSplitTabChanged(const SplitTabChange& change) override;
+  void UpdateCommandsForFullscreenMode() override;
 
  private:
   friend class ::BraveAppMenuBrowserTest;

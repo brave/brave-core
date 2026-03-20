@@ -185,8 +185,11 @@ bool BraveBrowserTabStripController::IsContextMenuCommandEnabled(
     return brave::HasDuplicateTabs(browser());
   }
 
-  if (command_id == TabStripModel::CommandShowVerticalTabs ||
-      command_id == TabStripModel::CommandBringAllTabsToThisWindow ||
+  if (command_id == TabStripModel::CommandShowVerticalTabs) {
+    return tabs::utils::IsVerticalTabToggleEnabled(browser());
+  }
+
+  if (command_id == TabStripModel::CommandBringAllTabsToThisWindow ||
       command_id == TabStripModel::CommandOpenInContainer) {
     return true;
   }

@@ -8,15 +8,19 @@ import '../settings_vars.css.js'
 
 import {PrefsMixin, PrefsMixinInterface} from '/shared/settings/prefs/prefs_mixin.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {OpenWindowProxyImpl} from 'chrome://resources/js/open_window_proxy.js';
+import {sendWithPromise} from 'chrome://resources/js/cr.js'
 
 import {loadTimeData} from '../i18n_setup.js'
 
 import {getTemplate} from './tabs.html.js'
 
-const SettingsBraveAppearanceTabsElementBase = PrefsMixin(I18nMixin(PolymerElement)) as {
-  new (): PolymerElement & I18nMixinInterface & PrefsMixinInterface
+const SettingsBraveAppearanceTabsElementBase =
+    WebUiListenerMixin(PrefsMixin(I18nMixin(PolymerElement))) as {
+  new (): PolymerElement & I18nMixinInterface & PrefsMixinInterface &
+      WebUiListenerMixinInterface
 }
 
 export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceTabsElementBase {
@@ -50,12 +54,26 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
             }
           ]
         }
+      },
+      verticalTabsToggleEnabled_: {
+        type: Boolean,
+        value: true,
       }
     }
   }
 
   declare private tabTooltipModes_:
       Array<{value: number, name: string}>
+  declare private verticalTabsToggleEnabled_: boolean
+
+  override connectedCallback() {
+    super.connectedCallback()
+    sendWithPromise('getIsVerticalTabsToggleEnabled').then(
+        (enabled: boolean) => { this.verticalTabsToggleEnabled_ = enabled })
+    this.addWebUiListener(
+        'vertical-tabs-toggle-enabled-changed',
+        (enabled: boolean) => { this.verticalTabsToggleEnabled_ = enabled })
+  }
 
   private isSharedPinnedTabsEnabled_() {
     return loadTimeData.getBoolean('isSharedPinnedTabsEnabled')

@@ -328,6 +328,11 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
   contents_background_view_ =
       AddChildViewAt(std::make_unique<ContentsBackground>(), 0);
 
+#if BUILDFLAG(IS_MAC)
+  vertical_tabs_on_at_startup_ =
+      tabs::utils::ShouldShowBraveVerticalTabs(browser_);
+#endif
+
   pref_change_registrar_.Init(GetProfile()->GetPrefs());
   pref_change_registrar_.Add(
       kTabsSearchShow,
@@ -1206,6 +1211,30 @@ ClientFrameElementInfo BraveBrowserView::GetFrameElementInfo() const {
   }
   return info;
 }
+
+#if BUILDFLAG(IS_MAC)
+bool BraveBrowserView::UsesImmersiveFullscreenMode() const {
+  // Disable immersive when vertical tabs were on at startup overlay_widget_ is
+  // not created in that case, so immersive would crash.
+  if (vertical_tabs_on_at_startup_) {
+    return false;
+  }
+  // Immersive is also incompatible with vertical tabs at runtime.
+  if (tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
+    return false;
+  }
+
+  return BrowserView::UsesImmersiveFullscreenMode();
+}
+
+bool BraveBrowserView::UsesImmersiveFullscreenTabbedMode() const {
+  if (tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
+    return false;
+  }
+
+  return BrowserView::UsesImmersiveFullscreenTabbedMode();
+}
+#endif
 
 bool BraveBrowserView::IsSidebarVisible() const {
   return sidebar_container_view_ && sidebar_container_view_->IsSidebarVisible();
