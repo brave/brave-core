@@ -22,7 +22,8 @@ inline constexpr char kBraveServicesSwitchValueProduction[] = "prod";
 // Returns true if the value is a recognized environment switch value.
 bool IsValidSwitchValue(const std::string& value);
 
-// Logs an error if the switch value is set but not recognized.
+// Logs an error if the switch value is unrecognized, or a warning if it is
+// valid and non-empty.
 void MaybeWarnSwitchValue(const std::string& switch_name,
                           const std::string& value);
 
