@@ -4,6 +4,10 @@
 #
 # Opt-in: runs only when the PR has label "review/claude" (remove the
 # "if" to enable for all PRs once cost is acceptable).
+#
+# Author must be MEMBER or OWNER of the repo org (github.event.pull_request.
+# author_association). Fork PRs from non-members are CONTRIBUTOR / etc. To also
+# allow trusted outside collaborators, add: || ... == 'COLLABORATOR'
 name: PR review (Claude)
 
 on:
@@ -19,17 +23,17 @@ jobs:
   review:
     name: Claude PR review
     runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.labels.*.name, 'review/claude')
+    if: contains(github.event.pull_request.labels.*.name, 'review/claude') && (github.event.pull_request.author_association == 'MEMBER' || github.event.pull_request.author_association == 'OWNER')
     env:
       GH_TOKEN: ${{ secrets.PR_REVIEW_BOT_GITHUB_TOKEN }}
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4.0.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
