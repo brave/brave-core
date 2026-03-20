@@ -49,5 +49,5 @@ jobs:
             -e ANTHROPIC_API_KEY="${{ env.ANTHROPIC_API_KEY }}" \
             -v "$PWD:/workspace:ro" \
             ghcr.io/${{ github.repository }}/pr-review-claude:latest \
-            /workspace/brave/.claude/ci/pr-review-runner.py \
+            /workspace/brave/.github/workflows/pr-review-claude.py \
             "${{ github.event.pull_request.number }}" "${{ github.repository }}"
