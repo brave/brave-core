@@ -1,7 +1,7 @@
-diff --git a/chrome/installer/util/google_update_settings.cc b/chrome/installer/util/google_update_settings.cc
-index 19617a52633d339db4eb174077d3286c0f2ab018..e1cc75e5c0bb31084ade515d9e657c4bf7daee56 100644
---- a/chrome/installer/util/google_update_settings.cc
-+++ b/chrome/installer/util/google_update_settings.cc
+diff --git a/chrome/installer/util/google_update_settings_win.cc b/chrome/installer/util/google_update_settings_win.cc
+index ccefcf7da34785907c9d39a6cbd0ae46d2c0285a..a4aff811b1274a261cb8f878972643fdcf13d85c 100644
+--- a/chrome/installer/util/google_update_settings_win.cc
++++ b/chrome/installer/util/google_update_settings_win.cc
 @@ -33,7 +33,11 @@ using base::win::RegKey;
  using installer::InstallationState;
  
