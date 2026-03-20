@@ -590,9 +590,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         }
 
         // Move to other window
-        if (MultiWindowUtils.instanceSwitcherEnabled()
-                && MultiWindowUtils.isMultiInstanceApi31Enabled()
-                && !DeviceInfo.isAutomotive()) {
+        if (MultiWindowUtils.isMultiInstanceApi31Enabled() && !DeviceInfo.isAutomotive()) {
             modelList.add(
                     new MVCListAdapter.ListItem(
                             AppMenuHandler.AppMenuItemType.STANDARD,

@@ -21,5 +21,10 @@ public class BraveMultiWindowUtilsClassAdapter extends BraveClassVisitor {
                 sMultiWindowUtilsClassName,
                 "shouldShowManageWindowsMenu",
                 sBraveMultiWindowUtilsClassName);
+
+        changeMethodOwner(
+                sMultiWindowUtilsClassName,
+                "canEnterMultiWindowMode",
+                sBraveMultiWindowUtilsClassName);
     }
 }
