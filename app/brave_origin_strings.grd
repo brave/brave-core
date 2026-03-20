@@ -293,27 +293,27 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </then>
         <else>
           <message name="IDS_PRODUCT_NAME" desc="The Brave application name" translateable="false">
-            Brave
+            Brave Origin
           </message>
           <message name="IDS_SHORT_PRODUCT_NAME" desc="The Brave application short name." translateable="false">
-            Brave
+            Brave Origin
           </message>
         </else>
       </if>
       <if expr="is_win">
-        <message name="IDS_SXS_SHORTCUT_NAME">Brave Nightly</message>
-        <message name="IDS_SHORTCUT_NAME_BETA">Brave Beta</message>
-        <message name="IDS_SHORTCUT_NAME_DEV">Brave Dev</message>
+        <message name="IDS_SXS_SHORTCUT_NAME">Brave Origin Nightly</message>
+        <message name="IDS_SHORTCUT_NAME_BETA">Brave Origin Beta</message>
+        <message name="IDS_SHORTCUT_NAME_DEV">Brave Origin Dev</message>
         <message name="IDS_PRODUCT_DESCRIPTION" desc="Browser description">
-          Brave is a web browser that runs webpages and applications with lightning speed. It's fast, stable, and easy to use. Browse the web more safely with malware and phishing protection built into Brave.
+          Brave Origin is a web browser that runs webpages and applications with lightning speed. It's fast, stable, and easy to use. Browse the web more safely with malware and phishing protection built into Brave Origin.
         </message>
         <message name="IDS_WELCOME_TO_CHROME" desc="Welcoming text announced via screen readers the first time Brave is launched at the conclusion of installation.">
-          Welcome to Brave; new browser window opened
+          Welcome to Brave Origin; new browser window opened
         </message>
       </if>
       <if expr="is_macosx or is_linux">
         <message name="IDS_FIRST_RUN_DIALOG_WINDOW_TITLE" desc="Window title of First Run dialog on Mac and Linux, displayed in title bar">
-          Welcome to Brave
+          Welcome to Brave Origin
         </message>
       </if>
       <if expr="is_linux">
@@ -466,18 +466,18 @@ New bookmarks can’t be saved in your account until you delete some. If you sig
         </then>
         <else>
           <message name="IDS_ACCESSIBLE_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for the accessible name of a tabbed browser window">
-            <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave
+            <ph name="PAGE_TITLE">$1<ex>Brave Origin</ex></ph> - Brave Origin
           </message>
         </else>
       </if>
       <message name="IDS_ACCESSIBLE_BETA_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for the accessible name of a tabbed browser window for the beta channel version of the browser">
-        <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave Beta
+        <ph name="PAGE_TITLE">$1<ex>Brave Origin</ex></ph> - Brave Origin Beta
       </message>
       <message name="IDS_ACCESSIBLE_DEV_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for the accessible name of a tabbed browser window for the developer (dev) channel version of the browser">
-        <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave Dev
+        <ph name="PAGE_TITLE">$1<ex>Brave Origin</ex></ph> - Brave Origin Dev
       </message>
       <message name="IDS_ACCESSIBLE_CANARY_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for the accessible name of a tabbed browser window for the canary (nightly build) channel version of the browser">
-        <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave Canary
+        <ph name="PAGE_TITLE">$1<ex>Brave Origin</ex></ph> - Brave Origin Nightly
       </message>
       <if expr="_is_chrome_for_testing_branded">
         <then>
@@ -1033,13 +1033,13 @@ Brave is unable to recover your settings.
 
       <if expr="is_macosx">
         <message name="IDS_APP_MENU_PRODUCT_NAME" desc="The application's short name, used for the Mac's application menu, activity monitor, etc. This should be less than 16 characters. Example: Brave, not Brave." translateable="false">
-          Brave
+          Brave Origin
         </message>
         <message name="IDS_HELPER_NAME" desc="The helper application's name.  Should contain the Brave application name (IDS_PRODUCT_NAME). Example: Brave Helper.">
-          Brave Helper
+          Brave Origin Helper
         </message>
         <message name="IDS_SHORT_HELPER_NAME" desc="The helper application's short name, used for the Mac's application menu, activity monitor, etc. Example: Brave Helper, not Brave Helper.">
-          Brave Helper
+          Brave Origin Helper
         </message>
       </if>
 
@@ -1420,12 +1420,12 @@ Brave is unable to recover your settings.
 
       <!-- App shortcuts -->
       <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME" desc="Name for the Brave Apps Start Menu folder name.">
-        Brave Apps
+        Brave Origin Apps
       </message>
-      <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_CANARY">Brave Nightly Apps</message>
+      <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_CANARY">Brave Origin Nightly Apps</message>
       <if expr="is_win">
-        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA">Brave Beta Apps</message>
-        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV">Brave Dev Apps</message>
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA">Brave Origin Beta Apps</message>
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV">Brave Origin Dev Apps</message>
       </if>
 
       <!-- ChromeOS OOBE Terms of Service screen-->
@@ -1544,17 +1544,17 @@ Brave is unable to recover your settings.
       <!-- Windows firewall rule strings. -->
       <if expr="is_win">
         <message name="IDS_INBOUND_MDNS_RULE_NAME" desc="The name of the firewall rule allowing inbound mDNS traffic.">
-          Brave (mDNS-In)
+          Brave Origin (mDNS-In)
         </message>
-        <message name="IDS_INBOUND_MDNS_RULE_NAME_BETA">Brave Beta (mDNS-In)</message>
-        <message name="IDS_INBOUND_MDNS_RULE_NAME_CANARY">Brave Nightly (mDNS-In)</message>
-        <message name="IDS_INBOUND_MDNS_RULE_NAME_DEV">Brave Dev (mDNS-In)</message>
+        <message name="IDS_INBOUND_MDNS_RULE_NAME_BETA">Brave Origin Beta (mDNS-In)</message>
+        <message name="IDS_INBOUND_MDNS_RULE_NAME_CANARY">Brave Origin Nightly (mDNS-In)</message>
+        <message name="IDS_INBOUND_MDNS_RULE_NAME_DEV">Brave Origin Dev (mDNS-In)</message>
         <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION">
-          Inbound rule for Brave to allow mDNS traffic.
+          Inbound rule for Brave Origin to allow mDNS traffic.
         </message>
-        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA">Inbound rule for Brave Beta to allow mDNS traffic.</message>
-        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY">Inbound rule for Brave Nightly to allow mDNS traffic.</message>
-        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV">Inbound rule for Brave Dev to allow mDNS traffic.</message>
+        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA">Inbound rule for Brave Origin Beta to allow mDNS traffic.</message>
+        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY">Inbound rule for Brave Origin Nightly to allow mDNS traffic.</message>
+        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV">Inbound rule for Brave Origin Dev to allow mDNS traffic.</message>
       </if>
 
       <if expr="not is_android">
