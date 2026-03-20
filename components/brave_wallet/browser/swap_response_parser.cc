@@ -959,7 +959,10 @@ mojom::LiFiStatusPtr ParseStatusResponse(const base::Value& json_value) {
     return nullptr;
   }
 
-  result->lifi_explorer_link = value->lifi_explorer_link;
+  GURL lifi_explorer_gurl(value->lifi_explorer_link);
+  if (lifi_explorer_gurl.is_valid() && lifi_explorer_gurl.SchemeIs("https")) {
+    result->lifi_explorer_link = value->lifi_explorer_link;
+  }
   result->from_address = value->from_address;
   result->to_address = value->to_address;
   result->tool = value->tool;

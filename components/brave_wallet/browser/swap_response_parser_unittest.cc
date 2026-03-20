@@ -1996,6 +1996,74 @@ TEST(SwapResponseParserUnitTest, ParseLiFiStatusResponseTxLinkUrlValidation) {
   }
 }
 
+TEST(SwapResponseParserUnitTest,
+     ParseLiFiStatusResponseExplorerLinkUrlValidation) {
+  auto make_json = [](const std::string& lifi_explorer_link) {
+    return absl::StrFormat(R"({
+      "transactionId": "0xabc",
+      "sending": {
+        "txHash": "0x1",
+        "txLink": "https://etherscan.io/tx/0x1",
+        "amount": "100",
+        "chainId": "1"
+      },
+      "receiving": {
+        "txHash": "0x2",
+        "txLink": "https://etherscan.io/tx/0x2",
+        "amount": "99",
+        "chainId": "1"
+      },
+      "lifiExplorerLink": "%s",
+      "fromAddress": "0xSender",
+      "toAddress": "0xRecipient",
+      "tool": "stargate",
+      "status": "DONE",
+      "substatus": "COMPLETED"
+    })",
+                           lifi_explorer_link);
+  };
+
+  // Valid HTTPS URL is accepted.
+  {
+    auto status = lifi::ParseStatusResponse(
+        ParseJson(make_json("https://explorer.li.fi/tx/0xabc")));
+    ASSERT_TRUE(status);
+    EXPECT_EQ(status->lifi_explorer_link, "https://explorer.li.fi/tx/0xabc");
+  }
+
+  // javascript: URI is rejected.
+  {
+    auto status = lifi::ParseStatusResponse(
+        ParseJson(make_json("javascript:alert(1)")));
+    ASSERT_TRUE(status);
+    EXPECT_TRUE(status->lifi_explorer_link.empty());
+  }
+
+  // data: URI is rejected.
+  {
+    auto status = lifi::ParseStatusResponse(
+        ParseJson(make_json("data:text/html,<script>alert(1)</script>")));
+    ASSERT_TRUE(status);
+    EXPECT_TRUE(status->lifi_explorer_link.empty());
+  }
+
+  // HTTP URL is rejected (must be HTTPS).
+  {
+    auto status = lifi::ParseStatusResponse(
+        ParseJson(make_json("http://explorer.li.fi/tx/0xabc")));
+    ASSERT_TRUE(status);
+    EXPECT_TRUE(status->lifi_explorer_link.empty());
+  }
+
+  // Invalid string is rejected.
+  {
+    auto status =
+        lifi::ParseStatusResponse(ParseJson(make_json("not-a-url")));
+    ASSERT_TRUE(status);
+    EXPECT_TRUE(status->lifi_explorer_link.empty());
+  }
+}
+
 TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponse) {
   // Indicative quote response from Gate3 API
   std::string json(R"(
