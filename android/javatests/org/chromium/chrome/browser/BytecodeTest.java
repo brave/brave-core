@@ -893,7 +893,7 @@ public class BytecodeTest {
                 methodExists(
                         "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
                         "canEnterMultiWindowMode",
-                        MethodModifier.REGULAR,
+                        MethodModifier.STATIC,
                         boolean.class));
         Assert.assertTrue(
                 methodExists(

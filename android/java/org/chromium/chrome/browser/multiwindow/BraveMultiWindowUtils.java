@@ -31,7 +31,8 @@ public class BraveMultiWindowUtils extends MultiWindowUtils {
     }
 
     public boolean shouldShowEnableWindow(@Nullable Activity activity) {
-        return super.isOpenInOtherWindowSupported(activity) || super.canEnterMultiWindowMode();
+        return super.isOpenInOtherWindowSupported(activity)
+                || MultiWindowUtils.canEnterMultiWindowMode();
     }
 
     public static boolean shouldShowManageWindowsMenu() {
@@ -50,9 +51,8 @@ public class BraveMultiWindowUtils extends MultiWindowUtils {
                 && super.isMoveToOtherWindowSupported(activity, tabModelSelector);
     }
 
-    @Override
-    public boolean canEnterMultiWindowMode() {
-        return shouldEnableMultiWindows() && super.canEnterMultiWindowMode();
+    public static boolean canEnterMultiWindowMode() {
+        return shouldEnableMultiWindows() && MultiWindowUtils.canEnterMultiWindowMode();
     }
 
     public static boolean shouldEnableMultiWindows() {
