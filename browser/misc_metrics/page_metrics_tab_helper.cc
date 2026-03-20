@@ -16,8 +16,8 @@
 #include "brave/components/misc_metrics/navigation_source_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/reload_type.h"
@@ -110,8 +110,10 @@ void PageMetricsTabHelper::MaybeRecordNavigationSource(
     return;
   }
   auto& nav_source_metrics = page_metrics_->navigation_source_metrics();
-  Browser* browser = chrome::FindBrowserWithTab(web_contents());
-  if (browser && browser->is_type_app()) {
+  auto* tab = tabs::TabInterface::MaybeGetFromContents(web_contents());
+  auto* browser_window = tab ? tab->GetBrowserWindowInterface() : nullptr;
+  if (browser_window &&
+      browser_window->GetType() == BrowserWindowInterface::Type::TYPE_APP) {
     nav_source_metrics.RecordPWANavigation();
   } else if (ui::PageTransitionCoreTypeIs(transition,
                                           ui::PAGE_TRANSITION_AUTO_BOOKMARK)) {
