@@ -73,6 +73,7 @@ constexpr char kToolbarButtonEntryPointKey[] = "toolbar_button";
 constexpr char kMenuItemEntryPointKey[] = "menu_item";
 constexpr char kOmniboxCommandEntryPointKey[] = "omnibox_command";
 constexpr char kBraveSearchEntryPointKey[] = "brave_search";
+constexpr char kNTPWidgetEntryPointKey[] = "ntp_widget";
 
 constexpr auto kContextMenuActionKeys =
     base::MakeFixedFlatMap<ContextMenuAction, const char*>(
@@ -93,7 +94,8 @@ constexpr auto kEntryPointKeys =
          {EntryPoint::kToolbarButton, kToolbarButtonEntryPointKey},
          {EntryPoint::kMenuItem, kMenuItemEntryPointKey},
          {EntryPoint::kOmniboxCommand, kOmniboxCommandEntryPointKey},
-         {EntryPoint::kBraveSearch, kBraveSearchEntryPointKey}});
+         {EntryPoint::kBraveSearch, kBraveSearchEntryPointKey},
+         {EntryPoint::kNTPWidget, kNTPWidgetEntryPointKey}});
 
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
@@ -324,7 +326,8 @@ void AIChatMetrics::RecordReset() {
   UMA_HISTOGRAM_EXACT_LINEAR(kEnabledHistogramName,
                              std::numeric_limits<int>::max() - 1, 3);
   UMA_HISTOGRAM_EXACT_LINEAR(kAcquisitionSourceHistogramName,
-                             std::numeric_limits<int>::max() - 1, 7);
+                             std::numeric_limits<int>::max() - 1,
+                             static_cast<int>(EntryPoint::kMaxValue) + 1);
 }
 
 void AIChatMetrics::OnPremiumStatusUpdated(bool is_enabled,
@@ -416,6 +419,12 @@ void AIChatMetrics::RecordConversationsCleared() {
 
 void AIChatMetrics::OnSendingPromptWithFullPage() {
   prompted_via_full_page_ = true;
+}
+
+void AIChatMetrics::OnSendingPromptWithNTP() {
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+  HandleOpenViaEntryPoint(EntryPoint::kNTPWidget);
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 }
 
 void AIChatMetrics::OnQuickActionStatusChange(bool is_enabled) {

@@ -97,7 +97,8 @@ enum class EntryPoint {
   kMenuItem = 4,
   kOmniboxCommand = 5,
   kBraveSearch = 6,
-  kMaxValue = kBraveSearch
+  kNTPWidget = 7,
+  kMaxValue = kNTPWidget
 };
 
 enum class ContextMenuAction {
@@ -182,6 +183,7 @@ class AIChatMetrics : public mojom::Metrics,
 
   // Metrics:
   void OnSendingPromptWithFullPage() override;
+  void OnSendingPromptWithNTP() override;
   void OnQuickActionStatusChange(bool is_enabled) override;
   void RecordSkillClick(const std::string& skill_id) override;
 

@@ -38,7 +38,10 @@ export default function AIChatContextsProvider(props: {
       conversationEntriesComponent={() => <></>}
     >
       <ActiveChatContext.Provider value={conversationDetails}>
-        <ConversationProvider {...conversationDetails}>
+        <ConversationProvider
+          {...conversationDetails}
+          isNTPWidget
+        >
           {props.children}
         </ConversationProvider>
       </ActiveChatContext.Provider>
