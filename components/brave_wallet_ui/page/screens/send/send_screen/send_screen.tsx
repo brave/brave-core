@@ -159,6 +159,7 @@ export const SendScreen = React.memo(() => {
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isMobile = useSafeUISelector(UISelectors.isMobile)
   const isMobileOrPanel = isMobile || isPanel
+  const isIOS = useSafeUISelector(UISelectors.isIOS)
   const isKeyboardVisible = useIsKeyboardVisible()
   const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
     WalletSelectors.isZCashShieldedTransactionsEnabled,
@@ -304,9 +305,9 @@ export const SendScreen = React.memo(() => {
     return amountWei.gt(sendAssetBalance)
   }, [sendAssetBalance, sendAmount, tokenFromParams])
 
-  const tokenColor = React.useMemo(() => {
-    return getDominantColorFromImageURL(tokenFromParams?.logo ?? '')
-  }, [tokenFromParams?.logo])
+  const tokenColor = isIOS
+    ? undefined
+    : getDominantColorFromImageURL(tokenFromParams?.logo ?? '')
 
   const needsAccountSelected =
     accountIdFromParams === undefined
