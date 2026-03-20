@@ -23,12 +23,10 @@ fn ensure_cidv1(cid_str: &str) -> String {
         Ok(parsed) => parsed,
         Err(_) => return String::new(),
     };
-    
+
     if cid.version() == cid::Version::V1 {
         cid_str.to_string()
     } else {
-        cid.into_v1()
-            .map(|cid_v1| cid_v1.to_string())
-            .unwrap_or_else(|_| String::new())
+        cid.into_v1().map(|cid_v1| cid_v1.to_string()).unwrap_or_else(|_| String::new())
     }
 }

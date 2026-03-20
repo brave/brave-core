@@ -408,9 +408,10 @@ TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest,
            ""}),
       net::HTTP_OK);
   this->task_environment_.RunUntilIdle();
-  EXPECT_EQ(
-      brave_request_info->new_url_spec(),
-      "https://ipfs.io/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
+  EXPECT_EQ(brave_request_info->new_url_spec(),
+            "https://"
+            "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi.ipfs."
+            "inbrowser.link/");
 }
 
 TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
@@ -455,8 +456,9 @@ TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
       base::DoNothing(), brave_request_info, content_hash, false,
       brave_wallet::mojom::ProviderError::kSuccess, "");
   EXPECT_EQ(brave_request_info->new_url_spec(),
-            "https://ipfs.io/ipfs/"
-            "bafybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4");
+            "https://"
+            "bafybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4.ipfs."
+            "inbrowser.link/");
 
   EXPECT_FALSE(brave_request_info->pending_error().has_value());
 }
