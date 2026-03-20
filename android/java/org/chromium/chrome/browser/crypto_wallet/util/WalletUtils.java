@@ -63,9 +63,10 @@ public class WalletUtils {
             @CoinType.EnumType final int coinType, final AccountInfo[] accountInfos) {
         final Context context = ContextUtils.getApplicationContext();
         final int sameCoinAccountCount =
-                (int) Arrays.stream(accountInfos)
-                        .filter(acc -> acc.accountId.coin == coinType)
-                        .count();
+                (int)
+                        Arrays.stream(accountInfos)
+                                .filter(acc -> acc.accountId.coin == coinType)
+                                .count();
 
         return context.getString(
                 R.string.new_account_prefix,
