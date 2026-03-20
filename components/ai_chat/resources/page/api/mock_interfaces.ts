@@ -35,7 +35,23 @@ export const defaultServiceState: Mojom.ServiceState = {
   canShowPremiumPrompt: false,
 }
 
-export const defaultConversationState: Mojom.ConversationState = {
+export const defaultConversationState: Mojom.ConversationState & {
+  /**
+   * @deprecated This property only exists to replace conditionally compiled
+   * properties which should be stripped from Typescript
+   * TODO(https://github.com/brave/brave-browser/issues/53817): have
+   * typescript ignore the conditional code.
+   */
+  suggestedQuestions?: undefined[]
+
+  /**
+   * @deprecated This property only exists to replace conditionally compiled
+   * properties which should be stripped from Typescript
+   * TODO(https://github.com/brave/brave-browser/issues/53817): have
+   * typescript ignore the conditional code.
+   */
+  suggestionStatus: number
+} = {
   conversationUuid: 'test-conversation',
   isRequestInProgress: false,
   currentModelKey: 'test-model',
