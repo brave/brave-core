@@ -683,7 +683,10 @@ mojom::LiFiStepPtr ParseStep(const swap_responses::LiFiStep& value) {
   auto tool_details = mojom::LiFiToolDetails::New();
   tool_details->key = value.tool_details.key;
   tool_details->name = value.tool_details.name;
-  tool_details->logo = value.tool_details.logo_uri;
+  GURL tool_logo_gurl(value.tool_details.logo_uri);
+  if (tool_logo_gurl.is_valid() && tool_logo_gurl.SchemeIs("https")) {
+    tool_details->logo = value.tool_details.logo_uri;
+  }
   result->tool_details = std::move(tool_details);
 
   result->action = ParseAction(value.action);

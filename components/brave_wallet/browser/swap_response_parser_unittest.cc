@@ -901,7 +901,7 @@ TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponse) {
     EXPECT_EQ(step->tool, "optimism");
     EXPECT_EQ(step->tool_details->key, "optimism");
     EXPECT_EQ(step->tool_details->name, "Optimism Gateway");
-    EXPECT_EQ(step->tool_details->logo, "optimism.png");
+    EXPECT_TRUE(step->tool_details->logo.empty());
     EXPECT_EQ(step->action->from_token->contract_address,
               "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48");
     EXPECT_EQ(step->action->from_token->chain_id, "0x1");
@@ -1026,7 +1026,7 @@ TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponse) {
     EXPECT_EQ(included_step_2->tool, "optimism");
     EXPECT_EQ(included_step_2->tool_details->key, "optimism");
     EXPECT_EQ(included_step_2->tool_details->name, "Optimism Gateway");
-    EXPECT_EQ(included_step_2->tool_details->logo, "optimism.png");
+    EXPECT_TRUE(included_step_2->tool_details->logo.empty());
     EXPECT_EQ(included_step_2->action->from_amount, "1008586");
     EXPECT_EQ(included_step_2->action->from_token->contract_address,
               "0xdAC17F958D2ee523a2206206994597C13D831ec7");
@@ -1572,6 +1572,147 @@ TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponseTokenLogoUrlValidation) {
     ASSERT_TRUE(quote);
     ASSERT_FALSE(quote->routes.empty());
     EXPECT_TRUE(quote->routes[0]->from_token->logo.empty());
+  }
+}
+
+TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponseToolLogoUrlValidation) {
+  auto make_json = [](const std::string& tool_logo_uri) {
+    return absl::StrFormat(R"({
+      "routes": [{
+        "id": "route1",
+        "fromChainId": "10",
+        "fromAmountUSD": "1.00",
+        "fromAmount": "1000000",
+        "fromToken": {
+          "address": "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
+          "chainId": "10",
+          "symbol": "USDC.e",
+          "decimals": "6",
+          "name": "Bridged USD Coin",
+          "coinKey": "USDCe",
+          "logoURI": "https://tokens.1inch.io/usdc.png",
+          "priceUSD": "1"
+        },
+        "toChainId": "10",
+        "toAmountUSD": "0.99",
+        "toAmount": "990000",
+        "toAmountMin": "980000",
+        "toToken": {
+          "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+          "chainId": "10",
+          "symbol": "USDT",
+          "decimals": "6",
+          "name": "Tether USD",
+          "coinKey": "USDT",
+          "logoURI": "https://tokens.1inch.io/usdt.png",
+          "priceUSD": "1"
+        },
+        "gasCostUSD": "0.01",
+        "steps": [{
+          "id": "step1",
+          "type": "lifi",
+          "tool": "stargate",
+          "toolDetails": {
+            "key": "stargate",
+            "name": "Stargate",
+            "logoURI": "%s"
+          },
+          "action": {
+            "fromChainId": "10",
+            "toChainId": "10",
+            "fromToken": {
+              "address": "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
+              "chainId": "10",
+              "symbol": "USDC.e",
+              "decimals": "6",
+              "name": "Bridged USD Coin",
+              "coinKey": "USDCe",
+              "logoURI": "https://tokens.1inch.io/usdc.png",
+              "priceUSD": "1"
+            },
+            "toToken": {
+              "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+              "chainId": "10",
+              "symbol": "USDT",
+              "decimals": "6",
+              "name": "Tether USD",
+              "coinKey": "USDT",
+              "logoURI": "https://tokens.1inch.io/usdt.png",
+              "priceUSD": "1"
+            },
+            "fromAmount": "1000000",
+            "slippage": "0.01",
+            "fromAddress": "0xSender",
+            "toAddress": "0xRecipient"
+          },
+          "estimate": {
+            "tool": "stargate",
+            "fromAmount": "1000000",
+            "toAmount": "990000",
+            "toAmountMin": "980000",
+            "approvalAddress": "0xApproval",
+            "feeCosts": [],
+            "gasCosts": [],
+            "executionDuration": "30",
+            "fromAmountUSD": "1.00",
+            "toAmountUSD": "0.99"
+          }
+        }],
+        "tags": ["RECOMMENDED"]
+      }]
+    })",
+                           tool_logo_uri);
+  };
+
+  // Valid HTTPS URL is accepted.
+  {
+    auto quote = lifi::ParseQuoteResponse(
+        ParseJson(make_json("https://stargate.finance/logo.png")));
+    ASSERT_TRUE(quote);
+    ASSERT_FALSE(quote->routes.empty());
+    ASSERT_FALSE(quote->routes[0]->steps.empty());
+    EXPECT_EQ(quote->routes[0]->steps[0]->tool_details->logo,
+              "https://stargate.finance/logo.png");
+  }
+
+  // javascript: URI is rejected.
+  {
+    auto quote = lifi::ParseQuoteResponse(
+        ParseJson(make_json("javascript:alert(1)")));
+    ASSERT_TRUE(quote);
+    ASSERT_FALSE(quote->routes.empty());
+    ASSERT_FALSE(quote->routes[0]->steps.empty());
+    EXPECT_TRUE(quote->routes[0]->steps[0]->tool_details->logo.empty());
+  }
+
+  // data: URI is rejected.
+  {
+    auto quote = lifi::ParseQuoteResponse(ParseJson(
+        make_json("data:image/svg+xml,<svg><script>alert(1)</script></svg>")));
+    ASSERT_TRUE(quote);
+    ASSERT_FALSE(quote->routes.empty());
+    ASSERT_FALSE(quote->routes[0]->steps.empty());
+    EXPECT_TRUE(quote->routes[0]->steps[0]->tool_details->logo.empty());
+  }
+
+  // HTTP URL is rejected (must be HTTPS).
+  {
+    auto quote = lifi::ParseQuoteResponse(
+        ParseJson(make_json("http://stargate.finance/logo.png")));
+    ASSERT_TRUE(quote);
+    ASSERT_FALSE(quote->routes.empty());
+    ASSERT_FALSE(quote->routes[0]->steps.empty());
+    EXPECT_TRUE(quote->routes[0]->steps[0]->tool_details->logo.empty());
+  }
+
+  // Invalid string is rejected.
+  {
+    auto quote =
+        lifi::ParseQuoteResponse(ParseJson(make_json("not-a-url")));
+    ASSERT_TRUE(quote);
+    ASSERT_FALSE(quote->routes.empty());
+    ASSERT_FALSE(quote->routes[0]->steps.empty());
+    EXPECT_TRUE(quote->routes[0]->steps[0]->tool_details->logo.empty());
   }
 }
 
