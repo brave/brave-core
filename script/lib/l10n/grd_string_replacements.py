@@ -80,8 +80,7 @@ main_text_only_replacements = [
 # Replacements for strings in brave_strings.grd for situations where using a
 # different GRD would be impractical. These need to be translated in Crowdin.
 brave_strings_grd_replacements = [
-    ('IDS_LOCAL_NETWORK_ACCESS_PERMISSION_DESC',
-     r'''
+    ('IDS_LOCAL_NETWORK_ACCESS_PERMISSION_DESC', r'''
           This will allow you to share content from Brave to your local devices, such as a TV or speaker.
         '''),
 ]

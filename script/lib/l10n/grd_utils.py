@@ -127,13 +127,14 @@ def replace_strings_in_brave_strings_grd(source_xml_tree):
     """Takes in a brave_strings.grd tree and replaces strings listed in
     brave_strings_grd_replacements"""
     for (message_id, text) in brave_strings_grd_replacements:
-        elem = next(iter(
-            source_xml_tree.xpath('.//message[@name=$id]', id=message_id)),
-            None)
-        assert elem is not None, (f'String with name {message_id} listed in ' +
-                      'brave_strings_grd_replacements was not found in ' +
-                      'brave_strings.grd. If the string with this name was ' +
-                      'removed upstream, update the replacements accordingly.')
+        elem = next(
+            iter(source_xml_tree.xpath('.//message[@name=$id]',
+                                       id=message_id)), None)
+        assert elem is not None, (
+            f'String with name {message_id} listed in ' +
+            'brave_strings_grd_replacements was not found in ' +
+            'brave_strings.grd. If the string with this name was ' +
+            'removed upstream, update the replacements accordingly.')
         elem.text = text
 
 
