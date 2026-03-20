@@ -19,7 +19,7 @@ must be run from the `brave-core` directory.
 ## Step 1: Paths
 
 This skill runs from the brave-core (`src/brave`) directory. Best practices docs
-are at `./docs/best-practices/` and the index is at `./docs/BEST-PRACTICES.md`.
+are at `./docs/best-practices/` and the index is at `./docs/best_practices.md`.
 
 Set `DOCS_DIR="./docs/best-practices"`.
 
@@ -27,7 +27,7 @@ Set `DOCS_DIR="./docs/best-practices"`.
 
 ## Step 2: Read All Best Practice Files
 
-Read `docs/BEST-PRACTICES.md` and every file in `$DOCS_DIR/*.md` to understand
+Read `docs/best_practices.md` and every file in `$DOCS_DIR/*.md` to understand
 the full set of docs.
 
 ---
@@ -118,7 +118,7 @@ Look for:
 
 ## Step 10: Check the Index
 
-Verify `docs/BEST-PRACTICES.md`:
+Verify `docs/best_practices.md`:
 
 - All listed docs exist
 - No doc is listed twice

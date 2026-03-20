@@ -21,7 +21,7 @@ entries.
 ## Step 1: Verify Working Directory
 
 This skill runs from the brave-core (`src/brave`) directory. Best practices docs
-are at `./docs/best-practices/` and the index is at `./docs/BEST-PRACTICES.md`.
+are at `./docs/best-practices/` and the index is at `./docs/best_practices.md`.
 
 Set `DOCS_DIR="./docs/best-practices"`.
 
@@ -45,7 +45,7 @@ If the description is vague, ask the user to clarify before proceeding.
 Search ALL existing best-practice documents for rules that already cover this
 topic:
 
-1. Read the index file `docs/BEST-PRACTICES.md` to understand document
+1. Read the index file `docs/best_practices.md` to understand document
    categories
 2. Use Grep to search across all docs in `$DOCS_DIR/*.md` for keywords related
    to the new practice
@@ -81,7 +81,7 @@ attract multiple related practices**, create a new category document:
 1. Choose a descriptive filename (e.g., `performance.md`,
    `security-practices.md`)
 2. Add a prefix mapping to `script/manage-bp-ids.py` in the `DOC_PREFIXES` dict
-3. Add an entry in `docs/BEST-PRACTICES.md` index under the appropriate section
+3. Add an entry in `docs/best_practices.md` index under the appropriate section
 4. Create the new doc with a `# Title` header and cross-reference comment
 
 **If it doesn't fit but is a one-off**, find the closest existing document and
@@ -170,7 +170,7 @@ and the ID assignment — they are one logical unit).
 
 ```bash
 git add $DOCS_DIR/<document>.md
-# Also add manage-bp-ids.py and docs/BEST-PRACTICES.md if they were modified
+# Also add manage-bp-ids.py and docs/best_practices.md if they were modified
 git commit -m "Add best practice: <short rule title>"
 ```
 
