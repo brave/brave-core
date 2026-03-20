@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_CONTAINERS_CONTAINERS_MENU_MODEL_H_
 #define BRAVE_BROWSER_UI_CONTAINERS_CONTAINERS_MENU_MODEL_H_
 
-#include <limits>
 #include <string>
 #include <vector>
 
@@ -16,13 +15,14 @@
 #include "ui/menus/simple_menu_model.h"
 
 class Browser;
-class PrefService;
 
 namespace containers {
 
 namespace test {
 class ContainersMenuModelTestApi;
 }  // namespace test
+
+class ContainersService;
 
 // A menu model that represents a list of Containers. This menu can be used in
 // various UI components, such as renderer context menus, tab context menus,
@@ -41,7 +41,7 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
     virtual float GetScaleFactor() = 0;
   };
 
-  ContainersMenuModel(Delegate& delegate, const PrefService& prefs);
+  ContainersMenuModel(Delegate& delegate, const ContainersService& service);
   ~ContainersMenuModel() override;
 
   // ui::SimpleMenuModel::Delegate:

@@ -8,12 +8,24 @@ import("//brave/components/containers/buildflags/buildflags.gni")
 assert(enable_containers)
 
 static_library("browser") {
-  sources = [
-    "containers_settings_handler.cc",
+  public = [
+    "containers_service.h",
     "containers_settings_handler.h",
+    "prefs_registration.h",
+  ]
+
+  sources = [
+    "containers_service.cc",
+    "containers_settings_handler.cc",
     "pref_names.h",
     "prefs.cc",
     "prefs.h",
+    "prefs_registration.cc",
+  ]
+
+  friend = [
+    "//brave/browser/containers:browser_tests",
+    ":unit_tests",
   ]
 
   public_deps = [ "//brave/components/containers/core/mojom" ]
@@ -21,6 +33,7 @@ static_library("browser") {
   deps = [
     "//base",
     "//brave/components/containers/core/common",
+    "//components/keyed_service/core",
     "//components/pref_registry",
     "//components/prefs",
     "//components/user_prefs",
@@ -34,6 +47,7 @@ static_library("browser") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "containers_service_unittest.cc",
     "containers_settings_handler_unittest.cc",
     "prefs_unittest.cc",
   ]

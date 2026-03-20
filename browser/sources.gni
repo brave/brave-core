@@ -67,6 +67,8 @@ if (enable_brave_wallet) {
   import("//brave/browser/brave_wallet/notifications/sources.gni")
 }
 
+brave_chrome_browser_allow_circular_includes_from = []
+
 brave_chrome_browser_visibility = [
   "//brave/browser/*",
   "//brave/test:*",
@@ -419,7 +421,10 @@ if (enable_ai_chat && is_android) {
 }
 
 if (enable_containers) {
+  brave_chrome_browser_allow_circular_includes_from +=
+      [ "//brave/browser/containers" ]
   brave_chrome_browser_deps += [
+    "//brave/browser/containers",
     "//brave/components/containers/content/browser",
     "//brave/components/containers/content/browser:tab_restore",
     "//brave/components/containers/core/browser",
@@ -741,7 +746,7 @@ brave_chrome_browser_ui_allow_circular_includes_from = [ "//brave/browser/ui" ]
 brave_chrome_browser_ui_allow_circular_includes_from +=
     brave_ui_allow_circular_includes_from
 
-brave_chrome_browser_allow_circular_includes_from = [
+brave_chrome_browser_allow_circular_includes_from += [
   "//brave/browser/ui",
   "//brave/browser/brave_stats",
   "//brave/browser/ntp_background",

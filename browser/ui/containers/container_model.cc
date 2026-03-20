@@ -5,12 +5,14 @@
 
 #include "brave/browser/ui/containers/container_model.h"
 
+#include <optional>
+#include <string_view>
 #include <utility>
 #include <vector>
 
 #include "base/functional/bind.h"
 #include "brave/browser/ui/containers/containers_icon_generator.h"
-#include "brave/components/containers/core/browser/prefs.h"
+#include "brave/components/containers/core/browser/containers_service.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/gfx/geometry/size.h"
 
@@ -38,7 +40,6 @@ ContainerModel ContainerModel::CreateForUnknown(const std::string& id,
   return ContainerModel(
       mojom::Container::New(id, id, containers::mojom::Icon::kDefault,
                             SkColorSetRGB(0xb7, 0x4d, 0x49)),
-
       scale_factor);
 }
 
@@ -56,14 +57,23 @@ ContainerModel& ContainerModel::operator=(ContainerModel&& other) noexcept =
 
 ContainerModel::~ContainerModel() = default;
 
-std::vector<ContainerModel> GetContainerModelsFromPrefs(
-    const PrefService& prefs,
-    float scale_factor) {
+std::vector<ContainerModel> GetContainerModels(const ContainersService& service,
+                                               float scale_factor) {
   std::vector<ContainerModel> containers;
-  for (auto& container : GetContainersFromPrefs(prefs)) {
+  for (auto& container : service.GetContainers()) {
     containers.emplace_back(std::move(container), scale_factor);
   }
   return containers;
+}
+
+ContainerModel GetRuntimeContainerModel(const ContainersService& service,
+                                        std::string_view id,
+                                        float scale_factor) {
+  if (auto container = service.GetRuntimeContainerById(id)) {
+    return ContainerModel(std::move(container), scale_factor);
+  }
+
+  return ContainerModel::CreateForUnknown(std::string(id), scale_factor);
 }
 
 }  // namespace containers
