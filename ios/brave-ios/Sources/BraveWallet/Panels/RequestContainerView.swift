@@ -84,7 +84,17 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
             SignTransactionView(
               keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,
-              requests: requests,
+              solRequests: requests,
+              cardanoRequests: nil,
+              cryptoStore: cryptoStore,
+              onDismiss: onDismiss
+            )
+          case .signCardanoTransactions(let requests):
+            SignTransactionView(
+              keyringStore: keyringStore,
+              networkStore: cryptoStore.networkStore,
+              solRequests: nil,
+              cardanoRequests: requests,
               cryptoStore: cryptoStore,
               onDismiss: onDismiss
             )

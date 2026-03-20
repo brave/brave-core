@@ -19,6 +19,7 @@ enum PendingRequest: Equatable {
   case getEncryptionPublicKey(BraveWallet.GetEncryptionPublicKeyRequest)
   case decrypt(BraveWallet.DecryptRequest)
   case signSolTransactions([BraveWallet.SignSolTransactionsRequest])
+  case signCardanoTransactions([BraveWallet.SignCardanoTransactionRequest])
 }
 
 extension PendingRequest: Identifiable {
@@ -42,6 +43,8 @@ extension PendingRequest: Identifiable {
       return "decrypt-\(request.accountId.uniqueKey)-\(request.requestId)"
     case .signSolTransactions(let requests):
       return "signSolTransactions-\(requests.map(\.id))"
+    case .signCardanoTransactions(let requests):
+      return "signCardanoTransactions-\(requests.map(\.id))"
     }
   }
 }
@@ -55,6 +58,7 @@ enum WebpageRequestResponse: Equatable {
   case getEncryptionPublicKey(approved: Bool, requestId: String)
   case decrypt(approved: Bool, requestId: String)
   case signSolTransactions(approved: Bool, id: Int32)
+  case signCardanoTransactions(approved: Bool, id: Int32)
 }
 
 public class CryptoStore: ObservableObject, WalletObserverStore {
@@ -771,6 +775,11 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       await walletService.pendingSignSolTransactionsRequests(), !signSolTransactionsRequests.isEmpty
     {
       return .signSolTransactions(signSolTransactionsRequests)
+    } else if case let signCardanoTransactionRequests =
+      await walletService.pendingSignCardanoTransactionRequests(),
+      !signCardanoTransactionRequests.isEmpty
+    {
+      return .signCardanoTransactions(signCardanoTransactionRequests)
     } else if case let signMessageErrors = await walletService.pendingSignMessageErrors(),
       !signMessageErrors.isEmpty
     {
@@ -867,6 +876,12 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
         approved: approved,
         id: id,
         hwSignatures: [],
+        error: nil
+      )
+    case .signCardanoTransactions(let approved, let id):
+      walletService.notifySignCardanoTransactionRequestProcessed(
+        approved: approved,
+        id: id,
         error: nil
       )
     }
