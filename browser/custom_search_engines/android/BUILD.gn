@@ -1,0 +1,67 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+import("//chrome/common/features.gni")
+
+assert(is_android)
+
+android_library("java") {
+  sources = [
+    "java/src/org/chromium/brave/browser/custom_search_engines/ConfirmationDialog.java",
+    "java/src/org/chromium/brave/browser/custom_search_engines/CustomSearchEnginesManager.java",
+    "java/src/org/chromium/brave/browser/custom_search_engines/CustomSearchEnginesPrefManager.java",
+    "java/src/org/chromium/brave/browser/custom_search_engines/settings/AddCustomSearchEngineItemPreference.java",
+    "java/src/org/chromium/brave/browser/custom_search_engines/settings/AddCustomSearchEnginePreferenceFragment.java",
+    "java/src/org/chromium/brave/browser/custom_search_engines/settings/CustomSearchEngineAdapter.java",
+    "java/src/org/chromium/brave/browser/custom_search_engines/settings/CustomSearchEnginesPreference.java",
+  ]
+  deps = [
+    ":java_resources",
+    "//base:log_java",
+    "//base:supplier_java",
+    "//base:tasks_java",
+    "//chrome/browser/preferences:java",
+    "//chrome/browser/profiles/android:java",
+    "//chrome/browser/search_engines/android:java",
+    "//chrome/browser/settings:java",
+    "//chrome/browser/ui/android/favicon:java",
+    "//components/browser_ui/settings/android:java",
+    "//components/favicon/android:java",
+    "//components/search_engines/android:java",
+    "//content/public/android:content_full_java",
+    "//net/android:net_java",
+    "//third_party/android_deps:material_design_java",
+    "//third_party/androidx:androidx_activity_activity_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+    "//third_party/androidx:androidx_appcompat_appcompat_java",
+    "//third_party/androidx:androidx_fragment_fragment_java",
+    "//third_party/androidx:androidx_lifecycle_lifecycle_common_java",
+    "//third_party/androidx:androidx_preference_preference_java",
+    "//third_party/androidx:androidx_recyclerview_recyclerview_java",
+    "//ui/android:ui_no_recycler_view_java",
+    "//url:url_java",
+  ]
+
+  resources_package = "org.chromium.brave.browser.custom_search_engines"
+}
+
+android_resources("java_resources") {
+  sources = [
+    "java/res/color/add_search_engine_button_bg_tint.xml",
+    "java/res/color/brave_button_text_color.xml",
+    "java/res/drawable/brave_action_button_bg.xml",
+    "java/res/drawable/confirmation_dialog_shape.xml",
+    "java/res/layout/add_custom_search_engine_preference_layout.xml",
+    "java/res/layout/confirmation_dialog_layout.xml",
+    "java/res/layout/custom_search_engine_item.xml",
+    "java/res/layout/custom_search_engines_preference_layout.xml",
+    "java/res/values-night/colors.xml",
+    "java/res/values/colors.xml",
+    "java/res/values/dimens.xml",
+    "java/res/values/styles.xml",
+  ]
+  deps = [ "//brave/build/android:android_brave_strings_grd" ]
+}

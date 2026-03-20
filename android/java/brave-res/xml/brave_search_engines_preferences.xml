@@ -6,37 +6,55 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <org.chromium.components.browser_ui.settings.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.search_engines.settings.BraveStandardSearchEnginePreference"
-        android:key="standard_search_engine"
+    <PreferenceCategory
+        android:key="currently_used_search_engines_category"
         android:order="1"
-        android:title="@string/prefs_standard_search_engine"/>
-    <org.chromium.components.browser_ui.settings.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.search_engines.settings.BravePrivateSearchEnginePreference"
-        android:key="private_search_engine"
-        android:order="2"
-        android:title="@string/prefs_private_search_engine"/>
-    <org.chromium.components.browser_ui.settings.ChromeBasePreference
-        android:fragment="org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesFragment"
-        android:key="quick_search_engine"
-        android:order="3"
-        android:title="@string/quick_search_engines_with_hyphen"/>
-    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="show_autocomplete_in_address_bar"
-        android:title="@string/show_autocomplete_in_address_bar"
-        android:summary="@string/show_autocomplete_in_address_bar_summary"
-        android:order="4"
-        android:persistent="false"/>
-    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="search_suggestions"
-        android:title="@string/show_search_suggestions_title"
-        android:summary="@string/improve_search_suggestions_summary"
-        android:persistent="false"
-        android:order="5"/>
-    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="send_web_discovery"
-        android:order="8"
-        android:title="@string/send_web_discovery_title"
-        android:summary="@string/send_web_discovery_summary"
-        android:defaultValue="false" />
+        android:title="@string/currently_used_search_engines">
+        <org.chromium.components.browser_ui.settings.ChromeBasePreference
+            android:fragment="org.chromium.chrome.browser.search_engines.settings.BraveStandardSearchEnginePreference"
+            android:key="standard_search_engine"
+            android:order="1"
+            android:title="@string/prefs_standard_search_engine"/>
+        <org.chromium.components.browser_ui.settings.ChromeBasePreference
+            android:fragment="org.chromium.chrome.browser.search_engines.settings.BravePrivateSearchEnginePreference"
+            android:key="private_search_engine"
+            android:order="2"
+            android:title="@string/prefs_private_search_engine"/>
+        <org.chromium.components.browser_ui.settings.ChromeBasePreference
+            android:fragment="org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesFragment"
+            android:key="quick_search_engine"
+            android:order="3"
+            android:title="@string/quick_search_engines_with_hyphen"/>
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="show_autocomplete_in_address_bar"
+            android:title="@string/show_autocomplete_in_address_bar"
+            android:summary="@string/show_autocomplete_in_address_bar_summary"
+            android:order="4"
+            android:persistent="false"/>
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="search_suggestions"
+            android:title="@string/show_search_suggestions_title"
+            android:summary="@string/improve_search_suggestions_summary"
+            android:persistent="false"
+            android:order="5"/>
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="send_web_discovery"
+            android:order="8"
+            android:title="@string/send_web_discovery_title"
+            android:summary="@string/send_web_discovery_summary"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="custom_search_engines_category"
+        android:order="9"
+        android:title="@string/custom_search_engines"
+        app:isPreferenceVisible="false">
+        <!-- We are going to add Custom search engines list preference here  from .java file which takes order 1 -->
+        <org.chromium.brave.browser.custom_search_engines.settings.AddCustomSearchEngineItemPreference
+            android:fragment="org.chromium.brave.browser.custom_search_engines.settings.AddCustomSearchEnginePreferenceFragment"
+            android:key="add_custom_search_engine"
+            android:order="2"
+            app:allowDividerAbove="false"
+            android:title="@string/add_custom_search_engine"/>
+    </PreferenceCategory>
 </PreferenceScreen>
