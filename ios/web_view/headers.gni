@@ -8,8 +8,9 @@ brave_ios_web_view_public_headers = [
   "//brave/ios/web_view/public/cwv_autofill_profile_extras.h",
   "//brave/ios/web_view/public/cwv_credit_card_extras.h",
   "//brave/ios/web_view/public/cwv_download_task_extras.h",
+  "//brave/ios/web_view/public/cwv_favicon_status.h",
   "//brave/ios/web_view/public/cwv_password_extras.h",
   "//brave/ios/web_view/public/cwv_ssl_status_extras.h",
-  "//brave/ios/web_view/public/cwv_x509_certificate_extras.h",
   "//brave/ios/web_view/public/cwv_web_view_extras.h",
+  "//brave/ios/web_view/public/cwv_x509_certificate_extras.h",
 ]

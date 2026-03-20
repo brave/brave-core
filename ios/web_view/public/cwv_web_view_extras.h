@@ -20,6 +20,7 @@ OBJC_EXPORT const CWVUserAgentType CWVUserAgentTypeMobile;
 OBJC_EXPORT const CWVUserAgentType CWVUserAgentTypeDesktop;
 
 @class CWVBackForwardListItem;
+@class CWVFaviconStatus;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -61,6 +62,9 @@ CWV_EXPORT
 
 /// Whether or not the keyboard is visible for this web views contents
 @property(readonly, getter=isKeyboardVisible) BOOL keyboardVisible;
+
+/// The current favicon status of the web state
+@property(readonly, nullable) CWVFaviconStatus* faviconStatus;
 
 #pragma mark -
 
