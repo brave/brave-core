@@ -131,6 +131,10 @@ function ConversationEntries(props: ConversationEntriesProps) {
     setHasLoaded(false)
     props.onIsContentReady(false)
     hasNotifiedContentReady.current = false
+    document.body.style.setProperty(
+      '--iframe-additional-margin-for-menus',
+      '0px',
+    )
     if (iframeRef.current) {
       iframeRef.current.style.height = '0px'
     }
@@ -139,6 +143,8 @@ function ConversationEntries(props: ConversationEntriesProps) {
   const conversationHasEntries =
     !!conversationApi.useGetConversationHistory().getConversationHistoryData
       .length
+  const conversationHasEntriesRef = React.useRef(conversationHasEntries)
+  conversationHasEntriesRef.current = conversationHasEntries
 
   // Mark that iframe has loaded if there're no conversation entries,
   // since we won't get ChildHeightChanged notification in that case.
@@ -171,7 +177,12 @@ function ConversationEntries(props: ConversationEntriesProps) {
         // button menu's get cut off when the conversation is short since
         // they cant be rendered outside of the iframe.
         // See https://github.com/brave/brave-browser/issues/46042
-        const additionalHeight = Math.max(0, 600 - height)
+        // For an empty conversation, the iframe is very short; the companion
+        // negative margin on .aichatIframeContainer would collapse layout and
+        // pull suggested questions over the header — skip the hack until
+        // there are entries.
+        const hasEntries = conversationHasEntriesRef.current
+        const additionalHeight = hasEntries ? Math.max(0, 600 - height) : 0
         document.body.style.setProperty(
           '--iframe-additional-margin-for-menus',
           additionalHeight + 'px',
