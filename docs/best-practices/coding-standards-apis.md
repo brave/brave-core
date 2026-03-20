@@ -1245,3 +1245,25 @@ auto it = map.find("key");  // no temporary string created
 ```
 
 For `base::flat_set` of `std::unique_ptr`, use `base::UniquePtrComparator` for transparent lookups by raw pointer. See [Chromium container guidelines](https://chromium.googlesource.com/chromium/src/+/HEAD/base/containers/README.md).
+
+---
+
+<a id="CSA-069"></a>
+
+## ❌ Don't Rely on Implicit `const char*` → `string_view` for Non-Null-Terminated Data
+
+**When constructing `std::string_view` from a byte buffer or `reinterpret_cast`'d pointer, always pass the size explicitly.** Implicit `string_view(const char*)` calls `strlen()`, which causes undefined behavior if the data is not null-terminated.
+
+This commonly occurs when migrating from `(const char* src, size_t src_len)` APIs to `string_view` APIs — dropping the size parameter silently changes the semantics.
+
+```cpp
+std::vector<uint8_t> data = GetBytes();
+
+// ❌ WRONG - implicit strlen() on potentially non-null-terminated data
+base::ReadUnicodeCharacter(
+    reinterpret_cast<const char*>(data.data()), &i, &code_point);
+
+// ✅ CORRECT - base::as_string_view handles the conversion safely
+base::ReadUnicodeCharacter(
+    base::as_string_view(data), &i, &code_point);
+```
