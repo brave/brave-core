@@ -880,7 +880,7 @@ TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponse) {
     EXPECT_EQ(route->from_token->symbol, "USDC");
     EXPECT_EQ(route->from_token->decimals, 6);
     EXPECT_EQ(route->from_token->name, "USD Coin");
-    EXPECT_EQ(route->from_token->logo, "usdc.png");
+    EXPECT_TRUE(route->from_token->logo.empty());
     EXPECT_EQ(route->from_address,
               "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
     EXPECT_EQ(route->to_amount, "1013654");
@@ -891,7 +891,7 @@ TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponse) {
     EXPECT_EQ(route->to_token->symbol, "USDT");
     EXPECT_EQ(route->to_token->decimals, 6);
     EXPECT_EQ(route->to_token->name, "USDT");
-    EXPECT_EQ(route->to_token->logo, "usdt.png");
+    EXPECT_TRUE(route->to_token->logo.empty());
     EXPECT_EQ(route->to_address, "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
 
     ASSERT_EQ(route->steps.size(), 1u);
@@ -908,7 +908,7 @@ TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponse) {
     EXPECT_EQ(step->action->from_token->symbol, "USDC");
     EXPECT_EQ(step->action->from_token->decimals, 6);
     EXPECT_EQ(step->action->from_token->name, "USD Coin");
-    EXPECT_EQ(step->action->from_token->logo, "usdc.png");
+    EXPECT_TRUE(step->action->from_token->logo.empty());
     EXPECT_EQ(step->action->from_amount, "1000000");
     EXPECT_EQ(step->action->to_token->contract_address,
               "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58");
@@ -916,7 +916,7 @@ TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponse) {
     EXPECT_EQ(step->action->to_token->symbol, "USDT");
     EXPECT_EQ(step->action->to_token->decimals, 6);
     EXPECT_EQ(step->action->to_token->name, "USDT");
-    EXPECT_EQ(step->action->to_token->logo, "usdt.png");
+    EXPECT_TRUE(step->action->to_token->logo.empty());
     EXPECT_EQ(step->action->slippage, "0.005");
     EXPECT_EQ(step->action->from_address,
               "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
@@ -938,7 +938,7 @@ TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponse) {
     EXPECT_EQ(fee_cost->token->symbol, "USDC");
     EXPECT_EQ(fee_cost->token->decimals, 6);
     EXPECT_EQ(fee_cost->token->name, "USD Coin");
-    EXPECT_EQ(fee_cost->token->logo, "usdc.png");
+    EXPECT_TRUE(fee_cost->token->logo.empty());
     EXPECT_EQ(fee_cost->amount, "3000");
     EXPECT_EQ(fee_cost->percentage, "0.003");
     EXPECT_TRUE(fee_cost->included);
@@ -953,7 +953,7 @@ TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponse) {
     EXPECT_EQ(gas_cost->token->symbol, "ETH");
     EXPECT_EQ(gas_cost->token->decimals, 18);
     EXPECT_EQ(gas_cost->token->name, "ETH");
-    EXPECT_EQ(gas_cost->token->logo, "eth.png");
+    EXPECT_TRUE(gas_cost->token->logo.empty());
     EXPECT_EQ(step->estimate->execution_duration, "106.944");
 
     ASSERT_TRUE(step->included_steps);
@@ -973,14 +973,14 @@ TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponse) {
     EXPECT_EQ(included_step_1->action->from_token->symbol, "USDC");
     EXPECT_EQ(included_step_1->action->from_token->decimals, 6);
     EXPECT_EQ(included_step_1->action->from_token->name, "USD Coin");
-    EXPECT_EQ(included_step_1->action->from_token->logo, "usdc.png");
+    EXPECT_TRUE(included_step_1->action->from_token->logo.empty());
     EXPECT_EQ(included_step_1->action->to_token->contract_address,
               "0xdAC17F958D2ee523a2206206994597C13D831ec7");
     EXPECT_EQ(included_step_1->action->to_token->chain_id, "0x1");
     EXPECT_EQ(included_step_1->action->to_token->symbol, "USDT");
     EXPECT_EQ(included_step_1->action->to_token->decimals, 6);
     EXPECT_EQ(included_step_1->action->to_token->name, "USDT");
-    EXPECT_EQ(included_step_1->action->to_token->logo, "usdt.png");
+    EXPECT_TRUE(included_step_1->action->to_token->logo.empty());
     EXPECT_EQ(included_step_1->action->slippage, "0.005");
     EXPECT_EQ(included_step_1->estimate->tool, "verse-dex");
     EXPECT_EQ(included_step_1->estimate->from_amount, "1000000");
@@ -1001,7 +1001,7 @@ TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponse) {
     EXPECT_EQ(included_step_1_fee_cost->token->symbol, "USDC");
     EXPECT_EQ(included_step_1_fee_cost->token->decimals, 6);
     EXPECT_EQ(included_step_1_fee_cost->token->name, "USD Coin");
-    EXPECT_EQ(included_step_1_fee_cost->token->logo, "usdc.png");
+    EXPECT_TRUE(included_step_1_fee_cost->token->logo.empty());
     EXPECT_EQ(included_step_1_fee_cost->amount, "3000");
     EXPECT_EQ(included_step_1_fee_cost->percentage, "0.003");
     EXPECT_TRUE(included_step_1_fee_cost->included);
@@ -1017,7 +1017,7 @@ TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponse) {
     EXPECT_EQ(included_step_1_gas_cost->token->symbol, "ETH");
     EXPECT_EQ(included_step_1_gas_cost->token->decimals, 18);
     EXPECT_EQ(included_step_1_gas_cost->token->name, "ETH");
-    EXPECT_EQ(included_step_1_gas_cost->token->logo, "eth.png");
+    EXPECT_TRUE(included_step_1_gas_cost->token->logo.empty());
     EXPECT_FALSE(included_step_1->included_steps);
 
     const auto& included_step_2 = step->included_steps->at(1);
@@ -1034,14 +1034,14 @@ TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponse) {
     EXPECT_EQ(included_step_2->action->from_token->symbol, "USDT");
     EXPECT_EQ(included_step_2->action->from_token->decimals, 6);
     EXPECT_EQ(included_step_2->action->from_token->name, "USDT");
-    EXPECT_EQ(included_step_2->action->from_token->logo, "usdt.png");
+    EXPECT_TRUE(included_step_2->action->from_token->logo.empty());
     EXPECT_EQ(included_step_2->action->to_token->contract_address,
               "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58");
     EXPECT_EQ(included_step_2->action->to_token->chain_id, "0xa");
     EXPECT_EQ(included_step_2->action->to_token->symbol, "USDT");
     EXPECT_EQ(included_step_2->action->to_token->decimals, 6);
     EXPECT_EQ(included_step_2->action->to_token->name, "USDT");
-    EXPECT_EQ(included_step_2->action->to_token->logo, "usdt.png");
+    EXPECT_TRUE(included_step_2->action->to_token->logo.empty());
     EXPECT_EQ(included_step_2->action->slippage, "0.005");
     EXPECT_EQ(included_step_2->action->destination_call_data, "0x0");
     EXPECT_EQ(included_step_2->estimate->tool, "optimism");
@@ -1064,7 +1064,7 @@ TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponse) {
     EXPECT_EQ(included_step_2_gas_cost->token->symbol, "ETH");
     EXPECT_EQ(included_step_2_gas_cost->token->decimals, 18);
     EXPECT_EQ(included_step_2_gas_cost->token->name, "ETH");
-    EXPECT_EQ(included_step_2_gas_cost->token->logo, "eth.png");
+    EXPECT_TRUE(included_step_2_gas_cost->token->logo.empty());
     EXPECT_FALSE(included_step_2->included_steps);
 
     ASSERT_EQ(route->tags.size(), 3u);
@@ -1485,6 +1485,93 @@ TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponse) {
     EXPECT_EQ(route->tags.at(0), "RECOMMENDED");
     EXPECT_EQ(route->tags.at(1), "CHEAPEST");
     EXPECT_EQ(route->tags.at(2), "FASTEST");
+  }
+}
+
+TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponseTokenLogoUrlValidation) {
+  auto make_json = [](const std::string& logo_uri) {
+    return absl::StrFormat(R"({
+      "routes": [{
+        "id": "route1",
+        "fromChainId": "10",
+        "fromAmountUSD": "1.00",
+        "fromAmount": "1000000",
+        "fromToken": {
+          "address": "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
+          "chainId": "10",
+          "symbol": "USDC.e",
+          "decimals": "6",
+          "name": "Bridged USD Coin",
+          "coinKey": "USDCe",
+          "logoURI": "%s",
+          "priceUSD": "1"
+        },
+        "toChainId": "10",
+        "toAmountUSD": "0.99",
+        "toAmount": "990000",
+        "toAmountMin": "980000",
+        "toToken": {
+          "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+          "chainId": "10",
+          "symbol": "USDT",
+          "decimals": "6",
+          "name": "Tether USD",
+          "coinKey": "USDT",
+          "logoURI": "https://tokens.1inch.io/usdt.png",
+          "priceUSD": "1"
+        },
+        "gasCostUSD": "0.01",
+        "steps": [],
+        "tags": ["RECOMMENDED"]
+      }]
+    })",
+                           logo_uri);
+  };
+
+  // Valid HTTPS URL is accepted.
+  {
+    auto quote = lifi::ParseQuoteResponse(
+        ParseJson(make_json("https://tokens.1inch.io/usdc.png")));
+    ASSERT_TRUE(quote);
+    ASSERT_FALSE(quote->routes.empty());
+    EXPECT_EQ(quote->routes[0]->from_token->logo,
+              "https://tokens.1inch.io/usdc.png");
+  }
+
+  // javascript: URI is rejected.
+  {
+    auto quote =
+        lifi::ParseQuoteResponse(ParseJson(make_json("javascript:alert(1)")));
+    ASSERT_TRUE(quote);
+    ASSERT_FALSE(quote->routes.empty());
+    EXPECT_TRUE(quote->routes[0]->from_token->logo.empty());
+  }
+
+  // data: URI is rejected.
+  {
+    auto quote = lifi::ParseQuoteResponse(ParseJson(
+        make_json("data:image/svg+xml,<svg><script>alert(1)</script></svg>")));
+    ASSERT_TRUE(quote);
+    ASSERT_FALSE(quote->routes.empty());
+    EXPECT_TRUE(quote->routes[0]->from_token->logo.empty());
+  }
+
+  // HTTP URL is rejected (must be HTTPS).
+  {
+    auto quote = lifi::ParseQuoteResponse(
+        ParseJson(make_json("http://tokens.1inch.io/usdc.png")));
+    ASSERT_TRUE(quote);
+    ASSERT_FALSE(quote->routes.empty());
+    EXPECT_TRUE(quote->routes[0]->from_token->logo.empty());
+  }
+
+  // Invalid string is rejected.
+  {
+    auto quote =
+        lifi::ParseQuoteResponse(ParseJson(make_json("not-a-url")));
+    ASSERT_TRUE(quote);
+    ASSERT_FALSE(quote->routes.empty());
+    EXPECT_TRUE(quote->routes[0]->from_token->logo.empty());
   }
 }
 

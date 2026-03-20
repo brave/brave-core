@@ -567,7 +567,12 @@ mojom::BlockchainTokenPtr ParseToken(const swap_responses::LiFiToken& value) {
   auto result = mojom::BlockchainToken::New();
   result->name = value.name;
   result->symbol = value.symbol;
-  result->logo = value.logo_uri.value_or("");
+  if (value.logo_uri) {
+    GURL logo_gurl(*value.logo_uri);
+    if (logo_gurl.is_valid() && logo_gurl.SchemeIs("https")) {
+      result->logo = *value.logo_uri;
+    }
+  }
   result->contract_address =
       (base::ToLowerASCII(value.address) ==
            kLiFiNativeEVMAssetContractAddress ||
