@@ -40,6 +40,8 @@ class PageMetrics;
 
 inline constexpr char kSearchSuggestEnabledHistogramName[] =
     "Brave.Search.SearchSuggest";
+inline constexpr char kShieldsDevModeEnabledHistogramName[] =
+    "Brave.Shields.DevModeEnabled";
 inline constexpr char kSurveyPanelistEnabledHistogramName[] =
     "Brave.Ads.SurveyPanelistEnabled";
 

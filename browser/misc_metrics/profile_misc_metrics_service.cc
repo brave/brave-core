@@ -12,9 +12,11 @@
 #include "brave/browser/misc_metrics/profile_new_tab_metrics.h"
 #include "brave/browser/misc_metrics/theme_metrics.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/misc_metrics/autofill_metrics.h"
 #include "brave/components/misc_metrics/language_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
+#include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/autofill/personal_data_manager_factory.h"
@@ -52,6 +54,10 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
   if (profile_prefs_) {
     language_metrics_ = std::make_unique<LanguageMetrics>(profile_prefs_);
     pref_change_registrar_.Init(profile_prefs_);
+    pref_change_registrar_.Add(
+        brave_shields::prefs::kAdBlockDeveloperMode,
+        base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
+                            base::Unretained(this)));
     pref_change_registrar_.Add(
         ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist,
         base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
@@ -155,6 +161,10 @@ void ProfileMiscMetricsService::ReportSimpleMetrics() {
                               ntp_background_images::prefs::
                                   kNewTabPageSponsoredImagesSurveyPanelist));
   }
+  bool shields_dev_mode_enabled =
+      profile_prefs_->GetBoolean(brave_shields::prefs::kAdBlockDeveloperMode);
+  UMA_HISTOGRAM_EXACT_LINEAR(kShieldsDevModeEnabledHistogramName,
+                             shields_dev_mode_enabled ? 1 : INT_MAX - 1, 2);
 }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
