@@ -16,6 +16,7 @@
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "brave/components/time_period_storage/time_period_storage.h"
 #include "brave/components/time_period_storage/time_period_store.h"
+#include "brave/components/time_period_storage/time_period_store_factory.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -49,25 +50,21 @@ class FakeTimePeriodStore : public TimePeriodStore {
   base::ListValue list_;
 };
 
-TimePeriodStorages BuildFakeTimePeriodStorages() {
-  TimePeriodStorages time_period_storages;
-  time_period_storages.emplace(SerpMetricType::kBrave,
-                               std::make_unique<TimePeriodStorage>(
-                                   std::make_unique<FakeTimePeriodStore>(),
-                                   kSerpMetricsTimePeriodInDays.Get(),
-                                   /*should_offset_dst=*/false));
-  time_period_storages.emplace(SerpMetricType::kGoogle,
-                               std::make_unique<TimePeriodStorage>(
-                                   std::make_unique<FakeTimePeriodStore>(),
-                                   kSerpMetricsTimePeriodInDays.Get(),
-                                   /*should_offset_dst=*/false));
-  time_period_storages.emplace(SerpMetricType::kOther,
-                               std::make_unique<TimePeriodStorage>(
-                                   std::make_unique<FakeTimePeriodStore>(),
-                                   kSerpMetricsTimePeriodInDays.Get(),
-                                   /*should_offset_dst=*/false));
-  return time_period_storages;
-}
+class FakeTimePeriodStoreFactory : public TimePeriodStoreFactory {
+ public:
+  FakeTimePeriodStoreFactory() = default;
+
+  FakeTimePeriodStoreFactory(const FakeTimePeriodStoreFactory&) = delete;
+  FakeTimePeriodStoreFactory& operator=(const FakeTimePeriodStoreFactory&) =
+      delete;
+
+  ~FakeTimePeriodStoreFactory() override = default;
+
+  std::unique_ptr<TimePeriodStore> Build(
+      const char* metric_name) const override {
+    return std::make_unique<FakeTimePeriodStore>();
+  }
+};
 
 }  // namespace
 
@@ -86,8 +83,8 @@ class SerpMetricsTest : public testing::Test {
     scoped_feature_list_.InitAndEnableFeatureWithParameters(
         kSerpMetricsFeature, {{"time_period_in_days", "7"}});
 
-    serp_metrics_ = std::make_unique<SerpMetrics>(
-        &local_state_, BuildFakeTimePeriodStorages());
+    serp_metrics_ = std::make_unique<SerpMetrics>(&local_state_,
+                                                  FakeTimePeriodStoreFactory());
   }
 
   // Advances the clock to one millisecond shy of a brand new day.

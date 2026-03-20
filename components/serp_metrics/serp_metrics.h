@@ -15,15 +15,13 @@
 
 class PrefService;
 class TimePeriodStorage;
+class TimePeriodStoreFactory;
 
 namespace base {
 class Time;
 }  // namespace base
 
 namespace serp_metrics {
-
-using TimePeriodStorages =
-    base::flat_map<SerpMetricType, std::unique_ptr<TimePeriodStorage>>;
 
 // SerpMetrics records and aggregates search engine usage counts.
 //
@@ -37,7 +35,7 @@ using TimePeriodStorages =
 class SerpMetrics final {
  public:
   SerpMetrics(PrefService* local_state,
-              TimePeriodStorages time_period_storages);
+              const TimePeriodStoreFactory& time_period_store_factory);
 
   SerpMetrics(const SerpMetrics&) = delete;
   SerpMetrics& operator=(const SerpMetrics&) = delete;
@@ -66,7 +64,8 @@ class SerpMetrics final {
 
   const raw_ptr<PrefService> local_state_;  // Not owned.
 
-  TimePeriodStorages time_period_storages_;
+  base::flat_map<SerpMetricType, std::unique_ptr<TimePeriodStorage>>
+      time_period_storages_;
 };
 
 }  // namespace serp_metrics
