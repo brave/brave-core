@@ -266,15 +266,8 @@ bool RewardsServiceImpl::IsInitialized() {
   return Connected() && ready_->is_signaled();
 }
 
-void RewardsServiceImpl::Init(
-    std::unique_ptr<RewardsServiceObserver> extension_observer) {
+void RewardsServiceImpl::Init() {
   AddObserver(notification_service_.get());
-
-  if (extension_observer) {
-    extension_observer_ = std::move(extension_observer);
-    AddObserver(extension_observer_.get());
-  }
-
   CheckPreferences();
   InitPrefChangeRegistrar();
 }

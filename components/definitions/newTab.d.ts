@@ -166,7 +166,6 @@ declare namespace NewTab {
     userType: string
     declaredCountry: string
     balance?: number
-    externalWallet?: RewardsExtension.ExternalWallet
     externalWalletProviders?: string[]
     report?: RewardsBalanceReport
     adsAccountStatement: AdsAccountStatement

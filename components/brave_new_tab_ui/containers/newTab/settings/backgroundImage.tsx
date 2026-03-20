@@ -155,8 +155,7 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
                   checked={showBackgroundImage && brandedWallpaperOptIn}
                   disabled={!showBackgroundImage /* This option can only be enabled if users opt in for background images */}
                   rewardsEnabled={this.props.newTabData.rewardsState.rewardsEnabled}
-                  isExternalWalletConnected={
-                    Boolean(this.props.newTabData.rewardsState.externalWallet)} />
+                  isExternalWalletConnected={false} />
               </SettingsRow>
             )}
             {showBackgroundImage && featureCustomBackgroundEnabled && (

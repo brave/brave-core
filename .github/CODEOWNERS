@@ -31,8 +31,6 @@ browser/android/preferences/brave_pref_service_bridge.cc @bridiver
 
 # Rewards
 browser/brave_rewards/ @brave/rewards-client
-browser/extensions/api/brave_rewards_api.cc @brave/rewards-client
-browser/extensions/api/brave_rewards_api.h @brave/rewards-client
 components/brave_rewards/ @brave/rewards-client
 components/services/bat_rewards/ @brave/rewards-client
 components/brave_rewards/core/engine/util/signer.cc @brave/sec-team

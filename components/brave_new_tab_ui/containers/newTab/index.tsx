@@ -379,10 +379,6 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
-  startRewards = () => {
-    chrome.braveRewards.openRewardsPanel()
-  }
-
   dismissBrandedWallpaperNotification = (isUserAction: boolean) => {
     this.props.actions.dismissBrandedWallpaperNotification(isUserAction)
   }
@@ -576,7 +572,7 @@ class NewTabPage extends React.Component<Props, State> {
             </style.rewardsMenuIcon>
           )
         },
-        onClick: () => { chrome.braveRewards.openRewardsPanel() }
+        onClick: () => {}
       },
       {
         label: 'rewardsSettings',
@@ -590,14 +586,6 @@ class NewTabPage extends React.Component<Props, State> {
         onClick: () => { window.open('chrome://rewards', '_blank', 'noopener') }
       }
     ]
-
-    const onSelfCustodyInviteDismissed = () => {
-      chrome.braveRewards.dismissSelfCustodyInvite()
-    }
-
-    const onTosUpdateAccepted = () => {
-      chrome.braveRewards.acceptTermsOfServiceUpdate()
-    }
 
     return (
       <Rewards
@@ -616,8 +604,8 @@ class NewTabPage extends React.Component<Props, State> {
         onShowContent={this.setForegroundStackWidget.bind(this, 'rewards')}
         onDismissNotification={this.dismissNotification}
         customMenuItems={customMenuItems}
-        onSelfCustodyInviteDismissed={onSelfCustodyInviteDismissed}
-        onTermsOfServiceUpdateAccepted={onTosUpdateAccepted}
+        onSelfCustodyInviteDismissed={() => {}}
+        onTermsOfServiceUpdateAccepted={() => {}}
       />
     )
   }
@@ -900,7 +888,7 @@ class NewTabPage extends React.Component<Props, State> {
           cardsHidden={this.allWidgetsHidden()}
           toggleCards={this.props.saveSetAllStackWidgets}
           newTabData={this.props.newTabData}
-          onEnableRewards={this.startRewards}
+          onEnableRewards={() => {}}
         />
         {
           showEditTopSite
