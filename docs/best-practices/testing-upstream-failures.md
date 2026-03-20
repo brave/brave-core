@@ -72,7 +72,9 @@ The script queries Chromium's LUCI Analysis database and returns one of five ver
 
 ## ✅ Match Filter Specificity to Actual Failure Scope
 
-**Use the most specific/narrow filter approach.** If a test only fails under ASAN on Linux, use a platform-and-sanitizer-specific filter file (e.g., `browser_tests-linux-asan.filter`) rather than an all-platform filter. Look at existing patterns in `build/commands/lib/testUtils.js` for how sanitizer-specific filters are loaded.
+**Use the most specific/narrow filter approach, but only when the evidence supports it.** If a test only fails under ASAN on Linux and upstream LUCI Analysis shows no flakiness on non-ASAN builds, use a platform-and-sanitizer-specific filter file (e.g., `browser_tests-linux-asan.filter`) rather than an all-platform filter. Look at existing patterns in `build/commands/lib/testUtils.js` for how sanitizer-specific filters are loaded.
+
+**Do not place a filter in a sanitizer-specific file (e.g., `-asan`, `-msan`) if upstream LUCI Analysis data shows the test also fails on non-sanitizer builds.** LUCI Analysis aggregates across all build configs, so a non-zero upstream flake rate means the test can fail outside of sanitizer builds too. In that case, use a broader filter file (e.g., `browser_tests.filter` or `browser_tests-windows.filter`) to cover all environments where the failure may occur.
 
 ---
 
