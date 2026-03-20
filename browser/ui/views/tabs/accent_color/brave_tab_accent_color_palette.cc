@@ -18,7 +18,6 @@
 // Macro to get num suffixed color id. ex) Primitive40(Blue) ->
 // kColorPrimitiveBlue40 The resulting color id is enum in nala_color_id.h
 #define COLOR_10(color) nala::kColor##color##10
-#define COLOR_20(color) nala::kColor##color##20
 #define COLOR_40(color) nala::kColor##color##40
 #define PRIMITIVE_60(color) nala::kColorPrimitive##color##60
 #define COLOR_KEY_AND_COLOR_ID_PAIR(color) \
@@ -38,14 +37,14 @@
 // Yield color ids for dark-pinned-inactive
 #define DARK_PINNED_INACTIVE_COLOR_IDS(color)                                  \
   ColorIds {                                                                   \
-    .icon_color_id = COLOR_40(color), .icon_border_color_id = COLOR_20(color), \
+    .icon_color_id = COLOR_40(color), .icon_border_color_id = COLOR_10(color), \
     .background_color_id = COLOR_10(color), .border_color_id = 0,              \
   }
 
 // Yield color ids for dark-pinned-hovered
 #define DARK_PINNED_HOVERED_COLOR_IDS(color)                                   \
   ColorIds {                                                                   \
-    .icon_color_id = COLOR_40(color), .icon_border_color_id = COLOR_20(color), \
+    .icon_color_id = COLOR_40(color), .icon_border_color_id = COLOR_10(color), \
     .background_color_id = COLOR_10(color), .border_color_id = 0,              \
     .override_tab_background_color_id = COLOR_10(color),                       \
   }
@@ -72,9 +71,9 @@
 #define DARK_UNPINNED_HOVERED_COLOR_IDS(color)           \
   ColorIds {                                             \
     .icon_color_id = PRIMITIVE_60(color),                \
-    .icon_border_color_id = COLOR_20(color),             \
-    .background_color_id = COLOR_20(color),              \
-    .border_color_id = COLOR_20(color),                  \
+    .icon_border_color_id = COLOR_10(color),             \
+    .background_color_id = COLOR_10(color),              \
+    .border_color_id = COLOR_10(color),                  \
     .override_tab_background_color_id = COLOR_10(color), \
   }
 
@@ -90,14 +89,14 @@
 // Yield color ids for light-pinned-inactive
 #define LIGHT_PINNED_INACTIVE_COLOR_IDS(color)                                 \
   ColorIds {                                                                   \
-    .icon_color_id = COLOR_40(color), .icon_border_color_id = COLOR_20(color), \
+    .icon_color_id = COLOR_40(color), .icon_border_color_id = COLOR_10(color), \
     .background_color_id = COLOR_10(color), .border_color_id = 0,              \
   }
 
 // Yield color ids for light-pinned-hovered
 #define LIGHT_PINNED_HOVERED_COLOR_IDS(color)                                  \
   ColorIds {                                                                   \
-    .icon_color_id = COLOR_40(color), .icon_border_color_id = COLOR_20(color), \
+    .icon_color_id = COLOR_40(color), .icon_border_color_id = COLOR_10(color), \
     .background_color_id = COLOR_10(color), .border_color_id = 0,              \
     .override_tab_background_color_id = COLOR_10(color),                       \
   }
@@ -115,9 +114,9 @@
 #define LIGHT_UNPINNED_HOVERED_COLOR_IDS(color)          \
   ColorIds {                                             \
     .icon_color_id = PRIMITIVE_60(color),                \
-    .icon_border_color_id = COLOR_20(color),             \
-    .background_color_id = COLOR_20(color),              \
-    .border_color_id = COLOR_20(color),                  \
+    .icon_border_color_id = COLOR_10(color),             \
+    .background_color_id = COLOR_10(color),              \
+    .border_color_id = COLOR_10(color),                  \
     .override_tab_background_color_id = COLOR_10(color), \
   }
 
