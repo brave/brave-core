@@ -156,7 +156,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if BUILDFLAG(ENABLE_DEVTOOLS_FRONTEND)
       &features::kDevToolsNewPermissionDialog,
 #endif  // BUILDFLAG(ENABLE_DEVTOOLS_FRONTEND)
-      &features::kDevToolsPrivacyUI,
       &features::kDevToolsUseGcaApi,
       &features::kDigitalGoodsApi,
       &features::kFedCm,
