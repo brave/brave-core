@@ -175,31 +175,25 @@ def _replace_text_in_element(elem, old, new):
 
 
 # Messages where "Brave" should become "Brave Origin" for Origin builds.
+# Only includes translateable="false" strings and strings that had their
+# translateable attribute stripped by the brave_strings processing.
 ORIGIN_BRANDED_MESSAGES = [
+    # translateable="false"
     'IDS_PRODUCT_NAME',
     'IDS_SHORT_PRODUCT_NAME',
+    'IDS_APP_MENU_PRODUCT_NAME',
+    # Shortcut names (translateable/desc stripped in brave_strings)
     'IDS_SXS_SHORTCUT_NAME',
     'IDS_SHORTCUT_NAME_BETA',
     'IDS_SHORTCUT_NAME_DEV',
-    'IDS_PRODUCT_DESCRIPTION',
-    'IDS_WELCOME_TO_CHROME',
-    'IDS_FIRST_RUN_DIALOG_WINDOW_TITLE',
-    'IDS_ACCESSIBLE_BROWSER_WINDOW_TITLE_FORMAT',
-    'IDS_ACCESSIBLE_BETA_BROWSER_WINDOW_TITLE_FORMAT',
-    'IDS_ACCESSIBLE_DEV_BROWSER_WINDOW_TITLE_FORMAT',
-    'IDS_ACCESSIBLE_CANARY_BROWSER_WINDOW_TITLE_FORMAT',
-    'IDS_APP_MENU_PRODUCT_NAME',
-    'IDS_HELPER_NAME',
-    'IDS_SHORT_HELPER_NAME',
-    'IDS_APP_SHORTCUTS_SUBDIR_NAME',
+    # App shortcut subdirs (translateable/desc stripped in brave_strings)
     'IDS_APP_SHORTCUTS_SUBDIR_NAME_CANARY',
     'IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA',
     'IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV',
-    'IDS_INBOUND_MDNS_RULE_NAME',
+    # Firewall rules (translateable/desc stripped in brave_strings)
     'IDS_INBOUND_MDNS_RULE_NAME_BETA',
     'IDS_INBOUND_MDNS_RULE_NAME_CANARY',
     'IDS_INBOUND_MDNS_RULE_NAME_DEV',
-    'IDS_INBOUND_MDNS_RULE_DESCRIPTION',
     'IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA',
     'IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY',
     'IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV',
