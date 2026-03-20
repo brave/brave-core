@@ -11,7 +11,6 @@
 #include "base/check.h"
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
-#include "brave/browser/psst/psst_ui_desktop_presenter.h"
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
@@ -32,6 +31,7 @@
 #if BUILDFLAG(ENABLE_PSST)
 #include "brave/browser/psst/psst_settings_service_factory.h"
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
+#include "brave/browser/psst/psst_ui_desktop_presenter.h"
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
 #include "brave/components/psst/common/features.h"
 #endif

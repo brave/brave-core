@@ -12,7 +12,7 @@ https://docs.google.com/document/d/1ccnBWBV_KkknZpZYxcOXTwtfIiaSzeLS5dMd08N2pbs/
 3. The browser injects the user script into the page. The primary goal of the user script is to ensure that the user is signed in to the current website and return a list of URLs where we should apply the privacy settings.
     - the results of the user script execution we process here:</br> `PsstTabWebContentsObserver::OnUserScriptResult`
 4. If the user is not signed in, we just break the flow.
-5. To inform the user that the PSST feature is available for a given website, we display an infobar: `Brave can help you optimize this site's privacy settings. Would you like to review our suggestions?` 
+5. To inform the user that the PSST feature is available for a given website, we display an infobar: `Brave can help you optimize this site's privacy settings. Would you like to review Brave's suggestions?` 
 6. If the user accepts the infobar prompt, we pass the list of URLs further and display a consent modal dialog. In this dialog, the user can choose their preferred privacy settings and track the progress of the operation.
 7. When the user clicks the OK button, we inject the policy script and execute it.
 8. The policy script does the next things: 

@@ -63,9 +63,8 @@ void PsstUiDelegateImpl::OnUserAcceptedInfobar(const url::Origin& origin,
                                                const bool is_accepted) {
   // Handle the user's response to the infobar
   if (is_accepted) {
-    // Call to presenter to show the consent dialog
-
-    // When the consent dialog is accepted by the user
+    // Simulate the consent dialog is accepted by the user and apply PSST
+    // settings accordingly.
     OnUserAcceptedPsstSettings(origin);
   } else {
     // Disable PSST if user declined the infobar
