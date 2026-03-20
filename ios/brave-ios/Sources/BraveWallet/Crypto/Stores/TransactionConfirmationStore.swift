@@ -739,9 +739,9 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           let fromToken = details.fromToken,
           let fromValue = BDouble(details.fromAmount)
         {
-          // need to fetch and check correct transparent/shielded ZEC balance based on
-          // zecTxData.useShieldedPool value
           if network.coin == .zec {
+            // need to fetch and check correct transparent/shielded ZEC balance based on
+            // zecTxData.useShieldedPool value
             if let zecBalance = zecGasTokenBalanceCache,
               let zecTxData = activeParsedTransaction.transaction.txDataUnion.zecTxData
             {
