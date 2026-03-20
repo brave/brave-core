@@ -22,6 +22,9 @@ public class BraveNewTabPageClassAdapter extends BraveClassVisitor {
         deleteField(sBraveNewTabPageClassName, "mNewTabPageLayout");
         makeProtectedField(sNewTabPageClassName, "mNewTabPageLayout");
 
+        deleteField(sBraveNewTabPageClassName, "mNewTabPageCoordinator");
+        makeProtectedField(sNewTabPageClassName, "mNewTabPageCoordinator");
+
         deleteField(sBraveNewTabPageClassName, "mFeedSurfaceProvider");
         makeProtectedField(sNewTabPageClassName, "mFeedSurfaceProvider");
 
