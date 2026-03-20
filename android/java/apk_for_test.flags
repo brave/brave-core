@@ -45,7 +45,6 @@
 }
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPageLayout {
-    *** mProfile;
     *** initializeSiteSectionView(...);
 }
 
@@ -61,6 +60,7 @@
 -keep class org.chromium.chrome.browser.ntp.NewTabPage {
     public <init>(...);
     *** mBrowserControlsStateProvider;
+    *** mNewTabPageCoordinator;
     *** mNewTabPageLayout;
     *** mFeedSurfaceProvider;
     *** mToolbarSupplier;

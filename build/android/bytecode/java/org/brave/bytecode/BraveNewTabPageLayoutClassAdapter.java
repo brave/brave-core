@@ -16,9 +16,6 @@ public class BraveNewTabPageLayoutClassAdapter extends BraveClassVisitor {
     public BraveNewTabPageLayoutClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        deleteField(sBraveNewTabPageLayoutClassName, "mProfile");
-        makeProtectedField(sNewTabPageLayoutClassName, "mProfile");
-
         makePublicMethod(sNewTabPageLayoutClassName, "initializeSiteSectionView");
         addMethodAnnotation(
                 sBraveNewTabPageLayoutClassName,

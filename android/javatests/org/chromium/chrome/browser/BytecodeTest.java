@@ -2306,6 +2306,9 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/ChromeTabbedActivity", "mLayoutManager"));
         Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/ntp/NewTabPage", "mNewTabPageCoordinator"));
+        Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/ntp/NewTabPage", "mNewTabPageLayout"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/ntp/NewTabPage", "mFeedSurfaceProvider"));
@@ -2539,8 +2542,6 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31",
                         "mInstanceId"));
-        Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "mProfile"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/dom_distiller/ReaderModeManager", "mTab"));
         Assert.assertTrue(
