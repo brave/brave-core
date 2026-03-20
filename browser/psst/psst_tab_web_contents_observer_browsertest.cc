@@ -12,6 +12,7 @@
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/buildflags/buildflags.h"
@@ -34,10 +35,10 @@ namespace psst {
 
 namespace {
 
-class InfobarAddedObserver : public infobars::InfoBarManager::Observer {
+class InfobarObserver : public infobars::InfoBarManager::Observer {
  public:
-  InfobarAddedObserver(infobars::InfoBarManager* manager,
-                       infobars::InfoBarDelegate::InfoBarIdentifier identifier)
+  InfobarObserver(infobars::InfoBarManager* manager,
+                  infobars::InfoBarDelegate::InfoBarIdentifier identifier)
       : identifier_(identifier) {
     if (manager) {
       infobar_observation_.Observe(manager);
@@ -45,71 +46,42 @@ class InfobarAddedObserver : public infobars::InfoBarManager::Observer {
       CheckForExistingInfobar(manager);
     }
   }
-  ~InfobarAddedObserver() override = default;
+  ~InfobarObserver() override = default;
 
-  void WaitForInfobarAdded() {
-    if (infobar_added_observed_) {
-      return;  // Already happened
-    }
+  bool WaitForInfobarAdded() {
     if (!infobar_observation_.IsObserving()) {
-      return;  // Manager is destroyed
+      return false;  // Manager is destroyed
     }
 
-    base::RunLoop run_loop;
-    if (infobar_added_observed_) {
-      return;  // Double-check after RunLoop creation
-    }
-    quit_closure_for_added_ = run_loop.QuitClosure();
-    run_loop.Run();
-    quit_closure_for_added_.Reset();
+    return infobar_added_future_.Wait();
   }
 
-  void WaitForInfobarRemoved() {
-    if (infobar_removed_observed_) {
-      return;  // Already happened
-    }
+  bool WaitForInfobarRemoved() {
     if (!infobar_observation_.IsObserving()) {
-      return;  // Manager is destroyed
+      return false;  // Manager is destroyed
     }
 
-    base::RunLoop run_loop;
-    if (infobar_removed_observed_) {
-      return;  // Double-check after RunLoop creation
-    }
-    quit_closure_for_removed_ = run_loop.QuitClosure();
-    run_loop.Run();
-    quit_closure_for_removed_.Reset();
+    return infobar_removed_future_.Wait();
   }
 
   void OnInfoBarAdded(infobars::InfoBar* infobar) override {
     if (infobar && infobar->delegate() &&
         infobar->delegate()->GetIdentifier() == identifier_) {
-      infobar_added_observed_ = true;
-      if (quit_closure_for_added_) {
-        std::move(quit_closure_for_added_).Run();
-      }
+      infobar_added_future_.SetValue();
     }
   }
 
   void OnInfoBarRemoved(infobars::InfoBar* infobar, bool animate) override {
     if (infobar && infobar->delegate() &&
         infobar->delegate()->GetIdentifier() == identifier_) {
-      infobar_removed_observed_ = true;
-      if (quit_closure_for_removed_) {
-        std::move(quit_closure_for_removed_).Run();
-      }
+      infobar_removed_future_.SetValue();
     }
   }
 
   void OnManagerWillBeDestroyed(infobars::InfoBarManager* manager) override {
     // Quit any pending waits since the manager is being destroyed
-    if (quit_closure_for_added_) {
-      std::move(quit_closure_for_added_).Run();
-    }
-    if (quit_closure_for_removed_) {
-      std::move(quit_closure_for_removed_).Run();
-    }
-    DCHECK(infobar_observation_.IsObservingSource(manager));
+    infobar_added_future_.SetValue();
+    infobar_removed_future_.SetValue();
     infobar_observation_.Reset();
   }
 
@@ -118,16 +90,14 @@ class InfobarAddedObserver : public infobars::InfoBarManager::Observer {
     for (infobars::InfoBar* infobar : manager->infobars()) {
       if (infobar && infobar->delegate() &&
           infobar->delegate()->GetIdentifier() == identifier_) {
-        infobar_added_observed_ = true;
+        infobar_added_future_.SetValue();
         break;
       }
     }
   }
 
-  bool infobar_added_observed_ = false;
-  bool infobar_removed_observed_ = false;
-  base::OnceClosure quit_closure_for_added_;
-  base::OnceClosure quit_closure_for_removed_;
+  base::test::TestFuture<void> infobar_added_future_;
+  base::test::TestFuture<void> infobar_removed_future_;
   const infobars::InfoBarDelegate::InfoBarIdentifier identifier_;
   base::ScopedObservation<infobars::InfoBarManager,
                           infobars::InfoBarManager::Observer>
@@ -202,13 +172,13 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   infobars::ContentInfoBarManager* manager =
       infobars::ContentInfoBarManager::FromWebContents(web_contents());
 
-  InfobarAddedObserver infobar_observer(
+  InfobarObserver infobar_observer(
       manager, infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
 
   std::u16string expected_title(u"a_user-a_policy");
   content::TitleWatcher watcher(web_contents(), expected_title);
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
-  infobar_observer.WaitForInfobarAdded();
+  ASSERT_TRUE(infobar_observer.WaitForInfobarAdded());
   auto* psst_infobar = GetPsstInfobar(manager);
   ASSERT_TRUE(psst_infobar);
   auto* confirm_delegate = psst_infobar->delegate()->AsConfirmInfoBarDelegate();
@@ -228,13 +198,13 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   infobars::ContentInfoBarManager* manager =
       infobars::ContentInfoBarManager::FromWebContents(web_contents());
 
-  InfobarAddedObserver infobar_observer(
+  InfobarObserver infobar_observer(
       manager, infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
 
   std::u16string expected_title(u"a_user-");
   content::TitleWatcher watcher(web_contents(), expected_title);
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
-  infobar_observer.WaitForInfobarAdded();
+  ASSERT_TRUE(infobar_observer.WaitForInfobarAdded());
   auto* psst_infobar = GetPsstInfobar(manager);
   ASSERT_TRUE(psst_infobar);
   auto* confirm_delegate = psst_infobar->delegate()->AsConfirmInfoBarDelegate();
@@ -243,7 +213,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
             infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
   confirm_delegate->InfoBarDismissed();
   manager->RemoveInfoBar(psst_infobar);
-  infobar_observer.WaitForInfobarRemoved();
+  ASSERT_TRUE(infobar_observer.WaitForInfobarRemoved());
 
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
   EXPECT_FALSE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
