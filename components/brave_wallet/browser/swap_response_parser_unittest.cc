@@ -1929,6 +1929,73 @@ TEST(SwapResponseParserUnitTest, ParseLiFiStatusResponse) {
             "The transfer is waiting for destination transaction.");
 }
 
+TEST(SwapResponseParserUnitTest, ParseLiFiStatusResponseTxLinkUrlValidation) {
+  auto make_json = [](const std::string& tx_link) {
+    return absl::StrFormat(R"({
+      "transactionId": "0xabc",
+      "sending": {
+        "txHash": "0x1",
+        "txLink": "%s",
+        "amount": "100",
+        "chainId": "1"
+      },
+      "receiving": {
+        "txHash": "0x2",
+        "txLink": "https://etherscan.io/tx/0x2",
+        "amount": "99",
+        "chainId": "1"
+      },
+      "lifiExplorerLink": "https://explorer.li.fi/tx/0xabc",
+      "fromAddress": "0xSender",
+      "toAddress": "0xRecipient",
+      "tool": "stargate",
+      "status": "DONE",
+      "substatus": "COMPLETED"
+    })",
+                           tx_link);
+  };
+
+  // Valid HTTPS URL is accepted.
+  {
+    auto status = lifi::ParseStatusResponse(
+        ParseJson(make_json("https://etherscan.io/tx/0x1")));
+    ASSERT_TRUE(status);
+    EXPECT_EQ(status->sending->tx_link, "https://etherscan.io/tx/0x1");
+  }
+
+  // javascript: URI is rejected.
+  {
+    auto status =
+        lifi::ParseStatusResponse(ParseJson(make_json("javascript:alert(1)")));
+    ASSERT_TRUE(status);
+    EXPECT_FALSE(status->sending->tx_link.has_value());
+  }
+
+  // data: URI is rejected.
+  {
+    auto status = lifi::ParseStatusResponse(
+        ParseJson(make_json("data:text/html,<script>alert(1)</script>")));
+    ASSERT_TRUE(status);
+    EXPECT_FALSE(status->sending->tx_link.has_value());
+  }
+
+  // HTTP URL is rejected (must be HTTPS).
+  {
+    auto status = lifi::ParseStatusResponse(
+        ParseJson(make_json("http://etherscan.io/tx/0x1")));
+    ASSERT_TRUE(status);
+    EXPECT_FALSE(status->sending->tx_link.has_value());
+  }
+
+  // Invalid string is rejected.
+  {
+    auto status =
+        lifi::ParseStatusResponse(ParseJson(make_json("not-a-url")));
+    ASSERT_TRUE(status);
+    EXPECT_FALSE(status->sending->tx_link.has_value());
+  }
+}
+
 TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponse) {
   // Indicative quote response from Gate3 API
   std::string json(R"(

@@ -548,7 +548,12 @@ mojom::LiFiStepStatusPtr ParseStepStatus(
   }
 
   result->tx_hash = value.tx_hash;
-  result->tx_link = value.tx_link;
+  if (value.tx_link) {
+    GURL tx_link_gurl(*value.tx_link);
+    if (tx_link_gurl.is_valid() && tx_link_gurl.SchemeIs("https")) {
+      result->tx_link = value.tx_link;
+    }
+  }
   result->amount = value.amount;
 
   if (value.token) {
