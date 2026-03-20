@@ -6,11 +6,14 @@
 #include "chrome/browser/ui/views/page_action/page_action_view.h"
 
 #include "chrome/browser/ui/views/page_action/page_action_view_params.h"
+#include "chrome/browser/ui/views/page_action/test_support/mock_page_action_controller.h"
 #include "chrome/browser/ui/views/page_action/test_support/mock_page_action_model.h"
 #include "chrome/test/views/chrome_views_test_base.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/views/style/platform_style.h"
 #include "ui/views/test/views_test_utils.h"
+#include "ui/views/view_class_properties.h"
 
 namespace page_actions {
 
@@ -87,6 +90,7 @@ class PageActionViewTest : public ChromeViewsTestBase {
   PageActionView* page_action_view() { return page_action_view_.get(); }
   MockPageActionModel* model() { return &mock_model_; }
   actions::ActionItem* action_item() { return action_item_.get(); }
+  views::Widget* test_widget() { return widget_.get(); }
 
  protected:
   testing::NiceMock<MockIconLabelViewDelegate> icon_label_view_delegate_;
@@ -142,14 +146,46 @@ TEST_F(PageActionViewTest, AlwaysShowsLabelEnsuresLabelWidth) {
 
   testing::Mock::VerifyAndClearExpectations(model());
 
-  // 2. Verify the behavior when GetAlwaysShowLabel() is true. In this case,
-  // host's proposed width will be at bounded width, which is wider than the
-  // minimum width. This will make the label visible.
+  // 2. When GetAlwaysShowLabel() is true, the host uses the full expanded chip
+  // width even when the parent passes a tighter horizontal bound.
   EXPECT_CALL(*model(), GetAlwaysShowLabel()).WillRepeatedly(Return(true));
 
   proposed_layout = page_action_view()->CalculateProposedLayout(
       views::SizeBounds(bounded_width, preferred_label_size.height()));
-  EXPECT_EQ(proposed_layout.host_size.width(), bounded_width);
+  EXPECT_EQ(proposed_layout.host_size.width(), preferred_label_size.width());
+}
+
+// When a custom chip foreground is set, inactive-window styling should not map
+// the visual state to disabled (LabelButton::GetVisualState()).
+TEST_F(PageActionViewTest, OverrideForegroundSkipsInactiveDisabledVisual) {
+  if (!views::PlatformStyle::kInactiveWidgetControlsAppearDisabled) {
+    GTEST_SKIP();
+  }
+
+  EXPECT_CALL(*model(), GetOverrideForegroundColor())
+      .WillRepeatedly(Return(std::optional<SkColor>(SK_ColorWHITE)));
+  page_action_view()->OnPageActionModelChanged(*model());
+
+  test_widget()->Deactivate();
+
+  EXPECT_EQ(page_action_view()->GetVisualState(),
+            page_action_view()->GetState());
+}
+
+TEST_F(PageActionViewTest, OverrideHeightIgnoreSizeBounds) {
+  constexpr int kOverrideHeight = 10;
+  EXPECT_CALL(*model(), GetOverrideHeight())
+      .WillRepeatedly(Return((kOverrideHeight)));
+
+  page_action_view()->OnPageActionModelVisualRefresh(model());
+
+  auto proposed_layout =
+      page_action_view()->CalculateProposedLayout(views::SizeBounds(400, 100));
+  EXPECT_GE(proposed_layout.host_size.height(), kOverrideHeight);
+
+  // When the height is set, the view's cross-axis alignment should be centered.
+  EXPECT_EQ(*page_action_view()->GetProperty(views::kCrossAxisAlignmentKey),
+            views::LayoutAlignment::kCenter);
 }
 
 }  // namespace page_actions

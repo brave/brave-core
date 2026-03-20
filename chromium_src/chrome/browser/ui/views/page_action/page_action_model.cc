@@ -41,4 +41,17 @@ std::optional<SkColor> PageActionModel::GetOverrideForegroundColor() const {
   return override_foreground_color_;
 }
 
+void PageActionModel::SetOverrideHeight(base::PassKey<PageActionController>,
+                                        std::optional<int> height) {
+  if (override_height_ == height) {
+    return;
+  }
+  override_height_ = height;
+  NotifyChange();
+}
+
+std::optional<int> PageActionModel::GetOverrideHeight() const {
+  return override_height_;
+}
+
 }  // namespace page_actions

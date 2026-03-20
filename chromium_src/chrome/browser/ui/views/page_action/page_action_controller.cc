@@ -27,4 +27,15 @@ void PageActionControllerImpl::ClearOverrideChipColors(
       /*override_foreground_color=*/std::nullopt);
 }
 
+void PageActionControllerImpl::SetOverrideHeight(actions::ActionId action_id,
+                                                 int height) {
+  CHECK_GT(height, 0);
+  FindPageActionModel(action_id).SetOverrideHeight(PassKey(), height);
+}
+
+void PageActionControllerImpl::ClearOverrideHeight(
+    actions::ActionId action_id) {
+  FindPageActionModel(action_id).SetOverrideHeight(PassKey(), std::nullopt);
+}
+
 }  // namespace page_actions

@@ -13,10 +13,13 @@ replace = '''\1
       std::optional<SkColor> override_foreground_color) = 0;
   virtual void SetAlwaysShowLabel(base::PassKey<PageActionController>,
                                   bool always_show) = 0;
+  virtual void SetOverrideHeight(base::PassKey<PageActionController>,
+                                 std::optional<int> height) = 0;
 
   virtual std::optional<SkColor> GetOverrideBackgroundColor() const = 0;
   virtual std::optional<SkColor> GetOverrideForegroundColor() const = 0;
-  virtual bool GetAlwaysShowLabel() const = 0;'''
+  virtual bool GetAlwaysShowLabel() const = 0;
+  virtual std::optional<int> GetOverrideHeight() const = 0;'''
 
 [[substitution]]
 description = 'Implementing the interfaces in PageActionModel'
@@ -29,13 +32,17 @@ replace = '''\1
       std::optional<SkColor> override_foreground_color) override;
   void SetAlwaysShowLabel(base::PassKey<PageActionController>,
                           bool always_show) override;
+  void SetOverrideHeight(base::PassKey<PageActionController>,
+                         std::optional<int> height_px) override;
   std::optional<SkColor> GetOverrideBackgroundColor() const override;
   std::optional<SkColor> GetOverrideForegroundColor() const override;
   bool GetAlwaysShowLabel() const override;
+  std::optional<int> GetOverrideHeight() const override;
 
  private:
   std::optional<SkColor> override_background_color_;
   std::optional<SkColor> override_foreground_color_;
   bool always_show_label_ = false;
+  std::optional<int> override_height_;
 
  public:'''

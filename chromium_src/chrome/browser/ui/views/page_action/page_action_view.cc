@@ -3,9 +3,86 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "chrome/browser/ui/views/page_action/page_action_view.h"
+
+#include <algorithm>
+
+#include "chrome/browser/ui/views/page_action/page_action_model.h"
+#include "ui/gfx/geometry/rect.h"
+#include "ui/views/layout/layout_types.h"
+#include "ui/views/layout/proposed_layout.h"
+#include "ui/views/style/platform_style.h"
+#include "ui/views/view_class_properties.h"
+
+#define GetMinimumSize GetMinimumSize_Chromium
+#define OnNewActiveController OnNewActiveController_Chromium
+
 #include <chrome/browser/ui/views/page_action/page_action_view.cc>
 
+#undef OnNewActiveController
+#undef GetMinimumSize
+
 namespace page_actions {
+
+views::ProposedLayout PageActionView::CalculateProposedLayout(
+    const views::SizeBounds& size_bounds) const {
+  const PageActionModelInterface* source = observation_.GetSource();
+  if (source && source->GetOverrideHeight().has_value()) {
+    int override_height = source->GetOverrideHeight().value();
+    CHECK_EQ(GetMinimumSize().height(), override_height);
+
+    auto new_size_bounds = size_bounds;
+    new_size_bounds.set_height(override_height);
+    auto proposed_layout =
+        IconLabelBubbleView::CalculateProposedLayout(new_size_bounds);
+    CHECK_EQ(proposed_layout.host_size.height(), override_height);
+
+    return proposed_layout;
+  }
+
+  return IconLabelBubbleView::CalculateProposedLayout(size_bounds);
+}
+
+void PageActionView::OnPageActionModelVisualRefresh(
+    PageActionModelInterface* model) {
+  // If model has specified foreground color, we don't dim this view when the
+  // widget is inactive.
+  if (model && model->GetOverrideForegroundColor().has_value()) {
+    SetAppearDisabledInInactiveWidget(false);
+  } else {
+    SetAppearDisabledInInactiveWidget(
+        views::PlatformStyle::kInactiveWidgetControlsAppearDisabled);
+  }
+
+  if (GetOverrideHeight()) {
+    // When the view have a specified height, we center the view in the
+    // container. The default behavior is stretch.
+    SetProperty(views::kCrossAxisAlignmentKey, views::LayoutAlignment::kCenter);
+  } else {
+    ClearProperty(views::kCrossAxisAlignmentKey);
+  }
+}
+
+gfx::Size PageActionView::GetSizeForLabelWidth(int label_width) const {
+  auto size = IconLabelBubbleView::GetSizeForLabelWidth(label_width);
+  if (auto override_height = GetOverrideHeight()) {
+    size.set_height(*override_height);
+  }
+  return size;
+}
+
+gfx::Size PageActionView::GetMinimumSize() const {
+  auto size = GetMinimumSize_Chromium();
+  if (auto override_height = GetOverrideHeight()) {
+    size.set_height(*override_height);
+  }
+
+  if (ShouldAlwaysShowLabel()) {
+    size.set_width(
+        GetSizeForLabelWidth(label()->GetPreferredSize().width()).width());
+  }
+  return size;
+}
 
 bool PageActionView::ShouldShowLabel() const {
   if (ShouldAlwaysShowLabel()) {
@@ -39,6 +116,19 @@ SkColor PageActionView::GetForegroundColor() const {
   }
 
   return IconLabelBubbleView::GetForegroundColor();
+}
+
+std::optional<int> PageActionView::GetOverrideHeight() const {
+  const PageActionModelInterface* source = observation_.GetSource();
+  if (source && source->GetOverrideHeight().has_value()) {
+    return *source->GetOverrideHeight();
+  }
+  return std::nullopt;
+}
+
+void PageActionView::OnNewActiveController(PageActionController* controller) {
+  OnNewActiveController_Chromium(controller);
+  OnPageActionModelVisualRefresh(observation_.GetSource());
 }
 
 }  // namespace page_actions

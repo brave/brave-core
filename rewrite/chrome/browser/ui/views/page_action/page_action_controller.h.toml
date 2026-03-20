@@ -17,7 +17,12 @@ replace = '''\1
       actions::ActionId action_id,
       std::optional<SkColor> override_background_color,
       std::optional<SkColor> override_foreground_color) = 0;
-  virtual void ClearOverrideChipColors(actions::ActionId action_id) = 0;'''
+  virtual void ClearOverrideChipColors(actions::ActionId action_id) = 0;
+
+  // Override the height of the PageActionView
+  virtual void SetOverrideHeight(actions::ActionId action_id,
+                                 int height) = 0;
+  virtual void ClearOverrideHeight(actions::ActionId action_id) = 0;'''
 
 
 [[substitution]]
@@ -30,4 +35,7 @@ replace = '''\1
   void OverrideChipColors(actions::ActionId action_id,
       std::optional<SkColor> override_background_color,
       std::optional<SkColor> override_foreground_color) override;
-  void ClearOverrideChipColors(actions::ActionId action_id) override;'''
+  void ClearOverrideChipColors(actions::ActionId action_id) override;
+  void SetOverrideHeight(actions::ActionId action_id,
+                         int height) override;
+  void ClearOverrideHeight(actions::ActionId action_id) override;'''

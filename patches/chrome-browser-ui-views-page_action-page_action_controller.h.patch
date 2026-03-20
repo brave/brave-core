@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_controller.h b/chrome/browser/ui/views/page_action/page_action_controller.h
-index 0cc8990928974cb418729eeba1320a560ade336e..284ac8c8d29ef0cf1874e5afe695c452bc294250 100644
+index 0cc8990928974cb418729eeba1320a560ade336e..5d4fa08f7f4e52d3f300f7e88d5bc712e60cd4f7 100644
 --- a/chrome/browser/ui/views/page_action/page_action_controller.h
 +++ b/chrome/browser/ui/views/page_action/page_action_controller.h
-@@ -107,6 +107,17 @@ class PageActionController {
+@@ -107,6 +107,22 @@ class PageActionController {
   public:
    virtual ~PageActionController() = default;
  
@@ -17,10 +17,15 @@ index 0cc8990928974cb418729eeba1320a560ade336e..284ac8c8d29ef0cf1874e5afe695c452
 +      std::optional<SkColor> override_foreground_color) = 0;
 +  virtual void ClearOverrideChipColors(actions::ActionId action_id) = 0;
 +
++  // Override the height of the PageActionView
++  virtual void SetOverrideHeight(actions::ActionId action_id,
++                                 int height) = 0;
++  virtual void ClearOverrideHeight(actions::ActionId action_id) = 0;
++
    // Requests that the page action be shown or hidden.
    virtual void Show(actions::ActionId action_id) = 0;
    virtual void Hide(actions::ActionId action_id) = 0;
-@@ -221,6 +232,13 @@ class PageActionControllerImpl : public PageActionController,
+@@ -221,6 +237,16 @@ class PageActionControllerImpl : public PageActionController,
    PageActionControllerImpl& operator=(const PageActionControllerImpl&) = delete;
    ~PageActionControllerImpl() override;
  
@@ -30,6 +35,9 @@ index 0cc8990928974cb418729eeba1320a560ade336e..284ac8c8d29ef0cf1874e5afe695c452
 +      std::optional<SkColor> override_background_color,
 +      std::optional<SkColor> override_foreground_color) override;
 +  void ClearOverrideChipColors(actions::ActionId action_id) override;
++  void SetOverrideHeight(actions::ActionId action_id,
++                         int height) override;
++  void ClearOverrideHeight(actions::ActionId action_id) override;
 +
    void Initialize(
        tabs::TabInterface& tab_interface,
