@@ -67,6 +67,9 @@
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Nome utente";
 
+/* Settings autofill section title */
+"Autofill" = "Compilazione automatica";
+
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Reindirizzamento automatico delle pagine AMP";
 
@@ -141,33 +144,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Indirizzo";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Account Brave";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "Quasi ci siamo!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "Un'email di conferma è in arrivo. Fai clic sul pulsante in quell'email per attivare il tuo account.";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "Annulla registrazione";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "Indirizzo email";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "Inizia";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "Rinvia email di conferma";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "Non vedi l'email? Controlla la cartella spam o fai clic sul pulsante per rinviare l'email di conferma.";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "Esci";
 
 /* Button to show the brave panel */
 "BravePanel" = "Pannello Brave";
@@ -1031,7 +1007,7 @@
 "nightMode.modeTitle" = "Modalità";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
-"nightMode.sectionDescription" = "La modalità notturna cambierà l’aspetto sia dei siti web che del sistema generale.";
+"nightMode.sectionDescription" = "La modalità notturna influenzerà l'aspetto del sito web e l'aspetto generale del sistema contemporaneamente.";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
 "nightMode.settingsDescription" = "Attiva/disattiva la modalità notturna";
@@ -1063,11 +1039,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Nascondi le immagini sponsorizzate";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "Le immagini sponsorizzate sono sfondi forniti da terze parti sponsorizzatrici che sono mostrati nelle nuove schede all'interno del browser. Attivare queste immagini sponsorizzate supporta la mission di Brave.";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "Scopri di più";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "Le immagini sponsorizzate sono sfondi a marchio che appaiono nei nuovi tab aperti nel browser. L'attivazione di queste immagini sponsorizzate supporta la missione di Brave. [Ulteriori informazioni](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Scopri di più su Brave Rewards";
@@ -2278,7 +2251,8 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Salva modifiche";
 
-/* Settings item for clearing passwords and login data */
+/* Settings item for clearing passwords and login data
+Settings item for clearing site-specific settings and shields settings. */
 "SavedLogins" = "Accessi salvati";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2367,9 +2341,6 @@
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Cerca con Brave";
-
-/* Settings security section title */
-"Security" = "Sicurezza";
 
 /* No comment provided by engineer. */
 "sendButtonTitle" = "Invia";

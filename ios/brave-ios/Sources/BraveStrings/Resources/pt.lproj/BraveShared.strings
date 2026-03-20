@@ -67,6 +67,9 @@
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Nome de usuário";
 
+/* Settings autofill section title */
+"Autofill" = "Preenchimento automático";
+
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Redireccionamento automático para páginas AMP";
 
@@ -141,33 +144,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Endereço";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Conta Brave";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "Quase lá!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "Um email de confirmação está a caminho. Clique no botão nesse email para ativar sua conta.";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "Cancelar registo";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "Endereço de e-mail";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "Começar";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "Reenviar email de confirmação";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "Não vê o email? Verifique sua pasta de spam ou clique no botão para reenviar o email de confirmação.";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "Terminar sessão";
 
 /* Button to show the brave panel */
 "BravePanel" = "Painel do Brave";
@@ -1063,11 +1039,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Ocultar imagens patrocinadas";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "As imagens patrocinadas são fundos de ecrã criados por marcas, que aparecem nos separadores recentemente abertos no navegador. A ativação destas imagens patrocinadas apoia a missão do Brave.";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "Aprenda mais";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "As imagens patrocinadas são fundos de ecrã criados por marcas, que aparecem nos separadores recentemente abertos no navegador. A ativação destas imagens patrocinadas apoia a missão do Brave. [Saiba Mais](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Saiba mais sobre o Brave Rewards";
@@ -2278,7 +2251,8 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Guardar alterações";
 
-/* Settings item for clearing passwords and login data */
+/* Settings item for clearing passwords and login data
+Settings item for clearing site-specific settings and shields settings. */
 "SavedLogins" = "Logins salvos";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2367,9 +2341,6 @@
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Pesquisar com o Brave";
-
-/* Settings security section title */
-"Security" = "Segurança";
 
 /* No comment provided by engineer. */
 "sendButtonTitle" = "Enviar";

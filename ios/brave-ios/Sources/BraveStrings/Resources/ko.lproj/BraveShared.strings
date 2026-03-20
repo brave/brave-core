@@ -67,6 +67,9 @@
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "사용자 이름";
 
+/* Settings autofill section title */
+"Autofill" = "자동 완성";
+
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "AMP 페이지 자동 리디렉션";
 
@@ -141,33 +144,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "주소";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Brave 계정";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "거의 다 왔어요!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "확인 이메일이 곧 전송됩니다. 해당 이메일의 버튼을 클릭하여 계정을 활성화하세요.";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "등록 취소";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "이메일 주소";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "시작하기";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "확인 이메일 다시 보내기";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "이메일을 받지 못하셨나요? 스팸 폴더를 확인하거나 버튼을 클릭하여 확인 이메일을 다시 보내세요.";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "로그아웃";
 
 /* Button to show the brave panel */
 "BravePanel" = "Brave 패널";
@@ -1031,7 +1007,7 @@
 "nightMode.modeTitle" = "모드";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
-"nightMode.sectionDescription" = "야간 모드 이용 시 웹사이트 비주얼과 일반적인 시스템 비주얼이 동시에 변경됩니다.";
+"nightMode.sectionDescription" = "야간 모드를 이용하면 웹사이트 모양과 일반 시스템 모양이 동시에 변경됩니다.";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
 "nightMode.settingsDescription" = "야간 모드 켜기/끄기";
@@ -1063,11 +1039,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "스폰서 이미지 숨기기";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "스폰서 이미지는 브라우저에서 새로 여는 탭에 표시되는 브랜드 배경입니다. 이러한 스폰서 이미지를 활성화하면 Brave가 사명을 수행하는 데 도움이 됩니다.";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "자세히 알아보기";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "스폰서 이미지는 브라우저에서 새로 여는 탭에 표시되는 브랜드 배경입니다. 이러한 스폰서 이미지를 활성화하면 Brave의 사명을 지원할 수 있습니다. [자세히 알아보기](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Brave Rewards 자세히 알아보기";
@@ -2278,7 +2251,8 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "변경사항 저장";
 
-/* Settings item for clearing passwords and login data */
+/* Settings item for clearing passwords and login data
+Settings item for clearing site-specific settings and shields settings. */
 "SavedLogins" = "저장된 로그인 정보";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2367,9 +2341,6 @@
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Brave로 검색";
-
-/* Settings security section title */
-"Security" = "보안";
 
 /* No comment provided by engineer. */
 "sendButtonTitle" = "전송";

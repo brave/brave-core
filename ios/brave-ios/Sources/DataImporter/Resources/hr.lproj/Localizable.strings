@@ -65,7 +65,7 @@
 "importTutorialDetailedProcessTitle" = "Želite detaljan postupak izvoza?";
 
 /* The title of the tutorial page that shows in the Navigation Bar. */
-"importTutorialScreenTitle" = "Kako izvesti podatke iz Safarija";
+"importTutorialScreenTitle" = "Kako izvesti iz Safarija";
 
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepFiveTitle" = "Spremite datoteku u **Datoteke**, odaberite lokaciju koju ćete kasnije lako pronaći.";

@@ -67,6 +67,9 @@
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Nazwa użytkownika";
 
+/* Settings autofill section title */
+"Autofill" = "Autouzupełnianie";
+
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Automatyczne przekierowanie stron AMP";
 
@@ -141,33 +144,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Adres";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Konto Brave";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "Prawie gotowe!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "Email potwierdzający jest w drodze. Kliknij przycisk w tym emailu, aby aktywować swoje konto.";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "Anuluj rejestrację";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "Adres e-mail";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "Rozpocznij";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "Wyślij ponownie email potwierdzający";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "Nie widzisz emaila? Sprawdź folder spam lub kliknij przycisk, aby wysłać ponownie email potwierdzający.";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "Wyloguj się";
 
 /* Button to show the brave panel */
 "BravePanel" = "Panel Brave";
@@ -1031,7 +1007,7 @@
 "nightMode.modeTitle" = "Tryb";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
-"nightMode.sectionDescription" = "Tryb nocny będzie miał wpływ na wygląd strony i ogólny wygląd systemu.";
+"nightMode.sectionDescription" = "Tryb nocny będzie miał wpływ na wygląd strony i ogólny wygląd systemu w tym samym czasie.";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
 "nightMode.settingsDescription" = "Włącz/wyłącz tryb nocny";
@@ -1063,11 +1039,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Ukryj sponsorowane obrazy";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "Sponsorowane obrazy to tła, które pojawiają się na nowo otwartych kartach w przeglądarce. Włączenie sponsorowanych obrazów wspiera misję firmy Brave.";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "Dowiedz się więcej";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "Sponsorowane obrazy to tła, które pojawiają się na nowo otwartych kartach w przeglądarce. Włączenie sponsorowanych obrazów wspiera misję firmy Brave. [Dowiedz się więcej](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Dowiedz się więcej o Brave Rewards";
@@ -2278,7 +2251,8 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Zapisz zmiany";
 
-/* Settings item for clearing passwords and login data */
+/* Settings item for clearing passwords and login data
+Settings item for clearing site-specific settings and shields settings. */
 "SavedLogins" = "Zapisane loginy";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2367,9 +2341,6 @@
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Szukaj z Brave";
-
-/* Settings security section title */
-"Security" = "Bezpieczeństwo";
 
 /* No comment provided by engineer. */
 "sendButtonTitle" = "Wyślij";

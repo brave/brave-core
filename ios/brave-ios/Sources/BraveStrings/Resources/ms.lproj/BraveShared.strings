@@ -67,6 +67,9 @@
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Nama pengguna";
 
+/* Settings autofill section title */
+"Autofill" = "Autoisi";
+
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Ubah Hala Auto Halaman AMP";
 
@@ -141,33 +144,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Alamat";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Akaun Brave";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "Almost there!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "E-mel pengesahan sedang dihantar. Klik butang dalam e-mel tersebut untuk mengaktifkan akaun anda.";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "Batalkan pendaftaran";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "Alamat e-mel";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "Mulakan";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "Hantar semula e-mel pengesahan";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "Tidak nampak e-mel? Semak folder spam anda atau klik pada butang untuk menghantar semula e-mel pengesahan.";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "Log keluar";
 
 /* Button to show the brave panel */
 "BravePanel" = "Panel Brave";
@@ -1031,7 +1007,7 @@
 "nightMode.modeTitle" = "Mod";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
-"nightMode.sectionDescription" = "Mod Malam akan memberikan kesan kepada penampilan laman web dan juga penampilan sistem secara amnya.";
+"nightMode.sectionDescription" = "Mod malam akan menjejaskan penampilan laman web dan penampilan sistem umum pada masa yang sama.";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
 "nightMode.settingsDescription" = "Hidupkan/Matikan Mod Malam";
@@ -1063,11 +1039,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Sembunyikan imej tajaan";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "Imej tajaan ialah latar belakang berjenama yang muncul apabila tab baharu dibuka dalam pelayar. Dengan mengaktifkannya, anda menyokong misi Brave.";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "Ketahui lebih lanjut";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "Imej tajaan ialah latar belakang berjenama yang muncul apabila tab baharu dibuka dalam pelayar. Dengan mengaktifkannya, anda menyokong misi Brave. [Ketahui Lebih Lanjut](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Ketahui lebih lanjut tentang Brave Rewards";
@@ -2278,7 +2251,8 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Simpan perubahan";
 
-/* Settings item for clearing passwords and login data */
+/* Settings item for clearing passwords and login data
+Settings item for clearing site-specific settings and shields settings. */
 "SavedLogins" = "Log Masuk Disimpan";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2367,9 +2341,6 @@
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Buat carian melalui Brave";
-
-/* Settings security section title */
-"Security" = "Sekuriti";
 
 /* No comment provided by engineer. */
 "sendButtonTitle" = "Hantar";

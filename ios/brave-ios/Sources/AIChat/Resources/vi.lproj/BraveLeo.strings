@@ -49,6 +49,21 @@
 /* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
 "aichat.busyErrorDescription" = "Leo hiện đang rất bận. Vui lòng thử lại trong ít phút.";
 
+/* The button title for adding a new custom model */
+"aichat.byomAddNewModelButtonTitle" = "Thêm mô hình mới";
+
+/* The description shown when no custom models have been added, prompting the user to add one */
+"aichat.byomEmptyStateDescription" = "Bắt đầu bằng cách nhấp vào \"Thêm mô hình mới\"";
+
+/* The title shown when no custom models have been added yet */
+"aichat.byomEmptyStateTitle" = "Bạn vẫn chưa kết nối mô hình";
+
+/* The section header description explaining the Bring Your Own Model feature with a link to learn more. The text inside square brackets should be translated. */
+"aichat.byomSectionHeaderDescription" = "Kết nối LLM tự lưu trữ hoặc được lưu trữ bởi bên thứ ba của bạn với Leo và sử dụng chúng trong trình duyệt. Sử dụng bất kỳ khung công tác tương thích với Giao thức Trò chuyện OpenAI nào như Ollama. [Tìm hiểu thêm](https://support.brave.app/hc/en-us/articles/34070140231821-How-do-I-use-the-Bring-Your-Own-Model-BYOM-with-Brave-Leo)";
+
+/* The section header title for the Bring Your Own Model feature */
+"aichat.byomSectionHeaderTitle" = "Mang theo mô hình của riêng bạn";
+
 /* The subtitle for intro view which triggers just chat */
 "aichat.chatIntroJustTalkSubTitle" = "Hỏi tôi bất cứ điều gì! Chúng ta có thể nói về bất kỳ chủ đề nào bạn muốn. Tôi luôn học hỏi và cải thiện để đưa ra câu trả lời tốt hơn.";
 
@@ -78,6 +93,87 @@
 
 /* The title of the section where custom models are displayed as a list. */
 "aichat.customModelChatSectionTitle" = "Mô hình tùy chỉnh";
+
+/* The navigation bar title when adding a new custom model */
+"aichat.customModelFormAddModelNavigationTitle" = "Thêm mô hình";
+
+/* The footer text explaining when and how API keys are used */
+"aichat.customModelFormApiKeyFieldFooter" = "Một số khung phục vụ có thể yêu cầu thông tin xác thực, chẳng hạn như khóa API hoặc mã thông báo truy cập. Những thông tin này sẽ được thêm vào tiêu đề yêu cầu.";
+
+/* The label for the API key field */
+"aichat.customModelFormApiKeyFieldTitle" = "Khóa API";
+
+/* The footer text explaining what context size means for AI models */
+"aichat.customModelFormContextSizeFieldFooter" = "Số token tối đa mô hình có thể xử lý trong một tương tác duy nhất. Kích thước ngữ cảnh lớn hơn cho phép mô hình xử lý các cuộc hội thoại dài hơn. Các mô hình khác nhau hỗ trợ các kích thước ngữ cảnh tối đa khác nhau.";
+
+/* The label for the context size field */
+"aichat.customModelFormContextSizeFieldTitle" = "Kích thước ngữ cảnh";
+
+/* The placeholder text for generic detail input fields */
+"aichat.customModelFormDetailsFieldPlaceholder" = "Nhập chi tiết";
+
+/* The button title for dismissing the keyboard */
+"aichat.customModelFormDoneButtonTitle" = "Xong";
+
+/* The navigation bar title when editing an existing custom model */
+"aichat.customModelFormEditModelNavigationTitle" = "Sửa mô hình";
+
+/* The alert title shown when saving a custom model fails */
+"aichat.customModelFormFailedToSaveAlertTitle" = "Không thể lưu mô hình";
+
+/* The error message shown when the context size is invalid */
+"aichat.customModelFormInvalidContextSizeErrorMessage" = "Kích thước ngữ cảnh không hợp lệ";
+
+/* The error message shown when the server endpoint URL is invalid */
+"aichat.customModelFormInvalidUrlErrorMessage" = "URL không hợp lệ";
+
+/* The footer text explaining the purpose of the label field */
+"aichat.customModelFormLabelFieldFooter" = "Tên mô hình để sử dụng trong trình chọn mô hình của Leo.";
+
+/* The placeholder text for the custom model name field */
+"aichat.customModelFormLabelFieldPlaceholder" = "Nhập nhãn cho mô hình này";
+
+/* The label for the custom model name field in the custom model form */
+"aichat.customModelFormLabelFieldTitle" = "Nhãn";
+
+/* The error message shown when trying to use a private network address, explaining why it's blocked and how to enable it */
+"aichat.customModelFormPrivateEndpointErrorMessage" = "Địa chỉ bạn nhập dường như đến từ một mạng riêng—như bộ định tuyến hoặc máy chủ cục bộ của bạn. Brave tự động chặn những cái này để bảo vệ bạn, nhưng bạn có thể bật chúng nếu bạn chắc chắn rằng nó an toàn.\n\nĐể tiếp tục, hãy truy cập brave://flags/, tìm kiếm \"brave-ai-chat-allow-private-ips\" và bật tính năng này. Sau khi bật, bạn có thể sử dụng địa chỉ mạng riêng trong cài đặt Leo.";
+
+/* The footer text explaining what the model request name is used for and providing an example */
+"aichat.customModelFormRequestNameFieldFooter" = "Tên của mô hình khi sẽ xuất hiện trong yêu cầu tới khung phục vụ, ví dụ phi-3 (lưu ý rằng nếu tên này không khớp chính xác với những gì khung phục vụ mong đợi thì sẽ không tích hợp được).";
+
+/* The placeholder text for the model request name field */
+"aichat.customModelFormRequestNameFieldPlaceholder" = "Nhập tên yêu cầu mô hình";
+
+/* The label for the model request name field */
+"aichat.customModelFormRequestNameFieldTitle" = "Tên yêu cầu mô hình";
+
+/* The indicator text shown next to required fields in forms */
+"aichat.customModelFormRequiredFieldIndicator" = "Bắt buộc";
+
+/* The button title for saving a custom model */
+"aichat.customModelFormSaveButtonTitle" = "Lưu";
+
+/* The footer text explaining what the server endpoint is and providing an example URL for Ollama */
+"aichat.customModelFormServerEndpointFieldFooter" = "URL nơi khung phục vụ của bạn đang lắng nghe các yêu cầu. Nếu bạn không chắc chắn thì hãy kiểm tra tài liệu về khung phục vụ. Ví dụ: đối với Ollama, đây luôn là `http://localhost:11434/v1/chat/completions`. Brave không chuyển tiếp những yêu cầu này, vui lòng đọc điều khoản bảo mật của nhà cung cấp được chọn.";
+
+/* The label for the server endpoint URL field */
+"aichat.customModelFormServerEndpointFieldTitle" = "Điểm cuối máy chủ";
+
+/* The footer text explaining what a system prompt is and noting the %datetime% placeholder */
+"aichat.customModelFormSystemPromptFieldFooter" = "Hướng dẫn tùy chỉnh và/hoặc ngữ cảnh được cung cấp cho mô hình để hướng dẫn phản hồi của mô hình. Sử dụng %datetime% nơi bạn muốn chèn ngày và giờ hiện tại.";
+
+/* The label for the system prompt field */
+"aichat.customModelFormSystemPromptFieldTitle" = "Prompt hệ thống";
+
+/* Warning message shown when user enters an HTTP (not HTTPS) endpoint */
+"aichat.customModelFormUnsafeEndpointWarning" = "Điểm cuối này có khả năng không an toàn.";
+
+/* The description text explaining what vision support means with an example */
+"aichat.customModelFormVisionSupportFieldDescription" = "Nếu mô hình này chấp nhận đầu vào là hình ảnh, ví dụ như llama 3.2b vision";
+
+/* The label for the vision support toggle */
+"aichat.customModelFormVisionSupportFieldTitle" = "Hỗ trợ Hình ảnh";
 
 /* The title for the custom models section in the menu */
 "aichat.customModelsMenuSectionTitle" = "Mô hình tùy chỉnh";

@@ -1,14 +1,26 @@
 /* A section header title for ads-related settings */
 "adsHeader" = "โฆษณา";
 
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "เคยทำการซื้อกับ brave.com แล้วเหรอ";
+
 /* A section header title for analytics-related settings */
 "analyticsHeader" = "การวิเคราะห์";
 
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "ซื้อเลย";
+
+/* A note that indicates a feature is enabled */
+"enabledFeatureNote" = "คุณลักษณะนี้ถูกเปิดใช้งานเนื่องจากคุณได้เลือกที่จะใช้งาน";
+
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin เป็นวิธีการที่ใช้สมาชิกเพื่อปิดใช้งานคุณสมบัติที่สร้างรายได้ซึ่งมิฉะนั้นจะสนับสนุน Brave ในฐานะธุรกิจ ผู้สมัครสมาชิก Brave Origin จะได้รับประโยชน์ต่อไปจากความเป็นส่วนตัวที่นำอุตสาหกรรม การปิดกั้นโฆษณา และความเร็ว (ผ่าน Brave Shields) ตลอดจนการอัปเดตซอฟต์แวร์ทั่วไป แพตช์ Chromium และการปรับปรุงด้านความปลอดภัยและความเป็นส่วนตัว พวกเขายังสามารถปลดล็อคตัวเลือกเพื่อปิดใช้งานคุณสมบัติเช่น Brave Leo News รางวัล วอลเล็ท VPN โดเมน Web3 และอื่นๆ\n\nผู้สมัครสมาชิกจะเห็นแผงควบคุมใหม่ในเมนู Settings ของเบราว์เซอร์ คุณสมบัติที่มีอยู่ ตลอดจนคุณสมบัติใหม่ที่เราจัดส่งในอนาคต จะปรากฏที่นี่ และจะถูกตั้งให้ปิดใช้งานโดยค่าเริ่มต้น\n\n**หมายเหตุ: Brave Origin จะไม่ปิดใช้งานคุณสมบัติของเบราว์เซอร์ที่คุณใช้อยู่ในปัจจุบัน และจะไม่ส่งผลกระทบต่อคุณสมบัติของ Brave Search หรือ โฆษณาใน Brave Search";
+"featuresFooter" = "Brave Origin เป็นเวอร์ชันของเบราว์เซอร์ Brave ที่อนุญาตให้คุณปิดใช้งานคุณสมบัติที่สร้างรายได้ซึ่งมิฉะนั้นจะสนับสนุน Brave ในฐานะธุรกิจ ผู้ใช้ Brave Origin จะได้รับประโยชน์ต่อไปจากความเป็นส่วนตัวที่นำอุตสาหกรรม การปิดกั้นโฆษณา และความเร็ว (ผ่าน Brave Shields) ตลอดจนการอัปเดตซอฟต์แวร์ทั่วไป แพตช์ Chromium และการปรับปรุงด้านความปลอดภัยและความเป็นส่วนตัว พวกเขายังสามารถปลดล็อคตัวเลือกเพื่อปิดใช้งานคุณสมบัติเช่น Brave Leo รางวัล วอลเล็ท VPN โดเมน Web3 และอื่นๆ\n\nเมื่อสิ้นสุดการซื้อ ผู้ใช้จะเห็นแผงควบคุมใหม่ในเมนู Settings ของเบราว์เซอร์ คุณสมบัติที่มีอยู่ ตลอดจนคุณสมบัติใหม่ที่เราจัดส่งในอนาคต จะปรากฏที่นี่ และจะถูกตั้งให้ปิดใช้งานโดยค่าเริ่มต้น\n\n**หมายเหตุ: Brave Origin จะไม่ปิดใช้งานคุณสมบัติของเบราว์เซอร์ที่คุณใช้อยู่ในปัจจุบัน และจะไม่ส่งผลกระทบต่อคุณสมบัติของ Brave Search หรือโฆษณา Brave Search";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "ฟีเจอร์";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "รับรหัสเข้าสู่ระบบ";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Leo AI";
@@ -16,14 +28,32 @@
 /* A toggle label for Brave News feature */
 "newsLabel" = "ข่าวสาร";
 
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "การซื้อครั้งเดียว";
+
+/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
+"paywallDescription" = "**ปรับแต่งเบราว์เซอร์ของคุณและยังคงสนับสนุน Brave**\n\nBrave Origin เป็นเวอร์ชันเบราว์เซอร์แบบชำระเงินสำหรับผู้ใช้ที่ไม่ต้องการคุณสมบัติทั้งหมดที่สนับสนุน Brave ในฐานะธุรกิจ แต่ยังต้องการความเป็นส่วนตัวที่เพียงแค่ Brave เท่านั้นที่มี ผู้ใช้ Brave Origin จะได้รับประโยชน์ต่อไปจากความเป็นส่วนตัวที่นำอุตสาหกรรม การปิดกั้นโฆษณา และความเร็ว (ผ่าน Brave Shields) ตลอดจนการอัปเดตซอฟต์แวร์ทั่วไป แพตช์ Chromium และการปรับปรุงด้านความปลอดภัยและความเป็นส่วนตัว พวกเขายังสามารถปลดล็อคตัวเลือกเพื่อปิดใช้งานคุณสมบัติเช่น AI รางวัล วอลเล็ท VPN โดเมน Web3 และอื่นๆ\n\n**Brave Origin พร้อมให้บริการผ่านการซื้อครั้งเดียว บนอุปกรณ์เคลื่อนที่ (Android และ iOS) และเดสก์ทอป Origin สามารถซื้อได้เป็นอัพเกรดสำหรับเวอร์ชันปล่อยตัวที่มีอยู่ของคุณ** บนเดสก์ทอป Origin ยังมีให้บริการเป็นแอปแยกต่างหาก ไม่ว่าจะซื้อเป็นอัพเกรดหรือแอปแยกต่างหาก ผู้ใช้ Origin จะเห็นแผงควบคุมใหม่ในเมนู Settings คุณสมบัติที่มีอยู่ ตลอดจนคุณสมบัติใหม่ที่เราจัดส่งในอนาคต จะปรากฏที่นี่ และจะถูกตั้งให้ปิดใช้งานโดยค่าเริ่มต้น*\n\n* โปรดทราบว่าหากคุณซื้อ Origin เป็นอัพเกรดสำหรับเวอร์ชัน Brave ที่มีอยู่ของคุณ Origin จะไม่ปิดใช้งานคุณสมบัติของเบราว์เซอร์ที่คุณใช้อยู่ในปัจจุบัน สำหรับการอัพเกรดและเวอร์ชันแยกต่างหาก Origin จะไม่ส่งผลกระทบต่อคุณสมบัติของ Brave Search หรือโฆษณา Brave Search";
+
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "เพลย์ลิสต์";
 
 /* A toggle label for privacy preserving analytics feature */
 "privacyPreservingAnalyticsLabel" = "การวิเคราะห์ข้อมูลที่รักษาความเป็นส่วนตัว";
 
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "มีโค้ดโปรโมชั่นใช่ไหม";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "ไม่สามารถดำเนินการสั่งซื้อให้เสร็จสมบูรณ์ได้ โปรดลองอีกครั้ง หรือตรวจสอบรายละเอียดการชำระเงินของคุณบน Apple แล้วลองอีกครั้ง";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "ใช้โค้ดโปรโมชั่น";
+
 /* A button label to reset all Origin settings to their default values */
 "resetToDefaultsButton" = "รีเซ็ตเป็นค่าเริ่มต้น";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "กู้คืน";
 
 /* A toggle label for Brave Rewards feature */
 "rewardsLabel" = "Rewards";
@@ -33,6 +63,18 @@
 
 /* A toggle label for Brave Talk feature */
 "talkLabel" = "พูดคุย";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "รักษาฟีเจอร์หลักของ Adblock, ความเป็นส่วนตัว และความเร็ว";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "เบราว์เซอร์ UI ขั้นต่ำที่มุ่งเน้นไปที่ Shields";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "ซื้อครั้งเดียว ไม่มีค่าสมัครสมาชิกเพิ่มเติม";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "สนับสนุนภารกิจของเรา & งานโอเพนซอร์ส";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";
