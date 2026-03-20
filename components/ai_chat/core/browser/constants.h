@@ -34,7 +34,8 @@ inline constexpr auto kCapabilityStringMap =
     base::MakeFixedFlatMap<mojom::ConversationCapability, std::string_view>(
         {{mojom::ConversationCapability::CHAT, "chat"},
          {mojom::ConversationCapability::CONTENT_AGENT, "content_agent"},
-         {mojom::ConversationCapability::DEEP_RESEARCH, "deep_research"}});
+         {mojom::ConversationCapability::DEEP_RESEARCH, "deep_research"},
+         {mojom::ConversationCapability::ENCRYPTION, "encryption"}});
 
 inline constexpr char kLeoModelSupportUrl[] =
     "https://support.brave.app/hc/en-us/articles/26727364100493-"

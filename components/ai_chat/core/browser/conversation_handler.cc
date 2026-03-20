@@ -87,7 +87,7 @@ ConversationHandler::Suggestion& ConversationHandler::Suggestion::operator=(
     Suggestion&&) = default;
 ConversationHandler::Suggestion::~Suggestion() = default;
 
-void ConversationHandler::BuildCapabilitiesSet() {
+void ConversationHandler::BuildCapabilitiesSet(const mojom::Model* model) {
   conversation_capabilities_.clear();
   // Set conversation capability based on profile-global state.
   // TODO(https://github.com/brave/brave-browser/issues/49261): This is
@@ -106,6 +106,12 @@ void ConversationHandler::BuildCapabilitiesSet() {
   if (features::IsAIChatDeepResearchEnabled()) {
     conversation_capabilities_.insert(
         mojom::ConversationCapability::DEEP_RESEARCH);
+  }
+  if (model && model->is_near_model && features::kNEAREncryption.Get() &&
+      std::ranges::contains(model->supported_capabilities,
+                            mojom::ConversationCapability::ENCRYPTION)) {
+    conversation_capabilities_.insert(
+        mojom::ConversationCapability::ENCRYPTION);
   }
 }
 
@@ -148,7 +154,7 @@ ConversationHandler::ConversationHandler(
       feedback_api_(feedback_api),
       prefs_(prefs),
       url_loader_factory_(url_loader_factory) {
-  BuildCapabilitiesSet();
+  BuildCapabilitiesSet(nullptr);
 
   // Observe tool providers
   for (const auto& tool_provider : tool_providers_) {
@@ -320,6 +326,8 @@ void ConversationHandler::InitEngine() {
   // no longer exists).
   model_key_ = model->key;
 
+  BuildCapabilitiesSet(model);
+
   // Update Conversation metadata's model key
   if (model_key_ != model_service_->GetDefaultModelKey()) {
     metadata_->model_key = model_key_;
@@ -329,6 +337,13 @@ void ConversationHandler::InitEngine() {
 
   engine_ = model_service_->GetEngineForModel(model_key_, url_loader_factory_,
                                               credential_manager_);
+
+  ConversationCapabilitySet aux_capabilities;
+  if (conversation_capabilities_.contains(
+          mojom::ConversationCapability::ENCRYPTION)) {
+    aux_capabilities.insert(mojom::ConversationCapability::ENCRYPTION);
+  }
+  engine_->SetAuxOperationCapabilities(aux_capabilities);
 
   OnModelDataChanged();
 

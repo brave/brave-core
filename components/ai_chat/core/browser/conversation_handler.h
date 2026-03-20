@@ -336,7 +336,7 @@ class ConversationHandler : public mojom::ConversationHandler,
       GetTools_MemoryToolFilteredForTemporaryConversations);
   void InitEngine();
 
-  void BuildCapabilitiesSet();
+  void BuildCapabilitiesSet(const mojom::Model* model);
 
   // Setup tools for the conversation. When a new user message is added, we
   // can reset some of the state of the tools, ready for the next loop.

@@ -131,6 +131,9 @@ class EngineConsumer {
 
   virtual void UpdateModelOptions(const mojom::ModelOptions& options) = 0;
 
+  virtual void SetAuxOperationCapabilities(
+      const ConversationCapabilitySet& capabilities) {}
+
   // Given a list of tabs, return a list of suggested topics from the server.
   virtual void GetSuggestedTopics(const std::vector<Tab>& tabs,
                                   GetSuggestedTopicsCallback callback) = 0;

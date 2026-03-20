@@ -14,6 +14,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_v2_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 
@@ -83,6 +84,8 @@ class EngineConsumerConversationAPIV2 : public EngineConsumer {
   bool SupportsDeltaTextResponses() const override;
   bool RequiresClientSideTitleGeneration() const override;
   void UpdateModelOptions(const mojom::ModelOptions& options) override {}
+  void SetAuxOperationCapabilities(
+      const ConversationCapabilitySet& capabilities) override;
   // Given a list of tabs, get the suggested topics from the server.
   void GetSuggestedTopics(const std::vector<Tab>& tabs,
                           GetSuggestedTopicsCallback callback) override;
@@ -109,6 +112,7 @@ class EngineConsumerConversationAPIV2 : public EngineConsumer {
       GetSuggestedTopicsCallback callback) override;
 
   std::unique_ptr<ConversationAPIV2Client> api_ = nullptr;
+  ConversationCapabilitySet aux_operation_capabilities_;
 
   base::WeakPtrFactory<EngineConsumerConversationAPIV2> weak_ptr_factory_{this};
 };

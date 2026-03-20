@@ -17,6 +17,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+#include "brave/components/ai_chat/core/browser/engine/e2ee_processor.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
@@ -108,7 +109,8 @@ class ConversationAPIV2Client {
       const std::optional<std::string>& model_name,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback,
-      std::optional<CredentialCacheEntry> credential);
+      std::optional<CredentialCacheEntry> credential,
+      std::optional<mojom::APIError> attestation_fetch_error);
 
   void OnQueryCompleted(std::optional<CredentialCacheEntry> credential,
                         GenerationCompletedCallback callback,
@@ -119,10 +121,20 @@ class ConversationAPIV2Client {
   std::optional<std::string> GetLeoModelKeyFromResponse(
       const base::DictValue& response);
 
+  void OnCredentialFetched(
+      const std::optional<std::string>& attestation_model_name,
+      base::OnceCallback<void(std::optional<CredentialCacheEntry>,
+                              std::optional<mojom::APIError>)> callback,
+      std::optional<CredentialCacheEntry> credential);
+
+  void EnsureE2EEProcessor();
+
   const std::string model_name_;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   raw_ptr<AIChatCredentialManager> credential_manager_;
   raw_ptr<ModelService> model_service_;
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  std::unique_ptr<E2EEProcessor> e2ee_processor_;
 
   base::WeakPtrFactory<ConversationAPIV2Client> weak_ptr_factory_{this};
 };
