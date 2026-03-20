@@ -366,7 +366,10 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
 
       <if expr="is_macosx">
-        </if>
+        <message name="IDS_LOCAL_NETWORK_ACCESS_PERMISSION_DESC" desc="Text shown in the macOS permission dialog, describing why Brave needs the permission to access local network.">
+          This will allow you to share content from Brave to your local devices, such as a TV or speaker.
+        </message>
+      </if>
 
       <if expr="not is_android">
         </if>
