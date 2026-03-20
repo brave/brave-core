@@ -345,12 +345,24 @@ TEST(CardanoAddress, InvalidInput) {
       "d8cc3sq835lu7drv2xwl2wywfgse35a3xse35a3x",
       "Ae2tdPwUPEZFRbyhz3cpfC2CumGzNkFBN2L42rcUc2yjQpEkxDbkPodpMAi1",
       "Ae2tdPwUPEZFRbyhz3cpfC2CumGzNkFBN2L42rcUc2yjQpEkxDbkPodpMAI",
+      "Ae2tdPwUPEZFRbyhz3cpfC2CumGzNkFBN2L42rcUc2yj",
   });
 
   for (auto* address : invalid_cases) {
     EXPECT_FALSE(CardanoAddress::FromString(address))
         << testing::Message(address);
   }
+
+  EXPECT_TRUE(CardanoAddress::FromShellyPayload(
+      CardanoAddress::AddressType::kPaymentKeyHashStakeKeyHash,
+      CardanoAddress::NetworkTag::kMainnet,
+      test::HexToArray<56>(std::string(kPaymentPartHash) +
+                           std::string(kStakePartHash))));
+  EXPECT_FALSE(CardanoAddress::FromShellyPayload(
+      CardanoAddress::AddressType::kByronAddress,
+      CardanoAddress::NetworkTag::kMainnet,
+      test::HexToArray<56>(std::string(kPaymentPartHash) +
+                           std::string(kStakePartHash))));
 }
 
 }  // namespace brave_wallet

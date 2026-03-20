@@ -72,6 +72,25 @@ bool IsDelegationOnlyAddressType(CardanoAddress::AddressType address_type) {
          address_type == CardanoAddress::AddressType::kNoPaymentScriptHash;
 }
 
+bool ValidateShellyPayloadSize(CardanoAddress::AddressType address_type,
+                               base::span<const uint8_t> payload) {
+  if (IsPaymentAndDelegationAddressType(address_type)) {
+    return payload.size() == 2 * kCardanoKeyHashLength;
+  }
+
+  if ((IsPaymentOnlyAddressType(address_type) ||
+       IsDelegationOnlyAddressType(address_type))) {
+    return payload.size() == kCardanoKeyHashLength;
+  }
+
+  if (IsPaymentAndPointerAddressType(address_type)) {
+    // Pointer part has varying length.
+    return payload.size() > kCardanoKeyHashLength;
+  }
+
+  return false;
+}
+
 }  // namespace
 
 CardanoAddress::CardanoAddress(std::vector<uint8_t> bytes)
@@ -125,23 +144,11 @@ std::optional<CardanoAddress> CardanoAddress::FromShellyPayload(
     AddressType address_type,
     NetworkTag network_tag,
     base::span<const uint8_t> payload) {
-  CHECK(address_type != AddressType::kByronAddress);
+  if (address_type == AddressType::kByronAddress) {
+    return std::nullopt;
+  }
 
-  if (IsPaymentAndDelegationAddressType(address_type)) {
-    if (payload.size() != 2 * kCardanoKeyHashLength) {
-      return std::nullopt;
-    }
-  } else if ((IsPaymentOnlyAddressType(address_type) ||
-              IsDelegationOnlyAddressType(address_type))) {
-    if (payload.size() != kCardanoKeyHashLength) {
-      return std::nullopt;
-    }
-  } else if (IsPaymentAndPointerAddressType(address_type)) {
-    // Pointer part has varying length.
-    if (payload.size() <= kCardanoKeyHashLength) {
-      return std::nullopt;
-    }
-  } else {
+  if (!ValidateShellyPayloadSize(address_type, payload)) {
     return std::nullopt;
   }
 
