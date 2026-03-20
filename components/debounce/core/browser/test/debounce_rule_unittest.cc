@@ -562,7 +562,7 @@ TEST(DebounceRuleUnitTest, RedirectUrlNoMatch) {
   }
 }
 
-// Test redirect_url_template with more captures than placeholders (should fail).
+// Test redirect_url_template with more captures than placeholders (fail).
 TEST(DebounceRuleUnitTest, RedirectUrlExtraCapturesRejected) {
   const std::string contents = R"json(
       [{
@@ -584,8 +584,8 @@ TEST(DebounceRuleUnitTest, RedirectUrlExtraCapturesRejected) {
   }
 }
 
-// Test redirect_url_template referencing $2 when regex only has one capture group.
-// Unresolved placeholders mean a misconfigured rule, so it should not match.
+// Test redirect_url_template referencing $2 when regex only has one capture
+// group. Unresolved placeholders mean a misconfigured rule, so no match.
 TEST(DebounceRuleUnitTest, RedirectUrlUnresolvedPlaceholder) {
   const std::string contents = R"json(
       [{
@@ -606,8 +606,8 @@ TEST(DebounceRuleUnitTest, RedirectUrlUnresolvedPlaceholder) {
   }
 }
 
-// Test redirect_url_template with no placeholders but a capturing regex (should fail).
-// A static template with captures is a misconfigured rule.
+// Test redirect_url_template with no placeholders but a capturing regex (should
+// fail). A static template with captures is a misconfigured rule.
 TEST(DebounceRuleUnitTest, RedirectUrlStaticTemplateWithCaptures) {
   const std::string contents = R"json(
       [{
@@ -673,8 +673,8 @@ TEST(DebounceRuleUnitTest, RedirectUrlNonContiguousPlaceholders) {
   }
 }
 
-// Test that regex-path action ignores redirect_url_template (wrong action type).
-// The rule should use the existing concatenation path, not template substitution.
+// Test that regex-path action ignores redirect_url_template (wrong action).
+// Rule should use existing concatenation path, not template substitution.
 TEST(DebounceRuleUnitTest, RedirectUrlTemplateIgnoredForRegexPath) {
   const std::string contents = R"json(
       [{
