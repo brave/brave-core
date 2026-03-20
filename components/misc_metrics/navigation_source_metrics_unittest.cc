@@ -221,6 +221,35 @@ TEST_F(NavigationSourceMetricsUnitTest, ExternalNavigation) {
       kNavSourceExternalSourcePercentHistogramName, 3, 1);
 }
 
+TEST_F(NavigationSourceMetricsUnitTest, PWANavigation) {
+  // 20 total, 4 from PWA windows -> 20% -> bucket 2 (6-20%)
+  for (int i = 0; i < 20; i++) {
+    metrics_->IncrementPagesLoadedCount();
+  }
+  for (int i = 0; i < 4; i++) {
+    metrics_->RecordPWANavigation();
+  }
+
+  FastForwardAndReport(base::Days(1));
+
+  histogram_tester_.ExpectUniqueSample(kNavSourcePWASourcePercentHistogramName,
+                                       2, 1);
+  histogram_tester_.ExpectTotalCount(
+      kNavSourceExternalSourcePercentHistogramName, 0);
+}
+
+TEST_F(NavigationSourceMetricsUnitTest, PWANavigationZeroNotReported) {
+  // 10 total, 0 PWA navigations.
+  for (int i = 0; i < 10; i++) {
+    metrics_->IncrementPagesLoadedCount();
+  }
+
+  FastForwardAndReport(base::Days(1));
+
+  histogram_tester_.ExpectTotalCount(kNavSourcePWASourcePercentHistogramName,
+                                     0);
+}
+
 TEST_F(NavigationSourceMetricsUnitTest, ExternalNavigationZeroNotReported) {
   // 10 total, 0 external.
   for (int i = 0; i < 10; i++) {
