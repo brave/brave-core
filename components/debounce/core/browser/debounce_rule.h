@@ -31,7 +31,8 @@ enum DebounceAction {
   kDebounceNoAction,
   kDebounceRedirectToParam,
   kDebounceRegexPath,
-  kDebounceBase64DecodeAndRedirectToParam
+  kDebounceBase64DecodeAndRedirectToParam,
+  kDebounceRegexPathTemplate
 };
 
 enum DebouncePrependScheme {
@@ -71,15 +72,17 @@ class DebounceRule {
 
  private:
   bool CheckPrefForRule(const PrefService* prefs) const;
-  bool ValidateAndParsePatternRegex(std::string_view pattern,
-                                    std::string_view path,
-                                    std::string* parsed_value) const;
+  bool ValidateAndParsePatternRegex(
+      std::string_view pattern,
+      std::string_view path,
+      std::vector<std::string>& captured_groups) const;
   extensions::URLPatternSet include_pattern_set_;
   extensions::URLPatternSet exclude_pattern_set_;
   DebounceAction action_;
   DebouncePrependScheme prepend_scheme_;
   std::string param_;
   std::string pref_;
+  std::string redirect_url_template_;
 };
 
 }  // namespace debounce

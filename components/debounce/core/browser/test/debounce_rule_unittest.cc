@@ -42,6 +42,8 @@ TEST(DebounceRuleUnitTest, DebounceActionChecking) {
   DebounceAction field = kDebounceNoAction;
   EXPECT_TRUE(DebounceRule::ParseDebounceAction("regex-path", &field));
   EXPECT_EQ(kDebounceRegexPath, field);
+  EXPECT_TRUE(DebounceRule::ParseDebounceAction("regex-path-template", &field));
+  EXPECT_EQ(kDebounceRegexPathTemplate, field);
   EXPECT_TRUE(DebounceRule::ParseDebounceAction("base64,redirect", &field));
   EXPECT_EQ(kDebounceBase64DecodeAndRedirectToParam, field);
   EXPECT_TRUE(DebounceRule::ParseDebounceAction("redirect", &field));
@@ -472,6 +474,252 @@ TEST(DebounceRuleUnitTest, RejectUrlsWithoutValidEtldPlusOne) {
     CheckApplyResult(rule.get(),
                      GURL("https://example.ampproject.org/c/s/brave.com"),
                      "https://brave.com/", false);
+  }
+}
+
+// Test redirect_url_template with a single capture group (y2u.be-like case).
+TEST(DebounceRuleUnitTest, RedirectUrlBasic) {
+  const std::string contents = R"json(
+      [{
+          "include": [
+              "*://y2u.be/*"
+          ],
+          "exclude": [],
+          "action": "regex-path-template",
+          "param": "^/(.+)$",
+          "redirect_url_template": "https://www.youtube.com/watch?v=$1"
+      }]
+    )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    CheckApplyResult(rule.get(), GURL("https://y2u.be/dQw4w9WgXcQ"),
+                     "https://www.youtube.com/watch?v=dQw4w9WgXcQ", false);
+  }
+}
+
+// Test redirect_url_template with multiple capture groups.
+TEST(DebounceRuleUnitTest, RedirectUrlMultipleCaptures) {
+  const std::string contents = R"json(
+      [{
+          "include": [
+              "*://tracker.example.com/*"
+          ],
+          "exclude": [],
+          "action": "regex-path-template",
+          "param": "^/([^/]+)/([^/]+)$",
+          "redirect_url_template": "https://$1.example.org/page/$2"
+      }]
+    )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    CheckApplyResult(rule.get(),
+                     GURL("https://tracker.example.com/www/landing"),
+                     "https://www.example.org/page/landing", false);
+  }
+}
+
+// Test redirect_url_template producing same eTLD+1 as original (should fail).
+TEST(DebounceRuleUnitTest, RedirectUrlSameSite) {
+  const std::string contents = R"json(
+      [{
+          "include": [
+              "*://redir.example.com/*"
+          ],
+          "exclude": [],
+          "action": "regex-path-template",
+          "param": "^/(.+)$",
+          "redirect_url_template": "https://www.example.com/page/$1"
+      }]
+    )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    CheckApplyResult(rule.get(), GURL("https://redir.example.com/foo"), "",
+                     true);
+  }
+}
+
+// Test redirect_url_template when regex doesn't match the path.
+TEST(DebounceRuleUnitTest, RedirectUrlNoMatch) {
+  const std::string contents = R"json(
+      [{
+          "include": [
+              "*://y2u.be/*"
+          ],
+          "exclude": [],
+          "action": "regex-path-template",
+          "param": "^/video/(.+)$",
+          "redirect_url_template": "https://www.youtube.com/watch?v=$1"
+      }]
+    )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    // Path "/dQw4w9WgXcQ" doesn't match "^/video/(.+)$".
+    CheckApplyResult(rule.get(), GURL("https://y2u.be/dQw4w9WgXcQ"), "", true);
+  }
+}
+
+// Test redirect_url_template with more captures than placeholders (fail).
+TEST(DebounceRuleUnitTest, RedirectUrlExtraCapturesRejected) {
+  const std::string contents = R"json(
+      [{
+          "include": [
+              "*://tracker.example.com/*"
+          ],
+          "exclude": [],
+          "action": "regex-path-template",
+          "param": "^/([^/]+)/([^/]+)/([^/]+)$",
+          "redirect_url_template": "https://$1.example.org/"
+      }]
+    )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    // Three captures but only $1 in template -- mismatch.
+    CheckApplyResult(rule.get(),
+                     GURL("https://tracker.example.com/www/foo/bar"), "", true);
+  }
+}
+
+// Test redirect_url_template referencing $2 when regex only has one capture
+// group. Unresolved placeholders mean a misconfigured rule, so no match.
+TEST(DebounceRuleUnitTest, RedirectUrlUnresolvedPlaceholder) {
+  const std::string contents = R"json(
+      [{
+          "include": [
+              "*://tracker.example.com/*"
+          ],
+          "exclude": [],
+          "action": "regex-path-template",
+          "param": "^/(.+)$",
+          "redirect_url_template": "https://www.example.org/$1/$2"
+      }]
+    )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    CheckApplyResult(rule.get(), GURL("https://tracker.example.com/foo"), "",
+                     true);
+  }
+}
+
+// Test redirect_url_template with no placeholders but a capturing regex (should
+// fail). A static template with captures is a misconfigured rule.
+TEST(DebounceRuleUnitTest, RedirectUrlStaticTemplateWithCaptures) {
+  const std::string contents = R"json(
+      [{
+          "include": [
+              "*://tracker.example.com/*"
+          ],
+          "exclude": [],
+          "action": "regex-path-template",
+          "param": "^/(.+)$",
+          "redirect_url_template": "https://www.example.org/landing"
+      }]
+    )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    CheckApplyResult(rule.get(), GURL("https://tracker.example.com/anything"),
+                     "", true);
+  }
+}
+
+// Test redirect_url_template with >9 capture groups (should fail).
+TEST(DebounceRuleUnitTest, RedirectUrlTooManyCaptureGroups) {
+  const std::string contents = R"json(
+      [{
+          "include": [
+              "*://tracker.example.com/*"
+          ],
+          "exclude": [],
+          "action": "regex-path-template",
+          "param": "^/(.)(.)(.)(.)(.)(.)(.)(.)(.)(.+)$",
+          "redirect_url_template": "https://example.org/$1"
+      }]
+    )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    // 10 capture groups exceeds the $1..$9 limit.
+    CheckApplyResult(rule.get(), GURL("https://tracker.example.com/abcdefghij"),
+                     "", true);
+  }
+}
+
+// Test redirect_url_template with non-contiguous placeholders (e.g., $1 and $3
+// with only 2 capture groups). The set sizes match but the indices don't, so a
+// simple size comparison would incorrectly pass.
+TEST(DebounceRuleUnitTest, RedirectUrlNonContiguousPlaceholders) {
+  const std::string contents = R"json(
+      [{
+          "include": [
+              "*://tracker.example.com/*"
+          ],
+          "exclude": [],
+          "action": "regex-path-template",
+          "param": "^/([^/]+)/([^/]+)$",
+          "redirect_url_template": "https://$1.example.org/$3"
+      }]
+    )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    CheckApplyResult(rule.get(),
+                     GURL("https://tracker.example.com/www/landing"), "", true);
+  }
+}
+
+// Test that regex-path action ignores redirect_url_template (wrong action).
+// Rule should use existing concatenation path, not template substitution.
+TEST(DebounceRuleUnitTest, RedirectUrlTemplateIgnoredForRegexPath) {
+  const std::string contents = R"json(
+      [{
+          "include": [
+              "*://y2u.be/*"
+          ],
+          "exclude": [],
+          "action": "regex-path",
+          "param": "^/(.+)$",
+          "redirect_url_template": "https://www.youtube.com/watch?v=$1"
+      }]
+    )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    // regex-path concatenates captures as a raw URL, so the result is just the
+    // captured path segment (dQw4w9WgXcQ) treated as a URL -- which is invalid
+    // and should be rejected by downstream URL validation.
+    CheckApplyResult(rule.get(), GURL("https://y2u.be/dQw4w9WgXcQ"), "", true);
+  }
+}
+
+// Test that regex-path with prepend_scheme is unaffected by a stray
+// redirect_url_template field. The AMP-style rule should still work normally.
+TEST(DebounceRuleUnitTest, RegexPathPrependSchemeIgnoresTemplate) {
+  const std::string contents = R"json(
+      [{
+          "include": [
+              "*://*.ampproject.org/c/s/*"
+          ],
+          "exclude": [],
+          "action": "regex-path",
+          "prepend_scheme": "https",
+          "param": "^/c/s/(.*)$",
+          "redirect_url_template": "https://www.youtube.com/watch?v=$1"
+      }]
+    )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    // Should redirect to the AMP target, not the template URL.
+    CheckApplyResult(
+        rule.get(),
+        GURL("https://example.ampproject.org/c/s/www.example.com/article"),
+        "https://www.example.com/article", false);
   }
 }
 
