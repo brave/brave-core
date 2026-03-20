@@ -18,7 +18,6 @@ brave_flags_deps = [
   "//brave/components/debounce/core/common",
   "//brave/components/skus/common",
   "//brave/ios/browser/brave_wallet",
-  "//brave/ios/browser/ui/tab_tray:features",
   "//brave/ios/browser/ui/web_view:features",
   "//components/webui/flags",
   "//net",
