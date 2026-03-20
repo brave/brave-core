@@ -145,7 +145,7 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="2542968102051442371">Selecciona texto con la búsqueda por imágenes</translation>
 <translation id="70183448213529602">Brave está intentando reemplazar las contraseñas. Introduce tu contraseña de Windows para permitirlo.</translation>
 <translation id="7798069806040634998">Brave necesita acceso de almacenamiento para descargar archivos</translation>
-<translation id="8447483940522230788">Brave Helper</translation>
+<translation id="2351700486811407088">Brave Origin Helper</translation>
 <translation id="2575822587468774919">Selecciona cualquier cosa para buscarla con la búsqueda por imágenes</translation>
 <translation id="3830890663494219270">Para acceder a tus contraseñas y más en todos tus dispositivos, inicia sesión en Brave</translation>
 <translation id="6252796827759111076">Seguir usando Brave</translation>
@@ -259,7 +259,7 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="3846683726093018685">**Resumir:** en una sola frase de menos de 30 palabras, describe el tema principal y la finalidad del contenido de la captura de pantalla.
 
           **Sugerir preguntas:** genera una lista con viñetas de entre 3 y 5 preguntas que inviten a la reflexión y que un usuario podría hacer para entender mejor la captura de pantalla. Al menos una de estas preguntas debe referirse específicamente a un objeto visual, su diseño o su ubicación.</translation>
-<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="6899774208752247219"><ph name="PAGE_TITLE"/> - Brave Origin</translation>
 <translation id="3885770153807205175">Selector de idioma</translation>
 <translation id="6315734375101223238">Personaliza y controla Brave. Se requiere tu intervención. Haz clic aquí para obtener más información.</translation>
 <translation id="7130675370997202556">Haz clic en tu nombre para abrir Brave y empezar a navegar.</translation>
@@ -323,7 +323,7 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="4493028449971051158">Error de arranque: ejecuta el instalador como administrador.</translation>
 <translation id="4501471624619070934">Se ha producido un error en la instalación debido a una restricción de acceso en este país.</translation>
 <translation id="8594994021633965927">Esta extensión no ha publicado sus prácticas de privacidad, como la forma en la que recoge y usa los datos. Brave te recomienda que la elimines.</translation>
-<translation id="7084397798469173252">Te damos la bienvenida a Brave. Se ha abierto una nueva ventana del navegador.</translation>
+<translation id="770557926599450702">Te damos la bienvenida a Brave Origin. Se ha abierto una nueva ventana del navegador.</translation>
 <translation id="137732229629632648">Brave necesita permiso para mapear tu entorno y hacer un seguimiento de tus manos</translation>
 <translation id="5036046007335188949">Ya has iniciado sesión como <ph name="USER_EMAIL_ADDRESS"/> en otro perfil de Brave</translation>
 <translation id="1878185978731985193">Brave precarga las páginas, lo que te permite navegar y hacer búsquedas más rápido. <ph name="BEGIN_LINK"/>Más información sobre la precarga de páginas<ph name="END_LINK"/></translation>
@@ -331,7 +331,7 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="8669339108356170796">Brave ha bloqueado esta descarga porque has desactivado Navegación segura y el archivo no se puede verificar</translation>
 <translation id="7583343841997441047">Prueba Google Lens con Brave en tu teléfono</translation>
 <translation id="4594305310729380060">En el gestor de contraseñas de este dispositivo</translation>
-<translation id="3349475100979552835">Aplicaciones de Brave</translation>
+<translation id="7776200949522126045">Aplicaciones de Brave Origin</translation>
 <translation id="4598116752460667024">Busca cualquier proceso de la lista.</translation>
 <translation id="4970880042055371251">Versión de ChromeOS</translation>
 <translation id="2182657378556811785">Brave casi ha terminado de actualizarse. Reinícialo para completar la actualización.</translation>
@@ -350,7 +350,7 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="4823369970559443694">Brave no puede comprobar tus contraseñas. Vuelve a intentarlo en 24 horas o <ph name="BEGIN_LINK"/>comprueba las contraseñas en tu cuenta de Brave<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Utiliza el mismo corrector ortográfico que se usa en la Búsqueda de Brave. El texto que escribas en el navegador se enviará a Brave. Puedes cambiar esta opción en cualquier momento desde los ajustes.</translation>
 <translation id="2899369907387169108">Usar Brave sin una cuenta</translation>
-<translation id="1912973375560256099">Regla entrante para que Brave permita tráfico mDNS.</translation>
+<translation id="1833893255023048385">Regla entrante para que Brave Origin permita tráfico mDNS.</translation>
 <translation id="711601904575862069">Reiniciar para actualizar &amp;Brave</translation>
 <translation id="4918086044614829423">Aceptar</translation>
 <translation id="4918844574251943176">Imagen copiada</translation>
@@ -386,7 +386,7 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="5267531627648004734">Eliminar de Brave</translation>
 <translation id="4620757336635063467">Reduce el rendimiento, pero hace que Brave sea más resistente a los ataques</translation>
 <translation id="239760341987199724">Establecer Brave como navegador predeterminado</translation>
-<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> ‑ Brave Beta</translation>
+<translation id="5165277482382778404"><ph name="PAGE_TITLE"/> ‑ Brave Origin Beta</translation>
 <translation id="604223321106006231">{NUM_TABS,plural, =1{Brave recomienda pausar la pestaña que ralentiza tu navegador}other{Brave recomienda pausar las pestañas que ralentizan tu navegador}}</translation>
 <translation id="894936507076470937">Es posible que Brave no funcione correctamente porque ya no es compatible con esta distribución de Linux</translation>
 <translation id="2596557398669145729">Brave ha bloqueado esta descarga porque el archivo puede dañar tus cuentas personales y de redes sociales</translation>
@@ -415,7 +415,7 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="95980832839683236">Acelera los sitios con el motor V8 de Brave, pero hace que Brave sea un poco menos resistente a los ataques. Esta opción está desactivada.</translation>
 <translation id="1224606669200461217">Para usar y guardar datos de Brave en tu cuenta de Brave, actualiza Brave</translation>
 <translation id="5824893331272123205">No se ha podido cargar este panel. Inténtalo de nuevo.</translation>
-<translation id="7207456302801184289">Te damos la bienvenida a Brave</translation>
+<translation id="4467664627714200493">Te damos la bienvenida a Brave Origin</translation>
 <translation id="5871205389137001634">Haz clic para salir de la búsqueda por imágenes</translation>
 <translation id="8054200348483755053">Brave ha detectado que estos elementos contienen malware:</translation>
 <translation id="3955583201925082436">Brave comprueba de forma periódica si tu navegador tiene la configuración más segura. Te avisaremos si tienes que revisar algo.</translation>
@@ -475,7 +475,7 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="6388799252195623474">ayúdame con esto</translation>
 <translation id="7920857181125123335">Para continuar, inicia sesión en Brave con <ph name="EMAIL"/>. Así te aseguras de que se apliquen las políticas de tu organización.</translation>
 <translation id="3256100650978957522">Logotipo de Brave dentro de una pantalla de ordenador.</translation>
-<translation id="6373767849825830651">Brave es un navegador web que ejecuta páginas web y aplicaciones a gran velocidad. Es rápido, estable y fácil de utilizar. Brave te permite navegar en la Web de forma más segura, ya que incluye protección contra malware y phishing.</translation>
+<translation id="5880764554173582719">Brave Origin es un navegador web que ejecuta páginas web y aplicaciones a gran velocidad. Es rápido, estable y fácil de utilizar. Brave Origin te permite navegar en la Web de forma más segura, ya que incluye protección contra malware y phishing.</translation>
 <translation id="2532326772258858491">Brave se ejecuta más rápido y las funciones que usan JavaScript deberían funcionar según lo previsto</translation>
 <translation id="6436260184216827876">La búsqueda por imágenes no está disponible. Inténtalo de nuevo más tarde.</translation>
 <translation id="2139300032719313227">Reiniciar ChromeOS</translation>
@@ -576,7 +576,7 @@ Brave no puede recuperar tu configuración.</translation>
 <translation id="4631170166710903214">Esta extensión ya no se admite. Brave te recomienda que la elimines.</translation>
 <translation id="7951152294775418909">Continúa por donde lo dejaste: Brave restaura tus pestañas cada vez que lo reinicies. Para desactivar esta opción, ve a</translation>
 <translation id="3191314862567596053">Importar contraseñas a Brave</translation>
-<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> ‑ Brave Dev</translation>
+<translation id="4864311514218370796"><ph name="PAGE_TITLE"/> ‑ Brave Origin Dev</translation>
 <translation id="7450541714075000668">Texto copiado</translation>
 <translation id="2034072705932785495">Brave necesita permiso para acceder a la cámara en este sitio web</translation>
 <translation id="7129342855140808694">Para usar el micrófono, da acceso a Brave en la <ph name="BEGIN_LINK"/>configuración del sistema<ph name="END_LINK"/></translation>
@@ -605,7 +605,7 @@ Brave no puede recuperar tu configuración.</translation>
 <translation id="8543787950557226450">Restablecer tema predeterminado de Brave</translation>
 <translation id="4976450819672499783">Establece Brave como predeterminado y fíjalo en la barra de tareas</translation>
 <translation id="1978509466033734608">Aumenta la velocidad de Brave</translation>
-<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> ‑ Brave Canary</translation>
+<translation id="8607348724092473027"><ph name="PAGE_TITLE"/> ‑ Brave Origin Canary</translation>
 <translation id="2684504034454188774">Haz que a las personas con acceso a tu tráfico de Internet les resulte más complicado ver los sitios que visitas. Brave usa una conexión segura para buscar la dirección IP de un sitio en el DNS (sistema de nombres de dominio).</translation>
 <translation id="7810005234485217901">Puedes fijar la búsqueda por imágenes para acceder a ella fácilmente</translation>
 <translation id="1652855885539187849">Ya existe un perfil de Brave con esa cuenta en este dispositivo.</translation>
@@ -628,7 +628,7 @@ Brave no puede recuperar tu configuración.</translation>
 <translation id="6175141682081019059">Inhabilitar que Brave se ejecute en segundo plano en las aplicaciones</translation>
 <translation id="80790299200510644">Búsqueda por imágenes</translation>
 <translation id="8086881907087796310">No se ha podido realizar la instalación porque tu ordenador no cumple los requisitos mínimos de hardware.</translation>
-<translation id="8263061319795838019"><ph name="PAGE_TITLE"/> - Brave for Testing</translation>
+<translation id="5528402763209637578"><ph name="PAGE_TITLE"/> - Brave Origin for Testing</translation>
 <translation id="2061155704815580583">Brave necesita el permiso de ubicación para este sitio</translation>
 <translation id="3576319845915562805">La próxima vez que abras Brave en tu <ph name="DEVICE_TYPE"/>, verás una petición para habilitar las alertas de seguimiento de precios.</translation>
 <translation id="8118331347066725040">Enviar comentarios sobre la búsqueda con Lens</translation>
@@ -721,7 +721,7 @@ Brave no puede recuperar tu configuración.</translation>
 <translation id="2444257125841652328">El administrador del sistema ha configurado Brave para que abra otro navegador al acceder a <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="8208548103319284047">Consejo de Brave: busca con Lens</translation>
 <translation id="7902365066753170041">Reiniciar para actualizar &amp;Brave</translation>
-<translation id="3350544518197210895">Brave (tráfico mDNS entrante)</translation>
+<translation id="538146372587193686">Brave Origin (tráfico mDNS entrante)</translation>
 <translation id="49909619875329637">Inicia sesión para sacar más partido a Brave</translation>
 <translation id="296137235951584143">Personaliza Brave a tu gusto</translation>
 <translation id="7977787072794666032">Es posible que Brave no funcione correctamente porque ya no es compatible con Windows XP ni Windows Vista</translation>

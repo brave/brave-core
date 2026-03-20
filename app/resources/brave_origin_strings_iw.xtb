@@ -143,7 +143,7 @@
 <translation id="2542968102051442371">בחירה של טקסט באמצעות התכונה 'חיפוש תמונות'</translation>
 <translation id="70183448213529602">‏Brave מנסה להחליף את הסיסמאות הקיימות. כדי לאפשר זאת, יש להזין את הסיסמה שלך ל-Windows.</translation>
 <translation id="7798069806040634998">‏Brave זקוק לגישה לאחסון כדי להוריד קבצים</translation>
-<translation id="8447483940522230788">Brave Helper</translation>
+<translation id="2351700486811407088">Brave Origin Helper</translation>
 <translation id="2575822587468774919">אפשר לבחור משהו לחיפוש באמצעות התכונה 'חיפוש תמונות'</translation>
 <translation id="3830890663494219270">‏כדי לקבל גישה לסיסמאות ולנתונים נוספים בכל המכשירים שלך, כדאי להיכנס ל-Brave</translation>
 <translation id="6252796827759111076">‏המשך השימוש ב-Brave</translation>
@@ -255,7 +255,7 @@
 <translation id="3846683726093018685">**סיכום:** במשפט אחד של פחות מ-30 מילים, צריך לתאר את הנושא והמטרה העיקריים של התוכן בצילום המסך.
 
           **הצעת שאלות:** יצירת רשימה של 3-5 שאלות מעוררות מחשבה שהמשתמש יכול לשאול כדי להבין טוב יותר את צילום המסך. לפחות שאלה אחת צריכה להתייחס באופן ספציפי לאובייקט חזותי, לעיצוב שלו או למיקום שלו.</translation>
-<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="6899774208752247219"><ph name="PAGE_TITLE"/> - Brave Origin</translation>
 <translation id="3885770153807205175">הכלי לבחירת שפה</translation>
 <translation id="6315734375101223238">‏התאמה אישית וניהול של Brave נחוצה פעולה שלך - יש ללחוץ לקבלת פרטים נוספים.</translation>
 <translation id="7130675370997202556">‏יש ללחוץ על השם שלך כדי לפתוח את Brave ולהתחיל לגלוש.</translation>
@@ -319,7 +319,7 @@
 <translation id="4493028449971051158">שגיאת הפעלה: יש להפעיל את מנהל ההתקנה כאדמין.</translation>
 <translation id="4501471624619070934">ההתקנה נכשלה כי הגישה מוגבלת במדינה הזו.</translation>
 <translation id="8594994021633965927">‏לתוסף הזה לא פורסמו נוהלי פרטיות, למשל האופן שבו הוא אוסף נתונים ומשתמש בהם. ההמלצה של Brave היא להסיר אותו.</translation>
-<translation id="7084397798469173252">‏ברוך בואך אל Brave. נפתח חלון חדש בדפדפן</translation>
+<translation id="770557926599450702">‏ברוך בואך אל Brave Origin. נפתח חלון חדש בדפדפן</translation>
 <translation id="137732229629632648">‏ל-Brave נדרשת הרשאה כדי למפות את הסביבה שלך ולעקוב אחרי תנועות הידיים</translation>
 <translation id="5036046007335188949">‏כבר נכנסת לחשבון בתור <ph name="USER_EMAIL_ADDRESS"/> בפרופיל Brave אחר</translation>
 <translation id="1878185978731985193">‏‫Brave טוען מראש דפים וכך ניתן לגלוש ולחפש מהר יותר. <ph name="BEGIN_LINK"/>מידע נוסף על טעינה מראש של דפים<ph name="END_LINK"/></translation>
@@ -327,7 +327,7 @@
 <translation id="8669339108356170796">‏Brave חסם את ההורדה הזאת כי השבתת את הגלישה הבטוחה ואי אפשר לאמת את הקובץ</translation>
 <translation id="7583343841997441047">‏רוצה לנסות את Google Lens ב-Brave בטלפון?</translation>
 <translation id="4594305310729380060">שמירה למנהל הסיסמאות במכשיר הזה</translation>
-<translation id="3349475100979552835">‏יישומי Brave</translation>
+<translation id="7776200949522126045">‏יישומי Brave Origin</translation>
 <translation id="4598116752460667024">מחפשים תהליך כלשהו מהרשימה.</translation>
 <translation id="4970880042055371251">‏גרסת ChromeOS</translation>
 <translation id="2182657378556811785">‏העדכון כמעט הושלם! הפעל מחדש את Brave‏ כדי לסיים את העדכון.</translation>
@@ -346,7 +346,7 @@
 <translation id="4823369970559443694">‏Brave לא יכול לבדוק את הסיסמאות שלך. יש לנסות שוב בעוד 24 שעות או <ph name="BEGIN_LINK"/>לבדוק את הסיסמאות בחשבון Brave<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">‏נעשה כאן שימוש בבדיקת האיות של חיפוש Brave. הטקסט המוקלד בדפדפן נשלח אל Brave. אפשר לשנות את ההתנהגות הזו בכל שלב דרך ההגדרות.</translation>
 <translation id="2899369907387169108">‏שימוש ב-Brave ללא חשבון</translation>
-<translation id="1912973375560256099">‏כלל נכנס עבור Brave על מנת לאפשר תנועת mDNS.</translation>
+<translation id="1833893255023048385">‏כלל נכנס עבור Brave Origin על מנת לאפשר תנועת mDNS.</translation>
 <translation id="711601904575862069">‏הפעלה מחדש לצורך עדכון &amp;Brave</translation>
 <translation id="4918086044614829423">אישור</translation>
 <translation id="4918844574251943176">התמונה הועתקה</translation>
@@ -382,7 +382,7 @@
 <translation id="5267531627648004734">‏להסיר מ-‏Brave‏</translation>
 <translation id="4620757336635063467">‏ירידה ברמת הביצועים בתמורה להגברת העמידות של Brave בפני מתקפות</translation>
 <translation id="239760341987199724">‏הגדרת Brave כדפדפן ברירת המחדל שלך</translation>
-<translation id="1403270718080126244">‏<ph name="PAGE_TITLE"/> - Brave בגרסת בטא</translation>
+<translation id="5165277482382778404">‏<ph name="PAGE_TITLE"/> - Brave Origin בגרסת בטא</translation>
 <translation id="604223321106006231">{NUM_TABS,plural, =1{‏ההמלצה של Brave היא להשהות את הכרטיסייה שמאטה את הדפדפן}one{‏ההמלצה של Brave היא להשהות את הכרטיסיות שמאטות את הדפדפן}two{‏ההמלצה של Brave היא להשהות את הכרטיסיות שמאטות את הדפדפן}other{‏ההמלצה של Brave היא להשהות את הכרטיסיות שמאטות את הדפדפן}}</translation>
 <translation id="894936507076470937">‏יכול להיות ש-Brave לא יפעל כראוי כי הוא כבר לא נתמך בגרסה הזו של Linux</translation>
 <translation id="2596557398669145729">‏‫Brave חסם את ההורדה הזו כי הקובץ יכול לפגוע בחשבונות האישיים ובחשבונות שלך ברשתות החברתיות</translation>
@@ -411,7 +411,7 @@
 <translation id="95980832839683236">‏אפשר להאיץ ביצועים של אתרים באמצעות מנוע V8 של Brave, אבל Brave יהיה קצת פחות עמיד בפני מתקפות. ההגדרה הזו מושבתת.</translation>
 <translation id="1224606669200461217">‏כדי להשתמש בנתוני Brave ולשמור אותם בחשבון Brave, עליך לעדכן את Brave</translation>
 <translation id="5824893331272123205">לא הצלחנו לטעון את החלונית, אפשר לנסות שוב</translation>
-<translation id="7207456302801184289">‏ברוכים הבאים ל-Brave‏</translation>
+<translation id="4467664627714200493">‏ברוכים הבאים ל-Brave Origin‏</translation>
 <translation id="5871205389137001634">יש ללחוץ כדי לצאת מחיפוש התמונות</translation>
 <translation id="8054200348483755053">‏מערכת Brave גילתה שהפריטים האלה מכילים תוכנה זדונית:</translation>
 <translation id="3955583201925082436">‏Brave בודק בקביעות כדי לוודא שלדפדפן יש את ההגדרות הבטוחות ביותר. נודיע לך אם צריך לבדוק משהו.</translation>
@@ -471,7 +471,7 @@
 <translation id="6388799252195623474">אני רוצה עזרה בנושא הזה</translation>
 <translation id="7920857181125123335">‏כדי להמשיך, עליך להיכנס ל-Brave באמצעות החשבון <ph name="EMAIL"/>. כך המדיניות של הארגון תחול על המכשיר שלך.</translation>
 <translation id="3256100650978957522">‏הלוגו של Brave בתוך מסך מחשב.</translation>
-<translation id="6373767849825830651">‏Brave הוא דפדפן אינטרנט המפעיל דפי אינטרנט ואפליקציות במהירות הבזק. זהו דפדפן מהיר, יציב וקל לשימוש שמאפשר לך לגלוש באינטרנט בצורה מאובטחת יותר הודות להגנה מפני תוכנות זדוניות ופישינג המובנית ב-Brave.</translation>
+<translation id="5880764554173582719">‏Brave Origin הוא דפדפן אינטרנט המפעיל דפי אינטרנט ואפליקציות במהירות הבזק. זהו דפדפן מהיר, יציב וקל לשימוש שמאפשר לך לגלוש באינטרנט בצורה מאובטחת יותר הודות להגנה מפני תוכנות זדוניות ופישינג המובנית ב-Brave Origin.</translation>
 <translation id="2532326772258858491">‏דפדפן Brave פועל מהר יותר ותכונות שמשתמשות ב-JavaScript אמורות לפעול כמו שצריך</translation>
 <translation id="6436260184216827876">התכונה 'חיפוש תמונות' לא זמינה. יש לנסות שוב מאוחר יותר.</translation>
 <translation id="2139300032719313227">‏הפעלה מחדש של ChromeOS</translation>
@@ -572,7 +572,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="4631170166710903214">‏התוסף הזה כבר לא נתמך. ההמלצה של Brave היא להסיר אותו.</translation>
 <translation id="7951152294775418909">‏אפשר להמשיך מהמקום שבו הפסקת: Brave משחזר את הכרטיסיות שלך בכל הפעלה מחדש. כדי להשבית את האפשרות הזו, צריך לעבור אל</translation>
 <translation id="3191314862567596053">‏ייבוא סיסמאות אל Brave</translation>
-<translation id="3943696263619956191">‏<ph name="PAGE_TITLE"/> - Brave בגרסת פיתוח</translation>
+<translation id="4864311514218370796">‏<ph name="PAGE_TITLE"/> - Brave Origin בגרסת פיתוח</translation>
 <translation id="7450541714075000668">הטקסט הועתק</translation>
 <translation id="2034072705932785495">‏Brave זקוק להרשאת גישה למצלמה בשביל האתר הזה</translation>
 <translation id="7129342855140808694">‏כדי להשתמש במיקרופון, צריך להיכנס אל <ph name="BEGIN_LINK"/>הגדרות המערכת<ph name="END_LINK"/> ולתת ל-Brave גישה</translation>
@@ -601,7 +601,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="8543787950557226450">‏איפוס לברירת המחדל של Brave</translation>
 <translation id="4976450819672499783">‏הגדרת Brave כדפדפן ברירת המחדל והצמדה שלו לסרגל האפליקציות</translation>
 <translation id="1978509466033734608">‏שיפור המהירות ב-Brave</translation>
-<translation id="6236814935154483927">‏<ph name="PAGE_TITLE"/> – Brave בגרסת Canary</translation>
+<translation id="8607348724092473027">‏<ph name="PAGE_TITLE"/> – Brave Origin בגרסת Canary</translation>
 <translation id="2684504034454188774">‏לאנשים שיש להם גישה לתעבורת הנתונים שלך יהיה קשה יותר לראות את האתרים שביקרת בהם. ‫Brave משתמש בחיבור מאובטח לחיפוש כתובות IP של אתרים ב-DNS.</translation>
 <translation id="7810005234485217901">אפשר להצמיד את התכונה 'חיפוש תמונות' כדי לאפשר גישה נוחה</translation>
 <translation id="1652855885539187849">‏כבר קיים במכשיר פרופיל Brave עם החשבון הזה.</translation>
@@ -624,7 +624,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="6175141682081019059">‏השבתת הפעילות של Brave ברקע לאפליקציות</translation>
 <translation id="80790299200510644">חיפוש באמצעות תמונות</translation>
 <translation id="8086881907087796310">ההתקנה נכשלה כי המחשב לא עומד בדרישות החומרה המינימליות.</translation>
-<translation id="8263061319795838019">‏<ph name="PAGE_TITLE"/> –‏ Brave for Testing</translation>
+<translation id="5528402763209637578">‏<ph name="PAGE_TITLE"/> –‏ Brave Origin for Testing</translation>
 <translation id="2061155704815580583">‏נדרשת הרשאת מיקום ב-Brave עבור האתר הזה</translation>
 <translation id="3576319845915562805">‏בפתיחה הבאה של Brave במכשיר <ph name="DEVICE_TYPE"/>, תופיע הנחיה להפעיל התראות על מעקב מחירים.</translation>
 <translation id="8118331347066725040">‏שליחת משוב על חיפוש באמצעות Lens</translation>
@@ -717,7 +717,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="2444257125841652328">‏לפי הגדרת מנהל המערכת, Brave יפתח דפדפן חלופי כדי לגשת אל <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="8208548103319284047">‏טיפ ל-Brave: חיפוש באמצעות Lens</translation>
 <translation id="7902365066753170041">‏הפעלה מחדש לצורך עדכון &amp;Brave</translation>
-<translation id="3350544518197210895">‏Brave ‏(mDNS-In)</translation>
+<translation id="538146372587193686">‏Brave Origin ‏(mDNS-In)</translation>
 <translation id="49909619875329637">‏רוצה ליהנות מהיתרונות של כניסה לחשבון ב-Brave?</translation>
 <translation id="296137235951584143">‏אפשר להתאים אישית את Brave בדרך שנוחה לך</translation>
 <translation id="7977787072794666032">‏ייתכן ש-Brave לא יפעל כראוי כי הוא כבר לא נתמך ב-Windows XP וב-Windows Vista</translation>

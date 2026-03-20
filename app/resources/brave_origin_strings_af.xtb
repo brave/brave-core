@@ -145,7 +145,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="2542968102051442371">Kies teks met Prentsoektog</translation>
 <translation id="70183448213529602">Brave probeer tans bestaande wagwoorde vervang. Tik jou Windows-wagwoord in om dit toe te laat.</translation>
 <translation id="7798069806040634998">Brave het bergingtoegang nodig om lêers af te laai</translation>
-<translation id="8447483940522230788">Brave-helper</translation>
+<translation id="2351700486811407088">Brave Origin-helper</translation>
 <translation id="2575822587468774919">Kies enigiets om met Prentsoektog te soek</translation>
 <translation id="3830890663494219270">Meld aan by Brave om jou wagwoorde en meer op al jou toestelle te kry</translation>
 <translation id="6252796827759111076">Hou aan om Brave te gebruik</translation>
@@ -259,7 +259,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="3846683726093018685">**Som op:** Beskryf die primêre onderwerp en doel van die inhoud in die skermskoot in ’n enkele sin van onder 30 woorde.
 
           **Stel vrae voor:** Genereer ’n koeëlpuntlys met 3-5 besinningswaardige vrae wat ’n gebruiker kan vra om die skermskoot beter te verstaan. Hierdie vrae moet ten minste een vraag wat spesifiek oor ’n visuele objek, sy ontwerp of sy plasing gaan, insluit.</translation>
-<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
+<translation id="6899774208752247219"><ph name="PAGE_TITLE"/> – Brave Origin</translation>
 <translation id="3885770153807205175">Taalkieser</translation>
 <translation id="6315734375101223238">Pasmaak en beheer Brave. Iets verg jou aandag – klik vir besonderhede.</translation>
 <translation id="7130675370997202556">Klik jou naam om Brave oop te maak en te begin blaai.</translation>
@@ -323,7 +323,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="4493028449971051158">Aanskakelingfout: laat loop die installeerder as administrateur.</translation>
 <translation id="4501471624619070934">Installasie het misluk omdat toegang in hierdie land beperk is.</translation>
 <translation id="8594994021633965927">Hierdie uitbreiding het nie privaatheidpraktyke gepubliseer nie, soos hoe dit data insamel en gebruik. Brave beveel aan dat jy dit verwyder.</translation>
-<translation id="7084397798469173252">Welkom by Brave; nuwe blaaiervenster is oopgemaak</translation>
+<translation id="770557926599450702">Welkom by Brave Origin; nuwe blaaiervenster is oopgemaak</translation>
 <translation id="137732229629632648">Brave het toestemming nodig om jou omgewing te karteer en jou hande na te spoor</translation>
 <translation id="5036046007335188949">Jy het reeds in ’n ander Brave-profiel as <ph name="USER_EMAIL_ADDRESS"/> aangemeld</translation>
 <translation id="1878185978731985193">Brave laai bladsye vooraf wat blaai en soek vinniger maak. <ph name="BEGIN_LINK"/>Kry meer inligting oor voorafgelaaide bladsye<ph name="END_LINK"/></translation>
@@ -331,7 +331,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="8669339108356170796">Brave het hierdie aflaai geblokkeer omdat jy Veiligblaai afgeskakel het en die lêer nie geverifieer kan word nie</translation>
 <translation id="7583343841997441047">Probeer Google Lens met Brave op jou foon</translation>
 <translation id="4594305310729380060">Na Wagwoordbestuurder op hierdie toestel</translation>
-<translation id="3349475100979552835">Brave-programme</translation>
+<translation id="7776200949522126045">Brave Origin-programme</translation>
 <translation id="4598116752460667024">Soek enige proses op die lys.</translation>
 <translation id="4970880042055371251">Brave-bedryfstelselweergawe</translation>
 <translation id="2182657378556811785">Amper op datum! Herbegin Brave om opdatering te voltooi.</translation>
@@ -350,7 +350,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="4823369970559443694">Brave kan nie jou wagwoorde nagaan nie. Probeer ná 24 uur weer of <ph name="BEGIN_LINK"/>gaan wagwoorde in jou Brave-rekening na<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Dit gebruik dieselfde speltoetser wat in Brave-soektog gebruik word. Teks wat jy in die blaaier tik, word na Brave toe gestuur. Jy kan altyd hierdie gedrag in instellings verander.</translation>
 <translation id="2899369907387169108">Gebruik Brave sonder 'n rekening</translation>
-<translation id="1912973375560256099">Inkomende reël vir Brave om mDNS-verkeer toe te laat.</translation>
+<translation id="1833893255023048385">Inkomende reël vir Brave Origin om mDNS-verkeer toe te laat.</translation>
 <translation id="711601904575862069">Begin weer om &amp;Brave op te dateer</translation>
 <translation id="4918086044614829423">Aanvaar</translation>
 <translation id="4918844574251943176">Prent is gekopieer</translation>
@@ -386,7 +386,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="5267531627648004734">Verwyder van Brave af</translation>
 <translation id="4620757336635063467">Verminder werkverrigting, maar maak Brave meer bestand teen aanvalle</translation>
 <translation id="239760341987199724">Stel Brave as jou verstekblaaier</translation>
-<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
+<translation id="5165277482382778404"><ph name="PAGE_TITLE"/> – Brave Origin Beta</translation>
 <translation id="604223321106006231">{NUM_TABS,plural, =1{Brave beveel aan dat jy die oortjie wat jou blaaier stadig maak, onderbreek}other{Brave beveel aan dat jy die oortjies wat jou blaaier stadig maak, onderbreek}}</translation>
 <translation id="894936507076470937">Brave sal dalk nie reg werk nie omdat dit nie meer in hierdie Linux-uitreiking gesteun word nie</translation>
 <translation id="2596557398669145729">Brave het hierdie aflaai geblokkeer omdat die lêer jou persoonlike en sosialenetwerkrekeninge kan beskadig</translation>
@@ -415,7 +415,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="95980832839683236">Maak werwe vinniger met Brave se V8-enjin, maar maak Brave effens minder bestand teen aanvalle. Hierdie instelling is af.</translation>
 <translation id="1224606669200461217">Dateer Brave op om Brave-data in jou Brave-rekening te gebruik en te stoor</translation>
 <translation id="5824893331272123205">Kon nie hierdie paneel laai nie, probeer weer</translation>
-<translation id="7207456302801184289">Welkom by Brave</translation>
+<translation id="4467664627714200493">Welkom by Brave Origin</translation>
 <translation id="5871205389137001634">Klik om uit Prentsoektog te gaan</translation>
 <translation id="8054200348483755053">Brave het bevind dat hierdie items wanware bevat:</translation>
 <translation id="3955583201925082436">Brave kontroleer gereeld om seker te maak jou blaaier het die veiligste instellings. Ons sal jou laat weet as jy enigiets moet nagaan.</translation>
@@ -475,7 +475,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="6388799252195623474">help my hiermee</translation>
 <translation id="7920857181125123335">Meld aan by Brave as <ph name="EMAIL"/> om voort te gaan. Dit maak seker dat jy jou organisasie se beleide het.</translation>
 <translation id="3256100650978957522">Brave-logo binne ’n rekenaarskerm.</translation>
-<translation id="6373767849825830651">Brave is 'n webblaaier wat webbladsye en programme blitsvinning laat loop. Dis vinnig, stabiel en maklik om te gebruik. Blaai veiliger deur die web met beskerming teen wanware en uitvissing wat by Brave ingebou is.</translation>
+<translation id="5880764554173582719">Brave Origin is 'n webblaaier wat webbladsye en programme blitsvinning laat loop. Dis vinnig, stabiel en maklik om te gebruik. Blaai veiliger deur die web met beskerming teen wanware en uitvissing wat by Brave Origin ingebou is.</translation>
 <translation id="2532326772258858491">Brave loop vinniger en kenmerke wat JavaScript gebruik, behoort volgens ontwerp te werk</translation>
 <translation id="6436260184216827876">Prentsoektog is nie beskikbaar nie. Probeer later weer.</translation>
 <translation id="2139300032719313227">Herbegin Brave-bedryfstelsel</translation>
@@ -576,7 +576,7 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="4631170166710903214">Hierdie uitbreiding word nie meer gesteun nie. Brave beveel aan dat jy dit eerder verwyder.</translation>
 <translation id="7951152294775418909">Gaan voort waar jy opgehou het: Brave stel elke keer as jy herbegin, jou oortjies terug. Om dit af te skakel, gaan na</translation>
 <translation id="3191314862567596053">Voer wagwoorde na Brave in</translation>
-<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
+<translation id="4864311514218370796"><ph name="PAGE_TITLE"/> – Brave Origin Dev</translation>
 <translation id="7450541714075000668">Teks gekopieer</translation>
 <translation id="2034072705932785495">Brave het toestemming nodig om toegang te kry tot jou kamera vir hierdie werf</translation>
 <translation id="7129342855140808694">Jy moet vir Brave toegang in <ph name="BEGIN_LINK"/>stelselinstellings<ph name="END_LINK"/> gee om jou mikrofoon te gebruik</translation>
@@ -605,7 +605,7 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="8543787950557226450">Stel terug na verstek-Brave</translation>
 <translation id="4976450819672499783">Stel Brave as verstek en speld dit aan taakbalk vas</translation>
 <translation id="1978509466033734608">Maak Brave vinniger</translation>
-<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
+<translation id="8607348724092473027"><ph name="PAGE_TITLE"/> – Brave Origin Canary</translation>
 <translation id="2684504034454188774">Maak dit moeiliker vir mense met toegang tot jou internetverkeer om te sien watter werwe jy besoek. Brave gebruik ’n veilige verbinding om ’n webwerf se IP-adres in die DNS (domeinnaamstelsel) op te soek.</translation>
 <translation id="7810005234485217901">Jy kan Prentsoektog vir vinnige toegang vasspeld</translation>
 <translation id="1652855885539187849">'n Brave-profiel met hierdie rekening bestaan reeds op hierdie toestel</translation>
@@ -628,7 +628,7 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="6175141682081019059">Deaktiveer Brave wat op die agtergrond vir apps loop</translation>
 <translation id="80790299200510644">Prentsoektog</translation>
 <translation id="8086881907087796310">Installering het misluk omdat jou rekenaar nie aan die minimum hardewarevereistes voldoen nie.</translation>
-<translation id="8263061319795838019"><ph name="PAGE_TITLE"/> - Brave-toetsweergawe</translation>
+<translation id="5528402763209637578"><ph name="PAGE_TITLE"/> - Brave Origin-toetsweergawe</translation>
 <translation id="2061155704815580583">Brave het liggingtoestemming vir hierdie werf nodig</translation>
 <translation id="3576319845915562805">Jy sal ’n porboodskap sien om prysnasporingopletberigte te aktiveer wanneer jy volgende keer Brave op jou <ph name="DEVICE_TYPE"/> oopmaak.</translation>
 <translation id="8118331347066725040">Stuur terugvoer vir soektog met Lens</translation>
@@ -721,7 +721,7 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="2444257125841652328">Jou stelseladministrateur het Brave opgestel om 'n alternatiewe blaaier oop te maak om na <ph name="TARGET_URL_HOSTNAME"/> toe te gaan.</translation>
 <translation id="8208548103319284047">Brave-wenk: Soek met Lens</translation>
 <translation id="7902365066753170041">Begin weer om &amp;Brave op te dateer</translation>
-<translation id="3350544518197210895">Brave (mDNS-In)</translation>
+<translation id="538146372587193686">Brave Origin (mDNS-In)</translation>
 <translation id="49909619875329637">Kry meer as jy by Brave aangemeld is</translation>
 <translation id="296137235951584143">Maak Brave jou eie</translation>
 <translation id="7977787072794666032">Brave sal dalk nie reg werk nie omdat dit nie meer in Windows XP en Windows Vista gesteun word nie</translation>

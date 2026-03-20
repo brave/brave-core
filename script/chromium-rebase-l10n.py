@@ -16,7 +16,9 @@ import argparse
 import os.path
 import sys
 import glob
+import copy
 from lib.l10n.grd_utils import (braveify_grd_in_place, braveify_grd_tree,
+                                get_fingerprint_for_xtb, get_xtb_files,
                                 INSTALLER_STRINGS,
                                 GOOGLE_CHROME_STRINGS_MIGRATION_MAP,
                                 get_override_file_path, textify,
@@ -112,9 +114,8 @@ def migrate_google_chrome_strings(brave_strings_xml_tree,
 def add_installer_strings_xtb_translations_for_messages(message_ids):
     installer_xtb_files = glob.glob(
         os.path.join(
-            BRAVE_SOURCE_ROOT,
-            'chromium_src/chrome/installer/setup/resources/setup_resources_*.xtb'
-        ))
+            BRAVE_SOURCE_ROOT, 'chromium_src/chrome/installer/setup/resources/'
+            'setup_resources_*.xtb'))
     for installer_xtb_path in installer_xtb_files:
         installer_xtb_xml_tree = etree.parse(installer_xtb_path)
         lang = os.path.basename(installer_xtb_path).replace(
@@ -175,37 +176,80 @@ def _replace_text_in_element(elem, old, new):
 
 
 # Messages where "Brave" should become "Brave Origin" for Origin builds.
-# Only includes translateable="false" strings and strings that had their
-# translateable attribute stripped by the brave_strings processing.
 ORIGIN_BRANDED_MESSAGES = [
-    # translateable="false"
     'IDS_PRODUCT_NAME',
     'IDS_SHORT_PRODUCT_NAME',
-    'IDS_APP_MENU_PRODUCT_NAME',
-    # Shortcut names (translateable/desc stripped in brave_strings)
     'IDS_SXS_SHORTCUT_NAME',
     'IDS_SHORTCUT_NAME_BETA',
     'IDS_SHORTCUT_NAME_DEV',
-    # App shortcut subdirs (translateable/desc stripped in brave_strings)
+    'IDS_PRODUCT_DESCRIPTION',
+    'IDS_WELCOME_TO_CHROME',
+    'IDS_FIRST_RUN_DIALOG_WINDOW_TITLE',
+    'IDS_ACCESSIBLE_BROWSER_WINDOW_TITLE_FORMAT',
+    'IDS_ACCESSIBLE_BETA_BROWSER_WINDOW_TITLE_FORMAT',
+    'IDS_ACCESSIBLE_DEV_BROWSER_WINDOW_TITLE_FORMAT',
+    'IDS_ACCESSIBLE_CANARY_BROWSER_WINDOW_TITLE_FORMAT',
+    'IDS_APP_MENU_PRODUCT_NAME',
+    'IDS_HELPER_NAME',
+    'IDS_SHORT_HELPER_NAME',
+    'IDS_APP_SHORTCUTS_SUBDIR_NAME',
     'IDS_APP_SHORTCUTS_SUBDIR_NAME_CANARY',
     'IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA',
     'IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV',
-    # Firewall rules (translateable/desc stripped in brave_strings)
+    'IDS_INBOUND_MDNS_RULE_NAME',
     'IDS_INBOUND_MDNS_RULE_NAME_BETA',
     'IDS_INBOUND_MDNS_RULE_NAME_CANARY',
     'IDS_INBOUND_MDNS_RULE_NAME_DEV',
+    'IDS_INBOUND_MDNS_RULE_DESCRIPTION',
     'IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA',
     'IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY',
     'IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV',
 ]
 
 
-def apply_origin_branding(xml_tree):
-    """Apply 'Brave Origin' branding to origin-specific strings."""
+def apply_origin_branding(source_string_path, xml_tree):
+    """Apply 'Brave Origin' branding to origin-specific strings and
+    update XTB fingerprints to match."""
+    # Build a map of old fingerprint -> new fingerprint before modifying.
+    fp_map = {}
     for msg_name in ORIGIN_BRANDED_MESSAGES:
-        for elem in xml_tree.xpath(
-                f'//message[@name="{msg_name}"]'):
+        for elem in xml_tree.xpath(f'//message[@name="{msg_name}"]'):
+            old_fp = get_fingerprint_for_xtb(elem)
+            new_elem = copy.deepcopy(elem)
+            _replace_text_in_element(new_elem, 'Brave', 'Brave Origin')
+            new_fp = get_fingerprint_for_xtb(new_elem)
+            if old_fp != new_fp:
+                fp_map[old_fp] = new_fp
+
+    # Apply branding to GRD messages.
+    for msg_name in ORIGIN_BRANDED_MESSAGES:
+        for elem in xml_tree.xpath(f'//message[@name="{msg_name}"]'):
             _replace_text_in_element(elem, 'Brave', 'Brave Origin')
+
+    # Update XTB files: remap fingerprints and replace "Brave" with
+    # "Brave Origin" in matching translations.
+    grd_base_path = os.path.dirname(source_string_path)
+    xtb_files = get_xtb_files(source_string_path)
+    for (_lang, xtb_path) in xtb_files:
+        xtb_full_path = os.path.join(grd_base_path, xtb_path)
+        if not os.path.exists(xtb_full_path):
+            continue
+        xtb_tree = etree.parse(xtb_full_path)
+        modified = False
+        for translation in xtb_tree.xpath('//translation'):
+            old_fp = translation.attrib.get('id')
+            if old_fp in fp_map:
+                translation.attrib['id'] = fp_map[old_fp]
+                _replace_text_in_element(translation, 'Brave', 'Brave Origin')
+                modified = True
+        if modified:
+            content = (b'<?xml version="1.0" ?>\n' +
+                       etree.tostring(xtb_tree,
+                                      pretty_print=True,
+                                      xml_declaration=False,
+                                      encoding='utf-8').strip())
+            with open(xtb_full_path, mode='wb') as f:
+                f.write(content)
 
 
 def parse_args():
@@ -404,7 +448,7 @@ def main():
             '//message[@name="IDS_INSTALL_OS_NOT_SUPPORTED"]')[0]
         elem1.text = elem1.text.replace('Windows 7', 'Windows 10')
     elif basename == 'brave_origin_strings':
-        apply_origin_branding(xml_tree)
+        apply_origin_branding(source_string_path, xml_tree)
 
     grit_root = xml_tree.xpath(
         '//grit' if extension == '.grd' else '//grit-part')[0]
