@@ -477,7 +477,7 @@ TEST(DebounceRuleUnitTest, RejectUrlsWithoutValidEtldPlusOne) {
   }
 }
 
-// Test redirect_url with a single capture group (y2u.be-like case).
+// Test redirect_url_template with a single capture group (y2u.be-like case).
 TEST(DebounceRuleUnitTest, RedirectUrlBasic) {
   const std::string contents = R"json(
       [{
@@ -498,7 +498,7 @@ TEST(DebounceRuleUnitTest, RedirectUrlBasic) {
   }
 }
 
-// Test redirect_url with multiple capture groups.
+// Test redirect_url_template with multiple capture groups.
 TEST(DebounceRuleUnitTest, RedirectUrlMultipleCaptures) {
   const std::string contents = R"json(
       [{
@@ -520,7 +520,7 @@ TEST(DebounceRuleUnitTest, RedirectUrlMultipleCaptures) {
   }
 }
 
-// Test redirect_url producing same eTLD+1 as original (should fail).
+// Test redirect_url_template producing same eTLD+1 as original (should fail).
 TEST(DebounceRuleUnitTest, RedirectUrlSameSite) {
   const std::string contents = R"json(
       [{
@@ -541,7 +541,7 @@ TEST(DebounceRuleUnitTest, RedirectUrlSameSite) {
   }
 }
 
-// Test redirect_url when regex doesn't match the path.
+// Test redirect_url_template when regex doesn't match the path.
 TEST(DebounceRuleUnitTest, RedirectUrlNoMatch) {
   const std::string contents = R"json(
       [{
@@ -562,7 +562,7 @@ TEST(DebounceRuleUnitTest, RedirectUrlNoMatch) {
   }
 }
 
-// Test redirect_url with more captures than placeholders (should fail).
+// Test redirect_url_template with more captures than placeholders (should fail).
 TEST(DebounceRuleUnitTest, RedirectUrlExtraCapturesRejected) {
   const std::string contents = R"json(
       [{
@@ -584,7 +584,7 @@ TEST(DebounceRuleUnitTest, RedirectUrlExtraCapturesRejected) {
   }
 }
 
-// Test redirect_url referencing $2 when regex only has one capture group.
+// Test redirect_url_template referencing $2 when regex only has one capture group.
 // Unresolved placeholders mean a misconfigured rule, so it should not match.
 TEST(DebounceRuleUnitTest, RedirectUrlUnresolvedPlaceholder) {
   const std::string contents = R"json(
@@ -606,7 +606,7 @@ TEST(DebounceRuleUnitTest, RedirectUrlUnresolvedPlaceholder) {
   }
 }
 
-// Test redirect_url with no placeholders but a capturing regex (should fail).
+// Test redirect_url_template with no placeholders but a capturing regex (should fail).
 // A static template with captures is a misconfigured rule.
 TEST(DebounceRuleUnitTest, RedirectUrlStaticTemplateWithCaptures) {
   const std::string contents = R"json(
@@ -628,7 +628,7 @@ TEST(DebounceRuleUnitTest, RedirectUrlStaticTemplateWithCaptures) {
   }
 }
 
-// Test redirect_url with >9 capture groups (should fail).
+// Test redirect_url_template with >9 capture groups (should fail).
 TEST(DebounceRuleUnitTest, RedirectUrlTooManyCaptureGroups) {
   const std::string contents = R"json(
       [{
