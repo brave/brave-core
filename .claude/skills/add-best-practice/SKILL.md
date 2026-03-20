@@ -7,7 +7,7 @@ description:
 argument-hint: '<best practice description>'
 allowed-tools:
   Bash(python3:*), Bash(git:*), Bash(gh:*), Bash(ls:*), Read, Grep, Glob, Edit,
-  Write
+  Write, Agent, WebFetch
 ---
 
 # Add Best Practice
@@ -36,7 +36,34 @@ Parse the argument to understand:
 3. **Category** it falls under (C++ coding, testing, architecture, build system,
    frontend, etc.)
 
-If the description is vague, ask the user to clarify before proceeding.
+**If the argument is a GitHub PR comment URL**, gather full context before
+proceeding:
+
+1. Fetch the review comment text via `gh api`
+2. Fetch the PR diff around the commented file/line to understand the actual
+   code being discussed:
+
+   ```bash
+   # Get the comment details
+   gh api repos/<owner>/<repo>/pulls/comments/<comment_id> \
+     --jq '{body, path, line, diff_hunk}'
+
+   # Get surrounding context from the actual source file
+   # Read the file at the path mentioned in the comment
+   ```
+
+3. Read the **actual source file** at the commented line to understand the full
+   context — the `diff_hunk` alone is often insufficient
+4. If the comment is part of a thread, fetch the entire thread to understand the
+   full discussion
+
+**CRITICAL: Do NOT rely solely on the comment text.** Review comments are often
+brief and assume the reader can see the code. You MUST read the actual code
+being reviewed to understand what the reviewer is flagging and why.
+Misunderstanding the code context leads to incorrect best practices.
+
+If the description is vague even after gathering context, ask the user to
+clarify before proceeding.
 
 ---
 
@@ -128,6 +155,51 @@ Additional context, edge cases, or explanation if needed.
 - Keep the entry concise and actionable
 
 **Show the drafted entry to the user and ask for approval before writing it.**
+
+---
+
+## Step 5.5: Review Subagent Validation
+
+**CRITICAL: Before showing the draft to the user, launch a review subagent to
+validate the entry.** This catches misunderstandings of the source material that
+led to incorrect best practices in the past.
+
+Launch an Agent with the following prompt structure:
+
+```
+You are reviewing a drafted best practice entry for accuracy. Your job is to
+verify the draft correctly captures the issue from the source material.
+
+SOURCE CONTEXT:
+- Review comment: <the original review comment text>
+- File: <path to the file being reviewed>
+- Code context: <the diff_hunk and/or actual source code around the comment>
+- Thread context: <any additional thread replies>
+
+DRAFTED BEST PRACTICE:
+<the full drafted entry>
+
+VALIDATION CHECKLIST:
+1. Does the draft accurately describe the problem shown in the code?
+2. Are the code examples (WRONG/CORRECT) consistent with what the reviewer
+   flagged?
+3. Is the "why" explanation technically correct?
+4. Could the draft be misinterpreted or applied incorrectly?
+5. Does the draft introduce any claims not supported by the source material?
+
+Return one of:
+- PASS: <brief confirmation of accuracy>
+- FAIL: <specific explanation of what's wrong and what the correct
+  interpretation should be>
+```
+
+**If the subagent returns FAIL:**
+- Revise the draft based on the subagent's feedback
+- Re-run the subagent on the revised draft
+- Repeat until PASS or ask the user for clarification
+
+**If the subagent returns PASS:**
+- Proceed to show the draft to the user
 
 ---
 
