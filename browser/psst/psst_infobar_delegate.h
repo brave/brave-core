@@ -25,6 +25,7 @@ class PsstInfoBarDelegate : public ConfirmInfoBarDelegate {
 
   // ConfirmInfoBarDelegate overrides:
   bool Accept() override;
+  bool Cancel() override;
   void InfoBarDismissed() override;
 
  private:

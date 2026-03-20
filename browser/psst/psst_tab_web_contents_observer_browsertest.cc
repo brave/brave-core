@@ -39,64 +39,68 @@ class InfobarAddedObserver : public infobars::InfoBarManager::Observer {
   InfobarAddedObserver(infobars::InfoBarManager* manager,
                        infobars::InfoBarDelegate::InfoBarIdentifier identifier)
       : identifier_(identifier) {
-    // There may be no |manager| if the browser window is currently closing.
     if (manager) {
       infobar_observation_.Observe(manager);
     }
   }
+  ~InfobarAddedObserver() override = default;
 
-  ~InfobarAddedObserver() override {
-    // Explicitly reset the observation to prevent raw_ptr issues
-    infobar_observation_.Reset();
+  void WaitForInfobarAdded() {
+    if (infobar_observation_.IsObserving()) {
+      run_infobar_added_loop_.Run();
+    }
   }
 
-  void Wait() {
-    // When there is no manager being observed, there is nothing to wait on, so
-    // return immediately.
+  void WaitForInfobarRemoved() {
     if (infobar_observation_.IsObserving()) {
-      run_loop_.Run();
+      run_infobar_removed_loop_.Run();
     }
   }
 
   void OnInfoBarAdded(infobars::InfoBar* infobar) override {
-    if (infobar && infobar->delegate()) {
-      OnNotified(infobar->delegate()->GetIdentifier());
+    if (infobar && infobar->delegate() &&
+        infobar->delegate()->GetIdentifier() == identifier_) {
+      run_infobar_added_loop_.Quit();
+    }
+  }
+
+  void OnInfoBarRemoved(infobars::InfoBar* infobar, bool animate) override {
+    if (infobar && infobar->delegate() &&
+        infobar->delegate()->GetIdentifier() == identifier_) {
+      run_infobar_removed_loop_.Quit();
     }
   }
 
   void OnManagerWillBeDestroyed(infobars::InfoBarManager* manager) override {
-    if (run_loop_.running()) {
-      run_loop_.Quit();
+    if (run_infobar_added_loop_.running()) {
+      run_infobar_added_loop_.Quit();
+    }
+    if (run_infobar_removed_loop_.running()) {
+      run_infobar_removed_loop_.Quit();
     }
     DCHECK(infobar_observation_.IsObservingSource(manager));
     infobar_observation_.Reset();
   }
 
-  void OnNotified(
-      const infobars::InfoBarDelegate::InfoBarIdentifier identifier) {
-    if (identifier == identifier_) {
-      run_loop_.Quit();
-    }
-  }
-
-  base::RunLoop run_loop_;
+ private:
+  base::RunLoop run_infobar_added_loop_;
+  base::RunLoop run_infobar_removed_loop_;
   const infobars::InfoBarDelegate::InfoBarIdentifier identifier_;
   base::ScopedObservation<infobars::InfoBarManager,
                           infobars::InfoBarManager::Observer>
       infobar_observation_{this};
 };
 
-ConfirmInfoBarDelegate* GetPsstConfirmDelegate(
-    infobars::ContentInfoBarManager* manager) {
+infobars::InfoBar* GetPsstInfobar(infobars::ContentInfoBarManager* manager) {
   auto infobar =
       std::ranges::find_if(manager->infobars(), [](infobars::InfoBar* infobar) {
         return infobar->GetIdentifier() ==
                infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE;
       });
-  if (infobar != manager->infobars().end()) {
-    return (*infobar)->delegate()->AsConfirmInfoBarDelegate();
+  if (infobar == manager->infobars().end()) {
+    return nullptr;
   }
-  return nullptr;
+  return *infobar;
 }
 
 }  // namespace
@@ -161,8 +165,10 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   std::u16string expected_title(u"a_user-a_policy");
   content::TitleWatcher watcher(web_contents(), expected_title);
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
-  infobar_observer.Wait();
-  auto* confirm_delegate = GetPsstConfirmDelegate(manager);
+  infobar_observer.WaitForInfobarAdded();
+  auto* psst_infobar = GetPsstInfobar(manager);
+  ASSERT_TRUE(psst_infobar);
+  auto* confirm_delegate = psst_infobar->delegate()->AsConfirmInfoBarDelegate();
   ASSERT_TRUE(confirm_delegate);
   EXPECT_EQ(confirm_delegate->GetIdentifier(),
             infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
@@ -185,12 +191,17 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   std::u16string expected_title(u"a_user-");
   content::TitleWatcher watcher(web_contents(), expected_title);
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
-  infobar_observer.Wait();
-  auto* confirm_delegate = GetPsstConfirmDelegate(manager);
+  infobar_observer.WaitForInfobarAdded();
+  auto* psst_infobar = GetPsstInfobar(manager);
+  ASSERT_TRUE(psst_infobar);
+  auto* confirm_delegate = psst_infobar->delegate()->AsConfirmInfoBarDelegate();
   ASSERT_TRUE(confirm_delegate);
   EXPECT_EQ(confirm_delegate->GetIdentifier(),
             infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
   confirm_delegate->InfoBarDismissed();
+  manager->RemoveInfoBar(psst_infobar);
+  infobar_observer.WaitForInfobarRemoved();
+
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
   EXPECT_FALSE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
 }

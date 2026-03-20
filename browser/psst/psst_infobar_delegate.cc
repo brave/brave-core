@@ -25,11 +25,23 @@ void PsstInfoBarDelegate::Create(infobars::InfoBarManager* infobar_manager,
 PsstInfoBarDelegate::PsstInfoBarDelegate(AcceptCallback on_accept_callback)
     : on_accept_callback_(std::move(on_accept_callback)) {}
 
-PsstInfoBarDelegate::~PsstInfoBarDelegate() = default;
+PsstInfoBarDelegate::~PsstInfoBarDelegate() {
+  if (!on_accept_callback_.is_null()) {
+    std::move(on_accept_callback_).Run(false);
+  }
+}
 
 bool PsstInfoBarDelegate::Accept() {
-  if (on_accept_callback_) {
+  if (!on_accept_callback_.is_null()) {
     std::move(on_accept_callback_).Run(true);
+  }
+
+  return true;
+}
+
+bool PsstInfoBarDelegate::Cancel() {
+  if (!on_accept_callback_.is_null()) {
+    std::move(on_accept_callback_).Run(false);
   }
 
   return true;
@@ -53,7 +65,7 @@ std::u16string PsstInfoBarDelegate::GetButtonLabel(InfoBarButton button) const {
 }
 
 void PsstInfoBarDelegate::InfoBarDismissed() {
-  if (on_accept_callback_) {
+  if (!on_accept_callback_.is_null()) {
     std::move(on_accept_callback_).Run(false);
   }
 }
