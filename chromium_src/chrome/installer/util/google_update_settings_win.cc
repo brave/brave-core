@@ -11,7 +11,7 @@
 
 #define UpdateInstallStatus UpdateInstallStatus_Unused
 #define UpdateGoogleUpdateApKey UpdateGoogleUpdateApKey_Unused
-#include <chrome/installer/util/google_update_settings.cc>
+#include <chrome/installer/util/google_update_settings_win.cc>
 #undef UpdateGoogleUpdateApKey
 #undef UpdateInstallStatus
 
