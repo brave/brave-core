@@ -69,7 +69,8 @@ public final class WalletConstants {
                     BraveWalletConstants.MAINNET_CHAIN_ID,
                     BraveWalletConstants.SOLANA_MAINNET,
                     BraveWalletConstants.FILECOIN_MAINNET,
-                    BraveWalletConstants.BITCOIN_MAINNET);
+                    BraveWalletConstants.BITCOIN_MAINNET,
+                    BraveWalletConstants.Z_CASH_MAINNET);
 
     // Solana
     public static final String SOL = "SOL";
@@ -112,7 +113,8 @@ public final class WalletConstants {
                     BraveWalletConstants.SOLANA_DEVNET, CoinType.SOL, //
                     BraveWalletConstants.FILECOIN_TESTNET, CoinType.FIL, //
                     BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID, CoinType.ETH, //
-                    BraveWalletConstants.BITCOIN_TESTNET, CoinType.BTC); //
+                    BraveWalletConstants.BITCOIN_TESTNET, CoinType.BTC, //
+                    BraveWalletConstants.Z_CASH_TESTNET, CoinType.ZEC); //
 
     public static final List<String> KNOWN_TEST_CHAIN_IDS =
             new ArrayList<>(KNOWN_TEST_CHAINS_MAP.keySet());
