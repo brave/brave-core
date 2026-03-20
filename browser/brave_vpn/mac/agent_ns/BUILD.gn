@@ -1,0 +1,17 @@
+import("//brave/build/config.gni")
+
+executable("agent_ns") {
+  sources = [
+    "agent.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//base:base_static",
+    "//net",
+    "//build/win:default_exe_manifest",
+    "//mojo/core/embedder",
+    "//mojo/public/cpp/bindings",
+    "//brave/third_party/libcurl",
+  ]
+}

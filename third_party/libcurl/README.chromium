@@ -1,0 +1,17 @@
+Name: libcurl
+Short Name: libcurl
+URL: https://curl.se
+Version: 8.18.0
+Date: 2025-03-05
+License: MIT
+License File: COPYING
+Security Critical: yes
+Shipped: yes
+
+Description:
+libcurl is a free and easy-to-use client-side URL transfer library.
+Used for VPN agent HTTP requests (does not use Chromium's NetworkService).
+
+Local Modifications:
+- Removed: tests/, docs/, scripts/, projects/, m4/, .github/, all makefiles
+- Added: config/mac/curl_config.h

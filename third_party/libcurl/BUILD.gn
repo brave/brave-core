@@ -1,0 +1,235 @@
+import("//build/config/compiler/compiler.gni")
+
+config("curl_public_config") {
+  include_dirs = [ "src/include" ]
+  defines = [ "CURL_STATICLIB" ]
+}
+
+config("curl_private_config") {
+  include_dirs = [ "src/lib" ]
+
+  if (is_mac) {
+    include_dirs += [ "config/mac" ]
+  } else if (is_linux) {
+    include_dirs += [ "config/linux" ]
+  } else if (is_win) {
+    include_dirs += [ "config/win" ]
+  }
+  
+  # BoringSSL headers
+  include_dirs += ["//third_party/boringssl/src/include" ]
+
+  defines = [
+    "BUILDING_LIBCURL",
+    "HAVE_CONFIG_H",
+  ]
+
+  cflags = [ "-Wno-unsafe-buffer-usage" ]
+}
+
+static_library("libcurl") {
+  sources = [
+    "src/altsvc.c",
+    "src/amigaos.c",
+    "src/asyn-ares.c",
+    "src/asyn-base.c",
+    "src/asyn-thrdd.c",
+    "src/bufq.c",
+    "src/bufref.c",
+    "src/cf-h1-proxy.c",
+    "src/cf-h2-proxy.c",
+    "src/cf-haproxy.c",
+    "src/cf-https-connect.c",
+    "src/cf-ip-happy.c",
+    "src/cf-socket.c",
+    "src/cfilters.c",
+    "src/conncache.c",
+    "src/connect.c",
+    "src/content_encoding.c",
+    "src/cookie.c",
+    "src/cshutdn.c",
+    "src/curl_addrinfo.c",
+    "src/curl_endian.c",
+    "src/curl_fnmatch.c",
+    "src/curl_fopen.c",
+    "src/curl_get_line.c",
+    "src/curl_gethostname.c",
+    "src/curl_gssapi.c",
+    "src/curl_memrchr.c",
+    "src/curl_ntlm_core.c",
+    "src/curl_range.c",
+    "src/curl_rtmp.c",
+    "src/curl_sasl.c",
+    "src/curl_sha512_256.c",
+    "src/curl_share.c",
+    "src/curl_sspi.c",
+    "src/curl_threads.c",
+    "src/curl_trc.c",
+    "src/cw-out.c",
+    "src/cw-pause.c",
+    "src/dict.c",
+    "src/dllmain.c",
+    "src/doh.c",
+    "src/dynhds.c",
+    "src/easy.c",
+    "src/easygetopt.c",
+    "src/easyoptions.c",
+    "src/escape.c",
+    "src/fake_addrinfo.c",
+    "src/file.c",
+    "src/fileinfo.c",
+    "src/formdata.c",
+    "src/ftp.c",
+    "src/ftplistparser.c",
+    "src/getenv.c",
+    "src/getinfo.c",
+    "src/gopher.c",
+    "src/hash.c",
+    "src/headers.c",
+    "src/hmac.c",
+    "src/hostip.c",
+    "src/hostip4.c",
+    "src/hostip6.c",
+    "src/hsts.c",
+    "src/http_aws_sigv4.c",
+    "src/http_chunks.c",
+    "src/http_digest.c",
+    "src/http_negotiate.c",
+    "src/http_ntlm.c",
+    "src/http_proxy.c",
+    "src/http.c",
+    "src/http1.c",
+    "src/http2.c",
+    "src/httpsrr.c",
+    "src/idn.c",
+    "src/if2ip.c",
+    "src/imap.c",
+    "src/ldap.c",
+    "src/llist.c",
+    "src/macos.c",
+    "src/md4.c",
+    "src/md5.c",
+    "src/memdebug.c",
+    "src/mime.c",
+    "src/mprintf.c",
+    "src/mqtt.c",
+    "src/multi_ev.c",
+    "src/multi_ntfy.c",
+    "src/multi.c",
+    "src/netrc.c",
+    "src/noproxy.c",
+    "src/openldap.c",
+    "src/parsedate.c",
+    "src/pingpong.c",
+    "src/pop3.c",
+    "src/progress.c",
+    "src/psl.c",
+    "src/rand.c",
+    "src/ratelimit.c",
+    "src/request.c",
+    "src/rtsp.c",
+    "src/select.c",
+    "src/sendf.c",
+    "src/setopt.c",
+    "src/sha256.c",
+    "src/slist.c",
+    "src/smb.c",
+    "src/smtp.c",
+    "src/socketpair.c",
+    "src/socks_gssapi.c",
+    "src/socks_sspi.c",
+    "src/socks.c",
+    "src/splay.c",
+    "src/strcase.c",
+    "src/strdup.c",
+    "src/strequal.c",
+    "src/strerror.c",
+    "src/system_win32.c",
+    "src/telnet.c",
+    "src/tftp.c",
+    "src/transfer.c",
+    "src/uint-bset.c",
+    "src/uint-hash.c",
+    "src/uint-spbset.c",
+    "src/uint-table.c",
+    "src/url.c",
+    "src/urlapi.c",
+    "src/version.c",
+    "src/ws.c",
+    "src/curlx/base64.c",
+    "src/curlx/dynbuf.c",
+    "src/curlx/fopen.c",
+    "src/curlx/inet_ntop.c",
+    "src/curlx/inet_pton.c",
+    "src/curlx/multibyte.c",
+    "src/curlx/nonblock.c",
+    "src/curlx/strcopy.c",
+    "src/curlx/strerr.c",
+    "src/curlx/strparse.c",
+    "src/curlx/timediff.c",
+    "src/curlx/timeval.c",
+    "src/curlx/version_win32.c",
+    "src/curlx/wait.c",
+    "src/curlx/warnless.c",
+    "src/curlx/winapi.c",
+    "src/vauth/cleartext.c",
+    "src/vauth/cram.c",
+    "src/vauth/digest_sspi.c",
+    "src/vauth/digest.c",
+    "src/vauth/gsasl.c",
+    "src/vauth/krb5_gssapi.c",
+    "src/vauth/krb5_sspi.c",
+    "src/vauth/ntlm_sspi.c",
+    "src/vauth/ntlm.c",
+    "src/vauth/oauth2.c",
+    "src/vauth/spnego_gssapi.c",
+    "src/vauth/spnego_sspi.c",
+    "src/vauth/vauth.c",
+    "src/vquic/curl_ngtcp2.c",
+    "src/vquic/curl_osslq.c",
+    "src/vquic/curl_quiche.c",
+    "src/vquic/vquic-tls.c",
+    "src/vquic/vquic.c",
+    "src/vssh/libssh.c",
+    "src/vssh/libssh2.c",
+    "src/vssh/vssh.c",
+    "src/vtls/apple.c",
+    "src/vtls/cipher_suite.c",
+    "src/vtls/gtls.c",
+    "src/vtls/hostcheck.c",
+    "src/vtls/keylog.c",
+    "src/vtls/mbedtls.c",
+    "src/vtls/openssl.c",
+    "src/vtls/rustls.c",
+    "src/vtls/schannel_verify.c",
+    "src/vtls/schannel.c",
+    "src/vtls/vtls_scache.c",
+    "src/vtls/vtls_spack.c",
+    "src/vtls/vtls.c",
+    "src/vtls/wolfssl.c",
+    "src/vtls/x509asn1.c",
+  ]
+
+  public_configs = [ ":curl_public_config" ]
+
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [
+    ":curl_private_config",
+    "//build/config/compiler:no_chromium_code",
+  ]
+
+  # Use BoringSSL (already vendored in Chromium) as the TLS backend.
+  deps = [ "//third_party/boringssl" ]
+
+
+  if (is_mac || is_linux) {
+    if (is_mac) {
+      frameworks = [
+        "CoreFoundation.framework",
+        "CoreServices.framework",
+        "SystemConfiguration.framework",
+      ]
+    }
+    libs = [ "z" ]  # zlib, for content-encoding support
+  }
+}
