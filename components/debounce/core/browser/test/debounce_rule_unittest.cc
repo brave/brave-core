@@ -650,4 +650,77 @@ TEST(DebounceRuleUnitTest, RedirectUrlTooManyCaptureGroups) {
   }
 }
 
+// Test redirect_url_template with non-contiguous placeholders (e.g., $1 and $3
+// with only 2 capture groups). The set sizes match but the indices don't, so a
+// simple size comparison would incorrectly pass.
+TEST(DebounceRuleUnitTest, RedirectUrlNonContiguousPlaceholders) {
+  const std::string contents = R"json(
+      [{
+          "include": [
+              "*://tracker.example.com/*"
+          ],
+          "exclude": [],
+          "action": "regex-path-template",
+          "param": "^/([^/]+)/([^/]+)$",
+          "redirect_url_template": "https://$1.example.org/$3"
+      }]
+    )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    CheckApplyResult(rule.get(),
+                     GURL("https://tracker.example.com/www/landing"), "", true);
+  }
+}
+
+// Test that regex-path action ignores redirect_url_template (wrong action type).
+// The rule should use the existing concatenation path, not template substitution.
+TEST(DebounceRuleUnitTest, RedirectUrlTemplateIgnoredForRegexPath) {
+  const std::string contents = R"json(
+      [{
+          "include": [
+              "*://y2u.be/*"
+          ],
+          "exclude": [],
+          "action": "regex-path",
+          "param": "^/(.+)$",
+          "redirect_url_template": "https://www.youtube.com/watch?v=$1"
+      }]
+    )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    // regex-path concatenates captures as a raw URL, so the result is just the
+    // captured path segment (dQw4w9WgXcQ) treated as a URL -- which is invalid
+    // and should be rejected by downstream URL validation.
+    CheckApplyResult(rule.get(), GURL("https://y2u.be/dQw4w9WgXcQ"), "", true);
+  }
+}
+
+// Test that regex-path with prepend_scheme is unaffected by a stray
+// redirect_url_template field. The AMP-style rule should still work normally.
+TEST(DebounceRuleUnitTest, RegexPathPrependSchemeIgnoresTemplate) {
+  const std::string contents = R"json(
+      [{
+          "include": [
+              "*://*.ampproject.org/c/s/*"
+          ],
+          "exclude": [],
+          "action": "regex-path",
+          "prepend_scheme": "https",
+          "param": "^/c/s/(.*)$",
+          "redirect_url_template": "https://www.youtube.com/watch?v=$1"
+      }]
+    )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    // Should redirect to the AMP target, not the template URL.
+    CheckApplyResult(
+        rule.get(),
+        GURL("https://example.ampproject.org/c/s/www.example.com/article"),
+        "https://www.example.com/article", false);
+  }
+}
+
 }  // namespace debounce
