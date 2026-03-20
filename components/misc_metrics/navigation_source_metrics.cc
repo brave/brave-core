@@ -22,6 +22,7 @@ constexpr char kBookmarksCountKey[] = "bookmarks";
 constexpr char kDirectURLCountKey[] = "direct_url";
 constexpr char kHistoryCountKey[] = "history";
 constexpr char kExternalCountKey[] = "external";
+constexpr char kPwaCountKey[] = "pwa";
 
 }  // namespace
 
@@ -64,6 +65,10 @@ void NavigationSourceMetrics::RecordExternalNavigation() {
   IncrementDictCount(kExternalCountKey);
 }
 
+void NavigationSourceMetrics::RecordPWANavigation() {
+  IncrementDictCount(kPwaCountKey);
+}
+
 void NavigationSourceMetrics::IncrementPagesLoadedCount() {
   IncrementDictCount(kTotalCountKey);
 }
@@ -92,6 +97,8 @@ void NavigationSourceMetrics::ReportAllMetrics() {
                               kNavSourceHistorySourcePercentHistogramName);
     RecordPercentageHistogram(counts, total, kExternalCountKey,
                               kNavSourceExternalSourcePercentHistogramName);
+    RecordPercentageHistogram(counts, total, kPwaCountKey,
+                              kNavSourcePWASourcePercentHistogramName);
     UMA_HISTOGRAM_BOOLEAN(kNavSourceNavigatedHistogramName, true);
   }
 

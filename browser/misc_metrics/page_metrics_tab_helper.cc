@@ -7,6 +7,7 @@
 
 #include "base/check_is_test.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/media_session_metrics.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
@@ -15,6 +16,8 @@
 #include "brave/components/misc_metrics/navigation_source_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/reload_type.h"
@@ -22,6 +25,12 @@
 #include "ui/base/page_transition_types.h"
 
 namespace misc_metrics {
+
+namespace {
+
+constexpr char kYouTubeDomain[] = "youtube.com";
+
+}  // namespace
 
 PageMetricsTabHelper::PageMetricsTabHelper(content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
@@ -72,15 +81,7 @@ void PageMetricsTabHelper::DidFinishNavigation(
   }
 
   ui::PageTransition transition = navigation_handle->GetPageTransition();
-  if (!is_reload) {
-    if (ui::PageTransitionCoreTypeIs(transition,
-                                     ui::PAGE_TRANSITION_AUTO_BOOKMARK)) {
-      page_metrics_->navigation_source_metrics().RecordBookmarkNavigation();
-    } else if (ui::PageTransitionCoreTypeIs(
-                   transition, ui::PAGE_TRANSITION_AUTO_TOPLEVEL)) {
-      page_metrics_->navigation_source_metrics().RecordExternalNavigation();
-    }
-  }
+  MaybeRecordNavigationSource(transition, is_reload);
 
   page_metrics_->IncrementPagesLoadedCount(is_reload, is_otr);
 }
@@ -102,13 +103,42 @@ void PageMetricsTabHelper::WebContentsDestroyed() {
   media_session_ = nullptr;
 }
 
+void PageMetricsTabHelper::MaybeRecordNavigationSource(
+    ui::PageTransition transition,
+    bool is_reload) {
+  if (is_reload) {
+    return;
+  }
+  auto& nav_source_metrics = page_metrics_->navigation_source_metrics();
+  auto* tab = tabs::TabInterface::MaybeGetFromContents(web_contents());
+  auto* browser_window = tab ? tab->GetBrowserWindowInterface() : nullptr;
+  if (browser_window &&
+      browser_window->GetType() == BrowserWindowInterface::Type::TYPE_APP) {
+    nav_source_metrics.RecordPWANavigation();
+  } else if (ui::PageTransitionCoreTypeIs(transition,
+                                          ui::PAGE_TRANSITION_AUTO_BOOKMARK)) {
+    nav_source_metrics.RecordBookmarkNavigation();
+  } else if (ui::PageTransitionCoreTypeIs(transition,
+                                          ui::PAGE_TRANSITION_AUTO_TOPLEVEL)) {
+    nav_source_metrics.RecordExternalNavigation();
+  }
+}
+
 bool PageMetricsTabHelper::IsRelevantNavigationEvent(
     content::NavigationHandle* navigation_handle) {
+  const GURL& url = navigation_handle->GetURL();
   if (!navigation_handle->IsInPrimaryMainFrame() ||
-      !navigation_handle->GetURL().SchemeIsHTTPOrHTTPS() ||
-      navigation_handle->IsSameDocument() ||
+      !url.SchemeIsHTTPOrHTTPS() ||
       navigation_handle->GetRestoreType() == content::RestoreType::kRestored ||
       !navigation_handle->HasCommitted() || !page_metrics_) {
+    return false;
+  }
+
+  // YouTube is a SPA, so navigations within the same document represent
+  // distinct page visits and should be counted.
+  if (navigation_handle->IsSameDocument() &&
+      !base::EndsWith(url.host(), kYouTubeDomain,
+                      base::CompareCase::SENSITIVE)) {
     return false;
   }
 
