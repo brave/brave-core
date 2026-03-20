@@ -36,6 +36,7 @@ DOC_PREFIXES = {
     "localization": "L10N",
     "testing-async": "TA",
     "testing-isolation": "TI",
+    "testing-upstream-failures": "TUF",
     "testing-javascript": "TJ",
     "testing-navigation": "TN",
     "android": "AND",

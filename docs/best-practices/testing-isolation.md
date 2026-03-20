@@ -570,33 +570,6 @@ EXPECT_EQ(GetActiveWebContents()->GetURL(), url);
 
 ---
 
-<a id="TI-031"></a>
-
-## ✅ When Disabling Parameterized Tests, Filter Only Specific Flaky Variants
-
-**Do not use wildcard filters that suppress stable variants alongside flaky ones.** Check LUCI Analysis data for each variant individually and only filter the specific variants that are actually flaky.
-
-```
-# ❌ WRONG - wildcard disables all variants including stable ones
--SomeParameterizedTest/*
-
-# ✅ CORRECT - only disable the specific flaky variants
--SomeParameterizedTest/0
--SomeParameterizedTest/2
--SomeParameterizedTest/3
-# Variant /1 is stable upstream - keep it enabled
-```
-
----
-
-<a id="TI-032"></a>
-
-## ✅ Match Test Filter Specificity to Actual Failure Scope
-
-**Use the most specific/narrow filter approach.** If a test only fails under ASAN on Linux, use a platform-and-sanitizer-specific filter file (e.g., `browser_tests-linux-asan.filter`) rather than an all-platform filter. Look at existing patterns in `build/commands/lib/testUtils.js` for how sanitizer-specific filters are loaded.
-
----
-
 <a id="TI-033"></a>
 
 ## ✅ When Fixing a Test, Run All Tests in the Same File
@@ -753,3 +726,4 @@ Good examples in the repo:
 - `chromium_src/components/sync/engine/sync_scheduler_impl_unittest.cc`
 - `chromium_src/components/ntp_tiles/most_visited_sites_unittest.cc`
 - `chromium_src/components/variations/service/variations_service_unittest.cc`
+
