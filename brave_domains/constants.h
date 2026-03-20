@@ -14,6 +14,7 @@ namespace brave_domains {
 
 // Common CLI switch names and values for environment overrides.
 inline constexpr char kBraveServicesEnvironmentSwitch[] = "brave-services-env";
+inline constexpr char kEnvGate3Switch[] = "env-gate3";
 inline constexpr char kBraveServicesSwitchValueDev[] = "dev";
 inline constexpr char kBraveServicesSwitchValueStaging[] = "staging";
 inline constexpr char kBraveServicesSwitchValueProduction[] = "prod";

@@ -17,8 +17,6 @@ namespace {
 
 constexpr char kGate3ProdURL[] = "https://gate3.wallet.brave.com";
 constexpr char kGate3DevURL[] = "https://gate3.wallet.brave.software";
-constexpr char kEnvGate3Switch[] = "env-gate3";
-
 }  // namespace
 
 bool IsValidSwitchValue(const std::string& value) {
