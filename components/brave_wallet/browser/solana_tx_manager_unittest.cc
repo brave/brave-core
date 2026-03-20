@@ -409,12 +409,9 @@ class SolanaTxManagerUnitTest : public testing::Test {
                                 const mojom::AccountIdPtr& from,
                                 const std::optional<url::Origin>& origin,
                                 std::string* meta_id) {
-    auto tx_data_union =
-        mojom::TxDataUnion::NewSolanaTxData(std::move(solana_tx_data));
-
     base::RunLoop run_loop;
-    solana_tx_manager()->AddUnapprovedTransaction(
-        chain_id, std::move(tx_data_union), from, origin, nullptr,
+    solana_tx_manager()->AddUnapprovedSolanaTransaction(
+        chain_id, std::move(solana_tx_data), from, origin, nullptr,
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           ASSERT_TRUE(success);
@@ -2198,13 +2195,10 @@ TEST_F(SolanaTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {
       std::vector<mojom::SolanaMessageAddressTableLookupPtr>(), nullptr,
       nullptr, nullptr);
 
-  auto tx_data_union =
-      mojom::TxDataUnion::NewSolanaTxData(std::move(solana_tx_data));
-
   base::test::TestFuture<bool, const std::string&, const std::string&>
       add_tx_future;
-  solana_tx_manager()->AddUnapprovedTransaction(
-      mojom::kSolanaMainnet, std::move(tx_data_union), from_account,
+  solana_tx_manager()->AddUnapprovedSolanaTransaction(
+      mojom::kSolanaMainnet, std::move(solana_tx_data), from_account,
       GetOrigin(), swap_info.Clone(), add_tx_future.GetCallback());
   auto [success, tx_meta_id, error_message] = add_tx_future.Take();
   ASSERT_FALSE(tx_meta_id.empty());

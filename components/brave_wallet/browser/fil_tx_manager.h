@@ -27,6 +27,13 @@ class FilTransaction;
 
 class FilTxManager : public TxManager, public FilBlockTracker::Observer {
  public:
+  using AddUnapprovedFilecoinTransactionCallback =
+      mojom::TxService::AddUnapprovedFilecoinTransactionCallback;
+  using GetFilTransactionMessageToSignCallback =
+      mojom::FilTxManagerProxy::GetFilTransactionMessageToSignCallback;
+  using ProcessFilHardwareSignatureCallback =
+      mojom::FilTxManagerProxy::ProcessFilHardwareSignatureCallback;
+
   FilTxManager(TxService& tx_service,
                JsonRpcService* json_rpc_service,
                KeyringService& keyring_service,
@@ -36,17 +43,13 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
   FilTxManager(const FilTxManager&) = delete;
   FilTxManager operator=(const FilTxManager&) = delete;
 
-  using GetFilTransactionMessageToSignCallback =
-      mojom::FilTxManagerProxy::GetFilTransactionMessageToSignCallback;
-  using ProcessFilHardwareSignatureCallback =
-      mojom::FilTxManagerProxy::ProcessFilHardwareSignatureCallback;
-
-  void AddUnapprovedTransaction(const std::string& chain_id,
-                                mojom::TxDataUnionPtr tx_data_union,
-                                const mojom::AccountIdPtr& from,
-                                const std::optional<url::Origin>& origin,
-                                mojom::SwapInfoPtr swap_info,
-                                AddUnapprovedTransactionCallback) override;
+  void AddUnapprovedFilecoinTransaction(
+      const std::string& chain_id,
+      mojom::FilTxDataPtr fil_tx_data,
+      const mojom::AccountIdPtr& from,
+      const std::optional<url::Origin>& origin,
+      mojom::SwapInfoPtr swap_info,
+      AddUnapprovedFilecoinTransactionCallback callback);
   void ApproveTransaction(const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
   void GetFilTransactionMessageToSign(
@@ -71,7 +74,7 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
                        const mojom::AccountIdPtr& from_account_id,
                        const std::optional<url::Origin>& origin,
                        std::unique_ptr<FilTransaction> tx,
-                       AddUnapprovedTransactionCallback callback);
+                       AddUnapprovedFilecoinTransactionCallback callback);
   std::unique_ptr<FilTxMeta> GetTxForTesting(const std::string& tx_meta_id);
 
  private:
@@ -98,7 +101,7 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
       const mojom::AccountIdPtr& from_account_id,
       const std::optional<url::Origin>& origin,
       std::unique_ptr<FilTransaction> tx,
-      AddUnapprovedTransactionCallback callback,
+      AddUnapprovedFilecoinTransactionCallback callback,
       const std::string& gas_premium,
       const std::string& gas_fee_cap,
       int64_t gas_limit,

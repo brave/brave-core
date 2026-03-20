@@ -333,7 +333,6 @@ class SwapStoreTests: XCTestCase {
       }
     }
     let txService = BraveWallet.TestTxService()
-    txService._addUnapprovedTransaction = { $4(true, "tx-meta-id", "") }
     let walletService = BraveWallet.TestBraveWalletService()
     let mockAssetManager = TestableWalletUserAssetManager()
     mockAssetManager._getAllUserAssetsInNetworkAssets = { _, _ in
@@ -879,9 +878,9 @@ class SwapStoreTests: XCTestCase {
     solTxManagerProxy._makeTxDataFromBase64EncodedTransaction = { _, _, _, completion in
       completion(.init(), .success, "")
     }
-    var submittedTxData: BraveWallet.TxDataUnion?
-    txService._addUnapprovedTransaction = { txData, _, _, _, completion in
-      submittedTxData = txData
+    var submittedSolanaTxData: BraveWallet.SolanaTxData?
+    txService._addUnapprovedSolanaTransaction = { txData, _, _, _, completion in
+      submittedSolanaTxData = txData
       completion(true, "tx-meta-id", "")
     }
     let store = SwapTokenStore(
@@ -918,7 +917,7 @@ class SwapStoreTests: XCTestCase {
     let success = await store.createSwapTransaction()
     XCTAssertTrue(success, "Expected to successfully create transaction")
     XCTAssertFalse(store.isMakingTx)
-    XCTAssertNotNil(submittedTxData?.solanaTxData)
+    XCTAssertNotNil(submittedSolanaTxData)
   }
 
   func testSwapFullBalanceNoRounding() {

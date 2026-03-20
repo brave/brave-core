@@ -11,7 +11,6 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/check_op.h"
-#include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate_impl.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_manager.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -36,42 +35,6 @@
 namespace brave_wallet {
 
 namespace {
-
-std::string GetToAddressFromTxDataUnion(
-    const mojom::TxDataUnion& tx_data_union) {
-  if (tx_data_union.is_eth_tx_data_1559()) {
-    return tx_data_union.get_eth_tx_data_1559()->base_data->to;
-  }
-
-  if (tx_data_union.is_eth_tx_data()) {
-    return tx_data_union.get_eth_tx_data()->to;
-  }
-
-  if (tx_data_union.is_solana_tx_data()) {
-    return tx_data_union.get_solana_tx_data()->to_wallet_address;
-  }
-
-  if (tx_data_union.is_fil_tx_data()) {
-    return tx_data_union.get_fil_tx_data()->to;
-  }
-
-  if (tx_data_union.is_btc_tx_data()) {
-    return tx_data_union.get_btc_tx_data()->to;
-  }
-
-  if (tx_data_union.is_zec_tx_data()) {
-    return tx_data_union.get_zec_tx_data()->to;
-  }
-
-  if (tx_data_union.is_cardano_tx_data()) {
-    return tx_data_union.get_cardano_tx_data()->to;
-  }
-
-  if (tx_data_union.is_polkadot_tx_data()) {
-    return tx_data_union.get_polkadot_tx_data()->to;
-  }
-  NOTREACHED();
-}
 
 size_t CalculatePendingTxCount(
     const std::vector<mojom::TransactionInfoPtr>& result) {
@@ -218,61 +181,58 @@ void TxService::Bind(mojo::PendingReceiver<mojom::BtcTxManagerProxy> receiver) {
   btc_tx_manager_receivers_.Add(this, std::move(receiver));
 }
 
-void TxService::AddUnapprovedTransaction(
-    mojom::TxDataUnionPtr tx_data_union,
-    const std::string& chain_id,
+void TxService::AddUnapprovedEvmDappTransaction(
+    mojom::TxData1559Ptr tx_data_1559,
     mojom::AccountIdPtr from,
-    mojom::SwapInfoPtr swap_info,
-    AddUnapprovedTransactionCallback callback) {
-  CHECK_NE(from->coin, mojom::CoinType::ETH)
-      << "Wallet UI must use AddUnapprovedEvmTransaction";
-  CHECK_NE(from->coin, mojom::CoinType::BTC)
-      << "Wallet UI must use AddUnapprovedBitcoinTransaction";
-  CHECK_NE(from->coin, mojom::CoinType::ZEC)
-      << "Wallet UI must use AddUnapprovedZCashTransaction";
-  CHECK_NE(from->coin, mojom::CoinType::ADA)
-      << "Wallet UI must use AddUnapprovedCardanoTransaction";
-  AddUnapprovedTransactionWithOrigin(std::move(tx_data_union), chain_id,
-                                     std::move(from), std::move(swap_info),
-                                     std::nullopt, std::move(callback));
-}
-
-void TxService::AddUnapprovedTransactionWithOrigin(
-    mojom::TxDataUnionPtr tx_data_union,
-    const std::string& chain_id,
-    mojom::AccountIdPtr from,
-    mojom::SwapInfoPtr swap_info,
-    const std::optional<url::Origin>& origin,
-    AddUnapprovedTransactionCallback callback) {
-  if (!account_resolver_delegate_->ValidateAccountId(from)) {
-    std::move(callback).Run(
-        false, "",
-        l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
-    return;
-  }
-
+    const url::Origin& origin,
+    bool sign_only,
+    AddUnapprovedEvmTransactionCallback callback) {
   if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(
-          GetToAddressFromTxDataUnion(*tx_data_union))) {
+          tx_data_1559->base_data->to)) {
     std::move(callback).Run(false, "", WalletRestrictedAddressErrorMessage());
     return;
   }
 
-  auto coin_type = GetCoinTypeFromTxDataUnion(*tx_data_union);
-  GetTxManager(coin_type)->AddUnapprovedTransaction(
-      chain_id, std::move(tx_data_union), from, origin, std::move(swap_info),
+  GetEthTxManager()->AddUnapprovedEvmDappTransaction(
+      std::move(tx_data_1559), std::move(from), origin, sign_only,
+      std::move(callback));
+}
+
+void TxService::AddUnapprovedEvmDappTransaction(
+    mojom::TxDataPtr tx_data,
+    mojom::AccountIdPtr from,
+    const url::Origin& origin,
+    bool sign_only,
+    AddUnapprovedEvmTransactionCallback callback) {
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(tx_data->to)) {
+    std::move(callback).Run(false, "", WalletRestrictedAddressErrorMessage());
+    return;
+  }
+
+  GetEthTxManager()->AddUnapprovedEvmDappTransaction(
+      std::move(tx_data), std::move(from), origin, sign_only,
+      std::move(callback));
+}
+
+void TxService::AddUnapprovedSolanaDappTransaction(
+    mojom::SolanaTxDataPtr solana_tx_data,
+    const std::string& chain_id,
+    mojom::AccountIdPtr from,
+    const url::Origin& origin,
+    AddUnapprovedSolanaTransactionCallback callback) {
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(
+          solana_tx_data->to_wallet_address)) {
+    std::move(callback).Run(false, "", WalletRestrictedAddressErrorMessage());
+    return;
+  }
+
+  GetSolanaTxManager()->AddUnapprovedSolanaTransaction(
+      chain_id, std::move(solana_tx_data), from, origin, nullptr,
       std::move(callback));
 }
 
 void TxService::AddUnapprovedEvmTransaction(
     mojom::NewEvmTransactionParamsPtr params,
-    AddUnapprovedEvmTransactionCallback callback) {
-  AddUnapprovedEvmTransactionWithOrigin(std::move(params), std::nullopt,
-                                        std::move(callback));
-}
-
-void TxService::AddUnapprovedEvmTransactionWithOrigin(
-    mojom::NewEvmTransactionParamsPtr params,
-    const std::optional<url::Origin>& origin,
     AddUnapprovedEvmTransactionCallback callback) {
   CHECK_EQ(params->from->coin, mojom::CoinType::ETH);
   if (!account_resolver_delegate_->ValidateAccountId(params->from)) {
@@ -287,8 +247,41 @@ void TxService::AddUnapprovedEvmTransactionWithOrigin(
     return;
   }
 
-  GetEthTxManager()->AddUnapprovedEvmTransaction(std::move(params), origin,
+  GetEthTxManager()->AddUnapprovedEvmTransaction(std::move(params),
                                                  std::move(callback));
+}
+
+void TxService::AddUnapprovedSolanaTransaction(
+    mojom::SolanaTxDataPtr solana_tx_data,
+    const std::string& chain_id,
+    mojom::AccountIdPtr from,
+    mojom::SwapInfoPtr swap_info,
+    AddUnapprovedSolanaTransactionCallback callback) {
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(
+          solana_tx_data->to_wallet_address)) {
+    std::move(callback).Run(false, "", WalletRestrictedAddressErrorMessage());
+    return;
+  }
+
+  GetSolanaTxManager()->AddUnapprovedSolanaTransaction(
+      chain_id, std::move(solana_tx_data), from, std::nullopt,
+      std::move(swap_info), std::move(callback));
+}
+
+void TxService::AddUnapprovedFilecoinTransaction(
+    mojom::FilTxDataPtr fil_tx_data,
+    const std::string& chain_id,
+    mojom::AccountIdPtr from,
+    mojom::SwapInfoPtr swap_info,
+    AddUnapprovedFilecoinTransactionCallback callback) {
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(fil_tx_data->to)) {
+    std::move(callback).Run(false, "", WalletRestrictedAddressErrorMessage());
+    return;
+  }
+
+  GetFilTxManager()->AddUnapprovedFilecoinTransaction(
+      chain_id, std::move(fil_tx_data), from, std::nullopt,
+      std::move(swap_info), std::move(callback));
 }
 
 void TxService::AddUnapprovedBitcoinTransaction(
@@ -395,6 +388,11 @@ mojom::TransactionInfoPtr TxService::GetTransactionInfoSync(
     mojom::CoinType coin_type,
     const std::string& tx_meta_id) {
   return GetTxManager(coin_type)->GetTransactionInfo(tx_meta_id);
+}
+
+std::optional<std::string> TxService::GetEthSignedTransaction(
+    const std::string& tx_meta_id) {
+  return GetEthTxManager()->GetSignedTransaction(tx_meta_id);
 }
 
 void TxService::GetAllTransactionInfo(

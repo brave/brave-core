@@ -74,12 +74,6 @@ class BitcoinTxManager : public TxManager,
                              uint32_t latest_height) override;
 
   // TxManager
-  void AddUnapprovedTransaction(const std::string& chain_id,
-                                mojom::TxDataUnionPtr tx_data_union,
-                                const mojom::AccountIdPtr& from,
-                                const std::optional<url::Origin>& origin,
-                                mojom::SwapInfoPtr swap_info,
-                                AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
   void SpeedupOrCancelTransaction(
@@ -94,7 +88,7 @@ class BitcoinTxManager : public TxManager,
 
   void ContinueAddUnapprovedTransaction(
       std::unique_ptr<BitcoinTxMeta> meta,
-      AddUnapprovedTransactionCallback callback,
+      AddUnapprovedBitcoinTransactionCallback callback,
       base::expected<BitcoinTransaction, std::string> bitcoin_transaction);
 
   void ContinueApproveTransaction(const std::string& tx_meta_id,

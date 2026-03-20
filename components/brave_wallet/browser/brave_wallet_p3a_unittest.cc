@@ -123,7 +123,7 @@ class BraveWalletP3AUnitTest : public testing::Test {
       const std::string& chain_id,
       const mojom::AccountIdPtr& from,
       const std::optional<url::Origin>& origin,
-      TxService::AddUnapprovedTransactionCallback callback,
+      TxService::AddUnapprovedZCashTransactionCallback callback,
       base::expected<ZCashTransaction, std::string> zcash_transaction) {
     tx_service()->GetZCashTxManager()->ContinueAddUnapprovedTransaction(
         from, origin, nullptr, std::move(callback),
@@ -691,9 +691,9 @@ TEST_F(BraveWalletP3AUnitTest, SolTransactionSentObservation) {
                     last_valid_block_height1);
 
   TestFuture<bool, const std::string&, const std::string&> tx_add_future;
-  tx_service()->AddUnapprovedTransaction(
-      mojom::TxDataUnion::NewSolanaTxData(std::move(solana_tx_data)),
-      mojom::kSolanaMainnet, sol_from(), nullptr, tx_add_future.GetCallback());
+  tx_service()->AddUnapprovedSolanaTransaction(
+      std::move(solana_tx_data), mojom::kSolanaMainnet, sol_from(), nullptr,
+      tx_add_future.GetCallback());
   auto [success, tx_meta_id, error_message] = tx_add_future.Take();
   EXPECT_TRUE(success);
   EXPECT_NE(tx_meta_id, "");
@@ -725,9 +725,8 @@ TEST_F(BraveWalletP3AUnitTest, FilTransactionSentObservation) {
                                        "" /* gas_fee_cap */, "" /* gas_limit */,
                                        "" /* max_fee */, to_account, "11");
   TestFuture<bool, const std::string&, const std::string&> tx_add_future;
-  tx_service()->AddUnapprovedTransaction(
-      mojom::TxDataUnion::NewFilTxData(std::move(tx_data)),
-      mojom::kFilecoinMainnet, fil_from(), nullptr,
+  tx_service()->AddUnapprovedFilecoinTransaction(
+      std::move(tx_data), mojom::kFilecoinMainnet, fil_from(), nullptr,
       tx_add_future.GetCallback());
   auto [success, tx_meta_id, error_message] = tx_add_future.Take();
   EXPECT_TRUE(success);

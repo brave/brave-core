@@ -442,6 +442,8 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
       EXPECT_EQ(EvalJs(web_contents(), "getSendOrSignTransactionResult()")
                     .ExtractString(),
                 *expected_signed_tx);
+      EXPECT_EQ(*tx_service()->GetEthSignedTransaction(infos[0]->id),
+                *expected_signed_tx);
     } else {
       EXPECT_EQ(EvalJs(web_contents(), "getSendOrSignTransactionResult()")
                     .ExtractString(),

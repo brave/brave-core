@@ -49,7 +49,7 @@ import {
 import { makeSerializableTransaction } from '../../../utils/model-serialization-utils'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { TX_CACHE_TAGS } from '../../../utils/query-cache-utils'
-import { sortTransactionByDate, toTxDataUnion } from '../../../utils/tx-utils'
+import { sortTransactionByDate } from '../../../utils/tx-utils'
 import {
   signLedgerEthereumTransaction,
   signLedgerFilecoinTransaction,
@@ -215,18 +215,15 @@ export const transactionEndpoints = ({
         try {
           const { solanaTxManagerProxy, txService } = baseQuery(undefined).data
 
-          const {
-            error,
-            errorMessage: transferTxDataErrorMessage,
-            txData,
-          } = await solanaTxManagerProxy //
-            .makeSystemProgramTransferTxData(
-              payload.fromAccount.address,
-              payload.to,
-              BigInt(payload.value),
-            )
+          const { errorMessage: transferTxDataErrorMessage, txData } =
+            await solanaTxManagerProxy //
+              .makeSystemProgramTransferTxData(
+                payload.fromAccount.address,
+                payload.to,
+                BigInt(payload.value),
+              )
 
-          if (error && transferTxDataErrorMessage) {
+          if (!txData || transferTxDataErrorMessage) {
             throw new Error(
               'Failed to make SOL system program transfer txData): '
                 + transferTxDataErrorMessage || 'unknown error',
@@ -234,8 +231,8 @@ export const transactionEndpoints = ({
           }
 
           const { errorMessage, success } =
-            await txService.addUnapprovedTransaction(
-              toTxDataUnion({ solanaTxData: txData ?? undefined }),
+            await txService.addUnapprovedSolanaTransaction(
+              txData,
               payload.network.chainId,
               payload.fromAccount.accountId,
               payload.swapInfo ?? null,
@@ -298,8 +295,8 @@ export const transactionEndpoints = ({
           }
 
           const { errorMessage, success } =
-            await txService.addUnapprovedTransaction(
-              toTxDataUnion({ solanaTxData: txData }),
+            await txService.addUnapprovedSolanaTransaction(
+              txData,
               payload.network.chainId,
               payload.fromAccount.accountId,
               payload.swapInfo ?? null,
@@ -360,15 +357,15 @@ export const transactionEndpoints = ({
               payload.sendOptions || null,
             )
 
-          if (result.error !== BraveWallet.ProviderError.kSuccess) {
+          if (!result.txData) {
             throw new Error(
               `Failed to sign Solana message: ${result.errorMessage}`,
             )
           }
 
           const { errorMessage, success } =
-            await txService.addUnapprovedTransaction(
-              toTxDataUnion({ solanaTxData: result.txData ?? undefined }),
+            await txService.addUnapprovedSolanaTransaction(
+              result.txData,
               payload.chainId,
               payload.accountId,
               payload.swapInfo ?? null,
@@ -819,8 +816,8 @@ export const transactionEndpoints = ({
           }
 
           const { errorMessage, success } =
-            await txService.addUnapprovedTransaction(
-              toTxDataUnion({ filTxData: filTxData }),
+            await txService.addUnapprovedFilecoinTransaction(
+              filTxData,
               payload.network.chainId,
               payload.fromAccount.accountId,
               payload.swapInfo ?? null,

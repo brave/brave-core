@@ -1643,8 +1643,6 @@ struct TxData {
   string to;
   string value;
   array<uint8> data;
-  bool sign_only;
-  string? signed_transaction;
 };
 
 struct GasEstimation1559 {
@@ -2764,13 +2762,19 @@ struct NewPolkadotTransactionParams {
 // For transaction management such as creation, broadcasting, and storing
 // transactions.
 interface TxService {
-  AddUnapprovedTransaction(TxDataUnion tx_data_union,
-                           string chain_id,
-                           AccountId from,
-                           SwapInfo? swap_info)
+  AddUnapprovedEvmTransaction(NewEvmTransactionParams params)
       => (bool success, string tx_meta_id, string error_message);
 
-  AddUnapprovedEvmTransaction(NewEvmTransactionParams params)
+  AddUnapprovedSolanaTransaction(SolanaTxData tx_data,
+                                 string chain_id,
+                                 AccountId from,
+                                 SwapInfo? swap_info)
+      => (bool success, string tx_meta_id, string error_message);
+
+  AddUnapprovedFilecoinTransaction(FilTxData tx_data,
+                                   string chain_id,
+                                   AccountId from,
+                                   SwapInfo? swap_info)
       => (bool success, string tx_meta_id, string error_message);
 
   AddUnapprovedBitcoinTransaction(NewBitcoinTransactionParams params)

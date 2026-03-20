@@ -6,14 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_TX_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_TX_MANAGER_H_
 
-#include <memory>
 #include <optional>
 #include <string>
 
 #include "base/scoped_observation.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_block_tracker.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 
@@ -54,12 +52,6 @@ class ZCashTxManager : public TxManager, public ZCashBlockTracker::Observer {
                              uint32_t latest_height) override;
 
   // TxManager
-  void AddUnapprovedTransaction(const std::string& chain_id,
-                                mojom::TxDataUnionPtr tx_data_union,
-                                const mojom::AccountIdPtr& from,
-                                const std::optional<url::Origin>& origin,
-                                mojom::SwapInfoPtr swap_info,
-                                AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
 
@@ -77,7 +69,7 @@ class ZCashTxManager : public TxManager, public ZCashBlockTracker::Observer {
       const mojom::AccountIdPtr& from,
       const std::optional<url::Origin>& origin,
       mojom::SwapInfoPtr swap_info,
-      AddUnapprovedTransactionCallback callback,
+      AddUnapprovedZCashTransactionCallback callback,
       base::expected<ZCashTransaction, std::string> zcash_transaction);
 
   void ContinueApproveTransaction(const std::string& tx_meta_id,

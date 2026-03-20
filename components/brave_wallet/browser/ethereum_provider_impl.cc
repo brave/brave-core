@@ -322,7 +322,6 @@ void EthereumProviderImpl::SendOrSignTransactionInternal(
   }
 
   tx_data_1559->base_data->chain_id = chain->chain_id;
-  tx_data_1559->base_data->sign_only = sign_only;
 
   const auto account_id = FindAuthenticatedAccountByAddress(from, id, callback);
   if (!account_id) {
@@ -331,16 +330,15 @@ void EthereumProviderImpl::SendOrSignTransactionInternal(
   const bool is_eip_1559_network =
       brave_wallet_service_->network_manager()->IsEip1559Chain(chain->chain_id);
   if (is_eip_1559_network && ShouldCreate1559Tx(*tx_data_1559)) {
-    tx_service_->AddUnapprovedTransactionWithOrigin(
-        mojom::TxDataUnion::NewEthTxData1559(std::move(tx_data_1559)),
-        chain->chain_id, account_id.Clone(), nullptr, origin_,
+    tx_service_->AddUnapprovedEvmDappTransaction(
+        std::move(tx_data_1559), account_id.Clone(), origin_, sign_only,
         base::BindOnce(&EthereumProviderImpl::OnAddUnapprovedTransactionAdapter,
                        weak_factory_.GetWeakPtr(), std::move(callback),
                        std::move(id)));
   } else {
-    tx_service_->AddUnapprovedTransactionWithOrigin(
-        mojom::TxDataUnion::NewEthTxData(std::move(tx_data_1559->base_data)),
-        chain->chain_id, account_id.Clone(), nullptr, origin_,
+    tx_service_->AddUnapprovedEvmDappTransaction(
+        std::move(tx_data_1559->base_data), account_id.Clone(), origin_,
+        sign_only,
         base::BindOnce(&EthereumProviderImpl::OnAddUnapprovedTransactionAdapter,
                        weak_factory_.GetWeakPtr(), std::move(callback),
                        std::move(id)));
@@ -1529,19 +1527,16 @@ void EthereumProviderImpl::OnTransactionStatusChanged(
     formed_response = base::Value(tx_hash);
     reject = false;
   } else if (tx_status == mojom::TransactionStatus::Signed) {
-    std::string signed_transaction;
-    if (tx_info->tx_data_union->is_eth_tx_data()) {
-      DCHECK(tx_info->tx_data_union->get_eth_tx_data()->signed_transaction);
-      signed_transaction =
-          *tx_info->tx_data_union->get_eth_tx_data()->signed_transaction;
-    } else if (tx_info->tx_data_union->is_eth_tx_data_1559()) {
-      DCHECK(tx_info->tx_data_union->get_eth_tx_data_1559()
-                 ->base_data->signed_transaction);
-      signed_transaction = *tx_info->tx_data_union->get_eth_tx_data_1559()
-                                ->base_data->signed_transaction;
+    auto signed_transaction = tx_service_->GetEthSignedTransaction(tx_meta_id);
+    if (signed_transaction) {
+      formed_response = base::Value(*signed_transaction);
+      reject = false;
+    } else {
+      formed_response = GetProviderErrorDictionary(
+          mojom::ProviderError::kInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_ERROR));
+      reject = true;
     }
-    formed_response = base::Value(signed_transaction);
-    reject = false;
   } else if (tx_status == mojom::TransactionStatus::Rejected) {
     formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kUserRejectedRequest,
