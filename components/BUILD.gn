@@ -40,7 +40,7 @@ test("brave_components_unittests") {
     "//brave/components/email_aliases:unit_tests",
     "//brave/components/https_upgrade_exceptions/browser:unit_tests",
     "//brave/components/json:unit_tests",
-    "//brave/components/local_ai/core:unit_tests",
+    "//brave/components/on_device_ai/core:unit_tests",
     "//brave/components/static_redirect_helper:unit_tests",
     "//brave/components/time_period_storage:unit_tests",
     "//brave/components/update_client:unit_tests",
@@ -83,7 +83,7 @@ test("brave_components_unittests") {
   }
 
   if (use_blink) {
-    deps += [ "//brave/components/local_ai/content:unit_tests" ]
+    deps += [ "//brave/components/on_device_ai/content:unit_tests" ]
     if (enable_ai_chat) {
       deps += [ "//brave/components/ai_chat/content/browser:unit_tests" ]
     }

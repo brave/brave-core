@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+import("//tools/grit/preprocess_if_expr.gni")
+import("//tools/grit/repack.gni")
+
+# Untrusted WebUI for WASM execution at
+# chrome-untrusted://on-device-ai/
+transpile_web_ui("on_device_ai_ui") {
+  entry_points = [ [
+        "on_device_ai",
+        rebase_path("on_device_ai.ts"),
+      ] ]
+  webpack_aliases = [ "browser" ]
+  resource_name = "on_device_ai"
+
+  imports_from = [ "//brave/components/on_device_ai/resources/" ]
+
+  deps = [ "//brave/components/on_device_ai/core:mojom_js" ]
+}
+
+pack_web_resources("on_device_ai_generated") {
+  resource_name = "on_device_ai"
+  output_dir = "$root_gen_dir/brave/components/on_device_ai/resources"
+  deps = [ ":on_device_ai_ui" ]
+}

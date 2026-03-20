@@ -1449,7 +1449,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_PASSWORD_MANAGER_UI_IMPORT_DESCRIPTION_SIGNEDOUT_USERS" desc="The description for the password import banner in Password Manager settings.">
         To import passwords to <ph name="BRAND">$1<ex>Brave Password Manager</ex></ph> on this device, select a CSV file
       </message>
-      <message name="IDS_LOCAL_AI_TASK_MANAGER_TITLE" desc="The label for the on-device AI background process in the Task Manager.">
+      <message name="IDS_ON_DEVICE_AI_TASK_MANAGER_TITLE" desc="The label for the on-device AI background process in the Task Manager.">
         On-Device AI
       </message>
       <!--Add new items to the appropriate sections above -->

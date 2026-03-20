@@ -27,7 +27,7 @@
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
-#include "brave/components/local_ai/core/features.h"
+#include "brave/components/on_device_ai/core/features.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -691,13 +691,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #define BRAVE_ADS_FEATURE_ENTRIES
 #endif
 
-#define BRAVE_LOCAL_AI_MODELS                                 \
-  EXPAND_FEATURE_ENTRIES({                                    \
-      "brave-local-ai-models",                                \
-      "Brave Local AI Models",                                \
-      "Enables local AI models to be downloaded",             \
-      kOsWin | kOsMac | kOsLinux,                             \
-      FEATURE_VALUE_TYPE(local_ai::features::kLocalAIModels), \
+#define BRAVE_ON_DEVICE_AI_MODELS                                    \
+  EXPAND_FEATURE_ENTRIES({                                           \
+      "brave-on-device-ai-models",                                   \
+      "Brave On-Device AI Models",                                   \
+      "Enables on-device AI models to be downloaded",                \
+      kOsWin | kOsMac | kOsLinux,                                    \
+      FEATURE_VALUE_TYPE(on_device_ai::features::kOnDeviceAIModels), \
   })
 
 #define BRAVE_OMNIBOX_FEATURES                                                \
@@ -1342,7 +1342,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_AI_CHAT_TAB_MANAGEMENT_TOOL_ENTRY                                      \
   BRAVE_ADS_FEATURE_ENTRIES                                                    \
-  BRAVE_LOCAL_AI_MODELS                                                        \
+  BRAVE_ON_DEVICE_AI_MODELS                                                    \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
   BRAVE_FORCE_CONTEXT_MENU_ON_SHIFT_RIGHT_CLICK_FEATURE_ENTRY                  \

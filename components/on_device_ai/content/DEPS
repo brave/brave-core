@@ -1,0 +1,6 @@
+include_rules = [
+  "+brave/components/on_device_ai/core",
+  "+content/public/browser",
+  "+content/public/test",
+  "+services/network/public",
+]

@@ -1,0 +1,35 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("content") {
+  sources = [
+    "background_web_contents_impl.cc",
+    "background_web_contents_impl.h",
+  ]
+
+  public_deps = [ "//base" ]
+
+  deps = [
+    "//brave/components/on_device_ai/core",
+    "//content/public/browser",
+    "//services/network/public/cpp",
+    "//ui/base",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "background_web_contents_impl_unittest.cc" ]
+
+  deps = [
+    ":content",
+    "//base/test:test_support",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//url",
+  ]
+}
