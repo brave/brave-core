@@ -93,7 +93,7 @@
       ".*\\.css",
     ],
     "CheckParseErrors": [
-      ".*tsconfig\\.json",
+      ".*tsconfig.*\\.json",
       "components/brave_ads/core/test/data/invalid\\.json",
     ],
     "CheckNoBannedFunctions": [

@@ -28,7 +28,7 @@ module.exports = {
   'experimentalOperatorPosition': 'start',
   'overrides': [
     {
-      files: ['build/commands/tsconfig.json'],
+      files: ['tsconfig*.json'],
       options: {
         parser: 'jsonc',
       },

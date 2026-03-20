@@ -8,6 +8,7 @@ import { load, write } from './lit_mangler'
 import childProcess from 'child_process'
 import path from 'path'
 import fs from 'fs'
+import ts from 'typescript'
 
 const baseDir = path.join(__dirname, '../../../')
 const tsConfigPath = path.join(baseDir, 'tsconfig-mangle.json')
@@ -20,7 +21,14 @@ const tsConfigPath = path.join(baseDir, 'tsconfig-mangle.json')
  * @returns The path to the generated tsconfig
  */
 const getTsConfigForFiles = (genDir: string, files: string[]) => {
-  const tsConfig = JSON.parse(fs.readFileSync(tsConfigPath, 'utf8'))
+  const { config: tsConfig, error } = ts.readConfigFile(
+    tsConfigPath,
+    ts.sys.readFile,
+  )
+  if (error) {
+    console.error('Error reading tsconfig:', error)
+    process.exit(1)
+  }
 
   // Override the include path to only include the lit_mangler and the file
   // we want to check

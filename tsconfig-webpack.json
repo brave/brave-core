@@ -6,10 +6,10 @@
     // we don't mistakenly resolve to a different build configuration,
     // hiding an error or a timing issue with the dev's
     // current build configuration.
-    "paths": {}
+    "paths": {},
   },
   "include": [
     "./components/definitions/*",
-    "./components/brave_extension/extension/brave_extension/types/**/*"
-  ]
+    "./components/brave_extension/extension/brave_extension/types/**/*",
+  ],
 }
