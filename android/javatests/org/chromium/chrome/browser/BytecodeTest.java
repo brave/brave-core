@@ -88,7 +88,6 @@ import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.logo.LogoCoordinator;
 import org.chromium.chrome.browser.metrics.StartupMetricsTracker;
-import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.notifications.BraveNotificationPlatformBridge;
@@ -1697,8 +1696,7 @@ public class BytecodeTest {
                         ActivityLifecycleDispatcher.class,
                         MonotonicObservableSupplier.class,
                         MenuOrKeyboardActionController.class,
-                        Supplier.class,
-                        BraveMultiWindowUtils.getTabReparentingDelegateClass()));
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
