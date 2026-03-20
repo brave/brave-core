@@ -14,4 +14,11 @@ executable("agent_ns") {
     "//mojo/public/cpp/bindings",
     "//brave/third_party/libcurl",
   ]
+
+  if (is_win) {
+    libs = [
+      "crypt32.lib",
+      "iphlpapi.lib",
+    ]
+  }
 }

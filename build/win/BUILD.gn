@@ -17,6 +17,9 @@ group("brave") {
       "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service:wireguard_service",
     ]
   }
+  deps += [
+    "//brave/browser/brave_vpn/agent_ns",
+  ]
 }
 
 copy("copy_exe") {

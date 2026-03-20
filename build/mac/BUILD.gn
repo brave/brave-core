@@ -84,7 +84,7 @@ group("brave") {
              [ string_replace(rebase_path(exe_path), " ", "\\ ") ])
 
   deps = [
-    "//brave/browser/brave_vpn/mac/agent_ns",
+    "//brave/browser/brave_vpn/agent_ns",
   ]
 }
 
