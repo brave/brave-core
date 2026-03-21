@@ -19,6 +19,7 @@
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/views/chrome_views_test_base.h"
+#include "components/split_tabs/split_tab_visual_data.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/tabs/public/mock_tab_interface.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -52,19 +53,6 @@ class MockTabSlotController : public FakeTabSlotController {
               GetTreeTabNode,
               (const tree_tab::TreeTabNodeId& id),
               (const, override));
-};
-
-class MockTabInterfaceWithWeakPtr : public tabs::MockTabInterface {
- public:
-  using tabs::MockTabInterface::MockTabInterface;
-  ~MockTabInterfaceWithWeakPtr() override = default;
-
-  base::WeakPtr<tabs::TabInterface> GetWeakPtr() override {
-    return weak_ptr_factory_.GetWeakPtr();
-  }
-
- private:
-  base::WeakPtrFactory<MockTabInterfaceWithWeakPtr> weak_ptr_factory_{this};
 };
 
 class BraveTabTest : public ChromeViewsTestBase {
@@ -416,9 +404,17 @@ class BraveTabTestWithTreeTab : public BraveTabTest {
 TEST_F(BraveTabTestWithTreeTab, TreeToggleButtonVisibleInsteadOfCloseButton) {
   testing::NiceMock<MockTabSlotController> tab_slot_controller;
   auto node_id = tree_tab::TreeTabNodeId::GenerateNew();
+
+  // Create a dummy SplitTabCollection with a new ID and default visual data
+  split_tabs::SplitTabId dummy_id = split_tabs::SplitTabId::GenerateNew();
+  split_tabs::SplitTabVisualData dummy_visual_data;
+  auto split_collection =
+      std::make_unique<tabs::SplitTabCollection>(dummy_id, dummy_visual_data);
+
   tabs::TreeTabNodeTabCollection collection(
-      node_id, std::make_unique<MockTabInterfaceWithWeakPtr>(),
-      base::DoNothing(), base::DoNothing());
+      node_id, std::move(split_collection), base::DoNothing(),
+      base::DoNothing());
+
   ASSERT_EQ(collection.node().height(), 0);
 
   // When tree tab has descendants, the tree toggle button should be visible.
@@ -456,9 +452,16 @@ TEST_F(BraveTabTestWithTreeTab,
        TreeToggleButtonAlwaysVisibleWhenCollapsedAndHasDescendants) {
   testing::NiceMock<MockTabSlotController> tab_slot_controller;
   auto node_id = tree_tab::TreeTabNodeId::GenerateNew();
+
+  // Create a dummy SplitTabCollection with a new ID and default visual data
+  split_tabs::SplitTabId dummy_id = split_tabs::SplitTabId::GenerateNew();
+  split_tabs::SplitTabVisualData dummy_visual_data;
+  auto split_collection =
+      std::make_unique<tabs::SplitTabCollection>(dummy_id, dummy_visual_data);
+
   tabs::TreeTabNodeTabCollection collection(
-      node_id, std::make_unique<MockTabInterfaceWithWeakPtr>(),
-      base::DoNothing(), base::DoNothing());
+      node_id, std::move(split_collection), base::DoNothing(),
+      base::DoNothing());
   ASSERT_EQ(collection.node().height(), 0);
 
   // When tree tab has descendants, the tree toggle button should be visible.
@@ -501,9 +504,16 @@ TEST_F(BraveTabTestWithTreeTab,
        TreeToggleButtonVisibleMouseHoveredEvenWhenCloseButtonHiddenByPref) {
   testing::NiceMock<MockTabSlotController> tab_slot_controller;
   auto node_id = tree_tab::TreeTabNodeId::GenerateNew();
+
+  // Create a dummy SplitTabCollection with a new ID and default visual data
+  split_tabs::SplitTabId dummy_id = split_tabs::SplitTabId::GenerateNew();
+  split_tabs::SplitTabVisualData dummy_visual_data;
+  auto split_collection =
+      std::make_unique<tabs::SplitTabCollection>(dummy_id, dummy_visual_data);
+
   tabs::TreeTabNodeTabCollection collection(
-      node_id, std::make_unique<MockTabInterfaceWithWeakPtr>(),
-      base::DoNothing(), base::DoNothing());
+      node_id, std::move(split_collection), base::DoNothing(),
+      base::DoNothing());
   collection.node().set_height_for_test(100);
   collection.node().set_collapsed(false);
 
