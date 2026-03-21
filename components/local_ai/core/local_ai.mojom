@@ -5,6 +5,16 @@
 
 module local_ai.mojom;
 
+import "mojo/public/mojom/base/big_buffer.mojom";
+
+struct ModelFiles {
+  mojo_base.mojom.BigBuffer weights;
+  mojo_base.mojom.BigBuffer weights_dense1;
+  mojo_base.mojom.BigBuffer weights_dense2;
+  mojo_base.mojom.BigBuffer tokenizer;
+  mojo_base.mojom.BigBuffer config;
+};
+
 // Consumer-facing embedding interface. Consumers call
 // GenerateEmbeddings() via a Remote; the renderer implements it.
 interface PassageEmbedder {
@@ -13,9 +23,13 @@ interface PassageEmbedder {
 };
 
 // Renderer-implemented factory that creates direct consumer→renderer
-// PassageEmbedder bindings. Internal to the service — consumers never
-// interact with this interface.
+// PassageEmbedder bindings and manages model lifecycle. Internal to
+// the service — consumers never interact with this interface.
 interface PassageEmbedderFactory {
+  // Loads model weights and tokenizer into the runtime.
+  Init(ModelFiles model_files) => (bool success);
+
+  // Binds a direct consumer→renderer PassageEmbedder binding.
   Bind(pending_receiver<PassageEmbedder> receiver);
 };
 

@@ -12,6 +12,9 @@
 
 #include "base/files/file_path.h"
 #include "base/no_destructor.h"
+#include "base/observer_list.h"
+#include "base/observer_list_types.h"
+#include "base/sequence_checker.h"
 #include "base/values.h"
 #include "components/component_updater/component_installer.h"
 #include "components/update_client/update_client.h"
@@ -32,6 +35,9 @@ inline constexpr char kEmbeddingGemmaModelDir[] = "embeddinggemma-300m";
 inline constexpr char kEmbeddingGemmaModelFile[] = "model.gguf";
 inline constexpr char kEmbeddingGemmaConfigFile[] = "config.json";
 inline constexpr char kEmbeddingGemmaTokenizerFile[] = "tokenizer.json";
+inline constexpr char kEmbeddingGemmaDense1Dir[] = "2_Dense";
+inline constexpr char kEmbeddingGemmaDense2Dir[] = "3_Dense";
+inline constexpr char kEmbeddingGemmaDenseModelFile[] = "model.safetensors";
 
 // Exposed for testing - follows upstream Chromium pattern.
 class LocalModelsComponentInstallerPolicy
@@ -66,16 +72,27 @@ class LocalModelsComponentInstallerPolicy
 
 class LocalModelsUpdaterState {
  public:
+  class Observer : public base::CheckedObserver {
+   public:
+    // Called when the local models are ready (component installed)
+    virtual void OnLocalModelsReady(const base::FilePath& install_dir) = 0;
+  };
+
   static LocalModelsUpdaterState* GetInstance();
 
   LocalModelsUpdaterState(const LocalModelsUpdaterState&) = delete;
   LocalModelsUpdaterState& operator=(const LocalModelsUpdaterState&) = delete;
+
+  void AddObserver(Observer* observer);
+  void RemoveObserver(Observer* observer);
 
   void SetInstallDir(const base::FilePath& install_dir);
   const base::FilePath& GetInstallDir() const;
 
   const base::FilePath& GetEmbeddingGemmaModelDir() const;
   const base::FilePath& GetEmbeddingGemmaModel() const;
+  const base::FilePath& GetEmbeddingGemmaDense1() const;
+  const base::FilePath& GetEmbeddingGemmaDense2() const;
   const base::FilePath& GetEmbeddingGemmaConfig() const;
   const base::FilePath& GetEmbeddingGemmaTokenizer() const;
 
@@ -87,8 +104,14 @@ class LocalModelsUpdaterState {
   base::FilePath install_dir_;
   base::FilePath embeddinggemma_model_dir_;
   base::FilePath embeddinggemma_model_path_;
+  base::FilePath embeddinggemma_dense1_path_;
+  base::FilePath embeddinggemma_dense2_path_;
   base::FilePath embeddinggemma_config_path_;
   base::FilePath embeddinggemma_tokenizer_path_;
+
+  base::ObserverList<Observer> observers_;
+
+  SEQUENCE_CHECKER(sequence_checker_);
 };
 
 void ManageLocalModelsComponentRegistration(
