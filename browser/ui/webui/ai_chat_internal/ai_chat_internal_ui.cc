@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/check.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/resources/ai_chat_internal/grit/ai_chat_internal_generated_map.h"
 #include "brave/browser/resources/ai_chat_internal/grit/ai_chat_internal_static_resources.h"
@@ -15,7 +14,6 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/webui/webui_util.h"
@@ -31,6 +29,7 @@ AIChatInternalUI::AIChatInternalUI(content::WebUI* web_ui,
 }
 
 AIChatInternalUI::~AIChatInternalUI() = default;
+
 WEB_UI_CONTROLLER_TYPE_IMPL(AIChatInternalUI)
 
 void AIChatInternalUI::BindInterface(

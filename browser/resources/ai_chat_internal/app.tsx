@@ -48,22 +48,25 @@ function ConversationNavItem({
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             style={{
+                width: '100%',
+                boxSizing: 'border-box',
                 padding: 'var(--leo-spacing-m) var(--leo-spacing-l)',
                 cursor: 'pointer',
-                background: hovered && !selected
+                background: selected
                     ? 'var(--leo-color-container-highlight)'
-                    : 'transparent',
-                borderBottom: '1px solid var(--leo-color-divider-subtle)',
+                    : hovered
+                        ? 'var(--leo-color-container-background)'
+                        : 'transparent',
+
+                borderLeft: selected
+                    ? '3px solid var(--leo-color-text-interactive)'
+                    : '3px solid transparent',
                 transition: 'background 0.1s',
             }}
         >
             <div style={{
-                font: selected
-                    ? 'var(--leo-font-default-semibold)'
-                    : 'var(--leo-font-default-regular)',
-                color: selected
-                    ? 'var(--leo-color-text-interactive)'
-                    : 'var(--leo-color-text-primary)',
+                font: 'var(--leo-font-default-regular)',
+                color: 'var(--leo-color-text-primary)',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
@@ -105,10 +108,9 @@ function SidebarToggle({
                 color: hovered
                     ? 'var(--leo-color-text-primary)'
                     : 'var(--leo-color-text-secondary)',
-                font: 'var(--leo-font-heading-h3)',
-                // 32px minimum click target
-                width: '32px',
-                height: '32px',
+                font: 'var(--leo-font-default-regular)',
+                width: 'var(--leo-icon-m)',
+                height: 'var(--leo-icon-m)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -118,7 +120,7 @@ function SidebarToggle({
             }}
             title={open ? 'Collapse sidebar' : 'Expand sidebar'}
         >
-            {open ? '\u2039' : '\u203A'}
+            ☰
         </button>
     )
 }
@@ -152,7 +154,7 @@ function RawBlock({ data }: { data: any }) {
     return (
         <pre style={{
             marginTop: 'var(--leo-spacing-m)',
-            background: 'var(--leo-color-page-background)',
+            background: 'var(--leo-color-container-background)',
             padding: 'var(--leo-spacing-m)',
             font: 'var(--leo-font-small-regular)',
             fontFamily: 'monospace',
@@ -311,9 +313,6 @@ function ConversationDetail({ uuid }: { uuid: string }) {
                 </div>
             ) : (
                 <div style={{
-                    borderRadius: 'var(--leo-radius-l)',
-                    border: '1px solid var(--leo-color-divider-subtle)',
-                    background: 'var(--leo-color-container-background)',
                     overflow: 'hidden',
                 }}>
                     {turns.map((turn, i) => <TurnView key={i} turn={turn} />)}
@@ -330,7 +329,19 @@ function App() {
         return params.get('uuid')
     })
     const [loading, setLoading] = React.useState(true)
-    const [sidebarOpen, setSidebarOpen] = React.useState(true)
+    const [sidebarOpen, setSidebarOpen] = React.useState(false)
+    const [isNarrow, setIsNarrow] = React.useState(false)
+
+    React.useEffect(() => {
+        const mql = window.matchMedia('(max-width: 979px)')
+        const handler = (e: MediaQueryListEvent | MediaQueryList) => {
+            setIsNarrow(e.matches)
+            if (!e.matches) setSidebarOpen(false)
+        }
+        handler(mql)
+        mql.addEventListener('change', handler)
+        return () => mql.removeEventListener('change', handler)
+    }, [])
 
     React.useEffect(() => {
         async function load() {
@@ -343,7 +354,6 @@ function App() {
                     setSelectedUuid(convs[0].uuid)
                 }
             } catch {
-                // Connection error handled by empty state
             } finally {
                 setLoading(false)
             }
@@ -351,102 +361,172 @@ function App() {
         load()
     }, [])
 
+
+    const sidebarContent = (
+        <>
+            <div style={{
+                padding: 'var(--leo-spacing-l) var(--leo-spacing-xl)',
+                font: 'var(--leo-font-default-semibold)',
+                flexShrink: 0,
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                whiteSpace: 'nowrap',
+            }}>
+                Recent Chats
+            </div>
+            <div style={{ overflowY: 'auto', flex: 1 }}>
+                {loading ? (
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        padding: 'var(--leo-spacing-2xl)',
+                    }}>
+                        <ProgressRing />
+                    </div>
+                ) : conversations.length === 0 ? (
+                    <div style={{
+                        padding: 'var(--leo-spacing-xl)',
+                        color: 'var(--leo-color-text-tertiary)',
+                        textAlign: 'center',
+                    }}>
+                        No conversations found.
+                    </div>
+                ) : (
+                    conversations.map((conv) => (
+                        <ConversationNavItem
+                            key={conv.uuid}
+                            conv={conv}
+                            selected={conv.uuid === selectedUuid}
+                            onClick={() => {
+                                setSelectedUuid(conv.uuid)
+                                if (isNarrow) setSidebarOpen(false)
+                            }}
+                        />
+                    ))
+                )}
+            </div>
+        </>
+    )
+
     return (
         <div style={{
             display: 'flex',
+            flexDirection: 'column',
             height: '100vh',
             background: 'var(--leo-color-page-background)',
             color: 'var(--leo-color-text-primary)',
             font: 'var(--leo-font-default-regular)',
+            position: 'relative',
         }}>
-            <aside style={{
-                width: sidebarOpen ? '280px' : '0px',
-                flexShrink: 0,
-                borderRight: sidebarOpen ? '1px solid var(--leo-color-divider-subtle)' : 'none',
-                background: 'var(--leo-color-page-background)',
-                display: 'flex',
-                flexDirection: 'column',
-                overflow: 'hidden',
-                transition: 'width 0.2s ease',
-            }}>
-                <div style={{
-                    padding: 'var(--leo-spacing-l) var(--leo-spacing-xl)',
-                    font: 'var(--leo-font-heading-h4)',
-                    borderBottom: '1px solid var(--leo-color-divider-subtle)',
-                    flexShrink: 0,
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    whiteSpace: 'nowrap',
-                }}>
-                    Recent Chats
-                    <SidebarToggle open={true} onClick={() => setSidebarOpen(false)} />
-                </div>
-                <div style={{ overflowY: 'auto', flex: 1 }}>
-                    {loading ? (
-                        <div style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            padding: 'var(--leo-spacing-2xl)',
-                        }}>
-                            <ProgressRing />
-                        </div>
-                    ) : conversations.length === 0 ? (
-                        <div style={{
-                            padding: 'var(--leo-spacing-xl)',
-                            color: 'var(--leo-color-text-tertiary)',
-                            textAlign: 'center',
-                        }}>
-                            No conversations found.
-                        </div>
-                    ) : (
-                        conversations.map((conv) => (
-                            <ConversationNavItem
-                                key={conv.uuid}
-                                conv={conv}
-                                selected={conv.uuid === selectedUuid}
-                                onClick={() => setSelectedUuid(conv.uuid)}
-                            />
-                        ))
-                    )}
-                </div>
-            </aside>
+            <style>{`
+                ::-webkit-scrollbar { width: 14px; }
+                ::-webkit-scrollbar-track { background: transparent; }
+                ::-webkit-scrollbar-thumb {
+                    background-color: var(--leo-color-divider-subtle);
+                    border: var(--leo-spacing-s) solid transparent;
+                    background-clip: content-box;
+                    border-radius: var(--leo-radius-m);
+                }
+                ::-webkit-scrollbar-thumb:hover { background-color: var(--leo-color-text-secondary); }
+            `}</style>
 
-            <main style={{
-                flex: 1,
-                overflowY: 'auto',
-                display: 'flex',
-                flexDirection: 'column',
-            }}>
-                {!sidebarOpen && (
-                    <div style={{
-                        padding: 'var(--leo-spacing-m) var(--leo-spacing-l)',
-                        borderBottom: '1px solid var(--leo-color-divider-subtle)',
-                        flexShrink: 0,
-                    }}>
-                        <SidebarToggle open={false} onClick={() => setSidebarOpen(true)} />
-                    </div>
-                )}
-                <div style={{
-                    flex: 1,
-                    padding: 'var(--leo-spacing-2xl)',
+            {isNarrow && sidebarOpen && (
+                <div
+                    onClick={() => setSidebarOpen(false)}
+                    style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: 'var(--leo-color-dialogs-scrim-background)',
+                        zIndex: 10,
+                    }}
+                />
+            )}
+
+            {isNarrow && (
+                <aside style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    height: '100%',
+                    width: '280px',
+                    zIndex: 20,
+                    background: 'var(--leo-color-container-background)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    transform: sidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
+                    transition: 'transform 200ms ease',
                     overflowY: 'auto',
                 }}>
-                    {selectedUuid ? (
-                        <ConversationDetail key={selectedUuid} uuid={selectedUuid} />
-                    ) : (
-                        <div style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            height: '100%',
-                            color: 'var(--leo-color-text-tertiary)',
-                        }}>
-                            Select a conversation from the sidebar.
-                        </div>
-                    )}
-                </div>
-            </main>
+                    {sidebarContent}
+                </aside>
+            )}
+
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 'var(--leo-spacing-m)',
+                padding: '0 var(--leo-spacing-l)',
+                background: 'var(--leo-color-container-background)',
+                flexShrink: 0,
+                minHeight: '56px',
+            }}>
+                {isNarrow && (
+                    <div style={{ opacity: sidebarOpen ? 0 : 1, pointerEvents: sidebarOpen ? 'none' : 'auto' }}>
+                        <SidebarToggle open={sidebarOpen} onClick={() => setSidebarOpen(!sidebarOpen)} />
+                    </div>
+                )}
+                <span style={{
+                    font: 'var(--leo-font-heading-h3)',
+                    color: 'var(--leo-color-text-primary)',
+                }}>
+                    AI Chat Internal
+                </span>
+            </div>
+
+            <div style={{
+                display: 'flex',
+                flex: 1,
+                overflow: 'hidden',
+            }}>
+                {!isNarrow && (
+                    <aside style={{
+                        width: '280px',
+                        flexShrink: 0,
+                        background: 'var(--leo-color-container-background)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: '100%',
+                        position: 'sticky',
+                        top: 0,
+                        overflowY: 'auto',
+                    }}>
+                        {sidebarContent}
+                    </aside>
+                )}
+
+                <main style={{
+                    flex: 1,
+                    overflowY: 'auto',
+                    minWidth: 0,
+                }}>
+                    <div style={{ padding: 'var(--leo-spacing-2xl)' }}>
+                        {selectedUuid ? (
+                            <ConversationDetail key={selectedUuid} uuid={selectedUuid} />
+                        ) : (
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                height: '100%',
+                                color: 'var(--leo-color-text-tertiary)',
+                            }}>
+                                Select a conversation from the sidebar.
+                            </div>
+                        )}
+                    </div>
+                </main>
+            </div>
         </div>
     )
 }

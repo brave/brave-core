@@ -1131,18 +1131,22 @@ void AIChatService::GetConversationData(const std::string& uuid,
   GetConversation(
       uuid,
       base::BindOnce(
-          [](GetConversationDataCallback cb, ConversationHandler* handler) {
+          [](GetConversationDataCallback cb, ConversationMap& conversations,
+             const std::string& conv_uuid, ConversationHandler* handler) {
             std::vector<mojom::ConversationTurnPtr> turns;
             mojom::ConversationPtr conv = nullptr;
             if (handler) {
-              conv = handler->GetMetadataForTesting().Clone();
+              auto it = conversations.find(conv_uuid);
+              if (it != conversations.end()) {
+                conv = it->second->Clone();
+              }
               for (const auto& turn : handler->GetConversationHistory()) {
                 turns.push_back(turn.Clone());
               }
             }
             std::move(cb).Run(std::move(conv), std::move(turns));
           },
-          std::move(callback)));
+          std::move(callback), std::ref(conversations_), uuid));
 }
 
 bool AIChatService::GetIsContentAgentAllowed() const {
