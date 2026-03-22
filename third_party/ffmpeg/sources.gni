@@ -1,0 +1,64 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//third_party/ffmpeg/ffmpeg_options.gni")
+
+_use_linux_config = is_linux || is_chromeos || is_fuchsia
+
+brave_third_party_ffmpeg_c_sources = []
+brave_third_party_ffmpeg_asm_sources = []
+brave_third_party_ffmpeg_asm_deps = []
+
+# HEVC/H.265 software decoder sources for Linux.
+# Provides a fallback when hardware decode is unavailable (e.g., NVIDIA GPUs
+# where VA-API hardware decode is not functional in Chromium).
+if (_use_linux_config && ffmpeg_branding == "Chrome") {
+  brave_third_party_ffmpeg_c_sources += [
+    # Byte-swap DSP (renamed to avoid duplicate object name with x86/bswapdsp.asm)
+    "libavcodec/autorename_libavcodec_bswapdsp.c",
+
+    # HEVC core decoder
+    "libavcodec/hevc/autorename_libavcodec_hevc_cabac.c",
+    "libavcodec/hevc/autorename_libavcodec_hevc_parse.c",
+    "libavcodec/hevc/autorename_libavcodec_hevc_parser.c",
+    "libavcodec/hevc/data.c",
+    "libavcodec/hevc/dsp.c",
+    "libavcodec/hevc/filter.c",
+    "libavcodec/hevc/hevcdec.c",
+    "libavcodec/hevc/mvs.c",
+    "libavcodec/hevc/pred.c",
+    "libavcodec/hevc/ps.c",
+    "libavcodec/hevc/refs.c",
+    "libavcodec/hevc/sei.c",
+
+    # Film grain and Dolby Vision RPU support for HEVC streams
+    "libavcodec/aom_film_grain.c",
+    "libavcodec/dovi_rpu.c",
+    "libavcodec/dovi_rpudec.c",
+  ]
+}
+
+# HEVC x86_64 optimizations for Linux.
+if (_use_linux_config && current_cpu == "x64" && ffmpeg_branding == "Chrome") {
+  brave_third_party_ffmpeg_c_sources += [
+    "libavcodec/x86/bswapdsp_init.c",
+    "libavcodec/x86/h26x/h2656dsp.c",
+    "libavcodec/x86/hevc/dsp_init.c",
+  ]
+  brave_third_party_ffmpeg_asm_sources += [
+    "libavcodec/x86/bswapdsp.asm",
+    "libavcodec/x86/h26x/h2656_inter.asm",
+    "libavcodec/x86/hevc/add_res.asm",
+    "libavcodec/x86/hevc/deblock.asm",
+    "libavcodec/x86/hevc/idct.asm",
+    "libavcodec/x86/hevc/mc.asm",
+    "libavcodec/x86/hevc/sao.asm",
+    "libavcodec/x86/hevc/sao_10bit.asm",
+  ]
+  brave_third_party_ffmpeg_asm_deps += [
+    "libavcodec/x86/h26x/h2656_sao.asm",
+    "libavcodec/x86/h26x/h2656_sao_10bit.asm",
+  ]
+}
