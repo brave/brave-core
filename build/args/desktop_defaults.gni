@@ -8,3 +8,10 @@
 # builds for non-mobile builds (mac, linux, win)
 
 safe_browsing_mode = 1
+
+if (is_linux) {
+  # Allow the platform allocator to be used on Linux builds so hardened_malloc
+  # can be picked up when it is provided by the system.
+  use_partition_alloc_as_malloc = false
+  enable_backup_ref_ptr_support = false
+}
