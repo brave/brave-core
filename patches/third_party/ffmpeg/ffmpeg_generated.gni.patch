@@ -1,0 +1,16 @@
+diff --git a/ffmpeg_generated.gni b/ffmpeg_generated.gni
+index c584bfe8fb7f9d18156fb0c4b4d86daf6a1d2657..f83235a8db9f2af5ae4f357610a79ca87ba15a60 100644
+--- a/ffmpeg_generated.gni
++++ b/ffmpeg_generated.gni
+@@ -16,6 +16,11 @@ ffmpeg_nasm_include_dirs = []
+ ffmpeg_c_deps = []
+ ffmpeg_asm_deps = []
+ 
++import("//brave/third_party/ffmpeg/sources.gni")
++ffmpeg_c_sources += brave_third_party_ffmpeg_c_sources
++ffmpeg_asm_sources += brave_third_party_ffmpeg_asm_sources
++ffmpeg_asm_deps += brave_third_party_ffmpeg_asm_deps
++
+ use_linux_config = is_linux || is_chromeos || is_fuchsia
+ 
+ ffmpeg_asm_deps += [
