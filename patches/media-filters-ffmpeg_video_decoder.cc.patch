@@ -1,0 +1,50 @@
+diff --git a/media/filters/ffmpeg_video_decoder.cc b/media/filters/ffmpeg_video_decoder.cc
+index 7a63e7b64cdef89b487fa53b2f03c313e17967d2..111a3de77753a4dd19fe9471579a81a268493a29 100644
+--- a/media/filters/ffmpeg_video_decoder.cc
++++ b/media/filters/ffmpeg_video_decoder.cc
+@@ -6,6 +6,8 @@
+ #include <stddef.h>
+ #include <stdint.h>
+ 
++#include "build/build_config.h"
++#include "media/media_buildflags.h"
+ #include <memory>
+ #include <numeric>
+ 
+@@ -73,17 +75,22 @@ static int GetFFmpegVideoDecoderThreadCount(const VideoDecoderConfig& config) {
+     case VideoCodec::kUnknown:
+     case VideoCodec::kVC1:
+     case VideoCodec::kMPEG2:
+-    case VideoCodec::kHEVC:
+     case VideoCodec::kVP9:
+     case VideoCodec::kAV1:
+     case VideoCodec::kDolbyVision:
+     case VideoCodec::kTheora:
+     case VideoCodec::kMPEG4:
+     case VideoCodec::kVP8:
++#if !(BUILDFLAG(IS_LINUX) && BUILDFLAG(ENABLE_PLATFORM_HEVC))
++    case VideoCodec::kHEVC:
++#endif
+       // We do not compile ffmpeg with support for any of these codecs.
+       NOTREACHED();
+ 
+     case VideoCodec::kH264:
++#if BUILDFLAG(IS_LINUX) && BUILDFLAG(ENABLE_PLATFORM_HEVC)
++    case VideoCodec::kHEVC:
++#endif
+       // Normalize to three threads for 1080p content, then scale linearly
+       // with number of pixels.
+       // Examples:
+@@ -117,8 +124,11 @@ static void ReleaseVideoBufferImpl(void* opaque, uint8_t* data) {
+ 
+ // static
+ bool FFmpegVideoDecoder::IsCodecSupported(VideoCodec codec) {
+-  // We only build support for H.264.
++#if BUILDFLAG(IS_LINUX) && BUILDFLAG(ENABLE_PLATFORM_HEVC)
++  return (codec == VideoCodec::kH264 || codec == VideoCodec::kHEVC) && IsDecoderBuiltInVideoCodec(codec);
++#else
+   return codec == VideoCodec::kH264 && IsDecoderBuiltInVideoCodec(codec);
++#endif
+ }
+ 
+ FFmpegVideoDecoder::FFmpegVideoDecoder(MediaLog* media_log)
