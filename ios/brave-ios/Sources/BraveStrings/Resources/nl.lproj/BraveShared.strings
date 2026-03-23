@@ -67,6 +67,9 @@
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Gebruikersnaam";
 
+/* Settings autofill section title */
+"Autofill" = "Automatisch aanvullen";
+
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Leid AMP-pagina's automatisch om";
 
@@ -141,33 +144,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Adres";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Brave-account";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "Bijna daar!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "Een bevestigingse-mail is onderweg. Klik op de knop in die e-mail om uw account te activeren.";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "Registratie annuleren";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "E-mailadres";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "Aan de slag";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "Bevestigingse-mail opnieuw verzenden";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "Ziet u de e-mail niet? Controleer uw spammap of klik op de knop om de bevestigingse-mail opnieuw te verzenden.";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "Uitloggen";
 
 /* Button to show the brave panel */
 "BravePanel" = "Brave-paneel";
@@ -1031,7 +1007,7 @@
 "nightMode.modeTitle" = "Modus";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
-"nightMode.sectionDescription" = "In de nachtmodus komt de weergave van websites overeen met die van het systeem.";
+"nightMode.sectionDescription" = "De nachtmodus beïnvloedt tegelijkertijd het uiterlijk van websites en het algemene uiterlijk van het systeem.";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
 "nightMode.settingsDescription" = "Zet nachtmodus aan/uit";
@@ -1063,11 +1039,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Verberg gesponsorde afbeeldingen";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "Gesponsorde afbeeldingen zijn merkachtergronden die zichtbaar zijn bij het openen van een nieuw tabblad in de browser. Door deze in te schakelen, draag je bij aan de missie van Brave.";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "Meer informatie";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "Gesponsorde afbeeldingen zijn merkachtergronden die verschijnen in nieuw geopende tabbladen in de browser. Het inschakelen van deze gesponsorde afbeeldingen ondersteunt de missie van Brave. [Meer informatie](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Meer informatie over Brave Rewards";
@@ -2278,7 +2251,8 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Wijzigingen opslaan";
 
-/* Settings item for clearing passwords and login data */
+/* Settings item for clearing passwords and login data
+Settings item for clearing site-specific settings and shields settings. */
 "SavedLogins" = "Bewaarde logins";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2367,9 +2341,6 @@
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Zoek met Brave";
-
-/* Settings security section title */
-"Security" = "Beveiliging";
 
 /* No comment provided by engineer. */
 "sendButtonTitle" = "Stuur";

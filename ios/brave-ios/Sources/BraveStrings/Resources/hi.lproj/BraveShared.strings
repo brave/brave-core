@@ -67,6 +67,9 @@
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "उपयोगकर्ता नाम";
 
+/* Settings autofill section title */
+"Autofill" = "ऑटोमैटिक भरना";
+
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "AMP पेजों को अपने-आप रीडायइरेक्ट करें";
 
@@ -141,33 +144,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "पता";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Brave अकाउंट";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "लगभग हो गया!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "एक पुष्टि ईमेल रास्ते में है। अपने खाते को सक्रिय करने के लिए उस ईमेल में बटन पर क्लिक करें।";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "पंजीकरण रद्द करें";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "ईमेल पता";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "आरंभ करें";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "पुष्टि ईमेल दोबारा भेजें";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "ईमेल नहीं दिख रहा? अपने स्पैम फ़ोल्डर की जांच करें या पुष्टि ईमेल को दोबारा भेजने के लिए बटन पर क्लिक करें।";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "साइन आउट करें";
 
 /* Button to show the brave panel */
 "BravePanel" = "Brave पैनल";
@@ -1031,7 +1007,7 @@
 "nightMode.modeTitle" = "मोड";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
-"nightMode.sectionDescription" = "नाइड मोड से वेबसाइट और सामान्य सिस्टम का रंगरूप एक साथ बदल जाएगा।";
+"nightMode.sectionDescription" = "नाइट मोड वेबसाइट और सामान्य सिस्टम के रंगरूप को एक साथ प्रभावित करेगा।";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
 "nightMode.settingsDescription" = "नाइड मोड चालू/बंद करें";
@@ -1063,11 +1039,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "स्पांसर्ड इमेजों को छिपाएँ";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "स्पॉन्सर की गई इमेज ब्रैंडेड ब्रैकग्राउंड होती हैं, जो ब्राउज़र में नए खोले गए टैब में दिखती हैं। स्पॉन्सर की गई इन इमेज को चालू करने से, Brave के लक्ष्य का समर्थन होता है।";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "ज़्यादा जानें";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "स्पॉन्सर की गई इमेज ब्रैंडेड बैकग्राउंड होती हैं, जो ब्राउज़र में नए खोले गए टैब में दिखती हैं। इन स्पॉन्सर की गई इमेज को सक्षम करने से Brave के लक्ष्य का समर्थन होता है। [और जानें](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Brave Rewards के बारे में ज़्यादा जानें";
@@ -2278,7 +2251,8 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "बदलाव सेव करें";
 
-/* Settings item for clearing passwords and login data */
+/* Settings item for clearing passwords and login data
+Settings item for clearing site-specific settings and shields settings. */
 "SavedLogins" = "सेव किए गए लॉगिंस";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2367,9 +2341,6 @@
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Brave पर सर्च करें";
-
-/* Settings security section title */
-"Security" = "सुरक्षा";
 
 /* No comment provided by engineer. */
 "sendButtonTitle" = "भेजें";

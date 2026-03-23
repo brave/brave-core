@@ -67,6 +67,9 @@
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Nume utilizator";
 
+/* Settings autofill section title */
+"Autofill" = "Completare automată";
+
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Redirecționează automat paginile AMP";
 
@@ -141,33 +144,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Adresă";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Contul Brave";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "Aproape am ajuns!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "Veți primi un e-mail de confirmare. Faceți clic pe butonul din acel e-mail pentru a vă activa contul.";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "Anulează înregistrarea";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "Adresă de email";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "Începe";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "Trimiteți din nou e-mailul de confirmare";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "Nu vedeți e-mailul? Verificați folderul spam sau faceți clic pe butonul pentru a retrimite e-mailul de confirmare.";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "Deconectare";
 
 /* Button to show the brave panel */
 "BravePanel" = "Panoul Brave";
@@ -1031,7 +1007,7 @@
 "nightMode.modeTitle" = "Mod";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
-"nightMode.sectionDescription" = "Modul de noapte va afecta aspectul site-urilor web cât și aspectul general al sistemului.";
+"nightMode.sectionDescription" = "Modul de noapte va afecta aspectul site-urilor web și aspectul general al sistemului în același timp.";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
 "nightMode.settingsDescription" = "Activează/dezactivează modul de noapte";
@@ -1063,11 +1039,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Ascunde imaginile sponsorizate";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "Imaginile sponsorizate sunt fundaluri care apar în filele nou deschise în browser. Activarea acestor imagini sponsorizate sprijină misiunea Brave.";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "Află mai multe";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "Imaginile sponsorizate sunt fundaluri marcate care apar în filele nou deschise în browser. Activarea acestor imagini sponsorizate sprijină misiunea Brave. [Aflați mai multe](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Află mai multe despre Brave Rewards";
@@ -2278,7 +2251,8 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Salvează modificările";
 
-/* Settings item for clearing passwords and login data */
+/* Settings item for clearing passwords and login data
+Settings item for clearing site-specific settings and shields settings. */
 "SavedLogins" = "Credențiale salvate";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2367,9 +2341,6 @@
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Caută cu Brave";
-
-/* Settings security section title */
-"Security" = "Securitate";
 
 /* No comment provided by engineer. */
 "sendButtonTitle" = "Trimite";

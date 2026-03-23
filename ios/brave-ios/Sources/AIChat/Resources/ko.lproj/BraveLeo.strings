@@ -49,6 +49,21 @@
 /* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
 "aichat.busyErrorDescription" = "레오가 지금 너무 바쁩니다. 몇 분 후 다시 시도하세요.";
 
+/* The button title for adding a new custom model */
+"aichat.byomAddNewModelButtonTitle" = "새 모델 추가";
+
+/* The description shown when no custom models have been added, prompting the user to add one */
+"aichat.byomEmptyStateDescription" = "\"새 모델 추가\"를 탭하여 시작하세요";
+
+/* The title shown when no custom models have been added yet */
+"aichat.byomEmptyStateTitle" = "아직 연결한 모델이 없습니다";
+
+/* The section header description explaining the Bring Your Own Model feature with a link to learn more. The text inside square brackets should be translated. */
+"aichat.byomSectionHeaderDescription" = "자신이 호스팅하거나 타사에서 호스팅하는 LLM을 레오에 연결하고 브라우저 내에서 사용하세요. Ollama와 같은 OpenAI Chat Protocol 호환 프레임워크를 사용하세요. [자세한 정보](https://support.brave.app/hc/en-us/articles/34070140231821-How-do-I-use-the-Bring-Your-Own-Model-BYOM-with-Brave-Leo)";
+
+/* The section header title for the Bring Your Own Model feature */
+"aichat.byomSectionHeaderTitle" = "소유한 모델 가져오기";
+
 /* The subtitle for intro view which triggers just chat */
 "aichat.chatIntroJustTalkSubTitle" = "무엇이든 제게 물어보세요! 어떤 주제든 함께 이야기할 수 있습니다. 전 항상 열심히 배워 점점 더 똑똑해지고 있으니까 갈수록 나은 답변을 드릴 거예요.";
 
@@ -78,6 +93,87 @@
 
 /* The title of the section where custom models are displayed as a list. */
 "aichat.customModelChatSectionTitle" = "맞춤 모델";
+
+/* The navigation bar title when adding a new custom model */
+"aichat.customModelFormAddModelNavigationTitle" = "모델 추가";
+
+/* The footer text explaining when and how API keys are used */
+"aichat.customModelFormApiKeyFieldFooter" = "몇몇 서버 측 프레임워크가 API 키나 액세스 토큰 등, 인증 자격증명을 요구할 수 있습니다. 요청 헤더에 추가됩니다.";
+
+/* The label for the API key field */
+"aichat.customModelFormApiKeyFieldTitle" = "API 키";
+
+/* The footer text explaining what context size means for AI models */
+"aichat.customModelFormContextSizeFieldFooter" = "모델이 단일 상호작용에서 처리할 수 있는 최대 토큰 수입니다. 컨텍스트 크기가 클수록 모델이 처리할 수 있는 대화가 더 길어집니다. 모델마다 지원하는 최대 컨텍스트 크기가 다릅니다.";
+
+/* The label for the context size field */
+"aichat.customModelFormContextSizeFieldTitle" = "컨텍스트 크기";
+
+/* The placeholder text for generic detail input fields */
+"aichat.customModelFormDetailsFieldPlaceholder" = "세부 정보 입력";
+
+/* The button title for dismissing the keyboard */
+"aichat.customModelFormDoneButtonTitle" = "완료";
+
+/* The navigation bar title when editing an existing custom model */
+"aichat.customModelFormEditModelNavigationTitle" = "모델 편집";
+
+/* The alert title shown when saving a custom model fails */
+"aichat.customModelFormFailedToSaveAlertTitle" = "모델 저장 실패";
+
+/* The error message shown when the context size is invalid */
+"aichat.customModelFormInvalidContextSizeErrorMessage" = "유효하지 않은 컨텍스트 크기";
+
+/* The error message shown when the server endpoint URL is invalid */
+"aichat.customModelFormInvalidUrlErrorMessage" = "URL이 올바르지 않습니다.";
+
+/* The footer text explaining the purpose of the label field */
+"aichat.customModelFormLabelFieldFooter" = "레오의 모델 선택기에서 사용할 모델 이름입니다.";
+
+/* The placeholder text for the custom model name field */
+"aichat.customModelFormLabelFieldPlaceholder" = "이 모델의 라벨을 입력하세요";
+
+/* The label for the custom model name field in the custom model form */
+"aichat.customModelFormLabelFieldTitle" = "라벨";
+
+/* The error message shown when trying to use a private network address, explaining why it's blocked and how to enable it */
+"aichat.customModelFormPrivateEndpointErrorMessage" = "입력한 주소가 라우터나 로컬 서버 같은 개인 네트워크에서 나온 것으로 보입니다. Brave는 사용자의 안전을 위해 이를 자동으로 차단하지만, 안전하다고 확신하는 경우 활성화할 수 있습니다.\n\n계속하려면 brave://flags/를 방문하여 \"brave-ai-chat-allow-private-ips\"를 검색하고 기능을 활성화하세요. 활성화하면 레오 설정에서 개인 네트워크 주소를 사용할 수 있습니다.";
+
+/* The footer text explaining what the model request name is used for and providing an example */
+"aichat.customModelFormRequestNameFieldFooter" = "서버 측 프레임워크로의 요청에 표시되어야 하는 모델의 이름입니다(예: phi-3). 이 이름이 서버 측 프레임워크에서 기대하는 것과 정확하게 일치하지 않으면 통합이 작동하지 않습니다.";
+
+/* The placeholder text for the model request name field */
+"aichat.customModelFormRequestNameFieldPlaceholder" = "모델 요청 이름 입력";
+
+/* The label for the model request name field */
+"aichat.customModelFormRequestNameFieldTitle" = "모델 요청 이름";
+
+/* The indicator text shown next to required fields in forms */
+"aichat.customModelFormRequiredFieldIndicator" = "필수";
+
+/* The button title for saving a custom model */
+"aichat.customModelFormSaveButtonTitle" = "저장";
+
+/* The footer text explaining what the server endpoint is and providing an example URL for Ollama */
+"aichat.customModelFormServerEndpointFieldFooter" = "서버 측 프레임워크가 요청을 수신하는 URL입니다. 확실하지 않으면 서버 측 프레임워크 문서를 확인하세요. 예를 들어 Ollama의 경우 항상 `http://localhost:11434/v1/chat/completions`입니다. Brave는 이러한 요청을 프록시하지 않으므로 선택한 제공자의 개인정보 보호 약관을 읽어주시기 바랍니다.";
+
+/* The label for the server endpoint URL field */
+"aichat.customModelFormServerEndpointFieldTitle" = "서버 엔드포인트";
+
+/* The footer text explaining what a system prompt is and noting the %datetime% placeholder */
+"aichat.customModelFormSystemPromptFieldFooter" = "모델의 응답을 안내하기 위해 모델에 제공되는 사용자 지정 지침 및/또는 컨텍스트입니다. 현재 날짜와 시간을 삽입할 위치에 %datetime%을 사용하세요.";
+
+/* The label for the system prompt field */
+"aichat.customModelFormSystemPromptFieldTitle" = "시스템 프롬프트";
+
+/* Warning message shown when user enters an HTTP (not HTTPS) endpoint */
+"aichat.customModelFormUnsafeEndpointWarning" = "이 엔드포인트는 안전하지 않을 수 있습니다.";
+
+/* The description text explaining what vision support means with an example */
+"aichat.customModelFormVisionSupportFieldDescription" = "이 모델이 이미지를 입력으로 사용하는 경우(예: llama 3.2b 비전)";
+
+/* The label for the vision support toggle */
+"aichat.customModelFormVisionSupportFieldTitle" = "비전 지원";
 
 /* The title for the custom models section in the menu */
 "aichat.customModelsMenuSectionTitle" = "맞춤 모델";

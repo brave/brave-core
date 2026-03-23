@@ -107,5 +107,5 @@
 "SyncImportFolderName" = "Segnalibri importati";
 
 /* An unknown error occurred during data importing. */
-"unknownError" = "Il file zip non contiene dati da importare.";
+"unknownError" = "Il file zip non contiene alcun dato di importazione.";
 

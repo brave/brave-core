@@ -49,6 +49,21 @@
 /* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
 "aichat.busyErrorDescription" = "Το Leo είναι πολύ απασχολημένο αυτήν τη στιγμή. Δοκιμάστε ξανά σε λίγα λεπτά.";
 
+/* The button title for adding a new custom model */
+"aichat.byomAddNewModelButtonTitle" = "Προσθήκη νέου μοντέλου";
+
+/* The description shown when no custom models have been added, prompting the user to add one */
+"aichat.byomEmptyStateDescription" = "Ξεκινήστε κάνοντας tap στο \"Προσθήκη νέου μοντέλου\"";
+
+/* The title shown when no custom models have been added yet */
+"aichat.byomEmptyStateTitle" = "Δεν έχετε συνδέσει ακόμη μοντέλο";
+
+/* The section header description explaining the Bring Your Own Model feature with a link to learn more. The text inside square brackets should be translated. */
+"aichat.byomSectionHeaderDescription" = "Συνδέστε το δικό σας αυτο-φιλοξενούμενο ή φιλοξενούμενο από τρίτο LLM στο Leo και χρησιμοποιήστε το εντός του πρόγραμμα περιήγησης. Χρησιμοποιήστε οποιοδήποτε πλαίσιο συμβατό με OpenAI Chat Protocol όπως το Ollama. [Μάθετε περισσότερα](https://support.brave.app/hc/en-us/articles/34070140231821-How-do-I-use-the-Bring-Your-Own-Model-BYOM-with-Brave-Leo)";
+
+/* The section header title for the Bring Your Own Model feature */
+"aichat.byomSectionHeaderTitle" = "Φέρτε το δικό σας μοντέλο";
+
 /* The subtitle for intro view which triggers just chat */
 "aichat.chatIntroJustTalkSubTitle" = "Ρωτήστε με οτιδήποτε! Μπορούμε να μιλήσουμε για όποιο θέμα θέλετε. Πάντα μαθαίνω και βελτιώνομαι, ώστε να παρέχω καλύτερες απαντήσεις.";
 
@@ -78,6 +93,87 @@
 
 /* The title of the section where custom models are displayed as a list. */
 "aichat.customModelChatSectionTitle" = "Προσαρμοσμένα μοντέλα";
+
+/* The navigation bar title when adding a new custom model */
+"aichat.customModelFormAddModelNavigationTitle" = "Προσθήκη μοντέλου";
+
+/* The footer text explaining when and how API keys are used */
+"aichat.customModelFormApiKeyFieldFooter" = "Ορισμένα πλαίσια εξυπηρέτησης μπορεί να απαιτούν διαπιστευτήρια ελέγχου ταυτότητας, όπως ένα κλειδί API ή ένα token πρόσβασης. Αυτά θα προστεθούν στον τίτλο του αιτήματος.";
+
+/* The label for the API key field */
+"aichat.customModelFormApiKeyFieldTitle" = "Κλειδί API";
+
+/* The footer text explaining what context size means for AI models */
+"aichat.customModelFormContextSizeFieldFooter" = "Ο μέγιστος αριθμός token που μπορεί να επεξεργαστεί το μοντέλο σε μία μόνο αλληλεπίδραση. Ένα μεγαλύτερο μέγεθος πλαισίου επιτρέπει στο μοντέλο να χειρίζεται μεγαλύτερες συνομιλίες. Διαφορετικά μοντέλα υποστηρίζουν διαφορετικά μέγιστα μεγέθη πλαισίου.";
+
+/* The label for the context size field */
+"aichat.customModelFormContextSizeFieldTitle" = "Μέγεθος πλαισίου";
+
+/* The placeholder text for generic detail input fields */
+"aichat.customModelFormDetailsFieldPlaceholder" = "Εισαγάγετε λεπτομέρειες";
+
+/* The button title for dismissing the keyboard */
+"aichat.customModelFormDoneButtonTitle" = "Τέλος";
+
+/* The navigation bar title when editing an existing custom model */
+"aichat.customModelFormEditModelNavigationTitle" = "Επεξεργασία μοντέλου";
+
+/* The alert title shown when saving a custom model fails */
+"aichat.customModelFormFailedToSaveAlertTitle" = "Αποτυχία αποθήκευσης μοντέλου";
+
+/* The error message shown when the context size is invalid */
+"aichat.customModelFormInvalidContextSizeErrorMessage" = "Μη έγκυρο μέγεθος περιεχομένου";
+
+/* The error message shown when the server endpoint URL is invalid */
+"aichat.customModelFormInvalidUrlErrorMessage" = "Μη έγκυρη διεύθ. URL";
+
+/* The footer text explaining the purpose of the label field */
+"aichat.customModelFormLabelFieldFooter" = "Όνομα μοντέλου για χρήση στον επιλογέα μοντέλων του Leo.";
+
+/* The placeholder text for the custom model name field */
+"aichat.customModelFormLabelFieldPlaceholder" = "Εισαγάγετε ετικέτα για αυτό το μοντέλο";
+
+/* The label for the custom model name field in the custom model form */
+"aichat.customModelFormLabelFieldTitle" = "Ετικέτα";
+
+/* The error message shown when trying to use a private network address, explaining why it's blocked and how to enable it */
+"aichat.customModelFormPrivateEndpointErrorMessage" = "Η διεύθυνση που εισαγάγατε φαίνεται να προέρχεται από ένα ιδιωτικό δίκτυο—όπως ο δρομολογητής ή ένας τοπικός διακομιστής. Το Brave τα μπλοκάρει αυτόματα για να σας διατηρήσει ασφαλείς, αλλά μπορείτε να τα ενεργοποιήσετε εάν είστε σίγουροι ότι είναι ασφαλή.\n\nΓια να συνεχίσετε, επισκεφθείτε το brave://flags/, αναζητήστε το \"brave-ai-chat-allow-private-ips,\" και ενεργοποιήστε τη δυνατότητα. Μόλις ενεργοποιηθεί, μπορείτε να χρησιμοποιήσετε ιδιωτικές διευθύνσεις δικτύου στις ρυθμίσεις του Leo.";
+
+/* The footer text explaining what the model request name is used for and providing an example */
+"aichat.customModelFormRequestNameFieldFooter" = "Το όνομα του μοντέλου όπως θα πρέπει να εμφανίζεται στο αίτημα για το πλαίσιο εξυπηρέτησης, π.χ. phi-3 (λάβετε υπόψη ότι αν αυτό το όνομα δεν ταιριάζει ακριβώς με αυτό που αναμένεται από το πλαίσιο εξυπηρέτησης, η  ενσωμάτωση δεν θα λειτουργήσει).";
+
+/* The placeholder text for the model request name field */
+"aichat.customModelFormRequestNameFieldPlaceholder" = "Εισαγάγετε όνομα αιτήματος μοντέλου";
+
+/* The label for the model request name field */
+"aichat.customModelFormRequestNameFieldTitle" = "Όνομα αιτήματος μοντέλου";
+
+/* The indicator text shown next to required fields in forms */
+"aichat.customModelFormRequiredFieldIndicator" = "Απαραίτητο";
+
+/* The button title for saving a custom model */
+"aichat.customModelFormSaveButtonTitle" = "Αποθήκευση";
+
+/* The footer text explaining what the server endpoint is and providing an example URL for Ollama */
+"aichat.customModelFormServerEndpointFieldFooter" = "Η διεύθυνση URL όπου το πλαίσιο εξυπηρέτησής σας περιμένει αιτήματα. Εάν δεν είστε βέβαιοι, ελέγξτε τα έγγραφα του πλαισίου εξυπηρέτησης. Π.χ. για το Ollama, αυτή είναι πάντα η διεύθυνση http://localhost:11434/v1/chat/completions. Το Brave δεν δρομολογεί αυτά τα αιτήματα μέσω διακομιστή, παρακαλώ διαβάστε τους όρους απορρήτου του επιλεγμένου παρόχου.";
+
+/* The label for the server endpoint URL field */
+"aichat.customModelFormServerEndpointFieldTitle" = "Τελικό σημείο διακομιστή";
+
+/* The footer text explaining what a system prompt is and noting the %datetime% placeholder */
+"aichat.customModelFormSystemPromptFieldFooter" = "Προσαρμοσμένες οδηγίες ή/και πλαίσιο που δίνονται στο μοντέλο για να καθοδηγήσουν τις απαντήσεις του. Χρησιμοποιήστε το %datetime% όπου θέλετε να εισαχθεί η τρέχουσα ημερομηνία και ώρα.";
+
+/* The label for the system prompt field */
+"aichat.customModelFormSystemPromptFieldTitle" = "Προτροπή συστήματος";
+
+/* Warning message shown when user enters an HTTP (not HTTPS) endpoint */
+"aichat.customModelFormUnsafeEndpointWarning" = "Αυτό το τελικό σημείο ενδέχεται να μην είναι ασφαλές.";
+
+/* The description text explaining what vision support means with an example */
+"aichat.customModelFormVisionSupportFieldDescription" = "Εάν αυτό το μοντέλο λαμβάνει εικόνα ως είσοδο, π.χ. llama 3.2b vision";
+
+/* The label for the vision support toggle */
+"aichat.customModelFormVisionSupportFieldTitle" = "Υποστήριξη Vision";
 
 /* The title for the custom models section in the menu */
 "aichat.customModelsMenuSectionTitle" = "Προσαρμοσμένα μοντέλα";

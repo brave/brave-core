@@ -67,6 +67,9 @@
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Meno používateľa";
 
+/* Settings autofill section title */
+"Autofill" = "Automatické dopĺňanie";
+
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Stránky AMP s automatickým presmerovaním";
 
@@ -141,33 +144,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Adresa";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Účet Brave";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "Skoro hotovo!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "Potvrdzovací email je na ceste. Kliknutím na tlačidlo v tomto emaile aktivujete svoj účet.";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "Zrušiť registráciu";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "Emailová adresa";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "Začať";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "Znova odoslať potvrdzovací email";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "Email nevidíte? Skontrolujte si priečinok nevyžiadanej pošty alebo kliknutím na tlačidlo znova odošlite potvrdzovací email.";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "Odhlásiť sa";
 
 /* Button to show the brave panel */
 "BravePanel" = "Panel Brave";
@@ -1063,11 +1039,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Skryť sponzorované obrázky";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "Sponzorované obrázky sú označené pozadia, ktoré sa zobrazujú na novootvorených kartách v prehliadači. Povolením týchto sponzorovaných obrázkov podporíte poslanie spoločnosti Brave.";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "Zjistěte více.";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "Sponzorované obrázky sú označené pozadia, ktoré sa zobrazujú na novootvorených kartách v prehliadači. Povolením týchto sponzorovaných obrázkov podporíte poslanie spoločnosti Brave. [Ďalšie informácie](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Prečítajte si viac o odmenách Brave.";
@@ -2278,7 +2251,8 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Uložiť zmeny";
 
-/* Settings item for clearing passwords and login data */
+/* Settings item for clearing passwords and login data
+Settings item for clearing site-specific settings and shields settings. */
 "SavedLogins" = "Uložené prihlasovacie údaje";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2367,9 +2341,6 @@
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Vyhľadávanie pomocou Brave";
-
-/* Settings security section title */
-"Security" = "Bezpečnosť";
 
 /* No comment provided by engineer. */
 "sendButtonTitle" = "Odoslať";

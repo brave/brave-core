@@ -67,6 +67,9 @@
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Имя пользователя";
 
+/* Settings autofill section title */
+"Autofill" = "Автозаполнение";
+
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Автоматически обходить AMP-страницы";
 
@@ -142,33 +145,6 @@
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Адрес";
 
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Учетная запись Brave";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "Почти готово!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "Письмо с подтверждением отправляется. Нажмите кнопку в этом письме, чтобы активировать вашу учетную запись.";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "Отменить регистрацию";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "Адрес электронной почты";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "Начать";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "Отправить письмо с подтверждением повторно";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "Не видите письмо? Проверьте папку спама или нажмите кнопку, чтобы отправить письмо с подтверждением повторно.";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "Выйти";
-
 /* Button to show the brave panel */
 "BravePanel" = "Панель Brave";
 
@@ -233,13 +209,13 @@
 "BraveShieldsSiteBroken" = "Проблемы с сайтом? Попробуйте выключить щиты.";
 
 /* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Щиты Brave";
+"BraveShieldsStatusTitle" = "Защита Brave";
 
 /* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "выключены";
+"BraveShieldsStatusValueDown" = "выкл";
 
 /* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "включены";
+"BraveShieldsStatusValueUp" = "вкл";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Brave Shields: чтобы переключить, нажмите дважды";
@@ -1031,7 +1007,7 @@
 "nightMode.modeTitle" = "Тема";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
-"nightMode.sectionDescription" = "Ночной режим будет применен к сайту и системе в целом.";
+"nightMode.sectionDescription" = "Ночной режим одновременно повлияет на внешний вид сайта и общий вид системы.";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
 "nightMode.settingsDescription" = "Включить/отключить ночной режим";
@@ -1063,11 +1039,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Не показывать спонсорские изображения";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "Спонсируемые изображения — это брендированные фоны, которые появляются на новых вкладках в браузере. Включение этих спонсируемых изображений поддерживает миссию Brave.";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "Подробнее…";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "Спонсируемые изображения — это брендированные фоны, которые появляются на новых вкладках в браузере. Включение этих спонсируемых изображений поддерживает миссию Brave. [Подробнее](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Подробнее о Brave Rewards…";
@@ -1190,7 +1163,7 @@
 "OBShieldsDetail" = "Блокируйте трекеры, отслеживающие ваши действия в Интернете.";
 
 /* Title for shields onboarding screen */
-"OBShieldsTitle" = "Щиты Brave";
+"OBShieldsTitle" = "Защита Brave";
 
 /* Button to show the Brave Rewards Ads. */
 "OBShowMeButton" = "Показать";
@@ -2278,7 +2251,8 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Сохранить изменения";
 
-/* Settings item for clearing passwords and login data */
+/* Settings item for clearing passwords and login data
+Settings item for clearing site-specific settings and shields settings. */
 "SavedLogins" = "Сохраненные учетные данные";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2367,9 +2341,6 @@
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Искать в Brave";
-
-/* Settings security section title */
-"Security" = "Безопасность";
 
 /* No comment provided by engineer. */
 "sendButtonTitle" = "Отправить";

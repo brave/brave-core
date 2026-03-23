@@ -1,14 +1,26 @@
 /* A section header title for ads-related settings */
 "adsHeader" = "Brave Ads";
 
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "¿Ya lo ha contratado en brave.com?";
+
 /* A section header title for analytics-related settings */
 "analyticsHeader" = "Análisis";
 
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "Comprar ahora";
+
+/* A note that indicates a feature is enabled */
+"enabledFeatureNote" = "Esta función está habilitada porque usted la ha activado.";
+
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin es una forma basada en suscripción para deshabilitar las funciones que generan ingresos y que de otro modo apoyan a Brave como negocio. Los suscriptores de Brave Origin continuarán beneficiándose de nuestra privacidad líder en la industria, bloqueador de anuncios y velocidad (a través de Escudos de Brave), así como actualizaciones de software regulares, parches de Chromium y mejoras de seguridad y privacidad. También desbloquearán la opción de deshabilitar funciones como Brave Leo, Noticias, Recompensas, Billetera, VPN, dominios Web3 y más.\n\nLos suscriptores verán un nuevo panel de control en el menú Configuración del navegador. Las funciones existentes, así como cualquier nueva función que lancemos en el futuro, aparecerían aquí y estarían deshabilitadas de forma predeterminada.\n\n**Nota: Brave Origin no deshabilitará funciones del navegador que actualmente utilizas, y no afectará las funciones de Buscador de Brave ni Anuncios en los resultados de búsqueda.**";
+"featuresFooter" = "Brave Origin es una versión del navegador Brave que te permite deshabilitar fácilmente las funciones que generan ingresos y que de otra manera apoyan a Brave como negocio. Los usuarios de Brave Origin continuarán beneficiándose de nuestra privacidad líder en la industria, bloqueador de anuncios y velocidad (a través de Escudos de Brave), así como actualizaciones de software regulares, parches de Chromium y mejoras de seguridad y privacidad. También desbloquearán la opción de deshabilitar funciones como Brave Leo, Recompensas, Billetera, VPN, dominios Web3 y más.\n\nUna vez comprado, los usuarios verán un nuevo panel de control en el menú Configuración del navegador. Las funciones existentes, así como cualquier función nueva que lancemos en el futuro, aparecerían aquí y estarían deshabilitadas de forma predeterminada.\n\n**Nota: Brave Origin no deshabilitará funciones del navegador que actualmente uses, y no afectará las funciones de Buscador de Brave ni Anuncios en los resultados de búsqueda.**";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "Funciones";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Obtener un código de inicio de sesión";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Leo IA";
@@ -16,14 +28,32 @@
 /* A toggle label for Brave News feature */
 "newsLabel" = "Noticias";
 
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "Compra única";
+
+/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
+"paywallDescription" = "**Personaliza tu navegador mientras aún apoyas a Brave**\n\nBrave Origin es una versión paga del navegador para usuarios que no necesitan todas las funciones que apoyan a Brave como negocio, pero aún desean la privacidad que solo Brave ofrece. Los usuarios de Brave Origin continuarán beneficiándose de nuestra privacidad líder en la industria, bloqueador de anuncios y velocidad (a través de Escudos de Brave), así como actualizaciones de software regulares, parches de Chromium y mejoras de seguridad y privacidad. También desbloquearán la opción de deshabilitar funciones como IA, Recompensas, Billetera, VPN, dominios Web3 y más.\n\n**Brave Origin está disponible a través de compra única. En dispositivos móviles (Android e iOS) y computadora de escritorio, Origin se puede comprar como una actualización a tu versión de lanzamiento existente.** En computadora de escritorio, Origin también está disponible como una aplicación independiente y separada. Ya sea que se compre como una actualización o aplicación separada, los usuarios de Origin verán un nuevo panel de control en el menú Configuración. Las funciones existentes, así como cualquier función nueva que lancemos en el futuro, aparecerían aquí y estarían deshabilitadas de forma predeterminada.*\n\n* Ten en cuenta que si has comprado Origin como una actualización a tu versión existente de Brave, Origin no deshabilitará funciones del navegador que actualmente uses. Para la versión de actualización y la versión independiente, Origin no afectará las funciones de Buscador de Brave ni Anuncios en los resultados de búsqueda.";
+
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Playlist";
 
 /* A toggle label for privacy preserving analytics feature */
 "privacyPreservingAnalyticsLabel" = "Análisis con preservación de la privacidad";
 
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "¿Tienes un código promocional?";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "No ha sido posible completar la compra. Vuelve a intentarlo, o comprueba la información de pago que tienes en Apple e inténtalo de nuevo.";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "Canjear código promocional";
+
 /* A button label to reset all Origin settings to their default values */
 "resetToDefaultsButton" = "Restablecer valores predeterminados";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "Restaurar";
 
 /* A toggle label for Brave Rewards feature */
 "rewardsLabel" = "Recompensas";
@@ -33,6 +63,18 @@
 
 /* A toggle label for Brave Talk feature */
 "talkLabel" = "Videollamadas";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "Mantener el núcleo adblock, privacidad, & velocidad";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "IU del navegador minimalista centrada en Escudos";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "Compra única, sin costo de suscripción adicional";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "Apoye nuestra misión & trabajo de código abierto";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";

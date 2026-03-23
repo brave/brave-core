@@ -49,6 +49,21 @@
 /* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
 "aichat.busyErrorDescription" = "Leo 目前忙碌中，请稍后再试。";
 
+/* The button title for adding a new custom model */
+"aichat.byomAddNewModelButtonTitle" = "添加新型号";
+
+/* The description shown when no custom models have been added, prompting the user to add one */
+"aichat.byomEmptyStateDescription" = "首先点击\"添加新型号\"";
+
+/* The title shown when no custom models have been added yet */
+"aichat.byomEmptyStateTitle" = "您尚未连接型号";
+
+/* The section header description explaining the Bring Your Own Model feature with a link to learn more. The text inside square brackets should be translated. */
+"aichat.byomSectionHeaderDescription" = "将您自托管或第三方托管的 LLM 连接到 Leo，并在浏览器中使用它们。使用任何与 OpenAI Chat Protocol 兼容的框架，例如 Ollama。[了解更多](https://support.brave.app/hc/en-us/articles/34070140231821-How-do-I-use-the-Bring-Your-Own-Model-BYOM-with-Brave-Leo)";
+
+/* The section header title for the Bring Your Own Model feature */
+"aichat.byomSectionHeaderTitle" = "自备模型";
+
 /* The subtitle for intro view which triggers just chat */
 "aichat.chatIntroJustTalkSubTitle" = "您可以问我任何问题！我们可以讨论任何您想讨论的话题。我一直在学习和进步，以提供更好的答案。";
 
@@ -78,6 +93,87 @@
 
 /* The title of the section where custom models are displayed as a list. */
 "aichat.customModelChatSectionTitle" = "自定义型号";
+
+/* The navigation bar title when adding a new custom model */
+"aichat.customModelFormAddModelNavigationTitle" = "添加模型";
+
+/* The footer text explaining when and how API keys are used */
+"aichat.customModelFormApiKeyFieldFooter" = "某些服务框架可能需要认证凭证，如 API 密钥或访问令牌。这些凭证将添加到申请标题中。";
+
+/* The label for the API key field */
+"aichat.customModelFormApiKeyFieldTitle" = "API 密钥";
+
+/* The footer text explaining what context size means for AI models */
+"aichat.customModelFormContextSizeFieldFooter" = "模型在单次交互中可处理的最大字符数。上下文大小越大，模型就越能处理较长的对话。不同的模型支持不同的最大上下文大小。";
+
+/* The label for the context size field */
+"aichat.customModelFormContextSizeFieldTitle" = "上下文大小";
+
+/* The placeholder text for generic detail input fields */
+"aichat.customModelFormDetailsFieldPlaceholder" = "输入详情";
+
+/* The button title for dismissing the keyboard */
+"aichat.customModelFormDoneButtonTitle" = "已完成";
+
+/* The navigation bar title when editing an existing custom model */
+"aichat.customModelFormEditModelNavigationTitle" = "编辑模型";
+
+/* The alert title shown when saving a custom model fails */
+"aichat.customModelFormFailedToSaveAlertTitle" = "保存模型失败";
+
+/* The error message shown when the context size is invalid */
+"aichat.customModelFormInvalidContextSizeErrorMessage" = "上下文大小无效";
+
+/* The error message shown when the server endpoint URL is invalid */
+"aichat.customModelFormInvalidUrlErrorMessage" = "网址无效";
+
+/* The footer text explaining the purpose of the label field */
+"aichat.customModelFormLabelFieldFooter" = "在 Leo 的模型选择器中使用的模型名称。";
+
+/* The placeholder text for the custom model name field */
+"aichat.customModelFormLabelFieldPlaceholder" = "为此模型输入标签";
+
+/* The label for the custom model name field in the custom model form */
+"aichat.customModelFormLabelFieldTitle" = "标签";
+
+/* The error message shown when trying to use a private network address, explaining why it's blocked and how to enable it */
+"aichat.customModelFormPrivateEndpointErrorMessage" = "您输入的地址似乎来自私有网络（如您的路由器或本地服务器）。Brave 会自动阻止这些以保护您的安全，但如果您确信它是安全的，可以启用它们。\n\n要继续，请访问 brave://flags/，搜索";
+
+/* The footer text explaining what the model request name is used for and providing an example */
+"aichat.customModelFormRequestNameFieldFooter" = "模型的名称应该出现在服务框架请求中，例如 phi-3（请注意，如果此名称与服务框架期望的名称不完全匹配，集成将不会正常工作）。";
+
+/* The placeholder text for the model request name field */
+"aichat.customModelFormRequestNameFieldPlaceholder" = "输入模型请求名称";
+
+/* The label for the model request name field */
+"aichat.customModelFormRequestNameFieldTitle" = "申请型号名称";
+
+/* The indicator text shown next to required fields in forms */
+"aichat.customModelFormRequiredFieldIndicator" = "必填";
+
+/* The button title for saving a custom model */
+"aichat.customModelFormSaveButtonTitle" = "保存";
+
+/* The footer text explaining what the server endpoint is and providing an example URL for Ollama */
+"aichat.customModelFormServerEndpointFieldFooter" = "您的服务框架正在侦听请求的 URL。如果您不确定，请检查服务框架文档。例如，对于 Ollama，它始终是 `http://localhost:11434/v1/chat/completions`。Brave 不会代理这些请求，请阅读所选提供商的隐私条款。";
+
+/* The label for the server endpoint URL field */
+"aichat.customModelFormServerEndpointFieldTitle" = "服务器终端";
+
+/* The footer text explaining what a system prompt is and noting the %datetime% placeholder */
+"aichat.customModelFormSystemPromptFieldFooter" = "给模型的自定义指令和/或上下文，以指导其响应。在您想要插入当前日期和时间的位置使用 %datetime%。";
+
+/* The label for the system prompt field */
+"aichat.customModelFormSystemPromptFieldTitle" = "系统提示";
+
+/* Warning message shown when user enters an HTTP (not HTTPS) endpoint */
+"aichat.customModelFormUnsafeEndpointWarning" = "该终端可能不安全。";
+
+/* The description text explaining what vision support means with an example */
+"aichat.customModelFormVisionSupportFieldDescription" = "如果此模型将图像作为输入内容，例如 llama 3.2b vision";
+
+/* The label for the vision support toggle */
+"aichat.customModelFormVisionSupportFieldTitle" = "视觉支持";
 
 /* The title for the custom models section in the menu */
 "aichat.customModelsMenuSectionTitle" = "自定义型号";
