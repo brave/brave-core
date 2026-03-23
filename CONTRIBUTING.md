@@ -48,31 +48,22 @@ Brave does consider volunteer translators on a case-by-case basis. If you repres
 * The [repo's wiki](https://github.com/brave/brave-browser/wiki) has instructions for cloning the repo and getting setup on your platform of choice
 * Check out the [troubleshooting page](https://github.com/brave/brave-browser/wiki/Troubleshooting) if you get stuck
 * Once you're up and running, find an interesting issue to fix. Check out issues labelled with [good first issue](https://github.com/brave/brave-browser/labels/good%20first%20issue)
-  - some issues only require knowledge of JavaScript (for example, pages using React and our [Brave UI library](https://github.com/brave/brave-ui))
   - other issues may require C++ changes in either the Brave code or in Chromium
 
 ## Getting started
 * Make sure you have a [GitHub account](https://github.com/join).
 * Submit a [ticket](https://github.com/brave/brave-browser/issues) for your issue if one does not already exist. Please include the Brave version, operating system, and steps to reproduce the issue.
-* Fork the repository on GitHub (this might be [`brave-browser`](https://github.com/brave/brave-browser), [`brave-core`](https://github.com/brave/brave-core), or both).
+* Fork the repository on GitHub.
 * For changes to JavaScript files, we recommend installing a [Standard](http://standardjs.com/) plugin for your preferred text editor in order to ensure code style consistency.
 * For C++ changes, you can consider setting up [clang-format](https://chromium.googlesource.com/chromium/src/+/master/docs/sublime_ide.md#Format-Selection-with-Clang_Format-Chromium-only) for your editor.
-* For changes which involve patches, please check out our [Patching Chromium](https://github.com/brave/brave-browser/wiki/Patching-Chromium) guide.
+* For changes which involve patches, please check out our [Patching Chromium](https://github.com/brave/brave-core/blob/master/docs/patching_and_chromium_src.md) guide.
 
 ### Making changes
-Once you've cloned the repo to your computer, you're ready to start making edits!
+Once you've cloned [`brave-core`](https://github.com/brave/brave-core) into `src/brave` in a directory of your choice, you're ready to start making edits!
 
-Please note that there are two repositories here:
-* the root project (this repo, [`brave-browser`](https://github.com/brave/brave-browser)), which pulls down all of the Chromium code into `src/`
-* [`brave-core`](https://github.com/brave/brave-core) is basically a sub-module (repo in a repo) which is located on disk under the root at `src/brave`
-
-Depending on which you're editing, you'll need to add your fork to the remotes list. By default, `origin` is set to upstream.
-For example, here's how GitHub user `bsclifton` would add BOTH remotes `brave-browser` and `brave-core`:
+You'll need to add your fork to the remotes list. By default, `origin` is set to upstream.
+For example, here's how GitHub user `bsclifton` would and `brave-core`:
 ```sh
-# root where project is cloned
-cd ~/brave-browser/
-git remote add bsclifton git@github.com:bsclifton/brave-browser.git
-git fetch bsclifton
 # root for the `brave-core` repo
 cd src/brave
 git remote add bsclifton git@github.com:bsclifton/brave-core.git
@@ -100,7 +91,7 @@ Once you're set up, there are a few tips we can suggest:
 
 
 ### Keeping your fork up to sync
-- Both `brave-browser` and `brave-core` clone themselves with the remote `origin` being upstream, so you can update either using `git pull`.
+- `brave-core` clones with the remote `origin` being upstream, so you can update either using `git pull`.
 - Once `origin` is fetched, you can rebase your `master` branch against `origin/master`
     ```sh
     git fetch origin
@@ -140,7 +131,7 @@ Some helpful things to consider before submitting your work
 * If your change affects session or preferences, did you include steps to test? You may also consider manually testing an upgrade.
 
 #### Each pull request should include
-* a descriptive title; this gets used in the release notes ([desktop](https://github.com/brave/brave-browser/blob/master/CHANGELOG_DESKTOP.md) or [android](https://github.com/brave/brave-browser/blob/master/CHANGELOG_ANDROID.md))
+* a descriptive title; this gets used in the release notes ([desktop](https://github.com/brave/brave-browser/blob/master/CHANGELOG_DESKTOP.md), [android](https://github.com/brave/brave-browser/blob/master/CHANGELOG_ANDROID.md), [iOS](https://github.com/brave/brave-browser/blob/master/CHANGELOG_iOS.md))
 * a short summary of the changes
 * a reference to the issue that it fixes
 * steps to test the fix (if applicable)
