@@ -53,7 +53,7 @@ class InfobarObserver : public infobars::InfoBarManager::Observer {
       return false;  // Manager is destroyed
     }
 
-    return infobar_added_future_.Wait();
+    return infobar_added_future_.Get();
   }
 
   bool WaitForInfobarRemoved() {
@@ -61,27 +61,27 @@ class InfobarObserver : public infobars::InfoBarManager::Observer {
       return false;  // Manager is destroyed
     }
 
-    return infobar_removed_future_.Wait();
+    return infobar_removed_future_.Get();
   }
 
   void OnInfoBarAdded(infobars::InfoBar* infobar) override {
     if (infobar && infobar->delegate() &&
         infobar->delegate()->GetIdentifier() == identifier_) {
-      infobar_added_future_.SetValue();
+      infobar_added_future_.SetValue(true);
     }
   }
 
   void OnInfoBarRemoved(infobars::InfoBar* infobar, bool animate) override {
     if (infobar && infobar->delegate() &&
         infobar->delegate()->GetIdentifier() == identifier_) {
-      infobar_removed_future_.SetValue();
+      infobar_removed_future_.SetValue(true);
     }
   }
 
   void OnManagerWillBeDestroyed(infobars::InfoBarManager* manager) override {
     // Quit any pending waits since the manager is being destroyed
-    infobar_added_future_.SetValue();
-    infobar_removed_future_.SetValue();
+    infobar_added_future_.SetValue(false);
+    infobar_removed_future_.SetValue(false);
     infobar_observation_.Reset();
   }
 
@@ -90,14 +90,14 @@ class InfobarObserver : public infobars::InfoBarManager::Observer {
     for (infobars::InfoBar* infobar : manager->infobars()) {
       if (infobar && infobar->delegate() &&
           infobar->delegate()->GetIdentifier() == identifier_) {
-        infobar_added_future_.SetValue();
+        infobar_added_future_.SetValue(true);
         break;
       }
     }
   }
 
-  base::test::TestFuture<void> infobar_added_future_;
-  base::test::TestFuture<void> infobar_removed_future_;
+  base::test::TestFuture<bool> infobar_added_future_;
+  base::test::TestFuture<bool> infobar_removed_future_;
   const infobars::InfoBarDelegate::InfoBarIdentifier identifier_;
   base::ScopedObservation<infobars::InfoBarManager,
                           infobars::InfoBarManager::Observer>
