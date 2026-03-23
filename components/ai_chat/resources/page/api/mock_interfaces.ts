@@ -50,7 +50,7 @@ export const defaultConversationState: Mojom.ConversationState & {
    * TODO(https://github.com/brave/brave-browser/issues/53817): have
    * typescript ignore the conditional code.
    */
-  suggestionStatus: number
+  suggestionStatus?: number
 } = {
   conversationUuid: 'test-conversation',
   isRequestInProgress: false,
