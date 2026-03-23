@@ -40,56 +40,68 @@ public class AdaptiveCaptchaHelper {
     private static final String PUT_METHOD = "PUT";
 
     public static void startAttestation(String captchaId, String paymentId) {
-        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
-            HttpURLConnection urlConnection = null;
-            String startAttestationUrl = BraveRewardsNativeWorker.getInstance().getAttestationURL();
-            if (BraveQAPreferences.shouldVlogRewards()) {
-                Log.e(TAG, startAttestationUrl);
-            }
-            NetworkTrafficAnnotationTag annotation =
-                    NetworkTrafficAnnotationTag.createComplete("Brave attestation api android",
-                            "semantics {"
-                                    + "  sender: 'Brave Android app'"
-                                    + "  description: "
-                                    + "    'This api gets unique value for payment ID'"
-                                    + "  trigger: 'When payment id as captcha scheduled'"
-                                    + "  data:"
-                                    + "    'payment id'"
-                                    + "  destination: Brave grant endpoint"
-                                    + "}"
-                                    + "policy {"
-                                    + "  cookies_allowed: NO"
-                                    + "  policy_exception_justification: 'Not implemented.'"
-                                    + "}");
-            String logMessage = "";
-            try {
-                URL url = new URL(startAttestationUrl);
-                urlConnection = getUrlConnection(POST_METHOD, url, annotation);
-
-                writeRequestOutput(getStartAttestationBody(paymentId), urlConnection);
-
-                int responseCode = urlConnection.getResponseCode();
-                if (responseCode == HttpURLConnection.HTTP_CREATED) {
-                    JSONObject jsonResponse = new JSONObject(readResponse(urlConnection));
-                    if (jsonResponse.has("uniqueValue")) {
-                        getPlayIntegrityToken(
-                                jsonResponse.optString("uniqueValue"), captchaId, paymentId);
-                        logMessage = "Start attestation call is successful";
+        PostTask.postTask(
+                TaskTraits.BEST_EFFORT_MAY_BLOCK,
+                () -> {
+                    HttpURLConnection urlConnection = null;
+                    BraveRewardsNativeWorker worker = BraveRewardsNativeWorker.getInstance();
+                    if (worker == null) {
+                        return;
                     }
-                } else {
-                    recordFailureAttempt();
-                    logMessage = "Start attestation failed with " + responseCode + " : "
-                            + urlConnection.getResponseMessage();
-                }
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-            } finally {
-                if (urlConnection != null) urlConnection.disconnect();
-                if (BraveQAPreferences.shouldVlogRewards()) {
-                    Log.e(TAG, logMessage);
-                }
-            }
-        });
+                    String startAttestationUrl = worker.getAttestationURL();
+                    if (BraveQAPreferences.shouldVlogRewards()) {
+                        Log.e(TAG, startAttestationUrl);
+                    }
+                    NetworkTrafficAnnotationTag annotation =
+                            NetworkTrafficAnnotationTag.createComplete(
+                                    "Brave attestation api android",
+                                    "semantics {"
+                                            + "  sender: 'Brave Android app'"
+                                            + "  description: "
+                                            + "    'This api gets unique value for payment ID'"
+                                            + "  trigger: 'When payment id as captcha scheduled'"
+                                            + "  data:"
+                                            + "    'payment id'"
+                                            + "  destination: Brave grant endpoint"
+                                            + "}"
+                                            + "policy {"
+                                            + "  cookies_allowed: NO"
+                                            + "  policy_exception_justification: 'Not implemented.'"
+                                            + "}");
+                    String logMessage = "";
+                    try {
+                        URL url = new URL(startAttestationUrl);
+                        urlConnection = getUrlConnection(POST_METHOD, url, annotation);
+
+                        writeRequestOutput(getStartAttestationBody(paymentId), urlConnection);
+
+                        int responseCode = urlConnection.getResponseCode();
+                        if (responseCode == HttpURLConnection.HTTP_CREATED) {
+                            JSONObject jsonResponse = new JSONObject(readResponse(urlConnection));
+                            if (jsonResponse.has("uniqueValue")) {
+                                getPlayIntegrityToken(
+                                        jsonResponse.optString("uniqueValue"),
+                                        captchaId,
+                                        paymentId);
+                                logMessage = "Start attestation call is successful";
+                            }
+                        } else {
+                            recordFailureAttempt();
+                            logMessage =
+                                    "Start attestation failed with "
+                                            + responseCode
+                                            + " : "
+                                            + urlConnection.getResponseMessage();
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, e.getMessage());
+                    } finally {
+                        if (urlConnection != null) urlConnection.disconnect();
+                        if (BraveQAPreferences.shouldVlogRewards()) {
+                            Log.e(TAG, logMessage);
+                        }
+                    }
+                });
     }
 
     private static void getPlayIntegrityToken(String nonce, String captchaId, String paymentId) {
@@ -112,9 +124,11 @@ public class AdaptiveCaptchaHelper {
                 TaskTraits.BEST_EFFORT_MAY_BLOCK,
                 () -> {
                     HttpURLConnection urlConnection = null;
-                    String attestPaymentIdUrl =
-                            BraveRewardsNativeWorker.getInstance()
-                                    .getAttestationURLWithPaymentId(paymentId);
+                    BraveRewardsNativeWorker worker = BraveRewardsNativeWorker.getInstance();
+                    if (worker == null) {
+                        return;
+                    }
+                    String attestPaymentIdUrl = worker.getAttestationURLWithPaymentId(paymentId);
                     if (BraveQAPreferences.shouldVlogRewards()) {
                         Log.e(TAG, attestPaymentIdUrl);
                     }
@@ -164,9 +178,11 @@ public class AdaptiveCaptchaHelper {
                 TaskTraits.BEST_EFFORT_MAY_BLOCK,
                 () -> {
                     HttpURLConnection urlConnection = null;
-                    String solveCaptchaUrl =
-                            BraveRewardsNativeWorker.getInstance()
-                                    .getCaptchaSolutionURL(paymentId, captchaId);
+                    BraveRewardsNativeWorker worker = BraveRewardsNativeWorker.getInstance();
+                    if (worker == null) {
+                        return;
+                    }
+                    String solveCaptchaUrl = worker.getCaptchaSolutionURL(paymentId, captchaId);
                     if (BraveQAPreferences.shouldVlogRewards()) {
                         Log.e(TAG, solveCaptchaUrl);
                     }

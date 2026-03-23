@@ -62,7 +62,10 @@ public class BraveRewardsNativeWorker {
             if (sInstance == null) {
                 sInstance = new BraveRewardsNativeWorker();
                 sInstance.init();
-          }
+                if (sInstance.mNativeBraveRewardsNativeWorker == 0) {
+                    sInstance = null;
+                }
+            }
         }
         return sInstance;
     }

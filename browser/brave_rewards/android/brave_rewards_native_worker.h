@@ -23,6 +23,8 @@
 #include "brave/components/brave_rewards/content/rewards_service_observer.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
 
+class Profile;
+
 namespace brave_rewards {
 class RewardsService;
 }
@@ -38,7 +40,8 @@ class BraveRewardsNativeWorker
       public brave_rewards::RewardsNotificationServiceObserver {
  public:
   BraveRewardsNativeWorker(JNIEnv* env,
-                           const base::android::JavaRef<jobject>& obj);
+                           const base::android::JavaRef<jobject>& obj,
+                           Profile& profile);
   ~BraveRewardsNativeWorker() override;
 
   void Destroy(JNIEnv* env);
