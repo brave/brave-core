@@ -8,7 +8,6 @@
 #include <algorithm>
 #include <optional>
 
-#include "base/i18n/char_iterator.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/containers/containers_service_factory.h"
 #include "brave/browser/ui/containers/container_model.h"
@@ -17,6 +16,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/gfx/text_elider.h"
 
 namespace page_actions {
 
@@ -43,21 +43,6 @@ std::optional<containers::ContainerModel> GetContainerModelForWebContents(
 
   return containers::GetRuntimeContainerModel(*service, container_id,
                                               kDefaultScaleFactor);
-}
-
-// Truncate the string to the given number of characters. This function is
-// needed because we can have multi-byte characters in the string, so we
-// should not truncate the surrogate pairs.
-std::u16string TruncateString16(const std::u16string& input, size_t max_chars) {
-  CHECK_GT(max_chars, 0u);
-  base::i18n::UTF16CharIterator iter(input);
-  iter.Advance();
-  --max_chars;
-  while (max_chars > 0) {
-    iter.Advance();
-    --max_chars;
-  }
-  return input.substr(0, iter.array_pos());
 }
 
 }  // namespace
@@ -113,7 +98,8 @@ void PartitionedStoragePageActionController::UpdatePageAction() {
   // So far, we didn't have any limit for the name length, so if we don't
   // truncate the name, it will make url invisible because the PageActinView
   // will be too wide.
-  const auto truncated_name = TruncateString16(name, 20);
+  const auto truncated_name =
+      gfx::TruncateString(name, 20, gfx::BreakType::CHARACTER_BREAK);
   page_action_controller_->OverrideText(kActionShowPartitionedStorage,
                                         truncated_name);
 
