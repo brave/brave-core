@@ -46,6 +46,8 @@ URLSanitizerComponentInstaller::RawConfig::RawConfig() = default;
 URLSanitizerComponentInstaller::RawConfig::RawConfig(const RawConfig&) =
     default;
 URLSanitizerComponentInstaller::RawConfig::RawConfig(RawConfig&&) = default;
+URLSanitizerComponentInstaller::RawConfig&
+URLSanitizerComponentInstaller::RawConfig::operator=(RawConfig&&) = default;
 URLSanitizerComponentInstaller::RawConfig::~RawConfig() = default;
 
 URLSanitizerComponentInstaller::URLSanitizerComponentInstaller(
@@ -64,16 +66,22 @@ void URLSanitizerComponentInstaller::LoadDirectlyFromResourcePath() {
 
 void URLSanitizerComponentInstaller::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
+  // If we have a config loaded before observation was added, provide
+  // the current config to the observer.
+  if (current_config_) {
+    observer->OnConfigReady(*current_config_);
+  }
 }
 
 void URLSanitizerComponentInstaller::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void URLSanitizerComponentInstaller::OnRawConfigReady(const RawConfig& config) {
+void URLSanitizerComponentInstaller::OnRawConfigReady(RawConfig config) {
   for (Observer& observer : observers_) {
     observer.OnConfigReady(config);
   }
+  current_config_ = std::move(config);
 }
 
 void URLSanitizerComponentInstaller::OnComponentReady(

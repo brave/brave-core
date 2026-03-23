@@ -44,6 +44,7 @@ class URLSanitizerServiceFactory : public BrowserContextKeyedServiceFactory {
   // BrowserContextKeyedServiceFactory:
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
+  bool ServiceIsCreatedWithBrowserContext() const override;
   bool ServiceIsNULLWhileTesting() const override;
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
