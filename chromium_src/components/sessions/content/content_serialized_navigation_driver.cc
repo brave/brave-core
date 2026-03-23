@@ -42,14 +42,6 @@ constexpr auto kAllowedChromeUrlsOverridingHostList =
 std::string ContentSerializedNavigationDriver::GetSanitizedPageStateForPickle(
     const sessions::SerializedNavigationEntry* navigation) const {
   const auto& virtual_url = navigation->virtual_url();
-
-  // Restore previous saved urls with brave:// scheme as chrome://
-  if (virtual_url.SchemeIs(content::kBraveUIScheme)) {
-    GURL::Replacements replacements;
-    replacements.SetSchemeStr(content::kChromeUIScheme);
-    navigation->set_virtual_url(virtual_url.ReplaceComponents(replacements));
-  }
-
   if (virtual_url.SchemeIs(content::kChromeUIScheme)) {
     // If empty string is returned, chrome url overriding is ignored.
     if (kAllowedChromeUrlsOverridingHostList.contains(virtual_url.host())) {
@@ -86,6 +78,15 @@ std::string ContentSerializedNavigationDriver::GetSanitizedPageStateForPickle(
 void ContentSerializedNavigationDriver::Sanitize(
     SerializedNavigationEntry* navigation) const {
   Sanitize_ChromiumImpl(navigation);
+
+  const auto& virtual_url = navigation->virtual_url();
+
+  // Restore previous saved urls with brave:// scheme as chrome://
+  if (virtual_url.SchemeIs(content::kBraveUIScheme)) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(content::kChromeUIScheme);
+    navigation->set_virtual_url(virtual_url.ReplaceComponents(replacements));
+  }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   // This method is called when loading a SerializedNavigationEntry from
