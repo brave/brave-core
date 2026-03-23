@@ -31,6 +31,7 @@
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
@@ -136,9 +137,13 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
       base::BindRepeating(&GetNetworkContextForProfile, context),
       /*use_ohttp_staging=*/IsStagingEnvironment(*prefs));
 
+  ProfileManager* const profile_manager = g_browser_process->profile_manager();
+  CHECK(profile_manager);
+
   return std::make_unique<AdsServiceImpl>(
       std::move(delegate), prefs, local_state, std::move(http_client),
-      std::make_unique<VirtualPrefProviderDelegate>(*profile),
+      std::make_unique<VirtualPrefProviderDelegate>(
+          *profile, profile_manager->GetProfileAttributesStorage()),
       brave::GetChannelName(), profile->GetPath(), CreateAdsTooltipsDelegate(),
       std::make_unique<DeviceIdImpl>(),
       std::make_unique<BatAdsServiceFactoryImpl>(),

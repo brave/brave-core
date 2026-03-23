@@ -76,6 +76,7 @@ source_set("impl") {
     "//chrome/browser/history",
     "//chrome/browser/notifications",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/profiles:profile_util",
     "//chrome/browser/search_engines",
     "//chrome/browser/ui",
     "//chrome/common:channel_info",

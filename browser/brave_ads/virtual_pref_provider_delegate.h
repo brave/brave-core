@@ -13,12 +13,19 @@
 #include "brave/components/brave_ads/core/browser/virtual_pref/virtual_pref_provider.h"
 
 class Profile;
+class ProfileAttributesStorage;
+
+namespace base {
+class DictValue;
+}  // namespace base
 
 namespace brave_ads {
 
 class VirtualPrefProviderDelegate : public VirtualPrefProvider::Delegate {
  public:
-  explicit VirtualPrefProviderDelegate(Profile& profile);
+  VirtualPrefProviderDelegate(
+      Profile& profile,
+      ProfileAttributesStorage& profile_attributes_storage);
 
   VirtualPrefProviderDelegate(const VirtualPrefProviderDelegate&) = delete;
   VirtualPrefProviderDelegate& operator=(const VirtualPrefProviderDelegate&) =
@@ -30,8 +37,11 @@ class VirtualPrefProviderDelegate : public VirtualPrefProvider::Delegate {
 
   std::string GetDefaultSearchEngineName() const override;
 
+  base::DictValue GetSerpMetrics() const override;
+
  private:
   const raw_ref<Profile> profile_;
+  const raw_ref<ProfileAttributesStorage> profile_attributes_storage_;
 };
 
 }  // namespace brave_ads
