@@ -6440,7 +6440,7 @@ extension Strings {
         "tabs.settings.reopenBrowserInPrivateModeTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Reopen Browser in Private Mode",
+        value: "Remember Browsing Mode",
         comment: "Toggle to launch the browser in private mode when Keep Private Tabs is enabled"
       )
     public static let reopenBrowserInPrivateModeDescription =
@@ -6449,7 +6449,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "When toggled on, Brave will default to opening in private mode. When off, Brave will open in regular mode. Your private tabs will be retained locally, but not shown on launch.",
+          "If browser was in private mode when last closed, it will open in private mode on re-launch.",
         comment: ""
       )
     public static let autoOpenKeyboardTitle = NSLocalizedString(
