@@ -216,9 +216,9 @@ void BraveEphemeralStorageServiceDelegate::OnApplicationBecameInactive() {
     return;
   }
 
-  const auto ephemeral_domains =
-      shields_settings_service_->GetEphemeralDomainsForAutoShredMode(
-          brave_shields::mojom::AutoShredMode::APP_EXIT);
+  // Collect ephemeral domains from currently open tabs that have the "Shred on
+  // App Close" mode enabled.
+  const auto ephemeral_domains = GetEphemeralDomainsToCleanOnAppClose();
   PrepareTabsForFirstPartyStorageCleanup(ephemeral_domains, false);
 }
 
@@ -280,15 +280,6 @@ void BraveEphemeralStorageServiceDelegate::
         continue;
       }
 
-      // For the case when Tab is not active and WebContents is not yet loaded,
-      // we have to force the loading of WebContents as it is not possible to
-      // shred related data without it, as we need valid StoragePartitionConfig.
-      if (!tab->GetContents() &&
-          !ShouldSkipCleanupForURL(tab->GetURL(), ephemeral_domains)) {
-        // Force loading only for Tabs we really going to shred.
-        model->SetActiveIndex(index);
-      }
-
       if (!PrepareTabForFirstPartyStorageCleanup(
               tab->GetHandle(), ephemeral_domains, enforced_by_user)) {
         continue;
@@ -326,6 +317,66 @@ BraveEphemeralStorageServiceDelegate::GetAutoShredMode(const GURL& url) {
   }
 
   return shields_settings_service_->GetAutoShredMode(url);
+}
+
+std::vector<std::string>
+BraveEphemeralStorageServiceDelegate::GetEphemeralDomainsToCleanOnAppClose() {
+  std::vector<std::string> result;
+  auto* profile = Profile::FromBrowserContext(context_);
+  CHECK(profile);
+
+#if !BUILDFLAG(IS_ANDROID)
+  for (auto* browser : GetAllBrowserWindowInterfaces()) {
+    if (profile != browser->GetProfile()) {
+      continue;
+    }
+    auto* tab_strip = browser->GetTabStripModel();
+    if (!tab_strip) {
+      continue;
+    }
+
+    base::flat_set<tabs::TabHandle> tab_handlers;
+    for (auto* tab : *tab_strip) {
+      if (!tab || !tab->GetContents()) {
+        continue;
+      }
+      if (auto auto_shred_mode = shields_settings_service_->GetAutoShredMode(
+              tab->GetContents()->GetURL());
+          auto_shred_mode != brave_shields::mojom::AutoShredMode::APP_EXIT) {
+        continue;
+      }
+      result.emplace_back(
+          net::URLToEphemeralStorageDomain(tab->GetContents()->GetURL()));
+    }
+  }
+#else
+  for (TabModel* model : TabModelList::models()) {
+    const size_t tab_count = model->GetTabCount();
+    for (size_t index = 0; index < tab_count; index++) {
+      auto* tab = static_cast<TabAndroid*>(model->GetTabAt(index));
+      // Do not process tabs from other profiles.
+      if (!tab || profile != tab->profile()) {
+        continue;
+      }
+
+      if (auto auto_shred_mode =
+              shields_settings_service_->GetAutoShredMode(tab->GetURL());
+          auto_shred_mode != brave_shields::mojom::AutoShredMode::APP_EXIT) {
+        continue;
+      }
+
+      // For the case when Tab is not active and WebContents is not yet loaded,
+      // we have to force the loading of WebContents as it is not possible to
+      // shred related data without it, as we need valid StoragePartitionConfig.
+      if (!tab->GetContents()) {
+        // Force loading only for Tabs we really going to shred.
+        model->SetActiveIndex(index);
+      }
+      result.emplace_back(net::URLToEphemeralStorageDomain(tab->GetURL()));
+    }
+  }
+#endif
+  return result;
 }
 
 }  // namespace ephemeral_storage
