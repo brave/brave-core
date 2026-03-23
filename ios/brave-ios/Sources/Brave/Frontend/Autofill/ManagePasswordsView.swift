@@ -125,7 +125,7 @@ struct ManagePasswordsView: View {
     .overlay {
       if privacyLock.isLocked { Color(.braveGroupedBackground).ignoresSafeArea() }
     }
-    .environment(\.autofillPrivacyLock, privacyLock)
+    .environment(\.redactionReasons, privacyLock.isLocked ? [.privacy] : [])
     .toolbarBackground(.visible, for: .navigationBar)
     .navigationTitle(Strings.Autofill.managePasswordsTitle)
     .navigationBarTitleDisplayMode(.inline)
@@ -215,7 +215,7 @@ struct ManagePasswordsView: View {
 
 private struct ManagePasswordListRow: View {
   @Environment(\.openURL) var openURL
-  @Environment(\.autofillPrivacyLock) var privacyLock
+  @Environment(\.redactionReasons) private var redactionReasons
   let domain: String
   let passwords: [CWVPassword]
   let viewModel: ManagePasswordsViewModel
@@ -230,19 +230,17 @@ private struct ManagePasswordListRow: View {
 
   var body: some View {
     NavigationLink {
-      if let privacyLock {
-        if passwords.count == 1, let password = passwords.first {
-          ManagePasswordDetailView(viewModel: viewModel, password: password)
-            // NavigationLink destinations pushed onto a UINavigationController stack run in an isolated
-            // hosting context and do not inherit the parent's environment; Thus the parent's environment variables
-            // must be re-injected explicitly into the child view on the isolated stack.
-            .environment(\.openURL, openURL)
-            .environment(\.autofillPrivacyLock, privacyLock)
-        } else {
-          ManagePasswordGroupView(viewModel: viewModel, domain: domain)
-            .environment(\.openURL, openURL)
-            .environment(\.autofillPrivacyLock, privacyLock)
-        }
+      if passwords.count == 1, let password = passwords.first {
+        ManagePasswordDetailView(viewModel: viewModel, password: password)
+          // NavigationLink destinations pushed onto a UINavigationController stack run in an isolated
+          // hosting context and do not inherit the parent's environment; Thus the parent's environment variables
+          // must be re-injected explicitly into the child view on the isolated stack.
+          .environment(\.openURL, openURL)
+          .environment(\.redactionReasons, redactionReasons)
+      } else {
+        ManagePasswordGroupView(viewModel: viewModel, domain: domain)
+          .environment(\.openURL, openURL)
+          .environment(\.redactionReasons, redactionReasons)
       }
     } label: {
       Label {
