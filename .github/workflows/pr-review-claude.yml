@@ -5,29 +5,38 @@
 # Opt-in: runs only when the PR has label "review/claude" (remove the
 # "if" to enable for all PRs once cost is acceptable).
 #
-# Author must be MEMBER or OWNER of the repo org (github.event.pull_request.
-# author_association). Fork PRs from non-members are CONTRIBUTOR / etc. To also
-# allow trusted outside collaborators, add: || ... == 'COLLABORATOR'
+# Runs on pull_request_target so workflow logic is loaded from the base branch
+# (trusted), not from PR changes. Same-repo PRs only:
+# github.event.pull_request.head.repo.full_name == github.repository.
+#
+# Author must be MEMBER or OWNER (github.event.pull_request.author_association).
+# Fork PRs from non-members are CONTRIBUTOR / etc. To also allow outside
+# collaborators, add: || ... == 'COLLABORATOR'
 name: PR review (Claude)
 
 on:
-  pull_request:
-    types: [opened, reopened, synchronize]
+  pull_request_target:
+    types: [opened, reopened, synchronize, labeled]
+
+# One run at a time per PR so labeled + synchronize in the same push do not post twice.
+concurrency:
+  group: pr-review-claude-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
   pull-requests: write
-  packages: write
+  packages: read
 
 jobs:
   review:
     name: Claude PR review
     runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.labels.*.name, 'review/claude') && (github.event.pull_request.author_association == 'MEMBER' || github.event.pull_request.author_association == 'OWNER')
-    env:
-      GH_TOKEN: ${{ secrets.PR_REVIEW_BOT_GITHUB_TOKEN }}
-      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository
+      && contains(github.event.pull_request.labels.*.name, 'review/claude')
+      && (github.event.pull_request.author_association == 'MEMBER'
+      || github.event.pull_request.author_association == 'OWNER')
     steps:
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4.0.0
@@ -40,10 +49,13 @@ jobs:
         run: docker pull ghcr.io/${{ github.repository }}/pr-review-claude:latest
 
       # No checkout / volume: the image contains the trusted script + skill from master (see Dockerfile COPY).
+      # Secrets are piped on stdin (-i) so they are not visible in docker inspect, container env, or ps for docker.
       - name: Run Claude PR review
+        env:
+          GH_TOKEN: ${{ secrets.PR_REVIEW_BOT_GITHUB_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          docker run --rm \
-            -e GH_TOKEN="${{ env.GH_TOKEN }}" \
-            -e ANTHROPIC_API_KEY="${{ env.ANTHROPIC_API_KEY }}" \
+          printf '%s\n%s\n' "$GH_TOKEN" "$ANTHROPIC_API_KEY" | \
+            docker run -i --rm \
             ghcr.io/${{ github.repository }}/pr-review-claude:latest \
             "${{ github.event.pull_request.number }}" "${{ github.repository }}"
