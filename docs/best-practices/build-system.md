@@ -189,7 +189,7 @@ deps += [ "//brave/utility" ]
 
 ## ✅ Add New URLs to the Network Audit Allowed List
 
-**When adding any new network endpoint URL, it must be added to the network audit allowed list** in `brave/browser/net/brave_network_audit_allowed_lists.h`. Without this, the network audit check will fail.
+**When adding a new network endpoint URL that does not require user opt-in, it must be added to the network audit allowed list** in `brave/browser/net/brave_network_audit_allowed_lists.h`. Without this, the network audit check will fail. Endpoints that only make requests based on explicit user action (e.g., clicking a button) do not need to be added to the network auditor.
 
 ---
 
@@ -885,3 +885,11 @@ source_set("core") {
 ```
 
 This is especially useful for `static_library` and `source_set` targets that contain both a public API and private implementation files. GN will enforce that only headers listed in `public` can be `#include`d by dependent targets.
+
+---
+
+<a id="BS-056"></a>
+
+## ✅ Add New Endpoints to the HSTS Pin List
+
+**When adding any new Brave endpoint, it must be added to the HSTS pin list** in `chromium_src/net/tools/transport_security_state_generator/input_file_parsers.cc`. New endpoints must be added to both the pins `"entries"` list and the HSTS `"entries"` list in that file. This applies to all new endpoints regardless of whether they require user opt-in.
