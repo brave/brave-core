@@ -58,6 +58,8 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
 #if BUILDFLAG(IS_MAC)
   gfx::Insets AddFrameBorderInsets(const gfx::Insets& insets) const;
   gfx::Insets AddVerticalTabFrameBorderInsets(const gfx::Insets& insets) const;
+
+  friend class BraveBrowserViewTabbedLayoutImplMacTest;
 #endif
 };
 
