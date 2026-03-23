@@ -360,7 +360,6 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, BuildTreeTabs_WithGroupedTabs) {
             tabs::TabCollection::Type::GROUP);
   const tabs::TabCollection* group_collection =
       tab_strip_model().GetTabAtIndex(1)->GetParentCollection();
-  ASSERT_EQ(group_collection->type(), tabs::TabCollection::Type::GROUP);
   const tabs::TabCollection* group_parent =
       group_collection->GetParentCollection();
   ASSERT_TRUE(group_parent);
@@ -1928,12 +1927,13 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddToNewGroup_UnwrapsIntoGroup) {
   ASSERT_TRUE(tab_groups_service);
   tab_groups_service->SetIsInitializedForTesting(true);
 
-  SetTreeTabsEnabled(true);
-
   for (int i = 0; i < 3; ++i) {
     AddTab();
   }
   ASSERT_EQ(4, tab_strip_model().count());
+
+  SetTreeTabsEnabled(true);
+  ASSERT_EQ(unpinned_collection().ChildCount(), 4u);
 
   for (int i = 0; i < tab_strip_model().count(); ++i) {
     EXPECT_EQ(tab_strip_model().GetTabAtIndex(i)->GetParentCollection()->type(),
@@ -1942,6 +1942,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddToNewGroup_UnwrapsIntoGroup) {
 
   tab_groups::TabGroupId group_id = tab_strip_model().AddToNewGroup({0, 1});
   ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+  ASSERT_EQ(unpinned_collection().ChildCount(), 3u);
 
   // Group(tab0, tab1), tab2, tab3
   EXPECT_EQ(tab_strip_model().GetTabGroupForTab(0), group_id);
