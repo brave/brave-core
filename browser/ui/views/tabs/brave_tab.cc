@@ -232,14 +232,12 @@ void BraveTab::LayoutTreeToggleButton() {
     return;
   }
 
-  LOG(ERROR) << "GetTreeTabNode()";
   auto* node = GetTreeTabNode();
   if (!node) {
     tree_toggle_button_->SetVisible(false);
     return;
   }
 
-  LOG(ERROR) << "HasTreeTabNodeDescendants()";
   const bool has_descendants = HasTreeTabNodeDescendants();
   if (showing_close_button_ && has_descendants) {
     // In case of tree tab node has descendants, we show tree toggle button
@@ -278,8 +276,6 @@ void BraveTab::LayoutTreeToggleButton() {
     //  Otherwise, hide the button.
     tree_toggle_button_->SetVisible(false);
   }
-
-  LOG(ERROR) << "LayoutTreeToggleButton() done";
 }
 
 bool BraveTab::IsTreeNodeCollapsed() const {

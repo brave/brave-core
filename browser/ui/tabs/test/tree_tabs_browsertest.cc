@@ -1926,14 +1926,18 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddToNewGroup_UnwrapsIntoGroup) {
           browser()->profile());
   ASSERT_TRUE(tab_groups_service);
   tab_groups_service->SetIsInitializedForTesting(true);
+  SetTreeTabsEnabled(true);
 
   for (int i = 0; i < 3; ++i) {
     AddTab();
   }
   ASSERT_EQ(4, tab_strip_model().count());
-
-  SetTreeTabsEnabled(true);
-  ASSERT_EQ(unpinned_collection().ChildCount(), 4u);
+  // Added tabs are nested, so the unpinned collection should have one child
+  // - tab0
+  //     - tab1
+  //         - tab2
+  //             - tab3
+  ASSERT_EQ(unpinned_collection().ChildCount(), 1u);
 
   for (int i = 0; i < tab_strip_model().count(); ++i) {
     EXPECT_EQ(tab_strip_model().GetTabAtIndex(i)->GetParentCollection()->type(),
@@ -1942,9 +1946,13 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddToNewGroup_UnwrapsIntoGroup) {
 
   tab_groups::TabGroupId group_id = tab_strip_model().AddToNewGroup({0, 1});
   ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
-  ASSERT_EQ(unpinned_collection().ChildCount(), 3u);
+  // After grouping two of the tabs, the unpinned collection should have two
+  // child, as tab2 will be promoted up to the unpinned collection.
+  // - Group(tab0, tab1)
+  // - tab2
+  //   - tab3
+  ASSERT_EQ(unpinned_collection().ChildCount(), 2u);
 
-  // Group(tab0, tab1), tab2, tab3
   EXPECT_EQ(tab_strip_model().GetTabGroupForTab(0), group_id);
   EXPECT_EQ(tab_strip_model().GetTabGroupForTab(1), group_id);
   EXPECT_FALSE(tab_strip_model().GetTabGroupForTab(2).has_value());
