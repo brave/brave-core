@@ -309,6 +309,7 @@ struct AdblockRuleExclusionView: View {
   /// Indicates if we are currently saving the custom exclusion rules
   @State private var isSaving = false
   @Environment(\.dismiss) private var dismiss: DismissAction
+  @ScaledMetric private var editorFontSize: CGFloat = 14
   private var customFilterListStorage = CustomFilterListStorage.shared
 
   private func loadExclusionRules() async {
@@ -364,7 +365,7 @@ struct AdblockRuleExclusionView: View {
       Section(
         content: {
           TextEditor(text: $rulesToExclude)
-            .font(.system(size: 14, weight: .regular).monospaced())
+            .font(.system(size: editorFontSize, weight: .regular).monospaced())
             .foregroundStyle(Color(braveSystemName: .textPrimary))
             .frame(height: 400)
             .overlay(
