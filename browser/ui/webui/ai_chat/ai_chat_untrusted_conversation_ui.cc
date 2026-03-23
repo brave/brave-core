@@ -360,6 +360,8 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
 
   constexpr bool kIsMobile = BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS);
   source->AddBoolean("isMobile", kIsMobile);
+  source->AddBoolean("isHistoryEnabled",
+                     ai_chat::features::IsAIChatHistoryEnabled());
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,

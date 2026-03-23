@@ -1383,6 +1383,7 @@ function StoryContext(
           }}
           overrides={{
             isMobile: args.isMobile,
+            isHistoryFeatureEnabled: args.isHistoryEnabled,
             associatedContent: [getAssociatedContent()],
           }}
           deps={[...Object.values(args)]}

@@ -59,7 +59,6 @@ function Conversation(props: ConversationProps) {
   const isPremiumStatusFetching = premiumStatus.isPlaceholderData
   const isPremiumUser = premiumStatus.data.isPremiumUser
   const isPremiumUserDisconnected = premiumStatus.data.isPremiumUserDisconnected
-  const isHistoryFeatureEnabled = true
 
   const showTemporaryChatInfo = state.isTemporary
 
@@ -67,7 +66,7 @@ function Conversation(props: ConversationProps) {
 
   const shouldShowStorageNotice =
     hasAcceptedAgreement
-    && isHistoryFeatureEnabled
+    && context.isHistoryFeatureEnabled
     && isStoragePrefEnabled
     && !isStorageNoticeDismissed
 

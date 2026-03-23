@@ -236,6 +236,8 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   source->AddLocalizedStrings(webui::kAiChatStrings);
 
   source->AddBoolean("isMobile", true);
+  source->AddBoolean("isHistoryEnabled",
+                     ai_chat::features::IsAIChatHistoryEnabled());
 
   // If the feature is not enabled then don't add the origin to the CSP.
   if (base::FeatureList::IsEnabled(ai_chat::features::kRichSearchWidgets)) {
