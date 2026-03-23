@@ -127,6 +127,7 @@ brave_core_public_headers = [
   "$root_gen_dir/components/grit/brave_components_swift_strings.h",
   "//brave/ios/browser/web/logins/logins_tab_helper_bridge.h",
   "//brave/ios/browser/brave_talk/brave_talk_tab_helper_bridge.h",
+  "//brave/ios/web/security/nserror+wk_web_view_ssl_cert_error.h",
 ]
 
 brave_core_public_headers += ads_public_headers

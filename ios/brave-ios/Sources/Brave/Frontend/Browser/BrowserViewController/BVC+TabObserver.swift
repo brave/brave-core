@@ -252,12 +252,21 @@ extension BrowserViewController: TabObserver {
       return
     }
 
-    if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
-      // Check for invalid upgrade to https
-      if url.scheme == "https",  // verify failing url was https
+    /// https upgrade fallback logic
+    if tab.upgradedHTTPSRequest != nil {
+      var urlFromError: URL?
+      if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
+        urlFromError = url
+      } else if let urlString = error.userInfo[NSURLErrorFailingURLStringErrorKey] as? String,
+        let url = URL(string: urlString)
+      {
+        urlFromError = url
+      }
+      if let urlFromError,
+        urlFromError.scheme == "https",
         let response = handleInvalidHTTPSUpgrade(
           tab: tab,
-          responseURL: url
+          responseURL: urlFromError
         )
       {
         // load original or strict mode interstitial
