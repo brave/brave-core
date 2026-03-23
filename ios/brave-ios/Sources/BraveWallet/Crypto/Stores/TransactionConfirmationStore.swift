@@ -524,9 +524,11 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
 
   private var assetRatios: [BraveWallet.AssetPrice] = []
   private var currentAllowanceCache: [String: String] = [:]
-  /// Cache of gas token balance for each chainId (in pending transactions) for each account.
+  /// Cache of gas token balance for each chainId (in pending transactions except Zcash chain) for each account.
   /// Outer key is the `NetworkInfo.chainId`, inner key is the `AccountInfo.id`.
   private var gasTokenBalanceCache: [String: [String: Double]] = [:]
+  /// Cache for zec gas token shielded and transparent balance for different zcash tx types
+  private var zecGasTokenBalanceCache: BraveWallet.ZCashBalance?
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
   /// This could occur with a dapp creating a transaction.
   private var tokenInfoCache: [BraveWallet.BlockchainToken] = []
@@ -585,32 +587,40 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     account: BraveWallet.AccountInfo,
     network: BraveWallet.NetworkInfo
   ) async {
-    var gasBalancesForChain = gasTokenBalanceCache[network.chainId, default: [:]]
-    if token.coin == .btc {
-      if let availableBTCBalance = await bitcoinWalletService.fetchBTCBalance(
-        accountId: account.accountId,
-        type: .available
-      ) {
-        gasBalancesForChain[account.id] = availableBTCBalance
-      }
-    } else if token.coin == .ada {
-      let adaBalance = await cardanoWalletService.fetchADABalances(accountId: account.accountId)
-      gasBalancesForChain[account.id] = adaBalance
+    if token.coin == .zec,
+      let zecBalance = await zcashWalletService.balance(
+        accountId: account.accountId
+      ).0
+    {
+      zecGasTokenBalanceCache = zecBalance
     } else {
-      if let assetBalance = assetManager.getAssetBalances(
-        for: token,
-        account: account.id
-      )?.first(where: { $0.chainId == network.chainId }) {
-        gasBalancesForChain[account.id] = Double(assetBalance.balance) ?? 0
-      } else if let gasTokenBalance = await rpcService.balance(
-        for: token,
-        in: account,
-        network: network
-      ) {
-        gasBalancesForChain[account.id] = gasTokenBalance
+      var gasBalancesForChain = gasTokenBalanceCache[network.chainId, default: [:]]
+      if token.coin == .btc {
+        if let availableBTCBalance = await bitcoinWalletService.fetchBTCBalance(
+          accountId: account.accountId,
+          type: .available
+        ) {
+          gasBalancesForChain[account.id] = availableBTCBalance
+        }
+      } else if token.coin == .ada {
+        let adaBalance = await cardanoWalletService.fetchADABalances(accountId: account.accountId)
+        gasBalancesForChain[account.id] = adaBalance
+      } else {
+        if let assetBalance = assetManager.getAssetBalances(
+          for: token,
+          account: account.id
+        )?.first(where: { $0.chainId == network.chainId }) {
+          gasBalancesForChain[account.id] = Double(assetBalance.balance) ?? 0
+        } else if let gasTokenBalance = await rpcService.balance(
+          for: token,
+          in: account,
+          network: network
+        ) {
+          gasBalancesForChain[account.id] = gasTokenBalance
+        }
       }
+      gasTokenBalanceCache[network.chainId] = gasBalancesForChain
     }
-    gasTokenBalanceCache[network.chainId] = gasBalancesForChain
     updateTransaction(
       with: activeTransaction,
       shouldFetchCurrentAllowance: false,
@@ -725,33 +735,59 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
             assetRatios.getTokenPrice(for: activeParsedTransaction.network.nativeToken)?.price
               ?? "0"
           ) ?? 0
-
-        let gasBalance = gasTokenBalanceCache[network.chainId]?[
-          activeParsedTransaction.fromAccountInfo.id
-        ]
-        if let gasBalance,
-          let gasValue = BDouble(gasFee.fee),
+        if let gasValue = BDouble(gasFee.fee),
           let fromToken = details.fromToken,
           let fromValue = BDouble(details.fromAmount)
         {
-          if network.isNativeAsset(fromToken) {
-            isBalanceSufficient = BDouble(gasBalance) > gasValue + fromValue
+          if network.coin == .zec {
+            // need to fetch and check correct transparent/shielded ZEC balance based on
+            // zecTxData.useShieldedPool value
+            if let zecBalance = zecGasTokenBalanceCache,
+              let zecTxData = activeParsedTransaction.transaction.txDataUnion.zecTxData
+            {
+              let correctZecBalance: Double =
+                Double(
+                  zecTxData.useShieldedPool
+                    ? zecBalance.shieldedBalance : zecBalance.transparentBalance
+                ) / 100_000_000
+              isBalanceSufficient = BDouble(correctZecBalance) >= gasValue + fromValue
+            } else if shouldFetchGasTokenBalance || zecGasTokenBalanceCache == nil {
+              isBalanceSufficient = false
+              if let account = accounts.first(where: {
+                $0.id == activeParsedTransaction.fromAccountInfo.id
+              }) {
+                await fetchGasTokenBalance(
+                  token: network.nativeToken,
+                  account: account,
+                  network: network
+                )
+              }
+            } else {
+              isBalanceSufficient = true
+            }
           } else {
-            isBalanceSufficient = BDouble(gasBalance) > gasValue
+            let gasBalance = gasTokenBalanceCache[network.chainId]?[
+              activeParsedTransaction.fromAccountInfo.id
+            ]
+            if let gasBalance {
+              if network.isNativeAsset(fromToken) {
+                isBalanceSufficient = BDouble(gasBalance) >= gasValue + fromValue
+              } else {
+                isBalanceSufficient = BDouble(gasBalance) >= gasValue
+              }
+            } else if shouldFetchGasTokenBalance || gasBalance == nil {
+              isBalanceSufficient = false
+              if let account = accounts.first(where: {
+                $0.id == activeParsedTransaction.fromAccountInfo.id
+              }) {
+                await fetchGasTokenBalance(
+                  token: network.nativeToken,
+                  account: account,
+                  network: network
+                )
+              }
+            }
           }
-        } else if shouldFetchGasTokenBalance || gasBalance == nil {
-          isBalanceSufficient = false
-          if let account = accounts.first(where: {
-            $0.id == activeParsedTransaction.fromAccountInfo.id
-          }) {
-            await fetchGasTokenBalance(
-              token: network.nativeToken,
-              account: account,
-              network: network
-            )
-          }
-        } else {
-          isBalanceSufficient = true
         }
       }
       if let fromToken = details.fromToken {
