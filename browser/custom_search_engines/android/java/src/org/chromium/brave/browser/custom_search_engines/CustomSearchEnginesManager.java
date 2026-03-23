@@ -52,18 +52,22 @@ public class CustomSearchEnginesManager {
         }
     }
 
+    private boolean customSearchEngineExists(
+            List<String> customSearchEnginesList, String searchEngineKeyword) {
+        return !customSearchEnginesList.isEmpty()
+                && customSearchEnginesList.contains(searchEngineKeyword);
+    }
+
     public boolean isCustomSearchEngineAdded(String searchEngineKeyword) {
         List<String> customSearchEnginesList =
                 mCustomSearchEnginesPrefManager.getCustomSearchEngines();
-        return !customSearchEnginesList.isEmpty()
-                && customSearchEnginesList.contains(searchEngineKeyword);
+        return customSearchEngineExists(customSearchEnginesList, searchEngineKeyword);
     }
 
     public void removeCustomSearchEngine(String searchEngineKeyword) {
         List<String> customSearchEnginesList =
                 mCustomSearchEnginesPrefManager.getCustomSearchEngines();
-        if (!customSearchEnginesList.isEmpty()
-                && customSearchEnginesList.contains(searchEngineKeyword)) {
+        if (customSearchEngineExists(customSearchEnginesList, searchEngineKeyword)) {
             customSearchEnginesList.remove(searchEngineKeyword);
             mCustomSearchEnginesPrefManager.saveCustomSearchEngines(customSearchEnginesList);
         }
