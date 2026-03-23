@@ -251,6 +251,7 @@
     "js-yaml": "4.1.1",
     "prismjs": "1.30.0",
     "serialize-javascript": "7.0.3",
-    "tiny-secp256k1": "1.1.7"
+    "tiny-secp256k1": "1.1.7",
+    "flatted": "3.4.2"
   }
 }
