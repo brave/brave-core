@@ -94,6 +94,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
   data.title = u"Hello World";
   data_list.push_back({.index = 0, .handle = tabs::TabHandle(0), .data = data});
   horizontal_tab_strip_for_testing()->AddTabsAt(data_list);
+  horizontal_tab_strip_for_testing()->tab_at(0)->SetDataForTesting(data);
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
   EXPECT_EQ(data_list[0].data.visible_url, active_tab()->data().visible_url);
   EXPECT_NE(nullptr,
@@ -107,6 +108,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
   data.title = u"Foo Bar";
   data_list.push_back({.index = 0, .handle = tabs::TabHandle(1), .data = data});
   horizontal_tab_strip_for_testing()->AddTabsAt(data_list);
+  horizontal_tab_strip_for_testing()->tab_at(0)->SetDataForTesting(data);
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
   EXPECT_EQ(data_list[0].data.visible_url, active_tab()->data().visible_url);
   EXPECT_NE(nullptr,
@@ -121,6 +123,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
   data.title = u"Baf Baz";
   data_list.push_back({.index = 0, .handle = tabs::TabHandle(2), .data = data});
   horizontal_tab_strip_for_testing()->AddTabsAt(data_list);
+  horizontal_tab_strip_for_testing()->tab_at(0)->SetDataForTesting(data);
   EXPECT_EQ(0, horizontal_tab_strip_for_testing()->GetActiveIndex());
   EXPECT_EQ(data_list[0].data.visible_url, active_tab()->data().visible_url);
   EXPECT_NE(nullptr,
