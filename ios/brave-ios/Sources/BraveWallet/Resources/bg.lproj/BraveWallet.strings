@@ -319,6 +319,9 @@
 /* The title of the rank of this coin from market. */
 "wallet.coinMarketRank" = "Ранг";
 
+/* One of the coin types for users to create an account to store ADA assets */
+"wallet.coinTypeAda" = "Cardano";
+
 /* One of the coin types for users to create an account to store BTC assets */
 "wallet.coinTypeBitcoin" = "Bitcoin";
 
@@ -1418,7 +1421,7 @@
 "wallet.selectNetworksDescription" = "Избери мрежи, по които да се филтрира";
 
 /* The label of the filter option that allows users to select which networks to filter assets by. Used in Portfolio/NFT filters and display settings. */
-"wallet.selectNetworksTitle" = "Избери мрежи";
+"wallet.selectNetworksTitle" = "Избор на мрежи";
 
 /* The description of the view that lets the user select a token & account at the same time in the Send crypto view when there are no available tokens. */
 "wallet.selectTokenToSendNoTokens" = "Няма налични жетони";

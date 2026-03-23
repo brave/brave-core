@@ -67,6 +67,9 @@
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "ユーザー名";
 
+/* Settings autofill section title */
+"Autofill" = "自動入力";
+
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "AMPページの自動リダイレクト";
 
@@ -141,33 +144,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "住所";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Braveアカウント";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "もうすぐです!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "確認メールが送信されました。そのメール内のボタンをクリックしてアカウントを有効化してください。";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "登録をキャンセル";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "メールアドレス";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "始める";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "確認メールを再送信";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "メールが見つかりませんか?迷惑メールフォルダを確認するか、ボタンをクリックして確認メールを再送信してください。";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "サインアウト";
 
 /* Button to show the brave panel */
 "BravePanel" = "Brave パネル";
@@ -1031,7 +1007,7 @@
 "nightMode.modeTitle" = "モード";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
-"nightMode.sectionDescription" = "ナイトモードは、ウェブサイトとシステム全般の外観に同時に適用されます。";
+"nightMode.sectionDescription" = "ナイトモードは、ウェブサイトとシステム全般の外観に同時に影響を与えます。";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
 "nightMode.settingsDescription" = "ナイトモードをオン/オフ";
@@ -1063,11 +1039,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "スポンサードイメージを非表示にする";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "スポンサー画像を有効にすると、ブラウザで新規タブを開いた時にブランドから提供された背景画像が表示されます。これにより、Braveのミッションがサポートされます。";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "以下について詳しく";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "スポンサー画像は、ブラウザで新規タブを開いた際に表示されるブランド背景です。これらのスポンサー画像を有効にすると、Braveのミッションをサポートすることができます。[詳細](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Brave Rewardsについて詳しく知る";
@@ -2278,7 +2251,8 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "変更を保存";
 
-/* Settings item for clearing passwords and login data */
+/* Settings item for clearing passwords and login data
+Settings item for clearing site-specific settings and shields settings. */
 "SavedLogins" = "保存したログイン情報";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2367,9 +2341,6 @@
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Braveで検索";
-
-/* Settings security section title */
-"Security" = "セキュリティ";
 
 /* No comment provided by engineer. */
 "sendButtonTitle" = "送信";

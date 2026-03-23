@@ -1,14 +1,26 @@
 /* A section header title for ads-related settings */
 "adsHeader" = "Реклами";
 
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "Вече сте закупили от brave.com?";
+
 /* A section header title for analytics-related settings */
 "analyticsHeader" = "Анализ";
 
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "Купи сега";
+
+/* A note that indicates a feature is enabled */
+"enabledFeatureNote" = "Тази функция е активирана, защото сте се включили в нея.";
+
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin е абонаментен начин за деактивиране на генериращите приходи функции, които иначе поддържат Brave като бизнес. Абонатите на Brave Origin ще продължат да се възползват от нашите водещи в индустрията функции за защита на личните данни, блокиране на реклами и скорост (чрез Brave защити), както и от редовните актуализации на софтуера, Chromium кръпки и подобренията в сигурността и защитата на личните данни. Те също така ще отключат възможността за деактивиране на функции като Brave Leo, Новини, Rewards, Wallet, VPN, Web3 домейни и др.\n\nАбонатите ще видят нов контролен панел в менюто за настройки на браузъра. Съществуващите функции – както и всички нови функции, които ще доставим в бъдеще – ще се появят тук и ще бъдат изключени по подразбиране.\n\n**Забележка: Brave Origin няма да деактивира функциите на браузъра, които използвате в момента, и няма да засегне функциите на Brave търсене или рекламите на Brave търсене.**";
+"featuresFooter" = "Brave Origin е версия на браузъра Brave, която ви позволява лесно да деактивирате генериращите приходи функции, които иначе поддържат Brave като бизнес. Потребителите на Brave Origin ще продължат да се възползват от нашите водещи в индустрията функции за защита на личните данни, блокиране на реклами и скорост (чрез Brave Shields), както и от редовните актуализации на софтуера, Chromium кръпки и подобренията в сигурността и защитата на личните данни. Те също така ще отключат възможността за деактивиране на функции като Brave Leo, Rewards, Wallet, VPN, Web3 домейни и още.\n\nСлед като закупите, потребителите ще видят нов контролен панел в менюто за настройки на браузъра. Съществуващите функции – както и всички нови функции, които ще доставим в бъдеще – ще се появят тук и ще бъдат изключени по подразбиране.\n\n**Забележка: Brave Origin няма да деактивира функциите на браузъра, които използвате в момента, и няма да засегне функциите на Brave търсене или рекламите на Brave търсене.**";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "Функции";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Получете код за вход";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Leo AI";
@@ -16,14 +28,32 @@
 /* A toggle label for Brave News feature */
 "newsLabel" = "Новини";
 
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "Еднократна покупка";
+
+/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
+"paywallDescription" = "**Персонализирайте браузъра си, както и да поддържате Brave**\n\nBrave Origin е платена версия на браузъра за потребители, които не се нуждаят от всички функции, които поддържат Brave като бизнес, но все още искат защитата на личните данни, която само Brave предлага. Потребителите на Brave Origin ще продължат да се възползват от нашите водещи в индустрията функции за защита на личните данни, блокиране на реклами и скорост (чрез Brave Shields), както и от редовните актуализации на софтуера, Chromium кръпки и подобренията в сигурността и защитата на личните данни. Те също така ще отключат възможността за деактивиране на функции като ИИ, Rewards, Wallet, VPN, Web3 домейни и още.\n\n**Brave Origin е достъпна чрез еднократна покупка. На мобилни устройства (Android и iOS) и на настолни компютри Origin може да бъде закупена като надстройка на съществуващата версия. На настолни компютри Origin е също достъпна като отделно, самостоятелно приложение. Независимо дали е закупена като надстройка или отделно приложение, потребителите на Origin ще видят нов контролен панел в менюто на Настройки. Съществуващите функции – както и всички нови функции, които ще доставим в бъдеще – ще се появят тук и ще бъдат изключени по подразбиране.*\n\n* Имайте предвид, че ако сте закупили Origin като надстройка на съществуващата си версия на Brave, Origin няма да деактивира функциите на браузъра, които използвате в момента. За надстройката и самостоятелната версия Origin няма да засегне функциите на Brave търсене или рекламите на Brave търсене.";
+
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Плейлист";
 
 /* A toggle label for privacy preserving analytics feature */
 "privacyPreservingAnalyticsLabel" = "Анализи за запазване на поверителността";
 
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "Имаш ли код за промоция?";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "Не можеш да завършиш покупката. Моля, опитай отново или провери данните си за плащане в Apple и опитай отново.";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "Използване на код за промоция";
+
 /* A button label to reset all Origin settings to their default values */
 "resetToDefaultsButton" = "Възстановяване на настройките по подразбиране";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "Възстановяване";
 
 /* A toggle label for Brave Rewards feature */
 "rewardsLabel" = "Награди";
@@ -33,6 +63,18 @@
 
 /* A toggle label for Brave Talk feature */
 "talkLabel" = "Talk";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "Поддържане на основния блокер на реклами, конфиденциалност и скорост";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "Минимален потребителски интерфейс на браузъра, съсредоточен върху щитовете";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "Еднократно закупуване, без допълнителни разходи за абонамент";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "Подкрепете нашата мисия & работа с отворен код";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";

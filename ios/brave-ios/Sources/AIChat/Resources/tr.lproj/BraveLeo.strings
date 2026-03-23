@@ -49,6 +49,21 @@
 /* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
 "aichat.busyErrorDescription" = "Leo şu anda çok meşgul. Lütfen birkaç dakika içinde tekrar deneyin.";
 
+/* The button title for adding a new custom model */
+"aichat.byomAddNewModelButtonTitle" = "Yeni model ekle";
+
+/* The description shown when no custom models have been added, prompting the user to add one */
+"aichat.byomEmptyStateDescription" = "\"Yeni model ekle\" seçeneğine dokunarak başlayın";
+
+/* The title shown when no custom models have been added yet */
+"aichat.byomEmptyStateTitle" = "Henüz bir model bağlamadınız";
+
+/* The section header description explaining the Bring Your Own Model feature with a link to learn more. The text inside square brackets should be translated. */
+"aichat.byomSectionHeaderDescription" = "Kendi kendine barındırılan veya üçüncü taraf tarafından barındırılan LLM'nizi Leo'ya bağlayın ve bunları tarayıcı içinde kullanın. Ollama gibi OpenAI Chat Protocol uyumlu herhangi bir çerçeveyi kullanın. [Daha fazla bilgi edinin](https://support.brave.app/hc/en-us/articles/34070140231821-How-do-I-use-the-Bring-Your-Own-Model-BYOM-with-Brave-Leo)";
+
+/* The section header title for the Bring Your Own Model feature */
+"aichat.byomSectionHeaderTitle" = "Kendi Modelinizi Getirin";
+
 /* The subtitle for intro view which triggers just chat */
 "aichat.chatIntroJustTalkSubTitle" = "Bana istediğinizi sorun! İstediğiniz konu hakkında konuşabiliriz. Size daha iyi yanıt verebilmek için sürekli öğreniyor ve kendimi geliştiriyorum.";
 
@@ -78,6 +93,87 @@
 
 /* The title of the section where custom models are displayed as a list. */
 "aichat.customModelChatSectionTitle" = "Özel Modeller";
+
+/* The navigation bar title when adding a new custom model */
+"aichat.customModelFormAddModelNavigationTitle" = "Model Ekle";
+
+/* The footer text explaining when and how API keys are used */
+"aichat.customModelFormApiKeyFieldFooter" = "Hizmet veren çerçevelerin bazıları, bir API anahtarı veya bir erişim belirteci gibi kimlik doğrulama bilgileri gerektirebilir. Bunlar talep başlığına eklenecektir.";
+
+/* The label for the API key field */
+"aichat.customModelFormApiKeyFieldTitle" = "API anahtarı";
+
+/* The footer text explaining what context size means for AI models */
+"aichat.customModelFormContextSizeFieldFooter" = "Modelin tek bir etkileşimde işleyebileceği maksimum token sayısıdır. Daha büyük bir bağlam boyutu, modelin daha uzun konuşmaları işlemesini sağlar. Farklı modeller farklı maksimum bağlam boyutlarını destekler.";
+
+/* The label for the context size field */
+"aichat.customModelFormContextSizeFieldTitle" = "Bağlam boyutu";
+
+/* The placeholder text for generic detail input fields */
+"aichat.customModelFormDetailsFieldPlaceholder" = "Ayrıntıları girin";
+
+/* The button title for dismissing the keyboard */
+"aichat.customModelFormDoneButtonTitle" = "Bitti";
+
+/* The navigation bar title when editing an existing custom model */
+"aichat.customModelFormEditModelNavigationTitle" = "Modeli Düzenle";
+
+/* The alert title shown when saving a custom model fails */
+"aichat.customModelFormFailedToSaveAlertTitle" = "Model Kaydedilemedi";
+
+/* The error message shown when the context size is invalid */
+"aichat.customModelFormInvalidContextSizeErrorMessage" = "Geçersiz bağlam boyutu";
+
+/* The error message shown when the server endpoint URL is invalid */
+"aichat.customModelFormInvalidUrlErrorMessage" = "Geçersiz URL";
+
+/* The footer text explaining the purpose of the label field */
+"aichat.customModelFormLabelFieldFooter" = "Leo'nun model seçicisinde kullanılacak model adı.";
+
+/* The placeholder text for the custom model name field */
+"aichat.customModelFormLabelFieldPlaceholder" = "Bu model için bir etiket girin";
+
+/* The label for the custom model name field in the custom model form */
+"aichat.customModelFormLabelFieldTitle" = "Etiket";
+
+/* The error message shown when trying to use a private network address, explaining why it's blocked and how to enable it */
+"aichat.customModelFormPrivateEndpointErrorMessage" = "Girdiğiniz adres, yönlendiriciniz veya yerel bir sunucu gibi özel bir ağdan gibi görünüyor. Brave, sizi korumak için bunları otomatik olarak engeller, ancak güvenli olduğundan eminseniz bunları etkinleştirebilirsiniz.\n\nDevam etmek için brave://flags/ adresini ziyaret edin, \"brave-ai-chat-allow-private-ips\" ifadesini arayın ve özelliği etkinleştirin. Etkinleştirildikten sonra, Leo ayarlarında özel ağ adreslerini kullanabilirsiniz.";
+
+/* The footer text explaining what the model request name is used for and providing an example */
+"aichat.customModelFormRequestNameFieldFooter" = "Modelin hizmet çerçevesine giden istekte yazılması gereken adı, örneğin phi-3 (bu ad hizmet çerçevesinin beklediği formatla tam olarak uyuşmazsa entegrasyon çalışmayacağını unutmayın).";
+
+/* The placeholder text for the model request name field */
+"aichat.customModelFormRequestNameFieldPlaceholder" = "Model talep adını girin";
+
+/* The label for the model request name field */
+"aichat.customModelFormRequestNameFieldTitle" = "Model talep ismi";
+
+/* The indicator text shown next to required fields in forms */
+"aichat.customModelFormRequiredFieldIndicator" = "Gerekli";
+
+/* The button title for saving a custom model */
+"aichat.customModelFormSaveButtonTitle" = "Kaydet";
+
+/* The footer text explaining what the server endpoint is and providing an example URL for Ollama */
+"aichat.customModelFormServerEndpointFieldFooter" = "Hizmet çerçevenizin istekleri dinlediği URL. Emin değilseniz, hizmet çerçevesi belgelerini kontrol edin. Örneğin Ollama için bu her zaman `http://localhost:11434/v1/chat/completions` adresidir. Brave bu istekleri vekil olarak işlemez, lütfen seçtiğiniz sağlayıcının gizlilik koşullarını okuyun.";
+
+/* The label for the server endpoint URL field */
+"aichat.customModelFormServerEndpointFieldTitle" = "Sunucu uç noktası";
+
+/* The footer text explaining what a system prompt is and noting the %datetime% placeholder */
+"aichat.customModelFormSystemPromptFieldFooter" = "Modelin yanıtlarını yönlendirmek için verilen özel talimatlar ve/veya bağlam. Güncel tarih ve saatin eklenmesini istediğiniz yerde %datetime% ifadesini kullanın.";
+
+/* The label for the system prompt field */
+"aichat.customModelFormSystemPromptFieldTitle" = "Sistem istemi";
+
+/* Warning message shown when user enters an HTTP (not HTTPS) endpoint */
+"aichat.customModelFormUnsafeEndpointWarning" = "Bu uç nokta potansiyel olarak güvenli değil.";
+
+/* The description text explaining what vision support means with an example */
+"aichat.customModelFormVisionSupportFieldDescription" = "Bu model bir görseli girdi olarak alabilsin mi? Örneğin Ilama 3.2b vision";
+
+/* The label for the vision support toggle */
+"aichat.customModelFormVisionSupportFieldTitle" = "Görüntü desteği";
 
 /* The title for the custom models section in the menu */
 "aichat.customModelsMenuSectionTitle" = "Özel Modeller";

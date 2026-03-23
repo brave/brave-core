@@ -49,6 +49,21 @@
 /* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
 "aichat.busyErrorDescription" = "ตอนนี้ Leo กำลังวุ่นวายมาก โปรดลองอีกครั้งในอีกสักครู่";
 
+/* The button title for adding a new custom model */
+"aichat.byomAddNewModelButtonTitle" = "เพิ่มโมเดลใหม่";
+
+/* The description shown when no custom models have been added, prompting the user to add one */
+"aichat.byomEmptyStateDescription" = "เริ่มต้นโดยแตะ \"เพิ่มโมเดลใหม่\"";
+
+/* The title shown when no custom models have been added yet */
+"aichat.byomEmptyStateTitle" = "คุณยังไม่ได้เชื่อมต่อกับโมเดล";
+
+/* The section header description explaining the Bring Your Own Model feature with a link to learn more. The text inside square brackets should be translated. */
+"aichat.byomSectionHeaderDescription" = "เชื่อมต่อ LLM ที่โฮสต์เองหรือโฮสต์โดยบุคคลที่สามของคุณกับ Leo และใช้งานภายในเบราว์เซอร์ ใช้เฟรมเวิร์กที่เข้ากันได้กับ OpenAI Chat Protocol เช่น Ollama [ดูเพิ่มเติม](https://support.brave.app/hc/en-us/articles/34070140231821-How-do-I-use-the-Bring-Your-Own-Model-BYOM-with-Brave-Leo)";
+
+/* The section header title for the Bring Your Own Model feature */
+"aichat.byomSectionHeaderTitle" = "นำโมเดลของคุณมาเอง";
+
 /* The subtitle for intro view which triggers just chat */
 "aichat.chatIntroJustTalkSubTitle" = "ถามผมมาได้ทุกอย่างเลย! เราสามารถคุยกันในหัวข้ออะไรก็ได้ที่คุณต้องการ ผมเรียนรู้และพัฒนาตัวเองอยู่ตลอดเวลาเพื่อให้คำตอบที่ดียิ่งขึ้น";
 
@@ -78,6 +93,87 @@
 
 /* The title of the section where custom models are displayed as a list. */
 "aichat.customModelChatSectionTitle" = "โมเดลแบบกำหนดเอง";
+
+/* The navigation bar title when adding a new custom model */
+"aichat.customModelFormAddModelNavigationTitle" = "เพิ่มโมเดล";
+
+/* The footer text explaining when and how API keys are used */
+"aichat.customModelFormApiKeyFieldFooter" = "เฟรมเวิร์กการให้บริการบางตัวอาจต้องใช้ข้อมูลการยืนยันข้อมูลประจำตัว เช่น คีย์ API หรือโทเค็นการเข้าถึง โดยข้อมูลเหล่านี้จะถูกเพิ่มลงในส่วนหัวของคำขอ";
+
+/* The label for the API key field */
+"aichat.customModelFormApiKeyFieldTitle" = "คีย์ API";
+
+/* The footer text explaining what context size means for AI models */
+"aichat.customModelFormContextSizeFieldFooter" = "จำนวนโทเคนสูงสุดที่โมเดลสามารถประมวลผลได้ในการโต้ตอบครั้งเดียว ขนาดบริบทที่ใหญ่ขึ้นช่วยให้โมเดลจัดการกับบทสนทนาที่ยาวขึ้นได้ โมเดลแต่ละแบบรองรับขนาดบริบทสูงสุดที่แตกต่างกัน";
+
+/* The label for the context size field */
+"aichat.customModelFormContextSizeFieldTitle" = "ขนาดบริบท";
+
+/* The placeholder text for generic detail input fields */
+"aichat.customModelFormDetailsFieldPlaceholder" = "ป้อนรายละเอียด";
+
+/* The button title for dismissing the keyboard */
+"aichat.customModelFormDoneButtonTitle" = "เสร็จแล้ว";
+
+/* The navigation bar title when editing an existing custom model */
+"aichat.customModelFormEditModelNavigationTitle" = "แก้ไขโมเดล";
+
+/* The alert title shown when saving a custom model fails */
+"aichat.customModelFormFailedToSaveAlertTitle" = "ไม่สามารถบันทึกโมเดลได้";
+
+/* The error message shown when the context size is invalid */
+"aichat.customModelFormInvalidContextSizeErrorMessage" = "ขนาดบริบทไม่ถูกต้อง";
+
+/* The error message shown when the server endpoint URL is invalid */
+"aichat.customModelFormInvalidUrlErrorMessage" = "URL ไม่ถูกต้อง";
+
+/* The footer text explaining the purpose of the label field */
+"aichat.customModelFormLabelFieldFooter" = "ชื่อโมเดลที่จะใช้ในตัวเลือกโมเดล Leo";
+
+/* The placeholder text for the custom model name field */
+"aichat.customModelFormLabelFieldPlaceholder" = "ป้อนป้ายชื่อสำหรับโมเดลนี้";
+
+/* The label for the custom model name field in the custom model form */
+"aichat.customModelFormLabelFieldTitle" = "ฉลาก";
+
+/* The error message shown when trying to use a private network address, explaining why it's blocked and how to enable it */
+"aichat.customModelFormPrivateEndpointErrorMessage" = "ที่อยู่ที่คุณป้อนดูเหมือนจะมาจากเครือข่ายส่วนตัว เช่น เราเตอร์หรือเซิร์ฟเวอร์ท้องถิ่น Brave ปิดกั้นสิ่งเหล่านี้โดยอัตโนมัติเพื่อให้คุณปลอดภัย แต่คุณสามารถเปิดใช้งานได้หากคุณมั่นใจว่าปลอดภัย\n\nเพื่อดำเนินการต่อ โปรดไปที่ brave://flags/ ค้นหา \"brave-ai-chat-allow-private-ips\" และเปิดใช้งานฟีเจอร์ เมื่อเปิดใช้งานแล้ว คุณสามารถใช้ที่อยู่เครือข่ายส่วนตัวในการตั้งค่า Leo";
+
+/* The footer text explaining what the model request name is used for and providing an example */
+"aichat.customModelFormRequestNameFieldFooter" = "ชื่อของโมเดลตามที่ควรจะปรากฏในคำขอไปยังเฟรมเวิร์กที่ให้บริการ เช่น phi-3 (โปรดทราบว่าหากชื่อนี้ไม่ตรงกับสิ่งที่เฟรมเวิร์กที่ให้บริการคาดหวังไว้ ก็จะไม่สามารถทำการผสานรวมได้)";
+
+/* The placeholder text for the model request name field */
+"aichat.customModelFormRequestNameFieldPlaceholder" = "ป้อนชื่อคำขอโมเดล";
+
+/* The label for the model request name field */
+"aichat.customModelFormRequestNameFieldTitle" = "ชื่อคำขอโมเดล";
+
+/* The indicator text shown next to required fields in forms */
+"aichat.customModelFormRequiredFieldIndicator" = "จำเป็น";
+
+/* The button title for saving a custom model */
+"aichat.customModelFormSaveButtonTitle" = "บันทึก";
+
+/* The footer text explaining what the server endpoint is and providing an example URL for Ollama */
+"aichat.customModelFormServerEndpointFieldFooter" = "URL ที่เฟรมเวิร์กให้บริการของคุณกำลังรอรับคำขอ หากคุณไม่แน่ใจ โปรดตรวจสอบเอกสารของเฟรมเวิร์กให้บริการ เช่น สำหรับ Ollama จะเป็น `http://localhost:11434/v1/chat/completions` เสมอ Brave ไม่ส่งต่อคำขอเหล่านี้ โปรดอ่านเงื่อนไขความเป็นส่วนตัวของผู้ให้บริการที่เลือก";
+
+/* The label for the server endpoint URL field */
+"aichat.customModelFormServerEndpointFieldTitle" = "อุปกรณ์ปลายทางของเซิร์ฟเวอร์";
+
+/* The footer text explaining what a system prompt is and noting the %datetime% placeholder */
+"aichat.customModelFormSystemPromptFieldFooter" = "คำสั่งหรือบริบทที่กำหนดให้กับโมเดลเพื่อแนะแนวทางการตอบสนอง ใช้ %datetime% เมื่อคุณต้องการแทรกวันที่และเวลาปัจจุบัน";
+
+/* The label for the system prompt field */
+"aichat.customModelFormSystemPromptFieldTitle" = "พรอมต์ระบบ";
+
+/* Warning message shown when user enters an HTTP (not HTTPS) endpoint */
+"aichat.customModelFormUnsafeEndpointWarning" = "ปลายทางนี้อาจไม่ปลอดภัย";
+
+/* The description text explaining what vision support means with an example */
+"aichat.customModelFormVisionSupportFieldDescription" = "หากโมเดลนี้รองรับการป้อนภาพเป็นข้อมูลนำเข้า เช่น llama 3.2b vision";
+
+/* The label for the vision support toggle */
+"aichat.customModelFormVisionSupportFieldTitle" = "รองรับการมองเห็น";
 
 /* The title for the custom models section in the menu */
 "aichat.customModelsMenuSectionTitle" = "โมเดลแบบกำหนดเอง";

@@ -1,5 +1,5 @@
 /* Pop up extra description for billing issue of subcription VPN about to expire */
-"vpn.autoReneSoonExpirePopOverSubDescription" = "Vous voulez conserver votre protection ? Il vous suffit de renouveler votre abonnement avant qu’il expire. En remerciement de ce renouvellement, nous vous ferons même bénéficier d’une remise de 20 % sur les 3 prochains mois.";
+"vpn.autoReneSoonExpirePopOverSubDescription" = "Vous voulez conserver votre protection ? Il vous suffit de renouveler votre abonnement avant qu'il expire. En remerciement de ce renouvellement, nous vous ferons même bénéficier d'une remise de 20 % sur les 3 prochains mois.";
 
 /* Action button title that enables auto renew for subcription */
 "vpn.autoRenewActionButtonTitle" = "Activer le renouvellement automatique";
@@ -8,7 +8,7 @@
 "vpn.autoRenewDiscountPopOverTitle" = "Renouvelez automatiquement votre abonnement au VPN Brave dès maintenant et profitez de 20 % de remise pendant 3 mois !";
 
 /* Pop up title for renewing VPN subscription with month free */
-"vpn.autoRenewFreeMonthPopOverTitle" = "Renouvelez automatiquement votre abonnement au VPN Brave dès maintenant et profitez d’un mois offert !";
+"vpn.autoRenewFreeMonthPopOverTitle" = "Renouvelez automatiquement votre abonnement au VPN Brave dès maintenant et profitez d'un mois offert !";
 
 /* Pop up description for VPN subscription is about expire */
 "vpn.autoRenewSoonExpirePopOverDescription" = "Cela signifie que vous perdrez les protections supplémentaires de Brave pour chaque application sur votre téléphone.";
@@ -17,10 +17,10 @@
 "vpn.autoRenewSoonExpireTitle" = "Oh non ! Votre abonnement au VPN Brave va bientôt expirer.";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Brave VPN";
+"vpn.buyVPNTitle" = "VPN Brave";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesBody" = "Impossible de se connecter à l’App Store. Réessayez dans quelques minutes.";
+"vpn.errorCantGetPricesBody" = "Impossible de se connecter à l'App Store. Réessayez dans quelques minutes.";
 
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "Erreur de connexion à l'App Store";
@@ -32,7 +32,7 @@
 "vpn.infoCheckConnectionSpeed" = "Vitesses de connexion ultra-rapides";
 
 /* Information shown to users for using Brave VPN */
-"vpn.infoCheckLimitDevice" = "Protégez jusqu’à 10 appareils avec un seul abonnement";
+"vpn.infoCheckLimitDevice" = "Protégez jusqu'à 10 appareils avec un seul abonnement";
 
 /* Information Text shown to users for using Brave VPN */
 "vpn.infoCheckLocation" = "Masquez votre IP et changez votre géolocalisation";
@@ -53,10 +53,10 @@
 "vpn.popupCheckboxBlockAdsAlternate" = "Bloque les publicités et les traqueurs sur toutes les applications";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFast" = "Offre des vitesses jusqu’à 100 Mbit/s";
+"vpn.popupCheckboxFast" = "Offre des vitesses jusqu'à 100 Mbit/s";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFastAlternate" = "Rapide et illimité jusqu’à 100 Mbit/s";
+"vpn.popupCheckboxFastAlternate" = "Rapide et illimité jusqu'à 100 Mbit/s";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckmark247Support" = "Assistance 24 h/24, 7 j/7";
@@ -92,10 +92,10 @@
 "vpn.settingsVPNExpired" = "Expirée";
 
 /* Action button title that subscribe action for VPN purchase */
-"vpn.subscribeVPNActionButtonTitle" = "S’abonner";
+"vpn.subscribeVPNActionButtonTitle" = "S'abonner";
 
 /* Pop up description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverDescription" = "Le VPN Brave peut être utilisé sur 5 appareils au maximum. Vous pouvez donc vous abonner sur iOS et l’utiliser gratuitement sur vos appareils Mac, Windows et Android.";
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "Le VPN Brave peut être utilisé sur 5 appareils au maximum. Vous pouvez donc vous abonner sur iOS et l'utiliser gratuitement sur vos appareils Mac, Windows et Android.";
 
 /* Pop up title the subscription for VPN can be used for all platforms */
 "vpn.subscribeVPNAllDevicesPopOverTitle" = "Profitez du VPN Brave sur tous vos appareils pour le même prix !";
@@ -116,7 +116,7 @@
 "vpn.updateActionCellTitle" = "Mettre à jour";
 
 /* Pop up description for billing issue of subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverDescription" = "Pas d’inquiétude, le VPN restera actif pendant quelques jours, le temps que vous mettiez à jour vos informations de paiement.";
+"vpn.updateBillingExpiredPopOverDescription" = "Pas d'inquiétude, le VPN restera actif pendant quelques jours, le temps que vous mettiez à jour vos informations de paiement.";
 
 /* Pop up title for billing issue for subcription VPN already expired */
 "vpn.updateBillingExpiredPopOverTitle" = "Mettez à jour votre informations de paiement pour rester protégé(e) grâce au VPN Brave.";
