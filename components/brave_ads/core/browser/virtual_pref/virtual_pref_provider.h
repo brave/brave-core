@@ -23,6 +23,12 @@ class DictValue;
 
 namespace brave_ads {
 
+// Provides a stable set of virtual pref paths for condition matching, exposing
+// values that have no registered pref at all, and decoupling ads from
+// registered pref paths so that targeting continues to work correctly even if
+// those paths change in a future browser version. All matching occurs on the
+// device with nothing leaving the device.
+
 class VirtualPrefProvider final {
  public:
   class Delegate {
@@ -32,6 +38,8 @@ class VirtualPrefProvider final {
     virtual std::string_view GetChannel() const = 0;
 
     virtual std::string GetDefaultSearchEngineName() const = 0;
+
+    virtual base::DictValue GetSerpMetrics() const = 0;
   };
 
   VirtualPrefProvider(PrefService* prefs,

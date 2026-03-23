@@ -163,6 +163,7 @@ base::DictValue VirtualPrefProvider::GetPrefs() const {
       .Set("[virtual]:search_engine",
            base::DictValue().Set("default_name",
                                  delegate_->GetDefaultSearchEngineName()))
+      .Set("[virtual]:serp_metrics", delegate_->GetSerpMetrics())
       .Set("[virtual]:skus", GetSkus(local_state_));
 }
 
