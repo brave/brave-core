@@ -9,25 +9,20 @@
 # $ACTION is empty for Xcode builds unfortunately
 # $RUN_CLANG_STATIC_ANALYZER is NO for builds, YES for cleans
 if [[ $RUN_CLANG_STATIC_ANALYZER = "NO" ]]; then
-  if ! command -v npm &> /dev/null; then
-    # Fixup PATH for users who didn't install node directly or use nvm
-    if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
+  if ! command -v node &> /dev/null; then
+    # Fixup PATH for users who use nvm/fnm to manage node
+    # First, add brew to PATH on Apple Silicon so we can find tools like fnm
+    if [[ $(uname -p) == 'arm' ]] && [[ -x "/opt/homebrew/bin/brew" ]]; then
+      export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+    fi
+    # Now check for node version managers
+    if command -v fnm &> /dev/null; then
+      # fnm support - use bash shell mode and filter out zsh-specific commands
+      eval "$(fnm env --shell bash | grep -v rehash)"
+    elif [[ -s "$HOME/.nvm/nvm.sh" ]]; then
       . "$HOME/.nvm/nvm.sh"
-    else
-        BREW='brew'
-        if [[ $(uname -p) == 'arm' ]]; then
-            # On Apple Silicon (M1, M2, M3) Brew is not part
-            # of the PATH.
-            BREW='/opt/homebrew/bin/brew'
-        fi
-      if [[ -x "$(command -v $BREW)" ]]; then
-        if [[ -s "$($BREW --prefix nvm)/nvm.sh" ]]; then
-          . "$($BREW --prefix nvm)/nvm.sh"
-        else
-          # Fixup PATH for brew users
-          eval "$($BREW shellenv)"
-        fi
-      fi
+    elif command -v brew &> /dev/null && [[ -s "$(brew --prefix nvm)/nvm.sh" ]]; then
+      . "$(brew --prefix nvm)/nvm.sh"
     fi
   fi
   # Do not inject Xcode build configs into the GN build
