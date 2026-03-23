@@ -25,6 +25,8 @@
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge.h"
+#include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge_holder.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/ios/browser/ui/webui/favicon_source.h"
 #include "brave/ios/browser/ui/webui/untrusted_sanitized_image_source.h"
@@ -86,6 +88,26 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
       return;
     }
     OpenURL(url);
+  }
+
+  void GoPremium() override {
+    id<AIChatUIHandlerBridge> bridge =
+        ai_chat::UIHandlerBridgeHolder::GetOrCreateForWebState(
+            web_ui_->GetWebState())
+            ->bridge();
+    [bridge goPremium];
+  }
+
+  void RefreshPremiumSession() override {
+    OpenURL(GURL(ai_chat::kLeoRefreshPremiumSessionUrl));
+  }
+
+  void OpenModelSupportUrl() override {
+    OpenURL(GURL(ai_chat::kLeoModelSupportUrl));
+  }
+
+  void OpenStorageSupportUrl() override {
+    OpenURL(GURL(ai_chat::kLeoStorageSupportUrl));
   }
 
   // No current thumbnail tracker need or support on iOS
@@ -202,7 +224,10 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
     web::WebUIIOS* web_ui,
     const GURL& url)
-    : web::WebUIIOSController(web_ui, url.GetHost()) {
+    : web::WebUIIOSController(web_ui, url.GetHost()),
+      profile_(ProfileIOS::FromWebUIIOS(web_ui)) {
+  DCHECK(profile_);
+
   // Create a URLDataSource and add resources.
   BraveWebUIIOSDataSource* source = brave::CreateAndAddWebUIDataSource(
       web_ui, url.host(), kAiChatUiGenerated,
@@ -252,13 +277,11 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");
 
-  ProfileIOS* profile = ProfileIOS::FromWebUIIOS(web_ui);
-
   web::URLDataSourceIOS::Add(
-      profile, new FaviconSource(profile, chrome::FaviconUrlFormat::kFavicon2,
-                                 /*serve_untrusted=*/true));
-  web::URLDataSourceIOS::Add(profile,
-                             new UntrustedSanitizedImageSource(profile));
+      profile_, new FaviconSource(profile_, chrome::FaviconUrlFormat::kFavicon2,
+                                  /*serve_untrusted=*/true));
+  web::URLDataSourceIOS::Add(profile_,
+                             new UntrustedSanitizedImageSource(profile_));
 
   // Bind Mojom Interface
   web_ui->GetWebState()
@@ -267,6 +290,14 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
           url,
           base::BindRepeating(
               &AIChatUntrustedConversationUI::BindInterfaceUntrustedUIHandler,
+              base::Unretained(this)));
+
+  web_ui->GetWebState()
+      ->GetInterfaceBinderForMainFrame()
+      ->AddUntrustedInterface(
+          url,
+          base::BindRepeating(
+              &AIChatUntrustedConversationUI::BindInterfaceUntrustedService,
               base::Unretained(this)));
 }
 
@@ -278,9 +309,19 @@ AIChatUntrustedConversationUI::~AIChatUntrustedConversationUI() {
       ->GetInterfaceBinderForMainFrame()
       ->RemoveUntrustedInterface(url,
                                  ai_chat::mojom::UntrustedUIHandler::Name_);
+  web_ui()
+      ->GetWebState()
+      ->GetInterfaceBinderForMainFrame()
+      ->RemoveUntrustedInterface(url, ai_chat::mojom::UntrustedService::Name_);
 }
 
 void AIChatUntrustedConversationUI::BindInterfaceUntrustedUIHandler(
     mojo::PendingReceiver<ai_chat::mojom::UntrustedUIHandler> receiver) {
   ui_handler_ = std::make_unique<UIHandler>(web_ui(), std::move(receiver));
+}
+
+void AIChatUntrustedConversationUI::BindInterfaceUntrustedService(
+    mojo::PendingReceiver<ai_chat::mojom::UntrustedService> receiver) {
+  ai_chat::AIChatServiceFactory::GetForProfile(profile_)->BindUntrustedService(
+      std::move(receiver));
 }
