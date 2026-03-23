@@ -248,7 +248,7 @@ int BraveTabStrip::GetTreeHeight(const tree_tab::TreeTabNodeId& id) const {
       ->GetTreeHeight(id);
 }
 
-const tabs::TreeTabNode& BraveTabStrip::GetTreeTabNode(
+const tabs::TreeTabNode* BraveTabStrip::GetTreeTabNode(
     const tree_tab::TreeTabNodeId& id) const {
   return static_cast<BraveBrowserTabStripController*>(controller_.get())
       ->GetTreeTabNode(id);

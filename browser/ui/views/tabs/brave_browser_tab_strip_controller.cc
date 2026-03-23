@@ -48,12 +48,11 @@ int BraveBrowserTabStripController::GetTreeHeight(
       ->GetTreeHeight(id);
 }
 
-const tabs::TreeTabNode& BraveBrowserTabStripController::GetTreeTabNode(
+const tabs::TreeTabNode* BraveBrowserTabStripController::GetTreeTabNode(
     const tree_tab::TreeTabNodeId& id) const {
   const auto* node =
       static_cast<BraveTabStripModel*>(model_.get())->tree_model()->GetNode(id);
-  CHECK(node);
-  return *node;
+  return node;
 }
 
 void BraveBrowserTabStripController::SetTreeTabNodeCollapsed(

@@ -50,7 +50,7 @@ void BraveTab::UpdateTabStyle() {
 
 const tabs::TreeTabNode* BraveTab::GetTreeTabNode() const {
   if (tree_tab_node().has_value()) {
-    return &controller_->GetTreeTabNode(*tree_tab_node());
+    return controller_->GetTreeTabNode(*tree_tab_node());
   }
 
   return nullptr;
@@ -232,12 +232,14 @@ void BraveTab::LayoutTreeToggleButton() {
     return;
   }
 
+  LOG(ERROR) << "GetTreeTabNode()";
   auto* node = GetTreeTabNode();
   if (!node) {
     tree_toggle_button_->SetVisible(false);
     return;
   }
 
+  LOG(ERROR) << "HasTreeTabNodeDescendants()";
   const bool has_descendants = HasTreeTabNodeDescendants();
   if (showing_close_button_ && has_descendants) {
     // In case of tree tab node has descendants, we show tree toggle button
@@ -276,6 +278,8 @@ void BraveTab::LayoutTreeToggleButton() {
     //  Otherwise, hide the button.
     tree_toggle_button_->SetVisible(false);
   }
+
+  LOG(ERROR) << "LayoutTreeToggleButton() done";
 }
 
 bool BraveTab::IsTreeNodeCollapsed() const {
@@ -412,7 +416,11 @@ TabNestingInfo BraveTab::GetTabNestingInfo() const {
     return TabNestingInfo{};
   }
 
-  CHECK(GetTreeTabNode());
+  if (!GetTreeTabNode()) {
+    // The tab model in TabStripModel could be in detached state temporarily.
+    return TabNestingInfo{};
+  }
+
   return {.tree_height = GetTreeHeight(), .level = GetTreeTabNode()->level()};
 }
 

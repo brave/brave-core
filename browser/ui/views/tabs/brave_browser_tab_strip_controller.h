@@ -37,7 +37,11 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
                               const Tab* tab);
 
   int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const;
-  const tabs::TreeTabNode& GetTreeTabNode(
+  // Note that this can return nullptr if the tree tab node is not found.
+  // There are some cases where TreeTabNodeId set in tab UI isn't cleared when
+  // moving tabs to an group, because when the node is removed, the tab in model
+  // is in detached state temporarily.
+  const tabs::TreeTabNode* GetTreeTabNode(
       const tree_tab::TreeTabNodeId& id) const;
   void SetTreeTabNodeCollapsed(const tree_tab::TreeTabNodeId& id,
                                bool collapsed);

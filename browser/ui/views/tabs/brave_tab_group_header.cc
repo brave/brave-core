@@ -173,7 +173,7 @@ TabNestingInfo BraveTabGroupHeader::GetTabNestingInfo() const {
   }
   return {
       .tree_height = tab_slot_controller_->GetTreeHeight(*tree_tab_node()),
-      .level = tab_slot_controller_->GetTreeTabNode(*tree_tab_node()).level()};
+      .level = tab_slot_controller_->GetTreeTabNode(*tree_tab_node())->level()};
 }
 
 BEGIN_METADATA(BraveTabGroupHeader)

@@ -123,6 +123,12 @@ void TreeTabNodeTabCollection::FlattenTreeTabs(TabCollection& root) {
         << "Tree node should always have a parent collection.";
     size_t index = parent_collection->GetIndexOfCollection(tree_node).value();
 
+    // Before detaching children, we need to notify that the tree node is about
+    // to be destroyed.
+    if (!tree_node->on_remove_.is_null()) {
+      tree_node->on_remove_.Run(tree_node->node().id());
+    }
+
     // Remove all children in order, then insert back at the parent in the same
     // order (at index, index+1, ...) so tab/collection order is preserved.
     using RemovedChild = std::variant<std::unique_ptr<TabInterface>,
