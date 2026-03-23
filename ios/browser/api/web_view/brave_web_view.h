@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol AIChatAssociatedContentPageFetcher;
 @protocol ProfileBridge;
 @protocol LoginsTabHelperBridge;
+@protocol BraveTalkTabHelperBridge;
 
 typedef void (^ResetConfigurationCallback)(id<ProfileBridge>,
                                            WKWebViewConfiguration*);
@@ -194,6 +195,12 @@ CWV_EXPORT
 - (void)setReaderModeTheme:(NSString*)theme
                   fontType:(NSString*)fontType
                   fontSize:(NSInteger)fontSize;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (BraveTalk)
+/// A bridge for handling Brave Talk tab features
+- (void)setBraveTalkHelper:(id<BraveTalkTabHelperBridge>)braveTalkHelper;
 @end
 
 NS_ASSUME_NONNULL_END

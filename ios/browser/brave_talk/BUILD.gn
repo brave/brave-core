@@ -4,16 +4,39 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
+import("//ios/web/public/js_messaging/optimize_ts.gni")
 
 assert(enable_brave_talk)
 
 source_set("brave_talk") {
   sources = [
+    "brave_talk_launcher_javascript_feature.h",
+    "brave_talk_launcher_javascript_feature.mm",
     "brave_talk_pref_names_bridge.h",
     "brave_talk_pref_names_bridge.mm",
+    "brave_talk_tab_helper.h",
+    "brave_talk_tab_helper.mm",
+    "brave_talk_tab_helper_bridge.h",
   ]
   deps = [
-    "//base",
+    ":brave_talk_launcher_js",
     "//brave/components/brave_talk",
+    "//components/prefs",
+    "//ios/chrome/browser/shared/model/profile",
+    "//net",
+    "//url",
   ]
+  public_deps = [
+    "//base",
+    "//ios/web/public",
+    "//ios/web/public/js_messaging",
+  ]
+}
+
+optimize_ts("brave_talk_launcher_js") {
+  visibility = [ ":brave_talk" ]
+
+  sources = [ "resources/brave_talk_launcher.ts" ]
+
+  deps = [ "//ios/web/public/js_messaging:util_scripts" ]
 }

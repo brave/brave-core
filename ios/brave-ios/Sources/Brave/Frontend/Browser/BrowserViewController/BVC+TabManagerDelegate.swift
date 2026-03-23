@@ -83,6 +83,22 @@ extension BrowserViewController: TabManagerDelegate {
     if FeatureList.kUseProfileWebViewConfiguration.enabled {
       tab.readerMode = .init(tab: tab)
     }
+
+    tab.braveTalk = .init(tab: tab, coordinator: braveTalkJitsiCoordinator)
+    tab.braveTalk?.onExitCall = { [weak self] in
+      guard let self = self else { return }
+      // When we close the call, redirect to Brave Talk home page if the selected tab is still the
+      // original talk URL
+      if let url = self.tabManager.selectedTab?.visibleURL,
+        let currentHost = url.host,
+        DomainUserScript.braveTalkHelper.associatedDomains.contains(currentHost)
+      {
+        var components = URLComponents()
+        components.host = currentHost
+        components.scheme = url.scheme
+        self.select(url: components.url!, isUserDefinedURLNavigation: false)
+      }
+    }
   }
 
   func tabManager(

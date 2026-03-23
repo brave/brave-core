@@ -12,6 +12,7 @@
 #include "base/ios/ns_error_util.h"
 #include "base/notimplemented.h"
 #include "base/strings/sys_string_conversions.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/ios/browser/ai_chat/ai_chat_distiller_javascript_feature.h"
 #include "brave/ios/browser/api/profile/profile_bridge_impl.h"
@@ -46,6 +47,10 @@
 #import "ios/web_view/public/cwv_navigation_delegate.h"
 #import "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/ios/browser/brave_talk/brave_talk_launcher_javascript_feature.h"
+#endif
 
 BraveWebClient::BraveWebClient() {}
 
@@ -113,12 +118,14 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
     features.push_back(
         brave_ads::AdsMediaReportingJavaScriptFeature::GetInstance());
     features.push_back(AIChatDistillerJavaScriptFeature::GetInstance());
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+    features.push_back(BraveTalkLauncherJavaScriptFeature::GetInstance());
+#endif
     features.push_back(DeAmpJavaScriptFeature::GetInstance());
     features.push_back(DocumentFetchJavaScriptFeature::GetInstance());
     features.push_back(ForcePasteJavaScriptFeature::GetInstance());
     features.push_back(PageMetadataJavaScriptFeature::GetInstance());
     features.push_back(brave::ReaderModeJavaScriptFeature::GetInstance());
-
     if (!base::FeatureList::IsEnabled(
             brave::features::kUseChromiumWebViewsAutofill)) {
       features.push_back(LoginsJavaScriptFeature::GetInstance());

@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
 source_set("web") {
@@ -16,6 +17,7 @@ source_set("web") {
     "//base",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/brave_component_updater/browser:public",
+    "//brave/components/brave_talk/buildflags",
     "//brave/components/brave_user_agent/browser",
     "//brave/components/constants",
     "//brave/ios/browser/ai_chat",
@@ -47,6 +49,9 @@ source_set("web") {
     "//ios/public/provider/chrome/browser/url_rewriters:url_rewriters_api",
     "//ios/web_view/framework:web_view_sources",
   ]
+  if (enable_brave_talk) {
+    deps += [ "//brave/ios/browser/brave_talk" ]
+  }
   if (enable_brave_wallet) {
     deps += [ "//brave/components/brave_wallet/browser" ]
   }

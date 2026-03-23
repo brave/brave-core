@@ -646,7 +646,7 @@ var package = Package(
     .target(
       name: "BraveTalk",
       dependencies: [
-        "Shared", "Preferences", "JitsiMeet", "BraveCore",
+        "Shared", "Preferences", "JitsiMeet", "BraveCore", "Web",
         .product(name: "Collections", package: "swift-collections"),
       ],
       plugins: ["LoggerPlugin"]

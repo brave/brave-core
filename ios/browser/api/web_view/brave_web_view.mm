@@ -15,6 +15,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat_associated_content_page_fetcher.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat_tab_helper.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/ios/browser/ai_chat/ai_chat_distiller_javascript_feature.h"
 #include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge_holder.h"
 #include "brave/ios/browser/ai_chat/tab_data_web_state_observer.h"
@@ -22,6 +23,7 @@
 #include "brave/ios/browser/api/web_view/autofill/brave_web_view_autofill_client.h"
 #include "brave/ios/browser/api/web_view/passwords/brave_web_view_password_manager_client.h"
 #include "brave/ios/browser/brave_ads/ads_tab_helper.h"
+#include "brave/ios/browser/brave_talk/brave_talk_tab_helper_bridge.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler_bridge_holder.h"
 #include "brave/ios/browser/web/document_fetch/document_fetch_javascript_feature.h"
@@ -64,6 +66,10 @@
 #include "ios/web_view/public/cwv_autofill_controller.h"
 #include "net/base/apple/url_conversions.h"
 #include "net/http/http_status_code.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/ios/browser/brave_talk/brave_talk_tab_helper.h"
+#endif
 
 @interface BraveNavigationAction ()
 - (instancetype)initWithRequest:(NSURLRequest*)request
@@ -203,6 +209,9 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
         aiChatUIHandler;
 @property(nonatomic, weak) id<WalletPageHandlerBridge> walletPageHandler;
 @property(nonatomic, weak) id<LoginsTabHelperBridge> loginsHelper;
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+@property(nonatomic, weak) id<BraveTalkTabHelperBridge> braveTalkHelper;
+#endif
 @end
 
 @implementation BraveWebView {
@@ -281,6 +290,11 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
   }
 
   brave_ads::AdsTabHelper::MaybeCreateForWebState(self.webState);
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+  BraveTalkTabHelper::CreateForWebState(self.webState);
+  BraveTalkTabHelper::FromWebState(self.webState)
+      ->SetBridge(self.braveTalkHelper);
+#endif
 
   LoginsTabHelper::MaybeCreateForWebState(self.webState, _loginsHelper);
 }
@@ -541,6 +555,22 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
   style.Set("fontSize", static_cast<int>(fontSize));
   brave::ReaderModeJavaScriptFeature::GetInstance()->SetStyle(self.webState,
                                                               style);
+}
+
+@end
+
+@implementation BraveWebView (BraveTalk)
+
+/// A bridge for handling Brave Talk tab features
+- (void)setBraveTalkHelper:(id<BraveTalkTabHelperBridge>)braveTalkHelper {
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+  _braveTalkHelper = braveTalkHelper;
+  BraveTalkTabHelper* tab_helper =
+      BraveTalkTabHelper::FromWebState(self.webState);
+  if (tab_helper) {
+    tab_helper->SetBridge(braveTalkHelper);
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
 }
 
 @end

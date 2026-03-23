@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_talk/buildflags/buildflags.gni")
+
 config("config") {
   # For our own public headers to be able to import the official public headers
   include_dirs = [
@@ -27,6 +29,7 @@ source_set("web_view") {
     "//base",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/ios/browser",
+    "//brave/components/brave_talk/buildflags",
     "//brave/ios/browser/ai_chat",
     "//brave/ios/browser/api/profile",
     "//brave/ios/browser/api/web_view/autofill",
@@ -53,6 +56,9 @@ source_set("web_view") {
     "//ios/web_view/framework:web_view_sources",
     "//net",
   ]
+  if (enable_brave_talk) {
+    deps += [ "//brave/ios/browser/brave_talk" ]
+  }
   frameworks = [
     "Foundation.framework",
     "UIKit.framework",
