@@ -1,14 +1,26 @@
 /* A section header title for ads-related settings */
 "adsHeader" = "Ads";
 
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "Dokonałeś(-aś) już zakupu na brave.com?";
+
 /* A section header title for analytics-related settings */
 "analyticsHeader" = "Analityka";
 
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "Kup teraz";
+
+/* A note that indicates a feature is enabled */
+"enabledFeatureNote" = "Ta funkcja jest włączona, ponieważ wyrazili Państwo na nią zgodę";
+
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin to oparty na subskrypcji sposób wyłączenia funkcji generujących przychody, które w inny sposób wspierają Brave jako biznes. Subskrybenci Brave Origin będą nadal korzystać z naszej wiodącej w branży ochrony prywatności, blokady reklam i szybkości (dzięki Tarcze Brave), a także regularnych aktualizacji oprogramowania, poprawek Chromium i ulepszeń bezpieczeństwa i prywatności. Będą mieć również możliwość wyłączenia funkcji takich jak Brave Leo, Aktualności, Nagrody, portfel, VPN, domeny Web3 i wiele więcej.\n\nSubskrybenci zobaczą nowy panel sterowania w menu Ustawienia przeglądarki. Istniejące funkcje — oraz wszelkie nowe funkcje, które będziemy wysyłać w przyszłości — pojawią się tutaj i będą domyślnie wyłączone.\n\n**Uwaga: Brave Origin nie wyłączy funkcji przeglądarki, których aktualnie używasz, i nie będzie miał wpływu na funkcje Brave Search ani reklamy Brave Search.**";
+"featuresFooter" = "Brave Origin to wersja przeglądarki Brave, która umożliwia łatwe wyłączenie funkcji generujących przychody, które w inny sposób wspierają Brave jako biznes. Użytkownicy Brave Origin będą nadal korzystać z naszej wiodącej w branży ochrony prywatności, blokady reklam i szybkości (dzięki Tarcze Brave), a także regularnych aktualizacji oprogramowania, poprawek Chromium i ulepszeń bezpieczeństwa i prywatności. Będą mieć również możliwość wyłączenia funkcji takich jak Brave Leo, Nagrody, portfel, VPN, domeny Web3 i wiele więcej.\n\nPo zakupie użytkownicy zobaczą nowy panel sterowania w menu Ustawienia przeglądarki. Istniejące funkcje — oraz wszelkie nowe funkcje, które będziemy wysyłać w przyszłości — pojawią się tutaj i będą domyślnie wyłączone.\n\n**Uwaga: Brave Origin nie wyłączy funkcji przeglądarki, których aktualnie używasz, i nie będzie miał wpływu na funkcje Brave Search ani reklamy Brave Search.**";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "Funkcje";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Uzyskaj kod logowania";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Sztuczna inteligencja Leo";
@@ -16,14 +28,32 @@
 /* A toggle label for Brave News feature */
 "newsLabel" = "Wiadomości";
 
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "Jednorazowy zakup";
+
+/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
+"paywallDescription" = "**Dostosuj swoją przeglądarkę, jednocześnie wspierając Brave**\n\nBrave Origin to płatna wersja przeglądarki dla użytkowników, którzy nie potrzebują wszystkich funkcji wspierających Brave jako biznes, ale nadal chcą prywatności, którą oferuje tylko Brave. Użytkownicy Brave Origin będą nadal korzystać z naszej wiodącej w branży ochrony prywatności, blokady reklam i szybkości (dzięki Tarcze Brave), a także regularnych aktualizacji oprogramowania, poprawek Chromium i ulepszeń bezpieczeństwa i prywatności. Będą mieć również możliwość wyłączenia funkcji takich jak AI, Nagrody, portfel, VPN, domeny Web3 i wiele więcej.\n\n**Brave Origin dostępny jest poprzez jednorazowy zakup. Na urządzeniach mobilnych (Android i iOS) oraz na komputerze Origin można kupić jako uaktualnienie istniejącej wersji przeglądarki.** Na komputerze Origin dostępny jest również jako oddzielna, autonomiczna aplikacja. Niezależnie od tego, czy kupiony został jako uaktualnienie, czy jako oddzielna aplikacja, użytkownicy Origin zobaczą nowy panel sterowania w menu Ustawienia. Istniejące funkcje — oraz wszelkie nowe funkcje, które będziemy wysyłać w przyszłości — pojawią się tutaj i będą domyślnie wyłączone.*\n\n* Zwróć uwagę, że jeśli kupiłeś Origin jako uaktualnienie istniejącej wersji Brave, Origin nie wyłączy funkcji przeglądarki, których aktualnie używasz. Zarówno dla wersji uaktualnienia, jak i wersji autonomicznej, Origin nie będzie miał wpływu na funkcje Brave Search ani reklamy Brave Search.";
+
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = " Lista odtwarzania";
 
 /* A toggle label for privacy preserving analytics feature */
 "privacyPreservingAnalyticsLabel" = "Analityka chroniąca prywatność";
 
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "Masz kod promocyjny?";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "Nie udało się sfinalizować zakupu. Spróbuj ponownie lub sprawdź szczegóły płatności w Apple i spróbuj ponownie.";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "Zrealizuj kod promocyjny";
+
 /* A button label to reset all Origin settings to their default values */
 "resetToDefaultsButton" = "Przywróć ustawienia domyślne";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "Przywróć";
 
 /* A toggle label for Brave Rewards feature */
 "rewardsLabel" = "Rewards";
@@ -33,6 +63,18 @@
 
 /* A toggle label for Brave Talk feature */
 "talkLabel" = "Rozmawiaj";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "Te same funkcje blokowania reklam, ochrona prywatności i szybkość";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "Minimalistyczny interfejs przeglądarki skoncentrowany na funkcji Tarcze";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "Jednorazowy zakup, bez dodatkowych kosztów subskrypcji";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "Wesprzyj naszą misję i działalność open source ";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";

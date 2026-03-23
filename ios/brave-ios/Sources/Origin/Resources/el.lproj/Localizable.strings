@@ -1,14 +1,26 @@
 /* A section header title for ads-related settings */
 "adsHeader" = "Διαφημίσεις";
 
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "Έχετε ήδη κάνει αγορές στο brave.com;";
+
 /* A section header title for analytics-related settings */
 "analyticsHeader" = "Analytics";
 
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "Αγορά τώρα";
+
+/* A note that indicates a feature is enabled */
+"enabledFeatureNote" = "Αυτή η λειτουργία είναι ενεργοποιημένη επειδή την επιλέξατε";
+
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Το Brave Origin είναι ένας τρόπος υπό συνδρομή για απενεργοποίηση των δυνατοτήτων που δημιουργούν έσοδα και διαφορετικά υποστηρίζουν το Brave ως επιχείρηση. Οι συνδρομητές του Brave Origin θα συνεχίσουν να επωφελούνται από το κορυφαίο απόρρητο, το adblock και την ταχύτητα (μέσω των Ασπίδων Brave), καθώς και κανονικές ενημερώσεις λογισμικού, διορθώσεις Chromium και βελτιώσεις ασφάλειας και απορρήτου. Θα ξεκλειδώσουν επίσης την επιλογή απενεργοποίησης δυνατοτήτων όπως το Brave Leo, Νέα, Επιβραβεύσεις, πορτοφόλι, VPN, τομείς Web3 και πολλά άλλα.\n\nΟι συνδρομητές θα δουν ένα νέο πίνακα ελέγχου στο μενού Ρυθμίσεων του προγράμματος περιήγησης. Οι υπάρχουσες δυνατότητες—καθώς και οποιεσδήποτε νέες δυνατότητες που θα κυκλοφορούμε στο μέλλον—θα εμφανίζονταν εδώ και θα ήταν απενεργοποιημένες εξ ορισμού.\n\n**Σημείωση: Το Brave Origin δεν θα απενεργοποιήσει δυνατότητες του προγράμματος περιήγησης που χρησιμοποιείτε αυτήν τη στιγμή και δεν θα επηρεάσει τις δυνατότητες της Αναζήτησης Brave ή τις Διαφημίσεις αναζήτησης Brave.**";
+"featuresFooter" = "Το Brave Origin είναι μια έκδοση του προγράμματος περιήγησης Brave που σας επιτρέπει να απενεργοποιήσετε εύκολα τις δυνατότητες που δημιουργούν έσοδα και διαφορετικά υποστηρίζουν το Brave ως επιχείρηση. Οι χρήστες του Brave Origin θα συνεχίσουν να επωφελούνται από το κορυφαίο απόρρητο, το adblock και την ταχύτητα (μέσω των Ασπίδων Brave), καθώς και κανονικές ενημερώσεις λογισμικού, διορθώσεις Chromium και βελτιώσεις ασφάλειας και απορρήτου. Θα ξεκλειδώσουν επίσης την επιλογή απενεργοποίησης δυνατοτήτων όπως το Brave Leo, Επιβραβεύσεις, πορτοφόλι, VPN, τομείς Web3 και πολλά άλλα.\n\nΜόλις αγοραστεί, οι χρήστες θα δουν έναν νέο πίνακα ελέγχου στο μενού Ρυθμίσεων του προγράμματος περιήγησης. Οι υπάρχουσες δυνατότητες—καθώς και οποιεσδήποτε νέες δυνατότητες που θα κυκλοφορούμε στο μέλλον—θα εμφανίζονταν εδώ και θα ήταν απενεργοποιημένες εξ ορισμού.\n\n**Σημείωση: Το Brave Origin δεν θα απενεργοποιήσει δυνατότητες του προγράμματος περιήγησης που χρησιμοποιείτε αυτήν τη στιγμή και δεν θα επηρεάσει τις δυνατότητες της Αναζήτησης Brave ή τις Διαφημίσεις αναζήτησης Brave.**";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "Δυνατότητες";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Λήψη κωδικού σύνδεσης";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "AI Leo";
@@ -16,14 +28,32 @@
 /* A toggle label for Brave News feature */
 "newsLabel" = "Ειδήσεις";
 
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "Αγορά μιας φοράς";
+
+/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
+"paywallDescription" = "**Προσαρμόστε το πρόγραμμα περιήγησης ενώ εξακολουθείτε να υποστηρίζετε το Brave**\n\nΤο Brave Origin είναι μια πληρωμένη έκδοση του προγράμματος περιήγησης για χρήστες που δεν χρειάζονται όλες τις δυνατότητες που υποστηρίζουν το Brave ως επιχείρηση, αλλά εξακολουθούν να θέλουν το απόρρητο που προσφέρει μόνο το Brave. Οι χρήστες του Brave Origin θα συνεχίσουν να επωφελούνται από το κορυφαίο απόρρητο, το adblock και την ταχύτητα (μέσω των Ασπίδων Brave), καθώς και κανονικές ενημερώσεις λογισμικού, διορθώσεις Chromium και βελτιώσεις ασφάλειας και απορρήτου. Θα ξεκλειδώσουν επίσης την επιλογή απενεργοποίησης δυνατοτήτων όπως AI, Επιβραβεύσεις, πορτοφόλι, VPN, τομείς Web3 και πολλά άλλα.\n\n**Το Brave Origin διατίθεται μέσω αγοράς μιας φοράς. Στο κινητό (Android και iOS) και στην επιτραπέζιο, το Origin μπορεί να αγοραστεί ως αναβάθμιση της υπάρχουσας έκδοσης κυκλοφορίας σας.** Στην επιτραπέζιο, το Origin είναι επίσης διαθέσιμο ως ξεχωριστή, αυτόνομη εφαρμογή. Είτε αγοράστηκε ως αναβάθμιση είτε ως ξεχωριστή εφαρμογή, οι χρήστες του Origin θα δουν έναν νέο πίνακα ελέγχου στο μενού Ρυθμίσεων. Οι υπάρχουσες δυνατότητες—καθώς και οποιεσδήποτε νέες δυνατότητες που θα κυκλοφορούμε στο μέλλον—θα εμφανίζονταν εδώ και θα ήταν απενεργοποιημένες εξ ορισμού.*\n\n* Σημειώστε ότι εάν αγοράσατε το Origin ως αναβάθμιση της υπάρχουσας έκδοσης του Brave, το Origin δεν θα απενεργοποιήσει δυνατότητες του προγράμματος περιήγησης που χρησιμοποιείτε αυτήν τη στιγμή. Τόσο για την αναβάθμιση όσο και για την αυτόνομη έκδοση, το Origin δεν θα επηρεάσει τις δυνατότητες της Αναζήτησης Brave ή τις Διαφημίσεις αναζήτησης Brave.";
+
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Λίστα αναπαραγωγής";
 
 /* A toggle label for privacy preserving analytics feature */
 "privacyPreservingAnalyticsLabel" = "Αναλυτικά στοιχεία για τη διατήρηση της ιδιωτικής ζωής";
 
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "Έχετε κωδικό προσφοράς;";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "Δεν είναι δυνατή η ολοκλήρωση της αγοράς. Δοκιμάστε ξανά ή ελέγξτε τα στοιχεία πληρωμής σας στην Apple και δοκιμάστε ξανά.";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "Εξαργύρωση κωδικού προσφοράς";
+
 /* A button label to reset all Origin settings to their default values */
 "resetToDefaultsButton" = "Επαναφορά στις προεπιλογές";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "Ανάκτηση";
 
 /* A toggle label for Brave Rewards feature */
 "rewardsLabel" = "Ανταμοιβές";
@@ -33,6 +63,18 @@
 
 /* A toggle label for Brave Talk feature */
 "talkLabel" = "Συνομιλία";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "Διατήρηση βασικής αποκλεισμού διαφημίσεων, ιδιωτικότητας και ταχύτητας";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "Ελάχιστο UI προγράμματος περιήγησης με επίκεντρο τις ασπίδες";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "Αγορά μιας φοράς, χωρίς πρόσθετο κόστος συνδρομής";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "Υποστηρίξτε την αποστολή μας & έργο ανοιχτού κώδικα";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";

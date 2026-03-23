@@ -67,6 +67,9 @@
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "اسم المستخدم";
 
+/* Settings autofill section title */
+"Autofill" = "الملء التلقائي";
+
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "إعادة التوجيه التلقائي لصفحات AMP";
 
@@ -141,33 +144,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "العنوان";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "حساب Brave";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "تقريبا!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "رسالة تأكيد على الطريق. انقر فوق الزر في تلك الرسالة لتفعيل حسابك.";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "إلغاء التسجيل";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "عنوان البريد الإلكتروني";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "البدء";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "أعد إرسال رسالة التأكيد";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "لا ترى البريد الإلكتروني؟ تحقق من مجلد البريد المزعج أو انقر على الزر لإعادة إرسال رسالة التأكيد.";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "تسجيل الخروج";
 
 /* Button to show the brave panel */
 "BravePanel" = "لوحة Brave";
@@ -1063,11 +1039,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "إخفاء الصور الدعائية";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "الصور الدعائية هي خلفيات ذات علامة تجارية تظهر في علامات التبويب المفتوحة حديثًا في المتصفح. يدعم تمكين هذه الصور الدعائية Brave في مهمتها.";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "اعرف المزيد";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "الصور الدعائية هي خلفيات ذات علامة تجارية تظهر في علامات التبويب المفتوحة حديثًا في المتصفح. يدعم تمكين هذه الصور الدعائية Brave في مهمتها. [اعرف المزيد](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "تعرف على المزيد حول Brave Rewards";
@@ -2278,7 +2251,8 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "حفظ التغييرات";
 
-/* Settings item for clearing passwords and login data */
+/* Settings item for clearing passwords and login data
+Settings item for clearing site-specific settings and shields settings. */
 "SavedLogins" = "بيانات تسجيل الدخول المحفوظة";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2367,9 +2341,6 @@
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "بحث باستخدام Brave";
-
-/* Settings security section title */
-"Security" = "أمن المعلومات";
 
 /* No comment provided by engineer. */
 "sendButtonTitle" = "إرسال";

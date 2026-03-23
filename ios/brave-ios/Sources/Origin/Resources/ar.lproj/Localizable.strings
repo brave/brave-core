@@ -1,14 +1,26 @@
 /* A section header title for ads-related settings */
 "adsHeader" = "الإعلانات";
 
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "هل اشتريت بالفعل عبر الموقع الإلكتروني Brave.com؟";
+
 /* A section header title for analytics-related settings */
 "analyticsHeader" = "التحليلات";
 
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "شراء الآن";
+
+/* A note that indicates a feature is enabled */
+"enabledFeatureNote" = "تم تمكين هذه الميزة لأنك قمت باختيارها";
+
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin هي طريقة قائمة على الاشتراك لتعطيل الميزات المدرة للإيرادات التي تدعم Brave كعمل تجاري. سيستمر مشتركو Brave Origin في الاستفادة من خصوصيتنا الرائدة في الصناعة، وحجب الإعلانات، والسرعة (عبر Brave Shields)، بالإضافة إلى تحديثات البرامج العادية، وتصحيحات Chromium، وتحسينات الأمان والخصوصية. سيحصلون أيضًا على خيار تعطيل ميزات مثل Brave Leo وميزة الأخبار ومكافىت ومحفظة وVPN ودومينات Web3 والمزيد.\n\nسيرى المشتركون لوحة تحكم جديدة في قائمة إعدادات المتصفح. ستظهر الميزات الموجودة - وكذلك أي ميزات جديدة نطلقها في المستقبل - هنا، وسيتم إيقافها بشكل افتراضي.\n\n**ملاحظة: لن يقوم Brave Origin بتعطيل ميزات المتصفح التي تستخدمها حاليًا، ولن يؤثر على ميزات Brave Search أو إعلانات Brave Search.**";
+"featuresFooter" = "Brave Origin هي نسخة من متصفح Brave تتيح لك بسهولة تعطيل الميزات المدرة للإيرادات التي تدعم Brave كعمل تجاري. سيستمر مستخدمو Brave Origin في الاستفادة من خصوصيتنا الرائدة في الصناعة، وحجب الإعلانات، والسرعة (عبر Brave Shields)، بالإضافة إلى تحديثات البرامج العادية، وتصحيحات Chromium، وتحسينات الأمان والخصوصية. سيحصلون أيضًا على خيار تعطيل ميزات مثل Brave Leo والمكافآت والمحفظة وVPN ودومينات Web3 والمزيد.\n\nبعد الشراء، سيرى المستخدمون لوحة تحكم جديدة في قائمة إعدادات المتصفح. ستظهر الميزات الموجودة - وكذلك أي ميزات جديدة نطلقها في المستقبل - هنا، وسيتم إيقافها بشكل افتراضي.\n\n**ملاحظة: لن يقوم Brave Origin بتعطيل ميزات المتصفح التي تستخدمها حاليًا، ولن يؤثر على ميزات Brave Search أو إعلانات Brave Search.**";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "الميزات";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "احصل على رمز تسجيل الدخول";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Leo الذكاء الاصطناعي";
@@ -16,14 +28,32 @@
 /* A toggle label for Brave News feature */
 "newsLabel" = "أخبار";
 
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "شراء لمرة واحدة";
+
+/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
+"paywallDescription" = "**خصص متصفحك بينما تدعم Brave\n\nBrave Origin هي نسخة مدفوعة من المتصفح لمستخدمي لا يحتاجون إلى جميع الميزات التي تدعم Brave كعمل تجاري، لكنهم يريدون الخصوصية التي توفرها Brave فقط. سيستمر مستخدمو Brave Origin في الاستفادة من خصوصيتنا الرائدة في الصناعة، وحجب الإعلانات، والسرعة (عبر Brave Shields)، بالإضافة إلى تحديثات البرامج العادية، وتصحيحات Chromium، وتحسينات الأمان والخصوصية. سيحصلون أيضًا على خيار تعطيل ميزات مثل AI والمكافآت والمحفظة وVPN ودومينات Web3 والمزيد.\n\n**Brave Origin متاح عبر الشراء لمرة واحدة. على الأجهزة المحمولة (Android و iOS) وسطح المكتب، يمكن شراء Origin كترقية لإصدار الإصدار الموجود لديك.** على سطح المكتب، Origin متاح أيضًا كتطبيق منفصل وقائم بذاته. سواء تم شراؤه كترقية أو تطبيق منفصل، سيرى مستخدمو Origin لوحة تحكم جديدة في قائمة الإعدادات. ستظهر الميزات الموجودة - وكذلك أي ميزات جديدة نطلقها في المستقبل - هنا، وسيتم إيقافها بشكل افتراضي.*\n\n* لاحظ أنه إذا قمت بشراء Origin كترقية لإصدار Brave الموجود لديك، فلن يقوم Origin بتعطيل ميزات المتصفح التي تستخدمها حاليًا. بالنسبة للترقية والإصدار المستقل، لن يؤثر Origin على ميزات Brave Search أو إعلانات Brave Search.**";
+
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "قائمة التشغيل";
 
 /* A toggle label for privacy preserving analytics feature */
 "privacyPreservingAnalyticsLabel" = "تحليلات الحفاظ على الخصوصية";
 
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "هل لديك رمز ترويجي؟";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "يتعذر إكمال عملية الشراء. يرجى المحاولة مرة أخرى، أو التحقق من تفاصيل الدفع الخاصة بك على Apple والمحاولة مرة أخرى.";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "استرداد الرمز الترويجي";
+
 /* A button label to reset all Origin settings to their default values */
 "resetToDefaultsButton" = "إعادة التعيين إلى الإعدادات الافتراضية";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "استعادة";
 
 /* A toggle label for Brave Rewards feature */
 "rewardsLabel" = "Rewards";
@@ -33,6 +63,18 @@
 
 /* A toggle label for Brave Talk feature */
 "talkLabel" = "محادثة";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "الحفاظ على حظر الإعلانات الأساسي والخصوصية والسرعة";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "واجهة متصفح بسيطة تركز على Shields";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "شراء بمرة واحدة بدون تكاليف اشتراك إضافية";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "دعم مهمتنا & عمل مفتوح المصدر";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";

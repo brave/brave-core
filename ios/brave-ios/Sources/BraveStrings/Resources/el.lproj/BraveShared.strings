@@ -67,6 +67,9 @@
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Όνομα χρήστη";
 
+/* Settings autofill section title */
+"Autofill" = "Αυτόματη συμπλήρωση";
+
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Αυτόματη ανακατεύθυνση σελίδων AMP";
 
@@ -141,33 +144,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Διεύθυνση";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Λογαριασμός Brave";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "Σχεδόν έφτασες!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "Ένα email επιβεβαίωσης είναι καθ' οδόν. Κάνε κλικ στο κουμπί σε αυτό το email για να ενεργοποιήσεις τον λογαριασμό σας.";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "Ακύρωση εγγραφής";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "Διεύθυνση email";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "Έναρξη";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "Αποστολή email επιβεβαίωσης ξανά";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "Δεν βλέπεις το email; Έλεγχος του φακέλου ανεπιθύμητης αλληλογραφίας ή κάνε κλικ στο κουμπί για να αποστείλεις ξανά το email επιβεβαίωσης.";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "Αποσύνδεση";
 
 /* Button to show the brave panel */
 "BravePanel" = "Πίνακας Brave";
@@ -1063,11 +1039,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Απόκρυψη επιχορηγούμενων εικόνων";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "Οι χορηγούμενες εικόνες είναι επώνυμα φόντα που εμφανίζονται σε καρτέλες που ανοίγονται στο πρόγραμμα περιήγησης. Η ενεργοποίηση αυτών των χορηγούμενων εικόνων υποστηρίζει την αποστολή του Brave.";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "Μάθετε περισσότερα";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "Οι χορηγούμενες εικόνες είναι επώνυμα φόντα που εμφανίζονται σε καρτέλες που ανοίγονται πρόσφατα στο πρόγραμμα περιήγησης. Η ενεργοποίηση αυτών των χορηγούμενων εικόνων υποστηρίζει την αποστολή του Brave. [Μάθετε περισσότερα](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Μάθετε περισσότερα για τις Ανταμοιβές Brave";
@@ -2278,7 +2251,8 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Αποθήκευση αλλαγών";
 
-/* Settings item for clearing passwords and login data */
+/* Settings item for clearing passwords and login data
+Settings item for clearing site-specific settings and shields settings. */
 "SavedLogins" = "Αποθηκευμένες συνδέσεις";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2367,9 +2341,6 @@
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Αναζήτηση με το Brave";
-
-/* Settings security section title */
-"Security" = "Ασφάλεια";
 
 /* No comment provided by engineer. */
 "sendButtonTitle" = "Αποστολή";
