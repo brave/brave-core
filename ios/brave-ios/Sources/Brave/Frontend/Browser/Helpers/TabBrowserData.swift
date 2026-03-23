@@ -47,7 +47,7 @@ class TabBrowserData: NSObject, TabObserver {
     self.tab = tab
     _syncTab = tabGeneratorAPI?.createBraveSyncTab(isOffTheRecord: tab.isPrivate)
 
-    if let syncTab = _syncTab {
+    if !FeatureList.kUseProfileWebViewConfiguration.enabled, let syncTab = _syncTab {
       _faviconDriver = FaviconDriver(webState: syncTab.webState).then {
         $0.setMaximumFaviconImageSize(CGSize(width: 1024, height: 1024))
       }

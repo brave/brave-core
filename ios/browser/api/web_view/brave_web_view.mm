@@ -24,6 +24,7 @@
 #include "brave/ios/browser/api/web_view/passwords/brave_web_view_password_manager_client.h"
 #include "brave/ios/browser/brave_ads/ads_tab_helper.h"
 #include "brave/ios/browser/brave_talk/brave_talk_tab_helper_bridge.h"
+#include "brave/ios/browser/favicon/brave_ios_web_favicon_driver.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler_bridge_holder.h"
 #include "brave/ios/browser/web/document_fetch/document_fetch_javascript_feature.h"
@@ -36,6 +37,8 @@
 #include "components/autofill/core/browser/logging/log_router.h"
 #include "components/autofill/ios/browser/autofill_agent.h"
 #include "components/autofill/ios/browser/autofill_client_ios.h"
+#include "components/favicon/core/favicon_driver_observer.h"
+#include "components/favicon/core/favicon_service.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/password_manager/core/browser/leak_detection/leak_detection_request_utils.h"
 #include "components/password_manager/core/browser/password_form.h"
@@ -47,6 +50,7 @@
 #include "components/password_manager/ios/shared_password_controller.h"
 #include "ios/chrome/browser/autofill/model/autofill_log_router_factory.h"
 #include "ios/chrome/browser/autofill/model/personal_data_manager_factory.h"
+#include "ios/chrome/browser/favicon/model/favicon_service_factory.h"
 #include "ios/chrome/browser/passwords/model/ios_chrome_account_password_store_factory.h"
 #include "ios/chrome/browser/passwords/model/ios_chrome_profile_password_store_factory.h"
 #include "ios/chrome/browser/passwords/model/password_controller.h"
@@ -79,8 +83,12 @@
                         (web::WebStatePolicyDecider::RequestInfo)requestInfo;
 @end
 
-namespace {
+@protocol FaviconDriverObserverBridge <NSObject>
+@required
+- (void)faviconDriverDidUpdateFavicon:(favicon::FaviconDriver*)driver;
+@end
 
+namespace {
 ResetConfigurationCallback gDidResetConfigurationCallback;
 
 class BraveWebViewWebStatePolicyDecider : public web::WebStatePolicyDecider {
@@ -173,6 +181,26 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
   __weak BraveWebView* web_view_ = nil;
 };
 
+class FaviconDriverObserver : public favicon::FaviconDriverObserver {
+ public:
+  explicit FaviconDriverObserver(id<FaviconDriverObserverBridge> bridge)
+      : bridge_(bridge) {}
+
+  // favicon::FaviconDriverObserver
+  void OnFaviconUpdated(favicon::FaviconDriver* favicon_driver,
+                        NotificationIconType notification_icon_type,
+                        const GURL& icon_url,
+                        bool icon_url_changed,
+                        const gfx::Image& image) override {
+    if (bridge_) {
+      [bridge_ faviconDriverDidUpdateFavicon:favicon_driver];
+    }
+  }
+
+ private:
+  __weak id<FaviconDriverObserverBridge> bridge_;
+};
+
 }  // namespace
 
 @implementation BraveNavigationAction
@@ -205,7 +233,7 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 - (id<CRWResponderInputView>)webStateInputViewProvider:(web::WebState*)webState;
 @end
 
-@interface BraveWebView ()
+@interface BraveWebView () <FaviconDriverObserverBridge>
 @property(nonatomic, weak)
     id<AIChatUIHandlerBridge, AIChatAssociatedContentPageFetcher>
         aiChatUIHandler;
@@ -219,6 +247,7 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 
 @implementation BraveWebView {
   std::unique_ptr<BraveWebViewWebStatePolicyDecider> _webStatePolicyDecider;
+  std::unique_ptr<FaviconDriverObserver> _faviconObserver;
 }
 
 // These are shadowed CWVWebView properties
@@ -228,6 +257,18 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
   if (self.webState) {
     BraveWebViewHolder::RemoveFromWebState(self.webState);
   }
+  if (auto* faviconDriver =
+          brave_favicon::BraveIOSWebFaviconDriver::FromWebState(
+              self.webState)) {
+    faviconDriver->RemoveObserver(self.faviconDriverObserver);
+  }
+}
+
+- (FaviconDriverObserver*)faviconDriverObserver {
+  if (!_faviconObserver) {
+    _faviconObserver = std::make_unique<FaviconDriverObserver>(self);
+  }
+  return _faviconObserver.get();
 }
 
 + (nullable BraveWebView*)braveWebViewForWebState:(web::WebState*)webState {
@@ -268,6 +309,15 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 
   _webStatePolicyDecider =
       std::make_unique<BraveWebViewWebStatePolicyDecider>(self.webState, self);
+
+  if (auto* favicon_driver =
+          brave_favicon::BraveIOSWebFaviconDriver::FromWebState(
+              self.webState)) {
+    // This matches the values set on FaviconDriver from the Swift side
+    favicon_driver->SetMaximumFaviconImageSize(/*max_image_width=*/1024,
+                                               /*max_image_height=*/1024);
+    favicon_driver->AddObserver(self.faviconDriverObserver);
+  }
 }
 
 - (void)attachSecurityInterstitialHelpersToWebStateIfNecessary {
@@ -309,6 +359,11 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
     // When UseProfileWebViewConfiguration is removed, move this to
     // tab_helper_util.mm chromium_src override
     PrintTabHelper::CreateForWebState(self.webState);
+
+    brave_favicon::BraveIOSWebFaviconDriver::CreateForWebState(
+        self.webState,
+        ios::FaviconServiceFactory::GetForProfile(
+            profile->GetOriginalProfile(), ServiceAccessType::IMPLICIT_ACCESS));
   }
 }
 
@@ -432,6 +487,15 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
   if ([self.navigationDelegate
           respondsToSelector:@selector(webViewDidRedirectNavigation:)]) {
     [self.navigationDelegate webViewDidRedirectNavigation:self];
+  }
+}
+
+#pragma mark - FaviconDriverObserverBridge
+
+- (void)faviconDriverDidUpdateFavicon:(favicon::FaviconDriver*)driver {
+  if ([self.UIDelegate respondsToSelector:@selector(webView:
+                                              didUpdateFaviconStatus:)]) {
+    [self.UIDelegate webView:self didUpdateFaviconStatus:self.faviconStatus];
   }
 }
 
