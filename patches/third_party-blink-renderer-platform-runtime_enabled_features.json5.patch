@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 70a7e2a5203d3cdddbad7eecca28d65945522fed..f066712853d81d44412ef797c4a50683bcbf1fa7 100644
+index d5fe1468676285540909ee078d5b88a9bd8e197c..0f1049854970d348f7e944426008035b8d6478a4 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -839,6 +839,11 @@
@@ -30,7 +30,7 @@ index 70a7e2a5203d3cdddbad7eecca28d65945522fed..f066712853d81d44412ef797c4a50683
      },
      {
        name: "FileSystemAccessLockingScheme",
-@@ -3712,6 +3719,7 @@
+@@ -3593,6 +3600,7 @@
      {
        name: "MiddleClickAutoscroll",
        status: "test",
