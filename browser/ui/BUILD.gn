@@ -97,7 +97,6 @@ source_set("ui") {
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/startup",
     "//chrome/browser/ui/tabs:tabs_public",
-    "//chrome/browser/ui/toolbar",
     "//media",
   ]
 
@@ -107,12 +106,8 @@ source_set("ui") {
   public_deps = [ ":ui_public_dependencies" ]
 
   sources = [
-    "brave_scheme_utils.cc",
-    "brave_scheme_utils.h",
     "brave_ui_features.cc",
     "brave_ui_features.h",
-    "toolbar/brave_location_bar_model_delegate.cc",
-    "toolbar/brave_location_bar_model_delegate.h",
     "webui/brave_adblock_internals_ui.cc",
     "webui/brave_adblock_internals_ui.h",
     "webui/brave_adblock_ui.cc",
@@ -261,6 +256,8 @@ source_set("ui") {
       "brave_icon_with_badge_image_source.h",
       "brave_pages.cc",
       "brave_pages.h",
+      "brave_scheme_utils.cc",
+      "brave_scheme_utils.h",
       "brave_tab_strip_model_delegate.cc",
       "brave_tab_strip_model_delegate.h",
       "brave_view_ids.h",
@@ -1185,6 +1182,8 @@ source_set("ui") {
 
   if (enable_extensions && toolkit_views) {
     sources += [
+      "toolbar/brave_location_bar_model_delegate.cc",
+      "toolbar/brave_location_bar_model_delegate.h",
       "views/brave_actions/brave_actions_container.cc",
       "views/brave_actions/brave_actions_container.h",
       "views/brave_actions/brave_shields_action_view.cc",

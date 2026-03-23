@@ -141,7 +141,8 @@ bool BraveShieldsPageInfoView::ShouldShowForWebContents(
 
   if (url.SchemeIs(url::kAboutScheme) || url.SchemeIs(url::kBlobScheme) ||
       url.SchemeIs(url::kDataScheme) || url.SchemeIs(url::kFileSystemScheme) ||
-      url.SchemeIs(kMagnetScheme) || url.SchemeIs(content::kChromeUIScheme) ||
+      url.SchemeIs(kMagnetScheme) || url.SchemeIs(kBraveUIScheme) ||
+      url.SchemeIs(content::kChromeUIScheme) ||
       url.SchemeIs(extensions::kExtensionScheme)) {
     return false;
   }

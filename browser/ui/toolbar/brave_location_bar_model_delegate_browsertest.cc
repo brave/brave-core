@@ -10,7 +10,6 @@
 #include "brave/browser/ui/page_info/features.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_location_bar_model_delegate.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
@@ -19,17 +18,16 @@
 
 using security_state::SecurityLevel;
 
-class MockBraveLocationBarModelDelegate
-    : public BrowserLocationBarModelDelegate {
+class MockBraveLocationBarModelDelegate : public BraveLocationBarModelDelegate {
  public:
-  using BrowserLocationBarModelDelegate::BrowserLocationBarModelDelegate;
+  using BraveLocationBarModelDelegate::BraveLocationBarModelDelegate;
   ~MockBraveLocationBarModelDelegate() override = default;
 
   security_state::SecurityLevel GetSecurityLevel() const override {
     if (security_level_) {
       return *security_level_;
     }
-    return BrowserLocationBarModelDelegate::GetSecurityLevel();
+    return BraveLocationBarModelDelegate::GetSecurityLevel();
   }
 
   void SetSecurityLevel(SecurityLevel level) { security_level_ = level; }

@@ -6,21 +6,6 @@
 #include "third_party/blink/renderer/core/dom/document.h"
 
 #include "brave/components/brave_page_graph/common/buildflags.h"
-#include "third_party/blink/renderer/platform/weborigin/kurl.h"
-
-namespace {
-
-// Convert brave to chrome as early as possible for renderer side url checks
-blink::KURL RewriteBraveToChrome(const blink::KURL& brave_url) {
-  if (!brave_url.ProtocolIs("brave")) {
-    return brave_url;
-  }
-  blink::KURL chrome_url(brave_url);
-  chrome_url.SetProtocol("chrome");
-  return chrome_url;
-}
-
-}  // namespace
 
 #define ProcessJavaScriptUrl ProcessJavaScriptUrl_ChromiumImpl
 #include <third_party/blink/renderer/core/dom/document.cc>

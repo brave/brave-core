@@ -16,10 +16,12 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
+#include "extensions/buildflags/buildflags.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -27,7 +29,10 @@
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #endif
 
-BraveLocationBarModelDelegate::BraveLocationBarModelDelegate() = default;
+BraveLocationBarModelDelegate::BraveLocationBarModelDelegate(
+    TabStripModel* tab_strip_model)
+    : BrowserLocationBarModelDelegate(tab_strip_model),
+      tab_strip_model_(tab_strip_model) {}
 
 BraveLocationBarModelDelegate::~BraveLocationBarModelDelegate() = default;
 
@@ -44,7 +49,7 @@ BraveLocationBarModelDelegate::FormattedStringWithEquivalentMeaning(
     const GURL& url,
     const std::u16string& formatted_url) const {
   std::u16string new_formatted_url =
-      ChromeLocationBarModelDelegate::FormattedStringWithEquivalentMeaning(
+      BrowserLocationBarModelDelegate::FormattedStringWithEquivalentMeaning(
           url, formatted_url);
   BraveLocationBarModelDelegate::FormattedStringFromURL(url,
                                                         &new_formatted_url);
@@ -53,18 +58,16 @@ BraveLocationBarModelDelegate::FormattedStringWithEquivalentMeaning(
 
 bool BraveLocationBarModelDelegate::GetURL(GURL* url) const {
 #if !BUILDFLAG(IS_ANDROID)
-  auto* active_web_contents = GetActiveWebContents();
   if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs) &&
-      active_web_contents &&
-      Profile::FromBrowserContext(active_web_contents->GetBrowserContext())
-          ->GetPrefs()
-          ->GetBoolean(brave_tabs::kSharedPinnedTab)) {
+      tab_strip_model_->profile()->GetPrefs()->GetBoolean(
+          brave_tabs::kSharedPinnedTab)) {
     content::NavigationEntry* entry = GetNavigationEntry();
     if (entry && entry->IsInitialEntry()) {
+      auto* active_web_contents = GetActiveWebContents();
       auto* shared_pinned_tab_service =
           SharedPinnedTabServiceFactory::GetForProfile(
               Profile::FromBrowserContext(
-                  active_web_contents->GetBrowserContext()));
+                  GetActiveWebContents()->GetBrowserContext()));
       DCHECK(shared_pinned_tab_service);
       if (shared_pinned_tab_service->IsDummyContents(active_web_contents)) {
         // Override visible url for dummy contents so that about:blank is not
@@ -97,7 +100,7 @@ const gfx::VectorIcon* BraveLocationBarModelDelegate::GetVectorIconOverride()
 
   // Defer to the Chromium implementation first.
   const gfx::VectorIcon* parent_icon =
-      ChromeLocationBarModelDelegate::GetVectorIconOverride();
+      BrowserLocationBarModelDelegate::GetVectorIconOverride();
   if (parent_icon) {
     return parent_icon;
   }

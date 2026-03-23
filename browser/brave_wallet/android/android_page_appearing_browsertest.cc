@@ -363,9 +363,27 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
   network::TestURLLoaderFactory url_loader_factory_;
 };
 
+IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestWalletPageRoute) {
+  const GURL expected_real_url =
+      GURL("chrome://wallet/crypto/portfolio/assets");
+  const GURL expected_virtual_url =
+      GURL("brave://wallet/crypto/portfolio/assets");
+  for (auto scheme : GetWebUISchemes()) {
+    GURL url = GURL(base::StrCat({scheme, "wallet/"}));
+
+    auto* web_contents = GetActiveWebContents();
+    content::NavigateToURLBlockUntilNavigationsComplete(web_contents, url, 2);
+    EXPECT_EQ(web_contents->GetController().GetLastCommittedEntry()->GetURL(),
+              expected_real_url);
+    EXPECT_EQ(
+        web_contents->GetController().GetLastCommittedEntry()->GetVirtualURL(),
+        expected_virtual_url);
+  }
+}
+
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
                        TestPortfolioPageAppearing) {
-  const GURL expected_url = GURL("chrome://wallet/crypto/portfolio/assets");
+  const GURL expected_url = GURL("brave://wallet/crypto/portfolio/assets");
   for (auto scheme : GetWebUISchemes()) {
     GURL url = GURL(base::StrCat({scheme, "wallet/crypto/portfolio/assets"}));
     const std::vector<std::string> ignore_patterns = {
@@ -379,7 +397,7 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
                        DISABLED_TestSwapPageAppearing) {
-  const GURL expected_url = GURL("chrome://wallet/swap");
+  const GURL expected_url = GURL("brave://wallet/swap");
   for (auto scheme : GetWebUISchemes()) {
     GURL url = GURL(base::StrCat({scheme, "wallet/swap"}));
     const std::vector<std::string> ignore_patterns = {
@@ -394,7 +412,7 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSendPageAppearing) {
-  const GURL expected_url = GURL("chrome://wallet/send");
+  const GURL expected_url = GURL("brave://wallet/send");
   for (auto scheme : GetWebUISchemes()) {
     GURL url = GURL(base::StrCat({scheme, "wallet/send"}));
     const std::vector<std::string> ignore_patterns = {
@@ -406,7 +424,7 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSendPageAppearing) {
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
                        TestDepositPageAppearing) {
-  const GURL expected_url = GURL("chrome://wallet/crypto/deposit-funds");
+  const GURL expected_url = GURL("brave://wallet/crypto/deposit-funds");
   for (auto scheme : GetWebUISchemes()) {
     GURL url = GURL(base::StrCat({scheme, "wallet/crypto/deposit-funds"}));
     const std::vector<std::string> ignore_patterns = {
@@ -417,7 +435,7 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestMeldPageAppearing) {
-  const GURL expected_url = GURL("chrome://wallet/crypto/fund-wallet");
+  const GURL expected_url = GURL("brave://wallet/crypto/fund-wallet");
   for (auto scheme : GetWebUISchemes()) {
     GURL url = GURL(base::StrCat({scheme, "wallet/crypto/fund-wallet"}));
     const std::vector<std::string> ignore_patterns = {

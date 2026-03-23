@@ -261,7 +261,8 @@ bool BraveShieldsActionView::ShouldShowBubble(
 
   if (url.SchemeIs(url::kAboutScheme) || url.SchemeIs(url::kBlobScheme) ||
       url.SchemeIs(url::kDataScheme) || url.SchemeIs(url::kFileSystemScheme) ||
-      url.SchemeIs(kMagnetScheme) || url.SchemeIs(content::kChromeUIScheme) ||
+      url.SchemeIs(kMagnetScheme) || url.SchemeIs(kBraveUIScheme) ||
+      url.SchemeIs(content::kChromeUIScheme) ||
       url.SchemeIs(extensions::kExtensionScheme)) {
     // Do not show bubble if it's a local scheme
     return false;

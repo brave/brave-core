@@ -3,26 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "content/browser/renderer_host/navigation_entry_impl.h"
-
-#include "base/check.h"
 #include "base/check_op.h"
-#include "content/public/common/url_constants.h"
-
-#define SetVirtualURL SetVirtualURL_ChromiumImpl
 
 #include <content/browser/renderer_host/navigation_entry_impl.cc>
 
-#undef SetVirtualURL
-
 namespace content {
-
-// Virtual url should never be set to brave
-void NavigationEntryImpl::SetVirtualURL(const GURL& url) {
-  DCHECK(!url.SchemeIs(kBraveUIScheme))
-      << "Virtual URL should not use brave:// scheme";
-  SetVirtualURL_ChromiumImpl(url);
-}
 
 // SetStoragePartitionKeyToRestore and GetStoragePartitionKeyToRestore are
 // added to content::NavigationEntry to persist and restore the storage

@@ -23,6 +23,7 @@
 
 #define BrowserContentSettingBubbleModelDelegate \
   BraveBrowserContentSettingBubbleModelDelegate
+#define BrowserLocationBarModelDelegate BraveLocationBarModelDelegate
 #define BrowserWindowFeatures BrowserWindowFeatures_ChromiumImpl
 #define SidePanelCoordinator BraveSidePanelCoordinator
 #define BookmarksSidePanelCoordinator BraveBookmarksSidePanelCoordinator
@@ -34,6 +35,7 @@
 #undef BookmarksSidePanelCoordinator
 #undef SidePanelCoordinator
 #undef BrowserWindowFeatures
+#undef BrowserLocationBarModelDelegate
 #undef BrowserContentSettingBubbleModelDelegate
 #undef BrowserActions
 #undef BrowserCommandController
