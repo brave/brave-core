@@ -77,7 +77,7 @@ struct ManagePasswordDetailView: View {
                   Text(String(repeating: "•", count: 8))
                     .lineLimit(1)
                     .allowsHitTesting(false)
-                    .accessibility(hidden: !isPasswordRevealed)
+                    .accessibility(hidden: true)
                     .multilineTextAlignment(.trailing)
                     .frame(maxWidth: .infinity, alignment: .trailing)
                 }
@@ -88,8 +88,12 @@ struct ManagePasswordDetailView: View {
             Button {
               isPasswordRevealed.toggle()
             } label: {
-              Image(braveSystemName: isPasswordRevealed ? "leo.eye.on" : "leo.eye.off")
-                .foregroundStyle(Color(braveSystemName: .textInteractive))
+              Label(
+                Strings.Autofill.managePasswordDetailRevealPassword,
+                braveSystemImage: isPasswordRevealed ? "leo.eye.on" : "leo.eye.off"
+              )
+              .foregroundStyle(Color(braveSystemName: .textInteractive))
+              .labelStyle(.iconOnly)
             }
             .buttonStyle(.plain)
           }
