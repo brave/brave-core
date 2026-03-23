@@ -25,7 +25,7 @@ import java.util.List;
 @NullMarked
 public class CustomSearchEnginesPreference extends Preference {
     private @Nullable RecyclerView mRecyclerView;
-    private @Nullable Profile mProfile;
+    private Profile mProfile;
     private @Nullable CustomSearchEngineAdapter mCustomSearchEngineAdapter;
     private @Nullable CustomSearchEnginesPrefManager mCustomSearchEnginesPrefManager;
 

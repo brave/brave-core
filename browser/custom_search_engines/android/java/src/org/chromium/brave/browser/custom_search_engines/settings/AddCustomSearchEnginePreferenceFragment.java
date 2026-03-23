@@ -28,6 +28,7 @@ import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.brave.browser.custom_search_engines.CustomSearchEnginesManager;
 import org.chromium.brave.browser.custom_search_engines.R;
+import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
@@ -44,11 +45,11 @@ import java.util.Locale;
 
 @NullMarked
 public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsFragment {
-    private @Nullable TextInputEditText mTitleEdittext;
+    private TextInputEditText mTitleEdittext;
 
-    private @Nullable TextInputEditText mUrlEdittext;
+    private TextInputEditText mUrlEdittext;
 
-    private @Nullable TextInputLayout mUrlLayout;
+    private TextInputLayout mUrlLayout;
 
     private @Nullable Button mAddSearchEngineButton;
     private @Nullable Button mCancelButton;
@@ -68,6 +69,7 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
         mCustomSearchEnginesManager = CustomSearchEnginesManager.getInstance();
     }
 
+    @Initializer
     @Override
     public View onCreateView(
             LayoutInflater inflater,

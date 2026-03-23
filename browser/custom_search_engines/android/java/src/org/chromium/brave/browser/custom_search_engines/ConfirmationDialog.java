@@ -14,8 +14,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
-import org.chromium.build.annotations.Nullable;
 
 /**
  * A dialog class that handles confirmation dialogs in Brave browser. Provides functionality for
@@ -34,9 +34,9 @@ public class ConfirmationDialog {
         void onNegativeButtonClicked();
     }
 
-    private @Nullable Dialog mDialog;
-    private @Nullable Context mContext;
-    private @Nullable OnConfirmationDialogListener mListener;
+    private Dialog mDialog;
+    private Context mContext;
+    private OnConfirmationDialogListener mListener;
 
     /**
      * Shows a confirmation dialog with customizable title, message and button text.
@@ -48,6 +48,7 @@ public class ConfirmationDialog {
      * @param negativeButtonText The text for the negative/cancel button
      * @param listener Callback interface for button click events
      */
+    @Initializer
     public void showConfirmDialog(
             Context context,
             String title,
