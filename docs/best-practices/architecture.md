@@ -1372,3 +1372,21 @@ This avoids `BrowserWithTestWindowTest` (which Chromium discourages for producti
 ## ✅ Preference Keys Must Be Correct Before Shipping
 
 **Preference keys that get persisted to disk must be spelled correctly before the first release that includes them.** Changing a preference key after it ships requires a migration path to avoid losing user data. Double-check key strings during review.
+
+---
+
+<a id="ARCH-070"></a>
+
+## ✅ Keep PRs Focused on a Single Purpose
+
+**Each pull request should have one main purpose. Avoid bundling unrelated "ride-along" changes into the same PR.** If you notice something unrelated that needs fixing while working on a PR, make that fix in a separate PR instead.
+
+Focused PRs are easier to review, easier to revert if something goes wrong, and produce a cleaner git history. Mixing unrelated changes obscures the intent of each change and makes bisecting regressions harder.
+
+Small, closely related cleanups in code you are already modifying are acceptable. Formatting changes required by the formatter or presubmit are also fine but should be in a separate commit within the same PR.
+
+Examples of ride-along changes to avoid:
+- Fixing a separate bug you noticed while implementing a feature
+- Adding unrelated refactoring alongside a behavioral change
+- Large-scale renaming or reformatting unrelated to your change
+- Reordering functions or methods for aesthetic reasons
