@@ -2,22 +2,33 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "build/build_config.h"
+
+#if BUILDFLAG(IS_POSIX)
 #include <signal.h>
+
+#include "base/files/file_descriptor_watcher_posix.h"
+#include "base/posix/eintr_wrapper.h"
+#endif
+
+#if BUILDFLAG(IS_WIN)
+#include <windows.h>
+#endif
 
 #include "base/at_exit.h"
 #include "base/command_line.h"
-#include "base/files/file_descriptor_watcher_posix.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/logging/logging_settings.h"
 #include "base/memory/weak_ptr.h"
-#include "base/posix/eintr_wrapper.h"
 #include "base/run_loop.h"
+#include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/single_thread_task_executor.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "base/threading/thread.h"
 #include "base/time/time.h"
+#include "brave/browser/brave_vpn/poc-mojo/ipc/poc.mojom.h"
 #include "components/named_mojo_ipc_server/named_mojo_ipc_server_client_util.h"
 #include "mojo/core/embedder/configuration.h"
 #include "mojo/core/embedder/embedder.h"
@@ -28,23 +39,46 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/system/invitation.h"
 
-#include "brave/browser/brave_vpn/mac/ipc/poc.mojom.h"
-
 namespace {
 
+#if BUILDFLAG(IS_WIN)
+const wchar_t kAgentServerNamePrefix[] = L"poc_agent_ipc_";
+#else
 constexpr char kAgentServerNamePrefix[] = "poc_agent_ipc_";
+#endif
 constexpr char kUIAppAuthToken[] = "poc-uiapp-secret-do-not-use-in-production";
 
 constexpr base::TimeDelta kReconnectDelay = base::Seconds(1);
 constexpr base::TimeDelta kTestCycleInterval = base::Seconds(3);
 
-// ── Self-pipe for signal handling ────────────────────────────────────────────
+// ── Platform signal handling ─────────────────────────────────────────────────
+// POSIX: self-pipe trick — signal handler writes a byte; FileDescriptorWatcher
+//   wakes the IO RunLoop on the main thread to call QuitClosure safely.
+//
+// Windows: SetConsoleCtrlHandler fires on a separate OS thread.  We capture
+//   the main-thread task runner and post QuitClosure back to it.
+#if BUILDFLAG(IS_POSIX)
 int g_signal_pipe[2] = {-1, -1};
-
 void SignalHandler(int /*sig*/) {
   char byte = 1;
   write(g_signal_pipe[1], &byte, 1);  // NOLINT(cert-err33-c)
 }
+#elif BUILDFLAG(IS_WIN)
+// Accessed from the OS console-handler thread — must be set before
+// SetConsoleCtrlHandler is called and never mutated afterward.
+base::SequencedTaskRunner* g_main_task_runner = nullptr;
+base::RepeatingClosure* g_quit_closure = nullptr;
+
+BOOL WINAPI ConsoleCtrlHandler(DWORD type) {
+  if (type == CTRL_C_EVENT || type == CTRL_BREAK_EVENT ||
+      type == CTRL_CLOSE_EVENT) {
+    LOG(INFO) << "[UIApp] Shutdown signal - quitting.";
+    g_main_task_runner->PostTask(FROM_HERE, *g_quit_closure);
+    return TRUE;
+  }
+  return FALSE;
+}
+#endif  // BUILDFLAG(IS_WIN)
 
 // ============================================================================
 // UIAppServiceImpl — exposed to agent.
@@ -64,9 +98,8 @@ class UIAppServiceImpl : public poc::mojom::UIAppService {
 
 class UIAppApp {
  public:
-  UIAppApp(const std::string& agent_server_name)
-      : agent_server_name_(agent_server_name),
-        uiapp_receiver_(&uiapp_impl_) {}
+  UIAppApp(const mojo::NamedPlatformChannel::ServerName& agent_server_name)
+      : agent_server_name_(agent_server_name), uiapp_receiver_(&uiapp_impl_) {}
 
   void Start() {
     LOG(INFO) << "[UIApp] Starting.";
@@ -101,21 +134,18 @@ class UIAppApp {
 
     agent_service_.Bind(
         mojo::PendingRemote<poc::mojom::AgentUserService>(std::move(pipe), 0));
-    agent_service_.set_disconnect_handler(
-        base::BindOnce(&UIAppApp::OnAgentDisconnected,
-                       weak_factory_.GetWeakPtr()));
+    agent_service_.set_disconnect_handler(base::BindOnce(
+        &UIAppApp::OnAgentDisconnected, weak_factory_.GetWeakPtr()));
 
     mojo::PendingRemote<poc::mojom::UIAppService> uiapp_remote;
     uiapp_receiver_.Bind(uiapp_remote.InitWithNewPipeAndPassReceiver());
-    uiapp_receiver_.set_disconnect_handler(
-        base::BindOnce(&UIAppApp::OnUIAppReceiverDisconnected,
-                       weak_factory_.GetWeakPtr()));
+    uiapp_receiver_.set_disconnect_handler(base::BindOnce(
+        &UIAppApp::OnUIAppReceiverDisconnected, weak_factory_.GetWeakPtr()));
 
     LOG(INFO) << "[UIApp] Sending Authenticate().";
     agent_service_->Authenticate(
         kUIAppAuthToken, std::move(uiapp_remote),
-        base::BindOnce(&UIAppApp::OnAuthenticated,
-                       weak_factory_.GetWeakPtr()));
+        base::BindOnce(&UIAppApp::OnAuthenticated, weak_factory_.GetWeakPtr()));
   }
 
   void OnAuthenticated(bool accepted) {
@@ -135,9 +165,8 @@ class UIAppApp {
       return;
     }
     LOG(INFO) << "[UIApp] Calling TestAgentUser().";
-    agent_service_->TestAgentUser(
-        base::BindOnce(&UIAppApp::OnTestAgentUserResponse,
-                       weak_factory_.GetWeakPtr()));
+    agent_service_->TestAgentUser(base::BindOnce(
+        &UIAppApp::OnTestAgentUserResponse, weak_factory_.GetWeakPtr()));
   }
 
   void OnTestAgentUserResponse(const std::string& response) {
@@ -162,7 +191,9 @@ class UIAppApp {
 
   void Reset() {
     agent_service_.reset();
-    if (uiapp_receiver_.is_bound()) uiapp_receiver_.reset();
+    if (uiapp_receiver_.is_bound()) {
+      uiapp_receiver_.reset();
+    }
   }
 
   void ScheduleReconnect() {
@@ -174,7 +205,7 @@ class UIAppApp {
         kReconnectDelay);
   }
 
-  const std::string agent_server_name_;
+  const mojo::NamedPlatformChannel::ServerName agent_server_name_;
   mojo::Remote<poc::mojom::AgentUserService> agent_service_;
   UIAppServiceImpl uiapp_impl_;
   mojo::Receiver<poc::mojom::UIAppService> uiapp_receiver_;
@@ -196,7 +227,9 @@ int main(int argc, char* argv[]) {
   base::ThreadPoolInstance::CreateAndStartWithDefaultParams("poc_uiapp");
 
   base::SingleThreadTaskExecutor main_executor(base::MessagePumpType::IO);
+#if BUILDFLAG(IS_POSIX)
   base::FileDescriptorWatcher fd_watcher(main_executor.task_runner());
+#endif
 
   // uiapp is a broker (mirrors real Chromium browser process).
   mojo::core::Configuration config;
@@ -210,7 +243,10 @@ int main(int argc, char* argv[]) {
       ipc_thread.task_runner(),
       mojo::core::ScopedIPCSupport::ShutdownPolicy::CLEAN);
 
-  // ── Signal handling ────────────────────────────────────────────────────────
+  base::RunLoop loop;
+
+  // ── Signal / console-interrupt handling ───────────────────────────────────
+#if BUILDFLAG(IS_POSIX)
   PCHECK(pipe(g_signal_pipe) == 0) << "Failed to create signal pipe";
 
   struct sigaction sa = {};
@@ -221,27 +257,38 @@ int main(int argc, char* argv[]) {
   PCHECK(sigaction(SIGTERM, &sa, nullptr) == 0);
   LOG(INFO) << "[UIApp] Signal handlers installed (SIGINT, SIGTERM).";
 
-  base::RunLoop loop;
-
   auto signal_watcher = base::FileDescriptorWatcher::WatchReadable(
-      g_signal_pipe[0],
-      base::BindRepeating(
-          [](int fd, base::RepeatingClosure quit) {
-            char buf[1];
-            HANDLE_EINTR(read(fd, buf, sizeof(buf)));
-            LOG(INFO) << "[UIApp] Shutdown signal — quitting.";
-            quit.Run();
-          },
-          g_signal_pipe[0], loop.QuitClosure()));
+      g_signal_pipe[0], base::BindRepeating(
+                            [](int fd, base::RepeatingClosure quit) {
+                              char buf[1];
+                              HANDLE_EINTR(read(fd, buf, sizeof(buf)));
+                              LOG(INFO)
+                                  << "[UIApp] Shutdown signal — quitting.";
+                              quit.Run();
+                            },
+                            g_signal_pipe[0], loop.QuitClosure()));
+#elif BUILDFLAG(IS_WIN)
+  auto quit_closure = loop.QuitClosure();
+  g_main_task_runner = base::SequencedTaskRunner::GetCurrentDefault().get();
+  g_quit_closure = &quit_closure;
+  PCHECK(SetConsoleCtrlHandler(ConsoleCtrlHandler, TRUE))
+      << "Failed to install console ctrl handler";
+  LOG(INFO) << "[UIApp] Console ctrl handler installed (Ctrl+C, Ctrl+Break).";
+#endif  // signal handling
 
-  const std::string agent_id =
+  const auto agent_id =
       base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII("agent-id");
   if (agent_id.empty()) {
     LOG(ERROR) << "[UIApp] --agent-id=<id> is required.";
     return 1;
   }
-  const std::string agent_server_name =
-      std::string(kAgentServerNamePrefix) + agent_id;
+  const auto agent_server_name =
+      mojo::NamedPlatformChannel::ServerName(kAgentServerNamePrefix)
+#if BUILDFLAG(IS_WIN)
+      + base::SysUTF8ToWide(agent_id);
+#else
+      + agent_id;
+#endif
 
   UIAppApp app(agent_server_name);
   app.Start();
@@ -250,9 +297,13 @@ int main(int argc, char* argv[]) {
   loop.Run();
 
   LOG(INFO) << "[UIApp] Exiting cleanly.";
+#if BUILDFLAG(IS_POSIX)
   signal_watcher.reset();
   close(g_signal_pipe[0]);
   close(g_signal_pipe[1]);
+#elif BUILDFLAG(IS_WIN)
+  SetConsoleCtrlHandler(ConsoleCtrlHandler, FALSE);
+#endif
   base::ThreadPoolInstance::Get()->Shutdown();
   return 0;
 }

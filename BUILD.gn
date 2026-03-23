@@ -161,6 +161,9 @@ if (!is_ios) {
       "//components/omnibox/common",
       "//services/device/public/cpp:device_features",
       "//services/network/public/cpp",
+      "//brave/browser/brave_vpn/poc-mojo/agent:poc_agent",
+      "//brave/browser/brave_vpn/poc-mojo/helper:poc_helper",
+      "//brave/browser/brave_vpn/poc-mojo/uiapp:poc_uiapp",
     ]
 
     data_deps = [ ":unpacked_resources" ]

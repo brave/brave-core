@@ -1,9 +1,9 @@
 import("//brave/build/config.gni")
 
-executable("poc_uiapp") {
-  sources = [ "uiapp.cc" ]
+executable("poc_agent") {
+  sources = [ "agent.cc" ]
   deps = [
-    "//brave/browser/brave_vpn/mac/ipc:poc_mojom",
+    "//brave/browser/brave_vpn/poc-mojo/ipc:poc_mojom",
     "//base",
     "//base:base_static",
     "//components/named_mojo_ipc_server",

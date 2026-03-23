@@ -13,6 +13,6 @@ executable("poc_helper") {
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/platform",
     "//mojo/public/cpp/system",
-    "//brave/browser/brave_vpn/mac/ipc:poc_mojom",
+    "//brave/browser/brave_vpn/poc-mojo/ipc:poc_mojom",
   ]
 }
