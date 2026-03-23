@@ -79,6 +79,7 @@ public class AnyTabState: TabState {
     set { tab.favicon = newValue }
   }
 
+  public var faviconStatus: FaviconStatus? { tab.faviconStatus }
   public var url: URL? { tab.url }
   public var visibleURL: URL? { tab.visibleURL }
   public var lastCommittedURL: URL? { tab.lastCommittedURL }

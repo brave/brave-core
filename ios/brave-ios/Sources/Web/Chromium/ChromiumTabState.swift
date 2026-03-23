@@ -320,6 +320,10 @@ class ChromiumTabState: TabState, TabStateImpl {
     return webView?.visibleSSLStatus?.certificate?.createServerTrust()
   }
   var favicon: Favicon?
+  var faviconStatus: FaviconStatus? {
+    guard let faviconStatus = webView?.faviconStatus else { return nil }
+    return .init(faviconStatus)
+  }
   var url: URL? {
     visibleURL
   }
@@ -555,6 +559,12 @@ extension UserAgentType {
     case .mobile: self = .mobile
     default: self = .none
     }
+  }
+}
+
+extension FaviconStatus {
+  init(_ faviconStatus: CWVFaviconStatus) {
+    self.init(url: faviconStatus.url, image: faviconStatus.image)
   }
 }
 

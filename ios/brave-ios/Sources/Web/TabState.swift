@@ -63,6 +63,15 @@ public enum TabRestorationError: Error {
   case invalidData
 }
 
+/// Favicon related information for a current navigation
+public struct FaviconStatus {
+  /// The URL of the favicon which was used to load it off the web.
+  public var url: URL?
+  /// The favicon bitmap for the page. It is fetched asynchronously after the favicon URL is set,
+  /// so it is possible for `image` to be nil if the fetch hasn't completed
+  public var image: UIImage?
+}
+
 /// Core interface for interaction with the web
 @dynamicMemberLookup
 public protocol TabState: AnyObject {
@@ -129,6 +138,8 @@ public protocol TabState: AnyObject {
   /// The current pages favicon
   // TODO: Should be get only, make favicon fetch logic internal (brave/brave-browser#45095)
   var favicon: Favicon? { get set }
+  /// The current cached favicon for the realized tab
+  var faviconStatus: FaviconStatus? { get }
   /// The current URL loaded on the page, regardless of the navigation status or spoofing
   @available(iOS, deprecated, message: "Use `visibleURL` or `lastCommittedURL` instead")
   var url: URL? { get }
