@@ -7,14 +7,6 @@ import BraveStrings
 import LocalAuthentication
 import SwiftUI
 
-private struct AutofillPrivacyLockEnvironmentKey: EnvironmentKey {
-  static let defaultValue: AutofillPrivacyLock? = nil
-}
-
-extension EnvironmentValues {
-  @Entry var autofillPrivacyLock: AutofillPrivacyLock?
-}
-
 /// Owns the biometric/passcode authentication state for the autofill management hierarchy.
 /// The root ManagePasswordsView creates a single instance and injects it via environment;
 /// child views (ManagePasswordGroupView, ManagePasswordDetailView) inherit it and show the

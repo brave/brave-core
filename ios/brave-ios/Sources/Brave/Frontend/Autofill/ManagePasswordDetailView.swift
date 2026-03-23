@@ -12,7 +12,7 @@ import UIKit
 struct ManagePasswordDetailView: View {
   @Environment(\.openURL) private var openURL
   @Environment(\.dismiss) private var dismiss
-  @Environment(\.autofillPrivacyLock) private var privacyLock
+  @Environment(\.redactionReasons) private var redactionReasons
   @State private var isPasswordRevealed = false
 
   let viewModel: ManagePasswordsViewModel
@@ -103,13 +103,13 @@ struct ManagePasswordDetailView: View {
       }
     }
     .foregroundStyle(Color(braveSystemName: .textPrimary))
-    .accessibility(hidden: privacyLock?.isLocked ?? false)
+    .accessibility(hidden: redactionReasons.contains(.privacy) ? true : false)
     .navigationTitle(URL(string: password.site)?.baseDomain ?? password.title)
     .navigationBarTitleDisplayMode(.inline)
     .toolbarBackground(.visible, for: .navigationBar)
-    .toolbar(!(privacyLock?.isLocked ?? true) ? .visible : .hidden, for: .automatic)
+    .toolbar(redactionReasons.contains(.privacy) ? .hidden : .visible, for: .automatic)
     .overlay {
-      if privacyLock?.isLocked == true { Color(.braveGroupedBackground).ignoresSafeArea() }
+      if redactionReasons.contains(.privacy) { Color(.braveGroupedBackground).ignoresSafeArea() }
     }
   }
 }

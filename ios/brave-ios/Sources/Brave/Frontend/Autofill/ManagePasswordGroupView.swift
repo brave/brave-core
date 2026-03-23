@@ -15,7 +15,7 @@ struct ManagePasswordGroupView: View {
   @Environment(\.dismiss) private var dismiss
   @Environment(\.editMode) private var editMode
   @Environment(\.openURL) private var openURL
-  @Environment(\.autofillPrivacyLock) private var privacyLock
+  @Environment(\.redactionReasons) private var redactionReasons
 
   let viewModel: ManagePasswordsViewModel
   let domain: String
@@ -33,11 +33,9 @@ struct ManagePasswordGroupView: View {
       Section {
         ForEach(passwords, id: \.identifier) { password in
           NavigationLink {
-            if let privacyLock {
-              ManagePasswordDetailView(viewModel: viewModel, password: password)
-                .environment(\.openURL, openURL)
-                .environment(\.autofillPrivacyLock, privacyLock)
-            }
+            ManagePasswordDetailView(viewModel: viewModel, password: password)
+              .environment(\.openURL, openURL)
+              .environment(\.redactionReasons, redactionReasons)
           } label: {
             VStack(alignment: .leading, spacing: 4) {
               Text(password.username ?? password.title)
@@ -118,9 +116,10 @@ struct ManagePasswordGroupView: View {
           .disabled(passwords.isEmpty)
       }
     }
-    .toolbar(!(privacyLock?.isLocked ?? true) ? .visible : .hidden, for: .automatic)
+    .toolbar(redactionReasons.contains(.privacy) ? .hidden : .visible, for: .automatic)
+    .toolbar(redactionReasons.contains(.privacy) ? .hidden : .visible, for: .bottomBar)
     .overlay {
-      if privacyLock?.isLocked == true { Color(.braveGroupedBackground).ignoresSafeArea() }
+      if redactionReasons.contains(.privacy) { Color(.braveGroupedBackground).ignoresSafeArea() }
     }
   }
 
