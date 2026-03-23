@@ -7,7 +7,7 @@ import config from './config.js'
 import util from './util.js'
 import path from 'node:path'
 import fs from 'fs-extra'
-import Log from './logging.js'
+import * as Log from './log.ts'
 import branding from './branding.js'
 
 /**

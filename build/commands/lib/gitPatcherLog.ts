@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import chalk from 'chalk'
-import { divider as LogDivider } from './logging.js'
+import * as Log from './log.ts'
 import { patchApplyReasonMessages, getReasonName } from './gitPatcher.js'
 
 type PatchStatus = {
@@ -39,7 +39,7 @@ export function printFailedPatchesInJsonFormat(
     chalk.red(`${failedPatches.length} Failed patches json breakdown:`),
   )
   console.log(JSON.stringify(patchFailuresOutput))
-  console.log(LogDivider)
+  console.log(Log.divider)
 }
 
 export function allPatchStatus(
@@ -103,5 +103,5 @@ function logPatchStatus(patchStatus: PatchStatus) {
       console.error(chalk.red(patchStatus.error.stderr))
     }
   }
-  console.log(LogDivider)
+  console.log(Log.divider)
 }

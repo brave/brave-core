@@ -6,7 +6,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import semver from 'semver'
-import Log from './logging.js'
+import * as Log from './log.ts'
 
 checkNodeVersion()
 checkNpmVersion()

@@ -8,7 +8,7 @@ import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import { parseEnv } from 'node:util'
-import Log from './logging.js'
+import * as Log from './log.ts'
 
 /**
  * EnvConfig - Unified configuration loader for Brave build system

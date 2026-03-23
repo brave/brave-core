@@ -1,7 +1,7 @@
 // Copyright (c) 2019 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import os from 'node:os'
 import chalk from 'chalk'
@@ -9,7 +9,7 @@ import logUpdate from 'log-update'
 import tsm from 'teamcity-service-messages'
 import { isTeamcity } from './ciDetect.ts'
 
-export let divider
+export let divider: string
 function setLineLength() {
   divider = Array(process.stdout.columns || 32).join('-')
 }
@@ -26,7 +26,7 @@ const cmdCmdStyle = chalk.green
 const cmdArrowStyle = chalk.magenta
 
 // Track Teamcity progress scopes and finish them on unexpected exit.
-const progressScopes = []
+const progressScopes: string[] = []
 
 if (isTeamcity) {
   tsm.autoFlowId = false
@@ -45,12 +45,12 @@ if (isTeamcity) {
 
   process.on('exit', () => {
     while (progressScopes.length) {
-      tsm.blockClosed({ name: progressScopes.pop() })
+      tsm.blockClosed({ name: progressScopes.pop()! })
     }
   })
 }
 
-function progressStart(message) {
+export function progressStart(message: string) {
   if (isTeamcity) {
     tsm.blockOpened({ name: message })
     progressScopes.push(message)
@@ -59,7 +59,7 @@ function progressStart(message) {
   }
 }
 
-function progressFinish(message) {
+export function progressFinish(message: string) {
   if (isTeamcity) {
     progressScopes.pop()
     tsm.blockClosed({ name: message })
@@ -68,7 +68,7 @@ function progressFinish(message) {
   }
 }
 
-function progressScope(message, callable) {
+export function progressScope(message: string, callable: () => void) {
   progressStart(message)
   try {
     callable()
@@ -77,7 +77,10 @@ function progressScope(message, callable) {
   }
 }
 
-async function progressScopeAsync(message, callable) {
+export async function progressScopeAsync(
+  message: string,
+  callable: () => Promise<void>,
+) {
   progressStart(message)
   try {
     await callable()
@@ -86,7 +89,7 @@ async function progressScopeAsync(message, callable) {
   }
 }
 
-function status(message, alreadyStyled = false) {
+export function status(message: string, alreadyStyled: boolean = false) {
   if (isTeamcity) {
     tsm.progressMessage(message)
   } else {
@@ -94,7 +97,7 @@ function status(message, alreadyStyled = false) {
   }
 }
 
-function error(message) {
+export function error(message: string) {
   if (isTeamcity) {
     tsm.message({ text: message, status: 'ERROR' })
   } else {
@@ -102,7 +105,7 @@ function error(message) {
   }
 }
 
-function warn(message) {
+export function warn(message: string) {
   if (isTeamcity) {
     tsm.message({ text: message, status: 'WARNING' })
   } else {
@@ -110,7 +113,9 @@ function warn(message) {
   }
 }
 
-function updateStatus(projectUpdateStatus) {
+export function updateStatus(
+  projectUpdateStatus: { name: string; ref: string; phase: string }[],
+) {
   const statusLines = Object.values(projectUpdateStatus).map(
     (entry) =>
       `${chalk.bold(entry.name)} (${entry.ref}): ${chalk.green.italic(
@@ -120,22 +125,10 @@ function updateStatus(projectUpdateStatus) {
   logUpdate(statusLines.join(os.EOL))
 }
 
-function command(dir, cmd, args) {
+export function command(dir: string, cmd: string, args: string[]) {
   console.log(divider)
   if (dir) {
     console.log(cmdDirStyle(dir))
   }
   status(`${cmdArrowStyle('>')} ${cmdCmdStyle(cmd)} ${args.join(' ')}`, true)
-}
-
-export default {
-  progressStart,
-  progressFinish,
-  progressScope,
-  progressScopeAsync,
-  status,
-  error,
-  warn,
-  command,
-  updateStatus,
 }

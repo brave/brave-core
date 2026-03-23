@@ -11,7 +11,7 @@ import fs from 'node:fs'
 import assert from 'node:assert'
 import rootDir from './rootDir.cjs'
 import EnvConfig from './envConfig.ts'
-import Log from './logging.js'
+import * as Log from './log.ts'
 import util from './util.js'
 import { isCI, isTeamcity } from './ciDetect.ts'
 
