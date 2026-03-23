@@ -4,9 +4,11 @@ name: Build PR review image
 
 on:
   push:
-    branches: [master, main]
+    branches: [master]
     paths:
-      - 'brave/.github/workflows/pr-review-claude.dockerfile'
+      - '.github/workflows/pr-review-claude.dockerfile'
+      - '.github/workflows/pr-review-claude.py'
+      - '.claude/skills/review/SKILL.md'
   workflow_dispatch:
 
 permissions:
@@ -15,7 +17,7 @@ permissions:
 
 jobs:
   build:
-    name: Build and push image
+    name: Build the pr-review-claude docker image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -34,8 +36,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
         with:
-          context: .
-          file: ./brave/.github/workflows/pr-review-claude.Dockerfile
+          file: .github/workflows/pr-review-claude.dockerfile
           push: true
           tags: |
             ghcr.io/${{ github.repository }}/pr-review-claude:latest

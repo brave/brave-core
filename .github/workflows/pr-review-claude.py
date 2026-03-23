@@ -10,7 +10,7 @@ skill instructions, and posts the result as a GitHub review: one summary body
 plus multiple inline comments on the code (when the model provides them).
 
 Usage:
-  python3 pr-review-runner.py <pr_number> [repo]
+  python3 pr-review-claude.py <pr_number> [repo]
   repo defaults to brave/brave-core.
 
 Environment:
@@ -31,8 +31,18 @@ except ImportError:
     sys.exit(1)
 
 REPO_DEFAULT = "brave/brave-core"
-# Script lives at brave/.claude/ci/pr-review-runner.py; skill is brave/.claude/skills/review/SKILL.md
-SKILL_PATH = Path(__file__).resolve().parent.parent / "skills" / "review" / "SKILL.md"
+
+
+def _skill_path() -> Path:
+    """Review skill: baked into the CI image (trusted), or next to the repo in dev."""
+    bundled = Path("/opt/pr-review-claude/skills/review/SKILL.md")
+    if bundled.exists():
+        return bundled
+    # Local dev: script at .github/workflows/pr-review-claude.py → repo root is parent^3
+    repo_root = Path(__file__).resolve().parent.parent.parent
+    return repo_root / ".claude" / "skills" / "review" / "SKILL.md"
+
+
 REVIEW_DISCLAIMER = (
     "I generated this review about the changes, sharing here. "
     "It should be used for informational purposes only and not as proof of review.\n\n"
@@ -49,7 +59,6 @@ def run_gh(*args, repo: str, capture=True):
         capture_output=capture,
         text=True,
         env=env,
-        cwd="/workspace" if Path("/workspace").exists() else None,
     )
     if result.returncode != 0 and capture:
         raise RuntimeError(f"gh failed: {result.stderr or result.stdout}")
@@ -71,9 +80,10 @@ def gather_pr_context(pr_number: str, repo: str) -> dict:
 
 def load_skill_content() -> str:
     """Load the review skill markdown (for system prompt)."""
-    if not SKILL_PATH.exists():
+    path = _skill_path()
+    if not path.exists():
         return ""
-    return SKILL_PATH.read_text(encoding="utf-8", errors="replace")
+    return path.read_text(encoding="utf-8", errors="replace")
 
 
 def run_review(pr_number: str, repo: str) -> str:
@@ -174,7 +184,7 @@ def post_review(pr_number: str, repo: str, body: str, comments: list[dict]) -> N
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: pr-review-runner.py <pr_number> [repo]", file=sys.stderr)
+        print("Usage: pr-review-claude.py <pr_number> [repo]", file=sys.stderr)
         sys.exit(2)
     pr_number = sys.argv[1].strip()
     repo = sys.argv[2].strip() if len(sys.argv) > 2 else REPO_DEFAULT
