@@ -21,7 +21,6 @@
 
 class BraveActionsContainer;
 class BraveActionsContainerTest;
-class BraveShieldsPageInfoController;
 class PromotionButtonController;
 class PromotionButtonView;
 class PlaylistActionIconView;
@@ -147,7 +146,6 @@ class BraveLocationBarView : public LocationBarView {
 #endif
   std::unique_ptr<PromotionButtonController> promotion_controller_;
   raw_ptr<PromotionButtonView> promotion_button_ = nullptr;
-  std::unique_ptr<BraveShieldsPageInfoController> shields_page_info_controller_;
 #if BUILDFLAG(ENABLE_TOR)
   raw_ptr<OnionLocationView> onion_location_view_ = nullptr;
 #endif

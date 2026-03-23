@@ -13,12 +13,10 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/location_bar/brave_search_conversion/promotion_button_controller.h"
 #include "brave/browser/ui/views/location_bar/brave_search_conversion/promotion_button_view.h"
-#include "brave/browser/ui/views/location_bar/brave_shields_page_info_controller.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
@@ -142,11 +140,6 @@ void BraveLocationBarView::Init() {
         promotion_button_, omnibox_view_, browser());
   }
 
-  if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
-    shields_page_info_controller_ =
-        std::make_unique<BraveShieldsPageInfoController>(location_icon_view());
-  }
-
   // brave action buttons
   brave_actions_ = AddChildView(
       std::make_unique<BraveActionsContainer>(browser_, profile()));
@@ -195,10 +188,6 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
     brave_news_action_icon_view_->Update();
   }
 #endif
-
-  if (shields_page_info_controller_) {
-    shields_page_info_controller_->UpdateWebContents(contents);
-  }
 
   LocationBarView::Update(contents);
 }

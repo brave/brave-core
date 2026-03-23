@@ -546,7 +546,6 @@ test("brave_unit_tests") {
       "//brave/browser/ui/darker_theme:unit_tests",
       "//brave/browser/ui/sidebar:unit_tests",
       "//brave/browser/ui/views/brave_tooltips",
-      "//brave/browser/ui/views/page_info:unit_tests",
       "//brave/components/sidebar/browser:unit_tests",
     ]
 
@@ -1259,7 +1258,6 @@ test("brave_browser_tests") {
       "//brave/browser/ui/views/frame/vertical_tabs:browser_tests",
       "//brave/browser/ui/views/location_bar",
       "//brave/browser/ui/views/location_bar:browser_tests",
-      "//brave/browser/ui/views/page_info:browser_tests",
       "//brave/browser/ui/views/permissions:browser_tests",
       "//brave/browser/ui/views/split_view:browser_tests",
       "//brave/browser/ui/views/tabs:browser_tests",
@@ -1300,7 +1298,6 @@ test("brave_browser_tests") {
       "//brave/browser/brave_shields/ad_block_only_mode_browsertest.cc",
       "//brave/browser/ssl/certificate_transparency_browsertest.cc",
       "//brave/browser/ui/browser_navigator_browsertest.cc",
-      "//brave/browser/ui/toolbar/brave_location_bar_model_delegate_browsertest.cc",
     ]
     deps += [
       "//brave/app/theme:brave_theme_resources_grit",
@@ -1311,14 +1308,12 @@ test("brave_browser_tests") {
       "//brave/browser/sharing_hub:browser_tests",
       "//brave/browser/sync:browser_tests",
       "//brave/browser/ui/geolocation:browser_tests",
-      "//brave/browser/ui/page_info",
       "//brave/browser/ui/tabs:tab_strip",
       "//brave/browser/ui/toolbar:brave_app_menu_browser_tests",
       "//brave/browser/ui/webui/brave_new_tab_page_refresh:browser_tests",
       "//brave/browser/ui/webui/side_panel/customize_chrome:browser_tests",
       "//brave/browser/ui/whats_new:browser_test",
       "//brave/browser/url_sanitizer:browser_tests",
-      "//brave/components/vector_icons",
       "//chrome:packed_resources",
       "//chrome/browser/apps/app_service",
       "//chrome/browser/themes",

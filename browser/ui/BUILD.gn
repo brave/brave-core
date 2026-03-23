@@ -65,7 +65,6 @@ source_set("ui") {
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_origin",
     "//brave/browser/skus",
-    "//brave/browser/ui/page_info",
     "//brave/browser/ui/webui/brave_account",
     "//brave/browser/ui/webui/email_aliases",
     "//brave/browser/ui/webui/local_ai",
@@ -1028,7 +1027,6 @@ source_set("ui") {
 
     deps += [
       "//brave/browser/ui/views/brave_tooltips",
-      "//brave/browser/ui/views/page_info",
       "//ui/views/controls/webview",
     ]
 

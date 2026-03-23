@@ -13,7 +13,6 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_browser_tab_menu_model_delegate.h"
-#include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -75,9 +74,6 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
         std::make_unique<brave_rewards::RewardsPanelCoordinator>(browser);
   }
 #endif
-
-  brave_shields_ui_contents_cache_ =
-      std::make_unique<BraveShieldsUIContentsCache>();
 
   // Replace the original tab menu model delegate with our own.
   tab_menu_model_delegate_ =

@@ -31,7 +31,6 @@ source_set("internal") {
     deps += [
       "//brave/browser/ui/email_aliases",
       "//brave/browser/ui/tabs:tab_menu",
-      "//brave/browser/ui/views/page_info",
       "//chrome/browser/ui/tabs:features",
     ]
   }

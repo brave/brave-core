@@ -45,10 +45,6 @@ class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolb
         value: false,
       },
       // </if>
-      isShowBraveShieldsInPageInfoEnabled_: {
-        type: Boolean,
-        value: loadTimeData.getBoolean('isShowBraveShieldsInPageInfoEnabled'),
-      },
     }
   }
 
@@ -56,7 +52,6 @@ class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolb
   private declare isNativeWalletEnabled_: boolean
   private walletBrowserProxy_: BraveWalletBrowserProxy = BraveWalletBrowserProxyImpl.getInstance()
   // </if>
-  private declare isShowBraveShieldsInPageInfoEnabled_: boolean
 
   override ready() {
     super.ready()

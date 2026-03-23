@@ -539,7 +539,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(
       kWebViewRoundedCorners,
       base::FeatureList::IsEnabled(features::kBraveRoundedCornersByDefault));
-  registry->RegisterBooleanPref(kBraveSubtleAppMenuLogo, false);
 
   brave_tabs::RegisterBraveProfilePrefs(registry);
 

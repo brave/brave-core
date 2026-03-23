@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/feature_list.h"
-#include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/rounded_separator.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
@@ -89,11 +88,6 @@ bool BraveActionsContainer::ShouldShowBraveRewardsAction() const {
 #endif
 
 void BraveActionsContainer::AddActionViewForShields() {
-  // Do not create the shields button if the shields UI is displayed in the Page
-  // Info bubble.
-  if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
-    return;
-  }
   shields_action_btn_ = AddChildViewAt(
       std::make_unique<BraveShieldsActionView>(browser_window_interface_), 0);
   shields_action_btn_->SetPreferredSize(GetActionSize());

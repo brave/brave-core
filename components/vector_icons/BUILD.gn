@@ -12,11 +12,7 @@ aggregate_vector_icons("brave_components_vector_icons") {
 
   # Note: Before adding another icon here, check if the icon is available in Leo
   # https://leo.bravesoftware.com/?path=/story/icon--all-icons
-  sources = [
-    "app_menu_color.icon",
-    "app_menu_outline.icon",
-    "autoplay_status.icon",
-  ]
+  sources = [ "autoplay_status.icon" ]
 
   # The Skia icon names are transformed to make them easier to use in Brave Core
   # `arrow-right.svg` becomes `leo_arrow_right.icon`
@@ -106,8 +102,6 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_search.icon",
     "leo_settings.icon",
     "leo_share_windows.icon",
-    "leo_shield_disable_filled.icon",
-    "leo_shield_done.icon",
     "leo_shopping_bag.icon",
     "leo_shred_data.icon",
     "leo_smartphone_laptop.icon",

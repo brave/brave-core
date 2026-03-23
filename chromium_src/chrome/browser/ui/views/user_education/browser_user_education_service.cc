@@ -5,12 +5,7 @@
 
 #include "chrome/browser/ui/views/user_education/browser_user_education_service.h"
 
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_element_identifiers.h"
-#include "components/feature_engagement/public/feature_constants.h"
-#include "components/grit/brave_components_strings.h"
 #include "components/user_education/common/feature_promo/feature_promo_registry.h"
-#include "components/user_education/common/feature_promo/feature_promo_specification.h"
 
 // This override allows Brave to register its own in-product help features with
 // the user education system's feature promo registry.
@@ -20,23 +15,7 @@ namespace {
 // Registers Brave-specific in-product help features.
 void MaybeRegisterBraveFeaturePromos(
     user_education::FeaturePromoRegistry& registry,
-    Profile* profile) {
-  using user_education::FeaturePromoSpecification;
-  using user_education::HelpBubbleArrow;
-
-  // IPH for Brave Shields in Page Info.
-  registry.RegisterFeature(std::move(
-      FeaturePromoSpecification::CreateForToastPromo(
-          feature_engagement::kIPHBraveShieldsInPageInfoFeature,
-          kLocationIconElementId, IDS_BRAVE_SHIELDS_PAGE_INFO_IPH_TEXT,
-          IDS_BRAVE_SHIELDS_PAGE_INFO_IPH_SCREENREADER_TEXT,
-          FeaturePromoSpecification::AcceleratorInfo())
-          .SetBubbleArrow(HelpBubbleArrow::kBottomCenter)
-          .SetMetadata(144, "ksmith@brave.com",
-                       "Shown when user visits a site for the first time after "
-                       "the Shields UI was moved to Page Info. Educates users "
-                       "about the new location.")));
-}
+    Profile* profile) {}
 
 }  // namespace
 

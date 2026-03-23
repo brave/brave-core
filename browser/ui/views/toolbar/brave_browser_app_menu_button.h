@@ -9,18 +9,13 @@
 #include <optional>
 
 #include "base/gtest_prod_util.h"
-#include "base/memory/raw_ref.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
-#include "components/prefs/pref_change_registrar.h"
-
-class ToolbarView;
 
 class BraveBrowserAppMenuButton : public BrowserAppMenuButton {
   METADATA_HEADER(BraveBrowserAppMenuButton, BrowserAppMenuButton)
 
  public:
-  explicit BraveBrowserAppMenuButton(ToolbarView* toolbar_view);
-  ~BraveBrowserAppMenuButton() override;
+  using BrowserAppMenuButton::BrowserAppMenuButton;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveAppMenuBrowserTest,
@@ -35,11 +30,6 @@ class BraveBrowserAppMenuButton : public BrowserAppMenuButton {
   std::optional<SkColor> GetHighlightColor() const override;
   SkColor GetForegroundColor(ButtonState state) const override;
   void UpdateLayoutInsets() override;
-  void UpdateIcon() override;
-  void UpdateColorsAndInsets() override;
-
-  raw_ref<ToolbarView> toolbar_view_;
-  PrefChangeRegistrar pref_change_registrar_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_BROWSER_APP_MENU_BUTTON_H_

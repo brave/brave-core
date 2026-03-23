@@ -14,7 +14,6 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
-#include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
 #include "brave/components/brave_rewards/content/rewards_p3a.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
@@ -423,10 +422,6 @@ gfx::ImageSkia BraveRewardsActionView::GetRewardsIcon() {
   SkColor color = color_provider
                       ? color_provider->GetColor(kColorToolbarButtonIcon)
                       : kIconColor;
-
-  if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
-    return gfx::CreateVectorIcon(kLeoProductBatOutlineIcon, icon_size, color);
-  }
 
   // Since the BAT icon has color the actual color value here is not relevant,
   // but |CreateVectorIcon| requires one.

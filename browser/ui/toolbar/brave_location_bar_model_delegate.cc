@@ -7,9 +7,7 @@
 
 #include "base/check.h"
 #include "base/feature_list.h"
-#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/ui/brave_scheme_utils.h"
-#include "brave/browser/ui/page_info/features.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -107,27 +105,5 @@ const gfx::VectorIcon* BraveLocationBarModelDelegate::GetVectorIconOverride()
     return nullptr;
   }
 
-  auto* fallback_icon = &kLeoTuneSmallIcon;
-
-  // Return a fallback icon if the Shields/Page Info integration feature is
-  // disabled.
-  if (!page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
-    return fallback_icon;
-  }
-
-  // Return a fallback icon if we can't determine the shields status.
-  content::WebContents* web_contents = GetActiveWebContents();
-  if (!web_contents) {
-    return fallback_icon;
-  }
-  auto* shields_helper =
-      brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
-  if (!shields_helper) {
-    return fallback_icon;
-  }
-
-  // Return the appropriate shields icon based on the Shields status.
-  return shields_helper->GetBraveShieldsEnabled()
-             ? &kLeoShieldDoneIcon
-             : &kLeoShieldDisableFilledIcon;
+  return &kLeoTuneSmallIcon;
 }
