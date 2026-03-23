@@ -12,6 +12,7 @@ class SyncCodewordsView: UIView, UITextViewDelegate {
     let textView = UITextView()
     textView.autocapitalizationType = .none
     textView.autocorrectionType = .yes
+    textView.inlinePredictionType = .no
     textView.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.medium)
     textView.textColor = .braveLabel
     textView.backgroundColor = .braveBackground
