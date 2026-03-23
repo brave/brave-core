@@ -107,6 +107,7 @@ function AdBlockControl(props: { showDetails: () => void }) {
         isDisabled={adsBlocked <= 0}
         kind='plain-faint'
         fab
+        aria-label={getString('BRAVE_SHIELDS_VIEW_DETAILS')}
       >
         <Icon name='carat-right' />
       </Button>
@@ -221,6 +222,7 @@ function BlockScriptsControls(props: { showDetails: () => void }) {
         }
         kind='plain-faint'
         fab
+        aria-label={getString('BRAVE_SHIELDS_VIEW_DETAILS')}
       >
         <Icon name='carat-right' />
       </Button>
@@ -308,6 +310,7 @@ function FingerprintingControls(props: { showDetails: () => void }) {
         }
         kind='plain-faint'
         fab
+        aria-label={getString('BRAVE_SHIELDS_VIEW_DETAILS')}
       >
         <Icon name='carat-right' />
       </Button>
@@ -347,7 +350,10 @@ function CookieBlockControls() {
           {getString('BRAVE_SHIELDS_COOKIES_ALLOWED_ALL')}
         </leo-option>
       </Dropdown>
-      <OpenTabLink url='chrome://settings/shields'>
+      <OpenTabLink
+        url='chrome://settings/shields'
+        aria-label={getString('BRAVE_SHIELDS_OPEN_SETTINGS')}
+      >
         <Icon name='launch' />
       </OpenTabLink>
     </div>
@@ -408,7 +414,10 @@ function BlockElementsControls() {
           {getString('BRAVE_SHIELDS_SHOW_ALL_BLOCKED_ELEMENTS')}
         </button>
       </div>
-      <OpenTabLink url='chrome://settings/shields'>
+      <OpenTabLink
+        url='chrome://settings/shields'
+        aria-label={getString('BRAVE_SHIELDS_OPEN_SETTINGS')}
+      >
         <Icon name='launch' />
       </OpenTabLink>
     </div>

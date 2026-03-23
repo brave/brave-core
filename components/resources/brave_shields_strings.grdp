@@ -368,4 +368,16 @@
     Brave Shields has a new home and design. Access it by clicking the site icon in the address bar.
   </message>
 
+  <message name="IDS_BRAVE_SHIELDS_GO_BACK" desc="Accessible label for the back button on inner views of the Shields panel." formatter_data="webui=BraveShields">
+    Go back
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_VIEW_DETAILS" desc="Accessible label for icon buttons that navigate to a detail view." formatter_data="webui=BraveShields">
+    View details
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_OPEN_SETTINGS" desc="Accessible label for icon links that open Shields settings." formatter_data="webui=BraveShields">
+    Open settings
+  </message>
+
 </grit-part>
