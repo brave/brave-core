@@ -96,14 +96,9 @@ EphemeralStorageService::EphemeralStorageService(
   tld_ephemeral_area_keep_alive_ = base::Seconds(
       net::features::kBraveEphemeralStorageKeepAliveTimeInSeconds.Get());
 
-  if (base::FeatureList::IsEnabled(
-          net::features::kBraveForgetFirstPartyStorage) &&
-      !context_->IsOffTheRecord()) {
-    delegate_->RegisterFirstWindowOpenedCallback(
-        base::BindOnce(&EphemeralStorageService::
-                           ScheduleFirstPartyStorageAreasCleanupOnStartup,
-                       weak_ptr_factory_.GetWeakPtr()));
-  }
+  RegisterFirstWindowOpenedCallback(base::BindOnce(
+      &EphemeralStorageService::ScheduleFirstPartyStorageAreasCleanupOnStartup,
+      weak_ptr_factory_.GetWeakPtr()));
 }
 
 EphemeralStorageService::~EphemeralStorageService() = default;
@@ -284,6 +279,12 @@ void EphemeralStorageService::RemoveObserver(
 
 #if BUILDFLAG(IS_ANDROID)
 void EphemeralStorageService::TriggerCurrentAppStateNotification() {
+  // Register again, as on Android the EphemeralStorageService may remain alive
+  // across multiple app states, requiring the callback to be re-registered.
+  RegisterFirstWindowOpenedCallback(base::BindOnce(
+      &EphemeralStorageService::ScheduleFirstPartyStorageAreasCleanupOnStartup,
+      weak_ptr_factory_.GetWeakPtr()));
+
   delegate_->TriggerCurrentAppStateNotification();
 }
 #endif  // BUILDFLAG(IS_ANDROID)
@@ -468,6 +469,17 @@ void EphemeralStorageService::CleanupFirstPartyStorageAreasOnStartup() {
         {std::string(url.host()), storage_partition_config});
   }
   first_party_storage_areas_to_cleanup_on_startup_.clear();
+}
+
+void EphemeralStorageService::RegisterFirstWindowOpenedCallback(
+    base::OnceClosure callback) {
+  if (!base::FeatureList::IsEnabled(
+          net::features::kBraveForgetFirstPartyStorage) ||
+      context_->IsOffTheRecord()) {
+    return;
+  }
+
+  delegate_->RegisterFirstWindowOpenedCallback(std::move(callback));
 }
 
 size_t EphemeralStorageService::FireCleanupTimersForTesting() {

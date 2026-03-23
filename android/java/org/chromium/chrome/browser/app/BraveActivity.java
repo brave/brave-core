@@ -1097,12 +1097,6 @@ public abstract class BraveActivity extends ChromeActivity
             ApplicationStatus.registerApplicationStateListener(mApplicationStateListener);
         }
 
-        Profile profile = getCurrentProfile();
-        if (profile != null) {
-            // Triggers notification of current app state on Android.
-            BraveFirstPartyStorageCleanerUtils.triggerCurrentAppStateNotification(profile);
-        }
-
         super.onStartWithNative();
     }
 
@@ -3005,6 +2999,16 @@ public abstract class BraveActivity extends ChromeActivity
                     intent.setData(Uri.parse(BraveIntentHandler.BRAVE_FALLBACK_SUPPORT_URL));
                 }
             }
+        }
+    }
+
+    @Override
+    public void onTabStateInitializedHandler() {
+        Profile profile = getCurrentProfile();
+        if (profile != null) {
+            // Triggers current app state notification to make sure the first-party storage cleanup
+            // is scheduled on startup if needed.
+            BraveFirstPartyStorageCleanerUtils.triggerCurrentAppStateNotification(profile);
         }
     }
 }
