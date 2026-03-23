@@ -18,7 +18,6 @@
 // Macro to get num suffixed color id. ex) Primitive40(Blue) ->
 // kColorPrimitiveBlue40 The resulting color id is enum in nala_color_id.h
 #define COLOR_10(color) nala::kColor##color##10
-#define COLOR_20(color) nala::kColor##color##20
 #define COLOR_40(color) nala::kColor##color##40
 #define PRIMITIVE_60(color) nala::kColorPrimitive##color##60
 #define COLOR_KEY_AND_COLOR_ID_PAIR(color) \
@@ -38,14 +37,14 @@
 // Yield color ids for dark-pinned-inactive
 #define DARK_PINNED_INACTIVE_COLOR_IDS(color)                                  \
   ColorIds {                                                                   \
-    .icon_color_id = COLOR_40(color), .icon_border_color_id = COLOR_20(color), \
+    .icon_color_id = COLOR_40(color), .icon_border_color_id = COLOR_10(color), \
     .background_color_id = COLOR_10(color), .border_color_id = 0,              \
   }
 
 // Yield color ids for dark-pinned-hovered
 #define DARK_PINNED_HOVERED_COLOR_IDS(color)                                   \
   ColorIds {                                                                   \
-    .icon_color_id = COLOR_40(color), .icon_border_color_id = COLOR_20(color), \
+    .icon_color_id = COLOR_40(color), .icon_border_color_id = COLOR_10(color), \
     .background_color_id = COLOR_10(color), .border_color_id = 0,              \
     .override_tab_background_color_id = COLOR_10(color),                       \
   }
@@ -72,9 +71,9 @@
 #define DARK_UNPINNED_HOVERED_COLOR_IDS(color)           \
   ColorIds {                                             \
     .icon_color_id = PRIMITIVE_60(color),                \
-    .icon_border_color_id = COLOR_20(color),             \
-    .background_color_id = COLOR_20(color),              \
-    .border_color_id = COLOR_20(color),                  \
+    .icon_border_color_id = COLOR_10(color),             \
+    .background_color_id = COLOR_10(color),              \
+    .border_color_id = COLOR_10(color),                  \
     .override_tab_background_color_id = COLOR_10(color), \
   }
 
@@ -90,14 +89,14 @@
 // Yield color ids for light-pinned-inactive
 #define LIGHT_PINNED_INACTIVE_COLOR_IDS(color)                                 \
   ColorIds {                                                                   \
-    .icon_color_id = COLOR_40(color), .icon_border_color_id = COLOR_20(color), \
+    .icon_color_id = COLOR_40(color), .icon_border_color_id = COLOR_10(color), \
     .background_color_id = COLOR_10(color), .border_color_id = 0,              \
   }
 
 // Yield color ids for light-pinned-hovered
 #define LIGHT_PINNED_HOVERED_COLOR_IDS(color)                                  \
   ColorIds {                                                                   \
-    .icon_color_id = COLOR_40(color), .icon_border_color_id = COLOR_20(color), \
+    .icon_color_id = COLOR_40(color), .icon_border_color_id = COLOR_10(color), \
     .background_color_id = COLOR_10(color), .border_color_id = 0,              \
     .override_tab_background_color_id = COLOR_10(color),                       \
   }
@@ -115,9 +114,9 @@
 #define LIGHT_UNPINNED_HOVERED_COLOR_IDS(color)          \
   ColorIds {                                             \
     .icon_color_id = PRIMITIVE_60(color),                \
-    .icon_border_color_id = COLOR_20(color),             \
-    .background_color_id = COLOR_20(color),              \
-    .border_color_id = COLOR_20(color),                  \
+    .icon_border_color_id = COLOR_10(color),             \
+    .background_color_id = COLOR_10(color),              \
+    .border_color_id = COLOR_10(color),                  \
     .override_tab_background_color_id = COLOR_10(color), \
   }
 
@@ -263,27 +262,35 @@ TabAccentColors GetTabAccentColors(const TabAccentColorsParams& params,
   ColorKey key;
   switch (params.container_color) {
     case SkColorSetRGB(0xB7, 0x4D, 0x49):  // kColorPrimitiveRed50:26/03/03
+    case SkColorSetRGB(0xE0, 0x5F, 0x59):  // kColorPrimitiveRed60:26/03/21
       key = kRed;
       break;
     case SkColorSetRGB(0xB2, 0x54, 0x2E):  // kColorPrimitiveOrange50:26/03/03
+    case SkColorSetRGB(0xD9, 0x67, 0x38):  // kColorPrimitiveOrange60:26/03/21
       key = kOrange;
       break;
     case SkColorSetRGB(0x8E, 0x67, 0x02):  // kColorPrimitiveYellow50:26/03/03
+    case SkColorSetRGB(0xAD, 0x7E, 0x08):  // kColorPrimitiveYellow60:26/03/21
       key = kYellow;
       break;
     case SkColorSetRGB(0x1F, 0x7E, 0x48):  // kColorPrimitiveGreen50:26/03/03
+    case SkColorSetRGB(0x27, 0x9A, 0x58):  // kColorPrimitiveGreen60:26/03/21
       key = kGreen;
       break;
     case SkColorSetRGB(0x00, 0x7B, 0x92):  // kColorPrimitiveTeal50:26/03/03
+    case SkColorSetRGB(0x00, 0x96, 0xB1):  // kColorPrimitiveTeal60:26/03/21
       key = kTeal;
       break;
     case SkColorSetRGB(0x36, 0x6E, 0xB8):  // kColorPrimitiveBlue50:26/03/03
+    case SkColorSetRGB(0x43, 0x86, 0xE0):  // kColorPrimitiveBlue60:26/03/21
       key = kBlue;
       break;
     case SkColorSetRGB(0x7C, 0x5D, 0xAF):  // kColorPrimitivePurple50:26/03/03
+    case SkColorSetRGB(0x96, 0x71, 0xD4):  // kColorPrimitivePurple60:26/03/21
       key = kPurple;
       break;
     case SkColorSetRGB(0xB2, 0x4D, 0x71):  // kColorPrimitivePink50:26/03/03
+    case SkColorSetRGB(0xD8, 0x5E, 0x8A):  // kColorPrimitivePink60:26/03/21
       key = kPink;
       break;
     default:

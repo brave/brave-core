@@ -19,12 +19,12 @@ function getSkColorFromLeoVariable(variableName: string): SkColor {
 // When this set is updated, we should visit brave_tab_accent_color_palette.cc.
 // The key color mapping there should be updated as well.
 export default [
-  getSkColorFromLeoVariable('--leo-color-primitive-red-50'),
-  getSkColorFromLeoVariable('--leo-color-primitive-orange-50'),
-  getSkColorFromLeoVariable('--leo-color-primitive-yellow-50'),
-  getSkColorFromLeoVariable('--leo-color-primitive-green-50'),
-  getSkColorFromLeoVariable('--leo-color-primitive-teal-50'),
-  getSkColorFromLeoVariable('--leo-color-primitive-blue-50'),
-  getSkColorFromLeoVariable('--leo-color-primitive-purple-50'),
-  getSkColorFromLeoVariable('--leo-color-primitive-pink-50'),
+  getSkColorFromLeoVariable('--leo-color-primitive-red-60'),
+  getSkColorFromLeoVariable('--leo-color-primitive-orange-60'),
+  getSkColorFromLeoVariable('--leo-color-primitive-yellow-60'),
+  getSkColorFromLeoVariable('--leo-color-primitive-green-60'),
+  getSkColorFromLeoVariable('--leo-color-primitive-teal-60'),
+  getSkColorFromLeoVariable('--leo-color-primitive-blue-60'),
+  getSkColorFromLeoVariable('--leo-color-primitive-purple-60'),
+  getSkColorFromLeoVariable('--leo-color-primitive-pink-60'),
 ]
