@@ -342,7 +342,7 @@ std::optional<SquidSwapData> SquidDecodeCall(const base::ListValue& call) {
                     .AddTupleType(eth_abi::Uint(256))
                     .AddTupleType(eth_abi::Uint(256))
                     .AddTupleType(
-                        eth_abi::Array()
+                        eth_abi::Array()  // routes
                             .SetArrayType(eth_abi::Tuple()
                                               .AddTupleType(eth_abi::Address())
                                               .AddTupleType(eth_abi::Address())
@@ -359,7 +359,12 @@ std::optional<SquidSwapData> SquidDecodeCall(const base::ListValue& call) {
       return std::nullopt;
     }
 
-    auto& route = decoded_swap.value()[2].GetList().back().GetList();
+    auto& routes = decoded_swap.value()[2].GetList();
+    if (routes.empty()) {
+      return std::nullopt;
+    }
+
+    auto& route = routes.back().GetList();
     return SquidSwapData{
         .to_amount = decoded_swap.value()[1].GetString(),
         .receiving_asset_id = TransformContractAddress(route[1].GetString()),
