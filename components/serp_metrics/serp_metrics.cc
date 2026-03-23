@@ -16,11 +16,41 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "brave/components/time_period_storage/time_period_storage.h"
+#include "brave/components/time_period_storage/time_period_store.h"
+#include "brave/components/time_period_storage/time_period_store_factory.h"
 #include "components/prefs/pref_service.h"
 
 namespace serp_metrics {
 
 namespace {
+
+struct TimePeriodStorageInfo {
+  SerpMetricType type = SerpMetricType::kUndefined;
+  const char* metric_name = nullptr;
+};
+
+constexpr TimePeriodStorageInfo kTimePeriodStorages[] = {
+    {.type = SerpMetricType::kBrave, .metric_name = "brave_search_engine"},
+    {.type = SerpMetricType::kGoogle, .metric_name = "google_search_engine"},
+    {.type = SerpMetricType::kOther, .metric_name = "other_search_engine"},
+};
+
+base::flat_map<SerpMetricType, std::unique_ptr<TimePeriodStorage>>
+BuildTimePeriodStorages(
+    const TimePeriodStoreFactory& time_period_store_factory) {
+  base::flat_map<SerpMetricType, std::unique_ptr<TimePeriodStorage>>
+      time_period_storages;
+  for (const auto& [type, metric_name] : kTimePeriodStorages) {
+    std::unique_ptr<TimePeriodStore> time_period_store =
+        time_period_store_factory.Build(metric_name);
+    time_period_storages.emplace(type, std::make_unique<TimePeriodStorage>(
+                                           std::move(time_period_store),
+                                           kSerpMetricsTimePeriodInDays.Get(),
+                                           /*should_offset_dst=*/false));
+  }
+
+  return time_period_storages;
+}
 
 // Returns the start of yesterday in local time (midnight at the beginning of
 // the previous calendar day). Subtracting 12 hours ensures we cross into the
@@ -69,10 +99,12 @@ size_t GetYesterdaySumAfterLastCheckedCutoff(
 
 }  // namespace
 
-SerpMetrics::SerpMetrics(PrefService* local_state,
-                         TimePeriodStorages time_period_storages)
+SerpMetrics::SerpMetrics(
+    PrefService* local_state,
+    const TimePeriodStoreFactory& time_period_store_factory)
     : local_state_(local_state),
-      time_period_storages_(std::move(time_period_storages)) {
+      time_period_storages_(
+          BuildTimePeriodStorages(time_period_store_factory)) {
   CHECK(local_state_);
   CHECK(base::FeatureList::IsEnabled(serp_metrics::kSerpMetricsFeature));
 }

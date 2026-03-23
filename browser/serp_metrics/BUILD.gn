@@ -6,7 +6,6 @@
 static_library("serp_metrics") {
   public = [
     "serp_metrics_all_profiles_aggregator.h",
-    "serp_metrics_factory.h",
     "serp_metrics_migration.h",
     "serp_metrics_service.h",
     "serp_metrics_service_factory.h",
@@ -17,7 +16,6 @@ static_library("serp_metrics") {
 
   sources = [
     "serp_metrics_all_profiles_aggregator.cc",
-    "serp_metrics_factory.cc",
     "serp_metrics_migration.cc",
     "serp_metrics_service.cc",
     "serp_metrics_tab_helper.cc",
@@ -27,6 +25,7 @@ static_library("serp_metrics") {
 
   public_deps = [
     "//base",
+    "//brave/components/serp_metrics",
     "//brave/components/time_period_storage",
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/core",
@@ -37,14 +36,12 @@ static_library("serp_metrics") {
   deps = [
     "//brave/browser:browser_process",
     "//brave/components/constants",
-    "//brave/components/serp_metrics",
     "//brave/components/serp_metrics:features",
     "//brave/components/serp_metrics:prefs",
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profile_util",
-    "//chrome/browser/search_engines",
     "//components/prefs",
-    "//net",
+    "//ui/base",
     "//url",
   ]
 }
@@ -59,7 +56,9 @@ static_library("impl") {
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/profiles:profile_util",
+    "//components/keyed_service/core",
     "//components/prefs",
+    "//content/public/browser",
   ]
 }
 
@@ -91,7 +90,6 @@ source_set("browser_tests") {
     "//net:test_support",
     "//testing/gtest",
     "//third_party/abseil-cpp:absl",
-    "//url",
   ]
 
   if (!is_android) {
@@ -117,6 +115,7 @@ source_set("unit_tests") {
     "//brave/components/constants",
     "//brave/components/serp_metrics",
     "//brave/components/serp_metrics:prefs",
+    "//brave/components/time_period_storage",
     "//chrome/browser/profiles:profile_util",
     "//components/prefs",
     "//components/prefs:test_support",

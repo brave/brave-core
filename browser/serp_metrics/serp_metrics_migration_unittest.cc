@@ -12,7 +12,6 @@
 #include "base/files/file_path.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
-#include "brave/browser/serp_metrics/serp_metrics_factory.h"
 #include "brave/browser/serp_metrics/serp_metrics_time_period_store_factory.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/serp_metrics/pref_names.h"
@@ -36,7 +35,7 @@ constexpr base::FilePath::CharType kUserDataDir[] =
 std::unique_ptr<SerpMetrics> CreateProfilePrefsSerpMetrics(
     PrefService* local_state,
     PrefService* prefs) {
-  return CreateSerpMetrics(
+  return std::make_unique<SerpMetrics>(
       local_state,
       PrefTimePeriodStoreFactory(
           prefs, prefs::kDeprecatedSerpMetricsTimePeriodStorage.data()));
@@ -94,7 +93,7 @@ TEST_F(SerpMetricsMigrationTest, MigrateFromEmptySerpMetrics) {
   MaybeMigrateSerpMetricsToProfileAttributes(profile_prefs(),
                                              profile_attributes_entry());
 
-  std::unique_ptr<SerpMetrics> serp_metrics = CreateSerpMetrics(
+  std::unique_ptr<SerpMetrics> serp_metrics = std::make_unique<SerpMetrics>(
       local_state(), SerpMetricsTimePeriodStoreFactory(
                          profile_path(), profile_attributes_storage()));
   ASSERT_TRUE(serp_metrics);
@@ -138,7 +137,7 @@ TEST_F(SerpMetricsMigrationTest, MigrateFromNonEmptySerpMetrics) {
                   .GetDict(prefs::kDeprecatedSerpMetricsTimePeriodStorage)
                   .empty());
 
-  std::unique_ptr<SerpMetrics> serp_metrics = CreateSerpMetrics(
+  std::unique_ptr<SerpMetrics> serp_metrics = std::make_unique<SerpMetrics>(
       local_state(), SerpMetricsTimePeriodStoreFactory(
                          profile_path(), profile_attributes_storage()));
   ASSERT_TRUE(serp_metrics);
@@ -177,7 +176,7 @@ TEST_F(SerpMetricsMigrationTest,
                   .GetDict(prefs::kDeprecatedSerpMetricsTimePeriodStorage)
                   .empty());
 
-  std::unique_ptr<SerpMetrics> serp_metrics = CreateSerpMetrics(
+  std::unique_ptr<SerpMetrics> serp_metrics = std::make_unique<SerpMetrics>(
       local_state(), SerpMetricsTimePeriodStoreFactory(
                          profile_path(), profile_attributes_storage()));
   ASSERT_TRUE(serp_metrics);
@@ -222,7 +221,7 @@ TEST_F(SerpMetricsMigrationTest, DoubleMigrationIsNoOp) {
                   .GetDict(prefs::kDeprecatedSerpMetricsTimePeriodStorage)
                   .empty());
 
-  std::unique_ptr<SerpMetrics> serp_metrics = CreateSerpMetrics(
+  std::unique_ptr<SerpMetrics> serp_metrics = std::make_unique<SerpMetrics>(
       local_state(), SerpMetricsTimePeriodStoreFactory(
                          profile_path(), profile_attributes_storage()));
   ASSERT_TRUE(serp_metrics);

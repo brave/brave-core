@@ -7,7 +7,6 @@
 
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
-#include "brave/browser/serp_metrics/serp_metrics_factory.h"
 #include "brave/browser/serp_metrics/serp_metrics_time_period_store_factory.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
@@ -21,7 +20,7 @@ SerpMetricsService::SerpMetricsService(
     base::FilePath profile_path,
     ProfileAttributesStorage& profile_attributes_storage) {
   if (base::FeatureList::IsEnabled(serp_metrics::kSerpMetricsFeature)) {
-    serp_metrics_ = CreateSerpMetrics(
+    serp_metrics_ = std::make_unique<SerpMetrics>(
         &local_state, SerpMetricsTimePeriodStoreFactory(
                           profile_path, profile_attributes_storage));
   }
