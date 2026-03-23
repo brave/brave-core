@@ -684,6 +684,7 @@ def chunk_doc(doc_path):
 _REVIEW_RULES = """\
 Review Rules:
 - Only flag violations in ADDED lines (+ lines), not existing code.
+- If you notice a violation in surrounding context lines (lines without + prefix) or in unchanged code visible in the diff, do NOT comment on it or suggest fixing it -- unless the changes directly affect or break that surrounding code.
 - Also flag bugs introduced by the change (e.g., missing string separators, duplicate DEPS entries, code inside wrong #if guard).
 - Check surrounding context before making claims. When a violation involves dependencies, includes, or patterns, read the full file context (e.g., the BUILD.gn deps list, existing includes in the file) to verify your claim is accurate. Do NOT claim a PR "adds a dependency" or "introduces a pattern" if it already existed before the PR.
 - Only comment on things the PR author introduced. If a dependency, pattern, or architectural issue already existed before this PR, do not flag it — even if it violates a best practice. The PR author is not responsible for pre-existing issues. Focus exclusively on what this PR changes or adds.
