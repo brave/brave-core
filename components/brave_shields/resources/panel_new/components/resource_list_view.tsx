@@ -68,6 +68,7 @@ function ResourceGroup(props: ResourceGroupProps) {
     >
       <ResourceEntry
         icon={expanded ? 'minus' : 'plus-add'}
+        expanded={expanded}
         onIconClick={() => setExpanded(!expanded)}
         text={origin}
         url={origin}
@@ -94,12 +95,14 @@ interface ResourceEntryProps {
   text: string
   url: string
   icon: 'plus-add' | 'minus' | 'dot'
+  expanded?: boolean
   onIconClick?: () => void
   actionText?: string
   actionHandler?: (url: string) => void
 }
 
 function ResourceEntry(props: ResourceEntryProps) {
+  const textId = React.useId()
   return (
     <div className='resource'>
       {props.onIconClick ? (
@@ -107,13 +110,20 @@ function ResourceEntry(props: ResourceEntryProps) {
           kind='plain-faint'
           fab
           onClick={props.onIconClick}
+          aria-labelledby={textId}
+          aria-expanded={props.expanded}
         >
           <Icon name={props.icon} />
         </Button>
       ) : (
         <Icon name={props.icon} />
       )}
-      <div className='text'>{props.text}</div>
+      <div
+        id={textId}
+        className='text'
+      >
+        {props.text}
+      </div>
       {props.actionHandler && props.actionText && (
         <button
           className='action'

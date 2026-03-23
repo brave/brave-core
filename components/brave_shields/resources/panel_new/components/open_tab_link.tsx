@@ -10,6 +10,7 @@ import { useShieldsApi } from '../api/shields_api_context'
 interface Props {
   url: string
   className?: string
+  'aria-label'?: string
   children: React.ReactNode
 }
 
@@ -19,6 +20,7 @@ export function OpenTabLink(props: Props) {
     <a
       href={sanitize(props.url)}
       className={props.className}
+      aria-label={props['aria-label']}
       rel='noopener noreferrer'
       target='_blank'
       onClick={(event) => {
