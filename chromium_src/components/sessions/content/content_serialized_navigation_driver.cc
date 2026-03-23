@@ -11,6 +11,7 @@
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "components/sessions/core/serialized_navigation_entry.h"
 #include "content/public/common/url_constants.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/content/browser/session_utils.h"
@@ -41,6 +42,12 @@ constexpr auto kAllowedChromeUrlsOverridingHostList =
 std::string ContentSerializedNavigationDriver::GetSanitizedPageStateForPickle(
     const sessions::SerializedNavigationEntry* navigation) const {
   const auto& virtual_url = navigation->virtual_url();
+  if (virtual_url.SchemeIs(content::kBraveUIScheme)) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(content::kChromeUIScheme);
+    navigation->set_virtual_url(virtual_url.ReplaceComponents(replacements));
+  }
+
   if (virtual_url.SchemeIs(content::kChromeUIScheme)) {
     // If empty string is returned, chrome url overriding is ignored.
     if (kAllowedChromeUrlsOverridingHostList.contains(virtual_url.host())) {
