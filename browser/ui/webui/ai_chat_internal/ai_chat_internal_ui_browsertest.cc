@@ -31,3 +31,24 @@ IN_PROC_BROWSER_TEST_F(AiChatInternalUIBrowserTest, PageLoads) {
   EXPECT_TRUE(content::WaitForLoadStop(
       browser()->tab_strip_model()->GetActiveWebContents()));
 }
+
+class AiChatInternalUIDisabledBrowserTest : public InProcessBrowserTest {
+ public:
+  AiChatInternalUIDisabledBrowserTest() {
+    feature_list_.InitAndDisableFeature(
+        ai_chat::features::kAiChatInternalWebUI);
+  }
+  ~AiChatInternalUIDisabledBrowserTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(AiChatInternalUIDisabledBrowserTest, PageNotFound) {
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL(kAiChatInternalURL)));
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_NE(web_contents->GetLastCommittedURL().host(),
+            std::string(kAiChatInternalHost));
+}

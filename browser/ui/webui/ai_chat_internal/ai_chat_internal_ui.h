@@ -10,12 +10,14 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-#include "content/public/browser/web_ui.h"
-#include "content/public/browser/web_ui_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "ui/webui/mojo_web_ui_controller.h"
 
 class Profile;
+
+namespace content {
+class WebUI;
+}
 
 class AIChatInternalUI : public ui::MojoWebUIController {
  public:
