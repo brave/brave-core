@@ -3896,6 +3896,68 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_PASSWORD_ENTRY_VIEW_SET_SCREEN_LOCK" desc="Text prompting user to set up screen lock on their device in order to view passwords">
       To view passwords, first set a screen lock on your device
     </message>
+
+    <!-- Custom search engines (browser/custom_search_engines) -->
+    <message name="IDS_CUSTOM_SEARCH_ENGINES" desc="Search engines category title for custom search engines">
+      Custom search engines
+    </message>
+    <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE" desc="Title of the add custom search engine">
+      Add a custom search engine
+    </message>
+    <message name="IDS_EDIT_CUSTOM_SEARCH_ENGINE" desc="Title of the edit custom search engine">
+      Edit custom search engine
+    </message>
+    <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_TITLE" desc="Add custom search engine title">
+      Title
+    </message>
+    <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_TITLE_HINT" desc="Add serach engine title edittext hint">
+      Enter the name of the search engine
+    </message>
+    <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_URL" desc="Add custom search engine url">
+      URL
+    </message>
+    <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_URL_HINT" desc="Add custom search engine url hint" translateable="false">
+      https://
+    </message>
+    <message name="IDS_ADD_SEARCH_ENGINE" desc="Add search engine button text">
+      Add search engine
+    </message>
+    <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_TEXT1" desc="Add custom search engine text1">
+      Write the search url and replace the query with <ph name="SPECIAL_SYMBOL">%s</ph>.
+    </message>
+    <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_TEXT2" desc="Add custom search engine text2">
+      For example: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL">%s</ph>. If the site supports OpenSearch an option to add automatically will be provided while editing this field.
+    </message>
+    <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_URL_ERROR" desc="Add custom search engine empty url text">
+      URL is invalid.
+    </message>
+    <message name="IDS_SEARCH_ENGINE_ALREADY_EXISTS_ERROR" desc="Search engine already exists text">
+      Search engine is already added.
+    </message>
+    <message name="IDS_FAILED_TO_ADD_SEARCH_ENGINE" desc="Failed to add search engine text">
+      Failed to add search engine.
+    </message>
+    <message name="IDS_FAILED_TO_UPDATE_SEARCH_ENGINE" desc="Failed to update search engine text">
+      Failed to update search engine.
+    </message>
+    <message name="IDS_FAILED_TO_DELETE_SEARCH_ENGINE" desc="Failed to delete search engine text">
+      Failed to delete search engine. The search engine you're trying to delete may be set as the default one.
+    </message>
+    <message name="IDS_DELETE_CUSTOM_SEARCH_ENGINE_TITLE" desc="Delete custom search engine title">
+      Delete custom search engine
+    </message>
+    <message name="IDS_DELETE_CUSTOM_SEARCH_ENGINE_TEXT" desc="Delete custom search engine text">
+      Are you sure you want to delete ”<ph name="SEARCH_ENGINE_NAME">%s</ph>”? This action cannot be undone.
+    </message>
+    <message name="IDS_DELETE_ACTION_TEXT" desc="Delete action text">
+      Delete
+    </message>
+    <message name="IDS_CANCEL_ACTION_TEXT" desc="Cancel action text">
+      Cancel
+    </message>
+    <message name="IDS_SAVE_CHANGES_ACTION_TEXT" desc="Save changes action text">
+      Save changes
+    </message>
   </messages>
   </release>
 </grit>

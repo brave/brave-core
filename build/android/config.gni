@@ -27,6 +27,7 @@ brave_chrome_java_deps = [
   "//brave/brave_domains/android:java",
   "//brave/browser/brave_origin/android:java",
   "//brave/browser/brave_shields/android:java",
+  "//brave/browser/custom_search_engines/android:java",
   "//brave/browser/customize_menu/android:java",
   "//brave/browser/download/android:java",
   "//brave/browser/first_run/android:java",
@@ -116,6 +117,7 @@ brave_chrome_java_srcjar_deps = [
 brave_chrome_app_java_resources_deps = [
   "//brave/android:java_resources",
   "//brave/android/nala:java_resources",
+  "//brave/browser/custom_search_engines/android:java_resources",
   "//brave/browser/first_run/android:java_resources",
   "//brave/browser/quick_search_engines/android:java_resources",
   "//brave/build/android:android_brave_strings_grd",

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="0dp"
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="@color/schemes_surface_container_lowest"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/title_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="24dp"
+                app:expandedHintEnabled="false"
+                app:boxCornerRadiusTopStart="@dimen/custom_search_engine_input_corner_radius"
+                app:boxCornerRadiusTopEnd="@dimen/custom_search_engine_input_corner_radius"
+                app:boxCornerRadiusBottomStart="@dimen/custom_search_engine_input_corner_radius"
+                app:boxCornerRadiusBottomEnd="@dimen/custom_search_engine_input_corner_radius"
+                android:hint="@string/add_custom_search_engine_title">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/title_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:padding="16dp"
+                    android:gravity="top"
+                    android:hint="@string/add_custom_search_engine_title_hint" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/url_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                app:expandedHintEnabled="false"
+                app:boxCornerRadiusTopStart="@dimen/custom_search_engine_input_corner_radius"
+                app:boxCornerRadiusTopEnd="@dimen/custom_search_engine_input_corner_radius"
+                app:boxCornerRadiusBottomStart="@dimen/custom_search_engine_input_corner_radius"
+                app:boxCornerRadiusBottomEnd="@dimen/custom_search_engine_input_corner_radius"
+                android:hint="@string/add_custom_search_engine_url">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/url_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:padding="16dp"
+                    android:gravity="top"
+                    android:hint="@string/add_custom_search_engine_url_hint" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/add_custom_se_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="16dp"
+                android:paddingHorizontal="16dp"
+                android:textColor="@color/schemes_on_surface_variant" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="24dp"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel_action_text"
+            android:textAllCaps="false"
+            android:paddingHorizontal="12dp"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/schemes_on_surface_variant"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/add_search_engine_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_search_engine"
+            android:textAllCaps="false"
+            android:padding="12dp"
+            android:textColor="@color/brave_button_text_color"
+            android:letterSpacing="0"
+            app:backgroundTint="@color/add_search_engine_button_bg_tint"
+            app:cornerRadius="1000dp"
+            app:elevation="0dp"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"/>
+
+    </LinearLayout>
+
+</LinearLayout>

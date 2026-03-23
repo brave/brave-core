@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Disabled state -->
+    <item android:state_enabled="false">
+        <layer-list>
+            <item android:alpha="0.2">
+                <shape android:shape="rectangle">
+                    <corners android:radius="1000dp"/>
+                    <solid android:color="@color/button_disabled"/>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+    <!-- Enabled state -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="1000dp"/>
+            <solid android:color="@color/button_background"/>
+        </shape>
+    </item>
+</selector>

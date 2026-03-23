@@ -49,7 +49,7 @@
 
     <!-- Brave wallet 2.0 colors -->
     <color name="brave_wallet_dn_panel_bg">@color/wallet_bg</color>
-    <color name="text_disabled">#ebeef0</color>
+
     <color name="text_on_primary">#251491</color>
     <color name="icon_interactive">#bcc6f3</color>
     <color name="system_feedback_error">#FFB1B0</color>
