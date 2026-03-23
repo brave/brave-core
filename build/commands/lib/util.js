@@ -12,6 +12,7 @@ import fs from 'fs-extra'
 import { glob, writeFile } from 'node:fs/promises'
 import crypto from 'node:crypto'
 import Log from './logging.js'
+import * as GitPatcherLog from './gitPatcherLog.ts'
 import assert from 'node:assert'
 import updateChromeVersion from './updateChromeVersion.js'
 import ActionGuard from './actionGuard.js'
@@ -110,9 +111,12 @@ async function applyPatches(printPatchFailuresInJson) {
     ...searchEngineDataPatchStatus,
   ]
   if (printPatchFailuresInJson) {
-    Log.printFailedPatchesInJsonFormat(allPatchStatus, config.braveCoreDir)
+    GitPatcherLog.printFailedPatchesInJsonFormat(
+      allPatchStatus,
+      config.braveCoreDir,
+    )
   } else {
-    Log.allPatchStatus(allPatchStatus, 'Chromium')
+    GitPatcherLog.allPatchStatus(allPatchStatus, 'Chromium')
   }
 
   const hasPatchError = allPatchStatus.some((p) => p.error)
