@@ -650,37 +650,50 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
-       UserScriptReturnsEmptyUserNoPolicyScript) {
+       UserScriptReturnsWrongUserIdNoPolicyScript) {
   const std::string user_script = "user";
   const std::string policy_script = "policy";
   const GURL url("https://example1.com");
-  base::RunLoop check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
-      .WillOnce(CheckIfMatchCallback(
-          &check_loop, CreateMatchedRule(user_script, policy_script)));
-  base::test::TestFuture<base::Value> user_script_insert_future;
 
-  // Call UI delegate method once (Failed state) as user_script_result
-  // has empty user value
-  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
-      .Times(1);
+  struct {
+    std::string test_name;
+    base::Value user_script_result;
+  } test_cases[] = {
+      {"user_script_doesn't_return_user_id_key",
+       base::Value(base::DictValue())},
+      {"user_script_returns_empty_user_id",
+       base::Value(base::DictValue().Set("user_id", ""))},
+      {"user_script_returns_user_key_empty_dict",
+       base::Value(base::DictValue().Set("user_id", base::DictValue()))},
+  };
 
-  // User script result is an dictionary, but user key is empty
-  auto script_params = base::Value(base::DictValue().Set("user_id", ""));
+  for (const auto& test_case : test_cases) {
+    SCOPED_TRACE(test_case.test_name);
+    base::RunLoop check_loop;
+    EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+        .WillOnce(CheckIfMatchCallback(
+            &check_loop, CreateMatchedRule(user_script, policy_script)));
+    base::test::TestFuture<base::Value> user_script_insert_future;
 
-  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
-      .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
-                                           script_params.Clone()));
-  // No policy script executed
-  EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
+    // Call UI delegate method once (Failed state) as user_script_result
+    // has empty user value
+    EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+        .Times(1);
 
-  DocumentOnLoadObserver observer(web_contents());
-  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                             url);
-  observer.Wait();
+    EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+        .WillOnce(InsertScriptInPageCallback(
+            &user_script_insert_future, test_case.user_script_result.Clone()));
+    // No policy script executed
+    EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
 
-  check_loop.Run();
-  EXPECT_EQ(script_params, user_script_insert_future.Take());
+    DocumentOnLoadObserver observer(web_contents());
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                               url);
+    observer.Wait();
+
+    check_loop.Run();
+    EXPECT_EQ(test_case.user_script_result, user_script_insert_future.Take());
+  }
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,

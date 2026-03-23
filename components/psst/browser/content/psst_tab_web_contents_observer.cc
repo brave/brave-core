@@ -210,7 +210,7 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
 
   // If PSST websettings doesn't exist then this is the initial call
   if (!psst_settings) {
-    psst_settings = PsstWebsiteSettings();
+    psst_settings.emplace();
     psst_settings->consent_status = ConsentStatus::kAsk;
     psst_settings->script_version = rule->version();
     psst_settings->user_id = user_script_result_parsed->user_id;
