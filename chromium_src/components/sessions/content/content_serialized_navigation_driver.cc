@@ -42,6 +42,8 @@ constexpr auto kAllowedChromeUrlsOverridingHostList =
 std::string ContentSerializedNavigationDriver::GetSanitizedPageStateForPickle(
     const sessions::SerializedNavigationEntry* navigation) const {
   const auto& virtual_url = navigation->virtual_url();
+
+  // Restore previous saved urls with brave:// scheme as chrome://
   if (virtual_url.SchemeIs(content::kBraveUIScheme)) {
     GURL::Replacements replacements;
     replacements.SetSchemeStr(content::kChromeUIScheme);
