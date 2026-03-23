@@ -6449,7 +6449,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Opens in private mode on relaunch. When off, the app opens in regular mode — your private tabs are still kept, just not shown on launch",
+          "When toggled on, Brave will default to opening in private mode. When off, Brave will open in regular mode. Your private tabs will be retained locally, but not shown on launch.",
         comment: ""
       )
     public static let autoOpenKeyboardTitle = NSLocalizedString(
