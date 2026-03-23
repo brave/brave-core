@@ -45,6 +45,9 @@ import java.util.Locale;
 
 @NullMarked
 public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsFragment {
+    private static final String BOLD_END_TEXT1_TEXT2 = "%s";
+    private static final String BOLD_START_TEXT2 = "https://";
+
     private TextInputEditText mTitleEdittext;
 
     private TextInputEditText mUrlEdittext;
@@ -150,26 +153,26 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
         String text2 = getResources().getString(R.string.add_custom_search_engine_text2);
         SpannableStringBuilder ssb = new SpannableStringBuilder();
         ssb.append(text1);
-        // Bold "%s." at the end of text1
-        int t1BoldStart = text1.indexOf("%s");
+        // Bold "%s" at the end of text1
+        int t1BoldStart = text1.indexOf(BOLD_END_TEXT1_TEXT2);
         if (t1BoldStart >= 0) {
             ssb.setSpan(
                     new StyleSpan(Typeface.BOLD),
                     t1BoldStart,
-                    Math.min(t1BoldStart + 3, text1.length()),
+                    Math.min(t1BoldStart + BOLD_END_TEXT1_TEXT2.length(), text1.length()),
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         ssb.append("\n\n");
         int text2Offset = ssb.length();
         ssb.append(text2);
-        // Bold the URL (from "https://" through "%s.") in text2
-        int urlStart = text2.indexOf("https://");
-        int urlEnd = text2.indexOf("%s.", urlStart >= 0 ? urlStart : 0);
+        // Bold the URL (from "https://" through "%s") in text2
+        int urlStart = text2.indexOf(BOLD_START_TEXT2);
+        int urlEnd = text2.indexOf(BOLD_END_TEXT1_TEXT2, urlStart >= 0 ? urlStart : 0);
         if (urlStart >= 0 && urlEnd >= 0) {
             ssb.setSpan(
                     new StyleSpan(Typeface.BOLD),
                     text2Offset + urlStart,
-                    text2Offset + urlEnd + 3,
+                    text2Offset + urlEnd + BOLD_END_TEXT1_TEXT2.length(),
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         addCustomSeText.setText(ssb);
