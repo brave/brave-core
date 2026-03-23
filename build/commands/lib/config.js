@@ -11,7 +11,7 @@ import fs from 'node:fs'
 import assert from 'node:assert'
 import rootDir from './rootDir.cjs'
 import EnvConfig from './envConfig.ts'
-import Log from './logging.js'
+import * as Log from './log.ts'
 import util from './util.js'
 import { isCI, isTeamcity } from './ciDetect.ts'
 
@@ -774,8 +774,7 @@ export class Config {
 
   get outputDir() {
     if (this.use_no_gn_gen && this.#outputDir === undefined) {
-      Log.error(`You must specify output directory with -C with use_no_gn_gen`)
-      process.exit(1)
+      Log.fatal(`You must specify output directory with -C with use_no_gn_gen`)
     }
 
     const baseDir = path.join(this.srcDir, 'out')
@@ -834,10 +833,9 @@ export class Config {
   set targetOS(value) {
     const supportedTargetOS = ['android', 'ios', 'linux', 'mac', 'win']
     if (!supportedTargetOS.includes(value)) {
-      Log.error(
+      Log.fatal(
         `Invalid target_os: ${value} (must be one of: ${supportedTargetOS.join(', ')})`,
       )
-      process.exit(1)
     }
     this.#targetOS = value
   }

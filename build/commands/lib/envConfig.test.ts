@@ -8,12 +8,7 @@ import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import EnvConfig from './envConfig.ts'
-import Log from './logging.js'
-
-// Mock the logging module
-jest.mock('./logging.js', () => ({
-  error: jest.fn(),
-}))
+import * as Log from './log.ts'
 
 describe('EnvConfig', () => {
   const configDir = '/path/to/config'
@@ -54,8 +49,7 @@ describe('EnvConfig', () => {
       mockFiles[filePath.toString()] = data
     })
 
-    // Mock process.exit to prevent tests from exiting
-    jest.spyOn(process, 'exit').mockImplementation(() => {
+    jest.spyOn(Log, 'fatal').mockImplementation(() => {
       throw new Error('process.exit called')
     })
   })
@@ -337,7 +331,7 @@ describe('EnvConfig', () => {
         envConfig.get(['INVALID', 'JSON'], 123)
       }).toThrow('process.exit called')
 
-      expect(Log.error).toHaveBeenCalledWith(
+      expect(Log.fatal).toHaveBeenCalledWith(
         expect.stringContaining('not JSON-parseable'),
       )
     })
@@ -347,7 +341,7 @@ describe('EnvConfig', () => {
         envConfig.get(['WRONG', 'TYPE'], [])
       }).toThrow('process.exit called')
 
-      expect(Log.error).toHaveBeenCalledWith(
+      expect(Log.fatal).toHaveBeenCalledWith(
         expect.stringContaining('value type is invalid'),
       )
     })
@@ -430,7 +424,7 @@ describe('EnvConfig', () => {
 
       expect(() => new EnvConfig(configDir)).toThrow('process.exit called')
 
-      expect(Log.error).toHaveBeenCalledWith(
+      expect(Log.fatal).toHaveBeenCalledWith(
         expect.stringContaining('not found'),
       )
     })
@@ -450,7 +444,7 @@ describe('EnvConfig', () => {
       mockFiles[file2Path] = ['VALUE2=second', 'include_env=file1.env']
 
       expect(() => new EnvConfig(configDir)).toThrow('process.exit called')
-      expect(Log.error).toHaveBeenCalledWith(
+      expect(Log.fatal).toHaveBeenCalledWith(
         expect.stringContaining('Circular include_env directive detected'),
       )
     })
@@ -467,7 +461,7 @@ describe('EnvConfig', () => {
       mockFiles[selfRefPath] = ['SELF_VALUE=value', 'include_env=self.env']
 
       expect(() => new EnvConfig(configDir)).toThrow('process.exit called')
-      expect(Log.error).toHaveBeenCalledWith(
+      expect(Log.fatal).toHaveBeenCalledWith(
         expect.stringContaining('Circular include_env directive detected'),
       )
     })

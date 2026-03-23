@@ -8,7 +8,7 @@ import config from './config.js'
 import { isCI } from './ciDetect.ts'
 import fs from 'node:fs'
 import path from 'node:path'
-import Log from './logging.js'
+import * as Log from './log.ts'
 import util from './util.js'
 
 function toGClientConfigItem(name, value, pretty = true) {
@@ -132,8 +132,7 @@ print(json.dumps(out))
     }
     return JSON.parse(result.stdout.toString().trim())
   } catch (error) {
-    Log.error(`Failed to read ${config.gclientFile}:\n${error}`)
-    process.exit(1)
+    Log.fatal(`Failed to read ${config.gclientFile}:\n${error}`)
   }
 }
 

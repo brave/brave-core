@@ -11,7 +11,8 @@ import config from './config.js'
 import fs from 'fs-extra'
 import { glob, writeFile } from 'node:fs/promises'
 import crypto from 'node:crypto'
-import Log from './logging.js'
+import * as Log from './log.ts'
+import * as GitPatcherLog from './gitPatcherLog.ts'
 import assert from 'node:assert'
 import updateChromeVersion from './updateChromeVersion.js'
 import ActionGuard from './actionGuard.js'
@@ -110,16 +111,18 @@ async function applyPatches(printPatchFailuresInJson) {
     ...searchEngineDataPatchStatus,
   ]
   if (printPatchFailuresInJson) {
-    Log.printFailedPatchesInJsonFormat(allPatchStatus, config.braveCoreDir)
+    GitPatcherLog.printFailedPatchesInJsonFormat(
+      allPatchStatus,
+      config.braveCoreDir,
+    )
   } else {
-    Log.allPatchStatus(allPatchStatus, 'Chromium')
+    GitPatcherLog.allPatchStatus(allPatchStatus, 'Chromium')
   }
 
   const hasPatchError = allPatchStatus.some((p) => p.error)
   // Exit on error in any patch
   if (hasPatchError) {
-    Log.error('Exiting as not all patches were successful!')
-    process.exit(1)
+    Log.fatal('Exiting as not all patches were successful!')
   }
 
   updateChromeVersion()
@@ -147,8 +150,7 @@ const deleteFileIfOverrideIsNewer = (original, override) => {
       console.log(original + ' has been deleted.')
       return true
     } catch (err) {
-      console.error('Unable to delete file: ' + original + ' error: ', err)
-      process.exit(1)
+      Log.fatal(`Unable to delete file: ${original} error: ${err}`)
     }
   }
   return false

@@ -11,7 +11,7 @@ import program from 'commander'
 import path from 'node:path'
 import config from '../lib/config.js'
 import util from '../lib/util.js'
-import Log from '../lib/logging.js'
+import * as Log from '../lib/log.ts'
 import depotTools from '../lib/depotTools.js'
 import { isCI } from '../lib/ciDetect.ts'
 import syncUtil from '../lib/syncUtils.js'
@@ -147,7 +147,5 @@ function commaSeparatedToList(value, defaultValue) {
 }
 
 RunCommand().catch((err) => {
-  Log.error('Brave Browser Sync ERROR:')
-  console.error(err)
-  process.exit(1)
+  Log.fatal(`Brave Browser Sync ERROR:\n${err}`)
 })

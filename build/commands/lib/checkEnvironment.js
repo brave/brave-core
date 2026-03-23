@@ -6,7 +6,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import semver from 'semver'
-import Log from './logging.js'
+import * as Log from './log.ts'
 
 checkNodeVersion()
 checkNpmVersion()
@@ -50,10 +50,9 @@ function checkNpmVersion() {
  */
 function checkVersion(type, version, requiredVersion, instruction) {
   if (!semver.satisfies(version, requiredVersion)) {
-    Log.error(
+    Log.fatal(
       `Error: ${type} version must be "${requiredVersion}". Current version: ${version}\n${instruction}`,
     )
-    process.exit(1)
   }
 }
 
@@ -74,10 +73,9 @@ function checkWorkingDirectoryChainOnWindows() {
 
     // Check if it's a symlink.
     if (stats.isSymbolicLink()) {
-      Log.error(
+      Log.fatal(
         `Directory chain contains a symlink: ${currentDir}. This is not supported.`,
       )
-      process.exit(1)
     }
 
     // Check if directory device ID does not match the working directory device
@@ -86,11 +84,10 @@ function checkWorkingDirectoryChainOnWindows() {
     // 0 for on-device directories. Check only NTFS drives as there's no native
     // way of checking if a drive is attached as a directory in Node.js.
     if (workingDirectoryDev === 0 && stats.dev !== workingDirectoryDev) {
-      Log.error(
+      Log.fatal(
         `Is ${currentDir} a junction pointing to a different drive than ${process.cwd()}? `
           + 'This is not supported.',
       )
-      process.exit(1)
     }
 
     // Check the parent directory.

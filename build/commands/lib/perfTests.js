@@ -7,6 +7,7 @@ import util from './util.js'
 import config from './config.js'
 import path from 'node:path'
 import fs from 'node:fs'
+import * as Log from './log.ts'
 
 const runPerfTests = (
   passthroughArgs,
@@ -38,8 +39,7 @@ const runPerfTests = (
     } else if (process.platform === 'darwin') {
       const helperPath = binaryPath + '_helper'
       if (!fs.existsSync(helperPath)) {
-        console.log(`${helperPath} not found, run build first`)
-        process.exit(1)
+        Log.fatal(`${helperPath} not found, run build first`)
       }
 
       binaryPath = fs.readFileSync(helperPath).toString().trim()
@@ -47,8 +47,7 @@ const runPerfTests = (
       // Convert "\ " to " ":
       binaryPath = binaryPath.replace(/\\ /g, ' ')
       if (!fs.existsSync(binaryPath)) {
-        console.log(`${binaryPath} not found, run build first`)
-        process.exit(1)
+        Log.fatal(`${binaryPath} not found, run build first`)
       }
     }
     const braveCoreCommit = util.runGit(

@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import genTsConfig from '../lib/genTsConfig.js'
+import * as Log from '../lib/log.ts'
 
 genTsConfig().catch((err) => {
-  console.error(err)
-  process.exit(1)
+  Log.fatal(err)
 })

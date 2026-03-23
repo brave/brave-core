@@ -27,6 +27,7 @@ import genGradle from '../lib/genGradle.js'
 import perfTests from '../lib/perfTests.js'
 import registerListAffectedTestsCommand from './listAffectedTests.js'
 import registerGenerateCoverageReportCommand from './generateCoverageReport.js'
+import * as Log from '../lib/log.ts'
 
 const collect = (value, accumulator) => {
   accumulator.push(value)
@@ -122,8 +123,7 @@ program
       !path.isAbsolute(currentLink)
       && !path.relative(currentLink, config.srcDir).startsWith('..')
     ) {
-      console.error('Symlink must be an absolute path in src')
-      process.exit(1)
+      Log.fatal('Symlink must be an absolute path in src')
     }
 
     fs.removeSync(currentLink)
