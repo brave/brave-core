@@ -82,7 +82,7 @@ export class SettingsPrivateSearchEngineListDialogElement extends
       engine => engine.id === parseInt(this.selectedEngineId_))
     assert(searchEngine)
 
-    this.browserProxy_.setDefaultPrivateSearchEngine(searchEngine.modelIndex)
+    this.browserProxy_.setDefaultPrivateSearchEngine(searchEngine.id)
 
     this.dispatchEvent(new CustomEvent('private-search-engine-changed', {
       bubbles: true,
