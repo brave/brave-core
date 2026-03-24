@@ -7,5 +7,8 @@ import config from '../lib/config.js'
 import path from 'node:path'
 import util from '../lib/util.js'
 
-const args = [path.join(config.srcDir, 'brave', 'tools', 'crates', 'update.py')]
+const args = [
+  path.join(config.srcDir, 'brave', 'tools', 'crates', 'update.py'),
+  ...process.argv.slice(2)
+]
 util.run('vpython3', args, config.defaultOptions)

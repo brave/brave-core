@@ -9,14 +9,19 @@
 # whenever you need to add a new CLI tool,
 # or bump the version of an existing one.
 
+import argparse
 import fnmatch
+import hashlib
 import json
 import os
 from pathlib import Path
 import shutil
 import subprocess
 import sys
+import tarfile
+import tempfile
 import toml
+import urllib.request
 
 import brave_chromium_utils
 import versions
@@ -74,6 +79,89 @@ def add_dependencies():
 
     # Vendor dependencies
     subprocess.run([CARGO, 'vendor'], check=True)
+
+
+def update_crate(crate_name, precise_version):
+    """Update a single crate to an exact version without cargo resolution.
+
+    Downloads the crate directly from crates.io, replaces the vendor
+    directory, and patches Cargo.lock. No cargo update or cargo vendor is
+    invoked, so no collateral version bumps occur.
+    """
+    vendor_path = Path('vendor')
+    crate_dir = vendor_path / crate_name
+
+    # 1. Fetch the package checksum from the crates.io API.
+    index_url = (f'https://crates.io/api/v1/crates/{crate_name}'
+                 f'/{precise_version}')
+    req = urllib.request.Request(index_url,
+                                headers={'User-Agent': 'brave-tools-crates'})
+    with urllib.request.urlopen(req) as resp:
+        index_data = json.loads(resp.read())
+    package_checksum = index_data['version']['checksum']
+
+    # 2. Download crate tarball from crates.io.
+    download_url = (f'https://crates.io/api/v1/crates/{crate_name}'
+                    f'/{precise_version}/download')
+    print(f'Downloading {crate_name} {precise_version} from crates.io...')
+    with tempfile.NamedTemporaryFile(suffix='.tar.gz',
+                                     delete=False) as tmp:
+        urllib.request.urlretrieve(download_url, tmp.name)
+        tmp_path = tmp.name
+
+    try:
+        # 3. Replace vendor directory for this crate.
+        if crate_dir.exists():
+            shutil.rmtree(crate_dir)
+
+        with tarfile.open(tmp_path, 'r:gz') as tar:
+            tar.extractall(path=vendor_path)
+
+        # crates.io tarballs extract to <name>-<version>/
+        extracted = vendor_path / f'{crate_name}-{precise_version}'
+        if not extracted.exists():
+            raise RuntimeError(
+                f'Expected {extracted} after extraction, not found')
+        extracted.rename(crate_dir)
+    finally:
+        os.unlink(tmp_path)
+
+    # 4. Generate .cargo-checksum.json with per-file SHA256 hashes.
+    file_hashes = {}
+    for file_path in sorted(crate_dir.rglob('*')):
+        if file_path.is_file():
+            relative = str(file_path.relative_to(crate_dir))
+            sha = hashlib.sha256(file_path.read_bytes()).hexdigest()
+            file_hashes[relative] = sha
+
+    checksum_data = {'files': file_hashes, 'package': package_checksum}
+    with open(crate_dir / '.cargo-checksum.json', 'w') as f:
+        json.dump(checksum_data, f)
+
+    print(f'Vendored {crate_name} {precise_version}')
+
+    # 5. Patch Cargo.lock — update version and checksum for this crate.
+    cargo_lock_path = Path('Cargo.lock')
+    with open(cargo_lock_path) as f:
+        lock_text = f.read()
+
+    lock_data = toml.loads(lock_text)
+    updated = False
+    for package in lock_data.get('package', []):
+        if package.get('name') == crate_name:
+            old_version = package.get('version')
+            package['version'] = precise_version
+            package['checksum'] = package_checksum
+            updated = True
+            print(f'Cargo.lock: {crate_name} {old_version} -> '
+                  f'{precise_version}')
+            break
+
+    if not updated:
+        raise RuntimeError(f'{crate_name} not found in Cargo.lock')
+
+    with open(cargo_lock_path, 'w') as f:
+        toml.dump(lock_data, f)
 
 
 def create_dependency_placeholders():
@@ -243,12 +331,26 @@ def create_cargo_config():
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--update-crate',
+                        help='Update a single crate to an exact version '
+                        '(e.g. --update-crate=rustls-webpki@0.103.10)')
+    args = parser.parse_args()
+
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
-    setup_workspace()
-    add_dependencies()
-    filter_dependencies()
-    create_dependency_placeholders()
-    create_cargo_config()
+
+    if args.update_crate:
+        if '@' not in args.update_crate:
+            parser.error('--update-crate requires name@version format '
+                         '(e.g. rustls-webpki@0.103.10)')
+        crate_name, version = args.update_crate.rsplit('@', 1)
+        update_crate(crate_name, version)
+    else:
+        setup_workspace()
+        add_dependencies()
+        filter_dependencies()
+        create_dependency_placeholders()
+        create_cargo_config()
 
 
 if __name__ == '__main__':
