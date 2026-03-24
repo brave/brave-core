@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 291ef25d7e29b9dede8f8c84a47d94e364910c74..0f36d42c4c6befbe11be6f19558ccf1961eebc18 100644
+index 291ef25d7e29b9dede8f8c84a47d94e364910c74..a4d9cd241fcf47555f727a467f5e1f038108fcfb 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -16,6 +16,7 @@ import("//third_party/angle/gni/angle.gni")
@@ -62,7 +62,7 @@ index 291ef25d7e29b9dede8f8c84a47d94e364910c74..0f36d42c4c6befbe11be6f19558ccf19
      package = "google-chrome"
    } else {
 -    package = "chromium-browser"
-+    package = "brave-browser" chrome_version_full = brave_version
++    package = brave_linux_package_name chrome_version_full = brave_version
    }
  
    deb_target_name = "${target_name}_deb"

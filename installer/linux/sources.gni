@@ -3,11 +3,19 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
+
+if (is_brave_origin_branded) {
+  _linux_branding_dir = "brave-origin"
+} else {
+  _linux_branding_dir = "brave-browser"
+}
+
 common_packaging_files_sources = [
   "//brave/LICENSE",
   "//brave/chromium_src/chrome/app/resources/manpage.1.in",
-  "//brave/chromium_src/chrome/installer/linux/common/brave-browser/appdata.xml.template",
-  "//brave/chromium_src/chrome/installer/linux/common/brave-browser/chromium-browser.info",
+  "//brave/chromium_src/chrome/installer/linux/common/$_linux_branding_dir/appdata.xml.template",
+  "//brave/chromium_src/chrome/installer/linux/common/$_linux_branding_dir/chromium-browser.info",
 ]
 
 common_packaging_files_excluded_sources = [

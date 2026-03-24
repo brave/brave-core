@@ -582,6 +582,8 @@ if (should_generate_symbols) {
       # TODO(https://github.com/brave/brave-browser/issues/51200)
       # Cleanup Mono once cr144 reaches stable channel, CI also needs to be updated
       output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-mono-$target_cpu-symbols-$target_android_output_format.zip"
+    } else if (is_linux) {
+      output = "$brave_dist_dir/$brave_dist_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
     } else {
       output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
     }
