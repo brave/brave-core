@@ -18,6 +18,7 @@
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -56,6 +57,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/browser/brave_rewards/rewards_prefs_util.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/components/brave_talk/pref_names.h"
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -253,6 +258,20 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::MigrateObsoleteProfilePrefs(profile_prefs);
 #endif
+
+  // Added 2026-03
+  if (profile_prefs->GetBoolean(kNewTabPageHideAllWidgets)) {
+    profile_prefs->SetBoolean(kNewTabPageHideAllWidgets, false);
+    profile_prefs->SetBoolean(kNewTabPageShowRewards, false);
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+    profile_prefs->SetBoolean(brave_talk::prefs::kNewTabPageShowBraveTalk,
+                              false);
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+    profile_prefs->SetBoolean(kNewTabPageShowBraveVPN, false);
+#endif
+  }
+  profile_prefs->ClearPref(kNewTabPageHideAllWidgets);
 
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }

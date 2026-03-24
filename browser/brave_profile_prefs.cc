@@ -382,6 +382,9 @@ void RegisterProfilePrefsForMigration(
   // Added 2026-03
   registry->RegisterDictionaryPref(
       serp_metrics::prefs::kDeprecatedSerpMetricsTimePeriodStorage);
+
+  // Added 2026-03
+  registry->RegisterBooleanPref(kNewTabPageHideAllWidgets, false);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -466,7 +469,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kNewTabPageClockFormat, "");
   registry->RegisterBooleanPref(kNewTabPageShowStats, true);
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
-  registry->RegisterBooleanPref(kNewTabPageHideAllWidgets, false);
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
   registry->RegisterBooleanPref(brave_talk::prefs::kNewTabPageShowBraveTalk,
