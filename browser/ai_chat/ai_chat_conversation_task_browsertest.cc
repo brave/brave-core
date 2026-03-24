@@ -541,11 +541,12 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
     EXPECT_CALL(*mock_tool, UseTool).Times(0).InSequence(tool_call_seq);
 
     // Pause the task directly via C++ to avoid a timing race with the UI
-    // click handler. The Leo Button component (SvelteToReact wrapper) attaches
-    // its click listener asynchronously via useEffect, after browser paint.
-    // On macOS, the paint can be delayed enough that the click listener is not
-    // yet attached when ClickElement fires, causing pauseTask() to never be
-    // called. The UI click path is tested by TaskPauseResumeActions.
+    // click handler. The SvelteToReact wrapper in @brave/leo attaches click
+    // listeners asynchronously via useEffect, so the listener may not be
+    // attached when ClickElement fires. The UI click path is tested by
+    // TaskPauseResumeActions.
+    // TODO(https://github.com/brave/leo/issues/1343): Remove this workaround
+    // once SvelteToReact attaches listeners synchronously.
     conversation_handler_->PauseTask();
     EXPECT_EQ(GetConversationState()->tool_use_task_state,
               mojom::TaskState::kPaused);
