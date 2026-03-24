@@ -5,12 +5,92 @@
 
 import("//testing/test.gni")
 
+source_set("brave_shields") {
+  sources = [
+    "ad_block_pref_service_factory.h",
+    "ad_block_subscription_download_manager_getter.h",
+    "brave_farbling_service_factory.h",
+    "brave_shields_settings_service_factory.h",
+    "brave_shields_tab_helper.h",
+    "brave_shields_web_contents_observer.h",
+    "filter_list_service_factory.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/common:mojom",
+    "//brave/components/ephemeral_storage",
+    "//chrome/browser/profiles:profile",
+    "//components/content_settings/core/browser",
+    "//components/content_settings/core/common",
+    "//components/favicon/core",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//url",
+  ]
+}
+
+source_set("brave_shields_impl") {
+  sources = [
+    "ad_block_pref_service_factory.cc",
+    "ad_block_subscription_download_manager_getter.cc",
+    "brave_farbling_service_factory.cc",
+    "brave_shields_settings_service_factory.cc",
+    "brave_shields_tab_helper.cc",
+    "brave_shields_web_contents_observer.cc",
+    "filter_list_service_factory.cc",
+  ]
+
+  public_deps = [ ":brave_shields" ]
+
+  deps = [
+    "//base:i18n",
+    "//brave/browser:browser_process",
+    "//brave/components/brave_perf_predictor/browser",
+    "//brave/components/brave_shields/core/browser",
+    "//brave/components/brave_shields/core/common",
+    "//brave/components/constants",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/content_settings:content_settings_factory",
+    "//chrome/browser/profiles",
+    "//chrome/common:mojo_bindings",
+    "//components/content_settings/core/browser:cookie_settings",
+    "//components/favicon/content",
+    "//components/prefs",
+    "//components/proxy_config",
+    "//components/user_prefs",
+    "//extensions/buildflags",
+    "//net",
+    "//net:net_features",
+  ]
+
+  if (is_android) {
+    sources += [
+      "android/brave_first_party_storage_cleaner_utils.cc",
+      "android/filter_list_service_factory_android.cc",
+      "brave_shields_web_contents_observer_android.cc",
+    ]
+
+    deps += [
+      "//brave/browser/android:android_browser_process",
+      "//brave/browser/brave_shields/android:jni_headers",
+      "//brave/build/android:jni_headers",
+      "//chrome/browser/android:tabs_public",
+    ]
+  }
+}
+
 source_set("unit_tests") {
   testonly = true
 
   sources = []
 
   deps = [
+    ":brave_shields_impl",
     "//brave/components/brave_shields/content/browser",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_shields/core/common",
