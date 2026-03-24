@@ -51,8 +51,7 @@ constexpr int kNarrowLayoutHorizontalPadding = 10;
 
 void OpenMoreInfoPage() {
   if (auto* browser = GetLastActiveBrowserWindowInterfaceWithAnyProfile()) {
-    ShowSingletonTab(browser->GetBrowserForMigrationOnly(),
-                     GURL(kWebDiscoveryLearnMoreUrl));
+    ShowSingletonTab(browser, GURL(kWebDiscoveryLearnMoreUrl));
   }
 }
 
