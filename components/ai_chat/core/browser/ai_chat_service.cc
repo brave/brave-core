@@ -1126,6 +1126,29 @@ void AIChatService::BindObserver(
   std::move(callback).Run(BuildState());
 }
 
+void AIChatService::GetConversationData(const std::string& uuid,
+                                        GetConversationDataCallback callback) {
+  GetConversation(
+      uuid,
+      base::BindOnce(
+          [](GetConversationDataCallback cb, ConversationMap& conversations,
+             const std::string& conv_uuid, ConversationHandler* handler) {
+            std::vector<mojom::ConversationTurnPtr> turns;
+            mojom::ConversationPtr conv = nullptr;
+            if (handler) {
+              auto it = conversations.find(conv_uuid);
+              if (it != conversations.end()) {
+                conv = it->second->Clone();
+              }
+              for (const auto& turn : handler->GetConversationHistory()) {
+                turns.push_back(turn.Clone());
+              }
+            }
+            std::move(cb).Run(std::move(conv), std::move(turns));
+          },
+          std::move(callback), std::ref(conversations_), uuid));
+}
+
 bool AIChatService::GetIsContentAgentAllowed() const {
   return is_content_agent_allowed_;
 }
