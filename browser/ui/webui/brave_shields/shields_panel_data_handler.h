@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "base/task/cancelable_task_tracker.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
@@ -19,8 +20,11 @@
 #include "mojo/public/cpp/bindings/remote.h"
 
 class TabStripModel;
-
 class TopChromeWebUIController;
+
+namespace favicon {
+class FaviconService;
+}
 
 class ShieldsPanelDataHandler
     : public brave_shields::mojom::DataHandler,
@@ -31,7 +35,8 @@ class ShieldsPanelDataHandler
       mojo::PendingReceiver<brave_shields::mojom::DataHandler>
           data_handler_receiver,
       TopChromeWebUIController* webui_controller,
-      TabStripModel* browser);
+      TabStripModel* tab_strip_model,
+      favicon::FaviconService* favicon_service);
 
   ShieldsPanelDataHandler(const ShieldsPanelDataHandler&) = delete;
   ShieldsPanelDataHandler& operator=(const ShieldsPanelDataHandler&) = delete;
@@ -61,6 +66,9 @@ class ShieldsPanelDataHandler
   void ResetBlockedElements() override;
   void AreAnyBlockedElementsPresent(
       AreAnyBlockedElementsPresentCallback callback) override;
+  void IsResourceFaviconAvailable(
+      const GURL& url,
+      IsResourceFaviconAvailableCallback callback) override;
 
  private:
   void UpdateSiteBlockInfo();
@@ -78,11 +86,12 @@ class ShieldsPanelDataHandler
 
   mojo::Receiver<brave_shields::mojom::DataHandler> data_handler_receiver_;
   mojo::Remote<brave_shields::mojom::UIHandler> ui_handler_remote_;
-  raw_ptr<TopChromeWebUIController> const webui_controller_ = nullptr;
-  raw_ptr<brave_shields::BraveShieldsTabHelper>
-      active_shields_data_controller_ = nullptr;
-
   brave_shields::mojom::SiteBlockInfo site_block_info_;
+  base::CancelableTaskTracker cancelable_task_tracker_;
+  raw_ptr<TopChromeWebUIController> const webui_controller_;  // not owned
+  raw_ptr<brave_shields::BraveShieldsTabHelper>
+      active_shields_data_controller_ = nullptr;      // not owned
+  raw_ptr<favicon::FaviconService> favicon_service_;  // not owned
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_SHIELDS_SHIELDS_PANEL_DATA_HANDLER_H_

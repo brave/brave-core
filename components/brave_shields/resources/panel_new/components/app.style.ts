@@ -9,6 +9,7 @@ import { color, font } from '@brave/leo/tokens/css/variables'
 export const style = scoped.css`
   & {
     background: ${color.container.background};
+    color-scheme: light dark;
   }
 `
 
