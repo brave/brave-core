@@ -218,12 +218,10 @@ void ContentAgentToolProvider::ExecuteActions(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void ContentAgentToolProvider::OnActorTaskStateChanged(
-    actor::TaskId task_id,
-    actor::ActorTask::State task_state) {
-  DVLOG(4) << __func__ << " " << task_state;
-  if (!task_id_.is_null() && task_id_ == task_id &&
-      kActorStatesToNotify.contains(task_state)) {
+void ContentAgentToolProvider::OnActorTaskStateChanged(actor::ActorTask& task) {
+  DVLOG(4) << __func__ << " " << task.GetState();
+  if (!task_id_.is_null() && task_id_ == task.id() &&
+      kActorStatesToNotify.contains(task.GetState())) {
     NotifyTaskStateChanged();
   }
 }
