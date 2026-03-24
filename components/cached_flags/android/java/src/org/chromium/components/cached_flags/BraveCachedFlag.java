@@ -21,6 +21,7 @@ public class BraveCachedFlag extends CachedFlag {
     private static final String SURFACE_POLISH = "SurfacePolish";
     private static final String AUTOFILL_ENABLE_LOYALTY_CARDS_FILLING =
             "AutofillEnableLoyaltyCardsFilling";
+    private static final String CCT_TOOLBAR_REFACTOR = "CCTToolbarRefactor";
 
     // Set of flags to override.
     private static final HashMap<String, Boolean> sFlags;
@@ -28,6 +29,7 @@ public class BraveCachedFlag extends CachedFlag {
     static {
         sFlags = new HashMap<String, Boolean>();
         sFlags.put(AUTOFILL_ENABLE_LOYALTY_CARDS_FILLING, false);
+        sFlags.put(CCT_TOOLBAR_REFACTOR, false);
         sFlags.put(CLEAR_BROWSING_DATA_ANDROID_SURVEY, false);
         sFlags.put(FEED_CONTAINMENT, false);
         sFlags.put(INCOGNITO_REAUTHENTICATION_FOR_ANDROID, true);
