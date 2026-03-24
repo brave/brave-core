@@ -31,6 +31,10 @@ views::ProposedLayout PageActionView::CalculateProposedLayout(
     int override_height = source->GetOverrideHeight().value();
     CHECK_EQ(GetMinimumSize().height(), override_height);
 
+    // Note that we're intentionally ignore |size_bounds| passed from the caller
+    // (usually the parent view's decision) so that we can force the height to
+    // be the override height. This could be not an optimal solution, but it's
+    // the efficient way to achieve the desired behavior.
     auto new_size_bounds = size_bounds;
     new_size_bounds.set_height(override_height);
     auto proposed_layout =
