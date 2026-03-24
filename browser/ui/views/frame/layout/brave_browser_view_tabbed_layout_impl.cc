@@ -578,8 +578,7 @@ gfx::Insets BraveBrowserViewTabbedLayoutImpl::AddFrameBorderInsets(
     const gfx::Insets& insets) const {
   // We need more care about frame border when vertical tab is visible.
   // Frame border is not drawn in fullscreen.
-  if (!delegate().ShouldShowVerticalTabs() ||
-      delegate().IsFullscreenForBrowser()) {
+  if (!delegate().ShouldShowVerticalTabs() || delegate().IsFullscreen()) {
     return insets;
   }
 
