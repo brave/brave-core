@@ -41,9 +41,9 @@ int FakeTabSlotController::GetTreeHeight(
   return 0;
 }
 
-const tabs::TreeTabNode& FakeTabSlotController::GetTreeTabNode(
+const tabs::TreeTabNode* FakeTabSlotController::GetTreeTabNode(
     const tree_tab::TreeTabNodeId& id) const {
-  return tabs::TreeTabNode::GetEmptyTreeTabNode();
+  return nullptr;
 }
 
 void FakeTabSlotController::SetTreeTabNodeCollapsed(

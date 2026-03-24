@@ -47,7 +47,7 @@ class MockTabSlotController : public FakeTabSlotController {
               (),
               (override));
 
-  MOCK_METHOD(const tabs::TreeTabNode&,
+  MOCK_METHOD(const tabs::TreeTabNode*,
               GetTreeTabNode,
               (const tree_tab::TreeTabNodeId& id),
               (const, override));
@@ -422,7 +422,7 @@ TEST_F(BraveTabTestWithTreeTab, TreeToggleButtonVisibleInsteadOfCloseButton) {
 
   // When tree tab has descendants, the tree toggle button should be visible.
   EXPECT_CALL(tab_slot_controller, GetTreeTabNode(testing::_))
-      .WillRepeatedly(testing::ReturnRef(collection.node()));
+      .WillRepeatedly(testing::Return(&collection.node()));
 
   BraveTab tab(tabs::TabHandle(1), &tab_slot_controller);
   tab.set_tree_tab_node(node_id);
@@ -462,7 +462,7 @@ TEST_F(BraveTabTestWithTreeTab,
 
   // When tree tab has descendants, the tree toggle button should be visible.
   EXPECT_CALL(tab_slot_controller, GetTreeTabNode(testing::_))
-      .WillRepeatedly(testing::ReturnRef(collection.node()));
+      .WillRepeatedly(testing::Return(&collection.node()));
 
   BraveTab tab(tabs::TabHandle(1), &tab_slot_controller);
   tab.set_tree_tab_node(node_id);

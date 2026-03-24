@@ -95,9 +95,9 @@ int TabStrip::GetTreeHeight(const tree_tab::TreeTabNodeId& id) const {
   return 0;
 }
 
-const tabs::TreeTabNode& TabStrip::GetTreeTabNode(
+const tabs::TreeTabNode* TabStrip::GetTreeTabNode(
     const tree_tab::TreeTabNodeId& id) const {
-  return tabs::TreeTabNode::GetEmptyTreeTabNode();
+  return nullptr;
 }
 
 bool TabStrip::IsInCollapsedTreeTabNode(

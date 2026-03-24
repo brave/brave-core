@@ -44,7 +44,7 @@ class BraveTabStrip : public TabStrip {
   void AddedToWidget() override;
   bool ShouldAlwaysHideCloseButton() const override;
   int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const override;
-  const tabs::TreeTabNode& GetTreeTabNode(
+  const tabs::TreeTabNode* GetTreeTabNode(
       const tree_tab::TreeTabNodeId& id) const override;
   void SetTreeTabNodeCollapsed(const tree_tab::TreeTabNodeId& id,
                                bool collapsed) override;
@@ -54,6 +54,8 @@ class BraveTabStrip : public TabStrip {
   bool IsVerticalTabsAnimatingButNotFinalState() const override;
   bool CanPaintThrobberToLayer() const override;
   bool CanCloseTabViaMiddleButtonClick() const override;
+  void AddTabToGroup(std::optional<tab_groups::TabGroupId> group,
+                     int model_index) override;
 
   // TabSlotController:
   bool ShouldPaintTabAccent(const Tab* tab) const override;

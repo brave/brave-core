@@ -15,6 +15,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/components/tabs/public/tree_tab_node.h"
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
@@ -47,12 +48,11 @@ int BraveBrowserTabStripController::GetTreeHeight(
       ->GetTreeHeight(id);
 }
 
-const tabs::TreeTabNode& BraveBrowserTabStripController::GetTreeTabNode(
+const tabs::TreeTabNode* BraveBrowserTabStripController::GetTreeTabNode(
     const tree_tab::TreeTabNodeId& id) const {
   const auto* node =
       static_cast<BraveTabStripModel*>(model_.get())->tree_model()->GetNode(id);
-  CHECK(node);
-  return *node;
+  return node;
 }
 
 void BraveBrowserTabStripController::SetTreeTabNodeCollapsed(
@@ -75,6 +75,13 @@ BraveBrowserTabStripController::GetClosestCollapsedAncestor(
   return static_cast<BraveTabStripModel*>(model_.get())
       ->tree_model()
       ->GetClosestCollapsedAncestor(id);
+}
+
+const tree_tab::TreeTabNodeId*
+BraveBrowserTabStripController::GetTreeTabNodeIdForGroup(
+    tab_groups::TabGroupId group_id) const {
+  return static_cast<BraveTabStripModel*>(model_.get())
+      ->GetTreeTabNodeIdForGroup(group_id);
 }
 
 bool BraveBrowserTabStripController::IsCommandEnabledForTab(
@@ -285,14 +292,19 @@ void BraveBrowserTabStripController::OnTreeTabChanged(
         auto index = model_->GetIndexOfTab(tab);
         // The tab might have already been removed from the model when the
         // TreeTabNode is being destroyed (e.g., during group removal).
-        if (index != TabStripModel::kNoTab) {
-          auto* tab_view = tabstrip_->tab_at(index);
-          tab_view->set_tree_tab_node(std::nullopt);
-          if (auto* tab_container =
-                  views::AsViewClass<BraveTabContainer>(tab_view->parent())) {
-            tab_container->InvalidateIdealBounds();
-            tab_container->InvalidateLayout();
-          }
+        // Or tab could be in detached state during group creation. In this
+        // case, the BraeTabStrip::AddTabToGroup() will clear the node id by
+        // itself, as this controller have multiple places to clear the node id.
+        if (index == TabStripModel::kNoTab) {
+          continue;
+        }
+
+        auto* tab_view = tabstrip_->tab_at(index);
+        tab_view->set_tree_tab_node(std::nullopt);
+        if (auto* tab_container =
+                views::AsViewClass<BraveTabContainer>(tab_view->parent())) {
+          tab_container->InvalidateIdealBounds();
+          tab_container->InvalidateLayout();
         }
       }
       break;

@@ -6,6 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_TABS_PUBLIC_TAB_STRIP_COLLECTION_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_TABS_PUBLIC_TAB_STRIP_COLLECTION_H_
 
+namespace tree_tab {
+class TreeTabNodeId;
+}  // namespace tree_tab
+
 // Overload to AddTabRecursive() with an additional parameter and make it
 // virtual.
 #define AddTabRecursive(...)                                  \
@@ -24,10 +28,13 @@
 #define CreateSplit virtual CreateSplit
 #define Unsplit virtual Unsplit
 
-// Make method virtual and make BraveTabStripCollection friend.
-#define AddCollectionMapping(...)       \
-  AddCollectionMapping_Unused();        \
-  friend class BraveTabStripCollection; \
+// * Make method virtual and make BraveTabStripCollection friend.
+// * Add a method to get tree tab node id for a group.
+#define AddCollectionMapping(...)                                  \
+  AddCollectionMapping_Unused();                                   \
+  friend class BraveTabStripCollection;                            \
+  virtual const tree_tab::TreeTabNodeId* GetTreeTabNodeIdForGroup( \
+      tab_groups::TabGroupId group_id) const;                      \
   virtual void AddCollectionMapping(__VA_ARGS__)
 #define RemoveCollectionMapping virtual RemoveCollectionMapping
 

@@ -32,4 +32,10 @@ tabs::TabCollection* BraveTabStripCollectionDelegate::GetCollectionForMapping(
   return root_collection;
 }
 
+const tree_tab::TreeTabNodeId*
+BraveTabStripCollectionDelegate::GetTreeTabNodeIdForGroup(
+    tab_groups::TabGroupId group_id) const {
+  return nullptr;
+}
+
 }  // namespace tabs

@@ -7,8 +7,11 @@
 #define BRAVE_COMPONENTS_TABS_PUBLIC_BRAVE_TAB_STRIP_COLLECTION_H_
 
 #include <cstddef>
+#include <memory>
 
 #include "components/split_tabs/split_tab_id.h"
+#include "components/tab_groups/tab_group_id.h"
+#include "components/tabs/public/tab_group_tab_collection.h"
 #include "components/tabs/public/tab_strip_collection.h"
 
 namespace split_tabs {
@@ -53,6 +56,9 @@ class BraveTabStripCollection : public TabStripCollection {
       std::unique_ptr<TabCollection> collection,
       const TabCollection::Position& position,
       base::PassKey<BraveTabStripCollectionDelegate> pass_key);
+  std::unique_ptr<TabGroupTabCollection> PopDetachedGroupCollectionForDelegate(
+      tab_groups::TabGroupId group_id,
+      base::PassKey<BraveTabStripCollectionDelegate> pass_key);
 
   // TabStripCollection:
   void AddTabRecursive(std::unique_ptr<TabInterface> tab,
@@ -74,6 +80,8 @@ class BraveTabStripCollection : public TabStripCollection {
   void Unsplit(split_tabs::SplitTabId split_id) override;
   void AddCollectionMapping(TabCollection* root_collection) override;
   void RemoveCollectionMapping(TabCollection* root_collection) override;
+  const tree_tab::TreeTabNodeId* GetTreeTabNodeIdForGroup(
+      tab_groups::TabGroupId group_id) const override;
 
  private:
   std::unique_ptr<BraveTabStripCollectionDelegate> delegate_;

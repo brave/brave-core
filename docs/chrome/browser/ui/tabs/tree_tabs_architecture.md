@@ -596,7 +596,7 @@ otherwise **GetSplitTabCollection(split_id)** is null and callers hit a CHECK.
 In order to address this, we need to update **AddCollectionMapping** to recurse into **TREE_NODE**
 and register the inner **SplitTabCollection** in **split_mapping_**.
 
-### Unsplit
+#### Unsplit
 
 **Flow:** User chooses "Unsplit" (e.g. from split context menu) →
 **TabStripModel::RemoveSplit(split_id)** → **RemoveSplitImpl** →
@@ -617,3 +617,52 @@ delegate's **Unsplit** in tree mode).
      **MoveChildrenOfTreeTabNodeToNode**.
   4. Removes the wrapper (and the split it owns) via **RemoveTabCollection(wrapper)**.
 
+
+### Groups
+
+In tree mode, a group is represented by a single **TreeTabNodeTabCollection** wrapping the
+**TabGroupTabCollection**; tabs inside the group stay direct children of the group (no per-tab
+tree node). **BuildTreeTabs** wraps each **TabGroupTabCollection** in one tree node;
+**TreeTabNodeTabCollection** has a constructor that takes a **TabGroupTabCollection** for this.
+
+#### Add to group
+
+**Flow:** User adds tabs to a new or existing group →
+**TabStripModel::AddToNewGroup** / **AddToExistingGroupImpl** →
+**MoveTabsAndSetPropertiesImpl** (delegate **AddTabRecursive** or **MoveTabsRecursive** in tree
+mode).
+
+- **Default:** **TabStripCollection** / **UnpinnedCollection** create or look up
+  **TabGroupTabCollection**, move tabs in via **AddTabRecursive** or **MoveTabImpl**.
+
+- **Tree tabs:** When **new_group_id** is set, the delegate does not wrap tabs in tree nodes;
+  the group wraps them. **AddTabRecursive** forwards to the collection with **new_group_id** and
+  skips wrapping. **MoveTabsRecursive** dispatches to **MoveTabsIntoGroup**: unwrap tabs from
+  their tree nodes (or detach from another group), add to the target group. If the group is
+  detached (new group), the delegate wraps it in a **TreeTabNodeTabCollection** and attaches it
+  at the correct tree position via **AddTabCollectionAtPosition** and **PopDetachedGroupCollectionForDelegate**.
+
+#### Remove from group
+
+**Flow:** User removes tabs from a group → **TabStripModel::RemoveFromGroup** →
+**MoveTabsAndSetPropertiesImpl** (no **new_group_id**) → delegate **MoveTabsRecursive**.
+
+- **Default:** Tabs are moved out of **TabGroupTabCollection** into the unpinned (or pinned)
+  collection.
+
+- **Tree tabs:** When the tabs’ parent is **TabGroupTabCollection** and **new_group_id** is
+  unset, the delegate runs **MoveTabsOutOfGroup**: move each tab out of the group and wrap it
+  in its own **TreeTabNodeTabCollection** at the destination index (same pattern as moving
+  into unpinned).
+
+#### Move between groups
+
+**Flow:** Same as add-to-group from the model’s perspective: **MoveTabsAndSetPropertiesImpl**
+with **new_group_id** set → delegate **MoveTabsRecursive** → **MoveTabsIntoGroup**. Tabs may
+come from another group or from standalone tree nodes; **MoveTabsIntoGroup** detaches or
+unwraps them and adds them to the target group.
+
+**UI:** **BraveTabStrip::AddTabToGroup** uses **GetTreeTabNodeIdForGroup** (model → collection
+→ delegate) to set the tab’s **tree_tab_node** when adding to a group in tree mode, so layout
+shows the tab under the group’s tree node. **GetTreeTabNode** returns **GetEmptyTreeTabNode()**
+when the node is temporarily null (e.g. tab just moved into group before **TabGroupedStateChanged**).
