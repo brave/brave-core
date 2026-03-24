@@ -25,7 +25,9 @@
 #include "chrome/browser/net/profile_network_context_service_test_utils.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -74,6 +76,20 @@ Browser* SwitchToTorProfile(Profile* parent_profile,
   EXPECT_EQ(current_profile_num + 1, chrome::GetTotalBrowserCount());
   return tor_browser;
 }
+
+#if !BUILDFLAG(IS_MAC)
+size_t GetTabbedBrowserCount(Profile* profile) {
+  size_t tabbed_browser_count = 0;
+  ProfileBrowserCollection::GetForProfile(profile)->ForEach(
+      [&tabbed_browser_count](BrowserWindowInterface* browser) {
+        if (browser->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
+          tabbed_browser_count++;
+        }
+        return true;
+      });
+  return tabbed_browser_count;
+}
+#endif
 
 }  // namespace
 
@@ -139,7 +155,7 @@ class MockWebContentsDelegate : public content::WebContentsDelegate {
 #if !BUILDFLAG(IS_MAC)
 IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, LaunchWithTorUrl) {
   // We should start with one normal window.
-  ASSERT_EQ(1u, chrome::GetTabbedBrowserCount(browser()->profile()));
+  ASSERT_EQ(1u, GetTabbedBrowserCount(browser()->profile()));
 
   // Run with --tor switch and a URL specified.
   base::FilePath test_file_path = chrome_test_utils::GetTestFilePath(
@@ -154,7 +170,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, LaunchWithTorUrl) {
   Relaunch(new_command_line);
   ui_test_utils::WaitForBrowserToOpen();
   ASSERT_EQ(2u, chrome::GetTotalBrowserCount());
-  ASSERT_EQ(1u, chrome::GetTabbedBrowserCount(browser()->profile()));
+  ASSERT_EQ(1u, GetTabbedBrowserCount(browser()->profile()));
 }
 #endif
 
