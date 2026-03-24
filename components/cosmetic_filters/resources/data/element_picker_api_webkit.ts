@@ -5,15 +5,33 @@
 
 import { ElementPickerAPI } from './element_picker_api'
 
-export class WebKitElementPickerAPI implements ElementPickerAPI {
-  cosmeticFilterCreate(selector: string) {}
+const postNativeMessage = $((action, data) => {
+  return $.postNativeMessage(messageHandler, {
+    'securityToken': SECURITY_TOKEN,
+    'data': {
+      windowOrigin: $.windowOrigin,
+      action: action,
+      data: data,
+    },
+  })
+})
 
-  cosmeticFilterManage() {}
+export class WebKitElementPickerAPI implements ElementPickerAPI {
+  cosmeticFilterCreate(selector: string) {
+    postNativeMessage('addCosmeticFilter', selector)
+  }
+
+  cosmeticFilterManage() {
+    postNativeMessage('manageCustomFilters', undefined)
+  }
 
   getElementPickerThemeInfo(
     callback: (isDarkModeEnabled: boolean, bgcolor: number) => void,
   ) {
-    callback(true, 16777215) // white
+    postNativeMessage('elementPickerThemeInfo', undefined)
+      .then((val: { isDarkModeEnabled: boolean; bgcolor: number }) => {
+        callback(val.isDarkModeEnabled, val.bgcolor)
+      })
   }
 
   getLocalizedTexts(
@@ -26,14 +44,26 @@ export class WebKitElementPickerAPI implements ElementPickerAPI {
       btnQuitText: string,
     ) => void,
   ) {
-    callback(
-      'Select element you want to block',
-      'Block Element',
-      'manage',
-      'show rules',
-      'hide rules',
-      'quit',
-    )
+    postNativeMessage('localizedTexts', undefined)
+      .then(
+        (val: {
+          btnCreateDisabledText: string
+          btnCreateEnabledText: string
+          btnManageText: string
+          btnShowRulesBoxText: string
+          btnHideRulesBoxText: string
+          btnQuitText: string
+        }) => {
+          callback(
+            val.btnCreateDisabledText,
+            val.btnCreateEnabledText,
+            val.btnManageText,
+            val.btnShowRulesBoxText,
+            val.btnHideRulesBoxText,
+            val.btnQuitText,
+          )
+        },
+      )
   }
 
   getPlatform() {
