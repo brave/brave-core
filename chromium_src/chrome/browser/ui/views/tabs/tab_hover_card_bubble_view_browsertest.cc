@@ -48,6 +48,10 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest,
         {.index = 0, .handle = tabs::TabHandle(0), .data = data});
     GetTabStrip(browser())->AddTabsAt(data_list);
 
+    // As tabs::TabHandle::Get() would return nullptr, the tab data would not be
+    // set. So we need to set the tab data manually here for testing.
+    GetTabStrip(browser())->tab_at(0)->SetDataForTesting(data);
+
     SimulateHoverTab(browser(), 0);
   }
 
