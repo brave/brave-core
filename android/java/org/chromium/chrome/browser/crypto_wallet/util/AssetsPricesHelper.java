@@ -69,9 +69,8 @@ public class AssetsPricesHelper {
         for (AssetPrice assetPrice : assetPrices) {
             // Match by coin, chainId, and address
             if (assetPrice.coin == coin
-                    && Objects.equals(assetPrice.chainId, chainId)
-                    && Objects.toString(assetPrice.address, "")
-                            .equals(Objects.toString(address, ""))) {
+                    && assetPrice.chainId.equals(chainId)
+                    && assetPrice.address.equals(address)) {
                 return parseAssetPrice(assetPrice);
             }
         }
@@ -91,7 +90,7 @@ public class AssetsPricesHelper {
 
     /** Helper method to parse the price string from AssetPrice. */
     private static double parseAssetPrice(AssetPrice assetPrice) {
-        if (assetPrice.price != null && !assetPrice.price.isEmpty()) {
+        if (!assetPrice.price.isEmpty()) {
             try {
                 return Double.parseDouble(assetPrice.price);
             } catch (NumberFormatException ex) {
