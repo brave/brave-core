@@ -571,6 +571,8 @@ export const InputLabelText = styled.label`
 `
 
 export const VerticalDivider = styled.div<{ margin?: string }>`
+  flex-shrink: 0;
+  min-height: 1px;
   height: 1px;
   width: 100%;
   background-color: ${leo.color.divider.subtle};

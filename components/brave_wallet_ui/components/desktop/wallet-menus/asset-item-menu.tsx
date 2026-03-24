@@ -51,14 +51,10 @@ import {
 import {
   SellAssetModal, //
 } from '../popup-modals/sell-asset-modal/sell-asset-modal'
+import { MenuWrapper } from './menu_wrapper'
 
 // Styled Components
-import {
-  StyledWrapper,
-  PopupButton,
-  PopupButtonText,
-  ButtonIcon,
-} from './wellet-menus.style'
+import { PopupButton, PopupButtonText, ButtonIcon } from './wellet-menus.style'
 import { VerticalDivider } from '../../shared/style'
 
 interface Props {
@@ -225,7 +221,7 @@ export const AssetItemMenu = (props: Props) => {
   ])
 
   return (
-    <StyledWrapper yPosition={42}>
+    <MenuWrapper yPosition={42}>
       {foundMeldBuyToken && (
         <PopupButton onClick={onClickBuy}>
           <ButtonIcon name='coins-alt1' />
@@ -310,6 +306,6 @@ export const AssetItemMenu = (props: Props) => {
           sellAssetBalance={assetBalance}
         />
       )}
-    </StyledWrapper>
+    </MenuWrapper>
   )
 }
