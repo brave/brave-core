@@ -23,9 +23,13 @@ constexpr char kResult[] = "result";
 
 TEST(PolkadotChainMetadataUnitTest, FromFields) {
   auto metadata = PolkadotChainMetadata::FromFields(
-      /*balances_pallet_index=*/7, /*transfer_allow_death_call_index=*/2,
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/7,
+      /*transaction_payment_pallet_index=*/0x20,
+      /*transfer_allow_death_call_index=*/2,
       /*ss58_prefix=*/42, /*spec_version=*/1'234'567);
+  EXPECT_EQ(metadata.GetSystemPalletIndex(), 0u);
   EXPECT_EQ(metadata.GetBalancesPalletIndex(), 7u);
+  EXPECT_EQ(metadata.GetTransactionPaymentPalletIndex(), 0x20u);
   EXPECT_EQ(metadata.GetTransferAllowDeathCallIndex(), 2u);
   EXPECT_EQ(metadata.GetSs58Prefix(), 42u);
   EXPECT_EQ(metadata.GetSpecVersion(), 1'234'567u);
@@ -34,27 +38,35 @@ TEST(PolkadotChainMetadataUnitTest, FromFields) {
 TEST(PolkadotChainMetadataUnitTest, FromChainName) {
   auto westend = PolkadotChainMetadata::FromChainName("Westend");
   ASSERT_TRUE(westend);
+  EXPECT_EQ(westend->GetSystemPalletIndex(), 0u);
   EXPECT_EQ(westend->GetBalancesPalletIndex(), 4u);
+  EXPECT_EQ(westend->GetTransactionPaymentPalletIndex(), 0x1au);
   EXPECT_EQ(westend->GetTransferAllowDeathCallIndex(), 0u);
   EXPECT_EQ(westend->GetSs58Prefix(), 42u);
 
   auto westend_asset_hub =
       PolkadotChainMetadata::FromChainName("Westend Asset Hub");
   ASSERT_TRUE(westend_asset_hub);
+  EXPECT_EQ(westend_asset_hub->GetSystemPalletIndex(), 0u);
   EXPECT_EQ(westend_asset_hub->GetBalancesPalletIndex(), 10u);
+  EXPECT_EQ(westend_asset_hub->GetTransactionPaymentPalletIndex(), 0x0bu);
   EXPECT_EQ(westend_asset_hub->GetTransferAllowDeathCallIndex(), 0u);
   EXPECT_EQ(westend_asset_hub->GetSs58Prefix(), 42u);
 
   auto polkadot = PolkadotChainMetadata::FromChainName("Polkadot");
   ASSERT_TRUE(polkadot);
+  EXPECT_EQ(polkadot->GetSystemPalletIndex(), 0u);
   EXPECT_EQ(polkadot->GetBalancesPalletIndex(), 5u);
+  EXPECT_EQ(polkadot->GetTransactionPaymentPalletIndex(), 0x20u);
   EXPECT_EQ(polkadot->GetTransferAllowDeathCallIndex(), 0u);
   EXPECT_EQ(polkadot->GetSs58Prefix(), 0u);
 
   auto polkadot_asset_hub =
       PolkadotChainMetadata::FromChainName("Polkadot Asset Hub");
   ASSERT_TRUE(polkadot_asset_hub);
+  EXPECT_EQ(polkadot_asset_hub->GetSystemPalletIndex(), 0u);
   EXPECT_EQ(polkadot_asset_hub->GetBalancesPalletIndex(), 10u);
+  EXPECT_EQ(polkadot_asset_hub->GetTransactionPaymentPalletIndex(), 0x0bu);
   EXPECT_EQ(polkadot_asset_hub->GetTransferAllowDeathCallIndex(), 0u);
   EXPECT_EQ(polkadot_asset_hub->GetSs58Prefix(), 0u);
 

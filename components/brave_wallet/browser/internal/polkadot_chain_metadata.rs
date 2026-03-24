@@ -10,7 +10,9 @@ use std::collections::HashMap;
 
 #[derive(Clone, Copy)]
 struct CxxPolkadotChainMetadataFields {
+    system_pallet_index: u8,
     balances_pallet_index: u8,
+    transaction_payment_pallet_index: u8,
     transfer_allow_death_call_index: u8,
     ss58_prefix: u16,
     spec_version: u32,
@@ -33,7 +35,9 @@ mod ffi {
         ) -> Box<CxxPolkadotChainMetadataFields>;
 
         type CxxPolkadotChainMetadataFields;
+        fn system_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8;
         fn balances_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8;
+        fn transaction_payment_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8;
         fn transfer_allow_death_call_index(self: &CxxPolkadotChainMetadataFields) -> u8;
         fn ss58_prefix(self: &CxxPolkadotChainMetadataFields) -> u16;
         fn spec_version(self: &CxxPolkadotChainMetadataFields) -> u32;
@@ -41,8 +45,16 @@ mod ffi {
 }
 
 impl CxxPolkadotChainMetadataFields {
+    fn system_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
+        self.system_pallet_index
+    }
+
     fn balances_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
         self.balances_pallet_index
+    }
+
+    fn transaction_payment_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
+        self.transaction_payment_pallet_index
     }
 
     fn transfer_allow_death_call_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
@@ -392,6 +404,8 @@ fn parse_chain_metadata_fields(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata,
         .find(|p| normalize_ident(&p.name) == "system")
         .ok_or(Error::InvalidMetadata)?;
 
+    let system_pallet_index = system_pallet.index;
+
     let ss58_prefix = system_pallet
         .constants
         .iter()
@@ -405,8 +419,17 @@ fn parse_chain_metadata_fields(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata,
         .find(|(name, _)| normalize_ident(name) == "version")
         .and_then(|(_, value)| decode_runtime_spec_version(value))
         .ok_or(Error::InvalidMetadata)?;
+
+    let transaction_payment_pallet_index = pallets
+        .iter()
+        .find(|p| normalize_ident(&p.name) == "transactionpayment")
+        .map(|p| p.index)
+        .ok_or(Error::InvalidMetadata)?;
+
     Ok(CxxPolkadotChainMetadata {
+        system_pallet_index,
         balances_pallet_index,
+        transaction_payment_pallet_index,
         transfer_allow_death_call_index,
         ss58_prefix,
         spec_version,
@@ -418,7 +441,9 @@ fn parse_chain_metadata_from_scale(
 ) -> Box<CxxPolkadotChainMetadataFieldsResult> {
     let fields = parse_chain_metadata_fields(metadata_bytes).map(|metadata| {
         CxxPolkadotChainMetadataFields {
+            system_pallet_index: metadata.system_pallet_index,
             balances_pallet_index: metadata.balances_pallet_index,
+            transaction_payment_pallet_index: metadata.transaction_payment_pallet_index,
             transfer_allow_death_call_index: metadata.transfer_allow_death_call_index,
             ss58_prefix: metadata.ss58_prefix,
             spec_version: metadata.spec_version,
