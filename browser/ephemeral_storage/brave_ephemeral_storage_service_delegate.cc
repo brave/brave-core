@@ -335,7 +335,6 @@ BraveEphemeralStorageServiceDelegate::GetEphemeralDomainsToCleanOnAppClose() {
       continue;
     }
 
-    base::flat_set<tabs::TabHandle> tab_handlers;
     for (auto* tab : *tab_strip) {
       if (!tab || !tab->GetContents()) {
         continue;
