@@ -62,6 +62,7 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   void UpdateWindowControlsOverlay(const gfx::Rect&) override {}
   bool ShouldLayoutTabStrip() const override { return false; }
   int GetExtraInfobarOffset() const override { return 0; }
+  bool IsProjectsPanelVisible() const override { return false; }
 
   bool ShouldShowVerticalTabs() const override { return false; }
   bool IsVerticalTabOnRight() const override { return false; }
