@@ -1,10 +1,8 @@
 // See https://en.wikipedia.org/wiki/Tar_%28computing%29#UStar_format
-/// Indicate for the type of file described by a header.
+/// Indicate the type of content described by a header.
 ///
-/// Each `Header` has an `entry_type` method returning an instance of this type
-/// which can be used to inspect what the header is describing.
-
-/// A non-exhaustive enum representing the possible entry types
+/// This is returned by [`crate::Header::entry_type()`] and should be used to
+/// distinguish between types of content.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum EntryType {
     /// Regular file
