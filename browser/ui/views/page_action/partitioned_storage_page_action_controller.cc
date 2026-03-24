@@ -16,6 +16,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/gfx/text_elider.h"
 
 namespace page_actions {
 
@@ -82,6 +83,7 @@ void PartitionedStoragePageActionController::UpdatePageAction() {
     page_action_controller_->Hide(kActionShowPartitionedStorage);
     page_action_controller_->ClearOverrideChipColors(
         kActionShowPartitionedStorage);
+    page_action_controller_->ClearOverrideHeight(kActionShowPartitionedStorage);
     return;
   }
 
@@ -92,12 +94,21 @@ void PartitionedStoragePageActionController::UpdatePageAction() {
                                               true);
   page_action_controller_->OverrideImage(kActionShowPartitionedStorage,
                                          model->icon());
-  page_action_controller_->OverrideText(kActionShowPartitionedStorage, name);
+
+  // So far, we didn't have any limit for the name length, so if we don't
+  // truncate the name, it will make url invisible because the PageActinView
+  // will be too wide.
+  const auto truncated_name =
+      gfx::TruncateString(name, 20, gfx::BreakType::CHARACTER_BREAK);
+  page_action_controller_->OverrideText(kActionShowPartitionedStorage,
+                                        truncated_name);
+
   page_action_controller_->OverrideAccessibleName(kActionShowPartitionedStorage,
                                                   name);
   page_action_controller_->OverrideTooltip(kActionShowPartitionedStorage, name);
   page_action_controller_->OverrideChipColors(
       kActionShowPartitionedStorage, model->background_color(), SK_ColorWHITE);
+  page_action_controller_->SetOverrideHeight(kActionShowPartitionedStorage, 20);
 }
 
 }  // namespace page_actions

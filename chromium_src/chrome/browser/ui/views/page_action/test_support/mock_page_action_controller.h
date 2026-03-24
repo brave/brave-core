@@ -31,6 +31,14 @@ class MockPageActionController : public MockPageActionController_Chromium {
               ClearOverrideChipColors,
               (actions::ActionId action_id),
               (override));
+  MOCK_METHOD(void,
+              SetOverrideHeight,
+              (actions::ActionId action_id, int height_px),
+              (override));
+  MOCK_METHOD(void,
+              ClearOverrideHeight,
+              (actions::ActionId action_id),
+              (override));
 };
 
 }  // namespace page_actions
