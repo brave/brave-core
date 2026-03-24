@@ -32,9 +32,7 @@ void DropTableIndex(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
   CHECK(mojom_db_transaction);
   CHECK(!index_name.empty());
 
-  Execute(mojom_db_transaction, R"(
-      DROP INDEX IF EXISTS
-        ad_events_created_at_index)");
+  Execute(mojom_db_transaction, "DROP INDEX IF EXISTS $1", {index_name});
 }
 
 void DropTable(const mojom::DBTransactionInfoPtr& mojom_db_transaction,

@@ -141,14 +141,15 @@ void MigrateToV40(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
   // Delete legacy transactions with an undefined `creative_instance_id`,
-  // `segment` or `ad_type`.
+  // `segment`, `ad_type`, or `confirmation_type`.
   Execute(mojom_db_transaction, R"(
       DELETE FROM
         transactions
       WHERE
         COALESCE(creative_instance_id, '') = ''
         OR COALESCE(segment, '') = ''
-        OR ad_type = '')");
+        OR COALESCE(ad_type, '') = ''
+        OR COALESCE(confirmation_type, '') = '')");
 
   // Create a temporary table:
   //   - with a new `creative_instance_id` column constraint.
