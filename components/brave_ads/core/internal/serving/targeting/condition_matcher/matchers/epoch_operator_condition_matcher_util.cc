@@ -7,8 +7,9 @@
 
 #include <optional>
 #include <string_view>
+#include <utility>
 
-#include "base/strings/pattern.h"
+#include "base/notreached.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/internal/epoch_operator_condition_matcher_util_internal.h"
@@ -28,59 +29,80 @@ constexpr std::string_view kLessThanOrEqualOperatorConditionMatcherPrefix =
 
 }  // namespace
 
-bool IsEpochOperator(std::string_view condition) {
-  return base::MatchPattern(condition,
-                            kEpochOperatorConditionMatcherPrefixPattern);
-}
-
-bool MatchEpochOperator(std::string_view value, std::string_view condition) {
-  if (!base::MatchPattern(condition,
-                          kEpochOperatorConditionMatcherPrefixPattern)) {
-    // Not an operator.
-    return false;
+std::optional<ConditionMatcherOperatorType> MaybeParseEpochOperatorType(
+    std::string_view condition) {
+  if (condition.starts_with(kEqualOperatorConditionMatcherPrefix)) {
+    return ConditionMatcherOperatorType::kEqual;
   }
 
-  std::optional<int> days = ParseDays(condition);
+  if (condition.starts_with(kNotEqualOperatorConditionMatcherPrefix)) {
+    return ConditionMatcherOperatorType::kNotEqual;
+  }
+
+  if (condition.starts_with(kGreaterThanOperatorConditionMatcherPrefix)) {
+    return ConditionMatcherOperatorType::kGreaterThan;
+  }
+
+  if (condition.starts_with(
+          kGreaterThanOrEqualOperatorConditionMatcherPrefix)) {
+    return ConditionMatcherOperatorType::kGreaterThanOrEqual;
+  }
+
+  if (condition.starts_with(kLessThanOperatorConditionMatcherPrefix)) {
+    return ConditionMatcherOperatorType::kLessThan;
+  }
+
+  if (condition.starts_with(kLessThanOrEqualOperatorConditionMatcherPrefix)) {
+    return ConditionMatcherOperatorType::kLessThanOrEqual;
+  }
+
+  return std::nullopt;
+}
+
+bool MatchEpochOperator(std::string_view value,
+                        ConditionMatcherOperatorType operator_type,
+                        std::string_view condition) {
+  std::optional<int> days = MaybeParseDays(condition);
   if (!days) {
     // Invalid days.
     return false;
   }
 
-  std::optional<base::TimeDelta> time_delta = ParseTimeDelta(value);
+  std::optional<base::TimeDelta> time_delta = MaybeParseTimeDelta(value);
   if (!time_delta) {
     // Invalid time delta.
     BLOG(1, "Invalid epoch operator condition matcher for " << condition);
     return false;
   }
 
-  if (condition.starts_with(kEqualOperatorConditionMatcherPrefix)) {
-    return time_delta->InDays() == days;
+  switch (operator_type) {
+    case ConditionMatcherOperatorType::kEqual: {
+      return time_delta->InDays() == days;
+    }
+
+    case ConditionMatcherOperatorType::kNotEqual: {
+      return time_delta->InDays() != days;
+    }
+
+    case ConditionMatcherOperatorType::kGreaterThan: {
+      return time_delta->InDays() > days;
+    }
+
+    case ConditionMatcherOperatorType::kGreaterThanOrEqual: {
+      return time_delta->InDays() >= days;
+    }
+
+    case ConditionMatcherOperatorType::kLessThan: {
+      return time_delta->InDays() < days;
+    }
+
+    case ConditionMatcherOperatorType::kLessThanOrEqual: {
+      return time_delta->InDays() <= days;
+    }
   }
 
-  if (condition.starts_with(kNotEqualOperatorConditionMatcherPrefix)) {
-    return time_delta->InDays() != days;
-  }
-
-  if (condition.starts_with(kGreaterThanOperatorConditionMatcherPrefix)) {
-    return time_delta->InDays() > days;
-  }
-
-  if (condition.starts_with(
-          kGreaterThanOrEqualOperatorConditionMatcherPrefix)) {
-    return time_delta->InDays() >= days;
-  }
-
-  if (condition.starts_with(kLessThanOperatorConditionMatcherPrefix)) {
-    return time_delta->InDays() < days;
-  }
-
-  if (condition.starts_with(kLessThanOrEqualOperatorConditionMatcherPrefix)) {
-    return time_delta->InDays() <= days;
-  }
-
-  // Unknown operator.
-  BLOG(1, "Unknown epoch operator condition matcher for " << condition);
-  return false;
+  NOTREACHED() << "Unexpected value for ConditionMatcherOperatorType: "
+               << std::to_underlying(operator_type);
 }
 
 }  // namespace brave_ads

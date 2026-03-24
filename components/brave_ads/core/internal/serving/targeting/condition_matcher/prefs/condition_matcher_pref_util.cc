@@ -15,7 +15,7 @@ std::optional<std::string> MaybeGetPrefValueAsString(
     std::string_view pref_path) {
   if (std::optional<base::Value> value =
           MaybeGetPrefValue(virtual_prefs, pref_path)) {
-    return ToString(*value);
+    return MaybeToString(*value);
   }
 
   // Unknown pref path.

@@ -30,31 +30,31 @@ constexpr std::string_view kLessThanOrEqualOperatorConditionMatcherPrefix =
 
 }  // namespace
 
-std::optional<ConditionMatcherNumericalOperatorType>
-MaybeGetNumericalOperatorType(std::string_view condition) {
+std::optional<ConditionMatcherOperatorType> MaybeParseNumericalOperatorType(
+    std::string_view condition) {
   if (condition.starts_with(kEqualOperatorConditionMatcherPrefix)) {
-    return ConditionMatcherNumericalOperatorType::kEqual;
+    return ConditionMatcherOperatorType::kEqual;
   }
 
   if (condition.starts_with(kNotEqualOperatorConditionMatcherPrefix)) {
-    return ConditionMatcherNumericalOperatorType::kNotEqual;
+    return ConditionMatcherOperatorType::kNotEqual;
   }
 
   if (condition.starts_with(kGreaterThanOperatorConditionMatcherPrefix)) {
-    return ConditionMatcherNumericalOperatorType::kGreaterThan;
+    return ConditionMatcherOperatorType::kGreaterThan;
   }
 
   if (condition.starts_with(
           kGreaterThanOrEqualOperatorConditionMatcherPrefix)) {
-    return ConditionMatcherNumericalOperatorType::kGreaterThanOrEqual;
+    return ConditionMatcherOperatorType::kGreaterThanOrEqual;
   }
 
   if (condition.starts_with(kLessThanOperatorConditionMatcherPrefix)) {
-    return ConditionMatcherNumericalOperatorType::kLessThan;
+    return ConditionMatcherOperatorType::kLessThan;
   }
 
   if (condition.starts_with(kLessThanOrEqualOperatorConditionMatcherPrefix)) {
-    return ConditionMatcherNumericalOperatorType::kLessThanOrEqual;
+    return ConditionMatcherOperatorType::kLessThanOrEqual;
   }
 
   return std::nullopt;
@@ -98,7 +98,7 @@ std::optional<double> MaybeResolveNumericalOperand(
 }
 
 bool MatchNumericalOperator(std::string_view value,
-                            ConditionMatcherNumericalOperatorType operator_type,
+                            ConditionMatcherOperatorType operator_type,
                             double operand) {
   double value_as_double;
   if (!base::StringToDouble(value, &value_as_double)) {
@@ -107,31 +107,31 @@ bool MatchNumericalOperator(std::string_view value,
   }
 
   switch (operator_type) {
-    case ConditionMatcherNumericalOperatorType::kEqual: {
+    case ConditionMatcherOperatorType::kEqual: {
       return base::IsApproximatelyEqual(value_as_double, operand,
                                         std::numeric_limits<double>::epsilon());
     }
 
-    case ConditionMatcherNumericalOperatorType::kNotEqual: {
+    case ConditionMatcherOperatorType::kNotEqual: {
       return !base::IsApproximatelyEqual(
           value_as_double, operand, std::numeric_limits<double>::epsilon());
     }
 
-    case ConditionMatcherNumericalOperatorType::kGreaterThan: {
+    case ConditionMatcherOperatorType::kGreaterThan: {
       return value_as_double > operand;
     }
 
-    case ConditionMatcherNumericalOperatorType::kGreaterThanOrEqual: {
+    case ConditionMatcherOperatorType::kGreaterThanOrEqual: {
       return value_as_double > operand ||
              base::IsApproximatelyEqual(value_as_double, operand,
                                         std::numeric_limits<double>::epsilon());
     }
 
-    case ConditionMatcherNumericalOperatorType::kLessThan: {
+    case ConditionMatcherOperatorType::kLessThan: {
       return value_as_double < operand;
     }
 
-    case ConditionMatcherNumericalOperatorType::kLessThanOrEqual: {
+    case ConditionMatcherOperatorType::kLessThanOrEqual: {
       return value_as_double < operand ||
              base::IsApproximatelyEqual(value_as_double, operand,
                                         std::numeric_limits<double>::epsilon());

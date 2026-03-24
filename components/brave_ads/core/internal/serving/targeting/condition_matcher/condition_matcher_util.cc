@@ -15,7 +15,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/epoch_operator_condition_matcher_util.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/numerical_operator_condition_matcher_type.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/numerical_operator_condition_matcher_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/pattern_condition_matcher_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/regex_condition_matcher_util.h"
@@ -55,15 +54,16 @@ bool MatchCondition(const base::DictValue& virtual_prefs,
     return !value;
   }
 
-  if (IsEpochOperator(condition)) {
+  if (std::optional<ConditionMatcherOperatorType> epoch_operator_type =
+          MaybeParseEpochOperatorType(condition)) {
     return MatchEpochOperator(
         value.value_or(base::NumberToString(
             base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds())),
-        condition);
+        *epoch_operator_type, condition);
   }
 
-  if (std::optional<ConditionMatcherNumericalOperatorType>
-          numerical_operator_type = MaybeGetNumericalOperatorType(condition)) {
+  if (std::optional<ConditionMatcherOperatorType> numerical_operator_type =
+          MaybeParseNumericalOperatorType(condition)) {
     std::optional<double> numerical_operand =
         MaybeResolveNumericalOperand(condition, virtual_prefs);
     // Missing prefs default to "0".

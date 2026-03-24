@@ -21,13 +21,13 @@ namespace base {
 class DictValue;
 }  // namespace base
 
-namespace brave_ads {
-
 // Provides a stable set of virtual pref paths for condition matching, exposing
 // values that have no registered pref at all, and decoupling ads from
 // registered pref paths so that targeting continues to work correctly even if
-// those paths change in a future browser version. All matching occurs on the
-// device with nothing leaving the device.
+// those paths change in a future browser version, all evaluated locally with
+// nothing leaving the device.
+
+namespace brave_ads {
 
 class VirtualPrefProvider final {
  public:

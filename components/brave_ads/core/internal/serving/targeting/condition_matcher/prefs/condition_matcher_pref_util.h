@@ -14,14 +14,18 @@ namespace base {
 class DictValue;
 }  // namespace base
 
+// Pref values are exposed as strings for condition matching, regardless of
+// whether they are virtual, profile, or local state prefs.
+
 namespace brave_ads {
 
-// Get the pref value as a string from the provider for the given path. Handles
-// nested dictionaries, lists, and dot-separated keys.
-// `base::Value::Find*ByDottedPath` is not used because path keys can contain
-// dots. Returns `std::nullopt` if the path is malformed or unknown. Path keys
-// should be separated by `|`. Example `list|1` would return the second element
-// of a list.
+// Returns the value at `pref_path` as a string, converting bool, integer, and
+// double to their string representations. The first path component is the
+// registered pref name, which may contain dots (e.g. "foo.bar.baz"); any
+// further path components, separated by `|`, traverse into the pref's value.
+// Returns `std::nullopt` if the path is malformed or unknown, or a path
+// component into a list is neither a keyword path component nor an integer
+// index.
 std::optional<std::string> MaybeGetPrefValueAsString(
     const base::DictValue& virtual_prefs,
     std::string_view pref_path);
