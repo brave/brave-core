@@ -3516,3 +3516,9 @@
 -WebViewTests/WebViewTest.TestContextMenu/SiteIsolationForGuestsEnabled
 -WebViewWithDefaultSiteInstanceTest.IsolatedOrigin
 -WithAndWithoutReset/SessionRestoreTabGroupsTest.*
+
+# Flaky on Brave CI due to timing: setTimeout(1000ms) doesn't guarantee >1000ms
+# gap in PerformanceObserver startTimes under CI load, causing both layout
+# shifts to land in the same CLS session window. Stable upstream (0.3% flake
+# rate over 30 days). https://github.com/brave/brave-browser/issues/53783
+-LayoutInstabilityTest.CumulativeLayoutShift_OneSecondGap
