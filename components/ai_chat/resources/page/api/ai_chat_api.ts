@@ -210,9 +210,9 @@ export default function createAIChatApi(
           // <if expr="is_ios">
           dismissMenus() {},
           // </if>
-          regenerateAnswerMenuIsOpen(isOpen) {},
           showSkillDialog(prompt) {},
-          showPremiumSuggestionForRegenerate(isVisible) {},
+          requestNewConversation() {},
+          handleResetError() {},
         },
         (observer) => {
           conversationEntriesFrameObserver = observer

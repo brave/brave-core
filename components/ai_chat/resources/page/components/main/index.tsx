@@ -12,34 +12,18 @@ import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
 import DragOverlay from '../drag_overlay'
 import * as Mojom from '../../../common/mojom'
+import scrollerStyles from '../../../common/scroller.module.scss'
 import { useConversation } from '../../state/conversation_context'
 import { useAIChat } from '../../state/ai_chat_context'
-import { isLeoModel } from '../../model_utils'
-import ErrorConnection from '../alerts/error_connection'
-import ErrorConversationEnd from '../alerts/error_conversation_end'
-import ErrorInvalidAPIKey from '../alerts/error_invalid_api_key'
-import ErrorInvalidEndpointURL from '../alerts/error_invalid_endpoint_url'
-import ErrorRateLimit from '../alerts/error_rate_limit'
-import ErrorServiceOverloaded from '../alerts/error_service_overloaded'
-import LongConversationInfo from '../alerts/long_conversation_info'
-import TemporaryChatInfo from '../alerts/temporary_chat_info'
-import NoticeConversationStorage from '../notices/notice_conversation_storage'
-import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
 import ConversationsList from '../conversations_list'
 import DeleteConversationModal from '../delete_conversation_modal'
-import FeedbackForm from '../feedback_form'
 import { ConversationHeader } from '../header'
 import InputBox from '../input_box'
-import ModelIntro from '../model_intro'
 import OpenExternalLinkModal from '../open_external_link_modal'
 import RateMessagePrivacyModal from '../rate_message_privacy_modal'
 import SkillModal from '../skill_modal/skill_modal'
-import PremiumSuggestion from '../premium_suggestion'
 import PrivacyMessage from '../privacy_message'
-import {
-  GenerateSuggestionsButton,
-  SuggestedQuestion,
-} from '../suggested_question'
+import FeedbackForm from '../feedback_form'
 import ToolsMenu, {
   ExtendedActionEntry,
   getIsSkill,
@@ -51,134 +35,22 @@ import useHasConversationStarted from '../../hooks/useHasConversationStarted'
 import { useExtractedQuery } from '../filter_menu/query'
 import TabsMenu from '../filter_menu/attachments_menu'
 import { stringifyContent } from '../input_box/editable_content'
-import { useScrollToBottom } from './useScrollToBottom'
-
-const SUGGESTION_STATUS_SHOW_BUTTON = new Set<Mojom.SuggestionGenerationStatus>(
-  [
-    Mojom.SuggestionGenerationStatus.CanGenerate,
-    Mojom.SuggestionGenerationStatus.IsGenerating,
-  ],
-)
 
 function Main() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
   const [isConversationListOpen, setIsConversationsListOpen] =
     React.useState(false)
-  const [isContentReady, setIsContentReady] = React.useState(false)
   const { isDragActive, isDragOver } = conversationContext
-
-  const shouldShowPremiumSuggestionForModel =
-    aiChatContext.hasAcceptedAgreement
-    && !aiChatContext.isPremiumStatusFetching // Avoid flash of content
-    && !aiChatContext.isPremiumUser
-    && (conversationContext.currentModel?.options.leoModelOptions?.access
-      === Mojom.ModelAccess.PREMIUM
-      || !!conversationContext.showPremiumSuggestionForRegenerate)
-
-  const shouldShowStorageNotice =
-    aiChatContext.hasAcceptedAgreement
-    && aiChatContext.isHistoryFeatureEnabled
-    && aiChatContext.isStoragePrefEnabled
-    && !aiChatContext.isStorageNoticeDismissed
-
-  const shouldShowPremiumSuggestionStandalone =
-    aiChatContext.hasAcceptedAgreement
-    && !aiChatContext.isPremiumStatusFetching // Avoid flash of content
-    && !shouldShowPremiumSuggestionForModel // Don't show 2 premium prompts
-    && !conversationContext.apiHasError // Don't show premium prompt and errors (rate limit error has its own premium prompt suggestion)
-    && !shouldShowStorageNotice // Don't show premium prompt and storage notice
-    && aiChatContext.canShowPremiumPrompt
-    && conversationContext.associatedContentInfo === null // AssociatedContent request has finished and this is a standalone conversation
-    && !aiChatContext.isPremiumUser
 
   const showAttachments = !!conversationContext.attachmentsDialog
 
-  const showTemporaryChatInfo =
-    conversationContext.api.useGetState().data.temporary
-
-  let currentErrorElement = null
-
   const headerElement = React.useRef<HTMLDivElement>(null)
-  const conversationContentElement = React.useRef<HTMLDivElement>(null)
-
-  // Determine which, if any, error message should be displayed
-  if (aiChatContext.hasAcceptedAgreement && conversationContext.apiHasError) {
-    switch (conversationContext.currentError) {
-      case Mojom.APIError.ConnectionIssue:
-        currentErrorElement = (
-          <ErrorConnection onRetry={conversationContext.retryAPIRequest} />
-        )
-        break
-      case Mojom.APIError.InvalidAPIKey:
-        currentErrorElement = (
-          <ErrorInvalidAPIKey onRetry={conversationContext.retryAPIRequest} />
-        )
-        break
-      case Mojom.APIError.ServiceOverloaded:
-        currentErrorElement = (
-          <ErrorServiceOverloaded
-            onRetry={conversationContext.retryAPIRequest}
-          />
-        )
-        break
-      case Mojom.APIError.RateLimitReached:
-        currentErrorElement = <ErrorRateLimit />
-        break
-      case Mojom.APIError.ContextLimitReached:
-        currentErrorElement = <ErrorConversationEnd />
-        break
-      case Mojom.APIError.InvalidEndpointURL:
-        currentErrorElement = <ErrorInvalidEndpointURL />
-        break
-    }
-  }
-
-  const scrollElement = React.useRef<HTMLDivElement | null>(null)
-  const { scrollToBottomContinuously, hasScrollableContent } =
-    useScrollToBottom(scrollElement, conversationContentElement)
-
-  // Reset scroll and content-ready state when switching conversations
-  // so the new conversation starts fresh at the top. useLayoutEffect
-  // runs before paint so the user never sees the stale scroll position.
-  // <if expr="is_ios">
-  React.useLayoutEffect(() => {
-    setIsContentReady(false)
-    if (scrollElement.current) {
-      scrollElement.current.scrollTop = 0
-    }
-  }, [conversationContext.conversationUuid])
-  // </if>
-
-  // Scroll to bottom when opening a conversation
-  React.useEffect(() => {
-    if (!conversationContext.conversationUuid || !isContentReady) {
-      return
-    }
-
-    scrollToBottomContinuously(/*animate=*/ false)
-  }, [
-    conversationContext.conversationUuid,
-    isContentReady,
-    scrollToBottomContinuously,
-  ])
 
   // Ask for opt-in once the first message is sent
   const showAgreementModal =
     !aiChatContext.hasAcceptedAgreement
     && !!conversationContext.conversationHistory.length
-
-  const showContent =
-    !aiChatContext.hasAcceptedAgreement
-    || !conversationContext.conversationUuid
-    || isContentReady
-
-  const showSuggestions: boolean =
-    aiChatContext.hasAcceptedAgreement
-    && (conversationContext.suggestedQuestions.length > 0
-      || SUGGESTION_STATUS_SHOW_BUTTON.has(
-        conversationContext.suggestionStatus,
-      ))
 
   const hasConversationStarted = useHasConversationStarted(
     conversationContext.conversationUuid,
@@ -276,6 +148,7 @@ function Main() {
         [styles.mainPanel]: !aiChatContext.isStandalone,
         [styles.mainMobile]: aiChatContext.isMobile,
         [styles.dragOver]: isDragOver,
+        [styles.dragActive]: isDragActive,
       })}
     >
       <DragOverlay />
@@ -310,153 +183,32 @@ function Main() {
         position='top-left'
         className={styles.alertCenter}
       />
-      <div
-        className={classnames({
-          [styles.scroller]: true,
-          [styles.centeredContent]: !aiChatContext.hasAcceptedAgreement,
-        })}
-        ref={scrollElement}
-      >
+      {!aiChatContext.hasAcceptedAgreement && !hasConversationStarted ? (
         <div
-          className={classnames({
-            [styles.conversationContent]: true,
-            [styles.hasAcceptedAgreement]: aiChatContext.hasAcceptedAgreement,
-            [styles.showContent]: showContent,
-          })}
-          ref={conversationContentElement}
+          className={classnames(
+            scrollerStyles.scroller,
+            styles.centeredContent,
+          )}
         >
-          {aiChatContext.hasAcceptedAgreement && (
-            <>
-              <ModelIntro />
-
-              {showTemporaryChatInfo && (
-                <div className={styles.promptContainer}>
-                  <TemporaryChatInfo />
-                </div>
-              )}
-
-              <div
-                className={classnames({
-                  [styles.aichatIframeContainer]: true,
-                  [styles.dragActive]: isDragActive,
-                })}
-              >
-                {!!conversationContext.conversationUuid && (
-                  <aiChatContext.conversationEntriesComponent
-                    // Force remount when switching conversations on iOS
-                    // so the iframe height resets cleanly.
-                    // <if expr="is_ios">
-                    key={conversationContext.conversationUuid}
-                    // </if>
-                    onIsContentReady={setIsContentReady}
-                  />
-                )}
-              </div>
-
-              {conversationContext.isFeedbackFormVisible && (
-                <div
-                  className={classnames([
-                    styles.promptContainer,
-                    styles.feedbackForm,
-                  ])}
-                >
-                  <FeedbackForm />
-                </div>
-              )}
-
-              {showSuggestions && (
-                <div className={styles.suggestionsContainer}>
-                  <div className={styles.questionsList}>
-                    {conversationContext.suggestedQuestions.map(
-                      (question, i) => (
-                        <SuggestedQuestion
-                          key={question}
-                          question={question}
-                          index={i}
-                        />
-                      ),
-                    )}
-                    {SUGGESTION_STATUS_SHOW_BUTTON.has(
-                      conversationContext.suggestionStatus,
-                    )
-                      && conversationContext.associatedContentInfo.length
-                        > 0 && <GenerateSuggestionsButton />}
-                  </div>
-                </div>
-              )}
-            </>
-          )}
-          {currentErrorElement && (
-            <div className={styles.promptContainer}>{currentErrorElement}</div>
-          )}
-          {shouldShowStorageNotice && (
-            <div className={styles.promptContainer}>
-              <NoticeConversationStorage />
-            </div>
-          )}
-          {shouldShowPremiumSuggestionForModel && (
-            <div className={styles.promptContainer}>
-              <PremiumSuggestion
-                title={getLocale(S.CHAT_UI_UNLOCK_PREMIUM_TITLE)}
-                secondaryActionButton={
-                  <Button
-                    kind='plain-faint'
-                    onClick={() => conversationContext.switchToBasicModel()}
-                  >
-                    {getLocale(S.CHAT_UI_SWITCH_TO_BASIC_MODEL_BUTTON_LABEL)}
-                  </Button>
-                }
-              />
-            </div>
-          )}
-          {shouldShowPremiumSuggestionStandalone && (
-            <div className={styles.promptContainer}>
-              <PremiumSuggestion
-                title={getLocale(S.CHAT_UI_UNLOCK_PREMIUM_TITLE)}
-                secondaryActionButton={
-                  <Button
-                    kind='plain-faint'
-                    onClick={() => aiChatContext.dismissPremiumPrompt()}
-                  >
-                    {getLocale(S.CHAT_UI_DISMISS_BUTTON_LABEL)}
-                  </Button>
-                }
-              />
-            </div>
-          )}
-          {aiChatContext.isPremiumUserDisconnected
-            && (!conversationContext.currentModel
-              || isLeoModel(conversationContext.currentModel)) && (
-              <div className={styles.promptContainer}>
-                <WarningPremiumDisconnected />
-              </div>
-            )}
-          {conversationContext.shouldShowLongConversationInfo && (
-            <div className={styles.promptContainer}>
-              <LongConversationInfo />
-            </div>
-          )}
-          {!aiChatContext.hasAcceptedAgreement
-            && !conversationContext.conversationHistory.length && (
-              <WelcomeGuide />
-            )}
+          <WelcomeGuide />
         </div>
-        <div className={styles.scrollButtonContainer}>
-          <Button
-            kind='outline'
-            size='small'
-            title={getLocale(S.CHAT_UI_SCROLL_TO_BOTTOM_BUTTON_TITLE)}
-            fab
-            className={classnames({
-              [styles.scrollToBottomButton]: true,
-              [styles.hasScrollableContent]: hasScrollableContent,
-            })}
-            onClick={() => scrollToBottomContinuously()}
-          >
-            <Icon name='arrow-down' />
-          </Button>
-        </div>
-      </div>
+      ) : (
+        <>
+          {conversationContext.isFeedbackFormVisible && (
+            <Dialog
+              isOpen
+              onClose={conversationContext.handleFeedbackFormCancel}
+              className={styles.attachmentsDialog}
+            >
+              <FeedbackForm />
+            </Dialog>
+          )}
+
+          <aiChatContext.conversationEntriesComponent
+            className={styles.conversationContainer}
+          />
+        </>
+      )}
       {showAttachments && (
         <Dialog
           isOpen

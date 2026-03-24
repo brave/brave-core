@@ -98,12 +98,6 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
               (override));
 
   MOCK_METHOD(void,
-              OnSuggestedQuestionsChanged,
-              (const std::vector<std::string>&,
-               mojom::SuggestionGenerationStatus),
-              (override));
-
-  MOCK_METHOD(void,
               OnAssociatedContentInfoChanged,
               (std::vector<mojom::AssociatedContentPtr>),
               (override));

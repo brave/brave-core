@@ -7,7 +7,7 @@ import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { setIconBasePath } from '@brave/leo/react/icon'
 import '$web-common/defaultTrustedTypesPolicy'
-import ConversationEntries from './components/conversation_entries'
+import Conversation from './components/conversation'
 import { UntrustedConversationContextProvider } from './untrusted_conversation_context'
 import { useUntrustedFrameDragHandling } from './hooks/useUntrustedFrameDragHandling'
 // <if expr="is_ios">
@@ -73,7 +73,7 @@ function App(props: AppProps) {
 
   return (
     <UntrustedConversationContextProvider api={api}>
-      <ConversationEntries />
+      <Conversation />
     </UntrustedConversationContextProvider>
   )
 }

@@ -1,0 +1,88 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.scrollableContent {
+  --conversation-content-margin: var(--leo-spacing-2xl);
+  --conversation-content-max-width: calc(
+    768px + calc(var(--conversation-content-margin) * 2)
+  );
+
+  position: relative;
+  padding-bottom: var(--leo-spacing-xl);
+}
+
+.conversationContent {
+  margin: 0 auto;
+  width: 100%;
+  max-width: var(--conversation-content-max-width);
+  // Adjust padding to account for scrollbar width so content lines up with
+  // input area which is outside of the scroller.
+  padding: 0
+    calc(var(--conversation-content-margin) - var(--scrollbar-width) / 2) 0
+    var(--conversation-content-margin);
+}
+
+.promptContainer {
+  margin: var(--conversation-content-margin) 0;
+  container-type: inline-size;
+}
+
+.suggestionsContainer {
+  margin: var(--conversation-content-margin) 0;
+}
+
+.questionsList {
+  --leo-button-radius: var(--leo-radius-l);
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: var(--leo-spacing-m);
+}
+
+.buttonText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.feedbackForm {
+  padding: 0 16px;
+}
+
+.scrollButtonContainer {
+  height: 0;
+  position: sticky;
+  bottom: 0;
+  opacity: 0.8;
+}
+
+.scrollToBottomButton {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background: var(--leo-color-container-background);
+  border-radius: 100%;
+}
+
+.scrollToBottomButton.hasScrollableContent {
+  animation: scroll-button-fade linear both;
+  animation-timeline: scroll();
+  animation-range: calc(100% - 96px) 100%;
+}
+
+@keyframes scroll-button-fade {
+  from {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  to {
+    opacity: 0;
+    pointer-events: none;
+  }
+}

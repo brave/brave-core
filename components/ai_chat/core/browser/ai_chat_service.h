@@ -35,6 +35,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -64,6 +65,7 @@ class MemoryStorageTool;
 // Main entry point for creating and consuming AI Chat conversations
 class AIChatService : public KeyedService,
                       public mojom::Service,
+                      public mojom::UntrustedService,
                       public ConversationHandler::Observer,
                       public mojom::TabDataObserver {
  public:
@@ -189,7 +191,8 @@ class AIChatService : public KeyedService,
   void DeleteSkill(const std::string& id) override;
   void GetConversations(GetConversationsCallback callback) override;
   void GetActionMenuList(GetActionMenuListCallback callback) override;
-  void GetPremiumStatus(GetPremiumStatusCallback callback) override;
+  void GetPremiumStatus(
+      mojom::Service::GetPremiumStatusCallback callback) override;
   void DeleteConversation(const std::string& id) override;
   void RenameConversation(const std::string& id,
                           const std::string& new_name) override;
@@ -203,7 +206,12 @@ class AIChatService : public KeyedService,
 
   void BindMetrics(mojo::PendingReceiver<mojom::Metrics> metrics) override;
   void BindObserver(mojo::PendingRemote<mojom::ServiceObserver> ui,
-                    BindObserverCallback callback) override;
+                    mojom::Service::BindObserverCallback callback) override;
+  void BindObserver(
+      mojo::PendingRemote<mojom::UntrustedServiceObserver> observer,
+      mojom::UntrustedService::BindObserverCallback callback) override;
+  void BindUntrustedService(
+      mojo::PendingReceiver<mojom::UntrustedService> receiver);
 
   bool GetIsContentAgentAllowed() const;
   void SetIsContentAgentAllowed(bool is_allowed);
@@ -390,6 +398,10 @@ class AIChatService : public KeyedService,
       conversation_observations_{this};
   mojo::ReceiverSet<mojom::Service> receivers_;
   mojo::RemoteSet<mojom::ServiceObserver> observer_remotes_;
+
+  mojo::ReceiverSet<mojom::UntrustedService> untrusted_service_receivers_;
+  mojo::RemoteSet<mojom::UntrustedServiceObserver>
+      untrusted_service_observer_remotes_;
 
   mojo::Receiver<mojom::TabDataObserver> tab_data_observer_receiver_{this};
 

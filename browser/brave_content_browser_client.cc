@@ -652,7 +652,8 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
         .Add<ai_chat::mojom::BookmarksPageHandler>()
         .Add<ai_chat::mojom::HistoryUIHandler>();
     registry.ForWebUI<AIChatUntrustedConversationUI>()
-        .Add<ai_chat::mojom::UntrustedUIHandler>();
+        .Add<ai_chat::mojom::UntrustedUIHandler>()
+        .Add<ai_chat::mojom::UntrustedService>();
   }
 #endif
 

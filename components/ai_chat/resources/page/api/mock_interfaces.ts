@@ -35,14 +35,32 @@ export const defaultServiceState: Mojom.ServiceState = {
   canShowPremiumPrompt: false,
 }
 
-export const defaultConversationState: Mojom.ConversationState = {
+export const defaultConversationState: Mojom.ConversationState & {
+  /**
+   * @deprecated This property only exists to replace conditionally compiled
+   * properties which should be stripped from Typescript
+   * TODO(https://github.com/brave/brave-browser/issues/53817): have
+   * typescript ignore the conditional code.
+   */
+  suggestedQuestions?: undefined[]
+
+  /**
+   * @deprecated This property only exists to replace conditionally compiled
+   * properties which should be stripped from Typescript
+   * TODO(https://github.com/brave/brave-browser/issues/53817): have
+   * typescript ignore the conditional code.
+   */
+  suggestionStatus?: number
+} = {
   conversationUuid: 'test-conversation',
   isRequestInProgress: false,
   currentModelKey: 'test-model',
   defaultModelKey: 'test-model',
   allModels: [],
+  // <if expr="is_ios">
   suggestedQuestions: [],
   suggestionStatus: Mojom.SuggestionGenerationStatus.None,
+  // </if>
   associatedContent: [],
   error: Mojom.APIError.None,
   temporary: false,
@@ -95,7 +113,6 @@ export function createMockConversationHandler(
     getIsRequestInProgress: () =>
       Promise.resolve({ isRequestInProgress: false }),
     getAssociatedContentInfo: () => Promise.resolve({ associatedContent: [] }),
-    getAPIResponseError: () => Promise.resolve({ error: Mojom.APIError.None }),
 
     // Mutation methods - return empty/default results
     getScreenshots: () => Promise.resolve({ screenshots: [] }),
@@ -107,10 +124,6 @@ export function createMockConversationHandler(
     sendFeedback: () => Promise.resolve({ isSuccess: true }),
 
     // Action methods - fire and forget stubs
-    generateQuestions: () => {},
-    submitSummarizationRequest: () => {},
-    submitSuggestion: () => {},
-    retryAPIRequest: () => {},
     changeModel: () => {},
     submitHumanConversationEntryWithAction: () => {},
     submitHumanConversationEntryWithSkill: () => {},

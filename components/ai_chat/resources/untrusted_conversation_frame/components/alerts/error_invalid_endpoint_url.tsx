@@ -7,26 +7,28 @@ import * as React from 'react'
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import styles from './alerts.module.scss'
-import { useActiveChat } from '../../state/active_chat_context'
 
-function ErrorConversationEnd() {
-  const { createNewConversation } = useActiveChat()
+export default function ErrorInvalidEndpointURL() {
+  const context = useUntrustedConversationContext()
+
+  const handleConfigureClick = () => {
+    context.uiHandler.openAIChatCustomizationSettings()
+  }
 
   return (
     <div className={styles.alert}>
       <Alert type='error'>
-        {getLocale(S.CHAT_UI_CONVERSATION_END_ERROR)}
+        {getLocale(S.CUSTOM_MODEL_ENDPOINT_INVALID_ERROR)}
         <Button
           slot='actions'
-          kind='plain-faint'
-          onClick={createNewConversation}
+          kind='filled'
+          onClick={handleConfigureClick}
         >
-          {getLocale(S.CHAT_UI_MENU_NEW_CHAT)}
+          {getLocale(S.CHAT_UI_MODIFY_CONFIGURATION_LABEL)}
         </Button>
       </Alert>
     </div>
   )
 }
-
-export default ErrorConversationEnd

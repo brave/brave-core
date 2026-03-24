@@ -26,7 +26,6 @@ export const defaultConversationEntriesState: Mojom.ConversationEntriesState = {
   isGenerating: false,
   isToolExecuting: false,
   toolUseTaskState: Mojom.TaskState.kNone,
-  isPremiumUser: false,
   isLeoModel: true,
   allModels: [],
   currentModelKey: '',
@@ -36,6 +35,17 @@ export const defaultConversationEntriesState: Mojom.ConversationEntriesState = {
   totalTokens: BigInt(0),
   canSubmitUserEntries: false,
   conversationCapabilities: [Mojom.ConversationCapability.CHAT],
+  suggestedQuestions: [],
+  suggestionStatus: Mojom.SuggestionGenerationStatus.None,
+  currentError: Mojom.APIError.None,
+  isTemporary: false,
+}
+
+export const defaultServiceState: Mojom.ServiceState = {
+  hasAcceptedAgreement: false,
+  isStoragePrefEnabled: false,
+  isStorageNoticeDismissed: false,
+  canShowPremiumPrompt: false,
 }
 
 /**
@@ -60,6 +70,10 @@ export function createMockUntrustedConversationHandler(
     respondToToolUseRequest: () => {},
     processPermissionChallenge: () => {},
     regenerateAnswer: () => {},
+    submitSuggestion: () => {},
+    generateQuestions: () => {},
+    retryAPIRequest: () => {},
+    switchToNonPremiumModel() {},
 
     // Apply overrides
     ...overrides,
@@ -92,6 +106,10 @@ export function createMockUntrustedUIHandler(
     removeTabFromThumbnailTracker: () => {},
     bindParentPage: () => {},
     deleteMemory: () => {},
+    goPremium: () => {},
+    refreshPremiumSession: () => {},
+    openModelSupportUrl: () => {},
+    openStorageSupportUrl: () => {},
 
     // Apply overrides
     ...overrides,
@@ -116,6 +134,32 @@ export function createMockParentUIFrame(
     regenerateAnswerMenuIsOpen: () => {},
     showSkillDialog: () => {},
     showPremiumSuggestionForRegenerate: () => {},
+    requestNewConversation: () => {},
+    handleResetError: () => {},
+
+    // Apply overrides
+    ...overrides,
+  })
+}
+
+/**
+ * Creates a mock UntrustedServiceInterface for Storybook/tests.
+ * All methods have sensible defaults that can be overridden.
+ *
+ * @param overrides - Partial implementation to override default behavior
+ */
+export function createMockUntrustedService(
+  overrides: Partial<Mojom.UntrustedServiceInterface> = {},
+): Closable<Mojom.UntrustedServiceInterface> {
+  return makeCloseable({
+    // Query methods - return default results
+    bindObserver: () => Promise.resolve({ state: defaultServiceState }),
+    getPremiumStatus: () =>
+      Promise.resolve({ status: Mojom.PremiumStatus.Inactive, info: null }),
+
+    // Action methods - fire and forget stubs
+    dismissStorageNotice: () => {},
+    dismissPremiumPrompt: () => {},
 
     // Apply overrides
     ...overrides,

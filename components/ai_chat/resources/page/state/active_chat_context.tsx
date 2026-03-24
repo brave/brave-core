@@ -76,6 +76,11 @@ function ActiveChatProvider({
     [selectedConversationId, updateSelectedConversationId, conversationAPI],
   )
 
+  // Handle child frame requests we switch to new conversation
+  aiChat.api.useRequestNewConversation(() => {
+    setConversationAPI(BindConversation.newConversation(aiChat.api))
+  }, [aiChat.api])
+
   // Only update conversation if we're on the tab associated conversation
   // and the event fires
   aiChat.api.useOnNewDefaultConversation(() => {

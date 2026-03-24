@@ -393,8 +393,10 @@ void ConversationHandler::GetState(GetStateCallback callback) {
 
   mojom::ConversationStatePtr state = mojom::ConversationState::New(
       metadata_->uuid, is_request_in_progress_, std::move(models_copy),
-      model_key, default_model_key, std::move(suggestions),
-      suggestion_generation_status_,
+      model_key, default_model_key,
+#if BUILDFLAG(IS_IOS)
+      std::move(suggestions), suggestion_generation_status_,
+#endif
       associated_content_manager_->GetAssociatedContent(), current_error_,
       metadata_->temporary, tool_use_task_state_);
 
@@ -960,11 +962,6 @@ void ConversationHandler::RetryAPIRequest() {
   }
 }
 
-void ConversationHandler::GetAPIResponseError(
-    GetAPIResponseErrorCallback callback) {
-  std::move(callback).Run(current_error_);
-}
-
 void ConversationHandler::StopGenerationAndMaybeGetHumanEntry(
     StopGenerationAndMaybeGetHumanEntryCallback callback) {
   if (chat_history_.empty()) {
@@ -1062,6 +1059,10 @@ void ConversationHandler::AddSubmitSelectedTextError(
 void ConversationHandler::OnUserOptedIn() {
   MaybePopPendingRequests();
   MaybeFetchOrClearContentStagedConversation();
+}
+
+void ConversationHandler::SwitchToNonPremiumModel() {
+  ChangeModel(features::kAIModelsDefaultKey.Get());
 }
 
 void ConversationHandler::RespondToToolUseRequest(
@@ -1242,6 +1243,8 @@ void ConversationHandler::PerformPostToolAssistantGeneration() {
 
 void ConversationHandler::SetAPIError(const mojom::APIError& error) {
   current_error_ = error;
+
+  OnStateForConversationEntriesChanged();
 
   for (auto& client : conversation_ui_handlers_) {
     client->OnAPIResponseError(error);
@@ -1984,7 +1987,20 @@ ConversationHandler::GetStateForConversationEntries() {
            mojom::ModelAccess::PREMIUM);
   entries_state->conversation_capabilities = {
       conversation_capabilities_.begin(), conversation_capabilities_.end()};
-  entries_state->is_premium_user = ai_chat_service_->IsPremiumStatus();
+
+  // Suggested questions
+  std::vector<std::string> suggestions;
+  std::ranges::transform(suggestions_, std::back_inserter(suggestions),
+                         [](const auto& s) { return s.title; });
+  entries_state->suggested_questions = std::move(suggestions);
+  entries_state->suggestion_status = suggestion_generation_status_;
+
+  // API error
+  entries_state->current_error = current_error_;
+
+  // Temporary chat flag
+  entries_state->is_temporary = metadata_->temporary;
+
   return entries_state;
 }
 
@@ -2018,14 +2034,16 @@ void ConversationHandler::OnConversationUIConnectionChanged(
 }
 
 void ConversationHandler::OnSuggestedQuestionsChanged() {
+  OnStateForConversationEntriesChanged();
   std::vector<std::string> suggestions;
   std::ranges::transform(suggestions_, std::back_inserter(suggestions),
                          [](const auto& s) { return s.title; });
-
+#if BUILDFLAG(IS_IOS)
   for (auto& client : conversation_ui_handlers_) {
     client->OnSuggestedQuestionsChanged(suggestions,
                                         suggestion_generation_status_);
   }
+#endif
 }
 
 void ConversationHandler::OnAPIRequestInProgressChanged() {
@@ -2281,6 +2299,8 @@ void ConversationHandler::SetTemporary(bool temporary) {
   }
 
   metadata_->temporary = temporary;
+
+  OnStateForConversationEntriesChanged();
 }
 
 bool ConversationHandler::IsTemporaryChat() const {

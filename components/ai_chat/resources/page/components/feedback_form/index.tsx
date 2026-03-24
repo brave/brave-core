@@ -73,6 +73,7 @@ function FeedbackForm() {
       <form>
         <fieldset>
           <DropDown
+            positionStrategy='fixed'
             className={styles.dropdown}
             placeholder={getLocale(S.CHAT_UI_SELECT_FEEDBACK_TOPIC)}
             onChange={handleSelectOnChange}

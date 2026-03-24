@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as React from 'react'
 import generateReactContext from '$web-common/api/react_api'
 import { UntrustedConversationAPI } from './api/untrusted_conversation_api'
 import { loadTimeData } from '$web-common/loadTimeData'
@@ -13,6 +14,7 @@ export interface UntrustedConversationContextProps {
 }
 
 const IS_MOBILE = loadTimeData.getBoolean('isMobile')
+const IS_HISTORY_FEATURE_ENABLED = loadTimeData.getBoolean('isHistoryEnabled')
 
 /**
  * Provides the untrusted conversation context with API hooks
@@ -22,8 +24,14 @@ export function useProvideUntrustedConversationContext(
 ) {
   const { api } = props
 
+  const [
+    showPremiumSuggestionForRegenerate,
+    setShowPremiumSuggestionForRegenerate,
+  ] = React.useState(false)
+
   // Use API hooks for state
   const state = api.useState().data
+  const serviceState = api.useServiceState().data
   const conversationHistory = api.useGetConversationHistoryData()
 
   const associatedContent = api.useCurrentAssociatedContentChanged().data?.[0]
@@ -31,6 +39,9 @@ export function useProvideUntrustedConversationContext(
 
   return {
     api,
+
+    showPremiumSuggestionForRegenerate,
+    setShowPremiumSuggestionForRegenerate,
 
     // Expose state properties directly for backwards compatibility
     // These are marked as deprecated - components should use api.useState() instead
@@ -55,9 +66,9 @@ export function useProvideUntrustedConversationContext(
     toolUseTaskState: state.toolUseTaskState,
 
     /**
-     * @deprecated Use `api.useState().data.isPremiumUser` instead
+     * @deprecated Use `api.useGetPremiumStatus().data.isPremiumUser` instead
      */
-    isPremiumUser: state.isPremiumUser,
+    isPremiumUser: api.useGetPremiumStatusData().isPremiumUser,
 
     /**
      * @deprecated Use `api.useState().data.isLeoModel` instead
@@ -104,6 +115,10 @@ export function useProvideUntrustedConversationContext(
      */
     isMobile: IS_MOBILE,
 
+    // TODO(https://github.com/brave/brave-browser/issues/53878): Consider
+    // using typed LoadTimeData.
+    isHistoryFeatureEnabled: IS_HISTORY_FEATURE_ENABLED,
+
     /**
      * @deprecated Use `api.useCurrentAssociatedContentChanged().data` or
      * subscribe to `api.useAssociatedContentChanged()` directly.
@@ -120,6 +135,26 @@ export function useProvideUntrustedConversationContext(
      * `api.useContentTaskStarted()` directly instead
      */
     contentTaskTabId,
+
+    /**
+     * @deprecated Use `api.useState().data.suggestedQuestions` instead
+     */
+    suggestedQuestions: state.suggestedQuestions,
+
+    /**
+     * @deprecated Use `api.useState().data.suggestionStatus` instead
+     */
+    suggestionStatus: state.suggestionStatus,
+
+    /**
+     * @deprecated Use `api.useState().data.currentError` instead
+     */
+    currentError: state.currentError,
+
+    /**
+     * @deprecated Use `api.useState().data.isTemporary` instead
+     */
+    isTemporary: state.isTemporary,
 
     // Expose action handlers via convenient aliases
     // These are deprecated - use api.actions directly instead
@@ -138,6 +173,38 @@ export function useProvideUntrustedConversationContext(
      * @deprecated Use `api.actions.parentUIFrame` instead
      */
     parentUiFrame: api.parentUIFrame,
+
+    /**
+     * @deprecated Use `api.actions.service` instead
+     */
+    service: api.service,
+
+    // Service state (profile-level)
+    /**
+     * @deprecated Use `api.useServiceState().data.hasAcceptedAgreement` instead
+     */
+    hasAcceptedAgreement: serviceState.hasAcceptedAgreement,
+
+    /**
+     * @deprecated Use `api.useServiceState().data.isStoragePrefEnabled` instead
+     */
+    isStoragePrefEnabled: serviceState.isStoragePrefEnabled,
+
+    /**
+     * @deprecated Use `api.useServiceState().data.isStorageNoticeDismissed` instead
+     */
+    isStorageNoticeDismissed: serviceState.isStorageNoticeDismissed,
+
+    /**
+     * @deprecated Use `api.useServiceState().data.canShowPremiumPrompt` instead
+     */
+    canShowPremiumPrompt: serviceState.canShowPremiumPrompt,
+
+    /**
+     * @deprecated Use `api.useGetPremiumStatus().data.isPremiumUserDisconnected` instead
+     */
+    isPremiumUserDisconnected:
+      api.useGetPremiumStatusData().isPremiumUserDisconnected,
   }
 }
 

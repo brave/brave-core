@@ -7,7 +7,7 @@ import * as React from 'react'
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
-import { useAIChat } from '../../state/ai_chat_context'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import styles from './alerts.module.scss'
 
 interface ElementProps {
@@ -15,7 +15,7 @@ interface ElementProps {
 }
 
 export default function ErrorInvalidAPIKey(props: ElementProps) {
-  const aiChatContext = useAIChat()
+  const context = useUntrustedConversationContext()
 
   return (
     <div className={styles.alert}>
@@ -24,7 +24,7 @@ export default function ErrorInvalidAPIKey(props: ElementProps) {
         <Button
           slot='actions'
           kind='filled'
-          onClick={aiChatContext.api.uiHandler.openAIChatSettings}
+          onClick={() => context.uiHandler.openAIChatCustomizationSettings()}
         >
           {getLocale(S.CHAT_UI_MODIFY_CONFIGURATION_LABEL)}
         </Button>

@@ -7,11 +7,11 @@ import * as React from 'react'
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
-import { useAIChat } from '../../state/ai_chat_context'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import styles from './alerts.module.scss'
 
 export default function WarningPremiumDisconnected() {
-  const context = useAIChat()
+  const context = useUntrustedConversationContext()
 
   return (
     <div className={styles.alert}>
@@ -20,7 +20,7 @@ export default function WarningPremiumDisconnected() {
         <Button
           slot='actions'
           kind='filled'
-          onClick={context.userRefreshPremiumSession}
+          onClick={() => context.uiHandler.refreshPremiumSession()}
         >
           {getLocale(S.CHAT_UI_PREMIUM_REFRESH_WARNING_ACTION)}
         </Button>

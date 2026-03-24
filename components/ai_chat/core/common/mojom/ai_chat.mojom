@@ -56,41 +56,6 @@ const uint32 MAX_DOCUMENTS = 5;
 const uint32 MAX_DOCUMENT_SIZE_BYTES = 4718592; // 4.5MB
 
 
-enum APIError {
-  None,
-  InternalError,
-  ConnectionIssue,
-  RateLimitReached,
-  ContextLimitReached,
-  InvalidEndpointURL,
-  InvalidAPIKey,
-  ServiceOverloaded
-};
-
-
-enum PremiumStatus {
-  Unknown,
-  Inactive,
-  Active,
-  ActiveDisconnected,
-};
-
-struct PremiumInfo {
-  // How many credentials in the current batch are remaining
-  uint32 remaining_credential_count;
-
-  // When their next batch of credentials is active. If null, there is no
-  // next batch.
-  mojo_base.mojom.Time? next_active_at;
-};
-
-enum SuggestionGenerationStatus {
-  None,
-  CanGenerate,
-  IsGenerating,
-  HasGenerated,
-};
-
 struct Conversation {
   string uuid;
   // Set by the LLM or the user
@@ -162,15 +127,6 @@ union ActionEntry {
 struct ActionGroup {
   string category;
   array<ActionEntry> entries;
-};
-
-// This does not cover more specific data that the Service owns, such as the
-// conversation list, but does cover status of preferences and notices.
-struct ServiceState {
-  bool has_accepted_agreement;
-  bool is_storage_pref_enabled;
-  bool is_storage_notice_dismissed;
-  bool can_show_premium_prompt;
 };
 
 interface Service {
@@ -309,8 +265,13 @@ struct ConversationState {
   array<Model> all_models;
   string current_model_key;
   string default_model_key;
+
+  [EnableIf=is_ios] // Only needed for iOS swift UI
   array<string> suggested_questions;
+
+  [EnableIf=is_ios] // Only needed for iOS swift UI
   SuggestionGenerationStatus suggestion_status;
+
   array<AssociatedContent> associated_content;
   APIError error;
   // Indicates whether the conversation is temporary which would be in-memory
@@ -341,27 +302,15 @@ interface ConversationHandler {
   // Get all visible history entries, including in-progress responses
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
 
-  // The browser should generate some questions and fire an event when they
-  // are ready.
-  GenerateQuestions();
-
   SubmitHumanConversationEntry(
       string input, array<UploadedFile>? uploaded_files);
   SubmitHumanConversationEntryWithAction(string input, ActionType action_type);
   SubmitHumanConversationEntryWithSkill(string input, string skill_id);
-  SubmitSummarizationRequest();
-
-  // Submit one of the generated suggested questions for response from
-  // the assistant.
-  SubmitSuggestion(string suggestion);
 
   // Get associated page information. If there is none then |associated_content|
   // will be empty.
   GetAssociatedContentInfo() => (
       array<AssociatedContent> associated_content);
-
-  GetAPIResponseError() => (APIError error);
-  RetryAPIRequest();
 
   // Reset the current error state and returns the
   // most recent message from the conversation to the caller.
@@ -421,10 +370,13 @@ interface ConversationUI {
   OnModelDataChanged(string conversation_model_key,
                      string default_model_key,
                      array<Model> all_models);
+
   // Provides the full list of questions for the active tab in the page's
   // Browser window.
+  [EnableIf=is_ios] // Only needed for iOS swift UI
   OnSuggestedQuestionsChanged(
       array<string> questions, SuggestionGenerationStatus status);
+
   // Associated page information has changed. If there is none then |associated_content|
   // will be |null|.
   OnAssociatedContentInfoChanged(array<AssociatedContent> associated_content);
