@@ -14,13 +14,11 @@ import {
   AccountButtonOptionsObjectType,
 } from '../../../constants/types'
 
+// Components
+import { MenuWrapper } from './menu_wrapper'
+
 // Styled Components
-import {
-  StyledWrapper,
-  PopupButton,
-  PopupButtonText,
-  ButtonIcon,
-} from './wellet-menus.style'
+import { PopupButton, PopupButtonText, ButtonIcon } from './wellet-menus.style'
 import { VerticalDivider, VerticalSpace } from '../../shared/style'
 
 export interface Props {
@@ -37,7 +35,7 @@ export const AccountActionsMenu = (props: Props) => {
     : undefined
 
   return (
-    <StyledWrapper yPosition={26}>
+    <MenuWrapper yPosition={26}>
       {options.slice(0, 2).map((option) => (
         <PopupButton
           key={option.id}
@@ -66,7 +64,7 @@ export const AccountActionsMenu = (props: Props) => {
           <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
         </PopupButton>
       ))}
-    </StyledWrapper>
+    </MenuWrapper>
   )
 }
 
