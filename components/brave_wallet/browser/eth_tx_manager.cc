@@ -57,7 +57,7 @@ std::optional<uint256_t> IncreaseBy10Percent(uint256_t val) {
 bool EthTxManager::ValidateTxData(const mojom::TxDataPtr& tx_data,
                                   std::string* error) {
   CHECK(error);
-  if (!tx_data->chain_id.empty() && !IsValidHexString(tx_data->chain_id)) {
+  if (!IsValidHexString(tx_data->chain_id)) {
     *error = l10n_util::GetStringUTF8(
         IDS_WALLET_ETH_SEND_TRANSACTION_CHAIN_ID_INVALID);
     return false;

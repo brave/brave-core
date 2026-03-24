@@ -1026,20 +1026,33 @@ TEST_F(EthTxManagerUnitTest, ValidateTxData) {
 
   // Make sure if params are specified that they are valid hex strings
   auto test_tx_data = valid_tx_data->Clone();
+  test_tx_data->chain_id = "";
+  EXPECT_FALSE(EthTxManager::ValidateTxData(test_tx_data, &error_message));
+
+  test_tx_data = valid_tx_data->Clone();
+  test_tx_data->chain_id = "not hex";
+  EXPECT_FALSE(EthTxManager::ValidateTxData(test_tx_data, &error_message));
+
+  test_tx_data = valid_tx_data->Clone();
   test_tx_data->nonce = "hello";
   EXPECT_FALSE(EthTxManager::ValidateTxData(test_tx_data, &error_message));
+
   test_tx_data = valid_tx_data->Clone();
   test_tx_data->gas_price = "hello";
   EXPECT_FALSE(EthTxManager::ValidateTxData(test_tx_data, &error_message));
+
   test_tx_data = valid_tx_data->Clone();
   test_tx_data->gas_limit = "hello";
   EXPECT_FALSE(EthTxManager::ValidateTxData(test_tx_data, &error_message));
+
   test_tx_data = valid_tx_data->Clone();
   test_tx_data->to = "hello";
   EXPECT_FALSE(EthTxManager::ValidateTxData(test_tx_data, &error_message));
+
   test_tx_data = valid_tx_data->Clone();
   test_tx_data->value = "hello";
   EXPECT_FALSE(EthTxManager::ValidateTxData(test_tx_data, &error_message));
+
   // to must not only be a valid hex string but also an address
   test_tx_data = valid_tx_data->Clone();
   test_tx_data->to = "0xbe";
