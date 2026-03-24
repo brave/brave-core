@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/contextual_tasks/contextual_tasks_panel_host_desktop_unittest.cc b/chrome/browser/contextual_tasks/contextual_tasks_panel_host_desktop_unittest.cc
+index 63d5a40bfc3dbaec0328d9124425ccd28e78921d..7b80dcf0f3b2bed6b299e6eb58b4073969a4b0d9 100644
+--- a/chrome/browser/contextual_tasks/contextual_tasks_panel_host_desktop_unittest.cc
++++ b/chrome/browser/contextual_tasks/contextual_tasks_panel_host_desktop_unittest.cc
+@@ -97,6 +97,7 @@ class MockSidePanelUI : public SidePanelUI {
+               SetNoDelaysForTesting,
+               (bool no_delays_for_testing),
+               (override));
++  BRAVE_MOCK_SIDE_PANEL_UI_TOGGLE
+ };
+ 
+ class MockContextualTasksPanelHostObserver

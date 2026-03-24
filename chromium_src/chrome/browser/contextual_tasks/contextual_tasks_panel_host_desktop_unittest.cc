@@ -6,6 +6,6 @@
 #define BRAVE_MOCK_SIDE_PANEL_UI_TOGGLE \
   MOCK_METHOD(void, Toggle, (), (override));
 
-#include <chrome/browser/contextual_tasks/contextual_tasks_panel_host_desktop_impl_unittest.cc>
+#include <chrome/browser/contextual_tasks/contextual_tasks_panel_host_desktop_unittest.cc>
 
 #undef BRAVE_MOCK_SIDE_PANEL_UI_TOGGLE
