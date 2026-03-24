@@ -858,7 +858,7 @@ export class MockedWalletApiProxy {
           chainId,
           contractAddress,
           registry: this.tokenBalancesRegistry,
-          tokenId: tokenId.uint256Hex,
+          tokenId,
           coin: BraveWallet.CoinType.ETH,
           isShielded: false,
         }),

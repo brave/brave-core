@@ -30,11 +30,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 {%- for struct in structs %}
-{%-   if struct|is_struct_with_cpp_typemap %}
-{%      include "private_struct_with_cpp_typemap_declaration.tmpl" %}
-{%-   else %}
-{%      include "private_struct_declaration.tmpl" %}
-{%-   endif %}
+{%    include "private_struct_declaration.tmpl" %}
 {%- endfor %}
 
 {%- for union in unions %}

@@ -2124,6 +2124,14 @@ void JsonRpcService::GetERC721OwnerOf(const std::string& contract,
     return;
   }
 
+  uint256_t token_id_uint = 0;
+  if (!HexValueToUint256(token_id, &token_id_uint)) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
   std::string data;
   if (!erc721::OwnerOf(token_id, &data)) {
     std::move(callback).Run(

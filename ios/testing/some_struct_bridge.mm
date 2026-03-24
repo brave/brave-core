@@ -6,22 +6,21 @@
 #include "base/strings/sys_string_conversions.h"
 #import "brave/ios/testing/some_service.mojom.objc+private.h"
 
-@implementation MojomSomeStruct (SomeStructCppBridge)
+@implementation MojomSomeStruct (Private)
 
-- (NSString*)value {
-  return base::SysUTF8ToNSString(self.cppObjPtr.value);
+- (instancetype)initWithSomeStruct:(const ::SomeStructCpp&)obj {
+  if ((self = [super init])) {
+    self.value = base::SysUTF8ToNSString(obj.value);
+    self.count = obj.count;
+  }
+  return self;
 }
 
-- (void)setValue:(NSString*)value {
-  [self mutableCppObjRef].value = base::SysNSStringToUTF8(value);
-}
-
-- (int32_t)count {
-  return self.cppObjPtr.count;
-}
-
-- (void)setCount:(int32_t)count {
-  [self mutableCppObjRef].count = count;
+- (::SomeStructCpp)cppObjPtr {
+  ::SomeStructCpp obj;
+  obj.value = base::SysNSStringToUTF8(self.value);
+  obj.count = self.count;
+  return obj;
 }
 
 @end

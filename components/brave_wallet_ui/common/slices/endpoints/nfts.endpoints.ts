@@ -297,7 +297,7 @@ export const nftsEndpoints = ({
           const { errorMessage, ownerAddress } =
             await jsonRpcService.getERC721OwnerOf(
               arg.contract,
-              { uint256Hex: arg.tokenId },
+              arg.tokenId,
               arg.chainId,
             )
           if (errorMessage) {

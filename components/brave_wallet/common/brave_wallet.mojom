@@ -2141,14 +2141,14 @@ interface JsonRpcService {
   AddObserver(pending_remote<JsonRpcServiceObserver> observer);
 
   // Obtains the owner of a contract's ERC721 token ID
-  GetERC721OwnerOf(string contract, Uint256 token_id, string chain_id)
+  GetERC721OwnerOf(string contract, string token_id, string chain_id)
       => (string owner_address, ProviderError error, string error_message);
 
   // Obtains the balance of a contract's ERC721 token ID for an address
   // Balance is 0x1 if current selected account is the same as token owner's
   // address, otherwise balance is 0x0.
   GetERC721TokenBalance(string contract_address,
-                        Uint256 token_id,
+                        string token_id,
                         string account_address,
                         string chain_id)
       => (string balance, ProviderError error, string error_message);

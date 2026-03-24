@@ -4135,7 +4135,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
   bool callback_called = false;
 
   json_rpc_service_->GetERC721OwnerOf(
-      "", uint256_t{1}, mojom::kMainnetChainId,
+      "", "0x1", mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
@@ -4145,7 +4145,17 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
 
   callback_called = false;
   json_rpc_service_->GetERC721OwnerOf(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", uint256_t{1}, "",
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "", mojom::kMainnetChainId,
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kInvalidParams,
+                     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
+                     ""));
+  task_environment_.RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  json_rpc_service_->GetERC721OwnerOf(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1", "",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),

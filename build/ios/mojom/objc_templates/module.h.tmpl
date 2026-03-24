@@ -61,11 +61,7 @@ OBJC_EXPORT
 {%- endif %}
 
 {%- for struct in structs %}
-{%-   if struct|is_struct_with_cpp_typemap %}
-{%      include "struct_with_cpp_typemap_declaration.tmpl" %}
-{%-   else %}
-{%      include "struct_declaration.tmpl" %}
-{%-   endif %}
+{%    include "struct_declaration.tmpl" %}
 {%- endfor %}
 
 {%- for union in unions %}

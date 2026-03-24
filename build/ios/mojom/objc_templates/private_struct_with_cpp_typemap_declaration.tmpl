@@ -1,7 +1,0 @@
-
-{%- set mapped_type = struct|cpp_mapped_typename %}
-@interface {{class_prefix}}{{struct.name}} (Private)
-- (instancetype)initWith{{struct.name}}:(const {{mapped_type}}&)obj;
-- (const {{mapped_type}}&)cppObjPtr;
-- ({{mapped_type}}&)mutableCppObjRef;
-@end
