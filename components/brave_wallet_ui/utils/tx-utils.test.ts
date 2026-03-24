@@ -6,6 +6,7 @@ import { getLocale } from '../../common/locale'
 import {
   getMockedTransactionInfo,
   mockAccount,
+  mockCardanoAccount,
   mockNetwork,
   mockSolanaAccount,
 } from '../common/constants/mocks'
@@ -37,6 +38,7 @@ import {
   mockTransactionInfo,
   mockZecSendTransaction,
 } from '../stories/mock-data/mock-transaction-info'
+import { mockCardanoMainnetNetwork } from '../stories/mock-data/mock-networks'
 import { mockEthAccount } from '../stories/mock-data/mock-wallet-accounts'
 import Amount from './amount'
 import {
@@ -45,14 +47,80 @@ import {
   findTransactionToken,
   getIsRevokeApprovalTx,
   getIsSolanaAssociatedTokenAccountCreation,
+  getTransactionFormattedSendCurrencyTotal,
   getTransactionGas,
   getTransactionMemo,
   getTransactionStatusString,
+  getTransactionTokenSymbol,
+  getTransactionTransferredToken,
+  getTransactionTransferredValue,
   getTransactionTypeName,
   isCancelTransaction,
   parseSwapInfo,
   toTxDataUnion,
 } from './tx-utils'
+
+const mockCardanoMinswapTokenIdHex = 'deadbeefcafe'
+
+const mockCardanoMinswapToken = {
+  contractAddress: mockCardanoMinswapTokenIdHex,
+  name: 'Minswap',
+  symbol: 'MIN',
+  decimals: 6,
+  visible: true,
+  tokenId: '',
+  coingeckoId: '',
+  chainId: mockCardanoMainnetNetwork.chainId,
+  coin: BraveWallet.CoinType.ADA,
+  isCompressed: false,
+  isErc20: false,
+  isErc721: false,
+  isErc1155: false,
+  splTokenProgram: BraveWallet.SPLTokenProgram.kUnsupported,
+  isNft: false,
+  isSpam: false,
+  isShielded: false,
+  logo: '',
+} as BraveWallet.BlockchainToken
+
+const mockCardanoSendTokenTransaction: SerializableTransactionInfo = {
+  id: 'cardano-send-min-tx',
+  chainId: mockCardanoMainnetNetwork.chainId,
+  fromAccountId: mockCardanoAccount.accountId,
+  txHash: '',
+  txStatus: BraveWallet.TransactionStatus.Confirmed,
+  txType: BraveWallet.TransactionType.CardanoSendToken,
+  txParams: [],
+  txArgs: [],
+  createdTime: { microseconds: 0 },
+  submittedTime: { microseconds: 0 },
+  confirmedTime: { microseconds: 0 },
+  originInfo: undefined,
+  effectiveRecipient: '',
+  isRetriable: false,
+  swapInfo: undefined,
+  swapInfoDeprecated: undefined,
+  txDataUnion: {
+    ethTxData1559: undefined,
+    ethTxData: undefined,
+    solanaTxData: undefined,
+    filTxData: undefined,
+    btcTxData: undefined,
+    zecTxData: undefined,
+    polkadotTxData: undefined,
+    cardanoTxData: {
+      to: 'addr1qxytest',
+      sendingLovelace: BigInt(0),
+      sendingToken: {
+        tokenIdHex: mockCardanoMinswapTokenIdHex,
+        value: BigInt(1_000_000),
+      },
+      fee: BigInt(170_000),
+      inputs: [],
+      outputs: [],
+    },
+  },
+}
 
 describe('Check Transaction Status Strings Value', () => {
   test('Transaction ID 0 should return Unapproved', () => {
@@ -809,6 +877,62 @@ describe('findTransactionToken', () => {
         )?.symbol,
       ).toBe('BAT')
     })
+
+    it('should detect sent Cardano tokens', () => {
+      expect(
+        findTransactionToken(mockCardanoSendTokenTransaction, [
+          mockCardanoMinswapToken,
+        ])?.symbol,
+      ).toBe('MIN')
+    })
+  })
+})
+
+describe('Cardano send token transfer formatting', () => {
+  it('getTransactionTransferredToken returns the token, not native ADA', () => {
+    expect(
+      getTransactionTransferredToken({
+        tx: mockCardanoSendTokenTransaction,
+        txNetwork: mockCardanoMainnetNetwork,
+        token: mockCardanoMinswapToken,
+        sourceToken: undefined,
+      }),
+    ).toBe(mockCardanoMinswapToken)
+  })
+
+  it('getTransactionTransferredValue uses token decimals', () => {
+    const { normalized, wei } = getTransactionTransferredValue({
+      tx: mockCardanoSendTokenTransaction,
+      token: mockCardanoMinswapToken,
+      sourceToken: undefined,
+      txAccount: mockCardanoAccount,
+      txNetwork: mockCardanoMainnetNetwork,
+    })
+    expect(wei.format()).toBe('1000000')
+    expect(normalized.format(6)).toBe('1')
+  })
+
+  it('getTransactionFormattedSendCurrencyTotal uses the token symbol', () => {
+    expect(
+      getTransactionFormattedSendCurrencyTotal({
+        normalizedTransferredValue: '1',
+        tx: mockCardanoSendTokenTransaction,
+        token: mockCardanoMinswapToken,
+        sourceToken: undefined,
+        txNetwork: mockCardanoMainnetNetwork,
+      }),
+    ).toBe('1 MIN')
+  })
+
+  it('getTransactionTokenSymbol returns the token ticker', () => {
+    expect(
+      getTransactionTokenSymbol({
+        tx: mockCardanoSendTokenTransaction,
+        token: mockCardanoMinswapToken,
+        sourceToken: undefined,
+        txNetwork: { symbol: 'ADA' },
+      }),
+    ).toBe('MIN')
   })
 })
 
