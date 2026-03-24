@@ -52,15 +52,32 @@ constexpr size_t kMaxResponseBytes = 1024 * 1024;  // 1 MB cap
 // Returns the raw CRLSet bytes from disk, or nullopt on failure.
 std::optional<std::string> LoadLatestCRLSetBytes() {
   base::FilePath app_data_dir;
+
+#if BUILDFLAG(IS_WIN)
+  // %LOCALAPPDATA% e.g. C:\Users\<user>\AppData\Local
+  if (!base::PathService::Get(base::DIR_LOCAL_APP_DATA, &app_data_dir)) {
+#elif BUILDFLAG(IS_MAC)
+  // ~/Library/Application Support
   if (!base::PathService::Get(base::DIR_APP_DATA, &app_data_dir)) {
+#else  // Linux / other POSIX
+  // HOME dir; we'll prepend .config below to follow XDG convention
+  if (!base::PathService::Get(base::DIR_HOME, &app_data_dir)) {
+#endif
     LOG(WARNING) << "Could not get app data dir";
     return std::nullopt;
   }
 
-  // TODO: The CRLSet storage location is somewhat complex and
-  // platform-specific.
+#if BUILDFLAG(IS_WIN)
+  base::FilePath crl_base_dir = app_data_dir.AppendASCII(
+      "BraveSoftware\\Brave-Browser\\User Data\\CertificateRevocation");
+#elif BUILDFLAG(IS_MAC)
   base::FilePath crl_base_dir = app_data_dir.AppendASCII(
       "BraveSoftware/Brave-Browser/CertificateRevocation");
+#else  // Linux
+  base::FilePath crl_base_dir = app_data_dir.AppendASCII(
+      ".config/BraveSoftware/Brave-Browser/CertificateRevocation");
+#endif
+
   base::FilePath best_path;
   int best_sequence = -1;
 
