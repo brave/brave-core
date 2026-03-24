@@ -18,6 +18,7 @@ struct ManagePasswordsView: View {
 
   @Environment(\.dismiss) private var dismiss
   @Environment(\.editMode) private var editMode
+  @Environment(\.redactionReasons) private var redactionReasons
   @ObservedObject private var saveLogins = Preferences.General.saveLogins
   @State private var privacyLock = AutofillPrivacyLock()
   @State private var selectedGroupIds: Set<GroupID> = []
@@ -33,6 +34,10 @@ struct ManagePasswordsView: View {
 
   private var isEditMode: Bool {
     editMode?.wrappedValue == .active
+  }
+
+  private var effectiveRedactionReasons: RedactionReasons {
+    privacyLock.isLocked ? redactionReasons.union(.privacy) : redactionReasons
   }
 
   var body: some View {
@@ -125,7 +130,7 @@ struct ManagePasswordsView: View {
     .overlay {
       if privacyLock.isLocked { Color(.braveGroupedBackground).ignoresSafeArea() }
     }
-    .environment(\.redactionReasons, privacyLock.isLocked ? [.privacy] : [])
+    .environment(\.redactionReasons, effectiveRedactionReasons)
     .toolbarBackground(.visible, for: .navigationBar)
     .navigationTitle(Strings.Autofill.managePasswordsTitle)
     .navigationBarTitleDisplayMode(.inline)
