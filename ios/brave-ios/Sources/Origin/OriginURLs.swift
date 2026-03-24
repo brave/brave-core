@@ -12,4 +12,7 @@ extension URL {
   static let braveOriginRefreshCredentials = URL(
     string: "https://account.brave.com/?intent=recover&product=origin&ux=mobile"
   )!
+  static let braveOriginLinkCredentials = URL(
+    string: "https://account.brave.com/?intent=link-order&product=origin"
+  )!
 }

@@ -4,15 +4,17 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveStore
 import DesignSystem
 import Strings
 import SwiftUI
 
 public struct OriginSettingsView: View {
   @Bindable private var viewModel: OriginSettingsViewModel
+  @Environment(\.openURL) private var openURL
 
-  public init(service: any BraveOriginService) {
-    viewModel = .init(service: service)
+  public init(viewModel: OriginSettingsViewModel) {
+    self.viewModel = viewModel
   }
 
   public var body: some View {
@@ -81,6 +83,26 @@ public struct OriginSettingsView: View {
           Text(Strings.Origin.resetToDefaultsButton)
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      }
+      if viewModel.isPuchaseLinkable {
+        Section {
+          Button {
+            openURL(.braveOriginLinkCredentials)
+          } label: {
+            Text(Strings.Origin.linkPurchase)
+          }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+          NavigationLink {
+            StoreKitReceiptSimpleView()
+          } label: {
+            Text(Strings.Origin.viewAppStoreReceipt)
+          }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        } header: {
+          Text(Strings.Origin.purchaseSectionHeader)
+        } footer: {
+          Text(Strings.Origin.purchaseSectionFooter)
+        }
       }
     }
     .navigationTitle(Strings.Origin.originProductName)
@@ -155,7 +177,9 @@ private class MockOriginService: BraveOriginService {
 }
 #Preview {
   NavigationStack {
-    OriginSettingsView(service: MockOriginService())
+    OriginSettingsView(
+      viewModel: .init(service: MockOriginService(), storeSDK: .init(skusService: nil))
+    )
   }
 }
 #endif

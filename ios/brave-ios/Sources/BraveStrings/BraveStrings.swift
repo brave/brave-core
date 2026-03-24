@@ -5663,6 +5663,14 @@ extension Strings {
         comment: "The title of the product subscription the user purchased (Yearly subscription)"
       )
 
+    public static let originPurchaseName =
+      NSLocalizedString(
+        "storekitReceiptViewer.originPurchaseName",
+        bundle: .module,
+        value: "Brave Origin",
+        comment: "The title of the Brave Origin product"
+      )
+
     public static let receiptViewerTitle =
       NSLocalizedString(
         "storekitReceiptViewer.receiptViewerTitle",
