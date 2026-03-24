@@ -461,6 +461,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetBalanceReportFunction::Run() {
 
   std::optional<brave_rewards::GetBalanceReport::Params> params =
       brave_rewards::GetBalanceReport::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
 
   rewards_service->GetBalanceReport(
       params->month, params->year,
@@ -486,6 +487,7 @@ BraveRewardsSaveRecurringTipFunction::~BraveRewardsSaveRecurringTipFunction() =
 ExtensionFunction::ResponseAction BraveRewardsSaveRecurringTipFunction::Run() {
   std::optional<brave_rewards::SaveRecurringTip::Params> params =
       brave_rewards::SaveRecurringTip::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service =
@@ -517,6 +519,7 @@ ExtensionFunction::ResponseAction
 BraveRewardsRemoveRecurringTipFunction::Run() {
   std::optional<brave_rewards::RemoveRecurringTip::Params> params =
       brave_rewards::RemoveRecurringTip::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service =
@@ -570,6 +573,7 @@ BraveRewardsRefreshPublisherFunction::~BraveRewardsRefreshPublisherFunction() =
 ExtensionFunction::ResponseAction BraveRewardsRefreshPublisherFunction::Run() {
   std::optional<brave_rewards::RefreshPublisher::Params> params =
       brave_rewards::RefreshPublisher::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service =
