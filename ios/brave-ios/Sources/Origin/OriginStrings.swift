@@ -194,5 +194,32 @@ extension Strings {
       value: "One Time Purchase",
       comment: "A label indicating this is a one-time purchase product"
     )
+    public static let linkPurchase = NSLocalizedString(
+      "linkPurchase",
+      bundle: .module,
+      value: "Link Purchase To Your Brave Account",
+      comment:
+        "A button title that when triggered will allow a user to link their App Store purchase with Brave Account"
+    )
+    public static let viewAppStoreReceipt = NSLocalizedString(
+      "viewAppStoreReceipt",
+      bundle: .module,
+      value: "View App Store Receipt",
+      comment:
+        "A button title that when triggered will allow a user to view their App Store receipt"
+    )
+    public static let purchaseSectionHeader = NSLocalizedString(
+      "purchaseSectionHeader",
+      bundle: .module,
+      value: "Purchase",
+      comment: "The header shown below the Purchase section of the settings page"
+    )
+    public static let purchaseSectionFooter = NSLocalizedString(
+      "purchaseSectionFooter",
+      bundle: .module,
+      value:
+        "Link your App Store Purchase to your Brave account to use Brave Origin on other devices",
+      comment: "The footer shown below the Purchase section of the settings page"
+    )
   }
 }

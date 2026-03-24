@@ -193,6 +193,8 @@ public struct StoreKitReceiptSimpleView: View {
       return Strings.ReceiptViewer.leoMonthlySubscriptionName
     case BraveStoreProduct.leoYearly.rawValue:
       return Strings.ReceiptViewer.leoYearlySubscriptionName
+    case BraveStoreProduct.originPurchase.rawValue:
+      return Strings.ReceiptViewer.originPurchaseName
     default: return bundleId
     }
   }

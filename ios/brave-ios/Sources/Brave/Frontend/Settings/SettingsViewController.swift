@@ -780,11 +780,29 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.Origin.originProductName,
           selection: { [unowned self] in
-            guard let service = BraveOriginServiceFactory.get(profile: braveCore.profile) else {
+            guard let originService = BraveOriginServiceFactory.get(profile: braveCore.profile),
+              let skusService = Skus.SkusServiceFactory.get(profile: braveCore.profile)
+            else {
               return
             }
-            if service.isPurchased() {
-              let controller = UIHostingController(rootView: OriginSettingsView(service: service))
+            if originService.isPurchased() {
+              let controller = UIHostingController(
+                rootView: OriginSettingsView(
+                  viewModel: .init(
+                    service: originService,
+                    storeSDK: BraveStoreSDK(skusService: skusService)
+                  )
+                )
+                .environment(
+                  \.openURL,
+                  OpenURLAction { [weak self] url in
+                    guard let self else { return .handled }
+                    settingsDelegate?.settingsOpenURLInNewTab(url)
+                    dismiss(animated: true)
+                    return .handled
+                  }
+                )
+              )
               controller.title = Strings.Origin.originProductName  // Not Translated
               self.navigationController?.pushViewController(controller, animated: true)
             } else {

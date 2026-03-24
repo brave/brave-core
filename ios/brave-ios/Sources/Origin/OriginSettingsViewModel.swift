@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveStore
 import SwiftUI
 
 @propertyWrapper
@@ -35,10 +36,17 @@ struct OriginPolicyBooleanValue {
 }
 
 @Observable
-class OriginSettingsViewModel {
-  let service: any BraveOriginService
-  init(service: any BraveOriginService) {
+public class OriginSettingsViewModel {
+  fileprivate let service: any BraveOriginService
+  private let storeSDK: BraveStoreSDK
+
+  public init(service: any BraveOriginService, storeSDK: BraveStoreSDK) {
     self.service = service
+    self.storeSDK = storeSDK
+
+    Task {
+      await updatePurchaseStatus()
+    }
   }
 
   @ObservationIgnored
@@ -72,6 +80,23 @@ class OriginSettingsViewModel {
   @ObservationIgnored
   @OriginPolicyBooleanValue(key: .vpnDisabled)
   var isVPNDisabled: Bool
+
+  private(set) var isPuchaseLinkable: Bool = false
+
+  @MainActor
+  private func updatePurchaseStatus() async {
+    guard let transaction = await storeSDK.originPurchaseProduct?.latestTransaction else {
+      isPuchaseLinkable = false
+      return
+    }
+    isPuchaseLinkable =
+      switch transaction {
+      case .verified:
+        true
+      case .unverified:
+        false
+      }
+  }
 
   /// Reset all of the policy values back to their defaults
   func reset() {
