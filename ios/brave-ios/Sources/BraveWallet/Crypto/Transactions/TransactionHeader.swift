@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TransactionHeader: View {
 
+  let txCoinType: BraveWallet.CoinType
   let fromAccountInfo: BraveWallet.AccountInfo
   let fromAccountName: String
   let toAccountAddress: String
@@ -27,8 +28,10 @@ struct TransactionHeader: View {
   var body: some View {
     VStack(spacing: 8) {
       VStack(spacing: 8) {
-        if fromAccountInfo.address == toAccountAddress || toAccountAddress.isEmpty {
-          Blockie(address: fromAccountInfo.address)
+        if fromAccountInfo.address == toAccountAddress || toAccountAddress.isEmpty
+          || txCoinType == .btc || txCoinType == .ada || txCoinType == .zec
+        {
+          Blockie(address: fromAccountInfo.blockieSeed)
             .frame(
               width: min(blockieSize, maxBlockieSize),
               height: min(blockieSize, maxBlockieSize)

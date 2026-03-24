@@ -244,6 +244,7 @@ struct PendingTransactionView: View {
         erc20ApproveHeader
       } else {
         TransactionHeader(
+          txCoinType: confirmationStore.activeParsedTransaction.transaction.coin,
           fromAccountInfo: confirmationStore.activeParsedTransaction.fromAccountInfo,
           fromAccountName: confirmationStore.activeParsedTransaction.namedFromAddress,
           toAccountAddress: confirmationStore.activeParsedTransaction.toAddress,
