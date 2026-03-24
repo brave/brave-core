@@ -199,9 +199,9 @@ class SettingBraveSyncSubpage extends SettingBraveSyncSubpageBase {
 
   private computeSyncSectionDisabled_(): boolean {
     return this.syncStatus !== undefined &&
-      (!!this.syncStatus.disabled ||
-        !!this.syncStatus.hasSyncWordsDecryptionError ||
-        (!!this.syncStatus.hasError &&
+      ((this.syncStatus.disabled ?? false) ||
+        (this.syncStatus.hasSyncWordsDecryptionError ?? false) ||
+        ((this.syncStatus.hasError ?? false) &&
           this.syncStatus.statusAction !==
           StatusAction.ENTER_PASSPHRASE &&
           this.syncStatus.statusAction !==
@@ -209,19 +209,19 @@ class SettingBraveSyncSubpage extends SettingBraveSyncSubpageBase {
   }
 
   private computeSyncDisabledByAdmin_(): boolean {
-    return !!this.syncStatus?.managed
+    return this.syncStatus?.managed ?? false
   }
 
   private computeLockedSafeStorage_(): boolean {
-    return this.syncStatus &&
-           !!this.syncStatus.hasSyncWordsDecryptionError &&
-           !this.syncStatus.isOsEncryptionAvailable
+      return this.syncStatus !== undefined &&
+        (this.syncStatus.hasSyncWordsDecryptionError ?? false) &&
+        !(this.syncStatus.isOsEncryptionAvailable ?? false)
   }
 
   private computeUnlockedSafeStorageCannotDecryptSeed_(): boolean {
-    return this.syncStatus &&
-      !!this.syncStatus.hasSyncWordsDecryptionError &&
-      !!this.syncStatus.isOsEncryptionAvailable
+    return this.syncStatus !== undefined &&
+      (this.syncStatus.hasSyncWordsDecryptionError ?? false) &&
+      (this.syncStatus.isOsEncryptionAvailable ?? false)
   }
 
   private isStatus_(expectedPageStatus: PageStatus): boolean {
