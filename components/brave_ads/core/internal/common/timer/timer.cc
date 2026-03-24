@@ -8,6 +8,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/random/random_util.h"
@@ -38,10 +39,8 @@ base::Time Timer::Start(const base::Location& location,
 base::Time Timer::StartWithPrivacy(const base::Location& location,
                                    base::TimeDelta delay,
                                    base::OnceClosure user_task) {
-  base::TimeDelta rand_delay = RandTimeDelta(delay);
-  if (rand_delay.is_negative()) {
-    rand_delay = base::Seconds(1);
-  }
+  const base::TimeDelta rand_delay = RandTimeDelta(delay);
+  CHECK(!rand_delay.is_negative());
 
   return Start(location, rand_delay, std::move(user_task));
 }
@@ -64,7 +63,7 @@ ScopedTimerDelaySetterForTesting::ScopedTimerDelaySetterForTesting(
 }
 
 ScopedTimerDelaySetterForTesting::~ScopedTimerDelaySetterForTesting() {
-  g_timer_delay_for_testing = std::nullopt;
+  g_timer_delay_for_testing.reset();
 }
 
 }  // namespace brave_ads
