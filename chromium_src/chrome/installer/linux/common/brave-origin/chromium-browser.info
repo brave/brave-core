@@ -12,10 +12,10 @@ PACKAGE="brave-origin"
 PROGNAME=brave
 
 # Base directory for package installation.
-INSTALLDIR=/opt/brave.com/brave
+INSTALLDIR=/opt/brave.com/brave-origin
 
 # Directory for device policy enrollments.
-ENROLLMENTDIR=/etc/brave/policies/enrollment
+ENROLLMENTDIR=/etc/brave-origin/policies/enrollment
 
 # Display string for desktop menu/icon.
 MENUNAME="Brave Origin"
