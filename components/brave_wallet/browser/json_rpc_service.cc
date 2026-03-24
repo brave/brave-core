@@ -2113,7 +2113,7 @@ bool JsonRpcService::IsValidUnstoppableDomain(const std::string& domain) {
 }
 
 void JsonRpcService::GetERC721OwnerOf(const std::string& contract,
-                                      const uint256_t& token_id,
+                                      const std::string& token_id,
                                       const std::string& chain_id,
                                       GetERC721OwnerOfCallback callback) {
   auto network_url = GetNetworkURL(chain_id, mojom::CoinType::ETH);
@@ -2133,7 +2133,7 @@ void JsonRpcService::GetERC721OwnerOf(const std::string& contract,
   }
 
   std::string data;
-  if (!erc721::OwnerOf(token_id, &data)) {
+  if (!erc721::OwnerOf(token_id_uint, &data)) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -2172,7 +2172,7 @@ void JsonRpcService::OnGetERC721OwnerOf(GetERC721OwnerOfCallback callback,
 
 void JsonRpcService::GetERC721TokenBalance(
     const std::string& contract_address,
-    const uint256_t& token_id,
+    const std::string& token_id,
     const std::string& account_address,
     const std::string& chain_id,
     GetERC721TokenBalanceCallback callback) {
