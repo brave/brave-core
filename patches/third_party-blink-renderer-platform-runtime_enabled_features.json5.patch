@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 70a7e2a5203d3cdddbad7eecca28d65945522fed..f066712853d81d44412ef797c4a50683bcbf1fa7 100644
+index d5fe1468676285540909ee078d5b88a9bd8e197c..0f1049854970d348f7e944426008035b8d6478a4 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -839,6 +839,11 @@
@@ -30,16 +30,6 @@ index 70a7e2a5203d3cdddbad7eecca28d65945522fed..f066712853d81d44412ef797c4a50683
      },
      {
        name: "FileSystemAccessLockingScheme",
-@@ -2611,8 +2618,8 @@
-       // This fixes the suppression of markers for <details> and
-       // list items for appearance:auto.
-       // This was added in M146 and can be removed after M148.
-+      // Note that as-is, this flag triggers crbug.com/408002786.
-       name: "FixMarkerSuppressionForAppearanceAuto",
--      status: "stable",
-     },
-     {
-       // crbug.com/411739501
 @@ -3593,6 +3600,7 @@
      {
        name: "MiddleClickAutoscroll",
