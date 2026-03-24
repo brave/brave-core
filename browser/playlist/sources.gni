@@ -13,6 +13,7 @@ brave_browser_playlist_deps = [
   "//brave/components/playlist/content/browser",
   "//chrome/browser:browser_process",
   "//chrome/browser/profiles:profile",
+  "//chrome/browser/ui/side_panel:side_panel_views_dependent",
   "//chrome/common",
   "//components/keyed_service/content",
   "//components/pref_registry",
