@@ -964,35 +964,6 @@ if (old_value != visual_content_used_percentage_) {
 
 ---
 
-<a id="ARCH-052"></a>
-
-## ✅ Set Default Values in Mojom Struct Fields
-
-**Mojom struct fields should have explicit default values for safety.** Uninitialized mojom fields can lead to unexpected behavior when the struct is partially constructed.
-
-**Exception:** Do not flag fields whose types are opaque resources that must always be provided by the caller — e.g., `mojo_base.mojom.BigBuffer`, `handle`, `pending_remote`, `pending_receiver`, `pending_associated_remote`, `pending_associated_receiver`. Adding empty defaults for these types would mask bugs where a field is accidentally omitted. When in doubt whether a type benefits from a default, don't bother commenting.
-
-```mojom
-// ❌ WRONG - no defaults on primitive/string fields
-struct ModelConfig {
-  string name;
-  bool supports_tools;
-};
-
-// ✅ CORRECT - explicit defaults on primitive/string fields
-struct ModelConfig {
-  string name = "";
-  bool supports_tools = false;
-};
-
-// ✅ CORRECT - no default on opaque resource fields (must always be provided)
-struct ModelFiles {
-  mojo_base.mojom.BigBuffer weights;
-};
-```
-
----
-
 <a id="ARCH-053"></a>
 
 ## ❌ Avoid Cross-Feature Module Dependencies
