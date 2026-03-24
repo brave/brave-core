@@ -161,6 +161,7 @@ if (!is_ios) {
       "//components/omnibox/common",
       "//services/device/public/cpp:device_features",
       "//services/network/public/cpp",
+      "//brave/browser/brave_vpn/agent_ns",
     ]
 
     data_deps = [ ":unpacked_resources" ]
