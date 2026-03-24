@@ -25,3 +25,11 @@ interface BraveOriginSettingsHandler {
   // Set the value of a Brave Origin controlled policy
   SetPolicyValue(string policy_key, bool value) => (bool success);
 };
+
+// Interface for interaction between SubscriptionRenderFrameObserver
+// (renderer process) and browser process for Origin subscription linking.
+[EnableIf=is_android]
+interface OriginIAPSubscription {
+  GetPurchaseTokenOrderId() => (string token, string order_id);
+  SetLinkStatus(int32 status);
+};

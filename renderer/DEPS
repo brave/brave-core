@@ -26,6 +26,7 @@ include_rules += [
   "+brave/components/speedreader/renderer",
   "+brave/components/brave_vpn/common",
   "!brave/components/brave_mobile_subscription/renderer/android/subscription_render_frame_observer.h",
+  "+brave/components/brave_origin/features.h",
   "+brave/components/playlist/core/common",
   "+brave/components/playlist/content/renderer",
   "+brave/components/web_discovery/buildflags",

@@ -258,6 +258,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/android/ai_chat_iap_subscription_android.h"
 #endif
+#include "brave/components/brave_origin/features.h"
+#include "brave/components/brave_origin/origin_iap_subscription.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -431,6 +433,24 @@ void BindIAPSubscription(
   auto* profile = Profile::FromBrowserContext(context);
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<ai_chat::AIChatIAPSubscription>(profile->GetPrefs()),
+      std::move(receiver));
+}
+#endif
+
+#if BUILDFLAG(IS_ANDROID)
+void BindOriginIAPSubscription(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<brave_origin::mojom::OriginIAPSubscription>
+        receiver) {
+  const GURL& frame_host_url = frame_host->GetLastCommittedURL();
+  if (!skus::IsSafeOrigin(frame_host_url)) {
+    return;
+  }
+  auto* context = frame_host->GetBrowserContext();
+  auto* profile = Profile::FromBrowserContext(context);
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<brave_origin::OriginIAPSubscription>(
+          profile->GetPrefs()),
       std::move(receiver));
 }
 #endif
@@ -971,6 +991,13 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         base::BindRepeating(&BindIAPSubscription));
   }
 #endif
+#endif
+
+#if BUILDFLAG(IS_ANDROID)
+  if (base::FeatureList::IsEnabled(brave_origin::features::kBraveOrigin)) {
+    map->Add<brave_origin::mojom::OriginIAPSubscription>(
+        base::BindRepeating(&BindOriginIAPSubscription));
+  }
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER) && !BUILDFLAG(IS_ANDROID)

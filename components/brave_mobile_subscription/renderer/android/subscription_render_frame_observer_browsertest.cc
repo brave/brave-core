@@ -7,6 +7,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/skus/common/features.h"
@@ -31,6 +32,7 @@ class SubscriptionRenderFrameObserverBrowserTest
 #if BUILDFLAG(ENABLE_AI_CHAT)
             ai_chat::features::kAIChat,
 #endif
+            brave_origin::features::kBraveOrigin,
         },
         {});
   }
@@ -78,6 +80,13 @@ TEST_F(SubscriptionRenderFrameObserverBrowserTest, IsAllowed) {
   LoadHTMLWithUrlOverride(
       R"(<html><body></body></html>)",
       "https://account.brave.com/?intent=link-order&product=leo");
+
+  EXPECT_TRUE(observer.IsAllowed());
+
+  // Origin
+  LoadHTMLWithUrlOverride(
+      R"(<html><body></body></html>)",
+      "https://account.brave.com/?intent=link-order&product=origin");
 
   EXPECT_TRUE(observer.IsAllowed());
 
