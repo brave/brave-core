@@ -79,6 +79,7 @@ extension BrowserViewController: TabManagerDelegate {
     // we should add it as a policy decider at initialization.
     tab.addPolicyDecider(braveShieldsHelper)
     tab.logins = .init(tab: tab, passwordAPI: profileController.passwordAPI)
+    tab.nightMode = .init(tab: tab)
 
     if FeatureList.kUseProfileWebViewConfiguration.enabled {
       tab.readerMode = .init(tab: tab)

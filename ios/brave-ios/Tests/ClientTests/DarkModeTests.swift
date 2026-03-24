@@ -51,7 +51,7 @@ class DarkModeTests: XCTestCase {
         continue
       }
 
-      XCTAssertTrue(DarkReaderScriptHandler.isNightModeBlockedURL(url))
+      XCTAssertTrue(NightModeTabHelper.isNightModeBlockedURL(url))
     }
 
     for urlString in allowList {
@@ -60,7 +60,7 @@ class DarkModeTests: XCTestCase {
         continue
       }
 
-      XCTAssertFalse(DarkReaderScriptHandler.isNightModeBlockedURL(url))
+      XCTAssertFalse(NightModeTabHelper.isNightModeBlockedURL(url))
     }
   }
 }
