@@ -27,3 +27,8 @@ enable_pseudolocales = false
 
 # Our copy of signature_generator.py doesn't support --ignore_missing_cert:
 ignore_missing_widevine_signing_cert = false
+
+# Opt-in flag for using the platform allocator on Android/Linux builds.
+# This is disabled by default to avoid changing allocator behavior in standard
+# Brave builds.
+brave_use_system_allocator = false

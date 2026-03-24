@@ -12,10 +12,12 @@ safe_browsing_mode = 2
 # Fixes WebRTC IP leak with default option
 enable_mdns = true
 
-# Allow the platform allocator to be used on Android builds so downstream
-# environments that provide hardened_malloc can take effect.
-use_partition_alloc_as_malloc = false
-enable_backup_ref_ptr_support = false
+if (brave_use_system_allocator) {
+  # Allow the platform allocator to be used on Android builds so downstream
+  # environments that provide hardened_malloc can take effect.
+  use_partition_alloc_as_malloc = false
+  enable_backup_ref_ptr_support = false
+}
 
 # We want it to be enabled for all configurations
 disable_android_lint = false
