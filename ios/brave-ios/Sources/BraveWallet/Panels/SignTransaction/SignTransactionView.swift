@@ -7,20 +7,25 @@ import BraveCore
 import DesignSystem
 import SwiftUI
 
-enum SignTransactionRequestItem {
+enum SignTransactionRequestItem: Identifiable, Equatable {
   case solana(BraveWallet.SignSolTransactionsRequest)
   case cardano(BraveWallet.SignCardanoTransactionRequest)
-}
 
-struct SignTransactionRequests {
-  let items: [SignTransactionRequestItem]
+  var id: Int32 {
+    switch self {
+    case .solana(let request):
+      return request.id
+    case .cardano(let request):
+      return request.id
+    }
+  }
 }
 
 struct SignTransactionView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
 
-  var requests: SignTransactionRequests
+  var requests: [SignTransactionRequestItem]
   var cryptoStore: CryptoStore
   var onDismiss: () -> Void
 
@@ -42,19 +47,15 @@ struct SignTransactionView: View {
   init(
     keyringStore: KeyringStore,
     networkStore: NetworkStore,
-    solRequests: [BraveWallet.SignSolTransactionsRequest]?,
-    cardanoRequests: [BraveWallet.SignCardanoTransactionRequest]?,
+    requests: [SignTransactionRequestItem],
     cryptoStore: CryptoStore,
     onDismiss: @escaping () -> Void
   ) {
     self.keyringStore = keyringStore
     self.networkStore = networkStore
+    self.requests = requests
     self.cryptoStore = cryptoStore
     self.onDismiss = onDismiss
-
-    let items: [SignTransactionRequestItem] =
-      (solRequests ?? []).map { .solana($0) } + (cardanoRequests ?? []).map { .cardano($0) }
-    self.requests = SignTransactionRequests(items: items)
   }
 
   var navigationTitle: String {
@@ -68,7 +69,7 @@ struct SignTransactionView: View {
   }
 
   private var currentRequest: SignTransactionRequestItem {
-    requests.items[txIndex]
+    requests[txIndex]
   }
 
   private var network: BraveWallet.NetworkInfo? {
@@ -202,14 +203,14 @@ struct SignTransactionView: View {
                 .foregroundColor(Color(.braveLabel))
             }
             Spacer()
-            if requests.items.count > 1 {
+            if requests.count > 1 {
               HStack {
                 Spacer()
                 Text(
                   String.localizedStringWithFormat(
                     Strings.Wallet.transactionCount,
                     txIndex + 1,
-                    requests.items.count
+                    requests.count
                   )
                 )
                 .fontWeight(.semibold)
@@ -333,7 +334,7 @@ struct SignTransactionView: View {
             .signCardanoTransactions(approved: true, id: currentRequestId)
           )
         }
-        if requests.items.count == 1 {
+        if requests.count == 1 {
           onDismiss()
         }
       } label: {
@@ -358,7 +359,7 @@ struct SignTransactionView: View {
           .signCardanoTransactions(approved: false, id: currentRequestId)
         )
       }
-      if requests.items.count == 1 {
+      if requests.count == 1 {
         onDismiss()
       }
     } label: {
@@ -409,7 +410,7 @@ struct SignTransactionView: View {
   }
 
   private func next() {
-    if txIndex + 1 < requests.items.count {
+    if txIndex + 1 < requests.count {
       txIndex += 1
     } else {
       txIndex = 0
@@ -423,7 +424,7 @@ struct SignTransaction_Previews: PreviewProvider {
     SignTransactionView(
       keyringStore: .previewStore,
       networkStore: .previewStore,
-      solRequests: [
+      requests: [
         BraveWallet.SignSolTransactionsRequest(
           originInfo: .init(),
           id: 0,
@@ -432,8 +433,7 @@ struct SignTransaction_Previews: PreviewProvider {
           rawMessages: [.init()],
           chainId: BraveWallet.ChainId(coin: .sol, chainId: BraveWallet.SolanaMainnet)
         )
-      ],
-      cardanoRequests: nil,
+      ].map { .solana($0) },
       cryptoStore: .previewStore,
       onDismiss: {}
     )

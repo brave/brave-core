@@ -18,8 +18,7 @@ enum PendingRequest: Equatable {
   case signMessageError([BraveWallet.SignMessageError])
   case getEncryptionPublicKey(BraveWallet.GetEncryptionPublicKeyRequest)
   case decrypt(BraveWallet.DecryptRequest)
-  case signSolTransactions([BraveWallet.SignSolTransactionsRequest])
-  case signCardanoTransactions([BraveWallet.SignCardanoTransactionRequest])
+  case signTransactions([SignTransactionRequestItem])
 }
 
 extension PendingRequest: Identifiable {
@@ -41,10 +40,8 @@ extension PendingRequest: Identifiable {
       return "getEncryptionPublicKey-\(request.accountId.uniqueKey)-\(request.requestId)"
     case .decrypt(let request):
       return "decrypt-\(request.accountId.uniqueKey)-\(request.requestId)"
-    case .signSolTransactions(let requests):
-      return "signSolTransactions-\(requests.map(\.id))"
-    case .signCardanoTransactions(let requests):
-      return "signCardanoTransactions-\(requests.map(\.id))"
+    case .signTransactions(let requests):
+      return "signTransactions-\(requests.map(\.id))"
     }
   }
 }
@@ -774,12 +771,12 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     } else if case let signSolTransactionsRequests =
       await walletService.pendingSignSolTransactionsRequests(), !signSolTransactionsRequests.isEmpty
     {
-      return .signSolTransactions(signSolTransactionsRequests)
+      return .signTransactions(signSolTransactionsRequests.map { .solana($0) })
     } else if case let signCardanoTransactionRequests =
       await walletService.pendingSignCardanoTransactionRequests(),
       !signCardanoTransactionRequests.isEmpty
     {
-      return .signCardanoTransactions(signCardanoTransactionRequests)
+      return .signTransactions(signCardanoTransactionRequests.map { .cardano($0) })
     } else if case let signMessageErrors = await walletService.pendingSignMessageErrors(),
       !signMessageErrors.isEmpty
     {
