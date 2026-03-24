@@ -110,6 +110,7 @@ export const Swap = () => {
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isMobile = useSafeUISelector(UISelectors.isMobile)
   const isMobileOrPanel = isMobile || isPanel
+  const isIOS = useSafeUISelector(UISelectors.isIOS)
   const isKeyboardVisible = useIsKeyboardVisible()
 
   // Refs
@@ -137,10 +138,10 @@ export const Swap = () => {
     showPrivacyModal,
   )
 
-  // Memos
-  const tokenColor = React.useMemo(() => {
-    return getDominantColorFromImageURL(toToken?.logo ?? '')
-  }, [toToken?.logo])
+  // Computed
+  const tokenColor = isIOS
+    ? undefined
+    : getDominantColorFromImageURL(toToken?.logo ?? '')
 
   // render
   return (
