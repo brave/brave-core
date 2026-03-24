@@ -305,6 +305,8 @@ class KeyringService : public mojom::KeyringService {
   // Polkadot
   std::optional<std::array<uint8_t, kPolkadotSubstrateAccountIdSize>>
   GetPolkadotPubKey(const mojom::AccountIdPtr& account_id);
+  std::optional<std::string> GetPolkadotImportAddress(
+      const mojom::AccountIdPtr& account_id);
 
   std::optional<std::array<uint8_t, kSr25519SignatureSize>>
   SignMessageByPolkadotKeyring(const mojom::AccountIdPtr& account_id,

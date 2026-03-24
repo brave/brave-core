@@ -18,8 +18,11 @@
 
 namespace brave_wallet {
 
-PolkadotImportKeyring::PolkadotImportKeyring(mojom::KeyringId keyring_id)
-    : keyring_id_(keyring_id) {
+PolkadotImportKeyring::PolkadotImportKeyring(
+    mojom::KeyringId keyring_id,
+    base::RepeatingCallback<bool(const std::string&)> is_address_allowed)
+    : keyring_id_(keyring_id),
+      is_address_allowed_(std::move(is_address_allowed)) {
   CHECK(IsPolkadotImportKeyring(keyring_id_));
 }
 
@@ -36,6 +39,11 @@ bool PolkadotImportKeyring::AddAccount(
     return false;
   }
   accounts_.emplace(account, std::move(*key));
+
+  if (!is_address_allowed_.Run(GetAccountAddress(account).value())) {
+    return false;
+  }
+
   return true;
 }
 

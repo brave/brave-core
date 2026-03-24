@@ -24,7 +24,9 @@ namespace brave_wallet {
 // Accounts are added using the AddAccount method when wallet is created.
 class PolkadotImportKeyring {
  public:
-  explicit PolkadotImportKeyring(mojom::KeyringId keyring_id);
+  PolkadotImportKeyring(
+      mojom::KeyringId keyring_id,
+      base::RepeatingCallback<bool(const std::string&)> is_address_allowed);
   ~PolkadotImportKeyring();
 
   PolkadotImportKeyring(const PolkadotImportKeyring&) = delete;
@@ -62,6 +64,9 @@ class PolkadotImportKeyring {
 
   mojom::KeyringId keyring_id_;
   base::flat_map<uint32_t, HDKeySr25519> accounts_;
+
+  base::RepeatingCallback<bool(const std::string&)> is_address_allowed_;
+
   std::optional<std::array<uint8_t, kScryptSaltSize>>
       rand_salt_bytes_for_testing_;
   std::optional<std::array<uint8_t, kSecretboxNonceSize>>

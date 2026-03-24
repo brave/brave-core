@@ -1265,12 +1265,12 @@ void KeyringService::CreateKeyrings(const KeyringSeed& keyring_seed) {
         polkadot_seed, KeyringId::kPolkadotTestnet, is_address_allowed);
   }
   if (IsKeyringEnabled(KeyringId::kPolkadotImport)) {
-    polkadot_import_mainnet_keyring_ =
-        std::make_unique<PolkadotImportKeyring>(KeyringId::kPolkadotImport);
+    polkadot_import_mainnet_keyring_ = std::make_unique<PolkadotImportKeyring>(
+        KeyringId::kPolkadotImport, is_address_allowed);
   }
   if (IsKeyringEnabled(KeyringId::kPolkadotImportTestnet)) {
     polkadot_import_testnet_keyring_ = std::make_unique<PolkadotImportKeyring>(
-        KeyringId::kPolkadotImportTestnet);
+        KeyringId::kPolkadotImportTestnet, is_address_allowed);
   }
 }
 
@@ -3186,6 +3186,14 @@ KeyringService::GetPolkadotPubKey(const mojom::AccountIdPtr& account_id) {
     return keyring->GetPublicKey(account_id->account_index);
   }
   return std::nullopt;
+}
+
+std::optional<std::string> KeyringService::GetPolkadotImportAddress(
+    const mojom::AccountIdPtr& account_id) {
+  CHECK(IsPolkadotImportKeyring(account_id->keyring_id));
+
+  auto* keyring = GetKeyring<PolkadotImportKeyring>(account_id->keyring_id);
+  return keyring->GetAccountAddress(account_id->account_index);
 }
 
 std::optional<std::array<uint8_t, kSr25519SignatureSize>>
