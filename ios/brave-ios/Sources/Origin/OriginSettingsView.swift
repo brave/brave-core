@@ -76,7 +76,7 @@ public struct OriginSettingsView: View {
       }
       Section {
         Button(role: .destructive) {
-          // Would reset all of the settings
+          viewModel.reset()
         } label: {
           Text(Strings.Origin.resetToDefaultsButton)
         }
