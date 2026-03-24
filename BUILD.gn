@@ -581,11 +581,9 @@ if (should_generate_symbols) {
     if (is_android) {
       # TODO(https://github.com/brave/brave-browser/issues/51200)
       # Cleanup Mono once cr144 reaches stable channel, CI also needs to be updated
-      output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-mono-$target_cpu-symbols-$target_android_output_format.zip"
-    } else if (is_linux) {
-      output = "$brave_dist_dir/$brave_dist_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
+      output = "$brave_dist_dir/$brave_dist_name-v$brave_version-$brave_platform-mono-$target_cpu-symbols-$target_android_output_format.zip"
     } else {
-      output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
+      output = "$brave_dist_dir/$brave_dist_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
     }
 
     deps = [ "//brave/app/$current_os:symbol_dist_resources" ]
@@ -600,7 +598,7 @@ if (should_generate_symbols) {
   if (is_mac) {
     copy("create_native_symbols_dist") {
       sources = [ "$root_out_dir/$chrome_product_full_name.dSYM.tar.bz2" ]
-      outputs = [ "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-native-symbols.tar.bz2" ]
+      outputs = [ "$brave_dist_dir/$brave_dist_name-v$brave_version-$brave_platform-$target_arch-native-symbols.tar.bz2" ]
 
       deps = [ "//chrome:chrome_dsym_archive" ]
     }
@@ -624,7 +622,7 @@ group("create_symbols_dist") {
 }
 
 action("create_dist_zips") {
-  output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch.zip"
+  output = "$brave_dist_dir/$brave_dist_name-v$brave_version-$brave_platform-$target_arch.zip"
   outputs = [ output ]
 
   if (is_win) {
