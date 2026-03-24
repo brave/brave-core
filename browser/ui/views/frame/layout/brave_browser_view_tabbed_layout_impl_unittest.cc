@@ -140,6 +140,8 @@ class BraveBrowserViewTabbedLayoutImplMacTest
   }
 
   std::unique_ptr<BraveBrowserViewTabbedLayoutImpl> layout_;
+
+  // not owned
   raw_ptr<testing::NiceMock<MockBrowserViewLayoutDelegateForMac>> mock_;
 };
 
