@@ -9506,7 +9506,7 @@ extension Strings {
       "autofill.managePasswords.authenticationReason",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Authenticate to view.",
+      value: "Please authenticate to manage your passwords.",
       comment: "The reason string shown in the biometric/passcode authentication prompt when the user tries to access autofill management."
     )
   }
