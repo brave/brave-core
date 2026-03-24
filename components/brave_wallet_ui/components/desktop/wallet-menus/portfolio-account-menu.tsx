@@ -7,13 +7,11 @@ import * as React from 'react'
 
 import { getLocale } from '../../../../common/locale'
 
+// Components
+import { MenuWrapper } from './menu_wrapper'
+
 // Styled Components
-import {
-  StyledWrapper,
-  PopupButton,
-  PopupButtonText,
-  ButtonIcon,
-} from './wellet-menus.style'
+import { PopupButton, PopupButtonText, ButtonIcon } from './wellet-menus.style'
 
 interface Props {
   onClickDeposit: () => void
@@ -25,7 +23,7 @@ export const PortfolioAccountMenu = (props: Props) => {
   const { onClickSell, onClickViewOnExplorer, onClickDeposit } = props
 
   return (
-    <StyledWrapper yPosition={42}>
+    <MenuWrapper yPosition={42}>
       {onClickSell && (
         <PopupButton onClick={onClickSell}>
           <ButtonIcon name='usd-circle' />
@@ -46,6 +44,6 @@ export const PortfolioAccountMenu = (props: Props) => {
           {getLocale('braveWalletDepositCryptoButton')}
         </PopupButtonText>
       </PopupButton>
-    </StyledWrapper>
+    </MenuWrapper>
   )
 }
