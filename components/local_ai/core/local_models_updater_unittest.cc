@@ -50,6 +50,11 @@ class LocalModelsUpdaterUnitTest : public testing::Test {
     install_dir_ = component_dir.Append(kComponentInstallDir);
   }
 
+  void TearDown() override {
+    // Clear singleton state to avoid polluting other test suites.
+    LocalModelsUpdaterState::GetInstance()->SetInstallDir(base::FilePath());
+  }
+
   bool PathExists(const base::FilePath& file_path) {
     base::ScopedAllowBlockingForTesting allow_blocking;
     return base::PathExists(file_path);
