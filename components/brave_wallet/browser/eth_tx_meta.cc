@@ -42,7 +42,10 @@ std::optional<std::string> GetFinalRecipient(
       fil_chain_id = mojom::kFilecoinMainnet;
     } else if (chain_id == mojom::kFilecoinEthereumTestnetChainId) {
       fil_chain_id = mojom::kFilecoinTestnet;
+    } else {
+      return std::nullopt;
     }
+
     auto fil_address = FilAddress::FromBytes(fil_chain_id, bytes);
     if (fil_address.IsEmpty()) {
       return std::nullopt;

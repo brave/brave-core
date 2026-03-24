@@ -121,15 +121,6 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
 
   EXPECT_EQ(*meta_from_value, meta);
 
-  // `chain_id` might be missing in tx value, `chain_id` from meta should be
-  // used in that case.
-  EXPECT_EQ(*meta_value.FindStringByDottedPath("tx.chain_id"), "0x1");
-  LOG(ERROR) << meta_value.DebugString();
-  meta_value.RemoveByDottedPath("tx.chain_id");
-  meta_value.Set("chain_id", "0x123");
-  meta_from_value = eth_tx_state_manager_->ValueToEthTxMeta(meta_value);
-  EXPECT_EQ(meta_from_value->tx()->chain_id(), uint256_t{0x123});
-
   // type 1
   std::unique_ptr<Eip2930Transaction> tx1 =
       std::make_unique<Eip2930Transaction>(*Eip2930Transaction::FromTxData(
@@ -189,6 +180,30 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   meta_from_value3 = eth_tx_state_manager_->ValueToEthTxMeta(meta_value3);
   ASSERT_NE(meta_from_value3, nullptr);
   EXPECT_FALSE(meta_from_value3->sign_only());
+}
+
+TEST_F(EthTxStateManagerUnitTest, MetaChainIdUsedWhenTxChainIdMissing) {
+  auto eth_account_id = account_resolver_delegate_->RegisterAccount(
+      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived,
+                    "0x2f015c60e0be116b1f0cd534704db9c92118fb6a"));
+
+  std::unique_ptr<EthTransaction> tx = std::make_unique<EthTransaction>(
+      *EthTransaction::FromTxData(mojom::TxData::New(
+          "0x1", "0x09", "0x4a817c800", "0x5208",
+          "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
+          std::vector<uint8_t>(), false, std::nullopt)));
+  EthTxMeta meta(eth_account_id, std::move(tx));
+  meta.set_chain_id(mojom::kMainnetChainId);
+  base::DictValue meta_value = meta.ToValue();
+
+  // `chain_id` might be missing in tx value, `chain_id` from meta should be
+  // used in that case.
+  EXPECT_EQ(*meta_value.FindStringByDottedPath("tx.chain_id"), "0x1");
+  meta_value.RemoveByDottedPath("tx.chain_id");
+  meta_value.Set("chain_id", "0x123");
+  auto meta_from_value = eth_tx_state_manager_->ValueToEthTxMeta(meta_value);
+  EXPECT_EQ(meta_from_value->tx()->chain_id(), uint256_t{0x123});
 }
 
 }  // namespace brave_wallet
