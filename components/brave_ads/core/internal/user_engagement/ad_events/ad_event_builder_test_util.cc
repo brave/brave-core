@@ -18,13 +18,12 @@ AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
                          mojom::AdType mojom_ad_type,
                          mojom::ConfirmationType mojom_confirmation_type,
                          base::Time created_at,
-                         bool should_generate_random_uuids) {
+                         bool use_random_uuids) {
   AdEventInfo ad_event;
 
   ad_event.type = mojom_ad_type;
   ad_event.confirmation_type = mojom_confirmation_type;
-  ad_event.placement_id =
-      RandomUuidOr(should_generate_random_uuids, kPlacementId);
+  ad_event.placement_id = RandomUuidOr(use_random_uuids, kPlacementId);
   ad_event.campaign_id = creative_ad.campaign_id;
   ad_event.creative_set_id = creative_ad.creative_set_id;
   ad_event.creative_instance_id = creative_ad.creative_instance_id;

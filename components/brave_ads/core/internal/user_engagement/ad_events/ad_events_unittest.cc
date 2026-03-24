@@ -26,7 +26,7 @@ class BraveAdsAdEventsTest : public test::TestBase {};
 TEST_F(BraveAdsAdEventsTest, RecordAdEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, mojom::ConfirmationType::kServedImpression,
                    /*created_at=*/test::Now());
@@ -59,7 +59,7 @@ TEST_F(BraveAdsAdEventsTest, PurgeOrphanedAdEvents) {
   // Ad event 1: This served impression ad event should be purged because it
   // does not have an associated viewed impression ad event or matching ad type.
   const AdInfo ad_1 = test::BuildAd(mojom::AdType::kNotificationAd,
-                                    /*should_generate_random_uuids=*/true);
+                                    /*use_random_uuids=*/true);
   const AdEventInfo ad_event_1 =
       BuildAdEvent(ad_1, mojom::ConfirmationType::kServedImpression,
                    /*created_at=*/test::Now());
@@ -68,7 +68,7 @@ TEST_F(BraveAdsAdEventsTest, PurgeOrphanedAdEvents) {
   // Ad event 2: This served impression ad event should not be purged because it
   // has an associated viewed impression ad event for the matching ad type.
   const AdInfo ad_2 = test::BuildAd(mojom::AdType::kNotificationAd,
-                                    /*should_generate_random_uuids=*/true);
+                                    /*use_random_uuids=*/true);
   const AdEventInfo ad_event_2a =
       BuildAdEvent(ad_2, mojom::ConfirmationType::kServedImpression,
                    /*created_at=*/test::Now());
@@ -81,7 +81,7 @@ TEST_F(BraveAdsAdEventsTest, PurgeOrphanedAdEvents) {
   // Ad event 3: This served impression ad event should not be purged because it
   // has a mismatching ad type.
   const AdInfo ad_3 = test::BuildAd(mojom::AdType::kSearchResultAd,
-                                    /*should_generate_random_uuids=*/true);
+                                    /*use_random_uuids=*/true);
   const AdEventInfo ad_event_3 =
       BuildAdEvent(ad_3, mojom::ConfirmationType::kServedImpression,
                    /*created_at=*/test::Now());

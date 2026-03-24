@@ -47,7 +47,7 @@ class BraveAdsAdHistoryManagerTest : public test::TestBase {
 TEST_F(BraveAdsAdHistoryManagerTest, AddNotificationAdHistory) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   // Act & Assert
@@ -65,7 +65,7 @@ TEST_F(BraveAdsAdHistoryManagerTest,
   test::DisableBraveRewards();
 
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   // Act & Assert
@@ -78,7 +78,7 @@ TEST_F(BraveAdsAdHistoryManagerTest, AddNewTabPageAdHistory) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
 
   // Act & Assert
@@ -97,7 +97,7 @@ TEST_F(BraveAdsAdHistoryManagerTest,
 
   const CreativeNewTabPageAdInfo creative_ad =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
 
   // Act & Assert
@@ -109,7 +109,7 @@ TEST_F(BraveAdsAdHistoryManagerTest,
 TEST_F(BraveAdsAdHistoryManagerTest, AddSearchResultAdHistory) {
   // Arrange
   const SearchResultAdInfo ad =
-      test::BuildSearchResultAd(/*should_generate_random_uuids=*/true);
+      test::BuildSearchResultAd(/*use_random_uuids=*/true);
 
   // Act & Assert
   const AdHistoryItemInfo expected_ad_history_item =
@@ -127,7 +127,7 @@ TEST_F(BraveAdsAdHistoryManagerTest,
   test::DisableBraveRewards();
 
   const SearchResultAdInfo ad =
-      test::BuildSearchResultAd(/*should_generate_random_uuids=*/true);
+      test::BuildSearchResultAd(/*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_CALL(history_manager_observer_mock_, OnDidAddAdHistoryItem).Times(0);

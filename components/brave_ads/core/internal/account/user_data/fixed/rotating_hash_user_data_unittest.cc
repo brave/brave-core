@@ -34,7 +34,7 @@ TEST_F(BraveAdsRotatingHashUserDataTest, BuildRotatingHashUserData) {
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
@@ -55,7 +55,7 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_THAT(BuildRotatingHashUserData(transaction), ::testing::IsEmpty());
@@ -67,7 +67,7 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_THAT(BuildRotatingHashUserData(transaction), ::testing::IsEmpty());

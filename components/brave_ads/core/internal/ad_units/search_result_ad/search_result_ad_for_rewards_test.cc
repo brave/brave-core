@@ -42,12 +42,12 @@ TEST_F(BraveAdsSearchResultAdForRewardsIntegrationTest, TriggerViewedEvents) {
   // Act & Assert
   TriggerSearchResultAdEventAndVerifyExpectations(
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true),
+          /*use_random_uuids=*/true),
       mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
 
   TriggerSearchResultAdEventAndVerifyExpectations(
-      test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true),
+      test::BuildCreativeSearchResultAd(/*use_random_uuids=*/true),
       mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
 }
@@ -60,7 +60,7 @@ TEST_F(BraveAdsSearchResultAdForRewardsIntegrationTest,
   TriggerSearchResultAdEventAndVerifyExpectations(
       // This viewed impression ad event will be deferred.
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true),
+          /*use_random_uuids=*/true),
       mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
 
@@ -68,7 +68,7 @@ TEST_F(BraveAdsSearchResultAdForRewardsIntegrationTest,
   TriggerSearchResultAdEventAndVerifyExpectations(
       // This viewed impression ad event will be deferred as the previous viewed
       // impression ad event has not fired.
-      test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true),
+      test::BuildCreativeSearchResultAd(/*use_random_uuids=*/true),
       mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
 
@@ -78,7 +78,7 @@ TEST_F(BraveAdsSearchResultAdForRewardsIntegrationTest,
 TEST_F(BraveAdsSearchResultAdForRewardsIntegrationTest, TriggerClickedEvent) {
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
-      test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeSearchResultAd(/*use_random_uuids=*/true);
 
   TriggerSearchResultAdEventAndVerifyExpectations(
       mojom_creative_ad.Clone(),

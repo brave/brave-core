@@ -23,7 +23,7 @@ AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
                          mojom::AdType mojom_ad_type,
                          mojom::ConfirmationType mojom_confirmation_type,
                          base::Time created_at,
-                         bool should_generate_random_uuids);
+                         bool use_random_uuids);
 
 }  // namespace test
 

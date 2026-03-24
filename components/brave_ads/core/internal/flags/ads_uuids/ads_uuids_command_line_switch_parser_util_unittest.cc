@@ -59,7 +59,7 @@ TEST_P(BraveAdsUuidsCommandLineSwitchParserUtilTest,
   // Act & Assert
   ASSERT_TRUE(GlobalState::HasInstance());
   CreativeAdInfo creative_ad =
-      test::BuildCreativeAd(/*should_generate_random_uuids=*/false);
+      test::BuildCreativeAd(/*use_random_uuids=*/false);
   EXPECT_EQ(GetParam().ads_uuids, ParseAdsUuidsCommandLineSwitch());
 }
 

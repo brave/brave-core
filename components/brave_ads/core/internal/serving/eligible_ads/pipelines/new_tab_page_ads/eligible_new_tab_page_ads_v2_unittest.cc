@@ -52,18 +52,18 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAds) {
 
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ad_2.segment = "parent";
   creative_ads.push_back(creative_ad_2);
 
   CreativeNewTabPageAdInfo creative_ad_3 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ad_3.segment = "parent-child";
   creative_ads.push_back(creative_ad_3);
 
@@ -87,13 +87,13 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAdsForNoMatchingSegments) {
 
   CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ad_1.segment = "parent";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ad_2.segment = "parent-child";
   creative_ads.push_back(creative_ad_2);
 
@@ -168,7 +168,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, RoundRobinAlwaysServesASingleAd) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   test::SaveCreativeNewTabPageAds({creative_ad});
 
   const UserModelInfo user_model{
@@ -202,10 +202,10 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test,
     CreativeNewTabPageAdList creative_ads;
     creative_ads.push_back(test::BuildCreativeNewTabPageAd(
         CreativeNewTabPageAdWallpaperType::kImage,
-        /*should_generate_random_uuids=*/true));
+        /*use_random_uuids=*/true));
     creative_ads.push_back(test::BuildCreativeNewTabPageAd(
         CreativeNewTabPageAdWallpaperType::kImage,
-        /*should_generate_random_uuids=*/true));
+        /*use_random_uuids=*/true));
     test::SaveCreativeNewTabPageAds(creative_ads);
   }
 
@@ -261,13 +261,13 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, ZeroPriorityAdIsNeverServed) {
 
   CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ad_1.priority = 0;
   creative_ads.push_back(creative_ad_1);
 
   const CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ads.push_back(creative_ad_2);
 
   test::SaveCreativeNewTabPageAds(creative_ads);
@@ -292,13 +292,13 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test,
 
   CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ad_1.priority = 1;
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ad_2.priority = 2;
   creative_ads.push_back(creative_ad_2);
 
@@ -326,13 +326,13 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test,
 
   CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ad_1.priority = 1;
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ad_2.priority = 2;
   creative_ads.push_back(creative_ad_2);
 
@@ -371,13 +371,13 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test,
 
   CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ad_1.priority = 1;
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ad_2.priority = 2;
   creative_ads.push_back(creative_ad_2);
 
@@ -424,12 +424,12 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test,
   // Arrange: `creative_ad_1` has priority 1 and `creative_ad_2` has priority 2.
   CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ad_1.priority = 1;
 
   CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ad_2.priority = 2;
 
   test::SaveCreativeNewTabPageAds({creative_ad_1, creative_ad_2});
@@ -451,7 +451,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test,
   // Add a new priority 1 ad to the campaign.
   CreativeNewTabPageAdInfo creative_ad_3 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   creative_ad_3.priority = 1;
   test::SaveCreativeNewTabPageAds({creative_ad_3});
 

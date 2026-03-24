@@ -23,12 +23,12 @@ TransactionInfo BuildTransaction(
     mojom::AdType mojom_ad_type,
     mojom::ConfirmationType mojom_confirmation_type,
     base::Time reconciled_at,
-    bool should_generate_random_uuids);
+    bool use_random_uuids);
 TransactionInfo BuildUnreconciledTransaction(
     double value,
     mojom::AdType mojom_ad_type,
     mojom::ConfirmationType mojom_confirmation_type,
-    bool should_generate_random_uuids);
+    bool use_random_uuids);
 
 }  // namespace test
 

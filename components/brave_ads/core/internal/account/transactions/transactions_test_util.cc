@@ -19,13 +19,13 @@ TransactionInfo BuildTransaction(
     mojom::AdType mojom_ad_type,
     mojom::ConfirmationType mojom_confirmation_type,
     base::Time reconciled_at,
-    bool should_generate_random_uuids) {
+    bool use_random_uuids) {
   TransactionInfo transaction;
 
-  transaction.id = RandomUuidOr(should_generate_random_uuids, kTransactionId);
+  transaction.id = RandomUuidOr(use_random_uuids, kTransactionId);
   transaction.created_at = Now();
   transaction.creative_instance_id =
-      RandomUuidOr(should_generate_random_uuids, kCreativeInstanceId);
+      RandomUuidOr(use_random_uuids, kCreativeInstanceId);
   transaction.segment = kSegment;
   transaction.value = value;
   transaction.ad_type = mojom_ad_type;
@@ -41,9 +41,9 @@ TransactionInfo BuildUnreconciledTransaction(
     double value,
     mojom::AdType mojom_ad_type,
     mojom::ConfirmationType mojom_confirmation_type,
-    bool should_generate_random_uuids) {
+    bool use_random_uuids) {
   return BuildTransaction(value, mojom_ad_type, mojom_confirmation_type,
-                          /*reconciled_at=*/{}, should_generate_random_uuids);
+                          /*reconciled_at=*/{}, use_random_uuids);
 }
 
 }  // namespace brave_ads::test

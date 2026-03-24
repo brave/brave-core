@@ -52,12 +52,12 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAds) {
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   creative_ad_1.segment = "parent-child-1";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   creative_ad_2.segment = "parent-child-3";
   creative_ads.push_back(creative_ad_2);
 
@@ -82,12 +82,12 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAdsForNoMatchingSegments) {
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   creative_ad_1.segment = "parent";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   creative_ad_2.segment = "parent-child";
   creative_ads.push_back(creative_ad_2);
 
@@ -153,7 +153,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
 TEST_F(BraveAdsEligibleNotificationAdsV2Test, RoundRobinAlwaysServesASingleAd) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   database::SaveCreativeNotificationAds({creative_ad});
 
   const UserModelInfo user_model{
@@ -188,9 +188,9 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test,
   {
     CreativeNotificationAdList creative_ads;
     creative_ads.push_back(test::BuildCreativeNotificationAd(
-        /*should_generate_random_uuids=*/true));
+        /*use_random_uuids=*/true));
     creative_ads.push_back(test::BuildCreativeNotificationAd(
-        /*should_generate_random_uuids=*/true));
+        /*use_random_uuids=*/true));
     database::SaveCreativeNotificationAds(creative_ads);
   }
 
@@ -246,11 +246,11 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, ZeroPriorityAdIsNeverServed) {
   // bucketing step; `creative_ad_2` has the default priority 2 and should be
   // served.
   CreativeNotificationAdInfo creative_ad_1 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   creative_ad_1.priority = 0;
 
   const CreativeNotificationAdInfo creative_ad_2 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
 
   database::SaveCreativeNotificationAds({creative_ad_1, creative_ad_2});
 
@@ -271,11 +271,11 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test,
   // Arrange: `creative_ad_1` has priority 1 so it must be served over
   // `creative_ad_2` which has priority 2.
   CreativeNotificationAdInfo creative_ad_1 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   creative_ad_1.priority = 1;
 
   CreativeNotificationAdInfo creative_ad_2 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   creative_ad_2.priority = 2;
 
   database::SaveCreativeNotificationAds({creative_ad_1, creative_ad_2});
@@ -299,11 +299,11 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test,
   // higher-priority bucket is empty and the pipeline falls through to the
   // lower-priority bucket.
   CreativeNotificationAdInfo creative_ad_1 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   creative_ad_1.priority = 1;
 
   CreativeNotificationAdInfo creative_ad_2 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   creative_ad_2.priority = 2;
 
   database::SaveCreativeNotificationAds({creative_ad_1, creative_ad_2});
@@ -340,11 +340,11 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test,
        RoundRobinServesHigherPriorityAdAgainAfterAllAdsHaveBeenShown) {
   // Arrange: `creative_ad_1` has priority 1 and `creative_ad_2` has priority 2.
   CreativeNotificationAdInfo creative_ad_1 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   creative_ad_1.priority = 1;
 
   CreativeNotificationAdInfo creative_ad_2 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   creative_ad_2.priority = 2;
 
   database::SaveCreativeNotificationAds({creative_ad_1, creative_ad_2});
@@ -392,11 +392,11 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test,
        RoundRobinPrefersNewHigherPriorityAdOverLowerPriorityAd) {
   // Arrange: `creative_ad_1` has priority 1 and `creative_ad_2` has priority 2.
   CreativeNotificationAdInfo creative_ad_1 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   creative_ad_1.priority = 1;
 
   CreativeNotificationAdInfo creative_ad_2 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   creative_ad_2.priority = 2;
 
   database::SaveCreativeNotificationAds({creative_ad_1, creative_ad_2});
@@ -418,7 +418,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test,
 
   // Add a new priority 1 ad to the campaign.
   CreativeNotificationAdInfo creative_ad_3 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   creative_ad_3.priority = 1;
   database::SaveCreativeNotificationAds({creative_ad_3});
 

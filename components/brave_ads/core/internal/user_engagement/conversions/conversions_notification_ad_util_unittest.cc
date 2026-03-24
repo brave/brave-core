@@ -24,9 +24,9 @@ class BraveAdsConversionsNotificationAdUtilTest : public test::TestBase {};
 TEST_F(BraveAdsConversionsNotificationAdUtilTest,
        AllowedToConvertViewedAdEvent) {
   // Arrange
-  const AdInfo ad = test::BuildAd(
-      mojom::AdType::kNotificationAd, /*should_generate_random_uuids=*/
-      true);
+  const AdInfo ad =
+      test::BuildAd(mojom::AdType::kNotificationAd, /*use_random_uuids=*/
+                    true);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
                    /*created_at=*/test::Now());
@@ -41,7 +41,7 @@ TEST_F(BraveAdsConversionsNotificationAdUtilTest,
   test::OptOutOfNotificationAds();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/false);
+                                  /*use_random_uuids=*/false);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
                    /*created_at=*/test::Now());
@@ -56,7 +56,7 @@ TEST_F(BraveAdsConversionsNotificationAdUtilTest,
   test::DisableBraveRewards();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/false);
+                                  /*use_random_uuids=*/false);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
                    /*created_at=*/test::Now());
@@ -69,7 +69,7 @@ TEST_F(BraveAdsConversionsNotificationAdUtilTest,
        AllowedToConvertClickedAdEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/false);
+                                  /*use_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, mojom::ConfirmationType::kClicked, /*created_at=*/test::Now());
 
@@ -83,7 +83,7 @@ TEST_F(BraveAdsConversionsNotificationAdUtilTest,
   test::OptOutOfNotificationAds();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/false);
+                                  /*use_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, mojom::ConfirmationType::kClicked, /*created_at=*/test::Now());
 
@@ -97,7 +97,7 @@ TEST_F(BraveAdsConversionsNotificationAdUtilTest,
   test::DisableBraveRewards();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/false);
+                                  /*use_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, mojom::ConfirmationType::kClicked, /*created_at=*/test::Now());
 
@@ -109,7 +109,7 @@ TEST_F(BraveAdsConversionsNotificationAdUtilTest,
        NotAllowedToConvertNonViewedOrClickedAdEvents) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/false);
+                                  /*use_random_uuids=*/false);
 
   // Act & Assert
   for (size_t i = 0;

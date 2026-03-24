@@ -12,10 +12,9 @@ struct NotificationAdInfo;
 
 namespace test {
 
-NotificationAdInfo BuildNotificationAd(bool should_generate_random_uuids);
+NotificationAdInfo BuildNotificationAd(bool use_random_uuids);
 
-NotificationAdInfo BuildAndSaveNotificationAd(
-    bool should_generate_random_uuids);
+NotificationAdInfo BuildAndSaveNotificationAd(bool use_random_uuids);
 
 }  // namespace test
 

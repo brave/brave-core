@@ -49,7 +49,7 @@ class BraveAdsNotificationAdEventHandlerTest : public test::TestBase {
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireServedEvent) {
   // Arrange
   const NotificationAdInfo ad =
-      test::BuildAndSaveNotificationAd(/*should_generate_random_uuids=*/false);
+      test::BuildAndSaveNotificationAd(/*use_random_uuids=*/false);
 
   // Act & Assert
   base::RunLoop run_loop;
@@ -64,7 +64,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireServedEvent) {
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireViewedEvent) {
   // Arrange
   const NotificationAdInfo ad =
-      test::BuildAndSaveNotificationAd(/*should_generate_random_uuids=*/false);
+      test::BuildAndSaveNotificationAd(/*use_random_uuids=*/false);
 
   // Act & Assert
   base::RunLoop run_loop;
@@ -79,7 +79,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireViewedEvent) {
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireClickedEvent) {
   // Arrange
   const NotificationAdInfo ad =
-      test::BuildAndSaveNotificationAd(/*should_generate_random_uuids=*/false);
+      test::BuildAndSaveNotificationAd(/*use_random_uuids=*/false);
 
   // Act & Assert
   base::RunLoop run_loop;
@@ -94,7 +94,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireClickedEvent) {
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
   // Arrange
   const NotificationAdInfo ad =
-      test::BuildAndSaveNotificationAd(/*should_generate_random_uuids=*/false);
+      test::BuildAndSaveNotificationAd(/*use_random_uuids=*/false);
 
   // Act & Assert
   base::RunLoop run_loop;
@@ -109,7 +109,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
   // Arrange
   const NotificationAdInfo ad =
-      test::BuildAndSaveNotificationAd(/*should_generate_random_uuids=*/false);
+      test::BuildAndSaveNotificationAd(/*use_random_uuids=*/false);
 
   // Act & Assert
   base::RunLoop run_loop;
@@ -125,7 +125,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest,
        DoNotFireEventIfMissingPlacementId) {
   // Arrange
   const NotificationAdInfo ad =
-      test::BuildAndSaveNotificationAd(/*should_generate_random_uuids=*/false);
+      test::BuildAndSaveNotificationAd(/*use_random_uuids=*/false);
 
   // Act & Assert
   base::RunLoop run_loop;

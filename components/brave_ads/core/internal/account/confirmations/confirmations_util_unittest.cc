@@ -33,7 +33,7 @@ TEST_F(BraveAdsConfirmationsUtilTest, IsRewardConfirmationValid) {
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -45,7 +45,7 @@ TEST_F(BraveAdsConfirmationsUtilTest, IsNonRewardConfirmationValid) {
   test::DisableBraveRewards();
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildNonRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert

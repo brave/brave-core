@@ -23,7 +23,7 @@ class BraveAdsAdEventBuilderTest : public test::TestBase {};
 TEST_F(BraveAdsAdEventBuilderTest, BuildAdEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/false);
+                                  /*use_random_uuids=*/false);
 
   // Act
   const AdEventInfo ad_event =
@@ -44,7 +44,7 @@ TEST_F(BraveAdsAdEventBuilderTest, BuildAdEvent) {
 TEST_F(BraveAdsAdEventBuilderTest, RebuildAdEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/false);
+                                  /*use_random_uuids=*/false);
 
   const AdEventInfo ad_event =
       BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,

@@ -20,20 +20,20 @@ namespace brave_ads::test {
 AdHistoryItemInfo BuildAdHistoryItem(
     mojom::AdType mojom_ad_type,
     mojom::ConfirmationType mojom_confirmation_type,
-    bool should_generate_random_uuids) {
-  const AdInfo ad = BuildAd(mojom_ad_type, should_generate_random_uuids);
+    bool use_random_uuids) {
+  const AdInfo ad = BuildAd(mojom_ad_type, use_random_uuids);
   return BuildAdHistoryItem(ad, mojom_confirmation_type, kTitle, kDescription);
 }
 
 AdHistoryList BuildAdHistory(
     mojom::AdType mojom_ad_type,
     const std::vector<mojom::ConfirmationType>& mojom_confirmation_types,
-    bool should_generate_random_uuids) {
+    bool use_random_uuids) {
   AdHistoryList ad_history;
 
   for (const auto& mojom_confirmation_type : mojom_confirmation_types) {
     const AdHistoryItemInfo ad_history_item = BuildAdHistoryItem(
-        mojom_ad_type, mojom_confirmation_type, should_generate_random_uuids);
+        mojom_ad_type, mojom_confirmation_type, use_random_uuids);
     ad_history.push_back(ad_history_item);
   }
 
@@ -43,9 +43,9 @@ AdHistoryList BuildAdHistory(
 AdHistoryList BuildAdHistoryForSamePlacement(
     mojom::AdType mojom_ad_type,
     const std::vector<mojom::ConfirmationType>& mojom_confirmation_types,
-    bool should_generate_random_uuids) {
-  AdHistoryList ad_history = BuildAdHistory(
-      mojom_ad_type, mojom_confirmation_types, should_generate_random_uuids);
+    bool use_random_uuids) {
+  AdHistoryList ad_history =
+      BuildAdHistory(mojom_ad_type, mojom_confirmation_types, use_random_uuids);
 
   // Assign the same placement id to all ad history items.
   const std::string placement_id =

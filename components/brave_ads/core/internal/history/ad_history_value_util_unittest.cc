@@ -102,7 +102,7 @@ TEST_F(BraveAdsAdHistoryValueUtilTest, AdHistoryToValue) {
       test::BuildAdHistory(mojom::AdType::kNotificationAd,
                            {mojom::ConfirmationType::kViewedImpression,
                             mojom::ConfirmationType::kClicked},
-                           /*should_generate_random_uuids=*/false);
+                           /*use_random_uuids=*/false);
 
   // Act
   const base::ListValue list = AdHistoryToValue(ad_history);

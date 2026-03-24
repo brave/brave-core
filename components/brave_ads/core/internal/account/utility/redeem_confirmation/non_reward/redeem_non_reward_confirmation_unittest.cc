@@ -40,7 +40,7 @@ class BraveAdsRedeemNonRewardConfirmationTest : public test::TestBase {
 TEST_F(BraveAdsRedeemNonRewardConfirmationTest, Redeem) {
   // Arrange
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildNonRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {
@@ -61,7 +61,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest, Redeem) {
 TEST_F(BraveAdsRedeemNonRewardConfirmationTest, RetryRedeeming) {
   // Arrange
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildNonRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {

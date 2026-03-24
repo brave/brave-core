@@ -50,7 +50,7 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kConversion,
-      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/false);
+      /*created_at=*/test::Now(), /*use_random_uuids=*/false);
   ad_events.push_back(ad_event);
 
   const ConversionExclusionRule exclusion_rule(ad_events);
@@ -74,7 +74,7 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kConversion,
-      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/false);
+      /*created_at=*/test::Now(), /*use_random_uuids=*/false);
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
@@ -100,7 +100,7 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kConversion,
-      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/false);
+      /*created_at=*/test::Now(), /*use_random_uuids=*/false);
   for (size_t i = 0;
        i < kShouldExcludeAdIfCreativeSetExceedsConversionCap.Get() - 1; ++i) {
     ad_events.push_back(ad_event);
@@ -127,7 +127,7 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kConversion,
-      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/false);
+      /*created_at=*/test::Now(), /*use_random_uuids=*/false);
   for (size_t i = 0;
        i < kShouldExcludeAdIfCreativeSetExceedsConversionCap.Get(); ++i) {
     ad_events.push_back(ad_event);
@@ -157,7 +157,7 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad_2, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kConversion,
-      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/false);
+      /*created_at=*/test::Now(), /*use_random_uuids=*/false);
   ad_events.push_back(ad_event);
 
   const ConversionExclusionRule exclusion_rule(ad_events);

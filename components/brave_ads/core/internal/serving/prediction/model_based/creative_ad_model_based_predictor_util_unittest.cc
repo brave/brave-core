@@ -27,19 +27,19 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/
                                         true);
   creative_ad_1.segment = "parent-child";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/
                                         true);
   creative_ad_2.segment = "xyzzy-thud";
   creative_ads.push_back(creative_ad_2);
 
   CreativeNotificationAdInfo creative_ad_3 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/
                                         true);
   creative_ad_3.segment = "parent";
   creative_ads.push_back(creative_ad_3);
@@ -54,7 +54,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
       test::BuildAdEvent(creative_ad_2, mojom::AdType::kNotificationAd,
                          mojom::ConfirmationType::kViewedImpression,
                          /*created_at=*/test::Now() - base::Hours(3),
-                         /*should_generate_random_uuids=*/true);
+                         /*use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   // Act

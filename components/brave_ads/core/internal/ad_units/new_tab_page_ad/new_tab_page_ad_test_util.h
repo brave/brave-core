@@ -16,11 +16,11 @@ namespace test {
 
 NewTabPageAdInfo BuildNewTabPageAd(
     CreativeNewTabPageAdWallpaperType wallpaper_type,
-    bool should_generate_random_uuids);
+    bool use_random_uuids);
 
 NewTabPageAdInfo BuildAndSaveNewTabPageAd(
     CreativeNewTabPageAdWallpaperType wallpaper_type,
-    bool should_generate_random_uuids);
+    bool use_random_uuids);
 
 }  // namespace test
 

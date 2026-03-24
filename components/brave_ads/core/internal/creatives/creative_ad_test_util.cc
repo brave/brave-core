@@ -13,17 +13,14 @@
 
 namespace brave_ads::test {
 
-CreativeAdInfo BuildCreativeAd(bool should_generate_random_uuids) {
+CreativeAdInfo BuildCreativeAd(bool use_random_uuids) {
   CreativeAdInfo creative_ad;
 
   creative_ad.creative_instance_id =
-      RandomUuidOr(should_generate_random_uuids, kCreativeInstanceId);
-  creative_ad.creative_set_id =
-      RandomUuidOr(should_generate_random_uuids, kCreativeSetId);
-  creative_ad.campaign_id =
-      RandomUuidOr(should_generate_random_uuids, kCampaignId);
-  creative_ad.advertiser_id =
-      RandomUuidOr(should_generate_random_uuids, kAdvertiserId);
+      RandomUuidOr(use_random_uuids, kCreativeInstanceId);
+  creative_ad.creative_set_id = RandomUuidOr(use_random_uuids, kCreativeSetId);
+  creative_ad.campaign_id = RandomUuidOr(use_random_uuids, kCampaignId);
+  creative_ad.advertiser_id = RandomUuidOr(use_random_uuids, kAdvertiserId);
 
   creative_ad.metric_type = mojom::NewTabPageAdMetricType::kConfirmation;
 

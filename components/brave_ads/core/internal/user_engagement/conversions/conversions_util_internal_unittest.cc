@@ -32,7 +32,7 @@ TEST_F(BraveAdsConversionsUtilInternalTest,
     const auto mojom_ad_type = static_cast<mojom::AdType>(i);
 
     const AdInfo ad = test::BuildAd(mojom_ad_type,
-                                    /*should_generate_random_uuids=*/false);
+                                    /*use_random_uuids=*/false);
 
     for (size_t j = 0;
          j < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++j) {
@@ -55,7 +55,7 @@ TEST_F(BraveAdsConversionsUtilInternalTest,
     const auto mojom_ad_type = static_cast<mojom::AdType>(i);
 
     const AdInfo ad = test::BuildAd(mojom_ad_type,
-                                    /*should_generate_random_uuids=*/false);
+                                    /*use_random_uuids=*/false);
 
     for (size_t j = 0;
          j < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++j) {

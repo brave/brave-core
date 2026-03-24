@@ -32,7 +32,7 @@ TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
@@ -51,7 +51,7 @@ TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_THAT(BuildCreatedAtTimestampUserData(transaction),

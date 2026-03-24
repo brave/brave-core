@@ -29,7 +29,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, PredictCreativeAd) {
 
   CreativeNotificationAdList creative_ads;
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/
                                         true);
   creative_ads.push_back(creative_ad);
 
@@ -39,10 +39,10 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, PredictCreativeAd) {
       InterestUserModelInfo{SegmentList{"parent-child"}}};
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, mojom::AdType::kNotificationAd,
-      mojom::ConfirmationType::kViewedImpression,
-      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
+  const AdEventInfo ad_event =
+      test::BuildAdEvent(creative_ad, mojom::AdType::kNotificationAd,
+                         mojom::ConfirmationType::kViewedImpression,
+                         /*created_at=*/test::Now(), /*use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   // Act & Assert
@@ -65,7 +65,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, DoNotPredictCreativeAd) {
 
   CreativeNotificationAdList creative_ads;
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/
                                         true);
   creative_ads.push_back(creative_ad);
 
@@ -75,10 +75,10 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, DoNotPredictCreativeAd) {
       InterestUserModelInfo{SegmentList{"parent-child"}}};
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, mojom::AdType::kNotificationAd,
-      mojom::ConfirmationType::kViewedImpression,
-      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
+  const AdEventInfo ad_event =
+      test::BuildAdEvent(creative_ad, mojom::AdType::kNotificationAd,
+                         mojom::ConfirmationType::kViewedImpression,
+                         /*created_at=*/test::Now(), /*use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   // Act & Assert

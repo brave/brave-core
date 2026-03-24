@@ -52,7 +52,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest, FireServedEvent) {
   // Arrange
   const NewTabPageAdInfo ad =
       test::BuildAndSaveNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                     /*should_generate_random_uuids=*/false);
+                                     /*use_random_uuids=*/false);
 
   // Act & Assert
   base::RunLoop run_loop;
@@ -69,7 +69,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest, FireViewedEvent) {
   // Arrange
   const NewTabPageAdInfo ad =
       test::BuildAndSaveNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                     /*should_generate_random_uuids=*/false);
+                                     /*use_random_uuids=*/false);
   test::RecordAdEvent(ad, mojom::ConfirmationType::kServedImpression);
 
   // Act & Assert
@@ -88,7 +88,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
   // Arrange
   const NewTabPageAdInfo ad =
       test::BuildAndSaveNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                     /*should_generate_random_uuids=*/false);
+                                     /*use_random_uuids=*/false);
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
                             mojom::ConfirmationType::kViewedImpression});
 
@@ -111,7 +111,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
   // Arrange
   const NewTabPageAdInfo ad =
       test::BuildAndSaveNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                     /*should_generate_random_uuids=*/false);
+                                     /*use_random_uuids=*/false);
 
   // Act & Assert
   base::RunLoop run_loop;
@@ -131,7 +131,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest, FireClickedEvent) {
   // Arrange
   const NewTabPageAdInfo ad =
       test::BuildAndSaveNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                     /*should_generate_random_uuids=*/false);
+                                     /*use_random_uuids=*/false);
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
                             mojom::ConfirmationType::kViewedImpression});
 
@@ -150,7 +150,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
   // Arrange
   const NewTabPageAdInfo ad =
       test::BuildAndSaveNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                     /*should_generate_random_uuids=*/false);
+                                     /*use_random_uuids=*/false);
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
                             mojom::ConfirmationType::kViewedImpression,
                             mojom::ConfirmationType::kClicked});
@@ -172,7 +172,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
   // Arrange
   const NewTabPageAdInfo ad =
       test::BuildAndSaveNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                     /*should_generate_random_uuids=*/false);
+                                     /*use_random_uuids=*/false);
 
   // Act & Assert
   base::RunLoop run_loop;
@@ -223,7 +223,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
   // Arrange
   const NewTabPageAdInfo ad =
       test::BuildAndSaveNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                     /*should_generate_random_uuids=*/false);
+                                     /*use_random_uuids=*/false);
 
   // Act & Assert
   base::RunLoop run_loop;

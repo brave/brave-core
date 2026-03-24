@@ -187,14 +187,14 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
        ComputeCreativeAdModelBasedPredictorLastSeenAdInputVariable) {
   // Arrange
   const CreativeAdInfo creative_ad =
-      test::BuildCreativeAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeAd(/*use_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event =
       test::BuildAdEvent(creative_ad, mojom::AdType::kNotificationAd,
                          mojom::ConfirmationType::kViewedImpression,
                          /*created_at=*/test::Now() - base::Hours(7),
-                         /*should_generate_random_uuids=*/true);
+                         /*use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const CreativeAdModelBasedPredictorLastSeenInputVariableInfo
@@ -210,7 +210,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
        ComputeCreativeAdModelBasedPredictorLastSeenAdInputVariableIfNeverSeen) {
   // Arrange
   const CreativeAdInfo creative_ad =
-      test::BuildCreativeAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeAd(/*use_random_uuids=*/true);
 
   const CreativeAdModelBasedPredictorLastSeenInputVariableInfo
       last_seen_ad_input_variable =

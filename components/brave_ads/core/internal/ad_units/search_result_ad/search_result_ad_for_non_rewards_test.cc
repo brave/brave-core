@@ -47,7 +47,7 @@ TEST_F(BraveAdsSearchResultAdForNonRewardsIntegrationTest,
   // Act & Assert
   TriggerSearchResultAdEventAndVerifyExpectations(
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true),
+          /*use_random_uuids=*/true),
       mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/false);
 }
@@ -60,7 +60,7 @@ TEST_F(BraveAdsSearchResultAdForNonRewardsIntegrationTest,
   TriggerSearchResultAdEventAndVerifyExpectations(
       // This viewed impression ad event will be deferred.
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true),
+          /*use_random_uuids=*/true),
       mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/false);
 
@@ -69,7 +69,7 @@ TEST_F(BraveAdsSearchResultAdForNonRewardsIntegrationTest,
       // This viewed impression ad event will be deferred as the previous viewed
       // impression ad event has not fired.
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true),
+          /*use_random_uuids=*/true),
       mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/false);
 
@@ -81,7 +81,7 @@ TEST_F(BraveAdsSearchResultAdForNonRewardsIntegrationTest,
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
 
   // Act & Assert
   TriggerSearchResultAdEventAndVerifyExpectations(

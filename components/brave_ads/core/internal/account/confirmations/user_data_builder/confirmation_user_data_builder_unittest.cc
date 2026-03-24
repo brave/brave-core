@@ -36,7 +36,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest, BuildConfirmationUserData) {
   const TransactionInfo transaction = test::BuildTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
 
   // Act
   const UserDataInfo user_data = BuildConfirmationUserData(
@@ -81,7 +81,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   const TransactionInfo transaction = test::BuildTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
 
   // Act
   const UserDataInfo user_data = BuildConfirmationUserData(

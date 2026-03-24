@@ -37,10 +37,10 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest, ShouldIncludeIfDoesNotExceedCap) {
   creative_ad.daily_cap = 2;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, mojom::AdType::kNotificationAd,
-      mojom::ConfirmationType::kServedImpression,
-      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
+  const AdEventInfo ad_event =
+      test::BuildAdEvent(creative_ad, mojom::AdType::kNotificationAd,
+                         mojom::ConfirmationType::kServedImpression,
+                         /*created_at=*/test::Now(), /*use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const DailyCapExclusionRule exclusion_rule(ad_events);
@@ -63,7 +63,7 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest,
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad_2, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kServedImpression, /*created_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const DailyCapExclusionRule exclusion_rule(ad_events);
@@ -80,10 +80,10 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest,
   creative_ad.daily_cap = 2;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, mojom::AdType::kNotificationAd,
-      mojom::ConfirmationType::kServedImpression,
-      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
+  const AdEventInfo ad_event =
+      test::BuildAdEvent(creative_ad, mojom::AdType::kNotificationAd,
+                         mojom::ConfirmationType::kServedImpression,
+                         /*created_at=*/test::Now(), /*use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const DailyCapExclusionRule exclusion_rule(ad_events);
@@ -102,10 +102,10 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest,
   creative_ad.daily_cap = 2;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, mojom::AdType::kNotificationAd,
-      mojom::ConfirmationType::kServedImpression,
-      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
+  const AdEventInfo ad_event =
+      test::BuildAdEvent(creative_ad, mojom::AdType::kNotificationAd,
+                         mojom::ConfirmationType::kServedImpression,
+                         /*created_at=*/test::Now(), /*use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const DailyCapExclusionRule exclusion_rule(ad_events);
@@ -123,10 +123,10 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest, ShouldExcludeIfExceedsCap) {
   creative_ad.daily_cap = 2;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, mojom::AdType::kNotificationAd,
-      mojom::ConfirmationType::kServedImpression,
-      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
+  const AdEventInfo ad_event =
+      test::BuildAdEvent(creative_ad, mojom::AdType::kNotificationAd,
+                         mojom::ConfirmationType::kServedImpression,
+                         /*created_at=*/test::Now(), /*use_random_uuids=*/true);
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 

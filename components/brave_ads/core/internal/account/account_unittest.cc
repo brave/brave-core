@@ -118,13 +118,13 @@ TEST_F(BraveAdsAccountTest, GetStatementForRewardsUser) {
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 = test::BuildTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(test::TimeFromString("18 November 2020"));
@@ -132,13 +132,13 @@ TEST_F(BraveAdsAccountTest, GetStatementForRewardsUser) {
   const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 = test::BuildTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   transactions.push_back(transaction_4);
 
   AdvanceClockTo(test::TimeFromString("25 December 2020"));
@@ -146,19 +146,19 @@ TEST_F(BraveAdsAccountTest, GetStatementForRewardsUser) {
   const TransactionInfo transaction_5 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   transactions.push_back(transaction_5);
 
   const TransactionInfo transaction_6 = test::BuildTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   transactions.push_back(transaction_6);
 
   const TransactionInfo transaction_7 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   transactions.push_back(transaction_7);
 
   database::SaveTransactions(transactions);
@@ -207,7 +207,7 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
   test::RefillConfirmationTokens(/*count=*/1);
 
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/false);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert
@@ -243,7 +243,7 @@ TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
   test::RefillConfirmationTokens(/*count=*/1);
 
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/false);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert
@@ -335,7 +335,7 @@ TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   test::RefillConfirmationTokens(/*count=*/1);
 
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/false);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert
@@ -356,7 +356,7 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingCashForRewardsUser) {
   test::RefillConfirmationTokens(/*count=*/1);
 
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/false);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
@@ -403,7 +403,7 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingNonCashForRewardsUser) {
   test::RefillConfirmationTokens(/*count=*/1);
 
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/false);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
@@ -450,7 +450,7 @@ TEST_F(BraveAdsAccountTest,
 
   const CreativeNewTabPageAdInfo creative_ad =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/false);
+                                      /*use_random_uuids=*/false);
   test::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act

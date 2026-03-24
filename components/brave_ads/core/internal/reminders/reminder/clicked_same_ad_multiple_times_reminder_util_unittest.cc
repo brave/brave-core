@@ -71,7 +71,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
           mojom::ConfirmationType::kClicked,
           /*count=*/kRemindUserIfClickingTheSameAdAfter.Get()),
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_TRUE(DidUserClickTheSameAdMultipleTimes(test::kCreativeInstanceId,
@@ -88,7 +88,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
           mojom::ConfirmationType::kClicked,
           /*count=*/kRemindUserIfClickingTheSameAdAfter.Get() - 1),
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_FALSE(DidUserClickTheSameAdMultipleTimes(test::kCreativeInstanceId,
@@ -105,7 +105,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
           mojom::ConfirmationType::kClicked,
           /*count=*/kRemindUserIfClickingTheSameAdAfter.Get() * 2),
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_TRUE(DidUserClickTheSameAdMultipleTimes(test::kCreativeInstanceId,
@@ -122,7 +122,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
           mojom::ConfirmationType::kClicked,
           /*count=*/(kRemindUserIfClickingTheSameAdAfter.Get() * 2) - 1),
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_FALSE(DidUserClickTheSameAdMultipleTimes(test::kCreativeInstanceId,
@@ -139,7 +139,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
           mojom::ConfirmationType::kClicked,
           /*count=*/kRemindUserIfClickingTheSameAdAfter.Get()),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_FALSE(DidUserClickTheSameAdMultipleTimes(test::kCreativeInstanceId,

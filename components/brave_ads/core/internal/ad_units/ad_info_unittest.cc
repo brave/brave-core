@@ -18,7 +18,7 @@ class BraveAdsAdInfoTest : public test::TestBase {};
 TEST_F(BraveAdsAdInfoTest, IsValid) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_TRUE(ad.IsValid());

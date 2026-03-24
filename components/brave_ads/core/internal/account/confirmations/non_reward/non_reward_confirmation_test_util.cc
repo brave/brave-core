@@ -17,12 +17,12 @@
 namespace brave_ads::test {
 
 std::optional<ConfirmationInfo> BuildNonRewardConfirmation(
-    bool should_generate_random_uuids) {
+    bool use_random_uuids) {
   CHECK(!UserHasJoinedBraveRewards());
 
   const TransactionInfo transaction = BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
-      mojom::ConfirmationType::kViewedImpression, should_generate_random_uuids);
+      mojom::ConfirmationType::kViewedImpression, use_random_uuids);
   return BuildNonRewardConfirmation(transaction, /*user_data=*/{});
 }
 

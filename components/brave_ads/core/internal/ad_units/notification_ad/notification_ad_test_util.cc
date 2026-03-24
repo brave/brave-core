@@ -14,16 +14,15 @@
 
 namespace brave_ads::test {
 
-NotificationAdInfo BuildNotificationAd(bool should_generate_random_uuids) {
+NotificationAdInfo BuildNotificationAd(bool use_random_uuids) {
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(should_generate_random_uuids);
+      BuildCreativeNotificationAd(use_random_uuids);
   return BuildNotificationAd(creative_ad);
 }
 
-NotificationAdInfo BuildAndSaveNotificationAd(
-    bool should_generate_random_uuids) {
+NotificationAdInfo BuildAndSaveNotificationAd(bool use_random_uuids) {
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(should_generate_random_uuids);
+      BuildCreativeNotificationAd(use_random_uuids);
   database::SaveCreativeNotificationAds({creative_ad});
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
   NotificationAdManager::GetInstance().Add(ad);

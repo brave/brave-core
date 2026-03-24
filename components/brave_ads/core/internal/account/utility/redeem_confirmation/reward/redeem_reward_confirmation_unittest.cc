@@ -44,7 +44,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, Redeem) {
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {
@@ -74,7 +74,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, RetryRedeemingIfNoIssuers) {
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/true);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/true);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -99,7 +99,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {
@@ -135,7 +135,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {
@@ -171,7 +171,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {
@@ -206,7 +206,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {
@@ -243,7 +243,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {
@@ -278,7 +278,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {
@@ -326,7 +326,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {
@@ -375,7 +375,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {
@@ -417,7 +417,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {
@@ -465,7 +465,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {
@@ -514,7 +514,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {
@@ -562,7 +562,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {
@@ -610,7 +610,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {
@@ -659,7 +659,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {
@@ -705,7 +705,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {
@@ -754,7 +754,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {
@@ -802,7 +802,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, FetchPaymentTokenAfter) {
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {

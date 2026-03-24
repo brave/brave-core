@@ -100,7 +100,7 @@ TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromValue) {
   EXPECT_EQ(ad_history_item,
             test::BuildAdHistoryItem(mojom::AdType::kNotificationAd,
                                      mojom::ConfirmationType::kViewedImpression,
-                                     /*should_generate_random_uuids=*/false));
+                                     /*use_random_uuids=*/false));
 }
 
 TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromLegacyValue) {
@@ -115,7 +115,7 @@ TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromLegacyValue) {
   EXPECT_EQ(ad_history_item,
             test::BuildAdHistoryItem(mojom::AdType::kNotificationAd,
                                      mojom::ConfirmationType::kViewedImpression,
-                                     /*should_generate_random_uuids=*/false));
+                                     /*use_random_uuids=*/false));
 }
 
 TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemToValue) {
@@ -123,7 +123,7 @@ TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemToValue) {
   const AdHistoryItemInfo ad_history_item =
       test::BuildAdHistoryItem(mojom::AdType::kNotificationAd,
                                mojom::ConfirmationType::kViewedImpression,
-                               /*should_generate_random_uuids=*/false);
+                               /*use_random_uuids=*/false);
 
   // Act
   const base::DictValue dict = AdHistoryItemToValue(ad_history_item);
