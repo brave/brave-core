@@ -108,19 +108,29 @@ void AdBlockService::SourceProviderObserver::OnChanged(bool is_default_engine) {
 
 void AdBlockService::SourceProviderObserver::PreloadCachedDAT(
     DATFileDataBuffer dat) {
-  task_runner_->PostTaskAndReply(
+  task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(
           [](base::WeakPtr<AdBlockEngine> engine, DATFileDataBuffer dat) {
             if (engine) {
               // Resources will be loaded when available
               auto empty_resources = adblock::new_empty_resource_storage();
-              engine->Load(true, std::move(dat), *empty_resources);
+              return engine->Load(true, std::move(dat), *empty_resources);
             }
+            return false;
           },
           adblock_engine_->AsWeakPtr(), std::move(dat)),
-      base::BindOnce(&AdBlockService::SourceProviderObserver::LoadResources,
-                     weak_factory_.GetWeakPtr()));
+      base::BindOnce(
+          &AdBlockService::SourceProviderObserver::OnPreloadCachedDAT,
+          weak_factory_.GetWeakPtr()));
+}
+
+void AdBlockService::SourceProviderObserver::OnPreloadCachedDAT(bool success) {
+  if (success) {
+    LoadResources();
+  } else {
+    OnChanged(adblock_engine_->IsDefaultEngine(), base::Time());
+  }
 }
 
 void AdBlockService::SourceProviderObserver::OnFilterSetCallbackLoaded(

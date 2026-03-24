@@ -82,6 +82,8 @@ class AdBlockService {
         base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb);
     void OnFilterSetCreated(std::unique_ptr<rust::Box<adblock::FilterSet>>);
 
+    void OnPreloadCachedDAT(bool success);
+
     void LoadResources();
     // AdBlockResourceProvider::Observer
     void OnResourcesLoaded(AdblockResourceStorageBox) override;
