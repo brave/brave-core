@@ -53,8 +53,7 @@ TEST_F(BraveAdsNormalizationTransformationTest, NormalizationTest) {
 
   ASSERT_EQ(DataType::kVector, data->GetType());
 
-  const VectorData* const vector_data =
-      static_cast<VectorData*>(data.release());
+  const VectorData* const vector_data = static_cast<VectorData*>(data.get());
 
   std::vector<double> components;
   double s = 0.0;
