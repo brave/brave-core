@@ -601,6 +601,15 @@ import os.log
     Self.log.debug("Removed rule list for `\(identifier)`")
   }
 
+  /// Removes all rule lists from rule store and our cache.
+  public func removeAllRuleLists() async throws {
+    cachedRuleLists.removeAll()
+    for identifier in await ruleStore.availableIdentifiers() ?? [] {
+      versions.value.removeValue(forKey: identifier)
+      try await ruleStore.removeContentRuleList(forIdentifier: identifier)
+    }
+  }
+
   private func decode(encodedContentRuleList: String) throws -> [[String: Any?]] {
     guard let blocklistData = encodedContentRuleList.data(using: .utf8) else {
       assertionFailure()

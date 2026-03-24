@@ -14,6 +14,12 @@ struct AdBlockDebugView: View {
     Form {
       CompileContentBlockersSectionView()
       CorruptCacheSectionView()
+      NavigationLink(
+        destination: AdblockRuleExclusionView(),
+        label: {
+          Text("Adblock Rule Exclusions")
+        }
+      )
     }
   }
 }
@@ -289,5 +295,129 @@ private struct CorruptCacheSectionView: View {
     await AsyncFileManager.default.createFile(atPath: cachedDATFile.path, contents: corruptedData)
 
     return true
+  }
+}
+
+struct AdblockRuleExclusionView: View {
+
+  /// The rules to exclude from AdblockEngine & Content Blockers
+  @State private var rulesToExclude = ""
+  /// Any errors that are seen during saving or editing which we can display
+  @State private var rulesError: Error?
+  /// Indicates if we are currently loading the custom exclusion rules
+  @State private var isLoading = false
+  /// Indicates if we are currently saving the custom exclusion rules
+  @State private var isSaving = false
+  @Environment(\.dismiss) private var dismiss: DismissAction
+  @ScaledMetric private var editorFontSize: CGFloat = 14
+  private var customFilterListStorage = CustomFilterListStorage.shared
+
+  private func loadExclusionRules() async {
+    isLoading = true
+    defer { isLoading = false }
+
+    do {
+      self.rulesToExclude = try await customFilterListStorage.loadCustomExclusionRules() ?? ""
+    } catch {
+      rulesError = error
+    }
+  }
+
+  private func saveExlusionRules() {
+    guard !isLoading && !isSaving else { return }
+    Task {
+      isSaving = true
+      defer { isSaving = false }
+      do {
+        // Force reset the Content Blocker rule list caches.
+        if !rulesToExclude.isEmpty {
+          try await customFilterListStorage.save(customExclusionRules: rulesToExclude)
+        } else {
+          try await customFilterListStorage.deleteCustomExclusionRules()
+        }
+
+        dismiss()
+      } catch {
+        // Could not load the rules
+        self.rulesError = error
+      }
+    }
+  }
+
+  private var saveToolbarItem: ToolbarItem<(), some View> {
+    ToolbarItem(placement: .confirmationAction) {
+      if isSaving {
+        ProgressView()
+      } else {
+        Button(
+          action: saveExlusionRules,
+          label: {
+            Label(Strings.saveButtonTitle, braveSystemImage: "leo.check.normal")
+              .labelStyle(.titleOnly)
+          }
+        )
+      }
+    }
+  }
+
+  var body: some View {
+    Form {
+      Section(
+        content: {
+          TextEditor(text: $rulesToExclude)
+            .font(.system(size: editorFontSize, weight: .regular).monospaced())
+            .foregroundStyle(Color(braveSystemName: .textPrimary))
+            .frame(height: 400)
+            .overlay(
+              alignment: isLoading ? .center : .topLeading,
+              content: {
+                if isLoading {
+                  ProgressView()
+                } else {
+                  Text("Enter rules to exclude them from Adblock Engine and Content Blockers")
+                    .multilineTextAlignment(.leading)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 8)
+                    .disabled(true)
+                    .allowsHitTesting(false)
+                    .font(.body)
+                    .frame(
+                      maxWidth: .infinity,
+                      maxHeight: .infinity,
+                      alignment: .topLeading
+                    )
+                    .foregroundColor(Color(braveSystemName: .textDisabled))
+                    .opacity(rulesToExclude.isEmpty ? 1 : 0)
+                    .accessibilityHidden(!rulesToExclude.isEmpty)
+                }
+              }
+            )
+            .background(
+              Color(.secondaryBraveGroupedBackground),
+              in: RoundedRectangle(cornerRadius: 12, style: .continuous)
+            )
+        },
+        header: {
+          Text("Rules to Exclude")
+        },
+        footer: {
+          Text("Rules should be separated by new lines and match the exact rule you are excluding.")
+        }
+      )
+    }
+    .scrollContentBackground(.hidden)
+    .scrollDismissesKeyboard(.interactively)
+    .background(
+      Color(.secondaryBraveBackground)
+        .edgesIgnoringSafeArea(.all)
+    )
+    .navigationTitle(Text("Adblock Rule Exclusions"))
+    .navigationBarTitleDisplayMode(.inline)
+    .toolbar {
+      saveToolbarItem
+    }
+    .task {
+      await loadExclusionRules()
+    }
   }
 }
