@@ -52,6 +52,7 @@ public final class FakeTabState: TabState {
   public var visibleSecureContentState: SecureContentState { .unknown }
   public var serverTrust: SecTrust? { nil }
   public var favicon: Favicon?
+  public var faviconStatus: FaviconStatus? { nil }
   public var url: URL? { visibleURL }
   public var visibleURL: URL?
   public var lastCommittedURL: URL?
