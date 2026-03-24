@@ -65,6 +65,50 @@ public class BraveOriginSubscriptionPrefs {
     private static final String JSON_VALUE_ANDROID = "android";
 
     /**
+     * Callback that fires when fetchOrderCredentials completes. Called with {@code true} on
+     * success, {@code false} on failure. Only one observer at a time (the currently-open
+     * BraveOriginPreferences).
+     */
+    @Nullable private static Callback<Boolean> sCredentialsFetchedCallback;
+
+    /**
+     * Registers a one-shot callback that will be invoked on the UI thread when
+     * fetchOrderCredentials finishes. Any previously registered callback is replaced.
+     *
+     * @param callback Called with true on success, false on failure.
+     */
+    public static void setCredentialsFetchedCallback(@Nullable Callback<Boolean> callback) {
+        sCredentialsFetchedCallback = callback;
+    }
+
+    /**
+     * Returns true when a purchase has been made (subscription active) but fetchOrderCredentials
+     * has not yet completed (order ID is still empty).
+     */
+    public static boolean isFetchingCredentials(@Nullable Profile profile) {
+        if (profile == null) {
+            return false;
+        }
+        PrefService prefService = UserPrefs.get(profile);
+        return prefService.getBoolean(BravePref.BRAVE_ORIGIN_SUBSCRIPTION_ACTIVE_ANDROID)
+                && prefService.getString(BravePref.BRAVE_ORIGIN_ORDER_ID_ANDROID).isEmpty()
+                && !prefService.getString(BravePref.BRAVE_ORIGIN_PURCHASE_TOKEN_ANDROID).isEmpty();
+    }
+
+    /**
+     * Fires the one-shot credentials-fetched callback, if registered.
+     *
+     * @param success Whether the credential fetch succeeded.
+     */
+    private static void notifyCredentialsFetched(boolean success) {
+        Callback<Boolean> callback = sCredentialsFetchedCallback;
+        sCredentialsFetchedCallback = null;
+        if (callback != null) {
+            PostTask.postTask(TaskTraits.UI_DEFAULT, () -> callback.onResult(success));
+        }
+    }
+
+    /**
      * Queries Google Play for an existing Origin purchase and restores it if found. This handles
      * the case where a user changes devices - the purchase exists in their Google account but the
      * local prefs are empty.
@@ -244,6 +288,7 @@ public class BraveOriginSubscriptionPrefs {
                                         Base64.NO_WRAP);
                     } catch (JSONException e) {
                         Log.e(TAG, "Failed to create JSON request", e);
+                        notifyCredentialsFetched(false);
                         return;
                     }
 
@@ -256,6 +301,7 @@ public class BraveOriginSubscriptionPrefs {
                                                 .getSkusService(profile, null);
                                 if (skusService == null) {
                                     Log.e(TAG, "SkusService is null, cannot create order");
+                                    notifyCredentialsFetched(false);
                                     return;
                                 }
                                 String domain =
@@ -277,6 +323,7 @@ public class BraveOriginSubscriptionPrefs {
                                                                         ? result.message
                                                                         : "null result"));
                                                 skusService.close();
+                                                notifyCredentialsFetched(false);
                                                 return;
                                             }
                                             // Fetch order credentials using the same service
@@ -300,6 +347,7 @@ public class BraveOriginSubscriptionPrefs {
             Profile profile, @Nullable String orderId, SkusService skusService, String domain) {
         if (orderId == null || orderId.isEmpty()) {
             skusService.close();
+            notifyCredentialsFetched(false);
             return;
         }
 
@@ -307,6 +355,7 @@ public class BraveOriginSubscriptionPrefs {
                 domain,
                 orderId,
                 (result) -> {
+                    boolean success = false;
                     try {
                         if (result == null || result.code != SkusResultCode.OK) {
                             Log.e(
@@ -320,8 +369,10 @@ public class BraveOriginSubscriptionPrefs {
                         // Store the order ID
                         UserPrefs.get(profile)
                                 .setString(BravePref.BRAVE_ORIGIN_ORDER_ID_ANDROID, orderId);
+                        success = true;
                     } finally {
                         skusService.close();
+                        notifyCredentialsFetched(success);
                     }
                 });
     }
