@@ -66,6 +66,7 @@ BraveNewsTabHelper::~BraveNewsTabHelper() = default;
 
 const std::vector<GURL> BraveNewsTabHelper::GetAvailableFeedUrls() {
   std::vector<GURL> feeds;
+  feeds.reserve(1+rss_page_feeds.size());
   base::flat_set<GURL> seen_feeds;
 
   if (default_feed_) {

@@ -56,6 +56,8 @@ const char* GetAutoSecureRequestsHistogramName() {
 
 std::vector<const char*> GetDisabledAutoSecureRequestsHistogramNames() {
   std::vector<const char*> disabled_names;
+  disabled_names.reserve(4);
+
   const char* active_name = GetAutoSecureRequestsHistogramName();
 
   if (active_name != kAutoSecureRequestsHistogramName) {

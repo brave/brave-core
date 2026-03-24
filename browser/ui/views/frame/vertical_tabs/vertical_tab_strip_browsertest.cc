@@ -1253,7 +1253,9 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripStringBrowserTest, ContextMenuString) {
     auto menu = CreateMenuControllerAt(/*tab_index=*/0);
     auto* menu_model = CreateMenuModelAt(menu.get(), /*tab_index=*/0);
     std::vector<std::u16string> labels;
-    for (auto i = 0u; i < menu_model->GetItemCount(); i++) {
+	auto item_count = menu_model->GetItemCount();
+	labels.reserve(item_count);
+    for (auto i = 0u; i < item_count; i++) {
       labels.push_back(menu_model->GetLabelAt(i));
     }
     return labels;

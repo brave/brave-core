@@ -31,6 +31,7 @@ BrowserToolProvider::~BrowserToolProvider() = default;
 
 std::vector<base::WeakPtr<Tool>> BrowserToolProvider::GetTools() {
   std::vector<base::WeakPtr<Tool>> tool_ptrs;
+  tool_ptrs.reserve(2);
   if (code_execution_tool_) {
     tool_ptrs.push_back(code_execution_tool_->GetWeakPtr());
   }

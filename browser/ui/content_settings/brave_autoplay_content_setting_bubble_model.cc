@@ -74,6 +74,7 @@ void BraveAutoplayContentSettingBubbleModel::SetRadioGroup() {
   DCHECK(!allowed || content_settings->IsContentAllowed(content_type()));
 
   RadioGroup radio_group;
+  radio_group.radio_items.reserve(2);
   radio_group.url = url;
   std::u16string radio_allow_label =
       l10n_util::GetStringFUTF16(IDS_BLOCKED_AUTOPLAY_UNBLOCK, display_host);

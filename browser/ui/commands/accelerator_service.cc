@@ -94,6 +94,7 @@ mojom::CommandPtr ToMojoCommand(
             return !default_accelerator_codes.contains(ToCodesString(a));
           }) != accelerators.end();
 
+  command->accelerators.accelerators.reserve(accelerators.size());
   for (const auto& accelerator : accelerators) {
     auto a = mojom::Accelerator::New();
     a->codes = commands::ToCodesString(accelerator);

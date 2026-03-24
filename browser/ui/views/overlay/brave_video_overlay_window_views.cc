@@ -113,6 +113,7 @@ void BraveVideoOverlayWindowViews::LayoutCenterControls() {
   const auto window_size = GetBounds().size();
 
   std::vector<OverlayWindowImageButton*> visible_controls;
+  visible_controls.reserve(6);
   if (replay_10_seconds_button_->GetVisible()) {
     visible_controls.push_back(replay_10_seconds_button_.get());
   }

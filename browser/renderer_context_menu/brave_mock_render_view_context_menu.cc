@@ -125,6 +125,7 @@ void BraveMockRenderViewContextMenu::AddSeparator() {
 void BraveMockRenderViewContextMenu::AddSubMenu(int command_id,
                                                 const std::u16string& label,
                                                 ui::MenuModel* model) {
+  items_.reserve(items_.size()+1+model->GetItemCount());
   MockMenuItem item;
   item.command_id = command_id;
   item.enabled = observer_->IsCommandIdEnabled(command_id);

@@ -516,6 +516,7 @@ PlaylistMoveDialog::PlaylistMoveDialog(
   } else {
     auto service = get_move_param().service;
     std::vector<playlist::mojom::PlaylistItemPtr> items;
+	items.reserve(get_move_param().items.size());
     for (const auto& item_id : get_move_param().items) {
       items.push_back(service->GetPlaylistItem(item_id));
     }

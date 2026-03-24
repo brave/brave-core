@@ -161,6 +161,7 @@ void BraveConfirmInfoBar::Layout(PassKey) {
 
   int x = GetStartX();
   Views views;
+  views.reserve(2);
   views.push_back(label_.get());
   views.push_back(link_.get());
   AssignWidths(&views, std::max(0, GetEndX() - x - NonLabelWidth()));

@@ -543,11 +543,12 @@ void BraveRewardsNativeWorker::OnGetCurrentBalanceReport(
   base::android::ScopedJavaLocalRef<jdoubleArray> java_array;
   JNIEnv* env = base::android::AttachCurrentThread();
   if (report) {
-    std::vector<double> values;
-    values.push_back(report->earning_from_ads);
-    values.push_back(report->auto_contribute);
-    values.push_back(report->recurring_donation);
-    values.push_back(report->one_time_donation);
+    std::vector<double> values = {
+		report->earning_from_ads,
+		report->auto_contribute,
+		report->recurring_donation,
+		report->one_time_donation
+	};
     java_array = base::android::ToJavaDoubleArray(env, values);
   }
   Java_BraveRewardsNativeWorker_onGetCurrentBalanceReport(
