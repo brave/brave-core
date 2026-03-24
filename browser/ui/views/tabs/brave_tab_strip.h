@@ -12,6 +12,7 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/containers/buildflags/buildflags.h"
+#include "chrome/browser/ui/tabs/tab_renderer_data.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -56,6 +57,10 @@ class BraveTabStrip : public TabStrip {
   bool CanCloseTabViaMiddleButtonClick() const override;
   void AddTabToGroup(std::optional<tab_groups::TabGroupId> group,
                      int model_index) override;
+  void SetTabData(int model_index, TabRendererData data) override;
+  void MoveTab(int from_model_index,
+               int to_model_index,
+               TabRendererData data) override;
 
   // TabSlotController:
   bool ShouldPaintTabAccent(const Tab* tab) const override;
@@ -102,6 +107,10 @@ class BraveTabStrip : public TabStrip {
   BraveVerticalTabStripRegionView* GetVerticalTabStripRegionView() const;
 
   void OnAlwaysHideCloseButtonPrefChanged();
+
+  // Clears tree-tab-node UI state when a tab becomes pinned. There is no
+  // dedicated notification when pinning from a group.
+  void OnSetRendererData(int model_index, const TabRendererData& new_data);
 
   BooleanPrefMember always_hide_close_button_;
   BooleanPrefMember middle_click_close_tab_enabled_;

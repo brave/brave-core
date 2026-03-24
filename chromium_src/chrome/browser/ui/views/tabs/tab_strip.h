@@ -44,7 +44,11 @@ class BraveTabHoverCardController;
 
 #define TabHoverCardController BraveTabHoverCardController
 #define AddTabToGroup virtual AddTabToGroup
+#define SetTabData virtual SetTabData
+#define MoveTab virtual MoveTab
 #include <chrome/browser/ui/views/tabs/tab_strip.h>  // IWYU pragma: export
+#undef MoveTab
+#undef SetTabData
 #undef AddTabToGroup
 #undef TabHoverCardController
 #undef GetDragContext

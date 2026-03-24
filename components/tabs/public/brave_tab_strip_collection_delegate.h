@@ -59,7 +59,8 @@ class BraveTabStripCollectionDelegate {
                            split_tabs::SplitTabVisualData visual_data) const;
   // When handling (e.g. tree tabs), can no-op to keep tabs in split so
   // RemoveTabAtIndexRecursive sees parent SPLIT instead of TREE_NODE.
-  virtual void Unsplit(split_tabs::SplitTabId split_id) {}
+  // returns true if handled, false to use default path.
+  virtual bool Unsplit(split_tabs::SplitTabId split_id);
 
   // Returns tab collection that should be added/removed from collection mapping
   // in TabStripCollection.

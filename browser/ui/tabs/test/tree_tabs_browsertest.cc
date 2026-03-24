@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <variant>
+
 #include "base/run_loop.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
@@ -25,6 +27,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/saved_tab_groups/public/tab_group_sync_service.h"
 #include "components/split_tabs/split_tab_visual_data.h"
+#include "components/tabs/public/pinned_tab_collection.h"
 #include "components/tabs/public/split_tab_collection.h"
 #include "components/tabs/public/tab_collection.h"
 #include "components/tabs/public/tab_strip_collection.h"
@@ -51,6 +54,9 @@ tree_tab::TreeTabNodeId GetTreeTabNodeIdForTab(tabs::TabInterface* tab) {
 void CreateSplitWithTabs(TabStripModel* model, int index_a, int index_b) {
   ASSERT_NE(index_a, index_b);
   model->ActivateTabAt(index_a);
+  // Note that we're passing only one index to AddToNewSplit, because the
+  // implementation only takes one index, and then create split with active
+  // index.
   model->AddToNewSplit({index_b}, split_tabs::SplitTabVisualData(),
                        split_tabs::SplitTabCreatedSource::kTabContextMenu);
 }
@@ -58,25 +64,28 @@ void CreateSplitWithTabs(TabStripModel* model, int index_a, int index_b) {
 void VerifySplitCreated(TabStripModel* model,
                         tabs::TabStripCollection* collection) {
   std::set<split_tabs::SplitTabId> splits = collection->ListSplits();
-  ASSERT_EQ(1u, splits.size());
-  split_tabs::SplitTabId split_id = *splits.begin();
-  EXPECT_TRUE(model->ContainsSplit(split_id));
-  tabs::SplitTabCollection* split_coll =
-      collection->GetSplitTabCollection(split_id);
-  ASSERT_TRUE(split_coll);
-  EXPECT_EQ(2u, split_coll->TabCountRecursive());
+  ASSERT_GE(splits.size(), 1u);
+  for (const auto& split_id : splits) {
+    EXPECT_TRUE(model->ContainsSplit(split_id));
+    tabs::SplitTabCollection* split_coll =
+        collection->GetSplitTabCollection(split_id);
+    ASSERT_TRUE(split_coll);
+    EXPECT_EQ(2u, split_coll->TabCountRecursive());
 
-  // Verifies two tabs in split collection have the same grand parent
-  // collection.
-  tabs::TabCollection* grand_parent_collection =
-      split_coll->GetTabAtIndexRecursive(0)
-          ->GetParentCollection()
-          ->GetParentCollection();
-  EXPECT_EQ(grand_parent_collection, split_coll->GetTabAtIndexRecursive(1)
-                                         ->GetParentCollection()
-                                         ->GetParentCollection());
-  EXPECT_EQ(grand_parent_collection->type(),
-            tabs::TabCollection::Type::TREE_NODE);
+    // Verifies two tabs in split collection have the same grand parent
+    // collection.
+    tabs::TabCollection* grand_parent_collection =
+        split_coll->GetTabAtIndexRecursive(0)
+            ->GetParentCollection()
+            ->GetParentCollection();
+    EXPECT_EQ(grand_parent_collection, split_coll->GetTabAtIndexRecursive(1)
+                                           ->GetParentCollection()
+                                           ->GetParentCollection());
+    EXPECT_TRUE(grand_parent_collection->type() ==
+                    tabs::TabCollection::Type::TREE_NODE ||
+                grand_parent_collection->type() ==
+                    tabs::TabCollection::Type::PINNED);
+  }
 }
 
 // Verify that no splits remain and no tab is in a split. Optionally check
@@ -114,6 +123,9 @@ class TreeTabsBrowserTest : public InProcessBrowserTest {
   tabs::UnpinnedTabCollection& unpinned_collection() {
     return *tab_strip_collection().unpinned_collection();
   }
+  tabs::PinnedTabCollection& pinned_collection() {
+    return *tab_strip_collection().pinned_collection();
+  }
   void AddTab() {
     tab_strip_model().AppendWebContents(CreateWebContents(), true);
   }
@@ -124,6 +136,10 @@ class TreeTabsBrowserTest : public InProcessBrowserTest {
 
   void SetTreeTabsEnabled(bool enabled) {
     profile()->GetPrefs()->SetBoolean(brave_tabs::kTreeTabsEnabled, enabled);
+  }
+
+  void SetSplitPinned(split_tabs::SplitTabId split, bool pinned) {
+    tab_strip_model().SetSplitPinnedImplForTesting(split, pinned);
   }
 
   void SetUpOnMainThread() override {
@@ -2287,4 +2303,226 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, RemoveTabsFromMultipleGroups) {
   EXPECT_EQ(tab_strip_model().GetTabAtIndex(3)->GetParentCollection()->type(),
             tabs::TabCollection::Type::TREE_NODE);
   EXPECT_EQ(4, tab_strip_model().count());
+}
+
+// Pinned opener cannot host an unpinned child in the same tree node; the new
+// tab must become a top-level tree node in the unpinned collection
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       AddTab_OpenerIsPinned_NewTabIsTopLevelUnpinnedTreeNode) {
+  SetTreeTabsEnabled(true);
+  // Add a pinned tab.
+  ASSERT_EQ(1, tab_strip_model().count());
+  tab_strip_model().SetTabPinned(0, true);
+  ASSERT_TRUE(tab_strip_model().IsTabPinned(0));
+
+  // Create an unpinned tab from the pinned tab.
+  tabs::TabInterface* pinned_opener = tab_strip_model().GetTabAtIndex(0);
+  auto tab_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_interface->set_opener(pinned_opener);
+  tab_strip_model().AddTab(std::move(tab_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  // The new tab should be an unpinned tree node.
+  ASSERT_EQ(2, tab_strip_model().count());
+  tabs::TabInterface* added = tab_strip_model().GetTabAtIndex(1);
+  EXPECT_FALSE(tab_strip_model().IsTabPinned(1));
+  EXPECT_EQ(added->GetParentCollection()->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+  EXPECT_EQ(added->GetParentCollection()->GetParentCollection(),
+            &unpinned_collection());
+}
+
+// PinTabs unwraps the tree node: children are promoted before the tab is moved
+// to the pinned collection.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       PinTab_TreeNodeWithChild_PromotesChildToUnpinnedRoot) {
+  SetTreeTabsEnabled(true);
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  auto child_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  child_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(child_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  ASSERT_EQ(2, tab_strip_model().count());
+  tabs::TabInterface* child_tab = tab_strip_model().GetTabAtIndex(1);
+  ASSERT_EQ(parent_tab->GetParentCollection()->ChildCount(), 2u);
+
+  tab_strip_model().SetTabPinned(0, true);
+
+  EXPECT_TRUE(tab_strip_model().IsTabPinned(
+      tab_strip_model().GetIndexOfTab(parent_tab)));
+  EXPECT_FALSE(tab_strip_model().IsTabPinned(
+      tab_strip_model().GetIndexOfTab(child_tab)));
+  EXPECT_EQ(child_tab->GetParentCollection()->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+  EXPECT_EQ(child_tab->GetParentCollection()->GetParentCollection(),
+            &unpinned_collection());
+  EXPECT_EQ(1u, unpinned_collection().ChildCount());
+}
+
+// Split tabs pin/unpin as a unit; unpinned split is wrapped in a tree node
+// again.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       PinUnpin_Split_WrapsTreeNodeWhenUnpinned) {
+  // Create a split
+  SetTreeTabsEnabled(true);
+  AddTab();
+  ASSERT_EQ(2, tab_strip_model().count());
+  CreateSplitWithTabs(&tab_strip_model(), 0, 1);
+  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection());
+  EXPECT_EQ(1u, unpinned_collection().ChildCount());
+
+  // Pin the split
+  tabs::TabInterface* tab0 = tab_strip_model().GetTabAtIndex(0);
+  SetSplitPinned(tab0->GetSplit().value(), true);
+  EXPECT_TRUE(tab_strip_model().IsTabPinned(0));
+  EXPECT_TRUE(tab_strip_model().IsTabPinned(1));
+  EXPECT_EQ(tab0->GetParentCollection()->type(),
+            tabs::TabCollection::Type::SPLIT);
+  EXPECT_EQ(tab0->GetParentCollection()->GetParentCollection()->type(),
+            tabs::TabCollection::Type::PINNED);
+
+  // Unpin the split
+  SetSplitPinned(tab0->GetSplit().value(), false);
+  EXPECT_FALSE(tab_strip_model().IsTabPinned(0));
+  EXPECT_FALSE(tab_strip_model().IsTabPinned(1));
+  EXPECT_EQ(tab0->GetParentCollection()->type(),
+            tabs::TabCollection::Type::SPLIT);
+
+  // Verify the split is wrapped in a tree node.
+  const tabs::TabCollection* split_parent =
+      tab0->GetParentCollection()->GetParentCollection();
+  ASSERT_EQ(split_parent->type(), tabs::TabCollection::Type::TREE_NODE);
+  EXPECT_EQ(split_parent->GetParentCollection(), &unpinned_collection());
+  EXPECT_EQ(static_cast<const tabs::TreeTabNodeTabCollection*>(split_parent)
+                ->current_value_type(),
+            tabs::TreeTabNodeTabCollection::CurrentValueType::kSplit);
+}
+
+// Pinning a tab that is inside a tab group uses MoveTabsOutOfGroup with
+// |new_pinned_state|; the tab lands in the pinned collection
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       PinTab_FromGroupedTab_MovesToPinnedOutOfGroup) {
+  auto* tab_groups_service =
+      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
+          browser()->profile());
+  ASSERT_TRUE(tab_groups_service);
+  tab_groups_service->SetIsInitializedForTesting(true);
+
+  SetTreeTabsEnabled(true);
+  for (int i = 0; i < 3; ++i) {
+    AddTab();
+  }
+
+  // Create a group
+  // Group(tab0, tab1), tab2
+  ASSERT_EQ(4, tab_strip_model().count());
+  tab_groups::TabGroupId group_id = tab_strip_model().AddToNewGroup({0, 1});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+
+  tabs::TabInterface* tab0 = tab_strip_model().GetTabAtIndex(0);
+  tabs::TabInterface* tab1 = tab_strip_model().GetTabAtIndex(1);
+  ASSERT_EQ(tab0->GetParentCollection()->type(),
+            tabs::TabCollection::Type::GROUP);
+
+  // Pin the tab in the group
+  // [Pinned: tab0]
+  // [Unpinned: Group(tab1), tab2]
+  tab_strip_model().SetTabPinned(0, true);
+
+  // Verify the tab is moved to the pinned collection.
+  int pinned_idx = tab_strip_model().GetIndexOfTab(tab0);
+  ASSERT_GE(pinned_idx, 0);
+  EXPECT_TRUE(tab_strip_model().IsTabPinned(pinned_idx));
+  EXPECT_FALSE(tab_strip_model().GetTabGroupForTab(pinned_idx).has_value());
+  EXPECT_EQ(tab0->GetParentCollection()->type(),
+            tabs::TabCollection::Type::PINNED);
+
+  // Verify the other tab is in the group.
+  EXPECT_EQ(tab1->GetParentCollection()->type(),
+            tabs::TabCollection::Type::GROUP);
+}
+
+// Pinning a tab while there is a split tabs in a pinned collection should work.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       PinTab_PinnedCollectionAlreadyHasSplit) {
+  SetTreeTabsEnabled(true);
+  AddTab();
+
+  // Pin two tabs and they are in split collection
+  ASSERT_EQ(2, tab_strip_model().count());
+  CreateSplitWithTabs(&tab_strip_model(), 0, 1);
+  SetSplitPinned(tab_strip_model().GetTabAtIndex(0)->GetSplit().value(), true);
+
+  ASSERT_TRUE(tab_strip_model().IsTabPinned(0));
+  ASSERT_TRUE(tab_strip_model().IsTabPinned(1));
+
+  // Only one child with split collection.
+  EXPECT_EQ(1u, pinned_collection().ChildCount());
+  EXPECT_TRUE(std::holds_alternative<std::unique_ptr<tabs::TabCollection>>(
+      pinned_collection().GetChildren()[0]));
+  EXPECT_EQ(std::get<std::unique_ptr<tabs::TabCollection>>(
+                pinned_collection().GetChildren()[0])
+                ->type(),
+            tabs::TabCollection::Type::SPLIT);
+  ASSERT_TRUE(unpinned_collection().GetChildren().empty());
+
+  // Pin a tab should work well.
+  AddTab();
+  ASSERT_EQ(3, tab_strip_model().count());
+  tab_strip_model().SetTabPinned(2, true);
+  EXPECT_TRUE(tab_strip_model().IsTabPinned(2));
+  ASSERT_EQ(2u, pinned_collection().ChildCount());
+  ASSERT_TRUE(unpinned_collection().GetChildren().empty());
+
+  // Also pinning a tab from a group should work
+  AddTab();
+  ASSERT_EQ(4, tab_strip_model().count());
+  tab_groups::TabGroupId group_id = tab_strip_model().AddToNewGroup({3});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+
+  tab_strip_model().SetTabPinned(3, true);
+  EXPECT_TRUE(tab_strip_model().IsTabPinned(3));
+  EXPECT_FALSE(tab_strip_model().GetTabGroupForTab(3));
+  ASSERT_FALSE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+  ASSERT_EQ(3u, pinned_collection().ChildCount());
+  ASSERT_TRUE(unpinned_collection().GetChildren().empty());
+
+  // Also pinning another split tab should work
+  AddTab();
+  AddTab();
+  ASSERT_EQ(6, tab_strip_model().count());
+  CreateSplitWithTabs(&tab_strip_model(), 4, 5);
+  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection());
+
+  SetSplitPinned(tab_strip_model().GetTabAtIndex(4)->GetSplit().value(), true);
+  EXPECT_TRUE(std::holds_alternative<std::unique_ptr<tabs::TabCollection>>(
+      pinned_collection().GetChildren()[0]));
+  ASSERT_EQ(pinned_collection().ChildCount(), 4u);
+  ASSERT_TRUE(unpinned_collection().GetChildren().empty());
+  EXPECT_TRUE(tab_strip_model().IsTabPinned(4));
+  EXPECT_TRUE(tab_strip_model().IsTabPinned(5));
+
+  // So pinned tab collection now should be like
+  // [Split(tab0, tab1), tab2, tab3(previously in group), Split(tab4, tab5)]
+  EXPECT_TRUE(std::holds_alternative<std::unique_ptr<tabs::TabCollection>>(
+      pinned_collection().GetChildren()[0]));
+  EXPECT_EQ(std::get<std::unique_ptr<tabs::TabCollection>>(
+                pinned_collection().GetChildren()[0])
+                ->type(),
+            tabs::TabCollection::Type::SPLIT);
+
+  EXPECT_TRUE(std::holds_alternative<std::unique_ptr<tabs::TabInterface>>(
+      pinned_collection().GetChildren()[1]));
+  EXPECT_TRUE(std::holds_alternative<std::unique_ptr<tabs::TabInterface>>(
+      pinned_collection().GetChildren()[2]));
+  EXPECT_TRUE(std::holds_alternative<std::unique_ptr<tabs::TabCollection>>(
+
+      pinned_collection().GetChildren()[3]));
+  EXPECT_EQ(std::get<std::unique_ptr<tabs::TabCollection>>(
+                pinned_collection().GetChildren()[3])
+                ->type(),
+            tabs::TabCollection::Type::SPLIT);
 }
