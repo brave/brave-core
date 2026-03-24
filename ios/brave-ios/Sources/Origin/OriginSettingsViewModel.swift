@@ -72,4 +72,16 @@ class OriginSettingsViewModel {
   @ObservationIgnored
   @OriginPolicyBooleanValue(key: .vpnDisabled)
   var isVPNDisabled: Bool
+
+  /// Reset all of the policy values back to their defaults
+  func reset() {
+    self.isRewardsDisabled = true
+    self.isAIChatEnabled = false
+    self.isNewsDisabled = true
+    self.isP3AEnabled = false
+    self.isStatsPingEnabled = false
+    self.isTalkDisabled = true
+    self.isWalletDisabled = true
+    self.isVPNDisabled = true
+  }
 }
