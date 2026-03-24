@@ -677,6 +677,10 @@ brave_chrome_browser_public_deps = [
   "//brave/components/variations",
 ]
 
+if (is_android) {
+  brave_chrome_browser_public_deps += [ "//brave/extensions:common" ]
+}
+
 if (is_mac) {
   brave_chrome_framework_public_deps = [ "//brave:framework_bundle_data" ]
   brave_chrome_framework_bundle_deps = [ "//brave:framework_bundle_data" ]

@@ -17,6 +17,7 @@ deprecated_visibility_allowed = [
   "//brave/components/psst/browser/core",
   "//brave/components/request_otr/browser",
   "//chrome/browser",
+  "//chrome/browser:browser_public_dependencies",
 ]
 
 if (enable_extensions) {
