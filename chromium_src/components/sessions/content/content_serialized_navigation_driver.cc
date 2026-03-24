@@ -11,6 +11,7 @@
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "components/sessions/core/serialized_navigation_entry.h"
 #include "content/public/common/url_constants.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/content/browser/session_utils.h"
@@ -77,6 +78,14 @@ std::string ContentSerializedNavigationDriver::GetSanitizedPageStateForPickle(
 void ContentSerializedNavigationDriver::Sanitize(
     SerializedNavigationEntry* navigation) const {
   Sanitize_ChromiumImpl(navigation);
+
+  // Restore previous saved urls with brave:// scheme as chrome://
+  const auto& virtual_url = navigation->virtual_url();
+  if (virtual_url.SchemeIs(content::kBraveUIScheme)) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(content::kChromeUIScheme);
+    navigation->set_virtual_url(virtual_url.ReplaceComponents(replacements));
+  }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   // This method is called when loading a SerializedNavigationEntry from
