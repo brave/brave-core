@@ -9,6 +9,7 @@ import './brave_account_create_dialog.js'
 import './brave_account_entry_dialog.js'
 import './brave_account_error_dialog.js'
 import './brave_account_forgot_password_dialog.js'
+import './brave_account_otp_dialog.js'
 import './brave_account_sign_in_dialog.js'
 import { BraveAccountDialogs, Dialog } from './brave_account_dialogs.js'
 import { Error } from './brave_account_common.js'
@@ -19,6 +20,7 @@ export function getHtml(this: BraveAccountDialogs) {
       <brave-account-entry-dialog
         @close-dialog=${this.onCloseDialog}
         @create-button-clicked=${() => (this.dialog = { type: 'CREATE' })}
+        @logo-double-clicked=${() => (this.dialog = { type: 'OTP' })}
         @sign-in-button-clicked=${() => (this.dialog = { type: 'SIGN_IN' })}
       >
       </brave-account-entry-dialog>
@@ -57,6 +59,13 @@ export function getHtml(this: BraveAccountDialogs) {
         @close-dialog=${this.onCloseDialog}
       >
       </brave-account-forgot-password-dialog>
+    `,
+    OTP: () => html`
+      <brave-account-otp-dialog
+        @back-button-clicked=${this.onBackButtonClicked}
+        @close-dialog=${this.onCloseDialog}
+      >
+      </brave-account-otp-dialog>
     `,
     ERROR: () => html`
       <brave-account-error-dialog

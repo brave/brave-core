@@ -219,7 +219,7 @@
     "includes": [53980],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/components/brave_account/resources/resources.grd": {
-    "META": {"sizes": {"includes": [40]}},
+    "META": {"sizes": {"includes": [45]}},
     "includes": [54000],
   },
   "brave/ios/web/test/test_resources.grd": {
