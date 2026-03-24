@@ -43,7 +43,7 @@ class TabGridItemViewModel: TabObserver {
         self.snapshot = tab.screenshot
       }
     }
-    favicon = tab.displayFavicon ?? Favicon.default
+    favicon = tab.faviconTabHelper?.displayFavicon ?? Favicon.default
     title = tab.displayTitle
     snapshot = tab.screenshot
     isVisible = tab.isVisible
