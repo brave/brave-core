@@ -28,6 +28,20 @@ BraveEmbedder::BraveEmbedder(
 
 BraveEmbedder::~BraveEmbedder() = default;
 
+void BraveEmbedder::AddObserver(Observer* observer) {
+  observers_.AddObserver(observer);
+}
+
+void BraveEmbedder::RemoveObserver(Observer* observer) {
+  observers_.RemoveObserver(observer);
+}
+
+void BraveEmbedder::NotifyServiceIdle() {
+  if (local_ai_service_.is_bound()) {
+    local_ai_service_->NotifyPassageEmbedderIdle();
+  }
+}
+
 void BraveEmbedder::AcquirePassageEmbedder() {
   if (acquiring_embedder_) {
     return;
@@ -165,6 +179,9 @@ void BraveEmbedder::ProcessNextPassage() {
 
   if (jobs_.empty()) {
     passage_embedder_.reset();
+    for (auto& observer : observers_) {
+      observer.OnEmbedderIdle();
+    }
     return;
   }
 
