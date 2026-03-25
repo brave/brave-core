@@ -3178,8 +3178,7 @@ KeyringService::GetPolkadotPubKey(const mojom::AccountIdPtr& account_id) {
   CHECK(account_id);
 
   if (auto* keyring = GetKeyring<PolkadotKeyring>(account_id->keyring_id)) {
-    auto key = keyring->GetPublicKey(account_id->account_index);
-    return {key};
+    return keyring->GetPublicKey(account_id->account_index);
   }
   if (auto* keyring =
           GetKeyring<PolkadotImportKeyring>(account_id->keyring_id)) {

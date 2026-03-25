@@ -62,11 +62,13 @@ TEST(PolkadotImportKeyringTest, AddAccountAndGetAddress) {
     auto import_keyring =
         MakePolkadotImportKeyring(mojom::KeyringId::kPolkadotImport);
 
+    ASSERT_TRUE(hd_keyring.AddNewHDAccount(0));
     ASSERT_TRUE(
         import_keyring.AddAccount(0, hd_keyring.GetPkcs8KeyForTesting(0)));
     EXPECT_EQ(import_keyring.GetAccountAddress(0).value(), kMainnetAddress0);
     EXPECT_EQ(import_keyring.GetAddress(0, 0u).value(), kMainnetAddress0);
 
+    ASSERT_TRUE(hd_keyring.AddNewHDAccount(1));
     ASSERT_TRUE(
         import_keyring.AddAccount(1, hd_keyring.GetPkcs8KeyForTesting(1)));
     EXPECT_EQ(import_keyring.GetAccountAddress(1).value(), kMainnetAddress1);
@@ -79,11 +81,13 @@ TEST(PolkadotImportKeyringTest, AddAccountAndGetAddress) {
     auto import_keyring =
         MakePolkadotImportKeyring(mojom::KeyringId::kPolkadotImportTestnet);
 
+    ASSERT_TRUE(hd_keyring.AddNewHDAccount(0));
     ASSERT_TRUE(
         import_keyring.AddAccount(0, hd_keyring.GetPkcs8KeyForTesting(0)));
     EXPECT_EQ(import_keyring.GetAccountAddress(0).value(), kTestnetAddress0);
     EXPECT_EQ(import_keyring.GetAddress(0, 42u).value(), kTestnetAddress0);
 
+    ASSERT_TRUE(hd_keyring.AddNewHDAccount(1));
     EXPECT_TRUE(
         import_keyring.AddAccount(1, hd_keyring.GetPkcs8KeyForTesting(1)));
     EXPECT_EQ(import_keyring.GetAccountAddress(1).value(), kTestnetAddress1);
@@ -93,6 +97,7 @@ TEST(PolkadotImportKeyringTest, AddAccountAndGetAddress) {
 
 TEST(PolkadotImportKeyringTest, AddAccountFails) {
   auto hd_keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
+  hd_keyring.AddNewHDAccount(0);
   auto pkcs8 = hd_keyring.GetPkcs8KeyForTesting(0);
 
   auto keyring = MakePolkadotImportKeyring(mojom::KeyringId::kPolkadotImport);
@@ -105,6 +110,7 @@ TEST(PolkadotImportKeyringTest, AddAccountFails) {
 
 TEST(PolkadotImportKeyringTest, RemoveAccount) {
   auto hd_keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
+  hd_keyring.AddNewHDAccount(0);
   auto pkcs8 = hd_keyring.GetPkcs8KeyForTesting(0);
 
   auto keyring = MakePolkadotImportKeyring(mojom::KeyringId::kPolkadotImport);
@@ -119,6 +125,7 @@ TEST(PolkadotImportKeyringTest, RemoveAccount) {
 
 TEST(PolkadotImportKeyringTest, GetPublicKey) {
   auto hd_keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
+  hd_keyring.AddNewHDAccount(0);
   auto pkcs8 = hd_keyring.GetPkcs8KeyForTesting(0);
 
   auto import_keyring =
@@ -135,6 +142,7 @@ TEST(PolkadotImportKeyringTest, GetPublicKey) {
 
 TEST(PolkadotImportKeyringTest, SignMessage) {
   auto hd_keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
+  hd_keyring.AddNewHDAccount(0);
   auto pkcs8 = hd_keyring.GetPkcs8KeyForTesting(0);
 
   auto import_keyring =
@@ -151,6 +159,7 @@ TEST(PolkadotImportKeyringTest, SignMessage) {
 
 TEST(PolkadotImportKeyringTest, EncodePrivateKeyForExportRoundtrip) {
   auto hd_keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
+  hd_keyring.AddNewHDAccount(0);
   auto pkcs8 = hd_keyring.GetPkcs8KeyForTesting(0);
 
   auto import_keyring =

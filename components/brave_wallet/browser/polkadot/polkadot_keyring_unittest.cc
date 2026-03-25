@@ -7,8 +7,6 @@
 
 #include <string_view>
 
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
@@ -120,6 +118,8 @@ TEST(PolkadotKeyring, GetAddress) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotMainnet,
                             base::BindRepeating(IsAddressAllowed));
+    keyring.AddNewHDAccount(0);
+    keyring.AddNewHDAccount(1);
 
     EXPECT_EQ(keyring.GetAddress(0, 0u),
               "14YLzDFZTwnkcJkFij4Km7g5LdkLqKHy47xYGPN6HsLJpfnb");
@@ -140,6 +140,8 @@ TEST(PolkadotKeyring, GetAddress) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotTestnet,
                             base::BindRepeating(IsAddressAllowed));
+    keyring.AddNewHDAccount(0);
+    keyring.AddNewHDAccount(1);
 
     EXPECT_EQ(keyring.GetAddress(0, 42u),
               "5HGiBcFgEBMgT6GEuo9SA98sBnGgwHtPKDXiUukT6aqCrKEx");
@@ -202,6 +204,41 @@ TEST(PolkadotKeyring, AddHDAccount) {
   }
 }
 
+TEST(PolkadotKeyring, RemoveAccount) {
+  // Mainnet.
+  {
+    auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+    PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                            mojom::KeyringId::kPolkadotMainnet,
+                            base::BindRepeating(IsAddressAllowed));
+    keyring.AddNewHDAccount(0);
+    keyring.AddNewHDAccount(1u);
+    EXPECT_TRUE(keyring.RemoveAccount(0));
+    EXPECT_TRUE(keyring.RemoveAccount(1));
+
+    EXPECT_FALSE(keyring.RemoveAccount(0));
+    EXPECT_FALSE(keyring.RemoveAccount(1));
+    EXPECT_FALSE(keyring.RemoveAccount(1234));
+  }
+
+  // Testnet.
+  {
+    auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+    PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                            mojom::KeyringId::kPolkadotTestnet,
+                            base::BindRepeating(IsAddressAllowed));
+
+    keyring.AddNewHDAccount(0);
+    keyring.AddNewHDAccount(1u);
+    EXPECT_TRUE(keyring.RemoveAccount(0));
+    EXPECT_TRUE(keyring.RemoveAccount(1));
+
+    EXPECT_FALSE(keyring.RemoveAccount(0));
+    EXPECT_FALSE(keyring.RemoveAccount(1));
+    EXPECT_FALSE(keyring.RemoveAccount(1234));
+  }
+}
+
 TEST(PolkadotKeyring, GetPublicKey) {
   // Derived from the polkadot-sdk using:
   // clang-format off
@@ -225,12 +262,14 @@ TEST(PolkadotKeyring, GetPublicKey) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotMainnet,
                             base::BindRepeating(IsAddressAllowed));
+    keyring.AddNewHDAccount(0);
 
     auto pubkey = keyring.GetPublicKey(0);
+    ASSERT_TRUE(pubkey.has_value());
 
     constexpr char const* kPublicKey =
         "9C9C968EBB31417A36BEC0908ECD9EB6E847B44821E521DDA9ADD8C418EF7C30";
-    EXPECT_EQ(base::HexEncode(pubkey), kPublicKey);
+    EXPECT_EQ(base::HexEncode(*pubkey), kPublicKey);
   }
 
   // Testnet.
@@ -242,12 +281,14 @@ TEST(PolkadotKeyring, GetPublicKey) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotTestnet,
                             base::BindRepeating(IsAddressAllowed));
+    keyring.AddNewHDAccount(0);
 
     auto pubkey = keyring.GetPublicKey(0);
+    ASSERT_TRUE(pubkey.has_value());
 
     constexpr char const* kPublicKey =
         "E655361D12F3CCCA5F128187CF3F5EEA052BE722746E392C8B498D0D18723470";
-    EXPECT_EQ(base::HexEncode(pubkey), kPublicKey);
+    EXPECT_EQ(base::HexEncode(*pubkey), kPublicKey);
   }
 }
 
@@ -260,12 +301,19 @@ TEST(PolkadotKeyring, SignAndVerifyMessage) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotMainnet,
                             base::BindRepeating(IsAddressAllowed));
+    keyring.AddNewHDAccount(0);
+    keyring.AddNewHDAccount(1);
 
     auto signature = keyring.SignMessage(message, 0);
-    auto verified = keyring.VerifyMessage(signature, message, 0);
+    ASSERT_TRUE(signature);
+
+    auto verified = keyring.VerifyMessage(*signature, message, 0);
     EXPECT_TRUE(verified);
 
-    verified = keyring.VerifyMessage(signature, message, 1);
+    verified = keyring.VerifyMessage(*signature, message, 1);
+    EXPECT_FALSE(verified);
+
+    verified = keyring.VerifyMessage(*signature, message, 1234);
     EXPECT_FALSE(verified);
   }
 
@@ -275,12 +323,19 @@ TEST(PolkadotKeyring, SignAndVerifyMessage) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotTestnet,
                             base::BindRepeating(IsAddressAllowed));
+    keyring.AddNewHDAccount(0);
+    keyring.AddNewHDAccount(1);
 
     auto signature = keyring.SignMessage(message, 0);
-    auto verified = keyring.VerifyMessage(signature, message, 0);
+    ASSERT_TRUE(signature);
+
+    auto verified = keyring.VerifyMessage(*signature, message, 0);
     EXPECT_TRUE(verified);
 
-    verified = keyring.VerifyMessage(signature, message, 1);
+    verified = keyring.VerifyMessage(*signature, message, 1);
+    EXPECT_FALSE(verified);
+
+    verified = keyring.VerifyMessage(*signature, message, 1234);
     EXPECT_FALSE(verified);
   }
 }
@@ -297,6 +352,8 @@ TEST(PolkadotKeyring, VerifyMessage) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotTestnet,
                             base::BindRepeating(IsAddressAllowed));
+    keyring.AddNewHDAccount(0);
+    keyring.AddNewHDAccount(1);
 
     std::string signature_hex =
         "4C62835B705663D221F45A70E493C2B48FEEE5B541D3071727139A44A71F1E46E5F536"
@@ -339,6 +396,8 @@ TEST(PolkadotKeyring, VerifyMessage) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotMainnet,
                             base::BindRepeating(IsAddressAllowed));
+    keyring.AddNewHDAccount(0);
+    keyring.AddNewHDAccount(1);
 
     // Test with first mainnet signature vector
     std::string signature_hex =
@@ -381,38 +440,37 @@ TEST(PolkadotKeyring, AddNewHDAccount_OfacSanctionedAddress) {
   CHECK(registry);
 
   auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
-  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
-                          mojom::KeyringId::kPolkadotMainnet,
-                          base::BindRepeating(IsAddressAllowed));
+  PolkadotKeyring keyring(
+      base::span(seed).first<kPolkadotSeedSize>(),
+      mojom::KeyringId::kPolkadotMainnet,
+      base::BindLambdaForTesting([=](const std::string& address) {
+        return !registry->IsOfacAddress(address);
+      }));
 
   // Add an account to get its address.
   auto address = keyring.AddNewHDAccount(0);
   ASSERT_TRUE(address);
   const std::string address_to_sanction = *address;
 
+  ASSERT_TRUE(keyring.RemoveAccount(0));
+
   // Add address to OFAC list.
   registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
 
   // Try to add account again - should fail because it generates the same
-  // address Note: PolkadotKeyring doesn't have RemoveHDAccount, so we test by
-  // trying to add at index 1, which should succeed, then try index 0 again.
+  // address
+
   auto result1 = keyring.AddNewHDAccount(1);
   EXPECT_TRUE(result1) << "Non-OFAC address should succeed";
 
   // Now try to add at index 0 again - this should fail because the address
   // at index 0 is already in the OFAC list
-  // Actually, we can't test this directly because AddNewHDAccount doesn't
-  // allow adding at an index that's already been used. Instead, let's test
-  // by creating a new keyring and trying to add at index 0.
-  PolkadotKeyring keyring2(
-      base::span(seed).first<kPolkadotSeedSize>(),
-      mojom::KeyringId::kPolkadotMainnet,
-      base::BindLambdaForTesting([=](const std::string& address) {
-        return !registry->IsOfacAddress(address);
-      }));
-  auto result2 = keyring2.AddNewHDAccount(0);
+  auto result2 = keyring.AddNewHDAccount(0);
   EXPECT_FALSE(result2)
       << "OFAC sanctioned Polkadot address should be rejected";
+
+  // Prove that we didn't leave any remnant phantom keypairs.
+  EXPECT_FALSE(keyring.RemoveAccount(0));
 
   // Clear OFAC list
   registry->UpdateOfacAddressesList({});
