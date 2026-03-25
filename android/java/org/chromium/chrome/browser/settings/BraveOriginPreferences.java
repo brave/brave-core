@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.text.HtmlCompat;
 import androidx.preference.Preference;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -309,9 +310,12 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                 LayoutInflater.from(requireContext())
                         .inflate(R.layout.origin_restart_snackbar, null);
 
-        // Use the post-purchase message
+        // Use the post-purchase message (contains <b> tags for "Restart now")
         TextView messageView = customView.findViewById(R.id.snackbar_message);
-        messageView.setText(R.string.origin_changing_brave_features_message_post_purchase);
+        messageView.setText(
+                HtmlCompat.fromHtml(
+                        getString(R.string.origin_changing_brave_features_message_post_purchase),
+                        HtmlCompat.FROM_HTML_MODE_COMPACT));
 
         // Show the fetching container, hide the restart container
         mFetchingContainer = customView.findViewById(R.id.snackbar_fetching_container);
