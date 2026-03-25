@@ -60,6 +60,8 @@ class BraveEphemeralStorageServiceDelegate
 #endif
 
  private:
+  std::vector<std::string> GetEphemeralDomainsToCleanOnAppClose();
+
   raw_ptr<content::BrowserContext> context_ = nullptr;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
