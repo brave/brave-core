@@ -20,12 +20,16 @@ class DictValue;
 namespace brave_ads {
 
 // Returns the value at `pref_path` as a string, converting bool, integer, and
-// double to their string representations. The first path component is the
-// registered pref name, which may contain dots (e.g. "foo.bar.baz"); any
-// further path components, separated by `|`, traverse into the pref's value.
-// Returns `std::nullopt` if the path is malformed or unknown, or a path
-// component into a list is neither a keyword path component nor an integer
-// index.
+// double to their string representations. `pref_path` uses `|` as the path
+// delimiter because both registered pref names and dict keys within pref values
+// may contain dots. For example, "p3a.logs_constellation_prep" is a pref name
+// and P3A histogram names such as "Brave.Core.BookmarkCount" appear as dict
+// keys inside that pref. Using `.` as a delimiter would be ambiguous so
+// `base::Value::Find*ByDottedPath` is not used as it would incorrectly split on
+// those dots. Subsequent `|` separated segments traverse into dict or list
+// typed pref values. Returns `std::nullopt` if the path is malformed or
+// unknown, or a path component into a list is neither a keyword path component
+// nor an integer index.
 std::optional<std::string> MaybeGetPrefValueAsString(
     const base::DictValue& virtual_prefs,
     std::string_view pref_path);
