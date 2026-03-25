@@ -8,7 +8,7 @@
 "BraveTranslateOnboarding.disableTranslateButtonTitle" = "Désactiver cette fonctionnalité";
 
 /* A text element that describes the translation feature and explains that hte user might have to download or configure languages on their device. */
-"BraveTranslateOnboarding.translateDescription" = "Les pages peuvent être traduites dans des langues prises en charge par votre appareil iOS. Si c’est la première fois que vous utilisez cette fonctionnalité, vous devrez peut-être configurer des langues.";
+"BraveTranslateOnboarding.translateDescription" = "Les pages peuvent être traduites dans des langues prises en charge par votre appareil iOS. Si c'est la première fois que vous utilisez cette fonctionnalité, vous devrez peut-être configurer des langues.";
 
 /* A text element that explains we're translating pages. */
 "BraveTranslateOnboarding.translateTitle" = "Traductions des pages";
@@ -41,7 +41,7 @@
 "playlistInfoFeaturePointSubtitleOne" = "Créez des playlists avec vos contenus préférés. Économisez vos données mobiles et regardez vos vidéos sans publicité.";
 
 /* A list of features in Playlist */
-"playlistInfoFeaturePointSubtitleThree" = "Affichage multiple, lecture en arrière-plan, contrôle depuis l’écran de verrouillage et plus encore…";
+"playlistInfoFeaturePointSubtitleThree" = "Affichage multiple, lecture en arrière-plan, contrôle depuis l'écran de verrouillage et plus encore…";
 
 /* A list of features in Playlist */
 "playlistInfoFeaturePointSubtitleTwo" = "Gardez le rythme : ajoutez des vidéos lorsque vous parcourez Internet et regardez-les plus tard.";
@@ -53,10 +53,10 @@
 "playlistInfoFeaturePointTitleThree" = "Regarder des vidéos devient encore plus facile avec la playlist";
 
 /* A list of features in Playlist */
-"playlistInfoFeaturePointTitleTwo" = "Il vous suffit d’appuyer sur le bouton pour ajouter des vidéos à votre playlist";
+"playlistInfoFeaturePointTitleTwo" = "Il vous suffit d'appuyer sur le bouton pour ajouter des vidéos à votre playlist";
 
 /* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
-"playlistOnboardingDescription" = "Créez des playlists avec le contenu qui vous plaît. Ajoutez des contenus multimédias à partir de n’importe quelle page.\nRegardez-les à tout moment, même hors ligne !";
+"playlistOnboardingDescription" = "Créez des playlists avec le contenu qui vous plaît. Ajoutez des contenus multimédias à partir de n'importe quelle page.\nRegardez-les à tout moment, même hors ligne !";
 
 /* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
 "userActionPrompt" = "Appuyez sur %@ pour ajouter votre premier élément";

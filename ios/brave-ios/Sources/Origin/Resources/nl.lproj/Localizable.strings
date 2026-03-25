@@ -1,14 +1,26 @@
 /* A section header title for ads-related settings */
 "adsHeader" = "Advertenties";
 
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "Al gekocht op brave.com?";
+
 /* A section header title for analytics-related settings */
 "analyticsHeader" = "Analytics";
 
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "Nu kopen";
+
+/* A note that indicates a feature is enabled */
+"enabledFeatureNote" = "Deze functie is ingeschakeld omdat u ervoor hebt gekozen";
+
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin is een abonnementsdienst om de inkomstengenerererende functies uit te schakelen die Brave als bedrijf anders ondersteunen. Brave Origin-abonnees blijven profiteren van onze toonaangevende privacy, adblock en snelheid (via Brave Shields), evenals regelmatige software-updates, Chromium-patches en beveiligings- en privacyverbeteringen. Ze krijgen ook de mogelijkheid om functies zoals Brave Leo, News, Rewards, Wallet, VPN, Web3-domeinen en meer uit te schakelen.\n\nAbonnees zien een nieuw bedieningspaneel in het menu Browserinstellingen. Bestaande functies – en alle nieuwe functies die we in de toekomst uitbrengen – zouden hier verschijnen en standaard uitgeschakeld zijn.\n\n**Opmerking: Brave Origin zal browserfuncties die u momenteel gebruikt niet uitschakelen, en zal geen invloed hebben op Brave Search-functies of Brave Search Ads.**";
+"featuresFooter" = "Brave Origin is een versie van de Brave-browser waarmee u eenvoudig de inkomstengenerererende functies kunt uitschakelen die Brave als bedrijf anders ondersteunen. Brave Origin-gebruikers profiteren verder van onze toonaangevende privacy, adblock en snelheid (via Brave Shields), evenals regelmatige software-updates, Chromium-patches en beveiligings- en privacyverbeteringen. Zij krijgen ook de mogelijkheid om functies uit te schakelen, zoals Brave Leo, Rewards, Wallet, VPN, Web3-domeinen en meer.\n\nNa aankoop zien gebruikers een nieuw bedieningspaneel in het menu Browserinstellingen. Bestaande functies - en eventuele nieuwe functies die we in de toekomst uitbrengen - zouden hier verschijnen en standaard uitgeschakeld zijn.\n\n**Opmerking: Brave Origin zal browserfuncties die u momenteel gebruikt niet uitschakelen, en zal geen invloed hebben op Brave Search-functies of Brave Search Ads.**";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "Functies";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Aanmeldingscode ophalen";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Leo AI";
@@ -16,14 +28,32 @@
 /* A toggle label for Brave News feature */
 "newsLabel" = "News";
 
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "Eenmalige aankoop";
+
+/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
+"paywallDescription" = "**Pas uw browser aan en ondersteuner nog steeds Brave**\n\nBrave Origin is een betaalde versie van de browser voor gebruikers die niet alle functies nodig hebben die Brave als bedrijf ondersteunen, maar toch de privacy willen die alleen Brave biedt. Brave Origin-gebruikers profiteren verder van onze toonaangevende privacy, adblock en snelheid (via Brave Shields), evenals regelmatige software-updates, Chromium-patches en beveiligings- en privacyverbeteringen. Zij krijgen ook de mogelijkheid om functies uit te schakelen, zoals AI, Rewards, Wallet, VPN, Web3-domeinen en meer.\n\n**Brave Origin is beschikbaar via eenmalige aankoop. Op mobiel (Android en iOS) en desktop kan Origin als upgrade op uw bestaande releaseversie worden aangeschaft.** Op desktop is Origin ook beschikbaar als een afzonderlijke, zelfstandige app. Of het nu als upgrade of als afzonderlijke app is aangeschaft, Origin-gebruikers zien een nieuw bedieningspaneel in het menu Instellingen. Bestaande functies - en eventuele nieuwe functies die we in de toekomst uitbrengen - zouden hier verschijnen en standaard uitgeschakeld zijn.*\n\n* Opmerking: als u Origin als upgrade op uw bestaande versie van Brave hebt aangeschaft, zal Origin browserfuncties die u momenteel gebruikt niet uitschakelen. Voor zowel de upgrade als de zelfstandige versie zal Origin geen invloed hebben op Brave Search-functies of Brave Search Ads.";
+
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Playlist";
 
 /* A toggle label for privacy preserving analytics feature */
 "privacyPreservingAnalyticsLabel" = "Analyses met behoud van privacy";
 
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "Heb je een promotiecode?";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "Aankoop kan niet worden afgerond. Probeer het opnieuw of controleer je betalingsgegevens bij Apple en probeer het dan opnieuw.";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "Wissel promotiecode in";
+
 /* A button label to reset all Origin settings to their default values */
 "resetToDefaultsButton" = "Terugzetten op standaardwaarden";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "Herstel";
 
 /* A toggle label for Brave Rewards feature */
 "rewardsLabel" = "Rewards";
@@ -33,6 +63,18 @@
 
 /* A toggle label for Brave Talk feature */
 "talkLabel" = "Talk";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "Behoud kern adblock, privacy, & snelheid";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "Minimale browser UI gecentreerd op Shields";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "Eenmalige aankoop, geen extra abonnementskosten";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "Steun onze missie & open-source werk";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";

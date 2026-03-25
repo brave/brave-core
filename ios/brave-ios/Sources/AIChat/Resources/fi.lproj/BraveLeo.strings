@@ -49,6 +49,21 @@
 /* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
 "aichat.busyErrorDescription" = "Leo on liian kiireinen juuri nyt. Yritä muutaman minuutin kuluttua uudelleen.";
 
+/* The button title for adding a new custom model */
+"aichat.byomAddNewModelButtonTitle" = "Lisää uusi malli";
+
+/* The description shown when no custom models have been added, prompting the user to add one */
+"aichat.byomEmptyStateDescription" = "Aloita napauttamalla \"Lisää uusi malli\"";
+
+/* The title shown when no custom models have been added yet */
+"aichat.byomEmptyStateTitle" = "Et ole vielä yhdistänyt mallia";
+
+/* The section header description explaining the Bring Your Own Model feature with a link to learn more. The text inside square brackets should be translated. */
+"aichat.byomSectionHeaderDescription" = "Yhdistä omistamasi tai kolmannen osapuolen isännöimä LLM Leohon ja käytä sitä selaimen sisällä. Käytä mitä tahansa OpenAI Chat Protocol -yhteensopivaa kehystä, kuten Ollamaa. [Lisätietoja](https://support.brave.app/hc/en-us/articles/34070140231821-How-do-I-use-the-Bring-Your-Own-Model-BYOM-with-Brave-Leo)";
+
+/* The section header title for the Bring Your Own Model feature */
+"aichat.byomSectionHeaderTitle" = "Tuo oma mallisi";
+
 /* The subtitle for intro view which triggers just chat */
 "aichat.chatIntroJustTalkSubTitle" = "Kysy minulta mitä vaan! Voimme puhua mistä tahansa haluamastasi aiheesta. Opiskelen ja kehityn koko ajan, jotta voisin antaa parempia vastauksia.";
 
@@ -78,6 +93,87 @@
 
 /* The title of the section where custom models are displayed as a list. */
 "aichat.customModelChatSectionTitle" = "Mukautetut mallit";
+
+/* The navigation bar title when adding a new custom model */
+"aichat.customModelFormAddModelNavigationTitle" = "Lisää malli";
+
+/* The footer text explaining when and how API keys are used */
+"aichat.customModelFormApiKeyFieldFooter" = "Jotkin palveluntarjoajan viitekehykset voivat vaatia todennustunnukset, kuten API-avaimen tai käyttötunnuksen. Nämä lisätään pyynnön nimeen.";
+
+/* The label for the API key field */
+"aichat.customModelFormApiKeyFieldTitle" = "API-avain";
+
+/* The footer text explaining what context size means for AI models */
+"aichat.customModelFormContextSizeFieldFooter" = "Tokenien enimmäismäärä, jonka malli voi käsitellä yhdellä kertaa. Suurempi kontekstikoko mahdollistaa sen, että malli voi käsitellä pidempiä keskusteluja. Eri mallit tukevat erilaisia kontekstin enimmäiskokoja.";
+
+/* The label for the context size field */
+"aichat.customModelFormContextSizeFieldTitle" = "Kontekstikoko";
+
+/* The placeholder text for generic detail input fields */
+"aichat.customModelFormDetailsFieldPlaceholder" = "Kirjoita tiedot";
+
+/* The button title for dismissing the keyboard */
+"aichat.customModelFormDoneButtonTitle" = "Valmis";
+
+/* The navigation bar title when editing an existing custom model */
+"aichat.customModelFormEditModelNavigationTitle" = "Muokkaa mallia";
+
+/* The alert title shown when saving a custom model fails */
+"aichat.customModelFormFailedToSaveAlertTitle" = "Mallin tallentaminen epäonnistui";
+
+/* The error message shown when the context size is invalid */
+"aichat.customModelFormInvalidContextSizeErrorMessage" = "Virheellinen kontekstikoko";
+
+/* The error message shown when the server endpoint URL is invalid */
+"aichat.customModelFormInvalidUrlErrorMessage" = "Virheellinen URL-osoite";
+
+/* The footer text explaining the purpose of the label field */
+"aichat.customModelFormLabelFieldFooter" = "Mallin nimi, jota käytetään Leonin mallinvalitsimessa.";
+
+/* The placeholder text for the custom model name field */
+"aichat.customModelFormLabelFieldPlaceholder" = "Kirjoita tämän mallin tunnus";
+
+/* The label for the custom model name field in the custom model form */
+"aichat.customModelFormLabelFieldTitle" = "Merkintä";
+
+/* The error message shown when trying to use a private network address, explaining why it's blocked and how to enable it */
+"aichat.customModelFormPrivateEndpointErrorMessage" = "Osoite, jonka olet syöttänyt, näyttää olevan yksityisestä verkosta – kuten reitittimestä tai paikallisesta palvelimesta. Brave estää nämä automaattisesti turvallisuutesi vuoksi, mutta voit ottaa ne käyttöön, jos olet varma, että ne ovat turvallisia.\n\nJatkaaksesi käy osoitteessa brave://flags/, etsi \"brave-ai-chat-allow-private-ips\" ja ota ominaisuus käyttöön. Kun se on otettu käyttöön, voit käyttää yksityisiä verkon osoitteita Leon asetuksissa.";
+
+/* The footer text explaining what the model request name is used for and providing an example */
+"aichat.customModelFormRequestNameFieldFooter" = "Mallin nimi sellaisena kuin sen pitäisi näkyä palveluntarjoajan viitekehykselle osoitetussa pyynnössä, esim. phi-3. (Huomaa, että jos tämä nimi ei vastaa täysin palveluntarjoajan viitekehyksen odottamaa nimeä, integraatio ei toimi.)";
+
+/* The placeholder text for the model request name field */
+"aichat.customModelFormRequestNameFieldPlaceholder" = "Kirjoita mallipyynnön nimi";
+
+/* The label for the model request name field */
+"aichat.customModelFormRequestNameFieldTitle" = "Mallipyynnön nimi";
+
+/* The indicator text shown next to required fields in forms */
+"aichat.customModelFormRequiredFieldIndicator" = "Pakollinen";
+
+/* The button title for saving a custom model */
+"aichat.customModelFormSaveButtonTitle" = "Tallenna";
+
+/* The footer text explaining what the server endpoint is and providing an example URL for Ollama */
+"aichat.customModelFormServerEndpointFieldFooter" = "URL-osoite, jossa tarjoajan viitekehys kuuntelee pyyntöjä. Jos et ole varma, tarkista palveluntarjoajan viitekehyksen asiakirjat. Esimerkiksi Ollamalla se on aina `http://localhost:11434/v1/chat/completions`. Brave ei välitä näitä pyyntöjä, lue valitsemasi palveluntarjoajan yksityisyyden ehdot.";
+
+/* The label for the server endpoint URL field */
+"aichat.customModelFormServerEndpointFieldTitle" = "Palvelimen päätepiste";
+
+/* The footer text explaining what a system prompt is and noting the %datetime% placeholder */
+"aichat.customModelFormSystemPromptFieldFooter" = "Mukautetut ohjeet ja/tai konteksti, joka annetaan mallille sen vastausten ohjaamiseksi. Käytä %datetime% kohtaa, johon haluat nykyisen päivämäärän ja kellonajan lisätä.";
+
+/* The label for the system prompt field */
+"aichat.customModelFormSystemPromptFieldTitle" = "Järjestelmän kehote";
+
+/* Warning message shown when user enters an HTTP (not HTTPS) endpoint */
+"aichat.customModelFormUnsafeEndpointWarning" = "Tämä päätepiste ei välttämättä ole turvallinen.";
+
+/* The description text explaining what vision support means with an example */
+"aichat.customModelFormVisionSupportFieldDescription" = "Jos tämä malli ottaa syötteenä kuvan, esim. lama 3.2b vision";
+
+/* The label for the vision support toggle */
+"aichat.customModelFormVisionSupportFieldTitle" = "Vision-tuki";
 
 /* The title for the custom models section in the menu */
 "aichat.customModelsMenuSectionTitle" = "Mukautetut mallit";

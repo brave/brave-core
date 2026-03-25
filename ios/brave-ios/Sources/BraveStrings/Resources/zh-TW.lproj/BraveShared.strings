@@ -67,6 +67,9 @@
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "使用者名稱";
 
+/* Settings autofill section title */
+"Autofill" = "自動填入";
+
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "自動重新導向 AMP 頁面";
 
@@ -141,33 +144,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "地址";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Brave 帳戶";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "幾乎完成了！";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "確認電郵已發送。請點擊該電郵中的按鈕以啟用您的帳戶。";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "取消註冊";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "電子郵件地址";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "開始使用";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "重新發送確認電郵";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "看不到電郵？請檢查您的垃圾郵件資料夾，或點擊按鈕重新發送確認電郵。";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "登出";
 
 /* Button to show the brave panel */
 "BravePanel" = "Brave 面板";
@@ -1031,7 +1007,7 @@
 "nightMode.modeTitle" = "模式";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
-"nightMode.sectionDescription" = "深色模式會同時影響網站的呈現樣貌和一般的系統外觀。";
+"nightMode.sectionDescription" = "深色模式會同時影響網站的呈現樣貌和系統外觀。";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
 "nightMode.settingsDescription" = "開啟/關閉深色模式";
@@ -1063,11 +1039,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "隱藏贊助圖片";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "贊助圖片是出現在瀏覽器新開啟標籤頁中的品牌背景。啟用這些贊助圖片可支持 Brave 的使命。";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "了解更多";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "贊助圖片是出現在瀏覽器新開啟標籤頁中的品牌背景。啟用這些贊助圖片可支持 Brave 的使命。[深入瞭解](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "深入了解 Brave Rewards";
@@ -2278,7 +2251,8 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "儲存變更";
 
-/* Settings item for clearing passwords and login data */
+/* Settings item for clearing passwords and login data
+Settings item for clearing site-specific settings and shields settings. */
 "SavedLogins" = "已儲存的登入資訊";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2367,9 +2341,6 @@
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "使用 Brave 搜尋";
-
-/* Settings security section title */
-"Security" = "安全";
 
 /* No comment provided by engineer. */
 "sendButtonTitle" = "傳送";

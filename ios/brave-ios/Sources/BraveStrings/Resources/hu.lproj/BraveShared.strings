@@ -67,6 +67,9 @@
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Felhasználónév";
 
+/* Settings autofill section title */
+"Autofill" = "Automatikus kitöltés";
+
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "AMP-oldalak automatikus átirányítása";
 
@@ -141,33 +144,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Cím";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Brave fiók";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "Szinte kész!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "Egy megerősítő e-mail már útban van. Kattintson az e-mailben található gombra a fiók aktiválásához.";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "Regisztráció visszavonása";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "E-mail cím";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "Első lépések";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "Megerősítő e-mail újraküldése";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "Nem látja az e-mailt? Ellenőrizze a levélszemét mappát, vagy kattintson a gombra a megerősítő e-mail újraküldéséhez.";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "Kijelentkezés";
 
 /* Button to show the brave panel */
 "BravePanel" = "Brave panel";
@@ -1031,7 +1007,7 @@
 "nightMode.modeTitle" = "Mód";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
-"nightMode.sectionDescription" = "Az éjszakai mód a webhelyek megjelenését és a rendszer általános megjelenését is befolyásolja.";
+"nightMode.sectionDescription" = "Az éjszakai mód egyidejűleg érinti a webhelyek és az általános rendszer megjelenését.";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
 "nightMode.settingsDescription" = "Az éjszakai mód be- és kikapcsolása";
@@ -1063,11 +1039,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Szponzorált képek elrejtése";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "A szponzorált képek egyedi hátterek, amelyek az új böngészőfülek megnyitásakor jelennek meg. Ezek engedélyezése támogatja a Brave küldetését.";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "Tudj meg többet";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "A szponzorált képek egyedi hátterek, amelyek az új böngészőfülek megnyitásakor jelennek meg. Ezek engedélyezése támogatja a Brave küldetését. [További információ](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Tudjon meg többet a Brave-jutalmakról";
@@ -2278,7 +2251,8 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Módosítások mentése";
 
-/* Settings item for clearing passwords and login data */
+/* Settings item for clearing passwords and login data
+Settings item for clearing site-specific settings and shields settings. */
 "SavedLogins" = "Mentett bejelentkezések";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2367,9 +2341,6 @@
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Keresés a Brave-vel";
-
-/* Settings security section title */
-"Security" = "Biztonság";
 
 /* No comment provided by engineer. */
 "sendButtonTitle" = "Küldés";
