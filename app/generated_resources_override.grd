@@ -95,9 +95,6 @@ are declared in tools/grit/grit_args.gni.
 
       <part file="bookmarks_strings_override.grdp" />
 
-      <if expr="enable_glic">
-        </if>
-
       <part file="profiles_strings_override.grdp" />
 
       <if expr="is_chromeos">
@@ -265,6 +262,10 @@ are declared in tools/grit/grit_args.gni.
         </if>
       <if expr="use_titlecase">
         </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
 
       <if expr="is_chromeos">
         </if>
@@ -408,6 +409,11 @@ are declared in tools/grit/grit_args.gni.
       <if expr="is_win or is_linux or is_chromeos">
         </if>
 
+      <if expr="not use_titlecase">
+      </if>
+    <if expr="use_titlecase">
+      </if>
+
       <if expr="toolkit_views">
         </if>
 
@@ -480,10 +486,6 @@ are declared in tools/grit/grit_args.gni.
 
       <if expr="is_chromeos">
         </if>
-      <if expr="reven">
-        </if>
-      <if expr="not reven">
-        </if>
       <if expr="is_chromeos">
         </if>
 
@@ -499,6 +501,10 @@ are declared in tools/grit/grit_args.gni.
           </if>
         <if expr="is_macosx">
           </if>
+
+        <if expr="is_android">
+          </if>
+
         </if>
 
       <if expr="not is_android">
@@ -517,9 +523,6 @@ are declared in tools/grit/grit_args.gni.
           </if>
       </if>
 
-      <message name="IDS_EXTENSION_WEB_STORE_TITLE" desc="Text for the Web Store">
-        Web Store
-      </message>
       <message name="IDS_EXTENSIONS_ADDED_WITHOUT_KNOWLEDGE" desc="Text shown in the extensions settings for items that might have been forcefully added to Brave without the user's knowledge">
         This extension is not listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph> and may have been added without your knowledge.
       </message>
@@ -653,14 +656,10 @@ are declared in tools/grit/grit_args.gni.
         </if>
       <if expr="not use_titlecase">
         </if>
+      <if expr="enable_extensions_core">
+      </if>
       <if expr="is_macosx">
         </if>
-      <if expr="use_titlecase">
-        <then>
-          </then>
-        <else>
-          </else>
-      </if>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -694,6 +693,10 @@ are declared in tools/grit/grit_args.gni.
       </if>
 
       <if expr="not is_android">
+        <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
+          </if>
         </if>
 
       <if expr="not is_android">
@@ -850,6 +853,10 @@ are declared in tools/grit/grit_args.gni.
       <if expr="use_titlecase">
         </if>
 
+      <if expr="is_macosx">
+        </if>
+      <if expr="not is_macosx">
+        </if>
       <if expr="use_titlecase">
         <then>
           </then>
@@ -867,6 +874,11 @@ are declared in tools/grit/grit_args.gni.
         </if>
 
         <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
+          </if>
+
+      <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
         </if>
@@ -1373,7 +1385,7 @@ are declared in tools/grit/grit_args.gni.
   <if expr="is_chromeos">
       </if>
 
-    <if expr="enable_glic and enable_pdf">
+    <if expr="enable_pdf">
       </if>
 
     <if expr="is_win">
@@ -1384,6 +1396,6 @@ are declared in tools/grit/grit_args.gni.
 
     <if expr="is_linux or is_macosx or is_win">
       </if>
-  </messages>
+    </messages>
 </release>
 </grit>
