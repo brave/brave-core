@@ -5,9 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 
-#include "base/run_loop.h"
-#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
@@ -29,28 +28,24 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveEmptyTransactions) {
   SaveTransactions({});
 
   // Assert
-  base::MockCallback<GetTransactionsCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true,
-                            /*transactions=*/::testing::IsEmpty()))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   const Transactions database_table;
-  database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
-                                 /*to_time=*/test::DistantFuture(),
-                                 callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, TransactionList> test_future;
+  database_table.GetForDateRange(
+      /*from_time=*/test::DistantPast(),
+      /*to_time=*/test::DistantFuture(),
+      test_future.GetCallback<bool, const TransactionList&>());
+  const auto [success, transactions] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(transactions, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveTransactions) {
   // Arrange
-  TransactionList transactions;
-
   const TransactionInfo transaction_1 = test::BuildTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
       /*reconciled_at=*/test::DistantFuture(),
       /*use_random_uuids=*/true);
-  transactions.push_back(transaction_1);
 
   AdvanceClockBy(base::Days(5));
 
@@ -58,61 +53,54 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveTransactions) {
       /*value=*/0.03, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kClicked,
       /*use_random_uuids=*/true);
-  transactions.push_back(transaction_2);
 
   // Act
-  SaveTransactions(transactions);
+  SaveTransactions({transaction_1, transaction_2});
 
   // Assert
-  base::MockCallback<GetTransactionsCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback,
-              Run(/*success=*/true, ::testing::ElementsAreArray(transactions)))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   const Transactions database_table;
-  database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
-                                 /*to_time=*/test::DistantFuture(),
-                                 callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, TransactionList> test_future;
+  database_table.GetForDateRange(
+      /*from_time=*/test::DistantPast(),
+      /*to_time=*/test::DistantFuture(),
+      test_future.GetCallback<bool, const TransactionList&>());
+  const auto [success, transactions] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(transactions,
+              ::testing::ElementsAre(transaction_1, transaction_2));
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
   // Arrange
-  TransactionList transactions;
-
   const TransactionInfo transaction = test::BuildTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*use_random_uuids=*/true);
-  transactions.push_back(transaction);
 
-  SaveTransactions(transactions);
+  SaveTransactions({transaction});
 
   // Act
-  SaveTransactions(transactions);
+  SaveTransactions({transaction});
 
   // Assert
-  base::MockCallback<GetTransactionsCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true, transactions))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   const Transactions database_table;
-  database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
-                                 /*to_time=*/test::DistantFuture(),
-                                 callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, TransactionList> test_future;
+  database_table.GetForDateRange(
+      /*from_time=*/test::DistantPast(),
+      /*to_time=*/test::DistantFuture(),
+      test_future.GetCallback<bool, const TransactionList&>());
+  const auto [success, transactions] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(transactions, ::testing::ElementsAre(transaction));
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
   // Arrange
-  TransactionList transactions;
-
   const TransactionInfo transaction_1 = test::BuildTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
       /*reconciled_at=*/test::DistantFuture(),
       /*use_random_uuids=*/true);
-  transactions.push_back(transaction_1);
 
   AdvanceClockBy(base::Days(5));
 
@@ -120,41 +108,36 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
       /*value=*/0.03, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kClicked,
       /*use_random_uuids=*/true);
-  transactions.push_back(transaction_2);
 
-  SaveTransactions(transactions);
+  SaveTransactions({transaction_1, transaction_2});
 
   const Transactions database_table;
 
   // Act & Assert
-  base::MockCallback<GetTransactionsCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true, TransactionList{transaction_2}))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  database_table.GetForDateRange(/*from_time=*/test::Now(),
-                                 /*to_time=*/test::DistantFuture(),
-                                 callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, TransactionList> test_future;
+  database_table.GetForDateRange(
+      /*from_time=*/test::Now(),
+      /*to_time=*/test::DistantFuture(),
+      test_future.GetCallback<bool, const TransactionList&>());
+  const auto [success, transactions] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(transactions, ::testing::ElementsAre(transaction_2));
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, ReconcileTransactions) {
   // Arrange
-  TransactionList transactions;
-
   const TransactionInfo transaction_1 = test::BuildTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
       /*reconciled_at=*/test::DistantFuture(),
       /*use_random_uuids=*/true);
-  transactions.push_back(transaction_1);
 
   TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
       /*value=*/0.03, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kClicked,
       /*use_random_uuids=*/true);
-  transactions.push_back(transaction_2);
 
-  SaveTransactions(transactions);
+  SaveTransactions({transaction_1, transaction_2});
 
   PaymentTokenList payment_tokens;
   PaymentTokenInfo payment_token;
@@ -172,30 +155,26 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, ReconcileTransactions) {
   database_table.Reconcile(payment_tokens, reconcile_callback.Get());
 
   // Assert
-  base::MockCallback<GetTransactionsCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true,
-                            ::testing::UnorderedElementsAreArray(
-                                TransactionList{transaction_1, transaction_2})))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
-                                 /*to_time=*/test::DistantFuture(),
-                                 callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, TransactionList> test_future;
+  database_table.GetForDateRange(
+      /*from_time=*/test::DistantPast(),
+      /*to_time=*/test::DistantFuture(),
+      test_future.GetCallback<bool, const TransactionList&>());
+  const auto [success, transactions] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(transactions, ::testing::UnorderedElementsAreArray(
+                                TransactionList{transaction_1, transaction_2}));
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, PurgeExpired) {
   // Arrange
   AdvanceClockTo(test::TimeFromUTCString("Tue, 19 Mar 2024 05:35"));
 
-  TransactionList transactions;
-
   const TransactionInfo transaction_1 = test::BuildTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
       /*reconciled_at=*/test::DistantFuture(),
       /*use_random_uuids=*/true);
-  transactions.push_back(transaction_1);
 
   AdvanceClockBy(base::Days(90));
 
@@ -203,16 +182,14 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, PurgeExpired) {
       /*value=*/0.03, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kClicked,
       /*use_random_uuids=*/true);
-  transactions.push_back(transaction_2);
 
   const TransactionInfo transaction_3 = test::BuildTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
       /*reconciled_at=*/test::DistantFuture(),
       /*use_random_uuids=*/true);
-  transactions.push_back(transaction_3);
 
-  SaveTransactions(transactions);
+  SaveTransactions({transaction_1, transaction_2, transaction_3});
 
   const Transactions database_table;
 
@@ -221,16 +198,15 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, PurgeExpired) {
   EXPECT_CALL(purge_expired_callback, Run(/*success=*/true));
   database_table.PurgeExpired(purge_expired_callback.Get());
 
-  base::MockCallback<GetTransactionsCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true,
-                            ::testing::UnorderedElementsAreArray(
-                                TransactionList{transaction_2, transaction_3})))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
-                                 /*to_time=*/test::DistantFuture(),
-                                 callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, TransactionList> test_future;
+  database_table.GetForDateRange(
+      /*from_time=*/test::DistantPast(),
+      /*to_time=*/test::DistantFuture(),
+      test_future.GetCallback<bool, const TransactionList&>());
+  const auto [success, transactions] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(transactions, ::testing::UnorderedElementsAreArray(
+                                TransactionList{transaction_2, transaction_3}));
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest,
@@ -238,14 +214,11 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest,
   // Arrange
   AdvanceClockTo(test::TimeFromUTCString("Tue, 19 Mar 2024 05:35"));
 
-  TransactionList transactions;
-
   const TransactionInfo transaction_1 = test::BuildTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
       /*reconciled_at=*/test::DistantFuture(),
       /*use_random_uuids=*/true);
-  transactions.push_back(transaction_1);
 
   AdvanceClockBy(base::Days(90) - base::Milliseconds(1));
 
@@ -254,9 +227,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest,
       mojom::ConfirmationType::kClicked,
       /*reconciled_at=*/test::DistantFuture(),
       /*use_random_uuids=*/true);
-  transactions.push_back(transaction_2);
 
-  SaveTransactions(transactions);
+  SaveTransactions({transaction_1, transaction_2});
 
   const Transactions database_table;
 
@@ -265,16 +237,15 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest,
   EXPECT_CALL(purge_expired_callback, Run(/*success=*/true));
   database_table.PurgeExpired(purge_expired_callback.Get());
 
-  base::MockCallback<GetTransactionsCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true,
-                            ::testing::UnorderedElementsAreArray(
-                                TransactionList{transaction_1, transaction_2})))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
-                                 /*to_time=*/test::DistantFuture(),
-                                 callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, TransactionList> test_future;
+  database_table.GetForDateRange(
+      /*from_time=*/test::DistantPast(),
+      /*to_time=*/test::DistantFuture(),
+      test_future.GetCallback<bool, const TransactionList&>());
+  const auto [success, transactions] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(transactions, ::testing::UnorderedElementsAreArray(
+                                TransactionList{transaction_1, transaction_2}));
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTableName) {

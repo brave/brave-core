@@ -5,9 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
 
-#include "base/run_loop.h"
-#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
@@ -39,13 +38,13 @@ TEST_F(BraveAdsAdEventsTest, RecordAdEvent) {
                 record_ad_event_callback.Get());
 
   // Assert
-  base::RunLoop run_loop;
-  base::MockCallback<database::table::GetAdEventsCallback> callback;
-  EXPECT_CALL(callback, Run(/*success=*/true, AdEventList{ad_event}))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<bool, AdEventList> test_future;
   const database::table::AdEvents database_table;
-  database_table.GetUnexpired(callback.Get());
-  run_loop.Run();
+  database_table.GetUnexpired(
+      test_future.GetCallback<bool, const AdEventList&>());
+  const auto [success, ad_events] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(ad_events, ::testing::ElementsAre(ad_event));
 }
 
 TEST_F(BraveAdsAdEventsTest, PurgeOrphanedAdEvents) {
@@ -95,14 +94,14 @@ TEST_F(BraveAdsAdEventsTest, PurgeOrphanedAdEvents) {
                         purge_orphaned_ad_events_callback.Get());
 
   // Assert
-  base::RunLoop run_loop;
-  base::MockCallback<database::table::GetAdEventsCallback> callback;
-  EXPECT_CALL(callback, Run(/*success=*/true,
-                            AdEventList{ad_event_2a, ad_event_2b, ad_event_3}))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<bool, AdEventList> test_future;
   const database::table::AdEvents database_table;
-  database_table.GetUnexpired(callback.Get());
-  run_loop.Run();
+  database_table.GetUnexpired(
+      test_future.GetCallback<bool, const AdEventList&>());
+  const auto [success, ad_events] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(ad_events,
+              ::testing::ElementsAre(ad_event_2a, ad_event_2b, ad_event_3));
 }
 
 }  // namespace brave_ads

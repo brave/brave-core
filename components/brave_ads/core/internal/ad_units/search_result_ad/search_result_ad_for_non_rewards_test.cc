@@ -3,9 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/run_loop.h"
-#include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/creative_search_result_ad_test_util.h"
@@ -32,13 +30,11 @@ class BraveAdsSearchResultAdForNonRewardsIntegrationTest
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       mojom::SearchResultAdEventType mojom_ad_event_type,
       bool should_fire_event) {
-    base::RunLoop run_loop;
-    base::MockCallback<TriggerAdEventCallback> callback;
-    EXPECT_CALL(callback, Run(/*success=*/should_fire_event))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+    base::test::TestFuture<bool> test_future;
     GetAds().TriggerSearchResultAdEvent(std::move(mojom_creative_ad),
-                                        mojom_ad_event_type, callback.Get());
-    run_loop.Run();
+                                        mojom_ad_event_type,
+                                        test_future.GetCallback());
+    EXPECT_EQ(should_fire_event, test_future.Get());
   }
 };
 

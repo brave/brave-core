@@ -9,7 +9,7 @@
 #include "base/check.h"
 #include "base/run_loop.h"
 #include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_info.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
@@ -33,28 +33,22 @@ namespace {
 
 void VerifyDepositForCreativeInstanceIdExpectation(
     const std::string& creative_instance_id) {
-  base::MockCallback<database::table::GetDepositsCallback> callback;
-  base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
-  EXPECT_CALL(callback, Run(/*success=*/::testing::_,
-                            /*deposit=*/::testing::Eq(std::nullopt)))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<bool, std::optional<DepositInfo>> test_future;
   const database::table::Deposits database_table;
-  database_table.GetForCreativeInstanceId(creative_instance_id, callback.Get());
-  run_loop.Run();
+  database_table.GetForCreativeInstanceId(creative_instance_id,
+                                          test_future.GetCallback());
+  const auto [_, deposit] = test_future.Take();
+  EXPECT_EQ(deposit, std::nullopt);
 }
 
 void VerifyCreativeSetConversionExpectation(size_t expected_count) {
-  base::MockCallback<database::table::GetCreativeSetConversionsCallback>
-      callback;
-  base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
-  EXPECT_CALL(
-      callback,
-      Run(/*success=*/::testing::_,
-          /*creative_set_conversions=*/::testing::SizeIs(expected_count)))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<bool, CreativeSetConversionList> test_future;
   const database::table::CreativeSetConversions database_table;
-  database_table.GetUnexpired(callback.Get());
-  run_loop.Run();
+  database_table.GetUnexpired(
+      test_future.GetCallback<bool, const CreativeSetConversionList&>());
+  const auto [success, creative_set_conversions] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(creative_set_conversions, ::testing::SizeIs(expected_count));
 }
 
 }  // namespace
@@ -76,15 +70,16 @@ class BraveAdsSearchResultAdEventHandlerForNonRewardsTest
       bool should_fire_event) {
     CHECK(mojom_creative_ad);
 
-    base::MockCallback<FireSearchResultAdEventHandlerCallback> callback;
-    base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
-    EXPECT_CALL(callback,
-                Run(/*success=*/should_fire_event,
-                    mojom_creative_ad->placement_id, mojom_ad_event_type))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    event_handler_.FireEvent(mojom_creative_ad.Clone(), mojom_ad_event_type,
-                             callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<bool, std::string, mojom::SearchResultAdEventType>
+        test_future;
+    event_handler_.FireEvent(
+        mojom_creative_ad.Clone(), mojom_ad_event_type,
+        test_future.GetCallback<bool, const std::string&,
+                                mojom::SearchResultAdEventType>());
+    const auto [success, placement_id, ad_event_type] = test_future.Take();
+    EXPECT_EQ(should_fire_event, success);
+    EXPECT_EQ(mojom_creative_ad->placement_id, placement_id);
+    EXPECT_EQ(mojom_ad_event_type, ad_event_type);
 
     size_t expected_count = 0;
 

@@ -5,9 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 
-#include "base/run_loop.h"
-#include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -36,16 +34,16 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableIntegrationTest,
   const database::table::CreativeNotificationAds database_table;
 
   // Act & Assert
-  base::MockCallback<database::table::GetCreativeNotificationAdsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback,
-              Run(/*success=*/true, SegmentList{"technology & computing"},
-                  ::testing::SizeIs(2)))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<bool, SegmentList, CreativeNotificationAdList>
+      test_future;
   database_table.GetForSegments(
-      /*segments=*/{"technology & computing"}, callback.Get());
-  run_loop.Run();
+      /*segments=*/{"technology & computing"},
+      test_future
+          .GetCallback<bool, const SegmentList&, CreativeNotificationAdList>());
+  const auto [success, segments, creative_ads] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_EQ(SegmentList{"technology & computing"}, segments);
+  EXPECT_THAT(creative_ads, ::testing::SizeIs(2));
 }
 
 }  // namespace brave_ads

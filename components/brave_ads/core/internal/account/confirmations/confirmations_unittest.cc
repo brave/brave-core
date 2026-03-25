@@ -7,9 +7,7 @@
 
 #include <memory>
 
-#include "base/run_loop.h"
-#include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
@@ -50,13 +48,12 @@ TEST_F(BraveAdsConfirmationsTest, ConfirmForRewardsUser) {
   confirmations_->Confirm(transaction, /*user_data=*/{});
 
   // Assert
-  base::MockCallback<database::table::GetConfirmationQueueCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true,
-                            /*confirmation_queue_items=*/::testing::SizeIs(1)))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  confirmation_queue_database_table_.GetAll(callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, ConfirmationQueueItemList> test_future;
+  confirmation_queue_database_table_.GetAll(
+      test_future.GetCallback<bool, const ConfirmationQueueItemList&>());
+  const auto [success, confirmation_queue_items] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(confirmation_queue_items, ::testing::SizeIs(1));
 }
 
 TEST_F(BraveAdsConfirmationsTest, ConfirmForNonRewardsUser) {
@@ -72,13 +69,12 @@ TEST_F(BraveAdsConfirmationsTest, ConfirmForNonRewardsUser) {
   confirmations_->Confirm(transaction, /*user_data=*/{});
 
   // Assert
-  base::MockCallback<database::table::GetConfirmationQueueCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true,
-                            /*confirmation_queue_items=*/::testing::SizeIs(1)))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  confirmation_queue_database_table_.GetAll(callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, ConfirmationQueueItemList> test_future;
+  confirmation_queue_database_table_.GetAll(
+      test_future.GetCallback<bool, const ConfirmationQueueItemList&>());
+  const auto [success, confirmation_queue_items] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(confirmation_queue_items, ::testing::SizeIs(1));
 }
 
 }  // namespace brave_ads

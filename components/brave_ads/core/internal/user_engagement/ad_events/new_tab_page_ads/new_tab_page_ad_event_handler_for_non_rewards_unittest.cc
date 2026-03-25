@@ -5,7 +5,7 @@
 
 #include "base/run_loop.h"
 #include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -38,14 +38,17 @@ class BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest
       const std::string& creative_instance_id,
       mojom::NewTabPageAdEventType mojom_ad_event_type,
       bool should_fire_event) {
-    base::MockCallback<FireNewTabPageAdEventHandlerCallback> callback;
-    base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
-    EXPECT_CALL(callback, Run(/*success=*/should_fire_event, placement_id,
-                              mojom_ad_event_type))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    event_handler_.FireEvent(placement_id, creative_instance_id,
-                             mojom_ad_event_type, callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<bool, std::string, mojom::NewTabPageAdEventType>
+        test_future;
+    event_handler_.FireEvent(
+        placement_id, creative_instance_id, mojom_ad_event_type,
+        test_future.GetCallback<bool, const std::string&,
+                                mojom::NewTabPageAdEventType>());
+    const auto [success, fired_placement_id, ad_event_type] =
+        test_future.Take();
+    EXPECT_EQ(should_fire_event, success);
+    EXPECT_EQ(placement_id, fired_placement_id);
+    EXPECT_EQ(mojom_ad_event_type, ad_event_type);
   }
 
   NewTabPageAdEventHandler event_handler_;

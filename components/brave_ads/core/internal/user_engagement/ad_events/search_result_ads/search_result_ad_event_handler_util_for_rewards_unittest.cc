@@ -5,9 +5,7 @@
 
 #include <cstddef>
 
-#include "base/run_loop.h"
-#include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_test_util.h"
@@ -47,15 +45,13 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForRewardsTest,
       FromMojomMaybeBuildCreativeSetConversion(mojom_creative_ad);
   ASSERT_TRUE(creative_set_conversion);
 
-  base::MockCallback<database::table::GetCreativeSetConversionsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback,
-              Run(/*success=*/true,
-                  CreativeSetConversionList{*creative_set_conversion}))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  creative_set_conversions_database_table_.GetUnexpired(callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, CreativeSetConversionList> test_future;
+  creative_set_conversions_database_table_.GetUnexpired(
+      test_future.GetCallback<bool, const CreativeSetConversionList&>());
+  const auto [success, creative_set_conversions] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(creative_set_conversions,
+              ::testing::ElementsAre(*creative_set_conversion));
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerUtilForRewardsTest,
@@ -79,13 +75,12 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForRewardsTest,
   }
 
   // Assert
-  base::MockCallback<database::table::GetCreativeSetConversionsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true, ::testing::IsEmpty()))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  creative_set_conversions_database_table_.GetUnexpired(callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, CreativeSetConversionList> test_future;
+  creative_set_conversions_database_table_.GetUnexpired(
+      test_future.GetCallback<bool, const CreativeSetConversionList&>());
+  const auto [success, creative_set_conversions] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(creative_set_conversions, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerUtilForRewardsTest,
@@ -99,13 +94,12 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForRewardsTest,
       mojom_creative_ad, mojom::SearchResultAdEventType::kViewedImpression);
 
   // Assert
-  base::MockCallback<database::table::GetCreativeSetConversionsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true, ::testing::IsEmpty()))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  creative_set_conversions_database_table_.GetUnexpired(callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, CreativeSetConversionList> test_future;
+  creative_set_conversions_database_table_.GetUnexpired(
+      test_future.GetCallback<bool, const CreativeSetConversionList&>());
+  const auto [success, creative_set_conversions] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(creative_set_conversions, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerUtilForRewardsTest,
