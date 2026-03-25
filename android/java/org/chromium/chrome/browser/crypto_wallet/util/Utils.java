@@ -1420,7 +1420,9 @@ public class Utils {
      * @return the parsed price as a {@code double}, or {@code 0.0} if the asset is {@code null} or
      *     no matching price is found.
      */
-    public static double getPriceForAsset(List<AssetPrice> assetPrices, @Nullable BlockchainToken asset) {
+    public static double getPriceForAsset(
+            List<AssetPrice> assetPrices,
+            @Nullable BlockchainToken asset) {
         if (asset == null) {
             return 0.0d;
         }

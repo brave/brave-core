@@ -355,17 +355,27 @@ public class ParsedTransaction extends ParsedTransactionFees {
             final String sellAmountArg = txInfo.txArgs[1];
             final String minBuyAmountArg = txInfo.txArgs[2];
 
-            final List<BlockchainToken> fillTokensList = getUniswapBlockchainTokens(fullTokenList, fillPath, nativeAsset);
+            final List<BlockchainToken> fillTokensList =
+                    getUniswapBlockchainTokens(
+                            fullTokenList, fillPath, nativeAsset);
 
-            final BlockchainToken sellToken = fillTokensList.size() == 1 ? nativeAsset : fillTokensList.get(0);
-            final double price = Utils.getPrice(assetPrices, sellToken.coin, sellToken.chainId, sellToken.contractAddress);
+            final BlockchainToken sellToken =
+                    fillTokensList.size() == 1
+                            ? nativeAsset
+                            : fillTokensList.get(0);
+            final double price = Utils.getPrice(
+                    assetPrices, sellToken.coin,
+                    sellToken.chainId,
+                    sellToken.contractAddress);
             final String sellAmountWei =
                     sellAmountArg != null && !sellAmountArg.isEmpty() ? sellAmountArg : value;
             final double sellAmountFiat =
                     Utils.fromHexWei(sellAmountWei, sellToken.decimals) * price;
 
-            final BlockchainToken buyToken = fillTokensList.get(fillTokensList.size() - 1);
-            final double buyAmount = Utils.fromHexWei(minBuyAmountArg, buyToken.decimals);
+            final BlockchainToken buyToken =
+                    fillTokensList.get(fillTokensList.size() - 1);
+            final double buyAmount =
+                    Utils.fromHexWei(minBuyAmountArg, buyToken.decimals);
 
             final double totalAmountFiat = parsedTransaction.getGasFeeFiat() + sellAmountFiat;
 
@@ -384,7 +394,9 @@ public class ParsedTransaction extends ParsedTransactionFees {
         } else {
             // The rest cases falls through to default
             final double price = Utils.getPrice(
-                    assetPrices, nativeAsset.coin, nativeAsset.chainId, nativeAsset.contractAddress);
+                    assetPrices, nativeAsset.coin,
+                    nativeAsset.chainId,
+                    nativeAsset.contractAddress);
             double sendAmount;
             if (txInfo.txType == TransactionType.SOLANA_SYSTEM_TRANSFER || zecTxData != null) {
                 sendAmount = Utils.fromWei(value, txNetwork.decimals);
@@ -408,14 +420,20 @@ public class ParsedTransaction extends ParsedTransactionFees {
         return parsedTransaction;
     }
 
-    private static List<BlockchainToken> getUniswapBlockchainTokens(BlockchainToken[] fullTokenList, String fillPath, BlockchainToken nativeAsset) {
+    private static List<BlockchainToken> getUniswapBlockchainTokens(
+            BlockchainToken[] fullTokenList,
+            String fillPath,
+            BlockchainToken nativeAsset) {
         final Matcher matcher = UNISWAP_PATH_SEGMENT_PATTERN.matcher(fillPath.substring(2));
         final List<BlockchainToken> fillTokensList = new ArrayList<>();
         while (matcher.find()) {
             String address = "0x" + matcher.group();
             final BlockchainToken thisToken = findToken(fullTokenList, address);
             final boolean isEthSwapContract = address.equals(Utils.ETHEREUM_CONTRACT_FOR_SWAP);
-            final BlockchainToken tokenToAdd = (isEthSwapContract || thisToken == null) ? nativeAsset : thisToken;
+            final BlockchainToken tokenToAdd =
+                    (isEthSwapContract || thisToken == null)
+                            ? nativeAsset
+                            : thisToken;
             fillTokensList.add(tokenToAdd);
         }
         return fillTokensList;
