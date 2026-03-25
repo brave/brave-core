@@ -11,6 +11,7 @@
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/no_destructor.h"
+#include "brave/browser/history_embeddings/brave_embedder.h"
 #include "chrome/browser/profiles/profile_observer.h"
 #include "components/passage_embeddings/core/passage_embeddings_service_controller.h"
 
@@ -18,14 +19,13 @@ class Profile;
 
 namespace passage_embeddings {
 
-class BraveEmbedder;
-
 // Brave's implementation of PassageEmbeddingsServiceController.
 // Instead of launching a separate service process, we use an in-process
 // implementation that forwards to BraveEmbedder (which uses LocalAIService).
 class BravePassageEmbeddingsServiceController
     : public PassageEmbeddingsServiceController,
-      public ProfileObserver {
+      public ProfileObserver,
+      public BraveEmbedder::Observer {
  public:
   static BravePassageEmbeddingsServiceController* Get();
 
@@ -46,6 +46,9 @@ class BravePassageEmbeddingsServiceController
 
   // ProfileObserver:
   void OnProfileWillBeDestroyed(Profile* profile) override;
+
+  // BraveEmbedder::Observer:
+  void OnEmbedderIdle() override;
 
   // PassageEmbeddingsServiceController:
   void MaybeLaunchService() override;

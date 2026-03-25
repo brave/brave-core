@@ -7,6 +7,7 @@
 
 #include "base/logging.h"
 #include "brave/browser/history_embeddings/brave_embedder.h"
+#include "brave/browser/local_ai/local_ai_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 
 namespace passage_embeddings {
@@ -40,7 +41,9 @@ Embedder* BravePassageEmbeddingsServiceController::GetBraveEmbedder(
   if (it == profile_embedders_.end()) {
     DVLOG(3) << "Creating BraveEmbedder for profile " << profile;
     profile->AddObserver(this);
-    auto embedder = std::make_unique<BraveEmbedder>(profile);
+    auto embedder = std::make_unique<BraveEmbedder>(
+        local_ai::LocalAIServiceFactory::GetForProfile(profile));
+    embedder->AddObserver(this);
     it = profile_embedders_.emplace(profile, std::move(embedder)).first;
   }
 
@@ -51,6 +54,12 @@ void BravePassageEmbeddingsServiceController::OnProfileWillBeDestroyed(
     Profile* profile) {
   profile->RemoveObserver(this);
   profile_embedders_.erase(profile);
+}
+
+void BravePassageEmbeddingsServiceController::OnEmbedderIdle() {
+  for (auto& [profile, embedder] : profile_embedders_) {
+    embedder->NotifyServiceIdle();
+  }
 }
 
 void BravePassageEmbeddingsServiceController::MaybeLaunchService() {

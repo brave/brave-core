@@ -14,6 +14,8 @@
 
 #include "base/functional/callback_helpers.h"
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
+#include "base/observer_list_types.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "components/passage_embeddings/core/passage_embeddings_types.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -28,9 +30,19 @@ namespace passage_embeddings {
 // queries can preempt queued indexing work.
 class BraveEmbedder : public Embedder {
  public:
+  class Observer : public base::CheckedObserver {
+   public:
+    // Called when all jobs have completed and the embedder is idle.
+    virtual void OnEmbedderIdle() = 0;
+  };
+
   explicit BraveEmbedder(
       mojo::PendingRemote<local_ai::mojom::LocalAIService> service);
   ~BraveEmbedder() override;
+
+  void AddObserver(Observer* observer);
+  void RemoveObserver(Observer* observer);
+  void NotifyServiceIdle();
 
   BraveEmbedder(const BraveEmbedder&) = delete;
   BraveEmbedder& operator=(const BraveEmbedder&) = delete;
@@ -79,6 +91,7 @@ class BraveEmbedder : public Embedder {
 
   mojo::Remote<local_ai::mojom::LocalAIService> local_ai_service_;
   mojo::Remote<local_ai::mojom::PassageEmbedder> passage_embedder_;
+  base::ObserverList<Observer> observers_;
 
   base::WeakPtrFactory<BraveEmbedder> weak_ptr_factory_{this};
 };
