@@ -10,8 +10,8 @@
 safe_browsing_mode = 1
 
 if (is_linux) {
-  # Use hardened_malloc on Linux.
-  use_allocator = "hardened_malloc"
-  use_partition_alloc_as_malloc = false
-  enable_backup_ref_ptr_support = false
+  if (use_allocator == "hardened_malloc") {
+    use_partition_alloc_as_malloc = false
+    enable_backup_ref_ptr_support = false
+  }
 }
