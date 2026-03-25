@@ -5,6 +5,7 @@
 
 #include "brave/components/ipfs/ipfs_utils.h"
 
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -87,10 +88,14 @@ bool IsValidCID(const std::string& cid) {
   return filecoin::is_valid_cid(cid);
 }
 
-// Ensures the given CID is in CIDv1 format and returns it. If the CID is in
-// CIDv0, it converts it to CIDv1 before returning the result.
-std::string EnsureCIDv1(const std::string& cid) {
-  return filecoin::ensure_cidv1(cid).c_str();
+// Ensures the given CID is in CIDv1 format and returns it if possible. If the
+// CID is in CIDv0, it converts it to CIDv1 before returning the result.
+std::optional<std::string> EnsureCIDv1(const std::string& cid) {
+  auto result = filecoin::ensure_cidv1(cid);
+  if (!result->is_ok()) {
+    return std::nullopt;
+  }
+  return result->unwrap()->value().c_str();
 }
 
 }  // namespace
@@ -105,8 +110,13 @@ bool TranslateIPFSURI(const GURL& url, GURL* new_url, bool use_subdomain) {
   if (use_subdomain) {
     // In subdomain mode, CIDv1 is required, since CIDv0 cannot be used as part
     // of the host in a URL.
-    cid = EnsureCIDv1(cid);
+    auto cid_v1 = EnsureCIDv1(cid);
+    if (!cid_v1) {
+      return false;
+    }
+    cid = *cid_v1;
   }
+
   bool ipfs_scheme = url.scheme() == kIPFSScheme;
   bool ipns_scheme = url.scheme() == kIPNSScheme;
   if ((ipfs_scheme && IsValidCID(cid)) || ipns_scheme) {
