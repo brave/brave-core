@@ -1609,10 +1609,10 @@ public class BrowserViewController: UIViewController {
     }
 
     func shouldShowTabBar() -> Bool {
-      let isKeyboardActiveForWebContent =
+      let isKeyboardActive =
         tabManager.selectedTab?.webViewProxy?.isKeyboardVisible == true
-      let isBraveOriginatedKeyboard = keyboardState?.isLocal == true
-      if isUsingBottomBar, isKeyboardActiveForWebContent, isBraveOriginatedKeyboard {
+        && keyboardState?.isLocal == true
+      if isUsingBottomBar, topToolbar.inOverlayMode || isKeyboardActive {
         return false
       }
       let tabCount = tabManager.tabsForCurrentMode.count
