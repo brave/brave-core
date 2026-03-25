@@ -22,6 +22,7 @@
   virtual std::vector<views::View*> GetLeftMostTrailingViews();  \
   SkColor GetBackgroundColorForTesting
 
+#define GetMinimumTrailingWidth virtual GetMinimumTrailingWidth
 #define Init virtual Init
 #define OnOmniboxBlurred virtual OnOmniboxBlurred
 #define GetBorderRadius virtual GetBorderRadius
@@ -31,6 +32,7 @@
 #undef GetBorderRadius
 #undef OnOmniboxBlurred
 #undef Init
+#undef GetMinimumTrailingWidth
 #undef GetBackgroundColorForTesting
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_LOCATION_BAR_LOCATION_BAR_VIEW_H_

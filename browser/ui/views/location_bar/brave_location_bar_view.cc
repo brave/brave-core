@@ -301,6 +301,49 @@ void BraveLocationBarView::RefreshBackground() {
   }
 }
 
+int BraveLocationBarView::GetMinimumTrailingWidth() const {
+  int trailing_width = LocationBarView::GetMinimumTrailingWidth();
+  const int elem_pad =
+      GetLayoutConstant(LayoutConstant::kLocationBarElementPadding);
+
+  if (brave_actions_ && brave_actions_->GetVisible()) {
+    trailing_width += brave_actions_->GetMinimumSize().width() + elem_pad;
+  }
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  if (brave_news_action_icon_view_ &&
+      brave_news_action_icon_view_->GetVisible()) {
+    trailing_width +=
+        brave_news_action_icon_view_->GetMinimumSize().width() + elem_pad;
+  }
+
+#endif
+#if BUILDFLAG(ENABLE_TOR)
+  if (onion_location_view_ && onion_location_view_->GetVisible()) {
+    trailing_width += onion_location_view_->GetMinimumSize().width() + elem_pad;
+  }
+#endif
+
+  return trailing_width;
+}
+
+gfx::Size BraveLocationBarView::GetMinimumSize() const {
+  const int height = GetLayoutConstant(LayoutConstant::kLocationBarHeight);
+  if (!IsInitialized()) {
+    return gfx::Size(0, height);
+  }
+
+  // Unlike upstream which uses max(omnibox, leading+trailing), reserve space
+  // for all children simultaneously so the omnibox always has its minimum
+  // alongside all visible decorations.
+  const int padding =
+      GetLayoutConstant(LayoutConstant::kLocationBarElementPadding);
+  const int width = GetInsets().width() + GetMinimumLeadingWidth() + padding +
+                    omnibox_view_->GetMinimumSize().width() +
+                    GetMinimumTrailingWidth();
+  return gfx::Size(width, height);
+}
+
 gfx::Size BraveLocationBarView::CalculatePreferredSize(
     const views::SizeBounds& available_size) const {
   gfx::Size min_size = LocationBarView::CalculatePreferredSize(available_size);

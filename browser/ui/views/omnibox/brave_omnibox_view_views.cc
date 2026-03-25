@@ -8,6 +8,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -23,10 +24,13 @@
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/omnibox_client.h"
 #include "components/search_engines/template_url_service.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/gfx/text_elider.h"
+#include "ui/gfx/text_utils.h"
+#include "url/gurl.h"
 
 namespace {
 void BraveUpdateContextMenu(ui::SimpleMenuModel* menu_contents, GURL url) {
@@ -49,6 +53,37 @@ std::u16string GetClipboardText() {
 }  // namespace
 
 BraveOmniboxViewViews::~BraveOmniboxViewViews() = default;
+
+gfx::Size BraveOmniboxViewViews::GetMinimumSize() const {
+  gfx::Size min_size = OmniboxViewViews::GetMinimumSize();
+
+  // Ensure the omnibox is always wide enough to show the URL from its start
+  // through the end of the eTLD+1 (i.e. scheme + host), so the most
+  // security-relevant part of the address is never truncated at minimum
+  // window width.
+  const std::u16string text = GetText();
+  const GURL url(text);
+  const std::string etld1 =
+      net::registry_controlled_domains::GetDomainAndRegistry(
+          url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  if (etld1.empty()) {
+    return min_size;
+  }
+
+  // Find where the eTLD+1 ends within the displayed text and take the prefix
+  // up to that point (e.g. "https://sub.example.com" from the full URL text).
+  const std::u16string etld1_u16 = base::UTF8ToUTF16(etld1);
+  const size_t etld1_pos = text.find(etld1_u16);
+  if (etld1_pos == std::u16string::npos) {
+    return min_size;
+  }
+
+  const std::u16string prefix = text.substr(0, etld1_pos + etld1_u16.length());
+  const int prefix_width =
+      GetFontList().GetExpectedTextWidth(prefix.length()) + GetInsets().width();
+  min_size.set_width(std::max(min_size.width(), prefix_width + 25));
+  return min_size;
+}
 
 std::optional<GURL> BraveOmniboxViewViews::GetURLToCopy() {
   GURL url;

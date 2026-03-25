@@ -46,6 +46,8 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/window_open_disposition_utils.h"
 #include "ui/events/event.h"
+#include "ui/views/layout/flex_layout_types.h"
+#include "ui/views/view_class_properties.h"
 #include "ui/views/window/hit_test_utils.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -139,6 +141,19 @@ bool HasMultipleUserProfiles() {
 
 bool IsAvatarButtonHideable(Profile* profile) {
   return !profile->IsIncognitoProfile() && !profile->IsGuestSession();
+}
+
+// Brave-specific optional toolbar buttons should hide before the location bar
+// is forced to shrink. The location bar uses flex order 1001
+// (kLocationBarFlexOrder in toolbar_view.cc); assigning a higher order makes
+// these buttons the first to be evicted when horizontal space is tight.
+void SetBraveButtonFlexBehavior(views::View* btn) {
+  constexpr int kBraveOptionalButtonFlexOrder = 1010;
+  const views::FlexSpecification kBraveButtonFlex =
+      views::FlexSpecification(views::MinimumFlexSizeRule::kPreferredSnapToZero,
+                               views::MaximumFlexSizeRule::kPreferred)
+          .WithOrder(kBraveOptionalButtonFlexOrder);
+  btn->SetProperty(views::kFlexBehaviorKey, kBraveButtonFlex);
 }
 
 }  // namespace
@@ -289,10 +304,12 @@ void BraveToolbarView::Init() {
   bookmark_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                       ui::EF_MIDDLE_MOUSE_BUTTON);
   bookmark_->UpdateImageAndText();
+  SetBraveButtonFlexBehavior(bookmark_);
 
   side_panel_ = container_view->AddChildViewAt(
       std::make_unique<SidePanelButton>(browser()),
       *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+  SetBraveButtonFlexBehavior(side_panel_);
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   wallet_ = container_view->AddChildViewAt(
@@ -301,6 +318,7 @@ void BraveToolbarView::Init() {
   wallet_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                     ui::EF_MIDDLE_MOUSE_BUTTON);
   wallet_->UpdateImageAndText();
+  SetBraveButtonFlexBehavior(wallet_);
 
   UpdateWalletButtonVisibility();
 #endif
@@ -312,6 +330,7 @@ void BraveToolbarView::Init() {
     ai_chat_button_ = container_view->AddChildViewAt(
         std::make_unique<AIChatButton>(browser()),
         *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+    SetBraveButtonFlexBehavior(ai_chat_button_);
     show_ai_chat_button_.Init(
         ai_chat::prefs::kBraveAIChatShowToolbarButton,
         browser_->profile()->GetPrefs(),
@@ -330,6 +349,7 @@ void BraveToolbarView::Init() {
     brave_vpn_ = container_view->AddChildViewAt(
         std::make_unique<BraveVPNButton>(browser()),
         *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+    SetBraveButtonFlexBehavior(brave_vpn_);
     show_brave_vpn_button_.Init(
         brave_vpn::prefs::kBraveVPNShowButton, profile->GetPrefs(),
         base::BindRepeating(&BraveToolbarView::OnVPNButtonVisibilityChanged,
@@ -544,6 +564,13 @@ void BraveToolbarView::ResetLocationBarBounds() {
       width(), location_bar_view_->width(),
       location_bar_view_->GetMinimumSize().width(), location_bar_view_->x());
 
+  // When the window is at minimum width, GetLocationBarMarginHPercent()
+  // returns 0, so ResetLocationBarBounds() produces the same bounds and
+  // SetBoundsRect() exits early without calling LayoutImmediately(). In that
+  // case BraveLocationBarView::Layout() is never called in this pass and
+  // children keep stale positions from a previous wider layout, which can
+  // place Brave-specific views outside the bar's bounds.
+  location_bar_view_->InvalidateLayout();
   location_bar_view_->SetBounds(location_bar_view_->x() + margin.left(),
                                 location_bar_view_->y(),
                                 location_bar_view_->width() - margin.width(),
