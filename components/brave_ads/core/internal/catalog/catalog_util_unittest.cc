@@ -5,8 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 
-#include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
@@ -27,12 +26,9 @@ TEST_F(BraveAdsCatalogUtilTest, ResetCatalog) {
   SetCatalogLastUpdated(test::Now());
 
   // Act
-  base::RunLoop run_loop;
-  base::MockCallback<ResultCallback> callback;
-  EXPECT_CALL(callback, Run(/*success=*/true))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  ResetCatalog(callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool> test_future;
+  ResetCatalog(test_future.GetCallback());
+  EXPECT_TRUE(test_future.Get());
 
   // Assert
   EXPECT_THAT(GetProfileStringPref(prefs::kCatalogId), ::testing::IsEmpty());

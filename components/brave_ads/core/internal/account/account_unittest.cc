@@ -8,7 +8,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_test_util.h"
@@ -178,12 +178,9 @@ TEST_F(BraveAdsAccountTest, GetStatementForRewardsUser) {
   expected_mojom_statement->ads_summary_this_month = {
       {mojom::AdType::kNotificationAd, 3}};
 
-  base::MockCallback<GetStatementOfAccountsCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_mojom_statement))))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  GetAccount().GetStatement(callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<mojom::StatementInfoPtr> test_future;
+  GetAccount().GetStatement(test_future.GetCallback());
+  EXPECT_EQ(expected_mojom_statement, test_future.Take());
 }
 
 TEST_F(BraveAdsAccountTest, DoNotGetStatementForNonRewardsUser) {
@@ -191,12 +188,9 @@ TEST_F(BraveAdsAccountTest, DoNotGetStatementForNonRewardsUser) {
   test::DisableBraveRewards();
 
   // Act & Assert
-  base::MockCallback<GetStatementOfAccountsCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*statement=*/::testing::IsFalse()))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  GetAccount().GetStatement(callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<mojom::StatementInfoPtr> test_future;
+  GetAccount().GetStatement(test_future.GetCallback());
+  EXPECT_FALSE(test_future.Take());
 }
 
 TEST_F(BraveAdsAccountTest, DepositForCash) {
@@ -384,17 +378,14 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingCashForRewardsUser) {
   on_ad_rewards_did_change_run_loop.Run();
 
   // Assert
-  base::MockCallback<database::table::GetTransactionsCallback> callback;
-  base::RunLoop get_transactions_run_loop;
-  EXPECT_CALL(callback,
-              Run(/*success=*/true, /*transactions=*/::testing::SizeIs(1)))
-      .WillOnce(
-          base::test::RunOnceClosure(get_transactions_run_loop.QuitClosure()));
+  base::test::TestFuture<bool, TransactionList> test_future;
   const database::table::Transactions database_table;
-  database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
-                                 /*to_time=*/test::DistantFuture(),
-                                 callback.Get());
-  get_transactions_run_loop.Run();
+  database_table.GetForDateRange(
+      /*from_time=*/test::DistantPast(), /*to_time=*/test::DistantFuture(),
+      test_future.GetCallback<bool, const TransactionList&>());
+  const auto [success, transactions] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(transactions, ::testing::SizeIs(1));
 }
 
 TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingNonCashForRewardsUser) {
@@ -430,17 +421,14 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingNonCashForRewardsUser) {
   on_ad_rewards_did_change_run_loop.Run();
 
   // Assert
-  base::MockCallback<database::table::GetTransactionsCallback> callback;
-  base::RunLoop get_transactions_run_loop;
-  EXPECT_CALL(callback,
-              Run(/*success=*/true, /*transactions=*/::testing::SizeIs(1)))
-      .WillOnce(
-          base::test::RunOnceClosure(get_transactions_run_loop.QuitClosure()));
+  base::test::TestFuture<bool, TransactionList> test_future;
   const database::table::Transactions database_table;
-  database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
-                                 /*to_time=*/test::DistantFuture(),
-                                 callback.Get());
-  get_transactions_run_loop.Run();
+  database_table.GetForDateRange(
+      /*from_time=*/test::DistantPast(), /*to_time=*/test::DistantFuture(),
+      test_future.GetCallback<bool, const TransactionList&>());
+  const auto [success, transactions] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(transactions, ::testing::SizeIs(1));
 }
 
 TEST_F(BraveAdsAccountTest,
@@ -478,16 +466,14 @@ TEST_F(BraveAdsAccountTest,
   on_ad_rewards_did_change_run_loop.Run();
 
   // Assert
-  base::MockCallback<database::table::GetTransactionsCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback,
-              Run(/*success=*/true, /*transactions=*/::testing::IsEmpty()))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<bool, TransactionList> test_future;
   const database::table::Transactions database_table;
-  database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
-                                 /*to_time=*/test::DistantFuture(),
-                                 callback.Get());
-  run_loop.Run();
+  database_table.GetForDateRange(
+      /*from_time=*/test::DistantPast(), /*to_time=*/test::DistantFuture(),
+      test_future.GetCallback<bool, const TransactionList&>());
+  const auto [success, transactions] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(transactions, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

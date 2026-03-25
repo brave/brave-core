@@ -5,9 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/notification_ads/notification_ad_event_handler.h"
 
+#include <string>
+
 #include "base/run_loop.h"
 #include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -30,16 +32,20 @@ class BraveAdsNotificationAdEventHandlerTest : public test::TestBase {
   }
 
   void FireEventAndVerifyExpectations(
-      const std::string& placement_id,
-      mojom::NotificationAdEventType mojom_ad_event_type,
-      bool should_fire_event) {
-    base::MockCallback<FireNotificationAdEventHandlerCallback> callback;
-    base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
-    EXPECT_CALL(callback, Run(/*success=*/should_fire_event, placement_id,
-                              mojom_ad_event_type))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    event_handler_.FireEvent(placement_id, mojom_ad_event_type, callback.Get());
-    run_loop.Run();
+      const std::string& expected_placement_id,
+      mojom::NotificationAdEventType expected_mojom_ad_event_type,
+      bool expected_success) {
+    base::test::TestFuture<bool, std::string, mojom::NotificationAdEventType>
+        test_future;
+    event_handler_.FireEvent(
+        expected_placement_id, expected_mojom_ad_event_type,
+        test_future.GetCallback<bool, const std::string&,
+                                mojom::NotificationAdEventType>());
+    const auto [success, placement_id, mojom_ad_event_type] =
+        test_future.Take();
+    EXPECT_EQ(expected_success, success);
+    EXPECT_EQ(expected_placement_id, placement_id);
+    EXPECT_EQ(expected_mojom_ad_event_type, mojom_ad_event_type);
   }
 
   NotificationAdEventHandler event_handler_;

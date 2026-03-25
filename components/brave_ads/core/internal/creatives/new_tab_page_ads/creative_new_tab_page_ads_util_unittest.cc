@@ -8,9 +8,7 @@
 #include <optional>
 #include <utility>
 
-#include "base/run_loop.h"
-#include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -20,7 +18,6 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ads_callback.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -365,26 +362,23 @@ TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest, ParseAndSaveAds) {
 
   // Act
   {
-    base::MockCallback<ResultCallback> callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(/*success=*/true))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    ParseAndSaveNewTabPageAds(std::move(dict), callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<bool> test_future;
+    ParseAndSaveNewTabPageAds(std::move(dict), test_future.GetCallback());
+    EXPECT_TRUE(test_future.Get());
   }
 
   // Assert
-  base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(
-      callback,
-      Run(/*success=*/true, SegmentList{kUntargetedSegment},
-          ::testing::UnorderedElementsAreArray(BuildCreativeNewTabPageAds())))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<bool, SegmentList, CreativeNewTabPageAdList>
+      test_future;
   database::table::CreativeNewTabPageAds database_table;
-  database_table.GetForActiveCampaigns(callback.Get());
-  run_loop.Run();
+  database_table.GetForActiveCampaigns(
+      test_future
+          .GetCallback<bool, const SegmentList&, CreativeNewTabPageAdList>());
+  const auto [success, segments, creative_ads] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_EQ(SegmentList{kUntargetedSegment}, segments);
+  EXPECT_THAT(creative_ads, ::testing::UnorderedElementsAreArray(
+                                BuildCreativeNewTabPageAds()));
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
@@ -397,23 +391,17 @@ TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
       })JSON");
 
   // Act & Assert
-  base::MockCallback<ResultCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  ParseAndSaveNewTabPageAds(std::move(dict), callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool> test_future;
+  ParseAndSaveNewTabPageAds(std::move(dict), test_future.GetCallback());
+  EXPECT_TRUE(test_future.Get());
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
        DoNotParseAndSaveAdsWithInvalidData) {
   // Act & Assert
-  base::MockCallback<ResultCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/false))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  ParseAndSaveNewTabPageAds(base::DictValue(), callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool> test_future;
+  ParseAndSaveNewTabPageAds(base::DictValue(), test_future.GetCallback());
+  EXPECT_FALSE(test_future.Get());
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
@@ -426,12 +414,9 @@ TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
       })JSON");
 
   // Act & Assert
-  base::MockCallback<ResultCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/false))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  ParseAndSaveNewTabPageAds(std::move(dict), callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool> test_future;
+  ParseAndSaveNewTabPageAds(std::move(dict), test_future.GetCallback());
+  EXPECT_FALSE(test_future.Get());
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
@@ -443,12 +428,9 @@ TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
       })JSON");
 
   // Act & Assert
-  base::MockCallback<ResultCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/false))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  ParseAndSaveNewTabPageAds(std::move(dict), callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool> test_future;
+  ParseAndSaveNewTabPageAds(std::move(dict), test_future.GetCallback());
+  EXPECT_FALSE(test_future.Get());
 }
 
 TEST(BraveAdsNewTabPageAdMetricTypeUtilTest, ToMojomNewTabPageAdMetricType) {

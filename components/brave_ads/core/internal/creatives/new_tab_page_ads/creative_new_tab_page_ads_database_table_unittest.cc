@@ -5,9 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 
-#include "base/run_loop.h"
-#include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -31,141 +29,140 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, SaveEmpty) {
   test::SaveCreativeNewTabPageAds({});
 
   // Assert
-  base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true, /*segments=*/::testing::IsEmpty(),
-                            /*creative_ads=*/::testing::IsEmpty()))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  database_table_.GetForActiveCampaigns(callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, SegmentList, CreativeNewTabPageAdList>
+      test_future;
+  database_table_.GetForActiveCampaigns(
+      test_future
+          .GetCallback<bool, const SegmentList&, CreativeNewTabPageAdList>());
+  const auto [success, segments, creative_ads] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(segments, ::testing::IsEmpty());
+  EXPECT_THAT(creative_ads, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, Save) {
   // Arrange
-  const CreativeNewTabPageAdList creative_ads =
+  const CreativeNewTabPageAdList saved_creative_ads =
       test::BuildCreativeNewTabPageAds(
           CreativeNewTabPageAdWallpaperType::kImage, /*count=*/2);
 
   // Act
-  test::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(saved_creative_ads);
 
   // Assert
-  base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true,
-                            SegmentList{"architecture", "arts & entertainment"},
-                            ::testing::UnorderedElementsAreArray(creative_ads)))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  database_table_.GetForActiveCampaigns(callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, SegmentList, CreativeNewTabPageAdList>
+      test_future;
+  database_table_.GetForActiveCampaigns(
+      test_future
+          .GetCallback<bool, const SegmentList&, CreativeNewTabPageAdList>());
+  const auto [success, segments, creative_ads] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_EQ((SegmentList{"architecture", "arts & entertainment"}), segments);
+  EXPECT_THAT(creative_ads,
+              ::testing::UnorderedElementsAreArray(saved_creative_ads));
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, SaveInBatches) {
   // Arrange
   database_table_.SetBatchSize(2);
 
-  const CreativeNewTabPageAdList creative_ads =
+  const CreativeNewTabPageAdList saved_creative_ads =
       test::BuildCreativeNewTabPageAds(
           CreativeNewTabPageAdWallpaperType::kImage, /*count=*/3);
 
   // Act
-  test::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(saved_creative_ads);
 
   // Assert
-  base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true,
-                            SegmentList{"architecture", "arts & entertainment",
-                                        "automotive"},
-                            ::testing::UnorderedElementsAreArray(creative_ads)))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  database_table_.GetForActiveCampaigns(callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, SegmentList, CreativeNewTabPageAdList>
+      test_future;
+  database_table_.GetForActiveCampaigns(
+      test_future
+          .GetCallback<bool, const SegmentList&, CreativeNewTabPageAdList>());
+  const auto [success, segments, creative_ads] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_EQ((SegmentList{"architecture", "arts & entertainment", "automotive"}),
+            segments);
+  EXPECT_THAT(creative_ads,
+              ::testing::UnorderedElementsAreArray(saved_creative_ads));
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, DoNotSaveDuplicates) {
   // Arrange
-  const CreativeNewTabPageAdList creative_ads =
+  const CreativeNewTabPageAdList saved_creative_ads =
       test::BuildCreativeNewTabPageAds(
           CreativeNewTabPageAdWallpaperType::kImage, /*count=*/1);
-  test::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(saved_creative_ads);
 
   // Act
-  test::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(saved_creative_ads);
 
   // Assert
-  base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback,
-              Run(/*success=*/true, SegmentList{"architecture"}, creative_ads))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  database_table_.GetForActiveCampaigns(callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, SegmentList, CreativeNewTabPageAdList>
+      test_future;
+  database_table_.GetForActiveCampaigns(
+      test_future
+          .GetCallback<bool, const SegmentList&, CreativeNewTabPageAdList>());
+  const auto [success, segments, creative_ads] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_EQ(SegmentList{"architecture"}, segments);
+  EXPECT_THAT(creative_ads,
+              ::testing::UnorderedElementsAreArray(saved_creative_ads));
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetForImageSegments) {
   // Arrange
-  CreativeNewTabPageAdList creative_ads;
-
   CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
                                       /*use_random_uuids=*/true);
   creative_ad_1.segment = "food & drink";
-  creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
                                       /*use_random_uuids=*/true);
   creative_ad_2.segment = "technology & computing";
-  creative_ads.push_back(creative_ad_2);
 
-  test::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds({creative_ad_1, creative_ad_2});
 
   // Act & Assert
-  base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true, SegmentList{"food & drink"},
-                            CreativeNewTabPageAdList{creative_ad_1}))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<bool, SegmentList, CreativeNewTabPageAdList>
+      test_future;
   database_table_.GetForSegments(
-      /*segments=*/{"food & drink"}, callback.Get());
-  run_loop.Run();
+      /*segments=*/{"food & drink"},
+      test_future
+          .GetCallback<bool, const SegmentList&, CreativeNewTabPageAdList>());
+  const auto [success, segments, creative_ads] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_EQ(SegmentList{"food & drink"}, segments);
+  EXPECT_THAT(creative_ads, ::testing::ElementsAre(creative_ad_1));
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        GetForSegmentsIfTypeIsRichMedia) {
   // Arrange
-  CreativeNewTabPageAdList creative_ads;
-
   CreativeNewTabPageAdInfo creative_ad_1 = test::BuildCreativeNewTabPageAd(
       CreativeNewTabPageAdWallpaperType::kRichMedia,
       /*use_random_uuids=*/true);
   creative_ad_1.segment = "food & drink";
-  creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 = test::BuildCreativeNewTabPageAd(
       CreativeNewTabPageAdWallpaperType::kRichMedia,
       /*use_random_uuids=*/true);
   creative_ad_2.segment = "technology & computing";
-  creative_ads.push_back(creative_ad_2);
 
-  test::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds({creative_ad_1, creative_ad_2});
 
   // Act & Assert
-  base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true, SegmentList{"food & drink"},
-                            CreativeNewTabPageAdList{creative_ad_1}))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<bool, SegmentList, CreativeNewTabPageAdList>
+      test_future;
   database_table_.GetForSegments(
-      /*segments=*/{"food & drink"}, callback.Get());
-  run_loop.Run();
+      /*segments=*/{"food & drink"},
+      test_future
+          .GetCallback<bool, const SegmentList&, CreativeNewTabPageAdList>());
+  const auto [success, segments, creative_ads] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_EQ(SegmentList{"food & drink"}, segments);
+  EXPECT_THAT(creative_ads, ::testing::ElementsAre(creative_ad_1));
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
@@ -173,149 +170,137 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Arrange
   test::MockAllowJavaScript(false);
 
-  CreativeNewTabPageAdList creative_ads;
-
   CreativeNewTabPageAdInfo creative_ad_1 = test::BuildCreativeNewTabPageAd(
       CreativeNewTabPageAdWallpaperType::kRichMedia,
       /*use_random_uuids=*/true);
   creative_ad_1.segment = "food & drink";
-  creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 = test::BuildCreativeNewTabPageAd(
       CreativeNewTabPageAdWallpaperType::kRichMedia,
       /*use_random_uuids=*/true);
   creative_ad_2.segment = "technology & computing";
-  creative_ads.push_back(creative_ad_2);
 
-  test::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds({creative_ad_1, creative_ad_2});
 
   // Act & Assert
-  base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true, SegmentList{"food & drink"},
-                            /*creative_ads=*/::testing::IsEmpty()))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<bool, SegmentList, CreativeNewTabPageAdList>
+      test_future;
   database_table_.GetForSegments(
-      /*segments=*/{"food & drink"}, callback.Get());
-  run_loop.Run();
+      /*segments=*/{"food & drink"},
+      test_future
+          .GetCallback<bool, const SegmentList&, CreativeNewTabPageAdList>());
+  const auto [success, segments, creative_ads] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_EQ(SegmentList{"food & drink"}, segments);
+  EXPECT_THAT(creative_ads, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        DoNotGetForEmptySegments) {
   // Arrange
-  CreativeNewTabPageAdList creative_ads;
-
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
                                       /*use_random_uuids=*/true);
-  creative_ads.push_back(creative_ad_1);
 
   const CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(
           CreativeNewTabPageAdWallpaperType::kRichMedia,
           /*use_random_uuids=*/true);
-  creative_ads.push_back(creative_ad_2);
 
-  test::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds({creative_ad_1, creative_ad_2});
 
   // Act & Assert
-  base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true,
-                            /*segments=*/::testing::IsEmpty(),
-                            /*creative_ads=*/::testing::IsEmpty()))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  database_table_.GetForSegments(/*segments=*/{}, callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, SegmentList, CreativeNewTabPageAdList>
+      test_future;
+  database_table_.GetForSegments(
+      /*segments=*/{},
+      test_future
+          .GetCallback<bool, const SegmentList&, CreativeNewTabPageAdList>());
+  const auto [success, segments, creative_ads] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(segments, ::testing::IsEmpty());
+  EXPECT_THAT(creative_ads, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        DoNotGetForMissingSegment) {
   // Arrange
-  const CreativeNewTabPageAdList creative_ads =
+  const CreativeNewTabPageAdList saved_creative_ads =
       test::BuildCreativeNewTabPageAds(
           CreativeNewTabPageAdWallpaperType::kImage, /*count=*/1);
-  test::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(saved_creative_ads);
 
   // Act & Assert
-  base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true, SegmentList{"MISSING"},
-                            /*creative_ads=*/::testing::IsEmpty()))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<bool, SegmentList, CreativeNewTabPageAdList>
+      test_future;
   database_table_.GetForSegments(
-      /*segments=*/{"MISSING"}, callback.Get());
-  run_loop.Run();
+      /*segments=*/{"MISSING"},
+      test_future
+          .GetCallback<bool, const SegmentList&, CreativeNewTabPageAdList>());
+  const auto [success, segments, creative_ads] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_EQ(SegmentList{"MISSING"}, segments);
+  EXPECT_THAT(creative_ads, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetForMultipleSegments) {
   // Arrange
-  CreativeNewTabPageAdList creative_ads;
-
   CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
                                       /*use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
-  creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 = test::BuildCreativeNewTabPageAd(
       CreativeNewTabPageAdWallpaperType::kRichMedia,
       /*use_random_uuids=*/true);
   creative_ad_2.segment = "food & drink";
-  creative_ads.push_back(creative_ad_2);
 
   CreativeNewTabPageAdInfo creative_ad_3 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
                                       /*use_random_uuids=*/true);
   creative_ad_3.segment = "automotive";
-  creative_ads.push_back(creative_ad_3);
 
-  test::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(
+      {creative_ad_1, creative_ad_2, creative_ad_3});
 
   // Act & Assert
-  base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback,
-              Run(/*success=*/true,
-                  SegmentList{"technology & computing", "food & drink"},
-                  ::testing::UnorderedElementsAreArray(
-                      CreativeNewTabPageAdList{creative_ad_1, creative_ad_2})))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<bool, SegmentList, CreativeNewTabPageAdList>
+      test_future;
   database_table_.GetForSegments(
-      /*segments=*/{"technology & computing", "food & drink"}, callback.Get());
-  run_loop.Run();
+      /*segments=*/{"technology & computing", "food & drink"},
+      test_future
+          .GetCallback<bool, const SegmentList&, CreativeNewTabPageAdList>());
+  const auto [success, segments, creative_ads] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_EQ((SegmentList{"technology & computing", "food & drink"}), segments);
+  EXPECT_THAT(creative_ads,
+              ::testing::UnorderedElementsAre(creative_ad_1, creative_ad_2));
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        GetForCreativeInstanceIdIfTypeIsImage) {
   // Arrange
-  CreativeNewTabPageAdList creative_ads;
-
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
                                       /*use_random_uuids=*/true);
-  creative_ads.push_back(creative_ad_1);
 
   const CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
                                       /*use_random_uuids=*/true);
-  creative_ads.push_back(creative_ad_2);
 
-  test::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds({creative_ad_1, creative_ad_2});
 
   // Act & Assert
-  base::MockCallback<database::table::GetCreativeNewTabPageAdCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true,
-                            creative_ad_1.creative_instance_id, creative_ad_1))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  database_table_.GetForCreativeInstanceId(creative_ad_1.creative_instance_id,
-                                           callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, std::string, CreativeNewTabPageAdInfo>
+      test_future;
+  database_table_.GetForCreativeInstanceId(
+      creative_ad_1.creative_instance_id,
+      test_future.GetCallback<bool, const std::string&,
+                              const CreativeNewTabPageAdInfo&>());
+  const auto [success, creative_instance_id, creative_ad] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_EQ(creative_ad_1.creative_instance_id, creative_instance_id);
+  EXPECT_EQ(creative_ad_1, creative_ad);
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
@@ -323,58 +308,54 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Arrange
   test::MockAllowJavaScript(false);
 
-  CreativeNewTabPageAdList creative_ads;
-
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
                                       /*use_random_uuids=*/true);
-  creative_ads.push_back(creative_ad_1);
 
   const CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
                                       /*use_random_uuids=*/true);
-  creative_ads.push_back(creative_ad_2);
 
-  test::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds({creative_ad_1, creative_ad_2});
 
   // Act & Assert
-  base::MockCallback<database::table::GetCreativeNewTabPageAdCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true,
-                            creative_ad_1.creative_instance_id, creative_ad_1))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  database_table_.GetForCreativeInstanceId(creative_ad_1.creative_instance_id,
-                                           callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, std::string, CreativeNewTabPageAdInfo>
+      test_future;
+  database_table_.GetForCreativeInstanceId(
+      creative_ad_1.creative_instance_id,
+      test_future.GetCallback<bool, const std::string&,
+                              const CreativeNewTabPageAdInfo&>());
+  const auto [success, creative_instance_id, creative_ad] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_EQ(creative_ad_1.creative_instance_id, creative_instance_id);
+  EXPECT_EQ(creative_ad_1, creative_ad);
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        GetForCreativeInstanceIdIfTypeIsRichMedia) {
   // Arrange
-  CreativeNewTabPageAdList creative_ads;
-
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(
           CreativeNewTabPageAdWallpaperType::kRichMedia,
           /*use_random_uuids=*/true);
-  creative_ads.push_back(creative_ad_1);
 
   const CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
                                       /*use_random_uuids=*/true);
-  creative_ads.push_back(creative_ad_2);
 
-  test::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds({creative_ad_1, creative_ad_2});
 
   // Act & Assert
-  base::MockCallback<database::table::GetCreativeNewTabPageAdCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true,
-                            creative_ad_1.creative_instance_id, creative_ad_1))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  database_table_.GetForCreativeInstanceId(creative_ad_1.creative_instance_id,
-                                           callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, std::string, CreativeNewTabPageAdInfo>
+      test_future;
+  database_table_.GetForCreativeInstanceId(
+      creative_ad_1.creative_instance_id,
+      test_future.GetCallback<bool, const std::string&,
+                              const CreativeNewTabPageAdInfo&>());
+  const auto [success, creative_instance_id, creative_ad] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_EQ(creative_ad_1.creative_instance_id, creative_instance_id);
+  EXPECT_EQ(creative_ad_1, creative_ad);
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
@@ -382,120 +363,111 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Arrange
   test::MockAllowJavaScript(false);
 
-  CreativeNewTabPageAdList creative_ads;
-
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(
           CreativeNewTabPageAdWallpaperType::kRichMedia,
           /*use_random_uuids=*/true);
-  creative_ads.push_back(creative_ad_1);
 
   const CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
                                       /*use_random_uuids=*/true);
-  creative_ads.push_back(creative_ad_2);
 
-  test::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds({creative_ad_1, creative_ad_2});
 
   // Act & Assert
-  base::MockCallback<database::table::GetCreativeNewTabPageAdCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback,
-              Run(/*success=*/false, creative_ad_1.creative_instance_id,
-                  CreativeNewTabPageAdInfo{}))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  database_table_.GetForCreativeInstanceId(creative_ad_1.creative_instance_id,
-                                           callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, std::string, CreativeNewTabPageAdInfo>
+      test_future;
+  database_table_.GetForCreativeInstanceId(
+      creative_ad_1.creative_instance_id,
+      test_future.GetCallback<bool, const std::string&,
+                              const CreativeNewTabPageAdInfo&>());
+  const auto [success, creative_instance_id, creative_ad] = test_future.Take();
+  EXPECT_FALSE(success);
+  EXPECT_EQ(creative_ad_1.creative_instance_id, creative_instance_id);
+  EXPECT_EQ(CreativeNewTabPageAdInfo{}, creative_ad);
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        DoNotGetForMissingCreativeInstanceId) {
   // Arrange
-  const CreativeNewTabPageAdList creative_ads =
+  const CreativeNewTabPageAdList saved_creative_ads =
       test::BuildCreativeNewTabPageAds(
           CreativeNewTabPageAdWallpaperType::kImage, /*count=*/1);
-  test::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(saved_creative_ads);
 
   // Act & Assert
-  base::MockCallback<database::table::GetCreativeNewTabPageAdCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/false, test::kMissingCreativeInstanceId,
-                            CreativeNewTabPageAdInfo{}))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  database_table_.GetForCreativeInstanceId(test::kMissingCreativeInstanceId,
-                                           callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, std::string, CreativeNewTabPageAdInfo>
+      test_future;
+  database_table_.GetForCreativeInstanceId(
+      test::kMissingCreativeInstanceId,
+      test_future.GetCallback<bool, const std::string&,
+                              const CreativeNewTabPageAdInfo&>());
+  const auto [success, creative_instance_id, creative_ad] = test_future.Take();
+  EXPECT_FALSE(success);
+  EXPECT_EQ(test::kMissingCreativeInstanceId, creative_instance_id);
+  EXPECT_EQ(CreativeNewTabPageAdInfo{}, creative_ad);
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        GetNonExpiredIfTypeIsImage) {
   // Arrange
-  CreativeNewTabPageAdList creative_ads;
-
   CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
                                       /*use_random_uuids=*/true);
   creative_ad_1.start_at = test::DistantPast();
   creative_ad_1.end_at = test::Now();
-  creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
                                       /*use_random_uuids=*/true);
   creative_ad_2.start_at = test::DistantPast();
   creative_ad_2.end_at = test::DistantFuture();
-  creative_ads.push_back(creative_ad_2);
 
-  test::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds({creative_ad_1, creative_ad_2});
 
   AdvanceClockBy(base::Milliseconds(1));
 
   // Act & Assert
-  base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback,
-              Run(/*success=*/true, SegmentList{creative_ad_2.segment},
-                  CreativeNewTabPageAdList{creative_ad_2}))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  database_table_.GetForActiveCampaigns(callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, SegmentList, CreativeNewTabPageAdList>
+      test_future;
+  database_table_.GetForActiveCampaigns(
+      test_future
+          .GetCallback<bool, const SegmentList&, CreativeNewTabPageAdList>());
+  const auto [success, segments, creative_ads] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_EQ(SegmentList{creative_ad_2.segment}, segments);
+  EXPECT_THAT(creative_ads, ::testing::ElementsAre(creative_ad_2));
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        GetNonExpiredIfTypeIsRichMedia) {
   // Arrange
-  CreativeNewTabPageAdList creative_ads;
-
   CreativeNewTabPageAdInfo creative_ad_1 = test::BuildCreativeNewTabPageAd(
       CreativeNewTabPageAdWallpaperType::kRichMedia,
       /*use_random_uuids=*/true);
   creative_ad_1.start_at = test::DistantPast();
   creative_ad_1.end_at = test::Now();
-  creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 = test::BuildCreativeNewTabPageAd(
       CreativeNewTabPageAdWallpaperType::kRichMedia,
       /*use_random_uuids=*/true);
   creative_ad_2.start_at = test::DistantPast();
   creative_ad_2.end_at = test::DistantFuture();
-  creative_ads.push_back(creative_ad_2);
 
-  test::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds({creative_ad_1, creative_ad_2});
 
   AdvanceClockBy(base::Milliseconds(1));
 
   // Act & Assert
-  base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback,
-              Run(/*success=*/true, SegmentList{creative_ad_2.segment},
-                  CreativeNewTabPageAdList{creative_ad_2}))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  database_table_.GetForActiveCampaigns(callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, SegmentList, CreativeNewTabPageAdList>
+      test_future;
+  database_table_.GetForActiveCampaigns(
+      test_future
+          .GetCallback<bool, const SegmentList&, CreativeNewTabPageAdList>());
+  const auto [success, segments, creative_ads] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_EQ(SegmentList{creative_ad_2.segment}, segments);
+  EXPECT_THAT(creative_ads, ::testing::ElementsAre(creative_ad_2));
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
@@ -503,35 +475,32 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Arrange
   test::MockAllowJavaScript(false);
 
-  CreativeNewTabPageAdList creative_ads;
-
   CreativeNewTabPageAdInfo creative_ad_1 = test::BuildCreativeNewTabPageAd(
       CreativeNewTabPageAdWallpaperType::kRichMedia,
       /*use_random_uuids=*/true);
   creative_ad_1.start_at = test::DistantPast();
   creative_ad_1.end_at = test::Now();
-  creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 = test::BuildCreativeNewTabPageAd(
       CreativeNewTabPageAdWallpaperType::kRichMedia,
       /*use_random_uuids=*/true);
   creative_ad_2.start_at = test::DistantPast();
   creative_ad_2.end_at = test::DistantFuture();
-  creative_ads.push_back(creative_ad_2);
 
-  test::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds({creative_ad_1, creative_ad_2});
 
   AdvanceClockBy(base::Milliseconds(1));
 
   // Act & Assert
-  base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true, /*segments=*/::testing::IsEmpty(),
-                            /*creative_ads=*/::testing::IsEmpty()))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  database_table_.GetForActiveCampaigns(callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, SegmentList, CreativeNewTabPageAdList>
+      test_future;
+  database_table_.GetForActiveCampaigns(
+      test_future
+          .GetCallback<bool, const SegmentList&, CreativeNewTabPageAdList>());
+  const auto [success, segments, creative_ads] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(segments, ::testing::IsEmpty());
+  EXPECT_THAT(creative_ads, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetTableName) {
