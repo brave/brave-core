@@ -1416,6 +1416,11 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, MixedTabsPersistence) {
         browser()->tab_strip_model()->GetWebContentsAt(i);
     ASSERT_TRUE(tab);
 
+    // Restored background tabs may not have loaded yet. Activate each tab to
+    // trigger session restore's deferred loading, then wait for it to finish.
+    browser()->tab_strip_model()->ActivateTabAt(i);
+    ASSERT_TRUE(content::WaitForLoadStop(tab));
+
     content::StoragePartition* partition =
         tab->GetPrimaryMainFrame()->GetStoragePartition();
     ASSERT_TRUE(partition);
