@@ -209,3 +209,10 @@
 # (kBraveBlockScreenFingerprinting) by default on desktop, which modifies
 # screen dimension values returned to web content.
 -ScreenDetailsTest.FullscreenSize
+
+# https://github.com/brave/brave-browser/issues/53717
+# Flaky upstream test. ManifestSilentUpdateCommand queues a background
+# GetData() task whose FinishAndStartNextTask cleanup may still be pending when
+# HasCurrent() is asserted. Upstream flake rate 0.6% (LUCI Analysis, 30 days).
+# No Brave modifications to installable manager code path.
+-InstallableManagerBrowserTest.CheckWebapp
