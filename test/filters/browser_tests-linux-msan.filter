@@ -4,3 +4,12 @@
 ## When adding a new filter to this list, please include a short description of
 ## why the filter is required and create an associated tracking issue.
 ##
+
+# Upstream Chromium test. Stable upstream (0.2% flake rate over 30 days per
+# LUCI Analysis). The recorder panel has heavy initialization (~20 module
+# imports, LitElement setup, extension system) that, combined with Brave's
+# additional DevTools startup overhead (chromium_src overrides, NTP/stats
+# services), exceeds the test's hardcoded 20-second timeout under MSAN
+# instrumentation.
+# https://github.com/brave/brave-browser/issues/53812
+-DevToolsTest.TestShowRecorderTab
