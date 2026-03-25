@@ -36,9 +36,16 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/*
- * Transaction parser. Java version of
- * components/brave_wallet_ui/common/hooks/transaction-parser.ts.
+/**
+ * Parses a {@link TransactionInfo} into a UI-friendly representation containing resolved token
+ * metadata, formatted values, fiat totals, and fee breakdowns. Supports Ethereum (including
+ * ERC-20/721/1155 transfers, approvals, and Uniswap swaps), Solana (SPL transfers, dApp
+ * instructions), Filecoin, Bitcoin, ZCash, and Cardano transaction types.
+ *
+ * <p>Instances are created via the static factory method {@link #parseTransaction}.
+ *
+ * <p>This is the Java counterpart of the TypeScript {@code ParsedTransaction} interface defined in
+ * {@code components/brave_wallet_ui/utils/tx-utils.ts}.
  */
 @NullMarked
 public class ParsedTransaction extends ParsedTransactionFees {
@@ -73,6 +80,8 @@ public class ParsedTransaction extends ParsedTransactionFees {
     public boolean isSolanaDappTransaction;
     private boolean solChangeOfOwnership;
 
+    // Matches up to 40-character hex segments in a Uniswap encoded swap path (after stripping the
+    // "0x" prefix). Each segment represents a token contract address.
     private static final Pattern UNISWAP_PATH_SEGMENT_PATTERN = Pattern.compile("(.{1,40})");
 
     // There are too many fields to init here

@@ -1382,7 +1382,18 @@ public class Utils {
                 + address.substring(address.length() - 4));
     }
 
-    /** Find the price for a specific asset by coin, chainId, and address. */
+    /**
+     * Finds the price for a specific asset by matching coin type, chain ID, and contract address
+     * against the provided list of asset prices.
+     *
+     * @param assetPrices the list of {@link AssetPrice} entries to search through, may be {@code
+     *     null}.
+     * @param coin the coin type identifier (e.g. {@link org.chromium.brave_wallet.mojom.CoinType}).
+     * @param chainId the chain ID of the network the asset belongs to.
+     * @param address the contract address of the asset.
+     * @return the parsed price as a {@code double}, or {@code 0.0} if no matching price is found,
+     *     the list is {@code null}, or the list is empty.
+     */
     public static double getPrice(
             @Nullable List<AssetPrice> assetPrices, int coin, String chainId, String address) {
         if (assetPrices == null || assetPrices.isEmpty()) {
@@ -1400,7 +1411,15 @@ public class Utils {
         return 0.0d;
     }
 
-    /** Find the price for a specific asset from the asset prices list. */
+    /**
+     * Finds the price for a specific {@link BlockchainToken} by delegating to {@link #getPrice}
+     * using the token's coin type, chain ID, and contract address.
+     *
+     * @param assetPrices the list of {@link AssetPrice} entries to search through.
+     * @param asset the {@link BlockchainToken} to look up, may be {@code null}.
+     * @return the parsed price as a {@code double}, or {@code 0.0} if the asset is {@code null} or
+     *     no matching price is found.
+     */
     public static double getPriceForAsset(List<AssetPrice> assetPrices, @Nullable BlockchainToken asset) {
         if (asset == null) {
             return 0.0d;
