@@ -16,6 +16,8 @@
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/common/content_switches.h"
 #include "content/public/common/url_constants.h"
 #include "content/public/test/browser_test.h"
@@ -205,6 +207,19 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
     browser()->tab_strip_model()->CloseWebContentsAt(1,
                                                      TabCloseTypes::CLOSE_NONE);
     EXPECT_EQ(previous_tab_count - 1, browser()->tab_strip_model()->count());
+    // The Mojo associated pipe disconnect for BlobURLStoreImpl involves
+    // cross-thread notification: BrowserThread::IO detects the pipe closure
+    // and posts the disconnect handler to the UI thread. Flush the IO thread
+    // via PostTaskAndReply (which pumps the UI loop to avoid deadlock) so
+    // that disconnect notifications are delivered, then process the resulting
+    // UI thread tasks (which destroy BlobURLStoreImpl and remove blob URL
+    // mappings).
+    {
+      base::RunLoop run_loop;
+      content::GetIOThreadTaskRunner({})->PostTaskAndReply(
+          FROM_HERE, base::DoNothing(), run_loop.QuitClosure());
+      run_loop.Run();
+    }
     content::RunAllTasksUntilIdle();
     for (size_t idx = 0; idx < a_com2_registered_blobs.size(); ++idx) {
       auto* rfh = a_com2_registered_blobs[idx].rfh.get();
