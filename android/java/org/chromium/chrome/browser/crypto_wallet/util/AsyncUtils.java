@@ -275,21 +275,6 @@ public class AsyncUtils {
         }
     }
 
-    public static class FetchPricesResponseContext extends SingleResponseBaseContext
-            implements Callback1<List<AssetPrice>> {
-        public List<AssetPrice> assetPrices;
-
-        public FetchPricesResponseContext(Runnable responseCompleteCallback) {
-            super(responseCompleteCallback);
-        }
-
-        @Override
-        public void call(List<AssetPrice> assetPrices) {
-            this.assetPrices = assetPrices;
-            super.fireResponseCompleteCallback();
-        }
-    }
-
     public static class GetNativeAssetsBalancesResponseContext extends SingleResponseBaseContext
             implements Callback2<Integer, HashMap<String, Double>> {
         public int coinType;

@@ -40,7 +40,6 @@ import org.chromium.chrome.browser.crypto_wallet.activities.AdvanceTxSettingActi
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.presenters.Amount;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
-import org.chromium.chrome.browser.crypto_wallet.util.AssetsPricesHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransaction;
 import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransactionFees;
 import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
@@ -452,7 +451,7 @@ public class TxFragment extends Fragment {
         final double[] gasFeeArr =
                 ParsedTransactionFees.calcGasFee(
                         mTxNetwork,
-                        AssetsPricesHelper.getPrice(
+                        Utils.getPrice(
                                 mAssetPrices, mTxNetwork.coin, mTxNetwork.chainId, ""),
                         true,
                         gasLimit,
