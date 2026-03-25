@@ -21,6 +21,7 @@ aggregate_vector_icons("brave_vector_icons") {
     "brave_sad.icon",
     "brave_tooltips_stopwatch.icon",
     "download_unlock.icon",
+    "incognito_profile.icon",
     "sidebar_toolbar_button.icon",
     "sidebar_toolbar_button_right.icon",
     "user_menu_guest.icon",
