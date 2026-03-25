@@ -56,8 +56,10 @@ export const ConversationHeader = React.forwardRef(function (
   } = useActiveChat()
   const isMobile = useIsSmall() && aiChatContext.isMobile
 
+  const canStartNewConversation = useCanStartNewConversation()
+
   const shouldDisplayEraseAction =
-    (!aiChatContext.isStandalone || isMobile) && useCanStartNewConversation()
+    (!aiChatContext.isStandalone || isMobile) && canStartNewConversation
 
   const activeConversation = aiChatContext.conversations.find(
     (c: Conversation) => c.uuid === conversationContext.conversationUuid,
