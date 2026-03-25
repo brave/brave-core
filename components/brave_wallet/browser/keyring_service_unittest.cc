@@ -357,16 +357,10 @@ class KeyringServiceUnitTest : public testing::Test {
       const std::string& json_export,
       const std::string& password,
       const std::string& network) {
-    mojom::AccountInfoPtr result;
-    base::RunLoop run_loop;
-    service->ImportPolkadotAccount(
-        account_name, json_export, password, network,
-        base::BindLambdaForTesting([&](mojom::AccountInfoPtr account) {
-          result = std::move(account);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return result;
+    base::test::TestFuture<mojom::AccountInfoPtr> test_future;
+    service->ImportPolkadotAccount(account_name, json_export, password, network,
+                                   test_future.GetCallback());
+    return test_future.Take();
   }
 
   static mojom::AccountInfoPtr ImportEthereumAccountFromJson(
