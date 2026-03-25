@@ -11,6 +11,7 @@ interface Props {
   url: string
   className?: string
   onClick?: () => void
+  onContextMenu?: React.MouseEventHandler<HTMLAnchorElement>
   openInNewTab?: boolean
   children: React.ReactNode
 }
@@ -27,6 +28,7 @@ export function Link(props: Props) {
       rel='noopener noreferrer'
       target={props.openInNewTab ? '_blank' : '_self'}
       onClick={props.onClick}
+      onContextMenu={props.onContextMenu}
     >
       {props.children}
     </a>

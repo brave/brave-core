@@ -71,6 +71,7 @@ function SponsoredBackgroundLogo(props: SponsoredBackgroundLogoProps) {
       url={logo.destinationUrl}
       className='sponsored-logo'
       onClick={() => actions.notifySponsoredImageLogoClicked()}
+      onContextMenu={(e) => e.preventDefault()}
     >
       <Icon name='launch' />
       <img

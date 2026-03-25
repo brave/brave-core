@@ -31,6 +31,7 @@ export function BackgroundClickRegion() {
       <Link
         url={url}
         onClick={actions.notifySponsoredImageLogoClicked}
+        onContextMenu={(e) => e.preventDefault()}
       >
         <Icon name='launch' />
       </Link>

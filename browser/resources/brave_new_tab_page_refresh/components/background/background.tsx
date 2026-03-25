@@ -40,6 +40,7 @@ export function Background() {
             url={currentBackground.imageUrl}
             className='sponsored'
             onLoadError={actions.notifySponsoredImageLoadError}
+            onContextMenu={(e) => e.preventDefault()}
           />
         )
       case 'sponsored-rich-media':
@@ -72,6 +73,7 @@ interface ImageBackgroundProps {
   url: string
   className?: string
   onLoadError?: () => void
+  onContextMenu?: React.MouseEventHandler<HTMLDivElement>
 }
 
 function ImageBackground(props: ImageBackgroundProps) {
@@ -93,7 +95,12 @@ function ImageBackground(props: ImageBackgroundProps) {
     classNames.push(props.className)
   }
 
-  return <div className={classNames.join(' ')} />
+  return (
+    <div
+      className={classNames.join(' ')}
+      onContextMenu={props.onContextMenu}
+    />
+  )
 }
 
 function SponsoredRichMediaBackground(props: {
