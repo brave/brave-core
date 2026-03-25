@@ -203,13 +203,23 @@ describe('createInterfaceApi', () => {
       endpoints: {
         myData: state({
           myValue: 'initial',
+          myOtherValue: 2,
         }),
       },
     })
 
-    expect(api.myData.current()).toEqual({ myValue: 'initial' })
+    expect(api.myData.current()).toEqual({
+      myValue: 'initial',
+      myOtherValue: 2,
+    })
+
+    // Partial updates do not remove other placeholder properties
     api.myData.update({ myValue: 'updated' })
-    expect(api.myData.current()).toEqual({ myValue: 'updated' })
+
+    expect(api.myData.current()).toEqual({
+      myValue: 'updated',
+      myOtherValue: 2,
+    })
   })
 
   it('creates a hook that returns the query data', async () => {
