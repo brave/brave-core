@@ -25,12 +25,16 @@
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
 #include "brave/components/psst/common/pref_names.h"
+#include "brave/components/psst/common/psst_metadata_schema.h"
 #include "brave/components/psst/common/psst_script_responses.h"
 #include "build/build_config.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_details.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/navigation_entry_restore_context.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/replaced_navigation_entry_data.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/test/navigation_simulator.h"
@@ -39,14 +43,139 @@
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/blink/public/common/page_state/page_state.h"
+#include "url/origin.h"
 
 using ::testing::_;
 using ::testing::InvokeArgument;
+
+namespace content {
+
+class MockNavigationEntry : public NavigationEntry {
+ public:
+  MockNavigationEntry() = default;
+  ~MockNavigationEntry() override = default;
+
+  MOCK_METHOD(bool, IsInitialEntry, (), (const, override));
+  MOCK_METHOD(int, GetUniqueID, (), (const, override));
+  MOCK_METHOD(content::PageType, GetPageType, (), (const, override));
+  MOCK_METHOD(void, SetURL, (const GURL& url), (override));
+  MOCK_METHOD(const GURL&, GetURL, (), (const, override));
+  MOCK_METHOD(void, SetBaseURLForDataURL, (const GURL& url), (override));
+  MOCK_METHOD(const GURL&, GetBaseURLForDataURL, (), (const, override));
+
+  MOCK_METHOD(void,
+              SetReferrer,
+              (const content::Referrer& referrer),
+              (override));
+  MOCK_METHOD(const content::Referrer&, GetReferrer, (), (const, override));
+  MOCK_METHOD(void, SetVirtualURL, (const GURL& url), (override));
+  MOCK_METHOD(const GURL&, GetVirtualURL, (), (const, override));
+  MOCK_METHOD(void, SetTitle, (std::u16string title), (override));
+  MOCK_METHOD(const std::u16string&, GetTitle, (), (const, override));
+  MOCK_METHOD(void,
+              SetApplicationTitle,
+              (const std::u16string& application_title),
+              (override));
+  MOCK_METHOD(const std::optional<std::u16string>&,
+              GetApplicationTitle,
+              (),
+              (const, override));
+  MOCK_METHOD(void,
+              SetPageState,
+              (const blink::PageState& state,
+               NavigationEntryRestoreContext* context),
+              (override));
+  MOCK_METHOD(blink::PageState, GetPageState, (), (const, override));
+  MOCK_METHOD(const std::u16string&, GetTitleForDisplay, (), (const, override));
+  MOCK_METHOD(bool, IsViewSourceMode, (), (const, override));
+  MOCK_METHOD(void,
+              SetTransitionType,
+              (ui::PageTransition transition_type),
+              (override));
+  MOCK_METHOD(ui::PageTransition, GetTransitionType, (), (const, override));
+  MOCK_METHOD(const GURL&, GetUserTypedURL, (), (const, override));
+  MOCK_METHOD(void, SetHasPostData, (bool has_post_data), (override));
+  MOCK_METHOD(bool, GetHasPostData, (), (const, override));
+  MOCK_METHOD(void, SetPostID, (int64_t post_id), (override));
+  MOCK_METHOD(int64_t, GetPostID, (), (const, override));
+  MOCK_METHOD(void,
+              SetPostData,
+              (const scoped_refptr<network::ResourceRequestBody>& data),
+              (override));
+  MOCK_METHOD(const scoped_refptr<const network::ResourceRequestBody>,
+              GetPostData,
+              (),
+              (const, override));
+  MOCK_METHOD(FaviconStatus&, GetFavicon, (), (override));
+  MOCK_METHOD(SSLStatus&, GetSSL, (), (override));
+  MOCK_METHOD(void,
+              SetOriginalRequestURL,
+              (const GURL& original_url),
+              (override));
+  MOCK_METHOD(const GURL&, GetOriginalRequestURL, (), (const, override));
+  MOCK_METHOD(void, SetIsOverridingUserAgent, (bool override_ua), (override));
+  MOCK_METHOD(bool, GetIsOverridingUserAgent, (), (const, override));
+  MOCK_METHOD(void, SetTimestamp, (base::Time timestamp), (override));
+  MOCK_METHOD(base::Time, GetTimestamp, (), (const, override));
+  MOCK_METHOD(void, SetCanLoadLocalResources, (bool allow), (override));
+  MOCK_METHOD(bool, GetCanLoadLocalResources, (), (const, override));
+  MOCK_METHOD(void, SetHttpStatusCode, (int http_status_code), (override));
+  MOCK_METHOD(int, GetHttpStatusCode, (), (const, override));
+  MOCK_METHOD(void,
+              SetRedirectChain,
+              (const std::vector<GURL>& redirects),
+              (override));
+  MOCK_METHOD(const std::vector<GURL>&,
+              GetRedirectChain,
+              (),
+              (const, override));
+  MOCK_METHOD(const std::optional<ReplacedNavigationEntryData>&,
+              GetReplacedEntryData,
+              (),
+              (const, override));
+  MOCK_METHOD(bool, IsRestored, (), (const, override));
+  MOCK_METHOD(std::string, GetExtraHeaders, (), (const, override));
+  MOCK_METHOD(void,
+              AddExtraHeaders,
+              (const std::string& extra_headers),
+              (override));
+  MOCK_METHOD(int64_t,
+              GetMainFrameDocumentSequenceNumber,
+              (),
+              (const, override));
+  MOCK_METHOD(bool,
+              IsPossiblySkippableAdEntryForTesting,
+              (),
+              (const, override));
+};
+
+}  // namespace content
 
 namespace psst {
 
 namespace {
 constexpr base::TimeDelta kScriptTimeout = base::Seconds(15);
+
+const char signed_user_id_prop_name[] = "user_id";
+const char tasks_prop_name[] = "tasks";
+const char site_name_prop_name[] = "name";
+
+MATCHER_P4(PsstWebsiteSettingsEq,
+           consent_status,
+           script_version,
+           user_id,
+           urls_to_skip,
+           "PsstWebsiteSettings with consent_status=" +
+               ::testing::PrintToString(consent_status) +
+               ", script_version=" + ::testing::PrintToString(script_version) +
+               ", user_id=" + ::testing::PrintToString(user_id) +
+               ", urls_to_skip=" + ::testing::PrintToString(urls_to_skip)) {
+  return arg.consent_status == consent_status &&
+         arg.script_version == script_version && arg.user_id == user_id &&
+         arg.urls_to_skip == urls_to_skip;
+}
+
 }  // namespace
 
 class DocumentOnLoadObserver : public content::WebContentsObserver {
@@ -102,7 +231,19 @@ ACTION_P(InsertScriptInPageCallback, future, value) {
       .Run(value.Clone());
   future->SetValue(value.Clone());
 }
-
+ACTION_P(InsertPolicyAsyncScriptInPageCallback, future, value) {
+  std::move(
+      const_cast<PsstTabWebContentsObserver::InsertScriptInPageCallback&>(arg2))
+      .Run(value.Clone());
+  future->SetValue(value.Clone());
+}
+ACTION_P(ShowCallback, future, disabled_checks) {
+  std::move(
+      const_cast<PsstTabWebContentsObserver::PsstUiDelegate::ConsentCallback&>(
+          arg4))
+      .Run(disabled_checks);
+  future->SetValue(disabled_checks);
+}
 ACTION_P(InsertScriptInPageDelayedCallback,
          future,
          task_environment,
@@ -132,13 +273,14 @@ class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
   MockUiDelegate() = default;
   ~MockUiDelegate() override = default;
 
-  MOCK_METHOD(
-      void,
-      Show,
-      (const url::Origin& origin,
-       PsstWebsiteSettings dialog_data,
-       PsstTabWebContentsObserver::ConsentCallback apply_changes_callback),
-      (override));
+  MOCK_METHOD(void,
+              Show,
+              (url::Origin origin,
+               PsstWebsiteSettings dialog_data,
+               const std::string& site_name,
+               base::ListValue tasks,
+               PsstUiDelegate::ConsentCallback apply_changes_callback),
+              (override));
 
   MOCK_METHOD(void,
               UpdateTasks,
@@ -173,7 +315,8 @@ class PsstTabWebContentsObserverUnitTestBase
     psst_web_contents_observer_ = base::WrapUnique<PsstTabWebContentsObserver>(
         new PsstTabWebContentsObserver(web_contents(), rule_registry_.get(),
                                        &prefs_, std::move(ui_delegate),
-                                       inject_script_callback_.Get()));
+                                       inject_script_callback_.Get(),
+                                       inject_async_script_callback_.Get()));
   }
 
   void TearDown() override {
@@ -194,7 +337,16 @@ class PsstTabWebContentsObserverUnitTestBase
     return inject_script_callback_;
   }
 
+  base::MockCallback<PsstTabWebContentsObserver::InjectScriptAsyncCallback>&
+  inject_async_script_callback() {
+    return inject_async_script_callback_;
+  }
+
   MockUiDelegate& ui_delegate() { return *ui_delegate_; }
+
+  PsstTabWebContentsObserver& psst_web_contents_observer() {
+    return *psst_web_contents_observer_;
+  }
 
  protected:
   base::test::ScopedFeatureList feature_list_;
@@ -203,6 +355,8 @@ class PsstTabWebContentsObserverUnitTestBase
   raw_ptr<MockUiDelegate> ui_delegate_;
   base::MockCallback<PsstTabWebContentsObserver::InjectScriptCallback>
       inject_script_callback_;
+  base::MockCallback<PsstTabWebContentsObserver::InjectScriptAsyncCallback>
+      inject_async_script_callback_;
   std::unique_ptr<MockPsstRuleRegistry> rule_registry_;
   std::unique_ptr<PsstTabWebContentsObserver> psst_web_contents_observer_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -242,27 +396,17 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
        ShouldNotProcessRestoredNavigationEntry) {
   auto url = GURL("https://example1.com");
 
-  content::NavigationController& controller = web_contents()->GetController();
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch).Times(0);
+  auto restored_entry = std::make_unique<content::MockNavigationEntry>();
 
-  std::unique_ptr<content::NavigationEntry> restored_entry =
-      content::NavigationEntry::Create();
-  restored_entry->SetURL(url);
-  restored_entry->SetTitle(u"Restored Page");
+  EXPECT_CALL(*restored_entry.get(), GetURL())
+      .WillOnce(testing::ReturnRef(url));
+  EXPECT_CALL(*restored_entry.get(), IsRestored())
+      .WillOnce(testing::Return(true));
 
-  std::vector<std::unique_ptr<content::NavigationEntry>> entries;
-  entries.push_back(std::move(restored_entry));
-
-  DocumentOnLoadObserver observer(web_contents());
-  controller.Restore(0 /* selected_index */, content::RestoreType::kRestored,
-                     &entries);
-
-  controller.LoadIfNecessary();
-
-  auto navigation_simulator =
-      content::NavigationSimulator::CreateFromPending(controller);
-  navigation_simulator->Commit();
-  observer.Wait();
+  content::LoadCommittedDetails details;
+  details.entry = restored_entry.get();
+  psst_web_contents_observer().NavigationEntryCommitted(details);
+  EXPECT_EQ(nullptr, restored_entry->GetUserData("should_process_key"));
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest, ShouldOnlyProcessHttpOrHttps) {
@@ -563,16 +707,27 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
        UserScriptReturnsUserHasPolicyScript) {
   const std::string user_script = "user";
   const std::string policy_script = "policy";
+  const std::string user_id = "unique_user_id";
+
   const GURL url("https://example1.com");
   base::RunLoop check_loop;
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
   base::test::TestFuture<base::Value> user_script_insert_future;
+  base::test::TestFuture<const std::vector<std::string>&>
+      user_accept_psst_settings_future;
   base::test::TestFuture<base::Value> policy_script_insert_future;
 
   // User script result is an dictionary, and user key is not empty
-  auto script_params = base::Value(base::DictValue().Set("user", "value"));
+  auto script_params = base::Value(
+      base::DictValue()
+          .Set(signed_user_id_prop_name, user_id)
+          .Set(tasks_prop_name,
+               base::ListValue().Append(base::DictValue()
+                                            .Set("url", "https://example1.com")
+                                            .Set("description", "settings")))
+          .Set(site_name_prop_name, "example"));
 
   // Policy script result is a dictionary, but it is not deserializable
   auto policy_script_result =
@@ -581,23 +736,39 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   // Call UI delegate method once (Failed state) as policy_script_result
   // is not deserializable
   EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
-      .Times(1);
+      .Times(0);
+
+  EXPECT_CALL(ui_delegate(),
+              GetPsstWebsiteSettings(url::Origin::Create(url), user_id));
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
 
+  EXPECT_CALL(ui_delegate(),
+              Show(url::Origin::Create(url),
+                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
+                                         std::vector<std::string>()),
+                   "example", _, _))
+      .WillOnce(ShowCallback(&user_accept_psst_settings_future,
+                             std::vector<std::string>()));
+
+  auto policy_script_params = script_params.Clone();
+  // We expect the next two parameters to be added by the
+  // PrepareParametersForPolicyExecution
+  policy_script_params.GetDict().Set("initial_execution", true);
+
   const auto script_with_parameters = base::StrCat(
       {"const params = ",
-       base::WriteJsonWithOptions(script_params.Clone(),
+       base::WriteJsonWithOptions(policy_script_params,
                                   base::JSONWriter::OPTIONS_PRETTY_PRINT)
            .value(),
        ";\n", policy_script});
 
   // Policy script executed, parameters added
-  EXPECT_CALL(inject_script_callback(), Run(script_with_parameters, _))
-      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_future,
-                                           policy_script_result.Clone()));
+  EXPECT_CALL(inject_async_script_callback(), Run(_, script_with_parameters, _))
+      .WillOnce(InsertPolicyAsyncScriptInPageCallback(
+          &policy_script_insert_future, policy_script_result.Clone()));
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -648,18 +819,30 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   const std::string user_script = "user";
   const std::string policy_script = "policy";
   const GURL url("https://example1.com");
+  const std::string user_id = "unique_user_id";
+
   base::RunLoop check_loop;
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
 
   base::test::TestFuture<base::Value> user_script_insert_future;
+  base::test::TestFuture<const std::vector<std::string>&>
+      user_accept_psst_settings_future;
   base::test::TestFuture<base::Value> policy_script_insert_future;
+
+  EXPECT_CALL(ui_delegate(),
+              GetPsstWebsiteSettings(url::Origin::Create(url), user_id));
 
   // Create a dictionary with unsupported blob storage value
   auto script_params = base::Value(
       base::DictValue()
-          .Set("user", "value")
+          .Set(signed_user_id_prop_name, user_id)
+          .Set(tasks_prop_name,
+               base::ListValue().Append(base::DictValue()
+                                            .Set("url", "https://example1.com")
+                                            .Set("description", "settings")))
+          .Set(site_name_prop_name, "example")
           .Set("prop",
                base::Value(base::Value::BlobStorage{0x01, 0x02, 0x03})));
   auto policy_script_result = base::Value();
@@ -672,10 +855,19 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
+
+  EXPECT_CALL(ui_delegate(),
+              Show(url::Origin::Create(url),
+                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
+                                         std::vector<std::string>()),
+                   "example", _, _))
+      .WillOnce(ShowCallback(&user_accept_psst_settings_future,
+                             std::vector<std::string>()));
+
   // Policy script executed, parameters not added
-  EXPECT_CALL(inject_script_callback(), Run(policy_script, _))
-      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_future,
-                                           policy_script_result.Clone()));
+  EXPECT_CALL(inject_async_script_callback(), Run(_, policy_script, _))
+      .WillOnce(InsertPolicyAsyncScriptInPageCallback(
+          &policy_script_insert_future, policy_script_result.Clone()));
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -692,6 +884,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
   const std::string policy_script = "policy";
   const GURL url("https://example1.com");
   const std::string task_description = "task description";
+  const std::string user_id = "unique_user_id";
   const int progress = 50;
   base::RunLoop check_loop;
   base::test::TestFuture<long> progress_future;
@@ -717,35 +910,65 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
       });
 
   base::test::TestFuture<base::Value> user_script_insert_future;
+  base::test::TestFuture<const std::vector<std::string>&>
+      user_accept_psst_settings_future;
   base::test::TestFuture<base::Value> policy_script_insert_future;
 
+  EXPECT_CALL(ui_delegate(),
+              GetPsstWebsiteSettings(url::Origin::Create(url), user_id));
+
   // Create a user script return value
-  auto script_params = base::Value(base::DictValue().Set("user", "value"));
+  auto script_params = base::Value(
+      base::DictValue()
+          .Set(signed_user_id_prop_name, user_id)
+          .Set(tasks_prop_name,
+               base::ListValue().Append(base::DictValue()
+                                            .Set("url", "https://example1.com")
+                                            .Set("description", "settings")))
+          .Set(site_name_prop_name, "example"));
 
   // prepare return value for policy script (status should be STARTED)
-  auto policy_script_result =
-      base::Value(base::DictValue()
-                      .Set("progress", progress)
-                      .Set("applied_tasks",
-                           base::ListValue().Append(
-                               base::DictValue()
-                                   .Set("url", url.spec())
-                                   .Set("description", task_description))));
+  auto policy_script_result = base::Value(
+      base::DictValue()
+          .Set("result", false)
+          .Set("next_url", "https://example1.com/next")
+          .Set("psst",
+               base::DictValue()
+                   .Set("progress", progress)
+                   .Set("applied_tasks",
+                        base::ListValue().Append(
+                            base::DictValue()
+                                .Set("url", url.spec())
+                                .Set("description", task_description)))));
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
 
+  EXPECT_CALL(ui_delegate(),
+              Show(url::Origin::Create(url),
+                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
+                                         std::vector<std::string>()),
+                   "example", _, _))
+      .WillOnce(ShowCallback(&user_accept_psst_settings_future,
+                             std::vector<std::string>()));
+
+  auto policy_script_params = script_params.Clone();
+  // We expect the next two parameters to be added by the
+  // PrepareParametersForPolicyExecution
+  policy_script_params.GetDict().Set("initial_execution", true);
+
   const auto policy_script_with_parameters = base::StrCat(
       {"const params = ",
-       base::WriteJsonWithOptions(script_params.Clone(),
+       base::WriteJsonWithOptions(policy_script_params,
                                   base::JSONWriter::OPTIONS_PRETTY_PRINT)
            .value(),
        ";\n", policy_script});
   // Policy script executed, parameters added
-  EXPECT_CALL(inject_script_callback(), Run(policy_script_with_parameters, _))
-      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_future,
-                                           policy_script_result.Clone()));
+  EXPECT_CALL(inject_async_script_callback(),
+              Run(_, policy_script_with_parameters, _))
+      .WillOnce(InsertPolicyAsyncScriptInPageCallback(
+          &policy_script_insert_future, policy_script_result.Clone()));
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
