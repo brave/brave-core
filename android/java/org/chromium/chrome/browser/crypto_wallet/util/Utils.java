@@ -1176,9 +1176,7 @@ public class Utils {
                         request.coin = token.coin;
                         request.chainId = token.chainId;
                         request.address =
-                                token.contractAddress.isEmpty()
-                                        ? null
-                                        : token.contractAddress;
+                                token.contractAddress.isEmpty() ? null : token.contractAddress;
                         priceRequests.add(request);
                     }
 
@@ -1186,9 +1184,7 @@ public class Utils {
                             new AsyncUtils.GetPriceResponseContext(
                                     multiResponse.singleResponseComplete);
                     assetRatioService.getPrice(
-                            priceRequests.toArray(new AssetPriceRequest[0]),
-                            "usd",
-                            priceContext);
+                            priceRequests.toArray(new AssetPriceRequest[0]), "usd", priceContext);
 
                     AsyncUtils.GetNativeAssetsBalancesResponseContext
                             getNativeAssetsBalancesContext =
@@ -1421,8 +1417,7 @@ public class Utils {
      *     no matching price is found.
      */
     public static double getPriceForAsset(
-            List<AssetPrice> assetPrices,
-            @Nullable BlockchainToken asset) {
+            List<AssetPrice> assetPrices, @Nullable BlockchainToken asset) {
         if (asset == null) {
             return 0.0d;
         }

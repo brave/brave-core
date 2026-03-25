@@ -451,8 +451,7 @@ public class TxFragment extends Fragment {
         final double[] gasFeeArr =
                 ParsedTransactionFees.calcGasFee(
                         mTxNetwork,
-                        Utils.getPrice(
-                                mAssetPrices, mTxNetwork.coin, mTxNetwork.chainId, ""),
+                        Utils.getPrice(mAssetPrices, mTxNetwork.coin, mTxNetwork.chainId, ""),
                         true,
                         gasLimit,
                         "0",

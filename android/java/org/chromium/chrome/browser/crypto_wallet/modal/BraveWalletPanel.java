@@ -34,7 +34,6 @@ import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AllAccountsInfo;
-import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceRequest;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
@@ -153,8 +152,7 @@ public class BraveWalletPanel implements DialogInterface {
                                                 double price =
                                                         Utils.getPriceForAsset(
                                                                 success
-                                                                        ? Arrays.asList(
-                                                                                assetPrices)
+                                                                        ? Arrays.asList(assetPrices)
                                                                         : new ArrayList<>(),
                                                                 asset);
                                                 double balance =
