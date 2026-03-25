@@ -142,7 +142,7 @@
 <translation id="2542968102051442371">Görsel Arama ile metin seçin</translation>
 <translation id="70183448213529602">Brave mevcut şifreleri değiştirmeye çalışıyor. Buna izin vermek için Windows şifrenizi yazın.</translation>
 <translation id="7798069806040634998">Dosya indirmek için Brave'un depolama alanına erişmesi gerekiyor</translation>
-<translation id="8447483940522230788">Brave Yardımcısı</translation>
+<translation id="2351700486811407088">Brave Origin Yardımcısı</translation>
 <translation id="2575822587468774919">Görsel Arama ile aramak istediğiniz öğeyi seçin</translation>
 <translation id="3830890663494219270">Şifrelerinizi ve diğer öğelerinizi tüm cihazlarınızda kullanmak için Brave'da oturum açın</translation>
 <translation id="6252796827759111076">Brave'u kullanmaya devam et</translation>
@@ -254,7 +254,7 @@
 <translation id="3846683726093018685">**Özetle:** Ekran görüntüsündeki içeriğin temel konusunu ve amacını 30 kelimeden kısa olacak şekilde tek bir cümleyle açıkla.
 
           **Soru Öner:** Kullanıcının ekran görüntüsünü daha iyi anlamak için sorabileceği 3-5 düşündürücü sorudan oluşan bir madde işaretli liste oluştur. Bu sorulardan en az biri görsel bir nesne, tasarımı veya yerleşimiyle ilgili olmalı.</translation>
-<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="6899774208752247219"><ph name="PAGE_TITLE"/> - Brave Origin</translation>
 <translation id="3885770153807205175">Dil seçici</translation>
 <translation id="6315734375101223238">Brave'u özelleştirin ve kontrol edin. İlgilenmeniz gereken bir konu var. Ayrıntılar için tıklayın.</translation>
 <translation id="7130675370997202556">Brave'u açmak ve göz atmaya başlamak için adınızı tıklayın.</translation>
@@ -318,7 +318,7 @@
 <translation id="4493028449971051158">Başlatma hatası: Lütfen yükleyiciyi yönetici olarak çalıştırın.</translation>
 <translation id="4501471624619070934">Bu ülkede erişim kısıtlandığı için yükleme başarısız oldu.</translation>
 <translation id="8594994021633965927">Bu uzantı, verileri nasıl topladığı ve kullandığı gibi gizlilik uygulamalarını yayınlamadı. Brave bunu kaldırmanızı öneriyor.</translation>
-<translation id="7084397798469173252">Brave'a hoş geldiniz; yeni tarayıcı penceresi açıldı</translation>
+<translation id="770557926599450702">Brave Origin'a hoş geldiniz; yeni tarayıcı penceresi açıldı</translation>
 <translation id="137732229629632648">Çevrenizin haritasını çıkarması ve ellerinizi takip etmesi için Brave'a izin vermeniz gerekir.</translation>
 <translation id="5036046007335188949">Başka bir Brave profilinde <ph name="USER_EMAIL_ADDRESS"/> olarak zaten oturum açmış durumdasınız.</translation>
 <translation id="1878185978731985193">Brave, sayfaları önceden yükleyerek internette gezinme ve arama işlemlerini hızlandırır. <ph name="BEGIN_LINK"/>Önceden yükleme sayfaları hakkında daha fazla bilgi edinin<ph name="END_LINK"/>.</translation>
@@ -326,7 +326,7 @@
 <translation id="8669339108356170796">Güvenli Tarama'yı devre dışı bıraktığınız ve dosya doğrulanamadığı için Brave bu indirme işlemini engelledi</translation>
 <translation id="7583343841997441047">Telefonunuzda Brave ile Google Lens'i deneyin</translation>
 <translation id="4594305310729380060">Bu cihazdaki Şifre Yöneticisi'ne</translation>
-<translation id="3349475100979552835">Brave Uygulamaları</translation>
+<translation id="7776200949522126045">Brave Origin Uygulamaları</translation>
 <translation id="4598116752460667024">Listeden herhangi bir işlemi arayın.</translation>
 <translation id="4970880042055371251">ChromeOS sürümü</translation>
 <translation id="2182657378556811785">Az kaldı! Güncellemeyi tamamlamak için Brave'u yeniden başlatın.</translation>
@@ -345,7 +345,7 @@
 <translation id="4823369970559443694">Brave, şifrelerinizi kontrol edemiyor. 24 saat sonra tekrar deneyin veya <ph name="BEGIN_LINK"/>şifreleri Brave Hesabınızda kontrol edin<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Bu işlev, Brave Arama'da kullanılan yazım denetiminin aynısını kullanır. Tarayıcıda yazdığınız metin Brave'a gönderilir. Bu davranışı istediğiniz zaman ayarlardan değiştirebilirsiniz.</translation>
 <translation id="2899369907387169108">Brave'u hesap olmadan kullan</translation>
-<translation id="1912973375560256099">Brave'un mDNS trafiğine izin vermeyi sağlayan gelen trafik kuralı.</translation>
+<translation id="1833893255023048385">Brave Origin'un mDNS trafiğine izin vermeyi sağlayan gelen trafik kuralı.</translation>
 <translation id="711601904575862069">&amp;Brave'u Güncellemek İçin Yeniden Başlat</translation>
 <translation id="4918086044614829423">Kabul et</translation>
 <translation id="4918844574251943176">Resim kopyalandı</translation>
@@ -381,7 +381,7 @@
 <translation id="5267531627648004734">Brave'dan kaldır</translation>
 <translation id="4620757336635063467">Performansı düşürür ancak Brave'u saldırılara karşı daha dirençli hale getirir</translation>
 <translation id="239760341987199724">Brave'u varsayılan tarayıcım olarak ayarla</translation>
-<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
+<translation id="5165277482382778404"><ph name="PAGE_TITLE"/> - Brave Origin Beta</translation>
 <translation id="604223321106006231">{NUM_TABS,plural, =1{Brave, Tarayıcınızı Yavaşlatan Sekmeyi Duraklatmanızı Öneriyor}other{Brave, Tarayıcınızı Yavaşlatan Sekmeleri Duraklatmanızı Öneriyor}}</translation>
 <translation id="894936507076470937">Brave artık bu Linux dağıtım sisteminde desteklenmediği için doğru şekilde çalışmayabilir</translation>
 <translation id="2596557398669145729">Dosya kişisel ve sosyal ağ hesaplarınıza zarar verebileceği için Brave bu indirme işlemini engelledi</translation>
@@ -410,7 +410,7 @@
 <translation id="95980832839683236">Brave'un V8 motoruyla siteleri hızlandırır ancak bu durumda Brave, saldırılara karşı biraz daha dirençsiz hale gelir. Bu ayar kapalı.</translation>
 <translation id="1224606669200461217">Brave verilerini kullanmak ve Brave Hesabınıza kaydetmek için Brave'u güncelleyin</translation>
 <translation id="5824893331272123205">Bu panel yüklenemedi, tekrar deneyin</translation>
-<translation id="7207456302801184289">Brave'a Hoş Geldiniz</translation>
+<translation id="4467664627714200493">Brave Origin'a Hoş Geldiniz</translation>
 <translation id="5871205389137001634">Görsel Arama'dan çıkmak için tıklayın</translation>
 <translation id="8054200348483755053">Brave, aşağıdaki öğelerde kötü amaçlı yazılım tespit etti:</translation>
 <translation id="3955583201925082436">Brave, tarayıcınızın en güvenli ayarlara sahip olup olmadığını düzenli olarak kontrol eder. İncelemeniz gereken bir konu varsa sizi bilgilendiririz.</translation>
@@ -470,7 +470,7 @@
 <translation id="6388799252195623474">bana bu konuda yardım et</translation>
 <translation id="7920857181125123335">Devam etmek için Brave'da <ph name="EMAIL"/> hesabıyla oturum açın. Böylece kuruluşunuzun politikalarına uyabilirsiniz.</translation>
 <translation id="3256100650978957522">Bilgisayar ekranındaki Brave logosu.</translation>
-<translation id="6373767849825830651">Brave, Web sayfalarını ve uygulamaları yıldırım hızıyla çalıştıran bir Web tarayıcısıdır. Hızlı ve kararlı çalışır, kolay kullanılır. Brave'da dahili olarak bulunan zararlı yazılım ve kimlik avı koruması sayesinde Web'de daha güvenli gezinin.</translation>
+<translation id="5880764554173582719">Brave Origin, Web sayfalarını ve uygulamaları yıldırım hızıyla çalıştıran bir Web tarayıcısıdır. Hızlı ve kararlı çalışır, kolay kullanılır. Brave Origin'da dahili olarak bulunan zararlı yazılım ve kimlik avı koruması sayesinde Web'de daha güvenli gezinin.</translation>
 <translation id="2532326772258858491">Brave daha hızlı çalışır ve JavaScript kullanan özellikler tasarlandığı şekilde çalışır</translation>
 <translation id="6436260184216827876">Görsel Arama kullanılamıyor. Daha sonra tekrar deneyin.</translation>
 <translation id="2139300032719313227">ChromeOS'i yeniden başlatın</translation>
@@ -571,7 +571,7 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="4631170166710903214">Bu uzantı artık desteklenmiyor. Brave bunu kaldırmanızı öneriyor.</translation>
 <translation id="7951152294775418909">Kaldığınız yerden devam edin: Brave tarayıcısını kapatıp yeniden açtığınız her seferinde sekmeleriniz geri yüklenir. Bu özelliği devre dışı bırakmak için şuraya gidin:</translation>
 <translation id="3191314862567596053">Şifreleri Brave'a Aktar</translation>
-<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
+<translation id="4864311514218370796"><ph name="PAGE_TITLE"/> - Brave Origin Dev</translation>
 <translation id="7450541714075000668">Metin kopyalandı</translation>
 <translation id="2034072705932785495">Brave'un bu sitede kameranıza erişmesi için izin gerekiyor</translation>
 <translation id="7129342855140808694">Mikrofonunuzu kullanması için <ph name="BEGIN_LINK"/>sistem ayarlarında<ph name="END_LINK"/> Brave'a erişim izni verin</translation>
@@ -600,7 +600,7 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="8543787950557226450">Brave Varsayılanına Sıfırla</translation>
 <translation id="4976450819672499783">Brave'u varsayılan olarak ayarlayın ve görev çubuğuna sabitleyin</translation>
 <translation id="1978509466033734608">Brave'u daha hızlı hale getirin</translation>
-<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
+<translation id="8607348724092473027"><ph name="PAGE_TITLE"/> - Brave Origin Canary</translation>
 <translation id="2684504034454188774">İnternet trafiğinize erişimi olan kişilerin, ziyaret ettiğiniz siteleri görmesini zorlaştırın. Brave, DNS'de (Alan Adı Sistemi) bir sitenin IP adresini aramak için güvenli bağlantı kullanır.</translation>
 <translation id="7810005234485217901">Daha kolay erişmek için Görsel Arama'yı sabitleyebilirsiniz</translation>
 <translation id="1652855885539187849">Cihazda bu hesaba sahip bir Brave profili zaten var</translation>
@@ -623,7 +623,7 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="6175141682081019059">Uygulamalar için Brave'un arka planda çalışmasını devre dışı bırak</translation>
 <translation id="80790299200510644">Görsel Arama</translation>
 <translation id="8086881907087796310">Bilgisayarınız minimum donanım gereksinimlerini karşılamadığından yükleme işlemi başarısız oldu.</translation>
-<translation id="8263061319795838019"><ph name="PAGE_TITLE"/> - Brave for Testing</translation>
+<translation id="5528402763209637578"><ph name="PAGE_TITLE"/> - Brave Origin for Testing</translation>
 <translation id="2061155704815580583">Bu site için Brave'un konum iznine ihtiyacı var</translation>
 <translation id="3576319845915562805"><ph name="DEVICE_TYPE"/> cihazınızda Brave'u bir sonraki açışınızda fiyat takibi uyarılarını etkinleştirmeniz için bir istem görürsünüz.</translation>
 <translation id="8118331347066725040">Lens ile arama hakkında geri bildirim gönderin</translation>
@@ -716,7 +716,7 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="2444257125841652328">Sistem yöneticiniz, Brave'u, <ph name="TARGET_URL_HOSTNAME"/> sitesini alternatif bir tarayıcıda açacak şekilde yapılandırmış.</translation>
 <translation id="8208548103319284047">Brave İpucu: Lens ile Arama Yapın</translation>
 <translation id="7902365066753170041">&amp;Brave'u güncellemek için yeniden başlat</translation>
-<translation id="3350544518197210895">Brave (mDNS-In)</translation>
+<translation id="538146372587193686">Brave Origin (mDNS-In)</translation>
 <translation id="49909619875329637">Brave'da oturum açarak daha fazla avantajdan yararlanın</translation>
 <translation id="296137235951584143">Brave'u kendinize uyarlayın</translation>
 <translation id="7977787072794666032">Brave artık Windows XP veya Windows Vista üzerinde desteklenmediği için doğru şekilde çalışmayabilir</translation>

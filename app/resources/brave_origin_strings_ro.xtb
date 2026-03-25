@@ -143,7 +143,7 @@
 <translation id="2542968102051442371">Selectează text cu Căutarea de imagini</translation>
 <translation id="70183448213529602">Brave încearcă să înlocuiască parolele existente. Introdu parola Windows pentru a permite acest lucru.</translation>
 <translation id="7798069806040634998">Pentru a descărca fișiere, Brave necesită acces la stocare</translation>
-<translation id="8447483940522230788">Brave Helper</translation>
+<translation id="2351700486811407088">Brave Origin Helper</translation>
 <translation id="2575822587468774919">Selectează orice vrei să cauți cu Căutarea de imagini</translation>
 <translation id="3830890663494219270">Pentru a accesa parolele și alte date pe toate dispozitivele, conectează-te la Brave</translation>
 <translation id="6252796827759111076">Continuă să folosești Brave</translation>
@@ -257,7 +257,7 @@
 <translation id="3846683726093018685">**Rezumă:** într-o propoziție cu mai puțin de 30 de cuvinte, descrie subiectul principal și scopul conținutului din captura de ecran.
 
           **Sugerează întrebări:** generează o listă cu marcatori cu 3 – 5 întrebări care dau de gândit pe care un utilizator le-ar putea pune pentru a înțelege mai bine captura de ecran. Aceste întrebări trebuie să includă cel puțin una care să se refere în mod specific la un obiect vizual, la designul sau plasarea acestuia.</translation>
-<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="6899774208752247219"><ph name="PAGE_TITLE"/> - Brave Origin</translation>
 <translation id="3885770153807205175">Selector de limbă</translation>
 <translation id="6315734375101223238">Personalizează și controlează Brave. Ceva are nevoie de atenția ta – dă clic pentru detalii.</translation>
 <translation id="7130675370997202556">Dați clic pe numele dvs. pentru a deschide Brave și a începe să navigați.</translation>
@@ -321,7 +321,7 @@
 <translation id="4493028449971051158">Eroare la pornire: rulează programul de instalare ca administrator.</translation>
 <translation id="4501471624619070934">Instalarea nu a reușit deoarece accesul este restricționat în această țară.</translation>
 <translation id="8594994021633965927">Extensia nu a publicat practici de confidențialitate, cum ar fi modul în care colectează și folosește date. Brave recomandă să o elimini.</translation>
-<translation id="7084397798469173252">Bun venit la Brave; fereastră de browser nouă deschisă</translation>
+<translation id="770557926599450702">Bun venit la Brave Origin; fereastră de browser nouă deschisă</translation>
 <translation id="137732229629632648">Brave are nevoie de permisiune pentru a mapa împrejurimile și a-ți urmări mâinile</translation>
 <translation id="5036046007335188949">Te-ai conectat deja ca <ph name="USER_EMAIL_ADDRESS"/> în alt profil Brave</translation>
 <translation id="1878185978731985193">Brave preîncarcă paginile, astfel încât navigarea și căutarea să fie mai rapide. <ph name="BEGIN_LINK"/>Află mai multe despre preîncărcarea paginilor<ph name="END_LINK"/></translation>
@@ -329,7 +329,7 @@
 <translation id="8669339108356170796">Brave a blocat descărcarea, deoarece ai dezactivat Navigarea sigură, iar fișierul nu poate fi confirmat</translation>
 <translation id="7583343841997441047">Încearcă Google Lens cu Brave pe telefon</translation>
 <translation id="4594305310729380060">Către Managerul de parole, pe acest dispozitiv</translation>
-<translation id="3349475100979552835">Aplicații Brave</translation>
+<translation id="7776200949522126045">Aplicații Brave Origin</translation>
 <translation id="4598116752460667024">Caută orice proces din listă.</translation>
 <translation id="4970880042055371251">Versiunea sistemului de operare Brave</translation>
 <translation id="2182657378556811785">Aproape actualizat! Repornește Brave pentru a finaliza actualizarea.</translation>
@@ -348,7 +348,7 @@
 <translation id="4823369970559443694">Brave nu îți poate verifica parolele. Încearcă din nou după 24 de ore sau <ph name="BEGIN_LINK"/>verifică parolele din Contul Brave<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Folosește același verificator ortografic folosit în Căutarea Brave. Textul pe care îl introduci în browser este trimis la Brave. Poți schimba acest comportament în setări.</translation>
 <translation id="2899369907387169108">Folosește Brave fără un cont</translation>
-<translation id="1912973375560256099">Regula de intrare pentru Brave pentru a permite traficul mDNS.</translation>
+<translation id="1833893255023048385">Regula de intrare pentru Brave Origin pentru a permite traficul mDNS.</translation>
 <translation id="711601904575862069">Relansează pentru a actualiza &amp;Brave</translation>
 <translation id="4918086044614829423">Acceptă</translation>
 <translation id="4918844574251943176">Imaginea a fost copiată</translation>
@@ -384,7 +384,7 @@
 <translation id="5267531627648004734">Eliminați din Brave</translation>
 <translation id="4620757336635063467">Reduce performanța, dar face Brave mai rezistent la atacuri</translation>
 <translation id="239760341987199724">Setați Brave ca browser prestabilit</translation>
-<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
+<translation id="5165277482382778404"><ph name="PAGE_TITLE"/> – Brave Origin Beta</translation>
 <translation id="604223321106006231">{NUM_TABS,plural, =1{Brave recomandă să întrerupi fila care încetinește browserul}few{Brave recomandă să întrerupi filele care încetinesc browserul}other{Brave recomandă să întrerupi filele care încetinesc browserul}}</translation>
 <translation id="894936507076470937">Este posibil ca Brave să nu funcționeze corespunzător, deoarece nu mai este acceptat pe această versiune Linux</translation>
 <translation id="2596557398669145729">Brave a blocat descărcarea deoarece fișierul poate dăuna conturilor tale personale și din rețelele sociale</translation>
@@ -413,7 +413,7 @@
 <translation id="95980832839683236">Accelerează site-urile cu motorul V8 din Brave, dar reduce ușor rezistența Brave la atacuri. Setarea este dezactivată.</translation>
 <translation id="1224606669200461217">Pentru a folosi și a salva datele Brave în Contul Brave, actualizează Brave</translation>
 <translation id="5824893331272123205">Nu s-a putut încărca panoul. Încearcă din nou.</translation>
-<translation id="7207456302801184289">Bun venit la Brave</translation>
+<translation id="4467664627714200493">Bun venit la Brave Origin</translation>
 <translation id="5871205389137001634">Dă clic pentru a ieși din Căutarea de imagini</translation>
 <translation id="8054200348483755053">Brave a descoperit că următoarele elemente conțin programe malware:</translation>
 <translation id="3955583201925082436">Brave verifică periodic dacă browserul are cele mai sigure setări. Te vom anunța dacă trebuie să examinezi ceva.</translation>
@@ -473,7 +473,7 @@
 <translation id="6388799252195623474">ajută-mă cu asta</translation>
 <translation id="7920857181125123335">Pentru a continua, conectează-te la Brave ca <ph name="EMAIL"/>. Astfel, te asiguri că ai politicile organizației.</translation>
 <translation id="3256100650978957522">Sigla Brave pe un ecran de computer.</translation>
-<translation id="6373767849825830651">Brave este un browser web care rulează pagini web și aplicații cu viteza fulgerului. Este rapid, stabil și ușor de utilizat. Navigați pe web în condiții de mai multă siguranță, beneficiind de o protecție sporită, încorporată în Brave, împotriva programelor malware și a tentativelor de phishing.</translation>
+<translation id="5880764554173582719">Brave Origin este un browser web care rulează pagini web și aplicații cu viteza fulgerului. Este rapid, stabil și ușor de utilizat. Navigați pe web în condiții de mai multă siguranță, beneficiind de o protecție sporită, încorporată în Brave Origin, împotriva programelor malware și a tentativelor de phishing.</translation>
 <translation id="2532326772258858491">Brave rulează mai rapid și funcțiile care folosesc JavaScript ar trebui să ruleze corespunzător</translation>
 <translation id="6436260184216827876">Căutarea de imagini nu este disponibilă. Încearcă din nou mai târziu.</translation>
 <translation id="2139300032719313227">Repornește sistemul de operare Brave</translation>
@@ -574,7 +574,7 @@ Brave nu poate recupera setările.</translation>
 <translation id="4631170166710903214">Extensia nu mai este acceptată. Brave recomandă să o elimini.</translation>
 <translation id="7951152294775418909">Continuă de unde ai rămas: Brave restabilește filele de fiecare dată când repornești. Pentru a dezactiva opțiunea, accesează</translation>
 <translation id="3191314862567596053">Importă parolele în Brave</translation>
-<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave pentru dezvoltatori</translation>
+<translation id="4864311514218370796"><ph name="PAGE_TITLE"/> – Brave Origin pentru dezvoltatori</translation>
 <translation id="7450541714075000668">Text copiat</translation>
 <translation id="2034072705932785495">Brave are nevoie de permisiune ca să acceseze camera foto pentru acest site</translation>
 <translation id="7129342855140808694">Pentru a folosi microfonul, permite accesul Brave în <ph name="BEGIN_LINK"/>setările de sistem<ph name="END_LINK"/></translation>
@@ -603,7 +603,7 @@ Brave nu poate recupera setările.</translation>
 <translation id="8543787950557226450">Revino la tema Brave prestabilită</translation>
 <translation id="4976450819672499783">Setează Brave ca browser prestabilit și fixează-l în bara de activități</translation>
 <translation id="1978509466033734608">Crește eficiența în Brave</translation>
-<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
+<translation id="8607348724092473027"><ph name="PAGE_TITLE"/> – Brave Origin Canary</translation>
 <translation id="2684504034454188774">Împiedică persoanele care au acces la traficul tău de internet să vadă ce site-uri accesezi. Brave folosește o conexiune securizată pentru a căuta adresa IP a unui site în DNS (Sistemul denumirilor de domenii).</translation>
 <translation id="7810005234485217901">Poți să fixezi Căutarea de imagini pentru acces ușor</translation>
 <translation id="1652855885539187849">Există deja un profil Brave asociat acestui cont pe dispozitiv</translation>
@@ -626,7 +626,7 @@ Brave nu poate recupera setările.</translation>
 <translation id="6175141682081019059">Dezactivează rularea Brave în fundal pentru aplicații</translation>
 <translation id="80790299200510644">Căutare de imagini</translation>
 <translation id="8086881907087796310">Nu s-a instalat deoarece computerul nu îndeplinește cerințele minime de hardware.</translation>
-<translation id="8263061319795838019"><ph name="PAGE_TITLE"/> – Brave for Testing</translation>
+<translation id="5528402763209637578"><ph name="PAGE_TITLE"/> – Brave Origin for Testing</translation>
 <translation id="2061155704815580583">Brave necesită permisiuni pentru locație pentru acest site</translation>
 <translation id="3576319845915562805">Când vei deschide din nou Brave pe <ph name="DEVICE_TYPE"/>, vei vedea o solicitare de a activa alertele de urmărire a prețurilor.</translation>
 <translation id="8118331347066725040">Trimite feedback pentru căutare cu Lens</translation>
@@ -719,7 +719,7 @@ Brave nu poate recupera setările.</translation>
 <translation id="2444257125841652328">Administratorul de sistem a configurat Brave să deschidă un browser secundar pentru a accesa <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="8208548103319284047">Sfat pentru Brave: caută cu Lens</translation>
 <translation id="7902365066753170041">Relansează pentru a actualiza &amp;Brave</translation>
-<translation id="3350544518197210895">Brave (mDNS-In)</translation>
+<translation id="538146372587193686">Brave Origin (mDNS-In)</translation>
 <translation id="49909619875329637">Beneficiază de mai multe funcții când te conectezi la Brave</translation>
 <translation id="296137235951584143">Personalizează Brave</translation>
 <translation id="7977787072794666032">Este posibil ca Brave să nu funcționeze corespunzător, deoarece nu mai este acceptat pe Windows XP sau Windows Vista</translation>

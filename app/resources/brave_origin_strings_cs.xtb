@@ -144,7 +144,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="2542968102051442371">Vyberte text pomocí vyhledávání obrázků</translation>
 <translation id="70183448213529602">Brave se pokouší nahradit stávající hesla. Tato akce vyžaduje zadání hesla systému Windows.</translation>
 <translation id="7798069806040634998">Aby bylo možné stahovat soubory, potřebuje Brave přístup k úložišti</translation>
-<translation id="8447483940522230788">Brave Helper</translation>
+<translation id="2351700486811407088">Brave Origin Helper</translation>
 <translation id="2575822587468774919">Vyberte cokoli, co chcete vyhledat pomocí vyhledávání obrázků</translation>
 <translation id="3830890663494219270">Pokud svá hesla a další položky chcete mít na všech svých zařízeních, přihlaste se do prohlížeče Brave</translation>
 <translation id="6252796827759111076">Pokračovat v používání prohlížeče Brave</translation>
@@ -258,7 +258,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="3846683726093018685">**Shrň obsah:** V jedné větě do 30 slov popiš hlavní téma a účel obsahu na snímku obrazovky.
 
           **Navrhni otázky:** Vygeneruj seznam 3–5 otázek, které by uživatelé mohli položit s cílem lépe snímku obrazovky porozumět. Alespoň jedna z otázek by se měla týkat konkrétního vizuálního objektu, jeho designu nebo umístění.</translation>
-<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
+<translation id="6899774208752247219"><ph name="PAGE_TITLE"/> – Brave Origin</translation>
 <translation id="3885770153807205175">Výběr jazyka</translation>
 <translation id="6315734375101223238">Přizpůsobte si prohlížeč Brave a ovládejte jej. Něco vyžaduje vaši pozornost – podrobnosti zobrazíte kliknutím.</translation>
 <translation id="7130675370997202556">Chcete-li otevřít Brave a začít procházet Internet, klikněte na svoje jméno.</translation>
@@ -322,7 +322,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="4493028449971051158">Chyba při spuštění: Spusťte instalační program jako administrátor.</translation>
 <translation id="4501471624619070934">Instalace se nezdařila, protože přístup je v této zemi omezen.</translation>
 <translation id="8594994021633965927">Pro toto rozšíření nebyly publikovány postupy v oblasti ochrany soukromí, například informace o tom, jak shromažďuje a používá data. Brave vám doporučuje odstranit ho.</translation>
-<translation id="7084397798469173252">Vítá vás Brave; bylo otevřeno nové okno prohlížeče</translation>
+<translation id="770557926599450702">Vítá vás Brave Origin; bylo otevřeno nové okno prohlížeče</translation>
 <translation id="137732229629632648">Brave potřebuje oprávnění k mapování vašeho okolí a sledování vašich rukou</translation>
 <translation id="5036046007335188949">Jako <ph name="USER_EMAIL_ADDRESS"/> už jste přihlášeni v jiném profilu Brave</translation>
 <translation id="1878185978731985193">Brave načítá stránky předběžně, což zrychluje procházení a vyhledávání. <ph name="BEGIN_LINK"/>Další informace o předběžném načítání stránek<ph name="END_LINK"/></translation>
@@ -330,7 +330,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="8669339108356170796">Prohlížeč Brave toto stahování zablokoval, protože jste vypnuli Bezpečné prohlížení a soubor nelze ověřit</translation>
 <translation id="7583343841997441047">Vyzkoušejte Google Lens v Chromiu na telefonu</translation>
 <translation id="4594305310729380060">Do Správce hesel na tomto zařízení</translation>
-<translation id="3349475100979552835">Aplikace Brave</translation>
+<translation id="7776200949522126045">Aplikace Brave Origin</translation>
 <translation id="4598116752460667024">Vyhledejte libovolný proces ze seznamu.</translation>
 <translation id="4970880042055371251">Verze systému ChromeOS</translation>
 <translation id="2182657378556811785">Aktualizace je téměř hotova. Dokončíte ji restartováním prohlížeče Brave.</translation>
@@ -349,7 +349,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="4823369970559443694">Brave nemůže zkontrolovat hesla. Zkuste to znovu zítra, případně <ph name="BEGIN_LINK"/>hesla zkontrolujte v účtu Brave<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Tato funkce využívá stejnou službu kontroly pravopisu, jaká se používá ve vyhledávání Brave. Text, který v prohlížeči zadáte, se odešle do Googlu. Toto chování můžete kdykoliv změnit v nastavení.</translation>
 <translation id="2899369907387169108">Použít Brave bez účtu</translation>
-<translation id="1912973375560256099">Pravidlo příchozího provozu pro prohlížeč Brave, které povolí provoz mDNS.</translation>
+<translation id="1833893255023048385">Pravidlo příchozího provozu pro prohlížeč Brave Origin, které povolí provoz mDNS.</translation>
 <translation id="711601904575862069">Znovu spustit a aktualizovat &amp;Brave</translation>
 <translation id="4918086044614829423">Přijmout</translation>
 <translation id="4918844574251943176">Obrázek byl zkopírován</translation>
@@ -385,7 +385,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="5267531627648004734">Odstranit z prohlížeče Brave</translation>
 <translation id="4620757336635063467">Snižuje výkon, ale zvyšuje odolnost prohlížeče Brave proti útokům</translation>
 <translation id="239760341987199724">Nastavit Brave jako výchozí prohlížeč</translation>
-<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
+<translation id="5165277482382778404"><ph name="PAGE_TITLE"/> – Brave Origin Beta</translation>
 <translation id="604223321106006231">{NUM_TABS,plural, =1{Brave doporučuje pozastavit kartu, která ho zpomaluje}few{Brave doporučuje pozastavit karty, které ho zpomalují}many{Brave doporučuje pozastavit karty, které ho zpomalují}other{Brave doporučuje pozastavit karty, které ho zpomalují}}</translation>
 <translation id="894936507076470937">Prohlížeč Brave nemusí fungovat správně, protože v této distribuci Linuxu už není podporován</translation>
 <translation id="2596557398669145729">Prohlížeč Brave toto stahování zablokoval, protože tento soubor může poškodit vaše osobní účty a účty na sociálních sítích</translation>
@@ -414,7 +414,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="95980832839683236">Zrychluje weby pomocí modulu V8 prohlížeče Brave, ale trochu snižuje odolnost prohlížeče Brave vůči útokům. Toto nastavení je vypnuté.</translation>
 <translation id="1224606669200461217">Pokud chcete používat data prohlížeče Brave ve svém účtu Brave a ukládat je do něj, aktualizujte prohlížeč Brave</translation>
 <translation id="5824893331272123205">Tenhle panel se nepodařilo načíst, zkuste to znovu</translation>
-<translation id="7207456302801184289">Vítejte v prohlížeči Brave</translation>
+<translation id="4467664627714200493">Vítejte v prohlížeči Brave Origin</translation>
 <translation id="5871205389137001634">Kliknutím ukončíte vyhledávání obrázků</translation>
 <translation id="8054200348483755053">Prohlížeč Brave zjistil, že tyto položky obsahují malware:</translation>
 <translation id="3955583201925082436">Brave pravidelně kontroluje, zda je v prohlížeči vybráno nejbezpečnější nastavení. Pokud bude něco vyžadovat vaši kontrolu, dáme vám vědět.</translation>
@@ -474,7 +474,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="6388799252195623474">pomoz mi s tímhle</translation>
 <translation id="7920857181125123335">Pokud chcete pokračovat, přihlaste se do prohlížeče Brave jako <ph name="EMAIL"/>. Použijí se tak zásady vaší organizace.</translation>
 <translation id="3256100650978957522">Logo Brave na obrazovce počítače.</translation>
-<translation id="6373767849825830651">Brave je webový prohlížeč, který spouští webové stránky a aplikace rychlostí blesku. Je rychlý a snadno se používá. Prohlížejte web bezpečněji díky ochraně proti malwaru a phishingu integrované v prohlížeči Brave.</translation>
+<translation id="5880764554173582719">Brave Origin je webový prohlížeč, který spouští webové stránky a aplikace rychlostí blesku. Je rychlý a snadno se používá. Prohlížejte web bezpečněji díky ochraně proti malwaru a phishingu integrované v prohlížeči Brave Origin.</translation>
 <translation id="2532326772258858491">Brave běží rychleji a funkce využívající JavaScript by měly fungovat tak, jak byly navrženy</translation>
 <translation id="6436260184216827876">Vyhledávání obrázků není k dispozici. Zkuste to později.</translation>
 <translation id="2139300032719313227">Restartujte ChromeOS</translation>
@@ -575,7 +575,7 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="4631170166710903214">Toto rozšíření už není podporováno. Brave vám doporučuje odstranit ho.</translation>
 <translation id="7951152294775418909">Pokračujte od stavu, ve kterém jste skončili: Brave při restartech obnovuje karty. Tuto funkci můžete vypnout v</translation>
 <translation id="3191314862567596053">Import hesel do prohlížeče Brave</translation>
-<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
+<translation id="4864311514218370796"><ph name="PAGE_TITLE"/> – Brave Origin Dev</translation>
 <translation id="7450541714075000668">Text byl zkopírován</translation>
 <translation id="2034072705932785495">Brave pro tento web potřebuje oprávnění k přístupu k fotoaparátu</translation>
 <translation id="7129342855140808694">Pokud chcete používat mikrofon, udělte prohlížeči Brave přístup v <ph name="BEGIN_LINK"/>nastavení systému<ph name="END_LINK"/></translation>
@@ -604,7 +604,7 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="8543787950557226450">Obnovit výchozí motiv Chromia</translation>
 <translation id="4976450819672499783">Nastavte si Brave jako výchozí prohlížeč a připněte ho na hlavní panel</translation>
 <translation id="1978509466033734608">Zrychlete svůj prohlížeč Brave</translation>
-<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
+<translation id="8607348724092473027"><ph name="PAGE_TITLE"/> – Brave Origin Canary</translation>
 <translation id="2684504034454188774">Zajistěte, aby pro lidi s přístupem k vašemu internetovému provozu bylo obtížnější zjistit, které weby navštěvujete. K vyhledání IP adresy webu v systému názvů domén (DNS) používá Brave zabezpečené připojení.</translation>
 <translation id="7810005234485217901">Vyhledávání obrázků si můžete pro snadný přístup připnout</translation>
 <translation id="1652855885539187849">Profil Brave s tímto účtem už v tomto zařízení existuje</translation>
@@ -627,7 +627,7 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="6175141682081019059">Zakázat Brave na pozadí pro aplikace</translation>
 <translation id="80790299200510644">Vyhledávání obrázků</translation>
 <translation id="8086881907087796310">Instalace se nezdařila, protože váš počítač nesplňuje minimální požadavky na hardware.</translation>
-<translation id="8263061319795838019"><ph name="PAGE_TITLE"/> – Brave for Testing</translation>
+<translation id="5528402763209637578"><ph name="PAGE_TITLE"/> – Brave Origin for Testing</translation>
 <translation id="2061155704815580583">Brave pro tento web potřebuje přístup k poloze</translation>
 <translation id="3576319845915562805">Až příště na zařízení <ph name="DEVICE_TYPE"/> otevřete Brave, zobrazí se výzva k zapnutí upozornění na ceny.</translation>
 <translation id="8118331347066725040">Zpětná vazba k vyhledávání s funkcí Lens</translation>
@@ -720,7 +720,7 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="2444257125841652328">Administrátor systému nakonfiguroval prohlížeč Brave tak, aby pro přístup k adrese <ph name="TARGET_URL_HOSTNAME"/> otevřel alternativní prohlížeč.</translation>
 <translation id="8208548103319284047">Tip pro Brave: Vyhledávejte pomocí Lens</translation>
 <translation id="7902365066753170041">Znovu spustit a aktualizovat &amp;Brave</translation>
-<translation id="3350544518197210895">Brave (mDNS-In)</translation>
+<translation id="538146372587193686">Brave Origin (mDNS-In)</translation>
 <translation id="49909619875329637">Přihlášením do prohlížeče Brave získáte další funkce</translation>
 <translation id="296137235951584143">Přizpůsobte si Brave</translation>
 <translation id="7977787072794666032">Prohlížeč Brave nemusí fungovat správně, protože v systémech Windows XP a Windows Vista již není podporován</translation>

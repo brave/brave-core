@@ -143,7 +143,7 @@
 <translation id="2542968102051442371">نوشتاری را برای استفاده از «جستجوی تصویر» انتخاب کنید</translation>
 <translation id="70183448213529602">‏Brave می‌خواهد گذواژه‌های موجود را جایگزین کند. برای مجاز کردن این کار، گذرواژه Windows خود را تایپ کنید.</translation>
 <translation id="7798069806040634998">‏Brave برای بارگیری فایل‌ها باید به حافظه دسترسی داشته باشد</translation>
-<translation id="8447483940522230788">Brave Helper</translation>
+<translation id="2351700486811407088">Brave Origin Helper</translation>
 <translation id="2575822587468774919">هرچیزی را می‌خواهید انتخاب کنید تا با «جستجوی تصویر» جستجو شود</translation>
 <translation id="3830890663494219270">‏برای دریافت گذرواژه‌ها و موارد دیگر در همه دستگاه‌هایتان، به سیستم Brave وارد شوید</translation>
 <translation id="6252796827759111076">‏ادامه استفاده از Brave</translation>
@@ -256,7 +256,7 @@
 <translation id="3846683726093018685">**خلاصه کردن:** در یک جمله کمتر از ۳۰ کلمه، موضوع اصلی و هدف محتوای نماگرفت را شرح بده.
 
           **پیشنهاد سؤال:** فهرستی گلوله‌ای با ۳ تا ۵ سؤال تأمل‌برانگیز تولید کن که کاربر بتواند برای درک بهتر نماگرفت بپرسد. حداقل یک مورد از این سؤالات باید به‌طور خاص درباره یک شیء بصری، طراحی، یا جای آن باشد.</translation>
-<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="6899774208752247219"><ph name="PAGE_TITLE"/> - Brave Origin</translation>
 <translation id="3885770153807205175">انتخاب‌گر زبان</translation>
 <translation id="6315734375101223238">‏Brave را سفارشی و کنترل کنید. چیزی نیاز به رسیدگی دارد، برای اطلاعات بیشتر کلیک کنید.</translation>
 <translation id="7130675370997202556">‏برای باز کردن Brave و شروع به مرور، روی نامتان کلیک کنید.</translation>
@@ -320,7 +320,7 @@
 <translation id="4493028449971051158">خطای راه‌اندازی: لطفاً نصب‌کننده را با نقش سرپرست اجرا کنید.</translation>
 <translation id="4501471624619070934">نصب انجام نشد زیرا دسترسی در این کشور محدود است.</translation>
 <translation id="8594994021633965927">‏این افزونه روش‌های اعمال حریم خصوصی، مثل نحوه جمع‌آوری و استفاده از داده‌ها را منتشر نکرده است. ‫Brave توصیه می‌کند آن را حذف کنید.</translation>
-<translation id="7084397798469173252">‏به Brave خوش‌آمدید؛ پنجره مرورگر جدید راه‌اندازی شد</translation>
+<translation id="770557926599450702">‏به Brave Origin خوش‌آمدید؛ پنجره مرورگر جدید راه‌اندازی شد</translation>
 <translation id="137732229629632648">‏‫Brave برای نقشه‌برداری از محیط اطراف و ردیابی دستان شما به اجازه نیاز دارد</translation>
 <translation id="5036046007335188949">‏قبلاً با <ph name="USER_EMAIL_ADDRESS"/> در نمایه Brave دیگری به سیستم وارد شده‌اید</translation>
 <translation id="1878185978731985193">‏‫Brave صفحه‌ها را پیش‌بارگیری می‌کند تا مرور و جستجو کردن سریع‌تر شود. <ph name="BEGIN_LINK"/>درباره پیش‌بارگیری صفحه‌ها بیشتر بدانید<ph name="END_LINK"/></translation>
@@ -328,7 +328,7 @@
 <translation id="8669339108356170796">‏‫Brave این بارگیری را مسدود کرد زیرا «مرور ایمن» خاموش است و نمی‌توان فایل را تأیید کرد</translation>
 <translation id="7583343841997441047">‏«لنز Brave» را با Brave در تلفنتان امتحان کنید</translation>
 <translation id="4594305310729380060">در «مدیر گذرواژه» در این دستگاه</translation>
-<translation id="3349475100979552835">‏برنامه‌های Brave</translation>
+<translation id="7776200949522126045">‏برنامه‌های Brave Origin</translation>
 <translation id="4598116752460667024">فرایندی را ازطریق فهرست جستجو کنید.</translation>
 <translation id="4970880042055371251">‏نسخه ChromeOS</translation>
 <translation id="2182657378556811785">‏تقریباً به‌روز شده است! برای تمام کردن به‌روزرسانی، Brave را راه‌اندازی مجدد کنید.</translation>
@@ -347,7 +347,7 @@
 <translation id="4823369970559443694">‏Brave نمی‌تواند گذرواژه‌هایتان را بررسی کند. بعد از ۲۴ ساعت دوباره امتحان کنید یا <ph name="BEGIN_LINK"/>گذرواژه‌ها را در «حساب Brave» خود بررسی کنید<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">‏از همان غلط‌یاب املا استفاده می‌کند که در جستجوی Brave استفاده می‌شود. نوشتاری که در مرورگر تایپ کرده‌اید برای Brave ارسال می‌شود. هروقت بخواهید می‌توانید این رفتار را در تنظیمات تغییر دهید.</translation>
 <translation id="2899369907387169108">‏استفاده از Brave بدون حساب</translation>
-<translation id="1912973375560256099">‏قانون ترافیک ورودی برای Brave جهت اجازه به ترافیک mDNS.</translation>
+<translation id="1833893255023048385">‏قانون ترافیک ورودی برای Brave Origin جهت اجازه به ترافیک mDNS.</translation>
 <translation id="711601904575862069">‏راه‌اندازی مجدد برای به‌روزرسانی Brave</translation>
 <translation id="4918086044614829423">می‌پذیرم</translation>
 <translation id="4918844574251943176">تصویر کپی شد</translation>
@@ -383,7 +383,7 @@
 <translation id="5267531627648004734">‏حذف از Brave</translation>
 <translation id="4620757336635063467">‏عملکرد را کاهش می‌دهد اما Brave را دربرابر حملات مقاوم‌تر می‌کند</translation>
 <translation id="239760341987199724">‏تنظیم Brave به عنوان مرورگر پیش‌فرضتان</translation>
-<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
+<translation id="5165277482382778404"><ph name="PAGE_TITLE"/> - Brave Origin Beta</translation>
 <translation id="604223321106006231">{NUM_TABS,plural, =1{‏‫Brave توصیه می‌کند زبانه‌ای را که باعث کند شدن مرورگرتان شده است موقتاً متوقف کنید}one{‏‫Brave توصیه می‌کند زبانه‌ای را که باعث کند شدن مرورگرتان شده است موقتاً متوقف کنید}other{‏‫Brave توصیه می‌کند زبانه‌هایی را که باعث کند شدن مرورگرتان شده است موقتاً متوقف کنید}}</translation>
 <translation id="894936507076470937">‏Brave ممکن است درست کار نکند زیرا این توزیع Linux دیگر از آن پشتیبانی نمی‌کند.</translation>
 <translation id="2596557398669145729">‏‫Brave این بارگیری را مسدود کرد زیرا این فایل می‌تواند به حساب‌های شخصی و شبکه‌های اجتماعی شما آسیب برساند</translation>
@@ -412,7 +412,7 @@
 <translation id="95980832839683236">‏با این کار سرعت سایت‌ها با موتور Brave نسخه ۸ بالاتر می‌رود اما مقاومت Brave دربرابر حمله‌ها مقداری کمتر می‌شود. این تنظیم خاموش است.</translation>
 <translation id="1224606669200461217">‏برای استفاده و ذخیره کردن داده‌های Brave در «حساب Brave» خود، Brave را به‌روز کنید</translation>
 <translation id="5824893331272123205">این پانل بارگیری نشد، دوباره امتحان کنید</translation>
-<translation id="7207456302801184289">‏به Brave خوش آمدید</translation>
+<translation id="4467664627714200493">‏به Brave Origin خوش آمدید</translation>
 <translation id="5871205389137001634">برای خارج شدن از «جستجوی تصویر»، کلیک کنید</translation>
 <translation id="8054200348483755053">‏Brave متوجه شده است که این موارد حاوی بدافزار هستند:</translation>
 <translation id="3955583201925082436">‏Brave به‌طور منظم بررسی می‌کند تا مطمئن شود مرورگرتان ایمن‌ترین تنظیمات را دارد. اگر موردی به بازبینی شما نیاز داشته باشد، به شما اطلاع خواهیم داد.</translation>
@@ -472,7 +472,7 @@
 <translation id="6388799252195623474">در این مورد به من کمک کنید</translation>
 <translation id="7920857181125123335">‏برای ادامه دادن، با حساب <ph name="EMAIL"/> به سیستم Brave وارد شوید. با این کار مطمئن می‌شوید که خط‌مشی‌های سازمانتان اعمال شده‌اند.</translation>
 <translation id="3256100650978957522">‏نشان‌واره Brave درون صفحه‌نمایش رایانه.</translation>
-<translation id="6373767849825830651">‏‫Brave یک مرورگر وب است که صفحات وب و برنامه‌ها را با سرعت بسیار زیاد اجرا می‌کند. این مرورگر خیلی سریع و پایدار است کار کردن با آن آسان است. با محافظت دربرابر بدافزار و رمزگیری تعبیه‌شده در Brave، با امنیت بیشتری وب را مرور کنید.</translation>
+<translation id="5880764554173582719">‏‫Brave Origin یک مرورگر وب است که صفحات وب و برنامه‌ها را با سرعت بسیار زیاد اجرا می‌کند. این مرورگر خیلی سریع و پایدار است کار کردن با آن آسان است. با محافظت دربرابر بدافزار و رمزگیری تعبیه‌شده در Brave Origin، با امنیت بیشتری وب را مرور کنید.</translation>
 <translation id="2532326772258858491">‏‫Brave سریع‌تر اجرا می‌شود و ویژگی‌هایی که از جاوا اسکریپت استفاده می‌کنند باید طبق طراحی کار کنند</translation>
 <translation id="6436260184216827876">«جستجوی تصویر» دردسترس نیست. بعداً دوباره امتحان کنید.</translation>
 <translation id="2139300032719313227">‏بازراه‌اندازی ChromeOS</translation>
@@ -572,7 +572,7 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="4631170166710903214">‏دیگر از این افزونه پشتیبانی نمی‌شود. ‫Brave توصیه می‌کند آن را حذف کنید.</translation>
 <translation id="7951152294775418909">‏کارتان را از جایی که متوقف کرده بودید ادامه دهید: Brave هربار که آن را بازراه‌اندازی کنید، زبانه‌هایتان را بازمی‌گرداند. برای خاموش کردن این ویژگی، به اینجا بروید:</translation>
 <translation id="3191314862567596053">‏وارد کردن گذرواژه‌ها به Brave</translation>
-<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
+<translation id="4864311514218370796"><ph name="PAGE_TITLE"/> - Brave Origin Dev</translation>
 <translation id="7450541714075000668">نوشتار کپی شد</translation>
 <translation id="2034072705932785495">‏Brave برای این سایت به مجوز دسترسی به دوربین نیاز دارد</translation>
 <translation id="7129342855140808694">‏برای استفاده از میکروفون، در <ph name="BEGIN_LINK"/>تنظیمات سیستم<ph name="END_LINK"/> به Brave دسترسی دهید</translation>
@@ -601,7 +601,7 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="8543787950557226450">‏بازنشانی به Brave پیش‌فرض</translation>
 <translation id="4976450819672499783">‏‫Brave را به‌عنوان پیش‌فرض تنظیم کنید و آن را به نوار وظیفه سنجاق کنید</translation>
 <translation id="1978509466033734608">‏سرعت Brave را افزایش دهید</translation>
-<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
+<translation id="8607348724092473027"><ph name="PAGE_TITLE"/> - Brave Origin Canary</translation>
 <translation id="2684504034454188774">‏شرایط را سخت‌تر کنید تا افرادی که به ترافیک اینترنت شما دسترسی دارند نتوانند سایت‌هایی را که بازدید می‌کنید ببینند. ‫Brave برای جستجوی نشانی IP سایت در ساناد (سیستم نامگذاری دامنه) از اتصال ایمنی استفاده می‌کند.</translation>
 <translation id="7810005234485217901">می‌توانید «جستجوی تصویر» را برای دسترسی آسان سنجاق کنید</translation>
 <translation id="1652855885539187849">‏درحال‌حاضر یک نمایه Brave با این حساب در این دستگاه وجود دارد</translation>
@@ -624,7 +624,7 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="6175141682081019059">‏غیرفعال کردن اجرای Brave در پس‌زمینه برای برنامه‌ها</translation>
 <translation id="80790299200510644">جستجوی تصویر</translation>
 <translation id="8086881907087796310">نصب انجام نشد زیرا رایانه شما با حداقل شرایط سخت‌افزاری مطابقت ندارد.</translation>
-<translation id="8263061319795838019"><ph name="PAGE_TITLE"/> - Brave for Testing</translation>
+<translation id="5528402763209637578"><ph name="PAGE_TITLE"/> - Brave Origin for Testing</translation>
 <translation id="2061155704815580583">‏Brave برای این سایت به اجازه مکان نیاز دارد</translation>
 <translation id="3576319845915562805">‏دفعه بعد که Brave را در <ph name="DEVICE_TYPE"/> باز می‌کنید، پیام‌واره‌ای برای فعال کردن هشدارهای ردگیری قیمت خواهید دید.</translation>
 <translation id="8118331347066725040">درباره جستجو با «لنز»، بازخورد ارسال کنید</translation>
@@ -717,7 +717,7 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="2444257125841652328">‏سرپرست سیستم شما برای باز شدن مرورگر جایگزین برای دسترسی به <ph name="TARGET_URL_HOSTNAME"/>، Brave را پیکربندی کرده است.</translation>
 <translation id="8208548103319284047">‏نکته Brave: جستجو کردن با «لنز»</translation>
 <translation id="7902365066753170041">‏راه‌اندازی مجدد برای به‌روزرسانی Brave</translation>
-<translation id="3350544518197210895">‏Brave‏ (mDNS ورودی)</translation>
+<translation id="538146372587193686">‏Brave Origin‏ (mDNS ورودی)</translation>
 <translation id="49909619875329637">‏با ورود به سیستم Brave، از مزایای بیشتری بهره‌مند شوید</translation>
 <translation id="296137235951584143">‏شخصی‌سازی کردن Brave</translation>
 <translation id="7977787072794666032">‏Brave ممکن است درست کار نکند زیرا دیگر در Windows XP یا Windows Vista پشتیبانی نمی‌شود</translation>

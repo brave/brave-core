@@ -145,7 +145,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="2542968102051442371">Izberite besedilo s slikovnim iskanjem</translation>
 <translation id="70183448213529602">Brave poskuša zamenjati obstoječa gesla. Če želite to omogočiti, vnesite geslo za Windows.</translation>
 <translation id="7798069806040634998">Brave potrebuje za prenos datotek dostop do shrambe</translation>
-<translation id="8447483940522230788">Pomoč za Brave</translation>
+<translation id="2351700486811407088">Pomoč za Brave Origin</translation>
 <translation id="2575822587468774919">Izberite kar koli za iskanje s slikovnim iskanjem</translation>
 <translation id="3830890663494219270">Če želite dostopati do gesel in drugega v vseh napravah, se prijavite v Brave</translation>
 <translation id="6252796827759111076">Še naprej uporabljaj Brave</translation>
@@ -259,7 +259,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="3846683726093018685">**Povzemi:** V enem stavku z največ 30 besedami opiši glavni predmet in namen vsebine na posnetku zaslona.
 
           **Predlagaj vprašanja:** Generiraj označen seznam s 3–5 vprašanji, ki spodbujajo razmišljanje in jih lahko uporabnik zastavi za boljše razumevanje posnetka zaslona. Ta vprašanja morajo vključevati vsaj eno, ki se nanaša posebej na vizualni predmet, njegovo obliko ali njegovo umestitev.</translation>
-<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
+<translation id="6899774208752247219"><ph name="PAGE_TITLE"/> – Brave Origin</translation>
 <translation id="3885770153807205175">Izbirnik jezika</translation>
 <translation id="6315734375101223238">Prilagajanje in nadziranje Bravea. Nekaj morate preveriti – kliknite za podrobnosti.</translation>
 <translation id="7130675370997202556">Kliknite ime, da odprete Brave in začnete brskati.</translation>
@@ -323,7 +323,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="4493028449971051158">Napaka pri zagonu: Zaženite namestitveni program kot skrbnik.</translation>
 <translation id="4501471624619070934">Namestitev ni bila uspešna, ker je dostop v tej državi omejen.</translation>
 <translation id="8594994021633965927">Ta razširitev še ni objavila postopkov zagotavljanja zasebnosti, na primer kako zbira in uporablja podatke. Brave priporoča, da jo odstranite.</translation>
-<translation id="7084397798469173252">Pozdravljeni v Braveu; odprlo se je novo okno brskalnika</translation>
+<translation id="770557926599450702">Pozdravljeni v Brave Originu; odprlo se je novo okno brskalnika</translation>
 <translation id="137732229629632648">Brave potrebuje dovoljenje za ustvarjanje zemljevida vašega okolja in sledenje rokam</translation>
 <translation id="5036046007335188949">V drugem profilu za Brave ste že prijavljeni kot <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="1878185978731985193">Brave vnaprej naloži strani, kar omogoča hitrejše brskanje in iskanje. <ph name="BEGIN_LINK"/>Preberite več o vnaprejšnjem nalaganju strani<ph name="END_LINK"/>.</translation>
@@ -331,7 +331,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="8669339108356170796">Brave je blokiral ta prenos, ker ste izklopili Varno brskanje in datoteke ni mogoče preveriti</translation>
 <translation id="7583343841997441047">Preizkusite Google Lens s Braveom v telefonu</translation>
 <translation id="4594305310729380060">V Upravitelja gesel v tej napravi</translation>
-<translation id="3349475100979552835">Aplikacije za Brave</translation>
+<translation id="7776200949522126045">Aplikacije za Brave Origin</translation>
 <translation id="4598116752460667024">Na seznamu poiščite poljubni postopek.</translation>
 <translation id="4970880042055371251">Različica sistema Chrome OS</translation>
 <translation id="2182657378556811785">Samo še malo. Znova zaženite Brave, da dokončate posodobitev.</translation>
@@ -350,7 +350,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="4823369970559443694">Brave ne more preveriti gesel. Poskusite znova čez 24 ur ali <ph name="BEGIN_LINK"/>preverite gesla v računu Brave<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Uporabljeno je isto preverjanje črkovanja kot v Iskanju Brave. Besedilo, ki ga vnesete v brskalniku, je poslano Googlu. To lahko kadar koli spremenite v nastavitvah.</translation>
 <translation id="2899369907387169108">Uporaba Bravea brez računa</translation>
-<translation id="1912973375560256099">Pravilo za dohodni promet za Brave, ki omogoča promet mDNS.</translation>
+<translation id="1833893255023048385">Pravilo za dohodni promet za Brave Origin, ki omogoča promet mDNS.</translation>
 <translation id="711601904575862069">Znova zaženite, če želite posodobiti &amp;Brave</translation>
 <translation id="4918086044614829423">Sprejmi</translation>
 <translation id="4918844574251943176">Slika je kopirana</translation>
@@ -386,7 +386,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="5267531627648004734">Odstrani iz Bravea</translation>
 <translation id="4620757336635063467">Zmanjša učinkovitost delovanja, vendar je Brave odpornejši proti napadom</translation>
 <translation id="239760341987199724">Nastavitev Bravea za privzeti brskalnik</translation>
-<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – različica beta Bravea</translation>
+<translation id="5165277482382778404"><ph name="PAGE_TITLE"/> – različica beta Brave Origina</translation>
 <translation id="604223321106006231">{NUM_TABS,plural, =1{Brave priporoča, da začasno zaustavite zavihek, ki upočasnjuje brskalnik}one{Brave priporoča, da začasno zaustavite zavihke, ki upočasnjujejo brskalnik}two{Brave priporoča, da začasno zaustavite zavihke, ki upočasnjujejo brskalnik}few{Brave priporoča, da začasno zaustavite zavihke, ki upočasnjujejo brskalnik}other{Brave priporoča, da začasno zaustavite zavihke, ki upočasnjujejo brskalnik}}</translation>
 <translation id="894936507076470937">Brave morda ne bo deloval pravilno, ker ni več podprt v tej distribuciji Linuxa.</translation>
 <translation id="2596557398669145729">Brave je blokiral ta prenos, ker lahko datoteka škoduje vašim osebnim računom in računom v družbenih omrežjih</translation>
@@ -415,7 +415,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="95980832839683236">S Braveovim mehanizmom V8 pospešite delovanje spletnih mest, vendar je Brave zato nekoliko manj odporen proti napadom. Ta nastavitev je izklopljena.</translation>
 <translation id="1224606669200461217">Če želite v računu Brave uporabljati in shranjevati podatke iz Bravea, posodobite Brave</translation>
 <translation id="5824893331272123205">Tega podokna ni bilo mogoče naložiti. Poskusite znova.</translation>
-<translation id="7207456302801184289">Pozdravljeni v Braveu</translation>
+<translation id="4467664627714200493">Pozdravljeni v Brave Originu</translation>
 <translation id="5871205389137001634">Kliknite, če želite zapreti slikovno iskanje</translation>
 <translation id="8054200348483755053">Brave je ugotovil, da ti elementi vsebujejo zlonamerno programsko opremo:</translation>
 <translation id="3955583201925082436">Brave redno preverja, ali so v brskalniku na voljo najvarnejše nastavitve Če boste morali kaj pregledati, vam bomo sporočili.</translation>
@@ -475,7 +475,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="6388799252195623474">pomagaj mi pri tem</translation>
 <translation id="7920857181125123335">Če želite nadaljevati, se prijavite v Brave kot <ph name="EMAIL"/>. S tem zagotovite, da imate pravilnike organizacije.</translation>
 <translation id="3256100650978957522">Braveov logotip na zaslonu računalnika.</translation>
-<translation id="6373767849825830651">Brave je spletni brskalnik, ki bliskovito odpira spletne strani in izvaja aplikacije. Je hiter, stabilen in preprost za uporabo. Z vgrajeno zaščito pred zlonamerno programsko opremo in lažnim predstavljanjem je brskanje po spletu varno.</translation>
+<translation id="5880764554173582719">Brave Origin je spletni brskalnik, ki bliskovito odpira spletne strani in izvaja aplikacije. Je hiter, stabilen in preprost za uporabo. Z vgrajeno zaščito pred zlonamerno programsko opremo in lažnim predstavljanjem je brskanje po spletu varno.</translation>
 <translation id="2532326772258858491">Brave se izvaja hitreje, funkcije, ki uporabljajo JavaScript, pa bi morale delovati, kot je predvideno</translation>
 <translation id="6436260184216827876">Slikovno iskanje ni na voljo. Poskusite znova pozneje.</translation>
 <translation id="2139300032719313227">Vnovičen zagon sistema Chrome OS</translation>
@@ -576,7 +576,7 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="4631170166710903214">Ta razširitev ni več podprta. Brave priporoča, da jo odstranite.</translation>
 <translation id="7951152294775418909">Nadaljujte, kjer ste končali: Brave ob vsakem vnovičnem zagonu obnovi zavihke. Če želite to izklopiti, odprite</translation>
 <translation id="3191314862567596053">Uvoz gesel v Brave</translation>
-<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – različica Bravea za razvijalce</translation>
+<translation id="4864311514218370796"><ph name="PAGE_TITLE"/> – različica Brave Origina za razvijalce</translation>
 <translation id="7450541714075000668">Besedilo je kopirano.</translation>
 <translation id="2034072705932785495">Brave potrebuje dovoljenje za dostop do fotoaparata za to spletno mesto</translation>
 <translation id="7129342855140808694">Če želite uporabljati mikrofon, omogočite Braveu dostop v <ph name="BEGIN_LINK"/>sistemskih nastavitvah<ph name="END_LINK"/></translation>
@@ -605,7 +605,7 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="8543787950557226450">Ponastavitev Bravea na privzete nastavitve</translation>
 <translation id="4976450819672499783">Nastavite Brave kot privzeti brskalnik in ga pripnite v opravilno vrstico</translation>
 <translation id="1978509466033734608">Pospešite Brave</translation>
-<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – delovna različica Bravea</translation>
+<translation id="8607348724092473027"><ph name="PAGE_TITLE"/> – delovna različica Brave Origina</translation>
 <translation id="2684504034454188774">Ljudem z dostopom do vašega internetnega prometa otežite ogled spletnih mest, ki jih obiskujete. Brave uporablja varno povezavo za iskanje naslova IP spletnega mesta v DNS-ju (imenskem sistemu domen).</translation>
 <translation id="7810005234485217901">Slikovno iskanje lahko pripnete za preprost dostop</translation>
 <translation id="1652855885539187849">Profil v Braveu s tem računom že obstaja v tej napravi.</translation>
@@ -628,7 +628,7 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="6175141682081019059">Onemogoči Brave, ki se izvaja v ozadju za aplikacije</translation>
 <translation id="80790299200510644">Slikovno iskanje</translation>
 <translation id="8086881907087796310">Namestitev ni uspela, ker računalnik ne izpolnjuje najnižjih zahtev za strojno opremo.</translation>
-<translation id="8263061319795838019"><ph name="PAGE_TITLE"/> – Brave for Testing</translation>
+<translation id="5528402763209637578"><ph name="PAGE_TITLE"/> – Brave Origin for Testing</translation>
 <translation id="2061155704815580583">Brave potrebuje dovoljenje za lokacijo za to spletno mesto.</translation>
 <translation id="3576319845915562805">Ko boste naslednjič odprli Brave v napravi <ph name="DEVICE_TYPE"/>, bo prikazan poziv za omogočanje opozoril o spremljanju cen.</translation>
 <translation id="8118331347066725040">Pošiljanje povratnih informacij za iskanje z Googlom Lens</translation>
@@ -721,7 +721,7 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="2444257125841652328">Skrbnik sistema je Brave nastavil tako, da za dostop do <ph name="TARGET_URL_HOSTNAME"/> odpre drug brskalnik.</translation>
 <translation id="8208548103319284047">Nasvet za Brave: Iščite z Googlom Lens</translation>
 <translation id="7902365066753170041">Znova zaženite, če želite posodobiti &amp;Brave</translation>
-<translation id="3350544518197210895">Brave (mDNS-In)</translation>
+<translation id="538146372587193686">Brave Origin (mDNS-In)</translation>
 <translation id="49909619875329637">Če ste prijavljeni v Brave, lahko naredite več</translation>
 <translation id="296137235951584143">Prilagodite si Brave</translation>
 <translation id="7977787072794666032">Brave morda ne bo deloval pravilno, ker ni več podprt v sistemu Windows XP ali Windows Vista</translation>

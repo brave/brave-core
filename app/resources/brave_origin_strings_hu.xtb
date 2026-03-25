@@ -143,7 +143,7 @@
 <translation id="2542968102051442371">Jelölje ki a szöveget a Képkeresővel</translation>
 <translation id="70183448213529602">A Brave lecserélni próbálja a meglévő jelszavakat. Az engedélyezéshez adja meg Windows-jelszavát.</translation>
 <translation id="7798069806040634998">A Bravenak tárhelyhozzáférésre van szüksége a fájlok letöltéséhez</translation>
-<translation id="8447483940522230788">Brave Helper</translation>
+<translation id="2351700486811407088">Brave Origin Helper</translation>
 <translation id="2575822587468774919">Válasszon ki bármit a Képkeresővel való kereséshez</translation>
 <translation id="3830890663494219270">Ha az összes eszközén szeretne hozzáférni jelszavaihoz és egyebekhez, jelentkezzen be a Braveba</translation>
 <translation id="6252796827759111076">A Brave használatának folytatása</translation>
@@ -257,7 +257,7 @@
 <translation id="3846683726093018685">**Összefoglalás:** Egyetlen, 30 szónál rövidebb mondatban írd le a képernyőképen látható tartalom elsődleges tárgyát és célját.
 
           **Kérdések javaslása:** Generálj egy pontokba szedett listát 3–5 olyan elgondolkodtató kérdéssel, amelyet a felhasználó feltehet a képernyőkép jobb megértése érdekében. E kérdések közül legalább egynek kifejezetten egy vizuális objektumra, illetve annak dizájnjára vagy elhelyezésére kell vonatkoznia.</translation>
-<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> -- Brave</translation>
+<translation id="6899774208752247219"><ph name="PAGE_TITLE"/> -- Brave Origin</translation>
 <translation id="3885770153807205175">Nyelvválasztó</translation>
 <translation id="6315734375101223238">Személyre szabhatja a Brave működését. Figyelmet kell fordítania valamire – a részletekért kattintson.</translation>
 <translation id="7130675370997202556">Kattintson a nevére a Brave megnyitásához és a böngészés megkezdéséhez.</translation>
@@ -321,7 +321,7 @@
 <translation id="4493028449971051158">Indítási hiba: rendszergazdaként futtassa a telepítőt.</translation>
 <translation id="4501471624619070934">A telepítés sikertelen volt, mivel a hozzáférés korlátozott ebben az országban.</translation>
 <translation id="8594994021633965927">Ez a bővítmény nem tett közzé adatvédelmi gyakorlatokat például arra vonatkozóan, hogy hogyan gyűjti és használja fel az adatokat. A Brave az eltávolítását javasolja.</translation>
-<translation id="7084397798469173252">Üdvözöljük a Braveban; új böngészőablak megnyitva</translation>
+<translation id="770557926599450702">Üdvözöljük a Brave Originban; új böngészőablak megnyitva</translation>
 <translation id="137732229629632648">A Bravenak engedélyre van szüksége ahhoz, hogy feltérképezhesse az Ön környezetét, és nyomon követhesse a kezét</translation>
 <translation id="5036046007335188949">Már be van jelentkezve a(z) <ph name="USER_EMAIL_ADDRESS"/> fiókkal egy másik Brave-profilban.</translation>
 <translation id="1878185978731985193">A Brave előre betölti az oldalakat, ami felgyorsítja a böngészést és a keresést. <ph name="BEGIN_LINK"/>További információ az oldalak előtöltéséről<ph name="END_LINK"/></translation>
@@ -329,7 +329,7 @@
 <translation id="8669339108356170796">A Brave letiltotta ezt a letöltést, mert Ön kikapcsolta a Biztonságos Böngészést, és a fájl nem ellenőrizhető</translation>
 <translation id="7583343841997441047">A Google Lens kipróbálása a Bravemal telefonon</translation>
 <translation id="4594305310729380060">Az eszközön található Jelszókezelőbe</translation>
-<translation id="3349475100979552835">Brave-alkalmazások</translation>
+<translation id="7776200949522126045">Brave Origin-alkalmazások</translation>
 <translation id="4598116752460667024">Keressen rá a listában található bármelyik folyamatra.</translation>
 <translation id="4970880042055371251">A ChromeOS verziója</translation>
 <translation id="2182657378556811785">Már majdnem naprakész! Indítsa újra a Braveot a frissítés befejezéséhez.</translation>
@@ -348,7 +348,7 @@
 <translation id="4823369970559443694">A Brave nem tudja ellenőrizni a jelszavait. Próbálja újra 24 óra múlva, vagy <ph name="BEGIN_LINK"/>ellenőrizze jelszavait a Brave-fiókjában<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">A szolgáltatás ugyanazt a helyesírás-ellenőrzést használja, mint a Brave Kereső. A begépelt szöveget a böngésző elküldi a Brave-nak. A beállítások között ezt bármikor módosíthatja.</translation>
 <translation id="2899369907387169108">Brave használata fiók nélkül</translation>
-<translation id="1912973375560256099">Bejövő szabály a Bravehoz az mDNS forgalom engedélyezése céljából.</translation>
+<translation id="1833893255023048385">Bejövő szabály a Brave Originhoz az mDNS forgalom engedélyezése céljából.</translation>
 <translation id="711601904575862069">Indítsa újra a Brave frissítéshez</translation>
 <translation id="4918086044614829423">Elfogadás</translation>
 <translation id="4918844574251943176">Kép másolva</translation>
@@ -384,7 +384,7 @@
 <translation id="5267531627648004734">Eltávolítás a Braveból</translation>
 <translation id="4620757336635063467">Csökkenti a teljesítményt, de ellenállóbbá teszi a Braveot a támadásokkal szemben</translation>
 <translation id="239760341987199724">A Brave beállítása alapértelmezett böngészőként</translation>
-<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Béta</translation>
+<translation id="5165277482382778404"><ph name="PAGE_TITLE"/> – Brave Origin Béta</translation>
 <translation id="604223321106006231">{NUM_TABS,plural, =1{A Brave a böngészőt lassító lap szüneteltetését javasolja}other{A Brave a böngészőt lassító lapok szüneteltetését javasolja}}</translation>
 <translation id="894936507076470937">Előfordulhat, hogy a Brave nem fog megfelelően működni, mert a továbbiakban már nem támogatja ezt a Linux-verziót.</translation>
 <translation id="2596557398669145729">A Brave letiltotta ezt a letöltést, mert a fájl károkat okozhat az Ön személyes és közösségi fiókjaiban</translation>
@@ -413,7 +413,7 @@
 <translation id="95980832839683236">A Brave V8 motorjával felgyorsítja a webhelyeket, de kissé kevésbé ellenállóvá teszi a Braveot a támadásokkal szemben. Ez a beállítás ki van kapcsolva.</translation>
 <translation id="1224606669200461217">Ha Brave-adatokat szeretne használni és tárolni Brave-fiókjában, frissítse a Braveot</translation>
 <translation id="5824893331272123205">Nem sikerült betölteni ezt a panelt. Próbálja újra.</translation>
-<translation id="7207456302801184289">Üdvözli a Brave!</translation>
+<translation id="4467664627714200493">Üdvözli a Brave Origin!</translation>
 <translation id="5871205389137001634">Kattintson a Képkeresőből való kilépéshez</translation>
 <translation id="8054200348483755053">A Brave rosszindulatú programot talált a következő elemekben:</translation>
 <translation id="3955583201925082436">A Brave rendszeresen ellenőrzi, hogy a böngészője a legbiztonságosabb beállításokkal rendelkezik-e. Tudatni fogjuk, ha bármit felül kell vizsgálni.</translation>
@@ -473,7 +473,7 @@
 <translation id="6388799252195623474">ehhez kérek segítséget</translation>
 <translation id="7920857181125123335">A folytatáshoz jelentkezzen be a Braveba a következő fiókkal: <ph name="EMAIL"/>. Ezzel biztosíthatja, hogy megfeleljen a szervezete házirendjeinek.</translation>
 <translation id="3256100650978957522">A Brave logója egy számítógép képernyőjén.</translation>
-<translation id="6373767849825830651">A Brave olyan böngésző, amely villámgyorsan futtatja a weboldalakat és az alkalmazásokat. Gyors, stabil és könnyen használható. A beépített, adathalászat és kártékony programok elleni védelemmel biztonságosabban böngészhet az interneten.</translation>
+<translation id="5880764554173582719">A Brave Origin olyan böngésző, amely villámgyorsan futtatja a weboldalakat és az alkalmazásokat. Gyors, stabil és könnyen használható. A beépített, adathalászat és kártékony programok elleni védelemmel biztonságosabban böngészhet az interneten.</translation>
 <translation id="2532326772258858491">A Brave gyorsabban fut, a JavaScriptet használó funkcióknak pedig a tervezett módon kell működniük</translation>
 <translation id="6436260184216827876">A Képkereső nem áll rendelkezésre. Próbálja újra később.</translation>
 <translation id="2139300032719313227">A ChromeOS újraindítása</translation>
@@ -572,7 +572,7 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="4631170166710903214">Ez a bővítmény már nem támogatott. A Brave az eltávolítását javasolja.</translation>
 <translation id="7951152294775418909">Ott folytathatja, ahol abbahagyta: a Brave minden újraindításkor visszaállítja a lapokat. A kikapcsoláshoz lépjen ide:</translation>
 <translation id="3191314862567596053">Jelszavak importálása a Braveba</translation>
-<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
+<translation id="4864311514218370796"><ph name="PAGE_TITLE"/> – Brave Origin Dev</translation>
 <translation id="7450541714075000668">Szöveg vágólapra másolva</translation>
 <translation id="2034072705932785495">A Bravenak engedélyre van szüksége ahhoz, hogy hozzáférjen a kamerához ennél a webhelynél</translation>
 <translation id="7129342855140808694">A mikrofon használatához adjon hozzáférést a Bravenak a <ph name="BEGIN_LINK"/>rendszerbeállításokban<ph name="END_LINK"/></translation>
@@ -601,7 +601,7 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="8543787950557226450">Visszaállítás az alapértelmezett Bravera</translation>
 <translation id="4976450819672499783">Állítsa be a Braveot alapértelmezettként, és tűzze ki a tálcára</translation>
 <translation id="1978509466033734608">A Brave felgyorsítása</translation>
-<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
+<translation id="8607348724092473027"><ph name="PAGE_TITLE"/> – Brave Origin Canary</translation>
 <translation id="2684504034454188774">Megnehezítheti az internetes forgalmához hozzáférő személyek számára, hogy lássák, milyen webhelyeket keres fel. A Brave biztonságos kapcsolatot használ a webhelyek IP-címének DNS-ben (domainnévrendszerben) való megkereséséhez.</translation>
 <translation id="7810005234485217901">Az egyszerű hozzáférés érdekében kitűzheti a Képkeresőt</translation>
 <translation id="1652855885539187849">Már létezik Brave-profil ezzel a fiókkal ezen az eszközön.</translation>
@@ -624,7 +624,7 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="6175141682081019059">A Brave háttérben való futtatásának letiltása az alkalmazásoknál</translation>
 <translation id="80790299200510644">Képkereső</translation>
 <translation id="8086881907087796310">A telepítés sikertelen volt, mert a számítógép nem felel meg a minimális hardverkövetelményeknek.</translation>
-<translation id="8263061319795838019"><ph name="PAGE_TITLE"/> – Brave for Testing</translation>
+<translation id="5528402763209637578"><ph name="PAGE_TITLE"/> – Brave Origin for Testing</translation>
 <translation id="2061155704815580583">A Bravenak helymeghatározási jogosultságra van szüksége ehhez a webhelyhez</translation>
 <translation id="3576319845915562805">Amikor legközelebb megnyitja a Braveot <ph name="DEVICE_TYPE"/> eszközén, megjelenik az árfigyelési értesítések engedélyezésével kapcsolatos üzenet.</translation>
 <translation id="8118331347066725040">Visszajelzés küldése a Lens segítségével való keresésről</translation>
@@ -717,7 +717,7 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="2444257125841652328">Rendszergazdája úgy állította be a Braveot, hogy másik böngészőt nyisson meg a(z) <ph name="TARGET_URL_HOSTNAME"/> eléréséhez.</translation>
 <translation id="8208548103319284047">Brave-tipp: Kereshet a Lens segítségével</translation>
 <translation id="7902365066753170041">Indítsa újra a Brave frissítéshez</translation>
-<translation id="3350544518197210895">Brave (mDNS-In)</translation>
+<translation id="538146372587193686">Brave Origin (mDNS-In)</translation>
 <translation id="49909619875329637">Több mindenhez hozzáférhet, amikor be van jelentkezve a Braveba</translation>
 <translation id="296137235951584143">Tegye sajátjává a Braveot</translation>
 <translation id="7977787072794666032">Előfordulhat, hogy a Brave nem működik majd megfelelően, mert a továbbiakban már nem támogatja a következő rendszereket: Windows XP és Windows Vista</translation>

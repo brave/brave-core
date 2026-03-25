@@ -144,7 +144,7 @@ Dit heeft geen gevolgen voor bookmarks, geschiedenis en opgeslagen wachtwoorden.
 <translation id="2542968102051442371">Tekst selecteren met Zoeken met afbeelding</translation>
 <translation id="70183448213529602">Brave probeert bestaande wachtwoorden te vervangen. Typ je Windows-wachtwoord om dit toe te staan.</translation>
 <translation id="7798069806040634998">Brave heeft toegang tot de opslag nodig om bestanden te downloaden</translation>
-<translation id="8447483940522230788">Brave Helper</translation>
+<translation id="2351700486811407088">Brave Origin Helper</translation>
 <translation id="2575822587468774919">Selecteer iets om te zoeken met Zoeken met afbeelding</translation>
 <translation id="3830890663494219270">Log in bij Brave om onder andere je wachtwoorden te gebruiken op al je apparaten</translation>
 <translation id="6252796827759111076">Brave blijven gebruiken</translation>
@@ -258,7 +258,7 @@ Dit heeft geen gevolgen voor bookmarks, geschiedenis en opgeslagen wachtwoorden.
 <translation id="3846683726093018685">**Samenvatten:** Beschrijf in één zin van maximaal 30 woorden het belangrijkste onderwerp en doel van de content in het screenshot.
 
           **Vragen voorstellen:** Genereer een lijst met 3 tot 5 prikkelende vragen die een gebruiker kan stellen om het screenshot beter te begrijpen. Deze vragen moeten minstens één vraag bevatten die specifiek over een visueel object, het ontwerp of de plaatsing ervan gaat.</translation>
-<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="6899774208752247219"><ph name="PAGE_TITLE"/> - Brave Origin</translation>
 <translation id="3885770153807205175">Taalkiezer</translation>
 <translation id="6315734375101223238">Pas Brave aan en beheer de instellingen. Je aandacht is vereist. Klik voor meer informatie.</translation>
 <translation id="7130675370997202556">Klik op je naam om Brave te openen en begin met surfen.</translation>
@@ -322,7 +322,7 @@ Dit heeft geen gevolgen voor bookmarks, geschiedenis en opgeslagen wachtwoorden.
 <translation id="4493028449971051158">Opstartfout: voer het installatieprogramma uit als beheerder.</translation>
 <translation id="4501471624619070934">De installatie is mislukt omdat de toegang is beperkt in dit land.</translation>
 <translation id="8594994021633965927">Deze extensie heeft geen privacyprocedures gepubliceerd, zoals de manier waarop gegevens worden verzameld en gebruikt. Brave raadt je aan deze te verwijderen.</translation>
-<translation id="7084397798469173252">Welkom bij Brave, nieuw browservenster geopend</translation>
+<translation id="770557926599450702">Welkom bij Brave Origin, nieuw browservenster geopend</translation>
 <translation id="137732229629632648">Brave heeft rechten nodig om je omgeving in kaart te brengen en je handen te volgen</translation>
 <translation id="5036046007335188949">Je bent al ingelogd als <ph name="USER_EMAIL_ADDRESS"/> bij een ander Brave-profiel</translation>
 <translation id="1878185978731985193">Brave laadt pagina's vooraf, zodat je sneller kunt browsen en zoeken. <ph name="BEGIN_LINK"/>Meer informatie over hoe je pagina's vooraf laadt<ph name="END_LINK"/></translation>
@@ -330,7 +330,7 @@ Dit heeft geen gevolgen voor bookmarks, geschiedenis en opgeslagen wachtwoorden.
 <translation id="8669339108356170796">Brave heeft deze download geblokkeerd, omdat je Safe Browsing hebt uitgezet en het bestand niet kan worden geverifieerd</translation>
 <translation id="7583343841997441047">Probeer Google Lens met Brave op je telefoon</translation>
 <translation id="4594305310729380060">Naar Wachtwoordmanager op dit apparaat</translation>
-<translation id="3349475100979552835">Brave-apps</translation>
+<translation id="7776200949522126045">Brave Origin-apps</translation>
 <translation id="4598116752460667024">Zoek naar een proces in de lijst.</translation>
 <translation id="4970880042055371251">Brave OS-versie</translation>
 <translation id="2182657378556811785">Updaten bijna voltooid. Start Brave opnieuw op om de update te voltooien.</translation>
@@ -349,7 +349,7 @@ Dit heeft geen gevolgen voor bookmarks, geschiedenis en opgeslagen wachtwoorden.
 <translation id="4823369970559443694">Brave kan je wachtwoorden niet checken. Probeer het over 24 uur opnieuw of <ph name="BEGIN_LINK"/>check de wachtwoorden in je Brave-account<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Hiervoor wordt dezelfde spellingcontrole gebruikt als voor Brave Zoeken. Tekst die je in de browser typt, wordt naar Brave gestuurd. Je kunt dit altijd wijzigen in de instellingen.</translation>
 <translation id="2899369907387169108">Brave gebruiken zonder account</translation>
-<translation id="1912973375560256099">Inkomende regel zodat Brave mDNS-verkeer toestaat.</translation>
+<translation id="1833893255023048385">Inkomende regel zodat Brave Origin mDNS-verkeer toestaat.</translation>
 <translation id="711601904575862069">Opnieuw starten om &amp;Brave te updaten</translation>
 <translation id="4918086044614829423">Accepteren</translation>
 <translation id="4918844574251943176">Afbeelding gekopieerd</translation>
@@ -385,7 +385,7 @@ Dit heeft geen gevolgen voor bookmarks, geschiedenis en opgeslagen wachtwoorden.
 <translation id="5267531627648004734">Verwijderen uit Brave</translation>
 <translation id="4620757336635063467">Vermindert de prestaties maar maakt Brave beter bestand tegen aanvallen</translation>
 <translation id="239760341987199724">Brave instellen als je standaardbrowser</translation>
-<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave bèta</translation>
+<translation id="5165277482382778404"><ph name="PAGE_TITLE"/> - Brave Origin bèta</translation>
 <translation id="604223321106006231">{NUM_TABS,plural, =1{Brave raadt aan het tabblad dat je browser vertraagt te onderbreken}other{Brave raadt aan de tabbladen die je browser vertragen te onderbreken}}</translation>
 <translation id="894936507076470937">Brave werkt misschien niet goed omdat dit niet meer wordt ondersteund in deze Linux-distributie</translation>
 <translation id="2596557398669145729">Brave heeft deze download geblokkeerd, omdat het bestand schadelijk kan zijn voor je persoonlijke en socialmedia-accounts</translation>
@@ -414,7 +414,7 @@ Dit heeft geen gevolgen voor bookmarks, geschiedenis en opgeslagen wachtwoorden.
 <translation id="95980832839683236">Versnelt sites met de V8-engine van Brave, maar maakt Brave iets minder goed bestand tegen aanvallen. Deze instelling staat uit.</translation>
 <translation id="1224606669200461217">Update Brave om Brave-gegevens te gebruiken en op te slaan in je Brave-account</translation>
 <translation id="5824893331272123205">Kan dit deelvenster niet laden. Probeer het opnieuw.</translation>
-<translation id="7207456302801184289">Welkom bij Brave</translation>
+<translation id="4467664627714200493">Welkom bij Brave Origin</translation>
 <translation id="5871205389137001634">Klik om Zoeken met afbeelding te sluiten</translation>
 <translation id="8054200348483755053">Brave heeft vastgesteld dat deze items malware bevatten:</translation>
 <translation id="3955583201925082436">Brave checkt regelmatig of je browser de veiligste instellingen heeft. We laten het je weten als je iets moet controleren.</translation>
@@ -474,7 +474,7 @@ Dit heeft geen gevolgen voor bookmarks, geschiedenis en opgeslagen wachtwoorden.
 <translation id="6388799252195623474">help me hiermee</translation>
 <translation id="7920857181125123335">Als je wilt doorgaan, log je in bij Brave als <ph name="EMAIL"/>. Zo weet je zeker dat het beleid van je organisatie wordt toegepast.</translation>
 <translation id="3256100650978957522">Brave-logo in een computerscherm.</translation>
-<translation id="6373767849825830651">Brave is een webbrowser die webpagina's en applicaties bliksemsnel uitvoert. Brave is snel, stabiel en eenvoudig in gebruik. Surf veiliger op internet met de in Brave ingebouwde beveiliging tegen malware en phishing.</translation>
+<translation id="5880764554173582719">Brave Origin is een webbrowser die webpagina's en applicaties bliksemsnel uitvoert. Brave Origin is snel, stabiel en eenvoudig in gebruik. Surf veiliger op internet met de in Brave Origin ingebouwde beveiliging tegen malware en phishing.</translation>
 <translation id="2532326772258858491">Brave werkt sneller en functies die JavaScript gebruiken, zouden naar behoren moeten werken</translation>
 <translation id="6436260184216827876">Zoeken met afbeelding is niet beschikbaar. Probeer het later opnieuw.</translation>
 <translation id="2139300032719313227">Brave OS opnieuw opstarten</translation>
@@ -575,7 +575,7 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="4631170166710903214">Deze extensie wordt niet meer ondersteund. Brave raadt je aan de extensie te verwijderen.</translation>
 <translation id="7951152294775418909">Ga verder waar je gebleven was: Brave herstelt je tabbladen elke keer dat je opnieuw opstart. Als je dit wilt uitzetten, ga je naar</translation>
 <translation id="3191314862567596053">Wachtwoorden importeren in Brave</translation>
-<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave voor ontwikkelaars</translation>
+<translation id="4864311514218370796"><ph name="PAGE_TITLE"/> - Brave Origin voor ontwikkelaars</translation>
 <translation id="7450541714075000668">Tekst gekopieerd</translation>
 <translation id="2034072705932785495">Brave heeft toegangsrechten voor je camera nodig voor deze site</translation>
 <translation id="7129342855140808694">Geef Brave toegang via de <ph name="BEGIN_LINK"/>systeeminstellingen<ph name="END_LINK"/> om je microfoon te gebruiken</translation>
@@ -604,7 +604,7 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="8543787950557226450">Resetten naar standaard Brave</translation>
 <translation id="4976450819672499783">Brave instellen als standaardbrowser en vastzetten op de taakbalk</translation>
 <translation id="1978509466033734608">Maak Brave sneller</translation>
-<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
+<translation id="8607348724092473027"><ph name="PAGE_TITLE"/> - Brave Origin Canary</translation>
 <translation id="2684504034454188774">Maak het moeilijker voor mensen met toegang tot je internetverkeer om te zien welke sites je bezoekt. Brave gebruikt een beveiligde verbinding om het IP-adres van een site op te zoeken in het DNS (Domain Name System).</translation>
 <translation id="7810005234485217901">Je kunt Zoeken met afbeelding vastzetten voor snelle toegang</translation>
 <translation id="1652855885539187849">Er bestaat op dit apparaat al een Brave-profiel met dit account</translation>
@@ -627,7 +627,7 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="6175141682081019059">Brave niet uitvoeren op de achtergrond voor apps</translation>
 <translation id="80790299200510644">Zoeken met afbeelding</translation>
 <translation id="8086881907087796310">De installatie is mislukt omdat je computer niet voldoet aan de minimale hardwarevereisten.</translation>
-<translation id="8263061319795838019"><ph name="PAGE_TITLE"/> - Brave for Testing</translation>
+<translation id="5528402763209637578"><ph name="PAGE_TITLE"/> - Brave Origin for Testing</translation>
 <translation id="2061155704815580583">Brave heeft locatierechten nodig voor deze site</translation>
 <translation id="3576319845915562805">De volgende keer dat je Brave op je <ph name="DEVICE_TYPE"/> opent, zie je een prompt om meldingen voor prijzen volgen aan te zetten.</translation>
 <translation id="8118331347066725040">Stuur feedback voor zoeken met Lens</translation>
@@ -720,7 +720,7 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="2444257125841652328">Je systeembeheerder heeft geconfigureerd dat Brave een alternatieve browser opent voor toegang tot <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="8208548103319284047">Brave-tip: Zoeken met Lens</translation>
 <translation id="7902365066753170041">Opnieuw starten om &amp;Brave te updaten</translation>
-<translation id="3350544518197210895">Brave (mDNS-In)</translation>
+<translation id="538146372587193686">Brave Origin (mDNS-In)</translation>
 <translation id="49909619875329637">Krijg meer als je bent ingelogd bij Brave</translation>
 <translation id="296137235951584143">Personaliseer Brave</translation>
 <translation id="7977787072794666032">Brave werkt mogelijk niet naar behoren omdat dit niet langer wordt ondersteund op Windows XP en Windows Vista</translation>
