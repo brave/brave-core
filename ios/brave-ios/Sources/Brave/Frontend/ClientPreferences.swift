@@ -251,8 +251,8 @@ extension Preferences {
     )
     /// When "Keep Private Tabs" is enabled, whether to launch in private mode and restore private tabs.
     /// Off by default; when off, browser launches in regular mode but private tabs are still restored.
-    public static let reopenBrowserInPrivateMode = Option<Bool>(
-      key: "privacy.reopen-browser-in-private-mode",
+    public static let rememberBrowsingMode = Option<Bool>(
+      key: "privacy.remember-browsing-mode",
       default: false
     )
     /// Blocks all cookies and access to local storage

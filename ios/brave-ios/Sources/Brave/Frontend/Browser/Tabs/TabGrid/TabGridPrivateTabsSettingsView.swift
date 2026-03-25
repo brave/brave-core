@@ -16,8 +16,8 @@ struct TabGridPrivateTabsSettings: View {
   @Environment(\.dismiss) private var dismiss
   @ObservedObject private var persistentPrivateBrowsing = Preferences.Privacy
     .persistentPrivateBrowsing
-  @ObservedObject private var reopenBrowserInPrivateMode = Preferences.Privacy
-    .reopenBrowserInPrivateMode
+  @ObservedObject private var rememberBrowsingMode = Preferences.Privacy
+    .rememberBrowsingMode
   @ObservedObject private var privateBrowsingLock = Preferences.Privacy.privateBrowsingLock
 
   private var authenticationKind: LABiometryType? {
@@ -67,11 +67,11 @@ struct TabGridPrivateTabsSettings: View {
         .tint(Color.accentColor)
         .listRowBackground(Color(uiColor: .secondaryBraveGroupedBackground))
         if persistentPrivateBrowsing.value {
-          Toggle(isOn: $reopenBrowserInPrivateMode.value) {
+          Toggle(isOn: $rememberBrowsingMode.value) {
             Label {
-              Text(Strings.TabsSettings.reopenBrowserInPrivateModeTitle)
+              Text(Strings.TabsSettings.rememberBrowsingModeTitle)
                 .foregroundStyle(Color(braveSystemName: .textPrimary))
-              Text(Strings.TabsSettings.reopenBrowserInPrivateModeDescription)
+              Text(Strings.TabsSettings.rememberBrowsingModeDescription)
                 .foregroundStyle(Color(braveSystemName: .textSecondary))
                 .font(.footnote)
             } icon: {

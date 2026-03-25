@@ -874,7 +874,7 @@ extension SceneDelegate {
   /// Returns the default (privateBrowsingOnly) when the preferences don't apply (e.g. no persistent private tabs to restore).
   private func shouldLaunchInPrivateMode(windowId: UUID) -> Bool {
     guard Preferences.Privacy.persistentPrivateBrowsing.value,
-      Preferences.Privacy.reopenBrowserInPrivateMode.value
+      Preferences.Privacy.rememberBrowsingMode.value
     else {
       return Preferences.Privacy.privateBrowsingOnly.value
     }
