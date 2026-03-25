@@ -517,7 +517,18 @@ export function createInterfaceApi<
           argsAndUpdater.length - 1,
         ) as unknown as QArgs
 
-        queryClient.setQueryData<QData>([...baseKey, ...args], (old) => {
+        const queryKey = [...baseKey, ...args]
+
+        // Cancel because our set could be replaced if there is a query
+        // in-progress.
+        if (queryClient.isFetching({ queryKey, exact: true })) {
+          queryClient.cancelQueries({
+            queryKey,
+            exact: true,
+          })
+        }
+
+        queryClient.setQueryData<QData>(queryKey, (old) => {
           const updateData: AllowedUpdateParam =
             typeof up === 'function'
               ? up(old as QData)
