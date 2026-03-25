@@ -18,6 +18,8 @@ DEFAULT_LONGVARCHAR_COLUMN_LENGTH = 64
 
 MILLISECONDS_IN_SECOND = 1000
 
+EXPECTED_ROW_COUNT = 4
+
 # TODO(https://github.com/brave/brave-browser/issues/40017): Add foreign key
 # support.
 
@@ -370,6 +372,17 @@ def mock_tables(connection):
     connection.commit()
 
 
+def verify_mock_tables(connection):
+    table_names = get_table_names(connection)
+    for table_name in table_names:
+        connection_cursor = connection.cursor()
+        connection_cursor.execute(f"SELECT count(*) FROM {table_name};")
+        row_count = connection_cursor.fetchone()[0]
+        if row_count != EXPECTED_ROW_COUNT:
+            sys.exit(f"ERROR: {table_name} table has {row_count} rows, "
+                     f"expected {EXPECTED_ROW_COUNT}")
+
+
 def mock_database(database):
     if not os.path.exists(database):
         sys.exit(f"ERROR: {database} does not exist")
@@ -381,6 +394,7 @@ def mock_database(database):
     print("Mocking database migration test data")
 
     mock_tables(connection)
+    verify_mock_tables(connection)
     vacuum(connection)
     close_connection(connection)
 

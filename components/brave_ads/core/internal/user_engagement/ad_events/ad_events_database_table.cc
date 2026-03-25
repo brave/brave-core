@@ -172,6 +172,18 @@ void MigrateToV43(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
 void MigrateToV50(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
+  // Delete legacy ad events with an undefined `placement_id`, `campaign_id`,
+  // `creative_set_id`, or `creative_instance_id`.
+  Execute(mojom_db_transaction, R"(
+      DELETE FROM
+        ad_events
+      WHERE
+        COALESCE(placement_id, '') = ''
+        OR COALESCE(campaign_id, '') = ''
+        OR COALESCE(creative_set_id, '') = ''
+        OR COALESCE(creative_instance_id, '') = ''
+        OR created_at IS NULL)");
+
   // Create a temporary table:
   //   - with a new `target_url` column with a default value of
   //     'https://brave.com/brave-ads/'.
