@@ -28,7 +28,6 @@
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_policy/ad_block_only_mode/ad_block_only_mode_policy_manager.h"
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -146,22 +145,11 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   g_browser_process = this;
   g_brave_browser_process = this;
 
-  // early initialize referrals
-  brave_referrals_service();
-
   // Disabled on mobile platforms, see for instance issues/6176
   // Create P3A Service early to catch more histograms. The full initialization
   // should be started once browser process impl is ready.
   p3a_service();
   histogram_braveizer_ = p3a::HistogramsBraveizer::Create();
-
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-  // initialize ads stats helper
-  ads_brave_stats_helper();
-#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
-
-  // early initialize brave stats
-  brave_stats_updater();
 
   // early initialize misc metrics
   process_misc_metrics();
