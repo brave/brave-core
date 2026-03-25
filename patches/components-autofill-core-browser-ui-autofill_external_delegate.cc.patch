@@ -1,0 +1,12 @@
+diff --git a/components/autofill/core/browser/ui/autofill_external_delegate.cc b/components/autofill/core/browser/ui/autofill_external_delegate.cc
+index d11a7032698a9ab84065fa62517ba98be3cd786d..337e54c5de16b7dcdb774fc4caa42a4aa7e5ee03 100644
+--- a/components/autofill/core/browser/ui/autofill_external_delegate.cc
++++ b/components/autofill/core/browser/ui/autofill_external_delegate.cc
+@@ -348,6 +348,7 @@ void AutofillExternalDelegate::AttemptToDisplayAutofillSuggestions(
+     shown_suggestion_types_.push_back(suggestion.type);
+   }
+ 
++  BRAVE_AUTOFILL_EXTERNAL_DELEGATE_ATTEMPT_TO_DISPLAY_AUTOFILL_SUGGESTIONS
+   if (suggestions.empty()) {
+     OnAutofillAvailabilityEvent(
+         mojom::AutofillSuggestionAvailability::kNoSuggestions);

@@ -42,11 +42,16 @@ source_set("unit_tests") {
     "//brave/components/brave_account:features",
     "//brave/components/email_aliases:features",
     "//brave/components/email_aliases:service",
+    "//brave/components/resources:strings_grit",
     "//chrome/browser/profiles",
     "//chrome/test:test_support",
+    "//components/autofill/core/browser",
+    "//components/autofill/core/browser:test_support",
+    "//components/autofill/core/common",
     "//components/keyed_service/core",
     "//mojo/public/cpp/bindings",
     "//testing/gtest",
+    "//ui/base",
   ]
 }
 
@@ -56,7 +61,10 @@ if (toolkit_views) {
 
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-    sources = [ "email_aliases_browsertest.cc" ]
+    sources = [
+      "email_aliases_autofill_browsertest.cc",
+      "email_aliases_browsertest.cc",
+    ]
 
     deps = [
       ":email_aliases",
@@ -71,6 +79,7 @@ if (toolkit_views) {
       "//brave/components/email_aliases:service",
       "//brave/components/email_aliases:test_utils",
       "//chrome/browser",
+      "//chrome/browser/ui/autofill",
       "//chrome/browser/ui/views/bubble",
       "//chrome/test:test_support",
     ]
