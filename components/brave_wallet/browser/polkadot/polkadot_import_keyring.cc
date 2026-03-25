@@ -18,6 +18,19 @@
 
 namespace brave_wallet {
 
+namespace {
+
+std::optional<std::string> PubkeyToString(
+    base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> pubkey,
+    uint16_t prefix) {
+  Ss58Address addr;
+  addr.prefix = prefix;
+  base::span(addr.public_key).copy_from_nonoverlapping(pubkey);
+  return addr.Encode();
+}
+
+}  // namespace
+
 PolkadotImportKeyring::PolkadotImportKeyring(
     mojom::KeyringId keyring_id,
     base::RepeatingCallback<bool(const std::string&)> is_address_allowed)
@@ -34,16 +47,18 @@ bool PolkadotImportKeyring::AddAccount(
   if (accounts_.contains(account)) {
     return false;
   }
+
   auto key = HDKeySr25519::CreateFromPkcs8(pkcs8_key);
   if (!key) {
     return false;
   }
-  accounts_.emplace(account, std::move(*key));
 
-  if (!is_address_allowed_.Run(GetAccountAddress(account).value())) {
+  auto address = PubkeyToString(key->GetPublicKey(), GetSs58Prefix()).value();
+  if (!is_address_allowed_.Run(address)) {
     return false;
   }
 
+  accounts_.emplace(account, std::move(*key));
   return true;
 }
 
@@ -53,7 +68,7 @@ bool PolkadotImportKeyring::RemoveAccount(uint32_t account) {
 
 std::optional<std::string> PolkadotImportKeyring::GetAccountAddress(
     uint32_t account_index) {
-  const uint16_t prefix = IsTestnet() ? kWestendPrefix : kPolkadotPrefix;
+  const uint16_t prefix = GetSs58Prefix();
   return GetAddress(account_index, prefix);
 }
 
@@ -65,11 +80,7 @@ std::optional<std::string> PolkadotImportKeyring::GetAddress(
     return std::nullopt;
   }
 
-  Ss58Address addr;
-  addr.prefix = prefix;
-  base::span(addr.public_key)
-      .copy_from_nonoverlapping(base::span<uint8_t const>(key->GetPublicKey()));
-  return addr.Encode();
+  return PubkeyToString(key->GetPublicKey(), prefix);
 }
 
 std::optional<std::array<uint8_t, kSr25519PublicKeySize>>
@@ -122,6 +133,10 @@ HDKeySr25519* PolkadotImportKeyring::GetAccountByIndex(uint32_t account) {
     return nullptr;
   }
   return &it->second;
+}
+
+uint16_t PolkadotImportKeyring::GetSs58Prefix() {
+  return IsTestnet() ? kWestendPrefix : kPolkadotPrefix;
 }
 
 }  // namespace brave_wallet

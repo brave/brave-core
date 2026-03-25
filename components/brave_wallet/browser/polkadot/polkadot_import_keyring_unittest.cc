@@ -208,6 +208,7 @@ TEST(PolkadotImportKeyringTest, AddAccount_OfacSanctionedAddress) {
   ASSERT_TRUE(import_keyring.RemoveAccount(0));
 
   EXPECT_FALSE(import_keyring.AddAccount(0, pkcs8_key));
+  EXPECT_FALSE(import_keyring.RemoveAccount(0));
   EXPECT_TRUE(import_keyring.AddAccount(1, pkcs8_key1));
 
   // Clear OFAC list

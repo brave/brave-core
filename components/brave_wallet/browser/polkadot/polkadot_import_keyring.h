@@ -61,6 +61,7 @@ class PolkadotImportKeyring {
 
  private:
   HDKeySr25519* GetAccountByIndex(uint32_t account);
+  uint16_t GetSs58Prefix();
 
   mojom::KeyringId keyring_id_;
   base::flat_map<uint32_t, HDKeySr25519> accounts_;
