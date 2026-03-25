@@ -58,6 +58,14 @@ network::mojom::NetworkContext* GetNetworkContextForProfile(
 
 // static
 AdsService* AdsServiceFactory::GetForProfile(Profile* profile) {
+  if (!profile->IsRegularProfile()) {
+    return nullptr;
+  }
+
+  if (!brave_rewards::IsSupported(profile->GetPrefs())) {
+    return nullptr;
+  }
+
   return static_cast<AdsService*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }
@@ -93,21 +101,10 @@ AdsServiceFactory::CreateAdsTooltipsDelegate() const {
 #endif
 }
 
-bool AdsServiceFactory::ServiceIsCreatedWithBrowserContext() const {
-  return true;
-}
-
 std::unique_ptr<KeyedService>
 AdsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
-  if (!profile->IsRegularProfile()) {
-    return nullptr;
-  }
-
-  if (!brave_rewards::IsSupported(profile->GetPrefs())) {
-    return nullptr;
-  }
 
   auto* prefs = profile->GetPrefs();
   auto* local_state = g_browser_process->local_state();

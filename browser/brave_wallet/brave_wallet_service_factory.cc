@@ -33,6 +33,9 @@ BraveWalletServiceFactory* BraveWalletServiceFactory::GetInstance() {
 // static
 BraveWalletService* BraveWalletServiceFactory::GetServiceForContext(
     content::BrowserContext* context) {
+  if (!IsAllowedForContext(context)) {
+    return nullptr;
+  }
   return static_cast<BraveWalletService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
@@ -44,16 +47,9 @@ BraveWalletServiceFactory::BraveWalletServiceFactory()
 
 BraveWalletServiceFactory::~BraveWalletServiceFactory() = default;
 
-bool BraveWalletServiceFactory::ServiceIsCreatedWithBrowserContext() const {
-  return true;
-}
-
 std::unique_ptr<KeyedService>
 BraveWalletServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  if (!IsAllowedForContext(context)) {
-    return nullptr;
-  }
   return std::make_unique<BraveWalletService>(
       context->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess(),
