@@ -2936,6 +2936,8 @@
 -ExtensionInstalledBubbleViewsExplicitSignInBrowserTest.*
 -ExtensionInstalledBubbleViewsSignInBrowserTest.*
 -ExtensionInstallUIBrowserTest.*
+# https://github.com/brave/brave-browser/issues/53781 upstream flaky test (14% flake rate)
+-ExtensionInstallPolicyServiceTest.CanInstallExtensionServerUnreachable
 -ExtensionOverrideTest.*
 -ExtensionPolicyTest.*
 -ExtensionPreferenceApiTest.*
