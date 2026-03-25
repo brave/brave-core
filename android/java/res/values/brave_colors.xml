@@ -353,10 +353,6 @@
     <color name="schemes_surface_container_highest">#e4e4e5</color>
     <color name="schemes_surface_container_lowest">#ffffff</color>
     <color name="schemes_surface_container">#F2F2F3</color>
-    <color name="schemes_on_primary_fixed">#15192D</color>
-    <color name="schemes_primary_fixed_dim">#BCC6F3</color>
-    <color name="semantic_text_secondary">#464649</color>
-    <color name="semantic_text_tertiary">#78787C</color>
 
     <color name="open_yt_dialog_bg">#FFFFFF</color>
 

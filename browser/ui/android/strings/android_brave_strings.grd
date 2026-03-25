@@ -3299,6 +3299,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ORIGIN_RESTART_NOW" desc="Action button text on the Brave Origin restart snackbar">
       Restart now
     </message>
+    <message name="IDS_ORIGIN_DISABLING_FEATURES" desc="Text shown in the snackbar while Origin credentials are being fetched after purchase, indicating features are being disabled">
+      Disabling features
+    </message>
+    <message name="IDS_ORIGIN_CHANGING_BRAVE_FEATURES_MESSAGE_POST_PURCHASE" desc="Message for the snackbar shown right after Origin purchase while credentials are being fetched">
+      Enabling or disabling a Brave feature requires a browser restart to apply changes. Please tap <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Restart now<ph name="END_BOLD">&lt;/b&gt;</ph> once Origin has finished updating.
+    </message>
     <message name="IDS_ORIGIN_RESET_DIALOG_MESSAGE" desc="Confirmation message shown when the user taps Reset to defaults in Brave Origin settings">
       Are you sure you want to reset all settings to default?
     </message>

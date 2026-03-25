@@ -215,8 +215,7 @@
     <color name="schemes_surface_container_highest">#343438</color>
     <color name="schemes_surface_container_lowest">#0f0f0f</color>
     <color name="schemes_surface_container">#1F1F23</color>
-    <color name="semantic_text_secondary">#C9C9CA</color>
-    <color name="semantic_text_tertiary">#909093</color>
+
     <color name="text_interactive">#bcc6f3</color>
 
     <color name="open_yt_dialog_bg">#000000</color>
