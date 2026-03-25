@@ -8,6 +8,7 @@
 #include "base/logging.h"
 #include "brave/components/sync_device_info/brave_device_info.h"
 #include "components/sync/base/deletion_origin.h"
+#include "components/sync_device_info/device_info_proto_enum_util.h"
 
 #define BRAVE_MAKE_LOCAL_DEVICE_SPECIFICS \
   specifics->mutable_brave_fields()->set_is_self_delete_supported(true);
@@ -61,7 +62,7 @@ std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
   return std::make_unique<BraveDeviceInfo>(
       specifics.cache_guid(), specifics.client_name(),
       specifics.chrome_version(), specifics.sync_user_agent(),
-      specifics.device_type(),
+      ToDeviceInfoDeviceType(specifics.device_type()),
       DeriveOsFromDeviceType(specifics.device_type(), specifics.manufacturer()),
       DeriveFormFactorFromDeviceType(specifics.device_type()),
       specifics.signin_scoped_device_id(), specifics.manufacturer(),
@@ -69,7 +70,8 @@ std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
       ProtoTimeToTime(specifics.last_updated_timestamp()),
       GetPulseIntervalFromSpecifics(specifics),
       specifics.feature_fields().send_tab_to_self_receiving_enabled(),
-      specifics.feature_fields().send_tab_to_self_receiving_type(),
+      ToDeviceInfoSendTabReceivingType(
+          specifics.feature_fields().send_tab_to_self_receiving_type()),
       SpecificsToSharingInfo(specifics),
       SpecificsToPhoneAsASecurityKeyInfo(specifics),
       specifics.invalidation_fields().instance_id_token(), data_types,
