@@ -135,6 +135,9 @@
   <message name="IDS_BRAVE_ACCOUNT_SERVER_ERROR" translateable="false" desc="" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     Internal server error (HTTP=<ph name="STATUS_CODE">$1</ph><ph name="ERROR_CODE">$2</ph>). Please try again later.
   </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_EMAIL_NOT_VERIFIED" translateable="false" desc="" formatter_data="webui=BraveAccount">
+    This account is awaiting email verification.
+  </message>
   <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INCORRECT_EMAIL" translateable="false" desc="" formatter_data="webui=BraveAccount">
     No account found for that email address. Please try again, or create a new account.
   </message>

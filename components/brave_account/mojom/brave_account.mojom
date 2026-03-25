@@ -63,9 +63,9 @@ enum LoginErrorCode {
   // Server-side errors:
   kMiscServerError                     = 0,
   // /v2/auth/login/init:
-  // - internal:
+  // - internal: -
+  // - user-facing:
   kEmailNotVerified                    = 11003,
-  // - user-facing: -
   // /v2/auth/login/finalize:
   // - internal:
   kInterimPasswordStateNotFound        = 14001,
