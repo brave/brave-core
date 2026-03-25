@@ -1,14 +1,26 @@
 /* A section header title for ads-related settings */
 "adsHeader" = "Reklámok";
 
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "Már vásárolt a brave.com-on?";
+
 /* A section header title for analytics-related settings */
 "analyticsHeader" = "Analitika";
 
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "Vásárlás most";
+
+/* A note that indicates a feature is enabled */
+"enabledFeatureNote" = "Ez a funkció azért van engedélyezve, mert Ön ezt választotta.";
+
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "A Brave Origin egy előfizetés-alapú módszer a bevételt termelő funkciók letiltására, amelyek egyébként a Brave üzleti működését támogatják. A Brave Origin előfizetői továbbra is kihasználhatják az iparág-vezető adatvédelmi funkciókat, hirdetésblokkolót és sebességet (a Brave Shields segítségével), valamint rendszeres szoftverfrissítéseket, Chromium-javításokat és biztonsági és adatvédelmi fejlesztéseket. Feloldják az olyan funkciók letiltásának lehetőségét, mint a Brave Leo, a Hírek, a Jutalmak, a Pénztárca, a VPN, a Web3 domének és egyéb funkciók.\n\nAz előfizetők egy új vezérlőpanelt látnak majd a böngésző Beállítások menüjében. A meglévő funkciók – és a jövőben szállított új funkciók – itt jelennének meg, és alapértelmezés szerint ki lennének kapcsolva.\n\n**Megjegyzés: A Brave Origin nem fogja letiltani azokat a böngésző funkciókat, amelyeket jelenleg használ, és nem érinti a Brave keresés funkcióit vagy a Brave hirdetéskeresőt.**";
+"featuresFooter" = "A Brave Origin a Brave böngésző olyan verziója, amely lehetővé teszi a bevételt termelő funkciók egyszerű letiltását, amelyek egyéb módon a Brave üzleti működését támogatnák. A Brave Origin felhasználói továbbra is kihasználhatják az iparágvezető adatvédelmet, hirdetésblokkolást és sebességet (a Brave Shields segítségével), valamint rendszeres szoftverfrissítéseket, Chromium-javításokat és biztonsági és adatvédelmi fejlesztéseket. Feloldják az olyan funkciók letiltásának lehetőségét, mint a Brave Leo, a Jutalmak, a Pénztárca, a VPN, a Web3 domének és még sok más.\n\nA vásárlás után a felhasználók egy új vezérlőpanelt látnak a böngésző Beállítások menüjében. A meglévő funkciók – és a jövőben szállított új funkciók – itt jelennének meg, és alapértelmezés szerint ki lennének kapcsolva.\n\n**Megjegyzés: A Brave Origin nem fogja letiltani azokat a böngésző funkciókat, amelyeket jelenleg használ, és nem érinti a Brave keresés funkcióit vagy a Brave hirdetéskeresőt.**";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "Funkciók";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Bejelentkezési kód lekérése";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Leo MI";
@@ -16,14 +28,32 @@
 /* A toggle label for Brave News feature */
 "newsLabel" = "Hírek";
 
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "Egyszeri vásárlás";
+
+/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
+"paywallDescription" = "**Szabja személyre böngészőjét, miközben továbbra is támogatja a Bravét**\n\nA Brave Origin a böngésző fizetett verziója azoknak a felhasználóknak, akiknek nincs szükségük az összes olyan funkcióra, amely a Brave üzleti működését támogatja, de továbbra is szeretnék a Brave által kínált adatvédelmet. A Brave Origin felhasználói továbbra is kihasználhatják az iparágvezető adatvédelmet, hirdetésblokkolást és sebességet (a Brave Shields segítségével), valamint rendszeres szoftverfrissítéseket, Chromium-javításokat és biztonsági és adatvédelmi fejlesztéseket. Feloldják az olyan funkciók letiltásának lehetőségét, mint az AI, a Jutalmak, a Pénztárca, a VPN, a Web3 domének és még sok más.\n\n**A Brave Origin egyszeri vásárlás útján érhető el. Mobilon (Android és iOS) és asztalon az Origin a meglévő kiadás verzióra való frissítésként vásárolható meg.** Asztalon az Origin önálló alkalmazásként is elérhető. Az Origin felhasználók, függetlenül attól, hogy frissítésként vagy önálló alkalmazásként vásárolják meg, egy új vezérlőpanelt látnak majd a Beállítások menüben. A meglévő funkciók – és a jövőben szállított új funkciók – itt jelennének meg, és alapértelmezés szerint ki lennének kapcsolva.*\n\n* Vegye figyelembe, hogy ha a Brave Origin frissítésként vásárolta meg a Brave meglévő verziójához, az Origin nem fogja letiltani azokat a böngésző funkciókat, amelyeket jelenleg használ. Mind a frissítés, mind az önálló verzió esetén az Origin nem érinti a Brave keresés funkcióit vagy a Brave hirdetéskeresőt.";
+
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Lejátszási lista";
 
 /* A toggle label for privacy preserving analytics feature */
 "privacyPreservingAnalyticsLabel" = "Adatvédelmet megőrző elemzés";
 
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "Van promóciós kódja?";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "Nem sikerült befejezni a vásárlást. Kérjük, próbálja újra, vagy ellenőrizze fizetési adatait az Apple-nél, és próbálkozzon újra.";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "Promóciós kód beváltása";
+
 /* A button label to reset all Origin settings to their default values */
 "resetToDefaultsButton" = "Alapértelmezettre visszaállítása";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "Helyreállítás";
 
 /* A toggle label for Brave Rewards feature */
 "rewardsLabel" = "Jutalmak";
@@ -33,6 +63,18 @@
 
 /* A toggle label for Brave Talk feature */
 "talkLabel" = "Beszéd";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "Az alapvető hirdetésblokkolás, adatvédelem és sebesség fenntartása";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "Minimális böngésző felhasználói felület a Shields középpontjában";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "Egyszeri vásárlás, nincs további előfizetési költség";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "Támogassa küldetésünket & nyílt forráskódú munka";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";

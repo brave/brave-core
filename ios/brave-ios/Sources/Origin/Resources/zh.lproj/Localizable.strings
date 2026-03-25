@@ -1,14 +1,26 @@
 /* A section header title for ads-related settings */
 "adsHeader" = "广告";
 
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "已在 brave.com 购买？";
+
 /* A section header title for analytics-related settings */
 "analyticsHeader" = "分析";
 
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "立即购买";
+
+/* A note that indicates a feature is enabled */
+"enabledFeatureNote" = "该功能已启用，因为您选择了该功能";
+
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin是一种基于订阅的方式，用户可以禁用Brave的创收功能，否则这些功能将支持Brave的业务。Brave Origin用户将继续受益于我们业界领先的隐私、广告拦截和速度（通过Brave 盾牌），以及定期的软件更新、Chromium补丁、安全和隐私改进。他们还将解锁禁用 Brave Leo、新闻、奖励、钱包、VPN、Web3 域名等功能的选项。\n\n用户将在浏览器设置菜单中看到一个新的控制面板。现有功能以及我们将来推出的任何新功能都将出现在这里，并默认关闭。\n\n**注意：Brave Origin不会禁用您当前使用的浏览器功能，也不会影响Brave 搜索功能或Brave 搜索广告。**";
+"featuresFooter" = "Brave Origin 是 Brave 浏览器的一个版本，它允许您轻松禁用那些其他方式下支持 Brave 作为企业的创收功能。Brave Origin 用户将继续受益于我们业界领先的隐私、广告拦截和速度（通过 Brave 盾牌），以及定期的软件更新、Chromium 补丁和安全与隐私改进。他们还将解锁禁用 Brave Leo、奖励、钱包、VPN、Web3 域名等功能的选项。\n\n购买后，用户将在浏览器";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "功能";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "获取登录代码";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Leo 人工智能";
@@ -16,14 +28,32 @@
 /* A toggle label for Brave News feature */
 "newsLabel" = "新闻";
 
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "一次性购买";
+
+/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
+"paywallDescription" = "，Origin 用户都将在设置菜单中看到新的控制面板。现有功能以及我们将来推出的任何新功能都将出现在此处，默认情况下处于禁用状态。*\n\n* 请注意，如果您已将 Origin 作为现有 Brave 版本的升级进行购买，Origin 不会禁用您当前使用的浏览器功能。对于升级版本和独立版本，Origin 不会影响 Brave 搜索功能或 Brave 搜索广告。";
+
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "播放列表";
 
 /* A toggle label for privacy preserving analytics feature */
 "privacyPreservingAnalyticsLabel" = "隐私保护分析";
 
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "有促销代码吗？";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "無法完成購買。請再試一次，或到 Apple 帳戶查看付款詳細資訊後重試。";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "兑换促销代码";
+
 /* A button label to reset all Origin settings to their default values */
 "resetToDefaultsButton" = "重置为默认值";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "恢复";
 
 /* A toggle label for Brave Rewards feature */
 "rewardsLabel" = "奖赏";
@@ -33,6 +63,18 @@
 
 /* A toggle label for Brave Talk feature */
 "talkLabel" = "Talk";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "保持核心广告拦截、隐私、 & 速度";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "以盾牌为中心的极简浏览器用户界面";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "一次性购买，无需额外订阅费用";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "支持我们的使命 & 开源工作";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";

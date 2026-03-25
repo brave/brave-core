@@ -49,6 +49,21 @@
 /* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
 "aichat.busyErrorDescription" = "Leo terlalu sibuk sekarang. Sila cuba lagi dalam beberapa minit.";
 
+/* The button title for adding a new custom model */
+"aichat.byomAddNewModelButtonTitle" = "Tambah Model Baharu";
+
+/* The description shown when no custom models have been added, prompting the user to add one */
+"aichat.byomEmptyStateDescription" = "Mulakan dengan mengetik \"Tambah model baharu\"";
+
+/* The title shown when no custom models have been added yet */
+"aichat.byomEmptyStateTitle" = "Anda belum menyambungkan model";
+
+/* The section header description explaining the Bring Your Own Model feature with a link to learn more. The text inside square brackets should be translated. */
+"aichat.byomSectionHeaderDescription" = "Sambungkan LLM yang dihos sendiri atau dihos pihak ketiga ke Leo dan gunakannya dalam penyemak imbas. Gunakan sebarang rangka kerja yang serasi dengan Protokol Sembang OpenAI seperti Ollama. [Ketahui lebih lanjut](https://support.brave.app/hc/en-us/articles/34070140231821-How-do-I-use-the-Bring-Your-Own-Model-BYOM-with-Brave-Leo)";
+
+/* The section header title for the Bring Your Own Model feature */
+"aichat.byomSectionHeaderTitle" = "Bawa Model Anda Sendiri";
+
 /* The subtitle for intro view which triggers just chat */
 "aichat.chatIntroJustTalkSubTitle" = "Tanya apa-apa sahaja! Kita boleh bercakap tentang sebarang topik yang anda mahukan. Saya sentiasa belajar dan menambah baik untuk memberikan jawapan yang lebih baik.";
 
@@ -78,6 +93,87 @@
 
 /* The title of the section where custom models are displayed as a list. */
 "aichat.customModelChatSectionTitle" = "Model Tersuai";
+
+/* The navigation bar title when adding a new custom model */
+"aichat.customModelFormAddModelNavigationTitle" = "Tambah Model";
+
+/* The footer text explaining when and how API keys are used */
+"aichat.customModelFormApiKeyFieldFooter" = "Sesetengah rangkai kerja pelayan mungkin mengehendaki bukti kelayakan pengesahan, seperti kunci API atau token akses. Keperluan ini akan ditambahkan pada pengepala permintaan.";
+
+/* The label for the API key field */
+"aichat.customModelFormApiKeyFieldTitle" = "Kunci API";
+
+/* The footer text explaining what context size means for AI models */
+"aichat.customModelFormContextSizeFieldFooter" = "Jumlah maksimum token yang boleh diproses oleh model dalam satu interaksi. Saiz konteks yang lebih besar membolehkan model mengendalikan perbualan yang lebih panjang. Setiap model mempunyai had saiz konteks yang berbeza.";
+
+/* The label for the context size field */
+"aichat.customModelFormContextSizeFieldTitle" = "Saiz konteks";
+
+/* The placeholder text for generic detail input fields */
+"aichat.customModelFormDetailsFieldPlaceholder" = "Masukkan butiran";
+
+/* The button title for dismissing the keyboard */
+"aichat.customModelFormDoneButtonTitle" = "Selesai";
+
+/* The navigation bar title when editing an existing custom model */
+"aichat.customModelFormEditModelNavigationTitle" = "Edit Model";
+
+/* The alert title shown when saving a custom model fails */
+"aichat.customModelFormFailedToSaveAlertTitle" = "Gagal Menyimpan Model";
+
+/* The error message shown when the context size is invalid */
+"aichat.customModelFormInvalidContextSizeErrorMessage" = "Saiz konteks tidak sah";
+
+/* The error message shown when the server endpoint URL is invalid */
+"aichat.customModelFormInvalidUrlErrorMessage" = "URL tidak sah";
+
+/* The footer text explaining the purpose of the label field */
+"aichat.customModelFormLabelFieldFooter" = "Nama model untuk digunakan dalam pemilih model Leo.";
+
+/* The placeholder text for the custom model name field */
+"aichat.customModelFormLabelFieldPlaceholder" = "Masukkan label untuk model ini";
+
+/* The label for the custom model name field in the custom model form */
+"aichat.customModelFormLabelFieldTitle" = "Label";
+
+/* The error message shown when trying to use a private network address, explaining why it's blocked and how to enable it */
+"aichat.customModelFormPrivateEndpointErrorMessage" = "Alamat yang anda masukkan kelihatan berasal dari rangkaian persendirian—seperti penolak anda atau pelayan tempatan. Brave menyekat ini secara automatik untuk menjaga keselamatan anda, tetapi anda boleh mengaktifkannya jika anda yakin ia selamat.\n\nUntuk meneruskan, lawati brave://flags/, cari \"brave-ai-chat-allow-private-ips,\" dan aktifkan ciri ini. Setelah diaktifkan, anda boleh menggunakan alamat rangkaian persendirian dalam tetapan Leo.";
+
+/* The footer text explaining what the model request name is used for and providing an example */
+"aichat.customModelFormRequestNameFieldFooter" = "Nama model sebagaimana yang sepatutnya dipaparkan dalam permintaan kepada rangka kerja penyediaan, contohnya, phi-3 (harap maklum bahawa jika nama ini tidak betul-betul sepadan dengan nama yang dijangkakan oleh rangka kerja penyediaan, penyepaduan tidak akan berfungsi).";
+
+/* The placeholder text for the model request name field */
+"aichat.customModelFormRequestNameFieldPlaceholder" = "Masukkan nama permintaan model";
+
+/* The label for the model request name field */
+"aichat.customModelFormRequestNameFieldTitle" = "Nama permintaan model";
+
+/* The indicator text shown next to required fields in forms */
+"aichat.customModelFormRequiredFieldIndicator" = "Diperlukan";
+
+/* The button title for saving a custom model */
+"aichat.customModelFormSaveButtonTitle" = "Simpan";
+
+/* The footer text explaining what the server endpoint is and providing an example URL for Ollama */
+"aichat.customModelFormServerEndpointFieldFooter" = "URL di mana rangka kerja pelayan anda mendengar permintaan. Jika anda tidak pasti, semak dokumentasi rangka kerja pelayan. Contohnya, untuk Ollama, ia adalah `http://localhost:11434/v1/chat/completions`. Brave tidak menggunakan proksi permintaan ini, sila baca syarat privasi pembekal yang dipilih.";
+
+/* The label for the server endpoint URL field */
+"aichat.customModelFormServerEndpointFieldTitle" = "Titik akhir pelayan";
+
+/* The footer text explaining what a system prompt is and noting the %datetime% placeholder */
+"aichat.customModelFormSystemPromptFieldFooter" = "Arahan tersuai dan/atau konteks yang diberikan kepada model untuk membimbing tindak balasnya. Gunakan %datetime% di mana anda ingin tarikh dan masa semasa dimasukkan.";
+
+/* The label for the system prompt field */
+"aichat.customModelFormSystemPromptFieldTitle" = "Arahan sistem";
+
+/* Warning message shown when user enters an HTTP (not HTTPS) endpoint */
+"aichat.customModelFormUnsafeEndpointWarning" = "Titik akhir ini berpotensi tidak selamat.";
+
+/* The description text explaining what vision support means with an example */
+"aichat.customModelFormVisionSupportFieldDescription" = "Jika model ini mengambil imej sebagai input, contohnya llama 3.2b vision";
+
+/* The label for the vision support toggle */
+"aichat.customModelFormVisionSupportFieldTitle" = "Sokongan penglihatan";
 
 /* The title for the custom models section in the menu */
 "aichat.customModelsMenuSectionTitle" = "Model Tersuai";

@@ -49,6 +49,21 @@
 /* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
 "aichat.busyErrorDescription" = "A Leo jelenleg túlságosan foglalt. Néhány perc múlva próbálja újra.";
 
+/* The button title for adding a new custom model */
+"aichat.byomAddNewModelButtonTitle" = "Új modell hozzáadása";
+
+/* The description shown when no custom models have been added, prompting the user to add one */
+"aichat.byomEmptyStateDescription" = "Kezdje el az \"Új modell hozzáadása\" gomb megkoppintásával";
+
+/* The title shown when no custom models have been added yet */
+"aichat.byomEmptyStateTitle" = "Ön még nem csatlakoztatott modellt";
+
+/* The section header description explaining the Bring Your Own Model feature with a link to learn more. The text inside square brackets should be translated. */
+"aichat.byomSectionHeaderDescription" = "Csatlakoztassa a saját üzemeltetésű vagy harmadik fél által üzemeltetett LLM-et a Leo-hoz, és használja őket a böngészőben. Használjon bármilyen OpenAI Chat Protocol kompatibilis keretrendszert, például az Ollama-t. [További információ](https://support.brave.app/hc/en-us/articles/34070140231821-How-do-I-use-the-Bring-Your-Own-Model-BYOM-with-Brave-Leo)";
+
+/* The section header title for the Bring Your Own Model feature */
+"aichat.byomSectionHeaderTitle" = "Hozza el saját modelljét";
+
 /* The subtitle for intro view which triggers just chat */
 "aichat.chatIntroJustTalkSubTitle" = "Bármit kérdezhet! Az Ön által választott bármilyen témáról beszélgethetünk. Folyamatosan tanulok és fejlődöm, hogy jobb válaszokat adhassak.";
 
@@ -78,6 +93,87 @@
 
 /* The title of the section where custom models are displayed as a list. */
 "aichat.customModelChatSectionTitle" = "Egyéni modellek";
+
+/* The navigation bar title when adding a new custom model */
+"aichat.customModelFormAddModelNavigationTitle" = "Modell hozzáadása";
+
+/* The footer text explaining when and how API keys are used */
+"aichat.customModelFormApiKeyFieldFooter" = "Egyes kiszolgáló keretrendszerek hitelesítő adatokat, például API-kulcsot vagy hozzáférési tokent igényelhetnek. Ezek bekerülnek a kérés fejlécébe.";
+
+/* The label for the API key field */
+"aichat.customModelFormApiKeyFieldTitle" = "API-kulcs";
+
+/* The footer text explaining what context size means for AI models */
+"aichat.customModelFormContextSizeFieldFooter" = "A maximális tokenek száma, amit a modell egy interakcióval fel tud dolgozni. Nagyobb szöveg esetén a modell hosszabb beszélgetésre is képes. Különböző modellek, különböző méretű szövegek előállítására képesek.";
+
+/* The label for the context size field */
+"aichat.customModelFormContextSizeFieldTitle" = "Szövegméret";
+
+/* The placeholder text for generic detail input fields */
+"aichat.customModelFormDetailsFieldPlaceholder" = "Adjon meg részleteket";
+
+/* The button title for dismissing the keyboard */
+"aichat.customModelFormDoneButtonTitle" = "Kész";
+
+/* The navigation bar title when editing an existing custom model */
+"aichat.customModelFormEditModelNavigationTitle" = "Modell szerkesztése";
+
+/* The alert title shown when saving a custom model fails */
+"aichat.customModelFormFailedToSaveAlertTitle" = "A modell mentése nem sikerült";
+
+/* The error message shown when the context size is invalid */
+"aichat.customModelFormInvalidContextSizeErrorMessage" = "Érvénytelen kontextusméret";
+
+/* The error message shown when the server endpoint URL is invalid */
+"aichat.customModelFormInvalidUrlErrorMessage" = "Érvénytelen URL";
+
+/* The footer text explaining the purpose of the label field */
+"aichat.customModelFormLabelFieldFooter" = "A modell neve, amely a Leo modellválasztójában jelenik meg.";
+
+/* The placeholder text for the custom model name field */
+"aichat.customModelFormLabelFieldPlaceholder" = "Adjon meg egy címkét ehhez a modellhez";
+
+/* The label for the custom model name field in the custom model form */
+"aichat.customModelFormLabelFieldTitle" = "Címke";
+
+/* The error message shown when trying to use a private network address, explaining why it's blocked and how to enable it */
+"aichat.customModelFormPrivateEndpointErrorMessage" = "A megadott cím úgy tűnik, hogy egy privát hálózatról származik – például az Ön routeréről vagy egy helyi szerverről. A Brave automatikusan blokkolja ezeket az Ön biztonsága érdekében, de engedélyezheti őket, ha biztos abban, hogy biztonságos.\n\nA folytatáshoz látogasson el a brave://flags/ oldalra, keressen rá a \"brave-ai-chat-allow-private-ips\" kifejezésre, és engedélyezze a funkciót. Az engedélyezés után privát hálózati címeket használhat a Leo beállításaiban.";
+
+/* The footer text explaining what the model request name is used for and providing an example */
+"aichat.customModelFormRequestNameFieldFooter" = "A modell neve abban a formában, ahogyan a kiszolgáló keretrendszerhez küldött kérésben meg kell jelennie, pl. phi-3 (vegye figyelembe, hogy ha ez a név nem egyezik meg pontosan azzal, amit a kiszolgáló keretrendszer elvár, az integráció nem fog működni).";
+
+/* The placeholder text for the model request name field */
+"aichat.customModelFormRequestNameFieldPlaceholder" = "Adja meg a modellkérés nevét";
+
+/* The label for the model request name field */
+"aichat.customModelFormRequestNameFieldTitle" = "Modellkérés neve";
+
+/* The indicator text shown next to required fields in forms */
+"aichat.customModelFormRequiredFieldIndicator" = "Kötelező";
+
+/* The button title for saving a custom model */
+"aichat.customModelFormSaveButtonTitle" = "Mentés";
+
+/* The footer text explaining what the server endpoint is and providing an example URL for Ollama */
+"aichat.customModelFormServerEndpointFieldFooter" = "Az az URL-cím, ahol az Ön kiszolgáló keretrendszere figyeli a kéréseket. Ha nem biztos benne, nézze meg a kiszolgáló keretrendszer dokumentációját. Például az Ollama esetében ez mindig a `http://localhost:11434/v1/chat/completions`. A Brave nem proxyzol ezeket a kéréseket, kérjük, olvassa el a kiválasztott szolgáltató adatvédelmi feltételeit.";
+
+/* The label for the server endpoint URL field */
+"aichat.customModelFormServerEndpointFieldTitle" = "Kiszolgálói végpont";
+
+/* The footer text explaining what a system prompt is and noting the %datetime% placeholder */
+"aichat.customModelFormSystemPromptFieldFooter" = "Az egyéni utasítások és/vagy kontextus, amely a modellnek a válaszok irányításához van megadva. Használja a %datetime% kifejezést azok helyén, ahol az aktuális dátumot és időt szeretné beszúrni.";
+
+/* The label for the system prompt field */
+"aichat.customModelFormSystemPromptFieldTitle" = "Rendszerüzenet";
+
+/* Warning message shown when user enters an HTTP (not HTTPS) endpoint */
+"aichat.customModelFormUnsafeEndpointWarning" = "Ez a végpont potenciálisan nem biztonságos.";
+
+/* The description text explaining what vision support means with an example */
+"aichat.customModelFormVisionSupportFieldDescription" = "Ez a modell képfeldolgozásra is képes, pl. Llama 3.2 vision";
+
+/* The label for the vision support toggle */
+"aichat.customModelFormVisionSupportFieldTitle" = "Vizuális támogatás";
 
 /* The title for the custom models section in the menu */
 "aichat.customModelsMenuSectionTitle" = "Egyéni modellek";

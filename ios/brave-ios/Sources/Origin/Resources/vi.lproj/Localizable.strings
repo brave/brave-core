@@ -1,14 +1,26 @@
 /* A section header title for ads-related settings */
 "adsHeader" = "Quảng cáo";
 
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "Đã mua trên brave.com?";
+
 /* A section header title for analytics-related settings */
 "analyticsHeader" = "Phân tích";
 
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "Mua ngay";
+
+/* A note that indicates a feature is enabled */
+"enabledFeatureNote" = "Tính năng này được kích hoạt vì bạn đã chọn tham gia.";
+
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin là một cách dựa trên đăng ký để tắt các tính năng tạo doanh thu mà nếu không thì sẽ hỗ trợ Brave như một doanh nghiệp. Những người đăng ký Brave Origin sẽ tiếp tục được hưởng lợi từ quyền riêng tư hàng đầu trong ngành, trình chặn quảng cáo và tốc độ (thông qua Lá chắn Brave), cũng như các bản cập nhật phần mềm thường xuyên, bản vá Chromium và cải tiến bảo mật cũng như quyền riêng tư. Họ cũng sẽ mở khóa tùy chọn để tắt các tính năng như Brave Leo, Tin tức, Phần thưởng, Ví, VPN, tên miền Web3 và hơn thế nữa.\n\nNhững người đăng ký sẽ thấy một bảng điều khiển mới trong menu Cài đặt trình duyệt. Các tính năng hiện có—cũng như bất kỳ tính năng mới nào chúng tôi phát hành trong tương lai—sẽ xuất hiện ở đây và bị tắt theo mặc định.\n\n**Lưu ý: Brave Origin sẽ không tắt các tính năng trình duyệt mà bạn hiện đang sử dụng, và sẽ không ảnh hưởng đến các tính năng Brave Tìm kiếm hoặc Quảng cáo Brave Tìm kiếm.**";
+"featuresFooter" = "Brave Origin là một phiên bản của trình duyệt Brave cho phép bạn dễ dàng tắt các tính năng tạo doanh thu mà nếu không thì sẽ hỗ trợ Brave như một doanh nghiệp. Những người dùng Brave Origin sẽ tiếp tục được hưởng lợi từ quyền riêng tư hàng đầu trong ngành, trình chặn quảng cáo và tốc độ (thông qua Lá chắn Brave), cũng như các bản cập nhật phần mềm thường xuyên, bản vá Chromium và cải tiến bảo mật cũng như quyền riêng tư. Họ cũng sẽ mở khóa tùy chọn để tắt các tính năng như Brave Leo, Phần thưởng, Ví, VPN, tên miền Web3 và hơn thế nữa.\n\nSau khi mua, người dùng sẽ thấy một bảng điều khiển mới trong menu Cài đặt trình duyệt. Các tính năng hiện có—cũng như bất kỳ tính năng mới nào chúng tôi phát hành trong tương lai—sẽ xuất hiện ở đây và bị tắt theo mặc định.\n\n**Lưu ý: Brave Origin sẽ không tắt các tính năng trình duyệt mà bạn hiện đang sử dụng, và sẽ không ảnh hưởng đến các tính năng Brave Tìm kiếm hoặc Quảng cáo Brave Tìm kiếm.**";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "Tính năng";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Nhận mã đăng nhập";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Leo AI";
@@ -16,14 +28,32 @@
 /* A toggle label for Brave News feature */
 "newsLabel" = "Tin tức";
 
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "Mua một lần";
+
+/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
+"paywallDescription" = "**Tùy chỉnh trình duyệt của bạn trong khi vẫn hỗ trợ Brave**\n\nBrave Origin là một phiên bản trả phí của trình duyệt dành cho những người dùng không cần tất cả các tính năng hỗ trợ Brave như một doanh nghiệp, nhưng vẫn muốn quyền riêng tư mà chỉ Brave mới cung cấp. Những người dùng Brave Origin sẽ tiếp tục được hưởng lợi từ quyền riêng tư hàng đầu trong ngành, trình chặn quảng cáo và tốc độ (thông qua Lá chắn Brave), cũng như các bản cập nhật phần mềm thường xuyên, bản vá Chromium và cải tiến bảo mật cũng như quyền riêng tư. Họ cũng sẽ mở khóa tùy chọn để tắt các tính năng như AI, Phần thưởng, Ví, VPN, tên miền Web3 và hơn thế nữa.\n\n**Brave Origin có sẵn thông qua mua một lần. Trên thiết bị di động (Android và iOS) và máy tính để bàn, Origin có thể được mua như một nâng cấp cho phiên bản phát hành hiện có của bạn.** Trên máy tính để bàn, Origin cũng có sẵn dưới dạng một ứng dụng riêng biệt, độc lập. Cho dù mua như một nâng cấp hay ứng dụng riêng biệt, những người dùng Origin sẽ thấy một bảng điều khiển mới trong menu Cài đặt. Các tính năng hiện có—cũng như bất kỳ tính năng mới nào chúng tôi phát hành trong tương lai—sẽ xuất hiện ở đây và bị tắt theo mặc định.*\n\n* Lưu ý rằng nếu bạn đã mua Origin như một nâng cấp cho phiên bản Brave hiện có của mình, Origin sẽ không tắt các tính năng trình duyệt mà bạn hiện đang sử dụng. Đối với cả phiên bản nâng cấp và phiên bản độc lập, Origin sẽ không ảnh hưởng đến các tính năng Brave Tìm kiếm hoặc Quảng cáo Brave Tìm kiếm.";
+
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Danh sách phát";
 
 /* A toggle label for privacy preserving analytics feature */
 "privacyPreservingAnalyticsLabel" = "Phân tích bảo vệ quyền riêng tư";
 
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "Bạn có mã khuyến mãi?";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "Không thể hoàn tất giao dịch mua hàng. Vui lòng thử lại hoặc kiểm tra thông tin thanh toán của bạn trên Apple và thử lại.";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "Quy đổi mã khuyến mãi";
+
 /* A button label to reset all Origin settings to their default values */
 "resetToDefaultsButton" = "Đặt lại về cài đặt mặc định";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "Phục hồi";
 
 /* A toggle label for Brave Rewards feature */
 "rewardsLabel" = "Phần thưởng";
@@ -33,6 +63,18 @@
 
 /* A toggle label for Brave Talk feature */
 "talkLabel" = "Trò chuyện";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "Giữ nguyên chức năng chặn quảng cáo, bảo vệ quyền riêng tư, & tốc độ";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "Giao diện người dùng trình duyệt tối giản tập trung vào Shields";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "Mua một lần, không có chi phí đăng ký bổ sung";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "Hỗ trợ sứ mệnh của chúng tôi & công việc mã nguồn mở";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";

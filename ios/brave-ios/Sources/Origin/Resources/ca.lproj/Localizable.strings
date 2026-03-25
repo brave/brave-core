@@ -1,14 +1,26 @@
 /* A section header title for ads-related settings */
 "adsHeader" = "Anuncis";
 
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "Ja has comprat a brave.com?";
+
 /* A section header title for analytics-related settings */
 "analyticsHeader" = "Analítica";
 
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "Comprar ara";
+
+/* A note that indicates a feature is enabled */
+"enabledFeatureNote" = "Aquesta funció està activada perquè hi vas optar";
+
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin és una manera basada en subscripció per deshabilitar les funcions que generen ingressos que altrament suporten Brave com a negoci. Els subscriptors de Brave Origin continuaran beneficiant-se de la nostra privacitat líder en la indústria, bloqueig d'anuncis i velocitat (mitjançant Escuts de Brave), així com actualitzacions de programari regulars, pegats de Chromium i millores de seguretat i privacitat. També desbloquearan l'opció de deshabilitar funcions com Brave Leo, Notícies, Recompenses, Cartera, VPN, dominis Web3 i més.\n\nEls subscriptors veuran un nou panell de control al menú de Configuració del navegador. Les funcions existents, així com qualsevol funcionalitat nova que llancem en el futur, apareixerien aquí i estarien deshabilitades per defecte.\n\n**Nota: Brave Origin no deshabilitarà les funcions del navegador que actualment utilitzes, i no afectarà les funcions de Cercador de Brave ni els Anuncis de Cercador de Brave.**";
+"featuresFooter" = "Brave Origin és una versió del navegador Brave que us permet deshabilitar fàcilment les funcions que generen ingressos que altrament suporten Brave com a negoci. Els usuaris de Brave Origin continuaran beneficiant-se de la nostra privacitat líder en la indústria, bloqueig d'anuncis i velocitat (mitjançant Escuts de Brave), així com actualitzacions de programari regulars, pegats de Chromium i millores de seguretat i privacitat. També desbloquearan l'opció de deshabilitar funcions com Brave Leo, Recompenses, Cartera, VPN, dominis Web3 i més.\n\nUna vegada comprat, els usuaris veuran un nou panell de control al menú de Configuració del navegador. Les funcions existents, així com qualsevol funcionalitat nova que llancem en el futur, apareixerien aquí i estarien deshabilitades per defecte.\n\n**Nota: Brave Origin no deshabilitarà les funcions del navegador que actualment utilitzeu, i no afectarà les funcions de Cercador de Brave ni els Anuncis de Cercador de Brave.**";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "Funcions";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Obtenir un codi de connexió";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "IA Leo";
@@ -16,14 +28,32 @@
 /* A toggle label for Brave News feature */
 "newsLabel" = "Notícies";
 
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "Compra única";
+
+/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
+"paywallDescription" = "**Personalitzeu el vostre navegador mentre continueu suportant Brave**\n\nBrave Origin és una versió de pagament del navegador per als usuaris que no necessiten totes les funcions que suporten Brave com a negoci, però que encara volen la privacitat que només Brave ofereix. Els usuaris de Brave Origin continuaran beneficiant-se de la nostra privacitat líder en la indústria, bloqueig d'anuncis i velocitat (mitjançant Escuts de Brave), així com actualitzacions de programari regulars, pegats de Chromium i millores de seguretat i privacitat. També desbloquearan l'opció de deshabilitar funcions com IA, Recompenses, Cartera, VPN, dominis Web3 i més.\n\n**Brave Origin es pot comprar mitjançant una compra única. En dispositius mòbils (Android i iOS) i escriptori, Origin es pot comprar com una actualització a la vostra versió de publicació existent.** En escriptori, Origin també es pot comprar com una aplicació independent i autònoma. Tant si es compra com una actualització com una aplicació independent, els usuaris d'Origin veuran un nou panell de control al menú de Configuració. Les funcions existents, així com qualsevol funcionalitat nova que llancem en el futur, apareixerien aquí i estarien deshabilitades per defecte.*\n\n* Tingueu en compte que si heu comprat Origin com una actualització a la vostra versió existent de Brave, Origin no deshabilitarà les funcions del navegador que actualment utilitzeu. Per a l'actualització i la versió autònoma, Origin no afectarà les funcions de Cercador de Brave ni els Anuncis de Cercador de Brave.";
+
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Llista de reproducció";
 
 /* A toggle label for privacy preserving analytics feature */
 "privacyPreservingAnalyticsLabel" = "Analítica que preserva la privadesa";
 
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "Tens un codi promocional?";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "No es pot completar la compra. Torna-ho a provar o comprova les teves dades de pagament a Apple i torna-ho a provar.";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "Bescanviar codi promocional";
+
 /* A button label to reset all Origin settings to their default values */
 "resetToDefaultsButton" = "Restablir valors predeterminats";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "Restaura";
 
 /* A toggle label for Brave Rewards feature */
 "rewardsLabel" = "Recompenses";
@@ -33,6 +63,18 @@
 
 /* A toggle label for Brave Talk feature */
 "talkLabel" = "Conversa";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "Manté el bloqueig d'anuncis bàsic, la privadesa i la velocitat";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "IU de navegador minimalista, amb els Escuts com a centre";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "Compra única, sense cost d'subscripció adicional";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "Dona suport a la nostra missió i al nostre treball de codi obert";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";

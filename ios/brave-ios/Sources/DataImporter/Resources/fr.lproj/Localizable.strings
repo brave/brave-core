@@ -1,17 +1,17 @@
 /* Error message shown when importing bookmarks failed */
-"failedToImportBookmarks" = "Une erreur s’est produite lors de l’importation des signets.";
+"failedToImportBookmarks" = "Une erreur s'est produite lors de l'importation des signets.";
 
 /* Error message shown when importing history failed */
-"failedToImportHistory" = "Une erreur s’est produite lors de l’importation de l’historique.";
+"failedToImportHistory" = "Une erreur s'est produite lors de l'importation de l'historique.";
 
 /* Error message shown when importing passwords failed due to a password already existing (a conflict) */
-"failedToImportPasswordsDueToConflictError" = "Une erreur s’est produite lors de l’importation des mots de passe. Certains mots de passe n’ont pas pu être importés en raison de conflits.";
+"failedToImportPasswordsDueToConflictError" = "Une erreur s'est produite lors de l'importation des mots de passe. Certains mots de passe n'ont pas pu être importés en raison de conflits.";
 
 /* Error message shown when importing passwords failed */
-"failedToImportPasswordsError" = "Une erreur s’est produite lors de l’importation des mots de passe.";
+"failedToImportPasswordsError" = "Une erreur s'est produite lors de l'importation des mots de passe.";
 
 /* Error message shown when unzipping a zip file failed */
-"failedToUnzipError" = "Une erreur s’est produite lors de la décompression du fichier.";
+"failedToUnzipError" = "Une erreur s'est produite lors de la décompression du fichier.";
 
 /* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
 "importDataFileSelectorButtonTitle" = "Choisir un fichier…";
@@ -23,16 +23,16 @@
 "importDataFileSelectorNavigationTitle" = "Importer les données de navigation";
 
 /* The title of a Text on screen that explains to the user what type of data can be imported. */
-"importDataFileSelectorTitle" = "Importer les favoris et d’autres éléments";
+"importDataFileSelectorTitle" = "Importer les favoris et d'autres éléments";
 
 /* The title of the button on the file selector screen that lets the user view the tutorial screen on how to import data. */
 "importDataViewTutorialButtonTitle" = "Exporter mes données depuis Safari";
 
 /* The message shown on the import data screen when importing the data from the browser profile failed. */
-"importStateFailureMessage" = "Un problème est survenu lors de l’importation de vos données.\nVeuillez réessayer.\nSi le problème persiste, contactez l’assistance.";
+"importStateFailureMessage" = "Un problème est survenu lors de l'importation de vos données.\nVeuillez réessayer.\nSi le problème persiste, contactez l'assistance.";
 
 /* The title shown on the import data screen when importing the data from the browser profile failed. */
-"importStateFailureTitle" = "Échec de l’importation";
+"importStateFailureTitle" = "Échec de l'importation";
 
 /* The title of the button on the import error screen when there is a conflict, that lets the user keep your existing Brave passwords. */
 "importStatePasswordConflictKeepExistingPasswordsTitle" = "Conserver les mots de passe enregistrés dans Brave";
@@ -59,7 +59,7 @@
 "importStateTryAgainTitle" = "Réessayer";
 
 /* The message on the tutorial page explaining the detailed process to export your data from other browsers. */
-"importTutorialDetailedProcessMessage" = "Ouvrez la page d’aide de Safari.";
+"importTutorialDetailedProcessMessage" = "Ouvrez la page d'aide de Safari.";
 
 /* The title on the tutorial page explaining the detailed process to export your data from other browsers. */
 "importTutorialDetailedProcessTitle" = "Comment exporter mes données ?";
@@ -86,7 +86,7 @@
 "importTutorialStepTwoTitle" = "Dans la liste des applications (triées par ordre alphabétique), recherchez et appuyez sur **Safari**.";
 
 /* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
-"invalidZipFileDataError" = "Le fichier zip ne contient aucune donnée d’importation.";
+"invalidZipFileDataError" = "Le fichier zip ne contient aucune donnée d'importation.";
 
 /* The message shown on the import data screen when the data is being loaded or imported. */
 "loadingMessage" = "Veuillez patienter pendant que nous transférons vos données en toute sécurité.\nCela peut prendre quelques instants.";

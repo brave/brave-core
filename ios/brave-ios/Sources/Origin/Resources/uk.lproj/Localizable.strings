@@ -1,14 +1,26 @@
 /* A section header title for ads-related settings */
 "adsHeader" = "Ads";
 
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "Уже придбали на brave.com?";
+
 /* A section header title for analytics-related settings */
 "analyticsHeader" = "Аналітика";
 
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "Купити зараз";
+
+/* A note that indicates a feature is enabled */
+"enabledFeatureNote" = "Ця функція ввімкнена, оскільки ви вибрали її";
+
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin — це спосіб підписки, який дозволяє вимкнути функції, що генерують дохід і в інший спосіб підтримують Brave як бізнес. Передплатники Brave Origin продовжуватимуть користуватися нашим провідним у галузі захистом приватності, блокуванням реклами та швидкістю (завдяки Щитам Brave), а також регулярними оновленнями програмного забезпечення, патчами Chromium і поліпшеннями безпеки та приватності. Вони також розблокують можливість вимкнути функції, такі як Brave Лео, Новини, Rewards, Wallet, VPN, Web3 домени тощо.\n\nПередплатники побачать нову панель керування в меню параметрів браузера. Існуючі функції — а також будь-які нові функції, які ми представимо в майбутньому — з'являтимуться тут і будуть вимкнені за замовчуванням.\n\n**Примітка: Brave Origin не вимикатиме функції браузера, які ви наразі використовуєте, і не впливатиме на функції Пошуку Brave або рекламних оголошень Пошуку Brave.**";
+"featuresFooter" = "Brave Origin — це версія браузера Brave, яка дозволяє вам легко вимкнути функції, що генерують дохід і в інший спосіб підтримують Brave як бізнес. Користувачі Brave Origin продовжуватимуть користуватися нашим провідним у галузі захистом приватності, блокуванням реклами та швидкістю (завдяки Щитам Brave), а також регулярними оновленнями програмного забезпечення, патчами Chromium і поліпшеннями безпеки та приватності. Вони також розблокують можливість вимкнути функції, такі як Brave Лео, Rewards, Wallet, VPN, Web3 домени тощо.\n\nПісля покупки користувачі побачать нову панель керування в меню параметрів браузера. Існуючі функції — а також будь-які нові функції, які ми представимо в майбутньому — з'являтимуться тут і будуть вимкнені за замовчуванням.\n\n**Примітка: Brave Origin не вимикатиме функції браузера, які ви наразі використовуєте, і не впливатиме на функції Пошуку Brave або рекламних оголошень Пошуку Brave.**";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "Функції";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Отримати код входу";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "ШІ Leo";
@@ -16,14 +28,32 @@
 /* A toggle label for Brave News feature */
 "newsLabel" = "Новини";
 
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "Одноразова покупка";
+
+/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
+"paywallDescription" = "**Персоналізуйте браузер, при цьому підтримуючи Brave**\n\nBrave Origin — це платна версія браузера для користувачів, які не потребують усіх функцій, що підтримують Brave як бізнес, але все ж бажають приватності, яку пропонує лише Brave. Користувачі Brave Origin продовжуватимуть користуватися нашим провідним у галузі захистом приватності, блокуванням реклами та швидкістю (завдяки Щитам Brave), а також регулярними оновленнями програмного забезпечення, патчами Chromium і поліпшеннями безпеки та приватності. Вони також розблокують можливість вимкнути функції, такі як ШІ, Rewards, Wallet, VPN, Web3 домени тощо.\n\n**Brave Origin доступний як одноразова покупка. На мобільних пристроях (Android і iOS) і комп'ютері Origin можна купити як оновлення для вашої існуючої версії. На комп'ютері Origin також доступний як окремий самостійний додаток.** Незалежно від того, куплений Origin як оновлення чи окремий додаток, користувачі Origin побачать нову панель керування в меню параметрів. Існуючі функції — а також будь-які нові функції, які ми представимо в майбутньому — з'являтимуться тут і будуть вимкнені за замовчуванням.*\n\n* Зауважте, що якщо ви придбали Origin як оновлення своєї існуючої версії Brave, Origin не вимикатиме функції браузера, які ви наразі використовуєте. Як для версії оновлення, так і для самостійної версії Origin не впливатиме на функції Пошуку Brave або рекламних оголошень Пошуку Brave.";
+
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Список відтворення";
 
 /* A toggle label for privacy preserving analytics feature */
 "privacyPreservingAnalyticsLabel" = "Аналітика із збереженням конфіденційності";
 
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "Маєте промокод?";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "Не вдалося здійснити покупку. Спробуйте ще раз або перевірте свої платіжні реквізити, вказані в мережі Apple, та повторіть спробу.";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "Активувати промокод";
+
 /* A button label to reset all Origin settings to their default values */
 "resetToDefaultsButton" = "Скидання до налаштувань за замовчуванням";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "Відновити";
 
 /* A toggle label for Brave Rewards feature */
 "rewardsLabel" = "Винагороди";
@@ -33,6 +63,18 @@
 
 /* A toggle label for Brave Talk feature */
 "talkLabel" = "Talk";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "Збережіть основні блокування реклами, приватність та швидкість";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "Мінімальний інтерфейс браузера, зосереджений на Щитах";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "Разова покупка без додаткових витрат на підписку";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "Підтримайте нашу місію та роботу з відкритим кодом";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";

@@ -67,6 +67,9 @@
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Ім’я користувача";
 
+/* Settings autofill section title */
+"Autofill" = "Автозаповнення";
+
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Автоматичне переспрямування сторінок AMP";
 
@@ -141,33 +144,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Адреса";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Обліковий запис Brave";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "Майже там!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "Підтвердження електронною поштою має прийти. Натисніть кнопку в цьому листі, щоб активувати свій обліковий запис.";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "Скасувати реєстрацію";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "Адреса електронної пошти";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "Почати";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "Переслати підтвердження електронною поштою";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "Не бачите листа? Перевірте папку спаму або натисніть кнопку, щоб переслати підтвердження електронною поштою.";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "Вийти";
 
 /* Button to show the brave panel */
 "BravePanel" = "Панель Brave";
@@ -1031,7 +1007,7 @@
 "nightMode.modeTitle" = "Режим";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
-"nightMode.sectionDescription" = "Нічний режим вплине на зовнішній вигляд вебсайту, а також на загальний вигляд системи.";
+"nightMode.sectionDescription" = "Нічний режим вплине на зовнішній вигляд вебсайту та загальний вигляд системи одночасно.";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
 "nightMode.settingsDescription" = "Увімкнути/вимкнути нічний режим";
@@ -1063,11 +1039,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Приховати рекламні зображення";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "Спонсоровані зображення — це брендовані фони, які з’являються у нових вкладках. Увімкнувши їх, ви підтримуєте місію Brave.";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "Докладніше";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "Спонсоровані зображення — це брендовані фони, які з'являються у нових вкладках браузера. Увімкнувши такі спонсоровані зображення, ви підтримуєте місію Brave. [Дізнатися більше](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Докладніше про Brave Rewards";
@@ -2278,7 +2251,8 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Зберегти зміни";
 
-/* Settings item for clearing passwords and login data */
+/* Settings item for clearing passwords and login data
+Settings item for clearing site-specific settings and shields settings. */
 "SavedLogins" = "Збережені облікові дані";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2367,9 +2341,6 @@
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Пошук у Brave";
-
-/* Settings security section title */
-"Security" = "Безпека";
 
 /* No comment provided by engineer. */
 "sendButtonTitle" = "Надіслати";

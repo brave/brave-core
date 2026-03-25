@@ -1,14 +1,26 @@
 /* A section header title for ads-related settings */
 "adsHeader" = "Ads";
 
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "Sudah membeli di brave.com?";
+
 /* A section header title for analytics-related settings */
 "analyticsHeader" = "Analisis";
 
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "Beli Sekarang";
+
+/* A note that indicates a feature is enabled */
+"enabledFeatureNote" = "Fitur ini diaktifkan karena Anda memilihnya";
+
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin adalah cara berbasis langganan untuk menonaktifkan fitur penghasil pendapatan yang sebaliknya mendukung Brave sebagai bisnis. Pelanggan Brave Origin akan terus mendapatkan manfaat dari privasi terdepan industri kami, pemblokir iklan, dan kecepatan (melalui Brave Perisai), serta pembaruan perangkat lunak reguler, patch Chromium, dan peningkatan keamanan dan privasi. Mereka juga akan membuka opsi untuk menonaktifkan fitur seperti Brave Leo, Berita, Rewards, dompet, VPN, domain Web3, dan lainnya.\n\nPelanggan akan melihat panel kontrol baru di menu Pengaturan browser. Fitur yang ada—serta fitur baru apa pun yang kami kirimkan di masa depan—akan muncul di sini, dan dinonaktifkan secara default.\n\n**Catatan: Brave Origin tidak akan menonaktifkan fitur browser yang saat ini Anda gunakan, dan tidak akan mempengaruhi fitur Brave Penelusuran atau Brave Iklan Penelusuran.**";
+"featuresFooter" = "Brave Origin adalah versi browser Brave yang memungkinkan Anda dengan mudah menonaktifkan fitur penghasil pendapatan yang sebaliknya mendukung Brave sebagai bisnis. Pengguna Brave Origin akan terus mendapatkan manfaat dari privasi terdepan industri kami, pemblokir iklan, dan kecepatan (melalui Brave Perisai), serta pembaruan perangkat lunak reguler, patch Chromium, dan peningkatan keamanan dan privasi. Mereka juga akan membuka opsi untuk menonaktifkan fitur seperti Brave Leo, Rewards, dompet, VPN, domain Web3, dan lainnya.\n\nSetelah dibeli, pengguna akan melihat panel kontrol baru di menu Pengaturan browser. Fitur yang ada—serta fitur baru apa pun yang kami kirimkan di masa depan—akan muncul di sini, dan dinonaktifkan secara default.\n\n**Catatan: Brave Origin tidak akan menonaktifkan fitur browser yang saat ini Anda gunakan, dan tidak akan mempengaruhi fitur Brave Penelusuran atau Brave Iklan Penelusuran.**";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "Fitur";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Dapatkan Kode Login";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "AI Leo";
@@ -16,14 +28,32 @@
 /* A toggle label for Brave News feature */
 "newsLabel" = "Berita";
 
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "Pembelian Sekali Jadi";
+
+/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
+"paywallDescription" = "**Sesuaikan browser Anda sambil tetap mendukung Brave**\n\nBrave Origin adalah versi browser berbayar untuk pengguna yang tidak memerlukan semua fitur yang mendukung Brave sebagai bisnis, tetapi masih menginginkan privasi yang hanya ditawarkan Brave. Pengguna Brave Origin akan terus mendapatkan manfaat dari privasi terdepan industri kami, pemblokir iklan, dan kecepatan (melalui Brave Perisai), serta pembaruan perangkat lunak reguler, patch Chromium, dan peningkatan keamanan dan privasi. Mereka juga akan membuka opsi untuk menonaktifkan fitur seperti AI, Rewards, dompet, VPN, domain Web3, dan lainnya.\n\n**Brave Origin tersedia melalui pembelian sekali jadi. Di perangkat seluler (Android dan iOS) dan desktop, Origin dapat dibeli sebagai peningkatan ke versi rilis yang sudah ada.** Di desktop, Origin juga tersedia sebagai aplikasi terpisah yang berdiri sendiri. Baik dibeli sebagai peningkatan atau aplikasi terpisah, pengguna Origin akan melihat panel kontrol baru di menu Pengaturan. Fitur yang ada—serta fitur baru apa pun yang kami kirimkan di masa depan—akan muncul di sini, dan dinonaktifkan secara default.*\n\n* Perhatikan bahwa jika Anda telah membeli Origin sebagai peningkatan ke versi Brave yang ada, Origin tidak akan menonaktifkan fitur browser yang saat ini Anda gunakan. Untuk versi peningkatan dan versi mandiri, Origin tidak akan mempengaruhi fitur Brave Penelusuran atau Brave Iklan Penelusuran.";
+
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Daftar Putar";
 
 /* A toggle label for privacy preserving analytics feature */
 "privacyPreservingAnalyticsLabel" = "Analisis yang menjaga privasi";
 
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "Punya kode promo?";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "Tidak dapat menyelesaikan pembelian. Silakan coba lagi, atau periksa detail pembayaran Anda di akun Apple dan coba lagi.";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "Tukar Kode Promo";
+
 /* A button label to reset all Origin settings to their default values */
 "resetToDefaultsButton" = "Mengatur ulang ke pengaturan default";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "Pulihkan";
 
 /* A toggle label for Brave Rewards feature */
 "rewardsLabel" = "Imbalan";
@@ -33,6 +63,18 @@
 
 /* A toggle label for Brave Talk feature */
 "talkLabel" = "Bicara";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "Pertahankan adblock inti, privasi, & kecepatan";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "UI peramban minimal yang berpusat pada Perisai";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "Pembelian satu kali, tidak ada biaya langganan tambahan";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "Dukung misi kami & karya sumber terbuka";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";

@@ -1,14 +1,26 @@
 /* A section header title for ads-related settings */
 "adsHeader" = "Reclame";
 
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "Deja achiziționat pe brave.com?";
+
 /* A section header title for analytics-related settings */
 "analyticsHeader" = "Analiză";
 
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "Cumpără acum";
+
+/* A note that indicates a feature is enabled */
+"enabledFeatureNote" = "Această caracteristică este activată deoarece ați optat pentru ea";
+
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin este o modalitate bazată pe abonament pentru a dezactiva funcțiile generatoare de venituri care altfel ar sprijini Brave ca o afacere. Abonații Brave Origin vor continua să beneficieze de confidențialitatea noastră de clasă mondială, blocare de reclame și viteză (prin Brave Shields), precum și actualizări regulate de software, patch-uri Chromium și îmbunătățiri de securitate și confidențialitate. De asemenea, vor debloca opțiunea de a dezactiva funcții precum Brave Leo, News, Recompense, Wallet, VPN, domenii Web3 și multe altele.\n\nAbonații vor vedea un nou panou de control în meniul Setări al browser-ului. Funcțiile existente—precum și orice funcții noi pe care le lansăm în viitor—ar apărea aici și ar fi dezactivate în mod implicit.\n\n**Notă: Brave Origin nu va dezactiva funcțiile browser-ului pe care le utilizați în prezent și nu va afecta funcțiile Brave Search sau Brave Search Ads.**";
+"featuresFooter" = "Brave Origin este o versiune a browser-ului Brave care vă permite să dezactivați cu ușurință funcțiile generatoare de venituri care altfel ar sprijini Brave ca o afacere. Utilizatorii Brave Origin vor continua să beneficieze de confidențialitatea noastră de clasă mondială, blocare de reclame și viteză (prin Brave Shields), precum și actualizări regulate de software, patch-uri Chromium și îmbunătățiri de securitate și confidențialitate. De asemenea, vor debloca opțiunea de a dezactiva funcții precum Brave Leo, Rewards, Wallet, VPN, domenii Web3 și multe altele.\n\nOdată achiziționat, utilizatorii vor vedea un nou panou de control în meniul Setări al browser-ului. Funcțiile existente—precum și orice funcții noi pe care le lansăm în viitor—ar apărea aici și ar fi dezactivate în mod implicit.\n\n**Notă: Brave Origin nu va dezactiva funcțiile browser-ului pe care le utilizați în prezent și nu va afecta funcțiile Brave Search sau Brave Search Ads.**";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "Funcționalități";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Obțineți un cod de conectare";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Leo IA";
@@ -16,14 +28,32 @@
 /* A toggle label for Brave News feature */
 "newsLabel" = "Știri";
 
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "Achiziție unică";
+
+/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
+"paywallDescription" = "**Personalizați browser-ul dvs. în timp ce sprijiniți încă Brave**\n\nBrave Origin este o versiune plătită a browser-ului pentru utilizatorii care nu au nevoie de toate funcțiile care sprijin Brave ca o afacere, dar doresc totuși confidențialitatea pe care o oferă doar Brave. Utilizatorii Brave Origin vor continua să beneficieze de confidențialitatea noastră de clasă mondială, blocare de reclame și viteză (prin Brave Shields), precum și actualizări regulate de software, patch-uri Chromium și îmbunătățiri de securitate și confidențialitate. De asemenea, vor debloca opțiunea de a dezactiva funcții precum IA, Recompense, Wallet, VPN, domenii Web3 și multe altele.\n\n**Brave Origin este disponibil prin achiziție unică. Pe dispozitive mobile (Android și iOS) și desktop, Origin poate fi achiziționat ca o actualizare la versiunea de lansare existentă.** Pe desktop, Origin este, de asemenea, disponibil ca o aplicație separată și independentă. Fie achiziționat ca o actualizare sau aplicație separată, utilizatorii Origin vor vedea un nou panou de control în meniul Setări. Funcțiile existente—precum și orice funcții noi pe care le lansăm în viitor—ar apărea aici și ar fi dezactivate în mod implicit.*\n\n* Rețineți că, dacă ați achiziționat Origin ca o actualizare la versiunea existentă a Brave, Origin nu va dezactiva funcțiile browser-ului pe care le utilizați în prezent. Pentru versiunea de actualizare și cea independentă, Origin nu va afecta funcțiile Brave Search sau Brave Search Ads.";
+
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Playlist";
 
 /* A toggle label for privacy preserving analytics feature */
 "privacyPreservingAnalyticsLabel" = "Analizele care păstrează confidențialitatea";
 
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "Ai un cod promoțional?";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "Nu s-a putut finaliza achiziția. Te rog să încerci din nou sau să verifici detaliile de plată în Apple și apoi să încerci din nou.";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "Utilizează un cod de ofertă";
+
 /* A button label to reset all Origin settings to their default values */
 "resetToDefaultsButton" = "Resetare la valorile implicite";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "Restabilește";
 
 /* A toggle label for Brave Rewards feature */
 "rewardsLabel" = "Recompense";
@@ -33,6 +63,18 @@
 
 /* A toggle label for Brave Talk feature */
 "talkLabel" = "Talk";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "Mențineți adblock-ul de bază, confidențialitatea, viteza &";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "IU minimalist a browserului centrat pe Shields";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "Achiziție unică, fără costuri suplimentare de abonament";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "Sprijiniți-ne misiunea & muncă open-source";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";
