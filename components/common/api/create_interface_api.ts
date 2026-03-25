@@ -522,7 +522,21 @@ export function createInterfaceApi<
             typeof up === 'function'
               ? up(old as QData)
               : (up as AllowedUpdateParam)
-
+          const oldOrPlaceholder = getCachedData(...args)
+          if (!old && oldOrPlaceholder) {
+            // Warn only if this is a regular query. "state" queries will always
+            // use the update mechanism - the initial data is always considered
+            // placeholder.
+            if (endpointDef.enabled) {
+              console.warn(
+                'Updating data for query when base data has not yet'
+                  + ' been received. Placeholder data will convert to "real" data.'
+                  + ' `isPlaceholder` can no longer be relied upon for this query.',
+                { queryKey, old, oldOrPlaceholder, updateData },
+              )
+            }
+            old = oldOrPlaceholder
+          }
           const newData = updateFromOld(old, updateData)
           return newData
         })
