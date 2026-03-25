@@ -37,10 +37,6 @@ RewardsService* RewardsServiceFactory::GetForProfile(Profile* profile) {
     return testing_service_;
   }
 
-  if (!IsSupportedForProfile(profile)) {
-    return nullptr;
-  }
-
   return static_cast<RewardsService*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }
