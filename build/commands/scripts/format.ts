@@ -8,9 +8,9 @@ import fs from 'fs-extra'
 import program from 'commander'
 import { spawnSync, type SpawnSyncReturns } from 'node:child_process'
 
-// prettier is pure ESM and does not provide a default export.
-// eslint-disable-next-line import/no-named-default
-import { default as prettier } from 'prettier'
+// prettier does not provide a default export in .d.ts file.
+// eslint-disable-next-line import/default
+import prettier from 'prettier'
 
 import config from '../lib/config.js'
 import util from '../lib/util.js'
