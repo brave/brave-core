@@ -7,12 +7,13 @@ import Foundation
 
 extension URL {
   static let braveOriginCheckoutURL = URL(
-    string: "https://account.brave.com/?intent=checkout&product=origin"
+    string: "https://account.brave.com/?intent=checkout&product=origin&mtm_campaign=iap-ios"
   )!
   static let braveOriginRefreshCredentials = URL(
-    string: "https://account.brave.com/?intent=recover&product=origin&ux=mobile"
+    string:
+      "https://account.brave.com/?intent=recover&product=origin&ux=mobile&mtm_campaign=refresh-ios"
   )!
   static let braveOriginLinkCredentials = URL(
-    string: "https://account.brave.com/?intent=link-order&product=origin"
+    string: "https://account.brave.com/?intent=link-order&product=origin&mtm_campaign=linking-ios"
   )!
 }

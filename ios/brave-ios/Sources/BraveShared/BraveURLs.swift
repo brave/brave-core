@@ -32,19 +32,23 @@ extension URL {
       string: "https://support.brave.app/hc/en-us/articles/360045045952"
     )!
     public static let braveVPNLinkReceiptProd = URL(
-      string: "https://account.brave.com/?intent=connect-receipt&product=vpn"
+      string:
+        "https://account.brave.com/?intent=connect-receipt&product=vpn&mtm_campaign=linking-ios"
     )!
     public static let braveVPNLinkReceiptStaging = URL(
-      string: "https://account.bravesoftware.com/?intent=connect-receipt&product=vpn"
+      string:
+        "https://account.bravesoftware.com/?intent=connect-receipt&product=vpn&mtm_campaign=linking-ios"
     )!
     public static let braveVPNLinkReceiptDev = URL(
-      string: "https://account.brave.software/?intent=connect-receipt&product=vpn"
+      string:
+        "https://account.brave.software/?intent=connect-receipt&product=vpn&mtm_campaign=linking-ios"
     )!
     public static let braveVPNRefreshCredentials = URL(
-      string: "https://account.brave.com/?intent=recover&product=vpn&ux=mobile"
+      string:
+        "https://account.brave.com/?intent=recover&product=vpn&ux=mobile&mtm_campaign=refresh-ios"
     )!
     public static let braveVPNCheckoutURL = URL(
-      string: "https://account.brave.com/?intent=checkout&product=vpn"
+      string: "https://account.brave.com/?intent=checkout&product=vpn&mtm_campaign=iap-ios"
     )!
     public static let braveVPNLearnMoreURL = URL(
       string: "https://brave.com/firewall-vpn/"
@@ -56,28 +60,31 @@ extension URL {
       string: "https://support.apple.com/guide/security/secd8831e732/web"
     )!
     public static let braveLeoManageSubscriptionProd = URL(
-      string: "https://account.brave.com/plans"
+      string: "https://account.brave.com/plans?mtm_campaign=iap-ios"
     )!
     public static let braveLeoManageSubscriptionStaging = URL(
-      string: "https://account.bravesoftware.com/plans"
+      string: "https://account.bravesoftware.com/plans?mtm_campaign=iap-ios"
     )!
     public static let braveLeoManageSubscriptionDev = URL(
-      string: "https://account.brave.software/plans"
+      string: "https://account.brave.software/plans?mtm_campaign=iap-ios"
     )!
     public static let braveLeoCheckoutURL = URL(
-      string: "https://account.brave.com/?intent=checkout&product=leo"
+      string: "https://account.brave.com/?intent=checkout&product=leo&mtm_campaign=iap-ios"
     )!
     public static let braveLeoLinkReceiptProd = URL(
-      string: "https://account.brave.com/?intent=link-order&product=leo"
+      string: "https://account.brave.com/?intent=link-order&product=leo&mtm_campaign=linking-ios"
     )!
     public static let braveLeoLinkReceiptStaging = URL(
-      string: "https://account.bravesoftware.com/?intent=link-order&product=leo"
+      string:
+        "https://account.bravesoftware.com/?intent=link-order&product=leo&mtm_campaign=linking-ios"
     )!
     public static let braveLeoLinkReceiptDev = URL(
-      string: "https://account.brave.software/?intent=link-order&product=leo"
+      string:
+        "https://account.brave.software/?intent=link-order&product=leo&mtm_campaign=linking-ios"
     )!
     public static let braveLeoRefreshCredentials = URL(
-      string: "https://account.brave.com/?intent=recover&product=leo&ux=mobile"
+      string:
+        "https://account.brave.com/?intent=recover&product=leo&ux=mobile&mtm_campaign=refresh-ios"
     )!
     public static let braveLeoModelCategorySupport = URL(
       string:
