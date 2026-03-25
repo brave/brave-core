@@ -328,9 +328,9 @@ int BraveLocationBarView::GetMinimumTrailingWidth() const {
 }
 
 gfx::Size BraveLocationBarView::GetMinimumSize() const {
-  const int height = GetLayoutConstant(LayoutConstant::kLocationBarHeight);
+  gfx::Size min_size = LocationBarView::GetMinimumSize();
   if (!IsInitialized()) {
-    return gfx::Size(0, height);
+    return min_size;
   }
 
   // Unlike upstream which uses max(omnibox, leading+trailing), reserve space
@@ -341,7 +341,8 @@ gfx::Size BraveLocationBarView::GetMinimumSize() const {
   const int width = GetInsets().width() + GetMinimumLeadingWidth() + padding +
                     omnibox_view_->GetMinimumSize().width() +
                     GetMinimumTrailingWidth();
-  return gfx::Size(width, height);
+  min_size.set_width(width);
+  return min_size;
 }
 
 gfx::Size BraveLocationBarView::CalculatePreferredSize(

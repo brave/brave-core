@@ -27,9 +27,6 @@ class BraveOmniboxViewViews : public OmniboxViewViews {
   bool SelectedTextIsURL();
   void CleanAndCopySelectedURL();
 
-  // views::View:
-  gfx::Size GetMinimumSize() const override;
-
  protected:
   std::optional<GURL> GetURLToCopy();
   void CopySanitizedURL(const GURL& url);
