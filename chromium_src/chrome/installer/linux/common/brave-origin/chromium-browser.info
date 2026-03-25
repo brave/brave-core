@@ -9,7 +9,7 @@
 PACKAGE="brave-origin"
 
 # Filename of the main executable (for generating launcher scripts, etc.)
-PROGNAME=brave-origin
+PROGNAME=brave
 
 # Base directory for package installation.
 INSTALLDIR=/opt/brave.com/brave-origin

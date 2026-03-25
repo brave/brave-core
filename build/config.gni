@@ -77,13 +77,6 @@ if (is_brave_origin_branded) {
   _product_brand = "Origin"
   brave_dist_name = "brave-origin"
   brave_linux_package_name = "brave-origin"
-
-  # Override the binary name on Linux so origin can coexist with
-  # brave-browser. On Windows, brave_exe is appended with .exe below.
-  # On Mac, brave_exe is fully overridden to the .app bundle name.
-  if (is_linux) {
-    brave_exe = "brave-origin"
-  }
 } else {
   _product_brand = "Browser"
   brave_dist_name = "brave"
