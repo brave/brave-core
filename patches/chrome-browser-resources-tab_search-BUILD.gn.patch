@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/tab_search/BUILD.gn b/chrome/browser/resources/tab_search/BUILD.gn
-index f9c3c4dc649d0c8bdf1366236fc7e2cc8b2f53fd..e98ea1d43ca4a392ab9ef4304b41ec295da7e9ae 100644
+index 5559ef2d0038dd8d078105f703fe23c26602216c..ba701315f0c266fd42ad6fedef0b33aa8abd1ae8 100644
 --- a/chrome/browser/resources/tab_search/BUILD.gn
 +++ b/chrome/browser/resources/tab_search/BUILD.gn
-@@ -130,4 +130,5 @@ build_webui("build") {
+@@ -91,4 +91,5 @@ build_webui("build") {
        "tab_search.js",
      ]
    }

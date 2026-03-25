@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/setup/install_worker.cc b/chrome/installer/setup/install_worker.cc
-index 315760e9c64bb2767ce01ef2c7d8aa9a0d7f7c82..ada206aade3c8e8f3c1450f159a600490e4957e9 100644
+index feeca02961ebdec4f66112ab7cf530c3a539858f..e8f67a8586474ba01a46e03c37d2b5b7b396bee4 100644
 --- a/chrome/installer/setup/install_worker.cc
 +++ b/chrome/installer/setup/install_worker.cc
 @@ -107,6 +107,7 @@ void AddInstallerCopyTasks(const InstallParams& install_params,

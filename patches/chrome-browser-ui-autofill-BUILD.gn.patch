@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/autofill/BUILD.gn b/chrome/browser/ui/autofill/BUILD.gn
-index 7c3e3f94b6fd2..147f58ff2a214 100644
+index e59abb96c6dcd8a6626bcbe836842fe15e240925..45b2a5e1ca3953c0f7bd78f6ca4a064ff1898144 100644
 --- a/chrome/browser/ui/autofill/BUILD.gn
 +++ b/chrome/browser/ui/autofill/BUILD.gn
-@@ -239,6 +239,7 @@ source_set("impl") {
+@@ -241,6 +241,7 @@ source_set("impl") {
        "//components/password_manager/core/browser/features:password_features",
        "//components/plus_addresses/core/browser/resources/strings",
      ]

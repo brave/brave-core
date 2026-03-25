@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/sessions/session_service.cc b/chrome/browser/sessions/session_service.cc
-index 2eaacf40c2473f8d0147d79e99c9432c7d7ffdc3..d925c66c28d2aa2a66b383e31ada67f814e7f8f1 100644
+index 2081a22bf7ccfa12ad943ed7510d3e03ca506e42..943cac60ed3508d1c6e1ce5a76ef98bc409f3f24 100644
 --- a/chrome/browser/sessions/session_service.cc
 +++ b/chrome/browser/sessions/session_service.cc
 @@ -385,6 +385,7 @@ void SessionService::TabClosed(SessionID window_id, SessionID tab_id) {

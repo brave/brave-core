@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index dde7e8993cb8e59d0cbc1a15fffaedb8b0a26688..78d4622c7275e5423032342796dab4f1c531d43f 100644
+index 18df9cce23d777e890a81e76c9866974c2fa6985..8f165d6377a4136fbaa584a76409770e6299f096 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
 @@ -7578,6 +7578,7 @@ KURL Document::CompleteURLWithOverride(
