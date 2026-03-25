@@ -53,7 +53,7 @@ struct SendTokenView: View {
       return true
     }
     if token.isErc721 || token.isNft {
-      return balance < 1
+      return balance < 1.0
     }
     guard let sendAmount = BDouble(sendTokenStore.sendAmount) else {
       return true
@@ -68,7 +68,7 @@ struct SendTokenView: View {
     ) == nil {
       return true
     }
-    return sendAmount == 0 || sendAmount > balance || sendTokenStore.sendAmount.isEmpty
+    return sendAmount.isZero() || sendAmount > balance || sendTokenStore.sendAmount.isEmpty
   }
 
   private var sendButtonTitle: String {

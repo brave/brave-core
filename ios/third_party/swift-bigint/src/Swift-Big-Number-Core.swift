@@ -3005,7 +3005,7 @@ public struct BDouble:
 			return true;
 		} else if diff <= epsilon {
 			return true // shortcut
-		} else if (lhs == 0 || rhs == 0 || diff < Double.leastNormalMagnitude) {
+    } else if (lhs.isZero() || rhs.isZero() || diff < Double.leastNormalMagnitude) {
 			// lhs or rhs is zero or both are extremely close to it
 			// relative error is less meaningful here
 			return diff < (epsilon * Double.leastNormalMagnitude);
