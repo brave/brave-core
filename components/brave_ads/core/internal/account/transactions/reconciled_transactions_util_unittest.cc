@@ -18,72 +18,21 @@ namespace brave_ads {
 class BraveAdsReconciledTransactionsUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsReconciledTransactionsUtilTest,
-       DidReconcileTransactionsThisMonth) {
-  // Arrange
-  AdvanceClockTo(
-      test::TimeFromString("Wed, 16 Sep 2015 23:01"));  // Hello Millie!!!
-
-  TransactionList transactions;
-  const TransactionInfo transaction = test::BuildTransaction(
-      /*value=*/0.01, mojom::AdType::kNotificationAd,
-      mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
-      /*use_random_uuids=*/true);
-  transactions.push_back(transaction);
-
-  // Act & Assert
-  EXPECT_TRUE(DidReconcileTransactionsThisMonth(transactions));
-}
-
-TEST_F(BraveAdsReconciledTransactionsUtilTest,
-       DoesNotHaveReconciledTransactionsForThisMonth) {
+       DidNotReconcileTransactionsThisMonthForNoTransactions) {
   // Arrange
   AdvanceClockTo(test::TimeFromString("5 November 2020"));
 
-  TransactionList transactions;
-  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, mojom::AdType::kNotificationAd,
-      mojom::ConfirmationType::kViewedImpression,
-      /*use_random_uuids=*/true);
-  transactions.push_back(transaction);
-
-  AdvanceClockTo(test::TimeFromString("25 December 2020"));
-
   // Act & Assert
-  EXPECT_FALSE(DidReconcileTransactionsThisMonth(transactions));
+  EXPECT_FALSE(DidReconcileTransactionsThisMonth(/*transactions=*/{}));
 }
 
 TEST_F(BraveAdsReconciledTransactionsUtilTest,
-       DidReconcileTransactionsPreviousMonth) {
+       DidNotReconcileTransactionsPreviousMonthForNoTransactions) {
   // Arrange
   AdvanceClockTo(test::TimeFromString("5 November 2020"));
 
-  TransactionList transactions;
-  const TransactionInfo transaction = test::BuildTransaction(
-      /*value=*/0.01, mojom::AdType::kNotificationAd,
-      mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
-      /*use_random_uuids=*/true);
-  transactions.push_back(transaction);
-
-  AdvanceClockTo(test::TimeFromString("25 December 2020"));
-
   // Act & Assert
-  EXPECT_TRUE(DidReconcileTransactionsPreviousMonth(transactions));
-}
-
-TEST_F(BraveAdsReconciledTransactionsUtilTest,
-       DoesNotHaveReconciledTransactionsForPreviousMonth) {
-  // Arrange
-  AdvanceClockTo(test::TimeFromString("5 November 2020"));
-
-  TransactionList transactions;
-  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, mojom::AdType::kNotificationAd,
-      mojom::ConfirmationType::kViewedImpression,
-      /*use_random_uuids=*/true);
-  transactions.push_back(transaction);
-
-  // Act & Assert
-  EXPECT_FALSE(DidReconcileTransactionsPreviousMonth(transactions));
+  EXPECT_FALSE(DidReconcileTransactionsPreviousMonth(/*transactions=*/{}));
 }
 
 TEST_F(BraveAdsReconciledTransactionsUtilTest, DidReconcileTransaction) {
@@ -99,7 +48,7 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest, DidReconcileTransaction) {
   EXPECT_TRUE(DidReconcileTransaction(transaction));
 }
 
-TEST_F(BraveAdsReconciledTransactionsUtilTest, WasTransactionNotReconciled) {
+TEST_F(BraveAdsReconciledTransactionsUtilTest, DidNotReconcileTransaction) {
   // Arrange
   AdvanceClockTo(test::TimeFromString("5 November 2020"));
 
@@ -128,20 +77,35 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
 }
 
 TEST_F(BraveAdsReconciledTransactionsUtilTest,
-       HasTransactionNotReconciledForDateRange) {
+       DidNotReconcileTransactionWhenBeforeDateRange) {
   // Arrange
-  AdvanceClockTo(
-      test::TimeFromString("Sat, 20 Aug 2016 02:52"));  // Hello Elica!!!
+  AdvanceClockTo(test::TimeFromString("5 November 2020"));
 
-  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
+  const TransactionInfo transaction = test::BuildTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
-      mojom::ConfirmationType::kViewedImpression,
+      mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_FALSE(DidReconcileTransactionWithinDateRange(
       transaction, /*from_time=*/test::Now() + base::Milliseconds(1),
       /*to_time=*/test::DistantFuture()));
+}
+
+TEST_F(BraveAdsReconciledTransactionsUtilTest,
+       DidNotReconcileTransactionWhenAfterDateRange) {
+  // Arrange
+  AdvanceClockTo(test::TimeFromString("5 November 2020"));
+
+  const TransactionInfo transaction = test::BuildTransaction(
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
+      /*use_random_uuids=*/true);
+
+  // Act & Assert
+  EXPECT_FALSE(DidReconcileTransactionWithinDateRange(
+      transaction, /*from_time=*/test::DistantPast(),
+      /*to_time=*/test::Now() - base::Milliseconds(1)));
 }
 
 }  // namespace brave_ads
