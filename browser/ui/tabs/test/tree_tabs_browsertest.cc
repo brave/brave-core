@@ -31,6 +31,7 @@
 #include "components/tabs/public/pinned_tab_collection.h"
 #include "components/tabs/public/split_tab_collection.h"
 #include "components/tabs/public/tab_collection.h"
+#include "components/tabs/public/tab_group_tab_collection.h"
 #include "components/tabs/public/tab_strip_collection.h"
 #include "components/tabs/public/unpinned_tab_collection.h"
 #include "content/public/browser/web_contents.h"
@@ -137,6 +138,61 @@ class TreeTabsBrowserTest : public InProcessBrowserTest {
 
   void SetTreeTabsEnabled(bool enabled) {
     profile()->GetPrefs()->SetBoolean(brave_tabs::kTreeTabsEnabled, enabled);
+  }
+
+  // Tab group APIs used in tests require the sync service to report
+  // initialized.
+  void EnsureTabGroupSyncServiceInitialized() {
+    auto* tab_groups_service =
+        tab_groups::TabGroupSyncServiceFactory::GetForProfile(profile());
+    ASSERT_TRUE(tab_groups_service);
+    tab_groups_service->SetIsInitializedForTesting(true);
+  }
+
+  void ExpectGroupModelTabListCount(tab_groups::TabGroupId group_id,
+                                    size_t expected) {
+    auto* group = tab_strip_model().group_model()->GetTabGroup(group_id);
+    ASSERT_TRUE(group);
+    EXPECT_EQ(expected, group->ListTabs().length());
+  }
+
+  // |split_id| is a split whose SplitTabCollection is a direct child of a
+  // TabGroupTabCollection.
+  void ExpectSplitCollectionChildOfGroup(split_tabs::SplitTabId split_id) {
+    tabs::SplitTabCollection* split_coll =
+        tab_strip_collection().GetSplitTabCollection(split_id);
+    ASSERT_TRUE(split_coll);
+    EXPECT_EQ(2u, split_coll->TabCountRecursive());
+    EXPECT_EQ(split_coll->type(), tabs::TabCollection::Type::SPLIT);
+    EXPECT_EQ(split_coll->GetParentCollection()->type(),
+              tabs::TabCollection::Type::GROUP);
+  }
+
+  // |split_id| is wrapped in a TreeTabNode whose parent is the unpinned strip.
+  void ExpectSplitWrappedInUnpinnedTreeNode(split_tabs::SplitTabId split_id) {
+    tabs::SplitTabCollection* split_coll =
+        tab_strip_collection().GetSplitTabCollection(split_id);
+    ASSERT_TRUE(split_coll);
+    EXPECT_EQ(2u, split_coll->TabCountRecursive());
+    EXPECT_EQ(split_coll->type(), tabs::TabCollection::Type::SPLIT);
+    const tabs::TabCollection* split_parent = split_coll->GetParentCollection();
+    ASSERT_EQ(split_parent->type(), tabs::TabCollection::Type::TREE_NODE);
+    EXPECT_EQ(split_parent->GetParentCollection(), &unpinned_collection());
+    EXPECT_EQ(static_cast<const tabs::TreeTabNodeTabCollection*>(split_parent)
+                  ->current_value_type(),
+              tabs::TreeTabNodeTabCollection::CurrentValueType::kSplit);
+  }
+
+  void ExpectSplitParentGroupIs(split_tabs::SplitTabId split_id,
+                                tab_groups::TabGroupId group_id) {
+    tabs::SplitTabCollection* split_coll =
+        tab_strip_collection().GetSplitTabCollection(split_id);
+    ASSERT_TRUE(split_coll);
+    const tabs::TabCollection* group_coll = split_coll->GetParentCollection();
+    ASSERT_EQ(group_coll->type(), tabs::TabCollection::Type::GROUP);
+    EXPECT_EQ(static_cast<const tabs::TabGroupTabCollection*>(group_coll)
+                  ->GetTabGroupId(),
+              group_id);
   }
 
   void SetSplitPinned(split_tabs::SplitTabId split, bool pinned) {
@@ -2566,4 +2622,182 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
       tab_strip_model()
           .GetTabGroupForTab(tab_strip_model().GetIndexOfTab(first_pinned))
           .has_value());
+}
+
+// With tree tabs enabled, moving both tabs of a split into an existing group
+// must keep the split as one collection inside the group
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       MoveSplitTabsIntoExistingGroup_PreservesSplit) {
+  EnsureTabGroupSyncServiceInitialized();
+  SetTreeTabsEnabled(true);
+  for (int i = 0; i < 3; ++i) {
+    AddTab();
+  }
+  CreateSplitWithTabs(&tab_strip_model(), 0, 1);
+  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection());
+  ASSERT_EQ(4, tab_strip_model().count());
+  // So now we have:
+  // [Split(tab0, tab1), tab2, tab3]
+
+  tab_groups::TabGroupId group_id = tab_strip_model().AddToNewGroup({2, 3});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(2), group_id);
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(3), group_id);
+  //  Now we have:
+  // [Split(tab0, tab1), Group(tab2, tab3)]
+
+  // Try to add the split to the group
+  const split_tabs::SplitTabId split_id =
+      tab_strip_model().GetTabAtIndex(0)->GetSplit().value();
+  ASSERT_TRUE(tab_strip_model().GetTabAtIndex(1)->GetSplit().has_value());
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(1)->GetSplit().value(), split_id);
+
+  tab_strip_model().AddToExistingGroup({0, 1}, group_id, false);
+
+  // Checks if the model is in good shape.
+  ASSERT_EQ(1u, tab_strip_collection().ListSplits().size());
+  EXPECT_TRUE(tab_strip_model().ContainsSplit(split_id));
+
+  ExpectGroupModelTabListCount(group_id, 4u);
+  ExpectSplitCollectionChildOfGroup(split_id);
+}
+
+// Removing a split from a tab group (MoveTabsOutOfGroup) must keep the split
+// intact and re-wrap it as a tree node in the unpinned strip, not destroy the
+// split or leave the collection inconsistent.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       RemoveSplitFromGroup_PreservesSplitAsTreeNode) {
+  EnsureTabGroupSyncServiceInitialized();
+  SetTreeTabsEnabled(true);
+  for (int i = 0; i < 3; ++i) {
+    AddTab();
+  }
+  CreateSplitWithTabs(&tab_strip_model(), 0, 1);
+  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection());
+
+  tabs::TabInterface* split_tab_a = tab_strip_model().GetTabAtIndex(0);
+  tabs::TabInterface* split_tab_b = tab_strip_model().GetTabAtIndex(1);
+  const split_tabs::SplitTabId split_id = split_tab_a->GetSplit().value();
+
+  // Add the split to the group
+  tab_groups::TabGroupId group_id = tab_strip_model().AddToNewGroup({2, 3});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+  tab_strip_model().AddToExistingGroup({0, 1}, group_id, false);
+  ExpectSplitCollectionChildOfGroup(split_id);
+
+  // Remove the split from the group
+  tab_strip_model().RemoveFromGroup({0, 1});
+
+  ASSERT_EQ(1u, tab_strip_collection().ListSplits().size());
+  EXPECT_TRUE(tab_strip_model().ContainsSplit(split_id));
+  EXPECT_FALSE(split_tab_a->GetGroup().has_value());
+  EXPECT_FALSE(split_tab_b->GetGroup().has_value());
+  EXPECT_TRUE(split_tab_a->IsSplit());
+  EXPECT_TRUE(split_tab_b->IsSplit());
+  ExpectSplitWrappedInUnpinnedTreeNode(split_id);
+  ExpectGroupModelTabListCount(group_id, 2u);
+}
+
+// Detach/reinsert a split uses TabStripCollection::InsertTabCollectionAt (Brave
+// delegate): unpinned inserts should wrap the split in a tree node.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       InsertDetachedSplitTabAt_Unpinned_WrapsSplitInTreeNode) {
+  SetTreeTabsEnabled(true);
+  AddTab();
+  AddTab();
+  ASSERT_EQ(3, tab_strip_model().count());
+  CreateSplitWithTabs(&tab_strip_model(), 0, 1);
+  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection());
+
+  const split_tabs::SplitTabId split_id =
+      tab_strip_model().GetTabAtIndex(0)->GetSplit().value();
+  std::unique_ptr<DetachedTabCollection> detached =
+      tab_strip_model().DetachSplitTabForInsertion(split_id);
+  ASSERT_TRUE(detached);
+  ASSERT_EQ(1, tab_strip_model().count());
+  EXPECT_FALSE(tab_strip_model().ContainsSplit(split_id));
+
+  tab_strip_model().InsertDetachedSplitTabAt(std::move(detached), 0, false);
+
+  ASSERT_EQ(3, tab_strip_model().count());
+  ASSERT_TRUE(tab_strip_model().ContainsSplit(split_id));
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(0)->GetSplit().value(), split_id);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(1)->GetSplit().value(), split_id);
+
+  ExpectSplitWrappedInUnpinnedTreeNode(split_id);
+}
+
+// InsertDetachedSplitTabAt with a target group uses InsertTabCollectionAt with
+// |parent_group|; the split collection must stay a direct child of the group
+// (no tree-node wrapper).
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       InsertDetachedSplitTabAt_IntoGroup_SplitChildOfGroup) {
+  EnsureTabGroupSyncServiceInitialized();
+
+  SetTreeTabsEnabled(true);
+  AddTab();
+  AddTab();
+  ASSERT_EQ(3, tab_strip_model().count());
+  CreateSplitWithTabs(&tab_strip_model(), 0, 1);
+  ASSERT_EQ(1u, tab_strip_collection().ListSplits().size());
+
+  tab_groups::TabGroupId group_id = tab_strip_model().AddToNewGroup({2});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(2), group_id);
+
+  const split_tabs::SplitTabId split_id =
+      tab_strip_model().GetTabAtIndex(0)->GetSplit().value();
+  std::unique_ptr<DetachedTabCollection> detached =
+      tab_strip_model().DetachSplitTabForInsertion(split_id);
+  ASSERT_TRUE(detached);
+  ASSERT_EQ(1, tab_strip_model().count());
+
+  tab_strip_model().InsertDetachedSplitTabAt(std::move(detached), 0, false,
+                                             group_id);
+
+  ASSERT_EQ(3, tab_strip_model().count());
+  ASSERT_TRUE(tab_strip_model().ContainsSplit(split_id));
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(0), group_id);
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(1), group_id);
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(2), group_id);
+
+  ExpectSplitParentGroupIs(split_id, group_id);
+}
+
+// Selecting every tab in a tab group and using MoveSelectedTabsTo must move the
+// group as one unit, not ungroup or move member tabs separately.
+IN_PROC_BROWSER_TEST_F(
+    TreeTabsBrowserTest,
+    MoveSelectedTabsTo_SelectingFullGroup_MovesEntireGroupTogether) {
+  EnsureTabGroupSyncServiceInitialized();
+
+  SetTreeTabsEnabled(true);
+
+  for (int i = 0; i < 3; ++i) {
+    AddTab();
+  }
+  ASSERT_EQ(4, tab_strip_model().count());
+
+  tabs::TabInterface* tab_b = tab_strip_model().GetTabAtIndex(1);
+  tabs::TabInterface* tab_c = tab_strip_model().GetTabAtIndex(2);
+
+  tab_groups::TabGroupId group_id = tab_strip_model().AddToNewGroup({1, 2});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+  ExpectGroupModelTabListCount(group_id, 2u);
+
+  // Select both grouped tabs (full group), then move the block to the front.
+  // Note: MoveSelectedTabsTo(|index|) clamps the unpinned destination to
+  // [count() - selected_unpinned_count], so with 4 tabs and 2 selected,
+  // MoveSelectedTabsTo(3) becomes destination 2 and is a no-op for tabs at
+  // indices 1–2. Use index 0 to get a real reorder.
+  tab_strip_model().SelectTabAt(1);
+  tab_strip_model().SelectTabAt(2);
+  tab_strip_model().MoveSelectedTabsTo(0, std::nullopt);
+
+  ASSERT_EQ(4, tab_strip_model().count());
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(0), tab_b);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(1), tab_c);
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(0), group_id);
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(1), group_id);
+  ExpectGroupModelTabListCount(group_id, 2u);
 }

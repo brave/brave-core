@@ -416,6 +416,10 @@ void BraveTabContainer::PaintBoundingBoxForSplitTabs(gfx::Canvas& canvas) {
     if (!tab->split().has_value()) {
       continue;
     }
+    if (!tab_strip_model->ContainsSplit(*tab->split())) {
+      // This can happen when detaching split tabs to a new window.
+      continue;
+    }
     auto tabs = tab_strip_model->GetSplitData(*tab->split())->ListTabs();
     if (tabs.empty()) {
       continue;

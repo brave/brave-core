@@ -52,6 +52,14 @@ class BraveTabStripCollectionDelegate {
       bool new_pinned_state,
       const TabCollection::TypeEnumSet retain_collection_types) = 0;
 
+  // Inserts a tab collection (e.g. split or group) at a strip index. Used by
+  // TabStripModel when re-attaching detached collections after drag-and-drop.
+  virtual void InsertTabCollectionAt(
+      std::unique_ptr<TabCollection> collection,
+      int index,
+      bool pinned,
+      std::optional<tab_groups::TabGroupId> parent_group) {}
+
   // Handles CreateSplit when tabs are in different parent collections (e.g.
   // different tree nodes). Returns true if handled, false to use default path.
   virtual bool CreateSplit(split_tabs::SplitTabId split_id,
