@@ -1171,6 +1171,7 @@ def main():
             "skipped_cached": 0,
             "skipped_approved": 0,
             "skipped_external": 0,
+            "skipped_uplift": 0,
             "skipped_max_prs": 0,
         }
     else:
@@ -1178,10 +1179,12 @@ def main():
         (
             to_review,
             cached_prs_raw,
+            uplift_prs_raw,
             skipped_filtered,
             skipped_cached,
             skipped_approved,
             skipped_external,
+            skipped_uplift,
         ) = _fp_mod.filter_prs(
             raw_prs,
             mode,
@@ -1190,6 +1193,22 @@ def main():
             org_members,
             reviewer_priority=bot_username if reviewer_priority else None,
         )
+
+        # Update cache for uplift PRs so they are not re-fetched
+        for upr in uplift_prs_raw:
+            subprocess.run(
+                [
+                    sys.executable,
+                    os.path.join(_SCRIPT_DIR, "update-cache.py"),
+                    str(upr["number"]),
+                    upr["headRefOid"],
+                ],
+                capture_output=True,
+                text=True,
+                timeout=10,
+                cwd=_REPO_DIR,
+                check=False,
+            )
 
         # Sort by reviewer priority
         if reviewer_priority:
@@ -1212,6 +1231,7 @@ def main():
             "skipped_cached": skipped_cached,
             "skipped_approved": skipped_approved,
             "skipped_external": skipped_external,
+            "skipped_uplift": skipped_uplift,
             "skipped_max_prs": skipped_max_prs,
         }
 
@@ -1247,6 +1267,9 @@ def main():
     if fetch_summary["skipped_external"]:
         progress_lines.append(f"Skipped {fetch_summary['skipped_external']}"
                               " PRs (external contributors).")
+    if fetch_summary.get("skipped_uplift"):
+        progress_lines.append(f"Skipped {fetch_summary['skipped_uplift']}"
+                              " PRs (uplifts to version branches).")
 
     log("\n".join(progress_lines))
 

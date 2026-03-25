@@ -27,6 +27,7 @@ Output: JSON with "prs" array and "summary" stats.
 
 import json
 import os
+import re
 import subprocess
 import sys
 from datetime import datetime, timedelta, timezone
@@ -43,6 +44,8 @@ ORG_MEMBERS_PATH = os.environ.get(
 )
 SKIP_PREFIXES = ["CI run for", "Backport", "Update l10n"]
 SKIP_CONTAINS = ["uplift to", "Just to test CI"]
+# Pattern for version branches like "1.90.x"
+VERSION_BRANCH_RE = r"^\d+\.\d+\.x$"
 
 
 def parse_args():
@@ -102,8 +105,8 @@ def has_any_approval(pr):
 
 def fetch_single_pr(pr_number):
     fields = ("number,title,updatedAt,author,isDraft,"
-              "headRefOid,reviewDecision,latestReviews,"
-              "reviewRequests")
+              "headRefOid,baseRefName,reviewDecision,"
+              "latestReviews,reviewRequests")
     result = subprocess.run(
         [
             "gh",
@@ -140,8 +143,8 @@ def fetch_prs(mode, _days, page, pr_number, state):
         return fetch_single_pr(pr_number)
 
     fields = ("number,title,updatedAt,author,isDraft,"
-              "headRefOid,reviewDecision,latestReviews,"
-              "reviewRequests")
+              "headRefOid,baseRefName,reviewDecision,"
+              "latestReviews,reviewRequests")
     base_cmd = [
         "gh",
         "pr",
@@ -201,6 +204,11 @@ def load_org_members():
         return set(line.strip() for line in f if line.strip())
 
 
+def is_version_branch(branch_name):
+    """Check if a branch name is a version branch (e.g., 1.90.x)."""
+    return bool(re.match(VERSION_BRANCH_RE, branch_name or ""))
+
+
 def should_skip_title(title):
     for prefix in SKIP_PREFIXES:
         if title.startswith(prefix):
@@ -233,10 +241,12 @@ def filter_prs(prs, mode, days, cache, org_members, reviewer_priority=None):
 
     to_review = []
     cached_prs = []
+    uplift_prs = []
     skipped_filtered = 0
     skipped_cached = 0
     skipped_approved = 0
     skipped_external = 0
+    skipped_uplift = 0
 
     for pr in prs:
         if pr.get("isDraft"):
@@ -245,6 +255,12 @@ def filter_prs(prs, mode, days, cache, org_members, reviewer_priority=None):
 
         if should_skip_title(pr.get("title", "")):
             skipped_filtered += 1
+            continue
+
+        # Skip PRs targeting version branches (uplifts)
+        if is_version_branch(pr.get("baseRefName", "")):
+            skipped_uplift += 1
+            uplift_prs.append(pr)
             continue
 
         # Skip PRs from external contributors (non-org members)
@@ -292,10 +308,12 @@ def filter_prs(prs, mode, days, cache, org_members, reviewer_priority=None):
     return (
         to_review,
         cached_prs,
+        uplift_prs,
         skipped_filtered,
         skipped_cached,
         skipped_approved,
         skipped_external,
+        skipped_uplift,
     )
 
 
@@ -310,19 +328,23 @@ def main():
         # Skip all filtering for single PR review
         to_review = prs
         cached_prs = []
+        uplift_prs = []
         skipped_filtered = 0
         skipped_cached = 0
         skipped_approved = 0
         skipped_external = 0
+        skipped_uplift = 0
     else:
         cache = load_cache()
         (
             to_review,
             cached_prs,
+            uplift_prs,
             skipped_filtered,
             skipped_cached,
             skipped_approved,
             skipped_external,
+            skipped_uplift,
         ) = filter_prs(prs, mode, days, cache, org_members, reviewer_priority)
 
     # Sort PRs so those requesting review from the priority user come first
@@ -357,6 +379,7 @@ def main():
     output = {
         "prs": [pr_entry(pr) for pr in to_review],
         "cached_prs": [pr_entry(pr) for pr in cached_prs],
+        "uplift_prs": [pr_entry(pr) for pr in uplift_prs],
         "summary": {
             "total_fetched": len(prs),
             "to_review": len(to_review),
@@ -365,6 +388,7 @@ def main():
             "skipped_cached": skipped_cached,
             "skipped_approved": skipped_approved,
             "skipped_external": skipped_external,
+            "skipped_uplift": skipped_uplift,
             "skipped_max_prs": skipped_max_prs,
         },
     }
