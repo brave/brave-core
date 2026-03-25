@@ -57,6 +57,8 @@ import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.search.PreferenceParser;
 import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
 import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
+import org.chromium.components.browser_ui.site_settings.BraveSiteSettingsPreferencesBase;
+import org.chromium.components.browser_ui.site_settings.SiteSettings;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.base.DeviceFormFactor;
 
@@ -706,6 +708,27 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                     // Leaf prefs from brave_main_preferences.xml that are conditionally hidden.
                     if (!BraveSearchWidgetUtils.isRequestPinAppWidgetSupported()) {
                         indexData.removeEntry(getUniqueId(PREF_HOME_SCREEN_WIDGET));
+                    }
+                    // Remove features disabled by Brave Origin or enterprise policy.
+                    if (BraveLeoPrefUtils.isLeoDisabledByPolicy(profile)) {
+                        indexData.removeEntry(getUniqueId(PREF_BRAVE_LEO));
+                    }
+                    if (BraveNewsPolicy.isDisabledByPolicy(profile)) {
+                        indexData.removeEntry(getUniqueId(PREF_BRAVE_NEWS_V2));
+                    }
+                    if (BraveVpnPolicy.isDisabledByPolicy(profile)) {
+                        indexData.removeEntry(getUniqueId(PREF_BRAVE_VPN));
+                    }
+                    if (BraveWalletPolicy.isDisabledByPolicy(profile)) {
+                        indexData.removeEntry(getUniqueId(PREF_BRAVE_WALLET));
+                        // Also remove wallet-related entries from site settings.
+                        String siteSettingsFrag = SiteSettings.class.getName();
+                        indexData.removeEntryForKey(
+                                siteSettingsFrag,
+                                BraveSiteSettingsPreferencesBase.ETHEREUM_CONNECTED_SITES_KEY);
+                        indexData.removeEntryForKey(
+                                siteSettingsFrag,
+                                BraveSiteSettingsPreferencesBase.SOLANA_CONNECTED_SITES_KEY);
                     }
                 }
             };
