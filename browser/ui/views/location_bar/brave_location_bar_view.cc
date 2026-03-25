@@ -333,6 +333,21 @@ gfx::Size BraveLocationBarView::GetMinimumSize() const {
     return min_size;
   }
 
+  // Skip the additive formula for non-normal browser windows (popups, apps).
+  //
+  // The additive formula below produces a larger minimum width than upstream's
+  // max(omnibox, leading+trailing) formula. For popup windows opened via
+  // JavaScript (e.g. window.open(..., 'width=200')), Chromium's popup-clamping
+  // code computes the on-screen position using the *requested* width, then the
+  // window is later expanded to meet the minimum. If our minimum exceeds the
+  // requested width, the position calculated for the requested width is no
+  // longer valid for the actual (larger) window, causing the popup to extend
+  // partially outside the work area. Verified by
+  // PopupTest.OpenClampedToCurrentDisplay.
+  if (!browser_->is_type_normal()) {
+    return min_size;
+  }
+
   // Unlike upstream which uses max(omnibox, leading+trailing), reserve space
   // for all children simultaneously so the omnibox always has its minimum
   // alongside all visible decorations.
