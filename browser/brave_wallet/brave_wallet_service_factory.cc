@@ -33,9 +33,6 @@ BraveWalletServiceFactory* BraveWalletServiceFactory::GetInstance() {
 // static
 BraveWalletService* BraveWalletServiceFactory::GetServiceForContext(
     content::BrowserContext* context) {
-  if (!IsAllowedForContext(context)) {
-    return nullptr;
-  }
   return static_cast<BraveWalletService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
