@@ -201,6 +201,7 @@ import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.feature_engagement.Tracker;
 import org.chromium.components.offline_items_collection.OfflineItem;
 import org.chromium.components.omnibox.AutocompleteMatch;
+import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.permissions.PermissionDialogDelegate;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.search_engines.TemplateUrl;
@@ -1127,7 +1128,8 @@ public class BytecodeTest {
                         AutocompleteUIContext.class,
                         Context.class,
                         SuggestionHost.class,
-                        UrlBarEditingTextStateProvider.class));
+                        UrlBarEditingTextStateProvider.class,
+                        OmniboxActionDelegate.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/toolbar/adaptive/settings/RadioButtonGroupAdaptiveToolbarPreference", // presubmit: ignore-long-line
