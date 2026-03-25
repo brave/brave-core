@@ -52,33 +52,33 @@ public class ParsedTransaction extends ParsedTransactionFees {
     // Strings are initialized to empty string instead of null, as the default value from mojo
     // Common fields
     public double marketPrice;
-    private String hash = "";
-    private String nonce = "";
-    @Nullable private TimeDelta createdTime;
-    private int status; // mojo loses enum type info in struct
-    private int type; // mojo loses enum type info in struct
-    private String sender = "";
-    private String recipient = "";
-    private double fiatTotal;
-    private double value;
-    private String symbol = "";
-    @Nullable private BlockchainToken token;
-    private int decimals;
-    @Nullable private BlockchainToken erc721BlockchainToken;
-    private boolean isSwap;
+    private String mHash = "";
+    private String mNonce = "";
+    @Nullable private TimeDelta mCreatedTime;
+    private int mStatus; // mojo loses enum type info in struct
+    private int mType; // mojo loses enum type info in struct
+    private String mSender = "";
+    private String mRecipient = "";
+    private double mFiatTotal;
+    private double mValue;
+    private String mSymbol = "";
+    @Nullable private BlockchainToken mToken;
+    private int mDecimals;
+    @Nullable private BlockchainToken mErc721BlockchainToken;
+    private boolean mIsSwap;
 
     // ZCash
-    private boolean shielded;
+    private boolean mShielded;
 
     // Swap
-    @Nullable private BlockchainToken sellToken;
-    private double sellAmount;
-    @Nullable private BlockchainToken buyToken;
-    private double minBuyAmount;
+    @Nullable private BlockchainToken mSellToken;
+    private double mSellAmount;
+    @Nullable private BlockchainToken mBuyToken;
+    private double mMinBuyAmount;
 
     // Solana
     public boolean isSolanaDappTransaction;
-    private boolean solChangeOfOwnership;
+    private boolean mSolChangeOfOwnership;
 
     // Matches up to 40-character hex segments in a Uniswap encoded swap path (after stripping the
     // "0x" prefix). Each segment represents a token contract address.
@@ -191,18 +191,18 @@ public class ParsedTransaction extends ParsedTransactionFees {
                         : findToken(fullTokenList, to);
         ParsedTransaction parsedTransaction = new ParsedTransaction(feeDetails);
         // Common fields
-        parsedTransaction.hash = txInfo.txHash;
-        parsedTransaction.type = txInfo.txType;
-        parsedTransaction.nonce = nonce;
-        parsedTransaction.token = token;
-        parsedTransaction.createdTime = txInfo.createdTime;
-        parsedTransaction.status = txInfo.txStatus;
-        parsedTransaction.sender = sender;
+        parsedTransaction.mHash = txInfo.txHash;
+        parsedTransaction.mType = txInfo.txType;
+        parsedTransaction.mNonce = nonce;
+        parsedTransaction.mToken = token;
+        parsedTransaction.mCreatedTime = txInfo.createdTime;
+        parsedTransaction.mStatus = txInfo.txStatus;
+        parsedTransaction.mSender = sender;
         parsedTransaction.isSolanaDappTransaction =
                 WalletConstants.SOLANA_DAPPS_TRANSACTION_TYPES.contains(txInfo.txType);
         parsedTransaction.marketPrice = networkSpotPrice;
         if (zecTxData != null && zecTxData.useShieldedPool) {
-            parsedTransaction.shielded = true;
+            parsedTransaction.mShielded = true;
         }
 
         int txType = txInfo.txType;
@@ -211,10 +211,10 @@ public class ParsedTransaction extends ParsedTransactionFees {
                 || txType == TransactionType.SOLANA_SWAP
                 || (txType == TransactionType.OTHER && solTxData != null)) {
             if (solTxData == null) {
-                parsedTransaction.recipient = "";
-                parsedTransaction.fiatTotal = 0;
-                parsedTransaction.decimals = 0;
-                parsedTransaction.symbol = "";
+                parsedTransaction.mRecipient = "";
+                parsedTransaction.mFiatTotal = 0;
+                parsedTransaction.mDecimals = 0;
+                parsedTransaction.mSymbol = "";
                 return parsedTransaction;
             }
             BigDecimal lamportTransferredAmount = new BigDecimal(value);
@@ -226,7 +226,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
                 if (instructionType != null
                         && (instructionType == SolanaSystemInstruction.ASSIGN_WITH_SEED
                                 || instructionType == SolanaSystemInstruction.ASSIGN)) {
-                    parsedTransaction.solChangeOfOwnership = true;
+                    parsedTransaction.mSolChangeOfOwnership = true;
                 }
                 boolean isInsExists = instructionType != null;
                 if (isInsExists
@@ -286,15 +286,15 @@ public class ParsedTransaction extends ParsedTransactionFees {
             final double sendAmountFiat = sendAmount * price;
             final double totalAmountFiat = parsedTransaction.getGasFeeFiat() + sendAmountFiat;
 
-            parsedTransaction.recipient = to;
-            parsedTransaction.fiatTotal = totalAmountFiat;
-            parsedTransaction.value = sendAmount;
-            parsedTransaction.symbol = token != null ? token.symbol : "";
-            parsedTransaction.decimals = Utils.SOL_DEFAULT_DECIMALS;
-            parsedTransaction.isSwap = txType == TransactionType.SOLANA_SWAP;
-            if (parsedTransaction.isSwap) {
-                parsedTransaction.sellToken = nativeAsset;
-                parsedTransaction.buyToken = nativeAsset;
+            parsedTransaction.mRecipient = to;
+            parsedTransaction.mFiatTotal = totalAmountFiat;
+            parsedTransaction.mValue = sendAmount;
+            parsedTransaction.mSymbol = token != null ? token.symbol : "";
+            parsedTransaction.mDecimals = Utils.SOL_DEFAULT_DECIMALS;
+            parsedTransaction.mIsSwap = txType == TransactionType.SOLANA_SWAP;
+            if (parsedTransaction.mIsSwap) {
+                parsedTransaction.mSellToken = nativeAsset;
+                parsedTransaction.mBuyToken = nativeAsset;
             }
         } else if (txInfo.txType == TransactionType.ERC20_TRANSFER && txInfo.txArgs.length > 1) {
             final String address = txInfo.txArgs[0];
@@ -306,11 +306,11 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
             final double totalAmountFiat = parsedTransaction.getGasFeeFiat() + sendAmountFiat;
 
-            parsedTransaction.recipient = address;
-            parsedTransaction.fiatTotal = totalAmountFiat;
-            parsedTransaction.value = sendAmount;
-            parsedTransaction.symbol = token != null ? token.symbol : "";
-            parsedTransaction.decimals = decimals;
+            parsedTransaction.mRecipient = address;
+            parsedTransaction.mFiatTotal = totalAmountFiat;
+            parsedTransaction.mValue = sendAmount;
+            parsedTransaction.mSymbol = token != null ? token.symbol : "";
+            parsedTransaction.mDecimals = decimals;
         } else if ((txInfo.txType == TransactionType.ERC721_TRANSFER_FROM
                         || txInfo.txType == TransactionType.ERC721_SAFE_TRANSFER_FROM)
                 && txInfo.txArgs.length > 2) {
@@ -318,22 +318,22 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
             final double totalAmountFiat = parsedTransaction.getGasFeeFiat();
 
-            parsedTransaction.recipient = toAddress;
-            parsedTransaction.fiatTotal = totalAmountFiat;
-            parsedTransaction.value = 1; // Can only send 1 erc721 at a time
-            parsedTransaction.symbol = token != null ? token.symbol : "";
-            parsedTransaction.decimals = 0;
-            parsedTransaction.erc721BlockchainToken = token;
+            parsedTransaction.mRecipient = toAddress;
+            parsedTransaction.mFiatTotal = totalAmountFiat;
+            parsedTransaction.mValue = 1; // Can only send 1 erc721 at a time
+            parsedTransaction.mSymbol = token != null ? token.symbol : "";
+            parsedTransaction.mDecimals = 0;
+            parsedTransaction.mErc721BlockchainToken = token;
         } else if (txInfo.txType == TransactionType.ERC20_APPROVE && txInfo.txArgs.length > 1) {
             final String amount = txInfo.txArgs[1];
 
             final int decimals = token != null ? token.decimals : Utils.ETH_DEFAULT_DECIMALS;
             final double totalAmountFiat = parsedTransaction.getGasFeeFiat();
-            parsedTransaction.recipient = to;
-            parsedTransaction.fiatTotal = totalAmountFiat;
-            parsedTransaction.value = Utils.fromHexWei(amount, decimals);
-            parsedTransaction.symbol = token != null ? token.symbol : "";
-            parsedTransaction.decimals = decimals;
+            parsedTransaction.mRecipient = to;
+            parsedTransaction.mFiatTotal = totalAmountFiat;
+            parsedTransaction.mValue = Utils.fromHexWei(amount, decimals);
+            parsedTransaction.mSymbol = token != null ? token.symbol : "";
+            parsedTransaction.mDecimals = decimals;
         } else if (txInfo.txType == TransactionType.SOLANA_SPL_TOKEN_TRANSFER
                 || txInfo.txType
                         == TransactionType
@@ -345,11 +345,11 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
             final double totalAmountFiat = parsedTransaction.getGasFeeFiat() + sendAmountFiat;
 
-            parsedTransaction.recipient = to;
-            parsedTransaction.fiatTotal = totalAmountFiat;
-            parsedTransaction.value = sendAmount;
-            parsedTransaction.symbol = token != null ? token.symbol : "";
-            parsedTransaction.decimals = decimals;
+            parsedTransaction.mRecipient = to;
+            parsedTransaction.mFiatTotal = totalAmountFiat;
+            parsedTransaction.mValue = sendAmount;
+            parsedTransaction.mSymbol = token != null ? token.symbol : "";
+            parsedTransaction.mDecimals = decimals;
         } else if (txInfo.txType == TransactionType.ETH_SWAP && txInfo.txArgs.length > 2) {
             final String fillPath = txInfo.txArgs[0];
             final String sellAmountArg = txInfo.txArgs[1];
@@ -381,16 +381,16 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
             final double sellAmount = Utils.fromHexWei(sellAmountWei, sellToken.decimals);
 
-            parsedTransaction.recipient = to;
-            parsedTransaction.fiatTotal = totalAmountFiat;
-            parsedTransaction.value = sellAmount;
-            parsedTransaction.symbol = sellToken.symbol;
-            parsedTransaction.decimals = sellToken.decimals;
-            parsedTransaction.isSwap = true;
-            parsedTransaction.sellToken = sellToken;
-            parsedTransaction.sellAmount = sellAmount;
-            parsedTransaction.buyToken = buyToken;
-            parsedTransaction.minBuyAmount = buyAmount;
+            parsedTransaction.mRecipient = to;
+            parsedTransaction.mFiatTotal = totalAmountFiat;
+            parsedTransaction.mValue = sellAmount;
+            parsedTransaction.mSymbol = sellToken.symbol;
+            parsedTransaction.mDecimals = sellToken.decimals;
+            parsedTransaction.mIsSwap = true;
+            parsedTransaction.mSellToken = sellToken;
+            parsedTransaction.mSellAmount = sellAmount;
+            parsedTransaction.mBuyToken = buyToken;
+            parsedTransaction.mMinBuyAmount = buyAmount;
         } else {
             // The rest cases falls through to default
             final double price = Utils.getPrice(
@@ -408,12 +408,12 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
             final double totalAmountFiat = parsedTransaction.getGasFeeFiat() + sendAmountFiat;
 
-            parsedTransaction.recipient = to;
-            parsedTransaction.fiatTotal = totalAmountFiat;
-            parsedTransaction.value = sendAmount;
-            parsedTransaction.symbol = txNetwork.symbol;
-            parsedTransaction.decimals = txNetwork.decimals;
-            parsedTransaction.isSwap =
+            parsedTransaction.mRecipient = to;
+            parsedTransaction.mFiatTotal = totalAmountFiat;
+            parsedTransaction.mValue = sendAmount;
+            parsedTransaction.mSymbol = txNetwork.symbol;
+            parsedTransaction.mDecimals = txNetwork.decimals;
+            parsedTransaction.mIsSwap =
                     to.toLowerCase(Locale.getDefault()).equals(Utils.SWAP_EXCHANGE_PROXY);
         }
 
@@ -441,104 +441,104 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
     // TODO (Wengling): change it to reflect desktop Amount.format
     public String formatValueToDisplay() {
-        if (this.type == TransactionType.ERC20_TRANSFER) {
-            return String.format(Locale.getDefault(), "%.4f", this.value);
-        } else if (this.type == TransactionType.ERC721_TRANSFER_FROM
-                || this.type == TransactionType.ERC721_SAFE_TRANSFER_FROM) {
+        if (this.mType == TransactionType.ERC20_TRANSFER) {
+            return String.format(Locale.getDefault(), "%.4f", this.mValue);
+        } else if (this.mType == TransactionType.ERC721_TRANSFER_FROM
+                || this.mType == TransactionType.ERC721_SAFE_TRANSFER_FROM) {
             return "1";
-        } else if (this.type == TransactionType.ERC20_APPROVE) {
+        } else if (this.mType == TransactionType.ERC20_APPROVE) {
             return "0.0000";
-        } else if (this.isSwap) {
-            return String.format(Locale.getDefault(), "%.4f", this.value);
+        } else if (this.mIsSwap) {
+            return String.format(Locale.getDefault(), "%.4f", this.mValue);
         } else {
-            String sVal = String.format(Locale.getDefault(), "%.9f", value);
+            String sVal = String.format(Locale.getDefault(), "%.9f", mValue);
             // Show amount without trailing zeros
             return !sVal.contains(".") ? sVal : sVal.replaceAll("0*$", "").replaceAll("\\.$", "");
         }
     }
 
     public String getHash() {
-        return this.hash;
+        return this.mHash;
     }
 
     public String getNonce() {
-        return this.nonce;
+        return this.mNonce;
     }
 
     @Nullable
     public TimeDelta getCreatedTime() {
-        return this.createdTime;
+        return this.mCreatedTime;
     }
 
     public int getStatus() {
-        return this.status;
+        return this.mStatus;
     }
 
     public int getType() {
-        return this.type;
+        return this.mType;
     }
 
     public String getSender() {
-        return this.sender;
+        return this.mSender;
     }
 
     public String getRecipient() {
-        return this.recipient;
+        return this.mRecipient;
     }
 
     public double getFiatTotal() {
-        return this.fiatTotal;
+        return this.mFiatTotal;
     }
 
     public double getValue() {
-        return this.value;
+        return this.mValue;
     }
 
     public String getSymbol() {
-        return this.symbol;
+        return this.mSymbol;
     }
 
     @Nullable
     public BlockchainToken getToken() {
-        return this.token;
+        return this.mToken;
     }
 
     public int getDecimals() {
-        return this.decimals;
+        return this.mDecimals;
     }
 
     @Nullable
     public BlockchainToken getErc721BlockchainToken() {
-        return this.erc721BlockchainToken;
+        return this.mErc721BlockchainToken;
     }
 
     public boolean getIsSwap() {
-        return this.isSwap;
+        return this.mIsSwap;
     }
 
     @Nullable
     public BlockchainToken getSellToken() {
-        return this.sellToken;
+        return this.mSellToken;
     }
 
     public double getSellAmount() {
-        return this.sellAmount;
+        return this.mSellAmount;
     }
 
     @Nullable
     public BlockchainToken getBuyToken() {
-        return this.buyToken;
+        return this.mBuyToken;
     }
 
     public double getMinBuyAmount() {
-        return this.minBuyAmount;
+        return this.mMinBuyAmount;
     }
 
     public boolean isSolChangeOfOwnership() {
-        return solChangeOfOwnership;
+        return mSolChangeOfOwnership;
     }
 
     public boolean isShielded() {
-        return shielded;
+        return mShielded;
     }
 }
