@@ -466,7 +466,6 @@ public class BrowserViewController: UIViewController {
     Preferences.Privacy.privateBrowsingOnly.observe(from: self)
     Preferences.General.tabBarVisibility.observe(from: self)
     Preferences.General.mediaAutoBackgrounding.observe(from: self)
-    Preferences.General.youtubeHighQuality.observe(from: self)
     Preferences.General.defaultPageZoomLevel.observe(from: self)
     Preferences.Shields.allShields.forEach { $0.observe(from: self) }
     Preferences.Privacy.blockAllCookies.observe(from: self)
@@ -2936,11 +2935,6 @@ extension BrowserViewController: PreferencesObserver {
         .mediaBackgroundPlay: Preferences.General.mediaAutoBackgrounding.value
       ])
       tabManager.reloadSelectedTab()
-    case Preferences.General.youtubeHighQuality.key:
-      let status = Reachability.shared.status
-      tabManager.allTabs.forEach {
-        $0.youtubeQualityTabHelper?.setHighQuality(networkStatus: status)
-      }
     case Preferences.Playlist.enablePlaylistURLBarButton.key:
       let selectedTab = tabManager.selectedTab
       updatePlaylistURLBar(
