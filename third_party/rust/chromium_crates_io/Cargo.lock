@@ -265,6 +265,7 @@ dependencies = [
  "bech32",
  "bls-signatures",
  "ciborium",
+ "crc32fast",
  "curve25519-dalek",
  "cxx",
  "parity-scale-codec",
@@ -509,6 +510,13 @@ version = "0.2.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "libc",
+]
+
+[[package]]
+name = "crc32fast"
+version = "1.5.0"
+dependencies = [
+ "cfg-if",
 ]
 
 [[package]]

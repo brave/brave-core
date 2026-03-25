@@ -40,17 +40,11 @@ class CardanoMaxLovelaceSendSolverUnitTest : public testing::Test {
 
  protected:
   TxBuilderParms MakeTxBuilderParams() {
-    TxBuilderParms builder_params;
-    builder_params.send_to_address = *CardanoAddress::FromString(
-        keyring_
-            .GetAddress(
-                1, mojom::CardanoKeyId(mojom::CardanoKeyRole::kExternal, 123))
-            ->address_string);
+    TxBuilderParms builder_params(GetSendToAddress(), GetChangeAddress());
     builder_params.invalid_after = 12345;
     builder_params.epoch_parameters = latest_epoch_parameters();
     builder_params.amount = 0;
     builder_params.sending_max_amount = true;
-    builder_params.change_address = GetChangeAddress();
 
     return builder_params;
   }
@@ -62,8 +56,7 @@ class CardanoMaxLovelaceSendSolverUnitTest : public testing::Test {
                        ->address_string;
 
     uint32_t id = next_input_id_++;
-    CardanoTransaction::TxInput tx_input;
-    tx_input.utxo_address = *CardanoAddress::FromString(address);
+    CardanoTransaction::TxInput tx_input(*CardanoAddress::FromString(address));
     tx_input.utxo_outpoint.txid =
         crypto::hash::Sha256(base::byte_span_from_ref(id));
     tx_input.utxo_outpoint.index = tx_input.utxo_outpoint.txid[0];
@@ -81,8 +74,7 @@ class CardanoMaxLovelaceSendSolverUnitTest : public testing::Test {
                        ->address_string;
 
     uint32_t id = next_input_id_++;
-    CardanoTransaction::TxInput tx_input;
-    tx_input.utxo_address = *CardanoAddress::FromString(address);
+    CardanoTransaction::TxInput tx_input(*CardanoAddress::FromString(address));
     tx_input.utxo_outpoint.txid =
         crypto::hash::Sha256(base::byte_span_from_ref(id));
     tx_input.utxo_outpoint.index = tx_input.utxo_outpoint.txid[0];
@@ -90,6 +82,14 @@ class CardanoMaxLovelaceSendSolverUnitTest : public testing::Test {
     tx_input.utxo_tokens = tokens;
 
     return tx_input;
+  }
+
+  CardanoAddress GetSendToAddress() {
+    return *CardanoAddress::FromString(
+        keyring_
+            .GetAddress(
+                1, mojom::CardanoKeyId(mojom::CardanoKeyRole::kExternal, 123))
+            ->address_string);
   }
 
   CardanoAddress GetChangeAddress() {

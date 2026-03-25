@@ -22,7 +22,7 @@
 namespace brave_wallet {
 
 struct TxBuilderParms {
-  TxBuilderParms();
+  TxBuilderParms(CardanoAddress send_to_address, CardanoAddress change_address);
   ~TxBuilderParms();
   TxBuilderParms(const TxBuilderParms&);
   TxBuilderParms& operator=(const TxBuilderParms&);
@@ -69,7 +69,7 @@ class CardanoTransaction {
 
   // Input of cardano transaction.
   struct TxInput {
-    TxInput();
+    explicit TxInput(CardanoAddress utxo_address);
     ~TxInput();
     TxInput(const TxInput& other);
     TxInput& operator=(const TxInput& other);
@@ -112,7 +112,7 @@ class CardanoTransaction {
 
   // Output of cardano transaction. Has type of either `kTarget` or `kChange`.
   struct TxOutput {
-    TxOutput();
+    explicit TxOutput(CardanoAddress address);
     ~TxOutput();
     TxOutput(const TxOutput& other);
     TxOutput& operator=(const TxOutput& other);
@@ -201,6 +201,8 @@ class CardanoTransaction {
   FRIEND_TEST_ALL_PREFIXES(CardanoTransactionSerializerTest, ValidateAmounts);
   FRIEND_TEST_ALL_PREFIXES(CardanoTransactionSerializerTest,
                            ValidateAmountsWithTokens);
+  FRIEND_TEST_ALL_PREFIXES(CardanoTxDecoderTest,
+                           EncodeTransaction_FailsOnDuplicateInputs);
 
   std::vector<TxInput> inputs_;
   std::vector<TxOutput> outputs_;
