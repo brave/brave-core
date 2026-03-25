@@ -7,10 +7,10 @@ import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
 import './brave_account_dialog.js'
 import './brave_account_email_input.js'
-import './brave_account_password_icons.js'
+import './brave_account_password_input.js'
 import { BraveAccountSignInDialogElement } from './brave_account_sign_in_dialog.js'
 import type { EmailInputEventDetail } from './brave_account_email_input.js'
-import { onToggleVisibility } from './brave_account_common.js'
+import type { PasswordInputEventDetail } from './brave_account_password_input.js'
 
 export function getHtml(this: BraveAccountSignInDialogElement) {
   return html`<!--_html_template_start_-->
@@ -27,30 +27,22 @@ export function getHtml(this: BraveAccountSignInDialogElement) {
           }}
         >
         </brave-account-email-input>
-        <leo-input
+        <brave-account-password-input
+          .isCapsLockOn=${this.isCapsLockOn}
+          label="$i18n{BRAVE_ACCOUNT_PASSWORD_INPUT_LABEL}"
           placeholder="$i18n{BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER}"
-          type="password"
-          @blur=${this.passwordFocusHandler}
-          @focus=${this.passwordFocusHandler}
-          @input=${this.onPasswordInput}
-          @toggle-visibility=${onToggleVisibility}
+          @password-input=${(e: CustomEvent<PasswordInputEventDetail>) => {
+            this.password = e.detail.password
+          }}
         >
-          <div class="password">
-            <div class="label">$i18n{BRAVE_ACCOUNT_PASSWORD_INPUT_LABEL}</div>
-            <div
-              class="forgot-password"
-              @click=${() => this.fire('forgot-password-button-clicked')}
-            >
-              $i18n{BRAVE_ACCOUNT_FORGOT_PASSWORD_BUTTON_LABEL}
-            </div>
-          </div>
-          <brave-account-password-icons
-            slot="right-icon"
-            .isCapsLockOn=${this.isCapsLockOn}
-            .isInputFocused=${this.isPasswordInputFocused}
+          <div
+            slot="label-extra"
+            class="forgot-password"
+            @click=${() => this.fire('forgot-password-button-clicked')}
           >
-          </brave-account-password-icons>
-        </leo-input>
+            $i18n{BRAVE_ACCOUNT_FORGOT_PASSWORD_BUTTON_LABEL}
+          </div>
+        </brave-account-password-input>
       </div>
       <leo-button
         slot="buttons"

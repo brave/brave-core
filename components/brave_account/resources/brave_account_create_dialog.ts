@@ -9,9 +9,8 @@ import {
   BraveAccountBrowserProxy,
   BraveAccountBrowserProxyImpl,
 } from './brave_account_browser_proxy.js'
-import { getCss } from './brave_account_create_dialog.css.js'
 import { getHtml } from './brave_account_create_dialog.html.js'
-import { Error, makeFocusHandler } from './brave_account_common.js'
+import { Error } from './brave_account_common.js'
 import {
   RegisterError,
   RegisterErrorCode,
@@ -25,10 +24,6 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
     return 'brave-account-create-dialog'
   }
 
-  static override get styles() {
-    return getCss()
-  }
-
   override render() {
     return getHtml.bind(this)()
   }
@@ -38,20 +33,10 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
       email: { type: String },
       isCapsLockOn: { type: Boolean },
       isEmailValid: { type: Boolean },
-      isPasswordInputFocused: { type: Boolean },
-      isPasswordConfirmationInputFocused: { type: Boolean },
       isPasswordStrongEnough: { type: Boolean },
       password: { type: String },
       passwordConfirmation: { type: String },
     }
-  }
-
-  protected onPasswordInput(detail: { value: string }) {
-    this.password = detail.value
-  }
-
-  protected onPasswordConfirmationInput(detail: { value: string }) {
-    this.passwordConfirmation = detail.value
   }
 
   // The reason this happens here (rather than in BraveAccountService) is that
@@ -102,40 +87,16 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
     }
   }
 
-  // TODO(sszaloki): we should consider exporting `noChange`
-  // from third_party/lit/v3_0/lit.ts instead, so that such
-  // a workaround is not needed.
-  protected getIconName() {
-    if (this.passwordConfirmation.length !== 0) {
-      this.icon =
-        this.passwordConfirmation === this.password
-          ? 'check-circle-filled'
-          : 'warning-triangle-filled'
-    }
-
-    return this.icon
-  }
-
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
 
-  protected icon: string = 'warning-triangle-filled'
   protected accessor email: string = ''
   protected accessor isCapsLockOn: boolean = false
   protected accessor isEmailValid: boolean = false
-  protected accessor isPasswordInputFocused: boolean = false
-  protected accessor isPasswordConfirmationInputFocused: boolean = false
   protected accessor isPasswordStrongEnough: boolean = false
   protected accessor password: string = ''
   protected accessor passwordConfirmation: string = ''
   protected registration = new Registration()
-
-  protected readonly passwordFocusHandler = makeFocusHandler(
-    (f) => (this.isPasswordInputFocused = f),
-  )
-  protected readonly passwordConfirmationFocusHandler = makeFocusHandler(
-    (f) => (this.isPasswordConfirmationInputFocused = f),
-  )
 }
 
 declare global {
