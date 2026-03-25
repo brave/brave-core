@@ -16,6 +16,8 @@
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#include "brave/browser/ui/brave_pages.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "content/public/browser/render_frame_host.h"
@@ -59,6 +61,13 @@ bool BraveWalletProviderDelegateImpl::IsTabVisible() {
 
 void BraveWalletProviderDelegateImpl::ShowPanel(const url::Origin& origin) {
   ::brave_wallet::ShowPanel(web_contents());
+}
+
+void BraveWalletProviderDelegateImpl::OpenWalletPage() {
+  auto* b = chrome::FindBrowserWithTab(web_contents());
+  if (b) {
+    ::brave::ShowBraveWallet(b);
+  }
 }
 
 void BraveWalletProviderDelegateImpl::ShowWalletBackup() {

@@ -164,6 +164,22 @@ std::vector<uint8_t> HDKey::GetPublicKeyBytes() const {
   return public_key_;
 }
 
+std::vector<uint8_t> HDKey::GetChainCodeBytes() const {
+  return std::vector<uint8_t>(chain_code_.begin(), chain_code_.end());
+}
+
+uint8_t HDKey::GetDepth() const {
+  return depth_;
+}
+
+uint32_t HDKey::GetParentFingerprint() const {
+  return base::U32FromBigEndian(parent_fingerprint_);
+}
+
+uint32_t HDKey::GetIndex() const {
+  return index_;
+}
+
 void HDKey::SetPublicKey(
     base::span<const uint8_t, kSecp256k1PubkeySize> value) {
   // Verify public key

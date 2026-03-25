@@ -74,6 +74,10 @@ class HDKey {
   std::string GetPrivateExtendedKey(ExtendedKeyVersion version) const;
   std::vector<uint8_t> GetPrivateKeyBytes() const;
   std::vector<uint8_t> GetPublicKeyBytes() const;
+  std::vector<uint8_t> GetChainCodeBytes() const;
+  uint8_t GetDepth() const;
+  uint32_t GetParentFingerprint() const;
+  uint32_t GetIndex() const;
   std::string GetPublicExtendedKey(ExtendedKeyVersion version) const;
   std::string GetZCashTransparentAddress(bool testnet) const;
   std::vector<uint8_t> GetUncompressedPublicKey() const;

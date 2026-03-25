@@ -16,9 +16,13 @@
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/account_discovery_manager.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/time/time.h"
 #include "brave/components/brave_wallet/browser/snap/snap_controller.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -197,8 +201,11 @@ BraveWalletService::BraveWalletService(
       keyring_service_(std::make_unique<KeyringService>(json_rpc_service_.get(),
                                                         profile_prefs,
                                                         local_state)),
-      snap_controller_(
-          std::make_unique<SnapController>(keyring_service_.get())),
+      snap_controller_(std::make_unique<SnapController>(
+          keyring_service_.get(),
+          profile_prefs,
+          delegate_->GetWalletBaseDirectory(),
+          url_loader_factory)),
       profile_prefs_(profile_prefs),
       eth_allowance_manager_(
           std::make_unique<EthAllowanceManager>(json_rpc_service_.get(),
@@ -2094,6 +2101,234 @@ void BraveWalletService::WriteToClipboard(const std::string& text,
 #else
   NOTREACHED();
 #endif
+}
+
+void BraveWalletService::InvokeSnap(const std::string& snap_id,
+                                    const std::string& method,
+                                    const std::string& params_json,
+                                    InvokeSnapCallback callback) {
+  auto params = base::JSONReader::Read(params_json, base::JSON_PARSE_RFC);
+  if (!params) {
+    std::move(callback).Run(std::nullopt, "Invalid params JSON");
+    return;
+  }
+  std::ignore = snap_controller_->InvokeSnap(
+      snap_id, method, std::move(*params), std::nullopt,
+      base::BindOnce(
+          [](InvokeSnapCallback cb,
+             std::optional<base::Value> result,
+             std::optional<std::string> error) {
+            std::optional<std::string> result_json;
+            if (result) {
+              result_json = base::WriteJson(*result);
+            }
+            std::move(cb).Run(result_json, error);
+          },
+          std::move(callback)));
+}
+
+void BraveWalletService::InstallSnap(const std::string& snap_id,
+                                     const std::string& version,
+                                     InstallSnapCallback callback) {
+  // SnapInstaller::InstallCallback uses std::string for the error; the
+  // mojom-generated InstallSnapCallback uses std::optional<std::string>.
+  // Adapt at the boundary.
+  snap_controller_->InstallSnap(
+      snap_id, version,
+      base::BindOnce(
+          [](InstallSnapCallback cb, bool success, const std::string& error) {
+            std::move(cb).Run(
+                success,
+                error.empty() ? std::nullopt : std::make_optional(error));
+          },
+          std::move(callback)));
+}
+
+void BraveWalletService::UninstallSnap(const std::string& snap_id,
+                                        UninstallSnapCallback callback) {
+  snap_controller_->UninstallSnap(snap_id);
+  std::move(callback).Run();
+}
+
+void BraveWalletService::GetInstalledSnaps(
+    GetInstalledSnapsCallback callback) {
+  std::vector<mojom::InstalledSnapInfoPtr> result;
+  for (const auto& info : snap_controller_->GetInstalledSnaps()) {
+    auto mojo_info = mojom::InstalledSnapInfo::New();
+    mojo_info->snap_id = info.snap_id;
+    mojo_info->version = info.version;
+    mojo_info->proposed_name = info.proposed_name;
+    mojo_info->permissions = info.permissions;
+    mojo_info->enabled = info.enabled;
+    result.push_back(std::move(mojo_info));
+  }
+  std::move(callback).Run(std::move(result));
+}
+
+void BraveWalletService::GetSnapBundle(const std::string& snap_id,
+                                       GetSnapBundleCallback callback) {
+  snap_controller_->GetSnapBundle(
+      snap_id,
+      base::BindOnce(
+          [](GetSnapBundleCallback cb,
+             std::optional<std::string> bundle) {
+            if (!bundle) {
+              std::move(cb).Run(std::nullopt, "Bundle not found");
+              return;
+            }
+            std::move(cb).Run(std::move(bundle), std::nullopt);
+          },
+          std::move(callback)));
+}
+
+// ---------------------------------------------------------------------------
+// Snap install approval flow
+// ---------------------------------------------------------------------------
+
+void BraveWalletService::SetSnapInstallState(
+    mojom::SnapInstallState state,
+    mojom::SnapInstallManifestPtr manifest,
+    const std::string& error) {
+  pending_snap_state_ = state;
+  if (manifest) {
+    pending_snap_manifest_ = std::move(manifest);
+  }
+  if (state == mojom::SnapInstallState::kIdle) {
+    pending_snap_manifest_.reset();
+    pending_snap_error_.clear();
+  }
+  pending_snap_error_ = error;
+
+  for (auto& observer : observers_) {
+    observer->OnPendingSnapInstallChanged();
+  }
+}
+
+void BraveWalletService::RequestInstallSnap(
+    const std::string& snap_id,
+    const std::string& version,
+    RequestInstallSnapCallback callback) {
+  if (pending_snap_state_ != mojom::SnapInstallState::kIdle) {
+    std::move(callback).Run(false, "already_pending");
+    return;
+  }
+
+  SetSnapInstallState(mojom::SnapInstallState::kInstalling, nullptr, "");
+  std::move(callback).Run(true, std::nullopt);
+
+  snap_controller_->PrepareInstall(
+      snap_id, version,
+      base::BindOnce(
+          [](base::WeakPtr<BraveWalletService> self,
+             SnapInstaller::PrepareResult result) {
+            if (!self) {
+              return;
+            }
+            if (!result.error.empty()) {
+              self->SetSnapInstallState(mojom::SnapInstallState::kFailed,
+                                        nullptr, result.error);
+              return;
+            }
+            auto manifest = mojom::SnapInstallManifest::New();
+            manifest->snap_id = result.snap_id;
+            manifest->version = result.version;
+            manifest->proposed_name = result.proposed_name;
+            manifest->description = result.description;
+            manifest->bundle_size_bytes = result.bundle_size_bytes;
+            manifest->permissions = result.permissions;
+            manifest->manifest_json = result.manifest_json;
+            manifest->icon_svg = result.icon_svg;
+            self->SetSnapInstallState(mojom::SnapInstallState::kPendingApproval,
+                                      std::move(manifest), "");
+          },
+          weak_ptr_factory_.GetWeakPtr()));
+}
+
+void BraveWalletService::NotifySnapInstallRequestProcessed(
+    bool approved,
+    NotifySnapInstallRequestProcessedCallback callback) {
+  if (pending_snap_state_ == mojom::SnapInstallState::kIdle) {
+    std::move(callback).Run();
+    return;
+  }
+
+  if (!approved
+      || pending_snap_state_ == mojom::SnapInstallState::kFailed
+      || pending_snap_state_ == mojom::SnapInstallState::kSuccess) {
+    // Reject, dismiss error, or dismiss success — all reset to idle.
+    if (pending_snap_manifest_) {
+      snap_controller_->AbortInstall(pending_snap_manifest_->snap_id);
+    }
+    SetSnapInstallState(mojom::SnapInstallState::kIdle, nullptr, "");
+    std::move(callback).Run();
+    return;
+  }
+
+  if (pending_snap_state_ != mojom::SnapInstallState::kPendingApproval
+      || !pending_snap_manifest_) {
+    std::move(callback).Run();
+    return;
+  }
+
+  std::string snap_id = pending_snap_manifest_->snap_id;
+  SetSnapInstallState(mojom::SnapInstallState::kInstalling, nullptr, "");
+  std::move(callback).Run();
+
+  snap_controller_->FinishInstall(
+      snap_id,
+      base::BindOnce(&BraveWalletService::OnSnapFinishInstalled,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void BraveWalletService::OnSnapFinishInstalled(bool success,
+                                               const std::string& error) {
+  if (!success) {
+    SetSnapInstallState(mojom::SnapInstallState::kFailed, nullptr, error);
+    return;
+  }
+  SetSnapInstallState(mojom::SnapInstallState::kSuccess, nullptr, "");
+  // Auto-clear to kIdle after 2 s so the panel snaps tab appears.
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(
+          [](base::WeakPtr<BraveWalletService> self) {
+            if (self
+                && self->pending_snap_state_
+                       == mojom::SnapInstallState::kSuccess) {
+              self->SetSnapInstallState(mojom::SnapInstallState::kIdle, nullptr,
+                                        "");
+            }
+          },
+          weak_ptr_factory_.GetWeakPtr()),
+      base::Seconds(2));
+}
+
+void BraveWalletService::GetSnapHomePage(
+    const std::string& snap_id,
+    GetSnapHomePageCallback callback) {
+  snap_controller_->GetSnapHomePage(snap_id, std::move(callback));
+}
+
+void BraveWalletService::SendSnapUserInput(
+    const std::string& snap_id,
+    const std::string& interface_id,
+    const std::string& event_json,
+    SendSnapUserInputCallback callback) {
+  snap_controller_->SendSnapUserInput(snap_id, interface_id, event_json,
+                                      std::move(callback));
+}
+
+void BraveWalletService::GetPendingSnapInstall(
+    GetPendingSnapInstallCallback callback) {
+  auto result = mojom::PendingSnapInstall::New();
+  result->state = pending_snap_state_;
+  if (pending_snap_manifest_) {
+    result->manifest = pending_snap_manifest_.Clone();
+  }
+  if (!pending_snap_error_.empty()) {
+    result->error = pending_snap_error_;
+  }
+  std::move(callback).Run(std::move(result));
 }
 
 base::CallbackListSubscription

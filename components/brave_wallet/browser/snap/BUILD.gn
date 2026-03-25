@@ -11,17 +11,28 @@ source_set("snap") {
   sources = [
     "snap_controller.cc",
     "snap_controller.h",
+    "snap_installer.cc",
+    "snap_installer.h",
     "snap_permission_manager.cc",
     "snap_permission_manager.h",
     "snap_registry.cc",
     "snap_registry.h",
+    "snap_storage.cc",
+    "snap_storage.h",
+    "snap_tar_utils.cc",
+    "snap_tar_utils.h",
   ]
 
   deps = [
     "//base",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/resources:static_resources",
     "//components/prefs",
+    "//crypto",
     "//mojo/public/cpp/bindings",
+    "//net/traffic_annotation",
+    "//services/network/public/cpp",
+    "//third_party/zlib/google:compression_utils",
     "//url",
   ]
 

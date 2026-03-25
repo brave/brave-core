@@ -2964,6 +2964,10 @@ interface BraveWalletServiceObserver {
 
   // Fired when wallet service is being reset
   OnResetWallet();
+
+  // Fired whenever the pending snap install state changes (kInstalling,
+  // kPendingApproval, kSuccess, kFailed, or back to kIdle).
+  OnPendingSnapInstallChanged();
 };
 
 interface BraveWalletServiceTokenObserver {
@@ -3108,6 +3112,41 @@ enum ExternalWalletType {
 struct AddSuggestTokenRequest {
   OriginInfo origin;
   BlockchainToken token;
+};
+
+// Metadata for a dynamically installed snap (not compiled into the binary).
+struct InstalledSnapInfo {
+  string snap_id;
+  string version;
+  string proposed_name;
+  array<string> permissions;
+  bool enabled;
+};
+
+// Manifest information shown to the user before approving a snap install.
+struct SnapInstallManifest {
+  string snap_id;
+  string version;
+  string proposed_name;
+  string description;
+  uint64 bundle_size_bytes;
+  array<string> permissions;
+  string manifest_json;
+  string icon_svg;  // empty when absent
+};
+
+enum SnapInstallState {
+  kIdle = 0,
+  kInstalling = 1,       // download + extract, or persisting after approval
+  kPendingApproval = 2,  // manifest ready, waiting for user decision
+  kSuccess = 3,          // terminal, auto-clears to kIdle after a brief delay
+  kFailed = 4,           // terminal, cleared by user via NotifySnapInstallRequestProcessed(false)
+};
+
+struct PendingSnapInstall {
+  SnapInstallState state;
+  SnapInstallManifest? manifest;  // populated from kPendingApproval onward
+  string? error;                  // populated when state == kFailed
 };
 
 // For default wallet setting, user assets, permission checks, importing
@@ -3334,6 +3373,55 @@ interface BraveWalletService {
   SetTransactionSimulationOptInStatus(BlowfishOptInStatus status);
 
   WriteToClipboard(string text, bool is_sensitive);
+
+  // Invoke a snap RPC method from the wallet UI. Equivalent to
+  // window.ethereum.request({ method: 'wallet_invokeSnap', ... }) but usable
+  // from chrome:// pages that have no window.ethereum.
+  // params_json and result_json are JSON-serialized to avoid mojo_base.mojom.Value
+  // tagged-union complexity when called from TypeScript.
+  InvokeSnap(string snap_id, string method, string params_json)
+      => (string? result_json, string? error);
+
+  // Install a snap from the npm registry. Returns success=false and a
+  // non-empty error string on failure.
+  InstallSnap(string snap_id, string version)
+      => (bool success, string? error);
+
+  // Remove an installed snap and delete its files. No-op for built-in snaps.
+  UninstallSnap(string snap_id) => ();
+
+  // Returns metadata for all dynamically installed snaps.
+  GetInstalledSnaps() => (array<InstalledSnapInfo> snaps);
+
+  // Returns the JS bundle source for an installed snap, used by SnapBridge to
+  // pass sourceCode to executeSnap. Returns null on error or if not installed.
+  GetSnapBundle(string snap_id) => (string? source_code, string? error);
+
+  // Initiates a user-approved snap install from the wallet UI.
+  // Returns immediately: success=true means download started, false means
+  // error (e.g. already_pending). Progress is reported via
+  // OnPendingSnapInstallChanged observer callbacks.
+  RequestInstallSnap(string snap_id, string version)
+      => (bool success, string? error);
+
+  // Called by the panel after user approves (approved=true) or rejects
+  // (approved=false) the pending snap install, or to dismiss kFailed/kSuccess.
+  // No-op when there is no pending install.
+  NotifySnapInstallRequestProcessed(bool approved) => ();
+
+  // Returns the current pending snap install state. Called by the panel on
+  // open and after receiving OnPendingSnapInstallChanged notifications.
+  GetPendingSnapInstall() => (PendingSnapInstall pending);
+
+  // Fetch a snap's homepage UI via the wallet page's SnapBridge so the panel
+  // can render snap UIs without hosting iframes itself.
+  // Returns error="no_bridge" if the wallet page is not open.
+  GetSnapHomePage(string snap_id)
+      => (string? content_json, string? interface_id, string? error);
+
+  // Forward a user input event to a snap interface and return the updated UI.
+  SendSnapUserInput(string snap_id, string interface_id, string event_json)
+      => (string? content_json, string? error);
 };
 
 // For reporting wallet related P3A metrics.
@@ -4068,16 +4156,32 @@ interface SimulationService {
 // Implemented by the wallet page TypeScript (SnapBridge).
 // Called from SnapController (C++) to manage snap iframes.
 interface SnapBridge {
-  // Create an iframe for the snap, load SES + snap source code.
-  LoadSnap(string snap_id, string snap_source)
+  // Create an iframe for the snap and load its bundle via fetch() on the
+  // snap executor origin. The bundle URL is derived from snap_id by the
+  // executor itself — no source string passes through Mojo.
+  LoadSnap(string snap_id)
       => (bool success, string? error);
 
   // Execute an RPC call on the snap (in its iframe).
-  InvokeSnap(string snap_id, string method, mojo_base.mojom.Value params)
+  // |caller_origin| is the serialized dApp origin passed to onRpcRequest;
+  // use "brave-wallet" for internal wallet calls.
+  InvokeSnap(string snap_id, string method, mojo_base.mojom.Value params,
+             string caller_origin)
       => (mojo_base.mojom.Value? result, string? error);
 
   // Destroy the snap's iframe and clean up resources.
   UnloadSnap(string snap_id) => ();
+
+  // Load the snap and invoke its onHomePage handler. Returns the rendered UI
+  // component tree as JSON and the interface ID needed for user input events.
+  // Called by C++ on behalf of the panel (which cannot run snap iframes).
+  FetchSnapHomePage(string snap_id)
+      => (string? content_json, string? interface_id, string? error);
+
+  // Send a user interaction event to a snap interface and return the updated
+  // UI component tree. event_json is a JSON-serialised SnapUserInputEvent.
+  SendSnapUserInputEvent(string snap_id, string interface_id, string event_json)
+      => (string? content_json, string? error);
 };
 
 // Implemented by SnapController (C++).

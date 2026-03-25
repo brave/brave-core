@@ -228,6 +228,9 @@ export function makeBraveWalletServiceObserver(store: Store) {
         store.dispatch(WalletActions.setAssetAutoDiscoveryCompleted(true))
       },
       onResetWallet: function () {},
+      onPendingSnapInstallChanged: function () {
+        store.dispatch(walletApi.util.invalidateTags(['PendingSnapInstall']))
+      },
     })
   return braveWalletServiceObserverReceiver
 }

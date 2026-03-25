@@ -4,9 +4,16 @@
   <head>
     <meta charset="UTF-8" />
     <title>Snap Executor</title>
-    <!-- SES lockdown must run first, before any snap code -->
-    <script src="ses_lockdown.bundle.js"></script>
-    <script src="snap_executor.bundle.js"></script>
+    <!-- 1. SES 1.15.0 UMD — defines lockdown(), Compartment, harden(),
+            repairIntrinsics() globally. Does NOT auto-call lockdown().
+            MetaMask's bundle.js (via LavaMoat) calls repairIntrinsics()
+            directly with its own options, so we must NOT call lockdown()
+            ourselves — that would trigger SES_ALREADY_LOCKED_DOWN. -->
+    <script src="ses.umd.js"></script>
+    <!-- 2. Brave prefetch bridge — must run before MetaMask stream handshake. -->
+    <script src="snap_prefetch_bridge.bundle.js"></script>
+    <!-- 3. MetaMask's IFrameSnapExecutor (calls repairIntrinsics internally). -->
+    <script src="bundle.js"></script>
   </head>
   <body></body>
 </html>

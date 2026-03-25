@@ -1205,6 +1205,15 @@ void EthereumProviderImpl::HandleWalletInvokeSnapMethod(
   base::Value snap_params =
       snap_params_val ? snap_params_val->Clone() : base::Value(base::Value::Dict());
 
+  // Reject opaque / non-web origins (sandboxed iframes, about:blank, etc.).
+  if (origin_.opaque() || (origin_.scheme() != url::kHttpScheme &&
+                           origin_.scheme() != url::kHttpsScheme)) {
+    RejectMismatchError(std::move(request.id),
+                        "wallet_invokeSnap requires a secure web origin",
+                        std::move(request_callback));
+    return;
+  }
+
   auto* snap_controller = brave_wallet_service_->snap_controller();
   if (!snap_controller) {
     RejectMismatchError(std::move(request.id), "SnapController not available",
@@ -1212,32 +1221,149 @@ void EthereumProviderImpl::HandleWalletInvokeSnapMethod(
     return;
   }
 
-  snap_controller->InvokeSnap(
-      *snap_id, *method, std::move(snap_params),
+  // Auto-grant connection for installed snaps whose manifest permits dApp
+  // access. This handles dApps that call wallet_invokeSnap directly after
+  // seeing a snap in wallet_getSnaps without a prior wallet_requestSnaps call.
+  if (snap_controller->IsOriginAllowedByManifest(origin_, *snap_id) &&
+      !snap_controller->IsSnapConnected(origin_, *snap_id)) {
+    snap_controller->GrantSnapConnection(origin_, *snap_id);
+  }
+
+  const bool bridge_was_ready = snap_controller->InvokeSnap(
+      *snap_id, *method, std::move(snap_params), origin_,
       base::BindOnce(&EthereumProviderImpl::OnSnapInvokeResult,
                      weak_factory_.GetWeakPtr(), std::move(request_callback),
                      std::move(request.id)));
+  if (!bridge_was_ready) {
+    // Bridge not connected — open brave://wallet so the snap executor loads
+    // and the queued request is dispatched once the bridge connects.
+    delegate_->OpenWalletPage();
+  }
 }
 
 void EthereumProviderImpl::HandleWalletRequestSnapsMethod(
     JsonRpcRequest request,
     RequestCallback request_callback) {
-  // wallet_requestSnaps: grant permission to use the listed snaps.
-  // TODO(snap): implement snap permission flow. For now return empty object.
-  std::move(request_callback)
-      .Run(mojom::EthereumProviderResponse::New(
-          std::move(request.id), base::Value(base::Value::Dict()), false, "",
-          false));
+  // wallet_requestSnaps params: [{ "npm:snap-id": { "version": "^1.0.0" } }]
+  const base::Value::Dict* snaps_dict = nullptr;
+  if (request.params.size() == 1 && request.params.front().is_dict()) {
+    snaps_dict = &request.params.front().GetDict();
+  }
+  if (!snaps_dict) {
+    RejectInvalidParams(std::move(request.id), std::move(request_callback));
+    return;
+  }
+
+  if (origin_.opaque() || (origin_.scheme() != url::kHttpScheme &&
+                           origin_.scheme() != url::kHttpsScheme)) {
+    RejectMismatchError(std::move(request.id),
+                        "wallet_requestSnaps requires a secure web origin",
+                        std::move(request_callback));
+    return;
+  }
+
+  auto* snap_controller = brave_wallet_service_->snap_controller();
+  if (!snap_controller) {
+    RejectMismatchError(std::move(request.id), "SnapController not available",
+                        std::move(request_callback));
+    return;
+  }
+
+  // Partition snaps into already-available and needing installation.
+  struct InstallItem {
+    std::string snap_id;
+    std::string version;
+  };
+  base::Value::Dict result_dict;
+  std::vector<InstallItem> to_install;
+
+  for (const auto [snap_id, opts] : *snaps_dict) {
+    std::string version = "latest";
+    if (opts.is_dict()) {
+      if (const std::string* v = opts.GetDict().FindString("version")) {
+        version = *v;
+      }
+    }
+      if (snap_controller->IsSnapAvailable(snap_id)) {
+      // Already installed — grant connection if not already connected.
+      snap_controller->GrantSnapConnection(origin_, snap_id);
+      result_dict.Set(snap_id, base::Value::Dict());
+    } else {
+      to_install.push_back({snap_id, std::move(version)});
+    }
+  }
+
+  if (to_install.empty()) {
+    std::move(request_callback)
+        .Run(mojom::EthereumProviderResponse::New(
+            std::move(request.id), base::Value(std::move(result_dict)), false,
+            "", false));
+    return;
+  }
+
+  // Install all requested snaps in parallel, then grant connection on success.
+  struct InstallState {
+    size_t remaining;
+    base::Value::Dict result_dict;
+    base::Value request_id;
+    RequestCallback callback;
+    url::Origin origin;
+  };
+  auto state = std::make_shared<InstallState>(
+      InstallState{to_install.size(), std::move(result_dict),
+                   std::move(request.id), std::move(request_callback),
+                   origin_});
+
+  for (const auto& item : to_install) {
+    snap_controller->InstallSnap(
+        item.snap_id, item.version,
+        base::BindOnce(
+            [](std::shared_ptr<InstallState> state,
+               SnapController* snap_controller, std::string snap_id,
+               bool success, const std::string& /*error*/) {
+              if (success) {
+                snap_controller->GrantSnapConnection(state->origin, snap_id);
+                state->result_dict.Set(snap_id, base::Value::Dict());
+              }
+              if (--state->remaining == 0) {
+                std::move(state->callback)
+                    .Run(mojom::EthereumProviderResponse::New(
+                        std::move(state->request_id),
+                        base::Value(std::move(state->result_dict)), false, "",
+                        false));
+              }
+            },
+            state, snap_controller, item.snap_id));
+  }
 }
 
 void EthereumProviderImpl::HandleWalletGetSnapsMethod(
     JsonRpcRequest request,
     RequestCallback request_callback) {
-  // wallet_getSnaps: return the set of permitted snaps for the caller.
-  // TODO(snap): return real permitted-snaps map. For now return empty object.
+  // Return all installed snaps whose manifest permits dApp access
+  // (endowment:rpc with allow_dapps=true). Installation is treated as implicit
+  // availability to any https origin — connection grants gate wallet_invokeSnap,
+  // not this discovery method.
+  auto* snap_controller = brave_wallet_service_->snap_controller();
+  base::Value::Dict result;
+  if (snap_controller && !origin_.opaque() &&
+      (origin_.scheme() == url::kHttpScheme ||
+       origin_.scheme() == url::kHttpsScheme)) {
+    for (const auto& info : snap_controller->GetInstalledSnaps()) {
+      if (snap_controller->IsOriginAllowedByManifest(origin_, info.snap_id)) {
+        LOG(ERROR) << "XXXZZZ snap id " << info.snap_id;
+        base::Value::Dict snap_info;
+        snap_info.Set("id", info.snap_id);
+        snap_info.Set("version", info.version);
+        result.Set(info.snap_id, std::move(snap_info));
+      } else {
+        LOG(ERROR) << "XXXZZZ origin not allowed";
+      }
+    }
+  }
   std::move(request_callback)
       .Run(mojom::EthereumProviderResponse::New(
-          std::move(request.id), base::Value(base::Value::Dict()), false, "",
+          std::move(request.id), base::Value(std::move(result)), false, "",
           false));
 }
 

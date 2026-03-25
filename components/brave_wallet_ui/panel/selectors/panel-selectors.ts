@@ -36,3 +36,7 @@ export const submittingTransaction = createSelector(
   [selectPanelState],
   (panel) => panel.submittingTransaction,
 )
+export const viewingSnapId = createSelector(
+  [selectPanelState],
+  (panel) => panel.viewingSnapId,
+)

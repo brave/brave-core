@@ -3,14 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-// SES (Secure EcmaScript) lockdown must run before any snap code is executed.
-// This hardens the JS environment inside the snap executor iframe, preventing
-// prototype pollution and other sandbox escape attacks.
+// SES (Secure EcmaScript) lockdown must run before MetaMask's bundle.js so
+// that Compartment and harden are available when IFrameSnapExecutor initializes.
+// MetaMask's executor expects lockdown() to have already been called (they use
+// LavaMoat to do this; we call it explicitly here instead).
 
 import 'ses'
 
 lockdown({
   errorTaming: 'unsafe',
   overrideTaming: 'severe',
-  consoleTaming: 'unsafe'
+  consoleTaming: 'unsafe',
+  dateTaming: 'unsafe',
 })

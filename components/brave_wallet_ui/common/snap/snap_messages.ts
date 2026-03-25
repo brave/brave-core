@@ -10,12 +10,11 @@
 // Wallet page → iframe
 // ---------------------------------------------------------------------------
 
-/** Tell the iframe to load and initialize a snap. */
+/** Tell the iframe to load and initialize a snap.
+ * The iframe fetches the bundle from its own origin by snapId. */
 export type LoadSnapCommand = {
   type: 'load_snap'
   snapId: string
-  /** Bundled snap source code (CommonJS). */
-  source: string
   requestId: string
 }
 
@@ -91,10 +90,9 @@ export function isSnapRequestMessage(
 
 export function makeLoadSnapCommand(
   snapId: string,
-  source: string,
   requestId: string,
 ): LoadSnapCommand {
-  return { type: 'load_snap', snapId, source, requestId }
+  return { type: 'load_snap', snapId, requestId }
 }
 
 export function makeInvokeSnapCommand(

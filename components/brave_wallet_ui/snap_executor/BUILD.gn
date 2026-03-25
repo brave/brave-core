@@ -10,6 +10,17 @@ import("//brave/components/common/typescript.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/grit/repack.gni")
 
+# Copy MetaMask's pre-built iframe executor bundle.js and the matching SES UMD
+# file (ses@1.15.0) which defines lockdown(), Compartment, harden globally.
+# bundle.js requires lockdown() to have been called before it runs.
+copy("snap_executor_metamask_bundle") {
+  sources = [
+    "//brave/node_modules/@metamask/snaps-execution-environments/dist/webpack/iframe/bundle.js",
+    "//brave/node_modules/ses/dist/ses.umd.js",
+  ]
+  outputs = [ "$root_gen_dir/brave/components/snap_executor/metamask_bundle/{{source_file_part}}" ]
+}
+
 transpile_web_ui("snap_executor_ui") {
   output_module = false
   entry_points = [
@@ -20,6 +31,10 @@ transpile_web_ui("snap_executor_ui") {
     [
       "snap_executor",
       rebase_path("snap_executor.ts"),
+    ],
+    [
+      "snap_prefetch_bridge",
+      rebase_path("snap_prefetch_bridge.ts"),
     ],
   ]
   webpack_aliases = [ "browser" ]

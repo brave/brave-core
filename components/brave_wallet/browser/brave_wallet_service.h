@@ -289,6 +289,42 @@ class BraveWalletService : public KeyedService,
 
   void WriteToClipboard(const std::string& text, bool is_sensitive) override;
 
+  void InvokeSnap(const std::string& snap_id,
+                  const std::string& method,
+                  const std::string& params_json,
+                  InvokeSnapCallback callback) override;
+
+  void InstallSnap(const std::string& snap_id,
+                   const std::string& version,
+                   InstallSnapCallback callback) override;
+
+  void UninstallSnap(const std::string& snap_id,
+                     UninstallSnapCallback callback) override;
+
+  void GetInstalledSnaps(GetInstalledSnapsCallback callback) override;
+
+  void GetSnapBundle(const std::string& snap_id,
+                     GetSnapBundleCallback callback) override;
+
+  void RequestInstallSnap(const std::string& snap_id,
+                          const std::string& version,
+                          RequestInstallSnapCallback callback) override;
+
+  void NotifySnapInstallRequestProcessed(
+      bool approved,
+      NotifySnapInstallRequestProcessedCallback callback) override;
+
+  void GetPendingSnapInstall(
+      GetPendingSnapInstallCallback callback) override;
+
+  void GetSnapHomePage(const std::string& snap_id,
+                       GetSnapHomePageCallback callback) override;
+
+  void SendSnapUserInput(const std::string& snap_id,
+                         const std::string& interface_id,
+                         const std::string& event_json,
+                         SendSnapUserInputCallback callback) override;
+
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
 
@@ -383,6 +419,12 @@ class BraveWalletService : public KeyedService,
   bool HasPendingGetEncryptionPublicKeyRequestForOrigin(
       const url::Origin& origin) const;
 
+  // Snap install approval flow helpers.
+  void OnSnapFinishInstalled(bool success, const std::string& error);
+  void SetSnapInstallState(mojom::SnapInstallState state,
+                           mojom::SnapInstallManifestPtr manifest,
+                           const std::string& error);
+
   void OnDefaultEthereumWalletChanged();
   void OnDefaultSolanaWalletChanged();
   void OnDefaultCardanoWalletChanged();
@@ -464,6 +506,12 @@ class BraveWalletService : public KeyedService,
   base::flat_map<std::string, PendingGetEncryptPublicKeyRequest>
       pending_get_encryption_public_key_requests_;
   base::flat_map<std::string, PendingDecryptRequest> pending_decrypt_requests_;
+  // Pending snap install state — at most one in-flight at a time.
+  mojom::SnapInstallState pending_snap_state_ =
+      mojom::SnapInstallState::kIdle;
+  mojom::SnapInstallManifestPtr pending_snap_manifest_;
+  std::string pending_snap_error_;
+
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;
   mojo::RemoteSet<mojom::BraveWalletServiceTokenObserver> token_observers_;
   std::unique_ptr<BraveWalletServiceDelegate> delegate_;

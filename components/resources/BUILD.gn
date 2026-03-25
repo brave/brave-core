@@ -57,6 +57,10 @@ brave_grit("static_resources") {
 
   if (enable_brave_wallet) {
     deps += [
+      "//brave/components/brave_wallet_ui/snap_executor:snap_executor_metamask_bundle",
+      "//brave/components/brave_wallet_ui/cosmos_snap:cosmos_snap_bundle",
+      "//brave/components/brave_wallet_ui/filecoin_snap:filecoin_snap_bundle",
+      "//brave/components/brave_wallet_ui/polkadot_snap:polkadot_snap_bundle",
       "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
       "//brave/components/decentralized_dns/content/resources:bundle_js",
     ]

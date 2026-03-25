@@ -54,6 +54,12 @@
           <include name="IDR_WALLET_PANEL_HTML" file="../brave_wallet_ui/panel/wallet_panel.html" type="BINDATA" />
           <include name="IDR_BRAVE_WALLET_LEDGER_BRIDGE_HTML" file="../brave_wallet_ui/ledger/ledger.html" type="BINDATA" />
           <include name="IDR_BRAVE_WALLET_TREZOR_BRIDGE_HTML" file="../brave_wallet_ui/trezor/trezor.html" type="BINDATA" />
+          <include name="IDR_BRAVE_WALLET_SNAP_EXECUTOR_HTML" file="../brave_wallet_ui/snap_executor/snap_executor.html" type="BINDATA" />
+          <include name="IDR_BRAVE_WALLET_SNAP_EXECUTOR_BUNDLE_JS" file="${root_gen_dir}/brave/components/snap_executor/metamask_bundle/bundle.js" use_base_dir="false" type="BINDATA" />
+          <include name="IDR_BRAVE_WALLET_SNAP_EXECUTOR_SES_UMD_JS" file="${root_gen_dir}/brave/components/snap_executor/metamask_bundle/ses.umd.js" use_base_dir="false" type="BINDATA" />
+          <include name="IDR_BRAVE_WALLET_COSMOS_SNAP_JS" file="${root_gen_dir}/brave/components/cosmos_snap/cosmos_snap.bundle.js" use_base_dir="false" type="BINDATA" />
+          <include name="IDR_BRAVE_WALLET_FILECOIN_SNAP_JS" file="${root_gen_dir}/brave/components/filecoin_snap/filecoin_snap.bundle.js" use_base_dir="false" type="BINDATA" />
+          <include name="IDR_BRAVE_WALLET_POLKADOT_SNAP_JS" file="${root_gen_dir}/brave/components/polkadot_snap/polkadot_snap.bundle.js" use_base_dir="false" type="BINDATA" />
         </if>
 
         <!-- WebUI swap, send, and deposit page resources for Android -->

@@ -1,0 +1,16 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
+assert(enable_brave_wallet)
+
+# Copy the pre-built filsnap bundle (from npm) to the gen dir so
+# that brave_components_resources.grd can embed it as
+# IDR_BRAVE_WALLET_FILECOIN_SNAP_JS.
+copy("filecoin_snap_bundle") {
+  sources = [ "//brave/node_modules/filsnap/dist/snap.js" ]
+  outputs = [ "$root_gen_dir/brave/components/filecoin_snap/filecoin_snap.bundle.js" ]
+}
