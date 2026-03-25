@@ -24,7 +24,7 @@ MENUNAME="Brave Origin"
 SHORTDESC="The web browser from Brave"
 
 # Detailed package description.
-FULLDESC="Browse faster by blocking ads and trackers that violate your privacy and cost you time and money."
+FULLDESC="Enjoy Brave's industry-leading privacy, adblock, and speed (via Brave Shields), but minus the extra features."
 
 # Package maintainer information.
 MAINTNAME="Brave Software"
