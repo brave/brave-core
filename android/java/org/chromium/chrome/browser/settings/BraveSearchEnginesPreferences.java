@@ -268,7 +268,9 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
                                     profile.getPrimaryOtrProfile(/* createIfNeeded= */ true),
                                     true));
 
-                    if (!BraveConfig.WEB_DISCOVERY_ENABLED) {
+                    if (!BraveConfig.WEB_DISCOVERY_ENABLED
+                            || UserPrefs.get(profile)
+                                    .isManagedPreference(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED)) {
                         indexData.removeEntryForKey(frag, PREF_SEND_WEB_DISCOVERY);
                     } else {
                         indexData.updateEntryForKey(

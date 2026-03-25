@@ -20,8 +20,8 @@ public class BraveSiteSettingsPreferencesBase extends BaseSiteSettingsFragment {
     private static final String IDLE_DETECTION = "idle_detection";
     private static final String DIVIDER_KEY = "divider";
     private static final String PERMISSION_AUTOREVOCATION_KEY = "permission_autorevocation";
-    private static final String ETHEREUM_CONNECTED_SITES_KEY = "ethereum_connected_sites";
-    private static final String SOLANA_CONNECTED_SITES_KEY = "solana_connected_sites";
+    public static final String ETHEREUM_CONNECTED_SITES_KEY = "ethereum_connected_sites";
+    public static final String SOLANA_CONNECTED_SITES_KEY = "solana_connected_sites";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
 
