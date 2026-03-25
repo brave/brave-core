@@ -83,7 +83,6 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.shields.BraveShieldsHandler;
 import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
 import org.chromium.chrome.browser.shields.BraveShieldsUtils;
 import org.chromium.chrome.browser.shields.BraveUnifiedPanelHandler;
@@ -174,7 +173,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private FrameLayout mShieldsLayout;
     private FrameLayout mRewardsLayout;
     private FrameLayout mYouTubePipLayout;
-    private BraveShieldsHandler mBraveShieldsHandler;
     private BraveUnifiedPanelHandler mUnifiedPanelHandler;
 
     // TabModelSelectorTabObserver setups observer at the ctor
@@ -324,9 +322,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             BraveTouchUtils.ensureMinTouchTarget(mYouTubePipButton);
         }
 
-        mBraveShieldsHandler = new BraveShieldsHandler(getContext());
         mUnifiedPanelHandler = new BraveUnifiedPanelHandler(getContext());
-        BraveShieldsMenuObserver shieldsObserver =
+        mUnifiedPanelHandler.addObserver(
                 new BraveShieldsMenuObserver() {
                     @Override
                     public void onMenuTopShieldsChanged(boolean isOn, boolean isTopShield) {
@@ -341,24 +338,17 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             currentTab.stopLoading();
                         }
                         currentTab.reloadIgnoringCache();
-                        if (null != mBraveShieldsHandler) {
-                            // Clean the Bravery Panel
-                            mBraveShieldsHandler.updateValues(0, 0, 0);
-                        }
                     }
-                };
-        mBraveShieldsHandler.addObserver(shieldsObserver);
-        mUnifiedPanelHandler.addObserver(shieldsObserver);
+                });
         mBraveShieldsContentSettingsObserver =
                 new BraveShieldsContentSettingsObserver() {
                     @Override
                     public void blockEvent(int tabId, String blockType, String subresource) {
-                        mBraveShieldsHandler.addStat(tabId, blockType, subresource);
+                        mUnifiedPanelHandler.addStat(tabId, blockType, subresource);
                         Tab currentTab = getToolbarDataProvider().getTab();
                         if (currentTab == null || currentTab.getId() != tabId) {
                             return;
                         }
-                        mBraveShieldsHandler.updateValues(tabId);
                         if (!isIncognito()
                                 && OnboardingPrefManager.getInstance().isBraveStatsEnabled()
                                 && (blockType.equals(
@@ -560,7 +550,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         if (getToolbarDataProvider().getTab() == tab) {
                             updateBraveShieldsButtonState(tab);
                         }
-                        mBraveShieldsHandler.clearBraveShieldsCount(tab.getId());
+                        mUnifiedPanelHandler.clearBraveShieldsCount(tab.getId());
                         dismissShieldsTooltip();
                         hidePlaylistButton();
                         mPublisherId = "";
@@ -569,7 +559,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     @Override
                     public void onPageLoadFinished(final Tab tab, GURL url) {
                         if (getToolbarDataProvider().getTab() == tab) {
-                            mBraveShieldsHandler.updateUrlSpec(url.getSpec());
                             updateBraveShieldsButtonState(tab);
 
                             if (mBraveShieldsButton != null
@@ -623,7 +612,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                 mDatabaseHelper.deleteDisplayAdsFromTab(tab.getId());
                             }
                         }.start();
-                        mBraveShieldsHandler.removeStat(tab.getId());
+                        mUnifiedPanelHandler.removeStat(tab.getId());
                         mTabsWithWalletIcon.remove(tab.getId());
                     }
                 };
@@ -936,9 +925,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             if (!BraveShieldsUtils.isTooltipShown
                     && !BraveActivity.getBraveActivity().mIsDeepLink) {
                 if (!BraveShieldsUtils.hasShieldsTooltipShown(
-                            BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)
-                        && mBraveShieldsHandler.getTrackersBlockedCount(tab.getId())
-                                        + mBraveShieldsHandler.getAdsBlockedCount(tab.getId())
+                                BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)
+                        && mUnifiedPanelHandler.getTrackersBlockedCount(tab.getId())
+                                        + mUnifiedPanelHandler.getAdsBlockedCount(tab.getId())
                                 > 0) {
                     showTooltip(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP, tab.getId());
                 }
@@ -960,8 +949,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mShieldsPopupWindowTooltip =
                     new PopupWindowTooltip.Builder(getContext())
                             .anchorView(mBraveShieldsButton)
-                            .arrowColor(ContextCompat.getColor(
-                                    getContext(), R.color.onboarding_arrow_color))
+                            .arrowColor(
+                                    ContextCompat.getColor(
+                                            getContext(), R.color.onboarding_arrow_color))
                             .gravity(Gravity.BOTTOM)
                             .dismissOnOutsideTouch(true)
                             .dismissOnInsideTouch(false)
@@ -969,19 +959,21 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             .padding(padding)
                             .parentPaddingHorizontal(dpToPx(getContext(), 10))
                             .modal(true)
-                            .onDismissListener(tooltip -> {
-                                if (viewGroup != null && highlightView != null) {
-                                    highlightView.stopAnimation();
-                                    viewGroup.removeView(highlightView);
-                                }
-                            })
+                            .onDismissListener(
+                                    tooltip -> {
+                                        if (viewGroup != null && highlightView != null) {
+                                            highlightView.stopAnimation();
+                                            viewGroup.removeView(highlightView);
+                                        }
+                                    })
                             .contentView(R.layout.brave_shields_tooltip_layout)
                             .build();
 
-            ArrayList<String> blockerNamesList = mBraveShieldsHandler.getBlockerNamesList(tabId);
+            ArrayList<String> blockerNamesList = mUnifiedPanelHandler.getBlockerNamesList(tabId);
 
-            int adsTrackersCount = mBraveShieldsHandler.getTrackersBlockedCount(tabId)
-                    + mBraveShieldsHandler.getAdsBlockedCount(tabId);
+            int adsTrackersCount =
+                    mUnifiedPanelHandler.getTrackersBlockedCount(tabId)
+                            + mUnifiedPanelHandler.getAdsBlockedCount(tabId);
 
             String displayTrackerName = "";
             if (blockerNamesList.contains(BigtechCompany.Google.name())) {
@@ -1178,7 +1170,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     @Override
     public void onClickImpl(View v) {
-        if (mBraveShieldsHandler == null) {
+        if (mUnifiedPanelHandler == null) {
             assert false;
             return;
         }
@@ -1277,14 +1269,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             if (!isValidProtocolForShields(url.getProtocol())) {
                 return;
             }
-            mUnifiedPanelHandler.show(mBraveShieldsButton, currentTab, mBraveShieldsHandler);
+            mUnifiedPanelHandler.show(mBraveShieldsButton, currentTab);
         } catch (Exception e) {
             return;
         }
-    }
-
-    public BraveShieldsHandler getBraveShieldsHandler() {
-        return mBraveShieldsHandler;
     }
 
     @Override
