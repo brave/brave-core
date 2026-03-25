@@ -318,6 +318,10 @@ void TorLauncherFactory::GotSOCKSListeners(
       VLOG(2) << listener;
     }
   }
+  if (listeners.empty()) {
+    VLOG(1) << "No SOCKS listeners available";
+    return;
+  }
   std::string tor_proxy_uri = kTorProxyScheme + listeners[0];
   // Remove extra quotes
   std::erase(tor_proxy_uri, '\"');

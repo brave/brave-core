@@ -111,6 +111,7 @@ class TorControl {
   FRIEND_TEST_ALL_PREFIXES(TorControlTest, ReadDone);
   FRIEND_TEST_ALL_PREFIXES(TorControlTest, ReadLine);
   FRIEND_TEST_ALL_PREFIXES(TorControlTest, GetCircuitEstablishedDone);
+  FRIEND_TEST_ALL_PREFIXES(TorControlTest, SetupBridgesCommand);
 
   static bool ParseKV(const std::string& string,
                       std::string* key,
@@ -235,7 +236,7 @@ class TorControl {
   bool reading_;
   scoped_refptr<net::GrowableIOBuffer> readiobuf_;
   size_t read_start_;  // offset where the current line starts
-  bool read_cr_;    // true if we have parsed a CR
+  bool read_cr_;       // true if we have parsed a CR
 
   // Asynchronous command response callback state machine.
   std::map<TorControlEvent, size_t> async_events_;
