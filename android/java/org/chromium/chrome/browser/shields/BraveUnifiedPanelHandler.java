@@ -46,6 +46,9 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.Log;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
@@ -77,9 +80,12 @@ import org.chromium.webcompat_reporter.mojom.WebcompatCategoryItem;
 import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -91,6 +97,25 @@ public class BraveUnifiedPanelHandler {
     private static final String TAG = "BraveUnifiedPanel";
     private static final String BROKEN_SITE_REPORT_URL =
             "https://github.com/brave/brave-browser/wiki/Web-compatibility-reports";
+
+    private static final int MAX_BLOCKED_URLS = 50;
+    private static final int POPUP_ELEVATION_DP = 20;
+    private static final int POPUP_MARGIN_DP = 16;
+    private static final int POPUP_MAX_WIDTH_DP = 400;
+    private static final float LANDSCAPE_WIDTH_FRACTION = 0.50f;
+    private static final int BOTTOM_TOOLBAR_OFFSET_DP = 8;
+    private static final int ICON_OVERLAP_MARGIN_DP = -8;
+
+    private static class BlockersInfo {
+        public int mAdsBlocked;
+        public int mTrackersBlocked;
+        public int mScriptsBlocked;
+        public int mFingerprintsBlocked;
+        public final ArrayList<String> mBlockedUrls = new ArrayList<>();
+    }
+
+    private final Map<Integer, BlockersInfo> mTabsStat =
+            Collections.synchronizedMap(new HashMap<>());
 
     private final @Nullable Context mContext;
     private static final float BLOCK_SCRIPTS_SWITCH_SHIELDS_ENABLED_ALPHA = 1f;
@@ -147,7 +172,6 @@ public class BraveUnifiedPanelHandler {
     // Current state
     private @Nullable Profile mProfile;
     private @Nullable Tab mCurrentTab;
-    private @Nullable BraveShieldsHandler mLegacyShieldsHandler;
 
     private static @Nullable Context scanForActivity(@Nullable Context cont) {
         if (cont == null) {
@@ -160,6 +184,12 @@ public class BraveUnifiedPanelHandler {
         return cont;
     }
 
+    /**
+     * Creates a new panel handler. The provided context is unwrapped to find the hosting Activity;
+     * if no Activity is found, the handler will be inert (show() becomes a no-op).
+     *
+     * @param context an Activity context or a ContextWrapper that wraps one.
+     */
     public BraveUnifiedPanelHandler(Context context) {
         Context contextCandidate = scanForActivity(context);
         mHardwareButtonMenuAnchor = null;
@@ -171,8 +201,6 @@ public class BraveUnifiedPanelHandler {
         if (mContext != null) {
             mHardwareButtonMenuAnchor = ((Activity) mContext).findViewById(R.id.menu_anchor_stub);
         }
-
-        mLegacyShieldsHandler = null;
     }
 
     /**
@@ -185,11 +213,14 @@ public class BraveUnifiedPanelHandler {
         mMenuObserver = menuObserver;
     }
 
-    public void show(
-            @Nullable View anchorView,
-            @Nullable Tab tab,
-            @Nullable BraveShieldsHandler shieldsHandler) {
-        mLegacyShieldsHandler = shieldsHandler;
+    /**
+     * Displays the unified Shields panel anchored to the given view for the specified tab. Reads
+     * current shield settings from the tab's profile and populates the UI accordingly.
+     *
+     * @param anchorView the toolbar view to anchor the popup to, or null to use the fallback.
+     * @param tab the current browser tab whose shields state is displayed and modified.
+     */
+    public void show(@Nullable View anchorView, @Nullable Tab tab) {
         if (mHardwareButtonMenuAnchor == null || mContext == null) {
             return;
         }
@@ -201,6 +232,9 @@ public class BraveUnifiedPanelHandler {
         mCurrentTab = tab;
         mUrl = tab.getUrl();
         mProfile = Profile.fromWebContents(tab.getWebContents());
+        if (mProfile == null) {
+            return;
+        }
 
         mPopupWindow = showPopupMenu(anchorView);
         if (mPopupWindow != null) {
@@ -244,9 +278,9 @@ public class BraveUnifiedPanelHandler {
         }
 
         mBlockCountText.setText(R.string.trackers_blocked_text);
-        if (mCurrentTab != null && mLegacyShieldsHandler != null) {
+        if (mCurrentTab != null) {
             int tabId = mCurrentTab.getId();
-            int totalBlocked = mLegacyShieldsHandler.getTotalBlockedCount(tabId);
+            int totalBlocked = getTotalBlockedCount(tabId);
             mBlockCountNumber.setText(String.valueOf(totalBlocked));
             displayBlockedItemFavicons(tabId);
         } else {
@@ -292,18 +326,18 @@ public class BraveUnifiedPanelHandler {
             mPopupView = inflater.inflate(R.layout.brave_unified_panel_layout, null);
             setupViews();
         } catch (Exception e) {
+            Log.e(TAG, "Failed to inflate panel layout", e);
             return null;
         }
 
         float density = mContext.getResources().getDisplayMetrics().density;
-        int marginDp = 16;
-        int marginPx = (int) (marginDp * density);
+        int marginPx = (int) (POPUP_MARGIN_DP * density);
         int screenWidth = mContext.getResources().getDisplayMetrics().widthPixels;
-        int maxWidthPx = (int) (400 * density);
+        int maxWidthPx = (int) (POPUP_MAX_WIDTH_DP * density);
 
         int width;
         if (ConfigurationUtils.isLandscape(mContext)) {
-            width = Math.min((int) (screenWidth * 0.50), maxWidthPx);
+            width = Math.min((int) (screenWidth * LANDSCAPE_WIDTH_FRACTION), maxWidthPx);
         } else {
             width = Math.min(screenWidth - (marginPx * 2), maxWidthPx);
         }
@@ -311,7 +345,7 @@ public class BraveUnifiedPanelHandler {
 
         PopupWindow popupWindow = new PopupWindow(mPopupView, width, height, true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popupWindow.setElevation(20);
+        popupWindow.setElevation(POPUP_ELEVATION_DP);
         mPopupView.setClipToOutline(true);
 
         mAnchorView = anchorView;
@@ -328,7 +362,7 @@ public class BraveUnifiedPanelHandler {
 
                 int screenHeight = mContext.getResources().getDisplayMetrics().heightPixels;
                 int anchorTop = anchorLocation[1];
-                int yOffset = screenHeight - anchorTop + (int) (8 * density);
+                int yOffset = screenHeight - anchorTop + (int) (BOTTOM_TOOLBAR_OFFSET_DP * density);
 
                 popupWindow.showAtLocation(
                         mAnchorView,
@@ -339,6 +373,7 @@ public class BraveUnifiedPanelHandler {
                 popupWindow.showAsDropDown(mAnchorView);
             }
         } catch (Exception e) {
+            Log.e(TAG, "Failed to show popup window", e);
             return null;
         }
 
@@ -663,9 +698,9 @@ public class BraveUnifiedPanelHandler {
         if (descLearnMore != null && mContext != null) {
             String descText = mContext.getString(R.string.report_broken_site_panel_desc2);
             String learnMoreText = mContext.getString(R.string.learn_more);
-            String fullText = descText + learnMoreText + ".";
+            String fullText = descText + " " + learnMoreText + ".";
             SpannableString spannable = new SpannableString(fullText);
-            int learnMoreStart = descText.length();
+            int learnMoreStart = descText.length() + 1;
             int learnMoreEnd = learnMoreStart + learnMoreText.length();
             spannable.setSpan(
                     new ForegroundColorSpan(mContext.getColor(R.color.schemes_primary)),
@@ -726,6 +761,10 @@ public class BraveUnifiedPanelHandler {
             final TextInputEditText contactInput = mReportContactInput;
             mWebcompatReporterHandler.getBrowserParams(
                     (contactInfo, contactInfoSaveFlag, components) -> {
+                        Activity activity = (Activity) mContext;
+                        if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
+                            return;
+                        }
                         if (contactInfo != null && !contactInfo.isEmpty()) {
                             contactInput.setText(contactInfo);
                         }
@@ -738,7 +777,11 @@ public class BraveUnifiedPanelHandler {
             final AutoCompleteTextView dropdown = mReportCategoryDropdown;
             mWebcompatReporterHandler.getWebcompatCategories(
                     (categories) -> {
-                        if (categories == null || categories.length == 0 || mContext == null) {
+                        Activity activity = (Activity) mContext;
+                        if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
+                            return;
+                        }
+                        if (categories == null || categories.length == 0) {
                             return;
                         }
                         List<String> displayNames = new ArrayList<>();
@@ -939,9 +982,14 @@ public class BraveUnifiedPanelHandler {
         if (mPopupWindow != null && mPopupWindow.isShowing()) {
             mPopupWindow.dismiss();
         }
+        releaseResources();
     }
 
     public void destroy() {
+        hide();
+    }
+
+    private void releaseResources() {
         if (mFaviconHelper != null) {
             mFaviconHelper.destroy();
             mFaviconHelper = null;
@@ -952,23 +1000,79 @@ public class BraveUnifiedPanelHandler {
         }
     }
 
-    // Delegate methods to legacy handler for stats tracking
     public void addStat(int tabId, @Nullable String blockType, @Nullable String subResource) {
-        if (mLegacyShieldsHandler != null) {
-            mLegacyShieldsHandler.addStat(tabId, blockType, subResource);
+        if (blockType == null) return;
+        if (!mTabsStat.containsKey(tabId)) {
+            mTabsStat.put(tabId, new BlockersInfo());
+        }
+        BlockersInfo blockersInfo = mTabsStat.get(tabId);
+        if (blockersInfo == null) return;
+        if (blockType.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)) {
+            blockersInfo.mAdsBlocked++;
+            if (subResource != null
+                    && !subResource.isEmpty()
+                    && blockersInfo.mBlockedUrls.size() < MAX_BLOCKED_URLS) {
+                blockersInfo.mBlockedUrls.add(subResource);
+            }
+        } else if (blockType.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS)) {
+            blockersInfo.mTrackersBlocked++;
+            if (subResource != null
+                    && !subResource.isEmpty()
+                    && blockersInfo.mBlockedUrls.size() < MAX_BLOCKED_URLS) {
+                blockersInfo.mBlockedUrls.add(subResource);
+            }
+        } else if (blockType.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
+            blockersInfo.mScriptsBlocked++;
+        } else if (blockType.equals(
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING)) {
+            blockersInfo.mFingerprintsBlocked++;
+        }
+
+        if (isShowing()
+                && mCurrentTab != null
+                && mCurrentTab.getId() == tabId
+                && mBlockCountNumber != null) {
+            int totalBlocked = getTotalBlockedCount(tabId);
+            PostTask.postTask(
+                    TaskTraits.UI_DEFAULT,
+                    () -> {
+                        if (isShowing() && mBlockCountNumber != null) {
+                            mBlockCountNumber.setText(String.valueOf(totalBlocked));
+                        }
+                    });
         }
     }
 
     public void removeStat(int tabId) {
-        if (mLegacyShieldsHandler != null) {
-            mLegacyShieldsHandler.removeStat(tabId);
-        }
+        mTabsStat.remove(tabId);
     }
 
     public void clearBraveShieldsCount(int tabId) {
-        if (mLegacyShieldsHandler != null) {
-            mLegacyShieldsHandler.clearBraveShieldsCount(tabId);
-        }
+        mTabsStat.put(tabId, new BlockersInfo());
+    }
+
+    public int getAdsBlockedCount(int tabId) {
+        BlockersInfo info = mTabsStat.get(tabId);
+        return info != null ? info.mAdsBlocked : 0;
+    }
+
+    public int getTrackersBlockedCount(int tabId) {
+        BlockersInfo info = mTabsStat.get(tabId);
+        return info != null ? info.mTrackersBlocked : 0;
+    }
+
+    public int getTotalBlockedCount(int tabId) {
+        BlockersInfo info = mTabsStat.get(tabId);
+        if (info == null) return 0;
+        return info.mAdsBlocked
+                + info.mTrackersBlocked
+                + info.mScriptsBlocked
+                + info.mFingerprintsBlocked;
+    }
+
+    public ArrayList<String> getBlockedUrls(int tabId) {
+        BlockersInfo info = mTabsStat.get(tabId);
+        return info != null ? info.mBlockedUrls : new ArrayList<>();
     }
 
     private void showMainPanel() {
@@ -1461,7 +1565,6 @@ public class BraveUnifiedPanelHandler {
 
     private void displayBlockedItemFavicons(int tabId) {
         if (mBlockedItemsContainer == null
-                || mLegacyShieldsHandler == null
                 || mProfile == null
                 || mContext == null
                 || mFaviconHelper == null) {
@@ -1472,7 +1575,7 @@ public class BraveUnifiedPanelHandler {
         mFaviconSuccessBitmaps.clear();
         mFaviconFailedOrigins.clear();
 
-        ArrayList<String> blockedUrls = mLegacyShieldsHandler.getBlockedUrls(tabId);
+        ArrayList<String> blockedUrls = getBlockedUrls(tabId);
         if (blockedUrls == null || blockedUrls.isEmpty()) {
             return;
         }
@@ -1732,7 +1835,7 @@ public class BraveUnifiedPanelHandler {
         int childCount = mBlockedItemsContainer.getChildCount();
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(iconSize, iconSize);
         if (childCount > 0) {
-            params.setMarginStart(ViewUtils.dpToPx(mContext, -8));
+            params.setMarginStart(ViewUtils.dpToPx(mContext, ICON_OVERLAP_MARGIN_DP));
         }
         frame.setLayoutParams(params);
 
@@ -1750,7 +1853,7 @@ public class BraveUnifiedPanelHandler {
                     }
                 });
         frame.setClipToOutline(true);
-        frame.setTranslationZ(3 - childCount);
+        frame.setTranslationZ(MAX_BLOCKED_ICONS - childCount);
 
         return frame;
     }
