@@ -102,7 +102,7 @@ void PsstComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& install_dir,
     base::DictValue manifest) {
-  PsstRuleRegistry::GetInstance()->LoadRules(install_dir, base::NullCallback());
+  PsstRuleRegistry::GetInstance()->LoadRules(install_dir, base::DoNothing());
 }
 
 bool PsstComponentInstallerPolicy::VerifyInstallation(

@@ -9,10 +9,11 @@
   }
   document.title = 'a_user-';
   return {
-      "user": getUserId(),
+      "user_id": getUserId(),
+      "site_name": "site name",
       "tasks": [
-        {"name": "privacy setting #1"},
-        {"name": "privacy setting #2"},
+        {"url": "https://a.test/settings/privacy_setting_1", "description": "privacy setting #1"},
+        {"url": "https://a.test/settings/privacy_setting_2", "description": "privacy setting #2"},
       ]
   }
 })();

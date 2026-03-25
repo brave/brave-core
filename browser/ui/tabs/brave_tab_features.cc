@@ -31,6 +31,7 @@
 #if BUILDFLAG(ENABLE_PSST)
 #include "brave/browser/psst/psst_settings_service_factory.h"
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
+#include "brave/browser/psst/psst_ui_desktop_presenter.h"
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
 #include "brave/components/psst/common/features.h"
 #endif
@@ -65,7 +66,10 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
         psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
             tab.GetContents(), profile,
             std::make_unique<psst::PsstUiDelegateImpl>(
-                PsstSettingsServiceFactory::GetForProfile(profile)),
+                PsstSettingsServiceFactory::GetForProfile(profile),
+                profile->GetPrefs(),
+                std::make_unique<psst::PsstUiDesktopPresenter>(
+                    tab.GetContents()->GetWeakPtr())),
             profile->GetPrefs(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 #endif

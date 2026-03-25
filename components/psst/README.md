@@ -12,9 +12,10 @@ https://docs.google.com/document/d/1ccnBWBV_KkknZpZYxcOXTwtfIiaSzeLS5dMd08N2pbs/
 3. The browser injects the user script into the page. The primary goal of the user script is to ensure that the user is signed in to the current website and return a list of URLs where we should apply the privacy settings.
     - the results of the user script execution we process here:</br> `PsstTabWebContentsObserver::OnUserScriptResult`
 4. If the user is not signed in, we just break the flow.
-5. If the user is signed in and we have a list of URLs, we will display a consent modal dialog. In this dialog, the user can choose their preferred privacy settings and track the progress of the operation.
-6. When the user clicks the OK button, we inject the policy script and execute it.
-7. The policy script does the next things: 
+5. To inform the user that the PSST feature is available for a given website, we display an infobar: `Brave can help you optimize this site's privacy settings. Would you like to review Brave's suggestions?` 
+6. If the user accepts the infobar prompt, we pass the list of URLs further and display a consent modal dialog. In this dialog, the user can choose their preferred privacy settings and track the progress of the operation.
+7. When the user clicks the OK button, we inject the policy script and execute it.
+8. The policy script does the next things: 
     - saves the list of URLs (tasks) to local storage to be available after the next navigation;
     - calculates current progress;
     - takes the first URL (URL_1) and marks it as current;
@@ -22,12 +23,12 @@ https://docs.google.com/document/d/1ccnBWBV_KkknZpZYxcOXTwtfIiaSzeLS5dMd08N2pbs/
     - returns the progress and applied tasks list to the back-end: `PsstTabWebContentsObserver::OnPolicyScriptResult(int nav_entry_id,base::Value script_result)`</br>
     where after deserialization and validation, we update the flow's status on the consent dialog, by calling the UI delegate's method:</br>
     `UpdateTasks(long progress,const std::vector<PolicyTask>& applied_tasks)`</br>
-8. When navigation to URL_1 is complete, and it is a supported website, the user script is injected and executed. Then the same happens as in points #3,4.
-9. Since the workflow is running and the consent dialog is visible, we inject the policy script.
-10. Once injected, the policy script loads saved URLs (tasks) from local storage, takes the current' URL (see p. #7), and applies the privacy setting.
-11. Once the privacy setting is applied, the policy script marks the current URL as applied, takes the next one from the available URL (task) list and marks it as current, saves all the info to local storage, and navigates to the new current one.
-12. Then we enumerate each available URL in the list and do the same as in points #8-11.
-13. When all tasks are completed, the user sees all status and progress information in the consent dialog.
+9. When navigation to URL_1 is complete, and it is a supported website, the user script is injected and executed. Then the same happens as in points #3,4.
+10. Since the workflow is running and the consent dialog is visible, we inject the policy script.
+11. Once injected, the policy script loads saved URLs (tasks) from local storage, takes the current' URL (see p. #7), and applies the privacy setting.
+12. Once the privacy setting is applied, the policy script marks the current URL as applied, takes the next one from the available URL (task) list and marks it as current, saves all the info to local storage, and navigates to the new current one.
+13. Then we enumerate each available URL in the list and do the same as in points #8-11.
+14. When all tasks are completed, the user sees all status and progress information in the consent dialog.
 
 ### Workflow failure cases
 
@@ -116,13 +117,15 @@ Example:
 
 Script which helps to find the user identifier for the currently-logged-in user on the current website. We need this in order to apply PSST.
 The output of user script execution is JSON, which contains the following fields:
-`user` - contains the identifier of the logged-in user for the current website.
+`user_id` - contains the identifier of the logged-in user for the current website.
+`site_name` -  site's name or description that will be shown on the consent dialog.
 `tasks` - list of objects (url and description pairs) where `url` is the URL of the settings page for the website that we propose to change and its description.
 
 Example:
 ```
  {
-  "user": <logged-in user identifier>,
+  "user_id": <logged-in user identifier>,
+  "site_name": <name of the website or short site description>
   "tasks": [
       {
         url:<setting url, MUST BE UNIQUE>,

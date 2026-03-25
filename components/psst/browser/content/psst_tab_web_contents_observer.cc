@@ -34,7 +34,6 @@ namespace {
 
 constexpr base::TimeDelta kScriptTimeout = base::Seconds(15);
 const char kShouldProcessKey[] = "should_process_key";
-const char kSignedUserId[] = "user";
 
 struct PsstNavigationData : public base::SupportsUserData::Data {
  public:
@@ -188,18 +187,54 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     return;
   }
 
-  // We should break the flow in case of signed-in user ID is not available
-  if (const auto* user_id =
-          user_script_result.GetDict().FindString(kSignedUserId);
-      !user_id || user_id->empty()) {
+  const auto user_script_result_parsed =
+      UserScriptResult::FromValue(user_script_result);
+  if (!user_script_result_parsed) {
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
     return;
   }
 
+  // We should break the flow in case of signed-in user ID is not available
+  if (user_script_result_parsed->user_id.empty()) {
+    ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
+    return;
+  }
+
+  auto psst_settings = ui_delegate_->GetPsstWebsiteSettings(
+      url::Origin::Create(web_contents()->GetLastCommittedURL()),
+      user_script_result_parsed->user_id);
+  if (psst_settings && psst_settings->consent_status == ConsentStatus::kBlock) {
+    // Break the flow if user has already blocked PSST for the site
+    return;
+  }
+
+  // If PSST websettings doesn't exist then this is the initial call
+  if (!psst_settings) {
+    psst_settings.emplace();
+    psst_settings->consent_status = ConsentStatus::kAsk;
+    psst_settings->script_version = rule->version();
+    psst_settings->user_id = user_script_result_parsed->user_id;
+  }
+
+  auto origin = url::Origin::Create(web_contents()->GetLastCommittedURL());
+  ui_delegate_->Show(
+      std::move(origin), std::move(*psst_settings),
+      base::BindOnce(
+          &PsstTabWebContentsObserver::OnUserAcceptedPsstSettings,
+          weak_factory_.GetWeakPtr(), id,
+          MaybeAddParamsToScript(std::move(rule),
+                                 std::move(user_script_result).TakeDict())));
+}
+
+void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
+    int id,
+    const std::string& policy_script_with_params) {
+  if (!ShouldInsertScriptForPage(id)) {
+    return;
+  }
+
   RunWithTimeout(
-      id,
-      MaybeAddParamsToScript(std::move(rule),
-                             std::move(user_script_result).TakeDict()),
+      id, policy_script_with_params,
       base::BindOnce(&PsstTabWebContentsObserver::OnPolicyScriptResult,
                      weak_factory_.GetWeakPtr(), id));
 }

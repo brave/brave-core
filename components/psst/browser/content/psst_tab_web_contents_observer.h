@@ -33,8 +33,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   using InjectScriptCallback = base::RepeatingCallback<void(
       const std::string&,
       PsstTabWebContentsObserver::InsertScriptInPageCallback)>;
-  using ConsentCallback =
-      base::OnceCallback<void(const base::ListValue disabled_checks)>;
+  using ConsentCallback = base::OnceCallback<void()>;
 
   // Delegate interface for UI-related actions. This class is responsible for
   // facilitating communication with the consent dialog, ensuring that the UI
@@ -83,6 +82,8 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   void OnUserScriptResult(int id,
                           std::unique_ptr<MatchedRule> rule,
                           base::Value script_result);
+  void OnUserAcceptedPsstSettings(int id,
+                                  const std::string& policy_script_with_params);
   void OnPolicyScriptResult(int nav_entry_id, base::Value script_result);
   void RunWithTimeout(const int last_committed_entry_id,
                       const std::string& script,

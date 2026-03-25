@@ -12,6 +12,7 @@
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/buildflags/buildflags.h"
@@ -21,6 +22,9 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
+#include "components/infobars/content/content_infobar_manager.h"
+#include "components/infobars/core/confirm_infobar_delegate.h"
+#include "components/infobars/core/infobar.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
@@ -28,6 +32,91 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace psst {
+
+namespace {
+
+class InfobarObserver : public infobars::InfoBarManager::Observer {
+ public:
+  InfobarObserver(infobars::InfoBarManager* manager,
+                  infobars::InfoBarDelegate::InfoBarIdentifier identifier)
+      : identifier_(identifier) {
+    if (manager) {
+      infobar_observation_.Observe(manager);
+      // Check if the target infobar already exists
+      CheckForExistingInfobar(manager);
+    }
+  }
+  ~InfobarObserver() override = default;
+
+  bool WaitForInfobarAdded() {
+    if (!infobar_observation_.IsObserving()) {
+      return false;  // Manager is destroyed
+    }
+
+    return infobar_added_future_.Get();
+  }
+
+  bool WaitForInfobarRemoved() {
+    if (!infobar_observation_.IsObserving()) {
+      return false;  // Manager is destroyed
+    }
+
+    return infobar_removed_future_.Get();
+  }
+
+  void OnInfoBarAdded(infobars::InfoBar* infobar) override {
+    if (infobar && infobar->delegate() &&
+        infobar->delegate()->GetIdentifier() == identifier_) {
+      infobar_added_future_.SetValue(true);
+    }
+  }
+
+  void OnInfoBarRemoved(infobars::InfoBar* infobar, bool animate) override {
+    if (infobar && infobar->delegate() &&
+        infobar->delegate()->GetIdentifier() == identifier_) {
+      infobar_removed_future_.SetValue(true);
+    }
+  }
+
+  void OnManagerWillBeDestroyed(infobars::InfoBarManager* manager) override {
+    // Quit any pending waits since the manager is being destroyed
+    infobar_added_future_.SetValue(false);
+    infobar_removed_future_.SetValue(false);
+    infobar_observation_.Reset();
+  }
+
+ private:
+  void CheckForExistingInfobar(infobars::InfoBarManager* manager) {
+    for (infobars::InfoBar* infobar : manager->infobars()) {
+      if (infobar && infobar->delegate() &&
+          infobar->delegate()->GetIdentifier() == identifier_) {
+        infobar_added_future_.SetValue(true);
+        break;
+      }
+    }
+  }
+
+  base::test::TestFuture<bool> infobar_added_future_;
+  base::test::TestFuture<bool> infobar_removed_future_;
+  const infobars::InfoBarDelegate::InfoBarIdentifier identifier_;
+  base::ScopedObservation<infobars::InfoBarManager,
+                          infobars::InfoBarManager::Observer>
+      infobar_observation_{this};
+};
+
+infobars::InfoBar* GetPsstInfobar(infobars::ContentInfoBarManager* manager) {
+  auto infobar =
+      std::ranges::find_if(manager->infobars(), [](infobars::InfoBar* infobar) {
+        return infobar->GetIdentifier() ==
+               infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE;
+      });
+  if (infobar == manager->infobars().end()) {
+    return nullptr;
+  }
+  return *infobar;
+}
+
+}  // namespace
 
 class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
  public:
@@ -78,13 +167,56 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        StartScriptHandlerBothScriptsExecuted) {
-  EXPECT_EQ(GetPrefs()->GetBoolean(prefs::kPsstEnabled), true);
   const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/simple.html");
+
+  infobars::ContentInfoBarManager* manager =
+      infobars::ContentInfoBarManager::FromWebContents(web_contents());
+
+  InfobarObserver infobar_observer(
+      manager, infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
 
   std::u16string expected_title(u"a_user-a_policy");
   content::TitleWatcher watcher(web_contents(), expected_title);
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  ASSERT_TRUE(infobar_observer.WaitForInfobarAdded());
+  auto* psst_infobar = GetPsstInfobar(manager);
+  ASSERT_TRUE(psst_infobar);
+  auto* confirm_delegate = psst_infobar->delegate()->AsConfirmInfoBarDelegate();
+  ASSERT_TRUE(confirm_delegate);
+  EXPECT_EQ(confirm_delegate->GetIdentifier(),
+            infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
+  confirm_delegate->Accept();
+
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+  EXPECT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+}
+
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       DeclineInfobarOnlyUserScriptExecuted) {
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/simple.html");
+
+  infobars::ContentInfoBarManager* manager =
+      infobars::ContentInfoBarManager::FromWebContents(web_contents());
+
+  InfobarObserver infobar_observer(
+      manager, infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
+
+  std::u16string expected_title(u"a_user-");
+  content::TitleWatcher watcher(web_contents(), expected_title);
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  ASSERT_TRUE(infobar_observer.WaitForInfobarAdded());
+  auto* psst_infobar = GetPsstInfobar(manager);
+  ASSERT_TRUE(psst_infobar);
+  auto* confirm_delegate = psst_infobar->delegate()->AsConfirmInfoBarDelegate();
+  ASSERT_TRUE(confirm_delegate);
+  EXPECT_EQ(confirm_delegate->GetIdentifier(),
+            infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
+  confirm_delegate->InfoBarDismissed();
+  manager->RemoveInfoBar(psst_infobar);
+  ASSERT_TRUE(infobar_observer.WaitForInfobarRemoved());
+
+  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+  EXPECT_FALSE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
 }
 
 }  // namespace psst
