@@ -12,10 +12,9 @@ import {
   processUploadedFilesWithLimits,
 } from '../../common/conversation_history_utils'
 import * as Mojom from '../../common/mojom'
-import useHasConversationStarted from '../hooks/useHasConversationStarted'
 import { useIsDragging } from '../hooks/useIsDragging'
 import { isLeoModel } from '../model_utils'
-import { SelectedChatDetails, tabAssociatedChatId } from './active_chat_context'
+import { SelectedChatDetails } from './active_chat_context'
 import useSendFeedback, { SendFeedbackState } from './useSendFeedback'
 import { useAIChat } from './ai_chat_context'
 import {
@@ -88,7 +87,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
 
   const aiChat = useAIChat()
 
-  const { api, selectedConversationId, updateSelectedConversationId } = props
+  const { api } = props
   const conversationHistory = api.useGetConversationHistoryData()
   const { getStateData: conversationState } = api.useGetState()
 
@@ -152,21 +151,6 @@ export function useProvideConversationContext(props: ConversationContextProps) {
       (m) => m.key === conversationState.defaultModelKey,
     )
   }, [conversationState.allModels, conversationState.defaultModelKey])
-
-  // Update the location when the conversation has been started
-  const hasConversationStarted = useHasConversationStarted(
-    conversationState.conversationUuid,
-  )
-
-  React.useEffect(() => {
-    if (!hasConversationStarted) return
-    if (selectedConversationId === tabAssociatedChatId) return
-    if (conversationState.conversationUuid === selectedConversationId) return
-    updateSelectedConversationId(conversationState.conversationUuid)
-    // We don't want to re-run this effect on selectedConversationId change as
-    // that would cause an infinite loop.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasConversationStarted, updateSelectedConversationId])
 
   const shouldShowLongConversationInfo = React.useMemo<boolean>(() => {
     if (!conversationHistory || !currentModel) {
