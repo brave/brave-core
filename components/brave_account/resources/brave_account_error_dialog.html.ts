@@ -20,6 +20,8 @@ export function getHtml(this: BraveAccountErrorDialogElement) {
     <brave-account-dialog
       alert-message=${(() => {
         const LOGIN_ERROR_STRINGS: Partial<Record<LoginErrorCode, string>> = {
+          [LoginErrorCode.kEmailNotVerified]:
+            '$i18n{BRAVE_ACCOUNT_ERROR_DIALOG_EMAIL_NOT_VERIFIED}',
           [LoginErrorCode.kIncorrectEmail]:
             '$i18n{BRAVE_ACCOUNT_ERROR_DIALOG_INCORRECT_EMAIL}',
           [LoginErrorCode.kIncorrectPassword]:
