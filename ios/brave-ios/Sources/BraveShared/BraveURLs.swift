@@ -31,21 +31,35 @@ extension URL {
     public static let braveVPNFaq = URL(
       string: "https://support.brave.app/hc/en-us/articles/360045045952"
     )!
-    public static let braveVPNLinkReceiptProd = URL(
-      string: "https://account.brave.com/?intent=connect-receipt&product=vpn"
-    )!
-    public static let braveVPNLinkReceiptStaging = URL(
-      string: "https://account.bravesoftware.com/?intent=connect-receipt&product=vpn"
-    )!
-    public static let braveVPNLinkReceiptDev = URL(
-      string: "https://account.brave.software/?intent=connect-receipt&product=vpn"
-    )!
-    public static let braveVPNRefreshCredentials = URL(
-      string: "https://account.brave.com/?intent=recover&product=vpn&ux=mobile"
-    )!
-    public static let braveVPNCheckoutURL = URL(
-      string: "https://account.brave.com/?intent=checkout&product=vpn"
-    )!
+    public static let braveVPNLinkReceiptProd =
+      BraveIOSAccountMatomo.accountURLWithMatomoAttribution(
+        "https://account.brave.com/?intent=connect-receipt&product=vpn",
+        campaign: BraveIOSAccountMatomo.Campaign.deviceLinking,
+        medium: BraveIOSAccountMatomo.Medium.deviceLinking
+      )
+    public static let braveVPNLinkReceiptStaging =
+      BraveIOSAccountMatomo.accountURLWithMatomoAttribution(
+        "https://account.bravesoftware.com/?intent=connect-receipt&product=vpn",
+        campaign: BraveIOSAccountMatomo.Campaign.deviceLinking,
+        medium: BraveIOSAccountMatomo.Medium.deviceLinking
+      )
+    public static let braveVPNLinkReceiptDev =
+      BraveIOSAccountMatomo.accountURLWithMatomoAttribution(
+        "https://account.brave.software/?intent=connect-receipt&product=vpn",
+        campaign: BraveIOSAccountMatomo.Campaign.deviceLinking,
+        medium: BraveIOSAccountMatomo.Medium.deviceLinking
+      )
+    public static let braveVPNRefreshCredentials =
+      BraveIOSAccountMatomo.accountURLWithMatomoAttribution(
+        "https://account.brave.com/?intent=recover&product=vpn&ux=mobile",
+        campaign: BraveIOSAccountMatomo.Campaign.credentialsRefresh,
+        medium: BraveIOSAccountMatomo.Medium.credentialsRefresh
+      )
+    public static let braveVPNCheckoutURL = BraveIOSAccountMatomo.accountURLWithMatomoAttribution(
+      "https://account.brave.com/?intent=checkout&product=vpn",
+      campaign: BraveIOSAccountMatomo.Campaign.inAppPurchase,
+      medium: BraveIOSAccountMatomo.Medium.inAppPurchase
+    )
     public static let braveVPNLearnMoreURL = URL(
       string: "https://brave.com/firewall-vpn/"
     )!
@@ -55,30 +69,53 @@ extension URL {
     public static let screenTimeHelp = URL(
       string: "https://support.apple.com/guide/security/secd8831e732/web"
     )!
-    public static let braveLeoManageSubscriptionProd = URL(
-      string: "https://account.brave.com/plans"
-    )!
-    public static let braveLeoManageSubscriptionStaging = URL(
-      string: "https://account.bravesoftware.com/plans"
-    )!
-    public static let braveLeoManageSubscriptionDev = URL(
-      string: "https://account.brave.software/plans"
-    )!
-    public static let braveLeoCheckoutURL = URL(
-      string: "https://account.brave.com/?intent=checkout&product=leo"
-    )!
-    public static let braveLeoLinkReceiptProd = URL(
-      string: "https://account.brave.com/?intent=link-order&product=leo"
-    )!
-    public static let braveLeoLinkReceiptStaging = URL(
-      string: "https://account.bravesoftware.com/?intent=link-order&product=leo"
-    )!
-    public static let braveLeoLinkReceiptDev = URL(
-      string: "https://account.brave.software/?intent=link-order&product=leo"
-    )!
-    public static let braveLeoRefreshCredentials = URL(
-      string: "https://account.brave.com/?intent=recover&product=leo&ux=mobile"
-    )!
+    public static let braveLeoManageSubscriptionProd =
+      BraveIOSAccountMatomo.accountURLWithMatomoAttribution(
+        "https://account.brave.com/plans",
+        campaign: BraveIOSAccountMatomo.Campaign.inAppPurchase,
+        medium: BraveIOSAccountMatomo.Medium.managePlans
+      )
+    public static let braveLeoManageSubscriptionStaging =
+      BraveIOSAccountMatomo.accountURLWithMatomoAttribution(
+        "https://account.bravesoftware.com/plans",
+        campaign: BraveIOSAccountMatomo.Campaign.inAppPurchase,
+        medium: BraveIOSAccountMatomo.Medium.managePlans
+      )
+    public static let braveLeoManageSubscriptionDev =
+      BraveIOSAccountMatomo.accountURLWithMatomoAttribution(
+        "https://account.brave.software/plans",
+        campaign: BraveIOSAccountMatomo.Campaign.inAppPurchase,
+        medium: BraveIOSAccountMatomo.Medium.managePlans
+      )
+    public static let braveLeoCheckoutURL = BraveIOSAccountMatomo.accountURLWithMatomoAttribution(
+      "https://account.brave.com/?intent=checkout&product=leo",
+      campaign: BraveIOSAccountMatomo.Campaign.inAppPurchase,
+      medium: BraveIOSAccountMatomo.Medium.inAppPurchase
+    )
+    public static let braveLeoLinkReceiptProd =
+      BraveIOSAccountMatomo.accountURLWithMatomoAttribution(
+        "https://account.brave.com/?intent=link-order&product=leo",
+        campaign: BraveIOSAccountMatomo.Campaign.deviceLinking,
+        medium: BraveIOSAccountMatomo.Medium.deviceLinking
+      )
+    public static let braveLeoLinkReceiptStaging =
+      BraveIOSAccountMatomo.accountURLWithMatomoAttribution(
+        "https://account.bravesoftware.com/?intent=link-order&product=leo",
+        campaign: BraveIOSAccountMatomo.Campaign.deviceLinking,
+        medium: BraveIOSAccountMatomo.Medium.deviceLinking
+      )
+    public static let braveLeoLinkReceiptDev =
+      BraveIOSAccountMatomo.accountURLWithMatomoAttribution(
+        "https://account.brave.software/?intent=link-order&product=leo",
+        campaign: BraveIOSAccountMatomo.Campaign.deviceLinking,
+        medium: BraveIOSAccountMatomo.Medium.deviceLinking
+      )
+    public static let braveLeoRefreshCredentials =
+      BraveIOSAccountMatomo.accountURLWithMatomoAttribution(
+        "https://account.brave.com/?intent=recover&product=leo&ux=mobile",
+        campaign: BraveIOSAccountMatomo.Campaign.credentialsRefresh,
+        medium: BraveIOSAccountMatomo.Medium.credentialsRefresh
+      )
     public static let braveLeoModelCategorySupport = URL(
       string:
         "https://support.brave.app/hc/en-us/articles/26727364100493-What-are-the-differences-between-Leo-s-AI-Models"
