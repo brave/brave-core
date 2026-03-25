@@ -58,14 +58,6 @@ network::mojom::NetworkContext* GetNetworkContextForProfile(
 
 // static
 AdsService* AdsServiceFactory::GetForProfile(Profile* profile) {
-  if (!profile->IsRegularProfile()) {
-    return nullptr;
-  }
-
-  if (!brave_rewards::IsSupported(profile->GetPrefs())) {
-    return nullptr;
-  }
-
   return static_cast<AdsService*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }
