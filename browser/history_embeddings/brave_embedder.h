@@ -16,6 +16,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
+#include "base/timer/timer.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "components/passage_embeddings/core/passage_embeddings_types.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -76,6 +77,8 @@ class BraveEmbedder : public Embedder {
       base::ScopedClosureRunner reset_flag,
       mojo::PendingRemote<local_ai::mojom::PassageEmbedder> remote);
   void OnPassageEmbedderDisconnected();
+  void OnIdleTimeout();
+  void RestartIdleTimer();
   void FailJob(Job job);
   void CompleteJob(Job job);
   void FailAllPendingTasks();
@@ -92,6 +95,12 @@ class BraveEmbedder : public Embedder {
   mojo::Remote<local_ai::mojom::LocalAIService> local_ai_service_;
   mojo::Remote<local_ai::mojom::PassageEmbedder> passage_embedder_;
   base::ObserverList<Observer> observers_;
+
+  // Mojo's set_idle_handler() relies on the receiver sending MessageAck and
+  // NotifyIdle control messages, but the JS Mojo bindings don't implement
+  // this protocol. Use an explicit timer instead: it starts when all tasks
+  // complete and resets when new work arrives.
+  base::OneShotTimer idle_timer_;
 
   base::WeakPtrFactory<BraveEmbedder> weak_ptr_factory_{this};
 };

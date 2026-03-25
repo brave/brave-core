@@ -11,6 +11,7 @@
 #include "base/logging.h"
 #include "base/numerics/safe_math.h"
 #include "components/history_embeddings/content/history_embeddings_service.h"
+#include "components/passage_embeddings/core/passage_embeddings_features.h"
 
 namespace passage_embeddings {
 
@@ -76,9 +77,21 @@ void BraveEmbedder::OnPassageEmbedderAcquired(
 
 void BraveEmbedder::OnPassageEmbedderDisconnected() {
   DVLOG(2) << "BraveEmbedder: PassageEmbedder disconnected";
+  idle_timer_.Stop();
   passage_embedder_.reset();
   acquiring_embedder_ = false;
   FailAllPendingTasks();
+}
+
+void BraveEmbedder::OnIdleTimeout() {
+  DVLOG(2) << "BraveEmbedder: Idle timeout, disconnecting PassageEmbedder";
+  passage_embedder_.reset();
+}
+
+void BraveEmbedder::RestartIdleTimer() {
+  idle_timer_.Start(FROM_HERE, kEmbedderTimeout.Get(),
+                    base::BindOnce(&BraveEmbedder::OnIdleTimeout,
+                                   weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveEmbedder::FailJob(Job job) {
@@ -122,6 +135,8 @@ BraveEmbedder::TaskId BraveEmbedder::ComputePassagesEmbeddings(
                             ComputeEmbeddingsStatus::kExecutionFailure);
     return task_id;
   }
+
+  idle_timer_.Stop();
 
   Job job;
   job.priority = priority;
@@ -178,7 +193,7 @@ void BraveEmbedder::ProcessNextPassage() {
   }
 
   if (jobs_.empty()) {
-    passage_embedder_.reset();
+    RestartIdleTimer();
     for (auto& observer : observers_) {
       observer.OnEmbedderIdle();
     }
