@@ -22,10 +22,10 @@
 #include "base/values.h"
 #include "base/version.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-#include "brave/components/local_ai/core/features.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/history_embeddings/history_embeddings_features.h"
 #include "components/update_client/update_client.h"
 #include "crypto/sha2.h"
 
@@ -205,7 +205,7 @@ LocalModelsUpdaterState::~LocalModelsUpdaterState() = default;
 
 void ManageLocalModelsComponentRegistration(
     component_updater::ComponentUpdateService* cus) {
-  if (!base::FeatureList::IsEnabled(local_ai::features::kLocalAIModels) ||
+  if (!base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings) ||
       !cus) {
     DeleteComponentDirectory();
     return;

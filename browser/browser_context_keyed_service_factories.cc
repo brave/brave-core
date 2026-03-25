@@ -40,13 +40,13 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/features.h"
-#include "brave/components/local_ai/core/features.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
+#include "components/history_embeddings/history_embeddings_features.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
@@ -149,7 +149,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   SearchEngineProviderServiceFactory::GetInstance();
   misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance();
   BraveFarblingServiceFactory::GetInstance();
-  if (base::FeatureList::IsEnabled(local_ai::features::kLocalAIModels)) {
+  if (base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
     local_ai::LocalAIServiceFactory::GetInstance();
   }
 #if BUILDFLAG(ENABLE_TOR)
