@@ -37,6 +37,12 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURINotIPFSScheme) {
   ASSERT_FALSE(ipfs::TranslateIPFSURI(url, &new_url, false));
 }
 
+TEST_F(IpfsUtilsUnitTest, DoNotTranslateIPFSURIWrongCid) {
+  GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG1");
+  GURL new_url;
+  ASSERT_FALSE(ipfs::TranslateIPFSURI(url, &new_url, true));
+}
+
 TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSScheme) {
   GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   GURL new_url;
