@@ -55,8 +55,6 @@ class QuickViewController: UIViewController {
     )
     tab.braveShieldsHelper = braveShieldsTabHelper
     tab.addPolicyDecider(braveShieldsTabHelper)
-    tab.delegate = browserController
-    tab.downloadDelegate = browserController
     tab.webViewProxy?.scrollView?.layer.masksToBounds = true
     tab.isVisible = true
     self.currentTab = tab
