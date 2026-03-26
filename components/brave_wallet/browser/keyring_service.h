@@ -168,6 +168,11 @@ class KeyringService : public mojom::KeyringService {
   void SetAccountName(mojom::AccountIdPtr account_id,
                       const std::string& name,
                       SetAccountNameCallback callback) override;
+  void GetHiddenAccounts(GetHiddenAccountsCallback callback) override;
+  void AddHiddenAccount(mojom::AccountIdPtr account_id,
+                        AddHiddenAccountCallback callback) override;
+  void RemoveHiddenAccount(mojom::AccountIdPtr account_id,
+                           RemoveHiddenAccountCallback callback) override;
   void Reset(bool notify_observer = true);
   void SignTransactionByDefaultKeyring(const mojom::AccountIdPtr& account_id,
                                        EthTransaction* tx);
@@ -405,14 +410,16 @@ class KeyringService : public mojom::KeyringService {
   T* GetKeyring(const mojom::AccountIdPtr& account_id) const;
 
   std::vector<mojom::AccountInfoPtr> GetHardwareAccountsSync(
-      mojom::KeyringId keyring_id) const;
+      mojom::KeyringId keyring_id,
+      bool include_hidden_accounts = false) const;
   mojom::AccountInfoPtr ImportAccountForKeyring(
       mojom::KeyringId keyring_id,
       const std::string& account_name,
       base::span<const uint8_t> private_key);
 
   std::vector<mojom::AccountInfoPtr> GetAccountInfosForKeyring(
-      mojom::KeyringId keyring_id) const;
+      mojom::KeyringId keyring_id,
+      bool include_hidden_accounts = false) const;
 
   bool CanResumeWallet(const std::string& mnemonic,
                        const std::string& password,

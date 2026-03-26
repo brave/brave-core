@@ -32,6 +32,7 @@ export function createWalletApiBase() {
       ...cacher.defaultTags,
       ...balancesTags,
       'AccountInfos',
+      'HiddenAccounts',
       'AvailableShieldedAccount',
       'DefaultFiatCurrency',
       'NftMetadata',

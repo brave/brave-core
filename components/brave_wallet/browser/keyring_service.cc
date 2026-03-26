@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 
+#include <algorithm>
 #include <array>
 #include <optional>
 #include <set>
@@ -335,10 +336,22 @@ struct ImportedAccountInfo {
   std::optional<uint32_t> bitcoin_next_change_address_index;
 };
 
+bool IsAccountHidden(PrefService* profile_prefs, std::string_view unique_key) {
+  for (const auto& hidden_account :
+       profile_prefs->GetList(kBraveWalletHiddenAccounts)) {
+    const auto* hidden_unique_key = hidden_account.GetIfString();
+    if (hidden_unique_key && *hidden_unique_key == unique_key) {
+      return true;
+    }
+  }
+  return false;
+}
+
 // Gets all imported account from prefs.
 std::vector<ImportedAccountInfo> GetImportedAccountsForKeyring(
     PrefService* profile_prefs,
-    mojom::KeyringId keyring_id) {
+    mojom::KeyringId keyring_id,
+    bool include_hidden_accounts = false) {
   std::vector<ImportedAccountInfo> result;
   const base::ListValue* imported_accounts =
       GetPrefForKeyringList(profile_prefs, kImportedAccounts, keyring_id);
@@ -348,6 +361,11 @@ std::vector<ImportedAccountInfo> GetImportedAccountsForKeyring(
   for (const auto& item : *imported_accounts) {
     if (auto imported_account =
             ImportedAccountInfo::FromValue(keyring_id, item)) {
+      if (!include_hidden_accounts &&
+          IsAccountHidden(profile_prefs,
+                          imported_account->GetAccountId()->unique_key)) {
+        continue;
+      }
       result.emplace_back(std::move(*imported_account));
     }
   }
@@ -373,7 +391,8 @@ void AddImportedAccountForKeyring(PrefService* profile_prefs,
                                   mojom::KeyringId keyring_id) {
   CHECK(profile_prefs);
 
-  auto accounts = GetImportedAccountsForKeyring(profile_prefs, keyring_id);
+  auto accounts =
+      GetImportedAccountsForKeyring(profile_prefs, keyring_id, true);
   accounts.push_back(std::move(info));
   SetImportedAccountsForKeyring(profile_prefs, keyring_id, accounts);
 }
@@ -384,7 +403,8 @@ void RemoveImportedAccountForKeyring(PrefService* profile_prefs,
                                      mojom::KeyringId keyring_id) {
   CHECK(profile_prefs);
 
-  auto accounts = GetImportedAccountsForKeyring(profile_prefs, keyring_id);
+  auto accounts =
+      GetImportedAccountsForKeyring(profile_prefs, keyring_id, true);
   std::erase_if(accounts, [&](ImportedAccountInfo& acc) {
     return account_id == *acc.GetAccountId();
   });
@@ -541,7 +561,8 @@ struct DerivedAccountInfo {
 // Gets all hd account from prefs.
 std::vector<DerivedAccountInfo> GetDerivedAccountsForKeyring(
     PrefService* profile_prefs,
-    mojom::KeyringId keyring_id) {
+    mojom::KeyringId keyring_id,
+    bool include_hidden_accounts = false) {
   const base::ListValue* derived_accounts =
       GetPrefForKeyringList(profile_prefs, kAccountMetas, keyring_id);
   if (!derived_accounts) {
@@ -552,8 +573,15 @@ std::vector<DerivedAccountInfo> GetDerivedAccountsForKeyring(
   for (auto& item : *derived_accounts) {
     if (auto derived_account =
             DerivedAccountInfo::FromValue(keyring_id, item)) {
-      DCHECK_EQ(derived_account->account_index, result.size())
-          << "No gaps allowed";
+      if (!include_hidden_accounts &&
+          IsAccountHidden(profile_prefs,
+                          derived_account->GetAccountId()->unique_key)) {
+        continue;
+      }
+      if (include_hidden_accounts) {
+        DCHECK_EQ(derived_account->account_index, result.size())
+            << "No gaps allowed";
+      }
       result.emplace_back(std::move(*derived_account));
     }
   }
@@ -578,7 +606,7 @@ void SetDerivedAccountsForKeyring(
 
 size_t GetDerivedAccountsNumberForKeyring(PrefService* profile_prefs,
                                           mojom::KeyringId keyring_id) {
-  return GetDerivedAccountsForKeyring(profile_prefs, keyring_id).size();
+  return GetDerivedAccountsForKeyring(profile_prefs, keyring_id, true).size();
 }
 
 mojom::AccountInfoPtr MakeAccountInfoForDerivedAccount(
@@ -606,7 +634,7 @@ mojom::AccountInfoPtr MakeAccountInfoForImportedAccount(
 void AddDerivedAccountInfoForKeyring(PrefService* profile_prefs,
                                      const DerivedAccountInfo& account,
                                      mojom::KeyringId keyring_id) {
-  auto accounts = GetDerivedAccountsForKeyring(profile_prefs, keyring_id);
+  auto accounts = GetDerivedAccountsForKeyring(profile_prefs, keyring_id, true);
   DCHECK_EQ(account.account_index, accounts.size()) << "No gaps allowed";
   accounts.push_back(account);
   SetDerivedAccountsForKeyring(profile_prefs, keyring_id, accounts);
@@ -1493,7 +1521,7 @@ void KeyringService::LoadAccountsFromPrefs(mojom::KeyringId keyring_id) {
     auto* keyring = GetKeyring<BitcoinImportKeyring>(keyring_id);
     CHECK(keyring);
     for (const auto& imported_account_info :
-         GetImportedAccountsForKeyring(profile_prefs_, keyring_id)) {
+         GetImportedAccountsForKeyring(profile_prefs_, keyring_id, true)) {
       auto private_key = encryptor_->DecryptFromDict(
           imported_account_info.imported_private_key);
       if (!private_key) {
@@ -1513,7 +1541,7 @@ void KeyringService::LoadAccountsFromPrefs(mojom::KeyringId keyring_id) {
     auto* keyring = GetKeyring<PolkadotImportKeyring>(keyring_id);
     CHECK(keyring);
     for (const auto& imported_account_info :
-         GetImportedAccountsForKeyring(profile_prefs_, keyring_id)) {
+         GetImportedAccountsForKeyring(profile_prefs_, keyring_id, true)) {
       auto private_key = encryptor_->DecryptFromDict(
           imported_account_info.imported_private_key);
       if (!private_key || private_key->size() != kSr25519Pkcs8Size) {
@@ -1534,7 +1562,7 @@ void KeyringService::LoadAccountsFromPrefs(mojom::KeyringId keyring_id) {
     auto* keyring = GetKeyring<BitcoinHardwareKeyring>(keyring_id);
     CHECK(keyring);
     for (const auto& hardware_account_info :
-         GetHardwareAccountsForKeyring(profile_prefs_, keyring_id)) {
+         GetHardwareAccountsForKeyring(profile_prefs_, keyring_id, true)) {
       CHECK(hardware_account_info.bitcoin_xpub);
       keyring->AddAccount(hardware_account_info.account_index,
                           *hardware_account_info.bitcoin_xpub);
@@ -1549,7 +1577,7 @@ void KeyringService::LoadAccountsFromPrefs(mojom::KeyringId keyring_id) {
   }
 
   for (const auto& imported_account_info :
-       GetImportedAccountsForKeyring(profile_prefs_, keyring_id)) {
+       GetImportedAccountsForKeyring(profile_prefs_, keyring_id, true)) {
     const auto imported_address = imported_account_info.account_address();
     if (!imported_address) {
       continue;
@@ -2203,37 +2231,42 @@ mojom::AccountInfoPtr KeyringService::ImportAccountForKeyring(
 
 // This member function should not assume that the wallet is unlocked!
 std::vector<mojom::AccountInfoPtr> KeyringService::GetAccountInfosForKeyring(
-    mojom::KeyringId keyring_id) const {
+    mojom::KeyringId keyring_id,
+    bool include_hidden_accounts) const {
   std::vector<mojom::AccountInfoPtr> result;
 
   // Append HD accounts.
   for (const auto& derived_account_info :
-       GetDerivedAccountsForKeyring(profile_prefs_, keyring_id)) {
+       GetDerivedAccountsForKeyring(profile_prefs_, keyring_id,
+                                    include_hidden_accounts)) {
     result.push_back(MakeAccountInfoForDerivedAccount(derived_account_info));
   }
 
   // Append imported accounts.
   for (const auto& imported_account_info :
-       GetImportedAccountsForKeyring(profile_prefs_, keyring_id)) {
+       GetImportedAccountsForKeyring(profile_prefs_, keyring_id,
+                                     include_hidden_accounts)) {
     result.push_back(MakeAccountInfoForImportedAccount(imported_account_info));
   }
 
   // Append hardware accounts.
   for (const auto& hardware_account_info :
-       GetHardwareAccountsSync(keyring_id)) {
+       GetHardwareAccountsSync(keyring_id, include_hidden_accounts)) {
     result.push_back(hardware_account_info.Clone());
   }
   return result;
 }
 
 std::vector<mojom::AccountInfoPtr> KeyringService::GetHardwareAccountsSync(
-    mojom::KeyringId keyring_id) const {
+    mojom::KeyringId keyring_id,
+    bool include_hidden_accounts) const {
   std::vector<mojom::AccountInfoPtr> accounts;
 
   if (IsBitcoinKeyring(keyring_id)) {
     if (IsBitcoinLedgerEnabled() && IsBitcoinHardwareKeyring(keyring_id)) {
       for (auto& hardware_account :
-           GetHardwareAccountsForKeyring(profile_prefs_, keyring_id)) {
+           GetHardwareAccountsForKeyring(profile_prefs_, keyring_id,
+                                         include_hidden_accounts)) {
         accounts.push_back(hardware_account.MakeAccountInfo());
       }
     }
@@ -2258,6 +2291,13 @@ std::vector<mojom::AccountInfoPtr> KeyringService::GetHardwareAccountsSync(
       continue;
     }
     SerializeHardwareAccounts(id, account_value, keyring_id, &accounts);
+  }
+
+  if (!include_hidden_accounts) {
+    std::erase_if(accounts, [&](const mojom::AccountInfoPtr& account_info) {
+      return IsAccountHidden(profile_prefs_,
+                             account_info->account_id->unique_key);
+    });
   }
 
   return accounts;
@@ -2721,6 +2761,118 @@ void KeyringService::SetAccountName(mojom::AccountIdPtr account_id,
   NOTREACHED() << account_id->kind;
 }
 
+void KeyringService::GetHiddenAccounts(GetHiddenAccountsCallback callback) {
+  std::set<std::string> account_unique_keys;
+  for (const auto& hidden_account :
+       profile_prefs_->GetList(kBraveWalletHiddenAccounts)) {
+    if (auto* unique_key = hidden_account.GetIfString()) {
+      account_unique_keys.insert(*unique_key);
+    }
+  }
+
+  std::vector<mojom::AccountInfoPtr> hidden_accounts;
+  for (const auto& keyring_id : GetEnabledKeyrings()) {
+    for (auto& account_info : GetAccountInfosForKeyring(keyring_id, true)) {
+      if (account_unique_keys.contains(account_info->account_id->unique_key)) {
+        hidden_accounts.push_back(std::move(account_info));
+      }
+    }
+  }
+
+  std::move(callback).Run(std::move(hidden_accounts));
+}
+
+void KeyringService::AddHiddenAccount(mojom::AccountIdPtr account_id,
+                                      AddHiddenAccountCallback callback) {
+  if (account_id->unique_key.empty()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  bool account_exists = false;
+  switch (account_id->kind) {
+    case mojom::AccountKind::kDerived:
+      account_exists = std::ranges::any_of(
+          GetDerivedAccountsForKeyring(profile_prefs_, account_id->keyring_id,
+                                       true),
+          [&](const auto& account_info) {
+            return *account_info.GetAccountId() == *account_id;
+          });
+      break;
+    case mojom::AccountKind::kImported:
+      account_exists = std::ranges::any_of(
+          GetImportedAccountsForKeyring(profile_prefs_, account_id->keyring_id,
+                                        true),
+          [&](const auto& account_info) {
+            return *account_info.GetAccountId() == *account_id;
+          });
+      break;
+    case mojom::AccountKind::kHardware:
+      if (IsBitcoinHardwareKeyring(account_id->keyring_id)) {
+        account_exists = std::ranges::any_of(
+            GetHardwareAccountsForKeyring(profile_prefs_, account_id->keyring_id,
+                                          true),
+            [&](const auto& account_info) {
+              return *account_info.GetAccountId() == *account_id;
+            });
+      } else {
+        const base::DictValue* keyring = GetPrefForKeyringDict(
+            profile_prefs_, kHardwareAccounts, account_id->keyring_id);
+        if (keyring) {
+          for (const auto item : *keyring) {
+            const auto& value = item.second;
+            const base::DictValue* account_metas =
+                value.GetDict().FindDict(kAccountMetas);
+            if (!account_metas) {
+              continue;
+            }
+            if (account_metas->Find(account_id->address)) {
+              account_exists = true;
+              break;
+            }
+          }
+        }
+      }
+      break;
+  }
+  if (!account_exists) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  ScopedListPrefUpdate update(profile_prefs_, kBraveWalletHiddenAccounts);
+  if (!std::ranges::contains(*update, base::Value(account_id->unique_key))) {
+    update->Append(account_id->unique_key);
+    NotifyAccountsChanged();
+  }
+
+  std::move(callback).Run(true);
+}
+
+void KeyringService::RemoveHiddenAccount(mojom::AccountIdPtr account_id,
+                                         RemoveHiddenAccountCallback callback) {
+  if (account_id->unique_key.empty()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  ScopedListPrefUpdate update(profile_prefs_, kBraveWalletHiddenAccounts);
+  bool account_removed = false;
+  update->EraseIf([&](const base::Value& value) {
+    const auto* unique_key = value.GetIfString();
+    if (!unique_key || *unique_key != account_id->unique_key) {
+      return false;
+    }
+    account_removed = true;
+    return true;
+  });
+  if (account_removed) {
+    NotifyAccountsChanged();
+  }
+
+  std::move(callback).Run(true);
+}
+
 bool KeyringService::SetKeyringDerivedAccountNameInternal(
     const mojom::AccountId& account_id,
     const std::string& name) {
@@ -2728,7 +2880,7 @@ bool KeyringService::SetKeyringDerivedAccountNameInternal(
 
   const auto keyring_id = account_id.keyring_id;
 
-  auto accounts = GetDerivedAccountsForKeyring(profile_prefs_, keyring_id);
+  auto accounts = GetDerivedAccountsForKeyring(profile_prefs_, keyring_id, true);
   for (auto& account : accounts) {
     if (account_id == *account.GetAccountId()) {
       account.account_name = name;
@@ -2748,7 +2900,8 @@ bool KeyringService::SetHardwareAccountNameInternal(
 
   if (IsBitcoinHardwareKeyring(account_id.keyring_id)) {
     auto accounts =
-        GetHardwareAccountsForKeyring(profile_prefs_, account_id.keyring_id);
+        GetHardwareAccountsForKeyring(profile_prefs_, account_id.keyring_id,
+                                      true);
     for (auto& account : accounts) {
       if (account_id == *account.GetAccountId()) {
         account.account_name = name;
@@ -2788,7 +2941,8 @@ bool KeyringService::SetKeyringImportedAccountNameInternal(
 
   const auto keyring_id = account_id.keyring_id;
 
-  auto accounts = GetImportedAccountsForKeyring(profile_prefs_, keyring_id);
+  auto accounts =
+      GetImportedAccountsForKeyring(profile_prefs_, keyring_id, true);
   for (auto& account : accounts) {
     if (account_id == *account.GetAccountId()) {
       account.account_name = name;
@@ -3028,7 +3182,8 @@ void KeyringService::UpdateNextUnusedAddressForCardanoAccount(
   const auto keyring_id = account_id->keyring_id;
 
   if (IsCardanoHDKeyring(keyring_id)) {
-    auto accounts = GetDerivedAccountsForKeyring(profile_prefs_, keyring_id);
+    auto accounts =
+        GetDerivedAccountsForKeyring(profile_prefs_, keyring_id, true);
     for (auto& account : accounts) {
       if (account_id == account.GetAccountId()) {
         if (UpdateCardanoAccountIndexes(account, next_external_index,
@@ -3050,7 +3205,7 @@ mojom::CardanoAccountInfoPtr KeyringService::GetCardanoAccountInfo(
   auto keyring_id = account_id->keyring_id;
   if (auto* cardano_keyring = GetKeyring<CardanoHDKeyring>(keyring_id)) {
     for (const auto& derived_account_info :
-         GetDerivedAccountsForKeyring(profile_prefs_, keyring_id)) {
+         GetDerivedAccountsForKeyring(profile_prefs_, keyring_id, true)) {
       if (account_id->account_index == derived_account_info.account_index) {
         return CardanoAccountInfoFromPrefInfo(*cardano_keyring,
                                               derived_account_info);
@@ -3214,7 +3369,8 @@ void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
   const auto keyring_id = account_id->keyring_id;
 
   if (IsBitcoinHDKeyring(keyring_id)) {
-    auto accounts = GetDerivedAccountsForKeyring(profile_prefs_, keyring_id);
+    auto accounts =
+        GetDerivedAccountsForKeyring(profile_prefs_, keyring_id, true);
     for (auto& account : accounts) {
       if (account_id == account.GetAccountId()) {
         if (UpdateBitcoinAccountIndexes(account, next_receive_index,
@@ -3229,7 +3385,8 @@ void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
   }
 
   if (IsBitcoinImportKeyring(keyring_id)) {
-    auto accounts = GetImportedAccountsForKeyring(profile_prefs_, keyring_id);
+    auto accounts =
+        GetImportedAccountsForKeyring(profile_prefs_, keyring_id, true);
     for (auto& account : accounts) {
       if (account_id == account.GetAccountId()) {
         if (UpdateBitcoinAccountIndexes(account, next_receive_index,
@@ -3244,7 +3401,8 @@ void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
   }
 
   if (IsBitcoinHardwareKeyring(keyring_id)) {
-    auto accounts = GetHardwareAccountsForKeyring(profile_prefs_, keyring_id);
+    auto accounts =
+        GetHardwareAccountsForKeyring(profile_prefs_, keyring_id, true);
     for (auto& account : accounts) {
       if (account_id == account.GetAccountId()) {
         if (UpdateBitcoinAccountIndexes(account, next_receive_index,
@@ -3295,7 +3453,7 @@ void KeyringService::UpdateNextUnusedAddressForZCashAccount(
 
   const auto keyring_id = account_id->keyring_id;
 
-  auto accounts = GetDerivedAccountsForKeyring(profile_prefs_, keyring_id);
+  auto accounts = GetDerivedAccountsForKeyring(profile_prefs_, keyring_id, true);
   for (auto& account : accounts) {
     if (account_id == account.GetAccountId()) {
       bool account_changed = false;
@@ -3328,7 +3486,7 @@ mojom::BitcoinAccountInfoPtr KeyringService::GetBitcoinAccountInfo(
   auto keyring_id = account_id->keyring_id;
   if (auto* bitcoin_keyring = GetKeyring<BitcoinHDKeyring>(keyring_id)) {
     for (const auto& derived_account_info :
-         GetDerivedAccountsForKeyring(profile_prefs_, keyring_id)) {
+         GetDerivedAccountsForKeyring(profile_prefs_, keyring_id, true)) {
       if (account_id->account_index == derived_account_info.account_index) {
         return BitcoinAccountInfoFromPrefInfo(*bitcoin_keyring,
                                               derived_account_info);
@@ -3338,7 +3496,7 @@ mojom::BitcoinAccountInfoPtr KeyringService::GetBitcoinAccountInfo(
 
   if (auto* bitcoin_keyring = GetKeyring<BitcoinImportKeyring>(keyring_id)) {
     for (const auto& imported_account_info :
-         GetImportedAccountsForKeyring(profile_prefs_, keyring_id)) {
+         GetImportedAccountsForKeyring(profile_prefs_, keyring_id, true)) {
       if (imported_account_info.account_index() &&
           account_id->account_index == *imported_account_info.account_index()) {
         return BitcoinAccountInfoFromPrefInfo(*bitcoin_keyring,
@@ -3349,7 +3507,7 @@ mojom::BitcoinAccountInfoPtr KeyringService::GetBitcoinAccountInfo(
 
   if (auto* bitcoin_keyring = GetKeyring<BitcoinHardwareKeyring>(keyring_id)) {
     for (const auto& hw_account_info :
-         GetHardwareAccountsForKeyring(profile_prefs_, keyring_id)) {
+         GetHardwareAccountsForKeyring(profile_prefs_, keyring_id, true)) {
       if (account_id->account_index == hw_account_info.account_index) {
         return BitcoinAccountInfoFromPrefInfo(*bitcoin_keyring,
                                               hw_account_info);
@@ -3470,7 +3628,7 @@ mojom::ZCashAccountInfoPtr KeyringService::GetZCashAccountInfo(
   }
 
   for (const auto& derived_account_info :
-       GetDerivedAccountsForKeyring(profile_prefs_, keyring_id)) {
+       GetDerivedAccountsForKeyring(profile_prefs_, keyring_id, true)) {
     if (account_id->account_index != derived_account_info.account_index) {
       continue;
     }

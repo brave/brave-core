@@ -44,6 +44,8 @@ import {
   TokenBalancesRegistry, //
 } from '../../../common/slices/entities/token-balance.entity'
 import {
+  useAddHiddenAccountMutation,
+  useRemoveHiddenAccountMutation,
   useGetChainTipStatusQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetRewardsInfoQuery,
@@ -109,6 +111,7 @@ interface Props {
   spotPrices: BraveWallet.AssetPrice[] | undefined
   isLoadingSpotPrices: boolean
   isShieldingAvailable: boolean | undefined
+  isAccountHidden?: boolean
 }
 
 export const AccountListItem = ({
@@ -119,6 +122,7 @@ export const AccountListItem = ({
   isLoadingBalances,
   isLoadingSpotPrices,
   isShieldingAvailable,
+  isAccountHidden = false,
 }: Props) => {
   // redux
   const dispatch = useAppDispatch()
@@ -155,6 +159,8 @@ export const AccountListItem = ({
   const [showAccountMenu, setShowAccountMenu] = React.useState<boolean>(false)
   const [showShieldAccountModal, setShowShieldAccountModal] =
     React.useState<boolean>(false)
+  const [addHiddenAccount] = useAddHiddenAccountMutation()
+  const [removeHiddenAccount] = useRemoveHiddenAccountMutation()
 
   // refs
   const accountMenuRef = React.useRef<HTMLDivElement>(null)
@@ -195,6 +201,14 @@ export const AccountListItem = ({
         onSelectAccount()
         return
       }
+      if (id === 'hide') {
+        void addHiddenAccount({ accountId: account.accountId })
+        return
+      }
+      if (id === 'unhide') {
+        void removeHiddenAccount({ accountId: account.accountId })
+        return
+      }
       if (id === 'remove') {
         onRemoveAccount()
         return
@@ -205,7 +219,14 @@ export const AccountListItem = ({
       }
       onShowAccountsModal(id)
     },
-    [onSelectAccount, onRemoveAccount, onShowAccountsModal],
+    [
+      account,
+      addHiddenAccount,
+      removeHiddenAccount,
+      onSelectAccount,
+      onRemoveAccount,
+      onShowAccountsModal,
+    ],
   )
 
   // memos & computed
@@ -342,6 +363,18 @@ export const AccountListItem = ({
       && !zcashAccountInfo.accountShieldBirthday
 
     let options = [...AccountButtonOptions]
+    options = options.map((option) =>
+      option.id === 'hide'
+        ? {
+            ...option,
+            id: isAccountHidden ? 'unhide' : 'hide',
+            name: isAccountHidden
+              ? 'braveWalletAccountsUnhide'
+              : 'braveWalletAccountsHide',
+            icon: isAccountHidden ? 'eye-on' : 'eye-off',
+          }
+        : option,
+    )
 
     if (!canRemove) {
       options = options.filter((option) => option.id !== 'remove')
@@ -358,6 +391,7 @@ export const AccountListItem = ({
     isZCashShieldedTransactionsEnabled,
     isShieldingAvailable,
     zcashAccountInfo,
+    isAccountHidden,
   ])
 
   const showSyncWarning =

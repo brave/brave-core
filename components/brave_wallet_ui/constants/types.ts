@@ -852,6 +852,8 @@ export type AccountModalTypes =
   | 'privateKey'
   | 'edit'
   | 'details'
+  | 'hide'
+  | 'unhide'
   | 'remove'
   | 'buy'
   | 'explorer'

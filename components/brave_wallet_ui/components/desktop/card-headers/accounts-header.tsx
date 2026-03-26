@@ -32,7 +32,17 @@ import {
 } from './shared-card-headers.style'
 import { Row } from '../../shared/style'
 
-export const AccountsHeader = () => {
+interface Props {
+  showHiddenAccounts: boolean
+  hiddenAccountsCount: number
+  onToggleHiddenAccounts: () => void
+}
+
+export const AccountsHeader = ({
+  showHiddenAccounts,
+  hiddenAccountsCount,
+  onToggleHiddenAccounts,
+}: Props) => {
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isMobile = useSafeUISelector(UISelectors.isMobile)
@@ -51,10 +61,22 @@ export const AccountsHeader = () => {
     showPortfolioOverviewMenu,
   )
 
+  const canToggleHiddenAccounts = hiddenAccountsCount > 0 || showHiddenAccounts
+
   return isPanel || isMobile ? (
     <DefaultPanelHeader
       title={getLocale('braveWalletTopNavAccounts')}
       expandRoute={WalletRoutes.Accounts}
+      actionIconName={
+        canToggleHiddenAccounts
+          ? showHiddenAccounts
+            ? 'eye-on'
+            : 'eye-off'
+          : undefined
+      }
+      onClickActionButton={
+        canToggleHiddenAccounts ? onToggleHiddenAccounts : undefined
+      }
     />
   ) : (
     <Row
@@ -63,6 +85,11 @@ export const AccountsHeader = () => {
     >
       <HeaderTitle>{getLocale('braveWalletTopNavAccounts')}</HeaderTitle>
       <MenuWrapper ref={portfolioOverviewMenuRef}>
+        {canToggleHiddenAccounts && (
+          <MenuButton onClick={onToggleHiddenAccounts}>
+            <MenuButtonIcon name={showHiddenAccounts ? 'eye-on' : 'eye-off'} />
+          </MenuButton>
+        )}
         <MenuButton
           onClick={() => setShowPortfolioOverviewMenu((prev) => !prev)}
         >

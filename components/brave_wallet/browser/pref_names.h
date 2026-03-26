@@ -49,6 +49,8 @@ inline constexpr char kBraveWalletEip1559CustomChains[] =
     "brave.wallet.eip1559_chains";
 inline constexpr char kBraveWalletHiddenNetworks[] =
     "brave.wallet.hidden_networks";
+inline constexpr char kBraveWalletHiddenAccounts[] =
+    "brave.wallet.hidden_accounts";
 inline constexpr char kBraveWalletSelectedNetworks[] =
     "brave.wallet.selected_networks";
 inline constexpr char kBraveWalletSelectedNetworksPerOrigin[] =

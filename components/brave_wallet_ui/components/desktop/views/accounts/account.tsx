@@ -115,7 +115,10 @@ import { AccountDetailsOptions } from '../../../../options/nav-options'
 // Hooks
 import useInterval from '../../../../common/hooks/interval'
 import {
+  useAddHiddenAccountMutation,
+  useRemoveHiddenAccountMutation,
   useGetDefaultFiatCurrencyQuery,
+  useGetHiddenAccountsQuery,
   useGetVisibleNetworksQuery,
   useGetUserTokensRegistryQuery,
   useGetTransactionsQuery,
@@ -182,6 +185,8 @@ export const Account = () => {
   // mutations
   const [startShieldSync] = useStartShieldSyncMutation()
   const [stopShieldSync] = useStopShieldSyncMutation()
+  const [addHiddenAccount] = useAddHiddenAccountMutation()
+  const [removeHiddenAccount] = useRemoveHiddenAccountMutation()
 
   // routing
   const { accountId: addressOrUniqueKey, selectedTab } = useParams<{
@@ -195,13 +200,27 @@ export const Account = () => {
 
   // queries
   const { accounts } = useAccountsQuery()
+  const { data: hiddenAccounts = [] } = useGetHiddenAccountsQuery()
+  const allAccounts = React.useMemo(
+    () => [...accounts, ...hiddenAccounts],
+    [accounts, hiddenAccounts],
+  )
   const selectedAccount = React.useMemo(() => {
-    return accounts.find(
+    return allAccounts.find(
       (account) =>
         account.accountId.uniqueKey === addressOrUniqueKey
         || account.address.toLowerCase() === addressOrUniqueKey?.toLowerCase(),
     )
-  }, [accounts, addressOrUniqueKey])
+  }, [allAccounts, addressOrUniqueKey])
+  const isSelectedAccountHidden = React.useMemo(() => {
+    if (!selectedAccount) {
+      return false
+    }
+    return hiddenAccounts.some(
+      (account) =>
+        account.accountId.uniqueKey === selectedAccount.accountId.uniqueKey,
+    )
+  }, [hiddenAccounts, selectedAccount])
 
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
   const { data: networkList = [] } = useGetVisibleNetworksQuery()
@@ -520,6 +539,16 @@ export const Account = () => {
 
   const onClickMenuOption = React.useCallback(
     (option: AccountModalTypes) => {
+      if (option === 'hide' && selectedAccount) {
+        void addHiddenAccount({ accountId: selectedAccount.accountId })
+        history.push(WalletRoutes.Accounts)
+        return
+      }
+      if (option === 'unhide' && selectedAccount) {
+        void removeHiddenAccount({ accountId: selectedAccount.accountId })
+        history.push(WalletRoutes.Accounts)
+        return
+      }
       if (option === 'remove') {
         onRemoveAccount()
         return
@@ -548,7 +577,10 @@ export const Account = () => {
       dispatch(AccountsTabActions.setSelectedAccount(selectedAccount))
     },
     [
+      addHiddenAccount,
+      removeHiddenAccount,
       dispatch,
+      history,
       onRemoveAccount,
       networksFilteredByAccountsCoinType,
       selectedAccount,
@@ -637,6 +669,7 @@ export const Account = () => {
           account={selectedAccount}
           onClickMenuOption={onClickMenuOption}
           tokenBalancesRegistry={tokenBalancesRegistry}
+          isAccountHidden={isSelectedAccountHidden}
         />
       }
     >

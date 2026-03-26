@@ -41,6 +41,7 @@ describe('AccountDetailsHeader', () => {
             account={mockAccount}
             onClickMenuOption={() => {}}
             tokenBalancesRegistry={mockTokenBalanceRegistry}
+            isAccountHidden={false}
           />
         </BraveCoreThemeProvider>
       </Provider>,

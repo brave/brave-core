@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service_prefs.h"
 
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -23,6 +24,17 @@ namespace {
 constexpr char kHardwareVendor[] = "hardware.vendor";
 constexpr char kHardwareDerivationPath[] = "hardware.derivation_path";
 constexpr char kHardwareDeviceId[] = "hardware.device_id";
+
+bool IsAccountHidden(PrefService* profile_prefs, std::string_view unique_key) {
+  for (const auto& hidden_account :
+       profile_prefs->GetList(kBraveWalletHiddenAccounts)) {
+    const auto* hidden_unique_key = hidden_account.GetIfString();
+    if (hidden_unique_key && *hidden_unique_key == unique_key) {
+      return true;
+    }
+  }
+  return false;
+}
 }  // namespace
 
 std::string KeyringIdPrefString(mojom::KeyringId keyring_id) {
@@ -316,7 +328,8 @@ std::optional<HardwareAccountInfo> HardwareAccountInfo::FromValue(
 
 std::vector<HardwareAccountInfo> GetHardwareAccountsForKeyring(
     PrefService* profile_prefs,
-    mojom::KeyringId keyring_id) {
+    mojom::KeyringId keyring_id,
+    bool include_hidden_accounts) {
   CHECK(IsBitcoinHardwareKeyring(keyring_id));
   const base::ListValue* hw_accounts =
       GetPrefForKeyringList(profile_prefs, kAccountMetas, keyring_id);
@@ -328,6 +341,11 @@ std::vector<HardwareAccountInfo> GetHardwareAccountsForKeyring(
   for (auto& item : *hw_accounts) {
     if (auto derived_account =
             HardwareAccountInfo::FromValue(keyring_id, item)) {
+      if (!include_hidden_accounts &&
+          IsAccountHidden(profile_prefs,
+                          derived_account->GetAccountId()->unique_key)) {
+        continue;
+      }
       result.emplace_back(std::move(*derived_account));
     }
   }
@@ -355,7 +373,8 @@ void AddHardwareAccountToPrefs(PrefService* profile_prefs,
   CHECK(IsBitcoinHardwareKeyring(info.keyring_id));
 
   const auto keyring_id = info.keyring_id;
-  auto accounts = GetHardwareAccountsForKeyring(profile_prefs, keyring_id);
+  auto accounts =
+      GetHardwareAccountsForKeyring(profile_prefs, keyring_id, true);
   accounts.push_back(info);
   SetHardwareAccountsForKeyring(profile_prefs, keyring_id, accounts);
 }
@@ -366,7 +385,7 @@ void RemoveHardwareAccountFromPrefs(PrefService* profile_prefs,
   CHECK(IsBitcoinHardwareKeyring(account_id.keyring_id));
 
   auto accounts =
-      GetHardwareAccountsForKeyring(profile_prefs, account_id.keyring_id);
+      GetHardwareAccountsForKeyring(profile_prefs, account_id.keyring_id, true);
   std::erase_if(accounts, [&](HardwareAccountInfo& acc) {
     return account_id == *acc.GetAccountId();
   });

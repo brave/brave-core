@@ -85,10 +85,12 @@ interface Props {
   account: BraveWallet.AccountInfo
   onClickMenuOption: (option: AccountModalTypes) => void
   tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
+  isAccountHidden: boolean
 }
 
 export const AccountDetailsHeader = (props: Props) => {
-  const { account, onClickMenuOption, tokenBalancesRegistry } = props
+  const { account, onClickMenuOption, tokenBalancesRegistry, isAccountHidden } =
+    props
 
   // UI Selectors (safe)
   const isMobile = useSafeUISelector(UISelectors.isMobile)
@@ -219,8 +221,20 @@ export const AccountDetailsHeader = (props: Props) => {
         (option: AccountButtonOptionsObjectType) => option.id !== 'explorer',
       )
     }
+    options = options.map((option) =>
+      option.id === 'hide'
+        ? {
+            ...option,
+            id: isAccountHidden ? 'unhide' : 'hide',
+            name: isAccountHidden
+              ? 'braveWalletAccountsUnhide'
+              : 'braveWalletAccountsHide',
+            icon: isAccountHidden ? 'eye-on' : 'eye-off',
+          }
+        : option,
+    )
     return options
-  }, [account])
+  }, [account, isAccountHidden])
 
   const headerPadding = React.useMemo(() => {
     if (isMobileOrPanel) {

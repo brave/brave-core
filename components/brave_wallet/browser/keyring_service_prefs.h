@@ -111,7 +111,8 @@ struct HardwareAccountInfo {
 
 std::vector<HardwareAccountInfo> GetHardwareAccountsForKeyring(
     PrefService* profile_prefs,
-    mojom::KeyringId keyring_id);
+    mojom::KeyringId keyring_id,
+    bool include_hidden_accounts = false);
 void SetHardwareAccountsForKeyring(
     PrefService* profile_prefs,
     mojom::KeyringId keyring_id,

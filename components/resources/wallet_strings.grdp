@@ -344,6 +344,8 @@
   <message name="IDS_BRAVE_WALLET_TESTNET_ACCOUNTS" desc="Testnet accounts label">Testnet accounts</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_EXPORT" desc="Account list item Export button">Export</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_DEPOSIT" desc="Account list item Deposit button">Deposit</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNTS_HIDE" desc="Account list item Hide button">Hide account</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNTS_UNHIDE" desc="Account list item Unhide button">Unhide account</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_REMOVE" desc="Account list item Remove button">Remove</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS" desc="Account settings label">Account settings</message>
   <message name="IDS_BRAVE_WALLET_LAST_UPDATED_AGO" desc="Tooltip showing how long ago prices were last updated, e.g. Last updated 5m ago">Last updated <ph name="TIME_AGO"><ex>5m</ex>$1</ph> ago</message>

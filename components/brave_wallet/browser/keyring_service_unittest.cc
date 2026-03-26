@@ -273,6 +273,47 @@ class KeyringServiceUnitTest : public testing::Test {
     return success;
   }
 
+  static std::vector<std::string> GetHiddenAccounts(KeyringService* service) {
+    std::vector<std::string> account_unique_keys;
+    base::RunLoop run_loop;
+    service->GetHiddenAccounts(base::BindLambdaForTesting(
+        [&](const std::vector<mojom::AccountInfoPtr>& accounts) {
+          account_unique_keys.clear();
+          for (const auto& account : accounts) {
+            account_unique_keys.push_back(account->account_id->unique_key);
+          }
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return account_unique_keys;
+  }
+
+  static bool AddHiddenAccount(KeyringService* service,
+                               mojom::AccountIdPtr account_id) {
+    bool success = false;
+    base::RunLoop run_loop;
+    service->AddHiddenAccount(std::move(account_id),
+                              base::BindLambdaForTesting([&](bool v) {
+                                success = v;
+                                run_loop.Quit();
+                              }));
+    run_loop.Run();
+    return success;
+  }
+
+  static bool RemoveHiddenAccount(KeyringService* service,
+                                  mojom::AccountIdPtr account_id) {
+    bool success = false;
+    base::RunLoop run_loop;
+    service->RemoveHiddenAccount(std::move(account_id),
+                                 base::BindLambdaForTesting([&](bool v) {
+                                   success = v;
+                                   run_loop.Quit();
+                                 }));
+    run_loop.Run();
+    return success;
+  }
+
   static bool RemoveAccount(KeyringService* service,
                             const mojom::AccountIdPtr& account_id,
                             const std::string& password) {
@@ -3065,6 +3106,54 @@ TEST_F(KeyringServiceUnitTest, SetAccountName_HardwareAccounts) {
   account_infos = GetAccountUtils(&service).AllFilTestAccounts();
   EXPECT_FALSE(account_infos[0]->address.empty());
   EXPECT_EQ(account_infos[0]->name, "filecoin testnet 1 changed");
+}
+
+TEST_F(KeyringServiceUnitTest, HiddenAccounts) {
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
+  ASSERT_TRUE(CreateWallet(&service, "brave"));
+
+  auto account_id = GetAccountUtils(&service).EthAccountId(0);
+  auto hidden_accounts = GetHiddenAccounts(&service);
+  EXPECT_TRUE(hidden_accounts.empty());
+
+  EXPECT_CALL(observer, AccountsChanged());
+  EXPECT_TRUE(AddHiddenAccount(&service, account_id.Clone()));
+  observer.WaitAndVerify();
+
+  hidden_accounts = GetHiddenAccounts(&service);
+  EXPECT_THAT(hidden_accounts, ElementsAre(account_id->unique_key));
+  EXPECT_FALSE(std::ranges::any_of(
+      service.GetAllAccountsSync()->accounts, [&](const auto& account_info) {
+        return account_info->account_id->unique_key == account_id->unique_key;
+      }));
+
+  // Duplicate add should succeed but not trigger observer updates.
+  EXPECT_CALL(observer, AccountsChanged()).Times(0);
+  EXPECT_TRUE(AddHiddenAccount(&service, account_id.Clone()));
+  observer.WaitAndVerify();
+  EXPECT_THAT(GetHiddenAccounts(&service), ElementsAre(account_id->unique_key));
+
+  // Unknown account should fail.
+  auto unknown_account_id = GetAccountUtils(&service).EthUnkownAccountId();
+  EXPECT_CALL(observer, AccountsChanged()).Times(0);
+  EXPECT_FALSE(AddHiddenAccount(&service, std::move(unknown_account_id)));
+  observer.WaitAndVerify();
+
+  EXPECT_CALL(observer, AccountsChanged());
+  EXPECT_TRUE(RemoveHiddenAccount(&service, account_id.Clone()));
+  observer.WaitAndVerify();
+  EXPECT_TRUE(GetHiddenAccounts(&service).empty());
+  EXPECT_TRUE(std::ranges::any_of(
+      service.GetAllAccountsSync()->accounts, [&](const auto& account_info) {
+        return account_info->account_id->unique_key == account_id->unique_key;
+      }));
+
+  // Removing absent account should be a no-op and still succeed.
+  EXPECT_CALL(observer, AccountsChanged()).Times(0);
+  EXPECT_TRUE(RemoveHiddenAccount(&service, account_id.Clone()));
+  observer.WaitAndVerify();
+  EXPECT_TRUE(GetHiddenAccounts(&service).empty());
 }
 
 TEST_F(KeyringServiceUnitTest, SetDefaultKeyringHardwareAccountName) {
