@@ -1,0 +1,18 @@
+# Disable AVX and wider SIMD to ensure compatibility with the widest
+# possible range of hardware. "x86-64" is the baseline x86_64 feature set
+# (SSE2 only). For ARM, "generic" avoids any microarch-specific tuning.
+
+[target.x86_64-apple-darwin]
+rustflags = ["-C", "target-cpu=x86-64", "-C", "target-feature=-avx,-avx2,-avx512f"]
+
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "target-cpu=x86-64", "-C", "target-feature=-avx,-avx2,-avx512f"]
+
+[target.aarch64-pc-windows-msvc]
+rustflags = ["-C", "target-cpu=generic"]
+
+[target.x86_64-unknown-linux-gnu]
+rustflags = ["-C", "target-cpu=x86-64", "-C", "target-feature=-avx,-avx2,-avx512f", "-C", "link-args=-Wl,--export-dynamic"]
+
+[target.aarch64-unknown-linux-gnu]
+rustflags = ["-C", "target-cpu=generic", "-C", "link-args=-Wl,--export-dynamic"]

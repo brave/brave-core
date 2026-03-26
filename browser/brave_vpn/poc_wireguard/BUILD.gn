@@ -1,0 +1,62 @@
+import("//brave/build/config.gni")
+
+copy("copy_libraries") {
+  if (is_mac) {
+    sources = [ "//brave/third_party/boringtun/bin/libboringtun.dylib" ]
+  } else if (is_linux) {
+    sources = [ "//brave/third_party/boringtun/bin/libboringtun.so" ]
+  } else if (is_win) {
+    sources = [ 
+      "//brave/third_party/boringtun/bin/boringtun.dll",
+      "//brave/third_party/wintun/bin/${target_cpu}/wintun.dll",
+    ]
+  } else {
+    assert(false, "Platform POC is not implemented yet!")
+  }
+  outputs = [ "$root_out_dir/{{source_file_part}}" ]
+}
+
+source_set("wireguard_core") {
+  sources = [
+    "boringtun_loader.cc",
+    "wireguard_config_parser.cc",
+    "wireguard_tunnel.cc",
+  ]
+  if (is_mac || is_linux) {
+    sources += [
+      "boringtun_loader_posix.cc",
+      "platform_tools_posix.cc",
+      "udp_transport_posix.cc",
+    ]
+    if (is_mac) {
+      sources += [ "tun_interface_mac.cc" ]
+    } else if (is_linux) {
+      sources += [ "tun_interface_linux.cc" ]
+    }
+  }
+  if (is_win) {
+    sources += [
+      "boringtun_loader_win.cc",
+      "platform_tools_win.cc",
+      "tun_interface_win.cc",
+      "udp_transport_win.cc",
+      "wintun_loader.cc",
+    ]
+  }
+  deps = [ "//base" ]
+}
+
+executable("poc_wireguard") {
+  sources = [ "main.cc" ]
+
+  deps = [
+    ":copy_libraries",
+    ":wireguard_core",
+    "//base",
+    "//base:base_static",
+  ]
+
+  if (is_win) {
+    deps += [ "//build/win:default_exe_manifest" ]
+  }
+}

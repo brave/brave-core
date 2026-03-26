@@ -24,6 +24,7 @@ vendor/omaha/
 node_modules/
 patches/**/*.patchinfo
 /third_party/argon2/src
+/third_party/boringtun/bin/
 /third_party/brave-vpn-wireguard-nt-dlls/
 /third_party/brave-vpn-wireguard-tunnel-dlls/
 /third_party/bip39wally-core-native/
@@ -36,6 +37,7 @@ patches/**/*.patchinfo
 /third_party/macholib
 /third_party/libdmg-hfsplus/
 /third_party/opengrep/bin/
+/third_party/wintun/bin/
 *.xcodeproj
 !/ios/brave-ios/App/*.xcodeproj
 *.swp

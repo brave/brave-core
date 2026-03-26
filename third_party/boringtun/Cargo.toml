@@ -1,0 +1,11 @@
+[package]
+name = "boringtun-sys"
+version = "0.1.0"
+edition = "2021"
+build = "build.rs"
+
+[dependencies]
+boringtun = { git = "https://github.com/cloudflare/boringtun", rev = "cdf3b24558441ff4dc62bf5992484c5457a36760", default-features = false, features = ["ffi-bindings"] }
+
+[build-dependencies]
+cargo_metadata = "0.18"
