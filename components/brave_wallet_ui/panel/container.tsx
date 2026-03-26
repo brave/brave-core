@@ -20,7 +20,7 @@ import {
 } from '../components/extension/allow_add_change_network_panel/allow_add_change_network_panel'
 import {
   ConnectHardwareWalletPanel, //
-} from '../components/extension/connect-hardware-wallet-panel/index'
+} from '../components/extension/connect_hardware_wallet_panel/connect_hardware_wallet_panel'
 import {
   AddSuggestedTokenPanel, //
 } from '../components/extension/add_suggested_token_panel/add_suggested_token_panel'
@@ -31,11 +31,7 @@ import {
   DecryptMessageRequestPanel, //
 } from '../components/extension/public_encryption_key_panels/decrypt_message_request_panel'
 
-import {
-  StyledExtensionWrapper,
-  LongWrapper,
-  ConnectWithSiteWrapper,
-} from '../stories/style'
+import { LongWrapper, ConnectWithSiteWrapper } from '../stories/style'
 import { PanelWrapper, WelcomePanelWrapper } from './style'
 import { FullScreenWrapper } from '../page/screens/page-screen.styles'
 
@@ -215,10 +211,11 @@ function Container() {
       || signSolTransactionsRequests?.length)
   ) {
     return (
-      <PanelWrapper isLonger={false}>
-        <StyledExtensionWrapper>
-          <ConnectHardwareWalletPanel hardwareWalletCode={hardwareWalletCode} />
-        </StyledExtensionWrapper>
+      <PanelWrapper
+        width={390}
+        height={650}
+      >
+        <ConnectHardwareWalletPanel hardwareWalletCode={hardwareWalletCode} />
       </PanelWrapper>
     )
   }

@@ -4,43 +4,28 @@
 <!-- You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <!doctype html>
 <head>
-   <script src="/load_time_data_deprecated.js"></script>
-   <script src="/strings.js"></script>
-   <meta charset="UTF-8" />
-   <title>Ledger iframe</title>
-   <style>
-     .container {
-       display: flex;
-       justify-content: center;
-     }
-     body {
-       margin: 0;
-     }
-     button {
-      align-items: center;
+  <script src="/load_time_data_deprecated.js"></script>
+  <script src="/strings.js"></script>
+  <meta charset="UTF-8"></meta>
+  <title>Ledger iframe</title>
+  <style>
+    .container {
+      display: flex;
       justify-content: center;
-      cursor: pointer;
-      border-radius: 12px;
-      padding: 10px 16px;
-      outline: none;
-      margin-top: 0px;
-      background-color: #3F39E8;
-      border: none;
-      margin-right: 0px;
-      pointer-events: auto;
-      color: white;
-      font-weight: 600;
-      font-size: 12px;
-      line-height: 20px;
-     }
-   </style>
+    }
+    body {
+      margin: 0;
+    }
+  </style>
 </head>
 <body>
-   <script src="ledger.bundle.js"></script>
-   <div class="container">
-     <button id="authorize">
-       Authorize
-     </button>
-   </div>
+  <script src="ledger.bundle.js"></script>
+  <div class="container">
+    <leo-button
+      id="authorize"
+      size="medium"
+    >
+      Authorize
+    </leo-button>
+  </div>
 </body>
-

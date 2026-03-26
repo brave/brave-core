@@ -909,10 +909,10 @@ provideStrings({
   braveWalletPermissionForever: 'Forever',
 
   // Connect Hardware Wallet Panel
-  braveWalletConnectHardwarePanelConnected: '$1 connected',
-  braveWalletConnectHardwarePanelDisconnected: '$1 disconnected',
-  braveWalletConnectHardwarePanelInstructions: 'Instructions',
-  braveWalletConnectHardwarePanelConnect: 'Connect your $1',
+  braveWalletConnectHardwarePanelConnected: '$1 is connected',
+  braveWalletConnectHardwarePanelDisconnected: '$1 is disconnected',
+  braveWalletConnectHardwarePanelInstructions: 'View instructions',
+  braveWalletConnectHardwarePanelConnect: 'Connect your $1 to continue',
   braveWalletConnectHardwarePanelConfirmation:
     'Hardware wallet requires transaction confirmation on device.',
   braveWalletConnectHardwarePanelOpenApp:

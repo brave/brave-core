@@ -1,10 +1,14 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { assertNotReached } from 'chrome://resources/js/assert.js'
 import * as React from 'react'
+import Label from '@brave/leo/react/label'
+import Icon from '@brave/leo/react/icon'
+import Button from '@brave/leo/react/button'
+
 import { useHistory } from 'react-router'
 
 // utils
@@ -34,21 +38,16 @@ import {
 } from '../../../common/slices/api.slice'
 
 // components
-import { NavButton } from '../buttons/nav-button/index'
 import { AuthorizeHardwareDeviceIFrame } from '../../shared/authorize-hardware-device/authorize-hardware-device'
 
 // style
 import {
   StyledWrapper,
   Title,
-  Description,
-  PageIcon,
-  InstructionsButton,
-  ButtonWrapper,
-  Indicator,
-  ConnectionRow,
-} from './style'
-
+  IconWrapper,
+  EmptySpace,
+} from './connect_hardware_wallet_panel.style'
+import { Row, Column } from '../../shared/style'
 export interface Props {
   hardwareWalletCode: HardwareWalletResponseCodeType | undefined
 }
@@ -122,11 +121,13 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
       return ''
     }
 
-    if (hardwareWalletCode === 'deviceBusy') {
+    if (
+      hardwareWalletCode === 'deviceBusy'
+      || hardwareWalletCode === undefined
+    ) {
       return getLocale('braveWalletConnectHardwarePanelConfirmation')
     }
 
-    // Not connected
     if (
       hardwareWalletCode === 'deviceNotConnected'
       || hardwareWalletCode === 'unauthorized'
@@ -190,8 +191,25 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
     onConfirmTransaction,
   ])
 
+  // Don't poll while the initial sign attempt is still in-flight
+  // (hardwareWalletCode is undefined until the first attempt completes).
+  // Once a result arrives, immediately retry on connection-state transitions
+  // so the UI doesn't wait a full interval after the user takes action.
+  const hasResult = hardwareWalletCode !== undefined
+  const prevIsConnected = React.useRef(isConnected)
+  React.useEffect(() => {
+    if (hasResult && prevIsConnected.current !== isConnected) {
+      prevIsConnected.current = isConnected
+      retryHardwareOperation()
+    }
+  }, [hasResult, isConnected, retryHardwareOperation])
+
   // custom hooks
-  useInterval(retryHardwareOperation, 3000, !isConnected ? 5000 : null)
+  useInterval(
+    retryHardwareOperation,
+    hasResult ? 1500 : null,
+    hasResult && !isConnected ? 3000 : null,
+  )
 
   React.useEffect(() => {
     // After Panel V2 this is needed to reset the origin
@@ -206,10 +224,20 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
     return null
   }
   return (
-    <StyledWrapper>
-      <ConnectionRow>
-        <Indicator isConnected={isConnected} />
-        <Description>
+    <StyledWrapper
+      width='100%'
+      height='100%'
+      justifyContent='space-between'
+    >
+      <Column gap='16px'>
+        <Row padding='18px'>
+          <Title>{getLocale('braveWalletAddAccountConnect')}</Title>
+        </Row>
+        <Label color={isConnected ? 'green' : 'red'}>
+          <Icon
+            slot='icon-before'
+            name={isConnected ? 'check-circle-filled' : 'close-circle-filled'}
+          />
           {isConnected
             ? getLocale('braveWalletConnectHardwarePanelConnected').replace(
                 '$1',
@@ -219,25 +247,49 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
                 '$1',
                 account.name,
               )}
-        </Description>
-      </ConnectionRow>
-      <Title>{title}</Title>
-      <InstructionsButton onClick={onClickInstructions}>
-        {getLocale('braveWalletConnectHardwarePanelInstructions')}
-      </InstructionsButton>
-      <PageIcon />
-      {hardwareWalletCode !== 'deviceBusy'
-        && (hardwareWalletCode === 'unauthorized' ? (
+        </Label>
+      </Column>
+      <Column gap='24px'>
+        <IconWrapper padding='16px'>
+          <Icon name='flashdrive' />
+        </IconWrapper>
+        <Column
+          padding='16px'
+          gap='16px'
+        >
+          <Title>{title}</Title>
+          <Row width='unset'>
+            <Button
+              kind='plain'
+              size='small'
+              onClick={onClickInstructions}
+            >
+              {getLocale('braveWalletConnectHardwarePanelInstructions')}
+            </Button>
+          </Row>
+        </Column>
+      </Column>
+      <Column
+        width='100%'
+        padding='16px'
+        gap='16px'
+      >
+        {hardwareWalletCode === 'unauthorized' ? (
           <AuthorizeHardwareDeviceIFrame coinType={account.accountId.coin} />
         ) : (
-          <ButtonWrapper>
-            <NavButton
-              buttonType='secondary'
-              text={getLocale('braveWalletButtonCancel')}
-              onSubmit={onCancelConnect}
-            />
-          </ButtonWrapper>
-        ))}
+          <EmptySpace />
+        )}
+        <Row>
+          <Button
+            kind='outline'
+            size='medium'
+            onClick={onCancelConnect}
+            isDisabled={hardwareWalletCode === 'deviceBusy'}
+          >
+            {getLocale('braveWalletButtonCancel')}
+          </Button>
+        </Row>
+      </Column>
     </StyledWrapper>
   )
 }
