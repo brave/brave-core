@@ -870,10 +870,12 @@ extension SceneDelegate {
     return (windowId, isPrivate, nil)
   }
 
-  /// When "Keep private tabs" is enabled, returns whether the window should launch in Private mode.
-  /// Returns the default (privateBrowsingOnly) when the preference doesn't apply (e.g. no persistent private tabs to restore).
+  /// When "Keep private tabs" and "Reopen browser in private mode" are enabled, returns whether the window should launch in Private mode.
+  /// Returns the default (privateBrowsingOnly) when the preferences don't apply (e.g. no persistent private tabs to restore).
   private func shouldLaunchInPrivateMode(windowId: UUID) -> Bool {
-    guard Preferences.Privacy.persistentPrivateBrowsing.value else {
+    guard Preferences.Privacy.persistentPrivateBrowsing.value,
+      Preferences.Privacy.rememberBrowsingMode.value
+    else {
       return Preferences.Privacy.privateBrowsingOnly.value
     }
 

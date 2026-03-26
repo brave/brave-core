@@ -6435,6 +6435,23 @@ extension Strings {
           "Keep private browsing tabs open when you close the app, ensuring private browsing sessions continue seamlessly.",
         comment: ""
       )
+    public static let rememberBrowsingModeTitle =
+      NSLocalizedString(
+        "tabs.settings.rememberBrowsingModeTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Remember Browsing Mode",
+        comment: "Toggle to launch the browser in private mode when Keep Private Tabs is enabled"
+      )
+    public static let rememberBrowsingModeDescription =
+      NSLocalizedString(
+        "tabs.settings.rememberBrowsingModeDescription",
+        tableName: "BraveShared",
+        bundle: .module,
+        value:
+          "If browser was in private mode when last closed, it will open in private mode on re-launch.",
+        comment: "The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled."
+      )
     public static let autoOpenKeyboardTitle = NSLocalizedString(
       "tabs.settings.autoOpenKeyboardTitle",
       tableName: "BraveShared",

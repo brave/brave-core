@@ -249,6 +249,12 @@ extension Preferences {
       key: "privacy.private-browsing-persistence",
       default: false
     )
+    /// When "Keep Private Tabs" is enabled, whether to launch in private mode and restore private tabs.
+    /// Off by default; when off, browser launches in regular mode but private tabs are still restored.
+    public static let rememberBrowsingMode = Option<Bool>(
+      key: "privacy.remember-browsing-mode",
+      default: false
+    )
     /// Blocks all cookies and access to local storage
     static let blockAllCookies = Option<Bool>(key: "privacy.block-all-cookies", default: false)
     /// The toggles states for clear private data screen
