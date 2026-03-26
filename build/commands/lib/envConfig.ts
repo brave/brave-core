@@ -39,8 +39,8 @@ export default class EnvConfig {
   }
 
   /**
-   * Returns a boolean config value if present. If `defaultValue` is provided,
-   * returns it when the config value is missing.
+   * Returns the value if it has the expected type; otherwise errors. If
+   * `defaultValue` is provided, returns it when the config value is missing.
    *
    * @param keyPath - Array of keys forming the config path
    * @param defaultValue - Optional fallback value
@@ -53,8 +53,8 @@ export default class EnvConfig {
   }
 
   /**
-   * Returns a number config value if present. If `defaultValue` is provided,
-   * returns it when the config value is missing.
+   * Returns the value if it has the expected type; otherwise errors. If
+   * `defaultValue` is provided, returns it when the config value is missing.
    *
    * @param keyPath - Array of keys forming the config path
    * @param defaultValue - Optional fallback value
@@ -67,8 +67,8 @@ export default class EnvConfig {
   }
 
   /**
-   * Returns a string config value if present. If `defaultValue` is provided,
-   * returns it when the config value is missing.
+   * Returns the value if it has the expected type; otherwise errors. If
+   * `defaultValue` is provided, returns it when the config value is missing.
    *
    * @param keyPath - Array of keys forming the config path
    * @param defaultValue - Optional fallback value
@@ -81,8 +81,8 @@ export default class EnvConfig {
   }
 
   /**
-   * Returns an array config value if present. If `defaultValue` is provided,
-   * returns it when the config value is missing.
+   * Returns the value if it has the expected type; otherwise errors. If
+   * `defaultValue` is provided, returns it when the config value is missing.
    *
    * @param keyPath - Array of keys forming the config path
    * @param defaultValue - Optional fallback value
@@ -95,8 +95,8 @@ export default class EnvConfig {
   }
 
   /**
-   * Returns an object config value if present. If `defaultValue` is provided,
-   * returns it when the config value is missing.
+   * Returns the value if it has the expected type; otherwise errors. If
+   * `defaultValue` is provided, returns it when the config value is missing.
    *
    * @param keyPath - Array of keys forming the config path
    * @param defaultValue - Optional fallback value
