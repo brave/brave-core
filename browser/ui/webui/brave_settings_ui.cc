@@ -219,7 +219,7 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean("isCardanoDappSupportFeatureEnabled",
                           brave_wallet::IsCardanoDAppSupportEnabled());
   html_source->AddBoolean("isBraveWalletAllowed",
-                          brave_wallet::IsAllowedForContext(profile));
+                          brave_wallet::IsBraveWalletServiceAvailable(profile));
 #endif
   html_source->AddBoolean("isForgetFirstPartyStorageFeatureEnabled",
                           base::FeatureList::IsEnabled(

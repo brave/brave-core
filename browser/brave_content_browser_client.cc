@@ -362,16 +362,19 @@ void MaybeBindWalletP3A(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A> receiver) {
   auto* context = frame_host->GetBrowserContext();
-  if (brave_wallet::IsAllowedForContext(frame_host->GetBrowserContext())) {
-    brave_wallet::BraveWalletService* wallet_service =
-        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(context);
-    DCHECK(wallet_service);
-    wallet_service->GetBraveWalletP3A()->Bind(std::move(receiver));
-  } else {
-    // Dummy API to avoid reporting P3A for OTR contexts
+
+  if (context->IsOffTheRecord()) {
+    // Dummy API to avoid reporting P3A for OTR contexts.
     mojo::MakeSelfOwnedReceiver(
         std::make_unique<brave_wallet::BraveWalletP3APrivate>(),
         std::move(receiver));
+    return;
+  }
+
+  if (auto* wallet_service =
+          brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+              context)) {
+    wallet_service->GetBraveWalletP3A()->Bind(std::move(receiver));
   }
 }
 #endif
@@ -928,9 +931,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  map->Add<brave_wallet::mojom::BraveWalletP3A>(
-      base::BindRepeating(&MaybeBindWalletP3A));
-  if (brave_wallet::IsAllowedForContext(
+  if (brave_wallet::IsBraveWalletServiceAvailable(
           render_frame_host->GetBrowserContext())) {
     map->Add<brave_wallet::mojom::EthereumProvider>(base::BindRepeating(
         &brave_wallet::BraveWalletTabHelper::BindEthereumProvider));
@@ -940,6 +941,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       map->Add<brave_wallet::mojom::CardanoProvider>(base::BindRepeating(
           &brave_wallet::BraveWalletTabHelper::BindCardanoProvider));
     }
+    map->Add<brave_wallet::mojom::BraveWalletP3A>(
+        base::BindRepeating(&MaybeBindWalletP3A));
   }
 #endif
 
@@ -1355,8 +1358,9 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   decentralized_dns::DecentralizedDnsNavigationThrottle::MaybeCreateAndAdd(
-      registry, user_prefs::UserPrefs::Get(context),
-      g_browser_process->local_state(),
+      registry,
+      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(context),
+      user_prefs::UserPrefs::Get(context), g_browser_process->local_state(),
       g_browser_process->GetApplicationLocale());
 #endif
 

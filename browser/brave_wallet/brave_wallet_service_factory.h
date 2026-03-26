@@ -30,6 +30,16 @@ class BraveWalletServiceFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* context);
   static BraveWalletServiceFactory* GetInstance();
 
+  // Scoped override for `BraveWalletServiceFactory::ServiceIsNULLWhileTesting`
+  // behavior.
+  class NotNullForTesting {
+   public:
+    NotNullForTesting();
+    NotNullForTesting(const NotNullForTesting&) = delete;
+    NotNullForTesting& operator=(const NotNullForTesting&) = delete;
+    ~NotNullForTesting();
+  };
+
  private:
   friend base::NoDestructor<BraveWalletServiceFactory>;
 
@@ -40,6 +50,7 @@ class BraveWalletServiceFactory : public BrowserContextKeyedServiceFactory {
   BraveWalletServiceFactory& operator=(const BraveWalletServiceFactory&) =
       delete;
 
+  // BrowserContextKeyedServiceFactory:
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
   content::BrowserContext* GetBrowserContextToUse(

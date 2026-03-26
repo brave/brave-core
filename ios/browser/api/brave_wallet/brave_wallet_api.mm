@@ -60,7 +60,8 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
 }
 
 - (bool)isAllowed {
-  return brave_wallet::IsAllowed(_profile->GetPrefs());
+  return !!brave_wallet::BraveWalletServiceFactory::GetServiceForState(
+      _profile);
 }
 
 + (id<BraveWalletBlockchainRegistry>)blockchainRegistry {

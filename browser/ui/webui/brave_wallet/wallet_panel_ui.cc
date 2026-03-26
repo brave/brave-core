@@ -220,7 +220,7 @@ WalletPanelUIConfig::WalletPanelUIConfig()
 
 bool WalletPanelUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
-  return brave_wallet::IsAllowedForContext(browser_context);
+  return brave_wallet::IsBraveWalletServiceAvailable(browser_context);
 }
 
 bool WalletPanelUIConfig::ShouldAutoResizeHost() {

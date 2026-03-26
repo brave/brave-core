@@ -133,7 +133,8 @@ void BraveRendererUpdater::InitializeRenderer(
 
   bool is_brave_wallet_available = false;
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  is_wallet_allowed_for_context_ = brave_wallet::IsAllowedForContext(profile);
+  is_wallet_allowed_for_context_ =
+      brave_wallet::IsBraveWalletServiceAvailable(profile);
   is_brave_wallet_available = is_wallet_allowed_for_context_;
 #endif
 

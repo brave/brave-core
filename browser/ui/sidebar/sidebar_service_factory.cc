@@ -9,6 +9,7 @@
 
 #include "base/no_destructor.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/components/sidebar/common/features.h"
@@ -21,6 +22,11 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/version_info/channel.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#endif
 
 namespace sidebar {
 
@@ -39,6 +45,10 @@ SidebarServiceFactory::SidebarServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "SidebarService",
           BrowserContextDependencyManager::GetInstance()) {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  DependsOn(brave_wallet::BraveWalletServiceFactory::GetInstance());
+#endif
+
   // Early return if the preference is already set or not existed(in test).
   if (!g_browser_process || !g_browser_process->local_state()) {
     return;
@@ -71,6 +81,14 @@ std::vector<SidebarItem::BuiltInItemType>
 SidebarServiceFactory::GetBuiltInItemTypesForProfile(Profile* profile) const {
   std::vector<SidebarItem::BuiltInItemType> types;
   for (const auto& type : kDefaultBuiltInItemTypes) {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    if (type == SidebarItem::BuiltInItemType::kWallet) {
+      if (!brave_wallet::IsBraveWalletServiceAvailable(profile)) {
+        continue;
+      }
+    }
+#endif
+
     if (profile->IsGuestSession()) {
       if (!IsDisabledItemForGuest(type)) {
         types.push_back(type);

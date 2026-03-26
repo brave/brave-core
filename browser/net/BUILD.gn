@@ -113,4 +113,15 @@ source_set("unit_tests") {
     sources += [ "search_ads_header_network_delegate_helper_unittest.cc" ]
     deps += [ "//brave/components/brave_ads/core" ]
   }
+
+  if (enable_brave_wallet) {
+    sources += [ "decentralized_dns_network_delegate_helper_unittest.cc" ]
+    deps += [
+      "//brave/browser/brave_wallet",
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/browser:test_support",
+      "//brave/components/brave_wallet/browser:utils",
+      "//brave/components/decentralized_dns/core",
+    ]
+  }
 }

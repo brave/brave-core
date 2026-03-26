@@ -41,12 +41,27 @@
 #include "brave/components/brave_vpn/common/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#endif
+
 class BraveAppMenuModelBrowserTest : public InProcessBrowserTest {
  public:
   BraveAppMenuModelBrowserTest() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
     scoped_feature_list_.InitWithFeatures(
         {skus::features::kSkusFeature, brave_vpn::features::kBraveVPN}, {});
+#endif
+  }
+
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+        browser()->profile())
+        ->SetPrivateWindowsEnabled(true);
 #endif
   }
 
@@ -59,7 +74,7 @@ class BraveAppMenuModelBrowserTest : public InProcessBrowserTest {
                             ? brave_vpn::mojom::PurchasedState::PURCHASED
                             : brave_vpn::mojom::PurchasedState::NOT_PURCHASED;
     service->SetPurchasedState(skus::GetDefaultEnvironment(), target_state);
-    // Call explicitely to update vpn commands status because mojo works in
+    // Call explicitly to update vpn commands status because mojo works in
     // async way.
     static_cast<chrome::BraveBrowserCommandController*>(
         browser->command_controller())
@@ -335,9 +350,6 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
       IDC_NEW_WINDOW,
       IDC_NEW_INCOGNITO_WINDOW,
       IDC_NEW_OFFTHERECORD_WINDOW_TOR,
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-      IDC_SHOW_BRAVE_WALLET,
-#endif
       IDC_BOOKMARKS_MENU,
       IDC_SHOW_DOWNLOADS,
       IDC_EXTENSIONS_SUBMENU,

@@ -222,7 +222,8 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  if (brave_wallet::IsAllowedForContext(web_contents->GetBrowserContext())) {
+  if (brave_wallet::IsBraveWalletServiceAvailable(
+          web_contents->GetBrowserContext())) {
     brave_actions.push_back(kShowWalletAction);
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)

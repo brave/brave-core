@@ -9,13 +9,32 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/user_prefs/user_prefs.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/browser_state.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_wallet {
+
+namespace {
+
+bool CanBuildWalletServiceInstanceForProfile(ProfileIOS* profile) {
+  if (!profile) {
+    return false;
+  }
+
+  // Per `ProfileSelection::kNoInstanceInIncognito` trait only regular profile
+  // could be used to build wallet service instance.
+  CHECK(!profile->IsOffTheRecord());
+
+  return CanBuildWalletServiceInstance(user_prefs::UserPrefs::Get(profile),
+                                       true, false, false);
+}
+
+}  // namespace
 
 class BraveWalletServiceDelegateIos : public BraveWalletServiceDelegate {
  public:
@@ -57,6 +76,10 @@ BraveWalletServiceFactory::~BraveWalletServiceFactory() = default;
 
 std::unique_ptr<KeyedService>
 BraveWalletServiceFactory::BuildServiceInstanceFor(ProfileIOS* profile) const {
+  if (!CanBuildWalletServiceInstanceForProfile(profile)) {
+    return nullptr;
+  }
+
   std::unique_ptr<BraveWalletService> service(new BraveWalletService(
       profile->GetSharedURLLoaderFactory(),
       std::make_unique<BraveWalletServiceDelegateIos>(profile),

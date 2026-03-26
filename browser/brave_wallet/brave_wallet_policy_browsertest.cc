@@ -41,7 +41,7 @@
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 
-namespace policy {
+namespace brave_wallet {
 
 class BraveWalletPolicyTest : public InProcessBrowserTest,
                               public ::testing::WithParamInterface<bool> {
@@ -52,10 +52,11 @@ class BraveWalletPolicyTest : public InProcessBrowserTest,
   void SetUpInProcessBrowserTestFixture() override {
     EXPECT_CALL(provider_, IsInitializationComplete(testing::_))
         .WillRepeatedly(testing::Return(true));
-    BrowserPolicyConnector::SetPolicyProviderForTesting(&provider_);
-    PolicyMap policies;
-    policies.Set(key::kBraveWalletDisabled, POLICY_LEVEL_MANDATORY,
-                 POLICY_SCOPE_USER, POLICY_SOURCE_PLATFORM,
+    policy::BrowserPolicyConnector::SetPolicyProviderForTesting(&provider_);
+    policy::PolicyMap policies;
+    policies.Set(policy::key::kBraveWalletDisabled,
+                 policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+                 policy::POLICY_SOURCE_PLATFORM,
                  base::Value(IsBraveWalletDisabledTest()), nullptr);
     provider_.UpdateChromePolicy(policies);
   }
@@ -75,71 +76,20 @@ class BraveWalletPolicyTest : public InProcessBrowserTest,
   PrefService* prefs() { return user_prefs::UserPrefs::Get(browser_context()); }
 
  private:
-  MockConfigurationPolicyProvider provider_;
+  policy::MockConfigurationPolicyProvider provider_;
 };
-
-// Verify that brave_wallet::IsDisabledByPolicy works correctly based on the
-// preference set by the policy.
-IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, IsBraveWalletDisabled) {
-  EXPECT_TRUE(
-      prefs()->FindPreference(brave_wallet::kBraveWalletDisabledByPolicy));
-  if (IsBraveWalletDisabledTest()) {
-    EXPECT_TRUE(
-        prefs()->GetBoolean(brave_wallet::kBraveWalletDisabledByPolicy));
-    EXPECT_FALSE(brave_wallet::IsAllowed(prefs()));
-    EXPECT_FALSE(brave_wallet::IsAllowedForContext(profile()));
-  } else {
-    EXPECT_FALSE(
-        prefs()->GetBoolean(brave_wallet::kBraveWalletDisabledByPolicy));
-    EXPECT_TRUE(brave_wallet::IsAllowed(prefs()));
-    EXPECT_TRUE(brave_wallet::IsAllowedForContext(profile()));
-
-    auto* profile = browser()->profile();
-    auto* incognito_profile = CreateIncognitoBrowser(profile)->profile();
-    ui_test_utils::BrowserCreatedObserver browser_creation_observer;
-    profiles::SwitchToGuestProfile();
-    Browser* guest_browser = browser_creation_observer.Wait();
-    DCHECK(guest_browser);
-    auto* guest_profile = guest_browser->profile();
-    ASSERT_TRUE(guest_profile->IsGuestSession());
-
-#if BUILDFLAG(ENABLE_TOR)
-    ui_test_utils::BrowserCreatedObserver tor_browser_creation_observer;
-    brave::NewOffTheRecordWindowTor(browser());
-    Browser* tor_browser = tor_browser_creation_observer.Wait();
-    DCHECK(tor_browser);
-    auto* tor_profile = tor_browser->profile();
-    ASSERT_TRUE(tor_profile->IsTor());
-#endif
-
-    // By default the wallet should not be allowed for private, guest, or tor.
-    EXPECT_FALSE(brave_wallet::IsAllowedForContext(incognito_profile));
-#if BUILDFLAG(ENABLE_TOR)
-    EXPECT_FALSE(brave_wallet::IsAllowedForContext(tor_profile));
-#endif
-    EXPECT_FALSE(brave_wallet::IsAllowedForContext(guest_profile));
-
-    // Setting pref should allow it for incognito, but not for guest, or tor.
-    prefs()->SetBoolean(brave_wallet::kBraveWalletPrivateWindowsEnabled, true);
-    EXPECT_TRUE(brave_wallet::IsAllowedForContext(incognito_profile));
-#if BUILDFLAG(ENABLE_TOR)
-    EXPECT_FALSE(brave_wallet::IsAllowedForContext(tor_profile));
-#endif
-    EXPECT_FALSE(brave_wallet::IsAllowedForContext(guest_profile));
-  }
-}
 
 // Verify that Wallet service doesn't get created when Brave Wallet is
 // disabled by policy.
 IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, GetWalletService) {
   if (IsBraveWalletDisabledTest()) {
-    EXPECT_EQ(brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-                  profile()),
+    EXPECT_EQ(BraveWalletServiceFactory::GetServiceForContext(profile()),
               nullptr);
+    EXPECT_FALSE(IsBraveWalletServiceAvailable(profile()));
   } else {
-    EXPECT_NE(brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-                  profile()),
+    EXPECT_NE(BraveWalletServiceFactory::GetServiceForContext(profile()),
               nullptr);
+    EXPECT_TRUE(IsBraveWalletServiceAvailable(profile()));
   }
 }
 
@@ -195,7 +145,7 @@ IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, Web3SettingsPagesAccess) {
   };
 
   // Only test Cardano if it's enabled
-  if (brave_wallet::IsCardanoDAppSupportEnabled()) {
+  if (IsCardanoDAppSupportEnabled()) {
     web3_urls.push_back(GURL("chrome://settings/content/cardano"));
   }
 
@@ -255,4 +205,4 @@ INSTANTIATE_TEST_SUITE_P(
                              info.param ? "Disabled" : "NotDisabled");
     });
 
-}  // namespace policy
+}  // namespace brave_wallet
