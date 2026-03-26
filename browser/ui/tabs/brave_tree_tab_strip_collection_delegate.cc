@@ -91,7 +91,8 @@ BraveTreeTabStripCollectionDelegate::TryAddTabToSameTreeAsOpener(
     tabs::TabInterface* opener) const {
   // If new tab is inserted at first or last without opener, it becomes child
   // node of unpinned collection.
-  if (index == 0 || (!opener && index == collection_->TabCountRecursive())) {
+  if (index == collection_->IndexOfFirstNonPinnedTab() ||
+      (!opener && index == collection_->TabCountRecursive())) {
     return base::unexpected(std::move(tab));
   }
 

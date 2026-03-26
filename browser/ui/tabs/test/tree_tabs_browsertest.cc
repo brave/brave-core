@@ -21,6 +21,7 @@
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
+#include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -2331,6 +2332,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
             tabs::TabCollection::Type::TREE_NODE);
   EXPECT_EQ(added->GetParentCollection()->GetParentCollection(),
             &unpinned_collection());
+  EXPECT_EQ(static_cast<tabs::TabModel*>(added)->opener(), pinned_opener);
 }
 
 // PinTabs unwraps the tree node: children are promoted before the tab is moved
@@ -2434,7 +2436,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
 
   // Verify the tab is moved to the pinned collection.
   int pinned_idx = tab_strip_model().GetIndexOfTab(tab0);
-  ASSERT_GE(pinned_idx, 0);
+  ASSERT_EQ(pinned_idx, 0);
   EXPECT_TRUE(tab_strip_model().IsTabPinned(pinned_idx));
   EXPECT_FALSE(tab_strip_model().GetTabGroupForTab(pinned_idx).has_value());
   EXPECT_EQ(tab0->GetParentCollection()->type(),
@@ -2498,8 +2500,6 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   VerifySplitCreated(&tab_strip_model(), &tab_strip_collection());
 
   SetSplitPinned(tab_strip_model().GetTabAtIndex(4)->GetSplit().value(), true);
-  EXPECT_TRUE(std::holds_alternative<std::unique_ptr<tabs::TabCollection>>(
-      pinned_collection().GetChildren()[0]));
   ASSERT_EQ(pinned_collection().ChildCount(), 4u);
   ASSERT_TRUE(unpinned_collection().GetChildren().empty());
   EXPECT_TRUE(tab_strip_model().IsTabPinned(4));
