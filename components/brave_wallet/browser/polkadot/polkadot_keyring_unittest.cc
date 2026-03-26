@@ -204,41 +204,6 @@ TEST(PolkadotKeyring, AddHDAccount) {
   }
 }
 
-TEST(PolkadotKeyring, RemoveAccount) {
-  // Mainnet.
-  {
-    auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
-    PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
-                            mojom::KeyringId::kPolkadotMainnet,
-                            base::BindRepeating(IsAddressAllowed));
-    keyring.AddNewHDAccount(0);
-    keyring.AddNewHDAccount(1u);
-    EXPECT_TRUE(keyring.RemoveAccount(0));
-    EXPECT_TRUE(keyring.RemoveAccount(1));
-
-    EXPECT_FALSE(keyring.RemoveAccount(0));
-    EXPECT_FALSE(keyring.RemoveAccount(1));
-    EXPECT_FALSE(keyring.RemoveAccount(1234));
-  }
-
-  // Testnet.
-  {
-    auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
-    PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
-                            mojom::KeyringId::kPolkadotTestnet,
-                            base::BindRepeating(IsAddressAllowed));
-
-    keyring.AddNewHDAccount(0);
-    keyring.AddNewHDAccount(1u);
-    EXPECT_TRUE(keyring.RemoveAccount(0));
-    EXPECT_TRUE(keyring.RemoveAccount(1));
-
-    EXPECT_FALSE(keyring.RemoveAccount(0));
-    EXPECT_FALSE(keyring.RemoveAccount(1));
-    EXPECT_FALSE(keyring.RemoveAccount(1234));
-  }
-}
-
 TEST(PolkadotKeyring, GetPublicKey) {
   // Derived from the polkadot-sdk using:
   // clang-format off
@@ -452,28 +417,36 @@ TEST(PolkadotKeyring, AddNewHDAccount_OfacSanctionedAddress) {
   ASSERT_TRUE(address);
   const std::string address_to_sanction = *address;
 
-  ASSERT_TRUE(keyring.RemoveAccount(0));
-
   // Add address to OFAC list.
   registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
 
   // Try to add account again - should fail because it generates the same
-  // address
-
+  // address Note: PolkadotKeyring doesn't have RemoveHDAccount, so we test by
+  // trying to add at index 1, which should succeed, then try index 0 again.
   auto result1 = keyring.AddNewHDAccount(1);
   EXPECT_TRUE(result1) << "Non-OFAC address should succeed";
 
   // Now try to add at index 0 again - this should fail because the address
   // at index 0 is already in the OFAC list
-  auto result2 = keyring.AddNewHDAccount(0);
+  // Actually, we can't test this directly because AddNewHDAccount doesn't
+  // allow adding at an index that's already been used. Instead, let's test
+  // by creating a new keyring and trying to add at index 0.
+  PolkadotKeyring keyring2(
+      base::span(seed).first<kPolkadotSeedSize>(),
+      mojom::KeyringId::kPolkadotMainnet,
+      base::BindLambdaForTesting([=](const std::string& address) {
+        return !registry->IsOfacAddress(address);
+      }));
+  auto result2 = keyring2.AddNewHDAccount(0);
   EXPECT_FALSE(result2)
       << "OFAC sanctioned Polkadot address should be rejected";
 
-  // Prove that we didn't leave any remnant phantom keypairs.
-  EXPECT_FALSE(keyring.RemoveAccount(0));
-
   // Clear OFAC list
   registry->UpdateOfacAddressesList({});
+
+  // Prove that we didn't leave any remnant phantom keypairs.
+  result2 = keyring2.AddNewHDAccount(0);
+  EXPECT_TRUE(result2);
 }
 
 }  // namespace brave_wallet

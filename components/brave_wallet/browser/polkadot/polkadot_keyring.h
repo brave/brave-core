@@ -56,7 +56,6 @@ class PolkadotKeyring {
   mojom::KeyringId keyring_id() const { return keyring_id_; }
 
   std::optional<std::string> AddNewHDAccount(uint32_t account_index);
-  bool RemoveAccount(uint32_t account_index);
 
   // Encodes the private key for export in JSON format.
   // Returns a JSON string with encoded key, encoding metadata, and address.

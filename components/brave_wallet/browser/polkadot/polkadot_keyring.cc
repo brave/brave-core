@@ -138,17 +138,12 @@ std::optional<std::string> PolkadotKeyring::AddNewHDAccount(
       .copy_from_nonoverlapping(keypair.GetPublicKey());
 
   auto addr = ss58_addr.Encode().value();
-
   if (!is_address_allowed_.Run(addr)) {
     return std::nullopt;
   }
 
   secondary_keys_.emplace(account_index, std::move(keypair));
   return addr;
-}
-
-bool PolkadotKeyring::RemoveAccount(uint32_t account_index) {
-  return secondary_keys_.erase(account_index) > 0;
 }
 
 void PolkadotKeyring::SetRandBytesForTesting(  // IN-TEST
