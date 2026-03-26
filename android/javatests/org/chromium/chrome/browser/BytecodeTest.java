@@ -203,6 +203,7 @@ import org.chromium.components.offline_items_collection.OfflineItem;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.permissions.PermissionDialogDelegate;
+import org.chromium.components.prefs.PrefService;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.signin.base.AccountInfo;
 import org.chromium.components.variations.firstrun.VariationsSeedFetcher;
@@ -356,6 +357,8 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/download/DownloadMessageUiControllerImpl"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/autofill/AutofillClientProviderUtils"));
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator"));
@@ -638,6 +641,13 @@ public class BytecodeTest {
                         int.class,
                         boolean.class,
                         boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/autofill/AutofillClientProviderUtils", // presubmit: ignore-long-line
+                        "getAndroidAutofillFrameworkAvailability",
+                        MethodModifier.STATIC,
+                        int.class,
+                        PrefService.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/browser_ui/site_settings/WebsitePermissionsFetcher", // presubmit: ignore-long-line

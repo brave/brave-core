@@ -25,6 +25,7 @@ brave_chrome_java_deps = [
   "//brave/android:qrreader_java",
   "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
   "//brave/brave_domains/android:java",
+  "//brave/browser/autofill/android:java",
   "//brave/browser/brave_origin/android:java",
   "//brave/browser/brave_shields/android:java",
   "//brave/browser/custom_search_engines/android:java",
