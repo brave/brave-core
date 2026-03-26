@@ -75,6 +75,10 @@ static_library("browser") {
     "model_validator.h",
     "skills_metrics.cc",
     "skills_metrics.h",
+    "sync/ai_chat_sync_bridge.cc",
+    "sync/ai_chat_sync_bridge.h",
+    "sync/ai_chat_sync_conversions.cc",
+    "sync/ai_chat_sync_conversions.h",
     "tab_tracker_service.cc",
     "tab_tracker_service.h",
     "tools/bignumber_code_plugin.cc",
@@ -109,6 +113,7 @@ static_library("browser") {
   public_deps = [
     "//base",
     "//components/os_crypt/async/common",
+    "//components/sync/model",
   ]
 
   deps = [
@@ -136,6 +141,8 @@ static_library("browser") {
     "//components/keyed_service/core",
     "//components/os_crypt/async/browser",
     "//components/prefs",
+    "//components/sync/base",
+    "//components/sync/protocol",
     "//components/update_client",
     "//components/user_prefs",
     "//net/traffic_annotation",
@@ -196,7 +203,10 @@ source_set("unit_tests") {
   if (!is_ios) {
     # TODO(https://github.com/brave/brave-browser/issues/47827)
     # to initialize the database
-    sources += [ "ai_chat_database_unittest.cc" ]
+    sources += [
+      "ai_chat_database_unittest.cc",
+      "sync/ai_chat_sync_bridge_unittest.cc",
+    ]
   }
 
   data = [ "//brave/components/test/data/ai_chat" ]
@@ -224,6 +234,8 @@ source_set("unit_tests") {
     "//components/os_crypt/async/browser:test_support",
     "//components/os_crypt/sync:test_support",
     "//components/prefs:test_support",
+    "//components/sync:test_support",
+    "//components/sync/protocol",
     "//components/sync_preferences:test_support",
     "//net/traffic_annotation:test_support",
     "//services/network:test_support",
