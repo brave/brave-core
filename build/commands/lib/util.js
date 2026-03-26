@@ -18,6 +18,7 @@ import ActionGuard from './actionGuard.js'
 import { GitPatcher } from './gitPatcher.js'
 import { getBuildArgs } from './buildArgs.ts'
 import { isCI, isTeamcity } from './ciDetect.ts'
+import { dumpBuildHangDiagnostics } from './buildDiagnostics.ts'
 
 // Do not limit the number of listeners to avoid warnings from EventEmitter.
 process.setMaxListeners(0)
@@ -228,13 +229,22 @@ const util = {
     args = [],
     options = /** @type {Record<string, any>} */ ({}),
   ) => {
-    let { continueOnFail, verbose, onStdErrLine, onStdOutLine, ...cmdOptions } =
-      options
+    let {
+      continueOnFail,
+      verbose,
+      onSpawn,
+      onStdErrLine,
+      onStdOutLine,
+      ...cmdOptions
+    } = options
     if (verbose !== false) {
       Log.command(cmdOptions.cwd, cmd, args)
     }
     return new Promise((resolve, reject) => {
       const prog = spawn(...normalizeCommand(cmd, args), cmdOptions)
+      if (onSpawn) {
+        onSpawn(prog)
+      }
       const signalsToForward = ['SIGINT', 'SIGTERM', 'SIGQUIT', 'SIGHUP']
       const signalHandler = (s) => {
         prog.kill(s)
@@ -708,11 +718,14 @@ const util = {
     // Collect build statistics into this variable to display in a separate TC
     // block.
     let buildStats = ''
+    // Updated on every autoninja log line when CI pipes output (idle watchdog).
+    let lastBuildLogTime = Date.now()
 
     // Parse output to display the build progress on Teamcity.
     if (isTeamcity) {
       let lastStatusTime = Date.now()
       options.onStdOutLine = (line) => {
+        lastBuildLogTime = Date.now()
         if (
           buildStats
           || /^(RBE Stats:|metric\s+count|build finished)\s+/.test(line)
@@ -732,6 +745,14 @@ const util = {
       }
       options.onStdErrLine = options.onStdOutLine
       options.stdio = 'pipe'
+    } else if (isCI) {
+      const onLine = (line) => {
+        lastBuildLogTime = Date.now()
+        console.log(line)
+      }
+      options.onStdOutLine = onLine
+      options.onStdErrLine = onLine
+      options.stdio = 'pipe'
     }
 
     // Enable to allow error post-processing after autoninja/siso failure.
@@ -741,6 +762,14 @@ const util = {
     const sisoOutputFile = path.join(outputDir, 'siso_output')
     if (fs.existsSync(sisoOutputFile)) {
       fs.unlinkSync(sisoOutputFile)
+    }
+
+    let buildIdleWatchdogInterval = null
+    const clearBuildIdleWatchdog = () => {
+      if (buildIdleWatchdogInterval) {
+        clearInterval(buildIdleWatchdogInterval)
+        buildIdleWatchdogInterval = null
+      }
     }
 
     const buildGuard = new ActionGuard(path.join(outputDir, 'build.guard'))
@@ -755,9 +784,36 @@ const util = {
         await util.runAsync('gn', ['clean', outputDir], options)
       }
       buildGuard.markStarted()
-      await util.runAsync('autoninja', ninjaOpts, options)
+
+      let buildProcess = null
+      const autoninjaOptions = {
+        ...options,
+        onSpawn: (prog) => {
+          buildProcess = prog
+        },
+      }
+
+      if (isCI) {
+        const idleTimeoutMs = 90 * 60 * 1000 // 90 minutes
+        lastBuildLogTime = Date.now()
+        buildIdleWatchdogInterval = setInterval(() => {
+          if (Date.now() - lastBuildLogTime <= idleTimeoutMs) {
+            return
+          }
+          clearBuildIdleWatchdog()
+          Log.error(
+            `Build aborted: no autoninja output for ${idleTimeoutMs / 1000}s `,
+          )
+          dumpBuildHangDiagnostics(outputDir)
+          util.killProcessTree(buildProcess)
+        }, 10 * 1000)
+      }
+
+      await util.runAsync('autoninja', ninjaOpts, autoninjaOptions)
+      clearBuildIdleWatchdog()
       buildGuard.markFinished()
     } catch (e) {
+      clearBuildIdleWatchdog()
       // Display siso_output on CI after a build failure.
       if (isCI && fs.existsSync(sisoOutputFile)) {
         const sisoOutput = fs.readFileSync(sisoOutputFile, 'utf8')
@@ -1028,6 +1084,29 @@ const util = {
       ],
       config.defaultOptions,
     )
+  },
+
+  /**
+   * Stop a process and its descendants. On Windows, `child.kill()` often only
+   * affects `cmd.exe`; `taskkill /T` tears down the full tree.
+   * @param {import('node:child_process').ChildProcess | null} child
+   */
+  killProcessTree: (child) => {
+    if (!child?.pid) {
+      return
+    }
+    if (process.platform === 'win32') {
+      spawnSync('taskkill', ['/PID', String(child.pid), '/T', '/F'], {
+        stdio: 'ignore',
+        windowsHide: true,
+      })
+      return
+    }
+    try {
+      child.kill('SIGKILL')
+    } catch {
+      // Process may already have exited.
+    }
   },
 }
 
