@@ -512,6 +512,7 @@ var package = Package(
       ],
       plugins: ["LoggerPlugin"]
     ),
+    .testTarget(name: "OnboardingTests", dependencies: ["Onboarding"]),
     .testTarget(
       name: "BraveNewsTests",
       dependencies: ["BraveNews"],
