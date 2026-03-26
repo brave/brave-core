@@ -206,6 +206,14 @@ CWV_EXPORT
 @end
 
 CWV_EXPORT
+@interface BraveWebView (BraveSearchAdResults)
+// Fetches search result ad creatives from the current page and returns them
+// as a JSON string, or nil if none could be retrieved.
+- (void)fetchSearchAdCreatives:
+    (void (^)(NSString* _Nullable json))completionHandler;
+@end
+
+CWV_EXPORT
 @interface BraveWebView (BraveTalk)
 /// A bridge for handling Brave Talk tab features
 - (void)setBraveTalkHelper:(id<BraveTalkTabHelperBridge>)braveTalkHelper;

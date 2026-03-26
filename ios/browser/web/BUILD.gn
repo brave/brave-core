@@ -25,6 +25,7 @@ source_set("web") {
     "//brave/ios/browser/api/web_view",
     "//brave/ios/browser/application_context",
     "//brave/ios/browser/brave_ads",
+    "//brave/ios/browser/brave_search",
     "//brave/ios/browser/component_updater:zxcvbn_data_component_installer",
     "//brave/ios/browser/ui/web_view:features",
     "//brave/ios/browser/web/de_amp",

@@ -35,6 +35,7 @@ source_set("web_view") {
     "//brave/ios/browser/api/web_view/autofill",
     "//brave/ios/browser/api/web_view/passwords",
     "//brave/ios/browser/brave_ads",
+    "//brave/ios/browser/brave_search",
     "//brave/ios/browser/favicon",
     "//brave/ios/browser/ui/web_view:features",
     "//brave/ios/browser/ui/webui/brave_wallet",
