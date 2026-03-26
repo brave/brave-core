@@ -334,13 +334,18 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.addToDockSettingsCell,
           selection: { [unowned self] in
-            let controller = UIHostingController(
-              rootView: AddToDockSettingsView(onDismiss: { [unowned self] in
-                self.dismiss(animated: true)
-              })
-            )
-            controller.modalPresentationStyle = .pageSheet
-            controller.sheetPresentationController?.detents = [.large()]
+            let controller = OnboardingController(
+              environment: .init(
+                p3aUtils: p3aUtilities,
+                attributionManager: attributionManager
+              ),
+              steps: [.addToDock],
+              showSplashScreen: false,
+              showDismissButton: false
+            ).then {
+              $0.isModalInPresentation = true
+              $0.modalPresentationStyle = .overFullScreen
+            }
             self.present(controller, animated: true)
           },
           cellClass: MultilineButtonCell.self
@@ -359,7 +364,7 @@ class SettingsViewController: TableViewController {
             UIApplication.shared.open(settingsUrl)
           },
           cellClass: MultilineButtonCell.self
-        ),
+        )
       ] + addToDockRows + [
         Row(
           text: Strings.importBrowsingDataSettingsMenuTitle,
@@ -384,7 +389,7 @@ class SettingsViewController: TableViewController {
             self.navigationController?.pushViewController(controller, animated: true)
           },
           cellClass: MultilineButtonCell.self
-        ),
+        )
       ]
     )
   }()

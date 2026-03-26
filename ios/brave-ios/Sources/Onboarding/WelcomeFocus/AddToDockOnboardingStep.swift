@@ -11,21 +11,19 @@ struct AddToDockGraphicView: View {
   @Environment(\.colorScheme) private var colorScheme
 
   var body: some View {
-    GeometryReader { proxy in
-      LottieView(
-        animation: .named(
-          colorScheme == .dark
-            ? "onboarding-add-to-dock-dark"
-            : "onboarding-add-to-dock-light",
-          bundle: .module
-        )
+    LottieView(
+      animation: .named(
+        colorScheme == .dark
+          ? "onboarding-add-to-dock-dark"
+          : "onboarding-add-to-dock-light",
+        bundle: .module,
+        subdirectory: "LottieAssets"
       )
-      .resizable()
-      .playing(loopMode: .loop)
-      .id(colorScheme)
-      .frame(width: proxy.size.width * 0.90, height: proxy.size.height * 0.90)
-      .position(x: proxy.size.width * 0.50, y: proxy.size.height * 0.50)
-    }
+    )
+    .resizable()
+    .playing(loopMode: .loop)
+    .id(colorScheme)
+    .padding(30)
   }
 }
 

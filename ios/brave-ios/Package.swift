@@ -504,8 +504,6 @@ var package = Package(
       ],
       resources: [
         .copy("LottieAssets/onboarding-rewards.json"),
-        .copy("LottieAssets/onboarding-add-to-dock-dark.json"),
-        .copy("LottieAssets/onboarding-add-to-dock-light.json"),
         .copy("LottieAssets/playlist-confetti.json"),
         .copy("WelcomeFocus/Resources/LottieAssets"),
         .copy("WelcomeFocus/Resources/Videos"),
