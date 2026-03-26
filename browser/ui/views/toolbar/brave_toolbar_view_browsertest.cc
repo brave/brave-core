@@ -360,6 +360,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
                        BraveButtonsCollapseBeforeLocationBarShrinks) {
   auto* location_bar =
       static_cast<BraveLocationBarView*>(toolbar_view_->location_bar());
+  ASSERT_NE(location_bar, nullptr);
   const int location_bar_min = location_bar->GetMinimumSize().width();
 
   // Narrow the toolbar to just above the location bar minimum so that Brave
@@ -370,7 +371,9 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
 
   EXPECT_FALSE(toolbar_view_->bookmark_button()->GetVisible());
   EXPECT_FALSE(toolbar_view_->side_panel_button()->GetVisible());
-  EXPECT_GE(location_bar->width(), location_bar_min);
+  EXPECT_GE(location_bar->width(), location_bar_min)
+      << "location bar width: " << location_bar->width()
+      << ", min: " << location_bar_min;
 }
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ToolbarDividerNotShownTest) {
