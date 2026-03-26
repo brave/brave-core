@@ -58,6 +58,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.day_zero.DayZeroHelper;
 import org.chromium.chrome.browser.metrics.ChangeMetricsReportingStateCalledFrom;
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
@@ -100,13 +101,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
             "https://www.brave.com/browser/privacy/#web-discovery-project";
 
     private static final String TAG = "WelcomeOnboarding";
-    private static final String DAY_ZERO_DEFAULT_VARIANT = "a";
-    private static final String DAY_ZERO_VARIANT_B = "b";
+    private static final String DAY_ZERO_DEFAULT_VARIANT = "X";
+    private static final String DAY_ZERO_VARIANT_Y = "Y";
 
     private static final String KEY_SPLASH_ANIMATION_FINISHED =
             "WelcomeOnboardingActivity.SplashAnimationFinished";
-    private static final String KEY_VARIANT_B_PAGE_INDEX =
-            "WelcomeOnboardingActivity.VariantBPageIndex";
+    private static final String KEY_VARIANT_Y_PAGE_INDEX =
+            "WelcomeOnboardingActivity.VariantYPageIndex";
 
     private static final float LEAF_SCALE_ANIMATION = 1.5f;
     private static final float REDUCED_TENSION_OVERSHOOT_INTERPOLATOR = 1f;
@@ -116,10 +117,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     private boolean mIsTablet;
     private int mCurrentStep = -1;
     private boolean mSplashAnimationFinished;
-    private int mRestoredVariantBPageIndex;
+    private int mRestoredVariantYPageIndex;
 
     private ConstraintLayout mDefaultConstraintLayout;
-    private ConstraintLayout mVariantBConstraintLayout;
+    private ConstraintLayout mVariantYConstraintLayout;
     private View mVLeafAlignTop;
     private View mVLeafAlignBottom;
     private ImageView mIvLeafTop;
@@ -137,8 +138,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     private FrameLayout mBraveSplashContainer;
 
     private Guideline mSplashGuideline;
-    private ViewPager2 mVariantBPager;
-    @Nullable private OnboardingStepAdapter mVariantBAdapter;
+    private ViewPager2 mVariantYPager;
+    @Nullable private OnboardingStepAdapter mVariantYAdapter;
 
     private String mDayZeroVariant = "";
     private SpannableString mWdpLearnMore;
@@ -206,7 +207,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
     private void enableWebDiscoverPreference() {
         if ((isWDPSettingAvailable() && mCurrentOnboardingPage == CurrentOnboardingPage.WDP_PAGE)
-                || isVariantB()) {
+                || isVariantY()) {
             UserPrefs.get(assumeNonNull(getProfileProviderSupplier().get()).getOriginalProfile())
                     .setBoolean(BravePref.WEB_DISCOVERY_ENABLED, true);
         }
@@ -522,7 +523,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         setContentView(R.layout.activity_welcome_onboarding);
 
         mSplashGuideline = findViewById(R.id.splash_anchor);
-        mVariantBPager = findViewById(R.id.onboarding_steps_pager);
+        mVariantYPager = findViewById(R.id.onboarding_steps_pager);
 
         final ChromeClickableSpan wdpLearnMoreClickableSpan =
                 new ChromeClickableSpan(
@@ -535,15 +536,15 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                         wdpText,
                         new SpanInfo("<learn_more>", "</learn_more>", wdpLearnMoreClickableSpan));
 
-        if (mVariantBPager != null) {
-            mVariantBPager.setUserInputEnabled(false);
-            mPageBounceAnimator = new PageBounceAnimator(mVariantBPager);
-            mVariantBAdapter = new OnboardingStepAdapter(mWdpLearnMore, this);
-            mVariantBPager.setAdapter(mVariantBAdapter);
+        if (mVariantYPager != null) {
+            mVariantYPager.setUserInputEnabled(false);
+            mPageBounceAnimator = new PageBounceAnimator(mVariantYPager);
+            mVariantYAdapter = new OnboardingStepAdapter(mWdpLearnMore, this);
+            mVariantYPager.setAdapter(mVariantYAdapter);
         }
 
         mDefaultConstraintLayout = findViewById(R.id.onboarding_default_variant);
-        mVariantBConstraintLayout = findViewById(R.id.onboarding_variant_b);
+        mVariantYConstraintLayout = findViewById(R.id.onboarding_variant_y);
         mBraveSplash = findViewById(R.id.brave_splash);
         mBraveSplashContainer = findViewById(R.id.brave_splash_container);
         assert !mIsTablet || mBraveSplashContainer != null
@@ -633,39 +634,40 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                 !PrivacyPreferencesManagerImpl.getInstance()
                         .isUsageAndCrashReportingPermittedByPolicy();
 
-        // Uncomment next line to extract day zero variant
-        // for new onboarding flow when it's ready.
-        // mDayZeroVariant = DayZeroHelper.getDayZeroVariant();
-        if (TextUtils.isEmpty(mDayZeroVariant)) {
+        mDayZeroVariant = DayZeroHelper.getDayZeroVariant();
+        // Filter out day zero variants different from X and Y.
+        if (TextUtils.isEmpty(mDayZeroVariant)
+                || (!mDayZeroVariant.equals(DAY_ZERO_VARIANT_Y)
+                        && !mDayZeroVariant.equals(DAY_ZERO_DEFAULT_VARIANT))) {
             mDayZeroVariant = DAY_ZERO_DEFAULT_VARIANT;
         }
 
-        if (isVariantB()) {
+        if (isVariantY()) {
             if (!mIsCrashReportingManaged) {
                 final boolean isCrashReporting = getCrashReportingPreference();
-                if (mVariantBAdapter != null) {
-                    mVariantBAdapter.setCrashReportingChecked(isCrashReporting);
+                if (mVariantYAdapter != null) {
+                    mVariantYAdapter.setCrashReportingChecked(isCrashReporting);
                 }
-            } else if (mVariantBAdapter != null) {
-                mVariantBAdapter.setCrashReportingManaged(true);
+            } else if (mVariantYAdapter != null) {
+                mVariantYAdapter.setCrashReportingManaged(true);
             }
 
             if (!mIsP3aManaged) {
                 final boolean isP3aEnabled = getP3aPreference();
-                if (mVariantBAdapter != null) {
-                    mVariantBAdapter.setP3aChecked(isP3aEnabled);
+                if (mVariantYAdapter != null) {
+                    mVariantYAdapter.setP3aChecked(isP3aEnabled);
                 }
-            } else if (mVariantBAdapter != null) {
-                mVariantBAdapter.setP3aManaged(true);
+            } else if (mVariantYAdapter != null) {
+                mVariantYAdapter.setP3aManaged(true);
             }
-            mVariantBConstraintLayout.setVisibility(View.VISIBLE);
+            mVariantYConstraintLayout.setVisibility(View.VISIBLE);
             if (mSplashAnimationFinished) {
                 if (mBraveSplashContainer != null) {
                     mBraveSplashContainer.setVisibility(View.GONE);
                 }
-                if (mVariantBPager != null) {
-                    mVariantBPager.setCurrentItem(mRestoredVariantBPageIndex, false);
-                    mVariantBPager.setVisibility(View.VISIBLE);
+                if (mVariantYPager != null) {
+                    mVariantYPager.setCurrentItem(mRestoredVariantYPageIndex, false);
+                    mVariantYPager.setVisibility(View.VISIBLE);
                 }
             } else {
                 final AnimatedVectorDrawable vectorDrawable = getAnimatedVectorDrawable();
@@ -682,8 +684,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(KEY_SPLASH_ANIMATION_FINISHED, mSplashAnimationFinished);
-        if (mVariantBPager != null) {
-            outState.putInt(KEY_VARIANT_B_PAGE_INDEX, mVariantBPager.getCurrentItem());
+        if (mVariantYPager != null) {
+            outState.putInt(KEY_VARIANT_Y_PAGE_INDEX, mVariantYPager.getCurrentItem());
         }
     }
 
@@ -694,15 +696,15 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
             return;
         }
         mSplashAnimationFinished = state.getBoolean(KEY_SPLASH_ANIMATION_FINISHED, false);
-        mRestoredVariantBPageIndex = state.getInt(KEY_VARIANT_B_PAGE_INDEX, 0);
+        mRestoredVariantYPageIndex = state.getInt(KEY_VARIANT_Y_PAGE_INDEX, 0);
     }
 
     private boolean isDefaultVariant() {
         return mDayZeroVariant.equals(DAY_ZERO_DEFAULT_VARIANT);
     }
 
-    private boolean isVariantB() {
-        return mDayZeroVariant.equals(DAY_ZERO_VARIANT_B);
+    private boolean isVariantY() {
+        return mDayZeroVariant.equals(DAY_ZERO_VARIANT_Y);
     }
 
     private AnimatedVectorDrawable getAnimatedVectorDrawable() {
@@ -759,10 +761,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         return isP3aEnabled;
     }
 
-    private void showVariantBPagerAfterSplash() {
-        if (mVariantBPager != null) {
-            mVariantBPager.setCurrentItem(isWDPSettingAvailable() ? 0 : 1, false);
-            mVariantBPager.setVisibility(View.VISIBLE);
+    private void showVariantYPagerAfterSplash() {
+        if (mVariantYPager != null) {
+            mVariantYPager.setCurrentItem(isWDPSettingAvailable() ? 0 : 1, false);
+            mVariantYPager.setVisibility(View.VISIBLE);
         }
         mSplashAnimationFinished = true;
         maybeRequestDefaultBrowser();
@@ -786,7 +788,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                     @Override
                     public void onAnimationEnd(@NonNull Animator animation) {
                         mBraveSplashContainer.setVisibility(View.GONE);
-                        showVariantBPagerAfterSplash();
+                        showVariantYPagerAfterSplash();
                     }
 
                     @Override
@@ -844,7 +846,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                                 if (mBraveSplashContainer != null) {
                                     mBraveSplashContainer.setVisibility(View.GONE);
                                 }
-                                showVariantBPagerAfterSplash();
+                                showVariantYPagerAfterSplash();
                             }
 
                             @Override
