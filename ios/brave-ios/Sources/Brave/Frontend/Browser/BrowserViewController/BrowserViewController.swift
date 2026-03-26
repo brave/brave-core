@@ -2860,10 +2860,10 @@ extension BrowserViewController: NewTabPageDelegate {
     rewards.ads.recordNewTabTakeoverInfobarWasDisplayed()
 
     let newTabTakeoverInfoBar = NewTabTakeoverInfoBar(
-      tabManager: self.tabManager,
-      onLinkPressed: { [weak self] in
+      onLinkPressed: { [weak self] url in
         guard let self else { return }
         self.rewards.ads.suppressNewTabTakeoverInfobar()
+        self.tabManager.addTabAndSelect(URLRequest(url: url), isPrivate: false)
       },
       onClosePressed: { [weak self] in
         guard let self else { return }
