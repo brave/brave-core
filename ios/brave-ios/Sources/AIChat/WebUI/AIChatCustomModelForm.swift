@@ -30,6 +30,7 @@ struct CustomModelForm: View {
     var apiKey: String?
     var systemPrompt: String?
     var visionSupport: Bool = false
+    var supportsTools: Bool = false
 
     var isRequiredDataFilled: Bool {
       return !displayName.isEmpty && !requestName.isEmpty && !serverEndpoint.isEmpty
@@ -200,6 +201,12 @@ struct CustomModelForm: View {
         }
         .tint(Color(braveSystemName: .primary40))
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        Toggle(isOn: $data.supportsTools) {
+          Text(Strings.AIChat.customModelFormSupportsToolsFieldTitle)
+          Text(Strings.AIChat.customModelFormSupportsToolsFieldDescription)
+        }
+        .tint(Color(braveSystemName: .primary40))
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
 
       Section {
@@ -253,6 +260,7 @@ struct CustomModelForm: View {
       if let initialModel {
         data.displayName = initialModel.displayName
         data.visionSupport = initialModel.visionSupport
+        data.supportsTools = initialModel.supportsTools
         if let customOptions = initialModel.options.customModelOptions {
           data.requestName = customOptions.modelRequestName
           data.serverEndpoint = customOptions.endpoint.absoluteString
@@ -311,6 +319,7 @@ struct CustomModelForm: View {
     }
     let model = AiChat.Model()
     model.visionSupport = data.visionSupport
+    model.supportsTools = data.supportsTools
     model.displayName = data.displayName
     model.options = .init(
       customModelOptions: .init(

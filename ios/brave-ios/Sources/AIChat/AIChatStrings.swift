@@ -1203,6 +1203,20 @@ extension Strings {
       value: "If this model takes image as input, e.g. llama 3.2b vision",
       comment: "The description text explaining what vision support means with an example"
     )
+    public static let customModelFormSupportsToolsFieldTitle = NSLocalizedString(
+      "aichat.customModelFormToolsSupportFieldTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Tools support",
+      comment: "The label for the tools support toggle"
+    )
+    public static let customModelFormSupportsToolsFieldDescription = NSLocalizedString(
+      "aichat.customModelFormToolsSupportFieldDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "If this model supports function calling/tool use",
+      comment: "The description text explaining what tools supports means"
+    )
     public static let customModelFormSystemPromptFieldTitle = NSLocalizedString(
       "aichat.customModelFormSystemPromptFieldTitle",
       tableName: "BraveLeo",
