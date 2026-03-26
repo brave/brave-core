@@ -108,10 +108,10 @@ TEST(EthereumKeyringUnitTest, SignTransaction) {
   // Specific signature check is in eth_transaction_unittest.cc
   EthereumKeyring keyring({}, base::BindRepeating(IsAddressAllowed));
   EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
-      "0x09", "0x4a817c800", "0x5208",
+      "0x1", "0x09", "0x4a817c800", "0x5208",
       "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
       std::vector<uint8_t>(), false, std::nullopt));
-  keyring.SignTransaction("0xDEADBEEFdeadbeefdeadbeefdeadbeefDEADBEEF", &tx, 0);
+  keyring.SignTransaction("0xDEADBEEFdeadbeefdeadbeefdeadbeefDEADBEEF", &tx);
   EXPECT_FALSE(tx.IsSigned());
 
   std::vector<uint8_t> seed;
@@ -121,8 +121,16 @@ TEST(EthereumKeyringUnitTest, SignTransaction) {
       &seed));
   EthereumKeyring keyring2(seed, base::BindRepeating(IsAddressAllowed));
   auto address = *keyring2.AddNewHDAccount(0);
-  keyring2.SignTransaction(address, &tx, 0);
+  keyring2.SignTransaction(address, &tx);
   EXPECT_TRUE(tx.IsSigned());
+  EXPECT_EQ(base::HexEncodeLower(tx.GetSignedTransaction()),
+            "307866383663303938353034613831376338303038323532303839343335333533"
+            "353335333533353335333533353335333533353335333533353335333533353335"
+            "333538383064653062366233613736343030303038303235613031613936313464"
+            "623735393065333738653638373838376464633162326533643266653931613638"
+            "653734306631313134353766373562356466303830383866613036313135626666"
+            "663262666638643430613438346265653062643366393731623865353431663465"
+            "646436663962353962386466323434363230383030646261");
 }
 
 TEST(EthereumKeyringUnitTest, SignMessage) {
@@ -228,14 +236,22 @@ TEST(EthereumKeyringUnitTest, ImportedAccounts) {
 
   // Sign Transaction
   EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
-      "0x09", "0x4a817c800", "0x5208",
+      "0x1", "0x09", "0x4a817c800", "0x5208",
       "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
       std::vector<uint8_t>(), false, std::nullopt));
-  keyring.SignTransaction("0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB", &tx, 0);
+  keyring.SignTransaction("0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB", &tx);
   EXPECT_FALSE(tx.IsSigned());
 
-  keyring.SignTransaction("0x2166fB4e11D44100112B1124ac593081519cA1ec", &tx, 0);
+  keyring.SignTransaction("0x2166fB4e11D44100112B1124ac593081519cA1ec", &tx);
   EXPECT_TRUE(tx.IsSigned());
+  EXPECT_EQ(base::HexEncodeLower(tx.GetSignedTransaction()),
+            "307866383663303938353034613831376338303038323532303839343335333533"
+            "353335333533353335333533353335333533353335333533353335333533353335"
+            "333538383064653062366233613736343030303038303235613031613936313464"
+            "623735393065333738653638373838376464633162326533643266653931613638"
+            "653734306631313134353766373562356466303830383866613036313135626666"
+            "663262666638643430613438346265653062643366393731623865353431663465"
+            "646436663962353962386466323434363230383030646261");
 
   // Try adding derived account.
   auto address = keyring.AddNewHDAccount(0);

@@ -73,6 +73,14 @@ std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
     return nullptr;
   }
 
+  // Stored value might not have chain_id, so we need to add it.
+  std::optional<base::DictValue> tx_with_chain_id;
+  if (!tx->FindString("chain_id")) {
+    tx_with_chain_id = tx->Clone();
+    tx_with_chain_id->Set("chain_id", meta->chain_id());
+    tx = &tx_with_chain_id.value();
+  }
+
   switch (static_cast<uint8_t>(*type)) {
     case 0: {
       std::optional<EthTransaction> tx_from_value =

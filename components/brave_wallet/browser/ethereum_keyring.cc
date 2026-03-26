@@ -141,18 +141,17 @@ std::optional<std::vector<uint8_t>> EthereumKeyring::SignMessage(
 }
 
 void EthereumKeyring::SignTransaction(const std::string& address,
-                                      EthTransaction* tx,
-                                      uint256_t chain_id) {
+                                      EthTransaction* tx) {
   HDKey* hd_key = GetHDKeyFromAddress(address);
   if (!hd_key || !tx) {
     return;
   }
 
-  auto signature = hd_key->SignCompact(tx->GetHashedMessageToSign(chain_id));
+  auto signature = hd_key->SignCompact(tx->GetHashedMessageToSign());
   if (!signature) {
     return;
   }
-  tx->ProcessSignature(*signature, chain_id);
+  tx->ProcessSignature(*signature);
 }
 
 std::string EthereumKeyring::GetAddressInternal(const HDKey& hd_key) const {

@@ -46,6 +46,7 @@ class EthTransaction {
   static std::optional<EthTransaction> FromValue(const base::DictValue& value);
 
   EthTransactionType type() const { return type_; }
+  uint256_t chain_id() const { return chain_id_; }
 
   std::optional<uint256_t> nonce() const { return nonce_; }
   uint256_t gas_price() const { return gas_price_; }
@@ -59,6 +60,7 @@ class EthTransaction {
   std::vector<uint8_t> r() const { return r_; }
   std::vector<uint8_t> s() const { return s_; }
 
+  void set_chain_id(uint256_t chain_id) { chain_id_ = chain_id; }
   void set_to(const EthAddress& to) { to_ = to; }
   void set_to(const EthContractCreationAddress& to) { to_ = to; }
   void set_value(uint256_t value) { value_ = value; }
@@ -74,10 +76,10 @@ class EthTransaction {
   }
 
   // Creates binary message for signing depending on transaction's version.
-  std::vector<uint8_t> GetMessageToSign(uint256_t chain_id) const;
+  std::vector<uint8_t> GetMessageToSign() const;
 
   // keccak(GetMessageToSign(chain_id))
-  KeccakHashArray GetHashedMessageToSign(uint256_t chain_id) const;
+  KeccakHashArray GetHashedMessageToSign() const;
 
   // Returns hex of serialized transaction.
   std::string GetSignedTransaction() const;
@@ -87,8 +89,7 @@ class EthTransaction {
 
   // signature and recid will be used to produce v, r, s
   // Support EIP-155 chain id
-  void ProcessSignature(const Secp256k1Signature& signature,
-                        uint256_t chain_id);
+  void ProcessSignature(const Secp256k1Signature& signature);
 
   bool IsSigned() const;
 
@@ -107,7 +108,8 @@ class EthTransaction {
   FRIEND_TEST_ALL_PREFIXES(Eip2930TransactionUnitTest,
                            GetSignedTransactionAndHash);
 
-  EthTransaction(std::optional<uint256_t> nonce,
+  EthTransaction(uint256_t chain_id,
+                 std::optional<uint256_t> nonce,
                  uint256_t gas_price,
                  uint256_t gas_limit,
                  std::variant<EthAddress, EthContractCreationAddress> to,
@@ -118,7 +120,7 @@ class EthTransaction {
 
   // return rlp([nonce, gasPrice, gasLimit, to, value, data, chainID, 0, 0])
   // Support EIP-155 chain id
-  virtual std::vector<uint8_t> GetMessageToSignImpl(uint256_t chain_id) const;
+  virtual std::vector<uint8_t> GetMessageToSignImpl() const;
 
   // Gas paid for the data.
   virtual uint256_t GetDataFee() const;
@@ -130,11 +132,13 @@ class EthTransaction {
 
   EthTransactionType type_ = EthTransactionType::kLegacy;
 
+  uint256_t chain_id_ = 0;
   std::optional<uint256_t> nonce_;
-  uint256_t gas_price_;
-  uint256_t gas_limit_;
-  std::variant<EthAddress, EthContractCreationAddress> to_;
-  uint256_t value_;
+  uint256_t gas_price_ = 0;
+  uint256_t gas_limit_ = 0;
+  std::variant<EthAddress, EthContractCreationAddress> to_{
+      EthContractCreationAddress()};
+  uint256_t value_ = 0;
   std::vector<uint8_t> data_;
 
   uint256_t v_ = 0;

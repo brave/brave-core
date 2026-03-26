@@ -152,9 +152,10 @@ TEST_F(TxStateManagerUnitTest, ConvertFromAddress) {
 }
 
 TEST_F(TxStateManagerUnitTest, TxOperations) {
-  EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
+  auto tx = std::make_unique<EthTransaction>();
+  tx->set_chain_id(*HexValueToUint256(mojom::kMainnetChainId));
+  EthTxMeta meta(eth_account_id_, std::move(tx));
   meta.set_id("001");
-  meta.set_chain_id(mojom::kMainnetChainId);
   EXPECT_FALSE(GetTxs());
   // Add
   ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));

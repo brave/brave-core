@@ -37,10 +37,15 @@ std::optional<std::string> GetFinalRecipient(
     if (!PrefixedHexStringToBytes(tx_args.at(0), &bytes)) {
       return std::nullopt;
     }
-    std::string fil_chain_id =
-        chain_id == mojom::kFilecoinEthereumMainnetChainId
-            ? mojom::kFilecoinMainnet
-            : mojom::kFilecoinTestnet;
+    std::string fil_chain_id;
+    if (chain_id == mojom::kFilecoinEthereumMainnetChainId) {
+      fil_chain_id = mojom::kFilecoinMainnet;
+    } else if (chain_id == mojom::kFilecoinEthereumTestnetChainId) {
+      fil_chain_id = mojom::kFilecoinTestnet;
+    } else {
+      return std::nullopt;
+    }
+
     auto fil_address = FilAddress::FromBytes(fil_chain_id, bytes);
     if (fil_address.IsEmpty()) {
       return std::nullopt;
@@ -75,6 +80,7 @@ EthTxMeta::EthTxMeta(const mojom::AccountIdPtr& from,
     : tx_(std::move(tx)) {
   DCHECK_EQ(from->coin, mojom::CoinType::ETH);
   set_from(from.Clone());
+  set_chain_id(Uint256ValueToHex(tx_->chain_id()));
 }
 
 EthTxMeta::~EthTxMeta() = default;
@@ -93,17 +99,11 @@ base::DictValue EthTxMeta::ToValue() const {
 }
 
 mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
-  std::string chain_id;
   std::string max_priority_fee_per_gas;
   std::string max_fee_per_gas;
-  if (tx_->type() == EthTransactionType::kEip2930) {
-    // When type is 1 it's always Eip2930Transaction
-    auto* tx2930 = static_cast<Eip2930Transaction*>(tx_.get());
-    chain_id = Uint256ValueToHex(tx2930->chain_id());
-  } else if (tx_->type() == EthTransactionType::kEip1559) {
+  if (tx_->type() == EthTransactionType::kEip1559) {
     // When type is 2 it's always Eip1559Transaction
     auto* tx1559 = static_cast<Eip1559Transaction*>(tx_.get());
-    chain_id = Uint256ValueToHex(tx1559->chain_id());
     max_priority_fee_per_gas =
         Uint256ValueToHex(tx1559->max_priority_fee_per_gas());
     max_fee_per_gas = Uint256ValueToHex(tx1559->max_fee_per_gas());
@@ -125,7 +125,7 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
     mojom::SwapInfoPtr swap_info_from_data;
     std::tie(tx_type, tx_params, tx_args, swap_info_from_data) =
         std::move(*tx_info);
-    final_recipient = GetFinalRecipient(chain_id, tx_->GetToChecksumAddress(),
+    final_recipient = GetFinalRecipient(chain_id_, tx_->GetToChecksumAddress(),
                                         tx_type, tx_args);
 
     if (!swap_info && swap_info_from_data) {
@@ -161,12 +161,13 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
       id_, from_.Clone(), tx_hash_,
       mojom::TxDataUnion::NewEthTxData1559(mojom::TxData1559::New(
           mojom::TxData::New(
+              chain_id_,
               tx_->nonce() ? Uint256ValueToHex(tx_->nonce().value()) : "",
               Uint256ValueToHex(tx_->gas_price()),
               Uint256ValueToHex(tx_->gas_limit()), tx_->GetToChecksumAddress(),
               Uint256ValueToHex(tx_->value()), tx_->data(), sign_only_,
               signed_transaction),
-          chain_id, max_priority_fee_per_gas, max_fee_per_gas)),
+          max_priority_fee_per_gas, max_fee_per_gas)),
       status_, tx_type, tx_params, tx_args,
       base::Milliseconds(created_time_.InMillisecondsSinceUnixEpoch()),
       base::Milliseconds(submitted_time_.InMillisecondsSinceUnixEpoch()),

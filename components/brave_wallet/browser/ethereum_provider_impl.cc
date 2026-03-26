@@ -320,6 +320,8 @@ void EthereumProviderImpl::SendOrSignTransactionInternal(
         std::move(id), std::move(formed_response), reject, "", false));
     return;
   }
+
+  tx_data_1559->base_data->chain_id = chain->chain_id;
   tx_data_1559->base_data->sign_only = sign_only;
 
   const auto account_id = FindAuthenticatedAccountByAddress(from, id, callback);
@@ -329,8 +331,6 @@ void EthereumProviderImpl::SendOrSignTransactionInternal(
   const bool is_eip_1559_network =
       brave_wallet_service_->network_manager()->IsEip1559Chain(chain->chain_id);
   if (is_eip_1559_network && ShouldCreate1559Tx(*tx_data_1559)) {
-    // Set chain_id to current chain_id.
-    tx_data_1559->chain_id = chain->chain_id;
     tx_service_->AddUnapprovedTransactionWithOrigin(
         mojom::TxDataUnion::NewEthTxData1559(std::move(tx_data_1559)),
         chain->chain_id, account_id.Clone(), nullptr, origin_,

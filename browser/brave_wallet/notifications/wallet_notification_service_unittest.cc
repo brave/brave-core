@@ -68,7 +68,7 @@ class WalletNotificationServiceUnitTest : public testing::Test {
   bool WasNotificationDisplayedOnStatusChange(mojom::TransactionStatus status) {
     std::unique_ptr<EthTransaction> tx = std::make_unique<EthTransaction>(
         *EthTransaction::FromTxData(mojom::TxData::New(
-            "0x01", "0x4a817c800", "0x5208",
+            mojom::kMainnetChainId, "0x01", "0x4a817c800", "0x5208",
             "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
             std::vector<uint8_t>(), false, std::nullopt)));
     EthTxMeta meta(EthAccount(0), std::move(tx));

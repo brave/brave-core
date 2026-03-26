@@ -37,7 +37,6 @@ class Eip2930Transaction : public EthTransaction {
   bool operator==(const Eip2930Transaction&) const = default;
 
   static std::optional<Eip2930Transaction> FromTxData(const mojom::TxDataPtr&,
-                                                      uint256_t chain_id,
                                                       bool strict = true);
   static std::optional<Eip2930Transaction> FromValue(
       const base::DictValue& value);
@@ -45,24 +44,23 @@ class Eip2930Transaction : public EthTransaction {
   static base::ListValue AccessListToValue(const AccessList&);
   static std::optional<AccessList> ValueToAccessList(const base::ListValue&);
 
-  uint256_t chain_id() const { return chain_id_; }
   const AccessList* access_list() const { return &access_list_; }
   AccessList* access_list() { return &access_list_; }
 
  protected:
-  Eip2930Transaction(std::optional<uint256_t> nonce,
+  Eip2930Transaction(uint256_t chain_id,
+                     std::optional<uint256_t> nonce,
                      uint256_t gas_price,
                      uint256_t gas_limit,
                      std::variant<EthAddress, EthContractCreationAddress> to,
                      uint256_t value,
-                     const std::vector<uint8_t>& data,
-                     uint256_t chain_id);
+                     const std::vector<uint8_t>& data);
 
   uint256_t GetDataFee() const override;
 
   // 0x01 || rlp([chainId, nonce, gasPrice, gasLimit, to, value, data,
   // accessList])
-  std::vector<uint8_t> GetMessageToSignImpl(uint256_t chain_id) const override;
+  std::vector<uint8_t> GetMessageToSignImpl() const override;
 
   // 0x01 || rlp([chainId, nonce, gasPrice, gasLimit, to, value, data,
   // accessList, signatureYParity, signatureR, signatureS])
@@ -70,7 +68,6 @@ class Eip2930Transaction : public EthTransaction {
 
   base::DictValue ToValueImpl() const override;
 
-  uint256_t chain_id_;
   AccessList access_list_;
 };
 

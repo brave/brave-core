@@ -129,23 +129,20 @@ class SimulationServiceUnitTest : public testing::Test {
       bool eip1559,
       const std::string& chain_id) {
     auto base_tx_data = mojom::TxData::New(
-        "0x09", "0x4a817c800", "0x5208",
+        chain_id, "0x09", "0x4a817c800", "0x5208",
         "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
         std::vector<uint8_t>(), false, std::nullopt);
 
     if (eip1559) {
       std::unique_ptr<Eip1559Transaction> tx =
-          std::make_unique<Eip1559Transaction>(
-              *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
-                  std::move(base_tx_data), "0x3", "0x1E", "0x32")));
+          std::make_unique<Eip1559Transaction>(*Eip1559Transaction::FromTxData(
+              mojom::TxData1559::New(std::move(base_tx_data), "0x1E", "0x32")));
       EthTxMeta meta(EthAccountId(0), std::move(tx));
-      meta.set_chain_id(chain_id);
       return meta.ToTransactionInfo();
     } else {
       std::unique_ptr<EthTransaction> tx = std::make_unique<EthTransaction>(
           *EthTransaction::FromTxData(std::move(base_tx_data)));
       EthTxMeta meta(EthAccountId(0), std::move(tx));
-      meta.set_chain_id(chain_id);
       return meta.ToTransactionInfo();
     }
   }
@@ -437,21 +434,6 @@ TEST_F(SimulationServiceUnitTest, ScanEVMTransactionUnsupportedNetwork) {
   ScanEVMTransaction(
       GetCannedScanEVMTransactionParams(false, mojom::kNeonEVMMainnetChainId),
       "en-US", callback.Get());
-
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
-}
-
-TEST_F(SimulationServiceUnitTest, ScanEVMTransactionEmptyNetwork) {
-  base::MockCallback<mojom::SimulationService::ScanEVMTransactionCallback>
-      callback;
-  EXPECT_CALL(
-      callback,
-      Run(EqualsMojo(mojom::EVMSimulationResponsePtr()), "",
-          l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK)));
-
-  ScanEVMTransaction(GetCannedScanEVMTransactionParams(false, ""), "en-US",
-                     callback.Get());
 
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);

@@ -166,14 +166,12 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
 
   mojom::CoinType GetCoinType() const override;
 
-  void AddUnapprovedTransaction(const std::string& chain_id,
-                                mojom::TxDataPtr tx_data,
+  void AddUnapprovedTransaction(mojom::TxDataPtr tx_data,
                                 const mojom::AccountIdPtr& from,
                                 const url::Origin& origin,
                                 mojom::SwapInfoPtr swap_info,
                                 AddUnapprovedTransactionCallback);
-  void AddUnapproved1559Transaction(const std::string& chain_id,
-                                    mojom::TxData1559Ptr tx_data,
+  void AddUnapproved1559Transaction(mojom::TxData1559Ptr tx_data,
                                     const mojom::AccountIdPtr& from,
                                     const url::Origin& origin,
                                     mojom::SwapInfoPtr swap_info,
@@ -200,8 +198,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
                             const std::string& tx_hash,
                             mojom::ProviderError error,
                             const std::string& error_message);
-  void OnGetGasPrice(const std::string& chain_id,
-                     const mojom::AccountIdPtr& from,
+  void OnGetGasPrice(const mojom::AccountIdPtr& from,
                      const url::Origin& origin,
                      const std::string& to,
                      const std::string& value,
@@ -215,7 +212,6 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
                      mojom::ProviderError error,
                      const std::string& error_message);
   void ContinueAddUnapprovedTransaction(
-      const std::string& chain_id,
       const mojom::AccountIdPtr& from,
       const std::optional<url::Origin>& origin,
       std::unique_ptr<EthTransaction> tx,
@@ -235,7 +231,6 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       mojom::ProviderError error,
       const std::string& error_message);
   void OnGetGasOracleForUnapprovedTransaction(
-      const std::string& chain_id,
       const mojom::AccountIdPtr& from,
       const url::Origin& origin,
       const std::string& to,
@@ -251,7 +246,6 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       const std::optional<std::string>& chain_id) override;
 
   void ContinueSpeedupOrCancelTransaction(
-      const std::string& chain_id,
       const mojom::AccountIdPtr& from,
       const std::optional<url::Origin>& origin,
       const std::string& gas_limit,
@@ -261,7 +255,6 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       mojom::ProviderError error,
       const std::string& error_message);
   void ContinueSpeedupOrCancel1559Transaction(
-      const std::string& chain_id,
       const mojom::AccountIdPtr& from,
       const std::optional<url::Origin>& origin,
       const std::string& gas_limit,

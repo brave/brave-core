@@ -291,6 +291,7 @@ extension BraveWallet.TransactionInfo {
       txDataUnion: .init(
         ethTxData1559: .init(
           baseData: .init(
+            chainId: BraveWallet.MainnetChainId,
             nonce: "0x6",
             gasPrice: "0x0",
             gasLimit: "0x5208",
@@ -300,7 +301,6 @@ extension BraveWallet.TransactionInfo {
             signOnly: false,
             signedTransaction: nil
           ),
-          chainId: BraveWallet.MainnetChainId,
           maxPriorityFeePerGas: "0x2540be400",
           maxFeePerGas: "0x25b7f3d400"
         )
@@ -328,6 +328,7 @@ extension BraveWallet.TransactionInfo {
       txDataUnion: .init(
         ethTxData1559: .init(
           baseData: .init(
+            chainId: BraveWallet.MainnetChainId,
             nonce: "0x5",
             gasPrice: "0x0",
             gasLimit: "0x520ca",
@@ -340,7 +341,6 @@ extension BraveWallet.TransactionInfo {
             signOnly: false,
             signedTransaction: nil
           ),
-          chainId: BraveWallet.MainnetChainId,
           maxPriorityFeePerGas: "0x77359400",
           maxFeePerGas: "0x39bdf3b000"
         )
@@ -380,6 +380,7 @@ extension BraveWallet.TransactionInfo {
       txDataUnion: .init(
         ethTxData1559: .init(
           baseData: .init(
+            chainId: BraveWallet.MainnetChainId,
             nonce: "0x5",
             gasPrice: "0x0",
             gasLimit: "0x520ca",
@@ -391,7 +392,6 @@ extension BraveWallet.TransactionInfo {
             signOnly: false,
             signedTransaction: nil
           ),
-          chainId: BraveWallet.MainnetChainId,
           maxPriorityFeePerGas: "0x77359400",
           maxFeePerGas: "0x39bdf3b000"
         )
@@ -423,6 +423,7 @@ extension BraveWallet.TransactionInfo {
       txDataUnion: .init(
         ethTxData1559: .init(
           baseData: .init(
+            chainId: BraveWallet.MainnetChainId,
             nonce: "0x5",
             gasPrice: "0xa06907542",
             gasLimit: "0x12e61",
@@ -434,7 +435,6 @@ extension BraveWallet.TransactionInfo {
             signOnly: false,
             signedTransaction: nil
           ),
-          chainId: BraveWallet.MainnetChainId,
           maxPriorityFeePerGas: "",
           maxFeePerGas: ""
         )

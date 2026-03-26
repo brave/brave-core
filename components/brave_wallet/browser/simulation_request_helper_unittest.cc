@@ -39,7 +39,7 @@ mojom::TransactionInfoPtr GetCannedScanEVMTransactionParams(
     bool is_deploy_contract,
     std::optional<std::string> origin) {
   auto base_tx_data = mojom::TxData::New(
-      "0x09", "0x4a817c800", "0x5208",
+      "0x3", "0x09", "0x4a817c800", "0x5208",
       is_deploy_contract ? "0x" : "0x3535353535353535353535353535353535353535",
       "0xde0b6b3a7640000",
       is_eth_send ? std::vector<uint8_t>() : std::vector<uint8_t>(1, 10u),
@@ -48,7 +48,7 @@ mojom::TransactionInfoPtr GetCannedScanEVMTransactionParams(
   auto tx = eip1559
                 ? std::make_unique<Eip1559Transaction>(
                       *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
-                          std::move(base_tx_data), "0x3", "0x1E", "0x32")))
+                          std::move(base_tx_data), "0x1E", "0x32")))
                 : std::make_unique<EthTransaction>(
                       *EthTransaction::FromTxData(std::move(base_tx_data)));
 

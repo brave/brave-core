@@ -13,8 +13,6 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/rlp_encode.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
-#include "brave/components/brave_wallet/common/hash_utils.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
 
@@ -30,18 +28,23 @@ Eip2930Transaction::AccessListItem::AccessListItem(const AccessListItem&) =
 
 Eip2930Transaction::Eip2930Transaction(const Eip2930Transaction&) = default;
 Eip2930Transaction::Eip2930Transaction(
+    uint256_t chain_id,
     std::optional<uint256_t> nonce,
     uint256_t gas_price,
     uint256_t gas_limit,
     std::variant<EthAddress, EthContractCreationAddress> to,
     uint256_t value,
-    const std::vector<uint8_t>& data,
-    uint256_t chain_id)
-    : EthTransaction(nonce, gas_price, gas_limit, std::move(to), value, data),
-      chain_id_(chain_id) {
+    const std::vector<uint8_t>& data)
+    : EthTransaction(chain_id,
+                     nonce,
+                     gas_price,
+                     gas_limit,
+                     std::move(to),
+                     value,
+                     data) {
   type_ = EthTransactionType::kEip2930;
 }
-Eip2930Transaction::Eip2930Transaction() : chain_id_(0) {
+Eip2930Transaction::Eip2930Transaction() {
   type_ = EthTransactionType::kEip2930;
 }
 Eip2930Transaction::~Eip2930Transaction() = default;
@@ -49,16 +52,16 @@ Eip2930Transaction::~Eip2930Transaction() = default;
 // static
 std::optional<Eip2930Transaction> Eip2930Transaction::FromTxData(
     const mojom::TxDataPtr& tx_data,
-    uint256_t chain_id,
     bool strict) {
   std::optional<EthTransaction> legacy_tx =
       EthTransaction::FromTxData(tx_data, strict);
   if (!legacy_tx) {
     return std::nullopt;
   }
-  return Eip2930Transaction(legacy_tx->nonce(), legacy_tx->gas_price(),
-                            legacy_tx->gas_limit(), legacy_tx->to(),
-                            legacy_tx->value(), legacy_tx->data(), chain_id);
+  return Eip2930Transaction(legacy_tx->chain_id(), legacy_tx->nonce(),
+                            legacy_tx->gas_price(), legacy_tx->gas_limit(),
+                            legacy_tx->to(), legacy_tx->value(),
+                            legacy_tx->data());
 }
 
 // static
@@ -68,18 +71,10 @@ std::optional<Eip2930Transaction> Eip2930Transaction::FromValue(
   if (!legacy_tx) {
     return std::nullopt;
   }
-  const std::string* tx_chain_id = value.FindString("chain_id");
-  if (!tx_chain_id) {
-    return std::nullopt;
-  }
-  uint256_t chain_id;
-  if (!HexValueToUint256(*tx_chain_id, &chain_id)) {
-    return std::nullopt;
-  }
 
-  Eip2930Transaction tx(legacy_tx->nonce(), legacy_tx->gas_price(),
-                        legacy_tx->gas_limit(), legacy_tx->to(),
-                        legacy_tx->value(), legacy_tx->data(), chain_id);
+  Eip2930Transaction tx(legacy_tx->chain_id(), legacy_tx->nonce(),
+                        legacy_tx->gas_price(), legacy_tx->gas_limit(),
+                        legacy_tx->to(), legacy_tx->value(), legacy_tx->data());
   tx.v_ = legacy_tx->v();
   tx.r_ = legacy_tx->r();
   tx.s_ = legacy_tx->s();
@@ -135,9 +130,9 @@ Eip2930Transaction::ValueToAccessList(const base::ListValue& value) {
   return access_list;
 }
 
-std::vector<uint8_t> Eip2930Transaction::GetMessageToSignImpl(
-    uint256_t chain_id) const {
+std::vector<uint8_t> Eip2930Transaction::GetMessageToSignImpl() const {
   DCHECK(nonce_);
+  DCHECK(chain_id_);
 
   base::ListValue list;
   list.Append(RLPUint256ToBlob(chain_id_));
@@ -157,7 +152,6 @@ std::vector<uint8_t> Eip2930Transaction::GetMessageToSignImpl(
 
 base::DictValue Eip2930Transaction::ToValueImpl() const {
   base::DictValue tx = EthTransaction::ToValueImpl();
-  tx.Set("chain_id", Uint256ValueToHex(chain_id_));
   tx.Set("access_list", base::Value(AccessListToValue(access_list_)));
 
   return tx;
@@ -174,6 +168,8 @@ uint256_t Eip2930Transaction::GetDataFee() const {
 }
 
 std::vector<uint8_t> Eip2930Transaction::Serialize() const {
+  DCHECK(chain_id_);
+
   base::ListValue list;
   list.Append(RLPUint256ToBlob(chain_id_));
   list.Append(RLPUint256ToBlob(nonce_.value()));
