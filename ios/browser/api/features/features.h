@@ -92,6 +92,7 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly, nullable)
     Feature* kBraveWalletCardanoEnabled;
 @property(class, nonatomic, readonly) Feature* kUseChromiumWebViewsAutofill;
+@property(class, nonatomic, readonly) Feature* kQuickViewEnabled;
 @end
 
 NS_ASSUME_NONNULL_END

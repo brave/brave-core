@@ -2353,6 +2353,31 @@ extension BrowserViewController: SettingsDelegate {
       )
     }
   }
+
+  func settingsPresentQuickView() {
+    guard let currentTab = tabManager.selectedTab else {
+      let alert = UIAlertController(
+        title: "No Tab Available",
+        message: "Please open a tab first.",
+        preferredStyle: .alert
+      )
+      alert.addAction(UIAlertAction(title: "OK", style: .default))
+      present(alert, animated: true)
+      return
+    }
+
+    // TODO: Load actual ref link https://github.com/brave/brave-browser/issues/53569
+    let testURL = URL(string: "https://search.brave.com/ask?q=brave")!
+
+    let quickViewController = QuickViewController(
+      url: testURL,
+      for: currentTab
+    )
+
+    present(quickViewController, animated: true) {
+      Logger.module.debug("QuickView presented from Settings: \(testURL)")
+    }
+  }
 }
 
 extension BrowserViewController: PresentingModalViewControllerDelegate {
