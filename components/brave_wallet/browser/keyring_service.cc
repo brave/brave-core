@@ -3188,14 +3188,6 @@ KeyringService::GetPolkadotPubKey(const mojom::AccountIdPtr& account_id) {
   return std::nullopt;
 }
 
-std::optional<std::string> KeyringService::GetPolkadotImportAddress(
-    const mojom::AccountIdPtr& account_id) {
-  CHECK(IsPolkadotImportKeyring(account_id->keyring_id));
-
-  auto* keyring = GetKeyring<PolkadotImportKeyring>(account_id->keyring_id);
-  return keyring->GetAccountAddress(account_id->account_index);
-}
-
 std::optional<std::array<uint8_t, kSr25519SignatureSize>>
 KeyringService::SignMessageByPolkadotKeyring(
     const mojom::AccountIdPtr& account_id,

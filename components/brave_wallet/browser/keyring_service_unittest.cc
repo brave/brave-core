@@ -42,6 +42,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_migrations.h"
 #include "brave/components/brave_wallet/browser/keyring_service_prefs.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_import_keyring.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_keyring.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
@@ -2488,9 +2489,14 @@ TEST_F(KeyringServiceUnitTest, ImportPolkadotAccount_OfacSanctionedAddress) {
 
   ASSERT_TRUE(first_import);
 
+  auto* keyring = service.GetKeyring<PolkadotImportKeyring>(
+      mojom::KeyringId::kPolkadotImport);
+  ASSERT_TRUE(keyring);
+
   const auto address_to_sanction =
-      service.GetPolkadotImportAddress(first_import->account_id);
+      keyring->GetAccountAddress(first_import->account_id->account_index);
   ASSERT_TRUE(address_to_sanction.has_value());
+  EXPECT_FALSE(address_to_sanction->empty());
 
   // Remove the account first.
   EXPECT_TRUE(RemoveAccount(&service, first_import->account_id.Clone(),

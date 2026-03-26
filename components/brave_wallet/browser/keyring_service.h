@@ -305,8 +305,6 @@ class KeyringService : public mojom::KeyringService {
   // Polkadot
   std::optional<std::array<uint8_t, kPolkadotSubstrateAccountIdSize>>
   GetPolkadotPubKey(const mojom::AccountIdPtr& account_id);
-  std::optional<std::string> GetPolkadotImportAddress(
-      const mojom::AccountIdPtr& account_id);
 
   std::optional<std::array<uint8_t, kSr25519SignatureSize>>
   SignMessageByPolkadotKeyring(const mojom::AccountIdPtr& account_id,
@@ -353,6 +351,8 @@ class KeyringService : public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, EncodePrivateKeyForExport);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
                            EncodePolkadotPrivateKeyForExport);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
+                           ImportPolkadotAccount_OfacSanctionedAddress);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,
                            AccountDiscovery);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,
