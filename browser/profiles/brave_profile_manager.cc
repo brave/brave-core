@@ -208,9 +208,6 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_ads::AdsServiceFactory::GetForProfile(profile);
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
-#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-  brave_rewards::RewardsServiceFactory::GetForProfile(profile);
-#endif
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
 #endif

@@ -113,6 +113,10 @@ void RewardsServiceFactory::SetServiceForTesting(RewardsService* service) {
   testing_service_ = service;
 }
 
+bool RewardsServiceFactory::ServiceIsCreatedWithBrowserContext() const {
+  return true;
+}
+
 bool RewardsServiceFactory::ServiceIsNULLWhileTesting() const {
   return false;
 }
