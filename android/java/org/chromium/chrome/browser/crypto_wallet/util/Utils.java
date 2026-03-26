@@ -48,6 +48,7 @@ import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPrice;
+import org.chromium.brave_wallet.mojom.AssetPriceRequest;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
@@ -1168,10 +1169,22 @@ public class Utils {
                         tokens = filterByTokens;
                     }
 
-                    AsyncUtils.FetchPricesResponseContext fetchPricesContext =
-                            new AsyncUtils.FetchPricesResponseContext(
+                    List<AssetPriceRequest> priceRequests = new ArrayList<>();
+                    for (BlockchainToken token : tokens) {
+                        if (token == null) continue;
+                        AssetPriceRequest request = new AssetPriceRequest();
+                        request.coin = token.coin;
+                        request.chainId = token.chainId;
+                        request.address =
+                                token.contractAddress.isEmpty() ? null : token.contractAddress;
+                        priceRequests.add(request);
+                    }
+
+                    AsyncUtils.GetPriceResponseContext priceContext =
+                            new AsyncUtils.GetPriceResponseContext(
                                     multiResponse.singleResponseComplete);
-                    AssetsPricesHelper.fetchPrices(assetRatioService, tokens, fetchPricesContext);
+                    assetRatioService.getPrice(
+                            priceRequests.toArray(new AssetPriceRequest[0]), "usd", priceContext);
 
                     AsyncUtils.GetNativeAssetsBalancesResponseContext
                             getNativeAssetsBalancesContext =
@@ -1196,8 +1209,12 @@ public class Utils {
 
                     multiResponse.setWhenAllCompletedAction(
                             () -> {
+                                List<AssetPrice> assetPrices =
+                                        priceContext.success && priceContext.prices != null
+                                                ? Arrays.asList(priceContext.prices)
+                                                : new ArrayList<>();
                                 callback.call(
-                                        fetchPricesContext.assetPrices,
+                                        assetPrices,
                                         fullTokenList,
                                         getNativeAssetsBalancesContext.nativeAssetsBalances,
                                         getBlockchainTokensBalancesContext
@@ -1359,5 +1376,63 @@ public class Utils {
         return (address.substring(0, prefixLength)
                 + "***"
                 + address.substring(address.length() - 4));
+    }
+
+    /**
+     * Finds the price for a specific asset by matching coin type, chain ID, and contract address
+     * against the provided list of asset prices.
+     *
+     * @param assetPrices the list of {@link AssetPrice} entries to search through, may be {@code
+     *     null}.
+     * @param coin the coin type identifier (e.g. {@link org.chromium.brave_wallet.mojom.CoinType}).
+     * @param chainId the chain ID of the network the asset belongs to.
+     * @param address the contract address of the asset.
+     * @return the parsed price as a {@code double}, or {@code 0.0} if no matching price is found,
+     *     the list is {@code null}, or the list is empty.
+     */
+    public static double getPrice(
+            @Nullable List<AssetPrice> assetPrices, int coin, String chainId, String address) {
+        if (assetPrices == null || assetPrices.isEmpty()) {
+            return 0.0d;
+        }
+
+        for (AssetPrice assetPrice : assetPrices) {
+            if (assetPrice.coin == coin
+                    && assetPrice.chainId.equals(chainId)
+                    && assetPrice.address.equals(address)) {
+                return parseAssetPrice(assetPrice);
+            }
+        }
+
+        return 0.0d;
+    }
+
+    /**
+     * Finds the price for a specific {@link BlockchainToken} by delegating to {@link #getPrice}
+     * using the token's coin type, chain ID, and contract address.
+     *
+     * @param assetPrices the list of {@link AssetPrice} entries to search through.
+     * @param asset the {@link BlockchainToken} to look up, may be {@code null}.
+     * @return the parsed price as a {@code double}, or {@code 0.0} if the asset is {@code null} or
+     *     no matching price is found.
+     */
+    public static double getPriceForAsset(
+            List<AssetPrice> assetPrices, @Nullable BlockchainToken asset) {
+        if (asset == null) {
+            return 0.0d;
+        }
+
+        return getPrice(assetPrices, asset.coin, asset.chainId, asset.contractAddress);
+    }
+
+    private static double parseAssetPrice(AssetPrice assetPrice) {
+        if (!assetPrice.price.isEmpty()) {
+            try {
+                return Double.parseDouble(assetPrice.price);
+            } catch (NumberFormatException ex) {
+                Log.e(TAG, "Cannot parse price: " + assetPrice.price, ex);
+            }
+        }
+        return 0.0d;
     }
 }
