@@ -101,6 +101,17 @@ extension BrowserViewController: TabManagerDelegate {
         self.select(url: components.url!, isUserDefinedURLNavigation: false)
       }
     }
+
+    tab.braveSearch = .init(tab: tab, rewards: rewards)
+    tab.braveSearch?.presentSearchResultClickedInfoBar = { [weak self] in
+      guard let self else { return }
+      let searchResultClickedInfobar = SearchResultAdClickedInfoBar(
+        onLinkPressed: { [weak self] url in
+          self?.tabManager.addTabAndSelect(URLRequest(url: url), isPrivate: false)
+        }
+      )
+      show(toast: searchResultClickedInfobar, duration: nil)
+    }
   }
 
   func tabManager(
@@ -344,7 +355,7 @@ extension BrowserViewController: TabManagerDelegate {
   }
 
   func hideToastsOnNavigationStartIfNeeded(_ tabManager: TabManager) {
-    if tabManager.selectedTab?.braveSearchResultAdManager == nil {
+    if tabManager.selectedTab?.braveSearch?.braveSearchResultAdManager == nil {
       searchResultAdClickedInfoBar?.dismiss(false)
       searchResultAdClickedInfoBar = nil
     }

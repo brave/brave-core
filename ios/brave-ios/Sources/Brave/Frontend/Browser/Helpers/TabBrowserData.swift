@@ -249,12 +249,6 @@ class TabBrowserData: NSObject, TabObserver {
     externalAppURLDomain = nil
   }
 
-  /// A helper property that handles native to Brave Search communication.
-  var braveSearchManager: BraveSearchManager?
-
-  /// A helper property that handles Brave Search Result Ads.
-  var braveSearchResultAdManager: BraveSearchResultAdManager?
-
   /// A list of domains that we want to proceed to anyways regardless of any ad-blocking
   var proceedAnywaysDomainList: Set<String> = []
 
