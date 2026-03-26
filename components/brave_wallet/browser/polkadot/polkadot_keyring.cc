@@ -5,13 +5,9 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_keyring.h"
 
-#include "base/base64.h"
 #include "base/check_is_test.h"
 #include "base/containers/map_util.h"
 #include "base/containers/span.h"
-#include "base/containers/span_writer.h"
-#include "base/json/json_writer.h"
-#include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
 #include "brave/components/brave_wallet/browser/scrypt_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -121,8 +117,7 @@ HDKeySr25519* PolkadotKeyring::GetKeypair(uint32_t account_index) {
 
 std::optional<std::string> PolkadotKeyring::AddNewHDAccount(
     uint32_t account_index) {
-  auto pos = secondary_keys_.find(account_index);
-  if (pos != secondary_keys_.end()) {
+  if (secondary_keys_.contains(account_index)) {
     return std::nullopt;
   }
 
