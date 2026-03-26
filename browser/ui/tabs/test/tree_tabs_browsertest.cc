@@ -2526,3 +2526,44 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                 ->type(),
             tabs::TabCollection::Type::SPLIT);
 }
+
+// Grouping the 2nd and 3rd pinned tabs (indices 1 and 2) used to
+// crash in the tree-tabs delegate; completing the flow verifies stability.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       AddToNewGroup_SecondAndThirdPinnedTabs_NoCrash) {
+  auto* tab_groups_service =
+      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
+          browser()->profile());
+  ASSERT_TRUE(tab_groups_service);
+  tab_groups_service->SetIsInitializedForTesting(true);
+
+  SetTreeTabsEnabled(true);
+
+  AddTab();
+  AddTab();
+  ASSERT_EQ(3, tab_strip_model().count());
+
+  tab_strip_model().SetTabPinned(0, true);
+  tab_strip_model().SetTabPinned(1, true);
+  tab_strip_model().SetTabPinned(2, true);
+  ASSERT_TRUE(tab_strip_model().IsTabPinned(0));
+  ASSERT_TRUE(tab_strip_model().IsTabPinned(1));
+  ASSERT_TRUE(tab_strip_model().IsTabPinned(2));
+
+  tabs::TabInterface* first_pinned = tab_strip_model().GetTabAtIndex(0);
+  tabs::TabInterface* second_pinned = tab_strip_model().GetTabAtIndex(1);
+  tabs::TabInterface* third_pinned = tab_strip_model().GetTabAtIndex(2);
+
+  tab_groups::TabGroupId group_id = tab_strip_model().AddToNewGroup({1, 2});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(
+                tab_strip_model().GetIndexOfTab(second_pinned)),
+            group_id);
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(
+                tab_strip_model().GetIndexOfTab(third_pinned)),
+            group_id);
+  EXPECT_FALSE(
+      tab_strip_model()
+          .GetTabGroupForTab(tab_strip_model().GetIndexOfTab(first_pinned))
+          .has_value());
+}
