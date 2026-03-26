@@ -12,6 +12,7 @@
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/notimplemented.h"
+#include "base/notreached.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/tabs/public/brave_tab_strip_collection.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
@@ -770,10 +771,8 @@ void BraveTreeTabStripCollectionDelegate::PinSplit(
       collection_->GetParentCollection(moving_tab, GetPassKey());
   CHECK_EQ(split_collection->type(), tabs::TabCollection::Type::SPLIT);
   auto* split_collection_parent = split_collection->GetParentCollection();
-  if (split_collection_parent->type() != tabs::TabCollection::Type::TREE_NODE) {
-    // Split collection was in pinned state already.
-    return;
-  }
+  CHECK_EQ(split_collection_parent->type(),
+           tabs::TabCollection::Type::TREE_NODE);
 
   auto* split_collection_wrapper =
       static_cast<tabs::TreeTabNodeTabCollection*>(split_collection_parent);
