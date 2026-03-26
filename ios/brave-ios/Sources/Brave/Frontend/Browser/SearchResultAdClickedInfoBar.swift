@@ -6,12 +6,14 @@ import BraveStrings
 import SwiftUI
 
 class SearchResultAdClickedInfoBar: InfoBar {
-  init(tabManager: TabManager) {
+  init(
+    onLinkPressed: @escaping (URL) -> Void
+  ) {
     super.init(
-      tabManager: tabManager,
       labelText: Strings.Ads.searchResultAdClickedInfoBarMessage,
       linkText: Strings.Ads.searchResultAdClickedInfoBarLearnMoreOptOutChoices,
-      linkUrl: "https://search.brave.com/help/conversion-reporting"
+      linkUrl: "https://search.brave.com/help/conversion-reporting",
+      onLinkPressed: onLinkPressed
     )
   }
 

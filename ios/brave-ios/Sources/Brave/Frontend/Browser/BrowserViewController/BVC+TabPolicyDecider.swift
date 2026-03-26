@@ -361,7 +361,9 @@ extension BrowserViewController: TabPolicyDecider {
                   return
                 }
                 let searchResultClickedInfobar = SearchResultAdClickedInfoBar(
-                  tabManager: self.tabManager
+                  onLinkPressed: { [weak self] url in
+                    self?.tabManager.addTabAndSelect(URLRequest(url: url), isPrivate: false)
+                  }
                 )
                 self.show(toast: searchResultClickedInfobar, duration: nil)
               }
