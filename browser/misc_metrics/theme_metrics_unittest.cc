@@ -7,9 +7,10 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "base/test/metrics/histogram_tester.h"
-#include "chrome/browser/themes/theme_helper.h"
 #include "chrome/browser/themes/theme_service.h"
+#include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -19,17 +20,16 @@ namespace misc_metrics {
 class ThemeMetricsTest : public testing::Test {
  public:
   void SetUp() override {
-    theme_helper_ = std::make_unique<ThemeHelper>();
-    theme_service_ = std::make_unique<ThemeService>(&profile_, *theme_helper_);
-    theme_service_->Init();
-    theme_metrics_ = std::make_unique<ThemeMetrics>(theme_service_.get());
+    theme_service_ = ThemeServiceFactory::GetForProfile(&profile_);
+    theme_metrics_ = std::make_unique<ThemeMetrics>(theme_service_);
   }
+
+  void TearDown() override { theme_metrics_.reset(); }
 
  protected:
   content::BrowserTaskEnvironment task_environment_;
   TestingProfile profile_;
-  std::unique_ptr<ThemeHelper> theme_helper_;
-  std::unique_ptr<ThemeService> theme_service_;
+  raw_ptr<ThemeService> theme_service_;
   std::unique_ptr<ThemeMetrics> theme_metrics_;
 };
 
