@@ -1103,7 +1103,7 @@ const util = {
       return
     }
     try {
-      child.kill('SIGTERM')
+      child.kill('SIGKILL')
     } catch {
       // Process may already have exited.
     }
