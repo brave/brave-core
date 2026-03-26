@@ -19,7 +19,6 @@ import("//brave/browser/infobars/sources.gni")
 import("//brave/browser/misc_metrics/sources.gni")
 import("//brave/browser/net/sources.gni")
 import("//brave/browser/new_tab/sources.gni")
-import("//brave/browser/notifications/sources.gni")
 import("//brave/browser/onboarding/sources.gni")
 import("//brave/browser/perf/sources.gni")
 import("//brave/browser/permissions/sources.gni")
@@ -329,6 +328,7 @@ if (enable_brave_ads) {
     "//brave/browser/brave_ads:impl",
     "//brave/browser/brave_ads/creatives/search_result_ad",
     "//brave/browser/brave_ads/tabs",
+    "//brave/browser/notifications",
     "//brave/browser/ui/webui/ads_internals",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/core",
@@ -694,7 +694,6 @@ brave_chrome_browser_sources += brave_browser_infobar_sources
 brave_chrome_browser_sources += brave_browser_misc_metrics_sources
 brave_chrome_browser_sources += brave_browser_net_sources
 brave_chrome_browser_sources += brave_browser_new_tab_sources
-brave_chrome_browser_sources += brave_browser_notifications_sources
 brave_chrome_browser_sources += brave_browser_perf_sources
 brave_chrome_browser_sources += brave_browser_permissions_sources
 brave_chrome_browser_sources += brave_browser_playlist_sources
@@ -721,7 +720,6 @@ brave_chrome_browser_deps += brave_browser_infobar_deps
 brave_chrome_browser_deps += brave_browser_misc_metrics_deps
 brave_chrome_browser_deps += brave_browser_net_deps
 brave_chrome_browser_deps += brave_browser_new_tab_deps
-brave_chrome_browser_deps += brave_browser_notifications_deps
 brave_chrome_browser_deps += brave_browser_perf_deps
 brave_chrome_browser_deps += brave_browser_permissions_deps
 brave_chrome_browser_deps += brave_browser_playlist_deps
@@ -828,6 +826,7 @@ if (is_android) {
     "//brave/browser/android:android_browser_process",
     "//brave/browser/android:tabs_impl",
     "//brave/browser/android/preferences",
+    "//brave/browser/notifications",
   ]
 }
 
