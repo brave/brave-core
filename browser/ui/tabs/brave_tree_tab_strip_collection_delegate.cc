@@ -408,7 +408,17 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
   // Remove the moving tab first from the original parent.
   std::vector<std::unique_ptr<tabs::TabCollection>>
       unique_moving_tab_collections;
+  base::flat_map<split_tabs::SplitTabId, std::vector<tabs::TabInterface*>>
+      split_tabs;
   for (auto* moving_tab : base::Reversed(moving_tabs)) {
+    if (auto split_id = moving_tab->GetSplit()) {
+      split_tabs[split_id.value()].push_back(moving_tab);
+      if (split_tabs[split_id.value()].size() < 2) {
+        // Split tabs should be moving together.
+        continue;
+      }
+    }
+
     auto* moving_tab_tree_node = GetParentTreeNodeCollectionOfTab(moving_tab);
     CHECK(moving_tab_tree_node);
 
