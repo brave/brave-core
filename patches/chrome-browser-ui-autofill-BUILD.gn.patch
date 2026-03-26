@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/autofill/BUILD.gn b/chrome/browser/ui/autofill/BUILD.gn
+index 7c3e3f94b6fd2..3f41b301fd619 100644
+--- a/chrome/browser/ui/autofill/BUILD.gn
++++ b/chrome/browser/ui/autofill/BUILD.gn
+@@ -239,6 +239,7 @@ source_set("impl") {
+       "//components/password_manager/core/browser/features:password_features",
+       "//components/plus_addresses/core/browser/resources/strings",
+     ]
++    deps += [ "//brave/browser/autofill/android:jni_headers" ]
+   } else {
+     sources += [
+       "address_bubbles_controller.cc",

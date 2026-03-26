@@ -442,6 +442,10 @@
 -keepclassmembers class org.chromium.components.browser_ui.site_settings.BraveContentSettingsResources** { *; }
 -keepclassmembers class org.chromium.components.browser_ui.site_settings.ContentSettingsResources** { *; }
 
+-keep class org.chromium.chrome.browser.autofill.AutofillClientProviderUtils {
+    *** getAndroidAutofillFrameworkAvailability(...);
+}
+
 -keep class org.chromium.components.browser_ui.site_settings.WebsitePermissionsFetcher {
     *** getPermissionsType(...);
 }
