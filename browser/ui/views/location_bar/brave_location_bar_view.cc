@@ -301,6 +301,65 @@ void BraveLocationBarView::RefreshBackground() {
   }
 }
 
+int BraveLocationBarView::GetMinimumTrailingWidth() const {
+  int trailing_width = LocationBarView::GetMinimumTrailingWidth();
+  const int elem_pad =
+      GetLayoutConstant(LayoutConstant::kLocationBarElementPadding);
+
+  if (brave_actions_ && brave_actions_->GetVisible()) {
+    trailing_width += brave_actions_->GetMinimumSize().width() + elem_pad;
+  }
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  if (brave_news_action_icon_view_ &&
+      brave_news_action_icon_view_->GetVisible()) {
+    trailing_width +=
+        brave_news_action_icon_view_->GetMinimumSize().width() + elem_pad;
+  }
+
+#endif
+#if BUILDFLAG(ENABLE_TOR)
+  if (onion_location_view_ && onion_location_view_->GetVisible()) {
+    trailing_width += onion_location_view_->GetMinimumSize().width() + elem_pad;
+  }
+#endif
+
+  return trailing_width;
+}
+
+gfx::Size BraveLocationBarView::GetMinimumSize() const {
+  gfx::Size min_size = LocationBarView::GetMinimumSize();
+  if (!IsInitialized()) {
+    return min_size;
+  }
+
+  // Skip the additive formula for non-normal browser windows (popups, apps).
+  //
+  // The additive minimum-width formula produces a larger minimum width than
+  // upstream's max(omnibox, leading+trailing) formula. For popup windows opened
+  // via JavaScript (e.g. window.open(..., 'width=200')), Chromium's
+  // popup-clamping code computes the on-screen position using the *requested*
+  // width, then the window is later expanded to meet the minimum. If our
+  // minimum exceeds the requested width, the position calculated for the
+  // requested width is no longer valid for the actual (larger) window, causing
+  // the popup to extend partially outside the work area. Verified by
+  // PopupTest.OpenClampedToCurrentDisplay.
+  if (!browser_->is_type_normal()) {
+    return min_size;
+  }
+
+  // Unlike upstream which uses max(omnibox, leading+trailing), reserve space
+  // for all children simultaneously so the omnibox always has its minimum
+  // alongside all visible decorations.
+  const int padding =
+      GetLayoutConstant(LayoutConstant::kLocationBarElementPadding);
+  const int width = GetInsets().width() + GetMinimumLeadingWidth() + padding +
+                    omnibox_view_->GetMinimumSize().width() +
+                    GetMinimumTrailingWidth();
+  min_size.set_width(width);
+  return min_size;
+}
+
 gfx::Size BraveLocationBarView::CalculatePreferredSize(
     const views::SizeBounds& available_size) const {
   gfx::Size min_size = LocationBarView::CalculatePreferredSize(available_size);

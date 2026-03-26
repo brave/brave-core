@@ -12,7 +12,9 @@
 #include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
+#include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -349,6 +351,30 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatDisabled,
   EXPECT_FALSE(is_ai_chat_button_shown(browser()));
 }
 #endif
+
+// When the toolbar is narrowed, Brave optional buttons (bookmark, side panel)
+// must collapse to zero width before the location bar is forced below its
+// minimum size. This exercises SetBraveButtonFlexBehavior() and the additive
+// GetMinimumSize() in BraveLocationBarView.
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
+                       BraveButtonsCollapseBeforeLocationBarShrinks) {
+  auto* location_bar =
+      static_cast<BraveLocationBarView*>(toolbar_view_->location_bar());
+  ASSERT_NE(location_bar, nullptr);
+  const int location_bar_min = location_bar->GetMinimumSize().width();
+
+  // Narrow the toolbar to just above the location bar minimum so that Brave
+  // optional buttons must be evicted to satisfy the location bar's minimum.
+  auto toolbar_bounds = toolbar_view_->bounds();
+  toolbar_bounds.set_width(location_bar_min + 150);
+  toolbar_view_->SetBoundsRect(toolbar_bounds);
+
+  EXPECT_FALSE(toolbar_view_->bookmark_button()->GetVisible());
+  EXPECT_FALSE(toolbar_view_->side_panel_button()->GetVisible());
+  EXPECT_GE(location_bar->width(), location_bar_min)
+      << "location bar width: " << location_bar->width()
+      << ", min: " << location_bar_min;
+}
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ToolbarDividerNotShownTest) {
   // As we don't use divider in toolbar, it should be null always.

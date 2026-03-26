@@ -86,7 +86,11 @@ class BraveLocationBarView : public LocationBarView {
   void Layout(PassKey) override;
   void OnVisibleBoundsChanged() override;
 
+  // LocationBarView:
+  int GetMinimumTrailingWidth() const override;
+
   // views::View:
+  gfx::Size GetMinimumSize() const override;
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
   void OnThemeChanged() override;
