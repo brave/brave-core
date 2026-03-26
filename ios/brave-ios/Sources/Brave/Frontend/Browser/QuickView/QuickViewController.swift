@@ -16,13 +16,11 @@ class QuickViewController: UIViewController {
   private let url: URL
   private weak var parentTab: (any TabState)?
   private var currentTab: (any TabState)?
-  private weak var browserController: BrowserViewController?
   private let toolbar = QuickViewToolbar()
 
-  init(url: URL, for tab: some TabState, browserController: BrowserViewController) {
+  init(url: URL, for tab: some TabState) {
     self.url = url
     self.parentTab = tab
-    self.browserController = browserController
     super.init(nibName: nil, bundle: nil)
     modalPresentationStyle = .fullScreen
   }
@@ -33,7 +31,7 @@ class QuickViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    guard let browserController, let parentTab else {
+    guard let parentTab else {
       return
     }
 
@@ -46,9 +44,7 @@ class QuickViewController: UIViewController {
     let tab = TabStateFactory.create(
       with: .init(profile: parentTab.profile, initialConfiguration: initialConfiguration)
     )
-    tab.miscDelegate = browserController
     tab.createWebView()
-    tab.addPolicyDecider(browserController)
     let braveShieldsTabHelper: BraveShieldsTabHelper = .init(
       tab: tab,
       braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(profile: tab.profile)
@@ -104,12 +100,5 @@ class QuickViewController: UIViewController {
     }
 
     toolbar.updateURL(url)
-  }
-
-  deinit {
-    if let browserController {
-      currentTab?.removePolicyDecider(browserController)
-    }
-    self.currentTab = nil
   }
 }

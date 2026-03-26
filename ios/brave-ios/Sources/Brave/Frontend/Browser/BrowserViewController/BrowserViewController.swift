@@ -2371,8 +2371,7 @@ extension BrowserViewController: SettingsDelegate {
 
     let quickViewController = QuickViewController(
       url: testURL,
-      for: currentTab,
-      browserController: self
+      for: currentTab
     )
 
     present(quickViewController, animated: true) {
