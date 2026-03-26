@@ -2565,6 +2565,8 @@
 # https://github.com/brave/brave-browser/issues/48373)
 -InteractionTestUtilBrowserSelectTabTest.SelectTab_HorizontalTabstrip/*
 -InteractionTestUtilBrowserSelectTabTest.SelectTab_VerticalTabstrip/*
+-ResumptionRailPromoTest.HideOverflowButtonAfterGracePeriodIfNewProfile
+-ResumptionRailPromoTest.HideOverflowButtonWithinGracePeriodIfNewProfile
 -TabCollectionNodeBrowserTest.*
 -TabRestoreVerticalTabsTest.RestoreVerticalTabStripState
 -VerticalTabGroupViewTest.*
@@ -2744,6 +2746,7 @@
 # Stable upstream: Capture/0 1.1%, Capture/1 0.2% flake rate (30-day LUCI).
 -All/GetDisplayMediaHiDpiBrowserTest.Capture/0
 -All/GetDisplayMediaHiDpiBrowserTest.Capture/1
+-All/GetDisplayMediaHiDpiBrowserTest.Capture/640x480
 
 # These tests fail because we short-circuit
 # WebrtcLoggingPrivateFunction::RphFromRequest
