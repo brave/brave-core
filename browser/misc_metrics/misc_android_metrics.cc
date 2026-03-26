@@ -10,6 +10,7 @@
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/components/misc_metrics/brave_search_metrics.h"
 #include "brave/components/misc_metrics/default_browser_monitor.h"
+#include "brave/components/misc_metrics/navigation_source_metrics.h"
 #include "brave/components/misc_metrics/privacy_hub_metrics.h"
 #include "brave/components/misc_metrics/quick_search_metrics.h"
 #include "brave/components/misc_metrics/tab_metrics.h"
@@ -22,10 +23,12 @@ MiscAndroidMetrics::MiscAndroidMetrics(
     ProcessMiscMetrics* misc_metrics,
     SearchEngineTracker* search_engine_tracker,
     TemplateURLService* template_url_service,
-    BraveSearchMetrics* brave_search_metrics)
+    BraveSearchMetrics* brave_search_metrics,
+    NavigationSourceMetrics* navigation_source_metrics)
     : misc_metrics_(misc_metrics),
       search_engine_tracker_(search_engine_tracker),
       brave_search_metrics_(brave_search_metrics),
+      navigation_source_metrics_(navigation_source_metrics),
       quick_search_metrics_(
           std::make_unique<QuickSearchMetrics>(local_state,
                                                template_url_service)) {}
@@ -85,6 +88,37 @@ void MiscAndroidMetrics::RecordIntentURL(const std::string& url) {
     return;
   }
   brave_search_metrics_->MaybeRecordWidgetSearch(GURL(url));
+}
+
+void MiscAndroidMetrics::RecordOmniboxSearchQuery(
+    const std::string& destination_url,
+    bool is_suggestion) {
+  if (!brave_search_metrics_) {
+    return;
+  }
+  brave_search_metrics_->MaybeRecordOmniboxQuery(GURL(destination_url),
+                                                 is_suggestion);
+}
+
+void MiscAndroidMetrics::RecordOmniboxDirectNavigation() {
+  if (!navigation_source_metrics_) {
+    return;
+  }
+  navigation_source_metrics_->RecordDirectNavigation();
+}
+
+void MiscAndroidMetrics::RecordOmniboxHistoryNavigation() {
+  if (!navigation_source_metrics_) {
+    return;
+  }
+  navigation_source_metrics_->RecordHistoryNavigation();
+}
+
+void MiscAndroidMetrics::RecordOmniboxBookmarkNavigation() {
+  if (!navigation_source_metrics_) {
+    return;
+  }
+  navigation_source_metrics_->RecordBookmarkNavigation();
 }
 
 }  // namespace misc_metrics
