@@ -154,6 +154,10 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
       host_content_settings_map);
 }
 
+bool AdsServiceFactory::ServiceIsCreatedWithBrowserContext() const {
+  return true;
+}
+
 bool AdsServiceFactory::ServiceIsNULLWhileTesting() const {
   return true;
 }
