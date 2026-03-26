@@ -470,12 +470,7 @@ var package = Package(
     ),
     .testTarget(
       name: "AIChatTests",
-      dependencies: ["AIChat"],
-      resources: [
-        .copy("Components/Markdown/CodeHighlight/Themes/atom-one-dark.min.css"),
-        .copy("Components/Markdown/CodeHighlight/Themes/atom-one-light.min.css"),
-        .copy("Components/Markdown/CodeHighlight/Scripts/highlight.min.js"),
-      ]
+      dependencies: ["AIChat"]
     ),
     .target(
       name: "BraveStore",
@@ -512,9 +507,6 @@ var package = Package(
         .copy("LottieAssets/playlist-confetti.json"),
         .copy("WelcomeFocus/Resources/LottieAssets"),
         .copy("WelcomeFocus/Resources/Videos"),
-        .copy("WelcomeFocus/Resources/Fonts/Poppins-SemiBold.ttf"),
-        .copy("WelcomeFocus/Resources/Fonts/Poppins-Medium.ttf"),
-        .copy("WelcomeFocus/Resources/Fonts/Poppins-Regular.ttf"),
       ],
       plugins: ["LoggerPlugin"]
     ),
