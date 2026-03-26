@@ -19,6 +19,24 @@ Mocks should be set up in `SetUpMocks`, `TEST_F`, or `TEST_P`. Avoid setting up 
 
 Refer to `*_test_util.h`, `*_test_helper.h`, `*_test_constants.h`, and `*_test_types.h` for support in efficiently creating and structuring unit tests.
 
+## Timezone-Sensitive Tests
+
+Tests that depend on local-time behavior (month boundaries, midnight calculations, etc.) must use `test::ScopedTimezoneForTesting` to pin the timezone; otherwise tests may fail or produce incorrect results in other timezones. Use `::testing::WithParamInterface<std::string>` to parameterize over a representative set of IANA time zone IDs, e.g.,
+
+    class BraveAdsFooTimezoneTest
+        : public test::TestBase,
+          public ::testing::WithParamInterface<std::string_view> {
+     protected:
+      const test::ScopedTimezoneForTesting scoped_timezone_{GetParam()};
+    };
+
+    INSTANTIATE_TEST_SUITE_P(BraveAdsTimezones,
+                             BraveAdsFooTimezoneTest,
+                             test::kTimezones,
+                             test::TimezoneTestParamName);
+
+`ScopedTimezoneForTesting` sets both ICU and libc timezones to ensure consistent local time conversion across platforms. See [scoped_timezone_for_testing.h](scoped_timezone_for_testing.h). `test::kTimezones` and `test::TimezoneTestParamName` provide the shared timezone set and name sanitizer. See [timezone_test_util.h](timezone_test_util.h).
+
 ## Mocking Task Environment
 
 You can fast-forward virtual time using the `FastForwardClockBy`, `SuspendedFastForwardClockBy`, `FastForwardClockTo`, `FastForwardClockToNextPendingTask` helpers. These cause all tasks on the main thread and thread pool with a remaining delay to be executed.

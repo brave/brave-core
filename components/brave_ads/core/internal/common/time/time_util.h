@@ -6,25 +6,30 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TIME_TIME_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TIME_TIME_UTIL_H_
 
-#include <string>
-
 namespace base {
 class Time;
 }  // namespace base
 
 namespace brave_ads {
 
-int LocalTimeInMinutesSinceMidnight(base::Time time);
+// Returns the number of minutes elapsed since local midnight for `time`.
+int MinutesElapsedSinceLocalMidnight(base::Time time);
 
+// Returns midnight on the first day of the previous calendar month in local
+// time, e.g., 2020-10-01 00:00:00.000 local when now is in November 2020.
 base::Time LocalTimeAtBeginningOfPreviousMonth();
-base::Time LocalTimeAtEndOfPreviousMonth();
-base::Time LocalTimeAtBeginningOfThisMonth();
-base::Time LocalTimeAtEndOfThisMonth();
 
-// Formats a time compliant with ISO 8601 in UTC, e.g.,
-// "2020-12-31T23:00:00.000Z", with fixed values for minutes, seconds,
-// milliseconds, and time zone.
-std::string TimeToPrivacyPreservingIso8601(base::Time time);
+// Returns 23:59:59.999 on the last day of the previous calendar month in local
+// time, e.g., 2020-10-31 23:59:59.999 local when now is in November 2020.
+base::Time LocalTimeAtEndOfPreviousMonth();
+
+// Returns midnight on the first day of the current calendar month in local
+// time, e.g., 2020-11-01 00:00:00.000 local when now is in November 2020.
+base::Time LocalTimeAtBeginningOfThisMonth();
+
+// Returns 23:59:59.999 on the last day of the current calendar month in local
+// time, e.g., 2020-11-30 23:59:59.999 local when now is in November 2020.
+base::Time LocalTimeAtEndOfThisMonth();
 
 }  // namespace brave_ads
 

@@ -27,7 +27,7 @@ bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
 
   const base::Time now = base::Time::Now();
   const int day_of_week = DayOfWeek(now, /*is_local=*/true);
-  const int minutes = LocalTimeInMinutesSinceMidnight(now);
+  const int minutes = MinutesElapsedSinceLocalMidnight(now);
 
   return std::ranges::any_of(
       creative_ad.dayparts,
