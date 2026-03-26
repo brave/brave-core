@@ -79,4 +79,8 @@ ProfileMiscMetricsServiceFactory::GetBrowserContextToUse(
   return context;
 }
 
+bool ProfileMiscMetricsServiceFactory::ServiceIsNULLWhileTesting() const {
+  return true;
+}
+
 }  // namespace misc_metrics
