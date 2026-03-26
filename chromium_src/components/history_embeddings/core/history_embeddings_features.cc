@@ -7,6 +7,9 @@
 
 #include <components/history_embeddings/core/history_embeddings_features.cc>
 
+// Keep upstream history embeddings flags disabled by default. Users can
+// enable kHistoryEmbeddings via about:flags. kHistoryEmbeddingsAnswers
+// is not used by Brave.
 namespace history_embeddings {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{

@@ -42,7 +42,6 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/features.h"
-#include "brave/components/local_ai/core/features.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -154,8 +153,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   SearchEngineProviderServiceFactory::GetInstance();
   misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance();
   BraveFarblingServiceFactory::GetInstance();
-  if (base::FeatureList::IsEnabled(local_ai::features::kLocalAIModels) ||
-      base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
+  if (base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
     local_ai::LocalAIServiceFactory::GetInstance();
   }
 #if BUILDFLAG(ENABLE_TOR)

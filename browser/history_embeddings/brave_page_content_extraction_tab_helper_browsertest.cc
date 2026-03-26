@@ -7,7 +7,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/history_embeddings/brave_page_content_extraction_service.h"
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"
-#include "brave/components/local_ai/core/features.h"
 #include "chrome/browser/page_content_annotations/page_content_extraction_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -52,9 +51,7 @@ class BravePageContentExtractionTabHelperBrowserTest
     : public InProcessBrowserTest {
  public:
   BravePageContentExtractionTabHelperBrowserTest() {
-    feature_list_.InitWithFeatures({history_embeddings::kHistoryEmbeddings,
-                                    local_ai::features::kLocalAIModels},
-                                   {});
+    feature_list_.InitAndEnableFeature(history_embeddings::kHistoryEmbeddings);
   }
 
   void SetUpOnMainThread() override {

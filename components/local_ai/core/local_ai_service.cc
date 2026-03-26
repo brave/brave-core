@@ -15,8 +15,8 @@
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/local_models_updater.h"
+#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "mojo/public/cpp/base/big_buffer.h"
 
 namespace local_ai {
@@ -97,7 +97,7 @@ LocalAIService::LocalAIService(BackgroundWebContentsFactory factory,
                                LocalModelsUpdaterState* updater_state)
     : background_web_contents_factory_(std::move(factory)),
       updater_state_(updater_state) {
-  CHECK(base::FeatureList::IsEnabled(features::kLocalAIModels));
+  CHECK(base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings));
   CHECK(updater_state_);
   DVLOG(3) << "LocalAIService created";
 

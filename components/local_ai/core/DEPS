@@ -1,6 +1,7 @@
 include_rules = [
   "!content/public",
   "+components/component_updater",
+  "+components/history_embeddings/core/history_embeddings_features.h",
   "+components/keyed_service/core",
   "+components/update_client",
   "+crypto",
