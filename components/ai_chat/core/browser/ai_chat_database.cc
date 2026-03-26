@@ -26,6 +26,9 @@
 #include "brave/components/ai_chat/core/common/proto_conversion.h"
 #include "brave/components/ai_chat/core/proto/store.pb.h"
 #include "components/os_crypt/async/common/encryptor.h"
+#include "components/sync/model/metadata_batch.h"
+#include "components/sync/protocol/data_type_state.pb.h"
+#include "components/sync/protocol/entity_metadata.pb.h"
 #include "sql/init_status.h"
 #include "sql/meta_table.h"
 #include "sql/statement.h"
@@ -161,6 +164,19 @@ bool MigrateFrom8to9(sql::Database* db) {
   return statement.is_valid() && statement.Run();
 }
 
+bool MigrateFrom9to10(sql::Database* db) {
+  // Add sync metadata table for AI Chat sync.
+  static constexpr char kCreateSyncMetadataTableQuery[] =
+      "CREATE TABLE IF NOT EXISTS ai_chat_sync_metadata("
+      "storage_key TEXT PRIMARY KEY NOT NULL,"
+      "value BLOB NOT NULL"
+      ")";
+  return db->Execute(kCreateSyncMetadataTableQuery);
+}
+
+// Key in sql::MetaTable for the serialized DataTypeState.
+const char kAIChatDataTypeStateKey[] = "ai_chat_data_type_state";
+
 }  // namespace
 
 // These database versions should roll together unless we develop migrations.
@@ -173,7 +189,7 @@ constexpr int kLowestSupportedDatabaseVersion = 1;
 constexpr int kCompatibleDatabaseVersionNumber = 7;
 
 // Current version of the database. Increase if breaking changes are made.
-constexpr int kCurrentDatabaseVersion = 9;
+constexpr int kCurrentDatabaseVersion = 10;
 
 AIChatDatabase::AIChatDatabase(const base::FilePath& db_file_path,
                                os_crypt_async::Encryptor encryptor)
@@ -308,6 +324,15 @@ sql::InitStatus AIChatDatabase::InitInternal() {
                             meta_table.SetVersionNumber(9);
       }
       current_version = 9;
+    }
+    if (migration_success && current_version == 9) {
+      migration_success = MigrateFrom9to10(&GetDB());
+      if (migration_success) {
+        migration_success = meta_table.SetCompatibleVersionNumber(
+                                kCompatibleDatabaseVersionNumber) &&
+                            meta_table.SetVersionNumber(10);
+      }
+      current_version = 10;
     }
 
     // Migration unsuccessful, raze the database and re-init
@@ -1790,7 +1815,142 @@ bool AIChatDatabase::CreateSchema() {
     return false;
   }
 
+  // Sync metadata table for AI Chat sync.
+  static constexpr char kCreateSyncMetadataTableQuery[] =
+      "CREATE TABLE IF NOT EXISTS ai_chat_sync_metadata("
+      "storage_key TEXT PRIMARY KEY NOT NULL,"
+      "value BLOB NOT NULL"
+      ")";
+  CHECK(GetDB().IsSQLValid(kCreateSyncMetadataTableQuery));
+  if (!GetDB().Execute(kCreateSyncMetadataTableQuery)) {
+    return false;
+  }
+
   return true;
+}
+
+bool AIChatDatabase::GetAllSyncMetadata(syncer::MetadataBatch* metadata_batch) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return false;
+  }
+  DCHECK(metadata_batch);
+  if (!GetAllEntityMetadata(metadata_batch)) {
+    return false;
+  }
+  sync_pb::DataTypeState data_type_state;
+  if (!GetDataTypeState(&data_type_state)) {
+    return false;
+  }
+  metadata_batch->SetDataTypeState(data_type_state);
+  return true;
+}
+
+bool AIChatDatabase::ClearAllEntityMetadata() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return false;
+  }
+  sql::Statement s(
+      GetDB().GetUniqueStatement("DELETE FROM ai_chat_sync_metadata"));
+  return s.Run();
+}
+
+bool AIChatDatabase::UpdateEntityMetadata(
+    syncer::DataType data_type,
+    const std::string& storage_key,
+    const sync_pb::EntityMetadata& metadata) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK_EQ(data_type, syncer::AI_CHAT_CONVERSATION);
+  DCHECK(!storage_key.empty());
+  if (!LazyInit()) {
+    return false;
+  }
+  sql::Statement s(
+      GetDB().GetUniqueStatement("INSERT OR REPLACE INTO ai_chat_sync_metadata "
+                                 "(storage_key, value) VALUES(?, ?)"));
+  s.BindString(0, storage_key);
+  s.BindString(1, metadata.SerializeAsString());
+  return s.Run();
+}
+
+bool AIChatDatabase::ClearEntityMetadata(syncer::DataType data_type,
+                                         const std::string& storage_key) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK_EQ(data_type, syncer::AI_CHAT_CONVERSATION);
+  DCHECK(!storage_key.empty());
+  if (!LazyInit()) {
+    return false;
+  }
+  sql::Statement s(GetDB().GetUniqueStatement(
+      "DELETE FROM ai_chat_sync_metadata WHERE storage_key=?"));
+  s.BindString(0, storage_key);
+  return s.Run();
+}
+
+bool AIChatDatabase::UpdateDataTypeState(
+    syncer::DataType data_type,
+    const sync_pb::DataTypeState& data_type_state) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK_EQ(data_type, syncer::AI_CHAT_CONVERSATION);
+  if (!LazyInit()) {
+    return false;
+  }
+  // Store in meta table as the init creates it.
+  sql::MetaTable meta_table;
+  if (!meta_table.Init(&GetDB(), kCurrentDatabaseVersion,
+                       kCompatibleDatabaseVersionNumber)) {
+    return false;
+  }
+  return meta_table.SetValue(kAIChatDataTypeStateKey,
+                             data_type_state.SerializeAsString());
+}
+
+bool AIChatDatabase::ClearDataTypeState(syncer::DataType data_type) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK_EQ(data_type, syncer::AI_CHAT_CONVERSATION);
+  if (!LazyInit()) {
+    return false;
+  }
+  sql::MetaTable meta_table;
+  if (!meta_table.Init(&GetDB(), kCurrentDatabaseVersion,
+                       kCompatibleDatabaseVersionNumber)) {
+    return false;
+  }
+  return meta_table.DeleteKey(kAIChatDataTypeStateKey);
+}
+
+bool AIChatDatabase::GetAllEntityMetadata(
+    syncer::MetadataBatch* metadata_batch) {
+  DCHECK(metadata_batch);
+  sql::Statement s(GetDB().GetUniqueStatement(
+      "SELECT storage_key, value FROM ai_chat_sync_metadata"));
+  while (s.Step()) {
+    std::string storage_key = s.ColumnString(0);
+    std::string_view serialized_metadata = s.ColumnStringView(1);
+    auto entity_metadata = std::make_unique<sync_pb::EntityMetadata>();
+    if (!entity_metadata->ParseFromString(serialized_metadata)) {
+      DLOG(WARNING) << "Failed to deserialize AI_CHAT_CONVERSATION "
+                       "sync_pb::EntityMetadata.";
+      return false;
+    }
+    metadata_batch->AddMetadata(storage_key, std::move(entity_metadata));
+  }
+  return true;
+}
+
+bool AIChatDatabase::GetDataTypeState(sync_pb::DataTypeState* state) {
+  sql::MetaTable meta_table;
+  if (!meta_table.Init(&GetDB(), kCurrentDatabaseVersion,
+                       kCompatibleDatabaseVersionNumber)) {
+    return false;
+  }
+  std::string serialized_state;
+  if (!meta_table.GetValue(kAIChatDataTypeStateKey, &serialized_state)) {
+    *state = sync_pb::DataTypeState();
+    return true;
+  }
+  return state->ParseFromString(serialized_state);
 }
 
 }  // namespace ai_chat
