@@ -51,6 +51,7 @@ class KeyringService;
 class NetworkManager;
 class TxService;
 class AccountDiscoveryManager;
+class BraveWalletHiddenAccountsPermissionsHandler;
 struct PendingSignMessageRequest;
 struct PendingDecryptRequest;
 struct PendingGetEncryptPublicKeyRequest;
@@ -477,6 +478,8 @@ class BraveWalletService : public KeyedService,
   std::unique_ptr<BraveWalletP3A> brave_wallet_p3a_;
   std::unique_ptr<SimpleHashClient> simple_hash_client_;
   std::unique_ptr<AssetDiscoveryManager> asset_discovery_manager_;
+  std::unique_ptr<BraveWalletHiddenAccountsPermissionsHandler>
+      hidden_accounts_permissions_handler_;
   std::unique_ptr<EthAllowanceManager> eth_allowance_manager_;
   std::unique_ptr<AccountDiscoveryManager> account_discovery_manager_;
   mojo::ReceiverSet<mojom::BraveWalletService> receivers_;

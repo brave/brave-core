@@ -16,6 +16,7 @@ import {
 import { AddHardwareAccountModal } from './add-hardware-account-modal'
 import { ImportAccountModal } from './add-imported-account-modal'
 import { CreateAccountModal } from './create-account-modal'
+import { RestoreAccountsModal } from './restore-accounts-modal'
 
 export const AddAccountModal = () => {
   // routing
@@ -55,6 +56,13 @@ export const AddAccountModal = () => {
         exact
       >
         <CreateAccountModal />
+      </Route>
+
+      <Route
+        path={WalletRoutes.RestoreAccountsModal}
+        exact
+      >
+        <RestoreAccountsModal />
       </Route>
 
       <Redirect to={WalletRoutes.CreateAccountModalStart} />

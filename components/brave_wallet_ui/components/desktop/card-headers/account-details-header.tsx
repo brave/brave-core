@@ -187,6 +187,8 @@ export const AccountDetailsHeader = (props: Props) => {
 
   const menuOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {
     let options = AccountDetailsMenuOptions
+    const canToggleHiddenAccount =
+      account.accountId.kind === BraveWallet.AccountKind.kDerived
     // We are not able to remove a Derived account
     // so we filter out this option.
     if (account.accountId.kind === BraveWallet.AccountKind.kDerived) {
@@ -219,6 +221,21 @@ export const AccountDetailsHeader = (props: Props) => {
         (option: AccountButtonOptionsObjectType) => option.id !== 'explorer',
       )
     }
+    if (!canToggleHiddenAccount) {
+      options = options.filter(
+        (option: AccountButtonOptionsObjectType) => option.id !== 'hide',
+      )
+    }
+    options = options.map((option) =>
+      option.id === 'hide'
+        ? {
+            ...option,
+            id: 'hide',
+            name: 'braveWalletAccountsHide',
+            icon: 'eye-off',
+          }
+        : option,
+    )
     return options
   }, [account])
 

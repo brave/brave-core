@@ -273,6 +273,44 @@ class KeyringServiceUnitTest : public testing::Test {
     return success;
   }
 
+  static std::vector<std::string> GetHiddenAccounts(KeyringService* service) {
+    std::vector<std::string> account_unique_keys;
+    base::test::TestFuture<std::vector<mojom::AccountInfoPtr>> future;
+    service->GetHiddenAccounts(future.GetCallback());
+    auto accounts = future.Take();
+    account_unique_keys.clear();
+    for (const auto& account : accounts) {
+      account_unique_keys.push_back(account->account_id->unique_key);
+    }
+    return account_unique_keys;
+  }
+
+  static bool AddHiddenAccount(KeyringService* service,
+                               mojom::AccountIdPtr account_id) {
+    bool success = false;
+    base::RunLoop run_loop;
+    service->AddHiddenAccount(std::move(account_id),
+                              base::BindLambdaForTesting([&](bool v) {
+                                success = v;
+                                run_loop.Quit();
+                              }));
+    run_loop.Run();
+    return success;
+  }
+
+  static bool RemoveHiddenAccount(KeyringService* service,
+                                  mojom::AccountIdPtr account_id) {
+    bool success = false;
+    base::RunLoop run_loop;
+    service->RemoveHiddenAccount(std::move(account_id),
+                                 base::BindLambdaForTesting([&](bool v) {
+                                   success = v;
+                                   run_loop.Quit();
+                                 }));
+    run_loop.Run();
+    return success;
+  }
+
   static bool RemoveAccount(KeyringService* service,
                             const mojom::AccountIdPtr& account_id,
                             const std::string& password) {
@@ -3065,6 +3103,101 @@ TEST_F(KeyringServiceUnitTest, SetAccountName_HardwareAccounts) {
   account_infos = GetAccountUtils(&service).AllFilTestAccounts();
   EXPECT_FALSE(account_infos[0]->address.empty());
   EXPECT_EQ(account_infos[0]->name, "filecoin testnet 1 changed");
+}
+
+TEST_F(KeyringServiceUnitTest, HiddenAccounts) {
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
+  ASSERT_TRUE(CreateWallet(&service, "brave"));
+
+  auto account_id = GetAccountUtils(&service).EthAccountId(0);
+  // Test case: Hide a derived account.
+  {
+    auto hidden_accounts = GetHiddenAccounts(&service);
+    EXPECT_TRUE(hidden_accounts.empty());
+
+    EXPECT_CALL(observer, AccountsChanged());
+    EXPECT_TRUE(AddHiddenAccount(&service, account_id.Clone()));
+    observer.WaitAndVerify();
+
+    hidden_accounts = GetHiddenAccounts(&service);
+    EXPECT_THAT(hidden_accounts, ElementsAre(account_id->unique_key));
+    EXPECT_FALSE(std::ranges::any_of(
+        service.GetAllAccountsSync()->accounts, [&](const auto& account_info) {
+          return account_info->account_id->unique_key == account_id->unique_key;
+        }));
+  }
+
+  // Test case: Duplicate hide request is a no-op.
+  {
+    EXPECT_CALL(observer, AccountsChanged()).Times(0);
+    EXPECT_TRUE(AddHiddenAccount(&service, account_id.Clone()));
+    observer.WaitAndVerify();
+    EXPECT_THAT(GetHiddenAccounts(&service),
+                ElementsAre(account_id->unique_key));
+  }
+
+  // Test case: Imported account cannot be hidden.
+  {
+    EXPECT_CALL(observer, AccountsChanged());
+    auto imported_account = ImportEthereumAccount(
+        &service, "Imported account",
+        GenerateEthImportPayload("7d7dc5f71eb29dc58f8b07c4f962d01d12ca6a8f95fdb"
+                                 "0720fbc72d4c6f6cdd7"));
+    ASSERT_TRUE(imported_account);
+    observer.WaitAndVerify();
+
+    EXPECT_CALL(observer, AccountsChanged()).Times(0);
+    EXPECT_FALSE(
+        AddHiddenAccount(&service, imported_account->account_id.Clone()));
+    observer.WaitAndVerify();
+  }
+
+  // Test case: Hardware account cannot be hidden.
+  {
+    std::vector<mojom::HardwareWalletAccountPtr> new_accounts;
+    new_accounts.push_back(mojom::HardwareWalletAccount::New(
+        "0x111", "m/44'/60'/1'/0/0", "Ledger 1", mojom::HardwareVendor::kLedger,
+        "device1", mojom::KeyringId::kDefault));
+    EXPECT_CALL(observer, AccountsChanged());
+    auto hardware_accounts =
+        service.AddHardwareAccountsSync(std::move(new_accounts));
+    ASSERT_EQ(hardware_accounts.size(), 1u);
+    observer.WaitAndVerify();
+
+    EXPECT_CALL(observer, AccountsChanged()).Times(0);
+    EXPECT_FALSE(
+        AddHiddenAccount(&service, hardware_accounts[0]->account_id.Clone()));
+    observer.WaitAndVerify();
+  }
+
+  // Test case: Unknown account cannot be hidden.
+  {
+    auto unknown_account_id = GetAccountUtils(&service).EthUnkownAccountId();
+    EXPECT_CALL(observer, AccountsChanged()).Times(0);
+    EXPECT_FALSE(AddHiddenAccount(&service, std::move(unknown_account_id)));
+    observer.WaitAndVerify();
+  }
+
+  // Test case: Unhide a previously hidden account.
+  {
+    EXPECT_CALL(observer, AccountsChanged());
+    EXPECT_TRUE(RemoveHiddenAccount(&service, account_id.Clone()));
+    observer.WaitAndVerify();
+    EXPECT_TRUE(GetHiddenAccounts(&service).empty());
+    EXPECT_TRUE(std::ranges::any_of(
+        service.GetAllAccountsSync()->accounts, [&](const auto& account_info) {
+          return account_info->account_id->unique_key == account_id->unique_key;
+        }));
+  }
+
+  // Test case: Unhide absent account still succeeds and notifies observers.
+  {
+    EXPECT_CALL(observer, AccountsChanged());
+    EXPECT_TRUE(RemoveHiddenAccount(&service, account_id.Clone()));
+    observer.WaitAndVerify();
+    EXPECT_TRUE(GetHiddenAccounts(&service).empty());
+  }
 }
 
 TEST_F(KeyringServiceUnitTest, SetDefaultKeyringHardwareAccountName) {

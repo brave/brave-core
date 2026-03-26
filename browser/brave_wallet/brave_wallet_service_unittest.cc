@@ -21,6 +21,7 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -3352,6 +3353,33 @@ TEST_F(BraveWalletServiceUnitTest, HasPermissionSync) {
   EXPECT_FALSE(service_->HasPermissionSync(origin, account_id_2));
   EXPECT_FALSE(service_->HasPermissionSync(
       url::Origin::Create(GURL("https://brave.org")), account_id_1));
+}
+
+TEST_F(BraveWalletServiceUnitTest, HideAccountRevokesPermissions) {
+  SetupWallet();
+
+  const auto account_id = GetAccountUtils().EnsureEthAccount(0)->account_id.Clone();
+  const std::string account_identifier =
+      GetAccountPermissionIdentifier(account_id);
+  const auto origin = url::Origin::Create(GURL(kBraveUrl));
+  auto* delegate = service_->GetDelegateForTesting();
+  ASSERT_TRUE(delegate);
+
+  ASSERT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
+      blink::PermissionType::BRAVE_ETHEREUM, profile_.get(), origin,
+      account_identifier));
+  ASSERT_TRUE(delegate->HasPermission(mojom::CoinType::ETH, origin,
+                                      account_identifier));
+
+  base::test::TestFuture<bool> hide_future;
+  service_->keyring_service()->AddHiddenAccount(
+      account_id->Clone(), hide_future.GetCallback());
+  EXPECT_TRUE(hide_future.Get());
+
+  task_environment_.RunUntilIdle();
+
+  EXPECT_FALSE(delegate->HasPermission(mojom::CoinType::ETH, origin,
+                                       account_identifier));
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetNetworkForAccountOnActiveOrigin) {

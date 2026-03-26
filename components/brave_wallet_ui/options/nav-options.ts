@@ -248,6 +248,12 @@ export const CreateAccountOptions: NavOption[] = [
     icon: 'flashdrive',
     route: WalletRoutes.AddHardwareAccountModalStart,
   },
+  {
+    id: 'accounts',
+    name: 'braveWalletWelcomeRestoreButton',
+    icon: 'eye-on',
+    route: WalletRoutes.RestoreAccountsModal,
+  },
 ]
 
 export const AccountDetailsOptions: NavOption[] = [

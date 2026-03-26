@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service_prefs.h"
 
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 

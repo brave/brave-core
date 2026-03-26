@@ -98,6 +98,7 @@ export class MockedWalletApiProxy {
     mockFilecoinAccount,
     mockCardanoAccount,
   ]
+  hiddenAccountInfos: BraveWallet.AccountInfo[] = []
 
   selectedNetwork: BraveWallet.NetworkInfo = mockEthMainnet
 
@@ -624,6 +625,11 @@ export class MockedWalletApiProxy {
       }
       return { allAccounts }
     },
+    getHiddenAccounts: async () => {
+      return {
+        accounts: this.hiddenAccountInfos,
+      }
+    },
     validatePassword: async (password: string) => ({
       result: password === 'password',
     }),
@@ -662,6 +668,44 @@ export class MockedWalletApiProxy {
       return {
         success: validId,
       }
+    },
+    addHiddenAccount: async (accountId) => {
+      const accountToHide = this.accountInfos.find(
+        (a) => a.accountId.uniqueKey === accountId.uniqueKey,
+      )
+      if (!accountToHide) {
+        return { success: false }
+      }
+      this.accountInfos = this.accountInfos.filter(
+        (a) => a.accountId.uniqueKey !== accountId.uniqueKey,
+      )
+      if (
+        !this.hiddenAccountInfos.some(
+          (a) => a.accountId.uniqueKey === accountId.uniqueKey,
+        )
+      ) {
+        this.hiddenAccountInfos = [...this.hiddenAccountInfos, accountToHide]
+      }
+      return { success: true }
+    },
+    removeHiddenAccount: async (accountId) => {
+      const accountToUnhide = this.hiddenAccountInfos.find(
+        (a) => a.accountId.uniqueKey === accountId.uniqueKey,
+      )
+      if (!accountToUnhide) {
+        return { success: false }
+      }
+      this.hiddenAccountInfos = this.hiddenAccountInfos.filter(
+        (a) => a.accountId.uniqueKey !== accountId.uniqueKey,
+      )
+      if (
+        !this.accountInfos.some(
+          (a) => a.accountId.uniqueKey === accountId.uniqueKey,
+        )
+      ) {
+        this.accountInfos = [...this.accountInfos, accountToUnhide]
+      }
+      return { success: true }
     },
     unlock: async (password) => {
       return { success: password === 'password' }

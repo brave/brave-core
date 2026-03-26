@@ -115,6 +115,7 @@ import { AccountDetailsOptions } from '../../../../options/nav-options'
 // Hooks
 import useInterval from '../../../../common/hooks/interval'
 import {
+  useAddHiddenAccountMutation,
   useGetDefaultFiatCurrencyQuery,
   useGetVisibleNetworksQuery,
   useGetUserTokensRegistryQuery,
@@ -182,6 +183,7 @@ export const Account = () => {
   // mutations
   const [startShieldSync] = useStartShieldSyncMutation()
   const [stopShieldSync] = useStopShieldSyncMutation()
+  const [addHiddenAccount] = useAddHiddenAccountMutation()
 
   // routing
   const { accountId: addressOrUniqueKey, selectedTab } = useParams<{
@@ -520,6 +522,11 @@ export const Account = () => {
 
   const onClickMenuOption = React.useCallback(
     (option: AccountModalTypes) => {
+      if (option === 'hide' && selectedAccount) {
+        void addHiddenAccount({ accountId: selectedAccount.accountId })
+        history.push(WalletRoutes.Accounts)
+        return
+      }
       if (option === 'remove') {
         onRemoveAccount()
         return
@@ -548,7 +555,9 @@ export const Account = () => {
       dispatch(AccountsTabActions.setSelectedAccount(selectedAccount))
     },
     [
+      addHiddenAccount,
       dispatch,
+      history,
       onRemoveAccount,
       networksFilteredByAccountsCoinType,
       selectedAccount,
