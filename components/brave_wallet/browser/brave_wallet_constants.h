@@ -1746,6 +1746,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletPageNotFoundTitle", IDS_BRAVE_WALLET_PAGE_NOT_FOUND_TITLE},
     {"braveWalletPageNotFoundDescription",
      IDS_BRAVE_WALLET_PAGE_NOT_FOUND_DESCRIPTION},
+    {"braveWalletProcessTransactionErrorMessage",
+     IDS_BRAVE_WALLET_PROCESS_TRANSACTION_ERROR_MESSAGE},
     {"braveWalletGoToPortfolio", IDS_BRAVE_WALLET_GO_TO_PORTFOLIO},
     {"braveWalletAddToken", IDS_BRAVE_WALLET_ADD_TOKEN}};
 
