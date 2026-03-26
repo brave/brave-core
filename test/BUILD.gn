@@ -57,6 +57,7 @@ static_library("test_support") {
     "//brave/components/brave_shields/content/browser",
     "//brave/components/brave_shields/content/test:test_support",
     "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/services/brave_shields:filter_parsing_service",
     "//brave/components/tor/buildflags",
   ]
   if (enable_brave_vpn) {

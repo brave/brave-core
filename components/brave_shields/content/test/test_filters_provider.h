@@ -11,7 +11,7 @@
 #include "base/functional/callback.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
-#include "third_party/rust/cxx/v1/cxx.h"
+#include "mojo/public/cpp/base/big_buffer.h"
 
 namespace brave_shields {
 
@@ -29,9 +29,11 @@ class TestFiltersProvider : public AdBlockFiltersProvider {
   void RegisterAsSourceProvider(AdBlockService* ad_block_service);
   void RegisterAsSourceProvider(AdBlockFiltersProviderManager* manager);
 
-  void LoadFilterSet(
-      base::OnceCallback<void(
-          base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
+  void LoadFilters(base::OnceCallback<
+                   void(mojo_base::BigBuffer filter_buffer,
+                        uint8_t permission_mask,
+                        base::OnceCallback<void(adblock::CxxFilterListMetadata)>
+                            on_metadata)>) override;
 
   void Initialize();
   bool IsInitialized() const override;

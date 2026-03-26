@@ -15,35 +15,15 @@
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "components/prefs/pref_service.h"
+#include "mojo/public/cpp/base/big_buffer.h"
 
 namespace brave_shields {
-
-namespace {
-
-// static
-void AddDATBufferToFilterSet(
-    base::OnceCallback<void(const adblock::FilterListMetadata&)> on_metadata,
-    DATFileDataBuffer buffer,
-    const perfetto::Flow& flow,
-    rust::Box<adblock::FilterSet>* filter_set) {
-  TRACE_EVENT("brave.adblock",
-              "AddDATBufferToFilterSet_SubscriptionFiltersProvider", flow);
-  auto result = (*filter_set)->add_filter_list(buffer);
-  if (result.result_kind == adblock::ResultKind::Success) {
-    std::move(on_metadata).Run(result.value);
-  } else {
-    VLOG(0) << "Subscription list parsing failed: "
-            << result.error_message.c_str();
-  }
-}
-
-}  // namespace
 
 AdBlockSubscriptionFiltersProvider::AdBlockSubscriptionFiltersProvider(
     PrefService* local_state,
     AdBlockFiltersProviderManager* manager,
     base::FilePath list_file,
-    base::RepeatingCallback<void(const adblock::FilterListMetadata&)>
+    base::RepeatingCallback<void(const adblock::CxxFilterListMetadata&)>
         on_metadata_retrieved)
     : AdBlockFiltersProvider(false, manager),
       list_file_(list_file),
@@ -52,9 +32,12 @@ AdBlockSubscriptionFiltersProvider::AdBlockSubscriptionFiltersProvider(
 AdBlockSubscriptionFiltersProvider::~AdBlockSubscriptionFiltersProvider() =
     default;
 
-void AdBlockSubscriptionFiltersProvider::LoadFilterSet(
-    base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) {
+void AdBlockSubscriptionFiltersProvider::LoadFilters(
+    base::OnceCallback<void(
+        mojo_base::BigBuffer filter_buffer,
+        uint8_t permission_mask,
+        base::OnceCallback<void(adblock::CxxFilterListMetadata)> on_metadata)>
+        cb) {
   const auto flow = perfetto::Flow::FromPointer(this);
   TRACE_EVENT("brave.adblock",
               "AdBlockSubscriptionFiltersProvider::LoadFilterSet", flow);
@@ -70,25 +53,27 @@ std::string AdBlockSubscriptionFiltersProvider::GetNameForDebugging() {
 }
 
 void AdBlockSubscriptionFiltersProvider::OnDATFileDataReady(
-    base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
+    base::OnceCallback<void(
+        mojo_base::BigBuffer filter_buffer,
+        uint8_t permission_mask,
+        base::OnceCallback<void(adblock::CxxFilterListMetadata)> on_metadata)>
+        cb,
     const perfetto::Flow& flow,
-    const DATFileDataBuffer& dat_buf) {
+    DATFileDataBuffer dat_buf) {
   TRACE_EVENT("brave.adblock",
               "AdBlockSubscriptionFiltersProvider::OnDATFileDataReady", flow);
-  std::move(cb).Run(base::BindOnce(
-      &AddDATBufferToFilterSet,
+  std::move(cb).Run(
+      std::move(dat_buf), 0,
       base::BindOnce(
           [](scoped_refptr<base::SequencedTaskRunner> task_runner,
-             base::RepeatingCallback<void(const adblock::FilterListMetadata&)>
-                 on_metadata,
-             const adblock::FilterListMetadata& metadata) {
+             base::RepeatingCallback<void(
+                 const adblock::CxxFilterListMetadata&)> on_metadata,
+             adblock::CxxFilterListMetadata metadata) {
             task_runner->PostTask(FROM_HERE,
                                   base::BindOnce(on_metadata, metadata));
           },
           base::SingleThreadTaskRunner::GetCurrentDefault(),
-          on_metadata_retrieved_),
-      dat_buf, flow));
+          on_metadata_retrieved_));
 }
 
 void AdBlockSubscriptionFiltersProvider::OnListAvailable() {

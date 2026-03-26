@@ -48,6 +48,8 @@ static_library("browser") {
     "//brave/components/https_upgrade_exceptions/browser",
     "//brave/components/p3a",
     "//brave/components/p3a_utils",
+    "//brave/components/services/brave_shields:filter_parsing_service",
+    "//brave/components/services/brave_shields/mojom",
     "//brave/components/webcompat/core/common",
     "//components/component_updater",
     "//components/content_settings/core/browser",
@@ -57,6 +59,7 @@ static_library("browser") {
     "//components/prefs",
     "//components/value_store",
     "//crypto",
+    "//mojo/public/cpp/base",
     "//url",
   ]
   public_deps = [

@@ -6,7 +6,7 @@
 use adblock::{lists::ParseOptions, resources::PermissionMask, FilterSet as InnerFilterSet};
 use cxx::CxxVector;
 
-use crate::ffi::{FilterListMetadata, FilterListMetadataResult};
+use crate::ffi::{CxxFilterListMetadata, CxxFilterListMetadataResult};
 use crate::result::InternalError;
 
 pub struct FilterSet(pub(crate) InnerFilterSet);
@@ -22,7 +22,7 @@ pub fn new_filter_set() -> Box<FilterSet> {
 }
 
 impl FilterSet {
-    pub fn add_filter_list(&mut self, rules: &CxxVector<u8>) -> FilterListMetadataResult {
+    pub fn add_filter_list(&mut self, rules: &CxxVector<u8>) -> CxxFilterListMetadataResult {
         self.add_filter_list_with_permissions(rules, 0)
     }
 
@@ -30,8 +30,8 @@ impl FilterSet {
         &mut self,
         rules: &CxxVector<u8>,
         permission_mask: u8,
-    ) -> FilterListMetadataResult {
-        || -> Result<FilterListMetadata, InternalError> {
+    ) -> CxxFilterListMetadataResult {
+        || -> Result<CxxFilterListMetadata, InternalError> {
             Ok(self
                 .0
                 .add_filter_list(

@@ -13,8 +13,8 @@ use adblock::Engine as InnerEngine;
 use cxx::{let_cxx_string, CxxString, CxxVector};
 
 use crate::ffi::{
-    resolve_domain_position, BlockerResult, BoxEngineResult, ContentBlockingRulesResult, DebugInfo,
-    FilterListMetadata, RegexManagerDiscardPolicy, VecStringResult,
+    resolve_domain_position, BlockerResult, BoxEngineResult, ContentBlockingRulesResult,
+    CxxFilterListMetadata, DebugInfo, RegexManagerDiscardPolicy, VecStringResult,
 };
 use crate::filter_set::FilterSet;
 use crate::result::InternalError;
@@ -69,7 +69,7 @@ pub fn set_domain_resolver() -> bool {
     adblock::url_parser::set_domain_resolver(Box::new(DomainResolver)).is_ok()
 }
 
-pub fn read_list_metadata(list: &CxxVector<u8>) -> FilterListMetadata {
+pub fn read_list_metadata(list: &CxxVector<u8>) -> CxxFilterListMetadata {
     std::str::from_utf8(list.as_slice())
         .map(|list| adblock::lists::read_list_metadata(list).into())
         .unwrap_or_default()

@@ -16,5 +16,6 @@ include_rules = [
 specific_include_rules = {
   "brave_ad_block_tp_network_delegate_helper_unittest\.cc": [
     "+brave/components/brave_component_updater/browser/brave_component.h",
+    "+brave/components/services/brave_shields/filter_parsing_service.h",
   ],
 }

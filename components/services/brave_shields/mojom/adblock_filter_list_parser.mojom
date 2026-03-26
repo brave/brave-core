@@ -1,0 +1,29 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module adblock.mojom;
+
+import "mojo/public/mojom/base/big_buffer.mojom";
+import "sandbox/policy/mojom/sandbox.mojom";
+
+struct FilterListInput {
+  mojo_base.mojom.BigBuffer filters;
+  uint8 permission_mask;
+};
+
+struct FilterListMetadata {
+  string? homepage;
+  string? title;
+  uint16? expires_hours;
+};
+
+// Utility process interface exposed to the browser process. Allows for
+// sandboxing when parsing adblock filters.
+[ServiceSandbox=sandbox.mojom.Sandbox.kService]
+interface AdblockFilterListParser {
+  ParseFilters(array<FilterListInput> filters) =>
+    (mojo_base.mojom.BigBuffer verified_engine_dat,
+     array<FilterListMetadata> metadata);
+};

@@ -5,17 +5,20 @@
 
 #include "brave/components/brave_shields/content/browser/ad_block_localhost_filters_provider.h"
 
+#include <string_view>
 #include <utility>
 #include <vector>
 
+#include "base/containers/to_vector.h"
+#include "base/functional/callback_helpers.h"
 #include "base/task/single_thread_task_runner.h"
-#include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "mojo/public/cpp/base/big_buffer.h"
 
 namespace brave_shields {
 
 namespace {
 
-constexpr uint8_t kLocalhostBadfilters[] = R"(
+constexpr char kLocalhostBadfilters[] = R"(
 ||0.0.0.0^$third-party,domain=~[::]|~[::ffff:0:0],badfilter
 ||[::]^$third-party,domain=~0.0.0.0|~[::ffff:0:0],badfilter
 ||[::ffff:0:0]^$third-party,domain=~0.0.0.0|~[::],badfilter
@@ -24,12 +27,6 @@ constexpr uint8_t kLocalhostBadfilters[] = R"(
 ||[::1]^$third-party,domain=~localhost|~127.0.0.1|~[::ffff:7f00:1],badfilter
 ||[::ffff:7f00:1]^$third-party,domain=~localhost|~127.0.0.1|~[::1],badfilter
 )";
-
-void AddDATBufferToFilterSet(rust::Box<adblock::FilterSet>* filter_set) {
-  (*filter_set)
-      ->add_filter_list(std::vector<uint8_t>(std::begin(kLocalhostBadfilters),
-                                             std::end(kLocalhostBadfilters)));
-}
 
 }  // namespace
 
@@ -45,15 +42,22 @@ std::string AdBlockLocalhostFiltersProvider::GetNameForDebugging() {
   return "AdBlockLocalhostFiltersProvider";
 }
 
-void AdBlockLocalhostFiltersProvider::LoadFilterSet(
-    base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) {
+void AdBlockLocalhostFiltersProvider::LoadFilters(
+    base::OnceCallback<void(
+        mojo_base::BigBuffer filter_buffer,
+        uint8_t permission_mask,
+        base::OnceCallback<void(adblock::CxxFilterListMetadata)> on_metadata)>
+        cb) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  std::string_view filters_view(kLocalhostBadfilters);
+  std::vector<uint8_t> filters_vec(filters_view.begin(), filters_view.end());
+  auto buffer = mojo_base::BigBuffer(std::move(filters_vec));
 
   // PostTask so this has an async return to match other loaders
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(std::move(cb), base::BindOnce(&AddDATBufferToFilterSet)));
+      FROM_HERE, base::BindOnce(std::move(cb), std::move(buffer), UINT8_MAX,
+                                base::DoNothing()));
 }
 
 }  // namespace brave_shields

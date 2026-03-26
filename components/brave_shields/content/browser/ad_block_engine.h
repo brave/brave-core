@@ -70,7 +70,7 @@ class AdBlockEngine {
       const std::vector<std::string>& exceptions);
 
   void Load(bool deserialize,
-            const DATFileDataBuffer& dat_buf,
+            DATFileDataBuffer dat_buf,
             const adblock::BraveCoreResourceStorage& storage);
   void Load(rust::Box<adblock::FilterSet> filter_set,
             const adblock::BraveCoreResourceStorage& storage);
@@ -92,9 +92,9 @@ class AdBlockEngine {
 
   void OnFilterSetLoaded(rust::Box<adblock::FilterSet> filter_set,
                          const adblock::BraveCoreResourceStorage& storage);
-  void OnListSourceLoaded(const DATFileDataBuffer& filters,
+  void OnListSourceLoaded(DATFileDataBuffer filters,
                           const adblock::BraveCoreResourceStorage& storage);
-  void OnDATLoaded(const DATFileDataBuffer& dat_buf,
+  void OnDATLoaded(DATFileDataBuffer dat_buf,
                    const adblock::BraveCoreResourceStorage& storage);
 
   rust::Box<adblock::Engine> ad_block_client_

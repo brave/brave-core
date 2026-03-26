@@ -64,34 +64,17 @@ void AdBlockService::SourceProviderObserver::OnChanged(bool is_default_engine) {
     // Skip updates of another engine.
     return;
   }
-  auto on_loaded_cb = base::BindOnce(
-      &AdBlockService::SourceProviderObserver::OnFilterSetCallbackLoaded,
-      weak_factory_.GetWeakPtr());
-  filters_provider_manager_->LoadFilterSetForEngine(is_default_engine,
-                                                    std::move(on_loaded_cb));
+  auto on_loaded_cb =
+      base::BindOnce(&AdBlockService::SourceProviderObserver::OnDATCreated,
+                     weak_factory_.GetWeakPtr());
+  filters_provider_manager_->LoadFiltersForEngine(is_default_engine,
+                                                  std::move(on_loaded_cb));
 }
 
-void AdBlockService::SourceProviderObserver::OnFilterSetCallbackLoaded(
-    base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb) {
-  task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(
-          [](base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb) {
-            auto filter_set = std::make_unique<rust::Box<adblock::FilterSet>>(
-                adblock::new_filter_set());
-            std::move(cb).Run(filter_set.get());
-            return filter_set;
-          },
-          std::move(cb)),
-      base::BindOnce(
-          &AdBlockService::SourceProviderObserver::OnFilterSetCreated,
-          weak_factory_.GetWeakPtr()));
-}
-
-void AdBlockService::SourceProviderObserver::OnFilterSetCreated(
-    std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set) {
-  TRACE_EVENT("brave.adblock", "OnFilterSetCreated");
-  filter_set_ = std::move(filter_set);
+void AdBlockService::SourceProviderObserver::OnDATCreated(
+    mojo_base::BigBuffer verified_engine_dat) {
+  TRACE_EVENT("brave.adblock", "OnDATCreated");
+  pending_dat_ = std::move(verified_engine_dat);
   // multiple AddObserver calls are ignored
   resource_provider_->AddObserver(this);
   resource_provider_->LoadResources(base::BindOnce(
@@ -100,7 +83,7 @@ void AdBlockService::SourceProviderObserver::OnFilterSetCreated(
 
 void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
     AdblockResourceStorageBox storage) {
-  if (!filter_set_) {
+  if (pending_dat_.size() == 0) {
     task_runner_->PostTask(
         FROM_HERE, base::BindOnce(
                        [](base::WeakPtr<AdBlockEngine> engine,
@@ -112,14 +95,13 @@ void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
                        adblock_engine_->AsWeakPtr(), std::move(storage)));
   } else {
     auto engine_load_callback = base::BindOnce(
-        [](base::WeakPtr<AdBlockEngine> engine,
-           std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
+        [](base::WeakPtr<AdBlockEngine> engine, mojo_base::BigBuffer dat_buffer,
            AdblockResourceStorageBox storage) {
           if (engine) {
-            engine->Load(std::move(*filter_set.get()), *storage);
+            engine->Load(true, std::move(dat_buffer), *storage);
           }
         },
-        adblock_engine_->AsWeakPtr(), std::move(filter_set_),
+        adblock_engine_->AsWeakPtr(), std::move(pending_dat_),
         std::move(storage));
     task_runner_->PostTask(FROM_HERE, std::move(engine_load_callback));
   }
@@ -296,6 +278,7 @@ AdBlockService::AdBlockService(
     scoped_refptr<base::SequencedTaskRunner> task_runner,
     AdBlockSubscriptionDownloadManager::DownloadManagerGetter
         subscription_download_manager_getter,
+    FilterParsingServiceFactory filter_set_service_factory,
     const base::FilePath& profile_dir)
     : local_state_(local_state),
       locale_(locale),
@@ -338,7 +321,8 @@ AdBlockService::AdBlockService(
       std::make_unique<AdBlockFilterListCatalogProvider>(
           component_update_service_);
 
-  filters_provider_manager_ = std::make_unique<AdBlockFiltersProviderManager>();
+  filters_provider_manager_ = std::make_unique<AdBlockFiltersProviderManager>(
+      std::move(filter_set_service_factory));
 
   component_service_manager_ = std::make_unique<AdBlockComponentServiceManager>(
       local_state_, filters_provider_manager_.get(), locale_,

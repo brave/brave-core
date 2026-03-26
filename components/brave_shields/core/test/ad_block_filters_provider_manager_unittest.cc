@@ -4,9 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
-#include "testing/gtest/include/gtest/gtest.h"
 
+#include "base/functional/bind.h"
+#include "base/test/task_environment.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
+#include "brave/components/services/brave_shields/filter_parsing_service.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 class FiltersProviderManagerTestObserver
     : public brave_shields::AdBlockFiltersProvider::Observer {
@@ -20,8 +23,13 @@ class FiltersProviderManagerTestObserver
 };
 
 TEST(AdBlockFiltersProviderManagerTest, WaitUntilInitialized) {
+  base::test::TaskEnvironment task_environment;
+
   FiltersProviderManagerTestObserver test_observer;
-  brave_shields::AdBlockFiltersProviderManager m;
+
+  brave_shields::AdBlockFiltersProviderManager m(
+      base::BindRepeating(&brave_shields::FilterParsingService::
+                              LaunchInProcessFilterParsingService));
   m.AddObserver(&test_observer);
 
   brave_shields::TestFiltersProvider provider1("", true, 0);

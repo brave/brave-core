@@ -132,7 +132,7 @@ class AdBlockSubscriptionServiceManager {
       AdBlockSubscriptionDownloadManager* download_manager);
 
   void OnListMetadata(const GURL& sub_url,
-                      const adblock::FilterListMetadata& metadata);
+                      const adblock::CxxFilterListMetadata& metadata);
 
   // static to enforce locking on `subscriptions_`
   std::optional<SubscriptionInfo> GetInfo(const GURL& sub_url);

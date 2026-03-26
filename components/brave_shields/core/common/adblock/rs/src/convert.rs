@@ -6,7 +6,7 @@
 use std::time::Duration;
 
 use crate::ffi::{
-    BlockerResult, DebugInfo, FilterListMetadata, OptionalString, OptionalU16, RegexDebugEntry,
+    BlockerResult, CxxFilterListMetadata, DebugInfo, OptionalString, OptionalU16, RegexDebugEntry,
     RegexManagerDiscardPolicy,
 };
 use adblock::blocker::BlockerResult as InnerBlockerResult;
@@ -78,7 +78,7 @@ impl From<&RegexManagerDiscardPolicy> for InnerRegexManagerDiscardPolicy {
     }
 }
 
-impl From<InnerFilterListMetadata> for FilterListMetadata {
+impl From<InnerFilterListMetadata> for CxxFilterListMetadata {
     fn from(metadata: InnerFilterListMetadata) -> Self {
         let expires_hours = OptionalU16::from(metadata.expires.map(|interval| match interval {
             ExpiresInterval::Hours(hours) => hours,
