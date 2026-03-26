@@ -130,6 +130,65 @@ TEST_F(AIChatSyncBridgeTest, MergeFullSyncDataUploadsLocalConversations) {
                              std::move(empty_remote));
 }
 
+TEST_F(AIChatSyncBridgeTest, MergeFullSyncDataAppliesRemoteConversations) {
+  CreateBridge();
+
+  syncer::EntityChangeList remote_changes;
+  auto entity_data = std::make_unique<syncer::EntityData>();
+  auto* specifics = entity_data->specifics.mutable_ai_chat_conversation();
+  specifics->set_uuid("remote-conv-1");
+  specifics->set_title("Remote Conversation");
+  auto* entry = specifics->add_entries();
+  entry->set_uuid("remote-entry-1");
+  entry->set_entry_text("Hello from remote");
+  entry->set_character_type(0);
+  remote_changes.push_back(syncer::EntityChange::CreateAdd(
+      "remote-conv-1", std::move(*entity_data)));
+
+  bridge_->MergeFullSyncData(bridge_->CreateMetadataChangeList(),
+                             std::move(remote_changes));
+
+  auto conversations = db_->GetAllConversations();
+  bool found = false;
+  for (const auto& conv : conversations) {
+    if (conv->uuid == "remote-conv-1") {
+      EXPECT_EQ(conv->title, "Remote Conversation");
+      found = true;
+      break;
+    }
+  }
+  EXPECT_TRUE(found) << "Remote conversation not found in database";
+}
+
+TEST_F(AIChatSyncBridgeTest, ApplyIncrementalSyncChangesAdd) {
+  CreateBridge();
+
+  syncer::EntityChangeList changes;
+  auto entity_data = std::make_unique<syncer::EntityData>();
+  auto* specifics = entity_data->specifics.mutable_ai_chat_conversation();
+  specifics->set_uuid("incremental-conv-1");
+  specifics->set_title("Incremental Add");
+  auto* entry = specifics->add_entries();
+  entry->set_uuid("inc-entry-1");
+  entry->set_entry_text("Test entry");
+  entry->set_character_type(0);
+  changes.push_back(syncer::EntityChange::CreateAdd("incremental-conv-1",
+                                                    std::move(*entity_data)));
+
+  bridge_->ApplyIncrementalSyncChanges(bridge_->CreateMetadataChangeList(),
+                                       std::move(changes));
+
+  auto conversations = db_->GetAllConversations();
+  bool found = false;
+  for (const auto& conv : conversations) {
+    if (conv->uuid == "incremental-conv-1") {
+      found = true;
+      break;
+    }
+  }
+  EXPECT_TRUE(found) << "Incrementally added conversation not in database";
+}
+
 TEST_F(AIChatSyncBridgeTest, ApplyIncrementalSyncChangesDelete) {
   AddTestConversation("to-delete", "Will Be Deleted");
   CreateBridge();

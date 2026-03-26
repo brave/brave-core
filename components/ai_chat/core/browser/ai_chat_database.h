@@ -99,6 +99,13 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   virtual bool DeleteAssociatedWebContent(std::optional<base::Time> begin_time,
                                           std::optional<base::Time> end_time);
 
+  // Applies a remote conversation from sync. Deletes existing conversation
+  // with the same UUID (if any) and re-inserts with the provided data.
+  // |contents| should be empty strings since full text is not synced.
+  virtual bool ApplyRemoteConversation(
+      mojom::ConversationPtr conversation,
+      std::vector<mojom::ConversationTurnPtr> entries);
+
   // Reads all sync metadata (entity metadata + data type state) into the batch.
   bool GetAllSyncMetadata(syncer::MetadataBatch* metadata_batch);
 

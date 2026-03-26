@@ -78,9 +78,16 @@ std::optional<syncer::ModelError> AIChatSyncBridge::MergeFullSyncData(
     }
     const auto& specifics = change->data().specifics.ai_chat_conversation();
     remote_uuids.insert(specifics.uuid());
-    // TODO(https://github.com/brave/brave-browser/issues/53978): Apply
-    // remote-only conversations to local database and union-merge conversations
-    // that exist on both sides.
+
+    // Apply remote conversation to local database.
+    auto conversation = SpecificsToConversation(specifics);
+    auto archive = SpecificsToArchive(specifics);
+    std::vector<mojom::ConversationTurnPtr> entries;
+    for (auto& entry : archive->entries) {
+      entries.push_back(std::move(entry));
+    }
+    database_->ApplyRemoteConversation(std::move(conversation),
+                                       std::move(entries));
   }
 
   // Upload local-only conversations to sync.
@@ -117,10 +124,16 @@ std::optional<syncer::ModelError> AIChatSyncBridge::ApplyIncrementalSyncChanges(
       continue;
     }
 
-    // TODO(https://github.com/brave/brave-browser/issues/53978): Apply remote
-    // ADD/UPDATE to local database by converting specifics back to local format
-    // and upserting.
-    DVLOG(1) << "Received remote sync change for conversation: " << storage_key;
+    // Apply remote ADD/UPDATE to local database.
+    const auto& specifics = change->data().specifics.ai_chat_conversation();
+    auto conversation = SpecificsToConversation(specifics);
+    auto archive = SpecificsToArchive(specifics);
+    std::vector<mojom::ConversationTurnPtr> entries;
+    for (auto& entry : archive->entries) {
+      entries.push_back(std::move(entry));
+    }
+    database_->ApplyRemoteConversation(std::move(conversation),
+                                       std::move(entries));
   }
 
   return std::nullopt;

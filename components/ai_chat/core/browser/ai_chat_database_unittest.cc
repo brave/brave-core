@@ -1261,6 +1261,73 @@ TEST_F(AIChatDatabaseSyncTest, ClearDataTypeState) {
             sync_pb::DataTypeState::INITIAL_SYNC_STATE_UNSPECIFIED);
 }
 
+TEST_F(AIChatDatabaseSyncTest, ApplyRemoteConversation) {
+  auto conv = mojom::Conversation::New();
+  conv->uuid = "remote-conv";
+  conv->title = "Remote Title";
+  conv->total_tokens = 42;
+
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "remote-entry";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->text = "Hello from sync";
+  entry->created_time = base::Time::Now();
+
+  std::vector<mojom::ConversationTurnPtr> entries;
+  entries.push_back(std::move(entry));
+
+  EXPECT_TRUE(
+      db_->ApplyRemoteConversation(std::move(conv), std::move(entries)));
+
+  auto conversations = db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  EXPECT_EQ(conversations[0]->uuid, "remote-conv");
+  EXPECT_EQ(conversations[0]->title, "Remote Title");
+
+  auto archive = db_->GetConversationData("remote-conv");
+  ASSERT_TRUE(archive);
+  ASSERT_EQ(archive->entries.size(), 1u);
+  EXPECT_EQ(archive->entries[0]->text, "Hello from sync");
+}
+
+TEST_F(AIChatDatabaseSyncTest, ApplyRemoteConversationReplacesExisting) {
+  auto conv1 = mojom::Conversation::New();
+  conv1->uuid = "replace-conv";
+  conv1->title = "Original";
+  auto entry1 = mojom::ConversationTurn::New();
+  entry1->uuid = "entry-orig";
+  entry1->character_type = mojom::CharacterType::HUMAN;
+  entry1->action_type = mojom::ActionType::QUERY;
+  entry1->text = "Original text";
+  entry1->created_time = base::Time::Now();
+  db_->AddConversation(std::move(conv1), {}, std::move(entry1));
+
+  auto conv2 = mojom::Conversation::New();
+  conv2->uuid = "replace-conv";
+  conv2->title = "Replaced";
+  auto entry2 = mojom::ConversationTurn::New();
+  entry2->uuid = "entry-new";
+  entry2->character_type = mojom::CharacterType::ASSISTANT;
+  entry2->action_type = mojom::ActionType::RESPONSE;
+  entry2->text = "Replaced text";
+  entry2->created_time = base::Time::Now();
+
+  std::vector<mojom::ConversationTurnPtr> entries;
+  entries.push_back(std::move(entry2));
+  EXPECT_TRUE(
+      db_->ApplyRemoteConversation(std::move(conv2), std::move(entries)));
+
+  auto conversations = db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  EXPECT_EQ(conversations[0]->title, "Replaced");
+
+  auto archive = db_->GetConversationData("replace-conv");
+  ASSERT_TRUE(archive);
+  ASSERT_EQ(archive->entries.size(), 1u);
+  EXPECT_EQ(archive->entries[0]->text, "Replaced text");
+}
+
 // Test the migration for each version upgrade
 class AIChatDatabaseMigrationTest : public testing::Test,
                                     public testing::WithParamInterface<int> {
