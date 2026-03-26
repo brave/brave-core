@@ -52,8 +52,9 @@ class AIChatPolicyTest : public InProcessBrowserTest,
 
   void SetUpInProcessBrowserTestFixture() override {
     InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
-    EXPECT_CALL(provider_, IsInitializationComplete(testing::_))
-        .WillRepeatedly(testing::Return(true));
+    provider_.SetDefaultReturns(
+        /*is_initialization_complete_return=*/true,
+        /*is_first_policy_load_complete_return=*/true);
     BrowserPolicyConnector::SetPolicyProviderForTesting(&provider_);
     PolicyMap policies;
     policies.Set(key::kBraveAIChatEnabled, POLICY_LEVEL_MANDATORY,
