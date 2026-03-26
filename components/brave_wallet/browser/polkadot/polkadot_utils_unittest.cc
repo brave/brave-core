@@ -124,7 +124,7 @@ TEST(PolkadotUtils, Uint128MojomConversions) {
 // format).
 
 TEST(PolkadotUtils, EncodePrivateKeyForExport) {
-  constexpr char kPassword[] = "test_password_123";
+  static constexpr char kPassword[] = "test_password_123";
 
   auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
   keyring.AddNewHDAccount(0);
@@ -184,7 +184,7 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport) {
 }
 
 TEST(PolkadotUtils, EncodePrivateKeyForExport_Testnet) {
-  constexpr char kPassword[] = "test_password_123";
+  static constexpr char kPassword[] = "test_password_123";
 
   auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotTestnet);
   keyring.AddNewHDAccount(0);
@@ -244,7 +244,7 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport_Testnet) {
 }
 
 TEST(PolkadotUtils, DecodePrivateKeyFromExport_Roundtrip) {
-  constexpr char kPassword[] = "test_password_123";
+  static constexpr char kPassword[] = "test_password_123";
 
   auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
   keyring.AddNewHDAccount(0);
@@ -286,8 +286,8 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_Roundtrip) {
 }
 
 TEST(PolkadotUtils, DecodePrivateKeyFromExport_WrongPassword) {
-  constexpr char kPassword[] = "test_password_123";
-  constexpr char kWrongPassword[] = "wrong_password";
+  static constexpr char kPassword[] = "test_password_123";
+  static constexpr char kWrongPassword[] = "wrong_password";
 
   auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
   keyring.AddNewHDAccount(0);
@@ -300,7 +300,7 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_WrongPassword) {
 }
 
 TEST(PolkadotUtils, DecodePrivateKeyFromExport_EmptyPassword) {
-  constexpr char kPassword[] = "test_password_123";
+  static constexpr char kPassword[] = "test_password_123";
 
   auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
   keyring.AddNewHDAccount(0);
@@ -312,7 +312,7 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_EmptyPassword) {
 }
 
 TEST(PolkadotUtils, DecodePrivateKeyFromExport_InvalidJSON) {
-  constexpr char kPassword[] = "test_password_123";
+  static constexpr char kPassword[] = "test_password_123";
 
   EXPECT_FALSE(
       DecodePrivateKeyFromExport("{ invalid json }", kPassword).has_value());
@@ -324,7 +324,7 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_InvalidJSON) {
 }
 
 TEST(PolkadotUtils, DecodePrivateKeyFromExport_Testnet) {
-  constexpr char kPassword[] = "test_password_123";
+  static constexpr char kPassword[] = "test_password_123";
 
   auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotTestnet);
   keyring.AddNewHDAccount(0);
@@ -339,7 +339,7 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_Testnet) {
 }
 
 TEST(PolkadotUtils, DecodePrivateKeyFromExport_MissingParts) {
-  constexpr char kPassword[] = "test_password_123";
+  static constexpr char kPassword[] = "test_password_123";
 
   auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotTestnet);
   keyring.AddNewHDAccount(0);
