@@ -5,6 +5,8 @@
 
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
+import Dialog from '@brave/leo/react/dialog'
+import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
 import { useAppState, useAppActions } from '../lib/app_context'
@@ -15,10 +17,14 @@ export function RewardsLog() {
   const actions = useAppActions()
   const { getString } = actions
   const log = useAppState((state) => state.rewardsLog)
+  const verboseLoggingEnabled = useAppState(
+    (state) => state.verboseLoggingEnabled,
+  )
 
   const textAreaRef = React.useRef<HTMLTextAreaElement>(null)
   const [logLoaded, setLogLoaded] = React.useState(log.length > 0)
   const [autoRefresh, setAutoRefresh] = React.useState(false)
+  const [showVerboseDialog, setShowVerboseDialog] = React.useState(false)
 
   React.useEffect(() => {
     actions.loadRewardsLog()
@@ -77,15 +83,20 @@ export function RewardsLog() {
     >
       <h4>
         <span className='title'>Rewards Log</span>
-        <span className='auto-refresh'>
-          <Toggle
-            size='small'
-            checked={autoRefresh}
-            onChange={() => setAutoRefresh(!autoRefresh)}
-          >
-            Auto-refresh
-          </Toggle>
-        </span>
+        <Toggle
+          size='small'
+          checked={autoRefresh}
+          onChange={() => setAutoRefresh(!autoRefresh)}
+        >
+          Auto-refresh
+        </Toggle>
+        <Toggle
+          size='small'
+          checked={verboseLoggingEnabled}
+          onChange={() => setShowVerboseDialog(true)}
+        >
+          Verbose mode
+        </Toggle>
         <Button
           size='small'
           onClick={download}
@@ -105,6 +116,42 @@ export function RewardsLog() {
         value={log}
         readOnly
       />
+
+      <Dialog
+        isOpen={showVerboseDialog}
+        onClose={() => setShowVerboseDialog(false)}
+        backdropClickCloses={false}
+      >
+        <div slot='title'>Brave Rewards Verbose Logging</div>
+        <div className='verbose-logging-info'>
+          <Icon name='warning-triangle-filled' />
+          <div>
+            Enables detailed logging of Brave Rewards system events to a log
+            file stored on your device. Please note that this log file could
+            include information such as browsing history and credentials such as
+            passwords and access tokens depending on your activity. Please do
+            not share it unless asked to by Brave staff.
+          </div>
+        </div>
+        <div slot='actions'>
+          <Button
+            kind='plain-faint'
+            onClick={() => setShowVerboseDialog(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              setShowVerboseDialog(false)
+              actions.toggleVerboseLoggingAndRestart()
+            }}
+          >
+            {verboseLoggingEnabled
+              ? 'Disable and Restart'
+              : 'Enable and Restart'}
+          </Button>
+        </div>
+      </Dialog>
     </div>
   )
 }

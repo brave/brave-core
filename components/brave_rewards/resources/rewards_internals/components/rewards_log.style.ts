@@ -7,6 +7,10 @@ import { color, font } from '@brave/leo/tokens/css/variables'
 import { scoped } from '$web-common/scoped_css'
 
 export const style = scoped.css`
+  & {
+    --leo-dialog-padding: 32px;
+  }
+
   h4 {
     display: flex;
     align-items: center;
@@ -33,8 +37,22 @@ export const style = scoped.css`
     border: none;
   }
 
-  .auto-refresh {
-    padding: 0 16px;
+  leo-toggle {
     font: ${font.small.semibold};
+    margin-inline-end: 4px;
+  }
+
+  .verbose-logging-info {
+    --leo-icon-size: 48px;
+    --leo-icon-color: ${color.systemfeedback.warningIcon};
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: ${color.systemfeedback.warningBackground};
+    padding: 24px;
+    border-radius: 8px;
+    border: solid 1px ${color.systemfeedback.warningVibrant};
+    color: ${color.systemfeedback.warningText};
   }
 `

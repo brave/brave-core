@@ -149,7 +149,10 @@ source_set("ui") {
   }
 
   if (enable_brave_rewards) {
-    deps += [ "//brave/browser/brave_rewards" ]
+    deps += [
+      "//brave/browser/brave_rewards",
+      "//chrome/browser:flags",
+    ]
 
     sources += [
       "webui/brave_rewards/rewards_page_data_source.cc",

@@ -18,6 +18,7 @@ export interface AppState {
   creationEnvironment: Environment | null
   contributions: ContributionInfo[]
   rewardsLog: string
+  verboseLoggingEnabled: boolean
   externalWallet: ExternalWallet | null
   externalWalletId: string
   externalWalletAccountId: string
@@ -30,6 +31,7 @@ export interface AppState {
     clearRewardsLog: () => void
     loadRewardsLog: () => void
     fetchFullRewardsLog: () => Promise<string>
+    toggleVerboseLoggingAndRestart: () => void
     loadContributions: () => void
     loadRewardsEvents: () => void
   }
@@ -88,6 +90,7 @@ export function defaultAppStore() {
     creationEnvironment: null,
     contributions: [],
     rewardsLog: '',
+    verboseLoggingEnabled: false,
     externalWallet: null,
     externalWalletId: '',
     externalWalletAccountId: '',
@@ -104,6 +107,7 @@ export function defaultAppStore() {
       async fetchFullRewardsLog() {
         return ''
       },
+      toggleVerboseLoggingAndRestart() {},
       loadContributions() {},
       loadRewardsEvents() {},
     },
