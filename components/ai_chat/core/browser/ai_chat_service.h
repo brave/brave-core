@@ -31,6 +31,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_bridge.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider_factory.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
@@ -44,6 +45,10 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+
+namespace syncer {
+class DataTypeControllerDelegate;
+}  // namespace syncer
 
 namespace os_crypt_async {
 class Encryptor;
@@ -99,6 +104,15 @@ class AIChatService : public KeyedService,
 
   // KeyedService
   void Shutdown() override;
+
+  // Returns true if a conversation has a live ConversationHandler.
+  bool HasActiveConversationHandler(const std::string& uuid);
+
+  // Creates a sync controller delegate for the AI Chat data type. Uses
+  // ProxyDataTypeControllerDelegate to forward from UI thread to the
+  // background sequence where the bridge lives.
+  std::unique_ptr<syncer::DataTypeControllerDelegate>
+  CreateSyncControllerDelegate();
 
   // ConversationHandler::Observer
   void OnRequestInProgressChanged(ConversationHandler* handler,
@@ -413,6 +427,17 @@ class AIChatService : public KeyedService,
   // Whether conversations can utilize content agent capabilities. For now,
   // this is profile-specific.
   bool is_content_agent_allowed_ = false;
+
+  // Background task runner for the database and sync bridge.
+  scoped_refptr<base::SequencedTaskRunner> db_task_runner_;
+
+  // Sync bridge for AI Chat conversation sync. Lives on db_task_runner_.
+  // Created when database is ready. Must be destroyed on db_task_runner_.
+  std::unique_ptr<AIChatSyncBridge> sync_bridge_;
+  // WeakPtr to bridge, obtained on db_task_runner_ after creation. Safe to
+  // copy to the UI thread and use in PostTask (will be invalidated when bridge
+  // is destroyed on db_task_runner_).
+  base::WeakPtr<AIChatSyncBridge> sync_bridge_weak_;
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};
 };
