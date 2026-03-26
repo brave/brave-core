@@ -7,6 +7,7 @@
 
 #include "base/base64.h"
 #include "base/check_is_test.h"
+#include "base/containers/map_util.h"
 #include "base/containers/span.h"
 #include "base/containers/span_writer.h"
 #include "base/json/json_writer.h"
@@ -115,11 +116,7 @@ PolkadotKeyring::SignMessage(base::span<const uint8_t> message,
 }
 
 HDKeySr25519* PolkadotKeyring::GetKeypair(uint32_t account_index) {
-  auto pos = secondary_keys_.find(account_index);
-  if (pos == secondary_keys_.end()) {
-    return nullptr;
-  }
-  return &pos->second;
+  return base::FindOrNull(secondary_keys_, account_index);
 }
 
 std::optional<std::string> PolkadotKeyring::AddNewHDAccount(
