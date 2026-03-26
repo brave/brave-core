@@ -195,9 +195,14 @@ export default class EnvConfig {
   getMergedObject(keyPath: string[]): Record<string, any> {
     const keyJoined = EnvConfig.#joinKeyPath(keyPath)
 
-    const dotenvConfigValue = this.#getDotenvConfig(keyJoined, 'Object') || {}
-    const packageConfigValue = this.#getPackageConfig(keyPath, 'Object') || {}
-
+    const dotenvConfigValue = EnvConfig.#convertToValueType(
+      this.#getDotenvConfig(keyJoined) ?? {},
+      'Object',
+    )
+    const packageConfigValue = EnvConfig.#convertToValueType(
+      this.#getPackageConfig(keyPath) ?? {},
+      'Object',
+    )
     const mergedObject = { ...packageConfigValue, ...dotenvConfigValue }
 
     for (const [key, value] of Object.entries(this.#dotenvConfig)) {
@@ -255,13 +260,13 @@ export default class EnvConfig {
    */
   requirePath(keyPath: string[]): string {
     const pathValue = this.getPath(keyPath)
-    if (pathValue === undefined) {
-      Log.error(
-        `Required config value ${EnvConfig.#joinKeyPath(keyPath)} is not set`,
-      )
-      process.exit(1)
+    if (pathValue !== undefined) {
+      return pathValue
     }
-    return pathValue
+    Log.error(
+      `Required config value ${EnvConfig.#joinKeyPath(keyPath)} is not set`,
+    )
+    process.exit(1)
   }
 
   /**
@@ -273,6 +278,24 @@ export default class EnvConfig {
     return this.#packageJson.version
   }
 
+  #getOfType(keyPath: string[], expectedValueType: ConfigValueType): any {
+    const value = this.#get(keyPath)
+    if (value !== undefined) {
+      return EnvConfig.#convertToValueType(value, expectedValueType)
+    }
+  }
+
+  #requireOfType(keyPath: string[], expectedValueType: ConfigValueType): any {
+    const value = this.#getOfType(keyPath, expectedValueType)
+    if (value !== undefined) {
+      return value
+    }
+    Log.error(
+      `Required config value ${EnvConfig.#joinKeyPath(keyPath)} is not set`,
+    )
+    process.exit(1)
+  }
+
   /**
    * Returns a typed config value if present in any source.
    *
@@ -280,64 +303,14 @@ export default class EnvConfig {
    * @param expectedValueType - Expected runtime type of the value
    * @returns The typed config value, or `undefined` if not found
    */
-  #getOfType<TType extends ConfigValueType>(
-    keyPath: string[],
-    expectedValueType: TType,
-  ): ConfigValueTypeMap[TType] | undefined {
+  #get(keyPath: string[]): any {
     const keyJoined = EnvConfig.#joinKeyPath(keyPath)
-    return this.#getInternal(keyPath, keyJoined, expectedValueType)
-  }
-
-  /**
-   * Returns a typed config value from any source.
-   *
-   * Logs an error and exits if the value is missing.
-   *
-   * @param keyPath - Array of keys forming the config path
-   * @param expectedValueType - Expected runtime type of the value
-   * @returns The typed config value
-   */
-  #requireOfType<TType extends ConfigValueType>(
-    keyPath: string[],
-    expectedValueType: TType,
-  ): ConfigValueTypeMap[TType] {
-    const value = this.#getOfType(keyPath, expectedValueType)
-    if (value === undefined) {
-      Log.error(
-        `Required config value ${EnvConfig.#joinKeyPath(keyPath)} is not set`,
-      )
-      process.exit(1)
-    }
-    return value as ConfigValueTypeMap[TType]
-  }
-
-  /**
-   * Retrieves a config value from the supported sources in priority order.
-   *
-   * Values from `.env` take precedence over values from `package.json`.
-   *
-   * @param keyPath - Array of keys forming the config path
-   * @param keyJoined - Underscore-joined key used for `.env` lookups
-   * @param expectedValueType - Expected runtime type of the value
-   * @returns The config value, or `undefined` if not found
-   */
-  #getInternal(
-    keyPath: string[],
-    keyJoined: string,
-    expectedValueType: ConfigValueType,
-  ): any {
-    const dotenvConfigValue = this.#getDotenvConfig(
-      keyJoined,
-      expectedValueType,
-    )
+    const dotenvConfigValue = this.#getDotenvConfig(keyJoined)
     if (dotenvConfigValue !== undefined) {
       return dotenvConfigValue
     }
 
-    const packageConfigValue = this.#getPackageConfig(
-      keyPath,
-      expectedValueType,
-    )
+    const packageConfigValue = this.#getPackageConfig(keyPath)
     if (packageConfigValue !== undefined) {
       return packageConfigValue
     }
@@ -351,10 +324,7 @@ export default class EnvConfig {
    * @param expectedValueType - Expected type of the value
    * @returns The config value, or undefined if not found
    */
-  #getPackageConfig(
-    keyPath: string[],
-    expectedValueType: ConfigValueType,
-  ): any {
+  #getPackageConfig(keyPath: string[]): any {
     const packageConfigValue = keyPath.reduce(
       (obj, subkey) => obj?.[subkey],
       this.#packageJson.config,
@@ -363,11 +333,6 @@ export default class EnvConfig {
       return undefined
     }
 
-    EnvConfig.#validateValueType(
-      packageConfigValue,
-      expectedValueType,
-      () => `${keyPath.join('_')} (from package.json)`,
-    )
     return packageConfigValue
   }
 
@@ -378,39 +343,27 @@ export default class EnvConfig {
    * @param expectedValueType - Expected type of the value
    * @returns The parsed configuration value, or undefined if not found
    */
-  #getDotenvConfig(keyJoined: string, expectedValueType: ConfigValueType): any {
-    const dotenvConfigValue = this.#dotenvConfig[keyJoined]
-    if (dotenvConfigValue === undefined) {
-      return undefined
+  #getDotenvConfig(keyJoined: string): any {
+    return this.#dotenvConfig[keyJoined]
+  }
+
+  static #convertToValueType(value: any, valueType: ConfigValueType): any {
+    if (EnvConfig.#getValueType(value) === valueType) {
+      return value
     }
 
-    // Parse as JSON or return a string if no default value is provided.
-    if (expectedValueType === 'Any') {
-      return EnvConfig.#parseJsonOrKeepString(dotenvConfigValue)
-    }
-
-    // Use the value as is if the expected value type is a string.
-    if (expectedValueType === 'String') {
-      return dotenvConfigValue
-    }
-
-    // Parse as JSON if the expected value type is not a string.
-    let dotenvConfigValueParsed: any
     try {
-      dotenvConfigValueParsed = JSON.parse(dotenvConfigValue)
-    } catch (e) {
-      Log.error(
-        `${keyJoined} value is not JSON-parseable: ${dotenvConfigValue}\n${e.message}`,
+      const parsedValue = EnvConfig.#parseJsonOrKeepString(value)
+      EnvConfig.#validateValueType(
+        parsedValue,
+        valueType,
+        () => `${value} (from .env)`,
       )
+      return parsedValue
+    } catch (e) {
+      Log.error(`${value} value is not JSON-parseable:\n${e.message}`)
       process.exit(1)
     }
-
-    EnvConfig.#validateValueType(
-      dotenvConfigValueParsed,
-      expectedValueType,
-      () => `${keyJoined} (from .env)`,
-    )
-    return dotenvConfigValueParsed
   }
 
   /**
@@ -571,6 +524,10 @@ export default class EnvConfig {
    * @returns The parsed value or the original value if it is not JSON-parseable
    */
   static #parseJsonOrKeepString(value: any): any {
+    if (value === undefined) {
+      return value
+    }
+
     try {
       return JSON.parse(value)
     } catch (e) {
@@ -590,13 +547,10 @@ export default class EnvConfig {
   }
 }
 
-type ConfigValueTypeMap = {
-  Boolean: boolean
-  Number: number
-  String: string
-  Array: any[]
-  Object: Record<string, any>
-  Any: any
-}
-
-type ConfigValueType = keyof ConfigValueTypeMap
+type ConfigValueType =
+  | 'Boolean'
+  | 'Number'
+  | 'String'
+  | 'Array'
+  | 'Object'
+  | 'Any'
