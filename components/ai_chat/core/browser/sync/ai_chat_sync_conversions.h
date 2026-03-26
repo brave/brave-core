@@ -46,6 +46,15 @@ std::string GetClientTagFromSpecifics(
 std::string GetStorageKeyFromEntitySpecifics(
     const sync_pb::EntitySpecifics& specifics);
 
+// Converts sync specifics into Conversation metadata and a ConversationArchive.
+// The conversation has associated_content populated from the specifics.
+// The archive has entries populated from the specifics.
+mojom::ConversationPtr SpecificsToConversation(
+    const sync_pb::AIChatConversationSpecifics& specifics);
+
+mojom::ConversationArchivePtr SpecificsToArchive(
+    const sync_pb::AIChatConversationSpecifics& specifics);
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_SYNC_AI_CHAT_SYNC_CONVERSIONS_H_

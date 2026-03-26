@@ -1,4 +1,6 @@
 include_rules = [
   "+brave/browser/sync",
+  "+brave/components/ai_chat/core/common/buildflags/buildflags.h",
   "+brave/components/sync/service",
+  "+brave/ios/browser/ai_chat/ai_chat_service_factory.h",
 ]

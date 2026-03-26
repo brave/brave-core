@@ -1829,6 +1829,76 @@ bool AIChatDatabase::CreateSchema() {
   return true;
 }
 
+bool AIChatDatabase::ApplyRemoteConversation(
+    mojom::ConversationPtr conversation,
+    std::vector<mojom::ConversationTurnPtr> entries) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return false;
+  }
+
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    return false;
+  }
+
+  // Delete existing conversation if present (full replace from sync).
+  DeleteConversation(conversation->uuid);
+
+  // Insert conversation metadata.
+  static constexpr char kInsertConversationQuery[] =
+      "INSERT INTO conversation(uuid, title, model_key, total_tokens, "
+      "trimmed_tokens) VALUES(?, ?, ?, ?, ?)";
+  sql::Statement conv_stmt(
+      GetDB().GetUniqueStatement(kInsertConversationQuery));
+  conv_stmt.BindString(0, conversation->uuid);
+  BindAndEncryptOptionalString(conv_stmt, 1, conversation->title);
+  BindOptionalString(conv_stmt, 2, conversation->model_key);
+  conv_stmt.BindInt64(3, conversation->total_tokens);
+  conv_stmt.BindInt64(4, conversation->trimmed_tokens);
+  if (!conv_stmt.Run()) {
+    return false;
+  }
+
+  // Insert associated content metadata (no full text from sync).
+  for (const auto& content : conversation->associated_content) {
+    if (!content->conversation_turn_uuid) {
+      continue;
+    }
+    static constexpr char kInsertContentQuery[] =
+        "INSERT INTO associated_content(uuid, conversation_uuid, title, url,"
+        " content_type, last_contents, content_used_percentage,"
+        " conversation_entry_uuid)"
+        " VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+    sql::Statement content_stmt(
+        GetDB().GetUniqueStatement(kInsertContentQuery));
+    content_stmt.BindString(0, content->uuid);
+    content_stmt.BindString(1, conversation->uuid);
+    BindAndEncryptOptionalString(content_stmt, 2, content->title);
+    BindAndEncryptOptionalString(content_stmt, 3,
+                                 content->url.is_valid()
+                                     ? std::make_optional(content->url.spec())
+                                     : std::nullopt);
+    content_stmt.BindInt(4, static_cast<int>(content->content_type));
+    // No full text content from sync -- bind empty encrypted blob.
+    BindAndEncryptOptionalString(content_stmt, 5, std::string());
+    content_stmt.BindInt(6, content->content_used_percentage);
+    content_stmt.BindString(7, *content->conversation_turn_uuid);
+    if (!content_stmt.Run()) {
+      return false;
+    }
+  }
+
+  // Insert entries.
+  for (auto& entry : entries) {
+    if (!AddConversationEntry(conversation->uuid, std::move(entry))) {
+      return false;
+    }
+  }
+
+  return transaction.Commit();
+}
+
 bool AIChatDatabase::GetAllSyncMetadata(syncer::MetadataBatch* metadata_batch) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!LazyInit()) {
