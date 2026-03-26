@@ -161,8 +161,10 @@ std::string BuildAttributes(const ContentAttributes& attrs,
   }
 
   // Add important roles
-  if (attrs.annotated_roles_size() > 0) {
+  if (size_t size{attrs.annotated_roles_size()}; size > 0) {
     std::vector<std::string> important_roles;
+	important_roles.reserve(size);
+
     for (const auto& role : attrs.annotated_roles()) {
       switch (role) {
         case optimization_guide::proto::ANNOTATED_ROLE_HEADER:

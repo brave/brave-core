@@ -140,6 +140,7 @@ void BraveNewTabPageHandler::ChooseLocalCustomBackground() {
   ui::SelectFileDialog::FileTypeInfo file_types;
   file_types.allowed_paths = ui::SelectFileDialog::FileTypeInfo::NATIVE_PATH;
   file_types.extensions.resize(1);
+  file_types.extensions[0].reserve(4);
   file_types.extensions[0].push_back(FILE_PATH_LITERAL("jpg"));
   file_types.extensions[0].push_back(FILE_PATH_LITERAL("jpeg"));
   file_types.extensions[0].push_back(FILE_PATH_LITERAL("png"));

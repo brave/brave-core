@@ -69,6 +69,7 @@ class BraveAdblockInternalsMessageHandler
         memory_instrumentation::MemoryInstrumentation::GetInstance();
 
     std::vector<std::string> mad_list;
+	mad_list.reserve(sizeof(kCollectedMemoryMetrics)/sizeof(MemoryMetric));
     for (const auto& metric : kCollectedMemoryMetrics) {
       mad_list.push_back(metric.dump_name);
     }

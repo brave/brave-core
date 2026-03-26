@@ -155,6 +155,8 @@ double ConsecutiveMatchWithGaps(const std::u16string& needle,
     matches.emplace_back(match_start, h_iter.array_pos(), match_length,
                          match_began_on_boundary, gap_size_before_match);
   }
+
+  matched_ranges.reserve(matched_ranges.size()+matches.size());
   for (const MatchRecord& match : matches) {
     matched_ranges.push_back(match.range);
   }

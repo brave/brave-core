@@ -607,7 +607,10 @@ void GroupUngroupedTabs(Browser* browser) {
   auto* tsm = browser->tab_strip_model();
   std::vector<int> group_indices;
 
-  for (int i = 0; i < tsm->count(); ++i) {
+  int count = tsm->count();
+  group_indices.reserve(count);
+
+  for (int i = 0; i < count; ++i) {
     if (tsm->GetTabGroupForTab(i)) {
       continue;
     }

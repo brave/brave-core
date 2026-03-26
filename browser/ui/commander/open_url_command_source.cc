@@ -56,6 +56,7 @@ CommandSource::CommandResults OpenURLCommandSource::GetCommands(
     const std::u16string& input,
     Browser* browser) const {
   CommandSource::CommandResults results;
+  results.reserve(title_url_map_.size());
   std::vector<gfx::Range> ranges;
   FuzzyFinder finder(input);
   for (const auto& command_spec : title_url_map_) {

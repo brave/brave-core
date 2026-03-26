@@ -40,6 +40,7 @@ std::vector<mojom::ModelPtr> GetCustomModelsFromService(
   const std::vector<mojom::ModelPtr>& models = model_service->GetModels();
 
   std::vector<mojom::ModelPtr> models_copy;
+  models_copy.reserve(models.size());
   for (auto& model : models) {
     if (model->options->is_custom_model_options()) {
       models_copy.push_back(model->Clone());

@@ -224,6 +224,7 @@ void ContentAgentToolProvider::OnActorTaskStateChanged(
 
 void ContentAgentToolProvider::CreateTools() {
   tools_.clear();
+  tools_.reserve(8);
 
   tools_.push_back(std::make_unique<ClickTool>(this));
   tools_.push_back(std::make_unique<DragAndReleaseTool>(this));

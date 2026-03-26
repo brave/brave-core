@@ -48,6 +48,7 @@ struct ExtensionManifestV2 {
 };
 
 BraveExtensionsManifestV2Handler::BraveExtensionsManifestV2Handler() {
+  extensions.reserve(4);
   // NoScript
   extensions_.push_back({extensions_mv2::kNoScriptId,
                          "https://github.com/hackademix/noscript",

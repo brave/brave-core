@@ -68,6 +68,7 @@ BraveRequestHandler<T>::~BraveRequestHandler() = default;
 
 template <template <typename> class T>
 void BraveRequestHandler<T>::SetupCallbacks() {
+  before_url_request_callbacks_.reserve(4);
   brave::OnBeforeURLRequestCallback callback =
       base::BindRepeating(brave::OnBeforeURLRequest_SiteHacksWork<T>);
   before_url_request_callbacks_.push_back(callback);
@@ -85,6 +86,7 @@ void BraveRequestHandler<T>::SetupCallbacks() {
   before_url_request_callbacks_.push_back(callback);
 #endif
 
+  before_start_transaction_callbacks_.reserve(6);
   brave::OnBeforeStartTransactionCallback start_transaction_callback =
       base::BindRepeating(brave::OnBeforeStartTransaction_SiteHacksWork<T>);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);

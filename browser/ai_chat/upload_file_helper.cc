@@ -194,6 +194,7 @@ void UploadFileHelper::MultiFilesSelected(
                  std::tuple<std::optional<std::vector<uint8_t>>, base::FilePath,
                             std::optional<mojom::UploadedFileType>>> results) {
             std::vector<mojom::UploadedFilePtr> uploaded_files;
+			uploaded_files.reserve(results.size());
             for (const auto& [file_data, filepath, file_type_opt] : results) {
               if (file_data && file_type_opt) {
                 uploaded_files.push_back(mojom::UploadedFile::New(

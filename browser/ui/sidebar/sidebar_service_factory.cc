@@ -70,6 +70,7 @@ SidebarServiceFactory::~SidebarServiceFactory() = default;
 std::vector<SidebarItem::BuiltInItemType>
 SidebarServiceFactory::GetBuiltInItemTypesForProfile(Profile* profile) const {
   std::vector<SidebarItem::BuiltInItemType> types;
+  types.reserve(kDefaultBuiltInItemTypes.size());
   for (const auto& type : kDefaultBuiltInItemTypes) {
     if (profile->IsGuestSession()) {
       if (!IsDisabledItemForGuest(type)) {

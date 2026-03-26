@@ -5,6 +5,7 @@
 
 #include "brave/browser/net/brave_proxying_web_socket.h"
 
+#include <cstddef>
 #include <optional>
 #include <utility>
 

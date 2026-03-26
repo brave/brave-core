@@ -98,7 +98,9 @@ void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
     }
 
     // Create a list of tab indexes sorted by time of last activation
-    for (int i = 0; i < count(); ++i) {
+	int c = count();
+	mru_cycle_list_.reserve(c);
+    for (int i = 0; i < c; ++i) {
       mru_cycle_list_.push_back(i);
     }
 

@@ -57,6 +57,7 @@ bool IsEnabled() {
 
 CommanderService::CommanderService(Profile* profile)
     : profile_(profile), ranker_(profile->GetPrefs()) {
+  command_sources_.reserve(4);
   command_sources_.push_back(std::make_unique<SimpleCommandSource>());
   command_sources_.push_back(std::make_unique<BookmarkCommandSource>());
   command_sources_.push_back(std::make_unique<WindowCommandSource>());

@@ -723,7 +723,9 @@ void SharedPinnedTabService::SynchronizeNewBrowser(Browser* browser) {
 
   auto* model = browser->tab_strip_model();
   std::vector<PinnedTabData> new_pinned_tabs;
-  for (auto i = 0; i < model->IndexOfFirstNonPinnedTab(); i++) {
+  auto first_non_pinned_tab_i = model->IndexOfFirstNonPinnedTab();
+  new_pinned_tabs.reserve(first_non_pinned_tab_i);
+  for (auto i = 0; i < first_non_pinned_tab_i; i++) {
     new_pinned_tabs.push_back(
         {.renderer_data =
              TabRendererData::FromTabInterface(model->GetTabAtIndex(i)),
@@ -771,6 +773,7 @@ void SharedPinnedTabService::SynchronizeNewBrowser(Browser* browser) {
   DVLOG(2) << __FUNCTION__ << " Append new shared pinned tabs";
   // If the |browser| has pinned tabs out of sync, append them to other browsers
   const auto offset = pinned_tab_data_.size();
+  pinned_tab_data_.reserve(offset+new_pinned_tabs.size());
   for (auto i = 0u; i < new_pinned_tabs.size(); i++) {
     SharedContentsData::CreateForWebContents(
         new_pinned_tabs.at(i).shared_contents);
