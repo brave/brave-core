@@ -73,7 +73,7 @@ var package = Package(
     .package(url: "https://github.com/siteline/SwiftUI-Introspect", from: "0.1.3"),
     .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
     .package(url: "https://github.com/devxoul/Then", from: "2.7.0"),
-    .package(url: "https://github.com/mkrd/Swift-BigInt", from: "2.3.0"),
+    .package(name: "Swift-BigInt", path: "../third_party/swift-bigint"),
     .package(url: "https://github.com/GuardianFirewall/GuardianConnect", exact: "2.1.1"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.6.0"),
     .package(

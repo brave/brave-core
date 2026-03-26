@@ -1,5 +1,5 @@
 {
-  "originHash" : "82853f63ea7ec38bd518ac1ec47afc2a1f935cbada25dd1c3998e2aa733274d5",
+  "originHash" : "0759595b0a629230e15af28a034785bdc421f1babec4bbe36d2d6b941bf7b075",
   "pins" : [
     {
       "identity" : "feedkit",
@@ -87,15 +87,6 @@
       "state" : {
         "revision" : "87e50f483c54e6efd60e885f7f5aa946cee68023",
         "version" : "1.2.1"
-      }
-    },
-    {
-      "identity" : "swift-bigint",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mkrd/Swift-BigInt",
-      "state" : {
-        "revision" : "b07e961f4c999671cf8c2dc80e740899e8946013",
-        "version" : "2.3.0"
       }
     },
     {
