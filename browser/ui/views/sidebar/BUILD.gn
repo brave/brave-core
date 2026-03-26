@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/ui.gni")
+
+assert(toolkit_views)
+
+source_set("sidebar") {
+  sources = [
+    "sidebar_button_view.h",
+    "sidebar_container_view.h",
+    "sidebar_control_view.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/browser/ui/sidebar",
+    "//brave/browser/ui/views/side_panel",
+    "//brave/components/sidebar/browser",
+    "//chrome/browser/ui/tabs:tab_strip_model_observer",
+    "//chrome/browser/ui/views/side_panel",
+    "//components/prefs",
+    "//ui/events",
+    "//ui/gfx",
+    "//ui/menus",
+    "//ui/views",
+  ]
+}

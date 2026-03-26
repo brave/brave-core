@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/ui.gni")
+
+assert(toolkit_views)
+
+source_set("side_panel") {
+  sources = [ "side_panel.h" ]
+
+  public_deps = [
+    "//base",
+    "//chrome/browser/ui/views/side_panel",
+    "//components/prefs",
+    "//ui/base",
+    "//ui/gfx",
+    "//ui/views",
+  ]
+}

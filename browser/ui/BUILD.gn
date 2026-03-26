@@ -383,7 +383,7 @@ source_set("ui") {
       "//brave/browser/email_aliases",
       "//brave/browser/ntp_background",
       "//brave/browser/profiles:util",
-      "//brave/browser/ui/sidebar",
+      "//brave/browser/ui/sidebar:sidebar_impl",
       "//brave/browser/ui/tabs:tab_menu",
       "//brave/browser/ui/tabs:tab_model",
       "//brave/browser/ui/tabs:tab_strip",
@@ -615,7 +615,6 @@ source_set("ui") {
       "views/side_panel/brave_side_panel_view_base.cc",
       "views/side_panel/brave_side_panel_view_base.h",
       "views/side_panel/side_panel.cc",
-      "views/side_panel/side_panel.h",
       "views/side_panel/side_panel_resize_widget.cc",
       "views/side_panel/side_panel_resize_widget.h",
       "views/side_panel/side_panel_web_ui_view_utils.cc",
@@ -1106,6 +1105,9 @@ source_set("ui") {
 
   if (toolkit_views) {
     deps += [
+      "//brave/browser/ui/sidebar",
+      "//brave/browser/ui/views/side_panel",
+      "//brave/browser/ui/views/sidebar",
       "//brave/components/sidebar/browser",
       "//chrome/app:generated_resources",
       "//chrome/browser/ui/views",
@@ -1116,11 +1118,8 @@ source_set("ui") {
       "views/sidebar/sidebar_add_item_bubble_delegate_view.cc",
       "views/sidebar/sidebar_add_item_bubble_delegate_view.h",
       "views/sidebar/sidebar_button_view.cc",
-      "views/sidebar/sidebar_button_view.h",
       "views/sidebar/sidebar_container_view.cc",
-      "views/sidebar/sidebar_container_view.h",
       "views/sidebar/sidebar_control_view.cc",
-      "views/sidebar/sidebar_control_view.h",
       "views/sidebar/sidebar_edit_item_bubble_delegate_view.cc",
       "views/sidebar/sidebar_edit_item_bubble_delegate_view.h",
       "views/sidebar/sidebar_item_add_button.cc",
@@ -1552,7 +1551,7 @@ source_set("browser_tests") {
       sources += [ "views/side_panel/playlist/playlist_side_panel_coordinator_browsertest.cc" ]
 
       deps += [
-        "//brave/browser/ui/sidebar",
+        "//brave/browser/ui/sidebar:sidebar_impl",
         "//brave/components/playlist/core/common",
         "//chrome/browser/ui/browser_window",
         "//chrome/browser/web_applications:web_applications_test_support",
