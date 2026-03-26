@@ -16,3 +16,7 @@ source_set("js_messaging") {
 compile_ts("util_scripts") {
   sources = [ "resources/utils.ts" ]
 }
+
+compile_ts("safe_builtins") {
+  sources = [ "resources/safe_builtins.ts" ]
+}
