@@ -723,6 +723,11 @@
 -All/BrowsingTopicsSubresourceRequestTest.*
 -AttestationBrowsingTopicsBrowserTest.*
 -BrowsingTopicsBrowserTestNoTestingConfig.CalculationResultUkm
+# These tests are flaky due to a race in TestAnnotator's async model info
+# callback. Already disabled upstream with DISABLED_ prefix.
+# https://github.com/brave/brave-browser/issues/53618
+-BrowsingTopicsInternalsBrowserTest.ClassifierTab
+-BrowsingTopicsInternalsBrowserTest.ClassifierTab_ModelUnavailable
 -ChromeAttributionAttestationsBrowserTest.AttributionUponAttestationsLoading
 -ChromeAttributionBrowserTest.AttestedSiteCanReceiveAttributionReport
 -ChromeAttributionBrowserTest.SourceClicked_FeatureRecorded
@@ -2931,6 +2936,8 @@
 -ExtensionInstalledBubbleViewsExplicitSignInBrowserTest.*
 -ExtensionInstalledBubbleViewsSignInBrowserTest.*
 -ExtensionInstallUIBrowserTest.*
+# https://github.com/brave/brave-browser/issues/53781 upstream flaky test (14% flake rate)
+-ExtensionInstallPolicyServiceTest.CanInstallExtensionServerUnreachable
 -ExtensionOverrideTest.*
 -ExtensionPolicyTest.*
 -ExtensionPreferenceApiTest.*
