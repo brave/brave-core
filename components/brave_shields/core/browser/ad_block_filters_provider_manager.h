@@ -12,6 +12,7 @@
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/task/cancelable_task_tracker.h"
+#include "base/time/time.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
@@ -48,7 +49,7 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
           void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>);
 
   // AdBlockFiltersProvider::Observer
-  void OnChanged(bool is_default_engine) override;
+  void OnChanged(bool is_default_engine, base::Time timestamp) override;
 
   void AddProvider(AdBlockFiltersProvider* provider,
                    bool is_for_default_engine);

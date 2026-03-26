@@ -12,6 +12,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
+#include "base/time/time.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "third_party/rust/cxx/v1/cxx.h"
@@ -28,7 +29,8 @@ class AdBlockFiltersProvider {
  public:
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnChanged(bool is_for_default_engine) = 0;
+    virtual void OnChanged(bool is_for_default_engine,
+                           base::Time timestamp) = 0;
   };
 
   explicit AdBlockFiltersProvider(
@@ -59,7 +61,7 @@ class AdBlockFiltersProvider {
   bool engine_is_default_;
 
   raw_ptr<AdBlockFiltersProviderManager> filters_provider_manager_;
-  void NotifyObservers(bool is_for_default_engine);
+  void NotifyObservers(bool is_for_default_engine, base::Time timestamp);
 
  private:
   base::ObserverList<Observer> observers_;

@@ -70,7 +70,7 @@ void TestFiltersProvider::LoadFilterSet(
 void TestFiltersProvider::Initialize() {
   CHECK(!is_initialized_);
   is_initialized_ = true;
-  NotifyObservers(engine_is_default_);
+  NotifyObservers(engine_is_default_, base::Time::Now());
 }
 
 bool TestFiltersProvider::IsInitialized() const {

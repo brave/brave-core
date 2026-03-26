@@ -66,6 +66,7 @@ class AdBlockService {
    public:
     SourceProviderObserver(AdBlockService* owner,
                            base::FilePath cache_dir,
+                           PrefService* local_state,
                            bool engine_is_default);
 
     SourceProviderObserver(const SourceProviderObserver&) = delete;
@@ -75,12 +76,14 @@ class AdBlockService {
     void PreloadCachedDAT(DATFileDataBuffer dat);
 
     // AdBlockFiltersProvider::Observer
-    void OnChanged(bool is_default_engine) override;
+    void OnChanged(bool is_default_engine, base::Time timestamp) override;
 
    private:
     void OnFilterSetCallbackLoaded(
+        base::Time timestamp,
         base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb);
-    void OnFilterSetCreated(std::unique_ptr<rust::Box<adblock::FilterSet>>);
+    void OnFilterSetCreated(base::Time timestamp,
+                            std::unique_ptr<rust::Box<adblock::FilterSet>>);
 
     void OnPreloadCachedDAT(bool success);
 
@@ -89,6 +92,7 @@ class AdBlockService {
     void OnResourcesLoaded(AdblockResourceStorageBox) override;
 
     std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set_;
+    base::Time timestamp_;
     raw_ptr<AdBlockEngine> adblock_engine_ = nullptr;               // not owned
     raw_ptr<AdBlockResourceProvider> resource_provider_ = nullptr;  // not owned
     raw_ptr<AdBlockResourceProvider> custom_resource_provider_ =
@@ -97,6 +101,8 @@ class AdBlockService {
         nullptr;  // not owned
 
     base::FilePath cache_dir_;
+    raw_ptr<PrefService> local_state_;
+    std::string_view cache_timestamp_pref_;
 
     scoped_refptr<base::SequencedTaskRunner> task_runner_;
 

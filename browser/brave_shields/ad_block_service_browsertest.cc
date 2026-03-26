@@ -276,6 +276,13 @@ void AdBlockServiceTest::UpdateAdBlockResources(const std::string& resources) {
 
 void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
     const std::string& rules) {
+  // 1ms delay to avoid conflict caching conflicts when reloading rules multiple
+  // times in a row
+  base::RunLoop run_loop;
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE, run_loop.QuitClosure(), base::Milliseconds(1));
+  run_loop.Run();
+
   auto component_path = MakeFileInTempDir("list.txt", rules);
 
   brave_shields::AdBlockService* service =

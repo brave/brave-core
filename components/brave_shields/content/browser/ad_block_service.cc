@@ -78,6 +78,7 @@ ReadCachedDATFiles(base::FilePath cache_dir) {
 AdBlockService::SourceProviderObserver::SourceProviderObserver(
     AdBlockService* owner,
     base::FilePath cache_dir,
+    PrefService* local_state,
     bool engine_is_default)
     : adblock_engine_(engine_is_default
                           ? owner->default_engine_.get()
@@ -85,6 +86,10 @@ AdBlockService::SourceProviderObserver::SourceProviderObserver(
       resource_provider_(owner->resource_provider_.get()),
       filters_provider_manager_(owner->filters_provider_manager()),
       cache_dir_(cache_dir),
+      local_state_(local_state),
+      cache_timestamp_pref_(engine_is_default
+                                ? prefs::kAdBlockDefaultCacheTimestamp
+                                : prefs::kAdBlockAdditionalCacheTimestamp),
       task_runner_(owner->GetTaskRunner()) {
   filters_provider_manager_->AddObserver(this);
 }
@@ -94,14 +99,25 @@ AdBlockService::SourceProviderObserver::~SourceProviderObserver() {
   resource_provider_->RemoveObserver(this);
 }
 
-void AdBlockService::SourceProviderObserver::OnChanged(bool is_default_engine) {
+void AdBlockService::SourceProviderObserver::OnChanged(bool is_default_engine,
+                                                       base::Time timestamp) {
   if (adblock_engine_->IsDefaultEngine() != is_default_engine) {
     // Skip updates of another engine.
     return;
   }
+  int64_t cache_timestamp_value = local_state_->GetInt64(cache_timestamp_pref_);
+  base::Time cache_timestamp =
+      base::Time::FromMillisecondsSinceUnixEpoch(cache_timestamp_value);
+  // Add 1 millisecond since `timestamp` may have microsecond resolution
+  if (cache_timestamp_value != 0 &&
+      (timestamp <= cache_timestamp + base::Milliseconds(1) ||
+       cache_timestamp > base::Time::Now())) {
+    // Skip updates that have already been cached.
+    return;
+  }
   auto on_loaded_cb = base::BindOnce(
       &AdBlockService::SourceProviderObserver::OnFilterSetCallbackLoaded,
-      weak_factory_.GetWeakPtr());
+      weak_factory_.GetWeakPtr(), timestamp);
   filters_provider_manager_->LoadFilterSetForEngine(is_default_engine,
                                                     std::move(on_loaded_cb));
 }
@@ -134,6 +150,7 @@ void AdBlockService::SourceProviderObserver::OnPreloadCachedDAT(bool success) {
 }
 
 void AdBlockService::SourceProviderObserver::OnFilterSetCallbackLoaded(
+    base::Time timestamp,
     base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb) {
   task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
@@ -147,7 +164,7 @@ void AdBlockService::SourceProviderObserver::OnFilterSetCallbackLoaded(
           std::move(cb)),
       base::BindOnce(
           &AdBlockService::SourceProviderObserver::OnFilterSetCreated,
-          weak_factory_.GetWeakPtr()));
+          weak_factory_.GetWeakPtr(), timestamp));
 }
 
 void AdBlockService::SourceProviderObserver::LoadResources() {
@@ -158,9 +175,11 @@ void AdBlockService::SourceProviderObserver::LoadResources() {
 }
 
 void AdBlockService::SourceProviderObserver::OnFilterSetCreated(
+    base::Time timestamp,
     std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set) {
   TRACE_EVENT("brave.adblock", "OnFilterSetCreated");
   filter_set_ = std::move(filter_set);
+  timestamp_ = std::move(timestamp);
   LoadResources();
 }
 
@@ -183,14 +202,17 @@ void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
     auto engine_load_callback = base::BindOnce(
         [](base::WeakPtr<AdBlockEngine> engine,
            std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
-           AdblockResourceStorageBox storage, base::FilePath cache_file) {
+           AdblockResourceStorageBox storage, base::FilePath cache_file,
+           base::Time timestamp) {
           if (engine) {
             engine->Load(std::move(*filter_set.get()), *storage);
             base::WriteFile(cache_file, engine->Serialize());
           }
         },
         adblock_engine_->AsWeakPtr(), std::move(filter_set_),
-        std::move(storage), cache_file);
+        std::move(storage), cache_file, timestamp_);
+    local_state_->SetInt64(cache_timestamp_pref_,
+                           timestamp_.InMillisecondsSinceUnixEpoch());
     task_runner_->PostTask(FROM_HERE, std::move(engine_load_callback));
   }
 }
@@ -361,8 +383,8 @@ AdBlockService::subscription_service_manager() {
 
 void AdBlockService::ActivateFilterLoading() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  default_service_observer_->OnChanged(true);
-  additional_filters_service_observer_->OnChanged(false);
+  default_service_observer_->OnChanged(true, base::Time());
+  additional_filters_service_observer_->OnChanged(false, base::Time());
 }
 
 AdBlockService::AdBlockService(
@@ -445,10 +467,11 @@ AdBlockService::AdBlockService(
             filters_provider_manager_.get());
   }
 
-  default_service_observer_ =
-      std::make_unique<SourceProviderObserver>(this, cache_dir, true);
+  default_service_observer_ = std::make_unique<SourceProviderObserver>(
+      this, cache_dir, local_state_, true);
   additional_filters_service_observer_ =
-      std::make_unique<SourceProviderObserver>(this, cache_dir, false);
+      std::make_unique<SourceProviderObserver>(this, cache_dir, local_state_,
+                                               false);
 }
 
 AdBlockService::~AdBlockService() {
@@ -540,6 +563,7 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(
       prefs::kAdBlockMobileNotificationsListSettingTouched, false);
   registry->RegisterStringPref(prefs::kAdBlockCustomFilters, std::string());
+  registry->RegisterInt64Pref(prefs::kAdBlockCustomFiltersLastModified, 0);
   registry->RegisterDictionaryPref(prefs::kAdBlockRegionalFilters);
   registry->RegisterDictionaryPref(prefs::kAdBlockListSubscriptions);
   registry->RegisterBooleanPref(prefs::kAdBlockCheckedDefaultRegion, false);
@@ -547,6 +571,8 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kAdBlockOnlyModeEnabled, false);
   registry->RegisterBooleanPref(
       prefs::kAdBlockOnlyModeWasEnabledForSupportedLocale, false);
+  registry->RegisterInt64Pref(prefs::kAdBlockDefaultCacheTimestamp, 0);
+  registry->RegisterInt64Pref(prefs::kAdBlockAdditionalCacheTimestamp, 0);
 }
 
 void RegisterPrefsForAdBlockServiceForMigration(PrefRegistrySimple* registry) {

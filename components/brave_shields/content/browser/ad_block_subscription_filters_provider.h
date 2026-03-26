@@ -45,7 +45,7 @@ class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
       base::OnceCallback<void(
           base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
 
-  void OnListAvailable();
+  void OnListAvailable(bool force_new);
 
  private:
   void OnDATFileDataReady(

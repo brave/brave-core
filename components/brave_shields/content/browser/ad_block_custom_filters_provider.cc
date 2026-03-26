@@ -43,7 +43,9 @@ AdBlockCustomFiltersProvider::AdBlockCustomFiltersProvider(
     PrefService* local_state,
     AdBlockFiltersProviderManager* manager)
     : AdBlockFiltersProvider(false, manager), local_state_(local_state) {
-  NotifyObservers(engine_is_default_);
+  base::Time last_modified = base::Time::FromMillisecondsSinceUnixEpoch(
+      local_state_->GetInt64(prefs::kAdBlockCustomFiltersLastModified));
+  NotifyObservers(engine_is_default_, last_modified);
 }
 
 AdBlockCustomFiltersProvider::~AdBlockCustomFiltersProvider() {}
@@ -101,9 +103,12 @@ bool AdBlockCustomFiltersProvider::UpdateCustomFilters(
   if (!local_state_) {
     return false;
   }
+  base::Time now = base::Time::Now();
   local_state_->SetString(prefs::kAdBlockCustomFilters, custom_filters);
+  local_state_->SetInt64(prefs::kAdBlockCustomFiltersLastModified,
+                         now.InMillisecondsSinceUnixEpoch());
 
-  NotifyObservers(engine_is_default_);
+  NotifyObservers(engine_is_default_, now);
 
   return true;
 }

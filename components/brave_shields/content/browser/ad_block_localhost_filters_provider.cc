@@ -36,7 +36,11 @@ void AddDATBufferToFilterSet(rust::Box<adblock::FilterSet>* filter_set) {
 AdBlockLocalhostFiltersProvider::AdBlockLocalhostFiltersProvider(
     AdBlockFiltersProviderManager* manager)
     : AdBlockFiltersProvider(true, manager) {
-  NotifyObservers(engine_is_default_);
+  // Note: if the hardcoded filters are ever updated, this timestamp will need
+  // to be updated to reflect the timestamp of the corresponding installed
+  // browser update
+  base::Time last_modified = base::Time();
+  NotifyObservers(engine_is_default_, last_modified);
 }
 
 AdBlockLocalhostFiltersProvider::~AdBlockLocalhostFiltersProvider() = default;

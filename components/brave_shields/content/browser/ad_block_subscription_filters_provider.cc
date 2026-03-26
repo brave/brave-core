@@ -8,6 +8,8 @@
 #include <string>
 #include <utility>
 
+#include "base/files/file.h"
+#include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/single_thread_task_runner.h"
@@ -91,8 +93,22 @@ void AdBlockSubscriptionFiltersProvider::OnDATFileDataReady(
       dat_buf, flow));
 }
 
-void AdBlockSubscriptionFiltersProvider::OnListAvailable() {
-  NotifyObservers(engine_is_default_);
+void AdBlockSubscriptionFiltersProvider::OnListAvailable(bool force_new) {
+  if (force_new) {
+    NotifyObservers(engine_is_default_, base::Time::Now());
+  } else {
+    base::ThreadPool::PostTaskAndReplyWithResult(
+        FROM_HERE, {base::MayBlock()},
+        base::BindOnce(
+            [](const base::FilePath& list_file) {
+              base::File::Info info;
+              base::GetFileInfo(list_file, &info);
+              return info.last_modified;
+            },
+            list_file_),
+        base::BindOnce(&AdBlockSubscriptionFiltersProvider::NotifyObservers,
+                       weak_factory_.GetWeakPtr(), engine_is_default_));
+  }
 }
 
 }  // namespace brave_shields
