@@ -160,7 +160,6 @@ class BraveTreeTabStripCollectionDelegate
       const std::vector<tabs::TabInterface*>& moving_tabs,
       size_t destination_index,
       std::optional<tab_groups::TabGroupId> new_group_id,
-      bool new_pinned_state,
       const tabs::TabCollection::TypeEnumSet retain_collection_types) const;
 
   bool in_destruction_ = false;

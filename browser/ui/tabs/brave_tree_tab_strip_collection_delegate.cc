@@ -322,32 +322,24 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
     return;
   }
 
-  const bool pinned_state_inconsistent =
-      new_pinned_state != std::ranges::any_of(tab_indices, [this](int index) {
-        return IsTabInPinnedCollection(
-            collection_->GetTabAtIndexRecursive(index));
-      });
-  if (pinned_state_inconsistent && new_group_id) {
-    CHECK(!new_pinned_state);
-    // In this case, we should unpin and move tabs first in order to unpin the
-    // tabs, then add to group.
-    MoveTabsRecursive(tab_indices, destination_index, /*no group*/ std::nullopt,
-                      /*new_pinned_state=*/false, retain_collection_types);
-    std::vector<int> new_tab_indices;
-    new_tab_indices.reserve(tab_indices.size());
-    for (size_t i = 0; i < tab_indices.size(); ++i) {
-      new_tab_indices.push_back(static_cast<int>(destination_index + i));
-    }
-    MoveTabsRecursive(new_tab_indices, destination_index, new_group_id,
-                      new_pinned_state, retain_collection_types);
-    return;
-  }
-
   std::vector<tabs::TabInterface*> moving_tabs;
   std::ranges::transform(
       tab_indices, std::back_inserter(moving_tabs),
       [this](int index) { return collection_->GetTabAtIndexRecursive(index); });
   CHECK(!moving_tabs.empty());
+
+  const bool pinned_state_inconsistent =
+      new_pinned_state != std::ranges::any_of(moving_tabs, [this](auto* tab) {
+        return IsTabInPinnedCollection(tab);
+      });
+  if (pinned_state_inconsistent && new_group_id) {
+    CHECK(!new_pinned_state);
+    // In this case, we should unpin and move tabs first in order to unpin the
+    // tabs, then add to group.
+    UnpinTabs(moving_tabs, destination_index, new_group_id,
+              retain_collection_types);
+    return;
+  }
 
   // Move out of group: tabs are in a TabGroupTabCollection. Only when not
   // moving into another group (no new_group_id). Note that the indices could
@@ -374,7 +366,7 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
   }
 
   if (pinned_state_inconsistent) {
-    UnpinTabs(moving_tabs, destination_index, new_group_id, new_pinned_state,
+    UnpinTabs(moving_tabs, destination_index, new_group_id,
               retain_collection_types);
     return;
   }
@@ -845,7 +837,6 @@ void BraveTreeTabStripCollectionDelegate::UnpinTabs(
     const std::vector<tabs::TabInterface*>& moving_tabs,
     size_t destination_index,
     std::optional<tab_groups::TabGroupId> new_group_id,
-    bool new_pinned_state,
     const tabs::TabCollection::TypeEnumSet retain_collection_types) const {
   std::vector<int> new_tab_indices;
   base::flat_map<split_tabs::SplitTabId, std::vector<tabs::TabInterface*>>
@@ -853,10 +844,8 @@ void BraveTreeTabStripCollectionDelegate::UnpinTabs(
 
   for (auto* moving_tab : base::Reversed(moving_tabs)) {
     if (!IsTabInPinnedCollection(moving_tab)) {
-      // Already in unpinned collection. Just make sure it's moving to the
-      // destination index.
-      new_tab_indices.push_back(
-          *collection_->GetIndexOfTabRecursive(moving_tab));
+      // Already in unpinned collection. This will be moved together with
+      // MoveTabsRecursive() call in the end of this function.
       continue;
     }
 
@@ -889,13 +878,17 @@ void BraveTreeTabStripCollectionDelegate::UnpinTabs(
 
     CHECK(tree_tab_model_);
     tree_tab_model_->AddTreeTabNode(tree_tab_node_ptr->node());
-    new_tab_indices.push_back(0);
+  }
+
+  for (auto* moving_tab : moving_tabs) {
+    new_tab_indices.push_back(
+        collection_->GetIndexOfTabRecursive(moving_tab).value());
   }
 
   // The indices should be sorted in ascending order.
   std::ranges::sort(new_tab_indices);
   MoveTabsRecursive(new_tab_indices, destination_index, new_group_id,
-                    new_pinned_state, retain_collection_types);
+                    /*new_pinned_state=*/false, retain_collection_types);
 }
 
 bool BraveTreeTabStripCollectionDelegate::IsTabInPinnedCollection(
@@ -1083,7 +1076,6 @@ bool BraveTreeTabStripCollectionDelegate::CreateSplit(
 
 bool BraveTreeTabStripCollectionDelegate::Unsplit(
     split_tabs::SplitTabId split_id) {
-  LOG(ERROR) << "Unsplit: " << split_id;
   tabs::SplitTabCollection* split =
       collection_->GetSplitTabCollection(split_id);
   if (!split || collection_->pinned_collection()->GetIndexOfCollection(split)) {
