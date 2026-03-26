@@ -16,6 +16,7 @@ import DataImporter
 import Growth
 import LocalAuthentication
 import NetworkExtension
+import Onboarding
 import Origin
 import Playlist
 import Preferences
@@ -336,6 +337,20 @@ class SettingsViewController: TableViewController {
               return
             }
             UIApplication.shared.open(settingsUrl)
+          },
+          cellClass: MultilineButtonCell.self
+        ),
+        .init(
+          text: Strings.addToDockSettingsCell,
+          selection: { [unowned self] in
+            let controller = UIHostingController(
+              rootView: AddToDockSettingsView(onDismiss: { [unowned self] in
+                self.dismiss(animated: true)
+              })
+            )
+            controller.modalPresentationStyle = .pageSheet
+            controller.sheetPresentationController?.detents = [.large()]
+            self.present(controller, animated: true)
           },
           cellClass: MultilineButtonCell.self
         ),
