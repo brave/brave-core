@@ -72,8 +72,8 @@ struct EditGasFeeView: View {
   }
 
   private var isSaveButtonDisabled: Bool {
-    guard let gasPrice = BDouble(perGasPrice), gasPrice > 0,
-      let limit = BDouble(gasLimit), limit > 0
+    guard let gasPrice = BDouble(perGasPrice), gasPrice > 0.0,
+      let limit = BDouble(gasLimit), limit > 0.0
     else {
       return true
     }

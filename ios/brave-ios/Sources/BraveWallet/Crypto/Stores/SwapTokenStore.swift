@@ -344,7 +344,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     case .perSellAsset:
       // make sure the base value should not be zero, otherwise, it will always return insufficient liquidity error.
       // following desktop to make a idle state
-      if let sellAmountValue = BDouble(sellAmount), sellAmountValue == 0 {
+      if let sellAmountValue = BDouble(sellAmount), sellAmountValue.isZero() {
         return nil
       }
       sellAmountInWei =
@@ -356,7 +356,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       buyAmountInWei = ""
     case .perBuyAsset:
       // same as sell amount. make sure base value should not be zero
-      if let buyAmountValue = BDouble(buyAmount), buyAmountValue == 0 {
+      if let buyAmountValue = BDouble(buyAmount), buyAmountValue.isZero() {
         return nil
       }
       sellAmountInWei = ""
@@ -677,7 +677,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     case .perSellAsset:
       if let buyAmountBDouble = BDouble(buyAmountDecimalString) {
         buyAmount = buyAmountBDouble.decimalDescription
-        if let sellAmountBDouble = BDouble(sellAmountDecimalString), sellAmountBDouble != 0 {
+        if let sellAmountBDouble = BDouble(sellAmountDecimalString), !sellAmountBDouble.isZero() {
           let rate = buyAmountBDouble / sellAmountBDouble
           selectedFromTokenPrice = rate.decimalDescription
         }
@@ -685,7 +685,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     case .perBuyAsset:
       if let sellAmountBDouble = BDouble(sellAmountDecimalString) {
         sellAmount = sellAmountBDouble.decimalDescription
-        if let buyAmountBDouble = BDouble(buyAmountDecimalString), buyAmountBDouble != 0 {
+        if let buyAmountBDouble = BDouble(buyAmountDecimalString), !buyAmountBDouble.isZero() {
           let rate = sellAmountBDouble / buyAmountBDouble
           selectedFromTokenPrice = rate.decimalDescription
         }
@@ -780,7 +780,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         decimals: Int(selectedToToken.decimals)
       ),
       let newToAmountWrapped = BDouble(newToAmount),
-      newFromAmountWrapped != 0
+      !newFromAmountWrapped.isZero()
     {
       let rate = newToAmountWrapped / newFromAmountWrapped
       selectedFromTokenPrice = rate.decimalDescription

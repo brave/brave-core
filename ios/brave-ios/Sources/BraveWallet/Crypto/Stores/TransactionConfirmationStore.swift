@@ -464,7 +464,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   @MainActor private func determineFollowUpAction() async -> TransactionStatusStore.FollowUpAction {
     if case .ethSend(let detail) = activeParsedTransaction.details,
       let fromValue = BDouble(detail.fromAmount),
-      fromValue == 0, activeTransaction.ethTxData.isEmpty
+      fromValue.isZero(), activeTransaction.ethTxData.isEmpty
     {
       // loop through allTx to find if there is a tx that has the same account id, chain id and nonce
       // gasFee of this active tx should be bigger than the original one
