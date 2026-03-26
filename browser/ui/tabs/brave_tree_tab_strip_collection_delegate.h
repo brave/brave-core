@@ -37,12 +37,12 @@ class BraveTreeTabStripCollectionDelegate
                        tabs::TabInterface* opener) const override;
   std::unique_ptr<tabs::TabInterface> RemoveTabAtIndexRecursive(
       size_t index) const override;
-  void MoveTabsRecursive(const std::vector<int>& tab_indices,
-                         size_t destination_index,
-                         std::optional<tab_groups::TabGroupId> new_group_id,
-                         bool new_pinned_state,
-                         const tabs::TabCollection::TypeEnumSet
-                             retain_collection_types) const override;
+  void MoveTabsRecursive(
+      const std::vector<int>& tab_indices,
+      size_t destination_index,
+      std::optional<tab_groups::TabGroupId> new_group_id,
+      bool new_pinned_state,
+      const tabs::TabCollection::TypeEnumSet retain_collection_types) override;
 
   bool CreateSplit(split_tabs::SplitTabId split_id,
                    const std::vector<tabs::TabInterface*>& tabs,
@@ -160,9 +160,10 @@ class BraveTreeTabStripCollectionDelegate
       const std::vector<tabs::TabInterface*>& moving_tabs,
       size_t destination_index,
       std::optional<tab_groups::TabGroupId> new_group_id,
-      const tabs::TabCollection::TypeEnumSet retain_collection_types) const;
+      const tabs::TabCollection::TypeEnumSet retain_collection_types);
 
   bool in_destruction_ = false;
+  bool handling_pinned_state_inconsistency_ = false;
 
   base::WeakPtr<TreeTabModel> tree_tab_model_;
 };

@@ -50,7 +50,7 @@ class BraveTabStripCollectionDelegate {
       size_t destination_index,
       std::optional<tab_groups::TabGroupId> new_group_id,
       bool new_pinned_state,
-      const TabCollection::TypeEnumSet retain_collection_types) const = 0;
+      const TabCollection::TypeEnumSet retain_collection_types) = 0;
 
   // Handles CreateSplit when tabs are in different parent collections (e.g.
   // different tree nodes). Returns true if handled, false to use default path.

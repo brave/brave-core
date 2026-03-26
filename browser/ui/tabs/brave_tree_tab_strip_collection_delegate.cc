@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <variant>
 
+#include "base/auto_reset.h"
 #include "base/containers/adapters.h"
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
@@ -314,7 +315,7 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
     size_t destination_index,
     std::optional<tab_groups::TabGroupId> new_group_id,
     bool new_pinned_state,
-    const tabs::TabCollection::TypeEnumSet retain_collection_types) const {
+    const tabs::TabCollection::TypeEnumSet retain_collection_types) {
   // TabStripModel::AddToExistingGroupImpl only moves tabs strictly before or
   // after the group’s first/last strip index; indices already in [first, last]
   // are dropped. If none remain, this runs with an empty tab_indices (e.g.
@@ -335,6 +336,11 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
       });
   if (pinned_state_inconsistent && new_group_id) {
     CHECK(!new_pinned_state);
+    CHECK(!handling_pinned_state_inconsistency_);
+
+    base::AutoReset<bool> auto_reset(&handling_pinned_state_inconsistency_,
+                                     true);
+
     // In this case, we should unpin and move tabs first in order to unpin the
     // tabs, then add to group.
     UnpinTabs(moving_tabs, destination_index, new_group_id,
@@ -367,6 +373,9 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
   }
 
   if (pinned_state_inconsistent) {
+    CHECK(!handling_pinned_state_inconsistency_);
+    base::AutoReset<bool> auto_reset(&handling_pinned_state_inconsistency_,
+                                     true);
     UnpinTabs(moving_tabs, destination_index, new_group_id,
               retain_collection_types);
     return;
@@ -836,7 +845,7 @@ void BraveTreeTabStripCollectionDelegate::UnpinTabs(
     const std::vector<tabs::TabInterface*>& moving_tabs,
     size_t destination_index,
     std::optional<tab_groups::TabGroupId> new_group_id,
-    const tabs::TabCollection::TypeEnumSet retain_collection_types) const {
+    const tabs::TabCollection::TypeEnumSet retain_collection_types) {
   std::vector<int> new_tab_indices;
   base::flat_map<split_tabs::SplitTabId, std::vector<tabs::TabInterface*>>
       split_tabs;
