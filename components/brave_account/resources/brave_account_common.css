@@ -21,11 +21,11 @@ leo-input {
   --leo-control-border-color: var(--leo-color-divider-strong);
 }
 
-leo-input:not(:focus):has(> .error) {
+leo-input:not(:focus):has(.error) {
   --leo-control-border-color: var(--leo-color-systemfeedback-error-icon);
 }
 
-leo-input:focus:has(> .error) {
+leo-input:focus:has(.error) {
   --leo-control-focus-effect: 0px 0px 0px 2px
     var(--leo-color-systemfeedback-error-icon);
 }
