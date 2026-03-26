@@ -11,11 +11,7 @@
 #include "components/keyed_service/core/keyed_service.h"
 
 class PrefService;
-class ProfileAttributesStorage;
-
-namespace base {
-class FilePath;
-}  // namespace base
+class TimePeriodStoreFactory;
 
 namespace serp_metrics {
 
@@ -25,8 +21,7 @@ class SerpMetrics;
 class SerpMetricsService : public KeyedService {
  public:
   SerpMetricsService(PrefService& local_state,
-                     base::FilePath profile_path,
-                     ProfileAttributesStorage& profile_attributes_storage);
+                     const TimePeriodStoreFactory& time_period_store_factory);
 
   SerpMetricsService(const SerpMetricsService&) = delete;
   SerpMetricsService& operator=(const SerpMetricsService&) = delete;

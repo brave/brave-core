@@ -10,7 +10,7 @@
 
 @class BraveBookmarksAPI, BraveHistoryAPI, BravePasswordAPI, BraveOpenTabsAPI,
     BraveSendTabAPI, BraveSyncAPI, BraveSyncProfileServiceIOS, DeAmpPrefs,
-    BraveTabGeneratorAPI, BraveWalletAPI, BraveStats, AIChat,
+    BraveTabGeneratorAPI, BraveWalletAPI, BraveStats, SerpMetrics, AIChat,
     DefaultHostContentSettings, CWVWebViewConfiguration, WebImageDownloader,
     NTPBackgroundImagesService, BraveWebViewConfiguration;
 @protocol AIChatDelegate
@@ -31,6 +31,7 @@ OBJC_EXPORT
 @property(readonly) BraveTabGeneratorAPI* tabGeneratorAPI;
 @property(readonly) BraveWalletAPI* braveWalletAPI;
 @property(readonly) BraveStats* braveStats;
+@property(readonly) SerpMetrics* serpMetrics;
 @property(readonly) DeAmpPrefs* deAmpPrefs;
 @property(readonly) id<IpfsAPI> ipfsAPI;
 - (AIChat*)aiChatAPIWithDelegate:(id<AIChatDelegate>)delegate;

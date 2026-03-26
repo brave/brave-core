@@ -446,7 +446,7 @@ extension Preferences {
     migrate(key: "braveAdblockUseRegional", to: Preferences.Shields.useRegionAdBlock)
 
     // DAU
-    migrate(key: "dau_stat", to: Preferences.DAU.lastLaunchInfo)
+    migrate(key: "dau_stat", to: Preferences.DAU.lastLaunchInfoDeprecated)
     migrate(key: "week_of_installation", to: Preferences.DAU.weekOfInstallation)
 
     // URP
@@ -464,7 +464,7 @@ extension Preferences {
 
     // On 1.6 lastLaunchInfo is used to check if it's first app launch or not.
     // This needs to be translated to our new preference.
-    Preferences.General.isFirstLaunch.value = Preferences.DAU.lastLaunchInfo.value == nil
+    Preferences.General.isFirstLaunch.value = Preferences.DAU.lastLaunchInfoDeprecated.value == nil
     Preferences.Migration.completed.value = true
   }
 

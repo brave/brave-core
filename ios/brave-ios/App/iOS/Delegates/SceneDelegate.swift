@@ -41,7 +41,10 @@ struct ProfileState {
 
   init(profileController: BraveProfileController) {
     // Setup DAU
-    dau = DAU(braveCoreStats: profileController.braveStats)
+    dau = DAU(
+      braveCoreStats: profileController.braveStats,
+      serpMetrics: profileController.serpMetrics
+    )
 
     // Setup Attribution manager
     attributionManager = AttributionManager(

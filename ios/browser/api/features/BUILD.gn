@@ -29,6 +29,7 @@ source_set("features") {
     "//brave/components/ntp_background_images/browser",
     "//brave/components/p3a",
     "//brave/components/playlist/core/common",
+    "//brave/components/serp_metrics:features",
     "//brave/components/skus/common",
     "//brave/ios/browser/api/translate:features",
     "//brave/ios/browser/ui/commerce:features",

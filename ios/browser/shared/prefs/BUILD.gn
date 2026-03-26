@@ -33,6 +33,7 @@ source_set("prefs") {
     "//brave/components/playlist/core/common",
     "//brave/components/skus/browser",
     "//brave/ios/browser/brave_stats",
+    "//brave/ios/browser/serp_metrics:prefs",
     "//components/omnibox/browser",
     "//components/pref_registry",
     "//components/prefs",

@@ -21,6 +21,11 @@ OBJC_EXPORT
     BOOL statsReportingEnabled NS_SWIFT_NAME(isStatsReportingEnabled);
 @property(readonly, getter=isNotificationAdsEnabled)
     BOOL notificationAdsEnabled;
+
+/// The date of the last successful DAU ping, or nil if no ping has been
+/// recorded.
+@property(nonatomic, nullable) NSDate* lastPingDate;
+
 - (instancetype)init NS_UNAVAILABLE;
 
 @end

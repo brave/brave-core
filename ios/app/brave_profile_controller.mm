@@ -27,6 +27,7 @@
 #include "brave/ios/browser/api/opentabs/brave_tabgenerator_api+private.h"
 #include "brave/ios/browser/api/password/brave_password_api+private.h"
 #include "brave/ios/browser/api/profile/profile_bridge_impl.h"
+#include "brave/ios/browser/api/serp_metrics/serp_metrics+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
 #include "brave/ios/browser/api/web_image/web_image+private.h"
@@ -302,6 +303,10 @@
 
 - (BraveStats*)braveStats {
   return [[BraveStats alloc] initWithBrowserState:_profile];
+}
+
+- (SerpMetrics*)serpMetrics {
+  return [[SerpMetrics alloc] initWithProfile:_profile];
 }
 
 - (id<IpfsAPI>)ipfsAPI {

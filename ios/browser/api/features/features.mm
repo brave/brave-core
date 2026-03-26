@@ -23,6 +23,7 @@
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/p3a/features.h"
 #include "brave/components/playlist/core/common/features.h"
+#include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/ui/commerce/features.h"
@@ -405,5 +406,9 @@
 
 + (Feature*)kQuickViewEnabled {
   return [[Feature alloc] initWithFeature:&brave::features::kQuickViewEnabled];
+}
+
++ (Feature*)kSerpMetricsFeature {
+  return [[Feature alloc] initWithFeature:&serp_metrics::kSerpMetricsFeature];
 }
 @end

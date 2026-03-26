@@ -6,23 +6,19 @@
 #include "brave/browser/serp_metrics/serp_metrics_service.h"
 
 #include "base/feature_list.h"
-#include "base/files/file_path.h"
-#include "brave/browser/serp_metrics/serp_metrics_time_period_store_factory.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
-#include "chrome/browser/profiles/profile_attributes_storage.h"
+#include "brave/components/time_period_storage/time_period_store_factory.h"
 #include "components/prefs/pref_service.h"
 
 namespace serp_metrics {
 
 SerpMetricsService::SerpMetricsService(
     PrefService& local_state,
-    base::FilePath profile_path,
-    ProfileAttributesStorage& profile_attributes_storage) {
+    const TimePeriodStoreFactory& time_period_store_factory) {
   if (base::FeatureList::IsEnabled(serp_metrics::kSerpMetricsFeature)) {
-    serp_metrics_ = std::make_unique<SerpMetrics>(
-        &local_state, SerpMetricsTimePeriodStoreFactory(
-                          profile_path, profile_attributes_storage));
+    serp_metrics_ =
+        std::make_unique<SerpMetrics>(&local_state, time_period_store_factory);
   }
 }
 

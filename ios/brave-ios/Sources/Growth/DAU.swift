@@ -66,12 +66,26 @@ public class DAU {
 
   private let apiKey: String?
   private let braveCoreStats: BraveStats?
+  private let serpMetrics: SerpMetrics?
 
   public init(
-    braveCoreStats: BraveStats?
+    braveCoreStats: BraveStats?,
+    serpMetrics: SerpMetrics?
   ) {
     self.braveCoreStats = braveCoreStats
+    self.serpMetrics = serpMetrics
     apiKey = kBraveStatsAPIKey
+
+    migrateLastPingDateIfNeeded()
+  }
+
+  // Migrates the legacy timestamp to `kLastCheckYMD` so all components share one source of truth.
+  private func migrateLastPingDateIfNeeded() {
+    guard let stats = braveCoreStats, stats.lastPingDate == nil,
+      let legacyTimestamp = Preferences.DAU.lastLaunchInfoDeprecated.value?.first
+    else { return }
+    stats.lastPingDate = Date(timeIntervalSince1970: TimeInterval(legacyTimestamp))
+    Preferences.DAU.lastLaunchInfoDeprecated.value = nil
   }
 
   /// Sends ping to server and returns a boolean whether a timer for the server call was scheduled.
@@ -111,7 +125,12 @@ public class DAU {
       Logger.module.debug("DAU ping disabled by the user.")
       return
     }
-    guard let paramsAndPrefs = paramsAndPrefsSetup(for: Date()) else {
+    guard
+      let paramsAndPrefs = paramsAndPrefsSetup(
+        for: Date(),
+        lastPingDate: braveCoreStats?.lastPingDate
+      )
+    else {
       Logger.module.debug("dau, no changes detected, no server ping")
       return
     }
@@ -154,8 +173,10 @@ public class DAU {
       // This preference is set for future DAU pings.
       Preferences.DAU.firstPingParam.value = false
 
-      // This preference is used to calculate whether user used the app in this month and/or day.
-      Preferences.DAU.lastLaunchInfo.value = paramsAndPrefs.lastLaunchInfoPreference
+      // Store the last ping date in local state so all platform components share one source of truth.
+      DispatchQueue.main.async {
+        self.braveCoreStats?.lastPingDate = paramsAndPrefs.pingDate
+      }
     }
 
     task.resume()
@@ -165,7 +186,7 @@ public class DAU {
   struct ParamsAndPrefs {
     let queryParams: [URLQueryItem]
     let headers: [String: String]
-    let lastLaunchInfoPreference: [Int]
+    let pingDate: Date
   }
 
   func migrateInvalidWeekOfInstallPref() {
@@ -183,8 +204,8 @@ public class DAU {
   }
 
   /// Return params query or nil if no ping should be send to server and also preference values to set
-  /// after a succesful ing.
-  func paramsAndPrefsSetup(for date: Date) -> ParamsAndPrefs? {
+  /// after a succesful ping.
+  func paramsAndPrefsSetup(for date: Date, lastPingDate: Date?) -> ParamsAndPrefs? {
     var params = [channelParam(), versionParam()]
 
     let firstLaunch = Preferences.DAU.firstPingParam.value
@@ -201,7 +222,13 @@ public class DAU {
       migrateInvalidWeekOfInstallPref()
     }
 
-    guard let dauStatParams = dauStatParams(for: date, firstPing: firstLaunch) else {
+    guard
+      let dauStatParams = dauStatParams(
+        for: date,
+        lastPingDate: lastPingDate,
+        firstPing: firstLaunch
+      )
+    else {
       return nil
     }
 
@@ -214,6 +241,9 @@ public class DAU {
 
     if let braveCoreStats = braveCoreStats {
       params += braveCoreParams(for: braveCoreStats)
+    }
+    if let serpMetrics = serpMetrics, FeatureList.kSerpMetricsFeature.enabled {
+      params += serpMetricsParams(for: serpMetrics)
     }
 
     // Installation date for `dtoi` param has a limited lifetime.
@@ -231,8 +261,6 @@ public class DAU {
       params.append(URLQueryItem(name: "ref", value: referralCode))
     }
 
-    let lastPingTimestamp = [Int((date).timeIntervalSince1970)]
-
     var headers: [String: String] = [:]
 
     if let key = self.apiKey, !key.isEmpty {
@@ -242,7 +270,7 @@ public class DAU {
     return ParamsAndPrefs(
       queryParams: params,
       headers: headers,
-      lastLaunchInfoPreference: lastPingTimestamp
+      pingDate: date
     )
   }
 
@@ -268,6 +296,15 @@ public class DAU {
   func braveCoreParams(for braveStats: BraveStats) -> [URLQueryItem] {
     return [
       .init(name: "ads_enabled", value: braveStats.isNotificationAdsEnabled ? "true" : "false")
+    ]
+  }
+
+  func serpMetricsParams(for serpMetrics: SerpMetrics) -> [URLQueryItem] {
+    return [
+      .init(name: "braveSearch", value: "\(serpMetrics.braveSearchCountForYesterday)"),
+      .init(name: "googleSearch", value: "\(serpMetrics.googleSearchCountForYesterday)"),
+      .init(name: "otherSearch", value: "\(serpMetrics.otherSearchCountForYesterday)"),
+      .init(name: "staleSearch", value: "\(serpMetrics.searchCountForStalePeriod)"),
     ]
   }
 
@@ -374,7 +411,7 @@ public class DAU {
   /// Returns nil if no dau changes detected.
   func dauStatParams(
     for date: Date,
-    dauStat: [Int?]? = Preferences.DAU.lastLaunchInfo.value,
+    lastPingDate: Date?,
     firstPing: Bool,
     channel: AppBuildChannel = AppConstants.buildChannel
   ) -> [URLQueryItem]? {
@@ -389,17 +426,10 @@ public class DAU {
       return dauParams(true, true, true)
     }
 
-    guard let stat = dauStat?.compactMap({ $0 }) else {
-      Logger.module.error("Cannot cast dauStat to [Int]")
+    guard let lastPingDate = lastPingDate else {
+      Logger.module.error("Can't get last ping date")
       return nil
     }
-
-    guard let lastPingStat = stat.first else {
-      Logger.module.error("Can't get last ping timestamp from dauStats")
-      return nil
-    }
-
-    let lastPingDate = Date(timeIntervalSince1970: TimeInterval(lastPingStat))
 
     let pings = getPings(forDate: date, lastPingDate: lastPingDate)
 

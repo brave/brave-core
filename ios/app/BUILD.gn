@@ -68,6 +68,7 @@ source_set("app") {
     "//brave/ios/browser/api/profile",
     "//brave/ios/browser/api/qr_code",
     "//brave/ios/browser/api/query_filter",
+    "//brave/ios/browser/api/serp_metrics",
     "//brave/ios/browser/api/skus:skus_mojom_wrappers",
     "//brave/ios/browser/api/sync/driver",
     "//brave/ios/browser/api/web_image",
