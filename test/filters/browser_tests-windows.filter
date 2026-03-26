@@ -37,6 +37,15 @@
 # https://github.com/brave/brave-browser/issues/52475
 -PrintBrowserTest.NoResizeEvent
 
+# Flaky Chromium test - PageLoadMetricsTestWaiter times out waiting for layout
+# shift IPC from renderer. Chromium disables all LayoutInstabilityTest.* on all
+# platforms in CFT filter files (win, mac, linux). Already disabled on Linux
+# with wildcard. Upstream is stable (0.3% flake rate, LUCI Analysis) but
+# Chromium still disables in CFT. Brave has no chromium_src overrides for the
+# layout shift metrics pipeline.
+# https://github.com/brave/brave-browser/issues/53785
+-LayoutInstabilityTest.*
+
 # These tests are flaky both on CI and locally
 -CmdLineURLIncognitoBasicTestFeatureDisabled/LaunchNavigationBrowserBasicTest.CmdLineLaunch/0
 -CmdLineURLIncognitoBasicTestFeatureEnabled/LaunchNavigationBrowserBasicTest.CmdLineLaunch/0
@@ -191,3 +200,10 @@
 # (kBraveBlockScreenFingerprinting) by default on desktop, which modifies
 # screen dimension values returned to web content.
 -ScreenDetailsTest.FullscreenSize
+
+# https://github.com/brave/brave-browser/issues/53717
+# Flaky upstream test. ManifestSilentUpdateCommand queues a background
+# GetData() task whose FinishAndStartNextTask cleanup may still be pending when
+# HasCurrent() is asserted. Upstream flake rate 0.6% (LUCI Analysis, 30 days).
+# No Brave modifications to installable manager code path.
+-InstallableManagerBrowserTest.CheckWebapp
