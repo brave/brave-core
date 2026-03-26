@@ -25,7 +25,7 @@ extension TabDataValues {
 }
 
 @MainActor
-class YoutubeQualityTabHelper: NSObject, TabObserver {
+class YoutubeQualityTabHelper: NSObject, TabObserver, PreferencesObserver {
   private var url: URL?
   private weak var tab: (any TabState)?
 
@@ -36,6 +36,8 @@ class YoutubeQualityTabHelper: NSObject, TabObserver {
 
     tab?.addObserver(self)
     self.observeReachability()
+
+    Preferences.General.youtubeHighQuality.observe(from: self)
   }
 
   private func observeReachability() {
@@ -48,7 +50,7 @@ class YoutubeQualityTabHelper: NSObject, TabObserver {
     }
   }
 
-  func setHighQuality(networkStatus: Reachability.Status) {
+  private func setHighQuality(networkStatus: Reachability.Status) {
     let enabled = YoutubeQualityTabHelper.canEnableHighQuality(connectionStatus: networkStatus)
     tab?.evaluateJavaScript(
       functionName: "window.__firefox__.\(YoutubeQualityScriptHandler.setQuality)",
@@ -102,5 +104,11 @@ class YoutubeQualityTabHelper: NSObject, TabObserver {
 
   func tabWillBeDestroyed(_ tab: some TabState) {
     tab.removeObserver(self)
+  }
+
+  // MAKR: - PreferencesObserver
+
+  func preferencesDidChange(for key: String) {
+    setHighQuality(networkStatus: Reachability.shared.status)
   }
 }
