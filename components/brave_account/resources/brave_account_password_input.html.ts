@@ -8,7 +8,6 @@ import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 import './brave_account_password_icons.js'
 import './brave_account_password_strength_meter.js'
 import { BraveAccountPasswordInputElement } from './brave_account_password_input.js'
-import type { PasswordStrengthChangedEventDetail } from './brave_account_password_strength_meter.js'
 
 export function getHtml(this: BraveAccountPasswordInputElement) {
   return html`<!--_html_template_start_-->
@@ -54,13 +53,7 @@ export function getHtml(this: BraveAccountPasswordInputElement) {
               case 'strength':
                 return html`<brave-account-password-strength-meter
                   password=${this.password}
-                  @password-strength-changed=${(
-                    e: CustomEvent<PasswordStrengthChangedEventDetail>,
-                  ) => {
-                    if (this.config.mode === 'strength') {
-                      this.config.onPasswordStrengthChanged(e.detail)
-                    }
-                  }}
+                  @password-strength-changed=${this.onPasswordStrengthChanged}
                 >
                 </brave-account-password-strength-meter>`
               default:

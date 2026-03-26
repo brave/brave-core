@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { CrLitElement, html } from '//resources/lit/v3_0/lit.rollup.js'
+import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 import { getDeepActiveElement, hasKeyModifiers } from '//resources/js/util.js'
 
 import { getCss } from './brave_account_otp_input.css.js'
@@ -35,6 +35,10 @@ export class BraveAccountOtpInputElement extends CrLitElement {
     return {
       length: { type: Number },
     }
+  }
+
+  protected get indices() {
+    return [...Array(this.length).keys()]
   }
 
   protected onPaste(e: ClipboardEvent) {
@@ -135,34 +139,6 @@ export class BraveAccountOtpInputElement extends CrLitElement {
       case 'Delete':
         this.handleDeleteKey(e, index)
     }
-  }
-
-  protected getElementHtml() {
-    const indices = [...Array(this.length).keys()]
-
-    return html` <div class="label">$i18n{BRAVE_ACCOUNT_OTP_INPUT_LABEL}</div>
-      <div
-        class="otp-inputs"
-        @paste=${this.onPaste}
-      >
-        ${indices.map(
-          (index) => html`
-            <leo-input
-              autofocus=${index === 0}
-              // <if expr="is_ios">
-              spellcheck="false"
-              // </if>
-              type="text"
-              @beforeinput=${(e: InputEvent) => this.onBeforeInput(e, index)}
-              @focus=${this.onFocus}
-              @input=${(detail: { value: string }) => this.onInput(detail, index)}
-              @keydown=${(detail: { innerEvent: KeyboardEvent }) =>
-                this.onKeyDown(detail, index)}
-            >
-            </leo-input>
-          `,
-        )}
-      </div>`
   }
 
   private handleArrowKey(e: KeyboardEvent, index: number) {

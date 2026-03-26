@@ -52,7 +52,7 @@ function getErrorMessage<T extends LoginErrorCode | RegisterErrorCode>(
 
   // server-side error
   const specificErrorMessage =
-    errorCode != null && errorStrings[errorCode] != null
+    errorCode != null && errorStrings[errorCode]
       ? loadTimeData.getString(errorStrings[errorCode])
       : null
 

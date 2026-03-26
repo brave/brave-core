@@ -8,6 +8,7 @@ import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 import { getCss } from './brave_account_password_input.css.js'
 import { getHtml } from './brave_account_password_input.html.js'
 import type { PasswordStrengthChangedEventDetail } from './brave_account_password_strength_meter.js'
+import type { ToggleVisibilityEventDetail } from './brave_account_password_icons.js'
 
 export type PasswordInputEventDetail = { password: string }
 
@@ -56,11 +57,19 @@ export class BraveAccountPasswordInputElement extends CrLitElement {
     } satisfies PasswordInputEventDetail)
   }
 
-  protected onToggleVisibility(e: CustomEvent) {
+  protected onToggleVisibility(e: CustomEvent<ToggleVisibilityEventDetail>) {
     ;(e.currentTarget as Element).setAttribute(
       'type',
       e.detail.show ? 'text' : 'password',
     )
+  }
+
+  protected onPasswordStrengthChanged(
+    e: CustomEvent<PasswordStrengthChangedEventDetail>,
+  ) {
+    if (this.config.mode === 'strength') {
+      this.config.onPasswordStrengthChanged(e.detail)
+    }
   }
 
   protected get confirmPassword() {
