@@ -27,6 +27,10 @@ class WalletBubbleManagerDelegateImpl : public WalletBubbleManagerDelegate {
       const WalletBubbleManagerDelegateImpl&) = delete;
   ~WalletBubbleManagerDelegateImpl() override;
 
+  // True if the constructor navigated the wallet side panel instead of
+  // creating a bubble. MaybeCreate() checks this to return nullptr.
+  bool redirected_to_side_panel() const { return redirected_to_side_panel_; }
+
   void ShowBubble() override;
   void CloseBubble() override;
   bool IsShowingBubble() override;
@@ -37,6 +41,7 @@ class WalletBubbleManagerDelegateImpl : public WalletBubbleManagerDelegate {
  private:
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   GURL webui_url_;
+  bool redirected_to_side_panel_ = false;
   std::unique_ptr<WalletWebUIBubbleManager> webui_bubble_manager_;
 };
 

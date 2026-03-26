@@ -17,7 +17,14 @@
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/features.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/ui/views/side_panel/wallet/wallet_side_panel_coordinator.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
+#endif
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -42,6 +49,10 @@ class RewardsPanelCoordinator {};
 #if !BUILDFLAG(ENABLE_BRAVE_VPN)
 // Use stub class to avoid incomplete type build error.
 class BraveVPNController {};
+#endif
+
+#if !BUILDFLAG(ENABLE_BRAVE_WALLET)
+class WalletSidePanelCoordinator {};
 #endif
 
 BrowserWindowFeatures::BrowserWindowFeatures() = default;
@@ -98,6 +109,16 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
               browser_view->browser(), sidebar_controller_.get(),
               browser_view->GetProfile());
     }
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    if (brave_wallet::IsAllowed(browser_view->GetProfile()->GetPrefs()) &&
+        base::FeatureList::IsEnabled(
+            brave_wallet::features::kBraveWalletSidePanel)) {
+      wallet_side_panel_coordinator_ =
+          std::make_unique<WalletSidePanelCoordinator>(
+              browser_view->browser(), browser_view->GetProfile());
+    }
+#endif
   }
 
   if (auto* email_aliases_service =
@@ -127,5 +148,6 @@ void BrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
   if (sidebar_controller_) {
     sidebar_controller_->TearDownPreBrowserWindowDestruction();
     playlist_side_panel_coordinator_.reset();
+    wallet_side_panel_coordinator_.reset();
   }
 }

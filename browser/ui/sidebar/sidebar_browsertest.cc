@@ -88,6 +88,10 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/features.h"
+#endif
+
 using ::testing::Eq;
 using ::testing::Ne;
 using ::testing::Optional;
@@ -281,7 +285,8 @@ class SidebarBrowserTest : public InProcessBrowserTest {
 
   size_t GetDefaultItemCount() const {
     // kDefaultBuiltInItemTypes.size() already accounts for buildflags
-    // (ENABLE_BRAVE_TALK, ENABLE_AI_CHAT) at compile time.
+    // (ENABLE_BRAVE_TALK, ENABLE_AI_CHAT, ENABLE_BRAVE_WALLET) at compile
+    // time via conditional compilation in the array definition.
     auto item_count =
         std::size(SidebarServiceFactory::kDefaultBuiltInItemTypes) -
         1 /* for history*/;
@@ -293,10 +298,6 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     if (!ai_chat::features::IsAIChatEnabled()) {
       item_count -= 1;
     }
-#endif
-
-#if !BUILDFLAG(ENABLE_BRAVE_WALLET)
-    item_count -= 1;
 #endif
 
     return item_count;
@@ -409,7 +410,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, BasicTest) {
   EXPECT_TRUE(controller()->IsActiveIndex(first_panel_item_index));
 
   // Get first index of item that opens in a new tab (not panel).
-  // Note: Web-type items (kBraveTalk, kWallet) may not exist if their
+  // Note: Web-type items (e.g., kBraveTalk) may not exist if their
   // respective features are disabled.
   const size_t first_web_item_index = GetFirstWebItemIndex();
   int active_item_index = first_panel_item_index;
@@ -513,22 +514,28 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, WebTypePanelTest) {
   EXPECT_EQ(0, tab_model()->active_index());
   EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL(), iter->url);
 
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  // Activate second sidebar item(wallet) and check it's loaded at current tab.
-  iter = std::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
-                           &SidebarItem::built_in_item_type);
-  EXPECT_NE(items.end(), iter);
-  controller()->ActivateItemAt(std::distance(items.begin(), iter));
-  EXPECT_EQ(0, tab_model()->active_index());
-  EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL(), iter->url);
-#endif
   // New tab is not created.
   EXPECT_EQ(2, tab_model()->count());
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-// Category A:
-IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, IterateBuiltInWebTypeTest) {
+// Wallet sidebar tests with kBraveWalletSidePanel disabled: wallet item
+// behaves as a web-type item that opens in a tab.
+class SidebarBrowserTestWalletSidePanelDisabled
+    : public SidebarBrowserTestV1AndV2 {
+ public:
+  SidebarBrowserTestWalletSidePanelDisabled() {
+    wallet_feature_.InitAndDisableFeature(
+        brave_wallet::features::kBraveWalletSidePanel);
+  }
+
+ private:
+  base::test::ScopedFeatureList wallet_feature_;
+};
+
+// Category A: web-type wallet item behavior (kBraveWalletSidePanel disabled).
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWalletSidePanelDisabled,
+                       IterateBuiltInWebTypeTest) {
   // Click builtin wallet item and it's loaded at current active tab.
   const auto items = model()->GetAllSidebarItems();
   const auto wallet_item_iter =
@@ -537,6 +544,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, IterateBuiltInWebTypeTest) {
   ASSERT_NE(wallet_item_iter, items.cend());
   const int wallet_item_index = std::distance(items.cbegin(), wallet_item_iter);
   auto wallet_item = model()->GetAllSidebarItems()[wallet_item_index];
+  EXPECT_FALSE(wallet_item.open_in_panel);
   EXPECT_FALSE(controller()->DoesBrowserHaveOpenedTabForItem(wallet_item));
   SimulateSidebarItemClickAt(wallet_item_index);
   EXPECT_TRUE(controller()->DoesBrowserHaveOpenedTabForItem(wallet_item));
@@ -596,6 +604,101 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, IterateBuiltInWebTypeTest) {
   EXPECT_EQ(0, tab_model()->active_index());
 #endif
 }
+
+INSTANTIATE_TEST_SUITE_P(
+    /* no prefix */,
+    SidebarBrowserTestWalletSidePanelDisabled,
+    ::testing::Bool(),  // false = V1, true = V2
+    [](const testing::TestParamInfo<bool>& info) {
+      return info.param ? "V2" : "V1";
+    });
+
+// Wallet sidebar tests with kBraveWalletSidePanel enabled: wallet item
+// opens as a side panel instead of navigating a tab.
+class SidebarBrowserTestWalletSidePanel : public SidebarBrowserTestV1AndV2 {
+ public:
+  SidebarBrowserTestWalletSidePanel() {
+    wallet_feature_.InitAndEnableFeature(
+        brave_wallet::features::kBraveWalletSidePanel);
+  }
+
+ private:
+  base::test::ScopedFeatureList wallet_feature_;
+};
+
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWalletSidePanel, WalletItemIsPanel) {
+  const auto items = model()->GetAllSidebarItems();
+  const auto wallet_item_iter =
+      std::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
+                        &SidebarItem::built_in_item_type);
+  ASSERT_NE(wallet_item_iter, items.cend());
+  EXPECT_TRUE(wallet_item_iter->open_in_panel);
+}
+
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWalletSidePanel,
+                       WalletSidePanelOpens) {
+  auto wallet_item_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kWallet);
+  ASSERT_TRUE(wallet_item_index.has_value());
+
+  // V2 manages the side panel separately from SidebarContainerView, so
+  // SimulateSidebarItemClickAt (which waits on V1's active_index path) and
+  // GetSidePanel() (which accesses V1's embedded panel view) are unavailable.
+  if (IsV2Enabled()) {
+    controller()->ActivateItemAt(*wallet_item_index);
+  } else {
+    SimulateSidebarItemClickAt(*wallet_item_index);
+    WaitUntil(base::BindLambdaForTesting(
+        [&]() { return GetSidePanel()->GetVisible(); }));
+  }
+
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return controller()->IsActiveIndex(wallet_item_index); }));
+
+  // V2 doesn't expose the current panel entry via SidePanelUI the same way
+  // V1 does (other V2 tests also only verify via IsActiveIndex). In V1 we
+  // can additionally confirm the entry ID reported by the side panel UI.
+  if (!IsV2Enabled()) {
+    auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+    ASSERT_TRUE(panel_ui);
+    auto current_entry =
+        panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent);
+    ASSERT_TRUE(current_entry.has_value());
+    EXPECT_EQ(SidePanelEntryId::kWallet, *current_entry);
+  }
+}
+
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWalletSidePanel,
+                       WalletSidePanelDoesNotCreateTab) {
+  const int initial_tab_count = tab_model()->count();
+
+  auto wallet_item_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kWallet);
+  ASSERT_TRUE(wallet_item_index.has_value());
+
+  // See WalletSidePanelOpens for why V1 and V2 use different activation paths.
+  if (IsV2Enabled()) {
+    controller()->ActivateItemAt(*wallet_item_index);
+  } else {
+    SimulateSidebarItemClickAt(*wallet_item_index);
+    WaitUntil(base::BindLambdaForTesting(
+        [&]() { return GetSidePanel()->GetVisible(); }));
+  }
+
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return controller()->IsActiveIndex(wallet_item_index); }));
+
+  // Opening wallet as a side panel should not create a new tab.
+  EXPECT_EQ(initial_tab_count, tab_model()->count());
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    /* no prefix */,
+    SidebarBrowserTestWalletSidePanel,
+    ::testing::Bool(),  // false = V1, true = V2
+    [](const testing::TestParamInfo<bool>& info) {
+      return info.param ? "V2" : "V1";
+    });
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 // Category A:
@@ -1376,12 +1479,8 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, UnManagedPanelEntryTest) {
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 // Category C: V1-only (unmanaged panel after item deletion)
-IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2,
-                       OpenUnManagedPanelAfterDeletingDefaultWebTypeItem) {
-  if (IsV2Enabled()) {
-    GTEST_SKIP() << "Unmanaged panel testing is V1-specific";
-  }
-
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
+                       OpenUnManagedPanelAfterDeletingWalletItem) {
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   const auto items = model()->GetAllSidebarItems();
   const auto wallet_item_iter =

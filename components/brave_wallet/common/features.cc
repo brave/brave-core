@@ -76,6 +76,8 @@ BASE_FEATURE(kBraveWalletTransactionSimulationsFeature,
              "BraveWalletTransactionSimulations",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+BASE_FEATURE(kBraveWalletSidePanel, base::FEATURE_ENABLED_BY_DEFAULT);
+
 #if BUILDFLAG(IS_IOS)
 BASE_FEATURE(kBraveWalletWebUIFeature, base::FEATURE_DISABLED_BY_DEFAULT);
 #endif

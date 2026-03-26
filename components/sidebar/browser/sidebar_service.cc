@@ -44,6 +44,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -66,9 +67,11 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
   }
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (url == "chrome://wallet/") {
     return SidebarItem::BuiltInItemType::kWallet;
   }
+#endif
 
   if (url == "chrome://sidebar-bookmarks.top-chrome/" ||
       url == "chrome://bookmarks/") {
@@ -168,8 +171,10 @@ void SidebarService::MigratePrefSidebarBuiltInItemsToHidden() {
   built_in_items_to_hide.push_back(
       GetBuiltInItemForType(SidebarItem::BuiltInItemType::kBraveTalk));
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   built_in_items_to_hide.push_back(
       GetBuiltInItemForType(SidebarItem::BuiltInItemType::kWallet));
+#endif
   built_in_items_to_hide.push_back(
       GetBuiltInItemForType(SidebarItem::BuiltInItemType::kBookmarks));
 
@@ -622,19 +627,27 @@ SidebarItem SidebarService::GetBuiltInItemForType(
       }
       return SidebarItem();
 #endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
-    case SidebarItem::BuiltInItemType::kWallet: {
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    case SidebarItem::BuiltInItemType::kWallet: {
       if (brave_wallet::IsAllowed(prefs_)) {
+        if (base::FeatureList::IsEnabled(
+                brave_wallet::features::kBraveWalletSidePanel)) {
+          return SidebarItem::Create(
+              l10n_util::GetStringUTF16(IDS_SIDEBAR_WALLET_ITEM_TITLE),
+              SidebarItem::Type::kTypeBuiltIn,
+              SidebarItem::BuiltInItemType::kWallet,
+              /* open_in_panel = */ true);
+        }
         return SidebarItem::Create(
-            GURL("chrome://wallet/"),
+            GURL(kBraveUIWalletPageURL),
             l10n_util::GetStringUTF16(IDS_SIDEBAR_WALLET_ITEM_TITLE),
             SidebarItem::Type::kTypeBuiltIn,
             SidebarItem::BuiltInItemType::kWallet,
             /* open_in_panel = */ false);
       }
-#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
       return SidebarItem();
     }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
     case SidebarItem::BuiltInItemType::kBookmarks:
       return SidebarItem::Create(
           l10n_util::GetStringUTF16(IDS_SIDEBAR_BOOKMARKS_ITEM_TITLE),
