@@ -7,7 +7,7 @@ import("//build/config/ui.gni")
 
 assert(toolkit_views)
 
-source_set("sidebar_public") {
+source_set("sidebar") {
   sources = [
     "sidebar_button_view.h",
     "sidebar_container_view.h",
@@ -16,8 +16,8 @@ source_set("sidebar_public") {
 
   public_deps = [
     "//base",
-    "//brave/browser/ui/sidebar:sidebar_public",
-    "//brave/browser/ui/views/side_panel:side_panel_public",
+    "//brave/browser/ui/sidebar",
+    "//brave/browser/ui/views/side_panel",
     "//brave/components/sidebar/browser",
     "//chrome/browser/ui/tabs:tab_strip_model_observer",
     "//chrome/browser/ui/views/side_panel",

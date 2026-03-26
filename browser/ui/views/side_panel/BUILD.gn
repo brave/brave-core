@@ -7,7 +7,7 @@ import("//build/config/ui.gni")
 
 assert(toolkit_views)
 
-source_set("side_panel_public") {
+source_set("side_panel") {
   sources = [ "side_panel.h" ]
 
   public_deps = [

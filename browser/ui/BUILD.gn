@@ -383,7 +383,7 @@ source_set("ui") {
       "//brave/browser/email_aliases",
       "//brave/browser/ntp_background",
       "//brave/browser/profiles:util",
-      "//brave/browser/ui/sidebar",
+      "//brave/browser/ui/sidebar:sidebar_impl",
       "//brave/browser/ui/tabs:tab_menu",
       "//brave/browser/ui/tabs:tab_model",
       "//brave/browser/ui/tabs:tab_strip",
@@ -1105,9 +1105,9 @@ source_set("ui") {
 
   if (toolkit_views) {
     deps += [
-      "//brave/browser/ui/sidebar:sidebar_public",
-      "//brave/browser/ui/views/side_panel:side_panel_public",
-      "//brave/browser/ui/views/sidebar:sidebar_public",
+      "//brave/browser/ui/sidebar",
+      "//brave/browser/ui/views/side_panel",
+      "//brave/browser/ui/views/sidebar",
       "//brave/components/sidebar/browser",
       "//chrome/app:generated_resources",
       "//chrome/browser/ui/views",
@@ -1551,7 +1551,7 @@ source_set("browser_tests") {
       sources += [ "views/side_panel/playlist/playlist_side_panel_coordinator_browsertest.cc" ]
 
       deps += [
-        "//brave/browser/ui/sidebar",
+        "//brave/browser/ui/sidebar:sidebar_impl",
         "//brave/components/playlist/core/common",
         "//chrome/browser/ui/browser_window",
         "//chrome/browser/web_applications:web_applications_test_support",

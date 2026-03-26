@@ -11,7 +11,7 @@ import("//extensions/buildflags/buildflags.gni")
 
 assert(toolkit_views)
 
-source_set("sidebar_public") {
+source_set("sidebar") {
   sources = [
     "sidebar.h",
     "sidebar_model.h",
@@ -24,7 +24,7 @@ source_set("sidebar_public") {
   ]
 }
 
-source_set("sidebar") {
+source_set("sidebar_impl") {
   sources = [
     "features.cc",
     "features.h",
@@ -44,7 +44,7 @@ source_set("sidebar") {
   public_deps = [ "//brave/components/sidebar/browser" ]
 
   deps = [
-    ":sidebar_public",
+    ":sidebar",
     "//base",
     "//brave/browser/ui/views/frame/split_view",
     "//brave/components/brave_talk/buildflags",
@@ -80,13 +80,13 @@ source_set("browser_tests") {
 
   deps = [
     ":sidebar",
-    ":sidebar_public",
+    ":sidebar_impl",
     "//base",
     "//brave/app:command_ids",
     "//brave/browser/ui/views/frame",
     "//brave/browser/ui/views/frame/split_view",
-    "//brave/browser/ui/views/side_panel:side_panel_public",
-    "//brave/browser/ui/views/sidebar:sidebar_public",
+    "//brave/browser/ui/views/side_panel",
+    "//brave/browser/ui/views/sidebar",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_talk/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
@@ -122,7 +122,7 @@ source_set("unit_tests") {
 
   deps = [
     ":sidebar",
-    ":sidebar_public",
+    ":sidebar_impl",
     "//base",
     "//brave/common",
     "//brave/components/ai_chat/core/common/buildflags",
