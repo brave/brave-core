@@ -40,6 +40,8 @@ static_library("core") {
 
   sources = [
     "background_web_contents.h",
+    "file_util.cc",
+    "file_util.h",
     "local_ai_service.cc",
     "local_ai_service.h",
     "local_ai_service_base.cc",
