@@ -7,7 +7,7 @@ import Lottie
 import Strings
 import SwiftUI
 
-struct AddToDockGraphicView: View {
+private struct AddToDockGraphicView: View {
   @Environment(\.colorScheme) private var colorScheme
 
   var body: some View {
