@@ -34,6 +34,7 @@ static_library("core") {
   public = [
     "background_web_contents.h",
     "local_ai_service.h",
+    "local_ai_service_base.h",
     "url_constants.h",
   ]
 
@@ -41,6 +42,8 @@ static_library("core") {
     "background_web_contents.h",
     "local_ai_service.cc",
     "local_ai_service.h",
+    "local_ai_service_base.cc",
+    "local_ai_service_base.h",
     "local_models_updater.cc",
     "local_models_updater.h",
   ]
