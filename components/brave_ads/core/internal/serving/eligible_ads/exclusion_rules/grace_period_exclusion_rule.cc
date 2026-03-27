@@ -6,10 +6,10 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/grace_period_exclusion_rule.h"
 
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/command_line_switches/debug/debug_flag_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
-#include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-data-view.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"

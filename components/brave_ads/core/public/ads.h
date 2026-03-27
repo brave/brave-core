@@ -46,7 +46,8 @@ class Ads {
   virtual void SetBuildChannel(
       mojom::BuildChannelInfoPtr mojom_build_channel) = 0;
 
-  virtual void SetFlags(mojom::FlagsPtr mojom_flags) = 0;
+  virtual void SetCommandLineSwitches(
+      mojom::CommandLineSwitchesPtr mojom_command_line_switches) = 0;
 
   virtual void SetContentSettings(
       mojom::ContentSettingsPtr mojom_content_settings) = 0;

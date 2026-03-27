@@ -27,7 +27,7 @@
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
-#include "brave/components/brave_ads/core/public/flags/flags_util.h"
+#include "brave/components/brave_ads/core/public/command_line_switches/command_line_switches_util.h"
 #include "components/prefs/pref_service.h"
 #include "sql/database.h"
 #include "ui/base/page_transition_types.h"
@@ -458,7 +458,7 @@ void AdsServiceImplIOS::InitializeAds(InitializeCallback callback) {
 
   ads_->SetSysInfo(mojom_sys_info_.Clone());
   ads_->SetBuildChannel(mojom_build_channel_.Clone());
-  ads_->SetFlags(BuildFlags());
+  ads_->SetCommandLineSwitches(BuildCommandLineSwitches());
 
   ads_->Initialize(
       mojom_wallet_.Clone(),

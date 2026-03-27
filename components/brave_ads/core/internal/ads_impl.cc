@@ -56,13 +56,17 @@ void AdsImpl::SetBuildChannel(mojom::BuildChannelInfoPtr mojom_build_channel) {
   build_channel.name = mojom_build_channel->name;
 }
 
-void AdsImpl::SetFlags(mojom::FlagsPtr mojom_flags) {
-  auto& flags = GlobalState::GetInstance()->Flags();
-  flags.should_debug = mojom_flags->should_debug;
-  flags.did_override_from_command_line =
-      mojom_flags->did_override_from_command_line;
-  flags.environment_type = mojom_flags->environment_type;
-  flags.ads_uuids = mojom_flags->ads_uuids;
+void AdsImpl::SetCommandLineSwitches(
+    mojom::CommandLineSwitchesPtr mojom_command_line_switches) {
+  auto& command_line_switches =
+      GlobalState::GetInstance()->CommandLineSwitches();
+  command_line_switches.should_debug =
+      mojom_command_line_switches->should_debug;
+  command_line_switches.did_override_from_command_line =
+      mojom_command_line_switches->did_override_from_command_line;
+  command_line_switches.environment_type =
+      mojom_command_line_switches->environment_type;
+  command_line_switches.ads_uuids = mojom_command_line_switches->ads_uuids;
 }
 
 void AdsImpl::SetContentSettings(

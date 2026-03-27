@@ -263,7 +263,7 @@ void TestBase::Mock() {
 
   // Must be called after `SetUpMocks` because `SetupMocks` may call
   // `AppendCommandLineSwitches`.
-  MockFlags();
+  MockCommandLineSwitches();
 }
 
 void TestBase::MockDefaultAdsServiceState() const {

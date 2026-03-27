@@ -42,8 +42,8 @@
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
+#include "brave/components/brave_ads/core/public/command_line_switches/command_line_switches_util.h"
 #include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
-#include "brave/components/brave_ads/core/public/flags/flags_util.h"
 #include "brave/components/brave_ads/core/public/history/site_history.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/user_attention/user_idle_detection/user_idle_detection_feature.h"
@@ -364,7 +364,7 @@ void AdsServiceImpl::BatAdsServiceCreatedCallback(size_t current_start_number) {
 
   SetBuildChannel();
 
-  SetFlags();
+  SetCommandLineSwitches();
 
   SetContentSettings();
 
@@ -570,20 +570,23 @@ void AdsServiceImpl::SetBuildChannel() {
   bat_ads_associated_remote_->SetBuildChannel(std::move(mojom_build_channel));
 }
 
-void AdsServiceImpl::SetFlags() {
+void AdsServiceImpl::SetCommandLineSwitches() {
   if (!bat_ads_associated_remote_.is_bound()) {
     return;
   }
 
-  mojom::FlagsPtr mojom_flags = BuildFlags();
-  CHECK(mojom_flags);
+  mojom::CommandLineSwitchesPtr mojom_command_line_switches =
+      BuildCommandLineSwitches();
+  CHECK(mojom_command_line_switches);
 #if BUILDFLAG(IS_ANDROID)
   if (prefs_->GetBoolean(brave_rewards::prefs::kUseRewardsStagingServer)) {
-    mojom_flags->environment_type = mojom::EnvironmentType::kStaging;
+    mojom_command_line_switches->environment_type =
+        mojom::EnvironmentType::kStaging;
   }
 #endif  // BUILDFLAG(IS_ANDROID)
 
-  bat_ads_associated_remote_->SetFlags(std::move(mojom_flags));
+  bat_ads_associated_remote_->SetCommandLineSwitches(
+      std::move(mojom_command_line_switches));
 }
 
 void AdsServiceImpl::SetContentSettings() {
