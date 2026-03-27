@@ -7,12 +7,11 @@
 
 #include <utility>
 
-#include "base/barrier_closure.h"
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/files/file.h"
 #include "base/files/file_path.h"
-#include "base/files/file_util.h"
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/local_ai/core/features.h"
@@ -23,9 +22,6 @@ namespace local_ai {
 
 namespace {
 
-// Reads a file directly into BigBuffer's internal storage. For
-// files >64KB BigBuffer uses shared memory — the file data goes
-// straight into that allocation, avoiding a separate heap copy.
 std::optional<mojo_base::BigBuffer> ReadFileToBigBuffer(
     const base::FilePath& path) {
   base::File file(path, base::File::FLAG_OPEN | base::File::FLAG_READ);
@@ -33,19 +29,16 @@ std::optional<mojo_base::BigBuffer> ReadFileToBigBuffer(
     DVLOG(0) << "Failed to open: " << path;
     return std::nullopt;
   }
-
   int64_t size = file.GetLength();
   if (size <= 0) {
     DVLOG(0) << "Empty or unreadable: " << path;
     return std::nullopt;
   }
-
   mojo_base::BigBuffer buffer(static_cast<size_t>(size));
   if (!file.ReadAndCheck(0, base::span<uint8_t>(buffer))) {
     DVLOG(0) << "Failed to read: " << path;
     return std::nullopt;
   }
-
   DVLOG(1) << "Loaded " << path.BaseName() << ", size: " << size;
   return buffer;
 }
@@ -95,19 +88,22 @@ mojom::ModelFilesPtr LoadLocalModelFilesFromDisk(
 
 LocalAIService::LocalAIService(BackgroundWebContentsFactory factory,
                                LocalModelsUpdaterState* updater_state)
-    : background_web_contents_factory_(std::move(factory)),
+    : LocalAIServiceBase(std::move(factory),
+                         /*models_already_available=*/false),
       updater_state_(updater_state) {
   CHECK(base::FeatureList::IsEnabled(features::kBraveHistoryEmbeddings));
   CHECK(updater_state_);
   DVLOG(3) << "LocalAIService created";
 
-  MaybeWaitForLocalModelFilesReady();
+  // If models are already installed, signal the barrier
+  // so only factory registration is needed.
+  if (!updater_state_->GetInstallDir().empty()) {
+    SignalModelsAvailable();
+  }
   updater_state_->AddObserver(this);
 }
 
-LocalAIService::~LocalAIService() {
-  CloseBackgroundContents();
-}
+LocalAIService::~LocalAIService() = default;
 
 mojo::PendingRemote<mojom::LocalAIService> LocalAIService::MakeRemote() {
   mojo::PendingRemote<mojom::LocalAIService> remote;
@@ -122,183 +118,102 @@ void LocalAIService::Bind(
 
 void LocalAIService::RegisterPassageEmbedderFactory(
     mojo::PendingRemote<mojom::PassageEmbedderFactory> factory) {
-  // The renderer should only register a factory after we created the
-  // background WebContents that hosts it.
-  CHECK(background_web_contents_);
   factory_.Bind(std::move(factory));
-  factory_.set_disconnect_handler(base::BindOnce(
-      &LocalAIService::OnFactoryDisconnected, weak_ptr_factory_.GetWeakPtr()));
-
-  DVLOG(3) << "LocalAIService: WASM factory registered";
-  if (model_load_barrier_) {
-    model_load_barrier_.Run();
-  }
+  HandleFactoryRegistered();
 }
 
 void LocalAIService::GetPassageEmbedder(GetPassageEmbedderCallback callback) {
-  MaybeCreateBackgroundContents();
-  if (model_ready_ && factory_.is_bound()) {
+  MaybeCreateBWC();
+  if (ReadyToServe()) {
     BindPassageEmbedder(std::move(callback));
-  } else {
-    pending_embedder_callbacks_.push_back(std::move(callback));
+    return;
   }
+  auto [ready_cb, cancel_cb] = base::SplitOnceCallback(std::move(callback));
+  QueueConsumer(
+      base::BindOnce(&LocalAIService::BindPassageEmbedder,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(ready_cb)),
+      base::BindOnce(std::move(cancel_cb),
+                     mojo::PendingRemote<mojom::PassageEmbedder>()));
 }
 
 void LocalAIService::NotifyPassageEmbedderIdle() {
-  DVLOG(3) << "LocalAIService: All PassageEmbedder receivers disconnected";
-  CloseBackgroundContents();
+  DVLOG(3) << "LocalAIService: "
+              "All PassageEmbedder receivers disconnected";
+  NotifyIdle();
 }
 
 void LocalAIService::OnLocalModelsReady(const base::FilePath& install_dir) {
   DVLOG(3) << "LocalAIService: Local models ready at: " << install_dir;
-  if (model_load_barrier_) {
-    model_load_barrier_.Run();
-  }
+  SignalModelsAvailable();
 }
 
-void LocalAIService::MaybeWaitForLocalModelFilesReady() {
-  model_load_barrier_ = base::BarrierClosure(
-      2, base::BindOnce(&LocalAIService::LoadLocalModelFiles,
-                        weak_ptr_factory_.GetWeakPtr()));
-
-  // If models are already installed, signal the barrier immediately
-  // so only the factory registration is needed to trigger loading.
-  if (!updater_state_->GetInstallDir().empty()) {
-    model_load_barrier_.Run();
-  }
-}
-
-void LocalAIService::OnBackgroundContentsDestroyed(
-    BackgroundWebContents::DestroyReason reason) {
-  DVLOG(1) << "LocalAIService: Background contents destroyed";
-  CloseBackgroundContents();
-}
-
-void LocalAIService::Shutdown() {
-  DVLOG(3) << "LocalAIService: Shutting down";
-  receivers_.Clear();
-  weak_ptr_factory_.InvalidateWeakPtrs();
-  updater_state_->RemoveObserver(this);
-  CloseBackgroundContents();
-}
-
-void LocalAIService::MaybeCreateBackgroundContents() {
-  if (background_web_contents_) {
-    return;
-  }
-
-  DVLOG(3) << "LocalAIService: Creating background contents";
-  background_web_contents_ = background_web_contents_factory_.Run(this);
-}
-
-void LocalAIService::LoadLocalModelFiles() {
-  base::FilePath weights_path = updater_state_->GetEmbeddingGemmaModel();
-  base::FilePath weights_dense1_path =
-      updater_state_->GetEmbeddingGemmaDense1();
-  base::FilePath weights_dense2_path =
-      updater_state_->GetEmbeddingGemmaDense2();
-  base::FilePath tokenizer_path = updater_state_->GetEmbeddingGemmaTokenizer();
-  base::FilePath config_path = updater_state_->GetEmbeddingGemmaConfig();
-
-  const base::FilePath& model_dir = updater_state_->GetEmbeddingGemmaModelDir();
+void LocalAIService::LoadModelFiles(base::OnceCallback<void(bool)> on_done) {
+  const auto& model_dir = updater_state_->GetEmbeddingGemmaModelDir();
 
   if (model_dir.empty()) {
-    DVLOG(0) << "LocalAIService: Model directory not set "
-                "in updater state";
-    OnPassageEmbedderReady(false);
+    DVLOG(0) << "LocalAIService: "
+                "Model directory not set";
+    std::move(on_done).Run(false);
     return;
   }
 
-  DVLOG(1) << "Loading model files:";
-  DVLOG(1) << "Weights: " << weights_path;
-  DVLOG(1) << "Weights Dense1: " << weights_dense1_path;
-  DVLOG(1) << "Weights Dense2: " << weights_dense2_path;
-  DVLOG(1) << "Tokenizer: " << tokenizer_path;
-  DVLOG(1) << "Config: " << config_path;
+  base::FilePath weights = updater_state_->GetEmbeddingGemmaModel();
+  base::FilePath dense1 = updater_state_->GetEmbeddingGemmaDense1();
+  base::FilePath dense2 = updater_state_->GetEmbeddingGemmaDense2();
+  base::FilePath tokenizer = updater_state_->GetEmbeddingGemmaTokenizer();
+  base::FilePath config = updater_state_->GetEmbeddingGemmaConfig();
 
-  // Load model files on a background thread to avoid blocking
+  DVLOG(1) << "Loading model files:";
+  DVLOG(1) << "Weights: " << weights;
+  DVLOG(1) << "Weights Dense1: " << dense1;
+  DVLOG(1) << "Weights Dense2: " << dense2;
+  DVLOG(1) << "Tokenizer: " << tokenizer;
+  DVLOG(1) << "Config: " << config;
+
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-      base::BindOnce(&LoadLocalModelFilesFromDisk, weights_path,
-                     weights_dense1_path, weights_dense2_path, tokenizer_path,
-                     config_path),
-      base::BindOnce(&LocalAIService::OnLocalModelFilesLoaded,
-                     weak_ptr_factory_.GetWeakPtr()));
+      base::BindOnce(&LoadLocalModelFilesFromDisk, weights, dense1, dense2,
+                     tokenizer, config),
+      base::BindOnce(&LocalAIService::OnFilesLoaded,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(on_done)));
 }
 
-void LocalAIService::OnLocalModelFilesLoaded(mojom::ModelFilesPtr model_files) {
-  DVLOG(3) << "LocalAIService::OnLocalModelFilesLoaded called";
-
-  if (!model_files) {
-    DVLOG(0) << "Failed to load model files from disk";
-    OnPassageEmbedderReady(false);
-    return;
-  }
-
-  if (!factory_.is_bound()) {
-    DVLOG(0) << "Factory gone before model files loaded";
-    OnPassageEmbedderReady(false);
-    return;
-  }
-
-  DVLOG(3) << "Sending model files to factory via Init...";
-  factory_->Init(std::move(model_files),
-                 base::BindOnce(&LocalAIService::OnPassageEmbedderReady,
-                                weak_ptr_factory_.GetWeakPtr()));
+void LocalAIService::OnFilesLoaded(base::OnceCallback<void(bool)> on_done,
+                                   mojom::ModelFilesPtr model_files) {
+  DVLOG(3) << "LocalAIService::OnFilesLoaded";
+  loaded_model_files_ = std::move(model_files);
+  std::move(on_done).Run(!!loaded_model_files_);
 }
 
-void LocalAIService::OnPassageEmbedderReady(bool success) {
-  DVLOG(3) << "LocalAIService::OnPassageEmbedderReady called "
-              "with success="
-           << success;
-
-  if (success) {
-    DVLOG(3) << "LocalAIService: Model loaded successfully!";
-    model_ready_ = true;
-    ProcessPendingCallbacks();
-  } else {
-    DVLOG(0) << "LocalAIService: Failed to load model. "
-                "History embeddings will not work.";
-    CloseBackgroundContents();
-  }
+void LocalAIService::InitModelViaFactory(
+    base::OnceCallback<void(bool)> on_complete) {
+  factory_->Init(std::move(loaded_model_files_), std::move(on_complete));
 }
 
-void LocalAIService::CloseBackgroundContents() {
-  DVLOG(3) << "LocalAIService: Closing background contents to free memory";
+bool LocalAIService::IsFactoryBound() const {
+  return factory_.is_bound();
+}
+
+void LocalAIService::ResetFactory() {
   factory_.reset();
-  CancelPendingCallbacks();
-  background_web_contents_.reset();
-  model_ready_ = false;
-  MaybeWaitForLocalModelFilesReady();
+}
+
+void LocalAIService::SetFactoryDisconnectHandler(base::OnceClosure handler) {
+  factory_.set_disconnect_handler(std::move(handler));
+}
+
+void LocalAIService::OnShutdownExtra() {
+  receivers_.Clear();
+  weak_ptr_factory_.InvalidateWeakPtrs();
+  updater_state_->RemoveObserver(this);
 }
 
 void LocalAIService::BindPassageEmbedder(GetPassageEmbedderCallback callback) {
   mojo::PendingRemote<mojom::PassageEmbedder> remote;
   factory_->Bind(remote.InitWithNewPipeAndPassReceiver());
   std::move(callback).Run(std::move(remote));
-}
-
-void LocalAIService::ProcessPendingCallbacks() {
-  auto callbacks = std::move(pending_embedder_callbacks_);
-  for (auto& cb : callbacks) {
-    BindPassageEmbedder(std::move(cb));
-  }
-}
-
-void LocalAIService::OnFactoryDisconnected() {
-  factory_.reset();
-  model_ready_ = false;
-  CancelPendingCallbacks();
-  MaybeWaitForLocalModelFilesReady();
-}
-
-void LocalAIService::CancelPendingCallbacks() {
-  auto callbacks = std::move(pending_embedder_callbacks_);
-  for (auto& cb : callbacks) {
-    std::move(cb).Run(mojo::PendingRemote<mojom::PassageEmbedder>());
-  }
 }
 
 }  // namespace local_ai
