@@ -166,7 +166,7 @@ TEST(PolkadotImportKeyringTest, EncodePrivateKeyForExportRoundtrip) {
       MakePolkadotImportKeyring(mojom::KeyringId::kPolkadotImport);
   ASSERT_TRUE(import_keyring.AddAccount(0, pkcs8));
 
-  constexpr char kPassword[] = "export_password_123";
+  static constexpr char kPassword[] = "export_password_123";
   auto encoded = import_keyring.EncodePrivateKeyForExport(0, kPassword);
   ASSERT_TRUE(encoded.has_value());
 
@@ -196,6 +196,10 @@ TEST(PolkadotImportKeyringTest, AddAccount_OfacSanctionedAddress) {
   CHECK(registry);
 
   auto hd_keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
+
+  ASSERT_TRUE(hd_keyring.AddNewHDAccount(0));
+  ASSERT_TRUE(hd_keyring.AddNewHDAccount(1));
+
   auto pkcs8_key = hd_keyring.GetPkcs8KeyForTesting(0);
   auto pkcs8_key1 = hd_keyring.GetPkcs8KeyForTesting(1);
 
