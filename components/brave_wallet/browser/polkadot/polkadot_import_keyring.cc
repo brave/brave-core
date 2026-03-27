@@ -53,8 +53,10 @@ bool PolkadotImportKeyring::AddAccount(
     return false;
   }
 
-  auto address = PubkeyToString(key->GetPublicKey(), GetSs58Prefix()).value();
-  if (!is_address_allowed_.Run(address)) {
+  auto address = PubkeyToString(key->GetPublicKey(), GetSs58Prefix());
+  if (!address || !is_address_allowed_.Run(*address)) {
+    // Refuse to add accounts for public keys we either can't ss58-encode or
+    // the generated address was on our block-list.
     return false;
   }
 
