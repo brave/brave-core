@@ -5,12 +5,10 @@
 
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
 import { formatString } from '$web-common/formatString'
 import { useShieldsApi } from '../api/shields_api_context'
-import { useResourceFaviconUrls } from './use_resource_favicon_urls'
 import { getString } from './strings'
 
 import { style } from './main_card.style'
@@ -41,9 +39,7 @@ export function MainCard() {
     }
     return (
       <div className='block-info'>
-        <div className='blocked-items'>
-          <BlockedFavicons />
-        </div>
+        <div className='blocked-items' />
         {formatString(getString('BRAVE_SHIELDS_TRACKERS_ADS_BLOCKED'), {
           $1: () => <div className='count'>{trackersAndAdsBlocked}</div>,
         })}
@@ -90,35 +86,5 @@ export function MainCard() {
       </div>
       {renderBlockInfo()}
     </div>
-  )
-}
-
-function BlockedFavicons() {
-  const api = useShieldsApi()
-  const { data: siteBlockInfo } = api.useGetSiteBlockInfo()
-  const adsList = siteBlockInfo?.adsList ?? []
-  const urls = adsList.map((entry) => entry.url)
-
-  const faviconUrls = useResourceFaviconUrls(urls, {
-    maxQueries: 16,
-    maxResults: 3,
-  })
-
-  return (
-    <>
-      {faviconUrls.map((url) => (
-        <div
-          className='blocked-favicon'
-          key={url}
-        >
-          <img
-            className='favicon'
-            alt={url}
-            src={url}
-          />
-          <Icon name='disable-outline' />
-        </div>
-      ))}
-    </>
   )
 }

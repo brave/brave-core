@@ -23,8 +23,8 @@ export const style = scoped.css`
     font: ${font.small.regular};
     text-align: center;
 
-    button {
-      text-decoration: underline;
+    a {
+      color: inherit;
     }
   }
 
