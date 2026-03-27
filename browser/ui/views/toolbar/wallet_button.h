@@ -9,11 +9,17 @@
 #include <memory>
 #include <string>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/views/toolbar/wallet_button_notification_source.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/button/menu_button_controller.h"
+
+namespace brave_wallet {
+FORWARD_DECLARE_TEST(WalletButtonButtonBrowserTest,
+                     SizeIsNotEmptyWithAndWithoutBadge);
+}  // namespace brave_wallet
 
 class PrefService;
 
@@ -38,6 +44,9 @@ class WalletButton : public ToolbarButton {
   views::View* GetAsAnchorView();
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(brave_wallet::WalletButtonButtonBrowserTest,
+                           SizeIsNotEmptyWithAndWithoutBadge);
+
   // views::View:
   void AddedToWidget() override;
 
