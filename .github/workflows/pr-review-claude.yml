@@ -51,11 +51,8 @@ jobs:
       # No checkout / volume: the image contains the trusted script + skill from master (see Dockerfile COPY).
       # Secrets are piped on stdin (-i) so they are not visible in docker inspect, container env, or ps for docker.
       - name: Run Claude PR review
-        env:
-          GH_TOKEN: ${{ secrets.PR_REVIEW_BOT_GITHUB_TOKEN }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          printf '%s\n%s\n' "$GH_TOKEN" "$ANTHROPIC_API_KEY" | \
+          printf '%s\n%s\n' "${{ secrets.PR_REVIEW_BOT_GITHUB_TOKEN }}" "${{ secrets.PR_REVIEW_BOT_ANTHROPIC_API_KEY }}" | \
             docker run -i --rm \
             ghcr.io/${{ github.repository }}/pr-review-claude:latest \
             "${{ github.event.pull_request.number }}" "${{ github.repository }}"
