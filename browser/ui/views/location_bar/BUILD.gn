@@ -25,6 +25,11 @@ source_set("location_bar") {
     "brave_star_view.h",
   ]
 
+  public_deps = [
+    "//brave/components/brave_news/common/buildflags",
+    "//brave/components/tor/buildflags",
+  ]
+
   deps = [
     "//brave/app:brave_generated_resources_grit",
     "//brave/app/theme:brave_theme_resources",
@@ -32,12 +37,10 @@ source_set("location_bar") {
     "//brave/browser/ui:brave_tab_prefs",
     "//brave/browser/ui/page_info",
     "//brave/browser/ui/views/page_info",
-    "//brave/components/brave_news/common/buildflags",
     "//brave/components/brave_search_conversion",
     "//brave/components/commander/browser",
     "//brave/components/commander/common",
     "//brave/components/resources:strings",
-    "//brave/components/tor/buildflags",
     "//brave/components/vector_icons",
     "//chrome/browser/image_fetcher",
     "//chrome/browser/profiles",
