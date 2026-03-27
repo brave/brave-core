@@ -15,9 +15,9 @@ import android.widget.FrameLayout;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerInterface;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.toolbar.settings.AddressBarPreference;
 
 /**
@@ -82,8 +82,8 @@ public class BraveHubToolbarView extends HubToolbarView {
     private void updateButtonsVisibility() {
         boolean shouldHideButtons =
                 AddressBarPreference.isToolbarConfiguredToShowOnTop()
-                        && ContextUtils.getAppSharedPreferences()
-                                .getBoolean(BravePreferenceKeys.BRAVE_IS_MENU_FROM_BOTTOM, true);
+                        && ChromeSharedPreferences.getInstance()
+                                .readBoolean(BravePreferenceKeys.BRAVE_IS_MENU_FROM_BOTTOM, true);
 
         mActionButton.setVisibility(shouldHideButtons ? View.GONE : View.VISIBLE);
         mMenuButton.setVisibility(shouldHideButtons ? View.GONE : View.VISIBLE);
