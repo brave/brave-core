@@ -20,10 +20,11 @@ namespace {
 
 constexpr std::string_view kChromeScheme = "chrome";
 
-constexpr auto kAllowedHosts = base::MakeFixedFlatSet<std::string_view>(
-    {"getting-started", "leo-ai", "rewards", "sync", "wallet"});
+constexpr auto kAllowedInternalRootHosts =
+    base::MakeFixedFlatSet<std::string_view>(
+        {"getting-started", "leo-ai", "rewards", "sync", "wallet"});
 
-constexpr std::string_view kSettingsHostName = "settings";
+constexpr std::string_view kInternalSettingsHost = "settings";
 
 constexpr std::string_view kSurveyPanelistPath = "/surveyPanelist";
 
@@ -60,12 +61,12 @@ bool ShouldSupportInternalUrl(const GURL& url) {
   std::string_view url_host = url.host();
   std::string_view url_path = url.path();
 
-  if (kAllowedHosts.contains(url_host)) {
-    // Only support the root path for these hosts.
-    return url_path == "/";
+  if (kAllowedInternalRootHosts.contains(url_host)) {
+    // Only support the root path for these hosts, without a query.
+    return url_path == "/" && !url.has_query();
   }
 
-  if (url_host != kSettingsHostName) {
+  if (url_host != kInternalSettingsHost) {
     // Do not support hosts other than chrome://settings.
     return false;
   }
