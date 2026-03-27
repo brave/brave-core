@@ -41,7 +41,10 @@ transpile_web_ui("on_device_speech_recognition_worker_ui") {
 
   imports_from = [ "//brave/components/local_ai/resources/" ]
 
-  deps = [ "//brave/components/local_ai/core:mojom_js" ]
+  deps = [
+    "//brave/components/local_ai/core:mojom_js",
+    "//services/on_device_model/public/mojom:mojom_js",
+  ]
 }
 
 pack_web_resources("on_device_speech_recognition_worker_generated") {
@@ -61,7 +64,10 @@ transpile_web_ui("on_device_speech_recognition_internals_ui") {
 
   imports_from = [ "//brave/components/local_ai/resources/" ]
 
-  deps = [ "//brave/components/local_ai/core:mojom_js" ]
+  deps = [
+    "//brave/components/local_ai/core:mojom_js",
+    "//services/on_device_model/public/mojom:mojom_js",
+  ]
 }
 
 pack_web_resources("on_device_speech_recognition_internals_generated") {

@@ -72,12 +72,16 @@ struct TranscribeResult {
     is_final: bool,
 }
 
+// 5 seconds of audio at 16kHz mono.
+const FLUSH_THRESHOLD: usize = SAMPLE_RATE * 5;
+
 #[wasm_bindgen]
 pub struct WhisperRecognizer {
     model: model::Whisper,
     tokenizer: Tokenizer,
     mel_filters: Vec<f32>,
     config: Config,
+    audio_buffer: Vec<f32>,
 }
 
 #[wasm_bindgen]
@@ -110,18 +114,45 @@ impl WhisperRecognizer {
         let model =
             model::Whisper::load(&vb, config.clone()).map_err(|e| JsError::new(&e.to_string()))?;
 
-        Ok(Self { model, tokenizer, mel_filters, config })
+        Ok(Self { model, tokenizer, mel_filters, config, audio_buffer: Vec::new() })
     }
 
-    /// Transcribe audio samples (int16 PCM at 16kHz).
-    /// Returns JSON: {"transcript":"...","is_final":true}
-    pub fn transcribe(&mut self, audio_pcm16: Vec<i16>) -> Result<String, JsError> {
-        // Convert int16 PCM to f32 in [-1.0, 1.0].
-        let audio_f32: Vec<f32> = audio_pcm16.iter().map(|&s| s as f32 / 32768.0).collect();
+    /// Push normalized float32 audio samples into the
+    /// internal buffer. Returns empty string if buffer
+    /// not full yet, or JSON
+    /// {"transcript":"...","is_final":false} when flushed.
+    pub fn add_audio(&mut self, audio: Vec<f32>) -> Result<String, JsError> {
+        self.audio_buffer.extend_from_slice(&audio);
+        if self.audio_buffer.len() >= FLUSH_THRESHOLD {
+            self.flush(false)
+        } else {
+            Ok(String::new())
+        }
+    }
+
+    /// Signal end of audio. Flushes remaining buffer.
+    /// Returns empty string if nothing to flush, or
+    /// JSON {"transcript":"...","is_final":true}.
+    pub fn mark_done(&mut self) -> Result<String, JsError> {
+        if !self.audio_buffer.is_empty() {
+            self.flush(true)
+        } else {
+            Ok(String::new())
+        }
+    }
+
+    pub fn reset(&mut self) {
+        self.model.reset_kv_cache();
+        self.audio_buffer.clear();
+    }
+}
+
+impl WhisperRecognizer {
+    fn flush(&mut self, is_final: bool) -> Result<String, JsError> {
+        let audio_f32: Vec<f32> = self.audio_buffer.drain(..).collect();
 
         // 1. Compute mel spectrogram
         let mel = audio::pcm_to_mel(&self.config, &audio_f32, &self.mel_filters);
-
         let n_mels = self.config.num_mel_bins;
         let mel_len = mel.len() / n_mels;
         let mel_tensor = Tensor::from_vec(mel, (1, n_mels, mel_len), &Device::Cpu)
@@ -138,17 +169,10 @@ impl WhisperRecognizer {
         let transcript =
             self.greedy_decode(&encoder_output).map_err(|e| JsError::new(&e.to_string()))?;
 
-        let result = TranscribeResult { transcript, is_final: true };
-
+        let result = TranscribeResult { transcript, is_final };
         serde_json::to_string(&result).map_err(|e| JsError::new(&e.to_string()))
     }
 
-    pub fn reset(&mut self) {
-        self.model.reset_kv_cache();
-    }
-}
-
-impl WhisperRecognizer {
     fn greedy_decode(&mut self, encoder_output: &Tensor) -> candle_core::Result<String> {
         let sot_token = self.tokenizer.token_to_id(SOT_TOKEN).unwrap_or(50258);
         let lang_token = self.tokenizer.token_to_id(LANG_TOKEN).unwrap_or(50259);
