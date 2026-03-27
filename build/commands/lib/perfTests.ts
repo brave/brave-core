@@ -9,12 +9,12 @@ import path from 'node:path'
 import fs from 'node:fs'
 
 const runPerfTests = (
-  passthroughArgs,
-  perfConfig,
-  targetBuildConfig,
-  options,
+  passthroughArgs: string[],
+  perfConfig: string,
+  targetBuildConfig: string | undefined,
+  options: Record<string, any>,
 ) => {
-  const args = [
+  const args: string[] = [
     path.join(config.braveCoreDir, 'tools', 'perf', 'run_perftests.py'),
     perfConfig,
   ]
@@ -28,7 +28,10 @@ const runPerfTests = (
     })
   }
 
-  if (['Static', 'Release', 'Component'].includes(targetBuildConfig)) {
+  if (
+    targetBuildConfig !== undefined &&
+    ['Static', 'Release', 'Component'].includes(targetBuildConfig)
+  ) {
     config.buildConfig = targetBuildConfig
     config.update(options)
 
