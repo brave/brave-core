@@ -279,7 +279,8 @@ class CardanoProviderScriptHandler: TabContentScript {
 
     return await withTaskCancellationHandler {
       await withCheckedContinuation { continuation in
-        provider.enable { api, error in
+        provider.enable { [weak self] api, error in
+          guard let self else { return }
           if let error = error {
             Logger.module.error("Cardano: Enable failed - \(error.errorMessage)")
             continuation.resume(
