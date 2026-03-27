@@ -78,11 +78,6 @@
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
-// Our .h file creates a masquerade for RenderViewContextMenu.  Switch
-// back to the Chromium one for the Chromium implementation.
-#undef RenderViewContextMenu
-#define RenderViewContextMenu RenderViewContextMenu_Chromium
-
 namespace {
 
 AutocompleteMatch GetAutocompleteMatchForText(Profile* profile,
@@ -114,18 +109,16 @@ std::optional<GURL> GetSelectedURL(Profile* profile,
   return match.destination_url;
 }
 
-base::OnceCallback<void(BraveRenderViewContextMenu*)>*
-BraveGetMenuShownCallback() {
-  static base::NoDestructor<
-      base::OnceCallback<void(BraveRenderViewContextMenu*)>>
+base::OnceCallback<void(RenderViewContextMenu*)>* BraveGetMenuShownCallback() {
+  static base::NoDestructor<base::OnceCallback<void(RenderViewContextMenu*)>>
       callback;
   return callback.get();
 }
 
 }  // namespace
 
-void RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
-    base::OnceCallback<void(BraveRenderViewContextMenu*)> cb) {
+void RenderViewContextMenu_Chromium::RegisterMenuShownCallbackForTesting(
+    base::OnceCallback<void(RenderViewContextMenu*)> cb) {
   *BraveGetMenuShownCallback() = std::move(cb);
 }
 
@@ -141,6 +134,7 @@ void RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
 #define SpellingOptionsSubMenuObserver BraveSpellingOptionsSubMenuObserver
 #define RegisterMenuShownCallbackForTesting \
   RegisterMenuShownCallbackForTesting_unused
+#define RenderViewContextMenu RenderViewContextMenu_Chromium
 
 #include <chrome/browser/renderer_context_menu/render_view_context_menu.cc>
 
@@ -319,7 +313,7 @@ email_aliases::EmailAliasesController* GetEmailAliasesController(
 
 }  // namespace
 
-BraveRenderViewContextMenu::BraveRenderViewContextMenu(
+RenderViewContextMenu::RenderViewContextMenu(
     content::RenderFrameHost& render_frame_host,
     const content::ContextMenuParams& params,
     bool is_paste_enabled)
@@ -336,9 +330,9 @@ BraveRenderViewContextMenu::BraveRenderViewContextMenu(
 {
 }
 
-BraveRenderViewContextMenu::~BraveRenderViewContextMenu() = default;
+RenderViewContextMenu::~RenderViewContextMenu() = default;
 
-bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
+bool RenderViewContextMenu::IsCommandIdEnabled(int id) const {
   switch (id) {
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
     case IDC_CONTENT_CONTEXT_COPY_TEXT_FROM_IMAGE:
@@ -396,7 +390,7 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
   }
 }
 
-void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
+void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
   switch (id) {
     case IDC_COPY_CLEAN_LINK: {
       GURL link_url = params_.link_url;
@@ -459,7 +453,7 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
 }
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
-void BraveRenderViewContextMenu::CopyTextFromImage() {
+void RenderViewContextMenu::CopyTextFromImage() {
   RenderFrameHost* frame_host = GetRenderFrameHost();
   if (frame_host) {
     frame_host->GetImageAt(params_.x, params_.y,
@@ -470,7 +464,7 @@ void BraveRenderViewContextMenu::CopyTextFromImage() {
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-bool BraveRenderViewContextMenu::IsAIChatEnabled() const {
+bool RenderViewContextMenu::IsAIChatEnabled() const {
   return !params_.selection_text.empty() &&
          ai_chat::IsAIChatEnabled(GetProfile()->GetPrefs()) &&
          GetProfile()->IsRegularProfile() &&
@@ -479,7 +473,7 @@ bool BraveRenderViewContextMenu::IsAIChatEnabled() const {
          !IsInProgressiveWebApp();
 }
 
-void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
+void RenderViewContextMenu::ExecuteAIChatCommand(int command) {
   // To do rewrite in-place, the following conditions must be met:
   // 1) Selected content is editable.
   // 2) User has opted in to Leo.
@@ -559,7 +553,7 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
   }
 }
 
-void BraveRenderViewContextMenu::BuildAIChatMenu() {
+void RenderViewContextMenu::BuildAIChatMenu() {
   if (!IsAIChatEnabled()) {
     return;
   }
@@ -631,7 +625,7 @@ void BraveRenderViewContextMenu::BuildAIChatMenu() {
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-void BraveRenderViewContextMenu::BuildContainersMenu() {
+void RenderViewContextMenu::BuildContainersMenu() {
   if (!base::FeatureList::IsEnabled(containers::features::kContainers) ||
       !params_.link_url.is_valid()) {
     return;
@@ -650,11 +644,11 @@ void BraveRenderViewContextMenu::BuildContainersMenu() {
                                      containers_submenu_model_.get());
 }
 
-Browser* BraveRenderViewContextMenu::GetBrowserToOpenSettings() {
+Browser* RenderViewContextMenu::GetBrowserToOpenSettings() {
   return GetBrowser();
 }
 
-float BraveRenderViewContextMenu::GetScaleFactor() {
+float RenderViewContextMenu::GetScaleFactor() {
   auto* render_frame_host = GetRenderFrameHost();
   CHECK(render_frame_host);
   auto* render_view = render_frame_host->GetView();
@@ -663,7 +657,7 @@ float BraveRenderViewContextMenu::GetScaleFactor() {
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
-void BraveRenderViewContextMenu::AddSpellCheckServiceItem(bool is_checked) {
+void RenderViewContextMenu::AddSpellCheckServiceItem(bool is_checked) {
   // Call our implementation, not the one in the base class.
   // Assumption:
   // Use of spelling service is disabled in Brave profile preferences.
@@ -673,18 +667,16 @@ void BraveRenderViewContextMenu::AddSpellCheckServiceItem(bool is_checked) {
 }
 
 // static
-void BraveRenderViewContextMenu::AddSpellCheckServiceItem(
-    ui::SimpleMenuModel* menu,
-    bool is_checked) {
+void RenderViewContextMenu::AddSpellCheckServiceItem(ui::SimpleMenuModel* menu,
+                                                     bool is_checked) {
   // Suppress adding "Spellcheck->Ask Brave for suggestions" item.
 }
 
-void BraveRenderViewContextMenu::AddAccessibilityLabelsServiceItem(
-    bool is_checked) {
+void RenderViewContextMenu::AddAccessibilityLabelsServiceItem(bool is_checked) {
   // Suppress adding "Get image descriptions from Brave"
 }
 
-void BraveRenderViewContextMenu::AppendDeveloperItems() {
+void RenderViewContextMenu::AppendDeveloperItems() {
   RenderViewContextMenu_Chromium::AppendDeveloperItems();
 
   auto* shields_tab_helper =
@@ -730,7 +722,7 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-void BraveRenderViewContextMenu::OnContainerSelected(
+void RenderViewContextMenu::OnContainerSelected(
     const containers::mojom::ContainerPtr& container) {
   if (!params_.link_url.is_valid()) {
     return;
@@ -739,8 +731,7 @@ void BraveRenderViewContextMenu::OnContainerSelected(
   brave::OpenUrlInContainer(GetBrowser(), params_.link_url, container);
 }
 
-base::flat_set<std::string>
-BraveRenderViewContextMenu::GetCurrentContainerIds() {
+base::flat_set<std::string> RenderViewContextMenu::GetCurrentContainerIds() {
   CHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
 
   const auto& storage_partition_config = source_web_contents_->GetSiteInstance()
@@ -755,13 +746,13 @@ BraveRenderViewContextMenu::GetCurrentContainerIds() {
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-void BraveRenderViewContextMenu::SetAIEngineForTesting(
+void RenderViewContextMenu::SetAIEngineForTesting(
     std::unique_ptr<ai_chat::EngineConsumer> ai_engine) {
   ai_engine_ = std::move(ai_engine);
 }
 #endif
 
-void BraveRenderViewContextMenu::InitMenu() {
+void RenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();
 
   // Move "Open link in split view" to the last item of the first section (right
@@ -851,7 +842,7 @@ void BraveRenderViewContextMenu::InitMenu() {
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 }
 
-void BraveRenderViewContextMenu::NotifyMenuShown() {
+void RenderViewContextMenu::NotifyMenuShown() {
   auto* cb = BraveGetMenuShownCallback();
   if (!cb->is_null()) {
     std::move(*cb).Run(this);
