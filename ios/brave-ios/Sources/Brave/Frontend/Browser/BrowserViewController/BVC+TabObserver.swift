@@ -98,9 +98,6 @@ extension BrowserViewController: TabObserver {
     tab.redirectSourceURL = nil
     tab.isInternalRedirect = false
 
-    // Need to evaluate Night mode script injection after url is set inside the Tab
-    tab.nightMode = Preferences.General.nightModeEnabled.value
-
     // Dismiss any alerts that are showing on page navigation.
     if let alert = tab.shownPromptAlert {
       alert.dismiss(animated: false)

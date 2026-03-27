@@ -135,7 +135,6 @@ class TabManager: NSObject {
     self.tabCreationFactory = tabCreationFactory
     super.init()
 
-    Preferences.General.nightModeEnabled.observe(from: self)
     Preferences.Chromium.syncOpenTabsEnabled.observe(from: self)
 
     domainFrc.delegate = self
@@ -1654,11 +1653,6 @@ extension TabManagerDelegate {
 extension TabManager: PreferencesObserver {
   func preferencesDidChange(for key: String) {
     switch key {
-    case Preferences.General.nightModeEnabled.key:
-      DarkReaderScriptHandler.set(
-        tabManager: self,
-        enabled: Preferences.General.nightModeEnabled.value
-      )
     case Preferences.Chromium.syncOpenTabsEnabled.key:
       if Preferences.Chromium.syncOpenTabsEnabled.value {
         addRegularTabsToSyncChain()

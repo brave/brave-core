@@ -1035,9 +1035,6 @@ class SettingsViewController: TableViewController {
             title: Strings.NightMode.settingsTitle,
             detailText: Strings.NightMode.settingsDescription,
             option: Preferences.General.nightModeEnabled,
-            onValueChange: { [unowned self] enabled in
-              DarkReaderScriptHandler.set(tabManager: tabManager, enabled: enabled)
-            },
             image: UIImage(braveSystemNamed: "leo.theme.dark")
           )
         ],

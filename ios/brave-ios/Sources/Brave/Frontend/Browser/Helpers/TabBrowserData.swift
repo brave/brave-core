@@ -55,8 +55,6 @@ class TabBrowserData: NSObject, TabObserver {
       _faviconDriver = nil
     }
 
-    nightMode = Preferences.General.nightModeEnabled.value
-
     super.init()
 
     tab.addObserver(self)
@@ -233,28 +231,6 @@ class TabBrowserData: NSObject, TabObserver {
   fileprivate var alertQueue = [JSAlertInfo]()
   weak var shownPromptAlert: UIAlertController?
 
-  var nightMode: Bool {
-    didSet {
-      var isNightModeEnabled = false
-
-      if let fetchedTabURL = tab?.fetchedURL, nightMode,
-        !DarkReaderScriptHandler.isNightModeBlockedURL(fetchedTabURL)
-      {
-        isNightModeEnabled = true
-      }
-
-      if let tab = tab {
-        if isNightModeEnabled {
-          DarkReaderScriptHandler.enable(for: tab)
-        } else {
-          DarkReaderScriptHandler.disable(for: tab)
-        }
-      }
-
-      self.setScript(script: .nightMode, enabled: isNightModeEnabled)
-    }
-  }
-
   var translateHelper: BraveTranslateTabHelper?
   private(set) lazy var leoTabHelper = BraveLeoScriptTabHelper(tab: tab)
 
@@ -384,7 +360,6 @@ class TabBrowserData: NSObject, TabObserver {
 
   func tabDidStartNavigation(_ tab: some TabState) {
     resetExternalAlertProperties()
-    nightMode = Preferences.General.nightModeEnabled.value
   }
 
   func tabDidChangeTitle(_ tab: some TabState) {
@@ -403,13 +378,11 @@ class TabBrowserData: NSObject, TabObserver {
     let scriptPreferences: [UserScriptManager.ScriptType: Bool] = [
       .cookieBlocking: Preferences.Privacy.blockAllCookies.value,
       .mediaBackgroundPlay: Preferences.General.mediaAutoBackgrounding.value,
-      .nightMode: Preferences.General.nightModeEnabled.value,
       .braveTranslate: Preferences.Translate.translateEnabled.value != false,
     ]
 
     userScripts = Set(scriptPreferences.filter({ $0.value }).map({ $0.key }))
     self.updateInjectedScripts()
-    nightMode = Preferences.General.nightModeEnabled.value
   }
 
   func tabWillDeleteWebView(_ tab: some TabState) {
