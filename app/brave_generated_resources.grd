@@ -1452,6 +1452,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_LOCAL_AI_TASK_MANAGER_TITLE" desc="The label for the on-device AI background process in the Task Manager.">
         On-Device AI
       </message>
+      <message name="IDS_ON_DEVICE_SPEECH_RECOGNITION_TASK_MANAGER_TITLE" desc="The label for the on-device Whisper speech recognition background process in the Task Manager.">
+        On-Device Speech Recognition
+      </message>
       <!--Add new items to the appropriate sections above -->
     </messages>
   </release>

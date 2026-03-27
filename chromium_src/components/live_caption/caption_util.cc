@@ -5,6 +5,9 @@
 
 #include "components/live_caption/caption_util.h"
 
+#include "base/feature_list.h"
+#include "brave/components/local_ai/core/features.h"
+
 #define IsLiveCaptionFeatureSupported IsLiveCaptionFeatureSupported_ChromiumImpl
 
 #include <components/live_caption/caption_util.cc>
@@ -14,6 +17,10 @@
 namespace captions {
 
 bool IsLiveCaptionFeatureSupported() {
+  if (base::FeatureList::IsEnabled(
+          local_ai::features::kBraveOnDeviceSpeechRecognition)) {
+    return true;
+  }
   return false;
 }
 

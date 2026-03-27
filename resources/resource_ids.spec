@@ -238,12 +238,24 @@
     "META": {"sizes": {"includes": [1]}},
     "includes": [54037],
   },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ai_chat_agent_new_tab_page/ai_chat_agent_new_tab_page.grd": {
-    "META": {"sizes": {"includes": [20]}},
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-candle_whisper_module/candle_whisper_module.grd": {
+    "META": {"sizes": {"includes": [2]}},
+    "includes": [54038],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-on_device_speech_recognition_worker/on_device_speech_recognition_worker.grd": {
+    "META": {"sizes": {"includes": [1]}},
     "includes": [54040],
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-on_device_speech_recognition_internals/on_device_speech_recognition_internals.grd": {
+    "META": {"sizes": {"includes": [1]}},
+    "includes": [54041],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ai_chat_agent_new_tab_page/ai_chat_agent_new_tab_page.grd": {
+    "META": {"sizes": {"includes": [20]}},
+    "includes": [54042],
+  },
   "brave/browser/resources/bookmark_icon/bookmark_icon_resources.grd": {
-    "structures": [54060],
+    "structures": [54062],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_welcome_page/brave_welcome_page.grd": {
     "META": {"sizes": {"includes": [20]}},

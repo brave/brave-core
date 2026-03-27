@@ -28,3 +28,44 @@ pack_web_resources("local_ai_generated") {
   output_dir = "$root_gen_dir/brave/components/local_ai/resources"
   deps = [ ":local_ai_ui" ]
 }
+
+# Untrusted WebUI for Whisper WASM execution at
+# chrome-untrusted://whisper-worker/
+transpile_web_ui("on_device_speech_recognition_worker_ui") {
+  entry_points = [ [
+        "on_device_speech_recognition_worker",
+        rebase_path("on_device_speech_recognition_worker.ts"),
+      ] ]
+  webpack_aliases = [ "browser" ]
+  resource_name = "on_device_speech_recognition_worker"
+
+  imports_from = [ "//brave/components/local_ai/resources/" ]
+
+  deps = [ "//brave/components/local_ai/core:mojom_js" ]
+}
+
+pack_web_resources("on_device_speech_recognition_worker_generated") {
+  resource_name = "on_device_speech_recognition_worker"
+  output_dir = "$root_gen_dir/brave/components/local_ai/resources"
+  deps = [ ":on_device_speech_recognition_worker_ui" ]
+}
+
+# Trusted WebUI for brave://local-ai-internals/
+transpile_web_ui("on_device_speech_recognition_internals_ui") {
+  entry_points = [ [
+        "on_device_speech_recognition_internals",
+        rebase_path("on_device_speech_recognition_internals.ts"),
+      ] ]
+  webpack_aliases = [ "browser" ]
+  resource_name = "on_device_speech_recognition_internals"
+
+  imports_from = [ "//brave/components/local_ai/resources/" ]
+
+  deps = [ "//brave/components/local_ai/core:mojom_js" ]
+}
+
+pack_web_resources("on_device_speech_recognition_internals_generated") {
+  resource_name = "on_device_speech_recognition_internals"
+  output_dir = "$root_gen_dir/brave/components/local_ai/resources"
+  deps = [ ":on_device_speech_recognition_internals_ui" ]
+}
