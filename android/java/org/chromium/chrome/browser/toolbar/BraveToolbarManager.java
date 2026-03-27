@@ -47,7 +47,6 @@ import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
-import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
@@ -140,7 +139,7 @@ public class BraveToolbarManager extends ToolbarManager
     private TabCreatorManager mTabCreatorManager;
     private NonNullObservableSupplier<ModalDialogManager> mModalDialogManagerSupplier;
     private TabObscuringHandler mTabObscuringHandler;
-    private LayoutStateProvider mLayoutStateProvider;
+
     private MonotonicObservableSupplier<ReadAloudController> mReadAloudControllerSupplier;
     private TopUiThemeColorProvider mTopUiThemeColorProvider;
     private int mCurrentOrientation;
@@ -164,7 +163,6 @@ public class BraveToolbarManager extends ToolbarManager
     private final BrowserControlsSizer mBrowserControlsSizer;
     private final DataSharingTabManager mDataSharingTabManager;
     private final MonotonicObservableSupplier<TabModelSelector> mTabModelSelectorSupplier;
-    private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;
     private Runnable mOpenGridTabSwitcherHandler;
     private final MonotonicObservableSupplier<TabBookmarker> mTabBookmarkerSupplier;
     private final Supplier<ShareDelegate> mShareDelegateSupplier;
@@ -293,8 +291,6 @@ public class BraveToolbarManager extends ToolbarManager
 
         if (isToolbarPhone()) {
             updateBraveBottomControlsVisibility();
-            mLayoutStateProviderSupplier.onAvailable(
-                    mCallbackController.makeCancelable(this::setLayoutStateProvider));
         }
 
         mBraveHomepageStateListener =
@@ -506,10 +502,6 @@ public class BraveToolbarManager extends ToolbarManager
 
     @Override
     public void destroy() {
-        if (mLayoutStateProvider != null && mLayoutStateObserver != null) {
-            mLayoutStateProvider.removeObserver(mLayoutStateObserver);
-            mLayoutStateObserver = null;
-        }
         super.destroy();
         HomepageManager.getInstance().removeListener(mBraveHomepageStateListener);
     }
@@ -626,30 +618,6 @@ public class BraveToolbarManager extends ToolbarManager
                 updateBraveBottomControlsVisibility();
             }
         }
-    }
-
-    private void setLayoutStateProvider(LayoutStateProvider layoutStateProvider) {
-        assert mLayoutStateObserver == null : "mLayoutStateObserver should be set only once";
-
-        mLayoutStateObserver =
-                new LayoutStateProvider.LayoutStateObserver() {
-                    @Override
-                    public void onStartedShowing(@LayoutType int layoutType) {
-                        if (layoutType == LayoutType.TAB_SWITCHER
-                                && BottomToolbarConfiguration.isToolbarBottomAnchored()) {
-                            BraveMenuButtonCoordinator.setMenuFromBottom(false);
-                        }
-                    }
-
-                    @Override
-                    public void onStartedHiding(@LayoutType int layoutType) {
-                        if (layoutType == LayoutType.TAB_SWITCHER
-                                && BottomToolbarConfiguration.isToolbarBottomAnchored()) {
-                            BraveMenuButtonCoordinator.setMenuFromBottom(true);
-                        }
-                    }
-                };
-        layoutStateProvider.addObserver(mLayoutStateObserver);
     }
 
     public void openHomepage() {
