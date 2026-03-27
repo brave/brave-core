@@ -148,11 +148,22 @@ bool IsAvatarButtonHideable(Profile* profile) {
 // is forced to shrink. The location bar uses flex order 1001
 // (kLocationBarFlexOrder in toolbar_view.cc); assigning a higher order makes
 // these buttons the first to be evicted when horizontal space is tight.
+//
+// The orientation-aware FlexSpecification constructor is used here so that
+// kPreferredSnapToZero applies only to the main (horizontal) axis. The cross
+// (vertical) axis uses kPreferred so that height is always granted in full.
+// Using the two-argument constructor would apply kPreferredSnapToZero to both
+// axes: buttons whose preferred height exceeds the toolbar's cross-axis budget
+// (e.g. when a badge image is taller than the base icon) would have their
+// height snapped to zero, making them invisible despite having the correct
+// width.
 void SetBraveButtonFlexBehavior(views::View* btn) {
   constexpr int kBraveOptionalButtonFlexOrder = 1010;
   const views::FlexSpecification kBraveButtonFlex =
-      views::FlexSpecification(views::MinimumFlexSizeRule::kPreferredSnapToZero,
-                               views::MaximumFlexSizeRule::kPreferred)
+      views::FlexSpecification(views::LayoutOrientation::kHorizontal,
+                               views::MinimumFlexSizeRule::kPreferredSnapToZero,
+                               views::MaximumFlexSizeRule::kPreferred, false,
+                               views::MinimumFlexSizeRule::kPreferred)
           .WithOrder(kBraveOptionalButtonFlexOrder);
   btn->SetProperty(views::kFlexBehaviorKey, kBraveButtonFlex);
 }
