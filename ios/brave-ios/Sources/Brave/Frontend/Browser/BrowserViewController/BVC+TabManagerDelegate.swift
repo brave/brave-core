@@ -33,6 +33,7 @@ extension BrowserViewController: TabManagerDelegate {
     tab.pageMetadataHelper = .init(tab: tab)
     tab.faviconTabHelper = .init(tab: tab)
     tab.userActivityHelper = .init(tab: tab)
+    tab.print = .init(tab: tab, baseViewController: self)
     tab.forcePaste = .init(tab: tab)
     tab.aiChatWebUIHelper = .init(
       tab: tab,

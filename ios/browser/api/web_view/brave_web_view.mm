@@ -54,6 +54,8 @@
 #include "ios/chrome/browser/signin/model/identity_manager_factory.h"
 #include "ios/chrome/browser/sync/model/sync_service_factory.h"
 #include "ios/chrome/browser/tabs/model/tab_helper_util.h"
+#include "ios/chrome/browser/web/model/print/print_handler.h"
+#include "ios/chrome/browser/web/model/print/print_tab_helper.h"
 #include "ios/web/common/crw_input_view_provider.h"
 #include "ios/web/public/navigation/web_state_policy_decider.h"
 #include "ios/web/public/web_state.h"
@@ -212,6 +214,7 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 @property(nonatomic, weak) id<BraveTalkTabHelperBridge> braveTalkHelper;
 #endif
+@property(nonatomic, weak) id<PrintHandler> printHandler;
 @end
 
 @implementation BraveWebView {
@@ -300,6 +303,13 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 #endif
 
   LoginsTabHelper::MaybeCreateForWebState(self.webState, _loginsHelper);
+
+  if (base::FeatureList::IsEnabled(
+          brave::features::kUseProfileWebViewConfiguration)) {
+    // When UseProfileWebViewConfiguration is removed, move this to
+    // tab_helper_util.mm chromium_src override
+    PrintTabHelper::CreateForWebState(self.webState);
+  }
 }
 
 - (void)updateForOnDownloadCreated {
@@ -577,6 +587,18 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
     tab_helper->SetBridge(braveTalkHelper);
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
+}
+
+@end
+
+@implementation BraveWebView (Print)
+
+- (void)setPrintHandler:(id<PrintHandler>)printHandler {
+  _printHandler = printHandler;
+  if (PrintTabHelper* tab_helper =
+          PrintTabHelper::FromWebState(self.webState)) {
+    tab_helper->set_printer(printHandler);
+  }
 }
 
 @end

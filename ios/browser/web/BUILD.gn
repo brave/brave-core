@@ -42,6 +42,7 @@ source_set("web") {
     "//ios/chrome/browser/shared/model/url",
     "//ios/chrome/browser/shared/model/url:constants",
     "//ios/chrome/browser/web/model:web_internal",
+    "//ios/chrome/browser/web/model/print",
     "//ios/components/security_interstitials",
     "//ios/components/security_interstitials/lookalikes",
     "//ios/components/security_interstitials/safe_browsing",
