@@ -13,9 +13,15 @@ mojom_component("mojom") {
   generate_legacy_js_bindings = true
   webui_module_path = "/"
 
-  sources = [ "local_ai.mojom" ]
+  sources = [
+    "local_ai.mojom",
+    "on_device_speech_recognition.mojom",
+  ]
 
-  public_deps = [ "//mojo/public/mojom/base" ]
+  public_deps = [
+    "//mojo/public/mojom/base",
+    "//services/on_device_model/public/mojom",
+  ]
 }
 
 source_set("features") {
@@ -35,6 +41,7 @@ static_library("core") {
     "background_web_contents.h",
     "local_ai_service.h",
     "local_ai_service_base.h",
+    "on_device_speech_recognition_service.h",
     "url_constants.h",
   ]
 
@@ -48,6 +55,8 @@ static_library("core") {
     "local_ai_service_base.h",
     "local_models_updater.cc",
     "local_models_updater.h",
+    "on_device_speech_recognition_service.cc",
+    "on_device_speech_recognition_service.h",
   ]
 
   public_deps = [

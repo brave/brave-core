@@ -11,6 +11,9 @@ namespace local_ai {
 inline constexpr char kUntrustedLocalAIHost[] = "local-ai";
 inline constexpr char kUntrustedLocalAIURL[] = "chrome-untrusted://local-ai/";
 
+inline constexpr char kUntrustedOnDeviceSpeechRecognitionWorkerURL[] =
+    "chrome-untrusted://on-device-speech-recognition-worker/";
+
 }  // namespace local_ai
 
 #endif  // BRAVE_COMPONENTS_LOCAL_AI_CORE_URL_CONSTANTS_H_
