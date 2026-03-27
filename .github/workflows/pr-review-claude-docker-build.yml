@@ -1,14 +1,9 @@
-# Build and push the Claude PR review Docker image to ghcr.io.
+# Build and push the Claude PR review Docker image to ghcr.io (manual only).
+# Run from Actions → "Build PR review image" → Run workflow.
 # The PR review workflow (pr-review-claude.yml) pulls this image when present.
 name: Build PR review image
 
 on:
-  push:
-    branches: [master]
-    paths:
-      - '.github/workflows/pr-review-claude.dockerfile'
-      - '.github/workflows/pr-review-claude.py'
-      - '.claude/skills/review-prs/SKILL.md'
   workflow_dispatch:
 
 permissions:
@@ -20,6 +15,15 @@ jobs:
     name: Build the pr-review-claude docker image
     runs-on: ubuntu-latest
     steps:
+      # Only paths referenced by the Dockerfile COPY (full clone is huge for brave-core).
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          sparse-checkout: |
+            .github/workflows/pr-review-claude.dockerfile
+            .github/workflows/pr-review-claude.py
+            .claude/skills/review-prs/SKILL.md
+          sparse-checkout-cone-mode: false
+
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4.0.0
         with:
@@ -38,5 +42,3 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}/pr-review-claude:latest
             ghcr.io/${{ github.repository }}/pr-review-claude:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
