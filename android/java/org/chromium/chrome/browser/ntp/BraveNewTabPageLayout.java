@@ -24,10 +24,10 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Display;
 import android.view.GestureDetector;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -89,7 +89,6 @@ import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
 import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesLayoutBase;
-import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup.Delegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
@@ -125,12 +124,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private static final int MINIMUM_VISIBLE_HEIGHT_THRESHOLD = 50;
     private static final int HOUR_MS = 3_600_000;
 
-    // Variables below will be removed in bytecode, variables from parent class will be used
-    // instead.
     private ViewGroup mMvTilesContainerLayout;
-
-    @SuppressWarnings("UnusedVariable")
-    private boolean mMvtContentFits;
 
     // Own members.
     private WindowAndroid mWindowAndroid;
@@ -150,7 +144,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     // Whether to show sponsored image on NTP based on experiment variant
     private boolean mShouldShowSponsoredImage;
     private @Nullable NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
-    private @Nullable ViewGroup mMainLayout;
     private final DatabaseHelper mDatabaseHelper;
 
     private @Nullable LottieAnimationView mBadgeAnimationView;
@@ -219,12 +212,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     }
 
     protected void initializeSiteSectionView() {
-        mMainLayout = findViewById(R.id.ntp_content);
         mMvTilesContainerLayout =
-                (ViewGroup)
-                        LayoutInflater.from(mMainLayout.getContext())
-                                .inflate(R.layout.mv_tiles_layout, mMainLayout, false);
-        mMvTilesContainerLayout.setId(R.id.mv_tiles_container);
+                (ViewGroup) ((ViewStub) findViewById(R.id.mv_tiles_layout_stub)).inflate();
         mMvTilesContainerLayout.setPadding(0, 0, 0, 0);
         mMvTilesContainerLayout.setVisibility(View.VISIBLE);
 
@@ -1243,7 +1232,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             WindowAndroid windowAndroid,
             ActivityResultTracker activityResultTracker,
             BottomSheetController bottomSheetController,
-            Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
+            ModalDialogManager modalDialogManager,
             SnackbarManager snackbarManager,
             boolean isTablet,
             Supplier<Integer> tabStripHeightSupplier,
@@ -1262,7 +1251,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                 windowAndroid,
                 activityResultTracker,
                 bottomSheetController,
-                modalDialogManagerSupplier,
+                modalDialogManager,
                 snackbarManager,
                 isTablet,
                 tabStripHeightSupplier,
@@ -1513,19 +1502,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                                 action.run();
                             }
                         });
-    }
-
-    public void calculateTabletMvtWidth(int totalWidth) {
-        if (mMvTilesContainerLayout.getVisibility() == GONE) return;
-
-        MostVisitedTilesLayout mvTilesLayout =
-                mMvTilesContainerLayout.findViewById(R.id.mv_tiles_layout);
-        mMvtContentFits = mvTilesLayout.contentFitsOnTablet(totalWidth);
-        updateMvtOnTablet();
-    }
-
-    private void updateMvtOnTablet() {
-        assert false : "This method should be removed in the bytecode!";
     }
 
     /**

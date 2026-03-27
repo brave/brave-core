@@ -690,7 +690,7 @@ void BraveBrowserView::OnAcceleratorsChanged(
 
     // Register current accelerators
     for (const auto& accelerator : accelerators) {
-      if (focus_manager->IsAcceleratorRegistered(accelerator)) {
+      if (focus_manager->IsAcceleratorRegistered(accelerator, this)) {
         focus_manager->UnregisterAccelerator(accelerator, this);
       }
 

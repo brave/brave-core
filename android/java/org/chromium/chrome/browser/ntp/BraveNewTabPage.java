@@ -69,7 +69,7 @@ public class BraveNewTabPage extends NewTabPage {
             Activity activity,
             BrowserControlsStateProvider browserControlsStateProvider,
             Supplier<@Nullable Tab> activityTabProvider,
-            Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
+            ModalDialogManager modalDialogManager,
             SnackbarManager snackbarManager,
             ActivityLifecycleDispatcher lifecycleDispatcher,
             TabModelSelector tabModelSelector,
@@ -96,7 +96,7 @@ public class BraveNewTabPage extends NewTabPage {
                 activity,
                 browserControlsStateProvider,
                 activityTabProvider,
-                modalDialogManagerSupplier,
+                modalDialogManager,
                 snackbarManager,
                 lifecycleDispatcher,
                 tabModelSelector,
@@ -151,9 +151,11 @@ public class BraveNewTabPage extends NewTabPage {
     protected void initializeMainView(
             Activity activity,
             WindowAndroid windowAndroid,
+            ActivityResultTracker activityResultTracker,
             SnackbarManager snackbarManager,
             boolean isInNightMode,
             Supplier<@Nullable ShareDelegate> shareDelegateSupplier,
+            ModalDialogManager modalDialogManager,
             String url,
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             StartupMetricsTracker startupMetricsTracker) {
@@ -165,19 +167,20 @@ public class BraveNewTabPage extends NewTabPage {
         mNewTabPageLayout = (NewTabPageLayout) inflater.inflate(R.layout.new_tab_page_layout, null);
 
         // No-op stub to deal with non-null requirement
-        FeedActionDelegate actionDelegate =
-                new FeedActionDelegate() {
-                    @Override
-                    public void openSuggestionUrl(
-                            int disposition,
-                            LoadUrlParams params,
-                            boolean inGroup,
-                            int pageId,
-                            PageLoadObserver pageLoadObserver,
-                            Callback<VisitResult> onVisitComplete) {
-                        assert false : "Not supposed to be invoked";
-                    }
-                };
+        FeedSurfaceCoordinator.ActionDelegateFactory actionDelegate =
+                () ->
+                        new FeedActionDelegate() {
+                            @Override
+                            public void openSuggestionUrl(
+                                    int disposition,
+                                    LoadUrlParams params,
+                                    boolean inGroup,
+                                    int pageId,
+                                    PageLoadObserver pageLoadObserver,
+                                    Callback<VisitResult> onVisitComplete) {
+                                assert false : "Not supposed to be invoked";
+                            }
+                        };
 
         assertNonNull(mBrowserControlsStateProvider);
         assertNonNull(mToolbarSupplier);
@@ -207,7 +210,8 @@ public class BraveNewTabPage extends NewTabPage {
                         /* viewportView= */ null,
                         actionDelegate,
                         mTabStripHeightSupplier,
-                        edgeToEdgeControllerSupplier);
+                        edgeToEdgeControllerSupplier,
+                        /* moduleRegistry= */ null);
 
         mFeedSurfaceProvider = feedSurfaceCoordinator;
     }

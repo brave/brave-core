@@ -46,7 +46,7 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
-#include "components/history_embeddings/history_embeddings_features.h"
+#include "components/history_embeddings/core/history_embeddings_features.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"

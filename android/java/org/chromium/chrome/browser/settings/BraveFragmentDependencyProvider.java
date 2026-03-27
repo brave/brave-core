@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.app.Activity;
 import android.content.Context;
 
 import androidx.fragment.app.Fragment;
@@ -20,26 +21,34 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.search.SettingsSearchCoordinator;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
+import org.chromium.ui.base.ActivityResultTracker;
+import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
+
+import java.util.function.Supplier;
 
 @NullMarked
 public class BraveFragmentDependencyProvider extends FragmentDependencyProvider {
     private final Profile mProfile;
 
     public BraveFragmentDependencyProvider(
-            Context context,
+            Activity activity,
             Profile profile,
+            MonotonicObservableSupplier<WindowAndroid> windowAndroidSupplier,
+            ActivityResultTracker activityResultTracker,
             OneshotSupplier<SnackbarManager> snackbarManagerSupplier,
             OneshotSupplier<BottomSheetController> bottomSheetControllerSupplier,
             MonotonicObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
-            @Nullable SettingsSearchCoordinator searchCoordinator) {
+            Supplier<@Nullable SettingsSearchCoordinator> searchCoordinatorSupplier) {
         super(
-                context,
+                activity,
                 profile,
+                windowAndroidSupplier,
+                activityResultTracker,
                 snackbarManagerSupplier,
                 bottomSheetControllerSupplier,
                 modalDialogManagerSupplier,
-                searchCoordinator);
+                searchCoordinatorSupplier);
         mProfile = profile;
     }
 

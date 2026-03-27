@@ -121,8 +121,7 @@ public class BraveShieldsUtils {
                 BufferedReader br =
                         new BufferedReader(
                                 new InputStreamReader(
-                                        urlConnection.getInputStream(),
-                                        StandardCharsets.UTF_8.toString()));
+                                        urlConnection.getInputStream(), StandardCharsets.UTF_8));
                 String line = null;
                 while ((line = br.readLine()) != null) {
                     sb.append(line + "\n");
@@ -155,7 +154,7 @@ public class BraveShieldsUtils {
     }
 
     private static byte[] asUtf8Bytes(String val) throws UnsupportedEncodingException {
-        return val.getBytes(StandardCharsets.UTF_8.toString());
+        return val.getBytes(StandardCharsets.UTF_8);
     }
 
     private static void generateJsonData(HttpURLConnection urlConnection, String jsonData)
@@ -163,7 +162,7 @@ public class BraveShieldsUtils {
         urlConnection.setRequestProperty("Content-Type", "application/json");
         urlConnection.connect();
         try (OutputStream outputStream = urlConnection.getOutputStream()) {
-            byte[] input = jsonData.getBytes(StandardCharsets.UTF_8.toString());
+            byte[] input = jsonData.getBytes(StandardCharsets.UTF_8);
             outputStream.write(input, 0, input.length);
             outputStream.flush();
         }
@@ -210,9 +209,9 @@ public class BraveShieldsUtils {
                     asUtf8Bytes(
                             String.format(
                                     "Content-Type: %s%s", PNG_CONTENT_TYPE, MULTIPART_LINE_END)));
-            os.write(MULTIPART_LINE_END.getBytes(StandardCharsets.UTF_8.toString()));
+            os.write(MULTIPART_LINE_END.getBytes(StandardCharsets.UTF_8));
             os.write(screenshotPngBytes);
-            os.write(MULTIPART_LINE_END.getBytes(StandardCharsets.UTF_8.toString()));
+            os.write(MULTIPART_LINE_END.getBytes(StandardCharsets.UTF_8));
             os.write(asUtf8Bytes(String.format("--%s--%s", mb, MULTIPART_LINE_END)));
             os.flush();
         }

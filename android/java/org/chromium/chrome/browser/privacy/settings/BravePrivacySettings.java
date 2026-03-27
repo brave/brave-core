@@ -42,6 +42,7 @@ import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettin
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.safe_browsing.settings.NoGooglePlayServicesDialog;
+import org.chromium.chrome.browser.safety_hub.SafetyHubExpandablePreference;
 import org.chromium.chrome.browser.settings.BraveDialogPreference;
 import org.chromium.chrome.browser.settings.BravePreferenceDialogFragment;
 import org.chromium.chrome.browser.settings.BraveWebrtcPolicyPreference;
@@ -92,6 +93,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_PRIVACY_GUIDE = "privacy_guide";
     private static final String PREF_JAVASCRIPT_OPTIMIZER = "javascript_optimizer";
     private static final String PREF_PASSWORD_LEAK_DETECTION = "password_leak_detection";
+    private static final String PREF_ADVANCED_PROTECTION_INFO = "advanced_protection_info";
 
     // brave Prefs
     private static final String PREF_BRAVE_SHIELDS_GLOBALS_SECTION =
@@ -170,9 +172,9 @@ public class BravePrivacySettings extends PrivacySettings {
         PREF_SOCIAL_BLOCKING_TWITTER,
         PREF_SOCIAL_BLOCKING_LINKEDIN,
         PREF_OTHER_PRIVACY_SETTINGS_SECTION, // other section
+        PREF_SAFE_BROWSING,
         PREF_APP_LINKS,
         PREF_WEBRTC_POLICY,
-        PREF_SAFE_BROWSING,
         PREF_INCOGNITO_SCREENSHOT,
         PREF_INCOGNITO_LOCK,
         PREF_CAN_MAKE_PAYMENT,
@@ -190,8 +192,10 @@ public class BravePrivacySettings extends PrivacySettings {
         PREF_SEND_CRASH_REPORTS,
         PREF_BRAVE_STATS_USAGE_PING,
         PREF_SURVEY_PANELIST,
+        PREF_SURVEY_PANELIST_LEARN_MORE,
         PREF_USAGE_STATS,
-        PREF_PRIVACY_SANDBOX
+        PREF_PRIVACY_SANDBOX,
+        PREF_ADVANCED_PROTECTION_INFO,
     };
 
     private static final int STRICT = 0;
@@ -261,6 +265,8 @@ public class BravePrivacySettings extends PrivacySettings {
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
         super.onCreatePreferences(savedInstanceState, rootKey);
+
+        setupAdvancedProtectionInfoPreference();
 
         mBravePageTitle.set(getString(R.string.brave_shields_and_privacy));
 
@@ -972,6 +978,16 @@ public class BravePrivacySettings extends PrivacySettings {
         } else {
             updateRequestOtrPref();
         }
+    }
+
+    private void setupAdvancedProtectionInfoPreference() {
+        SafetyHubExpandablePreference advancedProtectionInfo =
+                findPreference(PREF_ADVANCED_PROTECTION_INFO);
+        if (advancedProtectionInfo == null) return;
+
+        // Clear the Google's shield icon and remove reserved icon space.
+        advancedProtectionInfo.setIcon(null);
+        advancedProtectionInfo.setSelectable(false);
     }
 
     private void updateRequestOtrPref() {

@@ -10,6 +10,7 @@
 #include "chrome/browser/ui/views/frame/browser_root_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/native_theme/native_theme.h"
+#include "ui/native_theme/native_theme_observer.h"
 
 class Browser;
 

@@ -8,6 +8,8 @@ import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 import { getCss } from './brave_account_password_icons.css.js'
 import { getHtml } from './brave_account_password_icons.html.js'
 
+export type ToggleVisibilityEventDetail = { show: boolean }
+
 // A component that displays password input icons:
 // - a Caps Lock indicator
 // - an eye icon for toggling password visibility
@@ -40,13 +42,19 @@ export class BraveAccountPasswordIconsElement extends CrLitElement {
     }
   }
 
+  protected get showCapsLock(): boolean {
+    return this.isCapsLockOn && this.isInputFocused && !this.isPasswordVisible
+  }
+
   protected onEyeIconClicked(event: Event) {
     event.preventDefault()
     const target = event.target as Element
     const isShowing = target.getAttribute('name') === 'eye-on'
     target.setAttribute('name', isShowing ? 'eye-off' : 'eye-on')
     this.isPasswordVisible = !isShowing
-    this.fire('toggle-visibility', { show: this.isPasswordVisible })
+    this.fire('toggle-visibility', {
+      show: this.isPasswordVisible,
+    } satisfies ToggleVisibilityEventDetail)
   }
 
   protected accessor isCapsLockOn: boolean = false

@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 291ef25d7e29b9dede8f8c84a47d94e364910c74..a4d9cd241fcf47555f727a467f5e1f038108fcfb 100644
+index 20ab87def9800142b19818ae4e5d478610fc8ea0..cbcf2fa02b61b268b07b2f2b3e23bef197a40c54 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
-@@ -16,6 +16,7 @@ import("//third_party/angle/gni/angle.gni")
+@@ -18,6 +18,7 @@ import("//third_party/angle/gni/angle.gni")
  import("//third_party/widevine/cdm/widevine.gni")
  import("//ui/gl/features.gni")
  import("//ui/qt/qt.gni")
@@ -10,7 +10,7 @@ index 291ef25d7e29b9dede8f8c84a47d94e364910c74..a4d9cd241fcf47555f727a467f5e1f03
  
  if (bundle_widevine_cdm) {
    import("//media/cdm/library_cdm/cdm_paths.gni")
-@@ -63,6 +64,7 @@ if (build_with_internal_optimization_guide) {
+@@ -65,6 +66,7 @@ if (build_with_internal_optimization_guide) {
        [ "$root_out_dir/liboptimization_guide_internal.so" ]
  }
  
@@ -18,7 +18,7 @@ index 291ef25d7e29b9dede8f8c84a47d94e364910c74..a4d9cd241fcf47555f727a467f5e1f03
  packaging_files_binaries = packaging_files_executables + packaging_files_shlibs
  
  # TODO(mmoss) Any convenient way to get all the relevant build files?
-@@ -172,6 +174,7 @@ action("merge_rpm_dependencies") {
+@@ -174,6 +176,7 @@ action("merge_rpm_dependencies") {
  strip_binary("strip_chrome_binary") {
    binary_input = "$root_out_dir/chrome"
    deps = [ "//chrome" ]
@@ -26,7 +26,7 @@ index 291ef25d7e29b9dede8f8c84a47d94e364910c74..a4d9cd241fcf47555f727a467f5e1f03
  }
  
  strip_binary("strip_chrome_crashpad_handler") {
-@@ -187,6 +190,7 @@ strip_binary("strip_chrome_management_service") {
+@@ -189,6 +192,7 @@ strip_binary("strip_chrome_management_service") {
  strip_binary("strip_chrome_sandbox") {
    binary_input = "$root_out_dir/chrome_sandbox"
    deps = [ "//sandbox/linux:chrome_sandbox" ]
@@ -34,7 +34,7 @@ index 291ef25d7e29b9dede8f8c84a47d94e364910c74..a4d9cd241fcf47555f727a467f5e1f03
  }
  
  strip_binary("strip_libEGL_shlib") {
-@@ -276,6 +280,7 @@ copy("common_packaging_files") {
+@@ -323,6 +327,7 @@ copy("common_packaging_files") {
    }
  
    outputs = [ "$root_out_dir/installer/common/{{source_file_part}}" ]
@@ -42,7 +42,7 @@ index 291ef25d7e29b9dede8f8c84a47d94e364910c74..a4d9cd241fcf47555f727a467f5e1f03
  }
  
  copy("deb_packaging_files") {
-@@ -373,6 +378,7 @@ group("installer_deps") {
+@@ -423,6 +428,7 @@ group("installer_deps") {
      "//components/privacy_sandbox/privacy_sandbox_attestations/preload:component",
      "//sandbox/linux:chrome_sandbox",
    ]
@@ -50,7 +50,7 @@ index 291ef25d7e29b9dede8f8c84a47d94e364910c74..a4d9cd241fcf47555f727a467f5e1f03
    if (bundle_widevine_cdm) {
      public_deps += [ "//third_party/widevine/cdm" ]
    }
-@@ -427,11 +433,14 @@ group("installer_deps") {
+@@ -477,11 +483,14 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
@@ -66,7 +66,7 @@ index 291ef25d7e29b9dede8f8c84a47d94e364910c74..a4d9cd241fcf47555f727a467f5e1f03
    }
  
    deb_target_name = "${target_name}_deb"
-@@ -460,7 +469,7 @@ template("linux_package") {
+@@ -510,7 +519,7 @@ template("linux_package") {
      }
  
      inputs = packaging_files
@@ -75,7 +75,7 @@ index 291ef25d7e29b9dede8f8c84a47d94e364910c74..a4d9cd241fcf47555f727a467f5e1f03
  
      args = [
        "-a",
-@@ -514,7 +523,7 @@ template("linux_package") {
+@@ -566,7 +575,7 @@ template("linux_package") {
        }
  
        inputs = packaging_files
@@ -84,7 +84,7 @@ index 291ef25d7e29b9dede8f8c84a47d94e364910c74..a4d9cd241fcf47555f727a467f5e1f03
  
        args = [
          "-a",
-@@ -561,3 +570,6 @@ linux_package("unstable") {
+@@ -613,3 +622,6 @@ linux_package("unstable") {
  linux_package("canary") {
    channel = "canary"
  }

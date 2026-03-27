@@ -53,6 +53,7 @@
 -PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchEnabled
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchDisabled
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchEnabled
+-UpdateMetricsProviderBrowserTest.RunInBackground
 
 # This test fails because we modify the Profile Picker UI to skip the initial
 # screen and the tests ends up creating 2 profiles instead of the intended one.

@@ -40,7 +40,7 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "components/content_settings/core/common/features.h"
 #include "components/history/core/browser/features.h"
-#include "components/history_embeddings/history_embeddings_features.h"
+#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/sync/base/command_line_switches.h"
 #include "components/translate/core/browser/translate_prefs.h"

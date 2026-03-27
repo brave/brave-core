@@ -103,26 +103,34 @@ public class BraveScrollingBottomViewResourceFrameLayout
             return;
         }
         mBottomControlsCoordinatorSupplier = bottomControlsCoordinatorSupplier;
-        braveBottomControlsCoordinator().getBottomToolbarVisibleSupplier().addObserver(
-                mCallbackController.makeCancelable((visible) -> {
-                    // Only make changes if visibility changed.
-                    if (mBottomToolbar != null
-                            && (mBottomToolbar.getVisibility()
-                                    != (visible ? View.VISIBLE : View.GONE))) {
-                        mBottomToolbar.setVisibility(visible ? View.VISIBLE : View.GONE);
-                        triggerBitmapCapture(!visible);
-                    }
-                }));
-        braveBottomControlsCoordinator().getTabGroupUiVisibleSupplier().addObserver(
-                mCallbackController.makeCancelable((visible) -> {
-                    // Only make changes if visibility changed.
-                    if (mBottomContainerSlot != null
-                            && (mBottomContainerSlot.getVisibility()
-                                    != (visible ? View.VISIBLE : View.GONE))) {
-                        mBottomContainerSlot.setVisibility(visible ? View.VISIBLE : View.GONE);
-                        triggerBitmapCapture(!visible);
-                    }
-                }));
+        braveBottomControlsCoordinator()
+                .getBottomToolbarVisibleSupplier()
+                .addSyncObserverAndPostIfNonNull(
+                        mCallbackController.makeCancelable(
+                                (visible) -> {
+                                    // Only make changes if visibility changed.
+                                    if (mBottomToolbar != null
+                                            && (mBottomToolbar.getVisibility()
+                                                    != (visible ? View.VISIBLE : View.GONE))) {
+                                        mBottomToolbar.setVisibility(
+                                                visible ? View.VISIBLE : View.GONE);
+                                        triggerBitmapCapture(!visible);
+                                    }
+                                }));
+        braveBottomControlsCoordinator()
+                .getTabGroupUiVisibleSupplier()
+                .addSyncObserverAndPostIfNonNull(
+                        mCallbackController.makeCancelable(
+                                (visible) -> {
+                                    // Only make changes if visibility changed.
+                                    if (mBottomContainerSlot != null
+                                            && (mBottomContainerSlot.getVisibility()
+                                                    != (visible ? View.VISIBLE : View.GONE))) {
+                                        mBottomContainerSlot.setVisibility(
+                                                visible ? View.VISIBLE : View.GONE);
+                                        triggerBitmapCapture(!visible);
+                                    }
+                                }));
     }
 
     private BraveBottomControlsCoordinator braveBottomControlsCoordinator() {

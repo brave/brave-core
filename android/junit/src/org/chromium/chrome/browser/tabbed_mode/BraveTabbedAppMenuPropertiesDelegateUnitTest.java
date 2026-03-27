@@ -37,6 +37,7 @@ import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.OneshotSupplierImpl;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.base.supplier.SettableNullableObservableSupplier;
 import org.chromium.base.test.BaseRobolectricTestRule;
 import org.chromium.base.test.BaseRobolectricTestRunner;
@@ -81,6 +82,7 @@ import org.chromium.chrome.browser.translate.TranslateBridgeJni;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuItemProperties;
+import org.chromium.chrome.browser.ui.default_browser_promo.DefaultBrowserPromoUtils;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePage;
 import org.chromium.components.browser_ui.accessibility.PageZoomManager;
@@ -120,7 +122,8 @@ import java.util.List;
     ChromeFeatureList.ADAPTIVE_BUTTON_IN_TOP_TOOLBAR_PAGE_SUMMARY,
     ChromeFeatureList.FEED_AUDIO_OVERVIEWS,
     ChromeFeatureList.GLIC,
-    ChromeFeatureList.NEW_TAB_PAGE_CUSTOMIZATION,
+    ChromeFeatureList.SUBMENUS_IN_APP_MENU,
+    DomDistillerFeatures.READER_MODE_DISTILL_IN_APP,
     DomDistillerFeatures.READER_MODE_IMPROVEMENTS,
     BraveFeatureList.BRAVE_SHRED,
 })
@@ -166,6 +169,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     @Mock private WebFeedBridge.Natives mWebFeedBridgeJniMock;
     @Mock private TranslateBridge.Natives mTranslateBridgeJniMock;
     @Mock private PageZoomManager mPageZoomManagerMock;
+    @Mock private DefaultBrowserPromoUtils mDefaultBrowserPromoUtilsMock;
 
     private ShadowPackageManager mShadowPackageManager;
 
@@ -175,8 +179,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             mIncognitoReauthControllerSupplier = new OneshotSupplierImpl<>();
     private final SettableNullableObservableSupplier<BookmarkModel> mBookmarkModelSupplier =
             ObservableSuppliers.createNullable();
-    private final SettableNullableObservableSupplier<ReadAloudController>
-            mReadAloudControllerSupplier = ObservableSuppliers.createNullable();
+    private final SettableMonotonicObservableSupplier<ReadAloudController>
+            mReadAloudControllerSupplier = ObservableSuppliers.createMonotonic();
     private final ActivityTabProvider mActivityTabProvider = new ActivityTabProvider();
 
     private BraveTabbedAppMenuPropertiesDelegate mTabbedAppMenuPropertiesDelegate;
@@ -281,6 +285,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
 
         CommerceFeatureUtilsJni.setInstanceForTesting(mCommerceFeatureUtilsJniMock);
         ShoppingServiceFactory.setShoppingServiceForTesting(mShoppingService);
+        DefaultBrowserPromoUtils.setInstanceForTesting(mDefaultBrowserPromoUtilsMock);
     }
 
     @After

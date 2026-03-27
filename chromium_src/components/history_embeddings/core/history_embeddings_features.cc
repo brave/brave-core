@@ -5,7 +5,7 @@
 
 #include "base/feature_override.h"
 
-#include <components/history_embeddings/history_embeddings_features.cc>
+#include <components/history_embeddings/core/history_embeddings_features.cc>
 
 // Keep upstream history embeddings flags disabled by default. Users can
 // enable kHistoryEmbeddings via about:flags. kHistoryEmbeddingsAnswers

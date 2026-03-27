@@ -37,6 +37,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "net/base/switches.h"
 #include "net/dns/mock_host_resolver.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -108,8 +109,7 @@ class BraveNetworkAuditSearchAdTest : public InProcessBrowserTest {
     audit_results_path_ =
         source_root_path.AppendASCII("network_audit_search_ad_results.json");
 
-    command_line->AppendSwitchPath(network::switches::kLogNetLog,
-                                   net_log_path_);
+    command_line->AppendSwitchPath(net::switches::kLogNetLog, net_log_path_);
     command_line->AppendSwitchASCII(network::switches::kNetLogCaptureMode,
                                     "Everything");
     mock_cert_verifier_.SetUpCommandLine(command_line);

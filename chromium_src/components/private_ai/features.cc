@@ -5,14 +5,14 @@
 
 #include "base/feature_override.h"
 
-#include <components/legion/features.cc>
+#include <components/private_ai/features.cc>
 
-namespace legion {
+namespace private_ai {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
 #if !BUILDFLAG(IS_ANDROID)
-    {kLegion, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kPrivateAi, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif  // !BUILDFLAG(IS_ANDROID)
 }});
 
-}  // namespace legion
+}  // namespace private_ai

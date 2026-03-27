@@ -772,11 +772,28 @@ Brave is unable to recover your settings.
         <message name="IDS_DEFAULT_BROWSER_MODAL_BODY_WITH_SETTINGS_ILLUSTRATION" desc="Body text of the default browser modal with settings illustration.">
           Keep your passwords, bookmarks, and history perfectly synced across devices. Easily access the features you know and love by updating your default browser to Brave.
         </message>
+        <message name="IDS_DEFAULT_BROWSER_MODAL_BODY_WITH_SETTINGS_ILLUSTRATION_UNPINNED" desc="Body text of the default browser modal with settings illustration when Brave is not pinned to the taskbar.">
+          Keep your passwords, bookmarks, and history perfectly synced across devices. Easily access the features you know and love by updating your default browser to Brave. Brave will be pinned to your taskbar for quick access.
+        </message>
         <message name="IDS_DEFAULT_BROWSER_MODAL_TITLE_WITHOUT_SETTINGS_ILLUSTRATION" desc="Title of the default browser modal without settings illustration.">
           Use Brave recommended browser settings
         </message>
         <message name="IDS_DEFAULT_BROWSER_MODAL_BODY_WITHOUT_SETTINGS_ILLUSTRATION" desc="Body text of the default browser modal without settings illustration.">
+          Get easy access to the features you know, love, and trust by setting Brave as your default browser.
+        </message>
+        <message name="IDS_DEFAULT_BROWSER_MODAL_BODY_WITHOUT_SETTINGS_ILLUSTRATION_UNPINNED" desc="Body text of the default browser modal without settings illustration when Brave is not pinned to the taskbar.">
           Get easy access to the features you know, love, and trust by setting Brave as your default browser. Brave will be pinned to your taskbar for quick access.
+        </message>
+        <message name="IDS_DEFAULT_BROWSER_BUBBLE_DIALOG_TITLE" desc="Title of the dialog prompting the user to set Brave as the default browser.">
+          Set Brave as your default browser
+        </message>
+        <message name="IDS_DEFAULT_BROWSER_BUBBLE_DIALOG_BODY" desc="Main explanatory text in the default browser dialog.">
+          Get easy access to the features you know, love, and trust by setting Brave as your default browser.
+        </message>
+        <message name="IDS_DEFAULT_BROWSER_BUBBLE_DIALOG_STEPS_PINNED_COMBINED" desc="Numbered instructions. $1, $2 and $3 are the bold button names.">
+          1. Click <ph name="BUTTON_LABEL">$1<ex>Open settings</ex></ph> below
+2. Click <ph name="BUTTON_2">$2<ex>Set default</ex></ph> in your Windows settings
+3. Click <ph name="BUTTON_3">$3<ex>Yes</ex></ph> in the Windows notification to pin Brave to your taskbar for quick access
         </message>
       </if>
       <if expr="is_win or is_macosx">
@@ -1115,6 +1132,16 @@ Brave is unable to recover your settings.
       <message name="IDS_ENTERPRISE_VALUE_PROPOSITION_PROFILE_REQUIRED_BY_ORG_TITLE" desc="Title of the screen in the profile creation flow where the user is asked whether they want to confirm signing in to Brave with their enterprise account when it is mandatory to sign in to Brave with the enterprise account.">
         Your organization requires you to sign into Brave
       </message>
+
+      <!-- Signin Search AI Mode promo -->
+      <!-- TODO(crbug.com/486858498): Finalize and make transalteable. -->
+      <message name="IDS_AI_SIGNIN_PROMO_SUBTITLE" translateable="false">
+        Sign in to Brave to ask AI mode about your tabs. You'll also get your passwords and more on all your devices.
+      </message>
+      <message name="IDS_AI_SIGNIN_PROMO_AVATAR_PILL_TEXT" translateable="false" meaning="Text shown on the expanded avatar pill when the Signin Search AI Bubble promo is shown to the user">
+        Sign in to Brave?
+      </message>
+
       <if expr="toolkit_views">
         <message name="IDS_ENTERPRISE_SIGNIN_TITLE" desc="The title of the dialog to confirm linking the browser profile with the signed-in enterprise account">
           Link your Brave data to this account?
@@ -1199,6 +1226,12 @@ Brave is unable to recover your settings.
       <if expr="not is_android">
         <message name="IDS_NTP_CUSTOMIZATION_PROMO" desc="The text shown in the body of the New Tab Page browser customization promotion">
           Customize Brave to give your browser a new look
+        </message>
+        <message name="IDS_NTP_MOBILE_PROMO_TITLE" desc="Title of the NTP promo that promotes the browser on mobile.">
+          Get Brave on your phone
+        </message>
+        <message name="IDS_NTP_MOBILE_PROMO_PASSWORDS_TITLE" desc="Title of the NTP promo that promotes the browser on mobile for passwords.">
+          Get the Brave app to save passwords on the go
         </message>
         <message name="IDS_NTP_SIGN_IN_PROMO_WITH_BOOKMARKS" desc="The text shown in the body of the New Tab Page sign in promotion">
           Sign in to Brave to get your passwords, bookmarks, and more on all your devices
@@ -1536,6 +1569,14 @@ Brave is unable to recover your settings.
         ''' It also controls what page is shown when you start Brave or search from the Omnibox. '''
       </message>
 
+      <!-- Search Settings Page -->
+      <message name="IDS_SETTINGS_SEARCH_EXTENSION_ENGINES_ACTIVE_SHORTCUTS_EXPLANATION" desc="Subtitle for the active features and extensions subsection, explaining how they can be used.">
+        To search a specific Brave feature or extension, type its shortcut in the address bar, followed by your selected keyboard key
+      </message>
+      <message name="IDS_SETTINGS_SEARCH_EXTENSION_ENGINES_INACTIVE_SHORTCUTS_EXPLANATION" desc="Subtitle for the inactive features and extensions subsection, explaining how they can be used.">
+        Some Brave features and extensions come with shortcuts. You can choose to turn them back on.
+      </message>
+
       <!-- Webstore strings -->
       <message name="IDS_WEBSTORE_APP_DESCRIPTION" desc="Description for the WebStore app.">
         Discover great apps, games, extensions and themes for Brave.
@@ -1588,6 +1629,18 @@ Brave is unable to recover your settings.
         <message name="IDS_AVATAR_BUTTON_MAKING_CHROME_YOURS" desc="The avatar button label when the user has just signed in. When clicked, it opens the profile menu.">
           Making Brave yours...
         </message>
+
+        <!-- Sign-in Promo Avatar Button Label Desktop -->
+        <if expr="not use_titlecase">
+          <message name="IDS_AVATAR_BUTTON_SIGNIN_PROMO" desc="The avatar button promo label inviting the user to sign-in. Shown for signed out users, and signed in to the web only. When clicked, it opens the profile menu.">
+            Sign in to Brave?
+          </message>
+        </if>
+        <if expr="use_titlecase">
+           <message name="IDS_AVATAR_BUTTON_SIGNIN_PROMO" desc="The avatar button promo label inviting the user to sign-in. Shown for signed out users, and signed in to the web only. When clicked, it opens the profile menu.">
+            Sign In to Brave?
+          </message>
+        </if>
       </if>
 
       <!-- Update Recommended dialog -->
@@ -2757,116 +2810,117 @@ Brave is unable to recover your settings.
           Cleared Brave data
         </message>
       </if>
+      <message name="IDS_SKILL_SAVED_TOAST_BUTTON" desc="Text on the toast action button after a skill is saved">
+        Try with Gemini in Brave
+      </message>
 
       <!-- Glic Strings -->
-      <if expr="enable_glic">
-        <message name="IDS_GLIC_PROMO_TITLE" desc="Glic promo title." translateable="false">
-          Try Gemini in Brave
-        </message>
-        <message name="IDS_GLIC_TAB_STRIP_BUTTON_TOOLTIP" translateable="false" desc="This is the tooltip shown when hovering over the glic entry button in the tab strip while the Glic window is closed.">
-          Open Gemini in Brave
-        </message>
-        <message name="IDS_GLIC_TAB_STRIP_BUTTON_TOOLTIP_CLOSE" translateable="false" desc="This is the tooltip shown when hovering over the glic entry button in the tab strip while the Glic window is open.">
-          Close Gemini in Brave
-        </message>
+      <message name="IDS_GLIC_PROMO_TITLE" desc="Glic promo title." translateable="false">
+        Try Gemini in Brave
+      </message>
+      <message name="IDS_GLIC_TAB_STRIP_BUTTON_TOOLTIP" translateable="false" desc="This is the tooltip shown when hovering over the glic entry button in the tab strip while the Glic window is closed.">
+        Open Gemini in Brave
+      </message>
+      <message name="IDS_GLIC_TAB_STRIP_BUTTON_TOOLTIP_CLOSE" translateable="false" desc="This is the tooltip shown when hovering over the glic entry button in the tab strip while the Glic window is open.">
+        Close Gemini in Brave
+      </message>
 
-        <message name="IDS_GLIC_THREE_DOT_MENU_ITEM" desc="Glic three dot menu item entry point." translateable="false">
-          Open Gemini in Brave
-        </message>
+      <message name="IDS_GLIC_THREE_DOT_MENU_ITEM" desc="Glic three dot menu item entry point." translateable="false">
+        Open Gemini in Brave
+      </message>
 
-        <!-- Glic status tray icon strings -->
-        <message name="IDS_GLIC_STATUS_ICON_TOOLTIP" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered and the Glic window is closed.">
-          Open Gemini in Brave
-        </message>
-        <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_CANARY" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered and the Glic window is closed. It indicates that this is the Canary version of the browser.">
-          Open Gemini (Canary)
-        </message>
-        <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_DEV" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered and the Glic window is closed. It indicates that this is the Dev version of the browser.">
-          Open Gemini (Dev)
-        </message>
-        <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_BETA" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered and the Glic window is closed. It indicates that this is the Beta version of the browser.">
-          Open Gemini (Beta)
-        </message>
-        <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_CLOSE" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered and the Glic window is open.">
-          Close Gemini in Brave
-        </message>
-        <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_CLOSE_CANARY" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered and the Glic window is open. It indicates that this is the Canary version of the browser.">
-          Close Gemini (Canary)
-        </message>
-        <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_CLOSE_DEV" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered and the Glic window is open. It indicates that this is the Dev version of the browser.">
-          Close Gemini (Dev)
-        </message>
-        <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_CLOSE_BETA" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered and the Glic window is open. It indicates that this is the Beta version of the browser.">
-          Close Gemini (Beta)
-        </message>
-        <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_TOGGLE" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered.">
-          Toggle Gemini in Brave
-        </message>
-        <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_TOGGLE_CANARY" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered. It indicates that this is the Canary version of the browser.">
-          Toggle Gemini (Canary)
-        </message>
-        <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_TOGGLE_DEV" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered. It indicates that this is the Dev version of the browser.">
-          Toggle Gemini (Dev)
-        </message>
-        <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_TOGGLE_BETA" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered. It indicates that this is the Beta version of the browser.">
-          Toggle Gemini (Beta)
-        </message>
-        <message name="IDS_GLIC_STATUS_ICON_MENU_SHOW" translateable="false" desc="This is the menu item for showing the glic UI.">
-          Open Gemini in Brave
-        </message>
-        <message name="IDS_GLIC_STATUS_ICON_MENU_CLOSE" translateable="false" desc="This is the menu item for closing the Glic window.">
-          Close Gemini in Brave
-        </message>
-        <message name="IDS_GLIC_STATUS_ICON_MENU_TOGGLE" translateable="false" desc="This is the menu item for toggling the glic UI.">
-          Toggle Gemini in Brave
-        </message>
-        <message name="IDS_GLIC_INELIGIBLE_PROFILE_NOTICE" translateable="false" desc="This is the text of the glic ineligible profile notice.">
-          To use Gemini in Brave, sign in with a different Brave sync chain
-        </message>
+      <!-- Glic status tray icon strings -->
+      <message name="IDS_GLIC_STATUS_ICON_TOOLTIP" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered and the Glic window is closed.">
+        Open Gemini in Brave
+      </message>
+      <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_CANARY" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered and the Glic window is closed. It indicates that this is the Canary version of the browser.">
+        Open Gemini (Canary)
+      </message>
+      <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_DEV" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered and the Glic window is closed. It indicates that this is the Dev version of the browser.">
+        Open Gemini (Dev)
+      </message>
+      <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_BETA" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered and the Glic window is closed. It indicates that this is the Beta version of the browser.">
+        Open Gemini (Beta)
+      </message>
+      <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_CLOSE" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered and the Glic window is open.">
+        Close Gemini in Brave
+      </message>
+      <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_CLOSE_CANARY" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered and the Glic window is open. It indicates that this is the Canary version of the browser.">
+        Close Gemini (Canary)
+      </message>
+      <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_CLOSE_DEV" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered and the Glic window is open. It indicates that this is the Dev version of the browser.">
+        Close Gemini (Dev)
+      </message>
+      <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_CLOSE_BETA" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered and the Glic window is open. It indicates that this is the Beta version of the browser.">
+        Close Gemini (Beta)
+      </message>
+      <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_TOGGLE" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered.">
+        Toggle Gemini in Brave
+      </message>
+      <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_TOGGLE_CANARY" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered. It indicates that this is the Canary version of the browser.">
+        Toggle Gemini (Canary)
+      </message>
+      <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_TOGGLE_DEV" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered. It indicates that this is the Dev version of the browser.">
+        Toggle Gemini (Dev)
+      </message>
+      <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_TOGGLE_BETA" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered. It indicates that this is the Beta version of the browser.">
+        Toggle Gemini (Beta)
+      </message>
+      <message name="IDS_GLIC_STATUS_ICON_MENU_SHOW" translateable="false" desc="This is the menu item for showing the glic UI.">
+        Open Gemini in Brave
+      </message>
+      <message name="IDS_GLIC_STATUS_ICON_MENU_CLOSE" translateable="false" desc="This is the menu item for closing the Glic window.">
+        Close Gemini in Brave
+      </message>
+      <message name="IDS_GLIC_STATUS_ICON_MENU_TOGGLE" translateable="false" desc="This is the menu item for toggling the glic UI.">
+        Toggle Gemini in Brave
+      </message>
+      <message name="IDS_GLIC_INELIGIBLE_PROFILE_NOTICE" translateable="false" desc="This is the text of the glic ineligible profile notice.">
+        To use Gemini in Brave, sign in with a different Brave sync chain
+      </message>
 
-        <!-- Experimental Glic settings -->
-        <message name="IDS_SETTINGS_GLIC_PAGE_TITLE" translateable="false" desc="Title of the Glic settings subpage. Also shown as page title in tabstrip.">
-          Gemini in Brave
-        </message>
-        <message name="IDS_SETTINGS_GLIC_SECTION_TITLE" translateable="false" desc="Text of the Glic section header on the AI settings page.">
-          Gemini in Brave
-        </message>
-        <message name="IDS_SETTINGS_GLIC_ROW_LABEL" translateable="false" desc="Label of the Glic row button on the AI settings page leading to the Glic subpage.">
-          Gemini in Brave
-        </message>
-        <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE" desc="Title for the Gemini feature introduction screen">
-          Let Brave browse for you
-        </message>
-        <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE_SUBLABEL" desc="Subheader explaining what the Gemini feature does">
-          Gemini in Brave uses auto browse to work in your tabs and complete tasks you give it. <ph name="LINK_BEGIN">&lt;a href="#"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
-        </message>
+      <!-- Experimental Glic settings -->
+      <message name="IDS_SETTINGS_GLIC_PAGE_TITLE" translateable="false" desc="Title of the Glic settings subpage. Also shown as page title in tabstrip.">
+        Gemini in Brave
+      </message>
+      <message name="IDS_SETTINGS_GLIC_SECTION_TITLE" translateable="false" desc="Text of the Glic section header on the AI settings page.">
+        Gemini in Brave
+      </message>
+      <message name="IDS_SETTINGS_GLIC_ROW_LABEL" translateable="false" desc="Label of the Glic row button on the AI settings page leading to the Glic subpage.">
+        Gemini in Brave
+      </message>
+      <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE" desc="Title for the Gemini feature introduction screen">
+        Let Brave browse for you
+      </message>
+      <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE_SUBLABEL" desc="Subheader explaining what the Gemini feature does">
+        Gemini in Brave uses auto browse to work in your tabs and complete tasks you give it. <ph name="LINK_BEGIN">&lt;a href="#"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+      </message>
 
-        <!-- Profile Picker Glic version-->
-        <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE_GLIC" desc="Profile picker main view title for Glic version. 'Glic' has a special styling." translateable="false">
-          Choose a Brave profile to use with <ph name="START_GLIC_STYLING">&lt;span class="glic-brand-style"&gt;</ph>Glic<ph name="END_GLIC_STYLING">&lt;/span&gt;</ph>
-        </message>
-        <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE_GLIC_NO_PROFILE" desc="Profile picker main view title for Glic version when no profiles are eligible to use Glic. 'Glic' has a special styling." translateable="false">
-          Sign into Brave with your Brave sync chain to use <ph name="START_GLIC_STYLING">&lt;span class="glic-brand-style"&gt;</ph>Glic<ph name="END_GLIC_STYLING">&lt;/span&gt;</ph>
-        </message>
-        <message name="IDS_PROFILE_PICKER_MAIN_VIEW_SUBTITLE_GLIC" desc="Profile picker main view subtitle for Glic version." translateable="false">
-          Select the Brave profile linked to your Brave sync chain to personalize your Glic experience
-        </message>
-        <message name="IDS_PROFILE_PICKER_MAIN_VIEW_SUBTITLE_GLIC_NO_PROFILE" desc="Profile picker main view subtitle for Glic version. This version is shown when no profiles are eligibile to use Glic." translateable="false">
-          To add a new profile and use it with Glic, sign in to Brave with a Brave sync chain. <ph name="BEGIN_LINK">&lt;a class="learn-more-link" href="#" target="_blank"&gt;</ph>Learn how to sign in to Brave<ph name="END_LINK">&lt;/a&gt;</ph>
-        </message>
-        <message name="IDS_PROFILE_PICKER_ADD_PROFILE_HELPER_GLIC" desc="Text shown in the Profile Picker Glic version below the profiles list container that helps the user to create a new profile and sign in to it." translateable="false">
-          To add a new profile and use it with Glic, sign in to Brave with a different Brave sync chain. <ph name="BEGIN_LINK">&lt;a class="learn-more-link" href="#" target="_blank"&gt;</ph>Learn how to add a new Brave profile<ph name="END_LINK">&lt;/a&gt;</ph>
-        </message>
+      <!-- Profile Picker Glic version-->
+      <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE_GLIC" desc="Profile picker main view title for Glic version. 'Glic' has a special styling." translateable="false">
+        Choose a Brave profile to use with <ph name="START_GLIC_STYLING">&lt;span class="glic-brand-style"&gt;</ph>Glic<ph name="END_GLIC_STYLING">&lt;/span&gt;</ph>
+      </message>
+      <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE_GLIC_NO_PROFILE" desc="Profile picker main view title for Glic version when no profiles are eligible to use Glic. 'Glic' has a special styling." translateable="false">
+        Sign into Brave with your Brave sync chain to use <ph name="START_GLIC_STYLING">&lt;span class="glic-brand-style"&gt;</ph>Glic<ph name="END_GLIC_STYLING">&lt;/span&gt;</ph>
+      </message>
+      <message name="IDS_PROFILE_PICKER_MAIN_VIEW_SUBTITLE_GLIC" desc="Profile picker main view subtitle for Glic version." translateable="false">
+        Select the Brave profile linked to your Brave sync chain to personalize your Glic experience
+      </message>
+      <message name="IDS_PROFILE_PICKER_MAIN_VIEW_SUBTITLE_GLIC_NO_PROFILE" desc="Profile picker main view subtitle for Glic version. This version is shown when no profiles are eligibile to use Glic." translateable="false">
+        To add a new profile and use it with Glic, sign in to Brave with a Brave sync chain. <ph name="BEGIN_LINK">&lt;a class="learn-more-link" href="#" target="_blank"&gt;</ph>Learn how to sign in to Brave<ph name="END_LINK">&lt;/a&gt;</ph>
+      </message>
+      <message name="IDS_PROFILE_PICKER_ADD_PROFILE_HELPER_GLIC" desc="Text shown in the Profile Picker Glic version below the profiles list container that helps the user to create a new profile and sign in to it." translateable="false">
+        To add a new profile and use it with Glic, sign in to Brave with a different Brave sync chain. <ph name="BEGIN_LINK">&lt;a class="learn-more-link" href="#" target="_blank"&gt;</ph>Learn how to add a new Brave profile<ph name="END_LINK">&lt;/a&gt;</ph>
+      </message>
 
-        <!-- Glic button and tab strip context menu -->
-        <message name="IDS_GLIC_CONTEXTUAL_CUEING_ANNOUNCEMENT" desc="Polite announcement that happens when a contextual nudge is shown next to the Glic button." translateable="false">
-          To open Gemini in Brave, press <ph name="GLOBAL_HOTKEY">$1<ex>⌘+G</ex></ph>
-        </message>
-        <!-- Variant of the label on the Gemini button in the tabstrip-->
-        <message name="IDS_GLIC_BUTTON_ENTRYPOINT_ASK_BROWSER_LABEL" desc="Label on the button used to open Gemini in Brave.">
-          Ask Brave
-        </message>
-      </if>
+      <!-- Glic button and tab strip context menu -->
+      <message name="IDS_GLIC_CONTEXTUAL_CUEING_ANNOUNCEMENT" desc="Polite announcement that happens when a contextual nudge is shown next to the Glic button." translateable="false">
+        To open Gemini in Brave, press <ph name="GLOBAL_HOTKEY">$1<ex>⌘+G</ex></ph>
+      </message>
+      <!-- Variant of the label on the Gemini button in the tabstrip-->
+      <message name="IDS_GLIC_BUTTON_ENTRYPOINT_ASK_BROWSER_LABEL" desc="Label on the button used to open Gemini in Brave.">
+        Ask Brave
+      </message>
 
       <!-- UNO Promo strings for extensions -->
       <if expr="enable_extensions">
@@ -2884,15 +2938,6 @@ Brave is unable to recover your settings.
       </message>
 
       <!-- Dice Migration strings -->
-      <message name="IDS_DICE_MIGRATION_DIALOG_TITLE" desc="The title in the Dice Migration dialog advertising the sign-in benefit.">
-        Get more when you’re signed in to Brave
-      </message>
-      <message name="IDS_DICE_MIGRATION_DIALOG_DESCRIPTION" desc="The content of the Dice Migration dialog advertising the benefits of signing in to Brave.">
-        You’ll save and use passwords and more in your Brave sync chain whenever you’re signed in to Brave. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
-      </message>
-      <message name="IDS_DICE_MIGRATION_DIALOG_OK_BUTTON" desc="The primary button label in the Dice Migration dialog, letting the user acknowledge signing in to Brave.">
-        Got it
-      </message>
       <message name="IDS_DICE_MIGRATION_CONFIRMATION_TOAST_MESSAGE" desc="The confirmation message shown in a toast after the user clicks on the accept button on the Dice Migration dialog.">
         You now have more features available in Brave
       </message>
@@ -2928,8 +2973,18 @@ Brave is unable to recover your settings.
         <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_FOOTER_TITLE" desc="The title for the footer of the iOS desktop password promo bubble suggesting to users that they can use their passwords on their iOS devices.">
           Use your passwords with Brave on your phone
         </message>
-        <message name="IDS_IOS_DESKTOP_PROMO_BUBBLE_BUTTON_ACCEPT_QR" desc="The text inside the iOS promo bubble button allowing the user to accept by getting the app via QR code.">
-          Get the Brave app
+        <if expr="use_titlecase">
+          <message name="IDS_IOS_DESKTOP_PROMO_BUBBLE_BUTTON_ACCEPT_QR" desc="The text inside the iOS promo bubble button allowing the user to accept by getting the app via QR code.">
+            Get the Brave App
+          </message>
+        </if>
+        <if expr="not use_titlecase">
+          <message name="IDS_IOS_DESKTOP_PROMO_BUBBLE_BUTTON_ACCEPT_QR" desc="The text inside the iOS promo bubble button allowing the user to accept by getting the app via QR code.">
+            Get the Brave app
+          </message>
+        </if>
+        <message name="IDS_IOS_DESKTOP_PROMO_QR_CODE_ALT_TEXT" desc="The accessibility label for the QR code image in the iOS desktop promo bubbles.">
+          QR code to download Brave browser on mobile devices
         </message>
         <message name="IDS_IOS_DESKTOP_PROMO_REMINDER_CONFIRMATION" desc="Body text of the promo bubble that appears after uses choose to be reminded of the feature on their iOS device. The placeholder will be replaced by the name of the feature.">
           You'll see a prompt to try <ph name="FEATURE_NAME">$1<ex>Google Lens</ex></ph> next time you open Brave iOS.
@@ -2987,9 +3042,19 @@ Brave is unable to recover your settings.
       <message name="IDS_REPORT_UNSAFE_SITE_DIALOG_TITLE" desc="Title of the dialog for reporting an unsafe site to Brave">
         Report this site
       </message>
-
       <message name="IDS_REPORT_UNSAFE_SITE_DIALOG_DESCRIPTION" desc="Explanatory text in dialog for reporting an unsafe site to Brave">
         Improve online safety for everyone when you report a site you think is harmful.
+      </message>
+      <message name="IDS_REPORT_UNSAFE_SITE_DIALOG_FOOTER" desc="Explanatory text in dialog footer describing what other information is sent as part of the unsafe-site-report.">
+          We use info to improve this service. See Privacy Policy and Terms of Service.
+      </message>
+
+      <!-- Indigo Strings -->
+      <message name="IDS_INDIGO_ENTRYPOINT_CHIP_TEXT" desc="The text on the Indigo entry point chip in the omnibox." translateable="false">
+        Indigo
+      </message>
+      <message name="IDS_INDIGO_ENTRYPOINT_CHIP_TOOLTIP_TEXT" desc="The tooltip text of the Indigo entry point chip in the omnibox when in hover state." translateable="false">
+        Indigo tooltip text
       </message>
     <message name="IDS_CHROME_SHORTCUT_NAME_BETA" desc="The Chrome shortcut name for beta channel">
           Google Chrome Beta

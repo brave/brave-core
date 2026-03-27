@@ -101,7 +101,6 @@ void BraveContentRendererClient::
       SetRuntimeFeaturesDefaultsBeforeBlinkInitialization();
 
   blink::WebRuntimeFeatures::EnableFledge(false);
-  blink::WebRuntimeFeatures::EnablePermissionElement(false);
   // Disable topics APIs because kBrowsingTopics feature is disabled
   blink::WebRuntimeFeatures::EnableTopicsAPI(false);
   blink::WebRuntimeFeatures::EnableTopicsDocumentAPI(false);
@@ -110,6 +109,7 @@ void BraveContentRendererClient::
 
   // These features don't have dedicated WebRuntimeFeatures wrappers.
   blink::WebRuntimeFeatures::EnableFeatureFromString("AdTagging", false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString("AIClassifierAPI", false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("DigitalGoods", false);
   if (!base::FeatureList::IsEnabled(blink::features::kFileSystemAccessAPI)) {
     blink::WebRuntimeFeatures::EnableFeatureFromString("FileSystemAccessLocal",
@@ -120,6 +120,7 @@ void BraveContentRendererClient::
   blink::WebRuntimeFeatures::EnableFeatureFromString("FledgeMultiBid", false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("PrivateStateTokens",
                                                      false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString("ProfilerAPI", false);
 
 #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
   if (base::FeatureList::IsEnabled(
@@ -294,13 +295,15 @@ void BraveContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
     v8::Local<v8::Context> v8_context,
     int64_t service_worker_version_id,
     const GURL& service_worker_scope,
-    const GURL& script_url) {
+    const GURL& script_url,
+    const blink::ServiceWorkerToken& service_worker_token) {
   brave_search_service_worker_holder_
       .WillDestroyServiceWorkerContextOnWorkerThread(
           v8_context, service_worker_version_id, service_worker_scope,
           script_url);
   ChromeContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
-      v8_context, service_worker_version_id, service_worker_scope, script_url);
+      v8_context, service_worker_version_id, service_worker_scope, script_url,
+      service_worker_token);
 }
 
 std::unique_ptr<blink::URLLoaderThrottleProvider>

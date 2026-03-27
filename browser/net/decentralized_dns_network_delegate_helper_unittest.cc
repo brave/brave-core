@@ -10,12 +10,14 @@
 #include "base/functional/callback_helpers.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/values.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/net/features.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
@@ -28,6 +30,7 @@
 #include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "build/build_config.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/testing_pref_service.h"
@@ -77,6 +80,20 @@ class DecentralizedDnsNetworkDelegateHelperTest : public testing::Test {
 
   void SetUp() override {
     profile_ = std::make_unique<TestingProfile>();
+
+    // BraveWalletService is nullptr in tests by default, so we have to create
+    // it manually.
+    DCHECK(g_browser_process->local_state());
+    brave_wallet::BraveWalletServiceFactory::GetInstance()->SetTestingFactory(
+        browser_context(),
+        base::BindLambdaForTesting([&](content::BrowserContext* context)
+                                       -> std::unique_ptr<KeyedService> {
+          return std::make_unique<brave_wallet::BraveWalletService>(
+              test_url_loader_factory_.GetSafeWeakWrapper(),
+              brave_wallet::BraveWalletServiceDelegate::Create(context),
+              user_prefs::UserPrefs::Get(context),
+              g_browser_process->local_state());
+        }));
 
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(

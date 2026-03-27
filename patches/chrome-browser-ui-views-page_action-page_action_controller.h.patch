@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_controller.h b/chrome/browser/ui/views/page_action/page_action_controller.h
-index 0cc8990928974cb418729eeba1320a560ade336e..5d4fa08f7f4e52d3f300f7e88d5bc712e60cd4f7 100644
+index f8b60561923541d940cbc6c7fdee6fa0d025584f..04e8d51f72cbd59f23ba1b706fa27565b05e4efd 100644
 --- a/chrome/browser/ui/views/page_action/page_action_controller.h
 +++ b/chrome/browser/ui/views/page_action/page_action_controller.h
-@@ -107,6 +107,22 @@ class PageActionController {
+@@ -109,6 +109,22 @@ class PageActionController {
   public:
    virtual ~PageActionController() = default;
  
@@ -25,7 +25,7 @@ index 0cc8990928974cb418729eeba1320a560ade336e..5d4fa08f7f4e52d3f300f7e88d5bc712
    // Requests that the page action be shown or hidden.
    virtual void Show(actions::ActionId action_id) = 0;
    virtual void Hide(actions::ActionId action_id) = 0;
-@@ -221,6 +237,16 @@ class PageActionControllerImpl : public PageActionController,
+@@ -246,6 +262,16 @@ class PageActionControllerImpl : public PageActionController,
    PageActionControllerImpl& operator=(const PageActionControllerImpl&) = delete;
    ~PageActionControllerImpl() override;
  

@@ -18,7 +18,6 @@ package org.chromium.chrome.browser.qrreader;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -29,6 +28,8 @@ import android.view.WindowManager;
 import androidx.annotation.RequiresPermission;
 
 import com.google.android.gms.common.images.Size;
+
+import org.chromium.base.Log;
 
 import java.io.IOException;
 

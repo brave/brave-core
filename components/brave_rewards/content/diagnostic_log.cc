@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/compiler_specific.h"
+#include "base/containers/span.h"
 #include "base/files/file_util.h"
 #include "base/i18n/time_formatting.h"
 #include "base/task/thread_pool.h"
@@ -122,7 +123,10 @@ int64_t SeekFromEnd(base::File* file, int num_lines) {
       return -1;
     }
 
-    if (UNSAFE_TODO(file->ReadAtCurrentPos(chunk, chunk_size)) == -1) {
+    std::optional<size_t> n =
+        file->ReadAtCurrentPos(base::as_writable_byte_span(chunk).first(
+            base::checked_cast<size_t>(chunk_size)));
+    if (!n.has_value()) {
       return -1;
     }
 
@@ -164,9 +168,10 @@ bool TrimBeginningOfFile(base::File* file, int keep_num_lines) {
   }
 
   const int64_t size = file->GetLength() - offset;
-  std::unique_ptr<char[]> buffer = std::make_unique<char[]>(size + 1);
-
-  if (UNSAFE_TODO(file->ReadAtCurrentPos(buffer.get(), size)) == -1) {
+  std::vector<char> buffer(base::checked_cast<size_t>(size));
+  std::optional<size_t> n =
+      file->ReadAtCurrentPos(base::as_writable_byte_span(buffer));
+  if (!n.has_value()) {
     return false;
   }
 
@@ -174,7 +179,7 @@ bool TrimBeginningOfFile(base::File* file, int keep_num_lines) {
     return false;
   }
 
-  const std::string data = std::string(buffer.get());
+  const std::string data(buffer.data(), *n);
   const int64_t new_size = data.size();
 
   if (UNSAFE_TODO(file->WriteAtCurrentPos(data.c_str(), new_size)) == -1) {
@@ -240,13 +245,14 @@ std::string ReadLastNLinesOnFileTaskRunner(const base::FilePath& file_path,
   }
 
   const int64_t size = file.GetLength() - offset;
-  std::unique_ptr<char[]> buffer = std::make_unique<char[]>(size + 1);
-
-  if (UNSAFE_TODO(file.ReadAtCurrentPos(buffer.get(), size)) == -1) {
+  std::vector<char> buffer(base::checked_cast<size_t>(size));
+  std::optional<size_t> n =
+      file.ReadAtCurrentPos(base::as_writable_byte_span(buffer));
+  if (!n.has_value()) {
     return "";
   }
 
-  return std::string(buffer.get());
+  return std::string(buffer.data(), *n);
 }
 
 bool WriteOnFileTaskRunner(const base::FilePath& file_path,

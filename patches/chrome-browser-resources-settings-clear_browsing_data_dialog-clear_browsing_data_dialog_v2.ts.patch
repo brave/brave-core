@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts
-index ad5e2480c9f624881eacc3dbc96bdcbb0785c517..b3ee2eec7da02e94c09c69bef9209efd7ca05b1c 100644
+index 60e4e4c2e89a30581df5a189064d2010986656e3..13bc89a3dd0006091b9c2179b84cd684e21d47b6 100644
 --- a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts
 +++ b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts
 @@ -81,10 +81,12 @@ export interface SettingsClearBrowsingDataDialogV2Element {

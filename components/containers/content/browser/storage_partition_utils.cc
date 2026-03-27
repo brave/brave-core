@@ -9,6 +9,7 @@
 
 #include "base/strings/string_util.h"
 #include "brave/components/containers/core/common/features.h"
+#include "content/public/browser/security_principal.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition_config.h"
 #include "content/public/browser/web_contents.h"
@@ -54,8 +55,9 @@ std::string GetContainerIdForWebContents(content::WebContents* web_contents) {
     return std::string();
   }
 
-  const auto& config =
-      web_contents->GetSiteInstance()->GetStoragePartitionConfig();
+  const auto& config = web_contents->GetSiteInstance()
+                           ->GetSecurityPrincipal()
+                           .GetStoragePartitionConfig();
   if (!IsContainersStoragePartition(config)) {
     return std::string();
   }

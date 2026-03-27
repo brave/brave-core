@@ -10,7 +10,7 @@
 .label {
   color: var(--leo-color-text-primary);
   font: var(--leo-font-small-semibold);
-  margin: 0px 0px 0px var(--leo-spacing-s);
+  margin: 0 0 0 var(--leo-spacing-s);
 }
 
 .label.error {
@@ -26,7 +26,7 @@ leo-input:not(:focus):has(.error) {
 }
 
 leo-input:focus:has(.error) {
-  --leo-control-focus-effect: 0px 0px 0px 2px
+  --leo-control-focus-effect: 0 0 0 2px
     var(--leo-color-systemfeedback-error-icon);
 }
 

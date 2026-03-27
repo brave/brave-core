@@ -19,7 +19,7 @@
 #include "brave/components/local_ai/core/background_web_contents.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "brave/components/local_ai/core/local_models_updater.h"
-#include "components/history_embeddings/history_embeddings_features.h"
+#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "mojo/public/cpp/base/big_buffer.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"

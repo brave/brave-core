@@ -37,6 +37,10 @@ export class BraveAccountOtpInputElement extends CrLitElement {
     }
   }
 
+  protected get indices() {
+    return [...Array(this.length).keys()]
+  }
+
   protected onPaste(e: ClipboardEvent) {
     e.preventDefault()
 

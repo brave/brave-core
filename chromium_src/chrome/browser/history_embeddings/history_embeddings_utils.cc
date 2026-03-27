@@ -7,7 +7,7 @@
 // OptimizationGuide pref checks that we don't use.
 #include "base/feature_list.h"
 #include "base/feature_override.h"
-#include "components/history_embeddings/history_embeddings_features.h"
+#include "components/history_embeddings/core/history_embeddings_features.h"
 
 #define IsHistoryEmbeddingsFeatureEnabled \
   IsHistoryEmbeddingsFeatureEnabled_ChromiumImpl

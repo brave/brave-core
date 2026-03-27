@@ -123,7 +123,8 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
   // Check promotion button is launched.
   GetTemplateURLService()->SetUserSelectedDefaultSearchProvider(
       &bing_template_url);
-  location_bar()->FocusLocation(true);
+  location_bar()->FocusLocation(/*is_user_initiated=*/true,
+                                /*clear_focus_if_failed=*/false);
   omnibox_view()->SetUserText(u"a");
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return controller()->IsPopupOpen(); }));
@@ -141,7 +142,8 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
       &brave_template_url);
 
   // Check button is not shown with brave search.
-  location_bar()->FocusLocation(true);
+  location_bar()->FocusLocation(/*is_user_initiated=*/true,
+                                /*clear_focus_if_failed=*/false);
   omnibox_view()->SetUserText(u"a");
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return controller()->IsPopupOpen(); }));
@@ -173,7 +175,8 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
   // Unset dismissed and simulate promotion button click.
   browser()->profile()->GetPrefs()->SetBoolean(
       brave_search_conversion::prefs::kDismissed, false);
-  location_bar()->FocusLocation(true);
+  location_bar()->FocusLocation(/*is_user_initiated=*/true,
+                                /*clear_focus_if_failed=*/false);
   omnibox_view()->SetUserText(search_term);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return controller()->IsPopupOpen(); }));

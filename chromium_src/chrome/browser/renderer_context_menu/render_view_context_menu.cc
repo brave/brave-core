@@ -42,6 +42,7 @@
 #include "components/omnibox/browser/autocomplete_classifier.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
 #include "components/omnibox/browser/autocomplete_match_type.h"
+#include "content/public/browser/security_principal.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/filename_util.h"
 #include "ui/base/models/menu_separator_types.h"
@@ -320,8 +321,11 @@ email_aliases::EmailAliasesController* GetEmailAliasesController(
 
 BraveRenderViewContextMenu::BraveRenderViewContextMenu(
     content::RenderFrameHost& render_frame_host,
-    const content::ContextMenuParams& params)
-    : RenderViewContextMenu_Chromium(render_frame_host, params)
+    const content::ContextMenuParams& params,
+    bool is_paste_enabled)
+    : RenderViewContextMenu_Chromium(render_frame_host,
+                                     params,
+                                     is_paste_enabled)
 #if BUILDFLAG(ENABLE_AI_CHAT)
       ,
       ai_chat_submenu_model_(this),
@@ -739,8 +743,9 @@ base::flat_set<std::string>
 BraveRenderViewContextMenu::GetCurrentContainerIds() {
   CHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
 
-  const auto& storage_partition_config =
-      source_web_contents_->GetSiteInstance()->GetStoragePartitionConfig();
+  const auto& storage_partition_config = source_web_contents_->GetSiteInstance()
+                                             ->GetSecurityPrincipal()
+                                             .GetStoragePartitionConfig();
   if (!containers::IsContainersStoragePartition(storage_partition_config)) {
     return {};
   }

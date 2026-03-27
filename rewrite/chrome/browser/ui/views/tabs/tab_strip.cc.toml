@@ -10,8 +10,8 @@ replace = '\1\n    BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEW
 
 [[substitution]]
 description = 'Insert Brave-specific macro in CalculateInsertionIndex()'
-re_pattern = '(int CalculateInsertionIndex\(const gfx::Rect& dragged_bounds,[\s\S]*continue;\n\s*}\n)'
-replace = '\1\n      BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX'
+re_pattern = '(int CalculateInsertionIndex\(const gfx::Rect& dragged_bounds,[\s\S]*continue;\n\s*}\n)(\n\s*// If there)'
+replace = '\1\n      BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX\2'
 
 [[substitution]]
 description = 'allow to expand tab groups only when tabstrip is editable inside SetSelection()'

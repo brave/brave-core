@@ -22,7 +22,7 @@
 #include "brave/components/brave_component_updater/browser/mock_on_demand_updater.h"
 #include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/mock_component_updater_service.h"
-#include "components/history_embeddings/history_embeddings_features.h"
+#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

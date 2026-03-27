@@ -19,6 +19,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/base/clipboard/clipboard_buffer.h"
+#include "ui/base/clipboard/test/clipboard_test_util.h"
 #include "ui/base/clipboard/test/test_clipboard.h"
 #include "ui/menus/simple_menu_model.h"
 #include "url/gurl.h"
@@ -234,9 +235,8 @@ TEST_F(DownloadBubbleTest, DownloadCommands_CopyDownloadLink) {
   clipboard->Clear(ui::ClipboardBuffer::kCopyPaste);
   commands.ExecuteCommand(DownloadCommands::COPY_DOWNLOAD_LINK);
 
-  std::u16string clipboard_text;
-  clipboard->ReadText(ui::ClipboardBuffer::kCopyPaste, nullptr,
-                      &clipboard_text);
+  std::u16string clipboard_text = ui::clipboard_test_util::ReadText(
+      clipboard, ui::ClipboardBuffer::kCopyPaste, /*data_dst=*/nullptr);
 
   EXPECT_EQ(base::UTF8ToUTF16(model_.GetURL().spec()), clipboard_text);
 

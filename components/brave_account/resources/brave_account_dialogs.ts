@@ -20,7 +20,7 @@ export type Dialog =
   | { type: 'CREATE' | 'ENTRY' | 'FORGOT_PASSWORD' | 'OTP' | 'SIGN_IN' }
   | { type: 'ERROR'; error: Error }
 
-export class BraveAccountDialogs extends CrLitElement {
+export class BraveAccountDialogsElement extends CrLitElement {
   static get is() {
     return 'brave-account-dialogs'
   }
@@ -108,8 +108,8 @@ export class BraveAccountDialogs extends CrLitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'brave-account-dialogs': BraveAccountDialogs
+    'brave-account-dialogs': BraveAccountDialogsElement
   }
 }
 
-customElements.define(BraveAccountDialogs.is, BraveAccountDialogs)
+customElements.define(BraveAccountDialogsElement.is, BraveAccountDialogsElement)

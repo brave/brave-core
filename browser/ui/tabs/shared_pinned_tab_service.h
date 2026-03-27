@@ -12,8 +12,8 @@
 #include "base/scoped_observation.h"
 #include "chrome/browser/profiles/profile_observer.h"
 #include "chrome/browser/ui/browser_list_observer.h"
+#include "chrome/browser/ui/tabs/tab_data.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
-#include "chrome/browser/ui/tabs/tab_renderer_data.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -35,7 +35,7 @@ class SharedPinnedTabService : public KeyedService,
                                public ProfileObserver {
  public:
   struct PinnedTabData {
-    TabRendererData renderer_data;
+    tabs::TabData renderer_data;
     raw_ptr<content::WebContents, DanglingUntriaged> shared_contents = nullptr;
     raw_ptr<TabStripModel> contents_owner_model = nullptr;
   };
@@ -53,13 +53,16 @@ class SharedPinnedTabService : public KeyedService,
   bool IsDummyContents(content::WebContents* contents) const;
 
   // Returns nullptr if it's not dummy contents or the data isn't ready yet.
-  const TabRendererData* GetTabRendererDataForDummyContents(
+  const tabs::TabData* GetTabDataForDummyContents(
       int index,
       content::WebContents* maybe_dummy_contents);
 
   void TabDraggingEnded(Browser* browser);
 
-  void BrowserClosing(TabStripModel* tab_strip_model);
+  // Returns true if the browser will be closed by this method. If true,
+  // Browser::OnWindowClosing() should not proceed, as TabStrip::Empty() will
+  // be invoked again.
+  [[nodiscard]] bool BrowserClosing(TabStripModel* tab_strip_model);
 
   // KeyedService:
   void Shutdown() override;

@@ -338,7 +338,11 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           </message>
         </if>
 
-        </if>
+        <if expr="not use_titlecase">
+          </if>
+        <if expr="use_titlecase">
+           </if>
+      </if>
 
       <if expr="not is_chromeos">
         <message name="IDS_UPDATE_RECOMMENDED" desc="The main text of the Update Recommended dialog with a count of open Private windows.">
@@ -460,10 +464,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
 
       <if expr="not is_android">
         </if>
-
-      <if expr="enable_glic">
-        </if>
-
       <if expr="enable_extensions">
         </if>
 
@@ -475,6 +475,10 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       </if>
 
       <if expr="not is_android">
+        <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
+          </if>
         </if>
 
       </messages>

@@ -214,18 +214,22 @@ export function getBuildArgs(config: Config) {
     }
   }
 
-  // Adjust symbol_level in Linux builds:
-  // 1. Set minimal symbol level to workaround size restrictions: on Linux x86,
-  //    ELF32 cannot be > 4GiB.
-  // 2. Enable symbols in Static builds. By default symbol_level is 0 in config
-  //    configuration. symbol_level = 2 cannot be used because of "relocation
+  // Adjust symbol_level to 1 to workaround size restrictions:
+  // 1. On Linux x86, ELF32 cannot be > 4GiB.
+  // 2. On Linux Static builds, enable symbols (symbol_level is 0 by default in
+  //    config). symbol_level = 2 cannot be used because of "relocation
   //    R_X86_64_32 out of range" errors.
+  // 3. On Android Release x64/arm64, debug sections exceed 4GiB causing
+  //    "relocation R_X86_64_32 out of range" linker errors.
   if (
-    config.targetOS === 'linux'
-    && (config.targetArch === 'x86'
-      || (!config.isDebug()
-        && !config.isComponentBuild()
-        && !config.isReleaseBuild()))
+    (config.targetOS === 'linux'
+      && (config.targetArch === 'x86'
+        || (!config.isDebug()
+          && !config.isComponentBuild()
+          && !config.isReleaseBuild())))
+    || (config.targetOS === 'android'
+      && config.isReleaseBuild()
+      && (config.targetArch === 'x64' || config.targetArch === 'arm64'))
   ) {
     args.symbol_level = 1
   }

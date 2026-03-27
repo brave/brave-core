@@ -8,6 +8,15 @@ import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 import { getCss } from './brave_account_email_input.css.js'
 import { getHtml } from './brave_account_email_input.html.js'
 
+// Maximum email address length according to this RFC3696 errata:
+// https://www.rfc-editor.org/errata/eid1690.
+// While maxlength is based on UTF-16 code units (where surrogate pairs count as
+// 2 code units), type="email"'s built-in validation filters out non-ASCII
+// characters, so maxlength="254" effectively means 254 ASCII characters/254
+// bytes. Platform behaviors: desktop and iOS invalidate the value if non-ASCII
+// is typed, while Android prevents typing non-ASCII entirely.
+export const MAX_EMAIL_LENGTH = 254
+
 export type EmailInputEventDetail = { email: string; isValid: boolean }
 
 export class BraveAccountEmailInputElement extends CrLitElement {

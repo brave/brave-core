@@ -78,6 +78,7 @@ source_set("test_utils") {
     "//base/test:test_support",
     "//brave/components/email_aliases:mojom",
     "//mojo/public/cpp/bindings",
+    "//url",
   ]
 }
 

@@ -12,6 +12,7 @@ source_set("side_panel") {
 
   public_deps = [
     "//base",
+    "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     "//chrome/browser/ui/views/side_panel",
     "//components/prefs",
     "//ui/base",
