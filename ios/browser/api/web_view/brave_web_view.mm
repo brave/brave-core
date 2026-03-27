@@ -61,6 +61,7 @@
 #include "ios/chrome/browser/web/model/print/print_handler.h"
 #include "ios/chrome/browser/web/model/print/print_tab_helper.h"
 #include "ios/web/common/crw_input_view_provider.h"
+#include "ios/web/public/navigation/navigation_context.h"
 #include "ios/web/public/navigation/web_state_policy_decider.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/web_state_user_data.h"
@@ -231,6 +232,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 - (void)updateNavigationAvailability;
 - (CWVAutofillController*)newAutofillController;
 - (id<CRWResponderInputView>)webStateInputViewProvider:(web::WebState*)webState;
+- (void)webState:(web::WebState*)webState
+    didFinishNavigation:(web::NavigationContext*)navigation;
 @end
 
 @interface BraveWebView () <FaviconDriverObserverBridge>
@@ -487,6 +490,18 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   if ([self.navigationDelegate
           respondsToSelector:@selector(webViewDidRedirectNavigation:)]) {
     [self.navigationDelegate webViewDidRedirectNavigation:self];
+  }
+}
+
+- (void)webState:(web::WebState*)webState
+    didFinishNavigation:(web::NavigationContext*)navigation {
+  [super webState:webState didFinishNavigation:navigation];
+
+  if (navigation->HasCommitted() && navigation->IsSameDocument() &&
+      !navigation->GetError() &&
+      [self.navigationDelegate respondsToSelector:@selector
+                               (webViewDidCommitSameDocumentNavigation:)]) {
+    [self.navigationDelegate webViewDidCommitSameDocumentNavigation:self];
   }
 }
 
