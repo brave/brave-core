@@ -7,6 +7,7 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import { Conversation } from '../../../common/mojom'
+import useCanStartNewConversation from '../../hooks/useCanStartNewConversation'
 import FeatureButtonMenu, {
   Props as FeatureButtonMenuProps,
 } from '../feature_button_menu'
@@ -16,7 +17,6 @@ import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
 import {
   tabAssociatedChatId,
-  updateSelectedConversation,
   useActiveChat,
 } from '../../state/active_chat_context'
 
@@ -40,12 +40,17 @@ export const ConversationHeader = React.forwardRef(function (
 ) {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
-  const { createNewConversation, isTabAssociated } = useActiveChat()
+  const {
+    createNewConversation,
+    isTabAssociated,
+    updateSelectedConversationId,
+  } = useActiveChat()
   const isMobile = useIsSmall() && aiChatContext.isMobile
 
+  const canStartNewConversation = useCanStartNewConversation()
+
   const shouldDisplayEraseAction =
-    (!aiChatContext.isStandalone || isMobile)
-    && conversationContext.conversationHistory.length >= 1
+    (!aiChatContext.isStandalone || isMobile) && canStartNewConversation
 
   const activeConversation = aiChatContext.conversations.find(
     (c: Conversation) => c.uuid === conversationContext.conversationUuid,
@@ -69,7 +74,7 @@ export const ConversationHeader = React.forwardRef(function (
             <Button
               kind='plain-faint'
               fab
-              onClick={() => updateSelectedConversation(tabAssociatedChatId)}
+              onClick={() => updateSelectedConversationId(tabAssociatedChatId)}
               title={getLocale(S.AI_CHAT_GO_BACK_TO_ACTIVE_CONVERSATION_BUTTON)}
             >
               <Icon name='arrow-left' />
@@ -154,12 +159,9 @@ export const ConversationHeader = React.forwardRef(function (
 
 export function NavigationHeader() {
   const aiChatContext = useAIChat()
-  const conversationContext = useConversation()
   const { createNewConversation } = useActiveChat()
 
-  const canStartNewConversation =
-    conversationContext.conversationHistory.length >= 1
-    && aiChatContext.hasAcceptedAgreement
+  const canStartNewConversation = useCanStartNewConversation()
   const isMobile = useIsSmall() && aiChatContext.isMobile
 
   return (

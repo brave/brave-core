@@ -7,8 +7,9 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import classNames from '$web-common/classnames'
+import { getLocale } from '$web-common/locale'
+import useCanStartNewConversation from '../../hooks/useCanStartNewConversation'
 import { useAIChat, useIsSmall } from '../../state/ai_chat_context'
-import { useConversation } from '../../state/conversation_context'
 import ConversationsList from '../conversations_list'
 import { NavigationHeader } from '../header'
 import Main from '../main'
@@ -18,7 +19,6 @@ import { useActiveChat } from '../../state/active_chat_context'
 export default function FullScreen() {
   const aiChatContext = useAIChat()
   const { createNewConversation } = useActiveChat()
-  const conversationContext = useConversation()
 
   const asideAnimationRef = React.useRef<Animation | null>()
   const controllerRef = React.useRef(new AbortController())
@@ -28,9 +28,7 @@ export default function FullScreen() {
   const [isNavigationRendered, setIsNavigationRendered] =
     React.useState(!isSmall)
 
-  const canStartNewConversation =
-    aiChatContext.hasAcceptedAgreement
-    && !!conversationContext.conversationHistory.length
+  const canStartNewConversation = useCanStartNewConversation()
 
   const asideRef = React.useRef<HTMLElement | null>(null)
 
@@ -156,6 +154,8 @@ export default function FullScreen() {
     }
   }, [aiChatContext.showSidebar, isSmall])
 
+  const newChatButtonLabel = getLocale(S.CHAT_UI_NEW_CONVERSATION_BUTTON_LABEL)
+
   return (
     <div
       className={classNames(
@@ -174,16 +174,16 @@ export default function FullScreen() {
               <Icon name='window-tabs-vertical-expanded' />
             </Button>
             {!isNavigationRendered && canStartNewConversation && (
-              <>
-                <Button
-                  fab
-                  kind='plain-faint'
-                  onClick={createNewConversation}
-                  data-test-id='new-chat-button'
-                >
-                  <Icon name='edit-box' />
-                </Button>
-              </>
+              <Button
+                fab
+                kind='plain-faint'
+                aria-label={newChatButtonLabel}
+                title={newChatButtonLabel}
+                onClick={createNewConversation}
+                data-test-id='new-chat-button'
+              >
+                <Icon name='edit-box' />
+              </Button>
             )}
           </div>
         )}
