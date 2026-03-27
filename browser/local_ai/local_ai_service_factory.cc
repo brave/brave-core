@@ -59,6 +59,7 @@ LocalAIServiceFactory::LocalAIServiceFactory()
           "LocalAIService",
           ProfileSelections::Builder()
               .WithRegular(ProfileSelection::kOriginalOnly)
+              .WithGuest(ProfileSelection::kOwnInstance)
               .Build()) {}
 
 LocalAIServiceFactory::~LocalAIServiceFactory() = default;

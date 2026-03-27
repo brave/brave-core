@@ -6,6 +6,7 @@
 #include "brave/browser/browser_context_keyed_service_factories.h"
 
 #include "base/feature_list.h"
+#include "base/functional/callback_helpers.h"
 #include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_origin/brave_origin_service_factory.h"
@@ -16,6 +17,7 @@
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
+#include "brave/browser/history_embeddings/brave_passage_embeddings_service_controller.h"
 #include "brave/browser/local_ai/local_ai_service_factory.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
@@ -47,6 +49,9 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "components/history_embeddings/core/history_embeddings_features.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
@@ -149,7 +154,8 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   SearchEngineProviderServiceFactory::GetInstance();
   misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance();
   BraveFarblingServiceFactory::GetInstance();
-  if (base::FeatureList::IsEnabled(local_ai::features::kLocalAIModels)) {
+  if (base::FeatureList::IsEnabled(local_ai::features::kLocalAIModels) ||
+      base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
     local_ai::LocalAIServiceFactory::GetInstance();
   }
 #if BUILDFLAG(ENABLE_TOR)
@@ -261,6 +267,29 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #endif  // BUILDFLAG(ENABLE_PSST)
 
   serp_metrics::SerpMetricsServiceFactory::GetInstance();
+
+  // Pre-create the guest profile for the embedding model's background
+  // WebContents. See BravePassageEmbeddingsServiceController for
+  // lifetime details. Must be at the end so all factories (including
+  // Brave-specific ones like PermissionLifetimeManagerFactory) have
+  // registered their prefs before the profile is created.
+  if (base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
+    if (auto* profile_manager = g_browser_process->profile_manager()) {
+      profile_manager->CreateProfileAsync(
+          ProfileManager::GetGuestProfilePath(),
+          base::BindOnce([](Profile* profile) {
+            if (!profile) {
+              return;
+            }
+            auto* otr_profile = profile->GetPrimaryOTRProfile(
+                /*create_if_needed=*/true);
+            passage_embeddings::BravePassageEmbeddingsServiceController::Get()
+                ->SetLocalAIServiceRemote(
+                    local_ai::LocalAIServiceFactory::GetForProfile(
+                        otr_profile));
+          }));
+    }
+  }
 }
 
 }  // namespace brave

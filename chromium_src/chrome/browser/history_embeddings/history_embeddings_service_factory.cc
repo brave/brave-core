@@ -22,10 +22,9 @@
   BraveHistoryEmbeddingsService<       \
       history_embeddings::ChromeHistoryEmbeddingsService>
 
-// Override GetEmbedder() call to return our BraveEmbedder for the given profile
-// instead of base class's embedder_. This passes the profile to create
-// per-profile embedders.
-#define GetEmbedder() GetBraveEmbedder(profile)
+// Override GetEmbedder() to return the shared BraveEmbedder backed by
+// the guest profile.
+#define GetEmbedder() GetBraveEmbedder()
 
 #include <chrome/browser/history_embeddings/history_embeddings_service_factory.cc>
 

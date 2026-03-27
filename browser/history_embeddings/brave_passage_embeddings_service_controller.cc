@@ -5,12 +5,54 @@
 
 #include "brave/browser/history_embeddings/brave_passage_embeddings_service_controller.h"
 
+#include <utility>
+
 #include "base/logging.h"
 #include "brave/browser/history_embeddings/brave_embedder.h"
-#include "brave/browser/local_ai/local_ai_service_factory.h"
-#include "chrome/browser/profiles/profile.h"
 
 namespace passage_embeddings {
+
+// EmbedderProxy implementation
+
+BravePassageEmbeddingsServiceController::EmbedderProxy::EmbedderProxy() =
+    default;
+BravePassageEmbeddingsServiceController::EmbedderProxy::~EmbedderProxy() =
+    default;
+
+void BravePassageEmbeddingsServiceController::EmbedderProxy::SetTarget(
+    Embedder* target) {
+  target_ = target;
+}
+
+Embedder::TaskId BravePassageEmbeddingsServiceController::EmbedderProxy::
+    ComputePassagesEmbeddings(PassagePriority priority,
+                              std::vector<std::string> passages,
+                              ComputePassagesEmbeddingsCallback callback) {
+  if (target_) {
+    return target_->ComputePassagesEmbeddings(priority, std::move(passages),
+                                              std::move(callback));
+  }
+  auto task_id = next_task_id_++;
+  std::move(callback).Run(std::move(passages), {}, task_id,
+                          ComputeEmbeddingsStatus::kModelUnavailable);
+  return task_id;
+}
+
+void BravePassageEmbeddingsServiceController::EmbedderProxy::ReprioritizeTasks(
+    PassagePriority priority,
+    const std::set<TaskId>& tasks) {
+  if (target_) {
+    target_->ReprioritizeTasks(priority, tasks);
+  }
+}
+
+bool BravePassageEmbeddingsServiceController::EmbedderProxy::TryCancel(
+    TaskId task_id) {
+  if (target_) {
+    return target_->TryCancel(task_id);
+  }
+  return false;
+}
 
 // BravePassageEmbeddingsServiceController implementation
 
@@ -22,57 +64,37 @@ BravePassageEmbeddingsServiceController::Get() {
 }
 
 BravePassageEmbeddingsServiceController::
-    BravePassageEmbeddingsServiceController() {
-  // Embedders are created lazily per-profile in GetBraveEmbedder()
-}
+    BravePassageEmbeddingsServiceController() = default;
 
 BravePassageEmbeddingsServiceController::
     ~BravePassageEmbeddingsServiceController() = default;
 
-Embedder* BravePassageEmbeddingsServiceController::GetBraveEmbedder(
-    Profile* profile) {
-  if (!profile) {
-    DVLOG(1) << "GetBraveEmbedder called with null profile";
-    return nullptr;
-  }
-
-  // Create embedder lazily for this profile if it doesn't exist
-  auto it = profile_embedders_.find(profile);
-  if (it == profile_embedders_.end()) {
-    DVLOG(3) << "Creating BraveEmbedder for profile " << profile;
-    profile->AddObserver(this);
-    auto embedder = std::make_unique<BraveEmbedder>(
-        local_ai::LocalAIServiceFactory::GetForProfile(profile));
-    embedder->AddObserver(this);
-    it = profile_embedders_.emplace(profile, std::move(embedder)).first;
-  }
-
-  return it->second.get();
+Embedder* BravePassageEmbeddingsServiceController::GetBraveEmbedder() {
+  // Always return the proxy — it's never null. The proxy delegates to the
+  // real BraveEmbedder once SetLocalAIServiceRemote() has been called.
+  return &embedder_proxy_;
 }
 
-void BravePassageEmbeddingsServiceController::OnProfileWillBeDestroyed(
-    Profile* profile) {
-  profile->RemoveObserver(this);
-  profile_embedders_.erase(profile);
+void BravePassageEmbeddingsServiceController::SetLocalAIServiceRemote(
+    mojo::PendingRemote<local_ai::mojom::LocalAIService> remote) {
+  embedder_ = std::make_unique<BraveEmbedder>(std::move(remote));
+  embedder_->AddObserver(this);
+  embedder_proxy_.SetTarget(embedder_.get());
 }
 
 void BravePassageEmbeddingsServiceController::OnEmbedderIdle() {
-  for (auto& [profile, embedder] : profile_embedders_) {
-    embedder->NotifyServiceIdle();
+  if (embedder_) {
+    embedder_->NotifyServiceIdle();
   }
 }
 
 void BravePassageEmbeddingsServiceController::MaybeLaunchService() {
-  // No-op: BraveEmbedder instances are passed directly to
-  // HistoryEmbeddingsService per-profile, so we don't launch a separate
-  // service process. This method is required by the base class but not used
-  // in our implementation.
+  // No-op: BraveEmbedder is created lazily in GetBraveEmbedder().
   DVLOG(3) << "MaybeLaunchService called (no-op for BraveEmbedder)";
 }
 
 void BravePassageEmbeddingsServiceController::ResetServiceRemote() {
-  // No-op: We don't use a separate service process. BraveEmbedder instances
-  // are used directly per-profile.
+  // No-op: We don't use a separate service remote.
   DVLOG(3) << "ResetServiceRemote called (no-op for BraveEmbedder)";
 }
 
@@ -96,10 +118,8 @@ void BravePassageEmbeddingsServiceController::GetEmbeddings(
     PassagePriority priority,
     GetEmbeddingsResultCallback callback) {
   // This method is part of the base class interface but not used in our
-  // implementation. BraveEmbedder instances are accessed directly per-profile
-  // via GetBraveEmbedder(profile), and HistoryEmbeddingsService calls
-  // methods on those embedders directly rather than going through this
-  // controller method.
+  // implementation. BraveEmbedder is accessed directly via GetBraveEmbedder()
+  // and HistoryEmbeddingsService calls methods on the embedder directly.
   DVLOG(1) << "GetEmbeddings called unexpectedly on BravePassage"
               "EmbeddingsServiceController";
   std::move(callback).Run({}, ComputeEmbeddingsStatus::kExecutionFailure);

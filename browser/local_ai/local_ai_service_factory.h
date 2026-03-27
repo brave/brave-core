@@ -33,7 +33,6 @@ class LocalAIServiceFactory : public ProfileKeyedServiceFactory {
   static void BindForProfile(
       Profile* profile,
       mojo::PendingReceiver<mojom::LocalAIService> receiver);
-
  private:
   friend base::NoDestructor<LocalAIServiceFactory>;
   LocalAIServiceFactory();
