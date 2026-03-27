@@ -67,7 +67,6 @@
 
 -keep class org.chromium.chrome.browser.hub.HubManagerImpl {
     *** ensureHubCoordinatorIsInitialized(...);
-    *** mEdgeToEdgeSupplier;
 }
 
 -keep class org.chromium.chrome.browser.tasks.tab_management.IncognitoTabSwitcherPane {
