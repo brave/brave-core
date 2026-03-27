@@ -17,6 +17,7 @@
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/local_ai/local_ai_service_factory.h"
+#include "brave/browser/local_ai/on_device_speech_recognition_service_factory.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
@@ -152,6 +153,10 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   if (base::FeatureList::IsEnabled(
           local_ai::features::kBraveHistoryEmbeddings)) {
     local_ai::LocalAIServiceFactory::GetInstance();
+  }
+  if (base::FeatureList::IsEnabled(
+          local_ai::features::kBraveOnDeviceSpeechRecognition)) {
+    local_ai::OnDeviceSpeechRecognitionServiceFactory::GetInstance();
   }
 #if BUILDFLAG(ENABLE_TOR)
   TorProfileServiceFactory::GetInstance();

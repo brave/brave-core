@@ -1,0 +1,69 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module local_ai.mojom;
+
+import "mojo/public/mojom/base/big_buffer.mojom";
+import "services/on_device_model/public/mojom/on_device_model.mojom";
+
+// Model files needed to initialize the speech recognition
+// engine. Loaded from disk in the browser process and sent
+// to the renderer via BigBuffer.
+struct SpeechRecognitionModelFiles {
+  mojo_base.mojom.BigBuffer weights;
+  mojo_base.mojom.BigBuffer tokenizer;
+  mojo_base.mojom.BigBuffer mel_filters;
+  mojo_base.mojom.BigBuffer config;
+};
+
+// Renderer-implemented factory that initializes the
+// recognition model and creates sessions. Internal to the
+// service -- consumers obtain sessions via
+// OnDeviceSpeechRecognitionService::CreateSession().
+interface SpeechRecognitionFactory {
+  // Loads model weights into the runtime.
+  Init(SpeechRecognitionModelFiles model_files)
+      => (bool success);
+
+  // Creates a recognition session. The receiver gets
+  // audio via AddAudioChunk(); results flow back via
+  // the responder.
+  CreateSession(
+      on_device_model.mojom.AsrStreamOptions options,
+      pending_receiver<on_device_model.mojom.AsrStreamInput>
+          stream,
+      pending_remote<on_device_model.mojom.AsrStreamResponder>
+          responder);
+};
+
+// Browser-side service managing the speech recognition WASM
+// worker lifecycle. The renderer calls
+// RegisterSpeechRecognitionFactory() on page load. Consumers
+// call CreateSession() to start a recognition session.
+// The service pushes model files to the factory via Init()
+// on first use. NotifySpeechRecognitionIdle() signals that
+// all sessions have disconnected so the background
+// WebContents can be closed.
+interface OnDeviceSpeechRecognitionService {
+  // Called by the renderer to register its factory.
+  RegisterSpeechRecognitionFactory(
+      pending_remote<SpeechRecognitionFactory> factory);
+
+  // Creates a recognition session bound directly to the
+  // renderer worker. Creates the background WebContents
+  // if needed. If the model is not yet loaded, the
+  // request is deferred until it is.
+  CreateSession(
+      on_device_model.mojom.AsrStreamOptions options,
+      pending_receiver<on_device_model.mojom.AsrStreamInput>
+          stream,
+      pending_remote<on_device_model.mojom.AsrStreamResponder>
+          responder);
+
+  // Called when all sessions have disconnected. The
+  // service closes the background WebContents to free
+  // memory.
+  NotifySpeechRecognitionIdle();
+};

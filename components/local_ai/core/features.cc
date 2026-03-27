@@ -13,4 +13,8 @@ namespace local_ai::features {
 // embedding WebUI.
 BASE_FEATURE(kBraveHistoryEmbeddings, base::FEATURE_DISABLED_BY_DEFAULT);
 
+// On-device speech recognition using Whisper WASM.
+BASE_FEATURE(kBraveOnDeviceSpeechRecognition,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace local_ai::features
