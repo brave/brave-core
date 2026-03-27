@@ -11,7 +11,6 @@ import Toggle from '@brave/leo/react/toggle'
 
 import { useShieldsApi } from '../api/shields_api_context'
 import { StringKey, getString } from './strings'
-import { OpenTabLink } from './open_tab_link'
 
 import {
   AdBlockMode,
@@ -350,12 +349,7 @@ function CookieBlockControls() {
           {getString('BRAVE_SHIELDS_COOKIES_ALLOWED_ALL')}
         </leo-option>
       </Dropdown>
-      <OpenTabLink
-        url='chrome://settings/shields'
-        aria-label={getString('BRAVE_SHIELDS_OPEN_SETTINGS')}
-      >
-        <Icon name='launch' />
-      </OpenTabLink>
+      <div />
     </div>
   )
 }
@@ -380,7 +374,7 @@ function ForgetFirstPartyStorageControls() {
 
   return (
     <div>
-      <Icon name='eye-off' />
+      <Icon name='broom' />
       <div className='toggle'>
         {getString('BRAVE_SHIELDS_FORGET_FIRST_PARTY_STORAGE_LABEL')}
         <Toggle
@@ -414,12 +408,7 @@ function BlockElementsControls() {
           {getString('BRAVE_SHIELDS_SHOW_ALL_BLOCKED_ELEMENTS')}
         </button>
       </div>
-      <OpenTabLink
-        url='chrome://settings/shields'
-        aria-label={getString('BRAVE_SHIELDS_OPEN_SETTINGS')}
-      >
-        <Icon name='launch' />
-      </OpenTabLink>
+      <div />
     </div>
   )
 }

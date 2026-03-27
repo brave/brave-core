@@ -41,7 +41,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_TRACKERS_ADS_BLOCKED" desc="Summary text for blocked trackers and ads." formatter_data="webui=BraveShields">
-    <ph name="BLOCK_COUNT">$1</ph> trackers, ads, and more blocked.
+    <ph name="BLOCK_COUNT">$1</ph> trackers, ads, and more blocked
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_TRACKERS_ADS_BLOCKED_TITLE" desc="Title of the trackers and ads blocked details view" formatter_data="webui=BraveShields">
