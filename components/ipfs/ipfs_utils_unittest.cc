@@ -11,6 +11,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "content/public/test/browser_task_environment.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
@@ -28,6 +29,17 @@ class IpfsUtilsUnitTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
 };
+
+TEST_F(IpfsUtilsUnitTest, CheckDefaultGatewayPslList) {
+  GURL url(base::StrCat(
+      {"https://"
+       "bafybeih4v623g54vbdrm5iw7caen2yqzgqeemwvz5qspvqt56wurdist7m.ipfs.",
+       GetDefaultIPFSGateway().GetHost()}));
+  EXPECT_EQ(
+      url.host(),
+      net::registry_controlled_domains::GetDomainAndRegistry(
+          url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES));
+}
 
 TEST_F(IpfsUtilsUnitTest, TranslateIPFSURINotIPFSScheme) {
   GURL url(
