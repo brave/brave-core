@@ -55,7 +55,7 @@ def CheckLeoVariables(input_api, output_api):
 def CheckPatchFormatted(input_api, output_api):
     cmd = [
         brave_chromium_utils.wspath(
-            '//brave/build/commands/scripts/format.js'), '--presubmit'
+            '//brave/build/commands/scripts/format.ts'), '--presubmit'
     ]
     if input_api.PRESUBMIT_ALL_BRAVE:
         cmd.append('--all-files')
