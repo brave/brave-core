@@ -29,7 +29,11 @@ extension BrowserViewController: TabManagerDelegate {
     tab.youtubeQualityTabHelper = .init(tab: tab)
     SnackBarTabHelper.create(for: tab)
     tab.braveUserAgentExceptions = braveCore.braveUserAgentExceptions
-    tab.translateHelper = .init(tab: tab, delegate: self)
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      tab.translate = .init(tab: tab, delegate: self)
+    } else {
+      tab.legacyTranslateHelper = .init(tab: tab, delegate: self)
+    }
     tab.pageMetadataHelper = .init(tab: tab)
     tab.faviconTabHelper = .init(tab: tab)
     tab.userActivityHelper = .init(tab: tab)
@@ -243,7 +247,7 @@ extension BrowserViewController: TabManagerDelegate {
     }
 
     if FeatureList.kBraveTranslateEnabled.enabled, let selectedTab = selected,
-      selectedTab.translateHelper != nil
+      selectedTab.legacyTranslateHelper != nil || selectedTab.translate != nil
     {
       updateTranslateURLBar(tab: selectedTab, state: selectedTab.translationState ?? .unavailable)
       updatePlaylistURLBar(

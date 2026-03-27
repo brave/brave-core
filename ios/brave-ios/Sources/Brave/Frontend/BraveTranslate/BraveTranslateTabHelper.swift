@@ -10,6 +10,17 @@ import Web
 import WebKit
 import os.log
 
+extension TabDataValues {
+  private struct BraveTranslateTabHelperKey: TabDataKey {
+    static var defaultValue: BraveTranslateTabHelper?
+  }
+
+  var legacyTranslateHelper: BraveTranslateTabHelper? {
+    get { self[BraveTranslateTabHelperKey.self] }
+    set { self[BraveTranslateTabHelperKey.self] = newValue }
+  }
+}
+
 enum BraveTranslateError: String, Error {
   case invalidURL
   case invalidLanguage
