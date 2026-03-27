@@ -15,6 +15,7 @@ source_set("browser_tests") {
       "blob_url_browsertest.cc",
       "ephemeral_storage_1p_browsertest.cc",
       "ephemeral_storage_1p_domain_block_browsertest.cc",
+      "ephemeral_storage_auto_shred_browsertest.cc",
       "ephemeral_storage_blink_memory_cache_browsertest.cc",
       "ephemeral_storage_browsertest.cc",
       "ephemeral_storage_browsertest.h",
