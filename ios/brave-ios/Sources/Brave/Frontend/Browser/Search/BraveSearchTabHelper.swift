@@ -7,7 +7,7 @@ import BraveCore
 import BraveShields
 import Foundation
 import OSLog
-import Web
+@_spi(ChromiumWebViewAccess) import Web
 
 extension TabDataValues {
   private struct BraveSearchTabHelperKey: TabDataKey {
@@ -47,6 +47,26 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider {
   // MARK: - TabObserver
 
   func tabDidFinishNavigation(_ tab: some TabState) {
+    if FeatureList.kUseProfileWebViewConfiguration.enabled,
+      let webView = BraveWebView.from(tab: tab),
+      let url = tab.lastCommittedURL,
+      DomainUserScript(for: url) == .braveSearchHelper
+    {
+      webView.fetchSearchAdCreatives { [weak self] creativesJSON in
+        guard let self, let creativesJSON else { return }
+        do {
+          let data = Data(creativesJSON.utf8)
+          let creatives = try JSONDecoder().decode(
+            [SearchResultAdResponse.SearchResultAd].self,
+            from: data
+          )
+          let response = SearchResultAdResponse(creatives: creatives)
+          processSearchResultAds(response)
+        } catch {
+          Logger.module.error("Failed to parse search result ads response")
+        }
+      }
+    }
     // Second attempt to inject results to the BraveSearch.
     // This will be called if we got fallback results faster than
     // the page navigation.
