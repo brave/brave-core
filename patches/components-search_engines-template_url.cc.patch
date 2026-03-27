@@ -1,0 +1,16 @@
+diff --git a/components/search_engines/template_url.cc b/components/search_engines/template_url.cc
+index 1111111..2222222 100644
+--- a/components/search_engines/template_url.cc
++++ b/components/search_engines/template_url.cc
+@@ -1063,10 +1063,10 @@ void TemplateURLRef::ParseHostAndSearchTermKey(
+     search_term_value_prefix_ = path_result.value_prefix();
+     search_term_value_suffix_ = path_result.value_suffix();
+   }
+ }
+ 
+-void TemplateURLRef::HandleReplacement(const std::string& name,
++void TemplateURLRef::HandleReplacement_ChromiumImpl(const std::string& name,
+                                        const std::string& value,
+                                        const Replacement& replacement,
+                                        std::string* url) const {
+   size_t pos = replacement.index;

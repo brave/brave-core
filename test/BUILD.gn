@@ -472,6 +472,7 @@ test("brave_unit_tests") {
       "//brave/browser/ui/brave_shields_data_controller_unittest.cc",
       "//brave/chromium_src/components/search_engines/brave_template_url_prepopulate_data_unittest.cc",
       "//brave/chromium_src/components/search_engines/brave_template_url_service_util_unittest.cc",
+      "//brave/chromium_src/components/search_engines/brave_template_url_unittest.cc",
       "//brave/chromium_src/components/translate/core/browser/translate_manager_unittest.cc",
     ]
 

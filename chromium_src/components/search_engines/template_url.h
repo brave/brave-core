@@ -18,8 +18,15 @@
   }                                                                       \
   bool is_ask_type_chromium()
 
+// Brave specific logic on what URL parameters gets added on any requests sent
+// to Google via the browser omnibox.
+#define HandleReplacement(...)                       \
+  HandleReplacement_ChromiumImpl(__VA_ARGS__) const; \
+  void HandleReplacement(__VA_ARGS__)
+
 #include <components/search_engines/template_url.h>  // IWYU pragma: export
 
+#undef HandleReplacement
 #undef is_ask_type
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SEARCH_ENGINES_TEMPLATE_URL_H_
