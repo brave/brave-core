@@ -3641,8 +3641,9 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnet) {
   base::MockCallback<ResolveDnsCallback> callback;
   EXPECT_CALL(
       callback,
-      Run(std::optional<GURL>("https://ipfs.io/ipfs/"
-                              "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"),
+      Run(std::optional<GURL>("https://"
+                              "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3ocl"
+                              "gtqy55fbzdi.ipfs.inbrowser.link/"),
           mojom::ProviderError::kSuccess, ""));
   SetEthRawResponse(DnsIpfsResponse());
   SetPolygonRawResponse(DnsEmptyResponse());
@@ -3701,8 +3702,9 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_ManyCalls) {
   base::MockCallback<ResolveDnsCallback> callback3;
   EXPECT_CALL(
       callback3,
-      Run(std::optional<GURL>("https://ipfs.io/ipfs/"
-                              "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"),
+      Run(std::optional<GURL>("https://"
+                              "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3ocl"
+                              "gtqy55fbzdi.ipfs.inbrowser.link/"),
           mojom::ProviderError::kSuccess, ""));
 
   ASSERT_EQ(6u, unstoppable_domains::kRecordKeys.size());

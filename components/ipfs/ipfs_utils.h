@@ -13,7 +13,7 @@
 namespace ipfs {
 
 inline constexpr char kIPFSScheme[] = "ipfs";
-inline constexpr char kDefaultPublicGateway[] = "https://ipfs.io";
+inline constexpr char kDefaultPublicGateway[] = "https://inbrowser.link";
 
 bool TranslateIPFSURI(const GURL& url, GURL* new_url, bool use_subdomain);
 
