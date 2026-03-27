@@ -32,6 +32,7 @@
 #include "components/autofill/ios/browser/autofill_java_script_feature.h"
 #include "components/autofill/ios/browser/suggestion_controller_java_script_feature.h"
 #include "components/autofill/ios/form_util/form_handlers_java_script_feature.h"
+#include "components/language/ios/browser/language_detection_java_script_feature.h"
 #include "components/password_manager/ios/password_manager_java_script_feature.h"
 #import "components/translate/ios/browser/translate_java_script_feature.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
@@ -119,6 +120,9 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
           brave::features::kUseProfileWebViewConfiguration)) {
     static base::NoDestructor<PrintJavaScriptFeature> print_feature;
     features.push_back(print_feature.get());
+    features.push_back(
+        language::LanguageDetectionJavaScriptFeature::GetInstance());
+    features.push_back(translate::TranslateJavaScriptFeature::GetInstance());
 
     // Add Brave iOS ported JavaScriptFeatures based on their original
     // counterpart in //brave-ios
