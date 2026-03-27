@@ -34,10 +34,11 @@ class AIChatMetricsTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
     // Simulate opted-in and a recent premium check so RecordEnabled proceeds
     // without blocking on async credential or disclaimer checks.
+    const auto now = base::Time::Now();
     browser()->profile()->GetPrefs()->SetTime(prefs::kLastAcceptedDisclaimer,
-                                              base::Time::Now());
+                                              now);
     g_browser_process->local_state()->SetTime(
-        prefs::kBraveChatP3ALastPremiumCheck, base::Time::Now());
+        prefs::kBraveChatP3ALastPremiumCheck, now);
     content::ContextMenuParams params;
     params.is_editable = false;
     params.selection_text = u"some text";
