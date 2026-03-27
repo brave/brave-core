@@ -96,7 +96,8 @@ class BraveRenderViewContextMenuTest : public testing::Test {
       bool is_pwa_browser = false) {
     ResetBrowser();
     auto menu = std::make_unique<BraveRenderViewContextMenuMock>(
-        *web_contents->GetPrimaryMainFrame(), params);
+        *web_contents->GetPrimaryMainFrame(), params,
+        /*is_paste_enabled=*/false);
 
     Browser::CreateParams create_params(
         is_pwa_browser ? Browser::Type::TYPE_APP : Browser::Type::TYPE_NORMAL,
@@ -231,7 +232,8 @@ TEST_F(BraveRenderViewContextMenuTest, MenuForAIChat_PWA) {
   content::ContextMenuParams params = CreateSelectedTextParams(u"hello");
 
   GetPrefs()->SetBoolean(ai_chat::prefs::kBraveAIChatContextMenuEnabled, true);
-  auto context_menu = CreateContextMenu(GetWebContents(), params, true);
+  auto context_menu = CreateContextMenu(GetWebContents(), params,
+                                        /*is_pwa_browser=*/true);
   EXPECT_TRUE(context_menu);
   std::optional<size_t> ai_chat_index =
       context_menu->menu_model().GetIndexOfCommandId(

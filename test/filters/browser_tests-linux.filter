@@ -44,6 +44,12 @@
 -ManagedUserNoticeUIDialogPixelTest.InvokeUi_default/*
 -ManagedUserNoticeUIWindowPixelTest.InvokeUi_default/*
 
+# These tests fail because in identity_test_utils.cc waiting for
+# identity_manager->AreRefreshTokensLoaded() times out.
+-AvatarToolbarButtonPromoBrowserTest.*
+-AvatarToolbarButtonPromoClickBrowserTest.*
+-AvatarToolbarButtonSignedOutPromoBrowserTest.SignedOutPromoTriggeredOnStartupAfterDelayExpired 
+
 # These tests fail because kPrerender2 feature is disabled.
 -MediaEngagementPreThirdPartyCookieDeprecationBrowserTest.Ignored
 
@@ -78,6 +84,21 @@
 # affects this path.
 # https://github.com/brave/brave-browser/issues/53358
 -DevToolsProcessPerSiteTest.PausedDebuggerFocus
+
+# These tests fail on Linux because kPromptForDownload defaults to true,
+# triggering the GTK file chooser dialog which causes g_malloc leaks
+# detected by LSan on ASAN builds and timeouts.
+# https://github.com/brave/brave-browser/issues/52572
+# https://github.com/brave/brave-browser/issues/52649
+# https://github.com/brave/brave-browser/issues/52569
+-All/PDFPluginDisabledTest.DirectNavigationToPDF/*
+-ChromeMojoProxyResolverFactoryBrowserTest.*
+-PluginResponseInterceptorURLLoaderThrottleBrowserTest.DownloadPdf
+
+# These fail because OsIntegrationTestOverride::GetShortcutPath and
+# OsIntegrationTestOverride::IsRunOnOsLoginEnabled on Linux hard-codes "chrome-"
+# into the shortcut name but our shortcut starts with "brave-".
+-ShortcutSubManagerBrowserTest.CleanUpEphemeralProfileDeletesShortcuts
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
@@ -133,13 +154,3 @@
 -WebRtcBrowserTest.*
 -WebRtcDisableEncryptionFlagBrowserTest.*
 -ZeroCacheTimePrefetchProxyBrowserTest.*
-
-# These tests fail on Linux because kPromptForDownload defaults to true,
-# triggering the GTK file chooser dialog which causes g_malloc leaks
-# detected by LSan on ASAN builds and timeouts.
-# https://github.com/brave/brave-browser/issues/52572
-# https://github.com/brave/brave-browser/issues/52649
-# https://github.com/brave/brave-browser/issues/52569
--All/PDFPluginDisabledTest.DirectNavigationToPDF/*
--ChromeMojoProxyResolverFactoryBrowserTest.*
--PluginResponseInterceptorURLLoaderThrottleBrowserTest.DownloadPdf

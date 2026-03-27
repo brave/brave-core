@@ -20,20 +20,20 @@ export class LeoModelSelectorElement extends CrLitElement {
     return 'leo-model-selector'
   }
 
-  static override get properties() {
-    return {
-      selectedKey: {type: String},
-      models: {type: Array},
-      isPremiumUser: {type: Boolean},
-    }
-  }
-
   static override get styles() {
     return getCss()
   }
 
   override render() {
     return getHtml.bind(this)()
+  }
+
+  static override get properties() {
+    return {
+      selectedKey: {type: String},
+      models: {type: Array},
+      isPremiumUser: {type: Boolean},
+    }
   }
 
   accessor selectedKey: string = ''
@@ -47,11 +47,7 @@ export class LeoModelSelectorElement extends CrLitElement {
   }
 
   onSelectionChange_(e: any) {
-    this.dispatchEvent(new CustomEvent('model-changed', {
-      detail: {value: e.value},
-      bubbles: true,
-      composed: true,
-    }))
+    this.fire('model-changed', {value: e.value})
   }
 
   shouldShowPremiumLabel_(entry: ModelWithSubtitle):

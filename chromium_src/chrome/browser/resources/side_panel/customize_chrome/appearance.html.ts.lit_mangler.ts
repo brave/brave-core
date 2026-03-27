@@ -17,20 +17,21 @@ function findElementWithId(
   return el
 }
 
-function removeElementWithId(elementId: string) {
+function hideElementWithId(elementId: string) {
   mangle(
     (element: DocumentFragment) => {
-      findElementWithId(elementId, element).remove()
+      findElementWithId(elementId, element).
+        setAttribute('style', 'display: none')
     },
     (template) => template.text.includes(`id="${elementId}"`),
   )
 }
 
 // Hides preview image.
-removeElementWithId('themeSnapshot')
+hideElementWithId('themeSnapshot')
 
-// Hides a label and button says "Brave ia managing your new tab page"
-removeElementWithId('thirdPartyManageLinkButton')
+// Hides the label and button for "Brave is managing your new tab page"
+hideElementWithId('thirdPartyManageLinkButton')
 
 // Moves the edit buttons container to the end of the template.
 mangle(

@@ -15,7 +15,7 @@
 #include "url/gurl.h"
 
 class Browser;
-class BrowserListObserver;
+class BrowserCollectionObserver;
 
 class TorProfileManager : public ProfileObserver {
  public:
@@ -40,7 +40,7 @@ class TorProfileManager : public ProfileObserver {
 
   // One regular profile can only have one tor profile
   base::flat_map<std::string, Profile*> tor_profiles_;
-  std::unique_ptr<BrowserListObserver> browser_list_observer_;
+  std::unique_ptr<BrowserCollectionObserver> browser_collection_observer_;
 
   TorProfileManager(const TorProfileManager&) = delete;
   TorProfileManager& operator=(const TorProfileManager&) = delete;

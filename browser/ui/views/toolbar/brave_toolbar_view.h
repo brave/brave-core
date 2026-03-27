@@ -82,7 +82,7 @@ class BraveToolbarView : public ToolbarView,
 #endif
   void UpdateWalletButtonVisibility();
 
-  views::View* toolbar_divider_for_testing() { return toolbar_divider_; }
+  ToolbarDivider* toolbar_divider_for_testing() { return toolbar_divider_; }
 
   raw_ptr<BraveBookmarkButton> bookmark_ = nullptr;
   // Tracks the preference to determine whether bookmark editing is allowed.

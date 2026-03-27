@@ -82,7 +82,7 @@ class BraveTabTest : public ChromeViewsTestBase {
     auto* tab_ptr = static_cast<BraveTab*>(widget->GetContentsView());
 
     if (is_pinned) {
-      TabRendererData data;
+      tabs::TabData data;
       data.pinned = true;
       tab_ptr->SetData(std::move(data));
     }
@@ -283,7 +283,7 @@ TEST_F(BraveTabTest,
 
   // data().show_icon defaults to true, so Tab::UpdateIconVisibility() sets
   // showing_icon_ = true for this pinned tab.
-  TabRendererData data;
+  tabs::TabData data;
   data.pinned = true;
   tab_ptr->SetData(std::move(data));
 

@@ -46,9 +46,12 @@ def GetRequiredLibsPaths(args, extension):
 
     # Set of libs which were not created by us
     ignored_libs = {
-        'libarcore_sdk_c.so', # Augmented reality lib from Android SDK
-        'libwg-go.so' # Wireguard lib for Brave VPN
-        }
+        'libarcore_sdk_c.so',  # Augmented reality lib from Android SDK
+        'libarcore_sdk_jni.so',  # Augmented reality lib from Android SDK
+        'libandroidx.xr.runtime.openxr.so',  # AndroidX XR ARCore prebuilt (arcore-openxr.aar)
+        'libimpress_api_jni.so',  # Google AR Impress prebuilt (com_google_ar_impress_java)
+        'libwg-go.so'  # Wireguard lib for Brave VPN
+    }
 
     # Additional ABIs
     additional_abi_dirs = glob.glob(os.path.join(args.build_dir,

@@ -261,8 +261,17 @@
   <message name="IDS_SETTINGS_SHOW_BOOKMARKS_BAR" desc="Label for the checkbox which enables or disables showing the bookmarks bar in the toolbar.">
     Show bookmarks
   </message>
+  <message name="IDS_SETTINGS_SHOW_TAB_SEARCH_BUTTON" desc="Label for the checkbox which enables or disables showing the tab search button in the tab strip.">
+    Show tab search button
+  </message>
+  <message name="IDS_SETTINGS_SHOW_PROJECTS_PANEL_BUTTON" desc="Label for the checkbox which enables or disables showing the projects panel button in the tab strip.">
+    Show organizer button
+  </message>
+  <message name="IDS_SETTINGS_SHOW_EVERYTHING_MENU_BUTTON" desc="Label for the checkbox which enables or disables showing the saved tab groups button in the tab strip.">
+    Show saved tab groups button
+  </message>
   <message name="IDS_SETTINGS_TAB_STRIP_POSITION" desc="Title for the side panel section. Allows the user to toggle which side the tab strip is displayed on.">
-    Tab strip position
+    Tab position
   </message>
   <message name="IDS_SETTINGS_ALLOW_SPLIT_VIEW_DRAG_AND_DROP" desc="Label for the checkbox which enables or disables drag and drop for split view.">
     Allow split view drag-and-drop on left or right edge of window
@@ -298,10 +307,10 @@
     Show on right
   </message>
   <message name="IDS_SETTINGS_UI_FEATURE_ALIGN_SIDE" desc="Label for the button that configures a feature to appear on the side of the browser.">
-    Side
+    Vertical
   </message>
   <message name="IDS_SETTINGS_UI_FEATURE_ALIGN_TOP" desc="Label for the button that configures a feature to appear on the top of the browser.">
-    Top
+    Horizontal
   </message>
   <message name="IDS_SETTINGS_HOME_PAGE_NTP" desc="Description of the New Tab Page when set as the home page.">
     New Tab page
@@ -358,6 +367,12 @@
   </if>
   <message name="IDS_SETTINGS_CONTROLLED_BY_EXTENSION" desc="Label text of an indicator that a setting's value is being controlled by an extension.">
     <ph name="NAME">$1<ex>Adblocker plusplus</ex></ph> is controlling this setting
+  </message>
+ <message name="IDS_SETTINGS_CONTROLLED_BY_EXTENSION_TITLE" desc="Title of the disclaimer that a setting's value is being controlled by an extension.">
+   An extension is controlling this setting
+ </message>
+  <message name="IDS_SETTINGS_CONTROLLED_BY_EXTENSION_WITH_DISABLE_AND_MANAGE_OPTION" desc="Text of the disclaimer that a setting's value is being controlled by an extension. `Disable` link immediately disables the extension. `Manage` link goes to the Details &gt; Extension Options link; either `chrome://extensions/?options=ID ` or `chrome-extension://ID/options.html`">
+    The "<ph name="NAME">$1<ex>Adblocker plusplus</ex></ph>" extension is controlling this setting. To change your default search engine, <ph name="BEGIN_LINK_DISABLE">&lt;a href="#" id="disableLink"&gt;</ph>disable the extension<ph name="END_LINK_DISABLE">&lt;/a&gt;</ph> or <ph name="BEGIN_LINK_MANAGE">&lt;a target="_blank" href="$2" id="manageLink"&gt;</ph>manage its settings<ph name="END_LINK_MANAGE">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR" desc="Label used on a menu item or button to delete an item.">
     Delete
@@ -688,16 +703,8 @@
       =1 {1 reused password}
       other {{NUM_REUSED} reused passwords}}
   </message>
-  <message name="IDS_SETTINGS_AUTOFILL_AI_AUTHENTICATION_TOGGLE_TITLE" desc="The title of the toggle shown in the settings page that allows managing the authentication requirement before seeings enhanced autofill settings sensitive fields, such as passport number and natinal id card number.">
-    Verify it’s you to autofill sensitive info
-  </message>
-  <message name="IDS_SETTINGS_AUTOFILL_AI_AUTHENTICATION_TOGGLE_SUBTITLE" desc="The subtitle of the toggle shown in the settings page that allows managing the authentication requirement before seeings enhanced autofill settings sensitive fields, such as passport number and natinal id card number.">
-    For added protection, always use your fingerprint, face, or other screen lock when you use sensitive info like travel and identity docs  </message>
   <message name="IDS_SETTINGS_AUTOFILL_AI_WHEN_ON_SAVED_INFO" desc="Bullet 1 of 2 that appears beneath the 'When on' title. 'Autofill': the user is on the 'enhanced autofill' feature page, but we want to frame this new type of autofill as just 'Autofill'. 'Can offer to save info when you submit forms': we want to convey that the user has the choice, each time a form is submitted, whether they want their info saved to Brave for the purposes of Autofill. 'Like your driver's license or passport number': Today, supported data types for 'enhanced autofill' include 1) driver's licenses, 2) passports, and 3) vehicles. Eventually we'll support more, but this example needs to mention these types of data and not others.">
     Autofill can offer to save info when you submit forms, like your driver's license or passport number
-  </message>
-  <message name="IDS_SETTINGS_AUTOFILL_AI_TO_CONSIDER_DATA_USAGE" desc="Bullet 1 of 2 that appears beneath the 'Things to consider' title. The point of this bullet is to convey to the user the types of data that get shared with Brave to support this feature. There are 2 data types: 1) 'the page’s URL' and 2) 'content', by which we mean the words, visuals, and layout of the pages the user visits. This notion that Brave is considering 'page content' is new. We want to lead with 'To offer suggestions' even though it might be a bit grammatically awkward, because we want to express the need / value before explaining the data that gets shared.">
-    To offer suggestions and improve this feature, the page’s URL and content are shared with Brave
   </message>
   <message name="IDS_SETTINGS_AUTOFILL_AI_ENTERPRISE_LOGGING_MANAGED_DISABLED" desc="Text only seen by enterprise users (Brave services provided for a company). Users should understand that their content saved with autofill won't be used to improve AI, neither AI features specifically or AI models generally.">
     Your content will not be used to improve AI. Your organization may change these settings at any time.
@@ -893,9 +900,6 @@
   </message>
   <message name="IDS_SETTINGS_CLEAR_GOOGLE_SEARCH_HISTORY_NON_GOOGLE_DSE" desc="A description explaining that other forms of activity can be cleared through the Brave account.">
     <ph name="BEGIN_LINK_GOOGLE">&lt;a target="_blank" href="$1"&gt;</ph>Other forms of activity<ph name="END_LINK_GOOGLE">&lt;/a&gt;</ph> may be saved in your Brave sync chain when you're signed in. You can delete them anytime.
-  </message>
-  <message name="IDS_SETTINGS_CLEAR_NON_GOOGLE_SEARCH_HISTORY_NON_PREPOPULATED_DSE" desc="A description informing the user about the way to clear their search history when their Default Search Engine is not Brave.">
-    See your search engine's instructions for deleting your search history, if applicable
   </message>
   <message name="IDS_SETTINGS_CLEAR_DOWNLOAD_HISTORY" desc="Checkbox for deleting Download History">
     Download history
@@ -1991,13 +1995,13 @@
     How it works
   </message>
   <message name="IDS_SETTINGS_SECURITY_BUNDLE_STANDARD_BULLET_ONE" desc="First bullet point under the security settings standard bundle section">
-    Uses on-device methods to detect threats
+    Provides strong protection
   </message>
   <message name="IDS_SETTINGS_SECURITY_BUNDLE_STANDARD_BULLET_TWO" desc="Second bullet point under the security settings standard bundle section">
-    Warns you about insecure connections on the open internet
+    Brave uses less data (for example, parts of URLs, download information) to detect threats
   </message>
   <message name="IDS_SETTINGS_SECURITY_BUNDLE_STANDARD_BULLET_THREE" desc="Third bullet point under the security settings standard bundle section">
-    Prioritizes site speed over enhanced security features
+    Prioritizes site speed
   </message>
   <message name="IDS_SETTINGS_SECURITY_SAFE_BROWSING_ENHANCED_TITLE" desc="Name of Safe Browsing enhanced protection">
     Enhanced Protection
@@ -2005,20 +2009,20 @@
   <message name="IDS_SETTINGS_SECURITY_SAFE_BROWSING_ENHANCED_SUBTITLE" desc="Description of Safe Browsing enhanced protection">
     Real-time, proactive protection by sending more information to Google Safe Browsing
   </message>
-  <message name="IDS_SETTINGS_SECURITY_BUNDLE_ENHANCED_BULLET_ONE" desc="First bullet point under the security settings enhanced bundle section">
-    Sends the URL and page content to Brave to detect threats faster
-  </message>
   <message name="IDS_SETTINGS_SECURITY_BUNDLE_ENHANCED_BULLET_TWO" desc="Second bullet point under the security settings enhanced bundle section">
-    Warns you about all insecure connections
+    Brave uses more data (for example, URLs, samples of page content, system information) to detect threats faster and more accurately
   </message>
   <message name="IDS_SETTINGS_SECURITY_BUNDLE_ENHANCED_BULLET_THREE" desc="Third bullet point under the security settings enhanced bundle section">
-    Slows down some unfamiliar sites to block common attacks
+    Some features may slow unfamiliar sites
   </message>
   <message name="IDS_SETTINGS_SECURITY_FEATURE_ROW_STATE_ENHANCED" desc="The state text denoting that a security feature is in the enhanced state.">
     Enhanced
   </message>
-  <message name="IDS_SETTINGS_SECURITY_FEATURE_ROW_STATE_ENHANCED_CUSTOM" desc="The state text denoting that a security feature is in the enhanced custom state. This text communitcates that the selected security setting is in its enhanced custom option.">
+  <message name="IDS_SETTINGS_SECURITY_FEATURE_ROW_STATE_ENHANCED_CUSTOM" desc="The state text denoting that a security feature is in the enhanced custom state. This text communicates that the selected security setting is in its enhanced custom state.">
     Enhanced: custom
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_FEATURE_ROW_STATE_ENHANCED_STRICT" desc="The state text denoting that a security feature is in the enhanced strict state. This text communicates that the selected security setting is in its enhanced strict state.">
+    Enhanced: strict
   </message>
   <message name="IDS_SETTINGS_SECURITY_FEATURE_ROW_STATE_STANDARD" desc="The state text denoting that a security feature is in the standard state.">
     Standard
@@ -2049,6 +2053,27 @@
   </message>
   <message name="IDS_SETTINGS_SECURITY_SECURE_DNS_CUSTOM" desc="Name of Secure DNS custom option">
     Use always with selected DNS over HTTPS provider
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_JAVASCRIPT_GUARDRAILS_TITLE" desc="Name of the JavaScript Guardrails security setting">
+    JavaScript Guardrails
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_JAVASCRIPT_GUARDRAILS_DESCRIPTION" desc="Description of the JavaScript Guardrails security setting">
+    Better protects you from attacks by turning off JavaScript optimization
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_JAVASCRIPT_GUARDRAILS_UNRECOGNIZED_SITES" desc="Name of JavaScript Guardrails unrecognized sites option.">
+    Unrecognized sites
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_JAVASCRIPT_GUARDRAILS_STRICT_FOR_ALL_SITES" desc="Name of JavaScript Guardrails strict for all sites option.">
+    Strict for all sites
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_JAVASCRIPT_GUARDRAILS_STRICT_FOR_ALL_SITES_DESCRIPTION" desc="Description of JavaScript Guardrails strict for all sites option.">
+    Custom enhanced protection turns off JavaScript optimization for all sites
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_JAVASCRIPT_GUARDRAILS_MANAGE_SITE_EXCEPTIONS" desc="Label of button that allows you to manage which sites JavaScript optimization can run on.">
+    Manage site exceptions
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_JAVASCRIPT_GUARDRAILS_MANAGE_SITE_EXCEPTIONS_DESCRIPTION" desc="Description of what the manage site exceptions button will direct you to.">
+    You can allowlist sites that you trust in content settings
   </message>
 
   <!-- Secure Connections -->
@@ -2293,6 +2318,9 @@
   <message name="IDS_SETTINGS_SEARCH" desc="Name of the settings page which displays search engine preferences.">
     Search engine
   </message>
+  <message name="IDS_SETTINGS_DEFAULT_SEARCH" desc="Title of the search settings page section which displays the default search engine.">
+    Default search engine
+  </message>
   <message name="IDS_SETTINGS_SEARCH_EXPLANATION_ACCESSIBILITY_LABEL" desc="Accessibility label for a 'learn more' link which links to an article about setting a default search engine.">
     Learn more about default search engines
   </message>
@@ -2304,6 +2332,54 @@
   </message>
   <message name="IDS_SETTINGS_SEARCH_MANAGE_SEARCH_ENGINES_EXPLANATION" desc="Explanation for the Manage Search Engines button.">
     Create shortcuts for searching sites and manage your search engine
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_SITE_SEARCH" desc="Label for 'Shortcuts for sites and search engines' section">
+    Shortcuts for sites and search engines
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ACTIVE_SHORTCUTS" desc="Label for 'Shortcuts for sites and search engines' subsection containing the active sites and search engines.">
+    Your site shortcuts
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ACTIVE_SHORTCUTS_EXPLANATION" desc="Subtitle for the active sites and search engines subsection, explaining how they can be used.">
+    To search a specific site or search engine, type its shortcut in the address bar, followed by your selected keyboard key
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_INACTIVE_SHORTCUTS" desc="Label for 'Shortcuts for sites and search engines' subsection containing the inactive sites and search engines.">
+    Available site shortcuts
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_INACTIVE_SHORTCUTS_EXPLANATION" desc="Subtitle for the inactive sites and search engines subsection, explaining how they can be used.">
+    You visited these sites, and they requested to become a shortcut. You can choose to turn them on.
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_EXTENSION_ENGINES" desc="Label for 'Shortcuts for features and extensions' section">
+    Shortcuts for features and extensions
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_EXTENSION_ENGINES_ACTIVE_SHORTCUTS" desc="Label for 'Shortcuts for features and extensions' subsection containing the active features and extensions.">
+    Your feature and extension shortcuts
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_EXTENSION_ENGINES_INACTIVE_SHORTCUTS" desc="Label for 'Shortcuts for features and extensions' subsection containing the inactive features and extensions.">
+    Available feature and extension shortcuts
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_KEYBOARD_KEY_TITLE" desc="Label for scoped search mode trigger options section">
+    Keyboard key
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_KEYBOARD_KEY_DESCRIPTION" desc="Text explaining how to use keyword mode">
+    In the address bar, use this key with all your shortcuts
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ACTIVATE" desc="Text of the button that activates a search engine" meaning="To turn on/enable usage of the search engine">
+    Turn on
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_DEACTIVATE" desc="Text of the button that deactivates a search engine" meaning="To turn off/disable usage of the search engine">
+    Turn off
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ACTIVATE_SHORTCUT" desc="Text of the button that activates a shortcut" meaning="To turn on/enable usage of the shortcut">
+    Turn on shortcut
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_DEACTIVATE_SHORTCUT" desc="Text of the button that deactivates a shortcut" meaning="To turn off/disable usage of the shortcut">
+    Turn off shortcut
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_DISABLE_EXTENSION" desc="Text displayed for a button that allows the user to disable a Brave extension">
+    Disable extension
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_MANAGE_EXTENSION" desc="Text displayed for a button that allows the user to manage a Brave extension">
+    Manage extension
   </message>
 
   <!-- Search Engines Page -->
@@ -2543,7 +2619,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DOWNLOADS_DESCRIPTION" desc="Description of the automatic downloads content setting.">
     Sites might automatically download related files together to save you time
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DOWNLOADS_ALLOWED" desc="Label for the enabled option of the automatic downloads content setting.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DOWNLOADS_ASK" desc="Label for the enabled option of the automatic downloads content setting.">
     Sites can ask to automatically download multiple files
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DOWNLOADS_BLOCKED" desc="Label for the disabled option of the automatic downloads content setting.">
@@ -2591,7 +2667,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_DEVICES_DESCRIPTION" desc="Description of the bluetooth devices site setting.">
     Sites usually connect to Bluetooth devices for features like setting up or syncing a low-energy beacon, a health or fitness tracker, or a smart light bulb
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_DEVICES_ALLOWED" desc="Label for the enabled option of bluetooth devices site setting.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_DEVICES_ASK" desc="Label for the ask-before-use option of bluetooth devices site setting.">
     Sites can ask to connect to Bluetooth devices
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_DEVICES_BLOCKED" desc="Label for the disabled option of the bluetooth devices site setting.">
@@ -2600,7 +2676,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_CAPTURED_SURFACE_CONTROL_DESCRIPTION" desc="Description of the Captured Surface Control content setting.">
     Sites use this feature to scroll and zoom shared tabs
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_CAPTURED_SURFACE_CONTROL_ALLOWED" desc="Label for the enabled option of the Captured Surface Control content setting.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CAPTURED_SURFACE_CONTROL_ASK" desc="Label for the ask-before-use option of the Captured Surface Control content setting.">
     Sites can ask to scroll and zoom shared tabs
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CAPTURED_SURFACE_CONTROL_BLOCKED" desc="Label for the disabled option of the Captured Surface Control content setting.">
@@ -2615,7 +2691,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_CAMERA_DESCRIPTION" desc="Description of the camera content setting.">
     Sites usually use your video camera for communication features like video chatting
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_CAMERA_ALLOWED" desc="Label for the enabled option of the camera content setting.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CAMERA_ASK" desc="Label for the ask-before-use option of the camera content setting.">
     Sites can ask to use your camera
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CAMERA_BLOCKED" desc="Label for the disabled option of the camera content setting.">
@@ -2633,7 +2709,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLIPBOARD_DESCRIPTION" desc="Description of the clipboard content setting.">
     Sites usually read your clipboard for features like keeping the formatting of text you copied
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_CLIPBOARD_ALLOWED" desc="Label for the enabled option of the clipboard content setting.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CLIPBOARD_ASK" desc="Label for the ask-before-use option of the clipboard content setting.">
     Sites can ask to see text and images on your clipboard
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLIPBOARD_BLOCKED" desc="Label for the disabled option of the clipboard content setting.">
@@ -2648,7 +2724,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_DEVICE_USE_DESCRIPTION" desc="Description of the device use content setting.">
     Sites usually detect when you're actively using your device to set your availability on chat apps
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_DEVICE_USE_ALLOWED" desc="Label for the enabled option of the device use content setting.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_DEVICE_USE_ASK" desc="Label for the ask-before-use option of the device use content setting.">
     Sites can ask to know when you're actively using your device
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_DEVICE_USE_BLOCKED" desc="Label for the disabled option of the device use content setting.">
@@ -2678,7 +2754,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_WRITE_DESCRIPTION" desc="Description of the file system write content setting.">
     Sites usually access files and folders on your device for features like automatically saving your work
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_WRITE_ALLOWED" desc="Label for the enabled option of the file system write content setting.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_WRITE_ASK" desc="Label for the ask-before-use option of the file system write content setting.">
     Sites can ask to edit files and folders on your device
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_WRITE_BLOCKED" desc="Label for the disabled option of the file system write content setting.">
@@ -2690,7 +2766,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_FONTS_DESCRIPTION" desc="Description of the fonts content setting.">
     Sites usually use your fonts so you can create high-fidelity content with online design and graphics tools
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FONTS_ALLOWED" desc="Label for the enabled option of the fonts content setting.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FONTS_ASK" desc="Label for the ask-before-use option of the fonts content setting.">
     Sites can ask to use fonts installed on your device
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FONTS_BLOCKED" desc="Label for the disabled option of the fonts content setting.">
@@ -2723,7 +2799,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_HID_DEVICES_DESCRIPTION" desc="Description of the hid devices site setting.">
     Sites usually connect to HID devices for features that use uncommon keyboards, game controllers, and other devices
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_HID_DEVICES_ALLOWED" desc="Label for the enabled option of hid devices site setting.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_HID_DEVICES_ASK" desc="Label for the ask-before-use option of hid devices site setting.">
     Sites can ask to connect to HID devices
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_HID_DEVICES_BLOCKED" desc="Label for the disabled option of the hid devices site setting.">
@@ -2738,7 +2814,7 @@
   <message name="IDS_SITE_SETTINGS_SMART_CARDS_DEFAULT_DESCRIPTION" desc="Label indicating the default behavior for smart card access.">
     Isolated web apps automatically follow this setting
   </message>
-  <message name="IDS_SITE_SETTINGS_SMART_CARDS_ALLOWED" desc="Option to allow isolated web apps to control smart card readers.">
+  <message name="IDS_SITE_SETTINGS_SMART_CARDS_ASK" desc="Option to allow isolated web apps to control smart card readers.">
     Isolated web apps can ask to control smart card readers
   </message>
   <message name="IDS_SITE_SETTINGS_SMART_CARDS_BLOCKED" desc="Option to block isolated web apps from controlling smart card readers.">
@@ -2816,7 +2892,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_DESCRIPTION" desc="Description of the keyboard lock content setting.">
     Sites use this feature to override the input of your keyboard, like for games or remote desktop apps
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_ALLOWED" desc="Label for the enabled option of the keyboard lock content setting.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_ASK" desc="Label for the ask-before-use option of the keyboard lock content setting.">
     Sites can ask to override your keyboard input
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_BLOCKED" desc="Label for the disabled option of the keyboard lock content setting.">
@@ -2831,7 +2907,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_LOCATION_DESCRIPTION" desc="Description of the location content setting.">
     Sites usually use your location for relevant features or info, like local news or nearby shops
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCATION_ALLOWED" desc="Label for the enabled option of the location content setting.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCATION_ASK" desc="Label for the ask-before-use option of the location content setting.">
     Sites can ask for your location
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_LOCATION_BLOCKED" desc="Label for the blocked option of the location content setting.">
@@ -2849,7 +2925,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_MIC_DESCRIPTION" desc="Description of the microphone content setting.">
     Sites usually use your microphone for communication features like video chatting
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_MIC_ALLOWED" desc="Label for the enabled option of the microphone content setting.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MIC_ASK" desc="Label for the ask-before-use option of the microphone content setting.">
     Sites can ask to use your microphone
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_MIC_BLOCKED" desc="Label for the disabled option of the microphone content setting.">
@@ -2867,7 +2943,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_MIDI_DESCRIPTION" desc="Description of the MIDI devices content setting.">
     Sites usually ask to control and reprogram MIDI devices to create music, edit music, or update device firmware
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_MIDI_ALLOWED" desc="Label for the enabled option of the MIDI devices content setting.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MIDI_ASK" desc="Label for the ask-before-use option of the MIDI devices content setting.">
     Sites can ask to control and reprogram your MIDI devices
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_MIDI_BLOCKED" desc="Label for the disabled option of the MIDI devices content setting.">
@@ -2879,11 +2955,35 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_MIDI_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the MIDI devices content setting.">
     Not allowed to control and reprogram your MIDI devices
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_AND_LIGHT_SENSORS_DESCRIPTION" desc="Description of the motion sensors content setting.">
+    Sites usually use your device's motion and light sensors for features like virtual reality or fitness tracking
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_AND_LIGHT_SENSORS_ALLOWED" desc="Label for the enabled option of the motion and light sensors content setting.">
+    Sites can use motion and light sensors
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_AND_LIGHT_SENSORS_ASK" desc="Label for the ask option of the motion and light sensors content setting.">
+    Sites can ask to use motion and light sensors
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_AND_LIGHT_SENSORS_BLOCKED" desc="Label for the disabled option of the motion and light sensors content setting.">
+    Don't allow sites to use motion or light sensors
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_AND_LIGHT_SENSORS_BLOCKED_SUB_LABEL" desc="Sub label for the disabled option of the motion and light sensors content setting.">
+    Features that need motion or light sensors won't work
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_AND_LIGHT_SENSORS_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the motion and light sensors content setting.">
+    Allowed to use motion and light sensors
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_AND_LIGHT_SENSORS_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the motion sensors content setting.">
+    Not allowed to use motion or light sensors
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_SENSORS_DESCRIPTION" desc="Description of the motion sensors content setting.">
     Sites usually use your device's motion sensors for features like virtual reality or fitness tracking
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_SENSORS_ALLOWED" desc="Label for the enabled option of the motion sensors content setting.">
     Sites can use motion sensors
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_SENSORS_ASK" desc="Label for the ask option of the motion sensors content setting.">
+    Sites can ask to use motion sensors
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_SENSORS_BLOCKED" desc="Label for the disabled option of the motion sensors content setting.">
     Don't allow sites to use motion sensors
@@ -3039,7 +3139,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_SERIAL_PORTS_DESCRIPTION" desc="Description of the serial ports content setting.">
     Sites usually connect to serial ports for data transfer features, like setting up your network
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SERIAL_PORTS_ALLOWED" desc="Label for the enabled option of the serial ports content setting.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SERIAL_PORTS_ASK" desc="Label for the ask-before-use option of the serial ports content setting.">
     Sites can ask to connect to serial ports
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SERIAL_PORTS_BLOCKED" desc="Label for the disabled option of the serial ports content setting.">
@@ -3066,7 +3166,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_USB_DESCRIPTION" desc="Description of the USB devices content setting.">
     Sites usually connect to USB devices for features like printing a document or saving to a storage device
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_USB_ALLOWED" desc="Label for the enabled option of the USB devices content setting.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_USB_ASK" desc="Label for the ask-before-use option of the USB devices content setting.">
     Sites can ask to connect to USB devices
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_USB_BLOCKED" desc="Label for the disabled option of the USB devices content setting.">
@@ -3075,7 +3175,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_VR_DESCRIPTION" desc="Description of the virtual reality content setting.">
     Sites usually use your virtual reality devices and data to let you enter VR sessions
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_VR_ALLOWED" desc="Label for the enabled option of the virtual reality content setting.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_VR_ASK" desc="Label for the ask-before-use option of the virtual reality content setting.">
     Sites can ask to use virtual reality devices and data
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_VR_BLOCKED" desc="Label for the disabled option of the virtual reality content setting.">
@@ -3231,12 +3331,6 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_APP_DISALLOWED_PROTOCOL_HANDLERS_DESCRIPTION" desc="Description of the disallowed protocol handlers list. The user has previously diallowed the launch of these apps.">
     Apps listed below will never handle protocol links.
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_HID_DEVICES_ASK" desc="The ask label for HID devices in site settings.">
-    Ask when a site wants to access HID devices
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_HID_DEVICES_BLOCK" desc="The block label for HID devices in site settings.">
-    Do not allow any sites to access HID devices
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_INSECURE_CONTENT_BLOCK" desc="Label explaining that insecure content is blocked by default in secure sites. Insecure content refers to content served over HTTP, secure sites refers to sites served over HTTPS.">
     Insecure content is blocked by default on secure sites
@@ -3646,7 +3740,7 @@
   <message name="IDS_SETTINGS_STORAGE_ACCESS_DESCRIPTION" desc="The body description on the Embedded content settings page.">
     Sites you visit can embed content from other sites, for example images, ads, and text. These other sites can ask for permission to use information they've saved about you as you browse the site.
   </message>
-  <message name="IDS_SETTINGS_STORAGE_ACCESS_ALLOWED" desc="One of two radio buttons on the Embedded content settings page. If a user chooses this option, they're allowing a new permission prompt that may get shown as the user browses sites. In the description below, “Google Docs” is just used as an example. 1) “use information” means retrieve existing info and save additional info. 2) “they've' saved about you”: Google Docs can only prompt the user for permission on www.myfavoritesite.com if the user has previously used Google Docs.">
+  <message name="IDS_SETTINGS_STORAGE_ACCESS_ASK" desc="One of two radio buttons on the Embedded content settings page. If a user chooses this option, they're allowing a new permission prompt that may get shown as the user browses sites. In the description below, “Google Docs” is just used as an example. 1) “use information” means retrieve existing info and save additional info. 2) “they've' saved about you”: Google Docs can only prompt the user for permission on www.myfavoritesite.com if the user has previously used Google Docs.">
     Sites can ask to use information they've saved about you
   </message>
   <message name="IDS_SETTINGS_STORAGE_ACCESS_BLOCKED" desc="The second of two radio buttons on the Embedded content settings page. If a user chooses this option, they're not allowing a new permission prompt that may get shown as the user browses sites. In the description below, “www.myfavoritesite.com” and “Google Docs” are just used as examples. 1) “use information” means retrieve existing info and save additional info. 2) “they've' saved about you”: Google Docs can only prompt the user for permission on www.myfavoritesite.com if the user has previously used Google Docs.">

@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h b/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h
-index a0d15aa1a0777306b1f02d8692bafce05c4ad12f..aa544007f56b5f29107b4f8b98a2ebfdba363b1d 100644
+index 48a432ac2db8c7119d3bf36754419f07390893f5..8c4deefe04c532f5370ef6ac6a8d224d408fcbbe 100644
 --- a/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h
 +++ b/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h
-@@ -133,7 +133,7 @@ class TabDragController : public views::WidgetObserver,
-   // and is only non-empty if the original selection isn't the same as the
-   // dragging set. Returns Liveness::DELETED if `this` was deleted during this
+@@ -135,7 +135,7 @@ class TabDragController : public views::WidgetObserver,
    // call, and Liveness::ALIVE if `this` still exists.
+   // Note: `dragging_views` must be ordered by their position in the source
+   // tabstrip (both visually and in the model).
 -  [[nodiscard]] Liveness Init(TabDragContext* source_context,
 +  [[nodiscard]] virtual Liveness Init(TabDragContext* source_context,
                                TabSlotView* source_view,

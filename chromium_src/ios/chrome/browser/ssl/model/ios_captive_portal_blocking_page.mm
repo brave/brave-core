@@ -7,16 +7,16 @@
 #include "base/memory/raw_ptr.h"
 #include "ios/chrome/browser/ssl/model/captive_portal_tab_helper.h"
 #include "ios/chrome/browser/web/model/web_navigation_util.h"
-#include "ios/web/public/lazy_web_state_user_data.h"
 #include "ios/web/public/navigation/navigation_manager.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/web_state_observer.h"
+#include "ios/web/public/web_state_user_data.h"
 
 // A custom captive portal tab helper that instead just loads the landing URL
 // directly into the current WebState instead of attempting to open it in a new
 // tab since we dont use WebStateList & its insertion agent on iOS
 class BraveCaptivePortalTabHelper
-    : public web::LazyWebStateUserData<BraveCaptivePortalTabHelper>,
+    : public web::WebStateUserData<BraveCaptivePortalTabHelper>,
       web::WebStateObserver {
  public:
   BraveCaptivePortalTabHelper(const BraveCaptivePortalTabHelper&) = delete;
@@ -47,7 +47,7 @@ class BraveCaptivePortalTabHelper
   }
 
  private:
-  friend class web::LazyWebStateUserData<BraveCaptivePortalTabHelper>;
+  friend class web::WebStateUserData<BraveCaptivePortalTabHelper>;
   BraveCaptivePortalTabHelper(web::WebState* web_state)
       : web_state_(web_state) {
     web_state_->AddObserver(this);

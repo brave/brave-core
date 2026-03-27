@@ -429,6 +429,8 @@ source_set("ui") {
       "//chrome/browser/ui/omnibox",
       "//chrome/browser/ui/prefs",
       "//chrome/browser/ui/profiles",
+      "//chrome/browser/ui/side_panel",
+      "//chrome/browser/ui/side_panel:side_panel_views_dependent",
       "//chrome/browser/ui/tabs:tab_menu",
       "//chrome/browser/ui/thumbnails",
       "//chrome/browser/ui/views/page_action",
@@ -679,6 +681,7 @@ source_set("ui") {
       "//chrome/browser:shell_integration",
       "//chrome/browser/devtools",
       "//chrome/browser/enterprise/watermark:watermark_view_lib",
+      "//chrome/browser/glic",
       "//chrome/browser/sharing_hub",
       "//chrome/browser/ui/download",
       "//chrome/browser/ui/exclusive_access",
@@ -692,10 +695,6 @@ source_set("ui") {
       "//chrome/browser/ui/views/toolbar",
       "//components/bookmarks/browser",
     ]
-
-    if (enable_glic) {
-      deps += [ "//chrome/browser/glic" ]
-    }
 
     if (enable_brave_vpn) {
       deps += [ "//brave/browser/ui/brave_vpn" ]
@@ -821,7 +820,10 @@ source_set("ui") {
       ]
     }
 
-    deps += [ "//chrome/browser/infobars" ]
+    deps += [
+      "//chrome/browser/infobars",
+      "//chrome/browser/obsolete_system",
+    ]
   }
 
   deps += [

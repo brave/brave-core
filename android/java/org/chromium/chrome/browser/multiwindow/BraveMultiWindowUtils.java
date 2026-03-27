@@ -8,6 +8,8 @@ package org.chromium.chrome.browser.multiwindow;
 import android.app.Activity;
 import android.content.Intent;
 
+import androidx.annotation.VisibleForTesting;
+
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
 import org.chromium.build.annotations.NullMarked;
@@ -36,6 +38,11 @@ public class BraveMultiWindowUtils extends MultiWindowUtils {
 
     public static boolean shouldShowManageWindowsMenu() {
         return shouldEnableMultiWindows() && MultiWindowUtils.shouldShowManageWindowsMenu();
+    }
+
+    @VisibleForTesting
+    public static Class<TabReparentingDelegate> getTabReparentingDelegateClass() {
+        return TabReparentingDelegate.class;
     }
 
     @Override

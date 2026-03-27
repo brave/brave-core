@@ -850,8 +850,7 @@ void PageGraph::RegisterPageGraphWebAPICallWithResult(
       return;
     } else if (name_piece == "Document.cookie.set") {
       String value(args[0].GetString());
-      blink::Vector<String> cookie_structure;
-      value.Split('=', cookie_structure);
+      blink::Vector<String> cookie_structure = value.SplitSkippingEmpty('=');
       String cookie_key = *(cookie_structure.begin());
       String cookie_value =
           value.Substring(cookie_key.length() + 1, value.length());
@@ -935,8 +934,8 @@ void PageGraph::RegisterPageGraphJavaScriptUrl(blink::Document* document,
   processed_js_urls_.insert(execution_context, Vector<ProcessedJavascriptURL>())
       .stored_value->value.push_back(ProcessedJavascriptURL{
           .script_code =
-              blink::DecodeURLEscapeSequences(
-                  url.GetString(), blink::DecodeURLMode::kUTF8OrIsomorphic)
+              blink::DecodeUrlEscapeSequences(
+                  url.GetString(), blink::DecodeUrlMode::kUtf8OrIsomorphic)
                   .Substring(kJavascriptSchemeLength),
           .parent_script_id = GetExecutingScriptId(execution_context),
       });
@@ -1104,7 +1103,7 @@ void PageGraph::GenerateReportForNode(const blink::DOMNodeId node_id,
 
   for (const GraphNode* succ : successors) {
     ItemName item_name = succ->GetItemName();
-    if (item_name.StartsWith("resource #")) {
+    if (item_name.starts_with("resource #")) {
       for (const GraphEdge* edge : succ->GetInEdges()) {
         String reportItem(edge->GetItemDesc() +
                           "\r\n\r\nby: " + edge->GetOutNode()->GetItemDesc());
@@ -1296,7 +1295,7 @@ void PageGraph::RegisterDocumentNodeCreated(blink::Document* document) {
       AddNode<NodeDOMRoot>(node_id, local_tag_name, is_frame_attached);
   auto url = document->Url();
   dom_root->SetURL(url);
-  if (!source_url_ && url.IsValid() && url.ProtocolIsInHTTPFamily()) {
+  if (!source_url_ && url.IsValid() && url.ProtocolIsInHttpFamily()) {
     source_url_ = url;
   }
 

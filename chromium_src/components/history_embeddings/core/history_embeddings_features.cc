@@ -5,14 +5,13 @@
 
 #include "base/feature_override.h"
 
-#include <components/legion/features.cc>
+#include <components/history_embeddings/core/history_embeddings_features.cc>
 
-namespace legion {
+namespace history_embeddings {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-#if !BUILDFLAG(IS_ANDROID)
-    {kLegion, base::FEATURE_DISABLED_BY_DEFAULT},
-#endif  // !BUILDFLAG(IS_ANDROID)
+    {kHistoryEmbeddings, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kHistoryEmbeddingsAnswers, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
-}  // namespace legion
+}  // namespace history_embeddings

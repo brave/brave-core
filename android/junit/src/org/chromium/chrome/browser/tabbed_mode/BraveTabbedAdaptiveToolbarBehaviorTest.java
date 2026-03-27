@@ -70,7 +70,8 @@ public class BraveTabbedAdaptiveToolbarBehaviorTest {
                         groupSuggestionsControllerSupplier,
                         tabModelSelectorSupplier,
                         modalDialogManagerSupplier,
-                        tabStripVisibilitySupplier);
+                        tabStripVisibilitySupplier,
+                        () -> {});
     }
 
     @After

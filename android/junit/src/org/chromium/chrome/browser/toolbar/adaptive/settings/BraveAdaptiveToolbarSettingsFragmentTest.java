@@ -57,10 +57,7 @@ import java.util.List;
 @RunWith(BaseRobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
 @EnableFeatures(ChromeFeatureList.ADAPTIVE_BUTTON_IN_TOP_TOOLBAR_CUSTOMIZATION_V2)
-@DisableFeatures({
-    ChromeFeatureList.ADAPTIVE_BUTTON_IN_TOP_TOOLBAR_PAGE_SUMMARY,
-    ChromeFeatureList.READALOUD
-})
+@DisableFeatures({ChromeFeatureList.ADAPTIVE_BUTTON_IN_TOP_TOOLBAR_PAGE_SUMMARY})
 public class BraveAdaptiveToolbarSettingsFragmentTest {
 
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
@@ -189,7 +186,7 @@ public class BraveAdaptiveToolbarSettingsFragmentTest {
                     // Check indexes of Brave buttons and MAX_VALUE
                     Assert.assertEquals(
                             AdaptiveToolbarButtonVariant.BOOKMARKS,
-                            AdaptiveToolbarButtonVariant.TAB_GROUPING + 1);
+                            AdaptiveToolbarButtonVariant.GLIC + 1);
                     Assert.assertEquals(
                             AdaptiveToolbarButtonVariant.HISTORY,
                             AdaptiveToolbarButtonVariant.BOOKMARKS + 1);

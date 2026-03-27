@@ -92,7 +92,7 @@ SyncAccountInfo BraveSyncAuthManager::DetermineAccountToUse(
   }
 }
 
-std::string BraveSyncAuthManager::GenerateAccessToken(
+signin::AccessTokenInfo BraveSyncAuthManager::GenerateAccessToken(
     const std::string& timestamp) {
   VLOG(1) << "timestamp=" << timestamp;
 
@@ -118,7 +118,10 @@ std::string BraveSyncAuthManager::GenerateAccessToken(
   std::string encoded_access_token = base::Base64Encode(access_token);
   DCHECK(!encoded_access_token.empty());
 
-  return encoded_access_token + AppendBraveServiceKeyHeaderString();
+  signin::AccessTokenInfo access_token_info;
+  access_token_info.token =
+      encoded_access_token + AppendBraveServiceKeyHeaderString();
+  return access_token_info;
 }
 
 void BraveSyncAuthManager::OnNetworkTimeFetched(const base::Time& time) {
@@ -127,7 +130,7 @@ void BraveSyncAuthManager::OnNetworkTimeFetched(const base::Time& time) {
   if (public_key_.empty() || private_key_.empty()) {
     return;
   }
-  access_token_ = GenerateAccessToken(timestamp);
+  access_token_info_ = GenerateAccessToken(timestamp);
   if (registered_for_auth_notifications_) {
     delegate_->SyncAuthCredentialsChanged();
   }

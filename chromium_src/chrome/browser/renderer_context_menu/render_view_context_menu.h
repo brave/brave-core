@@ -56,7 +56,8 @@ class BraveRenderViewContextMenu
   // Non-const reference passed in the parent class upstream
   // NOLINTNEXTLINE(runtime/references)
   BraveRenderViewContextMenu(content::RenderFrameHost& render_frame_host,
-                             const content::ContextMenuParams& params);
+                             const content::ContextMenuParams& params,
+                             bool is_paste_enabled);
   ~BraveRenderViewContextMenu() override;
   // RenderViewContextMenuBase:
   bool IsCommandIdEnabled(int command_id) const override;

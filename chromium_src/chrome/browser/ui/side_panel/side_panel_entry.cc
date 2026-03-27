@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry.h"
 
-#include <chrome/browser/ui/views/side_panel/side_panel_entry.cc>
+#include <chrome/browser/ui/side_panel/side_panel_entry.cc>
 
 bool SidePanelEntry::IsBeingObservedBy(SidePanelEntryObserver* observer) {
   return observers_.HasObserver(observer);

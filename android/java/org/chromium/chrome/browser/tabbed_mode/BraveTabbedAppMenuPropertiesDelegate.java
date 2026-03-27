@@ -25,6 +25,7 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.BraveUrlConstants;
 import org.chromium.base.DeviceInfo;
 import org.chromium.base.library_loader.LibraryLoader;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
@@ -241,7 +242,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             @NonNull
                     OneshotSupplier<IncognitoReauthController>
                             incognitoReauthControllerOneshotSupplier,
-            Supplier<ReadAloudController> readAloudControllerSupplier,
+            MonotonicObservableSupplier<ReadAloudController> readAloudControllerSupplier,
             PageZoomManager pageZoomManager,
             @Nullable OpenInAppMenuItemProvider openInAppMenuItemProvider) {
         super(
@@ -983,7 +984,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     }
 
     @Override
-    boolean shouldShowIconRow() {
+    public boolean shouldShowIconRow() {
         if (isMenuButtonInBottomToolbar()) {
             return false;
         }

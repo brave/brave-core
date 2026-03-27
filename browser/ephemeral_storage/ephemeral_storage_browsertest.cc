@@ -32,6 +32,7 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browsing_data_remover.h"
+#include "content/public/browser/security_principal.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/common/content_paths.h"
 #include "content/public/common/content_switches.h"
@@ -1353,8 +1354,9 @@ IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
 
   // Shred site data for site a.com
   auto* profile = browser()->profile();
-  auto storage_partition_config =
-      site_a_tab->GetSiteInstance()->GetStoragePartitionConfig();
+  auto storage_partition_config = site_a_tab->GetSiteInstance()
+                                      ->GetSecurityPrincipal()
+                                      .GetStoragePartitionConfig();
   EphemeralStorageServiceFactory::GetInstance()
       ->GetForContext(profile)
       ->CleanupTLDFirstPartyStorage(site_a_tab->GetLastCommittedURL(),
@@ -1440,8 +1442,9 @@ IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
   // Shred site data for a.com - this should close tabs for a.com, a.a.com, and
   // b.a.com
   auto* profile = browser()->profile();
-  auto storage_partition_config =
-      site_a_tab->GetSiteInstance()->GetStoragePartitionConfig();
+  auto storage_partition_config = site_a_tab->GetSiteInstance()
+                                      ->GetSecurityPrincipal()
+                                      .GetStoragePartitionConfig();
   EphemeralStorageServiceFactory::GetInstance()
       ->GetForContext(profile)
       ->CleanupTLDFirstPartyStorage(site_a_tab->GetLastCommittedURL(),
@@ -1525,8 +1528,9 @@ IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
   // Try to Shred site data for a.com - this should not be executed as shields
   // are disabled on a.a.com
   auto* profile = browser()->profile();
-  auto storage_partition_config =
-      site_a_tab->GetSiteInstance()->GetStoragePartitionConfig();
+  auto storage_partition_config = site_a_tab->GetSiteInstance()
+                                      ->GetSecurityPrincipal()
+                                      .GetStoragePartitionConfig();
   EphemeralStorageServiceFactory::GetInstance()
       ->GetForContext(profile)
       ->CleanupTLDFirstPartyStorage(site_a_tab->GetLastCommittedURL(),
