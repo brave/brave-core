@@ -38,7 +38,6 @@
 #include "brave/components/brave_ads/browser/tooltips/ads_tooltips_delegate.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 #include "brave/components/brave_ads/core/browser/virtual_pref/virtual_pref_provider.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_prefetcher.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
@@ -150,8 +149,6 @@ AdsServiceImpl::AdsServiceImpl(
       host_content_settings_map_(host_content_settings_map),
       ads_tooltips_delegate_(std::move(ads_tooltips_delegate)),
       device_id_(std::move(device_id)),
-      new_tab_page_ad_prefetcher_(
-          std::make_unique<NewTabPageAdPrefetcher>(/*ads_service=*/*this)),
       bat_ads_service_factory_(std::move(bat_ads_service_factory)),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
@@ -770,35 +767,6 @@ void AdsServiceImpl::NotifyRewardsWalletDidUpdate(
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
-void AdsServiceImpl::RefetchNewTabPageAd() {
-  ResetNewTabPageAd();
-
-  PurgeOrphanedAdEventsForType(
-      mojom::AdType::kNewTabPageAd,
-      base::BindOnce(&AdsServiceImpl::RefetchNewTabPageAdCallback,
-                     weak_ptr_factory_.GetWeakPtr()));
-}
-
-void AdsServiceImpl::RefetchNewTabPageAdCallback(bool success) {
-  if (success) {
-    new_tab_page_ad_prefetcher_->Prefetch();
-  }
-}
-
-void AdsServiceImpl::ResetNewTabPageAd() {
-  new_tab_page_ad_prefetcher_ = std::make_unique<NewTabPageAdPrefetcher>(*this);
-}
-
-void AdsServiceImpl::OnParseAndSaveNewTabPageAdsCallback(
-    ParseAndSaveNewTabPageAdsCallback callback,
-    bool success) {
-  if (success) {
-    RefetchNewTabPageAd();
-  }
-
-  std::move(callback).Run(success);
-}
-
 void AdsServiceImpl::CheckIdleStateAfterDelay() {
 #if !BUILDFLAG(IS_ANDROID)
   idle_state_timer_.Stop();
@@ -1078,8 +1046,6 @@ void AdsServiceImpl::ShutdownAdsService() {
 
   notification_ad_timers_.clear();
 
-  ResetNewTabPageAd();
-
   if (is_bat_ads_initialized_) {
     BackgroundHelper::GetInstance()->RemoveObserver(this);
   }
@@ -1200,23 +1166,6 @@ void AdsServiceImpl::GetStatementOfAccounts(
                                                   /*statement*/ nullptr));
 }
 
-void AdsServiceImpl::PrefetchNewTabPageAd() {
-  new_tab_page_ad_prefetcher_->Prefetch();
-}
-
-mojom::NewTabPageAdInfoPtr AdsServiceImpl::MaybeGetPrefetchedNewTabPageAd() {
-  return new_tab_page_ad_prefetcher_->MaybeGetPrefetchedAd();
-}
-
-void AdsServiceImpl::OnFailedToPrefetchNewTabPageAd(
-    const std::string& /*placement_id*/,
-    const std::string& /*creative_instance_id*/) {
-  ResetNewTabPageAd();
-
-  PurgeOrphanedAdEventsForType(mojom::AdType::kNewTabPageAd,
-                               /*intentional*/ base::DoNothing());
-}
-
 void AdsServiceImpl::ParseAndSaveNewTabPageAds(
     base::DictValue dict,
     ParseAndSaveNewTabPageAdsCallback callback) {
@@ -1224,10 +1173,8 @@ void AdsServiceImpl::ParseAndSaveNewTabPageAds(
     return std::move(callback).Run(/*success*/ false);
   }
 
-  bat_ads_associated_remote_->ParseAndSaveNewTabPageAds(
-      std::move(dict),
-      base::BindOnce(&AdsServiceImpl::OnParseAndSaveNewTabPageAdsCallback,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  bat_ads_associated_remote_->ParseAndSaveNewTabPageAds(std::move(dict),
+                                                        std::move(callback));
 }
 
 void AdsServiceImpl::MaybeServeNewTabPageAd(
@@ -1235,6 +1182,7 @@ void AdsServiceImpl::MaybeServeNewTabPageAd(
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(/*ad=*/nullptr);
   }
+
   bat_ads_associated_remote_->MaybeServeNewTabPageAd(std::move(callback));
 }
 
@@ -1760,8 +1708,6 @@ void AdsServiceImpl::OnContentSettingChanged(
     ContentSettingsTypeSet content_type_set) {
   if (content_type_set.Contains(ContentSettingsType::JAVASCRIPT)) {
     SetContentSettings();
-
-    RefetchNewTabPageAd();
   }
 }
 

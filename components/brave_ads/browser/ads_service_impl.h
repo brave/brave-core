@@ -63,7 +63,6 @@ namespace brave_ads {
 class AdsTooltipsDelegate;
 class BatAdsServiceFactory;
 class DeviceId;
-class NewTabPageAdPrefetcher;
 class ResourceComponent;
 
 class AdsServiceImpl final : public AdsService,
@@ -182,14 +181,6 @@ class AdsServiceImpl final : public AdsService,
       brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet);
 #endif
 
-  void RefetchNewTabPageAd();
-  void RefetchNewTabPageAdCallback(bool success);
-  void ResetNewTabPageAd();
-
-  void OnParseAndSaveNewTabPageAdsCallback(
-      ParseAndSaveNewTabPageAdsCallback callback,
-      bool success);
-
   // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple idle
   // state business logic.
   void CheckIdleStateAfterDelay();
@@ -248,11 +239,6 @@ class AdsServiceImpl final : public AdsService,
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
-  mojom::NewTabPageAdInfoPtr MaybeGetPrefetchedNewTabPageAd() override;
-  void PrefetchNewTabPageAd() override;
-  void OnFailedToPrefetchNewTabPageAd(
-      const std::string& placement_id,
-      const std::string& creative_instance_id) override;
   void ParseAndSaveNewTabPageAds(
       base::DictValue dict,
       ParseAndSaveNewTabPageAdsCallback callback) override;
@@ -461,8 +447,6 @@ class AdsServiceImpl final : public AdsService,
   const std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate_;
 
   const std::unique_ptr<DeviceId> device_id_;
-
-  std::unique_ptr<NewTabPageAdPrefetcher> new_tab_page_ad_prefetcher_;
 
   const std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory_;
 

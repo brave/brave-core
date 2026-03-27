@@ -185,6 +185,10 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   void ReportVPNWidgetUsage(ReportVPNWidgetUsageCallback callback) override;
 
  private:
+  void OnGetSponsoredImageBackground(
+      GetSponsoredImageBackgroundCallback callback,
+      mojom::SponsoredImageBackgroundPtr sponsored_background);
+
   void OnCustomBackgroundsSelected(ShowCustomBackgroundChooserCallback callback,
                                    std::vector<base::FilePath> paths);
 

@@ -108,18 +108,6 @@ class AdsService : public KeyedService {
   virtual void GetStatementOfAccounts(
       GetStatementOfAccountsCallback callback) = 0;
 
-  // Called to prefetch a new tab page ad.
-  virtual void PrefetchNewTabPageAd() = 0;
-
-  // Called to get the prefetched new tab page ad for display.
-  virtual mojom::NewTabPageAdInfoPtr MaybeGetPrefetchedNewTabPageAd() = 0;
-
-  // Called when failing to prefetch a new tab page ad for the specified
-  // `placement_id` and `creative_instance_id`.
-  virtual void OnFailedToPrefetchNewTabPageAd(
-      const std::string& placement_id,
-      const std::string& creative_instance_id) = 0;
-
   // Called to parse and save creative new tab page ads. The callback takes one
   // argument - `bool` is set to `true` if successful otherwise `false`.
   virtual void ParseAndSaveNewTabPageAds(

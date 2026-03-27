@@ -7,9 +7,11 @@
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_NEW_TAB_PAGE_REFRESH_BACKGROUND_FACADE_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.h"
@@ -17,6 +19,10 @@
 
 class CustomBackgroundFileManager;
 class PrefService;
+
+namespace base {
+class DictValue;
+}  // namespace base
 
 namespace ntp_background_images {
 class NTPBackgroundImagesService;
@@ -46,7 +52,10 @@ class BackgroundFacade {
 
   mojom::SelectedBackgroundPtr GetSelectedBackground();
 
-  mojom::SponsoredImageBackgroundPtr GetSponsoredImageBackground();
+  // The `callback` runs synchronously for Wallpaper backgrounds or when an
+  // error occurs.
+  void GetSponsoredImageBackground(
+      base::OnceCallback<void(mojom::SponsoredImageBackgroundPtr)> callback);
 
   void SelectBackground(mojom::SelectedBackgroundPtr background);
 
@@ -63,6 +72,10 @@ class BackgroundFacade {
       brave_ads::mojom::NewTabPageAdMetricType metric_type);
 
  private:
+  void OnGetSponsoredImageBackground(
+      base::OnceCallback<void(mojom::SponsoredImageBackgroundPtr)> callback,
+      std::optional<base::DictValue> data);
+
   void OnCustomBackgroundsSaved(base::OnceClosure callback,
                                 std::vector<base::FilePath> paths);
 

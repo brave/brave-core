@@ -13,6 +13,8 @@
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/test/bind.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
@@ -295,6 +297,28 @@ class ViewCounterServiceTest : public testing::Test {
     prefs_.SetBoolean(prefs::kNewTabPageShowBackgroundImage, should_show);
   }
 
+  std::optional<base::DictValue> GetCurrentWallpaperForDisplay(
+      bool allow_sponsored_image) {
+    std::optional<base::DictValue> result;
+    view_counter_service_->GetCurrentWallpaperForDisplay(
+        base::BindLambdaForTesting(
+            [&result](std::optional<base::DictValue> dict) {
+              result = std::move(dict);
+            }),
+        allow_sponsored_image);
+    return result;
+  }
+
+  std::optional<base::DictValue> GetCurrentBrandedWallpaper() {
+    std::optional<base::DictValue> result;
+    view_counter_service_->GetCurrentBrandedWallpaper(
+        base::BindLambdaForTesting(
+            [&result](std::optional<base::DictValue> dict) {
+              result = std::move(dict);
+            }));
+    return result;
+  }
+
   void MockBackgroundImagesService() {
     SetSponsoredImagesVisibility(true);
     MockSponsoredImagesData(WallpaperType::kImage);
@@ -309,15 +333,15 @@ class ViewCounterServiceTest : public testing::Test {
   CycleThroughPageViewsAndMaybeGetNewTabTakeoverWallpaper() {
     // Loading initial count times.
     for (int i = 0; i < GetInitialCountToBrandedWallpaper(); ++i) {
-      const std::optional<base::DictValue> wallpaper =
-          view_counter_service_->GetCurrentWallpaperForDisplay();
+      const auto wallpaper =
+          GetCurrentWallpaperForDisplay(/*allow_sponsored_image=*/true);
       EXPECT_TRUE(wallpaper);
       EXPECT_TRUE(wallpaper->FindBool(kIsBackgroundKey));
 
       view_counter_service_->RegisterPageView();
     }
 
-    return view_counter_service_->GetCurrentWallpaperForDisplay();
+    return GetCurrentWallpaperForDisplay(/*allow_sponsored_image=*/true);
   }
 
   void VerifyDoNotGetNewTabTakeoverWallpaperExpectation() {
@@ -511,10 +535,9 @@ TEST_F(
   ASSERT_TRUE(view_counter_service_->CanShowSponsoredImages());
 
   brave_ads::mojom::NewTabPageAdInfoPtr ad = BuildNewTabPageAd();
-  EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd)
-      .WillOnce(::testing::Return(std::move(ad)));
-  EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd).Times(0);
-  EXPECT_TRUE(view_counter_service_->GetCurrentBrandedWallpaper());
+  EXPECT_CALL(ads_service_mock_, MaybeServeNewTabPageAd)
+      .WillOnce(base::test::RunOnceCallback<0>(std::move(ad)));
+  EXPECT_TRUE(GetCurrentBrandedWallpaper());
 }
 
 TEST_F(
@@ -529,9 +552,8 @@ TEST_F(
       kSponsoredRichMediaCampaignsJson);
   ASSERT_FALSE(view_counter_service_->CanShowSponsoredImages());
 
-  EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd).Times(0);
-  EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd).Times(0);
-  EXPECT_FALSE(view_counter_service_->GetCurrentBrandedWallpaper());
+  EXPECT_CALL(ads_service_mock_, MaybeServeNewTabPageAd).Times(0);
+  EXPECT_FALSE(GetCurrentBrandedWallpaper());
 }
 
 TEST_F(ViewCounterServiceTest,
@@ -546,10 +568,9 @@ TEST_F(ViewCounterServiceTest,
   ASSERT_TRUE(view_counter_service_->CanShowSponsoredImages());
 
   brave_ads::mojom::NewTabPageAdInfoPtr ad = BuildNewTabPageAd();
-  EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd)
-      .WillOnce(::testing::Return(std::move(ad)));
-  EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd).Times(0);
-  EXPECT_TRUE(view_counter_service_->GetCurrentBrandedWallpaper());
+  EXPECT_CALL(ads_service_mock_, MaybeServeNewTabPageAd)
+      .WillOnce(base::test::RunOnceCallback<0>(std::move(ad)));
+  EXPECT_TRUE(GetCurrentBrandedWallpaper());
 }
 
 TEST_F(ViewCounterServiceTest,
@@ -564,10 +585,9 @@ TEST_F(ViewCounterServiceTest,
   ASSERT_TRUE(view_counter_service_->CanShowSponsoredImages());
 
   brave_ads::mojom::NewTabPageAdInfoPtr ad = BuildNewTabPageAd();
-  EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd)
-      .WillOnce(::testing::Return(std::move(ad)));
-  EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd).Times(0);
-  EXPECT_TRUE(view_counter_service_->GetCurrentBrandedWallpaper());
+  EXPECT_CALL(ads_service_mock_, MaybeServeNewTabPageAd)
+      .WillOnce(base::test::RunOnceCallback<0>(std::move(ad)));
+  EXPECT_TRUE(GetCurrentBrandedWallpaper());
 }
 
 TEST_F(ViewCounterServiceTest,
@@ -579,11 +599,8 @@ TEST_F(ViewCounterServiceTest,
   brave_ads::mojom::NewTabPageAdInfoPtr ad = BuildNewTabPageAd();
   ad->creative_instance_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
 
-  EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd)
-      .Times(GetInitialCountToBrandedWallpaper());
-  EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd)
-      .WillOnce(::testing::Return(std::move(ad)));
-  EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd);
+  EXPECT_CALL(ads_service_mock_, MaybeServeNewTabPageAd)
+      .WillOnce(base::test::RunOnceCallback<0>(std::move(ad)));
   VerifyDoNotGetNewTabTakeoverWallpaperExpectation();
 }
 

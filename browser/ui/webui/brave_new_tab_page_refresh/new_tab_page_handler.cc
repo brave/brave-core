@@ -145,7 +145,14 @@ void NewTabPageHandler::GetSponsoredImageBackground(
     return std::move(callback).Run(nullptr);
   }
 
-  auto sponsored_background = background_facade_->GetSponsoredImageBackground();
+  background_facade_->GetSponsoredImageBackground(
+      base::BindOnce(&NewTabPageHandler::OnGetSponsoredImageBackground,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void NewTabPageHandler::OnGetSponsoredImageBackground(
+    GetSponsoredImageBackgroundCallback callback,
+    mojom::SponsoredImageBackgroundPtr sponsored_background) {
   if (sponsored_background) {
     ntp_background_images::NewTabTakeoverInfoBarDelegate::
         MaybeDisplayAndIncrementCounter(base::to_address(web_contents_),

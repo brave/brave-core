@@ -109,7 +109,9 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
 
   void OnSearchPromotionDismissed();
   void NotifySearchPromotionDisabledIfNeeded() const;
+  void OnNotifySearchPromotionDisabledIfNeeded(bool is_enabled) const;
   void InitForSearchPromotion();
+  void OnInitForSearchPromotion(bool is_enabled);
 
   PrefChangeRegistrar pref_change_registrar_;
   base::ScopedObservation<TemplateURLService, TemplateURLServiceObserver>
