@@ -1065,12 +1065,13 @@ class TabManager: NSObject {
       if tabsCountForMode(isPrivate: true) <= 1 {
         removeAllBrowsingDataForTab(tab)
 
-        // After clearing the very last webview from the storage, give it a blank persistent store
-        // This is the only way to guarantee that the last reference to the shared persistent store
-        // reaches zero and destroys all its data.
-
-        Self.nonPersistentDataStore = nil
-        Self.privateConfiguration = Self.getNewConfiguration(isPrivate: true)
+        if !FeatureList.kUseProfileWebViewConfiguration.enabled {
+          // After clearing the very last webview from the storage, give it a blank persistent store
+          // This is the only way to guarantee that the last reference to the shared persistent store
+          // reaches zero and destroys all its data.
+          Self.nonPersistentDataStore = nil
+          Self.privateConfiguration = Self.getNewConfiguration(isPrivate: true)
+        }
       }
     }
 
