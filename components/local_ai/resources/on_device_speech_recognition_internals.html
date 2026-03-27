@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>On-Device Speech Recognition Internals</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 { font-size: 1.4em; }
+      button {
+        padding: 8px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        margin-right: 8px;
+      }
+      input[type="file"] {
+        margin: 8px 0;
+        display: block;
+      }
+      #output {
+        margin-top: 16px;
+        padding: 12px;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 13px;
+        white-space: pre-wrap;
+        min-height: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>On-Device Speech Recognition Internals</h1>
+    <p>Select a 16kHz mono WAV file to transcribe:</p>
+    <input type="file" id="wav-file" accept=".wav">
+    <div>
+      <button id="test-btn">
+        Test Speech Recognition (silence)
+      </button>
+      <button id="test-wav-btn">
+        Transcribe WAV File
+      </button>
+    </div>
+    <h2>Web Speech API</h2>
+    <p>Test the Web Speech API (uses microphone):</p>
+    <div>
+      <button id="webspeech-btn">
+        Start Recognition
+      </button>
+      <button id="webspeech-stop-btn" disabled>
+        Stop Recognition
+      </button>
+    </div>
+    <div id="output"></div>
+    <script type="module"
+      src="on_device_speech_recognition_internals.bundle.js"></script>
+  </body>
+</html>

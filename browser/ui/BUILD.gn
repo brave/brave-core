@@ -70,6 +70,7 @@ source_set("ui") {
     "//brave/browser/ui/webui/email_aliases",
     "//brave/browser/ui/webui/local_ai",
     "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/local_ai/core:features",
 
     # Unconditional for gn check as the NTP WebUI always needs the mojom
     # types since typescript cannnot yet conditionally import during typecheck.
