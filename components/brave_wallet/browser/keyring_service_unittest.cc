@@ -42,6 +42,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_migrations.h"
 #include "brave/components/brave_wallet/browser/keyring_service_prefs.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_import_keyring.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_keyring.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
@@ -349,6 +350,18 @@ class KeyringServiceUnitTest : public testing::Test {
         }));
     run_loop.Run();
     return result;
+  }
+
+  static mojom::AccountInfoPtr ImportPolkadotAccount(
+      KeyringService* service,
+      const std::string& account_name,
+      const std::string& json_export,
+      const std::string& password,
+      const std::string& network) {
+    base::test::TestFuture<mojom::AccountInfoPtr> test_future;
+    service->ImportPolkadotAccount(account_name, json_export, password, network,
+                                   test_future.GetCallback());
+    return test_future.Take();
   }
 
   static mojom::AccountInfoPtr ImportEthereumAccountFromJson(
@@ -2444,6 +2457,58 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccount_OfacSanctionedAddress) {
   // Test: Import with different network (mainnet) should work if address is
   // different or use a different private key for a valid import For this test,
   // we verify the OFAC check works for the testnet address
+
+  // Clear OFAC list
+  registry->UpdateOfacAddressesList({});
+}
+
+TEST_F(KeyringServiceUnitTest, ImportPolkadotAccount_OfacSanctionedAddress) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletPolkadotFeature};
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  ASSERT_TRUE(CreateWallet(&service, "brave"));
+
+  auto* registry = BlockchainRegistry::GetInstance();
+
+  auto hd_account =
+      AddAccount(&service, mojom::CoinType::DOT,
+                 mojom::KeyringId::kPolkadotMainnet, "Polkadot HD Account");
+  ASSERT_TRUE(hd_account);
+
+  TestFuture<const std::optional<std::string>&> export_future;
+  service.EncodePolkadotKeyForExport(hd_account->account_id.Clone(),
+                                     kPasswordBrave, "export_pwd",
+                                     export_future.GetCallback());
+  auto json_export = export_future.Get();
+  ASSERT_TRUE(json_export);
+
+  auto first_import =
+      ImportPolkadotAccount(&service, "Imported Polkadot", *json_export,
+                            "export_pwd", mojom::kPolkadotMainnet);
+
+  ASSERT_TRUE(first_import);
+
+  auto* keyring = service.GetKeyring<PolkadotImportKeyring>(
+      mojom::KeyringId::kPolkadotImport);
+  ASSERT_TRUE(keyring);
+
+  const auto address_to_sanction =
+      keyring->GetAccountAddress(first_import->account_id->account_index);
+  ASSERT_TRUE(address_to_sanction.has_value());
+  EXPECT_FALSE(address_to_sanction->empty());
+
+  // Remove the account first.
+  EXPECT_TRUE(RemoveAccount(&service, first_import->account_id.Clone(),
+                            kPasswordBrave));
+
+  // Update OFAC list with the address.
+  registry->UpdateOfacAddressesList({base::ToLowerASCII(*address_to_sanction)});
+
+  auto result =
+      ImportPolkadotAccount(&service, "Imported Polkadot", *json_export,
+                            "export_pwd", mojom::kPolkadotMainnet);
+  EXPECT_FALSE(result);
 
   // Clear OFAC list
   registry->UpdateOfacAddressesList({});

@@ -1265,12 +1265,12 @@ void KeyringService::CreateKeyrings(const KeyringSeed& keyring_seed) {
         polkadot_seed, KeyringId::kPolkadotTestnet, is_address_allowed);
   }
   if (IsKeyringEnabled(KeyringId::kPolkadotImport)) {
-    polkadot_import_mainnet_keyring_ =
-        std::make_unique<PolkadotImportKeyring>(KeyringId::kPolkadotImport);
+    polkadot_import_mainnet_keyring_ = std::make_unique<PolkadotImportKeyring>(
+        KeyringId::kPolkadotImport, is_address_allowed);
   }
   if (IsKeyringEnabled(KeyringId::kPolkadotImportTestnet)) {
     polkadot_import_testnet_keyring_ = std::make_unique<PolkadotImportKeyring>(
-        KeyringId::kPolkadotImportTestnet);
+        KeyringId::kPolkadotImportTestnet, is_address_allowed);
   }
 }
 

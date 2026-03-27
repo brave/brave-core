@@ -12,6 +12,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/containers/span.h"
+#include "base/functional/callback.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
 #include "brave/components/brave_wallet/browser/scrypt_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -24,7 +25,9 @@ namespace brave_wallet {
 // Accounts are added using the AddAccount method when wallet is created.
 class PolkadotImportKeyring {
  public:
-  explicit PolkadotImportKeyring(mojom::KeyringId keyring_id);
+  PolkadotImportKeyring(
+      mojom::KeyringId keyring_id,
+      base::RepeatingCallback<bool(const std::string&)> is_address_allowed);
   ~PolkadotImportKeyring();
 
   PolkadotImportKeyring(const PolkadotImportKeyring&) = delete;
@@ -59,9 +62,13 @@ class PolkadotImportKeyring {
 
  private:
   HDKeySr25519* GetAccountByIndex(uint32_t account);
+  uint16_t GetSs58Prefix();
 
   mojom::KeyringId keyring_id_;
   base::flat_map<uint32_t, HDKeySr25519> accounts_;
+
+  base::RepeatingCallback<bool(const std::string&)> is_address_allowed_;
+
   std::optional<std::array<uint8_t, kScryptSaltSize>>
       rand_salt_bytes_for_testing_;
   std::optional<std::array<uint8_t, kSecretboxNonceSize>>
