@@ -9,39 +9,18 @@
 
 #include "base/check.h"
 #include "base/feature_list.h"
-#include "base/files/file.h"
 #include "base/files/file_path.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/local_ai/core/features.h"
+#include "brave/components/local_ai/core/file_util.h"
 #include "brave/components/local_ai/core/local_models_updater.h"
 #include "mojo/public/cpp/base/big_buffer.h"
 
 namespace local_ai {
 
 namespace {
-
-std::optional<mojo_base::BigBuffer> ReadFileToBigBuffer(
-    const base::FilePath& path) {
-  base::File file(path, base::File::FLAG_OPEN | base::File::FLAG_READ);
-  if (!file.IsValid()) {
-    DVLOG(0) << "Failed to open: " << path;
-    return std::nullopt;
-  }
-  int64_t size = file.GetLength();
-  if (size <= 0) {
-    DVLOG(0) << "Empty or unreadable: " << path;
-    return std::nullopt;
-  }
-  mojo_base::BigBuffer buffer(static_cast<size_t>(size));
-  if (!file.ReadAndCheck(0, base::span<uint8_t>(buffer))) {
-    DVLOG(0) << "Failed to read: " << path;
-    return std::nullopt;
-  }
-  DVLOG(1) << "Loaded " << path.BaseName() << ", size: " << size;
-  return buffer;
-}
 
 mojom::ModelFilesPtr LoadLocalModelFilesFromDisk(
     const base::FilePath& weights_path,
