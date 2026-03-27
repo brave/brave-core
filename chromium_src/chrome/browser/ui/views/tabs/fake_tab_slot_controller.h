@@ -56,8 +56,23 @@
       const override;                                                        \
   void ShiftGroupRight(__VA_ARGS__)
 
+// Brave: test-controlled tab minimum width mode (brave_tabs::TabMinWidthMode).
+#define GetStrokeThickness()                                      \
+  GetStrokeThickness() const override;                            \
+                                                                  \
+ private:                                                         \
+  brave_tabs::TabMinWidthMode tab_min_width_mode_ =               \
+      brave_tabs::TabMinWidthMode::kDefault;                      \
+                                                                  \
+ public:                                                          \
+  void set_tab_min_width_mode(brave_tabs::TabMinWidthMode mode) { \
+    tab_min_width_mode_ = mode;                                   \
+  }                                                               \
+  brave_tabs::TabMinWidthMode GetTabMinWidthMode()
+
 #include <chrome/browser/ui/views/tabs/fake_tab_slot_controller.h>  // IWYU pragma: export
 
+#undef GetStrokeThickness
 #undef ShiftGroupRight
 #undef CanPaintThrobberToLayer
 #undef EndDrag

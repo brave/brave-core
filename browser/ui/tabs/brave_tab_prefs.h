@@ -43,6 +43,18 @@ inline constexpr char kAlwaysHideTabCloseButton[] =
 inline constexpr char kMiddleClickCloseTabEnabled[] =
     "brave.tabs.middle_click_close_tab_enabled";
 
+inline constexpr char kTabMinWidthMode[] = "brave.tabs.min_width_mode";
+
+// Integer values stored in prefs; stable for migration. kDefault is reserved so
+// the product default can change without migrating explicit user choices.
+enum class TabMinWidthMode {
+  kDefault = 0,
+  kMinimum = 1,
+  kMedium = 2,
+  kLarge = 3,
+  kFull = 4,
+};
+
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry);
 void MigrateBraveProfilePrefs(PrefService* prefs);
 

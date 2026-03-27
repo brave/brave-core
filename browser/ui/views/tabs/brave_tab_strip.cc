@@ -74,6 +74,11 @@ BraveTabStrip::BraveTabStrip(
   middle_click_close_tab_enabled_.Init(
       brave_tabs::kMiddleClickCloseTabEnabled,
       controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs());
+  tab_min_width_mode_.Init(
+      brave_tabs::kTabMinWidthMode,
+      controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs(),
+      base::BindRepeating(&BraveTabStrip::OnTabMinWidthModePrefChanged,
+                          base::Unretained(this)));
 }
 
 BraveTabStrip::~BraveTabStrip() = default;
@@ -343,6 +348,16 @@ void BraveTabStrip::OnAlwaysHideCloseButtonPrefChanged() {
   for (int i = 0; i < GetTabCount(); ++i) {
     tab_at(i)->InvalidateLayout();
   }
+}
+
+void BraveTabStrip::OnTabMinWidthModePrefChanged() {
+  tab_container_->InvalidateIdealBounds();
+  tab_container_->InvalidateLayout();
+}
+
+brave_tabs::TabMinWidthMode BraveTabStrip::GetTabMinWidthMode() const {
+  return static_cast<brave_tabs::TabMinWidthMode>(
+      tab_min_width_mode_.GetValue());
 }
 
 TabContainer* BraveTabStrip::GetTabContainerForTesting() {

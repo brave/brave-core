@@ -54,3 +54,7 @@ bool FakeTabSlotController::IsInCollapsedTreeTabNode(
     const tree_tab::TreeTabNodeId& id) const {
   return false;
 }
+
+brave_tabs::TabMinWidthMode FakeTabSlotController::GetTabMinWidthMode() const {
+  return tab_min_width_mode_;
+}

@@ -40,6 +40,7 @@ class BraveTabHoverCardController;
                                bool collapsed) override {}                   \
   bool IsInCollapsedTreeTabNode(const tree_tab::TreeTabNodeId& id)           \
       const override;                                                        \
+  brave_tabs::TabMinWidthMode GetTabMinWidthMode() const override;           \
   virtual TabDragContext* GetDragContext
 
 #define TabHoverCardController BraveTabHoverCardController

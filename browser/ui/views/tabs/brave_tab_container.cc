@@ -40,6 +40,7 @@
 #include "chrome/browser/ui/views/tabs/tab_container.h"
 #include "chrome/browser/ui/views/tabs/tab_container_impl.h"
 #include "chrome/browser/ui/views/tabs/tab_group_highlight.h"
+#include "chrome/browser/ui/views/tabs/tab_strip_layout_helper.h"
 #include "chrome/grit/theme_resources.h"
 #include "components/tabs/public/split_tab_data.h"
 #include "third_party/skia/include/core/SkColor.h"
@@ -959,6 +960,7 @@ void BraveTabContainer::UpdateIdealBounds() {
     }
   }
 
+  ClampScrollOffset();
   UpdateScrollBarVisibility();
   UpdateScrollBarBounds();
 }
