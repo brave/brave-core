@@ -24,6 +24,10 @@ class NotificationAdEventHandlerDelegate {
   virtual void OnDidFireNotificationAdViewedEvent(
       const NotificationAdInfo& ad) {}
 
+  // Invoked before the click ad event for `ad` is recorded.
+  virtual void OnWillFireNotificationAdClickedEvent(
+      const NotificationAdInfo& ad) {}
+
   // Invoked when the notification `ad` is clicked.
   virtual void OnDidFireNotificationAdClickedEvent(
       const NotificationAdInfo& ad) {}

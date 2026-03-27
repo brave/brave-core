@@ -599,4 +599,27 @@ TEST_F(BraveAdsSiteVisitTest, CancelPageLandIfTheTabIsClosed) {
   SimulateClosingTab(/*tab_id=*/1);
 }
 
+TEST_F(BraveAdsSiteVisitTest,
+       PageLandIsNotRecordedWhenNavigationCommitsBeforeLastClickedAdIsSet) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/true);
+
+  // Open the tab before setting `last_clicked_ad`. `MaybeLandOnPage` evaluates
+  // `last_clicked_ad` at the moment the tab opens, so the page land timer is
+  // never started and no land is recorded. This documents the ordering contract
+  // that event handlers must satisfy by calling `OnWillFireAdClickedEvent`
+  // synchronously before any asynchronous database write.
+  SimulateOpeningNewTab(/*tab_id=*/1,
+                        /*redirect_chain=*/{GURL("https://brave.com")},
+                        net::HTTP_OK);
+  site_visit_->set_last_clicked_ad(ad);
+
+  // Act & Assert
+  EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage).Times(0);
+  FastForwardClockBy(kPageLandAfter.Get());
+}
+
 }  // namespace brave_ads

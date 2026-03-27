@@ -111,6 +111,12 @@ void NewTabPageAdEventHandler::FireEvent(
     const NewTabPageAdInfo& ad,
     mojom::NewTabPageAdEventType mojom_ad_event_type,
     FireNewTabPageAdEventHandlerCallback callback) const {
+  if (mojom_ad_event_type == mojom::NewTabPageAdEventType::kClicked) {
+    // `RecordAdEvent` is asynchronous. Notifying the delegate before the write
+    // ensures `last_clicked_ad` is set before any page navigation commits.
+    NotifyWillFireNewTabPageAdClickedEvent(ad);
+  }
+
   const auto ad_event = NewTabPageAdEventFactory::Build(mojom_ad_event_type);
   ad_event->FireEvent(
       ad, base::BindOnce(&NewTabPageAdEventHandler::FireEventCallback,
@@ -162,6 +168,13 @@ void NewTabPageAdEventHandler::FailedToFireEvent(
                                       mojom_ad_event_type);
 
   std::move(callback).Run(/*success=*/false, placement_id, mojom_ad_event_type);
+}
+
+void NewTabPageAdEventHandler::NotifyWillFireNewTabPageAdClickedEvent(
+    const NewTabPageAdInfo& ad) const {
+  if (delegate_) {
+    delegate_->OnWillFireNewTabPageAdClickedEvent(ad);
+  }
 }
 
 void NewTabPageAdEventHandler::NotifyDidFireNewTabPageAdEvent(
