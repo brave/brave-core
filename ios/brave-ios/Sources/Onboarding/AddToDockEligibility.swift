@@ -20,7 +20,7 @@ public enum AddToDockEligibility {
     guard locale.language.languageCode?.identifier == "en" else {
       return false
     }
-    guard let region = locale.region?.identifier else {
+    guard let region = locale.region?.identifier.uppercased() else {
       return false
     }
     return allowedRegionIdentifiers.contains(region)

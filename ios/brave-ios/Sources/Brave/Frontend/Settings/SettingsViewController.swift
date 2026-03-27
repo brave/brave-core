@@ -333,7 +333,8 @@ class SettingsViewController: TableViewController {
       ? [
         Row(
           text: Strings.addToDockSettingsCell,
-          selection: { [unowned self] in
+          selection: { [weak self] in
+            guard let self else { return }
             let controller = OnboardingController(
               environment: .init(
                 p3aUtils: p3aUtilities,
