@@ -85,8 +85,8 @@ public class BraveHubToolbarView extends HubToolbarView {
                         && ContextUtils.getAppSharedPreferences()
                                 .getBoolean(BravePreferenceKeys.BRAVE_IS_MENU_FROM_BOTTOM, true);
 
-        mActionButton.setVisibility(shouldHideButtons ? View.INVISIBLE : View.VISIBLE);
-        mMenuButton.setVisibility(shouldHideButtons ? View.INVISIBLE : View.VISIBLE);
+        mActionButton.setVisibility(shouldHideButtons ? View.GONE : View.VISIBLE);
+        mMenuButton.setVisibility(shouldHideButtons ? View.GONE : View.VISIBLE);
 
         final boolean shouldShowShredButton =
                 ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED);

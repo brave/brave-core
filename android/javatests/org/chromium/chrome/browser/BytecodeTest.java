@@ -2707,6 +2707,9 @@ public class BytecodeTest {
                         "mEdgeToEdgeSupplier"));
         Assert.assertTrue(
                 fieldExists(
+                        "org/chromium/chrome/browser/hub/HubManagerImpl", "mEdgeToEdgeSupplier"));
+        Assert.assertTrue(
+                fieldExists(
                         "org/chromium/chrome/browser/password_manager/PasswordManagerHelper",
                         "sProfileMap",
                         true,
