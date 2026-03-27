@@ -22,6 +22,7 @@ class AIChatMetrics;
 
 namespace misc_metrics {
 class BraveSearchMetrics;
+class NavigationSourceMetrics;
 }  // namespace misc_metrics
 
 class BraveOmniboxClientImpl : public ChromeOmniboxClient {
@@ -59,6 +60,8 @@ class BraveOmniboxClientImpl : public ChromeOmniboxClient {
   raw_ptr<SearchEngineTracker> search_engine_tracker_ = nullptr;
   raw_ptr<ai_chat::AIChatMetrics> ai_chat_metrics_ = nullptr;
   raw_ptr<misc_metrics::BraveSearchMetrics> brave_search_metrics_ = nullptr;
+  raw_ptr<misc_metrics::NavigationSourceMetrics> navigation_source_metrics_ =
+      nullptr;
   BraveAutocompleteSchemeClassifier scheme_classifier_;
   WeeklyStorage search_storage_;
   PrefChangeRegistrar pref_change_registrar_;

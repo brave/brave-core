@@ -9,12 +9,12 @@
 #include "base/containers/map_util.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/no_destructor.h"
+#include "brave/components/misc_metrics/page_percentage_metrics.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-#include "components/prefs/scoped_user_pref_update.h"
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_service.h"
 
@@ -23,13 +23,11 @@ namespace misc_metrics {
 namespace {
 
 constexpr int kDailyQueriesBuckets[] = {0, 3, 7};
-constexpr int kEntryPercentageBuckets[] = {0, 5, 20, 80, 95};
 constexpr char kQueriesCountKey[] = "queries";
 constexpr char kPrimaryQueriesCountKey[] = "primary";
 constexpr char kOmniboxTypedCountKey[] = "omnibox_typed";
 constexpr char kOmniboxSuggestionCountKey[] = "omnibox_suggestion";
 constexpr char kNTPSearchCountKey[] = "ntp_search";
-constexpr base::TimeDelta kReportInterval = base::Hours(24);
 
 bool IsBraveSearchURL(const GURL& url) {
   static const base::NoDestructor<GURL> kBraveSearchURL(
@@ -46,33 +44,14 @@ constexpr auto kDailyQueriesHistogramMap =
         {SEARCH_ENGINE_YAHOO, kSearchDailyQueriesYahooDefaultHistogramName},
     });
 
-void RecordSearchPercentage(const base::DictValue& counts,
-                            int primary_queries,
-                            std::string_view count_key,
-                            const char* histogram_name) {
-  CHECK_GT(primary_queries, 0);
-  int count = counts.FindInt(count_key).value_or(0);
-  if (count == 0) {
-    return;
-  }
-  // Calculate percentage, ensuring we report at least 1% to avoid bucket 0
-  int percentage = std::max(1, (count * 100) / primary_queries);
-  p3a_utils::RecordToHistogramBucket(histogram_name, kEntryPercentageBuckets,
-                                     percentage);
-}
-
 }  // namespace
 
 BraveSearchMetrics::BraveSearchMetrics(PrefService* local_state,
                                        TemplateURLService* template_url_service)
-    : local_state_(local_state), template_url_service_(template_url_service) {
-  base::Time frame_start =
-      local_state_->GetTime(kMiscMetricsBraveSearchReportFrameStartTime);
-  if (frame_start.is_null()) {
-    local_state_->SetTime(kMiscMetricsBraveSearchReportFrameStartTime,
-                          base::Time::Now());
-  }
-
+    : PagePercentageMetrics(local_state,
+                            kMiscMetricsBraveSearchQueryCounts,
+                            kMiscMetricsBraveSearchReportFrameStartTime),
+      template_url_service_(template_url_service) {
   ReportAllMetrics();
 }
 
@@ -126,10 +105,7 @@ void BraveSearchMetrics::MaybeRecordNTPSearch(int64_t engine_prepopulate_id) {
 }
 
 void BraveSearchMetrics::ReportAllMetrics() {
-  base::Time frame_start =
-      local_state_->GetTime(kMiscMetricsBraveSearchReportFrameStartTime);
-  base::Time now = base::Time::Now();
-  if (now - frame_start < kReportInterval) {
+  if (!HasReportIntervalElapsed()) {
     return;
   }
 
@@ -154,25 +130,18 @@ void BraveSearchMetrics::ReportAllMetrics() {
 
   p3a_utils::RecordToHistogramBucket(histogram_name, kDailyQueriesBuckets, sum);
 
-  // Report omnibox entry percentages
   int primary_queries = counts.FindInt(kPrimaryQueriesCountKey).value_or(0);
   if (primary_queries > 0) {
-    RecordSearchPercentage(counts, primary_queries, kOmniboxTypedCountKey,
-                           kSearchOmniboxTypedPercentHistogramName);
-    RecordSearchPercentage(counts, primary_queries, kOmniboxSuggestionCountKey,
-                           kSearchOmniboxSuggestionPercentHistogramName);
-    RecordSearchPercentage(counts, primary_queries, kNTPSearchCountKey,
-                           kSearchNTPSearchPercentHistogramName);
+    RecordPercentageHistogram(counts, primary_queries, kOmniboxTypedCountKey,
+                              kSearchOmniboxTypedPercentHistogramName);
+    RecordPercentageHistogram(counts, primary_queries,
+                              kOmniboxSuggestionCountKey,
+                              kSearchOmniboxSuggestionPercentHistogramName);
+    RecordPercentageHistogram(counts, primary_queries, kNTPSearchCountKey,
+                              kSearchNTPSearchPercentHistogramName);
   }
 
-  local_state_->SetTime(kMiscMetricsBraveSearchReportFrameStartTime, now);
-  local_state_->SetDict(kMiscMetricsBraveSearchQueryCounts, {});
-}
-
-void BraveSearchMetrics::IncrementDictCount(std::string_view key) {
-  ScopedDictPrefUpdate update(local_state_, kMiscMetricsBraveSearchQueryCounts);
-  int current = update->FindInt(key).value_or(0);
-  update->Set(key, current + 1);
+  ResetCounts();
 }
 
 }  // namespace misc_metrics

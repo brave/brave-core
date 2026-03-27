@@ -68,7 +68,8 @@ PageMetrics::PageMetrics(PrefService* local_state,
       history_service_(history_service),
       first_run_time_callback_(first_run_time_callback),
       default_browser_monitor_(default_browser_monitor),
-      brave_search_metrics_(local_state, template_url_service) {
+      brave_search_metrics_(local_state, template_url_service),
+      navigation_source_metrics_(local_state) {
   DCHECK(local_state);
   DCHECK(history_service);
   DCHECK(template_url_service);
@@ -156,11 +157,19 @@ void PageMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kMiscMetricsFailedHTTPSUpgradeCount);
   registry->RegisterTimePref(kMiscMetricsFailedHTTPSUpgradeMetricAddedTime, {});
   BraveSearchMetrics::RegisterPrefs(registry);
+  NavigationSourceMetrics::RegisterPrefs(registry);
 }
 
-void PageMetrics::IncrementPagesLoadedCount(bool is_reload) {
+void PageMetrics::IncrementPagesLoadedCount(bool is_reload, bool is_otr) {
   VLOG(2) << "PageMetricsService: increment page load count, is_reload "
-          << is_reload;
+          << is_reload << ", is_otr " << is_otr;
+  if (!is_reload) {
+    navigation_source_metrics_.IncrementPagesLoadedCount();
+  }
+  // Navigation source metrics count OTR pages, but page load storage does not.
+  if (is_otr) {
+    return;
+  }
   InitStorage();
   if (is_reload) {
     pages_reloaded_storage_->AddDelta(1);
@@ -202,6 +211,7 @@ void PageMetrics::ReportAllMetrics() {
   ReportFailedHTTPSUpgrades();
   ReportBookmarkCount();
   brave_search_metrics_.ReportAllMetrics();
+  navigation_source_metrics_.ReportAllMetrics();
   periodic_report_timer_.Start(
       FROM_HERE, base::Time::Now() + kReportInterval,
       base::BindOnce(&PageMetrics::ReportAllMetrics, base::Unretained(this)));

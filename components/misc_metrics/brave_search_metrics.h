@@ -6,10 +6,8 @@
 #ifndef BRAVE_COMPONENTS_MISC_METRICS_BRAVE_SEARCH_METRICS_H_
 #define BRAVE_COMPONENTS_MISC_METRICS_BRAVE_SEARCH_METRICS_H_
 
-#include <string_view>
-
-#include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
+#include "brave/components/misc_metrics/page_percentage_metrics.h"
 #include "url/gurl.h"
 
 class PrefRegistrySimple;
@@ -35,7 +33,7 @@ inline constexpr char kSearchOmniboxSuggestionPercentHistogramName[] =
 inline constexpr char kSearchNTPSearchPercentHistogramName[] =
     "Brave.Search.NTPSearchPercent";
 
-class BraveSearchMetrics {
+class BraveSearchMetrics : public PagePercentageMetrics {
  public:
   BraveSearchMetrics(PrefService* local_state,
                      TemplateURLService* template_url_service);
@@ -52,9 +50,6 @@ class BraveSearchMetrics {
   void ReportAllMetrics();
 
  private:
-  void IncrementDictCount(std::string_view key);
-
-  raw_ptr<PrefService> local_state_ = nullptr;
   raw_ptr<TemplateURLService> template_url_service_ = nullptr;
 };
 
