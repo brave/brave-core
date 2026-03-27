@@ -9,6 +9,8 @@ source_set("local_ai") {
     "bwc_factory_util.h",
     "local_ai_service_factory.cc",
     "local_ai_service_factory.h",
+    "on_device_speech_recognition_service_factory.cc",
+    "on_device_speech_recognition_service_factory.h",
   ]
 
   public_deps = [
