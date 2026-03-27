@@ -166,15 +166,15 @@ void BraveTabStrip::AddTabToGroup(std::optional<tab_groups::TabGroupId> group,
   }
   tab_at(model_index)->set_tree_tab_node(node_id);
 }
-void BraveTabStrip::SetTabData(int model_index, TabRendererData data) {
-  OnSetRendererData(model_index, data);
+void BraveTabStrip::SetTabData(int model_index, tabs::TabData data) {
+  OnSetTabData(model_index, data);
   TabStrip::SetTabData(model_index, std::move(data));
 }
 
 void BraveTabStrip::MoveTab(int from_model_index,
                             int to_model_index,
-                            TabRendererData data) {
-  OnSetRendererData(from_model_index, data);
+                            tabs::TabData data) {
+  OnSetTabData(from_model_index, data);
   TabStrip::MoveTab(from_model_index, to_model_index, std::move(data));
 }
 
@@ -457,8 +457,8 @@ BraveTabStrip::GetContainerModelForTab(const Tab* tab) const {
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
-void BraveTabStrip::OnSetRendererData(int model_index,
-                                      const TabRendererData& new_data) {
+void BraveTabStrip::OnSetTabData(int model_index,
+                                 const tabs::TabData& new_data) {
   if (!base::FeatureList::IsEnabled(tabs::kBraveTreeTab)) {
     return;
   }
