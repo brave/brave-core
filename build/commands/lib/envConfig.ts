@@ -39,12 +39,8 @@ export default class EnvConfig {
   }
 
   /**
-   * Returns the value if it has the expected type; otherwise errors. If
-   * `defaultValue` is provided, returns it when the config value is missing.
-   *
-   * @param keyPath - Array of keys forming the config path
-   * @param defaultValue - Optional fallback value
-   * @returns The boolean config value, the fallback, or `undefined`
+   * Returns the value if it exists and has the expected type; otherwise returns
+   * `defaultValue` or `undefined` if missing, and errors on type mismatch.
    */
   getBoolean(keyPath: string[]): boolean | undefined
   getBoolean(keyPath: string[], defaultValue: boolean): boolean
@@ -53,12 +49,15 @@ export default class EnvConfig {
   }
 
   /**
-   * Returns the value if it has the expected type; otherwise errors. If
-   * `defaultValue` is provided, returns it when the config value is missing.
-   *
-   * @param keyPath - Array of keys forming the config path
-   * @param defaultValue - Optional fallback value
-   * @returns The number config value, the fallback, or `undefined`
+   * Returns a required boolean config value, errors if the value is missing.
+   */
+  requireBoolean(keyPath: string[]): boolean {
+    return this.#requireValue(keyPath, this.getBoolean(keyPath))
+  }
+
+  /**
+   * Returns the value if it exists and has the expected type; otherwise returns
+   * `defaultValue` or `undefined` if missing, and errors on type mismatch.
    */
   getNumber(keyPath: string[]): number | undefined
   getNumber(keyPath: string[], defaultValue: number): number
@@ -67,12 +66,15 @@ export default class EnvConfig {
   }
 
   /**
-   * Returns the value if it has the expected type; otherwise errors. If
-   * `defaultValue` is provided, returns it when the config value is missing.
-   *
-   * @param keyPath - Array of keys forming the config path
-   * @param defaultValue - Optional fallback value
-   * @returns The string config value, the fallback, or `undefined`
+   * Returns a required number config value, errors if the value is missing.
+   */
+  requireNumber(keyPath: string[]): number {
+    return this.#requireValue(keyPath, this.getNumber(keyPath))
+  }
+
+  /**
+   * Returns the value if it exists and has the expected type; otherwise returns
+   * `defaultValue` or `undefined` if missing, and errors on type mismatch.
    */
   getString(keyPath: string[]): string | undefined
   getString(keyPath: string[], defaultValue: string): string
@@ -81,12 +83,15 @@ export default class EnvConfig {
   }
 
   /**
-   * Returns the value if it has the expected type; otherwise errors. If
-   * `defaultValue` is provided, returns it when the config value is missing.
-   *
-   * @param keyPath - Array of keys forming the config path
-   * @param defaultValue - Optional fallback value
-   * @returns The array config value, the fallback, or `undefined`
+   * Returns a required string config value, errors if the value is missing.
+   */
+  requireString(keyPath: string[]): string {
+    return this.#requireValue(keyPath, this.getString(keyPath))
+  }
+
+  /**
+   * Returns the value if it exists and has the expected type; otherwise returns
+   * `defaultValue` or `undefined` if missing, and errors on type mismatch.
    */
   getArray(keyPath: string[]): any[] | undefined
   getArray(keyPath: string[], defaultValue: any[]): any[]
@@ -95,12 +100,15 @@ export default class EnvConfig {
   }
 
   /**
-   * Returns the value if it has the expected type; otherwise errors. If
-   * `defaultValue` is provided, returns it when the config value is missing.
-   *
-   * @param keyPath - Array of keys forming the config path
-   * @param defaultValue - Optional fallback value
-   * @returns The object config value, the fallback, or `undefined`
+   * Returns a required array config value, errors if the value is missing.
+   */
+  requireArray(keyPath: string[]): any[] {
+    return this.#requireValue(keyPath, this.getArray(keyPath))
+  }
+
+  /**
+   * Returns the value if it exists and has the expected type; otherwise returns
+   * `defaultValue` or `undefined` if missing, and errors on type mismatch.
    */
   getObject(keyPath: string[]): Record<string, any> | undefined
   getObject(
@@ -115,93 +123,35 @@ export default class EnvConfig {
   }
 
   /**
+   * Returns a required object config value, errors if the value is missing.
+   */
+  requireObject(keyPath: string[]): Record<string, any> {
+    return this.#requireValue(keyPath, this.getObject(keyPath))
+  }
+
+  /**
    * Returns a config value of any type (parsed as JSON if possible, otherwise
    * returned as a string) if present.
-   *
-   * @param keyPath - Array of keys forming the config path
-   * @returns The config value, or `undefined` if not found
    */
   getAny(keyPath: string[]): any {
     return this.#getOfType(keyPath, 'Any')
   }
 
   /**
-   * Returns a required boolean config value.
-   *
-   * Logs an error and exits if the value is missing.
-   *
-   * @param keyPath - Array of keys forming the config path
-   * @returns The boolean config value
-   */
-  requireBoolean(keyPath: string[]): boolean {
-    return this.#requireOfType(keyPath, 'Boolean')
-  }
-
-  /**
-   * Returns a required number config value.
-   *
-   * Logs an error and exits if the value is missing.
-   *
-   * @param keyPath - Array of keys forming the config path
-   * @returns The number config value
-   */
-  requireNumber(keyPath: string[]): number {
-    return this.#requireOfType(keyPath, 'Number')
-  }
-
-  /**
-   * Returns a required string config value.
-   *
-   * Logs an error and exits if the value is missing.
-   *
-   * @param keyPath - Array of keys forming the config path
-   * @returns The string config value
-   */
-  requireString(keyPath: string[]): string {
-    return this.#requireOfType(keyPath, 'String')
-  }
-
-  /**
-   * Returns a required array config value.
-   *
-   * Logs an error and exits if the value is missing.
-   *
-   * @param keyPath - Array of keys forming the config path
-   * @returns The array config value
-   */
-  requireArray(keyPath: string[]): any[] {
-    return this.#requireOfType(keyPath, 'Array')
-  }
-
-  /**
-   * Returns a required object config value.
-   *
-   * Logs an error and exits if the value is missing.
-   *
-   * @param keyPath - Array of keys forming the config path
-   * @returns The object config value
-   */
-  requireObject(keyPath: string[]): Record<string, any> {
-    return this.#requireOfType(keyPath, 'Object')
-  }
-
-  /**
    * Returns a merged object from .env files and package.json.
-   *
-   * @param keyPath - Array of keys forming the path to the config value (e.g.,
-   * ['projects', 'chrome', 'custom_deps'])
-   * @returns The merged object
    */
   getMergedObject(keyPath: string[]): Record<string, any> {
     const keyJoined = EnvConfig.#joinKeyPath(keyPath)
 
     const dotenvConfigValue = EnvConfig.#convertToValueType(
-      this.#getDotenvConfig(keyJoined) ?? {},
+      this.#get(keyPath, 'dotenv') ?? {},
       'Object',
+      keyPath,
     )
     const packageConfigValue = EnvConfig.#convertToValueType(
-      this.#getPackageConfig(keyPath) ?? {},
+      this.#get(keyPath, 'package') ?? {},
       'Object',
+      keyPath,
     )
     const mergedObject = { ...packageConfigValue, ...dotenvConfigValue }
 
@@ -223,9 +173,6 @@ export default class EnvConfig {
    *
    * Values from `include_env` configs are resolved relative to the same
    * *initial config directory*, not the included file's location.
-   *
-   * @param keyPath - Array of keys forming the config path
-   * @returns The resolved absolute path, or undefined
    */
   getPath(keyPath: string[]): string | undefined {
     let pathValue = this.getString(keyPath)
@@ -248,25 +195,16 @@ export default class EnvConfig {
   }
 
   /**
-   * Returns an absolute path from a configuration value. Relative paths are
-   * resolved relative to the *initial config directory*. Paths starting with
-   * `~` are expanded to the user's home directory.
+   * Returns a required absolute path from a configuration value, errors if the
+   * value is missing. Relative paths are resolved relative to the *initial
+   * config directory*. Paths starting with `~` are expanded to the user's home
+   * directory.
    *
    * Values from `include_env` configs are resolved relative to the same
    * *initial config directory*, not the included file's location.
-   *
-   * @param keyPath - Array of keys forming the config path
-   * @returns The resolved absolute path
    */
   requirePath(keyPath: string[]): string {
-    const pathValue = this.getPath(keyPath)
-    if (pathValue !== undefined) {
-      return pathValue
-    }
-    Log.error(
-      `Required config value ${EnvConfig.#joinKeyPath(keyPath)} is not set`,
-    )
-    process.exit(1)
+    return this.#requireValue(keyPath, this.getPath(keyPath))
   }
 
   /**
@@ -278,15 +216,20 @@ export default class EnvConfig {
     return this.#packageJson.version
   }
 
+  /**
+   * Returns a typed config value if present in any source.
+   */
   #getOfType(keyPath: string[], expectedValueType: ConfigValueType): any {
     const value = this.#get(keyPath)
     if (value !== undefined) {
-      return EnvConfig.#convertToValueType(value, expectedValueType)
+      return EnvConfig.#convertToValueType(value, expectedValueType, keyPath)
     }
   }
 
-  #requireOfType(keyPath: string[], expectedValueType: ConfigValueType): any {
-    const value = this.#getOfType(keyPath, expectedValueType)
+  /**
+   * Returns a value if present, errors if the value is missing.
+   */
+  #requireValue<T>(keyPath: string[], value: T | undefined): T {
     if (value !== undefined) {
       return value
     }
@@ -298,79 +241,59 @@ export default class EnvConfig {
 
   /**
    * Returns a typed config value if present in any source.
-   *
-   * @param keyPath - Array of keys forming the config path
-   * @param expectedValueType - Expected runtime type of the value
-   * @returns The typed config value, or `undefined` if not found
    */
-  #get(keyPath: string[]): any {
+  #get(keyPath: string[], source: 'dotenv' | 'package' | 'all' = 'all'): any {
     const keyJoined = EnvConfig.#joinKeyPath(keyPath)
-    const dotenvConfigValue = this.#getDotenvConfig(keyJoined)
-    if (dotenvConfigValue !== undefined) {
-      return dotenvConfigValue
-    }
-
-    const packageConfigValue = this.#getPackageConfig(keyPath)
-    if (packageConfigValue !== undefined) {
-      return packageConfigValue
+    switch (source) {
+      case 'dotenv':
+        return this.#dotenvConfig[keyJoined]
+      case 'package':
+        return keyPath.reduce(
+          (obj, subkey) => obj?.[subkey],
+          this.#packageJson.config,
+        )
+      case 'all':
+        return (
+          this.#dotenvConfig[keyJoined]
+          ?? keyPath.reduce(
+            (obj, subkey) => obj?.[subkey],
+            this.#packageJson.config,
+          )
+        )
+      default:
+        Log.error(`Invalid source: ${source}`)
+        process.exit(1)
     }
   }
 
   /**
-   * Retrieves a value from package.json "config" value.
-   *
-   * @param keyPath - Array of keys forming the path to the config value (e.g.,
-   * ['projects', 'chrome', 'tag'])
-   * @param expectedValueType - Expected type of the value
-   * @returns The config value, or undefined if not found
+   * Converts a value to the expected value type.
    */
-  #getPackageConfig(keyPath: string[]): any {
-    const packageConfigValue = keyPath.reduce(
-      (obj, subkey) => obj?.[subkey],
-      this.#packageJson.config,
-    )
-    if (packageConfigValue === undefined) {
-      return undefined
-    }
-
-    return packageConfigValue
-  }
-
-  /**
-   * Retrieves and parses a value from .env configuration.
-   *
-   * @param keyJoined - The joined key path (e.g., 'projects_chrome_tag')
-   * @param expectedValueType - Expected type of the value
-   * @returns The parsed configuration value, or undefined if not found
-   */
-  #getDotenvConfig(keyJoined: string): any {
-    return this.#dotenvConfig[keyJoined]
-  }
-
-  static #convertToValueType(value: any, valueType: ConfigValueType): any {
-    if (EnvConfig.#getValueType(value) === valueType) {
+  static #convertToValueType(
+    value: any,
+    requiredValueType: ConfigValueType,
+    keyPath: string[],
+  ): any {
+    if (EnvConfig.#getValueType(value) === requiredValueType) {
       return value
     }
 
     try {
       const parsedValue = EnvConfig.#parseJsonOrKeepString(value)
-      EnvConfig.#validateValueType(
-        parsedValue,
-        valueType,
-        () => `${value} (from .env)`,
+      EnvConfig.#validateValueType(parsedValue, requiredValueType, () =>
+        EnvConfig.#joinKeyPath(keyPath),
       )
       return parsedValue
     } catch (e) {
-      Log.error(`${value} value is not JSON-parseable:\n${e.message}`)
+      Log.error(
+        `${EnvConfig.#joinKeyPath(keyPath)} value is not JSON-parseable:\n${e.message}`,
+      )
       process.exit(1)
     }
   }
 
   /**
    * Loads package.json file from the specified directory.
-   *
-   * @param configDir - Directory containing package.json
-   * @returns The parsed package.json
    */
   static #loadPackageJson(configDir: string): Record<string, any> {
     const packageJsonPath = path.join(configDir, 'package.json')
@@ -393,9 +316,6 @@ export default class EnvConfig {
    * Loads .env configuration from the specified directory.
    * Supports include_env directives for composing multiple .env files.
    * Creates a placeholder .env file if none exists.
-   *
-   * @param configDir - Directory containing .env file
-   * @returns The parsed .env file
    */
   static #loadDotenvConfig(configDir: string): NodeJS.Dict<string> {
     let dotenvConfig: NodeJS.Dict<string> = {}
@@ -421,9 +341,6 @@ export default class EnvConfig {
    * Included files are processed recursively, allowing nested includes.
    *
    * Format: include_env=path/to/file.env
-   *
-   * @param envPath - Path to the main .env file to parse
-   * @returns The parsed .env file
    */
   static #parseEnvFileWithIncludes(envPath: string): NodeJS.Dict<string> {
     const seenFiles = new Set<string>()
@@ -465,11 +382,6 @@ export default class EnvConfig {
 
   /**
    * Validates the value against the expected value type.
-   *
-   * @param value - The value to validate
-   * @param expectedValueType - Expected type of the value
-   * @param valueDescCallback - Callback to get the
-   * description of the value
    */
   static #validateValueType(
     value: any,
@@ -490,18 +402,11 @@ export default class EnvConfig {
   }
 
   /**
-   * Returns a string representing the type of a value. Throws an error if the
-   * value is not a supported value type.
-   *
-   * @param value - Value to get the type of
-   * @returns Type name
+   * Returns a string representing the type of a value.
    */
   static #getValueType(value: any): ConfigValueType {
-    if (value === undefined) {
+    if (value === undefined || value === null) {
       return 'Any'
-    }
-    if (value === null) {
-      throw new Error('Null values are not allowed')
     }
 
     const typeName = value.constructor.name
@@ -517,11 +422,7 @@ export default class EnvConfig {
   }
 
   /**
-   * Parses a value as JSON or returns it as a string if it is not
-   * JSON-parseable.
-   *
-   * @param value - The value to parse
-   * @returns The parsed value or the original value if it is not JSON-parseable
+   * Parses a value as JSON or returns it as is if it is not JSON-parseable.
    */
   static #parseJsonOrKeepString(value: any): any {
     if (value === undefined) {
@@ -536,14 +437,13 @@ export default class EnvConfig {
   }
 
   /**
-   * Joins a key path with underscores.
-   *
-   * @param keyPath - Array of keys forming the config path
-   * @returns The joined key path
+   * Joins a key path with underscores, errors if the key path is empty.
    */
   static #joinKeyPath(keyPath: string[]): string {
     assert.notEqual(keyPath.length, 0, 'keyPath must not be empty')
-    return keyPath.join('_')
+    const joinedKeyPath = keyPath.join('_')
+    assert.notEqual(joinedKeyPath, '', 'joinedKeyPath must not be empty')
+    return joinedKeyPath
   }
 }
 

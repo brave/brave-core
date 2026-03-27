@@ -146,6 +146,7 @@ describe('EnvConfig', () => {
       expect(envConfig.getAny(['array'])).toEqual(['a', 'b', 'c'])
       expect(envConfig.getAny(['object'])).toEqual({ key: 'value' })
       expect(envConfig.getAny(['object', 'key'])).toBe('value')
+      expect(envConfig.getAny(['null_value'])).toBe(null)
     })
 
     it('non-existent config values', () => {
@@ -204,6 +205,7 @@ describe('EnvConfig', () => {
           object: {
             key: 'value',
           },
+          null_value: null,
         },
       }
 
@@ -234,6 +236,7 @@ describe('EnvConfig', () => {
         'array=["a","b","c"]',
         'object={"key":"value"}',
         'object_key=value',
+        'null_value=null',
       ]
 
       envConfig = new EnvConfig(configDir)
@@ -248,6 +251,7 @@ describe('EnvConfig', () => {
       expect(envConfig.getString(['array'])).toEqual('["a","b","c"]')
       expect(envConfig.getString(['object'])).toEqual('{"key":"value"}')
       expect(envConfig.getString(['object', 'key'])).toBe('value')
+      expect(envConfig.getString(['null_value'])).toBe('null')
 
       expect(envConfig.requireString(['boolean'])).toBe('true')
       expect(envConfig.requireString(['number'])).toBe('42')
@@ -255,6 +259,7 @@ describe('EnvConfig', () => {
       expect(envConfig.requireString(['array'])).toEqual('["a","b","c"]')
       expect(envConfig.requireString(['object'])).toEqual('{"key":"value"}')
       expect(envConfig.requireString(['object', 'key'])).toBe('value')
+      expect(envConfig.requireString(['null_value'])).toBe('null')
     })
 
     it('should fall back to package config when .env value not found', () => {
