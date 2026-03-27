@@ -18,7 +18,7 @@ import * as Log from './log.ts'
 import { isCI } from './ciDetect.ts'
 
 // Use the same filename as for Brave archive.
-const getOutputFilename = () => {
+const getOutputFilename = (): string => {
   const platform = (() => {
     if (config.targetOS === 'win') {
       return 'win32'
@@ -31,7 +31,13 @@ const getOutputFilename = () => {
   return `chromium-${config.chromeVersion}-${platform}-${config.targetArch}`
 }
 
-const chromiumConfigs = {
+type PlatformConfig = {
+  buildTargets: string[]
+  extraHooks?: () => void
+  processArtifacts: () => void
+}
+
+const chromiumConfigs: Record<string, PlatformConfig> = {
   'win': {
     buildTargets: ['mini_installer'],
     processArtifacts: () => {
@@ -109,11 +115,10 @@ const chromiumConfigs = {
 // There is two primarily sources:
 // 1. Chromium perf builds: tools/mb/mb_config_expectations/chromium.perf.json
 // 2. Brave Release build configuration
-function getChromiumGnArgs() {
+function getChromiumGnArgs(): Record<string, any> {
   const targetOs = config.targetOS
   const targetArch = config.targetArch
-  /** @type {Record<string, any>} */
-  const args = {
+  const args: Record<string, any> = {
     target_cpu: targetArch,
     target_os: targetOs,
     is_official_build: true,
@@ -147,7 +152,7 @@ function getChromiumGnArgs() {
   return args
 }
 
-function buildChromiumRelease(buildOptions = {}) {
+function buildChromiumRelease(buildOptions: { force?: boolean } = {}) {
   if (!isCI && !buildOptions.force) {
     console.error(
       'Warning: the command resets all changes in src/ folder.\n'
@@ -199,7 +204,7 @@ function buildChromiumRelease(buildOptions = {}) {
 
   Log.progressScope(`ninja`, () => {
     const target = chromiumConfig.buildTargets
-    const ninjaOpts = [
+    const ninjaOpts: string[] = [
       '-C',
       config.outputDir,
       target.join(' '),
