@@ -3,10 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { OnDeviceSpeechRecognitionService } from 'gen/brave/components/local_ai/core/on_device_speech_recognition.mojom.m.js'
+
 import {
-  OnDeviceSpeechRecognitionService,
-  AsrStreamInputClientCallbackRouter,
-} from 'gen/brave/components/local_ai/core/on_device_speech_recognition.mojom.m.js'
+  AsrStreamInputRemote,
+  AsrStreamResponderCallbackRouter,
+  AudioData,
+} from 'gen/services/on_device_model/public/mojom/on_device_model.mojom.m.js'
 
 const service = OnDeviceSpeechRecognitionService.getRemote()
 
@@ -15,55 +18,68 @@ function output(msg: string) {
   el.textContent += msg + '\n'
 }
 
-// Decode a 16kHz mono WAV file to int16 PCM samples.
-function decodeWav(buffer: ArrayBuffer): Int16Array {
+// Decode a 16kHz mono WAV file to float32 samples.
+function decodeWav(buffer: ArrayBuffer): Float32Array {
   const headerSize = 44
-  return new Int16Array(buffer.slice(headerSize))
+  const int16 = new Int16Array(buffer.slice(headerSize))
+  const float32 = new Float32Array(int16.length)
+  for (let i = 0; i < int16.length; i++) {
+    float32[i] = int16[i] / 32768.0
+  }
+  return float32
 }
 
-async function transcribeAudio(audio: number[]) {
-  output('Getting recognizer...')
-  const { recognizer } = await service.getAsrStreamInput()
-  if (!recognizer) {
-    output('ERROR: No recognizer returned')
-    return
-  }
+async function transcribeAudio(audio: Float32Array) {
+  output('Creating session...')
 
-  // Wire up a client to receive results.
-  const router = new AsrStreamInputClientCallbackRouter()
+  const responder = new AsrStreamResponderCallbackRouter()
   const startTime = performance.now()
 
-  const done = new Promise<void>((resolve) => {
-    router.onTranscript.addListener((transcript: string, isFinal: boolean) => {
-      const elapsed = performance.now() - startTime
+  responder.onResponse.addListener((results: any[]) => {
+    const elapsed = performance.now() - startTime
+    for (const r of results) {
       output(
         `Result (${elapsed.toFixed(0)}ms): `
-          + `"${transcript}" (final=${isFinal})`,
+          + `"${r.transcript}" `
+          + `(final=${r.isFinal})`,
       )
-    })
-    router.onStopped.addListener(() => {
-      resolve()
-    })
+    }
   })
 
-  recognizer.setClient(router.$.bindNewPipeAndPassRemote())
+  const stream = new AsrStreamInputRemote()
+  const options = { sampleRateHz: 16000 }
+  service.createSession(
+    options,
+    stream.$.bindNewPipeAndPassReceiver(),
+    responder.$.bindNewPipeAndPassRemote(),
+  )
 
   output(
     `Transcribing ${audio.length} samples `
       + `(${(audio.length / 16000).toFixed(1)}s)...`,
   )
-  recognizer.addAudio(audio)
-  recognizer.markDone()
 
-  await done
-  recognizer.$.close()
+  const data: AudioData = {
+    channelCount: 1,
+    sampleRate: 16000,
+    frameCount: audio.length,
+    data: Array.from(audio),
+  }
+  stream.addAudioChunk(data)
+
+  // Close the stream to signal end of audio.
+  // The WASM worker will flush and send final results.
+  stream.$.close()
+
+  // Wait a bit for results to arrive.
+  await new Promise((r) => setTimeout(r, 5000))
   output('Done.')
 }
 
 async function testSilence() {
   try {
     output('--- Test: silence (1s) ---')
-    const silence = new Array(16000).fill(0)
+    const silence = new Float32Array(16000)
     await transcribeAudio(silence)
   } catch (e) {
     output(`ERROR: ${e}`)
@@ -89,7 +105,7 @@ async function testWavFile() {
         + `(${(samples.length / 16000).toFixed(1)}s)`,
     )
 
-    await transcribeAudio(Array.from(samples))
+    await transcribeAudio(samples)
   } catch (e) {
     output(`ERROR: ${e}`)
     console.error('testWavFile failed:', e)
