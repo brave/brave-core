@@ -102,7 +102,9 @@ mojom::ToolUseEventPtr DeserializeToolUseEvent(
         static_cast<size_t>(proto_event.artifacts_size()));
     for (const auto& proto_artifact : proto_event.artifacts()) {
       auto mojom_artifact = mojom::ToolArtifact::New();
-      mojom_artifact->id = proto_artifact.id();
+      if (proto_artifact.has_id()) {
+        mojom_artifact->id = proto_artifact.id();
+      }
       mojom_artifact->type = proto_artifact.type();
       mojom_artifact->content_json = proto_artifact.content_json();
       mojom_event->artifacts->push_back(std::move(mojom_artifact));
@@ -215,7 +217,9 @@ bool SerializeToolUseEvent(const mojom::ToolUseEventPtr& mojom_event,
   if (mojom_event->artifacts) {
     for (const auto& mojom_artifact : mojom_event->artifacts.value()) {
       auto* proto_artifact = proto_event->add_artifacts();
-      proto_artifact->set_id(mojom_artifact->id);
+      if (mojom_artifact->id) {
+        proto_artifact->set_id(*mojom_artifact->id);
+      }
       proto_artifact->set_type(mojom_artifact->type);
       proto_artifact->set_content_json(mojom_artifact->content_json);
     }

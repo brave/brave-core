@@ -38,10 +38,10 @@ class CodePlugin {
   virtual std::optional<std::string> ValidateArtifact(
       const base::Value& artifact_value) const;
 
-  // Returns an optional log prefix used when generating artifact creation
-  // log messages (e.g. "Chart"). If nullopt, no log message is emitted for
-  // artifacts of this type.
-  virtual std::optional<std::string_view> ArtifactCreationLogPrefix() const;
+  // Returns an optional log message for artifact creation, given the artifact
+  // ID. If nullopt, no output is emitted for artifacts of this type.
+  virtual std::optional<std::string> GetArtifactCreationMessage(
+      std::string_view artifact_id) const;
 };
 
 }  // namespace ai_chat

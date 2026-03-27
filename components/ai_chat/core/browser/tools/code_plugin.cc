@@ -14,7 +14,8 @@ std::optional<std::string> CodePlugin::ValidateArtifact(
   return std::nullopt;
 }
 
-std::optional<std::string_view> CodePlugin::ArtifactCreationLogPrefix() const {
+std::optional<std::string> CodePlugin::GetArtifactCreationMessage(
+    std::string_view artifact_id) const {
   return std::nullopt;
 }
 

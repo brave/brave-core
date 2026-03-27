@@ -160,9 +160,9 @@ void CodeExecutionTool::ResolveRequest(
       plugin_found = true;
       if (auto validation_error = plugin->ValidateArtifact(*content)) {
         error = base::StrCat({"Error: ", *validation_error});
-      } else if (auto prefix = plugin->ArtifactCreationLogPrefix()) {
-        base::StrAppend(&console_logs, {console_logs.empty() ? "" : "\n",
-                                        *prefix, artifact_id});
+      } else if (auto log = plugin->GetArtifactCreationMessage(artifact_id)) {
+        base::StrAppend(&console_logs,
+                        {console_logs.empty() ? "" : "\n", *log});
       }
       break;
     }

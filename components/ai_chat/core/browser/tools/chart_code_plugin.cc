@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/tools/chart_code_plugin.h"
 
+#include "base/strings/strcat.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
@@ -141,9 +142,9 @@ std::optional<std::string> ChartCodePlugin::ValidateArtifact(
   return std::nullopt;
 }
 
-std::optional<std::string_view> ChartCodePlugin::ArtifactCreationLogPrefix()
-    const {
-  return "Chart created with ID: ";
+std::optional<std::string> ChartCodePlugin::GetArtifactCreationMessage(
+    std::string_view artifact_id) const {
+  return base::StrCat({"Chart created with ID: ", artifact_id});
 }
 
 }  // namespace ai_chat
