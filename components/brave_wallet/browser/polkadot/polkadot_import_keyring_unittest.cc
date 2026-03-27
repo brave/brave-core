@@ -8,6 +8,7 @@
 #include <array>
 #include <string_view>
 
+#include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
