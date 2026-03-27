@@ -5,6 +5,8 @@
 
 source_set("local_ai") {
   sources = [
+    "bwc_factory_util.cc",
+    "bwc_factory_util.h",
     "local_ai_service_factory.cc",
     "local_ai_service_factory.h",
   ]
