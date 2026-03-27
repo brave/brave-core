@@ -118,8 +118,8 @@ TEST(PolkadotKeyring, GetAddress) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotMainnet,
                             base::BindRepeating(IsAddressAllowed));
-    keyring.AddNewHDAccount(0);
-    keyring.AddNewHDAccount(1);
+    ASSERT_TRUE(keyring.AddNewHDAccount(0));
+    ASSERT_TRUE(keyring.AddNewHDAccount(1));
 
     EXPECT_EQ(keyring.GetAddress(0, 0u),
               "14YLzDFZTwnkcJkFij4Km7g5LdkLqKHy47xYGPN6HsLJpfnb");
@@ -140,8 +140,8 @@ TEST(PolkadotKeyring, GetAddress) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotTestnet,
                             base::BindRepeating(IsAddressAllowed));
-    keyring.AddNewHDAccount(0);
-    keyring.AddNewHDAccount(1);
+    ASSERT_TRUE(keyring.AddNewHDAccount(0));
+    ASSERT_TRUE(keyring.AddNewHDAccount(1));
 
     EXPECT_EQ(keyring.GetAddress(0, 42u),
               "5HGiBcFgEBMgT6GEuo9SA98sBnGgwHtPKDXiUukT6aqCrKEx");
@@ -227,7 +227,7 @@ TEST(PolkadotKeyring, GetPublicKey) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotMainnet,
                             base::BindRepeating(IsAddressAllowed));
-    keyring.AddNewHDAccount(0);
+    ASSERT_TRUE(keyring.AddNewHDAccount(0));
 
     auto pubkey = keyring.GetPublicKey(0);
     ASSERT_TRUE(pubkey.has_value());
@@ -246,7 +246,7 @@ TEST(PolkadotKeyring, GetPublicKey) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotTestnet,
                             base::BindRepeating(IsAddressAllowed));
-    keyring.AddNewHDAccount(0);
+    ASSERT_TRUE(keyring.AddNewHDAccount(0));
 
     auto pubkey = keyring.GetPublicKey(0);
     ASSERT_TRUE(pubkey.has_value());
@@ -266,8 +266,8 @@ TEST(PolkadotKeyring, SignAndVerifyMessage) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotMainnet,
                             base::BindRepeating(IsAddressAllowed));
-    keyring.AddNewHDAccount(0);
-    keyring.AddNewHDAccount(1);
+    ASSERT_TRUE(keyring.AddNewHDAccount(0));
+    ASSERT_TRUE(keyring.AddNewHDAccount(1));
 
     auto signature = keyring.SignMessage(message, 0);
     ASSERT_TRUE(signature);
@@ -288,8 +288,8 @@ TEST(PolkadotKeyring, SignAndVerifyMessage) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotTestnet,
                             base::BindRepeating(IsAddressAllowed));
-    keyring.AddNewHDAccount(0);
-    keyring.AddNewHDAccount(1);
+    ASSERT_TRUE(keyring.AddNewHDAccount(0));
+    ASSERT_TRUE(keyring.AddNewHDAccount(1));
 
     auto signature = keyring.SignMessage(message, 0);
     ASSERT_TRUE(signature);
@@ -317,8 +317,8 @@ TEST(PolkadotKeyring, VerifyMessage) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotTestnet,
                             base::BindRepeating(IsAddressAllowed));
-    keyring.AddNewHDAccount(0);
-    keyring.AddNewHDAccount(1);
+    ASSERT_TRUE(keyring.AddNewHDAccount(0));
+    ASSERT_TRUE(keyring.AddNewHDAccount(1));
 
     std::string signature_hex =
         "4C62835B705663D221F45A70E493C2B48FEEE5B541D3071727139A44A71F1E46E5F536"
@@ -361,8 +361,8 @@ TEST(PolkadotKeyring, VerifyMessage) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotMainnet,
                             base::BindRepeating(IsAddressAllowed));
-    keyring.AddNewHDAccount(0);
-    keyring.AddNewHDAccount(1);
+    ASSERT_TRUE(keyring.AddNewHDAccount(0));
+    ASSERT_TRUE(keyring.AddNewHDAccount(1));
 
     // Test with first mainnet signature vector
     std::string signature_hex =

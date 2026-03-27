@@ -118,6 +118,7 @@ HDKeySr25519* PolkadotKeyring::GetKeypair(uint32_t account_index) {
 std::optional<std::string> PolkadotKeyring::AddNewHDAccount(
     uint32_t account_index) {
   if (secondary_keys_.contains(account_index)) {
+    // Account already exists.
     return std::nullopt;
   }
 
@@ -129,8 +130,10 @@ std::optional<std::string> PolkadotKeyring::AddNewHDAccount(
   base::span(ss58_addr.public_key)
       .copy_from_nonoverlapping(keypair.GetPublicKey());
 
-  auto addr = ss58_addr.Encode().value();
-  if (!is_address_allowed_.Run(addr)) {
+  const auto addr = ss58_addr.Encode();
+  if (!addr || !is_address_allowed_.Run(*addr)) {
+    // We either failed to ss58-encode the public key or it was present in our
+    // block-list. Either way, reject keypair creation.
     return std::nullopt;
   }
 
