@@ -527,6 +527,24 @@ TEST_F(
                      net::HTTP_INTERNAL_SERVER_ERROR);
 }
 
+TEST_F(BraveAdsSiteVisitTest,
+       DoNotLandOnPageForHttpNotFoundResponseStatusCode) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/true);
+  EXPECT_CALL(site_visit_observer_mock_,
+              OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()))
+      .Times(0);
+
+  // Act & Assert
+  EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage).Times(0);
+  SimulateClickingAd(ad, /*tab_id=*/1,
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_NOT_FOUND);
+}
+
 TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfTheTabIsOccluded) {
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);

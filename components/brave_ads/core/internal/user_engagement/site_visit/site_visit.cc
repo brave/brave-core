@@ -19,6 +19,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_util.h"
 #include "brave/components/brave_ads/core/public/common/url/url_util.h"
 #include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
+#include "net/http/http_status_code.h"
 
 namespace brave_ads {
 
@@ -71,6 +72,11 @@ void SiteVisit::MaybeLandOnPage(const TabInfo& tab, int http_status_code) {
   }
 
   if (!IsSuccessfulHttpStatusCode(http_status_code)) {
+    if (http_status_code == net::HTTP_NOT_FOUND) {
+      // Do not trigger a page land event when the page cannot be found. This
+      // may happen if an incorrect target URL was entered.
+      return;
+    }
     // If the page did not load successfully, immediately land on the page.
     return LandedOnPage(tab.id, http_status_code, ad);
   }
