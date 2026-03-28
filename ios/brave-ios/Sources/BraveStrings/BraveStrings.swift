@@ -2081,6 +2081,14 @@ extension Strings {
       value: "Set as Default Browser",
       comment: "Settings item to set the Brave as a default browser on the iOS device."
     )
+  public static let addToDockSettingsCell =
+    NSLocalizedString(
+      "addToDockSettingsCell",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Add to Dock",
+      comment: "Settings item that opens instructions for adding Brave to the iOS dock."
+    )
   public static let setDefaultBrowserCalloutTitle =
     NSLocalizedString(
       "setDefaultBrowserCalloutTitle",

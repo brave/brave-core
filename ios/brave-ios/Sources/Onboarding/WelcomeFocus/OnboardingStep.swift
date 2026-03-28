@@ -38,11 +38,21 @@ public protocol OnboardingStep: Identifiable {
 extension [any OnboardingStep] {
   /// All of the standard browser steps
   public static var allSteps: [any OnboardingStep] {
-    [.defaultBrowsing, .blockInterruptions, .p3aOptIn]
+    var steps: [any OnboardingStep] = [.defaultBrowsing]
+    if AddToDockEligibility.isEligible {
+      steps.append(.addToDock)
+    }
+    steps.append(contentsOf: [.blockInterruptions, .p3aOptIn])
+    return steps
   }
   /// A subset of steps if the user is already the default browser on first launch
   public static var alreadyDefaultBrowserSteps: [any OnboardingStep] {
-    [.blockInterruptions, .p3aOptIn]
+    var steps: [any OnboardingStep] = []
+    if AddToDockEligibility.isEligible {
+      steps.append(.addToDock)
+    }
+    steps.append(contentsOf: [.blockInterruptions, .p3aOptIn])
+    return steps
   }
 }
 

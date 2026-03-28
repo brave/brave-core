@@ -300,7 +300,10 @@ extension BrowserViewController {
     // Check if user is already default before showing onboarding
     let isDefault = defaultBrowserHelper.status == .defaulted
 
-    var steps: [any OnboardingStep] = [.blockInterruptions]
+    var steps: [any OnboardingStep] =
+      AddToDockEligibility.isEligible
+      ? [.addToDock, .blockInterruptions]
+      : [.blockInterruptions]
     if !isDefault {
       steps.insert(.defaultBrowsing, at: 0)
     }

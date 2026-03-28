@@ -16,6 +16,7 @@ import DataImporter
 import Growth
 import LocalAuthentication
 import NetworkExtension
+import Onboarding
 import Origin
 import Playlist
 import Preferences
@@ -327,9 +328,35 @@ class SettingsViewController: TableViewController {
   }()
 
   private lazy var defaultBrowserSection: Static.Section = {
-    var section = Static.Section(
+    let addToDockRows: [Row] =
+      AddToDockEligibility.isEligible
+      ? [
+        Row(
+          text: Strings.addToDockSettingsCell,
+          selection: { [weak self] in
+            guard let self else { return }
+            let controller = OnboardingController(
+              environment: .init(
+                p3aUtils: p3aUtilities,
+                attributionManager: attributionManager
+              ),
+              steps: [.addToDock],
+              showSplashScreen: false,
+              showDismissButton: false
+            ).then {
+              $0.isModalInPresentation = true
+              $0.modalPresentationStyle = .overFullScreen
+            }
+            self.present(controller, animated: true)
+          },
+          cellClass: MultilineButtonCell.self
+        )
+      ]
+      : []
+
+    return Static.Section(
       rows: [
-        .init(
+        Row(
           text: Strings.setDefaultBrowserSettingsCell,
           selection: { [unowned self] in
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
@@ -338,8 +365,9 @@ class SettingsViewController: TableViewController {
             UIApplication.shared.open(settingsUrl)
           },
           cellClass: MultilineButtonCell.self
-        ),
-        .init(
+        )
+      ] + addToDockRows + [
+        Row(
           text: Strings.importBrowsingDataSettingsMenuTitle,
           selection: { [unowned self] in
             let controller = UIHostingController(
@@ -362,11 +390,9 @@ class SettingsViewController: TableViewController {
             self.navigationController?.pushViewController(controller, animated: true)
           },
           cellClass: MultilineButtonCell.self
-        ),
+        )
       ]
     )
-
-    return section
   }()
 
   private func setCellEnabled(_ enabled: Bool, rowUUID: UUID, sectionUUID: UUID) {
