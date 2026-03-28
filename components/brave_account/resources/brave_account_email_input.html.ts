@@ -15,8 +15,7 @@ export function getHtml(this: BraveAccountEmailInputElement) {
     <leo-input
       maxlength=${MAX_EMAIL_LENGTH}
       placeholder="$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER}"
-      required
-      showErrors=${this.blockBraveAlias}
+      ?showErrors=${this.blockBraveAlias}
       type="email"
       @input=${this.onInput}
     >
