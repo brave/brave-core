@@ -47,10 +47,10 @@ leo-input:focus:has(.error) {
     min-height: 0;
 
     leo-icon[name='check-circle-filled'] {
-      --leo-icon-color: var(--leo-color-text-interactive);
+      --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
 
       & + div {
-        color: var(--leo-color-text-interactive);
+        color: var(--leo-color-systemfeedback-success-text);
       }
     }
 
