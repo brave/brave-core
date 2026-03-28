@@ -9,6 +9,7 @@
 #include <string_view>
 
 #include "base/check.h"
+#include "base/containers/fixed_flat_set.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 #include "url/gurl.h"
@@ -19,11 +20,8 @@ namespace {
 
 constexpr std::string_view kChromeScheme = "chrome";
 
-constexpr std::string_view kGettingStartedHostName = "getting-started";
-constexpr std::string_view kRewardsHostName = "rewards";
-constexpr std::string_view kSyncHostName = "sync";
-constexpr std::string_view kLeoAiHostName = "leo-ai";
-constexpr std::string_view kWalletHostName = "wallet";
+constexpr auto kAllowedHosts = base::MakeFixedFlatSet<std::string_view>(
+    {"getting-started", "leo-ai", "rewards", "sync", "wallet"});
 
 constexpr std::string_view kSettingsHostName = "settings";
 
@@ -62,11 +60,8 @@ bool ShouldSupportInternalUrl(const GURL& url) {
   std::string_view url_host = url.host();
   std::string_view url_path = url.path();
 
-  if (url_host == kGettingStartedHostName || url_host == kRewardsHostName ||
-      url_host == kSyncHostName || url_host == kLeoAiHostName ||
-      url_host == kWalletHostName) {
-    // Support chrome://getting-started, chrome://rewards, chrome://sync,
-    // chrome://leo-ai, and chrome://wallet hosts only if the path is "/".
+  if (kAllowedHosts.contains(url_host)) {
+    // Only support the root path for these hosts.
     return url_path == "/";
   }
 
