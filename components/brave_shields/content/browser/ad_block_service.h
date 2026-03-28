@@ -83,6 +83,7 @@ class AdBlockService {
 
     std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set_;
     raw_ptr<AdBlockEngine> adblock_engine_ = nullptr;               // not owned
+    bool engine_is_default_;
     raw_ptr<AdBlockResourceProvider> resource_provider_ = nullptr;  // not owned
     raw_ptr<AdBlockResourceProvider> custom_resource_provider_ =
         nullptr;  // not owned
@@ -191,6 +192,14 @@ class AdBlockService {
 
   AdBlockListP3A list_p3a_;
 
+  // The AdBlockEngines should be deleted last to ensure that any code that
+  // posts them to the task runner will run before the deletion. This could
+  // happen if another class posts something in its destructor (unlikely, but
+  // just to be extra safe).
+  std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter> default_engine_;
+  std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>
+      additional_filters_engine_;
+
   std::unique_ptr<AdBlockFiltersProviderManager> filters_provider_manager_
       GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockResourceProvider> resource_provider_
@@ -213,10 +222,6 @@ class AdBlockService {
       subscription_service_manager_ GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockComponentServiceManager> component_service_manager_
       GUARDED_BY_CONTEXT(sequence_checker_);
-
-  std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter> default_engine_;
-  std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>
-      additional_filters_engine_;
 
   std::unique_ptr<SourceProviderObserver> default_service_observer_
       GUARDED_BY_CONTEXT(sequence_checker_);

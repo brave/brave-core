@@ -47,11 +47,12 @@ AdBlockService::SourceProviderObserver::SourceProviderObserver(
     : adblock_engine_(engine_is_default
                           ? owner->default_engine_.get()
                           : owner->additional_filters_engine_.get()),
+      engine_is_default_(engine_is_default),
       resource_provider_(owner->resource_provider_.get()),
       filters_provider_manager_(owner->filters_provider_manager()),
       task_runner_(owner->GetTaskRunner()) {
   filters_provider_manager_->AddObserver(this);
-  OnChanged(engine_is_default);
+  OnChanged(engine_is_default_);
 }
 
 AdBlockService::SourceProviderObserver::~SourceProviderObserver() {
@@ -60,7 +61,7 @@ AdBlockService::SourceProviderObserver::~SourceProviderObserver() {
 }
 
 void AdBlockService::SourceProviderObserver::OnChanged(bool is_default_engine) {
-  if (adblock_engine_->IsDefaultEngine() != is_default_engine) {
+  if (engine_is_default_ != is_default_engine) {
     // Skip updates of another engine.
     return;
   }
@@ -102,26 +103,26 @@ void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
     AdblockResourceStorageBox storage) {
   if (!filter_set_) {
     task_runner_->PostTask(
-        FROM_HERE, base::BindOnce(
-                       [](base::WeakPtr<AdBlockEngine> engine,
-                          AdblockResourceStorageBox storage) {
-                         if (engine) {
-                           engine->UseResources(*storage);
-                         }
-                       },
-                       adblock_engine_->AsWeakPtr(), std::move(storage)));
+        FROM_HERE,
+        base::BindOnce(
+            [](AdBlockEngine* engine, AdblockResourceStorageBox storage) {
+              if (engine) {
+                engine->UseResources(*storage);
+              }
+            },
+            adblock_engine_.get(), std::move(storage)));
   } else {
-    auto engine_load_callback = base::BindOnce(
-        [](base::WeakPtr<AdBlockEngine> engine,
-           std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
-           AdblockResourceStorageBox storage) {
-          if (engine) {
-            engine->Load(std::move(*filter_set.get()), *storage);
-          }
-        },
-        adblock_engine_->AsWeakPtr(), std::move(filter_set_),
-        std::move(storage));
-    task_runner_->PostTask(FROM_HERE, std::move(engine_load_callback));
+    task_runner_->PostTask(
+        FROM_HERE,
+        base::BindOnce(
+            [](AdBlockEngine* engine,
+               std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
+               AdblockResourceStorageBox storage) {
+              if (engine) {
+                engine->Load(std::move(*filter_set.get()), *storage);
+              }
+            },
+            adblock_engine_.get(), std::move(filter_set_), std::move(storage)));
   }
 }
 
@@ -402,10 +403,6 @@ void AdBlockService::ResetCosmeticFilter(std::string_view host) {
 
 void AdBlockService::GetDebugInfoAsync(GetDebugInfoCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  // base::Unretained() is safe because |default_engine_| is deleted
-  // on the same sequence. See docs/threading_and_tasks_testing.md for
-  // explanations.
   GetTaskRunner()->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&AdBlockEngine::GetDebugInfo,
@@ -417,23 +414,27 @@ void AdBlockService::GetDebugInfoAsync(GetDebugInfoCallback callback) {
 void AdBlockService::DiscardRegex(uint64_t regex_id) {
   // Dispatch to both default & additional engines, ids are unique.
   GetTaskRunner()->PostTask(
-      FROM_HERE, base::BindOnce(&AdBlockEngine::DiscardRegex,
-                                default_engine_->AsWeakPtr(), regex_id));
+      FROM_HERE,
+      base::BindOnce(&AdBlockEngine::DiscardRegex,
+                     base::Unretained(default_engine_.get()), regex_id));
   GetTaskRunner()->PostTask(
       FROM_HERE,
       base::BindOnce(&AdBlockEngine::DiscardRegex,
-                     additional_filters_engine_->AsWeakPtr(), regex_id));
+                     base::Unretained(additional_filters_engine_.get()),
+                     regex_id));
 }
 
 void AdBlockService::SetupDiscardPolicy(
     const adblock::RegexManagerDiscardPolicy& policy) {
   GetTaskRunner()->PostTask(
-      FROM_HERE, base::BindOnce(&AdBlockEngine::SetupDiscardPolicy,
-                                default_engine_->AsWeakPtr(), policy));
+      FROM_HERE,
+      base::BindOnce(&AdBlockEngine::SetupDiscardPolicy,
+                     base::Unretained(default_engine_.get()), policy));
   GetTaskRunner()->PostTask(
       FROM_HERE,
       base::BindOnce(&AdBlockEngine::SetupDiscardPolicy,
-                     additional_filters_engine_->AsWeakPtr(), policy));
+                     base::Unretained(additional_filters_engine_.get()),
+                     policy));
 }
 
 base::SequencedTaskRunner* AdBlockService::GetTaskRunner() {
@@ -472,10 +473,6 @@ void AdBlockService::OnGetDebugInfoFromDefaultEngine(
     GetDebugInfoCallback callback,
     base::DictValue default_engine_debug_info) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  // base::Unretained() is safe because |additional_filters_engine_| is deleted
-  // on the same sequence. See docs/threading_and_tasks_testing.md for
-  // explanations.
   GetTaskRunner()->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&AdBlockEngine::GetDebugInfo,
