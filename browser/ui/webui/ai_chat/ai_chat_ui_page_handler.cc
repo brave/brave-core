@@ -15,7 +15,9 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
+#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/time/time.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_tab_helpers.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
@@ -45,6 +47,10 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/common/url_constants.h"
+#include "net/traffic_annotation/network_traffic_annotation.h"
+#include "services/network/public/cpp/resource_request.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/cpp/simple_url_loader.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
 
@@ -238,6 +244,93 @@ void AIChatUIPageHandler::ProcessImageFile(
                 filename, processed_data->size(), *processed_data,
                 ai_chat::mojom::UploadedFileType::kImage);
             std::move(callback).Run(std::move(uploaded_file));
+          },
+          filename, std::move(callback)));
+}
+
+void AIChatUIPageHandler::FetchAndProcessImageUrl(
+    const GURL& image_url,
+    FetchAndProcessImageUrlCallback callback) {
+  if (!image_url.SchemeIsHTTPOrHTTPS()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  const net::NetworkTrafficAnnotationTag traffic_annotation =
+      net::DefineNetworkTrafficAnnotation("ai_chat_fetch_image_url", R"(
+      semantics {
+        sender: "AI Chat"
+        description:
+          "Fetches an image from a URL provided by the user via drag-and-drop "
+          "from a webpage into the AI Chat interface. The image is sanitized "
+          "and resized before being sent to the AI model."
+        trigger:
+          "User drags an image from a webpage into the AI Chat conversation."
+        data: "No user credentials are included in the request."
+        destination: WEBSITE
+      }
+      policy {
+        cookies_allowed: NO
+        setting:
+          "This request is triggered by explicit user action (drag-and-drop). "
+          "It can be disabled by disabling AI Chat."
+        policy_exception_justification:
+          "Not implemented. This is an explicit user action."
+      })");
+
+  auto request = std::make_unique<network::ResourceRequest>();
+  request->url = image_url;
+  request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+
+  // Store as member so the in-flight request is cancelled if |this| is
+  // destroyed. The loader is moved into the DownloadToString callback to keep
+  // it alive until the response arrives.
+  image_url_loader_ =
+      network::SimpleURLLoader::Create(std::move(request), traffic_annotation);
+
+  // Use the SimpleURLLoader string download limit (5MB). Images larger than
+  // this are unusual for web page content and will be silently rejected.
+  constexpr size_t kMaxImageDownloadBytes =
+      network::SimpleURLLoader::kMaxBoundedStringDownloadSize;
+  image_url_loader_->DownloadToString(
+      profile_->GetDefaultStoragePartition()
+          ->GetURLLoaderFactoryForBrowserProcess()
+          .get(),
+      base::BindOnce(
+          &AIChatUIPageHandler::OnImageUrlFetched,
+          weak_ptr_factory_.GetWeakPtr(), image_url, std::move(callback),
+          std::move(image_url_loader_)),
+      kMaxImageDownloadBytes);
+}
+
+void AIChatUIPageHandler::OnImageUrlFetched(
+    const GURL& image_url,
+    FetchAndProcessImageUrlCallback callback,
+    std::unique_ptr<network::SimpleURLLoader> loader,
+    std::optional<std::string> body) {
+  if (loader->NetError() != net::OK || !body || body->empty()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  const std::vector<uint8_t> image_data(body->begin(), body->end());
+  const std::string filename = base::StringPrintf(
+      "web-image-%" PRId64,
+      base::Time::Now().InMillisecondsSinceUnixEpoch());
+
+  UploadFileHelper::ProcessImageData(
+      &data_decoder_, image_data,
+      base::BindOnce(
+          [](const std::string& filename, FetchAndProcessImageUrlCallback cb,
+             std::optional<std::vector<uint8_t>> processed_data) {
+            if (!processed_data) {
+              std::move(cb).Run(nullptr);
+              return;
+            }
+            auto uploaded_file = ai_chat::mojom::UploadedFile::New(
+                filename, processed_data->size(), *processed_data,
+                ai_chat::mojom::UploadedFileType::kImage);
+            std::move(cb).Run(std::move(uploaded_file));
           },
           filename, std::move(callback)));
 }

@@ -214,6 +214,11 @@ interface AIChatUIHandler {
   ProcessImageFile(array<uint8> file_data, string filename)
       => (UploadedFile? processed_file);
 
+  // Fetch an image from a URL and process it (resizing and sanitization).
+  // Used for web image drag-and-drop where CORS prevents a JS fetch.
+  FetchAndProcessImageUrl(url.mojom.Url image_url)
+      => (UploadedFile? processed_file);
+
   // Get a plural string for the given key and count.
   GetPluralString(string key, int32 count) => (string plural_string);
 

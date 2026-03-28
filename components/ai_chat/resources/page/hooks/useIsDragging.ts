@@ -48,11 +48,21 @@ export function useIsDragging({
       }
     }
 
+    const isDraggableContent = (e: DragEvent) => {
+      const types = e.dataTransfer?.types ?? []
+      // Native file drag (e.g. from OS file manager)
+      if (types.includes('Files')) return true
+      // Web image drag: browser puts both text/uri-list (the URL) and
+      // text/html (the <img> tag) in the transfer. getData() is not
+      // readable during dragenter/dragover, so we check types only here.
+      return types.includes('text/uri-list') && types.includes('text/html')
+    }
+
     const handleDragEnter = (e: DragEvent) => {
       e.preventDefault()
       dragCounter++
 
-      if (e.dataTransfer?.types?.includes('Files')) {
+      if (isDraggableContent(e)) {
         setDragActive(true)
         setDragOver(true)
 
@@ -78,7 +88,7 @@ export function useIsDragging({
     const handleDragOver = (e: DragEvent) => {
       e.preventDefault()
       // Reset timeout on any drag activity
-      if (dragTimeoutId && e.dataTransfer?.types?.includes('Files')) {
+      if (dragTimeoutId && isDraggableContent(e)) {
         clearTimeout(dragTimeoutId)
         dragTimeoutId = window.setTimeout(() => {
           clearDragStateInternal()

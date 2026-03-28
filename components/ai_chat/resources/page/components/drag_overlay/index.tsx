@@ -25,19 +25,38 @@ export default function DragOverlay() {
       (file) => isImageFile(file) || isPdfFile(file),
     )
 
-    if (files.length === 0) {
+    if (files.length > 0) {
+      try {
+        const uploadedFiles = await Promise.all(
+          files.map((file) =>
+            convertFileToUploadedFile(file, aiChat.processImageFile),
+          ),
+        )
+        attachImages(uploadedFiles)
+      } catch (error) {
+        // Silently fail - error will be handled by the upload system
+      }
       return
     }
 
-    try {
-      const uploadedFiles = await Promise.all(
-        files.map((file) =>
-          convertFileToUploadedFile(file, aiChat.processImageFile),
-        ),
-      )
-      attachImages(uploadedFiles)
-    } catch (error) {
-      // Silently fail - error will be handled by the upload system
+    // Web image drag: no File objects, but may carry a URL via text/uri-list.
+    // Confirm it's an image by checking for an <img tag in text/html, then
+    // fetch and process the URL via C++ to bypass CORS restrictions.
+    const html = e.dataTransfer?.getData('text/html') ?? ''
+    const uriList = e.dataTransfer?.getData('text/uri-list') ?? ''
+    const url = uriList.split('\n').map((u) => u.trim()).find(
+      (u) => u && !u.startsWith('#'),
+    )
+
+    if (html.includes('<img') && url) {
+      try {
+        const result = await aiChat.fetchAndProcessImageUrl([{ url }])
+        if (result) {
+          attachImages([result])
+        }
+      } catch (error) {
+        // Silently fail - not all web image drags will be fetchable
+      }
     }
   }
 
