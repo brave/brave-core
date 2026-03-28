@@ -33,47 +33,46 @@ struct ParamInfo final {
   base::flat_map<std::string, bool> ads_uuids;
 };
 
-// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
-// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
-// added in the meantime to fix the build error. Remove this attribute and
-// provide a proper fix.
-[[clang::no_destroy]] const ParamInfo kTests[] = {
-    // Should debug.
-    {.command_line_switches = {{"rewards", "debug=true"}},
-     .should_debug = true},
+std::vector<ParamInfo> GetTestCases() {
+  return {
+      // Should debug.
+      {.command_line_switches = {{"rewards", "debug=true"}},
+       .should_debug = true},
 
-    // Should not debug.
-    {.command_line_switches = {{"rewards", "debug=false"}},
-     .should_debug = false},
+      // Should not debug.
+      {.command_line_switches = {{"rewards", "debug=false"}},
+       .should_debug = false},
 
-    // Override variations command-line switches.
-    {.command_line_switches = {{variations::switches::kFakeVariationsChannel,
-                                "foobar"}},
-     .did_override_command_line_switches = true},
+      // Override variations command-line switches.
+      {.command_line_switches = {{variations::switches::kFakeVariationsChannel,
+                                  "foobar"}},
+       .did_override_command_line_switches = true},
 
-    // Do not override variations command-line switches.
-    {.command_line_switches = {{variations::switches::kFakeVariationsChannel,
-                                ""}},
-     .did_override_command_line_switches = false},
+      // Do not override variations command-line switches.
+      {.command_line_switches = {{variations::switches::kFakeVariationsChannel,
+                                  ""}},
+       .did_override_command_line_switches = false},
 
-    // Force staging environment from command-line switch.
-    {.command_line_switches = {{"rewards", "staging=true"}},
-     .environment_type = mojom::EnvironmentType::kStaging},
+      // Force staging environment from command-line switch.
+      {.command_line_switches = {{"rewards", "staging=true"}},
+       .environment_type = mojom::EnvironmentType::kStaging},
 
-    // Force production environment from command-line switch.
-    {.command_line_switches = {{"rewards", "staging=false"}},
-     .environment_type = mojom::EnvironmentType::kProduction},
+      // Force production environment from command-line switch.
+      {.command_line_switches = {{"rewards", "staging=false"}},
+       .environment_type = mojom::EnvironmentType::kProduction},
 
-    // Use default environment.
-    {.command_line_switches = {}, .environment_type = kDefaultEnvironmentType},
+      // Use default environment.
+      {.command_line_switches = {},
+       .environment_type = kDefaultEnvironmentType},
 
-    // Ads UUIDs
-    {.command_line_switches =
-         {{"ads",
-           R"(uuids=fd955b44-5b46-4359-a074-3bc700cb86bf,7bc35504-c891-4b80-afac-20c655a5566e)"}},
-     .ads_uuids = {{"fd955b44-5b46-4359-a074-3bc700cb86bf", true},
-                   {"7bc35504-c891-4b80-afac-20c655a5566e", true}}},
-};
+      // Ads UUIDs
+      {.command_line_switches =
+           {{"ads",
+             R"(uuids=fd955b44-5b46-4359-a074-3bc700cb86bf,7bc35504-c891-4b80-afac-20c655a5566e)"}},
+       .ads_uuids = {{"fd955b44-5b46-4359-a074-3bc700cb86bf", true},
+                     {"7bc35504-c891-4b80-afac-20c655a5566e", true}}},
+  };
+}
 
 }  // namespace
 
@@ -151,7 +150,7 @@ std::string TestParamToString(
 
 INSTANTIATE_TEST_SUITE_P(,
                          BraveAdsCommandLineSwitchesUtilTest,
-                         ::testing::ValuesIn(kTests),
+                         ::testing::ValuesIn(GetTestCases()),
                          TestParamToString);
 
 }  // namespace brave_ads

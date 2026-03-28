@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <string>
+#include <vector>
 
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/command_line_switch_test_info.h"
@@ -22,16 +23,16 @@ struct ParamInfo final {
   bool should_debug = false;
 };
 
-// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
-// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
-// added in the meantime to fix the build error. Remove this attribute and
-// provide a proper fix.
-[[clang::no_destroy]] const ParamInfo kTests[] = {
-    {.command_line_switch = {"rewards", "debug=true"}, .should_debug = true},
-    {.command_line_switch = {"rewards", "debug=1"}, .should_debug = true},
-    {.command_line_switch = {"rewards", "debug=false"}, .should_debug = false},
-    {.command_line_switch = {"rewards", "debug=foobar"}, .should_debug = false},
-    {.command_line_switch = {}, .should_debug = false}};
+std::vector<ParamInfo> GetTestCases() {
+  return {
+      {.command_line_switch = {"rewards", "debug=true"}, .should_debug = true},
+      {.command_line_switch = {"rewards", "debug=1"}, .should_debug = true},
+      {.command_line_switch = {"rewards", "debug=false"},
+       .should_debug = false},
+      {.command_line_switch = {"rewards", "debug=foobar"},
+       .should_debug = false},
+      {.command_line_switch = {}, .should_debug = false}};
+}
 
 }  // namespace
 
@@ -66,7 +67,7 @@ std::string TestParamToString(
 
 INSTANTIATE_TEST_SUITE_P(,
                          BraveAdsDebugCommandLineSwitchParserUtilTest,
-                         ::testing::ValuesIn(kTests),
+                         ::testing::ValuesIn(GetTestCases()),
                          TestParamToString);
 
 }  // namespace brave_ads

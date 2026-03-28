@@ -6,21 +6,24 @@
 #include "brave/browser/ui/views/brave_ads/notification_ad_popup_collection.h"
 
 #include <map>
+#include <string>
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/no_destructor.h"
 #include "brave/browser/ui/views/brave_ads/notification_ad_popup.h"
 
 namespace brave_ads {
 
 namespace {
 
-// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
-// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
-// added in the meantime to fix the build error. Remove this attribute and
-// provide a proper fix.
-[[clang::no_destroy]] std::map<std::string, NotificationAdPopup* /*NOT OWNED*/>
-    g_notification_ad_popups;
+std::map<std::string, NotificationAdPopup* /*NOT OWNED*/>&
+GetNotificationAdPopups() {
+  static base::NoDestructor<
+      std::map<std::string, NotificationAdPopup* /*NOT OWNED*/>>
+      popups;
+  return *popups;
+}
 
 }  // namespace
 
@@ -32,19 +35,19 @@ NotificationAdPopupCollection::~NotificationAdPopupCollection() = default;
 void NotificationAdPopupCollection::Add(NotificationAdPopup* popup,
                                         const std::string& notification_id) {
   CHECK(!notification_id.empty());
-  CHECK_EQ(g_notification_ad_popups.count(notification_id), 0u);
-  g_notification_ad_popups[notification_id] = popup;
+  CHECK_EQ(GetNotificationAdPopups().count(notification_id), 0u);
+  GetNotificationAdPopups()[notification_id] = popup;
 }
 
 // static
 NotificationAdPopup* NotificationAdPopupCollection::Get(
     const std::string& notification_id) {
   CHECK(!notification_id.empty());
-  if (g_notification_ad_popups.count(notification_id) == 0) {
+  if (GetNotificationAdPopups().count(notification_id) == 0) {
     return nullptr;
   }
 
-  NotificationAdPopup* popup = g_notification_ad_popups[notification_id];
+  NotificationAdPopup* popup = GetNotificationAdPopups()[notification_id];
   CHECK(popup);
 
   return popup;
@@ -53,13 +56,13 @@ NotificationAdPopup* NotificationAdPopupCollection::Get(
 // static
 void NotificationAdPopupCollection::Remove(const std::string& notification_id) {
   CHECK(!notification_id.empty());
-  if (g_notification_ad_popups.count(notification_id) == 0) {
+  if (GetNotificationAdPopups().count(notification_id) == 0) {
     return;
   }
 
   // Note: The pointed-to NotificationAdPopup members are deallocated by their
   // containing Widgets
-  g_notification_ad_popups.erase(notification_id);
+  GetNotificationAdPopups().erase(notification_id);
 }
 
 }  // namespace brave_ads

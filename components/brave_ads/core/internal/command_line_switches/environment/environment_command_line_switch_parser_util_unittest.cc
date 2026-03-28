@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <string>
+#include <vector>
 
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/command_line_switches/command_line_switches_constants.h"
@@ -25,20 +26,18 @@ struct ParamInfo final {
   mojom::EnvironmentType environment_type = kDefaultEnvironmentType;
 };
 
-// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
-// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
-// added in the meantime to fix the build error. Remove this attribute and
-// provide a proper fix.
-[[clang::no_destroy]] const ParamInfo kTests[] = {
-    {.command_line_switch = {"rewards", "staging=true"},
-     .environment_type = mojom::EnvironmentType::kStaging},
-    {.command_line_switch = {"rewards", "staging=1"},
-     .environment_type = mojom::EnvironmentType::kStaging},
-    {.command_line_switch = {"rewards", "staging=false"},
-     .environment_type = mojom::EnvironmentType::kProduction},
-    {.command_line_switch = {"rewards", "staging=foobar"},
-     .environment_type = mojom::EnvironmentType::kProduction},
-    {.command_line_switch = {}, .environment_type = kDefaultEnvironmentType}};
+std::vector<ParamInfo> GetTestCases() {
+  return {
+      {.command_line_switch = {"rewards", "staging=true"},
+       .environment_type = mojom::EnvironmentType::kStaging},
+      {.command_line_switch = {"rewards", "staging=1"},
+       .environment_type = mojom::EnvironmentType::kStaging},
+      {.command_line_switch = {"rewards", "staging=false"},
+       .environment_type = mojom::EnvironmentType::kProduction},
+      {.command_line_switch = {"rewards", "staging=foobar"},
+       .environment_type = mojom::EnvironmentType::kProduction},
+      {.command_line_switch = {}, .environment_type = kDefaultEnvironmentType}};
+}
 
 }  // namespace
 
@@ -74,7 +73,7 @@ std::string TestParamToString(
 
 INSTANTIATE_TEST_SUITE_P(,
                          BraveAdsEnvironmentCommandLineSwitchParserUtilTest,
-                         ::testing::ValuesIn(kTests),
+                         ::testing::ValuesIn(GetTestCases()),
                          TestParamToString);
 
 }  // namespace brave_ads
