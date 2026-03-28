@@ -10,6 +10,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
+#include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/test/engine_test_observer.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
@@ -181,9 +182,9 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
     source_provider->RegisterAsSourceProvider(
         g_brave_browser_process->ad_block_service());
     source_providers_.push_back(std::move(source_provider));
-    auto* engine =
-        g_brave_browser_process->ad_block_service()->default_engine_.get();
-    EngineTestObserver engine_observer(engine);
+    auto& engine = g_brave_browser_process->ad_block_service()
+                       ->engine_wrapper_->default_engine();
+    EngineTestObserver engine_observer(&engine);
     engine_observer.Wait();
   }
 

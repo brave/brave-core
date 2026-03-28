@@ -11,6 +11,8 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "brave/components/brave_shields/content/browser/ad_block_engine.h"
+#include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/test/engine_test_observer.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
@@ -50,9 +52,9 @@ class EphemeralStorage1pDomainBlockBrowserTest
         g_brave_browser_process->ad_block_service();
     source_provider_->RegisterAsSourceProvider(ad_block_service);
 
-    auto* engine =
-        g_brave_browser_process->ad_block_service()->default_engine_.get();
-    EngineTestObserver engine_observer(engine);
+    auto& engine = g_brave_browser_process->ad_block_service()
+                       ->engine_wrapper_->default_engine();
+    EngineTestObserver engine_observer(&engine);
     engine_observer.Wait();
   }
 
