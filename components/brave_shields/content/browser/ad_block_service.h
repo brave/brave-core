@@ -83,7 +83,7 @@ class AdBlockService {
 
     std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set_;
     raw_ptr<AdBlockEngine> adblock_engine_ = nullptr;               // not owned
-    bool engine_is_default_;
+    const bool engine_is_default_;
     raw_ptr<AdBlockResourceProvider> resource_provider_ = nullptr;  // not owned
     raw_ptr<AdBlockResourceProvider> custom_resource_provider_ =
         nullptr;  // not owned
