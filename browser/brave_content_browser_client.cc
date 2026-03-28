@@ -62,6 +62,7 @@
 #include "brave/components/brave_search/common/brave_search_default.mojom.h"
 #include "brave/components/brave_search/common/brave_search_fallback.mojom.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
+#include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
@@ -340,10 +341,11 @@ namespace {
 
 void BindCosmeticFiltersResourcesOnTaskRunner(
     mojo::PendingReceiver<cosmetic_filters::mojom::CosmeticFiltersResources>
-        receiver) {
+        receiver,
+    brave_shields::AdBlockEngineWrapper* engine_wrapper) {
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<cosmetic_filters::CosmeticFiltersResources>(
-          g_brave_browser_process->ad_block_service()),
+          engine_wrapper),
       std::move(receiver));
 }
 
@@ -352,8 +354,10 @@ void BindCosmeticFiltersResources(
     mojo::PendingReceiver<cosmetic_filters::mojom::CosmeticFiltersResources>
         receiver) {
   g_brave_browser_process->ad_block_service()->GetTaskRunner()->PostTask(
-      FROM_HERE, base::BindOnce(&BindCosmeticFiltersResourcesOnTaskRunner,
-                                std::move(receiver)));
+      FROM_HERE,
+      base::BindOnce(
+          &BindCosmeticFiltersResourcesOnTaskRunner, std::move(receiver),
+          g_brave_browser_process->ad_block_service()->engine_wrapper()));
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)

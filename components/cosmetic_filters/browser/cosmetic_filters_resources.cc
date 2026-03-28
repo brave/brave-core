@@ -13,9 +13,10 @@
 #include "base/feature_list.h"
 #include "base/json/json_reader.h"
 #include "base/json/string_escape.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -43,16 +44,17 @@ constexpr char kProceduralActionsScript[] =
 namespace cosmetic_filters {
 
 CosmeticFiltersResources::CosmeticFiltersResources(
-    brave_shields::AdBlockService* ad_block_service)
-    : ad_block_service_(ad_block_service) {}
+    brave_shields::AdBlockEngineWrapper* engine_wrapper)
+    : engine_wrapper_(engine_wrapper) {}
 
-CosmeticFiltersResources::~CosmeticFiltersResources() = default;
+CosmeticFiltersResources::~CosmeticFiltersResources() {
+  engine_wrapper_ = nullptr;
+}
 
 void CosmeticFiltersResources::HiddenClassIdSelectors(
     const std::string& input,
     const std::vector<std::string>& exceptions,
     HiddenClassIdSelectorsCallback callback) {
-  DCHECK(ad_block_service_->GetTaskRunner()->RunsTasksInCurrentSequence());
   std::optional<base::DictValue> input_dict = base::JSONReader::ReadDict(
       input, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                  base::JSON_REPLACE_INVALID_CHARACTERS);
@@ -84,7 +86,7 @@ void CosmeticFiltersResources::HiddenClassIdSelectors(
   }
 
   auto selectors =
-      ad_block_service_->HiddenClassIdSelectors(classes, ids, exceptions);
+      engine_wrapper_->HiddenClassIdSelectors(classes, ids, exceptions);
 
   std::move(callback).Run(std::move(selectors));
 }
@@ -93,9 +95,8 @@ void CosmeticFiltersResources::UrlCosmeticResources(
     const std::string& url,
     bool aggressive_blocking,
     UrlCosmeticResourcesCallback callback) {
-  DCHECK(ad_block_service_->GetTaskRunner()->RunsTasksInCurrentSequence());
   auto resources =
-      ad_block_service_->UrlCosmeticResources(url, aggressive_blocking);
+      engine_wrapper_->UrlCosmeticResources(url, aggressive_blocking);
 
   const auto* procedural_actions_list =
       resources.FindList(brave_shields::kCosmeticResourcesProceduralActions);
