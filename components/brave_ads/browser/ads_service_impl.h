@@ -154,7 +154,7 @@ class AdsServiceImpl final : public AdsService,
 
   void SetSysInfo();
   void SetBuildChannel();
-  void SetFlags();
+  void SetCommandLineSwitches();
   void SetContentSettings();
 
   bool ShouldShowOnboardingNotification();

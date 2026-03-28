@@ -85,8 +85,9 @@ void BatAdsImpl::SetBuildChannel(
   GetAds()->SetBuildChannel(std::move(mojom_build_channel));
 }
 
-void BatAdsImpl::SetFlags(brave_ads::mojom::FlagsPtr mojom_flags) {
-  GetAds()->SetFlags(std::move(mojom_flags));
+void BatAdsImpl::SetCommandLineSwitches(
+    brave_ads::mojom::CommandLineSwitchesPtr mojom_command_line_switches) {
+  GetAds()->SetCommandLineSwitches(std::move(mojom_command_line_switches));
 }
 
 void BatAdsImpl::SetContentSettings(

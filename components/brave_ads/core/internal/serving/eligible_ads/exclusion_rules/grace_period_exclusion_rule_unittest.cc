@@ -37,7 +37,7 @@ TEST_F(BraveAdsGracePeriodExclusionRuleTest,
        ShouldIncludeIfWithinGracePeriodWhenDebugIsEnabled) {
   // Arrange
   ASSERT_TRUE(GlobalState::HasInstance());
-  GlobalState::GetInstance()->Flags().should_debug = true;
+  GlobalState::GetInstance()->CommandLineSwitches().should_debug = true;
 
   FastForwardClockBy(kGracePeriod - base::Milliseconds(1));
 
@@ -52,7 +52,7 @@ TEST_F(BraveAdsGracePeriodExclusionRuleTest,
        ShouldIncludeIfOutsideGracePeriodWhenDebugIsEnabled) {
   // Arrange
   ASSERT_TRUE(GlobalState::HasInstance());
-  GlobalState::GetInstance()->Flags().should_debug = true;
+  GlobalState::GetInstance()->CommandLineSwitches().should_debug = true;
 
   FastForwardClockBy(kGracePeriod);
 

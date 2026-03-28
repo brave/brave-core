@@ -38,7 +38,7 @@
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
-#include "brave/components/brave_ads/core/public/flags/flags_util.h"
+#include "brave/components/brave_ads/core/public/command_line_switches/command_line_switches_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"

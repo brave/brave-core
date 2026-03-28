@@ -44,7 +44,8 @@ class AdsImpl final : public Ads {
 
   void SetSysInfo(mojom::SysInfoPtr mojom_sys_info) override;
   void SetBuildChannel(mojom::BuildChannelInfoPtr mojom_build_channel) override;
-  void SetFlags(mojom::FlagsPtr mojom_flags) override;
+  void SetCommandLineSwitches(
+      mojom::CommandLineSwitchesPtr mojom_command_line_switches) override;
   void SetContentSettings(
       mojom::ContentSettingsPtr mojom_content_settings) override;
 

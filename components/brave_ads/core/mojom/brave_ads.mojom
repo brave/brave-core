@@ -21,7 +21,7 @@ enum EnvironmentType {
   kProduction
 };
 
-struct Flags {
+struct CommandLineSwitches {
   bool should_debug;
   bool did_override_from_command_line;
   EnvironmentType environment_type;
