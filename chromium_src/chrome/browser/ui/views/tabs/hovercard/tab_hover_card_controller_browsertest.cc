@@ -5,4 +5,4 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
 
-#include <chrome/browser/ui/views/tabs/tab_hover_card_controller_browsertest.cc>
+#include <chrome/browser/ui/views/tabs/hovercard/tab_hover_card_controller_browsertest.cc>

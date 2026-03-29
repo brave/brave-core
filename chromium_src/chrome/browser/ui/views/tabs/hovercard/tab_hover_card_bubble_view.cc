@@ -1,9 +1,9 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * you can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h"
+#include "chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.h"
 
 #include <string>
 
@@ -12,14 +12,14 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/views/tabs/hovercard/tab_hover_card_controller.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
-#include "chrome/browser/ui/views/tabs/tab_hover_card_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 #include "content/public/common/url_constants.h"
 #include "ui/views/controls/label.h"
 
 #define TabHoverCardBubbleView TabHoverCardBubbleView_ChromiumImpl
-#include <chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.cc>
+#include <chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.cc>
 #undef TabHoverCardBubbleView
 
 bool TabHoverCardBubbleView_ChromiumImpl::HasThumbnailView() const {
