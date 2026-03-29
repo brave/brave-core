@@ -84,13 +84,12 @@ class SearchPage implements PageInterface {
   setKeywordSelected(isKeywordSelected: boolean): void {}
   updateAutoSuggestedTabContext(tab: (TabInfo | null)): void {}
   updateLensSearchEligibility(eligible: boolean): void {}
-  updateAimEligibility(eligible: boolean): void {}
-  onShowAiModePrefChanged(canShow: boolean): void {}
   updateContentSharingPolicy(enabled: boolean): void {}
   onInputStateChanged(inputState: InputState): void {}
   stepSelection(direction: SelectionDirection, step: SelectionStep): void {}
   openCurrentSelection(disposition: WindowOpenDisposition): void {}
   setAimButtonVisible(visible: boolean): void {}
+  updateAimPopupEligibility(eligible: boolean): void {}
 }
 
 export const search = new SearchPage()
