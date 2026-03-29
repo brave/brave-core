@@ -7,6 +7,8 @@ import("//ios/web/public/js_messaging/optimize_ts.gni")
 
 source_set("brave_ads") {
   sources = [
+    "ads_client_ios_observer.cc",
+    "ads_client_ios_observer.h",
     "ads_factory.h",
     "ads_factory_impl.h",
     "ads_factory_impl.mm",
@@ -79,6 +81,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "ads_client_ios_observer_unittest.mm",
     "ads_service_impl_ios_unittest.mm",
     "ads_tab_helper_unittest.mm",
   ]
