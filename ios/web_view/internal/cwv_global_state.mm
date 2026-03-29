@@ -8,6 +8,8 @@
 
 #import "ios/web_view/public/cwv_global_state.h"
 
+#import "base/debug/dump_without_crashing.h"
+
 @implementation CWVEarlyInitFlags
 @end
 
@@ -55,6 +57,10 @@
 }
 
 - (void)earlyInit {
+}
+
+- (void)setDumpWithoutCrashingHandler:(void (*)(void))handler {
+  base::debug::SetDumpWithoutCrashingFunction(handler);
 }
 
 - (void)earlyInitWithFlags:(CWVEarlyInitFlags*)flags {
