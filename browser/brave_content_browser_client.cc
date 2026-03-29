@@ -20,6 +20,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/system/sys_info.h"
+#include "brave/browser/bluetooth/brave_bluetooth_delegate.h"
 #include "brave/browser/brave_account/brave_account_navigation_throttle.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
@@ -100,6 +101,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "build/build_config.h"
+#include "chrome/browser/bluetooth/chrome_bluetooth_delegate_impl_client.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_browser_interface_binders.h"
 #include "chrome/browser/chrome_browser_main.h"
@@ -863,19 +865,6 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
       IsJsBlockingEnforced(browser_context, url));
 }
 
-content::ContentBrowserClient::AllowWebBluetoothResult
-BraveContentBrowserClient::AllowWebBluetooth(
-    content::BrowserContext* browser_context,
-    const url::Origin& requesting_origin,
-    const url::Origin& embedding_origin) {
-  if (!base::FeatureList::IsEnabled(blink::features::kBraveWebBluetoothAPI)) {
-    return ContentBrowserClient::AllowWebBluetoothResult::
-        BLOCK_GLOBALLY_DISABLED;
-  }
-  return ChromeContentBrowserClient::AllowWebBluetooth(
-      browser_context, requesting_origin, embedding_origin);
-}
-
 bool BraveContentBrowserClient::CanCreateWindow(
     content::RenderFrameHost* opener,
     const GURL& opener_url,
@@ -1590,6 +1579,14 @@ bool BraveContentBrowserClient::AllowSignedExchange(
   // `features::kSignedHTTPExchange`, which was being used to disable signed
   // exchanges.
   return false;
+}
+
+content::BluetoothDelegate* BraveContentBrowserClient::GetBluetoothDelegate() {
+  if (!bluetooth_delegate_) {
+    bluetooth_delegate_ = std::make_unique<BraveBluetoothDelegate>(
+        std::make_unique<ChromeBluetoothDelegateImplClient>());
+  }
+  return bluetooth_delegate_.get();
 }
 
 bool BraveContentBrowserClient::IsJitDisabledForSite(

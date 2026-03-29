@@ -140,6 +140,7 @@ brave_chrome_browser_deps = [
   "//brave/browser:brave_global_features_impl",
   "//brave/browser:browser_process",
   "//brave/browser:sparkle_buildflags",
+  "//brave/browser/bluetooth",
   "//brave/browser/brave_account",
   "//brave/browser/brave_adaptive_captcha",
   "//brave/browser/brave_adaptive_captcha:impl",
