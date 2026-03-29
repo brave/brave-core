@@ -851,19 +851,6 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
       IsJsBlockingEnforced(browser_context, url));
 }
 
-content::ContentBrowserClient::AllowWebBluetoothResult
-BraveContentBrowserClient::AllowWebBluetooth(
-    content::BrowserContext* browser_context,
-    const url::Origin& requesting_origin,
-    const url::Origin& embedding_origin) {
-  if (!base::FeatureList::IsEnabled(blink::features::kBraveWebBluetoothAPI)) {
-    return ContentBrowserClient::AllowWebBluetoothResult::
-        BLOCK_GLOBALLY_DISABLED;
-  }
-  return ChromeContentBrowserClient::AllowWebBluetooth(
-      browser_context, requesting_origin, embedding_origin);
-}
-
 bool BraveContentBrowserClient::CanCreateWindow(
     content::RenderFrameHost* opener,
     const GURL& opener_url,

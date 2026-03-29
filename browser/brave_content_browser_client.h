@@ -90,11 +90,6 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const GURL& url,
       content::BrowserContext* browser_context) override;
 
-  content::ContentBrowserClient::AllowWebBluetoothResult AllowWebBluetooth(
-      content::BrowserContext* browser_context,
-      const url::Origin& requesting_origin,
-      const url::Origin& embedding_origin) override;
-
   void RegisterBrowserInterfaceBindersForFrame(
       content::RenderFrameHost* render_frame_host,
       mojo::BinderMapWithContext<content::RenderFrameHost*>* map) override;
