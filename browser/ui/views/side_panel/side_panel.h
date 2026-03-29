@@ -13,8 +13,6 @@
 #include "base/scoped_multi_source_observation.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_animation_coordinator.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_animation_ids.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -36,8 +34,7 @@ class SidebarBrowserTest;
 // SidebarContainerView controls this panel's visibility.
 class SidePanel : public views::View,
                   public views::ViewObserver,
-                  public views::ResizeAreaDelegate,
-                  public SidePanelAnimationCoordinator::AnimationIdObserver {
+                  public views::ResizeAreaDelegate {
   METADATA_HEADER(SidePanel, views::View)
  public:
   // Determines the side from which the side panel will appear.
@@ -53,10 +50,6 @@ class SidePanel : public views::View,
   SidePanel(const SidePanel&) = delete;
   SidePanel& operator=(const SidePanel&) = delete;
   ~SidePanel() override;
-
-  SidePanelAnimationCoordinator* animation_coordinator() {
-    return animation_coordinator_.get();
-  }
 
   void SetPanelWidth(int width);
   void UpdateWidthOnEntryChanged();
@@ -110,7 +103,7 @@ class SidePanel : public views::View,
 
   // Reflects the current state of the visibility of the side panel.
   enum class State { kClosed, kOpening, kOpen, kClosing };
-  State state() { return state_; }
+  State state() const { return state_; }
 
   // These two methods are the only mechanism to change visibility of the side
   // panel. `animated` is ignored in Brave entirely.
@@ -138,12 +131,6 @@ class SidePanel : public views::View,
   void OnChildViewAdded(View* observed_view, View* child) override;
   void OnChildViewRemoved(View* observed_view, View* child) override;
 
-  // AnimationIdObserver
-  void OnAnimationSequenceProgressed(const SidePanelAnimationId animation_id,
-                                     double animation_value) override;
-  void OnAnimationSequenceEnded(
-      const SidePanelAnimationId animation_id) override;
-
   void OnSidePanelWidthChanged();
 
   // Monitors addition of content view and change content view property that
@@ -169,11 +156,6 @@ class SidePanel : public views::View,
   IntegerPrefMember side_panel_width_;
   std::unique_ptr<SidePanelResizeWidget> resize_widget_;
   std::unique_ptr<ViewShadow> shadow_;
-
-  // The animation coordinator for the side panel. This controls all of the
-  // animations that are tied to the side panel when triggering the show and
-  // hide states.
-  std::unique_ptr<SidePanelAnimationCoordinator> animation_coordinator_;
 
   // Observes and listens to side panel alignment changes.
   PrefChangeRegistrar pref_change_registrar_;

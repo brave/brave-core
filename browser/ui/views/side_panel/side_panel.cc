@@ -25,8 +25,6 @@
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_animation_coordinator.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_animation_ids.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_helper.h"
 #include "chrome/common/pref_names.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -111,13 +109,9 @@ SidePanel::SidePanel(BrowserView* browser_view,
       base::BindRepeating(&SidePanel::UpdateHorizontalAlignment,
                           base::Unretained(this)));
 
-  animation_coordinator_ =
-      std::make_unique<SidePanelAnimationCoordinator>(this);
-  animation_coordinator_->AddObserver(kSidePanelBoundsAnimation, this);
 }
 
 SidePanel::~SidePanel() {
-  animation_coordinator_->RemoveObserver(kSidePanelBoundsAnimation, this);
   scoped_observation_.RemoveObservation(this);
 }
 
@@ -192,7 +186,7 @@ gfx::Size SidePanel::GetMinimumSize() const {
 }
 
 bool SidePanel::IsClosing() {
-  return animation_coordinator_->IsClosing();
+  return state() == State::kClosing;
 }
 
 void SidePanel::AddedToWidget() {
@@ -291,13 +285,6 @@ void SidePanel::OnChildViewRemoved(View* observed_view, View* child) {
     scoped_observation_.RemoveObservation(child);
   }
 }
-
-void SidePanel::OnAnimationSequenceProgressed(
-    const SidePanelAnimationId animation_id,
-    double animation_value) {}
-
-void SidePanel::OnAnimationSequenceEnded(
-    const SidePanelAnimationId animation_id) {}
 
 void SidePanel::Open(bool animated) {
   UpdateVisibility(/*should_be_open=*/true);
