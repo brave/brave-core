@@ -100,7 +100,7 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
 
   override connectedCallback() {
     super.connectedCallback()
-    sendWithPromise('getIsVerticalTabsToggleEnabled').then(
+    sendWithPromise<boolean>('getIsVerticalTabsToggleEnabled').then(
         (enabled: boolean) => { this.verticalTabsToggleEnabled_ = enabled })
     this.addWebUiListener(
         'vertical-tabs-toggle-enabled-changed',

@@ -17,11 +17,11 @@ export interface BraveNewTabBrowserProxy {
 
 export class BraveNewTabBrowserProxyImpl implements BraveNewTabBrowserProxy {
   getNewTabShowsOptionsList() {
-    return sendWithPromise('getNewTabShowsOptionsList')
+    return sendWithPromise<NewTabOption[]>('getNewTabShowsOptionsList')
   }
 
   shouldShowNewTabDashboardSettings() {
-    return sendWithPromise('shouldShowNewTabDashboardSettings')
+    return sendWithPromise<boolean>('shouldShowNewTabDashboardSettings')
   }
 
   static getInstance(): BraveNewTabBrowserProxyImpl {

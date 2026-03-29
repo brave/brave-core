@@ -14,7 +14,7 @@
     implements BraveClearBrowsingDataDialogBrowserProxy {
 
    getBraveRewardsEnabled() {
-    return sendWithPromise('getBraveRewardsEnabled')
+    return sendWithPromise<boolean>('getBraveRewardsEnabled')
   }
 
   clearBraveAdsData() {
