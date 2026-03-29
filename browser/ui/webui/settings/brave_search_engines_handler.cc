@@ -87,8 +87,8 @@ void BraveSearchEnginesHandler::RegisterMessages() {
           base::Unretained(this)));
 }
 
-void BraveSearchEnginesHandler::OnModelChanged() {
-  SearchEnginesHandler::OnModelChanged();
+void BraveSearchEnginesHandler::OnTemplateURLServiceChanged() {
+  SearchEnginesHandler::OnTemplateURLServiceChanged();
 
   brave::UpdateDefaultPrivateSearchProviderData(*profile_);
 
@@ -147,7 +147,7 @@ void BraveSearchEnginesHandler::HandleSetDefaultPrivateSearchEngine(
       prefs::kSyncedDefaultPrivateSearchProviderGUID,
       template_url->sync_guid());
 
-  OnModelChanged();
+  OnTemplateURLServiceChanged();
 }
 
 base::DictValue BraveSearchEnginesHandler::GetSearchEnginesList() {
