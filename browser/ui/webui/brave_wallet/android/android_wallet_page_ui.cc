@@ -29,7 +29,7 @@
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_swap_page_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/webui/sanitized_image_source.h"
+#include "chrome/browser/ui/webui/sanitized_image/sanitized_image_source.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/url_data_source.h"
