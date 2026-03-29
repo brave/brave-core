@@ -1470,27 +1470,6 @@ void AdsServiceImpl::LoadResourceComponent(
           std::move(callback)));
 }
 
-void AdsServiceImpl::ShowScheduledCaptcha(const std::string& payment_id,
-                                          const std::string& captcha_id) {
-#if BUILDFLAG(IS_ANDROID)
-  ShowScheduledCaptchaCallback(payment_id, captcha_id);
-#else   // BUILDFLAG(IS_ANDROID)
-  if (prefs_->GetBoolean(
-          brave_adaptive_captcha::prefs::kScheduledCaptchaPaused)) {
-    return VLOG(1) << "Ads paused; support intervention required";
-  }
-
-  CHECK(ads_tooltips_delegate_);
-
-  ads_tooltips_delegate_->ShowCaptchaTooltip(
-      payment_id, captcha_id, /*include_cancel_button=*/true,
-      base::BindOnce(&AdsServiceImpl::ShowScheduledCaptchaCallback,
-                     weak_ptr_factory_.GetWeakPtr()),
-      base::BindOnce(&AdsServiceImpl::SnoozeScheduledCaptchaCallback,
-                     weak_ptr_factory_.GetWeakPtr()));
-#endif  // !BUILDFLAG(IS_ANDROID)
-}
-
 void AdsServiceImpl::FindProfilePref(const std::string& path,
                                      FindProfilePrefCallback callback) {
   std::move(callback).Run(prefs_->FindPreference(path) != nullptr);
@@ -1567,6 +1546,27 @@ void AdsServiceImpl::Log(const std::string& file,
 
 void AdsServiceImpl::OnBrowserUpgradeRequiredToServeAds() {
   browser_upgrade_required_to_serve_ads_ = true;
+}
+
+void AdsServiceImpl::OnSolveCaptchaToServeAds(const std::string& payment_id,
+                                              const std::string& captcha_id) {
+#if BUILDFLAG(IS_ANDROID)
+  ShowScheduledCaptchaCallback(payment_id, captcha_id);
+#else   // BUILDFLAG(IS_ANDROID)
+  if (prefs_->GetBoolean(
+          brave_adaptive_captcha::prefs::kScheduledCaptchaPaused)) {
+    return VLOG(1) << "Ads paused; support intervention required";
+  }
+
+  CHECK(ads_tooltips_delegate_);
+
+  ads_tooltips_delegate_->ShowCaptchaTooltip(
+      payment_id, captcha_id, /*include_cancel_button=*/true,
+      base::BindOnce(&AdsServiceImpl::ShowScheduledCaptchaCallback,
+                     weak_ptr_factory_.GetWeakPtr()),
+      base::BindOnce(&AdsServiceImpl::SnoozeScheduledCaptchaCallback,
+                     weak_ptr_factory_.GetWeakPtr()));
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 void AdsServiceImpl::OnRemindUser(mojom::ReminderType mojom_reminder_type) {

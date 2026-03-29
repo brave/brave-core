@@ -55,10 +55,6 @@ class AdsClientMock : public AdsClient {
               LoadResourceComponent,
               (const std::string&, int, LoadFileCallback));
 
-  MOCK_METHOD(void,
-              ShowScheduledCaptcha,
-              (const std::string&, const std::string&));
-
   MOCK_METHOD(bool, FindProfilePref, (const std::string&), (const));
   MOCK_METHOD(std::optional<base::Value>, GetProfilePref, (const std::string&));
   MOCK_METHOD(void, SetProfilePref, (const std::string&, base::Value));
