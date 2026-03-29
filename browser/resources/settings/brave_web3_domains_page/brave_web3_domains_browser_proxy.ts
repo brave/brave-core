@@ -16,11 +16,11 @@ export interface BraveWeb3DomainsBrowserProxy {
 export class BraveWeb3DomainsBrowserProxyImpl
   implements BraveWeb3DomainsBrowserProxy {
   getDecentralizedDnsResolveMethodList() {
-    return sendWithPromise('getDecentralizedDnsResolveMethodList')
+    return sendWithPromise<DropdownMenuOptionList>('getDecentralizedDnsResolveMethodList')
   }
 
   getEnsOffchainResolveMethodList() {
-    return sendWithPromise('getEnsOffchainResolveMethodList')
+    return sendWithPromise<DropdownMenuOptionList>('getEnsOffchainResolveMethodList')
   }
 
   static getInstance(): BraveWeb3DomainsBrowserProxy {

@@ -81,91 +81,91 @@ export class BraveWalletBrowserProxyImpl implements BraveWalletBrowserProxy {
   }
 
   getNetworksList (coin: number) {
-    return sendWithPromise('getNetworksList', coin)
+    return sendWithPromise<NetworksList>('getNetworksList', coin)
   }
 
   getPrepopulatedNetworksList () {
-    return sendWithPromise('getPrepopulatedNetworksList')
+    return sendWithPromise<NetworkInfo[]>('getPrepopulatedNetworksList')
   }
 
   setDefaultNetwork (chainId: string, coin: number) {
-    return sendWithPromise('setDefaultNetwork', chainId, coin)
+    return sendWithPromise<boolean>('setDefaultNetwork', chainId, coin)
   }
 
   removeChain (chainId: string, coin: number) {
-    return sendWithPromise('removeChain', chainId, coin)
+    return sendWithPromise<boolean>('removeChain', chainId, coin)
   }
 
   resetChain (chainId: string, coin: number) {
-    return sendWithPromise('resetChain', chainId, coin)
+    return sendWithPromise<boolean>('resetChain', chainId, coin)
   }
 
   addChain (payload: NetworkInfo) {
-    return sendWithPromise('addChain', payload)
+    return sendWithPromise<[boolean, string]>('addChain', payload)
   }
 
   addHiddenNetwork (chainId: string, coin: number) {
-    return sendWithPromise('addHiddenNetwork', chainId, coin)
+    return sendWithPromise<boolean>('addHiddenNetwork', chainId, coin)
   }
 
   removeHiddenNetwork (chainId: string, coin: number) {
-    return sendWithPromise('removeHiddenNetwork', chainId, coin)
+    return sendWithPromise<boolean>('removeHiddenNetwork', chainId, coin)
   }
 
   getWeb3ProviderList () {
-    return sendWithPromise('getWeb3ProviderList')
+    return sendWithPromise<string>('getWeb3ProviderList')
   }
 
   getAutoLockMinutes () {
-    return sendWithPromise('getAutoLockMinutes')
+    return sendWithPromise<number>('getAutoLockMinutes')
   }
 
   getSolanaProviderOptions() {
-    return sendWithPromise('getSolanaProviderOptions')
+    return sendWithPromise<SolanaProvider[]>('getSolanaProviderOptions')
   }
 
   getCardanoProviderOptions() {
-    return sendWithPromise('getCardanoProviderOptions')
+    return sendWithPromise<CardanoProvider[]>('getCardanoProviderOptions')
   }
 
   isBitcoinEnabled() {
-    return sendWithPromise('isBitcoinEnabled')
+    return sendWithPromise<boolean>('isBitcoinEnabled')
   }
 
   isZCashEnabled() {
-    return sendWithPromise('isZCashEnabled')
+    return sendWithPromise<boolean>('isZCashEnabled')
   }
 
   isZCashShieldedTxEnabled() {
-    return sendWithPromise('isZCashShieldedTxEnabled')
+    return sendWithPromise<boolean>('isZCashShieldedTxEnabled')
   }
 
   isCardanoEnabled() {
-    return sendWithPromise('isCardanoEnabled')
+    return sendWithPromise<boolean>('isCardanoEnabled')
   }
 
   isCardanoDAppSupportEnabled() {
-    return sendWithPromise('isCardanoDAppSupportEnabled')
+    return sendWithPromise<boolean>('isCardanoDAppSupportEnabled')
   }
 
   isPolkadotEnabled() {
-    return sendWithPromise('isPolkadotEnabled')
+    return sendWithPromise<boolean>('isPolkadotEnabled')
   }
 
   getTransactionSimulationOptInStatusOptions() {
-    return sendWithPromise('getTransactionSimulationOptInStatusOptions')
+    return sendWithPromise<Option[]>('getTransactionSimulationOptInStatusOptions')
   }
 
   isTransactionSimulationsFeatureEnabled() {
-    return sendWithPromise('isTransactionSimulationsFeatureEnabled')
+    return sendWithPromise<boolean>('isTransactionSimulationsFeatureEnabled')
   }
 
   getWalletInPrivateWindowsEnabled() {
-    return sendWithPromise('getWalletInPrivateWindowsEnabled')
+    return sendWithPromise<boolean>('getWalletInPrivateWindowsEnabled')
   }
 
   setWalletInPrivateWindowsEnabled(value: boolean) {
-    return sendWithPromise('setWalletInPrivateWindowsEnabled', value)
+    return sendWithPromise<boolean>('setWalletInPrivateWindowsEnabled', value)
   }
 
   static getInstance() {
