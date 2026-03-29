@@ -109,7 +109,8 @@ class BraveIdentityManagerTest : public testing::Test {
     account_fetcher_service->Initialize(
         &signin_client_, token_service.get(), account_tracker_service.get(),
         std::make_unique<image_fetcher::FakeImageDecoder>(),
-        std::make_unique<FakeAccountFetcherFactory>());
+        std::make_unique<FakeAccountFetcherFactory>(*token_service,
+                                                    *signin_client()));
 
     metrics::ProfileMetricsContext context = metrics::ProfileMetricsContext();
     profile_metrics_service_ =
