@@ -24,6 +24,10 @@
 #include "brave/components/brave_ads/core/internal/account/wallet/test/wallet_test_constants.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/test/wallet_test_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/test/ads_client_mock.h"
+#include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_mock.h"
+#include "brave/components/brave_ads/core/internal/ads_observer_mock.h"
+#include "brave/components/brave_ads/core/internal/ads_observer_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/profile_pref_value_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -40,8 +44,12 @@ class BraveAdsUserRewardsTest : public AdsClientMock, public test::TestBase {
   void SetUp() override {
     test::TestBase::SetUp();
 
+    ads_observer_mock_ = test::MockAdsObserver();
+
     user_rewards_ = std::make_unique<UserRewards>(test::Wallet());
   }
+
+  raw_ptr<AdsObserverMock> ads_observer_mock_ = nullptr;  // Not owned.
 
   std::unique_ptr<UserRewards> user_rewards_;
 };
@@ -232,8 +240,8 @@ TEST_F(BraveAdsUserRewardsTest,
           )"}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  EXPECT_CALL(ads_client_mock_,
-              ShowScheduledCaptcha(
+  EXPECT_CALL(*ads_observer_mock_,
+              OnSolveCaptchaToServeAds(
                   test::kWalletPaymentId,
                   /*captcha_id=*/"daf85dc8-164e-4eb9-a4d4-1836055004b3"));
 
@@ -260,7 +268,7 @@ TEST_F(BraveAdsUserRewardsTest,
           )"}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  EXPECT_CALL(ads_client_mock_, ShowScheduledCaptcha).Times(0);
+  EXPECT_CALL(*ads_observer_mock_, OnSolveCaptchaToServeAds).Times(0);
 
   // Act & Assert
   user_rewards_->MaybeRefillConfirmationTokens();
@@ -281,7 +289,7 @@ TEST_F(BraveAdsUserRewardsTest,
        {{net::HTTP_OK, test::BuildGetSignedTokensUrlResponseBody()}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  EXPECT_CALL(ads_client_mock_, ShowScheduledCaptcha).Times(0);
+  EXPECT_CALL(*ads_observer_mock_, OnSolveCaptchaToServeAds).Times(0);
 
   // Act & Assert
   user_rewards_->MaybeRefillConfirmationTokens();

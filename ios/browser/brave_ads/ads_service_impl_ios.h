@@ -155,6 +155,9 @@ class AdsServiceImplIOS : public AdsService {
   void ClearAdsData(ResultCallback callback, bool success);
   void ClearAdsDataCallback(ResultCallback callback);
 
+  void OnSolveCaptchaToServeAds(const std::string& payment_id,
+                                const std::string& captcha_id);
+
   const raw_ref<PrefService> prefs_;
 
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
