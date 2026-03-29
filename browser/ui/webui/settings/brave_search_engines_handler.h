@@ -27,7 +27,7 @@ class BraveSearchEnginesHandler : public SearchEnginesHandler {
  private:
   // SearchEnginesHandler overrides:
   void RegisterMessages() override;
-  void OnModelChanged() override;
+  void OnTemplateURLServiceChanged() override;
   base::DictValue GetSearchEnginesList() override;
 
   base::ListValue GetPrivateSearchEnginesList();
