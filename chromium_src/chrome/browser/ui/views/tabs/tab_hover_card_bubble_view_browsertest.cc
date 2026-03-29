@@ -41,16 +41,16 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest,
   // DialogBrowserTest:
   void ShowUi(const std::string& name) override {
     std::vector<TabStrip::AddTabData> data_list;
-    tabs::TabData data;
-    data.title = kTabTitle;
-    data.last_committed_url = GURL(kTabUrl);
     data_list.push_back(
-        {.index = 0, .handle = tabs::TabHandle(0), .data = data});
+        {.index = 0, .handle = tabs::TabHandle(0), .is_pinned = false});
     GetTabStrip(browser())->AddTabsAt(data_list);
 
     // As tabs::TabHandle::Get() would return nullptr, the tab data would not be
     // set. So we need to set the tab data manually here for testing.
-    GetTabStrip(browser())->tab_at(0)->SetDataForTesting(data);
+    tabs::TabData tab_data;
+    tab_data.title = kTabTitle;
+    tab_data.last_committed_url = GURL(kTabUrl);
+    GetTabStrip(browser())->tab_at(0)->SetDataForTesting(tab_data);
 
     SimulateHoverTab(browser(), 0);
   }
