@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.ntp;
 
 import static org.chromium.build.NullUtil.assertNonNull;
+import static org.chromium.build.NullUtil.assumeNonNull;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -29,7 +30,6 @@ import org.chromium.chrome.browser.feed.FeedSwipeRefreshLayout;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.magic_stack.ModuleRegistry;
 import org.chromium.chrome.browser.metrics.StartupMetricsTracker;
-import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
@@ -95,8 +95,7 @@ public class BraveNewTabPage extends NewTabPage implements NewTabPage.MostVisite
             OneshotSupplier<ModuleRegistry> moduleRegistrySupplier,
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             TopInsetProvider topInsetProvider,
-            StartupMetricsTracker startupMetricsTracker,
-            MultiInstanceManager multiInstanceManager) {
+            StartupMetricsTracker startupMetricsTracker) {
         super(
                 activity,
                 browserControlsStateProvider,
@@ -121,8 +120,7 @@ public class BraveNewTabPage extends NewTabPage implements NewTabPage.MostVisite
                 moduleRegistrySupplier,
                 edgeToEdgeControllerSupplier,
                 topInsetProvider,
-                startupMetricsTracker,
-                multiInstanceManager);
+                startupMetricsTracker);
 
         mActivity = activity;
 
@@ -180,7 +178,10 @@ public class BraveNewTabPage extends NewTabPage implements NewTabPage.MostVisite
             ModalDialogManager modalDialogManager,
             String url,
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
-            StartupMetricsTracker startupMetricsTracker) {
+            StartupMetricsTracker startupMetricsTracker,
+            TabModelSelector tabModelSelector,
+            OneshotSupplier<ModuleRegistry> moduleRegistrySupplier,
+            @Nullable HomeSurfaceTracker homeSurfaceTracker) {
         // Override surface provider
         Profile profile = Profile.fromWebContents(mTab.getWebContents());
         assertNonNull(profile);
@@ -188,7 +189,14 @@ public class BraveNewTabPage extends NewTabPage implements NewTabPage.MostVisite
         LayoutInflater inflater = LayoutInflater.from(activity);
         mNewTabPageLayout = (NewTabPageLayout) inflater.inflate(R.layout.new_tab_page_layout, null);
         mNewTabPageCoordinator =
-                new BraveNewTabPageCoordinator(mNewTabPageManager, activity, mNewTabPageLayout);
+                new BraveNewTabPageCoordinator(
+                        mNewTabPageManager,
+                        activity,
+                        mNewTabPageLayout,
+                        mTab,
+                        tabModelSelector,
+                        moduleRegistrySupplier,
+                        homeSurfaceTracker);
 
         // No-op stub to deal with non-null requirement
         FeedSurfaceCoordinator.ActionDelegateFactory actionDelegate =
@@ -235,7 +243,7 @@ public class BraveNewTabPage extends NewTabPage implements NewTabPage.MostVisite
                         actionDelegate,
                         mTabStripHeightSupplier,
                         edgeToEdgeControllerSupplier,
-                        /* moduleRegistry= */ null);
+                        assumeNonNull(moduleRegistrySupplier).get());
 
         mFeedSurfaceProvider = feedSurfaceCoordinator;
     }

@@ -22,7 +22,6 @@ import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
-import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.omnibox.LocationBarMediator.OmniboxUma;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
@@ -101,7 +100,6 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             boolean isToolbarPositionCustomizationEnabled,
             @Nullable PageZoomManager pageZoomManager,
             Function<Tab, @Nullable Bitmap> tabFaviconFunction,
-            @Nullable MultiInstanceManager multiInstanceManager,
             SnackbarManager snackbarManager,
             View bottomContainerView,
             @Nullable OmniboxChipManager omniboxChipManager) {
@@ -144,7 +142,6 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 isToolbarPositionCustomizationEnabled,
                 pageZoomManager,
                 tabFaviconFunction,
-                multiInstanceManager,
                 snackbarManager,
                 bottomContainerView,
                 omniboxChipManager);
