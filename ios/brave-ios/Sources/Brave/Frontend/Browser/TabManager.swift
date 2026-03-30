@@ -389,7 +389,7 @@ class TabManager: NSObject {
     else { return }
 
     if !privateBrowsingManager.isPrivateBrowsing {
-      if previousTab.displayFavicon == nil {
+      if previousTab.faviconTabHelper?.displayFavicon == nil {
         adsRewardsLog.warning("No favicon found in tab to report to rewards panel")
       }
       rewards?.reportTabUpdated(
@@ -398,7 +398,7 @@ class TabManager: NSObject {
         isPrivate: previousTab.isPrivate
       )
 
-      if newSelectedTab.displayFavicon == nil && !newTabUrl.isLocal {
+      if newSelectedTab.faviconTabHelper?.displayFavicon == nil && !newTabUrl.isLocal {
         adsRewardsLog.warning("No favicon found in tab to report to rewards panel")
       }
       rewards?.reportTabUpdated(
@@ -484,12 +484,6 @@ class TabManager: NSObject {
       )
       tab.lastTitle = url.absoluteDisplayString
       tab.setVirtualURL(url)
-      tab.favicon = Favicon.default
-      Task { @MainActor in
-        if let icon = await FaviconFetcher.getIconFromCache(for: url) {
-          tab.favicon = icon
-        }
-      }
       tabs.append(tab)
     }
 
@@ -1413,14 +1407,9 @@ class TabManager: NSObject {
         )
 
         tab.lastTitle = savedTab.title
-        tab.favicon = Favicon.default
         tab.browserData?.setScreenshot(savedTab.screenshot)
 
         Task { @MainActor in
-          tab.favicon = try await FaviconFetcher.loadIcon(
-            url: tabURL,
-            persistent: !tab.isPrivate
-          )
           tab.browserData?.setScreenshot(savedTab.screenshot)
         }
 
@@ -1438,7 +1427,6 @@ class TabManager: NSObject {
         )
 
         tab.lastTitle = savedTab.title
-        tab.favicon = Favicon.default
         tab.browserData?.setScreenshot(savedTab.screenshot)
 
         // Select the tab if it was selected and matches current mode (private vs regular)

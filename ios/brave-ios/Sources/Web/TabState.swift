@@ -135,9 +135,6 @@ public protocol TabState: AnyObject {
   var visibleSecureContentState: SecureContentState { get }
   /// The certificiate assoicated with this page if one exists
   var serverTrust: SecTrust? { get }
-  /// The current pages favicon
-  // TODO: Should be get only, make favicon fetch logic internal (brave/brave-browser#45095)
-  var favicon: Favicon? { get set }
   /// The current cached favicon for the realized tab
   var faviconStatus: FaviconStatus? { get }
   /// The current URL loaded on the page, regardless of the navigation status or spoofing

@@ -319,7 +319,6 @@ class ChromiumTabState: TabState, TabStateImpl {
   var serverTrust: SecTrust? {
     return webView?.visibleSSLStatus?.certificate?.createServerTrust()
   }
-  var favicon: Favicon?
   var faviconStatus: FaviconStatus? {
     guard let faviconStatus = webView?.faviconStatus else { return nil }
     return .init(faviconStatus)
