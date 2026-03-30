@@ -306,7 +306,8 @@ void AdBlockServiceTest::UpdateCustomAdBlockInstanceWithRules(
       g_brave_browser_process->ad_block_service();
   ad_block_service->custom_filters_provider()->UpdateCustomFilters(rules);
 
-  auto& engine = ad_block_service->engine_wrapper_->additional_filters_engine();
+  auto& engine = ad_block_service->engine_wrapper_
+                     ->additional_filters_engine_for_testing();
   EngineTestObserver engine_observer(&engine);
   engine_observer.Wait();
 }
