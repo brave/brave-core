@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 
+#include <algorithm>
 #include <memory>
 #include <optional>
 #include <utility>
@@ -212,15 +213,10 @@ base::DictValue AdBlockService::UrlCosmeticResources(const std::string& url,
     base::ListValue* default_hide_selectors =
         resources.FindList("hide_selectors");
     if (default_hide_selectors) {
-      base::ListValue::iterator it = default_hide_selectors->begin();
-      while (it < default_hide_selectors->end()) {
-        DCHECK(it->is_string());
-        if (it->GetString().find(":has(") != std::string::npos) {
-          it = default_hide_selectors->erase(it);
-        } else {
-          it++;
-        }
-      }
+      default_hide_selectors->EraseIf([](const base::Value& val) {
+        DCHECK(val.is_string());
+        return val.GetString().find(":has(") != std::string::npos;
+      });
     }
 
     // In standard blocking mode, drop procedural filters but otherwise keep
@@ -560,34 +556,35 @@ void AdBlockService::StripProceduralFilters(base::DictValue& resources) {
   base::ListValue* procedural_actions =
       resources.FindList(kCosmeticResourcesProceduralActions);
   if (procedural_actions) {
-    base::ListValue::iterator it = procedural_actions->begin();
-    while (it < procedural_actions->end()) {
-      DCHECK(it->is_string());
-      auto* pfilter_str = it->GetIfString();
+    procedural_actions->EraseIf([](const base::Value& item) {
+      DCHECK(item.is_string());
+      auto* pfilter_str = item.GetIfString();
       if (pfilter_str == nullptr) {
-        continue;
+        return false;
       }
       auto val = base::JSONReader::ReadDict(*pfilter_str, base::JSON_PARSE_RFC);
-      if (val) {
-        auto* list = val->FindList("selector");
-        if (list && list->size() != 1) {
-          // Non-procedural filters are always a single operator in length.
-          it = procedural_actions->erase(it);
-          continue;
-        }
-        // The single operator must also be a `css-selector`.
-        auto op_iterator = list->begin();
-        auto* dict = op_iterator->GetIfDict();
-        if (dict) {
-          auto* str = dict->FindString("type");
-          if (str && *str != "css-selector") {
-            it = procedural_actions->erase(it);
-            continue;
-          }
+      if (!val) {
+        return false;
+      }
+      auto* list = val->FindList("selector");
+      if (list && list->size() != 1) {
+        // Non-procedural filters are always a single operator in length.
+        return true;
+      }
+      if (!list) {
+        return false;
+      }
+      // The single operator must also be a `css-selector`.
+      auto op_iterator = list->begin();
+      auto* dict = op_iterator->GetIfDict();
+      if (dict) {
+        auto* str = dict->FindString("type");
+        if (str && *str != "css-selector") {
+          return true;
         }
       }
-      it++;
-    }
+      return false;
+    });
   }
 }
 
