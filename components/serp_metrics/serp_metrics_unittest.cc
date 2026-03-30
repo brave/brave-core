@@ -446,6 +446,27 @@ TEST_F(SerpMetricsTest, SearchCountsForYesterdayAndStalePeriod) {
   EXPECT_EQ(4U, serp_metrics_->GetSearchCountForStalePeriod());
 }
 
+TEST_F(SerpMetricsTest, SearchCountForStalePeriodOnCuspOfDayRollover) {
+  // Day 0: Stale
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+  AdvanceClockToNextDay();
+
+  // Day 1: Yesterday
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+  AdvanceClockToNextDay();
+
+  // Day 2: Today
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+
+  AdvanceClockToJustBeforeNextDay();
+  EXPECT_EQ(3U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
 TEST_F(SerpMetricsTest, DoNotCountSearchesBeforeLastDailyUsagePingWasSent) {
   // Verifies that sending the daily usage ping updates the reporting cutoff
   // and prevents re-reporting older searches.

@@ -25,14 +25,17 @@ namespace serp_metrics {
 namespace {
 
 struct TimePeriodStorageInfo {
-  SerpMetricType type = SerpMetricType::kUndefined;
+  SerpMetricType serp_metric_type = SerpMetricType::kUndefined;
   const char* metric_name = nullptr;
 };
 
 constexpr TimePeriodStorageInfo kTimePeriodStorages[] = {
-    {.type = SerpMetricType::kBrave, .metric_name = "brave_search_engine"},
-    {.type = SerpMetricType::kGoogle, .metric_name = "google_search_engine"},
-    {.type = SerpMetricType::kOther, .metric_name = "other_search_engine"},
+    {.serp_metric_type = SerpMetricType::kBrave,
+     .metric_name = "brave_search_engine"},
+    {.serp_metric_type = SerpMetricType::kGoogle,
+     .metric_name = "google_search_engine"},
+    {.serp_metric_type = SerpMetricType::kOther,
+     .metric_name = "other_search_engine"},
 };
 
 base::flat_map<SerpMetricType, std::unique_ptr<TimePeriodStorage>>
@@ -56,23 +59,23 @@ BuildTimePeriodStorages(
 // the previous calendar day). Subtracting 12 hours ensures we cross into the
 // previous day even during daylight saving time transitions, so the final
 // normalization to local midnight always resolves to the correct day.
-base::Time GetStartOfYesterday() {
-  return (base::Time::Now().LocalMidnight() - base::Hours(12)).LocalMidnight();
+base::Time GetStartOfYesterday(base::Time now) {
+  return (now.LocalMidnight() - base::Hours(12)).LocalMidnight();
 }
 
 // Returns the end of yesterday in local time, defined as the final millisecond
 // before today's local midnight. Subtracting one millisecond ensures the
 // yesterday time range is inclusive of all events on that day without spilling
 // into today.
-base::Time GetEndOfYesterday() {
-  return base::Time::Now().LocalMidnight() - base::Milliseconds(1);
+base::Time GetEndOfYesterday(base::Time now) {
+  return now.LocalMidnight() - base::Milliseconds(1);
 }
 
 // Returns the end of the stale period in local time, defined as the final
 // millisecond before the start of yesterday. This establishes a clear boundary
 // between stale metrics and yesterday's metrics without overlap.
-base::Time GetEndOfStalePeriod() {
-  return GetStartOfYesterday() - base::Milliseconds(1);
+base::Time GetEndOfStalePeriod(base::Time now) {
+  return GetStartOfYesterday(now) - base::Milliseconds(1);
 }
 
 // Returns the sum of metrics recorded during yesterday (local time) that have
@@ -120,14 +123,16 @@ void SerpMetrics::RecordSearch(SerpMetricType type) {
 size_t SerpMetrics::GetSearchCountForYesterday(SerpMetricType type) const {
   CHECK_NE(SerpMetricType::kUndefined, type);
   CHECK(time_period_storages_.contains(type));
+  const base::Time now = base::Time::Now();
   return GetYesterdaySumAfterLastCheckedCutoff(
-      *time_period_storages_.at(type), GetStartOfYesterday(),
-      GetEndOfYesterday(), GetStartOfStalePeriod());
+      *time_period_storages_.at(type), GetStartOfYesterday(now),
+      GetEndOfYesterday(now), GetStartOfStalePeriod());
 }
 
 size_t SerpMetrics::GetSearchCountForStalePeriod() const {
+  const base::Time now = base::Time::Now();
   const base::Time start_of_stale_period = GetStartOfStalePeriod();
-  const base::Time end_of_stale_period = GetEndOfStalePeriod();
+  const base::Time end_of_stale_period = GetEndOfStalePeriod(now);
 
   size_t count = 0;
   for (const auto& [_, time_period_storage] : time_period_storages_) {
