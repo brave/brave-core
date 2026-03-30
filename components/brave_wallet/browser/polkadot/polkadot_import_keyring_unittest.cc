@@ -191,7 +191,7 @@ TEST(PolkadotImportKeyringTest, IsTestnet) {
   EXPECT_TRUE(testnet_keyring.IsTestnet());
 }
 
-TEST(PolkadotImportKeyringTest, AddAccount_OfacSanctionedAddress) {
+TEST(PolkadotImportKeyringTest, AddAccount_RestrictedAddress) {
   auto* registry = BlockchainRegistry::GetInstance();
   CHECK(registry);
 
@@ -206,7 +206,7 @@ TEST(PolkadotImportKeyringTest, AddAccount_OfacSanctionedAddress) {
   PolkadotImportKeyring import_keyring(
       mojom::KeyringId::kPolkadotImport,
       base::BindLambdaForTesting([=](const std::string& address) {
-        return !registry->IsOfacAddress(address);
+        return !registry->IsRestrictedAddress(address);
       }));
 
   // Add an account to get its address.
@@ -214,10 +214,11 @@ TEST(PolkadotImportKeyringTest, AddAccount_OfacSanctionedAddress) {
 
   auto address = import_keyring.GetAccountAddress(0);
   ASSERT_TRUE(address);
-  const auto address_to_sanction = *address;
+  const auto address_to_restrict = *address;
 
-  // Add address to OFAC list.
-  registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
+  // Add address to restricted list.
+  registry->UpdateRestrictedAddressesList(
+      {base::ToLowerASCII(address_to_restrict)});
 
   ASSERT_TRUE(import_keyring.RemoveAccount(0));
 
@@ -225,8 +226,8 @@ TEST(PolkadotImportKeyringTest, AddAccount_OfacSanctionedAddress) {
   EXPECT_FALSE(import_keyring.RemoveAccount(0));
   EXPECT_TRUE(import_keyring.AddAccount(1, pkcs8_key1));
 
-  // Clear OFAC list
-  registry->UpdateOfacAddressesList({});
+  // Clear restricted list
+  registry->UpdateRestrictedAddressesList({});
 }
 
 }  // namespace brave_wallet

@@ -400,7 +400,7 @@ TEST(PolkadotKeyring, VerifyMessage) {
   }
 }
 
-TEST(PolkadotKeyring, AddNewHDAccount_OfacSanctionedAddress) {
+TEST(PolkadotKeyring, AddNewHDAccount_RestrictedAddress) {
   auto* registry = BlockchainRegistry::GetInstance();
   CHECK(registry);
 
@@ -415,19 +415,20 @@ TEST(PolkadotKeyring, AddNewHDAccount_OfacSanctionedAddress) {
   // Add an account to get its address.
   auto address = keyring.AddNewHDAccount(0);
   ASSERT_TRUE(address);
-  const std::string address_to_sanction = *address;
+  const std::string address_to_restrict = *address;
 
-  // Add address to OFAC list.
-  registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
+  // Add address to restricted list.
+  registry->UpdateRestrictedAddressesList(
+      {base::ToLowerASCII(address_to_restrict)});
 
   // Try to add account again - should fail because it generates the same
   // address Note: PolkadotKeyring doesn't have RemoveHDAccount, so we test by
   // trying to add at index 1, which should succeed, then try index 0 again.
   auto result1 = keyring.AddNewHDAccount(1);
-  EXPECT_TRUE(result1) << "Non-OFAC address should succeed";
+  EXPECT_TRUE(result1) << "Non-restricted address should succeed";
 
   // Now try to add at index 0 again - this should fail because the address
-  // at index 0 is already in the OFAC list
+  // at index 0 is already in the restricted list
   // Actually, we can't test this directly because AddNewHDAccount doesn't
   // allow adding at an index that's already been used. Instead, let's test
   // by creating a new keyring and trying to add at index 0.
@@ -435,14 +436,13 @@ TEST(PolkadotKeyring, AddNewHDAccount_OfacSanctionedAddress) {
       base::span(seed).first<kPolkadotSeedSize>(),
       mojom::KeyringId::kPolkadotMainnet,
       base::BindLambdaForTesting([=](const std::string& address) {
-        return !registry->IsOfacAddress(address);
+        return !registry->IsRestrictedAddress(address);
       }));
   auto result2 = keyring2.AddNewHDAccount(0);
-  EXPECT_FALSE(result2)
-      << "OFAC sanctioned Polkadot address should be rejected";
+  EXPECT_FALSE(result2) << "Restricted Polkadot address should be rejected";
 
-  // Clear OFAC list
-  registry->UpdateOfacAddressesList({});
+  // Clear restricted list
+  registry->UpdateRestrictedAddressesList({});
 
   // Prove that we didn't leave any remnant phantom keypairs.
   result2 = keyring2.AddNewHDAccount(0);

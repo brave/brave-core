@@ -988,14 +988,14 @@ TEST_F(SolanaTxManagerUnitTest, CompressedNftTransferSendOptions) {
   EXPECT_FALSE(tx_meta4->tx()->send_options()->skip_preflight.value());
 }
 
-TEST_F(SolanaTxManagerUnitTest, OfacSanctionedToAddress) {
+TEST_F(SolanaTxManagerUnitTest, RestrictedToAddress) {
   const auto& from = sol_account();
-  const std::string ofac_sanctioned_to =
+  const std::string restricted_to =
       "FepMPR8vahkJ98Fr22VKbfHU4f4PTAyi18PDZN2NooPb";
   auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateOfacAddressesList({base::ToLowerASCII(ofac_sanctioned_to)});
+  registry->UpdateRestrictedAddressesList({base::ToLowerASCII(restricted_to)});
   TestMakeSystemProgramTransferTxData(
-      from, ofac_sanctioned_to, 10000000, nullptr,
+      from, restricted_to, 10000000, nullptr,
       mojom::SolanaProviderError::kInvalidParams,
       l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION), nullptr);
 }
@@ -1278,14 +1278,14 @@ TEST_P(TokenProgramTest, MakeTokenProgramTransferTxData) {
       "", 10000000, nullptr, mojom::SolanaProviderError::kInvalidParams,
       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
 
-  // Test sending to OFAC Sanctioned address
-  const std::string ofac_sanctioned_to =
+  // Test sending to restricted address.
+  const std::string restricted_to =
       "FepMPR8vahkJ98Fr22VKbfHU4f4PTAyi18PDZN2NooPb";
   auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateOfacAddressesList({base::ToLowerASCII(ofac_sanctioned_to)});
+  registry->UpdateRestrictedAddressesList({base::ToLowerASCII(restricted_to)});
   TestMakeTokenProgramTransferTxData(
       FROM_HERE, mojom::kSolanaMainnet, spl_token_mint_address,
-      from_wallet_address, ofac_sanctioned_to, 10000000,
+      from_wallet_address, restricted_to, 10000000,
       /*expected_tx_data=*/nullptr, mojom::SolanaProviderError::kInvalidParams,
       l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
 }

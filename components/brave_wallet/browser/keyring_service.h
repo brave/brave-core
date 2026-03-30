@@ -352,7 +352,7 @@ class KeyringService : public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
                            EncodePolkadotPrivateKeyForExport);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
-                           ImportPolkadotAccount_OfacSanctionedAddress);
+                           ImportPolkadotAccount_RestrictedAddress);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,
                            AccountDiscovery);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,

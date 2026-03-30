@@ -131,7 +131,7 @@ fn create_sr25519_keypair_from_pkcs8(pkcs8: &[u8; 117]) -> Box<CxxSchnorrkelKeyP
     // Extract secret key (64 bytes after PAIR_HDR).
     // Try from_bytes first (schnorrkel canonical). If the scalar has the high bit
     // set (e.g. Polkadot.js / Ed25519-style export), try from_ed25519_bytes
-    // which divides by cofactor and accepts that format.
+    // which divides by crestrictedtor and accepts that format.
     // https://github.com/polkadot-js/wasm/blob/f55a3e75a2ab5408f6bf947f2ec9b294daef432d/packages/wasm-crypto/src/rs/sr25519.rs#L36
     let secret_key_start = PAIR_HDR.len();
     let secret_key_end = secret_key_start + 64;

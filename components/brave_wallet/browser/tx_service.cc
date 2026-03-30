@@ -250,7 +250,7 @@ void TxService::AddUnapprovedTransactionWithOrigin(
     return;
   }
 
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(
           GetToAddressFromTxDataUnion(*tx_data_union))) {
     std::move(callback).Run(
         false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
@@ -282,7 +282,7 @@ void TxService::AddUnapprovedEvmTransactionWithOrigin(
     return;
   }
 
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
     std::move(callback).Run(
         false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
     return;
@@ -303,7 +303,7 @@ void TxService::AddUnapprovedBitcoinTransaction(
     return;
   }
 
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
     std::move(callback).Run(
         false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
     return;
@@ -324,7 +324,7 @@ void TxService::AddUnapprovedZCashTransaction(
     return;
   }
 
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
     std::move(callback).Run(
         false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
     return;
@@ -345,7 +345,7 @@ void TxService::AddUnapprovedCardanoTransaction(
     return;
   }
 
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
     std::move(callback).Run(
         false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
     return;
@@ -366,7 +366,7 @@ void TxService::AddUnapprovedPolkadotTransaction(
     return;
   }
 
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
     std::move(callback).Run(
         false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
     return;

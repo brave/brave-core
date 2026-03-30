@@ -716,7 +716,7 @@ void EthTxManager::MakeERC20TransferData(
     const std::string& to_address,
     const std::string& amount,
     MakeERC20TransferDataCallback callback) {
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(to_address)) {
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(to_address)) {
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
   }
@@ -745,7 +745,7 @@ void EthTxManager::MakeERC20TransferData(
 void EthTxManager::MakeERC20ApproveData(const std::string& spender_address,
                                         const std::string& amount,
                                         MakeERC20ApproveDataCallback callback) {
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(spender_address)) {
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(spender_address)) {
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
   }
@@ -777,7 +777,7 @@ void EthTxManager::MakeERC721TransferFromData(
     const std::string& token_id,
     const std::string& contract_address,
     MakeERC721TransferFromDataCallback callback) {
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(to)) {
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(to)) {
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
   }
@@ -829,7 +829,7 @@ void EthTxManager::MakeERC1155TransferFromData(
     const std::string& value,
     const std::string& contract_address,
     MakeERC1155TransferFromDataCallback callback) {
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(to)) {
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(to)) {
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
   }

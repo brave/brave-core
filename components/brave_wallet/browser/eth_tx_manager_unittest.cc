@@ -2278,9 +2278,9 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
                      mojom::TransactionType::Other));
   run_loop->Run();
 
-  // Address on the OFAC SDN list should fail.
+  // Address on the restricted SDN list should fail.
   auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateOfacAddressesList(
+  registry->UpdateRestrictedAddressesList(
       {"0xbfb30a082f650c2a15d0632f0e87be4f8e64460a"});
   run_loop = std::make_unique<base::RunLoop>();
   eth_tx_manager()->MakeERC721TransferFromData(
@@ -2293,9 +2293,9 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
 }
 
 TEST_F(EthTxManagerUnitTest, MakeERC1155TransferFromData) {
-  // Invalid if to_address is on OFAC SDN list
+  // Invalid if to_address is on restricted SDN list
   auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateOfacAddressesList(
+  registry->UpdateRestrictedAddressesList(
       {"0xbfb30a082f650c2a15d0632f0e87be4f8e64460a"});
   TestMakeERC1155TransferFromDataTxType(
       "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f", "", "0xf", "0x1",
@@ -2303,7 +2303,7 @@ TEST_F(EthTxManagerUnitTest, MakeERC1155TransferFromData) {
       mojom::TransactionType::Other);
 
   // Valid
-  registry->UpdateOfacAddressesList({});
+  registry->UpdateRestrictedAddressesList({});
   TestMakeERC1155TransferFromDataTxType(
       "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f",
       "0xbfb30a082f650c2a15d0632f0e87be4f8e64460a", "0xf", "0x1",
