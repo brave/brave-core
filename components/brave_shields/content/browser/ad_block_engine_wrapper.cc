@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
 
+#include <cstdint>
+#include <memory>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -19,7 +21,9 @@
 #include "base/trace_event/trace_event.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
+#include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_service_helper.h"
+#include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
