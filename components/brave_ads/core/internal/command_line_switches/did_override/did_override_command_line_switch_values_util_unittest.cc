@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/command_line_switches/did_override/did_override_command_line_switch_values_util.h"
 
 #include <string>
+#include <vector>
 
 #include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
@@ -25,24 +26,23 @@ struct ParamInfo final {
   bool did_override_command_line_switch = false;
 };
 
-// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
-// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
-// added in the meantime to fix the build error. Remove this attribute and
-// provide a proper fix.
-[[clang::no_destroy]] const ParamInfo kTests[] = {
-    {.command_line_switch = {"foobar", ""},
-     .did_override_command_line_switch = false},
-    {.command_line_switch = {variations::switches::kFakeVariationsChannel, ""},
-     .did_override_command_line_switch = false},
-    {.command_line_switch = {variations::switches::kFakeVariationsChannel,
-                             "FooBar"},
-     .did_override_command_line_switch = true},
-    {.command_line_switch = {variations::switches::kVariationsOverrideCountry,
-                             ""},
-     .did_override_command_line_switch = false},
-    {.command_line_switch = {variations::switches::kVariationsOverrideCountry,
-                             "FooBar"},
-     .did_override_command_line_switch = true}};
+std::vector<ParamInfo> GetTestCases() {
+  return {
+      {.command_line_switch = {"foobar", ""},
+       .did_override_command_line_switch = false},
+      {.command_line_switch = {variations::switches::kFakeVariationsChannel,
+                               ""},
+       .did_override_command_line_switch = false},
+      {.command_line_switch = {variations::switches::kFakeVariationsChannel,
+                               "FooBar"},
+       .did_override_command_line_switch = true},
+      {.command_line_switch = {variations::switches::kVariationsOverrideCountry,
+                               ""},
+       .did_override_command_line_switch = false},
+      {.command_line_switch = {variations::switches::kVariationsOverrideCountry,
+                               "FooBar"},
+       .did_override_command_line_switch = true}};
+}
 
 }  // namespace
 
@@ -85,7 +85,7 @@ std::string TestParamToString(
 
 INSTANTIATE_TEST_SUITE_P(,
                          BraveAdsDidOverrideCommandLineSwitchValuesUtilTest,
-                         ::testing::ValuesIn(kTests),
+                         ::testing::ValuesIn(GetTestCases()),
                          TestParamToString);
 
 }  // namespace brave_ads

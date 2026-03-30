@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/command_line_switches/ads_uuids/ads_uuids_command_line_switch_parser_util.h"
 
 #include <string>
+#include <vector>
 
 #include "brave/components/brave_ads/core/internal/common/test/command_line_switch_test_info.h"
 #include "brave/components/brave_ads/core/internal/common/test/command_line_switch_test_util.h"
@@ -25,22 +26,20 @@ struct ParamInfo final {
   base::flat_map<std::string, bool> ads_uuids;
 };
 
-// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
-// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
-// added in the meantime to fix the build error. Remove this attribute and
-// provide a proper fix.
-[[clang::no_destroy]] const ParamInfo kTests[] = {
-    {.command_line_switch = {"ads",
-                             "uuids=52ee5e5a-08ae-4295-9bfe-a2d802144c86"},
-     .ads_uuids = {{"52ee5e5a-08ae-4295-9bfe-a2d802144c86", true}}},
-    {.command_line_switch =
-         {"ads",
-          R"(uuids=52ee5e5a-08ae-4295-9bfe-a2d802144c86,123e4567-e89b-12d3-a456-426614174000)"},
-     .ads_uuids = {{"52ee5e5a-08ae-4295-9bfe-a2d802144c86", true},
-                   {"123e4567-e89b-12d3-a456-426614174000", true}}},
-    {.command_line_switch = {"ads", "uuids="}, .ads_uuids = {}},
-    {.command_line_switch = {"ads", ""}, .ads_uuids = {}},
-    {.command_line_switch = {}, .ads_uuids = {}}};
+std::vector<ParamInfo> GetTestCases() {
+  return {
+      {.command_line_switch = {"ads",
+                               "uuids=52ee5e5a-08ae-4295-9bfe-a2d802144c86"},
+       .ads_uuids = {{"52ee5e5a-08ae-4295-9bfe-a2d802144c86", true}}},
+      {.command_line_switch =
+           {"ads",
+            R"(uuids=52ee5e5a-08ae-4295-9bfe-a2d802144c86,123e4567-e89b-12d3-a456-426614174000)"},
+       .ads_uuids = {{"52ee5e5a-08ae-4295-9bfe-a2d802144c86", true},
+                     {"123e4567-e89b-12d3-a456-426614174000", true}}},
+      {.command_line_switch = {"ads", "uuids="}, .ads_uuids = {}},
+      {.command_line_switch = {"ads", ""}, .ads_uuids = {}},
+      {.command_line_switch = {}, .ads_uuids = {}}};
+}
 
 }  // namespace
 
@@ -69,7 +68,7 @@ std::string TestParamToString(
 
 INSTANTIATE_TEST_SUITE_P(,
                          BraveAdsUuidsCommandLineSwitchParserUtilTest,
-                         ::testing::ValuesIn(kTests),
+                         ::testing::ValuesIn(GetTestCases()),
                          TestParamToString);
 
 }  // namespace brave_ads
