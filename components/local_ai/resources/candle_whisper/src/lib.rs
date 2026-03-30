@@ -72,8 +72,9 @@ struct TranscribeResult {
     is_final: bool,
 }
 
-// 5 seconds of audio at 16kHz mono.
-const FLUSH_THRESHOLD: usize = SAMPLE_RATE * 5;
+// 2 seconds of audio at 16kHz mono, matching
+// Chromium's OnDeviceSpeechRecognitionEngine.
+const FLUSH_THRESHOLD: usize = SAMPLE_RATE * 2;
 
 #[wasm_bindgen]
 pub struct WhisperRecognizer {
