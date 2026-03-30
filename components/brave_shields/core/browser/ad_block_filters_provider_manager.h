@@ -47,6 +47,8 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
       base::OnceCallback<
           void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>);
 
+  void MaybeNotifyOnChanged(bool is_for_default_engine);
+
   // AdBlockFiltersProvider::Observer
   void OnChanged(bool is_default_engine) override;
 

@@ -16,6 +16,7 @@
 #include "base/rand_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/trace_event/trace_event.h"
+#include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 
 namespace brave_shields {
 
@@ -90,6 +91,16 @@ void AdBlockFiltersProviderManager::LoadFilterSetForEngine(
         base::SequencedTaskRunner::GetCurrentDefault().get(), FROM_HERE,
         base::BindOnce(&AdBlockFiltersProvider::LoadFilterSet,
                        provider->AsWeakPtr(), collect_and_merge));
+  }
+}
+
+void AdBlockFiltersProviderManager::MaybeNotifyOnChanged(
+    bool is_for_default_engine) {
+  auto& filters_providers = is_for_default_engine
+                                ? default_engine_filters_providers_
+                                : additional_engine_filters_providers_;
+  if (std::ranges::any_of(filters_providers, &AdBlockFiltersProvider::IsInitialized)) {
+    OnChanged(is_for_default_engine);
   }
 }
 
