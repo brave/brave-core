@@ -99,7 +99,8 @@ void AdBlockFiltersProviderManager::MaybeNotifyOnChanged(
   auto& filters_providers = is_for_default_engine
                                 ? default_engine_filters_providers_
                                 : additional_engine_filters_providers_;
-  if (std::ranges::any_of(filters_providers, &AdBlockFiltersProvider::IsInitialized)) {
+  if (std::ranges::any_of(filters_providers,
+                          &AdBlockFiltersProvider::IsInitialized)) {
     OnChanged(is_for_default_engine);
   }
 }
