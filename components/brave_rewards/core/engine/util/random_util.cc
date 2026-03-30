@@ -34,7 +34,7 @@ namespace brave_rewards::internal::util {
 std::string GenerateRandomHexString() {
   uint8_t bytes[kLengthHexString];
   crypto::RandBytes(bytes);
-  return base::HexEncode(bytes, sizeof(bytes));
+  return base::HexEncode(base::byte_span_from_ref(bytes));
 }
 
 std::string GeneratePKCECodeVerifier() {
