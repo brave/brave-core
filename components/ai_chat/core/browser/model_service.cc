@@ -20,6 +20,7 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/containers/checked_iterators.h"
+#include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/metrics/field_trial_params.h"
@@ -36,6 +37,7 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api_v2.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
+#include "brave/components/ai_chat/core/browser/remote_models_fetcher.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -622,17 +624,69 @@ base::DictValue GetModelDict(mojom::ModelPtr model) {
 
 ModelService::ModelService(PrefService* prefs_service)
     : pref_service_(prefs_service) {
+  InitializeCommon();
+}
+
+ModelService::ModelService(
+    PrefService* prefs_service,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : pref_service_(prefs_service) {
+  // Initialize remote models fetcher if feature is enabled
+  if (!base::FeatureList::IsEnabled(features::kAIChatRemoteModels)) {
+    remote_models_state_ = RemoteModelsState::DISABLED;
+    VLOG(1) << "Remote models feature disabled, using static Leo models";
+  } else if (url_loader_factory) {
+    std::string endpoint_url = features::kRemoteModelsEndpoint.Get();
+    if (!endpoint_url.empty()) {
+      VLOG(1) << "Remote models feature enabled, endpoint: " << endpoint_url;
+      remote_models_fetcher_ = std::make_unique<RemoteModelsFetcher>(
+          pref_service_, url_loader_factory);
+
+      // Load cached models from prefs
+      std::vector<mojom::ModelPtr> cached_models =
+          remote_models_fetcher_->LoadFromPrefs();
+      if (!cached_models.empty()) {
+        using_remote_models_ = true;
+        VLOG(1) << "Loaded " << cached_models.size()
+                << " remote models from prefs cache";
+
+        // Check if cache is stale
+        if (remote_models_fetcher_->IsStale()) {
+          remote_models_state_ = RemoteModelsState::CACHED_STALE;
+          VLOG(1) << "Remote models cache is stale, triggering background "
+                     "refresh";
+          InitRemoteModels();
+        } else {
+          remote_models_state_ = RemoteModelsState::CACHED_FRESH;
+        }
+      } else {
+        // No cache - trigger initial fetch
+        remote_models_state_ = RemoteModelsState::FETCHING_INITIAL;
+        VLOG(1) << "No cached remote models found, initiating initial fetch";
+        InitRemoteModels();
+      }
+    } else {
+      remote_models_state_ = RemoteModelsState::DISABLED;
+      VLOG(1) << "Remote models feature enabled but endpoint not configured";
+    }
+  } else {
+    remote_models_state_ = RemoteModelsState::DISABLED;
+  }
+
+  InitializeCommon();
+}
+
+void ModelService::InitializeCommon() {
   InitModels();
-  // Perform migrations which depend on finding out about user's premium status
+
+  // 2024-05 Migration for old "claude instant" model.
+  // The migration is performed here instead of
+  // ai_chat::prefs::MigrateProfilePrefs because the migration requires
+  // knowing about premium status.
+  // First set to an equivalent model that is available to all users. When
+  // we are told about premium status, we can switch to the premium equivalent.
   const std::string& default_model_user_pref = GetDefaultModelKey();
   if (default_model_user_pref == "chat-claude-instant") {
-    // 2024-05 Migration for old "claude instant" model
-    // The migration is performed here instead of
-    // ai_chat::prefs::MigrateProfilePrefs because the migration requires
-    // knowing about premium status.
-    // First set to an equivalent model that is available to all users. When
-    // we are told about premium status, we can switch to the premium
-    // equivalent.
     SetDefaultModelKey(kClaudeHaikuModelKey);
     is_migrating_claude_instant_ = true;
   }
@@ -782,16 +836,16 @@ void ModelService::OnPremiumStatus(mojom::PremiumStatus status) {
 }
 
 void ModelService::InitModels() {
-  // Get leo and custom models
-  const std::vector<mojom::ModelPtr>& leo_models = GetLeoModels();
+  // Get base models (remote or static Leo) and custom models
+  std::vector<mojom::ModelPtr> base_models = GetModelsForInitialization();
   const std::vector<mojom::ModelPtr> custom_models = GetCustomModels();
 
   // Reserve space in the combined models vector
   models_.clear();
-  models_.reserve(leo_models.size() + custom_models.size());
+  models_.reserve(base_models.size() + custom_models.size());
 
   // Ensure we return only in intended display order
-  std::transform(leo_models.cbegin(), leo_models.cend(),
+  std::transform(base_models.cbegin(), base_models.cend(),
                  std::back_inserter(models_),
                  [](const mojom::ModelPtr& model) { return model.Clone(); });
 
@@ -896,15 +950,14 @@ const mojom::Model* ModelService::GetModel(std::string_view key) {
 
 std::optional<std::string> ModelService::GetLeoModelKeyByName(
     std::string_view name) {
-  const std::vector<mojom::ModelPtr>& leo_models = GetLeoModels();
-
   auto match_iter = std::find_if(
-      leo_models.cbegin(), leo_models.cend(),
-      [name](const mojom::ModelPtr& model) {
-        CHECK(model->options->is_leo_model_options());
+      models_.cbegin(), models_.cend(), [name](const mojom::ModelPtr& model) {
+        if (!model->options->is_leo_model_options()) {
+          return false;
+        }
         return model->options->get_leo_model_options()->name == name;
       });
-  if (match_iter != leo_models.cend()) {
+  if (match_iter != models_.cend()) {
     return (*match_iter)->key;
   }
 
@@ -913,16 +966,21 @@ std::optional<std::string> ModelService::GetLeoModelKeyByName(
 
 std::optional<std::string> ModelService::GetLeoModelNameByKey(
     std::string_view key) {
-  const std::vector<mojom::ModelPtr>& leo_models = GetLeoModels();
-
   auto match_iter = std::find_if(
-      leo_models.cbegin(), leo_models.cend(),
+      models_.cbegin(), models_.cend(),
       [key](const mojom::ModelPtr& model) { return model->key == key; });
-  if (match_iter != leo_models.cend()) {
-    CHECK((*match_iter)->options->is_leo_model_options());
-    return (*match_iter)->options->get_leo_model_options()->name;
+  if (match_iter != models_.cend()) {
+    if (!(*match_iter)->options->is_leo_model_options()) {
+      return std::nullopt;
+    }
+    VLOG(1) << "Model found: " << key;
+    const std::string& model_name =
+        (*match_iter)->options->get_leo_model_options()->name;
+    VLOG(1) << "Using model name: " << model_name;
+    return model_name;
   }
 
+  VLOG(1) << "Model not found: " << key;
   return std::nullopt;
 }
 
@@ -1160,6 +1218,38 @@ const std::vector<mojom::ModelPtr> ModelService::GetCustomModels() {
   return models;
 }
 
+bool ModelService::IsValidModelKey(const std::string& model_key) const {
+  if (model_key.empty()) {
+    return false;
+  }
+  auto it = std::find_if(
+      models_.begin(), models_.end(),
+      [&model_key](const auto& model) { return model->key == model_key; });
+  return it != models_.end();
+}
+
+std::string ModelService::GetFallbackModelKey() const {
+  // Priority 1: Automatic model
+  if (IsValidModelKey("chat-automatic")) {
+    return "chat-automatic";
+  }
+
+  // Priority 2: First suggested model
+  for (const auto& model : models_) {
+    if (model->is_suggested_model) {
+      return model->key;
+    }
+  }
+
+  // Priority 3: First available model
+  if (!models_.empty()) {
+    return models_[0]->key;
+  }
+
+  // Should never happen, but return automatic as last resort
+  return "chat-automatic";
+}
+
 void ModelService::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
 }
@@ -1195,6 +1285,189 @@ std::unique_ptr<EngineConsumer> ModelService::GetEngineForModel(
   }
 
   return engine;
+}
+
+std::vector<mojom::ModelPtr> ModelService::GetModelsForInitialization() {
+  VLOG(1) << "GetModelsForInitialization called, state = "
+          << static_cast<int>(remote_models_state_);
+
+  switch (remote_models_state_) {
+    case RemoteModelsState::DISABLED:
+      VLOG(1) << "Remote models disabled, using static Leo models";
+      return GetStaticLeoModels();
+
+    case RemoteModelsState::CACHED_FRESH:
+      VLOG(1) << "Using fresh remote models from cache";
+      using_remote_models_ = true;
+      return remote_models_fetcher_->GetCachedModels();
+
+    case RemoteModelsState::CACHED_STALE:
+      VLOG(1) << "Using stale remote models from cache (refresh in progress)";
+      using_remote_models_ = true;
+      return remote_models_fetcher_->GetCachedModels();
+
+    case RemoteModelsState::FETCHING_REFRESH:
+      // Have cache, just refreshing - use cached models
+      VLOG(1) << "Refresh in progress, using cached remote models";
+      using_remote_models_ = true;
+      return remote_models_fetcher_->GetCachedModels();
+
+    case RemoteModelsState::FETCHING_INITIAL:
+      // No cache, fetch in progress - show only Automatic model
+      VLOG(1) << "Initial fetch in progress, showing Automatic model only";
+      return GetAutomaticModelOnly();
+
+    case RemoteModelsState::FAILED_NO_CACHE:
+      // Fetch failed and no cache - show only Automatic model
+      VLOG(1) << "Remote fetch failed with no cache, showing Automatic model "
+                 "only";
+      return GetAutomaticModelOnly();
+  }
+
+  // Should never reach here, but return automatic only as safe fallback
+  VLOG(1) << "WARNING: Unexpected state in GetModelsForInitialization, "
+             "returning Automatic only";
+  return GetAutomaticModelOnly();
+}
+
+std::vector<mojom::ModelPtr> ModelService::GetStaticLeoModels() {
+  using_remote_models_ = false;
+  const std::vector<mojom::ModelPtr>& leo_models = GetLeoModels();
+  std::vector<mojom::ModelPtr> result;
+  result.reserve(leo_models.size());
+  for (const auto& model : leo_models) {
+    result.push_back(model->Clone());
+  }
+  return result;
+}
+
+std::vector<mojom::ModelPtr> ModelService::GetAutomaticModelOnly() {
+  using_remote_models_ = false;
+  const std::vector<mojom::ModelPtr>& leo_models = GetLeoModels();
+  std::vector<mojom::ModelPtr> result;
+
+  // The Automatic model is always the first model in the static Leo models list
+  if (!leo_models.empty() && leo_models[0]->key == "chat-automatic") {
+    result.push_back(leo_models[0]->Clone());
+    VLOG(1) << "Returning Automatic model only";
+  } else {
+    // Fallback: if Automatic isn't first, search for it
+    for (const auto& model : leo_models) {
+      if (model->key == "chat-automatic") {
+        result.push_back(model->Clone());
+        VLOG(1) << "Found and returning Automatic model";
+        break;
+      }
+    }
+
+    // Ultimate fallback: if Automatic doesn't exist, return first model
+    if (result.empty() && !leo_models.empty()) {
+      result.push_back(leo_models[0]->Clone());
+      VLOG(1) << "Automatic model not found, returning first model: "
+              << leo_models[0]->key;
+    }
+  }
+
+  return result;
+}
+
+void ModelService::InitRemoteModels() {
+  if (!base::FeatureList::IsEnabled(features::kAIChatRemoteModels)) {
+    VLOG(1) << "Remote models feature is disabled";
+    return;
+  }
+
+  if (!remote_models_fetcher_) {
+    return;
+  }
+
+  std::string endpoint_url = features::kRemoteModelsEndpoint.Get();
+  if (endpoint_url.empty()) {
+    VLOG(1) << "Remote models endpoint not configured";
+    return;
+  }
+
+  // Update state based on whether we have cache
+  if (remote_models_fetcher_->HasValidCache() ||
+      remote_models_fetcher_->IsStale()) {
+    remote_models_state_ = RemoteModelsState::FETCHING_REFRESH;
+    VLOG(1) << "Initiating remote models refresh from: " << endpoint_url;
+  } else {
+    remote_models_state_ = RemoteModelsState::FETCHING_INITIAL;
+    VLOG(1) << "Initiating initial remote models fetch from: " << endpoint_url;
+  }
+
+  remote_models_fetcher_->FetchModels(
+      endpoint_url, base::BindOnce(&ModelService::OnRemoteModelsFetched,
+                                   weak_ptr_factory_.GetWeakPtr()));
+}
+
+void ModelService::OnRemoteModelsFetched(std::vector<mojom::ModelPtr> models) {
+  VLOG(1) << "OnRemoteModelsFetched called";
+
+  if (models.empty()) {
+    VLOG(1) << "Remote models fetch failed or returned empty list";
+
+    // Check if we have any cached models to fall back to
+    if (remote_models_fetcher_ &&
+        !remote_models_fetcher_->GetCachedModels().empty()) {
+      remote_models_state_ = RemoteModelsState::CACHED_STALE;
+      VLOG(1) << "Fetch failed, continuing to use stale cached models";
+    } else {
+      remote_models_state_ = RemoteModelsState::FAILED_NO_CACHE;
+      VLOG(1) << "Fetch failed with no cache available, will show Automatic "
+                 "model only";
+    }
+
+    // Re-initialize with fallback
+    InitModels();
+    return;
+  }
+
+  VLOG(1) << "Successfully fetched " << models.size() << " remote models";
+
+  // Models have already been saved to cache by RemoteModelsFetcher
+  remote_models_state_ = RemoteModelsState::CACHED_FRESH;
+  using_remote_models_ = true;
+
+  // Store old default model key before re-initializing
+  std::string old_default = GetDefaultModelKey();
+
+  // Re-initialize model list with new remote models
+  InitModels();
+
+  // Validate default model still exists after model list update
+  if (!old_default.empty() && !IsValidModelKey(old_default)) {
+    std::string new_default = GetFallbackModelKey();
+    VLOG(1) << "Default model '" << old_default
+            << "' no longer available, migrating to '" << new_default << "'";
+    SetDefaultModelKey(new_default);
+
+    // Notify observers about default model change
+    for (auto& observer : observers_) {
+      observer.OnDefaultModelChanged(old_default, new_default);
+    }
+  }
+}
+
+void ModelService::RefreshRemoteModels() {
+  if (!base::FeatureList::IsEnabled(features::kAIChatRemoteModels)) {
+    VLOG(1) << "Cannot refresh remote models: feature is disabled";
+    return;
+  }
+
+  if (!remote_models_fetcher_) {
+    VLOG(1) << "Cannot refresh remote models: fetcher not initialized";
+    return;
+  }
+
+  VLOG(1) << "Manual refresh of remote models requested";
+
+  // Clear in-memory cache (keep PrefService backup)
+  remote_models_fetcher_->ClearCache();
+
+  // Trigger re-fetch
+  InitRemoteModels();
 }
 
 }  // namespace ai_chat

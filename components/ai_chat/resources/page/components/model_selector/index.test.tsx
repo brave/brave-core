@@ -23,6 +23,8 @@ describe('ModelSelector', () => {
       isSuggestedModel: true,
       isNearModel: false,
       visionSupport: true,
+      audioSupport: false,
+      videoSupport: false,
       supportsTools: true,
       supportedCapabilities: [
         Mojom.ConversationCapability.CHAT,
@@ -33,6 +35,7 @@ describe('ModelSelector', () => {
         leoModelOptions: {
           name: 'A model',
           displayMaker: 'Brave',
+          description: '',
           category: Mojom.ModelCategory.CHAT,
           longConversationWarningCharacterLimit: 1,
           maxAssociatedContentLength: 2,
@@ -51,11 +54,14 @@ describe('ModelSelector', () => {
         Mojom.ConversationCapability.CONTENT_AGENT,
       ],
       visionSupport: true,
+      audioSupport: false,
+      videoSupport: false,
       options: {
         customModelOptions: undefined,
         leoModelOptions: {
           name: 'A model',
           displayMaker: 'Brave',
+          description: '',
           category: Mojom.ModelCategory.CHAT,
           longConversationWarningCharacterLimit: 1,
           maxAssociatedContentLength: 2,
@@ -71,11 +77,14 @@ describe('ModelSelector', () => {
       supportsTools: false,
       supportedCapabilities: [Mojom.ConversationCapability.CHAT],
       visionSupport: true,
+      audioSupport: false,
+      videoSupport: false,
       options: {
         customModelOptions: undefined,
         leoModelOptions: {
           name: 'A model',
           displayMaker: 'Brave',
+          description: '',
           category: Mojom.ModelCategory.CHAT,
           longConversationWarningCharacterLimit: 1,
           maxAssociatedContentLength: 2,
@@ -94,11 +103,14 @@ describe('ModelSelector', () => {
         Mojom.ConversationCapability.CONTENT_AGENT,
       ],
       visionSupport: true,
+      audioSupport: false,
+      videoSupport: false,
       options: {
         customModelOptions: undefined,
         leoModelOptions: {
           name: 'A model',
           displayMaker: 'Brave',
+          description: '',
           category: Mojom.ModelCategory.CHAT,
           longConversationWarningCharacterLimit: 1,
           maxAssociatedContentLength: 2,
@@ -114,11 +126,14 @@ describe('ModelSelector', () => {
       supportsTools: false,
       supportedCapabilities: [Mojom.ConversationCapability.CHAT],
       visionSupport: true,
+      audioSupport: false,
+      videoSupport: false,
       options: {
         customModelOptions: undefined,
         leoModelOptions: {
           name: 'A model',
           displayMaker: 'Brave',
+          description: '',
           category: Mojom.ModelCategory.CHAT,
           longConversationWarningCharacterLimit: 1,
           maxAssociatedContentLength: 2,
@@ -132,6 +147,8 @@ describe('ModelSelector', () => {
       isSuggestedModel: false,
       isNearModel: false,
       visionSupport: true,
+      audioSupport: false,
+      videoSupport: false,
       supportsTools: false,
       supportedCapabilities: [Mojom.ConversationCapability.CHAT],
       options: {
@@ -139,6 +156,7 @@ describe('ModelSelector', () => {
         leoModelOptions: {
           name: 'A summary model',
           displayMaker: 'Brave',
+          description: '',
           longConversationWarningCharacterLimit: 1,
           maxAssociatedContentLength: 2,
           category: Mojom.ModelCategory.SUMMARY,
@@ -152,6 +170,8 @@ describe('ModelSelector', () => {
       displayName: 'Custom Model',
       isNearModel: false,
       visionSupport: false,
+      audioSupport: false,
+      videoSupport: false,
       supportsTools: false,
       supportedCapabilities: [Mojom.ConversationCapability.CHAT],
       isSuggestedModel: false,

@@ -279,6 +279,9 @@
   <message name="IDS_CHAT_UI_CONVERSATION_COPIED" desc="Toast message shown when conversation is copied to clipboard" formatter_data="webui=AiChat">
     Conversation copied to clipboard
   </message>
+  <message name="IDS_CHAT_UI_MODEL_MIGRATED" desc="Toast notification shown when a model is no longer available and the conversation has been switched to a different model" formatter_data="webui=AiChat">
+    <ph name="OLD_MODEL_NAME">$1</ph> is no longer available. Switched to <ph name="NEW_MODEL_NAME">$2</ph>.
+  </message>
   <message name="IDS_CHAT_UI_LIKE_ANSWER_BUTTON_LABEL" desc="Button label to like an answer" formatter_data="webui=AiChat">
     Like answer
   </message>

@@ -12,6 +12,7 @@
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/storage_partition.h"
 
 namespace ai_chat {
 
@@ -43,7 +44,10 @@ ModelServiceFactory::~ModelServiceFactory() = default;
 std::unique_ptr<KeyedService>
 ModelServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return std::make_unique<ModelService>(user_prefs::UserPrefs::Get(context));
+  return std::make_unique<ModelService>(
+      user_prefs::UserPrefs::Get(context),
+      context->GetDefaultStoragePartition()
+          ->GetURLLoaderFactoryForBrowserProcess());
 }
 
 }  // namespace ai_chat

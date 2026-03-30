@@ -505,27 +505,37 @@ void ConversationHandler::GetModels(GetModelsCallback callback) {
 
 void ConversationHandler::ChangeModel(const std::string& model_key) {
   CHECK(!model_key.empty());
-  // Check that the key exists
-  auto* new_model = model_service_->GetModel(model_key);
-  if (new_model) {
-    model_key_ = new_model->key;
 
-    // Applies to Custom Models alone. Verify that the endpoint URL for this
-    // model is valid. Model endpoints may be valid in one session, but not in
-    // another. For example, if --allow-leo-private-ips is enabled, the endpoint
-    // does not need to use HTTPS.
-    if (new_model->options->is_custom_model_options()) {
-      const bool is_valid_endpoint = ModelValidator::IsValidEndpoint(
-          new_model->options->get_custom_model_options()->endpoint);
-      SetAPIError(is_valid_endpoint ? mojom::APIError::None
-                                    : mojom::APIError::InvalidEndpointURL);
+  auto* new_model = model_service_->GetModel(model_key);
+  if (!new_model) {
+    VLOG(1) << "Model '" << model_key << "' not found, falling back to default";
+
+    std::string default_key = model_service_->GetDefaultModelKey();
+    if (model_service_->GetModel(default_key)) {
+      model_key_ = default_key;
     } else {
-      // Non-custom model activated; clear any previous API error.
-      SetAPIError(mojom::APIError::None);
+      model_key_ = model_service_->GetFallbackModelKey();
     }
+
+    InitEngine();
+    return;
   }
 
-  // Always call InitEngine, even with a bad key as we need a model
+  model_key_ = new_model->key;
+
+  // Applies to Custom Models alone. Verify that the endpoint URL for this
+  // model is valid. Model endpoints may be valid in one session, but not in
+  // another. For example, if --allow-leo-private-ips is enabled, the endpoint
+  // does not need to use HTTPS.
+  if (new_model->options->is_custom_model_options()) {
+    const bool is_valid_endpoint = ModelValidator::IsValidEndpoint(
+        new_model->options->get_custom_model_options()->endpoint);
+    SetAPIError(is_valid_endpoint ? mojom::APIError::None
+                                  : mojom::APIError::InvalidEndpointURL);
+  } else {
+    SetAPIError(mojom::APIError::None);
+  }
+
   InitEngine();
 }
 

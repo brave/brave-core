@@ -104,6 +104,7 @@ struct AIChatIntroMessageView_Previews: PreviewProvider {
             leoModelOptions: .init(
               name: "Mixtral-8x7b",
               displayMaker: "Powerful, fast and adaptive",
+              description: "",
               category: .chat,
               access: .basicAndPremium,
               maxAssociatedContentLength: 9000,
@@ -114,6 +115,8 @@ struct AIChatIntroMessageView_Previews: PreviewProvider {
           displayName: "Mixtral 8x7b",
           visionSupport: false,
           supportsTools: false,
+          audioSupport: false,
+          videoSupport: false,
           supportedCapabilities: [NSNumber(value: AiChat.ConversationCapability.chat.rawValue)],
           isSuggestedModel: false,
           isNearModel: false

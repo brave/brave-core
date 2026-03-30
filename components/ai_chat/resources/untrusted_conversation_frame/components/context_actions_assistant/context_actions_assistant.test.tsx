@@ -16,6 +16,8 @@ const mockModels: Mojom.Model[] = [
     key: 'model-one',
     displayName: 'Model One',
     visionSupport: false,
+    audioSupport: false,
+    videoSupport: false,
     supportsTools: false,
     supportedCapabilities: [Mojom.ConversationCapability.CHAT],
     isSuggestedModel: false,
@@ -24,6 +26,7 @@ const mockModels: Mojom.Model[] = [
       leoModelOptions: {
         name: 'model-one',
         displayMaker: 'Company',
+        description: '',
         category: Mojom.ModelCategory.CHAT,
         access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
         maxAssociatedContentLength: 10000,
@@ -36,6 +39,8 @@ const mockModels: Mojom.Model[] = [
     key: BRAVE_SUMMARY_MODEL_KEY,
     displayName: 'Brave Summary',
     visionSupport: false,
+    audioSupport: false,
+    videoSupport: false,
     supportsTools: false,
     supportedCapabilities: [Mojom.ConversationCapability.CHAT],
     isSuggestedModel: false,
@@ -44,6 +49,7 @@ const mockModels: Mojom.Model[] = [
       leoModelOptions: {
         name: 'brave-summary',
         displayMaker: 'Brave',
+        description: '',
         category: Mojom.ModelCategory.SUMMARY,
         access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
         maxAssociatedContentLength: 180000,

@@ -63,6 +63,18 @@ extern const base::FeatureParam<bool> kAutomaticModelSupportsTools;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<bool> kShouldIndentPageContentBlocks;
 
+// Enable remote model fetching from server endpoint
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+BASE_DECLARE_FEATURE(kAIChatRemoteModels);
+
+// Remote models endpoint URL (only used when kAIChatRemoteModels is enabled)
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<std::string> kRemoteModelsEndpoint;
+
+// Cache TTL for remote models in minutes
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<int> kRemoteModelsCacheTTLMinutes;
+
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatEnabled();
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatHistory);

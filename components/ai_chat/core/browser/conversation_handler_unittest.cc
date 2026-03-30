@@ -1951,6 +1951,21 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_TRUE(conversation_handler_->GetConversationHistory().empty());
 }
 
+TEST_F(ConversationHandlerUnitTest, ChangeModelFallsBackOnInvalidKey) {
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  std::string default_key = model_service_->GetDefaultModelKey();
+
+  base::RunLoop loop;
+  EXPECT_CALL(client, OnModelDataChanged)
+      .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
+  conversation_handler_->ChangeModel("nonexistent-model-key");
+  loop.Run();
+
+  EXPECT_EQ(conversation_handler_->GetCurrentModel().key, default_key);
+  testing::Mock::VerifyAndClearExpectations(&client);
+}
+
 TEST_F(ConversationHandlerUnitTest, UploadFile) {
   conversation_handler_->MaybeUnlinkAssociatedContent();
 

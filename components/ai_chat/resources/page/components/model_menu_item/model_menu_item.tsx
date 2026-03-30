@@ -37,6 +37,32 @@ const ModelContent = (props: ModelContentProps) => {
     model.options.customModelOptions?.endpoint.url === Mojom.OLLAMA_ENDPOINT
   )
 
+  // Get subtitle based on model type
+  const getModelSubtitle = React.useMemo(() => {
+    // For custom models, show the model request name
+    if (model.options.customModelOptions) {
+      return model.options.customModelOptions.modelRequestName
+    }
+
+    // For Leo models, try localized string first
+    if (model.options.leoModelOptions) {
+      const localizedKey = `CHAT_UI_${model.key
+        .toUpperCase()
+        .replaceAll('-', '_')}_SUBTITLE`
+      const localizedString = getLocale(localizedKey)
+
+      // If localization exists (not same as key), use it
+      if (localizedString !== localizedKey) {
+        return localizedString
+      }
+
+      // Fall back to displayName for remote models without localization
+      return model.displayName
+    }
+
+    return undefined
+  }, [model])
+
   const label = React.useMemo(() => {
     if (isCurrent) {
       return (
@@ -119,15 +145,7 @@ const ModelContent = (props: ModelContentProps) => {
         </div>
         {showDetails && (
           <>
-            <p className={styles.modelSubtitle}>
-              {isCustomModel
-                ? model.options.customModelOptions?.modelRequestName
-                : getLocale(
-                    `CHAT_UI_${model.key
-                      .toUpperCase()
-                      .replaceAll('-', '_')}_SUBTITLE`,
-                  )}
-            </p>
+            <p className={styles.modelSubtitle}>{getModelSubtitle}</p>
             {onClickLearnMore && model.isNearModel && (
               <a
                 // While we preventDefault, we still need to pass the href

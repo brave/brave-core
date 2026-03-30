@@ -20,6 +20,8 @@ describe('ModelIntro', () => {
     key: 'test-model',
     displayName: 'Test Model',
     visionSupport: false,
+    audioSupport: false,
+    videoSupport: false,
     isSuggestedModel: false,
     supportsTools: false,
     supportedCapabilities: [Mojom.ConversationCapability.CHAT],
@@ -29,6 +31,7 @@ describe('ModelIntro', () => {
       leoModelOptions: {
         displayMaker: 'Test Maker',
         name: 'test-leo-model',
+        description: 'Test model description.',
         access: Mojom.ModelAccess.BASIC,
         longConversationWarningCharacterLimit: 1,
         maxAssociatedContentLength: 2,
@@ -90,8 +93,10 @@ describe('ModelIntro', () => {
       tooltip?.querySelector<HTMLDivElement>('[slot="content"]')
     expect(tooltipContent).toBeInTheDocument()
 
-    // Test that the tooltip content has the correct message
+    // Test that the tooltip content has the correct message (description + learn more)
     const tooltipContentText = tooltipContent?.textContent
-    expect(tooltipContentText).toBe(S.CHAT_UI_INTRO_MESSAGE_TEST_MODEL)
+    expect(tooltipContentText).toBe(
+      'Test model description. CHAT_UI_LEARN_MORE',
+    )
   })
 })

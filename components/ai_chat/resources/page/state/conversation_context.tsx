@@ -5,7 +5,9 @@
 
 import * as React from 'react'
 import generateReactContext from '$web-common/api/react_api'
+import { showAlert } from '@brave/leo/react/alertCenter'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
+import { getLocale } from '$web-common/locale'
 import { IGNORE_EXTERNAL_LINK_WARNING_KEY } from '../../common/constants'
 import {
   isFullPageScreenshot,
@@ -151,6 +153,48 @@ export function useProvideConversationContext(props: ConversationContextProps) {
       (m) => m.key === conversationState.defaultModelKey,
     )
   }, [conversationState.allModels, conversationState.defaultModelKey])
+
+  // Track previous model and models list for migration detection
+  const prevModelKeyRef = React.useRef<string | undefined>()
+  const prevAllModelsRef = React.useRef<Mojom.Model[]>([])
+
+  // Detect model migrations and show toast notifications
+  React.useEffect(() => {
+    // Check if model changed
+    if (
+      prevModelKeyRef.current
+      && currentModel
+      && prevModelKeyRef.current !== currentModel.key
+      && prevAllModelsRef.current.length > 0
+    ) {
+      // Check if the old model no longer exists in the new model list
+      const oldModelExists = conversationState.allModels.some(
+        (m) => m.key === prevModelKeyRef.current,
+      )
+
+      if (!oldModelExists) {
+        // Find the old model's display name from the previous list
+        const oldModel = prevAllModelsRef.current.find(
+          (m) => m.key === prevModelKeyRef.current,
+        )
+
+        if (oldModel) {
+          // Show toast notification
+          showAlert({
+            type: 'info',
+            content: getLocale(S.CHAT_UI_MODEL_MIGRATED)
+              .replace('$1', oldModel.displayName)
+              .replace('$2', currentModel.displayName),
+            actions: [],
+          })
+        }
+      }
+    }
+
+    // Update refs for next comparison
+    prevModelKeyRef.current = currentModel?.key
+    prevAllModelsRef.current = [...conversationState.allModels]
+  }, [currentModel, conversationState.allModels])
 
   const shouldShowLongConversationInfo = React.useMemo<boolean>(() => {
     if (!conversationHistory || !currentModel) {
