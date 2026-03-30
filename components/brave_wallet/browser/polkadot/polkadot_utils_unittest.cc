@@ -127,8 +127,8 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport) {
   static constexpr char kPassword[] = "test_password_123";
 
   auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
-  keyring.AddNewHDAccount(0);
-  keyring.AddNewHDAccount(1);
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
+  ASSERT_TRUE(keyring.AddNewHDAccount(1));
 
   std::array<uint8_t, kScryptSaltSize> salt_bytes;
   salt_bytes.fill(1);
@@ -187,8 +187,8 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport_Testnet) {
   static constexpr char kPassword[] = "test_password_123";
 
   auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotTestnet);
-  keyring.AddNewHDAccount(0);
-  keyring.AddNewHDAccount(1);
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
+  ASSERT_TRUE(keyring.AddNewHDAccount(1));
 
   std::array<uint8_t, kScryptSaltSize> salt_bytes;
   salt_bytes.fill(1);
@@ -247,8 +247,8 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_Roundtrip) {
   static constexpr char kPassword[] = "test_password_123";
 
   auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
-  keyring.AddNewHDAccount(0);
-  keyring.AddNewHDAccount(1);
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
+  ASSERT_TRUE(keyring.AddNewHDAccount(1));
 
   // Account 0: encode then decode
   {
@@ -290,7 +290,7 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_WrongPassword) {
   static constexpr char kWrongPassword[] = "wrong_password";
 
   auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
-  keyring.AddNewHDAccount(0);
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
 
   auto encoded_json = keyring.EncodePrivateKeyForExport(0, kPassword);
   ASSERT_TRUE(encoded_json.has_value());
@@ -303,7 +303,7 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_EmptyPassword) {
   static constexpr char kPassword[] = "test_password_123";
 
   auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
-  keyring.AddNewHDAccount(0);
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
 
   auto encoded_json = keyring.EncodePrivateKeyForExport(0, kPassword);
   ASSERT_TRUE(encoded_json.has_value());
@@ -327,7 +327,7 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_Testnet) {
   static constexpr char kPassword[] = "test_password_123";
 
   auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotTestnet);
-  keyring.AddNewHDAccount(0);
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
 
   auto encoded_json = keyring.EncodePrivateKeyForExport(0, kPassword);
   ASSERT_TRUE(encoded_json.has_value());
@@ -342,7 +342,7 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_MissingParts) {
   static constexpr char kPassword[] = "test_password_123";
 
   auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotTestnet);
-  keyring.AddNewHDAccount(0);
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
 
   auto valid_json = keyring.EncodePrivateKeyForExport(0, kPassword);
   ASSERT_TRUE(valid_json.has_value());
