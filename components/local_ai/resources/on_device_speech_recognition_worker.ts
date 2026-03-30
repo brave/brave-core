@@ -75,25 +75,34 @@ class AsrStreamInputImpl implements AsrStreamInputInterface {
   async addAudioChunk(data: AudioData) {
     try {
       const audio = new Float32Array(data.data)
+      console.error('[worker] addAudioChunk samples=',
+        audio.length)
       const resultJson = this.recognizer.add_audio(audio)
+      if (resultJson) {
+        console.error('[worker] add_audio result:', resultJson)
+      }
       this.maybeSendResults(resultJson)
     } catch (e) {
-      console.error('Whisper addAudioChunk error:', e)
+      console.error('[worker] addAudioChunk error:', e)
     }
   }
 
   private flush() {
+    console.error('[worker] flush called')
     try {
       const resultJson = this.recognizer.mark_done()
+      console.error('[worker] mark_done result:', resultJson)
       this.maybeSendResults(resultJson)
     } catch (e) {
-      console.error('Whisper flush error:', e)
+      console.error('[worker] flush error:', e)
     }
   }
 
   private maybeSendResults(json: string) {
     if (json && this.responder) {
       const r = JSON.parse(json)
+      console.error('[worker] sending result:',
+        r.transcript, 'is_final:', r.is_final)
       const result: SpeechRecognitionResult = {
         transcript: r.transcript,
         isFinal: r.is_final,
@@ -179,6 +188,7 @@ class SpeechRecognitionFactoryImpl
     stream: AsrStreamInputPendingReceiver,
     responder: AsrStreamResponderRemote,
   ) {
+    console.error('[worker] createSession called')
     if (!wasmRecognizer) {
       console.error('Cannot create stream: model not loaded')
       return
