@@ -23,6 +23,7 @@
 #include "brave/ios/browser/api/web_view/autofill/brave_web_view_autofill_client.h"
 #include "brave/ios/browser/api/web_view/passwords/brave_web_view_password_manager_client.h"
 #include "brave/ios/browser/brave_ads/ads_tab_helper.h"
+#include "brave/ios/browser/brave_search/brave_search_ad_results_javascript_feature.h"
 #include "brave/ios/browser/brave_talk/brave_talk_tab_helper_bridge.h"
 #include "brave/ios/browser/favicon/brave_ios_web_favicon_driver.h"
 #include "brave/ios/browser/ui/web_view/features.h"
@@ -650,6 +651,22 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   style.Set("fontSize", static_cast<int>(fontSize));
   brave::ReaderModeJavaScriptFeature::GetInstance()->SetStyle(self.webState,
                                                               style);
+}
+
+@end
+
+@implementation BraveWebView (BraveSearchAdResults)
+
+- (void)fetchSearchAdCreatives:
+    (void (^)(NSString* _Nullable json))completionHandler {
+  BraveSearchAdResultsJavaScriptFeature::GetInstance()->GetCreatives(
+      self.webState, base::BindOnce(^(const base::Value* value) {
+        if (value && value->is_string()) {
+          completionHandler(base::SysUTF8ToNSString(value->GetString()));
+          return;
+        }
+        completionHandler(nil);
+      }));
 }
 
 @end
