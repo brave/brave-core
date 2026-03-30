@@ -54,13 +54,14 @@ interface OnDeviceSpeechRecognitionService {
   // Creates a recognition session bound directly to the
   // renderer worker. Creates the background WebContents
   // if needed. If the model is not yet loaded, the
-  // request is deferred until it is.
+  // request is deferred until it is. The callback fires
+  // once the session is established.
   CreateSession(
       on_device_model.mojom.AsrStreamOptions options,
       pending_receiver<on_device_model.mojom.AsrStreamInput>
           stream,
       pending_remote<on_device_model.mojom.AsrStreamResponder>
-          responder);
+          responder) => ();
 
   // Called when all sessions have disconnected. The
   // service closes the background WebContents to free

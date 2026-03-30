@@ -66,8 +66,8 @@ class OnDeviceSpeechRecognitionService
   void CreateSession(
       on_device_model::mojom::AsrStreamOptionsPtr options,
       mojo::PendingReceiver<on_device_model::mojom::AsrStreamInput> stream,
-      mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder> responder)
-      override;
+      mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder> responder,
+      CreateSessionCallback callback) override;
   void NotifySpeechRecognitionIdle() override;
 
  private:
@@ -85,7 +85,8 @@ class OnDeviceSpeechRecognitionService
       on_device_model::mojom::AsrStreamOptionsPtr options,
       mojo::PendingReceiver<on_device_model::mojom::AsrStreamInput> stream,
       mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder>
-          responder);
+          responder,
+      CreateSessionCallback callback);
 
   mojo::ReceiverSet<mojom::OnDeviceSpeechRecognitionService> receivers_;
   mojo::Remote<mojom::SpeechRecognitionFactory> factory_;

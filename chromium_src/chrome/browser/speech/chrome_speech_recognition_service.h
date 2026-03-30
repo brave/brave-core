@@ -51,6 +51,16 @@ class ChromeSpeechRecognitionService
           receiver) override;
 
  private:
+  void OnSessionCreated(
+      mojo::PendingReceiver<
+          media::mojom::SpeechRecognitionContext>
+          receiver,
+      mojo::PendingRemote<
+          on_device_model::mojom::AsrStreamInput>
+          stream,
+      mojo::PendingReceiver<
+          on_device_model::mojom::AsrStreamResponder>
+          responder);
   void OnAsrSessionStored(
       mojo::PendingReceiver<
           media::mojom::SpeechRecognitionContext>

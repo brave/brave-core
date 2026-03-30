@@ -73,6 +73,8 @@ void ChromeSpeechRecognitionService::
                 GetForProfile(profile));
   }
 
+  LOG(ERROR) << "[BraveSpeech] Creating ASR session";
+
   // Create pipe pairs.
   mojo::PendingRemote<
       on_device_model::mojom::AsrStreamInput>
@@ -86,19 +88,39 @@ void ChromeSpeechRecognitionService::
   auto responder_receiver =
       responder_remote.InitWithNewPipeAndPassReceiver();
 
-  // CreateSession — WASM worker binds stream_receiver
-  // and responder_remote.
+  // CreateSession — wait for WASM worker to be ready
+  // and bind the pipes before sending the other ends
+  // to the utility process.
   auto options =
       on_device_model::mojom::AsrStreamOptions::New();
   speech_service_->CreateSession(
       std::move(options), std::move(stream_receiver),
-      std::move(responder_remote));
+      std::move(responder_remote),
+      base::BindOnce(
+          &ChromeSpeechRecognitionService::
+              OnSessionCreated,
+          weak_ptr_factory_.GetWeakPtr(),
+          std::move(receiver),
+          std::move(stream_remote),
+          std::move(responder_receiver)));
+}
 
-  // Send the other ends to the utility process, then
-  // bind the speech recognition context.
+void ChromeSpeechRecognitionService::OnSessionCreated(
+    mojo::PendingReceiver<
+        media::mojom::SpeechRecognitionContext> receiver,
+    mojo::PendingRemote<
+        on_device_model::mojom::AsrStreamInput> stream,
+    mojo::PendingReceiver<
+        on_device_model::mojom::AsrStreamResponder>
+        responder) {
+  if (!speech_recognition_service_.is_bound()) {
+    return;
+  }
+
+  LOG(ERROR) << "[BraveSpeech] Session created, "
+             << "sending to utility process";
   speech_recognition_service_->SetAsrSession(
-      std::move(stream_remote),
-      std::move(responder_receiver),
+      std::move(stream), std::move(responder),
       base::BindOnce(
           &ChromeSpeechRecognitionService::
               OnAsrSessionStored,

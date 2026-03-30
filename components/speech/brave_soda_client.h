@@ -61,6 +61,7 @@ class BraveSodaClient
           result) override;
 
  private:
+  void OnResponderDisconnect();
   void SendStopEvent();
 
   mojo::Remote<on_device_model::mojom::AsrStreamInput>
@@ -72,6 +73,7 @@ class BraveSodaClient
   int sample_rate_ = 0;
   int channel_count_ = 0;
   bool initialized_ = false;
+  bool mark_done_pending_ = false;
 };
 
 }  // namespace speech

@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/functional/bind.h"
 #include "base/check.h"
 #include "base/compiler_specific.h"
 #include "base/containers/span.h"
@@ -25,7 +26,11 @@ BraveSodaClient::BraveSodaClient(
         on_device_model::mojom::AsrStreamResponder>
         responder)
     : stream_(std::move(stream)),
-      responder_receiver_(this, std::move(responder)) {}
+      responder_receiver_(this, std::move(responder)) {
+  responder_receiver_.set_disconnect_handler(
+      base::BindOnce(&BraveSodaClient::OnResponderDisconnect,
+                     base::Unretained(this)));
+}
 
 BraveSodaClient::~BraveSodaClient() =
     default;
@@ -34,8 +39,13 @@ void BraveSodaClient::AddAudio(
     const char* audio_buffer,
     int audio_buffer_size) {
   if (!initialized_ || !stream_.is_bound()) {
+    LOG(ERROR) << "BraveSodaClient::AddAudio skipped"
+               << " initialized=" << initialized_
+               << " bound=" << stream_.is_bound();
     return;
   }
+  LOG(ERROR) << "BraveSodaClient::AddAudio"
+             << " bytes=" << audio_buffer_size;
 
   // Recover the original int16_t samples that the caller
   // cast to char* for the SODA C API.
@@ -64,11 +74,16 @@ void BraveSodaClient::AddAudio(
 }
 
 void BraveSodaClient::MarkDone() {
-  if (!initialized_ || !stream_.is_bound()) {
+  LOG(ERROR) << "BraveSodaClient::MarkDone";
+  if (!initialized_) {
     return;
   }
   // Disconnect the stream to signal end of audio.
+  // The worker will flush remaining audio, send final
+  // result via OnResponse (is_final=true), then
+  // disconnect the responder pipe.
   stream_.reset();
+  mark_done_pending_ = true;
 }
 
 bool BraveSodaClient::DidAudioPropertyChange(
@@ -138,6 +153,19 @@ void BraveSodaClient::OnResponse(
     callback_(serialized.data(),
               static_cast<int>(serialized.size()),
               callback_handle_.get());
+
+    if (r->is_final && mark_done_pending_) {
+      mark_done_pending_ = false;
+      SendStopEvent();
+    }
+  }
+}
+
+void BraveSodaClient::OnResponderDisconnect() {
+  LOG(ERROR) << "BraveSodaClient::OnResponderDisconnect";
+  if (mark_done_pending_) {
+    mark_done_pending_ = false;
+    SendStopEvent();
   }
 }
 

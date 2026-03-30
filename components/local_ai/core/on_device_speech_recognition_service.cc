@@ -96,17 +96,23 @@ void OnDeviceSpeechRecognitionService::RegisterSpeechRecognitionFactory(
 void OnDeviceSpeechRecognitionService::CreateSession(
     on_device_model::mojom::AsrStreamOptionsPtr options,
     mojo::PendingReceiver<on_device_model::mojom::AsrStreamInput> stream,
-    mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder> responder) {
+    mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder> responder,
+    CreateSessionCallback callback) {
   MaybeCreateBWC();
   if (ReadyToServe()) {
-    ForwardSession(std::move(options), std::move(stream), std::move(responder));
+    ForwardSession(std::move(options), std::move(stream),
+                   std::move(responder), std::move(callback));
     return;
   }
+  // Split callback so on_cancel can run it if load fails.
+  auto [on_ready_cb, on_cancel_cb] =
+      base::SplitOnceCallback(std::move(callback));
   QueueConsumer(
       base::BindOnce(&OnDeviceSpeechRecognitionService::ForwardSession,
                      weak_ptr_factory_.GetWeakPtr(), std::move(options),
-                     std::move(stream), std::move(responder)),
-      base::DoNothing());
+                     std::move(stream), std::move(responder),
+                     std::move(on_ready_cb)),
+      std::move(on_cancel_cb));
 }
 
 void OnDeviceSpeechRecognitionService::NotifySpeechRecognitionIdle() {
@@ -165,9 +171,11 @@ void OnDeviceSpeechRecognitionService::OnShutdownExtra() {
 void OnDeviceSpeechRecognitionService::ForwardSession(
     on_device_model::mojom::AsrStreamOptionsPtr options,
     mojo::PendingReceiver<on_device_model::mojom::AsrStreamInput> stream,
-    mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder> responder) {
+    mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder> responder,
+    CreateSessionCallback callback) {
   factory_->CreateSession(std::move(options), std::move(stream),
                           std::move(responder));
+  std::move(callback).Run();
 }
 
 }  // namespace local_ai
