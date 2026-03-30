@@ -52,7 +52,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/extensions/detail_view.html.ts
 +++ gen/chrome/browser/resources/extensions/preprocessed/detail_view.html.ts
-@@ -346,16 +346,13 @@
+@@ -349,16 +349,13 @@
                @change=\\"\${this.onPinnedToToolbarChange_}\\">
              <span>$i18n{itemPinToToolbar}</span>
            </extensions-toggle-row>\` : ''}
