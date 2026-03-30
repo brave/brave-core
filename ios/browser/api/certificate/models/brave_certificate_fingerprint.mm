@@ -27,9 +27,7 @@
         std::string data = base::SHA1HashString(std::string(
             reinterpret_cast<const char*>(CFDataGetBytePtr(cert_data)),
             CFDataGetLength(cert_data)));
-        _fingerprintHexEncoded =
-            base::SysUTF8ToNSString(base::HexEncode(data.data(), data.size()));
-
+        _fingerprintHexEncoded = base::SysUTF8ToNSString(base::HexEncode(data));
       } break;
 
       case BraveFingerprintType_SHA256: {
@@ -43,8 +41,7 @@
         secure_hash->Update(base::span<const uint8_t>(cert_bytes));
         secure_hash->Finish(data);
 
-        _fingerprintHexEncoded =
-            base::SysUTF8ToNSString(base::HexEncode(data.data(), data.size()));
+        _fingerprintHexEncoded = base::SysUTF8ToNSString(base::HexEncode(data));
       } break;
     }
   }
