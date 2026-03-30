@@ -81,6 +81,10 @@ CWV_EXPORT
         (BraveNavigationAction*)navigationAction
                          decisionHandler:(void (^)(CWVNavigationActionPolicy))
                                              decisionHandler;
+/// Noifies the delegate that a navigation did commit on the same document
+/// (reference fragment navigations, pushState/replaceState, same document
+/// history navigation)
+- (void)webViewDidCommitSameDocumentNavigation:(CWVWebView*)webView;
 
 @end
 

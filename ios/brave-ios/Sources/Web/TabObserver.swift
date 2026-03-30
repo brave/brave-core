@@ -14,6 +14,7 @@ public protocol TabObserver: AnyObject {
 
   func tabDidStartNavigation(_ tab: some TabState)
   func tabDidCommitNavigation(_ tab: some TabState)
+  func tabDidCommitSameDocumentNavigation(_ tab: some TabState)
   func tabDidRedirectNavigation(_ tab: some TabState)
   func tabDidFinishNavigation(_ tab: some TabState)
   func tab(_ tab: some TabState, didFailNavigationWithError error: Error)
@@ -55,6 +56,7 @@ extension TabObserver {
 
   public func tabDidStartNavigation(_ tab: some TabState) {}
   public func tabDidCommitNavigation(_ tab: some TabState) {}
+  public func tabDidCommitSameDocumentNavigation(_ tab: some TabState) {}
   public func tabDidRedirectNavigation(_ tab: some TabState) {}
   public func tabDidFinishNavigation(_ tab: some TabState) {}
   public func tab(_ tab: some TabState, didFailNavigationWithError error: Error) {}
@@ -86,6 +88,7 @@ class AnyTabObserver: TabObserver, Hashable, CustomDebugStringConvertible {
 
   private let _tabDidStartNavigation: (any TabState) -> Void
   private let _tabDidCommitNavigation: (any TabState) -> Void
+  private let _tabDidCommitSameDocumentNavigation: (any TabState) -> Void
   private let _tabDidRedirectNavigation: (any TabState) -> Void
   private let _tabDidFinishNavigation: (any TabState) -> Void
   private let _tabDidFailNavigationWithError: (any TabState, Error) -> Void
@@ -129,6 +132,9 @@ class AnyTabObserver: TabObserver, Hashable, CustomDebugStringConvertible {
     _tabWasShown = { [weak observer] in observer?.tabWasShown($0) }
     _tabWasHidden = { [weak observer] in observer?.tabWasHidden($0) }
     _tabDidStartNavigation = { [weak observer] in observer?.tabDidStartNavigation($0) }
+    _tabDidCommitSameDocumentNavigation = { [weak observer] in
+      observer?.tabDidCommitSameDocumentNavigation($0)
+    }
     _tabDidCommitNavigation = { [weak observer] in observer?.tabDidCommitNavigation($0) }
     _tabDidRedirectNavigation = { [weak observer] in observer?.tabDidRedirectNavigation($0) }
     _tabDidFinishNavigation = { [weak observer] in observer?.tabDidFinishNavigation($0) }
@@ -174,6 +180,9 @@ class AnyTabObserver: TabObserver, Hashable, CustomDebugStringConvertible {
   }
   func tabDidCommitNavigation(_ tab: some TabState) {
     _tabDidCommitNavigation(tab)
+  }
+  func tabDidCommitSameDocumentNavigation(_ tab: some TabState) {
+    _tabDidCommitSameDocumentNavigation(tab)
   }
   func tabDidRedirectNavigation(_ tab: some TabState) {
     _tabDidRedirectNavigation(tab)

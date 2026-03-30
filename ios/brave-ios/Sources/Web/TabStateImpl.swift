@@ -133,6 +133,12 @@ extension TabStateImpl {
     }
   }
 
+  func didCommitSameDocumentNavigation() {
+    observers.forEach {
+      $0.tabDidCommitSameDocumentNavigation(self)
+    }
+  }
+
   func didRedirectNavigation() {
     observers.forEach {
       $0.tabDidRedirectNavigation(self)
