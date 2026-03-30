@@ -7,11 +7,15 @@ import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 
 import './brave_account_password_icons.js'
 import './brave_account_password_strength_meter.js'
-import { BraveAccountPasswordInputElement } from './brave_account_password_input.js'
+import {
+  BraveAccountPasswordInputElement,
+  MAX_PASSWORD_LENGTH,
+} from './brave_account_password_input.js'
 
 export function getHtml(this: BraveAccountPasswordInputElement) {
   return html`<!--_html_template_start_-->
     <leo-input
+      maxlength=${MAX_PASSWORD_LENGTH}
       placeholder=${this.placeholder}
       ?showErrors=${this.config.mode !== 'regular'}
       type="password"
