@@ -18,6 +18,7 @@ import org.chromium.build.annotations.EnsuresNonNull;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.feed.BraveFeedSurfaceCoordinator;
 import org.chromium.chrome.browser.feed.FeedActionDelegate;
@@ -33,6 +34,8 @@ import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImp
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.share.ShareDelegate;
+import org.chromium.chrome.browser.suggestions.tile.Tile;
+import org.chromium.chrome.browser.suggestions.tile.TileSource;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tabmodel.TabModel;
@@ -46,6 +49,7 @@ import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.content_public.browser.LoadUrlParams;
+import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.ui.base.ActivityResultTracker;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
@@ -53,8 +57,9 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 import java.util.function.Supplier;
 
 @NullMarked
-public class BraveNewTabPage extends NewTabPage {
+public class BraveNewTabPage extends NewTabPage implements NewTabPage.MostVisitedTileClickObserver {
     // To delete in bytecode, members from parent class will be used instead.
+    private Activity mActivity;
     private @Nullable BrowserControlsStateProvider mBrowserControlsStateProvider;
     private @Nullable NewTabPageLayout mNewTabPageLayout;
 
@@ -144,6 +149,22 @@ public class BraveNewTabPage extends NewTabPage {
                 TemplateUrlServiceFactory.getForProfile(
                         Profile.fromWebContents(assertNonNull(mTab.getWebContents())));
         templateUrlService.addObserver(this);
+
+        addMostVisitedTileClickObserver(this);
+    }
+
+    @Override
+    public void destroy() {
+        removeMostVisitedTileClickObserver(this);
+        super.destroy();
+    }
+
+    @Override
+    public void onMostVisitedTileClicked(Tile tile, Tab tab) {
+        if (!(mActivity instanceof BraveActivity braveActivity)) return;
+        MiscAndroidMetrics miscAndroidMetrics = braveActivity.getMiscAndroidMetrics();
+        if (miscAndroidMetrics == null) return;
+        miscAndroidMetrics.recordTopSiteNavigation(tile.getSource() == TileSource.CUSTOM_LINKS);
     }
 
     @Override
