@@ -64,7 +64,7 @@ void PushNotification(content::BrowserContext* context,
       GURL("brave://wallet/crypto/accounts/" + from + "#" + uuid));
   auto* profile = Profile::FromBrowserContext(context);
   NotificationDisplayServiceFactory::GetForProfile(profile)->Display(
-      NotificationHandler::Type::SEND_TAB_TO_SELF, *notification, nullptr);
+      NotificationHandler::Type::ANNOUNCEMENT, *notification, nullptr);
 }
 
 }  // namespace

@@ -73,7 +73,7 @@ class WalletNotificationServiceUnitTest : public testing::Test {
     meta.set_status(status);
     notification_service_->OnTransactionStatusChanged(meta.ToTransactionInfo());
     auto notification = tester_->GetNotification(meta.id());
-    tester_->RemoveAllNotifications(NotificationHandler::Type::SEND_TAB_TO_SELF,
+    tester_->RemoveAllNotifications(NotificationHandler::Type::ANNOUNCEMENT,
                                     true /* by_user */);
     return notification.has_value();
   }
