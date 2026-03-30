@@ -3,6 +3,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+# Overrides: map a Nala source drawable to a Chromium drawable name.
+# Add new entries here to override additional Chromium icons.
+nala_icon_overrides = [
+  {
+    # Override Chromium's star icon in the bookmark bar with Brave's bookmark ribbon.
+    source = "ic_browser_bookmark_normal.xml"
+    dest = "ic_all_bookmarks_icon_16dp.xml"
+  },
+]
+
 # Please keep this list sorted alphabetically.
 nala_icons = [
   "ic_accessibility.xml",

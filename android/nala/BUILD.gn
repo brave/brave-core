@@ -8,6 +8,18 @@ import("//build/config/android/rules.gni")
 
 nala_base_path = "../../node_modules/@brave/leo/tokens/android"
 
+# Generate one copy() target per icon override and collect their dep labels.
+# To override a Chromium drawable, add an entry to nala_icon_overrides in icons.gni.
+_nala_override_deps = []
+foreach(override, nala_icon_overrides) {
+  _name = "nala_override_" + string_replace(override.dest, ".xml", "")
+  copy(_name) {
+    sources = [ "$nala_base_path/drawable/${override.source}" ]
+    outputs = [ "$target_gen_dir/res/drawable/${override.dest}" ]
+  }
+  _nala_override_deps += [ ":$_name" ]
+}
+
 # Copies Nala Android tokens to the gen directory.
 # Note: We need to copy on a per folder basis as GN can't
 # preserve the directory structure in a copy target.
@@ -17,6 +29,7 @@ group("nala") {
     ":nala_colors_night",
     ":nala_icons",
   ]
+  public_deps += _nala_override_deps
 }
 
 copy("nala_colors") {
@@ -45,6 +58,9 @@ android_resources("java_resources") {
   ]
   foreach(icon, nala_icons) {
     sources += [ "$target_gen_dir/res/drawable/$icon" ]
+  }
+  foreach(override, nala_icon_overrides) {
+    sources += [ "$target_gen_dir/res/drawable/${override.dest}" ]
   }
   resource_overlay = true
   deps = [ ":nala" ]
