@@ -25,7 +25,11 @@
 #include "ui/base/page_transition_types.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "components/tabs/public/tab_interface.h"
 #endif
 
 namespace brave_ads {
@@ -86,11 +90,12 @@ AdsTabHelper::AdsTabHelper(content::WebContents* const web_contents)
 
 #if !BUILDFLAG(IS_ANDROID)
   // See `application_state_monitor_android.h` for Android.
-  browser_collection_observation_.Observe(
-      GlobalBrowserCollection::GetInstance());
-#endif  // !BUILDFLAG(IS_ANDROID)
+  BrowserList::AddObserver(this);
 
-  MaybeSetBrowserIsActive();
+  MaybeSetInitialBrowserIsActive();
+#else
+  MaybeSetBrowserIsActive(/*browser_window=*/nullptr);
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   OnVisibilityChanged(web_contents->GetVisibility());
 }
@@ -117,7 +122,17 @@ bool AdsTabHelper::IsVisible() const {
   return is_web_contents_visible_ && is_browser_active_.value_or(false);
 }
 
-void AdsTabHelper::MaybeSetBrowserIsActive() {
+void AdsTabHelper::MaybeSetBrowserIsActive(
+    const BrowserWindowInterface* const browser_window) {
+#if !BUILDFLAG(IS_ANDROID)
+  const tabs::TabInterface* const tab =
+      tabs::TabInterface::MaybeGetFromContents(web_contents());
+  if (tab && tab->GetBrowserWindowInterface() != browser_window) {
+    // Not this tab's browser window.
+    return;
+  }
+#endif
+
   if (is_browser_active_.has_value() && *is_browser_active_) {
     // Already active.
     return;
@@ -132,7 +147,17 @@ void AdsTabHelper::MaybeSetBrowserIsActive() {
   MaybeNotifyTabDidChange();
 }
 
-void AdsTabHelper::MaybeSetBrowserIsNoLongerActive() {
+void AdsTabHelper::MaybeSetBrowserIsNoLongerActive(
+    const BrowserWindowInterface* const browser_window) {
+#if !BUILDFLAG(IS_ANDROID)
+  const tabs::TabInterface* const tab =
+      tabs::TabInterface::MaybeGetFromContents(web_contents());
+  if (tab && tab->GetBrowserWindowInterface() != browser_window) {
+    // Not this tab's browser window.
+    return;
+  }
+#endif
+
   if (is_browser_active_.has_value() && !*is_browser_active_) {
     // Already inactive.
     return;
@@ -435,15 +460,52 @@ void AdsTabHelper::WebContentsDestroyed() {
 }
 
 #if !BUILDFLAG(IS_ANDROID)
-// TODO(https://github.com/brave/brave-browser/issues/24970): Decouple
-// BrowserCollectionObserver.
+void AdsTabHelper::MaybeSetInitialBrowserIsActive() {
+  // Only mark the browser as active if this tab belongs to the currently active
+  // browser window. Tabs opened in background windows must start inactive.
+  const tabs::TabInterface* const tab =
+      tabs::TabInterface::MaybeGetFromContents(web_contents());
+  if (!tab) {
+    return;
+  }
 
-void AdsTabHelper::OnBrowserActivated(BrowserWindowInterface* /*browser*/) {
-  MaybeSetBrowserIsActive();
+  const BrowserWindowInterface* const browser_window =
+      tab->GetBrowserWindowInterface();
+  if (!browser_window) {
+    return;
+  }
+
+  if (browser_window->IsActive()) {
+    MaybeSetBrowserIsActive(browser_window);
+  }
 }
 
-void AdsTabHelper::OnBrowserDeactivated(BrowserWindowInterface* /*browser*/) {
-  MaybeSetBrowserIsNoLongerActive();
+void AdsTabHelper::OnBrowserRemoved(Browser* const /*browser*/) {
+  // `BrowserListObserver::OnBrowserSetLastActive` is not automatically called
+  // when a browser closes, so check whether our browser is now the last active.
+  const tabs::TabInterface* const tab =
+      tabs::TabInterface::MaybeGetFromContents(web_contents());
+  if (!tab) {
+    return;
+  }
+
+  const BrowserWindowInterface* const browser_window =
+      tab->GetBrowserWindowInterface();
+  if (!browser_window) {
+    return;
+  }
+
+  if (GetLastActiveBrowserWindowInterfaceWithAnyProfile() == browser_window) {
+    MaybeSetBrowserIsActive(browser_window);
+  }
+}
+
+void AdsTabHelper::OnBrowserSetLastActive(Browser* const browser) {
+  MaybeSetBrowserIsActive(browser);
+}
+
+void AdsTabHelper::OnBrowserNoLongerActive(Browser* const browser) {
+  MaybeSetBrowserIsNoLongerActive(browser);
 }
 #endif
 

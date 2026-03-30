@@ -20,13 +20,12 @@
 #include "content/public/browser/web_contents_user_data.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "base/scoped_observation.h"
-#include "chrome/browser/ui/browser_window/public/browser_collection_observer.h"
+#include "chrome/browser/ui/browser_list_observer.h"
 #endif
 
-class GURL;
+class Browser;
 class BrowserWindowInterface;
-class BrowserCollection;
+class GURL;
 
 namespace brave_ads {
 
@@ -34,7 +33,7 @@ class AdsService;
 
 class AdsTabHelper final : public content::WebContentsObserver,
 #if !BUILDFLAG(IS_ANDROID)
-                           public BrowserCollectionObserver,
+                           public BrowserListObserver,
 #endif
                            public content::WebContentsUserData<AdsTabHelper> {
  public:
@@ -56,8 +55,9 @@ class AdsTabHelper final : public content::WebContentsObserver,
 
   bool IsVisible() const;
 
-  void MaybeSetBrowserIsActive();
-  void MaybeSetBrowserIsNoLongerActive();
+  void MaybeSetBrowserIsActive(const BrowserWindowInterface* browser_window);
+  void MaybeSetBrowserIsNoLongerActive(
+      const BrowserWindowInterface* browser_window);
 
   void ProcessNavigation();
   void ResetNavigationState();
@@ -104,9 +104,15 @@ class AdsTabHelper final : public content::WebContentsObserver,
   void WebContentsDestroyed() override;
 
 #if !BUILDFLAG(IS_ANDROID)
-  // BrowserCollectionObserver:
-  void OnBrowserActivated(BrowserWindowInterface* browser) override;
-  void OnBrowserDeactivated(BrowserWindowInterface* browser) override;
+  void MaybeSetInitialBrowserIsActive();
+
+  // TODO(https://github.com/brave/brave-browser/issues/24970): Decouple
+  // BrowserListObserver from AdsTabHelper.
+
+  // BrowserListObserver:
+  void OnBrowserRemoved(Browser* browser) override;
+  void OnBrowserSetLastActive(Browser* browser) override;
+  void OnBrowserNoLongerActive(Browser* browser) override;
 #endif
 
   SessionID session_id_;
@@ -128,11 +134,6 @@ class AdsTabHelper final : public content::WebContentsObserver,
   base::flat_set<content::MediaPlayerId> media_players_with_audio_;
 
   std::optional<bool> is_browser_active_;
-
-#if !BUILDFLAG(IS_ANDROID)
-  base::ScopedObservation<BrowserCollection, BrowserCollectionObserver>
-      browser_collection_observation_{this};
-#endif
 
   base::WeakPtrFactory<AdsTabHelper> weak_factory_{this};
 
