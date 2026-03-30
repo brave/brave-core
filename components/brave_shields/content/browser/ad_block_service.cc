@@ -562,16 +562,17 @@ void AdBlockService::StripProceduralFilters(base::DictValue& resources) {
   if (procedural_actions) {
     base::ListValue::iterator it = procedural_actions->begin();
     while (it < procedural_actions->end()) {
-      DCHECK(it->is_string());
       auto* pfilter_str = it->GetIfString();
       if (pfilter_str == nullptr) {
+        it = procedural_actions->erase(it);
         continue;
       }
       auto val = base::JSONReader::ReadDict(*pfilter_str, base::JSON_PARSE_RFC);
       if (val) {
         auto* list = val->FindList("selector");
-        if (list && list->size() != 1) {
+        if (!list || list->size() != 1) {
           // Non-procedural filters are always a single operator in length.
+          // Also strip entries with no "selector" key at all.
           it = procedural_actions->erase(it);
           continue;
         }
