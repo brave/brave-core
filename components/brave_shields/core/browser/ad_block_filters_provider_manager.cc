@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 
-#include <algorithm>
 #include <memory>
 #include <string>
 #include <utility>
@@ -17,7 +16,6 @@
 #include "base/rand_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 
 namespace brave_shields {
 
