@@ -1569,7 +1569,6 @@ public class BytecodeTest {
                         Supplier.class,
                         HomeSurfaceTracker.class,
                         ActivityResultTracker.class,
-                        MonotonicObservableSupplier.class,
                         NonNullObservableSupplier.class,
                         OneshotSupplier.class,
                         MonotonicObservableSupplier.class,
