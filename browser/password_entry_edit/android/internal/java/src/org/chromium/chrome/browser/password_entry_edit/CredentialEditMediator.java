@@ -9,6 +9,7 @@
 
 package org.chromium.chrome.browser.password_entry_edit;
 
+import static org.chromium.build.NullUtil.assertNonNull;
 import static org.chromium.chrome.browser.password_entry_edit.CredentialEditMediator.CredentialEditError.DUPLICATE_USERNAME;
 import static org.chromium.chrome.browser.password_entry_edit.CredentialEditMediator.CredentialEditError.EMPTY_PASSWORD;
 import static org.chromium.chrome.browser.password_entry_edit.CredentialEditMediator.CredentialEditError.ERROR_COUNT;
@@ -30,6 +31,7 @@ import static org.chromium.chrome.browser.password_entry_edit.CredentialEditProp
 import static org.chromium.chrome.browser.password_entry_edit.CredentialEditProperties.URL_OR_APP;
 import static org.chromium.chrome.browser.password_entry_edit.CredentialEditProperties.USERNAME;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 
@@ -40,12 +42,19 @@ import org.chromium.base.CallbackUtils;
 import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.password_entry_edit.CredentialEditCoordinator.CredentialActionDelegate;
 import org.chromium.chrome.browser.password_entry_edit.CredentialEntryFragmentViewBase.UiActionHandler;
-import org.chromium.chrome.browser.password_manager.ConfirmationDialogHelper;
 import org.chromium.chrome.browser.password_manager.settings.PasswordAccessReauthenticationHelper;
 import org.chromium.chrome.browser.password_manager.settings.PasswordAccessReauthenticationHelper.ReauthReason;
+import org.chromium.components.browser_ui.widget.ActionConfirmationDialog;
+import org.chromium.components.browser_ui.widget.ActionConfirmationDialog.ConfirmationDialogParams;
+import org.chromium.components.browser_ui.widget.ActionConfirmationDialog.DialogDismissType;
+import org.chromium.components.browser_ui.widget.ActionConfirmationDialog.DialogHandle;
+import org.chromium.components.browser_ui.widget.StrictButtonPressController.ButtonClickResult;
 import org.chromium.ui.base.Clipboard;
+import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.modaldialog.DialogDismissalCause;
 import org.chromium.ui.modelutil.PropertyModel;
 import org.chromium.ui.widget.Toast;
 
@@ -68,7 +77,8 @@ public class CredentialEditMediator implements UiActionHandler {
     static final String BLOCKED_CREDENTIAL_ACTION_HISTOGRAM =
             "PasswordManager.CredentialEntryActions.BlockedCredential";
     private final PasswordAccessReauthenticationHelper mReauthenticationHelper;
-    private final ConfirmationDialogHelper mDeleteDialogHelper;
+    private final ActionConfirmationDialog mActionConfirmationDialog;
+    private @Nullable DialogHandle mConfirmationDialogDismissHandler;
     private final Resources mResources;
     private final CredentialActionDelegate mCredentialActionDelegate;
     private final Runnable mHelpLauncher;
@@ -78,6 +88,7 @@ public class CredentialEditMediator implements UiActionHandler {
     private String mOriginalPassword;
     private boolean mIsInsecureCredential;
     private Set<String> mExistingUsernames;
+    private final Activity mActivity;
 
     /**
      * The action that the user takes within the credential entry UI.
@@ -149,14 +160,18 @@ public class CredentialEditMediator implements UiActionHandler {
     }
 
     CredentialEditMediator(
+            Activity activity,
+            WindowAndroid windowAndroid,
             PasswordAccessReauthenticationHelper reauthenticationHelper,
-            ConfirmationDialogHelper deleteDialogHelper,
             Resources resources,
             CredentialActionDelegate credentialActionDelegate,
             Runnable helpLauncher,
             boolean isBlockedCredential) {
         mReauthenticationHelper = reauthenticationHelper;
-        mDeleteDialogHelper = deleteDialogHelper;
+        mActivity = activity;
+        mActionConfirmationDialog =
+                new ActionConfirmationDialog(
+                        mActivity, assertNonNull(windowAndroid.getModalDialogManager()));
         mResources = resources;
         mCredentialActionDelegate = credentialActionDelegate;
         mHelpLauncher = helpLauncher;
@@ -185,6 +200,10 @@ public class CredentialEditMediator implements UiActionHandler {
     }
 
     void dismiss() {
+        if (mConfirmationDialogDismissHandler != null) {
+            mConfirmationDialogDismissHandler.dismiss(DialogDismissalCause.UNKNOWN);
+            mConfirmationDialogDismissHandler = null;
+        }
         mModel.set(UI_DISMISSED_BY_NATIVE, true);
     }
 
@@ -255,15 +274,35 @@ public class CredentialEditMediator implements UiActionHandler {
                         mModel.get(URL_OR_APP));
         String confirmation =
                 mResources.getString(R.string.password_entry_edit_delete_credential_dialog_confirm);
-        mDeleteDialogHelper.showConfirmation(
-                title,
-                message,
-                confirmation,
-                () -> {
-                    recordDeleted();
-                    mCredentialActionDelegate.deleteCredential();
-                },
-                CallbackUtils.emptyRunnable());
+        mConfirmationDialogDismissHandler =
+                mActionConfirmationDialog.show(
+                        new ConfirmationDialogParams(mActivity)
+                                .withTitle(title)
+                                .withDescription(message)
+                                .withPositiveButton(confirmation)
+                                .withNegativeButton(android.R.string.cancel)
+                                .withSupportStopShowing(false),
+                        (handler, result, stopShowing) ->
+                                onConfirmationDialogInteracted(
+                                        result,
+                                        () -> {
+                                            recordDeleted();
+                                            mCredentialActionDelegate.deleteCredential();
+                                        },
+                                        CallbackUtils.emptyRunnable()));
+    }
+
+    private @DialogDismissType int onConfirmationDialogInteracted(
+            @ButtonClickResult int buttonClickResult,
+            Runnable confirmedCallback,
+            Runnable declinedCallback) {
+        mConfirmationDialogDismissHandler = null;
+        if (buttonClickResult == ButtonClickResult.POSITIVE) {
+            confirmedCallback.run();
+        } else {
+            declinedCallback.run();
+        }
+        return DialogDismissType.DISMISS_IMMEDIATELY;
     }
 
     @Override

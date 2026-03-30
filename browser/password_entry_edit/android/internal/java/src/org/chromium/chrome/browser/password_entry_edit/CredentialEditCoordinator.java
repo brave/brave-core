@@ -20,9 +20,9 @@ import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncherFactory;
 import org.chromium.chrome.browser.password_entry_edit.CredentialEntryFragmentViewBase.ComponentStateDelegate;
-import org.chromium.chrome.browser.password_manager.ConfirmationDialogHelper;
 import org.chromium.chrome.browser.password_manager.settings.PasswordAccessReauthenticationHelper;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modelutil.PropertyModel;
 import org.chromium.ui.modelutil.PropertyModelChangeProcessor;
 
@@ -52,6 +52,7 @@ class CredentialEditCoordinator implements ComponentStateDelegate {
 
     CredentialEditCoordinator(
             Profile profile,
+            WindowAndroid windowAndroid,
             CredentialEntryFragmentViewBase fragmentView,
             UiDismissalHandler dismissalHandler,
             CredentialActionDelegate credentialActionDelegate) {
@@ -64,8 +65,9 @@ class CredentialEditCoordinator implements ComponentStateDelegate {
 
         mMediator =
                 new CredentialEditMediator(
+                        mFragmentView.getActivity(),
+                        windowAndroid,
                         mReauthenticationHelper,
-                        new ConfirmationDialogHelper(mFragmentView.getContext()),
                         resources,
                         credentialActionDelegate,
                         this::handleHelp,
@@ -120,6 +122,7 @@ class CredentialEditCoordinator implements ComponentStateDelegate {
 
     @Override
     public void onDestroy() {
+        mMediator.dismiss();
         mDismissalHandler.onUiDismissed();
     }
 
