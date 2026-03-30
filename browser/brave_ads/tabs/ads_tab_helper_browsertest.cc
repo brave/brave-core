@@ -15,6 +15,7 @@
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/notreached.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
@@ -22,6 +23,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/test/gmock_callback_support.h"
+#include "base/test/test_future.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_mock.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
@@ -156,35 +158,61 @@ class MediaWaiter final : public content::WebContentsObserver {
   explicit MediaWaiter(content::WebContents* const web_contents)
       : content::WebContentsObserver(web_contents) {}
 
-  void WaitForMediaStartedPlaying() { media_started_playing_run_loop_.Run(); }
+  void WaitForMediaStartedPlaying() {
+    ASSERT_TRUE(media_started_playing_.Wait());
+  }
 
-  void WaitForMediaDestroyed() { media_destroyed_run_loop_.Run(); }
+  void WaitForMediaDestroyed() { ASSERT_TRUE(media_destroyed_.Wait()); }
 
-  void WaitForMediaSessionCreated() { media_session_created_run_loop_.Run(); }
+  void WaitForMediaSessionCreated() {
+    ASSERT_TRUE(media_session_created_.Wait());
+  }
+
+  void WaitForMediaMutedStatusChanged() {
+    if (muted_status_changed_count_ > 0U) {
+      --muted_status_changed_count_;
+      return;
+    }
+    base::test::TestFuture<void> future;
+    muted_status_changed_callback_ = future.GetCallback();
+    ASSERT_TRUE(future.Wait());
+  }
 
   // content::WebContentsObserver:
   void MediaStartedPlaying(const MediaPlayerInfo& /*video_type*/,
                            const content::MediaPlayerId& id) override {
     id_ = id;
-    media_started_playing_run_loop_.Quit();
+    media_started_playing_.SetValue();
   }
 
   void MediaDestroyed(const content::MediaPlayerId& id) override {
     EXPECT_EQ(id, id_);
-    media_destroyed_run_loop_.Quit();
+    media_destroyed_.SetValue();
   }
 
   void MediaSessionCreated(
       content::MediaSession* const /*media_session*/) override {
-    media_session_created_run_loop_.Quit();
+    media_session_created_.SetValue();
+  }
+
+  void MediaMutedStatusChanged(const content::MediaPlayerId& /*id*/,
+                               bool /*muted*/) override {
+    if (muted_status_changed_callback_) {
+      std::move(muted_status_changed_callback_).Run();
+    } else {
+      ++muted_status_changed_count_;
+    }
   }
 
  private:
   std::optional<content::MediaPlayerId> id_;
 
-  base::RunLoop media_started_playing_run_loop_;
-  base::RunLoop media_destroyed_run_loop_;
-  base::RunLoop media_session_created_run_loop_;
+  base::test::TestFuture<void> media_started_playing_;
+  base::test::TestFuture<void> media_destroyed_;
+  base::test::TestFuture<void> media_session_created_;
+
+  size_t muted_status_changed_count_ = 0;
+  base::OnceClosure muted_status_changed_callback_;
 };
 
 std::unique_ptr<KeyedService> CreateAdsService(
@@ -415,6 +443,18 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
   void PauseVideoPlayback(const std::string& selector) {
     const std::string javascript = base::ReplaceStringPlaceholders(
         R"(document.querySelector("$1")?.pause();)", {selector}, nullptr);
+    ASSERT_TRUE(ExecuteJavaScript(javascript, /*has_user_gesture=*/true));
+  }
+
+  void MuteVideoAudio(const std::string& selector) {
+    const std::string javascript = base::ReplaceStringPlaceholders(
+        R"(document.querySelector("$1").muted = true;)", {selector}, nullptr);
+    ASSERT_TRUE(ExecuteJavaScript(javascript, /*has_user_gesture=*/true));
+  }
+
+  void UnmuteVideoAudio(const std::string& selector) {
+    const std::string javascript = base::ReplaceStringPlaceholders(
+        R"(document.querySelector("$1").muted = false;)", {selector}, nullptr);
     ASSERT_TRUE(ExecuteJavaScript(javascript, /*has_user_gesture=*/true));
   }
 
@@ -848,8 +888,12 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyTabDidStartPlayingMedia) {
   NavigateToRelativeURL(kVideoWebpage, /*has_user_gesture=*/true);
 
+  content::WebContents* const web_contents = GetActiveWebContents();
+  MediaWaiter waiter(web_contents);
+
   EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidStartPlayingMedia);
   StartVideoPlayback(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaStartedPlaying();
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyTabDidStopPlayingMedia) {
@@ -859,6 +903,97 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyTabDidStopPlayingMedia) {
 
   EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidStopPlayingMedia);
   PauseVideoPlayback(kVideoJavascriptDocumentQuerySelector);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       DoNotNotifyTabDidStartPlayingMediaForMutedVideo) {
+  // Arrange
+  NavigateToRelativeURL(kVideoWebpage, /*has_user_gesture=*/true);
+
+  content::WebContents* const web_contents = GetActiveWebContents();
+  MediaWaiter waiter(web_contents);
+
+  MuteVideoAudio(kVideoJavascriptDocumentQuerySelector);
+
+  // Act & Assert
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidStartPlayingMedia).Times(0);
+  StartVideoPlayback(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaStartedPlaying();
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       NotifyTabDidStartPlayingMediaWhenVideoIsUnmuted) {
+  // Arrange
+  NavigateToRelativeURL(kVideoWebpage, /*has_user_gesture=*/true);
+
+  content::WebContents* const web_contents = GetActiveWebContents();
+  MediaWaiter waiter(web_contents);
+
+  MuteVideoAudio(kVideoJavascriptDocumentQuerySelector);
+  StartVideoPlayback(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaStartedPlaying();
+
+  // Act & Assert
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidStartPlayingMedia);
+  UnmuteVideoAudio(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaMutedStatusChanged();
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       NotifyTabDidStopPlayingMediaWhenVideoIsMuted) {
+  // Arrange
+  NavigateToRelativeURL(kVideoWebpage, /*has_user_gesture=*/true);
+
+  content::WebContents* const web_contents = GetActiveWebContents();
+  MediaWaiter waiter(web_contents);
+
+  StartVideoPlayback(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaStartedPlaying();
+
+  // Act & Assert
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidStopPlayingMedia);
+  MuteVideoAudio(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaMutedStatusChanged();
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       DoNotNotifyTabDidStopPlayingMediaForMutedVideo) {
+  // Arrange
+  NavigateToRelativeURL(kVideoWebpage, /*has_user_gesture=*/true);
+
+  content::WebContents* const web_contents = GetActiveWebContents();
+  MediaWaiter waiter(web_contents);
+
+  MuteVideoAudio(kVideoJavascriptDocumentQuerySelector);
+  StartVideoPlayback(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaStartedPlaying();
+
+  // Act & Assert
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidStopPlayingMedia).Times(0);
+  PauseVideoPlayback(kVideoJavascriptDocumentQuerySelector);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       NotifyTabDidStopPlayingMediaWhenVideoIsRemuted) {
+  // Arrange
+  NavigateToRelativeURL(kVideoWebpage, /*has_user_gesture=*/true);
+
+  content::WebContents* const web_contents = GetActiveWebContents();
+  MediaWaiter waiter(web_contents);
+
+  StartVideoPlayback(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaStartedPlaying();
+
+  MuteVideoAudio(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaMutedStatusChanged();
+
+  UnmuteVideoAudio(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaMutedStatusChanged();
+
+  // Act & Assert
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidStopPlayingMedia);
+  MuteVideoAudio(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaMutedStatusChanged();
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyDidCloseTab) {
