@@ -181,16 +181,10 @@ void BraveTabStrip::AddTabToGroup(std::optional<tab_groups::TabGroupId> group,
   }
   tab_at(model_index)->set_tree_tab_node(node_id);
 }
-void BraveTabStrip::SetTabData(int model_index, tabs::TabData data) {
-  OnSetTabData(model_index, data);
-  TabStrip::SetTabData(model_index, std::move(data));
-}
 
-void BraveTabStrip::MoveTab(int from_model_index,
-                            int to_model_index,
-                            tabs::TabData data) {
-  OnSetTabData(from_model_index, data);
-  TabStrip::MoveTab(from_model_index, to_model_index, std::move(data));
+void BraveTabStrip::OnTabPinnedStateChanged(int model_index, bool is_pinned) {
+  TabStrip::OnTabPinnedStateChanged(model_index, is_pinned);
+  OnPinnedStateChanged(model_index, is_pinned);
 }
 
 void BraveTabStrip::ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) {
@@ -508,8 +502,8 @@ BraveTabStrip::GetContainerModelForTab(const Tab* tab) const {
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
-void BraveTabStrip::OnSetTabData(int model_index,
-                                 const tabs::TabData& new_data) {
+void BraveTabStrip::OnPinnedStateChanged(int model_index,
+                                         bool new_pinned_state) {
   if (!base::FeatureList::IsEnabled(tabs::kBraveTreeTab)) {
     return;
   }
@@ -517,9 +511,7 @@ void BraveTabStrip::OnSetTabData(int model_index,
   // In case moving a tab from a group to pinned, we need to clear the
   // tree-tab-node UI state. There is no dedicated notification when pinning
   // from a group.
-  const bool pinned_state_changed =
-      tab_at(model_index)->data().pinned != new_data.pinned;
-  if (pinned_state_changed && new_data.pinned) {
+  if (new_pinned_state) {
     tab_at(model_index)->set_tree_tab_node(std::nullopt);
   }
 }
