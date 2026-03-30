@@ -56,9 +56,12 @@ struct ManagePasswordGroupView: View {
               .labelStyle(.iconOnly)
             }
           }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
     }
+    .scrollContentBackground(.hidden)
+    .background((Color(.braveGroupedBackground)))
     .navigationTitle(domain)
     .navigationBarTitleDisplayMode(.inline)
     .toolbarBackground(.visible, for: .navigationBar)
