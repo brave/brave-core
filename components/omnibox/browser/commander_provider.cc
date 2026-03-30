@@ -102,12 +102,12 @@ void CommanderProvider::OnCommanderUpdated() {
 
     // This is neat but it would be nice if we could always show it instead of
     // only when we have a result selected.
-    match.contents = option.annotation;
-    if (!option.annotation.empty()) {
+    match.contents = AutocompleteInput::SanitizeString(option.annotation);
+    if (!match.contents.empty()) {
       match.contents_class = {
           ACMatchClassification(0, ACMatchClassification::DIM)};
     }
-    match.description = option.title;
+    match.description = AutocompleteInput::SanitizeString(option.title);
     match.allowed_to_be_default_match = true;
     match.swap_contents_and_description = true;
 
