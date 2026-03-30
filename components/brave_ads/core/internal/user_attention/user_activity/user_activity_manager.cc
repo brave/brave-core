@@ -38,10 +38,11 @@ void LogEvent(UserActivityEventType event_type) {
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           kUserActivityTimeWindow.Get());
 
-  BLOG(6, "Triggered event: " << base::HexEncode(&event_type, sizeof(int8_t))
-                              << " (" << GetUserActivityScore(triggers, events)
-                              << ":" << kUserActivityThreshold.Get() << ":"
-                              << kUserActivityTimeWindow.Get() << ")");
+  BLOG(6, "Triggered event: "
+              << base::HexEncode(base::byte_span_from_ref(event_type)) << " ("
+              << GetUserActivityScore(triggers, events) << ":"
+              << kUserActivityThreshold.Get() << ":"
+              << kUserActivityTimeWindow.Get() << ")");
 }
 
 }  // namespace

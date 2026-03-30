@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/compiler_specific.h"
 #include "base/containers/span.h"
+#include "base/containers/to_vector.h"
 #include "base/files/file.h"
 #include "base/logging.h"
 #include "base/sequence_checker.h"
@@ -210,9 +211,10 @@ bool TorFileWatcher::EatControlCookie(std::vector<uint8_t>& cookie,
   }
 
   // Success!
-  cookie.assign(buf, UNSAFE_TODO(buf + *nread));
+  auto read_buffer = base::as_byte_span(buf).first(*nread);
+  cookie = base::ToVector(read_buffer);
   mtime = info.last_accessed;
-  VLOG(3) << "Control cookie " << base::HexEncode(buf, *nread) << ", mtime "
+  VLOG(3) << "Control cookie " << base::HexEncode(read_buffer) << ", mtime "
           << mtime;
   return true;
 }
