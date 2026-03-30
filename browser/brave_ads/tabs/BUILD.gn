@@ -35,6 +35,13 @@ source_set("tabs") {
     "//components/sessions",
     "//ui/base",
   ]
+
+  if (!is_android) {
+    deps += [
+      "//chrome/browser/ui/browser_window",
+      "//components/tabs:public",
+    ]
+  }
 }
 
 source_set("browser_tests") {

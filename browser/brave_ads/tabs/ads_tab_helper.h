@@ -24,6 +24,7 @@
 #endif
 
 class Browser;
+class BrowserWindowInterface;
 class GURL;
 
 
@@ -55,8 +56,9 @@ class AdsTabHelper final : public content::WebContentsObserver,
 
   bool IsVisible() const;
 
-  void MaybeSetBrowserIsActive();
-  void MaybeSetBrowserIsNoLongerActive();
+  void MaybeSetBrowserIsActive(const BrowserWindowInterface* browser_window);
+  void MaybeSetBrowserIsNoLongerActive(
+      const BrowserWindowInterface* browser_window);
 
   void ProcessNavigation();
   void ResetNavigationState();
@@ -103,7 +105,13 @@ class AdsTabHelper final : public content::WebContentsObserver,
   void WebContentsDestroyed() override;
 
 #if !BUILDFLAG(IS_ANDROID)
+  void MaybeSetInitialBrowserIsActive();
+
+  // TODO(https://github.com/brave/brave-browser/issues/24970): Decouple
+  // BrowserListObserver from AdsTabHelper.
+
   // BrowserListObserver:
+  void OnBrowserRemoved(Browser* browser) override;
   void OnBrowserSetLastActive(Browser* browser) override;
   void OnBrowserNoLongerActive(Browser* browser) override;
 #endif
