@@ -36,6 +36,8 @@ class AdBlockEngineWrapper {
   AdBlockEngineWrapper& operator=(const AdBlockEngineWrapper&) = delete;
   ~AdBlockEngineWrapper();
 
+  static Create();
+
   adblock::BlockerResult ShouldStartRequest(
       const GURL& url,
       blink::mojom::ResourceType resource_type,

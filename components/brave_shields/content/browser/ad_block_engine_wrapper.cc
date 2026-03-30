@@ -42,6 +42,13 @@ AdBlockEngineWrapper::AdBlockEngineWrapper(
 
 AdBlockEngineWrapper::~AdBlockEngineWrapper() = default;
 
+// static
+std::unique_ptr<AdBlockEngineWrapper> Create() {
+  return std::make_unique<AdBlockEngineWrapper>(
+      std::make_unique<AdBlockEngine>(true /* is_default */),
+      std::make_unique<AdBlockEngine>(false /* is_default */));
+}
+
 adblock::BlockerResult AdBlockEngineWrapper::ShouldStartRequest(
     const GURL& url,
     blink::mojom::ResourceType resource_type,

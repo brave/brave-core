@@ -140,11 +140,8 @@ AdBlockService::AdBlockService(
       component_update_service_(cus),
       task_runner_(task_runner),
       list_p3a_(local_state),
-      engine_wrapper_(
-          new AdBlockEngineWrapper(
-              std::make_unique<AdBlockEngine>(true /* is_default */),
-              std::make_unique<AdBlockEngine>(false /* is_default */)),
-          base::OnTaskRunnerDeleter(GetTaskRunner())) {
+      engine_wrapper_(AdBlockEngineWrapper::Create(),
+                      base::OnTaskRunnerDeleter(GetTaskRunner())) {
   TRACE_EVENT("brave.adblock", "AdBlockService");
   // Initializes adblock-rust's domain resolution implementation
   adblock::set_domain_resolver();
@@ -306,7 +303,8 @@ void AdBlockService::TagExistsForTest(const std::string& tag,
       FROM_HERE,
       base::BindOnce(
           &AdBlockEngine::TagExists,
-          base::Unretained(&engine_wrapper_->default_engine_for_testing()),
+          base::Unretained(
+              &engine_wrapper_->default_engine_for_testing()),  // IN-TEST
           tag),
       std::move(cb));
 }
