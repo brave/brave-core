@@ -52,7 +52,7 @@ class AdBlockEngineWrapper {
   void EnableTag(const std::string& tag, bool enabled);
   bool TagExists(const std::string& tag);
 
-  base::DictValue GetDebugInfo();
+  std::pair<base::DictValue, base::DictValue> GetDebugInfo();
   void DiscardRegex(uint64_t regex_id);
   void SetupDiscardPolicy(const adblock::RegexManagerDiscardPolicy& policy);
 
