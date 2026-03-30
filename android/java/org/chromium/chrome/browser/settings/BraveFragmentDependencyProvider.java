@@ -30,6 +30,7 @@ import java.util.function.Supplier;
 @NullMarked
 public class BraveFragmentDependencyProvider extends FragmentDependencyProvider {
     private final Profile mProfile;
+    private final OneshotSupplier<WindowAndroid> mWindowAndroidSupplier;
 
     public BraveFragmentDependencyProvider(
             Activity activity,
@@ -50,13 +51,17 @@ public class BraveFragmentDependencyProvider extends FragmentDependencyProvider 
                 modalDialogManagerSupplier,
                 searchCoordinatorSupplier);
         mProfile = profile;
+        mWindowAndroidSupplier = windowAndroidSupplier;
     }
 
     @Override
     public void onFragmentAttached(
             FragmentManager fragmentManager, Fragment fragment, Context unusedContext) {
         if (fragment instanceof CredentialEntryFragmentViewBase) {
-            CredentialEditUiFactory.create((CredentialEntryFragmentViewBase) fragment, mProfile);
+            CredentialEditUiFactory.create(
+                    (CredentialEntryFragmentViewBase) fragment,
+                    mProfile,
+                    mWindowAndroidSupplier.get());
         }
 
         super.onFragmentAttached(fragmentManager, fragment, unusedContext);
