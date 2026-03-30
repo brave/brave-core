@@ -5,8 +5,14 @@
 
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 
+#include "chrome/browser/ui/tabs/features.h"
+
 int VerticalTabStripWidgetDelegateView::GetVerticalTabStripCornerRadiusMac()
     const {
+  // Vertical tabs is clipped by application frame, so we don't need to clip it
+  // when hosted in browser view.
+  CHECK(!base::FeatureList::IsEnabled(tabs::kBraveVerticalTabStripEmbedded));
+
   if (@available(macOS 26, *)) {
     return 20;
   }

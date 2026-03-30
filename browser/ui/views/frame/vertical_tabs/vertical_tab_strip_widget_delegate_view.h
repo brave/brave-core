@@ -40,6 +40,13 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
  public:
   static std::unique_ptr<views::Widget> Create(BrowserView* browser_view,
                                                views::View* host_view);
+
+  // Embeds the vertical tab strip as a child of |browser_view| (no separate
+  // Widget). Bounds are updated via UpdateVerticalTabBounds().
+  static std::unique_ptr<VerticalTabStripWidgetDelegateView>
+  CreateEmbeddedInBrowserView(BrowserView* browser_view,
+                              views::View* host_view);
+
   ~VerticalTabStripWidgetDelegateView() override;
 
   BraveVerticalTabStripRegionView* vertical_tab_strip_region_view() const {
@@ -65,8 +72,11 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
 
  private:
   VerticalTabStripWidgetDelegateView(BrowserView* browser_view,
-                                     views::View* host);
+                                     views::View* host,
+                                     bool embedded_in_browser_view = false);
+
   void UpdateWidgetBounds();
+  void UpdateVerticalTabBounds();
 
 #if BUILDFLAG(IS_MAC)
   void UpdateClip();
@@ -76,6 +86,8 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
   raw_ptr<BrowserView> browser_view_ = nullptr;
   raw_ptr<views::View> host_ = nullptr;
   raw_ptr<BraveVerticalTabStripRegionView> region_view_ = nullptr;
+
+  const bool embedded_in_browser_view_ = false;
 
   base::ScopedObservation<views::View, views::ViewObserver>
       host_view_observation_{this};

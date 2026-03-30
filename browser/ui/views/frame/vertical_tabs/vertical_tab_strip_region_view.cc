@@ -730,9 +730,16 @@ void BraveVerticalTabStripRegionView::OnMouseExited(
     const ui::MouseEvent& event) {
   DCHECK(GetWidget())
       << "As widget is the event sink, this is expected to be true.";
-  if (GetWidget()->GetRootView()->IsMouseHovered() && !mouse_events_for_test_) {
+  if (!base::FeatureList::IsEnabled(tabs::kBraveVerticalTabStripEmbedded) &&
+      GetWidget()->GetRootView()->IsMouseHovered() && !mouse_events_for_test_) {
     // On Windows, when mouse moves into the area which intersects with web
     // view, OnMouseExited() is invoked even mouse is on this view.
+    return;
+  }
+
+  // This can be called when context menu is shown even if mouse is hovered
+  // over vertical tab strip area. Don't want to collapse in that case.
+  if (IsMouseHovered()) {
     return;
   }
 

@@ -27,6 +27,8 @@ BASE_FEATURE(kBraveVerticalTabScrollBar, base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveVerticalTabHideCompletely, base::FEATURE_ENABLED_BY_DEFAULT);
 
+BASE_FEATURE(kBraveVerticalTabStripEmbedded, base::FEATURE_DISABLED_BY_DEFAULT);
+
 BASE_FEATURE(kBraveTreeTab, base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveScrollableTabStrip, base::FEATURE_DISABLED_BY_DEFAULT);
