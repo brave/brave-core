@@ -140,7 +140,7 @@ AdBlockService::AdBlockService(
       component_update_service_(cus),
       task_runner_(task_runner),
       list_p3a_(local_state),
-      engine_wrapper_(AdBlockEngineWrapper::Create(),
+      engine_wrapper_(AdBlockEngineWrapper::Create().release(),
                       base::OnTaskRunnerDeleter(GetTaskRunner())) {
   TRACE_EVENT("brave.adblock", "AdBlockService");
   // Initializes adblock-rust's domain resolution implementation

@@ -43,7 +43,7 @@ AdBlockEngineWrapper::AdBlockEngineWrapper(
 AdBlockEngineWrapper::~AdBlockEngineWrapper() = default;
 
 // static
-std::unique_ptr<AdBlockEngineWrapper> Create() {
+std::unique_ptr<AdBlockEngineWrapper> AdBlockEngineWrapper::Create() {
   return std::make_unique<AdBlockEngineWrapper>(
       std::make_unique<AdBlockEngine>(true /* is_default */),
       std::make_unique<AdBlockEngine>(false /* is_default */));
