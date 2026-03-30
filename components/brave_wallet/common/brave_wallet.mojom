@@ -2483,6 +2483,11 @@ interface PolkadotWalletService {
   GetNetworkName(AccountId account)
       => (string? network, string? error_message);
 
+  GetCompatibleNetworks(AccountId account) => (array<NetworkInfo>? networks);
+
+  GetAddress(AccountId account, string chain_id)
+      => (string? address, string? error_message);
+
   GetAccountBalance(AccountId account, string chain_id)
       => (PolkadotAccountInfo? account, string? error_message);
 };

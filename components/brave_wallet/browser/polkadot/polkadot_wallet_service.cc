@@ -5,10 +5,14 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 
+#include <algorithm>
+
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "base/types/optional_ref.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 
 namespace brave_wallet {
@@ -38,6 +42,7 @@ PolkadotWalletService::PolkadotWalletService(
     NetworkManager& network_manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : keyring_service_(keyring_service),
+      network_manager_(network_manager),
       polkadot_substrate_rpc_(network_manager, std::move(url_loader_factory)) {
   keyring_service_->AddObserver(
       keyring_service_observer_receiver_.BindNewPipeAndPassRemote());
@@ -87,6 +92,67 @@ void PolkadotWalletService::GetNetworkName(mojom::AccountIdPtr account_id,
   std::string chain_id = GetNetworkForPolkadotAccount(account_id);
   polkadot_substrate_rpc_.GetChainName(std::move(chain_id),
                                        std::move(callback));
+}
+
+void PolkadotWalletService::GetCompatibleNetworks(
+    mojom::AccountIdPtr account_id,
+    GetCompatibleNetworksCallback callback) {
+  if (!account_id || account_id->coin != mojom::CoinType::DOT ||
+      !IsPolkadotKeyring(account_id->keyring_id)) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  const std::string compatible_chain_id =
+      GetNetworkForPolkadotKeyring(account_id->keyring_id);
+  const auto hidden_networks =
+      network_manager_->GetHiddenNetworks(mojom::CoinType::DOT);
+
+  std::vector<mojom::NetworkInfoPtr> compatible_networks;
+  for (auto& network_info : network_manager_->GetAllChains()) {
+    if (network_info->coin != mojom::CoinType::DOT) {
+      continue;
+    }
+
+    if (network_info->chain_id == compatible_chain_id &&
+        !std::ranges::contains(hidden_networks,
+                               base::ToLowerASCII(network_info->chain_id))) {
+      compatible_networks.push_back(std::move(network_info));
+    }
+  }
+
+  std::move(callback).Run(std::move(compatible_networks));
+}
+
+void PolkadotWalletService::GetAddress(mojom::AccountIdPtr account_id,
+                                       const std::string& chain_id,
+                                       GetAddressCallback callback) {
+  if (!account_id || account_id->coin != mojom::CoinType::DOT ||
+      !IsPolkadotKeyring(account_id->keyring_id) ||
+      !IsPolkadotNetwork(chain_id) ||
+      GetNetworkForPolkadotKeyring(account_id->keyring_id) != chain_id) {
+    std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
+    return;
+  }
+
+  auto pubkey = keyring_service_->GetPolkadotPubKey(account_id);
+  if (!pubkey) {
+    std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
+    return;
+  }
+
+  const uint16_t prefix =
+      chain_id == mojom::kPolkadotMainnet ? kPolkadotPrefix : kWestendPrefix;
+  PolkadotAddress polkadot_address;
+  polkadot_address.pubkey = *pubkey;
+  polkadot_address.ss58_prefix = prefix;
+  auto address = polkadot_address.ToString();
+  if (!address) {
+    std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
+    return;
+  }
+
+  std::move(callback).Run(std::move(*address), std::nullopt);
 }
 
 void PolkadotWalletService::GetAccountBalance(

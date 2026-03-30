@@ -55,6 +55,13 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   void GetNetworkName(mojom::AccountIdPtr account_id,
                       GetNetworkNameCallback callback) override;
 
+  void GetCompatibleNetworks(mojom::AccountIdPtr account_id,
+                             GetCompatibleNetworksCallback callback) override;
+
+  void GetAddress(mojom::AccountIdPtr account_id,
+                  const std::string& chain_id,
+                  GetAddressCallback callback) override;
+
   void GetAccountBalance(mojom::AccountIdPtr account,
                          const std::string& chain_id,
                          GetAccountBalanceCallback callback) override;
@@ -144,6 +151,7 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
                       base::expected<uint128_t, std::string> partial_fee);
 
   const raw_ref<KeyringService> keyring_service_;
+  const raw_ref<NetworkManager> network_manager_;
   mojo::ReceiverSet<mojom::PolkadotWalletService> receivers_;
 
   std::optional<base::expected<PolkadotChainMetadata, std::string>>

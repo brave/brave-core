@@ -1461,6 +1461,67 @@ export class MockedWalletApiProxy {
     },
   }
 
+  polkadotWalletService: Partial<
+    InstanceType<typeof BraveWallet.PolkadotWalletServiceInterface>
+  > = {
+    getCompatibleNetworks: async (accountId) => {
+      const account = this.accountInfos.find(
+        (item) => item.accountId.uniqueKey === accountId.uniqueKey,
+      )
+      if (!account || account.accountId.coin !== BraveWallet.CoinType.DOT) {
+        return { networks: [] }
+      }
+
+      let chainId = ''
+      switch (account.accountId.keyringId) {
+        case BraveWallet.KeyringId.kPolkadotMainnet:
+        case BraveWallet.KeyringId.kPolkadotImport:
+          chainId = BraveWallet.POLKADOT_MAINNET
+          break
+        case BraveWallet.KeyringId.kPolkadotTestnet:
+        case BraveWallet.KeyringId.kPolkadotImportTestnet:
+          chainId = BraveWallet.POLKADOT_TESTNET
+          break
+        default:
+          break
+      }
+
+      if (!chainId) {
+        return { networks: [] }
+      }
+
+      return {
+        networks: this.networks.filter(
+          (network) =>
+            network.coin === BraveWallet.CoinType.DOT
+            && network.chainId === chainId,
+        ),
+      }
+    },
+    getAddress: async (accountId, chainId) => {
+      const account = this.accountInfos.find(
+        (item) => item.accountId.uniqueKey === accountId.uniqueKey,
+      )
+      if (!account || account.accountId.coin !== BraveWallet.CoinType.DOT) {
+        return { address: null, errorMessage: 'invalid account' }
+      }
+
+      const { networks } =
+        await this.polkadotWalletService.getCompatibleNetworks!(accountId)
+      const isCompatible = (networks ?? []).some(
+        (network) =>
+          network.chainId === chainId
+          && network.coin === BraveWallet.CoinType.DOT,
+      )
+
+      if (!isCompatible) {
+        return { address: null, errorMessage: 'incompatible network' }
+      }
+
+      return { address: account.address, errorMessage: null }
+    },
+  }
+
   zcashWalletService: Partial<
     InstanceType<typeof BraveWallet.ZCashWalletServiceInterface>
   > = {

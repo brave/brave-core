@@ -236,6 +236,8 @@ export const {
   useGetPendingSignMessageRequestsQuery,
   useGetPendingSwitchChainRequestQuery,
   useGetPendingTokenSuggestionRequestsQuery,
+  useGetPolkadotAddressForNetworkQuery,
+  useGetPolkadotCompatibleNetworksQuery,
   useGetPriceHistoryQuery,
   useGetPricesHistoryQuery,
   useGetQrCodeImageQuery,

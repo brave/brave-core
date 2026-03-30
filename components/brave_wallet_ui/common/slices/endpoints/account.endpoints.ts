@@ -121,6 +121,63 @@ export const accountEndpoints = ({
       providesTags: [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }],
     }),
 
+    getPolkadotCompatibleNetworks: query<
+      BraveWallet.NetworkInfo[],
+      BraveWallet.AccountId
+    >({
+      queryFn: async (accountId, { endpoint }, _extraOptions, baseQuery) => {
+        try {
+          const { polkadotWalletService } = baseQuery(undefined).data
+          const { networks } =
+            await polkadotWalletService.getCompatibleNetworks(accountId)
+
+          if (!networks) {
+            throw new Error('compatible networks unavailable')
+          }
+
+          return {
+            data: networks,
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            `Unable to fetch compatible Polkadot networks for account ${accountId.uniqueKey}`,
+            error,
+          )
+        }
+      },
+    }),
+
+    getPolkadotAddressForNetwork: query<
+      string,
+      {
+        accountId: BraveWallet.AccountId
+        chainId: string
+      }
+    >({
+      queryFn: async ({ accountId, chainId }, { endpoint }, _, baseQuery) => {
+        try {
+          const { polkadotWalletService } = baseQuery(undefined).data
+          const { address, errorMessage } =
+            await polkadotWalletService.getAddress(accountId, chainId)
+
+          if (!address || errorMessage) {
+            throw new Error(errorMessage || 'address unavailable')
+          }
+
+          return {
+            data: address,
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            `Unable to fetch Polkadot address for account ${accountId.uniqueKey} on chain ${chainId}`,
+            error,
+          )
+        }
+      },
+    }),
+
     addAccount: mutation<
       BraveWallet.AccountInfo,
       {

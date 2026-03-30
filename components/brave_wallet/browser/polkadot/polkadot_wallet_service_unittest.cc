@@ -344,6 +344,133 @@ TEST_F(PolkadotWalletServiceUnitTest, ConcurrentChainNameFetches) {
   task_environment_.RunUntilQuit();
 }
 
+TEST_F(PolkadotWalletServiceUnitTest, GetCompatibleNetworks) {
+  auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
+      *keyring_service_, *network_manager_,
+      url_loader_factory_.GetSafeWeakWrapper());
+  // Start from a known visibility state for deterministic assertions.
+  network_manager_->RemoveHiddenNetwork(mojom::CoinType::DOT,
+                                        mojom::kPolkadotMainnet);
+  network_manager_->RemoveHiddenNetwork(mojom::CoinType::DOT,
+                                        mojom::kPolkadotTestnet);
+
+  // Compatible networks for mainnet account.
+  {
+    base::test::TestFuture<std::optional<std::vector<mojom::NetworkInfoPtr>>>
+        future;
+    polkadot_wallet_service->GetCompatibleNetworks(
+        polkadot_mainnet_account_->account_id.Clone(), future.GetCallback());
+
+    auto networks = future.Take();
+    ASSERT_TRUE(networks.has_value());
+    EXPECT_EQ(networks->size(), 1u);
+    EXPECT_EQ((*networks)[0]->chain_id, mojom::kPolkadotMainnet);
+    EXPECT_EQ((*networks)[0]->coin, mojom::CoinType::DOT);
+  }
+
+  // Compatible networks list changes.
+  {
+    network_manager_->AddHiddenNetwork(mojom::CoinType::DOT,
+                                       mojom::kPolkadotMainnet);
+
+    base::test::TestFuture<std::optional<std::vector<mojom::NetworkInfoPtr>>>
+        future;
+    polkadot_wallet_service->GetCompatibleNetworks(
+        polkadot_mainnet_account_->account_id.Clone(), future.GetCallback());
+
+    auto networks = future.Take();
+    ASSERT_TRUE(networks.has_value());
+    EXPECT_TRUE(networks->empty());
+  }
+
+  // Compatible networks for testnet account.
+  {
+    base::test::TestFuture<std::optional<std::vector<mojom::NetworkInfoPtr>>>
+        future;
+    polkadot_wallet_service->GetCompatibleNetworks(
+        polkadot_testnet_account_->account_id.Clone(), future.GetCallback());
+
+    auto networks = future.Take();
+    ASSERT_TRUE(networks.has_value());
+    EXPECT_EQ(networks->size(), 1u);
+    EXPECT_EQ((*networks)[0]->chain_id, mojom::kPolkadotTestnet);
+    EXPECT_EQ((*networks)[0]->coin, mojom::CoinType::DOT);
+  }
+}
+
+TEST_F(PolkadotWalletServiceUnitTest, GetAddress) {
+  auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
+      *keyring_service_, *network_manager_,
+      url_loader_factory_.GetSafeWeakWrapper());
+
+  // Mainnet address.
+  {
+    base::test::TestFuture<std::optional<std::string>,
+                           std::optional<std::string>>
+        future;
+    auto callback = future.GetCallback();
+    polkadot_wallet_service->GetAddress(
+        polkadot_mainnet_account_->account_id.Clone(), mojom::kPolkadotMainnet,
+        base::BindLambdaForTesting(
+            [callback = std::move(callback)](
+                const std::optional<std::string>& address,
+                const std::optional<std::string>& error) {
+              std::move(callback).Run(address, error);
+            }));
+
+    auto [address, error] = future.Take();
+    EXPECT_TRUE(address.has_value());
+    EXPECT_FALSE(error.has_value());
+    EXPECT_EQ(*address, "158HHeYTmEXMiMM1XufQt5bEe2CTia3EcVcfrpYBYcXA6bdb");
+  }
+
+  // Testnet network is hidden.
+  {
+    network_manager_->AddHiddenNetwork(mojom::CoinType::DOT,
+                                       mojom::kPolkadotTestnet);
+
+    base::test::TestFuture<std::optional<std::string>,
+                           std::optional<std::string>>
+        future;
+    auto callback = future.GetCallback();
+    polkadot_wallet_service->GetAddress(
+        polkadot_testnet_account_->account_id.Clone(), mojom::kPolkadotTestnet,
+        base::BindLambdaForTesting(
+            [callback = std::move(callback)](
+                const std::optional<std::string>& address,
+                const std::optional<std::string>& error) {
+              std::move(callback).Run(address, error);
+            }));
+
+    auto [address, error] = future.Take();
+    EXPECT_FALSE(address.has_value());
+    EXPECT_EQ(error, WalletInternalErrorMessage());
+  }
+
+  // Address\chain_id mismatch.
+  {
+    network_manager_->RemoveHiddenNetwork(mojom::CoinType::DOT,
+                                          mojom::kPolkadotTestnet);
+
+    base::test::TestFuture<std::optional<std::string>,
+                           std::optional<std::string>>
+        future;
+    auto callback = future.GetCallback();
+    polkadot_wallet_service->GetAddress(
+        polkadot_mainnet_account_->account_id.Clone(), mojom::kPolkadotTestnet,
+        base::BindLambdaForTesting(
+            [callback = std::move(callback)](
+                const std::optional<std::string>& address,
+                const std::optional<std::string>& error) {
+              std::move(callback).Run(address, error);
+            }));
+
+    auto [address, error] = future.Take();
+    EXPECT_FALSE(address.has_value());
+    EXPECT_EQ(error, WalletInternalErrorMessage());
+  }
+}
+
 TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic) {
   url_loader_factory_.ClearResponses();
 
