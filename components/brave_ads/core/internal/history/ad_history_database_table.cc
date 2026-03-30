@@ -236,7 +236,7 @@ void AdHistory::GetForDateRange(base::Time from_time,
             created_at BETWEEN $2 AND $3
           ORDER BY
             created_at DESC)",
-      {GetTableName(), TimeToSqlValueAsString(from_time),
+      {kTableName, TimeToSqlValueAsString(from_time),
        TimeToSqlValueAsString(to_time)},
       nullptr);
   BindColumnTypes(mojom_db_action);
@@ -339,7 +339,7 @@ void AdHistory::GetHighestRankedPlacementsForDateRange(
             FilteredAdHistory
           ORDER BY
             created_at DESC)",
-      {GetTableName(), TimeToSqlValueAsString(from_time),
+      {kTableName, TimeToSqlValueAsString(from_time),
        TimeToSqlValueAsString(to_time)},
       nullptr);
   BindColumnTypes(mojom_db_action);
@@ -375,7 +375,7 @@ void AdHistory::GetForCreativeInstanceId(
             $1
           WHERE
             creative_instance_id = '$2')",
-      {GetTableName(), creative_instance_id}, nullptr);
+      {kTableName, creative_instance_id}, nullptr);
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
@@ -386,21 +386,17 @@ void AdHistory::GetForCreativeInstanceId(
 void AdHistory::PurgeExpired(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
-  Execute(mojom_db_transaction, R"(
+  Execute(
+      mojom_db_transaction, R"(
             DELETE FROM
               $1
             WHERE
               created_at <= $2)",
-          {GetTableName(),
-           TimeToSqlValueAsString(base::Time::Now() -
-                                  kAdHistoryRetentionPeriod.Get())});
+      {kTableName, TimeToSqlValueAsString(base::Time::Now() -
+                                          kAdHistoryRetentionPeriod.Get())});
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(callback));
-}
-
-std::string AdHistory::GetTableName() const {
-  return kTableName;
 }
 
 void AdHistory::Create(
@@ -427,18 +423,18 @@ void AdHistory::Create(
   // Optimize database query for `GetForDateRange`,
   // `GetHighestRankedPlacementsForDateRange`, and `PurgeExpired` from
   // schema 42.
-  CreateTableIndex(mojom_db_transaction, GetTableName(),
+  CreateTableIndex(mojom_db_transaction, kTableName,
                    /*columns=*/{"created_at"});
 
   // Optimize database query for `GetHighestRankedPlacementsForDateRange` from
   // schema 42.
-  CreateTableIndex(mojom_db_transaction, GetTableName(),
+  CreateTableIndex(mojom_db_transaction, kTableName,
                    /*columns=*/{"confirmation_type"});
-  CreateTableIndex(mojom_db_transaction, GetTableName(),
+  CreateTableIndex(mojom_db_transaction, kTableName,
                    /*columns=*/{"placement_id"});
 
   // Optimize database query for `GetForCreativeInstanceId` from schema 42.
-  CreateTableIndex(mojom_db_transaction, GetTableName(),
+  CreateTableIndex(mojom_db_transaction, kTableName,
                    /*columns=*/{"creative_instance_id"});
 }
 
@@ -496,8 +492,7 @@ std::string AdHistory::BuildInsertSql(
             description,
             target_url
           ) VALUES $2)",
-      {GetTableName(),
-       BuildBindColumnPlaceholders(/*column_count=*/12, row_count)},
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/12, row_count)},
       nullptr);
 }
 

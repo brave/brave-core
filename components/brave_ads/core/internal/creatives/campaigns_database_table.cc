@@ -117,10 +117,6 @@ void Campaigns::Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
   deposits_database_table_.Insert(mojom_db_transaction, deposits);
 }
 
-std::string Campaigns::GetTableName() const {
-  return kTableName;
-}
-
 void Campaigns::Create(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
@@ -226,8 +222,7 @@ std::string Campaigns::BuildInsertSql(
             priority,
             ptr
           ) VALUES $2)",
-      {GetTableName(),
-       BuildBindColumnPlaceholders(/*column_count=*/8, row_count)},
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/8, row_count)},
       nullptr);
 }
 

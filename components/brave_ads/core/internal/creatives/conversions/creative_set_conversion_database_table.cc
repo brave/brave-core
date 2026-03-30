@@ -188,7 +188,7 @@ void CreativeSetConversions::GetUnexpired(
             $1
           WHERE
             $2 < expire_at)",
-      {GetTableName(), TimeToSqlValueAsString(base::Time::Now())}, nullptr);
+      {kTableName, TimeToSqlValueAsString(base::Time::Now())}, nullptr);
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
@@ -216,7 +216,7 @@ void CreativeSetConversions::GetActive(
           WHERE
             $2 < expire_at
             AND ad_events.confirmation_type IN ('$3', '$4'))",
-      {GetTableName(), TimeToSqlValueAsString(base::Time::Now()),
+      {kTableName, TimeToSqlValueAsString(base::Time::Now()),
        std::string(ToString(mojom::ConfirmationType::kViewedImpression)),
        std::string(ToString(mojom::ConfirmationType::kClicked))},
       nullptr);
@@ -235,14 +235,10 @@ void CreativeSetConversions::PurgeExpired(ResultCallback callback) const {
               $1
             WHERE
               $2 >= expire_at)",
-          {GetTableName(), TimeToSqlValueAsString(base::Time::Now())});
+          {kTableName, TimeToSqlValueAsString(base::Time::Now())});
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(callback));
-}
-
-std::string CreativeSetConversions::GetTableName() const {
-  return kTableName;
 }
 
 void CreativeSetConversions::Create(
@@ -259,11 +255,11 @@ void CreativeSetConversions::Create(
       ))");
 
   // Optimize database query for `GetUnexpired` from schema 35.
-  CreateTableIndex(mojom_db_transaction, GetTableName(),
+  CreateTableIndex(mojom_db_transaction, kTableName,
                    /*columns=*/{"expire_at"});
 
   // Optimize database query for `database::table::AdEvents` from schema 43.
-  CreateTableIndex(mojom_db_transaction, GetTableName(),
+  CreateTableIndex(mojom_db_transaction, kTableName,
                    /*columns=*/{"creative_set_id"});
 }
 
@@ -323,8 +319,7 @@ std::string CreativeSetConversions::BuildInsertSql(
             observation_window,
             expire_at
           ) VALUES $2)",
-      {GetTableName(),
-       BuildBindColumnPlaceholders(/*column_count=*/5, row_count)},
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/5, row_count)},
       nullptr);
 }
 

@@ -654,9 +654,4 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeAllOrphaned) {
                                                          ad_event_1_viewed));
 }
 
-TEST_F(BraveAdsAdEventsDatabaseTableTest, GetTableName) {
-  // Act & Assert
-  EXPECT_EQ("ad_events", database_table_.GetTableName());
-}
-
 }  // namespace brave_ads

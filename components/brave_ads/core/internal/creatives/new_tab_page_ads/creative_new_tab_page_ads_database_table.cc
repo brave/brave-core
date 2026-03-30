@@ -373,7 +373,7 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
           WHERE
             creative_new_tab_page_ad.creative_instance_id = '$2'
             AND ($3 OR creative_new_tab_page_ad.type != 'richMedia'))",
-      {GetTableName(), creative_instance_id, IsRichMediaAllowed()}, nullptr);
+      {kTableName, creative_instance_id, IsRichMediaAllowed()}, nullptr);
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
@@ -434,8 +434,7 @@ void CreativeNewTabPageAds::GetForSegments(
             segments.segment IN $2
             AND $3 BETWEEN campaigns.start_at AND campaigns.end_at
             AND ($4 OR creative_new_tab_page_ad.type != 'richMedia'))",
-      {GetTableName(),
-       BuildBindColumnPlaceholder(/*column_count=*/segments.size()),
+      {kTableName, BuildBindColumnPlaceholder(/*column_count=*/segments.size()),
        TimeToSqlValueAsString(base::Time::Now()), IsRichMediaAllowed()},
       nullptr);
   BindColumnTypes(mojom_db_action);
@@ -497,7 +496,7 @@ void CreativeNewTabPageAds::GetForActiveCampaigns(
           WHERE
             $2 BETWEEN campaigns.start_at AND campaigns.end_at
             AND ($3 OR creative_new_tab_page_ad.type != 'richMedia'))",
-      {GetTableName(), TimeToSqlValueAsString(base::Time::Now()),
+      {kTableName, TimeToSqlValueAsString(base::Time::Now()),
        IsRichMediaAllowed()},
       nullptr);
   BindColumnTypes(mojom_db_action);
@@ -506,10 +505,6 @@ void CreativeNewTabPageAds::GetForActiveCampaigns(
   RunTransaction(
       FROM_HERE, std::move(mojom_db_transaction),
       base::BindOnce(&GetForActiveCampaignsCallback, std::move(callback)));
-}
-
-std::string CreativeNewTabPageAds::GetTableName() const {
-  return kTableName;
 }
 
 void CreativeNewTabPageAds::Create(
@@ -644,8 +639,7 @@ std::string CreativeNewTabPageAds::BuildInsertSql(
             company_name,
             alt
           ) VALUES $2)",
-      {GetTableName(),
-       BuildBindColumnPlaceholders(/*column_count=*/6, row_count)},
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/6, row_count)},
       nullptr);
 }
 

@@ -153,9 +153,4 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
               ::testing::ElementsAre(creative_set_conversion_2));
 }
 
-TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest, GetTableName) {
-  // Act & Assert
-  EXPECT_EQ("creative_set_conversions", database_table_.GetTableName());
-}
-
 }  // namespace brave_ads

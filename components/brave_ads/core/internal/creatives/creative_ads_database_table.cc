@@ -195,17 +195,13 @@ void CreativeAds::GetForCreativeInstanceId(
             $1
           WHERE
             creative_instance_id = '$2')",
-      {GetTableName(), creative_instance_id}, nullptr);
+      {kTableName, creative_instance_id}, nullptr);
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  base::BindOnce(&GetForCreativeInstanceIdCallback,
                                 creative_instance_id, std::move(callback)));
-}
-
-std::string CreativeAds::GetTableName() const {
-  return kTableName;
 }
 
 void CreativeAds::Create(
@@ -281,8 +277,7 @@ std::string CreativeAds::BuildInsertSql(
             condition_matchers,
             target_url
           ) VALUES $2)",
-      {GetTableName(),
-       BuildBindColumnPlaceholders(/*column_count=*/10, row_count)},
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/10, row_count)},
       nullptr);
 }
 
