@@ -185,7 +185,7 @@ class AdBlockService {
   // base::Unretained() usage is safe because the wrapper is deleted
   // on the same sequence. See docs/threading_and_tasks_testing.md for
   // explanations.
-  std::unique_ptr<AdBlockEngineWrapper, base::OnTaskRunnerDeleter>
+  const std::unique_ptr<AdBlockEngineWrapper, base::OnTaskRunnerDeleter>
       engine_wrapper_ GUARDED_BY_CONTEXT(sequence_checker_);
 
   std::unique_ptr<AdBlockFiltersProviderManager> filters_provider_manager_
