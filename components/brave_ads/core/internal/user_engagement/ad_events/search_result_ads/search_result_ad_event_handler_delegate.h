@@ -22,6 +22,10 @@ class SearchResultAdEventHandlerDelegate {
   virtual void OnDidFireSearchResultAdViewedEvent(
       const SearchResultAdInfo& ad) {}
 
+  // Invoked before the click ad event for `ad` is recorded.
+  virtual void OnWillFireSearchResultAdClickedEvent(
+      const SearchResultAdInfo& ad) {}
+
   // Invoked when the search result `ad` is clicked.
   virtual void OnDidFireSearchResultAdClickedEvent(
       const SearchResultAdInfo& ad) {}

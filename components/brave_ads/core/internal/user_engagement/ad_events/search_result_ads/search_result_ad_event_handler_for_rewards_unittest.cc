@@ -250,6 +250,8 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 
   // Act & Assert
   base::RunLoop run_loop;
+  ::testing::InSequence seq;
+  EXPECT_CALL(delegate_mock_, OnWillFireSearchResultAdClickedEvent(ad));
   EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdClickedEvent(ad))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(mojom_creative_ad,
@@ -272,12 +274,48 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 
   // Act & Assert
   base::RunLoop run_loop;
+  ::testing::InSequence seq;
+  EXPECT_CALL(delegate_mock_, OnWillFireSearchResultAdClickedEvent(ad));
   EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdClickedEvent(ad))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(mojom_creative_ad,
                                  mojom::SearchResultAdEventType::kClicked,
                                  /*should_fire_event=*/true);
   run_loop.Run();
+}
+
+TEST_F(
+    BraveAdsSearchResultAdEventHandlerForRewardsTest,
+    ClickedEventNotifiesDelegateBeforeRecordingCompletesToEnsurePageLandIsRecorded) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kSearchResultAdFeature);
+
+  const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
+      test::BuildCreativeSearchResultAd(/*use_random_uuids=*/true);
+  const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kViewedImpression});
+
+  bool delegate_was_notified = false;
+  ::testing::InSequence seq;
+  EXPECT_CALL(delegate_mock_, OnWillFireSearchResultAdClickedEvent(ad))
+      .WillOnce([&] { delegate_was_notified = true; });
+  EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdClickedEvent(ad));
+
+  base::test::TestFuture<bool, std::string, mojom::SearchResultAdEventType>
+      test_future;
+
+  // Act & Assert
+  event_handler_.FireEvent(
+      mojom_creative_ad.Clone(), mojom::SearchResultAdEventType::kClicked,
+      test_future.GetCallback<bool, const std::string&,
+                              mojom::SearchResultAdEventType>());
+  const auto [success, placement_id, mojom_ad_event_type] = test_future.Take();
+  EXPECT_TRUE(delegate_was_notified);
+  EXPECT_TRUE(success);
+  EXPECT_EQ(mojom_creative_ad->placement_id, placement_id);
+  EXPECT_EQ(mojom::SearchResultAdEventType::kClicked, mojom_ad_event_type);
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,

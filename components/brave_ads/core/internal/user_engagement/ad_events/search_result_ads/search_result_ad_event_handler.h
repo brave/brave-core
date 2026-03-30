@@ -102,6 +102,8 @@ class SearchResultAdEventHandler final
                          mojom::SearchResultAdEventType mojom_ad_event_type,
                          FireSearchResultAdEventHandlerCallback callback) const;
 
+  void NotifyWillFireSearchResultAdClickedEvent(
+      const SearchResultAdInfo& ad) const;
   void NotifyDidFireSearchResultAdEvent(
       const SearchResultAdInfo& ad,
       mojom::SearchResultAdEventType mojom_ad_event_type) const;

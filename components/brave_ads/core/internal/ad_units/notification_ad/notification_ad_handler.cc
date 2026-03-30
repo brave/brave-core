@@ -196,6 +196,14 @@ void NotificationAdHandler::OnDidFireNotificationAdViewedEvent(
           ad.creative_instance_id, ad.segment);
 }
 
+void NotificationAdHandler::OnWillFireNotificationAdClickedEvent(
+    const NotificationAdInfo& ad) {
+  // Must be set before `RecordAdEvent` completes so that if a page navigation
+  // commits during the write, `SiteVisit::MaybeLandOnPage` can record the
+  // page land for this ad.
+  site_visit_->set_last_clicked_ad(ad);
+}
+
 void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
     const NotificationAdInfo& ad) {
   BLOG(3, "Clicked notification ad with placement id "
@@ -204,8 +212,6 @@ void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
 
   NotificationAdManager::GetInstance().Remove(ad.placement_id,
                                               /*should_close=*/true);
-
-  site_visit_->set_last_clicked_ad(ad);
 
   AdHistoryManager::GetInstance().Add(ad, mojom::ConfirmationType::kClicked);
 

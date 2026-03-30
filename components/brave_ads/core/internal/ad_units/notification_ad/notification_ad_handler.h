@@ -73,6 +73,8 @@ class NotificationAdHandler final : public AdsClientNotifierObserver,
   void OnDidServeNotificationAd(const NotificationAdInfo& ad) override;
 
   // NotificationAdEventHandlerDelegate:
+  void OnWillFireNotificationAdClickedEvent(
+      const NotificationAdInfo& ad) override;
   void OnDidFireNotificationAdServedEvent(
       const NotificationAdInfo& ad) override;
   void OnDidFireNotificationAdViewedEvent(

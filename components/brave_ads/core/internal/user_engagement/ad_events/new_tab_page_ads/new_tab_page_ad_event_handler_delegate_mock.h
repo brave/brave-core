@@ -32,6 +32,9 @@ class NewTabPageAdEventHandlerDelegateMock
               OnDidFireNewTabPageAdViewedEvent,
               (const NewTabPageAdInfo&));
   MOCK_METHOD(void,
+              OnWillFireNewTabPageAdClickedEvent,
+              (const NewTabPageAdInfo&));
+  MOCK_METHOD(void,
               OnDidFireNewTabPageAdClickedEvent,
               (const NewTabPageAdInfo&));
   MOCK_METHOD(void,
