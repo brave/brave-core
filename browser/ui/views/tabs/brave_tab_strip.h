@@ -60,10 +60,7 @@ class BraveTabStrip : public TabStrip {
   bool CanCloseTabViaMiddleButtonClick() const override;
   void AddTabToGroup(std::optional<tab_groups::TabGroupId> group,
                      int model_index) override;
-  void SetTabData(int model_index, tabs::TabData data) override;
-  void MoveTab(int from_model_index,
-               int to_model_index,
-               tabs::TabData data) override;
+  void OnTabPinnedStateChanged(int model_index, bool is_pinned) override;
 
   // TabSlotController:
   bool ShouldPaintTabAccent(const Tab* tab) const override;
@@ -115,7 +112,7 @@ class BraveTabStrip : public TabStrip {
 
   // Clears tree-tab-node UI state when a tab becomes pinned. There is no
   // dedicated notification when pinning from a group.
-  void OnSetTabData(int model_index, const tabs::TabData& new_data);
+  void OnPinnedStateChanged(int model_index, bool new_pinned_state);
 
   BooleanPrefMember always_hide_close_button_;
   BooleanPrefMember middle_click_close_tab_enabled_;
