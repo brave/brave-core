@@ -48,7 +48,7 @@ AdBlockService::SourceProviderObserver::SourceProviderObserver(
       engine_is_default_(engine_is_default),
       resource_provider_(resource_provider),
       filters_provider_manager_(filters_provider_manager),
-      task_runner_(task_runner) {
+      task_runner_(std::move(task_runner)) {
   filters_provider_manager_->AddObserver(this);
   OnChanged(engine_is_default_);
 }
