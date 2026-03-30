@@ -147,7 +147,8 @@ class SpeechRecognitionFactoryImpl
       console.log('[whisper-worker] Loading WASM module...')
       const module = await import(
         // @ts-ignore - Served by the same WebUI data source
-        'chrome-untrusted://whisper-worker/' + 'candle_whisper.bundle.js'
+        'chrome-untrusted://on-device-speech-recognition-worker/'
+          + 'candle_whisper.bundle.js'
       )
 
       // Create the single WASM recognizer. Model bytes are

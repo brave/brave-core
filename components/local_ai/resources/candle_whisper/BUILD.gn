@@ -27,7 +27,8 @@ transpile_web_ui("candle_whisper_module") {
 
   no_iife = true
   output_module = true
-  public_asset_path = "chrome-untrusted://whisper-worker/"
+  public_asset_path =
+      "chrome-untrusted://on-device-speech-recognition-worker/"
 }
 
 pack_web_resources("candle_whisper_module_generated") {
