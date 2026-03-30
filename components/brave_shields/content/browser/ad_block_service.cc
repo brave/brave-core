@@ -98,7 +98,8 @@ void AdBlockService::SourceProviderObserver::OnFilterSetCreated(
 
 void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
     AdblockResourceStorageBox storage) {
-  on_resources_loaded_.Run(std::move(filter_set_), std::move(storage));
+  on_resources_loaded_.Run(engine_is_default_, std::move(filter_set_),
+                           std::move(storage));
 }
 
 AdBlockComponentServiceManager* AdBlockService::component_service_manager() {
@@ -194,30 +195,18 @@ AdBlockService::AdBlockService(
             filters_provider_manager_.get());
   }
 
-  auto make_on_resources_loaded_callback = base::BindPostTask(
+  const auto make_on_resources_loaded_callback = base::BindPostTask(
       task_runner_,
-      base::BindRepeating(
-          [](AdBlockEngine* engine,
-             std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
-             AdblockResourceStorageBox storage) {
-            if (filter_set) {
-              engine->Load(std::move(*filter_set), *storage);
-            } else {
-              engine->UseResources(*storage);
-            }
-          }));
+      base::BindRepeating(&AdBlockEngineWrapper::OnResourcesLoaded,
+                          base::Unretained(engine_wrapper_.get())));
 
   default_service_observer_ = std::make_unique<SourceProviderObserver>(
-      base::BindRepeating(make_on_resources_loaded_callback,
-                          &engine_wrapper_->default_engine()),
-      resource_provider_.get(), filters_provider_manager_.get(), task_runner_,
-      true);
+      make_on_resources_loaded_callback, resource_provider_.get(),
+      filters_provider_manager_.get(), task_runner_, true);
   additional_filters_service_observer_ =
       std::make_unique<SourceProviderObserver>(
-          base::BindRepeating(make_on_resources_loaded_callback,
-                              &engine_wrapper_->additional_filters_engine()),
-          resource_provider_.get(), filters_provider_manager_.get(),
-          task_runner_, false);
+          make_on_resources_loaded_callback, resource_provider_.get(),
+          filters_provider_manager_.get(), task_runner_, false);
 }
 
 AdBlockService::~AdBlockService() {

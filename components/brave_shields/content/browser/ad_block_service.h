@@ -66,6 +66,7 @@ class AdBlockService {
     // Callback to handle loading resources into the engine.
     // If filter_set is non-null, calls Load; otherwise calls UseResources.
     using OnResourcesLoadedCallback = base::RepeatingCallback<void(
+        bool,
         std::unique_ptr<rust::Box<adblock::FilterSet>>,
         AdblockResourceStorageBox)>;
 
