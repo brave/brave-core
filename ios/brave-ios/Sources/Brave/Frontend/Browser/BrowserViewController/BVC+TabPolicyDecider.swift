@@ -22,7 +22,6 @@ extension BrowserViewController: TabPolicyDecider {
     shouldAllowResponse response: URLResponse,
     responseInfo: WebResponseInfo
   ) async -> WebPolicyDecision {
-    let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
     let responseURL = response.url
 
     // Store the response in the tab
@@ -324,97 +323,6 @@ extension BrowserViewController: TabPolicyDecider {
             isBlockFingerprintingEnabled: isBlockFingerprintingEnabled
           ) ?? []
         tab.browserData?.setCustomUserScript(scripts: scriptTypes)
-      }
-
-      // Brave Search logic.
-
-      if requestInfo.isMainFrame,
-        BraveSearchManager.isValidURL(requestURL)
-      {
-        // We fetch cookies to determine if backup search was enabled on the website.
-        let cookies = await tab.configuration?.websiteDataStore.httpCookieStore.allCookies() ?? []
-        tab.braveSearchManager = BraveSearchManager(
-          url: requestURL,
-          cookies: cookies
-        )
-
-        let isAdBlockModeAggressive =
-          tab.braveShieldsHelper?.shieldLevel(
-            for: requestURL,
-            considerAllShieldsOption: true
-          ).isAggressive ?? true
-
-        if BraveSearchResultAdManager.shouldTriggerSearchResultAdClickedEvent(
-          requestURL,
-          isPrivateBrowsing: isPrivateBrowsing,
-          isAggressiveAdsBlocking: isAdBlockModeAggressive
-        ) {
-          // Ensure the webView is not a link preview popup.
-          if self.presentedViewController == nil {
-            let showSearchResultAdClickedPrivacyNotice =
-              rewards.ads.shouldShowSearchResultAdClickedInfoBar()
-            BraveSearchResultAdManager.maybeTriggerSearchResultAdClickedEvent(
-              requestURL,
-              rewards: rewards,
-              completion: { [weak self] success in
-                guard let self, success, showSearchResultAdClickedPrivacyNotice else {
-                  return
-                }
-                let searchResultClickedInfobar = SearchResultAdClickedInfoBar(
-                  onLinkPressed: { [weak self] url in
-                    self?.tabManager.addTabAndSelect(URLRequest(url: url), isPrivate: false)
-                  }
-                )
-                self.show(toast: searchResultClickedInfobar, duration: nil)
-              }
-            )
-          }
-        } else {
-          // The Brave-Search-Ads header should be added with a negative value when all
-          // of the following conditions are met:
-          //   - The current tab is not a Private tab
-          //   - Brave Rewards is enabled.
-          //   - The "Search Ads" is opted-out.
-          //   - The requested URL host is one of the Brave Search domains.
-          if !isPrivateBrowsing && rewards.isEnabled
-            && !rewards.ads.isOptedInToSearchResultAds()
-            && request.allHTTPHeaderFields?["Brave-Search-Ads"] == nil
-          {
-            var modifiedRequest = URLRequest(url: requestURL)
-            modifiedRequest.setValue("?0", forHTTPHeaderField: "Brave-Search-Ads")
-            tab.loadRequest(modifiedRequest)
-            return .cancel
-          }
-
-          tab.braveSearchResultAdManager = BraveSearchResultAdManager(
-            url: requestURL,
-            rewards: rewards,
-            isPrivateBrowsing: isPrivateBrowsing,
-            isAggressiveAdsBlocking: isAdBlockModeAggressive
-          )
-        }
-
-        if let braveSearchManager = tab.braveSearchManager {
-          braveSearchManager.fallbackQueryResultsPending = true
-          braveSearchManager.shouldUseFallback { backupQuery in
-            guard let query = backupQuery else {
-              braveSearchManager.fallbackQueryResultsPending = false
-              return
-            }
-
-            if query.found {
-              braveSearchManager.fallbackQueryResultsPending = false
-            } else {
-              braveSearchManager.backupSearch(with: query) { completion in
-                braveSearchManager.fallbackQueryResultsPending = false
-                tab.injectResults()
-              }
-            }
-          }
-        }
-      } else {
-        tab.braveSearchManager = nil
-        tab.braveSearchResultAdManager = nil
       }
     }
 
