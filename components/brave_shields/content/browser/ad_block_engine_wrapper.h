@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
 #include "base/values.h"
@@ -69,11 +70,13 @@ class AdBlockEngineWrapper {
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);
 
-  AdBlockEngine& default_engine() {
+  AdBlockEngine& default_engine_for_testing() {
+    CHECK_IS_TEST();
     return *TS_UNCHECKED_READ(default_engine_);
   }
 
-  AdBlockEngine& additional_filters_engine() {
+  AdBlockEngine& additional_filters_engine_for_testing() {
+    CHECK_IS_TEST();
     return *TS_UNCHECKED_READ(additional_filters_engine_);
   }
 

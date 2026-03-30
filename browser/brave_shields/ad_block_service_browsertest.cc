@@ -222,8 +222,9 @@ void AdBlockServiceTest::AddNewRules(const std::string& rules,
 
   auto& engine =
       first_party_protections
-          ? ad_block_service->engine_wrapper_->default_engine()
-          : ad_block_service->engine_wrapper_->additional_filters_engine();
+          ? ad_block_service->engine_wrapper_->default_engine_for_testing()
+          : ad_block_service->engine_wrapper_
+                ->additional_filters_engine_for_testing();
   EngineTestObserver engine_observer(&engine);
   engine_observer.Wait();
 }
@@ -289,7 +290,7 @@ void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
   EXPECT_TRUE(provider);
   provider->OnComponentReady(component_path);
 
-  auto& engine = service->engine_wrapper_->default_engine();
+  auto& engine = service->engine_wrapper_->default_engine_for_testing();
   EngineTestObserver engine_observer(&engine);
   engine_observer.Wait();
 }
@@ -363,9 +364,10 @@ void AdBlockServiceTest::InstallComponent(
     EXPECT_TRUE(provider);
     provider->OnComponentReady(component_path);
 
-    auto& engine = catalog_entry.first_party_protections
-                       ? service->engine_wrapper_->default_engine()
-                       : service->engine_wrapper_->additional_filters_engine();
+    auto& engine =
+        catalog_entry.first_party_protections
+            ? service->engine_wrapper_->default_engine_for_testing()
+            : service->engine_wrapper_->additional_filters_engine_for_testing();
     EngineTestObserver engine_observer(&engine);
     engine_observer.Wait();
   }

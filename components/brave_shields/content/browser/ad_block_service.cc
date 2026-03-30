@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/debug/leak_annotations.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
@@ -300,10 +301,13 @@ AdBlockDefaultResourceProvider* AdBlockService::default_resource_provider() {
 void AdBlockService::TagExistsForTest(const std::string& tag,
                                       base::OnceCallback<void(bool)> cb) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK_IS_TEST();
   GetTaskRunner()->PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&AdBlockEngine::TagExists,
-                     base::Unretained(&engine_wrapper_->default_engine()), tag),
+      base::BindOnce(
+          &AdBlockEngine::TagExists,
+          base::Unretained(&engine_wrapper_->default_engine_for_testing()),
+          tag),
       std::move(cb));
 }
 
