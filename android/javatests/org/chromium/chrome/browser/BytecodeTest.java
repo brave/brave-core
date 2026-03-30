@@ -1660,7 +1660,11 @@ public class BytecodeTest {
                         Supplier.class,
                         ShareDelegateImpl.ShareSheetDelegate.class,
                         boolean.class,
-                        DataSharingTabManager.class));
+                        DataSharingTabManager.class,
+                        SigninAndHistorySyncActivityLauncher.class,
+                        ActivityResultTracker.class,
+                        MonotonicObservableSupplier.class,
+                        SnackbarManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator", // presubmit: ignore-long-line
