@@ -1,0 +1,12 @@
+diff --git a/chrome/services/speech/BUILD.gn b/chrome/services/speech/BUILD.gn
+index 97ccdc272c95602527c0344922c4e0004b1a8308..efc77f892d2a8f170b9a8a82d0ec5a3516098011 100644
+--- a/chrome/services/speech/BUILD.gn
++++ b/chrome/services/speech/BUILD.gn
+@@ -44,6 +44,7 @@ source_set("lib") {
+     "//net",
+     "//services/audio/public/cpp",
+   ]
++  import("//brave/services/speech/sources.gni") deps += brave_services_speech_deps
+
+   if (is_chromeos) {
+     sources += [

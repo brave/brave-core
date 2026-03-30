@@ -1,0 +1,12 @@
+diff --git a/media/mojo/mojom/BUILD.gn b/media/mojo/mojom/BUILD.gn
+index e1d948682749c..f4adb893cdd19 100644
+--- a/media/mojo/mojom/BUILD.gn
++++ b/media/mojo/mojom/BUILD.gn
+@@ -104,6 +104,7 @@ mojom("mojom") {
+     "//url/mojom:url_mojom_gurl",
+     "//url/mojom:url_mojom_origin",
+   ]
++  import("//brave/media/mojo/mojom/sources.gni") public_deps += brave_media_mojo_mojom_public_deps
+ 
+   if (allow_oop_video_decoder) {
+     public_deps += [ "//services/viz/public/mojom" ]

@@ -1,0 +1,21 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module media.mojom;
+
+import "services/on_device_model/public/mojom/on_device_model.mojom";
+
+[BraveExtend]
+interface SpeechRecognitionService {
+  // Sends ASR session pipes from the browser process to
+  // the utility process. The stream receives audio; the
+  // responder returns transcription results.
+  SetAsrSession(
+      pending_remote<on_device_model.mojom.AsrStreamInput>
+          stream,
+      pending_receiver<
+          on_device_model.mojom.AsrStreamResponder>
+          responder) => ();
+};

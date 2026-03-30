@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("speech") {
+  sources = [
+    "brave_soda_client.cc",
+    "brave_soda_client.h",
+  ]
+
+  deps = [
+    "//base",
+    "//chrome/services/speech/soda",
+    "//chrome/services/speech/soda:soda_api_proto",
+    "//mojo/public/cpp/bindings",
+    "//services/on_device_model/public/mojom",
+  ]
+}
