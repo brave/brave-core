@@ -254,10 +254,9 @@ void AdBlockService::GetDebugInfoAsync(GetDebugInfoCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   GetTaskRunner()->PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&AdBlockEngine::GetDebugInfo,
-                     base::Unretained(&engine_wrapper_->default_engine())),
-      base::BindOnce(&AdBlockService::OnGetDebugInfoFromDefaultEngine,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+      base::BindOnce(&AdBlockEngineWrapper::GetDebugInfo,
+                     base::Unretained(engine_wrapper_.get())),
+      std::move(callback));
 }
 
 void AdBlockService::DiscardRegex(uint64_t regex_id) {
@@ -307,19 +306,6 @@ void MigrateObsoletePrefsForAdBlockService(PrefService* local_state) {
 AdBlockDefaultResourceProvider* AdBlockService::default_resource_provider() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return default_resource_provider_.get();
-}
-
-void AdBlockService::OnGetDebugInfoFromDefaultEngine(
-    GetDebugInfoCallback callback,
-    base::DictValue default_engine_debug_info) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  GetTaskRunner()->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(
-          &AdBlockEngine::GetDebugInfo,
-          base::Unretained(&engine_wrapper_->additional_filters_engine())),
-      base::BindOnce(std::move(callback),
-                     std::move(default_engine_debug_info)));
 }
 
 void AdBlockService::TagExistsForTest(const std::string& tag,

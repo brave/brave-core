@@ -129,10 +129,11 @@ bool AdBlockEngineWrapper::TagExists(const std::string& tag) {
   return default_engine_->TagExists(tag);
 }
 
-base::DictValue AdBlockEngineWrapper::GetDebugInfo() {
+std::pair<base::DictValue, base::DictValue>
+AdBlockEngineWrapper::GetDebugInfo() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  // Return debug info from the default engine.
-  return default_engine_->GetDebugInfo();
+  return {default_engine_->GetDebugInfo(),
+          additional_filters_engine_->GetDebugInfo()};
 }
 
 void AdBlockEngineWrapper::DiscardRegex(uint64_t regex_id) {

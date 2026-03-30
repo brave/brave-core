@@ -128,7 +128,7 @@ class AdBlockService {
 
   // Methods for brave://adblock-internals.
   using GetDebugInfoCallback =
-      base::OnceCallback<void(base::DictValue, base::DictValue)>;
+      base::OnceCallback<void(std::pair<base::DictValue, base::DictValue>)>;
   void GetDebugInfoAsync(GetDebugInfoCallback callback);
   void DiscardRegex(uint64_t regex_id);
 
@@ -161,10 +161,6 @@ class AdBlockService {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
     return filters_provider_manager_.get();
   }
-
-  void OnGetDebugInfoFromDefaultEngine(
-      GetDebugInfoCallback callback,
-      base::DictValue default_engine_debug_info);
 
   void TagExistsForTest(const std::string& tag,
                         base::OnceCallback<void(bool)> cb);
