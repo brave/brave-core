@@ -103,7 +103,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistCoordinatorBrowserTest,
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   ASSERT_TRUE(embedded_test_server()->Start());
 
-  const GURL url = https_server()->GetURL("app.com", "/ssl/google.html");
+  const GURL url =
+      embedded_https_test_server().GetURL("app.com", "/ssl/google.html");
   auto* app_browser = InstallPWA(url);
 
   EXPECT_TRUE(app_browser);
