@@ -378,7 +378,7 @@ bool pkcs7_get_signed_content(
 
           case 5: {
             _sha1Hash = base::SysUTF8ToNSString(
-                base::HexEncode(value.data(), value.size()));
+                base::HexEncode(base::as_byte_span(value)));
           } break;
 
           case 12: {

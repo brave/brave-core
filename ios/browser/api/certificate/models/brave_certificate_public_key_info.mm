@@ -56,10 +56,8 @@
         }
 
         if (!certificate::x509_utils::IsNull(parameters)) {
-          std::string parameters_string =
-              std::string(base::as_string_view(parameters));
-          _parameters = base::SysUTF8ToNSString(base::HexEncode(
-              parameters_string.data(), parameters_string.size()));
+          _parameters = base::SysUTF8ToNSString(
+              base::HexEncode(base::as_byte_span(base::span(parameters))));
         }
       }
 
@@ -77,8 +75,9 @@
     NSData* external_representation =
         (__bridge_transfer NSData*)SecKeyCopyExternalRepresentation(key, nil);
 
-    _keyHexEncoded = base::SysUTF8ToNSString(base::HexEncode(
-        [external_representation bytes], [external_representation length]));
+    _keyHexEncoded = base::SysUTF8ToNSString(base::HexEncode(std::string_view(
+        static_cast<const char*>([external_representation bytes]),
+        [external_representation length])));
 
     NSDictionary* attributes =
         (__bridge_transfer NSDictionary*)SecKeyCopyAttributes(key);
@@ -138,10 +137,8 @@
             [external_representation length]);
         if (certificate::x509_utils::ParseRSAPublicKeyInfo(spk, &modulus,
                                                            &public_exponent)) {
-          std::string modulus_string =
-              std::string(base::as_string_view(modulus));
           _keyHexEncoded = base::SysUTF8ToNSString(
-              base::HexEncode(modulus_string.data(), modulus_string.size()));
+              base::HexEncode(base::as_byte_span(base::span(modulus))));
 
           std::uint64_t parsed_public_exponent = 0;
           if (bssl::der::ParseUint64(public_exponent,
