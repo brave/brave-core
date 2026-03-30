@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/check.h"
-#include "base/check_op.h"
+#include "base/containers/map_util.h"
 #include "base/no_destructor.h"
 #include "brave/browser/ui/views/brave_ads/notification_ad_popup.h"
 
@@ -35,7 +35,7 @@ NotificationAdPopupCollection::~NotificationAdPopupCollection() = default;
 void NotificationAdPopupCollection::Add(NotificationAdPopup* popup,
                                         const std::string& notification_id) {
   CHECK(!notification_id.empty());
-  CHECK_EQ(GetNotificationAdPopups().count(notification_id), 0u);
+  CHECK(!GetNotificationAdPopups().contains(notification_id));
   GetNotificationAdPopups()[notification_id] = popup;
 }
 
@@ -43,22 +43,15 @@ void NotificationAdPopupCollection::Add(NotificationAdPopup* popup,
 NotificationAdPopup* NotificationAdPopupCollection::Get(
     const std::string& notification_id) {
   CHECK(!notification_id.empty());
-  if (GetNotificationAdPopups().count(notification_id) == 0) {
-    return nullptr;
-  }
 
-  NotificationAdPopup* popup = GetNotificationAdPopups()[notification_id];
-  CHECK(popup);
-
+  NotificationAdPopup* popup =
+      base::FindPtrOrNull(GetNotificationAdPopups(), notification_id);
   return popup;
 }
 
 // static
 void NotificationAdPopupCollection::Remove(const std::string& notification_id) {
   CHECK(!notification_id.empty());
-  if (GetNotificationAdPopups().count(notification_id) == 0) {
-    return;
-  }
 
   // Note: The pointed-to NotificationAdPopup members are deallocated by their
   // containing Widgets
