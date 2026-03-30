@@ -157,7 +157,7 @@ TEST(PolkadotImportKeyringTest, EncodePrivateKeyForExportRoundtrip) {
       MakePolkadotImportKeyring(mojom::KeyringId::kPolkadotImport);
   ASSERT_TRUE(import_keyring.AddAccount(0, pkcs8));
 
-  constexpr std::string kPassword = "export_password_123";
+  constexpr char kPassword[] = "export_password_123";
   auto encoded = import_keyring.EncodePrivateKeyForExport(0, kPassword);
   ASSERT_TRUE(encoded.has_value());
 
