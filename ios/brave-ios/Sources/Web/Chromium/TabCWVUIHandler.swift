@@ -155,6 +155,27 @@ class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
     guard let tab, let delegate = tab.delegate else { return }
     delegate.tab(tab, buildEditMenuWithBuilder: builder)
   }
+
+  func webView(_ webView: CWVWebView, didLoad favIcons: [CWVFavicon]) {
+    guard let tab else { return }
+    let canditates = favIcons.map(WebFaviconCandidate.init)
+    for observer in tab.observers {
+      observer.tab(tab, didUpdateFaviconURLCandidates: canditates)
+    }
+  }
+
+  func webView(_ webView: CWVWebView, didUpdate faviconStatus: CWVFaviconStatus?) {
+    guard let tab else { return }
+    for observer in tab.observers {
+      observer.tabDidUpdateFaviconStatus(tab)
+    }
+  }
+}
+
+extension WebFaviconCandidate {
+  init(_ favicon: CWVFavicon) {
+    self.init(url: favicon.url, sizes: favicon.sizes.map(\.cgSizeValue))
+  }
 }
 
 extension WebMediaCaptureType {

@@ -99,6 +99,9 @@ CWV_EXPORT
 /// on the page.
 - (void)webView:(CWVWebView*)webView
     buildEditMenuWithBuilder:(id<UIMenuBuilder>)builder;
+/// Called when the favicon driver updates the web views favicon status
+- (void)webView:(CWVWebView*)webView
+    didUpdateFaviconStatus:(nullable CWVFaviconStatus*)faviconStatus;
 @end
 
 /// A CWVWebView with Chrome tab helpers attached and the ability to handle
