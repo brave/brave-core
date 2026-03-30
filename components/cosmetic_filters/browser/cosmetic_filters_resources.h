@@ -49,7 +49,7 @@ class CosmeticFiltersResources final
                             UrlCosmeticResourcesCallback callback) override;
 
  private:
-  const raw_ptr<brave_shields::AdBlockEngineWrapper> engine_wrapper_ = nullptr;
+  raw_ptr<brave_shields::AdBlockEngineWrapper> engine_wrapper_ = nullptr;
 };
 
 }  // namespace cosmetic_filters

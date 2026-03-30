@@ -36,7 +36,7 @@ class AdBlockEngineWrapper {
   AdBlockEngineWrapper& operator=(const AdBlockEngineWrapper&) = delete;
   ~AdBlockEngineWrapper();
 
-  static Create();
+  static std::unique_ptr<AdBlockEngineWrapper> Create();
 
   adblock::BlockerResult ShouldStartRequest(
       const GURL& url,
