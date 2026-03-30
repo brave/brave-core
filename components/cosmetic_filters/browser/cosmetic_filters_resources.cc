@@ -47,9 +47,7 @@ CosmeticFiltersResources::CosmeticFiltersResources(
     brave_shields::AdBlockEngineWrapper* engine_wrapper)
     : engine_wrapper_(engine_wrapper) {}
 
-CosmeticFiltersResources::~CosmeticFiltersResources() {
-  engine_wrapper_ = nullptr;
-}
+CosmeticFiltersResources::~CosmeticFiltersResources() = default;
 
 void CosmeticFiltersResources::HiddenClassIdSelectors(
     const std::string& input,
