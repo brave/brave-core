@@ -40,7 +40,6 @@ class ComponentUpdateService;
 }  // namespace component_updater
 
 namespace adblock {
-struct BlockerResult;
 struct RegexManagerDiscardPolicy;
 }  // namespace adblock
 namespace brave_shields {
