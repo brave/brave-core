@@ -23,7 +23,10 @@ namespace {
 
 // TODO(AIA-12345): Replace hard-coded path with component
 // updater integration.
-constexpr char kDefaultModelDir[] = "/tmp/whisper-tiny";
+constexpr char kDefaultModelDir[] =
+    "/Users/yrliou/brave/brave-browser/src/brave/"
+    "components/local_ai/resources/candle_whisper/"
+    "tmp/whisper-tiny";
 
 mojom::SpeechRecognitionModelFilesPtr LoadSpeechModelFilesFromDisk(
     const base::FilePath& dir) {
