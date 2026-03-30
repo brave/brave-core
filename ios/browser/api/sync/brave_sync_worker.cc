@@ -207,7 +207,7 @@ std::string BraveSyncWorker::GetHexSeedFromSyncCode(
   if (brave_sync::crypto::PassphraseToBytes32(code_words, &bytes)) {
     DCHECK_EQ(bytes.size(), SEED_BYTES_COUNT);
     if (bytes.size() == SEED_BYTES_COUNT) {
-      sync_code_hex = base::HexEncode(&bytes.at(0), bytes.size());
+      sync_code_hex = base::HexEncode(bytes);
     } else {
       LOG(ERROR) << "wrong seed bytes " << bytes.size();
     }
