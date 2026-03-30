@@ -86,7 +86,7 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
                         Collections.singletonList(getCurrentInstanceId()),
                         CloseWindowAppSource.NO_TABS_IN_WINDOW);
             }
-            if (MultiWindowUtils.getInstanceCountWithFallback(PersistedInstanceType.ACTIVE) == 1) {
+            if (MultiWindowUtils.getInstanceCount(PersistedInstanceType.ACTIVE) == 1) {
                 BraveMultiWindowUtils.updateEnableMultiWindows(false);
             } else {
                 Snackbar snackbar =

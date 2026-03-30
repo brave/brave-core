@@ -1436,7 +1436,7 @@ public abstract class BraveActivity extends ChromeActivity
         // Check multiwindow toggle for upgrade case
         if (!isFirstInstall
                 && !BraveMultiWindowUtils.isCheckUpgradeEnableMultiWindows()
-                && MultiWindowUtils.getInstanceCountWithFallback(PersistedInstanceType.ACTIVE) > 1
+                && MultiWindowUtils.getInstanceCount(PersistedInstanceType.ACTIVE) > 1
                 && !BraveMultiWindowUtils.shouldEnableMultiWindows()) {
             BraveMultiWindowUtils.setCheckUpgradeEnableMultiWindows(true);
             BraveMultiWindowUtils.updateEnableMultiWindows(true);
