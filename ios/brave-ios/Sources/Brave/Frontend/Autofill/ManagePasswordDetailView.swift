@@ -42,6 +42,7 @@ struct ManagePasswordDetailView: View {
         } label: {
           Text(Strings.Login.loginInfoDetailsWebsiteFieldTitle)
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
         LabeledContent {
           Menu {
@@ -58,6 +59,7 @@ struct ManagePasswordDetailView: View {
         } label: {
           Text(Strings.Login.loginInfoDetailsUsernameFieldTitle)
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
         LabeledContent {
           HStack(spacing: 8) {
@@ -100,8 +102,11 @@ struct ManagePasswordDetailView: View {
         } label: {
           Text(Strings.Login.loginInfoDetailsPasswordFieldTitle)
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
+    .scrollContentBackground(.hidden)
+    .background((Color(.braveGroupedBackground)))
     .foregroundStyle(Color(braveSystemName: .textPrimary))
     .accessibility(hidden: redactionReasons.contains(.privacy) ? true : false)
     .navigationTitle(URL(string: password.site)?.baseDomain ?? password.title)
