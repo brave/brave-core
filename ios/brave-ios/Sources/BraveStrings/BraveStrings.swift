@@ -2718,7 +2718,7 @@ extension Strings {
     comment: "Settings item for clearing passwords and login data"
   )
   public static let siteAndShieldsSettings = NSLocalizedString(
-    "SavedLogins",
+    "SiteAndShieldsSettings",
     tableName: "BraveShared",
     bundle: .module,
     value: "Site and Shields Settings",
