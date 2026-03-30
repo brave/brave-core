@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_TABS_BRAVE_TREE_TAB_STRIP_COLLECTION_DELEGATE_H_
 #define BRAVE_BROWSER_UI_TABS_BRAVE_TREE_TAB_STRIP_COLLECTION_DELEGATE_H_
 
+#include <set>
+
 #include "base/types/expected.h"
 #include "brave/components/tabs/public/brave_tab_strip_collection_delegate.h"
 
@@ -35,17 +37,17 @@ class BraveTreeTabStripCollectionDelegate
                        tabs::TabInterface* opener) const override;
   std::unique_ptr<tabs::TabInterface> RemoveTabAtIndexRecursive(
       size_t index) const override;
-  void MoveTabsRecursive(const std::vector<int>& tab_indices,
-                         size_t destination_index,
-                         std::optional<tab_groups::TabGroupId> new_group_id,
-                         bool new_pinned_state,
-                         const tabs::TabCollection::TypeEnumSet
-                             retain_collection_types) const override;
+  void MoveTabsRecursive(
+      const std::vector<int>& tab_indices,
+      size_t destination_index,
+      std::optional<tab_groups::TabGroupId> new_group_id,
+      bool new_pinned_state,
+      const tabs::TabCollection::TypeEnumSet retain_collection_types) override;
 
   bool CreateSplit(split_tabs::SplitTabId split_id,
                    const std::vector<tabs::TabInterface*>& tabs,
                    split_tabs::SplitTabVisualData visual_data) const override;
-  void Unsplit(split_tabs::SplitTabId split_id) override;
+  bool Unsplit(split_tabs::SplitTabId split_id) override;
   tabs::TabCollection* GetCollectionForMapping(
       tabs::TabCollection* root_collection) override;
   const tree_tab::TreeTabNodeId* GetTreeTabNodeIdForGroup(
@@ -133,9 +135,35 @@ class BraveTreeTabStripCollectionDelegate
   // Handles moving tabs out of a group: remove from group, wrap each in a tree
   // node, insert at destination, remove empty group.
   void MoveTabsOutOfGroup(const std::vector<tabs::TabInterface*>& moving_tabs,
-                          size_t destination_index) const;
+                          size_t destination_index,
+                          bool new_pinned_state) const;
+
+  // Returns true if the given tab is in a pinned collection.
+  bool IsTabInPinnedCollection(tabs::TabInterface* tab) const;
+
+  // Pins the given tabs and moves them to the destination index.
+  void PinTabs(const std::vector<tabs::TabInterface*>& moving_tabs,
+               size_t destination_index) const;
+
+  // Pins a split whose both tabs are in `split_tab_set`, unwrapping a tree node
+  // wrapper if needed. Returns early if the split is already pinned.
+  void PinSplit(tabs::TabInterface* moving_tab,
+                const std::set<tabs::TabInterface*>& split_tab_set,
+                size_t destination_index) const;
+
+  // Unpins a split from pinned: wraps the split in a tree node and attaches to
+  // the unpinned collection at index 0 for a later MoveTabsRecursive pass.
+  void UnpinSplit(tabs::TabInterface* moving_tab) const;
+
+  // Unpins the given tabs and moves them to the destination index.
+  void UnpinTabs(
+      const std::vector<tabs::TabInterface*>& moving_tabs,
+      size_t destination_index,
+      std::optional<tab_groups::TabGroupId> new_group_id,
+      const tabs::TabCollection::TypeEnumSet retain_collection_types);
 
   bool in_destruction_ = false;
+  bool handling_pinned_state_inconsistency_ = false;
 
   base::WeakPtr<TreeTabModel> tree_tab_model_;
 };

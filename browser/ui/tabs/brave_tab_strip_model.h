@@ -85,6 +85,8 @@ class BraveTabStripModel : public TabStripModel {
 
   tabs::TabStripCollection& GetTabStripCollectionForTesting();
 
+  void SetSplitPinnedImplForTesting(split_tabs::SplitTabId split, bool pinned);
+
   // List of tab indexes sorted by most recently used
   std::vector<int> mru_cycle_list_;
 

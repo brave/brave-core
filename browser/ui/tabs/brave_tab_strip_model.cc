@@ -219,3 +219,11 @@ tabs::TabStripCollection&
 BraveTabStripModel::GetTabStripCollectionForTesting() {
   return *contents_data_;
 }
+
+void BraveTabStripModel::SetSplitPinnedImplForTesting(
+    split_tabs::SplitTabId split,
+    bool pinned) {
+  auto* split_collection = contents_data_->GetSplitTabCollection(split);
+  CHECK(split_collection);
+  TabStripModel::SetSplitPinnedImpl(split_collection, pinned);  // IN-TEST
+}
