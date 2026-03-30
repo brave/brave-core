@@ -29,9 +29,10 @@
 
 namespace chrome {
 
-void ReloadBypassingCache(Browser* browser, WindowOpenDisposition disposition) {
+void ReloadBypassingCache(BrowserWindowInterface* browser,
+                          WindowOpenDisposition disposition) {
 #if BUILDFLAG(ENABLE_TOR)
-  Profile* profile = browser->profile();
+  Profile* profile = browser->GetProfile();
   DCHECK(profile);
   // NewTorConnectionForSite will do hard reload after obtaining new identity
   if (profile->IsTor()) {

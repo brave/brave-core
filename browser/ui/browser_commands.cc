@@ -240,13 +240,14 @@ void NewOffTheRecordWindowTor(Profile* profile) {
   TorProfileManager::SwitchToTorProfile(profile);
 }
 
-void NewTorConnectionForSite(Browser* browser) {
-  Profile* profile = browser->profile();
+void NewTorConnectionForSite(BrowserWindowInterface* browser) {
+  Profile* profile = browser->GetProfile();
   DCHECK(profile);
   tor::TorProfileService* service =
       TorProfileServiceFactory::GetForContext(profile);
   DCHECK(service);
-  WebContents* current_tab = browser->tab_strip_model()->GetActiveWebContents();
+  WebContents* current_tab =
+      browser->GetTabStripModel()->GetActiveWebContents();
   if (!current_tab) {
     return;
   }
