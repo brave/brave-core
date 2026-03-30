@@ -16,6 +16,7 @@
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
 #include "base/values.h"
+#include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
@@ -42,6 +43,11 @@ class AdBlockEngineWrapper {
       bool previously_matched_rule,
       bool previously_matched_exception,
       bool previously_matched_important);
+
+  void OnResourcesLoaded(
+      bool is_default_engine,
+      std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
+      AdblockResourceStorageBox storage);
 
   std::optional<std::string> GetCspDirectives(
       const GURL& url,

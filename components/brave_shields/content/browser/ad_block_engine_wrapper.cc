@@ -95,6 +95,20 @@ adblock::BlockerResult AdBlockEngineWrapper::ShouldStartRequest(
   return result;
 }
 
+void AdBlockEngineWrapper::OnResourcesLoaded(
+    bool is_default_engine,
+    std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
+    AdblockResourceStorageBox storage) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  auto* engine = is_default_engine ? default_engine_.get()
+                                   : additional_filters_engine_.get();
+  if (filter_set) {
+    engine->Load(std::move(*filter_set), *storage);
+  } else {
+    engine->UseResources(*storage);
+  }
+}
+
 std::optional<std::string> AdBlockEngineWrapper::GetCspDirectives(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
