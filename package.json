@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.90.82",
+  "version": "1.90.83",
   "description": "Brave browser for Android, iOS, Linux, macOS, and Windows",
   "main": "index.js",
   "scripts": {
