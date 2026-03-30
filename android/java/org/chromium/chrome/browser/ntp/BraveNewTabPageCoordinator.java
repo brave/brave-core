@@ -7,13 +7,19 @@ package org.chromium.chrome.browser.ntp;
 
 import android.app.Activity;
 
+import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.feed.FeedSurfaceScrollDelegate;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
+import org.chromium.chrome.browser.magic_stack.ModuleRegistry;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup;
+import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.TouchEnabledDelegate;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
@@ -35,8 +41,21 @@ public class BraveNewTabPageCoordinator extends NewTabPageCoordinator {
     private final NewTabPageManager mNewTabPageManager;
 
     public BraveNewTabPageCoordinator(
-            NewTabPageManager manager, Activity activity, NewTabPageLayout newTabPageLayout) {
-        super(manager, activity, newTabPageLayout);
+            NewTabPageManager manager,
+            Activity activity,
+            NewTabPageLayout newTabPageLayout,
+            Tab tab,
+            TabModelSelector tabModelSelector,
+            OneshotSupplier<ModuleRegistry> moduleRegistrySupplier,
+            @Nullable HomeSurfaceTracker homeSurfaceTracker) {
+        super(
+                manager,
+                activity,
+                newTabPageLayout,
+                tab,
+                tabModelSelector,
+                moduleRegistrySupplier,
+                homeSurfaceTracker);
 
         mNewTabPageManager = manager;
 
