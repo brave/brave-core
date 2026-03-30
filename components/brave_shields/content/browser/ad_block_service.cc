@@ -49,7 +49,7 @@ AdBlockService::SourceProviderObserver::SourceProviderObserver(
       filters_provider_manager_(filters_provider_manager),
       task_runner_(task_runner) {
   filters_provider_manager_->AddObserver(this);
-  filters_provider_manager_->MaybeNotifyOnChanged(engine_is_default);
+  filters_provider_manager_->ForceNotifyObservers(engine_is_default);
 }
 
 AdBlockService::SourceProviderObserver::~SourceProviderObserver() {

@@ -47,8 +47,9 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
       base::OnceCallback<
           void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>);
 
-  // Calls NotifyObservers if at least one provider is initialized
-  void MaybeNotifyOnChanged(bool is_for_default_engine);
+  // Used on startup to force a run if the providers were registered before
+  // the observer was added
+  void ForceNotifyObservers(bool is_for_default_engine);
 
   // AdBlockFiltersProvider::Observer
   void OnChanged(bool is_default_engine) override;

@@ -95,15 +95,9 @@ void AdBlockFiltersProviderManager::LoadFilterSetForEngine(
   }
 }
 
-void AdBlockFiltersProviderManager::MaybeNotifyOnChanged(
+void AdBlockFiltersProviderManager::ForceNotifyObservers(
     bool is_for_default_engine) {
-  auto& filters_providers = is_for_default_engine
-                                ? default_engine_filters_providers_
-                                : additional_engine_filters_providers_;
-  if (std::ranges::any_of(filters_providers,
-                          &AdBlockFiltersProvider::IsInitialized)) {
-    NotifyObservers(is_for_default_engine);
-  }
+  NotifyObservers(is_for_default_engine);
 }
 
 // static
