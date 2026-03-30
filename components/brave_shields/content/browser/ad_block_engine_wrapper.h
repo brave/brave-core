@@ -83,9 +83,9 @@ class AdBlockEngineWrapper {
                                  bool force_hide);
 
  private:
-  std::unique_ptr<AdBlockEngine> default_engine_
+  const std::unique_ptr<AdBlockEngine> default_engine_
       GUARDED_BY_CONTEXT(sequence_checker_);
-  std::unique_ptr<AdBlockEngine> additional_filters_engine_
+  const std::unique_ptr<AdBlockEngine> additional_filters_engine_
       GUARDED_BY_CONTEXT(sequence_checker_);
 
   SEQUENCE_CHECKER(sequence_checker_);
