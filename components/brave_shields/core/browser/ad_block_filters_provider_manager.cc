@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <utility>
@@ -101,7 +102,7 @@ void AdBlockFiltersProviderManager::MaybeNotifyOnChanged(
                                 : additional_engine_filters_providers_;
   if (std::ranges::any_of(filters_providers,
                           &AdBlockFiltersProvider::IsInitialized)) {
-    OnChanged(is_for_default_engine);
+    NotifyObservers(is_for_default_engine);
   }
 }
 
