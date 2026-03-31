@@ -30,9 +30,6 @@
 #include "third_party/rust/cxx/v1/cxx.h"
 #include "url/gurl.h"
 
-class AdBlockServiceTest;
-class EphemeralStorage1pDomainBlockBrowserTest;
-class DebounceBrowserTest;
 class PrefService;
 
 namespace component_updater {
@@ -54,9 +51,6 @@ class AdBlockCustomResourceProvider;
 class AdBlockLocalhostFiltersProvider;
 class AdBlockFilterListCatalogProvider;
 class AdBlockSubscriptionServiceManager;
-class CosmeticResourceMergeTest;
-class StripProceduralFiltersTest;
-class TestFiltersProvider;
 
 // The brave shields service in charge of ad-block checking and init.
 class AdBlockService {
@@ -161,15 +155,13 @@ class AdBlockService {
 
   base::SequencedTaskRunner* GetTaskRunner();
 
-  AdBlockEngine& default_engine_for_testing();
-  AdBlockEngine& additional_filters_engine_for_testing();
+  // Test accessors
+  AdBlockEngine& GetDefaultEngineForTesting();
+  AdBlockEngine& GetAdditionalFiltersEngineForTesting();
+  AdBlockFiltersProviderManager* GetFiltersProviderManagerForTesting();
+  AdBlockDefaultResourceProvider* GetDefaultResourceProviderForTesting();
 
  private:
-  friend class ::AdBlockServiceTest;
-  friend class brave_shields::CosmeticResourceMergeTest;
-  friend class brave_shields::StripProceduralFiltersTest;
-  friend class brave_shields::TestFiltersProvider;
-
   static std::string g_ad_block_dat_file_version_;
 
   AdBlockDefaultResourceProvider* default_resource_provider();
@@ -182,9 +174,6 @@ class AdBlockService {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
     return filters_provider_manager_.get();
   }
-
-  void TagExistsForTest(const std::string& tag,
-                        base::OnceCallback<void(bool)> cb);
 
   raw_ptr<PrefService> local_state_;
   std::string locale_;

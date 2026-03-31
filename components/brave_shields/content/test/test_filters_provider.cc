@@ -44,7 +44,8 @@ TestFiltersProvider::~TestFiltersProvider() = default;
 
 void TestFiltersProvider::RegisterAsSourceProvider(
     AdBlockService* ad_block_service) {
-  RegisterAsSourceProvider(ad_block_service->filters_provider_manager());
+  RegisterAsSourceProvider(
+      ad_block_service->GetFiltersProviderManagerForTesting());
 }
 
 void TestFiltersProvider::RegisterAsSourceProvider(

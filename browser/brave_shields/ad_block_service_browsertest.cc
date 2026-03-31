@@ -20,8 +20,10 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "base/test/thread_test_helper.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/app/brave_command_ids.h"
@@ -30,6 +32,7 @@
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
+#include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager_observer.h"
@@ -219,10 +222,9 @@ void AdBlockServiceTest::AddNewRules(const std::string& rules,
   source_provider->RegisterAsSourceProvider(ad_block_service);
   source_providers_.push_back(std::move(source_provider));
 
-  auto& engine =
-      first_party_protections
-          ? ad_block_service->default_engine_for_testing()
-          : ad_block_service->additional_filters_engine_for_testing();
+  auto& engine = first_party_protections
+                     ? ad_block_service->GetDefaultEngineForTesting()
+                     : ad_block_service->GetAdditionalFiltersEngineForTesting();
   EngineTestObserver engine_observer(&engine);
   engine_observer.Wait();
 }
@@ -270,7 +272,8 @@ void AdBlockServiceTest::UpdateAdBlockResources(const std::string& resources) {
   brave_shields::AdBlockService* service =
       g_brave_browser_process->ad_block_service();
 
-  service->default_resource_provider()->OnComponentReady(component_path);
+  service->GetDefaultResourceProviderForTesting()->OnComponentReady(
+      component_path);
 }
 
 void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
@@ -288,7 +291,7 @@ void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
   EXPECT_TRUE(provider);
   provider->OnComponentReady(component_path);
 
-  auto& engine = service->default_engine_for_testing();
+  auto& engine = service->GetDefaultEngineForTesting();
   EngineTestObserver engine_observer(&engine);
   engine_observer.Wait();
 }
@@ -304,19 +307,24 @@ void AdBlockServiceTest::UpdateCustomAdBlockInstanceWithRules(
       g_brave_browser_process->ad_block_service();
   ad_block_service->custom_filters_provider()->UpdateCustomFilters(rules);
 
-  auto& engine = ad_block_service->additional_filters_engine_for_testing();
+  auto& engine = ad_block_service->GetAdditionalFiltersEngineForTesting();
   EngineTestObserver engine_observer(&engine);
   engine_observer.Wait();
 }
 
 void AdBlockServiceTest::AssertTagExists(const std::string& tag,
                                          bool expected_exists) const {
-  g_brave_browser_process->ad_block_service()->TagExistsForTest(
-      tag, base::BindOnce(
-               [](bool expected_exists, bool actual_exists) {
-                 ASSERT_EQ(expected_exists, actual_exists);
-               },
-               expected_exists));
+  base::test::TestFuture<bool> future;
+  g_brave_browser_process->ad_block_service()
+      ->AsyncCallOnTaskRunnerAndReply<bool>(
+          base::BindLambdaForTesting(
+              [&tag](brave_shields::AdBlockEngineWrapper* wrapper) {
+                return wrapper->TagExists(tag);
+              }),
+
+          future.GetCallback());
+  ASSERT_TRUE(future.Wait());
+  ASSERT_EQ(future.Get(), expected_exists);
 }
 
 void AdBlockServiceTest::InitEmbeddedTestServer() {
@@ -363,8 +371,8 @@ void AdBlockServiceTest::InstallComponent(
     provider->OnComponentReady(component_path);
 
     auto& engine = catalog_entry.first_party_protections
-                       ? service->default_engine_for_testing()
-                       : service->additional_filters_engine_for_testing();
+                       ? service->GetDefaultEngineForTesting()
+                       : service->GetAdditionalFiltersEngineForTesting();
     EngineTestObserver engine_observer(&engine);
     engine_observer.Wait();
   }

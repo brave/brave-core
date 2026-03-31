@@ -267,18 +267,6 @@ base::SequencedTaskRunner* AdBlockService::GetTaskRunner() {
   return task_runner_.get();
 }
 
-AdBlockEngine& AdBlockService::default_engine_for_testing() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  CHECK_IS_TEST();
-  return engine_wrapper_->default_engine_for_testing();
-}
-
-AdBlockEngine& AdBlockService::additional_filters_engine_for_testing() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  CHECK_IS_TEST();
-  return engine_wrapper_->additional_filters_engine_for_testing();
-}
-
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kAdBlockCookieListSettingTouched, false);
   registry->RegisterBooleanPref(
@@ -307,17 +295,30 @@ AdBlockDefaultResourceProvider* AdBlockService::default_resource_provider() {
   return default_resource_provider_.get();
 }
 
-void AdBlockService::TagExistsForTest(const std::string& tag,
-                                      base::OnceCallback<void(bool)> cb) {
+AdBlockEngine& AdBlockService::GetDefaultEngineForTesting() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK_IS_TEST();
-  GetTaskRunner()->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(
-          &AdBlockEngine::TagExists,
-          base::Unretained(&default_engine_for_testing()),  // IN-TEST
-          tag),
-      std::move(cb));
+  return engine_wrapper_->default_engine_for_testing();  // IN-TEST
+}
+
+AdBlockEngine& AdBlockService::GetAdditionalFiltersEngineForTesting() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK_IS_TEST();
+  return engine_wrapper_->additional_filters_engine_for_testing();  // IN-TEST
+}
+
+AdBlockFiltersProviderManager*
+AdBlockService::GetFiltersProviderManagerForTesting() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK_IS_TEST();
+  return filters_provider_manager_.get();
+}
+
+AdBlockDefaultResourceProvider*
+AdBlockService::GetDefaultResourceProviderForTesting() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK_IS_TEST();
+  return default_resource_provider_.get();
 }
 
 }  // namespace brave_shields
