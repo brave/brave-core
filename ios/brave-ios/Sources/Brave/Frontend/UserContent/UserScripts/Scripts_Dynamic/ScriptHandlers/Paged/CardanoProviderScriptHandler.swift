@@ -206,7 +206,7 @@ class CardanoProviderScriptHandler: TabContentScript {
       }
 
       // CIP-30 API methods - require API to be enabled first
-      guard let api = tab.data.walletCardanoApi else {
+      guard let api = tab.walletCardanoApi else {
         Logger.module.error("Cardano: API is nil - must call enable() first")
         replyHandler(
           nil,
@@ -330,7 +330,7 @@ class CardanoProviderScriptHandler: TabContentScript {
 
   /// Enables the Cardano provider and returns the API instance.
   @MainActor func enable(tab: some TabState) async throws -> BraveWalletCardanoApi {
-    guard let provider = tab.data.walletCardanoProvider else {
+    guard let provider = tab.walletCardanoProvider else {
       Logger.module.error("Cardano: Provider is nil in enable()")
       throw CardanoError.internalError(Strings.Wallet.internalErrorMessage)
     }
@@ -348,7 +348,7 @@ class CardanoProviderScriptHandler: TabContentScript {
 
           if let api = api {
             Logger.module.info("Cardano: Enable succeeded! Got API object")
-            tab.data.walletCardanoApi = api
+            tab.walletCardanoApi = api
             continuation.resume(returning: api)
           } else {
             Logger.module.error("Cardano: Enable returned nil API with no error")
@@ -366,7 +366,7 @@ class CardanoProviderScriptHandler: TabContentScript {
 
   /// Checks if the Cardano provider is enabled
   @MainActor func isEnabled(tab: some TabState) async -> Bool {
-    guard let provider = tab.data.walletCardanoProvider else { return false }
+    guard let provider = tab.walletCardanoProvider else { return false }
     return await provider.isEnabled()
   }
 }
