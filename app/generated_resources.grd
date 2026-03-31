@@ -12556,10 +12556,10 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           Open group in new window
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_PIN_GROUP" desc="The label of the saved tab group button context menu item to pin a gruop">
-          Pin group to bookmarks
+          Pin group to bookmarks bar
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_UNPIN_GROUP" desc="The label of the saved tab group button context menu item to unpin a gruop">
-          Unpin group from bookmarks
+          Unpin group from bookmarks bar
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_CONVERT_GROUP_TO_BOOKMARK_FOLDER" desc="The label of the tab group header context menu item for moving the entire group to a new window.">
           Convert group to bookmark folder
@@ -12610,10 +12610,10 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           Open Group in New Window
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_PIN_GROUP" desc="The label of the saved tab group button context menu item to pin a gruop">
-          Pin Group to Bookmarks
+          Pin Group to Bookmarks Bar
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_UNPIN_GROUP" desc="The label of the saved tab group button context menu item to unpin a gruop">
-          Unpin Group from Bookmarks
+          Unpin Group from Bookmarks Bar
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_CONVERT_GROUP_TO_BOOKMARK_FOLDER" desc="The label of the tab group header context menu item for moving the entire group to a new window.">
           Convert Group to Bookmark Folder
@@ -15646,7 +15646,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <!-- View menu -->
         <message name="IDS_BOOKMARK_BAR_ALWAYS_SHOW_MAC" desc="The Mac menu item for having bookmark bar always visible in the view menu.">
-          Always Show Bookmarks
+          Always Show Bookmarks Bar
         </message>
         <message name="IDS_STOP_MENU_MAC" desc="The Mac menu item stop in the view menu.">
           Stop

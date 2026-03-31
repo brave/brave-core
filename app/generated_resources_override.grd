@@ -884,21 +884,9 @@ are declared in tools/grit/grit_args.gni.
         </if>
 
       <if expr="not use_titlecase">
-        <message name="IDS_TAB_GROUP_HEADER_CXMENU_PIN_GROUP" desc="The label of the saved tab group button context menu item to pin a gruop">
-          Pin group to bookmarks
-        </message>
-        <message name="IDS_TAB_GROUP_HEADER_CXMENU_UNPIN_GROUP" desc="The label of the saved tab group button context menu item to unpin a gruop">
-          Unpin group from bookmarks
-        </message>
         </if>
 
       <if expr="use_titlecase">
-        <message name="IDS_TAB_GROUP_HEADER_CXMENU_PIN_GROUP" desc="The label of the saved tab group button context menu item to pin a gruop">
-          Pin Group to Bookmarks
-        </message>
-        <message name="IDS_TAB_GROUP_HEADER_CXMENU_UNPIN_GROUP" desc="The label of the saved tab group button context menu item to unpin a gruop">
-          Unpin Group from Bookmarks
-        </message>
         </if>
 
     <if expr="use_titlecase">
@@ -1133,9 +1121,6 @@ are declared in tools/grit/grit_args.gni.
         </if> <if expr="is_macosx">
         <message name="IDS_NEW_INCOGNITO_WINDOW_MAC" desc="The Mac menu item for opening a new Private window in the file menu.">
           New Private Window
-        </message>
-        <message name="IDS_BOOKMARK_BAR_ALWAYS_SHOW_MAC" desc="The Mac menu item for having bookmark bar always visible in the view menu.">
-          Always Show Bookmarks
         </message>
         </if> <if expr="is_posix and not is_macosx">
         </if>

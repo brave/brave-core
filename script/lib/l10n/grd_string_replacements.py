@@ -33,9 +33,6 @@ default_replacements = [
     (r'Incognito', r'Private'),
     (r'inco&gnito', r'&private'),
     (r'Inco&gnito', r'&Private'),
-    (r'Bookmarks Bar\n', r'Bookmarks\n'),
-    (r'Bookmarks bar\n', r'Bookmarks\n'),
-    (r'bookmarks bar\n', r'bookmarks\n'),
 ]
 
 

@@ -259,7 +259,7 @@
     Show home button
   </message>
   <message name="IDS_SETTINGS_SHOW_BOOKMARKS_BAR" desc="Label for the checkbox which enables or disables showing the bookmarks bar in the toolbar.">
-    Show bookmarks
+    Show bookmarks bar
   </message>
   <message name="IDS_SETTINGS_SHOW_TAB_SEARCH_BUTTON" desc="Label for the checkbox which enables or disables showing the tab search button in the tab strip.">
     Show tab search button
@@ -277,10 +277,10 @@
     Allow split view drag-and-drop on left or right edge of window
   </message>
   <message name="IDS_SETTINGS_SHOW_TAB_GROUPS_IN_BOOKMARKS_BAR" desc="Label for the checkbox which enables or disables showing saved tab groups in bookmarks bar.">
-    Show tab groups in bookmarks
+    Show tab groups in bookmarks bar
   </message>
   <message name="IDS_SETTINGS_AUTO_PIN_NEW_TAB_GROUPS" desc="Label for the checkbox which enables or disables auto pin new tab groups.">
-    Automatically pin new tab groups created on any device to the bookmarks
+    Automatically pin new tab groups created on any device to the bookmarks bar
   </message>
   <message name="IDS_SETTINGS_HOVER_CARD_TITLE" desc="Title for the section in appearance settings for configuring what gets displayed in tab hovercards.">
     Tab hover preview card
