@@ -14,7 +14,7 @@ foreach(override, nala_icon_overrides) {
   _name = "nala_override_" + string_replace(override.dest, ".xml", "")
   copy(_name) {
     sources = [ "$nala_base_path/drawable/${override.source}" ]
-    outputs = [ "$target_gen_dir/res/drawable/${override.dest}" ]
+    outputs = [ "$target_gen_dir/drawable/${override.dest}" ]
   }
   _nala_override_deps += [ ":$_name" ]
 }

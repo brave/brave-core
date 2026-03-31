@@ -94,6 +94,12 @@ brave_java_resources = [
 brave_java_resources +=
     rebase_path(nala_icons, ".", "$root_gen_dir/brave/android/nala/drawable")
 
+# Include the Nala icon overrides from the gen directory.
+foreach(override, nala_icon_overrides) {
+  brave_java_resources +=
+      [ "$root_gen_dir/brave/android/nala/drawable/${override.dest}" ]
+}
+
 brave_base_module_resources =
     [ "java/res_chromium_base/drawable-night/themed_app_icon.xml" ]
 
