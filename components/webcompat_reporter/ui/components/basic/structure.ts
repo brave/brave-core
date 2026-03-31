@@ -25,6 +25,7 @@ export const ModalLayout = styled('div')<{}>`
 
 export const PaddedButton = styled(Button)<{}>`
   margin: 5px;
+  color: var(--leo-color-text-secondary);
 `
 
 export const TextSection = styled('div')<{}>`
