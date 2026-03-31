@@ -63,9 +63,7 @@ void NavigationSourceMetrics::RecordTopSiteNavigation(bool is_custom) {
   {
     ScopedDictPrefUpdate update(local_state_, kMiscMetricsNavSourceCounts);
     int current = update->FindInt(kBookmarksCountKey).value_or(0);
-    if (current > 0) {
-      update->Set(kBookmarksCountKey, current - 1);
-    }
+    update->Set(kBookmarksCountKey, current - 1);
   }
 #endif
   if (is_custom) {

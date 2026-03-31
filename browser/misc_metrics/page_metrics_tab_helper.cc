@@ -15,6 +15,7 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/components/misc_metrics/navigation_source_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "components/tabs/public/tab_interface.h"
@@ -120,6 +121,14 @@ void PageMetricsTabHelper::MaybeRecordNavigationSource(
     nav_source_metrics.RecordBookmarkNavigation();
   } else if (ui::PageTransitionCoreTypeIs(transition,
                                           ui::PAGE_TRANSITION_AUTO_TOPLEVEL)) {
+#if BUILDFLAG(IS_ANDROID)
+    nav_source_metrics.RecordPWANavigation();
+#else
+    nav_source_metrics.RecordExternalNavigation();
+#endif
+  } else if (ui::PageTransitionCoreTypeIs(transition,
+                                          ui::PAGE_TRANSITION_FIRST) &&
+             (transition & ui::PAGE_TRANSITION_FROM_API)) {
     nav_source_metrics.RecordExternalNavigation();
   }
 }
