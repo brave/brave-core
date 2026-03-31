@@ -178,12 +178,6 @@ std::optional<CatalogConversionList> ParseConversions(
     // Invalid conversions are filtered later by `FilterInvalidConversions`.
     conversion.url_pattern = *url_pattern;
 
-    if (const std::string* const public_key =
-            conversion_dict->FindString("conversionPublicKey")) {
-      // Optional.
-      conversion.verifiable_advertiser_public_key_base64 = *public_key;
-    }
-
     conversion.observation_window =
         base::Days(conversion_dict->FindInt("observationWindow")
                        .value_or(kDefaultConversionObservationWindow));

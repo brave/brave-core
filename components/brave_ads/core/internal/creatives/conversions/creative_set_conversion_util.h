@@ -39,7 +39,7 @@ void FilterCreativeSetConversionBucketsThatExceedTheCap(
     size_t creative_set_conversion_cap,
     CreativeSetConversionBucketMap& creative_set_conversion_buckets);
 
-CreativeSetConversionList GetCreativeSetConversionsWithinObservationWindow(
+bool HasCreativeSetConversionWithinObservationWindow(
     const CreativeSetConversionList& creative_set_conversions,
     const AdEventInfo& ad_event);
 

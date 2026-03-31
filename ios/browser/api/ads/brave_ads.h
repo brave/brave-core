@@ -155,10 +155,6 @@ OBJC_EXPORT
                         redirectChain:(NSArray<NSURL*>*)redirectChain
                                  text:(NSString*)text;
 
-- (void)notifyTabHtmlContentDidChange:(NSInteger)tabId
-                        redirectChain:(NSArray<NSURL*>*)redirectChain
-                                 html:(NSString*)html;
-
 - (void)notifyTabDidStartPlayingMedia:(NSInteger)tabId;
 
 - (void)notifyTabDidStopPlayingMedia:(NSInteger)tabId;

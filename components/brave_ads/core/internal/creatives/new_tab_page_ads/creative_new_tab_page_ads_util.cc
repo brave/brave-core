@@ -107,8 +107,6 @@ constexpr char kCreativeSetConversionsKey[] = "conversions";
 constexpr char kCreativeSetConversionUrlPatternKey[] = "urlPattern";
 constexpr char kCreativeSetConversionObservationWindowKey[] =
     "observationWindow";
-constexpr char kCreativeSetConversionPublicKeyKey[] = "publicKey";
-
 // Creative keys.
 constexpr char kCreativesKey[] = "creatives";
 constexpr char kCreativeInstanceIdKey[] = "creativeInstanceId";
@@ -407,13 +405,6 @@ void ParseAndSaveNewTabPageAds(base::DictValue dict, ResultCallback callback) {
 
           creative_set_conversion.expire_at =
               creative_ad.end_at + creative_set_conversion.observation_window;
-
-          const std::string* const public_key =
-              conversion_dict->FindString(kCreativeSetConversionPublicKeyKey);
-          if (public_key) {
-            creative_set_conversion.verifiable_advertiser_public_key_base64 =
-                *public_key;
-          }
 
           creative_set_conversions.push_back(creative_set_conversion);
         }

@@ -45,13 +45,6 @@ void VerifyRequiredMojomCreativeSetConversionExpectations(
             test::kCreativeSetConversionObservationWindow);
 }
 
-void VerifyOptionalMojomCreativeSetConversionExpectations(
-    const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad) {
-  EXPECT_EQ(mojom_creative_ad->creative_set_conversion
-                ->verifiable_advertiser_public_key_base64,
-            test::kCreativeSetConversionAdvertiserPublicKey);
-}
-
 }  // namespace
 
 TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest, Extract) {
@@ -72,7 +65,6 @@ TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest, Extract) {
 
   VerifyRequiredMojomCreativeAdExpectations(mojom_creative_ad);
   VerifyRequiredMojomCreativeSetConversionExpectations(mojom_creative_ad);
-  VerifyOptionalMojomCreativeSetConversionExpectations(mojom_creative_ad);
 }
 
 TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
@@ -228,7 +220,6 @@ TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
 
   VerifyRequiredMojomCreativeAdExpectations(mojom_creative_ad);
   VerifyRequiredMojomCreativeSetConversionExpectations(mojom_creative_ad);
-  VerifyOptionalMojomCreativeSetConversionExpectations(mojom_creative_ad);
 }
 
 TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
@@ -320,29 +311,6 @@ TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
 }
 
 TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
-     ExtractIfMissingOptionalCreativeSetConversionAdvertiserPublicKey) {
-  const std::vector<schema_org::mojom::EntityPtr> mojom_web_page_entities =
-      test::CreativeSearchResultAdMojomWebPageEntitiesWithProperty(
-          kCreativeSetConversionAdvertiserPublicKeyPropertyName, /*value=*/"");
-
-  const std::vector<mojom::CreativeSearchResultAdInfoPtr>
-      creative_search_result_ads =
-          ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
-              mojom_web_page_entities);
-  ASSERT_THAT(creative_search_result_ads, ::testing::SizeIs(1));
-  const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad =
-      creative_search_result_ads[0];
-  ASSERT_TRUE(mojom_creative_ad);
-  ASSERT_TRUE(mojom_creative_ad->creative_set_conversion);
-  EXPECT_EQ(test::kCreativeAdPlacementId, mojom_creative_ad->placement_id);
-
-  VerifyRequiredMojomCreativeAdExpectations(mojom_creative_ad);
-  VerifyRequiredMojomCreativeSetConversionExpectations(mojom_creative_ad);
-  EXPECT_FALSE(mojom_creative_ad->creative_set_conversion
-                   ->verifiable_advertiser_public_key_base64);
-}
-
-TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
      DoNotExtractIfMissingRequiredCreativeSetConversionProperties) {
   static constexpr auto kRequiredCreativeSetConversionPropertyNames =
       std::to_array<std::string_view>(
@@ -366,34 +334,6 @@ TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
 
     VerifyRequiredMojomCreativeAdExpectations(mojom_creative_ad);
     EXPECT_FALSE(mojom_creative_ad->creative_set_conversion);
-  }
-}
-
-TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
-     ExtractIfMissingOptionalCreativeSetConversionProperties) {
-  static constexpr auto kOptionalCreativeSetConversionPropertyNames =
-      std::to_array<std::string_view>(
-          {kCreativeSetConversionAdvertiserPublicKeyPropertyName});
-
-  for (auto property_name : kOptionalCreativeSetConversionPropertyNames) {
-    const std::vector<schema_org::mojom::EntityPtr> mojom_web_page_entities =
-        test::CreativeSearchResultAdMojomWebPageEntities(
-            /*excluded_property_names=*/{property_name});
-
-    const std::vector<mojom::CreativeSearchResultAdInfoPtr>
-        creative_search_result_ads =
-            ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
-                mojom_web_page_entities);
-    ASSERT_THAT(creative_search_result_ads, ::testing::SizeIs(1));
-    const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad =
-        creative_search_result_ads[0];
-    ASSERT_TRUE(mojom_creative_ad);
-    EXPECT_EQ(test::kCreativeAdPlacementId, mojom_creative_ad->placement_id);
-
-    VerifyRequiredMojomCreativeAdExpectations(mojom_creative_ad);
-    VerifyRequiredMojomCreativeSetConversionExpectations(mojom_creative_ad);
-    EXPECT_FALSE(mojom_creative_ad->creative_set_conversion
-                     ->verifiable_advertiser_public_key_base64);
   }
 }
 

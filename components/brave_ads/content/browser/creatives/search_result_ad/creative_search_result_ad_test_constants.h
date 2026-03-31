@@ -33,8 +33,6 @@ inline constexpr double kCreativeAdRewardsValue = 0.5;
 // Creative set conversion.
 inline constexpr char kCreativeSetConversionUrlPattern[] =
     "https://brave.com/*";
-inline constexpr char kCreativeSetConversionAdvertiserPublicKey[] =
-    "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
 inline constexpr base::TimeDelta kCreativeSetConversionObservationWindow =
     base::Days(1);
 

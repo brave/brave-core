@@ -10,7 +10,6 @@
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/creative_search_result_ad_test_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_test_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -36,7 +35,6 @@ TEST_F(BraveAdsCreativeSetConversionBuilderTest,
       *creative_set_conversion,
       ::testing::FieldsAre(test::kCreativeSetId,
                            /*url_pattern*/ "https://brave.com/*",
-                           test::kVerifiableConversionAdvertiserPublicKeyBase64,
                            /*observation_window*/ base::Days(3),
                            /*expire_at*/ test::Now() + base::Days(3)));
 }

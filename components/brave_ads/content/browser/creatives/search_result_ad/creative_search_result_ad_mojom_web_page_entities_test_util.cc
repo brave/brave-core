@@ -92,10 +92,6 @@ class CreativeAdMojomWebPageEntitiesConstructor final {
     MaybeAddCreativeAdMojomProperty<std::string>(
         &mojom_entity->properties, kCreativeSetConversionUrlPatternPropertyName,
         kCreativeSetConversionUrlPattern);
-    MaybeAddCreativeAdMojomProperty<std::string>(
-        &mojom_entity->properties,
-        kCreativeSetConversionAdvertiserPublicKeyPropertyName,
-        kCreativeSetConversionAdvertiserPublicKey);
     MaybeAddCreativeAdMojomProperty<int64_t>(
         &mojom_entity->properties,
         kCreativeSetConversionObservationWindowPropertyName,

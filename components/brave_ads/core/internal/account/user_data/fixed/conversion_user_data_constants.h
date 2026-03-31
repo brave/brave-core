@@ -12,13 +12,6 @@ inline constexpr char kConversionKey[] = "conversion";
 
 inline constexpr char kConversionActionTypeKey[] = "action";
 
-inline constexpr char kVerifiableConversionEnvelopeKey[] = "envelope";
-inline constexpr char kVerifiableConversionEnvelopeAlgorithmKey[] = "alg";
-inline constexpr char kVerifiableConversionEnvelopeCipherTextKey[] =
-    "ciphertext";
-inline constexpr char kVerifiableConversionEnvelopeEphemeralPublicKeyKey[] =
-    "epk";
-inline constexpr char kVerifiableConversionEnvelopeNonceKey[] = "nonce";
 
 }  // namespace brave_ads
 

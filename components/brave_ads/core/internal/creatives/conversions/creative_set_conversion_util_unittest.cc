@@ -11,7 +11,6 @@
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_test_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 #include "url/gurl.h"
@@ -244,7 +243,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
 }
 
 TEST_F(BraveAdsCreativeSetConversionUtilTest,
-       GetCreativeSetConversionsWithinObservationWindow) {
+       HasCreativeSetConversionWithinObservationWindow) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*use_random_uuids=*/false);
@@ -254,34 +253,35 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
 
   AdvanceClockBy(base::Days(3) + base::Milliseconds(1));
 
-  CreativeSetConversionList creative_set_conversions;
+  const CreativeSetConversionList creative_set_conversions = {
+      test::BuildCreativeSetConversion(test::kCreativeSetId,
+                                       /*url_pattern=*/"https://foo.com/*",
+                                       /*observation_window=*/base::Days(7))};
 
-  const CreativeSetConversionInfo creative_set_conversion_1 =
-      test::BuildVerifiableCreativeSetConversion(
-          test::kCreativeSetId,
-          /*url_pattern=*/"https://foo.com/*",
-          /*observation_window=*/base::Days(7),
-          test::kVerifiableConversionAdvertiserPublicKeyBase64);
-  creative_set_conversions.push_back(creative_set_conversion_1);
+  // Act & Assert
+  EXPECT_TRUE(HasCreativeSetConversionWithinObservationWindow(
+      creative_set_conversions, ad_event));
+}
 
-  const CreativeSetConversionInfo creative_set_conversion_2 =
+TEST_F(BraveAdsCreativeSetConversionUtilTest,
+       DoesNotHaveCreativeSetConversionWithinObservationWindow) {
+  // Arrange
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/false);
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, mojom::ConfirmationType::kConversion,
+                   /*created_at=*/test::Now());
+
+  AdvanceClockBy(base::Days(3) + base::Milliseconds(1));
+
+  const CreativeSetConversionList creative_set_conversions = {
       test::BuildCreativeSetConversion(test::kAnotherCreativeSetId,
                                        /*url_pattern=*/"https://www.qux.com/",
-                                       /*observation_window=*/base::Days(3));
-  creative_set_conversions.push_back(creative_set_conversion_2);
+                                       /*observation_window=*/base::Days(3))};
 
-  // Act
-  const CreativeSetConversionList
-      creative_set_conversions_within_observation_window =
-          GetCreativeSetConversionsWithinObservationWindow(
-              creative_set_conversions, ad_event);
-
-  // Assert
-  const CreativeSetConversionList
-      expected_creative_set_conversions_within_observation_window = {
-          creative_set_conversion_1};
-  EXPECT_EQ(expected_creative_set_conversions_within_observation_window,
-            creative_set_conversions_within_observation_window);
+  // Act & Assert
+  EXPECT_FALSE(HasCreativeSetConversionWithinObservationWindow(
+      creative_set_conversions, ad_event));
 }
 
 }  // namespace brave_ads

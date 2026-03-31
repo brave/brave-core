@@ -76,20 +76,15 @@ void FilterCreativeSetConversionBucketsThatExceedTheCap(
   }
 }
 
-CreativeSetConversionList GetCreativeSetConversionsWithinObservationWindow(
+bool HasCreativeSetConversionWithinObservationWindow(
     const CreativeSetConversionList& creative_set_conversions,
     const AdEventInfo& ad_event) {
-  CreativeSetConversionList unexpired_creative_set_conversions;
-
-  std::ranges::copy_if(
+  return std::ranges::any_of(
       creative_set_conversions,
-      std::back_inserter(unexpired_creative_set_conversions),
       [&ad_event](const CreativeSetConversionInfo& creative_set_conversion) {
         return DidAdEventOccurWithinObservationWindow(
             ad_event, creative_set_conversion.observation_window);
       });
-
-  return unexpired_creative_set_conversions;
 }
 
 }  // namespace brave_ads

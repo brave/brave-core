@@ -212,16 +212,6 @@ class AdsService : public KeyedService {
       const std::vector<GURL>& redirect_chain,
       const std::string& text) = 0;
 
-  // Called when the page for `tab_id` has loaded and the content is available
-  // for analysis. `redirect_chain` containing a list of redirect URLs that
-  // occurred on the way to the current page. The current page is the last one
-  // in the list (so even when there's no redirect, there should be one entry in
-  // the list). `html` containing the page content as HTML.
-  virtual void NotifyTabHtmlContentDidChange(
-      int32_t tab_id,
-      const std::vector<GURL>& redirect_chain,
-      const std::string& html) = 0;
-
   // Called when media starts playing on a browser tab for the specified
   // `tab_id`.
   virtual void NotifyTabDidStartPlayingMedia(int32_t tab_id) = 0;

@@ -36,11 +36,6 @@ class TabManagerObserver : public base::CheckedObserver {
                                       const std::vector<GURL>& redirect_chain,
                                       const std::string& text) {}
 
-  // Invoked when the HTML content for the tab specified by `tab_id` did change.
-  virtual void OnHtmlContentDidChange(int32_t tab_id,
-                                      const std::vector<GURL>& redirect_chain,
-                                      const std::string& html) {}
-
   // Invoked when a tab is closed with the given `tab_id`.
   virtual void OnDidCloseTab(int32_t tab_id) {}
 

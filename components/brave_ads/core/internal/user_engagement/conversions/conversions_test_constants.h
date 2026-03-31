@@ -8,28 +8,11 @@
 
 namespace brave_ads::test {
 
-// See `test/data/resources/nnqccijfhvzwyrxpxwjrpmynaiazctqb` for conversion
-// resource test data.
-
-// Also, see `conversions_test_util.h` for test helpers to construct redirect
-// chains and URL patterns.
-
 // Default conversion.
 inline constexpr char kMatchingUrlPattern[] = "https://foo.com/*";
 inline constexpr char kAnotherMatchingUrlPattern[] = "https://qux.com/*/corge";
 inline constexpr char kMismatchingUrlPattern[] =
     "https://www.grault.com/garply";
-
-// Verifiable conversion.
-inline constexpr char kMatchingVerifiableConversionUrlPattern[] =
-    "https://foo.com/bar?qux_id=xyz*";  // Matches xyzzy.
-inline constexpr char kMismatchingVerifiableConversionUrlPattern[] =
-    "https://foo.com/bar?qux_id=thud";
-
-inline constexpr char kVerifiableConversionHtml[] =
-    R"(<html>Hello World!<div id="xyzzy-id">waldo</div><meta name="ad-conversion-id" content="fred"></html>)";
-
-inline constexpr char kVerifiableConversionIdPattern[] = "qux_id=(.*)";
 
 }  // namespace brave_ads::test
 

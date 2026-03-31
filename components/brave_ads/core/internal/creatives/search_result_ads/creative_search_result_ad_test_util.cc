@@ -8,7 +8,6 @@
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_test_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "url/gurl.h"
 
@@ -53,9 +52,6 @@ mojom::CreativeSearchResultAdInfoPtr BuildCreativeSearchResultAdWithConversion(
       mojom::CreativeSetConversionInfo::New();
   mojom_creative_ad->creative_set_conversion->url_pattern =
       kConversionUrlPattern;
-  mojom_creative_ad->creative_set_conversion
-      ->verifiable_advertiser_public_key_base64 =
-      kVerifiableConversionAdvertiserPublicKeyBase64;
   mojom_creative_ad->creative_set_conversion->observation_window =
       kConversionObservationWindow;
 

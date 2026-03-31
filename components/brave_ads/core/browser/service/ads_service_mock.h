@@ -98,9 +98,6 @@ class AdsServiceMock : public AdsService {
   MOCK_METHOD(void,
               NotifyTabTextContentDidChange,
               (int32_t, const std::vector<GURL>&, const std::string&));
-  MOCK_METHOD(void,
-              NotifyTabHtmlContentDidChange,
-              (int32_t, const std::vector<GURL>&, const std::string&));
   MOCK_METHOD(void, NotifyTabDidStartPlayingMedia, (int32_t));
   MOCK_METHOD(void, NotifyTabDidStopPlayingMedia, (int32_t));
   MOCK_METHOD(void,

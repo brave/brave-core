@@ -82,25 +82,6 @@ constexpr char kHttpStatusCodeQueryKey[] = "http_status_code";
 
 constexpr char kMultiPageApplicationWebpage[] =
     "/brave_ads/multi_page_application.html";
-constexpr char kMultiPageApplicationWebpageHtmlContent[] =
-    "<!DOCTYPE html><html xmlns=\"http://www.w3.org/1999/xhtml\" "
-    "lang=\"en\"><head>\n  <title>Adventure "
-    "Awaits</title>\n</head>\n\n<body>\n  <h1>Welcome to Your Adventure</h1>\n "
-    " <p>\n    Embark on a journey of learning and discovery. Each step you "
-    "take brings you closer to mastering new skills and\n    achieving your "
-    "goals.\n  </p>\n  <ul>\n    <li><a href=\"rust.html\" "
-    "target=\"_self\">Explore new programming languages</a></li>\n    <li><a "
-    "href=\"open_source.html\" target=\"_self\">Contribute to open-source "
-    "projects</a></li>\n    <li><a href=\"develop.html\" "
-    "target=\"_self\">Develop innovative applications</a></li>\n  </ul>\n  "
-    "<blockquote>\n    \"The only limit to our realization of tomorrow is our "
-    "doubts of today.\" - Franklin D. Roosevelt\n  </blockquote>\n  <table "
-    "border=\"1\">\n    <tbody><tr>\n      <th>Task</th>\n      "
-    "<th>Status</th>\n    </tr>\n    <tr>\n      <td>Learn Rust</td>\n      "
-    "<td>Completed</td>\n    </tr>\n    <tr>\n      <td>Contribute to a GitHub "
-    "repository</td>\n      <td>In Progress</td>\n    </tr>\n    <tr>\n      "
-    "<td>Build a mobile app</td>\n      <td>Pending</td>\n    </tr>\n  "
-    "</tbody></table>\n\n\n\n</body></html>";
 constexpr char kMultiPageApplicationWebpageTextContent[] =
     "Welcome to Your Adventure\n\nEmbark on a journey of learning and "
     "discovery. Each step you take brings you closer to mastering new skills "
@@ -113,35 +94,6 @@ constexpr char kMultiPageApplicationWebpageTextContent[] =
 
 constexpr char kSinglePageApplicationWebpage[] =
     "/brave_ads/single_page_application.html";
-constexpr char kSinglePageApplicationWebpageHtmlContent[] =
-    "<!DOCTYPE html><html xmlns=\"http://www.w3.org/1999/xhtml\" "
-    "lang=\"en\"><head>\n  <title>Single Page Application</title>\n  "
-    "<script>\n    // Function to update the page header.\n    function "
-    "displayContent(state) {\n      const pageHeader = "
-    "document.querySelector(\"#pageHeader\");\n      pageHeader.textContent = "
-    "state.header;\n    }\n\n    // Event listener for clicks on the "
-    "document.\n    document.addEventListener(\"click\", async (event) =&gt; "
-    "{\n      const navigationType = "
-    "event.target.getAttribute(\"data-navigation-type\");\n      if "
-    "(navigationType) {\n        event.preventDefault(); // Stop the default "
-    "link behavior.\n        if (navigationType === \"same_document\") {\n     "
-    "     try {\n            // Update the header.\n            "
-    "displayContent({ header: navigationType });\n\n            // Change the "
-    "URL without reloading.\n            const newState = { header: "
-    "navigationType };\n            history.pushState(newState, \"\", "
-    "navigationType);\n          } catch (err) {\n            // Log any "
-    "errors.\n            console.error(err);\n          }\n        }\n      "
-    "}\n    });\n\n    // Event listener for browser navigation "
-    "(back/forward).\n    window.addEventListener(\"popstate\", (event) =&gt; "
-    "{\n      if (event.state) {\n        // Update the header based on the "
-    "state.\n        displayContent(event.state);\n      }\n    });\n\n    // "
-    "Set the initial state of the page.\n    const initialState = { header: "
-    "\"Home\" };\n    history.replaceState(initialState, \"\", "
-    "document.location.href);\n  </script>\n</head>\n\n<body>\n  <h1 "
-    "id=\"pageHeader\">same_document</h1>\n  <ul>\n    <li><a href=\"/\" "
-    "data-navigation-type=\"home\">Home</a></li>\n    <li><a "
-    "href=\"same_document\" data-navigation-type=\"same_document\">Same "
-    "Document</a></li>\n  </ul>\n\n\n\n</body></html>";
 constexpr char kSinglePageApplicationClickSelector[] =
     "[data-navigation-type='same_document']";
 
@@ -568,135 +520,6 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
                        NotifyTabDidLoadForHttpSuccessfulResponsePage) {
   EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidLoad(TabId(), net::HTTP_OK));
   SimulateHttpStatusCodePage(net::HTTP_OK);
-}
-
-IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
-                       NotifyTabHtmlContentDidChangeForRewardsUser) {
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-
-  base::RunLoop run_loop;
-  EXPECT_CALL(
-      GetAdsServiceMock(),
-      NotifyTabHtmlContentDidChange(
-          TabId(), RedirectChainExpectation(kMultiPageApplicationWebpage),
-          kMultiPageApplicationWebpageHtmlContent))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  NavigateToRelativeURL(kMultiPageApplicationWebpage,
-                        /*has_user_gesture=*/true);
-  run_loop.Run();
-}
-
-IN_PROC_BROWSER_TEST_F(
-    BraveAdsTabHelperTest,
-    NotifyTabHtmlContentDidChangeWithEmptyHtmlForNonRewardsUser) {
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, false);
-
-  base::RunLoop run_loop;
-  EXPECT_CALL(
-      GetAdsServiceMock(),
-      NotifyTabHtmlContentDidChange(
-          TabId(), RedirectChainExpectation(kMultiPageApplicationWebpage),
-          /*html=*/::testing::IsEmpty()))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  NavigateToRelativeURL(kMultiPageApplicationWebpage,
-                        /*has_user_gesture=*/true);
-  run_loop.Run();
-}
-
-IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
-                       DoNotNotifyTabHtmlContentDidChangeIfTabWasRestored) {
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-
-  base::RunLoop run_loop;
-  EXPECT_CALL(GetAdsServiceMock(), NotifyTabHtmlContentDidChange)
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  NavigateToRelativeURL(kMultiPageApplicationWebpage,
-                        /*has_user_gesture=*/true);
-  run_loop.Run();
-  ::testing::Mock::VerifyAndClearExpectations(&GetAdsServiceMock());
-
-  // Must occur before the browser is closed.
-  Profile* const profile = GetProfile();
-  AdsServiceMock& ads_service_mock = GetAdsServiceMock();
-
-  const ScopedKeepAlive scoped_keep_alive(KeepAliveOrigin::SESSION_RESTORE,
-                                          KeepAliveRestartOption::DISABLED);
-  const ScopedProfileKeepAlive scoped_profile_keep_alive(
-      profile, ProfileKeepAliveOrigin::kSessionRestore);
-  CloseBrowserSynchronously(browser());
-
-  // We should not notify about changes to the tab's HTML content, as the
-  // session will be restored and the tab will reload.
-  EXPECT_CALL(ads_service_mock, NotifyTabHtmlContentDidChange).Times(0);
-  RestoreBrowser(profile);
-
-  EXPECT_TRUE(WaitForActiveWebContentsToLoad());
-}
-
-IN_PROC_BROWSER_TEST_F(
-    BraveAdsTabHelperTest,
-    DoNotNotifyTabHtmlContentDidChangeForPreviouslyCommittedNavigation) {
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-
-  base::RunLoop run_loop;
-  EXPECT_CALL(GetAdsServiceMock(), NotifyTabHtmlContentDidChange)
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  NavigateToRelativeURL(kMultiPageApplicationWebpage,
-                        /*has_user_gesture=*/true);
-  run_loop.Run();
-  ::testing::Mock::VerifyAndClearExpectations(&GetAdsServiceMock());
-
-  EXPECT_CALL(GetAdsServiceMock(), NotifyTabHtmlContentDidChange).Times(0);
-  GoBack();
-  GoForward();
-  Reload();
-
-  EXPECT_TRUE(WaitForActiveWebContentsToLoad());
-}
-
-IN_PROC_BROWSER_TEST_F(
-    BraveAdsTabHelperTest,
-    DoNotNotifyTabHtmlContentDidChangeForHttpClientErrorResponsePage) {
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-
-  EXPECT_CALL(GetAdsServiceMock(), NotifyTabHtmlContentDidChange).Times(0);
-  SimulateHttpStatusCodePage(net::HTTP_NOT_FOUND);
-}
-
-IN_PROC_BROWSER_TEST_F(
-    BraveAdsTabHelperTest,
-    DoNotNotifyTabHtmlContentDidChangeForHttpServerErrorResponsePage) {
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-
-  EXPECT_CALL(GetAdsServiceMock(), NotifyTabHtmlContentDidChange).Times(0);
-  SimulateHttpStatusCodePage(net::HTTP_INTERNAL_SERVER_ERROR);
-}
-
-IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
-                       NotifyTabHtmlContentDidChangeForSameDocumentNavigation) {
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-
-  {
-    base::RunLoop run_loop;
-    EXPECT_CALL(GetAdsServiceMock(), NotifyTabHtmlContentDidChange)
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    NavigateToRelativeURL(kSinglePageApplicationWebpage,
-                          /*has_user_gesture=*/true);
-    run_loop.Run();
-    ::testing::Mock::VerifyAndClearExpectations(&GetAdsServiceMock());
-  }
-
-  {
-    base::RunLoop run_loop;
-    EXPECT_CALL(GetAdsServiceMock(),
-                NotifyTabHtmlContentDidChange(
-                    TabId(), ::testing::Contains(FileName("same_document")),
-                    kSinglePageApplicationWebpageHtmlContent))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    SimulateClick(kSinglePageApplicationClickSelector,
-                  /*has_user_gesture=*/true);
-    run_loop.Run();
-  }
 }
 
 IN_PROC_BROWSER_TEST_F(

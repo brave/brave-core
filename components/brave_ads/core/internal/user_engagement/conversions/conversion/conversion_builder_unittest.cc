@@ -12,8 +12,6 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_info.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_test_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -32,41 +30,14 @@ TEST(BraveAdsConversionBuilderTest, BuildConversion) {
                    /*created_at=*/test::Now());
 
   // Act
-  const ConversionInfo conversion =
-      BuildConversion(ad_event, /*verifiable_conversion=*/std::nullopt);
+  const ConversionInfo conversion = BuildConversion(ad_event);
 
   // Assert
   EXPECT_THAT(conversion,
               ::testing::FieldsAre(
                   mojom::AdType::kNotificationAd, test::kCreativeInstanceId,
                   test::kCreativeSetId, test::kCampaignId, test::kAdvertiserId,
-                  test::kSegment, ConversionActionType::kViewThrough,
-                  /*verifable*/ std::nullopt));
-}
-
-TEST(BraveAdsConversionBuilderTest, BuildVerifiableConversion) {
-  // Arrange
-  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*use_random_uuids=*/false);
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
-                   /*created_at=*/test::Now());
-
-  // Act
-  const ConversionInfo conversion = BuildConversion(
-      ad_event, VerifiableConversionInfo{
-                    test::kVerifiableConversionId,
-                    test::kVerifiableConversionAdvertiserPublicKeyBase64});
-
-  // Assert
-  EXPECT_THAT(conversion,
-              ::testing::FieldsAre(
-                  mojom::AdType::kNotificationAd, test::kCreativeInstanceId,
-                  test::kCreativeSetId, test::kCampaignId, test::kAdvertiserId,
-                  test::kSegment, ConversionActionType::kViewThrough,
-                  VerifiableConversionInfo{
-                      test::kVerifiableConversionId,
-                      test::kVerifiableConversionAdvertiserPublicKeyBase64}));
+                  test::kSegment, ConversionActionType::kViewThrough));
 }
 
 }  // namespace brave_ads

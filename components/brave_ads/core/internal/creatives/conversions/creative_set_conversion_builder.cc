@@ -25,10 +25,6 @@ FromMojomMaybeBuildCreativeSetConversion(
   creative_set_conversion.url_pattern =
       mojom_creative_ad->creative_set_conversion->url_pattern;
 
-  creative_set_conversion.verifiable_advertiser_public_key_base64 =
-      mojom_creative_ad->creative_set_conversion
-          ->verifiable_advertiser_public_key_base64;
-
   creative_set_conversion.observation_window =
       mojom_creative_ad->creative_set_conversion->observation_window;
 

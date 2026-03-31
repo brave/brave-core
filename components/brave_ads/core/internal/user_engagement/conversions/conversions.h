@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_CONVERSIONS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_CONVERSIONS_H_
 
-#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -17,7 +16,6 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/resource/conversion_resource.h"
 
 class GURL;
 
@@ -25,7 +23,6 @@ namespace brave_ads {
 
 class ConversionsObserver;
 struct ConversionInfo;
-struct VerifiableConversionInfo;
 
 class Conversions final : public TabManagerObserver {
  public:
@@ -39,53 +36,39 @@ class Conversions final : public TabManagerObserver {
   void AddObserver(ConversionsObserver* observer);
   void RemoveObserver(ConversionsObserver* observer);
 
-  // Examine potential view-through or click-through conversions through various
-  // channels, such as URL redirects or HTML pages.
-  void MaybeConvert(const std::vector<GURL>& redirect_chain,
-                    const std::string& html);
+  // Examine potential view-through or click-through conversions by matching
+  // URL patterns in the redirect chain against known creative set conversions.
+  void MaybeConvert(const std::vector<GURL>& redirect_chain);
 
  private:
-  void GetCreativeSetConversions(const std::vector<GURL>& redirect_chain,
-                                 const std::string& html);
+  void GetCreativeSetConversions(const std::vector<GURL>& redirect_chain);
   void GetCreativeSetConversionsCallback(
       const std::vector<GURL>& redirect_chain,
-      const std::string& html,
       bool success,
       const CreativeSetConversionList& creative_set_conversions);
 
   void GetAdEvents(const std::vector<GURL>& redirect_chain,
-                   const std::string& html,
                    const CreativeSetConversionList& creative_set_conversions);
   void GetAdEventsCallback(
       const std::vector<GURL>& redirect_chain,
-      const std::string& html,
       const CreativeSetConversionList& creative_set_conversions,
       bool success,
       const AdEventList& ad_events);
 
   void CheckForConversions(
       const std::vector<GURL>& redirect_chain,
-      const std::string& html,
       const CreativeSetConversionList& creative_set_conversions,
       const AdEventList& ad_events);
-  void Convert(const AdEventInfo& ad_event,
-               std::optional<VerifiableConversionInfo> verifiable_conversion);
-  void ConvertCallback(
-      const AdEventInfo& ad_event,
-      std::optional<VerifiableConversionInfo> verifiable_conversion,
-      bool success);
+  void Convert(const AdEventInfo& ad_event);
+  void ConvertCallback(const AdEventInfo& ad_event, bool success);
 
   void NotifyDidConvertAd(const ConversionInfo& conversion);
   void NotifyFailedToConvertAd(const std::string& creative_instance_id);
 
   // TabManagerObserver:
-  void OnHtmlContentDidChange(int32_t tab_id,
-                              const std::vector<GURL>& redirect_chain,
-                              const std::string& html) override;
+  void OnTabDidChange(const TabInfo& tab) override;
 
   base::ObserverList<ConversionsObserver> observers_;
-
-  ConversionResource resource_;
 
   const database::table::CreativeSetConversions
       creative_set_conversions_database_table_;
