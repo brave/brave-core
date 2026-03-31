@@ -2278,7 +2278,7 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
                      mojom::TransactionType::Other));
   run_loop->Run();
 
-  // Address on the restricted SDN list should fail.
+  // Address on the restricted list should fail.
   auto* registry = BlockchainRegistry::GetInstance();
   registry->UpdateRestrictedAddressesList(
       {"0xbfb30a082f650c2a15d0632f0e87be4f8e64460a"});
@@ -2293,7 +2293,7 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
 }
 
 TEST_F(EthTxManagerUnitTest, MakeERC1155TransferFromData) {
-  // Invalid if to_address is on restricted SDN list
+  // Invalid if to_address is on restricted list
   auto* registry = BlockchainRegistry::GetInstance();
   registry->UpdateRestrictedAddressesList(
       {"0xbfb30a082f650c2a15d0632f0e87be4f8e64460a"});
