@@ -15,6 +15,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/notreached.h"
 #include "base/task/single_thread_task_runner.h"
+#include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/content/browser/domain_block_controller_client.h"
@@ -54,15 +55,16 @@ struct DomainBlockNavigationThrottle::BlockResult {
 
 namespace {
 brave_shields::DomainBlockNavigationThrottle::BlockResult
-ShouldBlockDomainOnTaskRunner(brave_shields::AdBlockService* ad_block_service,
-                              const GURL& url) {
+ShouldBlockDomainOnTaskRunner(
+    brave_shields::AdBlockEngineWrapper* engine_wrapper,
+    const GURL& url) {
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.DomainBlock.ShouldBlock");
   brave_shields::DomainBlockNavigationThrottle::BlockResult block_result;
   // force aggressive blocking to `true` for domain blocking - these requests
   // are all "first-party", but the throttle is already only called when
   // necessary.
   bool aggressive_for_engine = true;
-  auto result = ad_block_service->ShouldStartRequest(
+  auto result = engine_wrapper->ShouldStartRequest(
       url, blink::mojom::ResourceType::kMainFrame, std::string(url.host()),
       aggressive_for_engine, false, false, false);
 
@@ -175,8 +177,8 @@ DomainBlockNavigationThrottle::WillStartRequest() {
   // this domain should be blocked.
   ad_block_service_->GetTaskRunner()->PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&ShouldBlockDomainOnTaskRunner, ad_block_service_,
-                     request_url),
+      base::BindOnce(&ShouldBlockDomainOnTaskRunner,
+                     ad_block_service_->engine_wrapper(), request_url),
       base::BindOnce(&DomainBlockNavigationThrottle::OnShouldBlockDomain,
                      weak_ptr_factory_.GetWeakPtr(), domain_blocking_type));
 

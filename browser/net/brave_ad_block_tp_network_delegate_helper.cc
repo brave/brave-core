@@ -14,6 +14,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/notreached.h"
@@ -23,6 +24,7 @@
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/net/url_context.h"
+#include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_pref_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
@@ -198,6 +200,7 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
 // response should be blocked. Otherwise, it will run the check for the
 // original request URL.
 ShouldBlockRequestResult ShouldBlockRequestOnTaskRunner(
+    brave_shields::AdBlockEngineWrapper* engine_wrapper,
     ShouldBlockRequestParams input,
     EngineFlags previous_result,
     std::optional<GURL> canonical_url) {
@@ -222,12 +225,11 @@ ShouldBlockRequestResult ShouldBlockRequestOnTaskRunner(
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.Adblock.ShouldBlockRequest");
-  auto adblock_result =
-      g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-          url_to_check, input.resource_type, source_host,
-          input.aggressive_blocking || force_aggressive,
-          previous_result.did_match_rule, previous_result.did_match_exception,
-          previous_result.did_match_important);
+  auto adblock_result = engine_wrapper->ShouldStartRequest(
+      url_to_check, input.resource_type, source_host,
+      input.aggressive_blocking || force_aggressive,
+      previous_result.did_match_rule, previous_result.did_match_exception,
+      previous_result.did_match_important);
 
   bool has_valid_rewritten_url = false;
   // Note that `rewritten_url` results should only be used for the
@@ -339,9 +341,12 @@ void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
                                    ctx->devtools_request_id()};
     task_runner->PostTaskAndReplyWithResult(
         FROM_HERE,
-        base::BindOnce(&ShouldBlockRequestOnTaskRunner, std::move(input),
-                       previous_result,
-                       std::make_optional<GURL>(canonical_url)),
+        base::BindOnce(
+            &ShouldBlockRequestOnTaskRunner,
+            base::Unretained(
+                g_brave_browser_process->ad_block_service()->engine_wrapper()),
+            std::move(input), previous_result,
+            std::make_optional<GURL>(canonical_url)),
         base::BindOnce(&OnShouldBlockRequestResult<T>, false, task_runner,
                        next_callback, ctx));
   } else {
@@ -438,8 +443,11 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
       ctx->devtools_request_id()};
   task_runner->PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&ShouldBlockRequestOnTaskRunner, std::move(input),
-                     EngineFlags(), std::nullopt),
+      base::BindOnce(
+          &ShouldBlockRequestOnTaskRunner,
+          base::Unretained(
+              g_brave_browser_process->ad_block_service()->engine_wrapper()),
+          std::move(input), EngineFlags(), std::nullopt),
       base::BindOnce(&OnShouldBlockRequestResult<T>, should_check_uncloaked,
                      task_runner, next_callback, ctx));
 }
