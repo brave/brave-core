@@ -241,6 +241,27 @@ extension BraveWallet.BlockchainToken {
     coin: .ada,
     isShielded: false
   )
+
+  static let mockMinToken: BraveWallet.BlockchainToken = .init(
+    contractAddress: "29d222ce763455e3d7a09a665ce554f00ac89d2e99a1a83d267170c64d494e",
+    name: "Minswap",
+    logo: "",
+    isCompressed: false,
+    isErc20: false,
+    isErc721: false,
+    isErc1155: false,
+    splTokenProgram: .unsupported,
+    isNft: false,
+    isSpam: false,
+    symbol: "MIN",
+    decimals: 6,
+    visible: false,
+    tokenId: "",
+    coingeckoId: "",
+    chainId: BraveWallet.CardanoMainnet,
+    coin: .ada,
+    isShielded: false
+  )
 }
 
 extension BraveWallet.AccountInfo {
