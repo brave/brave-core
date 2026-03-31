@@ -41,6 +41,7 @@
 #include "components/favicon/core/favicon_driver_observer.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/keyed_service/core/service_access_type.h"
+#include "components/language/core/browser/language_model_manager.h"
 #include "components/password_manager/core/browser/leak_detection/leak_detection_request_utils.h"
 #include "components/password_manager/core/browser/password_form.h"
 #include "components/password_manager/core/browser/password_manager_client.h"
@@ -52,6 +53,9 @@
 #include "ios/chrome/browser/autofill/model/autofill_log_router_factory.h"
 #include "ios/chrome/browser/autofill/model/personal_data_manager_factory.h"
 #include "ios/chrome/browser/favicon/model/favicon_service_factory.h"
+#include "ios/chrome/browser/language/model/accept_languages_service_factory.h"
+#include "ios/chrome/browser/language/model/language_model_manager_factory.h"
+#include "ios/chrome/browser/language/model/url_language_histogram_factory.h"
 #include "ios/chrome/browser/passwords/model/ios_chrome_account_password_store_factory.h"
 #include "ios/chrome/browser/passwords/model/ios_chrome_profile_password_store_factory.h"
 #include "ios/chrome/browser/passwords/model/password_controller.h"
@@ -59,6 +63,7 @@
 #include "ios/chrome/browser/signin/model/identity_manager_factory.h"
 #include "ios/chrome/browser/sync/model/sync_service_factory.h"
 #include "ios/chrome/browser/tabs/model/tab_helper_util.h"
+#include "ios/chrome/browser/translate/model/translate_ranker_factory.h"
 #include "ios/chrome/browser/web/model/print/print_handler.h"
 #include "ios/chrome/browser/web/model/print/print_tab_helper.h"
 #include "ios/web/common/crw_input_view_provider.h"
@@ -71,6 +76,7 @@
 #include "ios/web_view/internal/cwv_navigation_type_internal.h"
 #include "ios/web_view/internal/cwv_web_view_internal.h"
 #include "ios/web_view/internal/passwords/web_view_password_manager_client.h"
+#include "ios/web_view/internal/translate/web_view_translate_client.h"
 #include "ios/web_view/public/cwv_autofill_controller.h"
 #include "net/base/apple/url_conversions.h"
 #include "net/http/http_status_code.h"
@@ -441,9 +447,21 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
          passwordController:passwordController];
 }
 
-- (CWVTranslationController*)translationController {
-  NOTREACHED();
-  return nil;
+- (CWVTranslationController*)newTranslationController {
+  // Reimplements CWVWebView's `newTranslationController` method to  create a
+  // CWVTranslationController using Chrome factories instead of `//ios/web_view`
+  // specific factories.
+  auto* profile =
+      ProfileIOS::FromBrowserState(self.webState->GetBrowserState());
+  auto translateClient = std::make_unique<ios_web_view::WebViewTranslateClient>(
+      profile->GetPrefs(),
+      translate::TranslateRankerFactory::GetForProfile(profile),
+      LanguageModelManagerFactory::GetForProfile(profile)->GetPrimaryModel(),
+      UrlLanguageHistogramFactory::GetForProfile(profile), self.webState,
+      AcceptLanguagesServiceFactory::GetForProfile(profile));
+  return [[CWVTranslationController alloc]
+      initWithWebState:self.webState
+       translateClient:std::move(translateClient)];
 }
 
 #pragma mark - CRWWebStateDelegate
