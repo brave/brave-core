@@ -311,6 +311,7 @@ export class TabFocusPageElement extends CrLitElement {
           (entry, index) => html`
             <leo-button
               id="${this.getTopicId_(index)}"
+              data-testid="${this.getTopicId_(index)}"
               class="topics-button"
               size="small"
               kind="outline"
@@ -358,6 +359,7 @@ export class TabFocusPageElement extends CrLitElement {
               <div>
                 <leo-button
                   id="enableButton"
+                  data-testid="enable-tab-focus"
                   kind="filled"
                   size="small"
                   @click="${this.onEnableTabFocusClick_}"
