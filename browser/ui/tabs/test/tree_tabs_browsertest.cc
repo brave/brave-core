@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <unordered_set>
 #include <variant>
 
 #include "base/run_loop.h"
@@ -38,6 +39,7 @@
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/models/list_selection_model.h"
 
 namespace {
 
@@ -2829,4 +2831,102 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_EQ(tab_strip_model().GetTabGroupForTab(0), group_id);
   EXPECT_EQ(tab_strip_model().GetTabGroupForTab(1), group_id);
   ExpectGroupModelTabListCount(group_id, 2u);
+}
+
+// Selecting one tab inside a group and one ungrouped tab, then
+// MoveSelectedTabsTo, must complete without breaking the strip (partial group
+// move).
+IN_PROC_BROWSER_TEST_F(
+    TreeTabsBrowserTest,
+    MoveSelectedTabsTo_GroupTabAndUngroupedTab_MovesWithoutError) {
+  EnsureTabGroupSyncServiceInitialized();
+
+  SetTreeTabsEnabled(true);
+
+  for (int i = 0; i < 3; ++i) {
+    AddTab();
+  }
+  ASSERT_EQ(4, tab_strip_model().count());
+
+  tab_groups::TabGroupId group_id = tab_strip_model().AddToNewGroup({1, 2});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+  ExpectGroupModelTabListCount(group_id, 2u);
+
+  tabs::TabInterface* tab_in_group = tab_strip_model().GetTabAtIndex(1);
+  tabs::TabInterface* tab_ungrouped = tab_strip_model().GetTabAtIndex(3);
+  ASSERT_EQ(tab_strip_model().GetTabGroupForTab(1), group_id);
+  ASSERT_FALSE(tab_strip_model().GetTabGroupForTab(3).has_value());
+
+  ui::ListSelectionModel selection_model;
+  selection_model.AddIndexToSelection(1);
+  selection_model.AddIndexToSelection(3);
+  selection_model.set_active(3);
+  selection_model.set_anchor(1);
+  tab_strip_model().SetSelectionFromModel(selection_model);
+
+  tab_strip_model().MoveSelectedTabsTo(0, std::nullopt);
+
+  ASSERT_EQ(4, tab_strip_model().count());
+  EXPECT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+  ExpectGroupModelTabListCount(group_id, 1u);
+  EXPECT_FALSE(tab_in_group->GetGroup().has_value());
+  EXPECT_FALSE(tab_ungrouped->GetGroup().has_value());
+}
+
+// Group A (one tab) and group B (two tabs). Selecting one tab from each group
+// and moving must move the single-tab group as a unit and pull the selected tab
+// out of group B; the other tab stays in group B. Destination |index| is
+// clamped by TabStripModel::MoveSelectedTabsTo (and may differ when the target
+// overlaps another group's tabs).
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       MoveSelectedTabsTo_OneTabFromEachGroup_PartialGroupB) {
+  EnsureTabGroupSyncServiceInitialized();
+
+  SetTreeTabsEnabled(true);
+
+  for (int i = 0; i < 3; ++i) {
+    AddTab();
+  }
+  ASSERT_EQ(4, tab_strip_model().count());
+
+  // [GroupA(tab0), tab1, GroupB(tab2, tab3)]
+  tab_groups::TabGroupId group_a = tab_strip_model().AddToNewGroup({0});
+  tab_groups::TabGroupId group_b = tab_strip_model().AddToNewGroup({2, 3});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_a));
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_b));
+  ExpectGroupModelTabListCount(group_a, 1u);
+  ExpectGroupModelTabListCount(group_b, 2u);
+
+  tabs::TabInterface* tab_in_a = tab_strip_model().GetTabAtIndex(0);
+  tabs::TabInterface* tab_in_b_selected = tab_strip_model().GetTabAtIndex(2);
+  tabs::TabInterface* tab_in_b_remaining = tab_strip_model().GetTabAtIndex(3);
+  ASSERT_EQ(tab_strip_model().GetTabGroupForTab(0), group_a);
+  ASSERT_EQ(tab_strip_model().GetTabGroupForTab(2), group_b);
+  ASSERT_EQ(tab_strip_model().GetTabGroupForTab(3), group_b);
+
+  ui::ListSelectionModel selection_model;
+  selection_model.AddIndexToSelection(0);
+  selection_model.AddIndexToSelection(2);
+  selection_model.set_active(2);
+  selection_model.set_anchor(0);
+  tab_strip_model().SetSelectionFromModel(selection_model);
+
+  tab_strip_model().MoveSelectedTabsTo(1, std::nullopt);
+
+  ASSERT_EQ(4, tab_strip_model().count());
+  EXPECT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_a));
+  EXPECT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_b));
+  ExpectGroupModelTabListCount(group_a, 1u);
+  ExpectGroupModelTabListCount(group_b, 1u);
+
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(
+                tab_strip_model().GetIndexOfTab(tab_in_a)),
+            group_a);
+  EXPECT_FALSE(
+      tab_strip_model()
+          .GetTabGroupForTab(tab_strip_model().GetIndexOfTab(tab_in_b_selected))
+          .has_value());
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(
+                tab_strip_model().GetIndexOfTab(tab_in_b_remaining)),
+            group_b);
 }
