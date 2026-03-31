@@ -135,7 +135,6 @@ class TabManager: NSObject {
     self.tabCreationFactory = tabCreationFactory
     super.init()
 
-    Preferences.General.nightModeEnabled.observe(from: self)
     Preferences.Chromium.syncOpenTabsEnabled.observe(from: self)
 
     domainFrc.delegate = self
@@ -390,7 +389,7 @@ class TabManager: NSObject {
     else { return }
 
     if !privateBrowsingManager.isPrivateBrowsing {
-      if previousTab.displayFavicon == nil {
+      if previousTab.faviconTabHelper?.displayFavicon == nil {
         adsRewardsLog.warning("No favicon found in tab to report to rewards panel")
       }
       rewards?.reportTabUpdated(
@@ -399,7 +398,7 @@ class TabManager: NSObject {
         isPrivate: previousTab.isPrivate
       )
 
-      if newSelectedTab.displayFavicon == nil && !newTabUrl.isLocal {
+      if newSelectedTab.faviconTabHelper?.displayFavicon == nil && !newTabUrl.isLocal {
         adsRewardsLog.warning("No favicon found in tab to report to rewards panel")
       }
       rewards?.reportTabUpdated(
@@ -485,12 +484,6 @@ class TabManager: NSObject {
       )
       tab.lastTitle = url.absoluteDisplayString
       tab.setVirtualURL(url)
-      tab.favicon = Favicon.default
-      Task { @MainActor in
-        if let icon = await FaviconFetcher.getIconFromCache(for: url) {
-          tab.favicon = icon
-        }
-      }
       tabs.append(tab)
     }
 
@@ -1066,12 +1059,13 @@ class TabManager: NSObject {
       if tabsCountForMode(isPrivate: true) <= 1 {
         removeAllBrowsingDataForTab(tab)
 
-        // After clearing the very last webview from the storage, give it a blank persistent store
-        // This is the only way to guarantee that the last reference to the shared persistent store
-        // reaches zero and destroys all its data.
-
-        Self.nonPersistentDataStore = nil
-        Self.privateConfiguration = Self.getNewConfiguration(isPrivate: true)
+        if !FeatureList.kUseProfileWebViewConfiguration.enabled {
+          // After clearing the very last webview from the storage, give it a blank persistent store
+          // This is the only way to guarantee that the last reference to the shared persistent store
+          // reaches zero and destroys all its data.
+          Self.nonPersistentDataStore = nil
+          Self.privateConfiguration = Self.getNewConfiguration(isPrivate: true)
+        }
       }
     }
 
@@ -1413,14 +1407,9 @@ class TabManager: NSObject {
         )
 
         tab.lastTitle = savedTab.title
-        tab.favicon = Favicon.default
         tab.browserData?.setScreenshot(savedTab.screenshot)
 
         Task { @MainActor in
-          tab.favicon = try await FaviconFetcher.loadIcon(
-            url: tabURL,
-            persistent: !tab.isPrivate
-          )
           tab.browserData?.setScreenshot(savedTab.screenshot)
         }
 
@@ -1438,7 +1427,6 @@ class TabManager: NSObject {
         )
 
         tab.lastTitle = savedTab.title
-        tab.favicon = Favicon.default
         tab.browserData?.setScreenshot(savedTab.screenshot)
 
         // Select the tab if it was selected and matches current mode (private vs regular)
@@ -1654,11 +1642,6 @@ extension TabManagerDelegate {
 extension TabManager: PreferencesObserver {
   func preferencesDidChange(for key: String) {
     switch key {
-    case Preferences.General.nightModeEnabled.key:
-      DarkReaderScriptHandler.set(
-        tabManager: self,
-        enabled: Preferences.General.nightModeEnabled.value
-      )
     case Preferences.Chromium.syncOpenTabsEnabled.key:
       if Preferences.Chromium.syncOpenTabsEnabled.value {
         addRegularTabsToSyncChain()

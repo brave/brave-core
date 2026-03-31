@@ -13,7 +13,7 @@ namespace brave_ads::test {
 
 class TestBase;
 
-void MockFlags();
+void MockCommandLineSwitches();
 
 void MockContentSettings();
 

@@ -1,0 +1,26 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/web/public/js_messaging/optimize_ts.gni")
+
+source_set("night_mode") {
+  sources = [
+    "night_mode_javascript_feature.h",
+    "night_mode_javascript_feature.mm",
+  ]
+  deps = [ ":darkreader_js" ]
+  public_deps = [
+    "//base",
+    "//ios/web/public/js_messaging",
+  ]
+}
+
+# Bundle darkreader.js as-is to avoid rollup warnings from its UMD wrapper.
+bundle_data("darkreader_js") {
+  visibility = [ ":night_mode" ]
+  sources = [ "//brave/node_modules/darkreader/darkreader.js" ]
+  outputs = [ "{{bundle_resources_dir}}/{{source_file_part}}" ]
+}

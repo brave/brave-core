@@ -15,7 +15,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/memory/weak_ptr.h"
 #include "base/observer_list_types.h"
 #include "base/sequence_checker.h"
 #include "base/values.h"
@@ -41,8 +40,6 @@ class AdBlockEngine {
   AdBlockEngine(const AdBlockEngine&) = delete;
   AdBlockEngine& operator=(const AdBlockEngine&) = delete;
   ~AdBlockEngine();
-
-  bool IsDefaultEngine() { return is_default_engine_; }
 
   adblock::BlockerResult ShouldStartRequest(
       const GURL& url,
@@ -83,8 +80,6 @@ class AdBlockEngine {
   void AddObserverForTest(TestObserver* observer);
   void RemoveObserverForTest();
 
-  base::WeakPtr<AdBlockEngine> AsWeakPtr();
-
  protected:
   void AddKnownTagsToAdBlockInstance();
   void UpdateAdBlockClient(rust::Box<adblock::Engine> ad_block_client,
@@ -115,7 +110,6 @@ class AdBlockEngine {
   bool is_default_engine_;
 
   SEQUENCE_CHECKER(sequence_checker_);
-  base::WeakPtrFactory<AdBlockEngine> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_shields

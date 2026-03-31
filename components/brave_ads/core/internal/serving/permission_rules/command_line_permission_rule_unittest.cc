@@ -20,10 +20,12 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
   // Arrange
   ASSERT_TRUE(GlobalState::HasInstance());
 
-  GlobalState::GetInstance()->Flags().environment_type =
+  GlobalState::GetInstance()->CommandLineSwitches().environment_type =
       mojom::EnvironmentType::kProduction;
 
-  GlobalState::GetInstance()->Flags().did_override_from_command_line = false;
+  GlobalState::GetInstance()
+      ->CommandLineSwitches()
+      .did_override_from_command_line = false;
 
   // Act & Assert
   EXPECT_TRUE(HasCommandLinePermission());
@@ -34,10 +36,12 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
   // Arrange
   ASSERT_TRUE(GlobalState::HasInstance());
 
-  GlobalState::GetInstance()->Flags().environment_type =
+  GlobalState::GetInstance()->CommandLineSwitches().environment_type =
       mojom::EnvironmentType::kStaging;
 
-  GlobalState::GetInstance()->Flags().did_override_from_command_line = false;
+  GlobalState::GetInstance()
+      ->CommandLineSwitches()
+      .did_override_from_command_line = false;
 
   // Act & Assert
   EXPECT_TRUE(HasCommandLinePermission());
@@ -48,10 +52,12 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
   // Arrange
   ASSERT_TRUE(GlobalState::HasInstance());
 
-  GlobalState::GetInstance()->Flags().environment_type =
+  GlobalState::GetInstance()->CommandLineSwitches().environment_type =
       mojom::EnvironmentType::kProduction;
 
-  GlobalState::GetInstance()->Flags().did_override_from_command_line = true;
+  GlobalState::GetInstance()
+      ->CommandLineSwitches()
+      .did_override_from_command_line = true;
 
   // Act & Assert
   EXPECT_FALSE(HasCommandLinePermission());
@@ -62,10 +68,12 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
   // Arrange
   ASSERT_TRUE(GlobalState::HasInstance());
 
-  GlobalState::GetInstance()->Flags().environment_type =
+  GlobalState::GetInstance()->CommandLineSwitches().environment_type =
       mojom::EnvironmentType::kStaging;
 
-  GlobalState::GetInstance()->Flags().did_override_from_command_line = true;
+  GlobalState::GetInstance()
+      ->CommandLineSwitches()
+      .did_override_from_command_line = true;
 
   // Act & Assert
   EXPECT_TRUE(HasCommandLinePermission());

@@ -23,7 +23,9 @@
 #include "brave/ios/browser/api/web_view/autofill/brave_web_view_autofill_client.h"
 #include "brave/ios/browser/api/web_view/passwords/brave_web_view_password_manager_client.h"
 #include "brave/ios/browser/brave_ads/ads_tab_helper.h"
+#include "brave/ios/browser/brave_search/brave_search_ad_results_javascript_feature.h"
 #include "brave/ios/browser/brave_talk/brave_talk_tab_helper_bridge.h"
+#include "brave/ios/browser/favicon/brave_ios_web_favicon_driver.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler_bridge_holder.h"
 #include "brave/ios/browser/web/document_fetch/document_fetch_javascript_feature.h"
@@ -36,6 +38,8 @@
 #include "components/autofill/core/browser/logging/log_router.h"
 #include "components/autofill/ios/browser/autofill_agent.h"
 #include "components/autofill/ios/browser/autofill_client_ios.h"
+#include "components/favicon/core/favicon_driver_observer.h"
+#include "components/favicon/core/favicon_service.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/password_manager/core/browser/leak_detection/leak_detection_request_utils.h"
 #include "components/password_manager/core/browser/password_form.h"
@@ -47,6 +51,7 @@
 #include "components/password_manager/ios/shared_password_controller.h"
 #include "ios/chrome/browser/autofill/model/autofill_log_router_factory.h"
 #include "ios/chrome/browser/autofill/model/personal_data_manager_factory.h"
+#include "ios/chrome/browser/favicon/model/favicon_service_factory.h"
 #include "ios/chrome/browser/passwords/model/ios_chrome_account_password_store_factory.h"
 #include "ios/chrome/browser/passwords/model/ios_chrome_profile_password_store_factory.h"
 #include "ios/chrome/browser/passwords/model/password_controller.h"
@@ -54,7 +59,10 @@
 #include "ios/chrome/browser/signin/model/identity_manager_factory.h"
 #include "ios/chrome/browser/sync/model/sync_service_factory.h"
 #include "ios/chrome/browser/tabs/model/tab_helper_util.h"
+#include "ios/chrome/browser/web/model/print/print_handler.h"
+#include "ios/chrome/browser/web/model/print/print_tab_helper.h"
 #include "ios/web/common/crw_input_view_provider.h"
+#include "ios/web/public/navigation/navigation_context.h"
 #include "ios/web/public/navigation/web_state_policy_decider.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/web_state_user_data.h"
@@ -77,8 +85,12 @@
                         (web::WebStatePolicyDecider::RequestInfo)requestInfo;
 @end
 
-namespace {
+@protocol FaviconDriverObserverBridge <NSObject>
+@required
+- (void)faviconDriverDidUpdateFavicon:(favicon::FaviconDriver*)driver;
+@end
 
+namespace {
 ResetConfigurationCallback gDidResetConfigurationCallback;
 
 class BraveWebViewWebStatePolicyDecider : public web::WebStatePolicyDecider {
@@ -171,6 +183,26 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
   __weak BraveWebView* web_view_ = nil;
 };
 
+class FaviconDriverObserver : public favicon::FaviconDriverObserver {
+ public:
+  explicit FaviconDriverObserver(id<FaviconDriverObserverBridge> bridge)
+      : bridge_(bridge) {}
+
+  // favicon::FaviconDriverObserver
+  void OnFaviconUpdated(favicon::FaviconDriver* favicon_driver,
+                        NotificationIconType notification_icon_type,
+                        const GURL& icon_url,
+                        bool icon_url_changed,
+                        const gfx::Image& image) override {
+    if (bridge_) {
+      [bridge_ faviconDriverDidUpdateFavicon:favicon_driver];
+    }
+  }
+
+ private:
+  __weak id<FaviconDriverObserverBridge> bridge_;
+};
+
 }  // namespace
 
 @implementation BraveNavigationAction
@@ -201,9 +233,11 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 - (void)updateNavigationAvailability;
 - (CWVAutofillController*)newAutofillController;
 - (id<CRWResponderInputView>)webStateInputViewProvider:(web::WebState*)webState;
+- (void)webState:(web::WebState*)webState
+    didFinishNavigation:(web::NavigationContext*)navigation;
 @end
 
-@interface BraveWebView ()
+@interface BraveWebView () <FaviconDriverObserverBridge>
 @property(nonatomic, weak)
     id<AIChatUIHandlerBridge, AIChatAssociatedContentPageFetcher>
         aiChatUIHandler;
@@ -212,10 +246,12 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 @property(nonatomic, weak) id<BraveTalkTabHelperBridge> braveTalkHelper;
 #endif
+@property(nonatomic, weak) id<PrintHandler> printHandler;
 @end
 
 @implementation BraveWebView {
   std::unique_ptr<BraveWebViewWebStatePolicyDecider> _webStatePolicyDecider;
+  std::unique_ptr<FaviconDriverObserver> _faviconObserver;
 }
 
 // These are shadowed CWVWebView properties
@@ -225,6 +261,18 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
   if (self.webState) {
     BraveWebViewHolder::RemoveFromWebState(self.webState);
   }
+  if (auto* faviconDriver =
+          brave_favicon::BraveIOSWebFaviconDriver::FromWebState(
+              self.webState)) {
+    faviconDriver->RemoveObserver(self.faviconDriverObserver);
+  }
+}
+
+- (FaviconDriverObserver*)faviconDriverObserver {
+  if (!_faviconObserver) {
+    _faviconObserver = std::make_unique<FaviconDriverObserver>(self);
+  }
+  return _faviconObserver.get();
 }
 
 + (nullable BraveWebView*)braveWebViewForWebState:(web::WebState*)webState {
@@ -265,6 +313,15 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 
   _webStatePolicyDecider =
       std::make_unique<BraveWebViewWebStatePolicyDecider>(self.webState, self);
+
+  if (auto* favicon_driver =
+          brave_favicon::BraveIOSWebFaviconDriver::FromWebState(
+              self.webState)) {
+    // This matches the values set on FaviconDriver from the Swift side
+    favicon_driver->SetMaximumFaviconImageSize(/*max_image_width=*/1024,
+                                               /*max_image_height=*/1024);
+    favicon_driver->AddObserver(self.faviconDriverObserver);
+  }
 }
 
 - (void)attachSecurityInterstitialHelpersToWebStateIfNecessary {
@@ -300,6 +357,18 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 #endif
 
   LoginsTabHelper::MaybeCreateForWebState(self.webState, _loginsHelper);
+
+  if (base::FeatureList::IsEnabled(
+          brave::features::kUseProfileWebViewConfiguration)) {
+    // When UseProfileWebViewConfiguration is removed, move this to
+    // tab_helper_util.mm chromium_src override
+    PrintTabHelper::CreateForWebState(self.webState);
+
+    brave_favicon::BraveIOSWebFaviconDriver::CreateForWebState(
+        self.webState,
+        ios::FaviconServiceFactory::GetForProfile(
+            profile->GetOriginalProfile(), ServiceAccessType::IMPLICIT_ACCESS));
+  }
 }
 
 - (void)updateForOnDownloadCreated {
@@ -422,6 +491,27 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
   if ([self.navigationDelegate
           respondsToSelector:@selector(webViewDidRedirectNavigation:)]) {
     [self.navigationDelegate webViewDidRedirectNavigation:self];
+  }
+}
+
+- (void)webState:(web::WebState*)webState
+    didFinishNavigation:(web::NavigationContext*)navigation {
+  [super webState:webState didFinishNavigation:navigation];
+
+  if (navigation->HasCommitted() && navigation->IsSameDocument() &&
+      !navigation->GetError() &&
+      [self.navigationDelegate respondsToSelector:@selector
+                               (webViewDidCommitSameDocumentNavigation:)]) {
+    [self.navigationDelegate webViewDidCommitSameDocumentNavigation:self];
+  }
+}
+
+#pragma mark - FaviconDriverObserverBridge
+
+- (void)faviconDriverDidUpdateFavicon:(favicon::FaviconDriver*)driver {
+  if ([self.UIDelegate respondsToSelector:@selector(webView:
+                                              didUpdateFaviconStatus:)]) {
+    [self.UIDelegate webView:self didUpdateFaviconStatus:self.faviconStatus];
   }
 }
 
@@ -565,6 +655,22 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 
 @end
 
+@implementation BraveWebView (BraveSearchAdResults)
+
+- (void)fetchSearchAdCreatives:
+    (void (^)(NSString* _Nullable json))completionHandler {
+  BraveSearchAdResultsJavaScriptFeature::GetInstance()->GetCreatives(
+      self.webState, base::BindOnce(^(const base::Value* value) {
+        if (value && value->is_string()) {
+          completionHandler(base::SysUTF8ToNSString(value->GetString()));
+          return;
+        }
+        completionHandler(nil);
+      }));
+}
+
+@end
+
 @implementation BraveWebView (BraveTalk)
 
 /// A bridge for handling Brave Talk tab features
@@ -577,6 +683,18 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
     tab_helper->SetBridge(braveTalkHelper);
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
+}
+
+@end
+
+@implementation BraveWebView (Print)
+
+- (void)setPrintHandler:(id<PrintHandler>)printHandler {
+  _printHandler = printHandler;
+  if (PrintTabHelper* tab_helper =
+          PrintTabHelper::FromWebState(self.webState)) {
+    tab_helper->set_printer(printHandler);
+  }
 }
 
 @end

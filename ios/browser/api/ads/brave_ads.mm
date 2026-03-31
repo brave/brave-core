@@ -38,7 +38,7 @@
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
-#include "brave/components/brave_ads/core/public/flags/flags_util.h"
+#include "brave/components/brave_ads/core/public/command_line_switches/command_line_switches_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -1468,6 +1468,29 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
       }));
 }
 
+- (void)maybeServeNewTabPageAd:
+    (void (^)(NewTabPageAdIOS* _Nullable))completion {
+  if (![self isServiceRunning]) {
+    return completion(/*newTabPageAd=*/nil);
+  }
+
+  adsService->MaybeServeNewTabPageAd(
+      base::BindOnce(^(brave_ads::mojom::NewTabPageAdInfoPtr mojom_ad) {
+        if (!mojom_ad) {
+          return completion(/*newTabPageAd=*/nil);
+        }
+
+        const auto ad = brave_ads::FromMojom(mojom_ad);
+        if (!ad) {
+          return completion(/*newTabPageAd=*/nil);
+        }
+
+        const auto newTabPageAd =
+            [[NewTabPageAdIOS alloc] initWithNewTabPageAdInfo:*ad];
+        completion(newTabPageAd);
+      }));
+}
+
 - (void)triggerNewTabPageAdEvent:(NSString*)wallpaperId
               creativeInstanceId:(NSString*)creativeInstanceId
                       metricType:(BraveAdsNewTabPageAdMetricType)metricType
@@ -1584,36 +1607,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   }
 
   adsService->ClearData(base::IgnoreArgs<bool>(base::BindOnce(completion)));
-}
-
-#pragma mark - New Tab Page Ad
-
-- (NewTabPageAdIOS*)maybeGetPrefetchedNewTabPageAd {
-  if (![self isServiceRunning]) {
-    return nil;
-  }
-
-  brave_ads::mojom::NewTabPageAdInfoPtr new_tab_page_ad =
-      adsService->MaybeGetPrefetchedNewTabPageAd();
-  adsService->PrefetchNewTabPageAd();
-  std::optional<brave_ads::NewTabPageAdInfo> ad =
-      brave_ads::FromMojom(new_tab_page_ad);
-  if (!ad) {
-    return nil;
-  }
-
-  return [[NewTabPageAdIOS alloc] initWithNewTabPageAdInfo:*ad];
-}
-
-- (void)onFailedToPrefetchNewTabPageAd:(NSString*)placementId
-                    creativeInstanceId:(NSString*)creativeInstanceId {
-  if (![self isServiceRunning]) {
-    return;
-  }
-
-  adsService->OnFailedToPrefetchNewTabPageAd(
-      base::SysNSStringToUTF8(placementId),
-      base::SysNSStringToUTF8(creativeInstanceId));
 }
 
 #pragma mark - Ads client notifier

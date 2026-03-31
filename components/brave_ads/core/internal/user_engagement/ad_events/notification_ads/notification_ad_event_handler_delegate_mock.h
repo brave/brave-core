@@ -32,6 +32,9 @@ class NotificationAdEventHandlerDelegateMock
               OnDidFireNotificationAdViewedEvent,
               (const NotificationAdInfo&));
   MOCK_METHOD(void,
+              OnWillFireNotificationAdClickedEvent,
+              (const NotificationAdInfo&));
+  MOCK_METHOD(void,
               OnDidFireNotificationAdClickedEvent,
               (const NotificationAdInfo&));
   MOCK_METHOD(void,

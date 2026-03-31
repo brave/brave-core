@@ -30,6 +30,9 @@ class SearchResultAdEventHandlerDelegateMock
               OnDidFireSearchResultAdViewedEvent,
               (const SearchResultAdInfo&));
   MOCK_METHOD(void,
+              OnWillFireSearchResultAdClickedEvent,
+              (const SearchResultAdInfo&));
+  MOCK_METHOD(void,
               OnDidFireSearchResultAdClickedEvent,
               (const SearchResultAdInfo&));
   MOCK_METHOD(void,

@@ -143,9 +143,9 @@ mojom::BuildChannelInfo& GlobalState::BuildChannel() {
   return mojom_build_channel_;
 }
 
-mojom::Flags& GlobalState::Flags() {
+mojom::CommandLineSwitches& GlobalState::CommandLineSwitches() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return mojom_flags_;
+  return mojom_command_line_switches_;
 }
 
 mojom::ContentSettings& GlobalState::ContentSettings() {

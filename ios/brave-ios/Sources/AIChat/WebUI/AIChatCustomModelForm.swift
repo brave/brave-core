@@ -447,6 +447,8 @@ extension AiChat.Model {
       displayName: "Custom Model",
       visionSupport: true,
       supportsTools: false,
+      audioSupport: false,
+      videoSupport: false,
       supportedCapabilities: [NSNumber(value: AiChat.ConversationCapability.chat.rawValue)],
       isSuggestedModel: false,
       isNearModel: false

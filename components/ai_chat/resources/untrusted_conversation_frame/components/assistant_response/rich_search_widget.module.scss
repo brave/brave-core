@@ -7,5 +7,5 @@
   width: 100%;
   border: none;
   border-radius: var(--leo-radius-m);
-  animation: reveal 200ms ease-out both;
+  animation: var(--reveal-animation);
 }

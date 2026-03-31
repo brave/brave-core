@@ -77,7 +77,6 @@ import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
 import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
 import org.chromium.chrome.browser.ntp_background_images.util.FetchWallpaperWorkerTask;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPImageUtil;
-import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
@@ -265,10 +264,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         if (mSponsoredTab == null) {
             initilizeSponsoredTab();
         }
-        checkAndShowNTPImage(false);
+        getAndShowNTPImage();
 
-        if (OnboardingPrefManager.getInstance().isFromNotification() ) {
-            ((BraveActivity)mActivity).showOnboardingV2(false);
+        if (OnboardingPrefManager.getInstance().isFromNotification()) {
+            ((BraveActivity) mActivity).showOnboardingV2(false);
             OnboardingPrefManager.getInstance().setFromNotification(false);
         }
         if (mBadgeAnimationView != null
@@ -944,36 +943,29 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
         if (mActivity != null && (mActivity.isFinishing() || mActivity.isDestroyed())) {
-            super.onConfigurationChanged(newConfig);
             return;
         }
-        if (mSponsoredTab != null && NTPImageUtil.shouldEnableNTPFeature()) {
-            NTPImage ntpImage = mSponsoredTab.getTabNTPImage(false, mShouldShowSponsoredImage);
-            if (ntpImage == null) {
-                mSponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
-            } else if (ntpImage instanceof Wallpaper) {
-                Wallpaper mWallpaper = (Wallpaper) ntpImage;
-                if (mWallpaper == null) {
-                    mSponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
-                }
-            }
-            super.onConfigurationChanged(newConfig);
-            showNTPImage(ntpImage);
 
-            new Handler(Looper.getMainLooper())
-                    .postDelayed(
-                            () -> {
-                                assertNonNull(mRecyclerView);
-                                if (mNtpAdapter != null) {
-                                    mNtpAdapter.setRecyclerViewHeight(mRecyclerView.getHeight());
-                                }
-                                keepPosition();
-                            },
-                            10);
-        } else {
-            super.onConfigurationChanged(newConfig);
+        if (mSponsoredTab == null || !NTPImageUtil.shouldEnableNTPFeature()) {
+            return;
         }
+
+        // `maybeShowNTPImage()` is a no-op if configuration changes before the NTP image is ready;
+        // it will be called again once NTP image is ready.
+        maybeShowNTPImage();
+
+        new Handler(Looper.getMainLooper())
+                .postDelayed(
+                        () -> {
+                            assertNonNull(mRecyclerView);
+                            if (mNtpAdapter != null) {
+                                mNtpAdapter.setRecyclerViewHeight(mRecyclerView.getHeight());
+                            }
+                            keepPosition();
+                        },
+                        10);
     }
 
     @Override
@@ -1295,19 +1287,24 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
     public void setTabProvider(Supplier<@Nullable Tab> unused_tabProvider) {}
 
-    private void showNTPImage(NTPImage ntpImage) {
+    private void maybeShowNTPImage() {
+        // Return early if the NTP image is not available yet; this method is called again once it
+        // is ready.
+        if (mNtpImageGlobal == null) {
+            return;
+        }
+
         Display display = mActivity.getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
 
-        mNtpImageGlobal = ntpImage;
         if (mNtpAdapter != null) {
-            mNtpAdapter.setNtpImage(ntpImage);
+            mNtpAdapter.setNtpImage(mNtpImageGlobal);
         }
 
         boolean wasWallpaperShown = true;
-        if (ntpImage instanceof Wallpaper && ((Wallpaper) ntpImage).isRichMedia()) {
-            setupSponsoredBackgroundContent((Wallpaper) ntpImage);
+        if (mNtpImageGlobal instanceof Wallpaper && ((Wallpaper) mNtpImageGlobal).isRichMedia()) {
+            setupSponsoredBackgroundContent((Wallpaper) mNtpImageGlobal);
         } else {
             maybeResetSponsoredRichMediaBackground();
 
@@ -1315,7 +1312,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                             .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
                     && mSponsoredTab != null
                     && NTPImageUtil.shouldEnableNTPFeature()) {
-                setBackgroundImage(ntpImage);
+                setBackgroundImage(mNtpImageGlobal);
             } else {
                 wasWallpaperShown = false;
             }
@@ -1323,7 +1320,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
         assertNonNull(mProfile);
         if (wasWallpaperShown
-                && ntpImage instanceof Wallpaper
+                && mNtpImageGlobal instanceof Wallpaper
                 && getTab() != null
                 && mNewTabTakeoverInfobar == null) {
             mNewTabTakeoverInfobar = new BraveNewTabTakeoverInfobar(mProfile);
@@ -1413,18 +1410,17 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         return variant == null || !variant.equals("D") || !shouldShowSnackbar;
     }
 
-    private void checkAndShowNTPImage(boolean isReset) {
+    private void getAndShowNTPImage() {
         assertNonNull(mSponsoredTab);
-        NTPImage ntpImage = mSponsoredTab.getTabNTPImage(isReset, mShouldShowSponsoredImage);
-        if (ntpImage == null) {
-            mSponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
-        } else if (ntpImage instanceof Wallpaper) {
-            Wallpaper mWallpaper = (Wallpaper) ntpImage;
-            if (mWallpaper == null) {
-                mSponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
-            }
-        }
-        showNTPImage(ntpImage);
+        mSponsoredTab.getNTPImage(
+                mShouldShowSponsoredImage,
+                ntpImage -> {
+                    if (mActivity == null || mActivity.isFinishing() || mActivity.isDestroyed()) {
+                        return;
+                    }
+                    mNtpImageGlobal = ntpImage;
+                    maybeShowNTPImage();
+                });
     }
 
     private void initilizeSponsoredTab() {

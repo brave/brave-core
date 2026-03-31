@@ -253,6 +253,7 @@ void AdBlockEngine::Load(bool deserialize,
 
 void AdBlockEngine::Load(rust::Box<adblock::FilterSet> filter_set,
                          const adblock::BraveCoreResourceStorage& storage) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   OnFilterSetLoaded(std::move(filter_set), storage);
 }
 
@@ -377,10 +378,6 @@ void AdBlockEngine::AddObserverForTest(AdBlockEngine::TestObserver* observer) {
 
 void AdBlockEngine::RemoveObserverForTest() {
   test_observer_ = nullptr;
-}
-
-base::WeakPtr<AdBlockEngine> AdBlockEngine::AsWeakPtr() {
-  return weak_ptr_factory_.GetWeakPtr();
 }
 
 }  // namespace brave_shields

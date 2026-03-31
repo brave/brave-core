@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_NEW_TAB_PAGE_BRAVE_NEW_TAB_MESSAGE_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_NEW_TAB_PAGE_BRAVE_NEW_TAB_MESSAGE_HANDLER_H_
 
+#include <optional>
+
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
@@ -17,6 +19,7 @@ class Profile;
 
 namespace base {
 class Time;
+class DictValue;
 }  //  namespace base
 
 namespace content {
@@ -59,6 +62,8 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   void HandleRegisterNewTabPageView(const base::ListValue& args);
   void HandleBrandedWallpaperLogoClicked(const base::ListValue& args);
   void HandleGetWallpaperData(const base::ListValue& args);
+  void HandleGetWallpaperDataCallback(base::Value callback_id,
+                                      std::optional<base::DictValue> data);
   void HandleCustomizeClicked(const base::ListValue& args);
 
   void OnStatsChanged();

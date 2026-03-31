@@ -248,12 +248,4 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest,
                                 TransactionList{transaction_1, transaction_2}));
 }
 
-TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTableName) {
-  // Arrange
-  const Transactions database_table;
-
-  // Act & Assert
-  EXPECT_EQ("transactions", database_table.GetTableName());
-}
-
 }  // namespace brave_ads::database::table

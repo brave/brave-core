@@ -8,6 +8,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/check.h"
@@ -166,17 +167,16 @@ ViewCounterService::GetNextWallpaperForDisplay() {
   return GetCurrentWallpaper();
 }
 
-std::optional<base::DictValue>
-ViewCounterService::GetCurrentWallpaperForDisplay(bool allow_sponsored_image) {
+void ViewCounterService::GetCurrentWallpaperForDisplay(
+    base::OnceCallback<void(std::optional<base::DictValue>)> callback,
+    bool allow_sponsored_image) {
   if (allow_sponsored_image && ShouldShowSponsoredImages()) {
-    if (std::optional<base::DictValue> dict = GetCurrentBrandedWallpaper()) {
-      return dict;
-    }
+    return GetCurrentBrandedWallpaper(
+        base::BindOnce(&ViewCounterService::OnGetCurrentBrandedWallpaper,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   }
 
-  // If a sponsored image should not be displayed, fallback to the next
-  // wallpaper.
-  return GetNextWallpaperForDisplay();
+  std::move(callback).Run(GetNextWallpaperForDisplay());
 }
 
 std::optional<base::DictValue> ViewCounterService::GetCurrentWallpaper() const {
@@ -204,47 +204,23 @@ std::optional<base::DictValue> ViewCounterService::GetCurrentWallpaper() const {
       .Set(kWallpaperRandomKey, true);
 }
 
-std::optional<base::DictValue> ViewCounterService::GetCurrentBrandedWallpaper()
-    const {
+void ViewCounterService::GetCurrentBrandedWallpaper(
+    base::OnceCallback<void(std::optional<base::DictValue>)> callback) {
   NTPSponsoredImagesData* images_data = GetSponsoredImagesData();
   if (!images_data) {
-    return std::nullopt;
+    return std::move(callback).Run(std::nullopt);
   }
 
-  return GetCurrentBrandedWallpaperFromAdsService();
+  GetCurrentBrandedWallpaperFromAdsService(std::move(callback));
 }
 
-std::optional<base::DictValue>
-ViewCounterService::GetCurrentBrandedWallpaperFromAdsService() const {
+void ViewCounterService::GetCurrentBrandedWallpaperFromAdsService(
+    base::OnceCallback<void(std::optional<base::DictValue>)> callback) {
   DCHECK(ads_service_);
 
-  brave_ads::mojom::NewTabPageAdInfoPtr ad =
-      ads_service_->MaybeGetPrefetchedNewTabPageAd();
-  if (!ad) {
-    return std::nullopt;
-  }
-
-  NTPSponsoredImagesData* images_data = GetSponsoredImagesData();
-  if (!images_data) {
-    ads_service_->OnFailedToPrefetchNewTabPageAd(ad->placement_id,
-                                                 ad->creative_instance_id);
-    return std::nullopt;
-  }
-
-  std::optional<base::DictValue> background =
-      images_data->MaybeGetBackground(*ad);
-  if (!background) {
-    ads_service_->OnFailedToPrefetchNewTabPageAd(ad->placement_id,
-                                                 ad->creative_instance_id);
-    SCOPED_CRASH_KEY_STRING64("Issue50267", "creative_instance_id",
-                              ad->creative_instance_id);
-    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
-                              "No matching background");
-    base::debug::DumpWithoutCrashing();
-    return std::nullopt;
-  }
-
-  return background;
+  ads_service_->MaybeServeNewTabPageAd(base::BindOnce(
+      &ViewCounterService::GetCurrentBrandedWallpaperFromAdsServiceCallback,
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 std::optional<base::DictValue>
@@ -288,9 +264,7 @@ void ViewCounterService::OnSponsoredContentDidUpdate(
 }
 
 void ViewCounterService::ParseAndSaveNewTabPageAdsCallback(bool success) {
-  if (success) {
-    MaybePrefetchNewTabPageAd();
-  } else {
+  if (!success) {
     SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
                               "Failed to parse and save ads");
     base::debug::DumpWithoutCrashing();
@@ -346,7 +320,6 @@ void ViewCounterService::RegisterPageView() {
   // This will be no-op when component is not ready.
   background_images_service_->MaybeCheckForSponsoredComponentUpdate();
   model_.RegisterPageView();
-  MaybePrefetchNewTabPageAd();
 }
 
 bool ViewCounterService::ShouldShowSponsoredImages() const {
@@ -396,16 +369,34 @@ bool ViewCounterService::IsSponsoredImagesWallpaperOptedIn() const {
         is_supported_locale_;
 }
 
-void ViewCounterService::MaybePrefetchNewTabPageAd() {
-  if (!ads_service_) {
-    return;
+void ViewCounterService::OnGetCurrentBrandedWallpaper(
+    base::OnceCallback<void(std::optional<base::DictValue>)> callback,
+    std::optional<base::DictValue> branded_wallpaper) {
+  if (branded_wallpaper) {
+    return std::move(callback).Run(std::move(branded_wallpaper));
+  }
+  std::move(callback).Run(GetNextWallpaperForDisplay());
+}
+
+void ViewCounterService::GetCurrentBrandedWallpaperFromAdsServiceCallback(
+    base::OnceCallback<void(std::optional<base::DictValue>)> callback,
+    brave_ads::mojom::NewTabPageAdInfoPtr ad) {
+  if (!ad) {
+    return std::move(callback).Run(std::nullopt);
   }
 
-  if (!CanShowSponsoredImages()) {
-    return;
+  NTPSponsoredImagesData* images_data = GetSponsoredImagesData();
+  if (!images_data) {
+    return std::move(callback).Run(std::nullopt);
   }
 
-  ads_service_->PrefetchNewTabPageAd();
+  std::optional<base::DictValue> background =
+      images_data->MaybeGetBackground(*ad);
+  if (!background) {
+    return std::move(callback).Run(std::nullopt);
+  }
+
+  std::move(callback).Run(std::move(background));
 }
 
 void ViewCounterService::MaybeTriggerNewTabPageAdEvent(

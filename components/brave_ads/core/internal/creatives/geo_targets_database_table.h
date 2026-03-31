@@ -21,8 +21,6 @@ class GeoTargets final : public TableInterface {
               const std::map</*campaign_id*/ std::string,
                              base::flat_set<std::string>>& geo_targets);
 
-  std::string GetTableName() const override;
-
   void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;
   void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                int to_version) override;

@@ -27,6 +27,10 @@ bool BraveTabStripCollectionDelegate::CreateSplit(
   return false;
 }
 
+bool BraveTabStripCollectionDelegate::Unsplit(split_tabs::SplitTabId split_id) {
+  return false;
+}
+
 tabs::TabCollection* BraveTabStripCollectionDelegate::GetCollectionForMapping(
     tabs::TabCollection* root_collection) {
   return root_collection;

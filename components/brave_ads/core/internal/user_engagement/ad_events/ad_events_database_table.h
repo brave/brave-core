@@ -66,7 +66,6 @@ class AdEvents final : public TableInterface {
                      ResultCallback callback) const;
   void PurgeAllOrphaned(ResultCallback callback) const;
 
-  std::string GetTableName() const override;
   void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;
   void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                int to_version) override;

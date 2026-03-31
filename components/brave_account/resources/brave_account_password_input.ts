@@ -10,6 +10,12 @@ import { getHtml } from './brave_account_password_input.html.js'
 import type { PasswordStrengthChangedEventDetail } from './brave_account_password_strength_meter.js'
 import type { ToggleVisibilityEventDetail } from './brave_account_password_icons.js'
 
+// maxlength is based on UTF-16 code units (where surrogate pairs count as
+// 2 code units). maxlength=8192 allows up to 8192 code units (16kB for BMP,
+// up to 32kB with characters outside the BMP, e.g. emojis). This limits
+// length in code units, not bytes.
+export const MAX_PASSWORD_LENGTH = 8192
+
 export type PasswordInputEventDetail = { password: string }
 
 export type PasswordInputConfig =

@@ -556,12 +556,23 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
     return;
   }
 
-  std::optional<base::DictValue> data =
-      was_restored_ ? service->GetNextWallpaperForDisplay()
-                    : service->GetCurrentWallpaperForDisplay();
+  if (was_restored_) {
+    return HandleGetWallpaperDataCallback(
+        args[0].Clone(), service->GetNextWallpaperForDisplay());
+  }
+
+  service->GetCurrentWallpaperForDisplay(
+      base::BindOnce(&BraveNewTabMessageHandler::HandleGetWallpaperDataCallback,
+                     weak_ptr_factory_.GetWeakPtr(), args[0].Clone()));
+}
+
+void BraveNewTabMessageHandler::HandleGetWallpaperDataCallback(
+    base::Value callback_id,
+    std::optional<base::DictValue> data) {
+  base::DictValue wallpaper;
 
   if (!data) {
-    ResolveJavascriptCallback(args[0], wallpaper);
+    ResolveJavascriptCallback(callback_id, wallpaper);
     return;
   }
 
@@ -572,11 +583,17 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
   constexpr char kBackgroundWallpaperKey[] = "backgroundWallpaper";
   if (is_background.value()) {
     wallpaper.Set(kBackgroundWallpaperKey, std::move(*data));
-    ResolveJavascriptCallback(args[0], wallpaper);
+    ResolveJavascriptCallback(callback_id, wallpaper);
     return;
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
+  auto* service = ViewCounterServiceFactory::GetForProfile(profile_);
+  if (!service) {
+    ResolveJavascriptCallback(callback_id, wallpaper);
+    return;
+  }
+
   // Even though we show sponsored image, we should pass "Background wallpaper"
   // data so that NTP customization menu can know which wallpaper is selected by
   // users.
@@ -610,7 +627,7 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
   wallpaper.Set(kBrandedWallpaperKey, std::move(*data));
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
-  ResolveJavascriptCallback(args[0], wallpaper);
+  ResolveJavascriptCallback(callback_id, wallpaper);
 }
 
 void BraveNewTabMessageHandler::HandleCustomizeClicked(

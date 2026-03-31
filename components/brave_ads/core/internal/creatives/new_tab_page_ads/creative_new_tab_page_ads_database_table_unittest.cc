@@ -503,9 +503,4 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   EXPECT_THAT(creative_ads, ::testing::IsEmpty());
 }
 
-TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetTableName) {
-  // Act & Assert
-  EXPECT_EQ("creative_new_tab_page_ads", database_table_.GetTableName());
-}
-
 }  // namespace brave_ads

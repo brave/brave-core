@@ -147,12 +147,46 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
 
   // Act & Assert
   base::RunLoop run_loop;
+  ::testing::InSequence seq;
+  EXPECT_CALL(delegate_mock_, OnWillFireNewTabPageAdClickedEvent(ad));
   EXPECT_CALL(delegate_mock_, OnDidFireNewTabPageAdClickedEvent(ad))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(ad.placement_id, ad.creative_instance_id,
                                  mojom::NewTabPageAdEventType::kClicked,
                                  /*should_fire_event=*/true);
   run_loop.Run();
+}
+
+TEST_F(
+    BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
+    ClickedEventNotifiesDelegateBeforeRecordingCompletesToEnsurePageLandIsRecorded) {
+  // Arrange
+  const NewTabPageAdInfo ad =
+      test::BuildAndSaveNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                     /*use_random_uuids=*/false);
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kViewedImpression});
+
+  bool delegate_was_notified = false;
+  ::testing::InSequence seq;
+  EXPECT_CALL(delegate_mock_, OnWillFireNewTabPageAdClickedEvent(ad))
+      .WillOnce([&] { delegate_was_notified = true; });
+  EXPECT_CALL(delegate_mock_, OnDidFireNewTabPageAdClickedEvent(ad));
+
+  base::test::TestFuture<bool, std::string, mojom::NewTabPageAdEventType>
+      test_future;
+
+  // Act & Assert
+  event_handler_.FireEvent(
+      ad.placement_id, ad.creative_instance_id,
+      mojom::NewTabPageAdEventType::kClicked,
+      test_future.GetCallback<bool, const std::string&,
+                              mojom::NewTabPageAdEventType>());
+  const auto [success, placement_id, mojom_ad_event_type] = test_future.Take();
+  EXPECT_TRUE(delegate_was_notified);
+  EXPECT_TRUE(success);
+  EXPECT_EQ(ad.placement_id, placement_id);
+  EXPECT_EQ(mojom::NewTabPageAdEventType::kClicked, mojom_ad_event_type);
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,

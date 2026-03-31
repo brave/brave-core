@@ -8,24 +8,29 @@ package org.chromium.chrome.browser.hub;
 import android.app.Activity;
 import android.content.ComponentCallbacks;
 import android.content.res.Configuration;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.BraveReflectionUtil;
-import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.browser.back_press.BackPressManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.settings.AddressBarPreference;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
+import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeControllerFactory;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityClient;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.ui.base.DeviceFormFactor;
+import org.chromium.ui.edge_to_edge.EdgeToEdgePadAdjuster;
 
 /**
  * Brave's extension of {@link HubManagerImpl}. We need it to adjust bottom margin for the bottom
@@ -36,6 +41,9 @@ public class BraveHubManagerImpl extends HubManagerImpl {
     private int mBottomToolbarHeight;
     private final boolean mIsTablet;
     private final ComponentCallbacks mComponentCallbacks;
+    // This field is deleted by BraveHubManagerImplClassAdapter so the parent's field is used.
+    private MonotonicObservableSupplier<EdgeToEdgeController> mEdgeToEdgeSupplier;
+    private EdgeToEdgePadAdjuster mEdgeToEdgePadAdjuster;
 
     public BraveHubManagerImpl(
             Activity activity,
@@ -106,6 +114,18 @@ public class BraveHubManagerImpl extends HubManagerImpl {
         super.onHubLayoutShow();
 
         maybeUpdateBottomMarginForContainerView();
+        maybeRepositionToolbarToBottom();
+    }
+
+    @Override
+    public void onHubLayoutDoneHiding() {
+        // The parent destroys the HubCoordinator (and all views) here, so the adjuster's
+        // view reference becomes stale. Reset it so it's recreated on the next show.
+        if (mEdgeToEdgePadAdjuster != null) {
+            mEdgeToEdgePadAdjuster.destroy();
+            mEdgeToEdgePadAdjuster = null;
+        }
+        super.onHubLayoutDoneHiding();
     }
 
     @Override
@@ -114,6 +134,10 @@ public class BraveHubManagerImpl extends HubManagerImpl {
 
         if (mActivity != null) {
             mActivity.unregisterComponentCallbacks(mComponentCallbacks);
+        }
+        if (mEdgeToEdgePadAdjuster != null) {
+            mEdgeToEdgePadAdjuster.destroy();
+            mEdgeToEdgePadAdjuster = null;
         }
     }
 
@@ -147,8 +171,8 @@ public class BraveHubManagerImpl extends HubManagerImpl {
                             HubContainerView containerView = getContainerView();
                             LayoutParams params = (LayoutParams) containerView.getLayoutParams();
                             params.bottomMargin =
-                                    ContextUtils.getAppSharedPreferences()
-                                                    .getBoolean(
+                                    ChromeSharedPreferences.getInstance()
+                                                    .readBoolean(
                                                             BravePreferenceKeys
                                                                     .BRAVE_IS_MENU_FROM_BOTTOM,
                                                             true)
@@ -156,6 +180,85 @@ public class BraveHubManagerImpl extends HubManagerImpl {
                                             : 0;
                             containerView.setLayoutParams(params);
                         });
+    }
+
+    /**
+     * Repositions the hub toolbar from top to bottom when the address bar is at the bottom. This
+     * moves all hub controls (new tab, menu, pane switcher, search) to the bottom of the tab
+     * switcher for one-handed accessibility.
+     */
+    private void maybeRepositionToolbarToBottom() {
+        if (mIsTablet || !isToolbarBottomAnchored()) return;
+
+        HubContainerView containerView = getContainerView();
+        if (containerView == null) return;
+
+        View hubToolbar = containerView.findViewById(R.id.hub_toolbar);
+        if (hubToolbar == null) return;
+
+        // Move the toolbar layout wrapper to the bottom of its FrameLayout parent.
+        View toolbarWrapper = (View) hubToolbar.getParent();
+        if (toolbarWrapper != null
+                && toolbarWrapper.getLayoutParams() instanceof FrameLayout.LayoutParams) {
+            FrameLayout.LayoutParams params =
+                    (FrameLayout.LayoutParams) toolbarWrapper.getLayoutParams();
+            params.gravity = Gravity.BOTTOM;
+            toolbarWrapper.setLayoutParams(params);
+        }
+
+        // Swap the pane host container margins: top margin → bottom margin so the content
+        // area leaves space for the toolbar at the bottom instead of the top.
+        View hostContainer = containerView.findViewById(R.id.hub_pane_host_container);
+        if (hostContainer != null
+                && hostContainer.getLayoutParams() instanceof FrameLayout.LayoutParams) {
+            FrameLayout.LayoutParams params =
+                    (FrameLayout.LayoutParams) hostContainer.getLayoutParams();
+            if (params.topMargin > 0 && params.bottomMargin == 0) {
+                int toolbarHeight = params.topMargin;
+                params.topMargin = 0;
+                params.bottomMargin = toolbarHeight;
+                hostContainer.setLayoutParams(params);
+            }
+        }
+
+        // Apply bottom padding for the system navigation bar so the toolbar content
+        // does not sit behind the gesture bar, matching the address bar behavior.
+        applyNavigationBarPadding(hubToolbar, hostContainer);
+    }
+
+    /**
+     * Applies bottom padding to the toolbar for the system navigation bar inset using the
+     * edge-to-edge controller (same pattern as upstream HubBottomToolbarCoordinator), and adjusts
+     * the pane host container's bottom margin when the toolbar wrapper's layout changes.
+     */
+    private void applyNavigationBarPadding(View hubToolbar, View hostContainer) {
+        // Guard against multiple calls (onHubLayoutShow fires each time hub is shown).
+        if (mEdgeToEdgePadAdjuster != null) return;
+
+        View toolbarWrapper = (View) hubToolbar.getParent();
+        if (toolbarWrapper == null) return;
+
+        // Use the EdgeToEdge factory to apply bottom padding for the navigation bar inset.
+        mEdgeToEdgePadAdjuster =
+                EdgeToEdgeControllerFactory.createForViewAndObserveSupplier(
+                        toolbarWrapper, mEdgeToEdgeSupplier);
+
+        // When the toolbar wrapper's height changes (due to edge-to-edge padding), update
+        // the pane host container's bottom margin to prevent content overlap.
+        toolbarWrapper.addOnLayoutChangeListener(
+                (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+                    int newHeight = bottom - top;
+                    if (hostContainer != null
+                            && hostContainer.getLayoutParams()
+                                    instanceof FrameLayout.LayoutParams) {
+                        FrameLayout.LayoutParams hostParams =
+                                (FrameLayout.LayoutParams) hostContainer.getLayoutParams();
+                        if (hostParams.bottomMargin != newHeight) {
+                            hostParams.bottomMargin = newHeight;
+                            hostContainer.setLayoutParams(hostParams);
+                        }
+                    }
+                });
     }
 
     private boolean isToolbarBottomAnchored() {

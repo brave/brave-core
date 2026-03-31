@@ -13,6 +13,7 @@ namespace containers {
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterListPref(prefs::kContainersList,
                              user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
+  registry->RegisterDictionaryPref(prefs::kLocallyUsedContainers);
 }
 
 }  // namespace containers

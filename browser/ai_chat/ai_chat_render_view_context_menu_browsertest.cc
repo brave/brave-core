@@ -177,12 +177,10 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
 
     RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
         base::BindLambdaForTesting([&](RenderViewContextMenu* context_menu) {
-          auto* brave_context_menu =
-              static_cast<BraveRenderViewContextMenu*>(context_menu);
-          brave_context_menu->SetAIEngineForTesting(
+          context_menu->SetAIEngineForTesting(
               std::make_unique<MockEngineConsumer>());
           ai_engine = static_cast<MockEngineConsumer*>(
-              brave_context_menu->GetAIEngineForTesting());
+              context_menu->GetAIEngineForTesting());
           // Verify that rewrite is requested
           EXPECT_CALL(*ai_engine, GenerateRewriteSuggestion(_, _, _, _))
               .WillOnce(

@@ -120,4 +120,44 @@ TEST_F(ContainersPrefsTest, GetContainerById) {
   EXPECT_FALSE(GetContainerFromPrefs(prefs_, "missing-id"));
 }
 
+TEST_F(ContainersPrefsTest, SetAndGetLocallyUsedContainer) {
+  auto container = mojom::Container::New("used-id", "Used Container",
+                                         mojom::Icon::kShopping, SK_ColorBLUE);
+  EXPECT_FALSE(HasLocallyUsedContainerInPrefs(prefs_, "used-id"));
+  SetLocallyUsedContainerToPrefs(container, prefs_);
+  EXPECT_TRUE(HasLocallyUsedContainerInPrefs(prefs_, "used-id"));
+  EXPECT_FALSE(HasLocallyUsedContainerInPrefs(prefs_, "other-id"));
+
+  auto retrieved = GetLocallyUsedContainerFromPrefs(prefs_, "used-id");
+  ASSERT_TRUE(retrieved);
+  EXPECT_EQ(retrieved->name, "Used Container");
+  EXPECT_EQ(retrieved->icon, mojom::Icon::kShopping);
+  EXPECT_EQ(retrieved->background_color, SK_ColorBLUE);
+
+  auto all_used = GetLocallyUsedContainersFromPrefs(prefs_);
+  ASSERT_EQ(all_used.size(), 1u);
+  EXPECT_EQ(all_used[0]->id, "used-id");
+}
+
+TEST_F(ContainersPrefsTest, UpdateAndRemoveLocallyUsedContainer) {
+  SetLocallyUsedContainerToPrefs(
+      mojom::Container::New("used-id", "Used Container", mojom::Icon::kShopping,
+                            SK_ColorBLUE),
+      prefs_);
+  SetLocallyUsedContainerToPrefs(
+      mojom::Container::New("used-id", "Updated Container", mojom::Icon::kWork,
+                            SK_ColorRED),
+      prefs_);
+
+  auto retrieved = GetLocallyUsedContainerFromPrefs(prefs_, "used-id");
+  ASSERT_TRUE(retrieved);
+  EXPECT_EQ(retrieved->name, "Updated Container");
+  EXPECT_EQ(retrieved->icon, mojom::Icon::kWork);
+  EXPECT_EQ(retrieved->background_color, SK_ColorRED);
+
+  RemoveLocallyUsedContainerFromPrefs("used-id", prefs_);
+  EXPECT_FALSE(GetLocallyUsedContainerFromPrefs(prefs_, "used-id"));
+  EXPECT_TRUE(GetLocallyUsedContainersFromPrefs(prefs_).empty());
+}
+
 }  // namespace containers

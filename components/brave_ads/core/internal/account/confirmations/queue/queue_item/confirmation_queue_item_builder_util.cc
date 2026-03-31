@@ -7,8 +7,8 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_feature.h"
+#include "brave/components/brave_ads/core/internal/command_line_switches/debug/debug_flag_util.h"
 #include "brave/components/brave_ads/core/internal/common/random/random_util.h"
-#include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
 
 namespace brave_ads {
 

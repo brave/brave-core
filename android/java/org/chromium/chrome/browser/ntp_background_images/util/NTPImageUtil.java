@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.view.View;
 
+import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
@@ -235,14 +236,17 @@ public class NTPImageUtil {
         return false;
     }
 
-    public static NTPImage getNTPImage(
-            NTPBackgroundImagesBridge mNTPBackgroundImagesBridge, boolean allowSponsoredImage) {
-        NTPImage mWallpaper = mNTPBackgroundImagesBridge.getCurrentWallpaper(allowSponsoredImage);
-        if (mWallpaper != null) {
-            return mWallpaper;
-        } else {
-            return SponsoredImageUtil.getBackgroundImage();
-        }
+    public static void getNTPImage(
+            NTPBackgroundImagesBridge mNTPBackgroundImagesBridge,
+            boolean allowSponsoredImage,
+            Callback<NTPImage> callback) {
+        mNTPBackgroundImagesBridge.getCurrentWallpaper(
+                allowSponsoredImage,
+                wallpaper ->
+                        callback.onResult(
+                                wallpaper != null
+                                        ? wallpaper
+                                        : SponsoredImageUtil.getBackgroundImage()));
     }
 
     public static int getViewHeight(View view) {

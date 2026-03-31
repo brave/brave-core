@@ -17,7 +17,7 @@ class BraveAdsAnonymousSearchUrlHostTest : public test::TestBase {};
 TEST_F(BraveAdsAnonymousSearchUrlHostTest, GetProductionUrlHost) {
   // Arrange
   ASSERT_TRUE(GlobalState::HasInstance());
-  GlobalState::GetInstance()->Flags().environment_type =
+  GlobalState::GetInstance()->CommandLineSwitches().environment_type =
       mojom::EnvironmentType::kProduction;
 
   // Act & Assert
@@ -28,7 +28,7 @@ TEST_F(BraveAdsAnonymousSearchUrlHostTest, GetProductionUrlHost) {
 TEST_F(BraveAdsAnonymousSearchUrlHostTest, GetStagingUrlHost) {
   // Arrange
   ASSERT_TRUE(GlobalState::HasInstance());
-  GlobalState::GetInstance()->Flags().environment_type =
+  GlobalState::GetInstance()->CommandLineSwitches().environment_type =
       mojom::EnvironmentType::kStaging;
 
   // Act & Assert

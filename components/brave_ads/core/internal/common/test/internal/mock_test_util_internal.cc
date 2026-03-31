@@ -25,20 +25,21 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
-#include "brave/components/brave_ads/core/public/flags/flags_util.h"
+#include "brave/components/brave_ads/core/public/command_line_switches/command_line_switches_util.h"
 
 namespace brave_ads::test {
 
-void MockFlags() {
+void MockCommandLineSwitches() {
   CHECK(GlobalState::HasInstance());
 
-  GlobalState::GetInstance()->Flags() = *BuildFlags();
+  GlobalState::GetInstance()->CommandLineSwitches() =
+      *BuildCommandLineSwitches();
 
   if (!DidAppendCommandLineSwitches()) {
     // Force the test environment to staging if we did not append command-line
     // switches in `SetUpMocks`, or if the test environment does not support
     // passing command-line switches.
-    GlobalState::GetInstance()->Flags().environment_type =
+    GlobalState::GetInstance()->CommandLineSwitches().environment_type =
         mojom::EnvironmentType::kStaging;
   }
 }

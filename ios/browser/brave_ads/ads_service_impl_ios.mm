@@ -21,13 +21,12 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_prefetcher.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_util.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
-#include "brave/components/brave_ads/core/public/flags/flags_util.h"
+#include "brave/components/brave_ads/core/public/command_line_switches/command_line_switches_util.h"
 #include "components/prefs/pref_service.h"
 #include "sql/database.h"
 #include "ui/base/page_transition_types.h"
@@ -48,9 +47,7 @@ AdsServiceImplIOS::AdsServiceImplIOS(PrefService* prefs)
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-      ads_client_notifier_(std::make_unique<AdsClientNotifier>()),
-      new_tab_page_ad_prefetcher_(
-          std::make_unique<NewTabPageAdPrefetcher>(/*ads_service=*/*this)) {
+      ads_client_notifier_(std::make_unique<AdsClientNotifier>()) {
   CHECK(prefs_);
 }
 
@@ -199,31 +196,6 @@ void AdsServiceImplIOS::GetStatementOfAccounts(
   ads_->GetStatementOfAccounts(std::move(callback));
 }
 
-void AdsServiceImplIOS::PrefetchNewTabPageAd() {
-  if (!IsInitialized()) {
-    return;
-  }
-
-  new_tab_page_ad_prefetcher_->Prefetch();
-}
-
-mojom::NewTabPageAdInfoPtr AdsServiceImplIOS::MaybeGetPrefetchedNewTabPageAd() {
-  if (!IsInitialized()) {
-    return nullptr;
-  }
-
-  return new_tab_page_ad_prefetcher_->MaybeGetPrefetchedAd();
-}
-
-void AdsServiceImplIOS::OnFailedToPrefetchNewTabPageAd(
-    const std::string& /*placement_id*/,
-    const std::string& /*creative_instance_id*/) {
-  ResetNewTabPageAd();
-
-  PurgeOrphanedAdEventsForType(mojom::AdType::kNewTabPageAd,
-                               /*intentional*/ base::DoNothing());
-}
-
 void AdsServiceImplIOS::ParseAndSaveNewTabPageAds(
     base::DictValue dict,
     ParseAndSaveNewTabPageAdsCallback callback) {
@@ -237,13 +209,10 @@ void AdsServiceImplIOS::ParseAndSaveNewTabPageAds(
   }
 
   if (!IsInitialized()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
-  ads_->ParseAndSaveNewTabPageAds(
-      std::move(dict),
-      base::BindOnce(&AdsServiceImplIOS::OnParseAndSaveNewTabPageAdsCallback,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  ads_->ParseAndSaveNewTabPageAds(std::move(dict), std::move(callback));
 }
 
 void AdsServiceImplIOS::MaybeServeNewTabPageAd(
@@ -443,8 +412,6 @@ void AdsServiceImplIOS::NotifyDidSolveAdaptiveCaptcha() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void AdsServiceImplIOS::Shutdown() {
-  ResetNewTabPageAd();
-
   NotifyDidShutdownAdsService();
 
   ads_.reset();
@@ -458,7 +425,7 @@ void AdsServiceImplIOS::InitializeAds(InitializeCallback callback) {
 
   ads_->SetSysInfo(mojom_sys_info_.Clone());
   ads_->SetBuildChannel(mojom_build_channel_.Clone());
-  ads_->SetFlags(BuildFlags());
+  ads_->SetCommandLineSwitches(BuildCommandLineSwitches());
 
   ads_->Initialize(
       mojom_wallet_.Clone(),
@@ -514,36 +481,6 @@ void AdsServiceImplIOS::ClearAdsData(ClearDataCallback callback, bool success) {
 void AdsServiceImplIOS::ClearAdsDataCallback(ClearDataCallback callback) {
   NotifyDidClearAdsServiceData();
   InitializeAds(std::move(callback));
-}
-
-void AdsServiceImplIOS::RefetchNewTabPageAd() {
-  ResetNewTabPageAd();
-
-  PurgeOrphanedAdEventsForType(
-      mojom::AdType::kNewTabPageAd,
-      base::BindOnce(&AdsServiceImplIOS::RefetchNewTabPageAdCallback,
-                     weak_ptr_factory_.GetWeakPtr()));
-}
-
-void AdsServiceImplIOS::RefetchNewTabPageAdCallback(bool success) {
-  if (success) {
-    new_tab_page_ad_prefetcher_->Prefetch();
-  }
-}
-
-void AdsServiceImplIOS::ResetNewTabPageAd() {
-  new_tab_page_ad_prefetcher_ =
-      std::make_unique<NewTabPageAdPrefetcher>(/*ads_service=*/*this);
-}
-
-void AdsServiceImplIOS::OnParseAndSaveNewTabPageAdsCallback(
-    ParseAndSaveNewTabPageAdsCallback callback,
-    bool success) {
-  if (success) {
-    PrefetchNewTabPageAd();
-  }
-
-  std::move(callback).Run(success);
 }
 
 }  // namespace brave_ads

@@ -61,10 +61,6 @@ void GeoTargets::Insert(
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
-std::string GeoTargets::GetTableName() const {
-  return kTableName;
-}
-
 void GeoTargets::Create(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
@@ -127,8 +123,7 @@ std::string GeoTargets::BuildInsertSql(
             campaign_id,
             geo_target
           ) VALUES $2)",
-      {GetTableName(),
-       BuildBindColumnPlaceholders(/*column_count=*/2, row_count)},
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/2, row_count)},
       nullptr);
 }
 

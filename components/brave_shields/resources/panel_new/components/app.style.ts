@@ -9,7 +9,6 @@ import { color, font } from '@brave/leo/tokens/css/variables'
 export const style = scoped.css`
   & {
     background: ${color.container.background};
-    color-scheme: light dark;
   }
 `
 
@@ -25,6 +24,7 @@ style.passthrough.css`
   & {
     font: ${font.default.regular};
     color: ${color.text.primary};
+    color-scheme: light dark;
   }
 
   p {
@@ -92,8 +92,13 @@ style.passthrough.css`
     > .scrollable {
       overflow-y: auto;
       flex: 1 1 auto;
+
+      /* Remove the gap between the scrollable area and siblings */
       margin-top: -8px;
-      margin-bottom: -8px;
+
+      + * {
+        margin-top: -8px;
+      }
     }
   }
 

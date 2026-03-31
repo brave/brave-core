@@ -7,15 +7,15 @@
 #define BRAVE_BROWSER_BRAVE_ADS_TABS_ADS_TAB_HELPER_H_
 
 #include <optional>
-#include <set>
-#include <string>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
+#include "content/public/browser/media_player_id.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -26,9 +26,6 @@
 class Browser;
 class GURL;
 
-namespace content {
-struct MediaPlayerId;
-}  // namespace content
 
 namespace brave_ads {
 
@@ -86,7 +83,9 @@ class AdsTabHelper final : public content::WebContentsObserver,
       const std::vector<GURL>& redirect_chain,
       base::Value value);
 
-  bool IsPlayingMedia(const std::string& media_player_uuid);
+  bool IsPlayingMediaWithAudio(const content::MediaPlayerId& id);
+  void PlayerStartedPlayingWithAudio(const content::MediaPlayerId& id);
+  void PlayerStoppedPlayingWithAudio(const content::MediaPlayerId& id);
   void MaybeNotifyTabDidStartPlayingMedia();
   void MaybeNotifyTabDidStopPlayingMedia();
 
@@ -104,6 +103,8 @@ class AdsTabHelper final : public content::WebContentsObserver,
       const MediaPlayerInfo& video_type,
       const content::MediaPlayerId& id,
       WebContentsObserver::MediaStoppedReason reason) override;
+  void MediaMutedStatusChanged(const content::MediaPlayerId& id,
+                               bool muted) override;
   void OnVisibilityChanged(content::Visibility visibility) override;
   void WebContentsDestroyed() override;
 
@@ -124,7 +125,12 @@ class AdsTabHelper final : public content::WebContentsObserver,
   std::vector<GURL> redirect_chain_;
   std::optional<int> http_status_code_;
 
-  std::set</*media_player_uuid*/ std::string> media_players_;
+  // Tracks media players that have started to guard against spurious
+  // `MediaMutedStatusChanged` events for players that never actually started.
+  base::flat_set<content::MediaPlayerId> started_media_players_;
+  // Tracks media players that are currently playing with audio to determine
+  // when to send start and stop playing notifications.
+  base::flat_set<content::MediaPlayerId> media_players_with_audio_;
 
   std::optional<bool> is_browser_active_;
 

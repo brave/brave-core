@@ -593,8 +593,8 @@ def CheckJavaStyle(_original_check, input_api, output_api):
             for f in input_api.AffectedFiles()):
         return []
 
-    # Android toolchain is only available on Linux.
-    if not sys.platform.startswith('linux'):
+    # Android toolchain is only available on Linux and MacOS.
+    if not sys.platform.startswith(('linux', 'darwin')):
         return []
 
     with brave_chromium_utils.sys_path('//tools/android/checkstyle'):

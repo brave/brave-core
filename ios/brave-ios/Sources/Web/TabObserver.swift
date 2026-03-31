@@ -14,6 +14,7 @@ public protocol TabObserver: AnyObject {
 
   func tabDidStartNavigation(_ tab: some TabState)
   func tabDidCommitNavigation(_ tab: some TabState)
+  func tabDidCommitSameDocumentNavigation(_ tab: some TabState)
   func tabDidRedirectNavigation(_ tab: some TabState)
   func tabDidFinishNavigation(_ tab: some TabState)
   func tab(_ tab: some TabState, didFailNavigationWithError error: Error)
@@ -27,6 +28,8 @@ public protocol TabObserver: AnyObject {
   func tabDidChangeVisibleSecurityState(_ tab: some TabState)
   func tabDidChangeBackForwardState(_ tab: some TabState)
   func tabDidChangeSampledPageTopColor(_ tab: some TabState)
+  func tabDidUpdateFaviconStatus(_ tab: some TabState)
+  func tab(_ tab: some TabState, didUpdateFaviconURLCandidates candidates: [WebFaviconCandidate])
 
   /// Called when the Tab is about to deinit, use this to remove any observers/policy deciders added
   /// to the Tab.
@@ -34,6 +37,14 @@ public protocol TabObserver: AnyObject {
   /// - warning: The supplied `tab` will nil immediately after execution, therefore you cannot
   ///            capture this tab in escaping closures
   func tabWillBeDestroyed(_ tab: some TabState)
+}
+
+/// A favicon candidate that was found on the webpage
+public struct WebFaviconCandidate {
+  /// A url pointing to the favicon asset
+  public var url: URL
+  /// A list of sizes available for this candidate
+  public var sizes: [CGSize]
 }
 
 extension TabObserver {
@@ -45,6 +56,7 @@ extension TabObserver {
 
   public func tabDidStartNavigation(_ tab: some TabState) {}
   public func tabDidCommitNavigation(_ tab: some TabState) {}
+  public func tabDidCommitSameDocumentNavigation(_ tab: some TabState) {}
   public func tabDidRedirectNavigation(_ tab: some TabState) {}
   public func tabDidFinishNavigation(_ tab: some TabState) {}
   public func tab(_ tab: some TabState, didFailNavigationWithError error: Error) {}
@@ -58,7 +70,9 @@ extension TabObserver {
   public func tabDidChangeVisibleSecurityState(_ tab: some TabState) {}
   public func tabDidChangeBackForwardState(_ tab: some TabState) {}
   public func tabDidChangeSampledPageTopColor(_ tab: some TabState) {}
+  public func tabDidUpdateFaviconStatus(_ tab: some TabState) {}
   public func tabWillBeDestroyed(_ tab: some TabState) {}
+  public func tab(_ tab: some TabState, didUpdateFaviconURLCandidates: [WebFaviconCandidate]) {}
 }
 
 class AnyTabObserver: TabObserver, Hashable, CustomDebugStringConvertible {
@@ -74,6 +88,7 @@ class AnyTabObserver: TabObserver, Hashable, CustomDebugStringConvertible {
 
   private let _tabDidStartNavigation: (any TabState) -> Void
   private let _tabDidCommitNavigation: (any TabState) -> Void
+  private let _tabDidCommitSameDocumentNavigation: (any TabState) -> Void
   private let _tabDidRedirectNavigation: (any TabState) -> Void
   private let _tabDidFinishNavigation: (any TabState) -> Void
   private let _tabDidFailNavigationWithError: (any TabState, Error) -> Void
@@ -87,7 +102,9 @@ class AnyTabObserver: TabObserver, Hashable, CustomDebugStringConvertible {
   private let _tabDidChangeVisibleSecurityState: (any TabState) -> Void
   private let _tabDidChangeBackForwardState: (any TabState) -> Void
   private let _tabDidChangeSampledPageTopColor: (any TabState) -> Void
+  private let _tabDidUpdateFaviconStatus: (any TabState) -> Void
   private let _tabWillBeDestroyed: (any TabState) -> Void
+  private let _tabDidLoadFaviconsURLCandidates: (any TabState, [WebFaviconCandidate]) -> Void
 
   var debugDescription: String {
     #if DEBUG
@@ -115,6 +132,9 @@ class AnyTabObserver: TabObserver, Hashable, CustomDebugStringConvertible {
     _tabWasShown = { [weak observer] in observer?.tabWasShown($0) }
     _tabWasHidden = { [weak observer] in observer?.tabWasHidden($0) }
     _tabDidStartNavigation = { [weak observer] in observer?.tabDidStartNavigation($0) }
+    _tabDidCommitSameDocumentNavigation = { [weak observer] in
+      observer?.tabDidCommitSameDocumentNavigation($0)
+    }
     _tabDidCommitNavigation = { [weak observer] in observer?.tabDidCommitNavigation($0) }
     _tabDidRedirectNavigation = { [weak observer] in observer?.tabDidRedirectNavigation($0) }
     _tabDidFinishNavigation = { [weak observer] in observer?.tabDidFinishNavigation($0) }
@@ -136,7 +156,11 @@ class AnyTabObserver: TabObserver, Hashable, CustomDebugStringConvertible {
     _tabDidChangeSampledPageTopColor = { [weak observer] in
       observer?.tabDidChangeSampledPageTopColor($0)
     }
+    _tabDidUpdateFaviconStatus = { [weak observer] in observer?.tabDidUpdateFaviconStatus($0) }
     _tabWillBeDestroyed = { [weak observer] in observer?.tabWillBeDestroyed($0) }
+    _tabDidLoadFaviconsURLCandidates = { [weak observer] in
+      observer?.tab($0, didUpdateFaviconURLCandidates: $1)
+    }
   }
 
   func tabDidCreateWebView(_ tab: some TabState) {
@@ -156,6 +180,9 @@ class AnyTabObserver: TabObserver, Hashable, CustomDebugStringConvertible {
   }
   func tabDidCommitNavigation(_ tab: some TabState) {
     _tabDidCommitNavigation(tab)
+  }
+  func tabDidCommitSameDocumentNavigation(_ tab: some TabState) {
+    _tabDidCommitSameDocumentNavigation(tab)
   }
   func tabDidRedirectNavigation(_ tab: some TabState) {
     _tabDidRedirectNavigation(tab)
@@ -193,7 +220,13 @@ class AnyTabObserver: TabObserver, Hashable, CustomDebugStringConvertible {
   func tabDidChangeSampledPageTopColor(_ tab: some TabState) {
     _tabDidChangeSampledPageTopColor(tab)
   }
+  func tabDidUpdateFaviconStatus(_ tab: some TabState) {
+    _tabDidUpdateFaviconStatus(tab)
+  }
   func tabWillBeDestroyed(_ tab: some TabState) {
     _tabWillBeDestroyed(tab)
+  }
+  func tab(_ tab: some TabState, didUpdateFaviconURLCandidates candidates: [WebFaviconCandidate]) {
+    _tabDidLoadFaviconsURLCandidates(tab, candidates)
   }
 }

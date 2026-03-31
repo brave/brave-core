@@ -74,11 +74,6 @@ public class AnyTabState: TabState {
 
   public var visibleSecureContentState: SecureContentState { tab.visibleSecureContentState }
   public var serverTrust: SecTrust? { tab.serverTrust }
-  public var favicon: Favicon? {
-    get { tab.favicon }
-    set { tab.favicon = newValue }
-  }
-
   public var faviconStatus: FaviconStatus? { tab.faviconStatus }
   public var url: URL? { tab.url }
   public var visibleURL: URL? { tab.visibleURL }

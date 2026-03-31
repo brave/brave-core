@@ -18,7 +18,7 @@
 class HostContentSettingsMap;
 
 namespace brave_shields {
-class AdBlockService;
+class AdBlockEngineWrapper;
 }
 
 namespace cosmetic_filters {
@@ -32,7 +32,7 @@ class CosmeticFiltersResources final
   CosmeticFiltersResources(const CosmeticFiltersResources&) = delete;
   CosmeticFiltersResources& operator=(const CosmeticFiltersResources&) = delete;
   explicit CosmeticFiltersResources(
-      brave_shields::AdBlockService* ad_block_service);
+      brave_shields::AdBlockEngineWrapper* engine_wrapper);
   ~CosmeticFiltersResources() override;
 
   // Sends back to renderer a response about rules that has to be applied
@@ -52,8 +52,8 @@ class CosmeticFiltersResources final
   // DanglingPtrDetection is disabled because the AdBlockService is owned by
   // the BrowserProcess and is guaranteed to be alive for the lifetime of the
   // browser process. This class however is a self-owned mojo receiver.
-  raw_ptr<brave_shields::AdBlockService, DisableDanglingPtrDetection>
-      ad_block_service_ = nullptr;  // Not owned
+  raw_ptr<brave_shields::AdBlockEngineWrapper, DisableDanglingPtrDetection>
+      engine_wrapper_ = nullptr;
 };
 
 }  // namespace cosmetic_filters

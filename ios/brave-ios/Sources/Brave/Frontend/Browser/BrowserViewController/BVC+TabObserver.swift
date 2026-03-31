@@ -98,9 +98,6 @@ extension BrowserViewController: TabObserver {
     tab.redirectSourceURL = nil
     tab.isInternalRedirect = false
 
-    // Need to evaluate Night mode script injection after url is set inside the Tab
-    tab.nightMode = Preferences.General.nightModeEnabled.value
-
     // Dismiss any alerts that are showing on page navigation.
     if let alert = tab.shownPromptAlert {
       alert.dismiss(animated: false)
@@ -183,21 +180,6 @@ extension BrowserViewController: TabObserver {
       Task { @MainActor in
         await BraveSkusAccountLink.injectLocalStorage(tab: tab)
       }
-    }
-
-    // Second attempt to inject results to the BraveSearch.
-    // This will be called if we got fallback results faster than
-    // the page navigation.
-    if let braveSearchManager = tab.braveSearchManager {
-      // Fallback results are ready before navigation finished,
-      // they must be injected here.
-      if !braveSearchManager.fallbackQueryResultsPending {
-        tab.injectResults()
-      }
-    } else {
-      // If not applicable, null results must be injected regardless.
-      // The website waits on us until this is called with either results or null.
-      tab.injectResults()
     }
 
     navigateInTab(tab: tab)

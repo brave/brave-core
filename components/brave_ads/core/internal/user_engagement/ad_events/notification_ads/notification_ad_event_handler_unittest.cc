@@ -89,12 +89,42 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireClickedEvent) {
 
   // Act & Assert
   base::RunLoop run_loop;
+  ::testing::InSequence seq;
+  EXPECT_CALL(delegate_mock_, OnWillFireNotificationAdClickedEvent(ad));
   EXPECT_CALL(delegate_mock_, OnDidFireNotificationAdClickedEvent(ad))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(ad.placement_id,
                                  mojom::NotificationAdEventType::kClicked,
                                  /*should_fire_event=*/true);
   run_loop.Run();
+}
+
+TEST_F(
+    BraveAdsNotificationAdEventHandlerTest,
+    ClickedEventNotifiesDelegateBeforeRecordingCompletesToEnsurePageLandIsRecorded) {
+  // Arrange
+  const NotificationAdInfo ad =
+      test::BuildAndSaveNotificationAd(/*use_random_uuids=*/false);
+
+  bool delegate_was_notified = false;
+  ::testing::InSequence seq;
+  EXPECT_CALL(delegate_mock_, OnWillFireNotificationAdClickedEvent(ad))
+      .WillOnce([&] { delegate_was_notified = true; });
+  EXPECT_CALL(delegate_mock_, OnDidFireNotificationAdClickedEvent(ad));
+
+  base::test::TestFuture<bool, std::string, mojom::NotificationAdEventType>
+      test_future;
+
+  // Act & Assert
+  event_handler_.FireEvent(
+      ad.placement_id, mojom::NotificationAdEventType::kClicked,
+      test_future.GetCallback<bool, const std::string&,
+                              mojom::NotificationAdEventType>());
+  EXPECT_TRUE(delegate_was_notified);
+  const auto [success, placement_id, mojom_ad_event_type] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_EQ(ad.placement_id, placement_id);
+  EXPECT_EQ(mojom::NotificationAdEventType::kClicked, mojom_ad_event_type);
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireDismissedEvent) {

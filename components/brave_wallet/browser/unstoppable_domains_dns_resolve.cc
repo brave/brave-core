@@ -40,7 +40,7 @@ GURL ResolveUrl(base::span<const std::string> response) {
   GURL resolved_url;
   if (!ipfs_uri.empty()) {
     return ipfs::TranslateIPFSURI(GURL("ipfs://" + ipfs_uri), &resolved_url,
-                                  false)
+                                  true)
                ? resolved_url
                : GURL();
   }

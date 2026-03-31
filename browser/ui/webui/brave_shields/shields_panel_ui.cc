@@ -80,8 +80,6 @@ ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
   content::URLDataSource::Add(profile_,
                               std::make_unique<ThemeSource>(profile_));
 
-  AddBackgroundColorToSource(source, web_ui->GetWebContents());
-
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kShowUpdatedShieldsPanel)) {
     source->AddLocalizedStrings(webui::kBraveShieldsStrings);
@@ -91,6 +89,8 @@ ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
     webui::SetupWebUIDataSource(source, kBraveShieldsPanelGenerated,
                                 IDR_SHIELDS_PANEL_HTML);
   }
+
+  AddBackgroundColorToSource(source, web_ui->GetWebContents());
 }
 
 ShieldsPanelUI::~ShieldsPanelUI() = default;

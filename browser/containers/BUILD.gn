@@ -9,14 +9,19 @@ assert(enable_containers)
 
 source_set("containers") {
   sources = [
+    "container_tab_tracker.cc",
+    "container_tab_tracker.h",
     "containers_service_factory.cc",
     "containers_service_factory.h",
   ]
 
   deps = [
+    "//brave/components/containers/content/browser",
     "//brave/components/containers/core/browser",
     "//brave/components/containers/core/common",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/tabs",
+    "//content/public/browser",
   ]
 }
 

@@ -30,6 +30,7 @@
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
+#include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager_observer.h"
@@ -219,11 +220,12 @@ void AdBlockServiceTest::AddNewRules(const std::string& rules,
   source_provider->RegisterAsSourceProvider(ad_block_service);
   source_providers_.push_back(std::move(source_provider));
 
-  brave_shields::AdBlockEngine* engine =
+  auto& engine =
       first_party_protections
-          ? ad_block_service->default_engine_.get()
-          : ad_block_service->additional_filters_engine_.get();
-  EngineTestObserver engine_observer(engine);
+          ? ad_block_service->engine_wrapper_->default_engine_for_testing()
+          : ad_block_service->engine_wrapper_
+                ->additional_filters_engine_for_testing();
+  EngineTestObserver engine_observer(&engine);
   engine_observer.Wait();
 }
 
@@ -288,8 +290,8 @@ void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
   EXPECT_TRUE(provider);
   provider->OnComponentReady(component_path);
 
-  auto* engine = service->default_engine_.get();
-  EngineTestObserver engine_observer(engine);
+  auto& engine = service->engine_wrapper_->default_engine_for_testing();
+  EngineTestObserver engine_observer(&engine);
   engine_observer.Wait();
 }
 
@@ -304,8 +306,9 @@ void AdBlockServiceTest::UpdateCustomAdBlockInstanceWithRules(
       g_brave_browser_process->ad_block_service();
   ad_block_service->custom_filters_provider()->UpdateCustomFilters(rules);
 
-  auto* engine = ad_block_service->additional_filters_engine_.get();
-  EngineTestObserver engine_observer(engine);
+  auto& engine = ad_block_service->engine_wrapper_
+                     ->additional_filters_engine_for_testing();
+  EngineTestObserver engine_observer(&engine);
   engine_observer.Wait();
 }
 
@@ -362,10 +365,11 @@ void AdBlockServiceTest::InstallComponent(
     EXPECT_TRUE(provider);
     provider->OnComponentReady(component_path);
 
-    auto* engine = catalog_entry.first_party_protections
-                       ? service->default_engine_.get()
-                       : service->additional_filters_engine_.get();
-    EngineTestObserver engine_observer(engine);
+    auto& engine =
+        catalog_entry.first_party_protections
+            ? service->engine_wrapper_->default_engine_for_testing()
+            : service->engine_wrapper_->additional_filters_engine_for_testing();
+    EngineTestObserver engine_observer(&engine);
     engine_observer.Wait();
   }
 }

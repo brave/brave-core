@@ -599,6 +599,8 @@ struct LeoModelOptions {
   string name;
   // maker, for users
   string display_maker;
+  // description, for users
+  string description = "";
   // user-facing category
   ModelCategory category;
   // Which access level grants permission to use the model
@@ -639,6 +641,10 @@ struct Model {
   bool vision_support;
   // Model supports tool use
   bool supports_tools = false;
+  // whether accept audio as input
+  bool audio_support = false;
+  // whether accept video as input
+  bool video_support = false;
   // Conversation capabilities this model supports. Used to filter which models
   // are available for different conversation types (e.g. basic chat, content
   // agent, deep research).

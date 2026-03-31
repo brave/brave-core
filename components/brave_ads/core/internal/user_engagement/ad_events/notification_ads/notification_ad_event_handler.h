@@ -58,6 +58,8 @@ class NotificationAdEventHandler final
                          mojom::NotificationAdEventType mojom_ad_event_type,
                          FireNotificationAdEventHandlerCallback callback) const;
 
+  void NotifyWillFireNotificationAdClickedEvent(
+      const NotificationAdInfo& ad) const;
   void NotifyDidFireNotificationAdEvent(
       const NotificationAdInfo& ad,
       mojom::NotificationAdEventType mojom_ad_event_type) const;

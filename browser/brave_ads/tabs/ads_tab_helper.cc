@@ -22,7 +22,6 @@
 #include "content/public/browser/web_contents.h"
 #include "net/http/http_response_headers.h"
 #include "net/http/http_status_code.h"
-#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/page_transition_types.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -70,12 +69,6 @@ bool IsErrorPage(int http_status_code) {
   const int http_status_code_class = http_status_code / 100;
   return http_status_code_class == kHttpClientErrorResponseStatusCodeClass ||
          http_status_code_class == kHttpServerErrorResponseStatusCodeClass;
-}
-
-std::string MediaPlayerUuid(const content::MediaPlayerId& id) {
-  return absl::StrFormat("%d%d%d",
-                         id.frame_routing_id.child_id.GetUnsafeValue(),
-                         id.frame_routing_id.frame_routing_id, id.player_id);
 }
 
 }  // namespace
@@ -184,7 +177,10 @@ void AdsTabHelper::ResetNavigationState() {
 
   http_status_code_.reset();
 
-  media_players_.clear();
+  // Clear player tracking on navigation because all players from the previous
+  // document are torn down and their IDs become invalid.
+  started_media_players_.clear();
+  media_players_with_audio_.clear();
 }
 
 void AdsTabHelper::MaybeNotifyBrowserDidBecomeActive() {
@@ -321,6 +317,38 @@ void AdsTabHelper::OnMaybeNotifyTabTextContentDidChange(
   }
 }
 
+bool AdsTabHelper::IsPlayingMediaWithAudio(const content::MediaPlayerId& id) {
+  return media_players_with_audio_.contains(id);
+}
+
+void AdsTabHelper::PlayerStartedPlayingWithAudio(
+    const content::MediaPlayerId& id) {
+  if (IsPlayingMediaWithAudio(id)) {
+    return;
+  }
+
+  media_players_with_audio_.insert(id);
+  if (media_players_with_audio_.size() == 1) {
+    // If this is the first media player that has started playing, notify that
+    // the tab has started playing media.
+    MaybeNotifyTabDidStartPlayingMedia();
+  }
+}
+
+void AdsTabHelper::PlayerStoppedPlayingWithAudio(
+    const content::MediaPlayerId& id) {
+  if (!IsPlayingMediaWithAudio(id)) {
+    return;
+  }
+
+  media_players_with_audio_.erase(id);
+  if (media_players_with_audio_.empty()) {
+    // If this is the last media player that has stopped playing, notify that
+    // the tab has stopped playing media.
+    MaybeNotifyTabDidStopPlayingMedia();
+  }
+}
+
 void AdsTabHelper::MaybeNotifyTabDidStartPlayingMedia() {
   if (ads_service_) {
     ads_service_->NotifyTabDidStartPlayingMedia(/*tab_id=*/session_id_.id());
@@ -413,43 +441,39 @@ void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
   was_restored_ = false;
 }
 
-bool AdsTabHelper::IsPlayingMedia(const std::string& media_player_uuid) {
-  return media_players_.contains(media_player_uuid);
-}
-
-void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& /*video_type*/,
+void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& video_type,
                                        const content::MediaPlayerId& id) {
-  const std::string media_player_uuid = MediaPlayerUuid(id);
+  started_media_players_.insert(id);
 
-  if (IsPlayingMedia(media_player_uuid)) {
-    // Already playing media.
+  if (!video_type.has_audio) {
+    // Media without an audio track should not suppress ads, as the user is not
+    // actively engaged with audible content.
     return;
   }
 
-  media_players_.insert(media_player_uuid);
-  if (media_players_.size() == 1) {
-    // If this is the first media player that has started playing, notify that
-    // the tab has started playing media.
-    MaybeNotifyTabDidStartPlayingMedia();
-  }
+  PlayerStartedPlayingWithAudio(id);
 }
 
 void AdsTabHelper::MediaStoppedPlaying(
     const MediaPlayerInfo& /*video_type*/,
     const content::MediaPlayerId& id,
     WebContentsObserver::MediaStoppedReason /*reason*/) {
-  const std::string media_player_uuid = MediaPlayerUuid(id);
+  started_media_players_.erase(id);
+  PlayerStoppedPlayingWithAudio(id);
+}
 
-  if (!IsPlayingMedia(media_player_uuid)) {
-    // Not playing media.
+void AdsTabHelper::MediaMutedStatusChanged(const content::MediaPlayerId& id,
+                                           bool muted) {
+  if (!started_media_players_.contains(id)) {
+    // Only process mute transitions for players that have actually started, to
+    // avoid spurious notifications from blocked autoplay or pre-start events.
     return;
   }
 
-  media_players_.erase(media_player_uuid);
-  if (media_players_.empty()) {
-    // If this is the last media player that has stopped playing, notify that
-    // the tab has stopped playing media.
-    MaybeNotifyTabDidStopPlayingMedia();
+  if (muted) {
+    PlayerStoppedPlayingWithAudio(id);
+  } else {
+    PlayerStartedPlayingWithAudio(id);
   }
 }
 

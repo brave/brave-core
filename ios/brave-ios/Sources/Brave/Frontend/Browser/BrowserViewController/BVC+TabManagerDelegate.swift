@@ -33,6 +33,7 @@ extension BrowserViewController: TabManagerDelegate {
     tab.pageMetadataHelper = .init(tab: tab)
     tab.faviconTabHelper = .init(tab: tab)
     tab.userActivityHelper = .init(tab: tab)
+    tab.print = .init(tab: tab, baseViewController: self)
     tab.forcePaste = .init(tab: tab)
     tab.aiChatWebUIHelper = .init(
       tab: tab,
@@ -79,6 +80,7 @@ extension BrowserViewController: TabManagerDelegate {
     // we should add it as a policy decider at initialization.
     tab.addPolicyDecider(braveShieldsHelper)
     tab.logins = .init(tab: tab, passwordAPI: profileController.passwordAPI)
+    tab.nightMode = .init(tab: tab)
 
     if FeatureList.kUseProfileWebViewConfiguration.enabled {
       tab.readerMode = .init(tab: tab)
@@ -98,6 +100,17 @@ extension BrowserViewController: TabManagerDelegate {
         components.scheme = url.scheme
         self.select(url: components.url!, isUserDefinedURLNavigation: false)
       }
+    }
+
+    tab.braveSearch = .init(tab: tab, rewards: rewards)
+    tab.braveSearch?.presentSearchResultClickedInfoBar = { [weak self] in
+      guard let self else { return }
+      let searchResultClickedInfobar = SearchResultAdClickedInfoBar(
+        onLinkPressed: { [weak self] url in
+          self?.tabManager.addTabAndSelect(URLRequest(url: url), isPrivate: false)
+        }
+      )
+      show(toast: searchResultClickedInfobar, duration: nil)
     }
   }
 
@@ -342,7 +355,7 @@ extension BrowserViewController: TabManagerDelegate {
   }
 
   func hideToastsOnNavigationStartIfNeeded(_ tabManager: TabManager) {
-    if tabManager.selectedTab?.braveSearchResultAdManager == nil {
+    if tabManager.selectedTab?.braveSearch?.braveSearchResultAdManager == nil {
       searchResultAdClickedInfoBar?.dismiss(false)
       searchResultAdClickedInfoBar = nil
     }

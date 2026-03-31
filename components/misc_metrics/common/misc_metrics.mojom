@@ -38,4 +38,17 @@ interface MiscAndroidMetrics {
   // Records a URL opened via an intent (e.g. from a widget), for tracking
   // widget search usage.
   RecordIntentURL(string url);
+
+  // Records a Brave Search omnibox query, and whether it was a suggestion
+  // (vs. explicitly typed).
+  RecordOmniboxSearchQuery(string destinationUrl, bool isSuggestion);
+
+  // Records a directly typed URL navigation from the omnibox.
+  RecordOmniboxDirectNavigation();
+
+  // Records a history item navigation from the omnibox.
+  RecordOmniboxHistoryNavigation();
+
+  // Records a bookmark navigation from the omnibox.
+  RecordOmniboxBookmarkNavigation();
 };
