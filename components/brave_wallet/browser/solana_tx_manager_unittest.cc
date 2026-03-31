@@ -997,7 +997,7 @@ TEST_F(SolanaTxManagerUnitTest, RestrictedToAddress) {
   TestMakeSystemProgramTransferTxData(
       from, restricted_to, 10000000, nullptr,
       mojom::SolanaProviderError::kInvalidParams,
-      l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION), nullptr);
+      WalletRestrictedAddressErrorMessage(), nullptr);
 }
 
 TEST_F(SolanaTxManagerUnitTest, WalletOrigin) {
@@ -1287,7 +1287,7 @@ TEST_P(TokenProgramTest, MakeTokenProgramTransferTxData) {
       FROM_HERE, mojom::kSolanaMainnet, spl_token_mint_address,
       from_wallet_address, restricted_to, 10000000,
       /*expected_tx_data=*/nullptr, mojom::SolanaProviderError::kInvalidParams,
-      l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+      WalletRestrictedAddressErrorMessage());
 }
 
 INSTANTIATE_TEST_SUITE_P(TokenProgramTest,
