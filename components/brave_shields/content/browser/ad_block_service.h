@@ -120,8 +120,7 @@ class AdBlockService {
   AdBlockCustomResourceProvider* custom_resource_provider();
 
   // Call a callback on the task runner with the engine wrapper
-  void AsyncCallOnTaskRunner(
-      base::OnceCallback<void(AdBlockEngineWrapper* wrapper)> task) {
+  void AsyncCall(base::OnceCallback<void(AdBlockEngineWrapper* wrapper)> task) {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
     task_runner_->PostTask(
         FROM_HERE, base::BindOnce(std::move(task),
@@ -131,7 +130,7 @@ class AdBlockService {
   // Call a callback on the task runner with the engine wrapper and post the
   // result to the original sequence.
   template <typename T>
-  void AsyncCallOnTaskRunnerAndReply(
+  void AsyncCallAndReplyWithResult(
       base::OnceCallback<T(AdBlockEngineWrapper* wrapper)> task,
       base::OnceCallback<void(T)> reply) {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

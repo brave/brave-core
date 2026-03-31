@@ -175,7 +175,7 @@ DomainBlockNavigationThrottle::WillStartRequest() {
 
   // Otherwise, call the ad block service on a task runner to determine whether
   // this domain should be blocked.
-  ad_block_service_->AsyncCallOnTaskRunnerAndReply<BlockResult>(
+  ad_block_service_->AsyncCallAndReplyWithResult<BlockResult>(
       base::BindOnce(&ShouldBlockDomainOnTaskRunner, request_url),
       base::BindOnce(&DomainBlockNavigationThrottle::OnShouldBlockDomain,
                      weak_ptr_factory_.GetWeakPtr(), domain_blocking_type));

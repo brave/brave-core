@@ -335,7 +335,7 @@ void UseCnameResult(const ResponseCallback& next_callback,
                                    ctx->render_frame_token(),
                                    ctx->devtools_request_id()};
     auto* ad_block_service = g_brave_browser_process->ad_block_service();
-    ad_block_service->AsyncCallOnTaskRunnerAndReply<ShouldBlockRequestResult>(
+    ad_block_service->AsyncCallAndReplyWithResult<ShouldBlockRequestResult>(
         base::BindOnce(&ShouldBlockRequestOnTaskRunner, std::move(input),
                        previous_result, std::move(canonical_url)),
         base::BindOnce(&OnShouldBlockRequestResult<T>, false, next_callback,
@@ -430,7 +430,7 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
       ctx->aggressive_blocking(), ctx->method(),      ctx->render_frame_token(),
       ctx->devtools_request_id()};
   auto* ad_block_service = g_brave_browser_process->ad_block_service();
-  ad_block_service->AsyncCallOnTaskRunnerAndReply<ShouldBlockRequestResult>(
+  ad_block_service->AsyncCallAndReplyWithResult<ShouldBlockRequestResult>(
       base::BindOnce(&ShouldBlockRequestOnTaskRunner, std::move(input),
                      EngineFlags(), std::nullopt),
       base::BindOnce(&OnShouldBlockRequestResult<T>, should_check_uncloaked,

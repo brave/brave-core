@@ -93,7 +93,7 @@ int OnHeadersReceived_AdBlockCspWork(
     (*override_response_headers)->RemoveHeader("Content-Security-Policy");
 
     auto* ad_block_service = g_brave_browser_process->ad_block_service();
-    ad_block_service->AsyncCallOnTaskRunnerAndReply<std::optional<std::string>>(
+    ad_block_service->AsyncCallAndReplyWithResult<std::optional<std::string>>(
         base::BindOnce(&GetCspDirectivesOnTaskRunner, ctx->initiator_url(),
                        ctx->request_url(), ctx->resource_type(),
                        std::move(original_csp)),

@@ -316,7 +316,7 @@ void AdBlockServiceTest::AssertTagExists(const std::string& tag,
                                          bool expected_exists) const {
   base::test::TestFuture<bool> future;
   g_brave_browser_process->ad_block_service()
-      ->AsyncCallOnTaskRunnerAndReply<bool>(
+      ->AsyncCallAndReplyWithResult<bool>(
           base::BindLambdaForTesting(
               [tag](brave_shields::AdBlockEngineWrapper* wrapper) {
                 return wrapper->TagExists(tag);
