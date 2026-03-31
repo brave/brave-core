@@ -364,8 +364,8 @@ TEST_F(PolkadotWalletServiceUnitTest, GetCompatibleNetworks) {
     auto networks = future.Take();
     ASSERT_TRUE(networks.has_value());
     EXPECT_EQ(networks->size(), 1u);
-    EXPECT_EQ((*networks)[0]->chain_id, mojom::kPolkadotMainnet);
-    EXPECT_EQ((*networks)[0]->coin, mojom::CoinType::DOT);
+    EXPECT_EQ(networks->at(0)->chain_id, mojom::kPolkadotMainnet);
+    EXPECT_EQ(networks->at(0)->coin, mojom::CoinType::DOT);
   }
 
   // Compatible networks list changes.
@@ -405,18 +405,12 @@ TEST_F(PolkadotWalletServiceUnitTest, GetAddress) {
 
   // Mainnet address.
   {
-    base::test::TestFuture<std::optional<std::string>,
-                           std::optional<std::string>>
+    base::test::TestFuture<const std::optional<std::string>&,
+                           const std::optional<std::string>&>
         future;
-    auto callback = future.GetCallback();
     polkadot_wallet_service->GetAddress(
         polkadot_mainnet_account_->account_id.Clone(), mojom::kPolkadotMainnet,
-        base::BindLambdaForTesting(
-            [callback = std::move(callback)](
-                const std::optional<std::string>& address,
-                const std::optional<std::string>& error) {
-              std::move(callback).Run(address, error);
-            }));
+        future.GetCallback());
 
     auto [address, error] = future.Take();
     EXPECT_TRUE(address.has_value());
@@ -424,27 +418,32 @@ TEST_F(PolkadotWalletServiceUnitTest, GetAddress) {
     EXPECT_EQ(*address, "158HHeYTmEXMiMM1XufQt5bEe2CTia3EcVcfrpYBYcXA6bdb");
   }
 
-  // Testnet network is hidden.
+  // Unknown chain id.
   {
-    network_manager_->AddHiddenNetwork(mojom::CoinType::DOT,
-                                       mojom::kPolkadotTestnet);
-
-    base::test::TestFuture<std::optional<std::string>,
-                           std::optional<std::string>>
+    base::test::TestFuture<const std::optional<std::string>&,
+                           const std::optional<std::string>&>
         future;
-    auto callback = future.GetCallback();
     polkadot_wallet_service->GetAddress(
-        polkadot_testnet_account_->account_id.Clone(), mojom::kPolkadotTestnet,
-        base::BindLambdaForTesting(
-            [callback = std::move(callback)](
-                const std::optional<std::string>& address,
-                const std::optional<std::string>& error) {
-              std::move(callback).Run(address, error);
-            }));
+        polkadot_testnet_account_->account_id.Clone(), "asd",
+        future.GetCallback());
 
     auto [address, error] = future.Take();
     EXPECT_FALSE(address.has_value());
     EXPECT_EQ(error, WalletInternalErrorMessage());
+  }
+
+  // Testnet.
+  {
+    base::test::TestFuture<const std::optional<std::string>&,
+                           const std::optional<std::string>&>
+        future;
+    polkadot_wallet_service->GetAddress(
+        polkadot_testnet_account_->account_id.Clone(), mojom::kPolkadotTestnet,
+        future.GetCallback());
+
+    auto [address, error] = future.Take();
+    EXPECT_TRUE(address.has_value());
+    EXPECT_EQ(*address, "5GvDB3LMJCoBVPyf7KgbfLe17FG7aQq2qqBKQ2YW9rJqNpHS");
   }
 
   // Address\chain_id mismatch.
@@ -452,18 +451,12 @@ TEST_F(PolkadotWalletServiceUnitTest, GetAddress) {
     network_manager_->RemoveHiddenNetwork(mojom::CoinType::DOT,
                                           mojom::kPolkadotTestnet);
 
-    base::test::TestFuture<std::optional<std::string>,
-                           std::optional<std::string>>
+    base::test::TestFuture<const std::optional<std::string>&,
+                           const std::optional<std::string>&>
         future;
-    auto callback = future.GetCallback();
     polkadot_wallet_service->GetAddress(
         polkadot_mainnet_account_->account_id.Clone(), mojom::kPolkadotTestnet,
-        base::BindLambdaForTesting(
-            [callback = std::move(callback)](
-                const std::optional<std::string>& address,
-                const std::optional<std::string>& error) {
-              std::move(callback).Run(address, error);
-            }));
+        future.GetCallback());
 
     auto [address, error] = future.Take();
     EXPECT_FALSE(address.has_value());
