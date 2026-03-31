@@ -43,7 +43,6 @@ struct RegexManagerDiscardPolicy;
 }  // namespace adblock
 namespace brave_shields {
 
-class AdBlockEngine;
 class AdBlockEngineWrapper;
 class AdBlockComponentFiltersProvider;
 class AdBlockDefaultResourceProvider;
@@ -157,9 +156,6 @@ class AdBlockService {
 
   base::SequencedTaskRunner* GetTaskRunner();
 
-  // Test accessors
-  AdBlockEngine& GetDefaultEngineForTesting();
-  AdBlockEngine& GetAdditionalFiltersEngineForTesting();
   AdBlockFiltersProviderManager* GetFiltersProviderManagerForTesting();
   AdBlockDefaultResourceProvider* GetDefaultResourceProviderForTesting();
 

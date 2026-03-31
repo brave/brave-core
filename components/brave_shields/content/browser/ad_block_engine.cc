@@ -11,6 +11,8 @@
 #include <utility>
 #include <vector>
 
+#include "base/check_is_test.h"
+#include "base/dcheck_is_on.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
@@ -269,8 +271,8 @@ void AdBlockEngine::UpdateAdBlockClient(
   }
   UseResources(storage);
   AddKnownTagsToAdBlockInstance();
-  if (test_observer_) {
-    test_observer_->OnEngineUpdated();
+  if (on_engine_updated_callback_) {
+    on_engine_updated_callback_.Run();
   }
 }
 
@@ -372,12 +374,11 @@ void AdBlockEngine::OnDATLoaded(
   UpdateAdBlockClient(std::move(client), storage);
 }
 
-void AdBlockEngine::AddObserverForTest(AdBlockEngine::TestObserver* observer) {
-  test_observer_ = observer;
+void AdBlockEngine::AddOnEngineUpdatedCallbackForTesting(base::RepeatingClosure callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK_IS_TEST();
+  on_engine_updated_callback_ = std::move(callback);
 }
 
-void AdBlockEngine::RemoveObserverForTest() {
-  test_observer_ = nullptr;
-}
 
 }  // namespace brave_shields

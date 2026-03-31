@@ -222,10 +222,8 @@ void AdBlockServiceTest::AddNewRules(const std::string& rules,
   source_provider->RegisterAsSourceProvider(ad_block_service);
   source_providers_.push_back(std::move(source_provider));
 
-  auto& engine = first_party_protections
-                     ? ad_block_service->GetDefaultEngineForTesting()
-                     : ad_block_service->GetAdditionalFiltersEngineForTesting();
-  EngineTestObserver engine_observer(&engine);
+  EngineTestObserver engine_observer(
+      first_party_protections /* is_default_engine */);
   engine_observer.Wait();
 }
 
@@ -291,8 +289,7 @@ void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
   EXPECT_TRUE(provider);
   provider->OnComponentReady(component_path);
 
-  auto& engine = service->GetDefaultEngineForTesting();
-  EngineTestObserver engine_observer(&engine);
+  EngineTestObserver engine_observer(true /* is_default_engine */);
   engine_observer.Wait();
 }
 
@@ -307,8 +304,7 @@ void AdBlockServiceTest::UpdateCustomAdBlockInstanceWithRules(
       g_brave_browser_process->ad_block_service();
   ad_block_service->custom_filters_provider()->UpdateCustomFilters(rules);
 
-  auto& engine = ad_block_service->GetAdditionalFiltersEngineForTesting();
-  EngineTestObserver engine_observer(&engine);
+  EngineTestObserver engine_observer(false /* is_default_engine */);
   engine_observer.Wait();
 }
 
@@ -351,7 +347,6 @@ void AdBlockServiceTest::NavigateToURL(const GURL& url) {
 
 void AdBlockServiceTest::InstallComponent(
     const brave_shields::FilterListCatalogEntry& catalog_entry) {
-  auto* service = g_brave_browser_process->ad_block_service();
   std::vector<brave_shields::FilterListCatalogEntry> filter_list_catalog(
       component_service_manager()->GetFilterListCatalog());
   filter_list_catalog.push_back(catalog_entry);
@@ -370,10 +365,8 @@ void AdBlockServiceTest::InstallComponent(
     EXPECT_TRUE(provider);
     provider->OnComponentReady(component_path);
 
-    auto& engine = catalog_entry.first_party_protections
-                       ? service->GetDefaultEngineForTesting()
-                       : service->GetAdditionalFiltersEngineForTesting();
-    EngineTestObserver engine_observer(&engine);
+    EngineTestObserver engine_observer(
+        catalog_entry.first_party_protections /* is_default_engine */);
     engine_observer.Wait();
   }
 }

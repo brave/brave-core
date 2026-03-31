@@ -51,9 +51,7 @@ class EphemeralStorage1pDomainBlockBrowserTest
         g_brave_browser_process->ad_block_service();
     source_provider_->RegisterAsSourceProvider(ad_block_service);
 
-    auto& engine = g_brave_browser_process->ad_block_service()
-                       ->GetDefaultEngineForTesting();
-    EngineTestObserver engine_observer(&engine);
+    EngineTestObserver engine_observer(true /* is_default_engine*/);
     engine_observer.Wait();
   }
 

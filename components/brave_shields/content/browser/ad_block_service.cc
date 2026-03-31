@@ -295,18 +295,6 @@ AdBlockDefaultResourceProvider* AdBlockService::default_resource_provider() {
   return default_resource_provider_.get();
 }
 
-AdBlockEngine& AdBlockService::GetDefaultEngineForTesting() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  CHECK_IS_TEST();
-  return engine_wrapper_->default_engine_for_testing();  // IN-TEST
-}
-
-AdBlockEngine& AdBlockService::GetAdditionalFiltersEngineForTesting() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  CHECK_IS_TEST();
-  return engine_wrapper_->additional_filters_engine_for_testing();  // IN-TEST
-}
-
 AdBlockFiltersProviderManager*
 AdBlockService::GetFiltersProviderManagerForTesting() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

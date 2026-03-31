@@ -16,6 +16,7 @@
 #include <vector>
 
 #include "base/observer_list_types.h"
+#include "base/functional/callback.h"
 #include "base/sequence_checker.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
@@ -72,13 +73,7 @@ class AdBlockEngine {
   void Load(rust::Box<adblock::FilterSet> filter_set,
             const adblock::BraveCoreResourceStorage& storage);
 
-  class TestObserver : public base::CheckedObserver {
-   public:
-    virtual void OnEngineUpdated() = 0;
-  };
-
-  void AddObserverForTest(TestObserver* observer);
-  void RemoveObserverForTest();
+  void AddOnEngineUpdatedCallbackForTesting(base::RepeatingClosure callback);
 
  protected:
   void AddKnownTagsToAdBlockInstance();
@@ -105,7 +100,8 @@ class AdBlockEngine {
   std::optional<adblock::RegexManagerDiscardPolicy> regex_discard_policy_
       GUARDED_BY_CONTEXT(sequence_checker_);
 
-  raw_ptr<TestObserver> test_observer_ = nullptr;
+  base::RepeatingClosure on_engine_updated_callback_
+      GUARDED_BY_CONTEXT(sequence_checker_);
 
   bool is_default_engine_;
 
