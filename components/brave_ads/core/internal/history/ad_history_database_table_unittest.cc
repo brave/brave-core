@@ -269,9 +269,4 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, DoNotPurgeOnTheCuspOfExpiration) {
       ::testing::Optional(::testing::UnorderedElementsAreArray(ad_history)));
 }
 
-TEST_F(BraveAdsAdHistoryDatabaseTableTest, GetTableName) {
-  // Act & Assert
-  EXPECT_EQ("ad_history", database_table_.GetTableName());
-}
-
 }  // namespace brave_ads

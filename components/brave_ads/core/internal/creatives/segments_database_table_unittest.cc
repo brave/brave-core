@@ -5,18 +5,39 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/segments_database_table.h"
 
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::database::table {
 
-TEST(BraveAdsSegmentsDatabaseTableTest, GetTableName) {
+TEST(BraveAdsSegmentsDatabaseTableTest, InsertEmptySegments) {
   // Arrange
-  const Segments database_table;
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
+      mojom::DBTransactionInfo::New();
+  Segments database_table;
 
-  // Act & Assert
-  EXPECT_EQ("segments", database_table.GetTableName());
+  // Act
+  database_table.Insert(mojom_db_transaction, /*segments=*/{});
+
+  // Assert
+  EXPECT_THAT(mojom_db_transaction->actions, ::testing::IsEmpty());
+}
+
+TEST(BraveAdsSegmentsDatabaseTableTest, InsertSegments) {
+  // Arrange
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
+      mojom::DBTransactionInfo::New();
+  Segments database_table;
+
+  // Act
+  database_table.Insert(mojom_db_transaction,
+                        /*segments=*/{{"foo", {"bar"}}});
+
+  // Assert
+  EXPECT_THAT(mojom_db_transaction->actions, ::testing::SizeIs(1));
 }
 
 }  // namespace brave_ads::database::table

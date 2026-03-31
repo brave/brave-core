@@ -66,10 +66,6 @@ void Dayparts::Insert(
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
-std::string Dayparts::GetTableName() const {
-  return kTableName;
-}
-
 void Dayparts::Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
@@ -136,8 +132,7 @@ std::string Dayparts::BuildInsertSql(
             start_minute,
             end_minute
           ) VALUES $2)",
-      {GetTableName(),
-       BuildBindColumnPlaceholders(/*column_count=*/4, row_count)},
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/4, row_count)},
       nullptr);
 }
 

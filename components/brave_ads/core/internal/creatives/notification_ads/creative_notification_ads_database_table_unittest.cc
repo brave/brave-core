@@ -227,9 +227,4 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, GetNonExpired) {
   EXPECT_THAT(creative_ads, ::testing::ElementsAre(creative_ad_2));
 }
 
-TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, GetTableName) {
-  // Act & Assert
-  EXPECT_EQ("creative_ad_notifications", database_table_.GetTableName());
-}
-
 }  // namespace brave_ads

@@ -37,8 +37,6 @@ class Transactions final : public TableInterface {
 
   void PurgeExpired(ResultCallback callback) const;
 
-  std::string GetTableName() const override;
-
   void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;
   void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                int to_version) override;

@@ -275,8 +275,7 @@ void CreativeNotificationAds::GetForSegments(
           WHERE
             segments.segment IN $2
             AND $3 BETWEEN campaigns.start_at AND campaigns.end_at)",
-      {GetTableName(),
-       BuildBindColumnPlaceholder(/*column_count=*/segments.size()),
+      {kTableName, BuildBindColumnPlaceholder(/*column_count=*/segments.size()),
        TimeToSqlValueAsString(base::Time::Now())},
       nullptr);
   BindColumnTypes(mojom_db_action);
@@ -336,16 +335,12 @@ void CreativeNotificationAds::GetForActiveCampaigns(
             INNER JOIN segments ON segments.creative_set_id = creative_notification_ad.creative_set_id
           WHERE
             $2 BETWEEN campaigns.start_at AND campaigns.end_at)",
-      {GetTableName(), TimeToSqlValueAsString(base::Time::Now())}, nullptr);
+      {kTableName, TimeToSqlValueAsString(base::Time::Now())}, nullptr);
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  base::BindOnce(&GetAllCallback, std::move(callback)));
-}
-
-std::string CreativeNotificationAds::GetTableName() const {
-  return kTableName;
 }
 
 void CreativeNotificationAds::Create(
@@ -434,8 +429,7 @@ std::string CreativeNotificationAds::BuildInsertSql(
             title,
             body
           ) VALUES $2)",
-      {GetTableName(),
-       BuildBindColumnPlaceholders(/*column_count=*/5, row_count)},
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/5, row_count)},
       nullptr);
 }
 

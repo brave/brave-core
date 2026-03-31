@@ -187,7 +187,7 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
             $1
           WHERE
             creative_instance_id = '$2')",
-      {GetTableName(), creative_instance_id}, nullptr);
+      {kTableName, creative_instance_id}, nullptr);
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
@@ -204,14 +204,10 @@ void Deposits::PurgeExpired(ResultCallback callback) const {
               $1
             WHERE
               $2 >= expire_at)",
-          {GetTableName(), TimeToSqlValueAsString(base::Time::Now())});
+          {kTableName, TimeToSqlValueAsString(base::Time::Now())});
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(callback));
-}
-
-std::string Deposits::GetTableName() const {
-  return kTableName;
 }
 
 void Deposits::Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
@@ -225,11 +221,11 @@ void Deposits::Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
       ))");
 
   // Optimize database query for `GetForCreativeInstanceId` from schema 43.
-  CreateTableIndex(mojom_db_transaction, GetTableName(),
+  CreateTableIndex(mojom_db_transaction, kTableName,
                    /*columns=*/{"creative_instance_id"});
 
   // Optimize database query for `PurgeExpired` from schema 43.
-  CreateTableIndex(mojom_db_transaction, GetTableName(),
+  CreateTableIndex(mojom_db_transaction, kTableName,
                    /*columns=*/{"expire_at"});
 }
 
@@ -268,8 +264,7 @@ std::string Deposits::BuildInsertSql(
             value,
             expire_at
           ) VALUES $2)",
-      {GetTableName(),
-       BuildBindColumnPlaceholders(/*column_count=*/3, row_count)},
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/3, row_count)},
       nullptr);
 }
 
@@ -288,8 +283,7 @@ std::string Deposits::BuildInsertSql(
             value,
             expire_at
           ) VALUES $2)",
-      {GetTableName(), BuildBindColumnPlaceholder(/*column_count=*/3)},
-      nullptr);
+      {kTableName, BuildBindColumnPlaceholder(/*column_count=*/3)}, nullptr);
 }
 
 }  // namespace brave_ads::database::table

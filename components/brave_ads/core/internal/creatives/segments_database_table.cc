@@ -60,10 +60,6 @@ void Segments::Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
-std::string Segments::GetTableName() const {
-  return kTableName;
-}
-
 void Segments::Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
@@ -124,8 +120,7 @@ std::string Segments::BuildInsertSql(
             creative_set_id,
             segment
           ) VALUES $2)",
-      {GetTableName(),
-       BuildBindColumnPlaceholders(/*column_count=*/2, row_count)},
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/2, row_count)},
       nullptr);
 }
 

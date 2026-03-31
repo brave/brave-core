@@ -329,7 +329,7 @@ void ConfirmationQueue::DeleteAll(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
 
-  DeleteTable(mojom_db_transaction, GetTableName());
+  DeleteTable(mojom_db_transaction, kTableName);
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(callback));
@@ -345,7 +345,7 @@ void ConfirmationQueue::Delete(const std::string& transaction_id,
               WHERE
                 transaction_id = '$2';
             )",
-          {GetTableName(), transaction_id});
+          {kTableName, transaction_id});
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(callback));
@@ -360,8 +360,7 @@ void ConfirmationQueue::Retry(const std::string& transaction_id,
       base::NumberToString(RetryProcessingConfirmationAfter().InMicroseconds());
   const std::string max_retry_after = base::NumberToString(
       kProcessConfirmationMaxBackoffDelay.Get().InMicroseconds());
-  Execute(
-      mojom_db_transaction, R"(
+  Execute(mojom_db_transaction, R"(
           UPDATE
             $1
           SET
@@ -374,8 +373,8 @@ void ConfirmationQueue::Retry(const std::string& transaction_id,
             )
           WHERE
             transaction_id = '$7')",
-      {GetTableName(), TimeToSqlValueAsString(base::Time::Now()), retry_after,
-       max_retry_after, retry_after, max_retry_after, transaction_id});
+          {kTableName, TimeToSqlValueAsString(base::Time::Now()), retry_after,
+           max_retry_after, retry_after, max_retry_after, transaction_id});
 
   const std::string max_retry_count = base::NumberToString(kMaximumRetryCount);
   Execute(mojom_db_transaction, R"(
@@ -388,7 +387,7 @@ void ConfirmationQueue::Retry(const std::string& transaction_id,
                             END
             WHERE
               transaction_id = '$4')",
-          {GetTableName(), max_retry_count, max_retry_count, transaction_id});
+          {kTableName, max_retry_count, max_retry_count, transaction_id});
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(callback));
@@ -420,7 +419,7 @@ void ConfirmationQueue::GetAll(GetConfirmationQueueCallback callback) const {
             $1
           ORDER BY
             process_at ASC)",
-      {GetTableName()}, nullptr);
+      {kTableName}, nullptr);
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
@@ -456,16 +455,12 @@ void ConfirmationQueue::GetNext(GetConfirmationQueueCallback callback) const {
             process_at ASC
           LIMIT
             1)",
-      {GetTableName()}, nullptr);
+      {kTableName}, nullptr);
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  base::BindOnce(&GetCallback, std::move(callback)));
-}
-
-std::string ConfirmationQueue::GetTableName() const {
-  return kTableName;
 }
 
 void ConfirmationQueue::Create(
@@ -570,8 +565,7 @@ std::string ConfirmationQueue::BuildInsertSql(
             process_at,
             retry_count
           ) VALUES $2)",
-      {GetTableName(),
-       BuildBindColumnPlaceholders(/*column_count=*/14, row_count)},
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/14, row_count)},
       nullptr);
 }
 

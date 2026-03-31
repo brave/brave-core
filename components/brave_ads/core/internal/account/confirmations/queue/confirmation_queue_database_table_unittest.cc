@@ -432,9 +432,4 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
   EXPECT_EQ(confirmation_queue_items, got_items);
 }
 
-TEST_F(BraveAdsConfirmationQueueDatabaseTableTest, GetTableName) {
-  // Act & Assert
-  EXPECT_EQ("confirmation_queue", database_table_.GetTableName());
-}
-
 }  // namespace brave_ads::database::table
