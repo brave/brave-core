@@ -112,7 +112,19 @@ void Dayparts::MigrateToV48(
   // should not drop the table as it will store catalog and non-catalog ad units
   // and maintain relationships with other tables.
   DropTable(mojom_db_transaction, "dayparts");
-  Create(mojom_db_transaction);
+  Execute(mojom_db_transaction, R"(
+      CREATE TABLE dayparts (
+        campaign_id TEXT NOT NULL,
+        days_of_week TEXT NOT NULL,
+        start_minute INT NOT NULL,
+        end_minute INT NOT NULL,
+        PRIMARY KEY (
+          campaign_id,
+          days_of_week,
+          start_minute,
+          end_minute
+        ) ON CONFLICT REPLACE
+      ))");
 }
 
 std::string Dayparts::BuildInsertSql(

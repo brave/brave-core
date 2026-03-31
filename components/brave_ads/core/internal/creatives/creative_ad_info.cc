@@ -38,7 +38,6 @@ bool CreativeAdInfo::operator==(const CreativeAdInfo& other) const {
          per_month == other.per_month && total_max == other.total_max &&
          base::IsApproximatelyEqual(value, other.value,
                                     std::numeric_limits<double>::epsilon()) &&
-         split_test_group == other.split_test_group &&
          condition_matchers == other.condition_matchers &&
          segment == other.segment && geo_targets == other.geo_targets &&
          target_url == other.target_url && dayparts == other.dayparts;

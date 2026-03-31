@@ -102,7 +102,15 @@ void Segments::MigrateToV48(
   // should not drop the table as it will store catalog and non-catalog ad units
   // and maintain relationships with other tables.
   DropTable(mojom_db_transaction, "segments");
-  Create(mojom_db_transaction);
+  Execute(mojom_db_transaction, R"(
+      CREATE TABLE segments (
+        creative_set_id TEXT NOT NULL,
+        segment TEXT NOT NULL,
+        PRIMARY KEY (
+          creative_set_id,
+          segment
+        ) ON CONFLICT REPLACE
+      ))");
 }
 
 std::string Segments::BuildInsertSql(

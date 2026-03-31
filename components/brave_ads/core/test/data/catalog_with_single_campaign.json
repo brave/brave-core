@@ -68,7 +68,6 @@
           "perDay": 5,
           "perWeek": 6,
           "perMonth": 7,
-          "splitTestGroup": "GroupB",
           "totalMax": 100,
           "value": "0.05"
         }

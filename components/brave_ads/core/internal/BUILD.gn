@@ -748,8 +748,6 @@ static_library("internal") {
     "serving/eligible_ads/exclusion_rules/per_month_exclusion_rule.h",
     "serving/eligible_ads/exclusion_rules/per_week_exclusion_rule.cc",
     "serving/eligible_ads/exclusion_rules/per_week_exclusion_rule.h",
-    "serving/eligible_ads/exclusion_rules/split_test_exclusion_rule.cc",
-    "serving/eligible_ads/exclusion_rules/split_test_exclusion_rule.h",
     "serving/eligible_ads/exclusion_rules/subdivision_targeting_exclusion_rule.cc",
     "serving/eligible_ads/exclusion_rules/subdivision_targeting_exclusion_rule.h",
     "serving/eligible_ads/exclusion_rules/total_max_exclusion_rule.cc",

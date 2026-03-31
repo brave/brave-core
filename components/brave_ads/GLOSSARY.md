@@ -39,7 +39,6 @@ A place to define all specific terms and vocabulary for the Brave Ads component,
 | Resources  | External resources provided by [components](brave://components).  |
 | Segment  | An advertising taxonomy to target ads to reach the desired audience.  |
 | Serving  | Deliver advertisements to users, ensuring that suitable ads are shown to the right audience at the right time, also known as delivery.  |
-| Split testing  | Comparing ad or landing page versions to determine which performs better. Also known as A/B testing.  |
 | Statement of accounts  | A statement of accounts outlines the transactions during a specific period, giving the user an overview of earned rewards.  |
 | Targeting  | Delivering an ad to the appropriate audience through behavioral, contextual, or geographic targeting.  |
 | Text classification  | Target audiences based on the analysis and understanding of textual data to deliver more relevant and personalized advertisements.  |

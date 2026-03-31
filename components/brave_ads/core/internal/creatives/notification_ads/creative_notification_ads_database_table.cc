@@ -57,7 +57,6 @@ void BindColumnTypes(const mojom::DBActionInfoPtr& mojom_db_action) {
       mojom::DBBindColumnType::kInt,     // per_month
       mojom::DBBindColumnType::kInt,     // total_max
       mojom::DBBindColumnType::kDouble,  // value
-      mojom::DBBindColumnType::kString,  // split_test_group
       mojom::DBBindColumnType::kString,  // segment
       mojom::DBBindColumnType::kString,  // geo_target
       mojom::DBBindColumnType::kString,  // target_url
@@ -114,18 +113,17 @@ CreativeNotificationAdInfo FromMojomRow(
   creative_ad.per_month = ColumnInt(mojom_db_row, 11);
   creative_ad.total_max = ColumnInt(mojom_db_row, 12);
   creative_ad.value = ColumnDouble(mojom_db_row, 13);
-  creative_ad.split_test_group = ColumnString(mojom_db_row, 14);
-  creative_ad.segment = ColumnString(mojom_db_row, 15);
-  creative_ad.geo_targets.insert(ColumnString(mojom_db_row, 16));
-  creative_ad.target_url = GURL(ColumnString(mojom_db_row, 17));
-  creative_ad.title = ColumnString(mojom_db_row, 18);
-  creative_ad.body = ColumnString(mojom_db_row, 19);
-  creative_ad.pass_through_rate = ColumnDouble(mojom_db_row, 20);
+  creative_ad.segment = ColumnString(mojom_db_row, 14);
+  creative_ad.geo_targets.insert(ColumnString(mojom_db_row, 15));
+  creative_ad.target_url = GURL(ColumnString(mojom_db_row, 16));
+  creative_ad.title = ColumnString(mojom_db_row, 17);
+  creative_ad.body = ColumnString(mojom_db_row, 18);
+  creative_ad.pass_through_rate = ColumnDouble(mojom_db_row, 19);
 
   CreativeDaypartInfo daypart;
-  daypart.days_of_week = ColumnString(mojom_db_row, 21);
-  daypart.start_minute = ColumnInt(mojom_db_row, 22);
-  daypart.end_minute = ColumnInt(mojom_db_row, 23);
+  daypart.days_of_week = ColumnString(mojom_db_row, 20);
+  daypart.start_minute = ColumnInt(mojom_db_row, 21);
+  daypart.end_minute = ColumnInt(mojom_db_row, 22);
   creative_ad.dayparts.insert(daypart);
 
   return creative_ad;
@@ -255,7 +253,6 @@ void CreativeNotificationAds::GetForSegments(
             creative_ads.per_month,
             creative_ads.total_max,
             creative_ads.value,
-            creative_ads.split_test_group,
             segments.segment,
             geo_targets.geo_target,
             creative_ads.target_url,
@@ -316,7 +313,6 @@ void CreativeNotificationAds::GetForActiveCampaigns(
             creative_ads.per_month,
             creative_ads.total_max,
             creative_ads.value,
-            creative_ads.split_test_group,
             segments.segment,
             geo_targets.geo_target,
             creative_ads.target_url,
@@ -390,7 +386,14 @@ void CreativeNotificationAds::MigrateToV48(
   // should not drop the table as it will store catalog and non-catalog ad units
   // and maintain relationships with other tables.
   DropTable(mojom_db_transaction, "creative_ad_notifications");
-  Create(mojom_db_transaction);
+  Execute(mojom_db_transaction, R"(
+      CREATE TABLE creative_ad_notifications (
+        creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        creative_set_id TEXT NOT NULL,
+        campaign_id TEXT NOT NULL,
+        title TEXT NOT NULL,
+        body TEXT NOT NULL
+      ))");
 }
 
 void CreativeNotificationAds::Insert(

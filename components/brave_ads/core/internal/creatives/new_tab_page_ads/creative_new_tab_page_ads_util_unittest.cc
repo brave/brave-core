@@ -52,7 +52,6 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAds() {
         {/*pref_path*/ "[virtual]:operating_system|locale|language",
          /*condition*/ "en"}};
     creative_ad.segment = kUntargetedSegment;
-    creative_ad.split_test_group = "Group A";
     creative_ad.per_day = 15;
     creative_ad.per_week = 120;
     creative_ad.per_month = 580;
@@ -83,7 +82,6 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAds() {
         {/*pref_path*/ "[virtual]:browser|version",
          /*condition*/ R"RE2(^\d+\.\d+\.(?:[0-6]?\d|7[0-7])\.\d+$)RE2"}};
     creative_ad.segment = kUntargetedSegment;
-    creative_ad.split_test_group = "Group A";
     creative_ad.per_day = 15;
     creative_ad.per_week = 120;
     creative_ad.per_month = 580;
@@ -110,7 +108,6 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAds() {
     creative_ad.total_max = 1000;
     creative_ad.value = 0.1;
     creative_ad.segment = kUntargetedSegment;
-    creative_ad.split_test_group = "Group B";
     creative_ad.condition_matchers = {
         {/*pref_path*/ "uninstall_metrics.installation_date2",
          /*condition*/ "[T<]:3"},
@@ -147,7 +144,6 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAds() {
         {/*pref_path*/ "[virtual]:browser|version",
          /*condition*/ R"RE2(^\d+\.\d+\.(?:7[8-9]|[89]\d|\d{3,})\.\d+$)RE2"}};
     creative_ad.segment = kUntargetedSegment;
-    creative_ad.split_test_group = "Group B";
     creative_ad.per_day = 20;
     creative_ad.per_week = 140;
     creative_ad.per_month = 560;
@@ -255,7 +251,6 @@ TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest, ParseAndSaveAds) {
                 "segments": [
                   "untargeted"
                 ],
-                "splitTestGroup": "Group A",
                 "perDay": 15,
                 "perWeek": 120,
                 "perMonth": 580,
@@ -348,7 +343,6 @@ TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest, ParseAndSaveAds) {
                 "segments": [
                   "untargeted"
                 ],
-                "splitTestGroup": "Group B",
                 "perDay": 20,
                 "perWeek": 140,
                 "perMonth": 560,

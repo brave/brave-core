@@ -39,7 +39,6 @@ void BindColumnTypes(const mojom::DBActionInfoPtr& mojom_db_action) {
       mojom::DBBindColumnType::kInt,     // per_month
       mojom::DBBindColumnType::kInt,     // total_max
       mojom::DBBindColumnType::kDouble,  // value
-      mojom::DBBindColumnType::kString,  // split_test_group
       mojom::DBBindColumnType::kString,  // condition_matchers
       mojom::DBBindColumnType::kString   // target_url
   };
@@ -62,7 +61,6 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
     BindColumnInt(mojom_db_action, index++, creative_ad.per_month);
     BindColumnInt(mojom_db_action, index++, creative_ad.total_max);
     BindColumnDouble(mojom_db_action, index++, creative_ad.value);
-    BindColumnString(mojom_db_action, index++, creative_ad.split_test_group);
     BindColumnString(mojom_db_action, index++,
                      ConditionMatchersToString(creative_ad.condition_matchers));
     BindColumnString(mojom_db_action, index++, creative_ad.target_url.spec());
@@ -85,10 +83,9 @@ CreativeAdInfo FromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row) {
   creative_ad.per_month = ColumnInt(mojom_db_row, 4);
   creative_ad.total_max = ColumnInt(mojom_db_row, 5);
   creative_ad.value = ColumnDouble(mojom_db_row, 6);
-  creative_ad.split_test_group = ColumnString(mojom_db_row, 7);
   creative_ad.condition_matchers =
-      StringToConditionMatchers(ColumnString(mojom_db_row, 8));
-  creative_ad.target_url = GURL(ColumnString(mojom_db_row, 9));
+      StringToConditionMatchers(ColumnString(mojom_db_row, 7));
+  creative_ad.target_url = GURL(ColumnString(mojom_db_row, 8));
 
   return creative_ad;
 }
@@ -189,7 +186,7 @@ void CreativeAds::GetForCreativeInstanceId(
             per_month,
             total_max,
             value,
-            split_test_group,
+            condition_matchers,
             target_url
           FROM
             $1
@@ -217,7 +214,6 @@ void CreativeAds::Create(
         per_month INTEGER NOT NULL DEFAULT 0,
         total_max INTEGER NOT NULL DEFAULT 0,
         value DOUBLE NOT NULL DEFAULT 0,
-        split_test_group TEXT,
         condition_matchers TEXT NOT NULL,
         target_url TEXT NOT NULL
       ))");
@@ -231,6 +227,11 @@ void CreativeAds::Migrate(
   switch (to_version) {
     case 48: {
       MigrateToV48(mojom_db_transaction);
+      break;
+    }
+
+    case 54: {
+      MigrateToV54(mojom_db_transaction);
       break;
     }
 
@@ -252,7 +253,28 @@ void CreativeAds::MigrateToV48(
   // should not drop the table as it will store catalog and non-catalog ad units
   // and maintain relationships with other tables.
   DropTable(mojom_db_transaction, "creative_ads");
-  Create(mojom_db_transaction);
+  Execute(mojom_db_transaction, R"(
+      CREATE TABLE creative_ads (
+        creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        creative_set_id TEXT NOT NULL,
+        per_day INTEGER NOT NULL DEFAULT 0,
+        per_week INTEGER NOT NULL DEFAULT 0,
+        per_month INTEGER NOT NULL DEFAULT 0,
+        total_max INTEGER NOT NULL DEFAULT 0,
+        value DOUBLE NOT NULL DEFAULT 0,
+        split_test_group TEXT,
+        condition_matchers TEXT NOT NULL,
+        target_url TEXT NOT NULL
+      ))");
+}
+
+void CreativeAds::MigrateToV54(
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
+
+  // `split_test_group` has been removed.
+  Execute(mojom_db_transaction,
+          "ALTER TABLE creative_ads DROP COLUMN split_test_group");
 }
 
 std::string CreativeAds::BuildInsertSql(
@@ -273,11 +295,10 @@ std::string CreativeAds::BuildInsertSql(
             per_month,
             total_max,
             value,
-            split_test_group,
             condition_matchers,
             target_url
           ) VALUES $2)",
-      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/10, row_count)},
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/9, row_count)},
       nullptr);
 }
 

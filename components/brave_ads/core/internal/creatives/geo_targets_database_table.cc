@@ -105,7 +105,15 @@ void GeoTargets::MigrateToV48(
   // should not drop the table as it will store catalog and non-catalog ad units
   // and maintain relationships with other tables.
   DropTable(mojom_db_transaction, "geo_targets");
-  Create(mojom_db_transaction);
+  Execute(mojom_db_transaction, R"(
+      CREATE TABLE geo_targets (
+        campaign_id TEXT NOT NULL,
+        geo_target TEXT NOT NULL,
+        PRIMARY KEY (
+          campaign_id,
+          geo_target
+        ) ON CONFLICT REPLACE
+      ))");
 }
 
 std::string GeoTargets::BuildInsertSql(

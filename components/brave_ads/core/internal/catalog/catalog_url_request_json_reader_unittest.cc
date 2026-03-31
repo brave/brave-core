@@ -94,7 +94,6 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   catalog_creative_set.per_day = 5;
   catalog_creative_set.per_week = 6;
   catalog_creative_set.per_month = 7;
-  catalog_creative_set.split_test_group = "GroupB";
   catalog_creative_set.total_max = 100;
   catalog_creative_set.value = 0.05;
   catalog_creative_set.segments = catalog_segments;

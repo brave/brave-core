@@ -20,7 +20,6 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/per_day_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/per_month_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/per_week_exclusion_rule.h"
-#include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/split_test_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/subdivision_targeting_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/total_max_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
@@ -60,8 +59,6 @@ ExclusionRulesBase::ExclusionRulesBase(
 
   exclusion_rules_.push_back(std::make_unique<AntiTargetingExclusionRule>(
       anti_targeting_resource, site_history));
-
-  exclusion_rules_.push_back(std::make_unique<SplitTestExclusionRule>());
 
   exclusion_rules_.push_back(std::make_unique<DislikeExclusionRule>());
 
