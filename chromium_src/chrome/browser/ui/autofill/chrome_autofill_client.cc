@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/autofill/chrome_autofill_client.h"
 
+#include "base/check_is_test.h"
 #include "base/memory/ptr_util.h"
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/components/constants/pref_names.h"
