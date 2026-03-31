@@ -241,13 +241,6 @@ RegisterPolymerTemplateModifications({
       'beforebegin',
       getTrustedHTML`
         <div slot="body" id="braveDataOptions">
-          <div id="nonGoogleSearchHistoryBox"
-              hidden="[[!isNonGoogleDse_]]">
-            <leo-icon name="search"></leo-icon>
-            <span id="nonGoogleSearchHistoryLabel"
-                inner-h-t-m-l="[[nonGoogleSearchHistoryString_]]">
-            </span>
-          </div>
           <a id="clearBraveAdsData"
               href="chrome://settings/privacy"
               hidden="[[braveRewardsEnabled_]]">
