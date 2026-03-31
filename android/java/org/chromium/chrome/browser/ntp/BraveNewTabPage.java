@@ -59,7 +59,6 @@ import java.util.function.Supplier;
 @NullMarked
 public class BraveNewTabPage extends NewTabPage implements NewTabPage.MostVisitedTileClickObserver {
     // To delete in bytecode, members from parent class will be used instead.
-    private Activity mActivity;
     private @Nullable BrowserControlsStateProvider mBrowserControlsStateProvider;
     private @Nullable NewTabPageLayout mNewTabPageLayout;
 
@@ -69,6 +68,8 @@ public class BraveNewTabPage extends NewTabPage implements NewTabPage.MostVisite
     private @Nullable Supplier<Toolbar> mToolbarSupplier;
     private @Nullable BottomSheetController mBottomSheetController;
     private @Nullable NonNullObservableSupplier<Integer> mTabStripHeightSupplier;
+
+    private final Activity mActivity;
 
     public BraveNewTabPage(
             Activity activity,
@@ -124,6 +125,8 @@ public class BraveNewTabPage extends NewTabPage implements NewTabPage.MostVisite
                 topInsetProvider,
                 startupMetricsTracker,
                 multiInstanceManager);
+
+        mActivity = activity;
 
         assertNonNull(mNewTabPageLayout);
         assert mNewTabPageLayout instanceof BraveNewTabPageLayout;

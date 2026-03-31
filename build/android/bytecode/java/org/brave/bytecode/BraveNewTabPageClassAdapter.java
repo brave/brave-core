@@ -34,9 +34,6 @@ public class BraveNewTabPageClassAdapter extends BraveClassVisitor {
         deleteField(sBraveNewTabPageClassName, "mTabStripHeightSupplier");
         makeProtectedField(sNewTabPageClassName, "mTabStripHeightSupplier");
 
-        deleteField(sBraveNewTabPageClassName, "mActivity");
-        makeProtectedField(sNewTabPageClassName, "mActivity");
-
         makePublicMethod(sNewTabPageClassName, "updateSearchProvider");
         addMethodAnnotation(
                 sBraveNewTabPageClassName, "updateSearchProvider", "Ljava/lang/Override;");

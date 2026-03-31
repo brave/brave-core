@@ -62,7 +62,7 @@ void NavigationSourceMetrics::RecordTopSiteNavigation(bool is_custom) {
   // this same event. Subtract it out so the top site is not double-counted.
   {
     ScopedDictPrefUpdate update(local_state_, kMiscMetricsNavSourceCounts);
-    int current = update->FindInt(kBookmarksCountKey).value_or(0);
+    const int current = update->FindInt(kBookmarksCountKey).value_or(0);
     update->Set(kBookmarksCountKey, current - 1);
   }
 #endif
