@@ -3570,3 +3570,11 @@
 -WebViewTests/WebViewTest.TestContextMenu/SiteIsolationForGuestsEnabled
 -WebViewWithDefaultSiteInstanceTest.IsolatedOrigin
 -WithAndWithoutReset/SessionRestoreTabGroupsTest.*
+
+# This Chromium test times out because its busy-wait loop calling
+# RunUntilIdle() + FetchHistogramsFromChildProcesses() hangs in Brave due to
+# background tasks from extensions and shields keeping the UI thread non-idle.
+# The underlying DataUse histogram recording works correctly (verified via
+# inline FetchHistogramsAsynchronously call). Upstream flake rate: 0.3%.
+# https://github.com/brave/brave-browser/issues/54039
+-ChromeDataUseMeasurementBrowserTest.DataUseRecorded
