@@ -582,7 +582,17 @@ void BraveToolbarView::ResetLocationBarBounds() {
   // case BraveLocationBarView::Layout() is never called in this pass and
   // children keep stale positions from a previous wider layout, which can
   // place Brave-specific views outside the bar's bounds.
-  location_bar_view_->InvalidateLayout();
+  // Only call InvalidateLayout() in that zero-margin case; calling it
+  // unconditionally causes spurious re-layouts on every hover/paint pass,
+  // which moves anchor views and makes anchored bubbles flicker.
+  if (margin.IsEmpty()) {
+    // Only the location bar needs layout here; pass true to prevent the
+    // invalidation from propagating to the parent toolbar.
+    // views::View::InvalidateLayout() is called explicitly because
+    // LocationBarView::InvalidateLayout() shadows the base-class bool overload.
+    location_bar_view_->views::View::InvalidateLayout(
+        /*avoid_propagate_during_layout*/ true);
+  }
   location_bar_view_->SetBounds(location_bar_view_->x() + margin.left(),
                                 location_bar_view_->y(),
                                 location_bar_view_->width() - margin.width(),
