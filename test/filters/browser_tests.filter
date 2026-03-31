@@ -148,6 +148,11 @@
 -NotificationContentDetectionLoggingEnabledBrowserTest.ReportNotificationAsSafe*
 -NotificationContentDetectionLoggingEnabledBrowserTest.ReportUnwarnedNotificationAsSpam*
 -NotificationContentDetectionLoggingEnabledBrowserTest.ReportWarnedNotificationAsSpam*
+# This Chromium test creates a standalone TestingProfile in a browser test
+# context, which triggers Brave's additional keyed services and causes
+# intermittent ASAN-detected failures during profile lifecycle.
+# Stable upstream (0.3% flake rate). https://github.com/brave/brave-browser/issues/54043
+-NotificationContentDetectionServiceFactoryBrowserTest.DisabledForGuestMode
 -NotificationContentDetectionServiceFactoryBrowserTest.EnabledForRegularProfiles
 -NotificationContentDetectionShowWarningsEnabledBrowserTest.AllowlistedSiteNotificationGetsDisplayed/*
 -NotificationContentDetectionShowWarningsEnabledBrowserTest.NonAllowlistedSiteNotificationGetsDisplayed/*
