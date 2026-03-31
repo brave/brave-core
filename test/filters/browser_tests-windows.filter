@@ -5,6 +5,15 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# This Chromium test fails consistently on Windows ASAN nightly builds.
+# The test creates an HTTPS embedded test server and expects
+# SanitizedImageSource (browser-process URL loader) to download an image from
+# it via chrome://image. The download fails, likely due to cert trust issues in
+# the browser-process network path under ASAN. Stable upstream (0.3% flake
+# rate). Brave does not modify SanitizedImageSource or ImageNavigationThrottle.
+# https://github.com/brave/brave-browser/issues/54041
+-ImageNavigationThrottleTest.SubresourceLoadSucceeds
+
 # This test fails because the product name is Brave instead of Chromium -
 # hardcoded in the test.
 -CrashClientUploadInfoTest.GetClientProductInfo
