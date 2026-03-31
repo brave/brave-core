@@ -123,7 +123,7 @@ class AdBlockService {
   void AsyncCallOnTaskRunner(
       base::OnceCallback<void(AdBlockEngineWrapper* wrapper)> task) {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-    GetTaskRunner()->PostTask(
+    task_runner_->PostTask(
         FROM_HERE, base::BindOnce(std::move(task),
                                   base::Unretained(engine_wrapper_.get())));
   }
@@ -135,7 +135,7 @@ class AdBlockService {
       base::OnceCallback<T(AdBlockEngineWrapper* wrapper)> task,
       base::OnceCallback<void(T)> reply) {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-    GetTaskRunner()->PostTaskAndReplyWithResult(
+    task_runner_->PostTaskAndReplyWithResult(
         FROM_HERE,
         base::BindOnce(std::move(task),
                        base::Unretained(engine_wrapper_.get())),
@@ -155,13 +155,12 @@ class AdBlockService {
 
   void SetupDiscardPolicy(const adblock::RegexManagerDiscardPolicy& policy);
 
-  base::SequencedTaskRunner* GetTaskRunner();
-
   // Test accessors
   AdBlockEngine& GetDefaultEngineForTesting();
   AdBlockEngine& GetAdditionalFiltersEngineForTesting();
   AdBlockFiltersProviderManager* GetFiltersProviderManagerForTesting();
   AdBlockDefaultResourceProvider* GetDefaultResourceProviderForTesting();
+  base::SequencedTaskRunner* GetTaskRunnerForTesting();
 
  private:
   static std::string g_ad_block_dat_file_version_;

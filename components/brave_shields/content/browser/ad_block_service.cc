@@ -141,7 +141,7 @@ AdBlockService::AdBlockService(
       task_runner_(task_runner),
       list_p3a_(local_state),
       engine_wrapper_(AdBlockEngineWrapper::Create().release(),
-                      base::OnTaskRunnerDeleter(GetTaskRunner())) {
+                      base::OnTaskRunnerDeleter(task_runner_.get())) {
   TRACE_EVENT("brave.adblock", "AdBlockService");
   // Initializes adblock-rust's domain resolution implementation
   adblock::set_domain_resolver();
@@ -216,7 +216,7 @@ AdBlockService::~AdBlockService() {
 void AdBlockService::EnableTag(const std::string& tag, bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Tags only need to be modified for the default engine.
-  GetTaskRunner()->PostTask(
+  task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&AdBlockEngineWrapper::EnableTag,
                      base::Unretained(engine_wrapper_.get()), tag, enabled));
@@ -239,7 +239,7 @@ void AdBlockService::ResetCosmeticFilter(std::string_view host) {
 
 void AdBlockService::GetDebugInfoAsync(GetDebugInfoCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  GetTaskRunner()->PostTaskAndReplyWithResult(
+  task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&AdBlockEngineWrapper::GetDebugInfo,
                      base::Unretained(engine_wrapper_.get())),
@@ -248,7 +248,7 @@ void AdBlockService::GetDebugInfoAsync(GetDebugInfoCallback callback) {
 
 void AdBlockService::DiscardRegex(uint64_t regex_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  GetTaskRunner()->PostTask(
+  task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&AdBlockEngineWrapper::DiscardRegex,
                      base::Unretained(engine_wrapper_.get()), regex_id));
@@ -257,14 +257,10 @@ void AdBlockService::DiscardRegex(uint64_t regex_id) {
 void AdBlockService::SetupDiscardPolicy(
     const adblock::RegexManagerDiscardPolicy& policy) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  GetTaskRunner()->PostTask(
+  task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&AdBlockEngineWrapper::SetupDiscardPolicy,
                      base::Unretained(engine_wrapper_.get()), policy));
-}
-
-base::SequencedTaskRunner* AdBlockService::GetTaskRunner() {
-  return task_runner_.get();
 }
 
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
@@ -319,6 +315,12 @@ AdBlockService::GetDefaultResourceProviderForTesting() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK_IS_TEST();
   return default_resource_provider_.get();
+}
+
+base::SequencedTaskRunner* AdBlockService::GetTaskRunnerForTesting() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK_IS_TEST();
+  return task_runner_.get();
 }
 
 }  // namespace brave_shields

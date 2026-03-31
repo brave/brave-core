@@ -414,7 +414,7 @@ void AdBlockServiceTest::SetSubscriptionIntervals() {
 
 void AdBlockServiceTest::WaitForAdBlockServiceThreads() {
   scoped_refptr<base::ThreadTestHelper> tr_helper(new base::ThreadTestHelper(
-      g_brave_browser_process->ad_block_service()->GetTaskRunner()));
+      g_brave_browser_process->ad_block_service()->GetTaskRunnerForTesting()));
   ASSERT_TRUE(tr_helper->Run());
 }
 
