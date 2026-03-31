@@ -12,6 +12,7 @@
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 
 namespace containers {
 
@@ -39,13 +40,10 @@ base::DictValue ContainerToDict(const mojom::ContainerPtr& container) {
       .Set("background_color", static_cast<int>(container->background_color));
 }
 
-}  // namespace
-
-std::vector<mojom::ContainerPtr> GetContainersFromPrefs(
-    const PrefService& prefs) {
-  CHECK(base::FeatureList::IsEnabled(features::kContainers));
+std::vector<mojom::ContainerPtr> GetContainersFromList(
+    const base::ListValue& list) {
   std::vector<mojom::ContainerPtr> containers;
-  for (const auto& container : prefs.GetList(prefs::kContainersList)) {
+  for (const auto& container : list) {
     if (!container.is_dict()) {
       LOG(ERROR) << "Container is not a dictionary";
       continue;
@@ -58,22 +56,20 @@ std::vector<mojom::ContainerPtr> GetContainersFromPrefs(
   return containers;
 }
 
+}  // namespace
+
+std::vector<mojom::ContainerPtr> GetContainersFromPrefs(
+    const PrefService& prefs) {
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
+  return GetContainersFromList(prefs.GetList(prefs::kContainersList));
+}
+
 mojom::ContainerPtr GetContainerFromPrefs(const PrefService& prefs,
                                           std::string_view id) {
   CHECK(base::FeatureList::IsEnabled(features::kContainers));
-  for (const auto& container : prefs.GetList(prefs::kContainersList)) {
-    if (!container.is_dict()) {
-      LOG(ERROR) << "Container is not a dictionary";
-      continue;
-    }
-
-    const auto* container_id = container.GetDict().FindString("id");
-    if (!container_id || *container_id != id) {
-      continue;
-    }
-
-    if (auto parsed = ContainerFromDict(container.GetDict())) {
-      return parsed;
+  for (auto& container : GetContainersFromPrefs(prefs)) {
+    if (container->id == id) {
+      return std::move(container);
     }
   }
   return nullptr;
@@ -87,6 +83,58 @@ void SetContainersToPrefs(const std::vector<mojom::ContainerPtr>& containers,
     list.Append(ContainerToDict(container));
   }
   prefs.SetList(prefs::kContainersList, std::move(list));
+}
+
+std::vector<mojom::ContainerPtr> GetLocallyUsedContainersFromPrefs(
+    const PrefService& prefs) {
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
+  std::vector<mojom::ContainerPtr> containers;
+  for (const auto item : prefs.GetDict(prefs::kLocallyUsedContainers)) {
+    if (!item.second.is_dict()) {
+      LOG(ERROR) << "Used container snapshot is not a dictionary";
+      continue;
+    }
+
+    if (auto parsed = ContainerFromDict(item.second.GetDict())) {
+      containers.push_back(std::move(parsed));
+    }
+  }
+  return containers;
+}
+
+mojom::ContainerPtr GetLocallyUsedContainerFromPrefs(const PrefService& prefs,
+                                                     std::string_view id) {
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
+  if (const auto* value =
+          prefs.GetDict(prefs::kLocallyUsedContainers).FindDict(id)) {
+    return ContainerFromDict(*value);
+  }
+  return nullptr;
+}
+
+void SetLocallyUsedContainerToPrefs(const mojom::ContainerPtr& container,
+                                    PrefService& prefs) {
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
+  CHECK(container);
+  ScopedDictPrefUpdate update(&prefs, prefs::kLocallyUsedContainers);
+  update->Set(container->id, ContainerToDict(container));
+}
+
+bool HasLocallyUsedContainerInPrefs(const PrefService& prefs,
+                                    std::string_view id) {
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
+  return prefs.GetDict(prefs::kLocallyUsedContainers).contains(id);
+}
+
+void RemoveLocallyUsedContainerFromPrefs(std::string_view id,
+                                         PrefService& prefs) {
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
+  if (!prefs.GetDict(prefs::kLocallyUsedContainers).contains(id)) {
+    return;
+  }
+
+  ScopedDictPrefUpdate update(&prefs, prefs::kLocallyUsedContainers);
+  update->Remove(id);
 }
 
 }  // namespace containers

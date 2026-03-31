@@ -620,10 +620,7 @@ test("brave_unit_tests") {
   }
 
   if (enable_containers) {
-    deps += [
-      "//brave/browser/ui/containers:unit_tests",
-      "//brave/components/containers/core/browser:unit_tests",
-    ]
+    deps += [ "//brave/browser/ui/containers:unit_tests" ]
   }
 
   if (enable_omaha4) {

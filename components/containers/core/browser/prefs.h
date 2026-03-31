@@ -28,6 +28,27 @@ mojom::ContainerPtr GetContainerFromPrefs(const PrefService& prefs,
 void SetContainersToPrefs(const std::vector<mojom::ContainerPtr>& containers,
                           PrefService& prefs);
 
+// Returns the list of locally used containers.
+std::vector<mojom::ContainerPtr> GetLocallyUsedContainersFromPrefs(
+    const PrefService& prefs);
+
+// Returns the locally used container snapshot with `id`, or a null
+// mojom::ContainerPtr if it is not present.
+mojom::ContainerPtr GetLocallyUsedContainerFromPrefs(const PrefService& prefs,
+                                                     std::string_view id);
+
+// Upserts a locally used container snapshot.
+void SetLocallyUsedContainerToPrefs(const mojom::ContainerPtr& container,
+                                    PrefService& prefs);
+
+// Returns true if a locally used container snapshot is present.
+bool HasLocallyUsedContainerInPrefs(const PrefService& prefs,
+                                    std::string_view id);
+
+// Removes a locally used container snapshot.
+void RemoveLocallyUsedContainerFromPrefs(std::string_view id,
+                                         PrefService& prefs);
+
 }  // namespace containers
 
 #endif  // BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_PREFS_H_
