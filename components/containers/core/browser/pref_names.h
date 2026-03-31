@@ -8,12 +8,12 @@
 
 namespace containers::prefs {
 
-// Preference key for storing the list of containers.
+// Syncable list of containers.
 inline constexpr char kContainersList[] = "brave.containers.list";
 
-// Local-only cache of container snapshots that are still referenced by this
-// profile even if they disappear from the synced containers list.
-inline constexpr char kUsedContainers[] = "brave.containers.used";
+// Local-only dictionary of container snapshots that are still referenced by
+// this profile even if they disappear from the synced containers list.
+inline constexpr char kLocallyUsedContainers[] = "brave.containers.used";
 
 }  // namespace containers::prefs
 

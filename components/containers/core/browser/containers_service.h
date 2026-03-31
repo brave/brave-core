@@ -48,7 +48,7 @@ class ContainersService : public KeyedService {
   // Refreshes used-container snapshots from the synced containers list so they
   // do not stay stale (names, icons, etc.). This is called when the synced
   // containers list changes.
-  void RefreshUsedContainersFromSyncedList();
+  void RefreshLocallyUsedContainersFromSyncedList();
 
   raw_ref<PrefService> prefs_;
   PrefChangeRegistrar pref_change_registrar_;

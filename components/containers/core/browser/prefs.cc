@@ -85,11 +85,11 @@ void SetContainersToPrefs(const std::vector<mojom::ContainerPtr>& containers,
   prefs.SetList(prefs::kContainersList, std::move(list));
 }
 
-std::vector<mojom::ContainerPtr> GetUsedContainersFromPrefs(
+std::vector<mojom::ContainerPtr> GetLocallyUsedContainersFromPrefs(
     const PrefService& prefs) {
   CHECK(base::FeatureList::IsEnabled(features::kContainers));
   std::vector<mojom::ContainerPtr> containers;
-  for (const auto item : prefs.GetDict(prefs::kUsedContainers)) {
+  for (const auto item : prefs.GetDict(prefs::kLocallyUsedContainers)) {
     if (!item.second.is_dict()) {
       LOG(ERROR) << "Used container snapshot is not a dictionary";
       continue;
@@ -102,35 +102,38 @@ std::vector<mojom::ContainerPtr> GetUsedContainersFromPrefs(
   return containers;
 }
 
-mojom::ContainerPtr GetUsedContainerFromPrefs(const PrefService& prefs,
-                                              std::string_view id) {
+mojom::ContainerPtr GetLocallyUsedContainerFromPrefs(const PrefService& prefs,
+                                                     std::string_view id) {
   CHECK(base::FeatureList::IsEnabled(features::kContainers));
-  if (const auto* value = prefs.GetDict(prefs::kUsedContainers).FindDict(id)) {
+  if (const auto* value =
+          prefs.GetDict(prefs::kLocallyUsedContainers).FindDict(id)) {
     return ContainerFromDict(*value);
   }
   return nullptr;
 }
 
-void SetUsedContainerToPrefs(const mojom::ContainerPtr& container,
-                             PrefService& prefs) {
+void SetLocallyUsedContainerToPrefs(const mojom::ContainerPtr& container,
+                                    PrefService& prefs) {
   CHECK(base::FeatureList::IsEnabled(features::kContainers));
   CHECK(container);
-  ScopedDictPrefUpdate update(&prefs, prefs::kUsedContainers);
+  ScopedDictPrefUpdate update(&prefs, prefs::kLocallyUsedContainers);
   update->Set(container->id, ContainerToDict(container));
 }
 
-bool HasUsedContainerInPrefs(const PrefService& prefs, std::string_view id) {
+bool HasLocallyUsedContainerInPrefs(const PrefService& prefs,
+                                    std::string_view id) {
   CHECK(base::FeatureList::IsEnabled(features::kContainers));
-  return prefs.GetDict(prefs::kUsedContainers).contains(id);
+  return prefs.GetDict(prefs::kLocallyUsedContainers).contains(id);
 }
 
-void RemoveUsedContainerFromPrefs(std::string_view id, PrefService& prefs) {
+void RemoveLocallyUsedContainerFromPrefs(std::string_view id,
+                                         PrefService& prefs) {
   CHECK(base::FeatureList::IsEnabled(features::kContainers));
-  if (!prefs.GetDict(prefs::kUsedContainers).contains(id)) {
+  if (!prefs.GetDict(prefs::kLocallyUsedContainers).contains(id)) {
     return;
   }
 
-  ScopedDictPrefUpdate update(&prefs, prefs::kUsedContainers);
+  ScopedDictPrefUpdate update(&prefs, prefs::kLocallyUsedContainers);
   update->Remove(id);
 }
 

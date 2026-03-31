@@ -18,9 +18,9 @@ inline constexpr SkColor kUnknownContainerBackgroundColor =
     SkColorSetRGB(0xb7, 0x4d, 0x49);
 
 // Builds an "unknown" Container for the given `container_id`. The unknown
-// container is a placeholder for a container that is not present in synced and
-// locally cached used lists. The logic exist to handle unknown containers
-// gracefully at runtime.
+// container is a placeholder for a container that is not present in the synced
+// and locally used lists. This exists to handle unknown containers gracefully
+// at runtime.
 mojom::ContainerPtr CreateUnknownContainer(std::string_view container_id);
 
 }  // namespace containers

@@ -456,7 +456,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   PrefService* prefs = browser()->profile()->GetPrefs();
   EXPECT_TRUE(GetContainerFromPrefs(*prefs, kTestContainerId));
   mojom::ContainerPtr used_after_nav =
-      GetUsedContainerFromPrefs(*prefs, kTestContainerId);
+      GetLocallyUsedContainerFromPrefs(*prefs, kTestContainerId);
   ASSERT_TRUE(used_after_nav);
   EXPECT_EQ("ReadableName", used_after_nav->name);
 
@@ -464,7 +464,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   SetContainersToPrefs({}, *prefs);
   EXPECT_FALSE(GetContainerFromPrefs(*prefs, kTestContainerId));
   mojom::ContainerPtr used_after_removal =
-      GetUsedContainerFromPrefs(*prefs, kTestContainerId);
+      GetLocallyUsedContainerFromPrefs(*prefs, kTestContainerId);
   ASSERT_TRUE(used_after_removal);
   EXPECT_EQ("ReadableName", used_after_removal->name);
 }

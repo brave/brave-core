@@ -32,7 +32,7 @@ void ContainersService::Shutdown() {
 void ContainersService::MarkContainerUsed(std::string_view container_id) {
   CHECK(!container_id.empty());
 
-  if (HasUsedContainerInPrefs(*prefs_, container_id)) {
+  if (HasLocallyUsedContainerInPrefs(*prefs_, container_id)) {
     return;
   }
 
@@ -41,7 +41,7 @@ void ContainersService::MarkContainerUsed(std::string_view container_id) {
     container = CreateUnknownContainer(container_id);
   }
 
-  SetUsedContainerToPrefs(container, *prefs_);
+  SetLocallyUsedContainerToPrefs(container, *prefs_);
 }
 
 mojom::ContainerPtr ContainersService::GetRuntimeContainerById(
@@ -49,7 +49,7 @@ mojom::ContainerPtr ContainersService::GetRuntimeContainerById(
   if (auto container = GetContainerFromPrefs(*prefs_, id)) {
     return container;
   }
-  if (auto container = GetUsedContainerFromPrefs(*prefs_, id)) {
+  if (auto container = GetLocallyUsedContainerFromPrefs(*prefs_, id)) {
     return container;
   }
   return nullptr;
@@ -60,13 +60,14 @@ std::vector<mojom::ContainerPtr> ContainersService::GetContainers() const {
 }
 
 void ContainersService::OnSyncedContainersChanged() {
-  RefreshUsedContainersFromSyncedList();
+  RefreshLocallyUsedContainersFromSyncedList();
 }
 
-void ContainersService::RefreshUsedContainersFromSyncedList() {
-  for (const auto& used_container : GetUsedContainersFromPrefs(*prefs_)) {
+void ContainersService::RefreshLocallyUsedContainersFromSyncedList() {
+  for (const auto& used_container :
+       GetLocallyUsedContainersFromPrefs(*prefs_)) {
     if (auto container = GetContainerFromPrefs(*prefs_, used_container->id)) {
-      SetUsedContainerToPrefs(container, *prefs_);
+      SetLocallyUsedContainerToPrefs(container, *prefs_);
     } else {
       // A container may be absent from the synced list if it was deleted. We
       // don't remove the used-container snapshot in this case here. It will be

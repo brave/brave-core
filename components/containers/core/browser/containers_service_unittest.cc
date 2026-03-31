@@ -85,7 +85,7 @@ TEST_F(ContainersServiceTest, MarkContainerUsed_PersistsSnapshot) {
 
   service_->MarkContainerUsed("used-id");
 
-  auto used = GetUsedContainerFromPrefs(prefs_, "used-id");
+  auto used = GetLocallyUsedContainerFromPrefs(prefs_, "used-id");
   ExpectContainer(used, "used-id", "Local");
 }
 
@@ -94,7 +94,7 @@ TEST_F(ContainersServiceTest, MarkContainerUsed_PersistsUnknownWhenNotSynced) {
 
   service_->MarkContainerUsed("unknown-id");
 
-  auto used = GetUsedContainerFromPrefs(prefs_, "unknown-id");
+  auto used = GetLocallyUsedContainerFromPrefs(prefs_, "unknown-id");
   ExpectContainer(used, "unknown-id", "unknown-", mojom::Icon::kDefault,
                   kUnknownContainerBackgroundColor);
 }
@@ -108,20 +108,21 @@ TEST_F(ContainersServiceTest,
 
   service_->MarkContainerUsed("used-id");
 
-  SetUsedContainerToPrefs(
+  SetLocallyUsedContainerToPrefs(
       MakeContainer("used-id", "Stale", mojom::Icon::kWork, SK_ColorRED),
       prefs_);
 
   service_->MarkContainerUsed("used-id");
 
-  auto used = GetUsedContainerFromPrefs(prefs_, "used-id");
+  auto used = GetLocallyUsedContainerFromPrefs(prefs_, "used-id");
   ExpectContainer(used, "used-id", "Stale", mojom::Icon::kWork, SK_ColorRED);
 }
 
 TEST_F(ContainersServiceTest,
        GetRuntimeContainerById_FallsBackToUsedWhenNotInSyncedList) {
   SetContainersToPrefs({}, prefs_);
-  SetUsedContainerToPrefs(MakeContainer("cached-id", "CachedName"), prefs_);
+  SetLocallyUsedContainerToPrefs(MakeContainer("cached-id", "CachedName"),
+                                 prefs_);
 
   auto runtime = service_->GetRuntimeContainerById("cached-id");
   ExpectContainer(runtime, "cached-id", "CachedName");
@@ -135,29 +136,29 @@ TEST_F(ContainersServiceTest,
   v1.push_back(MakeContainer("c1", "SyncedV1"));
   SetContainersToPrefs(v1, prefs_);
 
-  SetUsedContainerToPrefs(
+  SetLocallyUsedContainerToPrefs(
       MakeContainer("c1", "Stale", mojom::Icon::kWork, SK_ColorRED), prefs_);
 
-  auto used = GetUsedContainerFromPrefs(prefs_, "c1");
+  auto used = GetLocallyUsedContainerFromPrefs(prefs_, "c1");
   ExpectContainer(used, "c1", "Stale", mojom::Icon::kWork, SK_ColorRED);
 
   std::vector<mojom::ContainerPtr> v2;
   v2.push_back(MakeContainer("c1", "SyncedV2"));
   SetContainersToPrefs(v2, prefs_);
 
-  auto used_after_sync = GetUsedContainerFromPrefs(prefs_, "c1");
+  auto used_after_sync = GetLocallyUsedContainerFromPrefs(prefs_, "c1");
   ExpectContainer(used_after_sync, "c1", "SyncedV2");
 }
 
 TEST_F(ContainersServiceTest,
        OnSyncedContainersChanged_PreservesUsedWhenIdNotInSyncedList) {
-  SetUsedContainerToPrefs(MakeContainer("gone-id", "Cached"), prefs_);
+  SetLocallyUsedContainerToPrefs(MakeContainer("gone-id", "Cached"), prefs_);
 
   std::vector<mojom::ContainerPtr> synced;
   synced.push_back(MakeContainer("other-id", "Other"));
   SetContainersToPrefs(synced, prefs_);
 
-  auto used = GetUsedContainerFromPrefs(prefs_, "gone-id");
+  auto used = GetLocallyUsedContainerFromPrefs(prefs_, "gone-id");
   ExpectContainer(used, "gone-id", "Cached");
 }
 
