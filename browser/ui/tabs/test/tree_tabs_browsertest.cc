@@ -2662,6 +2662,35 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   ExpectSplitCollectionChildOfGroup(split_id);
 }
 
+// Create a split in the unpinned strip, pin it, then add both tabs of the
+// pinned split to a new group in one step; the split must stay one collection
+// in the group.
+IN_PROC_BROWSER_TEST_F(
+    TreeTabsBrowserTest,
+    AddToNewGroup_PinnedSplit_AfterUnpinnedSplit_PreservesSplit) {
+  EnsureTabGroupSyncServiceInitialized();
+  SetTreeTabsEnabled(true);
+  AddTab();
+  ASSERT_EQ(2, tab_strip_model().count());
+  CreateSplitWithTabs(&tab_strip_model(), 0, 1);
+  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection());
+
+  const split_tabs::SplitTabId split_id =
+      tab_strip_model().GetTabAtIndex(0)->GetSplit().value();
+  SetSplitPinned(split_id, true);
+  ASSERT_TRUE(tab_strip_model().IsTabPinned(0));
+  ASSERT_TRUE(tab_strip_model().IsTabPinned(1));
+  ASSERT_TRUE(tab_strip_model().ContainsSplit(split_id));
+
+  tab_groups::TabGroupId group_id = tab_strip_model().AddToNewGroup({0, 1});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(0), group_id);
+  EXPECT_EQ(tab_strip_model().GetTabGroupForTab(1), group_id);
+  ASSERT_TRUE(tab_strip_model().ContainsSplit(split_id));
+  ExpectGroupModelTabListCount(group_id, 2u);
+  ExpectSplitCollectionChildOfGroup(split_id);
+}
+
 // Removing a split from a tab group (MoveTabsOutOfGroup) must keep the split
 // intact and re-wrap it as a tree node in the unpinned strip, not destroy the
 // split or leave the collection inconsistent.
