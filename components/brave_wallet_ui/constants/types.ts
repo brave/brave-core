@@ -587,6 +587,9 @@ export enum WalletRoutes {
   // dev zcash screen
   DevZCash = '/dev-zcash',
 
+  // dev component override screen
+  DevSnapUiOverride = '/dev-snap-ui-override',
+
   // panel connection screen
   Connections = '/crypto/connections',
 

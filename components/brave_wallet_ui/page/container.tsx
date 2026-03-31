@@ -72,6 +72,7 @@ import {
 } from '../components/desktop/popup-modals/partners_consent_modal/partners_consent_modal'
 import { Connections } from '../components/extension/connections/connections'
 import { PageNotFound } from './screens/page_not_found/page_not_found'
+import { DevSnapUiOverride } from './screens/dev_snap_ui_override/dev_snap_ui_override'
 
 export const Container = () => {
   // routing
@@ -300,6 +301,15 @@ export const Container = () => {
           redirectRoute={defaultRedirect}
         >
           <DevZCash />
+        </ProtectedRoute>
+
+        <ProtectedRoute
+          path={WalletRoutes.DevSnapUiOverride}
+          exact={true}
+          requirement={!isWalletLocked && !walletNotYetCreated}
+          redirectRoute={defaultRedirect}
+        >
+          <DevSnapUiOverride />
         </ProtectedRoute>
 
         {/* Insures that we redirect to the default route if the user
