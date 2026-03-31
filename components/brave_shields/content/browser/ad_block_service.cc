@@ -267,6 +267,18 @@ base::SequencedTaskRunner* AdBlockService::GetTaskRunner() {
   return task_runner_.get();
 }
 
+AdBlockEngine& AdBlockService::default_engine_for_testing() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK_IS_TEST();
+  return engine_wrapper_->default_engine_for_testing();
+}
+
+AdBlockEngine& AdBlockService::additional_filters_engine_for_testing() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK_IS_TEST();
+  return engine_wrapper_->additional_filters_engine_for_testing();
+}
+
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kAdBlockCookieListSettingTouched, false);
   registry->RegisterBooleanPref(
@@ -303,8 +315,7 @@ void AdBlockService::TagExistsForTest(const std::string& tag,
       FROM_HERE,
       base::BindOnce(
           &AdBlockEngine::TagExists,
-          base::Unretained(
-              &engine_wrapper_->default_engine_for_testing()),  // IN-TEST
+          base::Unretained(&default_engine_for_testing()),  // IN-TEST
           tag),
       std::move(cb));
 }

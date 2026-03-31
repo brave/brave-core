@@ -56,8 +56,8 @@ struct DomainBlockNavigationThrottle::BlockResult {
 namespace {
 brave_shields::DomainBlockNavigationThrottle::BlockResult
 ShouldBlockDomainOnTaskRunner(
-    brave_shields::AdBlockEngineWrapper* engine_wrapper,
-    const GURL& url) {
+    const GURL& url,
+    brave_shields::AdBlockEngineWrapper* engine_wrapper) {
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.DomainBlock.ShouldBlock");
   brave_shields::DomainBlockNavigationThrottle::BlockResult block_result;
   // force aggressive blocking to `true` for domain blocking - these requests
@@ -175,10 +175,8 @@ DomainBlockNavigationThrottle::WillStartRequest() {
 
   // Otherwise, call the ad block service on a task runner to determine whether
   // this domain should be blocked.
-  ad_block_service_->GetTaskRunner()->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(&ShouldBlockDomainOnTaskRunner,
-                     ad_block_service_->engine_wrapper(), request_url),
+  ad_block_service_->AsyncCallOnTaskRunnerAndReply<BlockResult>(
+      base::BindOnce(&ShouldBlockDomainOnTaskRunner, request_url),
       base::BindOnce(&DomainBlockNavigationThrottle::OnShouldBlockDomain,
                      weak_ptr_factory_.GetWeakPtr(), domain_blocking_type));
 
@@ -207,7 +205,7 @@ DomainBlockNavigationThrottle::WillProcessResponse() {
 
 void DomainBlockNavigationThrottle::OnShouldBlockDomain(
     DomainBlockingType domain_blocking_type,
-    const BlockResult& block_result) {
+    BlockResult block_result) {
   const bool should_block = block_result.should_block;
   const GURL new_url(block_result.new_url);
 

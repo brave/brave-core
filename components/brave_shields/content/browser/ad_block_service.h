@@ -44,6 +44,7 @@ struct RegexManagerDiscardPolicy;
 }  // namespace adblock
 namespace brave_shields {
 
+class AdBlockEngine;
 class AdBlockEngineWrapper;
 class AdBlockComponentFiltersProvider;
 class AdBlockDefaultResourceProvider;
@@ -122,6 +123,29 @@ class AdBlockService {
   AdBlockCustomFiltersProvider* custom_filters_provider();
   AdBlockCustomResourceProvider* custom_resource_provider();
 
+  // Call a callback on the task runner with the engine wrapper
+  void AsyncCallOnTaskRunner(
+      base::OnceCallback<void(AdBlockEngineWrapper* wrapper)> task) {
+    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+    GetTaskRunner()->PostTask(
+        FROM_HERE, base::BindOnce(std::move(task),
+                                  base::Unretained(engine_wrapper_.get())));
+  }
+
+  // Call a callback on the task runner with the engine wrapper and post the
+  // result to the original sequence.
+  template <typename T>
+  void AsyncCallOnTaskRunnerAndReply(
+      base::OnceCallback<T(AdBlockEngineWrapper* wrapper)> task,
+      base::OnceCallback<void(T)> reply) {
+    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+    GetTaskRunner()->PostTaskAndReplyWithResult(
+        FROM_HERE,
+        base::BindOnce(std::move(task),
+                       base::Unretained(engine_wrapper_.get())),
+        std::move(reply));
+  }
+
   void EnableTag(const std::string& tag, bool enabled);
   void AddUserCosmeticFilter(const std::string& filter);
   void ResetCosmeticFilter(std::string_view host);
@@ -137,15 +161,11 @@ class AdBlockService {
 
   base::SequencedTaskRunner* GetTaskRunner();
 
-  AdBlockEngineWrapper* engine_wrapper() {
-    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-    return engine_wrapper_.get();
-  }
+  AdBlockEngine& default_engine_for_testing();
+  AdBlockEngine& additional_filters_engine_for_testing();
 
  private:
   friend class ::AdBlockServiceTest;
-  friend class ::EphemeralStorage1pDomainBlockBrowserTest;
-  friend class ::DebounceBrowserTest;
   friend class brave_shields::CosmeticResourceMergeTest;
   friend class brave_shields::StripProceduralFiltersTest;
   friend class brave_shields::TestFiltersProvider;

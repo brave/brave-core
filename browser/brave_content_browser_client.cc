@@ -353,11 +353,9 @@ void BindCosmeticFiltersResources(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<cosmetic_filters::mojom::CosmeticFiltersResources>
         receiver) {
-  g_brave_browser_process->ad_block_service()->GetTaskRunner()->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          &BindCosmeticFiltersResourcesOnTaskRunner, std::move(receiver),
-          g_brave_browser_process->ad_block_service()->engine_wrapper()));
+  g_brave_browser_process->ad_block_service()->AsyncCallOnTaskRunner(
+      base::BindOnce(&BindCosmeticFiltersResourcesOnTaskRunner,
+                     std::move(receiver)));
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
