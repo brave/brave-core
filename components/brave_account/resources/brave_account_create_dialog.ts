@@ -34,6 +34,7 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
       isCapsLockOn: { type: Boolean },
       isEmailValid: { type: Boolean },
       isPasswordStrongEnough: { type: Boolean },
+      isPasswordValid: { type: Boolean },
       password: { type: String },
       passwordConfirmation: { type: String },
     }
@@ -94,6 +95,7 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
   protected accessor isCapsLockOn: boolean = false
   protected accessor isEmailValid: boolean = false
   protected accessor isPasswordStrongEnough: boolean = false
+  protected accessor isPasswordValid: boolean = false
   protected accessor password: string = ''
   protected accessor passwordConfirmation: string = ''
   protected registration = new Registration()

@@ -35,6 +35,7 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
       email: { type: String },
       isEmailValid: { type: Boolean },
       isCapsLockOn: { type: Boolean },
+      isPasswordValid: { type: Boolean },
       password: { type: String },
     }
   }
@@ -95,11 +96,8 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
   protected accessor email: string = ''
   protected accessor isEmailValid: boolean = false
   protected accessor isCapsLockOn: boolean = false
+  protected accessor isPasswordValid: boolean = false
   protected accessor password: string = ''
-
-  protected get isPasswordValid(): boolean {
-    return this.password.length !== 0
-  }
 }
 
 declare global {
