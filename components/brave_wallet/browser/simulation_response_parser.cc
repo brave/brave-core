@@ -76,7 +76,7 @@ mojom::BlowfishWarningKind ParseWarningKind(const std::string& kind) {
     return mojom::BlowfishWarningKind::kPermitUnlimitedAllowance;
   } else if (kind == "POISONED_ADDRESS") {
     return mojom::BlowfishWarningKind::kPoisonedAddress;
-  } else if (kind == "REFERENCED_restricted_ADDRESS") {
+  } else if (kind == "REFERENCED_OFAC_ADDRESS") {
     return mojom::BlowfishWarningKind::kReferencedRestrictedAddress;
   } else if (kind == "SEMI_TRUSTED_BLOCKLIST_DOMAIN") {
     return mojom::BlowfishWarningKind::kSemiTrustedBlocklistDomain;

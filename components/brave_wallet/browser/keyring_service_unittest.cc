@@ -2274,7 +2274,7 @@ TEST_F(KeyringServiceUnitTest, AddHardwareAccounts_RestrictedAddress) {
   {
     std::vector<mojom::HardwareWalletAccountPtr> accounts;
     accounts.push_back(mojom::HardwareWalletAccount::New(
-        restricted_eth_address, "m/44'/60'/0'/0/0", "restricted ETH",
+        restricted_eth_address, "m/44'/60'/0'/0/0", "Restricted ETH",
         mojom::HardwareVendor::kLedger, "device1", mojom::KeyringId::kDefault));
     auto result = keyring_service.AddHardwareAccountsSync(std::move(accounts));
     EXPECT_TRUE(result.empty())
@@ -2285,7 +2285,7 @@ TEST_F(KeyringServiceUnitTest, AddHardwareAccounts_RestrictedAddress) {
   {
     std::vector<mojom::HardwareWalletAccountPtr> accounts;
     accounts.push_back(mojom::HardwareWalletAccount::New(
-        restricted_sol_address, "m/44'/501'/0'/0'", "restricted SOL",
+        restricted_sol_address, "m/44'/501'/0'/0'", "Restricted SOL",
         mojom::HardwareVendor::kLedger, "device1", mojom::KeyringId::kSolana));
     auto result = keyring_service.AddHardwareAccountsSync(std::move(accounts));
     EXPECT_TRUE(result.empty())
@@ -2296,7 +2296,7 @@ TEST_F(KeyringServiceUnitTest, AddHardwareAccounts_RestrictedAddress) {
   {
     std::vector<mojom::HardwareWalletAccountPtr> accounts;
     accounts.push_back(mojom::HardwareWalletAccount::New(
-        restricted_fil_address, "m/44'/461'/0'/0/0", "restricted FIL",
+        restricted_fil_address, "m/44'/461'/0'/0/0", "Restricted FIL",
         mojom::HardwareVendor::kLedger, "device1",
         mojom::KeyringId::kFilecoin));
     auto result = keyring_service.AddHardwareAccountsSync(std::move(accounts));
@@ -2308,7 +2308,7 @@ TEST_F(KeyringServiceUnitTest, AddHardwareAccounts_RestrictedAddress) {
   {
     std::vector<mojom::HardwareWalletAccountPtr> accounts;
     accounts.push_back(mojom::HardwareWalletAccount::New(
-        restricted_dot_address, "//0", "restricted DOT",
+        restricted_dot_address, "//0", "Restricted DOT",
         mojom::HardwareVendor::kLedger, "device1",
         mojom::KeyringId::kPolkadotMainnet));
     auto result = keyring_service.AddHardwareAccountsSync(std::move(accounts));
@@ -2332,7 +2332,7 @@ TEST_F(KeyringServiceUnitTest, AddHardwareAccounts_RestrictedAddress) {
   {
     std::vector<mojom::HardwareWalletAccountPtr> accounts;
     accounts.push_back(mojom::HardwareWalletAccount::New(
-        restricted_eth_address, "m/44'/60'/0'/0/0", "restricted ETH",
+        restricted_eth_address, "m/44'/60'/0'/0/0", "Restricted ETH",
         mojom::HardwareVendor::kLedger, "device1", mojom::KeyringId::kDefault));
     accounts.push_back(mojom::HardwareWalletAccount::New(
         valid_eth_address, "m/44'/60'/1'/0/0", "Valid ETH",
@@ -2372,7 +2372,7 @@ TEST_F(KeyringServiceUnitTest, ImportEthereumAccount_RestrictedAddress) {
       {base::ToLowerASCII(address_to_restrict)});
 
   // Test: Import with Restricted address should fail.
-  auto result = ImportEthereumAccount(&keyring_service, "restricted Account",
+  auto result = ImportEthereumAccount(&keyring_service, "Restricted Account",
                                       known_private_key);
   EXPECT_FALSE(result) << "Restricted Ethereum address should be rejected";
 
@@ -2417,7 +2417,7 @@ TEST_F(KeyringServiceUnitTest, ImportSolanaAccount_RestrictedAddress) {
       {base::ToLowerASCII(address_to_restrict)});
 
   // Test: Import with Restricted address should fail
-  auto result = ImportSolanaAccount(&keyring_service, "restricted Account",
+  auto result = ImportSolanaAccount(&keyring_service, "Restricted Account",
                                     known_private_key);
   EXPECT_FALSE(result) << "Restricted Solana address should be rejected";
 
@@ -2458,7 +2458,7 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccount_RestrictedAddress) {
 
   // Test: Import with Restricted address should fail
   auto result =
-      ImportFilecoinAccount(&keyring_service, "restricted Account",
+      ImportFilecoinAccount(&keyring_service, "Restricted Account",
                             known_private_key, mojom::kFilecoinTestnet);
   EXPECT_FALSE(result) << "Restricted Filecoin address should be rejected";
 

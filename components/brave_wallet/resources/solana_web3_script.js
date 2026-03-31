@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-
 /* Auto generated from @solana/web3.js 1.98.2 index.iife.min.js */
 var solanaWeb3 = $(function (exports) {
   "use strict";
@@ -3132,7 +3131,7 @@ var solanaWeb3 = $(function (exports) {
       hash: cHash,
       randomBytes: randomBytes,
       nByteLength: nByteLength,
-      h: crestrictedtor
+      h: cofactor
     } = CURVE;
     const MASK = _2n$3 << BigInt(nByteLength * 8) - _1n$4;
     const modP = Fp.create;
@@ -3378,7 +3377,7 @@ var solanaWeb3 = $(function (exports) {
         return wnaf.wNAFCachedUnsafe(this, n, Point.normalizeZ, acc);
       }
       isSmallOrder() {
-        return this.multiplyUnsafe(crestrictedtor).is0();
+        return this.multiplyUnsafe(cofactor).is0();
       }
       isTorsionFree() {
         return wnaf.unsafeLadder(this, CURVE_ORDER).is0();
@@ -3386,12 +3385,12 @@ var solanaWeb3 = $(function (exports) {
       toAffine(iz) {
         return toAffineMemo(this, iz);
       }
-      clearCrestrictedtor() {
+      clearCofactor() {
         const {
-          h: crestrictedtor
+          h: cofactor
         } = CURVE;
-        if (crestrictedtor === _1n$4) return this;
-        return this.multiplyUnsafe(crestrictedtor);
+        if (cofactor === _1n$4) return this;
+        return this.multiplyUnsafe(cofactor);
       }
       static fromHex(hex, zip215 = false) {
         const {
@@ -3527,7 +3526,7 @@ var solanaWeb3 = $(function (exports) {
       if (!zip215 && A.isSmallOrder()) return false;
       const k = hashDomainToScalar(context, R.toRawBytes(), A.toRawBytes(), msg);
       const RkA = R.add(A.multiplyUnsafe(k));
-      return RkA.subtract(SB).clearCrestrictedtor().equals(Point.ZERO);
+      return RkA.subtract(SB).clearCofactor().equals(Point.ZERO);
     }
     $(verify);
     G._setWindowSize(8);
@@ -17581,7 +17580,7 @@ var solanaWeb3 = $(function (exports) {
       result.allowedPrivateKeyLengths = "array";
       result.wrapPrivateKey = "boolean";
       result.isTorsionFree = "function";
-      result.clearCrestrictedtor = "function";
+      result.clearCofactor = "function";
       result.allowInfinityPoint = "boolean";
       result.fromBytes = "function";
       result.toBytes = "function";
@@ -18113,20 +18112,20 @@ var solanaWeb3 = $(function (exports) {
       }
       isTorsionFree() {
         const {
-          h: crestrictedtor,
+          h: cofactor,
           isTorsionFree: isTorsionFree
         } = CURVE;
-        if (crestrictedtor === _1n$1) return true;
+        if (cofactor === _1n$1) return true;
         if (isTorsionFree) return isTorsionFree(Point, this);
         throw new Error("isTorsionFree() has not been declared for the elliptic curve");
       }
-      clearCrestrictedtor() {
+      clearCofactor() {
         const {
-          h: crestrictedtor,
-          clearCrestrictedtor: clearCrestrictedtor
+          h: cofactor,
+          clearCofactor: clearCofactor
         } = CURVE;
-        if (crestrictedtor === _1n$1) return this;
-        if (clearCrestrictedtor) return clearCrestrictedtor(Point, this);
+        if (cofactor === _1n$1) return this;
+        if (clearCofactor) return clearCofactor(Point, this);
         return this.multiplyUnsafe(CURVE.h);
       }
       toRawBytes(isCompressed = true) {

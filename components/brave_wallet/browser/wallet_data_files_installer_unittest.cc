@@ -332,7 +332,7 @@ TEST_F(WalletDataFilesInstallerUnitTest,
 
 TEST_F(WalletDataFilesInstallerUnitTest,
        OnDemandInstallAndParsing_RestoreWallet_Restricted) {
-  // Test that if we have an restricted list, we should not create any accounts
+  // Test that if we have a restriced list, we should not create any accounts
   // under those addresses. In this case, we add both of the test account
   // addresses to the restricted list. This ensures that the restricted loading
   // strongly happens-before we create the set of restored accounts.
