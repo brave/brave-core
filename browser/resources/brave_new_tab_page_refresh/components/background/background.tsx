@@ -4,31 +4,20 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Dialog from '@brave/leo/react/dialog'
-import Button from '@brave/leo/react/button'
 
-import { SponsoredImageBackground } from '../../state/background_store'
 import { loadImage } from '../../lib/image_loader'
-import { IframeBackground, IframeBackgroundHandle } from './iframe_background'
-import {
-  useSafeAreaReporter,
-  useRichMediaMessageHandler,
-} from './rich_media_capability_provider'
+import { RichMediaBackground } from './rich_media_background'
 
 import {
-  useBackgroundState,
   useCurrentBackground,
   useBackgroundActions,
 } from '../../context/background_context'
-import { getString } from '../../lib/strings'
 
 import { style } from './background.style'
 
 export function Background() {
   const actions = useBackgroundActions()
   const currentBackground = useCurrentBackground()
-  const [showMakeDefaultDialog, setShowMakeDefaultDialog] =
-    React.useState(false)
 
   function renderBackground() {
     if (!currentBackground) {
@@ -49,46 +38,13 @@ export function Background() {
           />
         )
       case 'sponsored-rich-media':
-        return (
-          <SponsoredRichMediaBackground
-            background={currentBackground}
-            onMakeBraveSearchDefault={() => setShowMakeDefaultDialog(true)}
-          />
-        )
+        return <RichMediaBackground background={currentBackground} />
       case 'color':
         return <ColorBackground colorValue={currentBackground.cssValue} />
     }
   }
 
-  function handleMakeBraveSearchDefault() {
-    actions.makeBraveSearchDefault()
-    setShowMakeDefaultDialog(false)
-  }
-
-  return (
-    <>
-      <div data-css-scope={style.scope}>{renderBackground()}</div>
-      <Dialog
-        isOpen={showMakeDefaultDialog}
-        showClose
-        onClose={() => setShowMakeDefaultDialog(false)}
-      >
-        <h3>{getString(S.NEW_TAB_MAKE_SEARCH_DEFAULT_TITLE)}</h3>
-        <p>{getString(S.NEW_TAB_MAKE_SEARCH_DEFAULT_TEXT)}</p>
-        <div slot='actions'>
-          <Button onClick={handleMakeBraveSearchDefault}>
-            {getString(S.NEW_TAB_MAKE_SEARCH_DEFAULT_CONFIRM_LABEL)}
-          </Button>
-          <Button
-            kind='outline'
-            onClick={() => setShowMakeDefaultDialog(false)}
-          >
-            {getString(S.NEW_TAB_CANCEL_BUTTON_LABEL)}
-          </Button>
-        </div>
-      </Dialog>
-    </>
-  )
+  return <div data-css-scope={style.scope}>{renderBackground()}</div>
 }
 
 function ColorBackground(props: { colorValue: string }) {
@@ -137,33 +93,6 @@ function ImageBackground(props: ImageBackgroundProps) {
     <div
       className={classNames.join(' ')}
       onContextMenu={props.onContextMenu}
-    />
-  )
-}
-
-function SponsoredRichMediaBackground(props: {
-  background: SponsoredImageBackground
-  onMakeBraveSearchDefault: () => void
-}) {
-  const sponsoredRichMediaBaseUrl = useBackgroundState(
-    (s) => s.sponsoredRichMediaBaseUrl,
-  )
-
-  const [frameHandle, setFrameHandle] = React.useState<IframeBackgroundHandle>()
-
-  const messageHandler = useRichMediaMessageHandler(frameHandle, {
-    destinationUrl: props.background.logo?.destinationUrl,
-    onMakeBraveSearchDefault: props.onMakeBraveSearchDefault,
-  })
-
-  useSafeAreaReporter(frameHandle)
-
-  return (
-    <IframeBackground
-      url={props.background.imageUrl}
-      expectedOrigin={new URL(sponsoredRichMediaBaseUrl).origin}
-      onReady={setFrameHandle}
-      onMessage={messageHandler}
     />
   )
 }

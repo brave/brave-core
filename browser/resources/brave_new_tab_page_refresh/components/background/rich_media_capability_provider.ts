@@ -22,7 +22,7 @@ import {
 
 interface MessageHandlerOptions {
   destinationUrl?: string
-  onMakeBraveSearchDefault?: () => void
+  onMakeBraveSearchDefault: () => void
 }
 
 // Returns a callback that will handle messages received from the rich media
@@ -57,7 +57,7 @@ export function useRichMediaMessageHandler(
           searchActions.setSearchBoxSuppressed(true)
         },
         makeBraveSearchDefault() {
-          onMakeBraveSearchDefault?.()
+          onMakeBraveSearchDefault()
         },
       })
     },

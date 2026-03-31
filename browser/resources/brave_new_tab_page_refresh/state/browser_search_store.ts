@@ -242,6 +242,10 @@ export function createSearchStore() {
       newTabProxy.handler.openURLFromSearch(url, event)
     },
 
+    setDefaultSearchEngine(engine) {
+      newTabProxy.handler.setDefaultSearchEngine(engine)
+    },
+
     reportSearchBoxHidden() {
       newTabProxy.handler.reportSearchBoxHidden()
     },

@@ -78,6 +78,7 @@ export function defaultSearchStore(): SearchStore {
       stopAutocomplete() {},
       openSearch(query, engine, event) {},
       openUrlFromSearch(url, event) {},
+      setDefaultSearchEngine(engine) {},
       reportSearchBoxHidden() {},
       reportSearchEngineUsage(engine) {},
       reportSearchResultUsage(engine) {},
@@ -107,6 +108,7 @@ export interface SearchActions {
   stopAutocomplete: () => void
   openSearch: (query: string, engine: string, event: ClickEvent) => void
   openUrlFromSearch: (url: string, event: ClickEvent) => void
+  setDefaultSearchEngine: (engine: string) => void
   reportSearchBoxHidden: () => void
   reportSearchEngineUsage: (engine: string) => void
   reportSearchResultUsage: (engine: string) => void

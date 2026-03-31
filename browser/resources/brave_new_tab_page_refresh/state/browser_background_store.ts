@@ -141,10 +141,6 @@ export function createBackgroundStore() {
         type,
       )
     },
-
-    makeBraveSearchDefault() {
-      handler.setBraveSearchAsDefaultSearchEngine()
-    },
   }
 
   store.update({ actions })
