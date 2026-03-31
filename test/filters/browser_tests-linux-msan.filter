@@ -13,3 +13,13 @@
 # instrumentation.
 # https://github.com/brave/brave-browser/issues/53812
 -DevToolsTest.TestShowRecorderTab
+
+# Upstream Chromium test. Stable upstream (0.9% flake rate over 30 days per
+# LUCI Analysis). The test performs 10 eval retries with exponentially
+# increasing timeouts (total ~10s wall-clock). Combined with Brave's DevTools
+# startup overhead (chromium_src overrides, NTP/stats services), this exceeds
+# the hardcoded 20-second timeout under MSAN instrumentation. The sibling test
+# CantInspectBlockedSubdomainHost is already disabled in the upstream source
+# for the same reason.
+# https://github.com/brave/brave-browser/issues/54053
+-DevToolsExtensionHostsPolicyTest.CantInspectBlockedHost
