@@ -148,7 +148,7 @@ class CardanoProviderScriptHandler: TabContentScript {
     var tx: String
   }
 
-  typealias ApiResult = (Any?, BraveWallet.CardanoProviderErrorBundle?)
+  typealias ApiResult = (data: Any?, error: BraveWallet.CardanoProviderErrorBundle?)
 
   func tab(
     _ tab: some TabState,
@@ -228,7 +228,7 @@ class CardanoProviderScriptHandler: TabContentScript {
       case .getRewardAddresses:
         cardanoApiResult = await api.rewardAddresses()
       case .getUtxos:
-        let argsData = body.args.data(using: .utf8) ?? Data()
+        let argsData = Data(body.args.utf8)
         let args = try? JSONDecoder().decode(GetUtxosArgs.self, from: argsData)
         let amount: String? = args?.amount
         let paginate: BraveWallet.CardanoProviderPagination? =
@@ -242,7 +242,7 @@ class CardanoProviderScriptHandler: TabContentScript {
       case .getBalance:
         cardanoApiResult = await api.balance()
       case .signTx:
-        let argsData = body.args.data(using: .utf8) ?? Data()
+        let argsData = Data(body.args.utf8)
         guard let args = try? JSONDecoder().decode(SignTxArgs.self, from: argsData) else {
           replyHandler(
             nil,
@@ -252,7 +252,7 @@ class CardanoProviderScriptHandler: TabContentScript {
         }
         cardanoApiResult = await api.signTx(txCbor: args.tx, partialSign: args.partialSign)
       case .signData:
-        let argsData = body.args.data(using: .utf8) ?? Data()
+        let argsData = Data(body.args.utf8)
         guard let args = try? JSONDecoder().decode(SignDataArgs.self, from: argsData) else {
           replyHandler(
             nil,
@@ -262,7 +262,7 @@ class CardanoProviderScriptHandler: TabContentScript {
         }
         cardanoApiResult = await api.signData(address: args.addr, payloadHex: args.payload)
       case .submitTx:
-        let argsData = body.args.data(using: .utf8) ?? Data()
+        let argsData = Data(body.args.utf8)
         guard let args = try? JSONDecoder().decode(SubmitTxArgs.self, from: argsData) else {
           replyHandler(
             nil,
@@ -272,7 +272,7 @@ class CardanoProviderScriptHandler: TabContentScript {
         }
         cardanoApiResult = await api.submitTx(signedTxCbor: args.tx)
       case .getCollateral:
-        let argsData = body.args.data(using: .utf8) ?? Data()
+        let argsData = Data(body.args.utf8)
         guard let args = try? JSONDecoder().decode(CollateralArgs.self, from: argsData) else {
           replyHandler(
             nil,
@@ -297,13 +297,13 @@ class CardanoProviderScriptHandler: TabContentScript {
     result: ApiResult,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
-    if let error = result.1 {
+    if let error = result.error {
       Logger.module.error("Cardano: API call failed - \(error.errorMessage)")
       replyHandler(nil, errorToJson(.providerError(error)))
       return
     }
 
-    if let result = result.0 {
+    if let result = result.data {
       // Check if result is a BaseValue dictionary (from signData)
       if let dictResult = result as? [String: BaseValue] {
         // Convert BaseValue dictionary to String dictionary

@@ -180,18 +180,6 @@ struct SignTransactionView: View {
     }
   }
 
-  @ViewBuilder
-  func signTxRequestStaticTextView(text: String) -> some View {
-    VStack(alignment: .leading) {
-      StaticTextView(text: text)
-        .frame(maxWidth: .infinity)
-        .frame(height: 200)
-        .background(Color(.tertiaryBraveGroupedBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
-    }
-    .padding()
-  }
-
   var body: some View {
     ScrollView(.vertical) {
       VStack {
@@ -253,11 +241,11 @@ struct SignTransactionView: View {
           case .solana(_):
             divider
               .padding(.vertical, 8)
-            signTxRequestStaticTextView(text: instructionsDisplayString())
+            SignTxRequestStaticTextView(text: instructionsDisplayString())
               .background(
-                Color(.secondaryBraveGroupedBackground)
+                Color(.secondaryBraveGroupedBackground),
+                in: .rect(cornerRadius: 10, style: .continuous)
               )
-              .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
           case .cardano(let signCardanoTransactionRequest):
             // View Mode
             VStack(spacing: 12) {
@@ -269,20 +257,20 @@ struct SignTransactionView: View {
               Group {
                 switch viewMode {
                 case .transaction:
-                  signTxRequestStaticTextView(
+                  SignTxRequestStaticTextView(
                     text: signCardanoTransactionRequest.rawTxData
                   )
                 case .details:
-                  signTxRequestStaticTextView(
+                  SignTxRequestStaticTextView(
                     text: instructionsDisplayString()
                   )
                 }
               }
               .frame(maxWidth: .infinity)
               .background(
-                Color(.secondaryBraveGroupedBackground)
+                Color(.secondaryBraveGroupedBackground),
+                in: .rect(cornerRadius: 10, style: .continuous)
               )
-              .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
             }
           }
         }
@@ -325,11 +313,11 @@ struct SignTransactionView: View {
       cancelButton
       Button {  // approve
         switch currentRequest {
-        case .solana(_):
+        case .solana:
           cryptoStore.handleWebpageRequestResponse(
             .signSolTransactions(approved: true, id: currentRequestId)
           )
-        case .cardano(_):
+        case .cardano:
           cryptoStore.handleWebpageRequestResponse(
             .signCardanoTransactions(approved: true, id: currentRequestId)
           )
@@ -415,6 +403,21 @@ struct SignTransactionView: View {
     } else {
       txIndex = 0
     }
+  }
+}
+
+struct SignTxRequestStaticTextView: View {
+  var text: String
+
+  var body: some View {
+    VStack(alignment: .leading) {
+      StaticTextView(text: text)
+        .frame(maxWidth: .infinity)
+        .frame(height: 200)
+        .background(Color(.tertiaryBraveGroupedBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
+    }
+    .padding()
   }
 }
 
