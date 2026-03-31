@@ -63,7 +63,7 @@ ContainerModel GetRuntimeContainerModel(const ContainersService& service,
     return ContainerModel(std::move(container), scale_factor);
   }
 
-  return ContainerModel(CreateUnknownContainer(std::string(id)), scale_factor);
+  return ContainerModel(CreateUnknownContainer(id), scale_factor);
 }
 
 }  // namespace containers
