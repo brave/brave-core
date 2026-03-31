@@ -101,8 +101,10 @@ TabData TabData::FromTabInterface(tabs::TabInterface* tab) {
     }
   }
 
-  // Show which tabs are unloaded.
-  if (!data.should_show_discard_status) {
+  // Show which tabs are unloaded due to being discarded. Only mark tabs that
+  // were actually discarded (WasDiscarded), not tabs that simply haven't loaded
+  // yet (e.g. during browser initialization).
+  if (!data.should_show_discard_status && contents->WasDiscarded()) {
     const auto loading_state =
         resource_coordinator::TabLoadTracker::Get()->GetLoadingState(contents);
     if (loading_state ==
