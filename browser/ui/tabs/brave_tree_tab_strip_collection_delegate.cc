@@ -237,56 +237,46 @@ BraveTreeTabStripCollectionDelegate::CompactMovingTabs(
     const tabs::TabCollection::TypeEnumSet& types_to_compact) const {
   std::vector<std::variant<tabs::TabInterface*, tabs::TabCollection*>>
       compacted_tabs;
+  compacted_tabs.reserve(moving_tabs.size());
 
-  base::flat_set<tab_groups::TabGroupId> moving_groups;
-  if (types_to_compact.Has(tabs::TabCollection::Type::GROUP)) {
-    for (auto* tab : moving_tabs) {
-      if (auto group = tab->GetGroup()) {
-        moving_groups.insert(group.value());
-      }
-    }
-  }
-
-  base::flat_set<split_tabs::SplitTabId> moving_splits;
-  if (types_to_compact.Has(tabs::TabCollection::Type::SPLIT)) {
-    for (auto* tab : moving_tabs) {
-      if (tab->IsSplit()) {
-        moving_splits.insert(tab->GetSplit().value());
-      }
-    }
-  }
+  const bool compact_groups =
+      types_to_compact.Has(tabs::TabCollection::Type::GROUP);
+  const bool compact_splits =
+      types_to_compact.Has(tabs::TabCollection::Type::SPLIT);
 
   base::flat_set<tab_groups::TabGroupId> compacted_groups;
   base::flat_set<split_tabs::SplitTabId> compacted_splits;
   for (auto* tab : moving_tabs) {
-    if (auto group = tab->GetGroup();
-        group && moving_groups.contains(group.value())) {
-      if (compacted_groups.contains(group.value())) {
-        // The entire group is already added.
+    if (compact_groups) {
+      if (auto group = tab->GetGroup()) {
+        if (compacted_groups.contains(group.value())) {
+          // The entire group is already added.
+          continue;
+        }
+
+        compacted_groups.insert(group.value());
+        auto* group_collection = GetParentCollectionSkippingTypes(
+            tab, {tabs::TabCollection::Type::SPLIT});
+        CHECK_EQ(group_collection->type(), tabs::TabCollection::Type::GROUP);
+        compacted_tabs.push_back(group_collection);
         continue;
       }
-
-      compacted_groups.insert(group.value());
-      auto* group_collection = GetParentCollectionSkippingTypes(
-          tab, {tabs::TabCollection::Type::SPLIT});
-      CHECK_EQ(group_collection->type(), tabs::TabCollection::Type::GROUP);
-      compacted_tabs.push_back(group_collection);
-      continue;
     }
 
-    if (tab->IsSplit() && moving_splits.contains(tab->GetSplit().value())) {
-      if (compacted_splits.contains(tab->GetSplit().value())) {
+    if (compact_splits && tab->IsSplit()) {
+      auto split = tab->GetSplit().value();
+      if (compacted_splits.contains(split)) {
         // The entire split is already added.
         continue;
       }
 
-      compacted_splits.insert(tab->GetSplit().value());
+      compacted_splits.insert(split);
       compacted_tabs.push_back(
           collection_->GetParentCollection(tab, GetPassKey()));
       continue;
     }
 
-    compacted_tabs.push_back(std::move(tab));
+    compacted_tabs.push_back(tab);
   }
 
   return compacted_tabs;
