@@ -43,8 +43,6 @@ CreativeAdInfo BuildCreativeAd(bool use_random_uuids) {
 
   creative_ad.segment = kSegment;
 
-  creative_ad.split_test_group = "";
-
   creative_ad.condition_matchers = {};
 
   creative_ad.dayparts = {

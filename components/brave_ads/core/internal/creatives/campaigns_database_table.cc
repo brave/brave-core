@@ -167,7 +167,16 @@ void Campaigns::MigrateToV48(
   // should not drop the table as it will store catalog and non-catalog ad units
   // and maintain relationships with other tables.
   DropTable(mojom_db_transaction, "campaigns");
-  Create(mojom_db_transaction);
+  Execute(mojom_db_transaction, R"(
+      CREATE TABLE campaigns (
+        id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        start_at TIMESTAMP NOT NULL,
+        end_at TIMESTAMP NOT NULL,
+        daily_cap INTEGER DEFAULT 0 NOT NULL,
+        advertiser_id TEXT NOT NULL,
+        priority INTEGER NOT NULL DEFAULT 0,
+        ptr DOUBLE NOT NULL DEFAULT 1
+      ))");
 }
 
 void Campaigns::MigrateToV52(

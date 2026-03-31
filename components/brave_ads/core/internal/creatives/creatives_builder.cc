@@ -73,7 +73,6 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         creative_ad.per_month = creative_set.per_month;
         creative_ad.total_max = creative_set.total_max;
         creative_ad.value = creative_set.value;
-        creative_ad.split_test_group = creative_set.split_test_group;
         creative_ad.dayparts = dayparts;
         creative_ad.geo_targets = geo_targets;
         creative_ad.target_url = creative.payload.target_url;

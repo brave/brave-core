@@ -103,8 +103,6 @@ constexpr char kCreativeSetValueKey[] = "value";
 
 constexpr char kCreativeSetSegmentsKey[] = "segments";
 
-constexpr char kCreativeSetSplitTestGroupKey[] = "splitTestGroup";
-
 constexpr char kCreativeSetConversionsKey[] = "conversions";
 constexpr char kCreativeSetConversionUrlPatternKey[] = "urlPattern";
 constexpr char kCreativeSetConversionObservationWindowKey[] =
@@ -371,13 +369,6 @@ void ParseAndSaveNewTabPageAds(base::DictValue dict, ResultCallback callback) {
       } else {
         // Default to zero value.
         creative_ad.value = 0.0;
-      }
-
-      // Split test group.
-      if (const std::string* const value =
-              creative_set_dict->FindString(kCreativeSetSplitTestGroupKey)) {
-        // Split test group is optional.
-        creative_ad.split_test_group = *value;
       }
 
       // Conversions.

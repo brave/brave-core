@@ -397,12 +397,6 @@ std::optional<CatalogCreativeSetInfo> ParseCreativeSet(
     return std::nullopt;
   }
 
-  if (const std::string* const split_group =
-          dict.FindString("splitTestGroup")) {
-    // Optional.
-    creative_set.split_test_group = *split_group;
-  }
-
   std::optional<CatalogSegmentList> segments = ParseSegments(dict);
   if (!segments || segments->empty()) {
     // At least one segment is required.

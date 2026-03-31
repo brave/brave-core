@@ -36,7 +36,6 @@ bool CatalogCreativeSetInfo::operator==(
          total_max == other.total_max &&
          base::IsApproximatelyEqual(value, other.value,
                                     std::numeric_limits<double>::epsilon()) &&
-         split_test_group == other.split_test_group &&
          condition_matchers == other.condition_matchers &&
          segments == other.segments && oses == other.oses &&
          conversions == other.conversions &&
