@@ -184,7 +184,7 @@ void DoParseOnRampLists(const base::FilePath& dir, ParseListsResult& out) {
 void DoParseRestrictedAddressesLists(const base::FilePath& dir,
                                      ParseListsResult& out) {
   auto result =
-      ParseJsonFile(dir, "ofac-sanctioned-digital-currency-addresses.json");
+      ParseJsonFile(dir, BlockchainRegistry::kRestrictedAddressFileName);
   if (!result) {
     return;
   }

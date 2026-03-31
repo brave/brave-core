@@ -1122,7 +1122,7 @@ TEST(BlockchainRegistryUnitTest, ParseLists) {
   ASSERT_TRUE(base::WriteFile(path.Append(FPL("on-ramp-currency-lists.json")),
                               on_ramp_currency_lists_json));
   ASSERT_TRUE(base::WriteFile(
-      path.Append(FPL("ofac-sanctioned-digital-currency-addresses.json")),
+      path.AppendASCII(BlockchainRegistry::kRestrictedAddressFileName),
       R"({"addresses": ["0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"]})"));
 
   auto* registry = BlockchainRegistry::GetInstance();
@@ -1208,7 +1208,7 @@ TEST(BlockchainRegistryUnitTest, ParseLists) {
       }));
   run_loop->Run();
 
-  // ofac-sanctioned-digital-currency-addresses.json
+  // kRestrictedAddressFileName
   EXPECT_TRUE(registry->IsRestrictedAddress(
       "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
 }

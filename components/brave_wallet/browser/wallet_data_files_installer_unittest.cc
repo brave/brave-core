@@ -285,8 +285,7 @@ TEST_F(WalletDataFilesInstallerUnitTest,
     ]
   })";
   ASSERT_TRUE(base::WriteFile(
-      install_dir().Append(
-          FPL("ofac-sanctioned-digital-currency-addresses.json")),
+      install_dir().AppendASCII(BlockchainRegistry::kRestrictedAddressFileName),
       restricted_list_json));
 
   CreateWallet();
@@ -350,8 +349,7 @@ TEST_F(WalletDataFilesInstallerUnitTest,
     ]
   })";
   ASSERT_TRUE(base::WriteFile(
-      install_dir().Append(
-          FPL("ofac-sanctioned-digital-currency-addresses.json")),
+      install_dir().AppendASCII(BlockchainRegistry::kRestrictedAddressFileName),
       restricted_list_json));
 
   base::test::TestFuture<bool> future;
