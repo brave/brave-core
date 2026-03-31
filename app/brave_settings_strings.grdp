@@ -181,7 +181,7 @@
     Tooltip
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_MIN_WIDTH_MODE" desc="Label for horizontal tab minimum width setting">
-    Tab minimum width
+    Minimum tab width
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_MIN_WIDTH_DEFAULT" desc="Tab minimum width option: default width">
     Default (Minimum)
