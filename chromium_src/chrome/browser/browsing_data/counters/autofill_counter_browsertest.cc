@@ -18,16 +18,14 @@
 
 #include "content/public/test/test_utils.h"
 
-// Disable the original TimeRanges test; we provide a fixed version below.
-#define TimeRanges DISABLED_TimeRanges_Upstream
+// The original TimeRanges test is filtered out via test/filters/ because it
+// calls FlushForTesting() which deadlocks. This file provides a fixed version.
 
 #include <chrome/browser/browsing_data/counters/autofill_counter_browsertest.cc>
 
-#undef TimeRanges
-
 namespace {
 
-IN_PROC_BROWSER_TEST_F(AutofillCounterTest, TimeRanges) {
+IN_PROC_BROWSER_TEST_F(AutofillCounterTest, TimeRanges_BraveFixFlush) {
   autofill::TestAutofillClock test_clock;
   const base::Time kTime1 = base::Time::FromSecondsSinceUnixEpoch(25);
   test_clock.SetNow(kTime1);

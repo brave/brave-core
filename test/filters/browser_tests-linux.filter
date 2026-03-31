@@ -5,6 +5,12 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# FlushForTesting() deadlocks on Linux because Brave background services (AI
+# Chat, etc.) trigger D-Bus thread pool tasks that post replies to the blocked
+# main thread. A fixed version runs via chromium_src override.
+# https://github.com/brave/brave-browser/issues/54038
+-AutofillCounterTest.TimeRanges
+
 # These tests fail because we disable adding Open Search engines by default.
 # See https://github.com/brave/brave-browser/issues/14496
 # We short circuit the SearchEngineTabHelper::PageHasOpenSearchDescriptionDocument
