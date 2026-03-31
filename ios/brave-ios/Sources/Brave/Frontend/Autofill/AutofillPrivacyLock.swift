@@ -54,3 +54,11 @@ final class AutofillPrivacyLock {
     }
   }
 }
+
+struct AutofillPrivacyLockExitOnFailureKey: EnvironmentKey {
+  static let defaultValue: (() -> Void)? = nil
+}
+
+extension EnvironmentValues {
+  @Entry var autofillPrivacyLockExitOnFailure: (() -> Void)?
+}

@@ -17,6 +17,7 @@ struct ManagePasswordsView: View {
   @Bindable var viewModel: ManagePasswordsViewModel
 
   @Environment(\.dismiss) private var dismiss
+  @Environment(\.autofillPrivacyLockExitOnFailure) private var privacyLockExitOnFailure
   @Environment(\.editMode) private var editMode
   @Environment(\.redactionReasons) private var redactionReasons
   @ObservedObject private var saveLogins = Preferences.General.saveLogins
@@ -199,12 +200,12 @@ struct ManagePasswordsView: View {
       for: .bottomBar
     )
     .toolbar(!privacyLock.isLocked ? .visible : .hidden, for: .navigationBar)
-    .task { await privacyLock.authenticate(onFailure: { dismiss() }) }
+    .task { await privacyLock.authenticate(onFailure: exitAfterAuthFailure) }
     .onReceive(NotificationCenter.default.publisher(for: UIScene.willDeactivateNotification)) { _ in
       privacyLock.lock()
     }
     .onReceive(NotificationCenter.default.publisher(for: UIScene.didActivateNotification)) { _ in
-      Task { await privacyLock.authenticate(onFailure: { dismiss() }) }
+      Task { await privacyLock.authenticate(onFailure: exitAfterAuthFailure) }
     }
   }
 
@@ -221,6 +222,14 @@ struct ManagePasswordsView: View {
 
   private func exitEditMode() {
     editMode?.wrappedValue = .inactive
+  }
+
+  private func exitAfterAuthFailure() {
+    if let privacyLockExitOnFailure {
+      privacyLockExitOnFailure()
+    } else {
+      dismiss()
+    }
   }
 }
 
