@@ -106,7 +106,8 @@
     &ntp_background_images::features::kBraveNTPBrandedWallpaperSurveyPanelist, \
     &brave_shields::features::kBraveShredFeature,                              \
     &brave_origin::features::kBraveOrigin,                                     \
-    &email_aliases::features::kEmailAliases
+    &email_aliases::features::kEmailAliases,                                   \
+    &features::kBraveCustomSearchEngines
 
 // clang-format on
 

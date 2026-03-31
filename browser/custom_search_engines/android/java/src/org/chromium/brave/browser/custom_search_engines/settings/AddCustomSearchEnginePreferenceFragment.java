@@ -220,7 +220,14 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
                             return;
                         }
                         String title = titleEditable.toString();
-                        String keyword = title.toLowerCase(Locale.getDefault());
+
+                        if (!isTitleValid(title)) {
+                            return;
+                        }
+
+                        // Make the title lowercase and replace spaces with underscores to get the
+                        // keyword.
+                        String keyword = title.toLowerCase(Locale.getDefault()).replace(" ", "_");
                         String url = urlEditable.toString();
 
                         if (!isUrlValid(url)) {
@@ -253,19 +260,16 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
         if (mCustomSearchEnginesManager == null) {
             return;
         }
-        // TODO(https://github.com/brave/brave-browser/issues/21837): implement the actual update of
-        // the custom search engine in template url
-        // service.
-        boolean isUpdated = templateUrlService != null;
+        boolean isUpdated =
+                mCustomSearchEnginesManager.updateCustomSearchEngine(
+                        templateUrlService, searchEngineKeyword, title, keyword, url);
         if (isUpdated) {
-            mCustomSearchEnginesManager.updateCustomSearchEngine(
-                    searchEngineKeyword, title, keyword, url);
             handleBackPressed();
         } else {
             Toast.makeText(
                             getActivity(),
                             getString(R.string.failed_to_update_search_engine),
-                            Toast.LENGTH_SHORT)
+                            Toast.LENGTH_LONG)
                     .show();
         }
     }
@@ -275,27 +279,25 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
         if (mCustomSearchEnginesManager == null) {
             return;
         }
-        if (mCustomSearchEnginesManager.isCustomSearchEngineAdded(keyword)) {
+        if (mCustomSearchEnginesManager.isCustomSearchEngine(keyword)) {
             Toast.makeText(
                             getActivity(),
                             getString(R.string.search_engine_already_exists_error),
-                            Toast.LENGTH_SHORT)
+                            Toast.LENGTH_LONG)
                     .show();
             return;
         }
 
-        // TODO(https://github.com/brave/brave-browser/issues/21837): implement the actual addition
-        // of the custom search engine to template
-        // url service.
-        boolean isAdded = templateUrlService != null && !url.isEmpty() && !title.isEmpty();
+        boolean isAdded =
+                mCustomSearchEnginesManager.addCustomSearchEngine(
+                        templateUrlService, title, keyword, url);
         if (isAdded) {
-            mCustomSearchEnginesManager.addCustomSearchEngine(keyword);
             handleBackPressed();
         } else {
             Toast.makeText(
                             getActivity(),
                             getString(R.string.failed_to_add_search_engine),
-                            Toast.LENGTH_SHORT)
+                            Toast.LENGTH_LONG)
                     .show();
         }
     }
@@ -360,6 +362,22 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
             }
         }
         return null;
+    }
+
+    // Validates that the title contains only letters (Unicode), digits, and spaces.
+    // Keywords are derived from the title by lowercasing and replacing spaces with underscores,
+    // so allowing arbitrary characters (e.g. punctuation, symbols) would produce malformed
+    // keywords. Showing an error here keeps the keyword predictable and consistent.
+    private boolean isTitleValid(String title) {
+        if (!title.matches("[\\p{L}0-9 ]+")) {
+            Toast.makeText(
+                            getActivity(),
+                            getString(R.string.add_custom_search_engine_title_error),
+                            Toast.LENGTH_LONG)
+                    .show();
+            return false;
+        }
+        return true;
     }
 
     private boolean isUrlValid(String url) {

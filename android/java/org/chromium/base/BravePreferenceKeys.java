@@ -111,6 +111,10 @@ public final class BravePreferenceKeys {
             "org.chromium.brave.browser.Brave_SAFE_BROWSING_ERRORS";
 
     public static final String DEFAULT_SEARCH_ENGINE_CHANGED = "default_search_engine_changed";
+    public static final String STANDARD_DSE_SHORTNAME = "standard_dse_shortname";
+    public static final String PRIVATE_DSE_SHORTNAME = "private_dse_shortname";
+
+    public static final String CUSTOM_SEARCH_ENGINE_KEYWORDS = "Brave.SearchEngine.CustomKeywords";
 
     public static final String BRAVE_DEFAULT_SEARCH_ENGINE_MIGRATED_JP =
             "brave_default_search_engine_migrated_jp";

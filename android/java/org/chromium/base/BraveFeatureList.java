@@ -47,4 +47,5 @@ public abstract class BraveFeatureList {
     public static final String BRAVE_ORIGIN = "BraveOrigin";
     public static final String BRAVE_SHRED = "BraveShredFeature";
     public static final String EMAIL_ALIASES = "EmailAliases";
+    public static final String BRAVE_CUSTOM_SEARCH_ENGINES = "BraveCustomSearchEngines";
 }
