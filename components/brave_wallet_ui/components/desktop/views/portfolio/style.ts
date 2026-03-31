@@ -218,7 +218,7 @@ export const PortfolioActionButton = styled(WalletButton)`
   outline: none;
   background: none;
   background-color: ${leo.color.container.background};
-  border-radius: 8px;
+  border-radius: ${leo.radius.full};
   border: 1px solid var(--button-border-color);
   height: 36px;
   width: 36px;
