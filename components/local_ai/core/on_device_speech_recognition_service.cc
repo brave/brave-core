@@ -21,7 +21,7 @@ namespace local_ai {
 
 namespace {
 
-// TODO(AIA-12345): Replace hard-coded path with component
+// TODO(jocelyn): Replace hard-coded path with component
 // updater integration.
 constexpr char kDefaultModelDir[] =
     "/Users/yrliou/brave/brave-browser/src/brave/"
