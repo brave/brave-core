@@ -60,9 +60,17 @@ std::vector<mojom::ContainerPtr> ContainersService::GetContainers() const {
 }
 
 void ContainersService::OnSyncedContainersChanged() {
+  RefreshUsedContainersFromSyncedList();
+}
+
+void ContainersService::RefreshUsedContainersFromSyncedList() {
   for (const auto& used_container : GetUsedContainersFromPrefs(*prefs_)) {
     if (auto container = GetContainerFromPrefs(*prefs_, used_container->id)) {
       SetUsedContainerToPrefs(container, *prefs_);
+    } else {
+      // A container may be absent from the synced list if it was deleted. We
+      // don't remove the used-container snapshot in this case here. It will be
+      // removed with a separate cleanup logic later.
     }
   }
 }

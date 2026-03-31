@@ -42,7 +42,13 @@ class ContainersService : public KeyedService {
   std::vector<mojom::ContainerPtr> GetContainers() const;
 
  private:
+  // Called when the synced containers list changes.
   void OnSyncedContainersChanged();
+
+  // Refreshes used-container snapshots from the synced containers list so they
+  // do not stay stale (names, icons, etc.). This is called when the synced
+  // containers list changes.
+  void RefreshUsedContainersFromSyncedList();
 
   raw_ref<PrefService> prefs_;
   PrefChangeRegistrar pref_change_registrar_;

@@ -16,6 +16,7 @@
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace containers {
@@ -35,10 +36,7 @@ void ExpectContainer(const mojom::ContainerPtr& container,
                      const mojom::Icon& icon = mojom::Icon::kDefault,
                      const SkColor& color = SK_ColorBLUE) {
   ASSERT_TRUE(container);
-  EXPECT_EQ(container->id, id);
-  EXPECT_EQ(container->name, name);
-  EXPECT_EQ(container->icon, icon);
-  EXPECT_EQ(container->background_color, color);
+  EXPECT_THAT(*container, testing::FieldsAre(id, name, icon, color));
 }
 
 }  // namespace
