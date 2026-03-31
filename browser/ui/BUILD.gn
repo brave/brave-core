@@ -1032,10 +1032,6 @@ source_set("ui") {
       "//brave/browser/ui/views/page_info",
       "//ui/views/controls/webview",
     ]
-
-    if (enable_brave_ads) {
-      deps += [ "//brave/browser/ui/views/brave_ads" ]
-    }
   }
 
   if (enable_text_recognition) {

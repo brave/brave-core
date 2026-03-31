@@ -11,7 +11,6 @@
 #include <string>
 #include <vector>
 
-#include "base/functional/callback_forward.h"
 #include "base/observer_list.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_callback.h"
@@ -37,7 +36,7 @@ class AdsService : public KeyedService {
    public:
     virtual ~Delegate() = default;
 
-    virtual void MaybeInitNotificationHelper(base::OnceClosure callback) = 0;
+    virtual void MaybeInitNotificationHelper() = 0;
     virtual bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() = 0;
     virtual bool DoesSupportSystemNotifications() = 0;
     virtual bool CanShowNotifications() = 0;
@@ -48,9 +47,8 @@ class AdsService : public KeyedService {
     virtual void SnoozeScheduledCaptcha() = 0;
     virtual void ShowNotificationAd(const std::string& id,
                                     const std::u16string& title,
-                                    const std::u16string& body,
-                                    bool is_custom) = 0;
-    virtual void CloseNotificationAd(const std::string& id, bool is_custom) = 0;
+                                    const std::u16string& body) = 0;
+    virtual void CloseNotificationAd(const std::string& id) = 0;
     virtual void OpenNewTabWithUrl(const GURL& url) = 0;
     virtual bool IsFullScreenMode() = 0;
     virtual std::string GetVariationsCountryCode() = 0;
