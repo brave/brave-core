@@ -249,4 +249,7 @@ interface NewTabPageHandler {
   // Records VPN widget usage metrics.
   ReportVPNWidgetUsage() => ();
 
+  // Sets Brave Search as the user's default search engine.
+  SetBraveSearchAsDefaultSearchEngine() => ();
+
 };

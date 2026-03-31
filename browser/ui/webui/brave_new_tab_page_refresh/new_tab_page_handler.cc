@@ -41,6 +41,10 @@
 
 namespace brave_new_tab_page_refresh {
 
+namespace {
+constexpr char kBraveSearchHost[] = "search.brave.com";
+}  // namespace
+
 NewTabPageHandler::NewTabPageHandler(
     mojo::PendingReceiver<mojom::NewTabPageHandler> receiver,
     std::unique_ptr<CustomImageChooser> custom_image_chooser,
@@ -548,6 +552,15 @@ void NewTabPageHandler::OpenVPNAccountPage(
 void NewTabPageHandler::ReportVPNWidgetUsage(
     ReportVPNWidgetUsageCallback callback) {
   vpn_facade_->RecordWidgetUsage();
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::SetBraveSearchAsDefaultSearchEngine(
+    SetBraveSearchAsDefaultSearchEngineCallback callback) {
+  if (auto* template_url =
+          template_url_service_->GetTemplateURLForHost(kBraveSearchHost)) {
+    template_url_service_->SetUserSelectedDefaultSearchProvider(template_url);
+  }
   std::move(callback).Run();
 }
 

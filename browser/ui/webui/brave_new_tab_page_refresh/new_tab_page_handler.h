@@ -183,6 +183,8 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   void OpenVPNAccountPage(brave_vpn::mojom::ManageURLType url_type,
                           OpenVPNAccountPageCallback callback) override;
   void ReportVPNWidgetUsage(ReportVPNWidgetUsageCallback callback) override;
+  void SetBraveSearchAsDefaultSearchEngine(
+      SetBraveSearchAsDefaultSearchEngineCallback callback) override;
 
  private:
   void OnGetSponsoredImageBackground(

@@ -119,6 +119,7 @@ export function defaultBackgroundStore(): BackgroundStore {
       notifySponsoredImageLoadError() {},
       notifySponsoredImageLogoClicked() {},
       notifySponsoredRichMediaEvent(type) {},
+      makeBraveSearchDefault() {},
     },
   })
 }
@@ -132,6 +133,7 @@ export interface BackgroundActions {
   notifySponsoredImageLoadError: () => void
   notifySponsoredImageLogoClicked: () => void
   notifySponsoredRichMediaEvent: (type: NewTabPageAdEventType) => void
+  makeBraveSearchDefault: () => void
 }
 
 function chooseRandom<T>(list: T[], randomValue: number): T | null {
