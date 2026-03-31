@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
+import Button from '@brave/leo/react/button'
 
 // Types
 import { BraveWallet } from '../../../../../constants/types'
@@ -48,12 +49,7 @@ import {
 } from '../../../../../components/shared/copy-tooltip/copy-tooltip'
 
 // Styles
-import {
-  Column,
-  LeoSquaredButton,
-  Row,
-  Text,
-} from '../../../../../components/shared/style'
+import { Column, Row, Text } from '../../../../../components/shared/style'
 import { PercentChangeText, CopyIcon } from './token_details.style'
 import { AssetIcon } from '../../shared_composer.style'
 
@@ -282,7 +278,7 @@ export const TokenDetails = (props: Props) => {
       </Column>
       {!isNativeToken && (
         <Row padding='16px'>
-          <LeoSquaredButton
+          <Button
             onClick={
               isNFT
                 ? onClickViewOnBlockExplorer(
@@ -295,7 +291,7 @@ export const TokenDetails = (props: Props) => {
             size='large'
           >
             {getLocale('braveWalletTransactionExplorer')}
-          </LeoSquaredButton>
+          </Button>
         </Row>
       )}
     </Column>

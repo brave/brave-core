@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { useSelector } from 'react-redux'
 import * as leo from '@brave/leo/tokens/css/variables'
+import Button from '@brave/leo/react/button'
 
 // redux
 import { useAppDispatch } from '../../../../common/hooks/use-redux'
@@ -35,7 +36,7 @@ import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
 import { PopupModal } from '../index'
 
 // style
-import { Column, LeoSquaredButton, Row, Text } from '../../../shared/style'
+import { Column, Row, Text } from '../../../shared/style'
 import { modalWidth, StyledWrapper } from './remove-account-modal.style'
 import {
   PasswordInputNala, //
@@ -180,22 +181,22 @@ export const RemoveAccountModal = () => {
 
         {isMobile || isPanel ? (
           <Row gap='4px'>
-            <LeoSquaredButton
+            <Button
               onClick={() =>
                 dispatch(AccountsTabActions.setAccountToRemove(undefined))
               }
               kind='plain-faint'
             >
               {getLocale('braveWalletButtonCancel')}
-            </LeoSquaredButton>
+            </Button>
 
-            <LeoSquaredButton
+            <Button
               onClick={onSubmit}
               kind='filled'
               isDisabled={password ? !isCorrectPassword : true}
             >
               {getLocale('braveWalletAccountsRemove')}
-            </LeoSquaredButton>
+            </Button>
           </Row>
         ) : (
           <Row
@@ -203,24 +204,24 @@ export const RemoveAccountModal = () => {
             justifyContent={'flex-end'}
           >
             <div>
-              <LeoSquaredButton
+              <Button
                 onClick={() =>
                   dispatch(AccountsTabActions.setAccountToRemove(undefined))
                 }
                 kind='plain-faint'
               >
                 {getLocale('braveWalletButtonCancel')}
-              </LeoSquaredButton>
+              </Button>
             </div>
 
             <div>
-              <LeoSquaredButton
+              <Button
                 onClick={onSubmit}
                 kind='filled'
                 isDisabled={password ? !isCorrectPassword : true}
               >
                 {getLocale('braveWalletAccountsRemove')}
-              </LeoSquaredButton>
+              </Button>
             </div>
           </Row>
         )}

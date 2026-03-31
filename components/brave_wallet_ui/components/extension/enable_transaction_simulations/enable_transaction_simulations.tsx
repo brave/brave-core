@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
+import Button from '@brave/leo/react/button'
 
 // types
 import { BraveWallet } from '../../../constants/types'
@@ -22,12 +23,7 @@ import {
 import { LoadingPanel } from '../loading_panel/loading_panel'
 
 // styles
-import {
-  Column,
-  LeoSquaredButton,
-  Row,
-  VerticalDivider,
-} from '../../shared/style'
+import { Column, Row, VerticalDivider } from '../../shared/style'
 import {
   BulletPoints,
   CardContent,
@@ -128,7 +124,7 @@ export const EnableTransactionSimulations: React.FC = () => {
           </div>
 
           <OptionsRow>
-            <LeoSquaredButton
+            <Button
               kind='outline'
               onClick={async () => {
                 await optInOrOut(
@@ -137,8 +133,8 @@ export const EnableTransactionSimulations: React.FC = () => {
               }}
             >
               {getLocale('braveWalletButtonNoThanks')}
-            </LeoSquaredButton>
-            <LeoSquaredButton
+            </Button>
+            <Button
               kind='filled'
               onClick={async () => {
                 await optInOrOut(
@@ -147,7 +143,7 @@ export const EnableTransactionSimulations: React.FC = () => {
               }}
             >
               {getLocale('braveWalletButtonEnable')}
-            </LeoSquaredButton>
+            </Button>
           </OptionsRow>
         </Column>
       </CardContent>

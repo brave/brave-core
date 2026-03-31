@@ -7,6 +7,7 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import Input, { InputEventDetail } from '@brave/leo/react/input'
 import Alert from '@brave/leo/react/alert'
+import Button from '@brave/leo/react/button'
 
 // utils
 import { BraveWallet } from '../../../constants/types'
@@ -55,7 +56,7 @@ import {
   TokenTickerPreviewText,
   DescriptionRow,
 } from './add-custom-token-form-styles'
-import { Column, LeoSquaredButton, Row } from '../style'
+import { Column, Row } from '../style'
 import { Skeleton } from '../loading-skeleton/styles'
 import Icon from '@brave/leo/react/icon'
 import Tooltip from '../tooltip'
@@ -654,12 +655,12 @@ export const AddNftForm = (props: Props) => {
       </FormWrapper>
 
       <ButtonRow gap='16px'>
-        <LeoSquaredButton
+        <Button
           onClick={onClickCancel}
           kind='plain-faint'
         >
           {getLocale('braveWalletButtonCancel')}
-        </LeoSquaredButton>
+        </Button>
 
         <Tooltip
           text={<FormErrorsList errors={formErrors} />}
@@ -668,7 +669,7 @@ export const AddNftForm = (props: Props) => {
           verticalPosition='above'
         >
           <Row>
-            <LeoSquaredButton
+            <Button
               onClick={addOrUpdateToken}
               isDisabled={buttonDisabled}
               isLoading={
@@ -682,7 +683,7 @@ export const AddNftForm = (props: Props) => {
                 : selectedAsset
                   ? getLocale('braveWalletButtonSaveChanges')
                   : getLocale('braveWalletWatchListAdd')}
-            </LeoSquaredButton>
+            </Button>
           </Row>
         </Tooltip>
       </ButtonRow>

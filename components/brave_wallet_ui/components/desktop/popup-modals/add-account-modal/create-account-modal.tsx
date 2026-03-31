@@ -7,6 +7,7 @@ import { assert } from 'chrome://resources/js/assert.js'
 import * as React from 'react'
 import { useHistory, useLocation, useParams } from 'react-router'
 import Input, { InputEventDetail } from '@brave/leo/react/input'
+import Button from '@brave/leo/react/button'
 
 // utils
 import { getLocale } from '$web-common/locale'
@@ -42,7 +43,6 @@ import {
   useAddAccountMutation,
   useGetVisibleNetworksQuery,
 } from '../../../../common/slices/api.slice'
-import { LeoSquaredButton } from '../../../shared/style'
 
 interface Params {
   accountTypeName: string
@@ -230,13 +230,13 @@ export const CreateAccountModal = () => {
           </Input>
 
           <SubmitButtonWrapper>
-            <LeoSquaredButton
+            <Button
               onClick={onClickCreateAccount}
               isDisabled={isDisabled}
               kind='filled'
             >
               {getLocale('braveWalletCreateAccountButton')}
-            </LeoSquaredButton>
+            </Button>
           </SubmitButtonWrapper>
         </CreateAccountStyledWrapper>
       )}

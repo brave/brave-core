@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useHistory, useLocation } from 'react-router'
+import Button from '@brave/leo/react/button'
 
 // Selectors
 import {
@@ -79,11 +80,7 @@ import {
   ToSectionBackground,
   ReviewButtonBackground,
 } from '../../composer_ui/shared_composer.style'
-import {
-  Column,
-  LeoSquaredButton,
-  Row,
-} from '../../../../components/shared/style'
+import { Column, Row } from '../../../../components/shared/style'
 
 // Components
 import {
@@ -744,7 +741,7 @@ export const SendScreen = React.memo(() => {
               }
             >
               <ReviewButtonBackground>
-                <LeoSquaredButton
+                <Button
                   onClick={submitSend}
                   size='large'
                   isDisabled={isReviewButtonDisabled}
@@ -758,7 +755,7 @@ export const SendScreen = React.memo(() => {
                       isUnshieldingFunds,
                     ),
                   ).replace('$1', CoinTypesMap[networkFromParams?.coin ?? 0])}
-                </LeoSquaredButton>
+                </Button>
               </ReviewButtonBackground>
             </ReviewButtonRow>
           </ToSectionBackground>

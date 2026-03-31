@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
+import Button from '@brave/leo/react/button'
 
 // Types
 import { BraveWallet } from '../../../../../constants/types'
@@ -44,7 +45,6 @@ import {
 import {
   Column,
   ScrollableColumn,
-  LeoSquaredButton,
   Row,
   Text,
 } from '../../../../../components/shared/style'
@@ -239,13 +239,13 @@ export const SelectAccount = (props: Props) => {
         ))}
       </ScrollableColumn>
       <Row padding='16px'>
-        <LeoSquaredButton
+        <Button
           onClick={() => selectedAccount && onSelectAccount(selectedAccount)}
           size='large'
           isDisabled={!selectedAccount}
         >
           {getLocale('braveWalletButtonContinue')}
-        </LeoSquaredButton>
+        </Button>
       </Row>
     </Column>
   )
