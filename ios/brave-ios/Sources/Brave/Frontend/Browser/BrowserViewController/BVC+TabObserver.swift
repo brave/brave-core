@@ -137,7 +137,7 @@ extension BrowserViewController: TabObserver {
             isPrivateBrowsing: tab.isPrivate
           )
         {
-          tab.walletCardanoProvider = provider
+          tab.data.walletCardanoProvider = provider
         }
       }
     }

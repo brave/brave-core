@@ -17,7 +17,9 @@ if (window.isSecureContext) {
         "method": method,
         "args": JSON.stringify(payload)
       })
-      .then(resolve, (errorJSON) => {
+      .then((result) => {
+        resolve($.extensiveFreeze(result, []));
+      }, (errorJSON) => {
         /* remove `Error: ` prefix. errorJSON=`Error: {code: 1, errorMessage: "Internal error"}` */
         const errorJSONString = new String(errorJSON);
         const errorJSONStringSliced = errorJSONString.slice(errorJSONString.indexOf('{'));
@@ -107,6 +109,7 @@ if (window.isSecureContext) {
     configurable: false,
   };
   $Object.defineProperty(window.cardano, 'brave', braveProvider);
+  $Object.freeze(window.cardano);
 }
 
 });
