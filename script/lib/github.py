@@ -57,6 +57,7 @@ class GitHub():
             request = urllib.request.Request(url, **kw)
             with urllib.request.urlopen(request) as response:
                 r = json.loads(response.read())
+                kw['headers']['ResponseHeaders'] = dict(response.headers.items())
         except ValueError:
             # Returned response may be empty in some cases
             r = {}

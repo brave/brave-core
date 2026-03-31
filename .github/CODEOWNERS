@@ -3,6 +3,7 @@ patches/ @brave/patch-reviewers
 chromium_src/ @brave/chromium-src-reviewers
 script/audit_deps.py @brave/sec-team
 script/uplift.py @bsclifton
+script/triage.py @bsclifton
 /README.md @bsclifton
 script/deps.py @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
