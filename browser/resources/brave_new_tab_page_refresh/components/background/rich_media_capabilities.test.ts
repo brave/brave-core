@@ -30,6 +30,15 @@ describe('readIncomingMessage', () => {
     })
   })
 
+  describe('valid richMediaMakeBraveSearchDefault messages', () => {
+    test('returns correct message for richMediaMakeBraveSearchDefault', () => {
+      const result = readIncomingMessage({
+        type: 'richMediaMakeBraveSearchDefault',
+      })
+      expect(result).toEqual({ type: 'richMediaMakeBraveSearchDefault' })
+    })
+  })
+
   describe('invalid message types', () => {
     test('returns null for unknown message type', () => {
       const result = readIncomingMessage({
@@ -168,6 +177,7 @@ describe('dispatchIncomingMessage', () => {
       openBraveSearch: jest.fn(),
       queryBraveSearchAutocomplete: jest.fn(),
       hideBraveSearchBox: jest.fn(),
+      makeBraveSearchDefault: jest.fn(),
     }
   })
 
@@ -242,6 +252,14 @@ describe('dispatchIncomingMessage', () => {
       dispatch({ type: 'richMediaHideBraveSearchBox' })
 
       expect(mockCapabilities.hideBraveSearchBox).toHaveBeenCalled()
+    })
+  })
+
+  describe('richMediaMakeBraveSearchDefault message', () => {
+    it('should call makeBraveSearchDefault', () => {
+      dispatch({ type: 'richMediaMakeBraveSearchDefault' })
+
+      expect(mockCapabilities.makeBraveSearchDefault).toHaveBeenCalled()
     })
   })
 })
