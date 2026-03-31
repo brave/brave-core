@@ -6,10 +6,10 @@
 #include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards_util.h"
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_observer_mock.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/test/issuers_test_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/test/ads_client_notifier_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 

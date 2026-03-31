@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_util.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_test_util.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/test/permission_rules_test_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "net/http/http_status_code.h"

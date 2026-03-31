@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/command_line_switch_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/creative_ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/test/creative_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

@@ -7,7 +7,7 @@
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
+#include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

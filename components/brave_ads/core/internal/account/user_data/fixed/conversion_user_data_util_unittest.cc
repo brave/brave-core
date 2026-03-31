@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data_util.h"
 
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"

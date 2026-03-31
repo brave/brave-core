@@ -7,13 +7,13 @@
 
 #include "base/test/values_test_util.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/test/confirmation_user_data_builder_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/test/transactions_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
-#include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/user_data_info.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
+#include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

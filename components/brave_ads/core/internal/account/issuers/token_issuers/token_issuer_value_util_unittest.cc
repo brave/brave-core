@@ -8,7 +8,7 @@
 #include <string_view>
 
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/test/issuers_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_info.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 

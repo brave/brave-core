@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer_mock.h"
+#include "brave/components/brave_ads/core/internal/tabs/test/tab_manager_observer_mock.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

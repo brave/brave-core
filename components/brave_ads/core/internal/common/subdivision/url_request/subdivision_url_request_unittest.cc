@@ -9,8 +9,8 @@
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_builder_util.h"
-#include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_delegate_mock.h"
-#include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/subdivision/url_request/test/subdivision_url_request_delegate_mock.h"
+#include "brave/components/brave_ads/core/internal/common/subdivision/url_request/test/subdivision_url_request_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "net/http/http_status_code.h"

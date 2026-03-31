@@ -15,7 +15,7 @@
 #include "base/time/time.h"
 #include "base/types/optional_util.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
-#include "brave/components/brave_ads/core/browser/service/ads_service_mock.h"
+#include "brave/components/brave_ads/core/browser/service/test/ads_service_mock.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"

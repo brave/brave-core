@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 

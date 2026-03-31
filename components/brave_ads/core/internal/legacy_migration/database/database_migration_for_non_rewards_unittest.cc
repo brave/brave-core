@@ -7,7 +7,7 @@
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
+#include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 

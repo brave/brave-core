@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/summary_user_data_util.h"
 
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/test/payment_tokens_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"

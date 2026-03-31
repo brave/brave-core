@@ -11,11 +11,11 @@
 #include "base/test/gmock_callback_support.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/notification_ad/test/notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/notification_ads/notification_ad_event_handler_delegate_mock.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/notification_ads/test/notification_ad_event_handler_delegate_mock.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 

@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_builder_util.h"
-#include "brave/components/brave_ads/core/internal/history/ad_history_test_util.h"
+#include "brave/components/brave_ads/core/internal/history/test/ad_history_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
