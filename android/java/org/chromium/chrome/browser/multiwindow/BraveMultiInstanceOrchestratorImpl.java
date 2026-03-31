@@ -25,12 +25,17 @@ public class BraveMultiInstanceOrchestratorImpl extends MultiInstanceOrchestrato
 
     @Override
     public void moveTabsToWindowByIdChecked(
-            int destWindowId, List<Tab> tabs, int destTabIndex, int destGroupTabId) {
-        super.moveTabsToWindowByIdChecked(destWindowId, tabs, destTabIndex, destGroupTabId);
+            int destWindowId,
+            List<Tab> tabs,
+            int destTabIndex,
+            int destGroupTabId,
+            boolean bringToFront) {
+        super.moveTabsToWindowByIdChecked(
+                destWindowId, tabs, destTabIndex, destGroupTabId, bringToFront);
 
         if (mBraveMultiInstanceManager != null) {
             mBraveMultiInstanceManager.moveTabsToWindowByIdChecked(
-                    destWindowId, tabs, destTabIndex, destGroupTabId);
+                    destWindowId, tabs, destTabIndex, destGroupTabId, bringToFront);
         }
     }
 }
