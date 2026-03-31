@@ -188,7 +188,6 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   raw_ptr<content::WebContents> owner_web_contents_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
-  base::WeakPtr<ConversationHandler> current_conversation_ = nullptr;
 
   base::ScopedObservation<AssociatedContentDelegate,
                           AssociatedContentDelegate::Observer>

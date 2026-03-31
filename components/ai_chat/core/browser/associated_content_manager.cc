@@ -9,7 +9,6 @@
 #include <cstdint>
 #include <memory>
 #include <string>
-#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -208,22 +207,6 @@ void AssociatedContentManager::ClearContent() {
   }
 
   DetachContent();
-
-  conversation_->OnAssociatedContentUpdated();
-}
-
-void AssociatedContentManager::ClearStagedContent() {
-  std::vector<std::string_view> to_remove;
-  for (const auto& content : content_delegates_) {
-    if (content_uuid_to_conversation_turns_.contains(content->uuid())) {
-      continue;
-    }
-    to_remove.push_back(content->uuid());
-  }
-
-  for (const auto& uuid : to_remove) {
-    RemoveContent(uuid, /*notify_updated=*/false);
-  }
 
   conversation_->OnAssociatedContentUpdated();
 }
