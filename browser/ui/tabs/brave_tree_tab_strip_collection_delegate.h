@@ -208,6 +208,7 @@ class BraveTreeTabStripCollectionDelegate
   // node, insert at destination, remove empty group.
   void MoveTabsOutOfGroup(
       const std::vector<tabs::TabInterface*>& moving_tabs,
+      const base::flat_set<tab_groups::TabGroupId>& moving_groups,
       size_t destination_index,
       bool new_pinned_state,
       const tabs::TabCollection::TypeEnumSet& retain_collection_types);
