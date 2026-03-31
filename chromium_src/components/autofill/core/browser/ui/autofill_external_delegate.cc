@@ -13,6 +13,10 @@
 #include "components/autofill/core/browser/foundations/autofill_manager.h"
 #include "components/autofill/core/browser/suggestions/suggestion.h"
 
+// This patch allows us to add the additional autofill suggestions.
+// BraveAddSuggestions accepts the form classification, the field data and the
+// reference to chromium suggestions.
+
 #define BRAVE_AUTOFILL_EXTERNAL_DELEGATE_ATTEMPT_TO_DISPLAY_AUTOFILL_SUGGESTIONS \
   {                                                                              \
     manager_->client().BraveAddSuggestions(                                      \

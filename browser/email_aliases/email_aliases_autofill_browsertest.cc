@@ -3,28 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <string>
+#include <string_view>
 
 #include "base/path_service.h"
-#include "base/run_loop.h"
-#include "base/test/bind.h"
 #include "base/test/run_until.h"
-#include "base/values.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/email_aliases/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/autofill/autofill_uitest_util.h"
-#include "chrome/browser/autofill/personal_data_manager_factory.h"
 #include "chrome/browser/policy/policy_test_utils.h"
 #include "chrome/browser/ui/autofill/chrome_autofill_client.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/autofill/content/browser/content_autofill_client.h"
 #include "components/autofill/content/browser/test_autofill_client_injector.h"
 #include "components/autofill/content/browser/test_autofill_manager_injector.h"
-#include "components/autofill/core/browser/data_manager/addresses/address_data_manager.h"
-#include "components/autofill/core/browser/data_manager/personal_data_manager.h"
-#include "components/autofill/core/browser/form_structure.h"
 #include "components/autofill/core/browser/foundations/autofill_manager.h"
 #include "components/autofill/core/browser/foundations/browser_autofill_manager.h"
 #include "components/autofill/core/browser/foundations/test_autofill_manager_waiter.h"
@@ -36,7 +28,6 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
-#include "url/gurl.h"
 
 namespace email_aliases {
 
@@ -168,6 +159,8 @@ IN_PROC_BROWSER_TEST_P(EmailAliasesAutofillTest, NewEmailAliasSuggestion) {
   autofill_manager()->WaitForAskForValuesToFill();
   EXPECT_TRUE(base::test::RunUntil(
       [&]() { return !autofill_client()->suggestions().empty(); }));
+
+  ASSERT_LE(3u, autofill_client()->suggestions().size());
 
   // Suggestion from Address settings.
   EXPECT_EQ(autofill_client()->suggestions()[0].main_text.value,
