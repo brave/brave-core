@@ -17,9 +17,7 @@ import UIKit
 import Web
 import os.log
 
-extension BrowserViewController: PlaylistScriptHandlerDelegate,
-  PlaylistFolderSharingScriptHandlerDelegate
-{
+extension BrowserViewController: PlaylistScriptHandlerDelegate {
   static var didShowStorageFullWarning = false
   func createPlaylistPopover(item: PlaylistInfo, tab: (any TabState)?) -> PopoverController {
 
@@ -277,8 +275,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
     }
   }
 
-  func openPlaylist(tab: (any TabState)?, item: PlaylistInfo?, folderSharingPageUrl: String? = nil)
-  {
+  func openPlaylist(tab: (any TabState)?, item: PlaylistInfo?) {
     if !profileController.profile.prefs.isPlaylistAvailable {
       return
     }
@@ -288,16 +285,14 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
         self?.openPlaylist(
           tab: tab,
           item: item,
-          playbackOffset: currentTime,
-          folderSharingPageUrl: folderSharingPageUrl
+          playbackOffset: currentTime
         )
       }
     } else {
       openPlaylist(
         tab: tab,
         item: item,
-        playbackOffset: 0.0,
-        folderSharingPageUrl: folderSharingPageUrl
+        playbackOffset: 0.0
       )
     }
   }
@@ -305,8 +300,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
   private func openPlaylist(
     tab: (any TabState)?,
     item: PlaylistInfo?,
-    playbackOffset: Double,
-    folderSharingPageUrl: String? = nil
+    playbackOffset: Double
   ) {
     let playlistController = PlaylistCoordinator.shared.getPlaylistController(
       tab: tab,
@@ -427,11 +421,6 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
       AppReviewManager.shared.processSubCriteria(for: .numberOfPlaylistItems)
       addItemToPlaylist(item, folderUUID, completion)
     }
-  }
-
-  // MARK: - PlaylistFolderSharingHelperDelegate
-  func openPlaylistSharingFolder(with pageUrl: String) {
-    openPlaylist(tab: nil, item: nil, playbackOffset: 0.0, folderSharingPageUrl: pageUrl)
   }
 }
 

@@ -417,8 +417,7 @@ extension BrowserViewController {
 
     if tab.profile.prefs.isPlaylistAvailable {
       injectedScripts.append(contentsOf: [
-        PlaylistScriptHandler(tab: tab),
-        PlaylistFolderSharingScriptHandler(),
+        PlaylistScriptHandler(tab: tab)
       ])
     }
 
@@ -472,8 +471,6 @@ extension BrowserViewController {
     (tab.browserData?.getContentScript(name: PlaylistScriptHandler.scriptName)
       as? PlaylistScriptHandler)?
       .delegate = self
-    (tab.browserData?.getContentScript(name: PlaylistFolderSharingScriptHandler.scriptName)
-      as? PlaylistFolderSharingScriptHandler)?.delegate = self
     (tab.browserData?.getContentScript(name: Web3NameServiceScriptHandler.scriptName)
       as? Web3NameServiceScriptHandler)?.delegate = self
   }
