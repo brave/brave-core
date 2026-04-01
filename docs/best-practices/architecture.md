@@ -1259,9 +1259,29 @@ bool IsFeatureReady(MyService* service) {
 
 <a id="ARCH-064"></a>
 
-## ✅ Use Unowned User Data Pattern for Tab/Window Feature Retrieval
+## ✅ Use Unowned User Data Pattern for Tab/Window Feature Retrieval When External Retrieval Is Needed
 
-**Tab-scoped and browser-window-scoped features should use the Unowned User Data pattern** to separate creation/lifetime management from retrieval. Features are owned by `TabFeatures` or `BrowserWindowFeatures` but retrieved via a static `From()` method on `TabInterface` or `BrowserWindowInterface`. See [Unowned User Data README](https://chromium.googlesource.com/chromium/src/+/main/ui/base/unowned_user_data/README.md).
+Tab-scoped and browser-window-scoped features use one of two ownership patterns depending on whether external code needs to retrieve them. See the upstream [Chrome Browser Design Principles](https://chromium.googlesource.com/chromium/src/+/main/docs/chrome_browser_design_principles.md#architecture) for background.
+
+**Simple `unique_ptr` member** — Use when the feature is **self-contained** (observes events internally, doesn't need to be looked up by other code). Owned as a `unique_ptr` member of `BraveTabFeatures` / `BraveBrowserWindowFeatures`. Upstream example: `JsOptimizationsPageActionController` takes its dependencies in the constructor and is simply instantiated in `TabFeatures::Init()`:
+
+```cpp
+// In BraveTabFeatures:
+std::unique_ptr<MyTabFeature> my_tab_feature_;
+```
+
+**Unowned User Data pattern** — Use when **external code needs to retrieve** the feature from a `TabInterface` or `BrowserWindowInterface` via a static `From()` method. This separates creation/lifetime management from retrieval. Upstream example: `CommerceUiTabHelper` is retrieved externally via `CommerceUiTabHelper::From(tab)` by UI code that needs to query commerce state for a given tab. See [Unowned User Data README](https://chromium.googlesource.com/chromium/src/+/main/ui/base/unowned_user_data/README.md).
+
+Example of external retrieval that motivates this pattern:
+
+```cpp
+// Code outside the feature (e.g. a toolbar button or bubble) needs to
+// look up the feature for a given tab:
+auto* feature = MyTabFeature::From(tab);
+if (feature) {
+  feature->DoSomething();
+}
+```
 
 **Setup (~7 lines of boilerplate):**
 
