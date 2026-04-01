@@ -10,9 +10,9 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/local_ai/core/features.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "build/build_config.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "content/public/browser/webui_config_map.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -65,7 +65,7 @@ void RegisterChromeUntrustedWebUIConfigs() {
       std::make_unique<trezor::UntrustedTrezorUIConfig>());
 #endif  // !BUILDFLAG(IS_ANDROID)
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
-  if (base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
+  if (base::FeatureList::IsEnabled(local_ai::features::kLocalAIModels)) {
     content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
         std::make_unique<local_ai::UntrustedLocalAIUIConfig>());
   }

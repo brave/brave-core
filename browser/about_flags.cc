@@ -27,6 +27,7 @@
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
+#include "brave/components/local_ai/core/features.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -40,7 +41,6 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "components/content_settings/core/common/features.h"
 #include "components/history/core/browser/features.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/sync/base/command_line_switches.h"
 #include "components/translate/core/browser/translate_prefs.h"
@@ -691,16 +691,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #define BRAVE_ADS_FEATURE_ENTRIES
 #endif
 
-// The upstream "history-embeddings" flag expired at M145. Use a
-// different name to bypass the expiry system while controlling the
-// same underlying kHistoryEmbeddings feature.
-#define BRAVE_HISTORY_EMBEDDINGS_FLAG                             \
-  EXPAND_FEATURE_ENTRIES({                                        \
-      "brave-history-embeddings",                                 \
-      "History Embeddings",                                       \
-      "Enables semantic history search using local embeddings.",  \
-      kOsDesktop,                                                 \
-      FEATURE_VALUE_TYPE(history_embeddings::kHistoryEmbeddings), \
+#define BRAVE_LOCAL_AI_MODELS                                 \
+  EXPAND_FEATURE_ENTRIES({                                    \
+      "brave-local-ai-models",                                \
+      "Brave Local AI Models",                                \
+      "Enables local AI models to be downloaded",             \
+      kOsWin | kOsMac | kOsLinux,                             \
+      FEATURE_VALUE_TYPE(local_ai::features::kLocalAIModels), \
   })
 
 #define BRAVE_OMNIBOX_FEATURES                                                \
@@ -1345,7 +1342,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_AI_CHAT_TAB_MANAGEMENT_TOOL_ENTRY                                      \
   BRAVE_ADS_FEATURE_ENTRIES                                                    \
-  BRAVE_HISTORY_EMBEDDINGS_FLAG                                                \
+  BRAVE_LOCAL_AI_MODELS                                                        \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
   BRAVE_FORCE_CONTEXT_MENU_ON_SHIFT_RIGHT_CLICK_FEATURE_ENTRY                  \
