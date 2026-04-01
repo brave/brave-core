@@ -107,7 +107,7 @@ struct SlippageGrid: View {
         .accessibilityAddTraits(isSelected ? .isSelected : [])
       }
       TextField("%", text: $input)
-        .onChange(of: input) { value in
+        .onChange(of: input) { _, value in
           guard let intValue = Int(value) else {
             customSlippage = nil
             return

@@ -160,7 +160,7 @@ public struct AIChatPaywallView: View {
           dismissButton: .default(Text(Strings.OKString))
         )
       }
-      .onChange(of: shouldDismiss) { shouldDismiss in
+      .onChange(of: shouldDismiss) { _, shouldDismiss in
         premiumUpgrageSuccessful?(selectedTierType)
 
         if shouldDismiss {

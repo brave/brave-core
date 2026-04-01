@@ -71,7 +71,7 @@ struct NetworkFilterView: View {
         }
       }
     }
-    .onChange(of: networks) { networks in
+    .onChange(of: networks) { _, networks in
       if !requiresSave {
         // No save button, so call saveAction when updating selections
         saveAction(networks)

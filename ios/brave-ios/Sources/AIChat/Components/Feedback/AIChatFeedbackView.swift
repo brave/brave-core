@@ -176,7 +176,7 @@ private struct AIChatDropdownView: View {
       } menuView: {
         AIChatDropdownMenu(selectedItem: $selectedItem, items: AIChatFeedbackOption.allCases)
           .offset(x: 0.0, y: 12.0)
-          .onChange(of: selectedItem) { _ in
+          .onChange(of: selectedItem) { _, _ in
             showMenu = false
           }
       }

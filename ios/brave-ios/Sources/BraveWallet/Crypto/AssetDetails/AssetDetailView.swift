@@ -399,7 +399,7 @@ struct AssetDetailView: View {
     .introspectTableView { tableView in
       tableInset = -tableView.layoutMargins.left
     }
-    .onChange(of: sizeCategory) { _ in
+    .onChange(of: sizeCategory) { _, _ in
       // Fix broken header when text size changes on iOS 16+
       self.collectionViewRef?.value?.collectionViewLayout.invalidateLayout()
     }
@@ -536,7 +536,7 @@ struct AssetDetailView: View {
         }
       )
     )
-    .onChange(of: keyringStore.isWalletLocked) { isLocked in
+    .onChange(of: keyringStore.isWalletLocked) { _, isLocked in
       if isLocked, isShowingAuroraBridgeAlert {
         isShowingAuroraBridgeAlert = false
       }

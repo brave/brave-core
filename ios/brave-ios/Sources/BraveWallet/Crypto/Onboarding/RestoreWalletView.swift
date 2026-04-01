@@ -220,7 +220,7 @@ struct RestoreWalletView: View {
       }
     }
     .padding()
-    .onChange(of: recoveryWords) { [recoveryWords] newValue in
+    .onChange(of: recoveryWords) { [recoveryWords] _, newValue in
       handleRecoveryWordsChanged(oldValue: recoveryWords, newValue: newValue)
     }
     .navigationBarBackButtonHidden(isShowingCreatingWallet)

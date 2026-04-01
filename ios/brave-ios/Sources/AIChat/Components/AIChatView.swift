@@ -297,13 +297,13 @@ public struct AIChatView: View {
                         .padding(.trailing, 12.0)
                     }
                   }
-                  .onChange(of: model.requestInProgress) { _ in
+                  .onChange(of: model.requestInProgress) { _, _ in
                     scrollViewReader.scrollTo(lastMessageId, anchor: .bottom)
                   }
-                  .onChange(of: model.conversationHistory) { _ in
+                  .onChange(of: model.conversationHistory) { _, _ in
                     scrollViewReader.scrollTo(lastMessageId, anchor: .bottom)
                   }
-                  .onChange(of: customFeedbackInfo) { _ in
+                  .onChange(of: customFeedbackInfo) { _, _ in
                     hideKeyboard()
                     withAnimation {
                       scrollViewReader.scrollTo(lastMessageId, anchor: .bottom)

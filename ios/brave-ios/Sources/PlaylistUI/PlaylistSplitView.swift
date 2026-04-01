@@ -239,7 +239,7 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View, Tool
               .onAppear {
                 maxDetentHeight = proxy.size.height
               }
-              .onChange(of: proxy.size.height) { newValue in
+              .onChange(of: proxy.size.height) { _, newValue in
                 maxDetentHeight = newValue
               }
           }
@@ -268,7 +268,7 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View, Tool
       if sidebarLayoutMode == .bottomSheet {
         VStack(spacing: 0) {
           sidebarContents
-            .onChange(of: sidebarScrollViewDragState) { value in
+            .onChange(of: sidebarScrollViewDragState) { _, value in
               switch value.state {
               case .changed:
                 handleBottomSheetDragGestureChanged(translation: value.translation)
@@ -317,7 +317,7 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View, Tool
       detentAnchors.merge(with: value)
       computeDetentHeights()
     }
-    .onChange(of: maxDetentHeight) { _ in
+    .onChange(of: maxDetentHeight) { _, _ in
       computeDetentHeights()
     }
     // FIXME: Figure out what to do in AX sizes

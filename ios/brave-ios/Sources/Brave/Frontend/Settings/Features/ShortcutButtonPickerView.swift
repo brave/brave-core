@@ -29,7 +29,7 @@ struct ShortcutButtonPickerView: View {
       .foregroundStyle(Color(braveSystemName: .textPrimary))
       .listRowBackground(Color(uiColor: .secondaryBraveGroupedBackground))
     }
-    .onChange(of: selectedShortcut.value) { newValue in
+    .onChange(of: selectedShortcut.value) { _, newValue in
       dismiss()
     }
     .navigationTitle(Strings.ShortcutButton.shortcutButtonTitle)

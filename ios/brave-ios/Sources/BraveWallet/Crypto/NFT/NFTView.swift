@@ -433,7 +433,7 @@ struct NFTView: View {
         }
       )
     )
-    .onChange(of: keyringStore.isWalletLocked) { isLocked in
+    .onChange(of: keyringStore.isWalletLocked) { _, isLocked in
       guard isLocked else { return }
       if isShowingNFTDiscoveryAlert {
         isShowingNFTDiscoveryAlert = false

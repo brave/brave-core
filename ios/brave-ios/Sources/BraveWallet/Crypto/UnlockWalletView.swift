@@ -122,7 +122,7 @@ struct UnlockWalletView: View {
         .aspectRatio(contentMode: .fill)
         .edgesIgnoringSafeArea(.all)
     )
-    .onChange(of: password) { _ in
+    .onChange(of: password) { _, _ in
       unlockError = nil
     }
     .onAppear {

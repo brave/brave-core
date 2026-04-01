@@ -147,12 +147,12 @@ public struct WalletPanelContainerView: View {
       }
     }
     .frame(idealWidth: 320, maxWidth: .infinity)
-    .onChange(of: keyringStore.isWalletLocked) { newValue in
+    .onChange(of: keyringStore.isWalletLocked) { _, newValue in
       guard keyringStore.isLoaded, newValue, !keyringStore.lockedManually else { return }
       // Wallet was auto-locked with panel open
       presentWalletWithContext?(.panelUnlockOrSetup)
     }
-    .onChange(of: keyringStore.isLoaded) { newValue in
+    .onChange(of: keyringStore.isLoaded) { _, newValue in
       guard newValue else { return }  // KeyringStore loaded
       handleKeyringStoreLoaded()
     }
@@ -601,12 +601,12 @@ struct WalletPanelView: View {
       Color(.braveGroupedBackground)
         .ignoresSafeArea()
     )
-    .onChange(of: cryptoStore.selectedTab) { tab in
+    .onChange(of: cryptoStore.selectedTab) { _, tab in
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
         presentWalletWithContext(.default(tab))
       }
     }
-    .onChange(of: cryptoStore.pendingRequest) { newValue in
+    .onChange(of: cryptoStore.pendingRequest) { _, newValue in
       if newValue != nil {
         // Slight delay to allow dismissal of unlock modal before presenting pending request modal.
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -614,10 +614,10 @@ struct WalletPanelView: View {
         }
       }
     }
-    .onChange(of: keyringStore.selectedAccount) { _ in
+    .onChange(of: keyringStore.selectedAccount) { _, _ in
       isConnectHidden = isConnectButtonHidden()
     }
-    .onChange(of: tabDappStore.latestPendingPermissionRequest) { newValue in
+    .onChange(of: tabDappStore.latestPendingPermissionRequest) { _, newValue in
       if let request = newValue, request.requestingOrigin == origin,
         request.coinType == keyringStore.selectedAccount.coin
       {
