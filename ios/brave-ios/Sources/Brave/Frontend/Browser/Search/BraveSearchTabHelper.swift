@@ -180,7 +180,6 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider {
         let timeInterval = TimeInterval(conversionObservationWindowValue) * 1.days
         conversion = .init(
           urlPattern: conversionUrlPatternValue,
-          verifiableAdvertiserPublicKeyBase64: ad.conversionAdvertiserPublicKeyValue,
           observationWindow: Date(timeIntervalSince1970: timeInterval)
         )
       }

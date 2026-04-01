@@ -6,12 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_CONVERSION_CONVERSION_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_CONVERSION_CONVERSION_INFO_H_
 
-#include <optional>
 #include <string>
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
@@ -38,7 +36,6 @@ struct ConversionInfo final {
   std::string advertiser_id;
   std::string segment;
   ConversionActionType action_type = ConversionActionType::kUndefined;
-  std::optional<VerifiableConversionInfo> verifiable;
 };
 
 using ConversionList = std::vector<ConversionInfo>;

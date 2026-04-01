@@ -35,9 +35,6 @@ namespace {
 constexpr int kHttpClientErrorResponseStatusCodeClass = 4;
 constexpr int kHttpServerErrorResponseStatusCodeClass = 5;
 
-constexpr char16_t kSerializeDocumentToStringJavaScript[] =
-    u"new XMLSerializer().serializeToString(document)";
-
 constexpr char16_t kDocumentBodyInnerTextJavaScript[] =
     u"document?.body?.innerText";
 
@@ -138,12 +135,7 @@ void AdsTabHelper::DidFinishNavigation(
 
   MaybeNotifyTabDidLoad();
 
-  // Process same document navigations only when a document load is completed.
-  // For navigations that lead to a document change, `ProcessNavigation` is
-  // called from `DocumentOnLoadCompletedInPrimaryMainFrame`.
   if (navigation_context->IsSameDocument()) {
-    MaybeNotifyTabHtmlContentDidChange();
-
     // Set `was_restored_` to `false` so that listeners are notified of tab
     // changes after the tab is restored.
     was_restored_ = false;
@@ -153,7 +145,6 @@ void AdsTabHelper::DidFinishNavigation(
 void AdsTabHelper::PageLoaded(
     web::WebState* web_state,
     web::PageLoadCompletionStatus load_completion_status) {
-  MaybeNotifyTabHtmlContentDidChange();
   MaybeNotifyTabTextContentDidChange();
 
   // Set `was_restored_` to `false` so that listeners are notified of tab
@@ -166,13 +157,6 @@ void AdsTabHelper::WebStateDestroyed(web::WebState* web_state) {
 
   web_state_->RemoveObserver(this);
   web_state_ = nullptr;
-}
-
-bool AdsTabHelper::UserHasJoinedBraveRewards() const {
-  const PrefService* const prefs =
-      ProfileIOS::FromBrowserState(web_state_->GetBrowserState())->GetPrefs();
-
-  return prefs->GetBoolean(brave_rewards::prefs::kEnabled);
 }
 
 bool AdsTabHelper::UserHasOptedInToNotificationAds() const {
@@ -214,42 +198,6 @@ bool AdsTabHelper::ShouldNotifyTabContentDidChange() const {
   // user constantly refreshes the page.
   return !was_restored_ && is_new_navigation_ && !redirect_chain_.empty() &&
          http_status_code_ && !IsErrorPage(*http_status_code_);
-}
-
-void AdsTabHelper::MaybeNotifyTabHtmlContentDidChange() {
-  if (!ShouldNotifyTabContentDidChange()) {
-    return;
-  }
-  if (!UserHasJoinedBraveRewards()) {
-    // HTML is not required because verifiable conversions are only supported
-    // for Brave Rewards users. However, we must notify that the tab content has
-    // changed with empty HTML to ensure that regular conversions are processed.
-    ads_service_->NotifyTabHtmlContentDidChange(tab_id_, redirect_chain_,
-                                                /*html=*/"");
-    return;
-  }
-
-  web::WebFrame* main_web_frame =
-      web_state_->GetWebFramesManager(web::ContentWorld::kIsolatedWorld)
-          ->GetMainWebFrame();
-  if (!main_web_frame) {
-    ads_service_->NotifyTabHtmlContentDidChange(tab_id_, redirect_chain_,
-                                                /*html=*/"");
-    return;
-  }
-  main_web_frame->ExecuteJavaScript(
-      kSerializeDocumentToStringJavaScript,
-      base::BindOnce(&AdsTabHelper::OnMaybeNotifyTabHtmlContentDidChange,
-                     weak_factory_.GetWeakPtr(), redirect_chain_));
-}
-
-void AdsTabHelper::OnMaybeNotifyTabHtmlContentDidChange(
-    const std::vector<GURL>& redirect_chain,
-    const base::Value* value) {
-  if (value && value->is_string()) {
-    ads_service_->NotifyTabHtmlContentDidChange(tab_id_, redirect_chain,
-                                                value->GetString());
-  }
 }
 
 void AdsTabHelper::MaybeNotifyTabTextContentDidChange() {

@@ -10,7 +10,6 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_test_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_test_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -38,10 +37,9 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
        SaveCreativeSetConversions) {
   // Arrange
   const CreativeSetConversionInfo creative_set_conversion_1 =
-      test::BuildVerifiableCreativeSetConversion(
+      test::BuildCreativeSetConversion(
           test::kCreativeSetId, /*url_pattern=*/"https://www.brave.com/*",
-          /*observation_window=*/base::Days(3),
-          test::kVerifiableConversionAdvertiserPublicKeyBase64);
+          /*observation_window=*/base::Days(3));
 
   const CreativeSetConversionInfo creative_set_conversion_2 =
       test::BuildCreativeSetConversion(
@@ -68,10 +66,9 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
        DoNotSaveDuplicateConversion) {
   // Arrange
   const CreativeSetConversionInfo creative_set_conversion =
-      test::BuildVerifiableCreativeSetConversion(
+      test::BuildCreativeSetConversion(
           test::kCreativeSetId, /*url_pattern=*/"https://www.brave.com/*",
-          /*observation_window=*/base::Days(3),
-          test::kVerifiableConversionAdvertiserPublicKeyBase64);
+          /*observation_window=*/base::Days(3));
 
   database::SaveCreativeSetConversions({creative_set_conversion});
 
@@ -125,20 +122,18 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
        SaveConversionWithMatchingCreativeSetIdAndType) {
   // Arrange
   const CreativeSetConversionInfo creative_set_conversion_1 =
-      test::BuildVerifiableCreativeSetConversion(
+      test::BuildCreativeSetConversion(
           test::kCreativeSetId,
           /*url_pattern=*/"https://www.brave.com/1",
-          /*observation_window=*/base::Days(3),
-          test::kVerifiableConversionAdvertiserPublicKeyBase64);
+          /*observation_window=*/base::Days(3));
 
   database::SaveCreativeSetConversions({creative_set_conversion_1});
 
   const CreativeSetConversionInfo creative_set_conversion_2 =
-      test::BuildVerifiableCreativeSetConversion(
+      test::BuildCreativeSetConversion(
           test::kCreativeSetId,
           /*url_pattern=*/"https://www.brave.com/2",
-          /*observation_window=*/base::Days(30),
-          test::kVerifiableConversionAdvertiserPublicKeyBase64);
+          /*observation_window=*/base::Days(30));
 
   // Act
   database::SaveCreativeSetConversions({creative_set_conversion_2});

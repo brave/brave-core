@@ -43,10 +43,6 @@ void AdsClientNotifierWaiter::WaitForOnNotifyTabTextContentDidChange() {
   on_notify_tab_text_content_did_change_run_loop_.Run();
 }
 
-void AdsClientNotifierWaiter::WaitForOnNotifyTabHtmlContentDidChange() {
-  on_notify_tab_html_content_did_change_run_loop_.Run();
-}
-
 void AdsClientNotifierWaiter::WaitForOnNotifyTabDidStartPlayingMedia() {
   on_notify_tab_did_start_playing_media_run_loop_.Run();
 }
@@ -132,13 +128,6 @@ void AdsClientNotifierWaiter::OnNotifyTabTextContentDidChange(
     const std::vector<GURL>& /*redirect_chain*/,
     const std::string& /*text*/) {
   on_notify_tab_text_content_did_change_run_loop_.Quit();
-}
-
-void AdsClientNotifierWaiter::OnNotifyTabHtmlContentDidChange(
-    int32_t /*tab_id*/,
-    const std::vector<GURL>& /*redirect_chain*/,
-    const std::string& /*html*/) {
-  on_notify_tab_html_content_did_change_run_loop_.Quit();
 }
 
 void AdsClientNotifierWaiter::OnNotifyTabDidStartPlayingMedia(

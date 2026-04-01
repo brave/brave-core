@@ -37,8 +37,6 @@ inline constexpr char kCreativeAdRewardsValuePropertyName[] =
 // Creative set conversion.
 inline constexpr char kCreativeSetConversionUrlPatternPropertyName[] =
     "data-conversion-url-pattern-value";
-inline constexpr char kCreativeSetConversionAdvertiserPublicKeyPropertyName[] =
-    "data-conversion-advertiser-public-key-value";
 inline constexpr char kCreativeSetConversionObservationWindowPropertyName[] =
     "data-conversion-observation-window-value";
 

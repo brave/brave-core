@@ -44,9 +44,6 @@ class AdsClientNotifierObserverMock : public AdsClientNotifierObserver {
   MOCK_METHOD(void,
               OnNotifyTabTextContentDidChange,
               (int32_t, const std::vector<GURL>&, const std::string&));
-  MOCK_METHOD(void,
-              OnNotifyTabHtmlContentDidChange,
-              (int32_t, const std::vector<GURL>&, const std::string&));
   MOCK_METHOD(void, OnNotifyTabDidStartPlayingMedia, (int32_t));
   MOCK_METHOD(void, OnNotifyTabDidStopPlayingMedia, (int32_t));
   MOCK_METHOD(void,

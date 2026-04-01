@@ -1671,19 +1671,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
                                             base::SysNSStringToUTF8(text));
 }
 
-- (void)notifyTabHtmlContentDidChange:(NSInteger)tabId
-                        redirectChain:(NSArray<NSURL*>*)redirectChain
-                                 html:(NSString*)html {
-  if (!adsService) {
-    return;
-  }
-
-  const std::vector<GURL> urls = [self GURLsWithNSURLs:redirectChain];
-
-  adsService->NotifyTabHtmlContentDidChange(static_cast<int32_t>(tabId), urls,
-                                            base::SysNSStringToUTF8(html));
-}
-
 - (void)notifyTabDidStartPlayingMedia:(NSInteger)tabId {
   if (adsService) {
     adsService->NotifyTabDidStartPlayingMedia(static_cast<int32_t>(tabId));

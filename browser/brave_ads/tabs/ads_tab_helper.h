@@ -51,7 +51,6 @@ class AdsTabHelper final : public content::WebContentsObserver,
  private:
   friend class content::WebContentsUserData<AdsTabHelper>;
 
-  bool UserHasJoinedBraveRewards() const;
   bool UserHasOptedInToNotificationAds() const;
 
   bool IsVisible() const;
@@ -60,7 +59,6 @@ class AdsTabHelper final : public content::WebContentsObserver,
   void MaybeSetBrowserIsNoLongerActive();
 
   void ProcessNavigation();
-  void ProcessSameDocumentNavigation();
   void ResetNavigationState();
 
   void MaybeNotifyBrowserDidBecomeActive();
@@ -74,10 +72,6 @@ class AdsTabHelper final : public content::WebContentsObserver,
   void MaybeNotifyTabDidLoad();
 
   bool ShouldNotifyTabContentDidChange() const;
-  void MaybeNotifyTabHtmlContentDidChange();
-  void OnMaybeNotifyTabHtmlContentDidChange(
-      const std::vector<GURL>& redirect_chain,
-      base::Value value);
   void MaybeNotifyTabTextContentDidChange();
   void OnMaybeNotifyTabTextContentDidChange(
       const std::vector<GURL>& redirect_chain,

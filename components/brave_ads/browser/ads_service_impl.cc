@@ -1340,16 +1340,6 @@ void AdsServiceImpl::NotifyTabTextContentDidChange(
   }
 }
 
-void AdsServiceImpl::NotifyTabHtmlContentDidChange(
-    int32_t tab_id,
-    const std::vector<GURL>& redirect_chain,
-    const std::string& html) {
-  if (bat_ads_client_notifier_remote_.is_bound()) {
-    bat_ads_client_notifier_remote_->NotifyTabHtmlContentDidChange(
-        tab_id, redirect_chain, html);
-  }
-}
-
 void AdsServiceImpl::NotifyTabDidStartPlayingMedia(int32_t tab_id) {
   if (bat_ads_client_notifier_remote_.is_bound()) {
     bat_ads_client_notifier_remote_->NotifyTabDidStartPlayingMedia(tab_id);

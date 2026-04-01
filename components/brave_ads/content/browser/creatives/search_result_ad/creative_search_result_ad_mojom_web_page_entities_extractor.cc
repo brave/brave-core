@@ -46,8 +46,7 @@ constexpr auto kRequiredCreativeSetConversionPropertyNames =
 constexpr auto kCreativeSetConversionPropertyNames =
     base::MakeFixedFlatSet<std::string_view>(
         base::sorted_unique,
-        {kCreativeSetConversionAdvertiserPublicKeyPropertyName,
-         kCreativeSetConversionObservationWindowPropertyName,
+        {kCreativeSetConversionObservationWindowPropertyName,
          kCreativeSetConversionUrlPatternPropertyName});
 
 bool GetStringValue(const schema_org::mojom::PropertyPtr& mojom_property,
@@ -211,18 +210,6 @@ bool ExtractCreativeSetConversionMojomProperty(
                                   &mojom_creative_set_conversion->url_pattern);
   }
 
-  if (property_name == kCreativeSetConversionAdvertiserPublicKeyPropertyName) {
-    std::string verifiable_advertiser_public_key_base64;
-    const bool success = GetStringValue(
-        mojom_property, &verifiable_advertiser_public_key_base64);
-    if (success && !verifiable_advertiser_public_key_base64.empty()) {
-      mojom_creative_set_conversion->verifiable_advertiser_public_key_base64 =
-          verifiable_advertiser_public_key_base64;
-    }
-
-    return success;
-  }
-
   if (property_name == kCreativeSetConversionObservationWindowPropertyName) {
     int32_t observation_window;
     const bool success = GetIntValue(mojom_property, &observation_window);
@@ -384,10 +371,6 @@ void Log(const std::vector<mojom::CreativeSearchResultAdInfoPtr>&
     VLOG(6) << "Creative set conversion properties:\n"
             << kCreativeSetConversionUrlPatternPropertyName << ": "
             << mojom_creative_ad->creative_set_conversion->url_pattern << "\n"
-            << kCreativeSetConversionAdvertiserPublicKeyPropertyName << ": "
-            << mojom_creative_ad->creative_set_conversion
-                   ->verifiable_advertiser_public_key_base64.value_or("")
-            << "\n"
             << kCreativeSetConversionObservationWindowPropertyName << ": "
             << mojom_creative_ad->creative_set_conversion->observation_window;
   }

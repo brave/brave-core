@@ -10,7 +10,6 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/resources/country_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
@@ -21,8 +20,6 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_base.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_constants.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_test_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 #include "url/gurl.h"
@@ -62,10 +59,29 @@ TEST_F(BraveAdsConversionsTest,
   base::RunLoop click_through_run_loop;
   VerifyOnDidConvertAdExpectation(ad_2, ConversionActionType::kClickThrough,
                                   click_through_run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
   view_through_run_loop.Run();
   click_through_run_loop.Run();
+}
+
+TEST_F(BraveAdsConversionsTest, ConvertAdForMatchingCreativeSetConversion) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/false);
+  test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          test::kMatchingUrlPattern,
+                                          /*observation_window=*/base::Days(3));
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kViewedImpression});
+
+  // Act & Assert
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
+                                  run_loop.QuitClosure());
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConversionsTest, DoNotCapConversionsWithinTheSameCreativeSet) {
@@ -85,16 +101,14 @@ TEST_F(BraveAdsConversionsTest, DoNotCapConversionsWithinTheSameCreativeSet) {
   base::RunLoop view_through_run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
                                   view_through_run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
   view_through_run_loop.Run();
 
   // Act & Assert
   base::RunLoop click_through_run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
                                   click_through_run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
   click_through_run_loop.Run();
 }
 
@@ -115,21 +129,18 @@ TEST_F(BraveAdsConversionsTest, CapConversionsWithinTheSameCreativeSet) {
   base::RunLoop view_through_run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
                                   view_through_run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
   view_through_run_loop.Run();
 
   base::RunLoop click_through_run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
                                   click_through_run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
   click_through_run_loop.Run();
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertViewedAdAfterTheSameAdWasDismissed) {
@@ -149,8 +160,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedAdAfterTheSameAdWasDismissed) {
   base::RunLoop run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
                                   run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
   run_loop.Run();
 }
 
@@ -174,8 +184,7 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -191,8 +200,7 @@ TEST_F(BraveAdsConversionsTest,
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -211,8 +219,7 @@ TEST_F(BraveAdsConversionsTest,
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -232,8 +239,7 @@ TEST_F(BraveAdsConversionsTest,
   base::RunLoop run_loop;
   VerifyOnDidConvertAdExpectation(ad_1, ConversionActionType::kViewThrough,
                                   run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
   run_loop.Run();
 
   AdInfo ad_2 = ad_1;
@@ -244,8 +250,7 @@ TEST_F(BraveAdsConversionsTest,
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
 }
 
 TEST_F(BraveAdsConversionsTest, DoNotConvertAdIfUrlPatternDoesNotMatch) {
@@ -263,8 +268,7 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertAdIfUrlPatternDoesNotMatch) {
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -285,8 +289,7 @@ TEST_F(BraveAdsConversionsTest,
   base::RunLoop run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
                                   run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
   run_loop.Run();
 }
 
@@ -306,287 +309,7 @@ TEST_F(BraveAdsConversionsTest,
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
-}
-
-TEST_F(BraveAdsConversionsTest,
-       FallbackToDefaultConversionIfVerifiableAdvertiserPublicKeyIsEmpty) {
-  // Arrange
-  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
-
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
-
-  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*use_random_uuids=*/false);
-  test::BuildAndSaveVerifiableCreativeSetConversion(
-      ad.creative_set_id, test::kMatchingUrlPattern,
-      /*observation_window=*/base::Days(3),
-      /*verifiable_advertiser_public_key_base64=*/"");
-  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
-                            mojom::ConfirmationType::kViewedImpression});
-
-  // Act & Assert
-  base::RunLoop run_loop;
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
-                                  run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildVerifiableConversionRedirectChain(),
-                             /*html=*/"");
-  run_loop.Run();
-}
-
-TEST_F(
-    BraveAdsConversionsTest,
-    FallbackToDefaultConversionIfResourceIdPatternDoesNotMatchRedirectChain) {
-  // Arrange
-  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
-
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
-
-  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*use_random_uuids=*/false);
-  test::BuildAndSaveVerifiableCreativeSetConversion(
-      ad.creative_set_id, test::kMatchingUrlPattern,
-      /*observation_window=*/base::Days(3),
-      test::kVerifiableConversionAdvertiserPublicKeyBase64);
-  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
-                            mojom::ConfirmationType::kViewedImpression});
-
-  // Act & Assert
-  base::RunLoop run_loop;
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
-                                  run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
-  run_loop.Run();
-}
-
-TEST_F(BraveAdsConversionsTest,
-       FallbackToDefaultConversionIfVerifiableUrlConversionIdDoesNotExist) {
-  // Arrange
-  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
-
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
-
-  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*use_random_uuids=*/false);
-  test::BuildAndSaveVerifiableCreativeSetConversion(
-      ad.creative_set_id, test::kMatchingUrlPattern,
-      /*observation_window=*/base::Days(3),
-      test::kVerifiableConversionAdvertiserPublicKeyBase64);
-  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
-                            mojom::ConfirmationType::kViewedImpression});
-
-  // Act & Assert
-  base::RunLoop run_loop;
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
-                                  run_loop.QuitClosure());
-  conversions_->MaybeConvert(
-      /*redirect_chain=*/{GURL("https://foo.com/bar?qux=quux")}, /*html=*/"");
-  run_loop.Run();
-}
-
-TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
-  // Arrange
-  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
-
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
-
-  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*use_random_uuids=*/false);
-  test::BuildAndSaveVerifiableCreativeSetConversion(
-      ad.creative_set_id, test::kMatchingUrlPattern,
-      /*observation_window=*/base::Days(3),
-      test::kVerifiableConversionAdvertiserPublicKeyBase64);
-  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
-                            mojom::ConfirmationType::kViewedImpression});
-
-  // Act & Assert
-  base::RunLoop run_loop;
-  VerifyOnDidConvertVerifiableAdExpectation(
-      ad, ConversionActionType::kViewThrough,
-      VerifiableConversionInfo{
-          /*id=*/"xyzzy", test::kVerifiableConversionAdvertiserPublicKeyBase64},
-      run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildVerifiableConversionRedirectChain(),
-                             /*html=*/"");
-  run_loop.Run();
-}
-
-TEST_F(BraveAdsConversionsTest,
-       FallbackToDefaultConversionIfVerifiableHtmlConversionIdDoesNotExist) {
-  // Arrange
-  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
-
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
-
-  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*use_random_uuids=*/false);
-  test::BuildAndSaveVerifiableCreativeSetConversion(
-      ad.creative_set_id, test::kMatchingUrlPattern,
-      /*observation_window=*/base::Days(3),
-      test::kVerifiableConversionAdvertiserPublicKeyBase64);
-  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
-                            mojom::ConfirmationType::kViewedImpression});
-
-  // Act & Assert
-  base::RunLoop run_loop;
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
-                                  run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
-  run_loop.Run();
-}
-
-TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableHtmlConversionIdExists) {
-  // Arrange
-  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
-
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
-
-  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*use_random_uuids=*/false);
-  test::BuildAndSaveVerifiableCreativeSetConversion(
-      ad.creative_set_id, test::kMatchingUrlPattern,
-      /*observation_window=*/base::Days(3),
-      test::kVerifiableConversionAdvertiserPublicKeyBase64);
-  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
-                            mojom::ConfirmationType::kViewedImpression});
-
-  // Act & Assert
-  base::RunLoop run_loop;
-  VerifyOnDidConvertVerifiableAdExpectation(
-      ad, ConversionActionType::kViewThrough,
-      VerifiableConversionInfo{
-          /*id=*/"waldo", test::kVerifiableConversionAdvertiserPublicKeyBase64},
-      run_loop.QuitClosure());
-  conversions_->MaybeConvert(
-      test::BuildDefaultConversionRedirectChain(),
-      /*html=*/R"(<html><div id="xyzzy-id">waldo</div></html>)");
-  run_loop.Run();
-}
-
-TEST_F(
-    BraveAdsConversionsTest,
-    FallbackToDefaultConversionIfVerifiableHtmlMetaTagConversionIdDoesNotExist) {
-  // Arrange
-  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
-
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
-
-  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*use_random_uuids=*/false);
-  test::BuildAndSaveVerifiableCreativeSetConversion(
-      ad.creative_set_id, test::kAnotherMatchingUrlPattern,
-      /*observation_window=*/base::Days(3),
-      test::kVerifiableConversionAdvertiserPublicKeyBase64);
-  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
-                            mojom::ConfirmationType::kViewedImpression});
-
-  // Act & Assert
-  base::RunLoop run_loop;
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
-                                  run_loop.QuitClosure());
-  conversions_->MaybeConvert(
-      /*redirect_chain=*/{GURL("https://qux.com/quux/corge")}, /*html=*/"");
-  run_loop.Run();
-}
-
-TEST_F(BraveAdsConversionsTest,
-       ConvertAdIfVerifiableHtmlMetaTagConversionIdExists) {
-  // Arrange
-  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
-
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
-
-  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*use_random_uuids=*/false);
-  test::BuildAndSaveVerifiableCreativeSetConversion(
-      ad.creative_set_id, test::kAnotherMatchingUrlPattern,
-      /*observation_window=*/base::Days(3),
-      test::kVerifiableConversionAdvertiserPublicKeyBase64);
-  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
-                            mojom::ConfirmationType::kViewedImpression});
-
-  // Act & Assert
-  base::RunLoop run_loop;
-  VerifyOnDidConvertVerifiableAdExpectation(
-      ad, ConversionActionType::kViewThrough,
-      VerifiableConversionInfo{
-          /*id=*/"fred", test::kVerifiableConversionAdvertiserPublicKeyBase64},
-      run_loop.QuitClosure());
-  conversions_->MaybeConvert(
-      /*redirect_chain=*/{GURL("https://qux.com/quux/corge")},
-      /*html=*/R"(<html><meta name="ad-conversion-id" content="fred"></html>)");
-  run_loop.Run();
-}
-
-TEST_F(BraveAdsConversionsTest, VerifiableConversion) {
-  // Arrange
-  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
-
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
-
-  const AdInfo ad = test::BuildAd(mojom::AdType::kSearchResultAd,
-                                  /*use_random_uuids=*/false);
-  test::BuildAndSaveVerifiableCreativeSetConversion(
-      ad.creative_set_id, test::kMatchingUrlPattern,
-      /*observation_window=*/base::Days(3),
-      test::kVerifiableConversionAdvertiserPublicKeyBase64);
-  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
-                            mojom::ConfirmationType::kViewedImpression,
-                            mojom::ConfirmationType::kClicked});
-
-  // Act & Assert
-  base::RunLoop run_loop;
-  VerifyOnDidConvertVerifiableAdExpectation(
-      ad, ConversionActionType::kClickThrough,
-      VerifiableConversionInfo{
-          /*id=*/"fred", test::kVerifiableConversionAdvertiserPublicKeyBase64},
-      run_loop.QuitClosure());
-  conversions_->MaybeConvert(
-      test::BuildDefaultConversionRedirectChain(),
-      /*html=*/R"(<html><meta name="ad-conversion-id" content="fred"></html>)");
-  run_loop.Run();
-}
-
-TEST_F(BraveAdsConversionsTest, FallbackToDefaultConversionForNonRewardsUser) {
-  // Arrange
-  const base::test::ScopedFeatureList scoped_feature_list(
-      {kConversionsFeature});
-
-  test::DisableBraveRewards();
-
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
-
-  const AdInfo ad = test::BuildAd(mojom::AdType::kSearchResultAd,
-                                  /*use_random_uuids=*/false);
-  test::BuildAndSaveVerifiableCreativeSetConversion(
-      ad.creative_set_id, test::kMatchingUrlPattern,
-      /*observation_window=*/base::Days(3),
-      test::kVerifiableConversionAdvertiserPublicKeyBase64);
-
-  // We only record ad clicked and conversion events for non-Rewards users.
-  test::RecordAdEvent(ad, mojom::ConfirmationType::kClicked);
-
-  // Act & Assert
-  base::RunLoop run_loop;
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough,
-                                  run_loop.QuitClosure());
-  conversions_->MaybeConvert(
-      test::BuildDefaultConversionRedirectChain(),
-      /*html=*/R"(<html><meta name="ad-conversion-id" content="fred"></html>)");
-  run_loop.Run();
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
 }
 
 }  // namespace brave_ads

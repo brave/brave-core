@@ -124,14 +124,6 @@ void TabManager::NotifyTextContentDidChange(
                     redirect_chain, text);
 }
 
-void TabManager::NotifyHtmlContentDidChange(
-    int32_t tab_id,
-    const std::vector<GURL>& redirect_chain,
-    const std::string& html) {
-  observers_.Notify(&TabManagerObserver::OnHtmlContentDidChange, tab_id,
-                    redirect_chain, html);
-}
-
 void TabManager::NotifyDidCloseTab(int32_t tab_id) {
   observers_.Notify(&TabManagerObserver::OnDidCloseTab, tab_id);
 }
@@ -142,23 +134,6 @@ void TabManager::NotifyTabDidStartPlayingMedia(int32_t tab_id) {
 
 void TabManager::NotifyTabDidStopPlayingMedia(int32_t tab_id) {
   observers_.Notify(&TabManagerObserver::OnTabDidStopPlayingMedia, tab_id);
-}
-
-void TabManager::OnNotifyTabHtmlContentDidChange(
-    int32_t tab_id,
-    const std::vector<GURL>& redirect_chain,
-    const std::string& html) {
-  CHECK(!redirect_chain.empty());
-
-  const uint32_t hash = base::FastHash(html);
-  if (!html.empty() && hash == last_html_content_hash_) {
-    // No change.
-    return;
-  }
-  last_html_content_hash_ = hash;
-
-  BLOG(2, "Tab id " << tab_id << " HTML content changed");
-  NotifyHtmlContentDidChange(tab_id, redirect_chain, html);
 }
 
 void TabManager::OnNotifyTabTextContentDidChange(

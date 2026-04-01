@@ -27,7 +27,6 @@ constexpr char kPaymentId[] = "PaymentId";
 constexpr char kRecoverySeed[] = "RecoverySeed";
 constexpr char kRedirectChainUrl[] = "https://brave.com";
 constexpr char kText[] = "Text";
-constexpr char kHtml[] = "HTML";
 
 constexpr int32_t kTabId = 1;
 constexpr bool kIsNewNavigation = true;
@@ -65,8 +64,6 @@ class BraveAdsAdsClientNotifierTest : public ::testing::Test {
 
     ads_client_notifier_.NotifyTabTextContentDidChange(
         kTabId, {GURL(kRedirectChainUrl)}, kText);
-    ads_client_notifier_.NotifyTabHtmlContentDidChange(
-        kTabId, {GURL(kRedirectChainUrl)}, kHtml);
     ads_client_notifier_.NotifyTabDidStartPlayingMedia(kTabId);
     ads_client_notifier_.NotifyTabDidStopPlayingMedia(kTabId);
     ads_client_notifier_.NotifyTabDidChange(kTabId, {GURL(kRedirectChainUrl)},
@@ -112,11 +109,6 @@ class BraveAdsAdsClientNotifierTest : public ::testing::Test {
         ads_client_notifier_observer_mock_,
         OnNotifyTabTextContentDidChange(
             kTabId, ::testing::ElementsAre(GURL(kRedirectChainUrl)), kText))
-        .Times(expected_call_count);
-    EXPECT_CALL(
-        ads_client_notifier_observer_mock_,
-        OnNotifyTabHtmlContentDidChange(
-            kTabId, ::testing::ElementsAre(GURL(kRedirectChainUrl)), kHtml))
         .Times(expected_call_count);
     EXPECT_CALL(ads_client_notifier_observer_mock_,
                 OnNotifyTabDidStartPlayingMedia(kTabId))

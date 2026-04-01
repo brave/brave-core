@@ -38,8 +38,7 @@ TEST_F(BraveAdsConversionsSearchResultAdTest,
   base::RunLoop run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
                                   run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
   run_loop.Run();
 }
 
@@ -58,8 +57,7 @@ TEST_F(BraveAdsConversionsSearchResultAdTest,
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
 }
 
 TEST_F(BraveAdsConversionsSearchResultAdTest,
@@ -78,8 +76,7 @@ TEST_F(BraveAdsConversionsSearchResultAdTest,
   base::RunLoop run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough,
                                   run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
   run_loop.Run();
 }
 
@@ -99,8 +96,7 @@ TEST_F(BraveAdsConversionsSearchResultAdTest,
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
 }
 
 TEST_F(BraveAdsConversionsSearchResultAdTest,
@@ -119,8 +115,7 @@ TEST_F(BraveAdsConversionsSearchResultAdTest,
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
 }
 
 TEST_F(BraveAdsConversionsSearchResultAdTest,
@@ -141,8 +136,7 @@ TEST_F(BraveAdsConversionsSearchResultAdTest,
   base::RunLoop run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough,
                                   run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
-                             /*html=*/"");
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
   run_loop.Run();
 }
 

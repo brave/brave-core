@@ -35,9 +35,6 @@ class TabManagerObserverMock : public TabManagerObserver {
   MOCK_METHOD(void,
               OnTextContentDidChange,
               (int32_t, const std::vector<GURL>&, const std::string&));
-  MOCK_METHOD(void,
-              OnHtmlContentDidChange,
-              (int32_t, const std::vector<GURL>&, const std::string&));
 
   MOCK_METHOD(void, OnDidCloseTab, (int32_t));
 

@@ -114,10 +114,6 @@ mojom::CreativeSearchResultAdInfoPtr GenerateCreativeSearchResultAd(
   auto mojom_conversion = mojom::CreativeSetConversionInfo::New();
   mojom_conversion->url_pattern =
       base::StrCat({"data-conversion-url-pattern-value", index});
-  if (ad_index == 1) {
-    mojom_conversion->verifiable_advertiser_public_key_base64 =
-        base::StrCat({"data-conversion-advertiser-public-key-value", index});
-  }
   mojom_conversion->observation_window = base::Days(ad_index);
   mojom_creative_ad->creative_set_conversion = std::move(mojom_conversion);
 

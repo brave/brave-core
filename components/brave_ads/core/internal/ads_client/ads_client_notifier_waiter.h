@@ -39,7 +39,6 @@ class AdsClientNotifierWaiter final : public AdsClientNotifierObserver {
   void WaitForOnNotifyDidUnregisterResourceComponent();
   void WaitForOnNotifyRewardsWalletDidUpdate();
   void WaitForOnNotifyTabTextContentDidChange();
-  void WaitForOnNotifyTabHtmlContentDidChange();
   void WaitForOnNotifyTabDidStartPlayingMedia();
   void WaitForOnNotifyTabDidStopPlayingMedia();
   void WaitForOnNotifyTabDidChange();
@@ -67,9 +66,6 @@ class AdsClientNotifierWaiter final : public AdsClientNotifierObserver {
   void OnNotifyTabTextContentDidChange(int32_t tab_id,
                                        const std::vector<GURL>& redirect_chain,
                                        const std::string& text) override;
-  void OnNotifyTabHtmlContentDidChange(int32_t tab_id,
-                                       const std::vector<GURL>& redirect_chain,
-                                       const std::string& html) override;
   void OnNotifyTabDidStartPlayingMedia(int32_t tab_id) override;
   void OnNotifyTabDidStopPlayingMedia(int32_t tab_id) override;
   void OnNotifyTabDidChange(int32_t tab_id,
@@ -96,7 +92,6 @@ class AdsClientNotifierWaiter final : public AdsClientNotifierObserver {
   base::RunLoop on_notify_did_unregister_resource_component_run_loop_;
   base::RunLoop on_notify_rewards_wallet_did_update_run_loop_;
   base::RunLoop on_notify_tab_text_content_did_change_run_loop_;
-  base::RunLoop on_notify_tab_html_content_did_change_run_loop_;
   base::RunLoop on_notify_tab_did_start_playing_media_run_loop_;
   base::RunLoop on_notify_tab_did_stop_playing_media_run_loop_;
   base::RunLoop on_notify_tab_did_change_run_loop_;

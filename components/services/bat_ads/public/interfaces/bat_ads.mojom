@@ -37,9 +37,6 @@ interface BatAdsClientNotifier {
   NotifyTabTextContentDidChange(int32 tab_id,
                                 array<url.mojom.Url> redirect_chain,
                                 mojo_base.mojom.BigString text);
-  NotifyTabHtmlContentDidChange(int32 tab_id,
-                                array<url.mojom.Url> redirect_chain,
-                                mojo_base.mojom.BigString html);
   NotifyTabDidStartPlayingMedia(int32 tab_id);
   NotifyTabDidStopPlayingMedia(int32 tab_id);
   NotifyTabDidChange(int32 tab_id,

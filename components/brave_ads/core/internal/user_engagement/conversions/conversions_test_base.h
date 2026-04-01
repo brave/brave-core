@@ -17,8 +17,6 @@ namespace brave_ads {
 
 class Conversions;
 struct AdInfo;
-struct VerifiableConversionInfo;
-
 namespace test {
 
 class BraveAdsConversionsTestBase : public TestBase {
@@ -43,11 +41,6 @@ class BraveAdsConversionsTestBase : public TestBase {
 
   void VerifyOnDidNotConvertAdExpectation();
 
-  void VerifyOnDidConvertVerifiableAdExpectation(
-      const AdInfo& ad,
-      ConversionActionType action_type,
-      const VerifiableConversionInfo& verifiable_conversion,
-      base::OnceClosure did_convert_ad_closure);
 
   std::unique_ptr<Conversions> conversions_;
 

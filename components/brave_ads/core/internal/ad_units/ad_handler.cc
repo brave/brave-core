@@ -13,9 +13,7 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/page_land_user_data.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_info.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
@@ -101,13 +99,12 @@ void AdHandler::TriggerSearchResultAdEvent(
 void AdHandler::OnDidConvertAd(const ConversionInfo& conversion) {
   CHECK(conversion.IsValid());
 
-  BLOG(1, "Converted " << ToString(conversion.action_type) << " "
-                       << ConversionTypeToString(conversion) << " for "
-                       << conversion.ad_type << " with creative instance id "
-                       << conversion.creative_instance_id
-                       << ", creative set id " << conversion.creative_set_id
-                       << ", campaign id " << conversion.campaign_id
-                       << " and advertiser id " << conversion.advertiser_id);
+  BLOG(1, "Conversion for "
+              << conversion.ad_type << " with creative instance id "
+              << conversion.creative_instance_id << ", creative set id "
+              << conversion.creative_set_id << ", campaign id "
+              << conversion.campaign_id << " and advertiser id "
+              << conversion.advertiser_id);
 
   DepositWithUserData(conversion.ad_type, mojom::ConfirmationType::kConversion,
                       conversion.campaign_id, conversion.creative_instance_id,
