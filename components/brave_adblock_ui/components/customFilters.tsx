@@ -30,7 +30,7 @@ export class CustomFilters extends React.Component<Props, {}> {
         </div>
         <textarea
           style={{ marginTop: '10px' }}
-          data-test-id={'customFiltersInput'}
+          data-testid={'customFiltersInput'}
           cols={100}
           rows={10}
           spellCheck={false}

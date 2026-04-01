@@ -441,7 +441,7 @@ describe('AssistantTask web sources', () => {
     )
 
     expect(
-      container.querySelector('[data-test-id="web-sources-event"]'),
+      container.querySelector('[data-testid="web-sources-event"]'),
     ).toBeInTheDocument()
   })
 
@@ -457,7 +457,7 @@ describe('AssistantTask web sources', () => {
     )
 
     expect(
-      container.querySelector('[data-test-id="search-summary"]'),
+      container.querySelector('[data-testid="search-summary"]'),
     ).toBeInTheDocument()
   })
 
@@ -481,7 +481,7 @@ describe('AssistantTask web sources', () => {
 
     // Verify sources appear in the Steps view
     expect(
-      container.querySelector('[data-test-id="web-sources-event"]'),
+      container.querySelector('[data-testid="web-sources-event"]'),
     ).toBeInTheDocument()
 
     // Sources should be in the last step (with the
@@ -489,10 +489,10 @@ describe('AssistantTask web sources', () => {
     const steps = container.querySelectorAll('[class*="taskStep"]')
     expect(steps.length).toBe(2)
     expect(
-      steps[0].querySelector('[data-test-id="web-sources-event"]'),
+      steps[0].querySelector('[data-testid="web-sources-event"]'),
     ).toBeNull()
     expect(
-      steps[1].querySelector('[data-test-id="web-sources-event"]'),
+      steps[1].querySelector('[data-testid="web-sources-event"]'),
     ).toBeInTheDocument()
   })
 
@@ -517,9 +517,9 @@ describe('AssistantTask web sources', () => {
     // Search summary should be in the last step
     const steps = container.querySelectorAll('[class*="taskStep"]')
     expect(steps.length).toBe(2)
-    expect(steps[0].querySelector('[data-test-id="search-summary"]')).toBeNull()
+    expect(steps[0].querySelector('[data-testid="search-summary"]')).toBeNull()
     expect(
-      steps[1].querySelector('[data-test-id="search-summary"]'),
+      steps[1].querySelector('[data-testid="search-summary"]'),
     ).toBeInTheDocument()
   })
 })

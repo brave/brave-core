@@ -51,7 +51,7 @@ export default function WebSourcesEvent(props: { sources: mojom.WebSource[] }) {
   return (
     <div
       className={styles.sources}
-      data-test-id='web-sources-event'
+      data-testid='web-sources-event'
     >
       <h4>{getLocale(S.CHAT_UI_SOURCES)}</h4>
       <ul>

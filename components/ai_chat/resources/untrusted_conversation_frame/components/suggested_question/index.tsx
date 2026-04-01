@@ -25,7 +25,7 @@ export function SuggestedQuestion({
     >
       <span
         className={styles.questionButtonText}
-        data-test-id={`suggested-question-${index}`}
+        data-testid={`suggested-question-${index}`}
       >
         {question}
       </span>
