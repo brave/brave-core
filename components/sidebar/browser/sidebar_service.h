@@ -80,6 +80,10 @@ class SidebarService : public KeyedService {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
+  // Re-evaluates built-in items and removes any that are no longer
+  // available (e.g. disabled by policy).
+  void RefreshBuiltInItems();
+
   std::vector<SidebarItem> GetHiddenDefaultSidebarItems() const;
   ShowSidebarOption GetSidebarShowOption() const;
   void SetSidebarShowOption(ShowSidebarOption show_options);
@@ -109,6 +113,7 @@ class SidebarService : public KeyedService {
   SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) const;
   std::vector<SidebarItem::BuiltInItemType> GetCurrentlyPresentBuiltInTypes()
       const;
+  void OnBuiltInItemPolicyChanged(const std::string& pref_name);
   void OnPreferenceChanged(const std::string& pref_name);
   void MigrateSidebarShowOptions();
   void MigratePrefSidebarBuiltInItemsToHidden();
