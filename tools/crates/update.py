@@ -15,12 +15,14 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
 import tarfile
 import tempfile
 import toml
+import urllib.parse
 import urllib.request
 
 import brave_chromium_utils
@@ -32,6 +34,28 @@ with brave_chromium_utils.sys_path('//tools/rust'):
                          'cargo' + ('.exe' if sys.platform == 'win32' else ''))
 REMOVE_CRATES = ['winapi-*gnu*', 'windows_*gnu*']
 FILTER_CHECKSUM_PATTERNS = ['.git', '**/.git']
+
+_CRATE_NAME_RE = re.compile(r'^[a-zA-Z0-9_-]+$')
+_VERSION_RE = re.compile(r'^\d+\.\d+\.\d+')
+_CRATES_IO_BASE = 'https://crates.io/api/v1/crates/'
+
+
+def _crates_io_url(*parts):
+    """Build a crates.io API URL with each path component percent-encoded."""
+    return _CRATES_IO_BASE + '/'.join(
+        urllib.parse.quote(p, safe='') for p in parts)
+
+
+def _safe_extractall(tar, path):
+    """Extract a tarball, rejecting any member whose path escapes *path*."""
+    resolved = Path(path).resolve()
+    for member in tar.getmembers():
+        member_path = (resolved / member.name).resolve()
+        if not str(member_path).startswith(str(resolved)):
+            raise RuntimeError(
+                f'Refusing to extract {member.name!r}: path traversal detected'
+            )
+    tar.extractall(path=path)
 
 
 def setup_workspace():
@@ -88,12 +112,16 @@ def update_crate(crate_name, precise_version):
     directory, and patches Cargo.lock. No cargo update or cargo vendor is
     invoked, so no collateral version bumps occur.
     """
+    if not _CRATE_NAME_RE.match(crate_name):
+        raise ValueError(f'Invalid crate name: {crate_name!r}')
+    if not _VERSION_RE.match(precise_version):
+        raise ValueError(f'Invalid version: {precise_version!r}')
+
     vendor_path = Path('vendor')
     crate_dir = vendor_path / crate_name
 
     # 1. Fetch the package checksum from the crates.io API.
-    index_url = (f'https://crates.io/api/v1/crates/{crate_name}'
-                 f'/{precise_version}')
+    index_url = _crates_io_url(crate_name, precise_version)
     req = urllib.request.Request(index_url,
                                 headers={'User-Agent': 'brave-tools-crates'})
     with urllib.request.urlopen(req) as resp:
@@ -101,8 +129,7 @@ def update_crate(crate_name, precise_version):
     package_checksum = index_data['version']['checksum']
 
     # 2. Download crate tarball from crates.io.
-    download_url = (f'https://crates.io/api/v1/crates/{crate_name}'
-                    f'/{precise_version}/download')
+    download_url = _crates_io_url(crate_name, precise_version, 'download')
     print(f'Downloading {crate_name} {precise_version} from crates.io...')
     with tempfile.NamedTemporaryFile(suffix='.tar.gz',
                                      delete=False) as tmp:
@@ -115,7 +142,7 @@ def update_crate(crate_name, precise_version):
             shutil.rmtree(crate_dir)
 
         with tarfile.open(tmp_path, 'r:gz') as tar:
-            tar.extractall(path=vendor_path)
+            _safe_extractall(tar, vendor_path)
 
         # crates.io tarballs extract to <name>-<version>/
         extracted = vendor_path / f'{crate_name}-{precise_version}'
