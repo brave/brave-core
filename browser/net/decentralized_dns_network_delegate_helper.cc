@@ -135,7 +135,7 @@ void OnBeforeURLRequest_SnsRedirectWork(
     const std::string& error_message) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (ctx && error == brave_wallet::mojom::SolanaProviderError::kSuccess &&
-      url && url->is_valid()) {
+      url && url->is_valid() && url->SchemeIsHTTPOrHTTPS()) {
     ctx->set_new_url_spec(url->spec());
   }
 
@@ -153,7 +153,7 @@ void OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
     const std::string& error_message) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (ctx && error == brave_wallet::mojom::ProviderError::kSuccess && url &&
-      url->is_valid()) {
+      url->is_valid() && url->SchemeIsHTTPOrHTTPS()) {
     ctx->set_new_url_spec(url->spec());
   }
 

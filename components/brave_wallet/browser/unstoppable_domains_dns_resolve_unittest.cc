@@ -67,4 +67,36 @@ TEST_F(UnstoppableDomainsResolveUrlTest, FallbackToIpfsRedirectDomainValue) {
   EXPECT_EQ(GURL("https://fallback2.test.com"), ResolveUrl(rpc_result));
 }
 
+TEST_F(UnstoppableDomainsResolveUrlTest, RejectsNonHTTPSRedirectUrl) {
+  auto rpc_result = DefaultRpcResult();
+  rpc_result[0] = "";
+  rpc_result[1] = "";
+
+  // javascript: scheme should be rejected.
+  rpc_result[4] = "javascript:alert(1)";
+  rpc_result[5] = "";
+  EXPECT_TRUE(ResolveUrl(rpc_result).is_empty());
+
+  // data: scheme should be rejected.
+  rpc_result[4] = "data:text/html,<script>alert(1)</script>";
+  EXPECT_TRUE(ResolveUrl(rpc_result).is_empty());
+
+  // file: scheme should be rejected.
+  rpc_result[4] = "file:///etc/passwd";
+  EXPECT_TRUE(ResolveUrl(rpc_result).is_empty());
+
+  // Also reject in the legacy redirect field.
+  rpc_result[4] = "";
+  rpc_result[5] = "javascript:alert(1)";
+  EXPECT_TRUE(ResolveUrl(rpc_result).is_empty());
+
+  // HTTP should be accepted.
+  rpc_result[4] = "http://example.com";
+  EXPECT_EQ(GURL("http://example.com"), ResolveUrl(rpc_result));
+
+  // HTTPS should be accepted.
+  rpc_result[4] = "https://example.com";
+  EXPECT_EQ(GURL("https://example.com"), ResolveUrl(rpc_result));
+}
+
 }  // namespace brave_wallet::unstoppable_domains
