@@ -6,4 +6,12 @@
 #ifndef BRAVE_COMPONENTS_LOCAL_AI_CORE_FEATURES_H_
 #define BRAVE_COMPONENTS_LOCAL_AI_CORE_FEATURES_H_
 
+#include "base/feature_list.h"
+
+namespace local_ai::features {
+
+BASE_DECLARE_FEATURE(kLocalAIModels);
+
+}  // namespace local_ai::features
+
 #endif  // BRAVE_COMPONENTS_LOCAL_AI_CORE_FEATURES_H_

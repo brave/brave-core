@@ -17,9 +17,9 @@
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/local_ai/core/background_web_contents.h"
+#include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "brave/components/local_ai/core/local_models_updater.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "mojo/public/cpp/base/big_buffer.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -121,7 +121,7 @@ class FakeBackgroundWebContents : public BackgroundWebContents {
 class LocalAIServiceTest : public testing::Test {
  protected:
   void SetUp() override {
-    feature_list_.InitAndEnableFeature(history_embeddings::kHistoryEmbeddings);
+    feature_list_.InitAndEnableFeature(features::kLocalAIModels);
     service_ = std::make_unique<LocalAIService>(
         base::BindRepeating(&LocalAIServiceTest::CreateFakeWebContents,
                             base::Unretained(this)),

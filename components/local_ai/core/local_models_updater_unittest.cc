@@ -20,9 +20,9 @@
 #include "base/values.h"
 #include "base/version.h"
 #include "brave/components/brave_component_updater/browser/mock_on_demand_updater.h"
+#include "brave/components/local_ai/core/features.h"
 #include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/mock_component_updater_service.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -38,8 +38,7 @@ class LocalModelsUpdaterUnitTest : public testing::Test {
  public:
   LocalModelsUpdaterUnitTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
-    feature_list_.InitWithFeatures({history_embeddings::kHistoryEmbeddings},
-                                   {});
+    feature_list_.InitWithFeatures({features::kLocalAIModels}, {});
   }
 
   ~LocalModelsUpdaterUnitTest() override = default;
@@ -126,7 +125,7 @@ TEST_F(LocalModelsUpdaterUnitTest, DeleteComponent) {
   EXPECT_TRUE(PathExists(install_dir_));
 
   base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndDisableFeature(history_embeddings::kHistoryEmbeddings);
+  feature_list.InitAndDisableFeature(features::kLocalAIModels);
   EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(0);
@@ -139,7 +138,7 @@ TEST_F(LocalModelsUpdaterUnitTest, DeleteComponent) {
 // Tests that the component is not registered when the feature is disabled.
 TEST_F(LocalModelsUpdaterUnitTest, NoRegisterWhenFeatureDisabled) {
   base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndDisableFeature(history_embeddings::kHistoryEmbeddings);
+  feature_list.InitAndDisableFeature(features::kLocalAIModels);
 
   EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
