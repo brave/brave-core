@@ -14,11 +14,14 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/functional/bind.h"
+#include "base/location.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/values.h"
+#include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
@@ -30,9 +33,6 @@
 #include "third_party/rust/cxx/v1/cxx.h"
 #include "url/gurl.h"
 
-class AdBlockServiceTest;
-class EphemeralStorage1pDomainBlockBrowserTest;
-class DebounceBrowserTest;
 class PrefService;
 
 namespace component_updater {
@@ -44,7 +44,7 @@ struct RegexManagerDiscardPolicy;
 }  // namespace adblock
 namespace brave_shields {
 
-class AdBlockEngineWrapper;
+class AdBlockEngine;
 class AdBlockComponentFiltersProvider;
 class AdBlockDefaultResourceProvider;
 class AdBlockComponentServiceManager;
@@ -53,9 +53,6 @@ class AdBlockCustomResourceProvider;
 class AdBlockLocalhostFiltersProvider;
 class AdBlockFilterListCatalogProvider;
 class AdBlockSubscriptionServiceManager;
-class CosmeticResourceMergeTest;
-class StripProceduralFiltersTest;
-class TestFiltersProvider;
 
 // The brave shields service in charge of ad-block checking and init.
 class AdBlockService {
@@ -122,6 +119,28 @@ class AdBlockService {
   AdBlockCustomFiltersProvider* custom_filters_provider();
   AdBlockCustomResourceProvider* custom_resource_provider();
 
+  // Call a callback on the task runner with the engine wrapper
+  void AsyncCall(base::OnceCallback<void(AdBlockEngineWrapper* wrapper)> task) {
+    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+    task_runner_->PostTask(
+        FROM_HERE, base::BindOnce(std::move(task),
+                                  base::Unretained(engine_wrapper_.get())));
+  }
+
+  // Call a callback on the task runner with the engine wrapper and post the
+  // result to the original sequence.
+  template <typename T>
+  void AsyncCallAndReplyWithResult(
+      base::OnceCallback<T(AdBlockEngineWrapper* wrapper)> task,
+      base::OnceCallback<void(T)> reply) {
+    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+    task_runner_->PostTaskAndReplyWithResult(
+        FROM_HERE,
+        base::BindOnce(std::move(task),
+                       base::Unretained(engine_wrapper_.get())),
+        std::move(reply));
+  }
+
   void EnableTag(const std::string& tag, bool enabled);
   void AddUserCosmeticFilter(const std::string& filter);
   void ResetCosmeticFilter(std::string_view host);
@@ -135,21 +154,14 @@ class AdBlockService {
 
   void SetupDiscardPolicy(const adblock::RegexManagerDiscardPolicy& policy);
 
-  base::SequencedTaskRunner* GetTaskRunner();
-
-  AdBlockEngineWrapper* engine_wrapper() {
-    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-    return engine_wrapper_.get();
-  }
+  // Test accessors
+  AdBlockEngine& GetDefaultEngineForTesting();
+  AdBlockEngine& GetAdditionalFiltersEngineForTesting();
+  AdBlockFiltersProviderManager* GetFiltersProviderManagerForTesting();
+  AdBlockDefaultResourceProvider* GetDefaultResourceProviderForTesting();
+  base::SequencedTaskRunner* GetTaskRunnerForTesting();
 
  private:
-  friend class ::AdBlockServiceTest;
-  friend class ::EphemeralStorage1pDomainBlockBrowserTest;
-  friend class ::DebounceBrowserTest;
-  friend class brave_shields::CosmeticResourceMergeTest;
-  friend class brave_shields::StripProceduralFiltersTest;
-  friend class brave_shields::TestFiltersProvider;
-
   static std::string g_ad_block_dat_file_version_;
 
   AdBlockDefaultResourceProvider* default_resource_provider();
@@ -162,9 +174,6 @@ class AdBlockService {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
     return filters_provider_manager_.get();
   }
-
-  void TagExistsForTest(const std::string& tag,
-                        base::OnceCallback<void(bool)> cb);
 
   raw_ptr<PrefService> local_state_;
   std::string locale_;

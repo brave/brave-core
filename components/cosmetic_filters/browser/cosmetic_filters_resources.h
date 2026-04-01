@@ -6,13 +6,10 @@
 #ifndef BRAVE_COMPONENTS_COSMETIC_FILTERS_BROWSER_COSMETIC_FILTERS_RESOURCES_H_
 #define BRAVE_COMPONENTS_COSMETIC_FILTERS_BROWSER_COSMETIC_FILTERS_RESOURCES_H_
 
-#include <memory>
 #include <string>
 #include <vector>
 
-#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
-#include "base/values.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
 
 class HostContentSettingsMap;
@@ -52,7 +49,8 @@ class CosmeticFiltersResources final
   // DanglingPtrDetection is disabled because the AdBlockService is owned by
   // the BrowserProcess and is guaranteed to be alive for the lifetime of the
   // browser process. This class however is a self-owned mojo receiver.
-  raw_ptr<brave_shields::AdBlockEngineWrapper, DisableDanglingPtrDetection>
+  const raw_ptr<brave_shields::AdBlockEngineWrapper,
+                DisableDanglingPtrDetection>
       engine_wrapper_ = nullptr;
 };
 
