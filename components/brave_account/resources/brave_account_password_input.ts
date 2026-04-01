@@ -121,7 +121,7 @@ export class BraveAccountPasswordInputElement extends CrLitElement {
   }
 
   protected get isValid() {
-    return this.password.length > 0 && this.password === this.password.trim()
+    return this.password.length !== 0 && this.password === this.password.trim()
   }
 
   protected accessor config: PasswordInputConfig = { mode: 'regular' }

@@ -69,8 +69,9 @@ leo-input:focus:has(.error) {
     leo-icon {
       /* Slight vertical tweak to align icon with first text line.
          align-items: center on .dropdown-content works for single-line text,
-         but misaligns when wrapping. */
-      margin-top: 1px;
+         but misaligns when wrapping. Offset is based on the difference between
+         the line-height and icon size. */
+      margin-top: calc((1lh - var(--leo-icon-size)) / 2);
     }
 
     leo-icon[name='check-circle-filled'] {
