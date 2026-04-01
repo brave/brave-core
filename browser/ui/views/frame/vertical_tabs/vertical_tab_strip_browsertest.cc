@@ -143,15 +143,13 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest,
                                     public testing::WithParamInterface<bool> {
  public:
   VerticalTabStripBrowserTest() {
-    // Enable Embedded explicitely when true.
-    // Otherwise, default state - disabled.
+    // kBraveVerticalTabStripEmbedded is enabled by default.
     if (GetParam()) {
-      feature_list_.InitWithFeatures({features::kBraveRoundedCornersByDefault,
-                                      tabs::kBraveVerticalTabStripEmbedded},
-                                     {});
-    } else {
       feature_list_.InitAndEnableFeature(
           features::kBraveRoundedCornersByDefault);
+    } else {
+      feature_list_.InitWithFeatures({features::kBraveRoundedCornersByDefault},
+                                     {tabs::kBraveVerticalTabStripEmbedded});
     }
   }
   ~VerticalTabStripBrowserTest() override = default;
