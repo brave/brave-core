@@ -80,8 +80,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     DynamicFontHelper.defaultHelper.startObserving()
     ReaderModeFonts.registerCustomFonts()
 
-    MenuHelper.defaultHelper.setItems()
-
     SDImageCodersManager.shared.addCoder(PrivateCDNImageCoder())
 
     if Preferences.BraveNews.isEnabled.value && !Preferences.BraveNews.userOptedIn.value {
