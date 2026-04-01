@@ -44,7 +44,8 @@ class BraveTabStrip : public TabStrip {
   // TabStrip:
   void ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) override;
   void HideHover(Tab* tab, TabStyle::HideHoverStyle style) override;
-  void UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) override;
+  void UpdateHoverCard(HoverCardAnchorTarget* anchor_target,
+                       HoverCardUpdateType update_type) override;
   void MaybeStartDrag(TabSlotView* source,
                       const ui::LocatedEvent& event,
                       ui::ListSelectionModel original_selection) override;
