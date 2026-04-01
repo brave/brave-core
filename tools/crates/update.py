@@ -127,8 +127,7 @@ def update_crate(crate_name, precise_version):
 
     # 1. Fetch the package checksum from the crates.io API.
     index_url = ('https://crates.io/api/v1/crates/' + '/'.join(
-        urllib.parse.quote(p, safe='')
-        for p in (crate_name, precise_version)))
+        urllib.parse.quote(p, safe='') for p in (crate_name, precise_version)))
     req = urllib.request.Request(index_url,
                                  headers={'User-Agent': 'brave-tools-crates'})
     with _safe_urlopen(req) as resp:
@@ -138,8 +137,7 @@ def update_crate(crate_name, precise_version):
     # 2. Download crate tarball from crates.io.
     download_url = index_url + '/download'
     print(f'Downloading {crate_name} {precise_version} from crates.io...')
-    with tempfile.NamedTemporaryFile(suffix='.tar.gz',
-                                     delete=False) as tmp:
+    with tempfile.NamedTemporaryFile(suffix='.tar.gz', delete=False) as tmp:
         with _safe_urlopen(download_url) as resp:
             tmp.write(resp.read())
         tmp_path = tmp.name
