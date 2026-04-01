@@ -1,0 +1,22 @@
+diff --git a/components/omnibox/browser/autocomplete_controller_unittest.cc b/components/omnibox/browser/autocomplete_controller_unittest.cc
+index b460081d2cb616a844ea7e116f3a9b49fe6a2ee8..c6541654d0e03961e79afff671badb7903732272 100644
+--- a/components/omnibox/browser/autocomplete_controller_unittest.cc
++++ b/components/omnibox/browser/autocomplete_controller_unittest.cc
+@@ -2767,7 +2767,7 @@ TEST_F(AutocompleteControllerTest, ContextualQueryAppendsSearchboxStats) {
+           controller_.internal_result_.match_at(0)->takeover_action.get());
+   EXPECT_EQ(OmniboxActionId::CONTEXTUAL_SEARCH_FULFILLMENT,
+             contextual_takover_action_0->ActionId());
+-  EXPECT_TRUE(contextual_takover_action_0->get_fulfillment_url_for_testing()
++  EXPECT_FALSE(contextual_takover_action_0->get_fulfillment_url_for_testing()
+                   .spec()
+                   .contains("gs_lcrp="));
+   ASSERT_TRUE(controller_.internal_result_.match_at(1)->takeover_action);
+@@ -2776,7 +2776,7 @@ TEST_F(AutocompleteControllerTest, ContextualQueryAppendsSearchboxStats) {
+           controller_.internal_result_.match_at(1)->takeover_action.get());
+   EXPECT_EQ(OmniboxActionId::CONTEXTUAL_SEARCH_FULFILLMENT,
+             contextual_takover_action_1->ActionId());
+-  EXPECT_TRUE(contextual_takover_action_1->get_fulfillment_url_for_testing()
++  EXPECT_FALSE(contextual_takover_action_1->get_fulfillment_url_for_testing()
+                   .spec()
+                   .contains("gs_lcrp="));
+ }

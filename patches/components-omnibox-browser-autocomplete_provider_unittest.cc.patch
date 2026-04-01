@@ -1,0 +1,13 @@
+diff --git a/components/omnibox/browser/autocomplete_provider_unittest.cc b/components/omnibox/browser/autocomplete_provider_unittest.cc
+index 023b863225fa97dd259c71e6c18dad33e9a9d20c..274c50d8921071b3d2104348c1ea6dbf38c8d53a 100644
+--- a/components/omnibox/browser/autocomplete_provider_unittest.cc
++++ b/components/omnibox/browser/autocomplete_provider_unittest.cc
+@@ -1458,7 +1458,7 @@ TEST_F(AutocompleteProviderTest, GetDestinationURL) {
+   // searchbox_stats need to have been set.
+   match.search_terms_args->searchbox_stats.set_client_name("chrome");
+   url = GetDestinationURL(match, base::Milliseconds(2456));
+-  EXPECT_EQ("//gs_lcrp=EgZjaHJvbWXSAQgyNDU2ajBqMA&", url.GetPath());
++  EXPECT_EQ("//", url.GetPath());
+   // Make sure searchbox_stats is serialized and encoded correctly.
+   {
+     std::string serialized_proto;
