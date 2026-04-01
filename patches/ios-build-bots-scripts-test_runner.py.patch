@@ -1,5 +1,5 @@
 diff --git a/ios/build/bots/scripts/test_runner.py b/ios/build/bots/scripts/test_runner.py
-index ce272919c24e5603347929097efbdf15c24f140d..eff230cf2155d6e97527cd53f6cf981555431ae8 100644
+index ce272919c24e5603347929097efbdf15c24f140d..f8e3e2e9b3eb2362e148be0ae669de4ed954b26a 100644
 --- a/ios/build/bots/scripts/test_runner.py
 +++ b/ios/build/bots/scripts/test_runner.py
 @@ -404,6 +404,7 @@ class TestRunner(object):
@@ -22,7 +22,15 @@ index ce272919c24e5603347929097efbdf15c24f140d..eff230cf2155d6e97527cd53f6cf9815
  
      try:
        result = self._run(cmd=cmd, clones=self.clones or 1)
-@@ -830,10 +828,10 @@ class SimulatorTestRunner(TestRunner):
+@@ -809,6 +807,7 @@ class SimulatorTestRunner(TestRunner):
+           'xcodebuild', # https://crbug.com/684305
+       ])
+       # If a signal was sent, wait for the simulators to actually be killed.
++      time.sleep(10)
+       time.sleep(5)
+     except subprocess.CalledProcessError as e:
+       if e.returncode != 1:
+@@ -830,10 +829,10 @@ class SimulatorTestRunner(TestRunner):
    def set_up(self):
      """Performs setup actions which must occur prior to every test launch."""
      self.remove_proxy_settings()
