@@ -21,7 +21,7 @@ jobs:
 
       - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
-          node-version: '24.11.1'
+          node-version: '24'
 
       - name: Install Socket CLI
         run: npm install -g @socketsecurity/cli
@@ -58,7 +58,8 @@ jobs:
             gh pr create \
               --title "fix: address security advisories" \
               --body "Addresses: $GHSA_IDS" \
-              --base master
+              --base master \
+              --label "CI/skip"
           else
             echo "::error::No changes produced by socket fix."
             exit 1
