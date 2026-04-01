@@ -1,16 +1,8 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 5270a95ee7b87aacdcad1f2823fe1d20e66cef3b..7d7b4021ff6ced3229306cc4fa4aee61e166e7ed 100644
+index 5270a95ee7b87aacdcad1f2823fe1d20e66cef3b..9e72230a8e6403526f9929e32ed7862899573469 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
-@@ -38,6 +38,7 @@ by a child template that "extends" this file.
- 
-     <uses-permission-sdk-23 android:name="android.permission.ACCESS_WIFI_STATE" />
-     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-+    {% include "//brave/android/java/AndroidManifest_user_permissions.xml" %}
- 
-     <uses-permission-sdk-23 android:name="android.permission.ACCESS_ADSERVICES_ATTRIBUTION" />
-     <uses-permission-sdk-23 android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30"/>
-@@ -62,7 +63,9 @@ by a child template that "extends" this file.
+@@ -62,7 +62,9 @@ by a child template that "extends" this file.
      <uses-permission-sdk-23 android:name="android.permission.BLUETOOTH_SCAN"
                              android:usesPermissionFlags="neverForLocation"/>
  
@@ -20,7 +12,13 @@ index 5270a95ee7b87aacdcad1f2823fe1d20e66cef3b..7d7b4021ff6ced3229306cc4fa4aee61
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
  
      <!--  Needed for allowing downloaded APKs to be installed. -->
-@@ -76,24 +79,32 @@ by a child template that "extends" this file.
+@@ -72,28 +74,38 @@ by a child template that "extends" this file.
+     <uses-permission android:name="android.permission.CAPTURE_KEYBOARD" />
+     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
++    {% if is_desktop_android == "true" %}
+     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
++    {% endif %}
      <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
      {% set enable_screen_capture = enable_screen_capture|default(0) %}
      {% if enable_screen_capture == "true" %}
@@ -54,7 +52,7 @@ index 5270a95ee7b87aacdcad1f2823fe1d20e66cef3b..7d7b4021ff6ced3229306cc4fa4aee61
      <uses-permission-sdk-23 android:name="android.permission.READ_MEDIA_AUDIO"/>
  
      <!-- Needed for handling media-viewing Intents from other apps for images and video on low end
-@@ -111,12 +122,14 @@ by a child template that "extends" this file.
+@@ -111,12 +123,14 @@ by a child template that "extends" this file.
        resizeTo, moveBy}|).
      -->
      <uses-permission android:name="android.permission.REPOSITION_SELF_WINDOWS"/>
@@ -70,7 +68,7 @@ index 5270a95ee7b87aacdcad1f2823fe1d20e66cef3b..7d7b4021ff6ced3229306cc4fa4aee61
  
      <!-- Permission for using Android 14's credential management framework. -->
      <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_QUERY_CANDIDATE_CREDENTIALS"/>
-@@ -169,7 +182,9 @@ by a child template that "extends" this file.
+@@ -169,7 +183,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
@@ -80,7 +78,7 @@ index 5270a95ee7b87aacdcad1f2823fe1d20e66cef3b..7d7b4021ff6ced3229306cc4fa4aee61
  
      <!-- Permission for using pinned windowing layer for document picture-in-picture. -->
      <uses-permission android:name="android.permission.USE_PINNED_WINDOWING_LAYER" />
-@@ -385,6 +400,7 @@ by a child template that "extends" this file.
+@@ -385,6 +401,7 @@ by a child template that "extends" this file.
              <intent-filter>
                  <action android:name="com.sec.android.airview.HOVER" />
              </intent-filter>
@@ -88,7 +86,7 @@ index 5270a95ee7b87aacdcad1f2823fe1d20e66cef3b..7d7b4021ff6ced3229306cc4fa4aee61
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -942,6 +958,7 @@ by a child template that "extends" this file.
+@@ -942,6 +959,7 @@ by a child template that "extends" this file.
          </service>
  
          <!-- Quick Action Search widget -->
@@ -96,7 +94,7 @@ index 5270a95ee7b87aacdcad1f2823fe1d20e66cef3b..7d7b4021ff6ced3229306cc4fa4aee61
          <receiver
              android:name="org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch"
              android:label="@string/quick_action_search_widget_title"
-@@ -971,6 +988,7 @@ by a child template that "extends" this file.
+@@ -971,6 +989,7 @@ by a child template that "extends" this file.
                  android:name="android.appwidget.provider"
                  android:resource="@xml/quick_action_search_widget_dino_info" />
          </receiver>
@@ -104,7 +102,7 @@ index 5270a95ee7b87aacdcad1f2823fe1d20e66cef3b..7d7b4021ff6ced3229306cc4fa4aee61
  
          <!-- Bookmarks widget -->
          <receiver android:name="com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider"
-@@ -1184,7 +1202,7 @@ by a child template that "extends" this file.
+@@ -1184,7 +1203,7 @@ by a child template that "extends" this file.
  
          <service android:name="org.chromium.chrome.browser.media.MediaCaptureNotificationService"
              {% if enable_screen_capture == "true" %}
@@ -113,7 +111,7 @@ index 5270a95ee7b87aacdcad1f2823fe1d20e66cef3b..7d7b4021ff6ced3229306cc4fa4aee61
              {% else %}
              android:foregroundServiceType="camera|microphone"
              {% endif %}
-@@ -1281,6 +1299,7 @@ by a child template that "extends" this file.
+@@ -1281,6 +1300,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  
