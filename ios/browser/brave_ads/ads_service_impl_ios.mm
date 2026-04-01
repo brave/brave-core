@@ -83,7 +83,9 @@ void AdsServiceImplIOS::InitializeAds(
 
 void AdsServiceImplIOS::ShutdownAds(ShutdownCallback callback) {
   if (!IsInitialized()) {
-    return std::move(callback).Run(/*success=*/false);
+    // Not initialized means already shut down, which is a success. Callers such
+    // as `ClearData` rely on this to proceed even when the service is idle.
+    return std::move(callback).Run(/*success=*/true);
   }
 
   ads_->Shutdown(base::BindOnce(&AdsServiceImplIOS::ShutdownAdsCallback,
@@ -158,8 +160,6 @@ void AdsServiceImplIOS::OnNotificationAdClicked(
 
 void AdsServiceImplIOS::ClearData(ClearDataCallback callback) {
   UMA_HISTOGRAM_BOOLEAN(kClearDataHistogramName, true);
-  prefs_->ClearPrefsWithPrefixSilently("brave.brave_ads");
-
   ShutdownAds(base::BindOnce(&AdsServiceImplIOS::ClearAdsData,
                              weak_ptr_factory_.GetWeakPtr(),
                              std::move(callback)));
@@ -450,10 +450,13 @@ void AdsServiceImplIOS::ClearAdsData(ClearDataCallback callback, bool success) {
     return std::move(callback).Run(/*success=*/false);
   }
 
-  // Ensure the Brave Ads service is stopped before clearing data.
-  if (IsInitialized()) {
-    return std::move(callback).Run(/*success=*/false);
-  }
+  // `ShutdownAdsCallback` always calls `Shutdown` before invoking this callback
+  // with success, so `ads_` must be null by this point.
+  CHECK(!IsInitialized());
+
+  // Clear preferences only after confirming shutdown succeeded so the pref
+  // state and database are always cleared together or not at all.
+  prefs_->ClearPrefsWithPrefixSilently("brave.brave_ads");
 
   file_task_runner_->PostTaskAndReply(
       FROM_HERE,

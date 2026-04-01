@@ -100,6 +100,9 @@ class AdsServiceImpl final : public AdsService,
 
   ~AdsServiceImpl() override;
 
+  // KeyedService:
+  void Shutdown() override;
+
  private:
   bool IsBatAdsServiceBound() const;
 
@@ -124,14 +127,10 @@ class AdsServiceImpl final : public AdsService,
   void MaybeStartBatAdsService();
   void StartBatAdsService();
   void DisconnectHandler();
-  bool ShouldProceedInitialization(size_t current_start_number) const;
-  void BatAdsServiceCreatedCallback(size_t current_start_number);
-  void InitializeBasePathDirectoryCallback(size_t current_start_number,
-                                           bool success);
-  void Initialize(size_t current_start_number);
-  void InitializeRewardsWallet(size_t current_start_number);
+  void BatAdsServiceCreatedCallback();
+  void InitializeBasePathDirectoryCallback(bool success);
+  void InitializeRewardsWallet();
   void InitializeRewardsWalletCallback(
-      size_t current_start_number,
       brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet);
   void InitializeBatAds(
       brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet);
@@ -214,9 +213,6 @@ class AdsServiceImpl final : public AdsService,
   void ShutdownAdsCallback(ShutdownCallback callback, bool success);
 
   void ShutdownAdsService();
-
-  // KeyedService:
-  void Shutdown() override;
 
   // AdsService:
   void AddBatAdsObserver(mojo::PendingRemote<bat_ads::mojom::BatAdsObserver>
@@ -398,12 +394,6 @@ class AdsServiceImpl final : public AdsService,
 
   bool browser_upgrade_required_to_serve_ads_ = false;
 
-  // Brave Ads Service starts count is needed to avoid possible double Brave
-  // Ads initialization.
-  // TODO(https://github.com/brave/brave-browser/issues/30247): Refactor Brave
-  // Ads startup logic.
-  size_t service_starts_count_ = 0;
-
   PrefChangeRegistrar pref_change_registrar_;
 
   PrefChangeRegistrar local_state_pref_change_registrar_;
@@ -468,6 +458,12 @@ class AdsServiceImpl final : public AdsService,
   mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier>
       bat_ads_client_notifier_pending_receiver_;
 
+  // Invalidated in `ShutdownAdsService` to no-op pending initialization
+  // callbacks, aborting any startup that was mid-sequence on stop.
+  base::WeakPtrFactory<AdsServiceImpl> bat_ads_service_weak_ptr_factory_{this};
+
+  // Only invalidated on destruction; used for callbacks that must always
+  // fire regardless of service state, such as shutdown and disconnect handling.
   base::WeakPtrFactory<AdsServiceImpl> weak_ptr_factory_{this};
 };
 

@@ -162,7 +162,11 @@ AdsServiceImpl::AdsServiceImpl(
     CHECK_IS_TEST();
   }
 
-  host_content_settings_map_observation_.Observe(host_content_settings_map);
+  if (host_content_settings_map) {
+    host_content_settings_map_observation_.Observe(host_content_settings_map);
+  } else {
+    CHECK_IS_TEST();
+  }
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   CHECK(rewards_service);
@@ -305,7 +309,10 @@ bool AdsServiceImpl::CanStartBatAdsService() const {
 }
 
 void AdsServiceImpl::MaybeStartBatAdsService() {
-  if (IsBatAdsServiceBound() || !CanStartBatAdsService()) {
+  // `is_shutting_down_` is set permanently when `KeyedService::Shutdown` is
+  // called and the profile begins tearing down. There is no recovery from that
+  // state, so any subsequent attempt to restart the service must be suppressed.
+  if (is_shutting_down_ || IsBatAdsServiceBound() || !CanStartBatAdsService()) {
     return;
   }
 
@@ -332,7 +339,7 @@ void AdsServiceImpl::StartBatAdsService() {
       bat_ads_associated_remote_.BindNewEndpointAndPassReceiver(),
       std::move(bat_ads_client_notifier_pending_receiver_),
       base::BindOnce(&AdsServiceImpl::BatAdsServiceCreatedCallback,
-                     weak_ptr_factory_.GetWeakPtr(), ++service_starts_count_));
+                     bat_ads_service_weak_ptr_factory_.GetWeakPtr()));
 
   bat_ads_associated_remote_.reset_on_disconnect();
   bat_ads_client_notifier_remote_.reset_on_disconnect();
@@ -346,16 +353,11 @@ void AdsServiceImpl::DisconnectHandler() {
   ShutdownAdsService();
 }
 
-bool AdsServiceImpl::ShouldProceedInitialization(
-    size_t current_start_number) const {
-  return IsBatAdsServiceBound() &&
-         service_starts_count_ == current_start_number;
-}
-
-void AdsServiceImpl::BatAdsServiceCreatedCallback(size_t current_start_number) {
-  if (!ShouldProceedInitialization(current_start_number)) {
-    return;
-  }
+void AdsServiceImpl::BatAdsServiceCreatedCallback() {
+  // Guaranteed by `bat_ads_service_weak_ptr_factory_`. This callback is only
+  // reachable while the service is alive, and `ShutdownAdsService` resets
+  // `bat_ads_service_remote_` before invalidating the factory.
+  CHECK(IsBatAdsServiceBound());
 
   SetSysInfo();
 
@@ -370,48 +372,34 @@ void AdsServiceImpl::BatAdsServiceCreatedCallback(size_t current_start_number) {
       base::BindOnce(&EnsureBaseDirectoryExistsOnFileTaskRunner,
                      ads_service_path_),
       base::BindOnce(&AdsServiceImpl::InitializeBasePathDirectoryCallback,
-                     weak_ptr_factory_.GetWeakPtr(), current_start_number));
+                     bat_ads_service_weak_ptr_factory_.GetWeakPtr()));
 }
 
-void AdsServiceImpl::InitializeBasePathDirectoryCallback(
-    size_t current_start_number,
-    bool success) {
+void AdsServiceImpl::InitializeBasePathDirectoryCallback(bool success) {
   if (!success) {
     VLOG(0) << "Failed to initialize " << ads_service_path_ << " directory";
     return ShutdownAdsService();
   }
 
-  Initialize(current_start_number);
+  InitializeRewardsWallet();
 }
 
-void AdsServiceImpl::Initialize(size_t current_start_number) {
-  if (!ShouldProceedInitialization(current_start_number)) {
-    return;
-  }
-
-  InitializeRewardsWallet(current_start_number);
-}
-
-void AdsServiceImpl::InitializeRewardsWallet(size_t current_start_number) {
+void AdsServiceImpl::InitializeRewardsWallet() {
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   rewards_service_observation_.GetSource()->GetRewardsWallet(
       base::BindOnce(&AdsServiceImpl::InitializeRewardsWalletCallback,
-                     weak_ptr_factory_.GetWeakPtr(), current_start_number));
+                     bat_ads_service_weak_ptr_factory_.GetWeakPtr()));
 #else
-  InitializeRewardsWalletCallback(current_start_number, nullptr);
+  InitializeRewardsWalletCallback(/*mojom_rewards_wallet=*/nullptr);
 #endif
 }
 
 void AdsServiceImpl::InitializeRewardsWalletCallback(
-    size_t current_start_number,
     brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet) {
-  if (!ShouldProceedInitialization(current_start_number)) {
-    return;
-  }
-
-  if (!bat_ads_associated_remote_.is_bound()) {
-    return;
-  }
+  // Guaranteed by `bat_ads_service_weak_ptr_factory_`. `ShutdownAdsService`
+  // resets `bat_ads_associated_remote_` before invalidating the factory, so the
+  // remote is bound for the lifetime of any pending init callback.
+  CHECK(bat_ads_associated_remote_.is_bound());
 
   if (!mojom_rewards_wallet && UserHasJoinedBraveRewards()) {
     VLOG(0) << "Failed to initialize Brave Rewards wallet";
@@ -423,9 +411,9 @@ void AdsServiceImpl::InitializeRewardsWalletCallback(
 
 void AdsServiceImpl::InitializeBatAds(
     brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet) {
-  if (!bat_ads_associated_remote_.is_bound()) {
-    return;
-  }
+  // Called synchronously from `InitializeRewardsWalletCallback`, which already
+  // checked this invariant.
+  CHECK(bat_ads_associated_remote_.is_bound());
 
   mojom::WalletInfoPtr mojom_wallet;
 
@@ -439,7 +427,7 @@ void AdsServiceImpl::InitializeBatAds(
   bat_ads_associated_remote_->Initialize(
       std::move(mojom_wallet),
       base::BindOnce(&AdsServiceImpl::InitializeBatAdsCallback,
-                     weak_ptr_factory_.GetWeakPtr()));
+                     bat_ads_service_weak_ptr_factory_.GetWeakPtr()));
 }
 
 void AdsServiceImpl::InitializeBatAdsCallback(bool success) {
@@ -588,6 +576,11 @@ void AdsServiceImpl::SetCommandLineSwitches() {
 
 void AdsServiceImpl::SetContentSettings() {
   if (!bat_ads_associated_remote_.is_bound()) {
+    return;
+  }
+
+  if (!host_content_settings_map_) {
+    CHECK_IS_TEST();
     return;
   }
 
@@ -1017,6 +1010,8 @@ void AdsServiceImpl::ShutdownAds(ShutdownCallback callback) {
     return std::move(callback).Run(/*success=*/true);
   }
 
+  // Use `weak_ptr_factory_` because `bat_ads_service_weak_ptr_factory_` is
+  // invalidated to cancel pending startups; this callback must always fire.
   bat_ads_associated_remote_->Shutdown(
       base::BindOnce(&AdsServiceImpl::ShutdownAdsCallback,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -1034,6 +1029,10 @@ void AdsServiceImpl::ShutdownAdsService() {
   if (is_bat_ads_initialized_) {
     VLOG(2) << "Shutting down Bat Ads Service";
   }
+
+  // Invalidate weak pointers before resetting mojo endpoints so no in-flight
+  // callback fires against a partially torn-down service.
+  bat_ads_service_weak_ptr_factory_.InvalidateWeakPtrs();
 
   bat_ads_client_notifier_remote_.reset();
   bat_ads_client_notifier_pending_receiver_.reset();
@@ -1067,6 +1066,8 @@ void AdsServiceImpl::ShutdownAdsService() {
 }
 
 void AdsServiceImpl::Shutdown() {
+  // The profile is being destroyed and the service must never start again, so
+  // this is never reset to false.
   is_shutting_down_ = true;
 
   ShutdownAdsService();
