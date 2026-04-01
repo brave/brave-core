@@ -160,6 +160,6 @@ constexpr base::FeatureParam<int>
     kAdblockOverrideRegexDiscardPolicyDiscardUnusedSec{
         &kAdblockOverrideRegexDiscardPolicy, "discard_unused_sec", 180};
 
-BASE_FEATURE(kShowUpdatedShieldsPanel, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kShowUpdatedShieldsPanel, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace brave_shields::features
