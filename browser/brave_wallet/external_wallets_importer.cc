@@ -279,7 +279,7 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
       *vault_str,
       base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_TRAILING_COMMAS);
   if (!vault) {
-    VLOG(1) << "not a valid JSON: " << *vault_str;
+    VLOG(1) << "vault is not a valid JSON";
     std::move(callback).Run(base::unexpected(ImportError::kJsonError));
     return;
   }
@@ -294,19 +294,19 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
 
   auto salt_decoded = base::Base64Decode(*salt_str);
   if (!salt_decoded) {
-    VLOG(1) << "base64 decode failed: " << *salt_str;
+    VLOG(1) << "base64 decode of salt failed";
     std::move(callback).Run(base::unexpected(ImportError::kJsonError));
     return;
   }
   auto iv_decoded = base::Base64Decode(*iv_str);
   if (!iv_decoded) {
-    VLOG(1) << "base64 decode failed: " << *iv_str;
+    VLOG(1) << "base64 decode of iv failed";
     std::move(callback).Run(base::unexpected(ImportError::kJsonError));
     return;
   }
   auto data_decoded = base::Base64Decode(*data_str);
   if (!data_decoded) {
-    VLOG(1) << "base64 decode failed: " << *data_str;
+    VLOG(1) << "base64 decode of encrypted data failed";
     std::move(callback).Run(base::unexpected(ImportError::kJsonError));
     return;
   }
@@ -341,7 +341,7 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
       decrypted_keyrings_str,
       base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_TRAILING_COMMAS);
   if (!keyrings) {
-    VLOG(1) << "not a valid JSON: " << decrypted_keyrings_str;
+    VLOG(1) << "decrypted keyrings is not a valid JSON";
     std::move(callback).Run(base::unexpected(ImportError::kJsonError));
     return;
   }
