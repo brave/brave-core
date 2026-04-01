@@ -109,12 +109,26 @@ public class BraveLocalStateMigration {
 
   public func launchMigrations() {
     migrateDAUPingPreference()
+    migrateDAULastLaunchInfoPreference()
     migrateAdsPreferences()
   }
 
   private func migrateDAUPingPreference() {
     Preferences.DeprecatedPreferences.sendUsagePing.migrate { value in
       localState.set(value, forPath: kStatsReportingEnabledPrefName)
+    }
+  }
+
+  private func migrateDAULastLaunchInfoPreference() {
+    Preferences.DeprecatedPreferences.lastLaunchInfo.migrate { value in
+      guard let lastPingTimestamp = value?.first else { return }
+
+      if !Preferences.DAU.firstPingParam.isValueStored {
+        Preferences.DAU.firstPingParam.value = false
+      }
+
+      let date = Date(timeIntervalSince1970: TimeInterval(lastPingTimestamp))
+      localState.set(DAU.dateFormatter.string(from: date), forPath: kLastCheckYMDPrefName)
     }
   }
 
@@ -267,6 +281,12 @@ extension Migration {
 extension Preferences {
   fileprivate final class DeprecatedPreferences {
     static let sendUsagePing = Option<Bool>(key: "dau.send-usage-ping", default: true)
+
+    /// Superseded by `brave.stats.last_ping_date` in local state.
+    static let lastLaunchInfo = Option<[Int]?>(
+      key: "dau.last-launch-info",
+      default: nil
+    )
 
     static let blockAdsAndTracking = Option<Bool>(
       key: "shields.block-ads-and-tracking",
@@ -446,7 +466,6 @@ extension Preferences {
     migrate(key: "braveAdblockUseRegional", to: Preferences.Shields.useRegionAdBlock)
 
     // DAU
-    migrate(key: "dau_stat", to: Preferences.DAU.lastLaunchInfo)
     migrate(key: "week_of_installation", to: Preferences.DAU.weekOfInstallation)
 
     // URP
@@ -462,9 +481,6 @@ extension Preferences {
     migrate(key: "fp_protection", to: Preferences.BlockStats.fingerprintingCount)
     migrate(key: "safebrowsing", to: Preferences.BlockStats.phishingCount)
 
-    // On 1.6 lastLaunchInfo is used to check if it's first app launch or not.
-    // This needs to be translated to our new preference.
-    Preferences.General.isFirstLaunch.value = Preferences.DAU.lastLaunchInfo.value == nil
     Preferences.Migration.completed.value = true
   }
 

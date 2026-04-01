@@ -48,7 +48,7 @@ public class DAU {
   }
 
   /// Date formatted used for passing date strings to the DAU server.
-  static let dateFormatter = { () -> DateFormatter in
+  public static let dateFormatter = { () -> DateFormatter in
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd"
     formatter.calendar = DAU.calendar
@@ -111,7 +111,12 @@ public class DAU {
       Logger.module.debug("DAU ping disabled by the user.")
       return
     }
-    guard let paramsAndPrefs = paramsAndPrefsSetup(for: Date()) else {
+    guard
+      let paramsAndPrefs = paramsAndPrefsSetup(
+        for: Date(),
+        lastPingDate: stats.lastPingDate
+      )
+    else {
       Logger.module.debug("dau, no changes detected, no server ping")
       return
     }
@@ -154,8 +159,12 @@ public class DAU {
       // This preference is set for future DAU pings.
       Preferences.DAU.firstPingParam.value = false
 
-      // This preference is used to calculate whether user used the app in this month and/or day.
-      Preferences.DAU.lastLaunchInfo.value = paramsAndPrefs.lastLaunchInfoPreference
+      // Store the last ping date in local state so all platform components share one source of truth.
+      // Thread hop to main is required because `lastPingDate` sets `brave.stats.last_check_ymd`
+      // Chromium preference, which must be done from the main thread.
+      DispatchQueue.main.async { [weak self] in
+        self?.braveCoreStats?.lastPingDate = paramsAndPrefs.date
+      }
     }
 
     task.resume()
@@ -165,7 +174,7 @@ public class DAU {
   struct ParamsAndPrefs {
     let queryParams: [URLQueryItem]
     let headers: [String: String]
-    let lastLaunchInfoPreference: [Int]
+    let date: Date
   }
 
   func migrateInvalidWeekOfInstallPref() {
@@ -183,8 +192,8 @@ public class DAU {
   }
 
   /// Return params query or nil if no ping should be send to server and also preference values to set
-  /// after a succesful ing.
-  func paramsAndPrefsSetup(for date: Date) -> ParamsAndPrefs? {
+  /// after a succesful ping.
+  func paramsAndPrefsSetup(for date: Date, lastPingDate: Date?) -> ParamsAndPrefs? {
     var params = [channelParam(), versionParam()]
 
     let firstLaunch = Preferences.DAU.firstPingParam.value
@@ -201,7 +210,13 @@ public class DAU {
       migrateInvalidWeekOfInstallPref()
     }
 
-    guard let dauStatParams = dauStatParams(for: date, firstPing: firstLaunch) else {
+    guard
+      let dauStatParams = dauStatParams(
+        for: date,
+        lastPingDate: lastPingDate,
+        firstPing: firstLaunch
+      )
+    else {
       return nil
     }
 
@@ -231,8 +246,6 @@ public class DAU {
       params.append(URLQueryItem(name: "ref", value: referralCode))
     }
 
-    let lastPingTimestamp = [Int((date).timeIntervalSince1970)]
-
     var headers: [String: String] = [:]
 
     if let key = self.apiKey, !key.isEmpty {
@@ -242,7 +255,7 @@ public class DAU {
     return ParamsAndPrefs(
       queryParams: params,
       headers: headers,
-      lastLaunchInfoPreference: lastPingTimestamp
+      date: date
     )
   }
 
@@ -374,7 +387,7 @@ public class DAU {
   /// Returns nil if no dau changes detected.
   func dauStatParams(
     for date: Date,
-    dauStat: [Int?]? = Preferences.DAU.lastLaunchInfo.value,
+    lastPingDate: Date?,
     firstPing: Bool,
     channel: AppBuildChannel = AppConstants.buildChannel
   ) -> [URLQueryItem]? {
@@ -389,17 +402,10 @@ public class DAU {
       return dauParams(true, true, true)
     }
 
-    guard let stat = dauStat?.compactMap({ $0 }) else {
-      Logger.module.error("Cannot cast dauStat to [Int]")
+    guard let lastPingDate = lastPingDate else {
+      Logger.module.error("Can't get last ping date")
       return nil
     }
-
-    guard let lastPingStat = stat.first else {
-      Logger.module.error("Can't get last ping timestamp from dauStats")
-      return nil
-    }
-
-    let lastPingDate = Date(timeIntervalSince1970: TimeInterval(lastPingStat))
 
     let pings = getPings(forDate: date, lastPingDate: lastPingDate)
 

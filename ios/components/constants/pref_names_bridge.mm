@@ -10,3 +10,5 @@
 
 NSString* const kStatsReportingEnabledPrefName =
     base::SysUTF8ToNSString(kStatsReportingEnabled);
+
+NSString* const kLastCheckYMDPrefName = base::SysUTF8ToNSString(kLastCheckYMD);
