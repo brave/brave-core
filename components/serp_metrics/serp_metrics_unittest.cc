@@ -743,4 +743,248 @@ TEST_F(SerpMetricsTest, ClearHistoryIsIdempotent) {
             serp_metrics_->GetSearchCountForTesting(SerpMetricType::kOther));
 }
 
+// Tests for `GetSearchCountForLastWeek` use a 14-day retention period so that
+// last-week data (up to 13 days old) is within the `TimePeriodStorage` window.
+// Advancing the clock by exactly 7 days guarantees that any searches recorded
+// before the advance fall within the previous ISO week, regardless of the day
+// of the week the test clock starts on.
+class SerpMetricsLastWeekTest : public SerpMetricsTest {
+ public:
+  void SetUp() override {
+    local_state_.registry()->RegisterStringPref(kLastCheckYMD,
+                                                "");  // Never checked.
+
+    scoped_feature_list_.InitAndEnableFeatureWithParameters(
+        kSerpMetricsFeature, {{"time_period_in_days", "14"}});
+
+    serp_metrics_ = std::make_unique<SerpMetrics>(&local_state_,
+                                                  FakeTimePeriodStoreFactory());
+  }
+
+  void AdvanceClockByOneWeek() {
+    task_environment_.AdvanceClock(base::Days(7));
+  }
+};
+
+TEST_F(SerpMetricsLastWeekTest,
+       NoSearchCountForLastWeekWhenNoSearchesRecorded) {
+  EXPECT_EQ(0U,
+            serp_metrics_->GetSearchCountForLastWeek(SerpMetricType::kBrave));
+  EXPECT_EQ(0U,
+            serp_metrics_->GetSearchCountForLastWeek(SerpMetricType::kGoogle));
+  EXPECT_EQ(0U,
+            serp_metrics_->GetSearchCountForLastWeek(SerpMetricType::kOther));
+}
+
+TEST_F(SerpMetricsLastWeekTest, BraveSearchCountForLastWeek) {
+  // Week 0: Last week
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  AdvanceClockByOneWeek();
+
+  // Week 1: This week (ignored)
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+
+  EXPECT_EQ(2U,
+            serp_metrics_->GetSearchCountForLastWeek(SerpMetricType::kBrave));
+}
+
+TEST_F(SerpMetricsLastWeekTest, GoogleSearchCountForLastWeek) {
+  // Week 0: Last week
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+  AdvanceClockByOneWeek();
+
+  // Week 1: This week (ignored)
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+
+  EXPECT_EQ(2U,
+            serp_metrics_->GetSearchCountForLastWeek(SerpMetricType::kGoogle));
+}
+
+TEST_F(SerpMetricsLastWeekTest, OtherSearchCountForLastWeek) {
+  // Week 0: Last week
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+  AdvanceClockByOneWeek();
+
+  // Week 1: This week (ignored)
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+
+  EXPECT_EQ(2U,
+            serp_metrics_->GetSearchCountForLastWeek(SerpMetricType::kOther));
+}
+
+TEST_F(SerpMetricsLastWeekTest, SearchCountForLastWeek) {
+  // Week 0: Last week
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+  AdvanceClockByOneWeek();
+
+  // Week 1: This week (ignored)
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+
+  EXPECT_EQ(1U,
+            serp_metrics_->GetSearchCountForLastWeek(SerpMetricType::kBrave));
+  EXPECT_EQ(2U,
+            serp_metrics_->GetSearchCountForLastWeek(SerpMetricType::kGoogle));
+  EXPECT_EQ(3U,
+            serp_metrics_->GetSearchCountForLastWeek(SerpMetricType::kOther));
+}
+
+TEST_F(SerpMetricsLastWeekTest,
+       NoSearchCountForLastWeekWhenSearchesAreFromThisWeek) {
+  // Week 0: This week (no last week data)
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+
+  EXPECT_EQ(0U,
+            serp_metrics_->GetSearchCountForLastWeek(SerpMetricType::kBrave));
+  EXPECT_EQ(0U,
+            serp_metrics_->GetSearchCountForLastWeek(SerpMetricType::kGoogle));
+  EXPECT_EQ(0U,
+            serp_metrics_->GetSearchCountForLastWeek(SerpMetricType::kOther));
+}
+
+TEST_F(SerpMetricsLastWeekTest,
+       NoSearchCountForLastWeekWhenSearchesAreOlderThanLastWeek) {
+  // Week 0: Two weeks ago (outside last week window)
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+  AdvanceClockByOneWeek();
+
+  // Week 1: Last week (no searches)
+  AdvanceClockByOneWeek();
+
+  // Week 2: This week
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+
+  EXPECT_EQ(0U,
+            serp_metrics_->GetSearchCountForLastWeek(SerpMetricType::kBrave));
+  EXPECT_EQ(0U,
+            serp_metrics_->GetSearchCountForLastWeek(SerpMetricType::kGoogle));
+  EXPECT_EQ(0U,
+            serp_metrics_->GetSearchCountForLastWeek(SerpMetricType::kOther));
+}
+
+// Tests for `GetSearchCountForLastMonth` use a 31-day retention period so that
+// last-month data (up to 31 days old) is within the `TimePeriodStorage` window.
+// Advancing the clock by exactly 32 days guarantees that any searches recorded
+// before the advance fall within the previous calendar month, regardless of
+// which month the test clock starts on.
+class SerpMetricsLastMonthTest : public SerpMetricsTest {
+ public:
+  void SetUp() override {
+    local_state_.registry()->RegisterStringPref(kLastCheckYMD,
+                                                "");  // Never checked.
+
+    scoped_feature_list_.InitAndEnableFeatureWithParameters(
+        kSerpMetricsFeature, {{"time_period_in_days", "31"}});
+
+    serp_metrics_ = std::make_unique<SerpMetrics>(&local_state_,
+                                                  FakeTimePeriodStoreFactory());
+  }
+
+  // Advances the clock by 32 days so that searches recorded before the advance
+  // are guaranteed to fall in the previous calendar month relative to now.
+  void AdvanceClockByOneMonth() {
+    task_environment_.AdvanceClock(base::Days(32));
+  }
+};
+
+TEST_F(SerpMetricsLastMonthTest,
+       NoSearchCountForLastMonthWhenNoSearchesRecorded) {
+  EXPECT_EQ(0U,
+            serp_metrics_->GetSearchCountForLastMonth(SerpMetricType::kBrave));
+  EXPECT_EQ(0U,
+            serp_metrics_->GetSearchCountForLastMonth(SerpMetricType::kGoogle));
+  EXPECT_EQ(0U,
+            serp_metrics_->GetSearchCountForLastMonth(SerpMetricType::kOther));
+}
+
+TEST_F(SerpMetricsLastMonthTest, BraveSearchCountForLastMonth) {
+  // Month 0: Last month
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  AdvanceClockByOneMonth();
+
+  // Month 1: This month (ignored)
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+
+  EXPECT_EQ(2U,
+            serp_metrics_->GetSearchCountForLastMonth(SerpMetricType::kBrave));
+}
+
+TEST_F(SerpMetricsLastMonthTest, GoogleSearchCountForLastMonth) {
+  // Month 0: Last month
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+  AdvanceClockByOneMonth();
+
+  // Month 1: This month (ignored)
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+
+  EXPECT_EQ(2U,
+            serp_metrics_->GetSearchCountForLastMonth(SerpMetricType::kGoogle));
+}
+
+TEST_F(SerpMetricsLastMonthTest, OtherSearchCountForLastMonth) {
+  // Month 0: Last month
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+  AdvanceClockByOneMonth();
+
+  // Month 1: This month (ignored)
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+
+  EXPECT_EQ(2U,
+            serp_metrics_->GetSearchCountForLastMonth(SerpMetricType::kOther));
+}
+
+TEST_F(SerpMetricsLastMonthTest, SearchCountForLastMonth) {
+  // Month 0: Last month
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+  AdvanceClockByOneMonth();
+
+  // Month 1: This month (ignored)
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+
+  EXPECT_EQ(1U,
+            serp_metrics_->GetSearchCountForLastMonth(SerpMetricType::kBrave));
+  EXPECT_EQ(2U,
+            serp_metrics_->GetSearchCountForLastMonth(SerpMetricType::kGoogle));
+  EXPECT_EQ(3U,
+            serp_metrics_->GetSearchCountForLastMonth(SerpMetricType::kOther));
+}
+
+TEST_F(SerpMetricsLastMonthTest,
+       NoSearchCountForLastMonthWhenSearchesAreFromThisMonth) {
+  // Month 0: This month (no last month data)
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+
+  EXPECT_EQ(0U,
+            serp_metrics_->GetSearchCountForLastMonth(SerpMetricType::kBrave));
+  EXPECT_EQ(0U,
+            serp_metrics_->GetSearchCountForLastMonth(SerpMetricType::kGoogle));
+  EXPECT_EQ(0U,
+            serp_metrics_->GetSearchCountForLastMonth(SerpMetricType::kOther));
+}
+
 }  // namespace serp_metrics

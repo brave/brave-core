@@ -78,6 +78,69 @@ base::Time GetEndOfStalePeriod(base::Time now) {
   return GetStartOfYesterday(now) - base::Milliseconds(1);
 }
 
+// Returns the local midnight of the Monday that starts the current ISO week.
+// Subtracting `days_since_monday` days before normalising to local midnight
+// handles DST correctly without relying on fixed-offset arithmetic.
+base::Time GetStartOfThisWeek(base::Time now) {
+  base::Time::Exploded exploded;
+  now.LocalExplode(&exploded);
+  const int days_since_monday =
+      (exploded.day_of_week == 0) ? 6 : exploded.day_of_week - 1;
+  return (now - base::Days(days_since_monday)).LocalMidnight();
+}
+
+// Returns the local midnight of the Monday that started the previous ISO week.
+base::Time GetStartOfLastWeek(base::Time now) {
+  return GetStartOfThisWeek(now) - base::Days(7);
+}
+
+// Returns the final millisecond of the previous ISO week (Sunday 23:59:59.999).
+base::Time GetEndOfLastWeek(base::Time now) {
+  return GetStartOfThisWeek(now) - base::Milliseconds(1);
+}
+
+// Returns local midnight on the first day of the current calendar month.
+base::Time GetStartOfThisMonth(base::Time now) {
+  base::Time::Exploded exploded;
+  now.LocalExplode(&exploded);
+  exploded.day_of_month = 1;
+  exploded.hour = 0;
+  exploded.minute = 0;
+  exploded.second = 0;
+  exploded.millisecond = 0;
+  base::Time result;
+  const bool success = base::Time::FromLocalExploded(exploded, &result);
+  DCHECK(success);
+  return result;
+}
+
+// Returns local midnight on the first day of the previous calendar month.
+base::Time GetStartOfLastMonth(base::Time now) {
+  base::Time::Exploded exploded;
+  now.LocalExplode(&exploded);
+  if (exploded.month == 1) {
+    exploded.year -= 1;
+    exploded.month = 12;
+  } else {
+    exploded.month -= 1;
+  }
+  exploded.day_of_month = 1;
+  exploded.hour = 0;
+  exploded.minute = 0;
+  exploded.second = 0;
+  exploded.millisecond = 0;
+  base::Time result;
+  const bool success = base::Time::FromLocalExploded(exploded, &result);
+  DCHECK(success);
+  return result;
+}
+
+// Returns the final millisecond of the previous calendar month (last day
+// 23:59:59.999 in local time).
+base::Time GetEndOfLastMonth(base::Time now) {
+  return GetStartOfThisMonth(now) - base::Milliseconds(1);
+}
+
 // Returns the sum of metrics recorded during yesterday (local time) that have
 // not already been reported. The later of the start of yesterday and the start
 // of the stale period is used as the cutoff to avoid double-counting previously
@@ -127,6 +190,22 @@ size_t SerpMetrics::GetSearchCountForYesterday(SerpMetricType type) const {
   return GetYesterdaySumAfterLastCheckedCutoff(
       *time_period_storages_.at(type), GetStartOfYesterday(now),
       GetEndOfYesterday(now), GetStartOfStalePeriod());
+}
+
+size_t SerpMetrics::GetSearchCountForLastWeek(SerpMetricType type) const {
+  CHECK_NE(SerpMetricType::kUndefined, type);
+  CHECK(time_period_storages_.contains(type));
+  const base::Time now = base::Time::Now();
+  return time_period_storages_.at(type)->GetPeriodSumInTimeRange(
+      GetStartOfLastWeek(now), GetEndOfLastWeek(now));
+}
+
+size_t SerpMetrics::GetSearchCountForLastMonth(SerpMetricType type) const {
+  CHECK_NE(SerpMetricType::kUndefined, type);
+  CHECK(time_period_storages_.contains(type));
+  const base::Time now = base::Time::Now();
+  return time_period_storages_.at(type)->GetPeriodSumInTimeRange(
+      GetStartOfLastMonth(now), GetEndOfLastMonth(now));
 }
 
 size_t SerpMetrics::GetSearchCountForStalePeriod() const {

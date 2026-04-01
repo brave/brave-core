@@ -228,6 +228,51 @@ GURL BraveStatsUpdaterParams::GetUpdateURL(
             serp_metrics_aggregator->GetSearchCountForStalePeriod()));
   }
 
+  if (serp_metrics_aggregator &&
+      (last_check_woy_ == 0 || woy_ != last_check_woy_)) {
+    // Report per-engine search totals for the previous complete ISO week on
+    // each new-week boundary so the server can derive weekly trends.
+
+    update_url = net::AppendQueryParameter(
+        update_url, "braveSearchWeek",
+        base::NumberToString(serp_metrics_aggregator->GetSearchCountForLastWeek(
+            serp_metrics::SerpMetricType::kBrave)));
+
+    update_url = net::AppendQueryParameter(
+        update_url, "googleSearchWeek",
+        base::NumberToString(serp_metrics_aggregator->GetSearchCountForLastWeek(
+            serp_metrics::SerpMetricType::kGoogle)));
+
+    update_url = net::AppendQueryParameter(
+        update_url, "otherSearchWeek",
+        base::NumberToString(serp_metrics_aggregator->GetSearchCountForLastWeek(
+            serp_metrics::SerpMetricType::kOther)));
+  }
+
+  if (serp_metrics_aggregator &&
+      (last_check_month_ == 0 || month_ != last_check_month_)) {
+    // Report per-engine search totals for the previous complete calendar month
+    // on each new-month boundary so the server can derive monthly trends.
+
+    update_url = net::AppendQueryParameter(
+        update_url, "braveSearchMonth",
+        base::NumberToString(
+            serp_metrics_aggregator->GetSearchCountForLastMonth(
+                serp_metrics::SerpMetricType::kBrave)));
+
+    update_url = net::AppendQueryParameter(
+        update_url, "googleSearchMonth",
+        base::NumberToString(
+            serp_metrics_aggregator->GetSearchCountForLastMonth(
+                serp_metrics::SerpMetricType::kGoogle)));
+
+    update_url = net::AppendQueryParameter(
+        update_url, "otherSearchMonth",
+        base::NumberToString(
+            serp_metrics_aggregator->GetSearchCountForLastMonth(
+                serp_metrics::SerpMetricType::kOther)));
+  }
+
   return update_url;
 }
 

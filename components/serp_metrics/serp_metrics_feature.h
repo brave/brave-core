@@ -17,8 +17,12 @@ BASE_DECLARE_FEATURE(kSerpMetricsFeature);
 
 // Ideally this would be `base::FeatureParam<base::TimeDelta>`, but that type is
 // not currently supported for `TimePeriodStorage`.
+//
+// 31 days ensures the previous calendar month is always within the retention
+// window when the monthly ping fires, since the longest calendar month is 31
+// days.
 inline constexpr base::FeatureParam<size_t> kSerpMetricsTimePeriodInDays{
-    &kSerpMetricsFeature, "time_period_in_days", 28};
+    &kSerpMetricsFeature, "time_period_in_days", 31};
 
 }  // namespace serp_metrics
 

@@ -35,6 +35,8 @@ class SerpMetricsAllProfilesAggregator {
   virtual ~SerpMetricsAllProfilesAggregator();
 
   virtual size_t GetSearchCountForYesterday(SerpMetricType type) const;
+  virtual size_t GetSearchCountForLastWeek(SerpMetricType type) const;
+  virtual size_t GetSearchCountForLastMonth(SerpMetricType type) const;
   virtual size_t GetSearchCountForStalePeriod() const;
 
   size_t GetSearchCountForTesting(SerpMetricType type) const;

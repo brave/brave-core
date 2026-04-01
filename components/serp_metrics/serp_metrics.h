@@ -25,10 +25,14 @@ namespace serp_metrics {
 
 // SerpMetrics records and aggregates search engine usage counts.
 //
-// Counts are exposed for two reporting windows, based on the timestamp of the
-// last successful usage ping (i.e., only searches not yet reported):
+// Counts are exposed for four reporting windows:
 //  - Yesterday: searches from the most recent completed calendar day
-//    (00:00:00 to 23:59:59 in the reporting timezone).
+//    (00:00:00 to 23:59:59 in the reporting timezone). Only searches not yet
+//    reported (based on the last successful usage ping) are included.
+//  - Last week: searches from the previous complete ISO week
+//    (Monday 00:00:00 to Sunday 23:59:59 in the reporting timezone).
+//  - Last month: searches from the previous complete calendar month
+//    (first day 00:00:00 to last day 23:59:59 in the reporting timezone).
 //  - Stale period: searches older than yesterday (but still within the
 //    `TimePeriodStorage` retention window).
 
@@ -44,6 +48,8 @@ class SerpMetrics final {
 
   void RecordSearch(SerpMetricType type);
   size_t GetSearchCountForYesterday(SerpMetricType type) const;
+  size_t GetSearchCountForLastWeek(SerpMetricType type) const;
+  size_t GetSearchCountForLastMonth(SerpMetricType type) const;
 
   size_t GetSearchCountForStalePeriod() const;
 

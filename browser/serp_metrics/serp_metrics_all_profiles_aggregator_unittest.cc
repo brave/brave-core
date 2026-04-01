@@ -48,6 +48,18 @@ class SerpMetricsAllProfilesAggregatorTest : public ::testing::Test {
     task_environment_.AdvanceClock(base::Days(1));
   }
 
+  // Advances the clock by exactly one week. Searches recorded before calling
+  // this will fall in "last week" relative to after the advance.
+  void AdvanceClockByOneWeek() {
+    task_environment_.AdvanceClock(base::Days(7));
+  }
+
+  // Advances the clock by 32 days so that searches recorded before the advance
+  // are guaranteed to fall in the previous calendar month relative to now.
+  void AdvanceClockByOneMonth() {
+    task_environment_.AdvanceClock(base::Days(32));
+  }
+
   PrefService* local_state() { return &local_state_; }
 
   ProfileAttributesStorage& profile_attributes_storage() { return *storage_; }
@@ -221,6 +233,152 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
   SerpMetricsAllProfilesAggregator aggregator(local_state(),
                                               profile_attributes_storage());
   EXPECT_EQ(6U, aggregator.GetSearchCountForStalePeriod());
+}
+
+TEST_F(SerpMetricsAllProfilesAggregatorTest,
+       AggregateNoLastWeekMetricsForSingleProfile) {
+  base::FilePath profile_path =
+      base::FilePath(kUserDataDir).AppendASCII("testing_profile");
+  AddProfile(profile_path);
+
+  SerpMetricsAllProfilesAggregator aggregator(local_state(),
+                                              profile_attributes_storage());
+  EXPECT_EQ(0U, aggregator.GetSearchCountForLastWeek(SerpMetricType::kBrave));
+  EXPECT_EQ(0U, aggregator.GetSearchCountForLastWeek(SerpMetricType::kGoogle));
+  EXPECT_EQ(0U, aggregator.GetSearchCountForLastWeek(SerpMetricType::kOther));
+}
+
+TEST_F(SerpMetricsAllProfilesAggregatorTest,
+       AggregateLastWeekRecordedMetricsForSingleProfile) {
+  base::FilePath profile_path =
+      base::FilePath(kUserDataDir).AppendASCII("testing_profile");
+  AddProfile(profile_path);
+  std::unique_ptr<SerpMetrics> serp_metrics = std::make_unique<SerpMetrics>(
+      local_state(), SerpMetricsTimePeriodStoreFactory(
+                         profile_path, profile_attributes_storage()));
+
+  // Week 0: Last week
+  serp_metrics->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics->RecordSearch(SerpMetricType::kGoogle);
+  serp_metrics->RecordSearch(SerpMetricType::kOther);
+  AdvanceClockByOneWeek();
+
+  // Week 1: This week (ignored)
+  serp_metrics->RecordSearch(SerpMetricType::kBrave);
+
+  SerpMetricsAllProfilesAggregator aggregator(local_state(),
+                                              profile_attributes_storage());
+  EXPECT_EQ(1U, aggregator.GetSearchCountForLastWeek(SerpMetricType::kBrave));
+  EXPECT_EQ(1U, aggregator.GetSearchCountForLastWeek(SerpMetricType::kGoogle));
+  EXPECT_EQ(1U, aggregator.GetSearchCountForLastWeek(SerpMetricType::kOther));
+}
+
+TEST_F(SerpMetricsAllProfilesAggregatorTest,
+       AggregateLastWeekRecordedMetricsForMultipleProfiles) {
+  base::FilePath profile_path_1 =
+      base::FilePath(kUserDataDir).AppendASCII("testing_profile_1");
+  AddProfile(profile_path_1);
+  std::unique_ptr<SerpMetrics> serp_metrics_1 = std::make_unique<SerpMetrics>(
+      local_state(), SerpMetricsTimePeriodStoreFactory(
+                         profile_path_1, profile_attributes_storage()));
+  base::FilePath profile_path_2 =
+      base::FilePath(kUserDataDir).AppendASCII("testing_profile_2");
+  AddProfile(profile_path_2);
+  std::unique_ptr<SerpMetrics> serp_metrics_2 = std::make_unique<SerpMetrics>(
+      local_state(), SerpMetricsTimePeriodStoreFactory(
+                         profile_path_2, profile_attributes_storage()));
+
+  // Week 0: Last week
+  serp_metrics_1->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_1->RecordSearch(SerpMetricType::kGoogle);
+  serp_metrics_1->RecordSearch(SerpMetricType::kOther);
+  serp_metrics_2->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_2->RecordSearch(SerpMetricType::kGoogle);
+  serp_metrics_2->RecordSearch(SerpMetricType::kOther);
+  AdvanceClockByOneWeek();
+
+  // Week 1: This week (ignored)
+  serp_metrics_1->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_2->RecordSearch(SerpMetricType::kOther);
+
+  SerpMetricsAllProfilesAggregator aggregator(local_state(),
+                                              profile_attributes_storage());
+  EXPECT_EQ(2U, aggregator.GetSearchCountForLastWeek(SerpMetricType::kBrave));
+  EXPECT_EQ(2U, aggregator.GetSearchCountForLastWeek(SerpMetricType::kGoogle));
+  EXPECT_EQ(2U, aggregator.GetSearchCountForLastWeek(SerpMetricType::kOther));
+}
+
+TEST_F(SerpMetricsAllProfilesAggregatorTest,
+       AggregateNoLastMonthMetricsForSingleProfile) {
+  base::FilePath profile_path =
+      base::FilePath(kUserDataDir).AppendASCII("testing_profile");
+  AddProfile(profile_path);
+
+  SerpMetricsAllProfilesAggregator aggregator(local_state(),
+                                              profile_attributes_storage());
+  EXPECT_EQ(0U, aggregator.GetSearchCountForLastMonth(SerpMetricType::kBrave));
+  EXPECT_EQ(0U, aggregator.GetSearchCountForLastMonth(SerpMetricType::kGoogle));
+  EXPECT_EQ(0U, aggregator.GetSearchCountForLastMonth(SerpMetricType::kOther));
+}
+
+TEST_F(SerpMetricsAllProfilesAggregatorTest,
+       AggregateLastMonthRecordedMetricsForSingleProfile) {
+  base::FilePath profile_path =
+      base::FilePath(kUserDataDir).AppendASCII("testing_profile");
+  AddProfile(profile_path);
+  std::unique_ptr<SerpMetrics> serp_metrics = std::make_unique<SerpMetrics>(
+      local_state(), SerpMetricsTimePeriodStoreFactory(
+                         profile_path, profile_attributes_storage()));
+
+  // Month 0: Last month
+  serp_metrics->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics->RecordSearch(SerpMetricType::kGoogle);
+  serp_metrics->RecordSearch(SerpMetricType::kOther);
+  AdvanceClockByOneMonth();
+
+  // Month 1: This month (ignored)
+  serp_metrics->RecordSearch(SerpMetricType::kBrave);
+
+  SerpMetricsAllProfilesAggregator aggregator(local_state(),
+                                              profile_attributes_storage());
+  EXPECT_EQ(1U, aggregator.GetSearchCountForLastMonth(SerpMetricType::kBrave));
+  EXPECT_EQ(1U, aggregator.GetSearchCountForLastMonth(SerpMetricType::kGoogle));
+  EXPECT_EQ(1U, aggregator.GetSearchCountForLastMonth(SerpMetricType::kOther));
+}
+
+TEST_F(SerpMetricsAllProfilesAggregatorTest,
+       AggregateLastMonthRecordedMetricsForMultipleProfiles) {
+  base::FilePath profile_path_1 =
+      base::FilePath(kUserDataDir).AppendASCII("testing_profile_1");
+  AddProfile(profile_path_1);
+  std::unique_ptr<SerpMetrics> serp_metrics_1 = std::make_unique<SerpMetrics>(
+      local_state(), SerpMetricsTimePeriodStoreFactory(
+                         profile_path_1, profile_attributes_storage()));
+  base::FilePath profile_path_2 =
+      base::FilePath(kUserDataDir).AppendASCII("testing_profile_2");
+  AddProfile(profile_path_2);
+  std::unique_ptr<SerpMetrics> serp_metrics_2 = std::make_unique<SerpMetrics>(
+      local_state(), SerpMetricsTimePeriodStoreFactory(
+                         profile_path_2, profile_attributes_storage()));
+
+  // Month 0: Last month
+  serp_metrics_1->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_1->RecordSearch(SerpMetricType::kGoogle);
+  serp_metrics_1->RecordSearch(SerpMetricType::kOther);
+  serp_metrics_2->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_2->RecordSearch(SerpMetricType::kGoogle);
+  serp_metrics_2->RecordSearch(SerpMetricType::kOther);
+  AdvanceClockByOneMonth();
+
+  // Month 1: This month (ignored)
+  serp_metrics_1->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_2->RecordSearch(SerpMetricType::kOther);
+
+  SerpMetricsAllProfilesAggregator aggregator(local_state(),
+                                              profile_attributes_storage());
+  EXPECT_EQ(2U, aggregator.GetSearchCountForLastMonth(SerpMetricType::kBrave));
+  EXPECT_EQ(2U, aggregator.GetSearchCountForLastMonth(SerpMetricType::kGoogle));
+  EXPECT_EQ(2U, aggregator.GetSearchCountForLastMonth(SerpMetricType::kOther));
 }
 
 }  // namespace serp_metrics

@@ -870,3 +870,180 @@ TEST_F(BraveStatsUpdaterTest, DoNotSendSerpMetricsUsageIfDisabled) {
   EXPECT_FALSE(net::GetValueForKeyInQuery(update_url, "staleSearch",
                                           /*out_value=*/nullptr));
 }
+
+TEST_F(BraveStatsUpdaterTest, SendWeeklySerpMetricsWhenNewWeek) {
+  // `kLastCheckWOY` is not set, so `last_check_woy_` defaults to 0 and the
+  // weekly guard fires.
+  ProfileAttributesStorage::RegisterPrefs(GetLocalStateRegistry());
+  ProfileAttributesStorage profile_attributes_storage(GetLocalState(),
+                                                      base::FilePath());
+  serp_metrics::SerpMetricsAllProfilesAggregatorMock
+      serp_metrics_aggregator_mock(GetLocalState(), profile_attributes_storage);
+
+  EXPECT_CALL(serp_metrics_aggregator_mock,
+              GetSearchCountForLastWeek(serp_metrics::SerpMetricType::kBrave))
+      .WillOnce(::testing::Return(7));
+
+  EXPECT_CALL(serp_metrics_aggregator_mock,
+              GetSearchCountForLastWeek(serp_metrics::SerpMetricType::kGoogle))
+      .WillOnce(::testing::Return(42));
+
+  EXPECT_CALL(serp_metrics_aggregator_mock,
+              GetSearchCountForLastWeek(serp_metrics::SerpMetricType::kOther))
+      .WillOnce(::testing::Return(1));
+
+  auto params = BuildUpdaterParams();
+  const GURL update_url = params->GetUpdateURL(
+      GURL("http://localhost:8080"),
+      /*platform_id=*/"", /*channel_name=*/"", /*full_brave_version=*/"",
+      &serp_metrics_aggregator_mock);
+  ASSERT_TRUE(update_url.is_valid());
+
+  std::string query_value;
+
+  ASSERT_TRUE(
+      net::GetValueForKeyInQuery(update_url, "braveSearchWeek", &query_value));
+  EXPECT_EQ("7", query_value);
+
+  ASSERT_TRUE(
+      net::GetValueForKeyInQuery(update_url, "googleSearchWeek", &query_value));
+  EXPECT_EQ("42", query_value);
+
+  ASSERT_TRUE(
+      net::GetValueForKeyInQuery(update_url, "otherSearchWeek", &query_value));
+  EXPECT_EQ("1", query_value);
+}
+
+TEST_F(BraveStatsUpdaterTest, DoNotSendWeeklySerpMetricsOnSameWeek) {
+  // Set `kLastCheckWOY` to the current week so the weekly guard does not fire.
+  GetLocalState()->SetInteger(kLastCheckWOY, kThisWeek);
+
+  ProfileAttributesStorage::RegisterPrefs(GetLocalStateRegistry());
+  ProfileAttributesStorage profile_attributes_storage(GetLocalState(),
+                                                      base::FilePath());
+  serp_metrics::SerpMetricsAllProfilesAggregatorMock
+      serp_metrics_aggregator_mock(GetLocalState(), profile_attributes_storage);
+
+  brave_stats::BraveStatsUpdaterParams params(GetLocalState(), kToday,
+                                              kThisWeek, kThisMonth);
+  const GURL update_url = params.GetUpdateURL(
+      GURL("http://localhost:8080"),
+      /*platform_id=*/"", /*channel_name=*/"", /*full_brave_version=*/"",
+      &serp_metrics_aggregator_mock);
+  ASSERT_TRUE(update_url.is_valid());
+
+  EXPECT_FALSE(net::GetValueForKeyInQuery(update_url, "braveSearchWeek",
+                                          /*out_value=*/nullptr));
+  EXPECT_FALSE(net::GetValueForKeyInQuery(update_url, "googleSearchWeek",
+                                          /*out_value=*/nullptr));
+  EXPECT_FALSE(net::GetValueForKeyInQuery(update_url, "otherSearchWeek",
+                                          /*out_value=*/nullptr));
+}
+
+TEST_F(BraveStatsUpdaterTest, DoNotSendWeeklySerpMetricsIfDisabled) {
+  // When `serp_metrics_aggregator` is null, weekly SERP params must not appear
+  // regardless of the weekly guard state.
+  auto params = BuildUpdaterParams();
+
+  const GURL update_url = params->GetUpdateURL(
+      GURL("http://localhost:8080"),
+      /*platform_id=*/"", /*channel_name=*/"", /*full_brave_version=*/"",
+      /*serp_metrics_aggregator=*/nullptr);
+  ASSERT_TRUE(update_url.is_valid());
+
+  EXPECT_FALSE(net::GetValueForKeyInQuery(update_url, "braveSearchWeek",
+                                          /*out_value=*/nullptr));
+  EXPECT_FALSE(net::GetValueForKeyInQuery(update_url, "googleSearchWeek",
+                                          /*out_value=*/nullptr));
+  EXPECT_FALSE(net::GetValueForKeyInQuery(update_url, "otherSearchWeek",
+                                          /*out_value=*/nullptr));
+}
+
+TEST_F(BraveStatsUpdaterTest, SendMonthlySerpMetricsWhenNewMonth) {
+  // `kLastCheckMonth` is not set, so `last_check_month_` defaults to 0 and the
+  // monthly guard fires.
+  ProfileAttributesStorage::RegisterPrefs(GetLocalStateRegistry());
+  ProfileAttributesStorage profile_attributes_storage(GetLocalState(),
+                                                      base::FilePath());
+  serp_metrics::SerpMetricsAllProfilesAggregatorMock
+      serp_metrics_aggregator_mock(GetLocalState(), profile_attributes_storage);
+
+  EXPECT_CALL(serp_metrics_aggregator_mock,
+              GetSearchCountForLastMonth(serp_metrics::SerpMetricType::kBrave))
+      .WillOnce(::testing::Return(7));
+
+  EXPECT_CALL(serp_metrics_aggregator_mock,
+              GetSearchCountForLastMonth(serp_metrics::SerpMetricType::kGoogle))
+      .WillOnce(::testing::Return(42));
+
+  EXPECT_CALL(serp_metrics_aggregator_mock,
+              GetSearchCountForLastMonth(serp_metrics::SerpMetricType::kOther))
+      .WillOnce(::testing::Return(1));
+
+  auto params = BuildUpdaterParams();
+  const GURL update_url = params->GetUpdateURL(
+      GURL("http://localhost:8080"),
+      /*platform_id=*/"", /*channel_name=*/"", /*full_brave_version=*/"",
+      &serp_metrics_aggregator_mock);
+  ASSERT_TRUE(update_url.is_valid());
+
+  std::string query_value;
+
+  ASSERT_TRUE(
+      net::GetValueForKeyInQuery(update_url, "braveSearchMonth", &query_value));
+  EXPECT_EQ("7", query_value);
+
+  ASSERT_TRUE(net::GetValueForKeyInQuery(update_url, "googleSearchMonth",
+                                         &query_value));
+  EXPECT_EQ("42", query_value);
+
+  ASSERT_TRUE(
+      net::GetValueForKeyInQuery(update_url, "otherSearchMonth", &query_value));
+  EXPECT_EQ("1", query_value);
+}
+
+TEST_F(BraveStatsUpdaterTest, DoNotSendMonthlySerpMetricsOnSameMonth) {
+  // Set `kLastCheckMonth` to the current month so the monthly guard does not
+  // fire.
+  GetLocalState()->SetInteger(kLastCheckMonth, kThisMonth);
+
+  ProfileAttributesStorage::RegisterPrefs(GetLocalStateRegistry());
+  ProfileAttributesStorage profile_attributes_storage(GetLocalState(),
+                                                      base::FilePath());
+  serp_metrics::SerpMetricsAllProfilesAggregatorMock
+      serp_metrics_aggregator_mock(GetLocalState(), profile_attributes_storage);
+
+  brave_stats::BraveStatsUpdaterParams params(GetLocalState(), kToday,
+                                              kThisWeek, kThisMonth);
+  const GURL update_url = params.GetUpdateURL(
+      GURL("http://localhost:8080"),
+      /*platform_id=*/"", /*channel_name=*/"", /*full_brave_version=*/"",
+      &serp_metrics_aggregator_mock);
+  ASSERT_TRUE(update_url.is_valid());
+
+  EXPECT_FALSE(net::GetValueForKeyInQuery(update_url, "braveSearchMonth",
+                                          /*out_value=*/nullptr));
+  EXPECT_FALSE(net::GetValueForKeyInQuery(update_url, "googleSearchMonth",
+                                          /*out_value=*/nullptr));
+  EXPECT_FALSE(net::GetValueForKeyInQuery(update_url, "otherSearchMonth",
+                                          /*out_value=*/nullptr));
+}
+
+TEST_F(BraveStatsUpdaterTest, DoNotSendMonthlySerpMetricsIfDisabled) {
+  // When `serp_metrics_aggregator` is null, monthly SERP params must not appear
+  // regardless of the monthly guard state.
+  auto params = BuildUpdaterParams();
+
+  const GURL update_url = params->GetUpdateURL(
+      GURL("http://localhost:8080"),
+      /*platform_id=*/"", /*channel_name=*/"", /*full_brave_version=*/"",
+      /*serp_metrics_aggregator=*/nullptr);
+  ASSERT_TRUE(update_url.is_valid());
+
+  EXPECT_FALSE(net::GetValueForKeyInQuery(update_url, "braveSearchMonth",
+                                          /*out_value=*/nullptr));
+  EXPECT_FALSE(net::GetValueForKeyInQuery(update_url, "googleSearchMonth",
+                                          /*out_value=*/nullptr));
+  EXPECT_FALSE(net::GetValueForKeyInQuery(update_url, "otherSearchMonth",
+                                          /*out_value=*/nullptr));
+}

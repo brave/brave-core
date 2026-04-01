@@ -36,6 +36,16 @@ class SerpMetricsAllProfilesAggregatorMock
               (SerpMetricType type),
               (const, override));
 
+  MOCK_METHOD(size_t,
+              GetSearchCountForLastWeek,
+              (SerpMetricType type),
+              (const, override));
+
+  MOCK_METHOD(size_t,
+              GetSearchCountForLastMonth,
+              (SerpMetricType type),
+              (const, override));
+
   MOCK_METHOD(size_t, GetSearchCountForStalePeriod, (), (const, override));
 };
 
