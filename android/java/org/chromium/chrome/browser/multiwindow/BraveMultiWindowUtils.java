@@ -11,7 +11,6 @@ import android.content.Intent;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
 import org.chromium.build.annotations.NullMarked;
-import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager.PersistedInstanceType;
@@ -30,8 +29,8 @@ public class BraveMultiWindowUtils extends MultiWindowUtils {
         super();
     }
 
-    public boolean shouldShowEnableWindow(@Nullable Activity activity) {
-        return super.isOpenInOtherWindowSupported(activity)
+    public boolean shouldShowEnableWindow(Activity activity) {
+        return super.isLinkNavigationToOtherWindowSupported(activity)
                 || MultiWindowUtils.canEnterMultiWindowMode();
     }
 
@@ -39,9 +38,19 @@ public class BraveMultiWindowUtils extends MultiWindowUtils {
         return shouldEnableMultiWindows() && MultiWindowUtils.shouldShowManageWindowsMenu();
     }
 
+    public static boolean isLinkNavigationToNewWindowSupported() {
+        return shouldEnableMultiWindows()
+                && MultiWindowUtils.isLinkNavigationToNewWindowSupported();
+    }
+
+    public static boolean isLinkNavigationToIncognitoWindowSupported() {
+        return shouldEnableMultiWindows()
+                && MultiWindowUtils.isLinkNavigationToIncognitoWindowSupported();
+    }
+
     @Override
-    public boolean isOpenInOtherWindowSupported(@Nullable Activity activity) {
-        return shouldEnableMultiWindows() && super.isOpenInOtherWindowSupported(activity);
+    public boolean isLinkNavigationToOtherWindowSupported(Activity activity) {
+        return shouldEnableMultiWindows() && super.isLinkNavigationToOtherWindowSupported(activity);
     }
 
     @Override

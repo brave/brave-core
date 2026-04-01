@@ -26,5 +26,15 @@ public class BraveMultiWindowUtilsClassAdapter extends BraveClassVisitor {
                 sMultiWindowUtilsClassName,
                 "canEnterMultiWindowMode",
                 sBraveMultiWindowUtilsClassName);
+
+        changeMethodOwner(
+                sMultiWindowUtilsClassName,
+                "isLinkNavigationToNewWindowSupported",
+                sBraveMultiWindowUtilsClassName);
+
+        changeMethodOwner(
+                sMultiWindowUtilsClassName,
+                "isLinkNavigationToIncognitoWindowSupported",
+                sBraveMultiWindowUtilsClassName);
     }
 }
