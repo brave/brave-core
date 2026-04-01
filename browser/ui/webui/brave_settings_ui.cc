@@ -282,10 +282,12 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 #endif
   html_source->AddBoolean("isBraveAccountEnabled",
                           brave_account::features::IsBraveAccountEnabled());
-  html_source->AddBoolean("isOriginAllowed",
-                          brave_origin::IsBraveOriginEnabled());
   html_source->AddBoolean("isBraveOriginBrandedBuild",
                           BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
+  html_source->AddBoolean("isBraveOriginPurchased",
+                          brave_origin::IsBraveOriginPurchased());
+  html_source->AddBoolean("isBraveOriginFeatureEnabled",
+                          brave_origin::IsBraveOriginFeatureEnabled());
   // STAGING for unofficial builds; official builds always resolve to prod.
   html_source->AddString(
       "braveOriginBuyUrl",

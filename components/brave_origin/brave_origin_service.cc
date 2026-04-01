@@ -85,7 +85,7 @@ void BraveOriginService::Shutdown() {
 
 bool BraveOriginService::IsPolicyControlledByBraveOrigin(
     std::string_view policy_key) const {
-  if (!IsBraveOriginEnabled()) {
+  if (!IsBraveOriginPurchased()) {
     return false;
   }
 
@@ -106,7 +106,7 @@ bool BraveOriginService::IsPolicyControlledByBraveOrigin(
 
 bool BraveOriginService::SetPolicyValue(std::string_view policy_key,
                                         bool value) {
-  if (!IsBraveOriginEnabled()) {
+  if (!IsBraveOriginPurchased()) {
     return false;
   }
 
