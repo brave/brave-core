@@ -6,7 +6,7 @@ index c8c10cdab040d39f69fa56aad12fc8b1c67854f3..db0b99f8458986328be3495d0415b4d6
          "common/crash_keys.cc",
          "common/crash_keys.h",
        ]
-+      sources -= [ "app/chrome_exe.rc", ] sources += [ "//brave/app/brave_exe.rc", ] import("//brave/components/brave_origin/buildflags/buildflags.gni") if (is_brave_origin_branded) { defines += [ "IS_BRAVE_ORIGIN_BRANDED" ] }
++      sources -= [ "app/chrome_exe.rc", ] sources += [ "//brave/app/brave_exe.rc", ]
  
        deps += [
          ":chrome_dll",

@@ -36,11 +36,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // icons.  To avoid breaking existing shortcuts, add new icons at the end
 // (following the ordering described above).
 #if defined(OFFICIAL_BUILD)
-#if defined(IS_BRAVE_ORIGIN_BRANDED)
-IDR_MAINFRAME           ICON       "theme\\brave_origin\\win\\brave.ico"
-#else
 IDR_MAINFRAME           ICON       "theme\\brave\\win\\brave.ico"
-#endif
 // These three are no longer used, but remain as placeholders. (They cannot be
 // removed, or existing shortcuts to the later resources will break.)
 IDR_MAINFRAME_2         ICON       "theme\\brave\\win\\placeholder.ico"
@@ -48,36 +44,17 @@ IDR_MAINFRAME_3         ICON       "theme\\brave\\win\\placeholder.ico"
 IDR_MAINFRAME_4         ICON       "theme\\brave\\win\\placeholder.ico"
 // The SXS icon must have an index of 4, the constant is used in Chrome code to
 // identify it.
-#if defined(IS_BRAVE_ORIGIN_BRANDED)
-IDR_SXS                 ICON       "theme\\brave_origin\\win\\brave_canary.ico"
-#else
 IDR_SXS                 ICON       "theme\\brave\\win\\brave_canary.ico"
-#endif
 
 // Start a naming scheme to keep icons in order. A leading X is used to keep
 // the name alphabetically after IDR_SXS. The maximum of the number that follows
 // should be incremented when a new icon is added. The icon indices in
 // chrome_icon_resources_win.h should also be updated.
 #else
-#if defined(IS_BRAVE_ORIGIN_BRANDED)
-IDR_MAINFRAME           ICON       "theme\\brave_origin\\win\\brave_development.ico"
-#else
 IDR_MAINFRAME           ICON       "theme\\brave\\win\\brave_development.ico"
-#endif
 #endif
 
 #if defined(OFFICIAL_BUILD)
-#if defined(IS_BRAVE_ORIGIN_BRANDED)
-IDR_X001_APP_LIST       ICON       "theme\\brave_origin\\win\\app_list.ico"
-IDR_X002_APP_LIST_SXS   ICON       "theme\\brave_origin\\win\\app_list_sxs.ico"
-IDR_X003_INCOGNITO      ICON       "theme\\brave_origin\\win\\incognito.ico"
-IDR_X004_DEV            ICON       "theme\\brave_origin\\win\\brave_dev.ico"
-IDR_X005_BETA           ICON       "theme\\brave_origin\\win\\brave_beta.ico"
-IDR_X006_FILE           ICON       "theme\\brave_origin\\win\\brave_file.ico"
-IDR_X006_FILE_BETA      ICON       "theme\\brave_origin\\win\\brave_file_beta.ico"
-IDR_X006_FILE_DEVA      ICON       "theme\\brave_origin\\win\\brave_file_dev.ico"
-IDR_X006_FILE_SXS       ICON       "theme\\brave_origin\\win\\brave_file_nightly.ico"
-#else
 IDR_X001_APP_LIST       ICON       "theme\\brave\\win\\app_list.ico"
 IDR_X002_APP_LIST_SXS   ICON       "theme\\brave\\win\\app_list_sxs.ico"
 IDR_X003_INCOGNITO      ICON       "theme\\brave\\win\\incognito.ico"
@@ -87,15 +64,9 @@ IDR_X006_FILE           ICON       "theme\\brave\\win\\brave_file.ico"
 IDR_X006_FILE_BETA      ICON       "theme\\brave\\win\\brave_file_beta.ico"
 IDR_X006_FILE_DEVA      ICON       "theme\\brave\\win\\brave_file_dev.ico"
 IDR_X006_FILE_SXS       ICON       "theme\\brave\\win\\brave_file_nightly.ico"
-#endif
-#else
-#if defined(IS_BRAVE_ORIGIN_BRANDED)
-IDR_X001_APP_LIST       ICON       "theme\\brave_origin\\win\\app_list.ico"
-IDR_X003_INCOGNITO      ICON       "theme\\brave_origin\\win\\incognito.ico"
 #else
 IDR_X001_APP_LIST       ICON       "theme\\brave\\win\\app_list.ico"
 IDR_X003_INCOGNITO      ICON       "theme\\brave\\win\\incognito.ico"
-#endif
 #endif
 
 
