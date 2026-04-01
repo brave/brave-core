@@ -46,7 +46,7 @@ class TreeTabNodeId;
 #define InsertTabCollectionAt                                           \
   AddTabCollectionAtPosition(std::unique_ptr<TabCollection> collection, \
                              const TabCollection::Position& position);  \
-  void InsertTabCollectionAt
+  virtual void InsertTabCollectionAt
 
 #include <components/tabs/public/tab_strip_collection.h>  // IWYU pragma: export
 

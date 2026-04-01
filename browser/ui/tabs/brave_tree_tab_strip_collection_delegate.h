@@ -8,12 +8,15 @@
 
 #include <set>
 
+#include "base/containers/flat_set.h"
 #include "base/types/expected.h"
 #include "brave/components/tabs/public/brave_tab_strip_collection_delegate.h"
 
 class TreeTabModel;
 
 namespace tabs {
+class SplitTabCollection;
+class TabGroupTabCollection;
 class TreeTabNodeTabCollection;
 }  // namespace tabs
 
@@ -43,6 +46,12 @@ class BraveTreeTabStripCollectionDelegate
       std::optional<tab_groups::TabGroupId> new_group_id,
       bool new_pinned_state,
       const tabs::TabCollection::TypeEnumSet retain_collection_types) override;
+
+  void InsertTabCollectionAt(
+      std::unique_ptr<tabs::TabCollection> collection,
+      int index,
+      bool pinned,
+      std::optional<tab_groups::TabGroupId> parent_group) override;
 
   bool CreateSplit(split_tabs::SplitTabId split_id,
                    const std::vector<tabs::TabInterface*>& tabs,
@@ -88,6 +97,29 @@ class BraveTreeTabStripCollectionDelegate
       std::optional<tab_groups::TabGroupId> new_group_id,
       std::unique_ptr<tabs::TabInterface> tab) const;
 
+  // Inserts a tree-node wrapper (callbacks + model registration) for detached
+  // split/group collections; used by InsertTabCollectionAt.
+  void InsertTreeNodeWrapperAt(
+      std::unique_ptr<tabs::TreeTabNodeTabCollection> wrapper,
+      int index,
+      bool pinned,
+      std::optional<tab_groups::TabGroupId> parent_group);
+  void WrapCollectionInTreeNodeAndInsert(
+      std::unique_ptr<tabs::SplitTabCollection> collection,
+      int index,
+      bool pinned,
+      std::optional<tab_groups::TabGroupId> parent_group);
+  void WrapCollectionInTreeNodeAndInsert(
+      std::unique_ptr<tabs::TabGroupTabCollection> collection,
+      int index,
+      bool pinned,
+      std::optional<tab_groups::TabGroupId> parent_group);
+
+  // Unwraps the tree node and returns the split collection without the tree
+  // node wrapper.
+  std::unique_ptr<tabs::SplitTabCollection> UnwrapTreeNodeForCollection(
+      tabs::SplitTabCollection* collection);
+
   // Move all direct children of TreeTabNodeTabCollection to its parent at the
   // position of the TreeTabNodeTabCollection. The "current tab" of the given
   // tree tab node collection will be skipped.
@@ -100,6 +132,30 @@ class BraveTreeTabStripCollectionDelegate
       tabs::TreeTabNodeTabCollection* tree_tab_node_collection,
       tabs::TabCollection* target_collection,
       size_t target_index) const;
+
+  // Groups where every tab in the group is in |moving_tabs|, so the move should
+  // relocate the whole group collection. Empty when whole-group detection does
+  // not apply (e.g. moving into a group or pinning).
+  base::flat_set<tab_groups::TabGroupId> GetMovingGroups(
+      const std::vector<tabs::TabInterface*>& moving_tabs,
+      std::optional<tab_groups::TabGroupId> new_group_id,
+      bool new_pinned_state,
+      const tabs::TabCollection::TypeEnumSet& retain_collection_types) const;
+
+  // Returns a vector of tabs or collections. Tabs in a moving group are
+  // converted into a single collection. And Tabs in a split are converted into
+  // a single collection.
+  std::vector<std::variant<tabs::TabInterface*, tabs::TabCollection*>>
+  CompactMovingTabs(
+      const std::vector<tabs::TabInterface*>& moving_tabs,
+      const tabs::TabCollection::TypeEnumSet& types_to_compact) const;
+
+  // Returns the tab's parent collection in the strip; if the direct parent is
+  // a split or group, returns the split/group's parent (e.g. group). This is
+  // used to get the closest parent TreeNodeTabCollection
+  tabs::TabCollection* GetParentCollectionSkippingTypes(
+      tabs::TabInterface* tab,
+      const tabs::TabCollection::TypeEnumSet& skipping_types) const;
 
   // Returns parent TreeTabNodeTabCollection of the given tab. In case the tab's
   // direct parent is not a TreeTabNodeTabCollection, e.g. GROUP, SPLIT, it goes
@@ -122,9 +178,25 @@ class BraveTreeTabStripCollectionDelegate
 
   // Handles moving tabs into a group: get/attach group, unwrap from tree nodes,
   // add to group, clean up empty tree nodes.
-  void MoveTabsIntoGroup(const std::vector<tabs::TabInterface*>& moving_tabs,
-                         size_t destination_index,
-                         tab_groups::TabGroupId new_group_id) const;
+  void MoveTabsIntoGroup(
+      const std::vector<tabs::TabInterface*>& moving_tabs,
+      size_t destination_index,
+      tab_groups::TabGroupId new_group_id,
+      const tabs::TabCollection::TypeEnumSet& retain_collection_types);
+
+  // Called when a group has no tabs left: unwrap tree node, notify model,
+  // detach group collection, remove wrapper.
+  void OnGroupEmpty(tabs::TabGroupTabCollection* group_collection) const;
+
+  // Detaches a single tab from its parent and returns it. Handles cases where
+  // the parent is group or tree node.
+  std::unique_ptr<tabs::TabInterface> DetachTabFromParent(
+      tabs::TabInterface* tab) const;
+
+  // Detaches a single split from its parent and returns it. Handles cases where
+  // the parent is group or tree node.
+  std::unique_ptr<tabs::TabCollection> DetachSplitFromParent(
+      tabs::SplitTabCollection* collection);
 
   // Detaches a single tab from its group and returns it. If the group becomes
   // empty, removes the group collection and its tree node wrapper. The tab's
@@ -134,22 +206,25 @@ class BraveTreeTabStripCollectionDelegate
 
   // Handles moving tabs out of a group: remove from group, wrap each in a tree
   // node, insert at destination, remove empty group.
-  void MoveTabsOutOfGroup(const std::vector<tabs::TabInterface*>& moving_tabs,
-                          size_t destination_index,
-                          bool new_pinned_state) const;
+  void MoveTabsOutOfGroup(
+      const std::vector<tabs::TabInterface*>& moving_tabs,
+      const base::flat_set<tab_groups::TabGroupId>& moving_groups,
+      size_t destination_index,
+      bool new_pinned_state,
+      const tabs::TabCollection::TypeEnumSet& retain_collection_types);
 
   // Returns true if the given tab is in a pinned collection.
   bool IsTabInPinnedCollection(tabs::TabInterface* tab) const;
 
   // Pins the given tabs and moves them to the destination index.
   void PinTabs(const std::vector<tabs::TabInterface*>& moving_tabs,
-               size_t destination_index) const;
+               size_t destination_index);
 
   // Pins a split whose both tabs are in `split_tab_set`, unwrapping a tree node
   // wrapper if needed. Returns early if the split is already pinned.
   void PinSplit(tabs::TabInterface* moving_tab,
                 const std::set<tabs::TabInterface*>& split_tab_set,
-                size_t destination_index) const;
+                size_t destination_index);
 
   // Unpins a split from pinned: wraps the split in a tree node and attaches to
   // the unpinned collection at index 0 for a later MoveTabsRecursive pass.

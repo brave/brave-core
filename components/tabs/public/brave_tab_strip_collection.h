@@ -56,8 +56,21 @@ class BraveTabStripCollection : public TabStripCollection {
       std::unique_ptr<TabCollection> collection,
       const TabCollection::Position& position,
       base::PassKey<BraveTabStripCollectionDelegate> pass_key);
+  void InsertTabCollectionAt(
+      std::unique_ptr<TabCollection> collection,
+      int index,
+      bool pinned,
+      std::optional<tab_groups::TabGroupId> parent_group,
+      base::PassKey<BraveTabStripCollectionDelegate> pass_key);
   std::unique_ptr<TabGroupTabCollection> PopDetachedGroupCollectionForDelegate(
       tab_groups::TabGroupId group_id,
+      base::PassKey<BraveTabStripCollectionDelegate> pass_key);
+  void MoveTabsRecursiveForDelegate(
+      const std::vector<int>& tab_indices,
+      size_t destination_index,
+      std::optional<tab_groups::TabGroupId> new_group_id,
+      bool new_pinned_state,
+      const TabCollection::TypeEnumSet retain_collection_types,
       base::PassKey<BraveTabStripCollectionDelegate> pass_key);
 
   // TabStripCollection:
@@ -66,6 +79,11 @@ class BraveTabStripCollection : public TabStripCollection {
                        std::optional<tab_groups::TabGroupId> new_group_id,
                        bool new_pinned_state,
                        TabInterface* opener) override;
+  void InsertTabCollectionAt(
+      std::unique_ptr<TabCollection> collection,
+      int index,
+      bool pinned,
+      std::optional<tab_groups::TabGroupId> parent_group) override;
   void MoveTabsRecursive(
       const std::vector<int>& tab_indices,
       size_t destination_index,
