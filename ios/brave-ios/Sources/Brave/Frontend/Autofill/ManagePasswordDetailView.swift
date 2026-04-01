@@ -17,7 +17,7 @@ struct ManagePasswordDetailView: View {
 
   let viewModel: ManagePasswordsViewModel
   let password: CWVPassword
-
+  var navigationTitle: String { URL(string: password.site)?.baseDomain ?? password.title }
   var body: some View {
     Form {
       Section {
@@ -109,10 +109,10 @@ struct ManagePasswordDetailView: View {
     .background((Color(.braveGroupedBackground)))
     .foregroundStyle(Color(braveSystemName: .textPrimary))
     .accessibility(hidden: redactionReasons.contains(.privacy) ? true : false)
-    .navigationTitle(URL(string: password.site)?.baseDomain ?? password.title)
+    .navigationBarBackButtonHidden(redactionReasons.contains(.privacy))
+    .navigationTitle(redactionReasons.contains(.privacy) ? "" : navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbarBackground(.visible, for: .navigationBar)
-    .toolbar(redactionReasons.contains(.privacy) ? .hidden : .visible, for: .automatic)
     .overlay {
       if redactionReasons.contains(.privacy) { Color(.braveGroupedBackground).ignoresSafeArea() }
     }

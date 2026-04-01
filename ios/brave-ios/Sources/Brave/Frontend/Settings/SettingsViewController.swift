@@ -1280,7 +1280,7 @@ class SettingsViewController: TableViewController {
               let autofillDataManager = braveCore.defaultWebViewConfiguration.autofillDataManager
             {
               let viewModel = ManagePasswordsViewModel(autofillDataManager: autofillDataManager)
-              let controller = AutofillSettingsHostingController(
+              let controller = UIHostingController(
                 rootView:
                   ManagePasswordsView(viewModel: viewModel)
                   .environment(
@@ -1293,15 +1293,13 @@ class SettingsViewController: TableViewController {
                   // Failed privacy-lock auth must exit the entire navigation flow: `dismiss` only pops the
                   // top SwiftUI screen, so from second order stack i.e detail/group
                   // we would not return to settings. `popToViewController` unwinds every `NavigationLink`-pushed host;
-                  // then restore nav bar and toolbar because child SwiftUI can hide them on the shared `UINavigationController`.
-                  .environment(\.autofillPrivacyLockExitOnFailure) { [weak self] in
-                    Task { @MainActor in
+                  .environment(
+                    \.autofillPrivacyLockExitOnFailure,
+                    AutofillPrivacyLockExitOnFailureAction { [weak self] in
                       guard let self, let nav = self.navigationController else { return }
                       nav.popToViewController(self, animated: true)
-                      nav.setNavigationBarHidden(false, animated: false)
-                      nav.setToolbarHidden(true, animated: false)
                     }
-                  }
+                  )
               )
 
               navigationController?.pushViewController(controller, animated: true)
