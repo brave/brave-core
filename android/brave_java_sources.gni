@@ -208,6 +208,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/customtabs/FullScreenCustomTabActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/customtabs/FullScreenCustomTabRootUiCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/customtabs/features/partialcustomtab/BravePartialCustomTabBottomSheetStrategy.java",
+  "../../brave/android/java/org/chromium/chrome/browser/customtabs/features/toolbar/BraveCustomTabToolbarButtonsViewBinder.java",
   "../../brave/android/java/org/chromium/chrome/browser/day_zero/DayZeroHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/decentralized_dns/settings/ENSSettingsFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/decentralized_dns/settings/RadioButtonGroupDDnsResolveMethodPreference.java",

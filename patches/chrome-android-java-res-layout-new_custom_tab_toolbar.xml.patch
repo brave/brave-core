@@ -1,0 +1,10 @@
+diff --git a/chrome/android/java/res/layout/new_custom_tab_toolbar.xml b/chrome/android/java/res/layout/new_custom_tab_toolbar.xml
+index 0166788dd2b7cda89cbb0be5cc218dc0f4f1e780..98e0dfe0f708ab65722bf9c71f6ccfb4add7903a 100644
+--- a/chrome/android/java/res/layout/new_custom_tab_toolbar.xml
++++ b/chrome/android/java/res/layout/new_custom_tab_toolbar.xml
+@@ -109,4 +109,5 @@ found in the LICENSE file.
+         android:layout_width="match_parent"
+         android:layout_height="match_parent" />
+ 
++    <include layout="@layout/brave_custom_tabs_toolbar" android:layout_height="wrap_content" android:layout_width="match_parent" />
+ </org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbar>

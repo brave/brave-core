@@ -123,7 +123,6 @@ namespace chrome {
 namespace android {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kCCTToolbarRefactor, base::FEATURE_DISABLED_BY_DEFAULT},
     {kMagicStackAndroid, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
