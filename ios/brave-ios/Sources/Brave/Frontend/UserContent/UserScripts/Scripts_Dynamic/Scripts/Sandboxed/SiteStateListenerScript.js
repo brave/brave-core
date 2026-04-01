@@ -8,13 +8,12 @@ window.__firefox__.execute(function($) {
     'use strict'
 
     const messageHandler = '$<message_handler>';
-    const sendMessage = $((data) => {
+    const sendMessage = $(() => {
       return $.postNativeMessage(messageHandler, {
-        "securityToken": SECURITY_TOKEN,
-        "data": data
+        "securityToken": SECURITY_TOKEN
       });
     });
 
-    sendMessage(undefined);
+    sendMessage();
   })();
 });
