@@ -33,7 +33,7 @@ source_set("test_support") {
   ]
 
   sources = [
-    "ads_service_mock.cc",
-    "ads_service_mock.h",
+    "test/ads_service_mock.cc",
+    "test/ads_service_mock.h",
   ]
 }

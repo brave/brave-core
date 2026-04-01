@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_test_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/test/creative_set_conversion_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

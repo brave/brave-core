@@ -19,7 +19,7 @@
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/model/linear/linear.h"
-#include "brave/components/brave_ads/core/internal/ml/pipeline/linear_pipeline_test_util.h"
+#include "brave/components/brave_ads/core/internal/ml/pipeline/test/linear_pipeline_test_util.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/hashed_ngrams_transformation.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/lowercase_transformation.h"
 #include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"

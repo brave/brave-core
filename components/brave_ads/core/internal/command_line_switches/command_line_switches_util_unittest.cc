@@ -12,7 +12,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/command_line_switches/command_line_switches_constants.h"
-#include "brave/components/brave_ads/core/internal/command_line_switches/environment/environment_types_test_util.h"
+#include "brave/components/brave_ads/core/internal/command_line_switches/environment/test/environment_types_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/command_line_switch_test_info.h"
 #include "brave/components/brave_ads/core/internal/common/test/command_line_switch_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
