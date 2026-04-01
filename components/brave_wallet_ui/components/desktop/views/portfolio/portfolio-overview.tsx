@@ -572,7 +572,6 @@ export const PortfolioOverview = () => {
             >
               <BalanceAndButtonsWrapper
                 fullWidth={true}
-                alignItems='center'
                 padding='40px 32px'
               >
                 <BalanceAndChangeWrapper>
