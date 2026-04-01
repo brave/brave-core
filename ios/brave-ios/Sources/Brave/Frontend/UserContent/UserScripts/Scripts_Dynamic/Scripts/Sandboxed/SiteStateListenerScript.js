@@ -15,9 +15,6 @@ window.__firefox__.execute(function($) {
       });
     });
 
-    sendMessage({
-      "windowURL": window.location.href,
-      "windowOriginURL": $.windowOrigin
-    });
+    sendMessage(undefined);
   })();
 });
