@@ -230,21 +230,21 @@ Print a final list:
 | GHSA | @brave/leo | `socket-fix.yml` in leo | manual hash bump in package.json |
 | GHSA | brave-core JS | `socket-fix.yml` in brave-core | none |
 | RUSTSEC | vendored crate | local `--update-crate` flag | PR with crate changes |
-| Any | acceptable risk | audit-config PR | none |
+| Any | no fix / breaking upgrade | `create_pull_request.yml` in audit-config | none |
 
-## Audit-Config (Acceptable Risk)
+## Audit-Config (No Fix Available)
 
-When a vulnerability has no fix or requires a major update that would cause a breaking change:
+When a vulnerability has no fix or requires a major update that would cause a breaking change, use the `create_pull_request.yml` workflow in `brave/audit-config` — it handles the config.json edit and PR creation automatically:
 
-```json
-// brave/audit-config/config.json
-"ignore": {
-  "npm": [{"advisory": "https://github.com/advisories/GHSA-xxxx-xxxx-xxxx", "issue": "<issue-url>"}],
-  "cargo": [{"advisory": "RUSTSEC-YYYY-NNNN", "issue": "<issue-url>"}]
-}
+```bash
+gh workflow run create_pull_request.yml \
+  --repo brave/audit-config \
+  -f advisory="GHSA-xxxx-xxxx-xxxx" \
+  -f issue="<issue-url>" \
+  -f comment="<optional reason, e.g. no fix available / breaking upgrade>"
 ```
 
-Open a PR to audit-config with justification. Get security team approval before merging.
+The workflow accepts GHSA IDs, RUSTSEC IDs, or full advisory URLs. It opens a PR in `brave/audit-config` titled "Ignore `<advisory-id>`".
 
 ## Common Mistakes
 
