@@ -136,7 +136,8 @@ struct PrivateTabsView: View {
     }
     .navigationBarTitle(Strings.TabsSettings.privateTabsSettingsTitle)
     .navigationBarTitleDisplayMode(.inline)
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
   }
 }
 

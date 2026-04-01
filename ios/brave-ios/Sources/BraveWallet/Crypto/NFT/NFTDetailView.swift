@@ -209,7 +209,8 @@ struct NFTDetailView: View {
         }
       }
     }
-    .listBackgroundColor(Color(.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .onChange(
       of: nftDetailStore.nftMetadata,
       perform: { newValue in

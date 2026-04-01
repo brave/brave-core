@@ -611,7 +611,8 @@ struct SwapCryptoView: View {
           unsupportedSwapChainSection
         }
       }
-      .listBackgroundColor(Color(.braveGroupedBackground))
+      .scrollContentBackground(.hidden)
+      .background(Color(UIColor.braveGroupedBackground))
       .environment(\.defaultMinListHeaderHeight, 0)
       .environment(\.defaultMinListRowHeight, 0)
       .navigationTitle(Strings.Wallet.swap)

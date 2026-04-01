@@ -218,7 +218,8 @@ public struct NewsSettingsView: View {
     }
     .listStyle(.insetGrouped)
     .animation(.default, value: searchDelegate.isEditing)
-    .listBackgroundColor(Color(.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.BraveNews.braveNews)
     .navigationBarTitleDisplayMode(.inline)
     .onChange(of: searchDelegate.query) { _, query in

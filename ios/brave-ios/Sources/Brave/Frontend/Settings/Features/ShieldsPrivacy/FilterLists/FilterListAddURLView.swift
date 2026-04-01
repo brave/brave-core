@@ -59,7 +59,8 @@ struct FilterListAddURLView: View {
         )
       }
       .animation(.easeInOut, value: errorMessage)
-      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+      .scrollContentBackground(.hidden)
+      .background(Color(UIColor.braveGroupedBackground))
       .listStyle(.insetGrouped)
       .navigationTitle(Strings.Shields.customFilterList)
       .navigationBarTitleDisplayMode(.inline)

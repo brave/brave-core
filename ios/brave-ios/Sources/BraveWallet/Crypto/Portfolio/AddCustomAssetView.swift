@@ -290,7 +290,8 @@ struct AddCustomAssetView: View {
           }
         }
       }
-      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+      .scrollContentBackground(.hidden)
+      .background(Color(UIColor.braveGroupedBackground))
       .onChange(
         of: selectedTokenType,
         perform: { _ in

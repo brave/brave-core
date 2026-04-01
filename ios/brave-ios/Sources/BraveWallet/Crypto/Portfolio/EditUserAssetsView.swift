@@ -159,7 +159,8 @@ struct EditUserAssetsView: View {
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
-      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+      .scrollContentBackground(.hidden)
+      .background(Color(UIColor.braveGroupedBackground))
       .animation(.default, value: tokenStores)
       .navigationTitle(Strings.Wallet.editVisibleAssetsButtonTitle)
       .navigationBarTitleDisplayMode(.inline)

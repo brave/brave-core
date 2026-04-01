@@ -337,7 +337,8 @@ struct SendTokenView: View {
         ) {
         }
       }
-      .listBackgroundColor(Color(.braveGroupedBackground))
+      .scrollContentBackground(.hidden)
+      .background(Color(UIColor.braveGroupedBackground))
       .environment(\.defaultMinListHeaderHeight, 0)
       .environment(\.defaultMinListRowHeight, 0)
       .alert(isPresented: $isShowingError) {
