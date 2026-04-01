@@ -7,6 +7,10 @@ on:
         description: 'Comma-separated list of GHSA IDs (e.g. GHSA-442j-39wm-28r2,GHSA-7rx3-28cr-v5wh)'
         required: true
         type: string
+      issue_link:
+        description: 'Link to the related security issue (e.g. https://github.com/brave/security/issues/123)'
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -46,6 +50,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GHSA_IDS: ${{ inputs.ghsa_ids }}
+          ISSUE_LINK: ${{ inputs.issue_link }}
         run: |
           if ! git diff --quiet; then
             BRANCH="socket-fix/$(echo "$GHSA_IDS" | tr ', ' '-' | tr -s '-' | cut -c1-60)"
@@ -55,11 +60,14 @@ jobs:
             git add -A
             git commit -m "fix: address security advisories"
             git push origin "$BRANCH"
+            BODY="Addresses: $GHSA_IDS"
+            if [[ -n "$ISSUE_LINK" ]]; then BODY="$BODY"$'\n\n'"closes $ISSUE_LINK"; fi
             gh pr create \
               --title "fix: address security advisories" \
-              --body "Addresses: $GHSA_IDS" \
+              --body "$BODY" \
               --base master \
-              --label "CI/skip"
+              --label "CI/skip" \
+              --label "security"
           else
             echo "::error::No changes produced by socket fix."
             exit 1
