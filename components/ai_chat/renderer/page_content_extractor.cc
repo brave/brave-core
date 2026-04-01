@@ -326,7 +326,7 @@ void PageContentExtractor::OnJSTranscriptUrlResult(
   // Handle invalid url
   GURL transcript_url =
       render_frame()->GetWebFrame()->GetDocument().CompleteURL(
-          blink::WebString::FromASCII(url));
+          blink::WebString::FromAscii(url));
   if (!transcript_url.is_valid() ||
       !transcript_url.SchemeIs(url::kHttpsScheme)) {
     DVLOG(1) << "Invalid Url for transcript: " << transcript_url.spec();
