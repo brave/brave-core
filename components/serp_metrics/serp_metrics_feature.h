@@ -15,10 +15,13 @@ namespace serp_metrics {
 
 BASE_DECLARE_FEATURE(kSerpMetricsFeature);
 
-// Ideally this would be `base::FeatureParam<base::TimeDelta>`, but that type is
-// not currently supported for `TimePeriodStorage`.
+// Uses `size_t` days rather than `base::TimeDelta` because `TimePeriodStorage`
+// does not support `TimeDelta` field trial parameters. Two 31-day months ensure
+// the previous calendar month always falls within the retention window when the
+// monthly ping fires, since the worst case is a full 31-day prior month plus
+// up to 31 days into the current month.
 inline constexpr base::FeatureParam<size_t> kSerpMetricsTimePeriodInDays{
-    &kSerpMetricsFeature, "time_period_in_days", 28};
+    &kSerpMetricsFeature, "time_period_in_days", 2 * 31};
 
 }  // namespace serp_metrics
 
