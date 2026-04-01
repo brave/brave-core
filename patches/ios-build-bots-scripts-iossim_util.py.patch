@@ -1,8 +1,8 @@
 diff --git a/ios/build/bots/scripts/iossim_util.py b/ios/build/bots/scripts/iossim_util.py
-index d1253bb5e285087154f6586074eba069a2ebe8c3..599fc9970936e7ea4a22642e2e9ad1ee4de3553b 100644
+index d1253bb5e285087154f6586074eba069a2ebe8c3..e2d064221e1b7171c8cf7fea9b752aab8b9c46a1 100644
 --- a/ios/build/bots/scripts/iossim_util.py
 +++ b/ios/build/bots/scripts/iossim_util.py
-@@ -333,7 +333,9 @@ def boot_simulator_if_not_booted(sim_udid, path=SIMULATOR_DEFAULT_PATH):
+@@ -333,7 +333,10 @@ def boot_simulator_if_not_booted(sim_udid, path=SIMULATOR_DEFAULT_PATH):
        (sim_udid, simulator_list['devices']))
  
  
@@ -10,10 +10,11 @@ index d1253bb5e285087154f6586074eba069a2ebe8c3..599fc9970936e7ea4a22642e2e9ad1ee
 +def ensure_simulator_fully_booted(sim_udid: str,
 +                                  path=SIMULATOR_DEFAULT_PATH,
 +                                  num_attempts=1):
++  return False
    """Ensures simulator of given udid is fully booted.
  
    `xcrun simctl boot` launches only background processes and does not ensure the
-@@ -351,29 +353,36 @@ def ensure_simulator_fully_booted(sim_udid: str, path=SIMULATOR_DEFAULT_PATH):
+@@ -351,29 +354,36 @@ def ensure_simulator_fully_booted(sim_udid: str, path=SIMULATOR_DEFAULT_PATH):
    Returns:
      True if the simulator was successfully booted, false otherwise.
    """
