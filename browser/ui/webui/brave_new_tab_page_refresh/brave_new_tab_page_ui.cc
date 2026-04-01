@@ -163,9 +163,13 @@ void BraveNewTabPageUI::BindInterface(
 void BraveNewTabPageUI::BindInterface(
     mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
+  auto* rewards_service =
+      brave_rewards::RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return;
+  }
   rewards_page_handler_ = std::make_unique<brave_rewards::RewardsPageHandler>(
-      std::move(receiver), nullptr,
-      brave_rewards::RewardsServiceFactory::GetForProfile(profile),
+      std::move(receiver), nullptr, rewards_service,
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
       brave_ads::AdsServiceFactory::GetForProfile(profile),
 #else
@@ -219,9 +223,12 @@ BraveNewTabPageUI::GetContextualSessionHandle() {
 void BraveNewTabPageUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver) {
   CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled());
+  auto* profile = Profile::FromWebUI(web_ui());
+  if (!ai_chat::AIChatServiceFactory::GetForBrowserContext(profile)) {
+    return;
+  }
   ai_chat_page_handler_ = std::make_unique<ai_chat::AIChatUIPageHandler>(
-      web_ui()->GetWebContents(), nullptr, Profile::FromWebUI(web_ui()),
-      std::move(receiver));
+      web_ui()->GetWebContents(), nullptr, profile, std::move(receiver));
 }
 
 void BraveNewTabPageUI::BindInterface(
@@ -229,7 +236,9 @@ void BraveNewTabPageUI::BindInterface(
   CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled());
   auto* profile = Profile::FromWebUI(web_ui());
   auto* service = ai_chat::AIChatServiceFactory::GetForBrowserContext(profile);
-  CHECK(service);
+  if (!service) {
+    return;
+  }
   service->Bind(std::move(receiver));
 }
 
@@ -239,7 +248,9 @@ void BraveNewTabPageUI::BindInterface(
   auto* profile = Profile::FromWebUI(web_ui());
   auto* service =
       ai_chat::TabTrackerServiceFactory::GetForBrowserContext(profile);
-  CHECK(service);
+  if (!service) {
+    return;
+  }
   service->Bind(std::move(pending_receiver));
 }
 
