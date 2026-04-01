@@ -152,7 +152,6 @@ export const actionsStyle = scoped.css`
     }
 
     @container style(--is-narrow-view) {
-      margin-top: 16px;
       flex-direction: column;
     }
   }
