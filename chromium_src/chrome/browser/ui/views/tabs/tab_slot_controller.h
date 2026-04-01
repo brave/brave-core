@@ -6,6 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_
 
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/accent_color/brave_tab_accent_types.h"
 #include "ui/base/models/image_model.h"
 
@@ -62,8 +63,14 @@ class TreeTabNodeId;
                                        bool collapsed) = 0;               \
   virtual bool IsInCollapsedTreeTabNode(const tree_tab::TreeTabNodeId& id) const
 
+// Brave horizontal tab minimum width mode
+#define GetStrokeThickness()      \
+  GetStrokeThickness() const = 0; \
+  virtual brave_tabs::TabMinWidthMode GetTabMinWidthMode()
+
 #include <chrome/browser/ui/views/tabs/tab_slot_controller.h>  // IWYU pragma: export
 
+#undef GetStrokeThickness
 #undef ShiftGroupRight
 #undef CanPaintThrobberToLayer
 #undef EndDrag

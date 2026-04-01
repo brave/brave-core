@@ -14,6 +14,7 @@
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/tab_data.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
+#include "components/prefs/pref_member.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/ui/containers/container_model.h"
@@ -67,6 +68,7 @@ class BraveTabStrip : public TabStrip {
   std::optional<TabAccentColors> GetTabAccentColors(
       const Tab* tab) const override;
   ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;
+  brave_tabs::TabMinWidthMode GetTabMinWidthMode() const override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarMode);
@@ -107,6 +109,7 @@ class BraveTabStrip : public TabStrip {
   BraveVerticalTabStripRegionView* GetVerticalTabStripRegionView() const;
 
   void OnAlwaysHideCloseButtonPrefChanged();
+  void OnTabMinWidthModePrefChanged();
 
   // Clears tree-tab-node UI state when a tab becomes pinned. There is no
   // dedicated notification when pinning from a group.
@@ -114,6 +117,7 @@ class BraveTabStrip : public TabStrip {
 
   BooleanPrefMember always_hide_close_button_;
   BooleanPrefMember middle_click_close_tab_enabled_;
+  IntegerPrefMember tab_min_width_mode_;
 
   base::WeakPtrFactory<BraveTabStrip> weak_factory_{this};
 };

@@ -11,7 +11,6 @@
 
 #include "base/check.h"
 #include "base/feature_list.h"
-#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
@@ -396,12 +395,26 @@ bool BraveTab::IsActive() const {
 }
 
 TabSizeInfo BraveTab::GetTabSizeInfo() const {
+  if (tabs::utils::ShouldShowBraveVerticalTabs(
+          controller()->GetBrowserWindowInterface())) {
+    return Tab::GetTabSizeInfo();
+  }
+
   auto size_info = Tab::GetTabSizeInfo();
+  const auto mode = controller()->GetTabMinWidthMode();
+  size_info.min_active_width = GetTabMinWidthForMode(
+      mode, size_info.min_active_width, size_info.standard_width);
+  size_info.min_inactive_width = GetTabMinWidthForMode(
+      mode, size_info.min_inactive_width, size_info.standard_width);
+
   if (base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
     // In case horizontal scrollable tab strip is enabled, we can have wider
     // inactive tabs.
-    size_info.min_inactive_width = tab_style()->GetMinimumActiveWidth(false);
+    const int min_active_width = tab_style()->GetMinimumActiveWidth(false);
+    size_info.min_inactive_width =
+        std::max(size_info.min_inactive_width, min_active_width);
   }
+
   return size_info;
 }
 
@@ -487,6 +500,24 @@ void BraveTab::UpdateTreeToggleButtonIcon() {
   tree_toggle_button_->SetImageModel(
       views::Button::STATE_PRESSED,
       ui::ImageModel::FromVectorIcon(icon, icon_color, icon_size));
+}
+
+// static
+int BraveTab::GetTabMinWidthForMode(brave_tabs::TabMinWidthMode mode,
+                                    int min_width,
+                                    int standard_width) {
+  switch (mode) {
+    case brave_tabs::TabMinWidthMode::kDefault:
+      return min_width;
+    case brave_tabs::TabMinWidthMode::kMinimum:
+      return min_width;
+    case brave_tabs::TabMinWidthMode::kMedium:
+      return 76;  // We're using this value from Firefox's default min width.
+    case brave_tabs::TabMinWidthMode::kLarge:
+      return standard_width / 2;
+    case brave_tabs::TabMinWidthMode::kFull:
+      return standard_width;
+  }
 }
 
 BEGIN_METADATA(BraveTab)

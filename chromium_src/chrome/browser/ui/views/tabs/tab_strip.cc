@@ -104,3 +104,7 @@ bool TabStrip::IsInCollapsedTreeTabNode(
     const tree_tab::TreeTabNodeId& id) const {
   return false;
 }
+
+brave_tabs::TabMinWidthMode TabStrip::GetTabMinWidthMode() const {
+  return brave_tabs::TabMinWidthMode::kDefault;
+}

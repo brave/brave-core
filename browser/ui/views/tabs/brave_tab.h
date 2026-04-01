@@ -11,6 +11,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/accent_color/brave_tab_accent_types.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "ui/gfx/geometry/point.h"
@@ -33,6 +34,10 @@ class BraveTab : public Tab {
   static constexpr int kTabAccentIconAreaWidth = 22;
   static constexpr int kExtraLeftPadding = 4;
 
+  static int GetTabMinWidthForMode(brave_tabs::TabMinWidthMode mode,
+                                   int min_width,
+                                   int standard_width);
+
   explicit BraveTab(tabs::TabHandle handle, TabSlotController* controller);
   BraveTab(const BraveTab&) = delete;
   BraveTab& operator=(const BraveTab&) = delete;
@@ -49,8 +54,8 @@ class BraveTab : public Tab {
   std::u16string GetRenderedTooltipText(const gfx::Point& p) const override;
 
   // Overridden because we moved alert button to left side in the tab whereas
-  // upstream put it on right side. Need to consider this change for calculating
-  // largest selectable region.
+  // upstream put it on right side. Need to consider this change for
+  // calculating largest selectable region.
   int GetWidthOfLargestSelectableRegion() const override;
 
   void ActiveStateChanged() override;
