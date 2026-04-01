@@ -99,6 +99,7 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
     actionList: api.useGetActionMenuList().data,
 
     isStandalone: api.useIsStandalone().data,
+    isGlobalPanel: loadTimeData.getBoolean('isGlobalPanel'),
 
     /**
      * @deprecated use api.useGetConversations() instead
