@@ -877,7 +877,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
-                        "isOpenInOtherWindowSupported",
+                        "isLinkNavigationToOtherWindowSupported",
                         MethodModifier.REGULAR,
                         boolean.class,
                         Activity.class));
@@ -899,6 +899,18 @@ public class BytecodeTest {
                 methodExists(
                         "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
                         "shouldShowManageWindowsMenu",
+                        MethodModifier.STATIC,
+                        boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
+                        "isLinkNavigationToNewWindowSupported",
+                        MethodModifier.STATIC,
+                        boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
+                        "isLinkNavigationToIncognitoWindowSupported",
                         MethodModifier.STATIC,
                         boolean.class));
         Assert.assertTrue(
