@@ -283,7 +283,7 @@ BraveSessionCache::GetAudioFarblingHelper() {
     // This call is only expensive the first time; afterwards it returns
     // a cached value:
     const uint64_t fudge = default_shields_settings_->farbling_token.high();
-    const double fudge_factor = 0.99 + ((fudge / maxUInt64AsDouble) / 100);
+    const double fudge_factor = 0.999 + ((fudge / maxUInt64AsDouble) / 1000);
     const uint64_t seed = default_shields_settings_->farbling_token.low();
     audio_farbling_helper_.emplace(
         fudge_factor, seed,
