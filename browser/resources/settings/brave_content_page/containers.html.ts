@@ -99,7 +99,12 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
                       auto-validate
                       pattern="^.*\\S.*$"
                       placeholder="$i18n{SETTINGS_CONTAINERS_CONTAINER_NAME_PLACEHOLDER}"
-                    ></cr-input>
+                      maxlength="20"
+                    >
+                      <span slot="inline-suffix" class="name-char-counter">
+                        ${(this.editingContainer_.name ?? '').length} / 20
+                      </span>
+                    </cr-input>
                   </section>
                   <section class="background-colors-section">
                     <div class="edit-subsection-label">
