@@ -44,7 +44,7 @@ struct AIChatSpeechRecognitionView: View {
         secondaryButton: Alert.Button.cancel(Text(Strings.CancelString))
       )
     }
-    .onChange(of: speechRecognizer.finalizedRecognition) { recognition in
+    .onChange(of: speechRecognizer.finalizedRecognition) { _, recognition in
       if let recognition {
         // Feedback indicating recognition is finalized
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))

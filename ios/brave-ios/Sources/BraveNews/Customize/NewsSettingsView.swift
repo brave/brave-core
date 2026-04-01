@@ -221,10 +221,10 @@ public struct NewsSettingsView: View {
     .listBackgroundColor(Color(.braveGroupedBackground))
     .navigationTitle(Strings.BraveNews.braveNews)
     .navigationBarTitleDisplayMode(.inline)
-    .onChange(of: searchDelegate.query) { query in
+    .onChange(of: searchDelegate.query) { _, query in
       searchResults = dataSource.search(query: query)
     }
-    .onChange(of: dataSource.rssFeedLocations) { _ in
+    .onChange(of: dataSource.rssFeedLocations) { _, _ in
       withAnimation {
         searchResults = dataSource.search(query: searchDelegate.query)
       }

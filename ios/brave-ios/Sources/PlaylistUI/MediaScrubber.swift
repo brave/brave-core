@@ -157,7 +157,7 @@ struct MediaScrubber<Label: View>: View {
       label
     }
     .coordinateSpace(name: "MediaScrubber")
-    .onChange(of: isScrubbingState) { newValue in
+    .onChange(of: isScrubbingState) { _, newValue in
       isScrubbing = newValue
     }
     .accessibilityRepresentation {

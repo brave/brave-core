@@ -127,7 +127,7 @@ struct AddCustomAssetView: View {
           )
         ) {
           TextField(Strings.Wallet.enterAddress, text: $addressInput)
-            .onChange(of: addressInput) { newValue in
+            .onChange(of: addressInput) { _, newValue in
               guard !newValue.isEmpty,
                 let network = networkSelectionStore.networkSelectionInForm
               else { return }
@@ -267,7 +267,7 @@ struct AddCustomAssetView: View {
               HStack {
                 TextField(Strings.Wallet.enterTokenId, text: $tokenId)
                   .keyboardType(.numberPad)
-                  .onChange(of: tokenId) { newValue in
+                  .onChange(of: tokenId) { _, newValue in
                     guard !newValue.isEmpty,
                       let network = networkSelectionStore.networkSelectionInForm
                     else { return }

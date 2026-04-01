@@ -247,7 +247,7 @@ struct PlaylistContentView: View {
       .environment(\.colorScheme, .dark)
       .preferredColorScheme(.dark)
     }
-    .onChange(of: selectedItemID) { newValue in
+    .onChange(of: selectedItemID) { _, newValue in
       if newValue == nil {
         withAnimation(.snappy) {
           selectedDetent = .anchor(.emptyPlaylistContent)
@@ -257,7 +257,7 @@ struct PlaylistContentView: View {
         return
       }
     }
-    .onChange(of: Array(folders)) { newValue in
+    .onChange(of: Array(folders)) { _, newValue in
       if !newValue.map(\.id).contains(selectedFolderID) {
         // Reset the selected folder if the user deletes the folder they had selected
         playerModel.selectedFolderID = PlaylistFolder.savedFolderUUID

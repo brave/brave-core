@@ -78,7 +78,7 @@ public struct BraveVPNPaywallView: View {
         dismissButton: .default(Text(Strings.OKString))
       )
     }
-    .onChange(of: iapObserverManager.paymentStatus) { status in
+    .onChange(of: iapObserverManager.paymentStatus) { _, status in
       if case .failure(let error) = status {
         resetTheRestoreTimerIfNecessary()
 

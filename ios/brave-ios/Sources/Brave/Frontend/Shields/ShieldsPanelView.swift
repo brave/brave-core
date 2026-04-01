@@ -102,7 +102,7 @@ struct ShieldsPanelView: View {
           height: ShieldsSwitch.size.height,
           alignment: .center
         ).padding(.top, 8)
-        .onChange(of: viewModel.shieldsEnabled) { newValue in
+        .onChange(of: viewModel.shieldsEnabled) { _, newValue in
           actionCallback(.changedShieldSettings)
         }
 
@@ -215,7 +215,7 @@ struct ShieldsPanelView: View {
         .tint(Color(.secondaryBraveLabel))
         .buttonStyle(.plain)
         .padding(.horizontal, -10)
-        .onChange(of: viewModel.blockAdsAndTrackingLevel) { newValue in
+        .onChange(of: viewModel.blockAdsAndTrackingLevel) { _, newValue in
           actionCallback(.changedShieldSettings)
         }
       }

@@ -18,7 +18,7 @@ struct FilterListAddURLView: View {
 
   private var textField: some View {
     TextField(Strings.Shields.filterListsEnterFilterListURL, text: $newURLInput)
-      .onChange(of: newURLInput) { newValue in
+      .onChange(of: newURLInput) { _, newValue in
         errorMessage = nil
       }
       .keyboardType(.URL)

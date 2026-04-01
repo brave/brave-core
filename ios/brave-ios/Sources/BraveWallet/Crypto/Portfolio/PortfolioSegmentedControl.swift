@@ -91,14 +91,14 @@ struct WalletSegmentedControl<Item: WalletSegmentedControlItem>: View {
       }
       .frame(height: min(max(height, minHeight), maxHeight))
       .gesture(dragGesture)
-      .onChange(of: isDragGestureActive) { isDragGestureActive in
+      .onChange(of: isDragGestureActive) { _, isDragGestureActive in
         if !isDragGestureActive {  // cancellation of gesture, ex while scrolling
           if let itemForLocation = item(for: location) {
             select(itemForLocation)
           }
         }
       }
-      .onChange(of: viewSize) { viewSize in
+      .onChange(of: viewSize) { _, viewSize in
         if location == .zero {
           // set initial location
           select(selected, animated: false)

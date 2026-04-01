@@ -72,7 +72,7 @@ public struct BraveProgressStyleDots: ProgressViewStyle {
           .frame(width: 8.0, height: 8.0)
           .scaleEffect(phase == 2 ? 1.0 : 0.5)
       }
-      .onChange(of: date) { (date: Date) in
+      .onChange(of: date) { (_, date: Date) in
         phase = (phase + 1) % maxPhase
       }
     }
