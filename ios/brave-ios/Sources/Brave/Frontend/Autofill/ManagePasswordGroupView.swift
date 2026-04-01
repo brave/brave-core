@@ -12,7 +12,6 @@ import UIKit
 /// Displays all login credentials for a selected domain.
 /// Each credential is shown as a separate row (username + masked password).
 struct ManagePasswordGroupView: View {
-  @Environment(\.dismiss) private var dismiss
   @Environment(\.editMode) private var editMode
   @Environment(\.openURL) private var openURL
   @Environment(\.redactionReasons) private var redactionReasons
@@ -62,17 +61,20 @@ struct ManagePasswordGroupView: View {
     }
     .scrollContentBackground(.hidden)
     .background((Color(.braveGroupedBackground)))
-    .navigationTitle(domain)
+    .navigationBarBackButtonHidden(redactionReasons.contains(.privacy))
+    .navigationTitle(redactionReasons.contains(.privacy) ? "" : domain)
     .navigationBarTitleDisplayMode(.inline)
     .toolbarBackground(.visible, for: .navigationBar)
     .toolbar {
-      ToolbarItem(placement: .topBarTrailing) {
-        Button {
-          // TODO: Present Add Password Form
-        } label: {
-          Label(Strings.addButtonTitle, braveSystemImage: "leo.plus.add")
+      if !redactionReasons.contains(.privacy) {
+        ToolbarItem(placement: .topBarTrailing) {
+          Button {
+            // TODO: Present Add Password Form
+          } label: {
+            Label(Strings.addButtonTitle, braveSystemImage: "leo.plus.add")
+          }
+          .disabled(isEditMode)
         }
-        .disabled(isEditMode)
       }
 
       if isEditMode {
@@ -122,7 +124,6 @@ struct ManagePasswordGroupView: View {
           .disabled(passwords.isEmpty)
       }
     }
-    .toolbar(redactionReasons.contains(.privacy) ? .hidden : .visible, for: .automatic)
     .toolbar(redactionReasons.contains(.privacy) ? .hidden : .visible, for: .bottomBar)
     .overlay {
       if redactionReasons.contains(.privacy) { Color(.braveGroupedBackground).ignoresSafeArea() }

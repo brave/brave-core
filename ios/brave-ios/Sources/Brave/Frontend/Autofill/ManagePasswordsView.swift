@@ -136,16 +136,19 @@ struct ManagePasswordsView: View {
     }
     .environment(\.redactionReasons, effectiveRedactionReasons)
     .toolbarBackground(.visible, for: .navigationBar)
-    .navigationTitle(Strings.Autofill.managePasswordsTitle)
+    .navigationTitle(privacyLock.isLocked ? "" : Strings.Autofill.managePasswordsTitle)
+    .navigationBarBackButtonHidden(privacyLock.isLocked)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
-      ToolbarItem(placement: .topBarTrailing) {
-        Button {
-          //TODO: Present Add Password Form
-        } label: {
-          Label(Strings.addButtonTitle, braveSystemImage: "leo.plus.add")
+      if !privacyLock.isLocked {
+        ToolbarItem(placement: .topBarTrailing) {
+          Button {
+            //TODO: Present Add Password Form
+          } label: {
+            Label(Strings.addButtonTitle, braveSystemImage: "leo.plus.add")
+          }
+          .disabled(isEditMode)
         }
-        .disabled(isEditMode)
       }
 
       if isEditMode {
@@ -199,7 +202,6 @@ struct ManagePasswordsView: View {
       (isContentAvailable || viewModel.isFetching) && !privacyLock.isLocked ? .visible : .hidden,
       for: .bottomBar
     )
-    .toolbar(!privacyLock.isLocked ? .visible : .hidden, for: .navigationBar)
     .task { await privacyLock.authenticate(onFailure: exitAfterAuthFailure) }
     .onReceive(NotificationCenter.default.publisher(for: UIScene.willDeactivateNotification)) { _ in
       privacyLock.lock()
