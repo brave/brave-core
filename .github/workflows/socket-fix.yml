@@ -1,0 +1,65 @@
+name: Socket Fix by GHSA
+
+on:
+  workflow_dispatch:
+    inputs:
+      ghsa_ids:
+        description: 'Comma-separated list of GHSA IDs (e.g. GHSA-442j-39wm-28r2,GHSA-7rx3-28cr-v5wh)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  socket-fix:
+    runs-on: ubuntu-slim
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '24.11.1'
+
+      - name: Install Socket CLI
+        run: npm install -g @socketsecurity/cli
+
+      - name: Run Socket Fix
+        env:
+          GHSA_IDS: ${{ inputs.ghsa_ids }}
+          SOCKET_SECURITY_API_KEY: ${{ secrets.SOCKET_SECURITY_API_KEY }}
+          SOCKET_CLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CI: 'true'
+        run: |
+          if ! [[ "$GHSA_IDS" =~ ^GHSA-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}(,[[:space:]]?GHSA-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4})*$ ]]; then
+            echo "::error::GHSA_IDS contains invalid entries. Expected format: GHSA-xxxx-xxxx-xxxx (comma or comma-space separated)"
+            exit 1
+          fi
+          IFS=',' read -ra IDS <<< "$GHSA_IDS"
+          for id in "${IDS[@]}"; do FLAGS+=(--id "${id// /}"); done
+          socket config set defaultOrg "brave"
+          socket fix . "${FLAGS[@]}"
+
+      - name: Open Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHSA_IDS: ${{ inputs.ghsa_ids }}
+        run: |
+          if ! git diff --quiet; then
+            BRANCH="socket-fix/$(echo "$GHSA_IDS" | tr ', ' '-' | tr -s '-' | cut -c1-60)"
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git checkout -b "$BRANCH"
+            git add -A
+            git commit -m "fix: address security advisories"
+            git push origin "$BRANCH"
+            gh pr create \
+              --title "fix: address security advisories" \
+              --body "Addresses: $GHSA_IDS" \
+              --base master
+          else
+            echo "::error::No changes produced by socket fix."
+            exit 1
+          fi
