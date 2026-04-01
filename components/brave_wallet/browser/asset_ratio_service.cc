@@ -116,7 +116,6 @@ std::string CreatePricingRequestPayload(
     if (auto coin_str = GetStringFromCoinType(request->coin)) {
       response_item.Set("coin", *coin_str);
     } else {
-      LOG(ERROR) << "Invalid coin type: " << request->coin;
       continue;
     }
 

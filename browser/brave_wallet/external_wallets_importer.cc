@@ -14,7 +14,6 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
-#include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/string_view_util.h"
 #include "base/strings/utf_string_conversion_utils.h"
@@ -59,7 +58,6 @@ std::string GetLegacyCryptoWalletsPassword(const std::string& password,
   const auto* argon_params =
       dict.FindDictByDottedPath("data.KeyringController.argonParams");
   if (!argon_params) {
-    VLOG(0) << "data.KeyringController.argonParams is not dict";
     return std::string();
   }
   auto hash_len = argon_params->FindInt("hashLen");
@@ -67,19 +65,16 @@ std::string GetLegacyCryptoWalletsPassword(const std::string& password,
   auto time = argon_params->FindInt("time");
   auto type = argon_params->FindInt("type");
   if (!hash_len || !mem || !time) {
-    VLOG(0) << "missing hashLen, mem, time or type in argonParams";
     return std::string();
   }
 
   if (type != 2) {
-    VLOG(0) << "Type should be Argon2_id";
     return std::string();
   }
 
   const std::string* salt_str =
       dict.FindStringByDottedPath("data.KeyringController.salt");
   if (!salt_str) {
-    VLOG(0) << "missing data.KeyringController.salt";
     return std::string();
   }
 
@@ -104,7 +99,6 @@ std::string GetLegacyCryptoWalletsPassword(const std::string& password,
   if (argon2id_hash_raw(*time, *mem, 1, password.data(), password.size(),
                         salt_str->data(), character_count, master_key.data(),
                         *hash_len) != ARGON2_OK) {
-    VLOG(1) << "argon2id_hash_raw failed";
     return std::string();
   }
   const std::string info = "metamask-encryptor";
@@ -112,7 +106,6 @@ std::string GetLegacyCryptoWalletsPassword(const std::string& password,
   if (!HKDF(sub_key.data(), sub_key.size(), EVP_sha512(), master_key.data(),
             master_key.size(), nullptr, 0, (uint8_t*)info.data(),
             info.size())) {
-    VLOG(1) << "HKDF failed";
     return std::string();
   }
 
@@ -148,7 +141,6 @@ void ExternalWalletsImporter::Initialize(InitCallback callback) {
   if (type_ == mojom::ExternalWalletType::MetaMask) {
     extension = GetMetaMask();
     if (!extension) {
-      VLOG(1) << "Failed to load MetaMask extension";
       std::move(callback).Run(false);
       return;
     }
@@ -194,7 +186,6 @@ void ExternalWalletsImporter::GetImportInfo(
   }
 
   if (password.empty()) {
-    VLOG(1) << "password is empty";
     std::move(callback).Run(base::unexpected(ImportError::kPasswordError));
     return;
   }
@@ -231,7 +222,6 @@ void ExternalWalletsImporter::GetLocalStorage(
 
   StorageFrontend* frontend = StorageFrontend::Get(context_);
   if (!frontend) {
-    VLOG(1) << "Failed to read chrome.storage.local";
     std::move(callback).Run(false);
     return;
   }
@@ -263,7 +253,6 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
   DCHECK(IsInitialized());
 
   if (password.empty()) {
-    VLOG(0) << "Failed to get password of legacy Crypto Wallets";
     std::move(callback).Run(base::unexpected(ImportError::kInternalError));
     return;
   }
@@ -271,7 +260,6 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
   const std::string* vault_str =
       storage_data_->FindStringByDottedPath("data.KeyringController.vault");
   if (!vault_str) {
-    VLOG(0) << "cannot find data.KeyringController.vault";
     std::move(callback).Run(base::unexpected(ImportError::kJsonError));
     return;
   }
@@ -279,7 +267,6 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
       *vault_str,
       base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_TRAILING_COMMAS);
   if (!vault) {
-    VLOG(1) << "not a valid JSON: " << *vault_str;
     std::move(callback).Run(base::unexpected(ImportError::kJsonError));
     return;
   }
@@ -287,26 +274,22 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
   auto* iv_str = vault->FindString("iv");
   auto* salt_str = vault->FindString("salt");
   if (!data_str || !iv_str || !salt_str) {
-    VLOG(1) << "data or iv or salt is missing";
     std::move(callback).Run(base::unexpected(ImportError::kJsonError));
     return;
   }
 
   auto salt_decoded = base::Base64Decode(*salt_str);
   if (!salt_decoded) {
-    VLOG(1) << "base64 decode failed: " << *salt_str;
     std::move(callback).Run(base::unexpected(ImportError::kJsonError));
     return;
   }
   auto iv_decoded = base::Base64Decode(*iv_str);
   if (!iv_decoded) {
-    VLOG(1) << "base64 decode failed: " << *iv_str;
     std::move(callback).Run(base::unexpected(ImportError::kJsonError));
     return;
   }
   auto data_decoded = base::Base64Decode(*data_str);
   if (!data_decoded) {
-    VLOG(1) << "base64 decode failed: " << *data_str;
     std::move(callback).Run(base::unexpected(ImportError::kJsonError));
     return;
   }
@@ -330,7 +313,6 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
   }
 
   if (!decrypted_keyrings) {
-    VLOG(0) << "Importer decryption failed";
     std::move(callback).Run(base::unexpected(ImportError::kPasswordError));
     return;
   }
@@ -341,7 +323,6 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
       decrypted_keyrings_str,
       base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_TRAILING_COMMAS);
   if (!keyrings) {
-    VLOG(1) << "not a valid JSON: " << decrypted_keyrings_str;
     std::move(callback).Run(base::unexpected(ImportError::kJsonError));
     return;
   }
@@ -353,7 +334,6 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
     const auto& keyring = *keyring_listed.GetIfDict();
     const auto* type = keyring.FindString("type");
     if (!type) {
-      VLOG(0) << "keyring.type is missing";
       std::move(callback).Run(base::unexpected(ImportError::kJsonError));
       return;
     }
@@ -375,8 +355,6 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
         }
       }
       if (utf8_encoded_mnemonic.empty()) {
-        VLOG(0) << "keyring.data.mnemonic is missing";
-
         std::move(callback).Run(base::unexpected(ImportError::kJsonError));
         return;
       }
@@ -390,7 +368,6 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
   }
 
   if (!mnemonic) {
-    VLOG(0) << "Failed to find mnemonic in decrypted keyrings";
     std::move(callback).Run(base::unexpected(ImportError::kJsonError));
     return;
   }

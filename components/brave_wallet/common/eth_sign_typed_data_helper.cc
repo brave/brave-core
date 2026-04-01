@@ -13,7 +13,6 @@
 #include "base/check.h"
 #include "base/containers/extend.h"
 #include "base/containers/span.h"
-#include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
@@ -198,7 +197,6 @@ EthSignTypedDataHelper::EncodeField(const std::string_view type,
 
   if (type.ends_with(']')) {
     if (version_ != Version::kV4) {
-      VLOG(0) << "version has to be v4 to support array";
       return std::nullopt;
     }
     if (!value.is_list()) {

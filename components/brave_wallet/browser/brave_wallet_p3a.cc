@@ -13,7 +13,6 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/command_line.h"
-#include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/notreached.h"
@@ -103,7 +102,6 @@ void BraveWalletP3A::Bind(
 }
 
 void BraveWalletP3A::ReportUsage(bool unlocked) {
-  VLOG(1) << "Wallet P3A: starting report";
   base::Time wallet_last_used =
       local_state_->GetTime(kBraveWalletLastUnlockTime);
 
@@ -371,7 +369,6 @@ void BraveWalletP3A::OnUpdateTimerFired() {
 }
 
 void BraveWalletP3A::WriteUsageStatsToHistogram() {
-  VLOG(1) << "Wallet P3A: Recording usage";
   UMA_HISTOGRAM_BOOLEAN(kBraveWalletMonthlyHistogramName, true);
   UMA_HISTOGRAM_BOOLEAN(kBraveWalletWeeklyHistogramName, true);
   UMA_HISTOGRAM_BOOLEAN(kBraveWalletDailyHistogramName, true);

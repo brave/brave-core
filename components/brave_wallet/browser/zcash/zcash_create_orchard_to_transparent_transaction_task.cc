@@ -9,7 +9,6 @@
 #include <variant>
 
 #include "base/check.h"
-#include "base/logging.h"
 #include "base/numerics/checked_math.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"

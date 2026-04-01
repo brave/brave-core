@@ -8,7 +8,6 @@
 #include <memory>
 #include <string>
 
-#include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
@@ -34,7 +33,6 @@ int GetStatusTitle(brave_wallet::mojom::TransactionStatus status) {
     default:
       break;
   }
-  VLOG(1) << "No title for " << int(status) << " transaction status";
   return -1;
 }
 

@@ -12,8 +12,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/check_op.h"
-#include "base/logging.h"
 #include "base/notimplemented.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/fil_block_tracker.h"
@@ -147,7 +145,6 @@ void FilTxManager::ApproveTransaction(const std::string& tx_meta_id,
                                       ApproveTransactionCallback callback) {
   std::unique_ptr<FilTxMeta> meta = GetFilTxStateManager().GetFilTx(tx_meta_id);
   if (!meta) {
-    LOG(ERROR) << "Transaction should be found";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewFilecoinProviderError(
@@ -176,7 +173,6 @@ void FilTxManager::OnGetNextNonce(std::unique_ptr<FilTxMeta> meta,
   if (!success) {
     meta->set_status(mojom::TransactionStatus::Error);
     tx_state_manager().AddOrUpdateTx(*meta);
-    LOG(ERROR) << "GetNextNonce failed";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewFilecoinProviderError(
@@ -285,7 +281,6 @@ void FilTxManager::GetFilTransactionMessageToSign(
     GetFilTransactionMessageToSignCallback callback) {
   std::unique_ptr<FilTxMeta> meta = GetFilTxStateManager().GetFilTx(tx_meta_id);
   if (!meta || !meta->tx()) {
-    VLOG(1) << __FUNCTION__ << "No transaction found with id:" << tx_meta_id;
     std::move(callback).Run(std::nullopt);
     return;
   }
