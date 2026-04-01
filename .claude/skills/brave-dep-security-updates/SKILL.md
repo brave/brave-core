@@ -234,7 +234,7 @@ Print a final list:
 
 ## Audit-Config (Acceptable Risk)
 
-When a vulnerability is dev-only, unexploitable, or has no fix:
+When a vulnerability has no fix or requires a major update that would cause a breaking change:
 
 ```json
 // brave/audit-config/config.json
