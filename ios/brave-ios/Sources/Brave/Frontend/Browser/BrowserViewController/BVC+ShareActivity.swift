@@ -314,9 +314,7 @@ extension BrowserViewController {
     }
 
     // Display Certificate Activity
-    if let tabURL = tabManager.selectedTab?.visibleURL,
-      tabManager.selectedTab?.serverTrust != nil
-    {
+    if tabManager.selectedTab?.serverTrust != nil {
       activities.append(
         BasicMenuActivity(
           activityType: .displaySecurityCertificate

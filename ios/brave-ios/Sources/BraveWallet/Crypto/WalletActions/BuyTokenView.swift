@@ -28,7 +28,7 @@ struct BuyTokenView: View {
 
   @ViewBuilder private var accountPickerView: some View {
     Menu {
-      if let account = buyTokenStore.selectedAccount {
+      if buyTokenStore.selectedAccount != nil {
         Text(buyTokenStore.selectedAccountAddress.zwspOutput)
       }
       Button {

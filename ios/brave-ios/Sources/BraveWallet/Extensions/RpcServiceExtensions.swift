@@ -446,7 +446,7 @@ extension BraveWalletJsonRpcService {
       of: [String: BraveWallet.NftMetadata].self
     ) { @MainActor [weak self] group in
       guard let self = self else { return [:] }
-      for (coin, tokensPerCoin) in tokenCoinMap {
+      for (_, tokensPerCoin) in tokenCoinMap {
         group.addTask {
           var uniqueTokensPerCoin: [BraveWallet.BlockchainToken] = []
           for token in tokensPerCoin {

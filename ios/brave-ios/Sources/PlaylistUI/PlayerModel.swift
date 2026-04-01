@@ -718,7 +718,7 @@ public final class PlayerModel: ObservableObject {
     ) { [weak self] _ in
       guard let self else { return }
       MainActor.assumeIsolated {
-        if let selectedItem = self.selectedItem {
+        if self.selectedItem != nil {
           // Reset the play time of the item that just finished
           self.persistPlaybackTimeForSelectedItem(0)
         }
