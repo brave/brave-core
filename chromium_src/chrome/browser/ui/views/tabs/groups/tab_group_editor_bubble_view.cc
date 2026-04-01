@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/ui/views/tabs/tab_group_editor_bubble_view.h"
+#include "chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.h"
 
 #include "base/check.h"
 #include "chrome/app/vector_icons/vector_icons.h"
@@ -41,7 +41,7 @@ void MaybeRemoveFooter(TabGroupEditorBubbleView* bubble_view,
 #define kUngroupRefreshIcon \
   kUngroupRefreshIcon, ui::kColorMenuIcon, kDefaultIconSize
 
-#include <chrome/browser/ui/views/tabs/tab_group_editor_bubble_view.cc>
+#include <chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc>
 
 #undef kUngroupRefreshIcon
 
