@@ -21,6 +21,7 @@
 -All/GlicEnablingAnyFreModeTest.Consented_ReturnsReady/*
 -All/GlicEnablingAnyFreModeTest.IsEnabledAndConsentForProfile_*/*
 -All/GlicEnablingAnyFreModeTest.NotSignedIn_ReturnsIneligible/*
+-All/GlicEnablingContextMenuTest.ExpectedBehavior/*
 -AppMenuModelTest.ProfileSyncBookmarkLimitExceededErrorHiddenTest_*
 -BrowsingHistoryHandlerTest.RequestAccountInfo
 -BrowsingHistoryHandlerTest.SendsUpdatedInfoOnAccountChange
