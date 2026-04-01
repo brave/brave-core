@@ -12,6 +12,7 @@
 import argparse
 import fnmatch
 import hashlib
+import http.client
 import json
 import os
 from pathlib import Path
@@ -23,7 +24,6 @@ import tarfile
 import tempfile
 import toml
 import urllib.parse
-import urllib.request
 
 import brave_chromium_utils
 import versions
@@ -37,13 +37,28 @@ FILTER_CHECKSUM_PATTERNS = ['.git', '**/.git']
 
 _CRATE_NAME_RE = re.compile(r'^[a-zA-Z0-9_-]+$')
 _VERSION_RE = re.compile(r'^\d+\.\d+\.\d+')
-_CRATES_IO_BASE = 'https://crates.io/api/v1/crates/'
+_CRATES_IO_HOST = 'crates.io'
 
 
-def _crates_io_url(*parts):
-    """Build a crates.io API URL with each path component percent-encoded."""
-    return _CRATES_IO_BASE + '/'.join(
-        urllib.parse.quote(p, safe='') for p in parts)
+def _https_get(host, path, max_redirects=5):
+    """HTTPS GET with redirect following, returning the response body."""
+    for _ in range(max_redirects):
+        conn = http.client.HTTPSConnection(host)
+        conn.request('GET', path, headers={'User-Agent': 'brave-tools-crates'})
+        resp = conn.getresponse()
+        if resp.status in (301, 302, 303, 307, 308):
+            location = resp.getheader('Location', '')
+            parsed = urllib.parse.urlparse(location)
+            host = parsed.netloc
+            path = parsed.path
+            if parsed.query:
+                path += '?' + parsed.query
+            continue
+        if resp.status != 200:
+            raise RuntimeError(
+                f'HTTP {resp.status} fetching https://{host}{path}')
+        return resp.read()
+    raise RuntimeError(f'Too many redirects fetching https://{host}{path}')
 
 
 def _safe_extractall(tar, path):
@@ -121,19 +136,19 @@ def update_crate(crate_name, precise_version):
     crate_dir = vendor_path / crate_name
 
     # 1. Fetch the package checksum from the crates.io API.
-    index_url = _crates_io_url(crate_name, precise_version)
-    req = urllib.request.Request(index_url,
-                                headers={'User-Agent': 'brave-tools-crates'})
-    with urllib.request.urlopen(req) as resp:
-        index_data = json.loads(resp.read())
+    api_path = '/api/v1/crates/' + '/'.join(
+        urllib.parse.quote(p, safe='')
+        for p in (crate_name, precise_version))
+    index_data = json.loads(_https_get(_CRATES_IO_HOST, api_path))
     package_checksum = index_data['version']['checksum']
 
     # 2. Download crate tarball from crates.io.
-    download_url = _crates_io_url(crate_name, precise_version, 'download')
+    download_path = api_path + '/download'
     print(f'Downloading {crate_name} {precise_version} from crates.io...')
+    tarball_bytes = _https_get(_CRATES_IO_HOST, download_path)
     with tempfile.NamedTemporaryFile(suffix='.tar.gz',
                                      delete=False) as tmp:
-        urllib.request.urlretrieve(download_url, tmp.name)
+        tmp.write(tarball_bytes)
         tmp_path = tmp.name
 
     try:
