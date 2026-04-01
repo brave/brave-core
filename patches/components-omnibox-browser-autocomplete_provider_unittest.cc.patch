@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/autocomplete_provider_unittest.cc b/components/omnibox/browser/autocomplete_provider_unittest.cc
-index 023b863225fa97dd259c71e6c18dad33e9a9d20c..274c50d8921071b3d2104348c1ea6dbf38c8d53a 100644
+index 023b863225fa97dd259c71e6c18dad33e9a9d20c..c10af4f3ae4975b8b97dd4303d3d8aa49597ad19 100644
 --- a/components/omnibox/browser/autocomplete_provider_unittest.cc
 +++ b/components/omnibox/browser/autocomplete_provider_unittest.cc
 @@ -1458,7 +1458,7 @@ TEST_F(AutocompleteProviderTest, GetDestinationURL) {
@@ -11,3 +11,57 @@ index 023b863225fa97dd259c71e6c18dad33e9a9d20c..274c50d8921071b3d2104348c1ea6dbf
    // Make sure searchbox_stats is serialized and encoded correctly.
    {
      std::string serialized_proto;
+@@ -1473,7 +1473,7 @@ TEST_F(AutocompleteProviderTest, GetDestinationURL) {
+   // Test field trial triggered bit set.
+   set_remote_search_feature_triggered_in_session(true);
+   url = GetDestinationURL(match, base::Milliseconds(2456));
+-  EXPECT_EQ("//gs_lcrp=EgZjaHJvbWXSAQgyNDU2ajFqMA&", url.GetPath());
++  EXPECT_EQ("//", url.GetPath());
+   // Make sure searchbox_stats is serialized and encoded correctly.
+   {
+     std::string serialized_proto;
+@@ -1489,7 +1489,7 @@ TEST_F(AutocompleteProviderTest, GetDestinationURL) {
+   set_remote_search_feature_triggered_in_session(false);
+   set_current_page_classification(metrics::OmniboxEventProto::OTHER);
+   url = GetDestinationURL(match, base::Milliseconds(2456));
+-  EXPECT_EQ("//gs_lcrp=EgZjaHJvbWXSAQgyNDU2ajBqNA&", url.GetPath());
++  EXPECT_EQ("//", url.GetPath());
+   // Make sure searchbox_stats is serialized and encoded correctly.
+   {
+     std::string serialized_proto;
+@@ -1505,7 +1505,7 @@ TEST_F(AutocompleteProviderTest, GetDestinationURL) {
+   set_remote_search_feature_triggered_in_session(true);
+   set_current_page_classification(metrics::OmniboxEventProto::OTHER);
+   url = GetDestinationURL(match, base::Milliseconds(2456));
+-  EXPECT_EQ("//gs_lcrp=EgZjaHJvbWXSAQgyNDU2ajFqNA&", url.GetPath());
++  EXPECT_EQ("//", url.GetPath());
+   // Make sure searchbox_stats is serialized and encoded correctly.
+   {
+     std::string serialized_proto;
+@@ -1523,7 +1523,7 @@ TEST_F(AutocompleteProviderTest, GetDestinationURL) {
+     controller_->SetSteadyStateOmniboxPosition(
+         metrics::OmniboxEventProto::TOP_POSITION);
+     url = GetDestinationURL(match_copy, base::Milliseconds(2456));
+-    EXPECT_EQ("//gs_lcrp=EgZjaHJvbWXSAQgyNDU2ajFqNOIDBBgBIF8&", url.GetPath());
++    EXPECT_EQ("//", url.GetPath());
+     // Make sure searchbox_stats is serialized and encoded correctly.
+     std::string serialized_proto;
+     EXPECT_TRUE(base::Base64UrlDecode(
+@@ -1540,7 +1540,7 @@ TEST_F(AutocompleteProviderTest, GetDestinationURL) {
+     controller_->SetSteadyStateOmniboxPosition(
+         metrics::OmniboxEventProto::BOTTOM_POSITION);
+     url = GetDestinationURL(match_copy, base::Milliseconds(2456));
+-    EXPECT_EQ("//gs_lcrp=EgZjaHJvbWXSAQgyNDU2ajFqNOIDBBgCIF8&", url.GetPath());
++    EXPECT_EQ("//", url.GetPath());
+     // Make sure searchbox_stats is serialized and encoded correctly.
+     std::string serialized_proto;
+     EXPECT_TRUE(base::Base64UrlDecode(
+@@ -1562,7 +1562,7 @@ TEST_F(AutocompleteProviderTest, GetDestinationURL) {
+   experiment_stats_v2.set_string_value("0:67");
+   add_zero_suggest_provider_experiment_stats_v2(experiment_stats_v2);
+   url = GetDestinationURL(match, base::Milliseconds(2456));
+-  EXPECT_EQ("//gs_lcrp=EgZjaHJvbWXSAQgyNDU2ajFqNOIDCRIEMCw2NyCRTg&",
++  EXPECT_EQ("//",
+             url.GetPath());
+   // Make sure searchbox_stats is serialized and encoded correctly.
+   {
