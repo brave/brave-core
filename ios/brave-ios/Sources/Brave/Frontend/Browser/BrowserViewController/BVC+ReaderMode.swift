@@ -151,7 +151,7 @@ extension BrowserViewController {
     recordTimeBasedNumberReaderModeUsedP3A(activated: true)
 
     let playlistItem = tab.playlistItem
-    let translationState = tab.translationState ?? .unavailable
+    let translationState = tab.translationState
     if backList.count > 1 && backList.last?.url == readerModeURL {
       tab.goToBackForwardListItem(backList.last!)
       PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
@@ -178,13 +178,12 @@ extension BrowserViewController {
         ) { (object, error) -> Void in
           if let readabilityResult = ReadabilityResult(object: object as AnyObject?) {
             let playlistItem = tab.playlistItem
-            let translationState = tab.translationState ?? .unavailable
+            let translationState = tab.translationState
             Task { @MainActor in
               try? await self.readerModeCache.put(currentURL, readabilityResult)
-              if tab.loadRequest(PrivilegedRequest(url: readerModeURL) as URLRequest) != nil {
-                PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
-                self.updateTranslateURLBar(tab: tab, state: translationState)
-              }
+              tab.loadRequest(PrivilegedRequest(url: readerModeURL) as URLRequest)
+              PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
+              self.updateTranslateURLBar(tab: tab, state: translationState)
             }
           }
         }
@@ -205,7 +204,7 @@ extension BrowserViewController {
       if let currentURL = backForwardList.currentItem?.url {
         if let originalURL = currentURL.decodeEmbeddedInternalURL(for: .readermode) {
           let playlistItem = tab.playlistItem
-          let translationState = tab.translationState ?? .unavailable
+          let translationState = tab.translationState
           if backList.count > 1 && backList.last?.url == originalURL {
             tab.goToBackForwardListItem(backList.last!)
             PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
@@ -215,10 +214,9 @@ extension BrowserViewController {
             PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
             self.updateTranslateURLBar(tab: tab, state: translationState)
           } else {
-            if tab.loadRequest(URLRequest(url: originalURL)) != nil {
-              PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
-              self.updateTranslateURLBar(tab: tab, state: translationState)
-            }
+            tab.loadRequest(URLRequest(url: originalURL))
+            PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
+            self.updateTranslateURLBar(tab: tab, state: translationState)
           }
         }
       }

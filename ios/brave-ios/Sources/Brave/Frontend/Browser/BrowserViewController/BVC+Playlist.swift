@@ -225,7 +225,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate {
     guard Preferences.Playlist.enablePlaylistURLBarButton.value,
       let selectedTab = tabManager.selectedTab,
       selectedTab === tab,
-      selectedTab.playlistItemState != .none
+      selectedTab.playlistItemState != PlaylistItemAddedState.none
     else {
       return
     }

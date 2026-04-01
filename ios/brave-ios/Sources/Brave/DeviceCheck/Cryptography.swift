@@ -259,7 +259,7 @@ public class Cryptography {
       kSecPrivateKeyAttrs: [
         kSecAttrIsPermanent: storeInKeychain,
         kSecAttrApplicationTag: keyId,
-        kSecAttrAccessControl: (controlFlags ?? nil) as Any,
+        kSecAttrAccessControl: controlFlags as Any,
       ],
     ]
 

@@ -249,7 +249,7 @@ extension BrowserViewController: TabManagerDelegate {
     if FeatureList.kBraveTranslateEnabled.enabled, let selectedTab = selected,
       selectedTab.legacyTranslateHelper != nil || selectedTab.translate != nil
     {
-      updateTranslateURLBar(tab: selectedTab, state: selectedTab.translationState ?? .unavailable)
+      updateTranslateURLBar(tab: selectedTab, state: selectedTab.translationState)
       updatePlaylistURLBar(
         tab: selectedTab,
         state: selectedTab.playlistItemState ?? .none,
