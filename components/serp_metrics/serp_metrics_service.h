@@ -3,19 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_SERP_METRICS_SERP_METRICS_SERVICE_H_
-#define BRAVE_BROWSER_SERP_METRICS_SERP_METRICS_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_SERP_METRICS_SERP_METRICS_SERVICE_H_
+#define BRAVE_COMPONENTS_SERP_METRICS_SERP_METRICS_SERVICE_H_
 
 #include <memory>
 
 #include "components/keyed_service/core/keyed_service.h"
 
 class PrefService;
-class ProfileAttributesStorage;
-
-namespace base {
-class FilePath;
-}  // namespace base
+class TimePeriodStoreFactory;
 
 namespace serp_metrics {
 
@@ -25,8 +21,7 @@ class SerpMetrics;
 class SerpMetricsService : public KeyedService {
  public:
   SerpMetricsService(PrefService& local_state,
-                     base::FilePath profile_path,
-                     ProfileAttributesStorage& profile_attributes_storage);
+                     const TimePeriodStoreFactory& time_period_store_factory);
 
   SerpMetricsService(const SerpMetricsService&) = delete;
   SerpMetricsService& operator=(const SerpMetricsService&) = delete;
@@ -42,4 +37,4 @@ class SerpMetricsService : public KeyedService {
 
 }  // namespace serp_metrics
 
-#endif  // BRAVE_BROWSER_SERP_METRICS_SERP_METRICS_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_SERP_METRICS_SERP_METRICS_SERVICE_H_

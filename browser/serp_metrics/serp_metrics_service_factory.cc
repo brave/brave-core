@@ -9,9 +9,9 @@
 
 #include "base/check.h"
 #include "base/check_deref.h"
-#include "base/files/file_path.h"
 #include "base/no_destructor.h"
-#include "brave/browser/serp_metrics/serp_metrics_service.h"
+#include "brave/browser/serp_metrics/serp_metrics_time_period_store_factory.h"
+#include "brave/components/serp_metrics/serp_metrics_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
@@ -55,8 +55,9 @@ SerpMetricsServiceFactory::BuildServiceInstanceForBrowserContext(
   Profile* profile = Profile::FromBrowserContext(context);
   CHECK(profile);
   return std::make_unique<SerpMetricsService>(
-      CHECK_DEREF(g_browser_process->local_state()), profile->GetPath(),
-      profile_manager->GetProfileAttributesStorage());
+      CHECK_DEREF(g_browser_process->local_state()),
+      SerpMetricsTimePeriodStoreFactory(
+          profile->GetPath(), profile_manager->GetProfileAttributesStorage()));
 }
 
 }  // namespace serp_metrics

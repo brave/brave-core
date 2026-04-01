@@ -1,5 +1,6 @@
 include_rules = [
   "+components/regional_capabilities",
+  "+components/keyed_service/core",
   "+components/search_engines",
   "+components/prefs",
   "+absl",
