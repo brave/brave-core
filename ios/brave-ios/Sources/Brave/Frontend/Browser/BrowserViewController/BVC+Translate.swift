@@ -89,8 +89,9 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
     }
 
     let popover = PopoverController(
-      content: TranslateToast(languageInfo: languageInfo) { [weak tab] _ in
-        tab?.translateHelper?.startTranslation(canShowToast: false)
+      content: TranslateToast(languageInfo: languageInfo) { [weak tab] languageDetails in
+        tab?.translate?.startTranslation(with: languageDetails)
+        tab?.legacyTranslateHelper?.startTranslation(canShowToast: false)
       },
       autoLayoutConfiguration: nil
     )

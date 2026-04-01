@@ -105,7 +105,11 @@ extension BrowserViewController {
           callback: { [weak self] in
             guard let self = self, let tab = tab else { return }
 
-            if let translateHelper = tab.translateHelper {
+            if let translateTabHelper = tab.translate {
+              translateTabHelper.toggleTranslation()
+            }
+
+            if let translateHelper = tab.legacyTranslateHelper {
               translateHelper.presentUI(on: self)
 
               if tab.translationState == .active {

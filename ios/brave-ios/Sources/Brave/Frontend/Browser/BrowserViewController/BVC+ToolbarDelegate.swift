@@ -271,7 +271,11 @@ extension BrowserViewController: TopToolbarDelegate {
   func topToolbarDidPressTranslateButton(_ urlBar: TopToolbarView) {
     guard let tab = tabManager.selectedTab else { return }
 
-    if let translateHelper = tab.translateHelper {
+    if let translateTabHelper = tab.translate {
+      translateTabHelper.toggleTranslation()
+    }
+
+    if let translateHelper = tab.legacyTranslateHelper {
       translateHelper.presentUI(on: self)
 
       if tab.translationState == .active {

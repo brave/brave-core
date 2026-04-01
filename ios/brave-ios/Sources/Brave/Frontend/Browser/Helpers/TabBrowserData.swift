@@ -153,7 +153,6 @@ class TabBrowserData: NSObject, TabObserver {
 
   var playlistItem: PlaylistInfo?
   var playlistItemState: PlaylistItemAddedState = .none
-  var translationState: TranslateURLBarButton.TranslateState = .unavailable
 
   /// This is the request that was upgraded to HTTPS
   /// This allows us to rollback the upgrade when we encounter a 4xx+
@@ -221,7 +220,6 @@ class TabBrowserData: NSObject, TabObserver {
   fileprivate var alertQueue = [JSAlertInfo]()
   weak var shownPromptAlert: UIAlertController?
 
-  var translateHelper: BraveTranslateTabHelper?
   private(set) lazy var leoTabHelper = BraveLeoScriptTabHelper(tab: tab)
 
   /// Boolean tracking custom url-scheme alert presented
@@ -372,7 +370,6 @@ class TabBrowserData: NSObject, TabObserver {
   func tabWillDeleteWebView(_ tab: some TabState) {
     contentScriptManager.helpers.removeAll()
     contentScriptManager.uninstall(from: tab)
-    translateHelper = nil
   }
 
   func tabWillBeDestroyed(_ tab: some TabState) {
