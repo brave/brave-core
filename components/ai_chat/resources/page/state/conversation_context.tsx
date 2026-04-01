@@ -443,17 +443,12 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     }
   }
 
-  // Whenever input text changes, check if the selected skill has been removed
+  // Since we only allow one skill to be selected at a time if the user clears the input text,
+  // we need to clear the selected skill.
   React.useEffect(() => {
-    if (!selectedSkill) return
-
-    // If we still have the skill selected there's nothing to do.
-    if (stringifyContent(inputText).startsWith(`/${selectedSkill.shortcut}`)) {
-      return
+    if (selectedSkill && stringifyContent(inputText) === '') {
+      setSelectedSkill(undefined)
     }
-
-    // Otherwise, the user has cleared it:
-    setSelectedSkill(undefined)
   }, [inputText, selectedSkill])
 
   // TODO(https://github.com/brave/brave-browser/issues/52542): Handle this conversation's deletion:
