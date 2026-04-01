@@ -188,7 +188,7 @@ public class CustomSearchEngineAdapter
                         TemplateUrlServiceFactory.getForProfile(mProfile);
                 templateUrlService.runWhenLoaded(
                         () -> {
-                            if (isDefaultSearchEngine(searchEngineKeyword)) {
+                            if (!isSearchEngineEligibleToDelete(searchEngineKeyword)) {
                                 Toast.makeText(
                                                 mContext,
                                                 mContext.getString(
@@ -223,7 +223,15 @@ public class CustomSearchEngineAdapter
         };
     }
 
-    private boolean isDefaultSearchEngine(String searchEngineKeyword) {
+    /**
+     * Checks if the search engine is eligible to be deleted.
+     *
+     * @param searchEngineKeyword The keyword of the search engine.
+     * @return True if the search engine is eligible to be deleted (it is not set as active DSE for
+     *     standard or private tabs and we are able to retrieve data for searchEngineKeyword), false
+     *     otherwise.
+     */
+    private boolean isSearchEngineEligibleToDelete(String searchEngineKeyword) {
         // Brave stores the active DSE for standard and private tabs as shortnames in Java
         // SharedPreferences (written by BraveSearchEngineAdapter). Compare by shortname since
         // the private profile's TemplateUrlService may not be loaded.
@@ -235,12 +243,15 @@ public class CustomSearchEngineAdapter
                 ChromeSharedPreferences.getInstance()
                         .readString(BravePreferenceKeys.STANDARD_DSE_SHORTNAME, null);
         if (shortName.equals(standardDse)) {
-            return true;
+            return false;
         }
         String privateDse =
                 ChromeSharedPreferences.getInstance()
                         .readString(BravePreferenceKeys.PRIVATE_DSE_SHORTNAME, null);
-        return shortName.equals(privateDse);
+        if (shortName.equals(privateDse)) {
+            return false;
+        }
+        return true;
     }
 
     @Override
