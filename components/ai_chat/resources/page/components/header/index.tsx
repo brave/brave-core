@@ -17,6 +17,8 @@ import { useAIChat, useIsSmall } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
 import {
+  globalChatId,
+  isGlobalPanel,
   tabAssociatedChatId,
   useActiveChat,
 } from '../../state/active_chat_context'
@@ -83,7 +85,11 @@ export const ConversationHeader = React.forwardRef(function (
             <Button
               kind='plain-faint'
               fab
-              onClick={() => updateSelectedConversationId(tabAssociatedChatId)}
+              onClick={() =>
+                updateSelectedConversationId(
+                  isGlobalPanel ? globalChatId : tabAssociatedChatId,
+                )
+              }
               title={getLocale(S.AI_CHAT_GO_BACK_TO_ACTIVE_CONVERSATION_BUTTON)}
             >
               <Icon name='arrow-left' />

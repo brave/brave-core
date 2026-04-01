@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
+#include "url/gurl.h"
 
 namespace blink::mojom {
 class FileChooserParams;
@@ -26,10 +27,11 @@ class Profile;
 class AIChatSidePanelWebView : public SidePanelWebUIViewT<AIChatUI> {
  public:
   // Factory method to create and configure an AIChatSidePanelWebView.
-  // If `is_tab_associated` is true, the side panel will be related
-  // to the active tab and will change conversation when the tab navigates.
+  // `initial_url` is the URL the side panel WebUI will load. Use
+  // `ai_chat::TabAssociatedConversationUrl()` for the contextual (per-tab)
+  // entry, or `ai_chat::GlobalConversationUrl()` for the global entry.
   static std::unique_ptr<views::View> CreateView(Profile* profile,
-                                                 bool is_tab_associated,
+                                                 GURL initial_url,
                                                  SidePanelEntryScope& scope);
 
   AIChatSidePanelWebView(

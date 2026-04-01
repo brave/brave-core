@@ -16,7 +16,7 @@ import {
 import * as Mojom from '../../common/mojom'
 import { useIsDragging } from '../hooks/useIsDragging'
 import { isLeoModel } from '../model_utils'
-import { SelectedChatDetails } from './active_chat_context'
+import { globalChatId, SelectedChatDetails } from './active_chat_context'
 import useSendFeedback, { SendFeedbackState } from './useSendFeedback'
 import { useAIChat } from './ai_chat_context'
 import {
@@ -320,8 +320,13 @@ export function useProvideConversationContext(props: ConversationContextProps) {
   // active tab or page changes, clear staged content and attach the new tab.
   const prevDefaultTabContentIdRef = React.useRef<number | undefined>(undefined)
   React.useEffect(() => {
-    if (aiChat.isStandalone !== false || props.isTabAssociated) return
     if (!conversationState.conversationUuid) return
+    if (
+      aiChat.isStandalone !== false
+      || props.selectedConversationId !== globalChatId
+    ) {
+      return
+    }
 
     const prevContentId = prevDefaultTabContentIdRef.current
     const newContentId = aiChat.defaultTabContentId
