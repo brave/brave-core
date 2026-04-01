@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import Input, { InputEventDetail } from '@brave/leo/react/input'
+import Button from '@brave/leo/react/button'
 
 // utils
 import { getLocale } from '$web-common/locale'
@@ -48,7 +49,7 @@ import {
   InputLabel,
   SubDivider,
 } from './add-custom-token-form-styles'
-import { Column, LeoSquaredButton, Row } from '../style'
+import { Column, Row } from '../style'
 
 interface Props {
   selectedAsset?: BraveWallet.BlockchainToken
@@ -463,12 +464,12 @@ export const AddCustomTokenForm = (props: Props) => {
       </FormWrapper>
 
       <ButtonRow gap='16px'>
-        <LeoSquaredButton
+        <Button
           onClick={onClickCancel}
           kind='outline'
         >
           {getLocale('braveWalletButtonCancel')}
-        </LeoSquaredButton>
+        </Button>
 
         <Tooltip
           text={<FormErrorsList errors={formErrors} />}
@@ -477,7 +478,7 @@ export const AddCustomTokenForm = (props: Props) => {
           verticalPosition='above'
         >
           <Row>
-            <LeoSquaredButton
+            <Button
               onClick={onClickAddCustomToken}
               isDisabled={
                 buttonDisabled || (!selectedAsset && tokenAlreadyExists)
@@ -486,7 +487,7 @@ export const AddCustomTokenForm = (props: Props) => {
               {selectedAsset
                 ? getLocale('braveWalletButtonSaveChanges')
                 : getLocale('braveWalletWatchListAdd')}
-            </LeoSquaredButton>
+            </Button>
           </Row>
         </Tooltip>
       </ButtonRow>

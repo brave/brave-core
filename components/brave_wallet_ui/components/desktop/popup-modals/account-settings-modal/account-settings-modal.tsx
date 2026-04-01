@@ -8,6 +8,7 @@ import { skipToken } from '@reduxjs/toolkit/query'
 import ProgressRingReact from '@brave/leo/react/progressRing'
 import Input, { InputEventDetail } from '@brave/leo/react/input'
 import SegmentedControlItem from '@brave/leo/react/segmentedControlItem'
+import Button from '@brave/leo/react/button'
 
 // redux
 import { useDispatch, useSelector } from 'react-redux'
@@ -77,12 +78,7 @@ import {
   ControlsWrapper,
   SegmentedControl,
 } from './account-settings-modal.style'
-import {
-  Column,
-  LeoSquaredButton,
-  Text,
-  VerticalSpacer,
-} from '../../../shared/style'
+import { Column, Text, VerticalSpacer } from '../../../shared/style'
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
 
 const zcashAddressOptions: zcashAddressOptionType[] = [
@@ -511,13 +507,13 @@ export const AccountSettingsModal = () => {
             )}
 
             <ButtonRow>
-              <LeoSquaredButton
+              <Button
                 onClick={onSubmitUpdateName}
                 isDisabled={showNameInputErrors}
                 kind='filled'
               >
                 {getLocale('braveWalletAccountSettingsSave')}
-              </LeoSquaredButton>
+              </Button>
             </ButtonRow>
           </EditWrapper>
         )}
@@ -611,48 +607,48 @@ export const AccountSettingsModal = () => {
               && !privateKey ? (
                 // Show Cancel and Confirm buttons for encryption password
                 <ButtonRow>
-                  <LeoSquaredButton
+                  <Button
                     onClick={onCancelEncryptionPassword}
                     kind='outline'
                   >
                     {getLocale('braveWalletButtonCancel')}
-                  </LeoSquaredButton>
-                  <LeoSquaredButton
+                  </Button>
+                  <Button
                     onClick={onConfirmEncryptionPassword}
                     kind='filled'
                     isDisabled={!isEncryptionPasswordValid}
                   >
                     {getLocale('braveWalletAccountSettingsShowKey')}
-                  </LeoSquaredButton>
+                  </Button>
                 </ButtonRow>
               ) : privateKey ? (
                 // Show Download and Hide buttons when key is visible
                 <ButtonRow>
                   {selectedAccount?.accountId.coin
                     === BraveWallet.CoinType.DOT && (
-                    <LeoSquaredButton
+                    <Button
                       onClick={onDownloadPolkadotKey}
                       kind='outline'
                     >
                       {getLocale('braveWalletAccountSettingsDownloadKey')}
-                    </LeoSquaredButton>
+                    </Button>
                   )}
-                  <LeoSquaredButton
+                  <Button
                     onClick={onHidePrivateKey}
                     kind='filled'
                   >
                     {getLocale('braveWalletAccountSettingsHideKey')}
-                  </LeoSquaredButton>
+                  </Button>
                 </ButtonRow>
               ) : (
                 // Show "Show Key" button when no key is visible
-                <LeoSquaredButton
+                <Button
                   onClick={onShowPrivateKey}
                   kind='filled'
                   isDisabled={password ? !isCorrectPassword : true}
                 >
                   {getLocale('braveWalletAccountSettingsShowKey')}
-                </LeoSquaredButton>
+                </Button>
               )}
             </ButtonWrapper>
           </PrivateKeyWrapper>

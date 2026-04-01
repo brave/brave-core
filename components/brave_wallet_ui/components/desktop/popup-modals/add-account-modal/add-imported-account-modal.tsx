@@ -8,6 +8,7 @@ import * as React from 'react'
 import { useHistory, useParams } from 'react-router'
 import Input, { InputEventDetail } from '@brave/leo/react/input'
 import Dropdown from '@brave/leo/react/dropdown'
+import Button from '@brave/leo/react/button'
 import {
   SelectItemEventDetail, //
 } from '@brave/leo/types/src/components/menu/menu.svelte'
@@ -34,7 +35,6 @@ import { PopupModal } from '../index'
 import { SelectAccountType } from './select-account-type/select-account-type'
 
 // style
-import { LeoSquaredButton } from '../../../shared/style'
 import {
   CreateAccountStyledWrapper,
   DisclaimerText,
@@ -494,13 +494,13 @@ export const ImportAccountModal = () => {
               }
             </Input>
 
-            <LeoSquaredButton
+            <Button
               onClick={onClickCreateAccount}
               isDisabled={isDisabled}
               kind='filled'
             >
               {getLocale('braveWalletAddAccountImport')}
-            </LeoSquaredButton>
+            </Button>
           </CreateAccountStyledWrapper>
         </StyledWrapper>
       )}

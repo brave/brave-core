@@ -8,7 +8,6 @@ import styled, { css, CSSProperties } from 'styled-components'
 import { Link } from 'react-router-dom'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
-import Button from '@brave/leo/react/button'
 import ProgressRing from '@brave/leo/react/progressRing'
 
 // types
@@ -591,10 +590,6 @@ export const BraveRewardsIndicator = styled.div`
   padding: 2px 6px;
   border: 1px solid ${leo.color.divider.subtle};
   border-radius: 4px;
-`
-
-export const LeoSquaredButton = styled(Button)`
-  --leo-button-radius: 12px;
 `
 
 export const DefaultPageWrapper = styled.div`

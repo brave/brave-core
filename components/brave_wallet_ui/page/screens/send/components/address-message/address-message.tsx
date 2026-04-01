@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Button from '@brave/leo/react/button'
 
 // Types
 import { AddressMessageInfo } from '../../../../../constants/types'
@@ -18,12 +19,7 @@ import {
   HowToSolveButton,
   ErrorIcon,
 } from './address-message.style'
-import {
-  Column,
-  Row,
-  Text,
-  LeoSquaredButton,
-} from '../../../../../components/shared/style'
+import { Column, Row, Text } from '../../../../../components/shared/style'
 
 interface Props {
   addressMessageInfo: AddressMessageInfo
@@ -104,9 +100,9 @@ export const AddressMessage = (props: Props) => {
             margin='16px 0px 0px 0px'
             width='unset'
           >
-            <LeoSquaredButton onClick={onClickEnableENSOffchain}>
+            <Button onClick={onClickEnableENSOffchain}>
               {getLocale('braveWalletEnsOffChainButton')}
-            </LeoSquaredButton>
+            </Button>
           </Row>
         )}
       </Column>

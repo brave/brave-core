@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Button from '@brave/leo/react/button'
 
 // Selectors
 import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
@@ -43,11 +44,7 @@ import {
 import { PopupModal } from '../../../components/desktop/popup-modals/index'
 
 // Styled Components
-import {
-  Column,
-  LeoSquaredButton,
-  VerticalSpace,
-} from '../../../components/shared/style'
+import { Column, VerticalSpace } from '../../../components/shared/style'
 import {
   ReviewButtonRow,
   AlertMessage,
@@ -274,14 +271,14 @@ export const Swap = () => {
             isMobile={isMobile && !isKeyboardVisible && !isSubmitButtonDisabled}
           >
             <ReviewButtonBackground>
-              <LeoSquaredButton
+              <Button
                 onClick={onSubmit}
                 size='large'
                 isDisabled={isSubmitButtonDisabled}
                 isLoading={isFetchingQuote || isSubmittingSwap}
               >
                 {submitButtonText}
-              </LeoSquaredButton>
+              </Button>
             </ReviewButtonBackground>
           </ReviewButtonRow>
         </ToSectionBackground>

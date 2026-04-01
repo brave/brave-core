@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
+import Button from '@brave/leo/react/button'
 
 // Types
 import { BraveWallet } from '../../../../constants/types'
@@ -41,12 +42,7 @@ import {
   ErrorIcon,
 } from './sell-asset-modal.style'
 
-import {
-  VerticalSpacer,
-  Row,
-  Column,
-  LeoSquaredButton,
-} from '../../../shared/style'
+import { VerticalSpacer, Row, Column } from '../../../shared/style'
 
 interface Props {
   selectedAsset: BraveWallet.BlockchainToken
@@ -236,12 +232,12 @@ export const SellAssetModal = (props: Props) => {
           )}
         </Column>
         <VerticalSpacer space={8} />
-        <LeoSquaredButton
+        <Button
           isDisabled={isSellButtonDisabled}
           onClick={openSellAssetLink}
         >
           {getLocale('braveWalletSellWithProvider').replace('$1', 'Ramp')}
-        </LeoSquaredButton>
+        </Button>
       </StyledWrapper>
     </PopupModal>
   )
