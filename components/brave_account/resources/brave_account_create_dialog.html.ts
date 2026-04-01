@@ -42,6 +42,7 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
           placeholder="$i18n{BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER}"
           @password-input=${(e: CustomEvent<PasswordInputEventDetail>) => {
             this.password = e.detail.password
+            this.isPasswordValid = e.detail.isValid
           }}
         >
         </brave-account-password-input>
@@ -59,6 +60,7 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
       <leo-button
         slot="buttons"
         ?isDisabled=${!this.isEmailValid
+        || !this.isPasswordValid
         || !this.isPasswordStrongEnough
         || this.passwordConfirmation !== this.password}
         @click=${this.onCreateAccountButtonClicked}

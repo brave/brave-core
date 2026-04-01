@@ -47,12 +47,10 @@ build_webui("build") {
   css_files = [
     "brave_account_common.css",
     "brave_account_dialog.css",
-    "brave_account_email_input.css",
     "brave_account_entry_dialog.css",
     "brave_account_forgot_password_dialog.css",
     "brave_account_otp_input.css",
     "brave_account_password_icons.css",
-    "brave_account_password_input.css",
     "brave_account_password_strength_meter.css",
     "brave_account_sign_in_dialog.css",
   ]

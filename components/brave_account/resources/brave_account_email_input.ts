@@ -5,7 +5,7 @@
 
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
-import { getCss } from './brave_account_email_input.css.js'
+import { getCss } from './brave_account_common.css.js'
 import { getHtml } from './brave_account_email_input.html.js'
 
 // Maximum email address length according to this RFC3696 errata:

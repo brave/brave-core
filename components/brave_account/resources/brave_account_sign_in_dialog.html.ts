@@ -33,6 +33,7 @@ export function getHtml(this: BraveAccountSignInDialogElement) {
           placeholder="$i18n{BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER}"
           @password-input=${(e: CustomEvent<PasswordInputEventDetail>) => {
             this.password = e.detail.password
+            this.isPasswordValid = e.detail.isValid
           }}
         >
           <div

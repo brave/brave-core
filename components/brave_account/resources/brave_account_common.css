@@ -7,6 +7,21 @@
  * #type=style-lit
  * #css_wrapper_metadata_end */
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.label-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .label {
   color: var(--leo-color-text-primary);
   font: var(--leo-font-small-semibold);
@@ -43,8 +58,21 @@ leo-input:focus:has(.error) {
   }
 
   .dropdown-content {
+    --leo-icon-size: var(--leo-icon-xs);
     align-self: end;
+    animation: fadeIn 300ms ease-in-out;
+    display: flex;
+    font: var(--leo-font-small-regular);
+    gap: var(--leo-spacing-s);
     min-height: 0;
+
+    leo-icon {
+      /* Slight vertical tweak to align icon with first text line.
+         align-items: center on .dropdown-content works for single-line text,
+         but misaligns when wrapping. Offset is based on the difference between
+         the line-height and icon size. */
+      margin-top: calc((1lh - var(--leo-icon-size)) / 2);
+    }
 
     leo-icon[name='check-circle-filled'] {
       --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
