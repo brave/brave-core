@@ -325,6 +325,10 @@ inline constexpr char16_t kGeminiPersonalContextUrl[] =
 inline constexpr char16_t kMyActivityGeminiAppsUrl[] =
     u"https://support.brave.app/";
 
+// The URL for the AI Mode activity page.
+inline constexpr char16_t kMyActivityAiModeUrl[] =
+    u"https://support.brave.app/";
+
 // Help URL for the Omnibox setting.
 inline constexpr char16_t kOmniboxLearnMoreURL[] =
     u"https://support.brave.app/hc/en-us/articles/"

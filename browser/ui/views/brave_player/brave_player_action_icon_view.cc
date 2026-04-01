@@ -38,7 +38,7 @@ GURL GetPlayerURL(content::WebContents* web_contents) {
       url.has_query()) {
     if (std::string video_id; net::GetValueForKeyInQuery(url, "v", &video_id)) {
       url::RawCanonOutputT<char> encoded_video_id;
-      url::EncodeURIComponent(video_id, &encoded_video_id);
+      url::EncodeUriComponent(video_id, &encoded_video_id);
       return GURL(base::StrCat({brave_player::kBravePlayerURL, "youtube/",
                                 encoded_video_id.view()}));
     }

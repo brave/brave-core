@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <stddef.h>
+
 #include <memory>
 #include <utility>
 
@@ -13,7 +14,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/tabs/tab_renderer_data.h"
+#include "chrome/browser/ui/tabs/tab_data.h"
 #include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -88,7 +89,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
   browser()->profile()->GetPrefs()->SetInteger(brave_tabs::kTabHoverMode,
                                                brave_tabs::TabHoverMode::CARD);
   std::vector<TabStrip::AddTabData> data_list;
-  TabRendererData data;
+  tabs::TabData data;
   data.visible_url = GURL("https://card.com");
   data.title = u"Hello World";
   data_list.push_back({.index = 0, .handle = tabs::TabHandle(0), .data = data});

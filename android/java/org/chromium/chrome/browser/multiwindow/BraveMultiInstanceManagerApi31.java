@@ -16,7 +16,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.tabmodel.TabModelOrchestrator;
 import org.chromium.chrome.browser.app.tabwindow.TabWindowManagerSingleton;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
-import org.chromium.chrome.browser.multiwindow.MultiInstanceManager.NewWindowAppSource;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager.PersistedInstanceType;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -37,7 +36,6 @@ import java.util.function.Supplier;
 class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
 
     private static final String TAG = "MultiInstanceApi31";
-    private int mInstanceId;
     private boolean mIsMoveTabsFromSettings;
 
     BraveMultiInstanceManagerApi31(
@@ -47,7 +45,8 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
             MonotonicObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
             MenuOrKeyboardActionController menuOrKeyboardActionController,
-            Supplier<DesktopWindowStateManager> desktopWindowStateManagerSupplier) {
+            Supplier<DesktopWindowStateManager> desktopWindowStateManagerSupplier,
+            TabReparentingDelegate tabReparentingDelegate) {
         super(
                 activity,
                 tabModelOrchestratorSupplier,
@@ -55,7 +54,8 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
                 activityLifecycleDispatcher,
                 modalDialogManagerSupplier,
                 menuOrKeyboardActionController,
-                desktopWindowStateManagerSupplier);
+                desktopWindowStateManagerSupplier,
+                tabReparentingDelegate);
     }
 
     @Override
@@ -67,17 +67,18 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
     }
 
     @Override
-    public void moveTabsToWindow(
-            InstanceInfo info, List<Tab> tabs, int tabAtIndex, @NewWindowAppSource int source) {
-        super.moveTabsToWindow(info, tabs, tabAtIndex, source);
+    public void moveTabsToWindowByIdChecked(
+            int destWindowId, List<Tab> tabs, int destTabIndex, int destGroupTabId) {
+        super.moveTabsToWindowByIdChecked(destWindowId, tabs, destTabIndex, destGroupTabId);
 
         if (mIsMoveTabsFromSettings && !tabs.isEmpty()) {
             mIsMoveTabsFromSettings = false;
             TabModelSelector selector =
-                    TabWindowManagerSingleton.getInstance().getTabModelSelectorById(mInstanceId);
+                    TabWindowManagerSingleton.getInstance()
+                            .getTabModelSelectorById(getCurrentInstanceId());
             if (selector != null && selector.getTotalTabCount() == 0) {
                 closeWindows(
-                        Collections.singletonList(mInstanceId),
+                        Collections.singletonList(getCurrentInstanceId()),
                         CloseWindowAppSource.NO_TABS_IN_WINDOW);
             }
             if (MultiWindowUtils.getInstanceCountWithFallback(PersistedInstanceType.ACTIVE) == 1) {

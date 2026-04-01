@@ -64,7 +64,6 @@ class TestBraveSiteSettingsHandlerUnittest : public testing::Test {
     // unbind it from the base class before the derived class is destroyed.
     handler_->set_web_ui(nullptr);
     handler_.reset();
-    TestingBrowserProcess::GetGlobal()->TearDownGlobalFeaturesForTesting();
   }
   content::TestWebUI* web_ui() { return &test_web_ui_; }
   PrefService* prefs() { return profile_->GetPrefs(); }

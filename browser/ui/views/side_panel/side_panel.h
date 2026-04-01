@@ -12,9 +12,9 @@
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_multi_source_observation.h"
 #include "build/build_config.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_animation_coordinator.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_animation_ids.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -138,13 +138,11 @@ class SidePanel : public views::View,
   void OnChildViewAdded(View* observed_view, View* child) override;
   void OnChildViewRemoved(View* observed_view, View* child) override;
 
-  // SidePanelAnimationCoordinator::AnimationIdObserver
-  void OnAnimationSequenceProgressed(
-      const SidePanelAnimationCoordinator::SidePanelAnimationId& animation_id,
-      double animation_value) override;
+  // AnimationIdObserver
+  void OnAnimationSequenceProgressed(const SidePanelAnimationId animation_id,
+                                     double animation_value) override;
   void OnAnimationSequenceEnded(
-      const SidePanelAnimationCoordinator::SidePanelAnimationId& animation_id)
-      override;
+      const SidePanelAnimationId animation_id) override;
 
   void OnSidePanelWidthChanged();
 

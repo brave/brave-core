@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PAGE_ACTION_PAGE_ACTION_VIEW_H_
 
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
+#include "ui/views/widget/native_widget_delegate.h"
 
 // Add methods to override the IconLabelBubbleView methods.
 // Also add a friend class for testing.

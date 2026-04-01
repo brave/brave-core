@@ -91,6 +91,10 @@ RegisterStyleOverride(
         background: transparent !important;
       }
 
+      .cr-nav-menu-item:focus {
+        outline: none !important;
+      }
+
       .cr-nav-menu-item cr-ripple {
         display: none !important;
       }

@@ -7,6 +7,7 @@
 
 #include "base/containers/fixed_flat_set.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "components/regional_capabilities/regional_capabilities_utils.h"
 #include "components/search_engines/search_engine_type.h"
 #include "components/search_engines/search_terms_data.h"
 #include "components/search_engines/template_url.h"
@@ -105,7 +106,7 @@ GURL SerpClassifier::NormalizeUrl(const GURL& url) const {
 std::unique_ptr<TemplateURL> SerpClassifier::MaybeGetTemplateUrl(
     const GURL& url) const {
   for (const auto* prepopulated_engine :
-       TemplateURLPrepopulateData::GetAllPrepopulatedEngines()) {
+       regional_capabilities::GetAllPrepopulatedEngines()) {
     if (auto search_engine = MaybeGetTemplateURLForPrepopulatedEngine(
             *prepopulated_engine, url)) {
       return search_engine;

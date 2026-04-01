@@ -227,8 +227,7 @@ bool SharedPinnedTabService::IsDummyContents(
   return !!DummyContentsData::FromWebContents(contents);
 }
 
-const TabRendererData*
-SharedPinnedTabService::GetTabRendererDataForDummyContents(
+const tabs::TabData* SharedPinnedTabService::GetTabDataForDummyContents(
     int index,
     content::WebContents* maybe_dummy_contents) {
   auto* dummy_contents_data =
@@ -304,14 +303,14 @@ void SharedPinnedTabService::OnBrowserSetLastActive(Browser* browser) {
   }
 }
 
-void SharedPinnedTabService::BrowserClosing(TabStripModel* tab_strip_model) {
+bool SharedPinnedTabService::BrowserClosing(TabStripModel* tab_strip_model) {
   DVLOG(2) << __FUNCTION__;
   Browser* browser = tab_strip_model->delegate()
                          ->GetBrowserWindowInterface()
                          ->GetBrowserForMigrationOnly();
   if (!browsers_.contains(browser)) {
     // In case this is called multiple times for the same browser
-    return;
+    return false;
   }
 
   browsers_.erase(browser);
@@ -333,6 +332,7 @@ void SharedPinnedTabService::BrowserClosing(TabStripModel* tab_strip_model) {
         }
       }
     }
+    return false;
   } else {
     CHECK(!profile_will_be_destroyed_);
 
@@ -352,6 +352,7 @@ void SharedPinnedTabService::BrowserClosing(TabStripModel* tab_strip_model) {
         pinned_tab_data.contents_owner_model = nullptr;
       }
     }
+    return tab_strip_model->empty();
   }
 }
 
@@ -405,8 +406,8 @@ void SharedPinnedTabService::OnTabPinnedStateChanged(tabs::TabInterface* tab,
   if (tab_strip_model->IsTabPinned(index)) {
     LOCK_REENTRANCE(tab_strip_model);
     SharedContentsData::CreateForWebContents(contents);
-    auto tab_renderer_data = TabRendererData::FromTabInterface(
-        tab_strip_model->GetTabAtIndex(index));
+    auto tab_renderer_data =
+        tabs::TabData::FromTabInterface(tab_strip_model->GetTabAtIndex(index));
     DCHECK_LE(index, static_cast<int>(pinned_tab_data_.size()));
     pinned_tab_data_.insert(pinned_tab_data_.begin() + index,
                             {.renderer_data = tab_renderer_data,
@@ -442,7 +443,7 @@ void SharedPinnedTabService::OnTabChangedAt(tabs::TabInterface* tab,
 
   LOCK_REENTRANCE(iter->contents_owner_model);
 
-  iter->renderer_data = TabRendererData::FromTabInterface(
+  iter->renderer_data = tabs::TabData::FromTabInterface(
       iter->contents_owner_model->GetTabAtIndex(index));
   for (auto* browser : browsers_) {
     auto* tab_strip_model = browser->tab_strip_model();
@@ -472,7 +473,7 @@ void SharedPinnedTabService::OnTabAdded(
       continue;
     }
 
-    auto tab_renderer_data = TabRendererData::FromTabInterface(
+    auto tab_renderer_data = tabs::TabData::FromTabInterface(
         tab_strip_model->GetTabAtIndex(current_index));
     if (static_cast<int>(pinned_tab_data_.size()) > current_index &&
         pinned_tab_data_.at(current_index).renderer_data.last_committed_url ==
@@ -724,11 +725,10 @@ void SharedPinnedTabService::SynchronizeNewBrowser(Browser* browser) {
   auto* model = browser->tab_strip_model();
   std::vector<PinnedTabData> new_pinned_tabs;
   for (auto i = 0; i < model->IndexOfFirstNonPinnedTab(); i++) {
-    new_pinned_tabs.push_back(
-        {.renderer_data =
-             TabRendererData::FromTabInterface(model->GetTabAtIndex(i)),
-         .shared_contents = model->GetWebContentsAt(i),
-         .contents_owner_model = model});
+    new_pinned_tabs.push_back({.renderer_data = tabs::TabData::FromTabInterface(
+                                   model->GetTabAtIndex(i)),
+                               .shared_contents = model->GetWebContentsAt(i),
+                               .contents_owner_model = model});
   }
 
   if (std::ranges::equal(

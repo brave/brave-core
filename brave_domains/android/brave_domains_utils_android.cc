@@ -24,9 +24,10 @@ constexpr bool IsValidServicesEnvironment(jint environment) {
   return false;
 }
 
-static std::string JNI_BraveDomainsUtils_GetServicesDomain(JNIEnv* env,
-                                                           std::string& prefix,
-                                                           jint environment) {
+static std::string JNI_BraveDomainsUtils_GetServicesDomain(
+    JNIEnv* env,
+    const std::string& prefix,
+    jint environment) {
   // Validate that environment is a valid enum value, if not, default to DEV.
   if (!IsValidServicesEnvironment(environment)) {
     environment = static_cast<jint>(brave_domains::DEV);

@@ -192,6 +192,13 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
     }
 
     @Override
+    protected int getToolbarLayoutHeightResId() {
+        // Return 0dp so ToolbarPositionController does not push web content down by the
+        // toolbar height. The actual toolbar view is hidden in performPostInflationStartup().
+        return R.dimen.full_screen_custom_tabs_control_container_height;
+    }
+
+    @Override
     protected RootUiCoordinator createRootUiCoordinator() {
         mBaseCustomTabRootUiCoordinator =
                 new FullScreenCustomTabRootUiCoordinator(
@@ -205,12 +212,13 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                         getTabModelSelectorSupplier(),
                         getBrowserControlsManager(),
                         getWindowAndroid(),
+                        getActivityResultTracker(),
                         getChromeAndroidTaskSupplier(),
                         getLifecycleDispatcher(),
                         getLayoutManagerSupplier(),
                         /* menuOrKeyboardActionController= */ this,
                         this::getActivityThemeColor,
-                        getModalDialogManagerSupplier(),
+                        getModalDialogManagerSupplier().asNonNull(),
                         /* appMenuBlocker= */ this,
                         this::supportsAppMenu,
                         this::supportsFindInPage,
@@ -218,7 +226,7 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                         getFullscreenManager(),
                         getCompositorViewHolderSupplier(),
                         getTabContentManagerSupplier(),
-                        this::getSnackbarManager,
+                        getSnackbarManagerSupplier(),
                         mEdgeToEdgeControllerSupplier,
                         getActivityType(),
                         this::isInOverviewMode,

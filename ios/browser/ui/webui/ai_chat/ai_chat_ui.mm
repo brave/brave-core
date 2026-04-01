@@ -136,8 +136,7 @@ AIChatUI::~AIChatUI() {
 void AIChatUI::BindInterfaceUIHandler(
     mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver) {
   id<AIChatUIHandlerBridge> bridge =
-      ai_chat::UIHandlerBridgeHolder::GetOrCreateForWebState(
-          web_ui()->GetWebState())
+      ai_chat::UIHandlerBridgeHolder::FromWebState(web_ui()->GetWebState())
           ->bridge();
   web::WebState* chat_context_web_state = nullptr;
   if (BraveWebView* webView = [bridge webViewForAssociatedContent]) {

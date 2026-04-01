@@ -79,7 +79,6 @@ brave_java_resources = [
   "java/res/drawable-xxxhdpi/plus.png",
   "java/res/drawable-xxxhdpi/share_icon.png",
   "java/res/drawable/ic_add_24dp.xml",
-  "java/res/drawable/ic_arrow_down.xml",
   "java/res/drawable/ic_open_in_new.xml",
   "java/res/drawable/ic_timer.xml",
   "java/res/drawable/tab_selector.xml",
@@ -94,6 +93,12 @@ brave_java_resources = [
 # Include the Nala icons from the gen directory.
 brave_java_resources +=
     rebase_path(nala_icons, ".", "$root_gen_dir/brave/android/nala/drawable")
+
+# Include the Nala icon overrides from the gen directory.
+foreach(override, nala_icon_overrides) {
+  brave_java_resources +=
+      [ "$root_gen_dir/brave/android/nala/drawable/${override.dest}" ]
+}
 
 brave_base_module_resources =
     [ "java/res_chromium_base/drawable-night/themed_app_icon.xml" ]

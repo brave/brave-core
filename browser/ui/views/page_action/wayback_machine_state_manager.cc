@@ -14,6 +14,7 @@
 #include "brave/components/brave_wayback_machine/wayback_state.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "ui/views/widget/widget.h"
 
 WaybackMachineStateManager::WaybackMachineStateManager(
     WaybackMachineActionIconView* icon,

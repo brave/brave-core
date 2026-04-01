@@ -6,5 +6,5 @@
 body {
   background: var(--leo-color-container-background);
   color: var(--leo-color-text-primary);
-  margin: 0px;
+  margin: 0;
 }

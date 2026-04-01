@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/compiler_specific.h"
+#include "base/containers/span.h"
 #include "base/files/file.h"
 #include "base/logging.h"
 #include "base/sequence_checker.h"
@@ -195,22 +196,23 @@ bool TorFileWatcher::EatControlCookie(std::vector<uint8_t>& cookie,
 
   // Read up to 33 octets.  We should need no more than 32, so 33 will
   // indicate the file is abnormally large.
-  constexpr size_t kBufSiz = 33;
-  char buf[kBufSiz];
-  int nread = UNSAFE_TODO(cookiefile.ReadAtCurrentPos(buf, kBufSiz));
-  if (nread <= 0) {
+  constexpr size_t kBufSiz = 32;
+  char buf[kBufSiz + 1];
+  std::optional<size_t> nread =
+      cookiefile.ReadAtCurrentPos(base::as_writable_byte_span(buf));
+  if (!nread.has_value() || *nread == 0) {
     VLOG(0) << "tor: failed to read Tor control auth cookie";
     return false;
   }
-  if (nread > 32) {
+  if (*nread > kBufSiz) {
     VLOG(0) << "tor: control auth cookie too large";
     return false;
   }
 
   // Success!
-  cookie.assign(buf, UNSAFE_TODO(buf + nread));
+  cookie.assign(buf, UNSAFE_TODO(buf + *nread));
   mtime = info.last_accessed;
-  VLOG(3) << "Control cookie " << base::HexEncode(buf, nread) << ", mtime "
+  VLOG(3) << "Control cookie " << base::HexEncode(buf, *nread) << ", mtime "
           << mtime;
   return true;
 }
@@ -242,21 +244,22 @@ bool TorFileWatcher::EatControlPort(int& port, base::Time& mtime) {
   // Read up to 27/28 octets, the maximum we will ever need.
   const size_t kBufSiz = sizeof(kControlPortMaxTmpl);
   char buf[kBufSiz];
-  int nread = UNSAFE_TODO(portfile.ReadAtCurrentPos(buf, sizeof buf));
-  if (nread < 0) {
+  std::optional<size_t> nread =
+      portfile.ReadAtCurrentPos(base::as_writable_byte_span(buf));
+  if (!nread.has_value()) {
     VLOG(0) << "tor: failed to read control port";
     return false;
-  } else if (static_cast<size_t>(nread) >= sizeof buf) {
+  } else if (*nread >= sizeof buf) {
     VLOG(0) << "tor: control port too long";
     return false;
   }
 
-  if (static_cast<size_t>(nread) < strlen(kControlPortMinTmpl)) {
+  if (*nread < strlen(kControlPortMinTmpl)) {
     VLOG(0) << "tor: control port truncated";
     return false;
   }
 
-  UNSAFE_TODO(buf[nread]) = '\0';
+  UNSAFE_TODO(buf[*nread]) = '\0';
   std::string text(buf);
 
   // Sanity-check the content.
@@ -275,7 +278,7 @@ bool TorFileWatcher::EatControlPort(int& port, base::Time& mtime) {
 
   // Parse it!
   std::string portstr(text, strlen(expected),
-                      nread - strlen(kLineBreak) - strlen(expected));
+                      *nread - strlen(kLineBreak) - strlen(expected));
   if (!base::StringToInt(portstr, &port)) {
     VLOG(0) << "tor: failed to parse control port: "
             << "`" << portstr << "'";  // XXX escape

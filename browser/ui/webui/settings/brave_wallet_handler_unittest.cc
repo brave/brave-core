@@ -21,6 +21,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
@@ -29,9 +30,11 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_web_ui.h"
@@ -68,6 +71,21 @@ class TestBraveWalletHandler : public BraveWalletHandler {
     TestingProfile::Builder builder;
 
     profile_ = builder.Build();
+
+    // BraveWalletService is nullptr in tests by default, so we have to create
+    // it manually.
+    DCHECK(g_browser_process->local_state());
+    brave_wallet::BraveWalletServiceFactory::GetInstance()->SetTestingFactory(
+        profile_.get(),
+        base::BindLambdaForTesting([&](content::BrowserContext* context)
+                                       -> std::unique_ptr<KeyedService> {
+          return std::make_unique<brave_wallet::BraveWalletService>(
+              url_loader_factory_.GetSafeWeakWrapper(),
+              brave_wallet::BraveWalletServiceDelegate::Create(context),
+              user_prefs::UserPrefs::Get(context),
+              g_browser_process->local_state());
+        }));
+
     web_contents_ = content::WebContents::Create(
         content::WebContents::CreateParams(profile_.get()));
 

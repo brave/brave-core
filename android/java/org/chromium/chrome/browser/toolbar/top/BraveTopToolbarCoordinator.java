@@ -34,6 +34,7 @@ import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.back_button.BackButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.forward_button.ForwardButtonCoordinator;
+import org.chromium.chrome.browser.toolbar.home_button.HomeButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButton;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.optional_button.ButtonDataProvider;
@@ -76,7 +77,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             @Nullable ToggleTabStackButtonCoordinator tabSwitcherButtonCoordinator,
             MonotonicObservableSupplier<Integer> tabCountSupplier,
             NonNullObservableSupplier<Boolean> homepageEnabledSupplier,
-            NonNullObservableSupplier<Boolean> homepageNonNtpSupplier,
             Supplier<ResourceManager> resourceManagerSupplier,
             HistoryDelegate historyDelegate,
             boolean initializeWithIncognitoColors,
@@ -95,7 +95,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             NonNullObservableSupplier<Boolean> toolbarNavControlsEnabledSupplier,
             @Nullable BackButtonCoordinator backButtonCoordinator,
             @Nullable ForwardButtonCoordinator forwardButtonCoordinator,
-            @Nullable HomeButtonDisplay homeButtonDisplay,
+            HomeButtonCoordinator homeButtonCoordinator,
             TopControlsStacker topControlsStacker,
             BrowserControlsVisibilityManager browserControlsVisibilityManager,
             Supplier<Integer> incognitoWindowCountSupplier,
@@ -115,7 +115,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 tabSwitcherButtonCoordinator,
                 tabCountSupplier,
                 homepageEnabledSupplier,
-                homepageNonNtpSupplier,
                 resourceManagerSupplier,
                 historyDelegate,
                 initializeWithIncognitoColors,
@@ -133,7 +132,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 toolbarNavControlsEnabledSupplier,
                 backButtonCoordinator,
                 forwardButtonCoordinator,
-                homeButtonDisplay,
+                homeButtonCoordinator,
                 topControlsStacker,
                 browserControlsVisibilityManager,
                 incognitoWindowCountSupplier,

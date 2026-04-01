@@ -1,10 +1,12 @@
 diff --git a/third_party/blink/renderer/modules/permissions/BUILD.gn b/third_party/blink/renderer/modules/permissions/BUILD.gn
-index 2e4b14e09755ff0194454863c4de36e99a290253..f50482466991dc87a15c829dd728cc09fecc4e07 100644
+index 312a2db74139bdb6ade7dff60030f0655231b37a..db4a4819fd32a76c0982e4c0a03665d2fc441b09 100644
 --- a/third_party/blink/renderer/modules/permissions/BUILD.gn
 +++ b/third_party/blink/renderer/modules/permissions/BUILD.gn
-@@ -15,4 +15,5 @@ blink_modules_sources("permissions") {
+@@ -15,6 +15,7 @@ blink_modules_sources("permissions") {
      "permissions.cc",
      "permissions.h",
    ]
 +  import("//brave/components/brave_wallet/sources.gni") deps = brave_blink_renderer_modules_permissions_deps
  }
+ 
+ source_set("unit_tests") {

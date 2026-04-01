@@ -57,9 +57,7 @@ std::u16string BraveTab::GetRenderedTooltipText(const gfx::Point& p) const {
   auto* browser = controller_->GetBrowserWindowInterface();
   if (browser &&
       brave_tabs::AreTooltipsEnabled(browser->GetProfile()->GetPrefs())) {
-    return Tab::GetTooltipText(
-        data_.title,
-        tabs::TabAlertController::GetAlertStateToShow(data_.alert_state));
+    return Tab::GetTooltipText(data_.title, data_.alert_state);
   }
   return TabSlotView::GetTooltipText();
 }
@@ -276,7 +274,7 @@ bool BraveTab::IsAtMinWidthForVerticalTabStrip() const {
          width() <= tabs::kVerticalTabMinWidth;
 }
 
-void BraveTab::SetData(TabRendererData data) {
+void BraveTab::SetData(tabs::TabData data) {
   const bool data_changed = data != data_;
   Tab::SetData(std::move(data));
 

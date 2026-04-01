@@ -103,7 +103,7 @@ TEST_F(BraveSyncAuthManagerTest, GetAccessToken) {
   const std::string kBraveServerKeyHeaderString = base::StrCat(
       {kBraveServicesKeyHeader, ": ", BUILDFLAG(BRAVE_SERVICES_KEY)});
 
-  ASSERT_EQ(auth_manager->GetCredentials().access_token,
+  ASSERT_EQ(auth_manager->GetCredentials().access_token_info.token,
             base::StrCat({kAccessToken, "\r\n", kBraveServerKeyHeaderString}));
 
   EXPECT_TRUE(auth_manager->GetActiveAccountInfo().is_sync_consented);
@@ -124,7 +124,7 @@ TEST_F(BraveSyncAuthManagerTest, Reset) {
   auth_manager->ConnectionOpened();
 
   auth_manager->ResetKeys();
-  EXPECT_TRUE(auth_manager->GetCredentials().access_token.empty());
+  EXPECT_TRUE(auth_manager->GetCredentials().access_token_info.token.empty());
   EXPECT_FALSE(auth_manager->GetActiveAccountInfo().is_sync_consented);
   EXPECT_TRUE(
       auth_manager->GetActiveAccountInfo().account_info.account_id.empty());

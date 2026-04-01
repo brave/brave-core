@@ -14,7 +14,7 @@ namespace {
 // These template specialisations are required because not all `T`s passed to
 // `IsOnion` have a `Host` method that returns a `String`. Recently,
 // `KURL.Host()` has been converted to return a `StringView`, which doesn't
-// offer an `EndsWith` method.
+// offer an `ends_with` method.
 template <typename T>
 String GetHost(const T& obj) {
   return obj.Host();
@@ -27,7 +27,7 @@ String GetHost(const KURL& obj) {
 
 template <typename T>
 bool IsOnion(const T& obj) {
-  return GetHost(obj).EndsWith(".onion") &&
+  return GetHost(obj).ends_with(".onion") &&
          (obj.Protocol() == url::kHttpsScheme ||
           obj.Protocol() == url::kHttpScheme ||
           obj.Protocol() == url::kWsScheme ||

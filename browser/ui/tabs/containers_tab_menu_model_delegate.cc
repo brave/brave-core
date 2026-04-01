@@ -9,6 +9,7 @@
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/common/features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "content/public/browser/security_principal.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/compositor/compositor.h"
@@ -46,8 +47,9 @@ ContainersTabMenuModelDelegate::GetCurrentContainerIds() {
       continue;
     }
 
-    auto storage_partition_config =
-        contents->GetSiteInstance()->GetStoragePartitionConfig();
+    auto storage_partition_config = contents->GetSiteInstance()
+                                        ->GetSecurityPrincipal()
+                                        .GetStoragePartitionConfig();
     if (!containers::IsContainersStoragePartition(storage_partition_config)) {
       continue;
     }

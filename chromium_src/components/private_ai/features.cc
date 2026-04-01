@@ -5,13 +5,14 @@
 
 #include "base/feature_override.h"
 
-#include <components/history_embeddings/history_embeddings_features.cc>
+#include <components/private_ai/features.cc>
 
-namespace history_embeddings {
+namespace private_ai {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kHistoryEmbeddings, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kHistoryEmbeddingsAnswers, base::FEATURE_DISABLED_BY_DEFAULT},
+#if !BUILDFLAG(IS_ANDROID)
+    {kPrivateAi, base::FEATURE_DISABLED_BY_DEFAULT},
+#endif  // !BUILDFLAG(IS_ANDROID)
 }});
 
-}  // namespace history_embeddings
+}  // namespace private_ai

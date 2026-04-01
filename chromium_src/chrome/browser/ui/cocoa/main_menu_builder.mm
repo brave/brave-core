@@ -33,10 +33,10 @@ constexpr int kShowGoogleLensShortcut = IDC_SHOW_GOOGLE_LENS_SHORTCUT;
 
 // Insert "Report Broken Site" in "Help" menu
 #undef IDS_HELP_MAC
-#define IDS_HELP_MAC                                    \
-  IDS_REPORT_BROKEN_SITE_MAC)                           \
-        .command_id(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER), \
-  Item(kHelpMacResourceId
+#define IDS_HELP_MAC                                     \
+  IDS_REPORT_BROKEN_SITE_MAC)                            \
+        .command_id(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER)); \
+  items.push_back(Item(kHelpMacResourceId
 
 #undef IDS_PASTE_MAC
 #define IDS_PASTE_MAC IDS_COPY_CLEAN_LINK) \

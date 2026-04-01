@@ -32,20 +32,19 @@ export class SettingsBraveContentContainersIconElement extends CrLitElement {
     return 'settings-brave-content-containers-icon'
   }
 
-  static override get properties() {
-    return {
-      icon: { type: Number },
-      backgroundColor: { type: String },
-      selected: { type: Boolean },
-    }
-  }
-
   static override get styles() {
     return getCss()
   }
 
   override render() {
     return getHtml.bind(this)()
+  }
+
+  static override get properties() {
+    return {
+      icon: {type: Number}, backgroundColor: {type: String},
+          selected: {type: Boolean},
+    }
   }
 
   accessor icon: Icon

@@ -54,6 +54,7 @@
 # These tests fail because we stub out
 # optimization_guide::IsUserPermittedToFetchRemoteOptimizationGuide and
 # optimization_guide::features::IsModelDownloadingEnabled
+-All/OnDeviceModelServiceControllerBackgroundDownloadTest.Run/ConfigNotAvailableIfBackgroundDownloadEnabledAndAssetPending
 -All/OnDeviceModelServiceControllerBackgroundDownloadTest.Run/EligibilityReturnsPendingUsageIfModelInstalledForOtherFeature
 -All/OnDeviceModelServiceControllerBackgroundDownloadTest.Run/EligibleIfBackgroundDownloadEnabled
 -HintsManagerFetchingTest.*
@@ -159,6 +160,17 @@
 # These tests fail because the text contains "Google" instead of "Brave" (the
 # string is hard-coded into the test)
 -BnplUtilTest.GetBnplUiFooterTextForAi_AiTerms*
+
+# These tests fail because we disable kAimEnabled.
+-AimEligibilityServiceTest.*
+
+# This test fails because we have a different set of regional search engines.
+-RegionalCapabilitiesUtilsTest.GetPrepopulatedEngines
+
+# This test fails because it uses raw
+# TemplateURLPrepopulateData::kCurrentDataVersion to compare with the version
+# that is overridden to add Brave's version bump.
+-TemplateURLPrepopulateDataUpdateRequirementsTest.ComputeDatabaseUpdateRequirements/UpToDateMetadataWithEngineMigration
 
 # These tests fail because we disable kAimEnabled.
 -AimEligibilityServiceTest.*

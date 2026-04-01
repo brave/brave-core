@@ -63,11 +63,13 @@ content::BrowserContext* BraveWalletServiceFactory::GetBrowserContextToUse(
 }
 
 bool BraveWalletServiceFactory::ServiceIsNULLWhileTesting() const {
-  // KeyringService and BraveWalletP3A expect a valid local state. Without it
-  // we'd need to put a lot of unnecessary ifs/checks into those services.
-  // Instead, we just won't create the wallet service if the local state isn't
-  // available.
-  return (g_browser_process->local_state() == nullptr);
+  // Using BrowserTabStripTracker in BraveWalletServiceDelegate can cause
+  // upstream tests to crash if they don't have the correct order of
+  // creation/destruction of profiles and calls to
+  // SetUpGlobalFeaturesForTesting/TearDownGlobalFeaturesForTesting because
+  // BrowserTabStripTracker relies on global features. By default, make this
+  // service NULL for testing and create it manually in tests when needed.
+  return true;
 }
 
 }  // namespace brave_wallet

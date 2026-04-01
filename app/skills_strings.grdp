@@ -2,21 +2,21 @@
 <!-- Skills specific strings (included from generated_resources.grd). -->
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
-   <message name="IDS_SKILL_SAVED_TOAST_BODY" desc="Text on the toast after a skill is saved" translateable="false">
+   <message name="IDS_SKILL_SAVED_TOAST_BODY" desc="Text on the toast after a skill is saved">
     Saved skill
   </message>
-  <message name="IDS_SKILL_SAVED_TOAST_BUTTON" desc="Text on the toast action button after a skill is saved" translateable="false">
-    Try with Gemini in Brave
-  </message>
-  <message name="IDS_SKILL_DELETED_TOAST_BODY" desc="Text on the toast action button after a skill is saved" translateable="false">
+  <message name="IDS_SKILL_DELETED_TOAST_BODY" desc="Text on the toast action button after a skill is saved">
     Deleted skill
+  </message>
+  <message name="IDS_SKILL_UNDO_TOAST_BUTTON" desc="Text on the toast action button after a user undoes a skill deletion" translateable="false">
+    Undo
   </message>
 
   <!-- a11y strings -->
-  <message name="IDS_SKILL_CARD_ACTION_MENU_LABEL" desc="Accessibility label for button that opens a dropdown on a skill card with options for deleting or copying the text of a skill." translateable="false">
+  <message name="IDS_SKILL_CARD_ACTION_MENU_LABEL" is_accessibility_with_no_ui="true" desc="Accessibility label for button that opens a dropdown on a skill card with options for deleting or copying the text of a skill.">
     Manage your skill
   </message>
-  <message name="IDS_ADD_NEW_SKILL_LABEL" desc="Accessibility label for the add button that opens a dialog allowing users to create a new skill." translateable="false">
+  <message name="IDS_ADD_NEW_SKILL_LABEL" is_accessibility_with_no_ui="true" desc="Accessibility label for the add button that opens a dialog allowing users to create a new skill.">
     Add a new skill
   </message>
 
@@ -122,7 +122,19 @@
   <message name="IDS_SKILLS_DIALOG_REFINE_ERROR" desc="Error message for skill refinement" translateable="false">
     Something went wrong
   </message>
+  <message name="IDS_SKILLS_DIALOG_CHAR_LIMIT_ERROR" desc="Error message for exceeding the max character limit on the instructions field" translateable="false">
+    <ph name="MAX_CHARS">$1<ex>20,000</ex></ph> character limit reached
+  </message>
   <message name="IDS_SKILLS_DIALOG_ACCOUNT_INFO" desc="Text for account info in the skills dialog" translateable="false">
-    This skill will save to your Brave sync chain
+    Your skills get saved to your Brave sync chain,
+  </message>
+  <message name="IDS_SKILLS_DIALOG_SAVE_ERROR" desc="Error message for saving a skill" translateable="false">
+    Unable to save. Try again
+  </message>
+  <message name="IDS_SKILLS_EMOJI_PICKER_SEARCH_PLACEHOLDER" desc="Placeholder text for the search bar in the emoji picker." translateable="false">
+    Search
+  </message>
+  <message name="IDS_SKILLS_EMOJI_PICKER_ARIA_LABEL" desc="Aria label for the emoji picker." translateable="false">
+    Emoji Picker
   </message>
 </grit-part>

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/omnibox/omnibox_edit_model.cc b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
-index b3b8cab34e45976c545a17830377dd324eb42b48..9648d8e6d3367157125fe599da9ff9c110b8f7f0 100644
+index 288909c365d235c2d02e0162890ca0bb3eb708f5..5d35bf75472cbd0cd3037f80ca47083fd9d41445 100644
 --- a/chrome/browser/ui/omnibox/omnibox_edit_model.cc
 +++ b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
-@@ -658,6 +658,7 @@ void OmniboxEditModel::StartAutocomplete(bool has_selected_text,
+@@ -663,6 +663,7 @@ void OmniboxEditModel::StartAutocomplete(bool has_selected_text,
      input_.set_lens_overlay_suggest_inputs(*suggest_inputs);
    }
  
