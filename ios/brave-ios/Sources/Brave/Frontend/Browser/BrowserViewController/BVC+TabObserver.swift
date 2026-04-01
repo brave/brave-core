@@ -167,6 +167,17 @@ extension BrowserViewController: TabObserver {
     updateBackForwardActionStatus(for: tab)
   }
 
+  public func tabDidCommitSameDocumentNavigation(_ tab: some TabState) {
+    tab.browserData?.resetExternalAlertProperties()
+
+    if !Preferences.Privacy.privateBrowsingOnly.value,
+      !tab.isPrivate || Preferences.Privacy.persistentPrivateBrowsing.value
+    {
+      tabManager.preserveScreenshot(for: tab)
+      tabManager.saveTab(tab)
+    }
+  }
+
   public func tabDidFinishNavigation(_ tab: some TabState) {
     if !Preferences.Privacy.privateBrowsingOnly.value
       && (!tab.isPrivate || Preferences.Privacy.persistentPrivateBrowsing.value)
@@ -389,7 +400,6 @@ extension BrowserViewController {
       BraveSearchScriptHandler(profile: profile, rewards: rewards),
       ResourceDownloadScriptHandler(),
       AdsMediaReportingScriptHandler(),
-      ReadyStateScriptHandler(),
       DeAmpScriptHandler(),
       SiteStateListenerScriptHandler(),
       CosmeticFiltersScriptHandler(),

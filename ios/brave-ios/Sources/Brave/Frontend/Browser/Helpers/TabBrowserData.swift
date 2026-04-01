@@ -219,9 +219,6 @@ class TabBrowserData: NSObject, TabObserver {
     return false
   }
 
-  var webStateDebounceTimer: Timer?
-  var onPageReadyStateChanged: ((ReadyState.State) -> Void)?
-
   fileprivate let contentScriptManager = TabContentScriptManager()
   private var userScripts = Set<UserScriptManager.ScriptType>()
   private var customUserScripts = Set<UserScriptType>()

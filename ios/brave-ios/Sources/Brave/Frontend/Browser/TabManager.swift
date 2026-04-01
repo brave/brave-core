@@ -692,34 +692,6 @@ class TabManager: NSObject {
     if flushToDisk && !zombie && isPersistentTab {
       saveTab(tab, saveOrder: true)
     }
-
-    // When the state of the page changes, we debounce a call to save the screenshots and tab information
-    // This fixes pages that have dynamic URL via changing history
-    // as well as regular pages that load DOM normally.
-    tab.onPageReadyStateChanged = { [weak tab] state in
-      guard let tab = tab else { return }
-      tab.webStateDebounceTimer?.invalidate()
-      tab.webStateDebounceTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) {
-        [weak self, weak tab] _ in
-        guard let self = self, let tab = tab else { return }
-        tab.webStateDebounceTimer?.invalidate()
-
-        if state == .complete || state == .loaded || state == .pushstate || state == .popstate
-          || state == .replacestate
-        {
-
-          if Preferences.Privacy.privateBrowsingOnly.value
-            || (tab.isPrivate && !Preferences.Privacy.persistentPrivateBrowsing.value)
-          {
-            return
-          }
-
-          tab.browserData?.resetExternalAlertProperties()
-          self.preserveScreenshot(for: tab)
-          self.saveTab(tab)
-        }
-      }
-    }
   }
 
   func saveAllTabs(synchronously: Bool = false) {
