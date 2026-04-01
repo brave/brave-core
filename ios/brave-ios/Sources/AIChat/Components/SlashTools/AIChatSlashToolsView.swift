@@ -8,7 +8,7 @@ import BraveUI
 import DesignSystem
 import SwiftUI
 
-extension AiChat.ActionGroup: Identifiable {
+extension AiChat.ActionGroup: @retroactive Identifiable {
   public var id: String {
     self.category
   }

@@ -708,7 +708,7 @@ extension BraveWallet.NftMetadata {
   }
 }
 
-extension BraveWallet.NftAttribute: Identifiable {
+extension BraveWallet.NftAttribute: @retroactive Identifiable {
   public var id: String {
     traitType
   }

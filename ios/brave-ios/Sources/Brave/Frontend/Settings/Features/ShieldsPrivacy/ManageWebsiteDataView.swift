@@ -13,7 +13,7 @@ struct ManageWebsiteDataView: View {
   @State private var isLoading: Bool = false
   @State private var dataRecords: [WKWebsiteDataRecord] = []
   @State private var filter: String = ""
-  @State private var selectedRecordsIds: Set<String> = []
+  @State private var selectedRecordDisplayNames: Set<String> = []
   @State private var editMode: EditMode = .inactive
   @Environment(\.presentationMode) @Binding private var presentationMode
 
@@ -27,7 +27,7 @@ struct ManageWebsiteDataView: View {
   }
 
   private func removeRecords(_ records: [WKWebsiteDataRecord]) {
-    let recordIds = records.map(\.id)
+    let recordDisplayNames = records.map(\.displayName)
     WKWebsiteDataStore.default()
       .removeData(
         ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
@@ -37,38 +37,38 @@ struct ManageWebsiteDataView: View {
           if dataRecords.count == records.count {
             dataRecords.removeAll()
           } else {
-            dataRecords.removeAll(where: { recordIds.contains($0.displayName) })
+            dataRecords.removeAll(where: { recordDisplayNames.contains($0.displayName) })
           }
         }
       }
   }
 
-  private func removeRecordsWithIds(_ recordIds: [String]) {
-    let records = dataRecords.filter { recordIds.contains($0.id) }
+  private func removeRecordsWithDisplayNames(_ recordDisplayNames: [String]) {
+    let records = dataRecords.filter { recordDisplayNames.contains($0.displayName) }
     removeRecords(records)
   }
 
   private var isEditMode: Bool {
-    !selectedRecordsIds.isEmpty && editMode == .active
+    !selectedRecordDisplayNames.isEmpty && editMode == .active
   }
 
-  private func visibleSelectedRecordIds(
+  private func visibleSelectedRecordDisplayNames(
     _ visibleRecords: [WKWebsiteDataRecord]
-  ) -> [WKWebsiteDataRecord.ID] {
-    selectedRecordsIds.filter { id in
-      visibleRecords.contains(where: { $0.id == id })
+  ) -> [String] {
+    selectedRecordDisplayNames.filter { displayName in
+      visibleRecords.contains(where: { $0.displayName == displayName })
     }
   }
 
   private func removeButtonTitle(visibleRecords: [WKWebsiteDataRecord]) -> String {
-    let visibleSelectedRecordsIds = visibleSelectedRecordIds(visibleRecords)
+    let visibleSelectedRecords = visibleSelectedRecordDisplayNames(visibleRecords)
     if isEditMode {
-      if visibleSelectedRecordsIds.count == 1 {
+      if visibleSelectedRecords.count == 1 {
         return Strings.removeDataRecord
       }
       return String.localizedStringWithFormat(
         Strings.removeSelectedDataRecord,
-        visibleSelectedRecordsIds.count
+        visibleSelectedRecords.count
       )
     }
     return Strings.removeAllDataRecords
@@ -94,7 +94,7 @@ struct ManageWebsiteDataView: View {
   var body: some View {
     NavigationView {
       let visibleRecords = filteredRecords
-      List(selection: $selectedRecordsIds) {
+      List(selection: $selectedRecordDisplayNames) {
         Section {
           if isLoading {
             HStack {
@@ -102,7 +102,7 @@ struct ManageWebsiteDataView: View {
               Text(Strings.loadingWebsiteData)
             }
           } else {
-            ForEach(visibleRecords) { record in
+            ForEach(visibleRecords, id: \.displayName) { record in
               VStack(alignment: .leading, spacing: 2) {
                 let types = Set(
                   record.dataTypes.compactMap(localizedStringForDataRecordType)
@@ -158,7 +158,7 @@ struct ManageWebsiteDataView: View {
             withAnimation {
               editMode = editMode.isEditing ? .inactive : .active
               if editMode == .inactive {
-                selectedRecordsIds = []
+                selectedRecordDisplayNames = []
               }
             }
           } label: {
@@ -171,9 +171,9 @@ struct ManageWebsiteDataView: View {
           Spacer()
           Button {
             if isEditMode {
-              let idsToRemove = visibleSelectedRecordIds(visibleRecords)
-              removeRecordsWithIds(Array(idsToRemove))
-              selectedRecordsIds = []
+              let recordsToRemove = visibleSelectedRecordDisplayNames(visibleRecords)
+              removeRecordsWithDisplayNames(Array(recordsToRemove))
+              selectedRecordDisplayNames = []
             } else {
               removeRecords(visibleRecords)
             }
@@ -210,11 +210,5 @@ private func localizedStringForDataRecordType(_ type: String) -> String? {
     return Strings.dataRecordDatabases
   default:
     return nil
-  }
-}
-
-extension WKWebsiteDataRecord: Identifiable {
-  public var id: String {
-    displayName
   }
 }
