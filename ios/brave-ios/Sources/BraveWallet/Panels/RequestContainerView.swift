@@ -80,7 +80,7 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
               keyringStore: keyringStore,
               onDismiss: onDismiss
             )
-          case .signSolTransactions(let requests):
+          case .signTransactions(let requests):
             SignTransactionView(
               keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,

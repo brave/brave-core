@@ -7,11 +7,25 @@ import BraveCore
 import DesignSystem
 import SwiftUI
 
+enum SignTransactionRequestItem: Identifiable, Equatable {
+  case solana(BraveWallet.SignSolTransactionsRequest)
+  case cardano(BraveWallet.SignCardanoTransactionRequest)
+
+  var id: Int32 {
+    switch self {
+    case .solana(let request):
+      return request.id
+    case .cardano(let request):
+      return request.id
+    }
+  }
+}
+
 struct SignTransactionView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
 
-  var requests: [BraveWallet.SignSolTransactionsRequest]
+  var requests: [SignTransactionRequestItem]
   var cryptoStore: CryptoStore
   var onDismiss: () -> Void
 
@@ -23,10 +37,17 @@ struct SignTransactionView: View {
   @ScaledMetric private var blockieSize = 54
   private let maxBlockieSize: CGFloat = 108
 
+  private enum ViewMode: Int {
+    case transaction
+    case details
+  }
+
+  @State private var viewMode: ViewMode = .details
+
   init(
     keyringStore: KeyringStore,
     networkStore: NetworkStore,
-    requests: [BraveWallet.SignSolTransactionsRequest],
+    requests: [SignTransactionRequestItem],
     cryptoStore: CryptoStore,
     onDismiss: @escaping () -> Void
   ) {
@@ -38,32 +59,125 @@ struct SignTransactionView: View {
   }
 
   var navigationTitle: String {
-    return currentRequest.txDatas.count > 1
-      ? Strings.Wallet.signAllTransactionsTitle : Strings.Wallet.signTransactionTitle
+    switch currentRequest {
+    case .solana(let signSolTransactionsRequest):
+      return signSolTransactionsRequest.txDatas.count > 1
+        ? Strings.Wallet.signAllTransactionsTitle : Strings.Wallet.signTransactionTitle
+    case .cardano(_):
+      return Strings.Wallet.signTransactionTitle
+    }
   }
 
-  private var currentRequest: BraveWallet.SignSolTransactionsRequest {
+  private var currentRequest: SignTransactionRequestItem {
     requests[txIndex]
   }
 
   private var network: BraveWallet.NetworkInfo? {
-    networkStore.allChains.first(where: { $0.chainId == currentRequest.chainId.chainId })
+    switch currentRequest {
+    case .solana(let signSolTransactionsRequest):
+      return networkStore.allChains.first(
+        where: { $0.chainId == signSolTransactionsRequest.chainId.chainId }
+      )
+    case .cardano(let signCardanoTransactionRequest):
+      return networkStore.allChains.first(
+        where: { $0.chainId == signCardanoTransactionRequest.chainId.chainId }
+      )
+    }
   }
 
   private func instructionsDisplayString() -> String {
-    currentRequest.txDatas
-      .map { $0.instructions }
-      .map { instructionsForOneTx in
-        instructionsForOneTx
-          .map { TransactionParser.parseSolanaInstruction($0).toString }
-          .joined(separator: "\n\n====\n\n")  // separator between each instruction
+    switch currentRequest {
+    case .solana(let signSolTransactionsRequest):
+      return signSolTransactionsRequest.txDatas
+        .map { $0.instructions }
+        .map { instructionsForOneTx in
+          instructionsForOneTx
+            .map { TransactionParser.parseSolanaInstruction($0).toString }
+            .joined(separator: "\n\n====\n\n")  // separator between each instruction
+        }
+        .joined(separator: "\n\n\n\n")  // separator between each transaction
+    case .cardano(let signCardanoTransactionRequest):
+      let inputDetails = signCardanoTransactionRequest.inputs
+        .map { input in
+          var details: [String] = []
+          details.append(
+            "\(Strings.Wallet.inputLabel):\n\(input.outpointTxid):\(input.outpointIndex)"
+          )
+          details.append("\(Strings.Wallet.valueLabel):\n\(input.value)")
+
+          // Add tokens if present
+          for token in input.tokens {
+            details.append(
+              "\(Strings.Wallet.signCardanoTxRequestDetailsTokenLabel):\n\(token.tokenIdHex):\(token.value)"
+            )
+          }
+
+          details.append(
+            "\(Strings.Wallet.signCardanoTxRequestDetailsAddressLabel):\n\(input.address)"
+          )
+
+          return details.joined(separator: "\n\n")
+        }
+        .joined(separator: "\n\n====\n\n")  // separator between each input
+
+      let outputDetails = signCardanoTransactionRequest.outputs
+        .map { output in
+          var details: [String] = []
+          details.append(
+            "\(Strings.Wallet.signCardanoTxRequestDetailsAddressLabel):\n\(output.address)"
+          )
+          details.append("\(Strings.Wallet.valueLabel):\n\(output.value)")
+
+          for token in output.tokens {
+            details.append(
+              "\(Strings.Wallet.signCardanoTxRequestDetailsTokenLabel):\n\(token.tokenIdHex):\(token.value)"
+            )
+          }
+
+          return details.joined(separator: "\n\n")
+        }
+        .joined(separator: "\n\n====\n\n")  // separator between each output
+
+      var sections: [String] = []
+      if !inputDetails.isEmpty {
+        sections.append("==\(Strings.Wallet.inputLabel)==\n\n\(inputDetails)")
       }
-      .joined(separator: "\n\n\n\n")  // separator between each transaction
+      if !outputDetails.isEmpty {
+        sections.append("==\(Strings.Wallet.outputLabel)==\n\n\(outputDetails)")
+      }
+      return sections.joined(separator: "\n\n\n\n")
+    }
   }
 
   private var account: BraveWallet.AccountInfo {
-    keyringStore.allAccounts.first(where: { $0.accountId == currentRequest.fromAccountId })
-      ?? keyringStore.selectedAccount
+    switch currentRequest {
+    case .solana(let signSolTransactionsRequest):
+      return keyringStore.allAccounts.first(
+        where: { $0.accountId == signSolTransactionsRequest.fromAccountId }
+      ) ?? keyringStore.selectedAccount
+    case .cardano(let signCardanoTransactionRequest):
+      return keyringStore.allAccounts.first(
+        where: { $0.accountId == signCardanoTransactionRequest.accountId }
+      ) ?? keyringStore.selectedAccount
+    }
+  }
+
+  private var currentRequestOriginInfo: BraveWallet.OriginInfo {
+    switch currentRequest {
+    case .solana(let signSolTransactionsRequest):
+      return signSolTransactionsRequest.originInfo
+    case .cardano(let signCardanoTransactionRequest):
+      return signCardanoTransactionRequest.originInfo
+    }
+  }
+
+  private var currentRequestId: Int32 {
+    switch currentRequest {
+    case .solana(let signSolTransactionsRequest):
+      return signSolTransactionsRequest.id
+    case .cardano(let signCardanoTransactionRequest):
+      return signCardanoTransactionRequest.id
+    }
   }
 
   var body: some View {
@@ -107,7 +221,7 @@ struct SignTransactionView: View {
             }
             .foregroundColor(Color(.bravePrimary))
             .font(.callout)
-            Text(originInfo: currentRequest.originInfo)
+            Text(originInfo: currentRequestOriginInfo)
               .foregroundColor(Color(.braveLabel))
               .font(.subheadline)
               .multilineTextAlignment(.center)
@@ -123,20 +237,42 @@ struct SignTransactionView: View {
             .padding(.vertical, 12)
             .padding(.horizontal, 20)
         } else {
-          divider
-            .padding(.vertical, 8)
-          VStack(alignment: .leading) {
-            StaticTextView(text: instructionsDisplayString())
+          switch currentRequest {
+          case .solana(_):
+            divider
+              .padding(.vertical, 8)
+            SignTxRequestStaticTextView(text: instructionsDisplayString())
+              .background(
+                Color(.secondaryBraveGroupedBackground),
+                in: .rect(cornerRadius: 10, style: .continuous)
+              )
+          case .cardano(let signCardanoTransactionRequest):
+            // View Mode
+            VStack(spacing: 12) {
+              Picker("", selection: $viewMode) {
+                Text(Strings.Wallet.confirmationViewModeDetails).tag(ViewMode.details)
+                Text(Strings.Wallet.confirmationViewModeTransaction).tag(ViewMode.transaction)
+              }
+              .pickerStyle(SegmentedPickerStyle())
+              Group {
+                switch viewMode {
+                case .transaction:
+                  SignTxRequestStaticTextView(
+                    text: signCardanoTransactionRequest.rawTxData
+                  )
+                case .details:
+                  SignTxRequestStaticTextView(
+                    text: instructionsDisplayString()
+                  )
+                }
+              }
               .frame(maxWidth: .infinity)
-              .frame(height: 200)
-              .background(Color(.tertiaryBraveGroupedBackground))
-              .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
-              .padding()
+              .background(
+                Color(.secondaryBraveGroupedBackground),
+                in: .rect(cornerRadius: 10, style: .continuous)
+              )
+            }
           }
-          .background(
-            Color(.secondaryBraveGroupedBackground)
-          )
-          .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         }
         buttonsContainer
           .padding(.top)
@@ -176,9 +312,16 @@ struct SignTransactionView: View {
     } else {
       cancelButton
       Button {  // approve
-        cryptoStore.handleWebpageRequestResponse(
-          .signSolTransactions(approved: true, id: currentRequest.id)
-        )
+        switch currentRequest {
+        case .solana:
+          cryptoStore.handleWebpageRequestResponse(
+            .signSolTransactions(approved: true, id: currentRequestId)
+          )
+        case .cardano:
+          cryptoStore.handleWebpageRequestResponse(
+            .signCardanoTransactions(approved: true, id: currentRequestId)
+          )
+        }
         if requests.count == 1 {
           onDismiss()
         }
@@ -194,9 +337,16 @@ struct SignTransactionView: View {
 
   @ViewBuilder private var cancelButton: some View {
     Button {  // cancel
-      cryptoStore.handleWebpageRequestResponse(
-        .signSolTransactions(approved: false, id: currentRequest.id)
-      )
+      switch currentRequest {
+      case .solana(_):
+        cryptoStore.handleWebpageRequestResponse(
+          .signSolTransactions(approved: false, id: currentRequestId)
+        )
+      case .cardano(_):
+        cryptoStore.handleWebpageRequestResponse(
+          .signCardanoTransactions(approved: false, id: currentRequestId)
+        )
+      }
       if requests.count == 1 {
         onDismiss()
       }
@@ -256,6 +406,21 @@ struct SignTransactionView: View {
   }
 }
 
+struct SignTxRequestStaticTextView: View {
+  var text: String
+
+  var body: some View {
+    VStack(alignment: .leading) {
+      StaticTextView(text: text)
+        .frame(maxWidth: .infinity)
+        .frame(height: 200)
+        .background(Color(.tertiaryBraveGroupedBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
+    }
+    .padding()
+  }
+}
+
 #if DEBUG
 struct SignTransaction_Previews: PreviewProvider {
   static var previews: some View {
@@ -271,7 +436,7 @@ struct SignTransaction_Previews: PreviewProvider {
           rawMessages: [.init()],
           chainId: BraveWallet.ChainId(coin: .sol, chainId: BraveWallet.SolanaMainnet)
         )
-      ],
+      ].map { .solana($0) },
       cryptoStore: .previewStore,
       onDismiss: {}
     )

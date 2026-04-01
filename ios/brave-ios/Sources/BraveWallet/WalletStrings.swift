@@ -5959,5 +5959,21 @@ extension Strings {
       comment:
         "A button title to confirm an unshield ZEC transaction. It is shown below details about a given transaction."
     )
+    public static let signCardanoTxRequestDetailsTokenLabel = NSLocalizedString(
+      "wallet.signCardanoTxRequestDetailsTokenLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Token",
+      comment:
+        "The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Token index."
+    )
+    public static let signCardanoTxRequestDetailsAddressLabel = NSLocalizedString(
+      "wallet.signCardanoTxRequestDetailsAddressLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Address",
+      comment:
+        "The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Address index."
+    )
   }
 }

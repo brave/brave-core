@@ -18,7 +18,7 @@ enum PendingRequest: Equatable {
   case signMessageError([BraveWallet.SignMessageError])
   case getEncryptionPublicKey(BraveWallet.GetEncryptionPublicKeyRequest)
   case decrypt(BraveWallet.DecryptRequest)
-  case signSolTransactions([BraveWallet.SignSolTransactionsRequest])
+  case signTransactions([SignTransactionRequestItem])
 }
 
 extension PendingRequest: Identifiable {
@@ -40,8 +40,8 @@ extension PendingRequest: Identifiable {
       return "getEncryptionPublicKey-\(request.accountId.uniqueKey)-\(request.requestId)"
     case .decrypt(let request):
       return "decrypt-\(request.accountId.uniqueKey)-\(request.requestId)"
-    case .signSolTransactions(let requests):
-      return "signSolTransactions-\(requests.map(\.id))"
+    case .signTransactions(let requests):
+      return "signTransactions-\(requests.map(\.id))"
     }
   }
 }
@@ -55,6 +55,7 @@ enum WebpageRequestResponse: Equatable {
   case getEncryptionPublicKey(approved: Bool, requestId: String)
   case decrypt(approved: Bool, requestId: String)
   case signSolTransactions(approved: Bool, id: Int32)
+  case signCardanoTransactions(approved: Bool, id: Int32)
 }
 
 public class CryptoStore: ObservableObject, WalletObserverStore {
@@ -770,7 +771,12 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     } else if case let signSolTransactionsRequests =
       await walletService.pendingSignSolTransactionsRequests(), !signSolTransactionsRequests.isEmpty
     {
-      return .signSolTransactions(signSolTransactionsRequests)
+      return .signTransactions(signSolTransactionsRequests.map { .solana($0) })
+    } else if case let signCardanoTransactionRequests =
+      await walletService.pendingSignCardanoTransactionRequests(),
+      !signCardanoTransactionRequests.isEmpty
+    {
+      return .signTransactions(signCardanoTransactionRequests.map { .cardano($0) })
     } else if case let signMessageErrors = await walletService.pendingSignMessageErrors(),
       !signMessageErrors.isEmpty
     {
@@ -867,6 +873,12 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
         approved: approved,
         id: id,
         hwSignatures: [],
+        error: nil
+      )
+    case .signCardanoTransactions(let approved, let id):
+      walletService.notifySignCardanoTransactionRequestProcessed(
+        approved: approved,
+        id: id,
         error: nil
       )
     }
