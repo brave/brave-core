@@ -19,6 +19,12 @@ inline constexpr std::string_view kDeprecatedSerpMetricsTimePeriodStorage =
 inline constexpr std::string_view kLastReportedAt =
     "brave.serp_metrics.last_reported_at";
 
+inline constexpr std::string_view kLastWeeklyReportedAt =
+    "brave.serp_metrics.last_weekly_reported_at";
+
+inline constexpr std::string_view kLastMonthlyReportedAt =
+    "brave.serp_metrics.last_monthly_reported_at";
+
 }  // namespace serp_metrics::prefs
 
 #endif  // BRAVE_COMPONENTS_SERP_METRICS_PREF_NAMES_H_

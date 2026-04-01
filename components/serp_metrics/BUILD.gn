@@ -56,15 +56,33 @@ source_set("test_support") {
 
   public = [
     "test/fake_serp_metrics_time_period_store.h",
-    "test/timezone_test_util.h",
+    "test/serp_metrics_calendar_test_util.h",
+    "test/serp_metrics_test_base.h",
   ]
 
-  sources = [ "test/fake_serp_metrics_time_period_store.cc" ]
+  sources = [
+    "test/fake_serp_metrics_time_period_store.cc",
+    "test/fake_serp_metrics_time_period_store.h",
+    "test/serp_metrics_calendar_test_util.h",
+    "test/serp_metrics_test_base.cc",
+    "test/serp_metrics_test_base.h",
+  ]
+
+  public_deps = [
+    ":features",
+    ":serp_metrics",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/constants",
+    "//brave/components/time_period_storage",
+    "//components/prefs:test_support",
+    "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
+  ]
 
   deps = [
-    "//base",
-    "//brave/components/serp_metrics/time_period_storage",
-    "//testing/gtest",
+    ":prefs",
+    "//components/prefs",
   ]
 }
 
@@ -74,10 +92,9 @@ source_set("unit_tests") {
   sources = [
     "serp_classifier_unittest.cc",
     "serp_classifier_utils_unittest.cc",
-    "serp_metrics_last_reported_at_pref_migration_unittest.cc",
-    "serp_metrics_timezone_unittest.cc",
-    "serp_metrics_travel_unittest.cc",
-    "serp_metrics_unittest.cc",
+    "serp_metrics_daily_unittest.cc",
+    "serp_metrics_monthly_unittest.cc",
+    "serp_metrics_weekly_unittest.cc",
   ]
 
   deps = [

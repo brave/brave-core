@@ -26,12 +26,20 @@ class SerpMetricsTimePeriodStoreFactory;
 
 // `SerpMetrics` records and aggregates search engine usage counts.
 //
-// Counts are exposed for two reporting windows, based on `kLastReportedAt`
-// (i.e., only searches not yet included in the last report):
+// Counts are exposed for six reporting windows:
 //  - Yesterday: searches from the most recent completed calendar day
-//    (00:00:00 to 23:59:59 UTC).
+//    (00:00:00 to 23:59:59 UTC). Only searches not yet reported (based on
+//    the last successful usage ping) are included.
+//  - Last week: searches from the previous complete ISO week
+//    (Monday 00:00:00 to Sunday 23:59:59 UTC).
+//  - Last month: searches from the previous complete calendar month
+//    (first day 00:00:00 to last day 23:59:59 UTC).
 //  - Stale period: searches older than yesterday (but still within the
 //    `TimePeriodStorage` retention window).
+//  - Stale week period: searches older than last week's start (but still
+//    within the `TimePeriodStorage` retention window).
+//  - Stale month period: searches older than last month's start (but still
+//    within the `TimePeriodStorage` retention window).
 
 class SerpMetrics final {
  public:
@@ -46,8 +54,20 @@ class SerpMetrics final {
 
   void RecordSearch(SerpMetricType type);
   size_t GetSearchCountForYesterday(SerpMetricType type) const;
+  size_t GetSearchCountForLastWeek(SerpMetricType type) const;
+  size_t GetSearchCountForLastMonth(SerpMetricType type) const;
 
+  // Returns searches older than yesterday but within the retention window,
+  // summed across all engine types.
   size_t GetSearchCountForStalePeriod() const;
+
+  // Returns searches older than last week's start but within the retention
+  // window, summed across all engine types.
+  size_t GetSearchCountForStaleWeekPeriod() const;
+
+  // Returns searches older than last month's start but within the retention
+  // window, summed across all engine types.
+  size_t GetSearchCountForStaleMonthPeriod() const;
 
   void ClearHistory();
 
@@ -57,12 +77,21 @@ class SerpMetrics final {
   size_t GetSearchCountForTesting(SerpMetricType type) const;
 
  private:
-  // Returns the start of the stale period in UTC, based on the last day
-  // metrics were reported. Searches recorded since that day have not yet been
-  // reported, so the stale period begins at UTC midnight of that day. If the
-  // last reported date is unavailable or invalid, an empty time is returned to
-  // indicate that the full retention period should be considered stale.
-  base::Time GetStartOfStalePeriod() const;
+  // Returns the start of the daily stale period. Reads `kLastReportedAt`
+  // to find when the last daily ping was sent. Returns an empty time if the
+  // pref is unset, treating the full retention window as stale.
+  base::Time GetStartOfStaleDayPeriod() const;
+
+  // Returns the start of the weekly stale period. Reads `kLastWeeklyReportedAt`
+  // to find when the last weekly ping was sent. Returns an empty time if the
+  // pref is unset, treating the full retention window as stale.
+  base::Time GetStartOfStaleWeekPeriod() const;
+
+  // Returns the start of the monthly stale period. Reads
+  // `kLastMonthlyReportedAt` to find when the last monthly ping was sent.
+  // Returns an empty time if the pref is unset, treating the full retention
+  // window as stale.
+  base::Time GetStartOfStaleMonthPeriod() const;
 
   const raw_ref<PrefService> local_state_;
 
