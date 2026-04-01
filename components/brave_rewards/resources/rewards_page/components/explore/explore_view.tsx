@@ -11,6 +11,7 @@ import { useBreakpoint } from '../../lib/breakpoint'
 import { UICard } from '../../lib/app_store'
 import { CardView, sortCards, splitCardsIntoColumns } from './card_view'
 import { useOnVisibleCallback } from '../../../../../common/useVisible'
+import { useAutoScroller } from '../../lib/auto_scroller'
 
 import { style } from './explore_view.style'
 
@@ -30,18 +31,35 @@ export function ExploreView() {
     setElementRef(ref.current)
   }, [])
 
+  const autoScroll = useAutoScroller()
+
   // If a card ID is present in the hash portion of the URL, scroll to that
-  // card.
+  // card. A ResizeObserver re-scrolls if layout shifts (e.g. images loading)
+  // move the target.
   React.useEffect(() => {
     const id = location.hash.replace(/^#/, '')
     if (!id || !cards) {
       return
     }
+
     const elem = ref.current?.querySelector(`[data-deep-link-id=${id}]`)
-    if (elem instanceof HTMLElement) {
-      elem.offsetParent?.scrollTo({ top: elem.offsetTop - 16 })
-      elem.classList.add('deep-link-highlight')
+    if (!(elem instanceof HTMLElement)) {
+      return
     }
+
+    const scrollToTarget = () => {
+      autoScroll(() => {
+        elem.offsetParent?.scrollTo({ top: elem.offsetTop - 16 })
+      })
+    }
+
+    scrollToTarget()
+    elem.classList.add('deep-link-highlight')
+
+    const observer = new ResizeObserver(scrollToTarget)
+    observer.observe(ref.current!)
+
+    return () => observer.disconnect()
   }, [cards])
 
   if (!cards) {
