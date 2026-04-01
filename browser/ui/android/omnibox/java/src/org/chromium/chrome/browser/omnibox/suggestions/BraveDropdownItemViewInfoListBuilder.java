@@ -163,16 +163,17 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
                 viewInfoList
                         .get(viewInfoList.size() - 1)
                         .model
-                        .set(DropdownCommonProperties.BG_BOTTOM_CORNER_ROUNDED, false);
+                        .set(SuggestionCommonProperties.BG_BOTTOM_CORNER_ROUNDED, false);
                 viewInfoList
                         .get(viewInfoList.size() - 1)
                         .model
-                        .set(DropdownCommonProperties.SHOW_DIVIDER, true);
+                        .set(SuggestionCommonProperties.SHOW_DIVIDER, true);
             }
 
-            leoModel.set(DropdownCommonProperties.BG_TOP_CORNER_ROUNDED, viewInfoList.size() == 0);
-            leoModel.set(DropdownCommonProperties.BG_BOTTOM_CORNER_ROUNDED, true);
-            leoModel.set(DropdownCommonProperties.SHOW_DIVIDER, false);
+            leoModel.set(
+                    SuggestionCommonProperties.BG_TOP_CORNER_ROUNDED, viewInfoList.size() == 0);
+            leoModel.set(SuggestionCommonProperties.BG_BOTTOM_CORNER_ROUNDED, true);
+            leoModel.set(SuggestionCommonProperties.SHOW_DIVIDER, false);
 
             viewInfoList.add(
                     tileNavSuggestPosition,
