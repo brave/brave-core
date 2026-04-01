@@ -101,6 +101,7 @@ import { Banners } from '../banners/banners'
 import {
   LastPricesUpdatedTooltip, //
 } from '../../../shared/last_prices_updated_tooltip/last_prices_updated_tooltip'
+import { GettingStarted } from './components/getting_started/getting_started'
 
 // Styled Components
 import {
@@ -548,6 +549,8 @@ export const PortfolioOverview = () => {
     ? percentageChange
     : `+${percentageChange}`
 
+  const hasZeroBalance = fullPortfolioFiatBalance.isZero()
+
   // render
   return (
     <WalletPageWrapper
@@ -572,9 +575,9 @@ export const PortfolioOverview = () => {
             >
               <BalanceAndButtonsWrapper
                 fullWidth={true}
-                padding='40px 32px'
+                hasZeroBalance={hasZeroBalance}
               >
-                <BalanceAndChangeWrapper>
+                <BalanceAndChangeWrapper hasZeroBalance={hasZeroBalance}>
                   {formattedFullPortfolioFiatBalance !== '' ? (
                     <LastPricesUpdatedTooltip>
                       <BalanceText>
@@ -591,7 +594,7 @@ export const PortfolioOverview = () => {
                       />
                     </Column>
                   )}
-                  {!hidePortfolioGraph && (
+                  {!hidePortfolioGraph && !hasZeroBalance && (
                     <Row
                       alignItems='center'
                       justifyContent='center'
@@ -626,19 +629,23 @@ export const PortfolioOverview = () => {
                     </Row>
                   )}
                 </BalanceAndChangeWrapper>
-                <BuySendSwapDepositNav />
+                {!hasZeroBalance && <BuySendSwapDepositNav />}
               </BalanceAndButtonsWrapper>
-              <ColumnReveal hideContent={hidePortfolioGraph}>
-                <PortfolioOverviewChart
-                  timeframe={selectedTimeframe}
-                  onTimeframeChanged={setSelectedTimeframe}
-                  hasZeroBalance={fullPortfolioFiatBalance.isZero()}
-                  portfolioPriceHistory={portfolioPriceHistory}
-                  isLoading={
-                    isFetchingPortfolioPriceHistory || !portfolioPriceHistory
-                  }
-                />
-              </ColumnReveal>
+              {hasZeroBalance ? (
+                <GettingStarted />
+              ) : (
+                <ColumnReveal hideContent={hidePortfolioGraph}>
+                  <PortfolioOverviewChart
+                    timeframe={selectedTimeframe}
+                    onTimeframeChanged={setSelectedTimeframe}
+                    hasZeroBalance={fullPortfolioFiatBalance.isZero()}
+                    portfolioPriceHistory={portfolioPriceHistory}
+                    isLoading={
+                      isFetchingPortfolioPriceHistory || !portfolioPriceHistory
+                    }
+                  />
+                </ColumnReveal>
+              )}
             </BalanceAndLineChartWrapper>
             <ControlsRow>
               <SegmentedControl

@@ -967,6 +967,9 @@
   <message name="IDS_BRAVE_WALLET_DEPOSIT_ONLY_SEND_ON_X_NETWORK" desc="Warning to only send tokens to a address via a specific network">Only send tokens to this address on <ph name="VALUE">$1</ph></message>
   <message name="IDS_BRAVE_WALLET_PERKS_TOKENS" desc="Description of how the wallet allows access to many crypto tokens">Buy, send, and swap 200+ crypto assets</message>
   <message name="IDS_BRAVE_WALLET_PERKS_BROWSER_NATIVE" desc="Description of how the wallet is browser-native">Browser-native, no risky extensions</message>
+  <message name="IDS_BRAVE_WALLET_LETS_GET_STARTED" desc="Title for getting started screen">Let's get started</message>
+  <message name="IDS_BRAVE_WALLET_LETS_GET_STARTED_BUY_CRYPTO_DESCRIPTION" desc="Description for getting started buying crypto card">Buy your first crypto with a credit or debit card</message>
+  <message name="IDS_BRAVE_WALLET_LETS_GET_STARTED_DEPOSIT_CRYPTO_DESCRIPTION" desc="Description for getting started depositing crypto card">Deposit crypto from another wallet or exchange</message>
   <message name="IDS_BRAVE_WALLET_MULTI_CHAIN" desc="Description of how the wallet allows access to multiple blockchains">Multi-chain &amp; NFT support</message>
   <message name="IDS_BRAVE_WALLET_CLICK_TO_SWITCH" desc="Action text for switching selection">Click to switch</message>
   <message name="IDS_BRAVE_WALLET_ORDINAL_TWELFTH" desc="Twelfth list item ordinal">Twelfth</message>
