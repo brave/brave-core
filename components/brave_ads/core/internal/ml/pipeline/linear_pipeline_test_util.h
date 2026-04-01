@@ -35,7 +35,7 @@ class LinearPipelineBufferBuilder final {
       int bucket_count,
       const std::vector<uint32_t>& subgrams);
 
-  std::string Build(const std::string& language);
+  std::string Build(std::string_view language);
 
  private:
   flatbuffers::FlatBufferBuilder builder_;

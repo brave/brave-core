@@ -10,15 +10,15 @@
 
 #include <vector>
 
+#include "base/containers/span.h"
 
 namespace importer {
 
 // Given raw image data, decodes the icon, re-sampling to the correct size as
 // necessary, and re-encodes as PNG data in the given output vector. Returns
 // true on success.
-bool ReencodeFavicon(const unsigned char* src_data,
-                     size_t src_len,
-                     std::vector<unsigned char>* png_data);
+bool ReencodeFavicon(base::span<const uint8_t> src,
+                     std::vector<unsigned char>& png_data);
 
 }  // namespace importer
 
