@@ -173,7 +173,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kPrivacySandboxAdsAPIsM1Override,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kPwaNavigationCapturing,
-      &features::kReportPakFileIntegrity,
 #endif
       &features::kSCTAuditingHashdance,
       &features::kServiceWorkerAutoPreload,
