@@ -39,7 +39,11 @@ enum RegisterErrorCode {
 };
 
 struct RegisterError {
-  uint32? statusCode;
+  // null: client-side error
+  // < 0: network error code (net_error_list.h)
+  // >= 0: HTTP status code (http_status_code_list.h) if available,
+  //       otherwise net::OK
+  int32? netErrorOrHttpStatus;
   RegisterErrorCode? errorCode;
 };
 
@@ -81,7 +85,11 @@ enum LoginErrorCode {
 };
 
 struct LoginError {
-  uint32? statusCode;
+  // null: client-side error
+  // < 0: network error code (net_error_list.h)
+  // >= 0: HTTP status code (http_status_code_list.h) if available,
+  //       otherwise net::OK
+  int32? netErrorOrHttpStatus;
   LoginErrorCode? errorCode;
 };
 

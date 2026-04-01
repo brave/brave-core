@@ -273,7 +273,13 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
 
         return mFragment
                 .getString(R.string.brave_account_server_error)
-                .replace("$1", String.valueOf(error.netErrorOrHttpStatus))
+                .replace(
+                        "$1",
+                        String.format(
+                                Locale.ROOT,
+                                "%s=%d",
+                                error.netErrorOrHttpStatus > 0 ? "HTTP" : "NET",
+                                error.netErrorOrHttpStatus))
                 .replace(
                         "$2",
                         error.errorCode != null

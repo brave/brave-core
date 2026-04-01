@@ -34,15 +34,15 @@ const REGISTER_ERROR_STRINGS: Partial<Record<RegisterErrorCode, string>> = {
 
 function getErrorMessage<T extends LoginErrorCode | RegisterErrorCode>(
   errorStrings: Partial<Record<T, string>>,
-  details: { statusCode: number | null; errorCode: T | null },
+  details: { netErrorOrHttpStatus: number | null; errorCode: T | null },
 ): string {
-  const { statusCode, errorCode } = details
+  const { netErrorOrHttpStatus, errorCode } = details
 
   const errorLabel = loadTimeData.getString(
     BraveAccountStrings.BRAVE_ACCOUNT_ERROR,
   )
 
-  if (statusCode == null) {
+  if (netErrorOrHttpStatus == null) {
     // client-side error
     return loadTimeData.getStringF(
       BraveAccountStrings.BRAVE_ACCOUNT_CLIENT_ERROR,
@@ -60,7 +60,7 @@ function getErrorMessage<T extends LoginErrorCode | RegisterErrorCode>(
     specificErrorMessage
     ?? loadTimeData.getStringF(
       BraveAccountStrings.BRAVE_ACCOUNT_SERVER_ERROR,
-      statusCode,
+      `${netErrorOrHttpStatus > 0 ? 'HTTP' : 'NET'}=${netErrorOrHttpStatus}`,
       errorCode != null ? `, ${errorLabel}=${errorCode}` : '',
     )
   )
