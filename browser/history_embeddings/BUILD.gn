@@ -1,0 +1,54 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+if (!is_android) {
+  source_set("unit_tests") {
+    testonly = true
+
+    sources = [ "brave_page_content_extraction_tab_helper_unittest.cc" ]
+
+    deps = [
+      ":history_embeddings",
+      "//base/test:test_support",
+      "//chrome/browser",
+      "//chrome/test:test_support",
+      "//components/optimization_guide/proto:optimization_guide_proto",
+      "//components/os_crypt/async/browser",
+      "//components/page_content_annotations/content",
+      "//components/tabs:test_support",
+      "//content/test:test_support",
+      "//testing/gtest",
+    ]
+  }
+}
+
+source_set("history_embeddings") {
+  if (!is_android) {
+    sources = [
+      "brave_page_content_extraction_service.h",
+      "brave_page_content_extraction_tab_helper.cc",
+      "brave_page_content_extraction_tab_helper.h",
+    ]
+
+    public_deps = [ "//chrome/browser/ui/tabs" ]
+
+    deps = [
+      "//components/history_embeddings/core",
+      "//components/optimization_guide/content/browser",
+      "//components/optimization_guide/proto:optimization_guide_proto",
+      "//components/page_content_annotations/content",
+      "//components/page_content_annotations/core",
+      "//content/public/browser",
+      "//services/service_manager/public/cpp",
+      "//ui/base",
+    ]
+  }
+
+  public_deps += [
+    "//base",
+    "//chrome/browser/profiles",
+    "//mojo/public/cpp/bindings",
+  ]
+}

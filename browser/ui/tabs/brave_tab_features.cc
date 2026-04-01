@@ -11,11 +11,15 @@
 #include "base/check.h"
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
+#include "brave/browser/history_embeddings/brave_page_content_extraction_service.h"
+#include "brave/browser/history_embeddings/brave_page_content_extraction_tab_helper.h"
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "chrome/browser/page_content_annotations/page_content_extraction_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
+#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/tabs/public/tab_interface.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -90,6 +94,17 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
     }
   }
 #endif
+
+  if (base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
+    if (auto* extraction_service =
+            static_cast<BravePageContentExtractionService*>(
+                page_content_annotations::PageContentExtractionServiceFactory::
+                    GetForProfile(profile))) {
+      page_content_extraction_tab_helper_ =
+          std::make_unique<BravePageContentExtractionTabHelper>(
+              tab, extraction_service);
+    }
+  }
 }
 
 }  // namespace tabs

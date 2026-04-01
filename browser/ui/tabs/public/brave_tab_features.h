@@ -13,6 +13,7 @@
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 
+class BravePageContentExtractionTabHelper;
 class Profile;
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -66,6 +67,8 @@ class BraveTabFeatures : public TabFeatures {
   std::unique_ptr<page_actions::PartitionedStoragePageActionController>
       partitioned_storage_page_action_controller_;
 #endif
+  std::unique_ptr<BravePageContentExtractionTabHelper>
+      page_content_extraction_tab_helper_;
 };
 
 }  // namespace tabs

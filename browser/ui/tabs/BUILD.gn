@@ -33,14 +33,17 @@ if (!is_android) {
 
     deps = [
       ":tabs_public",
+      "//brave/browser/history_embeddings",
       "//brave/browser/psst",
       "//brave/browser/ui/side_panel",
       "//brave/browser/ui/views/page_action",
       "//brave/components/psst/browser/content",
       "//brave/components/psst/common",
       "//chrome/browser/content_settings:content_settings_factory",
+      "//chrome/browser/page_content_annotations",
       "//chrome/browser/profiles",
       "//chrome/browser/ui/tabs:impl",
+      "//components/history_embeddings/core",
     ]
 
     if (enable_ai_chat) {
