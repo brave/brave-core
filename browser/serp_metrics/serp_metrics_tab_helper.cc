@@ -12,6 +12,7 @@
 #include "brave/browser/serp_metrics/serp_metrics_service_factory.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/serp_metrics/serp_classifier.h"
+#include "brave/components/serp_metrics/serp_classifier_utils.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
@@ -76,6 +77,13 @@ void SerpMetricsTabHelper::MaybeClassifyAndRecordSearchEngineForUrl(
   std::optional<SearchEngineType> search_engine_type =
       MaybeClassifySearchEngine(url);
   if (!search_engine_type) {
+    return;
+  }
+
+  if (search_engine_type == SEARCH_ENGINE_GOOGLE && !IsGoogleWebSearch(url)) {
+    // Only web searches count toward Google metrics. Vertical searches
+    // (`tbm` for images, news, video, etc. or a non-zero `udm` for shopping
+    // etc.) are excluded.
     return;
   }
 

@@ -8,10 +8,18 @@
 
 #include "components/search_engines/search_engine_type.h"
 
+class GURL;
+
 namespace serp_metrics {
 
 // Returns `true` if the search engine type is allowed to be classified.
 bool IsAllowedSearchEngine(SearchEngineType type);
+
+// Returns `true` if `url` is a Google web search. Returns `false` if `tbm` is
+// present (a vertical search such as images, news, or video) or `udm` is
+// present with a non-zero value (a vertical such as shopping). `udm=0` and
+// `udm=28` are both treated as web searches.
+bool IsGoogleWebSearch(const GURL& url);
 
 }  // namespace serp_metrics
 
