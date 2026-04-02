@@ -263,34 +263,42 @@ TabAccentColors GetTabAccentColors(const TabAccentColorsParams& params,
   switch (params.container_color) {
     case SkColorSetRGB(0xB7, 0x4D, 0x49):  // kColorPrimitiveRed50:26/03/03
     case SkColorSetRGB(0xE0, 0x5F, 0x59):  // kColorPrimitiveRed60:26/03/21
+    case SkColorSetRGB(0xFF, 0x3C, 0x36):  // kColorPrimitiveRed60:26/04/02
       key = kRed;
       break;
     case SkColorSetRGB(0xB2, 0x54, 0x2E):  // kColorPrimitiveOrange50:26/03/03
     case SkColorSetRGB(0xD9, 0x67, 0x38):  // kColorPrimitiveOrange60:26/03/21
+    case SkColorSetRGB(0xF4, 0x52, 0x02):  // kColorPrimitiveOrange60:26/04/02
       key = kOrange;
       break;
     case SkColorSetRGB(0x8E, 0x67, 0x02):  // kColorPrimitiveYellow50:26/03/03
     case SkColorSetRGB(0xAD, 0x7E, 0x08):  // kColorPrimitiveYellow60:26/03/21
+    case SkColorSetRGB(0xB0, 0x8C, 0x00):  // kColorPrimitiveYellow60:26/04/02
       key = kYellow;
       break;
     case SkColorSetRGB(0x1F, 0x7E, 0x48):  // kColorPrimitiveGreen50:26/03/03
     case SkColorSetRGB(0x27, 0x9A, 0x58):  // kColorPrimitiveGreen60:26/03/21
+    case SkColorSetRGB(0x2F, 0xAB, 0x5F):  // kColorPrimitiveGreen60:26/04/02
       key = kGreen;
       break;
     case SkColorSetRGB(0x00, 0x7B, 0x92):  // kColorPrimitiveTeal50:26/03/03
     case SkColorSetRGB(0x00, 0x96, 0xB1):  // kColorPrimitiveTeal60:26/03/21
+    case SkColorSetRGB(0x35, 0xA0, 0xB4):  // kColorPrimitiveTeal60:26/04/02
       key = kTeal;
       break;
     case SkColorSetRGB(0x36, 0x6E, 0xB8):  // kColorPrimitiveBlue50:26/03/03
     case SkColorSetRGB(0x43, 0x86, 0xE0):  // kColorPrimitiveBlue60:26/03/21
+    case SkColorSetRGB(0x48, 0x8C, 0xFF):  // kColorPrimitiveBlue60:26/04/02
       key = kBlue;
       break;
     case SkColorSetRGB(0x7C, 0x5D, 0xAF):  // kColorPrimitivePurple50:26/03/03
     case SkColorSetRGB(0x96, 0x71, 0xD4):  // kColorPrimitivePurple60:26/03/21
+    case SkColorSetRGB(0x99, 0x73, 0xF8):  // kColorPrimitivePurple60:26/04/02
       key = kPurple;
       break;
     case SkColorSetRGB(0xB2, 0x4D, 0x71):  // kColorPrimitivePink50:26/03/03
     case SkColorSetRGB(0xD8, 0x5E, 0x8A):  // kColorPrimitivePink60:26/03/21
+    case SkColorSetRGB(0xFF, 0x15, 0x93):  // kColorPrimitivePink60:26/04/02
       key = kPink;
       break;
     default:
