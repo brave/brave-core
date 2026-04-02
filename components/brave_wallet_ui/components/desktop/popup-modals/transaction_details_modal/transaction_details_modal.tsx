@@ -71,6 +71,7 @@ import {
   getAccountLabel,
 } from '../../../../utils/account-utils'
 import { makeNetworkAsset } from '../../../../options/asset-options'
+import { openTab } from '../../../../utils/routes-utils'
 
 // Components
 import { PopupModal } from '../../popup-modals/index'
@@ -701,12 +702,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                   <Button
                     onClick={
                       swapStatus?.explorerUrl
-                        ? () =>
-                            window.open(
-                              swapStatus.explorerUrl,
-                              '_blank',
-                              'noreferrer',
-                            )
+                        ? () => openTab(swapStatus.explorerUrl)
                         : onClickViewOnBlockExplorer(
                             transaction.swapInfo?.provider
                               === BraveWallet.SwapProvider.kLiFi
