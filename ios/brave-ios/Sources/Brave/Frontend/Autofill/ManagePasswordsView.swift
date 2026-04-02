@@ -135,8 +135,6 @@ struct ManagePasswordsView: View {
       if privacyLock.isLocked { Color(.braveGroupedBackground).ignoresSafeArea() }
     }
     .environment(\.redactionReasons, effectiveRedactionReasons)
-    .toolbarBackground(.visible, for: .navigationBar)
-    .toolbarBackground(Color(.braveGroupedBackground), for: .navigationBar)
     .navigationTitle(Strings.Autofill.managePasswordsTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {

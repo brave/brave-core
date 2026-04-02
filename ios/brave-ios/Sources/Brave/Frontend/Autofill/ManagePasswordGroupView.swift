@@ -63,7 +63,6 @@ struct ManagePasswordGroupView: View {
     .background((Color(.braveGroupedBackground)))
     .navigationTitle(redactionReasons.contains(.privacy) ? "" : domain)
     .navigationBarTitleDisplayMode(.inline)
-    .toolbarBackground(.visible, for: .navigationBar)
     .toolbar {
       if !redactionReasons.contains(.privacy) {
         ToolbarItem(placement: .topBarTrailing) {

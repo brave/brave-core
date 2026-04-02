@@ -117,7 +117,6 @@ struct ManagePasswordDetailView: View {
     .accessibility(hidden: redactionReasons.contains(.privacy) ? true : false)
     .navigationTitle(redactionReasons.contains(.privacy) ? "" : navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
-    .toolbarBackground(.visible, for: .navigationBar)
     .overlay {
       if redactionReasons.contains(.privacy) { Color(.braveGroupedBackground).ignoresSafeArea() }
     }
