@@ -7,7 +7,6 @@ static_library("serp_metrics") {
   public = [
     "serp_metrics_all_profiles_aggregator.h",
     "serp_metrics_migration.h",
-    "serp_metrics_service.h",
     "serp_metrics_service_factory.h",
     "serp_metrics_tab_helper.h",
     "serp_metrics_time_period_store.h",
@@ -17,7 +16,6 @@ static_library("serp_metrics") {
   sources = [
     "serp_metrics_all_profiles_aggregator.cc",
     "serp_metrics_migration.cc",
-    "serp_metrics_service.cc",
     "serp_metrics_tab_helper.cc",
     "serp_metrics_time_period_store.cc",
     "serp_metrics_time_period_store_factory.cc",
@@ -28,7 +26,6 @@ static_library("serp_metrics") {
     "//brave/components/serp_metrics",
     "//brave/components/time_period_storage",
     "//chrome/browser/profiles:profile",
-    "//components/keyed_service/core",
     "//components/search_engines",
     "//content/public/browser",
   ]
@@ -40,6 +37,7 @@ static_library("serp_metrics") {
     "//brave/components/serp_metrics:prefs",
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profile_util",
+    "//components/keyed_service/core",
     "//components/prefs",
     "//ui/base",
     "//url",
