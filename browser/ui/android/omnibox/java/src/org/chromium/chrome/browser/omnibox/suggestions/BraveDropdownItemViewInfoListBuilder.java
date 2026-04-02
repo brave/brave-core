@@ -29,6 +29,7 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.omnibox.AutocompleteInput;
 import org.chromium.components.omnibox.AutocompleteResult;
 import org.chromium.components.omnibox.GroupsProto.GroupConfig;
+import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.omnibox.suggestions.OmniboxSuggestionUiType;
 import org.chromium.ui.modelutil.PropertyModel;
 
@@ -66,9 +67,12 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
 
     @Override
     void initDefaultProcessors(
-            Context context, SuggestionHost host, UrlBarEditingTextStateProvider textProvider) {
+            Context context,
+            SuggestionHost host,
+            UrlBarEditingTextStateProvider textProvider,
+            OmniboxActionDelegate actionDelegate) {
         mUrlBarEditingTextProvider = textProvider;
-        super.initDefaultProcessors(context, host, textProvider);
+        super.initDefaultProcessors(context, host, textProvider, actionDelegate);
         if (host instanceof BraveSuggestionHost) {
             mBraveSearchBannerProcessor =
                     new BraveSearchBannerProcessor(
@@ -76,7 +80,8 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
                             (BraveSuggestionHost) host,
                             textProvider,
                             mAutocompleteDelegate);
-            AutocompleteUIContext uiContext = createUIContext(context, host, textProvider);
+            AutocompleteUIContext uiContext =
+                    createUIContext(context, host, textProvider, actionDelegate);
             mBraveLeoSuggestionProcessor = new BraveLeoSuggestionProcessor(uiContext);
             mBraveLeoSuggestionProcessor.setBraveLeoAutocompleteDelegate(mLeoAutocompleteDelegate);
         }
@@ -229,7 +234,10 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
 
     @SuppressWarnings("UnusedVariable")
     private AutocompleteUIContext createUIContext(
-            Context context, SuggestionHost host, UrlBarEditingTextStateProvider textProvider) {
+            Context context,
+            SuggestionHost host,
+            UrlBarEditingTextStateProvider textProvider,
+            OmniboxActionDelegate actionDelegate) {
         assert false
                 : "This method will be deleted in bytecode. Method from the parent class will be"
                         + " used instead.";
