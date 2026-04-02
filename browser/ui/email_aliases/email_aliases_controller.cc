@@ -25,7 +25,7 @@ namespace {
 inline constexpr char kEmailAliasesPanelURL[] = "chrome://email-aliases.panel/";
 
 constexpr char kEmailAliasesSettingsURL[] = "brave://settings/email-aliases";
-constexpr int kDialogWidth = 420;
+constexpr int kDialogWidth = 512;
 constexpr gfx::Size kDialogMinSize(kDialogWidth, 336);
 constexpr gfx::Size kDialogMaxSize(kDialogWidth, 794);
 
