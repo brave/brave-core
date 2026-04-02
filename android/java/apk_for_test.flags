@@ -73,6 +73,14 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.ntp.NewTabPageCoordinator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.ntp.BraveNewTabPageCoordinator {
+    public <init>(...);
+}
+
 -keep class org.chromium.chrome.browser.ntp.IncognitoNewTabPage {
     public <init>(...);
 }

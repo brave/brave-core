@@ -40,6 +40,9 @@ public class BraveNewTabPageCoordinator extends NewTabPageCoordinator {
     private final BraveNewTabPageLayout mBraveNewTabPageLayout;
     private final NewTabPageManager mNewTabPageManager;
 
+    private final Profile mProfile;
+    private final WindowAndroid mWindowAndroid;
+
     public BraveNewTabPageCoordinator(
             NewTabPageManager manager,
             Activity activity,
@@ -47,6 +50,14 @@ public class BraveNewTabPageCoordinator extends NewTabPageCoordinator {
             Tab tab,
             TabModelSelector tabModelSelector,
             OneshotSupplier<ModuleRegistry> moduleRegistrySupplier,
+            Profile profile,
+            WindowAndroid windowAndroid,
+            ActivityResultTracker activityResultTracker,
+            BottomSheetController bottomSheetController,
+            ModalDialogManager modalDialogManager,
+            SnackbarManager snackbarManager,
+            boolean isTablet,
+            Supplier<Integer> tabStripHeightSupplier,
             @Nullable HomeSurfaceTracker homeSurfaceTracker) {
         super(
                 manager,
@@ -55,6 +66,14 @@ public class BraveNewTabPageCoordinator extends NewTabPageCoordinator {
                 tab,
                 tabModelSelector,
                 moduleRegistrySupplier,
+                profile,
+                windowAndroid,
+                activityResultTracker,
+                bottomSheetController,
+                modalDialogManager,
+                snackbarManager,
+                isTablet,
+                tabStripHeightSupplier,
                 homeSurfaceTracker);
 
         mNewTabPageManager = manager;
@@ -64,6 +83,9 @@ public class BraveNewTabPageCoordinator extends NewTabPageCoordinator {
 
         assert (newTabPageLayout instanceof BraveNewTabPageLayout);
         mBraveNewTabPageLayout = (BraveNewTabPageLayout) newTabPageLayout;
+
+        mProfile = profile;
+        mWindowAndroid = windowAndroid;
     }
 
     @Override
@@ -76,14 +98,6 @@ public class BraveNewTabPageCoordinator extends NewTabPageCoordinator {
             TouchEnabledDelegate touchEnabledDelegate,
             UiConfig uiConfig,
             ActivityLifecycleDispatcher lifecycleDispatcher,
-            Profile profile,
-            WindowAndroid windowAndroid,
-            ActivityResultTracker activityResultTracker,
-            BottomSheetController bottomSheetController,
-            ModalDialogManager modalDialogManager,
-            SnackbarManager snackbarManager,
-            boolean isTablet,
-            Supplier<Integer> tabStripHeightSupplier,
             Supplier<GURL> composeplateUrlSupplier) {
         super.initialize(
                 tileGroupDelegate,
@@ -93,16 +107,8 @@ public class BraveNewTabPageCoordinator extends NewTabPageCoordinator {
                 touchEnabledDelegate,
                 uiConfig,
                 lifecycleDispatcher,
-                profile,
-                windowAndroid,
-                activityResultTracker,
-                bottomSheetController,
-                modalDialogManager,
-                snackbarManager,
-                isTablet,
-                tabStripHeightSupplier,
                 composeplateUrlSupplier);
 
-        mBraveNewTabPageLayout.initialize(mNewTabPageManager, mActivity, profile, windowAndroid);
+        mBraveNewTabPageLayout.initialize(mNewTabPageManager, mActivity, mProfile, mWindowAndroid);
     }
 }

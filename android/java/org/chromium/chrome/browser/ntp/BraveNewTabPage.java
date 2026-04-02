@@ -9,7 +9,6 @@ import static org.chromium.build.NullUtil.assertNonNull;
 import static org.chromium.build.NullUtil.assumeNonNull;
 
 import android.app.Activity;
-import android.view.LayoutInflater;
 
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
@@ -66,8 +65,8 @@ public class BraveNewTabPage extends NewTabPage implements NewTabPage.MostVisite
     private @Nullable FeedSurfaceProvider mFeedSurfaceProvider;
 
     private @Nullable Supplier<Toolbar> mToolbarSupplier;
-    private @Nullable BottomSheetController mBottomSheetController;
-    private @Nullable NonNullObservableSupplier<Integer> mTabStripHeightSupplier;
+    private final BottomSheetController mBottomSheetController;
+    private final NonNullObservableSupplier<Integer> mTabStripHeightSupplier;
 
     private final Activity mActivity;
 
@@ -123,6 +122,8 @@ public class BraveNewTabPage extends NewTabPage implements NewTabPage.MostVisite
                 startupMetricsTracker);
 
         mActivity = activity;
+        mBottomSheetController = bottomSheetController;
+        mTabStripHeightSupplier = tabStripHeightSupplier;
 
         assertNonNull(mNewTabPageLayout);
         assert mNewTabPageLayout instanceof BraveNewTabPageLayout;
@@ -167,8 +168,8 @@ public class BraveNewTabPage extends NewTabPage implements NewTabPage.MostVisite
     }
 
     @Override
-    @EnsuresNonNull({"mNewTabPageLayout", "mNewTabPageCoordinator", "mFeedSurfaceProvider"})
-    protected void initializeMainView(
+    @EnsuresNonNull({"mFeedSurfaceProvider"})
+    protected void initializeFeedSurfaceProvider(
             Activity activity,
             WindowAndroid windowAndroid,
             ActivityResultTracker activityResultTracker,
@@ -180,23 +181,13 @@ public class BraveNewTabPage extends NewTabPage implements NewTabPage.MostVisite
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             StartupMetricsTracker startupMetricsTracker,
             TabModelSelector tabModelSelector,
-            OneshotSupplier<ModuleRegistry> moduleRegistrySupplier,
-            @Nullable HomeSurfaceTracker homeSurfaceTracker) {
+            OneshotSupplier<ModuleRegistry> moduleRegistrySupplier) {
         // Override surface provider
         Profile profile = Profile.fromWebContents(mTab.getWebContents());
         assertNonNull(profile);
 
-        LayoutInflater inflater = LayoutInflater.from(activity);
-        mNewTabPageLayout = (NewTabPageLayout) inflater.inflate(R.layout.new_tab_page_layout, null);
-        mNewTabPageCoordinator =
-                new BraveNewTabPageCoordinator(
-                        mNewTabPageManager,
-                        activity,
-                        mNewTabPageLayout,
-                        mTab,
-                        tabModelSelector,
-                        moduleRegistrySupplier,
-                        homeSurfaceTracker);
+        assert mNewTabPageLayout != null : "Must be already created at NewTabPage.c-tor";
+        assert mNewTabPageCoordinator != null : "Must be already created at NewTabPage.c-tor";
 
         // No-op stub to deal with non-null requirement
         FeedSurfaceCoordinator.ActionDelegateFactory actionDelegate =
@@ -246,6 +237,7 @@ public class BraveNewTabPage extends NewTabPage implements NewTabPage.MostVisite
                         assumeNonNull(moduleRegistrySupplier).get());
 
         mFeedSurfaceProvider = feedSurfaceCoordinator;
+        startupMetricsTracker.registerNtpViewObserver(mFeedSurfaceProvider.getView());
     }
 
     public void updateSearchProvider() {
