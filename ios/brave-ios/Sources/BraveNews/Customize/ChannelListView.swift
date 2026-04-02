@@ -38,7 +38,8 @@ private struct ChannelListView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(.grouped)
-    .listBackgroundColor(Color(.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .environment(\.defaultMinListRowHeight, 0)
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.BraveNews.channelsTitle)

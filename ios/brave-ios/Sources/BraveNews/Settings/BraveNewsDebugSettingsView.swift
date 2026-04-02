@@ -197,7 +197,8 @@ public struct BraveNewsDebugSettingsView: View {
       }
     }
     .listStyle(.insetGrouped)
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle("Brave News QA Settings")
     .navigationBarTitleDisplayMode(.inline)
     .animation(.default, value: fileList)

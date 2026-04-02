@@ -202,7 +202,8 @@ struct EditSiteConnectionView: View {
           .padding(.vertical)
         }
       }
-      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+      .scrollContentBackground(.hidden)
+      .background(Color(UIColor.braveGroupedBackground))
       .navigationTitle(Strings.Wallet.editSiteConnectionScreenTitle)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {

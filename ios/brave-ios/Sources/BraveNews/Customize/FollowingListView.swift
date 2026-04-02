@@ -66,7 +66,8 @@ struct FollowingListView: View {
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
-    .listBackgroundColor(Color(.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .listStyle(.grouped)
     .environment(\.defaultMinListRowHeight, 0)
     .navigationTitle(Strings.BraveNews.followingTitle)

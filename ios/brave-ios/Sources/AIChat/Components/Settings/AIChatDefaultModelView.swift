@@ -55,7 +55,8 @@ struct AIChatDefaultModelView: View {
         }
       }
     }
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .listStyle(.insetGrouped)
     .navigationTitle(Strings.AIChat.defaultModelViewTitle)
     .sheet(isPresented: $isPresentingPaywallPremium) {

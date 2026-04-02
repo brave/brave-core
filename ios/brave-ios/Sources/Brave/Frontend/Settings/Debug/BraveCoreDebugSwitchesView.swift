@@ -94,7 +94,8 @@ private struct BasicStringInputView: View {
       }
     }
     .listStyle(.insetGrouped)
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(coreSwitch.displayString)
     .onAppear {
       // SwiftUI bug, has to wait a bit
@@ -147,7 +148,8 @@ private struct BasicPickerInputView: View {
       .pickerStyle(.inline)
     }
     .listStyle(.insetGrouped)
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(coreSwitch.displayString)
     .onAppear {
       // SwiftUI bug, has to wait a bit
@@ -215,7 +217,8 @@ private struct CustomSwitchInputView: View {
       }
     }
     .listStyle(.insetGrouped)
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle("Custom Switch")
     .onAppear {
       // SwiftUI bug, has to wait a bit
@@ -482,7 +485,8 @@ struct BraveCoreDebugSwitchesView: View {
       }
     }
     .listStyle(.insetGrouped)
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitle("BraveCore Switches")
   }
 }

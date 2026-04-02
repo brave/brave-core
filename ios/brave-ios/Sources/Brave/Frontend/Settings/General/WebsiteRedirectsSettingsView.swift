@@ -35,7 +35,8 @@ struct WebsiteRedirectsSettingsView: View {
       }
     }
     .listStyle(.insetGrouped)
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.urlRedirectsSettings)
   }
 }

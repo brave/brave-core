@@ -109,7 +109,8 @@ struct RecentlyClosedTabsView: View {
     }
     .environment(\.defaultMinListHeaderHeight, 0)
     .listStyle(.insetGrouped)
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
   }
 
   init(tabManager: TabManager? = nil) {

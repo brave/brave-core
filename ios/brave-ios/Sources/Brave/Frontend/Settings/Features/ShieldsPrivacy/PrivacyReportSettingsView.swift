@@ -65,7 +65,8 @@ struct PrivacyReportSettingsView: View {
     }
     .navigationTitle(Strings.PrivacyHub.privacyReportsTitle)
     .listStyle(.insetGrouped)
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
   }
 }
 

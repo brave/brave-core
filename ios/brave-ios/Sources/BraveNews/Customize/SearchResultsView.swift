@@ -114,7 +114,8 @@ struct SearchResultsView: View {
       }
     }
     .listStyle(.insetGrouped)
-    .listBackgroundColor(Color(.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .overlay(
       Group {
         if results.isEmpty, urlQuery == nil {

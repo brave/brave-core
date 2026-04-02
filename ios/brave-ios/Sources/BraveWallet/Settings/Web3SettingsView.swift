@@ -48,7 +48,8 @@ public struct Web3SettingsView: View {
       }
     }
     .listStyle(InsetGroupedListStyle())
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.Wallet.web3)
     .navigationBarTitleDisplayMode(.inline)
     .background(
