@@ -926,8 +926,13 @@
 -keep class org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesLayoutBase
 
 -keep class org.chromium.chrome.browser.hub.HubManagerImpl {
+    public <init>(...);
     *** ensureHubCoordinatorIsInitialized(...);
     *** mEdgeToEdgeSupplier;
+}
+
+-keep class org.chromium.chrome.browser.hub.BraveHubManagerImpl {
+    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.ui.system.StatusBarColorController {

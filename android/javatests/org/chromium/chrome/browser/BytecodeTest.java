@@ -83,6 +83,8 @@ import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreference;
+import org.chromium.chrome.browser.hub.HubShowPaneHelper;
+import org.chromium.chrome.browser.hub.PaneListBuilder;
 import org.chromium.chrome.browser.infobar.InfoBarContainerView;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
@@ -164,6 +166,7 @@ import org.chromium.chrome.browser.ui.edge_to_edge.TopInsetProvider;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
+import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityClient;
 import org.chromium.chrome.browser.ui.signin.SigninAndHistorySyncActivityLauncher;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
@@ -2320,6 +2323,25 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/BraveSwipeRefreshHandler",
                         Tab.class,
                         SwipeRefreshHandler.SwipeRefreshLayoutCreator.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/hub/HubManagerImpl",
+                        "org/chromium/chrome/browser/hub/BraveHubManagerImpl",
+                        Activity.class,
+                        OneshotSupplier.class,
+                        PaneListBuilder.class,
+                        BackPressManager.class,
+                        MenuOrKeyboardActionController.class,
+                        SnackbarManager.class,
+                        BottomSheetController.class,
+                        BottomBarHostManager.class,
+                        NullableObservableSupplier.class,
+                        MenuButtonCoordinator.class,
+                        HubShowPaneHelper.class,
+                        MonotonicObservableSupplier.class,
+                        SearchActivityClient.class,
+                        NonNullObservableSupplier.class,
+                        int.class));
     }
 
     @Test
