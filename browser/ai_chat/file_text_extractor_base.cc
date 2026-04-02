@@ -115,48 +115,6 @@ void FileTextExtractorBase::Finish(std::optional<std::string> result) {
   }
 }
 
-// content::WebContentsDelegate:
-
-bool FileTextExtractorBase::ShouldSuppressDialogs(
-    content::WebContents* source) {
-  return true;
-}
-
-void FileTextExtractorBase::CanDownload(
-    const GURL& url,
-    const std::string& request_method,
-    base::OnceCallback<void(bool)> callback) {
-  std::move(callback).Run(false);
-}
-
-bool FileTextExtractorBase::IsWebContentsCreationOverridden(
-    content::RenderFrameHost* opener,
-    content::SiteInstance* source_site_instance,
-    content::mojom::WindowContainerType window_container_type,
-    const GURL& opener_url,
-    const std::string& frame_name,
-    const GURL& target_url) {
-  return true;
-}
-
-bool FileTextExtractorBase::CanEnterFullscreenModeForTab(
-    content::RenderFrameHost* requesting_frame) {
-  return false;
-}
-
-bool FileTextExtractorBase::CanDragEnter(
-    content::WebContents* source,
-    const content::DropData& data,
-    blink::DragOperationsMask operations_allowed) {
-  return false;
-}
-
-void FileTextExtractorBase::RequestKeyboardLock(
-    content::WebContents* web_contents,
-    bool esc_key_locked) {
-  web_contents->GotResponseToKeyboardLockRequest(false);
-}
-
 // content::WebContentsObserver:
 
 void FileTextExtractorBase::DidFinishNavigation(

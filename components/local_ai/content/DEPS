@@ -1,5 +1,6 @@
 include_rules = [
   "+brave/components/local_ai/core",
+  "+brave/components/restricted_web_contents_delegate",
   "+content/public/browser",
   "+content/public/test",
   "+services/network/public",
