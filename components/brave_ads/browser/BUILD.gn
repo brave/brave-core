@@ -88,20 +88,77 @@ static_library("browser") {
   public_deps += [ "//brave/components/services/bat_ads/public/interfaces" ]
 }
 
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "test/fake_ads_service_delegate.cc",
+    "test/fake_ads_service_delegate.h",
+    "test/fake_ads_tooltips_delegate.cc",
+    "test/fake_ads_tooltips_delegate.h",
+    "test/fake_bat_ads.cc",
+    "test/fake_bat_ads.h",
+    "test/fake_bat_ads_service.cc",
+    "test/fake_bat_ads_service.h",
+    "test/fake_bat_ads_service_factory.cc",
+    "test/fake_bat_ads_service_factory.h",
+    "test/fake_device_id.cc",
+    "test/fake_device_id.h",
+    "test/fake_virtual_pref_provider_delegate.cc",
+    "test/fake_virtual_pref_provider_delegate.h",
+  ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//brave/components/brave_ads/core/mojom",
+    "//brave/components/services/bat_ads/public/interfaces",
+    "//components/prefs",
+    "//mojo/public/cpp/bindings",
+    "//url",
+  ]
+
+  if (enable_brave_rewards) {
+    sources += [
+      "test/fake_rewards_service.cc",
+      "test/fake_rewards_service.h",
+    ]
+
+    deps += [
+      "//brave/components/brave_rewards/content",
+      "//brave/components/brave_rewards/core/buildflags",
+    ]
+  }
+}
+
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "analytics/p3a/notification_ad_unittest.cc" ]
+  sources = [
+    "ads_service_impl_unittest.cc",
+    "analytics/p3a/notification_ad_unittest.cc",
+  ]
 
   deps = [
+    ":test_support",
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/core",
+    "//brave/components/brave_ads/core/public:headers",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core/buildflags",
+    "//brave/components/ntp_background_images/common",
+    "//components/content_settings/core/browser",
     "//components/metrics:metrics_pref_names",
     "//components/prefs",
     "//components/prefs:test_support",
+    "//components/variations",
     "//content/test:test_support",
     "//testing/gtest",
   ]
+
+  if (enable_brave_rewards) {
+    deps += [ "//brave/components/brave_rewards/content" ]
+  }
 }

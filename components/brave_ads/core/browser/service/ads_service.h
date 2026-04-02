@@ -192,7 +192,7 @@ class AdsService : public KeyedService {
   // Called to save an ad for later viewing. This is a toggle, so calling it
   // again removes the ad from the saved list. The callback takes one argument -
   // `bool` is set to `true` if successful otherwise `false`.
-  virtual void ToggleSaveAd(mojom::ReactionInfoPtr reactimojom_reactionon,
+  virtual void ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
                             ToggleReactionCallback callback) = 0;
 
   // Called to mark an ad as inappropriate. This is a toggle, so calling it
