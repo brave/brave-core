@@ -16,6 +16,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/events/event_constants.h"
 #include "ui/gfx/text_elider.h"
 
 namespace page_actions {
@@ -84,6 +85,8 @@ void PartitionedStoragePageActionController::UpdatePageAction() {
     page_action_controller_->ClearOverrideChipColors(
         kActionShowPartitionedStorage);
     page_action_controller_->ClearOverrideHeight(kActionShowPartitionedStorage);
+    page_action_controller_->SetOverrideTriggerableEvent(
+        kActionShowPartitionedStorage, std::nullopt);
     return;
   }
 
@@ -109,6 +112,8 @@ void PartitionedStoragePageActionController::UpdatePageAction() {
   page_action_controller_->OverrideChipColors(
       kActionShowPartitionedStorage, model->background_color(), SK_ColorWHITE);
   page_action_controller_->SetOverrideHeight(kActionShowPartitionedStorage, 20);
+  page_action_controller_->SetOverrideTriggerableEvent(
+      kActionShowPartitionedStorage, ui::EF_RIGHT_MOUSE_BUTTON);
 }
 
 }  // namespace page_actions

@@ -21,6 +21,7 @@
 #include "base/i18n/time_formatting.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/notimplemented.h"
 #include "base/notreached.h"
 #include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
@@ -1194,6 +1195,11 @@ void OpenUrlInContainer(BrowserWindowInterface* browser_window,
       browser_window->GetProfile()->IsOffTheRecord());
 
   Navigate(&params);
+}
+
+void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser_window) {
+  // TODO(https://github.com/brave/brave-browser/issues/53350)
+  NOTIMPLEMENTED();
 }
 #endif
 

@@ -54,4 +54,18 @@ std::optional<int> PageActionModel::GetOverrideHeight() const {
   return override_height_;
 }
 
+void PageActionModel::SetOverrideTriggerableEvent(
+    base::PassKey<PageActionController>,
+    std::optional<int> event_flags) {
+  if (override_triggerable_event_flags_ == event_flags) {
+    return;
+  }
+  override_triggerable_event_flags_ = event_flags;
+  NotifyChange(Property::kOverrideTriggerableEvent);
+}
+
+std::optional<int> PageActionModel::GetOverrideTriggerableEvent() const {
+  return override_triggerable_event_flags_;
+}
+
 }  // namespace page_actions

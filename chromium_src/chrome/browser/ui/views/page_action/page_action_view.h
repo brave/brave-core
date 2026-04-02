@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PAGE_ACTION_PAGE_ACTION_VIEW_H_
 
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
+#include "chrome/browser/ui/views/page_action/page_action_model_observer.h"
 #include "ui/views/view.h"
 #include "ui/views/widget/native_widget_delegate.h"
 
@@ -26,6 +27,11 @@
   void OnPageActionModelVisualRefresh(PageActionModelInterface* model); \
   bool ShouldAlwaysShowLabel()
 
+// Make a OnPageActionModelChanged wrapper
+#define OnPageActionModelChanged(...)             \
+  OnPageActionModelChanged_Chromium(__VA_ARGS__); \
+  void OnPageActionModelChanged(__VA_ARGS__)
+
 // Make a GetMinimumSize wrapper
 #define GetMinimumSize()           \
   GetMinimumSize_Chromium() const; \
@@ -40,6 +46,7 @@
 
 #undef OnNewActiveController
 #undef GetMinimumSize
+#undef OnPageActionModelChanged
 #undef ShouldShowLabelAfterAnimation
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PAGE_ACTION_PAGE_ACTION_VIEW_H_

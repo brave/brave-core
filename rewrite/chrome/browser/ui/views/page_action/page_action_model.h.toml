@@ -15,11 +15,14 @@ replace = '''\1
                                   bool always_show) = 0;
   virtual void SetOverrideHeight(base::PassKey<PageActionController>,
                                  std::optional<int> height) = 0;
+  virtual void SetOverrideTriggerableEvent(base::PassKey<PageActionController>,
+                                           std::optional<int> event_flags) = 0;
 
   virtual std::optional<SkColor> GetOverrideBackgroundColor() const = 0;
   virtual std::optional<SkColor> GetOverrideForegroundColor() const = 0;
   virtual bool GetAlwaysShowLabel() const = 0;
-  virtual std::optional<int> GetOverrideHeight() const = 0;'''
+  virtual std::optional<int> GetOverrideHeight() const = 0;
+  virtual std::optional<int> GetOverrideTriggerableEvent() const = 0;'''
 
 [[substitution]]
 description = 'Implementing the interfaces in PageActionModel'
@@ -34,16 +37,20 @@ replace = '''\1
                           bool always_show) override;
   void SetOverrideHeight(base::PassKey<PageActionController>,
                          std::optional<int> height_px) override;
+  void SetOverrideTriggerableEvent(base::PassKey<PageActionController>,
+                                  std::optional<int> event_flags) override;
   std::optional<SkColor> GetOverrideBackgroundColor() const override;
   std::optional<SkColor> GetOverrideForegroundColor() const override;
   bool GetAlwaysShowLabel() const override;
   std::optional<int> GetOverrideHeight() const override;
+  std::optional<int> GetOverrideTriggerableEvent() const override;
 
  private:
   std::optional<SkColor> override_background_color_;
   std::optional<SkColor> override_foreground_color_;
   bool always_show_label_ = false;
   std::optional<int> override_height_;
+  std::optional<int> override_triggerable_event_flags_;
 
  public:'''
 
@@ -53,4 +60,5 @@ re_pattern = '(\s+kShowRequested,)'
 replace = '''\1
     kAlwaysShowLabel,
     kOverrideChipColors,
-    kOverrideHeight,'''
+    kOverrideHeight,
+    kOverrideTriggerableEvent,'''

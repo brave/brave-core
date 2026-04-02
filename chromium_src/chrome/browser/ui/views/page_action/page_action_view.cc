@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include "chrome/browser/ui/views/page_action/page_action_model.h"
+#include "ui/events/event_constants.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/views/layout/layout_types.h"
 #include "ui/views/layout/proposed_layout.h"
@@ -16,9 +17,11 @@
 
 #define GetMinimumSize GetMinimumSize_Chromium
 #define OnNewActiveController OnNewActiveController_Chromium
+#define OnPageActionModelChanged OnPageActionModelChanged_Chromium
 
 #include <chrome/browser/ui/views/page_action/page_action_view.cc>
 
+#undef OnPageActionModelChanged
 #undef OnNewActiveController
 #undef GetMinimumSize
 
@@ -133,6 +136,19 @@ std::optional<int> PageActionView::GetOverrideHeight() const {
 void PageActionView::OnNewActiveController(PageActionController* controller) {
   OnNewActiveController_Chromium(controller);
   OnPageActionModelVisualRefresh(observation_.GetSource());
+}
+
+void PageActionView::OnPageActionModelChanged(
+    const PageActionModelInterface& model) {
+  PageActionView::OnPageActionModelChanged_Chromium(model);
+
+  const PageActionModelInterface* source = observation_.GetSource();
+  if (source) {
+    // ui::EF_LEFT_MOUSE_BUTTON is the default triggerable event flags of Button
+    // class.
+    SetTriggerableEventFlags(source->GetOverrideTriggerableEvent().value_or(
+        ui::EF_LEFT_MOUSE_BUTTON));
+  }
 }
 
 }  // namespace page_actions

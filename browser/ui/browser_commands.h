@@ -163,6 +163,10 @@ void OpenTabUrlInContainer(BrowserWindowInterface* browser_window,
 void OpenUrlInContainer(BrowserWindowInterface* browser_window,
                         const GURL& url,
                         const containers::mojom::ContainerPtr& container);
+
+// Opens the container menu on the page action view if the active tab is in a
+// container.
+void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser);
 #endif
 
 }  // namespace brave

@@ -38,4 +38,11 @@ void PageActionControllerImpl::ClearOverrideHeight(
   FindPageActionModel(action_id).SetOverrideHeight(PassKey(), std::nullopt);
 }
 
+void PageActionControllerImpl::SetOverrideTriggerableEvent(
+    actions::ActionId action_id,
+    std::optional<int> event_flags) {
+  FindPageActionModel(action_id).SetOverrideTriggerableEvent(PassKey(),
+                                                             event_flags);
+}
+
 }  // namespace page_actions
