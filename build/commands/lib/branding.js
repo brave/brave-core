@@ -7,7 +7,7 @@ import fs from 'fs-extra'
 import path from 'node:path'
 import config from './config.js'
 import l10nUtil from './l10nUtil.js'
-import Log from './logging.js'
+import * as Log from './log.ts'
 import util from './util.js'
 
 const update = () => {

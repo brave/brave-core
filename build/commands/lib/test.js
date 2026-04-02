@@ -6,7 +6,7 @@
 import fs from 'fs-extra'
 import path from 'node:path'
 import Config from './config.js'
-import Log from './logging.js'
+import * as Log from './log.ts'
 import util from './util.js'
 import assert from 'node:assert'
 import { getAffectedTests } from './affectedTests.js'

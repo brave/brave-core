@@ -14,7 +14,7 @@ import path from 'node:path'
 import fs from 'fs-extra'
 import depotTools from './depotTools.js'
 import syncUtil from './syncUtils.js'
-import Log from './logging.js'
+import * as Log from './log.ts'
 import { isCI } from './ciDetect.ts'
 
 // Use the same filename as for Brave archive.

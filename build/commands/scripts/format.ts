@@ -14,7 +14,7 @@ import prettier from 'prettier'
 
 import config from '../lib/config.js'
 import util from '../lib/util.js'
-import Log from '../lib/logging.js'
+import * as Log from '../lib/log.ts'
 
 program
   .description(

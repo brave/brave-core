@@ -8,10 +8,10 @@ import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import EnvConfig from './envConfig.ts'
-import Log from './logging.js'
+import * as Log from './log.ts'
 
 // Mock the logging module
-jest.mock('./logging.js', () => ({
+jest.mock('./log.ts', () => ({
   error: jest.fn(),
 }))
 
