@@ -6,6 +6,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import Log from './logging.js'
+import { execSync } from 'node:child_process'
 
 const kReadFileTailLimitBytes = 128 * 1024
 
@@ -67,5 +68,74 @@ function readFileTailUtf8Sync(filePath: string, maxBytes: number): string {
     return str
   } finally {
     fs.closeSync(fd)
+  }
+}
+
+/**
+ * Dumps the hang diagnostics for the processes that are suspicious of being the
+ * cause of the build hang. This is a best-effort attempt to diagnose the hang.
+ */
+export function dumpProcessHangDiagnostics() {
+  // Restrict to Linux for now.
+  if (process.platform !== 'linux') {
+    return
+  }
+
+  try {
+    // Find all relevant processes
+    const psCommand = 'ps -e -o pid,ppid,pcpu,pmem,stat,command'
+
+    const psOutput = execSync(psCommand, { encoding: 'utf-8' })
+    const lines = psOutput.split('\n')
+
+    const suspiciousProcesses = lines.filter((line) => {
+      const lower = line.toLowerCase()
+      return (
+        lower.includes('node')
+        || lower.includes('python')
+        || lower.includes('siso')
+      )
+    })
+
+    console.log(
+      `--- Suspicious Processes (PID, PPID, %CPU, %MEM, STAT, CMD) ---`,
+    )
+    for (const process of suspiciousProcesses) {
+      console.log(process)
+    }
+
+    // Extract just the PIDs of the processes to probe them further
+    const pidsToProbe = suspiciousProcesses
+      .map((line) => line.trim().split(/\s+/)[0])
+      .filter((pid) => pid && !isNaN(Number(pid)))
+
+    console.log(`--- Deep Dive into PIDs: ${pidsToProbe.join(', ')} ---`)
+
+    // Allow gathering ptrace information. CI currently doesn't restrict sudo.
+    try {
+      execSync('sudo sysctl -w kernel.yama.ptrace_scope=0', {
+        encoding: 'utf-8',
+        stdio: 'inherit',
+      })
+    } catch (e) {
+      console.log(`Error setting ptrace_scope: ${e}`)
+    }
+    for (const pid of pidsToProbe) {
+      console.log(`\n>> Profiling PID: ${pid} <<`)
+      // Grab 2 seconds of strace to see if it's spinning or deadlocked
+      // We use timeout to ensure strace doesn't block our runner
+      let straceOut = ''
+      try {
+        straceOut = execSync(`timeout 2 strace -p ${pid} -s 256 2>&1`, {
+          encoding: 'utf-8',
+        })
+        console.log(`Strace summary (2s):\n${straceOut}`)
+      } catch (e) {
+        straceOut = `${e.stdout || ''}\n${e.stderr || ''}`
+        console.log(`Strace summary (2s):\n${straceOut}`)
+      }
+    }
+  } catch (e) {
+    console.log(`Error during diagnostic collection: ${e}`)
   }
 }

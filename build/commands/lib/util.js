@@ -18,7 +18,8 @@ import ActionGuard from './actionGuard.js'
 import { GitPatcher } from './gitPatcher.js'
 import { getBuildArgs } from './buildArgs.ts'
 import { isCI, isTeamcity } from './ciDetect.ts'
-import { dumpBuildHangDiagnostics } from './buildDiagnostics.ts'
+import * as buildDiagnostics from './buildDiagnostics.ts'
+import * as processUtil from './processUtil.ts'
 
 // Do not limit the number of listeners to avoid warnings from EventEmitter.
 process.setMaxListeners(0)
@@ -794,7 +795,7 @@ const util = {
       }
 
       if (isCI) {
-        const idleTimeoutMs = 90 * 60 * 1000 // 90 minutes
+        const idleTimeoutMs = 60 * 60 * 1000 // 60 minutes
         lastBuildLogTime = Date.now()
         buildIdleWatchdogInterval = setInterval(() => {
           if (Date.now() - lastBuildLogTime <= idleTimeoutMs) {
@@ -804,8 +805,9 @@ const util = {
           Log.error(
             `Build aborted: no autoninja output for ${idleTimeoutMs / 1000}s `,
           )
-          dumpBuildHangDiagnostics(outputDir)
-          util.killProcessTree(buildProcess)
+          buildDiagnostics.dumpBuildHangDiagnostics(outputDir)
+          buildDiagnostics.dumpProcessHangDiagnostics()
+          processUtil.killProcessTree(buildProcess)
         }, 10 * 1000)
       }
 
@@ -1084,29 +1086,6 @@ const util = {
       ],
       config.defaultOptions,
     )
-  },
-
-  /**
-   * Stop a process and its descendants. On Windows, `child.kill()` often only
-   * affects `cmd.exe`; `taskkill /T` tears down the full tree.
-   * @param {import('node:child_process').ChildProcess | null} child
-   */
-  killProcessTree: (child) => {
-    if (!child?.pid) {
-      return
-    }
-    if (process.platform === 'win32') {
-      spawnSync('taskkill', ['/PID', String(child.pid), '/T', '/F'], {
-        stdio: 'ignore',
-        windowsHide: true,
-      })
-      return
-    }
-    try {
-      child.kill('SIGKILL')
-    } catch {
-      // Process may already have exited.
-    }
   },
 }
 
