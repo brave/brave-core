@@ -207,6 +207,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &net::features::kEnableWebTransportDraft07,
       &net::features::kTpcdMetadataGrants,
       &net::features::kWaitForFirstPartySetsInit,
+      &network::features::kBrowsingTopics,
       &network::features::kInterestGroupStorage,
       &network::features::kSharedStorageAPI,
       &network_time::kNetworkTimeServiceQuerying,
