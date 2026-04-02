@@ -202,7 +202,11 @@ struct ManagePasswordsView: View {
       (isContentAvailable || viewModel.isFetching) && !privacyLock.isLocked ? .visible : .hidden,
       for: .bottomBar
     )
-    .task { await privacyLock.authenticate(onFailure: exitAfterAuthFailure) }
+    .onAppear {
+      Task {
+        await privacyLock.authenticate(onFailure: exitAfterAuthFailure)
+      }
+    }
     .onReceive(NotificationCenter.default.publisher(for: UIScene.willDeactivateNotification)) { _ in
       privacyLock.lock()
     }
