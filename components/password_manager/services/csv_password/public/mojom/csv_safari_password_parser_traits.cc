@@ -26,22 +26,21 @@ EnumTraits<password_manager::mojom::CSVSafariPassword_Status,
   NOTREACHED();
 }
 
-bool EnumTraits<password_manager::mojom::CSVSafariPassword_Status,
-                password_manager::CSVSafariPassword::Status>::
-    FromMojom(password_manager::mojom::CSVSafariPassword_Status status,
-              password_manager::CSVSafariPassword::Status* out) {
+std::optional<password_manager::CSVSafariPassword::Status>
+EnumTraits<password_manager::mojom::CSVSafariPassword_Status,
+           password_manager::CSVSafariPassword::Status>::
+    FromMojom(password_manager::mojom::CSVSafariPassword_Status status) {
+  using Mojom = password_manager::mojom::CSVSafariPassword_Status;
+  using Native = password_manager::CSVSafariPassword::Status;
   switch (status) {
-    case password_manager::mojom::CSVSafariPassword_Status::kOK:
-      *out = password_manager::CSVSafariPassword::Status::kOK;
-      return true;
-    case password_manager::mojom::CSVSafariPassword_Status::kSyntaxError:
-      *out = password_manager::CSVSafariPassword::Status::kSyntaxError;
-      return true;
-    case password_manager::mojom::CSVSafariPassword_Status::kSemanticError:
-      *out = password_manager::CSVSafariPassword::Status::kSemanticError;
-      return true;
+    case Mojom::kOK:
+      return Native::kOK;
+    case Mojom::kSyntaxError:
+      return Native::kSyntaxError;
+    case Mojom::kSemanticError:
+      return Native::kSemanticError;
   }
-  return false;
+  return std::nullopt;
 }
 
 // static
