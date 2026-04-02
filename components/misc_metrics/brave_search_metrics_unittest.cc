@@ -9,6 +9,7 @@
 
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "build/build_config.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/search_engines/search_engines_test_environment.h"
 #include "components/search_engines/template_url.h"
@@ -307,4 +308,62 @@ TEST_F(BraveSearchMetricsUnitTest, NTPSearchNonBraveEngineIgnored) {
   histogram_tester_.ExpectUniqueSample(kSearchNTPSearchPercentHistogramName, 2,
                                        1);
 }
+
+#if BUILDFLAG(IS_ANDROID)
+TEST_F(BraveSearchMetricsUnitTest, WidgetSearchPercentage) {
+  const GURL non_brave_url{"https://google.com/search?q=test"};
+
+  // Non-Brave URL should not be recorded.
+  for (int i = 0; i < 100; i++) {
+    brave_search_metrics_->MaybeRecordBraveQuery(empty_url_, brave_search_url_);
+  }
+  brave_search_metrics_->MaybeRecordWidgetSearch(non_brave_url);
+
+  FastForwardAndReport(base::Days(1));
+
+  histogram_tester_.ExpectTotalCount(kSearchWidgetSearchPercentHistogramName,
+                                     0);
+
+  // Simulate 100 primary queries with 25 widget searches (25%).
+  for (int i = 0; i < 100; i++) {
+    brave_search_metrics_->MaybeRecordBraveQuery(empty_url_, brave_search_url_);
+  }
+  for (int i = 0; i < 25; i++) {
+    brave_search_metrics_->MaybeRecordWidgetSearch(brave_search_url_);
+  }
+
+  FastForwardAndReport(base::Days(1));
+
+  // 25% widget -> bucket 3 (21-80%)
+  histogram_tester_.ExpectUniqueSample(kSearchWidgetSearchPercentHistogramName,
+                                       3, 1);
+}
+TEST_F(BraveSearchMetricsUnitTest, QuickSearchPercentage) {
+  // Leo search and non-Brave keyword should not be recorded.
+  for (int i = 0; i < 100; i++) {
+    brave_search_metrics_->MaybeRecordBraveQuery(empty_url_, brave_search_url_);
+  }
+  brave_search_metrics_->MaybeRecordQuickSearch(true, "");
+  brave_search_metrics_->MaybeRecordQuickSearch(false, ":go");
+
+  FastForwardAndReport(base::Days(1));
+
+  histogram_tester_.ExpectTotalCount(kSearchQuickSearchPercentHistogramName, 0);
+
+  // Simulate 100 primary queries with 25 quick searches (25%).
+  for (int i = 0; i < 100; i++) {
+    brave_search_metrics_->MaybeRecordBraveQuery(empty_url_, brave_search_url_);
+  }
+  for (int i = 0; i < 25; i++) {
+    brave_search_metrics_->MaybeRecordQuickSearch(false, ":br");
+  }
+
+  FastForwardAndReport(base::Days(1));
+
+  // 25% quick search -> bucket 3 (21-80%)
+  histogram_tester_.ExpectUniqueSample(kSearchQuickSearchPercentHistogramName,
+                                       3, 1);
+}
+#endif  // BUILDFLAG(IS_ANDROID)
+
 }  // namespace misc_metrics

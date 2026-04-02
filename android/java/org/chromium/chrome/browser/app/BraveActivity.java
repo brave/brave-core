@@ -2534,6 +2534,13 @@ public abstract class BraveActivity extends ChromeActivity
                             mMiscAndroidMetrics.recordSetAsDefault(
                                     BraveSetDefaultBrowserUtils.isAppSetAsDefaultBrowser(
                                             BraveActivity.this));
+                            Intent launchIntent = getIntent();
+                            if (launchIntent != null
+                                    && Intent.ACTION_VIEW.equals(launchIntent.getAction())
+                                    && launchIntent.getData() != null) {
+                                mMiscAndroidMetrics.recordIntentUrl(
+                                        launchIntent.getData().toString());
+                            }
                             if (mUsageMonitor == null) {
                                 mUsageMonitor = UsageMonitor.getInstance(mMiscAndroidMetrics);
                             }
@@ -2920,6 +2927,12 @@ public abstract class BraveActivity extends ChromeActivity
     // QuickSearchCallback
     @Override
     public void onSearchEngineClick(int position, QuickSearchEnginesModel quickSearchEnginesModel) {
+        if (mMiscAndroidMetrics != null) {
+            mMiscAndroidMetrics.recordQuickSearch(
+                    quickSearchEnginesModel.getType()
+                            == QuickSearchEnginesModel.QuickSearchEnginesModelType.AI_ASSISTANT,
+                    quickSearchEnginesModel.getKeyword());
+        }
         if (getActivityTab() == null) {
             return;
         }

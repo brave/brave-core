@@ -130,6 +130,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Search.Promo.DDGBannerD", {}},
     {"Brave.Search.Promo.NewTabPage", {}},
     {"Brave.Search.QueriesBeforeChurn", MetricConfig{.ephemeral = true}},
+    {"Brave.Search.QuickMostUsedAction", {}},
     {"Brave.Search.WebDiscoveryAndAds", {}},
     {"Brave.Search.WebDiscoveryDefaultEngine", {}},
     {"Brave.Search.WidgetDefault", {}},
@@ -301,10 +302,18 @@ inline constexpr auto kCollectedExpressHistograms =
       .ephemeral = true,
       .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
     }},
+    {"Brave.Search.QuickSearchPercent", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
+    }},
     {"Brave.Search.SwitchEngine.2", MetricConfig{
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kDateOfInstall, MetricAttribute::kVersion, MetricAttribute::kLocaleCountryCode},
     }},
     {"Brave.Search.WebDiscoveryEnabled", {}},
+    {"Brave.Search.WidgetSearchPercent", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
+    }},
     {"Brave.Shields.AdBlockOnlyModeEnabled", MetricConfig{
       .ephemeral = true,
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode, MetricAttribute::kDateOfActivation},
