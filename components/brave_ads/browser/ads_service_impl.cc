@@ -441,7 +441,8 @@ void AdsServiceImpl::InitializeBatAdsCallback(bool success) {
 
   RegisterResourceComponents();
 
-  BackgroundHelper::GetInstance()->AddObserver(this);
+  application_state_monitor_observation_.Observe(
+      ApplicationStateMonitor::GetInstance());
 
   MaybeShowOnboardingNotification();
 
@@ -1048,9 +1049,7 @@ void AdsServiceImpl::ShutdownAdsService() {
 
   notification_ad_timers_.clear();
 
-  if (is_bat_ads_initialized_) {
-    BackgroundHelper::GetInstance()->RemoveObserver(this);
-  }
+  application_state_monitor_observation_.Reset();
 
   CloseAllNotificationAds();
 
@@ -1407,7 +1406,8 @@ void AdsServiceImpl::IsNetworkConnectionAvailable(
 }
 
 void AdsServiceImpl::IsBrowserActive(IsBrowserActiveCallback callback) {
-  std::move(callback).Run(BackgroundHelper::GetInstance()->IsForeground());
+  std::move(callback).Run(
+      ApplicationStateMonitor::GetInstance()->IsBrowserActive());
 }
 
 void AdsServiceImpl::IsBrowserInFullScreenMode(
@@ -1641,7 +1641,7 @@ void AdsServiceImpl::OnRemindUser(mojom::ReminderType mojom_reminder_type) {
   ShowReminder(mojom_reminder_type);
 }
 
-void AdsServiceImpl::OnBrowserDidEnterForeground() {
+void AdsServiceImpl::OnBrowserDidBecomeActive() {
   if (bat_ads_client_notifier_remote_.is_bound()) {
     bat_ads_client_notifier_remote_->NotifyBrowserDidEnterForeground();
 #if BUILDFLAG(IS_ANDROID)
@@ -1650,7 +1650,7 @@ void AdsServiceImpl::OnBrowserDidEnterForeground() {
   }
 }
 
-void AdsServiceImpl::OnBrowserDidEnterBackground() {
+void AdsServiceImpl::OnBrowserDidResignActive() {
   if (bat_ads_client_notifier_remote_.is_bound()) {
 #if BUILDFLAG(IS_ANDROID)
     bat_ads_client_notifier_remote_->NotifyBrowserDidResignActive();

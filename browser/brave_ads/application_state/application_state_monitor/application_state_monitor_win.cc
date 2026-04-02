@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_ads/application_state/background_helper/background_helper_win.h"
+#include "brave/browser/brave_ads/application_state/application_state_monitor/application_state_monitor_win.h"
 
 #include <windows.h>
 
 #include "base/functional/bind.h"
+#include "base/no_destructor.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
@@ -16,15 +17,21 @@
 
 namespace brave_ads {
 
-BackgroundHelperWin::BackgroundHelperWin() {
-  hwnd_subscription_ =
-      gfx::SingletonHwnd::GetInstance()->RegisterCallback(base::BindRepeating(
-          &BackgroundHelperWin::OnWndProc, base::Unretained(this)));
+// static
+ApplicationStateMonitor* ApplicationStateMonitor::GetInstance() {
+  static base::NoDestructor<ApplicationStateMonitorWin> instance;
+  return instance.get();
 }
 
-BackgroundHelperWin::~BackgroundHelperWin() = default;
+ApplicationStateMonitorWin::ApplicationStateMonitorWin() {
+  singleton_hwnd_subscription_ =
+      gfx::SingletonHwnd::GetInstance()->RegisterCallback(base::BindRepeating(
+          &ApplicationStateMonitorWin::OnWndProc, base::Unretained(this)));
+}
 
-bool BackgroundHelperWin::IsForeground() const {
+ApplicationStateMonitorWin::~ApplicationStateMonitorWin() = default;
+
+bool ApplicationStateMonitorWin::IsBrowserActive() const {
   auto* browser = GetLastActiveBrowserWindowInterfaceWithAnyProfile();
   if (browser && browser->GetWindow()) {
     return ::GetForegroundWindow() ==
@@ -34,18 +41,18 @@ bool BackgroundHelperWin::IsForeground() const {
   return false;
 }
 
-void BackgroundHelperWin::OnWndProc(HWND hwnd,
-                                    UINT message,
-                                    WPARAM wparam,
-                                    LPARAM lparam) {
+void ApplicationStateMonitorWin::OnWndProc(HWND hwnd,
+                                           UINT message,
+                                           WPARAM wparam,
+                                           LPARAM lparam) {
   if (message != WM_ACTIVATEAPP) {
     return;
   }
 
   if ((BOOL)wparam) {
-    TriggerOnForeground();
+    NotifyBrowserDidBecomeActive();
   } else {
-    TriggerOnBackground();
+    NotifyBrowserDidResignActive();
   }
 }
 

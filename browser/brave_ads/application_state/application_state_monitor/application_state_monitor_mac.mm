@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_ads/application_state/background_helper/background_helper_mac.h"
+#include "brave/browser/brave_ads/application_state/application_state_monitor/application_state_monitor_mac.h"
 
 #import <Cocoa/Cocoa.h>
 
@@ -11,22 +11,25 @@
 #include "base/apple/osstatus_logging.h"
 #include "base/mac/mac_util.h"
 #include "base/memory/raw_ptr.h"
+#include "base/no_destructor.h"
 
-@interface BackgroundHelperDelegateMac : NSObject {
+@interface ApplicationStateMonitorDelegateMac : NSObject {
  @private
-  raw_ptr<brave_ads::BackgroundHelper> helper_;  // Not owned.
+  raw_ptr<brave_ads::ApplicationStateMonitorMac> monitor_;  // Not owned.
 }
 
+- (instancetype)initWithMonitor:(brave_ads::ApplicationStateMonitorMac*)monitor;
 - (void)appDidBecomeActive:(NSNotification*)notification;
 - (void)appDidResignActive:(NSNotification*)notification;
 
 @end
 
-@implementation BackgroundHelperDelegateMac
+@implementation ApplicationStateMonitorDelegateMac
 
-- (id)initWithHelper:(brave_ads::BackgroundHelper*)helper {
+- (instancetype)initWithMonitor:
+    (brave_ads::ApplicationStateMonitorMac*)monitor {
   if ((self = [super init])) {
-    helper_ = helper;
+    monitor_ = monitor;
 
     NSNotificationCenter* notification_center =
         [NSNotificationCenter defaultCenter];
@@ -43,37 +46,51 @@
 }
 
 - (void)appDidBecomeActive:(NSNotification*)notification {
-  helper_->TriggerOnForeground();
+  monitor_->OnBrowserDidBecomeActive();
 }
 
 - (void)appDidResignActive:(NSNotification*)notification {
-  helper_->TriggerOnBackground();
+  monitor_->OnBrowserDidResignActive();
 }
 
 @end
 
 namespace brave_ads {
 
-class BackgroundHelperMac::BackgroundHelperDelegate {
+class ApplicationStateMonitorMac::Delegate {
  public:
-  explicit BackgroundHelperDelegate(BackgroundHelper* background_helper) {
+  explicit Delegate(ApplicationStateMonitorMac* monitor) {
     delegate_ =
-        [[BackgroundHelperDelegateMac alloc] initWithHelper:background_helper];
+        [[ApplicationStateMonitorDelegateMac alloc] initWithMonitor:monitor];
   }
 
-  ~BackgroundHelperDelegate() = default;
+  ~Delegate() = default;
 
  private:
-  BackgroundHelperDelegateMac* __strong delegate_;
+  ApplicationStateMonitorDelegateMac* __strong delegate_;
 };
 
-BackgroundHelperMac::BackgroundHelperMac() {
-  delegate_ = std::make_unique<BackgroundHelperDelegate>(this);
+// static
+ApplicationStateMonitor* ApplicationStateMonitor::GetInstance() {
+  static base::NoDestructor<ApplicationStateMonitorMac> instance;
+  return instance.get();
 }
 
-BackgroundHelperMac::~BackgroundHelperMac() = default;
+ApplicationStateMonitorMac::ApplicationStateMonitorMac() {
+  delegate_ = std::make_unique<Delegate>(this);
+}
 
-bool BackgroundHelperMac::IsForeground() const {
+ApplicationStateMonitorMac::~ApplicationStateMonitorMac() = default;
+
+void ApplicationStateMonitorMac::OnBrowserDidBecomeActive() {
+  NotifyBrowserDidBecomeActive();
+}
+
+void ApplicationStateMonitorMac::OnBrowserDidResignActive() {
+  NotifyBrowserDidResignActive();
+}
+
+bool ApplicationStateMonitorMac::IsBrowserActive() const {
   return [[NSApplication sharedApplication] isActive];
 }
 
