@@ -693,6 +693,7 @@ Review Rules:
 - Security-sensitive areas (wallet, crypto, sync, credentials) deserve extra scrutiny — type mismatches, truncation, and correctness issues should use stronger language.
 - Do NOT flag: existing code the PR isn't changing, template functions defined in headers, simple inline getters in headers, style preferences not in the documented best practices, include/import ordering (this is handled by formatting tools and linters, not this bot).
 - Every claim must be verified in the best practices source document. Do NOT make claims based on general knowledge or assumptions about what "should" be a best practice. If the best practices docs do not contain a rule about something, do NOT flag it as a violation — even if you believe it to be true. For example, do NOT claim an API is "deprecated" or a pattern is "banned" unless the best practices doc explicitly says so. Hallucinated rules erode trust and waste developer time. When in doubt, do not comment.
+- Do NOT make claims about what upstream Chromium code does (e.g., "the upstream class overrides X" or "upstream uses pattern Y") unless you read the actual upstream file during validation. Upstream behavior claims are a common hallucination vector. If your violation depends on an upstream comparison, verify it by reading the file -- if you cannot confirm it, drop the violation.
 - Comment style: short (1-3 sentences), targeted, acknowledge context. Use "nit:" for genuinely minor/stylistic issues (including missing comments/documentation). Substantive issues (test reliability, correctness, banned APIs) should be direct without "nit:" prefix."""
 
 _BEST_PRACTICE_LINK_REQUIREMENT = """\
@@ -778,6 +779,7 @@ For each violation:
 - Deprecation claims require header verification — read the actual header file to confirm.
 - Check surrounding context for justification — comments, TODOs, or patterns that explain the code.
 - If surrounding code uses the same pattern being flagged, the violation may be invalid.
+- If the violation claims upstream code has or lacks something (e.g., "upstream overrides X", "upstream class uses Y"), you MUST read the actual upstream file to confirm. Do not rely on your training data for upstream code state. If you cannot locate and read the upstream file, drop the violation.
 - Sanitize @mentions — validate against actual PR participants. Fix or strip hallucinated usernames.
 - Drop false positives. If reading the source reveals the violation is incorrect, drop it.
 - Log each result:
