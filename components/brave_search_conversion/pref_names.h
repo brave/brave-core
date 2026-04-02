@@ -29,6 +29,9 @@ inline constexpr char kShowNTPSearchBox[] =
 
 inline constexpr char kShowNTPChatInput[] = "brave.brave_search.show-ntp-chat";
 
+inline constexpr char kMigratedNTPChatInputFromSearch[] =
+    "brave.brave_search.migrated-ntp-chat-from-search";
+
 inline constexpr char kLastUsedNTPSearchEngine[] =
     "brave.brave_search.last-used-ntp-search-engine";
 
