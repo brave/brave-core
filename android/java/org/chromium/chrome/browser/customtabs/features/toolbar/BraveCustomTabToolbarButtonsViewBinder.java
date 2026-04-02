@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.customtabs.features.toolbar;
 
 import static org.chromium.build.NullUtil.assumeNonNull;
-import static org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbarButtonsProperties.TINT;
 
 import android.view.Gravity;
 import android.view.View;
@@ -24,9 +23,8 @@ public class BraveCustomTabToolbarButtonsViewBinder extends CustomTabToolbarButt
     @Override
     public void bind(PropertyModel model, CustomTabToolbar view, PropertyKey propertyKey) {
         super.bind(model, view, propertyKey);
-        if (propertyKey != TINT) {
-            positionBraveShieldsButton(view);
-        }
+
+        positionBraveShieldsButton(view);
     }
 
     private static void positionBraveShieldsButton(CustomTabToolbar view) {
@@ -37,6 +35,8 @@ public class BraveCustomTabToolbarButtonsViewBinder extends CustomTabToolbarButt
                 view.getResources().getDimensionPixelSize(R.dimen.toolbar_button_width);
 
         // Shields should sit immediately to the left of the menu button.
+        // The menu button's end margin is set by upstream and never modified by Brave,
+        // so it is a stable anchor for computing all margins absolutely.
         int shieldsEndMargin;
         MenuButton menuButton = view.getMenuButton();
         if (menuButton != null && menuButton.getVisibility() == View.VISIBLE) {
@@ -49,24 +49,26 @@ public class BraveCustomTabToolbarButtonsViewBinder extends CustomTabToolbarButt
                             .getDimensionPixelSize(R.dimen.custom_tabs_toolbar_horizontal_padding);
         }
 
-        // Shift all action buttons (Share, etc.) outward by the shields button width so they
-        // remain to the left of shields rather than overlapping it.
+        // Set each action button's end margin absolutely from the shields anchor.
+        // Upstream adds buttons via addView(btn, 0) in priority order, so index 0
+        // is leftmost and index n-1 is rightmost (closest to menu/shields).
         FrameLayout customActionButtons = view.getCustomActionButtonsParent();
+        int n = customActionButtons != null ? customActionButtons.getChildCount() : 0;
         if (customActionButtons != null) {
-            for (int i = 0; i < customActionButtons.getChildCount(); i++) {
+            for (int i = 0; i < n; i++) {
                 View child = customActionButtons.getChildAt(i);
                 ViewGroup.MarginLayoutParams childLp =
                         assumeNonNull((ViewGroup.MarginLayoutParams) child.getLayoutParams());
-                childLp.setMarginEnd(childLp.getMarginEnd() + defaultButtonWidth);
+                childLp.setMarginEnd(shieldsEndMargin + (n - i) * defaultButtonWidth);
                 child.setLayoutParams(childLp);
             }
         }
 
-        // Push the location bar left to make room for the shields button.
+        // Push the location bar left to make room for the shields button and all action buttons.
         View locationBar = assumeNonNull(view.findViewById(R.id.location_bar_frame_layout));
         ViewGroup.MarginLayoutParams locationBarLp =
                 assumeNonNull((ViewGroup.MarginLayoutParams) locationBar.getLayoutParams());
-        locationBarLp.setMarginEnd(locationBarLp.getMarginEnd() + defaultButtonWidth);
+        locationBarLp.setMarginEnd(shieldsEndMargin + (n + 1) * defaultButtonWidth);
         locationBar.setLayoutParams(locationBarLp);
 
         FrameLayout.LayoutParams lp =
@@ -74,6 +76,5 @@ public class BraveCustomTabToolbarButtonsViewBinder extends CustomTabToolbarButt
         lp.gravity = Gravity.CENTER_VERTICAL | Gravity.END;
         lp.setMarginEnd(shieldsEndMargin);
         shieldsButton.setLayoutParams(lp);
-        shieldsButton.setVisibility(View.VISIBLE);
     }
 }
