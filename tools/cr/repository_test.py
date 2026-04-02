@@ -165,6 +165,43 @@ class RepositoryTest(unittest.TestCase):
             repository.chromium.get_commit_short_description())
         self.assertEqual(last_commit_message_after, commit_message)
 
+    def test_git_commit_allows_empty(self):
+        """Test git_commit with allows_empty."""
+        head_before_empty_commit = repository.chromium.run_git(
+            'rev-parse', 'HEAD')
+
+        # Case 1: Empty commit is created when allows_empty=True and there are
+        # no staged changes.
+        empty_commit_message = 'Create empty commit'
+        repository.chromium.git_commit(empty_commit_message, allows_empty=True)
+
+        self.assertEqual(repository.chromium.get_commit_short_description(),
+                         empty_commit_message)
+        self.assertEqual(repository.chromium.run_git('rev-parse', 'HEAD~1'),
+                         head_before_empty_commit)
+
+        # Case 2: allows_empty=True raises when there are staged changes.
+        test_file = self.fake_chromium_src.chromium / 'test_file.txt'
+        test_file.write_text('staged content')
+        repository.chromium.run_git('add', str(test_file))
+
+        with self.assertRaises(ValueError):
+            repository.chromium.git_commit('Should fail', allows_empty=True)
+
+    def test_git_commit_no_verify(self):
+        """Test git_commit passes --no-verify when no_verify=True."""
+        with patch.object(Repository, 'has_staged_changed',
+                          return_value=True), patch.object(
+                              Repository,
+                              'run_git',
+                              return_value='abcd123 msg') as mock_run_git:
+            repository.chromium.git_commit('Commit with no verify',
+                                           no_verify=True)
+
+        self.assertIn(
+            unittest.mock.call('commit', '-m', 'Commit with no verify',
+                               '--no-verify'), mock_run_git.mock_calls)
+
     def test_is_valid_git_reference(self):
         """Test is_valid_git_reference using the chromium repository."""
 

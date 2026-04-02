@@ -162,6 +162,28 @@ Furthermore, there is also `--squash-minor-bumps`, which can be used to squash
 away all minor bumps in a branch down to a single one. This is useful when
 when running a cr branch, as it is common to have multiple minor daily bumps
 in a branch.
+
+### `brockit.py reassign`
+This command is used to change the authorship of a given commit in the branch.
+It generates an empty commit with the message `reassign! {original_subject}`
+where the author is the person running the command.
+
+```sh
+tools/cr/brockit.py reassign <commit_hash>
+```
+
+This commit acts similarly to a `fixup!` commit but works in tandem with
+`brockit.py rebase`. When `brockit.py rebase` is run, the rebase process detects
+the `reassign! ` commit. It moves this commit directly above the original target
+commit in the interactive rebase sequence, changing the target commit's command
+from `pick` to `squash`. (This only works when using `rebase` with
+`--squash-minor-bumps`.)
+
+During the squash operation, `brockit.py rebase` also automatically edits the
+squashed commit message by removing the `reassign! ` line and preserving the
+original commit's subject and body. Because the original commit is squashed into
+the reassignment commit, the resulting commit adopts the reassignment commit's
+authorship.
 """
 
 import argparse
@@ -225,6 +247,8 @@ MINOR_VERSION_BUMP_ISSUE_TEMPLATE = """### Minor Chromium bump
 - No specific code changes in Brave (only line number changes in patches)
 """
 
+# This is a brockit specific prefix for commit messages, similar to `fixup!`.
+REASSIGN_COMMIT_MSG_PREFIX = 'reassign!'
 
 def _get_current_branch_upstream_name() -> Optional[str]:
     """Retrieves the name of the current branch's upstream.
@@ -1709,59 +1733,149 @@ class Rebase(Task):
         gnrt = []
         iwyu = []
         others = []
+        reassign = []
         for line in lines:
-            if 'Update from Chromium ' in line:
+            # Empty lines and comment lines are not interesting when doing the
+            # rebase todo file.
+            if line.startswith('#') or line.strip() == '':
+                continue
+
+            # We are breaking down the lines into command|commit columns. The
+            # split below works on lines that are supposed to look like this:
+            #
+            # pick 7aab77cbd1a # [cr148] Args plumbed into context menu
+            # pick 7765fb6198b # [cr148] `TabCardView` created
+            # pick d97c4b4ee81 # [cr148] `AtomicString::LowerASCII` deleted
+            # pick 1b7e261baed # [cr148] Tab strip model shadow files moved
+            #
+            # The left side of before the (#) comment marker represent the
+            # rebase interactive command, while the right side has the commit
+            # description. As the right side is obviously a comment, it goes
+            # without saying that the right side is not necessarily required by
+            # `git rebase --interactive` to work, and one shouldn't rely on it,
+            # however for the way brockit works, we can always rely on these
+            # comments to be present and providing accurate data for us to
+            # scrape. This makes the split below safe to do.
+            _, comment = [part.lstrip() for part in line.split('#', 1)]
+
+            if comment.startswith('Update from Chromium '):
                 version.append(
                     line if not version else line.replace('pick', 'squash'))
-            elif 'Conflict-resolved patches from Chromium ' in line:
+            elif comment.startswith(
+                    'Conflict-resolved patches from Chromium '):
                 conflict.append(
                     line if not conflict else line.replace('pick', 'squash'))
-            elif '`gnrt` run for Chromium ' in line:
+            elif comment.startswith(REASSIGN_COMMIT_MSG_PREFIX):
+                reassign.append(line)
+            elif '`gnrt` run for Chromium ' in comment:
                 gnrt.append(
                     line if not gnrt else line.replace('pick', 'squash'))
-            elif '] IWYU fixes.' in line:
+            elif '] IWYU fixes.' in comment:
                 iwyu.append(
                     line if not iwyu else line.replace('pick', 'squash'))
             else:
                 others.append(line)
 
-        console.print('Version:', version)
+        # Merging all categories in the desired order.
+        new_todo_file = version + conflict + gnrt + iwyu + others
+
+        # Looking for every occurrence of lines starting with `reassign! `,
+        # taking the commit message after it, and looking for the the first
+        # line starting with `pick ` that matches the commit message, then
+        # moving the reassign commit above it, and changing the pick line under
+        # it to a `squash` line.
+        # Orphaned `reassing!` commits get intentionally silently dropped at
+        # this point.
+        for reassign_line in reassign:
+            command, comment = [
+                part.lstrip() for part in reassign_line.split('#', 1)
+            ]
+
+            # The format of the commit reassign commit will always be:
+            #
+            # reassign!ae3724d6603! [brockit] Authorship reassingment
+            #
+            # The first part can be ignored. The hash is the second part, and
+            # the remainder is the commit message.
+            _, commit, reassign_message = comment.strip().split('!', 2)
+            # the commit message has a trailing comment for empty commits.
+            reassign_message = (
+                reassign_message.strip().removesuffix(' # empty'))
+
+            # Looking first for a line with the exact hash mentioned in the
+            # reassign message. (This should be enough, however a hash is not
+            # guaranteed to match the one in the reassignment commit, if any
+            # rebase took place that didn't carry out this process first, for
+            # by a previous call of `brockit rebase` without
+            # `--squash-minor-bumps`.)
+            target_index = None
+            for i, line in enumerate(new_todo_file):
+                if line.startswith(f'pick {commit}'):
+                    target_index = i
+                    break
+
+            # if no line for the provided hash is found, then falling back to
+            # looking for a line with the same commit message.
+            if target_index is None:
+                for i, line in enumerate(new_todo_file):
+                    if line.strip().endswith(f' # {reassign_message}'
+                                             ) and line.startswith('pick '):
+                        target_index = i
+                        break
+
+            if target_index is not None:
+                new_todo_file.insert(target_index, f'{command} # {comment}')
+                new_todo_file[target_index +
+                              1] = new_todo_file[target_index + 1].replace(
+                                  'pick', 'squash', 1)
 
         with open(todo_file, 'w') as file:
-            for line in version:
-                file.write(line)
-            for line in conflict:
-                file.write(line)
-            for line in gnrt:
-                file.write(line)
-            for line in iwyu:
-                file.write(line)
-            for line in others:
-                file.write(line)
+            file.writelines(new_todo_file)
+
 
     @staticmethod
-    def squash_commit_message_to_last_line(todo_file: PurePath):
-        """Squashes the commit message to the last line.
+    def fix_squash_commit_messages(todo_file: PurePath):
+        """Fixes the commit messages during rebase squash.
 
-    This function removes all lines that are not the last line of the commit
-    message, and saves the changes to the file. This is useful to discard all
-    the minor bumps from history.
+    This function handles rebase squashes to correct the commit messages. It
+    does two things:
+
+    For authorship reassignments, it removes the `reassign!` line, and restore
+    the original commit message, resulting in the original author being swapped
+    with the author of the reassignment.
+
+    For minor bumps, it keeps the message of the last minor bump, which is the
+    one that should be retained.
         """
         with open(todo_file, 'r') as file:
             lines = file.readlines()
 
-        # finds the last line that is not empty and that doesn't start with a
-        # hash comment.
-        last_valid_line = next(
-            (line for line in reversed(lines)
-             if line.strip() and not line.lstrip().startswith("#")), None)
+        # Filter out empty lines and comments once to make searching easier
+        # We keep the original index to reference back to 'lines' if needed
+        valid_entries = [(i, line) for i, line in enumerate(lines)
+                         if line.strip() and not line.lstrip().startswith('#')]
 
-        if not last_valid_line:
-            # This should never happen, as there should be one valid line
-            sys.exit(1)
+        if not valid_entries:
+            sys.exit("Error: No valid content found in commit message.")
+
+        _, first_line = valid_entries[0]
+
+        # Handle "reassign!" logic
+        if first_line.startswith(REASSIGN_COMMIT_MSG_PREFIX):
+            if len(valid_entries) > 1:
+                # Get the index of the very next valid line
+                next_valid_idx = valid_entries[1][0]
+                content_to_write = lines[next_valid_idx:]
+            else:
+                sys.exit("Error: No valid content found in reassign squash.")
+
+        else:
+            # Standard squash: Keep only the last valid line
+            _, last_line = valid_entries[-1]
+            content_to_write = [last_line]
 
         with open(todo_file, 'w') as file:
-            file.write(last_valid_line)
+            file.writelines(content_to_write)
 
     def execute(self, from_ref: Optional[str], to_ref: Optional[str],
                 recommit: bool, discard_regen_changes: bool,
@@ -1852,6 +1966,42 @@ class Rebase(Task):
         except subprocess.CalledProcessError as e:
             raise InvalidInputException(f'Rebase failed. {e.stderr}') from e
 
+
+class Reassign(Task):
+    """Creates a reassignment commit for a given change in the branch.
+
+    This task is used for cases where the authorship of a given change should be
+    reassigned to a different author. This class is responsible for creating an
+    empty commit whose author is the person calling this command. This commit is
+    similar to a `fixup!` commit, being called `reassign!`, followed by the
+    short hash for the change being reassinged. This change is then picked up
+    by the brockit's `rebase` command, and squashed as the base commit for the
+    original change, resulting in a change of authorship.
+    """
+
+    def status_message(self):
+        return "Creating reassignment commit..."
+
+    def execute(self, change: str):
+        """Creates the reassignment commit.
+
+    This function creates an empty commit with the message
+    `reassign! {change}`, and the author being the user calling this
+    command.
+
+    Args:
+        change:
+            The change for which the authorship should be reassigned. This is
+            any valid git reference that resolves to a single commit.
+        """
+
+        commit, message = repository.brave.run_git('log', '-1', change, '-s',
+                                                   '--format=%h %s').split(
+                                                       ' ', 1)
+        repository.brave.git_commit(
+            f"{REASSIGN_COMMIT_MSG_PREFIX}{commit}! {message}",
+            allows_empty=True,
+            no_verify=True)
 
 def fetch_chromium_dash_version(channel: str, target_platform: str) -> Version:
     """Fetches the latest version from the Chromium Dash.
@@ -2039,6 +2189,16 @@ def main():
         default=None,
         help='Prints the latest version available for the channel provided.')
 
+    reassign_parser = subparsers.add_parser(
+        'reassign',
+        parents=[global_parser],
+        help=(
+            f'Creates a {REASSIGN_COMMIT_MSG_PREFIX} commit for a given change '
+            'to change authorship to current user.'))
+    reassign_parser.add_argument(
+        'change',
+        help='The commit reference to reassign (hash, HEAD~N, etc.).')
+
     subparsers.add_parser('reference',
                           help='Detailed documentation for this tool.')
     args = parser.parse_args()
@@ -2109,6 +2269,8 @@ def main():
             Regen(resolve_from_ref_flag_version()).run(dry_run=args.dry_run)
         if args.command == 'update-version-issue':
             GitHubIssue(resolve_from_ref_flag_version()).run()
+        if args.command == 'reassign':
+            Reassign().run(change=args.change)
         if args.command == 'reference':
             console.print(Markdown(__doc__))
         if args.command == 'show':
@@ -2131,7 +2293,7 @@ if __name__ == '__main__':
         if '--internal-rebase-squash-minor-bumps' in sys.argv:
             Rebase.squash_minor_bumps_from_rebase_plan(PurePath(sys.argv[-1]))
         if '--internal-rebase-squash-commit-message' in sys.argv:
-            Rebase.squash_commit_message_to_last_line(PurePath(sys.argv[-1]))
+            Rebase.fix_squash_commit_messages(PurePath(sys.argv[-1]))
         sys.exit(0)
 
     sys.exit(main())
