@@ -360,7 +360,7 @@ if (brave_wallet_enabled) {
 
 ## ✅ Use Friend Class for Test/Private Access
 
-**When tests or subclasses need access to private members, use `friend` declarations instead of making methods public or protected.**
+**When tests or other classes need access to private members, use `friend` declarations instead of making methods public or protected.** This rule is about bypassing access control for convenience. It does not apply to normal inheritance where a subclass calls inherited protected methods or exposes new public methods that delegate to them.
 
 ```cpp
 // ❌ WRONG - making methods public just for testing
@@ -1191,7 +1191,7 @@ If re-entrancy is unavoidable, document it clearly and use guards (e.g., `base::
 
 ## ✅ Every UI Feature Needs a CUJ Test; Avoid Change Detector Tests
 
-**Every UI feature should have at least one Critical User Journey (CUJ) test** using `InteractiveBrowserTest`. Do not use `BrowserWithTestWindowTest` — it forces `if (!browser_view)` test-only checks in production code. Use browser tests or unit tests with proper dependency injection instead.
+**Every UI feature should have at least one Critical User Journey (CUJ) test** using `InteractiveBrowserTest`. Do not use `BrowserWithTestWindowTest` — it forces `if (!browser_view)` test-only checks in production code. Use browser tests or unit tests with proper dependency injection instead. This rule applies to features with user-visible UI. Backend services, infrastructure, and non-UI components should have appropriate unit or browser tests but do not require CUJ tests.
 
 **Avoid change detector tests.** A change detector test is easy to spot because the test logic mirrors the production logic — it just calls the same method and checks the obvious result. These tests break whenever the implementation changes but catch no real bugs. The purpose of a unit test is to validate behavior across common and edge cases for code that has many possible valid inputs.
 
