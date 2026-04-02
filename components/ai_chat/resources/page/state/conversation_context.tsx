@@ -230,10 +230,8 @@ export function useProvideConversationContext(props: ConversationContextProps) {
   }
 
   const handleSkillClick = (skill: Mojom.Skill) => {
-    setSelectedActionType(undefined)
-    setSelectedSkill(skill)
-    setIsToolsMenuOpen(false)
-
+    // Call makeEdit first before setting the selected skill to prevent
+    // race condition where the input text is not updated before the skill is set.
     makeEdit(document.querySelector('[data-editor="true"]')!)
       .selectRangeToTriggerChar('/')
       .replaceSelectedRange({
@@ -241,6 +239,10 @@ export function useProvideConversationContext(props: ConversationContextProps) {
         id: skill.shortcut,
         text: `/${skill.shortcut}`,
       })
+
+    setSelectedActionType(undefined)
+    setSelectedSkill(skill)
+    setIsToolsMenuOpen(false)
   }
 
   const handleSkillEdit = (skill: Mojom.Skill) => {
