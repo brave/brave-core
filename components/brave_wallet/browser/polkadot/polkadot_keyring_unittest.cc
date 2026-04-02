@@ -409,7 +409,7 @@ TEST(PolkadotKeyring, AddNewHDAccount_RestrictedAddress) {
       base::span(seed).first<kPolkadotSeedSize>(),
       mojom::KeyringId::kPolkadotMainnet,
       base::BindLambdaForTesting([=](const std::string& address) {
-        return !registry->IsOfacAddress(address);
+        return !registry->IsRestrictedAddress(address);
       }));
 
   // Add an account to get its address.
