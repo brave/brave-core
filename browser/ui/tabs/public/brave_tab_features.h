@@ -69,6 +69,12 @@ class BraveTabFeatures : public TabFeatures {
 #endif
   std::unique_ptr<BravePageContentExtractionTabHelper>
       page_content_extraction_tab_helper_;
+
+ public:
+  BravePageContentExtractionTabHelper*
+  page_content_extraction_tab_helper_for_testing() {
+    return page_content_extraction_tab_helper_.get();
+  }
 };
 
 }  // namespace tabs

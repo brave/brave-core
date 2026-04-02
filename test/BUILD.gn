@@ -895,6 +895,13 @@ test("brave_browser_tests") {
     "//brave/browser/brave_stats:browser_tests",
     "//brave/browser/browsing_data:browser_tests",
     "//brave/browser/ephemeral_storage:browser_tests",
+  ]
+
+  if (!is_android) {
+    deps += [ "//brave/browser/history_embeddings:browser_tests" ]
+  }
+
+  deps += [
     "//brave/browser/extensions",
     "//brave/browser/extensions:test_support",
     "//brave/browser/farbling:browser_tests",
