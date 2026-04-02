@@ -38,9 +38,9 @@ export function DetailsHeader(props: Props) {
         <div className='text'>
           <h4>{props.title}</h4>
           <div className='host overflow-ellipsis-start'>{host}</div>
+          {props.children}
         </div>
       </div>
-      {props.children}
     </div>
   )
 }
