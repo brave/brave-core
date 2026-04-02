@@ -38,11 +38,11 @@ struct ManagePasswordDetailView: View {
           } label: {
             Text(password.site).lineLimit(1)
               .contentShape(.rect)
-              .foregroundStyle(Color(braveSystemName: .textPrimary))
+              .foregroundStyle(Color(braveSystemName: .textSecondary))
           }
         } label: {
           Text(Strings.Login.loginInfoDetailsWebsiteFieldTitle)
-            .foregroundStyle(Color(braveSystemName: .textSecondary))
+            .foregroundStyle(Color(braveSystemName: .textPrimary))
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
@@ -57,11 +57,11 @@ struct ManagePasswordDetailView: View {
             Text(password.username ?? "")
               .lineLimit(1)
               .contentShape(.rect)
-              .foregroundStyle(Color(braveSystemName: .textPrimary))
+              .foregroundStyle(Color(braveSystemName: .textSecondary))
           }
         } label: {
           Text(Strings.Login.loginInfoDetailsUsernameFieldTitle)
-            .foregroundStyle(Color(braveSystemName: .textSecondary))
+            .foregroundStyle(Color(braveSystemName: .textPrimary))
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
@@ -79,7 +79,6 @@ struct ManagePasswordDetailView: View {
                 if isPasswordRevealed {
                   Text(password.password ?? "")
                     .lineLimit(1)
-
                 } else {
                   Text(String(repeating: "•", count: 8))
                     .lineLimit(1)
@@ -90,7 +89,7 @@ struct ManagePasswordDetailView: View {
                 }
               }
               .contentShape(.rect)
-              .foregroundStyle(Color(braveSystemName: .textPrimary))
+              .foregroundStyle(Color(braveSystemName: .textSecondary))
             }
 
             Button {
@@ -107,7 +106,7 @@ struct ManagePasswordDetailView: View {
           }
         } label: {
           Text(Strings.Login.loginInfoDetailsPasswordFieldTitle)
-            .foregroundStyle(Color(braveSystemName: .textSecondary))
+            .foregroundStyle(Color(braveSystemName: .textPrimary))
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
@@ -116,8 +115,7 @@ struct ManagePasswordDetailView: View {
     .background((Color(.braveGroupedBackground)))
     .foregroundStyle(Color(braveSystemName: .textPrimary))
     .accessibility(hidden: redactionReasons.contains(.privacy) ? true : false)
-    .navigationBarBackButtonHidden(redactionReasons.contains(.privacy))
-    .navigationTitle(navigationTitle)
+    .navigationTitle(redactionReasons.contains(.privacy) ? "" : navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbarBackground(.visible, for: .navigationBar)
     .overlay {
