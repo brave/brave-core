@@ -5,12 +5,9 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_keyring.h"
 
-#include "base/base64.h"
 #include "base/check_is_test.h"
+#include "base/containers/map_util.h"
 #include "base/containers/span.h"
-#include "base/containers/span_writer.h"
-#include "base/json/json_writer.h"
-#include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
 #include "brave/components/brave_wallet/browser/scrypt_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -59,60 +56,88 @@ bool PolkadotKeyring::IsTestnet() const {
   return keyring_id_ == mojom::KeyringId::kPolkadotTestnet;
 }
 
-std::array<uint8_t, kSr25519PublicKeySize> PolkadotKeyring::GetPublicKey(
-    uint32_t account_index) {
-  auto const& keypair = EnsureKeyPair(account_index);
-  return keypair.GetPublicKey();
+std::optional<std::array<uint8_t, kSr25519PublicKeySize>>
+PolkadotKeyring::GetPublicKey(uint32_t account_index) {
+  const auto* keypair = GetKeypair(account_index);
+  if (!keypair) {
+    return std::nullopt;
+  }
+  return keypair->GetPublicKey();
 }
 
 std::array<uint8_t, kSr25519Pkcs8Size>
 PolkadotKeyring::GetPkcs8KeyForTesting(  // IN-TEST
     uint32_t account_index) {
   CHECK_IS_TEST();
-  return EnsureKeyPair(account_index).GetExportKeyPkcs8();
+  const auto* keypair = GetKeypair(account_index);
+  // This is a test, so we can require correct inputs unconditionally.
+  CHECK(keypair);
+  return keypair->GetExportKeyPkcs8();
 }
 
-std::string PolkadotKeyring::GetAddress(uint32_t account_index,
-                                        uint16_t prefix) {
-  auto& keypair = EnsureKeyPair(account_index);
+std::optional<std::string> PolkadotKeyring::GetAddress(uint32_t account_index,
+                                                       uint16_t prefix) {
+  auto* keypair = GetKeypair(account_index);
+  if (!keypair) {
+    return std::nullopt;
+  }
 
   Ss58Address addr;
   addr.prefix = prefix;
-  addr.public_key = keypair.GetPublicKey();
-  return addr.Encode().value();
+  addr.public_key = keypair->GetPublicKey();
+  return addr.Encode();
 }
 
-std::array<uint8_t, kSr25519SignatureSize> PolkadotKeyring::SignMessage(
-    base::span<const uint8_t> message,
-    uint32_t account_index) {
-  auto const& keypair = EnsureKeyPair(account_index);
-  return keypair.SignMessage(message);
+std::optional<std::array<uint8_t, kSr25519SignatureSize>>
+PolkadotKeyring::SignMessage(base::span<const uint8_t> message,
+                             uint32_t account_index) {
+  auto const* keypair = GetKeypair(account_index);
+  if (!keypair) {
+    return std::nullopt;
+  }
+
+  return keypair->SignMessage(message);
 }
 
 [[nodiscard]] bool PolkadotKeyring::VerifyMessage(
     base::span<const uint8_t, kSr25519SignatureSize> signature,
     base::span<const uint8_t> message,
     uint32_t account_index) {
-  auto const& keypair = EnsureKeyPair(account_index);
-  return keypair.VerifyMessage(signature, message);
-}
-
-HDKeySr25519& PolkadotKeyring::EnsureKeyPair(uint32_t account_index) {
-  auto pos = secondary_keys_.find(account_index);
-  if (pos == secondary_keys_.end()) {
-    auto [it, inserted] = secondary_keys_.emplace(
-        account_index,
-        root_account_key_.DeriveHard(base::byte_span_from_ref(account_index)));
-    pos = it;
+  const auto* keypair = GetKeypair(account_index);
+  if (!keypair) {
+    return false;
   }
-  return pos->second;
+
+  return keypair->VerifyMessage(signature, message);
 }
 
-std::optional<std::string> PolkadotKeyring::AddNewHDAccount(uint32_t index) {
-  auto addr = GetAddress(index, IsTestnet() ? kWestendPrefix : kPolkadotPrefix);
-  if (!is_address_allowed_.Run(addr)) {
+HDKeySr25519* PolkadotKeyring::GetKeypair(uint32_t account_index) {
+  return base::FindOrNull(secondary_keys_, account_index);
+}
+
+std::optional<std::string> PolkadotKeyring::AddNewHDAccount(
+    uint32_t account_index) {
+  if (secondary_keys_.contains(account_index)) {
+    // Account already exists.
     return std::nullopt;
   }
+
+  auto keypair =
+      root_account_key_.DeriveHard(base::byte_span_from_ref(account_index));
+
+  Ss58Address ss58_addr;
+  ss58_addr.prefix = IsTestnet() ? kWestendPrefix : kPolkadotPrefix;
+  base::span(ss58_addr.public_key)
+      .copy_from_nonoverlapping(keypair.GetPublicKey());
+
+  const auto addr = ss58_addr.Encode();
+  if (!addr || !is_address_allowed_.Run(*addr)) {
+    // We either failed to ss58-encode the public key or it was present in our
+    // block-list. Either way, reject keypair creation.
+    return std::nullopt;
+  }
+
+  secondary_keys_.emplace(account_index, std::move(keypair));
   return addr;
 }
 
@@ -134,8 +159,13 @@ void PolkadotKeyring::SetSignatureRngForTesting() {
 std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(
     uint32_t account_index,
     std::string_view password) {
+  auto* keypair = GetKeypair(account_index);
+  if (!keypair) {
+    return std::nullopt;
+  }
+
   return PolkadotKeyring::EncodePrivateKeyForExport(
-      EnsureKeyPair(account_index), password, rand_salt_bytes_for_testing_,
+      *keypair, password, rand_salt_bytes_for_testing_,
       rand_nonce_bytes_for_testing_);
 }
 

@@ -7,8 +7,6 @@
 
 #include <string_view>
 
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
@@ -120,6 +118,8 @@ TEST(PolkadotKeyring, GetAddress) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotMainnet,
                             base::BindRepeating(IsAddressAllowed));
+    ASSERT_TRUE(keyring.AddNewHDAccount(0));
+    ASSERT_TRUE(keyring.AddNewHDAccount(1));
 
     EXPECT_EQ(keyring.GetAddress(0, 0u),
               "14YLzDFZTwnkcJkFij4Km7g5LdkLqKHy47xYGPN6HsLJpfnb");
@@ -140,6 +140,8 @@ TEST(PolkadotKeyring, GetAddress) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotTestnet,
                             base::BindRepeating(IsAddressAllowed));
+    ASSERT_TRUE(keyring.AddNewHDAccount(0));
+    ASSERT_TRUE(keyring.AddNewHDAccount(1));
 
     EXPECT_EQ(keyring.GetAddress(0, 42u),
               "5HGiBcFgEBMgT6GEuo9SA98sBnGgwHtPKDXiUukT6aqCrKEx");
@@ -225,12 +227,14 @@ TEST(PolkadotKeyring, GetPublicKey) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotMainnet,
                             base::BindRepeating(IsAddressAllowed));
+    ASSERT_TRUE(keyring.AddNewHDAccount(0));
 
     auto pubkey = keyring.GetPublicKey(0);
+    ASSERT_TRUE(pubkey.has_value());
 
     constexpr char const* kPublicKey =
         "9C9C968EBB31417A36BEC0908ECD9EB6E847B44821E521DDA9ADD8C418EF7C30";
-    EXPECT_EQ(base::HexEncode(pubkey), kPublicKey);
+    EXPECT_EQ(base::HexEncode(*pubkey), kPublicKey);
   }
 
   // Testnet.
@@ -242,12 +246,14 @@ TEST(PolkadotKeyring, GetPublicKey) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotTestnet,
                             base::BindRepeating(IsAddressAllowed));
+    ASSERT_TRUE(keyring.AddNewHDAccount(0));
 
     auto pubkey = keyring.GetPublicKey(0);
+    ASSERT_TRUE(pubkey.has_value());
 
     constexpr char const* kPublicKey =
         "E655361D12F3CCCA5F128187CF3F5EEA052BE722746E392C8B498D0D18723470";
-    EXPECT_EQ(base::HexEncode(pubkey), kPublicKey);
+    EXPECT_EQ(base::HexEncode(*pubkey), kPublicKey);
   }
 }
 
@@ -260,12 +266,19 @@ TEST(PolkadotKeyring, SignAndVerifyMessage) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotMainnet,
                             base::BindRepeating(IsAddressAllowed));
+    ASSERT_TRUE(keyring.AddNewHDAccount(0));
+    ASSERT_TRUE(keyring.AddNewHDAccount(1));
 
     auto signature = keyring.SignMessage(message, 0);
-    auto verified = keyring.VerifyMessage(signature, message, 0);
+    ASSERT_TRUE(signature);
+
+    auto verified = keyring.VerifyMessage(*signature, message, 0);
     EXPECT_TRUE(verified);
 
-    verified = keyring.VerifyMessage(signature, message, 1);
+    verified = keyring.VerifyMessage(*signature, message, 1);
+    EXPECT_FALSE(verified);
+
+    verified = keyring.VerifyMessage(*signature, message, 1234);
     EXPECT_FALSE(verified);
   }
 
@@ -275,12 +288,19 @@ TEST(PolkadotKeyring, SignAndVerifyMessage) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotTestnet,
                             base::BindRepeating(IsAddressAllowed));
+    ASSERT_TRUE(keyring.AddNewHDAccount(0));
+    ASSERT_TRUE(keyring.AddNewHDAccount(1));
 
     auto signature = keyring.SignMessage(message, 0);
-    auto verified = keyring.VerifyMessage(signature, message, 0);
+    ASSERT_TRUE(signature);
+
+    auto verified = keyring.VerifyMessage(*signature, message, 0);
     EXPECT_TRUE(verified);
 
-    verified = keyring.VerifyMessage(signature, message, 1);
+    verified = keyring.VerifyMessage(*signature, message, 1);
+    EXPECT_FALSE(verified);
+
+    verified = keyring.VerifyMessage(*signature, message, 1234);
     EXPECT_FALSE(verified);
   }
 }
@@ -297,6 +317,8 @@ TEST(PolkadotKeyring, VerifyMessage) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotTestnet,
                             base::BindRepeating(IsAddressAllowed));
+    ASSERT_TRUE(keyring.AddNewHDAccount(0));
+    ASSERT_TRUE(keyring.AddNewHDAccount(1));
 
     std::string signature_hex =
         "4C62835B705663D221F45A70E493C2B48FEEE5B541D3071727139A44A71F1E46E5F536"
@@ -339,6 +361,8 @@ TEST(PolkadotKeyring, VerifyMessage) {
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                             mojom::KeyringId::kPolkadotMainnet,
                             base::BindRepeating(IsAddressAllowed));
+    ASSERT_TRUE(keyring.AddNewHDAccount(0));
+    ASSERT_TRUE(keyring.AddNewHDAccount(1));
 
     // Test with first mainnet signature vector
     std::string signature_hex =
@@ -381,9 +405,12 @@ TEST(PolkadotKeyring, AddNewHDAccount_OfacSanctionedAddress) {
   CHECK(registry);
 
   auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
-  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
-                          mojom::KeyringId::kPolkadotMainnet,
-                          base::BindRepeating(IsAddressAllowed));
+  PolkadotKeyring keyring(
+      base::span(seed).first<kPolkadotSeedSize>(),
+      mojom::KeyringId::kPolkadotMainnet,
+      base::BindLambdaForTesting([=](const std::string& address) {
+        return !registry->IsOfacAddress(address);
+      }));
 
   // Add an account to get its address.
   auto address = keyring.AddNewHDAccount(0);
@@ -416,6 +443,10 @@ TEST(PolkadotKeyring, AddNewHDAccount_OfacSanctionedAddress) {
 
   // Clear OFAC list
   registry->UpdateOfacAddressesList({});
+
+  // Prove that we didn't leave any remnant phantom keypairs.
+  result2 = keyring2.AddNewHDAccount(0);
+  EXPECT_TRUE(result2);
 }
 
 }  // namespace brave_wallet

@@ -11,7 +11,6 @@
 #include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_keyring.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -125,9 +124,12 @@ TEST(PolkadotUtils, Uint128MojomConversions) {
 // format).
 
 TEST(PolkadotUtils, EncodePrivateKeyForExport) {
-  const std::string kPassword = "test_password_123";
+  static constexpr char kPassword[] = "test_password_123";
 
   auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
+  ASSERT_TRUE(keyring.AddNewHDAccount(1));
+
   std::array<uint8_t, kScryptSaltSize> salt_bytes;
   salt_bytes.fill(1);
   std::array<uint8_t, kSecretboxNonceSize> nonce_bytes;
@@ -137,8 +139,10 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport) {
   // Test account 0
   {
     auto pkcs8 = keyring.GetPkcs8KeyForTesting(0);
-    std::string address = keyring.GetAddress(0, kSubstratePrefix);
-    auto private_key_0 = EncodePrivateKeyForExport(pkcs8, address, kPassword,
+    auto address = keyring.GetAddress(0, kSubstratePrefix);
+    ASSERT_TRUE(address.has_value());
+
+    auto private_key_0 = EncodePrivateKeyForExport(pkcs8, *address, kPassword,
                                                    salt_bytes, nonce_bytes);
     auto json_value =
         base::test::ParseJsonDict(*private_key_0, base::JSON_PARSE_RFC);
@@ -153,8 +157,10 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport) {
   // Test account 1
   {
     auto pkcs8 = keyring.GetPkcs8KeyForTesting(1);
-    std::string address = keyring.GetAddress(1, kSubstratePrefix);
-    auto private_key_1 = EncodePrivateKeyForExport(pkcs8, address, kPassword,
+    auto address = keyring.GetAddress(1, kSubstratePrefix);
+    ASSERT_TRUE(address.has_value());
+
+    auto private_key_1 = EncodePrivateKeyForExport(pkcs8, *address, kPassword,
                                                    salt_bytes, nonce_bytes);
     auto json_value_1 =
         base::test::ParseJsonDict(*private_key_1, base::JSON_PARSE_RFC);
@@ -169,16 +175,21 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport) {
   // Empty password (should fail)
   {
     auto pkcs8 = keyring.GetPkcs8KeyForTesting(0);
-    std::string address = keyring.GetAddress(0, kSubstratePrefix);
-    EXPECT_FALSE(
-        EncodePrivateKeyForExport(pkcs8, address, "", salt_bytes, nonce_bytes));
+    auto address = keyring.GetAddress(0, kSubstratePrefix);
+    ASSERT_TRUE(address.has_value());
+
+    EXPECT_FALSE(EncodePrivateKeyForExport(pkcs8, *address, "", salt_bytes,
+                                           nonce_bytes));
   }
 }
 
 TEST(PolkadotUtils, EncodePrivateKeyForExport_Testnet) {
-  const std::string kPassword = "test_password_123";
+  static constexpr char kPassword[] = "test_password_123";
 
   auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotTestnet);
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
+  ASSERT_TRUE(keyring.AddNewHDAccount(1));
+
   std::array<uint8_t, kScryptSaltSize> salt_bytes;
   salt_bytes.fill(1);
   std::array<uint8_t, kSecretboxNonceSize> nonce_bytes;
@@ -188,8 +199,10 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport_Testnet) {
   // Test account 0
   {
     auto pkcs8 = keyring.GetPkcs8KeyForTesting(0);
-    std::string address = keyring.GetAddress(0, kSubstratePrefix);
-    auto private_key_0 = EncodePrivateKeyForExport(pkcs8, address, kPassword,
+    auto address = keyring.GetAddress(0, kSubstratePrefix);
+    ASSERT_TRUE(address.has_value());
+
+    auto private_key_0 = EncodePrivateKeyForExport(pkcs8, *address, kPassword,
                                                    salt_bytes, nonce_bytes);
     auto json_value =
         base::test::ParseJsonDict(*private_key_0, base::JSON_PARSE_RFC);
@@ -204,8 +217,10 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport_Testnet) {
   // Test account 1
   {
     auto pkcs8 = keyring.GetPkcs8KeyForTesting(1);
-    std::string address = keyring.GetAddress(1, kSubstratePrefix);
-    auto private_key_1 = EncodePrivateKeyForExport(pkcs8, address, kPassword,
+    auto address = keyring.GetAddress(1, kSubstratePrefix);
+    ASSERT_TRUE(address.has_value());
+
+    auto private_key_1 = EncodePrivateKeyForExport(pkcs8, *address, kPassword,
                                                    salt_bytes, nonce_bytes);
     auto json_value_1 =
         base::test::ParseJsonDict(*private_key_1, base::JSON_PARSE_RFC);
@@ -220,16 +235,20 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport_Testnet) {
   // Empty password (should fail)
   {
     auto pkcs8 = keyring.GetPkcs8KeyForTesting(0);
-    std::string address = keyring.GetAddress(0, kSubstratePrefix);
-    EXPECT_FALSE(
-        EncodePrivateKeyForExport(pkcs8, address, "", salt_bytes, nonce_bytes));
+    auto address = keyring.GetAddress(0, kSubstratePrefix);
+    ASSERT_TRUE(address.has_value());
+
+    EXPECT_FALSE(EncodePrivateKeyForExport(pkcs8, *address, "", salt_bytes,
+                                           nonce_bytes));
   }
 }
 
 TEST(PolkadotUtils, DecodePrivateKeyFromExport_Roundtrip) {
-  const std::string kPassword = "test_password_123";
+  static constexpr char kPassword[] = "test_password_123";
 
   auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
+  ASSERT_TRUE(keyring.AddNewHDAccount(1));
 
   // Account 0: encode then decode
   {
@@ -267,10 +286,11 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_Roundtrip) {
 }
 
 TEST(PolkadotUtils, DecodePrivateKeyFromExport_WrongPassword) {
-  const std::string kPassword = "test_password_123";
-  const std::string kWrongPassword = "wrong_password";
+  static constexpr char kPassword[] = "test_password_123";
+  static constexpr char kWrongPassword[] = "wrong_password";
 
   auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
 
   auto encoded_json = keyring.EncodePrivateKeyForExport(0, kPassword);
   ASSERT_TRUE(encoded_json.has_value());
@@ -280,9 +300,10 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_WrongPassword) {
 }
 
 TEST(PolkadotUtils, DecodePrivateKeyFromExport_EmptyPassword) {
-  const std::string kPassword = "test_password_123";
+  static constexpr char kPassword[] = "test_password_123";
 
   auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
 
   auto encoded_json = keyring.EncodePrivateKeyForExport(0, kPassword);
   ASSERT_TRUE(encoded_json.has_value());
@@ -291,7 +312,7 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_EmptyPassword) {
 }
 
 TEST(PolkadotUtils, DecodePrivateKeyFromExport_InvalidJSON) {
-  const std::string kPassword = "test_password_123";
+  static constexpr char kPassword[] = "test_password_123";
 
   EXPECT_FALSE(
       DecodePrivateKeyFromExport("{ invalid json }", kPassword).has_value());
@@ -303,9 +324,10 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_InvalidJSON) {
 }
 
 TEST(PolkadotUtils, DecodePrivateKeyFromExport_Testnet) {
-  const std::string kPassword = "test_password_123";
+  static constexpr char kPassword[] = "test_password_123";
 
   auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotTestnet);
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
 
   auto encoded_json = keyring.EncodePrivateKeyForExport(0, kPassword);
   ASSERT_TRUE(encoded_json.has_value());
@@ -317,9 +339,10 @@ TEST(PolkadotUtils, DecodePrivateKeyFromExport_Testnet) {
 }
 
 TEST(PolkadotUtils, DecodePrivateKeyFromExport_MissingParts) {
-  const std::string kPassword = "test_password_123";
+  static constexpr char kPassword[] = "test_password_123";
 
   auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotTestnet);
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
 
   auto valid_json = keyring.EncodePrivateKeyForExport(0, kPassword);
   ASSERT_TRUE(valid_json.has_value());
