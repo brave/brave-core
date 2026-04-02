@@ -296,6 +296,12 @@ public class BytecodeTest {
                 classExists(
                         "org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbar")); // presubmit: ignore-long-line
         Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbarButtonsViewBinder")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/customtabs/features/toolbar/BraveCustomTabToolbarButtonsViewBinder")); // presubmit: ignore-long-line
+        Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/download/MimeUtils"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/app/ChromeActivity"));
@@ -1863,6 +1869,10 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/notifications/permissions/BraveNotificationPermissionRationaleDialogController",
                         Context.class,
                         ModalDialogManager.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbarButtonsViewBinder", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/customtabs/features/toolbar/BraveCustomTabToolbarButtonsViewBinder")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/notifications/StandardNotificationBuilder",
