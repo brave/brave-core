@@ -136,7 +136,8 @@ struct ManagePasswordsView: View {
     }
     .environment(\.redactionReasons, effectiveRedactionReasons)
     .toolbarBackground(.visible, for: .navigationBar)
-    .navigationTitle(privacyLock.isLocked ? "" : Strings.Autofill.managePasswordsTitle)
+    .toolbarBackground(Color(.braveGroupedBackground), for: .navigationBar)
+    .navigationTitle(Strings.Autofill.managePasswordsTitle)
     .navigationBarBackButtonHidden(privacyLock.isLocked)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
@@ -159,7 +160,7 @@ struct ManagePasswordsView: View {
           .foregroundStyle(
             Color(
               braveSystemName: selectedGroupIds.isEmpty
-                ? .textSecondary : .systemfeedbackErrorVibrant
+                ? .textDisabled : .systemfeedbackErrorVibrant
             )
           )
           .disabled(selectedGroupIds.isEmpty)
@@ -252,18 +253,18 @@ private struct ManagePasswordListRow: View {
 
   var body: some View {
     NavigationLink {
-      if passwords.count == 1, let password = passwords.first {
-        ManagePasswordDetailView(viewModel: viewModel, password: password)
-          // NavigationLink destinations pushed onto a UINavigationController stack run in an isolated
-          // hosting context and do not inherit the parent's environment; Thus the parent's environment variables
-          // must be re-injected explicitly into the child view on the isolated stack.
-          .environment(\.openURL, openURL)
-          .environment(\.redactionReasons, redactionReasons)
-      } else {
-        ManagePasswordGroupView(viewModel: viewModel, domain: domain)
-          .environment(\.openURL, openURL)
-          .environment(\.redactionReasons, redactionReasons)
+      Group {
+        if passwords.count == 1, let password = passwords.first {
+          ManagePasswordDetailView(viewModel: viewModel, password: password)
+        } else {
+          ManagePasswordGroupView(viewModel: viewModel, domain: domain)
+        }
       }
+      // NavigationLink destinations pushed onto a UINavigationController stack run in an isolated
+      // hosting context and do not inherit the parent's environment; Thus the parent's environment variables
+      // must be re-injected explicitly into the child view on the isolated stack.
+      .environment(\.openURL, openURL)
+      .environment(\.redactionReasons, redactionReasons)
     } label: {
       Label {
         VStack(alignment: .leading, spacing: 2) {
