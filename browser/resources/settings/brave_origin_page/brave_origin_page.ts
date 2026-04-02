@@ -49,7 +49,7 @@ export class SettingsBraveOriginPageElement
     return {
       isPurchased_: {
         type: Boolean,
-        value: false,
+        value: true,
       },
     }
   }

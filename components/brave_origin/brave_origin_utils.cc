@@ -14,8 +14,12 @@
 
 namespace brave_origin {
 
-bool IsBraveOriginEnabled() {
-  if (!base::FeatureList::IsEnabled(features::kBraveOrigin)) {
+bool IsBraveOriginFeatureEnabled() {
+  return base::FeatureList::IsEnabled(features::kBraveOrigin);
+}
+
+bool IsBraveOriginPurchased() {
+  if (!IsBraveOriginFeatureEnabled()) {
     return false;
   }
   auto* manager = BraveOriginPolicyManager::GetInstance();
