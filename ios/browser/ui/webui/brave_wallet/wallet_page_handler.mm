@@ -40,3 +40,9 @@ void WalletPageHandler::ShowOnboarding(bool is_new_wallet) {
       brave_wallet::PageHandlerBridgeHolder::FromWebState(web_state_)->bridge();
   [bridge showOnboarding:is_new_wallet];
 }
+
+void WalletPageHandler::OpenWalletHome() {
+  id<WalletPageHandlerBridge> bridge =
+      brave_wallet::PageHandlerBridgeHolder::FromWebState(web_state_)->bridge();
+  [bridge openWalletHome];
+}

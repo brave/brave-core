@@ -28,6 +28,9 @@ NS_SWIFT_NAME(WalletPageHandler)
 /// Handle when the user taps either create a new wallet or restore wallet to
 /// enter onboarding flow
 - (void)showOnboarding:(BOOL)isNewWallet;
+/// Handle when the user makes interation in Wallet WebUI will require to open
+/// Wallet WebUI in a new tab
+- (void)openWalletHome;
 
 @end
 

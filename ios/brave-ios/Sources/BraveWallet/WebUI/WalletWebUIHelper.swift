@@ -12,13 +12,15 @@ public class WalletWebUIHelper: NSObject, TabObserver, WalletPageHandler {
   private var showWalletBackUpHandler: (() -> Void)?
   private var unlockWalletHandler: (() -> Void)?
   private var showOnboardingHandler: ((Bool) -> Void)?
+  private var openWalletHomeHandler: (() -> Void)?
 
   public init?(
     tab: some TabState,
     showApprovePanelUIHandler: ((_ tab: (any TabState)?) -> Void)?,
     showWalletBackUpHandler: (() -> Void)?,
     unlockWalletHandler: (() -> Void)?,
-    showOnboardingHandler: ((Bool) -> Void)?
+    showOnboardingHandler: ((Bool) -> Void)?,
+    openWalletHomeHandler: (() -> Void)?
   ) {
     if !tab.isChromiumTab || !(FeatureList.kBraveWalletWebUIIOS?.enabled ?? false) {
       return nil
@@ -28,6 +30,7 @@ public class WalletWebUIHelper: NSObject, TabObserver, WalletPageHandler {
     self.showWalletBackUpHandler = showWalletBackUpHandler
     self.unlockWalletHandler = unlockWalletHandler
     self.showOnboardingHandler = showOnboardingHandler
+    self.openWalletHomeHandler = openWalletHomeHandler
     super.init()
     tab.addObserver(self)
   }
@@ -61,6 +64,10 @@ public class WalletWebUIHelper: NSObject, TabObserver, WalletPageHandler {
 
   public func showOnboarding(_ isNewWallet: Bool) {
     showOnboardingHandler?(isNewWallet)
+  }
+
+  public func openWalletHome() {
+    openWalletHomeHandler?()
   }
 }
 
