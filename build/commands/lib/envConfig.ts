@@ -271,16 +271,20 @@ export default class EnvConfig {
    */
   static #convertToValueType(
     value: any,
-    requiredValueType: ConfigValueType,
+    expectedValueType: ConfigValueType,
     keyPath: string[],
   ): any {
-    if (EnvConfig.#getValueType(value) === requiredValueType) {
+    if (EnvConfig.#getValueType(value) === expectedValueType) {
       return value
     }
 
+    if (expectedValueType === 'Any') {
+      return EnvConfig.#parseJsonOrKeepString(value)
+    }
+
     try {
-      const parsedValue = EnvConfig.#parseJsonOrKeepString(value)
-      EnvConfig.#validateValueType(parsedValue, requiredValueType, () =>
+      const parsedValue = JSON.parse(value)
+      EnvConfig.#validateValueType(parsedValue, expectedValueType, () =>
         EnvConfig.#joinKeyPath(keyPath),
       )
       return parsedValue

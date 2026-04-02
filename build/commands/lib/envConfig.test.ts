@@ -32,6 +32,13 @@ describe('EnvConfig', () => {
     )
   }
 
+  const expectInvalidJsonError = (fn: () => unknown) => {
+    expect(fn).toThrow('process.exit called')
+    expect(Log.error).toHaveBeenCalledWith(
+      expect.stringContaining('value is not JSON-parseable'),
+    )
+  }
+
   const expectRequiredNotFound = (fn: () => unknown) => {
     expect(fn).toThrow('process.exit called')
     expect(Log.error).toHaveBeenCalledWith(
@@ -237,6 +244,7 @@ describe('EnvConfig', () => {
         'object={"key":"value"}',
         'object_key=value',
         'null_value=null',
+        'invalid_json={"a": asd}',
       ]
 
       envConfig = new EnvConfig(configDir)
@@ -252,6 +260,7 @@ describe('EnvConfig', () => {
       expect(envConfig.getString(['object'])).toEqual('{"key":"value"}')
       expect(envConfig.getString(['object', 'key'])).toBe('value')
       expect(envConfig.getString(['null_value'])).toBe('null')
+      expect(envConfig.getString(['invalid_json'])).toBe('{"a": asd}')
 
       expect(envConfig.requireString(['boolean'])).toBe('true')
       expect(envConfig.requireString(['number'])).toBe('42')
@@ -260,6 +269,12 @@ describe('EnvConfig', () => {
       expect(envConfig.requireString(['object'])).toEqual('{"key":"value"}')
       expect(envConfig.requireString(['object', 'key'])).toBe('value')
       expect(envConfig.requireString(['null_value'])).toBe('null')
+      expect(envConfig.requireString(['invalid_json'])).toBe('{"a": asd}')
+    })
+
+    it('should throw if invalid JSON', () => {
+      expectInvalidJsonError(() => envConfig.getBoolean(['invalid_json']))
+      expectInvalidJsonError(() => envConfig.requireBoolean(['invalid_json']))
     })
 
     it('should fall back to package config when .env value not found', () => {
