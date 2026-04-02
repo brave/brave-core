@@ -373,7 +373,18 @@ private:
   void InternalMethod();
 ```
 
-For patches, use a `BRAVE_CLASS_NAME_H` define at the end of `public:` that adds friend declarations.
+To add a friend declaration to an upstream class, use a `#define` in a chromium_src header override that piggybacks the friend declaration onto an existing method name:
+
+```cpp
+// chromium_src/chrome/browser/extensions/component_loader.h
+#define AddNetworkSpeechSynthesisExtension    \
+  AddNetworkSpeechSynthesisExtensionUnused(); \
+  friend class BraveComponentLoader;          \
+  void AddNetworkSpeechSynthesisExtension
+
+#include <chrome/browser/extensions/component_loader.h>  // IWYU pragma: export
+#undef AddNetworkSpeechSynthesisExtension
+```
 
 ---
 
