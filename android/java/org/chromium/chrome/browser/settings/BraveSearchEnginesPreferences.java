@@ -13,6 +13,7 @@ import android.view.View;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
@@ -23,6 +24,7 @@ import org.chromium.brave.browser.custom_search_engines.settings.CustomSearchEng
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -34,7 +36,7 @@ import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.components.web_discovery.WebDiscoveryPrefs;
 
-import java.util.List;
+import java.util.Set;
 
 public class BraveSearchEnginesPreferences extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
@@ -101,10 +103,15 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
     }
 
     private void updateCustomSearchEnginesPreference() {
-        List<String> searchEngines =
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_CUSTOM_SEARCH_ENGINES)) {
+            removePreferenceIfPresent(PREF_CUSTOM_SEARCH_ENGINES_CATEGORY);
+            return;
+        }
+
+        Set<String> searchEngines =
                 CustomSearchEnginesPrefManager.getInstance().getCustomSearchEngines();
 
-        if (searchEngines == null || searchEngines.isEmpty()) {
+        if (searchEngines.isEmpty()) {
             removeCustomSearchEnginesPreference();
             return;
         }
@@ -278,8 +285,14 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
                         indexData.updateEntrySummaryForKey(
                                 frag, PREF_SEND_WEB_DISCOVERY, R.string.send_web_discovery_summary);
                     }
-                    indexData.updateEntryForKey(
-                            frag, PREF_ADD_CUSTOM_SEARCH_ENGINE, R.string.add_custom_search_engine);
+                    if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_CUSTOM_SEARCH_ENGINES)) {
+                        indexData.updateEntryForKey(
+                                frag,
+                                PREF_ADD_CUSTOM_SEARCH_ENGINE,
+                                R.string.add_custom_search_engine);
+                    } else {
+                        indexData.removeEntryForKey(frag, PREF_ADD_CUSTOM_SEARCH_ENGINE);
+                    }
                     // PREF_CUSTOM_SEARCH_ENGINE_LIST is added via addPreference() in Java — a
                     // runtime list of custom engines, not indexed for search.
                 }

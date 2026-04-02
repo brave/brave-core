@@ -5,24 +5,17 @@
 
 package org.chromium.brave.browser.custom_search_engines;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import org.chromium.base.Log;
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @NullMarked
 public class CustomSearchEnginesPrefManager {
-    private static final String TAG = "CustomSearchEngines";
-
-    private static final String CUSTOM_SEARCH_ENGINES = "custom_search_engines";
-
     private final SharedPreferencesManager mSharedPreferencesManager;
 
     private static @Nullable CustomSearchEnginesPrefManager sInstance;
@@ -38,40 +31,15 @@ public class CustomSearchEnginesPrefManager {
         return sInstance;
     }
 
-    public void saveCustomSearchEngines(List<String> customSearchEnginesList) {
-        if (customSearchEnginesList == null) {
-            return;
-        }
-
-        try {
-            JSONArray jsonArray = new JSONArray(customSearchEnginesList);
-            mSharedPreferencesManager.writeString(CUSTOM_SEARCH_ENGINES, jsonArray.toString());
-        } catch (Exception e) {
-            Log.e(TAG, "Error saving search engines", e);
-        }
+    public void saveCustomSearchEngines(Set<String> customSearchEngines) {
+        mSharedPreferencesManager.writeStringSet(
+                BravePreferenceKeys.CUSTOM_SEARCH_ENGINE_KEYWORDS, customSearchEngines);
     }
 
-    public List<String> getCustomSearchEngines() {
-        List<String> customSearchEnginesList = new ArrayList<>();
-        String savedSearchEngines =
-                mSharedPreferencesManager.readString(CUSTOM_SEARCH_ENGINES, null);
-
-        if (savedSearchEngines == null) {
-            return customSearchEnginesList;
-        }
-
-        try {
-            JSONObject wrapper =
-                    new JSONObject("{\"customSearchEngines\":" + savedSearchEngines + "}");
-            JSONArray searchEnginesArray = wrapper.getJSONArray("customSearchEngines");
-
-            for (int i = 0; i < searchEnginesArray.length(); i++) {
-                customSearchEnginesList.add(searchEnginesArray.getString(i));
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Error getting search engines", e);
-        }
-
-        return customSearchEnginesList;
+    public Set<String> getCustomSearchEngines() {
+        // Return a mutable copy so callers can freely modify the set before saving.
+        return new HashSet<>(
+                mSharedPreferencesManager.readStringSet(
+                        BravePreferenceKeys.CUSTOM_SEARCH_ENGINE_KEYWORDS));
     }
 }

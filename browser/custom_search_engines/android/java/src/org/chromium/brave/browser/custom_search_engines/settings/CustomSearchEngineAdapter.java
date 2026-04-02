@@ -23,19 +23,22 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.brave.browser.custom_search_engines.ConfirmationDialog;
 import org.chromium.brave.browser.custom_search_engines.CustomSearchEnginesManager;
 import org.chromium.brave.browser.custom_search_engines.CustomSearchEnginesPrefManager;
 import org.chromium.brave.browser.custom_search_engines.R;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.components.favicon.LargeIconBridge;
+import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.widget.Toast;
 
-import java.util.List;
+import java.util.ArrayList;
 
 @NullMarked
 public class CustomSearchEngineAdapter
@@ -84,7 +87,10 @@ public class CustomSearchEngineAdapter
             int position) {
         final String searchEngineKeyword = getItem(position);
 
-        customSearchEngineViewHolder.getSearchEngineText().setText(searchEngineKeyword);
+        String displayName = getSearchEngineName(searchEngineKeyword);
+        customSearchEngineViewHolder
+                .getSearchEngineText()
+                .setText(displayName != null ? displayName : searchEngineKeyword);
 
         customSearchEngineViewHolder
                 .getView()
@@ -95,6 +101,16 @@ public class CustomSearchEngineAdapter
 
         loadSearchEngineLogo(
                 customSearchEngineViewHolder.getSearchEngineLogo(), searchEngineKeyword);
+    }
+
+    private @Nullable String getSearchEngineName(String keyword) {
+        if (mTemplateUrlService == null) return null;
+        for (TemplateUrl templateUrl : mTemplateUrlService.getTemplateUrls()) {
+            if (templateUrl.getKeyword().equals(keyword)) {
+                return templateUrl.getShortName();
+            }
+        }
+        return null;
     }
 
     private void openAddCustomSearchEngineFragment(String searchEngineKeyword) {
@@ -133,14 +149,16 @@ public class CustomSearchEngineAdapter
     private void showConfirmationDialog(String searchEngineKeyword) {
         ConfirmationDialog.OnConfirmationDialogListener listener =
                 createDialogListener(searchEngineKeyword);
+        String displayName = getSearchEngineName(searchEngineKeyword);
+        String nameForDialog = displayName != null ? displayName : searchEngineKeyword;
         String formattedMessage =
-                mContext.getString(R.string.delete_custom_search_engine_text, searchEngineKeyword);
+                mContext.getString(R.string.delete_custom_search_engine_text, nameForDialog);
         SpannableStringBuilder messageSpan = new SpannableStringBuilder(formattedMessage);
-        int nameStart = formattedMessage.indexOf(searchEngineKeyword);
+        int nameStart = formattedMessage.indexOf(nameForDialog);
         if (nameStart >= 0) {
             // Include the surrounding quote characters (straight or curly)
             int boldStart = nameStart > 0 ? nameStart - 1 : nameStart;
-            int boldEnd = nameStart + searchEngineKeyword.length();
+            int boldEnd = nameStart + nameForDialog.length();
             if (boldEnd < formattedMessage.length()) boldEnd++;
             messageSpan.setSpan(
                     new StyleSpan(Typeface.BOLD),
@@ -166,30 +184,36 @@ public class CustomSearchEngineAdapter
                 if (mProfile == null) {
                     return;
                 }
-                Runnable templateUrlServiceReady =
+                TemplateUrlService templateUrlService =
+                        TemplateUrlServiceFactory.getForProfile(mProfile);
+                templateUrlService.runWhenLoaded(
                         () -> {
-                            // TODO(https://github.com/brave/brave-browser/issues/21837): implement
-                            // the actual removal of the custom search
-                            // engine from template url service.
-                            boolean isRemoved = true;
+                            if (!isSearchEngineEligibleToDelete(searchEngineKeyword)) {
+                                Toast.makeText(
+                                                mContext,
+                                                mContext.getString(
+                                                        R.string.failed_to_delete_search_engine),
+                                                Toast.LENGTH_LONG)
+                                        .show();
+                                return;
+                            }
+                            boolean isRemoved =
+                                    mCustomSearchEnginesManager.removeCustomSearchEngine(
+                                            templateUrlService, searchEngineKeyword);
                             if (isRemoved) {
-                                mCustomSearchEnginesManager.removeCustomSearchEngine(
-                                        searchEngineKeyword);
-                                List<String> customSearchEngines =
-                                        CustomSearchEnginesPrefManager.getInstance()
-                                                .getCustomSearchEngines();
-                                submitList(customSearchEngines);
+                                submitList(
+                                        new ArrayList<>(
+                                                CustomSearchEnginesPrefManager.getInstance()
+                                                        .getCustomSearchEngines()));
                             } else {
                                 Toast.makeText(
                                                 mContext,
                                                 mContext.getString(
                                                         R.string.failed_to_delete_search_engine),
-                                                Toast.LENGTH_SHORT)
+                                                Toast.LENGTH_LONG)
                                         .show();
                             }
-                        };
-                TemplateUrlServiceFactory.getForProfile(mProfile)
-                        .runWhenLoaded(templateUrlServiceReady);
+                        });
             }
 
             @Override
@@ -197,6 +221,37 @@ public class CustomSearchEngineAdapter
                 // no-op, but required by OnConfirmationDialogListener interface
             }
         };
+    }
+
+    /**
+     * Checks if the search engine is eligible to be deleted.
+     *
+     * @param searchEngineKeyword The keyword of the search engine.
+     * @return True if the search engine is eligible to be deleted (it is not set as active DSE for
+     *     standard or private tabs and we are able to retrieve data for searchEngineKeyword), false
+     *     otherwise.
+     */
+    private boolean isSearchEngineEligibleToDelete(String searchEngineKeyword) {
+        // Brave stores the active DSE for standard and private tabs as shortnames in Java
+        // SharedPreferences (written by BraveSearchEngineAdapter). Compare by shortname since
+        // the private profile's TemplateUrlService may not be loaded.
+        String shortName = getSearchEngineName(searchEngineKeyword);
+        if (shortName == null) {
+            return false;
+        }
+        String standardDse =
+                ChromeSharedPreferences.getInstance()
+                        .readString(BravePreferenceKeys.STANDARD_DSE_SHORTNAME, null);
+        if (shortName.equals(standardDse)) {
+            return false;
+        }
+        String privateDse =
+                ChromeSharedPreferences.getInstance()
+                        .readString(BravePreferenceKeys.PRIVATE_DSE_SHORTNAME, null);
+        if (shortName.equals(privateDse)) {
+            return false;
+        }
+        return true;
     }
 
     @Override

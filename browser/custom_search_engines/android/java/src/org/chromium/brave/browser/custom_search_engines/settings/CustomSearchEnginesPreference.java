@@ -20,7 +20,7 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.profiles.Profile;
 
-import java.util.List;
+import java.util.ArrayList;
 
 @NullMarked
 public class CustomSearchEnginesPreference extends Preference {
@@ -64,7 +64,7 @@ public class CustomSearchEnginesPreference extends Preference {
                 || mCustomSearchEnginesPrefManager == null) {
             return;
         }
-        List<String> customSearchEngines = mCustomSearchEnginesPrefManager.getCustomSearchEngines();
-        mCustomSearchEngineAdapter.submitList(customSearchEngines);
+        mCustomSearchEngineAdapter.submitList(
+                new ArrayList<>(mCustomSearchEnginesPrefManager.getCustomSearchEngines()));
     }
 }

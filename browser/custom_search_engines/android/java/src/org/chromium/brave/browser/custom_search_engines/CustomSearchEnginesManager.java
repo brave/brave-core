@@ -19,8 +19,7 @@ import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.net.NetworkTrafficAnnotationTag;
 import org.chromium.url.GURL;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @NullMarked
 public class CustomSearchEnginesManager {
@@ -40,51 +39,54 @@ public class CustomSearchEnginesManager {
         return sInstance;
     }
 
-    public void addCustomSearchEngine(String searchEngineKeyword) {
-        List<String> customSearchEnginesList =
-                mCustomSearchEnginesPrefManager.getCustomSearchEngines();
-        if (customSearchEnginesList.isEmpty()) {
-            customSearchEnginesList = new ArrayList<>();
+    public boolean addCustomSearchEngine(
+            TemplateUrlService templateUrlService, String title, String keyword, String url) {
+        String queryReplacedUrl = url.replace("%s", "{searchTerms}");
+        boolean isAdded = templateUrlService.addSearchEngine(title, keyword, queryReplacedUrl);
+        if (isAdded) {
+            Set<String> keywords = mCustomSearchEnginesPrefManager.getCustomSearchEngines();
+            keywords.add(keyword);
+            mCustomSearchEnginesPrefManager.saveCustomSearchEngines(keywords);
         }
-        if (!customSearchEnginesList.contains(searchEngineKeyword)) {
-            customSearchEnginesList.add(searchEngineKeyword);
-            mCustomSearchEnginesPrefManager.saveCustomSearchEngines(customSearchEnginesList);
-        }
+        return isAdded;
     }
 
-    private boolean customSearchEngineExists(
-            List<String> customSearchEnginesList, String searchEngineKeyword) {
-        return !customSearchEnginesList.isEmpty()
-                && customSearchEnginesList.contains(searchEngineKeyword);
+    public boolean isCustomSearchEngine(String searchEngineKeyword) {
+        return mCustomSearchEnginesPrefManager
+                .getCustomSearchEngines()
+                .contains(searchEngineKeyword);
     }
 
-    public boolean isCustomSearchEngineAdded(String searchEngineKeyword) {
-        List<String> customSearchEnginesList =
-                mCustomSearchEnginesPrefManager.getCustomSearchEngines();
-        return customSearchEngineExists(customSearchEnginesList, searchEngineKeyword);
-    }
-
-    public void removeCustomSearchEngine(String searchEngineKeyword) {
-        List<String> customSearchEnginesList =
-                mCustomSearchEnginesPrefManager.getCustomSearchEngines();
-        if (customSearchEngineExists(customSearchEnginesList, searchEngineKeyword)) {
-            customSearchEnginesList.remove(searchEngineKeyword);
-            mCustomSearchEnginesPrefManager.saveCustomSearchEngines(customSearchEnginesList);
-        }
-    }
-
-    public void updateCustomSearchEngine(
-            String searchEngineKeyword, String title, String newSearchEngineKeyword, String url) {
-        List<String> customSearchEnginesList =
-                mCustomSearchEnginesPrefManager.getCustomSearchEngines();
-        if (!customSearchEnginesList.isEmpty()
-                && customSearchEnginesList.contains(searchEngineKeyword)) {
-            int index = customSearchEnginesList.indexOf(searchEngineKeyword);
-            if (index != -1) {
-                customSearchEnginesList.set(index, newSearchEngineKeyword);
+    public boolean removeCustomSearchEngine(
+            TemplateUrlService templateUrlService, String searchEngineKeyword) {
+        boolean isRemoved = templateUrlService.removeSearchEngine(searchEngineKeyword);
+        if (isRemoved) {
+            Set<String> keywords = mCustomSearchEnginesPrefManager.getCustomSearchEngines();
+            if (keywords.remove(searchEngineKeyword)) {
+                mCustomSearchEnginesPrefManager.saveCustomSearchEngines(keywords);
             }
-            mCustomSearchEnginesPrefManager.saveCustomSearchEngines(customSearchEnginesList);
         }
+        return isRemoved;
+    }
+
+    public boolean updateCustomSearchEngine(
+            TemplateUrlService templateUrlService,
+            String searchEngineKeyword,
+            String title,
+            String newSearchEngineKeyword,
+            String url) {
+        String queryReplacedUrl = url.replace("%s", "{searchTerms}");
+        boolean isUpdated =
+                templateUrlService.editSearchEngine(
+                        searchEngineKeyword, title, newSearchEngineKeyword, queryReplacedUrl);
+        if (isUpdated) {
+            Set<String> keywords = mCustomSearchEnginesPrefManager.getCustomSearchEngines();
+            if (keywords.remove(searchEngineKeyword)) {
+                keywords.add(newSearchEngineKeyword);
+                mCustomSearchEnginesPrefManager.saveCustomSearchEngines(keywords);
+            }
+        }
+        return isUpdated;
     }
 
     public void loadSearchEngineLogo(

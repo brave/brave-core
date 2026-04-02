@@ -70,6 +70,10 @@ BASE_FEATURE(kBraveAndroidDynamicColors,
 // for a specified duration.
 BASE_FEATURE(kBraveFreshNtpAfterIdleExperiment,
              base::FEATURE_DISABLED_BY_DEFAULT);
+
+// Enable custom search engines on Android, allowing users to add, edit, and
+// remove their own search engine entries from the search engine settings.
+BASE_FEATURE(kBraveCustomSearchEngines, base::FEATURE_DISABLED_BY_DEFAULT);
 #endif  // BUILDFLAG(IS_ANDROID)
 
 // The variant of the "day zero" experiment. i.e. A, B, C, D, etc.

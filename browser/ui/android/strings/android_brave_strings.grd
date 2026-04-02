@@ -3937,8 +3937,11 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_URL_ERROR" desc="Add custom search engine empty url text">
       URL is invalid.
     </message>
+    <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_TITLE_ERROR" desc="Add custom search engine invalid title error">
+      Title can only contain letters, numbers and spaces.
+    </message>
     <message name="IDS_SEARCH_ENGINE_ALREADY_EXISTS_ERROR" desc="Search engine already exists text">
-      Search engine is already added.
+      Search engine with this keyword already exists.
     </message>
     <message name="IDS_FAILED_TO_ADD_SEARCH_ENGINE" desc="Failed to add search engine text">
       Failed to add search engine.

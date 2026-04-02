@@ -377,11 +377,21 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
       kOsAndroid,                                                    \
       FEATURE_VALUE_TYPE(features::kBraveAndroidDynamicColors),      \
   })
+#define BRAVE_CUSTOM_SEARCH_ENGINES                                        \
+  EXPAND_FEATURE_ENTRIES({                                                 \
+      "brave-custom-search-engines",                                       \
+      "Custom Search Engines",                                             \
+      "Enable the ability to add, edit, and remove custom search engines " \
+      "from the search engine settings.",                                  \
+      kOsAndroid,                                                          \
+      FEATURE_VALUE_TYPE(features::kBraveCustomSearchEngines),             \
+  })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
 #define BRAVE_SAFE_BROWSING_ANDROID
 #define BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID
 #define BRAVE_ANDROID_DYNAMIC_COLORS
+#define BRAVE_CUSTOM_SEARCH_ENGINES
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -1335,6 +1345,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID                                     \
   BRAVE_ANDROID_DYNAMIC_COLORS                                                 \
+  BRAVE_CUSTOM_SEARCH_ENGINES                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_TABS_FEATURE_ENTRIES                                                   \
   BRAVE_DARKER_THEME_FEATURE_ENTRIES                                           \
