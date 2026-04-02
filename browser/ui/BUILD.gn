@@ -435,6 +435,7 @@ source_set("ui") {
       "//chrome/browser/ui/thumbnails",
       "//chrome/browser/ui/views/page_action",
       "//chrome/browser/ui/views/side_panel",
+      "//chrome/browser/ui/webui/sanitized_image:sanitized_image_source",
       "//chrome/browser/ui/webui/searchbox",
       "//chrome/browser/ui/webui/settings",
       "//chrome/browser/ui/webui/side_panel/reading_list:mojo_bindings",
@@ -1069,8 +1070,8 @@ source_set("ui") {
     sources += [
       "//chrome/browser/ui/webui/favicon_source.cc",
       "//chrome/browser/ui/webui/favicon_source.h",
-      "//chrome/browser/ui/webui/sanitized_image_source.cc",
-      "//chrome/browser/ui/webui/sanitized_image_source.h",
+      "//chrome/browser/ui/webui/sanitized_image/sanitized_image_source.cc",
+      "//chrome/browser/ui/webui/sanitized_image/sanitized_image_source.h",
     ]
 
     deps += [
