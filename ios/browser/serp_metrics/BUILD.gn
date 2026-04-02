@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("serp_metrics") {
+  sources = [
+    "serp_metrics_service_factory_ios.h",
+    "serp_metrics_service_factory_ios.mm",
+  ]
+
+  public_deps = [
+    "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/constants",
+    "//brave/components/serp_metrics",
+    "//brave/components/serp_metrics:features",
+    "//brave/components/time_period_storage",
+    "//components/keyed_service/core",
+    "//components/pref_registry",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/profile",
+  ]
+}
