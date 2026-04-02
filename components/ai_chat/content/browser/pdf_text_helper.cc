@@ -37,7 +37,7 @@ void OnGetPdfPageCount(content::WebContents* web_contents,
   auto* pdf_helper =
       pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents);
   if (status == pdf::mojom::PdfListener::GetPdfBytesStatus::kFailed ||
-      !pdf_helper) {
+      page_count == 0 || !pdf_helper) {
     std::move(callback).Run(std::nullopt);
     return;
   }
