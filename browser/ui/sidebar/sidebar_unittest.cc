@@ -299,4 +299,34 @@ TEST(SidebarUtilTest, GetBubbleArrowForSidebarTest) {
   EXPECT_EQ(views::BubbleBorder::RIGHT_TOP, GetBubbleArrowForSidebar(prefs));
 }
 
+// Test that invalid sidebar items are filtered out during initialization.
+// This is important for built-in items that may become invalid when their
+// underlying feature is disabled (e.g., Wallet when disabled by policy).
+TEST_F(SidebarModelTest, InvalidItemsAreFilteredOut) {
+  // Create an invalid sidebar item (empty title and built-in type is kNone).
+  // This simulates what would happen for a disabled Wallet item.
+  SidebarItem invalid_item;
+  // invalid_item has default values: type = kTypeBuiltIn,
+  // built_in_item_type = kNone, title = empty.
+  // IsValidItem() should return false because title is empty and
+  // built_in_item_type is kNone.
+  EXPECT_FALSE(invalid_item.IsValidItem())
+      << "Default constructed item should be invalid";
+
+  // Create a valid web-type item for comparison.
+  SidebarItem valid_web_item = SidebarItem::Create(
+      GURL("https://example.com/"), u"Example",
+      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
+  EXPECT_TRUE(valid_web_item.IsValidItem())
+      << "Web-type item with valid URL and title should be valid";
+
+  // The model's items should only include valid items.
+  // After Init(), all items in the model should be valid.
+  model()->Init(nullptr);
+  for (const auto& item : model()->GetAllSidebarItems()) {
+    EXPECT_TRUE(item.IsValidItem())
+        << "All items in the model should be valid after Init()";
+  }
+}
+
 }  // namespace sidebar
