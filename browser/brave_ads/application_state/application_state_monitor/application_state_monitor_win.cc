@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_ads/application_state/background_helper/background_helper_win.h"
+#include "brave/browser/brave_ads/application_state/application_state_monitor/application_state_monitor_win.h"
 
 #include <windows.h>
 
@@ -18,20 +18,20 @@
 namespace brave_ads {
 
 // static
-BackgroundHelper* BackgroundHelper::GetInstance() {
-  static base::NoDestructor<BackgroundHelperWin> instance;
+ApplicationStateMonitor* ApplicationStateMonitor::GetInstance() {
+  static base::NoDestructor<ApplicationStateMonitorWin> instance;
   return instance.get();
 }
 
-BackgroundHelperWin::BackgroundHelperWin() {
+ApplicationStateMonitorWin::ApplicationStateMonitorWin() {
   singleton_hwnd_subscription_ =
       gfx::SingletonHwnd::GetInstance()->RegisterCallback(base::BindRepeating(
-          &BackgroundHelperWin::OnWndProc, base::Unretained(this)));
+          &ApplicationStateMonitorWin::OnWndProc, base::Unretained(this)));
 }
 
-BackgroundHelperWin::~BackgroundHelperWin() = default;
+ApplicationStateMonitorWin::~ApplicationStateMonitorWin() = default;
 
-bool BackgroundHelperWin::IsInForeground() const {
+bool ApplicationStateMonitorWin::IsBrowserActive() const {
   auto* browser = GetLastActiveBrowserWindowInterfaceWithAnyProfile();
   if (browser && browser->GetWindow()) {
     return ::GetForegroundWindow() ==
@@ -41,18 +41,18 @@ bool BackgroundHelperWin::IsInForeground() const {
   return false;
 }
 
-void BackgroundHelperWin::OnWndProc(HWND hwnd,
-                                    UINT message,
-                                    WPARAM wparam,
-                                    LPARAM lparam) {
+void ApplicationStateMonitorWin::OnWndProc(HWND hwnd,
+                                           UINT message,
+                                           WPARAM wparam,
+                                           LPARAM lparam) {
   if (message != WM_ACTIVATEAPP) {
     return;
   }
 
   if ((BOOL)wparam) {
-    NotifyDidEnterForeground();
+    NotifyBrowserDidBecomeActive();
   } else {
-    NotifyDidEnterBackground();
+    NotifyBrowserDidResignActive();
   }
 }
 

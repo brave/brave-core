@@ -86,7 +86,7 @@ AdsTabHelper::AdsTabHelper(content::WebContents* const web_contents)
   }
 
 #if !BUILDFLAG(IS_ANDROID)
-  // See "background_helper_android.h" for Android.
+  // See `application_state_monitor_android.h` for Android.
   BrowserList::AddObserver(this);
 #endif  // !BUILDFLAG(IS_ANDROID)
 

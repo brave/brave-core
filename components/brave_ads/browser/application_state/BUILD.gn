@@ -9,9 +9,9 @@ assert(enable_brave_ads)
 
 source_set("application_state") {
   sources = [
-    "background_helper.cc",
-    "background_helper.h",
-    "background_helper_observer.h",
+    "application_state_monitor.cc",
+    "application_state_monitor.h",
+    "application_state_observer.h",
   ]
 
   public_deps = [ "//base" ]
