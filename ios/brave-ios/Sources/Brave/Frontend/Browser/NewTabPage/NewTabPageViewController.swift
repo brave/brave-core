@@ -704,7 +704,7 @@ class NewTabPageViewController: UIViewController {
     _ event: BraveAds.NewTabPageAdEventType,
     completion: ((_ success: Bool) -> Void)? = nil
   ) {
-    if let tab = browserTab,
+    if browserTab != nil,
       case .sponsoredMedia(let sponsoredBackground, let newTabPageAd) = background.currentBackground
     {
       rewards.ads.triggerNewTabPageAdEvent(

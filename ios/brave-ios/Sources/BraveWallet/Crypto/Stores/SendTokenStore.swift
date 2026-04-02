@@ -590,7 +590,6 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     recipient: String
   ) {
     Task { @MainActor in
-      let selectedChain = await rpcService.network(coin: fromAccount.coin, origin: nil)
       let (_, zcashAddressError) = await zcashWalletService.transactionType(
         accountId: fromAccount.accountId,
         useShieldedPool: false,
@@ -1030,16 +1029,6 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       completion(false, Strings.Wallet.internalErrorMessage)
       return
     }
-    let zecTxData: BraveWallet.ZecTxData = .init(
-      useShieldedPool: false,
-      to: sendAddress,
-      sendingMaxAmount: isSendingMaxValue,
-      memo: nil,
-      amount: amountInSatoshi,
-      fee: 0,
-      inputs: [],
-      outputs: []
-    )
     self.txService.addUnapprovedZCashTransaction(
       params: .init(
         chainId: token.chainId,

@@ -384,8 +384,7 @@ class TabManager: NSObject {
     }
 
     guard let newSelectedTab = tab, let previousTab = previous,
-      let newTabUrl = newSelectedTab.visibleURL,
-      let previousTabUrl = previousTab.visibleURL
+      let newTabUrl = newSelectedTab.visibleURL
     else { return }
 
     if !privateBrowsingManager.isPrivateBrowsing {

@@ -42,11 +42,6 @@ class BraveSearchResultAdScriptHandler: TabContentScript {
       return
     }
 
-    guard let braveSearchResultAdManager = tab.braveSearch?.braveSearchResultAdManager else {
-      Logger.module.error("Failed to get brave search result ad handler")
-      return
-    }
-
     guard JSONSerialization.isValidJSONObject(message.body),
       let messageData = try? JSONSerialization.data(withJSONObject: message.body, options: []),
       let searchResultAds = try? JSONDecoder().decode(
