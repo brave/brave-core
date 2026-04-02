@@ -49,7 +49,6 @@ using endpoints::PasswordInit;
 using endpoints::ServiceToken;
 using endpoints::VerifyDelete;
 using endpoints::VerifyResend;
-using endpoints::VerifyResult;
 
 namespace {
 
@@ -141,7 +140,6 @@ BraveAccountService::BraveAccountService(
       prefs::kBraveAccountVerificationToken, pref_service,
       base::BindRepeating(&BraveAccountService::OnVerificationTokenChanged,
                           base::Unretained(this)));
-  OnVerificationTokenChanged();
 
   pref_authentication_token_.Init(
       prefs::kBraveAccountAuthenticationToken, pref_service,
@@ -459,91 +457,6 @@ void BraveAccountService::OnResendConfirmationEmail(
 
 void BraveAccountService::OnVerificationTokenChanged() {
   NotifyObservers();
-
-  if (pref_verification_token_.GetValue().empty()) {
-    return verify_result_timer_.Stop();
-  }
-
-  ScheduleVerifyResult();
-}
-
-void BraveAccountService::ScheduleVerifyResult(
-    base::TimeDelta delay,
-    RequestHandle current_verify_result_request) {
-  verify_result_timer_.Start(
-      FROM_HERE, delay,
-      base::BindOnce(&BraveAccountService::VerifyResult, base::Unretained(this),
-                     std::move(current_verify_result_request)));
-}
-
-void BraveAccountService::VerifyResult(
-    RequestHandle current_verify_result_request) {
-  current_verify_result_request.reset();
-
-  const auto encrypted_verification_token =
-      pref_service_->GetString(prefs::kBraveAccountVerificationToken);
-  if (encrypted_verification_token.empty()) {
-    return;
-  }
-
-  const auto verification_token = Decrypt(encrypted_verification_token);
-  if (verification_token.empty()) {
-    return;
-  }
-
-  auto request = MakeRequest<WithHeaders<VerifyResult::Request>>();
-  SetBearerToken(request, verification_token);
-  request.body.wait = false;
-  current_verify_result_request =
-      Client<endpoints::VerifyResult>::Send<RequestCancelability::kCancelable>(
-          url_loader_factory_, std::move(request),
-          base::BindOnce(&BraveAccountService::OnVerifyResult,
-                         weak_factory_.GetWeakPtr()));
-
-  // Replace normal cadence with the watchdog timer.
-  ScheduleVerifyResult(kWatchdogInterval,
-                       std::move(current_verify_result_request));
-}
-
-void BraveAccountService::OnVerifyResult(VerifyResult::Response response) {
-  const auto [authentication_token, email] =
-      response.body
-          ? std::move(*response.body)
-                .transform([](auto success_body) {
-                  return std::pair(
-                      success_body.auth_token.GetIfString()
-                          ? std::move(success_body.auth_token).TakeString()
-                          : "",
-                      std::move(success_body.email).value_or(""));
-                })
-                .value_or({})
-          : std::pair<std::string, std::string>{};
-
-  if (!authentication_token.empty() && !email.empty()) {
-    // We stop polling regardless of encryption success,
-    // since the auth token is transient on the server
-    // and cannot be retrieved again.
-    // TODO(https://github.com/brave/brave-browser/issues/50307)
-    pref_service_->ClearPref(prefs::kBraveAccountVerificationToken);
-
-    if (const auto encrypted_authentication_token =
-            Encrypt(authentication_token);
-        !encrypted_authentication_token.empty()) {
-      pref_service_->SetString(prefs::kBraveAccountEmailAddress, email);
-      pref_service_->SetString(prefs::kBraveAccountAuthenticationToken,
-                               encrypted_authentication_token);
-    }
-
-    return;
-  }
-
-  if (response.status_code >= 300 && response.status_code < 500) {
-    // Polling cannot recover from these errors, so we stop further attempts.
-    return pref_service_->ClearPref(prefs::kBraveAccountVerificationToken);
-  }
-
-  // Replace watchdog timer with the normal cadence.
-  ScheduleVerifyResult(kVerifyResultPollInterval);
 }
 
 void BraveAccountService::OnLoginInitialize(LoginInitializeCallback callback,
