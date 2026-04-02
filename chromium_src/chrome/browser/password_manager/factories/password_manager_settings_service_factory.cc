@@ -21,6 +21,6 @@ IsPasswordManagerAvailable(__VA_ARGS__) || true) {             \
         profile->GetPrefs());                                  \
   } else if (false /* NOLINT(readability/braces) */
 
-#include <chrome/browser/password_manager/password_manager_settings_service_factory.cc>
+#include <chrome/browser/password_manager/factories/password_manager_settings_service_factory.cc>
 
 #undef IsPasswordManagerAvailable
