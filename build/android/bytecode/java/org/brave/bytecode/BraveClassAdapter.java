@@ -99,6 +99,7 @@ public class BraveClassAdapter {
         chain = new BraveMultiInstanceOrchestratorImplClassAdapter(chain);
         chain = new BraveMultiWindowUtilsClassAdapter(chain);
         chain = new BraveNewTabPageClassAdapter(chain);
+        chain = new BraveNewTabPageCoordinatorClassAdapter(chain);
         chain = new BraveNewTabPageLayoutClassAdapter(chain);
         chain = new BraveNtpCustomizationUtilsClassAdapter(chain);
         chain = new BraveNotificationBuilderClassAdapter(chain);

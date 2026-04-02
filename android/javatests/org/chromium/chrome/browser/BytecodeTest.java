@@ -95,6 +95,8 @@ import org.chromium.chrome.browser.notifications.NotificationBuilderBase;
 import org.chromium.chrome.browser.notifications.NotificationPlatformBridge.NotificationIdentifyingAttributes;
 import org.chromium.chrome.browser.ntp.IncognitoNtpMetrics;
 import org.chromium.chrome.browser.ntp.NewTabPageCreationTracker;
+import org.chromium.chrome.browser.ntp.NewTabPageLayout;
+import org.chromium.chrome.browser.ntp.NewTabPageManager;
 import org.chromium.chrome.browser.omnibox.BackKeyBehaviorDelegate;
 import org.chromium.chrome.browser.omnibox.BraveLocationBarMediator;
 import org.chromium.chrome.browser.omnibox.DeferredIMEWindowInsetApplicationCallback;
@@ -1585,6 +1587,25 @@ public class BytecodeTest {
                         MonotonicObservableSupplier.class,
                         TopInsetProvider.class,
                         StartupMetricsTracker.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/ntp/NewTabPageCoordinator",
+                        "org/chromium/chrome/browser/ntp/BraveNewTabPageCoordinator",
+                        NewTabPageManager.class,
+                        Activity.class,
+                        NewTabPageLayout.class,
+                        Tab.class,
+                        TabModelSelector.class,
+                        OneshotSupplier.class,
+                        Profile.class,
+                        WindowAndroid.class,
+                        ActivityResultTracker.class,
+                        BottomSheetController.class,
+                        ModalDialogManager.class,
+                        SnackbarManager.class,
+                        boolean.class,
+                        Supplier.class,
+                        HomeSurfaceTracker.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/ntp/IncognitoNewTabPage",
