@@ -245,8 +245,8 @@ export const EmailAliasModal = ({
   editAlias?: Alias
   bubble?: boolean
   mainEmail: string
-  aliases: Alias[]
-  aliasLimit: number
+  aliases?: Alias[]
+  aliasLimit?: number
   emailAliasesService: EmailAliasesServiceInterface
 }) => {
   const [limitReached, setLimitReached] = React.useState<boolean>(false)
@@ -307,15 +307,15 @@ export const EmailAliasModal = ({
     setAwaitingProposedAlias(false)
   }
   React.useEffect(() => {
-    setLimitReached(aliases.length >= aliasLimit)
+    setLimitReached(aliases?.length >= aliasLimit)
   }, [aliases, aliasLimit])
 
   React.useEffect(() => {
-    if (editing || limitReached) {
+    if (editing || aliases?.length >= aliasLimit) {
       return
     }
     regenerateAlias()
-  }, [editing, limitReached])
+  }, [editing, aliases, aliasLimit])
   return (
     <ModalCol>
       <ModalTitle>
@@ -330,7 +330,7 @@ export const EmailAliasModal = ({
       )}
       {limitReached ? (
         <EmailAliasLimitReached
-          aliases={aliases}
+          aliases={aliases ?? []}
           aliasLimit={aliasLimit}
         />
       ) : (
