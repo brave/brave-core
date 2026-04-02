@@ -5,6 +5,7 @@ description:
   the downstream tree and skips branches already up-to-date. Triggers on: force
   push downstream, push chain, push all branches.'
 argument-hint: '[starting-branch]'
+disable-model-invocation: true
 ---
 
 # Force Push Downstream

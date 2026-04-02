@@ -4,6 +4,7 @@ description:
   'Audit and fix best practices docs for stale references, duplicates, obsolete
   content, and formatting issues. Triggers on: fix bp docs, fix best practice
   docs, audit bp docs.'
+disable-model-invocation: true
 allowed-tools:
   Bash(find:*), Bash(ls:*), Bash(head:*), Bash(git:*), Bash(python3:*), Read,
   Grep, Glob, Edit

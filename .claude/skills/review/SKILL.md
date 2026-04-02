@@ -5,6 +5,7 @@ description:
   review and local review of uncommitted/branch changes. Default mode is local
   (reviews current branch changes). Triggers on: review pr, review this pr,
   /review <pr_url>, /review local, /review, check bot pr quality.'
+disable-model-invocation: true
 allowed-tools:
   Bash(gh issue list:*), Bash(gh issue view:*), Bash(gh pr list:*), Bash(gh pr
   view:*), Bash(gh pr diff:*), Bash(git diff:*), Bash(git log:*), Bash(git

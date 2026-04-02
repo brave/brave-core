@@ -6,6 +6,7 @@ description:
   impl-review, implement review, implement review feedback, address review
   comments.'
 argument-hint: '<pr-number>'
+disable-model-invocation: true
 ---
 
 # Implement Review Feedback

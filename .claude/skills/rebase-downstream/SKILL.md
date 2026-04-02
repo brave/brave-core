@@ -4,6 +4,7 @@ description:
   'Rebase a tree of dependent branches (including siblings) after upstream
   changes. Auto-detects downstream branches and rebases each in order. Triggers
   on: rebase downstream, rebase chain, propagate changes downstream.'
+disable-model-invocation: true
 ---
 
 # Rebase Downstream Tree
