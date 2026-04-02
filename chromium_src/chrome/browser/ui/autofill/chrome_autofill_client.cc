@@ -100,6 +100,27 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
       const PasswordFormClassification& form_classification,
       const FormFieldData& field,
       std::vector<Suggestion>& chrome_suggestions) override {
+#if !BUILDFLAG(IS_ANDROID)
+    AddEmailAliasSuggestsion(form_classification, field, chrome_suggestions);
+#endif
+  }
+
+  bool BraveHandleSuggestion(const Suggestion& suggestion,
+                             const autofill::FieldGlobalId& field) override {
+#if !BUILDFLAG(IS_ANDROID)
+    if (HandleEmailAliasSuggestsion(suggestion, field)) {
+      return true;
+    }
+#endif
+    return false;
+  }
+
+ private:
+#if !BUILDFLAG(IS_ANDROID)
+  void AddEmailAliasSuggestsion(
+      const PasswordFormClassification& form_classification,
+      const FormFieldData& field,
+      std::vector<Suggestion>& chrome_suggestions) {
     email_aliases::EmailAliasesController* controller =
         GetEmailAliasesControllerFromWebContents(web_contents());
     if (controller) {
@@ -126,24 +147,24 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
     }
   }
 
-  bool BraveHandleSuggestion(const Suggestion& suggestion,
-                             const autofill::FieldGlobalId& field) override {
-    if (suggestion.brave_new_email_alias_suggestion) {
-      email_aliases::EmailAliasesController* email_aliases =
-          GetEmailAliasesControllerFromWebContents(web_contents());
-      if (email_aliases) {
-        auto* render_frame_host = autofill::FindRenderFrameHostByToken(
-            *web_contents(), field.frame_token);
-        if (render_frame_host) {
-          email_aliases->ShowBubble(web_contents(), render_frame_host,
-                                    field.renderer_id.value());
-        }
-      }
-
-      return true;
+  bool HandleEmailAliasSuggestsion(const Suggestion& suggestion,
+                                   const autofill::FieldGlobalId& field) {
+    if (!suggestion.brave_new_email_alias_suggestion) {
+      return false;
     }
-    return false;
+    email_aliases::EmailAliasesController* email_aliases =
+        GetEmailAliasesControllerFromWebContents(web_contents());
+    if (email_aliases) {
+      auto* render_frame_host = autofill::FindRenderFrameHostByToken(
+          *web_contents(), field.frame_token);
+      if (render_frame_host) {
+        email_aliases->ShowBubble(web_contents(), render_frame_host,
+                                  field.renderer_id.value());
+      }
+    }
+    return true;
   }
+#endif
 };
 
 std::unique_ptr<ChromeAutofillClient> CreateBraveChromeAutofillClientForTesting(
