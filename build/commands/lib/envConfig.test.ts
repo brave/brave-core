@@ -28,7 +28,7 @@ describe('EnvConfig', () => {
   const expectInvalidTypeError = (fn: () => unknown) => {
     expect(fn).toThrow('process.exit called')
     expect(Log.error).toHaveBeenCalledWith(
-      expect.stringContaining('value type is invalid'),
+      expect.stringContaining('invalid config value'),
     )
   }
 

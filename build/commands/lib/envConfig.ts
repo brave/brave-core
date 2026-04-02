@@ -234,7 +234,7 @@ export default class EnvConfig {
       return value
     }
     Log.error(
-      `Required config value ${EnvConfig.#joinKeyPath(keyPath)} is not set`,
+      `Required config value ${EnvConfig.#joinKeyPath(keyPath)} is not set.`,
     )
     process.exit(1)
   }
@@ -261,8 +261,7 @@ export default class EnvConfig {
           )
         )
       default:
-        Log.error(`Invalid source: ${source}`)
-        process.exit(1)
+        assert.fail(`Invalid source: ${source}.`)
     }
   }
 
@@ -290,7 +289,7 @@ export default class EnvConfig {
       return parsedValue
     } catch (e) {
       Log.error(
-        `${EnvConfig.#joinKeyPath(keyPath)} value is not JSON-parseable:\n${e.message}`,
+        `${EnvConfig.#joinKeyPath(keyPath)} config value is not JSON-parseable:\n${e.message}`,
       )
       process.exit(1)
     }
@@ -351,14 +350,14 @@ export default class EnvConfig {
     function readEnvFile(filePath: string, fromFile: string): string {
       if (seenFiles.has(filePath)) {
         Log.error(
-          `Circular include_env directive detected: ${filePath} from ${fromFile}`,
+          `Circular include_env directive detected: ${filePath} from ${fromFile}.`,
         )
         process.exit(1)
       }
       seenFiles.add(filePath)
 
       if (!fs.existsSync(filePath)) {
-        Log.error(`Error loading .env (not found) from: ${filePath}`)
+        Log.error(`Error loading .env (not found) from: ${filePath}.`)
         process.exit(1)
       }
 
@@ -384,9 +383,6 @@ export default class EnvConfig {
     return parseEnv(readEnvFile(envPath, envPath))
   }
 
-  /**
-   * Validates the value against the expected value type.
-   */
   static #validateValueType(
     value: any,
     expectedValueType: ConfigValueType,
@@ -399,15 +395,12 @@ export default class EnvConfig {
     const valueType = EnvConfig.#getValueType(value)
     if (valueType !== expectedValueType) {
       Log.error(
-        `${valueDescCallback()} value type is invalid: expected ${expectedValueType}, got ${valueType}`,
+        `${valueDescCallback()} invalid config value: expected ${expectedValueType}, got ${valueType}: ${value}`,
       )
       process.exit(1)
     }
   }
 
-  /**
-   * Returns a string representing the type of a value.
-   */
   static #getValueType(value: any): ConfigValueType {
     if (value === undefined || value === null) {
       return 'Any'
@@ -425,9 +418,6 @@ export default class EnvConfig {
     return typeName
   }
 
-  /**
-   * Parses a value as JSON or returns it as is if it is not JSON-parseable.
-   */
   static #parseJsonOrKeepString(value: any): any {
     if (value === undefined) {
       return value
@@ -440,9 +430,6 @@ export default class EnvConfig {
     }
   }
 
-  /**
-   * Joins a key path with underscores, errors if the key path is empty.
-   */
   static #joinKeyPath(keyPath: string[]): string {
     assert.notEqual(keyPath.length, 0, 'keyPath must not be empty')
     const joinedKeyPath = keyPath.join('_')
