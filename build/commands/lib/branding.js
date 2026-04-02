@@ -7,7 +7,7 @@ import fs from 'fs-extra'
 import path from 'node:path'
 import config from './config.js'
 import l10nUtil from './l10nUtil.js'
-import Log from './logging.js'
+import * as Log from './log.ts'
 import util from './util.js'
 
 const update = () => {
@@ -300,7 +300,7 @@ const update = () => {
 
   for (const [source, output] of fileMap) {
     if (!fs.existsSync(source)) {
-      console.warn(
+      Log.warn(
         `Warning: The following file-system entry was not found for copying contents to a chromium destination: ${source}. Consider removing the entry from the file-map, or investigating whether the correct source code reference is checked out.`,
       )
       continue

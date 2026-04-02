@@ -8,7 +8,7 @@ import config from './config.js'
 import { isCI } from './ciDetect.ts'
 import fs from 'node:fs'
 import path from 'node:path'
-import Log from './logging.js'
+import * as Log from './log.ts'
 import util from './util.js'
 
 // The .disable_auto_update file in the depot_tools directory, regardless of
@@ -75,11 +75,10 @@ function installDepotTools(options = config.defaultOptions) {
   // @ts-ignore
   const enforcedDepotToolsRef = config.getProjectRef('depot_tools', null)
   if (enforcedDepotToolsRef && !isDepotToolsRefValid(enforcedDepotToolsRef)) {
-    Log.error(
+    Log.fatal(
       `Invalid depot_tools ref: ${enforcedDepotToolsRef}. `
         + 'Only full git revision is supported.',
     )
-    process.exit(1)
   }
 
   // This guard is used to ensure that we don't have a partial or broken

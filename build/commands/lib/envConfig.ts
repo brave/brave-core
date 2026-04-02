@@ -8,7 +8,7 @@ import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import { parseEnv } from 'node:util'
-import Log from './logging.js'
+import * as Log from './log.ts'
 
 /**
  * EnvConfig - Unified configuration loader for Brave build system
@@ -215,10 +215,9 @@ export default class EnvConfig {
     try {
       dotenvConfigValueParsed = JSON.parse(dotenvConfigValue)
     } catch (e) {
-      Log.error(
+      Log.fatal(
         `${keyJoined} value is not JSON-parseable: ${dotenvConfigValue}\n${e.message}`,
       )
-      process.exit(1)
     }
 
     EnvConfig.#validateValueType(
@@ -292,16 +291,14 @@ export default class EnvConfig {
     const seenFiles = new Set<string>()
     function readEnvFile(filePath: string, fromFile: string): string {
       if (seenFiles.has(filePath)) {
-        Log.error(
+        Log.fatal(
           `Circular include_env directive detected: ${filePath} from ${fromFile}`,
         )
-        process.exit(1)
       }
       seenFiles.add(filePath)
 
       if (!fs.existsSync(filePath)) {
-        Log.error(`Error loading .env (not found) from: ${filePath}`)
-        process.exit(1)
+        Log.fatal(`Error loading .env (not found) from: ${filePath}`)
       }
 
       // Trim to remove BOM.
@@ -363,10 +360,9 @@ export default class EnvConfig {
 
     const valueType = EnvConfig.#getValueType(value)
     if (valueType !== expectedValueType) {
-      Log.error(
+      Log.fatal(
         `${valueDescCallback()} value type is invalid: expected ${expectedValueType}, got ${valueType}`,
       )
-      process.exit(1)
     }
   }
 

@@ -5,7 +5,7 @@
 
 import fs from 'node:fs'
 import path from 'node:path'
-import Log from './logging.js'
+import * as Log from './log.ts'
 
 const kReadFileTailLimitBytes = 128 * 1024
 

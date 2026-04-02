@@ -14,7 +14,7 @@ import path from 'node:path'
 import fs from 'fs-extra'
 import depotTools from './depotTools.js'
 import syncUtil from './syncUtils.js'
-import Log from './logging.js'
+import * as Log from './log.ts'
 import { isCI } from './ciDetect.ts'
 
 // Use the same filename as for Brave archive.
@@ -149,7 +149,7 @@ function getChromiumGnArgs() {
 
 function buildChromiumRelease(buildOptions = {}) {
   if (!isCI && !buildOptions.force) {
-    console.error(
+    Log.warn(
       'Warning: the command resets all changes in src/ folder.\n'
         + 'src/brave stays untouched. Pass --force to continue.',
     )

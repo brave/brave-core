@@ -5,7 +5,7 @@
 
 import config from './config.js'
 import util from './util.js'
-import Log from './logging.js'
+import * as Log from './log.ts'
 
 const genGradle = (
   passthroughArgs,
