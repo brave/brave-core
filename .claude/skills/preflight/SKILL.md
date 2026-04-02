@@ -3,6 +3,7 @@ name: preflight
 description:
   'Run all preflight checks (format, gn_check, presubmit, build, tests) to make
   sure the current work is ready for review.'
+disable-model-invocation: true
 ---
 
 # Preflight Checks

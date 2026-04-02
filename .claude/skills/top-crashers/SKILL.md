@@ -5,6 +5,7 @@ description:
   signatures, stacks, platforms, versions, channel breakdown, code origin, and
   regression detection. Triggers on: top crashers, crash report, what's
   crashing, top crashes, crash analysis, regression crashers, new crashes."
+disable-model-invocation: true
 argument-hint:
   '[--days 7] [--platform Windows] [--compare 2] [--new-only] [--crashes-only]
   [--channels nightly,beta] [--brave-only]'

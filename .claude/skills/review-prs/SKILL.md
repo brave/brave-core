@@ -7,6 +7,7 @@ description:
   best practices.'
 argument-hint:
   '[days|page<N>|#<PR>] [open|closed|all] [auto] [reviewer-priority]'
+disable-model-invocation: true
 allowed-tools: Bash(gh pr diff:*)
 ---
 

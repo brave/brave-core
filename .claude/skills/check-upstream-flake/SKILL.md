@@ -6,6 +6,7 @@ description:
   filter file decisions. Triggers on: check upstream flake, is this test flaky
   upstream, check luci flakiness, upstream flake check."
 argument-hint: <TestSuite.TestMethod>
+disable-model-invocation: true
 ---
 
 # Check Upstream Flake
