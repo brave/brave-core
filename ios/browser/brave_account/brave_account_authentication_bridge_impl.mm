@@ -13,7 +13,6 @@
 #include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/expected.h"
@@ -83,7 +82,9 @@ NSString* GetAlertMessage(
 
   return l10n_util::GetNSStringF(
       IDS_BRAVE_ACCOUNT_SERVER_ERROR,
-      base::NumberToString16(*error->netErrorOrHttpStatus),
+      base::UTF8ToUTF16(absl::StrFormat(
+          "%s=%d", *error->netErrorOrHttpStatus > 0 ? "HTTP" : "NET",
+          *error->netErrorOrHttpStatus)),
       error->errorCode
           ? base::UTF8ToUTF16(absl::StrFormat(
                 ", %s=%d", l10n_util::GetStringUTF8(IDS_BRAVE_ACCOUNT_ERROR),

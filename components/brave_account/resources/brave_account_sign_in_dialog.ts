@@ -73,12 +73,12 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
         details = error as LoginError
       } else if (typeof error === 'string') {
         details = {
-          statusCode: null,
+          netErrorOrHttpStatus: null,
           errorCode: LoginErrorCode.kOpaqueError,
         }
       } else {
         console.error('Unexpected error:', error)
-        details = { statusCode: null, errorCode: null }
+        details = { netErrorOrHttpStatus: null, errorCode: null }
       }
 
       this.fire('error-occurred', {

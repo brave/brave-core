@@ -73,12 +73,12 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
         details = error as RegisterError
       } else if (typeof error === 'string') {
         details = {
-          statusCode: null,
+          netErrorOrHttpStatus: null,
           errorCode: RegisterErrorCode.kOpaqueError,
         }
       } else {
         console.error('Unexpected error:', error)
-        details = { statusCode: null, errorCode: null }
+        details = { netErrorOrHttpStatus: null, errorCode: null }
       }
 
       this.fire('error-occurred', {

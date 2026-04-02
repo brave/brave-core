@@ -255,7 +255,7 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
       (errorCode != null ? ERROR_STRINGS[errorCode] : null)
       ?? this.i18n(
         BraveAccountSettingsStrings.BRAVE_ACCOUNT_SERVER_ERROR,
-        netErrorOrHttpStatus,
+        `${netErrorOrHttpStatus > 0 ? 'HTTP' : 'NET'}=${netErrorOrHttpStatus}`,
         errorCode != null
           ? `, ${this.i18n(
                      BraveAccountSettingsStrings

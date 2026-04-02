@@ -140,7 +140,7 @@
     The browser encountered an unexpected error<ph name="ERROR_CODE">$1</ph>. Please restart the browser and try again.
   </message>
   <message name="IDS_BRAVE_ACCOUNT_SERVER_ERROR" translateable="false" desc="" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
-    Internal server error (HTTP=<ph name="STATUS_CODE">$1</ph><ph name="ERROR_CODE">$2</ph>). Please try again later.
+    Internal server error (<ph name="STATUS_CODE">$1</ph><ph name="ERROR_CODE">$2</ph>). Please try again later.
   </message>
   <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_EMAIL_NOT_VERIFIED" translateable="false" desc="" formatter_data="webui=BraveAccount">
     This account is awaiting email verification.
