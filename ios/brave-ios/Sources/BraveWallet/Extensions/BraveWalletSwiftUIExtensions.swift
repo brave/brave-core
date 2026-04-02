@@ -7,7 +7,7 @@ import BraveCore
 import Foundation
 import SwiftUI
 
-extension BraveWallet.AccountInfo: Identifiable {
+extension BraveWallet.AccountInfo: @retroactive Identifiable {
   public var id: String {
     accountId.uniqueKey
   }
@@ -29,7 +29,7 @@ extension BraveWallet.AccountInfo: Identifiable {
   }
 }
 
-extension BraveWallet.TransactionInfo: Identifiable {
+extension BraveWallet.TransactionInfo: @retroactive Identifiable {
   // Already has `id` property
 }
 
@@ -50,7 +50,7 @@ public enum AssetImageName: String {
   case neon = "neon"
 }
 
-extension BraveWallet.NetworkInfo: Identifiable {
+extension BraveWallet.NetworkInfo: @retroactive Identifiable {
   public var id: String {
     "\(chainId)\(coin.rawValue)"
   }
@@ -126,7 +126,7 @@ extension BraveWallet.NetworkInfo: Identifiable {
   }
 }
 
-extension BraveWallet.BlockchainToken: Identifiable {
+extension BraveWallet.BlockchainToken: @retroactive Identifiable {
   public var id: String {
     contractAddress + chainId + symbol + tokenId
   }
@@ -157,19 +157,19 @@ extension BraveWallet {
   public static let solSwapAddress: String = "So11111111111111111111111111111111111111112"
 }
 
-extension BraveWallet.CoinType: Identifiable {
+extension BraveWallet.CoinType: @retroactive Identifiable {
   public var id: Int {
     rawValue
   }
 }
 
-extension BraveWallet.OnRampProvider: Identifiable {
+extension BraveWallet.OnRampProvider: @retroactive Identifiable {
   public var id: Int {
     rawValue
   }
 }
 
-extension BraveWallet.OnRampCurrency: Identifiable {
+extension BraveWallet.OnRampCurrency: @retroactive Identifiable {
   public var id: String {
     currencyCode
   }
@@ -179,25 +179,25 @@ extension BraveWallet.OnRampCurrency: Identifiable {
   }
 }
 
-extension BraveWallet.CoinMarket: Identifiable {
+extension BraveWallet.CoinMarket: @retroactive Identifiable {
   var uniqueId: String {
     "\(symbol)\(marketCapRank)"
   }
 }
 
-extension BraveWallet.MeldFiatCurrency: Identifiable {
+extension BraveWallet.MeldFiatCurrency: @retroactive Identifiable {
   public var id: String {
     currencyCode
   }
 }
 
-extension BraveWallet.MeldServiceProvider: Identifiable {
+extension BraveWallet.MeldServiceProvider: @retroactive Identifiable {
   public var id: String {
     serviceProvider
   }
 }
 
-extension BraveWallet.MeldCryptoCurrency: Identifiable {
+extension BraveWallet.MeldCryptoCurrency: @retroactive Identifiable {
   public var id: String {
     currencyCode
   }

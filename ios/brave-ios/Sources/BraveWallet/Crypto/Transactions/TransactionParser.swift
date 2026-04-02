@@ -1174,7 +1174,7 @@ enum TransactionParser {
   }
 }
 
-extension BraveWallet.TransactionStatus: Equatable {}
+extension BraveWallet.TransactionStatus: @retroactive Equatable {}
 
 struct GasFee: Equatable {
   let fee: String
