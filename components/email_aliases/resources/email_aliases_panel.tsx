@@ -22,6 +22,7 @@ import {
   EmailAliasesService,
   EmailAliasesPanelHandlerInterface,
   EmailAliasesPanelHandler,
+  MAX_ALIASES,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
 export const EmailAliasesPanelConnected = ({
@@ -59,6 +60,8 @@ export const EmailAliasesPanelConnected = ({
   }, [])
   return (
     <EmailAliasModal
+      aliases={aliasesState}
+      aliasLimit={MAX_ALIASES}
       onReturnToMain={(action: EmailAliasModalResult) => {
         switch (action.type) {
           case EmailAliasModalResultType.Cancelled:

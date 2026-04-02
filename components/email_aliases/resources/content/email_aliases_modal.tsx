@@ -26,6 +26,7 @@ import {
   EmailAliasesServiceInterface,
   MAX_ALIASES,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import { EmailAliasLimitReached } from './email_alias_limit_reached'
 import './strings'
 
 const ModalCol = styled(Col)`
@@ -103,12 +104,9 @@ const NoteInput = styled(Input)`
   margin 0;
 `
 
-const WarningText = styled.div`
-  font: ${font.default.semibold};
-`
-
-const ButtonRow = styled(Row)<{ bubble?: boolean }>`
-  justify-content: ${(props) => (props.bubble ? 'space-between' : 'end')};
+const ButtonRow = styled(Row)<{ bubble?: boolean; limitReached?: boolean }>`
+  justify-content: ${(props) =>
+    !props.bubble || props.limitReached ? 'end' : 'space-between'};
   & leo-button {
     flex-grow: 0;
   }
@@ -117,6 +115,20 @@ const ButtonRow = styled(Row)<{ bubble?: boolean }>`
     flex-direction: row;
     gap: ${spacing.m};
   }
+`
+
+const ManageButton = styled(Button)<{ limitReached?: boolean }>`
+  ${(props) =>
+    props.limitReached
+    && `
+    order: 1;  // Move Manage button to the right.
+  `}
+
+  ${(props) =>
+    !props.limitReached
+    && `
+    margin-right: auto;  // Move Manage button to the left.
+  `}
 `
 
 const LoadingIcon = styled(ProgressRing)`
@@ -188,21 +200,19 @@ export const DeleteAliasModal = ({
         {getLocale(S.SETTINGS_EMAIL_ALIASES_DELETE_WARNING)}
       </Alert>
       <ButtonRow>
-        <span>
-          <Button
-            onClick={onReturnToMain}
-            kind='plain-faint'
-          >
-            {getLocale(S.SETTINGS_EMAIL_ALIASES_CANCEL_BUTTON)}
-          </Button>
-          <Button
-            onClick={onDeleteAlias}
-            kind='filled'
-            isDisabled={deleting}
-          >
-            {getLocale(S.SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_BUTTON)}
-          </Button>
-        </span>
+        <Button
+          onClick={onReturnToMain}
+          kind='plain-faint'
+        >
+          {getLocale(S.SETTINGS_EMAIL_ALIASES_CANCEL_BUTTON)}
+        </Button>
+        <Button
+          onClick={onDeleteAlias}
+          kind='filled'
+          isDisabled={deleting}
+        >
+          {getLocale(S.SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_BUTTON)}
+        </Button>
       </ButtonRow>
       {deleteErrorMessage && <Alert>{deleteErrorMessage}</Alert>}
     </ModalCol>
@@ -225,7 +235,8 @@ export const EmailAliasModal = ({
   editing,
   editAlias,
   mainEmail,
-  aliasCount,
+  aliases,
+  aliasLimit = MAX_ALIASES,
   emailAliasesService,
   bubble,
 }: {
@@ -234,7 +245,8 @@ export const EmailAliasModal = ({
   editAlias?: Alias
   bubble?: boolean
   mainEmail: string
-  aliasCount: number
+  aliases: Alias[]
+  aliasLimit: number
   emailAliasesService: EmailAliasesServiceInterface
 }) => {
   const [limitReached, setLimitReached] = React.useState<boolean>(false)
@@ -295,13 +307,15 @@ export const EmailAliasModal = ({
     setAwaitingProposedAlias(false)
   }
   React.useEffect(() => {
-    if (bubble) {
-      setLimitReached(aliasCount >= MAX_ALIASES)
+    setLimitReached(aliases.length >= aliasLimit)
+  }, [aliases, aliasLimit])
+
+  React.useEffect(() => {
+    if (editing || limitReached) {
+      return
     }
-    if (!editing) {
-      regenerateAlias()
-    }
-  }, [editing])
+    regenerateAlias()
+  }, [editing, limitReached])
   return (
     <ModalCol>
       <ModalTitle>
@@ -314,10 +328,11 @@ export const EmailAliasModal = ({
           {getLocale(S.SETTINGS_EMAIL_ALIASES_BUBBLE_DESCRIPTION)}
         </ModalDescription>
       )}
-      {bubble && limitReached ? (
-        <WarningText>
-          {getLocale(S.SETTINGS_EMAIL_ALIASES_BUBBLE_LIMIT_REACHED)}
-        </WarningText>
+      {limitReached ? (
+        <EmailAliasLimitReached
+          aliases={aliases}
+          aliasLimit={aliasLimit}
+        />
       ) : (
         <ModalCol>
           <ModalSectionCol>
@@ -372,39 +387,41 @@ export const EmailAliasModal = ({
           </ModalSectionCol>
         </ModalCol>
       )}
-      <ButtonRow bubble={bubble}>
-        <span>
-          {bubble && (
-            <Button
-              id='manage-button'
-              onClick={() => {
-                onReturnToMain({
-                  type: EmailAliasModalResultType.ShouldManageAliases,
-                })
-              }}
-              kind='plain'
-            >
-              {getLocale(S.SETTINGS_EMAIL_ALIASES_MANAGE_BUTTON)}
-            </Button>
-          )}
-          <Button
-            id='cancel-button'
-            onClick={() =>
-              onReturnToMain({ type: EmailAliasModalResultType.Cancelled })
-            }
-            kind='plain-faint'
+      <ButtonRow
+        bubble={bubble}
+        limitReached={limitReached}
+      >
+        {bubble && (
+          <ManageButton
+            limitReached={limitReached}
+            id='manage-button'
+            onClick={() => {
+              onReturnToMain({
+                type: EmailAliasModalResultType.ShouldManageAliases,
+              })
+            }}
+            kind={limitReached ? 'filled' : 'plain'}
           >
-            {getLocale(S.SETTINGS_EMAIL_ALIASES_CANCEL_BUTTON)}
-          </Button>
+            {getLocale(S.SETTINGS_EMAIL_ALIASES_MANAGE_BUTTON)}
+          </ManageButton>
+        )}
+        <Button
+          id='cancel-button'
+          onClick={() =>
+            onReturnToMain({ type: EmailAliasModalResultType.Cancelled })
+          }
+          kind='plain-faint'
+        >
+          {getLocale(S.SETTINGS_EMAIL_ALIASES_CANCEL_BUTTON)}
+        </Button>
+        {!limitReached && (
           <Button
             id='create-alias-button'
             kind='filled'
             isDisabled={
               awaitingUpdate
               || (!editing
-                && (limitReached
-                  || awaitingProposedAlias
-                  || !generateAliasResult?.aliasEmail))
+                && (awaitingProposedAlias || !generateAliasResult?.aliasEmail))
             }
             onClick={createOrSave}
           >
@@ -412,7 +429,7 @@ export const EmailAliasModal = ({
               ? getLocale(S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_BUTTON)
               : getLocale(S.SETTINGS_EMAIL_ALIASES_SAVE_ALIAS_BUTTON)}
           </Button>
-        </span>
+        )}
       </ButtonRow>
       {updateErrorMessage && <Alert>{updateErrorMessage}</Alert>}
     </ModalCol>
