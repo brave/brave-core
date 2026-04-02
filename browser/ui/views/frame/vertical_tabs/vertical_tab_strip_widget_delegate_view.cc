@@ -5,13 +5,17 @@
 
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/check.h"
+#include "base/i18n/rtl.h"
+#include "base/memory/ptr_util.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_root_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_root_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/theme_copying_widget.h"
@@ -62,6 +66,7 @@ std::unique_ptr<views::Widget> VerticalTabStripWidgetDelegateView::Create(
     BrowserView* browser_view,
     views::View* host_view) {
   DCHECK(browser_view->GetWidget());
+  CHECK(!base::FeatureList::IsEnabled(tabs::kBraveVerticalTabStripEmbedded));
 
   auto* delegate_view =
       new VerticalTabStripWidgetDelegateView(browser_view, host_view);
@@ -85,6 +90,16 @@ std::unique_ptr<views::Widget> VerticalTabStripWidgetDelegateView::Create(
   return widget;
 }
 
+// static
+std::unique_ptr<VerticalTabStripWidgetDelegateView>
+VerticalTabStripWidgetDelegateView::CreateEmbeddedInBrowserView(
+    BrowserView* browser_view,
+    views::View* host_view) {
+  CHECK(base::FeatureList::IsEnabled(tabs::kBraveVerticalTabStripEmbedded));
+  return base::WrapUnique(new VerticalTabStripWidgetDelegateView(
+      browser_view, host_view, /*embedded_in_browser_view=*/true));
+}
+
 VerticalTabStripWidgetDelegateView::~VerticalTabStripWidgetDelegateView() {
   // Child views will be deleted after this. Marks `region_view_` nullptr
   // so that they dont' access the `region_view_` via this view.
@@ -93,26 +108,39 @@ VerticalTabStripWidgetDelegateView::~VerticalTabStripWidgetDelegateView() {
 
 VerticalTabStripWidgetDelegateView::VerticalTabStripWidgetDelegateView(
     BrowserView* browser_view,
-    views::View* host)
+    views::View* host,
+    bool embedded_in_browser_view)
     : browser_view_(browser_view),
       host_(host),
       region_view_(
           AddChildView(std::make_unique<BraveVerticalTabStripRegionView>(
               browser_view_,
               views::AsViewClass<HorizontalTabStripRegionView>(
-                  browser_view_->tab_strip_view())))) {
+                  browser_view_->tab_strip_view())))),
+      embedded_in_browser_view_(embedded_in_browser_view) {
+  if (embedded_in_browser_view_) {
+    // Needs layer to render this over the webview.
+    SetPaintToLayer();
+  }
+
   // As we follow user's choice for vertical tab alignment,
   // we don't need to mirror this view.
   SetMirrored(false);
   SetLayoutManager(std::make_unique<views::FillLayout>());
 
   host_view_observation_.Observe(host_);
-  widget_observation_.AddObservation(host_->GetWidget());
+
+  if (!embedded_in_browser_view_) {
+    widget_observation_.AddObservation(host_->GetWidget());
+  }
 
   ChildPreferredSizeChanged(region_view_);
 }
 
 void VerticalTabStripWidgetDelegateView::AddedToWidget() {
+  if (embedded_in_browser_view_) {
+    return;
+  }
   widget_observation_.AddObservation(GetWidget());
 }
 
@@ -131,13 +159,22 @@ void VerticalTabStripWidgetDelegateView::ChildPreferredSizeChanged(
 
   // Lay out the widget manually in case the host doesn't arrange it.
   // Ex, expand on mouse hover.
-  UpdateWidgetBounds();
+  if (embedded_in_browser_view_) {
+    UpdateVerticalTabBounds();
+  } else {
+    UpdateWidgetBounds();
+  }
 }
 
 void VerticalTabStripWidgetDelegateView::OnViewVisibilityChanged(
     views::View* observed_view,
     views::View* starting_view,
     bool visible) {
+  if (embedded_in_browser_view_) {
+    UpdateVerticalTabBounds();
+    return;
+  }
+
   auto* widget = GetWidget();
   if (!widget || widget->IsVisible() == observed_view->GetVisible()) {
     return;
@@ -152,7 +189,11 @@ void VerticalTabStripWidgetDelegateView::OnViewVisibilityChanged(
 
 void VerticalTabStripWidgetDelegateView::OnViewBoundsChanged(
     views::View* observed_view) {
-  UpdateWidgetBounds();
+  if (embedded_in_browser_view_) {
+    UpdateVerticalTabBounds();
+  } else {
+    UpdateWidgetBounds();
+  }
 }
 
 void VerticalTabStripWidgetDelegateView::OnViewIsDeleting(
@@ -164,6 +205,8 @@ void VerticalTabStripWidgetDelegateView::OnViewIsDeleting(
 void VerticalTabStripWidgetDelegateView::OnWidgetVisibilityChanged(
     views::Widget* widget,
     bool visible) {
+  CHECK(!embedded_in_browser_view_);
+
   if (widget == GetWidget()) {
     if (!tabs::utils::ShouldShowBraveVerticalTabs(browser_view_->browser()) &&
         visible) {
@@ -178,6 +221,10 @@ void VerticalTabStripWidgetDelegateView::OnWidgetVisibilityChanged(
 void VerticalTabStripWidgetDelegateView::OnWidgetBoundsChanged(
     views::Widget* widget,
     const gfx::Rect& new_bounds) {
+  if (embedded_in_browser_view_) {
+    return;
+  }
+
   if (widget == GetWidget()) {
     return;
   }
@@ -188,6 +235,8 @@ void VerticalTabStripWidgetDelegateView::OnWidgetBoundsChanged(
 }
 
 void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
+  CHECK(!embedded_in_browser_view_);
+
   if (!host_) {
     return;
   }
@@ -230,13 +279,56 @@ void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
 #endif
 }
 
+void VerticalTabStripWidgetDelegateView::UpdateVerticalTabBounds() {
+  CHECK(embedded_in_browser_view_);
+
+  if (!host_) {
+    return;
+  }
+
+  CHECK(host_->GetInsets().width() == 0)
+      << "No additional horizontal insets for embedded vertical tab strip";
+
+  const gfx::Rect host_bounds = host_->bounds();
+  gfx::Rect strip_bounds = host_bounds;
+  strip_bounds.set_width(region_view_->GetPreferredSize().width());
+
+  if (!region_view_->GetVisible() || strip_bounds.IsEmpty()) {
+    SetBoundsRect(gfx::Rect());
+    return;
+  }
+
+  const bool on_right =
+      tabs::utils::IsVerticalTabOnRight(browser_view_->browser());
+  if (on_right) {
+    strip_bounds.set_x(host_bounds.right() - strip_bounds.width());
+  }
+
+  // RTL: when the strip is wider than the host, correct horizontal overflow so
+  // the extra width still extends toward the web contents; flip the shift when
+  // vertical tabs are on the right.
+  if (base::i18n::IsRTL()) {
+    auto width_difference = strip_bounds.width() - host_bounds.width();
+    width_difference = std::max(width_difference, 0);
+    if (on_right) {
+      width_difference = -width_difference;
+    }
+    strip_bounds.set_x(strip_bounds.x() - (width_difference));
+  }
+
+  SetBoundsRect(strip_bounds);
+}
+
 void VerticalTabStripWidgetDelegateView::OnWidgetDestroying(
     views::Widget* widget) {
+  CHECK(!embedded_in_browser_view_);
   widget_observation_.RemoveObservation(widget);
 }
 
 #if BUILDFLAG(IS_MAC)
 void VerticalTabStripWidgetDelegateView::UpdateClip() {
+  CHECK(!embedded_in_browser_view_);
+
   // On mac, child window can be drawn out of parent window. We should clip
   // the border line and corner radius manually.
   const float corner_radius = GetVerticalTabStripCornerRadiusMac();

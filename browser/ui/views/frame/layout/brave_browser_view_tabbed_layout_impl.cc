@@ -603,6 +603,10 @@ BraveBrowserViewTabbedLayoutImpl::GetInsetsConsideringVerticalTabHost() const {
 #if BUILDFLAG(IS_MAC)
 gfx::Insets BraveBrowserViewTabbedLayoutImpl::AddFrameBorderInsets(
     const gfx::Insets& insets) const {
+  if (base::FeatureList::IsEnabled(tabs::kBraveVerticalTabStripEmbedded)) {
+    return insets;
+  }
+
   // We need more care about frame border when vertical tab is visible.
   // Frame border is not drawn in fullscreen.
   if (!delegate().ShouldShowVerticalTabs() || delegate().IsFullscreen()) {
@@ -623,6 +627,10 @@ gfx::Insets BraveBrowserViewTabbedLayoutImpl::AddFrameBorderInsets(
 
 gfx::Insets BraveBrowserViewTabbedLayoutImpl::AddVerticalTabFrameBorderInsets(
     const gfx::Insets& insets) const {
+  if (base::FeatureList::IsEnabled(tabs::kBraveVerticalTabStripEmbedded)) {
+    return insets;
+  }
+
   if (!delegate().ShouldShowVerticalTabs() || delegate().IsFullscreen()) {
     return insets;
   }

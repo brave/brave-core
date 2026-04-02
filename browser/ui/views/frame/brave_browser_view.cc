@@ -397,9 +397,14 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
     return;
   }
 
-  // Make sure |find_bar_host_view_| is the last child of BrowserView by
-  // re-ordering. FindBarHost widgets uses this view as a  kHostViewKey.
-  // See the comments of BrowserView::find_bar_host_view().
+  EnsureFindBarHostViewIsLastChild();
+}
+
+void BraveBrowserView::EnsureFindBarHostViewIsLastChild() {
+  CHECK(find_bar_host_view_);
+
+  // FindBarHost uses this view as kHostViewKey. See
+  // BrowserView::find_bar_host_view().
   ReorderChildView(find_bar_host_view_, -1);
 }
 
@@ -461,6 +466,14 @@ void BraveBrowserView::UpdateSearchTabsButtonState() {
 
 BraveBrowserView::~BraveBrowserView() {
   tab_cycling_event_handler_.reset();
+
+  // Destroying delegate view to clear vertical tab state. See its dtor.
+  // With separated widget, it's destroyed before main widget.
+  if (base::FeatureList::IsEnabled(tabs::kBraveVerticalTabStripEmbedded) &&
+      vertical_tab_strip_widget_delegate_view_) {
+    RemoveChildViewT(vertical_tab_strip_widget_delegate_view_);
+    vertical_tab_strip_widget_delegate_view_ = nullptr;
+  }
 }
 
 sidebar::Sidebar* BraveBrowserView::InitSidebar() {
@@ -743,18 +756,25 @@ void BraveBrowserView::AddedToWidget() {
   UpdateWebViewRoundedCorners();
 
   if (vertical_tab_strip_host_view_) {
-    vertical_tab_strip_widget_ = VerticalTabStripWidgetDelegateView::Create(
-        this, vertical_tab_strip_host_view_);
-    vertical_tab_strip_widget_delegate_view_ =
-        static_cast<VerticalTabStripWidgetDelegateView*>(
-            vertical_tab_strip_widget_->widget_delegate());
+    if (base::FeatureList::IsEnabled(tabs::kBraveVerticalTabStripEmbedded)) {
+      vertical_tab_strip_widget_delegate_view_ = AddChildView(
+          VerticalTabStripWidgetDelegateView::CreateEmbeddedInBrowserView(
+              this, vertical_tab_strip_host_view_));
+      EnsureFindBarHostViewIsLastChild();
+    } else {
+      vertical_tab_strip_widget_ = VerticalTabStripWidgetDelegateView::Create(
+          this, vertical_tab_strip_host_view_);
+      vertical_tab_strip_widget_delegate_view_ =
+          static_cast<VerticalTabStripWidgetDelegateView*>(
+              vertical_tab_strip_widget_->widget_delegate());
 
-    // By setting this property to the widget for vertical tabs,
-    // BrowserView::GetBrowserViewForNativeWindow() will return browser view
-    // properly even when we pass the native window for vertical tab strip.
-    // As a result, we don't have to call GetTopLevelWidget() in order to
-    // get browser view from the vertical tab strip's widget.
-    SetNativeWindowPropertyForWidget(vertical_tab_strip_widget_.get());
+      // By setting this property to the widget for vertical tabs,
+      // BrowserView::GetBrowserViewForNativeWindow() will return browser view
+      // properly even when we pass the native window for vertical tab strip.
+      // As a result, we don't have to call GetTopLevelWidget() in order to
+      // get browser view from the vertical tab strip's widget.
+      SetNativeWindowPropertyForWidget(vertical_tab_strip_widget_.get());
+    }
 
     GetBrowserViewLayout()->set_vertical_tab_strip_host(
         vertical_tab_strip_host_view_.get());
