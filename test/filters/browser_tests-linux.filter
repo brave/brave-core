@@ -7,7 +7,7 @@
 
 # FlushForTesting() deadlocks on Linux because Brave background services (AI
 # Chat, etc.) trigger D-Bus thread pool tasks that post replies to the blocked
-# main thread. A fixed version runs via chromium_src override.
+# main thread.
 # https://github.com/brave/brave-browser/issues/54038
 -AutofillCounterTest.TimeRanges
 
