@@ -62,7 +62,7 @@ struct ManagePasswordGroupView: View {
     .scrollContentBackground(.hidden)
     .background((Color(.braveGroupedBackground)))
     .navigationBarBackButtonHidden(redactionReasons.contains(.privacy))
-    .navigationTitle(redactionReasons.contains(.privacy) ? "" : domain)
+    .navigationTitle(domain)
     .navigationBarTitleDisplayMode(.inline)
     .toolbarBackground(.visible, for: .navigationBar)
     .toolbar {
@@ -85,7 +85,7 @@ struct ManagePasswordGroupView: View {
           .foregroundStyle(
             Color(
               braveSystemName: selectedCredentialIds.isEmpty
-                ? .textSecondary : .systemfeedbackErrorVibrant
+                ? .textDisabled : .systemfeedbackErrorVibrant
             )
           )
           .disabled(selectedCredentialIds.isEmpty)
