@@ -72,7 +72,7 @@ void BraveProfilePolicyProvider::OnBravePoliciesReady() {
 policy::PolicyBundle BraveProfilePolicyProvider::LoadPolicies() {
   policy::PolicyBundle bundle;
 
-  if (brave_origin::IsBraveOriginEnabled()) {
+  if (brave_origin::IsBraveOriginPurchased()) {
     LoadBraveOriginPolicies(bundle);
   }
 

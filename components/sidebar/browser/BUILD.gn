@@ -50,7 +50,10 @@ static_library("browser") {
   }
 
   if (enable_brave_wallet) {
-    deps += [ "//brave/components/brave_wallet/browser:utils" ]
+    deps += [
+      "//brave/components/brave_wallet/browser:pref_names",
+      "//brave/components/brave_wallet/browser:utils",
+    ]
   }
 
   if (enable_brave_talk) {

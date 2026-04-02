@@ -32,7 +32,7 @@ void BraveOriginSettingsHandlerImpl::IsBraveOriginUser(
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
   std::move(callback).Run(true);
 #else
-  if (!brave_origin::IsBraveOriginEnabled()) {
+  if (!brave_origin::IsBraveOriginFeatureEnabled()) {
     std::move(callback).Run(false);
     return;
   }
@@ -45,7 +45,7 @@ void BraveOriginSettingsHandlerImpl::RefreshPurchaseState(
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
   std::move(callback).Run(true);
 #else
-  if (!brave_origin::IsBraveOriginEnabled()) {
+  if (!brave_origin::IsBraveOriginFeatureEnabled()) {
     std::move(callback).Run(false);
     return;
   }
@@ -64,7 +64,7 @@ void BraveOriginSettingsHandlerImpl::IsPolicyControlledByBraveOrigin(
 void BraveOriginSettingsHandlerImpl::GetPolicyValue(
     const std::string& policy_key,
     GetPolicyValueCallback callback) {
-  if (!brave_origin::IsBraveOriginEnabled()) {
+  if (!brave_origin::IsBraveOriginPurchased()) {
     std::move(callback).Run(std::nullopt);
     return;
   }
@@ -77,7 +77,7 @@ void BraveOriginSettingsHandlerImpl::SetPolicyValue(
     const std::string& policy_key,
     bool value,
     SetPolicyValueCallback callback) {
-  if (!brave_origin::IsBraveOriginEnabled()) {
+  if (!brave_origin::IsBraveOriginPurchased()) {
     std::move(callback).Run(false);
     return;
   }

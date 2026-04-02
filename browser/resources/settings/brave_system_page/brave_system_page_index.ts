@@ -81,7 +81,7 @@ export class SettingsBraveSystemPageIndexElement extends
       // </if>
       showOriginOnboarding_: {
         type: Boolean,
-        value: () => loadTimeData.getBoolean('isOriginAllowed') &&
+        value: () => loadTimeData.getBoolean('isBraveOriginFeatureEnabled') &&
                      !loadTimeData.getBoolean('isBraveOriginBrandedBuild'),
       },
     };

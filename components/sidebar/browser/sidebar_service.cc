@@ -44,10 +44,12 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 namespace sidebar {
@@ -130,6 +132,22 @@ SidebarService::SidebarService(
       kSidebarShowOption,
       base::BindRepeating(&SidebarService::OnPreferenceChanged,
                           base::Unretained(this)));
+
+  // Watch for policy pref changes that affect built-in item visibility.
+#if BUILDFLAG(ENABLE_AI_CHAT) || BUILDFLAG(ENABLE_BRAVE_TALK) || \
+    BUILDFLAG(ENABLE_BRAVE_WALLET)
+  auto cb = base::BindRepeating(&SidebarService::OnBuiltInItemPolicyChanged,
+                                base::Unretained(this));
+#endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  pref_change_registrar_.Add(ai_chat::prefs::kEnabledByPolicy, cb);
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+  pref_change_registrar_.Add(brave_talk::prefs::kDisabledByPolicy, cb);
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  pref_change_registrar_.Add(brave_wallet::kBraveWalletDisabledByPolicy, cb);
+#endif
 }
 
 SidebarService::~SidebarService() = default;
@@ -307,6 +325,20 @@ void SidebarService::AddItem(const SidebarItem& item) {
   }
 
   UpdateSidebarItemsToPrefStore();
+}
+
+void SidebarService::RefreshBuiltInItems() {
+  // Iterate in reverse so removing doesn't invalidate indices.
+  for (int i = static_cast<int>(items_.size()) - 1; i >= 0; --i) {
+    const auto& item = items_[i];
+    if (!item.is_built_in_type()) {
+      continue;
+    }
+    auto refreshed = GetBuiltInItemForType(item.built_in_item_type);
+    if (refreshed.built_in_item_type == SidebarItem::BuiltInItemType::kNone) {
+      RemoveItemAt(i);
+    }
+  }
 }
 
 void SidebarService::RemoveItemAt(int index) {
@@ -690,6 +722,10 @@ SidebarItem SidebarService::GetBuiltInItemForType(
       break;
   }
   NOTREACHED();
+}
+
+void SidebarService::OnBuiltInItemPolicyChanged(const std::string& /*name*/) {
+  RefreshBuiltInItems();
 }
 
 void SidebarService::OnPreferenceChanged(const std::string& pref_name) {
