@@ -68,8 +68,15 @@ jobs:
           for branch in "${branches[@]}"
           do
             git switch "$branch"
+            # Current dep URL on this branch (before bump) — used for compare link in PR body
+            DEP_URL=$(\
+              sed -n '/deps = {/, /^}/p' DEPS | sed 's/deps = //' |\
+              python3 -c "import sys, ast; d=ast.literal_eval(sys.stdin.read()); dep=d[\"$DEP\"]; print(dep) if isinstance(dep, str) else print(dep.get(\"url\"))")
+            DEP_REPO=$(echo "$DEP_URL" | grep -Po '(?<=github.com\/).*?(?=\.git)?(?=@)' | sed 's/\.git//')
+            OLD_REF="${DEP_URL##*@}"
+
             pr_branch="update-dep-${branch}-${DEP}-${DEPREF}"
-            if git rev-parse --verify "$pr_branch"; then continue; fi # Skip duplicate
+            if git rev-parse --verify "$pr_branch" 2>/dev/null; then continue; fi # Skip duplicate
             git switch -c "$pr_branch"
             "$SED" -i -e "s,^\(\s*\"$DEP\"\s*:\s*\"https.*\)@[^\"]*\",\1@$DEPREF\"," \
                       -e "/^\s*\"${DEP//\//\\/}\"\s*:\s*{/,/@/ s/@[^\"]*/@$DEPREF/" DEPS
@@ -83,5 +90,6 @@ jobs:
                 --field sha="$(git rev-parse "$pr_branch:DEPS")"
             git restore DEPS
             git pull
-            gh pr create --base "${branch}" -f -t "Update dependency ${DEP}@${DEPREF}" -l "CI/run-audit-deps"
+            PR_BODY="https://github.com/${DEP_REPO}/compare/${OLD_REF}...${DEPREF}"
+            gh pr create --base "${branch}" -t "Update dependency ${DEP}@${DEPREF}" -b "${PR_BODY}" -l "CI/run-audit-deps"
           done
