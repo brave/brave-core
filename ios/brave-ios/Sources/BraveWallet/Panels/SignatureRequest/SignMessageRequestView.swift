@@ -25,6 +25,7 @@ struct SignMessageRequestView: View {
   var nextTapped: () -> Void
   var action: (_ approved: Bool) -> Void
 
+  @State private var isWarningShown: Bool = false
   @Environment(\.sizeCategory) private var sizeCategory
   @ScaledMetric private var blockieSize = 54
   private let maxBlockieSize: CGFloat = 108
@@ -84,11 +85,17 @@ struct SignMessageRequestView: View {
         }
         .padding(.vertical, 32)
 
-        SignMessageRequestContentView(
-          request: request,
-          needPilcrowFormatted: $needPilcrowFormatted,
-          showOrignalMessage: $showOrignalMessage
-        )
+        if isWarningShown {
+          SignMessageWarningView()
+            .padding(.vertical, 12)
+            .padding(.horizontal, 20)
+        } else {
+          SignMessageRequestContentView(
+            request: request,
+            needPilcrowFormatted: $needPilcrowFormatted,
+            showOrignalMessage: $showOrignalMessage
+          )
+        }
 
         buttonsContainer
           .padding(.top)
@@ -119,6 +126,11 @@ struct SignMessageRequestView: View {
       }
     }
     .navigationTitle(Strings.Wallet.signatureRequestTitle)
+    .onAppear {
+      isWarningShown =
+        (request.signData.cardanoSignData != nil)
+        || request.signData.ethSignTypedData?.primaryType == "Permit"
+    }
   }
 
   /// Cancel & Sign button container
@@ -136,6 +148,28 @@ struct SignMessageRequestView: View {
 
   /// Cancel and Sign buttons
   @ViewBuilder private var buttons: some View {
+    if isWarningShown {
+      cancelButton
+      Button {  // Continue
+        isWarningShown = false
+      } label: {
+        Text(Strings.Wallet.continueButtonTitle)
+      }
+      .buttonStyle(BraveFilledButtonStyle(size: .large))
+    } else {
+      cancelButton
+      Button {  // approve
+        action(true)
+      } label: {
+        Label(Strings.Wallet.sign, braveSystemImage: "leo.key")
+          .imageScale(.large)
+      }
+      .buttonStyle(BraveFilledButtonStyle(size: .large))
+      .disabled(requestIndex != 0)
+    }
+  }
+
+  @ViewBuilder private var cancelButton: some View {
     Button {  // cancel
       action(false)
     } label: {
@@ -143,14 +177,6 @@ struct SignMessageRequestView: View {
         .imageScale(.large)
     }
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
-    .disabled(requestIndex != 0)
-    Button {  // approve
-      action(true)
-    } label: {
-      Label(Strings.Wallet.sign, braveSystemImage: "leo.key")
-        .imageScale(.large)
-    }
-    .buttonStyle(BraveFilledButtonStyle(size: .large))
     .disabled(requestIndex != 0)
   }
 }

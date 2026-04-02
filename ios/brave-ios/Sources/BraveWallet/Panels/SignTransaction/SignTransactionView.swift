@@ -33,7 +33,6 @@ struct SignTransactionView: View {
   @State private var showWarning: Bool = true
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.colorScheme) private var colorScheme
-  @Environment(\.openURL) private var openWalletURL
   @ScaledMetric private var blockieSize = 54
   private let maxBlockieSize: CGFloat = 108
 
@@ -233,7 +232,7 @@ struct SignTransactionView: View {
         }
         .padding(.horizontal, 8)
         if showWarning {
-          warningView
+          SignMessageWarningView()
             .padding(.vertical, 12)
             .padding(.horizontal, 20)
         } else {
@@ -305,7 +304,6 @@ struct SignTransactionView: View {
         showWarning = false
       } label: {
         Text(Strings.Wallet.continueButtonTitle)
-          .imageScale(.large)
       }
       .buttonStyle(BraveFilledButtonStyle(size: .large))
       .disabled(txIndex != 0)
@@ -370,7 +368,19 @@ struct SignTransactionView: View {
     }
   }
 
-  @ViewBuilder private var warningView: some View {
+  private func next() {
+    if txIndex + 1 < requests.count {
+      txIndex += 1
+    } else {
+      txIndex = 0
+    }
+  }
+}
+
+struct SignMessageWarningView: View {
+  @Environment(\.openURL) private var openWalletURL
+
+  var body: some View {
     VStack(alignment: .leading, spacing: 8) {
       Group {
         Label(Strings.Wallet.signTransactionSignRisk, systemImage: "exclamationmark.triangle")
@@ -395,14 +405,6 @@ struct SignTransactionView: View {
       Color(.braveErrorBackground)
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     )
-  }
-
-  private func next() {
-    if txIndex + 1 < requests.count {
-      txIndex += 1
-    } else {
-      txIndex = 0
-    }
   }
 }
 
