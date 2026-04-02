@@ -302,7 +302,7 @@ fn generate_extrinsic_signature_payload(
     genesis_hash: &[u8; 32],
     block_hash: &[u8; 32],
 ) -> Vec<u8> {
-    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index, .. } =
+    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_keep_alive_call_index, .. } =
         chain_metadata;
 
     let mut buf = Vec::<u8>::with_capacity(256);
@@ -311,7 +311,7 @@ fn generate_extrinsic_signature_payload(
         /* Write module indicator, M_i. */
         *balances_pallet_index,
         /* Write function indicator (call index + call parameters). */
-        *transfer_allow_death_call_index,
+        *transfer_keep_alive_call_index,
         MULTIADDRESS_TYPE,
     ]);
 
@@ -364,7 +364,7 @@ fn make_signed_extrinsic(
     block_number: u32,
     sender_nonce: u32,
 ) -> Vec<u8> {
-    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index, .. } =
+    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_keep_alive_call_index, .. } =
         chain_metadata;
 
     let mut buf = Vec::<u8>::with_capacity(512);
@@ -379,7 +379,7 @@ fn make_signed_extrinsic(
 
     buf.extend_from_slice(&[
         *balances_pallet_index,
-        *transfer_allow_death_call_index,
+        *transfer_keep_alive_call_index,
         MULTIADDRESS_TYPE,
     ]);
 
