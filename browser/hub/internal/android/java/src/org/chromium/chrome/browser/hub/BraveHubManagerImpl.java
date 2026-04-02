@@ -17,6 +17,7 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
+import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.back_press.BackPressManager;
@@ -57,7 +58,7 @@ public class BraveHubManagerImpl extends HubManagerImpl {
             SnackbarManager snackbarManager,
             BottomSheetController bottomSheetController,
             @Nullable BottomBarHostManager bottomBarHostManager,
-            MonotonicObservableSupplier<Tab> tabSupplier,
+            NullableObservableSupplier<Tab> tabSupplier,
             MenuButtonCoordinator menuButtonCoordinator,
             HubShowPaneHelper hubShowPaneHelper,
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
