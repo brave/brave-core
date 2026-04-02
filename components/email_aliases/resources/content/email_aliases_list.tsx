@@ -119,7 +119,7 @@ export const AliasList = ({
             editing={editState.mode === 'Edit'}
             editAlias={editState.alias}
             mainEmail={authEmail}
-            aliasCount={aliases.length}
+            aliases={aliases}
             emailAliasesService={emailAliasesService}
           />
         )}

@@ -307,11 +307,11 @@ export const EmailAliasModal = ({
     setAwaitingProposedAlias(false)
   }
   React.useEffect(() => {
-    setLimitReached(aliases?.length >= aliasLimit)
+    setLimitReached((aliases?.length ?? 0) >= aliasLimit)
   }, [aliases, aliasLimit])
 
   React.useEffect(() => {
-    if (editing || aliases?.length >= aliasLimit) {
+    if (editing || (aliases?.length ?? 0) >= aliasLimit) {
       return
     }
     regenerateAlias()

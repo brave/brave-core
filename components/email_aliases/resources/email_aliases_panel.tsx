@@ -77,7 +77,6 @@ export const EmailAliasesPanelConnected = ({
       }}
       editing={false}
       mainEmail={authState.email}
-      aliasCount={aliasesState.length}
       emailAliasesService={emailAliasesService}
       bubble
     />
