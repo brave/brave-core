@@ -687,11 +687,11 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic) {
       "00"    // Address type.
       "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516" // Sender pubkey.
       "01"  // Signature type (0x01 => Sr25519)
-      "36376696cfb3470732527fff9fe146da430ec75a3bb3236b8720e2e19df0c170" // Signature
-      "9fcb3667049de2ff68185770bd9221a9b2e9a650d962d7015a6ee91e5de2d586"
+      "ccbd8179630a0a68e46a81828600655c09c3564e8406d120c18da4cb4460ee10" // Signature
+      "ba8900001c7eb26ee76cac82401d2afa09ae429fdaa4ead2540164cbc98d8887"
       "5501"    // Mortal era.
       "440000"  // Nonce is 17, SCALE-encoded as 0x44; tip = 0; mode = 0.
-      "0400"    // Pallet index, call index.
+      "0403"    // Pallet index, call index.
       "00"      // Address type
       "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48" // Recipient address
       "4913"  // Send amount.
@@ -1943,7 +1943,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction) {
       "0x028a2de5ca3f7fd3f00a75500cc626c12ffe4347e97a00e252ac0e46a423968d");
   EXPECT_EQ(
       base::HexEncodeLower(tx_hash->second.extrinsic()),
-      R"(35028400b67e7a888fc2a4289ed64c8eca2e4c28846fe556b2b3898b7f8d19a9a4743846016656520a0149abeb482feefc639ce3186ecdd0a45a0e953bdf8bd6dbcca8b55abc1e4e1e26c3b3ba1d1fb0a9e531f769eb293f6e7989fb5c65d65c191d82688055014400000500008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a488543)");
+      R"(35028400b67e7a888fc2a4289ed64c8eca2e4c28846fe556b2b3898b7f8d19a9a4743846010e310b735046f143a0eda48eaed0375b4759b6fe6c4cb55c955ff701f6a7471a20fa95186ee4d66ae7ded08fff594272677fcccc86d68e3548237870c649508155014400000503008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a488543)");
 }
 
 TEST_F(PolkadotWalletServiceUnitTest,

@@ -30,6 +30,7 @@ const POLKADOT_TESTNET: CxxPolkadotChainMetadata = CxxPolkadotChainMetadata {
     balances_pallet_index: 4,
     transaction_payment_pallet_index: 0x1a,
     transfer_allow_death_call_index: 0,
+    transfer_keep_alive_call_index: 3,
     ss58_prefix: 42,
 };
 
@@ -40,6 +41,7 @@ const POLKADOT_ASSET_HUB_TESTNET: CxxPolkadotChainMetadata = CxxPolkadotChainMet
     balances_pallet_index: 10,
     transaction_payment_pallet_index: 0x0b,
     transfer_allow_death_call_index: 0,
+    transfer_keep_alive_call_index: 3,
     ss58_prefix: 42,
 };
 
@@ -50,6 +52,7 @@ const POLKADOT_MAINNET: CxxPolkadotChainMetadata = CxxPolkadotChainMetadata {
     balances_pallet_index: 5,
     transaction_payment_pallet_index: 0x20,
     transfer_allow_death_call_index: 0,
+    transfer_keep_alive_call_index: 3,
     ss58_prefix: 0,
 };
 
@@ -60,6 +63,7 @@ const POLKADOT_ASSET_HUB_MAINNET: CxxPolkadotChainMetadata = CxxPolkadotChainMet
     balances_pallet_index: 10,
     transaction_payment_pallet_index: 0x0b,
     transfer_allow_death_call_index: 0,
+    transfer_keep_alive_call_index: 3,
     ss58_prefix: 0,
 };
 
@@ -212,6 +216,7 @@ struct CxxPolkadotChainMetadata {
     balances_pallet_index: u8,
     transaction_payment_pallet_index: u8,
     transfer_allow_death_call_index: u8,
+    transfer_keep_alive_call_index: u8,
     ss58_prefix: u16,
 }
 
@@ -395,7 +400,7 @@ fn generate_extrinsic_signature_payload(
     genesis_hash: &[u8; 32],
     block_hash: &[u8; 32],
 ) -> Vec<u8> {
-    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index, .. } =
+    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_keep_alive_call_index, .. } =
         chain_metadata;
 
     let mut buf = Vec::<u8>::with_capacity(256);
@@ -404,7 +409,7 @@ fn generate_extrinsic_signature_payload(
         /* Write module indicator, M_i. */
         *balances_pallet_index,
         /* Write function indicator (call index + call parameters). */
-        *transfer_allow_death_call_index,
+        *transfer_keep_alive_call_index,
         MULTIADDRESS_TYPE,
     ]);
 
@@ -457,7 +462,7 @@ fn make_signed_extrinsic(
     block_number: u32,
     sender_nonce: u32,
 ) -> Vec<u8> {
-    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index, .. } =
+    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_keep_alive_call_index, .. } =
         chain_metadata;
 
     let mut buf = Vec::<u8>::with_capacity(512);
@@ -472,7 +477,7 @@ fn make_signed_extrinsic(
 
     buf.extend_from_slice(&[
         *balances_pallet_index,
-        *transfer_allow_death_call_index,
+        *transfer_keep_alive_call_index,
         MULTIADDRESS_TYPE,
     ]);
 

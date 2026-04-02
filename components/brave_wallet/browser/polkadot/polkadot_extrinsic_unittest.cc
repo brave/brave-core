@@ -499,7 +499,7 @@ TEST(PolkadotExtrinsics, SignaturePayload) {
       block_hash);
 
   constexpr const char kExpected[] =
-      R"(0400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913750108000061900f001b000000e143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423ebdcb3205ee391126e758556ffef5bb0d5a5fd1bbd996c671a079d5b02a67191300)";
+      R"(0403008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913750108000061900f001b000000e143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423ebdcb3205ee391126e758556ffef5bb0d5a5fd1bbd996c671a079d5b02a67191300)";
 
   EXPECT_EQ(base::HexEncodeLower(encoded), kExpected);
 }
@@ -555,7 +555,7 @@ TEST(PolkadotExtrinsics, SignedExtrinsic) {
   EXPECT_TRUE(keypair.VerifyMessage(signature, signature_payload));
 
   const char expected_signatured[] =
-      R"(441018831cb0c3977e5e15c1fe632cfb2eeb6147edef9c5d83005df0686fcb64358416735e42f72c0666f8b37fc53d55d4def2b321ef3e143480423ba70d9381)";
+      R"(2a1f28c7d292dd8ecbe9e461c318ab970582153bbb1c0a648d6d6961db064c1a284d223455cabaf9c5d0d8a77ed63178b6ccfba83cfb6dda61faa12062031486)";
   EXPECT_EQ(base::HexEncodeLower(signature), expected_signatured);
 
   auto signed_extrinsic = make_signed_extrinsic(
@@ -613,13 +613,13 @@ TEST(PolkadotExtrinsics, SignedExtrinsic) {
       "00"    // MultiAddress type.
       "d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274"
       "01"  // Signature type (sr25519).
-      "441018831cb0c3977e5e15c1fe632cfb2eeb6147edef9c5d83005df0686fcb64"
-      "358416735e42f72c0666f8b37fc53d55d4def2b321ef3e143480423ba70d9381"
+      "2a1f28c7d292dd8ecbe9e461c318ab970582153bbb1c0a648d6d6961db064c1a"
+      "284d223455cabaf9c5d0d8a77ed63178b6ccfba83cfb6dda61faa12062031486"
       "6501"  // MortalEra
       "04"    // SCALE-encoded nonce.
       "00"    // Tip.
       "00"    // Mode (disable metadata hash checking).
-      "0400"  // Pallet index, call index.
+      "0403"  // Pallet index, call index.
       "00"    // MultiAddress type.
       "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48"
       "4913"  // SCALE-encoded send amount.
