@@ -81,6 +81,7 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
     // Null before reset to avoid `raw_ptr` dangling detection.
     device_id_ = nullptr;
     bat_ads_service_factory_ = nullptr;
+    ads_service_->Shutdown();
     ads_service_.reset();
   }
 
