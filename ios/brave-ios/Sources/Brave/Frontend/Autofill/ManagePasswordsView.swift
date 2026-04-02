@@ -138,7 +138,6 @@ struct ManagePasswordsView: View {
     .toolbarBackground(.visible, for: .navigationBar)
     .toolbarBackground(Color(.braveGroupedBackground), for: .navigationBar)
     .navigationTitle(Strings.Autofill.managePasswordsTitle)
-    .navigationBarBackButtonHidden(privacyLock.isLocked)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       if !privacyLock.isLocked {
