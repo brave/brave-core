@@ -63,6 +63,9 @@ extern const base::FeatureParam<bool> kAutomaticModelSupportsTools;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<bool> kShouldIndentPageContentBlocks;
 
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+BASE_DECLARE_FEATURE(kAIChatRemoteModelsConfig);
+
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatEnabled();
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatHistory);
