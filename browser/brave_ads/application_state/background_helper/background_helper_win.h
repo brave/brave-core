@@ -14,23 +14,20 @@ namespace brave_ads {
 
 class BackgroundHelperWin final : public BackgroundHelper {
  public:
+  BackgroundHelperWin();
+
   BackgroundHelperWin(const BackgroundHelperWin&) = delete;
   BackgroundHelperWin& operator=(const BackgroundHelperWin&) = delete;
 
   ~BackgroundHelperWin() override;
 
- protected:
-  friend class BackgroundHelperHolder;
-
-  BackgroundHelperWin();
-
  private:
   void OnWndProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);
 
   // BackgroundHelper:
-  bool IsForeground() const override;
+  bool IsInForeground() const override;
 
-  base::CallbackListSubscription hwnd_subscription_;
+  base::CallbackListSubscription singleton_hwnd_subscription_;
 };
 
 }  // namespace brave_ads

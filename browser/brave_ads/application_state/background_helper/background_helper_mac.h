@@ -14,19 +14,16 @@ namespace brave_ads {
 
 class BackgroundHelperMac final : public BackgroundHelper {
  public:
+  BackgroundHelperMac();
+
   BackgroundHelperMac(const BackgroundHelperMac&) = delete;
   BackgroundHelperMac& operator=(const BackgroundHelperMac&) = delete;
 
   ~BackgroundHelperMac() override;
 
- protected:
-  friend class BackgroundHelperHolder;
-
-  BackgroundHelperMac();
-
  private:
   // BackgroundHelper:
-  bool IsForeground() const override;
+  bool IsInForeground() const override;
 
   class BackgroundHelperDelegate;
   std::unique_ptr<BackgroundHelperDelegate> delegate_;

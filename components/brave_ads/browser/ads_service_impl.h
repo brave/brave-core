@@ -23,6 +23,7 @@
 #include "base/timer/timer.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/application_state/background_helper.h"
+#include "brave/components/brave_ads/browser/application_state/background_helper_observer.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
 #include "brave/components/brave_ads/core/browser/network/http_client.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
@@ -68,7 +69,7 @@ class ResourceComponent;
 class AdsServiceImpl final : public AdsService,
                              public bat_ads::mojom::BatAdsClient,
                              public bat_ads::mojom::BatAdsObserver,
-                             BackgroundHelper::Observer,
+                             public BackgroundHelperObserver,
                              public ResourceComponentObserver,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
                              public brave_rewards::RewardsServiceObserver,
@@ -366,7 +367,7 @@ class AdsServiceImpl final : public AdsService,
   void OnIneligibleWalletToServeAds() override {}
   void OnRemindUser(mojom::ReminderType mojom_reminder_type) override;
 
-  // BackgroundHelper::Observer:
+  // BackgroundHelperObserver:
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
 
@@ -446,6 +447,8 @@ class AdsServiceImpl final : public AdsService,
                           brave_rewards::RewardsServiceObserver>
       rewards_service_observation_{this};
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  base::ScopedObservation<BackgroundHelper, BackgroundHelperObserver>
+      background_helper_observation_{this};
 
   mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
       this};

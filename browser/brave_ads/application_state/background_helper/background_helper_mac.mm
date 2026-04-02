@@ -11,6 +11,7 @@
 #include "base/apple/osstatus_logging.h"
 #include "base/mac/mac_util.h"
 #include "base/memory/raw_ptr.h"
+#include "base/no_destructor.h"
 
 @interface BackgroundHelperDelegateMac : NSObject {
  @private
@@ -43,11 +44,11 @@
 }
 
 - (void)appDidBecomeActive:(NSNotification*)notification {
-  helper_->TriggerOnForeground();
+  helper_->NotifyDidEnterForeground();
 }
 
 - (void)appDidResignActive:(NSNotification*)notification {
-  helper_->TriggerOnBackground();
+  helper_->NotifyDidEnterBackground();
 }
 
 @end
@@ -67,13 +68,19 @@ class BackgroundHelperMac::BackgroundHelperDelegate {
   BackgroundHelperDelegateMac* __strong delegate_;
 };
 
+// static
+BackgroundHelper* BackgroundHelper::GetInstance() {
+  static base::NoDestructor<BackgroundHelperMac> instance;
+  return instance.get();
+}
+
 BackgroundHelperMac::BackgroundHelperMac() {
   delegate_ = std::make_unique<BackgroundHelperDelegate>(this);
 }
 
 BackgroundHelperMac::~BackgroundHelperMac() = default;
 
-bool BackgroundHelperMac::IsForeground() const {
+bool BackgroundHelperMac::IsInForeground() const {
   return [[NSApplication sharedApplication] isActive];
 }
 

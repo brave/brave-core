@@ -8,6 +8,7 @@
 #include <windows.h>
 
 #include "base/functional/bind.h"
+#include "base/no_destructor.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
@@ -16,15 +17,21 @@
 
 namespace brave_ads {
 
+// static
+BackgroundHelper* BackgroundHelper::GetInstance() {
+  static base::NoDestructor<BackgroundHelperWin> instance;
+  return instance.get();
+}
+
 BackgroundHelperWin::BackgroundHelperWin() {
-  hwnd_subscription_ =
+  singleton_hwnd_subscription_ =
       gfx::SingletonHwnd::GetInstance()->RegisterCallback(base::BindRepeating(
           &BackgroundHelperWin::OnWndProc, base::Unretained(this)));
 }
 
 BackgroundHelperWin::~BackgroundHelperWin() = default;
 
-bool BackgroundHelperWin::IsForeground() const {
+bool BackgroundHelperWin::IsInForeground() const {
   auto* browser = GetLastActiveBrowserWindowInterfaceWithAnyProfile();
   if (browser && browser->GetWindow()) {
     return ::GetForegroundWindow() ==
@@ -43,9 +50,9 @@ void BackgroundHelperWin::OnWndProc(HWND hwnd,
   }
 
   if ((BOOL)wparam) {
-    TriggerOnForeground();
+    NotifyDidEnterForeground();
   } else {
-    TriggerOnBackground();
+    NotifyDidEnterBackground();
   }
 }
 

@@ -7,42 +7,38 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_APPLICATION_STATE_BACKGROUND_HELPER_H_
 
 #include "base/observer_list.h"
+#include "brave/components/brave_ads/browser/application_state/background_helper_observer.h"
 
 namespace brave_ads {
 
+// Notifies `BackgroundHelperObserver` when the browser becomes active or
+// inactive.
 class BackgroundHelper {
  public:
-  class Observer {
-   public:
-    virtual void OnBrowserDidEnterForeground() = 0;
-    virtual void OnBrowserDidEnterBackground() = 0;
-
-   protected:
-    virtual ~Observer() = default;
-  };
+  BackgroundHelper();
 
   BackgroundHelper(const BackgroundHelper&) = delete;
   BackgroundHelper& operator=(const BackgroundHelper&) = delete;
 
   virtual ~BackgroundHelper();
 
+  // Returns the singleton instance.
   static BackgroundHelper* GetInstance();
 
-  void AddObserver(Observer* observer);
-  void RemoveObserver(Observer* observer);
+  void AddObserver(BackgroundHelperObserver* observer);
+  void RemoveObserver(BackgroundHelperObserver* observer);
 
-  void TriggerOnForeground();
-  void TriggerOnBackground();
+  // Returns whether the browser is currently in the foreground.
+  virtual bool IsInForeground() const;
 
-  virtual bool IsForeground() const;
+  // Notifies observers that the browser entered the foreground.
+  void NotifyDidEnterForeground();
 
- protected:
-  friend class BackgroundHelperHolder;
-
-  BackgroundHelper();
+  // Notifies observers that the browser entered the background.
+  void NotifyDidEnterBackground();
 
  private:
-  base::ObserverList<Observer>::Unchecked observers_;
+  base::ObserverList<BackgroundHelperObserver> observers_;
 };
 
 }  // namespace brave_ads

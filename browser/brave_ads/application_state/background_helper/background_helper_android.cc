@@ -7,41 +7,42 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/no_destructor.h"
 
 namespace brave_ads {
 
+// static
+BackgroundHelper* BackgroundHelper::GetInstance() {
+  static base::NoDestructor<BackgroundHelperAndroid> instance;
+  return instance.get();
+}
+
 BackgroundHelperAndroid::BackgroundHelperAndroid() {
-  app_status_listener_ = base::android::ApplicationStatusListener::New(
+  application_status_listener_ = base::android::ApplicationStatusListener::New(
       base::BindRepeating(&BackgroundHelperAndroid::OnApplicationStateChange,
                           weak_ptr_factory_.GetWeakPtr()));
 
-  last_state_ = base::android::ApplicationStatusListener::GetState();
+  application_state_ = base::android::ApplicationStatusListener::GetState();
 }
 
-BackgroundHelperAndroid::~BackgroundHelperAndroid() {
-  app_status_listener_.reset();
-}
+BackgroundHelperAndroid::~BackgroundHelperAndroid() = default;
 
-bool BackgroundHelperAndroid::IsForeground() const {
-  auto state = base::android::ApplicationStatusListener::GetState();
-  if (state != base::android::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
-    return false;
-  }
-
-  return true;
+bool BackgroundHelperAndroid::IsInForeground() const {
+  return base::android::ApplicationStatusListener::GetState() ==
+         base::android::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES;
 }
 
 void BackgroundHelperAndroid::OnApplicationStateChange(
     base::android::ApplicationState state) {
   if (state == base::android::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
-    TriggerOnForeground();
-  } else if (last_state_ != state &&
-             last_state_ ==
+    NotifyDidEnterForeground();
+  } else if (application_state_ != state &&
+             application_state_ ==
                  base::android::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
-    TriggerOnBackground();
+    NotifyDidEnterBackground();
   }
 
-  last_state_ = state;
+  application_state_ = state;
 }
 
 }  // namespace brave_ads

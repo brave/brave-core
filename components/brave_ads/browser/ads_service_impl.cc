@@ -441,7 +441,7 @@ void AdsServiceImpl::InitializeBatAdsCallback(bool success) {
 
   RegisterResourceComponents();
 
-  BackgroundHelper::GetInstance()->AddObserver(this);
+  background_helper_observation_.Observe(BackgroundHelper::GetInstance());
 
   MaybeShowOnboardingNotification();
 
@@ -1048,9 +1048,7 @@ void AdsServiceImpl::ShutdownAdsService() {
 
   notification_ad_timers_.clear();
 
-  if (is_bat_ads_initialized_) {
-    BackgroundHelper::GetInstance()->RemoveObserver(this);
-  }
+  background_helper_observation_.Reset();
 
   CloseAllNotificationAds();
 
@@ -1407,7 +1405,7 @@ void AdsServiceImpl::IsNetworkConnectionAvailable(
 }
 
 void AdsServiceImpl::IsBrowserActive(IsBrowserActiveCallback callback) {
-  std::move(callback).Run(BackgroundHelper::GetInstance()->IsForeground());
+  std::move(callback).Run(BackgroundHelper::GetInstance()->IsInForeground());
 }
 
 void AdsServiceImpl::IsBrowserInFullScreenMode(

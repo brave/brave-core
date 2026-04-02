@@ -16,26 +16,24 @@ namespace brave_ads {
 
 class BackgroundHelperAndroid final : public BackgroundHelper {
  public:
+  BackgroundHelperAndroid();
+
   BackgroundHelperAndroid(const BackgroundHelperAndroid&) = delete;
   BackgroundHelperAndroid& operator=(const BackgroundHelperAndroid&) = delete;
 
   ~BackgroundHelperAndroid() override;
 
- protected:
-  friend class BackgroundHelperHolder;
-
-  BackgroundHelperAndroid();
-
  private:
+  // ApplicationStatusListener:
   void OnApplicationStateChange(base::android::ApplicationState state);
 
   // BackgroundHelper:
-  bool IsForeground() const override;
+  bool IsInForeground() const override;
 
   std::unique_ptr<base::android::ApplicationStatusListener>
-      app_status_listener_;
+      application_status_listener_;
 
-  base::android::ApplicationState last_state_;
+  base::android::ApplicationState application_state_;
 
   base::WeakPtrFactory<BackgroundHelperAndroid> weak_ptr_factory_{this};
 };
