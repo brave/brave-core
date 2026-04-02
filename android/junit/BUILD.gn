@@ -148,4 +148,20 @@ if (is_android) {
       "//chrome/android/junit:chrome_junit_tests_helper",
     ]
   }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.preferences.website") {
+    sources = [ "src/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettingsResetTest.java" ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.shields") {
+    sources = [
+      "src/org/chromium/chrome/browser/shields/BraveUnifiedPanelFaviconPriorityTest.java",
+      "src/org/chromium/chrome/browser/shields/BraveUnifiedPanelHandlerStatTest.java",
+    ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
 }
