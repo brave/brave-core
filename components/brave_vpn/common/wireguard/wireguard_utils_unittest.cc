@@ -62,6 +62,15 @@ TEST(BraveVPNWireGuardUtilsUnitTest, ValidateAddress) {
                    .has_value());
   EXPECT_FALSE(brave_vpn::wireguard::ValidateAddress("1.1.1.1.1").has_value());
   EXPECT_FALSE(brave_vpn::wireguard::ValidateAddress("300.1.1.1").has_value());
+  // Loopback addresses should be rejected.
+  EXPECT_FALSE(brave_vpn::wireguard::ValidateAddress("127.0.0.1").has_value());
+  EXPECT_FALSE(
+      brave_vpn::wireguard::ValidateAddress("127.255.255.255").has_value());
+  // Link-local addresses should be rejected.
+  EXPECT_FALSE(
+      brave_vpn::wireguard::ValidateAddress("169.254.0.1").has_value());
+  EXPECT_FALSE(
+      brave_vpn::wireguard::ValidateAddress("169.254.255.255").has_value());
   // Spaces are not stripped out.
   // Removed call to base::TrimWhitespaceASCII.
   EXPECT_FALSE(

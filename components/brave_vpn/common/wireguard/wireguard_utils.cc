@@ -136,7 +136,7 @@ std::optional<std::string> ValidateAddress(const std::string& address) {
     return std::nullopt;
   }
 
-  if (parsed_ip.IsLinkLocal() && parsed_ip.IsLoopback()) {
+  if (parsed_ip.IsLinkLocal() || parsed_ip.IsLoopback()) {
     VLOG(1) << "address should not be local / loopback";
     return std::nullopt;
   }
