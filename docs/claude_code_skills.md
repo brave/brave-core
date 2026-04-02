@@ -2,7 +2,7 @@
 
 Claude Code skills are slash commands that automate common development tasks
 in `brave-core`. Skills are defined in `.claude/skills/` and best practices
-in `.claude/rules/best-practices/`.
+in `docs/best-practices/`.
 
 ## Available Skills
 
