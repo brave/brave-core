@@ -28,6 +28,13 @@ static_library("browser") {
     "pdf_utils.h",
   ]
 
+  if (enable_pdf) {
+    sources += [
+      "pdf_text_helper.cc",
+      "pdf_text_helper.h",
+    ]
+  }
+
   deps = [
     "//base",
     "//brave/components/ai_chat/core/browser",
