@@ -61,8 +61,7 @@ struct ManagePasswordGroupView: View {
     }
     .scrollContentBackground(.hidden)
     .background((Color(.braveGroupedBackground)))
-    .navigationBarBackButtonHidden(redactionReasons.contains(.privacy))
-    .navigationTitle(domain)
+    .navigationTitle(redactionReasons.contains(.privacy) ? "" : domain)
     .navigationBarTitleDisplayMode(.inline)
     .toolbarBackground(.visible, for: .navigationBar)
     .toolbar {
