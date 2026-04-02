@@ -38,6 +38,7 @@ source_set("unit_tests") {
   deps = [
     ":frame",
     "//base",
+    "//base/test:test_support",
     "//chrome/browser/ui",
     "//testing/gmock",
     "//testing/gtest",

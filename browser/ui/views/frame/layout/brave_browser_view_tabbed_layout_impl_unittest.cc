@@ -7,7 +7,9 @@
 
 #include <memory>
 
+#include "base/test/scoped_feature_list.h"
 #include "build/build_config.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_params.h"
@@ -120,6 +122,7 @@ struct AddFrameBorderInsetsCase {
   bool is_fullscreen;
   gfx::Insets input;
   gfx::Insets expected;
+  bool enable_embedded_vertical_tab_strip_feature = true;
 };
 
 // Test fixture that grants access to the private AddFrameBorderInsets method
@@ -148,6 +151,13 @@ class BraveBrowserViewTabbedLayoutImplMacTest
 
 TEST_P(BraveBrowserViewTabbedLayoutImplMacTest, AddFrameBorderInsets) {
   const auto& p = GetParam();
+  base::test::ScopedFeatureList scoped_feature_list;
+
+  // Nothing to do as it's enabled by default.
+  if (!p.enable_embedded_vertical_tab_strip_feature) {
+    scoped_feature_list.InitAndDisableFeature(
+        tabs::kBraveVerticalTabStripEmbedded);
+  }
   ON_CALL(*mock_, ShouldShowVerticalTabs())
       .WillByDefault(::testing::Return(p.show_vertical_tabs));
   ON_CALL(*mock_, IsFullscreen())
@@ -165,8 +175,11 @@ INSTANTIATE_TEST_SUITE_P(
         // Fullscreen (browser or tab): frame border is not drawn, so insets
         // pass through unchanged. IsFullscreen() covers both cases.
         AddFrameBorderInsetsCase{true, true, gfx::Insets(), gfx::Insets()},
-        // Vertical tabs visible, not fullscreen: 1px border on left, right,
-        // and bottom edges.
+        // Vertical tabs visible, not fullscreen: disable
+        // embedded feature to get 1px border on left, right, and bottom edges.
         AddFrameBorderInsetsCase{true, false, gfx::Insets(),
-                                 gfx::Insets::TLBR(0, 1, 1, 1)}));
+                                 gfx::Insets::TLBR(0, 1, 1, 1), false},
+        // Same delegate state with default embedded vertical strip on:
+        // AddFrameBorderInsets returns input unchanged.
+        AddFrameBorderInsetsCase{true, false, gfx::Insets(), gfx::Insets()}));
 #endif  // BUILDFLAG(IS_MAC)

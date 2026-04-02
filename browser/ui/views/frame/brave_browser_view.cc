@@ -397,9 +397,14 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
     return;
   }
 
-  // Make sure |find_bar_host_view_| is the last child of BrowserView by
-  // re-ordering. FindBarHost widgets uses this view as a  kHostViewKey.
-  // See the comments of BrowserView::find_bar_host_view().
+  EnsureFindBarHostViewIsLastChild();
+}
+
+void BraveBrowserView::EnsureFindBarHostViewIsLastChild() {
+  CHECK(find_bar_host_view_);
+
+  // FindBarHost uses this view as kHostViewKey. See
+  // BrowserView::find_bar_host_view().
   ReorderChildView(find_bar_host_view_, -1);
 }
 
@@ -755,6 +760,7 @@ void BraveBrowserView::AddedToWidget() {
       vertical_tab_strip_widget_delegate_view_ = AddChildView(
           VerticalTabStripWidgetDelegateView::CreateEmbeddedInBrowserView(
               this, vertical_tab_strip_host_view_));
+      EnsureFindBarHostViewIsLastChild();
     } else {
       vertical_tab_strip_widget_ = VerticalTabStripWidgetDelegateView::Create(
           this, vertical_tab_strip_host_view_);

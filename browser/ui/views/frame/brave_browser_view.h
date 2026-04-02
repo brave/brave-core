@@ -240,6 +240,13 @@ class BraveBrowserView : public BrowserView,
   BraveBrowser* GetBraveBrowser() const;
   void UpdateWebViewRoundedCorners();
 
+  // FindBarHost is anchored to |find_bar_host_view_|; it must remain the last
+  // child of BrowserView for correct z-order. Call when a child is added after
+  // the ctor reorder (e.g. embedded vertical tab strip in AddedToWidget()).
+  // |find_bar_host_view_| must exist (BrowserView creates it before this
+  // class's ctor body runs).
+  void EnsureFindBarHostViewIsLastChild();
+
   sidebar::Sidebar* InitSidebar() override;
   void ToggleSidebar() override;
   bool HasSelectedURL() const override;
