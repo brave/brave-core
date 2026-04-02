@@ -721,10 +721,9 @@ void SolanaTxManager::MakeSystemProgramTransferTxData(
     const std::string& to,
     uint64_t lamports,
     MakeSystemProgramTransferTxDataCallback callback) {
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(to)) {
-    std::move(callback).Run(
-        nullptr, mojom::SolanaProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(to)) {
+    std::move(callback).Run(nullptr, mojom::SolanaProviderError::kInvalidParams,
+                            WalletRestrictedAddressErrorMessage());
     return;
   }
 
@@ -769,10 +768,10 @@ void SolanaTxManager::MakeTokenProgramTransferTxData(
     uint64_t amount,
     uint8_t decimals,
     MakeTokenProgramTransferTxDataCallback callback) {
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(to_wallet_address)) {
-    std::move(callback).Run(
-        nullptr, mojom::SolanaProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(
+          to_wallet_address)) {
+    std::move(callback).Run(nullptr, mojom::SolanaProviderError::kInvalidParams,
+                            WalletRestrictedAddressErrorMessage());
     return;
   }
 

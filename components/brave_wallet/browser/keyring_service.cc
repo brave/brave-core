@@ -1199,7 +1199,7 @@ bool KeyringService::IsKeyringEnabled(mojom::KeyringId keyring_id) const {
 
 void KeyringService::CreateKeyrings(const KeyringSeed& keyring_seed) {
   auto is_address_allowed = base::BindRepeating([](const std::string& address) {
-    return !BlockchainRegistry::GetInstance()->IsOfacAddress(address);
+    return !BlockchainRegistry::GetInstance()->IsRestrictedAddress(address);
   });
 
   ethereum_keyring_ = std::make_unique<EthereumKeyring>(keyring_seed.eth_seed,
@@ -1645,7 +1645,7 @@ mojom::AccountInfoPtr KeyringService::AddAccountSync(
 // TODO(https://github.com/brave/brave-browser/issues/53346): We should aim to
 // reify this function with CreateDefaultAccounts(). Right now the behavior is
 // subtly different between each function and should be unified under a commmon
-// routine where we can also simplify resetting the wallet if a sanctioned
+// routine where we can also simplify resetting the wallet if a restricted
 // address is produced.
 void KeyringService::CreateDefaultAccountsForSelectedNetworks(
     std::vector<mojom::AddAccountArgsPtr> account_args,
@@ -2284,7 +2284,7 @@ std::vector<mojom::AccountInfoPtr> KeyringService::AddHardwareAccountsSync(
   std::vector<mojom::AccountInfoPtr> accounts_added;
   for (const auto& info : infos) {
     if (IsAccountBasedCoin(GetCoinForKeyring(info->keyring_id)) &&
-        BlockchainRegistry::GetInstance()->IsOfacAddress(info->address)) {
+        BlockchainRegistry::GetInstance()->IsRestrictedAddress(info->address)) {
       continue;
     }
 

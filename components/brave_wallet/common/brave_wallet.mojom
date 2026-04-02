@@ -1408,7 +1408,7 @@ interface KeyringService {
 
   // Adds accounts to the keyring in bulk during wallet creation/restoration.
   // Account creation can fail in certain cases, such as an account that is
-  // affected by OFAC sanctions. Because this method is intended to only be
+  // affected by restrictions. Because this method is intended to only be
   // called during onboarding, it will return std::nullopt on failure and reset
   // the keyring.
   CreateDefaultAccountsForSelectedNetworks(
@@ -3654,7 +3654,7 @@ enum BlowfishWarningKind {
   kPermitNoExpiration,
   kPermitUnlimitedAllowance,
   kPoisonedAddress,
-  kReferencedOfacAddress,
+  kReferencedRestrictedAddress,
   kSemiTrustedBlocklistDomain,
   kSetOwnerAuthority,
   kSuspectedMalicious,

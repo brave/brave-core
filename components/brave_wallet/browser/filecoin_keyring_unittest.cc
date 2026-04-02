@@ -203,7 +203,7 @@ TEST(FilecoinKeyring, SignTransaction) {
   EXPECT_TRUE(keyring.SignTransaction(address, transaction.value()));
 }
 
-TEST(FilecoinKeyring, AddNewHDAccount_OfacSanctionedAddress) {
+TEST(FilecoinKeyring, AddNewHDAccount_RestrictedAddress) {
   auto* registry = BlockchainRegistry::GetInstance();
   CHECK(registry);
 
@@ -211,27 +211,28 @@ TEST(FilecoinKeyring, AddNewHDAccount_OfacSanctionedAddress) {
       *MnemonicToSeed(kMnemonicDivideCruise),
       mojom::KeyringId::kFilecoinTestnet,
       base::BindLambdaForTesting([=](const std::string& address) {
-        return !registry->IsOfacAddress(address);
+        return !registry->IsRestrictedAddress(address);
       }));
 
   // Add an account to get its address.
   auto address = keyring.AddNewHDAccount(0);
   ASSERT_TRUE(address);
-  const std::string address_to_sanction = *address;
+  const std::string address_to_restrict = *address;
 
   // Remove the account.
   EXPECT_TRUE(keyring.RemoveHDAccount(0));
 
-  // Add address to OFAC list.
-  registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
+  // Add address to restricted list.
+  registry->UpdateRestrictedAddressesList(
+      {base::ToLowerASCII(address_to_restrict)});
 
   // Try to add account again - should fail because it generates the same
   // address.
   auto result = keyring.AddNewHDAccount(0);
-  EXPECT_FALSE(result) << "OFAC sanctioned Filecoin address should be rejected";
+  EXPECT_FALSE(result) << "Restricted Filecoin address should be rejected";
 }
 
-TEST(FilecoinKeyring, ImportAccount_SECP256K1_OfacSanctionedAddress) {
+TEST(FilecoinKeyring, ImportAccount_SECP256K1_RestrictedAddress) {
   auto* registry = BlockchainRegistry::GetInstance();
   CHECK(registry);
 
@@ -246,29 +247,30 @@ TEST(FilecoinKeyring, ImportAccount_SECP256K1_OfacSanctionedAddress) {
       *MnemonicToSeed(kMnemonicDivideCruise),
       mojom::KeyringId::kFilecoinTestnet,
       base::BindLambdaForTesting([=](const std::string& address) {
-        return !registry->IsOfacAddress(address);
+        return !registry->IsRestrictedAddress(address);
       }));
 
   // Import account to get its address
   auto address = keyring.ImportFilecoinAccount(
       private_key, mojom::FilecoinAddressProtocol::SECP256K1);
   ASSERT_TRUE(address);
-  const std::string address_to_sanction = *address;
+  const std::string address_to_restrict = *address;
 
   // Remove the account.
   EXPECT_TRUE(keyring.RemoveImportedAccount(*address));
 
-  // Add address to OFAC list.
-  registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
+  // Add address to restricted list.
+  registry->UpdateRestrictedAddressesList(
+      {base::ToLowerASCII(address_to_restrict)});
 
   // Try to import account again - should fail.
   auto result = keyring.ImportFilecoinAccount(
       private_key, mojom::FilecoinAddressProtocol::SECP256K1);
   EXPECT_FALSE(result)
-      << "OFAC sanctioned Filecoin SECP256K1 address should be rejected";
+      << "Restricted Filecoin SECP256K1 address should be rejected";
 }
 
-TEST(FilecoinKeyring, ImportAccount_BLS_OfacSanctionedAddress) {
+TEST(FilecoinKeyring, ImportAccount_BLS_RestrictedAddress) {
   auto* registry = BlockchainRegistry::GetInstance();
   CHECK(registry);
 
@@ -286,24 +288,24 @@ TEST(FilecoinKeyring, ImportAccount_BLS_OfacSanctionedAddress) {
       *MnemonicToSeed(kMnemonicDivideCruise),
       mojom::KeyringId::kFilecoinTestnet,
       base::BindLambdaForTesting([=](const std::string& address) {
-        return !registry->IsOfacAddress(address);
+        return !registry->IsRestrictedAddress(address);
       }));
 
   // Import account to get its address.
   auto address = keyring.ImportFilecoinAccount(private_key, protocol);
   ASSERT_TRUE(address);
-  const std::string address_to_sanction = *address;
+  const std::string address_to_restrict = *address;
 
   // Remove the account.
   EXPECT_TRUE(keyring.RemoveImportedAccount(*address));
 
-  // Add address to OFAC list.
-  registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
+  // Add address to restricted list.
+  registry->UpdateRestrictedAddressesList(
+      {base::ToLowerASCII(address_to_restrict)});
 
   // Try to import account again - should fail.
   auto result = keyring.ImportFilecoinAccount(private_key, protocol);
-  EXPECT_FALSE(result)
-      << "OFAC sanctioned Filecoin BLS address should be rejected";
+  EXPECT_FALSE(result) << "Restricted Filecoin BLS address should be rejected";
 }
 
 }  // namespace brave_wallet

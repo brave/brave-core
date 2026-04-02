@@ -279,15 +279,14 @@ TEST_F(WalletDataFilesInstallerUnitTest,
   ASSERT_TRUE(
       base::WriteFile(install_dir().Append(FPL("contract-map.json")), "bad"));
 
-  const std::string ofac_list_json = R"({
+  const std::string restricted_list_json = R"({
     "addresses": [
       "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"
     ]
   })";
   ASSERT_TRUE(base::WriteFile(
-      install_dir().Append(
-          FPL("ofac-sanctioned-digital-currency-addresses.json")),
-      ofac_list_json));
+      install_dir().AppendASCII(BlockchainRegistry::kRestrictedAddressFileName),
+      restricted_list_json));
 
   CreateWallet();
 
@@ -296,8 +295,8 @@ TEST_F(WalletDataFilesInstallerUnitTest,
   EXPECT_EQ(registry()->GetCoingeckoId(
                 "0xa", "0x7f5c764cbc14f9669b88837ca1490cca17c31607"),
             "usd-coin");
-  EXPECT_TRUE(
-      registry()->IsOfacAddress("0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
+  EXPECT_TRUE(registry()->IsRestrictedAddress(
+      "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
 }
 
 TEST_F(WalletDataFilesInstallerUnitTest,
@@ -331,11 +330,11 @@ TEST_F(WalletDataFilesInstallerUnitTest,
 }
 
 TEST_F(WalletDataFilesInstallerUnitTest,
-       OnDemandInstallAndParsing_RestoreWallet_OfacSanctioned) {
-  // Test that if we have an OFAC list, we should not create any accounts under
-  // those addresses. In this case, we add both of the test account addresses to
-  // the OFAC list. This ensures that the OFAC loading strongly happens-before
-  // we create the set of restored accounts.
+       OnDemandInstallAndParsing_RestoreWallet_Restricted) {
+  // Test that if we have a restricted list, we should not create any accounts
+  // under those addresses. In this case, we add both of the test account
+  // addresses to the restricted list. This ensures that the restricted loading
+  // strongly happens-before we create the set of restored accounts.
 
   EXPECT_CALL(*updater(), RegisterComponent(testing::_))
       .Times(1)
@@ -343,23 +342,22 @@ TEST_F(WalletDataFilesInstallerUnitTest,
   SetOnDemandInstallCallbackWithComponentReady(install_dir());
   WriteCoingeckoIdsMapToFile();
 
-  const std::string ofac_list_json = R"({
+  const std::string restricted_list_json = R"({
     "addresses": [
       "0xf81229fe54d8a20fbc1e1e2a3451d1c7489437db",
       "brg44hdsehzapvs8beqzvkq4egwevs3fre6ze2eno6s8"
     ]
   })";
   ASSERT_TRUE(base::WriteFile(
-      install_dir().Append(
-          FPL("ofac-sanctioned-digital-currency-addresses.json")),
-      ofac_list_json));
+      install_dir().AppendASCII(BlockchainRegistry::kRestrictedAddressFileName),
+      restricted_list_json));
 
   base::test::TestFuture<bool> future;
 
   keyring_service()->RestoreWallet(kMnemonicDivideCruise, kTestWalletPassword,
                                    false, future.GetCallback());
 
-  // We treat sanctioned addresses as an invalid mnemonic.
+  // We treat restricted addresses as an invalid mnemonic.
   auto success = future.Take();
   EXPECT_FALSE(success);
   EXPECT_TRUE(keyring_service()->GetAllAccountInfos().empty());

@@ -142,7 +142,7 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
         ->EnableDummyPricesForTesting();
 
     // We need to prevent the wallet creation from being stuck waiting to
-    // download an OFAC list that doesn't exist.
+    // download a restrictions list that doesn't exist.
     WalletDataFilesInstaller::GetInstance().ResetForTesting();
 
     brave_wallet_service()->keyring_service()->CreateWallet("password_123",

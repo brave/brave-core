@@ -390,7 +390,7 @@ TEST(EthereumKeyringUnitTest, DecryptCipherFromX25519_XSalsa20_Poly1305) {
             std::nullopt);
 }
 
-TEST(EthereumKeyringUnitTest, AddNewHDAccount_OfacSanctionedAddress) {
+TEST(EthereumKeyringUnitTest, AddNewHDAccount_RestrictedAddress) {
   auto* registry = BlockchainRegistry::GetInstance();
   CHECK(registry);
 
@@ -401,34 +401,35 @@ TEST(EthereumKeyringUnitTest, AddNewHDAccount_OfacSanctionedAddress) {
       &seed));
   EthereumKeyring keyring(
       seed, base::BindLambdaForTesting([=](const std::string& address) {
-        return !registry->IsOfacAddress(address);
+        return !registry->IsRestrictedAddress(address);
       }));
 
   // Add an account to get its address.
   auto address = keyring.AddNewHDAccount(0);
   ASSERT_TRUE(address);
-  const std::string address_to_sanction = *address;
+  const std::string address_to_restrict = *address;
 
   // Remove the account.
   EXPECT_TRUE(keyring.RemoveHDAccount(0));
 
-  // Add address to OFAC list.
-  registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
+  // Add address to restricted list.
+  registry->UpdateRestrictedAddressesList(
+      {base::ToLowerASCII(address_to_restrict)});
 
   // Try to add account again - should fail because it generates the same
   // address.
   auto result = keyring.AddNewHDAccount(0);
-  EXPECT_FALSE(result) << "OFAC sanctioned Ethereum address should be rejected";
+  EXPECT_FALSE(result) << "Restricted Ethereum address should be rejected";
 }
 
-TEST(EthereumKeyringUnitTest, ImportAccount_OfacSanctionedAddress) {
+TEST(EthereumKeyringUnitTest, ImportAccount_RestrictedAddress) {
   auto* registry = BlockchainRegistry::GetInstance();
   CHECK(registry);
 
   EthereumKeyring keyring(
       *MnemonicToSeed(kMnemonic),
       base::BindLambdaForTesting([=](const std::string& address) {
-        return !registry->IsOfacAddress(address);
+        return !registry->IsRestrictedAddress(address);
       }));
 
   std::array<uint8_t, 32> private_key;
@@ -439,17 +440,18 @@ TEST(EthereumKeyringUnitTest, ImportAccount_OfacSanctionedAddress) {
   // Import account to get its address.
   auto address = keyring.ImportAccount(private_key);
   ASSERT_TRUE(address);
-  const std::string address_to_sanction = *address;
+  const std::string address_to_restrict = *address;
 
   // Remove the account.
   EXPECT_TRUE(keyring.RemoveImportedAccount(*address));
 
-  // Add address to OFAC list.
-  registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
+  // Add address to restricted list.
+  registry->UpdateRestrictedAddressesList(
+      {base::ToLowerASCII(address_to_restrict)});
 
   // Try to import account again - should fail.
   auto result = keyring.ImportAccount(private_key);
-  EXPECT_FALSE(result) << "OFAC sanctioned Ethereum address should be rejected";
+  EXPECT_FALSE(result) << "Restricted Ethereum address should be rejected";
 }
 
 }  // namespace brave_wallet
