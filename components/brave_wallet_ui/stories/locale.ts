@@ -1382,6 +1382,13 @@ provideStrings({
   braveWalletMultiChain: 'Multi-chain & NFT support',
   braveWalletPerksBrowserNative: 'Browser-native, no risky extensions',
 
+  // Getting Started
+  braveWalletLetsGetStarted: "Let's get started",
+  braveWalletLetsGetStartedBuyCryptoDescription:
+    'Buy your first crypto with a credit or debit card',
+  braveWalletLetsGetStartedDepositCryptoDescription:
+    'Deposit crypto from another wallet or exchange',
+
   // Portfolio Asset More Popup
   braveWalletPortfolioTokenDetailsMenuLabel: 'Token details',
   braveWalletPortfolioViewOnExplorerMenuLabel: 'View on block explorer',

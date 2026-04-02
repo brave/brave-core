@@ -170,10 +170,23 @@ export const ControlsRow = styled(Row)`
   }
 `
 
-export const BalanceAndButtonsWrapper = styled(Column)`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
+export const BalanceAndButtonsWrapper = styled(Column)<{
+  hasZeroBalance?: boolean
+}>`
+  ${({ hasZeroBalance }) =>
+    hasZeroBalance
+      ? `
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 40px 32px 24px 32px;
+  `
+      : `
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 40px 32px;
+  `}
   @media screen and (max-width: ${layoutPanelWidth}px) {
     flex-direction: column;
     justify-content: flex-start;
@@ -182,7 +195,9 @@ export const BalanceAndButtonsWrapper = styled(Column)`
   }
 `
 
-export const BalanceAndChangeWrapper = styled(Column)`
+export const BalanceAndChangeWrapper = styled(Column)<{
+  hasZeroBalance?: boolean
+}>`
   position: relative;
   align-items: flex-start;
   margin-bottom: 0px;
@@ -190,7 +205,7 @@ export const BalanceAndChangeWrapper = styled(Column)`
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    margin-bottom: 24px;
+    margin-bottom: ${(p) => (p.hasZeroBalance ? '0px' : '24px')};
   }
 `
 
