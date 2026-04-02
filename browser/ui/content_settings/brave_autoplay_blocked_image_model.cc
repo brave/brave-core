@@ -17,7 +17,7 @@
 using content::WebContents;
 
 BraveAutoplayBlockedImageModel::BraveAutoplayBlockedImageModel()
-    : ContentSettingSimpleImageModel(ImageType::MEDIASTREAM,
+    : ContentSettingSimpleImageModel(ImageType::kMediaStream,
                                      ContentSettingsType::AUTOPLAY) {}
 
 bool BraveAutoplayBlockedImageModel::UpdateAndGetVisibility(
