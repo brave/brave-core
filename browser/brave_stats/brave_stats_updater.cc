@@ -173,6 +173,16 @@ BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service,
 
   if (profile_manager != nullptr) {
     g_browser_process->profile_manager()->AddObserver(this);
+
+    // Run SERP metrics migration for profiles already loaded before we
+    // registered as an observer. OnProfileAdded only fires for profiles loaded
+    // after AddObserver, so existing profiles (including the Default profile)
+    // would otherwise never get migrated.
+    for (Profile* profile :
+         g_browser_process->profile_manager()->GetLoadedProfiles()) {
+      MaybeMigrateSerpMetricsToProfileAttributes(
+          g_browser_process->profile_manager(), *profile);
+    }
   }
 
   Start();
