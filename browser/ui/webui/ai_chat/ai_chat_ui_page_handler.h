@@ -7,11 +7,13 @@
 #define BRAVE_BROWSER_UI_WEBUI_AI_CHAT_AI_CHAT_UI_PAGE_HANDLER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
+#include "services/network/public/cpp/simple_url_loader.h"
 #include "brave/browser/ai_chat/upload_file_helper.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
@@ -67,6 +69,9 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void ProcessImageFile(const std::vector<uint8_t>& file_data,
                         const std::string& filename,
                         ProcessImageFileCallback callback) override;
+  void FetchAndProcessImageUrl(
+      const GURL& image_url,
+      FetchAndProcessImageUrlCallback callback) override;
   void GetPluralString(const std::string& key,
                        int32_t count,
                        GetPluralStringCallback callback) override;
@@ -107,6 +112,11 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
 
   void HandleWebContentsDestroyed();
 
+  void OnImageUrlFetched(const GURL& image_url,
+                         FetchAndProcessImageUrlCallback callback,
+                         std::unique_ptr<network::SimpleURLLoader> loader,
+                         std::optional<std::string> body);
+
   // AssociatedContentDelegate::Observer
   void OnRequestArchive(AssociatedContentDelegate* delegate) override;
 
@@ -133,6 +143,8 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
 
   // DataDecoder instance for processing image data
   data_decoder::DataDecoder data_decoder_;
+
+  std::unique_ptr<network::SimpleURLLoader> image_url_loader_;
 
   mojo::Receiver<ai_chat::mojom::AIChatUIHandler> receiver_;
   mojo::Remote<ai_chat::mojom::ChatUI> chat_ui_;

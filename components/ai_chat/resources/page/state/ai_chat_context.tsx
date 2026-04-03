@@ -151,6 +151,7 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
     // Note: we might want to show progress during image processing,
     // and we can do that via monitoring the mutation in the provided hook.
     processImageFile: api.processImageFile,
+    fetchAndProcessImageUrl: api.fetchAndProcessImageUrl,
 
     /**
      * @deprecated use api.uiHandler.openAIChatAgentProfile directly instead

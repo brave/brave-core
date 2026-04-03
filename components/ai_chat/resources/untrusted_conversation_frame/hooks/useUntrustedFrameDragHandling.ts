@@ -13,7 +13,14 @@ import * as React from 'react'
 export function useUntrustedFrameDragHandling(onDragStarted: () => void): void {
   React.useEffect(() => {
     const handleDragEnter = (e: DragEvent) => {
-      if (e.dataTransfer?.types?.includes('Files')) {
+      const types = e.dataTransfer?.types ?? []
+      const isFileDrag = types.includes('Files')
+      // Heuristic for a web image drag: the browser puts text/uri-list
+      // (the image URL) and text/html (the <img> tag) in the transfer.
+      // getData() is not readable during dragenter, so we check types only.
+      const isWebImageDrag =
+        types.includes('text/uri-list') && types.includes('text/html')
+      if (isFileDrag || isWebImageDrag) {
         onDragStarted()
       }
     }

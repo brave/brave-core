@@ -202,6 +202,10 @@ export function createMockUIHandler(
           type: Mojom.UploadedFileType.kImage,
         },
       }),
+    fetchAndProcessImageUrl: () =>
+      Promise.resolve({
+        processedFile: null,
+      }),
     getPluralString: () => Promise.resolve({ pluralString: '' }),
     setChatUI: () => Promise.resolve({ isStandalone: false }),
 
