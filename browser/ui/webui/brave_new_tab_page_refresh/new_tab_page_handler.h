@@ -121,6 +121,8 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   void OpenURLFromSearch(const std::string& url,
                          mojom::EventDetailsPtr details,
                          OpenURLFromSearchCallback callback) override;
+  void SetDefaultSearchEngineAsBraveSearch(
+      SetDefaultSearchEngineAsBraveSearchCallback callback) override;
   void ReportSearchBoxHidden(ReportSearchBoxHiddenCallback callback) override;
   void ReportSearchEngineUsage(
       int64_t engine_prepopulate_id,

@@ -5,16 +5,10 @@
 
 import * as React from 'react'
 
-import { SponsoredImageBackground } from '../../state/background_store'
 import { loadImage } from '../../lib/image_loader'
-import { IframeBackground, IframeBackgroundHandle } from './iframe_background'
-import {
-  useSafeAreaReporter,
-  useRichMediaMessageHandler,
-} from './rich_media_capability_provider'
+import { RichMediaBackground } from './rich_media_background'
 
 import {
-  useBackgroundState,
   useCurrentBackground,
   useBackgroundActions,
 } from '../../context/background_context'
@@ -44,7 +38,7 @@ export function Background() {
           />
         )
       case 'sponsored-rich-media':
-        return <SponsoredRichMediaBackground background={currentBackground} />
+        return <RichMediaBackground background={currentBackground} />
       case 'color':
         return <ColorBackground colorValue={currentBackground.cssValue} />
     }
@@ -99,31 +93,6 @@ function ImageBackground(props: ImageBackgroundProps) {
     <div
       className={classNames.join(' ')}
       onContextMenu={props.onContextMenu}
-    />
-  )
-}
-
-function SponsoredRichMediaBackground(props: {
-  background: SponsoredImageBackground
-}) {
-  const sponsoredRichMediaBaseUrl = useBackgroundState(
-    (s) => s.sponsoredRichMediaBaseUrl,
-  )
-
-  const [frameHandle, setFrameHandle] = React.useState<IframeBackgroundHandle>()
-
-  const messageHandler = useRichMediaMessageHandler(frameHandle, {
-    destinationUrl: props.background.logo?.destinationUrl,
-  })
-
-  useSafeAreaReporter(frameHandle)
-
-  return (
-    <IframeBackground
-      url={props.background.imageUrl}
-      expectedOrigin={new URL(sponsoredRichMediaBaseUrl).origin}
-      onReady={setFrameHandle}
-      onMessage={messageHandler}
     />
   )
 }
