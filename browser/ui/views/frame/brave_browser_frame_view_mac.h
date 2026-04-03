@@ -34,6 +34,7 @@ class BraveBrowserFrameViewMac : public BrowserFrameViewMac {
   int GetTopInset(bool restored) const override;
   int NonClientHitTest(const gfx::Point& point) override;
   void OnThemeChanged() override;
+  bool ShouldHideTopUIInFullscreen() const override;
 
   std::unique_ptr<BraveWindowFrameGraphic> frame_graphic_;
 
