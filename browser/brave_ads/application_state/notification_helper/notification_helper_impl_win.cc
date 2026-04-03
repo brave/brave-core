@@ -114,14 +114,13 @@ NotificationHelperImplWin::NotificationHelperImplWin() = default;
 
 NotificationHelperImplWin::~NotificationHelperImplWin() = default;
 
-void NotificationHelperImplWin::InitSystemNotifications(
-    base::OnceClosure callback) {
+void NotificationHelperImplWin::InitSystemNotifications() {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
       base::BindOnce(&InitializeToastNotifier),
       base::BindOnce(
           &NotificationHelperImplWin::InitSystemNotificationsCallback,
-          weak_factory_.GetWeakPtr(), std::move(callback)));
+          weak_factory_.GetWeakPtr()));
 }
 
 bool NotificationHelperImplWin::CanShowNotifications() {
@@ -164,11 +163,9 @@ bool NotificationHelperImplWin::ShowOnboardingNotification() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void NotificationHelperImplWin::InitSystemNotificationsCallback(
-    base::OnceClosure callback,
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Notifications::IToastNotifier>
         toast_notifier) {
   toast_notifier_ = toast_notifier;
-  std::move(callback).Run();
 }
 
 bool NotificationHelperImplWin::IsFocusAssistEnabled() const {

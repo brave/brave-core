@@ -1,3 +1,0 @@
-include_rules = [
-  "+brave/test/views/snapshot/widget_snapshot_checker.h",
-]
