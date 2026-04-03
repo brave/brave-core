@@ -13,7 +13,6 @@
 #include "base/containers/map_util.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
-#include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
@@ -43,18 +42,15 @@ void HandleRampTokenLists(const std::optional<std::string>& result,
   }
   auto parsedRampTokensListMaps = ParseRampTokenListMaps(*result);
   if (!parsedRampTokensListMaps) {
-    VLOG(1) << "Can't parse on/off ramp token lists.";
     return;
   }
 
   if (parsedRampTokensListMaps->first.empty()) {
-    VLOG(1) << "On ramp supported token lists is empty.";
   } else {
     out.on_ramp_token_lists = std::move(parsedRampTokensListMaps->first);
   }
 
   if (parsedRampTokensListMaps->second.empty()) {
-    VLOG(1) << "Off ramp supported sell token lists is empty.";
   } else {
     out.off_ramp_token_lists = std::move(parsedRampTokensListMaps->second);
   }
@@ -69,7 +65,6 @@ void HandleOnRampCurrenciesLists(const std::optional<std::string>& result,
   std::optional<std::vector<mojom::OnRampCurrency>> lists =
       ParseOnRampCurrencyLists(*result);
   if (!lists) {
-    VLOG(1) << "Can't parse on ramp supported sell token lists.";
     return;
   }
 
@@ -80,13 +75,7 @@ base::FilePath ResolveAbsolutePath(const base::FilePath& input_path) {
   // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
   // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
   // requires IO so it needs to be posted.
-  const base::FilePath output_path = base::MakeAbsoluteFilePath(input_path);
-
-  if (output_path.empty()) {
-    LOG(ERROR) << "Failed to get absolute install path.";
-  }
-
-  return output_path;
+  return base::MakeAbsoluteFilePath(input_path);
 }
 
 std::optional<std::string> ParseJsonFile(base::FilePath path,
@@ -98,7 +87,6 @@ std::optional<std::string> ParseJsonFile(base::FilePath path,
   std::string json_content;
   const base::FilePath json_path = path.AppendASCII(filename);
   if (!base::ReadFileToString(json_path, &json_content)) {
-    LOG(ERROR) << "Can't read file: " << filename;
     return std::nullopt;
   }
 
@@ -114,7 +102,6 @@ void DoParseCoingeckoIdsMap(const base::FilePath& dir, ParseListsResult& out) {
   std::optional<CoingeckoIdsMap> coingecko_ids_map =
       ParseCoingeckoIdsMap(*result);
   if (!coingecko_ids_map) {
-    VLOG(1) << "Can't parse coingecko-ids.json";
     return;
   }
 
@@ -129,7 +116,6 @@ void DoParseTokenList(const base::FilePath& dir, ParseListsResult& out) {
 
   TokenListMap lists;
   if (!ParseTokenList(*result, &lists)) {
-    VLOG(1) << "Can't parse token list.";
     return;
   }
 
@@ -146,7 +132,6 @@ void DoParseChainList(const base::FilePath& dir, ParseListsResult& out) {
 
   ChainList chains;
   if (!ParseChainList(*result, &chains)) {
-    VLOG(1) << "Can't parse chain list.";
     return;
   }
 
@@ -166,7 +151,6 @@ void DoParseDappLists(const base::FilePath& dir, ParseListsResult& out) {
 
   std::optional<DappListMap> lists = ParseDappLists(converted_json);
   if (!lists) {
-    VLOG(1) << "Can't parse dapp lists.";
     return;
   }
 
@@ -192,7 +176,6 @@ void DoParseRestrictedAddressesLists(const base::FilePath& dir,
   std::optional<std::vector<std::string>> list =
       ParseRestrictedAddressesList(*result);
   if (!list) {
-    VLOG(1) << "Can't parse restricted addresses list.";
     return;
   }
 

@@ -13,7 +13,6 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/logging.h"
 #include "base/notimplemented.h"
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_block_tracker.h"
@@ -172,7 +171,6 @@ void BitcoinTxManager::ApproveTransaction(const std::string& tx_meta_id,
   std::unique_ptr<BitcoinTxMeta> meta =
       GetBitcoinTxStateManager().GetBitcoinTx(tx_meta_id);
   if (!meta) {
-    LOG(ERROR) << "Transaction should be found";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewBitcoinProviderError(
@@ -206,7 +204,6 @@ void BitcoinTxManager::ContinueApproveTransaction(
   std::unique_ptr<BitcoinTxMeta> meta =
       GetBitcoinTxStateManager().GetBitcoinTx(tx_meta_id);
   if (!meta) {
-    LOG(ERROR) << "Transaction should be found";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewBitcoinProviderError(

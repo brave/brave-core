@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -29,10 +28,8 @@ namespace {
 std::unique_ptr<OrchardBundleManager> ApplyOrchardSignatures(
     std::unique_ptr<OrchardBundleManager> orchard_bundle_manager,
     std::array<uint8_t, kZCashDigestSize> sighash) {
-  DVLOG(1) << "Apply signatures for ZCash transaction";
   // Heavy CPU operation, should be executed on background thread
   auto result = orchard_bundle_manager->ApplySignature(sighash);
-  DVLOG(1) << "Signatures applied";
   return result;
 }
 

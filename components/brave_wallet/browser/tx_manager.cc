@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/containers/to_vector.h"
-#include "base/logging.h"
 #include "brave/components/brave_wallet/browser/block_tracker.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -60,7 +59,6 @@ void TxManager::RejectTransaction(const std::string& tx_meta_id,
                                   RejectTransactionCallback callback) {
   std::unique_ptr<TxMeta> meta = tx_state_manager_->GetTx(tx_meta_id);
   if (!meta) {
-    LOG(ERROR) << "No transaction found";
     std::move(callback).Run(false);
     return;
   }

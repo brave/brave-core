@@ -16,7 +16,6 @@
 #include "base/containers/span_reader.h"
 #include "base/containers/span_writer.h"
 #include "base/containers/to_vector.h"
-#include "base/logging.h"
 #include "base/numerics/byte_conversions.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
@@ -97,7 +96,6 @@ std::unique_ptr<HDKey::ParsedExtendedKey> HDKey::GenerateFromExtendedKey(
     const std::string& key) {
   std::vector<unsigned char> decoded_key(kSerializationLength);
   if (!DecodeBase58Check(key, decoded_key, decoded_key.size())) {
-    LOG(ERROR) << __func__ << ": DecodeBase58Check failed";
     return nullptr;
   }
 
@@ -170,7 +168,6 @@ void HDKey::SetPublicKey(
   secp256k1_pubkey pubkey;
   if (!secp256k1_ec_pubkey_parse(GetSecp256k1Ctx(), &pubkey, value.data(),
                                  value.size())) {
-    LOG(ERROR) << __func__ << ": not a valid public key";
     return;
   }
   public_key_ = base::ToVector(value);
@@ -187,13 +184,12 @@ std::vector<uint8_t> HDKey::GetUncompressedPublicKey() const {
   secp256k1_pubkey pubkey;
   if (!secp256k1_ec_pubkey_parse(GetSecp256k1Ctx(), &pubkey, public_key_.data(),
                                  public_key_.size())) {
-    LOG(ERROR) << __func__ << ": secp256k1_ec_pubkey_parse failed";
     return public_key;
   }
   if (!secp256k1_ec_pubkey_serialize(GetSecp256k1Ctx(), public_key.data(),
                                      &public_key_len, &pubkey,
                                      SECP256K1_EC_UNCOMPRESSED)) {
-    LOG(ERROR) << __func__ << ": secp256k1_ec_pubkey_serialize failed";
+    return public_key;
   }
 
   return public_key;
@@ -284,7 +280,6 @@ std::unique_ptr<HDKey> HDKey::DeriveChild(const DerivationIndex& index) {
   unsigned int out_len;
   if (!HMAC(EVP_sha512(), chain_code_.data(), chain_code_.size(), data.data(),
             data.size(), hmac.data(), &out_len)) {
-    LOG(ERROR) << __func__ << ": HMAC_SHA512 failed";
     return nullptr;
   }
   DCHECK(out_len == kSHA512Length);
@@ -301,7 +296,6 @@ std::unique_ptr<HDKey> HDKey::DeriveChild(const DerivationIndex& index) {
     SecureVector private_key = private_key_;
     if (!secp256k1_ec_seckey_tweak_add(GetSecp256k1Ctx(), private_key.data(),
                                        hmac_span.first<32>().data())) {
-      LOG(ERROR) << __func__ << ": secp256k1_ec_seckey_tweak_add failed";
       return nullptr;
     }
     if (!hdkey->SetPrivateKey(
@@ -315,13 +309,11 @@ std::unique_ptr<HDKey> HDKey::DeriveChild(const DerivationIndex& index) {
     secp256k1_pubkey pubkey;
     if (!secp256k1_ec_pubkey_parse(GetSecp256k1Ctx(), &pubkey,
                                    public_key_.data(), public_key_.size())) {
-      LOG(ERROR) << __func__ << ": secp256k1_ec_pubkey_parse failed";
       return nullptr;
     }
 
     if (!secp256k1_ec_pubkey_tweak_add(GetSecp256k1Ctx(), &pubkey,
                                        hmac_span.first<32>().data())) {
-      LOG(ERROR) << __func__ << ": secp256k1_ec_pubkey_tweak_add failed";
       return nullptr;
     }
     size_t public_key_len = kSecp256k1PubkeySize;
@@ -329,7 +321,6 @@ std::unique_ptr<HDKey> HDKey::DeriveChild(const DerivationIndex& index) {
     if (!secp256k1_ec_pubkey_serialize(GetSecp256k1Ctx(), public_key.data(),
                                        &public_key_len, &pubkey,
                                        SECP256K1_EC_COMPRESSED)) {
-      LOG(ERROR) << __func__ << ": secp256k1_ec_pubkey_serialize failed";
       return nullptr;
     }
     hdkey->SetPublicKey(public_key);
@@ -402,7 +393,6 @@ std::optional<std::vector<uint8_t>> HDKey::SignDer(Secp256k1SignMsgSpan msg) {
     if (!secp256k1_ecdsa_sign(
             GetSecp256k1Ctx(), &ecdsa_sig, msg.data(), private_key_.data(),
             secp256k1_nonce_function_rfc6979, extra_entropy)) {
-      LOG(ERROR) << __func__ << ": secp256k1_ecdsa_sign failed";
       return std::nullopt;
     }
   }
@@ -425,19 +415,15 @@ bool HDKey::VerifyForTesting(Secp256k1SignMsgSpan msg,
   secp256k1_ecdsa_signature ecdsa_sig;
   if (!secp256k1_ecdsa_signature_parse_compact(GetSecp256k1Ctx(), &ecdsa_sig,
                                                sig.data())) {
-    LOG(ERROR) << __func__
-               << ": secp256k1_ecdsa_signature_parse_compact failed";
     return false;
   }
   secp256k1_pubkey pubkey;
   if (!secp256k1_ec_pubkey_parse(GetSecp256k1Ctx(), &pubkey, public_key_.data(),
                                  public_key_.size())) {
-    LOG(ERROR) << __func__ << ": secp256k1_ec_pubkey_parse failed";
     return false;
   }
   if (!secp256k1_ecdsa_verify(GetSecp256k1Ctx(), &ecdsa_sig, msg.data(),
                               &pubkey)) {
-    LOG(ERROR) << __func__ << ": secp256k1_ecdsa_verify failed";
     return false;
   }
   return true;
@@ -465,23 +451,18 @@ std::optional<std::vector<uint8_t>> HDKey::RecoverCompact(
   secp256k1_ecdsa_recoverable_signature ecdsa_sig;
   if (!secp256k1_ecdsa_recoverable_signature_parse_compact(
           GetSecp256k1Ctx(), &ecdsa_sig, sig.rs_bytes().data(), sig.recid())) {
-    LOG(ERROR)
-        << __func__
-        << ": secp256k1_ecdsa_recoverable_signature_parse_compact failed";
     return std::nullopt;
   }
 
   secp256k1_pubkey pubkey;
   if (!secp256k1_ecdsa_recover(GetSecp256k1Ctx(), &pubkey, &ecdsa_sig,
                                msg.data())) {
-    LOG(ERROR) << __func__ << ": secp256k1_ecdsa_recover failed";
     return std::nullopt;
   }
 
   if (!secp256k1_ec_pubkey_serialize(
           GetSecp256k1Ctx(), public_key.data(), &public_key_len, &pubkey,
           compressed ? SECP256K1_EC_COMPRESSED : SECP256K1_EC_UNCOMPRESSED)) {
-    LOG(ERROR) << "secp256k1_ec_pubkey_serialize failed";
     return std::nullopt;
   }
 
@@ -492,14 +473,13 @@ void HDKey::GeneratePublicKey() {
   secp256k1_pubkey public_key;
   if (!secp256k1_ec_pubkey_create(GetSecp256k1Ctx(), &public_key,
                                   private_key_.data())) {
-    LOG(ERROR) << "secp256k1_ec_pubkey_create failed";
     return;
   }
   size_t public_key_len = 33;
   if (!secp256k1_ec_pubkey_serialize(GetSecp256k1Ctx(), public_key_.data(),
                                      &public_key_len, &public_key,
                                      SECP256K1_EC_COMPRESSED)) {
-    LOG(ERROR) << "secp256k1_ec_pubkey_serialize failed";
+    return;
   }
 }
 

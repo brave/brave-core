@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/asset_ratio_response_parser.h"
 
 #include "base/check.h"
-#include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
@@ -71,7 +70,6 @@ mojom::AssetPriceSource GetAssetPriceSource(const std::string& source) {
 std::vector<mojom::AssetPricePtr> ParseAssetPrices(
     const base::Value& json_value) {
   if (!json_value.is_list()) {
-    LOG(ERROR) << "Invalid response, expected array";
     return {};
   }
 
@@ -81,8 +79,6 @@ std::vector<mojom::AssetPricePtr> ParseAssetPrices(
   for (const auto& item : response_list) {
     auto payload = api::asset_ratio::AssetPricePayload::FromValue(item);
     if (!payload) {
-      LOG(ERROR) << "Invalid response, could not parse AssetPricePayload:"
-                 << item.DebugString();
       continue;
     }
 
@@ -135,7 +131,6 @@ bool ParseAssetPriceHistory(const base::Value& json_value,
   // }
 
   if (!json_value.is_dict()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a dict";
     return false;
   }
 

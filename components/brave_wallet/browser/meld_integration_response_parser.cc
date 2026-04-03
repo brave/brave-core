@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/types/expected.h"
 #include "base/values.h"
@@ -360,7 +359,6 @@ std::optional<std::vector<mojom::MeldCountryPtr>> ParseCountries(
   //   }
   // ]
   if (!json_value.is_list()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a list";
     return std::nullopt;
   }
   std::vector<mojom::MeldCountryPtr> countries;
@@ -368,7 +366,6 @@ std::optional<std::vector<mojom::MeldCountryPtr>> ParseCountries(
     const auto country_value =
         meld_integration_responses::Country::FromValue(country_item);
     if (!country_value) {
-      LOG(ERROR) << "Invalid response, could not parse JSON";
       return std::nullopt;
     }
 
