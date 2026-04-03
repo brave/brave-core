@@ -15,6 +15,7 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -277,6 +278,9 @@ bool IsDisabledItemForGuest(SidebarItem::BuiltInItemType type) {
 
 SidebarService::ShowSidebarOption GetDefaultShowSidebarOption(
     version_info::Channel channel) {
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  return ShowSidebarOption::kShowNever;
+#else
   if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
           switches::kDontShowSidebarOnNonStable) &&
       channel != version_info::Channel::STABLE) {
@@ -295,6 +299,7 @@ SidebarService::ShowSidebarOption GetDefaultShowSidebarOption(
   }
 
   return ShowSidebarOption::kShowNever;
+#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 }
 
 views::BubbleBorder::Arrow GetBubbleArrowForSidebar(PrefService* prefs) {
