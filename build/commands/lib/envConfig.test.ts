@@ -221,9 +221,17 @@ describe('EnvConfig', () => {
 
     runCommonConfigTests()
 
-    it('getString/requireString should throw if type does not match', () => {
+    it('should throw if type does not match', () => {
+      expectInvalidTypeError(() => envConfig.getBoolean(['number']))
+      expectInvalidTypeError(() => envConfig.getNumber(['boolean']))
       expectInvalidTypeError(() => envConfig.getString(['boolean']))
+      expectInvalidTypeError(() => envConfig.getArray(['boolean']))
+      expectInvalidTypeError(() => envConfig.getObject(['boolean']))
+      expectInvalidTypeError(() => envConfig.requireBoolean(['number']))
+      expectInvalidTypeError(() => envConfig.requireNumber(['boolean']))
       expectInvalidTypeError(() => envConfig.requireString(['boolean']))
+      expectInvalidTypeError(() => envConfig.requireArray(['boolean']))
+      expectInvalidTypeError(() => envConfig.requireObject(['boolean']))
     })
   })
 
