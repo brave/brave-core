@@ -456,6 +456,14 @@ void BraveBrowserView::UpdateSearchTabsButtonState() {
   if (features::HasTabSearchToolbarButton()) {
     if (auto* tab_search_button = toolbar()->tab_search_button()) {
       tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
+      auto* tab_search_container =
+          BrowserElementsViews::From(browser())->GetViewAs<TabSearchContainer>(
+              kTabSearchContainerElementId);
+      if (tab_search_container) {
+        // We have tab search button on toolbar, so we don't need to show the
+        // tab search container in horizontal tab strip region view.
+        tab_search_container->SetVisible(false);
+      }
     }
   } else if (auto* tab_search_button =
                  BrowserElementsViews::From(browser())
