@@ -23,3 +23,10 @@
 # for the same reason.
 # https://github.com/brave/brave-browser/issues/54053
 -DevToolsExtensionHostsPolicyTest.CantInspectBlockedHost
+
+# Upstream Chromium test. Already disabled upstream on ChromeOS MSan
+# (crbug.com/491012584). Times out under MSan instrumentation because the
+# kInitialWebUI feature (WebUI toolbar) navigation hangs in Brave. Upstream
+# flake rate: 2.7% (LUCI Analysis, 30-day lookback).
+# https://github.com/brave/brave-browser/issues/54030
+-InitialWebUIMetricsDropBrowserTest.WebiumRendererMetricsDroppedIfNoRule
