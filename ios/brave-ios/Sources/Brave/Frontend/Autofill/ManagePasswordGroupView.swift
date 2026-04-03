@@ -18,6 +18,7 @@ struct ManagePasswordGroupView: View {
 
   let viewModel: ManagePasswordsViewModel
   let domain: String
+  let redactedTitle = Strings.Autofill.managePasswordsTitle
 
   @State private var selectedCredentialIds: Set<String> = []
   @State private var isDeleteSelectionDialogPresented = false
@@ -61,7 +62,7 @@ struct ManagePasswordGroupView: View {
     }
     .scrollContentBackground(.hidden)
     .background((Color(.braveGroupedBackground)))
-    .navigationTitle(redactionReasons.contains(.privacy) ? "" : domain)
+    .navigationTitle(redactionReasons.contains(.privacy) ? redactedTitle : domain)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       if !redactionReasons.contains(.privacy) {
