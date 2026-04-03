@@ -1,0 +1,21 @@
+diff --git a/components/sync/protocol/proto_value_conversions_unittest.cc b/components/sync/protocol/proto_value_conversions_unittest.cc
+index d5c268257fdcbe5e302289e5c9b7eff045b336df..d10dcc80b31b61b16205748f07b9c9fc1d70c040 100644
+--- a/components/sync/protocol/proto_value_conversions_unittest.cc
++++ b/components/sync/protocol/proto_value_conversions_unittest.cc
+@@ -71,7 +71,7 @@ using ::testing::Pointee;
+ 
+ DEFINE_SPECIFICS_TO_VALUE_TEST(encrypted)
+ 
+-static_assert(63 == syncer::GetNumDataTypes(),
++static_assert(64 == syncer::GetNumDataTypes(),
+               "When adding a new field, add a DEFINE_SPECIFICS_TO_VALUE_TEST "
+               "for your field below, and optionally a test for the specific "
+               "conversions.");
+@@ -139,6 +139,7 @@ DEFINE_SPECIFICS_TO_VALUE_TEST(contextual_task)
+ DEFINE_SPECIFICS_TO_VALUE_TEST(skill)
+ DEFINE_SPECIFICS_TO_VALUE_TEST(gemini_thread)
+ DEFINE_SPECIFICS_TO_VALUE_TEST(accessibility_annotation)
++DEFINE_SPECIFICS_TO_VALUE_TEST(ai_chat_conversation)
+ 
+ TEST(ProtoValueConversionsTest, AutofillWalletSpecificsToValue) {
+   sync_pb::AutofillWalletSpecifics specifics;
