@@ -11,6 +11,7 @@
 #include "chrome/test/views/chrome_views_test_base.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/events/event.h"
 #include "ui/views/style/platform_style.h"
 #include "ui/views/test/views_test_utils.h"
 #include "ui/views/view_class_properties.h"
@@ -186,6 +187,32 @@ TEST_F(PageActionViewTest, OverrideHeightIgnoreSizeBounds) {
   // When the height is set, the view's cross-axis alignment should be centered.
   EXPECT_EQ(*page_action_view()->GetProperty(views::kCrossAxisAlignmentKey),
             views::LayoutAlignment::kCenter);
+}
+
+TEST_F(PageActionViewTest, OverrideTriggerableEventUsesCallback) {
+  EXPECT_CALL(*model(), GetOverrideTriggerableEvent())
+      .WillRepeatedly(Return(ui::EF_RIGHT_MOUSE_BUTTON));
+
+  ui::MouseEvent left_press(ui::EventType::kMousePressed, gfx::Point(5, 5),
+                            gfx::Point(5, 5), base::TimeTicks::Now(),
+                            ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON);
+  ui::MouseEvent right_press(ui::EventType::kMousePressed, gfx::Point(5, 5),
+                             gfx::Point(5, 5), base::TimeTicks::Now(),
+                             ui::EF_RIGHT_MOUSE_BUTTON,
+                             ui::EF_RIGHT_MOUSE_BUTTON);
+  page_action_view()->OnPageActionModelChanged(*model());
+
+  EXPECT_FALSE(page_action_view()->IsTriggerableEvent(left_press));
+  EXPECT_TRUE(page_action_view()->IsTriggerableEvent(right_press));
+  testing::Mock::VerifyAndClearExpectations(model());
+
+  EXPECT_CALL(*model(), GetOverrideTriggerableEvent())
+      .WillRepeatedly(Return(std::nullopt));
+  page_action_view()->OnPageActionModelChanged(*model());
+
+  EXPECT_TRUE(page_action_view()->IsTriggerableEvent(left_press));
+  EXPECT_FALSE(page_action_view()->IsTriggerableEvent(right_press));
+  testing::Mock::VerifyAndClearExpectations(model());
 }
 
 }  // namespace page_actions

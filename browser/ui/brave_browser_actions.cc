@@ -7,6 +7,7 @@
 
 #include "base/functional/callback_helpers.h"
 #include "base/types/to_address.h"
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/features.h"
@@ -81,10 +82,20 @@ void BraveBrowserActions::InitializeBrowserActions() {
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
-    root_action_item_->AddChild(actions::ActionItem::Builder(base::DoNothing())
-                                    .SetActionId(kActionShowPartitionedStorage)
-                                    .SetEnabled(true)
-                                    .Build());
+    root_action_item_->AddChild(
+        actions::ActionItem::Builder(
+            // Safe to bind bwi to the callback because root_action_item_ is
+            // going to be destroyed on the base class's destructor while the
+            // browser window interface is also member of the base class.
+            base::BindRepeating(
+                [](BrowserWindowInterface* bwi, actions::ActionItem* item,
+                   actions::ActionInvocationContext context) {
+                  brave::OpenContainerMenuOnPageActionView(bwi);
+                },
+                bwi))
+            .SetActionId(kActionShowPartitionedStorage)
+            .SetEnabled(true)
+            .Build());
   }
 #endif
 }
