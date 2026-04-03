@@ -21,7 +21,11 @@ TEST(DataTypeTest, LowPriorityUserTypes) {
 
 // This test is supposed to fail when sync types are increased/decreased
 TEST(DataTypeTest, DataTypeCounts) {
-  EXPECT_EQ(static_cast<int>(DataTypeForHistograms::kMaxValue), 80);
+  EXPECT_EQ(static_cast<int>(DataTypeForHistograms::kMaxValue), 81);
+}
+
+TEST(DataTypeTest, AIChatConversationEncryptable) {
+  EXPECT_TRUE(EncryptableUserTypes().Has(AI_CHAT_CONVERSATION));
 }
 
 }  // namespace
