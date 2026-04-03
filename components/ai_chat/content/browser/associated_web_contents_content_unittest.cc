@@ -170,24 +170,6 @@ class AssociatedWebContentsContentUnitTest
     return static_cast<content::TestWebContents*>(web_contents());
   }
 
-#if BUILDFLAG(ENABLE_PDF)
-  void OnAllPDFPagesTextReceived(
-      AssociatedWebContentsContent::FetchPageContentCallback callback,
-      const std::vector<std::pair<size_t, std::string>>& page_texts) {
-    web_contents_content_->OnAllPDFPagesTextReceived(std::move(callback),
-                                                     page_texts);
-  }
-
-  void OnGetPDFPageCount(
-      AssociatedWebContentsContent::FetchPageContentCallback callback,
-      pdf::mojom::PdfListener::GetPdfBytesStatus status,
-      const std::vector<uint8_t>& bytes,
-      uint32_t page_count) {
-    web_contents_content_->OnGetPDFPageCount(std::move(callback), status, bytes,
-                                             page_count);
-  }
-#endif  // BUILDFLAG(ENABLE_PDF)
-
  protected:
   NiceMock<favicon::MockFaviconService> favicon_service_;
   std::unique_ptr<NiceMock<MockAssociatedContentObserver>> observer_;
@@ -397,54 +379,6 @@ TEST_P(AssociatedWebContentsContentUnitTest,
     }
   }
 }
-
-#if BUILDFLAG(ENABLE_PDF)
-TEST_P(AssociatedWebContentsContentUnitTest, OnAllPDFPagesTextReceived) {
-  // Create test data with out-of-order pages
-  std::vector<std::pair<size_t, std::string>> page_texts = {
-      {2, "Page 3 content"},
-      {0, "Page 1 content"},
-      {1, "Page 2 content"},
-  };
-
-  base::test::TestFuture<std::string, bool, std::string> future;
-  OnAllPDFPagesTextReceived(future.GetCallback(), page_texts);
-
-  auto [content, is_video, invalidation_token] = future.Get();
-  EXPECT_FALSE(is_video);
-  EXPECT_TRUE(invalidation_token.empty());
-  EXPECT_EQ(content, "Page 1 content\nPage 2 content\nPage 3 content");
-}
-
-TEST_P(AssociatedWebContentsContentUnitTest, OnGetPDFPageCount_FailedStatus) {
-  base::test::TestFuture<std::string, bool, std::string> future;
-
-  OnGetPDFPageCount(future.GetCallback(),
-                    pdf::mojom::PdfListener::GetPdfBytesStatus::kFailed,
-                    std::vector<uint8_t>(), 0);
-
-  auto [content, is_video, invalidation_token] = future.Get();
-  EXPECT_TRUE(content.empty());
-  EXPECT_FALSE(is_video);
-  EXPECT_TRUE(invalidation_token.empty());
-}
-
-TEST_P(AssociatedWebContentsContentUnitTest,
-       OnGetPDFPageCount_SuccessWhenNoPDFHelper) {
-  ASSERT_FALSE(pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents()));
-
-  base::test::TestFuture<std::string, bool, std::string> future;
-
-  OnGetPDFPageCount(future.GetCallback(),
-                    pdf::mojom::PdfListener::GetPdfBytesStatus::kSuccess,
-                    std::vector<uint8_t>(), 3);
-
-  auto [content, is_video, invalidation_token] = future.Get();
-  EXPECT_TRUE(content.empty());
-  EXPECT_FALSE(is_video);
-  EXPECT_TRUE(invalidation_token.empty());
-}
-#endif  // BUILDFLAG(ENABLE_PDF)
 
 TEST_P(AssociatedWebContentsContentUnitTest,
        GetPageContent_NoFallbackWhenNotPDF) {
