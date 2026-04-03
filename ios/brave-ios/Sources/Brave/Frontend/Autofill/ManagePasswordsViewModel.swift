@@ -100,6 +100,26 @@ class ManagePasswordsViewModel {
     }
     deletePasswords(toDelete)
   }
+
+  func updatePassword(_ password: CWVPassword, with draft: ManagePasswordDraft) {
+    guard draft.hasChanges(from: password) else { return }
+
+    autofillDataManager.update(
+      password,
+      newUsername: draft.username,
+      newPassword: draft.password,
+      timestamp: Date()
+    )
+  }
+
+  func addPassword(_ draft: ManagePasswordDraft) {
+    autofillDataManager.addNewPassword(
+      forUsername: draft.username,
+      password: draft.password,
+      site: draft.site,
+      timestamp: Date()
+    )
+  }
 }
 
 extension ManagePasswordsViewModel {
@@ -169,5 +189,52 @@ private class AutofillDataManagerObserver: NSObject, CWVAutofillDataManagerObser
     removing removed: [CWVPassword]
   ) {
     notify()
+  }
+}
+
+/// Editable snapshot of a saved login’s fields while the user is in add or edit mode.
+/// `CWVPassword` is the persisted model; this type holds the in-flight strings bound to text fields.
+struct ManagePasswordDraft: Identifiable {
+  let id = UUID()
+  var username: String = ""
+  var password: String = ""
+  var site: String = ""
+
+  /// `true` when the draft is in its default blank state (all fields empty or whitespace-only).
+  var isEmpty: Bool {
+    username.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+      && password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+      && site.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+  }
+
+  /// `true` when all fields are filled and `site` is a valid web page URL.
+  var isValid: Bool {
+    !isEmpty && URL(string: site)?.isWebPage() == true
+  }
+
+  /// Clears all fields (e.g. after a successful save or when discarding a new-login form).
+  mutating func reset() {
+    username = ""
+    password = ""
+    site = ""
+  }
+
+  /// Copies values from an existing credential into the draft.
+  mutating func populate(with cwvPassword: CWVPassword) {
+    username = cwvPassword.username ?? ""
+    password = cwvPassword.password ?? ""
+    site = cwvPassword.site
+  }
+
+  /// `true` when the draft still matches the given credential (no unsaved edits vs. that snapshot).
+  func matches(_ cwvPassword: CWVPassword) -> Bool {
+    username == (cwvPassword.username ?? "")
+      && password == (cwvPassword.password ?? "")
+      && site == cwvPassword.site
+  }
+
+  /// `true` when the draft differs from the given credential (i.e. there are unsaved edits).
+  func hasChanges(from cwvPassword: CWVPassword) -> Bool {
+    !matches(cwvPassword)
   }
 }

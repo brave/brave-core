@@ -17,6 +17,7 @@ struct ManagePasswordsView: View {
   @Bindable var viewModel: ManagePasswordsViewModel
 
   @Environment(\.dismiss) private var dismiss
+  @Environment(\.openURL) private var openURL
   @Environment(\.autofillPrivacyLockExitOnFailure) private var privacyLockExitOnFailure
   @Environment(\.editMode) private var editMode
   @Environment(\.redactionReasons) private var redactionReasons
@@ -24,6 +25,7 @@ struct ManagePasswordsView: View {
   @State private var privacyLock = AutofillPrivacyLock()
   @State private var selectedGroupIds: Set<GroupID> = []
   @State private var isDeleteSelectionDialogPresented: Bool = false
+  @State private var addPasswordDraft: ManagePasswordDraft? = nil
 
   private var isSearchActive: Bool {
     !viewModel.searchText.isEmpty
@@ -141,7 +143,7 @@ struct ManagePasswordsView: View {
       if !privacyLock.isLocked {
         ToolbarItem(placement: .topBarTrailing) {
           Button {
-            //TODO: Present Add Password Form
+            addPasswordDraft = ManagePasswordDraft()
           } label: {
             Label(Strings.addButtonTitle, braveSystemImage: "leo.plus.add")
           }
@@ -211,6 +213,15 @@ struct ManagePasswordsView: View {
     .onReceive(NotificationCenter.default.publisher(for: UIScene.didActivateNotification)) { _ in
       Task { await privacyLock.authenticate(onFailure: exitAfterAuthFailure) }
     }
+    .sheet(item: $addPasswordDraft) { draft in
+      NavigationStack {
+        ManagePasswordDetailView(
+          viewModel: viewModel,
+          context: .add(draft)
+        )
+        .environment(\.redactionReasons, effectiveRedactionReasons)
+      }
+    }
   }
 
   private var selectedDomainsString: String {
@@ -256,7 +267,7 @@ private struct ManagePasswordListRow: View {
     NavigationLink {
       Group {
         if passwords.count == 1, let password = passwords.first {
-          ManagePasswordDetailView(viewModel: viewModel, password: password)
+          ManagePasswordDetailView(viewModel: viewModel, context: .edit(password))
         } else {
           ManagePasswordGroupView(viewModel: viewModel, domain: domain)
         }
