@@ -24,6 +24,10 @@ import {
 } from '../conversation_entries/conversation_entries_utils'
 import RichSearchWidget from './rich_search_widget'
 import AssistantResponseContextProvider from './assistant_response_context'
+import {
+  getBraveSearchUrlForQuery,
+  LEO_BRAVE_SEARCH_SUPPORT_URL,
+} from '../../../common/constants'
 
 interface BaseProps {
   // Whether data is currently being received (generated)
@@ -59,7 +63,7 @@ function SearchSummary(props: { searchQueries: string[] }) {
       <React.Fragment key={i}>
         <a
           className={styles.searchQueryLink}
-          href='#'
+          href={getBraveSearchUrlForQuery(query)}
           onClick={(e) => handleOpenSearchQuery(e, query)}
         >
           {`"${query}"`}
@@ -76,7 +80,7 @@ function SearchSummary(props: { searchQueries: string[] }) {
         {message}{' '}
         <a
           className={styles.searchLearnMoreLink}
-          href='#'
+          href={LEO_BRAVE_SEARCH_SUPPORT_URL}
           onClick={handleLearnMoreClick}
         >
           {getLocale(S.CHAT_UI_LEARN_MORE)}
