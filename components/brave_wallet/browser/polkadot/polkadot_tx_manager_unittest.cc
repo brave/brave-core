@@ -470,6 +470,95 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction) {
   EXPECT_EQ(polkadot_tx->tx()->transfer_all(), false);
 }
 
+TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_TransferAll) {
+  // Prove that our ideal happy flow works for approving transactions, this time
+  // for a transfer_all call.
+
+  polkadot_mock_rpc_->AddReqResPairs();
+  polkadot_mock_rpc_->FinalizeSetup();
+
+  std::string chain_id = mojom::kPolkadotTestnet;
+
+  auto pubkey = base::HexEncodeLower(
+      keyring_service_->GetPolkadotPubKey(polkadot_testnet_account_->account_id)
+          .value());
+
+  EXPECT_EQ(pubkey,
+            "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
+
+  uint128_t amount = uint128_t{19079223034968ull};
+
+  auto transaction_params = mojom::NewPolkadotTransactionParams::New(
+      chain_id, polkadot_testnet_account_->account_id->Clone(), kBob,
+      Uint128ToMojom(amount), true, nullptr);
+
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      unapproved_future;
+
+  polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
+      std::move(transaction_params), unapproved_future.GetCallback());
+
+  auto [success, tx_meta_id, err_str] = unapproved_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_FALSE(tx_meta_id.empty());
+  EXPECT_EQ(err_str, "");
+
+  base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approved_future;
+
+  polkadot_tx_manager_->ApproveTransaction(tx_meta_id,
+                                           approved_future.GetCallback());
+
+  auto [success2, error, msg] = approved_future.Take();
+  EXPECT_TRUE(success2);
+
+  const auto& txs = tx_service_->GetDelegateForTesting()->GetTxs();
+  const auto* tx = txs.FindDict(tx_meta_id);
+  ASSERT_TRUE(tx);
+
+  auto polkadot_tx = GetPolkadotTxManager()->GetPolkadotTx(tx_meta_id);
+  ASSERT_TRUE(polkadot_tx);
+
+  EXPECT_EQ(polkadot_tx->status(), mojom::TransactionStatus::Submitted);
+  EXPECT_EQ(polkadot_tx->tx()->recipient().ToString().value(), kBob);
+  EXPECT_EQ(polkadot_tx->tx()->amount(), amount - uint128_t{15937408476ull});
+  EXPECT_EQ(polkadot_tx->tx()->fee(), uint128_t{15937408476ull});
+  EXPECT_EQ(polkadot_tx->tx()->transfer_all(), true);
+}
+
+TEST_F(PolkadotTxManagerUnitTest, TransferAll_InsufficientAmount) {
+  // The front-end should prevent this but just in case, we explicitly handle
+  // the case where a fee exceeds the total amount a user might be sending when
+  // they click MAX in the send UI.
+
+  polkadot_mock_rpc_->AddReqResPairs();
+  polkadot_mock_rpc_->FinalizeSetup();
+
+  std::string chain_id = mojom::kPolkadotTestnet;
+
+  auto pubkey = base::HexEncodeLower(
+      keyring_service_->GetPolkadotPubKey(polkadot_testnet_account_->account_id)
+          .value());
+
+  EXPECT_EQ(pubkey,
+            "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
+
+  auto transaction_params = mojom::NewPolkadotTransactionParams::New(
+      chain_id, polkadot_testnet_account_->account_id->Clone(), kBob,
+      mojom::uint128::New(0, 1234), true, nullptr);
+
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      unapproved_future;
+
+  polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
+      std::move(transaction_params), unapproved_future.GetCallback());
+
+  auto [success, tx_meta_id, err_str] = unapproved_future.Take();
+  EXPECT_FALSE(success);
+  EXPECT_TRUE(tx_meta_id.empty());
+  EXPECT_EQ(err_str, WalletInsufficientBalanceErrorMessage());
+}
+
 TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_NoTransaction) {
   // Test the endpoint when the tx_meta_id can't be found.
 

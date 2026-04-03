@@ -703,7 +703,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic) {
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      uint128_t{1234}, recipient_pubkey, test_future.GetCallback());
+      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
+      test_future.GetCallback());
 
   auto signed_extrinsic = test_future.Take();
   ASSERT_TRUE(signed_extrinsic.has_value());
@@ -763,7 +764,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainMetadata) {
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      uint128_t{1234}, recipient_pubkey, test_future.GetCallback());
+      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
+      test_future.GetCallback());
 
   auto signed_extrinsic = test_future.Take();
   EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
@@ -858,7 +860,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoAccountInfo) {
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      uint128_t{1234}, recipient_pubkey, test_future.GetCallback());
+      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
+      test_future.GetCallback());
 
   auto signed_extrinsic = test_future.Take();
   EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
@@ -981,7 +984,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainHeader) {
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      uint128_t{1234}, recipient_pubkey, test_future.GetCallback());
+      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
+      test_future.GetCallback());
 
   auto signed_extrinsic = test_future.Take();
   EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
@@ -1137,7 +1141,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoParentHeader) {
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      uint128_t{1234}, recipient_pubkey, test_future.GetCallback());
+      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
+      test_future.GetCallback());
 
   auto signed_extrinsic = test_future.Take();
   EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
@@ -1276,7 +1281,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoFinalizedHead) {
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      uint128_t{1234}, recipient_pubkey, test_future.GetCallback());
+      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
+      test_future.GetCallback());
 
   auto signed_extrinsic = test_future.Take();
   EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
@@ -1456,7 +1462,8 @@ TEST_F(PolkadotWalletServiceUnitTest,
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      uint128_t{1234}, recipient_pubkey, test_future.GetCallback());
+      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
+      test_future.GetCallback());
 
   auto signed_extrinsic = test_future.Take();
   EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
@@ -1684,7 +1691,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoGenesisHash) {
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      uint128_t{1234}, recipient_pubkey, test_future.GetCallback());
+      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
+      test_future.GetCallback());
 
   auto signed_extrinsic = test_future.Take();
   EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
@@ -1896,7 +1904,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoRuntimeVersion) {
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      uint128_t{1234}, recipient_pubkey, test_future.GetCallback());
+      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
+      test_future.GetCallback());
 
   auto signed_extrinsic = test_future.Take();
   EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
@@ -1933,8 +1942,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction) {
   EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
 
   polkadot_wallet_service->SignAndSendTransaction(
-      chain_id, polkadot_mainnet_account_->account_id.Clone(), 4321,
-      recipient_pubkey, future.GetCallback());
+      chain_id, polkadot_mainnet_account_->account_id.Clone(),
+      /*transfer_all=*/false, 4321, recipient_pubkey, future.GetCallback());
 
   auto tx_hash = future.Take();
   ASSERT_TRUE(tx_hash.has_value());
@@ -1944,6 +1953,50 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction) {
   EXPECT_EQ(
       base::HexEncodeLower(tx_hash->second.extrinsic()),
       R"(35028400b67e7a888fc2a4289ed64c8eca2e4c28846fe556b2b3898b7f8d19a9a4743846010e310b735046f143a0eda48eaed0375b4759b6fe6c4cb55c955ff701f6a7471a20fa95186ee4d66ae7ded08fff594272677fcccc86d68e3548237870c649508155014400000503008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a488543)");
+}
+
+TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_TransferAll) {
+  // Test the normal happy path, but this time for transfer_all instead of our
+  // normal transfer_keep_alive.
+
+  auto polkadot_mock_rpc = std::make_unique<PolkadotMockRpc>(
+      &url_loader_factory_, network_manager_.get());
+
+  auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
+      *keyring_service_, *network_manager_,
+      url_loader_factory_.GetSafeWeakWrapper());
+
+  UnlockWallet();
+
+  auto sender_pubkey =
+      keyring_service_->GetPolkadotPubKey(polkadot_mainnet_account_->account_id)
+          .value();
+
+  polkadot_mock_rpc->SetSenderPubKey(sender_pubkey);
+  polkadot_mock_rpc->AddReqResPairs();
+  polkadot_mock_rpc->FinalizeSetup();
+
+  base::test::TestFuture<base::expected<
+      std::pair<std::string, PolkadotExtrinsicMetadata>, std::string>>
+      future;
+
+  std::string chain_id = mojom::kPolkadotMainnet;
+
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> recipient_pubkey = {};
+  EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
+
+  polkadot_wallet_service->SignAndSendTransaction(
+      chain_id, polkadot_mainnet_account_->account_id.Clone(),
+      /*transfer_all=*/true, 4321, recipient_pubkey, future.GetCallback());
+
+  auto tx_hash = future.Take();
+  ASSERT_TRUE(tx_hash.has_value());
+  EXPECT_EQ(
+      tx_hash->first,
+      "0x028a2de5ca3f7fd3f00a75500cc626c12ffe4347e97a00e252ac0e46a423968d");
+  EXPECT_EQ(
+      base::HexEncodeLower(tx_hash->second.extrinsic()),
+      R"(31028400b67e7a888fc2a4289ed64c8eca2e4c28846fe556b2b3898b7f8d19a9a474384601a6f63abf49b47ddb1f13b271fe93ebcedb3fb60c9e5a9ee147643cd93cd8134e8c2c205ecccf2b8e161e9506e976061c6dbb83a7da39a70ce996d597071d3e8b55014400000504008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4800)");
 }
 
 TEST_F(PolkadotWalletServiceUnitTest,
@@ -1978,8 +2031,8 @@ TEST_F(PolkadotWalletServiceUnitTest,
   EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
 
   polkadot_wallet_service->SignAndSendTransaction(
-      chain_id, polkadot_mainnet_account_->account_id.Clone(), 4321,
-      recipient_pubkey, future.GetCallback());
+      chain_id, polkadot_mainnet_account_->account_id.Clone(),
+      /*transfer_all=*/false, 4321, recipient_pubkey, future.GetCallback());
 
   auto tx_hash = future.Take();
   ASSERT_FALSE(tx_hash.has_value());
@@ -2010,8 +2063,8 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate) {
   EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
 
   polkadot_wallet_service->GetFeeEstimate(
-      chain_id, polkadot_testnet_account_->account_id->Clone(), uint128_t{1234},
-      recipient_pubkey,
+      chain_id, polkadot_testnet_account_->account_id->Clone(),
+      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
       base::BindLambdaForTesting(
           [=](base::expected<uint128_t, std::string> partial_fee) {
             ASSERT_TRUE(partial_fee.has_value());
@@ -2047,8 +2100,8 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate_NetworkFailure) {
   EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
 
   polkadot_wallet_service->GetFeeEstimate(
-      chain_id, polkadot_testnet_account_->account_id->Clone(), uint128_t{1234},
-      recipient_pubkey,
+      chain_id, polkadot_testnet_account_->account_id->Clone(),
+      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
       base::BindLambdaForTesting(
           [=](base::expected<uint128_t, std::string> partial_fee) {
             ASSERT_FALSE(partial_fee.has_value());
