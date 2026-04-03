@@ -27,5 +27,8 @@ public class BraveManageSyncSettingsClassAdapter extends BraveClassVisitor {
 
         deleteField(sBraveManageSyncSettingsClassName, "mSyncEverything");
         makeProtectedField(sManageSyncSettingsClassName, "mSyncEverything");
+
+        deleteField(sBraveManageSyncSettingsClassName, "mSyncTypeCheckBoxPreferencesMap");
+        makeProtectedField(sManageSyncSettingsClassName, "mSyncTypeCheckBoxPreferencesMap");
     }
 }

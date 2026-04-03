@@ -17,14 +17,19 @@ import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.password_manager.settings.ReauthenticationManager;
+import org.chromium.components.browser_ui.settings.ChromeBaseCheckBoxPreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
+import org.chromium.components.sync.UserSelectableType;
 import org.chromium.ui.widget.Toast;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -34,9 +39,12 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
     private static final String TAG = "BMSS";
 
     private static final String PREF_ADVANCED_CATEGORY = "advanced_category";
+    private static final String PREF_SYNC_AI_CHAT = "sync_ai_chat";
 
     private Preference mGoogleActivityControls;
     private Preference mSyncEncryption;
+
+    private Map<Integer, ChromeBaseCheckBoxPreference> mSyncTypeCheckBoxPreferencesMap;
 
     private ChromeSwitchPreference mPrefSyncPasswords;
     private ChromeSwitchPreference mSyncEverything;
@@ -105,6 +113,16 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
         assert syncPaymentsIntegration != null : "Something has changed in the upstream!";
         if (syncPaymentsIntegration != null) {
             syncPaymentsIntegration.setVisible(false);
+        }
+
+        ChromeBaseCheckBoxPreference syncAIChat = findPreference(PREF_SYNC_AI_CHAT);
+        assert syncAIChat != null : "sync_ai_chat preference missing from XML";
+        if (syncAIChat != null && mSyncTypeCheckBoxPreferencesMap != null) {
+            if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SYNC_AI_CHAT)) {
+                mSyncTypeCheckBoxPreferencesMap.put(UserSelectableType.AI_CHAT, syncAIChat);
+            } else {
+                syncAIChat.setVisible(false);
+            }
         }
 
         mPrefSyncPasswords = findPreference(PREF_SYNC_PASSWORDS);
