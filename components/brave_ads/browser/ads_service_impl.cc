@@ -29,8 +29,6 @@
 #include "base/timer/timer.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_adaptive_captcha/pref_names.h"
-#include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
-#include "brave/components/brave_ads/browser/analytics/p3a/notification_ad.h"
 #include "brave/components/brave_ads/browser/bat_ads_service_factory.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_ads/browser/device_id/device_id.h"
@@ -59,7 +57,6 @@
 #include "components/prefs/pref_service.h"
 #include "components/variations/pref_names.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/browser/browser_thread.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "net/base/network_change_notifier.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -264,19 +261,7 @@ bool AdsServiceImpl::UserHasOptedInToSearchResultAds() const {
 }
 
 void AdsServiceImpl::InitializeNotificationsForCurrentProfile() {
-  delegate_->MaybeInitNotificationHelper(base::BindOnce(
-      &AdsServiceImpl::InitializeNotificationsForCurrentProfileCallback,
-      weak_ptr_factory_.GetWeakPtr()));
-}
-
-void AdsServiceImpl::InitializeNotificationsForCurrentProfileCallback() {
-  // Postpone recording P3A to make browser startup smoother.
-  content::GetUIThreadTaskRunner({base::TaskPriority::BEST_EFFORT})
-      ->PostDelayedTask(
-          FROM_HERE,
-          base::BindOnce(&AdsServiceImpl::DoRecordNotificationAdPositionMetric,
-                         weak_ptr_factory_.GetWeakPtr()),
-          base::Seconds(15));
+  delegate_->MaybeInitNotificationHelper();
 }
 
 void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsService() {
@@ -703,11 +688,6 @@ void AdsServiceImpl::InitializeNotificationAdsPrefChangeRegistrar() {
       base::BindRepeating(&AdsServiceImpl::NotifyPrefChanged,
                           base::Unretained(this),
                           prefs::kMaximumNotificationAdsPerHour));
-  auto notification_ad_position_callback =
-      base::BindRepeating(&AdsServiceImpl::DoRecordNotificationAdPositionMetric,
-                          base::Unretained(this));
-  pref_change_registrar_.Add(prefs::kNotificationAdLastNormalizedCoordinateY,
-                             notification_ad_position_callback);
 }
 
 void AdsServiceImpl::InitializeSearchResultAdsPrefChangeRegistrar() {
@@ -821,48 +801,11 @@ bool AdsServiceImpl::CheckIfCanShowNotificationAds() {
     return false;
   }
 
-  if (!delegate_->CanShowNotifications()) {
-    return ShouldShowCustomNotificationAds();
-  }
-
-  return true;
-}
-
-bool AdsServiceImpl::ShouldShowCustomNotificationAds() {
-  const bool can_show_native_notifications = delegate_->CanShowNotifications();
-
-  const bool can_fallback_to_custom_notification_ads =
-      base::FeatureList::IsEnabled(
-          kAllowedToFallbackToCustomNotificationAdFeature) &&
-      kCanFallbackToCustomNotificationAds.Get();
-  if (!can_fallback_to_custom_notification_ads) {
-    ClearProfilePref(prefs::kNotificationAdDidFallbackToCustom);
-  }
-
-  const bool should_show =
-      base::FeatureList::IsEnabled(kCustomNotificationAdFeature);
-
-  const bool should_fallback =
-      !can_show_native_notifications && can_fallback_to_custom_notification_ads;
-  if (should_fallback) {
-    SetProfilePref(prefs::kNotificationAdDidFallbackToCustom,
-                   base::Value(true));
-  }
-
-  const bool did_fallback =
-      prefs_->GetBoolean(prefs::kNotificationAdDidFallbackToCustom);
-
-  return should_show || should_fallback || did_fallback;
+  return delegate_->CanShowNotifications();
 }
 
 void AdsServiceImpl::StartNotificationAdTimeOutTimer(
     const std::string& placement_id) {
-#if BUILDFLAG(IS_ANDROID)
-  if (!ShouldShowCustomNotificationAds()) {
-    return;
-  }
-#endif
-
   const base::TimeDelta timeout = kNotificationAdTimeout.Get();
   if (timeout.is_zero()) {
     // Never time out.
@@ -901,21 +844,12 @@ void AdsServiceImpl::NotificationAdTimedOut(const std::string& placement_id) {
     return;
   }
 
-  if (!ShouldShowCustomNotificationAds() &&
-      delegate_->DoesSupportSystemNotifications()) {
-    bat_ads_associated_remote_->TriggerNotificationAdEvent(
-        placement_id, mojom::NotificationAdEventType::kTimedOut,
-        /*intentional*/ base::DoNothing());
-  }
+  bat_ads_associated_remote_->TriggerNotificationAdEvent(
+      placement_id, mojom::NotificationAdEventType::kTimedOut,
+      /*intentional*/ base::DoNothing());
 }
 
 void AdsServiceImpl::CloseAllNotificationAds() {
-#if BUILDFLAG(IS_ANDROID)
-  if (!ShouldShowCustomNotificationAds()) {
-    return;
-  }
-#endif
-
   const auto& list = prefs_->GetList(prefs::kNotificationAds);
 
   const base::circular_deque<NotificationAdInfo> ads =
@@ -996,14 +930,6 @@ void AdsServiceImpl::ShowScheduledCaptchaCallback(
 
 void AdsServiceImpl::SnoozeScheduledCaptchaCallback() {
   delegate_->SnoozeScheduledCaptcha();
-}
-
-void AdsServiceImpl::DoRecordNotificationAdPositionMetric() {
-  if (!base::FeatureList::IsEnabled(kCustomNotificationAdFeature)) {
-    return;
-  }
-
-  RecordNotificationAdPositionMetric(ShouldShowCustomNotificationAds(), prefs_);
 }
 
 void AdsServiceImpl::ShutdownAds(ShutdownCallback callback) {
@@ -1439,15 +1365,13 @@ void AdsServiceImpl::ShowNotificationAd(base::DictValue dict) {
     body = base::UTF8ToUTF16(ad.body);
   }
 
-  delegate_->ShowNotificationAd(ad.placement_id, title, body,
-                                ShouldShowCustomNotificationAds());
+  delegate_->ShowNotificationAd(ad.placement_id, title, body);
 
   StartNotificationAdTimeOutTimer(ad.placement_id);
 }
 
 void AdsServiceImpl::CloseNotificationAd(const std::string& placement_id) {
-  delegate_->CloseNotificationAd(placement_id,
-                                 ShouldShowCustomNotificationAds());
+  delegate_->CloseNotificationAd(placement_id);
 }
 
 void AdsServiceImpl::GetSiteHistory(int max_count,

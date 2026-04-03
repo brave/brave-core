@@ -5,16 +5,13 @@
 
 #include "brave/components/brave_ads/browser/test/fake_ads_service_delegate.h"
 
-#include "base/functional/callback.h"
-
 namespace brave_ads::test {
 
 FakeAdsServiceDelegate::FakeAdsServiceDelegate() = default;
 
 FakeAdsServiceDelegate::~FakeAdsServiceDelegate() = default;
 
-void FakeAdsServiceDelegate::MaybeInitNotificationHelper(
-    base::OnceClosure /*callback*/) {}
+void FakeAdsServiceDelegate::MaybeInitNotificationHelper() {}
 
 bool FakeAdsServiceDelegate::
     CanShowSystemNotificationsWhileBrowserIsBackgrounded() {
@@ -41,13 +38,12 @@ void FakeAdsServiceDelegate::ClearScheduledCaptcha() {}
 
 void FakeAdsServiceDelegate::SnoozeScheduledCaptcha() {}
 
-void FakeAdsServiceDelegate::ShowNotificationAd(const std::string& /*id*/,
-                                                const std::u16string& /*title*/,
-                                                const std::u16string& /*body*/,
-                                                bool /*is_custom*/) {}
+void FakeAdsServiceDelegate::ShowNotificationAd(
+    const std::string& /*id*/,
+    const std::u16string& /*title*/,
+    const std::u16string& /*body*/) {}
 
-void FakeAdsServiceDelegate::CloseNotificationAd(const std::string& /*id*/,
-                                                 bool /*is_custom*/) {}
+void FakeAdsServiceDelegate::CloseNotificationAd(const std::string& /*id*/) {}
 
 void FakeAdsServiceDelegate::OpenNewTabWithUrl(const GURL& /*url*/) {}
 

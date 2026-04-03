@@ -119,7 +119,6 @@ class AdsServiceImpl final : public AdsService,
   bool UserHasOptedInToSearchResultAds() const;
 
   void InitializeNotificationsForCurrentProfile();
-  void InitializeNotificationsForCurrentProfileCallback();
 
   void GetDeviceIdAndMaybeStartBatAdsService();
   void GetDeviceIdAndMaybeStartBatAdsServiceCallback(std::string device_id);
@@ -190,7 +189,6 @@ class AdsServiceImpl final : public AdsService,
   // TODO(https://github.com/brave/brave-browser/issues/23974) Decouple
   // notification ad business logic.
   bool CheckIfCanShowNotificationAds();
-  bool ShouldShowCustomNotificationAds();
   void StartNotificationAdTimeOutTimer(const std::string& placement_id);
   bool StopNotificationAdTimeOutTimer(const std::string& placement_id);
   void NotificationAdTimedOut(const std::string& placement_id);
@@ -207,8 +205,6 @@ class AdsServiceImpl final : public AdsService,
   void ShowScheduledCaptchaCallback(const std::string& payment_id,
                                     const std::string& captcha_id);
   void SnoozeScheduledCaptchaCallback();
-
-  void DoRecordNotificationAdPositionMetric();
 
   void ShutdownAds(ShutdownCallback callback);
   void ShutdownAdsCallback(ShutdownCallback callback, bool success);

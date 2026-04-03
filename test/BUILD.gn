@@ -157,6 +157,7 @@ test("brave_unit_tests") {
     "//brave/browser:unit_tests",
     "//brave/browser/brave_account:unit_tests",
     "//brave/browser/brave_origin:unit_tests",
+    "//brave/browser/brave_shields:brave_shields_impl",
     "//brave/browser/brave_shields:unit_tests",
     "//brave/browser/brave_stats:unit_tests",
     "//brave/browser/content_settings:unit_tests",
@@ -549,10 +550,6 @@ test("brave_unit_tests") {
       "//brave/browser/ui/views/page_info:unit_tests",
       "//brave/components/sidebar/browser:unit_tests",
     ]
-
-    if (enable_brave_ads) {
-      deps += [ "//brave/browser/ui/views/brave_ads:unit_tests" ]
-    }
   }
 
   if (is_linux) {
@@ -887,6 +884,7 @@ test("brave_browser_tests") {
     "//brave/base/test:test_vendor_is_brave",
     "//brave/browser",
     "//brave/browser/autoplay:browser_tests",
+    "//brave/browser/brave_shields:brave_shields_impl",
     "//brave/browser/brave_stats:browser_tests",
     "//brave/browser/browsing_data:browser_tests",
     "//brave/browser/ephemeral_storage:browser_tests",
@@ -1269,10 +1267,6 @@ test("brave_browser_tests") {
 
     if (enable_brave_rewards) {
       sources += [ "//brave/browser/ui/views/brave_actions/brave_actions_container_browsertest.cc" ]
-    }
-
-    if (enable_brave_ads) {
-      deps += [ "//brave/browser/ui/views/brave_ads:browser_tests" ]
     }
 
     if (enable_brave_wallet) {

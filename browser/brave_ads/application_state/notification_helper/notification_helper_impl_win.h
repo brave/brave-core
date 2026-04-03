@@ -9,7 +9,6 @@
 #include <windows.ui.notifications.h>
 #include <wrl/event.h>
 
-#include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper_impl.h"
 
@@ -24,7 +23,7 @@ class NotificationHelperImplWin final : public NotificationHelperImpl {
   ~NotificationHelperImplWin() override;
 
   // NotificationHelperImpl:
-  void InitSystemNotifications(base::OnceClosure callback) override;
+  void InitSystemNotifications() override;
   bool CanShowNotifications() override;
   bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() const override;
   bool ShowOnboardingNotification() override;
@@ -34,7 +33,6 @@ class NotificationHelperImplWin final : public NotificationHelperImpl {
   NotificationHelperImplWin();
 
   void InitSystemNotificationsCallback(
-      base::OnceClosure callback,
       Microsoft::WRL::ComPtr<ABI::Windows::UI::Notifications::IToastNotifier>
           toast_notifier);
 

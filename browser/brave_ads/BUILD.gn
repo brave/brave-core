@@ -41,7 +41,6 @@ source_set("impl") {
   ]
 
   sources = [
-    "ad_units/notification_ad/notification_ad_platform_bridge.h",
     "ads_service_delegate.cc",
     "ads_service_factory.cc",
     "analytics/p3a/brave_stats_helper.cc",
@@ -60,7 +59,6 @@ source_set("impl") {
     "//brave/browser/brave_ads/services",
     "//brave/browser/brave_ads/tooltips",
     "//brave/browser/brave_stats",
-    "//brave/browser/ui/brave_ads",
     "//brave/components/brave_adaptive_captcha",
     "//brave/components/brave_ads/browser/application_state",
     "//brave/components/brave_rewards/core",
@@ -106,12 +104,8 @@ source_set("impl") {
     ]
   }
 
-  if (!is_android) {
-    sources += [ "ad_units/notification_ad/notification_ad_platform_bridge.cc" ]
-    deps += [ "//chrome/browser/ui/browser_window" ]
-  } else {
+  if (is_android) {
     sources += [
-      "ad_units/notification_ad/notification_ad_platform_bridge_android.cc",
       "application_state/application_state_monitor/application_state_monitor_android.cc",
       "application_state/application_state_monitor/application_state_monitor_android.h",
       "application_state/notification_helper/notification_helper_impl_android.cc",

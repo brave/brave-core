@@ -12,7 +12,6 @@
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_education/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
@@ -108,10 +107,6 @@
 #include "brave/components/psst/common/features.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-#include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
-#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/common/features.h"
@@ -675,31 +670,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
                    kOsDesktop,                                                \
                    FEATURE_VALUE_TYPE(ai_chat::features::kTabManagementTool), \
                }))
-
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-#define BRAVE_ADS_FEATURE_ENTRIES                                             \
-  EXPAND_FEATURE_ENTRIES(                                                     \
-      {                                                                       \
-          "brave-ads-custom-push-notifications-ads",                          \
-          "Enable Brave Ads custom push notifications",                       \
-          "Enable Brave Ads custom push notifications to support rich media", \
-          kOsAll,                                                             \
-          FEATURE_VALUE_TYPE(brave_ads::kCustomNotificationAdFeature),        \
-      },                                                                      \
-      {                                                                       \
-          "brave-ads-allowed-to-fallback-to-custom-push-notification-ads",    \
-          "Allow Brave Ads to fallback from native to custom push "           \
-          "notifications",                                                    \
-          "Allow Brave Ads to fallback from native to custom push "           \
-          "notifications on operating systems which do not support native "   \
-          "notifications",                                                    \
-          kOsAll,                                                             \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_ads::kAllowedToFallbackToCustomNotificationAdFeature),    \
-      })
-#else
-#define BRAVE_ADS_FEATURE_ENTRIES
-#endif
 
 #define BRAVE_LOCAL_AI_MODELS                                 \
   EXPAND_FEATURE_ENTRIES({                                    \
@@ -1352,7 +1322,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_PAGE_INFO_FEATURE_ENTRIES                                              \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_AI_CHAT_TAB_MANAGEMENT_TOOL_ENTRY                                      \
-  BRAVE_ADS_FEATURE_ENTRIES                                                    \
   BRAVE_LOCAL_AI_MODELS                                                        \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \

@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 
 class Profile;
@@ -29,7 +28,7 @@ class NotificationHelper final {
 
   static NotificationHelper* GetInstance();
 
-  void MaybeInitForProfile(Profile* profile, base::OnceClosure callback);
+  void MaybeInitForProfile(Profile* profile);
 
   bool CanShowNotifications();
   bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() const;
@@ -45,8 +44,7 @@ class NotificationHelper final {
 
   ~NotificationHelper();
 
-  void OnSystemNotificationPlatformBridgeReady(base::OnceClosure callback,
-                                               bool success);
+  void OnSystemNotificationPlatformBridgeReady(bool success);
 
   bool is_initialized_ = false;
 

@@ -11,11 +11,6 @@ assert(enable_brave_ads)
 
 static_library("browser") {
   sources = [
-    "ad_units/notification_ad/custom_notification_ad_constants.h",
-    "ad_units/notification_ad/custom_notification_ad_feature.cc",
-    "ad_units/notification_ad/custom_notification_ad_feature.h",
-    "analytics/p3a/notification_ad.cc",
-    "analytics/p3a/notification_ad.h",
     "component_updater/component_info.h",
     "component_updater/component_util.cc",
     "component_updater/component_util.h",
@@ -136,7 +131,6 @@ source_set("unit_tests") {
 
   sources = [
     "ads_service_impl_unittest.cc",
-    "analytics/p3a/notification_ad_unittest.cc",
     "application_state/application_state_monitor_unittest.cc",
   ]
 

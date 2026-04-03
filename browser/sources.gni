@@ -8,7 +8,6 @@ import("//brave/browser/autocomplete/sources.gni")
 import("//brave/browser/brave_account/android/sources.gni")
 import("//brave/browser/brave_news/sources.gni")
 import("//brave/browser/brave_referrals/sources.gni")
-import("//brave/browser/brave_shields/sources.gni")
 import("//brave/browser/brave_vpn/sources.gni")
 import("//brave/browser/browsing_data/sources.gni")
 import("//brave/browser/cosmetic_filters/sources.gni")
@@ -141,6 +140,8 @@ brave_chrome_browser_deps = [
   "//brave/browser/brave_adaptive_captcha:impl",
   "//brave/browser/brave_origin",
   "//brave/browser/brave_search",
+  "//brave/browser/brave_shields",
+  "//brave/browser/brave_shields:brave_shields_impl",
   "//brave/browser/brave_stats",
   "//brave/browser/component_updater",
   "//brave/browser/email_aliases",
@@ -683,7 +684,6 @@ brave_chrome_browser_sources += brave_browser_profiles_sources
 brave_chrome_browser_sources += brave_browser_autocomplete_sources
 brave_chrome_browser_sources += brave_browser_brave_news_sources
 brave_chrome_browser_sources += brave_browser_brave_referrals_sources
-brave_chrome_browser_sources += brave_browser_brave_shields_sources
 brave_chrome_browser_sources += brave_browser_brave_vpn_sources
 brave_chrome_browser_sources += brave_browser_browsing_data_sources
 brave_chrome_browser_sources += brave_browser_cosmetic_filters_sources
@@ -709,7 +709,6 @@ brave_chrome_browser_sources += brave_browser_webcompat_reporter_sources
 brave_chrome_browser_deps += brave_browser_autocomplete_deps
 brave_chrome_browser_deps += brave_browser_brave_news_deps
 brave_chrome_browser_deps += brave_browser_brave_referrals_deps
-brave_chrome_browser_deps += brave_browser_brave_shields_deps
 brave_chrome_browser_deps += brave_browser_brave_vpn_deps
 brave_chrome_browser_deps += brave_browser_browsing_data_deps
 brave_chrome_browser_deps += brave_browser_cosmetic_filters_deps
@@ -745,6 +744,7 @@ brave_chrome_browser_ui_allow_circular_includes_from +=
     brave_ui_allow_circular_includes_from
 
 brave_chrome_browser_allow_circular_includes_from += [
+  "//brave/browser/brave_shields:brave_shields_impl",
   "//brave/browser/ui",
   "//brave/browser/brave_stats",
   "//brave/browser/ntp_background",
@@ -782,10 +782,6 @@ if (toolkit_views) {
   brave_chrome_browser_allow_circular_includes_from += [
     "//brave/browser/ui/sidebar:sidebar_impl",
     "//brave/browser/ui/views/location_bar",
-
-    # TODO(https://github.com/brave/brave-browser/issues/50542): Remove this
-    # once a target has been created for `//brave/browser/brave_shields`.
-    "//brave/browser/ui/views/page_info",
   ]
 }
 

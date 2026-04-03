@@ -20,6 +20,7 @@
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/constants/url_constants.h"
 #include "brave/components/misc_metrics/brave_search_metrics.h"
 #include "brave/components/misc_metrics/navigation_source_metrics.h"
 #include "brave/components/misc_metrics/new_tab_metrics.h"
@@ -309,6 +310,15 @@ void NewTabPageHandler::OpenURLFromSearch(const std::string& url,
   OpenGURL(GURL(url),
            ui::DispositionFromClick(false, details->alt_key, details->ctrl_key,
                                     details->meta_key, details->shift_key));
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::SetDefaultSearchEngineAsBraveSearch(
+    SetDefaultSearchEngineAsBraveSearchCallback callback) {
+  if (auto* template_url =
+          template_url_service_->GetTemplateURLForHost(kBraveSearchHost)) {
+    template_url_service_->SetUserSelectedDefaultSearchProvider(template_url);
+  }
   std::move(callback).Run();
 }
 

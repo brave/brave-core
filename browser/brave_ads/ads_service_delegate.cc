@@ -5,11 +5,7 @@
 
 #include "brave/browser/brave_ads/ads_service_delegate.h"
 
-#include <utility>
-
-#include "brave/browser/brave_ads/ad_units/notification_ad/notification_ad_platform_bridge.h"
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper.h"
-#include "brave/browser/ui/brave_ads/notification_ad.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -45,14 +41,10 @@ AdsServiceDelegate::AdsServiceDelegate(
     Profile& profile,
     PrefService* local_state,
     brave_adaptive_captcha::BraveAdaptiveCaptchaService&
-        adaptive_captcha_service,
-    std::unique_ptr<NotificationAdPlatformBridge>
-        notification_ad_platform_bridge)
+        adaptive_captcha_service)
     : profile_(profile),
       local_state_(local_state),
-      adaptive_captcha_service_(adaptive_captcha_service),
-      notification_ad_platform_bridge_(
-          std::move(notification_ad_platform_bridge)) {}
+      adaptive_captcha_service_(adaptive_captcha_service) {}
 
 AdsServiceDelegate::~AdsServiceDelegate() {}
 
@@ -77,10 +69,8 @@ void AdsServiceDelegate::OpenNewTabWithUrl(const GURL& url) {
 #endif
 }
 
-void AdsServiceDelegate::MaybeInitNotificationHelper(
-    base::OnceClosure callback) {
-  NotificationHelper::GetInstance()->MaybeInitForProfile(&*profile_,
-                                                         std::move(callback));
+void AdsServiceDelegate::MaybeInitNotificationHelper() {
+  NotificationHelper::GetInstance()->MaybeInitForProfile(&*profile_);
 }
 
 bool AdsServiceDelegate::
@@ -116,59 +106,48 @@ void AdsServiceDelegate::SnoozeScheduledCaptcha() {
 
 void AdsServiceDelegate::ShowNotificationAd(const std::string& id,
                                             const std::u16string& title,
-                                            const std::u16string& body,
-                                            bool is_custom) {
-  if (is_custom) {
-    notification_ad_platform_bridge_->ShowNotificationAd(
-        NotificationAd(id, title, body, /*delegate=*/nullptr));
-  } else {
-    message_center::RichNotificationData notification_data;
-    notification_data.context_message = u" ";
+                                            const std::u16string& body) {
+  message_center::RichNotificationData notification_data;
+  notification_data.context_message = u" ";
 
-    const GURL url = GURL(kNotificationAdUrlPrefix + id);
+  const GURL url = GURL(kNotificationAdUrlPrefix + id);
 
-    const std::unique_ptr<message_center::Notification> notification =
-        std::make_unique<message_center::Notification>(
-            message_center::NOTIFICATION_TYPE_SIMPLE, id, title, body,
-            ui::ImageModel(), std::u16string(), url,
-            message_center::NotifierId(
-                message_center::NotifierType::SYSTEM_COMPONENT,
-                "service.ads_service"),
-            notification_data, nullptr);
+  const std::unique_ptr<message_center::Notification> notification =
+      std::make_unique<message_center::Notification>(
+          message_center::NOTIFICATION_TYPE_SIMPLE, id, title, body,
+          ui::ImageModel(), std::u16string(), url,
+          message_center::NotifierId(
+              message_center::NotifierType::SYSTEM_COMPONENT,
+              "service.ads_service"),
+          notification_data, nullptr);
 
 #if !BUILDFLAG(IS_MAC) || defined(OFFICIAL_BUILD)
-    // `set_never_timeout` uses an XPC service which requires signing so for now
-    // we don't set this for macos dev builds
-    notification->set_never_timeout(true);
+  // `set_never_timeout` uses an XPC service which requires signing so for now
+  // we don't set this for macos dev builds
+  notification->set_never_timeout(true);
 #endif
 
-    // We cannot store a raw_ptr to NotificationDisplayService due to upstream
-    // browser tests changes NotificationDisplayService instance during test run
-    // which leads to dangling pointer errors.
-    GetNotificationDisplayService()->Display(
-        NotificationHandler::Type::BRAVE_ADS, *notification, nullptr);
-  }
+  // We cannot store a raw_ptr to NotificationDisplayService due to upstream
+  // browser tests changes NotificationDisplayService instance during test run
+  // which leads to dangling pointer errors.
+  GetNotificationDisplayService()->Display(NotificationHandler::Type::BRAVE_ADS,
+                                           *notification, nullptr);
 }
 
-void AdsServiceDelegate::CloseNotificationAd(const std::string& id,
-                                             bool is_custom) {
-  if (is_custom) {
-    notification_ad_platform_bridge_->CloseNotificationAd(id);
-  } else {
+void AdsServiceDelegate::CloseNotificationAd(const std::string& id) {
 #if BUILDFLAG(IS_ANDROID)
-    const std::string brave_ads_url_prefix = kNotificationAdUrlPrefix;
-    const GURL url =
-        GURL(brave_ads_url_prefix.substr(0, brave_ads_url_prefix.size() - 1));
-    BraveNotificationPlatformBridgeHelperAndroid::MaybeRegenerateNotification(
-        id, url);
+  const std::string brave_ads_url_prefix = kNotificationAdUrlPrefix;
+  const GURL url =
+      GURL(brave_ads_url_prefix.substr(0, brave_ads_url_prefix.size() - 1));
+  BraveNotificationPlatformBridgeHelperAndroid::MaybeRegenerateNotification(
+      id, url);
 #endif
 
-    // We cannot store a raw_ptr to NotificationDisplayService due to upstream
-    // browser tests changes NotificationDisplayService instance during test run
-    // which leads to dangling pointer errors.
-    GetNotificationDisplayService()->Close(NotificationHandler::Type::BRAVE_ADS,
-                                           id);
-  }
+  // We cannot store a raw_ptr to NotificationDisplayService due to upstream
+  // browser tests changes NotificationDisplayService instance during test run
+  // which leads to dangling pointer errors.
+  GetNotificationDisplayService()->Close(NotificationHandler::Type::BRAVE_ADS,
+                                         id);
 }
 
 bool AdsServiceDelegate::IsFullScreenMode() {

@@ -21,6 +21,7 @@ source_set("page_info") {
   ]
 
   deps = [
+    "//brave/browser/brave_shields",
     "//brave/browser/ui/page_info",
     "//brave/components/constants",
     "//brave/components/resources:strings",
