@@ -1,0 +1,12 @@
+diff --git a/ios/chrome/browser/settings/ui_bundled/google_services/manage_sync_settings_mediator.mm b/ios/chrome/browser/settings/ui_bundled/google_services/manage_sync_settings_mediator.mm
+index eedcc035b4b23f37edf8b5593438e11618559f86..f3a24dd07bad6a1f646ed581588afbac193c2b7d 100644
+--- a/ios/chrome/browser/settings/ui_bundled/google_services/manage_sync_settings_mediator.mm
++++ b/ios/chrome/browser/settings/ui_bundled/google_services/manage_sync_settings_mediator.mm
+@@ -800,6 +800,7 @@ constexpr CGFloat kBatchUploadSymbolPointSize = 22.;
+     case syncer::UserSelectableType::kSavedTabGroups:
+     case syncer::UserSelectableType::kProductComparison:
+     case syncer::UserSelectableType::kCookies:
++    case syncer::UserSelectableType::kAIChat:
+       NOTREACHED();
+   }
+   DCHECK_NE(itemType, 0);

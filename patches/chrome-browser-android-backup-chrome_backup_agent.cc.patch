@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/android/backup/chrome_backup_agent.cc b/chrome/browser/android/backup/chrome_backup_agent.cc
+index 16cb3ef1a1a40f222c33d85f41ed671e46f4ea0c..58f96396d139c7ccb0d060cd8674b28029681ee1 100644
+--- a/chrome/browser/android/backup/chrome_backup_agent.cc
++++ b/chrome/browser/android/backup/chrome_backup_agent.cc
+@@ -17,7 +17,7 @@
+ // Must come after all headers that specialize FromJniType() / ToJniType().
+ #include "chrome/android/chrome_jni_headers/ChromeBackupAgentImpl_jni.h"
+ 
+-static_assert(13 == static_cast<int>(syncer::UserSelectableType::kLastType),
++static_assert(14 == static_cast<int>(syncer::UserSelectableType::kLastType),
+               "When adding a new selectable type, add its pref to"
+               "BoolPrefBackupSerializer if the type exists on Android");
+ 

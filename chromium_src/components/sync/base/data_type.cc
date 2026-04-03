@@ -3,19 +3,33 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#define BRAVE_DATA_TYPE_ADD_DEFAULT_FIELD_VALUE \
+  case AI_CHAT_CONVERSATION:                    \
+    specifics->mutable_ai_chat_conversation();  \
+    break;
+
+#define BRAVE_DATA_TYPE_HISTOGRAM_VALUE \
+  case AI_CHAT_CONVERSATION:            \
+    return DataTypeForHistograms::kAIChatConversation;
+
 #define EncryptableUserTypes EncryptableUserTypes_ChromiumImpl
 #define LowPriorityUserTypes LowPriorityUserTypes_ChromiumImpl
+
 #include <components/sync/base/data_type.cc>
+
 #undef LowPriorityUserTypes
 #undef EncryptableUserTypes
+#undef BRAVE_DATA_TYPE_HISTOGRAM_VALUE
+#undef BRAVE_DATA_TYPE_ADD_DEFAULT_FIELD_VALUE
 
 namespace syncer {
 
 DataTypeSet EncryptableUserTypes() {
   DataTypeSet encryptable_user_types = EncryptableUserTypes_ChromiumImpl();
-  // Brave sync has encryption setup ready when sync chain created
+  // Brave sync has encryption setup ready when sync chain created.
   encryptable_user_types.Put(DEVICE_INFO);
   encryptable_user_types.Put(HISTORY);
+  encryptable_user_types.Put(AI_CHAT_CONVERSATION);
   return encryptable_user_types;
 }
 

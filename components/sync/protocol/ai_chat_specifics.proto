@@ -1,0 +1,156 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Sync protocol datatype extension for AI Chat conversations.
+//
+// To stay under the 400KB-per-entity server limit, each conversation is
+// represented by one Conversation metadata record plus one Entry record per
+// conversation turn. The storage key encodes the record kind with a prefix
+// ("c:" for Conversation, "e:" for Entry).
+
+syntax = "proto2";
+
+option java_multiple_files = true;
+option java_package = "org.chromium.components.sync.protocol";
+
+option optimize_for = LITE_RUNTIME;
+
+package sync_pb;
+
+// One sync entity is either a Conversation metadata record or a single
+// conversation Entry record.
+message AIChatConversationSpecifics {
+  // Conversation-level metadata. There is one Conversation record per
+  // conversation. Entries are synced as separate Entry records linked via
+  // |conversation_uuid|.
+  message Conversation {
+    // Unique identifier for the conversation.
+    optional string uuid = 1;
+    optional string title = 2;
+    optional string model_key = 3;
+    optional uint64 total_tokens = 4;
+    optional uint64 trimmed_tokens = 5;
+    optional int64 created_time_unix_epoch_micros = 6;
+    optional int64 last_modified_time_unix_epoch_micros = 7;
+  }
+
+  // A single conversation turn (human or assistant message), with the events
+  // and associated content metadata that belong to it. Each turn is its own
+  // sync entity so that a long conversation can exceed the per-entity size
+  // limit.
+  message Entry {
+    // Unique identifier for the entry. Used as the storage key suffix.
+    optional string uuid = 1;
+    // UUID of the conversation this entry belongs to.
+    optional string conversation_uuid = 2;
+    optional int64 date_unix_epoch_micros = 3;
+    optional string entry_text = 4;
+    // Optional user-invisible override prompt sent to the AI engine.
+    optional string prompt = 5;
+    // mojom::CharacterType (0=HUMAN, 1=ASSISTANT)
+    optional int32 character_type = 6;
+    // UUID of the parent entry being edited (for edit history tracking).
+    optional string editing_entry_uuid = 7;
+    // mojom::ActionType enum.
+    optional int32 action_type = 8;
+    // Selected text from page context.
+    optional string selected_text = 9;
+    optional string model_key = 10;
+
+    repeated AIChatEntryEventProto events = 11;
+    // Associated content metadata for this entry (no full text).
+    repeated AIChatAssociatedContentProto associated_content = 12;
+  }
+
+  oneof kind {
+    Conversation conversation = 1;
+    Entry entry = 2;
+  }
+}
+
+// Metadata for content associated with a conversation entry (e.g. a web
+// page). Full text content is not synced as it can be large and re-derivable.
+message AIChatAssociatedContentProto {
+  optional string uuid = 1;
+  optional string title = 2;
+  optional string url = 3;
+  // mojom::ContentType (0=PageContent, 1=VideoTranscript)
+  optional int32 content_type = 4;
+  optional int32 content_used_percentage = 5;
+}
+
+// An event within a conversation entry.
+message AIChatEntryEventProto {
+  optional int32 event_order = 1;
+  oneof event {
+    string completion_text = 2;
+    AIChatSearchQueriesEvent search_queries = 3;
+    AIChatWebSourcesEvent web_sources = 4;
+    AIChatInlineSearchEvent inline_search = 5;
+    AIChatToolUseEvent tool_use = 6;
+  }
+}
+
+message AIChatSearchQueriesEvent {
+  repeated string queries = 1;
+}
+
+// Web search results shown to the user.
+message AIChatWebSourcesEvent {
+  repeated AIChatWebSource sources = 1;
+  // JSON-formatted rich search results passed through to the renderer.
+  repeated string rich_results = 2;
+}
+
+message AIChatWebSource {
+  optional string title = 1;
+  optional string url = 2;
+  optional string favicon_url = 3;
+  optional string page_content = 4;
+  repeated string extra_snippets = 5;
+}
+
+// An inline search performed during the conversation.
+message AIChatInlineSearchEvent {
+  optional string query = 1;
+  optional string results_json = 2;
+}
+
+// A tool/function call made during the conversation.
+message AIChatToolUseEvent {
+  optional string tool_name = 1;
+  optional string id = 2;
+  optional string arguments_json = 3;
+  repeated AIChatContentBlock output = 4;
+  optional bool is_server_result = 5;
+  repeated AIChatToolArtifact artifacts = 6;
+}
+
+message AIChatContentBlock {
+  oneof content {
+    AIChatImageContentBlock image_content_block = 1;
+    AIChatTextContentBlock text_content_block = 2;
+    AIChatWebSourcesContentBlock web_sources_content_block = 3;
+  }
+}
+
+message AIChatImageContentBlock {
+  optional string image_url = 1;
+}
+
+message AIChatTextContentBlock {
+  optional string text = 1;
+}
+
+message AIChatWebSourcesContentBlock {
+  repeated AIChatWebSource sources = 1;
+  repeated string queries = 2;
+  repeated string rich_results = 3;
+}
+
+message AIChatToolArtifact {
+  optional string type = 1;
+  optional string content_json = 2;
+}

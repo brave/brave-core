@@ -1,0 +1,20 @@
+diff --git a/components/sync/protocol/entity_specifics.proto b/components/sync/protocol/entity_specifics.proto
+index 69a0ff1e525f56a2a42e8a858690dafb2fb2471f..61079ceded999c68093967552c9e055fee95c813 100644
+--- a/components/sync/protocol/entity_specifics.proto
++++ b/components/sync/protocol/entity_specifics.proto
+@@ -72,6 +72,7 @@ import "components/sync/protocol/gemini_thread_specifics.proto";
+ import "components/sync/protocol/theme_android_specifics.proto";
+ import "components/sync/protocol/theme_ios_specifics.proto";
+ import "components/sync/protocol/accessibility_annotation_specifics.proto";
++import "brave/components/sync/protocol/ai_chat_specifics.proto";
+ 
+ message EntitySpecifics {
+   // If a datatype is encrypted, this field will contain the encrypted
+@@ -176,6 +177,7 @@ message EntitySpecifics {
+     SkillSpecifics skill = 1564245;
+     GeminiThreadSpecifics gemini_thread = 1569348;
+     AccessibilityAnnotationSpecifics accessibility_annotation = 1588764;
++    AIChatConversationSpecifics ai_chat_conversation = 2000001;
+     // When adding a new type, follow the docs below and keep this comment as
+     // the last entry.
+     // https://www.chromium.org/developers/design-documents/sync/integration-checklist/

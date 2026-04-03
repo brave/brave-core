@@ -1,0 +1,28 @@
+diff --git a/components/sync/service/sync_prefs.cc b/components/sync/service/sync_prefs.cc
+index b64fa0bde4c7adc506476dba86c80b6d4dad85a3..3c04602f393803cdcb885bff9937c6f4033077ca 100644
+--- a/components/sync/service/sync_prefs.cc
++++ b/components/sync/service/sync_prefs.cc
+@@ -693,6 +693,7 @@ const char* SyncPrefs::GetPrefNameForType(UserSelectableType type) {
+       return prefs::internal::kSyncProductComparison;
+     case UserSelectableType::kCookies:
+       return prefs::internal::kSyncCookies;
++      BRAVE_SYNC_PREFS_GET_PREF_NAME_FOR_TYPE
+   }
+   NOTREACHED();
+ }
+@@ -770,6 +771,7 @@ bool SyncPrefs::IsTypeSupportedInTransportMode(UserSelectableType type) {
+     case UserSelectableType::kCookies:
+       // `kCookies` is not supported in transport mode (ChromeOS-only type).
+       return false;
++      BRAVE_SYNC_PREFS_IS_TYPE_SUPPORTED_IN_TRANSPORT_MODE
+   }
+   NOTREACHED();
+ }
+@@ -1195,6 +1197,7 @@ bool SyncPrefs::IsTypeSelectedByDefaultInTransportMode(
+       // All other types are always enabled by default with
+       // kReplaceSyncPromosWithSignInPromos.
+       return IsReplaceSyncPromosWithSignInPromosEnabled();
++      BRAVE_SYNC_PREFS_IS_TYPE_SELECTED_BY_DEFAULT
+   }
+   NOTREACHED();
+ }

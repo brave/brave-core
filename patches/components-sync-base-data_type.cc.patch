@@ -1,0 +1,52 @@
+diff --git a/components/sync/base/data_type.cc b/components/sync/base/data_type.cc
+index b03435535a09831963aaa46d4952be908bc37856..6278449efa053db05701afbcb95168605722345c 100644
+--- a/components/sync/base/data_type.cc
++++ b/components/sync/base/data_type.cc
+@@ -1075,6 +1075,22 @@ constexpr std::array<DataTypeInfo, syncer::GetNumDataTypes()>
+                 UnsyncedDataCheckOnSignoutPolicy::kNone,
+             .cross_user_sharing_policy = CrossUserSharingPolicy::kNone,
+         },
++        {
++            .type = AI_CHAT_CONVERSATION,
++            .specifics_field_number =
++                sync_pb::EntitySpecifics::kAiChatConversationFieldNumber,
++            .debug_string = "AI Chat Conversation",
++            .histogram_suffix = "AI_CHAT_CONVERSATION",
++            .stable_lowercase_string = "ai_chat_conversation",
++            .encryption_policy =
++                EncryptionPolicy::kEncryptedIfCustomPassphraseSet,
++            .priority = DataTypePriority::kRegular,
++            .communication_direction = CommunicationDirection::kRegularTwoWay,
++            .apply_updates_batch_policy = ApplyUpdatesBatchPolicy::kStandard,
++            .unsynced_data_check_on_signout_policy =
++                UnsyncedDataCheckOnSignoutPolicy::kNone,
++            .cross_user_sharing_policy = CrossUserSharingPolicy::kNone,
++        },
+         {
+             .type = NIGORI,
+             .specifics_field_number =
+@@ -1095,7 +1111,7 @@ constexpr std::array<DataTypeInfo, syncer::GetNumDataTypes()>
+     }};
+ 
+ // LINT.IfChange(DataTypeHistogramSuffix)
+-static_assert(GetNumDataTypes() == 63,
++static_assert(GetNumDataTypes() == 64,
+               "When adding a new type, update kDataTypeInfoTable, update "
+               "histograms.xml and follow the integration checklist in "
+               "https://www.chromium.org/developers/design-documents/sync/"
+@@ -1312,6 +1328,7 @@ void AddDefaultFieldValue(DataType type, sync_pb::EntitySpecifics* specifics) {
+     case ACCESSIBILITY_ANNOTATION:
+       specifics->mutable_accessibility_annotation();
+       break;
++      BRAVE_DATA_TYPE_ADD_DEFAULT_FIELD_VALUE
+   }
+ }
+ 
+@@ -1662,6 +1679,7 @@ DataTypeForHistograms DataTypeHistogramValue(DataType data_type) {
+       return DataTypeForHistograms::kGeminiThread;
+     case ACCESSIBILITY_ANNOTATION:
+       return DataTypeForHistograms::kAccessibilityAnnotation;
++      BRAVE_DATA_TYPE_HISTOGRAM_VALUE
+   }
+   NOTREACHED();
+ }
