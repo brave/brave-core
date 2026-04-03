@@ -326,8 +326,6 @@ void BraveTabStrip::UpdateOrientation() {
     SetAvailableWidthCallback(base::NullCallback());
   }
 
-  hover_card_controller_->SetIsVerticalTabs(using_vertical_tabs);
-
   if (const auto active_index = GetActiveIndex(); active_index) {
     // In order to update shadow state, call ActiveStateChanged().
     tab_at(active_index.value())->ActiveStateChanged();

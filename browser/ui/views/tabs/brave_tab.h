@@ -50,6 +50,9 @@ class BraveTab : public Tab {
   // the tree tab node.
   void UpdateTreeToggleButtonIcon();
 
+  // Tab / HoverCardAnchorTarget:
+  views::BubbleBorder::Arrow GetAnchorPosition() const override;
+
   // Tab:
   std::u16string GetRenderedTooltipText(const gfx::Point& p) const override;
 
