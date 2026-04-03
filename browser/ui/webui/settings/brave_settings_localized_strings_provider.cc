@@ -616,6 +616,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_RESET_AND_CLEAR_DATA_CONFIRMATION_LABEL},
       {"braveLeoAssistantAutocompleteLink",
        IDS_SETTINGS_LEO_ASSISTANT_AUTOCOMPLETE_LINK},
+      {"aiChatCheckboxLabel", IDS_SETTINGS_AI_CHAT_CHECKBOX_LABEL},
       {"aiChatClearHistoryData", IDS_SETTINGS_AI_CHAT_CLEAR_HISTORY_DATA_LABEL},
       {"aiChatClearHistoryDataSubLabel",
        IDS_SETTINGS_AI_CHAT_CLEAR_HISTORY_DATA_SUBLABEL},
@@ -1157,6 +1158,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 
   html_source->AddBoolean("isTabOrganizationFeatureEnabled",
                           ai_chat::features::IsTabOrganizationEnabled());
+  html_source->AddBoolean("isBraveSyncAIChatEnabled",
+                          ai_chat::features::IsBraveSyncAIChatEnabled());
 #endif
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY)

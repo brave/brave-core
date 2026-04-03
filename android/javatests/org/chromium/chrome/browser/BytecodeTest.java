@@ -2400,6 +2400,10 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
                         "mSyncEncryption"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
+                        "mSyncTypeCheckBoxPreferencesMap"));
 
         Assert.assertTrue(
                 fieldExists(
