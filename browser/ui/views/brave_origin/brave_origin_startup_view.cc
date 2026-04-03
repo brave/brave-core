@@ -136,7 +136,7 @@ BraveOriginStartupView::BraveOriginStartupView(
                                             KeepAliveRestartOption::DISABLED)),
       delegate_(std::move(delegate)),
       on_complete_(std::move(on_complete)) {
-  SetHasWindowSizeControls(false);
+  SetHasWindowSizeControls(true);
   SetTitle(IDS_BRAVE_ORIGIN_STARTUP_TITLE);
 }
 
