@@ -10,6 +10,8 @@ import path from 'node:path'
 import EnvConfig from './envConfig.ts'
 import * as Log from './log.ts'
 
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect*"] }] */
+
 // Mock the logging module
 jest.mock('./log.ts', () => ({
   error: jest.fn(),
@@ -21,6 +23,28 @@ describe('EnvConfig', () => {
   const envPath = path.join(configDir, '.env')
 
   let mockFiles = {}
+  let envConfig: EnvConfig
+
+  const expectInvalidTypeError = (fn: () => unknown) => {
+    expect(fn).toThrow('process.exit called')
+    expect(Log.error).toHaveBeenCalledWith(
+      expect.stringContaining('invalid config value'),
+    )
+  }
+
+  const expectInvalidJsonError = (fn: () => unknown) => {
+    expect(fn).toThrow('process.exit called')
+    expect(Log.error).toHaveBeenCalledWith(
+      expect.stringContaining('value is not JSON-parseable'),
+    )
+  }
+
+  const expectRequiredNotFound = (fn: () => unknown) => {
+    expect(fn).toThrow('process.exit called')
+    expect(Log.error).toHaveBeenCalledWith(
+      expect.stringMatching(/Required config value .* is not set/),
+    )
+  }
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -81,8 +105,10 @@ describe('EnvConfig', () => {
       const envConfig = new EnvConfig(configDir)
 
       expect(envConfig.getPackageVersion()).toBe('1.2.3')
-      expect(envConfig.get(['projects', 'chrome', 'version'])).toBe('120.0.0')
-      expect(envConfig.get(['TEST', 'VALUE'])).toBe('hello')
+      expect(envConfig.getString(['projects', 'chrome', 'version'])).toBe(
+        '120.0.0',
+      )
+      expect(envConfig.getString(['TEST', 'VALUE'])).toBe('hello')
     })
 
     it('should create .env file if it does not exist', () => {
@@ -101,48 +127,115 @@ describe('EnvConfig', () => {
     })
   })
 
-  describe('get without .env', () => {
-    let envConfig
+  function runCommonConfigTests() {
+    it('should retrieve version', () => {
+      expect(envConfig.getPackageVersion()).toBe('1.2.3')
+    })
 
+    it('should retrieve config values', () => {
+      expect(envConfig.getBoolean(['boolean'])).toBe(true)
+      expect(envConfig.getNumber(['number'])).toBe(42)
+      expect(envConfig.getString(['string'])).toBe('hello')
+      expect(envConfig.getArray(['array'])).toEqual(['a', 'b', 'c'])
+      expect(envConfig.getObject(['object'])).toEqual({ key: 'value' })
+      expect(envConfig.getString(['object', 'key'])).toBe('value')
+
+      expect(envConfig.requireBoolean(['boolean'])).toBe(true)
+      expect(envConfig.requireNumber(['number'])).toBe(42)
+      expect(envConfig.requireString(['string'])).toBe('hello')
+      expect(envConfig.requireArray(['array'])).toEqual(['a', 'b', 'c'])
+      expect(envConfig.requireObject(['object'])).toEqual({ key: 'value' })
+      expect(envConfig.requireString(['object', 'key'])).toBe('value')
+
+      expect(envConfig.getAny(['boolean'])).toBe(true)
+      expect(envConfig.getAny(['number'])).toBe(42)
+      expect(envConfig.getAny(['string'])).toBe('hello')
+      expect(envConfig.getAny(['array'])).toEqual(['a', 'b', 'c'])
+      expect(envConfig.getAny(['object'])).toEqual({ key: 'value' })
+      expect(envConfig.getAny(['object', 'key'])).toBe('value')
+      expect(envConfig.getAny(['null_value'])).toBe(null)
+    })
+
+    it('non-existent config values', () => {
+      expect(envConfig.getString(['a'])).toBeUndefined()
+      expect(envConfig.getString(['a', 'b'])).toBeUndefined()
+      expect(envConfig.getString(['object', 'b'])).toBeUndefined()
+
+      expectRequiredNotFound(() => envConfig.requireString(['a']))
+      expectRequiredNotFound(() => envConfig.requireString(['a', 'b']))
+      expectRequiredNotFound(() => envConfig.requireString(['object', 'b']))
+
+      expect(envConfig.getAny(['a'])).toBeUndefined()
+      expect(envConfig.getAny(['a', 'b'])).toBeUndefined()
+      expect(envConfig.getAny(['object', 'b'])).toBeUndefined()
+    })
+
+    it('default config values', () => {
+      expect(envConfig.getBoolean(['a'], true)).toBe(true)
+      expect(envConfig.getNumber(['a'], 0)).toBe(0)
+      expect(envConfig.getString(['a'], 'default')).toBe('default')
+      expect(envConfig.getArray(['a'], ['default'])).toEqual(['default'])
+      expect(envConfig.getObject(['a'], { key: 'default' })).toEqual({
+        key: 'default',
+      })
+    })
+
+    it('should throw if type does not match', () => {
+      expectInvalidTypeError(() => envConfig.getBoolean(['number']))
+      expectInvalidTypeError(() => envConfig.getNumber(['boolean']))
+      expectInvalidTypeError(() => envConfig.getArray(['boolean']))
+      expectInvalidTypeError(() => envConfig.getObject(['boolean']))
+
+      expectInvalidTypeError(() => envConfig.requireBoolean(['number']))
+      expectInvalidTypeError(() => envConfig.requireNumber(['boolean']))
+      expectInvalidTypeError(() => envConfig.requireArray(['boolean']))
+      expectInvalidTypeError(() => envConfig.requireObject(['boolean']))
+    })
+
+    it('should return the same value for the same key', () => {
+      const result1 = envConfig.getObject(['object'])
+      const result2 = envConfig.getObject(['object'])
+
+      expect(result1).toEqual(result2)
+    })
+  }
+
+  describe('without .env', () => {
     beforeEach(() => {
       mockFiles[packageJsonPath] = {
         version: '1.2.3',
         config: {
-          projects: {
-            chrome: {
-              tag: '120.0.0',
-            },
+          boolean: true,
+          number: 42,
+          string: 'hello',
+          array: ['a', 'b', 'c'],
+          object: {
+            key: 'value',
           },
+          null_value: null,
         },
       }
 
       envConfig = new EnvConfig(configDir)
     })
 
-    it('should retrieve version', () => {
-      const result = envConfig.getPackageVersion()
-      expect(result).toBe('1.2.3')
-    })
+    runCommonConfigTests()
 
-    it('should retrieve config values', () => {
-      const result = envConfig.get(['projects', 'chrome', 'tag'])
-      expect(result).toBe('120.0.0')
-    })
-
-    it('should return undefined for non-existent keys', () => {
-      const result = envConfig.get(['nonexistent', 'key'])
-      expect(result).toBeUndefined()
-    })
-
-    it('should return undefined when path traverses non-object', () => {
-      const result = envConfig.get(['config', 'nested'])
-      expect(result).toBeUndefined()
+    it('should throw if type does not match', () => {
+      expectInvalidTypeError(() => envConfig.getBoolean(['number']))
+      expectInvalidTypeError(() => envConfig.getNumber(['boolean']))
+      expectInvalidTypeError(() => envConfig.getString(['boolean']))
+      expectInvalidTypeError(() => envConfig.getArray(['boolean']))
+      expectInvalidTypeError(() => envConfig.getObject(['boolean']))
+      expectInvalidTypeError(() => envConfig.requireBoolean(['number']))
+      expectInvalidTypeError(() => envConfig.requireNumber(['boolean']))
+      expectInvalidTypeError(() => envConfig.requireString(['boolean']))
+      expectInvalidTypeError(() => envConfig.requireArray(['boolean']))
+      expectInvalidTypeError(() => envConfig.requireObject(['boolean']))
     })
   })
 
-  describe('get', () => {
-    let envConfig
-
+  describe('with .env', () => {
     beforeEach(() => {
       mockFiles[packageJsonPath] = {
         version: '1.2.3',
@@ -152,104 +245,52 @@ describe('EnvConfig', () => {
       }
       mockFiles[envPath] = [
         'version=4.5.6',
-        'STRING_VALUE=hello',
-        'NUMBER_VALUE=42',
-        'BOOL_VALUE=true',
-        'ARRAY_VALUE=["a","b","c"]',
-        'OBJECT_VALUE={"key":"value"}',
-        'EMPTY_STRING_VALUE=""',
-        'EMPTY_NUMBER_VALUE=0',
-        'EMPTY_BOOL_VALUE=false',
-        'EMPTY_ARRAY_VALUE=[]',
-        'EMPTY_OBJECT_VALUE={}',
+        'boolean=true',
+        'number=42',
+        'string=hello',
+        'array=["a","b","c"]',
+        'object={"key":"value"}',
+        'object_key=value',
+        'null_value=null',
+        'invalid_json={"a": asd}',
       ]
 
       envConfig = new EnvConfig(configDir)
     })
 
-    it('version should not override package.json version', () => {
-      const result = envConfig.getPackageVersion()
-      expect(result).toBe('1.2.3')
+    runCommonConfigTests()
+
+    it('getString/requireString should always return string values', () => {
+      expect(envConfig.getString(['boolean'])).toBe('true')
+      expect(envConfig.getString(['number'])).toBe('42')
+      expect(envConfig.getString(['string'])).toBe('hello')
+      expect(envConfig.getString(['array'])).toEqual('["a","b","c"]')
+      expect(envConfig.getString(['object'])).toEqual('{"key":"value"}')
+      expect(envConfig.getString(['object', 'key'])).toBe('value')
+      expect(envConfig.getString(['null_value'])).toBe('null')
+      expect(envConfig.getString(['invalid_json'])).toBe('{"a": asd}')
+
+      expect(envConfig.requireString(['boolean'])).toBe('true')
+      expect(envConfig.requireString(['number'])).toBe('42')
+      expect(envConfig.requireString(['string'])).toBe('hello')
+      expect(envConfig.requireString(['array'])).toEqual('["a","b","c"]')
+      expect(envConfig.requireString(['object'])).toEqual('{"key":"value"}')
+      expect(envConfig.requireString(['object', 'key'])).toBe('value')
+      expect(envConfig.requireString(['null_value'])).toBe('null')
+      expect(envConfig.requireString(['invalid_json'])).toBe('{"a": asd}')
     })
 
-    it('should retrieve string values from .env', () => {
-      const result = envConfig.get(['STRING', 'VALUE'])
-      expect(result).toBe('hello')
-    })
-
-    it('should parse JSON values when default is not provided', () => {
-      expect(envConfig.get(['NUMBER', 'VALUE'])).toBe(42)
-      expect(envConfig.get(['BOOL', 'VALUE'])).toBe(true)
-      expect(envConfig.get(['ARRAY', 'VALUE'])).toEqual(['a', 'b', 'c'])
-      expect(envConfig.get(['OBJECT', 'VALUE'])).toEqual({
-        key: 'value',
-      })
-      expect(envConfig.get(['EMPTY', 'STRING', 'VALUE'])).toBe('')
-      expect(envConfig.get(['EMPTY', 'NUMBER', 'VALUE'])).toBe(0)
-      expect(envConfig.get(['EMPTY', 'BOOL', 'VALUE'])).toBe(false)
-      expect(envConfig.get(['EMPTY', 'ARRAY', 'VALUE'])).toEqual([])
-      expect(envConfig.get(['EMPTY', 'OBJECT', 'VALUE'])).toEqual({})
-    })
-
-    it('should parse typed values', () => {
-      expect(envConfig.get(['STRING', 'VALUE'], '')).toBe('hello')
-      expect(envConfig.get(['NUMBER', 'VALUE'], 0)).toBe(42)
-      expect(envConfig.get(['BOOL', 'VALUE'], false)).toBe(true)
-      expect(envConfig.get(['ARRAY', 'VALUE'], [])).toEqual(['a', 'b', 'c'])
-      expect(envConfig.get(['OBJECT', 'VALUE'], {})).toEqual({
-        key: 'value',
-      })
-    })
-
-    it('should use string value as-is when default is string', () => {
-      expect(envConfig.get(['NUMBER', 'VALUE'], 'default')).toBe('42')
-      expect(envConfig.get(['BOOL', 'VALUE'], 'default')).toBe('true')
-      expect(envConfig.get(['ARRAY', 'VALUE'], 'default')).toEqual(
-        JSON.stringify(['a', 'b', 'c']),
-      )
-      expect(envConfig.get(['OBJECT', 'VALUE'], 'default')).toEqual(
-        JSON.stringify({
-          key: 'value',
-        }),
-      )
+    it('should throw if invalid JSON', () => {
+      expectInvalidJsonError(() => envConfig.getBoolean(['invalid_json']))
+      expectInvalidJsonError(() => envConfig.requireBoolean(['invalid_json']))
     })
 
     it('should fall back to package config when .env value not found', () => {
-      const result = envConfig.get(['fallback_value'])
-      expect(result).toBe('from_package')
-    })
-
-    it('should use default value when neither .env nor package config exist', () => {
-      const result = envConfig.get(['nonexistent', 'key'], 'default_val')
-      expect(result).toBe('default_val')
-    })
-
-    it('should return the same value for the same key', () => {
-      const result1 = envConfig.get(['OBJECT', 'VALUE'])
-      const result2 = envConfig.get(['OBJECT', 'VALUE'])
-
-      expect(result1).toEqual(result2)
-    })
-
-    it('should throw error when called with different default values for same key', () => {
-      envConfig.get(['TEST', 'KEY'], 'default1')
-
-      expect(() => {
-        envConfig.get(['TEST', 'KEY'], 'default2')
-      }).toThrow(/was requested with a different defaultValue/)
-    })
-
-    it('should allow same key with same default value', () => {
-      const result1 = envConfig.get(['TEST', 'KEY'], 'default')
-      const result2 = envConfig.get(['TEST', 'KEY'], 'default')
-
-      expect(result1).toBe(result2)
+      expect(envConfig.getString(['fallback_value'])).toBe('from_package')
     })
   })
 
   describe('getMergedObject', () => {
-    let envConfig
-
     beforeEach(() => {
       mockFiles[packageJsonPath] = {
         version: '1.2.3',
@@ -319,45 +360,6 @@ describe('EnvConfig', () => {
     })
   })
 
-  describe('type validation', () => {
-    let envConfig
-
-    beforeEach(() => {
-      mockFiles[packageJsonPath] = {
-        version: '1.0.0',
-        config: {},
-      }
-      mockFiles[envPath] = ['INVALID_JSON=not json', 'WRONG_TYPE=42']
-
-      envConfig = new EnvConfig(configDir)
-    })
-
-    it('should throw error when JSON parsing fails with non-string default', () => {
-      expect(() => {
-        envConfig.get(['INVALID', 'JSON'], 123)
-      }).toThrow('process.exit called')
-
-      expect(Log.error).toHaveBeenCalledWith(
-        expect.stringContaining('not JSON-parseable'),
-      )
-    })
-
-    it('should throw error when type does not match default type', () => {
-      expect(() => {
-        envConfig.get(['WRONG', 'TYPE'], [])
-      }).toThrow('process.exit called')
-
-      expect(Log.error).toHaveBeenCalledWith(
-        expect.stringContaining('value type is invalid'),
-      )
-    })
-
-    it('should not throw when type matches', () => {
-      const result = envConfig.get(['WRONG', 'TYPE'], 0)
-      expect(result).toBe(42)
-    })
-  })
-
   describe('include_env directive', () => {
     it('should handle include_env directive in .env files', () => {
       const includedEnvPath = path.resolve(configDir, 'included.env')
@@ -378,9 +380,9 @@ describe('EnvConfig', () => {
 
       const envConfig = new EnvConfig(configDir)
 
-      expect(envConfig.get(['MAIN', 'VALUE'])).toBe('main')
-      expect(envConfig.get(['INCLUDED', 'VALUE'])).toBe('included')
-      expect(envConfig.get(['OVERRIDE', 'VALUE'])).toBe('from_main')
+      expect(envConfig.getString(['MAIN', 'VALUE'])).toBe('main')
+      expect(envConfig.getString(['INCLUDED', 'VALUE'])).toBe('included')
+      expect(envConfig.getString(['OVERRIDE', 'VALUE'])).toBe('from_main')
     })
 
     it('should handle nested include_env directives', () => {
@@ -397,9 +399,9 @@ describe('EnvConfig', () => {
 
       const envConfig = new EnvConfig(configDir)
 
-      expect(envConfig.get(['MAIN'])).toBe(1)
-      expect(envConfig.get(['LEVEL1'])).toBe(2)
-      expect(envConfig.get(['LEVEL2'])).toBe(3)
+      expect(envConfig.getNumber(['MAIN'])).toBe(1)
+      expect(envConfig.getNumber(['LEVEL1'])).toBe(2)
+      expect(envConfig.getNumber(['LEVEL2'])).toBe(3)
     })
 
     it('should handle include_env with comments', () => {
@@ -417,8 +419,8 @@ describe('EnvConfig', () => {
 
       const envConfig = new EnvConfig(configDir)
 
-      expect(envConfig.get(['VALUE'])).toBe('main')
-      expect(envConfig.get(['INCLUDED'])).toBe('value')
+      expect(envConfig.getString(['VALUE'])).toBe('main')
+      expect(envConfig.getString(['INCLUDED'])).toBe('value')
     })
 
     it('should throw error when included file does not exist', () => {
@@ -484,7 +486,7 @@ describe('EnvConfig', () => {
 
       const envConfig = new EnvConfig(configDir)
 
-      expect(envConfig.get(['NESTED'])).toBe('value')
+      expect(envConfig.getString(['NESTED'])).toBe('value')
     })
   })
 
@@ -498,7 +500,7 @@ describe('EnvConfig', () => {
 
       const envConfig = new EnvConfig(configDir)
 
-      const result = envConfig.get(['key'], 'default')
+      const result = envConfig.getString(['key'], 'default')
       expect(result).toBe('default')
     })
 
@@ -515,7 +517,7 @@ describe('EnvConfig', () => {
 
       const envConfig = new EnvConfig(configDir)
 
-      expect(() => envConfig.get([])).toThrow('keyPath must not be empty')
+      expect(() => envConfig.getString([])).toThrow('keyPath must not be empty')
     })
 
     it('should handle undefined and null values correctly', () => {
@@ -527,12 +529,12 @@ describe('EnvConfig', () => {
 
       const envConfig = new EnvConfig(configDir)
 
-      const nullResult = envConfig.get(['NULL', 'VALUE'])
-      expect(nullResult).toBeNull()
+      const nullResult = envConfig.getString(['NULL', 'VALUE'])
+      expect(nullResult).toBe('null')
 
       // When no env or package config exists, return the default value
       // (undefined)
-      const undefResult = envConfig.get(['NONEXISTENT', 'VALUE'])
+      const undefResult = envConfig.getString(['NONEXISTENT', 'VALUE'])
       expect(undefResult).toBeUndefined()
     })
 
@@ -546,14 +548,12 @@ describe('EnvConfig', () => {
 
       const envConfig = new EnvConfig(configDir)
 
-      expect(envConfig.get(['TEST', 'VALUE'])).toBe('value')
-      expect(envConfig.get(['SECOND', 'VALUE'])).toBe('second')
+      expect(envConfig.getString(['TEST', 'VALUE'])).toBe('value')
+      expect(envConfig.getString(['SECOND', 'VALUE'])).toBe('second')
     })
   })
 
-  describe('getPath', () => {
-    let envConfig
-
+  describe('path', () => {
     beforeEach(() => {
       mockFiles[packageJsonPath] = {
         version: '1.0.0',
@@ -574,28 +574,33 @@ describe('EnvConfig', () => {
       envConfig = new EnvConfig(configDir)
     })
 
-    it('should return undefined for non-existent path', () => {
-      const result = envConfig.getPath(['nonexistent', 'path'])
-      expect(result).toBeUndefined()
+    it('non-existent path', () => {
+      expect(envConfig.getPath(['a'])).toBeUndefined()
+      expect(envConfig.getPath(['a', 'b'])).toBeUndefined()
+      expectRequiredNotFound(() => envConfig.requirePath(['a']))
+      expectRequiredNotFound(() => envConfig.requirePath(['a', 'b']))
     })
 
     it('should return undefined for empty path value', () => {
-      const result = envConfig.getPath(['empty_path'])
-      expect(result).toBeUndefined()
+      expect(envConfig.getPath(['empty_path'])).toBeUndefined()
     })
 
     it('should resolve relative paths to absolute paths', () => {
       const result = envConfig.getPath(['relative_path'])
+      assert(typeof result === 'string')
       const expected = path.resolve(configDir, 'subdir/file.txt')
       expect(result).toBe(expected)
       expect(path.isAbsolute(result)).toBe(true)
+      expect(envConfig.requirePath(['relative_path'])).toBe(expected)
     })
 
     it('should resolve relative paths from .env to absolute paths', () => {
       const result = envConfig.getPath(['ENV', 'RELATIVE', 'PATH'])
+      assert(typeof result === 'string')
       const expected = path.resolve(configDir, 'relative/path.txt')
       expect(result).toBe(expected)
       expect(path.isAbsolute(result)).toBe(true)
+      expect(envConfig.requirePath(['ENV', 'RELATIVE', 'PATH'])).toBe(expected)
     })
 
     if (process.platform === 'win32') {
@@ -625,6 +630,7 @@ describe('EnvConfig', () => {
       const result = envConfig.getPath(['relative_path'])
       const expected = path.resolve(configDir, 'env/override.txt')
       expect(result).toBe(expected)
+      expect(envConfig.requirePath(['relative_path'])).toBe(expected)
     })
 
     it('should expand ~ to home directory', () => {
@@ -641,6 +647,7 @@ describe('EnvConfig', () => {
       expect(result).toBe(expected)
       assert(typeof result === 'string')
       expect(path.isAbsolute(result)).toBe(true)
+      expect(envConfig.requirePath(['home_path'])).toBe(expected)
     })
 
     it('should expand ~ from .env to home directory', () => {
@@ -652,6 +659,7 @@ describe('EnvConfig', () => {
       expect(result).toBe(expected)
       assert(typeof result === 'string')
       expect(path.isAbsolute(result)).toBe(true)
+      expect(envConfig.requirePath(['HOME', 'PATH'])).toBe(expected)
     })
 
     it('should handle ~ as exact home directory', () => {
@@ -661,6 +669,7 @@ describe('EnvConfig', () => {
       const result = envConfig.getPath(['HOME', 'DIR'])
       const expectedPosix = os.homedir()
       expect(result).toBe(expectedPosix)
+      expect(envConfig.requirePath(['HOME', 'DIR'])).toBe(expectedPosix)
     })
   })
 })
