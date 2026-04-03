@@ -352,8 +352,7 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
 
   brave_sync_service_impl()
       ->GetUserSettings()
-      ->SetInitialSyncFeatureSetupComplete(
-          syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+      ->SetInitialSyncFeatureSetupComplete();
 
   // Pretend we need the passphrase by triggering OnPassphraseRequired and
   // supplying the encrypted portion of data, as it is done in
@@ -459,8 +458,7 @@ TEST_F(BraveSyncServiceImplTest, PermanentlyDeleteAccount) {
 
   brave_sync_service_impl()
       ->GetUserSettings()
-      ->SetInitialSyncFeatureSetupComplete(
-          syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+      ->SetInitialSyncFeatureSetupComplete();
   EXPECT_TRUE(engine());
 
   std::unique_ptr<testing::NiceMock<BraveMockSyncEngine>> mock_sync_engine =
@@ -603,8 +601,7 @@ TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
 
   brave_sync_service_impl()
       ->GetUserSettings()
-      ->SetInitialSyncFeatureSetupComplete(
-          syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+      ->SetInitialSyncFeatureSetupComplete();
   EXPECT_TRUE(engine());
 
   // Code below turns on encrypt everything
@@ -653,8 +650,7 @@ TEST_F(BraveSyncServiceImplTest, BookmarksAndPasswordsAfterSetup) {
 
   brave_sync_service_impl()
       ->GetUserSettings()
-      ->SetInitialSyncFeatureSetupComplete(
-          syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+      ->SetInitialSyncFeatureSetupComplete();
   EXPECT_TRUE(engine());
 
   EXPECT_FALSE(
@@ -779,8 +775,7 @@ TEST_F(BraveSyncServiceImplTest_DisableSyncDefaultPasswordsTest,
 
   brave_sync_service_impl()
       ->GetUserSettings()
-      ->SetInitialSyncFeatureSetupComplete(
-          syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+      ->SetInitialSyncFeatureSetupComplete();
   EXPECT_TRUE(engine());
 
   EXPECT_FALSE(
