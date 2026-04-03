@@ -143,9 +143,11 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   profile_prefs->ClearPref(kDefaultBrowserLaunchingCount);
 #endif
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
   // Added 11/2022
   profile_prefs->ClearPref(kDontAskEnableWebDiscovery);
+#endif
+#if BUILDFLAG(ENABLE_EXTENSIONS)
   profile_prefs->ClearPref(kBraveSearchVisitCount);
 #endif
 

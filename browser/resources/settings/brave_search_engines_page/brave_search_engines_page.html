@@ -73,7 +73,7 @@
 </template>
 <template is="dom-if" if="[[!isPrefManaged_(
     prefs.brave.web_discovery_enabled)]]" restamp>
-  <if expr="enable_extensions or enable_web_discovery_native">
+  <if expr="enable_web_discovery">
     <settings-toggle-button id="webDiscoveryEnabledExtension"
         class="cr-row"
         pref="{{prefs.brave.web_discovery_enabled}}"

@@ -32,6 +32,7 @@
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
+#include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_generated_resources_webui_strings.h"
 #include "chrome/browser/browser_process.h"
@@ -348,7 +349,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"showToolbarInFullScreen", IDS_SHOW_TOOLBAR_IN_FULL_SCREEN},
 #endif
   // Search settings
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
       {"braveWebDiscoveryLabel", IDS_SETTINGS_WEB_DISCOVERY_LABEL},
       {"braveWebDiscoverySubLabel", IDS_SETTINGS_WEB_DISCOVERY_SUBLABEL},
 #endif
@@ -1124,7 +1125,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                           ai_chat::features::IsTabOrganizationEnabled());
 #endif
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
   html_source->AddString("webDiscoveryLearnMoreURL", kWebDiscoveryLearnMoreUrl);
 #endif
   html_source->AddString("speedreaderLearnMoreURL", kSpeedreaderLearnMoreUrl);

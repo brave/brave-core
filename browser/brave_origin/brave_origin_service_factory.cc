@@ -179,11 +179,13 @@ constexpr auto kBraveOriginProfileMetadata =
              /*user_settable=*/false)},
 #endif
 
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
         // Web Discovery preferences
         {kWebDiscoveryEnabled,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              false,
              /*user_settable=*/true)},
+#endif
     });
 
 }  // namespace
