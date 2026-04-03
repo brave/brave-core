@@ -3,7 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import TrezorConnect, { Success, Unsuccessful } from '@trezor/connect-web'
+import TrezorConnect, {
+  DEVICE,
+  DEVICE_EVENT,
+  Success,
+  Unsuccessful,
+} from '@trezor/connect-web'
 import { EthereumSignedTx } from '@trezor/connect/lib/types/api/ethereum'
 import { PROTO } from '@trezor/connect/lib/constants'
 import {
@@ -20,6 +25,9 @@ import {
   UnlockResponse,
   SignTypedMessageCommand,
   SignTypedMessageResponsePayload,
+  GetDeviceNameCommand,
+  GetDeviceNameResponsePayload,
+  GetDeviceNameResponse,
 } from '../common/hardware/trezor/trezor-messages'
 import { addTrezorCommandHandler } from '../common/hardware/trezor/trezor-command-handler'
 
@@ -29,6 +37,17 @@ const hexPad = (hexString: string) => {
   }
   return hexString
 }
+
+let deviceName: string = ''
+
+TrezorConnect.on(DEVICE_EVENT, (event) => {
+  console.log(event)
+  if (event.type === DEVICE.CONNECT || event.type === DEVICE.CHANGED) {
+    deviceName = event.payload.name
+  } else if (event.type === DEVICE.DISCONNECT) {
+    deviceName = ''
+  }
+})
 
 const createUnlockResponse = (
   command: UnlockCommand,
@@ -51,6 +70,19 @@ const createGetAccountsResponse = (
     payload: result,
   }
 }
+
+addTrezorCommandHandler(
+  TrezorCommand.GetDeviceName,
+  async (
+    command: GetDeviceNameCommand,
+  ): Promise<GetDeviceNameResponsePayload> => {
+    const payload: GetDeviceNameResponse = { success: true, deviceName }
+    return {
+      ...command,
+      payload,
+    }
+  },
+)
 
 addTrezorCommandHandler(
   TrezorCommand.Unlock,

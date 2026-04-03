@@ -5,13 +5,18 @@
 
 import { BridgeType } from '../untrusted_shared_types'
 import { getLocale } from '../../../../common/locale'
-import { HardwareOperationError, HardwareOperationResult } from '../types'
+import {
+  HardwareOperationError,
+  HardwareOperationResult,
+  HardwareOperationResultDeviceName,
+} from '../types'
 import {
   LEDGER_BRIDGE_URL,
   LedgerCommand,
   UnlockResponse,
   LedgerFrameCommand,
   LedgerBridgeErrorCodes,
+  GetDeviceNameResponse,
 } from './ledger-messages'
 import { LedgerTrustedMessagingTransport } from './ledger-trusted-transport'
 
@@ -42,6 +47,26 @@ export default class LedgerBridgeKeyring {
 
   bridgeType = (): BridgeType => {
     throw new Error('Unimplemented.')
+  }
+
+  getDeviceName = async (): Promise<HardwareOperationResultDeviceName> => {
+    const data = await this.sendCommand<GetDeviceNameResponse>({
+      id: LedgerCommand.GetDeviceName,
+      origin: window.origin,
+      command: LedgerCommand.GetDeviceName,
+    })
+
+    if (
+      data === LedgerBridgeErrorCodes.BridgeNotReady
+      || data === LedgerBridgeErrorCodes.CommandInProgress
+    ) {
+      return this.createErrorFromCode(data)
+    }
+    if (!data.payload.success) {
+      return { ...data.payload }
+    }
+
+    return { success: true, deviceName: data.payload.deviceName }
   }
 
   unlock = async (): Promise<HardwareOperationResult> => {

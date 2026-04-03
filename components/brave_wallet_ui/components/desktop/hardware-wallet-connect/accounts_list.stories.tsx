@@ -24,6 +24,7 @@ export const HardwareAccountsList = {
   render: () => (
     <WalletPageStory>
       <HardwareWalletAccountsList
+        deviceName='Ledger Nano S Plus'
         accounts={mockAccountsFromDevice.map((a, i) => {
           return {
             ...a,

@@ -174,8 +174,13 @@ export const AllHardwareImportSchemes: HardwareImportScheme[] = [
   EthTrezorDefaultHardwareImportScheme,
 ]
 
+export type HardwareOperationResultDeviceName = HardwareOperationResult<{
+  deviceName: string
+}>
+
 export type HardwareOperationResultAccounts = HardwareOperationResult<{
   accounts: AccountFromDevice[]
+  deviceName: string
 }>
 
 export type HardwareOperationResultEthereumSignatureVRS =
