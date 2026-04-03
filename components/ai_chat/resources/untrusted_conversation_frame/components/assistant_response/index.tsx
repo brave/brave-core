@@ -42,13 +42,11 @@ interface BaseProps {
 function SearchSummary(props: { searchQueries: string[] }) {
   const context = useUntrustedConversationContext()
 
-  const handleOpenSearchQuery = React.useCallback(
+  const handleOpenSearchQuery =
     (e: React.MouseEvent<HTMLAnchorElement>, query: string) => {
       e.preventDefault()
       context.uiHandler?.openSearchURL(query)
-    },
-    [],
-  )
+    }
 
   const handleLearnMoreClick =
     (e: React.MouseEvent<HTMLAnchorElement>) => {
