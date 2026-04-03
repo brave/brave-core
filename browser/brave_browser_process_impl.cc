@@ -237,6 +237,14 @@ void BraveBrowserProcessImpl::StartTearDown() {
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
   ai_chat_agent_profile_manager_.reset();
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  // Reset WalletDataFilesInstaller to prevent dangling pointer to
+  // CrxUpdateService. WalletDataFilesInstaller instance is a static
+  // base::NoDestructor<> and makes use of
+  // component_updater::ComponentUpdateService::Observer, so it needs to be
+  // reset before the CrxUpdateService is destroyed.
+  brave_wallet::WalletDataFilesInstaller::GetInstance().Reset();
+#endif
   // Reset BraveOriginPolicyManager to prevent dangling pointer to local_state_
   brave_origin::BraveOriginPolicyManager::GetInstance()->Shutdown();
   brave_policy::AdBlockOnlyModePolicyManager::GetInstance()->Shutdown();

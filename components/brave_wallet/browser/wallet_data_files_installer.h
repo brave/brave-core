@@ -54,7 +54,7 @@ class WalletDataFilesInstaller
   // component_updater::ComponentUpdateService::Observer:
   void OnEvent(const update_client::CrxUpdateItem& item) override;
 
-  void ResetForTesting();
+  void Reset();
 
  private:
   friend base::NoDestructor<WalletDataFilesInstaller>;
