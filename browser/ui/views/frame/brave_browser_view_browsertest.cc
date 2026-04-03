@@ -29,6 +29,7 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_bubble_type.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tab_modal_confirm_dialog.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -55,6 +56,10 @@
 #include "ui/views/view_class_properties.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
+
+#if BUILDFLAG(IS_MAC)
+#include "chrome/browser/ui/fullscreen_util_mac.h"
+#endif  // BUILDFLAG(IS_MAC)
 
 using views::ShapeContextTokensOverride::kRoundedCornersBorderRadius;
 using views::ShapeContextTokensOverride::
@@ -720,5 +725,38 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
   brave::ToggleVerticalTabStrip(browser_with_vertical_at_startup);
   view_with_vertical_at_startup->DeprecatedLayoutImmediately();
   EXPECT_FALSE(view_with_vertical_at_startup->UsesImmersiveFullscreenMode());
+}
+
+// Regression test: when a browser starts with horizontal tabs and the user
+// switches to vertical tabs at runtime, fullscreen_toolbar_controller_ in the
+// base BrowserFrameViewMac is nil (it was skipped at construction because
+// UsesImmersiveFullscreenMode() returned true then). Messaging nil returns 0
+// which equals TOOLBAR_PRESENT, so without the fix ShouldHideTopUIInFullscreen
+// would return false during tab-fullscreen, leaving the toolbar visible.
+IN_PROC_BROWSER_TEST_F(
+    BraveBrowserViewTest,
+    ShouldHideTopUIInTabFullscreenAfterVerticalTabsEnabledAtRuntime) {
+  // Verify the precondition that triggers the bug: horizontal tabs at startup
+  // means immersive mode is on (and fullscreen_toolbar_controller_ is nil).
+  ASSERT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_TRUE(brave_browser_view()->UsesImmersiveFullscreenMode());
+
+  // Switch to vertical tabs at runtime.
+  ToggleVerticalTabStrip();
+  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_FALSE(brave_browser_view()->UsesImmersiveFullscreenMode());
+
+  // Fake tab (content) fullscreen without triggering any OS fullscreen
+  // transition — IsWindowFullscreenForTabOrPending() becomes true immediately.
+  auto* fullscreen_controller = browser()
+                                    ->GetFeatures()
+                                    .exclusive_access_manager()
+                                    ->fullscreen_controller();
+  fullscreen_controller->set_is_tab_fullscreen_for_testing(true);
+  ASSERT_TRUE(fullscreen_utils::IsInContentFullscreen(browser()));
+
+  // The frame view must report that top UI should be hidden during tab
+  // fullscreen, even though fullscreen_toolbar_controller_ is nil.
+  EXPECT_TRUE(browser_non_client_frame_view()->ShouldHideTopUIInFullscreen());
 }
 #endif  // BUILDFLAG(IS_MAC)
