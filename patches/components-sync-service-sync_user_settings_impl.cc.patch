@@ -1,0 +1,21 @@
+diff --git a/components/sync/service/sync_user_settings_impl.cc b/components/sync/service/sync_user_settings_impl.cc
+index aa56937126b9257b64e76b85277a11eb7ae1ae9c..4ab5895e685870ec0c6925a08f44865565b2e8cc 100644
+--- a/components/sync/service/sync_user_settings_impl.cc
++++ b/components/sync/service/sync_user_settings_impl.cc
+@@ -363,7 +363,7 @@ DataTypeSet SyncUserSettingsImpl::GetPreferredDataTypes() const {
+   // though they're technically not registered.
+   types.PutAll(ControlTypes());
+ 
+-  static_assert(63 == GetNumDataTypes(),
++  static_assert(64 == GetNumDataTypes(),
+                 "If adding a new sync data type, update the list below below if"
+                 " you want to disable the new data type for local sync, aka"
+                 " roaming profiles on Windows.");
+@@ -402,6 +402,7 @@ DataTypeSet SyncUserSettingsImpl::GetPreferredDataTypes() const {
+     types.Remove(GEMINI_THREAD);
+     types.Remove(THEMES_IOS);
+     types.Remove(ACCESSIBILITY_ANNOTATION);
++    types.Remove(AI_CHAT_CONVERSATION);
+   }
+   return types;
+ }

@@ -25,7 +25,8 @@ typedef NS_OPTIONS(NSUInteger, BraveSyncUserSelectableTypes) {
   BraveSyncUserSelectableTypes_SAVED_TAB_GROUPS = 1ULL << 11,
   BraveSyncUserSelectableTypes_PAYMENTS = 1ULL << 12,
   BraveSyncUserSelectableTypes_PRODUCT_COMPARISON = 1ULL << 14,
-  BraveSyncUserSelectableTypes_COOKIES = 1ULL << 15
+  BraveSyncUserSelectableTypes_COOKIES = 1ULL << 15,
+  BraveSyncUserSelectableTypes_AI_CHAT = 1ULL << 16
 };
 
 OBJC_EXPORT

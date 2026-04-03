@@ -14,12 +14,17 @@
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/strings/string_util.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_sync/brave_sync_p3a.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/sync/service/brave_sync_auth_manager.h"
 #include "brave/components/sync/service/sync_service_impl_delegate.h"
 #include "build/build_config.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/features.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 #include "components/prefs/pref_service.h"
 #include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/model/type_entities_count.h"
@@ -181,6 +186,11 @@ void BraveSyncServiceImpl::OnBraveSyncPrefsChanged(const std::string& path) {
               brave_sync::features::kBraveSyncDefaultPasswords)) {
         selected_types.Put(UserSelectableType::kPasswords);
       }
+#if BUILDFLAG(ENABLE_AI_CHAT)
+      if (ai_chat::features::IsBraveSyncAIChatEnabled()) {
+        selected_types.Put(UserSelectableType::kAIChat);
+      }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
       GetUserSettings()->SetSelectedTypes(false, selected_types);
 
       brave_sync_prefs_.ClearLeaveChainDetails();
