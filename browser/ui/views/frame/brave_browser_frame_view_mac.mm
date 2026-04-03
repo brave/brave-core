@@ -13,6 +13,7 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/fullscreen_util_mac.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/view_ids.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -163,4 +164,19 @@ gfx::Size BraveBrowserFrameViewMac::GetMinimumSize() const {
   }
 
   return BrowserFrameViewMac::GetMinimumSize();
+}
+
+bool BraveBrowserFrameViewMac::ShouldHideTopUIInFullscreen() const {
+  // When a browser window starts with horizontal tabs and the user switches to
+  // vertical tabs at runtime, fullscreen_toolbar_controller_ in the base class
+  // is nil — it was skipped at construction because
+  // UsesImmersiveFullscreenMode() returned true at that point. Messaging nil in
+  // ObjC returns 0, which equals TOOLBAR_PRESENT, so the base implementation
+  // incorrectly reports "don't hide" during tab (content) fullscreen. Intercept
+  // that case explicitly.
+  if (tabs::utils::ShouldShowBraveVerticalTabs(GetBrowserView()->browser()) &&
+      fullscreen_utils::IsInContentFullscreen(GetBrowserView()->browser())) {
+    return true;
+  }
+  return BrowserFrameViewMac::ShouldHideTopUIInFullscreen();
 }
