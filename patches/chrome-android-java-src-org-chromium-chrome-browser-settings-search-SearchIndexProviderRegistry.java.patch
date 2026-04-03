@@ -90,5 +90,6 @@ index 61e32e4c1c13515a872202e7ab46cde8c46a1544..b880423233f2d238f6ca40f269c018bf
 +                    org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesFragment.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.brave.browser.custom_search_engines.settings.AddCustomSearchEnginePreferenceFragment.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.chrome.browser.settings.AppearancePreferences.SEARCH_INDEX_DATA_PROVIDER,
-+                    org.chromium.chrome.browser.language.settings.BraveLanguageSettings.SEARCH_INDEX_DATA_PROVIDER);
++                    org.chromium.chrome.browser.language.settings.BraveLanguageSettings.SEARCH_INDEX_DATA_PROVIDER,
++                    org.chromium.chrome.browser.sync.settings.BraveManageSyncSettings.SEARCH_INDEX_DATA_PROVIDER);
  }
