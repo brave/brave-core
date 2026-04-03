@@ -12,7 +12,6 @@ declare_args() {
 }
 
 declare_args() {
-  enable_web_discovery =
-      (enable_web_discovery_native || enable_extensions) &&
-      !is_brave_origin_branded
+  enable_web_discovery = (enable_web_discovery_native || enable_extensions) &&
+                         !is_brave_origin_branded
 }

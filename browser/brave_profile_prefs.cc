@@ -294,10 +294,6 @@ void RegisterProfilePrefsForMigration(
                                 false);
 #endif
 
-#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
-  // Added 11/2022
-  registry->RegisterBooleanPref(kDontAskEnableWebDiscovery, false);
-#endif
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   registry->RegisterIntegerPref(kBraveSearchVisitCount, 0);
 #endif
