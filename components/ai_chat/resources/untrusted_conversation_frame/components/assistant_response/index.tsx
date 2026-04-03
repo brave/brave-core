@@ -42,17 +42,18 @@ interface BaseProps {
 function SearchSummary(props: { searchQueries: string[] }) {
   const context = useUntrustedConversationContext()
 
-  const handleOpenSearchQuery =
-    (e: React.MouseEvent<HTMLAnchorElement>, query: string) => {
-      e.preventDefault()
-      context.uiHandler?.openSearchURL(query)
-    }
+  const handleOpenSearchQuery = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    query: string,
+  ) => {
+    e.preventDefault()
+    context.uiHandler?.openSearchURL(query)
+  }
 
-  const handleLearnMoreClick =
-    (e: React.MouseEvent<HTMLAnchorElement>) => {
-      e.preventDefault()
-      context.uiHandler?.openLearnMoreAboutBraveSearchWithLeo()
-    }
+  const handleLearnMoreClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+    context.uiHandler?.openLearnMoreAboutBraveSearchWithLeo()
+  }
 
   const message = formatLocale(S.CHAT_UI_SEARCH_QUERIES, {
     $1: props.searchQueries.map((query, i, a) => (
