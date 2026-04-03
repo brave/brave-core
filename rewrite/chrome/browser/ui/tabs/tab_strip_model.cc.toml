@@ -1,0 +1,9 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = 'Patching AddTab() to set opener_was_set_for_empty_new_tab()'
+re_pattern = '(if \(ui::PageTransitionTypeIncludingQualifiersIs\(transition,\s*\n\s*ui::PAGE_TRANSITION_TYPED\) &&\s*\n\s*index == count\(\)\) \{[\s\S]*?\n    inherit_opener = true;)'
+replace = '\1\n    tab->set_opener_was_set_for_empty_new_tab();'
