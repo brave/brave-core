@@ -39,26 +39,31 @@ function SearchSummary(props: { searchQueries: string[] }) {
   const context = useUntrustedConversationContext()
 
   const handleOpenSearchQuery = React.useCallback(
-    (e: React.MouseEvent, query: string) => {
+    (e: React.MouseEvent<HTMLAnchorElement>, query: string) => {
       e.preventDefault()
       context.uiHandler?.openSearchURL(query)
     },
     [],
   )
 
-  const handleLearnMore = () => {
-    context.uiHandler?.openLearnMoreAboutBraveSearchWithLeo()
-  }
+  const handleLearnMoreClick = React.useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>) => {
+      e.preventDefault()
+      context.uiHandler?.openLearnMoreAboutBraveSearchWithLeo()
+    },
+    [],
+  )
 
   const message = formatLocale(S.CHAT_UI_SEARCH_QUERIES, {
     $1: props.searchQueries.map((query, i, a) => (
       <React.Fragment key={i}>
-        <button
+        <a
           className={styles.searchQueryLink}
+          href='#'
           onClick={(e) => handleOpenSearchQuery(e, query)}
         >
           {`"${query}"`}
-        </button>
+        </a>
         {i < a.length - 1 ? ', ' : null}
       </React.Fragment>
     )),
@@ -69,12 +74,13 @@ function SearchSummary(props: { searchQueries: string[] }) {
       <Icon name='brave-icon-search-color' />
       <span data-test-id='search-summary'>
         {message}{' '}
-        <button
+        <a
           className={styles.searchLearnMoreLink}
-          onClick={handleLearnMore}
+          href='#'
+          onClick={handleLearnMoreClick}
         >
           {getLocale(S.CHAT_UI_LEARN_MORE)}
-        </button>
+        </a>
       </span>
     </div>
   )

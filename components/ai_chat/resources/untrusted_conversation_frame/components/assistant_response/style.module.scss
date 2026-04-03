@@ -42,18 +42,18 @@
   line-height: 1.4;
   color: var(--leo-color-text-secondary);
 }
-.searchSummary button {
+.searchSummary a {
+  width: fit-content;
+  max-width: 100%;
+  vertical-align: baseline;
   text-align: left;
+  box-sizing: border-box;
 }
 
 .searchQueryLink {
   font: var(--leo-font-small-regular);
   text-decoration: underline;
   color: var(--leo-color-text-primary);
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
   &:hover {
     color: var(--leo-color-text-interactive);
   }
@@ -63,10 +63,6 @@
   font: var(--leo-font-small-regular);
   text-decoration: underline;
   color: var(--leo-color-text-secondary);
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
   &:hover {
     color: var(--leo-color-text-interactive);
   }
