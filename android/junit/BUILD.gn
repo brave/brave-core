@@ -29,6 +29,7 @@ if (is_android) {
     sources = [
       "src/org/chromium/chrome/browser/tabbed_mode/BraveTabbedAdaptiveToolbarBehaviorTest.java",
       "src/org/chromium/chrome/browser/tabbed_mode/BraveTabbedAppMenuPropertiesDelegateUnitTest.java",
+      "src/org/chromium/chrome/browser/tabbed_mode/BraveTabbedNavigationBarColorControllerBaseTest.java",
     ]
 
     deps = [
