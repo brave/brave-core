@@ -138,8 +138,7 @@ void BraveSyncWorker::MarkFirstSetupComplete() {
 
   // We're done configuring, so notify SyncService that it is OK to start
   // syncing.
-  service->GetUserSettings()->SetInitialSyncFeatureSetupComplete(
-      syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+  service->GetUserSettings()->SetInitialSyncFeatureSetupComplete();
 }
 
 void BraveSyncWorker::FinalizeSyncSetup(JNIEnv* env) {
