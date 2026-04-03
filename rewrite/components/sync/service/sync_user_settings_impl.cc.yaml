@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Bump the GetNumDataTypes static_assert for AI_CHAT_CONVERSATION'
+    re_pattern: 'static_assert\(64 == GetNumDataTypes\(\),'
+    replace: 'static_assert(65 == GetNumDataTypes(),'
+
+  - description: |-
+      Call BraveAdjustPreferredDataTypes for unconditional and
+      local-sync-only type exclusions.
+    re_pattern:
+      '(SyncUserSettingsImpl::GetPreferredDataTypes[\s\S]+?)(\s+return
+      types;\n})'
+    re_flags: ['MULTILINE']
+    replace: |-
+      \1
+        BraveAdjustPreferredDataTypes(&types, prefs_->IsLocalSyncEnabled());\2
