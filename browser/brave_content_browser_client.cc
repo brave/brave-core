@@ -33,6 +33,7 @@
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
+#include "brave/browser/local_ai/on_device_speech_recognition_service_factory.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
 #include "brave/browser/net/features.h"
@@ -143,6 +144,7 @@
 #include "content/public/common/content_switches.h"
 #include "content/public/common/url_constants.h"
 #include "extensions/buildflags/buildflags.h"
+#include "media/mojo/mojom/speech_recognizer.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -1608,4 +1610,27 @@ bool BraveContentBrowserClient::IsJitDisabledForSite(
 
   return ChromeContentBrowserClient::IsJitDisabledForSite(browser_context,
                                                           site_url);
+}
+
+media::mojom::AvailabilityStatus
+BraveContentBrowserClient::GetOnDeviceSpeechRecognitionAvailabilityStatus(
+    content::BrowserContext* context,
+    const std::string& language) {
+  if (base::FeatureList::IsEnabled(
+          local_ai::features::kBraveOnDeviceSpeechRecognition)) {
+    if (l10n_util::GetLanguage(language) == "en") {
+      return media::mojom::AvailabilityStatus::kAvailable;
+    }
+    return media::mojom::AvailabilityStatus::kUnavailable;
+  }
+  return ChromeContentBrowserClient::
+      GetOnDeviceSpeechRecognitionAvailabilityStatus(context, language);
+}
+
+mojo::PendingRemote<local_ai::mojom::OnDeviceSpeechRecognitionService>
+BraveContentBrowserClient::GetOnDeviceSpeechRecognitionService(
+    content::BrowserContext* context) {
+  auto* profile = Profile::FromBrowserContext(context);
+  return local_ai::OnDeviceSpeechRecognitionServiceFactory::GetForProfile(
+      profile);
 }

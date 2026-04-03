@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/debug/dump_without_crashing.h"
+#include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 
 #include <content/public/browser/content_browser_client.cc>
 
@@ -50,6 +51,11 @@ bool ContentBrowserClient::IsWindowsRecallDisabled() {
 bool ContentBrowserClient::ShouldInheritStoragePartition(
     const content::StoragePartitionConfig& partition_config) const {
   return false;
+}
+
+mojo::PendingRemote<local_ai::mojom::OnDeviceSpeechRecognitionService>
+ContentBrowserClient::GetOnDeviceSpeechRecognitionService(BrowserContext*) {
+  return {};
 }
 
 }  // namespace content

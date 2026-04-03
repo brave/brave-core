@@ -24,12 +24,13 @@ mojom_component("mojom") {
   ]
 }
 
-source_set("features") {
+component("features") {
   sources = [
     "features.cc",
     "features.h",
   ]
 
+  defines = [ "IS_LOCAL_AI_FEATURES_IMPL" ]
   public_deps = [ "//base" ]
 }
 

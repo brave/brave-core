@@ -6,11 +6,14 @@
 #ifndef BRAVE_COMPONENTS_LOCAL_AI_CORE_FEATURES_H_
 #define BRAVE_COMPONENTS_LOCAL_AI_CORE_FEATURES_H_
 
+#include "base/component_export.h"
 #include "base/feature_list.h"
 
 namespace local_ai::features {
 
+COMPONENT_EXPORT(LOCAL_AI_FEATURES)
 BASE_DECLARE_FEATURE(kBraveHistoryEmbeddings);
+COMPONENT_EXPORT(LOCAL_AI_FEATURES)
 BASE_DECLARE_FEATURE(kBraveOnDeviceSpeechRecognition);
 
 }  // namespace local_ai::features
