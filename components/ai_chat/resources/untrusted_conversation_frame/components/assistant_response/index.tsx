@@ -50,13 +50,11 @@ function SearchSummary(props: { searchQueries: string[] }) {
     [],
   )
 
-  const handleLearnMoreClick = React.useCallback(
+  const handleLearnMoreClick =
     (e: React.MouseEvent<HTMLAnchorElement>) => {
       e.preventDefault()
       context.uiHandler?.openLearnMoreAboutBraveSearchWithLeo()
-    },
-    [],
-  )
+    }
 
   const message = formatLocale(S.CHAT_UI_SEARCH_QUERIES, {
     $1: props.searchQueries.map((query, i, a) => (
