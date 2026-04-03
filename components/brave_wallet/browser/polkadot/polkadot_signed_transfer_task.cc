@@ -18,6 +18,7 @@ PolkadotSignedTransferTask::PolkadotSignedTransferTask(
     mojom::AccountIdPtr sender_account_id,
     std::string chain_id,
     bool use_dummy_signature,
+    bool transfer_all,
     uint128_t send_amount,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> sender,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient)
@@ -26,6 +27,7 @@ PolkadotSignedTransferTask::PolkadotSignedTransferTask(
       sender_account_id_(std::move(sender_account_id)),
       chain_id_(std::move(chain_id)),
       use_dummy_signature_{use_dummy_signature},
+      transfer_all_{transfer_all},
       send_amount_{send_amount} {
   base::span(sender_).copy_from_nonoverlapping(sender);
   base::span(recipient_).copy_from_nonoverlapping(recipient);
@@ -239,7 +241,7 @@ void PolkadotSignedTransferTask::MaybeFinalizeSignTransaction() {
 
   auto signature_payload = generate_extrinsic_signature_payload(
       *chain_metadata_.value(), account_info_->nonce, send_amount_bytes,
-      recipient_, runtime_version_->spec_version,
+      transfer_all_, recipient_, runtime_version_->spec_version,
       runtime_version_->transaction_version, signing_header_->block_number,
       *genesis_hash_, *signing_block_hash_);
 
@@ -259,7 +261,8 @@ void PolkadotSignedTransferTask::MaybeFinalizeSignTransaction() {
 
   extrinsic_ = base::ToVector(make_signed_extrinsic(
       *chain_metadata_.value(), *sender_pubkey, recipient_, send_amount_bytes,
-      signature, signing_header_->block_number, account_info_->nonce));
+      transfer_all_, signature, signing_header_->block_number,
+      account_info_->nonce));
 
   std::move(callback_).Run(base::ok(GetMetadata()));
 }

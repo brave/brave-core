@@ -39,6 +39,7 @@ PolkadotChainMetadata MakeWestendMetadata() {
       /*transaction_payment_pallet_index=*/0x1a,
       /*transfer_allow_death_call_index=*/0,
       /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
       /*ss58_prefix=*/42, kSpecVersion);
 }
 
@@ -48,6 +49,7 @@ PolkadotChainMetadata MakePolkadotMetadata() {
       /*transaction_payment_pallet_index=*/0x20,
       /*transfer_allow_death_call_index=*/0,
       /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
       /*ss58_prefix=*/0, kSpecVersion);
 }
 
@@ -57,6 +59,7 @@ PolkadotChainMetadata MakeWestendAssetHubMetadata() {
       /*transaction_payment_pallet_index=*/0x0b,
       /*transfer_allow_death_call_index=*/0,
       /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
       /*ss58_prefix=*/42, kSpecVersion);
 }
 
@@ -66,6 +69,7 @@ PolkadotChainMetadata MakePolkadotAssetHubMetadata() {
       /*transaction_payment_pallet_index=*/0x0b,
       /*transfer_allow_death_call_index=*/0,
       /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
       /*ss58_prefix=*/0, kSpecVersion);
 }
 
@@ -493,9 +497,9 @@ TEST(PolkadotExtrinsics, SignaturePayload) {
       block_hash));
 
   auto encoded = generate_extrinsic_signature_payload(
-      *testnet_metadata, sender_nonce, send_amount_bytes, recipient,
-      spec_version, transaction_version, block_number, genesis_hash,
-      block_hash);
+      *testnet_metadata, sender_nonce, send_amount_bytes,
+      /*transfer_all=*/false, recipient, spec_version, transaction_version,
+      block_number, genesis_hash, block_hash);
 
   constexpr const char kExpected[] =
       R"(0403008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913750108000061900f001b000000e143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423ebdcb3205ee391126e758556ffef5bb0d5a5fd1bbd996c671a079d5b02a67191300)";
@@ -503,7 +507,7 @@ TEST(PolkadotExtrinsics, SignaturePayload) {
   EXPECT_EQ(base::HexEncodeLower(encoded), kExpected);
 }
 
-TEST(PolkadotExtrinsics, SignedExtrinsic) {
+TEST(PolkadotExtrinsics, SignedExtrinsic_TransferKeepAlive) {
   auto testnet_metadata = MakeWestendMetadata();
 
   std::array<uint8_t, 32> recipient = {};
@@ -521,8 +525,6 @@ TEST(PolkadotExtrinsics, SignedExtrinsic) {
   const char genesis_hash_encoded[] =
       R"(0xe143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e)";
 
-  PolkadotUnsignedTransfer transfer(recipient, send_amount);
-
   uint32_t account_index = 0;
 
   auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
@@ -532,6 +534,8 @@ TEST(PolkadotExtrinsics, SignedExtrinsic) {
             "d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274");
 
   keypair.UseMockRngForTesting();
+
+  const auto transfer_all = false;
 
   std::array<uint8_t, 16> send_amount_bytes = {};
   base::span(send_amount_bytes)
@@ -544,8 +548,8 @@ TEST(PolkadotExtrinsics, SignedExtrinsic) {
   EXPECT_TRUE(PrefixedHexStringToFixed(block_hash_encoded, block_hash));
 
   auto signature_payload = generate_extrinsic_signature_payload(
-      *testnet_metadata, sender_nonce, send_amount_bytes, recipient,
-      spec_version, transaction_version, block_number, genesis_hash,
+      *testnet_metadata, sender_nonce, send_amount_bytes, transfer_all,
+      recipient, spec_version, transaction_version, block_number, genesis_hash,
       block_hash);
 
   auto signature = keypair.SignMessage(signature_payload);
@@ -558,7 +562,7 @@ TEST(PolkadotExtrinsics, SignedExtrinsic) {
 
   auto signed_extrinsic = make_signed_extrinsic(
       *testnet_metadata, keypair.GetPublicKey(), recipient, send_amount_bytes,
-      signature, block_number, sender_nonce);
+      transfer_all, signature, block_number, sender_nonce);
 
   auto extrinsic = base::HexEncodeLower(signed_extrinsic);
 
@@ -621,6 +625,86 @@ TEST(PolkadotExtrinsics, SignedExtrinsic) {
       "00"    // MultiAddress type.
       "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48"
       "4913"  // SCALE-encoded send amount.
+      ;
+
+  EXPECT_EQ(extrinsic, expected_extrinsic);
+}
+
+TEST(PolkadotExtrinsics, SignedExtrinsic_TransferAll) {
+  auto testnet_metadata = MakeWestendMetadata();
+
+  std::array<uint8_t, 32> recipient = {};
+  base::HexStringToSpan(kBob, recipient);
+
+  uint128_t send_amount = 1234;
+  uint32_t spec_version = 1020001;
+  uint32_t transaction_version = 27;
+
+  uint32_t sender_nonce = 45;
+  uint32_t block_number = 30508078;
+  const char block_hash_encoded[] =
+      R"(0x077a7467ddf9f37d0ebda40d830efcf4e895a599cc8cadfcd3e73588c5e70f82)";
+
+  const char genesis_hash_encoded[] =
+      R"(0xe143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e)";
+
+  uint32_t account_index = 0;
+
+  auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
+  keypair = keypair.DeriveHard(base::byte_span_from_cstring("\x1cwestend"));
+  keypair = keypair.DeriveHard(base::byte_span_from_ref(account_index));
+  EXPECT_EQ(base::HexEncodeLower(keypair.GetPublicKey()),
+            "d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274");
+
+  keypair.UseMockRngForTesting();
+
+  const auto transfer_all = true;
+
+  std::array<uint8_t, 16> send_amount_bytes = {};
+  base::span(send_amount_bytes)
+      .copy_from(base::byte_span_from_ref(send_amount));
+
+  std::array<uint8_t, 32> genesis_hash = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(genesis_hash_encoded, genesis_hash));
+
+  std::array<uint8_t, 32> block_hash = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(block_hash_encoded, block_hash));
+
+  auto signature_payload = generate_extrinsic_signature_payload(
+      *testnet_metadata, sender_nonce, send_amount_bytes, transfer_all,
+      recipient, spec_version, transaction_version, block_number, genesis_hash,
+      block_hash);
+
+  auto signature = keypair.SignMessage(signature_payload);
+
+  EXPECT_TRUE(keypair.VerifyMessage(signature, signature_payload));
+
+  const char expected_signatured[] =
+      R"(0442eb6ee79e19a958e614a854a496303200c95a8420b378b1a0b1f0ae1949335b3e5e675ffd1d905ffd91f7b9ea5e9f9f92faba18607c79d72d9a428e5e8383)";
+  EXPECT_EQ(base::HexEncodeLower(signature), expected_signatured);
+
+  auto signed_extrinsic = make_signed_extrinsic(
+      *testnet_metadata, keypair.GetPublicKey(), recipient, send_amount_bytes,
+      transfer_all, signature, block_number, sender_nonce);
+
+  auto extrinsic = base::HexEncodeLower(signed_extrinsic);
+
+  std::string_view expected_extrinsic =
+      "3102"  // SCALE-encoded length.
+      "84"    // Sign bit set (0x80), extrinsic version (0x04).
+      "00"    // MultiAddress type.
+      "d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274"
+      "01"  // Signature type (sr25519).
+      "0442eb6ee79e19a958e614a854a496303200c95a8420b378b1a0b1f0ae194933"
+      "5b3e5e675ffd1d905ffd91f7b9ea5e9f9f92faba18607c79d72d9a428e5e8383"
+      "e502"  // MortalEra
+      "b4"    // SCALE-encoded nonce.
+      "00"    // Tip.
+      "00"    // Mode (disable metadata hash checking).
+      "0404"  // Pallet index, call index.
+      "00"    // MultiAddress type.
+      "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48"
+      "00"  // Keep-alive.
       ;
 
   EXPECT_EQ(extrinsic, expected_extrinsic);

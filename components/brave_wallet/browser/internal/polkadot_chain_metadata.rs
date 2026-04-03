@@ -15,6 +15,7 @@ struct CxxPolkadotChainMetadataFields {
     transaction_payment_pallet_index: u8,
     transfer_allow_death_call_index: u8,
     transfer_keep_alive_call_index: u8,
+    transfer_all_call_index: u8,
     ss58_prefix: u16,
     spec_version: u32,
 }
@@ -41,6 +42,7 @@ mod ffi {
         fn transaction_payment_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8;
         fn transfer_allow_death_call_index(self: &CxxPolkadotChainMetadataFields) -> u8;
         fn transfer_keep_alive_call_index(self: &CxxPolkadotChainMetadataFields) -> u8;
+        fn transfer_all_call_index(self: &CxxPolkadotChainMetadataFields) -> u8;
         fn ss58_prefix(self: &CxxPolkadotChainMetadataFields) -> u16;
         fn spec_version(self: &CxxPolkadotChainMetadataFields) -> u32;
     }
@@ -65,6 +67,10 @@ impl CxxPolkadotChainMetadataFields {
 
     fn transfer_keep_alive_call_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
         self.transfer_keep_alive_call_index
+    }
+
+    fn transfer_all_call_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
+        self.transfer_all_call_index
     }
 
     fn ss58_prefix(self: &CxxPolkadotChainMetadataFields) -> u16 {
@@ -414,6 +420,9 @@ fn parse_chain_metadata_fields(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata,
     let transfer_keep_alive_call_index =
         get_call_index(&portable_registry, balances_pallet, "transferkeepalive")?;
 
+    let transfer_all_call_index =
+        get_call_index(&portable_registry, balances_pallet, "transferall")?;
+
     let system_pallet = pallets
         .iter()
         .find(|p| normalize_ident(&p.name) == "system")
@@ -447,6 +456,7 @@ fn parse_chain_metadata_fields(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata,
         transaction_payment_pallet_index,
         transfer_allow_death_call_index,
         transfer_keep_alive_call_index,
+        transfer_all_call_index,
         ss58_prefix,
         spec_version,
     })
@@ -462,6 +472,7 @@ fn parse_chain_metadata_from_scale(
             transaction_payment_pallet_index: metadata.transaction_payment_pallet_index,
             transfer_allow_death_call_index: metadata.transfer_allow_death_call_index,
             transfer_keep_alive_call_index: metadata.transfer_keep_alive_call_index,
+            transfer_all_call_index: metadata.transfer_all_call_index,
             ss58_prefix: metadata.ss58_prefix,
             spec_version: metadata.spec_version,
         }

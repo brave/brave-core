@@ -43,6 +43,7 @@ class PolkadotChainMetadata {
       uint8_t transaction_payment_pallet_index,
       uint8_t transfer_allow_death_call_index,
       uint8_t transfer_keep_alive_call_index,
+      uint8_t transfer_all_call_index,
       uint16_t ss58_prefix,
       uint32_t spec_version);
 
@@ -62,6 +63,7 @@ class PolkadotChainMetadata {
   uint8_t GetTransactionPaymentPalletIndex() const;
   uint8_t GetTransferAllowDeathCallIndex() const;
   uint8_t GetTransferKeepAliveCallIndex() const;
+  uint8_t GetTransferAllCallIndex() const;
 
   // Returns the ss58 prefix used by the chain when encoding/working with ss58
   // addresses.
