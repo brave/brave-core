@@ -66,7 +66,7 @@ class BraveTabMenuBrowserTest : public InProcessBrowserTest {
     return model_ptr;
   }
 
-  Browser* CreateBrowser(bool incognito) {
+  BrowserWindowInterface* CreateBrowser(bool incognito) {
     if (incognito) {
       return chrome::OpenEmptyWindow(
           browser()->profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true),
@@ -76,23 +76,27 @@ class BraveTabMenuBrowserTest : public InProcessBrowserTest {
                                    /*should_trigger_session_restore=*/false);
   }
 
-  void AddTabs(Browser* browser, int new_tab_count, int pinned_tab_count) {
-    std::vector expected = {browser->tab_strip_model()->GetWebContentsAt(0)};
+  void AddTabs(BrowserWindowInterface* browser,
+               int new_tab_count,
+               int pinned_tab_count) {
+    std::vector expected = {browser->GetTabStripModel()->GetWebContentsAt(0)};
     for (int i = 0; i < new_tab_count; ++i) {
       expected.push_back(chrome::AddAndReturnTabAt(browser, GURL(),
                                                    /*index=*/-1,
                                                    /*foreground=*/false));
     }
     for (int i = 0; i < pinned_tab_count; ++i) {
-      browser->tab_strip_model()->SetTabPinned(i, true);
+      browser->GetTabStripModel()->SetTabPinned(i, true);
     }
   }
 
-  std::vector<content::WebContents*> GetWebContentses(Browser* browser) {
+  std::vector<content::WebContents*> GetWebContentses(
+      BrowserWindowInterface* browser) {
     std::vector<content::WebContents*> web_contentses;
-    const auto count = browser->tab_strip_model()->count();
+    const auto count = browser->GetTabStripModel()->count();
     for (int i = 0; i < count; i++) {
-      web_contentses.push_back(browser->tab_strip_model()->GetWebContentsAt(i));
+      web_contentses.push_back(
+          browser->GetTabStripModel()->GetWebContentsAt(i));
     }
     return web_contentses;
   }
@@ -135,7 +139,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
 
   // Open a new browser and the command becomes visible.
   auto* new_browser = CreateBrowser(/*incognito=*/false);
-  ASSERT_FALSE(new_browser->tab_strip_model()->empty());
+  ASSERT_FALSE(new_browser->GetTabStripModel()->empty());
   EXPECT_TRUE(is_command_visible());
 
   // Close the new browser and the command becomes invisible again.
@@ -144,7 +148,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
 
   // New incognito window shouldn't affect the visibility of the command.
   new_browser = CreateBrowser(/*incognito=*/true);
-  ASSERT_FALSE(new_browser->tab_strip_model()->empty());
+  ASSERT_FALSE(new_browser->GetTabStripModel()->empty());
   EXPECT_FALSE(is_command_visible());
 }
 
@@ -155,12 +159,12 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
   constexpr auto kNewTabCount = 4;
   constexpr auto kPinnedTabCount = 2;
   AddTabs(new_browser, kNewTabCount, kPinnedTabCount);
-  ASSERT_EQ(new_browser->tab_strip_model()->count(), kNewTabCount + 1);
-  ASSERT_EQ(new_browser->tab_strip_model()->IndexOfFirstNonPinnedTab(),
+  ASSERT_EQ(new_browser->GetTabStripModel()->count(), kNewTabCount + 1);
+  ASSERT_EQ(new_browser->GetTabStripModel()->IndexOfFirstNonPinnedTab(),
             kPinnedTabCount);
   auto expected = GetWebContentses(new_browser);
 
-  auto* tab_strip_model = browser()->tab_strip_model();
+  auto* tab_strip_model = browser()->GetTabStripModel();
   AddTabs(browser(), /*new_tab_count*/ 1, /*pinned_tab*/ 1);
   ASSERT_EQ(tab_strip_model->count(), 2);
   ASSERT_TRUE(tab_strip_model->IsTabPinned(0));
@@ -190,16 +194,16 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
                        BringAllTabsToThisWindow_MultipleWindows) {
   auto* new_browser_1 = CreateBrowser(/*incognito=*/false);
   AddTabs(new_browser_1, /*new_tab_count=*/2, /*pinned_tab_count=*/0);
-  auto tab_count = new_browser_1->tab_strip_model()->count();
+  auto tab_count = new_browser_1->GetTabStripModel()->count();
 
   auto* new_browser_2 = CreateBrowser(/*incognito=*/false);
   AddTabs(new_browser_2, /*new_tab_count=*/3, /*pinned_tab_count=*/0);
-  tab_count += new_browser_2->tab_strip_model()->count();
+  tab_count += new_browser_2->GetTabStripModel()->count();
 
   auto* incognito_browser = CreateBrowser(/*incognito=*/true);
   AddTabs(incognito_browser, /*new_tab_count=*/4, /*pinned_tab_count=*/0);
   const auto incognito_tab_count =
-      incognito_browser->tab_strip_model()->count();
+      incognito_browser->GetTabStripModel()->count();
 
   auto menu = CreateMenuControllerAt(0);
   auto* menu_model = CreateMenuModelAt(menu.get(), 0);
@@ -211,7 +215,8 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
                        /*event_flags=*/0);
 
   EXPECT_EQ(browser()->tab_strip_model()->count(), tab_count + 1);
-  EXPECT_EQ(incognito_browser->tab_strip_model()->count(), incognito_tab_count);
+  EXPECT_EQ(incognito_browser->GetTabStripModel()->count(),
+            incognito_tab_count);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
