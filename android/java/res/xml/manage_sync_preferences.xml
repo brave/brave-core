@@ -67,6 +67,12 @@
         android:title="@string/sync_apps"
         android:persistent="false"/>
 
+    <org.chromium.components.browser_ui.settings.brave_tricks.checkbox_to_switch.ChromeBaseCheckBoxPreference
+        android:key="sync_ai_chat"
+        android:title="@string/brave_sync_ai_chat"
+        android:persistent="false"
+        app:isPreferenceVisible="false"/>
+
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:key="turn_off_sync"
         android:title="@string/sign_out_and_turn_off_sync"
