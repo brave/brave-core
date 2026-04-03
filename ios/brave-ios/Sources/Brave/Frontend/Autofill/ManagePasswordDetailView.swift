@@ -18,6 +18,8 @@ struct ManagePasswordDetailView: View {
   let viewModel: ManagePasswordsViewModel
   let password: CWVPassword
   var navigationTitle: String { URL(string: password.site)?.baseDomain ?? password.title }
+  let redactedTitle = Strings.Autofill.managePasswordsTitle
+
   var body: some View {
     Form {
       Section {
@@ -115,7 +117,7 @@ struct ManagePasswordDetailView: View {
     .background((Color(.braveGroupedBackground)))
     .foregroundStyle(Color(braveSystemName: .textPrimary))
     .accessibility(hidden: redactionReasons.contains(.privacy) ? true : false)
-    .navigationTitle(redactionReasons.contains(.privacy) ? "" : navigationTitle)
+    .navigationTitle(redactionReasons.contains(.privacy) ? redactedTitle : navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
     .overlay {
       if redactionReasons.contains(.privacy) { Color(.braveGroupedBackground).ignoresSafeArea() }
