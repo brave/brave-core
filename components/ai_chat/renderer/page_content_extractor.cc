@@ -149,7 +149,7 @@ void PageContentExtractor::ExtractPageContent(
       // Do Youtube extraction
       v8::HandleScope handle_scope(v8::Isolate::GetCurrent());
       blink::WebScriptSource source = blink::WebScriptSource(
-          blink::WebString::FromUTF16(kYoutubeInnerTubeConfigExtractionScript));
+          blink::WebString::FromUtf16(kYoutubeInnerTubeConfigExtractionScript));
       auto script_callback = base::BindOnce(
           &PageContentExtractor::OnJSYoutubeInnerTubeConfigResult,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback),
@@ -171,7 +171,7 @@ void PageContentExtractor::ExtractPageContent(
       // a video, and not a hard-coded list of Url hosts.
       v8::HandleScope handle_scope(v8::Isolate::GetCurrent());
       blink::WebScriptSource source =
-          blink::WebScriptSource(blink::WebString::FromUTF16(
+          blink::WebScriptSource(blink::WebString::FromUtf16(
               kVideoTrackTranscriptUrlExtractionScript));
       auto script_callback = base::BindOnce(
           &PageContentExtractor::OnJSTranscriptUrlResult,
