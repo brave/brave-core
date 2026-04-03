@@ -36,10 +36,14 @@
   margin-top: var(--leo-spacing-xl);
   display: flex;
   flex-direction: row;
-  gap: 6px;
+  flex-wrap: wrap;
+  gap: var(--leo-spacing-m);
   font: var(--leo-font-small-regular);
   line-height: 1.4;
   color: var(--leo-color-text-secondary);
+}
+.searchSummary button {
+  text-align: left;
 }
 
 .searchQueryLink {

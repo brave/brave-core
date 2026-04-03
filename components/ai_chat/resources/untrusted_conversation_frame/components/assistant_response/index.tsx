@@ -53,14 +53,13 @@ function SearchSummary(props: { searchQueries: string[] }) {
   const message = formatLocale(S.CHAT_UI_SEARCH_QUERIES, {
     $1: props.searchQueries.map((query, i, a) => (
       <React.Fragment key={i}>
-        "
         <button
           className={styles.searchQueryLink}
           onClick={(e) => handleOpenSearchQuery(e, query)}
         >
-          {query}
+          {`"${query}"`}
         </button>
-        "{i < a.length - 1 ? ', ' : null}
+        {i < a.length - 1 ? ', ' : null}
       </React.Fragment>
     )),
   })
