@@ -184,9 +184,6 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate {
   }
 
   func showPlaylistAlert(tab: (any TabState)?, state: PlaylistItemAddedState, item: PlaylistInfo?) {
-    // Has to be done otherwise it is impossible to play a video after selecting its elements
-    UIMenuController.shared.hideMenu()
-
     let style: UIAlertController.Style =
       UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
     let alert = UIAlertController(
