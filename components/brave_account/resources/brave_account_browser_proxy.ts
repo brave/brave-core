@@ -5,6 +5,7 @@
 
 import {
   Authentication,
+  AuthenticationObserverCallbackRouter,
   DialogController,
   Service,
 } from './brave_account.mojom-webui.js'
@@ -18,6 +19,7 @@ import { loadTimeData } from '//resources/js/load_time_data.js'
 
 export interface BraveAccountBrowserProxy {
   authentication: AuthenticationInterface
+  authenticationObserverCallbackRouter: AuthenticationObserverCallbackRouter
   dialog_controller: DialogControllerInterface
   password_strength_meter: PasswordStrengthMeterInterface
   closeDialog: () => void
@@ -26,13 +28,20 @@ export interface BraveAccountBrowserProxy {
 
 export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
   authentication: AuthenticationInterface
+  authenticationObserverCallbackRouter: AuthenticationObserverCallbackRouter
   dialog_controller: DialogControllerInterface
   password_strength_meter: PasswordStrengthMeterInterface
 
   private constructor() {
     this.authentication = Authentication.getRemote()
+    this.authenticationObserverCallbackRouter =
+      new AuthenticationObserverCallbackRouter()
     this.dialog_controller = DialogController.getRemote()
     this.password_strength_meter = PasswordStrengthMeter.getRemote()
+
+    this.authentication.addObserver(
+      this.authenticationObserverCallbackRouter.$.bindNewPipeAndPassRemote(),
+    )
   }
 
   closeDialog() {

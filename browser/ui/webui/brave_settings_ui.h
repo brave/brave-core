@@ -35,10 +35,6 @@
 
 class BraveSettingsUI;
 
-namespace brave_account {
-class BraveAccountSettingsHandler;
-}  // namespace brave_account
-
 namespace content {
 class WebUIDataSource;
 }
@@ -78,8 +74,7 @@ class BraveSettingsUI : public settings::SettingsUI {
   void BindInterface(mojo::PendingReceiver<brave_account::mojom::Authentication>
                          pending_receiver);
   void BindInterface(
-      mojo::PendingReceiver<brave_account::mojom::RowHandlerFactory>
-          pending_receiver);
+      mojo::PendingReceiver<brave_account::mojom::RowHandler> pending_receiver);
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   void BindInterface(
@@ -114,8 +109,6 @@ class BraveSettingsUI : public settings::SettingsUI {
         std::move(ref)));
   }
 
-  std::unique_ptr<brave_account::BraveAccountSettingsHandler>
-      brave_account_settings_handler_;
   // Ensure the mojo receivers are destroyed when the UI is destroyed.
   std::vector<base::ScopedClosureRunner> receiver_cleanup_runners_;
 };

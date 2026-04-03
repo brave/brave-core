@@ -22,7 +22,7 @@
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_info/features.h"
-#include "brave/browser/ui/webui/settings/brave_account/brave_account_settings_handler.h"
+#include "brave/browser/ui/webui/settings/brave_account/brave_account_row_handler.h"
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
@@ -360,11 +360,10 @@ void BraveSettingsUI::BindInterface(
 }
 
 void BraveSettingsUI::BindInterface(
-    mojo::PendingReceiver<brave_account::mojom::RowHandlerFactory>
-        pending_receiver) {
-  brave_account_settings_handler_ =
-      std::make_unique<brave_account::BraveAccountSettingsHandler>(
-          web_ui(), std::move(pending_receiver));
+    mojo::PendingReceiver<brave_account::mojom::RowHandler> pending_receiver) {
+  MakeOwnedReceiver(
+      std::make_unique<brave_account::BraveAccountRowHandler>(web_ui()),
+      std::move(pending_receiver));
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)

@@ -22,6 +22,11 @@ class MockBraveAccountAuthentication : public mojom::Authentication {
   ~MockBraveAccountAuthentication() override;
 
   MOCK_METHOD(void,
+              AddObserver,
+              (mojo::PendingRemote<mojom::AuthenticationObserver> observer),
+              (override));
+
+  MOCK_METHOD(void,
               RegisterInitialize,
               (std::optional<mojom::Service> initiating_service,
                const std::string& email,

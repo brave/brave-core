@@ -10,15 +10,17 @@ import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
 // @ts-expect-error
 import { leoShowAlert } from '//resources/brave/leo.bundle.js'
 
-import { AccountState, AccountStateFieldTags, whichAccountState } from '../brave_account_row.mojom-webui.js'
 import {
   BraveAccountBrowserProxy,
   BraveAccountBrowserProxyImpl
 } from './brave_account_browser_proxy.js'
 import { BraveAccountSettingsStrings } from '../brave_components_webui_strings.js'
 import {
+  AccountState,
+  AccountStateFieldTags,
   ResendConfirmationEmailError,
   ResendConfirmationEmailErrorCode,
+  whichAccountState,
 } from '../brave_account.mojom-webui.js'
 import { getCss } from './brave_account_row.css.js'
 import { getHtml } from './brave_account_row.html.js'
@@ -55,9 +57,11 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
   override connectedCallback() {
     super.connectedCallback()
 
-    this.loadInitialState()
-    this.browserProxy.rowClientCallbackRouter.updateState.addListener(
-      (state: AccountState) => { this.state = state; });
+    this.browserProxy.authenticationObserverCallbackRouter
+      .onAccountStateChanged
+      .addListener((state: AccountState) => {
+        this.state = state;
+      })
   }
 
   override disconnectedCallback() {
@@ -215,11 +219,6 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
     return this.state === undefined
       ? nothing
       : stateHtml[whichAccountState(this.state)]()
-  }
-
-  private async loadInitialState() {
-    const { state } = await this.browserProxy.rowHandler.getAccountState()
-    this.state = state
   }
 
   private getErrorMessage(details: ResendConfirmationEmailError): string {

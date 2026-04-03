@@ -28,7 +28,9 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_member.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 
 class PrefService;
 
@@ -65,6 +67,9 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       OSCryptCallback encrypt_callback,
       OSCryptCallback decrypt_callback);
+
+  void AddObserver(
+      mojo::PendingRemote<mojom::AuthenticationObserver> observer) override;
 
   void RegisterInitialize(std::optional<mojom::Service> initiating_service,
                           const std::string& email,
@@ -132,6 +137,12 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
 
   void OnAuthValidate(endpoints::AuthValidate::Response response);
 
+  void OnEmailAddressChanged();
+
+  void NotifyObservers();
+
+  mojom::AccountStatePtr GetAccountState() const;
+
   void OnGetServiceToken(
       const std::string& expected_encrypted_authentication_token,
       const std::string& service_name,
@@ -149,8 +160,10 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
   OSCryptCallback encrypt_callback_;
   OSCryptCallback decrypt_callback_;
   mojo::ReceiverSet<mojom::Authentication> authentication_receivers_;
+  mojo::RemoteSet<mojom::AuthenticationObserver> observers_;
   StringPrefMember pref_verification_token_;
   StringPrefMember pref_authentication_token_;
+  StringPrefMember pref_email_address_;
   base::OneShotTimer verify_result_timer_;
   base::OneShotTimer auth_validate_timer_;
   base::WeakPtrFactory<BraveAccountService> weak_factory_{this};

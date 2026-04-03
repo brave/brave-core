@@ -652,7 +652,7 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
   if (brave_account::features::IsBraveAccountEnabled()) {
     registry.ForWebUI<BraveSettingsUI>()
         .Add<brave_account::mojom::Authentication>()
-        .Add<brave_account::mojom::RowHandlerFactory>();
+        .Add<brave_account::mojom::RowHandler>();
   }
   registry.ForWebUI<BraveSettingsUI>()
       .Add<brave_origin::mojom::BraveOriginSettingsHandler>();

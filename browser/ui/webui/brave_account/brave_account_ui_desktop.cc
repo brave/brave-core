@@ -14,10 +14,8 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_account/brave_account_constants.h"
 #include "brave/components/brave_account/features.h"
-#include "brave/components/brave_account/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "content/public/browser/web_ui.h"
@@ -91,17 +89,7 @@ BraveAccountUIDesktop::BraveAccountUIDesktop(content::WebUI* web_ui)
     : BraveAccountUIBase(Profile::FromWebUI(web_ui),
                          web_ui->GetWebContents()->GetVisibleURL(),
                          base::BindOnce(&webui::SetupWebUIDataSource)),
-      ConstrainedWebDialogUI(web_ui) {
-  auto* pref_service = CHECK_DEREF(Profile::FromWebUI(web_ui)).GetPrefs();
-  CHECK(pref_service);
-
-  pref_change_registrar_.Init(pref_service);
-  pref_change_registrar_.AddMultiple(
-      {brave_account::prefs::kBraveAccountAuthenticationToken,
-       brave_account::prefs::kBraveAccountVerificationToken},
-      base::BindRepeating(&BraveAccountUIDesktop::OnTokensChanged,
-                          base::Unretained(this)));
-}
+      ConstrainedWebDialogUI(web_ui) {}
 
 BraveAccountUIDesktop::~BraveAccountUIDesktop() = default;
 
@@ -123,24 +111,6 @@ void BraveAccountUIDesktop::CloseDialog() {
 
   web_dialog_delegate->OnDialogClosed("");
   constrained_delegate->OnDialogCloseFromWebUI();
-}
-
-// Closes the UI when registration or login completes in any tab.
-// The dialog closes when either token becomes non-empty.
-// Since prefs are profile-wide, this automatically closes dialogs across all
-// tabs.
-void BraveAccountUIDesktop::OnTokensChanged() {
-  if (const auto& pref_service = CHECK_DEREF(pref_change_registrar_.prefs());
-      pref_service
-          .GetString(brave_account::prefs::kBraveAccountAuthenticationToken)
-          .empty() &&
-      pref_service
-          .GetString(brave_account::prefs::kBraveAccountVerificationToken)
-          .empty()) {
-    return;
-  }
-
-  CloseDialog();
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountUIDesktop)

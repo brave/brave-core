@@ -12,7 +12,6 @@
 #include "brave/components/brave_account/brave_account_ui_base.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
-#include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/webui_config.h"
@@ -42,10 +41,6 @@ class BraveAccountUIDesktop
  private:
   // brave_account::mojom::DialogController:
   void CloseDialog() override;
-
-  void OnTokensChanged();
-
-  PrefChangeRegistrar pref_change_registrar_;
 
   mojo::Receiver<brave_account::mojom::DialogController> receiver_{this};
 

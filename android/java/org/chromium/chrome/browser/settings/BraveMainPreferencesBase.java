@@ -156,9 +156,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         // Allows the fragment lifecycle to fully complete before updating preferences.
         // Prevents timing issues where preferences might not be fully initialized yet.
         PostTask.postTask(TaskTraits.UI_DEFAULT, this::prepareBravePreferences);
-        if (mAccountController != null) {
-            mAccountController.updateUI();
-        }
 
         // Check if features are disabled by policy
         checkLeoPolicyAndUpdatePreference();

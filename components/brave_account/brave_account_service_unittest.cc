@@ -26,10 +26,12 @@
 #include "brave/components/brave_account/endpoints/service_token.h"
 #include "brave/components/brave_account/endpoints/verify_resend.h"
 #include "brave/components/brave_account/endpoints/verify_result.h"
+#include "brave/components/brave_account/mock_brave_account_authentication_observer.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "net/http/http_status_code.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_account {
@@ -42,6 +44,170 @@ using endpoints::PasswordInit;
 using endpoints::ServiceToken;
 using endpoints::VerifyResend;
 using endpoints::VerifyResult;
+
+struct AuthenticationObserverTestCase {
+  enum class StateAction {
+    kSwitchToVerification,
+    kSwitchToLoggedIn,
+    kSwitchToLoggedOut,
+    kUpdateEmailAddress,
+  };
+
+  static void Run(const AuthenticationObserverTestCase& test_case,
+                  PrefService& pref_service,
+                  mojom::Authentication& authentication) {
+    const auto account_state_eq = [](const mojom::AccountStatePtr& expected) {
+      return testing::Truly([&](const mojom::AccountStatePtr& state) {
+        return state.Equals(expected);
+      });
+    };
+
+    switch (CHECK_DEREF(test_case.from).which()) {
+      case mojom::AccountState::Tag::kLoggedOut:
+        break;
+      case mojom::AccountState::Tag::kVerification:
+        pref_service.SetString(prefs::kBraveAccountVerificationToken,
+                               "verification_token");
+        break;
+      case mojom::AccountState::Tag::kLoggedIn:
+        pref_service.SetString(prefs::kBraveAccountEmailAddress, "email");
+        pref_service.SetString(prefs::kBraveAccountAuthenticationToken,
+                               "authentication_token");
+        break;
+    }
+
+    MockBraveAccountAuthenticationObserver mock_observer;
+    // Observer should receive initial state when added.
+    EXPECT_CALL(mock_observer,
+                OnAccountStateChanged(account_state_eq(test_case.from)))
+        .Times(1);
+
+    authentication.AddObserver(mock_observer.BindAndGetRemote());
+    mock_observer.FlushForTesting();
+    testing::Mock::VerifyAndClearExpectations(&mock_observer);
+
+    EXPECT_CALL(mock_observer,
+                OnAccountStateChanged(account_state_eq(test_case.to)))
+        .Times(1);
+
+    switch (test_case.action) {
+      case StateAction::kSwitchToVerification:
+        pref_service.SetString(prefs::kBraveAccountVerificationToken,
+                               "verification_token");
+        break;
+      case StateAction::kSwitchToLoggedIn:
+        pref_service.SetString(prefs::kBraveAccountEmailAddress, "email");
+        pref_service.SetString(prefs::kBraveAccountAuthenticationToken,
+                               "authentication_token");
+        break;
+      case StateAction::kSwitchToLoggedOut:
+        pref_service.ClearPref(prefs::kBraveAccountAuthenticationToken);
+        break;
+      case StateAction::kUpdateEmailAddress:
+        pref_service.SetString(prefs::kBraveAccountEmailAddress, "new_email");
+        break;
+    }
+
+    mock_observer.FlushForTesting();
+  }
+
+  std::string test_name;
+  mojom::AccountStatePtr from;
+  StateAction action;
+  mojom::AccountStatePtr to;
+};
+
+namespace {
+
+const AuthenticationObserverTestCase*
+AuthenticationObserverLoggedOutToVerification() {
+  static const base::NoDestructor<AuthenticationObserverTestCase>
+      kAuthenticationObserverLoggedOutToVerification(
+          {.test_name = "authentication_observer_logged_out_to_verification",
+           .from =
+               mojom::AccountState::NewLoggedOut(mojom::LoggedOutState::New()),
+           .action = AuthenticationObserverTestCase::StateAction::
+               kSwitchToVerification,
+           .to = mojom::AccountState::NewVerification(
+               mojom::VerificationState::New())});
+  return kAuthenticationObserverLoggedOutToVerification.get();
+}
+
+const AuthenticationObserverTestCase*
+AuthenticationObserverVerificationToLoggedIn() {
+  static const base::NoDestructor<AuthenticationObserverTestCase>
+      kAuthenticationObserverVerificationToLoggedIn(
+          {.test_name = "authentication_observer_verification_to_logged_in",
+           .from = mojom::AccountState::NewVerification(
+               mojom::VerificationState::New()),
+           .action =
+               AuthenticationObserverTestCase::StateAction::kSwitchToLoggedIn,
+           .to = mojom::AccountState::NewLoggedIn(
+               mojom::LoggedInState::New("email"))});
+  return kAuthenticationObserverVerificationToLoggedIn.get();
+}
+
+const AuthenticationObserverTestCase*
+AuthenticationObserverLoggedInToLoggedOut() {
+  static const base::NoDestructor<AuthenticationObserverTestCase>
+      kAuthenticationObserverLoggedInToLoggedOut(
+          {.test_name = "authentication_observer_logged_in_to_logged_out",
+           .from = mojom::AccountState::NewLoggedIn(
+               mojom::LoggedInState::New("email")),
+           .action =
+               AuthenticationObserverTestCase::StateAction::kSwitchToLoggedOut,
+           .to = mojom::AccountState::NewLoggedOut(
+               mojom::LoggedOutState::New())});
+  return kAuthenticationObserverLoggedInToLoggedOut.get();
+}
+
+const AuthenticationObserverTestCase*
+AuthenticationObserverLoggedOutToLoggedIn() {
+  static const base::NoDestructor<AuthenticationObserverTestCase>
+      kAuthenticationObserverLoggedOutToLoggedIn(
+          {.test_name = "authentication_observer_logged_out_to_logged_in",
+           .from =
+               mojom::AccountState::NewLoggedOut(mojom::LoggedOutState::New()),
+           .action =
+               AuthenticationObserverTestCase::StateAction::kSwitchToLoggedIn,
+           .to = mojom::AccountState::NewLoggedIn(
+               mojom::LoggedInState::New("email"))});
+  return kAuthenticationObserverLoggedOutToLoggedIn.get();
+}
+
+const AuthenticationObserverTestCase*
+AuthenticationObserverLoggedInToLoggedInEmailChange() {
+  static const base::NoDestructor<AuthenticationObserverTestCase>
+      kAuthenticationObserverLoggedInToLoggedInEmailChange(
+          {.test_name =
+               "authentication_observer_logged_in_to_logged_in_email_change",
+           .from = mojom::AccountState::NewLoggedIn(
+               mojom::LoggedInState::New("email")),
+           .action =
+               AuthenticationObserverTestCase::StateAction::kUpdateEmailAddress,
+           .to = mojom::AccountState::NewLoggedIn(
+               mojom::LoggedInState::New("new_email"))});
+  return kAuthenticationObserverLoggedInToLoggedInEmailChange.get();
+}
+
+using BraveAccountServiceAuthenticationObserverTest =
+    BraveAccountServiceTest<AuthenticationObserverTestCase>;
+
+}  // namespace
+
+TEST_P(BraveAccountServiceAuthenticationObserverTest, OnAccountStateChanged) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    BraveAccountServiceTests,
+    BraveAccountServiceAuthenticationObserverTest,
+    testing::Values(AuthenticationObserverLoggedOutToVerification(),
+                    AuthenticationObserverVerificationToLoggedIn(),
+                    AuthenticationObserverLoggedInToLoggedOut(),
+                    AuthenticationObserverLoggedOutToLoggedIn(),
+                    AuthenticationObserverLoggedInToLoggedInEmailChange()),
+    BraveAccountServiceAuthenticationObserverTest::kNameGenerator);
 
 struct RegisterInitializeTestCase {
   using Endpoint = PasswordInit;

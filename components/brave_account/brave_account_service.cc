@@ -148,6 +148,18 @@ BraveAccountService::BraveAccountService(
       base::BindRepeating(&BraveAccountService::OnAuthenticationTokenChanged,
                           base::Unretained(this)));
   OnAuthenticationTokenChanged();
+
+  pref_email_address_.Init(
+      prefs::kBraveAccountEmailAddress, pref_service,
+      base::BindRepeating(&BraveAccountService::OnEmailAddressChanged,
+                          base::Unretained(this)));
+}
+
+void BraveAccountService::AddObserver(
+    mojo::PendingRemote<mojom::AuthenticationObserver> observer) {
+  const auto observer_id = observers_.Add(std::move(observer));
+  CHECK_DEREF(observers_.Get(observer_id))
+      .OnAccountStateChanged(GetAccountState());
 }
 
 void BraveAccountService::RegisterInitialize(
@@ -446,6 +458,8 @@ void BraveAccountService::OnResendConfirmationEmail(
 }
 
 void BraveAccountService::OnVerificationTokenChanged() {
+  NotifyObservers();
+
   if (pref_verification_token_.GetValue().empty()) {
     return verify_result_timer_.Stop();
   }
@@ -623,6 +637,8 @@ void BraveAccountService::OnLoginFinalize(LoginFinalizeCallback callback,
 }
 
 void BraveAccountService::OnAuthenticationTokenChanged() {
+  NotifyObservers();
+
   if (pref_authentication_token_.GetValue().empty()) {
     pref_service_->ClearPref(prefs::kBraveAccountEmailAddress);
     pref_service_->ClearPref(prefs::kBraveAccountServiceTokens);
@@ -687,6 +703,37 @@ void BraveAccountService::OnAuthValidate(AuthValidate::Response response) {
 
   // Replace watchdog timer with the normal cadence.
   ScheduleAuthValidate(kAuthValidatePollInterval);
+}
+
+void BraveAccountService::OnEmailAddressChanged() {
+  // Only notify observers if logged in, since the email is only relevant in
+  // the LoggedIn state.
+  if (!pref_authentication_token_.GetValue().empty()) {
+    NotifyObservers();
+  }
+}
+
+void BraveAccountService::NotifyObservers() {
+  const auto state = GetAccountState();
+  for (auto& observer : observers_) {
+    observer->OnAccountStateChanged(state.Clone());
+  }
+}
+
+mojom::AccountStatePtr BraveAccountService::GetAccountState() const {
+  if (!pref_service_->GetString(prefs::kBraveAccountAuthenticationToken)
+           .empty()) {
+    return mojom::AccountState::NewLoggedIn(mojom::LoggedInState::New(
+        pref_service_->GetString(prefs::kBraveAccountEmailAddress)));
+  }
+
+  if (!pref_service_->GetString(prefs::kBraveAccountVerificationToken)
+           .empty()) {
+    return mojom::AccountState::NewVerification(
+        mojom::VerificationState::New());
+  }
+
+  return mojom::AccountState::NewLoggedOut(mojom::LoggedOutState::New());
 }
 
 void BraveAccountService::OnGetServiceToken(
