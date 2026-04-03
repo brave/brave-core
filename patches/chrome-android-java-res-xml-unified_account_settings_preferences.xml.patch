@@ -1,0 +1,16 @@
+diff --git a/chrome/android/java/res/xml/unified_account_settings_preferences.xml b/chrome/android/java/res/xml/unified_account_settings_preferences.xml
+index f1d2ae761e8d9ef989ad617cbdaf7864eda4e387..82758d0402b6ae294a50c7838ce854591cc14347 100644
+--- a/chrome/android/java/res/xml/unified_account_settings_preferences.xml
++++ b/chrome/android/java/res/xml/unified_account_settings_preferences.xml
+@@ -72,6 +72,11 @@ found in the LICENSE file.
+         android:title="@string/account_section_settings_toggle"
+         android:persistent="false"/>
+ 
++    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
++        android:key="account_section_ai_chat_toggle"
++        android:title="@string/brave_sync_ai_chat"
++        android:persistent="false"
++        app:isPreferenceVisible="false"/>
+     <org.chromium.components.browser_ui.settings.TextMessagePreference
+         android:key="account_section_footer"
+         android:summary="@string/account_section_footer"

@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.sync.settings;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -17,6 +18,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
@@ -24,10 +26,15 @@ import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.password_manager.settings.ReauthenticationManager;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
+import org.chromium.components.sync.UserSelectableType;
 import org.chromium.ui.widget.Toast;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -36,8 +43,13 @@ import java.util.TimerTask;
 public class BraveManageSyncSettings extends ManageSyncSettings {
     private static final String TAG = "BMSS";
 
+    private static final String PREF_SYNC_AI_CHAT = "account_section_ai_chat_toggle";
+
     private Preference mGoogleActivityControls;
     private Preference mSyncEncryption;
+
+    // Populated by upstream ManageSyncSettings via bytecode visibility tweak.
+    protected Map<Integer, ChromeSwitchPreference> mSyncTypeSwitchPreferencesMap;
 
     private ChromeSwitchPreference mPrefSyncPasswords;
 
@@ -108,6 +120,16 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
 
         Preference prefAutofill = findPreference(PREF_ACCOUNT_SECTION_ADDRESSES_TOGGLE);
         if (prefAutofill != null) prefAutofill.setTitle(R.string.brave_sync_autofill);
+
+        ChromeSwitchPreference syncAIChat = findPreference(PREF_SYNC_AI_CHAT);
+        if (syncAIChat != null) {
+            if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SYNC_AI_CHAT)
+                    && mSyncTypeSwitchPreferencesMap != null) {
+                mSyncTypeSwitchPreferencesMap.put(UserSelectableType.AI_CHAT, syncAIChat);
+            } else {
+                syncAIChat.setVisible(false);
+            }
+        }
 
         mPrefSyncPasswords =
                 (ChromeSwitchPreference) findPreference(PREF_ACCOUNT_SECTION_PASSWORDS_TOGGLE);
@@ -325,4 +347,23 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
             mPasswordsSummaryUpdater = null;
         }
     }
+
+    // Mirrors the runtime visibility gate on the AI Chat toggle. The static
+    // entry is parsed into the index under ManageSyncSettings (upstream's
+    // provider owns unified_account_settings_preferences.xml), so we use
+    // INDEX_OPT_OUT here and only strip the entry when the feature is off.
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(
+                    BraveManageSyncSettings.class.getName(),
+                    BaseSearchIndexProvider.INDEX_OPT_OUT) {
+
+                @Override
+                public void updateDynamicPreferences(
+                        Context context, SettingsIndexData indexData) {
+                    if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SYNC_AI_CHAT)) {
+                        indexData.removeEntryForKey(
+                                ManageSyncSettings.class.getName(), PREF_SYNC_AI_CHAT);
+                    }
+                }
+            };
 }

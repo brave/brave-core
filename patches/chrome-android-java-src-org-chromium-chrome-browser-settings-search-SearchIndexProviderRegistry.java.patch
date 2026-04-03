@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
-index b9a515255ae779daf61e37b86cc1ec54e1215f21..f258764dac9bdf57f46037855d41a453cf3a2cc1 100644
+index b9a515255ae779daf61e37b86cc1ec54e1215f21..ebe9a80faf277c62b4b1686da6b203a1483fe84b 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 @@ -7,7 +7,6 @@ package org.chromium.chrome.browser.settings.search;
@@ -59,7 +59,7 @@ index b9a515255ae779daf61e37b86cc1ec54e1215f21..f258764dac9bdf57f46037855d41a453
                      SafetyCheckSettingsFragment.SEARCH_INDEX_DATA_PROVIDER,
                      TabsSettings.SEARCH_INDEX_DATA_PROVIDER,
                      ManageSyncSettings.SEARCH_INDEX_DATA_PROVIDER,
-@@ -153,5 +146,30 @@ public final class SearchIndexProviderRegistry {
+@@ -153,5 +146,31 @@ public final class SearchIndexProviderRegistry {
                      DownloadSettings.SEARCH_INDEX_DATA_PROVIDER,
                      DeveloperSettings.SEARCH_INDEX_DATA_PROVIDER,
                      TracingSettings.SEARCH_INDEX_DATA_PROVIDER,
@@ -89,5 +89,6 @@ index b9a515255ae779daf61e37b86cc1ec54e1215f21..f258764dac9bdf57f46037855d41a453
 +                    org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesFragment.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.brave.browser.custom_search_engines.settings.AddCustomSearchEnginePreferenceFragment.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.chrome.browser.settings.AppearancePreferences.SEARCH_INDEX_DATA_PROVIDER,
-+                    org.chromium.chrome.browser.language.settings.BraveLanguageSettings.SEARCH_INDEX_DATA_PROVIDER);
++                    org.chromium.chrome.browser.language.settings.BraveLanguageSettings.SEARCH_INDEX_DATA_PROVIDER,
++                    org.chromium.chrome.browser.sync.settings.BraveManageSyncSettings.SEARCH_INDEX_DATA_PROVIDER);
  }
