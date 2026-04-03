@@ -64,6 +64,7 @@ source_set("ui") {
     "//brave/brave_domains",
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_origin",
+    "//brave/browser/brave_shields",
     "//brave/browser/skus",
     "//brave/browser/ui/page_info",
     "//brave/browser/ui/webui/brave_account",
