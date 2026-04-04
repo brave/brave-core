@@ -88,6 +88,7 @@ interface BatAdsClient {
 
   Save(string name, string value) => (bool success);
   Load(string name) => (string? value);
+  Remove(string name) => (bool success);
 
   LoadResourceComponent(string id, int32 version) =>
       (mojo_base.mojom.File? file);

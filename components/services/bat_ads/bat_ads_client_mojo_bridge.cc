@@ -157,6 +157,16 @@ void BatAdsClientMojoBridge::Save(const std::string& name,
   bat_ads_client_associated_remote_->Save(name, value, std::move(callback));
 }
 
+void BatAdsClientMojoBridge::Remove(const std::string& name,
+                                    brave_ads::RemoveCallback callback) {
+  if (!bat_ads_client_associated_remote_.is_bound()) {
+    std::move(callback).Run(/*success=*/false);
+    return;
+  }
+
+  bat_ads_client_associated_remote_->Remove(name, std::move(callback));
+}
+
 void BatAdsClientMojoBridge::LoadResourceComponent(
     const std::string& id,
     int version,

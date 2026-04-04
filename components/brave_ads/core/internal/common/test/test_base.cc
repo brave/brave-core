@@ -232,6 +232,7 @@ void TestBase::MockAdsClient() {
   MockGetSiteHistory(ads_client_mock_, /*site_history=*/{});
 
   MockSave(ads_client_mock_);
+  MockRemove(ads_client_mock_);
   MockLoad(ads_client_mock_, ProfilePath());
 
   MockLoadResourceComponent(ads_client_mock_, ProfilePath());
