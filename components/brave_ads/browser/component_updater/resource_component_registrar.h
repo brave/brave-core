@@ -9,12 +9,9 @@
 #include <optional>
 #include <string>
 
+#include "base/files/file_path.h"
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
-
-namespace base {
-class FilePath;
-}  // namespace base
 
 namespace brave_ads {
 
@@ -46,6 +43,7 @@ class ResourceComponentRegistrar final
   const raw_ref<ResourceComponentRegistrarDelegate>
       resource_component_registrar_delegate_;
   std::optional<std::string> resource_component_id_;
+  std::optional<base::FilePath> last_install_dir_;
 };
 
 }  // namespace brave_ads
