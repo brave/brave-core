@@ -144,8 +144,6 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  // Added 11/2022
-  profile_prefs->ClearPref(kDontAskEnableWebDiscovery);
   profile_prefs->ClearPref(kBraveSearchVisitCount);
 #endif
 
