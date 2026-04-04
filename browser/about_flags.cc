@@ -89,6 +89,7 @@
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/extensions/manifest_v2/features.h"
+#include "brave/browser/extensions/updater/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
@@ -710,6 +711,20 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(extensions_mv2::features::kExtensionsManifestV2), \
       }))
 
+#define BRAVE_EXTENSION_AUTO_UPDATE_FEATURE_ENTRY                              \
+  IF_BUILDFLAG(                                                                \
+      ENABLE_EXTENSIONS,                                                       \
+      EXPAND_FEATURE_ENTRIES({                                                 \
+          "brave-user-extension-auto-update",                                  \
+          "Automatically Update Extensions",                                   \
+          "Automatically update user installed extensions. When "              \
+          "disabled, extensions will not update in the background. Folks can " \
+          "still update them manually from the brave://extensions page.",      \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_extensions::features::kBraveExtensionAutoUpdate),          \
+      }))
+
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 #define BRAVE_EDUCATION_FEATURE_ENTRIES                                       \
   EXPAND_FEATURE_ENTRIES({                                                    \
@@ -1328,6 +1343,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_FORCE_CONTEXT_MENU_ON_SHIFT_RIGHT_CLICK_FEATURE_ENTRY                  \
   BRAVE_UPGRADE_WHEN_IDLE_FEATURE_ENTRY                                        \
   BRAVE_EXTENSIONS_MANIFEST_V2                                                 \
+  BRAVE_EXTENSION_AUTO_UPDATE_FEATURE_ENTRY                                    \
   BRAVE_WORKAROUND_NEW_WINDOW_FLASH                                            \
   BRAVE_WEBASSEMBLY_JITLESS_FEATURE_ENTRY                                      \
   BRAVE_EDUCATION_FEATURE_ENTRIES                                              \
