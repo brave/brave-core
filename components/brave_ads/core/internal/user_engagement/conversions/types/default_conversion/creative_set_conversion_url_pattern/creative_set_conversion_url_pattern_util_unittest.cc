@@ -33,6 +33,19 @@ TEST_F(BraveAdsCreativeConversionSetUrlPatternUtilTest,
 }
 
 TEST_F(BraveAdsCreativeConversionSetUrlPatternUtilTest,
+       DoesEmptyCreativeSetConversionUrlPatternNotMatchRedirectChain) {
+  // Arrange
+  const CreativeSetConversionInfo creative_set_conversion =
+      test::BuildCreativeSetConversion(test::kCreativeSetId,
+                                       /*url_pattern=*/"",
+                                       /*observation_window=*/base::Days(3));
+
+  // Act & Assert
+  EXPECT_FALSE(DoesCreativeSetConversionUrlPatternMatchRedirectChain(
+      creative_set_conversion, test::BuildDefaultConversionRedirectChain()));
+}
+
+TEST_F(BraveAdsCreativeConversionSetUrlPatternUtilTest,
        DoesCreativeSetConversionUrlPatternNotMatchRedirectChain) {
   // Arrange
   const CreativeSetConversionInfo creative_set_conversion =

@@ -122,7 +122,7 @@ enum ConfirmationType {
 };
 
 struct CreativeSetConversionInfo {
-  string url_pattern;
+  string? url_pattern;
   mojo_base.mojom.TimeDelta observation_window;
 };
 

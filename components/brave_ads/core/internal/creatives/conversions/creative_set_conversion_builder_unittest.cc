@@ -40,6 +40,18 @@ TEST_F(BraveAdsCreativeSetConversionBuilderTest,
 }
 
 TEST_F(BraveAdsCreativeSetConversionBuilderTest,
+       DoNotBuildCreativeSetConversionIfUrlPatternIsAbsent) {
+  // Arrange
+  const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
+      test::BuildCreativeSearchResultAdWithConversion(
+          /*use_random_uuids=*/false);
+  mojom_creative_ad->creative_set_conversion->url_pattern.reset();
+
+  // Act & Assert
+  EXPECT_FALSE(FromMojomMaybeBuildCreativeSetConversion(mojom_creative_ad));
+}
+
+TEST_F(BraveAdsCreativeSetConversionBuilderTest,
        DoNotBuildCreativeSetConversionIfAdDoesNotSupportConversions) {
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =

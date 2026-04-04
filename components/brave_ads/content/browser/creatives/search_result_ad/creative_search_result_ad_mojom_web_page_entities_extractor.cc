@@ -49,8 +49,9 @@ constexpr auto kCreativeSetConversionPropertyNames =
         {kCreativeSetConversionObservationWindowPropertyName,
          kCreativeSetConversionUrlPatternPropertyName});
 
-bool GetStringValue(const schema_org::mojom::PropertyPtr& mojom_property,
-                    std::string* out_value) {
+bool GetOptionalStringValue(
+    const schema_org::mojom::PropertyPtr& mojom_property,
+    std::string* out_value) {
   CHECK(mojom_property);
   CHECK(out_value);
 
@@ -71,15 +72,15 @@ bool GetRequiredStringValue(
   CHECK(mojom_property);
   CHECK(out_value);
 
-  if (!GetStringValue(mojom_property, out_value)) {
+  if (!mojom_property->values->is_string_values() ||
+      mojom_property->values->get_string_values().size() != 1) {
+    // Invalid type.
     return false;
   }
 
-  if (out_value->empty()) {
-    return false;
-  }
+  *out_value = mojom_property->values->get_string_values()[0];
 
-  return true;
+  return !out_value->empty();
 }
 
 bool GetIntValue(const schema_org::mojom::PropertyPtr& mojom_property,
@@ -206,8 +207,14 @@ bool ExtractCreativeSetConversionMojomProperty(
   const std::string& property_name = mojom_property->name;
 
   if (property_name == kCreativeSetConversionUrlPatternPropertyName) {
-    return GetRequiredStringValue(mojom_property,
-                                  &mojom_creative_set_conversion->url_pattern);
+    std::string url_pattern;
+    if (!GetOptionalStringValue(mojom_property, &url_pattern)) {
+      return false;
+    }
+    if (!url_pattern.empty()) {
+      mojom_creative_set_conversion->url_pattern = std::move(url_pattern);
+    }
+    return true;
   }
 
   if (property_name == kCreativeSetConversionObservationWindowPropertyName) {
@@ -368,11 +375,17 @@ void Log(const std::vector<mojom::CreativeSearchResultAdInfoPtr>&
       return;
     }
 
+    const mojom::CreativeSetConversionInfo& creative_set_conversion =
+        *mojom_creative_ad->creative_set_conversion;
+
     VLOG(6) << "Creative set conversion properties:\n"
-            << kCreativeSetConversionUrlPatternPropertyName << ": "
-            << mojom_creative_ad->creative_set_conversion->url_pattern << "\n"
             << kCreativeSetConversionObservationWindowPropertyName << ": "
-            << mojom_creative_ad->creative_set_conversion->observation_window;
+            << creative_set_conversion.observation_window;
+
+    if (creative_set_conversion.url_pattern) {
+      VLOG(6) << kCreativeSetConversionUrlPatternPropertyName << ": "
+              << *creative_set_conversion.url_pattern;
+    }
   }
 }
 
