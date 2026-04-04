@@ -416,6 +416,58 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
   }
 }
 
+IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
+                       SplitTabEntryIsLastInFirstSection) {
+  auto* tab_strip_model = browser()->tab_strip_model();
+
+  // Returns true if |command_id| is the last item before the first separator.
+  auto IsLastBeforeFirstSeparator = [](ui::SimpleMenuModel* model,
+                                       int command_id) {
+    auto cmd_index = model->GetIndexOfCommandId(command_id);
+    if (!cmd_index) {
+      return false;
+    }
+    for (size_t i = 0; i < model->GetItemCount(); i++) {
+      if (model->GetTypeAt(i) == ui::MenuModel::TYPE_SEPARATOR) {
+        return *cmd_index + 1 == i;
+      }
+    }
+    return false;
+  };
+
+  // Case 1: Normal tab, no active split → CommandAddToSplit.
+  {
+    auto menu = CreateMenuControllerAt(0);
+    auto* menu_model = CreateMenuModelAt(menu.get(), 0);
+    EXPECT_TRUE(IsLastBeforeFirstSeparator(menu_model,
+                                           TabStripModel::CommandAddToSplit));
+  }
+
+  // Add a second tab and open a split view so we can test the remaining cases.
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground=*/true);
+  ASSERT_EQ(2, tab_strip_model->count());
+  chrome::NewSplitTab(browser(),
+                      split_tabs::SplitTabCreatedSource::kTabContextMenu);
+  ASSERT_EQ(3, tab_strip_model->count());
+  ASSERT_EQ(2, tab_strip_model->active_index());
+
+  // Case 2: Tab in split view → CommandArrangeSplit.
+  {
+    auto menu = CreateMenuControllerAt(2);
+    auto* menu_model = CreateMenuModelAt(menu.get(), 2);
+    EXPECT_TRUE(IsLastBeforeFirstSeparator(menu_model,
+                                           TabStripModel::CommandArrangeSplit));
+  }
+
+  // Case 3: Normal tab while active tab is split → CommandSwapWithActiveSplit.
+  {
+    auto menu = CreateMenuControllerAt(0);
+    auto* menu_model = CreateMenuModelAt(menu.get(), 0);
+    EXPECT_TRUE(IsLastBeforeFirstSeparator(
+        menu_model, TabStripModel::CommandSwapWithActiveSplit));
+  }
+}
+
 #if BUILDFLAG(ENABLE_CONTAINERS)
 class BraveTabMenuWithContainersBrowserTest : public BraveTabMenuBrowserTest {
  public:
