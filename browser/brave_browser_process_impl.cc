@@ -78,6 +78,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/pref_names.h"
@@ -249,6 +250,9 @@ void BraveBrowserProcessImpl::StartTearDown() {
   brave_origin::BraveOriginPolicyManager::GetInstance()->Shutdown();
   brave_policy::AdBlockOnlyModePolicyManager::GetInstance()->Shutdown();
   brave_sync::NetworkTimeHelper::GetInstance()->Shutdown();
+#if BUILDFLAG(ENABLE_TOR)
+  TorProfileManager::GetInstance().Shutdown();
+#endif
   BrowserProcessImpl::StartTearDown();
 }
 
