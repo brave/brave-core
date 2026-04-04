@@ -103,7 +103,7 @@
 #include "brave/components/tor/tor_tab_helper.h"
 #endif
 
-#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
 #include "brave/browser/web_discovery/web_discovery_tab_helper.h"
 #endif
 
@@ -210,7 +210,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
       web_contents);
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
-#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
   web_discovery::WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 

@@ -190,7 +190,7 @@ void WelcomeDOMHandler::HandleSetMetricsReportingEnabled(
 
 void WelcomeDOMHandler::HandleEnableWebDiscovery(const base::ListValue& args) {
   CHECK(profile_);
-#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
   profile_->GetPrefs()->SetBoolean(kWebDiscoveryEnabled, true);
 #endif
 }

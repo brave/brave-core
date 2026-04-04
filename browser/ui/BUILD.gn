@@ -1022,11 +1022,16 @@ source_set("ui") {
       "views/infobars/brave_sync_account_deleted_infobar.h",
       "views/infobars/custom_styled_label.cc",
       "views/infobars/custom_styled_label.h",
-      "views/infobars/web_discovery_infobar_content_view.cc",
-      "views/infobars/web_discovery_infobar_content_view.h",
-      "views/infobars/web_discovery_infobar_view.cc",
-      "views/infobars/web_discovery_infobar_view.h",
     ]
+
+    if (enable_web_discovery) {
+      sources += [
+        "views/infobars/web_discovery_infobar_content_view.cc",
+        "views/infobars/web_discovery_infobar_content_view.h",
+        "views/infobars/web_discovery_infobar_view.cc",
+        "views/infobars/web_discovery_infobar_view.h",
+      ]
+    }
 
     deps += [
       "//brave/browser/ui/views/brave_tooltips",

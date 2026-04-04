@@ -228,7 +228,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
   histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 5);
 }
 
-#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, WebDiscoveryEnabledP3A) {
   histogram_tester_->ExpectBucketCount(kWebDiscoveryEnabledMetric, 0, 1);
   histogram_tester_->ExpectUniqueSample(kWebDiscoveryDefaultEngineMetric,

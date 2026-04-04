@@ -129,7 +129,7 @@ class SearchEngineTracker : public KeyedService,
   // TemplateURLServiceObserver overrides:
   void OnTemplateURLServiceChanged() override;
 
-#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
   void RecordWebDiscoveryEnabledP3A();
 #endif
 

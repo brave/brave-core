@@ -103,6 +103,7 @@ preprocess_if_expr("preprocess") {
     "enable_extensions=$enable_extensions",
     "enable_pin_shortcut=$enable_pin_shortcut",
     "enable_speedreader=$enable_speedreader",
+    "enable_web_discovery=$enable_web_discovery",
     "enable_web_discovery_native=$enable_web_discovery_native",
   ]
   out_folder =

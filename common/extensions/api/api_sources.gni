@@ -4,16 +4,18 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
+import("//brave/components/web_discovery/buildflags/buildflags.gni")
 
 brave_extensions_api_uncompiled_sources = []
 brave_extensions_api_root_namespace = "extensions::api::%(namespace)s"
 brave_extensions_api_schema_include_rules =
     "//brave/common/extensions/api:extensions::api::%(namespace)s"
 
-schema_sources_ = [
-  "brave_theme.json",
-  "web_discovery.json",
-]
+schema_sources_ = [ "brave_theme.json" ]
+
+if (enable_web_discovery) {
+  schema_sources_ += [ "web_discovery.json" ]
+}
 
 if (enable_brave_talk) {
   schema_sources_ += [ "brave_talk.json" ]
