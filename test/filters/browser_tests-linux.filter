@@ -85,6 +85,14 @@
 # https://github.com/brave/brave-browser/issues/53358
 -DevToolsProcessPerSiteTest.PausedDebuggerFocus
 
+# Chromium test: Blink's IdlenessDetector requires 500ms of renderer thread quiet
+# time to fire NetworkBecameIdle. Brave's cosmetic filters inject MutationObserver
+# and setInterval(500ms) polling on all pages, generating continuous renderer tasks
+# that prevent the quiet window from completing. 1.1% upstream flake rate over 30
+# days per LUCI Analysis.
+# https://github.com/brave/brave-browser/issues/54021
+-PageStabilityMetricsMinWaitTest.NetworkAndMainThreadIdleDelayed
+
 # These tests fail on Linux because kPromptForDownload defaults to true,
 # triggering the GTK file chooser dialog which causes g_malloc leaks
 # detected by LSan on ASAN builds and timeouts.
