@@ -1,0 +1,20 @@
+diff --git a/components/sync/engine/cycle/data_type_tracker.cc b/components/sync/engine/cycle/data_type_tracker.cc
+index 826ef7786ff066ecff9a4e0fa686558502979482..466c0933b52acedf8edd2d3676b6d3db74f5dd40 100644
+--- a/components/sync/engine/cycle/data_type_tracker.cc
++++ b/components/sync/engine/cycle/data_type_tracker.cc
+@@ -119,6 +119,7 @@ base::TimeDelta GetDefaultLocalChangeNudgeDelay(DataType data_type) {
+     case SKILL:
+     case GEMINI_THREAD:
+     case ACCESSIBILITY_ANNOTATION:
++    case AI_CHAT_CONVERSATION:
+       return kMediumLocalChangeNudgeDelay;
+     case UNSPECIFIED:
+       NOTREACHED();
+@@ -197,6 +198,7 @@ bool CanGetCommitsFromExtensions(DataType data_type) {
+     case SKILL:
+     case GEMINI_THREAD:
+     case ACCESSIBILITY_ANNOTATION:
++    case AI_CHAT_CONVERSATION:
+       return false;
+     case UNSPECIFIED:
+       NOTREACHED();

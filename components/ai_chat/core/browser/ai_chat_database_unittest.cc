@@ -29,6 +29,9 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/os_crypt/sync/os_crypt_mocker.h"
+#include "components/sync/model/metadata_batch.h"
+#include "components/sync/protocol/data_type_state.pb.h"
+#include "components/sync/protocol/entity_metadata.pb.h"
 #include "sql/init_status.h"
 #include "sql/meta_table.h"
 #include "sql/test/test_helpers.h"
@@ -1157,6 +1160,172 @@ TEST_P(AIChatDatabaseTest, DeleteConversationEntryWithAssociatedContent) {
 
   // Verify the middle turn (without associated content) remains
   EXPECT_EQ(archive_result->entries[0]->uuid.value(), history[1]->uuid.value());
+}
+
+// Sync metadata tests (non-parameterized, use the same fixture setup pattern).
+class AIChatDatabaseSyncTest : public testing::Test {
+ public:
+  void SetUp() override {
+    CHECK(temp_directory_.CreateUniqueTempDir());
+    os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting(
+        /*is_sync_for_unittests=*/true);
+    base::test::TestFuture<os_crypt_async::Encryptor> future;
+    os_crypt_->GetInstance(future.GetCallback());
+    db_ = std::make_unique<AIChatDatabase>(db_file_path(), future.Take());
+  }
+
+  void TearDown() override {
+    db_.reset();
+    CHECK(temp_directory_.Delete());
+  }
+
+  base::FilePath db_file_path() {
+    return temp_directory_.GetPath().AppendASCII("test_sync_ai_chat.db");
+  }
+
+ protected:
+  base::test::TaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
+  base::ScopedTempDir temp_directory_;
+  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
+  std::unique_ptr<AIChatDatabase> db_;
+};
+
+TEST_F(AIChatDatabaseSyncTest, UpdateAndGetEntityMetadata) {
+  sync_pb::EntityMetadata metadata;
+  metadata.set_creation_time(12345);
+  metadata.set_sequence_number(1);
+
+  EXPECT_TRUE(db_->UpdateEntityMetadata(syncer::AI_CHAT_CONVERSATION,
+                                        "conv-uuid-1", metadata));
+
+  syncer::MetadataBatch batch;
+  ASSERT_TRUE(db_->GetAllSyncMetadata(&batch));
+  ASSERT_EQ(batch.GetAllMetadata().size(), 1u);
+
+  const auto& entry = batch.GetAllMetadata().begin();
+  EXPECT_EQ(entry->first, "conv-uuid-1");
+  EXPECT_EQ(entry->second->creation_time(), 12345);
+}
+
+TEST_F(AIChatDatabaseSyncTest, ClearEntityMetadata) {
+  sync_pb::EntityMetadata metadata;
+  metadata.set_creation_time(1);
+  db_->UpdateEntityMetadata(syncer::AI_CHAT_CONVERSATION, "key1", metadata);
+  db_->UpdateEntityMetadata(syncer::AI_CHAT_CONVERSATION, "key2", metadata);
+
+  EXPECT_TRUE(db_->ClearEntityMetadata(syncer::AI_CHAT_CONVERSATION, "key1"));
+
+  syncer::MetadataBatch batch;
+  ASSERT_TRUE(db_->GetAllSyncMetadata(&batch));
+  EXPECT_EQ(batch.GetAllMetadata().size(), 1u);
+  EXPECT_EQ(batch.GetAllMetadata().begin()->first, "key2");
+}
+
+TEST_F(AIChatDatabaseSyncTest, ClearAllEntityMetadata) {
+  sync_pb::EntityMetadata metadata;
+  metadata.set_creation_time(1);
+  db_->UpdateEntityMetadata(syncer::AI_CHAT_CONVERSATION, "key1", metadata);
+  db_->UpdateEntityMetadata(syncer::AI_CHAT_CONVERSATION, "key2", metadata);
+
+  EXPECT_TRUE(db_->ClearAllEntityMetadata());
+
+  syncer::MetadataBatch batch;
+  ASSERT_TRUE(db_->GetAllSyncMetadata(&batch));
+  EXPECT_TRUE(batch.GetAllMetadata().empty());
+}
+
+TEST_F(AIChatDatabaseSyncTest, UpdateAndGetDataTypeState) {
+  sync_pb::DataTypeState state;
+  state.set_initial_sync_state(sync_pb::DataTypeState::INITIAL_SYNC_DONE);
+
+  EXPECT_TRUE(db_->UpdateDataTypeState(syncer::AI_CHAT_CONVERSATION, state));
+
+  syncer::MetadataBatch batch;
+  ASSERT_TRUE(db_->GetAllSyncMetadata(&batch));
+  EXPECT_EQ(batch.GetDataTypeState().initial_sync_state(),
+            sync_pb::DataTypeState::INITIAL_SYNC_DONE);
+}
+
+TEST_F(AIChatDatabaseSyncTest, ClearDataTypeState) {
+  sync_pb::DataTypeState state;
+  state.set_initial_sync_state(sync_pb::DataTypeState::INITIAL_SYNC_DONE);
+  db_->UpdateDataTypeState(syncer::AI_CHAT_CONVERSATION, state);
+
+  EXPECT_TRUE(db_->ClearDataTypeState(syncer::AI_CHAT_CONVERSATION));
+
+  syncer::MetadataBatch batch;
+  ASSERT_TRUE(db_->GetAllSyncMetadata(&batch));
+  // After clearing, GetDataTypeState returns default (no initial sync).
+  EXPECT_EQ(batch.GetDataTypeState().initial_sync_state(),
+            sync_pb::DataTypeState::INITIAL_SYNC_STATE_UNSPECIFIED);
+}
+
+TEST_F(AIChatDatabaseSyncTest, ApplyRemoteConversation) {
+  auto conv = mojom::Conversation::New();
+  conv->uuid = "remote-conv";
+  conv->title = "Remote Title";
+  conv->total_tokens = 42;
+
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "remote-entry";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->text = "Hello from sync";
+  entry->created_time = base::Time::Now();
+
+  std::vector<mojom::ConversationTurnPtr> entries;
+  entries.push_back(std::move(entry));
+
+  EXPECT_TRUE(
+      db_->ApplyRemoteConversation(std::move(conv), std::move(entries)));
+
+  auto conversations = db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  EXPECT_EQ(conversations[0]->uuid, "remote-conv");
+  EXPECT_EQ(conversations[0]->title, "Remote Title");
+
+  auto archive = db_->GetConversationData("remote-conv");
+  ASSERT_TRUE(archive);
+  ASSERT_EQ(archive->entries.size(), 1u);
+  EXPECT_EQ(archive->entries[0]->text, "Hello from sync");
+}
+
+TEST_F(AIChatDatabaseSyncTest, ApplyRemoteConversationReplacesExisting) {
+  auto conv1 = mojom::Conversation::New();
+  conv1->uuid = "replace-conv";
+  conv1->title = "Original";
+  auto entry1 = mojom::ConversationTurn::New();
+  entry1->uuid = "entry-orig";
+  entry1->character_type = mojom::CharacterType::HUMAN;
+  entry1->action_type = mojom::ActionType::QUERY;
+  entry1->text = "Original text";
+  entry1->created_time = base::Time::Now();
+  db_->AddConversation(std::move(conv1), {}, std::move(entry1));
+
+  auto conv2 = mojom::Conversation::New();
+  conv2->uuid = "replace-conv";
+  conv2->title = "Replaced";
+  auto entry2 = mojom::ConversationTurn::New();
+  entry2->uuid = "entry-new";
+  entry2->character_type = mojom::CharacterType::ASSISTANT;
+  entry2->action_type = mojom::ActionType::RESPONSE;
+  entry2->text = "Replaced text";
+  entry2->created_time = base::Time::Now();
+
+  std::vector<mojom::ConversationTurnPtr> entries;
+  entries.push_back(std::move(entry2));
+  EXPECT_TRUE(
+      db_->ApplyRemoteConversation(std::move(conv2), std::move(entries)));
+
+  auto conversations = db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  EXPECT_EQ(conversations[0]->title, "Replaced");
+
+  auto archive = db_->GetConversationData("replace-conv");
+  ASSERT_TRUE(archive);
+  ASSERT_EQ(archive->entries.size(), 1u);
+  EXPECT_EQ(archive->entries[0]->text, "Replaced text");
 }
 
 // Test the migration for each version upgrade

@@ -19,7 +19,7 @@
 #error "This file requires ARC support."
 #endif
 
-static_assert(static_cast<NSInteger>(syncer::UserSelectableType::kCookies) ==
+static_assert(static_cast<NSInteger>(syncer::UserSelectableType::kAIChat) ==
                   static_cast<NSInteger>(syncer::UserSelectableType::kLastType),
               "syncer::UserSelectableType has changed in a Chromium update");
 
@@ -51,7 +51,9 @@ constexpr auto kMapping = std::to_array<
      {syncer::UserSelectableType::kProductComparison,
       BraveSyncUserSelectableTypes_PRODUCT_COMPARISON},
      {syncer::UserSelectableType::kCookies,
-      BraveSyncUserSelectableTypes_COOKIES}});
+      BraveSyncUserSelectableTypes_COOKIES},
+     {syncer::UserSelectableType::kAIChat,
+      BraveSyncUserSelectableTypes_AI_CHAT}});
 
 syncer::UserSelectableTypeSet user_types_from_options(
     BraveSyncUserSelectableTypes options) {

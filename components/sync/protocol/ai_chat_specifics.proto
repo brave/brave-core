@@ -1,0 +1,143 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Sync protocol datatype extension for AI Chat conversations.
+
+syntax = "proto2";
+
+option java_multiple_files = true;
+option java_package = "org.chromium.components.sync.protocol";
+
+option optimize_for = LITE_RUNTIME;
+
+package sync_pb;
+
+// Represents a complete AI Chat conversation including all entries and events.
+// Each sync entity corresponds to one conversation.
+message AIChatConversationSpecifics {
+  // Unique identifier for this conversation. Used as client tag and storage
+  // key.
+  optional string uuid = 1;
+  optional string title = 2;
+  optional string model_key = 3;
+  optional uint64 total_tokens = 4;
+  optional uint64 trimmed_tokens = 5;
+  optional int64 created_time_unix_epoch_micros = 6;
+  optional int64 last_modified_time_unix_epoch_micros = 7;
+
+  repeated AIChatAssociatedContentProto associated_content = 8;
+  repeated AIChatConversationEntryProto entries = 9;
+}
+
+// Metadata for content associated with a conversation (e.g. a web page).
+// Full text content is not synced as it can be large and re-derivable.
+message AIChatAssociatedContentProto {
+  optional string uuid = 1;
+  optional string title = 2;
+  optional string url = 3;
+  // mojom::ContentType (0=PageContent, 1=VideoTranscript)
+  optional int32 content_type = 4;
+  optional int32 content_used_percentage = 5;
+  // The conversation entry this content is associated with.
+  optional string conversation_entry_uuid = 6;
+}
+
+// A single turn in the conversation (human or assistant message).
+message AIChatConversationEntryProto {
+  optional string uuid = 1;
+  optional int64 date_unix_epoch_micros = 2;
+  optional string entry_text = 3;
+  // Optional user-invisible override prompt sent to AI engine.
+  optional string prompt = 4;
+  // mojom::CharacterType (0=HUMAN, 1=ASSISTANT)
+  optional int32 character_type = 5;
+  // UUID of the parent entry being edited (for edit history tracking).
+  optional string editing_entry_uuid = 6;
+  // mojom::ActionType enum
+  optional int32 action_type = 7;
+  // Selected text from page context.
+  optional string selected_text = 8;
+  optional string model_key = 9;
+  // Serialized skill data.
+  optional bytes smart_mode_data = 10;
+  // NEAR AI TEE attestation verification status.
+  optional bool is_near_verified = 11;
+
+  repeated AIChatEntryEventProto events = 12;
+}
+
+// An event within a conversation entry.
+message AIChatEntryEventProto {
+  optional int32 event_order = 1;
+  oneof event {
+    string completion_text = 2;
+    AIChatSearchQueriesEvent search_queries = 3;
+    AIChatWebSourcesEvent web_sources = 4;
+    AIChatInlineSearchEvent inline_search = 5;
+    AIChatToolUseEvent tool_use = 6;
+  }
+}
+
+message AIChatSearchQueriesEvent {
+  repeated string queries = 1;
+}
+
+// Web search results shown to the user.
+message AIChatWebSourcesEvent {
+  repeated AIChatWebSource sources = 1;
+  // JSON-formatted rich search results passed through to the renderer.
+  repeated string rich_results = 2;
+}
+
+message AIChatWebSource {
+  optional string title = 1;
+  optional string url = 2;
+  optional string favicon_url = 3;
+  optional string page_content = 4;
+  repeated string extra_snippets = 5;
+}
+
+// An inline search performed during the conversation.
+message AIChatInlineSearchEvent {
+  optional string query = 1;
+  optional string results_json = 2;
+}
+
+// A tool/function call made during the conversation.
+message AIChatToolUseEvent {
+  optional string tool_name = 1;
+  optional string id = 2;
+  optional string arguments_json = 3;
+  repeated AIChatContentBlock output = 4;
+  optional bool is_server_result = 5;
+  repeated AIChatToolArtifact artifacts = 6;
+}
+
+message AIChatContentBlock {
+  oneof content {
+    AIChatImageContentBlock image_content_block = 1;
+    AIChatTextContentBlock text_content_block = 2;
+    AIChatWebSourcesContentBlock web_sources_content_block = 3;
+  }
+}
+
+message AIChatImageContentBlock {
+  optional string image_url = 1;
+}
+
+message AIChatTextContentBlock {
+  optional string text = 1;
+}
+
+message AIChatWebSourcesContentBlock {
+  repeated AIChatWebSource sources = 1;
+  repeated string queries = 2;
+  repeated string rich_results = 3;
+}
+
+message AIChatToolArtifact {
+  optional string type = 1;
+  optional string content_json = 2;
+}

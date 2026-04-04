@@ -1,0 +1,51 @@
+diff --git a/components/sync/base/data_type.cc b/components/sync/base/data_type.cc
+index 444f4e4d470d331d05543f505173d6f2b54a0bdb..d807de5d6083ecdd338d59a3d5b78a9505939e86 100644
+--- a/components/sync/base/data_type.cc
++++ b/components/sync/base/data_type.cc
+@@ -16,11 +16,11 @@ namespace syncer {
+ 
+ namespace {
+ 
+-static_assert(63 == syncer::GetNumDataTypes(),
++static_assert(64 == syncer::GetNumDataTypes(),
+               "When adding a new type, update enum SyncDataTypes in enums.xml "
+               "and suffix SyncDataType in histograms.xml.");
+ 
+-static_assert(63 == syncer::GetNumDataTypes(),
++static_assert(64 == syncer::GetNumDataTypes(),
+               "When adding a new type, follow the integration checklist in "
+               "https://www.chromium.org/developers/design-documents/sync/"
+               "integration-checklist/");
+@@ -121,6 +121,7 @@ constexpr kSpecificsFieldNumberToDataTypeMap specifics_field_number2data_type =
+         {sync_pb::EntitySpecifics::kThemeIosFieldNumber, THEMES_IOS},
+         {sync_pb::EntitySpecifics::kAccessibilityAnnotationFieldNumber,
+          ACCESSIBILITY_ANNOTATION},
++        BRAVE_SPECIFICS_FIELD_NUMBER_TO_DATA_TYPE
+         // ---- Control Types ----
+         {sync_pb::EntitySpecifics::kNigoriFieldNumber, NIGORI},
+     });
+@@ -521,7 +522,7 @@ DataTypeSet AlwaysPreferredUserTypes() {
+ }
+ 
+ DataTypeSet EncryptableUserTypes() {
+-  static_assert(63 == syncer::GetNumDataTypes(),
++  static_assert(64 == syncer::GetNumDataTypes(),
+                 "If adding an unencryptable type, remove from "
+                 "encryptable_user_types below.");
+   DataTypeSet encryptable_user_types = UserTypes();
+@@ -967,6 +968,7 @@ DataTypeForHistograms DataTypeHistogramValue(DataType data_type) {
+       return DataTypeForHistograms::kGeminiThread;
+     case ACCESSIBILITY_ANNOTATION:
+       return DataTypeForHistograms::kAccessibilityAnnotation;
++      BRAVE_DATA_TYPE_HISTOGRAM_VALUE
+   }
+   NOTREACHED();
+ }
+@@ -1117,6 +1119,7 @@ const char* DataTypeToStableLowerCaseString(DataType data_type) {
+       return "gemini_thread";
+     case ACCESSIBILITY_ANNOTATION:
+       return "accessibility_annotation";
++      BRAVE_DATA_TYPE_TO_STABLE_LOWER_CASE_STRING
+   }
+   // WARNING: existing strings must not be changed without migration, they
+   // are persisted!

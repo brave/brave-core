@@ -196,4 +196,10 @@ bool IsAIChatDeepResearchEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatDeepResearch);
 }
 
+BASE_FEATURE(kBraveSyncAIChat, base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsBraveSyncAIChatEnabled() {
+  return base::FeatureList::IsEnabled(features::kBraveSyncAIChat);
+}
+
 }  // namespace ai_chat::features

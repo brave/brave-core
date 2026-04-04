@@ -16,8 +16,13 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "components/os_crypt/async/common/encryptor.h"
+#include "components/sync/model/sync_metadata_store.h"
 #include "sql/database.h"
 #include "sql/init_status.h"
+
+namespace syncer {
+class MetadataBatch;
+}  // namespace syncer
 
 namespace ai_chat {
 
@@ -30,13 +35,13 @@ extern const int kCurrentDatabaseVersion;
 // should be handled with removal and re-adding so that other classes can make
 // decisions about how it affects the rest of history.
 // All data should be stored encrypted.
-class AIChatDatabase {
+class AIChatDatabase : public syncer::SyncMetadataStore {
  public:
   AIChatDatabase(const base::FilePath& db_file_path,
                  os_crypt_async::Encryptor encryptor);
   AIChatDatabase(const AIChatDatabase&) = delete;
   AIChatDatabase& operator=(const AIChatDatabase&) = delete;
-  virtual ~AIChatDatabase();
+  ~AIChatDatabase() override;
 
   // Gets lightweight metadata for all conversations. No high-memory-consuming
   // data is returned.
@@ -94,6 +99,30 @@ class AIChatDatabase {
   virtual bool DeleteAssociatedWebContent(std::optional<base::Time> begin_time,
                                           std::optional<base::Time> end_time);
 
+  // Applies a remote conversation from sync. Deletes existing conversation
+  // with the same UUID (if any) and re-inserts with the provided data.
+  // |contents| should be empty strings since full text is not synced.
+  virtual bool ApplyRemoteConversation(
+      mojom::ConversationPtr conversation,
+      std::vector<mojom::ConversationTurnPtr> entries);
+
+  // Reads all sync metadata (entity metadata + data type state) into the batch.
+  bool GetAllSyncMetadata(syncer::MetadataBatch* metadata_batch);
+
+  // Deletes all entity metadata (but not data type state).
+  bool ClearAllEntityMetadata();
+
+  // syncer::SyncMetadataStore:
+  bool UpdateEntityMetadata(syncer::DataType data_type,
+                            const std::string& storage_key,
+                            const sync_pb::EntityMetadata& metadata) override;
+  bool ClearEntityMetadata(syncer::DataType data_type,
+                           const std::string& storage_key) override;
+  bool UpdateDataTypeState(
+      syncer::DataType data_type,
+      const sync_pb::DataTypeState& data_type_state) override;
+  bool ClearDataTypeState(syncer::DataType data_type) override;
+
  private:
   friend class AIChatDatabaseTest;
   friend class AIChatDatabaseMigrationTest;
@@ -110,6 +139,9 @@ class AIChatDatabase {
       std::string_view conversation_id);
   std::vector<mojom::ContentArchivePtr> GetArchiveContentsForConversation(
       std::string_view conversation_uuid);
+
+  bool GetAllEntityMetadata(syncer::MetadataBatch* metadata_batch);
+  bool GetDataTypeState(sync_pb::DataTypeState* state);
 
   std::string DecryptColumnToString(sql::Statement& statement, int index);
   std::optional<std::string> DecryptOptionalColumnToString(
