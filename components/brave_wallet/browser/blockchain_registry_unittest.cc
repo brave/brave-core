@@ -914,23 +914,23 @@ TEST(BlockchainRegistryUnitTest, GetOnRampCurrencies) {
   run_loop->Run();
 }
 
-TEST(BlockchainRegistryUnitTest, IsOfacAddress) {
+TEST(BlockchainRegistryUnitTest, IsRestrictedAddress) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
 
   // Before parsing the list, should return false.
-  EXPECT_FALSE(
-      registry->IsOfacAddress("0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
+  EXPECT_FALSE(registry->IsRestrictedAddress(
+      "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
 
   // After parsing the list, we should have some addresses;
   std::vector<std::string> input_list;
   input_list.push_back("0xb9ef770b6a5e12e45983c5d80545258aa38f3b78");
-  registry->UpdateOfacAddressesList(input_list);
-  EXPECT_TRUE(
-      registry->IsOfacAddress("0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
-  EXPECT_TRUE(
-      registry->IsOfacAddress("0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
-  EXPECT_FALSE(registry->IsOfacAddress(""));
+  registry->UpdateRestrictedAddressesList(input_list);
+  EXPECT_TRUE(registry->IsRestrictedAddress(
+      "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
+  EXPECT_TRUE(registry->IsRestrictedAddress(
+      "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
+  EXPECT_FALSE(registry->IsRestrictedAddress(""));
 }
 
 TEST(BlockchainRegistryUnitTest, GetPrepopulatedNetworks) {
@@ -1122,7 +1122,7 @@ TEST(BlockchainRegistryUnitTest, ParseLists) {
   ASSERT_TRUE(base::WriteFile(path.Append(FPL("on-ramp-currency-lists.json")),
                               on_ramp_currency_lists_json));
   ASSERT_TRUE(base::WriteFile(
-      path.Append(FPL("ofac-sanctioned-digital-currency-addresses.json")),
+      path.AppendASCII(BlockchainRegistry::kRestrictedAddressFileName),
       R"({"addresses": ["0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"]})"));
 
   auto* registry = BlockchainRegistry::GetInstance();
@@ -1208,9 +1208,9 @@ TEST(BlockchainRegistryUnitTest, ParseLists) {
       }));
   run_loop->Run();
 
-  // ofac-sanctioned-digital-currency-addresses.json
-  EXPECT_TRUE(
-      registry->IsOfacAddress("0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
+  // kRestrictedAddressFileName
+  EXPECT_TRUE(registry->IsRestrictedAddress(
+      "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
 }
 
 }  // namespace brave_wallet

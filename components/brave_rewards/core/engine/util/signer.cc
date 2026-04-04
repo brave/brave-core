@@ -31,7 +31,7 @@ constexpr int kSaltLength = 64;
 
 namespace brave_rewards::internal {
 
-Signer::Signer(std::vector<uint8_t> public_key, std::vector<uint8_t> secret_key)
+Signer::Signer(std::vector<uint8_t> public_key, SecretKey secret_key)
     : public_key_(std::move(public_key)), secret_key_(std::move(secret_key)) {
   DCHECK_EQ(public_key_.size(),
             static_cast<size_t>(crypto_sign_PUBLICKEYBYTES));
@@ -50,7 +50,7 @@ std::optional<Signer> Signer::FromRecoverySeed(
     return std::nullopt;
   }
 
-  std::vector<uint8_t> secret_key(kSeedLength);
+  SecretKey secret_key(kSeedLength);
   const uint8_t info[] = {0};
   int hkdf_res = HKDF(secret_key.data(), kSeedLength, EVP_sha512(),
                       recovery_seed.data(), kSeedLength, kHkdfSalt, kSaltLength,

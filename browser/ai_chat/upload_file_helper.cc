@@ -77,8 +77,7 @@ std::optional<std::vector<uint8_t>> ReadFileToBytes(
 
 std::tuple<std::optional<std::vector<uint8_t>>, base::FilePath>
 ReadSelectedFile(const ui::SelectedFileInfo& info) {
-  return std::make_tuple(ai_chat::ReadFileToBytes(info.path()),
-                         base::FilePath(info.display_name));
+  return std::make_tuple(ai_chat::ReadFileToBytes(info.path()), info.path());
 }
 
 void OnImageDecoded(
@@ -198,7 +197,7 @@ void UploadFileHelper::MultiFilesSelected(
               if (file_data && file_type_opt) {
                 uploaded_files.push_back(mojom::UploadedFile::New(
                     filepath.AsUTF8Unsafe(), file_data->size(), *file_data,
-                    *file_type_opt));
+                    *file_type_opt, std::nullopt));
               }
             }
             std::move(callback).Run(
@@ -289,11 +288,12 @@ void UploadFileHelper::OnFileRead(
   auto file_type_opt = DetermineFileType(std::get<1>(result), *file_data);
 
   if (file_type_opt && *file_type_opt == mojom::UploadedFileType::kPdf) {
-    // For PDFs, just return the raw data without processing
+    // Return raw PDF data; text extraction happens via ProcessPdfFile mojo
+    // endpoint when uploading from WebUI drag-and-drop.
     std::vector<mojom::UploadedFilePtr> files;
-    files.push_back(mojom::UploadedFile::New(std::get<1>(result).AsUTF8Unsafe(),
-                                             file_data->size(), *file_data,
-                                             mojom::UploadedFileType::kPdf));
+    files.push_back(mojom::UploadedFile::New(
+        std::get<1>(result).AsUTF8Unsafe(), file_data->size(), *file_data,
+        mojom::UploadedFileType::kPdf, std::nullopt));
     std::move(upload_file_callback_).Run(std::make_optional(std::move(files)));
   } else if (file_type_opt &&
              *file_type_opt == mojom::UploadedFileType::kImage) {
@@ -318,9 +318,9 @@ void UploadFileHelper::OnImageEncoded(
     return;
   }
   std::vector<mojom::UploadedFilePtr> images;
-  images.push_back(mojom::UploadedFile::New(std::move(filename), output->size(),
-                                            *output,
-                                            mojom::UploadedFileType::kImage));
+  images.push_back(
+      mojom::UploadedFile::New(std::move(filename), output->size(), *output,
+                               mojom::UploadedFileType::kImage, std::nullopt));
   std::move(upload_file_callback_).Run(std::make_optional(std::move(images)));
 }
 

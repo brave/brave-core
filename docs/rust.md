@@ -11,6 +11,20 @@ When integrating Rust code into brave-core, keep the following points in mind:
 - Look at existing deps in `third_party/rust` and try to match up versions
   whenever possible. We are trying to avoid having multiple copies of the same third party libs
 
+### Updating vendored tool crates
+
+The `tools/crates/` directory vendors Rust CLI tools (`cargo-audit`, `wasm-bindgen-cli`, `wasm-opt`, `wasm-pack`). To update a single transitive dependency (e.g. for a security advisory) without re-vendoring everything:
+
+```sh
+npm run update_brave_tools_crates -- --update-crate=<name>@<version>
+```
+
+This downloads the crate directly from crates.io and patches only the targeted `vendor/` directory and `Cargo.lock` entry. To do a full re-vendor of all tool crates, run without arguments:
+
+```sh
+npm run update_brave_tools_crates
+```
+
 ### Patching crates
 
 There can be cases where patching crates is necessary. To create a patch file,

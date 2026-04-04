@@ -24,11 +24,14 @@
   flex-direction: column;
   align-items: center;
   max-width: 440px;
+  max-height: 100%;
   width: 100%;
+  min-height: 0;
   background: var(--leo-color-container-background);
   border-radius: var(--leo-radius-xl);
   padding: var(--leo-spacing-2xl) var(--leo-spacing-2xl) var(--leo-spacing-4xl);
   box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .logo {

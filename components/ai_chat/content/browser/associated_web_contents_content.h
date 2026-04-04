@@ -29,10 +29,6 @@
 #include "pdf/buildflags.h"
 #include "url/gurl.h"
 
-#if BUILDFLAG(ENABLE_PDF)
-#include "pdf/mojom/pdf.mojom.h"
-#endif  // BUILDFLAG(ENABLE_PDF)
-
 namespace content {
 class NavigationEntry;
 class RenderFrameHost;
@@ -151,15 +147,6 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
 
 #if BUILDFLAG(ENABLE_PDF)
   void OnPDFDocumentLoadComplete(FetchPageContentCallback callback);
-
-  void OnGetPDFPageCount(FetchPageContentCallback callback,
-                         pdf::mojom::PdfListener::GetPdfBytesStatus status,
-                         const std::vector<uint8_t>& bytes,
-                         uint32_t page_count);
-
-  void OnAllPDFPagesTextReceived(
-      FetchPageContentCallback callback,
-      const std::vector<std::pair<size_t, std::string>>& page_texts);
 #endif  // BUILDFLAG(ENABLE_PDF)
 
   void SetPendingGetContentCallback(FetchPageContentCallback callback);

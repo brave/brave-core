@@ -10,8 +10,7 @@
 #include "brave/browser/brave_ads/android/jni_headers/BraveAdsSignupDialog_jni.h"
 #include "brave/browser/brave_ads/android/jni_headers/BraveAds_jni.h"
 #include "brave/build/android/jni_headers/BraveSiteChannelsManagerBridge_jni.h"
-#include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
-#include "brave/components/brave_ads/browser/application_state/background_helper.h"
+#include "brave/components/brave_ads/browser/application_state/application_state_monitor.h"
 #include "chrome/browser/notifications/jni_headers/NotificationSystemStatusUtil_jni.h"
 #include "chrome/browser/notifications/notification_channels_provider_android.h"
 
@@ -69,7 +68,8 @@ bool NotificationHelperImplAndroid::CanShowNotifications() {
       (status == kAppNotificationsStatusEnabled ||
        status == kAppNotificationStatusUndeterminable);
 
-  const bool is_foreground = BackgroundHelper::GetInstance()->IsForeground();
+  const bool is_foreground =
+      ApplicationStateMonitor::GetInstance()->IsBrowserActive();
 
   const bool is_notification_channel_enabled =
       IsBraveAdsNotificationChannelEnabled(is_foreground);
@@ -93,12 +93,8 @@ bool NotificationHelperImplAndroid::
 }
 
 bool NotificationHelperImplAndroid::ShowOnboardingNotification() {
-  const bool should_show_custom_notifications =
-      base::FeatureList::IsEnabled(kCustomNotificationAdFeature);
-
   JNIEnv* env = jni_zero::AttachCurrentThread();
-  Java_BraveAdsSignupDialog_enqueueOnboardingNotificationNative(
-      env, should_show_custom_notifications);
+  Java_BraveAdsSignupDialog_enqueueOnboardingNotificationNative(env);
 
   return true;
 }

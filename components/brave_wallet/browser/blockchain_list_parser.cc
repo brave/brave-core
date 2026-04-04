@@ -12,7 +12,6 @@
 
 #include "base/check.h"
 #include "base/json/json_reader.h"
-#include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -79,13 +78,9 @@ std::optional<uint32_t> ParseNullableStringAsUint32(const base::Value& value) {
 }
 
 std::optional<base::DictValue> ParseJsonToDict(const std::string& json) {
-  std::optional<base::DictValue> records_v = base::JSONReader::ReadDict(
+  return base::JSONReader::ReadDict(
       json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                 base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v) {
-    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
-  }
-  return records_v;
 }
 
 std::string EmptyIfNull(const std::string* str) {
@@ -249,7 +244,6 @@ bool ParseTokenList(const std::string& json, TokenListMap* token_list_map) {
       json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                 base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
-    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
 
@@ -499,10 +493,6 @@ bool ParseChainList(const std::string& json, ChainList* result) {
       json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                 base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v.has_value()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON. "
-               << records_v.error().message
-               << ", line: " << records_v.error().line
-               << ", col: " << records_v.error().column;
     return false;
   }
 
@@ -736,7 +726,7 @@ std::optional<CoingeckoIdsMap> ParseCoingeckoIdsMap(const std::string& json) {
   return CoingeckoIdsMap(coingecko_ids_map.begin(), coingecko_ids_map.end());
 }
 
-std::optional<std::vector<std::string>> ParseOfacAddressesList(
+std::optional<std::vector<std::string>> ParseRestrictedAddressesList(
     const std::string& json) {
   // {
   //   "addresses": [
@@ -750,18 +740,18 @@ std::optional<std::vector<std::string>> ParseOfacAddressesList(
     return std::nullopt;
   }
 
-  auto ofac_list_from_component =
-      blockchain_lists::OfacAddressesList::FromValue(*records_v);
-  if (!ofac_list_from_component) {
+  auto restricted_list_from_component =
+      blockchain_lists::RestrictedAddressesList::FromValue(*records_v);
+  if (!restricted_list_from_component) {
     return std::nullopt;
   }
 
-  std::vector<std::string> ofac_list;
-  for (const auto& address : (*ofac_list_from_component).addresses) {
-    ofac_list.push_back(base::ToLowerASCII(address));
+  std::vector<std::string> restricted_list;
+  for (const auto& address : (*restricted_list_from_component).addresses) {
+    restricted_list.push_back(base::ToLowerASCII(address));
   }
 
-  return ofac_list;
+  return restricted_list;
 }
 
 }  // namespace brave_wallet

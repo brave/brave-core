@@ -8,7 +8,11 @@ import("//brave/components/brave_ads/buildflags/buildflags.gni")
 assert(enable_brave_ads)
 
 source_set("application_state") {
-  sources = [ "background_helper.h" ]
+  sources = [
+    "application_state_monitor.cc",
+    "application_state_monitor.h",
+    "application_state_observer.h",
+  ]
 
   public_deps = [ "//base" ]
 }

@@ -74,8 +74,6 @@ source_set("extensions") {
     "api/identity/brave_web_auth_flow.h",
     "api/settings_private/brave_prefs_util.cc",
     "api/settings_private/brave_prefs_util.h",
-    "api/web_discovery_api.cc",
-    "api/web_discovery_api.h",
     "brave_extension_management.cc",
     "brave_extension_management.h",
     "brave_extension_provider.cc",
@@ -171,6 +169,13 @@ source_set("extensions") {
       "//brave/browser/tor",
       "//brave/components/tor",
       "//brave/components/tor:pref_names",
+    ]
+  }
+
+  if (enable_web_discovery) {
+    sources += [
+      "api/web_discovery_api.cc",
+      "api/web_discovery_api.h",
     ]
   }
 

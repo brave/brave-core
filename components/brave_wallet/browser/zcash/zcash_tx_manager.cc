@@ -12,7 +12,6 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/logging.h"
 #include "base/notimplemented.h"
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_block_tracker.h"
@@ -154,7 +153,6 @@ void ZCashTxManager::ApproveTransaction(const std::string& tx_meta_id,
   std::unique_ptr<ZCashTxMeta> meta =
       GetZCashTxStateManager().GetZCashTx(tx_meta_id);
   if (!meta) {
-    LOG(ERROR) << "Transaction should be found";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewZcashProviderError(
@@ -207,7 +205,6 @@ void ZCashTxManager::ContinueApproveTransaction(
   std::unique_ptr<ZCashTxMeta> meta =
       GetZCashTxStateManager().GetZCashTx(tx_meta_id);
   if (!meta) {
-    LOG(ERROR) << "Transaction should be found";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewZcashProviderError(

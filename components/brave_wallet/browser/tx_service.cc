@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/account_resolver_delegate_impl.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_manager.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_tx_manager.h"
 #include "brave/components/brave_wallet/browser/eth_tx_manager.h"
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
@@ -250,10 +251,9 @@ void TxService::AddUnapprovedTransactionWithOrigin(
     return;
   }
 
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(
           GetToAddressFromTxDataUnion(*tx_data_union))) {
-    std::move(callback).Run(
-        false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+    std::move(callback).Run(false, "", WalletRestrictedAddressErrorMessage());
     return;
   }
 
@@ -282,9 +282,8 @@ void TxService::AddUnapprovedEvmTransactionWithOrigin(
     return;
   }
 
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
-    std::move(callback).Run(
-        false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
+    std::move(callback).Run(false, "", WalletRestrictedAddressErrorMessage());
     return;
   }
 
@@ -303,9 +302,8 @@ void TxService::AddUnapprovedBitcoinTransaction(
     return;
   }
 
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
-    std::move(callback).Run(
-        false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
+    std::move(callback).Run(false, "", WalletRestrictedAddressErrorMessage());
     return;
   }
 
@@ -324,9 +322,8 @@ void TxService::AddUnapprovedZCashTransaction(
     return;
   }
 
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
-    std::move(callback).Run(
-        false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
+    std::move(callback).Run(false, "", WalletRestrictedAddressErrorMessage());
     return;
   }
 
@@ -345,9 +342,8 @@ void TxService::AddUnapprovedCardanoTransaction(
     return;
   }
 
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
-    std::move(callback).Run(
-        false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
+    std::move(callback).Run(false, "", WalletRestrictedAddressErrorMessage());
     return;
   }
 
@@ -366,9 +362,8 @@ void TxService::AddUnapprovedPolkadotTransaction(
     return;
   }
 
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
-    std::move(callback).Run(
-        false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
+    std::move(callback).Run(false, "", WalletRestrictedAddressErrorMessage());
     return;
   }
 

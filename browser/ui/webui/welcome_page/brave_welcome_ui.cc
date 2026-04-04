@@ -170,7 +170,7 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, std::string_view name)
   PrefService* local_state = g_browser_process->local_state();
   source->AddBoolean(
       "isWebDiscoveryEnabledManaged",
-#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
       profile->GetPrefs()->IsManagedPreference(kWebDiscoveryEnabled));
 #else
       false);

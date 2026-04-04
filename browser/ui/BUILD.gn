@@ -64,6 +64,7 @@ source_set("ui") {
     "//brave/brave_domains",
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_origin",
+    "//brave/browser/brave_shields",
     "//brave/browser/skus",
     "//brave/browser/ui/page_info",
     "//brave/browser/ui/webui/brave_account",
@@ -1021,21 +1022,22 @@ source_set("ui") {
       "views/infobars/brave_sync_account_deleted_infobar.h",
       "views/infobars/custom_styled_label.cc",
       "views/infobars/custom_styled_label.h",
-      "views/infobars/web_discovery_infobar_content_view.cc",
-      "views/infobars/web_discovery_infobar_content_view.h",
-      "views/infobars/web_discovery_infobar_view.cc",
-      "views/infobars/web_discovery_infobar_view.h",
     ]
+
+    if (enable_web_discovery) {
+      sources += [
+        "views/infobars/web_discovery_infobar_content_view.cc",
+        "views/infobars/web_discovery_infobar_content_view.h",
+        "views/infobars/web_discovery_infobar_view.cc",
+        "views/infobars/web_discovery_infobar_view.h",
+      ]
+    }
 
     deps += [
       "//brave/browser/ui/views/brave_tooltips",
       "//brave/browser/ui/views/page_info",
       "//ui/views/controls/webview",
     ]
-
-    if (enable_brave_ads) {
-      deps += [ "//brave/browser/ui/views/brave_ads" ]
-    }
   }
 
   if (enable_text_recognition) {

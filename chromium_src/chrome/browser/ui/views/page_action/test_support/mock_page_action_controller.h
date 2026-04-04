@@ -39,6 +39,10 @@ class MockPageActionController : public MockPageActionController_Chromium {
               ClearOverrideHeight,
               (actions::ActionId action_id),
               (override));
+  MOCK_METHOD(void,
+              SetOverrideTriggerableEvent,
+              (actions::ActionId action_id, std::optional<int> event_flags),
+              (override));
 };
 
 }  // namespace page_actions

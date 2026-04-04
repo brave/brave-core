@@ -25,6 +25,7 @@ source_set("android_browser_process") {
     "//brave/browser/android/preferences",
     "//brave/browser/android/safe_browsing",
     "//brave/browser/brave_origin/android:jni_headers",
+    "//brave/browser/brave_shields",
     "//brave/browser/skus/android:jni_headers",
     "//brave/build/android:jni_headers",
     "//brave/components/brave_ads/buildflags",

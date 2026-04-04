@@ -22,6 +22,7 @@
 #include "brave/ios/browser/debounce/debounce_service_factory+private.h"
 #include "brave/ios/browser/favicon/brave_ios_favicon_loader_factory.h"
 #include "brave/ios/browser/misc_metrics/profile_misc_metrics_service_factory.h"
+#include "brave/ios/browser/serp_metrics/serp_metrics_service_factory_ios.h"
 #include "brave/ios/browser/skus/skus_service_factory.h"
 #include "brave/ios/browser/url_sanitizer/url_sanitizer_service_factory+private.h"
 
@@ -36,6 +37,7 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
     brave_account::BraveAccountServiceFactoryIOS::GetInstance();
   }
   brave_ads::AdsServiceFactoryIOS::GetInstance();
+  serp_metrics::SerpMetricsServiceFactoryIOS::GetInstance();
   brave_favicon::BraveIOSFaviconLoaderFactory::GetInstance();
   brave_origin::BraveOriginServiceFactory::GetInstance();
   brave_shields::BraveShieldsSettingsServiceFactory::GetInstance();

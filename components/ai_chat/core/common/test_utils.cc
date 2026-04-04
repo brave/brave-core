@@ -21,9 +21,9 @@ std::vector<mojom::UploadedFilePtr> CreateSampleUploadedFiles(
   for (size_t i = 0; i < number; ++i) {
     std::vector<uint8_t> file_data(base::RandGenerator(64));
     crypto::RandBytes(file_data);
-    uploaded_files.emplace_back(
-        mojom::UploadedFile::New("filename" + base::NumberToString(i),
-                                 file_data.size(), file_data, type));
+    uploaded_files.emplace_back(mojom::UploadedFile::New(
+        "filename" + base::NumberToString(i), file_data.size(), file_data, type,
+        std::nullopt));
   }
   return uploaded_files;
 }

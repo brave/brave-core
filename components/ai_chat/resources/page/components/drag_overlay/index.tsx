@@ -32,7 +32,11 @@ export default function DragOverlay() {
     try {
       const uploadedFiles = await Promise.all(
         files.map((file) =>
-          convertFileToUploadedFile(file, aiChat.processImageFile),
+          convertFileToUploadedFile(
+            file,
+            aiChat.processImageFile,
+            aiChat.processPdfFile,
+          ),
         ),
       )
       attachImages(uploadedFiles)

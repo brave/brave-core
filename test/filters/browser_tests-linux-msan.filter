@@ -30,3 +30,13 @@
 # flake rate: 2.7% (LUCI Analysis, 30-day lookback).
 # https://github.com/brave/brave-browser/issues/54030
 -InitialWebUIMetricsDropBrowserTest.WebiumRendererMetricsDroppedIfNoRule
+
+# Upstream Chromium test. Known upstream flake (2.9% flake rate over 30 days
+# per LUCI Analysis). Already disabled on ChromeOS MSan upstream
+# (crbug.com/491012584). The test expects zero samples for the renamed
+# histogram Webium.Navigation.DocumentLoader.DidCommitNavigation in a
+# non-initial-WebUI renderer, but pending histograms from the browser's own
+# initial WebUI startup process can leak into the measurement under slow MSan
+# execution. No Brave modifications in chrome/browser/ui/waap/.
+# https://github.com/brave/brave-browser/issues/54031
+-InitialWebUIMetricsMappingBrowserTest.NormalRendererMetricsAreNotMapped

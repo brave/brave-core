@@ -11,7 +11,6 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/containers/to_vector.h"
-#include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/rlp_encode.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
@@ -250,7 +249,6 @@ bool EthTransaction::ProcessVRS(const std::vector<uint8_t>& v,
   }
 
   if (!HexValueToUint256(ToHex(v), &v_)) {
-    LOG(ERROR) << "Unable to decode v param";
     return false;
   }
 

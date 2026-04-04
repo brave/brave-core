@@ -7,7 +7,6 @@
 
 #include <optional>
 
-#include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
@@ -110,7 +109,6 @@ std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
       break;
     }
     default:
-      LOG(ERROR) << "tx type is not supported";
       break;
   }
 

@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/check_op.h"
-#include "base/logging.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
@@ -120,7 +119,6 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
   std::optional<std::string> final_recipient;
   auto tx_info = GetTransactionInfoFromData(data);
   if (!tx_info) {
-    LOG(ERROR) << "Error parsing transaction data: " << ToHex(data);
   } else {
     mojom::SwapInfoPtr swap_info_from_data;
     std::tie(tx_type, tx_params, tx_args, swap_info_from_data) =

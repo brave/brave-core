@@ -11,6 +11,7 @@
 #include "brave/browser/serp_metrics/serp_metrics_service_factory.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/serp_metrics/serp_classifier.h"
+#include "brave/components/serp_metrics/serp_classifier_utils.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
@@ -29,6 +30,13 @@ namespace {
 
 bool IsAllowedToSendUsagePings() {
   return g_browser_process->local_state()->GetBoolean(kStatsReportingEnabled);
+}
+
+bool ShouldRecordSearchEngine(SearchEngineType search_engine_type,
+                              const GURL& url) {
+  // Only Google web searches count. Vertical searches (`tbm` for images, news,
+  // video, etc. or a non-zero `udm` for shopping etc.) are excluded.
+  return search_engine_type != SEARCH_ENGINE_GOOGLE || IsGoogleWebSearch(url);
 }
 
 }  // namespace
@@ -75,13 +83,11 @@ void SerpMetricsTabHelper::MaybeClassifyAndRecordSearchEngineForUrl(
 
   std::optional<SearchEngineType> search_engine_type =
       MaybeClassifySearchEngine(url);
-  if (!search_engine_type) {
-    return;
+  if (search_engine_type &&
+      ShouldRecordSearchEngine(*search_engine_type, url)) {
+    RecordSearchEngine(*search_engine_type);
+    last_recorded_serp_url_ = url;
   }
-
-  RecordSearchEngine(*search_engine_type);
-
-  last_recorded_serp_url_ = url;
 }
 
 void SerpMetricsTabHelper::RecordSearchEngine(

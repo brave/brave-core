@@ -65,13 +65,6 @@ void RegisterProfilePrefs(PrefRegistrySimple* const registry) {
   // Ads service prefs.
   registry->RegisterBooleanPref(prefs::kShouldShowOnboardingNotification, true);
 
-  registry->RegisterDoublePref(prefs::kNotificationAdLastNormalizedCoordinateX,
-                               0.0);
-  registry->RegisterDoublePref(prefs::kNotificationAdLastNormalizedCoordinateY,
-                               0.0);
-  registry->RegisterBooleanPref(prefs::kNotificationAdDidFallbackToCustom,
-                                false);
-
   registry->RegisterBooleanPref(prefs::kShouldShowSearchResultAdClickedInfoBar,
                                 true);
 }

@@ -1200,9 +1200,27 @@ If re-entrancy is unavoidable, document it clearly and use guards (e.g., `base::
 
 <a id="ARCH-062"></a>
 
-## ✅ Every UI Feature Needs a CUJ Test; Avoid Change Detector Tests
+## ✅ Every UI Feature Needs a CUJ Test
 
-**Every UI feature should have at least one Critical User Journey (CUJ) test** using `InteractiveBrowserTest`. Do not use `BrowserWithTestWindowTest` — it forces `if (!browser_view)` test-only checks in production code. Use browser tests or unit tests with proper dependency injection instead. This rule applies to features with user-visible UI. Backend services, infrastructure, and non-UI components should have appropriate unit or browser tests but do not require CUJ tests.
+**Every feature that adds or modifies user-visible UI should have at least one Critical User Journey (CUJ) test** using `InteractiveBrowserTest`. Do not use `BrowserWithTestWindowTest` — it forces `if (!browser_view)` test-only checks in production code. Use browser tests or unit tests with proper dependency injection instead.
+
+This rule applies to features with UI changes (new views, buttons, dialogs, etc.). Non-UI components such as tab helpers, services, or background logic should be covered by unit tests or browser tests appropriate to the code — a CUJ test is not required when there is no user-visible interaction to validate.
+
+```cpp
+// ✅ CORRECT - CUJ test: validates user-visible behavior end-to-end
+IN_PROC_BROWSER_TEST_F(MyFeatureInteractiveTest, UserCanToggleFeature) {
+  RunTestSequence(
+      PressButton(kMyButton),
+      WaitForShow(kResultView),
+      CheckViewProperty(kResultView, &views::Label::GetText, u"Enabled"));
+}
+```
+
+---
+
+<a id="ARCH-062b"></a>
+
+## ❌ Avoid Change Detector Tests
 
 **Avoid change detector tests.** A change detector test is easy to spot because the test logic mirrors the production logic — it just calls the same method and checks the obvious result. These tests break whenever the implementation changes but catch no real bugs. The purpose of a unit test is to validate behavior across common and edge cases for code that has many possible valid inputs.
 
@@ -1234,14 +1252,6 @@ TEST(Math, CheckIsPrime) {
   EXPECT_TRUE(IsPrime(3));
   EXPECT_FALSE(IsPrime(99));
   EXPECT_FALSE(IsPrime(-2));
-}
-
-// ✅ CORRECT - CUJ test: validates user-visible behavior end-to-end
-IN_PROC_BROWSER_TEST_F(MyFeatureInteractiveTest, UserCanToggleFeature) {
-  RunTestSequence(
-      PressButton(kMyButton),
-      WaitForShow(kResultView),
-      CheckViewProperty(kResultView, &views::Label::GetText, u"Enabled"));
 }
 ```
 

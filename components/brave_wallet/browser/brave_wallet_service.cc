@@ -12,7 +12,6 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -1266,8 +1265,6 @@ void BraveWalletService::GetPendingSignMessageErrors(
 void BraveWalletService::NotifySignMessageErrorProcessed(
     const std::string& id) {
   if (sign_message_errors_.empty() || sign_message_errors_.front()->id != id) {
-    VLOG(1) << "id: " << id << " is not expected, should be "
-            << sign_message_errors_.front()->id;
     return;
   }
   sign_message_errors_.pop_front();
@@ -1315,8 +1312,6 @@ void BraveWalletService::NotifySignSolTransactionsRequestProcessed(
     const std::optional<std::string>& error) {
   if (sign_sol_transactions_requests_.empty() ||
       sign_sol_transactions_requests_.front()->id != id) {
-    VLOG(1) << "id: " << id << " is not expected, should be "
-            << sign_sol_transactions_requests_.front()->id;
     return;
   }
   auto callback = std::move(sign_sol_transactions_callbacks_.front());

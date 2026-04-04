@@ -10,6 +10,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/test/test_future.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
@@ -125,6 +126,81 @@ TEST_F(AIChatUIPageHandlerTest, AssociateUrlContent_InvalidConversation) {
   page_handler()->AssociateUrlContent(test_url, title, "non-existent-uuid");
 
   // Should not crash
+}
+
+TEST_F(AIChatUIPageHandlerTest, FinishUpload_StripsPathToBasename) {
+  std::vector<mojom::UploadedFilePtr> files;
+  files.push_back(mojom::UploadedFile::New(
+      "/home/user/documents/report.pdf", 100, std::vector<uint8_t>(100),
+      mojom::UploadedFileType::kPdf, std::nullopt));
+  files.push_back(
+      mojom::UploadedFile::New("/tmp/image.png", 50, std::vector<uint8_t>(50),
+                               mojom::UploadedFileType::kImage, std::nullopt));
+
+  base::test::TestFuture<std::optional<std::vector<mojom::UploadedFilePtr>>>
+      future;
+  page_handler()->FinishUpload(future.GetCallback(),
+                               std::make_optional(std::move(files)));
+
+  auto result = future.Take();
+  ASSERT_TRUE(result.has_value());
+  ASSERT_EQ(result->size(), 2u);
+  EXPECT_EQ((*result)[0]->filename, "report.pdf");
+  EXPECT_EQ((*result)[1]->filename, "image.png");
+}
+
+TEST_F(AIChatUIPageHandlerTest, OnFilesUploaded_NonPdfGoesToFinish) {
+  std::vector<mojom::UploadedFilePtr> files;
+  files.push_back(mojom::UploadedFile::New(
+      "/path/to/photo.png", 50, std::vector<uint8_t>(50),
+      mojom::UploadedFileType::kImage, std::nullopt));
+
+  base::test::TestFuture<std::optional<std::vector<mojom::UploadedFilePtr>>>
+      future;
+  page_handler()->OnFilesUploaded(future.GetCallback(),
+                                  std::make_optional(std::move(files)));
+
+  auto result = future.Take();
+  ASSERT_TRUE(result.has_value());
+  ASSERT_EQ(result->size(), 1u);
+  EXPECT_EQ((*result)[0]->filename, "photo.png");
+}
+
+TEST_F(AIChatUIPageHandlerTest, OnAllPdfTextsExtracted_AppliesResults) {
+  std::vector<mojom::UploadedFilePtr> files;
+  files.push_back(
+      mojom::UploadedFile::New("/path/doc1.pdf", 100, std::vector<uint8_t>(100),
+                               mojom::UploadedFileType::kPdf, std::nullopt));
+  files.push_back(
+      mojom::UploadedFile::New("/path/photo.png", 50, std::vector<uint8_t>(50),
+                               mojom::UploadedFileType::kImage, std::nullopt));
+  files.push_back(
+      mojom::UploadedFile::New("/path/doc2.pdf", 200, std::vector<uint8_t>(200),
+                               mojom::UploadedFileType::kPdf, std::nullopt));
+
+  std::vector<std::pair<size_t, std::optional<std::string>>> results;
+  results.emplace_back(0, "Text from doc1");
+  results.emplace_back(2, std::nullopt);  // extraction failed for doc2
+
+  base::test::TestFuture<std::optional<std::vector<mojom::UploadedFilePtr>>>
+      future;
+  page_handler()->OnAllPdfTextsExtracted(future.GetCallback(),
+                                         std::make_optional(std::move(files)),
+                                         std::move(results));
+
+  auto result = future.Take();
+  ASSERT_TRUE(result.has_value());
+  ASSERT_EQ(result->size(), 3u);
+  // PDF extracted text applied and path stripped
+  EXPECT_EQ((*result)[0]->filename, "doc1.pdf");
+  ASSERT_TRUE((*result)[0]->extracted_text.has_value());
+  EXPECT_EQ(*(*result)[0]->extracted_text, "Text from doc1");
+  // Non-PDF unaffected, path stripped
+  EXPECT_EQ((*result)[1]->filename, "photo.png");
+  EXPECT_FALSE((*result)[1]->extracted_text.has_value());
+  // Failed extraction, path stripped
+  EXPECT_EQ((*result)[2]->filename, "doc2.pdf");
+  EXPECT_FALSE((*result)[2]->extracted_text.has_value());
 }
 
 }  // namespace ai_chat

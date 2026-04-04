@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_model.h b/chrome/browser/ui/views/page_action/page_action_model.h
-index a3d1abf58e71b25edb1487e2cf92c5587539d85b..daffa064f8e97b9ba1e6f0100dfd70cd1a491c28 100644
+index a3d1abf58e71b25edb1487e2cf92c5587539d85b..e928a6a2c80bac025e6a64258fdc3c693e08562e 100644
 --- a/chrome/browser/ui/views/page_action/page_action_model.h
 +++ b/chrome/browser/ui/views/page_action/page_action_model.h
-@@ -33,6 +33,19 @@ class PageActionModelInterface {
+@@ -33,6 +33,22 @@ class PageActionModelInterface {
   public:
    PageActionModelInterface() = default;
    virtual ~PageActionModelInterface() = default;
@@ -14,15 +14,18 @@ index a3d1abf58e71b25edb1487e2cf92c5587539d85b..daffa064f8e97b9ba1e6f0100dfd70cd
 +                                  bool always_show) = 0;
 +  virtual void SetOverrideHeight(base::PassKey<PageActionController>,
 +                                 std::optional<int> height) = 0;
++  virtual void SetOverrideTriggerableEvent(base::PassKey<PageActionController>,
++                                           std::optional<int> event_flags) = 0;
 +
 +  virtual std::optional<SkColor> GetOverrideBackgroundColor() const = 0;
 +  virtual std::optional<SkColor> GetOverrideForegroundColor() const = 0;
 +  virtual bool GetAlwaysShowLabel() const = 0;
 +  virtual std::optional<int> GetOverrideHeight() const = 0;
++  virtual std::optional<int> GetOverrideTriggerableEvent() const = 0;
  
    virtual void AddObserver(PageActionModelObserver* observer) = 0;
    virtual void RemoveObserver(PageActionModelObserver* observer) = 0;
-@@ -120,6 +133,27 @@ class PageActionModel : public PageActionModelInterface {
+@@ -120,6 +136,31 @@ class PageActionModel : public PageActionModelInterface {
    PageActionModel& operator=(const PageActionModel&) = delete;
    ~PageActionModel() override;
  
@@ -34,29 +37,34 @@ index a3d1abf58e71b25edb1487e2cf92c5587539d85b..daffa064f8e97b9ba1e6f0100dfd70cd
 +                          bool always_show) override;
 +  void SetOverrideHeight(base::PassKey<PageActionController>,
 +                         std::optional<int> height_px) override;
++  void SetOverrideTriggerableEvent(base::PassKey<PageActionController>,
++                                  std::optional<int> event_flags) override;
 +  std::optional<SkColor> GetOverrideBackgroundColor() const override;
 +  std::optional<SkColor> GetOverrideForegroundColor() const override;
 +  bool GetAlwaysShowLabel() const override;
 +  std::optional<int> GetOverrideHeight() const override;
++  std::optional<int> GetOverrideTriggerableEvent() const override;
 +
 + private:
 +  std::optional<SkColor> override_background_color_;
 +  std::optional<SkColor> override_foreground_color_;
 +  bool always_show_label_ = false;
 +  std::optional<int> override_height_;
++  std::optional<int> override_triggerable_event_flags_;
 +
 + public:
 +
    void AddObserver(PageActionModelObserver* observer) override;
    void RemoveObserver(PageActionModelObserver* observer) override;
  
-@@ -210,6 +244,9 @@ class PageActionModel : public PageActionModelInterface {
+@@ -210,6 +251,10 @@ class PageActionModel : public PageActionModelInterface {
    // per-property reentrancy checks.
    enum class Property {
      kShowRequested,
 +    kAlwaysShowLabel,
 +    kOverrideChipColors,
 +    kOverrideHeight,
++    kOverrideTriggerableEvent,
      kShouldShowSuggestionChip,
      kSuggestionChipConfig,
      kTabActive,

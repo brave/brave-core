@@ -200,6 +200,17 @@ export function createMockUIHandler(
           filesize: 0,
           data: [],
           type: Mojom.UploadedFileType.kImage,
+          extractedText: undefined,
+        },
+      }),
+    processPdfFile: () =>
+      Promise.resolve({
+        processedFile: {
+          filename: '',
+          filesize: 0,
+          data: [],
+          type: Mojom.UploadedFileType.kPdf,
+          extractedText: undefined,
         },
       }),
     getPluralString: () => Promise.resolve({ pluralString: '' }),

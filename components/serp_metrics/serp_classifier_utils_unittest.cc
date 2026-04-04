@@ -8,6 +8,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "components/search_engines/search_engine_type.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 namespace serp_metrics {
 
@@ -25,6 +26,84 @@ TEST(SerpClassifierUtilsTest, IsAllowedSearchEngine) {
     EXPECT_EQ(IsAllowedSearchEngine(search_engine_type),
               kExpectedSearchEngines.contains(search_engine_type));
   }
+}
+
+// Web searches (no vertical params).
+TEST(SerpClassifierUtilsTest, IsGoogleWebSearchWithNoSpecialParams) {
+  EXPECT_TRUE(
+      IsGoogleWebSearch(GURL(R"(https://www.google.com/search?q=foo)")));
+}
+
+TEST(SerpClassifierUtilsTest, IsGoogleWebSearchWithUdmZero) {
+  EXPECT_TRUE(
+      IsGoogleWebSearch(GURL(R"(https://www.google.com/search?q=foo&udm=0)")));
+}
+
+TEST(SerpClassifierUtilsTest, IsGoogleWebSearchWithUdmWebString) {
+  EXPECT_TRUE(IsGoogleWebSearch(
+      GURL(R"(https://www.google.com/search?q=foo&udm=web)")));
+}
+
+TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithUdmShopping) {
+  EXPECT_FALSE(
+      IsGoogleWebSearch(GURL(R"(https://www.google.com/search?q=foo&udm=28)")));
+}
+
+// Vertical searches via tbm.
+TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithTbmImages) {
+  EXPECT_FALSE(IsGoogleWebSearch(
+      GURL(R"(https://www.google.com/search?q=foo&tbm=isch)")));
+}
+
+TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithTbmNews) {
+  EXPECT_FALSE(IsGoogleWebSearch(
+      GURL(R"(https://www.google.com/search?q=foo&tbm=nws)")));
+}
+
+TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithTbmVideo) {
+  EXPECT_FALSE(IsGoogleWebSearch(
+      GURL(R"(https://www.google.com/search?q=foo&tbm=vid)")));
+}
+
+TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithTbmShopping) {
+  EXPECT_FALSE(IsGoogleWebSearch(
+      GURL(R"(https://www.google.com/search?q=foo&tbm=shop)")));
+}
+
+TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithTbmBooks) {
+  EXPECT_FALSE(IsGoogleWebSearch(
+      GURL(R"(https://www.google.com/search?q=foo&tbm=bks)")));
+}
+
+// Vertical searches via udm.
+TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithUdmImages) {
+  EXPECT_FALSE(
+      IsGoogleWebSearch(GURL(R"(https://www.google.com/search?q=foo&udm=2)")));
+}
+
+TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithUdmVideo) {
+  EXPECT_FALSE(
+      IsGoogleWebSearch(GURL(R"(https://www.google.com/search?q=foo&udm=7)")));
+}
+
+TEST(SerpClassifierUtilsTest, IsGoogleWebSearchWithUdmFourteen) {
+  EXPECT_TRUE(
+      IsGoogleWebSearch(GURL(R"(https://www.google.com/search?q=foo&udm=14)")));
+}
+
+TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithUdmDiscussions) {
+  EXPECT_FALSE(
+      IsGoogleWebSearch(GURL(R"(https://www.google.com/search?q=foo&udm=18)")));
+}
+
+TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithUdmShortVideos) {
+  EXPECT_FALSE(
+      IsGoogleWebSearch(GURL(R"(https://www.google.com/search?q=foo&udm=39)")));
+}
+
+TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithTbmAndUdm) {
+  EXPECT_FALSE(IsGoogleWebSearch(
+      GURL(R"(https://www.google.com/search?q=foo&tbm=vid&udm=14)")));
 }
 
 }  // namespace serp_metrics

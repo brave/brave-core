@@ -12,7 +12,6 @@
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
-#include "brave/browser/brave_ads/ad_units/notification_ad/notification_ad_platform_bridge.h"
 #include "brave/browser/brave_ads/ads_service_delegate.h"
 #include "brave/browser/brave_ads/device_id/device_id_impl.h"
 #include "brave/browser/brave_ads/services/bat_ads_service_factory_impl.h"
@@ -117,8 +116,7 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
   CHECK(brave_adaptive_captcha_service);
 
   auto delegate = std::make_unique<AdsServiceDelegate>(
-      *profile, local_state, *brave_adaptive_captcha_service,
-      std::make_unique<NotificationAdPlatformBridge>(*profile));
+      *profile, local_state, *brave_adaptive_captcha_service);
 
   auto* history_service = HistoryServiceFactory::GetForProfile(
       profile, ServiceAccessType::EXPLICIT_ACCESS);

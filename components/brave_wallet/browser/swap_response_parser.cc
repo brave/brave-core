@@ -1267,10 +1267,6 @@ mojom::Gate3SwapRoutePtr ParseRoute(
         swap_responses::Gate3SwapNetworkFee::FromValue(value.network_fee);
     if (network_fee_value) {
       result->network_fee = ParseNetworkFee(*network_fee_value);
-    } else {
-      // Log if parsing failed but network_fee was present
-      LOG(ERROR) << "Failed to parse Gate3SwapNetworkFee from value: "
-                 << value.network_fee;
     }
   }
 

@@ -28,6 +28,13 @@ static_library("browser") {
     "pdf_utils.h",
   ]
 
+  if (enable_pdf) {
+    sources += [
+      "pdf_text_helper.cc",
+      "pdf_text_helper.h",
+    ]
+  }
+
   deps = [
     "//base",
     "//brave/components/ai_chat/core/browser",
@@ -103,6 +110,10 @@ source_set("unit_tests") {
   ]
 
   if (enable_pdf) {
-    deps += [ "//components/pdf/browser" ]
+    sources += [ "pdf_text_helper_unittest.cc" ]
+    deps += [
+      "//components/pdf/browser",
+      "//pdf/mojom",
+    ]
   }
 }

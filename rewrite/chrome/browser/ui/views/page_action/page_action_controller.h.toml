@@ -22,7 +22,12 @@ replace = '''\1
   // Override the height of the PageActionView
   virtual void SetOverrideHeight(actions::ActionId action_id,
                                  int height) = 0;
-  virtual void ClearOverrideHeight(actions::ActionId action_id) = 0;'''
+  virtual void ClearOverrideHeight(actions::ActionId action_id) = 0;
+
+  // When set, `PageActionView::IsTriggerableEvent` uses this callback instead of
+  // the default logic. Pass nullopt to clear.
+  virtual void SetOverrideTriggerableEvent(actions::ActionId action_id, 
+                                           std::optional<int> event_flags) = 0;'''
 
 
 [[substitution]]
@@ -38,4 +43,6 @@ replace = '''\1
   void ClearOverrideChipColors(actions::ActionId action_id) override;
   void SetOverrideHeight(actions::ActionId action_id,
                          int height) override;
-  void ClearOverrideHeight(actions::ActionId action_id) override;'''
+  void ClearOverrideHeight(actions::ActionId action_id) override;
+  void SetOverrideTriggerableEvent(actions::ActionId action_id,
+                                   std::optional<int> event_flags) override;'''

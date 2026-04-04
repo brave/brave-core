@@ -548,6 +548,43 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_UploadedFiles) {
   VerifyTextBlock(FROM_HERE, messages[9].content[0], "response4");
 }
 
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_PdfExtractedTextPreferred) {
+  // Test that PDFs with extracted_text produce TextContentBlock instead of
+  // FileContentBlock, and PDFs without extracted_text still produce
+  // FileContentBlock.
+  auto history = CreateSampleChatHistory(1);
+
+  auto pdfs = CreateSampleUploadedFiles(2, mojom::UploadedFileType::kPdf);
+  // First PDF has extracted text — should produce TextContentBlock
+  pdfs[0]->extracted_text = "This is the extracted PDF content.";
+  pdfs[0]->filename = "extracted.pdf";
+  // Second PDF has no extracted text — should produce FileContentBlock
+  pdfs[1]->filename = "raw.pdf";
+
+  auto pdf_url2 = GURL(EngineConsumer::GetPdfDataURL(pdfs[1]->data));
+
+  history[0]->uploaded_files = std::move(pdfs);
+
+  PageContentsMap page_contents_map;
+  std::vector<OAIMessage> messages =
+      BuildOAIMessages(std::move(page_contents_map), history, nullptr, true,
+                       10000, [](std::string&) {});
+
+  ASSERT_EQ(messages.size(), 2u);
+  EXPECT_EQ(messages[0].role, "user");
+  // Content: PDFs intro + extracted text (TextContentBlock) +
+  // raw PDF (FileContentBlock) + prompt = 4 blocks
+  ASSERT_EQ(messages[0].content.size(), 4u);
+  VerifyTextBlock(FROM_HERE, messages[0].content[0],
+                  "These PDFs are uploaded by the user");
+  // Extracted PDF becomes a TextContentBlock with [PDF: filename] prefix
+  VerifyTextBlock(FROM_HERE, messages[0].content[1],
+                  "[PDF: extracted.pdf]\nThis is the extracted PDF content.");
+  // Raw PDF still uses FileContentBlock
+  VerifyFileBlock(FROM_HERE, messages[0].content[2], pdf_url2, "raw.pdf");
+  VerifyTextBlock(FROM_HERE, messages[0].content[3], "query0");
+}
+
 TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_Excluded) {
   // Enable customization and set data
   prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);

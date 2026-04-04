@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
+import("//pdf/features.gni")
 import("//printing/buildflags/buildflags.gni")
 import("//services/screen_ai/buildflags/features.gni")
 
@@ -78,6 +79,19 @@ static_library("ai_chat") {
   }
   if (!is_android) {
     deps += [ "//chrome/browser/ui/side_panel" ]
+  }
+
+  if (enable_pdf) {
+    sources += [
+      "pdf_text_extractor.cc",
+      "pdf_text_extractor.h",
+    ]
+    public_deps = [ "//content/public/browser" ]
+    deps += [
+      "//components/pdf/browser",
+      "//net",
+      "//services/network/public/cpp",
+    ]
   }
 
   if (enable_brave_ai_chat_agent_profile) {
@@ -274,6 +288,10 @@ source_set("unit_tests") {
     sources += [ "tools/tab_management_tool_unittest.cc" ]
   }
 
+  if (enable_pdf) {
+    sources += [ "pdf_text_extractor_unittest.cc" ]
+  }
+
   if (enable_print_preview) {
     sources += [ "print_preview_extractor_unittest.cc" ]
     deps += [
@@ -339,6 +357,10 @@ source_set("browser_tests") {
       "code_execution_tool_browsertest.cc",
       "page_content_fetcher_browsertest.cc",
     ]
+
+    if (enable_pdf) {
+      sources += [ "pdf_text_extractor_browsertest.cc" ]
+    }
     deps = [
       "//brave/app:generate_command_metadata",
       "//brave/browser/ai_chat",

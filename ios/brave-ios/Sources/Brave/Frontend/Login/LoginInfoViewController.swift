@@ -72,6 +72,8 @@ class LoginInfoViewController: LoginAuthViewController {
   }
 
   private var localAuthObservers = Set<AnyCancellable>()
+  private var editMenuInteraction: UIEditMenuInteraction?
+  private var menuIndexPath: IndexPath?
 
   // MARK: Lifecycle
 
@@ -147,6 +149,10 @@ class LoginInfoViewController: LoginAuthViewController {
       $0.estimatedRowHeight = 44.0
       $0.sectionHeaderTopPadding = 0
     }
+
+    let interaction = UIEditMenuInteraction(delegate: self)
+    tableView.addInteraction(interaction)
+    editMenuInteraction = interaction
   }
 }
 
@@ -333,9 +339,12 @@ extension LoginInfoViewController {
     guard let cell = tableView.cellForRow(at: indexPath) as? LoginInfoTableViewCell else {
       return
     }
-    cell.becomeFirstResponder()
-
-    UIMenuController.shared.showMenu(from: tableView, rect: cell.frame)
+    menuIndexPath = indexPath
+    let configuration = UIEditMenuConfiguration(
+      identifier: nil,
+      sourcePoint: CGPoint(x: cell.frame.midX, y: cell.frame.midY)
+    )
+    editMenuInteraction?.presentEditMenu(with: configuration)
   }
 
   @objc private func done() {
@@ -421,23 +430,6 @@ extension LoginInfoViewController: LoginInfoTableViewCellDelegate {
     }
   }
 
-  func canPerform(action: Selector, for cell: LoginInfoTableViewCell) -> Bool {
-    switch cell.tag {
-    case InfoItem.websiteItem.rawValue:
-      return action == MenuHelper.selectorCopy || action == MenuHelper.selectorOpenWebsite
-    case InfoItem.usernameItem.rawValue:
-      return action == MenuHelper.selectorCopy
-    case InfoItem.passwordItem.rawValue:
-      let hideRevealPasswordOption =
-        cell.descriptionTextField.isSecureTextEntry
-        ? (action == MenuHelper.selectorReveal)
-        : (action == MenuHelper.selectorHide)
-      return action == MenuHelper.selectorCopy || hideRevealPasswordOption
-    default:
-      return false
-    }
-  }
-
   func didSelectOpenWebsite(_ cell: LoginInfoTableViewCell) {
     settingsDelegate?.settingsOpenURLInNewTab(credentials.url)
     dismiss(animated: true)
@@ -474,5 +466,69 @@ extension LoginInfoViewController: LoginInfoTableViewCellDelegate {
     if cell.tag == InfoItem.passwordItem.rawValue {
       cell.displayDescriptionAsPassword = true
     }
+  }
+}
+
+// MARK: UIEditMenuInteractionDelegate
+
+extension LoginInfoViewController: UIEditMenuInteractionDelegate {
+
+  func editMenuInteraction(
+    _ interaction: UIEditMenuInteraction,
+    menuFor configuration: UIEditMenuConfiguration,
+    suggestedActions: [UIMenuElement]
+  ) -> UIMenu? {
+    guard let indexPath = menuIndexPath,
+      let cell = tableView.cellForRow(at: indexPath) as? LoginInfoTableViewCell
+    else {
+      return nil
+    }
+
+    var actions: [UIMenuElement] = []
+
+    switch indexPath.row {
+    case InfoItem.websiteItem.rawValue:
+      actions.append(
+        UIAction(title: Strings.menuItemCopyTitle) { [weak self] _ in
+          self?.didSelectCopyWebsite(cell, authenticationRequired: false)
+        }
+      )
+      actions.append(
+        UIAction(title: Strings.menuItemOpenWebsiteTitle) { [weak self] _ in
+          self?.didSelectOpenWebsite(cell)
+        }
+      )
+    case InfoItem.usernameItem.rawValue:
+      actions.append(
+        UIAction(title: Strings.menuItemCopyTitle) { [weak self] _ in
+          self?.didSelectCopyWebsite(cell, authenticationRequired: false)
+        }
+      )
+    case InfoItem.passwordItem.rawValue:
+      actions.append(
+        UIAction(title: Strings.menuItemCopyTitle) { [weak self] _ in
+          self?.didSelectCopyWebsite(cell, authenticationRequired: true)
+        }
+      )
+      if cell.descriptionTextField.isSecureTextEntry {
+        actions.append(
+          UIAction(title: Strings.menuItemRevealPasswordTitle) { [weak self] _ in
+            self?.didSelectReveal(cell) { status in
+              cell.displayDescriptionAsPassword = !status
+            }
+          }
+        )
+      } else {
+        actions.append(
+          UIAction(title: Strings.menuItemHidePasswordTitle) { _ in
+            cell.displayDescriptionAsPassword = true
+          }
+        )
+      }
+    default:
+      break
+    }
+
+    return UIMenu(children: actions)
   }
 }

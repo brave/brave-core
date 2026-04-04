@@ -26,7 +26,7 @@ class FakeAdsServiceDelegate : public AdsService::Delegate {
   ~FakeAdsServiceDelegate() override;
 
   // AdsService::Delegate:
-  void MaybeInitNotificationHelper(base::OnceClosure callback) override;
+  void MaybeInitNotificationHelper() override;
   bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() override;
   bool DoesSupportSystemNotifications() override;
   bool CanShowNotifications() override;
@@ -37,9 +37,8 @@ class FakeAdsServiceDelegate : public AdsService::Delegate {
   void SnoozeScheduledCaptcha() override;
   void ShowNotificationAd(const std::string& id,
                           const std::u16string& title,
-                          const std::u16string& body,
-                          bool is_custom) override;
-  void CloseNotificationAd(const std::string& id, bool is_custom) override;
+                          const std::u16string& body) override;
+  void CloseNotificationAd(const std::string& id) override;
   void OpenNewTabWithUrl(const GURL& url) override;
   bool IsFullScreenMode() override;
   std::string GetVariationsCountryCode() override;

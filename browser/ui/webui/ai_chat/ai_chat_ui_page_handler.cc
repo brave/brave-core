@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/barrier_callback.h"
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
@@ -218,7 +219,78 @@ void AIChatUIPageHandler::UploadFile(bool use_media_capture,
 #if BUILDFLAG(IS_ANDROID)
       use_media_capture,
 #endif
-      std::move(callback));
+      base::BindOnce(&AIChatUIPageHandler::OnFilesUploaded,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void AIChatUIPageHandler::OnFilesUploaded(
+    UploadFileCallback callback,
+    std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files) {
+#if BUILDFLAG(ENABLE_PDF)
+  if (uploaded_files) {
+    // Collect PDF file paths and their indices before moving uploaded_files.
+    std::vector<std::pair<size_t, base::FilePath>> pdf_extractions;
+    for (size_t i = 0; i < uploaded_files->size(); ++i) {
+      auto& file = (*uploaded_files)[i];
+      if (file->type == mojom::UploadedFileType::kPdf &&
+          !file->extracted_text.has_value()) {
+        pdf_extractions.emplace_back(
+            i, base::FilePath::FromUTF8Unsafe(file->filename));
+      }
+    }
+
+    if (!pdf_extractions.empty()) {
+      // Extract all PDFs in parallel via BarrierCallback.
+      auto barrier =
+          base::BarrierCallback<std::pair<size_t, std::optional<std::string>>>(
+              pdf_extractions.size(),
+              base::BindOnce(&AIChatUIPageHandler::OnAllPdfTextsExtracted,
+                             weak_ptr_factory_.GetWeakPtr(),
+                             std::move(callback), std::move(uploaded_files)));
+
+      for (const auto& [idx, pdf_path] : pdf_extractions) {
+        auto extractor = std::make_unique<PdfTextExtractor>();
+        auto* extractor_ptr = extractor.get();
+        pdf_extractors_.push_back(std::move(extractor));
+        extractor_ptr->ExtractText(
+            profile_, pdf_path,
+            base::BindOnce(&AIChatUIPageHandler::OnSinglePdfTextExtracted,
+                           weak_ptr_factory_.GetWeakPtr(), extractor_ptr, idx,
+                           barrier));
+      }
+      return;
+    }
+  }
+#endif  // BUILDFLAG(ENABLE_PDF)
+  FinishUpload(std::move(callback), std::move(uploaded_files));
+}
+
+void AIChatUIPageHandler::OnAllPdfTextsExtracted(
+    UploadFileCallback callback,
+    std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files,
+    std::vector<std::pair<size_t, std::optional<std::string>>> results) {
+  if (uploaded_files) {
+    for (auto& [idx, text] : results) {
+      if (idx < uploaded_files->size()) {
+        (*uploaded_files)[idx]->extracted_text = std::move(text);
+      }
+    }
+  }
+  FinishUpload(std::move(callback), std::move(uploaded_files));
+}
+
+void AIChatUIPageHandler::FinishUpload(
+    UploadFileCallback callback,
+    std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files) {
+  // Strip full paths to basenames before passing to WebUI/DB.
+  if (uploaded_files) {
+    for (auto& file : *uploaded_files) {
+      file->filename = base::FilePath::FromUTF8Unsafe(file->filename)
+                           .BaseName()
+                           .AsUTF8Unsafe();
+    }
+  }
+  std::move(callback).Run(std::move(uploaded_files));
 }
 
 void AIChatUIPageHandler::ProcessImageFile(
@@ -236,11 +308,63 @@ void AIChatUIPageHandler::ProcessImageFile(
             }
             auto uploaded_file = ai_chat::mojom::UploadedFile::New(
                 filename, processed_data->size(), *processed_data,
-                ai_chat::mojom::UploadedFileType::kImage);
+                ai_chat::mojom::UploadedFileType::kImage, std::nullopt);
             std::move(callback).Run(std::move(uploaded_file));
           },
           filename, std::move(callback)));
 }
+
+void AIChatUIPageHandler::ProcessPdfFile(const std::vector<uint8_t>& file_data,
+                                         const std::string& filename,
+                                         ProcessPdfFileCallback callback) {
+#if BUILDFLAG(ENABLE_PDF)
+  auto extractor = std::make_unique<PdfTextExtractor>();
+  auto* extractor_ptr = extractor.get();
+  pdf_extractors_.push_back(std::move(extractor));
+
+  auto response_data = std::vector<uint8_t>(file_data);
+  extractor_ptr->ExtractText(
+      profile_, std::vector<uint8_t>(file_data),
+      base::BindOnce(&AIChatUIPageHandler::OnPdfTextExtracted,
+                     weak_ptr_factory_.GetWeakPtr(), extractor_ptr, filename,
+                     std::move(response_data), std::move(callback)));
+#else
+  auto uploaded_file = ai_chat::mojom::UploadedFile::New(
+      filename, file_data.size(), file_data,
+      ai_chat::mojom::UploadedFileType::kPdf, std::nullopt);
+  std::move(callback).Run(std::move(uploaded_file));
+#endif  // BUILDFLAG(ENABLE_PDF)
+}
+
+#if BUILDFLAG(ENABLE_PDF)
+void AIChatUIPageHandler::OnSinglePdfTextExtracted(
+    PdfTextExtractor* extractor_ptr,
+    size_t file_index,
+    base::OnceCallback<void(std::pair<size_t, std::optional<std::string>>)>
+        barrier_cb,
+    std::optional<std::string> extracted_text) {
+  std::erase_if(pdf_extractors_, [extractor_ptr](const auto& e) {
+    return e.get() == extractor_ptr;
+  });
+  std::move(barrier_cb).Run({file_index, std::move(extracted_text)});
+}
+
+void AIChatUIPageHandler::OnPdfTextExtracted(
+    PdfTextExtractor* extractor_ptr,
+    std::string filename,
+    std::vector<uint8_t> file_data,
+    ProcessPdfFileCallback callback,
+    std::optional<std::string> extracted_text) {
+  auto file_size = file_data.size();
+  auto uploaded_file = ai_chat::mojom::UploadedFile::New(
+      std::move(filename), file_size, std::move(file_data),
+      ai_chat::mojom::UploadedFileType::kPdf, std::move(extracted_text));
+  std::move(callback).Run(std::move(uploaded_file));
+  std::erase_if(pdf_extractors_, [extractor_ptr](const auto& e) {
+    return e.get() == extractor_ptr;
+  });
+}
+#endif  // BUILDFLAG(ENABLE_PDF)
 
 void AIChatUIPageHandler::GetPluralString(const std::string& key,
                                           int32_t count,
