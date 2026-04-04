@@ -130,8 +130,8 @@ void TreeTabModel::AddTreeTabNode(tabs::TreeTabNode& node) {
     }
   };
 
-  // Defer notification to make sure the tab creation operation is completed
-  // before wrapping it up with TreeTabNode created here.
+  // Defer notification so that the collection tree is fully set up before
+  // observers query tab indices and views.
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(std::move(notification), GetWeakPtr(), node.id()));
