@@ -269,6 +269,9 @@ void BraveBrowserTabStripController::OnTreeTabChanged(
           created_change.node->GetTabs();
       for (const tabs::TabInterface* tab : tabs) {
         auto index = model_->GetIndexOfTab(tab);
+        // The tab may not yet have a model index when the deferred
+        // kNodeCreated notification fires during pin/unpin operations
+        // (e.g., the tab is still being moved between collections).
         if (index == TabStripModel::kNoTab) {
           continue;
         }
