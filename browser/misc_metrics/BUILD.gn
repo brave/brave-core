@@ -101,6 +101,10 @@ static_library("misc_metrics_impl") {
     ]
   } else {
     sources += [ "//brave/browser/misc_metrics/misc_android_metrics.h" ]
+    deps += [
+      "//chrome/browser/flags:flags_android",
+      "//chrome/browser/ui/android/tab_model",
+    ]
   }
 }
 
