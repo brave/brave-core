@@ -168,3 +168,8 @@
 -WebRtcBrowserTest.*
 -WebRtcDisableEncryptionFlagBrowserTest.*
 -ZeroCacheTimePrefetchProxyBrowserTest.*
+
+# This Chromium test fails because the Glic WebUI creates its webview
+# asynchronously via JavaScript, and Brave's environment doesn't fully support
+# the Glic WebUI initialization flow. Stable upstream (0.3% flake rate).
+-GuestUtilBrowserTest.OnGuestAdded_Glic
