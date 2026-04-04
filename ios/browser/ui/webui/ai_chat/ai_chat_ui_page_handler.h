@@ -63,6 +63,9 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void ProcessImageFile(const std::vector<uint8_t>& file_data,
                         const std::string& filename,
                         ProcessImageFileCallback callback) override;
+  void ProcessPdfFile(const std::vector<uint8_t>& file_data,
+                      const std::string& filename,
+                      ProcessPdfFileCallback callback) override;
   void UploadFile(bool use_media_capture, UploadFileCallback callback) override;
   void GetPluralString(const std::string& key,
                        int32_t count,

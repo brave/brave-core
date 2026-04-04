@@ -101,6 +101,9 @@ export default function createAIChatApi(
         processImageFile: {
           mutationResponse: (result) => result.processedFile,
         },
+        processPdfFile: {
+          mutationResponse: (result) => result.processedFile,
+        },
         getPluralString: {
           response: (result) => result.pluralString,
         },

@@ -74,6 +74,7 @@ type Props = Pick<
     | 'hasAcceptedAgreement'
     | 'getPluralString'
     | 'processImageFile'
+    | 'processPdfFile'
     | 'openAIChatAgentProfile'
     | 'skills'
   >
@@ -164,7 +165,11 @@ function InputBox(props: InputBoxProps) {
     try {
       const uploadedFiles = await Promise.all(
         files.map((file) =>
-          convertFileToUploadedFile(file, props.context.processImageFile),
+          convertFileToUploadedFile(
+            file,
+            props.context.processImageFile,
+            props.context.processPdfFile,
+          ),
         ),
       )
       props.context.attachImages(uploadedFiles)

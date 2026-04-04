@@ -333,13 +333,27 @@ std::vector<OAIMessage> BuildOAIMessages(
             screenshots_content_blocks.push_back(std::move(image));
           }
         } else if (uploaded_file->type == mojom::UploadedFileType::kPdf) {
-          uploaded_pdfs_content_blocks.push_back(
-              mojom::ContentBlock::NewFileContentBlock(
-                  mojom::FileContentBlock::New(
-                      GURL(EngineConsumer::GetPdfDataURL(uploaded_file->data)),
-                      uploaded_file->filename.empty()
-                          ? "uploaded.pdf"
-                          : uploaded_file->filename)));
+          std::string pdf_filename = uploaded_file->filename.empty()
+                                         ? "uploaded.pdf"
+                                         : uploaded_file->filename;
+          if (uploaded_file->extracted_text.has_value() &&
+              !uploaded_file->extracted_text->empty()) {
+            // Prefer extracted text — works with all models including
+            // local LLMs that cannot process raw PDF bytes.
+            uploaded_pdfs_content_blocks.push_back(
+                mojom::ContentBlock::NewTextContentBlock(
+                    mojom::TextContentBlock::New(
+                        "[PDF: " + pdf_filename + "]\n" +
+                        *uploaded_file->extracted_text)));
+          } else {
+            // Fall back to raw PDF bytes when no text was extracted.
+            uploaded_pdfs_content_blocks.push_back(
+                mojom::ContentBlock::NewFileContentBlock(
+                    mojom::FileContentBlock::New(
+                        GURL(
+                            EngineConsumer::GetPdfDataURL(uploaded_file->data)),
+                        pdf_filename)));
+          }
         }
       }
 

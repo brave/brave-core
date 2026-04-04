@@ -38,6 +38,7 @@ export class UnsupportedFileTypeError extends Error {
 export const convertFileToUploadedFile = async (
   file: File,
   processImageFile: AIChatContext['processImageFile'],
+  processPdfFile?: AIChatContext['processPdfFile'],
 ): Promise<Mojom.UploadedFile> => {
   const reader = new FileReader()
   const arrayBuffer = await new Promise<ArrayBuffer>((resolve, reject) => {
@@ -59,12 +60,22 @@ export const convertFileToUploadedFile = async (
   // Check file type and handle accordingly
   const mimeType = file.type.toLowerCase()
   if (mimeType === 'application/pdf') {
-    // Handle PDF files directly
+    if (processPdfFile) {
+      const processedFile = await processPdfFile([
+        Array.from(uint8Array),
+        file.name,
+      ])
+      if (processedFile) {
+        return processedFile
+      }
+    }
+    // Fallback: return raw PDF data without extracted text
     const uploadedFile: Mojom.UploadedFile = {
       filename: file.name,
       filesize: file.size,
       data: Array.from(uint8Array),
       type: Mojom.UploadedFileType.kPdf,
+      extractedText: undefined,
     }
     return uploadedFile
   } else if (mimeType.startsWith('image/')) {
