@@ -14,7 +14,6 @@
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
 #include "brave/components/playlist/content/renderer/playlist_render_frame_observer.h"
 #include "brave/components/playlist/core/common/features.h"
@@ -165,8 +164,7 @@ void BraveContentRendererClient::RenderFrameCreated(
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  if (base::FeatureList::IsEnabled(
-          brave_wallet::features::kNativeBraveWalletFeature)) {
+  if (IsBraveWalletAvailable()) {
     new brave_wallet::BraveWalletRenderFrameObserver(
         render_frame,
         base::BindRepeating(&BraveRenderThreadObserver::GetDynamicParams));
@@ -316,3 +314,9 @@ BraveContentRendererClient::CreateURLLoaderThrottleProvider(
 bool BraveContentRendererClient::IsOnionAllowed() const {
   return brave_observer_->IsOnionAllowed();
 }
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+bool BraveContentRendererClient::IsBraveWalletAvailable() const {
+  return brave_observer_->IsBraveWalletAvailable();
+}
+#endif

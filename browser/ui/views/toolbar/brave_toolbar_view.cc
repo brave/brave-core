@@ -185,8 +185,7 @@ class BraveToolbarView::LayoutGuard {
 };
 
 BraveToolbarView::BraveToolbarView(Browser* browser, BrowserView* browser_view)
-    : ToolbarView(browser, browser_view) {
-}
+    : ToolbarView(browser, browser_view) {}
 
 BraveToolbarView::~BraveToolbarView() = default;
 
@@ -624,8 +623,7 @@ void BraveToolbarView::UpdateAIChatButtonVisibility() {
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 void BraveToolbarView::UpdateWalletButtonVisibility() {
   Profile* profile = browser()->profile();
-  if (brave_wallet::IsNativeWalletEnabled() &&
-      brave_wallet::IsAllowedForContext(profile)) {
+  if (brave_wallet::IsAllowedForContext(profile)) {
     // Hide all if user wants to hide.
     if (!show_wallet_button_.GetValue()) {
       wallet_->SetVisible(false);

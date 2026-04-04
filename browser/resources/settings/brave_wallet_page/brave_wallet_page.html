@@ -118,23 +118,21 @@
       menu-options="[[transaction_simulation_opt_in_options_]]">
     </settings-dropdown-menu>
   </div>
-  <template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
-    <settings-toggle-button id="enableNftDiscovery"
-      class="cr-row"
-      pref="{{prefs.brave.wallet.nft_discovery_enabled}}"
-      label="$i18n{enableNftDiscoveryLabel}"
-      sub-label="$i18n{enableNftDiscoveryDesc}"
-      learn-more-url="$i18n{enableNftDiscoveryLearnMoreURL}">
-    </settings-toggle-button>
-    <settings-toggle-button id="enablePrivateWindows"
-      class="cr-row"
-      pref="[[isPrivateWindowsEnabled_]]"
-      on-settings-boolean-control-change="onPrivateWindowsEnabled_"
-      label="$i18n{enablePrivateWindowsLabel}"
-      sub-label="$i18n{enablePrivateWindowsDesc}">
-    </settings-toggle-button>
-  </template>
-  <div class="settings-box" hidden="[[!isNativeWalletEnabled_]]">
+  <settings-toggle-button id="enableNftDiscovery"
+    class="cr-row"
+    pref="{{prefs.brave.wallet.nft_discovery_enabled}}"
+    label="$i18n{enableNftDiscoveryLabel}"
+    sub-label="$i18n{enableNftDiscoveryDesc}"
+    learn-more-url="$i18n{enableNftDiscoveryLearnMoreURL}">
+  </settings-toggle-button>
+  <settings-toggle-button id="enablePrivateWindows"
+    class="cr-row"
+    pref="[[isPrivateWindowsEnabled_]]"
+    on-settings-boolean-control-change="onPrivateWindowsEnabled_"
+    label="$i18n{enablePrivateWindowsLabel}"
+    sub-label="$i18n{enablePrivateWindowsDesc}">
+  </settings-toggle-button>
+  <div class="settings-box">
     <div class="flex cr-padded-text">
       <div>$i18n{autoLockMinutes}</div>
       <div class="secondary">$i18n{autoLockMinutesDesc}</div>

@@ -25,10 +25,17 @@ struct DynamicParams {
   bool playlist_enabled = false;
 };
 
+// Initial renderer configuration parameters which can't change post renderer launch.
+struct InitialParams {
+  bool is_tor_process = false;
+  [EnableIf=enable_brave_wallet]
+  bool is_brave_wallet_available = false;
+};
+
 // Configures the renderer.
 interface BraveRendererConfiguration {
   // Configures the renderer with settings that won't change.
-  SetInitialConfiguration(bool is_tor_process);
+  SetInitialConfiguration(InitialParams params);
   // Update renderer configuration with settings that can change.
   SetConfiguration(DynamicParams params);
 };

@@ -216,10 +216,6 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                speedreader::kSpeedreaderEnabled)));
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  html_source->AddBoolean(
-      "isNativeBraveWalletFeatureEnabled",
-      base::FeatureList::IsEnabled(
-          brave_wallet::features::kNativeBraveWalletFeature));
   html_source->AddBoolean("isCardanoDappSupportFeatureEnabled",
                           brave_wallet::IsCardanoDAppSupportEnabled());
   html_source->AddBoolean("isBraveWalletAllowed",

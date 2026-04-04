@@ -13,8 +13,6 @@
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 namespace brave_wallet::features {
 
-BASE_DECLARE_FEATURE(kNativeBraveWalletFeature);
-
 BASE_DECLARE_FEATURE(kBraveWalletBitcoinFeature);
 extern const base::FeatureParam<int> kBitcoinRpcThrottle;
 extern const base::FeatureParam<bool> kBitcoinTestnetDiscovery;

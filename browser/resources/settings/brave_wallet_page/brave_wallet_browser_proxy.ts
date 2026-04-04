@@ -46,7 +46,6 @@ export interface BraveWalletBrowserProxy {
   getSolanaProviderOptions: () => Promise<SolanaProvider[]>
   getCardanoProviderOptions: () => Promise<CardanoProvider[]>
   getTransactionSimulationOptInStatusOptions: () => Promise<Option[]>
-  isNativeWalletEnabled: () => Promise<boolean>
   isBitcoinEnabled: () => Promise<boolean>
   isZCashEnabled: () => Promise<boolean>
   isZCashShieldedTxEnabled: () => Promise<boolean>
@@ -115,10 +114,6 @@ export class BraveWalletBrowserProxyImpl implements BraveWalletBrowserProxy {
 
   getWeb3ProviderList () {
     return sendWithPromise('getWeb3ProviderList')
-  }
-
-  isNativeWalletEnabled() {
-    return sendWithPromise('isNativeWalletEnabled')
   }
 
   getAutoLockMinutes () {

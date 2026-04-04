@@ -7,6 +7,7 @@
 #define BRAVE_RENDERER_BRAVE_RENDER_THREAD_OBSERVER_H_
 
 #include "brave/common/brave_renderer_configuration.mojom.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "content/public/renderer/render_thread_observer.h"
 #include "mojo/public/cpp/bindings/associated_receiver_set.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
@@ -29,6 +30,10 @@ class BraveRenderThreadObserver
 
   bool IsOnionAllowed() const;
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  bool IsBraveWalletAvailable() const;
+#endif
+
   // Return the dynamic parameters - those that may change while the
   // render process is running.
   static const brave::mojom::DynamicParams& GetDynamicParams();
@@ -41,14 +46,14 @@ class BraveRenderThreadObserver
       blink::AssociatedInterfaceRegistry* associated_interfaces) override;
 
   // brave::mojom::BraveRendererConfiguration:
-  void SetInitialConfiguration(bool is_tor_process) override;
+  void SetInitialConfiguration(brave::mojom::InitialParamsPtr params) override;
   void SetConfiguration(brave::mojom::DynamicParamsPtr params) override;
 
   void OnRendererConfigurationAssociatedRequest(
       mojo::PendingAssociatedReceiver<brave::mojom::BraveRendererConfiguration>
           receiver);
 
-  bool is_tor_process_ = false;
+  brave::mojom::InitialParamsPtr initial_params_;
   mojo::AssociatedReceiverSet<brave::mojom::BraveRendererConfiguration>
       renderer_configuration_receivers_;
 };
