@@ -226,3 +226,11 @@
 # HasCurrent() is asserted. Upstream flake rate 0.6% (LUCI Analysis, 30 days).
 # No Brave modifications to installable manager code path.
 -InstallableManagerBrowserTest.CheckWebapp
+
+# Intermittent failure: after crash recovery + reload, IsShowing() returns false.
+# Known upstream flake (1.7% flake rate over 30 days per LUCI Analysis).
+# LUCI data is aggregated across all configs, so using windows-wide filter.
+# Chromium test - no Brave modifications in crash recovery or view visibility paths.
+# The related ReloadCacheRevalidate variant is already DISABLED upstream.
+# https://github.com/brave/brave-browser/issues/53995
+-CrashRecoveryBrowserTest.Reload
