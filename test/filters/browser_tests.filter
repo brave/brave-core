@@ -3585,3 +3585,11 @@
 # inline FetchHistogramsAsynchronously call). Upstream flake rate: 0.3%.
 # https://github.com/brave/brave-browser/issues/54039
 -ChromeDataUseMeasurementBrowserTest.DataUseRecorded
+
+# Known upstream flake (8.2% flake rate over 30 days). Race condition between
+# autofill form classification and APC extraction: GetAutofillFieldData()
+# returns nullopt when autofill hasn't cached the cross-site iframe's form yet,
+# so no bounding boxes are generated and screenshot redaction is skipped.
+# Not disabled by Chromium. No Brave chromium_src modifications in this area.
+# https://github.com/brave/brave-browser/issues/54104
+-SensitivePaymentRedactionMultiSourcePageContextFetcherBrowserTest.BasicRedactionInIframe
