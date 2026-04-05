@@ -842,4 +842,7 @@ const executeProceduralActions = (added?: Element[]) => {
   }
 }
 
+(CC as any).executeProceduralActions =
+  (CC as any).executeProceduralActions || executeProceduralActions
+
 if (CC.hasProceduralActions) executeProceduralActions()
