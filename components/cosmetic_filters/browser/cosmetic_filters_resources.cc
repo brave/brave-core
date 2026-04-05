@@ -36,12 +36,14 @@ constexpr char kProceduralActionsScript[] =
           };
           CC.proceduralActionFilters = JSON.parse($2).filter(f => takeStyleFilter(f));
           CC.hasProceduralActions = CC.proceduralActionFilters.length > 0;
-          if (CC.hasProceduralActions && typeof CC.executeProceduralActions === 'function') {
-            const apply = () => CC.executeProceduralActions();
+          if (CC.hasProceduralActions &&
+              typeof CC.executeProceduralActions === 'function') {
+            const run = () => CC.executeProceduralActions();
             if (document.readyState !== 'loading') {
-              apply();
+              run();
             } else {
-              document.addEventListener('DOMContentLoaded', apply, {once: true});
+              document.addEventListener(
+                'DOMContentLoaded', run, {once: true});
             }
           }
           return stylesheet;
