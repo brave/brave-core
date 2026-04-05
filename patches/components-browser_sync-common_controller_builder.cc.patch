@@ -1,0 +1,12 @@
+diff --git a/components/browser_sync/common_controller_builder.cc b/components/browser_sync/common_controller_builder.cc
+index a03405289e78dfcbc57ba02a0258de0db434a7f1..6680a2907951b678d44476efe0c8760f48f552f2 100644
+--- a/components/browser_sync/common_controller_builder.cc
++++ b/components/browser_sync/common_controller_builder.cc
+@@ -1075,6 +1075,7 @@ CommonControllerBuilder::Build(syncer::DataTypeSet disabled_types,
+             sync_service, collaboration_service_.value()));
+   }
+ 
++  BRAVE_BUILD_SYNC_CONTROLLERS
+   return controllers;
+   // TODO(crbug.com/487347673): Cleanup: Split CommonControllerBuilder::Build()
+   // into smaller functions.

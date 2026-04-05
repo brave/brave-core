@@ -201,6 +201,7 @@ source_set("unit_tests") {
     sources += [
       "ai_chat_database_unittest.cc",
       "sync/ai_chat_sync_bridge_unittest.cc",
+      "sync/ai_chat_sync_conversions_unittest.cc",
     ]
   }
 

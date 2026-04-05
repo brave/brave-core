@@ -129,7 +129,11 @@ AIChatService::AIChatService(
                                               std::string(channel_string))),
       credential_manager_(std::move(ai_chat_credential_manager)),
       tool_provider_factories_(std::move(tool_provider_factories)),
-      profile_path_(profile_path) {
+      profile_path_(profile_path),
+      db_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::WithBaseSyncPrimitives(),
+           base::TaskPriority::USER_BLOCKING,
+           base::TaskShutdownBehavior::BLOCK_SHUTDOWN})) {
   DCHECK(profile_prefs_);
 
   // Initialize tools based on current pref settings which can be used across
@@ -213,20 +217,25 @@ bool AIChatService::HasActiveConversationHandler(const std::string& uuid) {
 
 std::unique_ptr<syncer::DataTypeControllerDelegate>
 AIChatService::CreateSyncControllerDelegate() {
-  if (!db_task_runner_ || !sync_bridge_) {
-    return nullptr;
-  }
+  // The bridge may not exist yet (it's created asynchronously when the
+  // database is ready). ProxyDataTypeControllerDelegate handles this by
+  // calling the callback lazily on the model thread. The callback captures
+  // a pointer to sync_bridge_weak_ (stable member address) and reads it
+  // when invoked — returning nullptr if the bridge isn't ready yet, which
+  // sync handles gracefully.
   return std::make_unique<syncer::ProxyDataTypeControllerDelegate>(
       db_task_runner_,
       base::BindRepeating(
-          [](base::WeakPtr<AIChatSyncBridge> bridge)
+          [](base::WeakPtr<AIChatSyncBridge>* weak_bridge_ptr)
               -> base::WeakPtr<syncer::DataTypeControllerDelegate> {
-            if (!bridge) {
+            if (!weak_bridge_ptr || !*weak_bridge_ptr) {
               return nullptr;
             }
-            return bridge->change_processor()->GetControllerDelegate();
+            return (*weak_bridge_ptr)
+                ->change_processor()
+                ->GetControllerDelegate();
           },
-          sync_bridge_weak_));
+          &sync_bridge_weak_));
 }
 
 ConversationHandler* AIChatService::CreateConversation() {
@@ -481,10 +490,6 @@ void AIChatService::OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor) {
   if (!profile_prefs_->GetBoolean(prefs::kBraveChatStorageEnabled)) {
     return;
   }
-  db_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
-      {base::MayBlock(), base::WithBaseSyncPrimitives(),
-       base::TaskPriority::USER_BLOCKING,
-       base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
   auto database = std::make_unique<AIChatDatabase>(
       profile_path_.Append(kDBFileName), std::move(encryptor));
   AIChatDatabase* database_ptr = database.get();

@@ -4,9 +4,15 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/sync/brave_sync_service_impl_delegate.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #define BRAVE_BUILD_SERVICE_INSTANCE_FOR                        \
   std::make_unique<syncer::BraveSyncServiceImpl>(               \
@@ -16,6 +22,15 @@
           HistoryServiceFactory::GetForProfile(                 \
               profile, ServiceAccessType::IMPLICIT_ACCESS)));
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#define BRAVE_COMMON_CONTROLLER_BUILDER_SET_SERVICES \
+  builder.SetAIChatService(                          \
+      ai_chat::AIChatServiceFactory::GetForBrowserContext(profile));
+#else
+#define BRAVE_COMMON_CONTROLLER_BUILDER_SET_SERVICES
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
 #include <chrome/browser/sync/sync_service_factory.cc>
 
+#undef BRAVE_COMMON_CONTROLLER_BUILDER_SET_SERVICES
 #undef BRAVE_BUILD_SERVICE_INSTANCE_FOR
