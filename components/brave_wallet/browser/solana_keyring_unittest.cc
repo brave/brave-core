@@ -292,6 +292,8 @@ TEST(SolanaKeyringUnitTest, AddNewHDAccount_RestrictedAddress) {
   // address.
   auto result = keyring.AddNewHDAccount(0);
   EXPECT_FALSE(result) << "Restricted Solana address should be rejected";
+
+  registry->UpdateRestrictedAddressesList({});
 }
 
 TEST(SolanaKeyringUnitTest, ImportAccount_RestrictedAddress) {
@@ -325,6 +327,8 @@ TEST(SolanaKeyringUnitTest, ImportAccount_RestrictedAddress) {
   // Try to import account again - should fail.
   auto result = keyring.ImportAccount(private_key);
   EXPECT_FALSE(result) << "Restricted Solana address should be rejected";
+
+  registry->UpdateRestrictedAddressesList({});
 }
 
 }  // namespace brave_wallet

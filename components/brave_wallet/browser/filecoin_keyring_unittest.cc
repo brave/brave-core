@@ -230,6 +230,8 @@ TEST(FilecoinKeyring, AddNewHDAccount_RestrictedAddress) {
   // address.
   auto result = keyring.AddNewHDAccount(0);
   EXPECT_FALSE(result) << "Restricted Filecoin address should be rejected";
+
+  registry->UpdateRestrictedAddressesList({});
 }
 
 TEST(FilecoinKeyring, ImportAccount_SECP256K1_RestrictedAddress) {
@@ -268,6 +270,8 @@ TEST(FilecoinKeyring, ImportAccount_SECP256K1_RestrictedAddress) {
       private_key, mojom::FilecoinAddressProtocol::SECP256K1);
   EXPECT_FALSE(result)
       << "Restricted Filecoin SECP256K1 address should be rejected";
+
+  registry->UpdateRestrictedAddressesList({});
 }
 
 TEST(FilecoinKeyring, ImportAccount_BLS_RestrictedAddress) {
@@ -306,6 +310,8 @@ TEST(FilecoinKeyring, ImportAccount_BLS_RestrictedAddress) {
   // Try to import account again - should fail.
   auto result = keyring.ImportFilecoinAccount(private_key, protocol);
   EXPECT_FALSE(result) << "Restricted Filecoin BLS address should be rejected";
+
+  registry->UpdateRestrictedAddressesList({});
 }
 
 }  // namespace brave_wallet
