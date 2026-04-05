@@ -24,7 +24,7 @@ namespace sessions {
 class TabRestoreService;
 }  // namespace sessions
 
-class Browser;
+class BrowserWindowInterface;
 
 class BraveTabMenuModel : public TabMenuModel {
  public:
@@ -47,17 +47,14 @@ class BraveTabMenuModel : public TabMenuModel {
   FRIEND_TEST_ALL_PREFIXES(BraveTabMenuBrowserTest,
                            SplitViewMenuCustomizationTest);
 
-  void Build(Browser* browser,
+  void Build(BrowserWindowInterface* browser_window,
              TabStripModel* tab_strip_model,
              int selected_index,
              const std::vector<int>& indices);
-  void BuildItemsForSplitView(Browser* browser,
-                              TabStripModel* tab_strip_model,
-                              const std::vector<int>& indices);
   int GetRestoreTabCommandStringId() const;
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-  void BuildItemForContainers(Browser* browser,
+  void BuildItemForContainers(BrowserWindowInterface* browser_window,
                               TabStripModel* tab_strip_model,
                               const std::vector<int>& selected_tab_indices);
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)

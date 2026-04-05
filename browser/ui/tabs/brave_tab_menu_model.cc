@@ -19,14 +19,14 @@
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_menu_model_delegate.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sessions/core/tab_restore_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/menus/simple_menu_model.h"
 
@@ -41,18 +41,18 @@ BraveTabMenuModel::BraveTabMenuModel(
     TabStripModel* tab_strip_model,
     int index)
     : TabMenuModel(delegate, tab_menu_model_delegate, tab_strip_model, index) {
-  auto* web_contents = tab_strip_model->GetWebContentsAt(index);
-  CHECK(web_contents);
-  Browser* browser = chrome::FindBrowserWithTab(web_contents);
-  CHECK(browser);
+  auto* tab = tab_strip_model->GetTabAtIndex(index);
+  CHECK(tab);
+  auto* browser_window = tab->GetBrowserWindowInterface();
+  CHECK(browser_window);
 
   restore_service_ =
-      TabRestoreServiceFactory::GetForProfile(browser->profile());
+      TabRestoreServiceFactory::GetForProfile(browser_window->GetProfile());
 
   auto* model = static_cast<BraveTabStripModel*>(tab_strip_model);
   auto indices = model->GetTabIndicesForCommandAt(index);
   all_muted_ = model->GetAllTabsMuted(indices);
-  Build(browser, tab_strip_model, index, indices);
+  Build(browser_window, tab_strip_model, index, indices);
 }
 
 BraveTabMenuModel::~BraveTabMenuModel() = default;
@@ -93,7 +93,7 @@ std::u16string BraveTabMenuModel::GetLabelAt(size_t index) const {
   return TabMenuModel::GetLabelAt(index);
 }
 
-void BraveTabMenuModel::Build(Browser* browser,
+void BraveTabMenuModel::Build(BrowserWindowInterface* browser_window,
                               TabStripModel* tab_strip_model,
                               int selected_index,
                               const std::vector<int>& indices) {
@@ -115,14 +115,14 @@ void BraveTabMenuModel::Build(Browser* browser,
   AddItemWithStringId(TabStripModel::CommandBookmarkAllTabs,
                       IDS_TAB_CXMENU_BOOKMARK_ALL_TABS);
 
-  if (brave::CanBringAllTabs(browser)) {
+  if (brave::CanBringAllTabs(browser_window->GetBrowserForMigrationOnly())) {
     AddItemWithStringId(TabStripModel::CommandBringAllTabsToThisWindow,
                         IDS_TAB_CXMENU_BRING_ALL_TABS_TO_THIS_WINDOW);
   }
 
   AddSeparator(ui::NORMAL_SEPARATOR);
 
-  if (tabs::utils::SupportsBraveVerticalTabs(browser)) {
+  if (tabs::utils::SupportsBraveVerticalTabs(browser_window)) {
     AddCheckItemWithStringId(TabStripModel::CommandShowVerticalTabs,
                              IDS_TAB_CXMENU_SHOW_VERTICAL_TABS);
   }
@@ -135,7 +135,7 @@ void BraveTabMenuModel::Build(Browser* browser,
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
-    BuildItemForContainers(browser, tab_strip_model, indices);
+    BuildItemForContainers(browser_window, tab_strip_model, indices);
   }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -160,10 +160,11 @@ void BraveTabMenuModel::Build(Browser* browser,
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 void BraveTabMenuModel::BuildItemForContainers(
-    Browser* browser,
+    BrowserWindowInterface* browser_window,
     TabStripModel* tab_strip_model,
     const std::vector<int>& selected_tab_indices) {
-  auto* service = ContainersServiceFactory::GetForProfile(browser->profile());
+  auto* service =
+      ContainersServiceFactory::GetForProfile(browser_window->GetProfile());
   if (!service) {
     return;
   }
@@ -193,7 +194,7 @@ void BraveTabMenuModel::BuildItemForContainers(
 
   containers_menu_delegate_ =
       std::make_unique<brave::ContainersTabMenuModelDelegate>(
-          browser, selected_tab_handles);
+          browser_window, selected_tab_handles);
   containers_submenu_ = std::make_unique<containers::ContainersMenuModel>(
       *containers_menu_delegate_, *service);
   InsertSubMenuWithStringIdAt(*index, TabStripModel::CommandOpenInContainer,
