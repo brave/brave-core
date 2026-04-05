@@ -3583,3 +3583,9 @@
 # inline FetchHistogramsAsynchronously call). Upstream flake rate: 0.3%.
 # https://github.com/brave/brave-browser/issues/54039
 -ChromeDataUseMeasurementBrowserTest.DataUseRecorded
+
+# Chromium test: known upstream flake (3.4% flake rate over 30 days,
+# 112k+ verdicts). No Brave modifications in chrome/browser/save_to_drive/.
+# Test times out during PDF extension host loading in SetUpOnMainThread.
+# https://github.com/brave/brave-browser/issues/54219
+-All/SaveToDriveEventDispatcherBrowserTest.GetFileMetadataStringForUploadInProgress/0
