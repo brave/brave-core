@@ -237,3 +237,12 @@
 # menu items, unrelated to startup timing. Not disabled upstream.
 # https://github.com/brave/brave-browser/issues/54114
 -All/ContextMenuBrowserTest.CopyLinkTextTouchTextOnly/LinkPreviewDisabled
+
+# Intermittent failure: after crash recovery + reload, IsShowing() returns false.
+# Known upstream flake (1.7% flake rate over 30 days per LUCI Analysis).
+# LUCI data is aggregated across all configs, so using windows-wide filter.
+# Chromium test - no Brave modifications in crash recovery or view visibility paths.
+# The related ReloadCacheRevalidate variant is already DISABLED upstream.
+# https://github.com/brave/brave-browser/issues/53995
+-CrashRecoveryBrowserTest.Reload
+
