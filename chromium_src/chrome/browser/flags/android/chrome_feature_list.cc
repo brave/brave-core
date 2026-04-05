@@ -40,8 +40,9 @@
 #endif
 
 // CHROMIUM_SRC_INTERNAL_USE
-#define BRAVE_AI_CHAT_FLAGS \
-  &ai_chat::features::kAIChat, &ai_chat::features::kAIChatHistory,
+#define BRAVE_AI_CHAT_FLAGS                                        \
+  &ai_chat::features::kAIChat, &ai_chat::features::kAIChatHistory, \
+      &ai_chat::features::kBraveSyncAIChat,
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 // CHROMIUM_SRC_INTERNAL_USE
