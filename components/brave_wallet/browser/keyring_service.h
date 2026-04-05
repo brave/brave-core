@@ -169,6 +169,10 @@ class KeyringService : public mojom::KeyringService {
                       const std::string& name,
                       SetAccountNameCallback callback) override;
   void Reset(bool notify_observer = true);
+
+  // Monotonically increasing counter that changes on every Reset(). Used by
+  // AccountDiscoveryManager to detect stale callbacks after wallet reset.
+  uint32_t wallet_generation() const { return wallet_generation_; }
   void SignTransactionByDefaultKeyring(const mojom::AccountIdPtr& account_id,
                                        EthTransaction* tx);
   std::optional<std::string> SignTransactionByFilecoinKeyring(
@@ -499,6 +503,7 @@ class KeyringService : public mojom::KeyringService {
   raw_ptr<PrefService> profile_prefs_ = nullptr;
   raw_ptr<PrefService> local_state_ = nullptr;
   bool request_unlock_pending_ = false;
+  uint32_t wallet_generation_ = 0;
 
   mojo::RemoteSet<mojom::KeyringServiceObserver> observers_;
   mojo::ReceiverSet<mojom::KeyringService> receivers_;
