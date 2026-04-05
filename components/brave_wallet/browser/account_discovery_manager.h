@@ -75,9 +75,12 @@ class AccountDiscoveryManager {
   void ProcessDiscoveryResult(std::unique_ptr<DiscoveryContext> context,
                               bool result);
 
+  bool IsStale() const;
+
   raw_ref<brave_wallet::JsonRpcService> json_rpc_service_;
   raw_ref<brave_wallet::KeyringService> keyring_service_;
   raw_ptr<brave_wallet::BitcoinWalletService> bitcoin_wallet_service_;
+  uint32_t wallet_generation_;
 
   base::WeakPtrFactory<AccountDiscoveryManager> weak_ptr_factory_{this};
 };
