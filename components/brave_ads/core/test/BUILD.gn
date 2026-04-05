@@ -260,6 +260,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/common/net/http/http_status_code_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/common/platform/test/platform_helper_mock.cc",
     "//brave/components/brave_ads/core/internal/common/platform/test/platform_helper_mock.h",
+    "//brave/components/brave_ads/core/internal/common/random/random_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/common/resources/country_components_test_constants.h",
     "//brave/components/brave_ads/core/internal/common/resources/language_components_test_constants.h",
     "//brave/components/brave_ads/core/internal/common/resources/resource_test_constants.h",

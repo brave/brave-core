@@ -14,14 +14,14 @@
 namespace brave_ads {
 
 namespace {
-std::optional<base::TimeDelta> g_rand_time_delta_for_testing;
+std::optional<base::TimeDelta> g_rand_time_delta_with_jitter_for_testing;
 }  // namespace
 
-base::TimeDelta RandTimeDelta(base::TimeDelta time_delta) {
-  if (g_rand_time_delta_for_testing) {
+base::TimeDelta RandTimeDeltaWithJitter(base::TimeDelta time_delta) {
+  if (g_rand_time_delta_with_jitter_for_testing) {
     CHECK_IS_TEST();
 
-    return *g_rand_time_delta_for_testing;
+    return *g_rand_time_delta_with_jitter_for_testing;
   }
 
   const double random_factor = 0.5 + base::RandDouble();
@@ -29,15 +29,16 @@ base::TimeDelta RandTimeDelta(base::TimeDelta time_delta) {
   return base::Seconds(time_delta.InSecondsF() * random_factor);
 }
 
-ScopedRandTimeDeltaSetterForTesting::ScopedRandTimeDeltaSetterForTesting(
-    base::TimeDelta time_delta) {
+ScopedRandTimeDeltaWithJitterSetterForTesting::
+    ScopedRandTimeDeltaWithJitterSetterForTesting(base::TimeDelta time_delta) {
   CHECK_IS_TEST();
 
-  g_rand_time_delta_for_testing = time_delta;
+  g_rand_time_delta_with_jitter_for_testing = time_delta;
 }
 
-ScopedRandTimeDeltaSetterForTesting::~ScopedRandTimeDeltaSetterForTesting() {
-  g_rand_time_delta_for_testing = std::nullopt;
+ScopedRandTimeDeltaWithJitterSetterForTesting::
+    ~ScopedRandTimeDeltaWithJitterSetterForTesting() {
+  g_rand_time_delta_with_jitter_for_testing = std::nullopt;
 }
 
 }  // namespace brave_ads
