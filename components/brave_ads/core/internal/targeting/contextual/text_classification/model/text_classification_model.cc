@@ -43,8 +43,9 @@ SegmentProbabilityList ToSortedSegmentProbabilityList(
     const SegmentProbabilityMap& segment_probabilities) {
   SegmentProbabilityList list(segment_probabilities.size());
 
-  std::ranges::partial_sort_copy(
-      segment_probabilities, list,
+  std::partial_sort_copy(
+      segment_probabilities.begin(), segment_probabilities.end(), list.begin(),
+      list.end(),
       [](const auto& lhs, const auto& rhs) { return lhs.second > rhs.second; });
 
   return list;

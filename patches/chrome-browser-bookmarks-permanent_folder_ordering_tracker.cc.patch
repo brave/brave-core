@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/bookmarks/permanent_folder_ordering_tracker.cc b/chrome/browser/bookmarks/permanent_folder_ordering_tracker.cc
+index 0291825a260ee57d9620f88e9c340442f1582de8..09ecd97b7a8adf57be7a3c7ef1e9dfc2398b2f7c 100644
+--- a/chrome/browser/bookmarks/permanent_folder_ordering_tracker.cc
++++ b/chrome/browser/bookmarks/permanent_folder_ordering_tracker.cc
+@@ -278,6 +278,7 @@ void PermanentFolderOrderingTracker::AddNodesAsCopiesOfNodeData(
+ size_t PermanentFolderOrderingTracker::GetIndexAcrossStorage(
+     const bookmarks::BookmarkNode* node,
+     size_t in_storage_index) const {
++  BRAVE_PERMANENT_FOLDER_ORDERING_TRACKER_GET_INDEX_ACROSS_STORAGE
+   if (!ShouldTrackOrdering()) {
+     CHECK(node);
+     CHECK(node->parent());
