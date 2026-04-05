@@ -51,8 +51,8 @@ class BraveTab : public Tab {
   void UpdateTreeToggleButtonIcon();
 
   // Tab:
-  std::u16string GetRenderedTooltipText(const gfx::Point& p) const override;
   views::BubbleBorder::Arrow GetAnchorPosition() const override;
+  std::u16string GetRenderedTooltipText(const gfx::Point& p) const override;
 
   // Overridden because we moved alert button to left side in the tab whereas
   // upstream put it on right side. Need to consider this change for
