@@ -23,3 +23,29 @@
 # for the same reason.
 # https://github.com/brave/brave-browser/issues/54053
 -DevToolsExtensionHostsPolicyTest.CantInspectBlockedHost
+
+# Upstream Chromium test. Stable upstream (0.3% flake rate over 30 days per
+# LUCI Analysis). The test evaluates a console expression with a
+# sourceMappingURL comment and waits for SourceMapWillAttach to fire within a
+# hardcoded 20-second JS timeout. Combined with Brave's DevTools startup
+# overhead (chromium_src overrides, NTP/stats services), MSAN instrumentation
+# causes the DevTools frontend initialization to exceed this timeout.
+# https://github.com/brave/brave-browser/issues/53990
+-DevToolsTest.SourceMapsFromDevtools
+
+# Upstream Chromium test. Already disabled upstream on ChromeOS MSan
+# (crbug.com/491012584). Times out under MSan instrumentation because the
+# kInitialWebUI feature (WebUI toolbar) navigation hangs in Brave. Upstream
+# flake rate: 2.7% (LUCI Analysis, 30-day lookback).
+# https://github.com/brave/brave-browser/issues/54030
+-InitialWebUIMetricsDropBrowserTest.WebiumRendererMetricsDroppedIfNoRule
+
+# Upstream Chromium test. Known upstream flake (2.9% flake rate over 30 days
+# per LUCI Analysis). Already disabled on ChromeOS MSan upstream
+# (crbug.com/491012584). The test expects zero samples for the renamed
+# histogram Webium.Navigation.DocumentLoader.DidCommitNavigation in a
+# non-initial-WebUI renderer, but pending histograms from the browser's own
+# initial WebUI startup process can leak into the measurement under slow MSan
+# execution. No Brave modifications in chrome/browser/ui/waap/.
+# https://github.com/brave/brave-browser/issues/54031
+-InitialWebUIMetricsMappingBrowserTest.NormalRendererMetricsAreNotMapped

@@ -2751,9 +2751,11 @@
 # Brave's canvas farbling (PerturbPixels) modifies getImageData() results,
 # breaking this test's canvas-based video playback detection.
 # Stable upstream: Capture/0 1.1%, Capture/1 0.2% flake rate (30-day LUCI).
+# Capture/3840x2160: 0.2% upstream flake rate (30-day LUCI).
 -All/GetDisplayMediaHiDpiBrowserTest.Capture/0
 -All/GetDisplayMediaHiDpiBrowserTest.Capture/1
 -All/GetDisplayMediaHiDpiBrowserTest.Capture/640x480
+-All/GetDisplayMediaHiDpiBrowserTest.Capture/3840x2160
 
 # These tests fail because we short-circuit
 # WebrtcLoggingPrivateFunction::RphFromRequest

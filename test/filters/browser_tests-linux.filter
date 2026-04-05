@@ -5,6 +5,12 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# FlushForTesting() deadlocks on Linux because Brave background services (AI
+# Chat, etc.) trigger D-Bus thread pool tasks that post replies to the blocked
+# main thread.
+# https://github.com/brave/brave-browser/issues/54038
+-AutofillCounterTest.TimeRanges
+
 # These tests fail because we disable adding Open Search engines by default.
 # See https://github.com/brave/brave-browser/issues/14496
 # We short circuit the SearchEngineTabHelper::PageHasOpenSearchDescriptionDocument
@@ -85,6 +91,14 @@
 # https://github.com/brave/brave-browser/issues/53358
 -DevToolsProcessPerSiteTest.PausedDebuggerFocus
 
+# Chromium test: Blink's IdlenessDetector requires 500ms of renderer thread quiet
+# time to fire NetworkBecameIdle. Brave's cosmetic filters inject MutationObserver
+# and setInterval(500ms) polling on all pages, generating continuous renderer tasks
+# that prevent the quiet window from completing. 1.1% upstream flake rate over 30
+# days per LUCI Analysis.
+# https://github.com/brave/brave-browser/issues/54021
+-PageStabilityMetricsMinWaitTest.NetworkAndMainThreadIdleDelayed
+
 # These tests fail on Linux because kPromptForDownload defaults to true,
 # triggering the GTK file chooser dialog which causes g_malloc leaks
 # detected by LSan on ASAN builds and timeouts.
@@ -99,6 +113,15 @@
 # OsIntegrationTestOverride::IsRunOnOsLoginEnabled on Linux hard-codes "chrome-"
 # into the shortcut name but our shortcut starts with "brave-".
 -ShortcutSubManagerBrowserTest.CleanUpEphemeralProfileDeletesShortcuts
+
+# Chromium test: fixture sets kGlicActorPageStabilityTimeout to 30s but doesn't
+# set kActorObservationDelayTimeout (defaults to 10s). On slow CI, the 10s
+# overall timeout fires while still in kWaitForPageStability, causing the state
+# to skip kWaitForLoadCompletion and jump directly to kDone. 0.5% upstream flake
+# rate over 30 days per LUCI Analysis. No Brave chromium_src overrides affect
+# the ObservationDelayController code path.
+# https://github.com/brave/brave-browser/issues/54159
+-ObservationDelayControllerTest.UsePageStabilityForSameDocumentNavigation
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
@@ -154,3 +177,8 @@
 -WebRtcBrowserTest.*
 -WebRtcDisableEncryptionFlagBrowserTest.*
 -ZeroCacheTimePrefetchProxyBrowserTest.*
+
+# This Chromium test fails because the Glic WebUI creates its webview
+# asynchronously via JavaScript, and Brave's environment doesn't fully support
+# the Glic WebUI initialization flow. Stable upstream (0.3% flake rate).
+-GuestUtilBrowserTest.OnGuestAdded_Glic
