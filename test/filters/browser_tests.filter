@@ -2749,9 +2749,11 @@
 # Brave's canvas farbling (PerturbPixels) modifies getImageData() results,
 # breaking this test's canvas-based video playback detection.
 # Stable upstream: Capture/0 1.1%, Capture/1 0.2% flake rate (30-day LUCI).
+# Capture/3840x2160: 0.2% upstream flake rate (30-day LUCI).
 -All/GetDisplayMediaHiDpiBrowserTest.Capture/0
 -All/GetDisplayMediaHiDpiBrowserTest.Capture/1
 -All/GetDisplayMediaHiDpiBrowserTest.Capture/640x480
+-All/GetDisplayMediaHiDpiBrowserTest.Capture/3840x2160
 
 # These tests fail because we short-circuit
 # WebrtcLoggingPrivateFunction::RphFromRequest
@@ -3589,3 +3591,11 @@
 # Test times out during PDF extension host loading in SetUpOnMainThread.
 # https://github.com/brave/brave-browser/issues/54219
 -All/SaveToDriveEventDispatcherBrowserTest.GetFileMetadataStringForUploadInProgress/0
+
+# Known upstream flake (8.2% flake rate over 30 days). Race condition between
+# autofill form classification and APC extraction: GetAutofillFieldData()
+# returns nullopt when autofill hasn't cached the cross-site iframe's form yet,
+# so no bounding boxes are generated and screenshot redaction is skipped.
+# Not disabled by Chromium. No Brave chromium_src modifications in this area.
+# https://github.com/brave/brave-browser/issues/54104
+-SensitivePaymentRedactionMultiSourcePageContextFetcherBrowserTest.BasicRedactionInIframe

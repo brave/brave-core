@@ -112,8 +112,7 @@ function getPageVisibility () {
     braveTor: !loadTimeData.getBoolean('braveTorDisabledByPolicy') ||
               loadTimeData.getBoolean('shouldExposeElementsForTesting'),
     // </if>
-    origin: loadTimeData.getBoolean('isBraveOriginBrandedBuild') ||
-            loadTimeData.getBoolean('isBraveOriginPurchased'),
+    origin: loadTimeData.getBoolean('isBraveOriginPurchased'),
   }
   // Proxy so we can respond to any other property
   return new Proxy(staticProps, {

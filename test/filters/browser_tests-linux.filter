@@ -114,6 +114,15 @@
 # into the shortcut name but our shortcut starts with "brave-".
 -ShortcutSubManagerBrowserTest.CleanUpEphemeralProfileDeletesShortcuts
 
+# Chromium test: fixture sets kGlicActorPageStabilityTimeout to 30s but doesn't
+# set kActorObservationDelayTimeout (defaults to 10s). On slow CI, the 10s
+# overall timeout fires while still in kWaitForPageStability, causing the state
+# to skip kWaitForLoadCompletion and jump directly to kDone. 0.5% upstream flake
+# rate over 30 days per LUCI Analysis. No Brave chromium_src overrides affect
+# the ObservationDelayController code path.
+# https://github.com/brave/brave-browser/issues/54159
+-ObservationDelayControllerTest.UsePageStabilityForSameDocumentNavigation
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
 -AdsPageLoadMetricsObserverBrowserTest.*
@@ -168,3 +177,8 @@
 -WebRtcBrowserTest.*
 -WebRtcDisableEncryptionFlagBrowserTest.*
 -ZeroCacheTimePrefetchProxyBrowserTest.*
+
+# This Chromium test fails because the Glic WebUI creates its webview
+# asynchronously via JavaScript, and Brave's environment doesn't fully support
+# the Glic WebUI initialization flow. Stable upstream (0.3% flake rate).
+-GuestUtilBrowserTest.OnGuestAdded_Glic

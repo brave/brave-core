@@ -227,7 +227,11 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   }
 
   if (sponsored_images_component_id_ == sponsored_images_component->id) {
-    // Already registered.
+    // Component already loaded. Replay the callback so profiles created after
+    // the initial load still receive the sponsored images data.
+    if (!sponsored_images_installed_dir_.empty()) {
+      OnSponsoredComponentReady(sponsored_images_installed_dir_);
+    }
     return;
   }
 

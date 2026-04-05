@@ -140,8 +140,9 @@ export function useFilteredItems(search: string) {
     }
 
     const searchLower = search.toLowerCase()
-    const filter = (item: { title: string }) =>
+    const filter = (item: Attachment) =>
       item.title.toLowerCase().includes(searchLower)
+      || item.url.url.toLowerCase().includes(searchLower)
 
     const sources: Record<
       NonNullable<ConversationContext['attachmentsDialog']>,
@@ -196,6 +197,7 @@ export default function Attachments() {
         placeholder={getLocale(searchPlaceholderKey[attachmentsDialog])}
         value={search}
         onInput={(e) => setSearch(e.value)}
+        autofocus
       >
         <Icon
           name='search'
