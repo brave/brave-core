@@ -16,6 +16,7 @@
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/common/content_switches.h"
 #include "content/public/common/url_constants.h"
 #include "content/public/test/browser_test.h"
@@ -205,6 +206,10 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
     browser()->tab_strip_model()->CloseWebContentsAt(1,
                                                      TabCloseTypes::CLOSE_NONE);
     EXPECT_EQ(previous_tab_count - 1, browser()->tab_strip_model()->count());
+    // Flush IO thread first: the Mojo associated pipe disconnect for
+    // BlobURLStoreImpl is detected on IO and posted to UI. Then flush
+    // remaining tasks so ~BlobURLStoreImpl runs and removes URL mappings.
+    content::RunAllPendingInMessageLoop(content::BrowserThread::IO);
     content::RunAllTasksUntilIdle();
     for (size_t idx = 0; idx < a_com2_registered_blobs.size(); ++idx) {
       auto* rfh = a_com2_registered_blobs[idx].rfh.get();

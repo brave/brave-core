@@ -21,6 +21,8 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/grit/brave_components_scaled_resources.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
 #include "extensions/buildflags/buildflags.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/color/color_provider.h"
@@ -101,12 +103,18 @@ TabData TabData::FromTabInterface(tabs::TabInterface* tab) {
     }
   }
 
-  // Show which tabs are unloaded.
+  // Show which tabs are unloaded (e.g., session-restored tabs not yet loaded).
+  // Only apply to tabs that have navigated before — tabs that still have the
+  // initial NavigationEntry (e.g., during browser startup before any real
+  // navigation commits) should not show discard status, as the discard ring
+  // indicator would trigger IPH code before the browser is fully initialized.
   if (!data.should_show_discard_status) {
     const auto loading_state =
         resource_coordinator::TabLoadTracker::Get()->GetLoadingState(contents);
+    auto* const entry = contents->GetController().GetLastCommittedEntry();
     if (loading_state ==
-        resource_coordinator::TabLoadTracker::LoadingState::UNLOADED) {
+            resource_coordinator::TabLoadTracker::LoadingState::UNLOADED &&
+        entry && !entry->IsInitialEntry()) {
       data.should_show_discard_status = true;
     }
   }

@@ -727,16 +727,16 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
     // Shouldn't call the tool again because we are pausing.
     EXPECT_CALL(*mock_tool, UseTool).Times(0).InSequence(tool_call_seq);
 
-    // Pause the task
-    EXPECT_TRUE(ClickElement("pause-task-button"));
-
-    // Wait for paused state to be confirmed before sending the tool use event
-    // to avoid race condition where tool use is processed before pause takes
-    // effect.
-    EXPECT_TRUE(base::test::RunUntil([this]() {
-      return GetConversationState()->tool_use_task_state ==
-             mojom::TaskState::kPaused;
-    }));
+    // Pause the task directly via C++ to avoid a timing race with the UI
+    // click handler. The SvelteToReact wrapper in @brave/leo attaches click
+    // listeners asynchronously via useEffect, so the listener may not be
+    // attached when ClickElement fires. The UI click path is tested by
+    // TaskPauseResumeActions.
+    // TODO(https://github.com/brave/leo/issues/1343): Remove this workaround
+    // once SvelteToReact attaches listeners synchronously.
+    conversation_handler_->PauseTask();
+    EXPECT_EQ(GetConversationState()->tool_use_task_state,
+              mojom::TaskState::kPaused);
 
     data_callback.Run(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewCompletionEvent(

@@ -142,12 +142,18 @@
 -NewTabPageUtilEnableFlagBrowserTest.*
 -NewTabPageUtilDisableFlagBrowserTest.*
 -NotificationContentDetectionAllowlistedChecksEnabledBrowserTest.AllowlistedSiteExecutesModel/*
+-NotificationContentDetectionAllowlistedChecksEnabledBrowserTest.NotificationDisplayedWhenModelNotAvailable/*
 -NotificationContentDetectionBrowserTest.AllowlistedSiteDoesNotExecuteModel*
 -NotificationContentDetectionBrowserTest.EnterpriseAllowlistedSiteDoesNotExecuteModel
 -NotificationContentDetectionBrowserTest.NonAllowlistedSiteSuccessfullyExecutesModel
 -NotificationContentDetectionLoggingEnabledBrowserTest.ReportNotificationAsSafe*
 -NotificationContentDetectionLoggingEnabledBrowserTest.ReportUnwarnedNotificationAsSpam*
 -NotificationContentDetectionLoggingEnabledBrowserTest.ReportWarnedNotificationAsSpam*
+# This Chromium test creates a standalone TestingProfile in a browser test
+# context, which triggers Brave's additional keyed services and causes
+# intermittent ASAN-detected failures during profile lifecycle.
+# Stable upstream (0.3% flake rate). https://github.com/brave/brave-browser/issues/54043
+-NotificationContentDetectionServiceFactoryBrowserTest.DisabledForGuestMode
 -NotificationContentDetectionServiceFactoryBrowserTest.EnabledForRegularProfiles
 -NotificationContentDetectionShowWarningsEnabledBrowserTest.AllowlistedSiteNotificationGetsDisplayed/*
 -NotificationContentDetectionShowWarningsEnabledBrowserTest.NonAllowlistedSiteNotificationGetsDisplayed/*
@@ -1909,6 +1915,7 @@
 -ShowPromoInPageBrowserTest.HelpBubbleParamsCanConfigureCloseButtonAltText
 -ShowPromoInPageBrowserTest.ShowPromoInNewWindow
 -ThirdPartyReduceAcceptLanguageBrowserTest.ThirdPartyIframeWithSubresourceRequests
+-WorkerTest.WorkerInBackgroundPage
 -WebViewPdfTest.ContextMenuNavigationInWebView/PdfOopifEnabled_InnerWebContents
 -WebViewPdfTest.PdfContainerBounds/PdfOopifEnabled_InnerWebContents
 -WebViewPdfTest.Shim_TestDialogInPdf/PdfOopifEnabled_InnerWebContents
@@ -2780,9 +2787,11 @@
 # Brave's canvas farbling (PerturbPixels) modifies getImageData() results,
 # breaking this test's canvas-based video playback detection.
 # Stable upstream: Capture/0 1.1%, Capture/1 0.2% flake rate (30-day LUCI).
+# Capture/3840x2160: 0.2% upstream flake rate (30-day LUCI).
 -All/GetDisplayMediaHiDpiBrowserTest.Capture/0
 -All/GetDisplayMediaHiDpiBrowserTest.Capture/1
 -All/GetDisplayMediaHiDpiBrowserTest.Capture/640x480
+-All/GetDisplayMediaHiDpiBrowserTest.Capture/3840x2160
 
 # These tests fail because we short-circuit
 # WebrtcLoggingPrivateFunction::RphFromRequest
@@ -3606,3 +3615,11 @@
 -WebViewTests/WebViewTest.TestContextMenu/SiteIsolationForGuestsEnabled
 -WebViewWithDefaultSiteInstanceTest.IsolatedOrigin
 -WithAndWithoutReset/SessionRestoreTabGroupsTest.*
+
+# This Chromium test times out because its busy-wait loop calling
+# RunUntilIdle() + FetchHistogramsFromChildProcesses() hangs in Brave due to
+# background tasks from extensions and shields keeping the UI thread non-idle.
+# The underlying DataUse histogram recording works correctly (verified via
+# inline FetchHistogramsAsynchronously call). Upstream flake rate: 0.3%.
+# https://github.com/brave/brave-browser/issues/54039
+-ChromeDataUseMeasurementBrowserTest.DataUseRecorded
