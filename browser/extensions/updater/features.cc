@@ -8,7 +8,6 @@
 namespace brave_extensions::features {
 
 BASE_FEATURE(kBraveExtensionAutoUpdate,
-             "BraveExtensionAutoUpdate",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace brave_extensions::features

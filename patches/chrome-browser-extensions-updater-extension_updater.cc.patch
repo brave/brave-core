@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/extensions/updater/extension_updater.cc b/chrome/browser/extensions/updater/extension_updater.cc
+index 0c6620892582a44fe5e5e951af120a4ae70c67f5..ce6ec8c55829861dac97aa1485e05a1d76d4ad5e 100644
+--- a/chrome/browser/extensions/updater/extension_updater.cc
++++ b/chrome/browser/extensions/updater/extension_updater.cc
+@@ -231,6 +231,7 @@ void ExtensionUpdater::Start() {
+   alive_ = true;
+   // Check soon, and set up the first delayed check.
+   if (!g_skip_scheduled_checks_for_tests) {
++    BRAVE_EXTENSION_UPDATER_SCHEDULED_CHECK_GUARD
+     CheckSoon();
+     ScheduleNextCheck();
+   }
+@@ -271,6 +272,7 @@ void ExtensionUpdater::NextCheck() {
+   if (!alive_) {
+     return;
+   }
++  BRAVE_EXTENSION_UPDATER_SCHEDULED_CHECK_GUARD
+   CheckNow(CheckParams());
+   ScheduleNextCheck();
+ }
