@@ -2623,6 +2623,7 @@ void KeyringService::IsLocked(IsLockedCallback callback) {
 }
 
 void KeyringService::Reset(bool notify_observer) {
+  ++wallet_generation_;
   ResetAllAccountInfosCache();
   StopAutoLockTimer();
   encryptor_.reset();
