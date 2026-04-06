@@ -83,7 +83,7 @@ export function ContributeCard() {
       <section>
         <div className='icon'>
           <img
-            src={getCreatorIconSrc(site)}
+            src={getCreatorIconSrc(site, banner)}
             alt='Site icon'
           />
         </div>

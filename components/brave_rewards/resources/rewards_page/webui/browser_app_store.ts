@@ -275,6 +275,7 @@ export function createAppStore(): AppStore {
           title: publisherBanner?.title || '',
           description: publisherBanner?.description || '',
           background: publisherBanner?.background || '',
+          logo: publisherBanner?.logo || '',
           web3URL: isValidWeb3URL(publisherBanner?.web3Url ?? '')
             ? (publisherBanner?.web3Url ?? '')
             : '',

@@ -15,7 +15,7 @@ export function faviconURL(url: string) {
   return `chrome://favicon2/?size=64&pageUrl=${encodeURIComponent(url)}`
 }
 
-export function cardImageURL(url: string) {
+export function externalImageURL(url: string) {
   url = sanitizeURL(url)
   try {
     if (/(^|\.)brave(software)?\.com$/i.test(new URL(url).hostname)) {
