@@ -1630,4 +1630,6 @@ provideStrings({
   braveWalletPageNotFoundDescription:
     'It may have moved to a different place or the URL may contain a typo.',
   braveWalletGoToPortfolio: 'Go to Portfolio',
+  braveWalletProcessTransactionErrorMessage:
+    "There was an error processing your transaction. In many cases, this means there isn't enough $1 to cover the network fee. Try a smaller amount instead.",
 })
