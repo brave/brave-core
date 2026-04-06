@@ -98,6 +98,11 @@
 # days per LUCI Analysis.
 # https://github.com/brave/brave-browser/issues/54021
 -PageStabilityMetricsMinWaitTest.NetworkAndMainThreadIdleDelayed
+# Same root cause as above: Brave's cosmetic filters prevent the IdlenessDetector's
+# 500ms quiet window from completing, causing the 4s page stability timeout to fire
+# before NetworkBecameIdle. 1% upstream flake rate over 30 days per LUCI Analysis.
+# https://github.com/brave/brave-browser/issues/54205
+-PageStabilityMetricsTest.NetworkAndMainThreadIdle
 
 # These tests fail on Linux because kPromptForDownload defaults to true,
 # triggering the GTK file chooser dialog which causes g_malloc leaks
