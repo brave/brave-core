@@ -14,16 +14,17 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/location.h"
-#include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_mock_time_task_runner.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
+#include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_custom_resource_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_default_resource_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
@@ -36,43 +37,49 @@
 
 namespace brave_shields {
 
-class DATCacheObserver : public AdBlockService::Observer {
+class FilterListObserver : public AdBlockService::Observer {
  public:
-  explicit DATCacheObserver(base::RunLoop& run_loop) : run_loop_(run_loop) {}
-  ~DATCacheObserver() override = default;
-  void OnDATFileLoaded(bool is_default_engine, bool success) override {
-    if (is_default_engine) {
-      default_engine_loaded_ = true;
-      default_engine_loaded_success_ = success;
-    } else {
-      additional_engine_loaded_ = true;
-      additional_engine_loaded_success_ = success;
-    }
-
-    if (default_engine_loaded_ && additional_engine_loaded_) {
-      run_loop_->Quit();
-    }
-  }
-
-  bool default_engine_loaded_success() {
-    return default_engine_loaded_success_;
-  }
-
-  bool additional_engine_loaded_success() {
-    return additional_engine_loaded_success_;
+  using Callback = base::RepeatingCallback<void(bool, bool)>;
+  explicit FilterListObserver(Callback cb) : cb_(std::move(cb)) {}
+  ~FilterListObserver() override = default;
+  void OnFilterListLoaded(bool is_default_engine, bool success) override {
+    cb_.Run(is_default_engine, success);
   }
 
  private:
-  base::raw_ref<base::RunLoop> run_loop_;
-  bool default_engine_loaded_ = false;
-  bool default_engine_loaded_success_ = false;
-  bool additional_engine_loaded_ = false;
-  bool additional_engine_loaded_success_ = false;
+  Callback cb_;
 };
 
-class AdBlockServiceTest : public testing::Test {
+// TODO need a test that dat gets rebuilt if only one filter list is newer
+class DATLoadObserver : public AdBlockService::Observer {
  public:
-  AdBlockServiceTest()
+  DATLoadObserver() = default;
+  ~DATLoadObserver() override = default;
+
+  void OnDATFileLoaded(bool is_default_engine, bool success) override {
+    if (is_default_engine) {
+      default_loaded_ = true;
+      default_success_ = success;
+    } else {
+      additional_loaded_ = true;
+      additional_success_ = success;
+    }
+  }
+
+  bool BothLoaded() const { return default_loaded_ && additional_loaded_; }
+  bool default_success() const { return default_success_; }
+  bool additional_success() const { return additional_success_; }
+
+ private:
+  bool default_loaded_ = false;
+  bool default_success_ = false;
+  bool additional_loaded_ = false;
+  bool additional_success_ = false;
+};
+
+class AdBlockServiceTestBase : public testing::Test {
+ public:
+  AdBlockServiceTestBase()
       : resource_storage_(adblock::new_empty_resource_storage()) {}
 
   void SetUp() override {
@@ -116,11 +123,6 @@ class AdBlockServiceTest : public testing::Test {
                                 CreateAdblockDAT(additional_rules)));
   }
 
-  std::unique_ptr<AdBlockService> CreateService() {
-    return CreateServiceWithTaskRunner(
-        task_environment_.GetMainThreadTaskRunner());
-  }
-
   std::unique_ptr<AdBlockService> CreateServiceWithTaskRunner(
       scoped_refptr<base::SequencedTaskRunner> task_runner) {
     download_manager_ = std::make_unique<AdBlockSubscriptionDownloadManager>(
@@ -141,13 +143,27 @@ class AdBlockServiceTest : public testing::Test {
   }
 
   base::ScopedTempDir temp_dir_;
-  base::test::TaskEnvironment task_environment_{
-      base::test::TaskEnvironment::TimeSource::MOCK_TIME,
-      base::test::TaskEnvironment::ThreadPoolExecutionMode::QUEUED};
   TestingPrefServiceSimple prefs_;
   base::ScopedTempDir profile_dir_;
   rust::Box<adblock::BraveCoreResourceStorage> resource_storage_;
   std::unique_ptr<AdBlockSubscriptionDownloadManager> download_manager_;
+};
+
+class AdBlockServiceTest : public AdBlockServiceTestBase {
+ protected:
+  std::unique_ptr<AdBlockService> CreateService() {
+    return CreateServiceWithTaskRunner(
+        task_environment_.GetMainThreadTaskRunner());
+  }
+
+  base::test::TaskEnvironment task_environment_;
+};
+
+class AdBlockServiceQueuedTest : public AdBlockServiceTestBase {
+ protected:
+  base::test::TaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME,
+      base::test::TaskEnvironment::ThreadPoolExecutionMode::QUEUED};
 };
 
 TEST_F(AdBlockServiceTest, LoadsCachedDATFilesOnCreation) {
@@ -174,12 +190,9 @@ TEST_F(AdBlockServiceTest, LoadsCachedDATFilesOnCreation) {
       blink::mojom::ResourceType::kScript, "test.com", false, false, false);
   EXPECT_FALSE(result.matched);
 
-  base::RunLoop run_loop;
-  DATCacheObserver observer(run_loop);
+  DATLoadObserver observer;
   service->AddObserver(&observer);
-  // Trigger DAT file loading on thread pool
-  task_environment_.RunUntilIdle();
-  run_loop.Run();
+  ASSERT_TRUE(base::test::RunUntil([&]() { return observer.BothLoaded(); }));
 
   // Verify default engine rules are loaded
   result = service->GetDefaultEngineForTesting().ShouldStartRequest(
@@ -216,14 +229,12 @@ TEST_F(AdBlockServiceTest, LoadsOnlyDefaultCachedDATFile) {
       blink::mojom::ResourceType::kScript, "test.com", false, false, false);
   EXPECT_FALSE(result.matched);
 
-  base::RunLoop run_loop;
-  DATCacheObserver observer(run_loop);
+  DATLoadObserver observer;
   service->AddObserver(&observer);
-  task_environment_.RunUntilIdle();
-  run_loop.Run();
+  ASSERT_TRUE(base::test::RunUntil([&]() { return observer.BothLoaded(); }));
 
-  EXPECT_TRUE(observer.default_engine_loaded_success());
-  EXPECT_FALSE(observer.additional_engine_loaded_success());
+  EXPECT_TRUE(observer.default_success());
+  EXPECT_FALSE(observer.additional_success());
 
   // Default engine rules should be active
   result = service->GetDefaultEngineForTesting().ShouldStartRequest(
@@ -255,14 +266,12 @@ TEST_F(AdBlockServiceTest, LoadsOnlyAdditionalCachedDATFile) {
           blink::mojom::ResourceType::kScript, "test.com", false, false, false);
   EXPECT_FALSE(result.matched);
 
-  base::RunLoop run_loop;
-  DATCacheObserver observer(run_loop);
+  DATLoadObserver observer;
   service->AddObserver(&observer);
-  task_environment_.RunUntilIdle();
-  run_loop.Run();
+  ASSERT_TRUE(base::test::RunUntil([&]() { return observer.BothLoaded(); }));
 
-  EXPECT_FALSE(observer.default_engine_loaded_success());
-  EXPECT_TRUE(observer.additional_engine_loaded_success());
+  EXPECT_FALSE(observer.default_success());
+  EXPECT_TRUE(observer.additional_success());
 
   // Additional engine rules should be active
   result = service->GetAdditionalFiltersEngineForTesting().ShouldStartRequest(
@@ -282,12 +291,9 @@ TEST_F(AdBlockServiceTest, WorksWithoutCachedDATFiles) {
 
   auto service = CreateService();
 
-  base::RunLoop run_loop;
-  DATCacheObserver observer(run_loop);
+  DATLoadObserver observer;
   service->AddObserver(&observer);
-  // Trigger DAT file loading on thread pool
-  task_environment_.RunUntilIdle();
-  run_loop.Run();
+  ASSERT_TRUE(base::test::RunUntil([&]() { return observer.BothLoaded(); }));
 
   // Should not crash and not block anything
   auto result = service->GetDefaultEngineForTesting().ShouldStartRequest(
@@ -296,7 +302,46 @@ TEST_F(AdBlockServiceTest, WorksWithoutCachedDATFiles) {
   EXPECT_FALSE(result.matched);
 }
 
-TEST_F(AdBlockServiceTest, FilterSetLoadingBlocksDATLoading) {
+TEST_F(AdBlockServiceTest,
+       DefaultEngineLoadsEvenWhenAdditionalEngineCacheIsSet) {
+  // Set only the additional engine cache timestamp. The default cache timestamp
+  // is left unset (base::Time()), meaning the default engine should always
+  // load.
+  base::Time now = base::Time::Now();
+  prefs_.SetTime(prefs::kAdBlockAdditionalCacheTimestamp, now);
+
+  auto service = CreateService();
+
+  bool default_filter_list_loaded = false;
+  FilterListObserver observer(
+      base::BindLambdaForTesting([&](bool is_default, bool success) {
+        if (is_default) {
+          default_filter_list_loaded = success;
+        }
+      }));
+  service->AddObserver(&observer);
+
+  // Register a test filters provider for the default engine. Its timestamp
+  // matches the additional cache timestamp — with the bug, the default
+  // observer would check the additional pref, see it's cached, and skip.
+  auto provider =
+      std::make_unique<TestFiltersProvider>("||default-rule.com^",
+                                            /*engine_is_default=*/true);
+  provider->set_timestamp(now);
+  provider->RegisterAsSourceProvider(service.get());
+
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return default_filter_list_loaded;
+  })) << "Timeout waiting for default engine filter set to load";
+
+  // The default engine must have loaded the filter set rules.
+  auto result = service->GetDefaultEngineForTesting().ShouldStartRequest(
+      GURL("https://default-rule.com/script.js"),
+      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
+  EXPECT_TRUE(result.matched);
+}
+
+TEST_F(AdBlockServiceQueuedTest, FilterSetLoadingBlocksDATLoading) {
   // Create cached DAT files with specific rules for the default engine.
   CreateCachedDATFiles("||blocked-by-dat.com^\n", "");
 

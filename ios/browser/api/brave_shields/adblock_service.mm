@@ -9,6 +9,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/thread_pool.h"
+#include "base/time/time.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_default_resource_provider.h"
@@ -28,7 +29,7 @@
 
 namespace brave_shields {
 using OnFilterListUpdatedCallback =
-    base::RepeatingCallback<void(bool is_default_engine)>;
+    base::RepeatingCallback<void(bool is_default_engine, NSDate* timestamp)>;
 using OnFilterListCatalogLoadedCallback = base::RepeatingCallback<void()>;
 using OnResourceUpdatedCallback = base::RepeatingCallback<void()>;
 
@@ -38,7 +39,7 @@ class AdBlockServiceObserver : public AdBlockFiltersProvider::Observer {
   explicit AdBlockServiceObserver(OnFilterListUpdatedCallback updated_callback);
 
   // AdBlockFiltersProvider::Observer
-  void OnChanged(bool is_default_engine) override;
+  void OnChanged(bool is_default_engine, base::Time timestamp) override;
 
  private:
   OnFilterListUpdatedCallback updated_callback_;
@@ -48,8 +49,9 @@ AdBlockServiceObserver::AdBlockServiceObserver(
     OnFilterListUpdatedCallback updated_callback)
     : updated_callback_(updated_callback) {}
 
-void AdBlockServiceObserver::OnChanged(bool is_default_engine) {
-  updated_callback_.Run(is_default_engine);
+void AdBlockServiceObserver::OnChanged(bool is_default_engine,
+                                       base::Time timestamp) {
+  updated_callback_.Run(is_default_engine, std::move(timestamp).ToNSDate());
 }
 
 class AdBlockCatalogObserver
@@ -141,7 +143,8 @@ void AdBlockResourceObserver::OnResourcesLoaded(
   return self;
 }
 
-- (void)registerFilterListChanges:(void (^)(bool isDefaultEngine))callback {
+- (void)registerFilterListChanges:(void (^)(bool isDefaultEngine,
+                                            NSDate* timestamp))callback {
   auto _serviceObserver =
       std::make_unique<brave_shields::AdBlockServiceObserver>(
           base::BindRepeating(callback));

@@ -139,7 +139,7 @@ extension AdblockService {
     GroupedAdBlockEngine.EngineType
   > {
     return AsyncStream { continuation in
-      registerFilterListChanges({ isDefaultFilterList in
+      registerFilterListChanges({ isDefaultFilterList, _ in
         continuation.yield(isDefaultFilterList ? .standard : .aggressive)
       })
     }
