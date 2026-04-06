@@ -38,7 +38,9 @@ describe('attachment item', () => {
       container.querySelector('img[src="https://example.com/image.jpg"]'),
     ).toBeTruthy()
 
-    expect(document.querySelector('leo-button.removeButton')).not.toBeInTheDocument()
+    expect(
+      document.querySelector('leo-button.removeButton'),
+    ).not.toBeInTheDocument()
   })
 
   it('does not render subtitle if it is not provided', () => {
