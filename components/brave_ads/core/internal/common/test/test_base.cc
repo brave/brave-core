@@ -18,14 +18,16 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/token_state_manager.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/test/wallet_test_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_waiter.h"
+#include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_path_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/command_line_switch_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/mock_test_util_internal.h"
+#include "brave/components/brave_ads/core/internal/common/test/internal/test_environment_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/local_state_pref_value_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/pref_registry_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/profile_pref_value_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/test/test_types.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_environment_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
@@ -217,9 +219,8 @@ void TestBase::MockAdsClientNotifier() {
 }
 
 void TestBase::MockAdsClient() {
-  // Also, see `common/test/mock_test_util.h`. `MockUrlResponses`,
-  // `ShowScheduledCaptcha`, and `Log` are not mocked here; they should be
-  // mocked as needed.
+  // `MockUrlResponses`, `ShowScheduledCaptcha`, and `Log` are not mocked here;
+  // they should be mocked as needed via `mock_test_util.h`.
 
   MockNotifyPendingObservers(ads_client_mock_, *this);
 
@@ -254,26 +255,27 @@ void TestBase::MockAdsClient() {
   MockHasLocalStatePrefPath(ads_client_mock_);
 }
 
-void TestBase::Mock() {
+void TestBase::SetUpEnvironment() {
   CHECK(GlobalState::HasInstance())
       << "Must be called after GlobalState is instantiated";
 
-  SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kWindows);
+  fake_platform_helper_.SetPlatformType(PlatformType::kWindows);
+  PlatformHelper::SetForTesting(&fake_platform_helper_);
 
-  MockBuildChannel(BuildChannelType::kRelease);
+  SetUpBuildChannel(BuildChannelType::kRelease);
 
-  MockContentSettings();
+  SetUpContentSettings();
 
   SetUpMocks();
 
   // Must be called after `SetUpMocks` because `SetupMocks` may call
   // `AppendCommandLineSwitches`.
-  MockCommandLineSwitches();
+  SetUpCommandLineSwitches();
 }
 
-void TestBase::MockDefaultAdsServiceState() const {
+void TestBase::SetUpDefaultAdsServiceState() const {
   CHECK(!is_integration_test_)
-      << "MockDefaultAdsServiceState should only be called if SetUp is "
+      << "SetUpDefaultAdsServiceState should only be called if SetUp is "
          "initialized for unit testing";
   CHECK(GlobalState::HasInstance())
       << "Must be called after GlobalState is instantiated";
@@ -305,7 +307,7 @@ void TestBase::SetUpIntegrationTest() {
   CHECK(ads_) << "Failed to create ads instance";
 
   // Must be called after `Ads` is instantiated but prior to `Initialize`.
-  Mock();
+  SetUpEnvironment();
 
   ads_->Initialize(MojomWallet(),
                    base::BindOnce(&TestBase::SetUpIntegrationTestCallback,
@@ -337,10 +339,10 @@ void TestBase::SetUpUnitTest() {
       ads_client_mock_, DatabasePath(), std::make_unique<FakeTokenGenerator>());
 
   // Must be called after `GlobalState` is instantiated but prior to
-  // `MockDefaultAdsServiceState`.
-  Mock();
+  // `SetUpDefaultAdsServiceState`.
+  SetUpEnvironment();
 
-  MockDefaultAdsServiceState();
+  SetUpDefaultAdsServiceState();
 
   NotifyPendingObservers();
 }

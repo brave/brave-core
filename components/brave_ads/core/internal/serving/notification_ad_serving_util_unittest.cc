@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_util.h"
 
-#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 
@@ -18,7 +18,8 @@ class BraveAdsNotificationAdServingUtilTest : public test::TestBase {};
 TEST_F(BraveAdsNotificationAdServingUtilTest,
        ShouldServeAdsAtRegularIntervalsOnIOS) {
   // Arrange
-  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kIOS);
+  fake_platform_helper_.SetPlatformType(PlatformType::kIOS);
+  PlatformHelper::SetForTesting(&fake_platform_helper_);
 
   // Act & Assert
   EXPECT_TRUE(ShouldServeAdsAtRegularIntervals());
@@ -27,7 +28,8 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
 TEST_F(BraveAdsNotificationAdServingUtilTest,
        ShouldServeAdsAtRegularIntervalsOnAndroid) {
   // Arrange
-  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kAndroid);
+  fake_platform_helper_.SetPlatformType(PlatformType::kAndroid);
+  PlatformHelper::SetForTesting(&fake_platform_helper_);
 
   // Act & Assert
   EXPECT_TRUE(ShouldServeAdsAtRegularIntervals());
@@ -36,7 +38,8 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
 TEST_F(BraveAdsNotificationAdServingUtilTest,
        ShouldNotServeAdsAtRegularIntervalsOnMacOS) {
   // Arrange
-  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kMacOS);
+  fake_platform_helper_.SetPlatformType(PlatformType::kMacOS);
+  PlatformHelper::SetForTesting(&fake_platform_helper_);
 
   // Act & Assert
   EXPECT_FALSE(ShouldServeAdsAtRegularIntervals());
@@ -45,7 +48,8 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
 TEST_F(BraveAdsNotificationAdServingUtilTest,
        ShouldNotServeAdsAtRegularIntervalsOnWindows) {
   // Arrange
-  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kWindows);
+  fake_platform_helper_.SetPlatformType(PlatformType::kWindows);
+  PlatformHelper::SetForTesting(&fake_platform_helper_);
 
   // Act & Assert
   EXPECT_FALSE(ShouldServeAdsAtRegularIntervals());
@@ -54,7 +58,8 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
 TEST_F(BraveAdsNotificationAdServingUtilTest,
        ShouldNotServeAdsAtRegularIntervalsOnLinux) {
   // Arrange
-  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kLinux);
+  fake_platform_helper_.SetPlatformType(PlatformType::kLinux);
+  PlatformHelper::SetForTesting(&fake_platform_helper_);
 
   // Act & Assert
   EXPECT_FALSE(ShouldServeAdsAtRegularIntervals());

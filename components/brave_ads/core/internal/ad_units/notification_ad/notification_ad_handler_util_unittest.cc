@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_handler_util.h"
 
-#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 
@@ -22,7 +22,8 @@ TEST_F(BraveAdsNotificationAdUtilTest, CanServeIfUserIsActive) {
 
 TEST_F(BraveAdsNotificationAdUtilTest, CannotServeIfUserIsActive) {
   // Arrange
-  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kAndroid);
+  fake_platform_helper_.SetPlatformType(PlatformType::kAndroid);
+  PlatformHelper::SetForTesting(&fake_platform_helper_);
 
   // Act & Assert
   EXPECT_FALSE(CanServeIfUserIsActive());
@@ -44,7 +45,8 @@ TEST_F(BraveAdsNotificationAdUtilTest,
 
 TEST_F(BraveAdsNotificationAdUtilTest, CanServeAtRegularIntervals) {
   // Arrange
-  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kAndroid);
+  fake_platform_helper_.SetPlatformType(PlatformType::kAndroid);
+  PlatformHelper::SetForTesting(&fake_platform_helper_);
 
   // Act & Assert
   EXPECT_TRUE(CanServeAtRegularIntervals());

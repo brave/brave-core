@@ -7,74 +7,13 @@
 
 #include <cstddef>
 #include <optional>
-#include <string>
 #include <utility>
 
-#include "base/check.h"
-#include "base/check_op.h"
-#include "base/notreached.h"
-#include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
-#include "brave/components/brave_ads/core/internal/common/platform/test/fake_platform_helper.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/url_response_test_util_internal.h"
-#include "brave/components/brave_ads/core/internal/common/test/test_constants.h"
-#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/history/site_history.h"
 
 namespace brave_ads::test {
-
-namespace {
-
-constexpr char kNightlyBuildChannelName[] = "nightly";
-constexpr char kBetaBuildChannelName[] = "beta";
-constexpr char kReleaseBuildChannelName[] = "release";
-
-}  // namespace
-
-void MockDeviceId() {
-  CHECK(GlobalState::HasInstance());
-
-  GlobalState::GetInstance()->SysInfo().device_id = kDeviceId;
-}
-
-void SetUpFakePlatformHelper(FakePlatformHelper& fake_platform_helper,
-                             PlatformType type) {
-  fake_platform_helper.SetPlatformType(type);
-  PlatformHelper::SetForTesting(&fake_platform_helper);
-}
-
-void MockBuildChannel(BuildChannelType type) {
-  CHECK(GlobalState::HasInstance());
-
-  auto& build_channel = GlobalState::GetInstance()->BuildChannel();
-  switch (type) {
-    case BuildChannelType::kNightly: {
-      build_channel.is_release = false;
-      build_channel.name = kNightlyBuildChannelName;
-      return;
-    }
-
-    case BuildChannelType::kBeta: {
-      build_channel.is_release = false;
-      build_channel.name = kBetaBuildChannelName;
-      return;
-    }
-
-    case BuildChannelType::kRelease: {
-      build_channel.is_release = true;
-      build_channel.name = kReleaseBuildChannelName;
-      return;
-    }
-  }
-
-  NOTREACHED() << "Unexpected value for BuildChannelType: "
-               << std::to_underlying(type);
-}
-
-void MockAllowJavaScript(bool allow_javascript) {
-  GlobalState::GetInstance()->ContentSettings().allow_javascript =
-      allow_javascript;
-}
 
 void MockIsNetworkConnectionAvailable(const AdsClientMock& ads_client_mock,
                                       bool is_available) {
