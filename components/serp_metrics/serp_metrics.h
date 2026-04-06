@@ -55,11 +55,10 @@ class SerpMetrics final {
 
  private:
   // Returns the start of the stale period in local time, based on the last day
-  // for which usage metrics were reported. Metrics recorded on or before the
-  // `kLastCheckYMD` date are considered already reported, so the stale period
-  // begins at local midnight on the day after that date. If the last check date
-  // is unavailable or invalid, an empty time is returned to indicate that the
-  // full retention period should be considered stale.
+  // a usage ping was sent. Searches recorded on `kLastCheckYMD` have not yet
+  // been reported, so the stale period begins at local midnight of that day. If
+  // the last check date is unavailable or invalid, an empty time is returned to
+  // indicate that the full retention period should be considered stale.
   base::Time GetStartOfStalePeriod() const;
 
   const raw_ptr<PrefService> local_state_;  // Not owned.
