@@ -188,12 +188,27 @@
 <translation id="834487290629916192">VĒLĀK</translation>
 <translation id="4117451092682672487">Privātums. Vienkārši.</translation>
 <translation id="7909375417585209817">Ja Brave būs noklusējuma pārlūks, visas saites, kam pieskaraties, tiks atvērtas ar Brave privātuma aizsardzību.</translation>
-<translation id="5148943178722443958">Palīdziet uzlabot Brave.</translation>
+<translation id="763369711159699222">Palīdziet uzlabot Brave</translation>
+<translation id="8025937231644975408">Paziņojiet mums, kuras funkcijas jums patīk visvairāk.</translation>
 <translation id="6718362830686703942">Sūtiet diagnostikas ziņojumus, ja programma avarē vai sastingst.</translation>
 <translation id="8616157231067364693">Kopīgojiet privātus un anonīmus viedokļus par produktiem un par to, kādas funkcijas izmanto Brave lietotāji.</translation>
 <translation id="2888496576732880897">Atbalstiet Brave meklēšanas izaugsmi</translation>
+<translation id="7198716519700700181">Bloķējiet traucējumus, kad pārraidāt saturu</translation>
 <translation id="7044431516245362795">Pievienojieties Tīmekļa izpētes projektam, lai palīdzētu mums paplašināt indeksu un uzlabot meklēšanas rezultātus. <ph name="LEARN_MORE_START"/>Uzzināt vairāk.<ph name="LEARN_MORE_END"/></translation>
+<translation id="4847979153841887006">Brave logotips</translation>
+<translation id="1389386068457132299">Onboarding fons</translation>
+<translation id="5101985748360228609">Augšējā lapas dekorācija</translation>
+<translation id="5270920361877570459">Apakšējā lapas dekorācija</translation>
+<translation id="4021716437419160885">Ritināt uz leju</translation>
+<translation id="4767173360729868049">Palīgs Brave Search ilustrācijai</translation>
+<translation id="8241918461631453498">Bloķēt traucējumus ilustrācijai</translation>
+<translation id="8213310572767907663">Padarīt Brave labāku ilustrācijai</translation>
+<translation id="2427917529469438577">Bloķējiet nepatīkamus traucējumus savās iecienītākajās straumēšanas vietnēs.</translation>
 <translation id="7818938154803162778">Protams, es palīdzēšu</translation>
+<translation id="5298784657468199167">Sūtīt avārijas ziņojumus</translation>
+<translation id="6188781052835527980">Sūtiet diagnostikas ziņojumus, ja programma avarē vai sastingst.</translation>
+<translation id="4780647518983772446">Kopīgojiet privātus un anonīmus viedokļus par produktiem un par to, kādas Brave funkcijas izmanto.</translation>
+<translation id="5109496672133133896">Privāti produktu ieskati</translation>
 <translation id="3545804467215833536">Pieskarieties, lai apskatītu Brave aizsargus</translation>
 <translation id="1724327820822194498">Skatiet visu, ko Brave ir bloķējusi katrā lapā, izmantojot aizsargus.</translation>
 <translation id="5386259141409498372">Bloķēti <ph name="BIG_TECH"/> un <ph name="TRACKER"/>citas reklāmas un izsekotāji.</translation>
@@ -383,7 +398,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="717952606991220586">Ak vai, šķiet, radās kļūda. Lūdzu, mēģiniet vēlreiz vēlāk.</translation>
 <translation id="987264212798334818">Vispārīgi</translation>
 <translation id="1116694919640316211">Par</translation>
-<translation id="1275213816424141989">Varbūt vēlāk</translation>
+<translation id="2370739752330685659">Varbūt vēlāk</translation>
 <translation id="3624048886326677117">Bloķēt izsekotājus un reklāmas (agresīvi)</translation>
 <translation id="7151914815476509258">Bloķēt izsekotājus un reklāmas (standarta)</translation>
 <translation id="7384778069178817075">Atļaut visus izsekotājus un reklāmas</translation>
@@ -502,7 +517,6 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="5705882733397021510">Doties atpakaļ</translation>
 <translation id="7889432931837317731">Kad vien iespējams, atvērt automātiski</translation>
 <translation id="1029304566263314007">Rādīt lejupielādes progresa paziņojumus</translation>
-<translation id="2910433761530295035">Jautāt, kur saglabāt failus (ja konstatēta SD karte)</translation>
 <translation id="2977501775944575564">Paralēla lejupielāde</translation>
 <translation id="6224180438946945617">Iespējojiet paralēlu lejupielādi, lai palielinātu lejupielādes ātrumu</translation>
 <translation id="8967385052772844086">Skatīt pilnu konfidencialitātes ziņojumu</translation>
@@ -923,6 +937,9 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="703185154752046151">Logrīks pievienots sākuma ekrānam</translation>
 <translation id="4635094429202343515">Izmēģini Brave meklēšanas logrīku</translation>
 <translation id="4809681171446727314">Piekļūsti privātai, neatkarīgai meklēšanai taisni no sākuma ekrāna.</translation>
+<translation id="3280562213547448728">Balss meklēšana</translation>
+<translation id="3925312712530886302">Atvērt privāto meklēšanu</translation>
+<translation id="9214590551301647710">Atvērt Leo</translation>
 <translation id="7751715172931488388">Pievienot logrīku</translation>
 <translation id="7285167584112910782">Brave ātrā meklēšana</translation>
 <translation id="2326703104633309781">Izmanto Brave tulkotāju</translation>
@@ -962,7 +979,14 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Atiestatīt noklusējuma iestatījumus</translation>
 <translation id="4922034974043704366">Šī funkcija ir iespējota, jo esat to izvēlējies.</translation>
-<translation id="3144818380093107753">Brave Origin ir uz abonementu balstīts veids, kā atspējot ieņēmumus nesošās funkcijas, kas citādi nodrošina Brave kā uzņēmuma darbību. Brave Origin abonenti arī turpmāk varēs izmantot priekšrocības, ko sniedz mūsu nozarē vadošās privātuma, reklāmu bloķēšanas un ātruma (izmantojot Brave Shields) funkcijas, kā arī regulārus programmatūras atjauninājumus, Chromium ielāpus un drošības un privātuma uzlabojumus. Viņi arī atslēgs iespēju atslēgt tādas funkcijas kā Brave Leo, News, Rewards, Wallet, VPN, Web3 domēni un citas.&lt;br/&gt;&lt;br/&gt;Abonenti redzēs jaunu vadības paneli pārlūkprogrammas iestatījumu izvēlnē. Esošās funkcijas - kā arī visas jaunās funkcijas, ko mēs piegādāsim nākotnē - parādīsies šeit un pēc noklusējuma tiks izslēgtas.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Piezīme: Brave Origin nedeaktivizēs pārlūka funkcijas, ko jūs pašlaik izmantojat, un neietekmēs Brave meklēšanas funkcijas vai Brave meklēšanas reklāmas.&lt;/b&gt;</translation>
+<translation id="2587535830241068901">Pielāgojiet savu pārlūkprogrammu, vienlaikus atbalstot Brave</translation>
+<translation id="7235314227387539944">Brave Origin ir apmaksāta pārlūka versija lietotājiem, kuriem nav nepieciešami visi Brave biznesa modeļa atbalstošie līdzekļi, taču joprojām vēlas privātumu, ko piedāvā tikai Brave. Origin lietotāji turpinās gūt labumu no mūsu nozarē vadošās privātuma aizsardzības, reklāmu bloķēšanas un ātruma (izmantojot Brave vairogi), kā arī regulāru programmatūras atjauninājumu, Chromium labojumu un drošības un privātuma uzlabojumu. Origin noņems lielāko daļu citu līdzekļu no pārlūka.</translation>
+<translation id="7941943775131052130">Ņemiet vērā, ka Brave Origin pirkums ietvers arī piekļuvi Brave meklēšana Premium, jo Origin noņems reklāmas no Brave meklēšanas rezultātu lapas.</translation>
+<translation id="2573819149217596923">Mainīgas Brave funkcijas</translation>
+<translation id="7415416427817229128">Brave funkcijas iespējošana vai atspējošana prasa pārlūka restartēšanu, lai izmaiņas tiktu piemērotas. Vai vēlaties restartēt tagad?</translation>
+<translation id="2256115617011615191">Restartēt tagad</translation>
+<translation id="8554205386170195281">Pirkt</translation>
+<translation id="7071521146534760487">Pārvaldīt kontu</translation>
 <translation id="8613144770663526433">Pierakstīties ar Brave maku</translation>
 <translation id="3696514931437952995">Jūs pierakstāties <ph name="ORIGIN"/>. Brave maks kopīgos jūsu maka adresi ar <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Skatīt informāciju</translation>
@@ -1087,12 +1111,13 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="2735247450315842119">Atļaut ekrānuzņēmumu veikšanu inkognito cilnēs</translation>
 <translation id="8420414929552321089">Šī funkcija nodrošina, ka privātās cilnes ir redzamas pat tad, ja ir atvērtas vairākas citas lietotnes.</translation>
 <translation id="7956713633345437162">Mobilo ierīču grāmatzīmes</translation>
+<translation id="7984508421152399880">Pirkt tūlīt</translation>
 <translation id="6261139507111008244">Atbalstiet mūsu misiju &amp; atvērtā koda darbu</translation>
-<translation id="7882690061170175552">Minimāla pārlūkprogrammas lietotāja interfeiss, kura centrā ir vairogi</translation>
+<translation id="6073373503121903099">Minimālistiskais pārlūka interfeiss, kas centrēts uz Brave vairogi</translation>
 <translation id="2267973897341040743">Saglabāt galveno adblock, konfidencialitāti, &amp; ātrumu</translation>
-<translation id="1361157028850796410">labākā cena</translation>
-<translation id="7280825497485894053">Ikmēneša abonements</translation>
-<translation id="4570901726096223030">Uzzināt vairāk par Origin</translation>
+<translation id="3339535734679532460">Vienreizējs pirkums, bez papildu abonēšanas maksas</translation>
+<translation id="2805615640226281689">Vienreizējs pirkums</translation>
+<translation id="261433018299584676">Saņemt pieteikšanās kodu</translation>
 <translation id="1943432128510653496">Paroļu saglabāšana</translation>
 <translation id="2100273922101894616">Automātiski pierakstīties</translation>
 <translation id="363596933471559332">Automātiski pierakstīties vietnēs, izmantojot saglabātos akreditācijas datus. Ja funkcija ir izslēgta, verifikācija būs jāveic ikreiz, kad pierakstīsieties vietnē.</translation>

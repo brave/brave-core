@@ -188,12 +188,27 @@
 <translation id="834487290629916192">LATER</translation>
 <translation id="4117451092682672487">Privacy, eenvoudig geregeld.</translation>
 <translation id="7909375417585209817">Met Brave als standaardbrowser worden de privacyfuncties van Brave geopend voor elke koppeling waar u op tikt.</translation>
-<translation id="5148943178722443958">Help ons Brave beter te maken.</translation>
+<translation id="763369711159699222">Help ons Brave beter te maken</translation>
+<translation id="8025937231644975408">Laat ons weten welke functies u het fijnst vindt.</translation>
 <translation id="6718362830686703942">Verzend diagnostische rapporten als uw systeem crasht of vastloopt.</translation>
 <translation id="8616157231067364693">Deel anonieme productinzichten over welke functies worden gebruikt door de gebruikers van Brave.</translation>
 <translation id="2888496576732880897">Help Brave Search groeien</translation>
+<translation id="7198716519700700181">Voorkom onderbrekingen wanneer je streamt</translation>
 <translation id="7044431516245362795">Neem deel aan het Web Discovery Project om de index te helpen groeien en de zoekresultaten te verbeteren. <ph name="LEARN_MORE_START"/>Meer informatie.<ph name="LEARN_MORE_END"/></translation>
+<translation id="4847979153841887006">Brave-logo</translation>
+<translation id="1389386068457132299">Onboardingachtergrond</translation>
+<translation id="5101985748360228609">Bovenste bladdecoratie</translation>
+<translation id="5270920361877570459">Onderste bladdecoratie</translation>
+<translation id="4021716437419160885">Naar beneden scrollen</translation>
+<translation id="4767173360729868049">Help Brave Search-illustratie</translation>
+<translation id="8241918461631453498">Illustratie voor onderbrekingsvoorkoming</translation>
+<translation id="8213310572767907663">Illustratie voor het verbeteren van Brave</translation>
+<translation id="2427917529469438577">Voorkom vervelende onderbrekingen op jouw favoriete streamingsites.</translation>
 <translation id="7818938154803162778">Natuurlijk, ik wil helpen</translation>
+<translation id="5298784657468199167">Crashrapporten verzenden</translation>
+<translation id="6188781052835527980">Verzend anonieme diagnostische rapporten als uw systeem crasht of vastloopt.</translation>
+<translation id="4780647518983772446">Deel anonieme productinzichten over welke Brave-functies worden gebruikt.</translation>
+<translation id="5109496672133133896">Persoonlijke productinzichten</translation>
 <translation id="3545804467215833536">Tik om Brave Shields te bekijken</translation>
 <translation id="1724327820822194498">Bekijk alles wat Brave heeft geblokkeerd op alle pagina's met Shields.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> en nog <ph name="TRACKER"/> advertenties en trackers geblokkeerd</translation>
@@ -380,7 +395,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="717952606991220586">Oeps, er is iets misgegaan. Probeer het later opnieuw.</translation>
 <translation id="987264212798334818">Algemeen</translation>
 <translation id="1116694919640316211">Over</translation>
-<translation id="1275213816424141989">Misschien later</translation>
+<translation id="2370739752330685659">Misschien later</translation>
 <translation id="3624048886326677117">Trackers &amp; advertenties blokkeren (aggressief)</translation>
 <translation id="7151914815476509258">Trackers &amp; advertenties blokkeren (standaard)</translation>
 <translation id="7384778069178817075">Laat alle trackers &amp; advertenties toe</translation>
@@ -498,7 +513,6 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="5705882733397021510">Terugkeren</translation>
 <translation id="7889432931837317731">Indien mogelijk automatisch openen</translation>
 <translation id="1029304566263314007">Meldingen van voortgang van download weergeven</translation>
-<translation id="2910433761530295035">Vragen waar bestanden moeten worden opgeslagen (als SD-kaart is gedetecteerd)</translation>
 <translation id="2977501775944575564">Parallel downloaden</translation>
 <translation id="6224180438946945617">Schakel parallel downloaden in voor een hogere downloadsnelheid</translation>
 <translation id="8967385052772844086">Volledig privacyrapport weergeven</translation>
@@ -919,6 +933,9 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="703185154752046151">Widget toegevoegd aan het startscherm</translation>
 <translation id="4635094429202343515">Probeer de Brave Search-widget</translation>
 <translation id="4809681171446727314">Krijg toegang tot privé- en onafhankelijk zoeken rechtstreeks vanaf het startscherm.</translation>
+<translation id="3280562213547448728">Gesproken zoekopdrachten</translation>
+<translation id="3925312712530886302">Privézoekopdracht openen</translation>
+<translation id="9214590551301647710">Open Leo</translation>
 <translation id="7751715172931488388">Widget toevoegen</translation>
 <translation id="7285167584112910782">Snel zoeken met Brave</translation>
 <translation id="2326703104633309781">Gebruik Brave Translate</translation>
@@ -958,7 +975,14 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Terugzetten op standaardwaarden</translation>
 <translation id="4922034974043704366">Deze functie is ingeschakeld omdat u ervoor hebt gekozen</translation>
-<translation id="3144818380093107753">Brave Origin is een abonnementsgebaseerde manier om de inkomstengenererende functies uit te schakelen die anders Brave als bedrijf ondersteunen. Brave Origin-abonnees zullen blijven profiteren van onze toonaangevende privacy, adblock en snelheid (via Brave Shields), evenals regelmatige software-updates, Chromium-patches en beveiligings- en privacyverbeteringen. Ze krijgen ook de optie om functies zoals Brave Leo, Nieuws, Beloningen, Portemonnee, VPN, Web3 domeinen en meer uit te schakelen.&lt;br/&gt;&lt;br/&gt;Abonnees zullen een nieuw bedieningspaneel zien in het menu met browserinstellingen. Bestaande functies - en alle nieuwe functies die we in de toekomst zullen leveren - zullen hier verschijnen en standaard uitgeschakeld worden.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Opmerking: Brave Origin zal geen browserfuncties uitschakelen die u momenteel gebruikt, en zal geen invloed hebben op Brave Zoekfuncties of Brave Zoekadvertenties.&lt;/b&gt;</translation>
+<translation id="2587535830241068901">Pas uw browser aan terwijl u Brave blijft ondersteunen</translation>
+<translation id="7235314227387539944">Brave Origin is een betaalde versie van de browser voor gebruikers die niet alle functies nodig hebben die Brave als bedrijf ondersteunen, maar nog steeds de privacy willen die alleen Brave biedt. Origin-gebruikers blijven profiteren van onze toonaangevende privacy, adblocking en snelheid (via Shields), evenals regelmatige software-updates, Chromium-patches en verbeteringen op het gebied van beveiliging en privacy. Origin zal de meeste andere functies uit de browser verwijderen.</translation>
+<translation id="7941943775131052130">Houd er rekening mee dat een Brave Origin-aankoop ook toegang tot Brave Search Premium omvat, omdat Origin advertenties uit de Brave Search-resultaten pagina verwijdert.</translation>
+<translation id="2573819149217596923">Brave-functies wijzigen</translation>
+<translation id="7415416427817229128">Het in- of uitschakelen van een Brave-functie vereist dat de browser opnieuw wordt opgestart om de wijzigingen toe te passen. Wilt u nu opnieuw starten?</translation>
+<translation id="2256115617011615191">Nu opnieuw starten</translation>
+<translation id="8554205386170195281">Aankoop</translation>
+<translation id="7071521146534760487">Account beheren</translation>
 <translation id="8613144770663526433">Inloggen bij Brave Wallet</translation>
 <translation id="3696514931437952995">U logt in bij <ph name="ORIGIN"/>. Brave-wallet deelt uw wallet-adres met <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Gegevens bekijken</translation>
@@ -1083,12 +1107,13 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="2735247450315842119">Screenshots op privétabbladen toestaan</translation>
 <translation id="8420414929552321089">Als deze optie is ingeschakeld, zijn privétabbladen ook zichtbaar wanneer meerdere apps zijn geopend.</translation>
 <translation id="7956713633345437162">Mobiele bladwijzers</translation>
+<translation id="7984508421152399880">Nu kopen</translation>
 <translation id="6261139507111008244">Steun onze missie &amp; open-source werk</translation>
-<translation id="7882690061170175552">Minimale browser UI gecentreerd op Shields</translation>
+<translation id="6073373503121903099">Minimale browser-UI gecentreerd op Brave Shields</translation>
 <translation id="2267973897341040743">Behoud kern adblock, privacy, &amp; snelheid</translation>
-<translation id="1361157028850796410">beste optie</translation>
-<translation id="7280825497485894053">Maandabonnement</translation>
-<translation id="4570901726096223030">Meer informatie over Origin</translation>
+<translation id="3339535734679532460">Eenmalige aankoop, geen extra abonnementskosten</translation>
+<translation id="2805615640226281689">Eenmalige aankoop</translation>
+<translation id="261433018299584676">Aanmeldingscode ophalen</translation>
 <translation id="1943432128510653496">Wachtwoorden opslaan</translation>
 <translation id="2100273922101894616">Automatisch inloggen</translation>
 <translation id="363596933471559332">Log automatisch in bij websites met de opgeslagen inloggegevens. Als de functie uitstaat, moet je je identiteit verifiëren voordat je kunt inloggen bij een website.</translation>

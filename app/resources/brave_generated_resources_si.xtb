@@ -323,6 +323,8 @@
 <translation id="8813509417421129632"><ph name="SITE"/> හි කාවැද්දූ පිටුවකට මෙය සුරැකීමට වුවමනාය:</translation>
 <translation id="7700010743463174379">මෙම පිටුවට මෙය සුරැකීමට වුවමනාය:</translation>
 <translation id="6774238875569752630">මෙය මෙම පිටුවේ කාවැද්දූ පිටුවකට සුරැකීමට වුවමනාය:</translation>
+<translation id="1383876407941801731">සොයන්න</translation>
+<translation id="5496587651328244253">සංවිධානය</translation>
 <translation id="1233913566967531780">පටිත්තට නාභිගත</translation>
 <translation id="4034992002364254340">අදාළ සියලු පටිති නව කවුළුවකට එකතැන් කරන්න</translation>
 <translation id="8012125596344613514">යෝජිත මාතෘකා</translation>
@@ -340,6 +342,7 @@
 <translation id="6501807887341963552">පෙනුම සහ වර්ණ</translation>
 <translation id="6724227215236550330">මෙම උපාංගයේ <ph name="BRAND"/> වෙත මුරපද ආයාත කිරීමට CSV ගොනුවක් <ph name="BEGIN_LINK"/> තෝරන්න<ph name="END_LINK"/>.</translation>
 <translation id="3575561030014162610">මෙම උපාංගයේ <ph name="BRAND"/> වෙත මුරපද ආයාත කිරීමට, CSV ගොනුවක් තෝරන්න</translation>
+<translation id="8570228839666486945">උපාංග මත AI</translation>
 <translation id="9156965752763025780">ඔබ ඊළඟ වතාවේ බ්‍රේව් දියත් කරන විට වෙනස්කම් යෙදෙනු ඇත</translation>
 <translation id="7179921470347911571">යළි දියත් කරන්න</translation>
 <translation id="1426410128494586442">ඔව්</translation>
@@ -392,6 +395,7 @@
 <translation id="5297085818601043899">මෙවලම් ඉඟිය</translation>
 <translation id="5219886318310413094">සියලු කවුළු වල ඇමිණු පටිති පෙන්වන්න</translation>
 <translation id="2396127686705429331">පොත්යොමු බොත්තම පෙන්වන්න</translation>
+<translation id="443318149139185498">ප්‍රධාන මෙනු බොත්තමේ දළ සටහන ලාංඡනය භාවිතා කරන්න</translation>
 <translation id="2814998458708016836">පුළුල් ලිපින තීරුව භාවිතා කරන්න</translation>
 <translation id="4749586705247636385">ප්‍රධාන අන්තර්ගත ප්‍රදේශවල වටකුරු මායිම් පෙන්වන්න</translation>
 <translation id="4109670531935487117">ලිපින තීරුවේ ඉබේ පිරවෙන යෝජනා පෙන්වන්න</translation>
@@ -545,7 +549,7 @@
 <translation id="509873765238158442">Microsoft Recall අවහිර කරන්න</translation>
 <translation id="4763421121695677716">Brave පටිත්තවලට ඔට්ටු ගත කීර්ති ඇණවුමක් ගෙන පටිත්තවලගේ ස්ක්‍රීන්ෂොට්ස් ස්වයංක්‍රීයව ගන්නා Microsoft Windows පටිත්ත සිසු විශේෂාංගය ලාභදායක කරන්නේ නැත.</translation>
 <translation id="1968895725257436430">දත්ත එකතුව</translation>
-<translation id="4846154056248462491">පිටවීමේදී</translation>
+<translation id="1700052872056357670">පිටවීමේදී දත්ත මකන්න</translation>
 <translation id="216468847346280584">Brave දැන්වීම් දත්ත මකන්න...</translation>
 <translation id="2808630562319398131">Brave පාරිතෝෂික දත්ත යළි සකසන්න...</translation>
 <translation id="6438096877646138757">ඔබ වැසූ පසු දත්තකඩ හිස් කරන අඩවි</translation>
@@ -791,6 +795,7 @@
 <translation id="1529674267267221673">ඔබ අඩවියක් මත දකුණින් එබූ විට සන්දර්භ වට්ටෝරුවේ ලියෝ දිස්වනු ඇත. මෙය වත්මන් පිටුවෙන් ලියෝ වෙත සන්දර්භය යවනු ඇත.</translation>
 <translation id="5226020406479918122">පටිති නාභිගත ප්‍රකාරය</translation>
 <translation id="3705539672403311123">ටැබ් සෙවුම් පිටුවේ ටැබ් සංවිධානය සක්‍රීය කරන්න. විවෘත කළ විට, මෙය සියලුම පුද්ගලික නොවන ටැබ් වල මාතෘකා සහ මූලාරම්භයන් වර්ගීකරණය කිරීම සඳහා ලියෝ වෙත ස්වයංක්‍රීයව යවනු ඇත. <ph name="BEGIN_LINK"/>තව දැනගන්න<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">ටැබ් ফෝකස සඳහා පෙරනිමි ආදර්ශකය</translation>
 <translation id="8172263161008556851">සංවාදයේ යෝජිත ප්‍රේරක පෙන්වන්න</translation>
 <translation id="5781842473834867765">මාගේ සංවාද ඉතිහාසය ගබඩා කරන්න</translation>
 <translation id="1082960401708055995">සංවාද ආචයනය අබල කිරීමෙන් කලින් ගබඩා කර ඇති සියලුම සංවාද සදහටම මැකෙනු ඇත. මෙම ක්‍රියාමාර්ගය අප්‍රතිවර්ත්‍යයි.</translation>

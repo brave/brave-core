@@ -188,12 +188,27 @@
 <translation id="834487290629916192">NESKÔR</translation>
 <translation id="4117451092682672487">Jednoduchý spôsob ochrany vášho súkromia.</translation>
 <translation id="7909375417585209817">S Brave ako predvoleným prehliadačom sa každý odkaz, na ktorý ťuknete, otvorí s ochranou osobných údajov Brave.</translation>
-<translation id="5148943178722443958">Pomôžte zlepšiť prehliadač Brave.</translation>
+<translation id="763369711159699222">Pomôžte zlepšiť prehliadač Brave</translation>
+<translation id="8025937231644975408">Dajte nám vedieť, ktoré funkcie sa vám páčia najviac.</translation>
 <translation id="6718362830686703942">Odošlite diagnostické správy, ak dôjde k zlyhaniu alebo zamrznutiu.</translation>
 <translation id="8616157231067364693">Zdieľajte súkromné a anonymné informácie o produktoch, ktoré používatelia Brave používajú.</translation>
 <translation id="2888496576732880897">Pomôžte Vyhľadávaniu Brave rásť</translation>
+<translation id="7198716519700700181">Blokujte prerušenia pri streamovaní</translation>
 <translation id="7044431516245362795">Prihláste sa do projektu Web Discovery Project a pomôžte tak rozšíriť index a zlepšiť výsledky vyhľadávania. <ph name="LEARN_MORE_START"/>Ďalšie informácie.<ph name="LEARN_MORE_END"/></translation>
+<translation id="4847979153841887006">Logo Brave</translation>
+<translation id="1389386068457132299">Pozadie onboardingu</translation>
+<translation id="5101985748360228609">Horný list dekorácie</translation>
+<translation id="5270920361877570459">Spodný list dekorácie</translation>
+<translation id="4021716437419160885">Posunúť nadol</translation>
+<translation id="4767173360729868049">Ilustrácia Pomôžte Vyhľadávaniu Brave rásť</translation>
+<translation id="8241918461631453498">Ilustrácia Blokujte prerušenia</translation>
+<translation id="8213310572767907663">Ilustrácia Zlepšite Brave</translation>
+<translation id="2427917529469438577">Zablokujte nepríjemné prerušenia na svojich obľúbených streamovacích stránkach.</translation>
 <translation id="7818938154803162778">Áno, chcem pomôcť</translation>
+<translation id="5298784657468199167">Odoslať správy o zlyhaní</translation>
+<translation id="6188781052835527980">Odošlite anonymné diagnostické správy, ak dôjde k zlyhaniu alebo zamrznutiu.</translation>
+<translation id="4780647518983772446">Zdieľajte súkromné a anonymné informácie o produktoch, ktoré používatelia Brave používajú.</translation>
+<translation id="5109496672133133896">Súkromné informácie o produktoch</translation>
 <translation id="3545804467215833536">Ťuknutím zobrazíte Brave Shields</translation>
 <translation id="1724327820822194498">Pozrite si všetky obťažujúce prvky, ktoré prehliadač Brave zablokoval na jednotlivých stránkach pomocou funkcie Shields.</translation>
 <translation id="5386259141409498372">Blokovanie <ph name="BIG_TECH"/> a <ph name="TRACKER"/> ďalších reklám a sledovacích nástrojov</translation>
@@ -383,7 +398,7 @@ Naozaj chcete pokračovať?</translation>
 <translation id="717952606991220586">Och, niečo sa pokazilo. Prosím, skúste to znova.</translation>
 <translation id="987264212798334818">Všeobecné</translation>
 <translation id="1116694919640316211">Informácie</translation>
-<translation id="1275213816424141989">Možno neskôr</translation>
+<translation id="2370739752330685659">Možno neskôr</translation>
 <translation id="3624048886326677117">Blokovať trackery &amp; a reklamy (agresívne)</translation>
 <translation id="7151914815476509258">Blokovať trackery &amp; a reklamy (štandardne)</translation>
 <translation id="7384778069178817075">Povoliť všetky sledovače &amp; reklamy</translation>
@@ -501,7 +516,6 @@ Naozaj chcete pokračovať?</translation>
 <translation id="5705882733397021510">Ísť naspäť</translation>
 <translation id="7889432931837317731">Ak je to možné, automaticky sa otvorí</translation>
 <translation id="1029304566263314007">Zobraziť oznámenia o priebehu sťahovania</translation>
-<translation id="2910433761530295035">Opýtať sa, kam uložiť súbory (ak je zistená karta SD)</translation>
 <translation id="2977501775944575564">Paralelné sťahovanie</translation>
 <translation id="6224180438946945617">Povoliť paralelné sťahovanie na zvýšenie rýchlosti sťahovania</translation>
 <translation id="8967385052772844086">Zobraziť celú správu o ochrane osobných údajov</translation>
@@ -922,6 +936,9 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="703185154752046151">Miniaplikácia pridaná na domovskú obrazovku</translation>
 <translation id="4635094429202343515">Vyskúšajte widget Vyhľadávania Brave</translation>
 <translation id="4809681171446727314">Prístup k súkromnému, nezávislému vyhľadávaniu priamo z domovskej obrazovky.</translation>
+<translation id="3280562213547448728">Hlasové vyhľadávanie</translation>
+<translation id="3925312712530886302">Otvoriť súkromné vyhľadávanie</translation>
+<translation id="9214590551301647710">Otvoriť Leo</translation>
 <translation id="7751715172931488388">Pridať miniaplikáciu</translation>
 <translation id="7285167584112910782">Rýchle vyhľadávanie Brave</translation>
 <translation id="2326703104633309781">Použiť Brave Translate</translation>
@@ -961,7 +978,14 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Obnovenie predvolených nastavení</translation>
 <translation id="4922034974043704366">Táto funkcia je povolená, pretože ste sa k nej prihlásili</translation>
-<translation id="3144818380093107753">Brave Origin je spôsob, ako na základe predplatného vypnúť funkcie generujúce príjmy, ktoré inak podporujú Brave ako podnikanie. Predplatitelia služby Brave Origin budú naďalej využívať výhody našej špičkovej ochrany súkromia, blokovania reklám a rýchlosti (prostredníctvom Brave Shields), ako aj pravidelné aktualizácie softvéru, záplaty Chromium a vylepšenia zabezpečenia a ochrany súkromia. Odomkne sa im aj možnosť vypnúť funkcie, ako sú Brave Leo, Novinky, Odmeny, Peňaženka, VPN, Web3 domény a ďalšie.&lt;br/&gt;&lt;br/&gt;Predplatitelia uvidia nový ovládací panel v ponuke nastavení prehliadača. Existujúce funkcie - ako aj všetky nové funkcie, ktoré dodáme v budúcnosti - sa tu zobrazia a budú štandardne vypnuté.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Poznámka: Brave Origin nezakáže funkcie prehliadača, ktoré v súčasnosti používate, a neovplyvní funkcie vyhľadávania Brave ani reklamy Brave Search.&lt;/b&gt;</translation>
+<translation id="2587535830241068901">Prispôsobenie prehliadača a zároveň podpora Brave</translation>
+<translation id="7235314227387539944">Brave Origin je platená verzia prehliadača pre používateľov, ktorí nepotrebujú všetky funkcie, ktoré podporujú Brave ako podnikanie, ale stále chcú súkromie, ktoré ponúka iba Brave. Používatelia Origin budú naďalej profitovať z našej špecializovanej ochrany súkromia, blokávania reklám a rýchlosti (prostredníctvom Štítov), ako aj z pravidelných aktualizácií softvéru, opráv Chromium a zlepšení bezpečnosti a súkromia. Origin odstráni väčšinu ďalších funkcií z prehliadača.</translation>
+<translation id="7941943775131052130">Upozorňujeme, že nákup Brave Origin bude obsahovať aj prístup k Vyhľadávaniu Brave Premium, keďže Origin odstráni Ads zo stránky výsledkov Vyhľadávania Brave.</translation>
+<translation id="2573819149217596923">Zmena funkcií Brave</translation>
+<translation id="7415416427817229128">Zapnutie alebo vypnutie funkcie Brave vyžaduje reštartovanie prehliadača, aby sa zmeny uplatnili. Chcete teraz reštartovať?</translation>
+<translation id="2256115617011615191">Reštartovať teraz</translation>
+<translation id="8554205386170195281">Nákup</translation>
+<translation id="7071521146534760487">Spravovať účet</translation>
 <translation id="8613144770663526433">Prihláste sa pomocou peňaženky Brave</translation>
 <translation id="3696514931437952995">Prihlasujete sa do <ph name="ORIGIN"/>. Peňaženka Brave bude zdieľať adresu vašej peňaženky s <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Zobraziť podrobnosti</translation>
@@ -1089,12 +1113,13 @@ Leo AI. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="2735247450315842119">Povoliť snímky obrazovky v súkromných kartách</translation>
 <translation id="8420414929552321089">Ak je táto možnosť povolená, súkromné karty budú viditeľné aj pri viacerých otvorených aplikáciách.</translation>
 <translation id="7956713633345437162">Mobilné záložky</translation>
+<translation id="7984508421152399880">Kúpiť teraz</translation>
 <translation id="6261139507111008244">Podporte našu misiu &amp; práce s otvoreným zdrojovým kódom</translation>
-<translation id="7882690061170175552">Minimálne používateľské rozhranie prehliadača zamerané na štíty</translation>
+<translation id="6073373503121903099">Minimalistické užívateľské rozhranie prehliadača zamerané na Štíty Brave</translation>
 <translation id="2267973897341040743">Zachovanie jadra blokovania reklám, súkromia, rýchlosti &amp;</translation>
-<translation id="1361157028850796410">najvýhodnejšie</translation>
-<translation id="7280825497485894053">Mesačné predplatné</translation>
-<translation id="4570901726096223030">Viac informácií o Origin</translation>
+<translation id="3339535734679532460">Jednorazový nákup bez dodatočných nákladov na predplatné</translation>
+<translation id="2805615640226281689">Jednorazový nákup</translation>
+<translation id="261433018299584676">Získať kód na prihlásenie</translation>
 <translation id="1943432128510653496">Ukladať heslá</translation>
 <translation id="2100273922101894616">Automaticky prihlasovať</translation>
 <translation id="363596933471559332">Povolí automatické prihlasovanie na webové stránky pomocou uložených poverení. Keď je funkcia vypnutá, zobrazí sa výzva na overenie vždy pred prihlásením na web.</translation>

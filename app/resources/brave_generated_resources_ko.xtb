@@ -323,6 +323,8 @@
 <translation id="8813509417421129632"><ph name="SITE"/>에 임베드된 페이지가 다음을 저장하려고 함</translation>
 <translation id="7700010743463174379">이 페이지가 다음을 저장하려고 함</translation>
 <translation id="6774238875569752630">이 페이지상에 임베드된 페이지가 다음을 저장하려고 함</translation>
+<translation id="1383876407941801731">검색</translation>
+<translation id="5496587651328244253">정리</translation>
 <translation id="1233913566967531780">탭 포커스</translation>
 <translation id="4034992002364254340">모든 관련 탭을 새 창에 모읍니다</translation>
 <translation id="8012125596344613514">추천 주제</translation>
@@ -340,6 +342,7 @@
 <translation id="6501807887341963552">테마 및 색상</translation>
 <translation id="6724227215236550330">저장된 암호가 여기에 표시됩니다. 이 기기에서 <ph name="BRAND"/>(으)로 비밀번호를 가져오려면 <ph name="BEGIN_LINK"/>CSV 파일을 선택하세요.<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">이 기기에서 <ph name="BRAND"/>(으)로 암호를 가져오려면 CSV 파일을 선택하세요</translation>
+<translation id="8570228839666486945">온디바이스 AI</translation>
 <translation id="9156965752763025780">변경사항은 다음에 Brave을 다시 시작할 때 적용됩니다.</translation>
 <translation id="7179921470347911571">지금 다시 실행</translation>
 <translation id="1426410128494586442">예</translation>
@@ -392,6 +395,7 @@
 <translation id="5297085818601043899">툴팁</translation>
 <translation id="5219886318310413094">모든 창에 고정된 탭 표시</translation>
 <translation id="2396127686705429331">북마크 버튼 표시</translation>
+<translation id="443318149139185498">기본 메뉴 버튼에 윤곽선 로고 사용</translation>
 <translation id="2814998458708016836">넓은 주소 표시줄 사용</translation>
 <translation id="4749586705247636385">주요 콘텐츠 영역에 둥근 모서리 표시</translation>
 <translation id="4109670531935487117">주소 표시줄에 자동 완성 추천 표시</translation>
@@ -545,7 +549,7 @@
 <translation id="509873765238158442">마이크로소프트 리콜 차단</translation>
 <translation id="4763421121695677716">마이크로소프트 윈도우 컴퓨터의 리콜 기능이 열려 있는 Brave 탭의 스크린샷을 자동으로 찍지 못하도록 차단합니다.</translation>
 <translation id="1968895725257436430">데이터 수집</translation>
-<translation id="4846154056248462491">나갈 때</translation>
+<translation id="1700052872056357670">종료 시 데이터 지우기</translation>
 <translation id="216468847346280584">Brave Ads 데이터 지우기...</translation>
 <translation id="2808630562319398131">Brave 리워드 데이터 재설정...</translation>
 <translation id="6438096877646138757">닫으면 쿠키가 삭제되는 사이트</translation>
@@ -792,6 +796,7 @@
 <translation id="1529674267267221673">웹사이트에서 우클릭하면 나오는 컨텍스트 메뉴에 레오가 표시됩니다. 현재 웹페이지의 컨텍스트를 레오로 보낼 수 있습니다.</translation>
 <translation id="5226020406479918122">탭 포커스 모드</translation>
 <translation id="3705539672403311123">탭 검색 페이지의 탭 정리를 활성화합니다. 탭을 열면 비공개가 아닌 모든 탭의 제목과 출처가 자동으로 레오에 전송되어 분류됩니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">탭 포커스의 기본 모델</translation>
 <translation id="8172263161008556851">대화 내에 추천 프롬프트 표시</translation>
 <translation id="5781842473834867765">대화 기록 저장</translation>
 <translation id="1082960401708055995">대화 저장을 비활성화하면 이전에 저장된 모든 대화가 영구적으로 삭제됩니다. 이 작업은 번복할 수 없습니다.</translation>

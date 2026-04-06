@@ -188,12 +188,27 @@
 <translation id="834487290629916192">MË VONË</translation>
 <translation id="4117451092682672487">Privatësi. E thjeshtuar.</translation>
 <translation id="7909375417585209817">Ku paracakton Brave, çdo lidhje që prek hapet me mbrojtjet e privatësisë së Brave.</translation>
-<translation id="5148943178722443958">Ndihmo në përmirësimin e Brave.</translation>
+<translation id="763369711159699222">Ndihmo në përmirësimin e Brave</translation>
+<translation id="8025937231644975408">Na tregoni cilat veçori ju pëlqejnë më shumë.</translation>
 <translation id="6718362830686703942">Dërgo raporte diagnostikuese, nëse has në rënie ose ngrirje të programit.</translation>
 <translation id="8616157231067364693">Ndaj mendime private dhe anonime mbi produktet në lidhje me veçoritë që përdoren nga përdoruesit e Brave.</translation>
 <translation id="2888496576732880897">Ndihmojini Kërkimit Brave të rritet</translation>
+<translation id="7198716519700700181">Blokoni ndërprerjet kur transmetoni</translation>
 <translation id="7044431516245362795">Zgjidh Projektin e Zbulimit të Internetit për të ndihmuar në rritjen e indeksit dhe përmirësimin e rezultateve të kërkimit. <ph name="LEARN_MORE_START"/>Mëso më shumë.<ph name="LEARN_MORE_END"/></translation>
+<translation id="4847979153841887006">Logoja e Brave</translation>
+<translation id="1389386068457132299">Sfondi i onboardingut</translation>
+<translation id="5101985748360228609">Dekorimi i fletës sipërme</translation>
+<translation id="5270920361877570459">Dekorimi i fletës në fund</translation>
+<translation id="4021716437419160885">Shkoni poshtë</translation>
+<translation id="4767173360729868049">Ilustrimi i ndihmës për Kërkimin Brave</translation>
+<translation id="8241918461631453498">Ilustrimi i bllokimit të ndërprerjeve</translation>
+<translation id="8213310572767907663">Ilustrimi i përmirësimit të Brave</translation>
+<translation id="2427917529469438577">Blokoni ndërprerjet e irrituese në sajtet tuaja të preferuara të transmetimit.</translation>
 <translation id="7818938154803162778">Do t'ju ndihmoj, sigurisht</translation>
+<translation id="5298784657468199167">Dërgoni raporte rrëzimi</translation>
+<translation id="6188781052835527980">Dërgo raporte diagnostikuese anonime, nëse has në rënie ose ngrirje të programit.</translation>
+<translation id="4780647518983772446">Ndaj mendime private dhe anonime mbi produktet në lidhje me veçoritë e Brave që përdoren.</translation>
+<translation id="5109496672133133896">Mendime private mbi produktet</translation>
 <translation id="3545804467215833536">Shtyp për të parë Mburojat Brave</translation>
 <translation id="1724327820822194498">Shikoni të gjitha gjërat e këqija që i bllokoi Brave në çdo faqe, me Mburojat.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> dhe <ph name="TRACKER"/> reklama të tjera dhe gjurmues të bllokuar</translation>
@@ -380,7 +395,7 @@ A jeni të sigurtë që dëshironi të bëni këtë?</translation>
 <translation id="717952606991220586">Hëm, diç shkoi ters. Ju lutemi, riprovoni më vonë.</translation>
 <translation id="987264212798334818">Të përgjithshme</translation>
 <translation id="1116694919640316211">Rreth</translation>
-<translation id="1275213816424141989">Mbase më vonë</translation>
+<translation id="2370739752330685659">Ndoshta më vonë</translation>
 <translation id="3624048886326677117">Bllokoni gjurmues &amp; reklama (Agresive)</translation>
 <translation id="7151914815476509258">Bllokoni gjurmues &amp; reklama (Standard)</translation>
 <translation id="7384778069178817075">Lejo gjithë gjurmuesit dhe reklamat</translation>
@@ -502,7 +517,6 @@ Të Bllokuara</translation>
 <translation id="5705882733397021510">Shko mbrapsht</translation>
 <translation id="7889432931837317731">Hape automatikisht kur të jetë e mundur</translation>
 <translation id="1029304566263314007">Shfaq njoftimet e progresit të shkarkimit</translation>
-<translation id="2910433761530295035">Pyet ku të ruhen skedarët (nëse detektohet karta SD)</translation>
 <translation id="2977501775944575564">Shkarkim Paralel</translation>
 <translation id="6224180438946945617">Aktivizo shkarkimin paralel për të përshpejtuar shpejtësinë e shkarkimit</translation>
 <translation id="8967385052772844086">Shiko Raportin e Plotë të Privatësisë</translation>
@@ -921,6 +935,9 @@ Nëse nuk e pranoni këtë kërkesë, VPN nuk do të rindërlidhet dhe lidhja ju
 <translation id="703185154752046151">Widget-i shtua në ekranin kryesor</translation>
 <translation id="4635094429202343515">Provo widget-in e Kërkimit Brave</translation>
 <translation id="4809681171446727314">Hyni në kërkimin privat dhe të pavarur drejtpërdrejt nga ekrani juaj kryesor.</translation>
+<translation id="3280562213547448728">Kërkimi me zë</translation>
+<translation id="3925312712530886302">Hap kërkimin privat</translation>
+<translation id="9214590551301647710">Hap Leo</translation>
 <translation id="7751715172931488388">Shto widget</translation>
 <translation id="7285167584112910782">Kërkimi i shpejtë i veprimeve me Brave</translation>
 <translation id="2326703104633309781">Përdor Përkthyesin Brave</translation>
@@ -960,7 +977,14 @@ Nëse nuk e pranoni këtë kërkesë, VPN nuk do të rindërlidhet dhe lidhja ju
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Riktheji në parazgjedhje</translation>
 <translation id="4922034974043704366">Kjo veçori është e aktivizuar sepse ju u pajtuat me të</translation>
-<translation id="3144818380093107753">Brave Origin është një mënyrë me abonim për të çaktivizuar veçoritë që gjenerojnë të ardhura, të cilat përndryshe mbështesin Brave si biznes. Abonentët e Brave Origin do të vazhdojnë të përfitojnë nga privatësia udhëheqëse në industri, bllokimi i reklamave dhe shpejtësia (nëpërmjet Mburojat Brave), si dhe përditësime të rregullta të softuerit, përditësime të Chromium-it dhe përmirësime të sigurisë dhe privatësisë.&lt;br/&gt;&lt;br/&gt;Gjithashtu, ata do të çelin opsionin për të çaktivizuar veçori si Brave Leo, Lajme, Rewards, Wallet, VPN, domene Web3 dhe më shumë.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Shënim: Brave Origin nuk do të çaktivizojë veçoritë e browser-it që përdorni aktualisht, dhe nuk do të ndikojë tek veçoritë e Kërkimit Brave apo Reklamat e Kërkimit Brave.&lt;/b&gt;</translation>
+<translation id="2587535830241068901">Përshtatni shfletuesin tuaj duke mbështetur gjithashtu Brave</translation>
+<translation id="7235314227387539944">Brave Origin është një version i paguar i shfletuesit për përdoruesit që nuk kanë nevojë për të gjithë veçoritë që mbështesin Brave si një biznes, por ende dëshirojnë privatësinë që vetëm Brave ofron. Përdoruesit e Origin do të vazhdojnë të përfitojnë nga privatësia jonë e paparë në industri, adblock, dhe shpejtësia (përmes Mburojave), si dhe përditësimet e rregullta të softuerit, rregullimet e Chromium, dhe përmirësimet e sigurisë dhe privatësisë. Origin do të hequr shumicën e veçorive të tjera nga shfletuesit.</translation>
+<translation id="7941943775131052130">Vini në dukje se një blerje e Brave Origin do të përfshijë gjithashtu aksesin në Kërkim Brave Premium, pasi Origin do të heqë reklamat nga faqja e rezultateve të Kerkimit Brave.</translation>
+<translation id="2573819149217596923">Ndryshimi i veçorive të Brave</translation>
+<translation id="7415416427817229128">Aktivizimi ose çaktivizimi i një veçorie të Brave kërkon që shfletuesit të rifillon për të zbatuara ndryshimet. Dëshironi të rivendoseni tani?</translation>
+<translation id="2256115617011615191">Rivendos tani</translation>
+<translation id="8554205386170195281">Blerje</translation>
+<translation id="7071521146534760487">Menaxho llogarinë</translation>
 <translation id="8613144770663526433">Identifikohu me Brave Wallet</translation>
 <translation id="3696514931437952995">Po lidhesh me <ph name="ORIGIN"/>. Kuleta Brave do të ndajë adresën tënde të kuletës me <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Shih detajet</translation>
@@ -1086,12 +1110,13 @@ mbështetet nga IA dhe është ndërtuar drejt e në shfletues</translation>
 <translation id="2735247450315842119">Lejo bëj screenshot në skeda private</translation>
 <translation id="8420414929552321089">Nëse lejohet, skedat private do të jenë të dukshme edhe kur janë të hapura aplikacione të shumta.</translation>
 <translation id="7956713633345437162">Faqeruejtësit e pajisjes së lëvizshme</translation>
+<translation id="7984508421152399880">Blej tani</translation>
 <translation id="6261139507111008244">Mbështetni misionin tonë &amp; punën open-source</translation>
-<translation id="7882690061170175552">UI minimialist i browser-it i fokusuar në Mburojat</translation>
+<translation id="6073373503121903099">UI minimialist i shfletuesit i fokusuar në Mburojat Brave</translation>
 <translation id="2267973897341040743">Ruaj bllokuesin bazë të reklamave, privatësinë &amp; shpejtësinë</translation>
-<translation id="1361157028850796410">vlera më e mirë</translation>
-<translation id="7280825497485894053">Abonim mujor</translation>
-<translation id="4570901726096223030">Mëso më shumë për Origin</translation>
+<translation id="3339535734679532460">Blerje përnjëherë, nuk ka kosto të shtesë të abonimit</translation>
+<translation id="2805615640226281689">Blerje Përnjëherë</translation>
+<translation id="261433018299584676">Merr një kod hyrjeje</translation>
 <translation id="1943432128510653496">Ruaj fjalëkalimet</translation>
 <translation id="2100273922101894616">Identifikohu automatikisht</translation>
 <translation id="363596933471559332">Identifikohu automatikisht në uebsajte duke përdorur kredencialet e ruajtura. Kur veçoria është e çaktivizuar, do të të kërkohet gjithmonë verifikimi  përpara se të identifikohesh në një uebsajt.</translation>

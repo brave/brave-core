@@ -188,12 +188,27 @@
 <translation id="834487290629916192">PLUS TARD</translation>
 <translation id="4117451092682672487">Protégez votre vie privée en toute facilité.</translation>
 <translation id="7909375417585209817">En définissant Brave comme navigateur par défaut, chaque lien s'ouvrira avec les protections de confidentialité de Brave.</translation>
-<translation id="5148943178722443958">Aidez-nous à améliorer Brave.</translation>
+<translation id="763369711159699222">Aidez-nous à améliorer Brave</translation>
+<translation id="8025937231644975408">Indiquez-nous les fonctionnalités que vous préférez.</translation>
 <translation id="6718362830686703942">Envoyer des rapports de diagnostic en cas de dysfonctionnement.</translation>
 <translation id="8616157231067364693">Partagez des renseignements privés et anonymes sur les fonctionnalités utilisées par les utilisateurs de Brave.</translation>
 <translation id="2888496576732880897">Aidez-nous à développer la recherche Brave</translation>
+<translation id="7198716519700700181">Bloquez les interruptions lorsque vous regardez en continu</translation>
 <translation id="7044431516245362795">Participez au projet Web Discovery pour aider à développer l'index et améliorer les résultats de recherche. <ph name="LEARN_MORE_START"/>En savoir plus.<ph name="LEARN_MORE_END"/></translation>
+<translation id="4847979153841887006">Logo Brave</translation>
+<translation id="1389386068457132299">Arrière-plan d'intégration</translation>
+<translation id="5101985748360228609">Décoration de feuille supérieure</translation>
+<translation id="5270920361877570459">Décoration de feuille inférieure</translation>
+<translation id="4021716437419160885">Défiler vers le bas</translation>
+<translation id="4767173360729868049">Illustration d'aide à la recherche Brave</translation>
+<translation id="8241918461631453498">Illustration de blocage des interruptions</translation>
+<translation id="8213310572767907663">Illustration pour améliorer Brave</translation>
+<translation id="2427917529469438577">Bloquez les interruptions gênantes sur vos sites de streaming préférés.</translation>
 <translation id="7818938154803162778">Oui, je veux apporter mon aide</translation>
+<translation id="5298784657468199167">Envoyer des rapports de dysfonctionnement</translation>
+<translation id="6188781052835527980">Envoyer des rapports de diagnostic anonymes en cas de dysfonctionnement.</translation>
+<translation id="4780647518983772446">Partagez des renseignements privés et anonymes sur les fonctionnalités de Brave qui sont utilisées.</translation>
+<translation id="5109496672133133896">Renseignements privés sur les produits</translation>
 <translation id="3545804467215833536">Appuyez pour voir les boucliers Brave</translation>
 <translation id="1724327820822194498">Visualisez toutes les nuisances bloquées par Brave sur chaque page grâce aux boucliers.</translation>
 <translation id="5386259141409498372">publicités et traceurs de <ph name="BIG_TECH"/> et <ph name="TRACKER"/> autre(s) bloqués</translation>
@@ -380,7 +395,7 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="717952606991220586">Oups, quelque chose ne va pas. Veuillez réessayer plus tard.</translation>
 <translation id="987264212798334818">Généralités</translation>
 <translation id="1116694919640316211">À propos</translation>
-<translation id="1275213816424141989">Peut-être plus tard</translation>
+<translation id="2370739752330685659">Peut-être plus tard</translation>
 <translation id="3624048886326677117">Bloquer les traqueurs et les annonces (agressif)</translation>
 <translation id="7151914815476509258">Bloquer les traqueurs et les publicités (standard)</translation>
 <translation id="7384778069178817075">Autoriser tous les traqueurs et annonces</translation>
@@ -498,7 +513,6 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="5705882733397021510">Revenir</translation>
 <translation id="7889432931837317731">Ouvrir automatiquement lorsque possible</translation>
 <translation id="1029304566263314007">Afficher les notifications de progression des téléchargements</translation>
-<translation id="2910433761530295035">Demander où enregistrer les fichiers (si une carte SD est détectée)</translation>
 <translation id="2977501775944575564">Téléchargements parallèles</translation>
 <translation id="6224180438946945617">Activez les téléchargements parallèles pour augmenter votre vitesse de téléchargement</translation>
 <translation id="8967385052772844086">Afficher le rapport de confidentialité complet</translation>
@@ -919,6 +933,9 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="703185154752046151">Gadget logiciel ajouté à l'écran d'accueil</translation>
 <translation id="4635094429202343515">Essayez le widget de recherche Brave</translation>
 <translation id="4809681171446727314">Utilisez un moteur de recherche indépendant et protégeant votre vie privée directement depuis votre écran d'accueil.</translation>
+<translation id="3280562213547448728">Recherche vocale</translation>
+<translation id="3925312712530886302">Ouvrir une recherche privée</translation>
+<translation id="9214590551301647710">Ouvrir Leo</translation>
 <translation id="7751715172931488388">Ajouter le gadget logiciel</translation>
 <translation id="7285167584112910782">recherche d'action rapide Brave</translation>
 <translation id="2326703104633309781">Utiliser l'outil de traduction Brave</translation>
@@ -958,7 +975,14 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Rétablir les paramètres par défaut</translation>
 <translation id="4922034974043704366">Cette fonctionnalité est activée parce que vous y avez consenti</translation>
-<translation id="3144818380093107753">Brave Origin est un abonnement qui vous permet de désactiver les fonctionnalités génératrices de revenus qui soutiennent autrement Brave en tant qu’entreprise. Les abonnés de Brave Origin continueront de bénéficier de notre protection de confidentialité de pointe, du blocage des publicités et de la vitesse (grâce aux boucliers Brave), ainsi que des mises à jour logicielles régulières, des correctifs Chromium, et des améliorations en matière de sécurité et de confidentialité. Ils pourront également désactiver des fonctionnalités comme Brave Leo, Actualités, programme de récompenses, portefeuille, VPN, les domaines Web3, et plus encore.&lt;br/&gt;&lt;br/&gt;Les abonnés verront un nouveau panneau de configuration dans le menu des paramètres du navigateur. Les fonctionnalités existantes — ainsi que toute nouvelle fonctionnalité que nous pourrions publier ultérieurement — y apparaîtront et seront désactivées par défaut.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Remarque : Brave Origin ne désactivera pas les fonctionnalités du navigateur que vous utilisez actuellement et n’affectera pas les fonctionnalités ni les annonces dans les résultats de recherche Brave.&lt;/b&gt;</translation>
+<translation id="2587535830241068901">Personnalisez votre navigateur tout en continuant de soutenir Brave</translation>
+<translation id="7235314227387539944">Brave Origin est une version payante du navigateur pour les utilisateurs qui n'ont pas besoin de toutes les fonctionnalités qui soutiennent Brave en tant qu'entreprise, mais qui veulent quand même la confidentialité que seul Brave offre. Les utilisateurs d'Origin continueront à bénéficier de notre confidentialité de pointe, du blocage des publicités et de la vitesse (via les boucliers Brave), ainsi que des mises à jour régulières des logiciels, des correctifs Chromium et des améliorations de sécurité et de confidentialité. Origin supprimera la plupart des autres fonctionnalités du navigateur.</translation>
+<translation id="7941943775131052130">Notez qu'un achat de Brave Origin inclura également l'accès à la recherche Brave Premium, car Origin supprimera les publicités de la page de résultats du moteur de recherche Brave.</translation>
+<translation id="2573819149217596923">Modification des fonctionnalités de Brave</translation>
+<translation id="7415416427817229128">L'activation ou la désactivation d'une fonctionnalité de Brave nécessite le redémarrage du navigateur pour appliquer les modifications. Voulez-vous redémarrer maintenant?</translation>
+<translation id="2256115617011615191">Redémarrer maintenant</translation>
+<translation id="8554205386170195281">Achat</translation>
+<translation id="7071521146534760487">Gérer le compte</translation>
 <translation id="8613144770663526433">Se connecter au portefeuille Brave</translation>
 <translation id="3696514931437952995">Vous vous connectez à <ph name="ORIGIN"/>. Le portefeuille Brave partagera l'adresse de votre portefeuille avec <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Voir les détails</translation>
@@ -1084,12 +1108,13 @@ Leo à l'avenir et effacera également votre historique de clavardage. L'effacem
 <translation id="2735247450315842119">Autoriser les captures d'écran dans les onglets privés</translation>
 <translation id="8420414929552321089">Si autorisé, les onglets privés seront également visibles lorsque plusieurs applications sont ouvertes.</translation>
 <translation id="7956713633345437162">Signets de téléphone mobile</translation>
+<translation id="7984508421152399880">Acheter maintenant</translation>
 <translation id="6261139507111008244">Soutenez notre mission et notre travail en open source</translation>
-<translation id="7882690061170175552">Interface du navigateur minimaliste axée sur les boucliers</translation>
+<translation id="6073373503121903099">Interface du navigateur minimaliste axée sur les boucliers Brave</translation>
 <translation id="2267973897341040743">Conservez le blocage des publicités, la confidentialité et la vitesse essentiels</translation>
-<translation id="1361157028850796410">meilleure valeur</translation>
-<translation id="7280825497485894053">Abonnement mensuel</translation>
-<translation id="4570901726096223030">En savoir plus sur Origin</translation>
+<translation id="3339535734679532460">Achat unique, aucun coût d'abonnement supplémentaire</translation>
+<translation id="2805615640226281689">Achat unique</translation>
+<translation id="261433018299584676">Obtenir un code de connexion</translation>
 <translation id="1943432128510653496">Enregistrer les mots de passe</translation>
 <translation id="2100273922101894616">Connexion automatique</translation>
 <translation id="363596933471559332">Connexion automatique à des sites Web à l'aide d'authentifiants enregistrés. Lorsque la fonctionnalité est désactivée, une vérification est effectuée avant chaque connexion à un site Web.</translation>

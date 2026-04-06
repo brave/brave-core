@@ -1821,6 +1821,7 @@
 <translation id="8897189056319316783">షీల్డ్ ZEC</translation>
 <translation id="508249542337194541">ZEC అన్షీల్డ్ చేయండి</translation>
 <translation id="3382275793825152362">ఫండ్స్‌కి షీల్డ్ చేయండి</translation>
+<translation id="617149752238892649">ఫండ్‌లను కాపాడు</translation>
 <translation id="8631765320256788981">మీరు మీ స్వచ్ఛ ఖాతా నుండి మీ షీల్డ్డ్ ఖాతాకు ఫండ్స్ ని పంపిస్తున్నారు.</translation>
 <translation id="3860364671495430495">మీరు మీ షీల్డ్డ్ ఖాతా నుండి మీ ట్రాన్స్పరెంట్ ఖాతాకు నిధులను పంపిస్తున్నారు.</translation>
 <translation id="7144878232160441200">మళ్లీ ప్రయత్నించండి</translation>
@@ -2170,6 +2171,7 @@
     }</translation>
 <translation id="6961721183181597848">నేడు నేను మీకు ఏం సహాయం చేయగలను?</translation>
 <translation id="2966135729673253768">తరువాతి అడిగండి</translation>
+<translation id="5923170497201832190">దిగువకు స్క్రోల్ చేయి</translation>
 <translation id="6219262425964000211">ఇమేజెస్‌ని ఇక్కడ వదలండి</translation>
 <translation id="4313763911013851687">చర్చలో వాటిని జోడించడానికి ఏ ఫైళ్లనైనా ఇక్కడ వదలండి</translation>
 <translation id="4524675003624341892">ప్రశ్నలను సూచించు…</translation>
@@ -2191,20 +2193,21 @@
 <translation id="999273441077650169">ఉత్తమమైనది టాస్క్ కోసం నేపథ్యంలో డైనమిక్ గా మోడల్ మారుతుంది.<ph name="LINK_BEFORE"/>మరింత తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Llama 3.1 8B, Meta ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా శక్తితో ఒక సాధనాన్ని నడుపుతాను. Llama అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Qwen VL 30B, Alibaba Cloud రూపొందించిన మోడల్ ద్వారా నడుపుతాను. Qwen స్వంత భద్రతా మౌలిక సదుపాయాలపై Brave ద్వారా అవహసించబడుతుంది. <ph name="LINK_BEFORE"/>మరింత తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను DeepSeek V3.1 ద్వారా శక్తిని పొందుతున్నాను, దీన్ని DeepSeek మోడల్ గా రూపొందించింది. DeepSeek V3.1 అనేది వారి స్వంత నిఘా పద్ధతుల ఆధారంగా NEAR-host చేయబడింది. <ph name="LINK_BEFORE"/>మరింత తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను GLM-5, Zhipu AI ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా శక్తితో ఒక సాధనాన్ని నడుపుతాను. GLM-5 అనేది NEAR-హోస్టింగ్ చేయబడిన వారి స్వంత ధృవీకరణీయమైన నిష్క్రియ భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">హాయ్, నేను లియోను. నేను Brave సంస్థచే అందించబడిన AI సహాయకుడు. నేను Anthropic రూపొందించిన Claude Instant మోడల్ ఆధారంగా పనిచేస్తాను. Brave Claude Instant‌ను తెలివిగా మా స్వంత సురక్షిత మౌలిక సదుపాయాల ద్వారా హోస్ట్ చేస్తుంది.<ph name="LINK_BEFORE"/>ఇంకా తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Claude Haiku, Anthropic ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా సంభాషణ మరియు టెక్స్ట్ ప్రాసెసింగ్ పనులకు శక్తినిస్తుంది. Claude Haiku అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Claude Sonnet, Anthropic ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా సంభాషణ మరియు టెక్స్ట్ ప్రాసెసింగ్ పనులకు శక్తినిస్తుంది. Claude Sonnet అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Llama 4 Scout, Meta ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా శక్తితో ఒక సాధనాన్ని నడుపుతాను. Llama 4 Scout అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Llama 4 Maverick, Meta ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా శక్తితో ఒక సాధనాన్ని నడుపుతాను. Llama 4 Maverick అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను GPT OSS 20B, OpenAI ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా శక్తితో ఒక సాధనాన్ని నడుపుతాను. GPT OSS 20B అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను GPT OSS 120B, OpenAI ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా శక్తితో ఒక సాధనాన్ని నడుపుతాను. GPT OSS 120B అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Mistral Large, Mistral ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా శక్తితో ఒక సాధనాన్ని నడుపుతాను. Mistral Large అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Pixtral Large, Mistral ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా శక్తితో ఒక సాధనాన్ని నడుపుతాను. Pixtral Large అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Qwen 3 235B, Alibaba Cloud ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా శక్తితో ఒక సాధనాన్ని నడుపుతాను. Qwen 3 235B అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Deepseek V3.1, Deepseek ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా శక్తితో ఒక సాధనాన్ని నడుపుతాను. Deepseek V3.1 అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Deepseek V3.2, Deepseek ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా శక్తితో ఒక సాధనాన్ని నడుపుతాను. Deepseek V3.2 అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Qwen 3 Coder 480B, Alibaba Cloud ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా శక్తితో ఒక సాధనాన్ని నడుపుతాను. Qwen 3 Coder 480B అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Claude Opus, Anthropic ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా సంభాషణ మరియు టెక్స్ట్ ప్రాసెసింగ్ పనులకు శక్తినిస్తుంది. Claude Opus అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను GLM-4-7-Flash, Zhipu AI ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా శక్తితో ఒక సాధనాన్ని నడుపుతాను. GLM-4-7-Flash అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడిది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Kimi K2.5, Moonshot AI ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా శక్తితో ఒక సాధనాన్ని నడుపుతాను. Kimi K2.5 అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడిది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Brave Ocelot, వెబ్ పేజీలను సంక్షిప్తీకరించడానికి Brave ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా శక్తితో ఒక సాధనాన్ని నడుపుతాను. Brave Ocelot అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడిది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">ప్రీమియం</translation>
 <translation id="5807427080183870259">లోకల్</translation>
 <translation id="830868413617744215">బీటా</translation>
@@ -2334,9 +2337,11 @@
 <translation id="2793458212460902934">వేగవంతమైనది • శోధన • సాధనాలు</translation>
 <translation id="8506027496671575183">శోధన • దృష్టి • సాధనాలు</translation>
 <translation id="3184606955650139158">వేగవంతమైనది • శోధన • విజన్</translation>
-<translation id="7465032796278724624">NEAR AI TEE తో ధృవీకరించబడిన గోప్యత</translation>
+<translation id="7465032796278724624">NEAR AI TEE తో ధృవీకరణీయంగా ప్రైవేట్</translation>
 <translation id="8782867266498869301">ఉత్తమమైనది టాస్క్ కోసం ప్రధానంగా డైనమిక్ గా మోడల్ మారుతుంది</translation>
 <translation id="3213834013136637671">శోధన • దృష్టి</translation>
+<translation id="5276681919620506371">శోధన • సాధనాలు</translation>
+<translation id="7434375176361995333">సారాంశాలు • వేగవంతమైనది</translation>
 <translation id="3965507912994218570">లియో సెట్టింగ్స్</translation>
 <translation id="3754337604877048671">Leo AI పరిచయ కార్యక్రమం</translation>
 <translation id="5295261408976371809">మీ <ph name="TEXT_BEFORE"/>ప్రైవేట్<ph name="TEXT_AFTER"/> AI సహాయకుడు, నేరుగా బ్రౌజర్‌లో నిర్మించబడ్డది.</translation>
@@ -2392,6 +2397,8 @@
 <translation id="4572010449071015143">కొత్త సంభాషణ ప్రారంభించు</translation>
 <translation id="345901077335355561">చురుకుగా ఉన్న సంభాషణకు తిరిగి వెళ్ళండి</translation>
 <translation id="6287023598025162715">కొత్త సంభాషణ</translation>
+<translation id="7230502562132448519">సంభాషణలను ఫిల్టర్ చేయి</translation>
+<translation id="821070843380699990">దయచేసి వేరే విచారణ ప్రయత్నించండి</translation>
 <translation id="7097822247923237815">తాత్కాలిక చాట్</translation>
 <translation id="7481750859362986254">ఈ చాట్ మీ చరిత్రలో సేవ్ చేయబడదు లేదా లియో యొక్క అనుకూలీకరణ లేదా జ్ఞాపకశక్తి ఉపయోగించదు.</translation>
 <translation id="4238305333951712482">మెమరీ నవీకరించబడింది: <ph name="MEMORY_CONTENT"/></translation>
@@ -2429,6 +2436,21 @@
 <translation id="6338250692384725496">మీ ప్రశ్నకు సహాయం చేయడానికి సాండ్‌బాక్స్‌లో కోడ్ అమలు చేసింది</translation>
 <translation id="4379566111233326721">కోడ్:</translation>
 <translation id="3542130965673205258">ఔట్పుట్:</translation>
+<translation id="5382076391290708074">మీ ట్యాబ్‌లను చుట్టూ తరలించడం</translation>
+<translation id="3862123464576147769">దీన్ని అనుమతించడం Brave AI కు మీ అన్ని ట్యాబ్‌లు మరియు ట్యాబ్ గ్రూపుల <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> మరియు <ph name="TITLE_FORMAT_START"/>శీర్షిక<ph name="TITLE_FORMAT_END"/>ను పంపుతుంది, మరియు Brave AI ను వాటిని చుట్టూ తరలించడానికి అనుమతిస్తుంది. ఈ అనుమతి ఈ సంభాషణకు మాత్రమే వర్తిస్తుంది.</translation>
+<translation id="396165714586708444">లోతైన నిర్ధారణ</translation>
+<translation id="577747221882855891">శోధన చేస్తున్నారు: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">"<ph name="QUERY"/>" కోసం <ph name="COUNT"/> మూలాధారాలను విశ్లేషిస్తున్నారు</translation>
+<translation id="1202264349398113062">"<ph name="QUERY"/>" కోసం <ph name="COUNT"/> కొత్త URLs ను ప్రాసెస్ చేస్తున్నారు</translation>
+<translation id="6189479600023022289">"<ph name="QUERY"/>" కోసం <ph name="COUNT"/> URLs ను కనుగొన్నారు</translation>
+<translation id="5150674341374247355"><ph name="FETCHED"/>/<ph name="TOTAL"/> URLలను పొందుతున్నారు</translation>
+<translation id="1075606740174445363">"<ph name="QUERY"/>" కోసం <ph name="COUNT"/> URLలను విశ్లేషించారు</translation>
+<translation id="6220878652174655112"><ph name="COUNT"/> ప్రశ్నలను శోధిస్తున్నారు</translation>
+<translation id="3571450204565012512"><ph name="QUERY_COUNT"/> శోధనల నుండి <ph name="URL_COUNT"/> URLలను విశ్లేషించారు</translation>
+<translation id="5733200563889491347">లోతైన ఆలోచనలు పూర్తయ్యాయి</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>m <ph name="SECONDS"/>s</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>s</translation>
+<translation id="5067194014665306881">నిర్ధారణ లోపం: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">AI బ్రౌజింగ్</translation>
 <translation id="2854657728271352435">AI బ్రౌజింగ్ ప్రొఫైల్ గురించి</translation>
 <translation id="2301685062527585986">మీ డేటాను రక్షించేందుకు, ఈ వేరు చేసిన AI బ్రౌజింగ్ ప్రొఫైల్, AI ఏజెంట్‌కి మీ ప్రధాన బ్రౌజింగ్ ప్రొఫైల్‌కి ప్రాప్యతను నిరాకరిస్తుంది, మరియు అవసరమైనప్పుడు మాత్రమే సైట్లను సందర్శించేందుకు మరియు అపరిచయంగా సంభాషించేందుకు అనుమతిస్తుంది. మీరు దానిని పనులు అప్పగించడం ద్వారా, అలాగే మీరు కోసం బ్రౌజ్ చేయించటం ద్వారా మీ ఉత్పాదకతను మెరుగుపరచవచ్చు.</translation>
@@ -2493,11 +2515,14 @@
 <translation id="7847477075635510673">బ్రేవ్ న్యూస్ దాచివేయి</translation>
 <translation id="9173319813356700250">న్యూస్</translation>
 <translation id="6543799171249004861">ఫోటో ద్వారా <ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="466214682712474574">మీ బ్యాలెన్స్‌ని చూడటానికి మీ <ph name="PROVIDER"/> ఖాతా లోనికి ప్రవేశించండి</translation>
 <translation id="8332875111286275890">మీ బ్యాలెన్స్ చూడటానికి లాగిన్ అవ్వండి</translation>
 <translation id="5430001801813715388">రివార్డ్స్</translation>
+<translation id="988042349921505128">శోధన మరియు AI</translation>
 <translation id="2430295257226173518">ఏదైనా అడగండి, ఏదైనా కనుగొనండి...</translation>
 <translation id="167018310108390163">కొత్త టాబ్ పేజీ ని అనుకూలపరచు</translation>
+<translation id="3500134717967948757">కొత్త ట్యాబ్లలో Leo AI విడ్జెట్ చూపించండి</translation>
 <translation id="6851426306697017546">గడియారం చూపించు</translation>
 <translation id="4844370919312937270">కొత్త టాబ్లలో సెర్చ్ విడ్జెట్ చూపించండి</translation>
 <translation id="7328310113820087094"><ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/>తో, మీరు కొత్త ట్యాబ్ పేజీ ప్రకటనలు చూసి మీరు సంపాదించవచ్చు</translation>
@@ -2526,8 +2551,14 @@
 <translation id="8458987127502506209">Brave Shields ప్రారంభించు</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>ఈ సైట్ కోసం షీల్డ్స్ UP <ph name="STATUS_AFTER"/></translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>ఈ సైట్ కోసం షీల్డ్స్ DOWN <ph name="STATUS_AFTER"/></translation>
+<translation id="8426214145426269584">Shields <ph name="UP_BEFORE"/>up<ph name="UP_AFTER"/> ఈ సైట్ కోసం</translation>
+<translation id="3325367578778625743">Shields <ph name="DOWN_BEFORE"/>down<ph name="DOWN_AFTER"/> ఈ సైట్ కోసం</translation>
 <translation id="4724752924364329714">ఈ సైట్ చెడు చూపనిపిస్తే, షీల్డ్స్‌ను డౌన్‌ చేయడం ప్రయత్నించండి.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>గమనిక: ఇది బ్రేవ్ యొక్క గోప్యతా పరిరక్షణలను తగ్గిస్తుందని గమనించండి.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">ఇది Brave యొక్క గోప్యతా రక్షణలను తగ్గించవచ్చు. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">ట్రాకర్స్, యాడ్‌లు మరియు మరిన్నవి బ్లాక్ చేయబడ్డాయి.</translation>
+<translation id="4968268657895673116">Shields పై ఉన్నప్పుడు ఈ సైట్ సరిగ్గా పనిచేయకపోతుందా?</translation>
+<translation id="5412004902081180614">నివేదించండి</translation>
 <translation id="3620004479054499575">మీకు ఈ సైట్‌తో సమస్యలు ఎదురవుతున్నాయా?</translation>
 <translation id="9176447766421988172">మేము సైట్ అనుకూలతను మెరుగుపరచడానికి ఒక ప్రయోగం నిర్వహిస్తున్నాం, ఇందులో యాడ్ బ్లాకింగ్ మాత్రమే ప్రారంభిస్తుంది. హెచ్చరిక: ఇది అన్ని గోప్యతా రక్షణలను తొలగిస్తుంది. మీరు దీనిని ప్రయత్నించాలనుకుంటున్నారా? <ph name="LINK_BEFORE"/>మరింత తెలుసుకోండి<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">బ్రేవ్ యొక్క గోప్యతా పరిరక్షణల వల్ల చెడిపోయిన వ్యక్తిగత వెబ్‌సైట్‌లకు, మీరు షీల్డ్స్‌ను డౌన్‌గా సెట్ చేయవచ్చు.</translation>
@@ -2542,9 +2573,12 @@
 <translation id="8377155647357436161">ట్రాకర్లను, యాడ్లను మరియు మరిన్నింటిని బ్లాక్ చేసింది <ph name="LINK_BEFORE"/>మరింత తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave Shields ద్వారా రక్షించబడలేదు <ph name="LINK_BEFORE"/>మరింత తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">అధునాతన నియంత్రణలు</translation>
+<translation id="7939062555109487992">అధునాతన ఎంపికలు</translation>
 <translation id="5799940914270080805">ఈ సెట్టింగులను మార్చడం సైట్లను దెబ్బతీయవచ్చు.</translation>
 <translation id="9204041448536398473">గ్లోబల్ షీల్డ్ సెట్టింగ్స్</translation>
 <translation id="2108334320919763866">గ్లోబల్ డిఫాల్టులు</translation>
+<translation id="1896472873031845605">గ్లోబల్ సెట్టింగ్‌లు</translation>
+<translation id="8324318899000695659">మూల్యతలను నిరోధించండి</translation>
 <translation id="7205939464631857223">అన్ని నిరోధించిన మూలకాలను క్లియర్ చేయండి</translation>
 <translation id="3440043456924990296">అంగీకరించినా సంస్థచే నిర్వహించబడుతుంది</translation>
 <translation id="7053983685419859001">నిరోధించు</translation>
@@ -2629,7 +2663,6 @@
 <translation id="7207456302801184289">Braveకు స్వాగతం</translation>
 <translation id="4988030440045495002">అత్యంత చీకటి థీమ్</translation>
 <translation id="2422927186524098759">సైడ్బార్</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">వీడియో మార్గదర్శిని</translation>
 <translation id="8000020256436988724">వేధిక</translation>
 <translation id="6225572914528673855">చిరునామా ప‌ట్టిక</translation>

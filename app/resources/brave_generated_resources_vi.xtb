@@ -323,6 +323,8 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8813509417421129632">Một trang nhúng tại <ph name="SITE"/> muốn lưu</translation>
 <translation id="7700010743463174379">Trang này muốn lưu</translation>
 <translation id="6774238875569752630">Một trang nhúng trên trang này muốn lưu</translation>
+<translation id="1383876407941801731">Tìm kiếm</translation>
+<translation id="5496587651328244253">Tổ chức</translation>
 <translation id="1233913566967531780">Tập trung thẻ</translation>
 <translation id="4034992002364254340">Tập trung tất cả thẻ liên quan ở một cửa sổ mới</translation>
 <translation id="8012125596344613514">Chủ đề được đề xuất</translation>
@@ -340,6 +342,7 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6501807887341963552">Chủ đề và màu sắc</translation>
 <translation id="6724227215236550330">Mật khẩu đã lưu sẽ hiển thị ở đây. Để nhập mật khẩu vào <ph name="BRAND"/>trên thiết bị này, <ph name="BEGIN_LINK"/> hãy chọn một tệp CSV<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">Để nhập mật khẩu vào <ph name="BRAND"/> trên thiết bị này, hãy chọn một tệp CSV</translation>
+<translation id="8570228839666486945">AI trên thiết bị</translation>
 <translation id="9156965752763025780">Các thay đổi của bạn sẽ có hiệu lực vào lần tới khi bạn chạy lại Brave.</translation>
 <translation id="7179921470347911571">Khởi chạy lại Ngay</translation>
 <translation id="1426410128494586442">Có</translation>
@@ -392,6 +395,7 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5297085818601043899">Chú giải công cụ</translation>
 <translation id="5219886318310413094">Hiển thị các tab được ghim trong tất cả các cửa sổ</translation>
 <translation id="2396127686705429331">Hiển thị nút dấu trang</translation>
+<translation id="443318149139185498">Sử dụng logo phác thảo trên nút menu ứng dụng chính</translation>
 <translation id="2814998458708016836">Dùng thanh địa chỉ rộng</translation>
 <translation id="4749586705247636385">Hiển thị góc bo tròn trên các khu vực nội dung chính.</translation>
 <translation id="4109670531935487117">Hiển thị các đề xuất tự động hoàn thành trên thanh địa chỉ</translation>
@@ -545,7 +549,7 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="509873765238158442">Chặn Microsoft Recall</translation>
 <translation id="4763421121695677716">Ngăn không để tính năng Recall tự động chụp ảnh màn hình của bất kỳ thẻ đang mở nào của trình duyệt Brave trên máy tính sử dụng Microsoft Windows.</translation>
 <translation id="1968895725257436430">Thu thập dữ liệu</translation>
-<translation id="4846154056248462491">Khi thoát</translation>
+<translation id="1700052872056357670">Xóa dữ liệu khi thoát</translation>
 <translation id="216468847346280584">Xóa dữ liệu Brave Quảng cáo...</translation>
 <translation id="2808630562319398131">Thiết lập lại dữ liệu Brave Rewards...</translation>
 <translation id="6438096877646138757">Các trang xóa cookie khi bạn đóng lại</translation>
@@ -792,6 +796,7 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1529674267267221673">Leo sẽ xuất hiện trong menu ngữ cảnh khi bạn nhấp chuột phải vào trang web. Thao tác này sẽ gửi ngữ cảnh từ trang web hiện tại tới Leo.</translation>
 <translation id="5226020406479918122">Chế độ Tập trung thẻ</translation>
 <translation id="3705539672403311123">Bật sắp xếp thẻ trong trang Tìm kiếm thẻ. Khi mở, tính năng này sẽ tự động gửi tiêu đề và nguồn gốc của tất cả thẻ không riêng tư đến Leo để phân loại. <ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">Mô hình mặc định cho tab focus</translation>
 <translation id="8172263161008556851">Hiển thị lời nhắc được đề xuất trong cuộc trò chuyện</translation>
 <translation id="5781842473834867765">Lưu lịch sử trò chuyện</translation>
 <translation id="1082960401708055995">Tắt tùy chọn lưu lịch sử trò chuyện sẽ xóa vĩnh viễn tất cả cuộc trò chuyện đã được lưu. Hành động này không thể được hoàn tác.</translation>
