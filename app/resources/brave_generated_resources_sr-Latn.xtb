@@ -323,6 +323,8 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="8813509417421129632">Ugrađena stranica na: <ph name="SITE"/> želi da sačuva fajl</translation>
 <translation id="7700010743463174379">Ova stranica želi da sačuva fajl</translation>
 <translation id="6774238875569752630">Ugrađena stranica na ovoj stranici želi da sačuva fajl</translation>
+<translation id="1383876407941801731">Pretraga</translation>
+<translation id="5496587651328244253">Organizuj</translation>
 <translation id="1233913566967531780">Fokus kartica</translation>
 <translation id="4034992002364254340">Skupite sve povezane kartice u jedan prozor</translation>
 <translation id="8012125596344613514">Predložene teme</translation>
@@ -340,6 +342,7 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="6501807887341963552">Tema i boje</translation>
 <translation id="6724227215236550330">Sačuvane lozinke će se pojaviti ovde. Da biste uvezli lozinke u <ph name="BRAND"/> na ovom uređaju, <ph name="BEGIN_LINK"/> izaberite CSV fajl<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">Da biste uvezli lozinke u <ph name="BRAND"/> na ovom uređaju, izaberite CSV fajl</translation>
+<translation id="8570228839666486945">AI na uređaju</translation>
 <translation id="9156965752763025780">Promene će biti primenjene kada sledeći put ponovo pokrenete Brave.</translation>
 <translation id="7179921470347911571">Ponovo pokreni sada</translation>
 <translation id="1426410128494586442">Da</translation>
@@ -392,6 +395,7 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="5297085818601043899">Kratak opis</translation>
 <translation id="5219886318310413094">Prikaži zakačene kartice u svim prozorima</translation>
 <translation id="2396127686705429331">Prikaži dugme za obeleživače</translation>
+<translation id="443318149139185498">Koristi logo u obrisu na dugme glavnog menija</translation>
 <translation id="2814998458708016836">Prikaži široku traku za adresu</translation>
 <translation id="4749586705247636385">Prikaži zaobljene uglove u glavnim oblastima sadržaja</translation>
 <translation id="4109670531935487117">Prikaži predloge za automatsko popunjavanje na traci za adresu</translation>
@@ -545,7 +549,7 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="509873765238158442">Blokiraj Microsoft Recall</translation>
 <translation id="4763421121695677716">Blokirajte funkciju „Recall“ na Microsoft Windows računarima da ne bi automatski uzimala snimke ekrana otvorenih Brave kartica.</translation>
 <translation id="1968895725257436430">Prikupljanje podataka</translation>
-<translation id="4846154056248462491">Prilikom zatvaranja</translation>
+<translation id="1700052872056357670">Izbriši podatke prilikom izlaska</translation>
 <translation id="216468847346280584">Izbriši podatke iz Brave oglasa…</translation>
 <translation id="2808630562319398131">Resetuj podatke iz Brave nagrada…</translation>
 <translation id="6438096877646138757">Sajtovi koji brišu kolačiće kada ih zatvorite</translation>
@@ -791,6 +795,7 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="1529674267267221673">Leo će se pojaviti u kontekstualnom meniju kada kliknete desnim tasterom miša na veb-sajt. Time će se poslati kontekst sa trenutne veb stranice na asistenta Leo.</translation>
 <translation id="5226020406479918122">Režim za fokus kartica</translation>
 <translation id="3705539672403311123">Aktivirajte organizaciju kartica na stranici za pretragu kartica. Kada je otvorena, automatski se šalju naslovi i poreklo svih kartica koje nisu privatne asistentu Leo da ih klasifikuje. <ph name="BEGIN_LINK"/> Saznajte više<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">Podrazumevani model za tab žižu</translation>
 <translation id="8172263161008556851">Prikaži predložene upite u razgovoru</translation>
 <translation id="5781842473834867765">Sačuvaj moju istoriju razgovora</translation>
 <translation id="1082960401708055995">Ako isključite čuvanje razgovora, trajno će se izbrisati svi prethodno sačuvani razgovori. Ova radnja se ne može opozvati.</translation>

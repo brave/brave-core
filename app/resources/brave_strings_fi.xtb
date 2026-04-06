@@ -7,6 +7,7 @@
 <translation id="3814674848168165531">Kun sivusto pyytää lupaa esiladata sen sivulla olevia linkkejä yksityisesti, Brave käyttää Braven palvelimia. Henkilöllisyytesi piilotetaan esiladatulta sivustolta, mutta Brave oppii, mitä sivustoja esiladataan.</translation>
 <translation id="1065672644894730302">Asetuksiasi ei voi lukea. Kaikkia toimintoja ei voi välttämättä käyttää eikä asetuksiin tehtäviä muutoksia tallenneta.</translation>
 <translation id="7577672138294294152">Vanhempasi on laittanut Bravein "Sivustojen, sovellusten ja laajennusten käyttöluvat" pois päältä</translation>
+<translation id="4408482856437790071">Etsi tiettyä Bravein ominaisuutta tai laajennusta kirjoittamalla sen pikakomento osoitepalkkiin ja painamalla valitsemaasi näppäintä</translation>
 <translation id="5918095577778020936">Brave yrittää viedä salasanojasi tiedostoon. Salli tämä kirjoittamalla Windows-salasanasi.</translation>
 <translation id="112640046208448578">Tunnista asioita tai paikkoja ja kopioi tai käännä tekstiä. Kun käytät kuvahakua, sivusta lähetetään kuvakaappaus palvelimelle. <ph name="LEARN_MORE"/></translation>
 <translation id="5468853758063275923">Brave on oletusselaimesi.</translation>
@@ -24,8 +25,10 @@
 <translation id="8799570501820813406">Kun tämä välilehti ei ollut aktiivinen, muistia vapautettiin Bravein pitämiseksi nopeana. Voit halutessasi valita, että tämä sivusto ei ole koskaan ei-aktiivinen.</translation>
 <translation id="8767381092474532098">Brave on estänyt tämän latauksen, koska tiedosto on haitallinen</translation>
 <translation id="3256289531845594061">Kun kirjaudut Braven palveluihin (esim. Gmailiin tai YouTubeen) tilillä <ph name="USER_EMAIL"/>, voit kirjautua Braveiin automaattisesti samalla tilillä</translation>
+<translation id="8508169558526580571">Lataa Brave puhelimelle</translation>
 <translation id="1290883685122687410">Käyttöönottovirhe: <ph name="METAINSTALLER_EXIT_CODE"/>. <ph name="WINDOWS_ERROR"/></translation>
 <translation id="4798342026247191171">Luo uusi Brave-profiili</translation>
+<translation id="4291722755910963157">Kokeile Gemini in Braveilla</translation>
 <translation id="878572309106296578">Brave tarvitsee pääsyn Bluetoothiin etsiäkseen
  Bluetooth-laitteita. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="1330562121671411446">Tunnista kieli</translation>
@@ -160,7 +163,6 @@
 <translation id="2738871930057338499">Internetyhteyden muodostaminen ei onnistu. HTTP 403 (kielletty). Tarkista välityspalvelimen asetukset.</translation>
 <translation id="2753623023919742414">Hae klikkaamalla</translation>
 <translation id="1312769823139326127">Valitse Brave PDF:ien oletuskatseluohjelmaksi</translation>
-<translation id="3173824377856109157">Brave voi täyttää automaattisesti vaikeita kenttiä, jotka tavallinen automaattinen täyttö ei välttämättä havaitse</translation>
 <translation id="1187986649024576560">Tämä laajennus sisältää haittaohjelmia, ja se ei ole turvallinen. Poista se Braveista, jotta se ei enää voi nähdä tai muuttaa dataasi avaamillasi sivustoilla, mukaan lukien henkilökohtaisia tietojasi.</translation>
 <translation id="2799223571221894425">Käynnistä uudelleen</translation>
 <translation id="5962774139606909656">Oma Brave</translation>
@@ -235,7 +237,9 @@
 <translation id="8703492925273919597">Sulje kaikki Brave-ikkunat ja yritä uudelleen.</translation>
 <translation id="599091950194451698">Jos haluat jakaa ikkunan, salli Bravein näytön tallennus järjestelmäasetuksista.</translation>
 <translation id="1447863765638888625"><ph name="EXISTING_USER"/> on jo kirjautunut sisään.  Jos haluat pitää selaamisen erillään, kirjaudu Braveiin omalla profiilillasi käyttämällä tiliä <ph name="USER_EMAIL_ADDRESS"/>.</translation>
+<translation id="7624624622436403494">QR-koodi, jolla voi ladata Brave-selaimen mobiililaitteille</translation>
 <translation id="8981774130895723211">Jos haluat jakaa näytön, salli Bravein näytön tallennus järjestelmäasetuksista.</translation>
+<translation id="2981961446160697133">Parannettu suojaus laittaa JavaScript-optimoinnin pois päältä sivustoilla, joita Brave ei tunnista</translation>
 <translation id="3597003331831379823">Käyttöönotto laajennetuilla pääsyoikeuksilla epäonnistui. <ph name="METAINSTALLER_ERROR"/></translation>
 <translation id="4167284810587724062">Braveiin kirjautuminen</translation>
 <translation id="3066805437003400520">Käyttäjän selaustiedot poistetaan tältä laitteelta. Jos haluat palauttaa tiedot myöhemmin, kirjaudu Braveiin käyttäjänä <ph name="USER_EMAIL"/>.</translation>
@@ -368,6 +372,7 @@
 <translation id="6234515504547364178">Kirjaudu ulos Braveista</translation>
 <translation id="5234764350956374838">Hylkää</translation>
 <translation id="5254739261293693943">Kysy tästä videosta</translation>
+<translation id="7690383309583926074">Lataa Brave-sovellus, niin voit tallentaa salasanoja missä tahansa</translation>
 <translation id="8586264863973514035">Ota muutokset käyttöön käynnistämällä Brave uudelleen</translation>
 <translation id="5286907366254680517">Tunnistettu</translation>
 <translation id="7264453786974905915">Lataa Brave-sovellus</translation>
@@ -414,6 +419,7 @@
 <translation id="1224606669200461217">Brave-datan käyttö ja tallennus Brave-tilillä edellyttää Bravein päivittämistä</translation>
 <translation id="5824893331272123205">Paneelin lataaminen epäonnistui, yritä uudelleen</translation>
 <translation id="7207456302801184289">Tervetuloa Braveiin</translation>
+<translation id="4026807082142463673">Laittaa päälle lisäominaisuuksia, jotka tarjoavat Bravein tehokkaimman suojauksen</translation>
 <translation id="5871205389137001634">Poistu kuvahausta klikkaamalla</translation>
 <translation id="8054200348483755053">Brave havaitsi, että näissä kohteissa on haittaohjelmia:</translation>
 <translation id="3955583201925082436">Brave tarkistaa säännöllisesti, että selaimen asetukset ovat mahdollisimman turvalliset. Ilmoitamme, jos jotain on tarkistettava.</translation>
@@ -466,6 +472,7 @@
 <translation id="6327105987658262776">Päivityksiä ei ole saatavilla.</translation>
 <translation id="1819119299840995223">Toinen Brave-prosessi on jo käynnissä. Yritä myöhemmin uudelleen.</translation>
 <translation id="8616874628011103667">Nyt voit helpommin käyttää Braveia Brave-tililläsi ja jaetuilla tietokoneilla.</translation>
+<translation id="5213389303624223677">Kun valitset Bravein oletusselaimeksi, saat helposti käyttöösi tutut, luotettavat ominaisuudet.</translation>
 <translation id="4264606872840545968">Brave-pikanäppäin</translation>
 <translation id="6890616081898535725">Brave on estänyt tämän latauksen, koska tiedostoa ei ladata usein, ja se saattaa olla haitallinen</translation>
 <translation id="335632367599648646">Haluatko varmasti poistaa Bravein asennuksen?</translation>
@@ -574,6 +581,9 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="4631170166710903214">Tätä laajennusta ei enää tueta. Brave suosittelee sen poistamista.</translation>
 <translation id="7951152294775418909">Jatka siitä, mihin jäit: Brave palauttaa välilehdet aina, kun käynnistät sen uudelleen. Voit laittaa asetuksen pois päältä täältä:</translation>
 <translation id="3191314862567596053">Tuo salasanoja Braveiin</translation>
+<translation id="284799389314308801">1. Klikkaa <ph name="BUTTON_LABEL"/> alta
+2. Klikkaa Windowsin asetuksista <ph name="BUTTON_2"/>
+3. Klikkaa Windowsin ilmoituksessa olevaa <ph name="BUTTON_3"/>, niin voit kiinnittää Bravein tehtäväpalkkiin nopeaa käyttöä varten</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="7450541714075000668">Teksti kopioitu</translation>
 <translation id="2034072705932785495">Brave tarvitsee oikeuden käyttää kameraasi tällä sivustolla.</translation>
@@ -581,7 +591,6 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="5296583608321648908">Jotta saat tulevia Bravein päivityksiä, sinulla on oltava Windows 10 tai uudempi. Tietokoneen käyttöjärjestelmä on Windows 7.</translation>
 <translation id="3962395975456095331">Käynnistä Brave uudelleen?</translation>
 <translation id="2619516027171717873">Braveista ei voi asentaa versiota, joka on tällä hetkellä käynnissä. Sulje Brave ja yritä uudelleen.</translation>
-<translation id="2731639583336131792">Voit tallentaa ja käyttää esimerkiksi Brave-tilin salasanoja aina, kun olet kirjautuneena Braveiin. <ph name="LEARN_MORE"/></translation>
 <translation id="5337027666828618338">Sivustot toimivat todennäköisesti odotetulla tavalla. Sinut kirjataan ulos useimmilta sivustoilta, kun suljet kaikki Brave-ikkunat. Tämä ei kuitenkaan koske Brave-tiliäsi, jos olet kirjautuneena Braveiin.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave käynnistetään uudelleen 1 minuutin kuluttua}other{Brave käynnistetään uudelleen # minuutin kuluttua}}</translation>
 <translation id="552342471964912391">Datasi suojaamiseksi salli Bravein poistaa luvat sivustoilta, joilla et ole käynyt viime aikoina.</translation>
@@ -590,7 +599,9 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="3293668930608086049">Brave käyttää kameraasi ja mikrofoniasi.</translation>
 <translation id="2827121003398607864">Brave on nyt entistä parempi</translation>
 <translation id="3071313329776323836">Braveissa on nyt enemmän ominaisuuksia</translation>
+<translation id="7624307931717240213">Käytämme tietoja palvelun parantamiseen. Katso tietosuojakäytäntö ja käyttöehdot.</translation>
 <translation id="7649070708921625228">Ohje</translation>
+<translation id="222435847253721602">Lataa Brave-sovellus</translation>
 <translation id="4008841832817149051">Anna Bravein selata puolestasi</translation>
 <translation id="7658239707568436148">Peru</translation>
 <translation id="3343095737966473035">Brave ei ole oletusselain.</translation>
@@ -671,6 +682,7 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="871233388178581868">Brave voi tarkistaa salasanasi, kun tallennat niitä</translation>
 <translation id="3667461919057407535">Saat varoituksen, jos Brave jonkin salasanoistasi julkisesta tietosuojaloukkauksesta</translation>
 <translation id="8555465886620020932">Palveluvirhe: <ph name="SERVICE_ERROR"/>.</translation>
+<translation id="7998982887712810347">Joissakin Bravein ominaisuuksissa ja laajennuksissa on pikanäppäimiä. Voit halutessasi laittaa ne takaisin päälle.</translation>
 <translation id="8556420416730706394">Kiinnitä kuvahaku klikkaamalla sivupaneelin yläreunan Kiinnitä-painiketta, niin löydät sen helposti</translation>
 <translation id="856656450041460113">Hakukielilista</translation>
 <translation id="227028348235968071">Brave voi tarkistaa salasanasi, kun kirjaudut sisään Brave-tililläsi</translation>
@@ -705,6 +717,7 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="6500340165622970282">Braveia ei voi käynnistää, koska jotain meni pieleen profiilia avattaessa. Kokeile käynnistää Brave uudelleen.</translation>
 <translation id="3424657754843264466">Ylläpidä Brave-profiileja</translation>
 <translation id="7055223246119657449">Brave on estänyt tämän latauksen, koska arkistotiedosto sisältää muita tiedostoja, jotka voivat piilottaa haittaohjelmia</translation>
+<translation id="8341362078156319636">Pidä salasanat, kirjanmerkit ja historia synkronoituina kaikilla laitteilla. Päivitä oletusselaimeksi Brave, niin saat tutut ominaisuudet helposti käyttöösi. Brave kiinnitetään tehtäväpalkkiin, jotta voit käyttää sitä nopeasti.</translation>
 <translation id="9049928023195059068">Kirjaudu Braveiin, kun kirjaudut muihin Braven palveluihin</translation>
 <translation id="4561046754724442504">Brave on suljettu automaattisesti</translation>
 <translation id="5173820533850252773">Brave on vanhentunut</translation>
@@ -720,7 +733,6 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="8208548103319284047">Brave-vinkki: Hae Lensilla</translation>
 <translation id="7902365066753170041">Päivitä &amp;Brave käynnistämällä se uudelleen</translation>
 <translation id="3350544518197210895">Brave (saapuva mDNS)</translation>
-<translation id="49909619875329637">Enemmän ominaisuuksia, kun olet kirjautuneena Braveiin</translation>
 <translation id="296137235951584143">Tee Braveista näköisesi</translation>
 <translation id="7977787072794666032">Brave ei välttämättä toimi oikein, koska se ei enää tue Windows XP:tä tai Windows Vistaa.</translation>
 <translation id="945522503751344254">Lähetä palautetta</translation>

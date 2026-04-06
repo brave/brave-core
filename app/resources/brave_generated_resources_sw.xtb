@@ -323,6 +323,8 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8813509417421129632">Ukurasa uliopachika kwa <ph name="SITE"/> unataka kuhifadhi</translation>
 <translation id="7700010743463174379">Ukurasa huu unataka kuhifadhi</translation>
 <translation id="6774238875569752630">Ukurasa uliopachikwa kwenye ukurasa huu unataka kuhifadhi</translation>
+<translation id="1383876407941801731">Tafuta</translation>
+<translation id="5496587651328244253">Panga</translation>
 <translation id="1233913566967531780">Kuzingatia kichupo</translation>
 <translation id="4034992002364254340">Kusanya vichupo vinavyohusiana katika dirisha mpya</translation>
 <translation id="8012125596344613514">Mada zilizopendekezwa</translation>
@@ -340,6 +342,7 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6501807887341963552">Mandhari na rangi</translation>
 <translation id="6724227215236550330">Nenosiri zilizohifadhiwa zitaonekana hapa. Ili kuagiza nenosiri kwa <ph name="BRAND"/> kwenye kifaa hiki, <ph name="BEGIN_LINK"/> chagua faili ya CSV<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">Ili kuagiza nenosiri kwa <ph name="BRAND"/> kwenye kifaa hiki, chagua faili ya CSV</translation>
+<translation id="8570228839666486945">AI Iliyofanya Kazi Kwenye Kifaa</translation>
 <translation id="9156965752763025780">Mabadiliko yako yataanza kufanya kazi wakati ujao utakapozindua upya Brave.</translation>
 <translation id="7179921470347911571">Zindua Sasa</translation>
 <translation id="1426410128494586442">Ndiyo</translation>
@@ -392,6 +395,7 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5297085818601043899">Kidokezo cha zana</translation>
 <translation id="5219886318310413094">Onyesha vichupo vilivyobandikwa kwenye madirisha yote</translation>
 <translation id="2396127686705429331">Onyesha kitufe cha alamisho</translation>
+<translation id="443318149139185498">Tumia kumbukumbu ya muvi kwenye kitufe cha menyu kuu</translation>
 <translation id="2814998458708016836">Tumia upao wa anwani pana</translation>
 <translation id="4749586705247636385">Onyesha kona zilizozunguka kwenye maeneo makuu ya maudhui</translation>
 <translation id="4109670531935487117">Onyesha mapendekezo ya ukamilishaji otomatiki kwenye upau wa anwani</translation>
@@ -545,7 +549,7 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="509873765238158442">Zuia Microsoft Recall</translation>
 <translation id="4763421121695677716">Zuia kipengele cha Recall kwenye kompyuta za Microsoft Windows kuchukua picha za skrini kiotomatiki za vichupo vyovyote vya Brave vilivyofunguliwa.</translation>
 <translation id="1968895725257436430">Ukusanyaji wa data</translation>
-<translation id="4846154056248462491">Kwenye kutoka</translation>
+<translation id="1700052872056357670">Futa unapotoka</translation>
 <translation id="216468847346280584">Futa data ya Matangazo ya Brave...</translation>
 <translation id="2808630562319398131">Weka upya data ya Zawadi za Brave...</translation>
 <translation id="6438096877646138757">Tovuti zinazofuta vidakuzi unapozifunga</translation>
@@ -792,6 +796,7 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1529674267267221673">Leo itaonekana kwenye menyu ya muktadha unapobofya upande wa kulia kwenye tovuti. Hii itatuma muktadha kutoka kwa ukurasa wa sasa wa wavuti kwenda kwa Leo.</translation>
 <translation id="5226020406479918122">Hali ya Kuzingatia Kichupo</translation>
 <translation id="3705539672403311123">Washa upangaji wa vichupo kwenye ukurasa wa Utafutaji wa Kichupo. Wakati inapofunguliwa, hii itatuma kiotomatiki vichwa na asili za vichupo vyote visivyo vya faragha kwa Leo ili kuvitambua. <ph name="BEGIN_LINK"/>Jifunze zaidi<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">Muundo chaguomsingi wa focusi ya kichupo</translation>
 <translation id="8172263161008556851">Onyesha visituo vilivyopendekezwa kwenye mazungumzo</translation>
 <translation id="5781842473834867765">Hifadhi historia ya mazungumzo yangu</translation>
 <translation id="1082960401708055995">Kuzima uhifadhi wa mazungumzo kutafuta maongezi yote yaliyohifadhiwa awali. Kitendo hiki hakiwezi kutenduliwa.</translation>

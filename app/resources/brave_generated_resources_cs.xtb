@@ -323,6 +323,8 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="8813509417421129632">Vložená stránka na této stránce <ph name="SITE"/> chce uložit</translation>
 <translation id="7700010743463174379">Tato stránka chce uložit</translation>
 <translation id="6774238875569752630">Vložená stránka na této stránce chce uložit</translation>
+<translation id="1383876407941801731">Search</translation>
+<translation id="5496587651328244253">Organizovat</translation>
 <translation id="1233913566967531780">Zaměřeno na karty</translation>
 <translation id="4034992002364254340">Seskupte všechny související karty do nového okna</translation>
 <translation id="8012125596344613514">Navrhovaná témata</translation>
@@ -340,6 +342,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="6501807887341963552">Motiv a barvy</translation>
 <translation id="6724227215236550330">Zde se zobrazí uložená hesla. Pokud chcete importovat hesla do <ph name="BRAND"/> v tomto zařízení, <ph name="BEGIN_LINK"/> vyberte soubor CSV<ph name="END_LINK"/>.</translation>
 <translation id="3575561030014162610">Pokud chcete importovat hesla do <ph name="BRAND"/> v tomto zařízení, vyberte soubor CSV.</translation>
+<translation id="8570228839666486945">Lokální AI</translation>
 <translation id="9156965752763025780">Změny se projeví po příštím restartu prohlížeče Brave.</translation>
 <translation id="7179921470347911571">Znovu spustit</translation>
 <translation id="1426410128494586442">Ano</translation>
@@ -392,6 +395,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="5297085818601043899">Nápověda</translation>
 <translation id="5219886318310413094">Zobrazit připnuté karty ve všech oknech</translation>
 <translation id="2396127686705429331">Zobrazit tlačítko záložek</translation>
+<translation id="443318149139185498">Použít logo obrysu v tlačítku hlavní nabídky</translation>
 <translation id="2814998458708016836">Použít široký adresní řádek</translation>
 <translation id="4749586705247636385">Zobrazení zaoblených rohů v hlavních oblastech obsahu</translation>
 <translation id="4109670531935487117">Zobrazovat návrhy automatického doplňování v adresním řádku</translation>
@@ -545,7 +549,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="509873765238158442">Blokovat Microsoft Recall</translation>
 <translation id="4763421121695677716">Zabrání funkci Recall v počítačích s operačním systémem Microsoft Windows, aby automaticky pořizovala snímky obrazovky všech otevřených karet Brave.</translation>
 <translation id="1968895725257436430">Shromažďování dat</translation>
-<translation id="4846154056248462491">Na výstupu</translation>
+<translation id="1700052872056357670">Při ukončení vymazat údaje</translation>
 <translation id="216468847346280584">Smazat data Reklam Brave...</translation>
 <translation id="2808630562319398131">Obnovit údaje o odměnách Brave Rewards...</translation>
 <translation id="6438096877646138757">Stránky, u kterých se při zavření vymažou soubory cookie</translation>
@@ -792,6 +796,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="1529674267267221673">Leo se objeví v kontextové nabídce, když kliknete pravým tlačítkem na webovou stránku. To odešle kontext z aktuální webové stránky do Leo.</translation>
 <translation id="5226020406479918122">Režim zaměření na karty</translation>
 <translation id="3705539672403311123">Zapne organizování karet na stránce hledání karet. Když je tato funkce aktivována, názvy a původ všech nesoukromých karet jsou automaticky odesílány Leovi, aby je roztřídil. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">Výchozí model pro tab focus</translation>
 <translation id="8172263161008556851">Zobrazit navrhované výzvy v konverzaci</translation>
 <translation id="5781842473834867765">Uložit historii mých konverzací</translation>
 <translation id="1082960401708055995">Když vypnete ukládání konverzací, trvale se vymažou všechny dříve uložené konverzace. Tuto akci nelze vrátit zpět.</translation>

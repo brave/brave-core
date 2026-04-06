@@ -323,6 +323,8 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="8813509417421129632">O pagină încorporată la <ph name="SITE"/> vrea să se salveze</translation>
 <translation id="7700010743463174379">Această pagină vrea să se salveze</translation>
 <translation id="6774238875569752630">O pagină încorporată pe această pagină vrea să se salveze</translation>
+<translation id="1383876407941801731">Caută</translation>
+<translation id="5496587651328244253">Organizare</translation>
 <translation id="1233913566967531780">Fila Focalizare</translation>
 <translation id="4034992002364254340">Adună toate filele asociate într-o fereastră nouă</translation>
 <translation id="8012125596344613514">Subiecte sugerate</translation>
@@ -340,6 +342,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="6501807887341963552">Teme și culori</translation>
 <translation id="6724227215236550330">Parolele salvate vor apărea aici. Pentru a importa parole la <ph name="BRAND"/> pe acest dispozitiv, <ph name="BEGIN_LINK"/> selectează un fișier CSV<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">Pentru a importa parole la <ph name="BRAND"/> pe acest dispozitiv, selectează un fișier CSV</translation>
+<translation id="8570228839666486945">IA la nivel de dispozitiv</translation>
 <translation id="9156965752763025780">Modificările dvs. vor intra în vigoare următoarea dată când reporniți Brave.</translation>
 <translation id="7179921470347911571">Relansare acum</translation>
 <translation id="1426410128494586442">Da</translation>
@@ -392,6 +395,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="5297085818601043899">Sfat ecran</translation>
 <translation id="5219886318310413094">Afișează filele fixate în toate ferestrele</translation>
 <translation id="2396127686705429331">Afișați butonul pentru marcaje</translation>
+<translation id="443318149139185498">Utilizați logo-ul din contur pe butonul meniului principal</translation>
 <translation id="2814998458708016836">Utilizați bara de adrese lată</translation>
 <translation id="4749586705247636385">Afișați colțuri rotunjite pe zonele principale de conținut</translation>
 <translation id="4109670531935487117">Afișați sugestiile de completare automată în bara de adrese</translation>
@@ -545,7 +549,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="509873765238158442">Blochează Microsoft Recall</translation>
 <translation id="4763421121695677716">Blochează funcția Recall pe computerele Microsoft Windows să facă capturi de ecran ale oricăror file deschise de Brave.</translation>
 <translation id="1968895725257436430">Colectare date</translation>
-<translation id="4846154056248462491">La ieșire</translation>
+<translation id="1700052872056357670">Ștergeți datele la ieșire</translation>
 <translation id="216468847346280584">Ștergeți datele Brave Ads...</translation>
 <translation id="2808630562319398131">Resetați datele Brave Rewards...</translation>
 <translation id="6438096877646138757">Site-uri care șterg modulele cookie atunci când le închideți</translation>
@@ -792,6 +796,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="1529674267267221673">Leo va apărea în meniul contextual atunci când faceți clic dreapta pe un site web. Aceasta va trimite contextul de pe pagina web actuală către Leo.</translation>
 <translation id="5226020406479918122">Filă Mod Focalizare</translation>
 <translation id="3705539672403311123">Activează organizarea de file în pagina de căutare filă. Când este deschisă, aceasta va trimite automat titlurile și originile tuturor filelor non-private către Leo pentru a le clasifica. <ph name="BEGIN_LINK"/>Află mai multe<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">Model implicit pentru tab focus</translation>
 <translation id="8172263161008556851">Afișați mesajele sugerate în conversație</translation>
 <translation id="5781842473834867765">Păstrează istoricul conversațiilor</translation>
 <translation id="1082960401708055995">Dezactivarea stocării conversațiilor va șterge definitiv toate conversațiile stocate anterior. Această acțiune nu poate fi anulată.</translation>

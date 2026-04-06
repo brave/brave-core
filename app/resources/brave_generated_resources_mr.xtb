@@ -323,6 +323,8 @@
 <translation id="8813509417421129632">एक मनोरित पृष्ठ <ph name="SITE"/> सेव्ह करू इच्छिते</translation>
 <translation id="7700010743463174379">हे पृष्ठ सेव्ह करू इच्छिते</translation>
 <translation id="6774238875569752630">या पृष्ठाचे एक मनोरित पृष्ठ सेव्ह करू इच्छिते</translation>
+<translation id="1383876407941801731">शोधा</translation>
+<translation id="5496587651328244253">संयोजित करा</translation>
 <translation id="1233913566967531780">टॅब लक्ष केंद्रित</translation>
 <translation id="4034992002364254340">सर्व संबंधित टॅब एका नवीन विंडोमध्ये एकत्र करा</translation>
 <translation id="8012125596344613514">सुझवलेले विषय</translation>
@@ -340,6 +342,7 @@
 <translation id="6501807887341963552">थीम आणि रंग</translation>
 <translation id="6724227215236550330">येथे सहेत असलेले पासवर्ड दिसतील. या डिव्हाइसवरील <ph name="BRAND"/> करण्‍यासाठी पासवर्ड आयात करण्‍यासाठी, <ph name="BEGIN_LINK"/> एक CSV फाइल निवडा<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610"><ph name="BRAND"/> या डिव्हाइसवरील Passcode आयात करण्‍यासाठी, एक CSV फाइल निवडा</translation>
+<translation id="8570228839666486945">डिव्‍हाइसवर AI</translation>
 <translation id="9156965752763025780">तुम्ही पुढल्या वेळी Brave रीलाँच कराल तोपर्यंत तुमचे बदल प्रभावी होतील.</translation>
 <translation id="7179921470347911571">आता पुन्हा लाँच करा</translation>
 <translation id="1426410128494586442">होय</translation>
@@ -392,6 +395,7 @@
 <translation id="5297085818601043899">टूलटिप</translation>
 <translation id="5219886318310413094">सर्व विंडोमध्ये पिन केलेले टॅब दाखवा</translation>
 <translation id="2396127686705429331">बुकमार्क बटण दाखवा</translation>
+<translation id="443318149139185498">मुख्य मेनू बटणवर रूपरेषा लोगो वापरा</translation>
 <translation id="2814998458708016836">रुंद अ‍ॅड्रेस बार वापरा</translation>
 <translation id="4749586705247636385">मुख्य मजकुराच्या क्षेत्रांवर गोलसर कोपरे दर्शवा</translation>
 <translation id="4109670531935487117">ॲड्रेस बारमध्ये ऑटोकम्प्लीट शिफारसी दाखवा</translation>
@@ -545,7 +549,7 @@
 <translation id="509873765238158442">Microsoft रीकॉल ब्लॉक करा</translation>
 <translation id="4763421121695677716">कोणत्याही चालू Brave टॅब्सचे आपोआप स्क्रीनशॉट घेणाऱ्या Microsoft Windows कंप्युटर्स वरील रीकॉल फीचर ब्लॉक करा.</translation>
 <translation id="1968895725257436430">डेटा संकलन</translation>
-<translation id="4846154056248462491">एग्झिट करताना</translation>
+<translation id="1700052872056357670">बाहेर पडल्यानंतर सर्व डेटा क्लियर करा</translation>
 <translation id="216468847346280584">Brave ॲड्स डेटा क्लियर करा...</translation>
 <translation id="2808630562319398131">Brave रीवॉर्ड्स डेटा रीसेट करा...</translation>
 <translation id="6438096877646138757">आपण बंद केलेल्या साइट्सची कुकीज त्वरीत काढा</translation>
@@ -791,6 +795,7 @@
 <translation id="1529674267267221673">वेबसाईटवर उजवीकडे क्लिक केल्यावर Leo संदर्भ मेनूमध्ये दिसेल. यामुळे वर्तमान वेब पृष्ठाचा संदर्भ Leo ला पाठवला जाईल.</translation>
 <translation id="5226020406479918122">टॅब फोकस मोड</translation>
 <translation id="3705539672403311123">टॅब शोध पृष्ठामध्ये टॅब्सचे आयोजन सक्षम करा. उघडल्यावर, हे आपोआप सर्व नॉन-प्रायव्हेट टॅबची शीर्षके आणि उत्पत्ती Leo कडे वर्गीकृत करण्यासाठी पाठवेल. <ph name="BEGIN_LINK"/>अधिक जाणून घ्या<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">टॅब फोकससाठीचे डीफॉल्ट मॉडेल</translation>
 <translation id="8172263161008556851">संवादात सूचित केलेले प्रॉम्प्ट दाखवा</translation>
 <translation id="5781842473834867765">माझा संभाषण इतिहास जतन करा</translation>
 <translation id="1082960401708055995">गोष्टी साठवण्याचा इतिहास अक्षम केल्याने सर्व आधी जतन केलेल्या संभाषणांचा कायमचा नाश होईल. हे क्रिया पूर्ववत करता येणार नाही.</translation>

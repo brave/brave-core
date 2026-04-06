@@ -1830,6 +1830,7 @@
 <translation id="8897189056319316783">Shield ZEC</translation>
 <translation id="508249542337194541">Çmbroj ZEC</translation>
 <translation id="3382275793825152362">Mbro fonde</translation>
+<translation id="617149752238892649">Shfaq fonde</translation>
 <translation id="8631765320256788981">Je duke dërguar fonde nga llogaria jote transparente në llogarinë tënde të mbrojtur.</translation>
 <translation id="3860364671495430495">Je duke dërguar fonde nga llogaria jote e mbrojtur në llogarinë tënde transparente.</translation>
 <translation id="7144878232160441200">Përsërite</translation>
@@ -2179,6 +2180,7 @@
     }</translation>
 <translation id="6961721183181597848">Si mund t'ju ndihmoj sot?</translation>
 <translation id="2966135729673253768">Paraqit pas</translation>
+<translation id="5923170497201832190">Rrëshqit në fund</translation>
 <translation id="6219262425964000211">Hidhni dosjet këtu</translation>
 <translation id="4313763911013851687">Hidhni dosje këtu për t'i shtuar në bisedë</translation>
 <translation id="4524675003624341892">Sugjero pyetje...</translation>
@@ -2200,20 +2202,21 @@
 <translation id="999273441077650169">Modeli ndryshon në mënyrë dinamike për të përdorur më të mirin për detyrën. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Llama 3.1 8B, një model i krijuar nga Meta për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Llama është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Qwen VL 30B, një model i krijuar nga Alibaba Cloud për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Qwen është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga DeepSeek V3.1, një model i krijuar nga DeepSeek për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. DeepSeek V3.1 është i mbajtur në NEAR përmes infrastrukturës së tyre të verifikueshme dhe të sigurt të privatësisë. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GLM-5, një model i krijuar nga Zhipu AI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. GLM-5 është i mbajtur në NEAR përmes infrastrukturës së tyre të verifikueshme dhe të sigurt të privatësisë. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Përshëndetje, unë jam Leo. Unë jam një asistent AI i Brave. Kam fuqi nga Claude Instant, një model i krijuar nga Anthropic për të kryer detyra bisedore dhe përpunimi teksti. Claude Instant ofrohet nga Brave përmes infrastrukturës sonë të sigurt.<ph name="LINK_BEFORE"/>Mësoni më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Claude Haiku, një model i krijuar nga Anthropic për të fuqizuar detyrat e bisedave dhe përpunimit të teksteve. Claude Haiku është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Claude Sonnet, një model i krijuar nga Anthropic për të fuqizuar detyrat e bisedave dhe përpunimit të teksteve. Claude Sonnet është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Llama 4 Scout, një model i krijuar nga Meta për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Llama 4 Scout është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Llama 4 Maverick, një model i krijuar nga Meta për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Llama 4 Maverick është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GPT OSS 20B, një model i krijuar nga OpenAI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. GPT OSS 20B është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GPT OSS 120B, një model i krijuar nga OpenAI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. GPT OSS 120B është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Mistral Large, një model i krijuar nga Mistral për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Mistral Large është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Pixtral Large, një model i krijuar nga Mistral për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Pixtral Large është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Qwen 3 235B, një model i krijuar nga Alibaba Cloud për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Qwen 3 235B është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Deepseek V3.1, një model i krijuar nga Deepseek për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Deepseek V3.1 është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Deepseek V3.2, një model i krijuar nga Deepseek për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Deepseek V3.2 është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Qwen 3 Coder 480B, një model i krijuar nga Alibaba Cloud për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Qwen 3 Coder 480B është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Claude Opus, një model i krijuar nga Anthropic për të fuqizuar detyrat e bisedave dhe përpunimit të teksteve. Claude Opus është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GLM-4-7-Flash, një model i krijuar nga Zhipu AI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. GLM-4-7-Flash është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Kimi K2.5, një model i krijuar nga Moonshot AI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Kimi K2.5 është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Brave Ocelot, një model i krijuar nga Brave për të përmbledhur faqet e internetit. Brave Ocelot është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Lokal</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -2346,6 +2349,8 @@
 <translation id="7465032796278724624">Verifikuar si Privat nga NEAR AI TEE</translation>
 <translation id="8782867266498869301">Modeli ndryshon dinamikisht për të përdorur më të mirën për detyrën</translation>
 <translation id="3213834013136637671">Kërkim • Vision</translation>
+<translation id="5276681919620506371">Kërkim • Mjete</translation>
+<translation id="7434375176361995333">Përmbledhje • I shpejtë</translation>
 <translation id="3965507912994218570">Parametrat e Leo</translation>
 <translation id="3754337604877048671">Prezantojmë Leo AI</translation>
 <translation id="5295261408976371809">Asistenti juaj <ph name="TEXT_BEFORE"/>privat<ph name="TEXT_AFTER"/>, i ndërtuar drejt në shfletues.</translation>
@@ -2401,6 +2406,8 @@
 <translation id="4572010449071015143">Fillo bisedë të re</translation>
 <translation id="345901077335355561">Kthehu në bisedën aktive</translation>
 <translation id="6287023598025162715">Bisedë e re</translation>
+<translation id="7230502562132448519">Filtro bisedën</translation>
+<translation id="821070843380699990">Ju lutem provoni një kërkesë tjetër</translation>
 <translation id="7097822247923237815">Bisedë e përkohshme</translation>
 <translation id="7481750859362986254">Kjo bisedë nuk do të ruhet në historik dhe nuk do të përdorë asnjë nga personalizimet ose memoriet e Leos.</translation>
 <translation id="4238305333951712482">Memoria u përditësua: <ph name="MEMORY_CONTENT"/></translation>
@@ -2438,6 +2445,21 @@
 <translation id="6338250692384725496">Ekzekutim kodi në sandbox për t'ju ndihmuar me pyetjen tuaj</translation>
 <translation id="4379566111233326721">Kodi:</translation>
 <translation id="3542130965673205258">Output-i:</translation>
+<translation id="5382076391290708074">Lëvizja e skedave tuaja</translation>
+<translation id="3862123464576147769">Duke e lejuar këtë, do të dërgohej <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> dhe <ph name="TITLE_FORMAT_START"/>Titull<ph name="TITLE_FORMAT_END"/> i të gjithë skedave dhe grupeve të skedave tuaja në Brave AI, dhe do të lejonte Brave AI t'i lëvizë ato. Ky leje zbatohet vetëm në këtë bisedë.</translation>
+<translation id="396165714586708444">Hulumtim i thellë</translation>
+<translation id="577747221882855891">Kërkues: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">Duke analizuar <ph name="COUNT"/> burime për "<ph name="QUERY"/>"</translation>
+<translation id="1202264349398113062">Duke përpunuar <ph name="COUNT"/> URL-e të reja për "<ph name="QUERY"/>"</translation>
+<translation id="6189479600023022289">U gjetën <ph name="COUNT"/> URL për "<ph name="QUERY"/>"</translation>
+<translation id="5150674341374247355">Duke marrë <ph name="FETCHED"/>/<ph name="TOTAL"/> URL</translation>
+<translation id="1075606740174445363">Analizuar <ph name="COUNT"/> URL për "<ph name="QUERY"/>"</translation>
+<translation id="6220878652174655112">Kërkues <ph name="COUNT"/> pyetjesh</translation>
+<translation id="3571450204565012512">Analizuar <ph name="URL_COUNT"/> URL nga <ph name="QUERY_COUNT"/> kërkime</translation>
+<translation id="5733200563889491347">Hulumtimi u përfundua</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>m <ph name="SECONDS"/>s</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>s</translation>
+<translation id="5067194014665306881">Gabim në hulumtim: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">Shfletim me AI</translation>
 <translation id="2854657728271352435">Rreth profilit të shfletimit me AI</translation>
 <translation id="2301685062527585986">Për të mbrojtur të dhënat tuaja, ky profil i izoluar i shfletimit me AI siguron që agjenti AI të mos ketë qasje në profilin tuaj kryesor të shfletimit, me leje vetëm për të vizituar dhe ndërvepruar me site kur është e nevojshme. Mund të rrisni produktivitetin tuaj duke i dhënë detyra dhe duke e lejuar të shfletojë për ju.</translation>
@@ -2502,11 +2524,14 @@
 <translation id="7847477075635510673">Fshi Lajmet</translation>
 <translation id="9173319813356700250">LAJME</translation>
 <translation id="6543799171249004861">Foto nga <ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="466214682712474574">Identifikou në llogarinë <ph name="PROVIDER"/> për të parë balancin tuaj</translation>
 <translation id="8332875111286275890">Identifikohu për të parë balancin tënd</translation>
 <translation id="5430001801813715388">SHËRBIME</translation>
+<translation id="988042349921505128">Kërkim dhe AI</translation>
 <translation id="2430295257226173518">Pyet ç'të duash, gjej ç'të duash…</translation>
 <translation id="167018310108390163">Përshtat Faqen e Re të Skedës</translation>
+<translation id="3500134717967948757">Shfaq miniaplikacionin Leo AI në skeda të reja</translation>
 <translation id="6851426306697017546">Shfaq oren</translation>
 <translation id="4844370919312937270">Shfaq kutinë e kërkimit në skeda të reja</translation>
 <translation id="7328310113820087094">Me <ph name="LINK_BEGIN"/>Shpërblime Brave<ph name="LINK_END"/>, mund të fitosh për të parë reklamat në faqen e re të skedës.</translation>
@@ -2535,8 +2560,14 @@
 <translation id="8458987127502506209">Aktivizo Mburojat Brave</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Mburojat janë NGRITUR<ph name="STATUS_AFTER"/> për këtë sajt</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Mburojat janë POSHTË<ph name="STATUS_AFTER"/> për këtë sajt</translation>
+<translation id="8426214145426269584">Shields <ph name="UP_BEFORE"/>up<ph name="UP_AFTER"/> për këtë sajt</translation>
+<translation id="3325367578778625743">Shields <ph name="DOWN_BEFORE"/>down<ph name="DOWN_AFTER"/> për këtë sajt</translation>
 <translation id="4724752924364329714">Nëse kjo faqe duket e prishur, provoje me Mburoja të çaktivizuara.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Shënim: kjo mund të ulë mbrojtjen e privatësisë nga Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">Kjo mund të zvogëlojë mbrojtjet e privatësisë të Brave. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">Gjurmues, reklama, dhe më shumë të bllokuara.</translation>
+<translation id="4968268657895673116">A nuk funksionon saktë ky sajt me Shields lart?</translation>
+<translation id="5412004902081180614">Raporto</translation>
 <translation id="3620004479054499575">Po keni probleme me këtë faqe?</translation>
 <translation id="9176447766421988172">Po testojmë një eksperiment për të rritur përputhshmërinë me faqet e internetit, ku mbajmë vetëm bllokimin e reklamave të aktivizuar. Paralajmërim: heq të gjitha mbrojtjet e privatësisë. Dëshironi ta provoni? <ph name="LINK_BEFORE"/>Mësoni më shumë<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Ju lutemi vini re se për faqe të veçanta të dëmtuara nga mbrojtjet e privatësisë së Brave, mund të vendosni Mburojat në POXHË.</translation>
@@ -2551,9 +2582,12 @@
 <translation id="8377155647357436161">Gjurmues, reklama, dhe më shumë të bllokuara <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Nuk është e mbrojtur nga Mburojat Brave <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Kontrolle të përparuara</translation>
+<translation id="7939062555109487992">Opsionet e përparuara</translation>
 <translation id="5799940914270080805">Ndryshimi i këtyre cilësimeve mund të prishë sajtet.</translation>
 <translation id="9204041448536398473">Cilësimet globale të Mburojës</translation>
 <translation id="2108334320919763866">Paracaktimet globale</translation>
+<translation id="1896472873031845605">Cilësimet globale</translation>
+<translation id="8324318899000695659">Blloko elementet</translation>
 <translation id="7205939464631857223">Hiq të gjitha elementet e bllokuara</translation>
 <translation id="3440043456924990296">Cilësimet e menaxhuara nga organizata</translation>
 <translation id="7053983685419859001">Bllokoje</translation>
@@ -2638,7 +2672,6 @@
 <translation id="7207456302801184289">Mirë se vini në Brave</translation>
 <translation id="4988030440045495002">Temë shumë e errët</translation>
 <translation id="2422927186524098759">Paneli Anësor</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Shiriti i mjeteve</translation>
 <translation id="6225572914528673855">Shiriti i adresës</translation>
