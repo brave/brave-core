@@ -115,6 +115,8 @@ void BraveTabMenuModel::Build(BrowserWindowInterface* browser_window,
   AddItemWithStringId(TabStripModel::CommandBookmarkAllTabs,
                       IDS_TAB_CXMENU_BOOKMARK_ALL_TABS);
 
+  // TODO(https://github.com/brave/brave-browser/issues/54241): Update
+  // brave::CanBringAllTabs() to accept BrowserWindowInterface*.
   if (brave::CanBringAllTabs(browser_window->GetBrowserForMigrationOnly())) {
     AddItemWithStringId(TabStripModel::CommandBringAllTabsToThisWindow,
                         IDS_TAB_CXMENU_BRING_ALL_TABS_TO_THIS_WINDOW);
