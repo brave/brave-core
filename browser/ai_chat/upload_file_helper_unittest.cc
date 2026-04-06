@@ -316,6 +316,87 @@ TEST_F(UploadFileHelperTest, PdfFileTooSmall) {
   EXPECT_FALSE(result);
 }
 
+TEST_F(UploadFileHelperTest, BinaryFileRejected) {
+  // Test that files with known binary MIME types are rejected
+  base::FilePath zip_path = temp_dir_.GetPath().AppendASCII("archive.zip");
+  ASSERT_TRUE(base::WriteFile(zip_path, "PK\x03\x04 fake zip content"));
+
+  ui::SelectFileDialog::SetFactory(
+      std::make_unique<content::FakeSelectFileDialogFactory>(
+          std::vector<base::FilePath>{zip_path}));
+
+  testing::NiceMock<MockObserver> observer(file_helper_.get());
+  EXPECT_CALL(observer, OnFilesSelected).Times(1);
+
+  auto result = UploadFileSync();
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  // Should fail since .zip maps to application/zip (known binary)
+  EXPECT_FALSE(result);
+}
+
+TEST_F(UploadFileHelperTest, TextFileHandling) {
+  // Test text file with known extension
+  base::FilePath txt_path = temp_dir_.GetPath().AppendASCII("readme.txt");
+  ASSERT_TRUE(base::WriteFile(txt_path, "Hello, world!"));
+
+  ui::SelectFileDialog::SetFactory(
+      std::make_unique<content::FakeSelectFileDialogFactory>(
+          std::vector<base::FilePath>{txt_path}));
+
+  testing::NiceMock<MockObserver> observer(file_helper_.get());
+  EXPECT_CALL(observer, OnFilesSelected).Times(1);
+
+  auto result = UploadFileSync();
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  ASSERT_TRUE(result);
+  ASSERT_EQ(1u, result->size());
+  EXPECT_EQ((*result)[0]->filename, txt_path.AsUTF8Unsafe());
+  EXPECT_EQ((*result)[0]->type, mojom::UploadedFileType::kText);
+  EXPECT_EQ((*result)[0]->data.size(), 13u);
+}
+
+TEST_F(UploadFileHelperTest, TextFileWithoutExtension) {
+  // Test file without extension — should be treated as text
+  base::FilePath no_ext_path = temp_dir_.GetPath().AppendASCII("textfile");
+  ASSERT_TRUE(base::WriteFile(no_ext_path, "some text content"));
+
+  ui::SelectFileDialog::SetFactory(
+      std::make_unique<content::FakeSelectFileDialogFactory>(
+          std::vector<base::FilePath>{no_ext_path}));
+
+  testing::NiceMock<MockObserver> observer(file_helper_.get());
+  EXPECT_CALL(observer, OnFilesSelected).Times(1);
+
+  auto result = UploadFileSync();
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  ASSERT_TRUE(result);
+  ASSERT_EQ(1u, result->size());
+  EXPECT_EQ((*result)[0]->type, mojom::UploadedFileType::kText);
+}
+
+TEST_F(UploadFileHelperTest, TextFileWithUnknownExtension) {
+  // Test file with extension not in Chromium's MIME registry
+  base::FilePath diff_path = temp_dir_.GetPath().AppendASCII("changes.diff");
+  ASSERT_TRUE(base::WriteFile(diff_path, "--- a/file\n+++ b/file\n"));
+
+  ui::SelectFileDialog::SetFactory(
+      std::make_unique<content::FakeSelectFileDialogFactory>(
+          std::vector<base::FilePath>{diff_path}));
+
+  testing::NiceMock<MockObserver> observer(file_helper_.get());
+  EXPECT_CALL(observer, OnFilesSelected).Times(1);
+
+  auto result = UploadFileSync();
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  ASSERT_TRUE(result);
+  ASSERT_EQ(1u, result->size());
+  EXPECT_EQ((*result)[0]->type, mojom::UploadedFileType::kText);
+}
+
 TEST_F(UploadFileHelperTest, MixedFileTypes) {
   data_decoder::test::InProcessDataDecoder data_decoder;
   // Test uploading both PDF and image files together

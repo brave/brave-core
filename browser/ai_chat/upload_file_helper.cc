@@ -12,16 +12,18 @@
 #include "base/files/file.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
-#include "base/no_destructor.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
+#include "media/base/mime_util.h"
+#include "net/base/mime_util.h"
 #include "printing/printing_utils.h"
 #include "services/data_decoder/public/cpp/data_decoder.h"
 #include "services/data_decoder/public/cpp/decode_image.h"
+#include "third_party/blink/public/common/mime_util/mime_util.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/shell_dialogs/selected_file_info.h"
@@ -51,8 +53,29 @@ std::optional<mojom::UploadedFileType> DetermineFileType(
     return mojom::UploadedFileType::kImage;
   }
 
-  // If no recognized extension, return nullopt
-  return std::nullopt;
+  // If the extension has a known MIME type, reject clearly binary types
+  // (e.g. zip, exe, tar) while accepting text-renderable types.
+  auto extension = file_path.Extension();
+  if (!extension.empty()) {
+    std::string mime_type;
+    if (net::GetMimeTypeFromExtension(extension.substr(1), &mime_type)) {
+      // Reject known binary MIME types (media, archives, executables, etc.)
+      if (blink::IsSupportedImageMimeType(mime_type) ||
+          media::IsSupportedMediaMimeType(mime_type)) {
+        return std::nullopt;
+      }
+      // Accept types that Chromium can render as text
+      if (blink::IsSupportedNonImageMimeType(mime_type)) {
+        return mojom::UploadedFileType::kText;
+      }
+      // Known MIME type but not renderable (e.g. application/zip)
+      return std::nullopt;
+    }
+  }
+
+  // No MIME mapping for this extension (or no extension). Let the renderer
+  // try via MIME sniffing, matching how Chromium handles file:// URLs.
+  return mojom::UploadedFileType::kText;
 }
 
 // base::ReadFileToBytes doesn't handle content uri so we need to read from
@@ -119,9 +142,6 @@ void UploadFileHelper::UploadFile(std::unique_ptr<ui::SelectFilePolicy> policy,
   select_file_dialog_ = ui::SelectFileDialog::Create(this, std::move(policy));
   ui::SelectFileDialog::FileTypeInfo info;
   info.allowed_paths = ui::SelectFileDialog::FileTypeInfo::NATIVE_PATH;
-  info.extensions = {{FILE_PATH_LITERAL("png"), FILE_PATH_LITERAL("jpeg"),
-                      FILE_PATH_LITERAL("jpg"), FILE_PATH_LITERAL("webp"),
-                      FILE_PATH_LITERAL("pdf")}};
 #if BUILDFLAG(IS_ANDROID)
   // Set the list of acceptable MIME types for the file picker; this will apply
   // to any subsequent SelectFile() calls.
@@ -231,8 +251,10 @@ void UploadFileHelper::MultiFilesSelected(
           auto file_type_opt = DetermineFileType(filepath, *file_data);
 
           if (file_type_opt &&
-              *file_type_opt == mojom::UploadedFileType::kPdf) {
-            // For PDFs, just return the raw data without processing
+              (*file_type_opt == mojom::UploadedFileType::kPdf ||
+               *file_type_opt == mojom::UploadedFileType::kText)) {
+            // For PDFs and text files, return raw data without processing.
+            // Text extraction happens via ProcessPdfFile/ProcessTextFile.
             std::move(callback).Run(std::make_tuple(
                 std::move(file_data), std::move(filepath), file_type_opt));
           } else if (file_type_opt &&
@@ -287,13 +309,14 @@ void UploadFileHelper::OnFileRead(
   // Determine file type based on extension and validate PDF content
   auto file_type_opt = DetermineFileType(std::get<1>(result), *file_data);
 
-  if (file_type_opt && *file_type_opt == mojom::UploadedFileType::kPdf) {
-    // Return raw PDF data; text extraction happens via ProcessPdfFile mojo
-    // endpoint when uploading from WebUI drag-and-drop.
+  if (file_type_opt && (*file_type_opt == mojom::UploadedFileType::kPdf ||
+                        *file_type_opt == mojom::UploadedFileType::kText)) {
+    // Return raw data; text extraction happens via ProcessPdfFile or
+    // ProcessTextFile mojo endpoint.
     std::vector<mojom::UploadedFilePtr> files;
-    files.push_back(mojom::UploadedFile::New(
-        std::get<1>(result).AsUTF8Unsafe(), file_data->size(), *file_data,
-        mojom::UploadedFileType::kPdf, std::nullopt));
+    files.push_back(mojom::UploadedFile::New(std::get<1>(result).AsUTF8Unsafe(),
+                                             file_data->size(), *file_data,
+                                             *file_type_opt, std::nullopt));
     std::move(upload_file_callback_).Run(std::make_optional(std::move(files)));
   } else if (file_type_opt &&
              *file_type_opt == mojom::UploadedFileType::kImage) {

@@ -66,6 +66,7 @@ static_library("ai_chat") {
     "//chrome/browser/actor",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/tabs:tabs_public",
+    "//chrome/common",
     "//chrome/common:channel_info",
     "//components/browsing_data/core",
     "//components/keyed_service/content",
