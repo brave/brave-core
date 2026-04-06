@@ -65,8 +65,9 @@ describe('attachment item', () => {
       />,
     )
 
-    const button =
-      document.querySelector('button.removeButton') as HTMLButtonElement
+    const button = document.querySelector(
+      'button.removeButton',
+    ) as HTMLButtonElement
     expect(button).toBeInTheDocument()
     expect(button).toBeVisible()
 
