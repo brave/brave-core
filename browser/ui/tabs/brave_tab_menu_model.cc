@@ -141,22 +141,67 @@ void BraveTabMenuModel::Build(BrowserWindowInterface* browser_window,
   }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
-  // Replace SplitTabMenuModel with BraveSplitTabMenuModel.
-  if (arrange_split_view_submenu_) {
-    auto arrange_submenu_index =
-        GetIndexOfCommandId(TabStripModel::CommandArrangeSplit);
-    CHECK(arrange_submenu_index);
-    RemoveItemAt(*arrange_submenu_index);
+  // Reorder the split tab entry to the last position of the first section.
+  // For CommandArrangeSplit, also replaces upstream's SplitTabMenuModel with
+  // BraveSplitTabMenuModel.
+  BuildSplitTabEntry(tab_strip_model, selected_index);
+}
+
+void BraveTabMenuModel::BuildSplitTabEntry(TabStripModel* tab_strip_model,
+                                           int selected_index) {
+  // Find whichever split-related command is present in the menu.
+  std::optional<int> split_cmd;
+  size_t split_index = 0;
+  for (int cmd :
+       {TabStripModel::CommandArrangeSplit, TabStripModel::CommandAddToSplit,
+        TabStripModel::CommandSwapWithActiveSplit}) {
+    if (auto index = GetIndexOfCommandId(cmd)) {
+      split_cmd = cmd;
+      split_index = *index;
+      break;
+    }
+  }
+  if (!split_cmd) {
+    return;
+  }
+
+  // Capture item properties before removal so we can re-insert at the target.
+  const auto label = GetLabelAt(split_index);
+  const auto icon = GetIconAt(split_index);
+  const bool is_submenu = GetTypeAt(split_index) == ui::MenuModel::TYPE_SUBMENU;
+  const bool enabled = IsEnabledAt(split_index);
+  const auto element_id = GetElementIdentifierAt(split_index);
+  ui::MenuModel* submenu =
+      is_submenu ? GetSubmenuModelAt(split_index) : nullptr;
+
+  RemoveItemAt(split_index);
+  // Find the first separator which marks the end of the first section.
+  // If no separator exists, append at the end.
+  size_t insert_index = GetItemCount();
+  for (size_t i = 0; i < GetItemCount(); i++) {
+    if (GetTypeAt(i) == ui::MenuModel::TYPE_SEPARATOR) {
+      insert_index = i;
+      break;
+    }
+  }
+  if (*split_cmd == TabStripModel::CommandArrangeSplit) {
     arrange_split_view_submenu_ = std::make_unique<BraveSplitTabMenuModel>(
         tab_strip_model, SplitTabMenuModel::MenuSource::kTabContextMenu,
         selected_index);
     InsertSubMenuWithStringIdAt(
-        *arrange_submenu_index, TabStripModel::CommandArrangeSplit,
+        insert_index, TabStripModel::CommandArrangeSplit,
         IDS_TAB_CXMENU_ARRANGE_SPLIT, arrange_split_view_submenu_.get());
-    SetIcon(*arrange_submenu_index,
-            ui::ImageModel::FromVectorIcon(kSplitSceneIcon, ui::kColorMenuIcon,
-                                           16));
-    SetElementIdentifierAt(*arrange_submenu_index, kArrangeSplitTabsMenuItem);
+  } else {
+    if (submenu) {
+      InsertSubMenuAt(insert_index, *split_cmd, label, submenu);
+    } else {
+      InsertItemAt(insert_index, *split_cmd, label);
+    }
+  }
+  SetEnabledAt(insert_index, enabled);
+  SetIcon(insert_index, icon);
+  if (element_id) {
+    SetElementIdentifierAt(insert_index, element_id);
   }
 }
 

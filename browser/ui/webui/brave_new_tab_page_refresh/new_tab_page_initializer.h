@@ -20,6 +20,7 @@ namespace regional_capabilities {
 class RegionalCapabilitiesService;
 }
 
+class PrefService;
 class Profile;
 
 namespace brave_new_tab_page_refresh {
@@ -40,6 +41,9 @@ class NewTabPageInitializer {
   NewTabPageInitializer& operator=(const NewTabPageInitializer&) = delete;
 
   void Initialize();
+
+  // Migrates profile prefs associated with the NTP.
+  static void MigrateProfilePrefs(PrefService* prefs);
 
  private:
   Profile* GetProfile();

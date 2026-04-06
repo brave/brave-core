@@ -184,7 +184,7 @@ TEST_F(UploadFileHelperTest, ImageRead) {
   testing::Mock::VerifyAndClearExpectations(&observer);
   ASSERT_TRUE(sample_result);
   ASSERT_EQ(1u, sample_result->size());
-  EXPECT_EQ((*sample_result)[0]->filename, "sample_png.png");
+  EXPECT_EQ((*sample_result)[0]->filename, path3.AsUTF8Unsafe());
   EXPECT_EQ((*sample_result)[0]->filesize, (*sample_result)[0]->data.size());
   EXPECT_EQ((*sample_result)[0]->type, mojom::UploadedFileType::kImage);
   auto encoded_bitmap = gfx::PNGCodec::Decode((*sample_result)[0]->data);
@@ -205,7 +205,7 @@ TEST_F(UploadFileHelperTest, ImageRead) {
   testing::Mock::VerifyAndClearExpectations(&observer);
   ASSERT_TRUE(large_result);
   ASSERT_EQ(1u, large_result->size());
-  EXPECT_EQ((*large_result)[0]->filename, "large_png.png");
+  EXPECT_EQ((*large_result)[0]->filename, path4.AsUTF8Unsafe());
   EXPECT_EQ((*large_result)[0]->filesize, (*large_result)[0]->data.size());
   EXPECT_EQ((*large_result)[0]->type, mojom::UploadedFileType::kImage);
   EXPECT_LE((*large_result)[0]->filesize, large_png_bytes->size());
@@ -225,7 +225,7 @@ TEST_F(UploadFileHelperTest, ImageRead) {
   ASSERT_TRUE(result);
   ASSERT_EQ(2u, result->size());
 
-  EXPECT_EQ((*result)[0]->filename, "sample_png.png");
+  EXPECT_EQ((*result)[0]->filename, path3.AsUTF8Unsafe());
   EXPECT_EQ((*result)[0]->filesize, (*result)[0]->data.size());
   EXPECT_EQ((*result)[0]->type, mojom::UploadedFileType::kImage);
   auto encoded_bitmap1 = gfx::PNGCodec::Decode((*result)[0]->data);
@@ -233,7 +233,7 @@ TEST_F(UploadFileHelperTest, ImageRead) {
   EXPECT_EQ(sample_bitmap.width(), encoded_bitmap1.width());
   EXPECT_EQ(sample_bitmap.height(), encoded_bitmap1.height());
 
-  EXPECT_EQ((*result)[1]->filename, "large_png.png");
+  EXPECT_EQ((*result)[1]->filename, path4.AsUTF8Unsafe());
   EXPECT_EQ((*result)[1]->filesize, (*result)[1]->data.size());
   EXPECT_EQ((*result)[1]->type, mojom::UploadedFileType::kImage);
   auto encoded_bitmap2 = gfx::PNGCodec::Decode((*result)[1]->data);
@@ -259,7 +259,7 @@ TEST_F(UploadFileHelperTest, PdfFileHandling) {
 
   ASSERT_TRUE(result);
   ASSERT_EQ(1u, result->size());
-  EXPECT_EQ((*result)[0]->filename, "sample.pdf");
+  EXPECT_EQ((*result)[0]->filename, pdf_path.AsUTF8Unsafe());
   EXPECT_EQ((*result)[0]->filesize, (*result)[0]->data.size());
   EXPECT_EQ((*result)[0]->type, mojom::UploadedFileType::kPdf);
 
@@ -339,11 +339,11 @@ TEST_F(UploadFileHelperTest, MixedFileTypes) {
   ASSERT_TRUE(result);
   ASSERT_EQ(2u, result->size());
 
-  EXPECT_EQ((*result)[0]->filename, "document.pdf");
+  EXPECT_EQ((*result)[0]->filename, pdf_path.AsUTF8Unsafe());
   EXPECT_EQ((*result)[0]->type, mojom::UploadedFileType::kPdf);
   EXPECT_EQ((*result)[0]->data.size(), sizeof(kSamplePdf));
 
-  EXPECT_EQ((*result)[1]->filename, "image.png");
+  EXPECT_EQ((*result)[1]->filename, png_path.AsUTF8Unsafe());
   EXPECT_EQ((*result)[1]->type, mojom::UploadedFileType::kImage);
   EXPECT_GT((*result)[1]->data.size(), 0u);
 }

@@ -8,7 +8,6 @@
 
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "build/build_config.h"
-#include "extensions/buildflags/buildflags.h"
 
 inline constexpr char kBraveAutofillPrivateWindows[] =
     "brave.autofill_private_windows";
@@ -86,12 +85,10 @@ inline constexpr char kBraveShieldsSettingsVersion[] =
 inline constexpr char kDefaultBrowserPromptEnabled[] =
     "brave.default_browser_prompt_enabled";
 
-#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
 inline constexpr char kWebDiscoveryEnabled[] = "brave.web_discovery_enabled";
-#endif
 inline constexpr char kWebDiscoveryCTAState[] = "brave.web_discovery.cta_state";
-inline constexpr char kDontAskEnableWebDiscovery[] =
-    "brave.dont_ask_enable_web_discovery";
+#endif
 inline constexpr char kBraveSearchVisitCount[] =
     "brave.brave_search_visit_count";
 

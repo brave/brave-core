@@ -184,7 +184,8 @@ extension BrowserViewController {
         filename: filename,
         filesize: filesize,
         data: dataArray,
-        type: .image
+        type: .image,
+        extractedText: nil
       )
 
       completion([uploadedFile])
@@ -334,7 +335,8 @@ extension AiChat.UploadedFile {
         filename: filename,
         filesize: filesize,
         data: dataArray,
-        type: .image
+        type: .image,
+        extractedText: nil
       )
     } catch {
       return nil

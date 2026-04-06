@@ -18,7 +18,6 @@
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
-#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -59,12 +58,9 @@
 #include "brave/browser/brave_rewards/rewards_prefs_util.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_TALK)
-#include "brave/components/brave_talk/pref_names.h"
-#endif
-
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_initializer.h"
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui_prefs.h"
 #endif
 
@@ -144,8 +140,6 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  // Added 11/2022
-  profile_prefs->ClearPref(kDontAskEnableWebDiscovery);
   profile_prefs->ClearPref(kBraveSearchVisitCount);
 #endif
 
@@ -260,18 +254,10 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
 #endif
 
   // Added 2026-03
-  if (profile_prefs->GetBoolean(kNewTabPageHideAllWidgets)) {
-    profile_prefs->SetBoolean(kNewTabPageHideAllWidgets, false);
-    profile_prefs->SetBoolean(kNewTabPageShowRewards, false);
-#if BUILDFLAG(ENABLE_BRAVE_TALK)
-    profile_prefs->SetBoolean(brave_talk::prefs::kNewTabPageShowBraveTalk,
-                              false);
+#if !BUILDFLAG(IS_ANDROID)
+  brave_new_tab_page_refresh::NewTabPageInitializer::MigrateProfilePrefs(
+      profile_prefs);
 #endif
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-    profile_prefs->SetBoolean(kNewTabPageShowBraveVPN, false);
-#endif
-  }
-  profile_prefs->ClearPref(kNewTabPageHideAllWidgets);
 
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }

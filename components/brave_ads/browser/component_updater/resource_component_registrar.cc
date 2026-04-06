@@ -43,6 +43,7 @@ void ResourceComponentRegistrar::RegisterResourceComponent(
   if (resource_component_id_ && resource_component_id_ != component->id) {
     Unregister();
     OnComponentUnregistered(*resource_component_id_);
+    last_install_dir_.reset();
   }
   resource_component_id_ = component->id;
 
@@ -54,6 +55,15 @@ void ResourceComponentRegistrar::RegisterResourceComponent(
 
   Register(component_name, *resource_component_id_,
            std::string(component->public_key_base64));
+
+  if (last_install_dir_) {
+    // The component was already ready before this registration. Replay
+    // OnResourceComponentRegistered so that newly-added observers (e.g. a
+    // profile opened after the component had already been processed) receive
+    // the current resource metadata.
+    resource_component_registrar_delegate_->OnResourceComponentRegistered(
+        *resource_component_id_, *last_install_dir_);
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -62,6 +72,7 @@ void ResourceComponentRegistrar::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& install_dir,
     const std::string& /*resource*/) {
+  last_install_dir_ = install_dir;
   resource_component_registrar_delegate_->OnResourceComponentRegistered(
       component_id, install_dir);
 }

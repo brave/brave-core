@@ -214,6 +214,10 @@ interface AIChatUIHandler {
   ProcessImageFile(array<uint8> file_data, string filename)
       => (UploadedFile? processed_file);
 
+  // Process PDF files: extract text via background PDF viewer + ScreenAI OCR
+  ProcessPdfFile(array<uint8> file_data, string filename)
+      => (UploadedFile? processed_file);
+
   // Get a plural string for the given key and count.
   GetPluralString(string key, int32 count) => (string plural_string);
 

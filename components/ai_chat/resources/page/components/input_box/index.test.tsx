@@ -70,6 +70,7 @@ const testContext: InputBoxProps['context'] = {
   handleSkillClick: () => {},
   selectedSkill: undefined,
   processImageFile: jest.fn(),
+  processPdfFile: jest.fn(),
   skills: [],
 }
 

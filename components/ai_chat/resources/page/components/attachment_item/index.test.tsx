@@ -202,6 +202,7 @@ describe('AttachmentUploadItems', () => {
     type,
     data: new ArrayBuffer(100),
     filesize: BigInt(100),
+    extractedText: undefined,
   })
 
   it('renders regular image files with original filename', () => {

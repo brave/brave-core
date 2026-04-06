@@ -28,6 +28,7 @@
 #include "ui/base/models/image_model.h"
 #include "ui/gfx/favicon_size.h"
 #include "ui/views/animation/ink_drop.h"
+#include "ui/views/bubble/bubble_border.h"
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/view_class_properties.h"
@@ -61,6 +62,15 @@ int BraveTab::GetTreeHeight() const {
   }
 
   return 0;
+}
+
+views::BubbleBorder::Arrow BraveTab::GetAnchorPosition() const {
+  if (tabs::utils::ShouldShowBraveVerticalTabs(
+          controller()->GetBrowserWindowInterface())) {
+    return views::BubbleBorder::Arrow::LEFT_TOP;
+  }
+
+  return Tab::GetAnchorPosition();
 }
 
 std::u16string BraveTab::GetRenderedTooltipText(const gfx::Point& p) const {

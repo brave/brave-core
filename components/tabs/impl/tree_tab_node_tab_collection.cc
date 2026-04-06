@@ -66,8 +66,9 @@ void TreeTabNodeTabCollection::BuildTreeTabs(
           base::WrapUnique<SplitTabCollection>(
               static_cast<SplitTabCollection*>(removed.release())),
           on_remove, on_move);
-      on_create.Run(tree_node->node());
+      TreeTabNode& node_ref = tree_node->node();
       grandparent->AddCollection(std::move(tree_node), index);
+      on_create.Run(node_ref);
       continue;
     }
 
@@ -90,8 +91,9 @@ void TreeTabNodeTabCollection::BuildTreeTabs(
           base::WrapUnique<TabGroupTabCollection>(
               static_cast<TabGroupTabCollection*>(removed.release())),
           on_remove, on_move);
-      on_create.Run(tree_node->node());
+      TreeTabNode& node_ref = tree_node->node();
       grandparent->AddCollection(std::move(tree_node), index);
+      on_create.Run(node_ref);
       continue;
     }
 
@@ -102,8 +104,9 @@ void TreeTabNodeTabCollection::BuildTreeTabs(
     auto tree_node = std::make_unique<TreeTabNodeTabCollection>(
         tree_tab::TreeTabNodeId::GenerateNew(), std::move(owned_tab_interface),
         on_remove, on_move);
-    on_create.Run(tree_node->node());
+    TreeTabNode& node_ref = tree_node->node();
     parent_collection->AddCollection(std::move(tree_node), index);
+    on_create.Run(node_ref);
   }
 }
 
