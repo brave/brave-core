@@ -61,7 +61,7 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   std::string GetNameForDebugging() override;
 
  private:
-  base::Time timestamp() const override;
+  base::Time GetTimestamp() const override;
 
   void FinishCombinating(
       base::OnceCallback<

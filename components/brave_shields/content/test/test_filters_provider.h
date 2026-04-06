@@ -39,7 +39,7 @@ class TestFiltersProvider : public AdBlockFiltersProvider {
 
   std::string GetNameForDebugging() override;
 
-  base::Time timestamp() const override;
+  base::Time GetTimestamp() const override;
   void set_timestamp(base::Time timestamp) { timestamp_ = timestamp; }
 
  private:

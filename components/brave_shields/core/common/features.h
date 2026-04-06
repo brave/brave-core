@@ -83,6 +83,8 @@ inline constexpr base::FeatureParam<size_t>
 
 BASE_DECLARE_FEATURE(kShowUpdatedShieldsPanel);
 
+BASE_DECLARE_FEATURE(kAdblockDATCache);
+
 }  // namespace features
 }  // namespace brave_shields
 

@@ -8,15 +8,20 @@
 #include <string>
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "base/files/file.h"
 #include "base/files/file_util.h"
+#include "base/json/values_util.h"
 #include "base/logging.h"
+#include "base/strings/strcat.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 
 namespace brave_shields {
 
@@ -49,6 +54,7 @@ AdBlockSubscriptionFiltersProvider::AdBlockSubscriptionFiltersProvider(
         on_metadata_retrieved)
     : AdBlockFiltersProvider(false, manager),
       list_file_(list_file),
+      local_state_(local_state),
       on_metadata_retrieved_(on_metadata_retrieved) {}
 
 AdBlockSubscriptionFiltersProvider::~AdBlockSubscriptionFiltersProvider() =
@@ -71,11 +77,33 @@ std::string AdBlockSubscriptionFiltersProvider::GetNameForDebugging() {
   return "AdBlockSubscriptionFiltersProvider";
 }
 
-void AdBlockSubscriptionFiltersProvider::CacheTimestampAndNotifyObservers(
-    bool engine_is_default,
-    base::Time timestamp) {
-  last_modified_ = timestamp;
-  NotifyObservers(engine_is_default, timestamp);
+void AdBlockSubscriptionFiltersProvider::OnGetFileInfo(base::File::Info info) {
+  if (!local_state_) {
+    CHECK_IS_TEST();
+  } else {
+    ScopedDictPrefUpdate update(
+        local_state_, prefs::kAdBlockSubscriptionFiltersCacheTimestamp);
+    update->Set(GetCacheKey(), base::TimeToValue(info.last_modified));
+  }
+  NotifyObservers(engine_is_default_, info.last_modified);
+}
+
+std::string AdBlockSubscriptionFiltersProvider::GetCacheKey() const {
+  return list_file_.BaseName().RemoveExtension().MaybeAsASCII();
+}
+
+base::Time AdBlockSubscriptionFiltersProvider::GetTimestamp() const {
+  if (!local_state_) {
+    CHECK_IS_TEST();
+    return base::Time::Now();
+  }
+  const auto& dict =
+      local_state_->GetDict(prefs::kAdBlockSubscriptionFiltersCacheTimestamp);
+  auto* value = dict.Find(GetCacheKey());
+  if (value) {
+    return base::ValueToTime(value).value_or(base::Time());
+  }
+  return base::Time();
 }
 
 void AdBlockSubscriptionFiltersProvider::OnDATFileDataReady(
@@ -100,27 +128,18 @@ void AdBlockSubscriptionFiltersProvider::OnDATFileDataReady(
       dat_buf, flow));
 }
 
-void AdBlockSubscriptionFiltersProvider::OnListAvailable(bool force_new) {
-  if (force_new) {
-    NotifyObservers(engine_is_default_, base::Time::Now());
-  } else {
-    base::ThreadPool::PostTaskAndReplyWithResult(
-        FROM_HERE, {base::MayBlock()},
-        base::BindOnce(
-            [](const base::FilePath& list_file) {
-              base::File::Info info;
-              base::GetFileInfo(list_file, &info);
-              return info.last_modified;
-            },
-            list_file_),
-        base::BindOnce(&AdBlockSubscriptionFiltersProvider::
-                           CacheTimestampAndNotifyObservers,
-                       weak_factory_.GetWeakPtr(), engine_is_default_));
-  }
-}
-
-base::Time AdBlockSubscriptionFiltersProvider::timestamp() const {
-  return base::Time();
+void AdBlockSubscriptionFiltersProvider::OnListAvailable() {
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(
+          [](const base::FilePath& list_file) {
+            base::File::Info info;
+            base::GetFileInfo(list_file, &info);
+            return info;
+          },
+          list_file_),
+      base::BindOnce(&AdBlockSubscriptionFiltersProvider::OnGetFileInfo,
+                     weak_factory_.GetWeakPtr()));
 }
 
 }  // namespace brave_shields

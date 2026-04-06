@@ -57,7 +57,7 @@ class AdBlockFiltersProvider {
   // ready at creation time.
   virtual bool IsInitialized() const;
 
-  virtual base::Time timestamp() const = 0;
+  virtual base::Time GetTimestamp() const = 0;
 
  protected:
   bool engine_is_default_;

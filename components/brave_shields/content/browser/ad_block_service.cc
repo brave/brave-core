@@ -218,13 +218,15 @@ AdBlockService::AdBlockService(
       profile_dir_, std::move(default_resource_provider));
   resource_provider_.reset(custom_resource_provider_.get());
 
-  base::FilePath cache_dir = profile_dir_.AppendASCII(kAdblockCacheDir);
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE,
-      {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-      base::BindOnce(&ReadCachedDATFiles, cache_dir),
-      base::BindOnce(&AdBlockService::OnReadCachedDATFiles,
-                     weak_factory_.GetWeakPtr()));
+  if (base::FeatureList::IsEnabled(features::kAdblockDATCache)) {
+    base::FilePath cache_dir = profile_dir_.AppendASCII(kAdblockCacheDir);
+    base::ThreadPool::PostTaskAndReplyWithResult(
+        FROM_HERE,
+        {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
+        base::BindOnce(&ReadCachedDATFiles, cache_dir),
+        base::BindOnce(&AdBlockService::OnReadCachedDATFiles,
+                       weak_factory_.GetWeakPtr()));
+  }
 
   filter_list_catalog_provider_ =
       std::make_unique<AdBlockFilterListCatalogProvider>(
@@ -300,7 +302,7 @@ void AdBlockService::OnResourcesLoaded(
     } else {
       NotifyOnDATLoaded(is_default_engine, false);
     }
-  } else {
+  } else if (base::FeatureList::IsEnabled(features::kAdblockDATCache)) {
     task_runner_->PostTaskAndReplyWithResult(
         FROM_HERE,
         base::BindOnce(
@@ -329,6 +331,15 @@ void AdBlockService::OnResourcesLoaded(
                        is_default_engine, std::move(timestamp)));
     // Block DAT loading if a FilterList has been loaded already
     allow_load_dat_loading_ = false;
+  } else {
+    task_runner_->PostTaskAndReplyWithResult(
+        FROM_HERE,
+        base::BindOnce(&AdBlockEngineWrapper::Load,
+                       base::Unretained(engine_wrapper_.get()),
+                       is_default_engine, std::move(filter_set),
+                       std::move(storage)),
+        base::BindOnce(&AdBlockService::OnDatCached, weak_factory_.GetWeakPtr(),
+                       is_default_engine, std::move(timestamp)));
   }
 
   for (auto& observer : observers_) {
@@ -439,6 +450,9 @@ void AdBlockService::SetupDiscardPolicy(
 
 bool AdBlockService::ShouldLoadFilterState(bool is_default_engine,
                                            base::Time timestamp) {
+  if (!base::FeatureList::IsEnabled(features::kAdblockDATCache)) {
+    return true;
+  }
   if (!local_state_) {
     CHECK_IS_TEST();
     return true;
@@ -478,6 +492,10 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
                              base::Time());
   registry->RegisterTimePref(prefs::kAdBlockAdditionalCacheTimestamp,
                              base::Time());
+  registry->RegisterDictionaryPref(
+      prefs::kAdBlockComponentFiltersCacheTimestamp);
+  registry->RegisterDictionaryPref(
+      prefs::kAdBlockSubscriptionFiltersCacheTimestamp);
 }
 
 void RegisterPrefsForAdBlockServiceForMigration(PrefRegistrySimple* registry) {

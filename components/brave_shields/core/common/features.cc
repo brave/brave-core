@@ -162,4 +162,9 @@ constexpr base::FeatureParam<int>
 
 BASE_FEATURE(kShowUpdatedShieldsPanel, base::FEATURE_ENABLED_BY_DEFAULT);
 
+// When enabled, adblock engines are serialized to DAT files on disk after
+// filter set loading. On subsequent startups, the cached DAT is loaded
+// instead of reprocessing filter lists, improving startup time.
+BASE_FEATURE(kAdblockDATCache, base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace brave_shields::features

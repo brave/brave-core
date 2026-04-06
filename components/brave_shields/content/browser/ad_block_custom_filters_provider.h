@@ -54,7 +54,7 @@ class AdBlockCustomFiltersProvider : public AdBlockFiltersProvider {
 
   std::string GetNameForDebugging() override;
 
-  base::Time timestamp() const override;
+  base::Time GetTimestamp() const override;
 
  private:
   void AppendCustomFilter(std::string_view filter);

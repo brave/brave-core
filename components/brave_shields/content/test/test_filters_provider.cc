@@ -72,14 +72,14 @@ void TestFiltersProvider::LoadFilterSet(
 void TestFiltersProvider::Initialize() {
   CHECK(!is_initialized_);
   is_initialized_ = true;
-  NotifyObservers(engine_is_default_, timestamp());
+  NotifyObservers(engine_is_default_, GetTimestamp());
 }
 
 bool TestFiltersProvider::IsInitialized() const {
   return is_initialized_;
 }
 
-base::Time TestFiltersProvider::timestamp() const {
+base::Time TestFiltersProvider::GetTimestamp() const {
   if (timestamp_.is_null()) {
     return base::Time::Now();
   }

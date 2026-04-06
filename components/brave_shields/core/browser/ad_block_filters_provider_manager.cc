@@ -56,8 +56,8 @@ void AdBlockFiltersProviderManager::ForceNotifyObserver(
                                 : additional_engine_filters_providers_;
   std::optional<base::Time> timestamp;
   for (auto*& provider : filters_providers) {
-    if (provider->IsInitialized() && provider->timestamp() > timestamp) {
-      timestamp = provider->timestamp();
+    if (provider->IsInitialized() && provider->GetTimestamp() > timestamp) {
+      timestamp = provider->GetTimestamp();
     }
   }
 
@@ -75,12 +75,17 @@ void AdBlockFiltersProviderManager::OnChanged(bool is_for_default_engine,
   auto& filters_providers = is_for_default_engine
                                 ? default_engine_filters_providers_
                                 : additional_engine_filters_providers_;
+  auto max_timestamp = timestamp;
   for (auto*& provider : filters_providers) {
     if (!provider->IsInitialized()) {
       return;
     }
+    auto provider_timestamp = provider->GetTimestamp();
+    if (provider_timestamp > max_timestamp) {
+      max_timestamp = provider_timestamp;
+    }
   }
-  NotifyObservers(is_for_default_engine, timestamp);
+  NotifyObservers(is_for_default_engine, max_timestamp);
 }
 
 // Use LoadDATBufferForEngine instead, for Filter Provider Manager.
@@ -125,7 +130,7 @@ void RunAllResults(
   }
 }
 
-base::Time AdBlockFiltersProviderManager::timestamp() const {
+base::Time AdBlockFiltersProviderManager::GetTimestamp() const {
   NOTREACHED();
 }
 

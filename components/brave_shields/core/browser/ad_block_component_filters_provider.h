@@ -26,8 +26,10 @@ namespace base {
 class FilePath;
 }
 
+class AdBlockComponentFiltersProviderTest;
 class AdBlockServiceTest;
 class DebounceBrowserTest;
+class PrefService;
 
 namespace brave_shields {
 
@@ -43,12 +45,14 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
       std::string base64_public_key,
       std::string title,
       uint8_t permission_mask,
+      PrefService* local_state,
       bool is_default_engine = true);
   // Helper to build a particular adblock component from a catalog entry
   AdBlockComponentFiltersProvider(
       component_updater::ComponentUpdateService* cus,
       AdBlockFiltersProviderManager* manager,
       const FilterListCatalogEntry& catalog_entry,
+      PrefService* local_state,
       bool is_default_engine = true);
   ~AdBlockComponentFiltersProvider() override;
   AdBlockComponentFiltersProvider(const AdBlockComponentFiltersProvider&) =
@@ -74,21 +78,23 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
 
   bool IsInitialized() const override;
 
-  base::Time timestamp() const override;
+  base::Time GetTimestamp() const override;
 
  private:
+  friend class ::AdBlockComponentFiltersProviderTest;
   friend class ::AdBlockServiceTest;
   friend class ::DebounceBrowserTest;
 
   void OnComponentReady(const base::FilePath&);
   void OnGetNewPathFileInfo(base::FilePath path, base::File::Info info);
-
+  std::string GetCacheKey() const;
   base::FilePath component_path_;
   base::Time last_updated_;
   std::string component_id_;
   uint8_t permission_mask_;
   const raw_ptr<component_updater::ComponentUpdateService>
       component_updater_service_;
+  const raw_ptr<PrefService> local_state_;
 
   base::WeakPtrFactory<AdBlockComponentFiltersProvider> weak_factory_{this};
 };

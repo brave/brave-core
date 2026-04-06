@@ -45,7 +45,7 @@ AdBlockCustomFiltersProvider::AdBlockCustomFiltersProvider(
     PrefService* local_state,
     AdBlockFiltersProviderManager* manager)
     : AdBlockFiltersProvider(false, manager), local_state_(local_state) {
-  NotifyObservers(engine_is_default_, timestamp());
+  NotifyObservers(engine_is_default_, GetTimestamp());
 }
 
 AdBlockCustomFiltersProvider::~AdBlockCustomFiltersProvider() {}
@@ -83,7 +83,7 @@ std::string AdBlockCustomFiltersProvider::GetNameForDebugging() {
   return "AdBlockCustomFiltersProvider";
 }
 
-base::Time AdBlockCustomFiltersProvider::timestamp() const {
+base::Time AdBlockCustomFiltersProvider::GetTimestamp() const {
   if (!local_state_) {
     CHECK_IS_TEST();
     return base::Time();

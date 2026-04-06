@@ -38,7 +38,7 @@ class AdBlockLocalhostFiltersProvider : public AdBlockFiltersProvider {
 
   std::string GetNameForDebugging() override;
 
-  base::Time timestamp() const override;
+  base::Time GetTimestamp() const override;
 
  private:
   SEQUENCE_CHECKER(sequence_checker_);

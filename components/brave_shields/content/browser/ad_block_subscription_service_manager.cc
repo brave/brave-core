@@ -293,7 +293,7 @@ void AdBlockSubscriptionServiceManager::EnableSubscription(const GURL& sub_url,
             base::BindRepeating(
                 &AdBlockSubscriptionServiceManager::OnListMetadata,
                 weak_ptr_factory_.GetWeakPtr(), sub_url));
-    subscription_filters_provider->OnListAvailable(true);
+    subscription_filters_provider->OnListAvailable();
     subscription_filters_providers_.insert(
         {sub_url, std::move(subscription_filters_provider)});
   } else {
@@ -443,7 +443,7 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
                 base::BindRepeating(
                     &AdBlockSubscriptionServiceManager::OnListMetadata,
                     weak_ptr_factory_.GetWeakPtr(), sub_url));
-        subscription_filters_provider->OnListAvailable(false);
+        subscription_filters_provider->OnListAvailable();
         subscription_filters_providers_.insert(
             std::make_pair(sub_url, std::move(subscription_filters_provider)));
       }
@@ -520,7 +520,7 @@ void AdBlockSubscriptionServiceManager::OnSubscriptionDownloaded(
   auto* subscription_filters_provider =
       base::FindPtrOrNull(subscription_filters_providers_, sub_url);
   if (subscription_filters_provider) {
-    subscription_filters_provider->OnListAvailable(false);
+    subscription_filters_provider->OnListAvailable();
   }
 
   NotifyObserversOfServiceEvent();

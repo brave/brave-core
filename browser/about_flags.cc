@@ -824,6 +824,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(features::kBraveNewTabPageRefreshEnabled),        \
       },                                                                       \
       {                                                                        \
+          "brave-adblock-dat-cache",                                           \
+          "Enable adblock DAT file caching",                                   \
+          "Cache compiled adblock engines to disk as serialized DAT files. "   \
+          "On subsequent startups, cached DAT files are loaded instead of "    \
+          "reprocessing filter lists, improving startup time.",                \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(brave_shields::features::kAdblockDATCache),       \
+      },                                                                       \
+      {                                                                        \
           "brave-adblock-cname-uncloaking",                                    \
           "Enable CNAME uncloaking",                                           \
           "Take DNS CNAME records into account when making network request "   \
