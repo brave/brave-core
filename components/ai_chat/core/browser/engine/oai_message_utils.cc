@@ -310,6 +310,7 @@ std::vector<OAIMessage> BuildOAIMessages(
       std::vector<mojom::ContentBlockPtr> uploaded_images_content_blocks;
       std::vector<mojom::ContentBlockPtr> screenshots_content_blocks;
       std::vector<mojom::ContentBlockPtr> uploaded_pdfs_content_blocks;
+      std::vector<mojom::ContentBlockPtr> uploaded_text_files_content_blocks;
 
       uploaded_images_content_blocks.push_back(
           mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
@@ -320,6 +321,9 @@ std::vector<OAIMessage> BuildOAIMessages(
       uploaded_pdfs_content_blocks.push_back(
           mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
               "These PDFs are uploaded by the user")));
+      uploaded_text_files_content_blocks.push_back(
+          mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
+              "These text files are uploaded by the user")));
 
       for (const auto& uploaded_file : *message->uploaded_files) {
         if (uploaded_file->type == mojom::UploadedFileType::kImage ||
@@ -354,6 +358,18 @@ std::vector<OAIMessage> BuildOAIMessages(
                             EngineConsumer::GetPdfDataURL(uploaded_file->data)),
                         pdf_filename)));
           }
+        } else if (uploaded_file->type == mojom::UploadedFileType::kText) {
+          std::string text_filename = uploaded_file->filename.empty()
+                                          ? "uploaded.txt"
+                                          : uploaded_file->filename;
+          if (uploaded_file->extracted_text.has_value() &&
+              !uploaded_file->extracted_text->empty()) {
+            uploaded_text_files_content_blocks.push_back(
+                mojom::ContentBlock::NewTextContentBlock(
+                    mojom::TextContentBlock::New(
+                        "[File: " + text_filename + "]\n" +
+                        *uploaded_file->extracted_text)));
+          }
         }
       }
 
@@ -376,6 +392,13 @@ std::vector<OAIMessage> BuildOAIMessages(
             oai_message.content.end(),
             std::make_move_iterator(uploaded_pdfs_content_blocks.begin()),
             std::make_move_iterator(uploaded_pdfs_content_blocks.end()));
+      }
+
+      if (uploaded_text_files_content_blocks.size() > 1) {
+        oai_message.content.insert(
+            oai_message.content.end(),
+            std::make_move_iterator(uploaded_text_files_content_blocks.begin()),
+            std::make_move_iterator(uploaded_text_files_content_blocks.end()));
       }
     }
 
