@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/trace_event/trace_event.h"
 #include "base/trace_event/trace_id_helper.h"
@@ -42,7 +43,15 @@ NewTabPageAdServing::~NewTabPageAdServing() {
 
 void NewTabPageAdServing::MaybeServeAd(
     MaybeServeNewTabPageAdCallback callback) {
-  GetAdEvents(std::move(callback));
+  if (pending_serve_ad_callback_) {
+    // A pipeline is already in-flight. Cancel it so the new request takes
+    // over. The superseded caller receives a failure response rather than
+    // being silently dropped, so the NTP caller always gets a definitive reply.
+    weak_factory_.InvalidateWeakPtrs();
+    FailedToServeAd();
+  }
+  pending_serve_ad_callback_ = std::move(callback);
+  GetAdEvents();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -66,60 +75,52 @@ bool NewTabPageAdServing::CanServeAd(const AdEventList& ad_events) const {
   return true;
 }
 
-void NewTabPageAdServing::GetAdEvents(MaybeServeNewTabPageAdCallback callback) {
+void NewTabPageAdServing::GetAdEvents() {
   const database::table::AdEvents database_table;
   database_table.Get(
       mojom::AdType::kNewTabPageAd, mojom::ConfirmationType::kServedImpression,
       /*time_window=*/base::Days(1),
       base::BindOnce(&NewTabPageAdServing::GetAdEventsCallback,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+                     weak_factory_.GetWeakPtr()));
 }
 
-void NewTabPageAdServing::GetAdEventsCallback(
-    MaybeServeNewTabPageAdCallback callback,
-    bool success,
-    const AdEventList& ad_events) {
+void NewTabPageAdServing::GetAdEventsCallback(bool success,
+                                              const AdEventList& ad_events) {
   if (!success) {
     BLOG(0, "New tab page ad not served: Failed to get ad events");
-    return FailedToServeAd(std::move(callback));
+    return FailedToServeAd();
   }
 
   if (!CanServeAd(ad_events)) {
     BLOG(1, "New tab page ad not served: Not allowed");
-    return FailedToServeAd(std::move(callback));
+    return FailedToServeAd();
   }
 
-  GetUserModel(std::move(callback));
+  GetUserModel();
 }
 
-void NewTabPageAdServing::GetUserModel(
-    MaybeServeNewTabPageAdCallback callback) {
+void NewTabPageAdServing::GetUserModel() {
   const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
   TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
       kTraceEventCategory, "NewTabPageAdServing::GetUserModel",
       TRACE_ID_WITH_SCOPE("NewTabPageAdServing", trace_id));
 
   BuildUserModel(base::BindOnce(&NewTabPageAdServing::GetUserModelCallback,
-                                weak_factory_.GetWeakPtr(), std::move(callback),
-                                trace_id));
+                                weak_factory_.GetWeakPtr(), trace_id));
 }
 
-void NewTabPageAdServing::GetUserModelCallback(
-    MaybeServeNewTabPageAdCallback callback,
-    uint64_t trace_id,
-    UserModelInfo user_model) const {
+void NewTabPageAdServing::GetUserModelCallback(uint64_t trace_id,
+                                               UserModelInfo user_model) {
   TRACE_EVENT_NESTABLE_ASYNC_END0(
       kTraceEventCategory, "NewTabPageAdServing::GetUserModel",
       TRACE_ID_WITH_SCOPE("NewTabPageAdServing", trace_id));
 
   NotifyOpportunityAroseToServeNewTabPageAd();
 
-  GetEligibleAds(std::move(callback), std::move(user_model));
+  GetEligibleAds(std::move(user_model));
 }
 
-void NewTabPageAdServing::GetEligibleAds(
-    MaybeServeNewTabPageAdCallback callback,
-    UserModelInfo user_model) const {
+void NewTabPageAdServing::GetEligibleAds(UserModelInfo user_model) {
   const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
   TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
       kTraceEventCategory, "NewTabPageAdServing::GetEligibleAds",
@@ -128,14 +129,12 @@ void NewTabPageAdServing::GetEligibleAds(
   eligible_ads_->GetForUserModel(
       std::move(user_model),
       base::BindOnce(&NewTabPageAdServing::GetEligibleAdsCallback,
-                     weak_factory_.GetWeakPtr(), std::move(callback),
-                     trace_id));
+                     weak_factory_.GetWeakPtr(), trace_id));
 }
 
 void NewTabPageAdServing::GetEligibleAdsCallback(
-    MaybeServeNewTabPageAdCallback callback,
     uint64_t trace_id,
-    CreativeNewTabPageAdList creative_ads) const {
+    CreativeNewTabPageAdList creative_ads) {
   TRACE_EVENT_NESTABLE_ASYNC_END1(
       kTraceEventCategory, "NewTabPageAdServing::GetEligibleAds",
       TRACE_ID_WITH_SCOPE("NewTabPageAdServing", trace_id), "creative_ads",
@@ -143,7 +142,7 @@ void NewTabPageAdServing::GetEligibleAdsCallback(
 
   if (creative_ads.empty()) {
     BLOG(1, "New tab page ad not served: No eligible ads found");
-    return FailedToServeAd(std::move(callback));
+    return FailedToServeAd();
   }
 
   BLOG(1, "Found " << creative_ads.size() << " eligible ads");
@@ -154,32 +153,37 @@ void NewTabPageAdServing::GetEligibleAdsCallback(
               << creative_ad.creative_instance_id << " and a priority of "
               << creative_ad.priority);
 
-  ServeAd(BuildNewTabPageAd(creative_ad), std::move(callback));
+  ServeAd(BuildNewTabPageAd(creative_ad));
 }
 
-void NewTabPageAdServing::ServeAd(
-    const NewTabPageAdInfo& ad,
-    MaybeServeNewTabPageAdCallback callback) const {
+void NewTabPageAdServing::ServeAd(const NewTabPageAdInfo& ad) {
   if (!ad.IsValid()) {
     BLOG(0, "New tab page ad not served: Invalid ad");
-    return FailedToServeAd(std::move(callback));
+    return FailedToServeAd();
   }
 
   eligible_ads_->SetLastServedAd(ad);
 
-  SuccessfullyServedAd(ad, std::move(callback));
+  SuccessfullyServedAd(ad);
 }
 
-void NewTabPageAdServing::SuccessfullyServedAd(
-    const NewTabPageAdInfo& ad,
-    MaybeServeNewTabPageAdCallback callback) const {
+void NewTabPageAdServing::SuccessfullyServedAd(const NewTabPageAdInfo& ad) {
+  CHECK(pending_serve_ad_callback_);
+  MaybeServeNewTabPageAdCallback callback =
+      std::move(*pending_serve_ad_callback_);
+  pending_serve_ad_callback_.reset();
+
   NotifyDidServeNewTabPageAd(ad);
 
   std::move(callback).Run(ad);
 }
 
-void NewTabPageAdServing::FailedToServeAd(
-    MaybeServeNewTabPageAdCallback callback) const {
+void NewTabPageAdServing::FailedToServeAd() {
+  CHECK(pending_serve_ad_callback_);
+  MaybeServeNewTabPageAdCallback callback =
+      std::move(*pending_serve_ad_callback_);
+  pending_serve_ad_callback_.reset();
+
   NotifyFailedToServeNewTabPageAd();
 
   std::move(callback).Run(/*ad=*/std::nullopt);
