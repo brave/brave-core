@@ -66,7 +66,7 @@ class UserRewards final : public AdsClientNotifierObserver,
   RefillConfirmationTokens refill_confirmation_tokens_;
   RedeemPaymentTokens redeem_payment_tokens_;
 
-  WalletInfo wallet_;
+  const WalletInfo wallet_;
 
   const database::table::Transactions transactions_database_table_;
 };

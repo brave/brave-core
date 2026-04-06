@@ -43,8 +43,8 @@ class RedeemPaymentTokensUrlRequestBuilder final
 
   base::ListValue BuildPaymentRequestDTO(const std::string& payload) const;
 
-  WalletInfo wallet_;
-  PaymentTokenList payment_tokens_;
+  const WalletInfo wallet_;
+  const PaymentTokenList payment_tokens_;
   base::DictValue user_data_;
 };
 

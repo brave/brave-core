@@ -68,7 +68,7 @@ class Database final : public base::MemoryPressureListener {
 
   void OnMemoryPressure(base::MemoryPressureLevel level) override;
 
-  base::FilePath db_path_;
+  const base::FilePath db_path_;
   sql::Database db_;
   sql::MetaTable meta_table_;
 
