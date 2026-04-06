@@ -28,7 +28,6 @@
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/layout/brave_browser_view_tabbed_layout_impl.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
-#include "brave/browser/ui/views/side_panel/side_panel.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
@@ -50,6 +49,7 @@
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "components/grit/brave_components_strings.h"
@@ -187,9 +187,11 @@ void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
 
   if (!base::FeatureList::IsEnabled(sidebar::features::kSidebarV2)) {
     CHECK(side_panel_);
+#if !BUILDFLAG(ENABLE_SIDEBAR_V2)
     side_panel_->SetHorizontalAlignment(
         sidebar_on_left ? SidePanel::HorizontalAlignment::kLeft
                         : SidePanel::HorizontalAlignment::kRight);
+#endif
   }
 }
 
@@ -544,7 +546,9 @@ void SidebarContainerView::AnimationEnded(const gfx::Animation* animation) {
     return;
   }
 
+#if !BUILDFLAG(ENABLE_SIDEBAR_V2)
   side_panel_->set_fixed_contents_width(std::nullopt);
+#endif
 
   PreferredSizeChanged();
 
@@ -713,9 +717,11 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel) {
               ->GetIdealSideBarWidth();
       animation_end_width_ =
           std::min(animation_end_width_, target_sidebar_width);
+#if !BUILDFLAG(ENABLE_SIDEBAR_V2)
       side_panel_->set_fixed_contents_width(
           animation_end_width_ -
           sidebar_control_view_->GetPreferredSize().width());
+#endif
     }
 
     width_animation_.Show();
@@ -797,7 +803,9 @@ void SidebarContainerView::HideSidebar(bool hide_sidebar_control) {
     DVLOG(1) << __func__ << ": hide with animation";
 
     if (side_panel_->GetVisible()) {
+#if !BUILDFLAG(ENABLE_SIDEBAR_V2)
       side_panel_->set_fixed_contents_width(side_panel_->width());
+#endif
     }
 
     width_animation_.Hide();
