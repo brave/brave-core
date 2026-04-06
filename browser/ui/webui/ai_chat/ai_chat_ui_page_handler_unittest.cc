@@ -19,6 +19,7 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "build/build_config.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -202,5 +203,44 @@ TEST_F(AIChatUIPageHandlerTest, OnAllPdfTextsExtracted_AppliesResults) {
   EXPECT_EQ((*result)[2]->filename, "doc2.pdf");
   EXPECT_FALSE((*result)[2]->extracted_text.has_value());
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+TEST_F(AIChatUIPageHandlerTest, OnAllTextFilesExtracted_AppliesResults) {
+  std::vector<mojom::UploadedFilePtr> files;
+  files.push_back(mojom::UploadedFile::New(
+      "/path/config.conf", 100, std::vector<uint8_t>(100),
+      mojom::UploadedFileType::kText, std::nullopt));
+  files.push_back(
+      mojom::UploadedFile::New("/path/photo.png", 50, std::vector<uint8_t>(50),
+                               mojom::UploadedFileType::kImage, std::nullopt));
+  files.push_back(mojom::UploadedFile::New(
+      "/path/script.py", 200, std::vector<uint8_t>(200),
+      mojom::UploadedFileType::kText, std::nullopt));
+
+  std::vector<std::pair<size_t, std::optional<std::string>>> results;
+  results.emplace_back(0, "key=value");
+  results.emplace_back(2, std::nullopt);  // extraction failed for script.py
+
+  base::test::TestFuture<std::optional<std::vector<mojom::UploadedFilePtr>>>
+      future;
+  page_handler()->OnAllTextFilesExtracted(future.GetCallback(),
+                                          std::make_optional(std::move(files)),
+                                          std::move(results));
+
+  auto result = future.Take();
+  ASSERT_TRUE(result.has_value());
+  ASSERT_EQ(result->size(), 3u);
+  // Text extracted and path stripped
+  EXPECT_EQ((*result)[0]->filename, "config.conf");
+  ASSERT_TRUE((*result)[0]->extracted_text.has_value());
+  EXPECT_EQ(*(*result)[0]->extracted_text, "key=value");
+  // Non-text unaffected, path stripped
+  EXPECT_EQ((*result)[1]->filename, "photo.png");
+  EXPECT_FALSE((*result)[1]->extracted_text.has_value());
+  // Failed extraction, path stripped
+  EXPECT_EQ((*result)[2]->filename, "script.py");
+  EXPECT_FALSE((*result)[2]->extracted_text.has_value());
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace ai_chat

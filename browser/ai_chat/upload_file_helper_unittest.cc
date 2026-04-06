@@ -125,22 +125,13 @@ TEST_F(UploadFileHelperTest, AcceptedFileExtensions) {
   EXPECT_CALL(observer, OnFilesSelected).Times(0);
   EXPECT_FALSE(UploadFileSync());
   EXPECT_EQ(dialog_params_.type, ui::SelectFileDialog::SELECT_OPEN_MULTI_FILE);
+  // No extension filtering — all files are accepted, matching how Chromium's
+  // Browser::OpenFile works. The renderer handles MIME sniffing.
   ASSERT_TRUE(dialog_params_.file_types);
-  ASSERT_EQ(1u, dialog_params_.file_types->extensions.size());
-  EXPECT_TRUE(std::ranges::contains(dialog_params_.file_types->extensions[0],
-                                    FILE_PATH_LITERAL("png")));
-  EXPECT_TRUE(std::ranges::contains(dialog_params_.file_types->extensions[0],
-                                    FILE_PATH_LITERAL("jpeg")));
-  EXPECT_TRUE(std::ranges::contains(dialog_params_.file_types->extensions[0],
-                                    FILE_PATH_LITERAL("jpg")));
-  EXPECT_TRUE(std::ranges::contains(dialog_params_.file_types->extensions[0],
-                                    FILE_PATH_LITERAL("webp")));
-  EXPECT_TRUE(std::ranges::contains(dialog_params_.file_types->extensions[0],
-                                    FILE_PATH_LITERAL("pdf")));
+  EXPECT_TRUE(dialog_params_.file_types->extensions.empty());
 #if BUILDFLAG(IS_ANDROID)
   EXPECT_THAT(dialog_params_.accept_types,
-              testing::UnorderedElementsAre(u"image/png", u"image/jpeg",
-                                            u"image/webp", u"application/pdf"));
+              testing::UnorderedElementsAre(u"*/*"));
 #endif
 }
 
