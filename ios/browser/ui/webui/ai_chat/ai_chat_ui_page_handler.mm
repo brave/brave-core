@@ -225,6 +225,17 @@ void AIChatUIPageHandler::ProcessPdfFile(const std::vector<uint8_t>& file_data,
   std::move(callback).Run(std::move(uploaded_file));
 }
 
+void AIChatUIPageHandler::ProcessTextFile(const std::vector<uint8_t>& file_data,
+                                          const std::string& filename,
+                                          ProcessTextFileCallback callback) {
+  // iOS does not support background text extraction.
+  // Return the raw data without extracted text.
+  auto uploaded_file = ai_chat::mojom::UploadedFile::New(
+      filename, file_data.size(), file_data,
+      ai_chat::mojom::UploadedFileType::kText, std::nullopt);
+  std::move(callback).Run(std::move(uploaded_file));
+}
+
 void AIChatUIPageHandler::UploadFile(bool use_media_capture,
                                      UploadFileCallback callback) {
   id<AIChatUIHandlerBridge> bridge =
