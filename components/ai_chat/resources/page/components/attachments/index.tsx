@@ -25,7 +25,7 @@ import usePromise from '$web-common/usePromise'
 
 type Attachment = TabData | Bookmark | HistoryEntry
 
-function TabItem({ tab }: { tab: TabData }) {
+function TabItem({ tab, index }: { tab: TabData; index: number }) {
   const aiChat = useAIChat()
   const { conversationUuid, associatedContentInfo } = useConversation()
   const content = React.useMemo(
@@ -36,6 +36,7 @@ function TabItem({ tab }: { tab: TabData }) {
     <Checkbox
       className={styles.tabItem}
       checked={!!content}
+      data-testid={`open-tab-${index}`}
       onChange={(e) => {
         if (e.checked) {
           aiChat.api.uiHandler.associateTab(tab, conversationUuid!)
@@ -182,6 +183,7 @@ export default function Attachments() {
             fab
             kind='plain-faint'
             size='small'
+            data-testid='close-attachments-dialog'
             onClick={() => conversation.setAttachmentsDialog(null)}
           >
             <Icon name='close' />
@@ -217,10 +219,11 @@ export default function Attachments() {
       </Input>
       <div className={styles.tabList}>
         {attachmentsDialog === 'tabs'
-          && filteredItems.map((t) => (
+          && filteredItems.map((t, i) => (
             <TabItem
               key={t.id}
               tab={t as TabData}
+              index={i}
             />
           ))}
         {(attachmentsDialog === 'bookmarks' || attachmentsDialog === 'history')
