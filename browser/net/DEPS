@@ -17,4 +17,7 @@ specific_include_rules = {
   "brave_ad_block_tp_network_delegate_helper_unittest\.cc": [
     "+brave/components/brave_component_updater/browser/brave_component.h",
   ],
+  "search_ads_header_network_delegate_helper_unittest\.cc": [
+    "+brave/components/l10n/common/test/scoped_default_locale.h",
+  ],
 }
