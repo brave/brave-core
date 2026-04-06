@@ -440,7 +440,8 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
     auto menu = CreateMenuControllerAt(0);
     auto* menu_model = CreateMenuModelAt(menu.get(), 0);
     EXPECT_TRUE(IsLastBeforeFirstSeparator(menu_model,
-                                           TabStripModel::CommandAddToSplit));
+                                           TabStripModel::CommandAddToSplit))
+        << "Case 1: CommandAddToSplit should be last before first separator";
   }
 
   // Add a second tab and open a split view so we can test the remaining cases.
@@ -456,7 +457,8 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
     auto menu = CreateMenuControllerAt(2);
     auto* menu_model = CreateMenuModelAt(menu.get(), 2);
     EXPECT_TRUE(IsLastBeforeFirstSeparator(menu_model,
-                                           TabStripModel::CommandArrangeSplit));
+                                           TabStripModel::CommandArrangeSplit))
+        << "Case 2: CommandArrangeSplit should be last before first separator";
   }
 
   // Case 3: Normal tab while active tab is split → CommandSwapWithActiveSplit.
@@ -464,7 +466,9 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
     auto menu = CreateMenuControllerAt(0);
     auto* menu_model = CreateMenuModelAt(menu.get(), 0);
     EXPECT_TRUE(IsLastBeforeFirstSeparator(
-        menu_model, TabStripModel::CommandSwapWithActiveSplit));
+        menu_model, TabStripModel::CommandSwapWithActiveSplit))
+        << "Case 3: CommandSwapWithActiveSplit should be last before first "
+           "separator";
   }
 }
 

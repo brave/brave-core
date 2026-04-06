@@ -51,14 +51,13 @@ class BraveTabMenuModel : public TabMenuModel {
              TabStripModel* tab_strip_model,
              int selected_index,
              const std::vector<int>& indices);
-  void BuildItemsForSplitView(Browser* browser,
-                              TabStripModel* tab_strip_model,
-                              const std::vector<int>& indices);
-
   // Moves the split tab entry to the last position of the first section,
   // immediately before the first separator. For CommandArrangeSplit, also
   // replaces upstream's SplitTabMenuModel with BraveSplitTabMenuModel.
   void BuildSplitTabEntry(TabStripModel* tab_strip_model, int selected_index);
+  void BuildItemsForSplitView(Browser* browser,
+                              TabStripModel* tab_strip_model,
+                              const std::vector<int>& indices);
   int GetRestoreTabCommandStringId() const;
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
