@@ -324,6 +324,8 @@
 <translation id="8813509417421129632">صفحة مضمنة في <ph name="SITE"/> تريد الحفظ</translation>
 <translation id="7700010743463174379">هذه الصفحة تريد الحفظ</translation>
 <translation id="6774238875569752630">تريد صفحة مضمنة في هذه الصفحة الحفظ</translation>
+<translation id="1383876407941801731">البحث</translation>
+<translation id="5496587651328244253">تنظيم</translation>
 <translation id="1233913566967531780">تركيز علامات التبويب</translation>
 <translation id="4034992002364254340">اجمع كل علامات التبويب ذات الصلة في نافذة جديدة</translation>
 <translation id="8012125596344613514">المواضيع المقترحة</translation>
@@ -341,6 +343,7 @@
 <translation id="6501807887341963552">النسق والألوان</translation>
 <translation id="6724227215236550330">ستظهر كلمات المرور هنا. لاستيراد كلمات المرور إلى <ph name="BRAND"/> على هذا الجهاز، <ph name="BEGIN_LINK"/> اختر ملف CSV<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">لاستيراد كلمات المرور إلى <ph name="BRAND"/> على هذا الجهاز، اختر ملف CSV</translation>
+<translation id="8570228839666486945">الذكاء الاصطناعي المحلي</translation>
 <translation id="9156965752763025780">‏ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل Brave.</translation>
 <translation id="7179921470347911571">أعد التشغيل الآن</translation>
 <translation id="1426410128494586442">نعم</translation>
@@ -393,6 +396,7 @@
 <translation id="5297085818601043899">تعريف الأدوات</translation>
 <translation id="5219886318310413094">إظهار علامات التبويب المُثبّتة في جميع النوافذ</translation>
 <translation id="2396127686705429331">عرض زر الإشارات المرجعية</translation>
+<translation id="443318149139185498">استخدام شعار بسيط على زر القائمة الرئيسية</translation>
 <translation id="2814998458708016836">استخدام شريط عناوين عريض</translation>
 <translation id="4749586705247636385">إظهار الزوايا المستديرة في مناطق المحتوى الرئيسية</translation>
 <translation id="4109670531935487117">عرض اقتراحات الإكمال التلقائي في شريط العنوان</translation>
@@ -546,7 +550,7 @@
 <translation id="509873765238158442">حظر Microsoft Recall</translation>
 <translation id="4763421121695677716">منع ميزة Recall على حواسيب Microsoft Windows من التقاط لقطات شاشة تلقائيًا لأي علامات تبويب Brave مفتوحة.</translation>
 <translation id="1968895725257436430">جمع البيانات</translation>
-<translation id="4846154056248462491">عند الخروج</translation>
+<translation id="1700052872056357670">حذف البيانات عند الخروج</translation>
 <translation id="216468847346280584">مسح بيانات إعلانات Brave Ads</translation>
 <translation id="2808630562319398131">إعادة تعيين بيانات مكافآت Brave...</translation>
 <translation id="6438096877646138757">المواقع التي تقوم بمسح ملفات تعريف الارتباط بمجرد إغلاقها</translation>
@@ -793,6 +797,7 @@
 <translation id="1529674267267221673">سيظهر مساعد Leo في قائمة السياقات عندما تنقر بزر الماوس الأيمن على موقع الويب. وسيؤدي ذلك إلى إرسال السياق من صفحة الويب الحالية إلى مساعد Leo.</translation>
 <translation id="5226020406479918122">وضع تركيز علامات التبويب</translation>
 <translation id="3705539672403311123">تمكين تنظيم علامات التبويب في صفحة البحث عن علامات التبويب. عند استخدام هذه الميزة، سيؤدي ذلك تلقائيًا إلى إرسال عناوين وأصول جميع علامات التبويب غير الخاصة إلى Leo لتصنيفها. <ph name="BEGIN_LINK"/>تعرف على المزيد<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">النموذج التلقائي للمحادثات الجديدة</translation>
 <translation id="8172263161008556851">إظهار المطالبات المقترحة في المحادثة</translation>
 <translation id="5781842473834867765">تخزين سجل محادثاتي</translation>
 <translation id="1082960401708055995">سيؤدي تعطيل تخزين المحادثات إلى مسح جميع المحادثات المخزنة مسبقًا بشكل دائم. لا يمكن التراجع عن هذا الإجراء.</translation>

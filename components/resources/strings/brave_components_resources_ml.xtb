@@ -1837,6 +1837,7 @@ other {{PENDING_TRANSACTIONS} കൂടുതൽ ഇടപാടുകൾ‌ ക
 <translation id="8897189056319316783">ZEC ഒരു ഷീൽഡ്</translation>
 <translation id="508249542337194541">ZEC അൺഷീൽഡ്</translation>
 <translation id="3382275793825152362">ഫണ്ട് തട്ടിക്കൂടൽ</translation>
+<translation id="617149752238892649">അൺഷീൽഡ് ഫണ്ടുകൾ</translation>
 <translation id="8631765320256788981">നിങ്ങളുടെ ഫണ്ട് തട്ടിക്കൂടൽ.</translation>
 <translation id="3860364671495430495">നിങ്ങളുടെ ഷീൽഡഡ് അക്കൗണ്ടിൽ നിന്ന് ട്രാൻസ്‌പാരന്റ് അക്കൗണ്ടിലേക്കാണ് ഫണ്ടുകൾ അയയ്‌ക്കുന്നത്.</translation>
 <translation id="7144878232160441200">വീണ്ടും ശ്രമിക്കുക</translation>
@@ -2183,6 +2184,7 @@ other {{PENDING_TRANSACTIONS} കൂടുതൽ ഇടപാടുകൾ‌ ക
 <translation id="4348006373172097089">{PAGE_COUNT, plural, =1 {ഈ പേജിന്റെ ഉള്ളടക്കത്തെക്കുറിച്ച് ഒരു ചോദ്യമുണ്ടാക്കുക} other {ഈ പേജുകളുടെ ഉള്ളടക്കത്തെക്കുറിച്ച് ഒരു ചോദ്യമുണ്ടാക്കുക}}</translation>
 <translation id="6961721183181597848">ഇന്ന് നിങ്ങളെ എങ്ങനെ സഹായിക്കാം?</translation>
 <translation id="2966135729673253768">ഫോളോ അപ് അല്ലോ</translation>
+<translation id="5923170497201832190">ടാബ് അടിയിൽ സ്ക്രോൾ ചെയ്യുക</translation>
 <translation id="6219262425964000211">ഫയലുകൾ ഇവിടെ ഡ്രോപ് ചെയ്യുക</translation>
 <translation id="4313763911013851687">സംഭാഷണത്തിൽ ചേർക്കാൻ ഏതെങ്കിലും ഫയലുകൾ ഇവിടെ ഡ്രോപ് ചെയ്യുക</translation>
 <translation id="4524675003624341892">ചോദ്യങ്ങള്‍ നിര്‍ദ്ദേശിക്കുക...</translation>
@@ -2201,20 +2203,21 @@ other {{PENDING_TRANSACTIONS} കൂടുതൽ ഇടപാടുകൾ‌ ക
 <translation id="999273441077650169">ആവശ്യമുണ്ടാകുന്ന മികച്ച മാതൃക ഉപയോഗിക്കുന്നതിന് മോഡൽ ഡൈനാമിക്കായി മാറുന്നു.<ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">ഹായ്, ഞാൻ ലിയോ. ഞാൻ ഒരു എഐ അസിസ്റ്റന്റാണ് കമ്പനി ബ്രേവിന്. ഞാൻ_META_ എന്ന മോഡൽ ഉപയോഗിച്ച് മെടാദ്വാര കൃതമായ ട്രേക്കിങ്ങ് വേണ്ടിയാണ് പ്രവർത്തിക്കുന്നത്. ലൊലമ മോഡലിന് ബ്രേവിന്റെ സുരക്ഷിതമായ ഇൻഫ്രാസ്ട്രക്ഷർ പ്രയോഗം ആണ്.<ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">ഹായ്, ഞാൻ ലിയോ. ഞാൻ ഒരു എഐ അസിസ്റ്റന്റാണ് കമ്പനി ബ്രേവിന്. ഞാൻ Qwen VL 30B എന്ന മോഡൽ ഉപയോഗിച്ച് അലിയബാബാ ക്ലൗഡ് നിർമ്മിച്ച മോഡലാണ് ഉപയോഗിക്കുന്നത്. Qwen മോഡലാണ് ബ്രേവിന്റെ സുരക്ഷിതമായ ഇൻഫ്രാസ്ട്രക്ഷർ ഉപയോഗിച്ച് പ്രവർത്തിക്കുന്നത്.<ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">ഹായ്, ഞാൻ ലിയോ. ഞാൻ ഒരു എഐ അസിസ്റ്റന്റാണ് കമ്പനി ബ്രേവിന്. ഞാൻ DeepSeek V3.1 എന്ന മോഡൽ ഉപയോഗിച്ച് DeepSeek നിർമ്മിച്ച മോഡലാണ്. DeepSeek V3.1 ഭദ്രമായ സ്വകാര്യത ഉറപ്പുള്ള NEAR ഇൻഫ്രാസ്ട്രക്ഷർ വഴി Brave ഹോസ്റ്റ് ചെയ്തിരിക്കുന്നു.<ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">ഹായ്, ഞാൻ ലിയോ. ഞാൻ ഒരു എഐ അസിസ്റ്റന്റാണ് കമ്പനി ബ്രേവിന്. ഞാൻ GLM-5 എന്ന മോഡൽ ഉപയോഗിക്കുന്ന Zhipu AI നിർമ്മിച്ച മോഡലാണ്. GLM-5 മോഡലാണ് NEAR-ന്റെ സുരക്ഷിതമായ ഇൻഫ്രാസ്ട്രക്ഷർ ഉപയോഗിച്ച് പ്രവർത്തിക്കുന്നത്.<ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">ഹായ്, ഞാൻ ലിയോ ആണ്. ഞാൻ ബ്രേവിന്റെ ഒരു AI അസിസ്റ്റന്റാണ്. സംഭാഷണ, ടെക്സ്റ്റ് പ്രോസസ്സിംഗ് ജോലികൾക്ക് ശക്തി പകരാൻ ആന്ത്രോപിക് സൃഷ്ടിച്ച ഒരു മോഡലായ ക്ലോഡ് ഇൻസ്റ്റന്റാണ് എനിക്ക് കരുത്ത് പകരുന്നത്. ഞങ്ങളുടെ സ്വന്തം സുരക്ഷിത ഇൻഫ്രാസ്ട്രക്ചറിലൂടെയാണ് ക്ലോഡ് ഇൻസ്റ്റന്റ് ബ്രേവ് ഹോസ്റ്റ് ചെയ്യുന്നത്.<ph name="LINK_BEFORE"/>കൂടുതലറിയുക<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">ഹായ്, ഞാൻ ലിയോ. ഞാൻ ഒരു എഐ അസിസ്റ്റന്റാണ് കമ്പനി ബ്രേവിന്. ഞാൻ ക്ലോഡ് ഹൈക്കു എന്ന മോഡൽ ഉപയോഗിച്ച് ആന്റ്രോപിക് നിർമ്മിച്ച മോഡലാണ്. ക്ലോഡ് ഹൈക്കു മോഡലിന് ബ്രേവിന്റെ സുരക്ഷിതമായ ഇൻഫ്രാസ്ട്രക്ഷർ പ്രയോഗം ആണ്.<ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">ഹായ്, ഞാൻ ലിയോ. ഞാൻ ഒരു എഐ അസിസ്റ്റന്റാണ് കമ്പനി ബ്രേവിന്. ഞാൻ ക്ലോഡ് സോണ്ണറ്റ് എന്ന മോഡൽ ഉപയോഗിച്ച് ആന്റ്രോപിക് നിർമ്മിച്ച മോഡലാണ്. ക്ലോഡ് സോണ്ണറ്റ് മോഡലിന് ബ്രേവിന്റെ സുരക്ഷിതമായ ഇൻഫ്രാസ്ട്രക്ഷർ പ്രയോഗം ആണ്.<ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">ഹായ്, ഞാൻ ലിയോ. ഞാൻ ഒരു എഐ അസിസ്റ്റന്റാണ് കമ്പനി ബ്രേവിന്. ഞാൻ Llama 4 Scout എന്ന മോഡൽ ഉപയോഗിച്ച് Meta നിർമ്മിച്ച മോഡലാണ്. Llama 4 Scout മോഡലിന് ബ്രേവിന്റെ സുരക്ഷിതമായ ഇൻഫ്രാസ്ട്രക്ഷർ പ്രയോഗം ആണ്.<ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">ഹായ്, ഞാൻ ലിയോ. ഞാൻ ഒരു എഐ അസിസ്റ്റന്റാണ് കമ്പനി ബ്രേവിന്. ഞാൻ Llama 4 Maverick എന്ന മോഡൽ ഉപയോഗിച്ച് Meta നിർമ്മിച്ച മോഡലാണ്. Llama 4 Maverick മോഡലിന് ബ്രേവിന്റെ സുരക്ഷിതമായ ഇൻഫ്രാസ്ട്രക്ഷർ പ്രയോഗം ആണ്.<ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">ഹായ്, ഞാൻ ലിയോ. ഞാൻ ഒരു എഐ അസിസ്റ്റന്റാണ് കമ്പനി ബ്രേവിന്. ഞാൻ GPT OSS 20B എന്ന മോഡൽ ഉപയോഗിക്കുന്ന OpenAI നിർമ്മിച്ച മോഡലാണ്. GPT OSS 20B മോഡലാണ് ബ്രേവിന്റെ സുരക്ഷിതമായ ഇൻഫ്രാസ്ട്രക്ഷർ ഉപയോഗിച്ച് പ്രവർത്തിക്കുന്നത്.<ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">ഹായ്, ഞാൻ ലിയോ. ഞാൻ ഒരു എഐ അസിസ്റ്റന്റാണ് കമ്പനി 브േവിന്. ഞാൻ GPT OSS 120B എന്ന മോഡൽ ഉപയോഗിക്കുന്ന OpenAI നിർമ്മിച്ച മോഡലാണ്. GPT OSS 120B മോഡലാണ് ബ്രേവിന്റെ സുരക്ഷിതമായ ഇൻഫ്രാസ്ട്രക്ഷർ ഉപയോഗിച്ച് പ്രവർത്തിക്കുന്നത്.<ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">ഹായ്, ഞാൻ ലിയോ. ഞാൻ ഒരു എഐ അസിസ്റ്റന്റാണ് കമ്പനി ബ്രേവിന്. ഞാൻ Mistral Large എന്ന മോഡൽ ഉപയോഗിക്കുന്ന Mistral നിർമ്മിച്ച മോഡലാണ്. Mistral Large മോഡലാണ് ബ്രേവിന്റെ സുരക്ഷിതമായ ഇൻഫ്രാസ്ട്രക്ഷർ ഉപയോഗിച്ച് പ്രവർത്തിക്കുന്നത്.<ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">ഹായ്, ഞാൻ ലിയോ. ഞാൻ ഒരു എഐ അസിസ്റ്റന്റാണ് കമ്പനി ബ്രേവിന്. ഞാൻ Pixtral Large എന്ന മോഡൽ ഉപയോഗിക്കുന്ന Mistral നിർമ്മിച്ച മോഡലാണ്. Pixtral Large മോഡലാണ് ബ്രേവിന്റെ സുരക്ഷിതമായ ഇൻഫ്രാസ്ട്രക്ഷർ ഉപയോഗിച്ച് പ്രവർത്തിക്കുന്നത്.<ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">ഹായ്, ഞാൻ ലിയോ. ഞാൻ ഒരു എഐ അസിസ്റ്റന്റാണ് കമ്പനി ബ്രേവിന്. ഞാൻ Qwen 3 235B എന്ന മോഡൽ ഉപയോഗിച്ച് അലിയബാബാ ക്ലൗഡ് നിർമ്മിച്ച മോഡലാണ്. Qwen 3 235B മോഡലാണ് ബ്രേവിന്റെ സുരക്ഷിതമായ ഇൻഫ്രാസ്ട്രക്ഷർ ഉപയോഗിച്ച് പ്രവർത്തിക്കുന്നത്.<ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">ഹായ്, ഞാൻ ലിയോ. ഞാൻ ഒരു എഐ അസിസ്റ്റന്റാണ് കമ്പനി ബ്രേവിന്. ഞാൻ Deepseek V3.1 എന്ന മോഡൽ ഉപയോഗിച്ച് Deepseek നിർമ്മിച്ച മോഡലാണ്. Deepseek V3.1 മോഡലാണ് ബ്രേവിന്റെ സുരക്ഷിതമായ ഇൻഫ്രാസ്ട്രക്ഷർ ഉപയോഗിച്ച് പ്രവർത്തിക്കുന്നത്.<ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">ഹായ്, ഞാൻ ലിയോ. ഞാൻ ഒരു എഐ അസിസ്റ്റന്റാണ് കമ്പനി ബ്രേവിന്. ഞാൻ Deepseek V3.2 എന്ന മോഡൽ ഉപയോഗിച്ച് Deepseek നിർമ്മിച്ച മോഡലാണ്. Deepseek V3.2 മോഡലാണ് ബ്രേവിന്റെ സുരക്ഷിതമായ ഇൻഫ്രാസ്ട്രക്ഷർ ഉപയോഗിച്ച് പ്രവർത്തിക്കുന്നത്.<ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">ഹായ്, ഞാൻ ലിയോ. ഞാൻ ഒരു എഐ അസിസ്റ്റന്റാണ് കമ്പനി ബ്രേവിന്. ഞാൻ Qwen 3 Coder 480B എന്ന മോഡൽ ഉപയോഗിച്ച് അലിയബാബാ ക്ലൗഡ് നിർമ്മിച്ചതാണ്. Qwen 3 Coder 480B മോഡലാണ് ബ്രേവിന്റെ സുരക്ഷിതമായ ഇൻഫ്രാസ്ട്രക്ഷർ ഉപയോഗിച്ച് പ്രവർത്തിക്കുന്നത്.<ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">ഹായ്, ഞാൻ ലിയോ. ഞാൻ ഒരു എഐ അസിസ്റ്റന്റാണ് കമ്പനി ബ്രേവിന്. ഞാൻ Claude Opus എന്ന മോഡൽ ഉപയോഗിച്ച് ആന്റ്രോപിക് നിർമ്മിച്ച മോഡലാണ്. Claude Opus മോഡലിന് ബ്രേവിന്റെ സുരക്ഷിതമായ ഇൻഫ്രാസ്ട്രക്ഷർ പ്രയോഗം ആണ്.<ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">ഹായ്, ഞാൻ ലിയോ. ഞാൻ ഒരു എഐ അസിസ്റ്റന്റാണ് കമ്പനി ബ്രേവിന്. ഞാൻ GLM-4-7-Flash എന്ന മോഡൽ ഉപയോഗിക്കുന്ന Zhipu AI നിർമ്മിച്ച മോഡലാണ്. GLM-4-7-Flash മോഡലാണ് ബ്രേവിന്റെ സുരക്ഷിതമായ ഇൻഫ്രാസ്ട്രക്ഷർ ഉപയോഗിച്ച് പ്രവർത്തിക്കുന്നത്.<ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">ഹായ്, ഞാൻ ലിയോ. ഞാൻ ഒരു എഐ അസിസ്റ്റന്റാണ് കമ്പനി ബ്രേവിന്. ഞാൻ Kimi K2.5 എന്ന മോഡൽ ഉപയോഗിക്കുന്ന Moonshot AI നിർമ്മിച്ച മോഡലാണ്. Kimi K2.5 മോഡലാണ് ബ്രേവിന്റെ സുരക്ഷിതമായ ഇൻഫ്രാസ്ട്രക്ഷർ ഉപയോഗിച്ച് പ്രവർത്തിക്കുന്നത്.<ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">ഹായ്, ഞാൻ ലിയോ. ഞാൻ ഒരു എഐ അസിസ്റ്റന്റാണ് കമ്പനി ബ്രേവിന്. ഞാൻ Brave Ocelot എന്ന മോഡൽ ഉപയോഗിക്കുന്ന Brave നിർമ്മിച്ച മോഡലാണ്. Brave Ocelot മോഡലാണ് ബ്രേവിന്റെ സുരക്ഷിതമായ ഇൻഫ്രാസ്ട്രക്ഷർ ഉപയോഗിച്ച് പ്രവർത്തിക്കുന്നത്.<ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">പ്രീമിയം</translation>
 <translation id="5807427080183870259">പ്രാദേശിക</translation>
 <translation id="830868413617744215">ബീറ്റ</translation>
@@ -2344,9 +2347,11 @@ other {{PENDING_TRANSACTIONS} കൂടുതൽ ഇടപാടുകൾ‌ ക
 <translation id="2793458212460902934">ശീഘ്രം • തിരയുക • ഉപകരണങ്ങൾ</translation>
 <translation id="8506027496671575183">തിരയുക • ദൃഷ്ടി • ഉപകരണങ്ങൾ</translation>
 <translation id="3184606955650139158">വേഗം • തിരയുക • വിഷൻ</translation>
-<translation id="7465032796278724624">NEAR AI TEE ഉപയോഗിച്ച് പരിശോധനയായ പ്രൈവസി</translation>
+<translation id="7465032796278724624">NEAR AI TEE ഉപയോഗിച്ച് സ്ഥിരീകരിക്കാവുന്നത് ബ്യക്തിഗത</translation>
 <translation id="8782867266498869301">ആവശ്യമുണ്ടാകുന്ന മികച്ച മാതൃക ഉപയോഗിക്കുന്നതിന് മോഡലുകളും ഡൈനാമിക്കായി മാറുന്നു</translation>
 <translation id="3213834013136637671">തിരയുക • ദൃഷ്ടി</translation>
+<translation id="5276681919620506371">തിരയുക • ഉപകരണങ്ങൾ</translation>
+<translation id="7434375176361995333">സംഗ്രഹം • ശീഘ്രം</translation>
 <translation id="3965507912994218570">Leo ക്രമീകരണങ്ങള്‍</translation>
 <translation id="3754337604877048671">Leo AI-യെ അവതരിപ്പിക്കുന്നു</translation>
 <translation id="5295261408976371809">നിങ്ങളുടെ <ph name="TEXT_BEFORE"/>സ്വകാര്യ<ph name="TEXT_AFTER"/> AI അസിസ്റ്റന്റിന്റെ ബ്രൗസറില്‍ തന്നെ ഉൾക്കൊടുക്കപ്പെട്ട രൂപം.</translation>
@@ -2402,6 +2407,8 @@ other {{PENDING_TRANSACTIONS} കൂടുതൽ ഇടപാടുകൾ‌ ക
 <translation id="4572010449071015143">പുതിയ സംവാദം ആരംഭിക്കുക</translation>
 <translation id="345901077335355561">ആക്റ്റീവ് സംഭാഷണത്തിലേക്ക് തിരിച്ചു പോകുക</translation>
 <translation id="6287023598025162715">പുതിയ സംവാദം</translation>
+<translation id="7230502562132448519">സംഭാഷണങ്ങൾ ഫിൽട്ടർ ചെയ്യുക</translation>
+<translation id="821070843380699990">ദയവായി മറ്റൊരു ക്വറി ശ്രമിക്കുക</translation>
 <translation id="7097822247923237815">താൽക്കാലിക ചാറ്റ്</translation>
 <translation id="7481750859362986254">ഈ ചാറ്റ് നിങ്ങളുടെ ചരിത്രത്തിൽ സംരക്ഷിക്കപ്പെടുകയോ ലിയോയുടെ ഇഷ്ടാനുസൃതമാക്കിയതോ ഓർമകളോ ഉപയോഗിക്കുകയോ ചെയ്യില്ല.</translation>
 <translation id="4238305333951712482">മെമ്മറി അപ്ഡേറ്റ് ചെയ്തു: <ph name="MEMORY_CONTENT"/></translation>
@@ -2439,6 +2446,21 @@ other {{PENDING_TRANSACTIONS} കൂടുതൽ ഇടപാടുകൾ‌ ക
 <translation id="6338250692384725496">നിങ്ങളുടെ ചോദ്യത്തിന് സഹായിക്കാൻ സാൻഡ്‌ബോക്സിൽ കോഡ് എക്സിക്യൂട്ട് ചെയ്തു</translation>
 <translation id="4379566111233326721">കോഡ്:</translation>
 <translation id="3542130965673205258">ഔട്ട്പുട്ട്:</translation>
+<translation id="5382076391290708074">നിങ്ങളുടെ ടാബുകൾ ചലിപ്പിക്കുന്നു</translation>
+<translation id="3862123464576147769">ഇത് അനുവദിക്കുന്നത് നിങ്ങളുടെ എല്ലാ ടാബുകൾ‍ന്റെയും ടാബ് ഗ്രൂപ്പുകളുടെയും <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> കൂടാതെ <ph name="TITLE_FORMAT_START"/>ശീർഷകം<ph name="TITLE_FORMAT_END"/> Brave AI-യിലേക്ക് അയയ്ക്കും, കൂടാതെ Brave AI-യിൽ അവയെ ചലിപ്പിക്കാൻ അനുവദിക്കും. ഈ അനുമതി ഈ സംഭാഷണത്തിന് മാത്രം ബാധകമാണ്.</translation>
+<translation id="396165714586708444">ആഴമേറിയ ഗവേഷണം</translation>
+<translation id="577747221882855891">തിരയുന്നു: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">"<ph name="QUERY"/>"ന് <ph name="COUNT"/> ഉറവിടങ്ങൾ വിശകലനം ചെയ്യുന്നു</translation>
+<translation id="1202264349398113062">"<ph name="QUERY"/>"ന് <ph name="COUNT"/> പുതിയ URL-കൾ പ്രോസസ്സ് ചെയ്യുന്നു</translation>
+<translation id="6189479600023022289">"<ph name="QUERY"/>"ന് <ph name="COUNT"/> URL-കൾ കണ്ടെത്തി</translation>
+<translation id="5150674341374247355"><ph name="FETCHED"/>/<ph name="TOTAL"/> URL-കൾ ഫെച്ച് ചെയ്യുന്നു</translation>
+<translation id="1075606740174445363">"<ph name="QUERY"/>"ന് <ph name="COUNT"/> URL-കൾ വിശകലനം ചെയ്തു</translation>
+<translation id="6220878652174655112"><ph name="COUNT"/> ക്വറികൾ തിരയുന്നു</translation>
+<translation id="3571450204565012512"><ph name="QUERY_COUNT"/> തിരയലുകളിൽ നിന്ന് <ph name="URL_COUNT"/> URL-കൾ വിശകലനം ചെയ്തു</translation>
+<translation id="5733200563889491347">വിവരണം പൂർത്തിയായി</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>മി <ph name="SECONDS"/>സെ</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>സെ</translation>
+<translation id="5067194014665306881">ഗവേഷണ പിശക്: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">AI ബ്രൗസിംഗ്</translation>
 <translation id="2854657728271352435">AI ബ്രൗസിംഗ് പ്രൊഫൈലിനെക്കുറിച്ച്</translation>
 <translation id="2301685062527585986">നിങ്ങളുടെ ഡാറ്റയെ സംരക്ഷിക്കുന്നതിന്, ഈ ഒറ്റപ്പെട്ട AI ബ്രൗസിംഗ് പ്രൊഫൈൽ, നിങ്ങളുടെ മുഖ്യ ബ്രൗസിംഗ് പ്രൊഫൈലിൽ AI ഏജന്റിന് ആക്സസ് ലഭിക്കാതിരിക്കാൻ ഉറപ്പുവരുത്തുന്നു. ആവശ്യമായ അനുവദനങ്ങളോടൊപ്പം സൈറ്റുകൾ സന്ദർശിക്കുകയും ഇടപെടുകയും ചെയ്യുന്നതാണ് ഏകമായി അനുവദിക്കുന്നത്. നിങ്ങൾക്ക് ഇതിനടയിൽ ജോലി നൽകിയും അത് ബ്രൗസ് ചെയ്യാൻ അനുവദിച്ചും ഉൽപ്പാദകത്വം വർധിപ്പിക്കാം.</translation>
@@ -2503,11 +2525,14 @@ other {{PENDING_TRANSACTIONS} കൂടുതൽ ഇടപാടുകൾ‌ ക
 <translation id="7847477075635510673">വാർത്ത മറയ്ക്കൂ</translation>
 <translation id="9173319813356700250">വാർത്തകൾ</translation>
 <translation id="6543799171249004861">ഫോട്ടോ - <ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="466214682712474574">താങ്കളുടെ <ph name="PROVIDER"/> അക്കൗണ്ടിൽ പ്രവേശിച്ച്, താങ്കളുടെ ബാലൻസ് കാണുക</translation>
 <translation id="8332875111286275890">താങ്കളുടെ ബാലൻസ് കാണാൻ പ്രവേശിക്കുക</translation>
 <translation id="5430001801813715388">Rewards</translation>
+<translation id="988042349921505128">തിരയുക കൂടാതെ AI</translation>
 <translation id="2430295257226173518">എന്തിനെയും ചോദിക്കുക, എന്തിനെയും കണ്ടെത്തുക...</translation>
 <translation id="167018310108390163">പുതിയ ടാബ് പേജ് ഇഷ്‌ടാനുസരണമാക്കുക</translation>
+<translation id="3500134717967948757">പുതിയ ടാബുകളിൽ Leo AI വിജറ്റ് കാണിക്കുക</translation>
 <translation id="6851426306697017546">ഘടികാരം കാണിക്കുക</translation>
 <translation id="4844370919312937270">പുതിയ ടാബുകളിൽ സെർച്ച് വിഡ്ഡ്ജറ്റ് കാണിക്കുക</translation>
 <translation id="7328310113820087094"><ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/> ഉപയോഗിച്ച്, പുതിയ ടാബ് പേജ് പരസ്യങ്ങൾ കാണുന്നതിന് നിങ്ങൾക്ക് നേടാൻ കഴിയും.</translation>
@@ -2536,8 +2561,14 @@ other {{PENDING_TRANSACTIONS} കൂടുതൽ ഇടപാടുകൾ‌ ക
 <translation id="8458987127502506209">Brave Shields പ്രాప్తമാക്കുക</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Shields are UP<ph name="STATUS_AFTER"/> for this site</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Shields are DOWN<ph name="STATUS_AFTER"/> for this site</translation>
+<translation id="8426214145426269584">ഈ സൈറ്റിന് Shields <ph name="UP_BEFORE"/>അപ്പ്<ph name="UP_AFTER"/></translation>
+<translation id="3325367578778625743">ഈ സൈറ്റിന് Shields <ph name="DOWN_BEFORE"/>ഡൗൺ<ph name="DOWN_AFTER"/></translation>
 <translation id="4724752924364329714">ഈ സൈറ്റ് തകരാറിലായി തോന്നുന്നു എങ്കിൽ, Shields ഓഫാക്കാൻ ശ്രമിക്കുക.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>കുറിപ്പ്: ഇത് Brave-ന്റെ സ്വകാര്യത സംരക്ഷണം കുറയ്ക്കും.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">ഇത് ബ്രേവിന്റെ സ്വകാര്യതാ സുരക്ഷ കുറയ്ക്കുന്നു. <ph name="LINK_BEFORE"/>കൂടുതൽ അറിയുക<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">ട്രാക്കുകൾ, പരസ്യങ്ങൾ, കൂടുതൽ തടഞ്ഞു.</translation>
+<translation id="4968268657895673116">ഈ സൈറ്റ് Shields പൂർണ്ണമായി കെട്ടിയെടുക്കാതെ ശരിയായി പ്രവർത്തിക്കുന്നില്ലെങ്കിലോ?</translation>
+<translation id="5412004902081180614">റിപ്പോർട്ട് ചെയ്യുക</translation>
 <translation id="3620004479054499575">ഈ സൈറ്റുമായി നിങ്ങളുടെതിൽ പ്രശ്‌നങ്ങളുണ്ടോ?</translation>
 <translation id="9176447766421988172">വെബ്സൈറ്റ് അനുയോജ്യത വർദ്ധിപ്പിക്കാൻ വേണ്ടി ഒരു പരീക്ഷണം നടത്തുകയാണ്, ഇത് പരസ്യങ്ങൾ തടയൽ മാത്രം സജീവമാക്കുന്ന രീതിയിലാണ്. മുന്നറിയിപ്പ്: എല്ലാ സ്വകാര്യതാ സംരക്ഷണങ്ങളും നീക്കംചെയ്യപ്പെടും. നിങ്ങൾ ഇത് പരീക്ഷിക്കാൻ ആഗ്രഹിക്കുന്നുണ്ടോ? <ph name="LINK_BEFORE"/>കൂടുതല് തിരിഞ്ഞു നോക്കുക<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Brave-ന്റെ സ്വകാര്യതാ സംരക്ഷണങ്ങൾ കൊണ്ടു തകരാറിലായ വ്യക്തിഗത വെബ്സൈറ്റുകൾക്ക്, നിങ്ങൾക്ക് Shields താഴേക്ക് സജ്ജമാക്കാൻ സാധിക്കും.</translation>
@@ -2552,9 +2583,12 @@ other {{PENDING_TRANSACTIONS} കൂടുതൽ ഇടപാടുകൾ‌ ക
 <translation id="8377155647357436161">ട്രാക്കുകൾ, പരസ്യങ്ങൾ, കൂടുതൽ തടഞ്ഞു <ph name="LINK_BEFORE"/>കൂടുതല് അറിയുക<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave Shields നൽകാതെ <ph name="LINK_BEFORE"/>കൂടുതല് അറിയുക<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">ഉയർന്ന നിയന്ത്രണങ്ങൾ</translation>
+<translation id="7939062555109487992">ഉയർന്ന നിയന്ത്രണങ്ങൾ</translation>
 <translation id="5799940914270080805">ഈ ക്രമീകരണങ്ങൾ മാറ്റുന്നത് സൈറ്റുകൾ തകരാറാകാൻ സാധ്യതയുണ്ട്.</translation>
 <translation id="9204041448536398473">ആഗോള ഷീൽഡ് ക്രമീകരണങ്ങൾ</translation>
 <translation id="2108334320919763866">ആഗോള ഡിഫോൾറ്റുകൾ</translation>
+<translation id="1896472873031845605">ആഗോള ക്രമീകരണങ്ങൾ</translation>
+<translation id="8324318899000695659">ലഘുഭാഗം ഉപാദാനങ്ങൾ</translation>
 <translation id="7205939464631857223">എല്ലാ തടഞ്ഞ ഘടകങ്ങളും മുകളിലോട്ടു</translation>
 <translation id="3440043456924990296">സംഘടനയാൽ പ്രയോജനപ്പെടുത്തുന്ന ക്രമീകരണങ്ങൾ</translation>
 <translation id="7053983685419859001">തടയുക</translation>
@@ -2636,7 +2670,6 @@ other {{PENDING_TRANSACTIONS} കൂടുതൽ ഇടപാടുകൾ‌ ക
 <translation id="7207456302801184289">Brave-ലേക്ക് സ്വാഗതം</translation>
 <translation id="4988030440045495002">അതീവ ഇളം നിറം പ്രമേയം</translation>
 <translation id="2422927186524098759">സൈഡ്ബാർ</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">ടൂള്പാർ</translation>
 <translation id="6225572914528673855">വിലാസ ബാർ</translation>

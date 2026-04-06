@@ -1838,6 +1838,7 @@
 <translation id="8897189056319316783">Escudo ZEC</translation>
 <translation id="508249542337194541">Desprotexer ZEC</translation>
 <translation id="3382275793825152362">Protexer fondos</translation>
+<translation id="617149752238892649">Desprotexer fondos</translation>
 <translation id="8631765320256788981">Estás a transferir fondos da conta pública á conta protexida.</translation>
 <translation id="3860364671495430495">Estás a transferir fondos da túa conta protexida á túa conta pública.</translation>
 <translation id="7144878232160441200">Reintentar</translation>
@@ -2187,6 +2188,7 @@
     }</translation>
 <translation id="6961721183181597848">Que podo facer por ti?</translation>
 <translation id="2966135729673253768">Facer unha pregunta de seguimento</translation>
+<translation id="5923170497201832190">Desprazar o separador ata a parte inferior</translation>
 <translation id="6219262425964000211">Soltar arquivos aquí</translation>
 <translation id="4313763911013851687">Solta calquera arquivo aquí para engadilos á conversa</translation>
 <translation id="4524675003624341892">Suxerir preguntas…</translation>
@@ -2208,20 +2210,21 @@
 <translation id="999273441077650169">O modelo cambia dinámicamente para usar o mellor para a tarefa.<ph name="LINK_BEFORE"/> Máis información <ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Llama 3.1 8B, un modelo creado por Meta para ser eficiente e aplicable a moitos casos de uso. Llama está aloxado en Brave a través da nosa propia infraestrutura segura.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Qwen VL 30B, un modelo creado por Alibaba Cloud para ser eficiente e aplicable a moitos casos de uso. Qwen é hospedado por Brave a través da nosa propia infraestrutura segura.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de DeepSeek V3.1, un modelo creado por DeepSeek para ser eficiente e aplicable a moitos casos de uso. DeepSeek V3.1 está aloxado en NEAR a través da súa infraestrutura verificablemente privada e segura.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de GLM-5, un modelo creado por Zhipu AI para ser eficiente e aplicable a moitos casos de uso. GLM-5 está aloxado en NEAR a través da súa infraestrutura verificablemente privada e segura.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Ola, son Leo. Son un asistente de IA de Brave. Estou impulsado por Claude Instant, un modelo creado por Anthropic para tarefas conversacionais e de procesamento de texto. Claude Instant está aloxado en Brave mediante a nosa propia infraestrutura segura.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Claude Haiku, un modelo creado por Anthropic para tarefas conversacionais e de procesamento de texto. Claude Haiku está aloxado en Brave a través da nosa propia infraestrutura segura.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Claude Sonnet, un modelo creado por Anthropic para tarefas conversacionais e de procesamento de texto. Claude Sonnet está aloxado en Brave a través da nosa propia infraestrutura segura.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Llama 4 Scout, un modelo creado por Meta para ser eficiente e aplicable a moitos casos de uso. Llama 4 Scout está aloxado en Brave a través da nosa propia infraestrutura segura.&amp;<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Llama 4 Maverick, un modelo creado por Meta para ser eficiente e aplicable a moitos casos de uso. Llama 4 Maverick está aloxado en Brave a través da nosa propia infraestrutura segura.&amp;<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de GPT OSS 20B, un modelo creado por OpenAI para ser eficiente e aplicable a moitos casos de uso. GPT OSS 20B está aloxado en Brave a través da nosa propia infraestrutura segura.&amp;<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de GPT OSS 120B, un modelo creado por OpenAI para ser eficiente e aplicable a moitos casos de uso. GPT OSS 120B está aloxado en Brave a través da nosa propia infraestrutura segura.&amp;<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Mistral Large, un modelo creado por Mistral para ser eficiente e aplicable a moitos casos de uso. Mistral Large está aloxado en Brave a través da nosa propia infraestrutura segura.&amp;<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Pixtral Large, un modelo creado por Mistral para ser eficiente e aplicable a moitos casos de uso. Pixtral Large está aloxado en Brave a través da nosa propia infraestrutura segura.&amp;<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Qwen 3 235B, un modelo creado por Alibaba Cloud para ser eficiente e aplicable a moitos casos de uso. Qwen 3 235B é hospedado por Brave a través da nosa propia infraestrutura segura.&amp;<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Deepseek V3.1, un modelo creado por Deepseek para ser eficiente e aplicable a moitos casos de uso. Deepseek V3.1 está aloxado en Brave a través da nosa propia infraestrutura segura.&amp;<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Deepseek V3.2, un modelo creado por Deepseek para ser eficiente e aplicable a moitos casos de uso. Deepseek V3.2 está aloxado en Brave a través da nosa propia infraestrutura segura.&amp;<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Qwen 3 Coder 480B, un modelo creado por Alibaba Cloud para ser eficiente e aplicable a moitos casos de uso. Qwen 3 Coder 480B é hospedado por Brave a través da nosa propia infraestrutura segura.&amp;<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Claude Opus, un modelo creado por Anthropic para tarefas conversacionais e de procesamento de texto. Claude Opus está aloxado en Brave a través da nosa propia infraestrutura segura.&amp;<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de GLM-4-7-Flash, un modelo creado por Zhipu AI para ser eficiente e aplicable a moitos casos de uso. GLM-4-7-Flash está aloxado en Brave a través da nosa propia infraestrutura segura.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Kimi K2.5, un modelo creado por Moonshot AI para ser eficiente e aplicable a moitos casos de uso. Kimi K2.5 está aloxado en Brave a través da nosa propia infraestrutura segura.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Brave Ocelot, un modelo creado por Brave para resumir páxinas web. Brave Ocelot está aloxado en Brave a través da nosa propia infraestrutura segura.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Local</translation>
 <translation id="830868413617744215">beta</translation>
@@ -2354,6 +2357,8 @@
 <translation id="7465032796278724624">Verificable e privado con NEAR AI TEE</translation>
 <translation id="8782867266498869301">O modelo cambia dinámicamente para usar o mellor para a tarefa</translation>
 <translation id="3213834013136637671">Busca • Visión</translation>
+<translation id="5276681919620506371">Busca • Ferramentas</translation>
+<translation id="7434375176361995333">Resumos • Rápido</translation>
 <translation id="3965507912994218570">Configuración de Leo</translation>
 <translation id="3754337604877048671">Presentando Leo IA</translation>
 <translation id="5295261408976371809">O teu asistente de IA <ph name="TEXT_BEFORE"/>privado<ph name="TEXT_AFTER"/>, integrado directamente no navegador.</translation>
@@ -2409,6 +2414,8 @@
 <translation id="4572010449071015143">Iniciar nova conversa</translation>
 <translation id="345901077335355561">Volver á conversa en curso</translation>
 <translation id="6287023598025162715">Nova conversa</translation>
+<translation id="7230502562132448519">Filtrar conversas</translation>
+<translation id="821070843380699990">Probe cunha busca diferente</translation>
 <translation id="7097822247923237815">Chat temporal</translation>
 <translation id="7481750859362986254">Esta conversa non se gardará no teu historial nin usará ningunha das personalizacións ou recordos de Leo.</translation>
 <translation id="4238305333951712482">Memoria actualizada: <ph name="MEMORY_CONTENT"/></translation>
@@ -2446,6 +2453,21 @@
 <translation id="6338250692384725496">Executou código en arxivador para axudarte coa túa consulta</translation>
 <translation id="4379566111233326721">Código:</translation>
 <translation id="3542130965673205258">Saída:</translation>
+<translation id="5382076391290708074">Movendo os teus separadores</translation>
+<translation id="3862123464576147769">Permitir isto enviará o <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> e o <ph name="TITLE_FORMAT_START"/>Título<ph name="TITLE_FORMAT_END"/> de todos os teus Separadores e Grupos de Separadores a Brave AI, e permitirá a Brave AI movelos. Este permiso aplícase só nesta conversa.</translation>
+<translation id="396165714586708444">Investigación profunda</translation>
+<translation id="577747221882855891">Buscando: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">Analizando <ph name="COUNT"/> fontes para "<ph name="QUERY"/>"</translation>
+<translation id="1202264349398113062">Procesando <ph name="COUNT"/> URLs novos para "<ph name="QUERY"/>"</translation>
+<translation id="6189479600023022289">Atopáronse <ph name="COUNT"/> URLs para "<ph name="QUERY"/>"</translation>
+<translation id="5150674341374247355">Obtendo <ph name="FETCHED"/>/<ph name="TOTAL"/> URLs</translation>
+<translation id="1075606740174445363">Analizáronse <ph name="COUNT"/> URLs para "<ph name="QUERY"/>"</translation>
+<translation id="6220878652174655112">Buscando <ph name="COUNT"/> consultas</translation>
+<translation id="3571450204565012512">Analizáronse <ph name="URL_COUNT"/> URLs de <ph name="QUERY_COUNT"/> buscas</translation>
+<translation id="5733200563889491347">Investigación completada</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>m <ph name="SECONDS"/>s</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>s</translation>
+<translation id="5067194014665306881">Erro de investigación: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">Navegación con IA</translation>
 <translation id="2854657728271352435">Acerca do perfil de navegación con IA</translation>
 <translation id="2301685062527585986">Para protexer os teus datos, este perfil illado de navegación con IA garante que o axente de IA non teña acceso ao teu perfil principal de navegación, cunicamente con permisos para visitar e interactuar cos sitios segundo sexa necesario. Podes aumentar a túa produtividade asignándolle tarefas e deixando que navegue por ti.</translation>
@@ -2510,11 +2532,14 @@
 <translation id="7847477075635510673">Ocultar Novas</translation>
 <translation id="9173319813356700250">NOVAS</translation>
 <translation id="6543799171249004861">Foto pertencente a <ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">IA de Leo</translation>
 <translation id="466214682712474574">Inicia sesión na túa conta de <ph name="PROVIDER"/> para ver o teu saldo</translation>
 <translation id="8332875111286275890">Iniciar sesión para ver o teu saldo</translation>
 <translation id="5430001801813715388">RECOMPENSAS</translation>
+<translation id="988042349921505128">Busca e IA</translation>
 <translation id="2430295257226173518">Pregunta calquera cousa, atopa calquera cousa…</translation>
 <translation id="167018310108390163">Personalizar o novo separador</translation>
+<translation id="3500134717967948757">Mostrar o widget de IA Leo nos novos separadores</translation>
 <translation id="6851426306697017546">Mostrar reloxo</translation>
 <translation id="4844370919312937270">Mostrar o widget de busca nos novos separadores</translation>
 <translation id="7328310113820087094">Coas <ph name="LINK_BEGIN"/>Recompensas de Brave<ph name="LINK_END"/>, podes gañar recompensas por ver anuncios na páxina do novo separador.</translation>
@@ -2543,8 +2568,14 @@
 <translation id="8458987127502506209">Activar Escudos de Brave</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Os escudos están ACTIVADOS<ph name="STATUS_AFTER"/> neste sitio</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Os escudos están DESACTIVADOS<ph name="STATUS_AFTER"/> neste sitio</translation>
+<translation id="8426214145426269584">Escudos <ph name="UP_BEFORE"/>activados<ph name="UP_AFTER"/> neste sitio</translation>
+<translation id="3325367578778625743">Escudos <ph name="DOWN_BEFORE"/>desactivados<ph name="DOWN_AFTER"/> neste sitio</translation>
 <translation id="4724752924364329714">Se este sitio aparece roto, proba Escudos.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Nota: isto pode reducir a protección da privacidade de Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">Isto pode reducir as proteccións de privacidade de Brave. <ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">Bloqueáronse rastreadores e anuncios, entre outras cousas.</translation>
+<translation id="4968268657895673116">¿Non funciona este sitio correctamente con Escudos activados?</translation>
+<translation id="5412004902081180614">Informar</translation>
 <translation id="3620004479054499575">Tes problemas con este sitio?</translation>
 <translation id="9176447766421988172">Estamos a probar un experimento para mellorar a compatibilidade dos sitios web, onde só mantemos o bloqueo de anuncios activado. Aviso: isto elimina toda protección de privacidade. Queres probalo? <ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Ten en conta que para sitios web individuais que se rompan pola protección da privacidade de Brave, podes poñer os Escudos a ABAIXO.</translation>
@@ -2559,9 +2590,12 @@
 <translation id="8377155647357436161">Bloqueáronse rastreadores e anuncios, entre outras cousas <ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Sen a protección de Escudos de Brave <ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Controis avanzados</translation>
+<translation id="7939062555109487992">Opcións avanzadas</translation>
 <translation id="5799940914270080805">Cambiar esta configuración pode afectar ao funcionamento dos sitios.</translation>
 <translation id="9204041448536398473">Configuración global de Escudos</translation>
 <translation id="2108334320919763866">Axustes predefinidos globais</translation>
+<translation id="1896472873031845605">Configuración global</translation>
+<translation id="8324318899000695659">Bloquear elementos</translation>
 <translation id="7205939464631857223">Baleirar todos os elementos bloqueados</translation>
 <translation id="3440043456924990296">Configuración xestionada pola organización</translation>
 <translation id="7053983685419859001">Bloquear</translation>
@@ -2646,7 +2680,6 @@ Bloqueáronse <ph name="NUMBER"/> rastreadores, anuncios e demais elementos</tra
 <translation id="7207456302801184289">Dámosche a benvida a Brave</translation>
 <translation id="4988030440045495002">Tema ultra escuro</translation>
 <translation id="2422927186524098759">Barra lateral</translation>
-<translation id="2361906291514218784">IA de Leo</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Barra de ferramentas</translation>
 <translation id="6225572914528673855">Barra de enderezos</translation>

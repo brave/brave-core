@@ -7,8 +7,10 @@
 <translation id="1070329623210597193">Soubory, které může tento web prohlížet nebo upravovat</translation>
 <translation id="1882093842020941518">Pomozte nám vylepšit Brave tím, že nám sdělíte, proč jste povolili soubory cookie třetích stran. <ph name="BEGIN_LINK"/>Odeslat zpětnou vazbu<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Můžete požádat o zobrazení verze webů pro počítače</translation>
-<translation id="9183227624343766158">Používejte Brave ve výchozím nastavení</translation>
+<translation id="1109482864356262001">Funkce vyžadující senzory pohybu nebo světla nebudou k dispozici</translation>
+<translation id="6670155282615872564">Pokud Brave chcete využít na maximum, proveďte níže uvedené navrhované akce</translation>
 <translation id="113098737392899175">Když je připojená klávesnice, procházet stránky pomocí textového kurzoru</translation>
+<translation id="1148624853678088576">Vše je nastaveno!</translation>
 <translation id="738393714577080438">Ukládejte si v Chromu hesla</translation>
 <translation id="1178015372320901893">Spodní panel Moje zkratky</translation>
 <translation id="1178581264944972037">Pozastavit</translation>
@@ -53,6 +55,7 @@
 <translation id="3665719978526894928">Zrychlit weby v Chromu pomocí modulu V8, čímž se ale o trochu sníží odolnost Chromu vůči útokům</translation>
 <translation id="1593426485665524382">V horní části obrazovky jsou k dispozici nové akce</translation>
 <translation id="1594521731409209842">Velikost fotky změníte stažením nebo roztažením prstů</translation>
+<translation id="1599268789440304082">Byl otevřen panel nastavení</translation>
 <translation id="1601560923496285236">Použít</translation>
 <translation id="1615755956145364867">Weby mohou žádat o přehrání chráněného obsahu</translation>
 <translation id="1620510694547887537">Kamera</translation>
@@ -64,7 +67,6 @@
 <translation id="1677097821151855053">Soubory cookie a další data webů slouží k tomu, aby si vás web zapamatoval, například pro účely přihlášení nebo personalizace reklam. Chcete-li spravovat cookies pro všechny weby, přejděte do <ph name="BEGIN_LINK"/>Nastavení<ph name="END_LINK"/>.</translation>
 <translation id="1679305402657584804">Weby můžou žádat o použití zařízení NFC</translation>
 <translation id="1686785653877010442">Weby obvykle zasílají oznámení, kterými vás informují o mimořádných zprávách nebo zprávách v chatu.</translation>
-<translation id="169515064810179024">Blokovat webům přístup k senzorům pohybu</translation>
 <translation id="1703666494654169921">Nepovolovat webům používání zařízení nebo dat pro virtuální realitu</translation>
 <translation id="1704230497453185209">Nepovolovat webům přehrávat zvuk</translation>
 <translation id="1717218214683051432">Pohybová čidla</translation>
@@ -127,6 +129,7 @@
 <translation id="2241587408274973373">Karty na stránce Nová karta</translation>
 <translation id="2241634353105152135">Pouze jednou</translation>
 <translation id="2253414712144136228">Odstranit položku <ph name="NAME_OF_LIST_ITEM"/></translation>
+<translation id="227763434929139750">Nepovolovat webům používat senzory pohybu nebo světla</translation>
 <translation id="228293613124499805">Většina navštěvovaných webů pravděpodobně ukládá data do vašeho zařízení, často za účelem zlepšení uživatelského prostředí (uloží se vaše předvolby a informace sdílené s weby). Doporučujeme toto nastavení ponechat zapnuté.</translation>
 <translation id="2289270750774289114">Zeptat se, když chce web objevit zařízení Bluetooth v okolí (doporučeno)</translation>
 <translation id="2315043854645842844">Volbu certifikátu na straně klienta operační systém nepodporuje.</translation>
@@ -191,12 +194,12 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="2802908157808345702">Nepovolovat webům zobrazovat vyskakovací okna ani používat přesměrování</translation>
 <translation id="5801312978029568377">Brave teď zobrazuje vaše nedávné karty v seznamu aplikací v zařízení a ve výsledcích vyhledávání. Tuto funkci můžete v nastavení Chromu kdykoli vypnout.</translation>
 <translation id="2822354292072154809">Opravdu chcete resetovat všechna oprávnění webů pro objekt <ph name="CHOSEN_OBJECT_NAME"/>?</translation>
+<translation id="7298052657381934345">Teď Brave na svém zařízení můžete využívat na maximum.</translation>
 <translation id="2850913818900871965">Požadovat mobilní zobrazení</translation>
 <translation id="2870560284913253234">Weby</translation>
 <translation id="2874939134665556319">Předchozí skladba</translation>
 <translation id="2891975107962658722">Blokovat webu ukládání dat do zařízení</translation>
 <translation id="2903493209154104877">Adresy</translation>
-<translation id="2910701580606108292">Před povolením spuštění chráněného obsahu na webu se zeptat</translation>
 <translation id="2918484639460781603">Přejít na nastavení</translation>
 <translation id="2932883381142163287">Nahlásit zneužití</translation>
 <translation id="2939338015096024043">Když je tato možnost zapnutá, weby mohou žádat o sledování polohy kamery a o informace o okolí. Když je vypnutá, weby nemohou sledovat polohu kamery ani získat informace o okolí.</translation>
@@ -210,6 +213,7 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="3065787901655140044">Pokročilá ochrana je zapnutá</translation>
 <translation id="3069226013421428034">Povolení přihlášení třetích stran na konkrétní web.</translation>
 <translation id="310297983047869047">Předchozí snímek</translation>
+<translation id="3108122610701115301">Výchozí nastavení</translation>
 <translation id="3109724472072898302">Sbaleno</translation>
 <translation id="310979712355504754">Smazat vše</translation>
 <translation id="311394601889664316">Nepovolovat webům upravovat soubory a složky v zařízení</translation>
@@ -232,7 +236,6 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="3232293466644486101">Vymazat údaje o prohlížení…</translation>
 <translation id="3242646949159196181">Když je tato možnost zapnutá, weby mohou přehrávat zvuk. Když je vypnutá, weby zvuk přehrávat nemohou.</translation>
 <translation id="3273479183583863618">Poklesy cen na kartách</translation>
-<translation id="3277252321222022663">Povolit webům přístup k senzorům (doporučeno)</translation>
 <translation id="3285500645985761267">Povolit souvisejícím webům sledovat vaši aktivitu ve skupině</translation>
 <translation id="3295019059349372795">Kapitola 11: Smaragdové město v zemi Oz</translation>
 <translation id="3295602654194328831">Skrýt informace</translation>
@@ -264,6 +267,7 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="3658847490588580244">Spodní panel výchozího prohlížeče</translation>
 <translation id="3669841141196828854">{COUNT,plural, =1{<ph name="RWS_MEMBERS_COUNT"/> web ve skupině webů vlastníka <ph name="RWS_OWNER"/>, které vidí vaši aktivitu ve skupině}few{<ph name="RWS_MEMBERS_COUNT"/> weby ve skupině webů vlastníka <ph name="RWS_OWNER"/>, které vidí vaši aktivitu ve skupině}many{<ph name="RWS_MEMBERS_COUNT"/> webu ve skupině webů vlastníka <ph name="RWS_OWNER"/>, které vidí vaši aktivitu ve skupině}other{<ph name="RWS_MEMBERS_COUNT"/> webů ve skupině webů vlastníka <ph name="RWS_OWNER"/>, které vidí vaši aktivitu ve skupině}}</translation>
 <translation id="3676777756440746804">Weby nemohou žádat o použití informací, které o vás uložily</translation>
+<translation id="3677897809642449131">Weby mohou žádat o použití senzorů pohybu</translation>
 <translation id="3678318839615834650">Spodní panel Karty na stránce Nová karta otevřený na celou výšku</translation>
 <translation id="3697164069658504920">Když je tato možnost zapnutá, weby mohou žádat o použití zařízení USB. Když je vypnutá, weby zařízení USB používat nemohou.</translation>
 <translation id="3703430731944883733">Spravovat feed</translation>
@@ -295,8 +299,8 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="3922092564198021702">V telefonu přejděte do Nastavení</translation>
 <translation id="3924858949939391676">Po zapnutí režimu čtení zobrazit odkazy</translation>
 <translation id="3933121352599513978">Sbalit nechtěné žádosti (doporučeno)</translation>
+<translation id="393417216277380082">Senzory pohybu a světla</translation>
 <translation id="3934905113567851655">Velikost změníte stažením prstů</translation>
-<translation id="3955193568934677022">Povolit webům přehrávat chráněný obsah (doporučeno)</translation>
 <translation id="3955321697524543127">Nepovolovat webům připojení k zařízením USB</translation>
 <translation id="3965467402665811906">Weby mohou žádat o použití informací, které o vás uložily</translation>
 <translation id="3967822245660637423">Stahování bylo dokončeno</translation>
@@ -312,6 +316,7 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="4046123991198612571">Další skladba</translation>
 <translation id="4077310749977440510">Weby obvykle čtou obsah schránky kvůli funkcím, jako je zachování formátu zkopírovaného textu</translation>
 <translation id="4082080074595021446">Výjimky pro konkrétní webové stránky jsou zakázány, protože zařízení s Androidem nemá dostatek paměti RAM.</translation>
+<translation id="6601032802262472844">Některá nastavení Chromu se změnila</translation>
 <translation id="4149890623864272035">Opravdu chcete vymazat všechna místní data, včetně souborů cookie, a resetovat všechna oprávnění tohoto webu?</translation>
 <translation id="4149994727733219643">Zjednodušené zobrazení webových stránek</translation>
 <translation id="4151930093518524179">Výchozí přiblížení</translation>
@@ -347,8 +352,11 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="4478158430052450698">Usnadnit přizpůsobení velikosti zobrazení pro různé weby</translation>
 <translation id="4479647676395637221">Pokud web bude chtít použít vaši kameru, zobrazit dotaz (doporučeno)</translation>
 <translation id="4505788138578415521">Rozbalená adresa URL</translation>
+<translation id="4522570452068850558">Podrobnosti</translation>
 <translation id="4523472416386354622">Nejdřív se přihlaste</translation>
+<translation id="4529207923544043455">Spodní panel zobrazující dokončené a nedokončené úkoly ze seznamu nastavení</translation>
 <translation id="4534723447064627427">Pokud aplikaci <ph name="APP_NAME"/> chcete umožnit přístup k mikrofonu, zapněte mikrofon také v <ph name="BEGIN_LINK"/>Nastavení Android<ph name="END_LINK"/>.</translation>
+<translation id="4545694195887112015">Panel nastavení byl zavřen</translation>
 <translation id="4566417217121906555">Vypnout mikrofon</translation>
 <translation id="4570913071927164677">Podrobnosti</translation>
 <translation id="4578289292431526768">Jdeme na to</translation>
@@ -363,7 +371,7 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="5652778654712411580">Klepněte na aplikaci Prohlížeč a potom na Brave</translation>
 <translation id="4676059169848868271">Pokud aplikaci <ph name="APP_NAME"/> chcete umožnit používat sledování rukou, zapněte sledování rukou také v <ph name="BEGIN_LINK"/>nastavení systému<ph name="END_LINK"/>.</translation>
 <translation id="4688045258817337666">Správa karet</translation>
-<translation id="4751476147751820511">Senzory pohybu nebo světla</translation>
+<translation id="4722332387043141878">Weby obvykle používají senzory pohybu a světla na zařízení kvůli funkcím, jako je virtuální realita nebo sledování fitness aktivit</translation>
 <translation id="4755971844837804407">Když je tato možnost zapnutá, weby vám mohou zobrazovat jakékoliv reklamy. Když je vypnutá, weby nemohou zobrazovat rušivé ani zavádějící reklamy.</translation>
 <translation id="4779083564647765204">Lupa</translation>
 <translation id="4807122856660838973">Zapnout Bezpečné prohlížení</translation>
@@ -390,7 +398,6 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="5001526427543320409">Soubory cookie třetích stran</translation>
 <translation id="5007392906805964215">Zkontrolovat</translation>
 <translation id="5039804452771397117">Povolit</translation>
-<translation id="5048398596102334565">Povolit webům přístup k senzorům pohybu (doporučeno)</translation>
 <translation id="5048841907079026162">Spravujte své údaje o procházení</translation>
 <translation id="5063480226653192405">Použití</translation>
 <translation id="5068293087784369013">Přizpůsobte si stránku Nová karta</translation>
@@ -480,6 +487,7 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="5922853908706496913">Sdílíte obrazovku</translation>
 <translation id="5922967540311291836">Blokovat soubory cookie třetích stran:</translation>
 <translation id="5923512600150154850">Tímto vymažete <ph name="DATASIZE"/> dat a souborů cookie, které uložily weby.</translation>
+<translation id="5930707844513754220">Zobrazit další seznam nastavení</translation>
 <translation id="5939518447894949180">Resetovat</translation>
 <translation id="5948139900367969951">Rychle se dostaňte k tomu, co vás zajímá</translation>
 <translation id="5964247741333118902">Vložený obsah</translation>
@@ -488,6 +496,7 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="5976059395673079613"><ph name="PERMISSION"/> – <ph name="WARNING_MESSAGE"/></translation>
 <translation id="5998071268779572583">Zapnout feed Objevit</translation>
 <translation id="6012967556075291653">Připnutá zkratka</translation>
+<translation id="6013003831291591200">Úkol dokončen</translation>
 <translation id="6015775454662021376">Spravujte přístup tohoto webu k vašemu zařízení</translation>
 <translation id="296137235951584143">Přizpůsobte si Brave</translation>
 <translation id="6040143037577758943">Zavřít</translation>
@@ -503,11 +512,11 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="6171020522141473435">Když je tato možnost zapnutá, weby mohou žádat o použití zařízení Bluetooth. Když je vypnutá, weby nemohou používat zařízení Bluetooth.</translation>
 <translation id="6177128806592000436">Spojení s tímto webem není bezpečné</translation>
 <translation id="6181444274883918285">Přidat výjimku pro konkrétní web</translation>
-<translation id="6192792657125177640">Výjimky</translation>
 <translation id="7938602278189860250">{DAYS,plural, =1{Zítra začne Brave soubory cookie opět blokovat}few{Za # dny budou soubory cookie opět zablokovány}many{Za # dne budou soubory cookie opět zablokovány}other{Za # dní budou soubory cookie opět zablokovány}}</translation>
 <translation id="6196640612572343990">Blokovat soubory cookie třetích stran</translation>
 <translation id="6205314730813004066">Ochrana soukromí v reklamách</translation>
 <translation id="6207207788774442484">Vymazat data a resetovat oprávnění</translation>
+<translation id="6211409961905616543">Weby mohou používat senzory pohybu a světla</translation>
 <translation id="6218508144653756827">Fuchsiový motiv</translation>
 <translation id="6231752747840485235">Odinstalovat aplikaci <ph name="APP_NAME"/>?</translation>
 <translation id="4789073065838177382">Klepněte na aplikaci Prohlížeč &gt; Brave</translation>
@@ -626,7 +635,6 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="7561196759112975576">Vždy</translation>
 <translation id="7573594921350120855">Weby obvykle používají videokameru ke komunikačním funkcím, jako je videohovor</translation>
 <translation id="7574529565935733861">{NUM_MONTHS,plural, =1{Před <ph name="NUM_MONTHS_ONE"/> měsícem}few{Před <ph name="NUM_MONTHS_MANY"/> měsíci}many{Před <ph name="NUM_MONTHS_MANY"/> měsíce}other{Před <ph name="NUM_MONTHS_MANY"/> měsíci}}</translation>
-<translation id="757524316907819857">Bránit webům v přehrávání chráněného obsahu</translation>
 <translation id="7586676035079382730">Oznámení nejsou povolena</translation>
 <translation id="7594634374516752650">Telefon je připojen k zařízení Bluetooth</translation>
 <translation id="7617547684249261169">Můžete smazat část nebo celou svou historii, soubory cookie, data webů a další položky</translation>
@@ -678,9 +686,9 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="8088603949666785339">Další možnosti v <ph name="BANNER_TITLE"/></translation>
 <translation id="8112925981674547014">Zobrazení karet v seznamu aplikací</translation>
 <translation id="8116925261070264013">Ztlumeno</translation>
-<translation id="8117244575099414087">Když je tato možnost zapnutá, weby mohou používat senzory zařízení. Když je vypnutá, weby senzory používat nemohou.</translation>
 <translation id="813082847718468539">Zobrazit informace o webu</translation>
 <translation id="8131740175452115882">Potvrdit</translation>
+<translation id="8148160259207090265">Tohle nastavení zůstane zapnuté, dokud budete mít v nastavení Androidu zapnutou pokročilou ochranu.</translation>
 <translation id="8163152278172770963">Nepovolovat webům automaticky aktivovat režim obrazu v obraze</translation>
 <translation id="8168435359814927499">Obsah</translation>
 <translation id="818487310457576362">Přetažením ze strany obrazovky ukončíte celou obrazovku.</translation>
@@ -710,6 +718,7 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="8441146129660941386">Přetočit dozadu</translation>
 <translation id="8444433999583714703">Pokud aplikaci <ph name="APP_NAME"/> chcete povolit přístup ke své poloze, zapněte polohu také v <ph name="BEGIN_LINK"/>Nastavení Android<ph name="END_LINK"/>.</translation>
 <translation id="8447861592752582886">Zrušit oprávnění zařízení</translation>
+<translation id="8463843545738141778">Tohle nastavení nejde zapnout, protože jste v nastavení Androidu zapnuli pokročilou ochranu.</translation>
 <translation id="8467359479529706065">Spodní panel vzhledu stránky Nová karta otevřený na polovinu výšky</translation>
 <translation id="8471525937465764768">Weby se obvykle připojují k zařízením USB kvůli funkcím, jako je tisk dokumentu nebo uložení obsahu na paměťové zařízení</translation>
 <translation id="8473055640493819707">Aplikace <ph name="APP_NAME"/> je zastaralá. Přeinstalujte ji.</translation>
@@ -738,9 +747,11 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="8707904142362025782">Web může požádat o přístup ke kameře</translation>
 <translation id="8712637175834984815">Hotovo</translation>
 <translation id="8715862698998036666">Celou obrazovku ukončíte přetažením shora a přejetím z levého nebo pravého okraje.</translation>
+<translation id="8716050156658570300">Weby mohou žádat o použití senzorů pohybu a světla</translation>
 <translation id="8719283222052720129">Zapněte v <ph name="BEGIN_LINK"/>Nastavení Android<ph name="END_LINK"/> oprávnění pro aplikaci <ph name="APP_NAME"/>.</translation>
 <translation id="8721719390026067591">Když je tato možnost zapnutá, weby mohou žádat o vyhledání zařízení Bluetooth. Když je vypnutá, weby zařízení Bluetooth vyhledávat nemohou.</translation>
 <translation id="8725066075913043281">Zkusit znovu</translation>
+<translation id="6614332522102257453">Využití všech funkcí Chromu</translation>
 <translation id="8730621377337864115">Hotovo</translation>
 <translation id="8737426583868847403">Tady se zobrazí weby, pro které uložíte vlastní úroveň přiblížení</translation>
 <translation id="8748714929822124637">Nepovolovat webům přístup k dalším zařízením v místní síti</translation>
@@ -751,7 +762,7 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="2026315747406172223">V8 je modul prohlížeče Brave pro JavaScript a WebAssembly používaný ke zlepšení výkonu webů</translation>
 <translation id="8803526663383843427">Když je tato funkce zapnutá</translation>
 <translation id="8805385115381080995">Procházení je rychlejší, protože je méně pravděpodobné, že vás web požádá o ověření, že jste skutečná osoba</translation>
-<translation id="8816026460808729765">Blokovat webům přístup k senzorům</translation>
+<translation id="881644524232657178">Když je tato možnost zapnutá, mohou weby používat senzory pohybu a světla na zařízení. Když je vypnutá, weby senzory používat nemohou.</translation>
 <translation id="8847988622838149491">USB</translation>
 <translation id="8874790741333031443">Zkuste dočasně povolit soubory cookie třetích stran – budete při procházení méně chráněni, ale funkce webu budou s větší pravděpodobností fungovat správně.</translation>
 <translation id="7532165358672313130">Při dalším procházení může Brave na požádání jinému webu sdělit, že vás předchozí web ověřil jako pravděpodobně skutečného uživatele</translation>

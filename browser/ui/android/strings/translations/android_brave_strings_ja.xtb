@@ -188,12 +188,27 @@
 <translation id="834487290629916192">後で</translation>
 <translation id="4117451092682672487">シンプルに、プライバシーを保護。</translation>
 <translation id="7909375417585209817">Braveをデフォルトで使用すると、タップしたすべてのリンクがBrave流のプライバシー保護モードで開かれます。</translation>
-<translation id="5148943178722443958">Braveの品質向上にご協力ください。</translation>
+<translation id="763369711159699222">Braveの品質向上にご協力ください。</translation>
+<translation id="8025937231644975408">お気に入りの機能についてご意見をお聞かせください</translation>
 <translation id="6718362830686703942">クラッシュやフリーズが発生した場合、診断レポートを送信します。</translation>
 <translation id="8616157231067364693">Braveのユーザーがどのような機能を使用しているかについて、非公開かつ匿名で製品インサイトを共有できます。</translation>
 <translation id="2888496576732880897">Braveサーチの向上にご協力ください</translation>
+<translation id="7198716519700700181">ストリーミング中の広告をブロック</translation>
 <translation id="7044431516245362795">Web Discovery Projectに参加して、検索インデックスの拡大と検索結果の改善にご協力ください。<ph name="LEARN_MORE_START"/>詳細を見る<ph name="LEARN_MORE_END"/></translation>
+<translation id="4847979153841887006">Braveロゴ</translation>
+<translation id="1389386068457132299">オンボーディング背景</translation>
+<translation id="5101985748360228609">上部の葉の装飾</translation>
+<translation id="5270920361877570459">下部の葉の装飾</translation>
+<translation id="4021716437419160885">下へスクロール</translation>
+<translation id="4767173360729868049">Brave Searchのサポートの図</translation>
+<translation id="8241918461631453498">広告をブロック中の図</translation>
+<translation id="8213310572767907663">Braveの改善イラスト</translation>
+<translation id="2427917529469438577">お気に入りの動画サイトで、ストリーミングを中断する迷惑な広告をブロックします。</translation>
 <translation id="7818938154803162778">はい、協力します</translation>
+<translation id="5298784657468199167">クラッシュレポートを送信</translation>
+<translation id="6188781052835527980">クラッシュやフリーズが発生した場合、匿名の診断レポートを送信してください。</translation>
+<translation id="4780647518983772446">Braveのどの機能が使用されているかについて、非公開かつ匿名で製品インサイトを共有してください。</translation>
+<translation id="5109496672133133896">プライベート製品インサイト</translation>
 <translation id="3545804467215833536">タップしてBraveシールドを表示</translation>
 <translation id="1724327820822194498">シールドを使うと、Braveでブロックされたすべてのアイテムを確認できます。</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> およびその他 <ph name="TRACKER"/> 件の広告 &amp; トラッカーをブロックしました</translation>
@@ -383,7 +398,7 @@
 <translation id="717952606991220586">おや、問題が発生しました。後でもう一度試してみて下さい。</translation>
 <translation id="987264212798334818">全般</translation>
 <translation id="1116694919640316211">企業情報</translation>
-<translation id="1275213816424141989">あとで</translation>
+<translation id="2370739752330685659">あとで</translation>
 <translation id="3624048886326677117">トラッカーと広告をブロック（アグレッシブ）</translation>
 <translation id="7151914815476509258">トラッカーと広告をブロック（標準）</translation>
 <translation id="7384778069178817075">すべてのトラッカー &amp; 広告を許可</translation>
@@ -501,7 +516,6 @@
 <translation id="5705882733397021510">戻る</translation>
 <translation id="7889432931837317731">可能な場合は自動的に開きます</translation>
 <translation id="1029304566263314007">ダウンロード進捗通知を表示</translation>
-<translation id="2910433761530295035">ファイルの保存先を確認 (SDカードを検出した場合)</translation>
 <translation id="2977501775944575564">パラレルダウンロード</translation>
 <translation id="6224180438946945617">パラレルダウンロードを有効にしてダウンロード速度をアップ</translation>
 <translation id="8967385052772844086">完全なプライバシーレポートを表示します</translation>
@@ -922,6 +936,9 @@
 <translation id="703185154752046151">ホーム画面にウィジェットを追加</translation>
 <translation id="4635094429202343515">Brave Searchウィジェットを試す</translation>
 <translation id="4809681171446727314">ホーム画面から、プライベートかつ独立した検索機能にアクセスできます。</translation>
+<translation id="3280562213547448728">音声検索</translation>
+<translation id="3925312712530886302">プライベート検索を開く</translation>
+<translation id="9214590551301647710">Leoを開く</translation>
 <translation id="7751715172931488388">ウィジェットを追加</translation>
 <translation id="7285167584112910782">Braveクイックアクション検索</translation>
 <translation id="2326703104633309781">Brave翻訳を使用</translation>
@@ -961,7 +978,14 @@
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">デフォルトにリセット</translation>
 <translation id="4922034974043704366">この機能は、あなたがオプトインしたため有効になっています。</translation>
-<translation id="3144818380093107753">サブスクリプションベースのBrave Originでは、Braveの事業を支える収益生成機能を無効にできます。Brave Shieldを介し、業界をリードするプライバシー、アドブロック、スピードはもちろん、定期的なソフトウェアアップデート、Chromiumパッチ、セキュリティとプライバシーの改善などは、Brave Originでも変わらずご利用いただけます。また、Brave Leo、News、Rewards、ウォレット、VPN、Web3ドメインなどの機能を無効にするオプションも解除されます。&lt;br/&gt;&lt;br/&gt;Brave Originをサブスクライブすると、ブラウザの設定メニューに新しいコントロールパネルが表示されます。既存の機能を始め今後リリースされる機能もここに表示されますが、デフォルトではオフになっています。&lt;br/&gt;&lt;br/&gt;&lt;b&gt;注：Brave Originは現在使用しているブラウザ機能を有効に保つため、Brave Search機能やBrave Search 広告には影響しません。&lt;/b&gt;</translation>
+<translation id="2587535830241068901">ブレイブをサポートしながらブラウザをカスタマイズ</translation>
+<translation id="7235314227387539944">Brave Originは、Braveのビジネスをサポートするすべての機能が必要ないが、Braveのみが提供するプライバシーが必要なユーザー向けの有料版ブラウザです。Originユーザーは、業界トップクラスのプライバシー、広告ブロック、速度(Shields経由)に加えて、定期的なソフトウェアアップデート、Chromiumパッチ、セキュリティおよびプライバシーの改善の恩恵を受け続けます。Originは、ブラウザからほとんどの他の機能を削除します。</translation>
+<translation id="7941943775131052130">Brave Origin の購入には、Brave Search Premium へのアクセスも含まれることに注意してください。これは、Origin が Brave Search 結果ページから広告を削除するためです。</translation>
+<translation id="2573819149217596923">Brave機能の変更</translation>
+<translation id="7415416427817229128">Brave機能を有効または無効にするには、ブラウザを再起動して変更を適用する必要があります。今すぐ再起動しますか?</translation>
+<translation id="2256115617011615191">今すぐ再起動</translation>
+<translation id="8554205386170195281">購入</translation>
+<translation id="7071521146534760487">アカウントを管理</translation>
 <translation id="8613144770663526433">Braveウォレットにサインイン</translation>
 <translation id="3696514931437952995"><ph name="ORIGIN"/>にサインインしています。Braveウォレットはあなたのウォレットのアドレスを<ph name="ORIGIN"/>に共有します。</translation>
 <translation id="1028781062521375153">詳細を表示</translation>
@@ -1087,12 +1111,13 @@
 <translation id="2735247450315842119">プライベートタブでスクリーンショットを許可</translation>
 <translation id="8420414929552321089">許可すると、複数のアプリを開いている時にもプライベートタブが表示されます。</translation>
 <translation id="7956713633345437162">モバイルブックマーク</translation>
+<translation id="7984508421152399880">今すぐ購入</translation>
 <translation id="6261139507111008244">私たちのミッションと&amp; オープンソースをサポートください</translation>
-<translation id="7882690061170175552">シールドを中心とした最小限のブラウザUI</translation>
+<translation id="6073373503121903099">Brave Shields を中心とした最小限のブラウザUI</translation>
 <translation id="2267973897341040743">アドブロック、プライバシー、 &amp; スピードを維持</translation>
-<translation id="1361157028850796410">ベストバリュー</translation>
-<translation id="7280825497485894053">定期購読(月払い)</translation>
-<translation id="4570901726096223030">Originについて詳しくはこちら</translation>
+<translation id="3339535734679532460">ワンタイム購入、追加のサブスクリプション料金なし</translation>
+<translation id="2805615640226281689">一度きりの購入</translation>
+<translation id="261433018299584676">ログインコードを取得</translation>
 <translation id="1943432128510653496">パスワードの保存</translation>
 <translation id="2100273922101894616">自動ログイン</translation>
 <translation id="363596933471559332">保存されている認証情報を使用してウェブサイトに自動的にログインします。この機能がオフの場合は、ウェブサイトにログインするときに毎回確認を求められます。</translation>

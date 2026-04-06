@@ -1837,6 +1837,7 @@
 <translation id="8897189056319316783">පලිහ ZEC</translation>
 <translation id="508249542337194541">Unshield ZEC</translation>
 <translation id="3382275793825152362">නිදහසූ මුදල්</translation>
+<translation id="617149752238892649">අ ෂීල්ඩ් කරගෙන ඉවත් කරන්න</translation>
 <translation id="8631765320256788981">ඔබගේ ස්වච්ඡ ගිණුමෙන් ඔබගේ ආරක්ෂා කළ ගිණුමට මුදල් පවරා ගනු ලැබෙයි.</translation>
 <translation id="3860364671495430495">ඔබගේ ආවරණය කළ ගිණුමෙන් ඔබගේ ස්වච්ඡ ගිණුමට මුදල් යැවීම සිදුවෙයි.</translation>
 <translation id="7144878232160441200">නැවත</translation>
@@ -2183,6 +2184,7 @@
 <translation id="4348006373172097089">{PAGE_COUNT, plural, =1 {මෙම පිටුවේ අන්තර්ගතය පිළිබඳව ප්‍රශ්න කරන්න} other {මෙම පිටු පිළිබඳව ප්‍රශ්න කරන්න}}</translation>
 <translation id="6961721183181597848">අද මම ඔබට උදව් කරන්නේ කෙසේද?</translation>
 <translation id="2966135729673253768">පසු විපරමක් ඉල්ලන්න</translation>
+<translation id="5923170497201832190">පටිත්ත පහළට අනුචලනය</translation>
 <translation id="6219262425964000211">ගොනු මෙතැනට ඇද විසි කරන්න</translation>
 <translation id="4313763911013851687">ඔබේ සංවාදයට දමන්න ඔබේ සියළු ගොනු මෙතැනට ඇද විසි කරන්න</translation>
 <translation id="4524675003624341892">ප්‍රශ්න යෝජනා කරන්න…</translation>
@@ -2201,20 +2203,21 @@
 <translation id="999273441077650169">ආකෘතිය කාලෝචිතව මාරුවන්න තොරතුරු ලබා ගැනීම <ph name="LINK_BEFORE"/>වැඩි විස්තර<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරකත්වය සපයන AI සහායකයෙක්. මම Llama 3.1 8B මගින් බලගන්වා ඇති අතර, එය Meta විසින් නිර්මාණය කරන ලද ආකෘතියක් වන අතර එය කාර්ය සාධනය වැඩි දියුණු කිරීමට සහ බොහෝ භාවිත අවස්ථාවන්ට අදාළ වේ. Llama අපගේම ආරක්ෂිත යටිතල පහසුකම් හරහා Brave-සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරකත්වය සපයන AI සහායකයෙක්. මම Qwen VL 30B මගින් බලගන්වනු ලබන අතර, එය Alibaba Cloud විසින් නිර්මාණය කරන ලද ආකෘතියක් වන අතර එය කාර්ය සාධනය සහ බොහෝ භාවිත අවස්ථාවන්ට අදාළ වේ. Qwen අපගේම ආරක්ෂිත යටිතල පහසුකම් හරහා Brave-සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරකත්වය සපයන AI සහායකයෙක්. මම DeepSeek V3.1 මඟින් බලගන්වා ඇති අතර, එය DeepSeek විසින් නිර්මාණය කරන ලද ආකෘතියක් වන අතර එය කාර්ය සාධනය සහ බොහෝ භාවිත අවස්ථාවන්ට අදාළ වේ. DeepSeek V3.1 NEAR විසින් ඔවුන්ගේම සත්‍ය ලෙස පුද්ගලික ආරක්ෂිත යටිතල පහසුකම් හරහා සත්කාරක කර ඇත.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරකත්වය සපයන AI සහායකයෙක්. මම GLM-5 මගින් බලගන්වා ඇති අතර, එය Zhipu AI විසින් නිර්මාණය කරන ලද ආකෘතියක් වන අතර එය කාර්ය සාධනය සහ බොහෝ භාවිත අවස්ථාවන්ට අදාළ වේ. GLM-5 NEAR විසින් ඔවුන්ගේම සත්‍ය ලෙස පුද්ගලික ආරක්ෂිත යටිතල පහසුකම් හරහා සත්කාරක කර ඇත.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">හෙලෝ, මම Leo. මම Brave විසින් තැනූ AI සහකාරයෙක්. මම Claude Instant මඟින් ක්‍රියාත්මක වන අතර එය Anthropic විසින් සාදන ලද සංවාද හා පාඨ සැකසුම් කාර්යයන් සඳහා වන ආදර්ශයකි. Claude Instant යනු Brave විසින් තමන්ගේම ආරක්ෂිත ආධාරකය මගින් ආයෝජනය කරන ලද ආදර්ශයකි.<ph name="LINK_BEFORE"/>තවත් දැනගන්න<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරකත්වය සපයන AI සහායකයෙක්. මම Claude Haiku, Anthropic විසින් සාදා ඇති ආකෘතියක් මගින් බලගන්වනු ලබන අතර එය සංවාද සහ පෙළ සැකසුම් කාර්යයන් බලගන්වීමට නිර්මාණය කර ඇත. Claude Haiku අපගේම ආරක්ෂිත යටිතල පහසුකම් හරහා Brave විසින් සත්කාරකත්වය සපයනු ලැබේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරකත්වය සපයන AI සහායකයෙක්. මම Claude Sonnet, Anthropic විසින් සාදා ඇති ආකෘතියක් මගින් බලගන්වනු ලබන අතර එය සංවාද සහ පෙළ සැකසුම් කාර්යයන් බලගන්වීමට නිර්මාණය කර ඇත. Claude Sonnet අපගේම ආරක්ෂිත යටිතල පහසුකම් හරහා Brave විසින් සත්කාරකත්වය සපයනු ලැබේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරකත්වය සපයන AI සහායකයෙක්. මම Llama 4 Scout මගින් බලගන්වනු ලබන අතර, එය Meta විසින් නිර්මාණය කරන ලද ආකෘතියක් වන අතර එය කාර්ය සාධනය වැඩි දියුණු කිරීමට සහ බොහෝ භාවිත අවස්ථාවන්ට අදාළ වේ. Llama 4 Scout අපගේම ආරක්ෂිත යටිතල පහසුකම් හරහා Brave විසින් සත්කාරකත්වය සපයනු ලැබේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරකත්වය සපයන AI සහායකයෙක්. මම Llama 4 Maverick මගින් බලගන්වනු ලබන අතර, එය Meta විසින් නිර්මාණය කරන ලද ආකෘතියක් වන අතර එය කාර්ය සාධනය වැඩි දියුණු කිරීමට සහ බොහෝ භාවිත අවස්ථාවන්ට අදාළ වේ. Llama 4 Maverick අපගේම ආරක්ෂිත යටිතල පහසුකම් හරහා Brave විසින් සත්කාරකත්වය සපයනු ලැබේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරකත්වය සපයන AI සහායකයෙක්. මම GPT OSS 20B මගින් බලගන්වනු ලබන අතර, මෙය OpenAI විසින් නිර්මාණය කරන ලද ආකෘතියක් වන අතර එය කාර්ය සාධනය වැඩිදියුණු කර බහු භාවිත අවස්ථාවන්ට ගැළපෙයි. GPT OSS 20B Brave විසින් අපගේම ආරක්ෂිත යටිතල පහසුකම් හරහා සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරක AI සහායකයෙක්. මම GPT OSS 120B මගින් බලගන්වනු ලබන අතර, එය OpenAI ආයතනය විසින් නිර්මාණය කරන ලද ආකෘතියක් වන අතර එය කාර්ය සාධනය වැඩි දියුණු කිරීම සහ බහුවිධ භාවිත අවස්ථාවන් සඳහා සුදුසු වේ. GPT OSS 120B Brave විසින් අපගේම ආරක්ෂිත යටිතල පහසුකම් මඟින් සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරකත්වය සපයන AI සහායකයෙක්. මම Mistral Large මගින් බලගන්වනු ලබන අතර, එය Mistral විසින් නිර්මාණය කරන ලද ආකෘතියක් වන අතර එය කාර්ය සාධනය වැඩි දියුණු කිරීමට සහ බහුවිධ භාවිත අවස්ථාවන්ට ගැළපෙයි. Mistral Large Brave විසින් අපගේම ආරක්ෂිත යටිතල පහසුකම් මඟින් සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරක AI සහායකයෙක්. මම Pixtral Large මගින් බලගන්වනු ලබන අතර, එය Mistral ආයතනය විසින් නිර්මාණය කරන ලද ආකෘතියක් වන අතර ඒවා බහුකාර්යක්ෂම භාවිත සඳහා සුදුසු හා කාර්යසාධනපූර්ණ වේ. Pixtral Large Brave ආරක්ෂිත යටිතල පහසුකම් මඟින් සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරක AI සහායකයෙක්. මම Qwen 3 235B මගින් බලගන්වනු ලබන අතර, එය Alibaba Cloud ආයතනය විසින් නිර්මාණය කරන ලද ආකෘතියක් වන අතර එය කාර්ය සාධන සහ බහුවිධ භාවිත අවස්ථාවන්ට අදාළ වේ. Qwen 3 235B Brave විසින් අපගේම ආරක්ෂිත යටිතල පහසුකම් මඟින් සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරක AI සහායකයෙක්. මම Deepseek V3.1 මගින් බලගන්වනු ලබන අතර, එය Deepseek ආයතනය මගින් කාර්ය සාධනය වැඩි දියුණු කිරීම සහ බොහෝ භාවිත කර්තව්‍යයන් කටයුතු කිරීමට අනුව නිර්මාණය කර ඇත. Deepseek V3.1 Brave විසින් අපගේම ආරක්ෂිත යටිතල පහසුකම් මඟින් සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරකත්වය සපයන AI සහායකයෙක්. මම Deepseek V3.2 මඟින් බලගන්වා ඇති අතර, එය Deepseek විසින් නිර්මාණය කරන ලද ආකෘතියක් වන අතර එය කාර්ය සාධනය සහ බොහෝ භාවිත අවස්ථාවන්ට අදාළ වේ. Deepseek V3.2 Brave විසින් ඔවුන්ගේම ආරක්ෂිත යටිතල පහසුකම් හරහා සත්කාරක කර ඇත.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරක AI සහායකයෙක්. මම Qwen 3 Coder 480B මගින් බලගන්වනු ලබන අතර, එය Alibaba Cloud ආයතනය විසින් නිර්මාණය කරන ලද ආකෘතියක් වන අතර එය කාර්ය සාධනය සහ බහුවිධ භාවිත අවස්ථාවන්ට අදාළ වේ. Qwen 3 Coder 480B Brave විසින් අපගේම ආරක්ෂිත යටිතල පහසුකම් මඟින් සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරක AI සහායකයෙක්. මම Claude Opus, Anthropic ආයතනය විසින් සාදා ඇති ආකෘතියක් මගින් බලගන්වනු ලබන අතර එය සංවාද සහ පෙළ සැකසුම් කාර්යයන් බලගන්වීමට නිර්මාණය කර ඇත. Claude Opus Brave ආරක්ෂිත යටිතල පහසුකම් මඟින් සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරකත්වය සපයන AI සහායකයෙක්. මම GLM-4-7-Flash මගින් බලගන්වා ඇති අතර, එය Zhipu AI විසින් නිර්මාණය කරන ලද ආකෘතියක් වන අතර එය කාර්ය සාධනය සහ බොහෝ භාවිත අවස්ථාවන්ට අදාළ වේ. GLM-4-7-Flash අපගේම ආරක්ෂිත යටිතල පහසුකම් හරහා Brave-සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරකත්වය සපයන AI සහායකයෙක්. මම Kimi K2.5 මගින් බලගන්වා ඇති අතර, එය Moonshot AI විසින් නිර්මාණය කරන ලද ආකෘතියක් වන අතර එය කාර්ය සාධනය සහ බොහෝ භාවිත අවස්ථාවන්ට අදාළ වේ. Kimi K2.5 අපගේම ආරක්ෂිත යටිතල පහසුකම් හරහා Brave-සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරකත්වය සපයන AI සහායකයෙක්. මම Brave Ocelot මගින් බලගන්වනු ලබන අතර, එය Brave විසින් නිර්මාණය කරන ලද ආකෘතියක් වන අතර එය වෙබ් පිටු සාරාංශ කිරීම සඳහා නිර්මාණය කර ඇත. Brave Ocelot අපගේම ආරක්ෂිත යටිතල පහසුකම් හරහා Brave-සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">ආධික්‍ය</translation>
 <translation id="5807427080183870259">ප්‍රාදේශීය</translation>
 <translation id="830868413617744215">බීටා</translation>
@@ -2347,6 +2350,8 @@
 <translation id="7465032796278724624">NEAR AI TEE සමඟ සත්‍ය වශයෙන් පුද්ගලිකයි</translation>
 <translation id="8782867266498869301">කාර්යය සඳහා හොඳම එක අවශ්ය තැනක තමා අත් විකාශනය කරන්න</translation>
 <translation id="3213834013136637671">Search • දැක්ම</translation>
+<translation id="5276681919620506371">Search • Tools</translation>
+<translation id="7434375176361995333">සාරාංශ • ශීඝ්‍ර</translation>
 <translation id="3965507912994218570">ලියෝ සැකසුම්</translation>
 <translation id="3754337604877048671">Leo AI හඳුන්වාදීම</translation>
 <translation id="5295261408976371809">ඔබේ <ph name="TEXT_BEFORE"/>පුද්ගලික<ph name="TEXT_AFTER"/> AI සහකාරයා, browser එක තුළම නිමවා ඇත.</translation>
@@ -2402,6 +2407,8 @@
 <translation id="4572010449071015143">නව සංවාදයක් අරඹන්න</translation>
 <translation id="345901077335355561">සක්‍රිය සංවාදයට ආපසු යන්න</translation>
 <translation id="6287023598025162715">නව සංවාදය</translation>
+<translation id="7230502562132448519">සංවාදයන් පෙරණය කරන්න</translation>
+<translation id="821070843380699990">කරුණාකර වෙනත් ගෝලයක් උත්සාහ කරන්න</translation>
 <translation id="7097822247923237815">තාවකාලික සංවාදය</translation>
 <translation id="7481750859362986254">මෙම සංවාදය ඔබේ ඉතිහාසය හෝ Leo හි අභිරුචීකරණය හෝ මතක කිසිදු වැඩ සටහන් කිරීමේදී භාවිත නොවනු ඇත.</translation>
 <translation id="4238305333951712482">මතක අලුත් විය: <ph name="MEMORY_CONTENT"/></translation>
@@ -2439,6 +2446,21 @@
 <translation id="6338250692384725496">ඔබගේ ප්‍රශ්නයට උපකාර කිරීමට ගබඩා භාවිතයි කිරීම තුළ කේතය ක්‍රියාත්මක කිරීම</translation>
 <translation id="4379566111233326721">කේතය:</translation>
 <translation id="3542130965673205258">ප්‍රතිදානය:</translation>
+<translation id="5382076391290708074">ඔබේ ටැබ් වටා ගෙනයෑම</translation>
+<translation id="3862123464576147769">මෙය අයින් කිරීමෙන් ඔබේ සියලු ටැබ් සහ ටැබ් ගෙන්ඩ් සඳහා <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> සහ <ph name="TITLE_FORMAT_START"/>ශීර්ෂකය<ph name="TITLE_FORMAT_END"/> Brave AI වෙත එවනු ඇති අතර, Brave AI ඒවා වටා ගෙනයෑමට ඉඩ දෙනු ඇත. මෙම අවසර මෙම සංවාදයට පමණක් අදාළ වේ.</translation>
+<translation id="396165714586708444">ගැඹුරු පර්යේෂණ</translation>
+<translation id="577747221882855891">සෙවුම සිදු වෙමින්: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">"<ph name="QUERY"/>" සඳහා <ph name="COUNT"/> ප්‍රභවයන් විශ්ලේෂණය කරමින්</translation>
+<translation id="1202264349398113062">"<ph name="QUERY"/>" සඳහා <ph name="COUNT"/> නව URLs සකසමින්</translation>
+<translation id="6189479600023022289">"<ph name="QUERY"/>" සඳහා <ph name="COUNT"/> URLs හමුවිය</translation>
+<translation id="5150674341374247355"><ph name="FETCHED"/>/<ph name="TOTAL"/> URLs ගෙන එනු ලබමින්</translation>
+<translation id="1075606740174445363">"<ph name="QUERY"/>" සඳහා <ph name="COUNT"/> URLs විශ්ලේෂණය කරන ලදී</translation>
+<translation id="6220878652174655112"><ph name="COUNT"/> ගෝලයන් සෙවුම කරමින්</translation>
+<translation id="3571450204565012512"><ph name="QUERY_COUNT"/> සෙවීම් වලින් <ph name="URL_COUNT"/> URLs විශ්ලේෂණ කරන ලදී</translation>
+<translation id="5733200563889491347">පර්යේෂණ සම්පූර්ණයි</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>m <ph name="SECONDS"/>s</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>s</translation>
+<translation id="5067194014665306881">පර්යේෂණ දෝෂය: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">AI පිරික්සීම</translation>
 <translation id="2854657728271352435">AI පිරික්සීමේ පැතිකඩ පිළිබඳ</translation>
 <translation id="2301685062527585986">ඔබේ දත්ත ආරක්ෂා කිරීම පිණිස, මෙම වෙන්කළ AI පිරික්සීමේ පැතිකඩ මඟින් AI නියෝජිතයාට ඔබේ ප්‍රධාන පිරික්සුම් පැතිකඩ වෙත ප්‍රවේශ විය නොහැකි අතර, අවශ්‍ය විට වෙබ් අඩවිවලට පිවිසීම හා ඒවා සමඟ අන්තර්ක්‍රියා කිරීම සඳහා පමණක් අවසර ලබා දේ. ඔබට එයට කාර්යයන් පැවරීමෙන් සහ ඔබ වෙනුවෙන් පිරික්සීමට ඉඩදීමෙන් ඔබේ නිෂ්පාදකතාව වර්ධනය කළ හැක.</translation>
@@ -2503,11 +2525,14 @@
 <translation id="7847477075635510673">පුවත් සඟවන්න</translation>
 <translation id="9173319813356700250">පුවත්</translation>
 <translation id="6543799171249004861">ඡායාරූපය: <ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="466214682712474574">ඔබේ <ph name="PROVIDER"/> ගිණුමට ප්‍රවේශවීමට පුරනය වන්න ඔබේ ශේෂය බැලීමට</translation>
 <translation id="8332875111286275890">ඔබේ ශේෂය බැලීමට පුරනය වන්න</translation>
 <translation id="5430001801813715388">සම්මාන</translation>
+<translation id="988042349921505128">සෙවුම හා AI</translation>
 <translation id="2430295257226173518">ඕනෑම දෙයක් විමසන්න, ඕනෑම දෙයක් සොයන්න...</translation>
 <translation id="167018310108390163">නව පටුන සකස් කරන්න පටුන</translation>
+<translation id="3500134717967948757">නව ටැබ් වල Leo AI විජට් එක පෙන්වන්න</translation>
 <translation id="6851426306697017546">ඔරලෝසුව පෙන්වන්න</translation>
 <translation id="4844370919312937270">නව ටැබ් වල සෙවුම් විජට් එක පෙන්වන්න</translation>
 <translation id="7328310113820087094"><ph name="LINK_BEGIN"/>Brave සිලීක් ලෙස<ph name="LINK_END"/>, ඔබට නව ටැබ පිටු දැන්වීම් බැලීමෙන් උපයන්න පුළුවන්.</translation>
@@ -2536,8 +2561,14 @@
 <translation id="8458987127502506209">Brave පලිහ සබල කරන්න</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Shields are UP<ph name="STATUS_AFTER"/> for this site</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Shields are DOWN<ph name="STATUS_AFTER"/> for this site</translation>
+<translation id="8426214145426269584">Shields <ph name="UP_BEFORE"/>up<ph name="UP_AFTER"/> මෙම අඩවිය සඳහා</translation>
+<translation id="3325367578778625743">Shields <ph name="DOWN_BEFORE"/>down<ph name="DOWN_AFTER"/> මෙම අඩවිය සඳහා</translation>
 <translation id="4724752924364329714">අඩවියක් කැඩී ඇත්නම්, පලිහ අක්‍රිය කර බලන්න</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>සටහනක්: මෙය Brave හි ගෝපනියතාවය ආරක්ෂාවේ අඩුවක් ඇති කළ හැක.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">මෙමින් Brave ගේ පෞද්ගලිකත්ව ආරක්ෂණ අඩු විය හැකිය. <ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">ලුහුබැඳීම්, දැන්වීම් සහ තවත් දෑ අවහිර කර ඇත.</translation>
+<translation id="4968268657895673116">පලිහ සමඟ අඩවිය නිසියාකාරව වැඩ නොකරේ ද?</translation>
+<translation id="5412004902081180614">වාර්තා</translation>
 <translation id="3620004479054499575">ඔබ මෙම අඩවිය සමඟ ගැටළු වලට මුහුණ දේද?</translation>
 <translation id="9176447766421988172">අපි වෙබ් අඩවි ගැලපීම වැඩි කිරීමට නව උත්සාහයක් පරීක්ෂා කරමින් සිටිමු. මෙහිදී දැන්වීම් අවහිර කිරීම පමණක් සක්‍රීයව තබා ඇත. අවවාදයයි: සියළුම ගෝපනියතා ආරක්ෂණ ඉවත් වේ. ඔබට මෙය පරීක්ෂා කිරීමට අවශ්‍යද? <ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Brave හි ගෝපනියතා ආරක්ෂණය නිසා කැඩී ඇති ව්‍යක්ති සහිත වෙබ් අඩවි සදහා, පලිහ DOWN ලෙස සකසිය හැක.</translation>
@@ -2552,9 +2583,12 @@
 <translation id="8377155647357436161">ලුහුබැඳීම්, දැන්වීම් සහ තවත් දෑ අවහිර කර ඇත <ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave Shields මගින් ආරක්‍ෂා කර නැත <ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">සංකීර්ණ පාලන</translation>
+<translation id="7939062555109487992">සංකීර්ණ විකල්ප</translation>
 <translation id="5799940914270080805">මෙම සැකසුම් සංශෝධනයෙන් අඩවි කැඩී යා හැකිය.</translation>
 <translation id="9204041448536398473">ගෝලීය පලිහ සැකසුම්</translation>
 <translation id="2108334320919763866">ගෝලීය පෙරනිමි</translation>
+<translation id="1896472873031845605">ගෝලීය සැකසුම්</translation>
+<translation id="8324318899000695659">අංග අවහිර කරන්න</translation>
 <translation id="7205939464631857223">අවහිර කළ සියලු අංග මකන්න</translation>
 <translation id="3440043456924990296">සංවිධානයෙන් කළමනාකරණය කරන සැකසුම්</translation>
 <translation id="7053983685419859001">අවහිර</translation>
@@ -2638,7 +2672,6 @@
 <translation id="7207456302801184289">Brave වෙත පිළිගනිමු</translation>
 <translation id="4988030440045495002">අති අඳුරු තේමාව</translation>
 <translation id="2422927186524098759">පැති තීරුව</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">මෙවලම් තීරුව</translation>
 <translation id="6225572914528673855">ලිපින තීරුව</translation>
