@@ -63,7 +63,7 @@ TEST_F(BraveAdsAccountTest, SupportUserRewardsForRewardsUser) {
   // Arrange
   GetAccount().SetWallet(test::Wallet());
 
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   // Act & Assert
   EXPECT_TRUE(GetAccount().IsUserRewardsSupported());
@@ -73,7 +73,7 @@ TEST_F(BraveAdsAccountTest, DoNotSupportUserRewardsForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   // Act & Assert
   EXPECT_FALSE(GetAccount().IsUserRewardsSupported());
@@ -90,24 +90,25 @@ TEST_F(BraveAdsAccountTest, DoNotSetWalletWithEmptyPaymentId) {
   // Act & Assert
   EXPECT_CALL(account_observer_mock_, OnDidInitializeWallet).Times(0);
   EXPECT_CALL(account_observer_mock_, OnFailedToInitializeWallet);
-  NotifyRewardsWalletDidUpdate(/*payment_id=*/"",
-                               test::kWalletRecoverySeedBase64);
+  ads_client_notifier_.NotifyRewardsWalletDidUpdate(
+      /*payment_id=*/"", test::kWalletRecoverySeedBase64);
 }
 
 TEST_F(BraveAdsAccountTest, DoNotSetWalletWithInvalidRecoverySeed) {
   // Act & Assert
   EXPECT_CALL(account_observer_mock_, OnDidInitializeWallet).Times(0);
   EXPECT_CALL(account_observer_mock_, OnFailedToInitializeWallet);
-  NotifyRewardsWalletDidUpdate(test::kWalletPaymentId,
-                               test::kInvalidWalletRecoverySeed);
+  ads_client_notifier_.NotifyRewardsWalletDidUpdate(
+      test::kWalletPaymentId, test::kInvalidWalletRecoverySeed);
 }
 
 TEST_F(BraveAdsAccountTest, DoNotSetWalletWithEmptyRecoverySeed) {
   // Act & Assert
   EXPECT_CALL(account_observer_mock_, OnDidInitializeWallet).Times(0);
   EXPECT_CALL(account_observer_mock_, OnFailedToInitializeWallet);
-  NotifyRewardsWalletDidUpdate(test::kWalletPaymentId,
-                               /*recovery_seed_base64=*/"");
+  ads_client_notifier_.NotifyRewardsWalletDidUpdate(
+      test::kWalletPaymentId,
+      /*recovery_seed_base64=*/"");
 }
 
 TEST_F(BraveAdsAccountTest, GetStatementForRewardsUser) {

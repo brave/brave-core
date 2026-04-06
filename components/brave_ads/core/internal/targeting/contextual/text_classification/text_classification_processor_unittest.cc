@@ -47,8 +47,8 @@ TEST_F(BraveAdsTextClassificationProcessorTest,
 
 TEST_F(BraveAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
-                                   test::kLanguageComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   TextClassificationProcessor processor(*resource_);
@@ -66,8 +66,8 @@ TEST_F(BraveAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
 
 TEST_F(BraveAdsTextClassificationProcessorTest, NeverProcessed) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
-                                   test::kLanguageComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   // Act & Assert
@@ -79,8 +79,8 @@ TEST_F(BraveAdsTextClassificationProcessorTest, NeverProcessed) {
 
 TEST_F(BraveAdsTextClassificationProcessorTest, ProcessText) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
-                                   test::kLanguageComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   TextClassificationProcessor processor(*resource_);
@@ -98,8 +98,8 @@ TEST_F(BraveAdsTextClassificationProcessorTest, ProcessText) {
 
 TEST_F(BraveAdsTextClassificationProcessorTest, ProcessMultipleText) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
-                                   test::kLanguageComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   TextClassificationProcessor processor(*resource_);

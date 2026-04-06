@@ -16,10 +16,11 @@
 #include "base/memory/weak_ptr.h"
 #include "base/test/scoped_command_line.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_for_testing.h"
 #include "brave/components/brave_ads/core/internal/ads_client/test/ads_client_mock.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_util.h"
 #include "brave/components/brave_ads/core/internal/common/platform/test/fake_platform_helper.h"
+#include "brave/components/brave_ads/core/internal/common/test/tab_test_helper.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
 #include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -36,7 +37,7 @@ class GlobalState;
 
 namespace test {
 
-class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
+class TestBase : public ::testing::Test {
  public:
   TestBase(const TestBase&) = delete;
   TestBase& operator=(const TestBase&) = delete;
@@ -137,6 +138,9 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
   FakePlatformHelper fake_platform_helper_;
 
   ::testing::NiceMock<AdsClientMock> ads_client_mock_;
+  AdsClientNotifier ads_client_notifier_;
+
+  TabHelper tab_helper_;
 
  private:
   void SimulateProfile();

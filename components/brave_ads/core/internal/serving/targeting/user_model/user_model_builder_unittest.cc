@@ -33,11 +33,11 @@ class BraveAdsUserModelBuilderTest : public test::TestBase {
 
     targeting_helper_ = std::make_unique<test::TargetingHelper>();
 
-    NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                     test::kCountryComponentId);
+    ads_client_notifier_.NotifyResourceComponentDidChange(
+        test::kCountryComponentManifestVersion, test::kCountryComponentId);
 
-    NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
-                                     test::kLanguageComponentId);
+    ads_client_notifier_.NotifyResourceComponentDidChange(
+        test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;

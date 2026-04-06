@@ -60,7 +60,7 @@ TEST_F(BraveAdsSubdivisionTest, OnDidInitializeAds) {
   EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision("US-CA"));
 
   // Act
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   // Assert
   EXPECT_TRUE(HasPendingTasks());
@@ -174,7 +174,7 @@ TEST_F(BraveAdsSubdivisionTest,
 
   EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
 
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   // Act
   FastForwardClockToNextPendingTask();
@@ -198,7 +198,7 @@ TEST_F(BraveAdsSubdivisionTest,
 
   EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision("US-CA"));
 
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   // Act
   FastForwardClockToNextPendingTask();
@@ -216,7 +216,7 @@ TEST_F(BraveAdsSubdivisionTest, RetryIfResponseBodyIsInvalid) {
   EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
 
   // Act
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   // Assert
   EXPECT_TRUE(HasPendingTasks());
@@ -231,7 +231,7 @@ TEST_F(BraveAdsSubdivisionTest, NoRegionSubdivisionCode) {
               OnDidUpdateSubdivision("US-NO REGION"));
 
   // Act
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   // Assert
   EXPECT_TRUE(HasPendingTasks());
@@ -244,7 +244,7 @@ TEST_F(BraveAdsSubdivisionTest, EmptySubdivisionCode) {
   EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
 
   // Act
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   // Assert
   EXPECT_TRUE(HasPendingTasks());
@@ -257,7 +257,7 @@ TEST_F(BraveAdsSubdivisionTest, EmptyCountryCode) {
   EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
 
   // Act
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   // Assert
   EXPECT_TRUE(HasPendingTasks());

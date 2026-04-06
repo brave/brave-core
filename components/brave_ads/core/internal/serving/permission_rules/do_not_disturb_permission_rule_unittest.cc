@@ -20,8 +20,8 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
   fake_platform_helper_.SetPlatformType(PlatformType::kAndroid);
   PlatformHelper::SetForTesting(&fake_platform_helper_);
 
-  NotifyBrowserDidResignActive();
-  NotifyBrowserDidEnterBackground();
+  ads_client_notifier_.NotifyBrowserDidResignActive();
+  ads_client_notifier_.NotifyBrowserDidEnterBackground();
 
   AdvanceClockToLocalMidnight();
 
@@ -57,8 +57,8 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
   fake_platform_helper_.SetPlatformType(PlatformType::kAndroid);
   PlatformHelper::SetForTesting(&fake_platform_helper_);
 
-  NotifyBrowserDidBecomeActive();
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
   AdvanceClockToLocalMidnight();
 
@@ -93,8 +93,8 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnIOS) {
   fake_platform_helper_.SetPlatformType(PlatformType::kIOS);
   PlatformHelper::SetForTesting(&fake_platform_helper_);
 
-  NotifyBrowserDidBecomeActive();
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
   AdvanceClockToLocalMidnight();
 
@@ -116,8 +116,8 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnMacOS) {
   fake_platform_helper_.SetPlatformType(PlatformType::kMacOS);
   PlatformHelper::SetForTesting(&fake_platform_helper_);
 
-  NotifyBrowserDidBecomeActive();
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
   AdvanceClockToLocalMidnight();
 
@@ -139,8 +139,8 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnWindows) {
   fake_platform_helper_.SetPlatformType(PlatformType::kWindows);
   PlatformHelper::SetForTesting(&fake_platform_helper_);
 
-  NotifyBrowserDidBecomeActive();
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
   AdvanceClockToLocalMidnight();
 
@@ -162,8 +162,8 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnLinux) {
   fake_platform_helper_.SetPlatformType(PlatformType::kLinux);
   PlatformHelper::SetForTesting(&fake_platform_helper_);
 
-  NotifyBrowserDidBecomeActive();
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
   AdvanceClockToLocalMidnight();
 

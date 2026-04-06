@@ -35,9 +35,9 @@ class BraveAdsNotificationAdIntegrationTest : public test::TestBase {
     test::MockUrlResponses(ads_client_mock_, url_responses);
   }
 
-  void ServeAd() {
-    NotifyUserDidBecomeActive(/*idle_time=*/base::TimeDelta::Min(),
-                              /*screen_was_locked=*/false);
+  void SimulateOpportunityToServeAd() {
+    ads_client_notifier_.NotifyUserDidBecomeActive(
+        /*idle_time=*/base::TimeDelta::Min(), /*screen_was_locked=*/false);
   }
 };
 
@@ -53,7 +53,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, ServeAd) {
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
 
-  ServeAd();
+  SimulateOpportunityToServeAd();
   run_loop.Run();
 }
 
@@ -66,7 +66,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest,
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd).Times(0);
 
-  ServeAd();
+  SimulateOpportunityToServeAd();
 }
 
 TEST_F(BraveAdsNotificationAdIntegrationTest,
@@ -109,7 +109,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
         run_loop.Quit();
       });
 
-  ServeAd();
+  SimulateOpportunityToServeAd();
   run_loop.Run();
 }
 
@@ -146,7 +146,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerClickedEvent) {
         run_loop.Quit();
       });
 
-  ServeAd();
+  SimulateOpportunityToServeAd();
   run_loop.Run();
 }
 
@@ -180,7 +180,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerDismissedEvent) {
         run_loop.Quit();
       });
 
-  ServeAd();
+  SimulateOpportunityToServeAd();
   run_loop.Run();
 }
 
@@ -214,7 +214,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerTimedOutEvent) {
         run_loop.Quit();
       });
 
-  ServeAd();
+  SimulateOpportunityToServeAd();
   run_loop.Run();
 }
 

@@ -53,6 +53,7 @@ constexpr std::string_view kYouCantTravelBackInTime =
 
 TestBase::TestBase()
     : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
+      tab_helper_(ads_client_notifier_),
       scoped_current_language_code_(kDefaultLanguageCode),
       scoped_current_country_code_(kDefaultCountryCode) {
   SimulateProfile();
@@ -202,8 +203,6 @@ void TestBase::AdvanceClockToUTCMidnight() {
   return AdvanceClockTo(Now().UTCMidnight() + base::Days(1));
 }
 
-///////////////////////////////////////////////////////////////////////////////
-
 void TestBase::SimulateProfile() {
   CHECK(profile_dir_.CreateUniqueTempDir());
 
@@ -215,14 +214,14 @@ base::FilePath TestBase::DatabasePath() const {
 }
 
 void TestBase::MockAdsClientNotifier() {
-  MockAdsClientNotifierAddObserver(ads_client_mock_, *this);
+  MockAdsClientNotifierAddObserver(ads_client_mock_, ads_client_notifier_);
 }
 
 void TestBase::MockAdsClient() {
   // `MockUrlResponses`, `ShowScheduledCaptcha`, and `Log` are not mocked here;
   // they should be mocked as needed via `mock_test_util.h`.
 
-  MockNotifyPendingObservers(ads_client_mock_, *this);
+  MockNotifyPendingObservers(ads_client_mock_, ads_client_notifier_);
 
   MockIsNetworkConnectionAvailable(ads_client_mock_, true);
 
@@ -244,13 +243,13 @@ void TestBase::MockAdsClient() {
 
   MockFindProfilePref(ads_client_mock_);
   MockGetProfilePref(ads_client_mock_);
-  MockSetProfilePref(ads_client_mock_, *this);
+  MockSetProfilePref(ads_client_mock_, ads_client_notifier_);
   MockClearProfilePref(ads_client_mock_);
   MockHasProfilePrefPath(ads_client_mock_);
 
   MockFindLocalStatePref(ads_client_mock_);
   MockGetLocalStatePref(ads_client_mock_);
-  MockSetLocalStatePref(ads_client_mock_, *this);
+  MockSetLocalStatePref(ads_client_mock_, ads_client_notifier_);
   MockClearLocalStatePref(ads_client_mock_);
   MockHasLocalStatePrefPath(ads_client_mock_);
 }
@@ -326,7 +325,7 @@ void TestBase::SetUpIntegrationTest() {
                    base::BindOnce(&TestBase::SetUpIntegrationTestCallback,
                                   weak_factory_.GetWeakPtr()));
 
-  AdsClientNotifierWaiter(/*ads_client_notifier=*/this)
+  AdsClientNotifierWaiter(/*ads_client_notifier=*/&ads_client_notifier_)
       .WaitForOnNotifyDidInitializeAds();
 
   // Flush 0-delay task replies posted during initialization.
@@ -339,12 +338,11 @@ void TestBase::SetUpIntegrationTestCallback(bool success) {
   // By default, integration tests are run while the browser is in the
   // foreground and active. If tests require the browser to be in the background
   // and inactive, you can call `NotifyBrowserDidEnterBackground` and
-  // `NotifyBrowserDidResignActive`. Refer to `AdsClientNotifierForTesting` for
-  // more information.
-  NotifyBrowserDidEnterForeground();
-  NotifyBrowserDidBecomeActive();
+  // `NotifyBrowserDidResignActive`.
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
 
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 }
 
 void TestBase::SetUpUnitTest() {
@@ -363,7 +361,7 @@ void TestBase::SetUpUnitTest() {
   base::RunLoop run_loop;
   SetUpDefaultAdsServiceState(run_loop.QuitClosure());
 
-  NotifyPendingObservers();
+  ads_client_notifier_.NotifyPendingObservers();
 
   // Process background thread replies without advancing the mock clock, so
   // that tests requiring a specific `NextPendingTaskDelay` are unaffected.

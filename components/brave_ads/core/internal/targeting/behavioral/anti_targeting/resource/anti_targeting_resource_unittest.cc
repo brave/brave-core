@@ -44,8 +44,8 @@ TEST_F(BraveAdsAntiTargetingResourceTest, IsResourceNotLoaded) {
 
 TEST_F(BraveAdsAntiTargetingResourceTest, LoadResource) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
 
   // Act & Assert
   ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
@@ -57,8 +57,8 @@ TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadMalformedResource) {
       /*from_path=*/test::kMalformedResourceId,
       /*to_path=*/kAntiTargetingResourceId));
 
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
   ASSERT_TRUE(resource_->GetManifestVersion());
 
   // Act & Assert
@@ -81,8 +81,8 @@ TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadMissingResource) {
         std::move(callback).Run(std::move(file));
       });
 
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
 
   // Act & Assert
   EXPECT_FALSE(resource_->IsLoaded());
@@ -90,8 +90,8 @@ TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadMissingResource) {
 
 TEST_F(BraveAdsAntiTargetingResourceTest,
        DoNotLoadResourceWithInvalidCountryComponentId) {
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kInvalidCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kInvalidCountryComponentId);
 
   // Act & Assert
   EXPECT_FALSE(resource_->IsLoaded());
@@ -101,8 +101,8 @@ TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadResourceIfOptedOutOfAllAds) {
   // Arrange
   test::OptOutOfAllAds();
 
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
 
   // Act & Assert
   EXPECT_FALSE(resource_->IsLoaded());
@@ -113,8 +113,8 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
   // Arrange
   test::OptOutOfAllAds();
 
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
   ASSERT_FALSE(resource_->IsLoaded());
 
   // Act
@@ -134,8 +134,8 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
   test::OptOutOfNotificationAds();
   test::OptOutOfSearchResultAds();
 
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
   ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   // Act
@@ -154,8 +154,8 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
   // Arrange
   test::OptOutOfAllAds();
 
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
   ASSERT_FALSE(resource_->IsLoaded());
 
   // Act
@@ -171,8 +171,8 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
   test::OptOutOfNewTabPageAds();
   test::OptOutOfSearchResultAds();
 
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
   ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   // Act
@@ -187,8 +187,8 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
   // Arrange
   test::OptOutOfAllAds();
 
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
   ASSERT_FALSE(resource_->IsLoaded());
 
   // Act
@@ -202,13 +202,13 @@ TEST_F(
     BraveAdsAntiTargetingResourceTest,
     DoNotResetResourceForOnResourceComponentDidChangeWithInvalidCountryComponentId) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
   ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   // Act
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kInvalidCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kInvalidCountryComponentId);
 
   // Assert
   EXPECT_TRUE(resource_->IsLoaded());
@@ -218,13 +218,13 @@ TEST_F(
     BraveAdsAntiTargetingResourceTest,
     DoNotResetResourceForOnResourceComponentDidChangeWithExistingManifestVersion) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
   ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   // Act
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
 
   // Assert
   EXPECT_TRUE(resource_->IsLoaded());
@@ -234,15 +234,15 @@ TEST_F(
     BraveAdsAntiTargetingResourceTest,
     DoNotResetResourceForOnResourceComponentDidChangeWithNewManifestVersion) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
   ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
   ASSERT_EQ(test::kCountryComponentManifestVersion,
             resource_->GetManifestVersion());
 
   // Act
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersionUpdate,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersionUpdate, test::kCountryComponentId);
 
   // Assert
   EXPECT_TRUE(resource_->IsLoaded());
@@ -253,12 +253,13 @@ TEST_F(
 TEST_F(BraveAdsAntiTargetingResourceTest,
        ResetResourceForOnNotifyDidUnregisterResourceComponent) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
   ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   // Act
-  NotifyDidUnregisterResourceComponent(test::kCountryComponentId);
+  ads_client_notifier_.NotifyDidUnregisterResourceComponent(
+      test::kCountryComponentId);
 
   // Assert
   EXPECT_FALSE(resource_->IsLoaded());
@@ -268,12 +269,13 @@ TEST_F(
     BraveAdsAntiTargetingResourceTest,
     DoNotResetResourceForOnNotifyDidUnregisterResourceComponentWithInvalidCountryComponentId) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
   ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   // Act
-  NotifyDidUnregisterResourceComponent(test::kInvalidCountryComponentId);
+  ads_client_notifier_.NotifyDidUnregisterResourceComponent(
+      test::kInvalidCountryComponentId);
 
   // Assert
   EXPECT_TRUE(resource_->IsLoaded());

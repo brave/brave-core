@@ -27,8 +27,8 @@ class BraveAdsInterestSegmentsTest : public test::TestBase {
 
     targeting_helper_ = std::make_unique<test::TargetingHelper>();
 
-    NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
-                                     test::kLanguageComponentId);
+    ads_client_notifier_.NotifyResourceComponentDidChange(
+        test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
   }
 
   std::unique_ptr<test::TargetingHelper> targeting_helper_;
