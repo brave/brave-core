@@ -377,6 +377,26 @@ TEST_F(UploadFileHelperTest, TextFileWithoutExtension) {
   EXPECT_EQ((*result)[0]->type, mojom::UploadedFileType::kText);
 }
 
+TEST_F(UploadFileHelperTest, TextFileWithTrailingDot) {
+  // Test file ending with a dot — should be treated as text
+  base::FilePath dot_path = temp_dir_.GetPath().AppendASCII("file.");
+  ASSERT_TRUE(base::WriteFile(dot_path, "trailing dot content"));
+
+  ui::SelectFileDialog::SetFactory(
+      std::make_unique<content::FakeSelectFileDialogFactory>(
+          std::vector<base::FilePath>{dot_path}));
+
+  testing::NiceMock<MockObserver> observer(file_helper_.get());
+  EXPECT_CALL(observer, OnFilesSelected).Times(1);
+
+  auto result = UploadFileSync();
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  ASSERT_TRUE(result);
+  ASSERT_EQ(1u, result->size());
+  EXPECT_EQ((*result)[0]->type, mojom::UploadedFileType::kText);
+}
+
 TEST_F(UploadFileHelperTest, TextFileWithUnknownExtension) {
   // Test file with extension not in Chromium's MIME registry
   base::FilePath diff_path = temp_dir_.GetPath().AppendASCII("changes.diff");

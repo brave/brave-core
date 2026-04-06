@@ -22,6 +22,7 @@
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/constants/brave_paths.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -39,6 +40,11 @@
 #include "url/url_constants.h"
 
 namespace ai_chat {
+
+#if !BUILDFLAG(IS_ANDROID)
+constexpr char kExpectedTextContent[] =
+    "Hello from a text file.\nThis is line two.";
+#endif
 
 #if BUILDFLAG(ENABLE_PDF)
 constexpr char kExpectedPdfText[] = "This is the way\nI have spoken";
@@ -331,6 +337,103 @@ IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest,
   EXPECT_EQ(*(*result)[0]->extracted_text, kExpectedPdfText);
 }
 #endif  // BUILDFLAG(ENABLE_PDF)
+
+#if !BUILDFLAG(IS_ANDROID)
+IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest, ProcessTextFile) {
+  auto* page_handler = GetPageHandler(web_contents());
+  ASSERT_TRUE(page_handler);
+
+  base::FilePath txt_path;
+  std::vector<uint8_t> txt_bytes;
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    txt_path = base::PathService::CheckedGet(brave::DIR_TEST_DATA)
+                   .AppendASCII("leo")
+                   .AppendASCII("dummy.txt");
+    auto bytes = base::ReadFileToBytes(txt_path);
+    ASSERT_TRUE(bytes.has_value());
+    txt_bytes = std::move(*bytes);
+  }
+
+  base::test::TestFuture<ai_chat::mojom::UploadedFilePtr> future;
+  page_handler->ProcessTextFile(txt_bytes, "dummy.txt", future.GetCallback());
+
+  auto result = future.Take();
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->filename, "dummy.txt");
+  EXPECT_EQ(result->type, ai_chat::mojom::UploadedFileType::kText);
+  EXPECT_GT(result->data.size(), 0u);
+  ASSERT_TRUE(result->extracted_text.has_value());
+  EXPECT_EQ(*result->extracted_text, kExpectedTextContent);
+}
+
+// Verify that HTML files are not rendered (no script execution, no external
+// resource loading). The extracted text must be the raw HTML source.
+IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest, ProcessHtmlFile) {
+  auto* page_handler = GetPageHandler(web_contents());
+  ASSERT_TRUE(page_handler);
+
+  base::FilePath html_path;
+  std::vector<uint8_t> html_bytes;
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    html_path = base::PathService::CheckedGet(brave::DIR_TEST_DATA)
+                    .AppendASCII("leo")
+                    .AppendASCII("dummy.html");
+    auto bytes = base::ReadFileToBytes(html_path);
+    ASSERT_TRUE(bytes.has_value());
+    html_bytes = std::move(*bytes);
+  }
+
+  base::test::TestFuture<ai_chat::mojom::UploadedFilePtr> future;
+  page_handler->ProcessTextFile(html_bytes, "dummy.html", future.GetCallback());
+
+  auto result = future.Take();
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->filename, "dummy.html");
+  ASSERT_TRUE(result->extracted_text.has_value());
+  // Raw source must contain HTML tags — proves it was NOT rendered.
+  EXPECT_TRUE(result->extracted_text->find("<p>Hello from an HTML file.</p>") !=
+              std::string::npos);
+  EXPECT_TRUE(result->extracted_text->find("<script>") != std::string::npos);
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest,
+                       OnFilesUploaded_WithText) {
+  auto* page_handler = GetPageHandler(web_contents());
+  ASSERT_TRUE(page_handler);
+
+  base::FilePath txt_path;
+  std::vector<uint8_t> txt_bytes;
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    txt_path = base::PathService::CheckedGet(brave::DIR_TEST_DATA)
+                   .AppendASCII("leo")
+                   .AppendASCII("dummy.txt");
+    auto bytes = base::ReadFileToBytes(txt_path);
+    ASSERT_TRUE(bytes.has_value());
+    txt_bytes = std::move(*bytes);
+  }
+
+  std::vector<ai_chat::mojom::UploadedFilePtr> files;
+  files.push_back(ai_chat::mojom::UploadedFile::New(
+      txt_path.AsUTF8Unsafe(), txt_bytes.size(), std::move(txt_bytes),
+      ai_chat::mojom::UploadedFileType::kText, std::nullopt));
+
+  base::test::TestFuture<
+      std::optional<std::vector<ai_chat::mojom::UploadedFilePtr>>>
+      future;
+  page_handler->OnFilesUploaded(future.GetCallback(),
+                                std::make_optional(std::move(files)));
+
+  auto result = future.Take();
+  ASSERT_TRUE(result.has_value());
+  ASSERT_EQ(result->size(), 1u);
+  EXPECT_EQ((*result)[0]->filename, "dummy.txt");
+  ASSERT_TRUE((*result)[0]->extracted_text.has_value());
+  EXPECT_EQ(*(*result)[0]->extracted_text, kExpectedTextContent);
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest,
                        AssociateURLDoesNotCrashShutdown) {

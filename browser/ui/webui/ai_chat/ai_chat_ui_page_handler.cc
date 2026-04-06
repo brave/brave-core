@@ -262,8 +262,66 @@ void AIChatUIPageHandler::OnFilesUploaded(
     }
   }
 #endif  // BUILDFLAG(ENABLE_PDF)
+#if !BUILDFLAG(IS_ANDROID)
+  ExtractTextFiles(std::move(callback), std::move(uploaded_files));
+#else
+  FinishUpload(std::move(callback), std::move(uploaded_files));
+#endif
+}
+
+#if !BUILDFLAG(IS_ANDROID)
+void AIChatUIPageHandler::ExtractTextFiles(
+    UploadFileCallback callback,
+    std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files) {
+  if (uploaded_files) {
+    std::vector<std::pair<size_t, base::FilePath>> text_extractions;
+    for (size_t i = 0; i < uploaded_files->size(); ++i) {
+      auto& file = (*uploaded_files)[i];
+      if (file->type == mojom::UploadedFileType::kText &&
+          !file->extracted_text.has_value()) {
+        text_extractions.emplace_back(
+            i, base::FilePath::FromUTF8Unsafe(file->filename));
+      }
+    }
+
+    if (!text_extractions.empty()) {
+      auto barrier =
+          base::BarrierCallback<std::pair<size_t, std::optional<std::string>>>(
+              text_extractions.size(),
+              base::BindOnce(&AIChatUIPageHandler::OnAllTextFilesExtracted,
+                             weak_ptr_factory_.GetWeakPtr(),
+                             std::move(callback), std::move(uploaded_files)));
+
+      for (const auto& [idx, text_path] : text_extractions) {
+        auto extractor = std::make_unique<TextFileExtractor>();
+        auto* extractor_ptr = extractor.get();
+        text_extractors_.push_back(std::move(extractor));
+        extractor_ptr->ExtractText(
+            profile_, text_path,
+            base::BindOnce(&AIChatUIPageHandler::OnSingleTextFileExtracted,
+                           weak_ptr_factory_.GetWeakPtr(), extractor_ptr, idx,
+                           barrier));
+      }
+      return;
+    }
+  }
   FinishUpload(std::move(callback), std::move(uploaded_files));
 }
+
+void AIChatUIPageHandler::OnAllTextFilesExtracted(
+    UploadFileCallback callback,
+    std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files,
+    std::vector<std::pair<size_t, std::optional<std::string>>> results) {
+  if (uploaded_files) {
+    for (auto& [idx, text] : results) {
+      if (idx < uploaded_files->size()) {
+        (*uploaded_files)[idx]->extracted_text = std::move(text);
+      }
+    }
+  }
+  FinishUpload(std::move(callback), std::move(uploaded_files));
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 void AIChatUIPageHandler::OnAllPdfTextsExtracted(
     UploadFileCallback callback,
@@ -276,7 +334,12 @@ void AIChatUIPageHandler::OnAllPdfTextsExtracted(
       }
     }
   }
+  // Continue to text file extraction (desktop only)
+#if !BUILDFLAG(IS_ANDROID)
+  ExtractTextFiles(std::move(callback), std::move(uploaded_files));
+#else
   FinishUpload(std::move(callback), std::move(uploaded_files));
+#endif
 }
 
 void AIChatUIPageHandler::FinishUpload(
@@ -313,6 +376,64 @@ void AIChatUIPageHandler::ProcessImageFile(
           },
           filename, std::move(callback)));
 }
+
+void AIChatUIPageHandler::ProcessTextFile(const std::vector<uint8_t>& file_data,
+                                          const std::string& filename,
+                                          ProcessTextFileCallback callback) {
+#if BUILDFLAG(IS_ANDROID)
+  // Android does not support background text extraction via view-source:.
+  std::move(callback).Run(nullptr);
+#else
+  auto extractor = std::make_unique<TextFileExtractor>();
+  auto* extractor_ptr = extractor.get();
+  text_extractors_.push_back(std::move(extractor));
+
+  auto response_data = std::vector<uint8_t>(file_data);
+  const auto extension = base::FilePath::FromUTF8Unsafe(filename).Extension();
+  extractor_ptr->ExtractText(
+      profile_, std::vector<uint8_t>(file_data),
+      extension.size() > 1 ? extension.substr(1) : FILE_PATH_LITERAL("txt"),
+      base::BindOnce(&AIChatUIPageHandler::OnTextFileExtracted,
+                     weak_ptr_factory_.GetWeakPtr(), extractor_ptr, filename,
+                     std::move(response_data), std::move(callback)));
+#endif
+}
+
+#if !BUILDFLAG(IS_ANDROID)
+void AIChatUIPageHandler::OnSingleTextFileExtracted(
+    TextFileExtractor* extractor_ptr,
+    size_t file_index,
+    base::OnceCallback<void(std::pair<size_t, std::optional<std::string>>)>
+        barrier_cb,
+    std::optional<std::string> extracted_text) {
+  std::erase_if(text_extractors_, [extractor_ptr](const auto& e) {
+    return e.get() == extractor_ptr;
+  });
+  std::move(barrier_cb).Run({file_index, std::move(extracted_text)});
+}
+
+void AIChatUIPageHandler::OnTextFileExtracted(
+    TextFileExtractor* extractor_ptr,
+    std::string filename,
+    std::vector<uint8_t> file_data,
+    ProcessTextFileCallback callback,
+    std::optional<std::string> extracted_text) {
+  std::erase_if(text_extractors_, [extractor_ptr](const auto& e) {
+    return e.get() == extractor_ptr;
+  });
+  // If extraction failed (e.g. renderer couldn't render the file as text),
+  // return null so the frontend does not attach the file.
+  if (!extracted_text.has_value()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+  size_t file_size = file_data.size();
+  auto uploaded_file = ai_chat::mojom::UploadedFile::New(
+      std::move(filename), file_size, std::move(file_data),
+      ai_chat::mojom::UploadedFileType::kText, std::move(extracted_text));
+  std::move(callback).Run(std::move(uploaded_file));
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 void AIChatUIPageHandler::ProcessPdfFile(const std::vector<uint8_t>& file_data,
                                          const std::string& filename,

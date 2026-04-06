@@ -15,7 +15,12 @@
 #include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/browser/ai_chat/upload_file_helper.h"
+#include "build/build_config.h"
 #include "pdf/buildflags.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ai_chat/text_file_extractor.h"
+#endif
 
 #if BUILDFLAG(ENABLE_PDF)
 #include "brave/browser/ai_chat/pdf_text_extractor.h"
@@ -77,6 +82,9 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void ProcessPdfFile(const std::vector<uint8_t>& file_data,
                       const std::string& filename,
                       ProcessPdfFileCallback callback) override;
+  void ProcessTextFile(const std::vector<uint8_t>& file_data,
+                       const std::string& filename,
+                       ProcessTextFileCallback callback) override;
   void GetPluralString(const std::string& key,
                        int32_t count,
                        GetPluralStringCallback callback) override;
@@ -105,12 +113,20 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
  private:
   FRIEND_TEST_ALL_PREFIXES(AIChatUIPageHandlerBrowserTest,
                            OnFilesUploaded_WithPdf);
+#if !BUILDFLAG(IS_ANDROID)
+  FRIEND_TEST_ALL_PREFIXES(AIChatUIPageHandlerBrowserTest,
+                           OnFilesUploaded_WithText);
+#endif
   FRIEND_TEST_ALL_PREFIXES(AIChatUIPageHandlerTest,
                            FinishUpload_StripsPathToBasename);
   FRIEND_TEST_ALL_PREFIXES(AIChatUIPageHandlerTest,
                            OnFilesUploaded_NonPdfGoesToFinish);
   FRIEND_TEST_ALL_PREFIXES(AIChatUIPageHandlerTest,
                            OnAllPdfTextsExtracted_AppliesResults);
+#if !BUILDFLAG(IS_ANDROID)
+  FRIEND_TEST_ALL_PREFIXES(AIChatUIPageHandlerTest,
+                           OnAllTextFilesExtracted_AppliesResults);
+#endif
 
   class ChatContextObserver : public content::WebContentsObserver {
    public:
@@ -142,6 +158,32 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void FinishUpload(
       UploadFileCallback callback,
       std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files);
+
+#if !BUILDFLAG(IS_ANDROID)
+  // Kicks off text extraction for all kText files in the upload batch.
+  void ExtractTextFiles(
+      UploadFileCallback callback,
+      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files);
+  // Collects results from the barrier callback and applies extracted text.
+  void OnAllTextFilesExtracted(
+      UploadFileCallback callback,
+      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files,
+      std::vector<std::pair<size_t, std::optional<std::string>>> results);
+  // Per-file callback from the barrier used in ExtractTextFiles.
+  void OnSingleTextFileExtracted(
+      TextFileExtractor* extractor_ptr,
+      size_t file_index,
+      base::OnceCallback<void(std::pair<size_t, std::optional<std::string>>)>
+          barrier_cb,
+      std::optional<std::string> extracted_text);
+  // Callback for ProcessTextFile's single-file extraction.
+  void OnTextFileExtracted(TextFileExtractor* extractor_ptr,
+                           std::string filename,
+                           std::vector<uint8_t> file_data,
+                           ProcessTextFileCallback callback,
+                           std::optional<std::string> extracted_text);
+#endif  // !BUILDFLAG(IS_ANDROID)
+
 #if BUILDFLAG(ENABLE_PDF)
   void OnSinglePdfTextExtracted(
       PdfTextExtractor* extractor_ptr,
@@ -176,6 +218,11 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
 
   // DataDecoder instance for processing image data
   data_decoder::DataDecoder data_decoder_;
+
+#if !BUILDFLAG(IS_ANDROID)
+  // Active text file extractors (owned until extraction completes)
+  std::vector<std::unique_ptr<TextFileExtractor>> text_extractors_;
+#endif
 
 #if BUILDFLAG(ENABLE_PDF)
   // Active PDF text extractors (owned until extraction completes)
