@@ -8,6 +8,7 @@
 
 #include <cstdint>
 
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
@@ -15,7 +16,6 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_callback.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_base.h"
-#include "brave/components/brave_ads/core/internal/serving/eligible_ads/round_robin/creative_ad_round_robin.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/public/history/site_history.h"
@@ -23,13 +23,15 @@
 namespace brave_ads {
 
 class AntiTargetingResource;
+class CreativeAdRoundRobin;
 class SubdivisionTargeting;
 struct UserModelInfo;
 
 class EligibleNewTabPageAdsV2 final : public EligibleNewTabPageAdsBase {
  public:
   EligibleNewTabPageAdsV2(const SubdivisionTargeting& subdivision_targeting,
-                          const AntiTargetingResource& anti_targeting_resource);
+                          const AntiTargetingResource& anti_targeting_resource,
+                          CreativeAdRoundRobin& creative_ad_round_robin);
 
   ~EligibleNewTabPageAdsV2() override;
 
@@ -93,7 +95,9 @@ class EligibleNewTabPageAdsV2 final : public EligibleNewTabPageAdsBase {
 
   const database::table::AdEvents ad_events_database_table_;
 
-  CreativeAdRoundRobin creative_ad_round_robin_;
+  // Must outlive `this`. Guaranteed by `NewTabPageAdServing`, which owns both
+  // and declares `creative_ad_round_robin_` before `eligible_ads_`.
+  const raw_ref<CreativeAdRoundRobin> creative_ad_round_robin_;
 
   base::WeakPtrFactory<EligibleNewTabPageAdsV2> weak_factory_{this};
 };

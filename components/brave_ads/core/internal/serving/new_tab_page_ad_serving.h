@@ -14,6 +14,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/round_robin/creative_ad_round_robin.h"
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_delegate.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
@@ -67,6 +68,8 @@ class NewTabPageAdServing final {
   void NotifyFailedToServeNewTabPageAd() const;
 
   raw_ptr<NewTabPageAdServingDelegate> delegate_ = nullptr;  // Not owned.
+
+  CreativeAdRoundRobin creative_ad_round_robin_;
 
   std::unique_ptr<EligibleNewTabPageAdsBase> eligible_ads_;
 

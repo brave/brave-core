@@ -32,9 +32,9 @@ namespace brave_ads {
 NewTabPageAdServing::NewTabPageAdServing(
     const SubdivisionTargeting& subdivision_targeting,
     const AntiTargetingResource& anti_targeting_resource) {
-  eligible_ads_ =
-      EligibleAdsFactory::Build(kNewTabPageAdServingVersion.Get(),
-                                subdivision_targeting, anti_targeting_resource);
+  eligible_ads_ = EligibleAdsFactory::Build(
+      kNewTabPageAdServingVersion.Get(), subdivision_targeting,
+      anti_targeting_resource, creative_ad_round_robin_);
 }
 
 NewTabPageAdServing::~NewTabPageAdServing() {
@@ -77,11 +77,11 @@ bool NewTabPageAdServing::CanServeAd(const AdEventList& ad_events) const {
 
 void NewTabPageAdServing::GetAdEvents() {
   const database::table::AdEvents database_table;
-  database_table.Get(
-      mojom::AdType::kNewTabPageAd, mojom::ConfirmationType::kServedImpression,
-      /*time_window=*/base::Days(1),
-      base::BindOnce(&NewTabPageAdServing::GetAdEventsCallback,
-                     weak_factory_.GetWeakPtr()));
+  database_table.Get(mojom::AdType::kNewTabPageAd,
+                     mojom::ConfirmationType::kServedImpression,
+                     /*time_window=*/base::Days(1),
+                     base::BindOnce(&NewTabPageAdServing::GetAdEventsCallback,
+                                    weak_factory_.GetWeakPtr()));
 }
 
 void NewTabPageAdServing::GetAdEventsCallback(bool success,
@@ -161,6 +161,8 @@ void NewTabPageAdServing::ServeAd(const NewTabPageAdInfo& ad) {
     BLOG(0, "New tab page ad not served: Invalid ad");
     return FailedToServeAd();
   }
+
+  creative_ad_round_robin_.MarkAsServed(ad);
 
   eligible_ads_->SetLastServedAd(ad);
 

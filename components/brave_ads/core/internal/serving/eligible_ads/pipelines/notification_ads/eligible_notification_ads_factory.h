@@ -11,6 +11,7 @@
 namespace brave_ads {
 
 class AntiTargetingResource;
+class CreativeAdRoundRobin;
 class EligibleNotificationAdsBase;
 class SubdivisionTargeting;
 
@@ -19,7 +20,8 @@ class EligibleNotificationAdsFactory final {
   static std::unique_ptr<EligibleNotificationAdsBase> Build(
       int version,
       const SubdivisionTargeting& subdivision_targeting,
-      const AntiTargetingResource& anti_targeting_resource);
+      const AntiTargetingResource& anti_targeting_resource,
+      CreativeAdRoundRobin& creative_ad_round_robin);
 };
 
 }  // namespace brave_ads
