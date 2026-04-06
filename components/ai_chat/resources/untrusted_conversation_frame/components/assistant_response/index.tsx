@@ -42,14 +42,6 @@ interface BaseProps {
 function SearchSummary(props: { searchQueries: string[] }) {
   const context = useUntrustedConversationContext()
 
-  const handleOpenSearchQuery = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    query: string,
-  ) => {
-    e.preventDefault()
-    context.uiHandler?.openSearchURL(query)
-  }
-
   const handleLearnMoreClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()
     context.uiHandler?.openLearnMoreAboutBraveSearchWithLeo()
@@ -61,7 +53,8 @@ function SearchSummary(props: { searchQueries: string[] }) {
         <a
           className={styles.searchQueryLink}
           href={getBraveSearchUrlForQuery(query)}
-          onClick={(e) => handleOpenSearchQuery(e, query)}
+          target='_blank'
+          rel='noopener noreferrer'
         >
           {`"${query}"`}
         </a>
