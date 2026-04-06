@@ -15,6 +15,15 @@ const MULTIADDRESS_TYPE: u8 = 0x00;
 const SR25519_SIGNATURE: u8 = 0x01;
 const PERIOD: u32 = 64;
 
+const PHASE_APPLY_EXTRINSIC: u8 = 0;
+
+// transactionpayment(TransactionFeePaid)
+const TRANSACTION_FEE_PAID_VARIANT_INDEX: u8 = 0x00;
+
+// system(ExtrinsicSuccess | ExtrinsicFailed)
+const EXTRINSIC_SUCCESS_VARIANT_INDEX: u8 = 0x00;
+const EXTRINSIC_FAILED_VARIANT_INDEX: u8 = 0x01;
+
 const UNSIGNED_TRANSFER_ALLOW_DEATH_MIN_LEN: usize = 1  /* extrinsic version */
                                                    + 1  /* pallet index */
                                                    + 1  /* call index */
@@ -509,15 +518,6 @@ fn was_extrinsic_successful(
     // for our extrinsic that we care about: the transaction fee paid and the final
     // status. We can theoretically probe for everything such as who the fee was
     // paid out to but it isn't strictly required for our current needs.
-
-    const PHASE_APPLY_EXTRINSIC: u8 = 0;
-
-    // transactionpayment(TransactionFeePaid)
-    const TRANSACTION_FEE_PAID_VARIANT_INDEX: u8 = 0x00;
-
-    // system(ExtrinsicSuccess | ExtrinsicFailed)
-    const EXTRINSIC_SUCCESS_VARIANT_INDEX: u8 = 0x00;
-    const EXTRINSIC_FAILED_VARIANT_INDEX: u8 = 0x01;
 
     let mut needle = [0_u8; 39];
     needle[0] = PHASE_APPLY_EXTRINSIC;
