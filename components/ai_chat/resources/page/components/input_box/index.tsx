@@ -107,10 +107,7 @@ function usePlaceholderText(
   return getLocale(S.CHAT_UI_INITIAL_PLACEHOLDER_LABEL)
 }
 
-function useChipClassName(
-  totalVisible: number,
-  isStandalone: boolean,
-) {
+function useChipClassName(totalVisible: number, isStandalone: boolean) {
   return React.useMemo(() => {
     const scrollThreshold = isStandalone ? 4 : 3
     if (totalVisible >= scrollThreshold) {
@@ -385,9 +382,7 @@ function InputBox(props: InputBoxProps) {
 
       {(showUploadedFiles || pendingContent.length > 0) && (
         <AttachmentChips
-          pendingContent={
-            props.context.isGenerating ? [] : pendingContent
-          }
+          pendingContent={props.context.isGenerating ? [] : pendingContent}
           pendingMessageFiles={props.context.pendingMessageFiles}
           isUploadingFiles={props.context.isUploadingFiles}
           isStandalone={!!aiChatContext.isStandalone}
