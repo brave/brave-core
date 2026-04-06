@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/webui/util/image_util.h"
@@ -127,6 +128,7 @@ class ListActionModifiersUnitTest : public testing::Test {
 
   void TearDown() override { web_contents_ = nullptr; }
 
+  brave_l10n::test::ScopedDefaultLocale scoped_locale_{"en_US"};
   content::BrowserTaskEnvironment task_environment_;
   TestingProfile testing_profile_;
   content::TestWebContentsFactory test_web_contents_factory_;

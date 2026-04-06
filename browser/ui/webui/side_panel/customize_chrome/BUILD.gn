@@ -100,6 +100,7 @@ source_set("unit_tests") {
     "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
+    "//brave/components/l10n/common:test_support",
     "//brave/components/resources:strings_grit",
     "//brave/components/vector_icons",
     "//chrome/browser/ui/webui/util",
