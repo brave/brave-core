@@ -28,6 +28,7 @@
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/skia_conversions.h"
+#include "ui/views/bubble/bubble_border.h"
 #include "ui/views/test/views_test_utils.h"
 
 class MockTabSlotController : public FakeTabSlotController {
@@ -520,4 +521,37 @@ TEST_F(BraveTabTest, GetTabSizeInfoFullMinWidthModeUsesStandardWidth) {
   const TabSizeInfo info = tab.GetTabSizeInfo();
   EXPECT_EQ(info.min_active_width, std_w);
   EXPECT_EQ(info.min_inactive_width, std_w);
+}
+
+// BraveTab::GetAnchorPosition() must return LEFT_TOP in vertical tab mode so
+// that the hover card appears to the right of the tab strip, and must
+// delegate to Tab::GetAnchorPosition() (TOP_LEFT) in horizontal mode.
+TEST_F(BraveTabTest, GetAnchorPositionReflectsTabOrientation) {
+  TestingProfile profile;
+
+  testing::NiceMock<MockBrowserWindowInterface> mock_browser_window;
+  EXPECT_CALL(mock_browser_window, GetProfile())
+      .WillRepeatedly(testing::Return(&profile));
+  EXPECT_CALL(testing::Const(mock_browser_window), GetProfile())
+      .WillRepeatedly(testing::Return(&profile));
+  EXPECT_CALL(mock_browser_window, GetType())
+      .WillRepeatedly(
+          testing::Return(BrowserWindowInterface::Type::TYPE_NORMAL));
+
+  testing::NiceMock<MockTabSlotController> tab_slot_controller;
+  EXPECT_CALL(tab_slot_controller, GetBrowserWindowInterface())
+      .WillRepeatedly(testing::Return(&mock_browser_window));
+
+  BraveTab tab(tabs::TabHandle(1), &tab_slot_controller);
+
+  // Horizontal tabs: delegate to Tab::GetAnchorPosition() which returns
+  // TOP_LEFT.
+  profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, false);
+  EXPECT_EQ(views::BubbleBorder::Arrow::TOP_LEFT, tab.GetAnchorPosition());
+
+  // Vertical tabs: must return LEFT_TOP so the hover card appears to the
+  // right of the tab strip for both the first hover (card creation) and
+  // subsequent hovers (card update via UpdateOrShowCard).
+  profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  EXPECT_EQ(views::BubbleBorder::Arrow::LEFT_TOP, tab.GetAnchorPosition());
 }

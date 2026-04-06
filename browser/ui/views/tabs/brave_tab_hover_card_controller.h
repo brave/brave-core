@@ -15,17 +15,11 @@ class BraveTabHoverCardController : public TabHoverCardController {
   using TabHoverCardController::TabHoverCardController;
   ~BraveTabHoverCardController() override;
 
-  void SetIsVerticalTabs(bool is_vertical_tabs);
-
  protected:
-  void UpdateHoverCardArrow();
-
   void OnHovercardImagesEnabledChanged() override;
 
   // TabHoverCardController:
   void CreateHoverCard(HoverCardAnchorTarget* anchor_target) override;
-
-  bool is_vertical_tabs_ = false;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_HOVER_CARD_CONTROLLER_H_
