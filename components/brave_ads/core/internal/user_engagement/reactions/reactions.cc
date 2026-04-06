@@ -208,7 +208,7 @@ void Reactions::ToggleMarkAdAsInappropriate(
                      ReactionSetToList(marked_as_inappropriate_));
 
   if (inserted) {
-    NotifyDidToggleSaveAd(mojom_reaction->creative_set_id);
+    NotifyDidToggleMarkAdAsInappropriate(mojom_reaction->creative_set_id);
 
     Deposit(mojom_reaction->mojom_ad_type,
             mojom::ConfirmationType::kMarkAdAsInappropriate,
