@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/strings/string_number_conversions.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "build/build_config.h"
@@ -324,7 +325,8 @@ TEST_F(BraveSearchMetricsUnitTest, WidgetSearchPercentage) {
   histogram_tester_.ExpectTotalCount(kSearchWidgetSearchPercentHistogramName,
                                      0);
 
-  // Simulate 100 primary queries with 25 widget searches (25%).
+  // Simulate 100 primary queries with the same widget search URL called
+  // multiple times. Only the first call records; duplicates are ignored.
   for (int i = 0; i < 100; i++) {
     brave_search_metrics_->MaybeRecordBraveQuery(empty_url_, brave_search_url_);
   }
@@ -334,9 +336,26 @@ TEST_F(BraveSearchMetricsUnitTest, WidgetSearchPercentage) {
 
   FastForwardAndReport(base::Days(1));
 
-  // 25% widget -> bucket 3 (21-80%)
+  // Only 1 widget search recorded out of 100 primary queries -> bucket 1
+  // (1-3%)
   histogram_tester_.ExpectUniqueSample(kSearchWidgetSearchPercentHistogramName,
-                                       3, 1);
+                                       1, 1);
+
+  // Simulate 100 primary queries with 25 distinct widget search URLs.
+  // Each unique URL passes the dedup guard and is recorded.
+  for (int i = 0; i < 100; i++) {
+    brave_search_metrics_->MaybeRecordBraveQuery(empty_url_, brave_search_url_);
+  }
+  for (int i = 0; i < 25; i++) {
+    brave_search_metrics_->MaybeRecordWidgetSearch(
+        GURL(brave_search_url_.spec() + base::NumberToString(i)));
+  }
+
+  FastForwardAndReport(base::Days(1));
+
+  // 25% widget searches -> bucket 3 (21-80%)
+  histogram_tester_.ExpectBucketCount(kSearchWidgetSearchPercentHistogramName,
+                                      3, 1);
 }
 TEST_F(BraveSearchMetricsUnitTest, QuickSearchPercentage) {
   // Leo search and non-Brave keyword should not be recorded.
