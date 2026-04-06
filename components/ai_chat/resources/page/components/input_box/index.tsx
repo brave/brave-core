@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { showAlert } from '@brave/leo/react/alertCenter'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import Tooltip from '@brave/leo/react/tooltip'
@@ -244,6 +245,13 @@ function InputBox(props: InputBoxProps) {
       )
       if (uploadedFiles.length > 0) {
         props.context.attachImages(uploadedFiles)
+      }
+      if (uploadedFiles.length < files.length) {
+        showAlert({
+          type: 'error',
+          content: getLocale(S.CHAT_UI_FILE_UPLOAD_ERROR),
+          actions: [],
+        })
       }
     } catch (error) {
       // Silently fail - error will be handled by the upload system

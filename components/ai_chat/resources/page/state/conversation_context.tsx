@@ -4,7 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { showAlert } from '@brave/leo/react/alertCenter'
 import generateReactContext from '$web-common/api/react_api'
+import { getLocale } from '$web-common/locale'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import { IGNORE_EXTERNAL_LINK_WARNING_KEY } from '../../common/constants'
 import {
@@ -349,6 +351,24 @@ export function useProvideConversationContext(props: ConversationContextProps) {
   }
 
   const processUploadedFiles = async (files: Mojom.UploadedFile[]) => {
+    // Filter out text files where extraction failed (no extracted text).
+    const validFiles = files.filter(
+      (f) =>
+        f.type !== Mojom.UploadedFileType.kText
+        || (f.extractedText !== undefined && f.extractedText !== null),
+    )
+    // Show error when some files were dropped: either text extraction
+    // failed, or unsupported files were included (the backend returns
+    // empty stubs for unsupported types like zip so they are filtered
+    // out here, while cancellation returns null and skips this path).
+    if (validFiles.length < files.length) {
+      showAlert({
+        type: 'error',
+        content: getLocale(S.CHAT_UI_FILE_UPLOAD_ERROR),
+        actions: [],
+      })
+    }
+
     // After mutation, any returned promise will be awaited before settling.
     // This won't re-fetch the conversation history, just get the latest
     // version if it's not invalidated.
@@ -357,7 +377,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     // data.
     setPendingMessageFiles((pendingMessageFiles) => {
       const newFiles = processUploadedFilesWithLimits(
-        files,
+        validFiles,
         conversationHistory,
         pendingMessageFiles,
       )
@@ -391,7 +411,8 @@ export function useProvideConversationContext(props: ConversationContextProps) {
   ) => {
     uploadFileMutation.mutate(args, {
       onSuccess: async (uploadedFiles, [useMediaCapture]) => {
-        // Reset event state, avoid us having to make a useState<bool> for this
+        // Reset event state, avoid us having to make a useState<bool>
+        // for this
         aiChat.api.resetOnUploadFilesSelected()
         if (uploadedFiles) {
           return processUploadedFiles(uploadedFiles)

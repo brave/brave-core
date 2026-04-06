@@ -218,12 +218,16 @@ void UploadFileHelper::MultiFilesSelected(
                 uploaded_files.push_back(mojom::UploadedFile::New(
                     filepath.AsUTF8Unsafe(), file_data->size(), *file_data,
                     *file_type_opt, std::nullopt));
+              } else {
+                // Include rejected files as empty stubs so the frontend
+                // can detect dropped files and show an error alert.
+                uploaded_files.push_back(mojom::UploadedFile::New(
+                    filepath.AsUTF8Unsafe(), 0, std::vector<uint8_t>(),
+                    mojom::UploadedFileType::kText, std::nullopt));
               }
             }
             std::move(callback).Run(
-                uploaded_files.empty()
-                    ? std::nullopt
-                    : std::make_optional(std::move(uploaded_files)));
+                std::make_optional(std::move(uploaded_files)));
           },
           std::move(upload_file_callback_)));
 
@@ -327,8 +331,14 @@ void UploadFileHelper::OnFileRead(
                        weak_ptr_factory_.GetWeakPtr(),
                        std::get<1>(result).AsUTF8Unsafe()));
   } else {
-    // Fail if we cannot handle this file type
-    std::move(upload_file_callback_).Run(std::nullopt);
+    // Include as empty stub so the frontend can detect the unsupported
+    // file and show an error (as opposed to nullopt which means the user
+    // cancelled the file picker).
+    std::vector<mojom::UploadedFilePtr> files;
+    files.push_back(mojom::UploadedFile::New(
+        std::get<1>(result).AsUTF8Unsafe(), 0, std::vector<uint8_t>(),
+        mojom::UploadedFileType::kText, std::nullopt));
+    std::move(upload_file_callback_).Run(std::make_optional(std::move(files)));
   }
 }
 

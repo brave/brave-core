@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { getLocale } from '$web-common/locale'
+import { showAlert } from '@brave/leo/react/alertCenter'
 import Icon from '@brave/leo/react/icon'
 import * as Mojom from '../../../common/mojom'
 import styles from './style.module.scss'
@@ -43,6 +44,13 @@ export default function DragOverlay() {
       )
       if (uploadedFiles.length > 0) {
         attachImages(uploadedFiles)
+      }
+      if (uploadedFiles.length < files.length) {
+        showAlert({
+          type: 'error',
+          content: getLocale(S.CHAT_UI_FILE_UPLOAD_ERROR),
+          actions: [],
+        })
       }
     } catch (error) {
       // Silently fail - error will be handled by the upload system

@@ -281,8 +281,13 @@ TEST_F(UploadFileHelperTest, PdfFileWithInvalidHeader) {
   auto result = UploadFileSync();
   testing::Mock::VerifyAndClearExpectations(&observer);
 
-  // Should fail since it has .pdf extension but doesn't look like a PDF
-  EXPECT_FALSE(result);
+  // Should return a stub entry (empty data, kText) so the frontend can
+  // detect the rejection and show an error.
+  ASSERT_TRUE(result);
+  ASSERT_EQ(1u, result->size());
+  EXPECT_TRUE((*result)[0]->data.empty());
+  EXPECT_EQ((*result)[0]->type, mojom::UploadedFileType::kText);
+  EXPECT_FALSE((*result)[0]->extracted_text.has_value());
 }
 
 TEST_F(UploadFileHelperTest, PdfFileTooSmall) {
@@ -303,8 +308,12 @@ TEST_F(UploadFileHelperTest, PdfFileTooSmall) {
   auto result = UploadFileSync();
   testing::Mock::VerifyAndClearExpectations(&observer);
 
-  // Should fail since it has .pdf extension but is too small to be a valid PDF
-  EXPECT_FALSE(result);
+  // Should return a stub entry for the rejected file.
+  ASSERT_TRUE(result);
+  ASSERT_EQ(1u, result->size());
+  EXPECT_TRUE((*result)[0]->data.empty());
+  EXPECT_EQ((*result)[0]->type, mojom::UploadedFileType::kText);
+  EXPECT_FALSE((*result)[0]->extracted_text.has_value());
 }
 
 TEST_F(UploadFileHelperTest, BinaryFileRejected) {
@@ -322,8 +331,12 @@ TEST_F(UploadFileHelperTest, BinaryFileRejected) {
   auto result = UploadFileSync();
   testing::Mock::VerifyAndClearExpectations(&observer);
 
-  // Should fail since .zip maps to application/zip (known binary)
-  EXPECT_FALSE(result);
+  // Should return a stub entry for the rejected zip file.
+  ASSERT_TRUE(result);
+  ASSERT_EQ(1u, result->size());
+  EXPECT_TRUE((*result)[0]->data.empty());
+  EXPECT_EQ((*result)[0]->type, mojom::UploadedFileType::kText);
+  EXPECT_FALSE((*result)[0]->extracted_text.has_value());
 }
 
 TEST_F(UploadFileHelperTest, TextFileHandling) {
@@ -438,6 +451,44 @@ TEST_F(UploadFileHelperTest, MixedFileTypes) {
   EXPECT_EQ((*result)[1]->filename, png_path.AsUTF8Unsafe());
   EXPECT_EQ((*result)[1]->type, mojom::UploadedFileType::kImage);
   EXPECT_GT((*result)[1]->data.size(), 0u);
+}
+
+TEST_F(UploadFileHelperTest, MixedWithUnsupportedFileDropsInvalid) {
+  data_decoder::test::InProcessDataDecoder data_decoder;
+  // Upload a valid image and text file alongside an unsupported zip file.
+  auto png_bytes = gfx::test::CreatePNGBytes(100);
+  base::FilePath png_path = temp_dir_.GetPath().AppendASCII("photo.png");
+  base::FilePath txt_path = temp_dir_.GetPath().AppendASCII("readme.txt");
+  base::FilePath zip_path = temp_dir_.GetPath().AppendASCII("archive.zip");
+  ASSERT_TRUE(base::WriteFile(png_path, base::span(*png_bytes)));
+  ASSERT_TRUE(base::WriteFile(txt_path, "hello world"));
+  ASSERT_TRUE(base::WriteFile(zip_path, "PK\x03\x04 fake zip"));
+
+  ui::SelectFileDialog::SetFactory(
+      std::make_unique<content::FakeSelectFileDialogFactory>(
+          std::vector<base::FilePath>{zip_path, png_path, txt_path}));
+
+  testing::NiceMock<MockObserver> observer(file_helper_.get());
+  EXPECT_CALL(observer, OnFilesSelected).Times(1);
+
+  auto result = UploadFileSync();
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  // All 3 files returned: image and text are valid, zip is a stub.
+  ASSERT_TRUE(result);
+  ASSERT_EQ(3u, result->size());
+  // Barrier callback order is nondeterministic, so check by type.
+  EXPECT_TRUE(std::ranges::any_of(*result, [](const auto& f) {
+    return f->type == mojom::UploadedFileType::kImage && !f->data.empty();
+  }));
+  // The text file and zip stub both have kText type. Distinguish by data.
+  EXPECT_TRUE(std::ranges::any_of(*result, [](const auto& f) {
+    return f->type == mojom::UploadedFileType::kText && !f->data.empty();
+  }));
+  // Zip stub: kText with empty data
+  EXPECT_TRUE(std::ranges::any_of(*result, [](const auto& f) {
+    return f->type == mojom::UploadedFileType::kText && f->data.empty();
+  }));
 }
 
 }  // namespace ai_chat
