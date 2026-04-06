@@ -17,7 +17,7 @@ class BraveAdsDoNotDisturbPermissionRuleTest : public test::TestBase {};
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
        ShouldAllowWhileBrowserIsInactiveBetween6amAnd9pmOnAndroid) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
+  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kAndroid);
 
   NotifyBrowserDidResignActive();
   NotifyBrowserDidEnterBackground();
@@ -53,7 +53,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
        ShouldAllowWhileBrowserIsActiveOnAndroid) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
+  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kAndroid);
 
   NotifyBrowserDidBecomeActive();
   NotifyBrowserDidEnterForeground();
@@ -88,7 +88,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
 
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnIOS) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
+  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kIOS);
 
   NotifyBrowserDidBecomeActive();
   NotifyBrowserDidEnterForeground();
@@ -110,7 +110,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnIOS) {
 
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnMacOS) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);
+  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kMacOS);
 
   NotifyBrowserDidBecomeActive();
   NotifyBrowserDidEnterForeground();
@@ -132,7 +132,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnMacOS) {
 
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnWindows) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
+  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kWindows);
 
   NotifyBrowserDidBecomeActive();
   NotifyBrowserDidEnterForeground();
@@ -154,7 +154,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnWindows) {
 
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnLinux) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kLinux);
+  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kLinux);
 
   NotifyBrowserDidBecomeActive();
   NotifyBrowserDidEnterForeground();

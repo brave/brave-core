@@ -22,7 +22,7 @@ TEST_F(BraveAdsNotificationAdUtilTest, CanServeIfUserIsActive) {
 
 TEST_F(BraveAdsNotificationAdUtilTest, CannotServeIfUserIsActive) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
+  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kAndroid);
 
   // Act & Assert
   EXPECT_FALSE(CanServeIfUserIsActive());
@@ -44,7 +44,7 @@ TEST_F(BraveAdsNotificationAdUtilTest,
 
 TEST_F(BraveAdsNotificationAdUtilTest, CanServeAtRegularIntervals) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
+  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kAndroid);
 
   // Act & Assert
   EXPECT_TRUE(CanServeAtRegularIntervals());

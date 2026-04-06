@@ -13,6 +13,8 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/notreached.h"
+#include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
+#include "brave/components/brave_ads/core/internal/common/platform/test/fake_platform_helper.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/url_response_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_constants.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
@@ -27,13 +29,6 @@ constexpr char kNightlyBuildChannelName[] = "nightly";
 constexpr char kBetaBuildChannelName[] = "beta";
 constexpr char kReleaseBuildChannelName[] = "release";
 
-constexpr char kUnknownPlatformType[] = "unknown";
-constexpr char kAndroidPlatformType[] = "android";
-constexpr char kIOSPlatformType[] = "ios";
-constexpr char kLinuxPlatformType[] = "linux";
-constexpr char kMacOSPlatformType[] = "macos";
-constexpr char kWindowsPlatformType[] = "windows";
-
 }  // namespace
 
 void MockDeviceId() {
@@ -42,51 +37,10 @@ void MockDeviceId() {
   GlobalState::GetInstance()->SysInfo().device_id = kDeviceId;
 }
 
-void MockPlatformHelper(const PlatformHelperMock& platform_helper_mock,
-                        PlatformType type) {
-  PlatformHelper::SetForTesting(&platform_helper_mock);
-
-  bool is_mobile = false;
-  std::string name;
-
-  switch (type) {
-    case PlatformType::kUnknown: {
-      name = kUnknownPlatformType;
-      break;
-    }
-
-    case PlatformType::kAndroid: {
-      is_mobile = true;
-      name = kAndroidPlatformType;
-      break;
-    }
-
-    case PlatformType::kIOS: {
-      is_mobile = true;
-      name = kIOSPlatformType;
-      break;
-    }
-
-    case PlatformType::kLinux: {
-      name = kLinuxPlatformType;
-      break;
-    }
-
-    case PlatformType::kMacOS: {
-      name = kMacOSPlatformType;
-      break;
-    }
-
-    case PlatformType::kWindows: {
-      name = kWindowsPlatformType;
-      break;
-    }
-  }
-
-  ON_CALL(platform_helper_mock, IsMobile)
-      .WillByDefault(::testing::Return(is_mobile));
-  ON_CALL(platform_helper_mock, GetName).WillByDefault(::testing::Return(name));
-  ON_CALL(platform_helper_mock, GetType).WillByDefault(::testing::Return(type));
+void SetUpFakePlatformHelper(FakePlatformHelper& fake_platform_helper,
+                             PlatformType type) {
+  fake_platform_helper.SetPlatformType(type);
+  PlatformHelper::SetForTesting(&fake_platform_helper);
 }
 
 void MockBuildChannel(BuildChannelType type) {

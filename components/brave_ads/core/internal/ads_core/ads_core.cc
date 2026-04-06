@@ -19,8 +19,8 @@ AdsCore::AdsCore(std::unique_ptr<TokenGeneratorInterface> token_generator)
 
 AdsCore::~AdsCore() = default;
 
-const TokenGeneratorInterface* AdsCore::GetTokenGenerator() const {
-  return &*token_generator_;
+TokenGeneratorInterface* AdsCore::GetTokenGenerator() {
+  return token_generator_.get();
 }
 
 Account& AdsCore::GetAccount() {

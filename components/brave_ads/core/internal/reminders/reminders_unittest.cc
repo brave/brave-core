@@ -57,7 +57,7 @@ TEST_F(BraveAdsRemindersTest,
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
 
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
+  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kAndroid);
 
   BuildAndSaveAdHistory(
       mojom::AdType::kNotificationAd,
@@ -78,7 +78,7 @@ TEST_F(BraveAdsRemindersTest,
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
 
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
+  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kIOS);
 
   BuildAndSaveAdHistory(
       mojom::AdType::kNotificationAd,
@@ -99,7 +99,7 @@ TEST_F(BraveAdsRemindersTest,
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
 
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
+  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kWindows);
 
   BuildAndSaveAdHistory(
       mojom::AdType::kNotificationAd,
@@ -121,7 +121,7 @@ TEST_F(BraveAdsRemindersTest,
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
 
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);
+  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kMacOS);
 
   BuildAndSaveAdHistory(
       mojom::AdType::kNotificationAd,
@@ -143,7 +143,7 @@ TEST_F(BraveAdsRemindersTest,
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
 
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kLinux);
+  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kLinux);
 
   BuildAndSaveAdHistory(
       mojom::AdType::kNotificationAd,

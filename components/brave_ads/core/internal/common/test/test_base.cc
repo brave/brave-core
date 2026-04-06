@@ -14,7 +14,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/test/token_generator_mock.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/test/fake_token_generator.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_state_manager.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/test/wallet_test_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_waiter.h"
@@ -258,7 +258,7 @@ void TestBase::Mock() {
   CHECK(GlobalState::HasInstance())
       << "Must be called after GlobalState is instantiated";
 
-  MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
+  SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kWindows);
 
   MockBuildChannel(BuildChannelType::kRelease);
 
@@ -334,7 +334,7 @@ void TestBase::SetUpUnitTest() {
                                   "SetUp is initialized for unit testing";
 
   global_state_ = std::make_unique<GlobalState>(
-      ads_client_mock_, DatabasePath(), std::make_unique<TokenGeneratorMock>());
+      ads_client_mock_, DatabasePath(), std::make_unique<FakeTokenGenerator>());
 
   // Must be called after `GlobalState` is instantiated but prior to
   // `MockDefaultAdsServiceState`.

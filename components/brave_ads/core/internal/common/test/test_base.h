@@ -18,7 +18,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_for_testing.h"
 #include "brave/components/brave_ads/core/internal/ads_client/test/ads_client_mock.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_util.h"
-#include "brave/components/brave_ads/core/internal/common/platform/test/platform_helper_mock.h"
+#include "brave/components/brave_ads/core/internal/common/platform/test/fake_platform_helper.h"
 #include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -133,7 +133,7 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
 
   base::test::TaskEnvironment task_environment_;
 
-  ::testing::NiceMock<PlatformHelperMock> platform_helper_mock_;
+  FakePlatformHelper fake_platform_helper_;
 
   ::testing::NiceMock<AdsClientMock> ads_client_mock_;
 
