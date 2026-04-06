@@ -23,7 +23,6 @@ import {
 } from '../attachment_item'
 import { ModelSelector } from '../model_selector'
 import usePromise from '$web-common/usePromise'
-import { isImageFile } from '../../constants/file_types'
 import { convertFileToUploadedFile } from '../../utils/file_utils'
 import { isFullPageScreenshot } from '../../../common/conversation_history_utils'
 import Editable from './editable'
@@ -76,6 +75,7 @@ type Props = Pick<
     | 'getPluralString'
     | 'processImageFile'
     | 'processPdfFile'
+    | 'processTextFile'
     | 'openAIChatAgentProfile'
     | 'skills'
   >
@@ -219,26 +219,32 @@ function InputBox(props: InputBoxProps) {
       return
     }
 
-    const files = Array.from(clipboardData.files).filter(isImageFile)
+    const files = Array.from(clipboardData.files)
 
     if (files.length === 0) {
       return
     }
 
-    // Prevent the default paste behavior for images
+    // Prevent the default paste behavior for files
     e.preventDefault()
 
     try {
-      const uploadedFiles = await Promise.all(
+      const results = await Promise.all(
         files.map((file) =>
           convertFileToUploadedFile(
             file,
             props.context.processImageFile,
             props.context.processPdfFile,
+            props.context.processTextFile,
           ),
         ),
       )
-      props.context.attachImages(uploadedFiles)
+      const uploadedFiles = results.filter(
+        (f): f is Mojom.UploadedFile => f !== null,
+      )
+      if (uploadedFiles.length > 0) {
+        props.context.attachImages(uploadedFiles)
+      }
     } catch (error) {
       // Silently fail - error will be handled by the upload system
     }

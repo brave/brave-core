@@ -6,8 +6,8 @@
 import * as React from 'react'
 import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
+import * as Mojom from '../../../common/mojom'
 import styles from './style.module.scss'
-import { isImageFile, isPdfFile } from '../../constants/file_types'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { convertFileToUploadedFile } from '../../utils/file_utils'
@@ -21,25 +21,29 @@ export default function DragOverlay() {
     e.stopPropagation()
     clearDragState()
 
-    const files = Array.from(e.dataTransfer?.files || []).filter(
-      (file) => isImageFile(file) || isPdfFile(file),
-    )
+    const files = Array.from(e.dataTransfer?.files || [])
 
     if (files.length === 0) {
       return
     }
 
     try {
-      const uploadedFiles = await Promise.all(
+      const results = await Promise.all(
         files.map((file) =>
           convertFileToUploadedFile(
             file,
             aiChat.processImageFile,
             aiChat.processPdfFile,
+            aiChat.processTextFile,
           ),
         ),
       )
-      attachImages(uploadedFiles)
+      const uploadedFiles = results.filter(
+        (f): f is Mojom.UploadedFile => f !== null,
+      )
+      if (uploadedFiles.length > 0) {
+        attachImages(uploadedFiles)
+      }
     } catch (error) {
       // Silently fail - error will be handled by the upload system
     }

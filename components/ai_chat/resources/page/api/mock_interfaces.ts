@@ -213,6 +213,16 @@ export function createMockUIHandler(
           extractedText: undefined,
         },
       }),
+    processTextFile: () =>
+      Promise.resolve({
+        processedFile: {
+          filename: '',
+          filesize: 0,
+          data: [],
+          type: Mojom.UploadedFileType.kText,
+          extractedText: undefined,
+        },
+      }),
     getPluralString: () => Promise.resolve({ pluralString: '' }),
     setChatUI: () => Promise.resolve({ isStandalone: false }),
 
