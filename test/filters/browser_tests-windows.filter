@@ -55,6 +55,16 @@
 # https://github.com/brave/brave-browser/issues/53785
 -LayoutInstabilityTest.*
 
+# Flaky Chromium test - Brave's cosmetic filters inject MutationObserver and
+# setInterval(500ms) polling on all pages, preventing Blink's IdlenessDetector
+# from reaching the 500ms quiet window needed for NetworkBecameIdle. The Paint
+# test fails at EnsureHistogramsRecorded for the network/main-thread idle
+# metric. Same root cause as the disabled NetworkAndMainThreadIdleDelayed
+# (Linux) and NetworkAndMainThreadIdle (Linux, PR #35281). Upstream flake rate
+# 3.8% (LUCI Analysis, 30 days).
+# https://github.com/brave/brave-browser/issues/54186
+-PageStabilityMetricsTest.Paint
+
 # These tests are flaky both on CI and locally
 -CmdLineURLIncognitoBasicTestFeatureDisabled/LaunchNavigationBrowserBasicTest.CmdLineLaunch/0
 -CmdLineURLIncognitoBasicTestFeatureEnabled/LaunchNavigationBrowserBasicTest.CmdLineLaunch/0
@@ -226,3 +236,23 @@
 # HasCurrent() is asserted. Upstream flake rate 0.6% (LUCI Analysis, 30 days).
 # No Brave modifications to installable manager code path.
 -InstallableManagerBrowserTest.CheckWebapp
+
+# Chromium test: intermittent browser startup timeout on Windows CI.
+# Upstream flake rate: 0.3% (stable). Brave-specific startup overhead
+# (AiChat, NTP images, stats, shields) extends initialization time,
+# triggering RunLoop timeout in ProxyRunTestOnMainThreadLoop under high
+# parallelism (32 jobs). Test itself is trivially simple (creates a context
+# menu and checks a menu item) — failure occurs before test body runs.
+# Brave modifies render_view_context_menu via chromium_src but only adds
+# menu items, unrelated to startup timing. Not disabled upstream.
+# https://github.com/brave/brave-browser/issues/54114
+-All/ContextMenuBrowserTest.CopyLinkTextTouchTextOnly/LinkPreviewDisabled
+
+# Intermittent failure: after crash recovery + reload, IsShowing() returns false.
+# Known upstream flake (1.7% flake rate over 30 days per LUCI Analysis).
+# LUCI data is aggregated across all configs, so using windows-wide filter.
+# Chromium test - no Brave modifications in crash recovery or view visibility paths.
+# The related ReloadCacheRevalidate variant is already DISABLED upstream.
+# https://github.com/brave/brave-browser/issues/53995
+-CrashRecoveryBrowserTest.Reload
+

@@ -132,6 +132,7 @@ source_set("unit_tests") {
   sources = [
     "ads_service_impl_unittest.cc",
     "application_state/application_state_monitor_unittest.cc",
+    "component_updater/resource_component_registrar_unittest.cc",
   ]
 
   deps = [
@@ -141,6 +142,7 @@ source_set("unit_tests") {
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/core/public:headers",
+    "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/ntp_background_images/common",
