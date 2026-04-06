@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import ProgressRing from '@brave/leo/react/progressRing'
 import Tooltip from '@brave/leo/react/tooltip'
@@ -70,13 +71,14 @@ export function AttachmentItem(props: Props) {
         </div>
       </div>
       {props.remove && (
-        <button
-          type='button'
+        <Button
+          fab
+          kind='plain-faint'
           className={styles.removeButton}
           onClick={props.remove}
         >
           <Icon name='close' />
-        </button>
+        </Button>
       )}
     </div>
   )

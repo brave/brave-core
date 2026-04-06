@@ -6,8 +6,8 @@
 .itemWrapper {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
+  gap: var(--leo-spacing-l);
   width: 100%;
   padding: var(--leo-spacing-m) var(--leo-spacing-l) var(--leo-spacing-m)
     var(--leo-spacing-m);
@@ -56,6 +56,7 @@
 
 .leftSide {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: row;
   align-items: center;
   gap: var(--leo-spacing-l);
@@ -66,14 +67,18 @@
 
 .info {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  min-width: 0;
   overflow: hidden;
 }
 
 .forEllipsis {
   display: grid;
+  width: 100%;
+  min-width: 0;
 }
 
 .title {
@@ -124,12 +129,7 @@
 .removeButton {
   --leo-icon-size: 20px;
   --leo-icon-color: var(--leo-color-icon-secondary);
+  --leo-button-padding: 0;
+  margin-inline-start: auto;
   flex-shrink: 0;
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }

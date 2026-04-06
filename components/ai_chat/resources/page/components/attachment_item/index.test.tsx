@@ -38,7 +38,7 @@ describe('attachment item', () => {
       container.querySelector('img[src="https://example.com/image.jpg"]'),
     ).toBeTruthy()
 
-    expect(document.querySelector('.removeButton')).not.toBeInTheDocument()
+    expect(document.querySelector('leo-button.removeButton')).not.toBeInTheDocument()
   })
 
   it('does not render subtitle if it is not provided', () => {
@@ -65,13 +65,11 @@ describe('attachment item', () => {
       />,
     )
 
-    const button = document.querySelector(
-      'button.removeButton',
-    ) as HTMLButtonElement
+    const button = document.querySelector('leo-button.removeButton') as any
     expect(button).toBeInTheDocument()
     expect(button).toBeVisible()
 
-    button.click()
+    button?.shadowRoot?.querySelector('button')?.click()
 
     await waitFor(() => {
       expect(clickHandler).toHaveBeenCalled()
@@ -325,11 +323,11 @@ describe('AttachmentUploadItems', () => {
     expect(screen.getByText('document.pdf')).toBeInTheDocument()
 
     // Find the remove button for the screenshot thumbnail (should be the second button)
-    const removeButtons = document.querySelectorAll('button.removeButton')
+    const removeButtons = document.querySelectorAll('leo-button.removeButton')
     expect(removeButtons).toHaveLength(3) // image, screenshot, pdf
 
     // Click the screenshot remove button (middle one)
-    ;(removeButtons[1] as HTMLButtonElement)?.click()
+    ;(removeButtons[1] as any)?.shadowRoot?.querySelector('button')?.click()
 
     // Should call remove with the actual index of the first full page screenshot (index 1)
     expect(mockRemove).toHaveBeenCalledTimes(1)
@@ -362,7 +360,7 @@ describe('AttachmentUploadItems', () => {
     expect(screen.getByText('document.pdf')).toBeInTheDocument()
 
     // Should have remove buttons for all file types
-    const removeButtons = document.querySelectorAll('button.removeButton')
+    const removeButtons = document.querySelectorAll('leo-button.removeButton')
     expect(removeButtons).toHaveLength(3) // image, screenshot, and PDF all have remove buttons
   })
 
