@@ -14,7 +14,6 @@
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "base/version_info/version_info.h"
-#include "brave/components/brave_ads/core/browser/virtual_pref/virtual_pref_provider_util.h"
 #include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
@@ -89,46 +88,6 @@ TEST_F(BraveAdsVirtualPrefProviderTest, BrowserVersion) {
       virtual_prefs.FindStringByDottedPath("[virtual]:browser.version");
   ASSERT_TRUE(version);
   EXPECT_EQ(*version, version_info::GetVersionNumber());
-}
-
-TEST_F(BraveAdsVirtualPrefProviderTest, BrowserMajorVersion) {
-  // Act
-  const base::DictValue virtual_prefs = GetVirtualPrefs();
-
-  // Assert
-  EXPECT_EQ(
-      virtual_prefs.FindIntByDottedPath("[virtual]:browser.major_version"),
-      GetMajorVersion());
-}
-
-TEST_F(BraveAdsVirtualPrefProviderTest, BrowserMinorVersion) {
-  // Act
-  const base::DictValue virtual_prefs = GetVirtualPrefs();
-
-  // Assert
-  EXPECT_EQ(
-      virtual_prefs.FindIntByDottedPath("[virtual]:browser.minor_version"),
-      GetMinorVersion());
-}
-
-TEST_F(BraveAdsVirtualPrefProviderTest, BrowserBuildVersion) {
-  // Act
-  const base::DictValue virtual_prefs = GetVirtualPrefs();
-
-  // Assert
-  EXPECT_EQ(
-      virtual_prefs.FindIntByDottedPath("[virtual]:browser.build_version"),
-      GetBuildVersion());
-}
-
-TEST_F(BraveAdsVirtualPrefProviderTest, BrowserPatchVersion) {
-  // Act
-  const base::DictValue virtual_prefs = GetVirtualPrefs();
-
-  // Assert
-  EXPECT_EQ(
-      virtual_prefs.FindIntByDottedPath("[virtual]:browser.patch_version"),
-      GetPatchVersion());
 }
 
 TEST_F(BraveAdsVirtualPrefProviderTest, OperatingSystemLocaleLanguage) {

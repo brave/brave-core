@@ -179,7 +179,8 @@ class DictValue;
 //  Supported virtual pref paths:
 //
 //  1. "[virtual]:browser|version"
-//     - Returning the browser version, e.g. "72.0.59.3".
+//     - Returning the browser version string, e.g. "1.91.0". Use a regex
+//       condition to match on this value.
 //
 //  2. "[virtual]:browser|build_channel"
 //     - Returning the build channel of the browser, returning one of the

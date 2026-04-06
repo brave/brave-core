@@ -12,7 +12,6 @@
 #include "base/json/json_reader.h"
 #include "base/values.h"
 #include "base/version_info/version_info.h"
-#include "brave/components/brave_ads/core/browser/virtual_pref/virtual_pref_provider_util.h"
 #include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
@@ -148,11 +147,7 @@ base::DictValue VirtualPrefProvider::GetPrefs() const {
       .Set("[virtual]:browser",
            base::DictValue()
                .Set("build_channel", delegate_->GetChannel())
-               .Set("version", version_info::GetVersionNumber())
-               .Set("major_version", GetMajorVersion())
-               .Set("minor_version", GetMinorVersion())
-               .Set("build_version", GetBuildVersion())
-               .Set("patch_version", GetPatchVersion()))
+               .Set("version", version_info::GetVersionNumber()))
       .Set("[virtual]:operating_system",
            base::DictValue()
                .Set("locale", base::DictValue()
