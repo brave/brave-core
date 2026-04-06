@@ -69,6 +69,10 @@ FileTextExtractorBase::AdditionalUnsandboxFlags() const {
   return network::mojom::WebSandboxFlags::kNone;
 }
 
+GURL FileTextExtractorBase::GetLoadURL(const base::FilePath& file_path) const {
+  return net::FilePathToFileURL(file_path);
+}
+
 void FileTextExtractorBase::LoadInWebContents(
     content::BrowserContext* browser_context,
     const base::FilePath& file_path) {
@@ -89,8 +93,8 @@ void FileTextExtractorBase::LoadInWebContents(
                        base::BindOnce(&FileTextExtractorBase::OnTimeout,
                                       base::Unretained(this)));
 
-  const GURL file_url = net::FilePathToFileURL(file_path);
-  web_contents_->GetController().LoadURL(file_url, content::Referrer(),
+  const GURL load_url = GetLoadURL(file_path);
+  web_contents_->GetController().LoadURL(load_url, content::Referrer(),
                                          ui::PAGE_TRANSITION_AUTO_TOPLEVEL,
                                          std::string());
 }

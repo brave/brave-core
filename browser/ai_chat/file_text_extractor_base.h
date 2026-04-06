@@ -18,6 +18,7 @@
 #include "brave/components/restricted_web_contents_delegate/restricted_web_contents_delegate.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "services/network/public/cpp/web_sandbox_flags.h"
+#include "url/gurl.h"
 
 namespace content {
 class BrowserContext;
@@ -52,6 +53,10 @@ class FileTextExtractorBase : public RestrictedWebContentsDelegate,
   // Returns additional sandbox flags to remove beyond the base set
   // (Scripts, Origin, Navigation). Override to add more, e.g. kPlugins.
   virtual network::mojom::WebSandboxFlags AdditionalUnsandboxFlags() const;
+
+  // Returns the URL to load for the given file path. Default returns a
+  // file:// URL. Override to customize, e.g. view-source:file://.
+  virtual GURL GetLoadURL(const base::FilePath& file_path) const;
 
   // Starts loading a file in a hidden WebContents.
   void LoadInWebContents(content::BrowserContext* browser_context,
