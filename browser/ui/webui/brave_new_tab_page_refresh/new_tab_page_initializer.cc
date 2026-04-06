@@ -20,6 +20,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -128,6 +129,35 @@ void NewTabPageInitializer::Initialize() {
 
   content::URLDataSource::Add(GetProfile(),
                               std::make_unique<ThemeSource>(GetProfile()));
+}
+
+// static
+void NewTabPageInitializer::MigrateProfilePrefs(PrefService* prefs) {
+  // Added 2026-03: Migrate "hide all widgets" into individual widget prefs.
+  if (prefs->GetBoolean(kNewTabPageHideAllWidgets)) {
+    prefs->SetBoolean(kNewTabPageHideAllWidgets, false);
+    prefs->SetBoolean(kNewTabPageShowRewards, false);
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+    prefs->SetBoolean(brave_talk::prefs::kNewTabPageShowBraveTalk, false);
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+    prefs->SetBoolean(kNewTabPageShowBraveVPN, false);
+#endif
+  }
+  prefs->ClearPref(kNewTabPageHideAllWidgets);
+
+  // Added 2026-04: Set chat input visibility to hidden if the user has
+  // explicitly hidden the search input.
+  using brave_search_conversion::prefs::kMigratedNTPChatInputFromSearch;
+  using brave_search_conversion::prefs::kShowNTPChatInput;
+  using brave_search_conversion::prefs::kShowNTPSearchBox;
+  if (!prefs->GetBoolean(kMigratedNTPChatInputFromSearch)) {
+    prefs->SetBoolean(kMigratedNTPChatInputFromSearch, true);
+    if (auto* user_value = prefs->GetUserPrefValue(kShowNTPSearchBox);
+        user_value && !user_value->GetBool()) {
+      prefs->SetBoolean(kShowNTPChatInput, false);
+    }
+  }
 }
 
 Profile* NewTabPageInitializer::GetProfile() {
