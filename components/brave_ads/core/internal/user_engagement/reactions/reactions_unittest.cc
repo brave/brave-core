@@ -18,6 +18,7 @@
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/reactions/test/reactions_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/test/reactions_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
@@ -32,15 +33,18 @@ class BraveAdsReactionsTest : public test::TestBase {
     test::TestBase::SetUp();
 
     GetAccount().AddObserver(&account_observer_mock_);
+    GetReactions().AddObserver(&reactions_observer_mock_);
   }
 
   void TearDown() override {
+    GetReactions().RemoveObserver(&reactions_observer_mock_);
     GetAccount().RemoveObserver(&account_observer_mock_);
 
     test::TestBase::TearDown();
   }
 
   AccountObserverMock account_observer_mock_;
+  ReactionsObserverMock reactions_observer_mock_;
 };
 
 TEST_F(BraveAdsReactionsTest, ToggleLikeAd) {
@@ -293,6 +297,100 @@ TEST_F(BraveAdsReactionsTest, ToggleMarkAdAsInappropriate) {
 TEST_F(BraveAdsReactionsTest, IsAdMarkedAsAppropriate) {
   // Act & Assert
   EXPECT_FALSE(GetReactions().IsAdMarkedAsInappropriate(test::kCreativeSetId));
+}
+
+TEST_F(BraveAdsReactionsTest, NotifyObserverWhenAdIsLiked) {
+  // Arrange
+  test::MockTokenGenerator(/*count=*/1);
+
+  mojom::ReactionInfoPtr mojom_reaction =
+      test::BuildReaction(mojom::AdType::kNotificationAd);
+
+  // Act & Assert
+  EXPECT_CALL(reactions_observer_mock_, OnDidLikeAd(test::kAdvertiserId));
+  EXPECT_CALL(reactions_observer_mock_, OnDidDislikeAd).Times(0);
+
+  base::MockCallback<ToggleReactionCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  GetReactions().ToggleLikeAd(std::move(mojom_reaction), callback.Get());
+}
+
+TEST_F(BraveAdsReactionsTest, NotifyObserverWhenAdIsDisliked) {
+  // Arrange
+  test::MockTokenGenerator(/*count=*/1);
+
+  mojom::ReactionInfoPtr mojom_reaction =
+      test::BuildReaction(mojom::AdType::kNotificationAd);
+
+  // Act & Assert
+  EXPECT_CALL(reactions_observer_mock_, OnDidDislikeAd(test::kAdvertiserId));
+  EXPECT_CALL(reactions_observer_mock_, OnDidLikeAd).Times(0);
+
+  base::MockCallback<ToggleReactionCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  GetReactions().ToggleDislikeAd(std::move(mojom_reaction), callback.Get());
+}
+
+TEST_F(BraveAdsReactionsTest, NotifyObserverWhenSegmentIsLiked) {
+  // Arrange
+  mojom::ReactionInfoPtr mojom_reaction =
+      test::BuildReaction(mojom::AdType::kNotificationAd);
+
+  // Act & Assert
+  EXPECT_CALL(reactions_observer_mock_, OnDidLikeSegment(test::kSegment));
+  EXPECT_CALL(reactions_observer_mock_, OnDidDislikeSegment).Times(0);
+
+  base::MockCallback<ToggleReactionCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  GetReactions().ToggleLikeSegment(std::move(mojom_reaction), callback.Get());
+}
+
+TEST_F(BraveAdsReactionsTest, NotifyObserverWhenSegmentIsDisliked) {
+  // Arrange
+  mojom::ReactionInfoPtr mojom_reaction =
+      test::BuildReaction(mojom::AdType::kNotificationAd);
+
+  // Act & Assert
+  EXPECT_CALL(reactions_observer_mock_, OnDidDislikeSegment(test::kSegment));
+  EXPECT_CALL(reactions_observer_mock_, OnDidLikeSegment).Times(0);
+
+  base::MockCallback<ToggleReactionCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  GetReactions().ToggleDislikeSegment(std::move(mojom_reaction),
+                                      callback.Get());
+}
+
+TEST_F(BraveAdsReactionsTest, NotifyObserverWhenAdIsSaved) {
+  // Arrange
+  test::MockTokenGenerator(/*count=*/1);
+
+  mojom::ReactionInfoPtr mojom_reaction =
+      test::BuildReaction(mojom::AdType::kNotificationAd);
+
+  // Act & Assert
+  EXPECT_CALL(reactions_observer_mock_,
+              OnDidToggleSaveAd(test::kCreativeInstanceId));
+
+  base::MockCallback<ToggleReactionCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  GetReactions().ToggleSaveAd(std::move(mojom_reaction), callback.Get());
+}
+
+TEST_F(BraveAdsReactionsTest, NotifyObserverWhenAdIsMarkedAsInappropriate) {
+  // Arrange
+  test::MockTokenGenerator(/*count=*/1);
+
+  mojom::ReactionInfoPtr mojom_reaction =
+      test::BuildReaction(mojom::AdType::kNotificationAd);
+
+  // Act & Assert
+  EXPECT_CALL(reactions_observer_mock_,
+              OnDidToggleMarkAdAsInappropriate(test::kCreativeSetId));
+
+  base::MockCallback<ToggleReactionCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  GetReactions().ToggleMarkAdAsInappropriate(std::move(mojom_reaction),
+                                             callback.Get());
 }
 
 }  // namespace brave_ads

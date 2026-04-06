@@ -34,6 +34,9 @@ class Reactions final {
 
   ~Reactions();
 
+  void AddObserver(ReactionsObserver* observer);
+  void RemoveObserver(ReactionsObserver* observer);
+
   void ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
                     ToggleReactionCallback callback);
   void ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
