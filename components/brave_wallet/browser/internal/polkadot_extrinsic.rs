@@ -13,6 +13,15 @@ const MULTIADDRESS_TYPE: u8 = 0x00;
 const SR25519_SIGNATURE: u8 = 0x01;
 const PERIOD: u32 = 64;
 
+const PHASE_APPLY_EXTRINSIC: u8 = 0;
+
+// transactionpayment(TransactionFeePaid)
+const TRANSACTION_FEE_PAID_VARIANT_INDEX: u8 = 0x00;
+
+// system(ExtrinsicSuccess | ExtrinsicFailed)
+const EXTRINSIC_SUCCESS_VARIANT_INDEX: u8 = 0x00;
+const EXTRINSIC_FAILED_VARIANT_INDEX: u8 = 0x01;
+
 // "Balances" pallet lives at index 4:
 // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/kusama-json.json#L921
 // https://github.com/paritytech/polkadot-sdk/blob/69f210b33fce91b23570f3bda64f8e3deff04843/polkadot/runtime/westend/src/lib.rs#L1853-L1854
@@ -584,15 +593,6 @@ fn was_extrinsic_successful(
     // for our extrinsic that we care about: the transaction fee paid and the final
     // status. We can theoretically probe for everything such as who the fee was
     // paid out to but it isn't strictly required for our current needs.
-
-    const PHASE_APPLY_EXTRINSIC: u8 = 0;
-
-    // transactionpayment(TransactionFeePaid)
-    const TRANSACTION_FEE_PAID_VARIANT_INDEX: u8 = 0x00;
-
-    // system(ExtrinsicSuccess | ExtrinsicFailed)
-    const EXTRINSIC_SUCCESS_VARIANT_INDEX: u8 = 0x00;
-    const EXTRINSIC_FAILED_VARIANT_INDEX: u8 = 0x01;
 
     let mut needle = [0_u8; 39];
     needle[0] = PHASE_APPLY_EXTRINSIC;
