@@ -3583,3 +3583,12 @@
 # inline FetchHistogramsAsynchronously call). Upstream flake rate: 0.3%.
 # https://github.com/brave/brave-browser/issues/54039
 -ChromeDataUseMeasurementBrowserTest.DataUseRecorded
+
+# This Chromium test times out because RunUntilIdle() at
+# browser_test_base.cc:966 never completes — Brave's additional startup
+# services (stats updater, referrals, P3A, NTP background images, etc.) keep
+# the UI thread task queue non-idle, exceeding the 30-second
+# action_max_timeout. Upstream flake rate: 0.2% (stable). No Brave
+# modifications to the extension module API code under test.
+# https://github.com/brave/brave-browser/issues/54187
+-PersistentBackground/ExtensionModuleApiTest.CognitoFile/0
