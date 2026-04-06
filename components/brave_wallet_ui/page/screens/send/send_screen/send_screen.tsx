@@ -73,7 +73,7 @@ import {
 } from '../../../../common/hooks/use_is_keyboard_visible'
 
 // Styled Components
-import { InputRow, ToText, ToRow, ShieldingFundsAlert } from './send.style'
+import { InputRow, ToText, ToRow, AlertMessage } from './send.style'
 import {
   ToSectionWrapper,
   ReviewButtonRow,
@@ -151,6 +151,8 @@ export const SendScreen = React.memo(() => {
   const [isWarningAcknowledged, setIsWarningAcknowledged] =
     React.useState<boolean>(false)
   const [memoText, setMemoText] = React.useState<string>('')
+  const [transactionProcessFailedMessage, setTransactionProcessFailedMessage] =
+    React.useState<string>()
 
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
@@ -329,6 +331,7 @@ export const SendScreen = React.memo(() => {
       if (account) {
         history.replace(makeSendRoute(asset, account))
       }
+      setTransactionProcessFailedMessage(undefined)
     },
     [history, needsAccountSelected, toAddressOrUrl],
   )
@@ -373,16 +376,27 @@ export const SendScreen = React.memo(() => {
 
     switch (fromAccount.accountId.coin) {
       case BraveWallet.CoinType.BTC: {
-        await sendBtcTransaction({
-          network: networkFromParams,
-          fromAccount,
-          to: toAddress,
-          sendingMaxAmount,
-          value: new Amount(sendAmount)
-            .multiplyByDecimals(tokenFromParams.decimals)
-            .toHex(),
-        })
-        resetSendFields()
+        setTransactionProcessFailedMessage(undefined)
+        try {
+          await sendBtcTransaction({
+            network: networkFromParams,
+            fromAccount,
+            to: toAddress,
+            sendingMaxAmount,
+            value: new Amount(sendAmount)
+              .multiplyByDecimals(tokenFromParams.decimals)
+              .toHex(),
+          }).unwrap()
+          resetSendFields()
+        } catch (error) {
+          console.error('Btc send failed:', error)
+          setTransactionProcessFailedMessage(
+            getLocale('braveWalletProcessTransactionErrorMessage').replace(
+              '$1',
+              tokenFromParams.symbol,
+            ),
+          )
+        }
         return
       }
 
@@ -499,35 +513,57 @@ export const SendScreen = React.memo(() => {
       }
 
       case BraveWallet.CoinType.ZEC: {
-        const memoArray =
-          memoText !== '' ? new TextEncoder().encode(memoText) : undefined
-        await sendZecTransaction({
-          useShieldedPool: tokenFromParams.isShielded,
-          network: networkFromParams,
-          fromAccount,
-          to: toAddress,
-          sendingMaxAmount,
-          value: new Amount(sendAmount)
-            .multiplyByDecimals(tokenFromParams.decimals)
-            .toHex(),
-          memo: memoArray ? Array.from(memoArray) : undefined,
-        })
-        resetSendFields()
+        setTransactionProcessFailedMessage(undefined)
+        try {
+          const memoArray =
+            memoText !== '' ? new TextEncoder().encode(memoText) : undefined
+          await sendZecTransaction({
+            useShieldedPool: tokenFromParams.isShielded,
+            network: networkFromParams,
+            fromAccount,
+            to: toAddress,
+            sendingMaxAmount,
+            value: new Amount(sendAmount)
+              .multiplyByDecimals(tokenFromParams.decimals)
+              .toHex(),
+            memo: memoArray ? Array.from(memoArray) : undefined,
+          }).unwrap()
+          resetSendFields()
+        } catch (error) {
+          console.error('Zec send failed:', error)
+          setTransactionProcessFailedMessage(
+            getLocale('braveWalletProcessTransactionErrorMessage').replace(
+              '$1',
+              tokenFromParams.symbol,
+            ),
+          )
+        }
         return
       }
 
       case BraveWallet.CoinType.ADA: {
-        await sendCardanoTransaction({
-          network: networkFromParams,
-          fromAccount,
-          to: toAddress,
-          sendingMaxAmount,
-          value: new Amount(sendAmount)
-            .multiplyByDecimals(tokenFromParams.decimals)
-            .toHex(),
-          tokenId: tokenFromParams.contractAddress || undefined,
-        })
-        resetSendFields()
+        setTransactionProcessFailedMessage(undefined)
+        try {
+          await sendCardanoTransaction({
+            network: networkFromParams,
+            fromAccount,
+            to: toAddress,
+            sendingMaxAmount,
+            value: new Amount(sendAmount)
+              .multiplyByDecimals(tokenFromParams.decimals)
+              .toHex(),
+            tokenId: tokenFromParams.contractAddress || undefined,
+          }).unwrap()
+          resetSendFields()
+        } catch (error) {
+          console.error('Cardano send failed:', error)
+          setTransactionProcessFailedMessage(
+            getLocale('braveWalletProcessTransactionErrorMessage').replace(
+              '$1',
+              tokenFromParams.symbol,
+            ),
+          )
+        }
         return
       }
 
@@ -718,9 +754,9 @@ export const SendScreen = React.memo(() => {
                     width='100%'
                     padding='16px 0px 0px 0px'
                   >
-                    <ShieldingFundsAlert type='info'>
+                    <AlertMessage type='info'>
                       {getLocale('braveWalletShieldingFundsAlertDescription')}
-                    </ShieldingFundsAlert>
+                    </AlertMessage>
                   </Row>
                 )}
                 {isUnshieldingFunds && (
@@ -728,9 +764,23 @@ export const SendScreen = React.memo(() => {
                     width='100%'
                     padding='16px 0px 0px 0px'
                   >
-                    <ShieldingFundsAlert type='info'>
+                    <AlertMessage type='info'>
                       {getLocale('braveWalletUnshieldingFundsAlertDescription')}
-                    </ShieldingFundsAlert>
+                    </AlertMessage>
+                  </Row>
+                )}
+                {transactionProcessFailedMessage && (
+                  <Row
+                    width='100%'
+                    padding={
+                      tokenFromParams?.coin === BraveWallet.CoinType.BTC
+                        ? '0px'
+                        : '16px 0px 0px 0px'
+                    }
+                  >
+                    <AlertMessage type='warning'>
+                      {transactionProcessFailedMessage}
+                    </AlertMessage>
                   </Row>
                 )}
               </Column>
