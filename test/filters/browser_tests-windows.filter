@@ -55,6 +55,16 @@
 # https://github.com/brave/brave-browser/issues/53785
 -LayoutInstabilityTest.*
 
+# Flaky Chromium test - Brave's cosmetic filters inject MutationObserver and
+# setInterval(500ms) polling on all pages, preventing Blink's IdlenessDetector
+# from reaching the 500ms quiet window needed for NetworkBecameIdle. The Paint
+# test fails at EnsureHistogramsRecorded for the network/main-thread idle
+# metric. Same root cause as the disabled NetworkAndMainThreadIdleDelayed
+# (Linux) and NetworkAndMainThreadIdle (Linux, PR #35281). Upstream flake rate
+# 3.8% (LUCI Analysis, 30 days).
+# https://github.com/brave/brave-browser/issues/54186
+-PageStabilityMetricsTest.Paint
+
 # These tests are flaky both on CI and locally
 -CmdLineURLIncognitoBasicTestFeatureDisabled/LaunchNavigationBrowserBasicTest.CmdLineLaunch/0
 -CmdLineURLIncognitoBasicTestFeatureEnabled/LaunchNavigationBrowserBasicTest.CmdLineLaunch/0
