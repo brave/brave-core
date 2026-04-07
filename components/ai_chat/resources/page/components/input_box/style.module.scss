@@ -91,9 +91,9 @@
   display: flex;
   align-items: center;
   justify-content: stretch;
-  gap: var(--leo-spacing-m);
   margin: var(--leo-spacing-m);
   margin-bottom: 0;
+  gap: var(--leo-spacing-m);
 }
 
 .taskStateActionButtonStop {
