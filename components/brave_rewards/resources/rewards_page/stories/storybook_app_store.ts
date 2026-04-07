@@ -108,6 +108,7 @@ export function createAppStore(): AppStore {
         title: 'Wikipedia',
         description: '',
         background: '',
+        logo: '',
         web3URL: '',
       },
       supportedWalletProviders: ['uphold', 'gemini'],
