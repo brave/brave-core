@@ -8,8 +8,10 @@
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/misc_metrics/page_percentage_metrics.h"
 #include "brave/components/misc_metrics/pref_names.h"
+#include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 
 namespace misc_metrics {
 
@@ -54,6 +56,16 @@ void NavigationSourceMetrics::RecordBookmarkNavigation() {
 }
 
 void NavigationSourceMetrics::RecordTopSiteNavigation(bool is_custom) {
+#if BUILDFLAG(IS_ANDROID)
+  // On Android, NTP tile navigations use PAGE_TRANSITION_AUTO_BOOKMARK, so
+  // PageMetricsTabHelper will have already recorded a bookmark navigation for
+  // this same event. Subtract it out so the top site is not double-counted.
+  {
+    ScopedDictPrefUpdate update(local_state_, kMiscMetricsNavSourceCounts);
+    const int current = update->FindInt(kBookmarksCountKey).value_or(0);
+    update->Set(kBookmarksCountKey, current - 1);
+  }
+#endif
   if (is_custom) {
     IncrementDictCount(kTopSitesFavoritesCountKey);
   } else {

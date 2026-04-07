@@ -15,6 +15,7 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/components/misc_metrics/navigation_source_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "components/tabs/public/tab_interface.h"
@@ -23,6 +24,12 @@
 #include "content/public/browser/reload_type.h"
 #include "content/public/browser/restore_type.h"
 #include "ui/base/page_transition_types.h"
+
+#if BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/flags/android/chrome_session_state.h"
+#include "chrome/browser/ui/android/tab_model/tab_model.h"
+#include "chrome/browser/ui/android/tab_model/tab_model_list.h"
+#endif  // BUILDFLAG(IS_ANDROID)
 
 namespace misc_metrics {
 
@@ -110,6 +117,17 @@ void PageMetricsTabHelper::MaybeRecordNavigationSource(
     return;
   }
   auto& nav_source_metrics = page_metrics_->navigation_source_metrics();
+#if BUILDFLAG(IS_ANDROID)
+  auto* tab_model = TabModelList::GetTabModelForWebContents(web_contents());
+  if (tab_model) {
+    auto activity_type = tab_model->activity_type();
+    if (activity_type == chrome::android::ActivityType::kWebapp ||
+        activity_type == chrome::android::ActivityType::kWebApk) {
+      nav_source_metrics.RecordPWANavigation();
+      return;
+    }
+  }
+#endif  // BUILDFLAG(IS_ANDROID)
   auto* tab = tabs::TabInterface::MaybeGetFromContents(web_contents());
   auto* browser_window = tab ? tab->GetBrowserWindowInterface() : nullptr;
   if (browser_window &&
@@ -118,8 +136,14 @@ void PageMetricsTabHelper::MaybeRecordNavigationSource(
   } else if (ui::PageTransitionCoreTypeIs(transition,
                                           ui::PAGE_TRANSITION_AUTO_BOOKMARK)) {
     nav_source_metrics.RecordBookmarkNavigation();
+#if !BUILDFLAG(IS_ANDROID)
   } else if (ui::PageTransitionCoreTypeIs(transition,
                                           ui::PAGE_TRANSITION_AUTO_TOPLEVEL)) {
+    nav_source_metrics.RecordExternalNavigation();
+#endif  // !BUILDFLAG(IS_ANDROID)
+  } else if (ui::PageTransitionCoreTypeIs(transition,
+                                          ui::PAGE_TRANSITION_FIRST) &&
+             (transition & ui::PAGE_TRANSITION_FROM_API)) {
     nav_source_metrics.RecordExternalNavigation();
   }
 }

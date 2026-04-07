@@ -121,4 +121,11 @@ void MiscAndroidMetrics::RecordOmniboxBookmarkNavigation() {
   navigation_source_metrics_->RecordBookmarkNavigation();
 }
 
+void MiscAndroidMetrics::RecordTopSiteNavigation(bool is_custom) {
+  if (!navigation_source_metrics_) {
+    return;
+  }
+  navigation_source_metrics_->RecordTopSiteNavigation(is_custom);
+}
+
 }  // namespace misc_metrics
