@@ -23,12 +23,14 @@
 #define DraggingTabsSession DraggingTabsSessionChromium
 
 // Pass additional parameter for contents_data_->AddTabRecursive().
-#define AddTabRecursive(...)                                   \
-  /* meaningless call to address "contents_data_->" */         \
-  pinned_collection();                                         \
-  auto* opener = tab_model->opener_was_set_for_empty_new_tab() \
-                     ? nullptr                                 \
-                     : tab_model->opener();                    \
+#define AddTabRecursive(...)                                    \
+  /* meaningless call to address "contents_data_->" */          \
+  pinned_collection();                                          \
+  /* passing nullptr as opener when creating a empty new tab */ \
+  /* in order not to create a nested tree node */               \
+  auto* opener = tab_model->opener_was_set_for_empty_new_tab()  \
+                     ? nullptr                                  \
+                     : tab_model->opener();                     \
   contents_data_->AddTabRecursive(__VA_ARGS__, opener)
 
 #include <chrome/browser/ui/tabs/tab_strip_model.cc>  // IWYU pragma: export
