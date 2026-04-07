@@ -5,9 +5,14 @@
 
 #include "brave/browser/extensions/updater/features.h"
 
-namespace brave_extensions::features {
+namespace extensions::features {
 
-BASE_FEATURE(kBraveExtensionAutoUpdate,
+// When enabled (default), user installed extensions are automatically updated
+// via component updater on a regular frequency.
+//
+// Can be disabled to prevent automatic extension updates. Folks can still
+// update them manually from the brave://extensions page.
+BASE_FEATURE(kBraveAutoUpdateExtensions,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-}  // namespace brave_extensions::features
+}  // namespace extensions::features

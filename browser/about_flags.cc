@@ -720,9 +720,9 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "Automatically update user installed extensions. When "              \
           "disabled, extensions will not update in the background. Folks can " \
           "still update them manually from the brave://extensions page.",      \
-          kOsDesktop,                                                          \
+          kOsWin | kOsLinux | kOsMac,                                          \
           FEATURE_VALUE_TYPE(                                                  \
-              brave_extensions::features::kBraveExtensionAutoUpdate),          \
+              extensions::features::kBraveAutoUpdateExtensions),               \
       }))
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
