@@ -1836,6 +1836,7 @@
 <translation id="8897189056319316783">ಶೀಲ್ಡ್ ZEC</translation>
 <translation id="508249542337194541">ZEC ಅನ್ನು ಅನ್ಶೀಲ್ಡ್ ಮಾಡಿ</translation>
 <translation id="3382275793825152362">ಶೀಲ್ಡ್ ಫಂಡ್ಸ್</translation>
+<translation id="617149752238892649">ಶೀಲ್ಡ್ ಫಂಡ್ಸ್ ಅನ್ನು ತೆರೆಯಿರಿ</translation>
 <translation id="8631765320256788981">ನೀವು ನಿಮ್ಮ ಪಾರದರ್ಶಕ ಖಾತೆಯಿಂದ ನಿಮ್ಮ ರಕ್ಷಿತ ಖಾತೆಗೆ ಹಣವನ್ನು ಕಳುಹಿಸುತ್ತಿದ್ದೀರಿ.</translation>
 <translation id="3860364671495430495">ನೀವು ನಿಮ್ಮ ಶೀಲ್ಡ್ ಖಾತೆಯಿಂದ ನಿಮ್ಮ ಪಾರದರ್ಶಕ ಖಾತೆಗೆ ಹಣ ಕಳುಹಿಸುತ್ತಿರುವಿರಿ.</translation>
 <translation id="7144878232160441200">ಮರುಪ್ರಯತ್ನಿಸಿ</translation>
@@ -2185,6 +2186,7 @@
     }</translation>
 <translation id="6961721183181597848">ಇಂದು ನಾನು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಬಹುದು?</translation>
 <translation id="2966135729673253768">ಫಾಲೋಅಪ್ ಕೇಳಿ</translation>
+<translation id="5923170497201832190">ಟ್ಯಾಬ್ ಅನ್ನು ಕೆಳಕ್ಕೆ ಸ್ಕ್ರಾಲ್ ಮಾಡಿ</translation>
 <translation id="6219262425964000211">ಫೈಲ್ಸ್‌ ಇಲ್ಲಿ‌ ಬಿಡಿ</translation>
 <translation id="4313763911013851687">ಯಾವುದೇ ಫೈಲ್‌ಗಳನ್ನು ಸಂವಾದಕ್ಕೆ ಸೇರಿಸಲು ಅವನ್ನು ಇಲ್ಲಿ ಬಿಡಿ</translation>
 <translation id="4524675003624341892">ಪ್ರಶ್ನೆಗಳ ಸಲಹೆ ನೀಡಿ…</translation>
@@ -2206,20 +2208,21 @@
 <translation id="999273441077650169">ಟಾಸ್ಕ್‌ಗೆ ಉತ್ತಮವಾದದ್ದನ್ನು ಬಳಸಲು ಮಾದರಿಯು ಕ್ರಿಯಾತ್ಮಕವಾಗಿ ಬದಲಾಗುತ್ತದೆ.<ph name="LINK_BEFORE"/>ಹೆಚ್ಚಾಗಿ ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು ಲಾಮಾ 3.1 8Bನಿಂದ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತೇನೆ. ಇದು ಮೆಟಾದಿಂದ ರಚಿಸಲ್ಪಟ್ಟ ಮತ್ತು ಅನೇಕ ಸಂದರ್ಭಗಳಿಗೆ ಅನ್ವಯಿಸುವ ಮಾದರಿಯಾಗಿದೆ. ಲಾಮಾ ನಮ್ಮದೇ ಆದ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ ಬ್ರೇವ್-ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು Qwen VL 30Bಅನ್ನು ಬಳಸುವ Brave ಸ್ಥಾಪಿತ ಮಾದರಿಯ ಮೇಲೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತೇನೆ, ಇದು Alibaba Cloud ರಚಿಸಿದ ಮಾದರಿಯಾಗಿದ್ದು, ಬಹುಪಾಲು ಸನ್ನಿವೇಶಗಳಿಗೆ ಅನ್ವಯಿಸುತ್ತದೆ. Qwen Braveನ ತನ್ನದೇ ಆದ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ Brave-ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು DeepSeek V3.1ನಿಂದ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತೇನೆ, ಇದು DeepSeek ರಚಿಸಿದ‌ ಮತ್ತು ಅನೇಕ ಸಂದರ್ಭಗಳಿಗೆ ಅನ್ವಯಿಸುವ ಮಾದರಿಯಾಗಿದೆ. DeepSeek V3.1 ನಮ್ಮದೇ ಆದ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ Brave-ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು GLM-5ನಿಂದ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತೇನೆ, ಇದು Zhipu AI ರಚಿಸಿದ‌ ಮತ್ತು ಅನೇಕ ಸಂದರ್ಭಗಳಿಗೆ ಅನ್ವಯಿಸುವ ಮಾದರಿಯಾಗಿದೆ. GLM-5 ಅವರು ಸ್ವತಃ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ NEAR-ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">ನಮಸ್ಕಾರ, ನಾನು ಲಿಯೋ. ನಾನು ಬ್ರೇವ್‌ನ AI ಸಹಾಯಕ. ನನ್ನನ್ನು Anthropic ರಚಿಸಿದ ಕ್ಲಾಡ್ ಇನ್‌ಸ್ಟಂಟ್ ಮోడೆಲ್ ಚಲಾಯಿಸುತ್ತಿದೆ, ಏನು ಸಂವಾದ ಶಕ್ತಿಯುಳ್ಳ ಮತ್ತು ಪಠ್ಯ ಸಂಸ್ಕರಣಾ ಕಾರ್ಯಗಳಿಗೆ ವಿನ್ಯಾಸ ಮಾಡಲಾಗಿದೆ. ಕ್ಲಾಡ್ ಇನ್‌ಸ್ಟಂಟ್ ಅನ್ನು ಬ್ರೇವ್‌ನ ಸ್ವಂತ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯಗಳ ಮುಖಾಂತರ ಆತನೀಂಗಲಾಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು Claude Haikuನಿಂದ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತೇನೆ, ಇದು ಆಂಥ್ರೊಪಿಕ್ ರಚಿಸಿದ ಸಂವಾದ ಮತ್ತು ಪಠ್ಯದ ಪೂರ್ಣಗೊಳಿಕೆಯ ಕೆಲಸಗಳಿಗೆ ಮಾಡೆಲ್ ಆಗಿದೆ. Claude Haiku ನಮ್ಮದೇ ಆದ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ ಬ್ರೇವ್-ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು Claude Sonnetನಿಂದ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತೇನೆ, ಇದು ಆಂಥ್ರೊಪಿಕ್ ರಚಿಸಿದ ಸಂವಾದ ಮತ್ತು ಪಠ್ಯದ ಪೂರ್ಣಗೊಳಿಕೆಯ ಕೆಲಸಗಳಿಗೆ ಮಾಡೆಲ್ ಆಗಿದೆ. Claude Sonnet ನಮ್ಮದೇ ಆದ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ ಬ್ರೇವ್-ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು Llama 4 Scoutನಿಂದ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತೇನೆ, ಇದು ಮೆಟಾದಿಂದ ರಚಿಸಲ್ಪಟ್ಟ ಮತ್ತು ಅನೇಕ ಸಂದರ್ಭಗಳಿಗೆ ಅನ್ವಯಿಸುವ ಮಾದರಿಯಾಗಿದೆ. Llama 4 Scout ನಮ್ಮದೇ ಆದ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ Brave-ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು Llama 4 Maverickನಿಂದ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತೇನೆ, ಇದು ಮೆಟಾದಿಂದ ರಚಿಸಲ್ಪಟ್ಟ ಮತ್ತು ಅನೇಕ ಸಂದರ್ಭಗಳಿಗೆ ಅನ್ವಯಿಸುವ ಮಾದರಿಯಾಗಿದೆ. Llama 4 Maverick Brave-ನ ದೃಢೀಕೃತ ಮೂಲಸೌಕರ್ಯದಲ್ಲಿ ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು GPT OSS 20Bನಿಂದ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತೇನೆ, ಇದು OpenAI ರಚಿಸಿದ‌ ಮತ್ತು ಅನೇಕ ಸಂದರ್ಭಗಳಿಗೆ ಅನುಕೂಲವಾಗುವ ಮಾದರಿಯಾಗಿದೆ. GPT OSS 20B ನಮ್ಮದೇ ಆದ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ Brave-ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು GPT OSS 120Bನಿಂದ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತೇನೆ, ಇದು OpenAI ರಚಿಸಿದ‌ ಮತ್ತು ಅನೇಕ ಸಂದರ್ಭಗಳಿಗೆ ಅನ್ವಯಿಸುವ ಮಾದರಿಯಾಗಿದೆ. GPT OSS 120B Brave-ನ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು Mistral Largeನಿಂದ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತೇನೆ, ಇದು Mistral ರಚಿಸಿದ‌ ಮತ್ತು ಅನೇಕ ಸಂದರ್ಭಗಳಿಗೆ ಅನ್ವಯಿಸುವ ಮಾದರಿಯಾಗಿದೆ. Mistral Large Brave-ನ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು Pixtral Largeನಿಂದ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತೇನೆ, ಇದು Mistral ರಚಿಸಿದ‌ ಮತ್ತು ಅನೇಕ ಸಂದರ್ಭಗಳಿಗೆ ಅನ್ವಯಿಸುವ ಮಾದರಿಯಾಗಿದೆ. Pixtral Large Brave-ನ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು Qwen 3 235Bಯಿಂದ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತೇನೆ, ಇದು Alibaba Cloud ರಚಿಸಿದ‌ ಮತ್ತು ಅನೇಕ ಸಂದರ್ಭಗಳಿಗೆ ಅನ್ವಯಿಸುವ ಮಾದರಿಯಾಗಿದೆ. Qwen 3 235B Brave-ನ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ Brave-ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು Deepseek V3.1ನಿಂದ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತೇನೆ, ಇದು Deepseek ರಚಿಸಿದ‌ ಮತ್ತು ಅನೇಕ ಸಂದರ್ಭಗಳಿಗೆ ಅನ್ವಯಿಸುವ ಮಾದರಿಯಾಗಿದೆ. Deepseek V3.1 Brave-ನ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ Brave-ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು Deepseek V3.2ನಿಂದ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತೇನೆ, ಇದು Deepseek ರಚಿಸಿದ‌ ಮತ್ತು ಅನೇಕ ಸಂದರ್ಭಗಳಿಗೆ ಅನ್ವಯಿಸುವ ಮಾದರಿಯಾಗಿದೆ. Deepseek V3.2 Brave-ನ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ Brave-ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು Qwen 3 Coder 480Bಯಿಂದ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತೇನೆ, ಇದು Alibaba Cloud ರಚಿಸಿದ‌ ಮತ್ತು ಅನೇಕ ಸಂದರ್ಭಗಳಿಗೆ ಅನ್ವಯಿಸುವ ಮಾದರಿಯಾಗಿದೆ. Qwen 3 Coder 480B Brave-ನ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ Brave-ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು Claude Opusನಿಂದ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತೇನೆ, ಇದು Anthropic ರಚಿಸಿದ ಸಂವಾದ ಮತ್ತು ಪಠ್ಯ ಸಂಸ್ಕರಣಾ ಕಾರ್ಯಗಳಿಗೆ ಯಾವುದೇ ತೊಂದರೆ ಇಲ್ಲದೆ ಅನ್ವಯಿಸುವ ಮಾದರಿಯಾಗಿದೆ. Claude Opus Brave-ನ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ Brave-ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು GLM-4-7-Flashನಿಂದ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತೇನೆ, ಇದು Zhipu AI ರಚಿಸಿದ‌ ಮತ್ತು ಅನೇಕ ಸಂದರ್ಭಗಳಿಗೆ ಅನ್ವಯಿಸುವ ಮಾದರಿಯಾಗಿದೆ. GLM-4-7-Flash Brave-ನ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು Kimi K2.5ನಿಂದ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತೇನೆ, ಇದು Moonshot AI ರಚಿಸಿದ‌ ಮತ್ತು ಅನೇಕ ಸಂದರ್ಭಗಳಿಗೆ ಅನ್ವಯಿಸುವ ಮಾದರಿಯಾಗಿದೆ. Kimi K2.5 Brave-ನ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು ಬ್ರೇವ್ ಓಸೆಲಾಟ್‌ನಿಂದ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತೇನೆ, ಇದು ವೆಬ್ ಪುಟಗಳನ್ನು ಸಾರಾಂಶಗೊಳಿಸಲು Brave ರಚಿಸಿದ ಮಾದರಿಯಾಗಿದೆ. ಬ್ರೇವ್ ಓಸೆಲಾಟ್ ನಮ್ಮದೇ ಆದ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ Brave-ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">ಪ್ರೀಮಿಯಂ</translation>
 <translation id="5807427080183870259">ಸ್ಥಳೀಯ</translation>
 <translation id="830868413617744215">ಬೀಟಾ</translation>
@@ -2353,6 +2356,8 @@ Uttaravannu iṣṭ;</translation>
 <translation id="7465032796278724624">NEAR AI TEE ಬಳಸಿ ಪರಿಶೀಲಿಸಲಾಗುವ ಮೌಲ್ಯದ ಗೌಪ್ಯತೆ</translation>
 <translation id="8782867266498869301">‌ ಟಾಸ್ಕ್‌ಗೆ ಉತ್ತಮವಾದದ್ದನ್ನು ಬಳಸಲು ಮಾದರಿಯು ಕ್ರಿಯಾತ್ಮಕವಾಗಿ ಬದಲಾಗುತ್ತದೆ</translation>
 <translation id="3213834013136637671">ಹುಡುಕಾಟ • ದೃಷ್ಟಿ</translation>
+<translation id="5276681919620506371">ಹುಡುಕಾಟ • ಸಾಧನಗಳು</translation>
+<translation id="7434375176361995333">ಸಾರಾಂಶಗಳು • ವೇಗ</translation>
 <translation id="3965507912994218570">Leo ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
 <translation id="3754337604877048671">ಪರಿಚಯಿಸುತ್ತಿದೆ ಲಿಯೋ ಎಐ</translation>
 <translation id="5295261408976371809">ನಿಮ್ಮ <ph name="TEXT_BEFORE"/>ಖಾಸಗಿ<ph name="TEXT_AFTER"/> AI ಸಹಾಯಕ, ನೇರವಾಗಿ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಸ್ಥಾಪಿತವಾಗಿದೆ.</translation>
@@ -2408,6 +2413,8 @@ Uttaravannu iṣṭ;</translation>
 <translation id="4572010449071015143">ಹೊಸ ಸಂಭಾಷಣೆ ಆರಂಭಿಸಿ</translation>
 <translation id="345901077335355561">ಸಕ್ರಿಯ ಸಂಭಾಷಣೆಗೆ ಹಿಂತಿರುಗಿ</translation>
 <translation id="6287023598025162715">ಹೊಸ ಸಂವಾದ</translation>
+<translation id="7230502562132448519">ಸಂವಾದಗಳನ್ನು ಸೋಗಿ ಮಾಡಿ</translation>
+<translation id="821070843380699990">ದಯವಿಟ್ಟು ಇತರ ಪ್ರಶ್ನೆ ಪ್ರಯತ್ನಿಸಿ</translation>
 <translation id="7097822247923237815">ತಾತ್ಕಾಲಿಕ ಚಾಟ್</translation>
 <translation id="7481750859362986254">ಈ ಚಾಟ್‌ನ್ನು ನಿಮ್ಮ ಹಿಸ್ಟರಿಯಲ್ಲಿ ಉಳಿಸಲಾಗುವುದಿಲ್ಲ ಅಥವಾ ಲಿಯೋ ಯಾವುದೇ ಕಸ್ಟಮೈಸೇಶನ್ ಅಥವಾ ಮೆಮೋರಿಸ್‌ನ್ನು ಬಳಸುವದಿಲ್ಲ.</translation>
 <translation id="4238305333951712482">ಮೆಮೊರಿ ನವೀಕರಿಸಲಾಗಿದೆ: <ph name="MEMORY_CONTENT"/></translation>
@@ -2445,6 +2452,21 @@ Uttaravannu iṣṭ;</translation>
 <translation id="6338250692384725496">ನಿಮ್ಮ ಕ್ವೆರಿಗೆ ಸಹಾಯ ಮಾಡಲು ಸ್ಯಾಂಡ್‌ಬಾಕ್ಸ್‌ನಲ್ಲಿ ಕೋಡ್ ಕಾರ್ಯಗತ ಮಾಡಲಾಯಿತು</translation>
 <translation id="4379566111233326721">ಕೋಡ್:</translation>
 <translation id="3542130965673205258">ಔಟ್‌ಪುಟ್‌:</translation>
+<translation id="5382076391290708074">ನಿಮ್ಮ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಸುತ್ತಲೂ ಸರಿಸುವುದು</translation>
+<translation id="3862123464576147769">ಇದನ್ನು ಅನುಮತಿ ನೀಡುವುದರಿಂದ ನಿಮ್ಮ ಎಲ್ಲಾ ಟ್ಯಾಬ್‌ಗಳು ಮತ್ತು ಟ್ಯಾಬ್ ಗ್ರೂಪ್‌ಗಳ <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> ಮತ್ತು <ph name="TITLE_FORMAT_START"/>ಶೀರ್ಷಿಕೆ<ph name="TITLE_FORMAT_END"/> Brave AI ಗೆ ಕಳುಹಿಸಲಾಗುತ್ತದೆ, ಮತ್ತು Brave AI ಅವುಗಳನ್ನು ಸುತ್ತಿ ಮಾಡಲು ಅನುಮತಿ ನೀಡುತ್ತದೆ. ಈ ಅನುಮತಿ ಈ ಸಂವಾದಕ್ಕೆ ಮಾತ್ರ ಅನ್ವಯಿಸುತ್ತದೆ.</translation>
+<translation id="396165714586708444">ಆಳವಾದ ಸಂಶೋಧನೆ</translation>
+<translation id="577747221882855891">ಹುಡುಕಾಟ: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">"<ph name="QUERY"/>" ಗಾಗಿ <ph name="COUNT"/> ಮೂಲಗಳನ್ನು ವಿಶ್ಲೇಷಿಸುತ್ತಿದೆ</translation>
+<translation id="1202264349398113062">"<ph name="QUERY"/>" ಗಾಗಿ <ph name="COUNT"/> ಹೊಸ URL ಗಳನ್ನು ಪ್ರಕ್ರಿಯೆ ಮಾಡುತ್ತಿದೆ</translation>
+<translation id="6189479600023022289">"<ph name="QUERY"/>" ಗಾಗಿ <ph name="COUNT"/> URL ಗಳು ಕಂಡುಬಂದವು</translation>
+<translation id="5150674341374247355"><ph name="FETCHED"/>/<ph name="TOTAL"/> URL ಗಳನ್ನು ಪಡೆಯುತ್ತಿದೆ</translation>
+<translation id="1075606740174445363">"<ph name="QUERY"/>" ಗಾಗಿ <ph name="COUNT"/> URL ಗಳನ್ನು ವಿಶ್ಲೇಷಿಸಲಾಗಿದೆ</translation>
+<translation id="6220878652174655112"><ph name="COUNT"/> ಪ್ರಶ್ನೆಗಳನ್ನು ಹುಡುಕುತ್ತಿದೆ</translation>
+<translation id="3571450204565012512"><ph name="QUERY_COUNT"/> ಹುಡುಕಾಟಗಳಿಂದ <ph name="URL_COUNT"/> URL ಗಳನ್ನು ವಿಶ್ಲೇಷಿಸಲಾಗಿದೆ</translation>
+<translation id="5733200563889491347">ಸಂಶೋಧನೆ ಪೂರ್ಣಗೊಂಡಿದೆ</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>m <ph name="SECONDS"/>s</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>s</translation>
+<translation id="5067194014665306881">ಸಂಶೋಧನೆ ದೋಷ: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">AI ಬ್ರೌಸಿಂಗ್</translation>
 <translation id="2854657728271352435">AI ಬ್ರೌಸಿಂಗ್ ಪ್ರೊಫೈಲ್ ಬಗ್ಗೆ</translation>
 <translation id="2301685062527585986">ನಿಮ್ಮ ಡೇಟಾವನ್ನು ರಕ್ಷಿಸಲು, ಈ ಪ್ರತ್ಯೇಕ AI ಬ್ರೌಸಿಂಗ್ ಪ್ರೊಫೈಲ್ Brave AI ಏಜೆಂಟ್‌ಗೆ ನಿಮ್ಮ ಮುಖ್ಯ ಬ್ರೌಸಿಂಗ್ ಪ್ರೊಫೈಲ್‌ಗೆ ಪ್ರವೇಶವಿಲ್ಲದಂತೆ ನಿರ್ಧರಿಸುತ್ತದೆ ಮತ್ತು ಅಗತ್ಯವಿರುವಾಗ ಮಾತ್ರ ತಾಣಗಳನ್ನು ಭೇಟಿ ನೀಡಿ ಪರಸ್ಪರ ಕ್ರಿಯೆಮಾಡಲಾಗುತ್ತದೆ. ನೀವು ಕಾರ್ಯಗಳನ್ನು ನೀಡದ ಮೂಲಕ ಅದರ ಮೂಲಕ ಬ್ರೌಸ್ ಮಾಡಿಸಲು ಅವಕಾಶ ನೀಡಿ ನಿಮ್ಮ ಉತ್ಪಾದಕತೆಯನ್ನು ಹೆಚ್ಚಿಸಬಹುದು.</translation>
@@ -2509,11 +2531,14 @@ Uttaravannu iṣṭ;</translation>
 <translation id="7847477075635510673">ಸುದ್ದಿಗಳನ್ನು ಮರೆಮಾಡಿ</translation>
 <translation id="9173319813356700250">ಸುದ್ದಿ</translation>
 <translation id="6543799171249004861"><ph name="AUTHOR"/>ಮೂಲಕ ಫೋಟೋ;</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="466214682712474574">ನಿಮ್ಮ ಬ್ಯಾಲೆನ್ಸ್ ನೋಡಲು ನಿಮ್ಮ <ph name="PROVIDER"/> ಖಾತೆಗೆ ಲಾಗಿನ್ ಮಾಡಿ</translation>
 <translation id="8332875111286275890">ನಿಮ್ಮ ಬ್ಯಾಲೆನ್ಸ್ ನೋಡಲು ಲಾಗಿನ್ ಮಾಡಿ</translation>
 <translation id="5430001801813715388">ಬಹುಮಾನಗಳು</translation>
+<translation id="988042349921505128">ಹುಡುಕಾಟ ಮತ್ತು AI</translation>
 <translation id="2430295257226173518">ಯಾವುದನ್ನಾದರೂ ಕೇಳಿ, ಯಾವುದನ್ನಾದರೂ ಹುಡುಕಿ...</translation>
 <translation id="167018310108390163">ಹೊಸ ಟ್ಯಾಬ್ ಪುಟವನ್ನು ಕಸ್ಟಮೈಸ್ ಮಾಡಿ</translation>
+<translation id="3500134717967948757">ಹೊಸ ಟ್ಯಾಬ್‌ಗಳಲ್ಲಿ Leo AI ವಿಜೆಟ್ ತೋರಿಸಿ</translation>
 <translation id="6851426306697017546">ಗಡಿಯಾರವನ್ನು ತೋರಿಸಿ</translation>
 <translation id="4844370919312937270">ಹೊಸ ಟ್ಯಾಬ್‌ಗಳಲ್ಲಿ ಸರ್ಚ್‌ ವಿಜೆಟ್ ಅನ್ನು ತೋರಿಸಿ</translation>
 <translation id="7328310113820087094"><ph name="LINK_BEGIN"/>ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್<ph name="LINK_END"/> ಸಹಯೋಗದೊಂದಿಗೆ, ಹೊಸ ಟ್ಯಾಬ್ ಪುಟದ ಜಾಹೀರಾತುಗಳನ್ನು ನೋಡಿ ಗಳಿಸಬಹುದು.</translation>
@@ -2542,8 +2567,14 @@ Uttaravannu iṣṭ;</translation>
 <translation id="8458987127502506209">Brave ಶೀಲ್ಡ್ಸ್ ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
 <translation id="8443488493738411048">ಈ ಸೈಟ್‌ಗಾಗಿ <ph name="STATUS_BEFORE"/>ಶೀಲ್ಡ್‌ಗಳು ಮೇಲೆ ಇವೆ<ph name="STATUS_AFTER"/></translation>
 <translation id="2458631245058451506">ಈ ಸೈಟ್‌ಗಾಗಿ <ph name="STATUS_BEFORE"/>ಶೀಲ್ಡ್‌ಗಳು ಕೆಳಗಿವೆ<ph name="STATUS_AFTER"/></translation>
+<translation id="8426214145426269584">ಈ ಸೈಟ್‌ಗಾಗಿ ಶೀಲ್ಡ್ಸ್‌ <ph name="UP_BEFORE"/>ಮೇಲೆ<ph name="UP_AFTER"/></translation>
+<translation id="3325367578778625743">ಈ ಸೈಟ್‌ಗಾಗಿ ಶೀಲ್ಡ್ಸ್‌ <ph name="DOWN_BEFORE"/>ಕೆಳಗಿವೆ<ph name="DOWN_AFTER"/></translation>
 <translation id="4724752924364329714">ಈ ಸೈಟ್‌ಗೆ ಹಾನಿಯಾದರೆ, ಶೀಲ್ಡ್‌ಗಳನ್ನು ಕೆಳಕ್ಕೆ ಮಾಡಲು ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>ಟಿಪ್ಪಣಿ: ಇದು Brave ನ ಗೌಪ್ಯತಾ ರಕ್ಷಣೆಗಳನ್ನು ಕಡಿಮೆ ಮಾಡಬಹುದು.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">ಇದು Brave ನ ಗೌಪ್ಯತೆ ರಕ್ಷಣೆಗಳನ್ನು ಕಡಿಮೆ ಮಾಡಬಹುದು. <ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">ಟ್ರ್ಯಾಕರ್‌ಗಳು, ಜಾಹೀರಾತುಗಳು ಮತ್ತು ಹೆಚ್ಚುವರಿ ನಿರ್ಬಂಧಿತವಾದವುಗಳು.</translation>
+<translation id="4968268657895673116">ಶೀಲ್ಡ್ಸ್‌ ಅಪ್‌ನೊಂದಿಗೆ ಈ ಸೈಟ್ ಸರಿಯಾಗಿ ಕೆಲಸ ಮಾಡುತ್ತಿಲ್ಲವೇ?</translation>
+<translation id="5412004902081180614">ವರದಿ</translation>
 <translation id="3620004479054499575">ಈ ಸೈಟ್‌ನಲ್ಲಿ ನಿಮಗೆ ಸಮಸ್ಯೆಗಳಾಗುತ್ತಿದೆಯೆ?</translation>
 <translation id="9176447766421988172">ವೇಬ್‌ಸೈಟ್ ಹೊಂದಾಣಿಕೆಯು ಹೆಚ್ಚಿಸಲು ನಾವು ಒಂದು ಪ್ರಯೋಗ ನಡೆಸುತ್ತಿದ್ದೇವೆ, ಇದರಲ್ಲಿ ಜಾಹೀರಾತುಗಳನ್ನು ತಡೆಹಿಡಿಯುವ ಕಾರ್ಯ ಮಾತ್ರ ಸಕ್ರಿಯವಾಗಿರುತ್ತದೆ. ಎಚ್ಚರಿಕೆ: ಎಲ್ಲ ಗೌಪ್ಯತಾ ರಕ್ಷಣೆಯಾಗಲಿಲ್ಲ. ನೀವು ಇದನ್ನು ಪ್ರಯತ್ನಿಸಬೇಕೇ? <ph name="LINK_BEFORE"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Brave ನ ಗೌಪ್ಯತಾ ರಕ್ಷಣೆಯಿಂದ ಮುರಿದ ವೈಯಕ್ತಿಕ ವೆಬ್‌ಸೈಟ್‌ಗಳಿಗೆ, ನೀವು ಶೀಲ್ಡ್‌ಗಳನ್ನು ಕೆಳಗೆ ಸೆಟ್ ಮಾಡಬಹುದು.</translation>
@@ -2558,9 +2589,12 @@ Uttaravannu iṣṭ;</translation>
 <translation id="8377155647357436161">ಟ್ರ್ಯಾಕರ್‌ಗಳು, ಜಾಹೀರಾತುಗಳು ಮತ್ತು ಹೆಚ್ಚು ನಿರ್ಬಂಧಿತವಾದವುಗಳು <ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave ಶೀಲ್ಡ್ಸ್‌ನಿಂದ ರಕ್ಷಿತವಾಗಿಲ್ಲ <ph name="LINK_BEFORE"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">ಸುಧಾರಿತ ನಿಯಂತ್ರಣಗಳು</translation>
+<translation id="7939062555109487992">ಸುಧಾರಿತ ಆಯ್ಕೆಗಳು</translation>
 <translation id="5799940914270080805">ಈ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಬದಲಾಯಿಸುವುದು ಸೈಟ್‌ಗಳನ್ನು ಹಾಳು ಮಾಡಬಹುದು.</translation>
 <translation id="9204041448536398473">ಜಾಗತಿಕ ಶೀಲ್ಡ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
 <translation id="2108334320919763866">ಜಾಗತಿಕ ಡೀಫಾಲ್ಟ್‌ಗಳು</translation>
+<translation id="1896472873031845605">ಜಾಗತಿಕ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
+<translation id="8324318899000695659">ಅಂಶಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="7205939464631857223">ನಿರ್ಬಂಧಿಸಲಾದ ಎಲ್ಲಾ ಅಂಶಗಳನ್ನು ತೆರವುಗೊಳಿಸಿ</translation>
 <translation id="3440043456924990296">ಸಂಸ್ಥೆಯು ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ನಿರ್ವಹಿಸುತ್ತದೆ</translation>
 <translation id="7053983685419859001">ನಿರ್ಬಂಧಿಸಿ</translation>
@@ -2645,7 +2679,6 @@ Uttaravannu iṣṭ;</translation>
 <translation id="7207456302801184289">Brave ಗೆ ಸುಸ್ವಾಗತ</translation>
 <translation id="4988030440045495002">ಅಲ್ಟ್ರಾ ಡಾರ್ಕ್ ಥೀಮ್</translation>
 <translation id="2422927186524098759">ಸೈಡ್‌ಬಾರ್</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">ಟೂಲ್‌ಬಾರ್</translation>
 <translation id="6225572914528673855">ಅಡ್ರೆಸ್‌ ಬಾರ್</translation>

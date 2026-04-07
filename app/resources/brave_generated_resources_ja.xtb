@@ -323,6 +323,8 @@
 <translation id="8813509417421129632"><ph name="SITE"/> に埋め込まれたページが保存を要求しています</translation>
 <translation id="7700010743463174379">このページが次の保存を要求しています:</translation>
 <translation id="6774238875569752630">このページに埋め込まれたページが次の保存を要求しています</translation>
+<translation id="1383876407941801731">検索</translation>
+<translation id="5496587651328244253">整理する</translation>
 <translation id="1233913566967531780">タブのグループ化</translation>
 <translation id="4034992002364254340">関連するすべてのタブを、新しいウィンドウにまとめる</translation>
 <translation id="8012125596344613514">トピックのサジェスチョン</translation>
@@ -340,6 +342,7 @@
 <translation id="6501807887341963552">テーマと色</translation>
 <translation id="6724227215236550330">保存されたパスワードはここに表示されます。このデバイスの <ph name="BRAND"/> にパスワードをインポートするには、 <ph name="BEGIN_LINK"/> CSV ファイルを選択してください<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">このデバイスでパスワードを <ph name="BRAND"/> にインポートするには、CSVファイルを選択してください</translation>
+<translation id="8570228839666486945">デバイス上のAI</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
 <translation id="7179921470347911571">今すぐ再起動</translation>
 <translation id="1426410128494586442">はい</translation>
@@ -392,6 +395,7 @@
 <translation id="5297085818601043899">ツールヒント</translation>
 <translation id="5219886318310413094">すべてのウィンドウでピン留めされたタブを表示</translation>
 <translation id="2396127686705429331">ブックマークボタンを表示する</translation>
+<translation id="443318149139185498">メインメニューボタンにアウトラインロゴを使用</translation>
 <translation id="2814998458708016836">ワイドアドレスバーを使用する</translation>
 <translation id="4749586705247636385">メインコンテンツに角丸を表示</translation>
 <translation id="4109670531935487117">アドレスバー入力中に自動でサイト候補を表示</translation>
@@ -545,7 +549,7 @@
 <translation id="509873765238158442">Microsoft Recallをブロック</translation>
 <translation id="4763421121695677716">Microsoft Windowsコンピュータのリコール機能をブロックして、開いているBraveタブのスクリーンショットを自動的に撮影できないようにします。</translation>
 <translation id="1968895725257436430">データコレクション</translation>
-<translation id="4846154056248462491">終了時に</translation>
+<translation id="1700052872056357670">終了時にデータをクリア</translation>
 <translation id="216468847346280584">Brave広告のデータをクリア</translation>
 <translation id="2808630562319398131">Brave Rewardsデータをリセット...</translation>
 <translation id="6438096877646138757">閉じたときにCookiesを消去するサイト</translation>
@@ -792,6 +796,7 @@
 <translation id="1529674267267221673">ウェブサイトを右クリックすると、コンテキストメニューにLeoが表示されます。これにより、現在のウェブページのコンテキストがLeoに送信されます。</translation>
 <translation id="5226020406479918122">タブのグループ化モード</translation>
 <translation id="3705539672403311123">タブ検索ページでタブのグループ化を有効にします。 開くと、プライベート以外のタブのタイトルと発信元が自動的にLeoに送信され、分類されます。 <ph name="BEGIN_LINK"/><ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">タブフォーカス向けデフォルトモデル</translation>
 <translation id="8172263161008556851">会話でおすすめのプロンプトを表示</translation>
 <translation id="5781842473834867765">会話履歴を保存</translation>
 <translation id="1082960401708055995">会話ストレージを無効にすると、以前に保存された会話はすべて永久に消去されます。この操作を元に戻すことはできません。</translation>

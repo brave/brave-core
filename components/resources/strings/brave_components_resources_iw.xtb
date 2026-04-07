@@ -1855,6 +1855,7 @@ CoinGecko</translation>
 <translation id="8897189056319316783">הגנת ZEC</translation>
 <translation id="508249542337194541">ביטול הגנת ZEC</translation>
 <translation id="3382275793825152362">הגנה על כספים</translation>
+<translation id="617149752238892649">ביטול הגנה על כספים</translation>
 <translation id="8631765320256788981">את/ה מעביר/ה כספים מהחשבון השקוף שלך לחשבון המוגן שלך.</translation>
 <translation id="3860364671495430495">את/ה מעביר/ה כספים מהחשבון המוגן שלך לחשבון השקוף שלך.</translation>
 <translation id="7144878232160441200">נסה שוב</translation>
@@ -2206,6 +2207,7 @@ CoinGecko</translation>
     }</translation>
 <translation id="6961721183181597848">איך אפשר לעזור לך היום?</translation>
 <translation id="2966135729673253768">בקשה למעקב</translation>
+<translation id="5923170497201832190">גלול למטה</translation>
 <translation id="6219262425964000211">יש לגרור קבצים לכאן</translation>
 <translation id="4313763911013851687">יש לגרור קבצים לכאן כדי להוסיף אותם לשיחה</translation>
 <translation id="4524675003624341892">הצעת שאלות…</translation>
@@ -2227,20 +2229,21 @@ CoinGecko</translation>
 <translation id="999273441077650169">המודל משתנה באופן דינמי כדי להשתמש בזה שמתאם למשימה באופן המיטבי.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Llama 3.1 8B, מודל שנוצר על ידי Meta לשימוש ויישום במגוון תרחישים. Llama מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Qwen VL 30B, מודל שנוצר על ידי Alibaba Cloud לשימוש ויישום במגוון תרחישים. Qwen מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות DeepSeek V3.1, מודל שנוצר על ידי DeepSeek לשימוש ויישום במגוון תרחישים. DeepSeek V3.1 מתארח על ידי NEAR באמצעות התשתית המאובטחת והפרטית שלהם.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות GLM-5, מודל שנוצר על ידי Zhipu AI לשימוש ויישום במגוון תרחישים. GLM-5 מתארח על ידי NEAR באמצעות התשתית המאובטחת והפרטית שלהם.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">שלום, אני לאו. אני עוזר AI של Brave. אני מוטמע יחד עם Claude Instant, מודל שפותח על ידי Anthropic לביצוע משימות שיחה ועיבוד טקסט. Claude Instant מתארח על-ידי Brave בתשתית המאובטחת שלה.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Claude Haiku, מודל שנוצר על ידי Anthropic לשימוש ויישום במגוון תרחישים. Claude Haiku מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Claude Sonnet, מודל שנוצר על ידי Anthropic לשימוש ויישום במגוון תרחישים. Claude Sonnet מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Llama 4 Scout, מודל שנוצר על ידי Meta לשימוש ויישום במגוון תרחישים. Llama 4 Scout מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Llama 4 Maverick, מודל שנוצר על ידי Meta לשימוש ויישום במגוון תרחישים. Llama 4 Maverick מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות GPT OSS 20B, מודל שנוצר על ידי OpenAI לשימוש ויישום במגוון תרחישים. GPT OSS 20B מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות GPT OSS 120B, מודל שנוצר על ידי OpenAI לשימוש ויישום במגוון תרחישים. GPT OSS 120B מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Mistral Large, מודל שנוצר על ידי Mistral לשימוש ויישום במגוון תרחישים. Mistral Large מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Pixtral Large, מודל שנוצר על ידי Mistral לשימוש ויישום במגוון תרחישים. Pixtral Large מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Qwen 3 235B, מודל שנוצר על ידי Alibaba לשימוש ויישום במגוון תרחישים. Qwen 3 235B מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Deepseek V3.1, מודל שנוצר על ידי Deepseek לשימוש ויישום במגוון תרחישים. Deepseek V3.1 מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Deepseek V3.2, מודל שנוצר על ידי Deepseek לשימוש ויישום במגוון תרחישים. Deepseek V3.2 מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Qwen 3 Coder 480B, מודל שנוצר על ידי Alibaba לשימוש ויישום במגוון תרחישים. Qwen 3 Coder 480B מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Claude Opus, מודל שנוצר על ידי Anthropic למטרות עיבוד שפה ושיחות. Claude Opus מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות GLM-4-7-Flash, מודל שנוצר על ידי Zhipu AI לשימוש ויישום במגוון תרחישים. GLM-4-7-Flash מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Kimi K2.5, מודל שנוצר על ידי Moonshot AI לשימוש ויישום במגוון תרחישים. Kimi K2.5 מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Brave Ocelot, מודל שנוצר על ידי Brave לסיכום דפי אינטרנט. Brave Ocelot מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">פרמיום</translation>
 <translation id="5807427080183870259">מקומי</translation>
 <translation id="830868413617744215">בטא</translation>
@@ -2373,6 +2376,8 @@ CoinGecko</translation>
 <translation id="7465032796278724624">פרטי בראי אימות עם NEAR AI TEE</translation>
 <translation id="8782867266498869301">המודל משתנה באופן דינמי על מנת להשתמש בזה שמותאם למשימה באופן המיטבי</translation>
 <translation id="3213834013136637671">חיפוש • חזון</translation>
+<translation id="5276681919620506371">חיפוש • כלים</translation>
+<translation id="7434375176361995333">סיכומים • מהר</translation>
 <translation id="3965507912994218570">הגדרות Leo</translation>
 <translation id="3754337604877048671">היכרות עם Leo AI</translation>
 <translation id="5295261408976371809">העוזר AI ה<ph name="TEXT_BEFORE"/>פרטי<ph name="TEXT_AFTER"/> שלך, מובנה בדפדפן.</translation>
@@ -2428,6 +2433,8 @@ CoinGecko</translation>
 <translation id="4572010449071015143">התחל שיחה חדשה</translation>
 <translation id="345901077335355561">חזרה לשיחה הפעילה</translation>
 <translation id="6287023598025162715">שיחה חדשה</translation>
+<translation id="7230502562132448519">סנן שיחות</translation>
+<translation id="821070843380699990">נסה שאילתה שונה</translation>
 <translation id="7097822247923237815">צ'אט זמני</translation>
 <translation id="7481750859362986254">הצ'אט הזה לא יישמר בהיסטוריה שלך ולא ישתמש באף אחת מההגדרות או הזיכרונות של Leo.</translation>
 <translation id="4238305333951712482">הזיכרון עודכן: <ph name="MEMORY_CONTENT"/></translation>
@@ -2465,6 +2472,21 @@ CoinGecko</translation>
 <translation id="6338250692384725496">קוד שונים בתיבת חול כדי לעזור לשאלתך</translation>
 <translation id="4379566111233326721">קוד:</translation>
 <translation id="3542130965673205258">פלט:</translation>
+<translation id="5382076391290708074">העברת הכרטיסיות שלך סביב</translation>
+<translation id="3862123464576147769">אפשרות זו תשלח את <ph name="URL_FORMAT_START"/>כתובת ה-URL<ph name="URL_FORMAT_END"/> וה<ph name="TITLE_FORMAT_START"/>כותרת<ph name="TITLE_FORMAT_END"/> של כל הכרטיסיות וקבוצות הכרטיסיות שלך ל-Brave AI, ותתיר ל-Brave AI להעביר אותן. הרשאה זו חלה רק על שיחה זו.</translation>
+<translation id="396165714586708444">חקר עמוק</translation>
+<translation id="577747221882855891">חיפוש: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">ניתוח <ph name="COUNT"/> מקורות עבור "<ph name="QUERY"/>"</translation>
+<translation id="1202264349398113062">עיבוד <ph name="COUNT"/> כתובות URL חדשות עבור "<ph name="QUERY"/>"</translation>
+<translation id="6189479600023022289">נמצאו <ph name="COUNT"/> כתובות URL עבור "<ph name="QUERY"/>"</translation>
+<translation id="5150674341374247355">הורדת <ph name="FETCHED"/>/<ph name="TOTAL"/> כתובות URL</translation>
+<translation id="1075606740174445363">ניתוח <ph name="COUNT"/> כתובות URL עבור "<ph name="QUERY"/>"</translation>
+<translation id="6220878652174655112">חיפוש <ph name="COUNT"/> שאילתות</translation>
+<translation id="3571450204565012512">ניתוח <ph name="URL_COUNT"/> כתובות URL מ-<ph name="QUERY_COUNT"/> חיפושים</translation>
+<translation id="5733200563889491347">החקר הושלם</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>m <ph name="SECONDS"/>s</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>s</translation>
+<translation id="5067194014665306881">שגיאת חקר: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">גלישת AI</translation>
 <translation id="2854657728271352435">אודות פרופיל הגלישה של AI</translation>
 <translation id="2301685062527585986">כדי להגן על הנתונים שלך, פרופיל גלישת AI מבודד זה מבטיח שלסוכן ה-AI אין גישה לפרופיל הגלישה הראשי שלך, עם הרשאות רק לבקר באתרים ולבצע בהם פעולות לפי הצורך. ניתן להעלות את פרודוקטיביות על ידי הקצאת משימות לאינטליגנציה ושהיא תבצע את הגלישה עבורך.</translation>
@@ -2529,11 +2551,14 @@ CoinGecko</translation>
 <translation id="7847477075635510673">הסתרת חדשות</translation>
 <translation id="9173319813356700250">חדשות</translation>
 <translation id="6543799171249004861">תמונה מאת <ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">Leo המבוסס בינה מלאכותית</translation>
 <translation id="466214682712474574">יש להתחבר ךחשבון <ph name="PROVIDER"/> שלך כדי לראות את היתרה שלך</translation>
 <translation id="8332875111286275890">יש להתחבר כדי לראות את היתרה שלך</translation>
 <translation id="5430001801813715388">תגמולים</translation>
+<translation id="988042349921505128">חיפוש ו-AI</translation>
 <translation id="2430295257226173518">שאל כל דבר, מצא כל דבר...</translation>
 <translation id="167018310108390163">התאמה אישית של דף הכרטיסיה החדשה</translation>
+<translation id="3500134717967948757">הצג ווידג׳ט Leo AI בכרטיסיות חדשות</translation>
 <translation id="6851426306697017546">הצגת שעון</translation>
 <translation id="4844370919312937270">הצגת ווידג׳ט חיפוש בכרטיסיות חדשות</translation>
 <translation id="7328310113820087094">עם <ph name="LINK_BEGIN"/>תגמולי Brave<ph name="LINK_END"/>, אפשר להרוויח עבור צפייה במודעות בעמוד הכרטיסיה החדשה.</translation>
@@ -2562,8 +2587,14 @@ CoinGecko</translation>
 <translation id="8458987127502506209">אפשר Brave מגנים</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>מגנים מופעלים<ph name="STATUS_AFTER"/> עבור אתר זה</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>מגנים מושבתים<ph name="STATUS_AFTER"/> עבור אתר זה</translation>
+<translation id="8426214145426269584">מגנים <ph name="UP_BEFORE"/>מופעלים<ph name="UP_AFTER"/> עבור אתר זה</translation>
+<translation id="3325367578778625743">מגנים <ph name="DOWN_BEFORE"/>מושבתים<ph name="DOWN_AFTER"/> עבור אתר זה</translation>
 <translation id="4724752924364329714">אם האתר נראה מקולקל, נסה להוריד את Shields.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>הערה: פעולה זו עלולה להפחית את רמת ההגנה על הפרטיות של Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">זה עלול להפחית את הגנות הפרטיות של Brave. <ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">עוקבים, מודעות ועוד חסומים.</translation>
+<translation id="4968268657895673116">האם אתר זה לא פועל כשורה כאשר מגנים מופעלים?</translation>
+<translation id="5412004902081180614">דוח</translation>
 <translation id="3620004479054499575">האם אתה נתקל בבעיות באתר זה?</translation>
 <translation id="9176447766421988172">אנו מנסים ניסוי כדי להגביר את תאימות האתר, שבו אנו משאירים רק את חסימת הפרסומות מופעלת. אזהרה: מסיר את כל הגנות הפרטיות. האם ברצונך לנסות זאת? <ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">שימו לב: עבור אתרים בודדים שנפגעים מהגנות הפרטיות של Brave, ניתן להגדיר את Shields למצב DOWN.</translation>
@@ -2579,9 +2610,12 @@ CoinGecko</translation>
 למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">ללא ההגנה של Brave Shields <ph name="LINK_BEFORE"/> לפרטים נוספים <ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">בקרות מתקדמות</translation>
+<translation id="7939062555109487992">אפשרויות מתקדמות</translation>
 <translation id="5799940914270080805">שינוי ההגדרות הללו עלול לגרום לבעיות באתרים.</translation>
 <translation id="9204041448536398473">הגדרות מגנים גלובלי</translation>
 <translation id="2108334320919763866">ברירות מחדל גלובליות</translation>
+<translation id="1896472873031845605">הגדרות גלובליות</translation>
+<translation id="8324318899000695659">חסום אלמנטים</translation>
 <translation id="7205939464631857223">ניקוי כל האלמנטים החסומים</translation>
 <translation id="3440043456924990296">ההגדרות מנוהלות על ידי ארגון</translation>
 <translation id="7053983685419859001">חסימה</translation>
@@ -2666,7 +2700,6 @@ CoinGecko</translation>
 <translation id="7207456302801184289">‏ברוכים הבאים ל-Brave‏</translation>
 <translation id="4988030440045495002">ערכת נושא כהה מאוד</translation>
 <translation id="2422927186524098759">סרגל צידי</translation>
-<translation id="2361906291514218784">Leo המבוסס בינה מלאכותית</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">סרגל כלים</translation>
 <translation id="6225572914528673855">שורת הכתובת</translation>

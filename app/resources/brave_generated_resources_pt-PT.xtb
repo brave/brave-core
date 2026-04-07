@@ -323,6 +323,8 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8813509417421129632">Uma página incorporada em <ph name="SITE"/> quer guardar</translation>
 <translation id="7700010743463174379">Esta página quer guardar</translation>
 <translation id="6774238875569752630">Uma página incorporada nesta página quer guardar</translation>
+<translation id="1383876407941801731">Pesquisar</translation>
+<translation id="5496587651328244253">Organizar</translation>
 <translation id="1233913566967531780">Foco no separador</translation>
 <translation id="4034992002364254340">Reúna todos os separadores relacionados numa nova janela</translation>
 <translation id="8012125596344613514">Tópicos sugeridos</translation>
@@ -340,6 +342,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6501807887341963552">Tema e cores</translation>
 <translation id="6724227215236550330">As palavras-passe guardadas aparecerão aqui. Para importar palavras-passe para <ph name="BRAND"/> neste dispositivo, <ph name="BEGIN_LINK"/> selecione um ficheiro CSV<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">Para importar palavras-passe para <ph name="BRAND"/> neste dispositivo, selecione um ficheiro CSV</translation>
+<translation id="8570228839666486945">IA no Dispositivo</translation>
 <translation id="9156965752763025780">As alterações serão aplicadas da próxima vez que reiniciar o Brave.</translation>
 <translation id="7179921470347911571">Relançar Agora</translation>
 <translation id="1426410128494586442">Sim</translation>
@@ -392,6 +395,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5297085818601043899">Descrição</translation>
 <translation id="5219886318310413094">Mostrar separadores fixados em todas as janelas</translation>
 <translation id="2396127686705429331">Mostrar botão de marcadores</translation>
+<translation id="443318149139185498">Usar logotipo de contorno no botão do menu principal</translation>
 <translation id="2814998458708016836">Usar a barra de endereços grande</translation>
 <translation id="4749586705247636385">Mostre os cantos arredondados nas principais áreas de conteúdo</translation>
 <translation id="4109670531935487117">Exibir sugestões de preenchimento automático na barra de endereço</translation>
@@ -545,7 +549,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="509873765238158442">Bloquear Microsoft Recall</translation>
 <translation id="4763421121695677716">Em computadores Microsoft Windows, impeça a funcionalidade de Recall de tirar automaticamente capturas de ecrã de quaisquer separadores abertos do Brave.</translation>
 <translation id="1968895725257436430">Recolha de dados</translation>
-<translation id="4846154056248462491">Ao sair</translation>
+<translation id="1700052872056357670">Limpar dados ao sair</translation>
 <translation id="216468847346280584">Limpar dados dos Anúncios Brave...</translation>
 <translation id="2808630562319398131">Redefinir dados da Brave Rewards...</translation>
 <translation id="6438096877646138757">Websites que limpam cookies quando os fecha</translation>
@@ -791,6 +795,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1529674267267221673">O Leo aparecerá no menu de contexto quando clicar com o botão direito do rato num site. Isto irá enviar o contexto da página web em que se encontra para o Leo.</translation>
 <translation id="5226020406479918122">Modo de Foco no Separador</translation>
 <translation id="3705539672403311123">Ativar a organização de separadores na página de Pesquisa de Separadores. Ao abrir, isto enviará automaticamente os títulos e as origens de todos os separadores não privados para o Leo, para que ele os classifique. <ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">Modelo predefinido para tab focus</translation>
 <translation id="8172263161008556851">Mostrar sugestões na conversa</translation>
 <translation id="5781842473834867765">Guardar o meu histórico de conversas</translation>
 <translation id="1082960401708055995">Desativar o armazenamento de conversas irá eliminar permanentemente todas as conversas anteriormente guardadas. Esta ação não pode ser revertida.</translation>

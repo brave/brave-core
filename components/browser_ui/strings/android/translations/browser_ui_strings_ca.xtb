@@ -7,8 +7,10 @@
 <translation id="1070329623210597193">Fitxers que aquest lloc web pot visualitzar o editar</translation>
 <translation id="1882093842020941518">Ajuda'ns a millorar Brave explicant-nos per què has permès les galetes de tercers. <ph name="BEGIN_LINK"/>Envia suggeriments<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Pots sol·licitar que es mostri la versió per a ordinadors dels llocs web</translation>
-<translation id="9183227624343766158">Utilitza Brave de manera predeterminada</translation>
+<translation id="1109482864356262001">Les funcions que necessitin sensors de moviment o de llum no funcionaran</translation>
+<translation id="6670155282615872564">Completa aquestes accions suggerides per treure el màxim profit de Brave</translation>
 <translation id="113098737392899175">Navega per les pàgines amb un cursor de text quan hi hagi un teclat connectat</translation>
+<translation id="1148624853678088576">Ja esteu a punt</translation>
 <translation id="738393714577080438">Desa les contrasenyes a Brave</translation>
 <translation id="1178015372320901893">Full inferior Les meves dreceres</translation>
 <translation id="1178581264944972037">Posa en pausa</translation>
@@ -53,6 +55,7 @@
 <translation id="3665719978526894928">Agilitza els llocs web amb el motor V8 de Brave, però fa que Brave sigui una mica menys resistent als atacs</translation>
 <translation id="1593426485665524382">Hi ha noves accions disponibles a prop de la part superior de la pantalla</translation>
 <translation id="1594521731409209842">Pinça la pantalla per canviar la mida de la foto</translation>
+<translation id="1599268789440304082">S'ha obert el full de configuració</translation>
 <translation id="1601560923496285236">Aplica</translation>
 <translation id="1615755956145364867">Els llocs web poden demanar permís per reproduir contingut protegit</translation>
 <translation id="1620510694547887537">Càmera</translation>
@@ -64,7 +67,6 @@
 <translation id="1677097821151855053">Les galetes i altres dades dels llocs web s'utilitzen per recordar-te amb finalitats com ara iniciar la teva sessió o personalitzar anuncis. Per gestionar les galetes de tots els llocs web, consulta <ph name="BEGIN_LINK"/>Configuració<ph name="END_LINK"/>.</translation>
 <translation id="1679305402657584804">Els llocs web poden demanar permís per utilitzar dispositius amb NFC</translation>
 <translation id="1686785653877010442">Els llocs web acostumen a enviar notificacions per informar-te de notícies d'última hora o de missatges de xat.</translation>
-<translation id="169515064810179024">Impedeix que els llocs web accedeixin als sensors de moviment</translation>
 <translation id="1703666494654169921">No permetis que els llocs web utilitzin dades o dispositius de realitat virtual</translation>
 <translation id="1704230497453185209">No permetis que els llocs web reprodueixin so</translation>
 <translation id="1717218214683051432">Sensors de moviment</translation>
@@ -127,6 +129,7 @@
 <translation id="2241587408274973373">Targetes de la pàgina Pestanya nova</translation>
 <translation id="2241634353105152135">Només una vegada</translation>
 <translation id="2253414712144136228">Suprimeix <ph name="NAME_OF_LIST_ITEM"/></translation>
+<translation id="227763434929139750">No permetis que els llocs web utilitzin sensors de moviment o de llum</translation>
 <translation id="228293613124499805">És probable que la majoria de llocs web que visites desin dades al teu dispositiu, sovint per millorar la teva experiència, desant les teves preferències o la informació que comparteixes amb el lloc web. Et recomanem que mantinguis aquesta opció de configuració activada.</translation>
 <translation id="2289270750774289114">Pregunta'm quan un lloc web vulgui descobrir dispositius Bluetooth propers (opció recomanada)</translation>
 <translation id="2315043854645842844">El sistema operatiu no permet seleccionar el certificat del client.</translation>
@@ -191,12 +194,12 @@ La Protecció avançada controla aquestes opcions de configuració de Brave:
 <translation id="2802908157808345702">No permetis que els llocs web enviïn finestres emergents ni que utilitzin redireccions</translation>
 <translation id="5801312978029568377">Ara Brave mostra les teves pestanyes recents als resultats de la cerca i a la llista d'aplicacions del dispositiu. Pots desactivar aquesta opció en qualsevol moment des de la configuració de Brave.</translation>
 <translation id="2822354292072154809">Confirmes que vols restablir tots els permisos del lloc web concedits a <ph name="CHOSEN_OBJECT_NAME"/>?</translation>
+<translation id="7298052657381934345">Ara podràs treure el màxim profit de Brave al teu dispositiu.</translation>
 <translation id="2850913818900871965">Sol·licita la vista per a mòbils</translation>
 <translation id="2870560284913253234">Lloc web</translation>
 <translation id="2874939134665556319">Pista anterior</translation>
 <translation id="2891975107962658722">Impedeix que un lloc web desi dades al dispositiu</translation>
 <translation id="2903493209154104877">Adreces</translation>
-<translation id="2910701580606108292">Pregunta abans de permetre que els llocs web reprodueixin contingut protegit</translation>
 <translation id="2918484639460781603">Ves a la configuració</translation>
 <translation id="2932883381142163287">Informa d'un ús abusiu</translation>
 <translation id="2939338015096024043">Quan aquesta opció està activada, els llocs web poden demanar permís per fer un seguiment de la posició de la càmera i obtenir informació sobre el teu entorn. Quan aquesta opció està desactivada, els llocs web no poden fer un seguiment de la posició de la càmera ni obtenir informació sobre el teu entorn.</translation>
@@ -210,6 +213,7 @@ La Protecció avançada controla aquestes opcions de configuració de Brave:
 <translation id="3065787901655140044">La Protecció avançada està activada</translation>
 <translation id="3069226013421428034">Permet l'inici de sessió de tercers en un lloc web concret.</translation>
 <translation id="310297983047869047">Diapositiva anterior</translation>
+<translation id="3108122610701115301">Defineix com a predeterminat</translation>
 <translation id="3109724472072898302">Reduït</translation>
 <translation id="310979712355504754">Suprimeix-ho tot</translation>
 <translation id="311394601889664316">No permetis que els llocs web editin fitxers o carpetes al dispositiu</translation>
@@ -232,7 +236,6 @@ La Protecció avançada controla aquestes opcions de configuració de Brave:
 <translation id="3232293466644486101">Suprimeix les dades de navegació…</translation>
 <translation id="3242646949159196181">Quan aquesta opció està activada, els llocs web poden reproduir so. Quan aquesta opció està desactivada, els llocs web no poden reproduir so.</translation>
 <translation id="3273479183583863618">Baixades de preu en pestanyes</translation>
-<translation id="3277252321222022663">Permet que els llocs web accedeixin als sensors (opció recomanada)</translation>
 <translation id="3285500645985761267">Permet que els llocs web relacionats vegin la meva activitat al grup</translation>
 <translation id="3295019059349372795">Capítol 11: La meravellosa Ciutat Maragda d'Oz</translation>
 <translation id="3295602654194328831">Amaga la informació</translation>
@@ -264,6 +267,7 @@ La Protecció avançada controla aquestes opcions de configuració de Brave:
 <translation id="3658847490588580244">Full inferior del navegador predeterminat</translation>
 <translation id="3669841141196828854">{COUNT,plural, =1{<ph name="RWS_MEMBERS_COUNT"/> lloc web al grup de llocs web de <ph name="RWS_OWNER"/> que poden veure la teva activitat al grup}other{<ph name="RWS_MEMBERS_COUNT"/> llocs web al grup de llocs web de <ph name="RWS_OWNER"/> que poden veure la teva activitat al grup}}</translation>
 <translation id="3676777756440746804">Els llocs web no poden demanar-te permís per utilitzar la informació que han desat sobre tu</translation>
+<translation id="3677897809642449131">Els llocs web poden demanar permís per utilitzar els sensors de moviment</translation>
 <translation id="3678318839615834650">Full inferior de les targetes de la pàgina Pestanya nova obert a alçada completa</translation>
 <translation id="3697164069658504920">Quan aquesta opció està activada, els llocs web poden demanar permís per utilitzar dispositius USB. Quan aquesta opció està desactivada, els llocs web no poden fer servir dispositius USB.</translation>
 <translation id="3703430731944883733">Gestiona el teu feed</translation>
@@ -295,8 +299,8 @@ La Protecció avançada controla aquestes opcions de configuració de Brave:
 <translation id="3922092564198021702">Al telèfon, obre Configuració</translation>
 <translation id="3924858949939391676">Mostra els enllaços quan el mode de lectura estigui activat</translation>
 <translation id="3933121352599513978">Replega les sol·licituds no desitjades (opció recomanada)</translation>
+<translation id="393417216277380082">Sensors de moviment i de llum</translation>
 <translation id="3934905113567851655">Pinça per canviar la mida</translation>
-<translation id="3955193568934677022">Permet que els llocs web reprodueixin contingut protegit (opció recomanada)</translation>
 <translation id="3955321697524543127">No permetis que els llocs web es connectin a dispositius USB</translation>
 <translation id="3965467402665811906">Els llocs web poden demanar-te permís per utilitzar la informació que han desat sobre tu</translation>
 <translation id="3967822245660637423">S'ha completat la baixada</translation>
@@ -312,6 +316,7 @@ La Protecció avançada controla aquestes opcions de configuració de Brave:
 <translation id="4046123991198612571">Pista següent</translation>
 <translation id="4077310749977440510">Els llocs web solen llegir el porta-retalls per a funcions com ara mantenir el format del text que has copiat</translation>
 <translation id="4082080074595021446">Les excepcions per a llocs web concrets no es permeten perquè el dispositiu Android no té prou RAM.</translation>
+<translation id="6601032802262472844">Algunes opcions de configuració de Brave han canviat</translation>
 <translation id="4149890623864272035">Confirmes que vols suprimir totes les dades locals, incloses les galetes, i restablir tots els permisos d'aquest lloc web?</translation>
 <translation id="4149994727733219643">Visualització simplificada de pàgines web</translation>
 <translation id="4151930093518524179">Zoom predeterminat</translation>
@@ -347,8 +352,11 @@ La Protecció avançada controla aquestes opcions de configuració de Brave:
 <translation id="4478158430052450698">Facilita personalitzar el zoom per a diferents llocs web</translation>
 <translation id="4479647676395637221">Pregunta abans de permetre que els llocs web utilitzin la càmera (opció recomanada)</translation>
 <translation id="4505788138578415521">L'URL s'ha ampliat</translation>
+<translation id="4522570452068850558">Detalls</translation>
 <translation id="4523472416386354622">Inicia la sessió per començar</translation>
+<translation id="4529207923544043455">Full inferior que mostra les tasques de la llista de configuració completades i no completades</translation>
 <translation id="4534723447064627427">Perquè <ph name="APP_NAME"/> pugui accedir al micròfon, també has d'activar-lo a la <ph name="BEGIN_LINK"/>configuració d'Android<ph name="END_LINK"/>.</translation>
+<translation id="4545694195887112015">S'ha tancat el full de configuració</translation>
 <translation id="4566417217121906555">Silencia el micròfon</translation>
 <translation id="4570913071927164677">Detalls</translation>
 <translation id="4578289292431526768">Som-hi</translation>
@@ -363,7 +371,7 @@ La Protecció avançada controla aquestes opcions de configuració de Brave:
 <translation id="5652778654712411580">Toca Aplicació de navegador i, a continuació, toca Brave</translation>
 <translation id="4676059169848868271">Perquè <ph name="APP_NAME"/> pugui utilitzar el seguiment de mans, també has d'activar aquesta funció a la <ph name="BEGIN_LINK"/>configuració del sistema<ph name="END_LINK"/>.</translation>
 <translation id="4688045258817337666">Gestionar les targetes</translation>
-<translation id="4751476147751820511">Sensors de moviment o de llum</translation>
+<translation id="4722332387043141878">Els llocs web solen utilitzar els sensors de moviment i de llum del dispositiu per a funcions com ara la realitat virtual o el seguiment de fitnes</translation>
 <translation id="4755971844837804407">Quan aquesta opció està activada, els llocs web et poden mostrar qualsevol anunci. Quan aquesta opció està desactivada, els llocs web no poden mostrar anuncis intrusius ni enganyosos.</translation>
 <translation id="4779083564647765204">Zoom</translation>
 <translation id="4807122856660838973">Activa la funció Navegació segura</translation>
@@ -390,7 +398,6 @@ La Protecció avançada controla aquestes opcions de configuració de Brave:
 <translation id="5001526427543320409">Galetes de tercers</translation>
 <translation id="5007392906805964215">Revisa</translation>
 <translation id="5039804452771397117">Permet</translation>
-<translation id="5048398596102334565">Permet que els llocs web accedeixin als sensors de moviment (opció recomanada)</translation>
 <translation id="5048841907079026162">Gestiona les teves dades de navegació</translation>
 <translation id="5063480226653192405">Ús</translation>
 <translation id="5068293087784369013">Personalitza la pàgina Pestanya nova</translation>
@@ -480,6 +487,7 @@ La Protecció avançada controla aquestes opcions de configuració de Brave:
 <translation id="5922853908706496913">S'està compartint la pantalla</translation>
 <translation id="5922967540311291836">Bloqueja les galetes de tercers:</translation>
 <translation id="5923512600150154850">Aquesta acció suprimirà dades i galetes (<ph name="DATASIZE"/>) emmagatzemades per llocs web.</translation>
+<translation id="5930707844513754220">Mostra més llistes de configuració</translation>
 <translation id="5939518447894949180">Restableix</translation>
 <translation id="5948139900367969951">Accedeix ràpidament al que t'interessa</translation>
 <translation id="5964247741333118902">Contingut inserit</translation>
@@ -488,6 +496,7 @@ La Protecció avançada controla aquestes opcions de configuració de Brave:
 <translation id="5976059395673079613"><ph name="PERMISSION"/> - <ph name="WARNING_MESSAGE"/></translation>
 <translation id="5998071268779572583">Activa el tauler de Discover</translation>
 <translation id="6012967556075291653">Drecera fixada</translation>
+<translation id="6013003831291591200">La tasca està completada</translation>
 <translation id="6015775454662021376">Controla l'accés al teu dispositiu d'aquest lloc web</translation>
 <translation id="296137235951584143">Personalitza Brave</translation>
 <translation id="6040143037577758943">Tanca</translation>
@@ -503,11 +512,11 @@ La Protecció avançada controla aquestes opcions de configuració de Brave:
 <translation id="6171020522141473435">Quan aquesta opció està activada, els llocs web poden demanar permís per utilitzar dispositius Bluetooth. Quan aquesta opció està desactivada, els llocs web no poden utilitzar dispositius Bluetooth.</translation>
 <translation id="6177128806592000436">La connexió amb aquest lloc web no és segura</translation>
 <translation id="6181444274883918285">Afegeix una excepció de lloc web</translation>
-<translation id="6192792657125177640">Excepcions</translation>
 <translation id="7938602278189860250">{DAYS,plural, =1{Brave tornarà a bloquejar les galetes demà}other{# dies perquè es tornin a bloquejar les galetes}}</translation>
 <translation id="6196640612572343990">Bloqueja les galetes de tercers</translation>
 <translation id="6205314730813004066">Privadesa d'anuncis</translation>
 <translation id="6207207788774442484">Suprimeix les dades i restableix els permisos</translation>
+<translation id="6211409961905616543">Els llocs web poden utilitzar sensors de moviment i de llum</translation>
 <translation id="6218508144653756827">Tema fúcsia</translation>
 <translation id="6231752747840485235">Vols desinstal·lar <ph name="APP_NAME"/>?</translation>
 <translation id="4789073065838177382">Toca Aplicació de navegador &gt; Brave</translation>
@@ -626,7 +635,6 @@ La Protecció avançada controla aquestes opcions de configuració de Brave:
 <translation id="7561196759112975576">Sempre</translation>
 <translation id="7573594921350120855">Els llocs web solen utilitzar la càmera de vídeo per a funcions de comunicació com ara el xat de vídeo</translation>
 <translation id="7574529565935733861">{NUM_MONTHS,plural, =1{Fa <ph name="NUM_MONTHS_ONE"/> mes}other{Fa <ph name="NUM_MONTHS_MANY"/> mesos}}</translation>
-<translation id="757524316907819857">Impedeix que els llocs web reprodueixin contingut protegit</translation>
 <translation id="7586676035079382730">No està permès utilitzar les notificacions</translation>
 <translation id="7594634374516752650">Connectat a un dispositiu Bluetooth</translation>
 <translation id="7617547684249261169">Pots suprimir l'historial, les galetes, les dades dels llocs web i més en la seva totalitat o bé una part</translation>
@@ -655,7 +663,7 @@ La Protecció avançada controla aquestes opcions de configuració de Brave:
 <translation id="783819812427904514">Deixa de silenciar el vídeo</translation>
 <translation id="7846076177841592234">Cancel·la la selecció</translation>
 <translation id="7882806643839505685">Permet el so d'un lloc web concret.</translation>
-<translation id="7891547341794213004">Amaga la targeta Continua amb aquesta pestanya</translation>
+<translation id="7891547341794213004">Amaga la targeta Continua navegant des d'aquesta pestanya</translation>
 <translation id="789722939441020330">No permetis que els llocs web baixin automàticament diversos fitxers</translation>
 <translation id="7940722705963108451">Recorda-m'ho</translation>
 <translation id="7948081750384205628">Més informació sobre <ph name="SETTING_TITLE"/></translation>
@@ -678,9 +686,9 @@ La Protecció avançada controla aquestes opcions de configuració de Brave:
 <translation id="8088603949666785339">Més opcions a <ph name="BANNER_TITLE"/></translation>
 <translation id="8112925981674547014">Mostra les pestanyes de la llista d'aplicacions</translation>
 <translation id="8116925261070264013">Silenciats</translation>
-<translation id="8117244575099414087">Quan aquesta opció està activada, els llocs web poden utilitzar els sensors del dispositiu. Quan aquesta opció està desactivada, els llocs web no poden utilitzar els sensors.</translation>
 <translation id="813082847718468539">Mostra la informació del lloc web</translation>
 <translation id="8131740175452115882">Confirma</translation>
+<translation id="8148160259207090265">Aquesta opció de configuració es manté activada sempre que tinguis activada la Protecció avançada a la configuració d'Android.</translation>
 <translation id="8163152278172770963">No permetis que els llocs web entrin automàticament al mode d'imatge sobre imatge</translation>
 <translation id="8168435359814927499">Contingut</translation>
 <translation id="818487310457576362">Arrossega des del costat de la pantalla per sortir de la pantalla completa.</translation>
@@ -710,6 +718,7 @@ La Protecció avançada controla aquestes opcions de configuració de Brave:
 <translation id="8441146129660941386">Retrocedeix</translation>
 <translation id="8444433999583714703">Perquè <ph name="APP_NAME"/> pugui accedir a la teva ubicació, també has d'activar-la a la <ph name="BEGIN_LINK"/>configuració d'Android<ph name="END_LINK"/>.</translation>
 <translation id="8447861592752582886">Revoca el permís d'accés al dispositiu</translation>
+<translation id="8463843545738141778">Aquesta opció de configuració està desactivada perquè has activat la Protecció avançada a la configuració d'Android.</translation>
 <translation id="8467359479529706065">Full inferior de l'aparença de la pàgina Pestanya nova obert a mitja alçada</translation>
 <translation id="8471525937465764768">Els llocs web solen connectar-se a dispositius USB per a funcions com ara desar dades en un dispositiu d'emmagatzematge o imprimir un document</translation>
 <translation id="8473055640493819707">L'aplicació <ph name="APP_NAME"/> no està actualitzada. Torna a instal·lar-la.</translation>
@@ -738,9 +747,11 @@ La Protecció avançada controla aquestes opcions de configuració de Brave:
 <translation id="8707904142362025782">El lloc web pot demanar permís per utilitzar la càmera</translation>
 <translation id="8712637175834984815">Entesos</translation>
 <translation id="8715862698998036666">Arrossega des de la part superior i llisca des de la vora esquerra o dreta per sortir de la pantalla completa.</translation>
+<translation id="8716050156658570300">Els llocs web poden demanar permís per utilitzar sensors de moviment i de llum</translation>
 <translation id="8719283222052720129">Activa el permís per a <ph name="APP_NAME"/> a la <ph name="BEGIN_LINK"/>configuració d'Android<ph name="END_LINK"/>.</translation>
 <translation id="8721719390026067591">Quan aquesta opció està activada, els llocs web poden demanar permís per cercar dispositius Bluetooth. Quan aquesta opció està desactivada, els llocs web no poden cercar dispositius Bluetooth.</translation>
 <translation id="8725066075913043281">Torna-ho a provar</translation>
+<translation id="6614332522102257453">Aprofita Brave al màxim</translation>
 <translation id="8730621377337864115">Fet</translation>
 <translation id="8737426583868847403">Els llocs web per als quals desis un nivell de zoom personalitzat es mostraran aquí</translation>
 <translation id="8748714929822124637">No permetis que els llocs web accedeixin a altres dispositius de la teva xarxa local</translation>
@@ -751,7 +762,7 @@ La Protecció avançada controla aquestes opcions de configuració de Brave:
 <translation id="2026315747406172223">V8 és el motor JavaScript i WebAssembly de Brave que s'utilitza per millorar el rendiment dels llocs web</translation>
 <translation id="8803526663383843427">Quan està activada</translation>
 <translation id="8805385115381080995">La navegació és més ràpida perquè és menys probable que un lloc web et demani que verifiquis que ets una persona real</translation>
-<translation id="8816026460808729765">Impedeix que els llocs web accedeixin als sensors</translation>
+<translation id="881644524232657178">Quan aquesta opció està activada, els llocs web poden utilitzar els sensors de moviment i de llum del dispositiu. Quan aquesta opció està desactivada, els llocs web no poden utilitzar els sensors.</translation>
 <translation id="8847988622838149491">USB</translation>
 <translation id="8874790741333031443">Prova de permetre temporalment les galetes de tercers. Això implica menys protecció de navegació, però és més probable que les funcions del lloc web funcionin de la manera prevista.</translation>
 <translation id="7532165358672313130">Mentre continuïs navegant, els llocs web podran recórrer a Brave per verificar que ets una persona real mitjançant llocs web que hagis visitat anteriorment</translation>
