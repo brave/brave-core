@@ -28,10 +28,8 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/priority/priority.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_ad_model_based_predictor.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
-#include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 
@@ -251,13 +249,10 @@ void EligibleNewTabPageAdsV2::FilterAndMaybePredictCreativeAdCallback(
       TRACE_ID_WITH_SCOPE("EligibleNewTabPageAds", trace_id), "ad_events",
       ad_events.size(), "creative_ads", creative_ad_count);
 
-  if (kShouldFrequencyCapNewTabPageAdsForNonRewards.Get() ||
-      UserHasJoinedBraveRewards()) {
-    NewTabPageAdExclusionRules exclusion_rules(
-        ad_events, *subdivision_targeting_, *anti_targeting_resource_,
-        site_history);
-    ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
-  }
+  NewTabPageAdExclusionRules exclusion_rules(ad_events, *subdivision_targeting_,
+                                             *anti_targeting_resource_,
+                                             site_history);
+  ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
 
   // Round-robin must run after exclusion rules but before pacing. Pacing is a
   // rate limiter, not an eligibility filter, so it should not influence which
