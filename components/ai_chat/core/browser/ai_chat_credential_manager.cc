@@ -241,7 +241,8 @@ void AIChatCredentialManager::OnGetPremiumStatus(
         callback,
     mojom::PremiumStatus status,
     mojom::PremiumInfoPtr info) {
-  if (status != mojom::PremiumStatus::Active) {
+  if (status != mojom::PremiumStatus::Active &&
+      status != mojom::PremiumStatus::ActiveDisconnected) {
     std::move(callback).Run(std::nullopt);
     return;
   }
