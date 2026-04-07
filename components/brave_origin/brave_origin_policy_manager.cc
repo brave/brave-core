@@ -172,13 +172,26 @@ void BraveOriginPolicyManager::SetPurchased(bool purchased) {
     return;
   }
   is_purchased_ = purchased;
+  // Persist purchase state so policies can be applied immediately on next
+  // startup, before the async SKU credential check completes.
+  if (local_state_) {
+    local_state_->SetBoolean(kOriginPurchaseValidated, purchased);
+  }
   if (initialized_) {
     observers_.Notify(&brave_policy::BravePolicyObserver::OnBravePoliciesReady);
   }
 }
 
 bool BraveOriginPolicyManager::IsPurchased() const {
-  return is_purchased_;
+  if (is_purchased_) {
+    return true;
+  }
+  // Fall back to persisted pref so policies are applied immediately on startup,
+  // before the async purchase verification completes.
+  if (local_state_) {
+    return local_state_->GetBoolean(kOriginPurchaseValidated);
+  }
+  return false;
 }
 
 void BraveOriginPolicyManager::Shutdown() {

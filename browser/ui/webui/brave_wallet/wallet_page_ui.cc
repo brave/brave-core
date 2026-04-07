@@ -19,7 +19,6 @@
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
-#include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -223,6 +222,5 @@ WalletPageUIConfig::WalletPageUIConfig()
 bool WalletPageUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
   return brave_wallet::IsNativeWalletEnabled() &&
-         !brave_origin::IsBraveOriginFeatureEnabled() &&
          brave_wallet::IsAllowedForContext(browser_context);
 }

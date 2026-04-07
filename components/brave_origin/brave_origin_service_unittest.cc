@@ -53,6 +53,8 @@ class BraveOriginServiceTest : public testing::Test {
 
     // Register the BraveOrigin policies dictionary pref in local_state
     local_state_.registry()->RegisterDictionaryPref(kBraveOriginPolicies);
+    local_state_.registry()->RegisterBooleanPref(kOriginPurchaseValidated,
+                                                 false);
 
     // Register test browser preferences in local_state
     // These are needed because BraveOriginService::SetBrowserPolicyValue()
@@ -512,6 +514,8 @@ class BraveOriginServiceWithSkusTest : public testing::Test {
     feature_list_.InitAndEnableFeature(features::kBraveOrigin);
 
     local_state_.registry()->RegisterDictionaryPref(kBraveOriginPolicies);
+    local_state_.registry()->RegisterBooleanPref(kOriginPurchaseValidated,
+                                                 false);
     local_state_.registry()->RegisterBooleanPref(kTestBrowserPref, false);
     profile_prefs_.registry()->RegisterBooleanPref(kTestProfilePref, true);
 
@@ -692,6 +696,8 @@ class BraveOriginServiceDisabledTest : public testing::Test {
 
     // Register the BraveOrigin policies dictionary pref in local_state
     local_state_.registry()->RegisterDictionaryPref(kBraveOriginPolicies);
+    local_state_.registry()->RegisterBooleanPref(kOriginPurchaseValidated,
+                                                 false);
 
     // Register test preferences (needed for pref service not to crash)
     local_state_.registry()->RegisterBooleanPref(kTestBrowserPref, false);

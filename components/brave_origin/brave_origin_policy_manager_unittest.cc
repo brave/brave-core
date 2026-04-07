@@ -35,6 +35,8 @@ class BraveOriginPolicyManagerTest : public testing::Test {
 
   void SetUp() override {
     pref_service_.registry()->RegisterDictionaryPref(kBraveOriginPolicies);
+    pref_service_.registry()->RegisterBooleanPref(kOriginPurchaseValidated,
+                                                  false);
   }
 
   void TearDown() override {
