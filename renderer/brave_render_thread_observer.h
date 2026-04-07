@@ -46,14 +46,18 @@ class BraveRenderThreadObserver
       blink::AssociatedInterfaceRegistry* associated_interfaces) override;
 
   // brave::mojom::BraveRendererConfiguration:
-  void SetInitialConfiguration(brave::mojom::InitialParamsPtr params) override;
+  void SetInitialConfiguration(bool is_tor_process,
+                               bool is_brave_wallet_available) override;
   void SetConfiguration(brave::mojom::DynamicParamsPtr params) override;
 
   void OnRendererConfigurationAssociatedRequest(
       mojo::PendingAssociatedReceiver<brave::mojom::BraveRendererConfiguration>
           receiver);
 
-  brave::mojom::InitialParamsPtr initial_params_;
+  bool is_tor_process_ = false;
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  bool is_brave_wallet_available_ = false;
+#endif
   mojo::AssociatedReceiverSet<brave::mojom::BraveRendererConfiguration>
       renderer_configuration_receivers_;
 };

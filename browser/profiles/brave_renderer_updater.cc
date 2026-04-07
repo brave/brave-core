@@ -131,16 +131,14 @@ void BraveRendererUpdater::InitializeRenderer(
   Profile* profile =
       Profile::FromBrowserContext(render_process_host->GetBrowserContext());
 
-  auto params = brave::mojom::InitialParams::New();
-
+  bool is_brave_wallet_available = false;
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   is_wallet_allowed_for_context_ = brave_wallet::IsAllowedForContext(profile);
-  params->is_brave_wallet_available = is_wallet_allowed_for_context_;
+  is_brave_wallet_available = is_wallet_allowed_for_context_;
 #endif
 
-  params->is_tor_process = profile->IsTor();
-
-  renderer_configuration->SetInitialConfiguration(std::move(params));
+  renderer_configuration->SetInitialConfiguration(profile->IsTor(),
+                                                  is_brave_wallet_available);
   UpdateRenderer(&renderer_configuration);
 }
 

@@ -50,8 +50,12 @@ void BraveRenderThreadObserver::OnRendererConfigurationAssociatedRequest(
 }
 
 void BraveRenderThreadObserver::SetInitialConfiguration(
-    brave::mojom::InitialParamsPtr params) {
-  initial_params_ = std::move(params);
+    bool is_tor_process,
+    bool is_brave_wallet_available) {
+  is_tor_process_ = is_tor_process;
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  is_brave_wallet_available_ = is_brave_wallet_available;
+#endif
 }
 
 void BraveRenderThreadObserver::SetConfiguration(
@@ -60,12 +64,12 @@ void BraveRenderThreadObserver::SetConfiguration(
 }
 
 bool BraveRenderThreadObserver::IsOnionAllowed() const {
-  return (initial_params_ && initial_params_->is_tor_process) ||
+  return is_tor_process_ ||
          !GetDynamicConfigParams()->onion_only_in_tor_windows;
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 bool BraveRenderThreadObserver::IsBraveWalletAvailable() const {
-  return initial_params_ && initial_params_->is_brave_wallet_available;
+  return is_brave_wallet_available_;
 }
 #endif
