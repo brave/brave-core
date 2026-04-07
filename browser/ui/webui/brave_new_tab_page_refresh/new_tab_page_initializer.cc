@@ -50,6 +50,7 @@
 #include "ui/webui/webui_util.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
 
@@ -207,7 +208,7 @@ void NewTabPageInitializer::AddLoadTimeValues() {
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat_input_enabled =
-      ai_chat::features::IsAIChatEnabled() &&
+      ai_chat::IsAIChatEnabled(profile->GetPrefs()) &&
       ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled();
 
   // Required by Brave AI Chat UI.
