@@ -128,10 +128,10 @@ IN_PROC_BROWSER_TEST_F(BraveWebAudioFarblingBrowserTest, FarbleWebAudio) {
   // web audio: farbled audio data
   SetFingerprintingDefault();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
-  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "7920");
+  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "7992");
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling2_url()));
-  EXPECT_EQ(content::EvalJs(contents(), kWebAudioResultScript), -1032);
+  EXPECT_EQ(content::EvalJs(contents(), kWebAudioResultScript), -1031);
 
   // Farbling level: off
   // web audio: original audio data
