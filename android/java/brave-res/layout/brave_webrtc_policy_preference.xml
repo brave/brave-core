@@ -12,18 +12,6 @@
     android:focusable="false">
 
 
-    <TextView
-        android:id="@+id/learn_more_webrtc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginStart="20dp"
-        android:textColor="@color/brave_theme_color"
-        android:layout_marginEnd="20dp"
-        android:gravity="start"
-        android:text="@string/menu_learn_more"/>
-
     <org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionLayout
         android:id="@+id/radio_button_layout"
         android:layout_width="match_parent"
@@ -33,7 +21,8 @@
             android:id="@+id/webrtc_policy_default"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:primaryText="@string/settings_webrtc_policy_default" />
+            app:primaryText="@string/settings_webrtc_policy_default"
+            app:backgroundStyle="none" />
 
         <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
             android:id="@+id/webrtc_policy_default_public_and_private_interfaces"
@@ -42,7 +31,8 @@
             android:minHeight="@dimen/min_touch_target_size"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            app:primaryText="@string/settings_webrtc_policy_default_public_and_private_interfaces" />
+            app:primaryText="@string/settings_webrtc_policy_default_public_and_private_interfaces"
+            app:backgroundStyle="none" />
 
         <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
             android:id="@+id/webrtc_policy_default_public_interface_only"
@@ -51,7 +41,8 @@
             android:minHeight="@dimen/min_touch_target_size"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            app:primaryText="@string/settings_webrtc_policy_default_public_interface_only" />
+            app:primaryText="@string/settings_webrtc_policy_default_public_interface_only"
+            app:backgroundStyle="none" />
 
         <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
             android:id="@+id/webrtc_policy_disable_non_proxied_udp"
@@ -60,8 +51,22 @@
             android:minHeight="@dimen/min_touch_target_size"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            app:primaryText="@string/settings_webrtc_policy_disable_non_proxied_udp" />
+            app:primaryText="@string/settings_webrtc_policy_disable_non_proxied_udp"
+            app:backgroundStyle="none" />
 
     </org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionLayout>
+
+    <TextView
+        android:id="@+id/learn_more_webrtc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="20dp"
+        android:textColor="@color/brave_theme_color"
+        android:layout_marginEnd="20dp"
+        android:gravity="start"
+        android:text="@string/menu_learn_more"/>
 
 </LinearLayout>
