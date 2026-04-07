@@ -22,6 +22,7 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/per_week_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/subdivision_targeting_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/total_max_exclusion_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/zero_priority_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 
@@ -68,6 +69,8 @@ ExclusionRulesBase::ExclusionRulesBase(
       std::make_unique<MarkedAsInappropriateExclusionRule>());
 
   exclusion_rules_.push_back(std::make_unique<CommandLineExclusionRule>());
+
+  exclusion_rules_.push_back(std::make_unique<ZeroPriorityExclusionRule>());
 }
 
 ExclusionRulesBase::~ExclusionRulesBase() = default;
