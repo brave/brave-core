@@ -35,19 +35,19 @@ class AdsInternalsHandler final : public bat_ads::mojom::AdsInternals {
 
   ~AdsInternalsHandler() override;
 
-  void BindInterface(
-      mojo::PendingReceiver<bat_ads::mojom::AdsInternals> pending_receiver);
+  void BindInterface(mojo::PendingReceiver<bat_ads::mojom::AdsInternals>
+                         mojom_pending_receiver);
 
  private:
   // bat_ads::mojom::AdsInternals:
   void CreateAdsInternalsPageHandler(
-      mojo::PendingRemote<bat_ads::mojom::AdsInternalsPage> page_pending_remote)
-      override;
+      mojo::PendingRemote<bat_ads::mojom::AdsInternalsPage>
+          mojom_pending_remote) override;
   void GetAdsInternals(GetAdsInternalsCallback callback) override;
   void ClearAdsData(brave_ads::ClearDataCallback callback) override;
 
   void GetInternalsCallback(GetAdsInternalsCallback callback,
-                            std::optional<base::DictValue> internals);
+                            std::optional<base::DictValue> dict);
 
   void OnBraveRewardsEnabledPrefChanged(const std::string& path);
   void UpdateBraveRewardsEnabled();
@@ -56,9 +56,9 @@ class AdsInternalsHandler final : public bat_ads::mojom::AdsInternals {
 
   const raw_ref<PrefService> prefs_;
 
-  mojo::Receiver<bat_ads::mojom::AdsInternals> receiver_{this};
+  mojo::Receiver<bat_ads::mojom::AdsInternals> mojom_receiver_{this};
 
-  mojo::Remote<bat_ads::mojom::AdsInternalsPage> page_remote_;
+  mojo::Remote<bat_ads::mojom::AdsInternalsPage> mojom_remote_;
 
   PrefChangeRegistrar pref_change_registrar_;
 

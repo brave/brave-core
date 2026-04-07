@@ -24,3 +24,22 @@ source_set("internals") {
     "//mojo/public/cpp/bindings",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "ads_internals_handler_unittest.cc" ]
+
+  deps = [
+    ":internals",
+    "//base/test:test_support",
+    "//brave/components/brave_ads/core/browser/service:test_support",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/services/bat_ads/public/interfaces",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//mojo/public/cpp/bindings",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}
