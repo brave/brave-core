@@ -12,10 +12,12 @@ namespace sidebar::features {
 
 // kSidebarV2 is enabled by default when ENABLE_SIDEBAR_V2 buildflag is on,
 // since that build uses upstream's SidePanel and requires V2 behavior.
+BASE_FEATURE(kSidebarV2,
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
-BASE_FEATURE(kSidebarV2, base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT
 #else
-BASE_FEATURE(kSidebarV2, base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT
 #endif
+);
 
 }  // namespace sidebar::features
