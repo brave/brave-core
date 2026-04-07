@@ -494,7 +494,10 @@ void BraveTabContainer::PaintBoundingBoxForSplitTab(
       !tab2->IsMouseHovered()) {
     constexpr int kSplitViewSeparatorHeight = 24;
     auto separator_top = bounding_rects.top_center();
-    CHECK_GT(bounding_rects.height(), kSplitViewSeparatorHeight);
+    if (bounding_rects.height() <= kSplitViewSeparatorHeight) {
+      // Bounding rect can be too small during shutdown.
+      return;
+    }
     // Calculate gap between tab bounds top and separator top.
     const int gap = (bounding_rects.height() - kSplitViewSeparatorHeight) / 2;
     separator_top.Offset(0, gap);
