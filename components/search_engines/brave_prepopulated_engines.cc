@@ -162,6 +162,19 @@ const PrepopulatedEngine brave_ecosia =
 // LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
 
 // LINT.IfChange
+const PrepopulatedEngine mojeek = MakeBravePrepopulatedEngine(
+    u"Mojeek",
+    u":m",
+    "https://www.mojeek.com/favicon.ico",
+    "IDR_SEARCH_ENGINE_MOJEEK",
+    "https://www.mojeek.com/search?q=%7BsearchTerms%7D",
+    "UTF-8",
+    "???",
+    SEARCH_ENGINE_MOJEEK,
+    PREPOPULATED_ENGINE_ID_MOJEEK);
+// LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
+
+// LINT.IfChange
 const PrepopulatedEngine qwant = MakeBravePrepopulatedEngine(
     u"Qwant",
     u":q",
