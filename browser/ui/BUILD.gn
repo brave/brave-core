@@ -5,6 +5,7 @@
 
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/browser/ui/config.gni")
+import("//brave/browser/ui/sidebar/buildflags/buildflags.gni")
 import("//brave/browser/updater/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
@@ -667,9 +668,21 @@ source_set("ui") {
       "views/window_closing_confirm_dialog_view.h",
     ]
 
+    # Brave's SidePanel and its resize widget are only built in V1 mode. When
+    # enable_sidebar_v2 is true, upstream's SidePanel is used instead (via
+    # the chromium_src override in side_panel.cc).
+    if (enable_sidebar_v2) {
+      sources -= [
+        "views/side_panel/side_panel.cc",
+        "views/side_panel/side_panel_resize_widget.cc",
+        "views/side_panel/side_panel_resize_widget.h",
+      ]
+    }
+
     deps += [
       "//brave/browser/ui/darker_theme",
       "//brave/browser/ui/side_panel",
+      "//brave/browser/ui/sidebar/buildflags",
       "//brave/browser/ui/views:layout_provider",
       "//brave/browser/ui/views/frame",
       "//brave/browser/ui/views/location_bar",

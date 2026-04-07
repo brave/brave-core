@@ -24,6 +24,7 @@
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_info/features.h"
+#include "brave/browser/ui/sidebar/buildflags/buildflags.h"
 #include "brave/browser/ui/sidebar/features.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -351,6 +352,14 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
       brave_vpn::prefs::kBraveVPNShowButton,
       base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
                           base::Unretained(this)));
+#endif
+
+  // When the ENABLE_SIDEBAR_V2 buildflag is on, upstream's SidePanel is
+  // compiled in and requires V2 behavior. Disabling kSidebarV2 at runtime
+  // would cause V1-only code paths (removed from this build) to be entered.
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  CHECK(base::FeatureList::IsEnabled(sidebar::features::kSidebarV2))
+      << "kSidebarV2 must be enabled when ENABLE_SIDEBAR_V2 buildflag is on";
 #endif
 
   // Only normal window (tabbed) should have sidebar.
@@ -1083,9 +1092,11 @@ void BraveBrowserView::UpdateVerticalTabStripBorder() {
 }
 
 void BraveBrowserView::UpdateSidebarBorder() {
+#if !BUILDFLAG(ENABLE_SIDEBAR_V2)
   if (contents_height_side_panel_) {
     contents_height_side_panel_->UpdateBorder();
   }
+#endif
 
   if (sidebar_container_view_) {
     sidebar_container_view_->UpdateBorder();

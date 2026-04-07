@@ -47,6 +47,7 @@ source_set("sidebar_impl") {
   deps = [
     ":sidebar",
     "//base",
+    "//brave/browser/ui/sidebar/buildflags",
     "//brave/browser/ui/views/frame/split_view",
     "//brave/components/brave_origin/buildflags",
     "//brave/components/brave_talk/buildflags",
