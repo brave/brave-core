@@ -17,9 +17,6 @@ Table of contents
   - [Closing issues](#closing-issues)
   - [Triage help](#triage-help)
 
-## How can you contribute?
-Brave welcomes contributions of all kinds! You can make a huge impact without writing a single line of code
-
 ### Help triage issues
 One of the easiest ways to help is to [look through our issues tab](https://github.com/brave/brave-browser/issues)
 * Does the issue still happen? Sometimes we fix the problem and don't always close the issue
@@ -34,15 +31,7 @@ Documentation is extremely important. There are lots of areas we can improve:
 * Capturing/updating helpful information [in our wiki](https://github.com/brave/brave-browser/wiki). You'll need to reach out to a Brave team member to request permission - you can do this by creating a new issue or tagging a Brave team member in an existing issue.
 * Helping to propose a way to bring documentation to other languages. Right now, everything is in English
 * Improving this document :smile:
-
-### Help with translations and localization efforts :earth_africa::earth_asia::earth_americas:
-All of the user interface text and strings added to Brave are written initially in English (en-US) and then are localized by real people into other languages. Brave supports many languages already. Though, the languages that Brave supports may vary by platform.
-
-Brave is constantly analyzing their language support to see if new languages are necessary. We pride ourselves on being a global company and want to include as many language communities as we can. Our aim is to make web privacy accessible to everyone regardless of their language. However, it is not possible to support all languages on all platforms.
-
-If you find that we are missing your preferred language or you see missing, incomplete, or poor quality translations, please [email us](mailto:localization@brave.com).
-
-Brave does consider volunteer translators on a case-by-case basis. If you represent a language community or are interested in collaborating with our team for specific projects, then please [reach out](mailto:localization@brave.com).
+* DO NOT USE AI
 
 ### Work on the code
 * The [repo's wiki](https://github.com/brave/brave-browser/wiki) has instructions for cloning the repo and getting setup on your platform of choice
