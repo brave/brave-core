@@ -71,8 +71,8 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -268,11 +268,19 @@ WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
     return WebUI::kNoWebUI;
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
-#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_WALLET)
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#if BUILDFLAG(IS_ANDROID)
   if (ShouldBlockWalletWebUI(browser_context, url)) {
     return WebUI::kNoWebUI;
   }
-#endif  // BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_WALLET)
+#else
+  if ((url.host() == kWalletPageHost ||
+       url.host() == kWalletPanelHost) &&
+      !brave_wallet::IsAllowedForContext(browser_context)) {
+    return WebUI::kNoWebUI;
+  }
+#endif  // BUILDFLAG(IS_ANDROID)
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     if (playlist::PlaylistUI::ShouldBlockPlaylistWebUI(browser_context, url)) {
