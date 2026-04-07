@@ -24,6 +24,10 @@ import {
 } from '../conversation_entries/conversation_entries_utils'
 import RichSearchWidget from './rich_search_widget'
 import AssistantResponseContextProvider from './assistant_response_context'
+import {
+  getBraveSearchUrlForQuery,
+  LEO_BRAVE_SEARCH_SUPPORT_URL,
+} from '../../../common/constants'
 
 interface BaseProps {
   // Whether data is currently being received (generated)
@@ -38,29 +42,23 @@ interface BaseProps {
 function SearchSummary(props: { searchQueries: string[] }) {
   const context = useUntrustedConversationContext()
 
-  const handleOpenSearchQuery = React.useCallback(
-    (e: React.MouseEvent, query: string) => {
-      e.preventDefault()
-      context.uiHandler?.openSearchURL(query)
-    },
-    [],
-  )
-
-  const handleLearnMore = () => {
+  const handleLearnMoreClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
     context.uiHandler?.openLearnMoreAboutBraveSearchWithLeo()
   }
 
   const message = formatLocale(S.CHAT_UI_SEARCH_QUERIES, {
     $1: props.searchQueries.map((query, i, a) => (
       <React.Fragment key={i}>
-        "
-        <button
+        <a
           className={styles.searchQueryLink}
-          onClick={(e) => handleOpenSearchQuery(e, query)}
+          href={getBraveSearchUrlForQuery(query)}
+          target='_blank'
+          rel='noopener noreferrer'
         >
-          {query}
-        </button>
-        "{i < a.length - 1 ? ', ' : null}
+          {`"${query}"`}
+        </a>
+        {i < a.length - 1 ? ', ' : null}
       </React.Fragment>
     )),
   })
@@ -70,12 +68,13 @@ function SearchSummary(props: { searchQueries: string[] }) {
       <Icon name='brave-icon-search-color' />
       <span data-test-id='search-summary'>
         {message}{' '}
-        <button
+        <a
           className={styles.searchLearnMoreLink}
-          onClick={handleLearnMore}
+          href={LEO_BRAVE_SEARCH_SUPPORT_URL}
+          onClick={handleLearnMoreClick}
         >
           {getLocale(S.CHAT_UI_LEARN_MORE)}
-        </button>
+        </a>
       </span>
     </div>
   )
