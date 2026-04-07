@@ -237,6 +237,7 @@ RegisterPolymerTemplateModifications({
       return
     }
 
+    // <if expr="enable_brave_ads or enable_brave_rewards">
     buttonContainer.insertAdjacentHTML(
       'beforebegin',
       getTrustedHTML`
@@ -270,6 +271,7 @@ RegisterPolymerTemplateModifications({
     } else {
       resetBraveRewardsLabel.textContent = loadTimeData.getString('resetRewardsData')
     }
+    // </if>
 
     // Append Save button.
     const confirmButtonElement = templateContent.querySelector('#deleteButton')
