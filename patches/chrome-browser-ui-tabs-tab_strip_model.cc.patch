@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.cc b/chrome/browser/ui/tabs/tab_strip_model.cc
-index cb0db177da8287674b22fc6e2bde8dbcbfc2c431..1bc2c37c3a80f2e961044a5c9ceeb76dc7383918 100644
+index cb0db177da8287674b22fc6e2bde8dbcbfc2c431..ea771606ffc87f69e8e8342f41341c2df79b9eea 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.cc
 +++ b/chrome/browser/ui/tabs/tab_strip_model.cc
-@@ -1764,6 +1764,7 @@ void TabStripModel::AddTab(std::unique_ptr<tabs::TabModel> tab,
+@@ -1763,6 +1763,7 @@ void TabStripModel::AddTab(std::unique_ptr<tabs::TabModel> tab,
+     // in the address bar and presses Alt+Enter. This allows for opening a new
      // Tab to quickly look up something. When this Tab is closed, the old one
      // is re-activated, not the next-adjacent.
++    BRAVE_TAB_STRIP_MODEL_ADD_TAB
      inherit_opener = true;
-+    tab->set_opener_was_set_for_empty_new_tab();
    }
    tabs::TabModel* tab_ptr = tab.get();
-   tab->OnAddedToModel(this);
