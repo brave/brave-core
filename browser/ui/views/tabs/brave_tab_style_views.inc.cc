@@ -536,31 +536,7 @@ void BraveVerticalTabStyle::PaintTabAccentIcon(gfx::Canvas* canvas) const {
                     .getBounds();
 
   if (!brave_tab->ShouldShowLargeAccentIcon()) {
-    // Small icon is painted on the left-bottom corner of the tab.
-    // We need 16x16 bounding circle and centered icon in it.
-    constexpr auto circle_size = 16;
-    int center_x = bounds.x() + circle_size / 2;
-    int center_y = bounds.bottom() - circle_size / 2;
-    if (auto accent_colors = brave_tab->GetTabAccentColors();
-        accent_colors.has_value()) {
-      cc::PaintFlags flags;
-      flags.setAntiAlias(true);
-      flags.setColor(accent_colors->background_color);
-      flags.setStyle(cc::PaintFlags::kFill_Style);
-      canvas->DrawCircle(gfx::PointF(center_x, center_y), 8, flags);
-    }
-
-    if (accent_icon.IsEmpty()) {
-      return;
-    }
-
-    constexpr int dest_image_size = 12;
-    auto image =
-        brave_tab->GetTabAccentIcon().Rasterize(tab()->GetColorProvider());
-    canvas->DrawImageInt(image, 0, 0, image.width(), image.height(),
-                         center_x - dest_image_size / 2,
-                         center_y - dest_image_size / 2, dest_image_size,
-                         dest_image_size, true);
+    // Small accent icon is painted by BraveTab's SmallAccentIconView child.
     return;
   }
 

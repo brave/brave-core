@@ -24,6 +24,10 @@ namespace tabs {
 class TreeTabNode;
 }  // namespace tabs
 
+namespace containers {
+FORWARD_DECLARE_TEST(ContainersBrowserTest, SmallAccentIconViewVisibility);
+}  // namespace containers
+
 // Brave specific tab implementation that extends the base Tab class.
 // It includes features like vertical tab support.
 // Also customizes the tab layout and visual appearance for Brave's UI.
@@ -97,6 +101,19 @@ class BraveTab : public Tab {
  private:
   friend class BraveTabTest;
 
+  class SmallAccentIconView : public views::View {
+    METADATA_HEADER(SmallAccentIconView, views::View)
+
+   public:
+    SmallAccentIconView();
+    ~SmallAccentIconView() override;
+
+    // views::View:
+    void OnPaint(gfx::Canvas* canvas) override;
+    gfx::Size CalculatePreferredSize(
+        const views::SizeBounds& available_size) const override;
+  };
+
   FRIEND_TEST_ALL_PREFIXES(BraveTabTest, ShouldAlwaysHideTabCloseButton);
   FRIEND_TEST_ALL_PREFIXES(BraveTabTest,
                            IconVisibilityWhenVerticalTabsAnimating);
@@ -108,6 +125,8 @@ class BraveTab : public Tab {
   FRIEND_TEST_ALL_PREFIXES(
       BraveTabTestWithTreeTab,
       TreeToggleButtonAlwaysVisibleWhenCollapsedAndHasDescendants);
+  FRIEND_TEST_ALL_PREFIXES(containers::ContainersBrowserTest,
+                           SmallAccentIconViewVisibility);
 
   bool IsAtMinWidthForVerticalTabStrip() const;
 
@@ -135,10 +154,15 @@ class BraveTab : public Tab {
   // Returns the height of the tree tab node for this tab.
   int GetTreeHeight() const;
 
+  // Lays out the small tab accent icon view (visibility and bounds).
+  void LayoutSmallTabAccentIcon();
+
   // Test accessors to reveal base class members.
   TabCloseButton* close_button_for_test() const { return close_button_.get(); }
   bool center_icon_for_test() const { return center_icon_; }
   bool showing_close_button_for_test() const { return showing_close_button_; }
+
+  raw_ptr<SmallAccentIconView> small_accent_icon_view_ = nullptr;  // not owned
 
   base::WeakPtrFactory<BraveTab> weak_factory_{this};
 };
