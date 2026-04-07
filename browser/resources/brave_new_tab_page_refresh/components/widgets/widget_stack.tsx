@@ -72,6 +72,7 @@ export function WidgetStack(props: Props) {
       <button
         key={tab}
         className={tab === activeTab ? 'active' : ''}
+        data-testid={`${tab}-widget-tab`}
         onClick={() => {
           storeCurrentTab(props.name, tab)
           setCurrentTab(tab)

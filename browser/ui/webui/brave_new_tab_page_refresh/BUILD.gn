@@ -139,16 +139,25 @@ source_set("brave_new_tab_page_refresh") {
 source_set("browser_tests") {
   testonly = true
 
-  sources = [ "brave_new_tab_page_ui_browsertest.cc" ]
+  sources = [
+    "brave_new_tab_page_ui_browsertest.cc",
+    "ntp_feature_disabled_browsertest.cc",
+  ]
 
   deps = [
     ":brave_new_tab_page_refresh",
     "//base",
     "//brave/browser/extensions:test_support",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_ads/buildflags",
+    "//brave/components/brave_news/common/buildflags",
+    "//brave/components/brave_rewards/core/buildflags",
+    "//brave/components/brave_vpn/common/buildflags",
     "//chrome/browser/ui",
     "//chrome/common",
     "//chrome/test:test_support",
+    "//components/policy/core/browser",
+    "//components/policy/core/common:test_support",
     "//content/public/browser",
     "//content/public/common:result_codes",
     "//content/test:test_support",
