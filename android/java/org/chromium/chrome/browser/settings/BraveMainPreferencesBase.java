@@ -440,6 +440,20 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
         // We have our own Appearance settings so we don't need the upstream's one.
         removePreferenceIfPresent(MainSettings.PREF_APPEARANCE);
+
+        resortPreferenceScreenChildren();
+    }
+
+    // PreferenceGroup (with orderingFromXml=false) only re-sorts its children list when
+    // addPreference() is called, not when setOrder() is called on existing preferences.
+    // The addPreference(mVpnCalloutPreference) in rearrangePreferenceOrders() fires before the
+    // setPreferenceOrder() calls, so it sorts with stale XML orders. Removing and re-adding any
+    // always-present preference triggers a final sort with all the correct final order values.
+    private void resortPreferenceScreenChildren() {
+        Preference featuresSectionPref = findPreference(PREF_FEATURES_SECTION);
+        assumeNonNull(featuresSectionPref);
+        getPreferenceScreen().removePreference(featuresSectionPref);
+        getPreferenceScreen().addPreference(featuresSectionPref);
     }
 
     // A wrapper to suppress NullAway warning for the prefs which always present
