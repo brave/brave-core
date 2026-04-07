@@ -18,6 +18,10 @@
   align-items: flex-start;
 }
 
+.hasGenerated .entryPair:last-child {
+  min-height: calc(100vh - var(--suggested-questions-height));
+}
+
 .message {
   margin: 0;
   width: 100%;
