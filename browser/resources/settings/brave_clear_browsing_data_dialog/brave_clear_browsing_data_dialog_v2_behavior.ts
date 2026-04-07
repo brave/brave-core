@@ -93,8 +93,8 @@ export class BraveSettingsClearBrowsingDataDialogV2Element
     this.addEventListener('clear-data-on-exit-page-change',
       this.onClearDataOnExitPageChange_)
 
-    this.shadowRoot!.querySelector('#clearBraveAdsData')!
-      .addEventListener('click', this.clearBraveAdsData_)
+    this.shadowRoot!.querySelector('#clearBraveAdsData')
+      ?.addEventListener('click', this.clearBraveAdsData_)
 
     this.shadowRoot!.querySelector('#saveOnExitSettingsConfirm')!
       .addEventListener('click', this.saveOnExitSettings_)
@@ -173,12 +173,9 @@ export class BraveSettingsClearBrowsingDataDialogV2Element
       this.removeLeoAIFromList()
     }
     // </if>
-
-    // <if expr="not enable_ai_chat">
-    this.removeLeoAIFromList()
-    // </if>
   }
 
+  // <if expr="enable_ai_chat">
   private removeLeoAIFromList() {
     const priv = this as any
     const leoExpandedIndex = priv.expandedBrowsingDataTypeOptionsList_.map(
@@ -193,6 +190,7 @@ export class BraveSettingsClearBrowsingDataDialogV2Element
     assert(leoMoreIndex !== -1)
     priv.moreBrowsingDataTypeOptionsList_.splice(leoMoreIndex, 1);
   }
+  // </if>
 
   /**
    * Saves on exit settings selections.

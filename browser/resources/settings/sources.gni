@@ -18,6 +18,10 @@ import("//brave/components/tor/buildflags/buildflags.gni")
 brave_settings_preprocess_deps =
     [ "//brave/browser/resources/settings:preprocess" ]
 
+# Preprocessor defines passed to build_webui() so that Chromium-patched
+# TypeScript files can use <if expr="..."> with Brave buildflags.
+brave_settings_preprocessor_defines = [ "enable_ai_chat=$enable_ai_chat" ]
+
 brave_settings_web_component_files = [
   "ad_block_only_mode_page/ad_block_only_mode_alert.ts",
   "ad_block_only_mode_page/ad_block_only_mode_page.ts",
