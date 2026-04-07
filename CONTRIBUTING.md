@@ -10,7 +10,7 @@ Table of contents
   - [Making changes](#making-changes)
   - [Pull requests](#pull-requests)
     - [Contribution pace and volume](#contribution-pace-and-volume)
-    - [AI-assisted contributions](#ai-assisted-contributions)
+    - [Mana's stance on vibe coding](#manas-stance-on-vibe-coding)
     - [Considerations before submitting a pull request](#considerations-before-submitting-a-pull-request)
     - [Each pull request should include](#each-pull-request-should-include)
     - [Employees should](#employees-should)
@@ -112,15 +112,8 @@ Do not open large numbers of pull requests in short periods of time. Each PR req
 
 New contributors should start with one or two pull requests, wait for them to be reviewed and merged, and scale up gradually over time. This helps you learn the codebase conventions, build trust with reviewers, and avoid repeating the same mistakes across many PRs.
 
-#### AI-assisted contributions
-AI tools (e.g., Copilot, Claude, ChatGPT) may be used to assist with contributions, but the human contributor is fully responsible for every PR they submit. This means:
-
-* You must understand the changes you are proposing — not just relay AI output
-* All changes must be manually built, tested, and verified by you on the relevant platform(s) before submitting a PR, exactly as any other contribution
-* Do not add AI-generated bot reviews (e.g., Copilot reviewer) to your PRs — code reviews are done by Brave maintainers
-* Be transparent about AI involvement when it played a significant role in identifying the issue or generating the fix
-
-Using AI does not change the expectations for quality, testing, or PR volume. AI makes it easy to generate many changes quickly, but the review burden still falls on Brave's team. Contributors are expected to be thoughtful about what they submit and to not externalize work onto maintainers.
+#### Mana's stance on vibe coding
+# NO AI ALLOWED
 
 #### Considerations before submitting a pull request
 Some helpful things to consider before submitting your work
