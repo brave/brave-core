@@ -870,3 +870,72 @@ TEST_F(BraveStatsUpdaterTest, DoNotSendSerpMetricsUsageIfDisabled) {
   EXPECT_FALSE(net::GetValueForKeyInQuery(update_url, "staleSearch",
                                           /*out_value=*/nullptr));
 }
+
+TEST_F(BraveStatsUpdaterTest, DoesNotFireServerPingIfNeitherReferralPrefIsSet) {
+  size_t ping_count = 0;
+  brave_stats::BraveStatsUpdater::StatsUpdatedCallback callback =
+      base::BindRepeating(
+          [](size_t* count, const GURL& /*url*/) { (*count)++; }, &ping_count);
+  SetupStatsUpdater(&callback);
+
+  task_environment_.FastForwardBy(base::Seconds(10));
+
+  EXPECT_EQ(0U, ping_count);
+}
+
+TEST_F(BraveStatsUpdaterTest,
+       ServerPingFiresWhenReferralInitializationPrefAlreadySetAtStartup) {
+  GetLocalState()->SetBoolean(kReferralInitialization, true);
+
+  size_t ping_count = 0;
+  brave_stats::BraveStatsUpdater::StatsUpdatedCallback callback =
+      base::BindRepeating(
+          [](size_t* count, const GURL& /*url*/) { (*count)++; }, &ping_count);
+  SetupStatsUpdater(&callback);
+
+  task_environment_.FastForwardBy(base::Seconds(4));
+
+  EXPECT_EQ(1U, ping_count);
+}
+
+TEST_F(BraveStatsUpdaterTest,
+       ServerPingFiresWhenPromoCodeFilePrefAlreadySetAtStartup) {
+  GetLocalState()->SetBoolean(kReferralCheckedForPromoCodeFile, true);
+
+  size_t ping_count = 0;
+  brave_stats::BraveStatsUpdater::StatsUpdatedCallback callback =
+      base::BindRepeating(
+          [](size_t* count, const GURL& /*url*/) { (*count)++; }, &ping_count);
+  SetupStatsUpdater(&callback);
+
+  task_environment_.FastForwardBy(base::Seconds(4));
+
+  EXPECT_EQ(1U, ping_count);
+}
+
+TEST_F(BraveStatsUpdaterTest,
+       ServerPingFiresWhenReferralInitializationPrefBecomesTrue) {
+  size_t ping_count = 0;
+  brave_stats::BraveStatsUpdater::StatsUpdatedCallback callback =
+      base::BindRepeating(
+          [](size_t* count, const GURL& /*url*/) { (*count)++; }, &ping_count);
+  SetupStatsUpdater(&callback);
+
+  GetLocalState()->SetBoolean(kReferralInitialization, true);
+  task_environment_.FastForwardBy(base::Seconds(4));
+
+  EXPECT_EQ(1U, ping_count);
+}
+
+TEST_F(BraveStatsUpdaterTest, ServerPingFiresWhenPromoCodeFilePrefBecomesTrue) {
+  size_t ping_count = 0;
+  brave_stats::BraveStatsUpdater::StatsUpdatedCallback callback =
+      base::BindRepeating(
+          [](size_t* count, const GURL& /*url*/) { (*count)++; }, &ping_count);
+  SetupStatsUpdater(&callback);
+
+  GetLocalState()->SetBoolean(kReferralCheckedForPromoCodeFile, true);
+  task_environment_.FastForwardBy(base::Seconds(4));
+
+  EXPECT_EQ(1U, ping_count);
+}
