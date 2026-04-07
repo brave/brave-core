@@ -324,6 +324,10 @@ void BraveStatsUpdater::QueueServerPing() {
         kReferralInitialization,
         base::BindRepeating(&BraveStatsUpdater::OnReferralInitialization,
                             base::Unretained(this)));
+    pref_change_registrar_->Add(
+        kReferralCheckedForPromoCodeFile,
+        base::BindRepeating(&BraveStatsUpdater::OnReferralInitialization,
+                            base::Unretained(this)));
   }
 }
 
