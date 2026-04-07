@@ -1417,6 +1417,13 @@ void AdsServiceImpl::Save(const std::string& name,
       std::move(callback));
 }
 
+void AdsServiceImpl::Remove(const std::string& name, RemoveCallback callback) {
+  file_task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&base::DeleteFile, ads_service_path_.AppendASCII(name)),
+      std::move(callback));
+}
+
 void AdsServiceImpl::Load(const std::string& name, LoadCallback callback) {
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,

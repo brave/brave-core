@@ -92,6 +92,11 @@ void AdsClientIOS::GetSiteHistory(int max_count,
                  callback:std::move(callback)];
 }
 
+void AdsClientIOS::Remove(const std::string& name,
+                          brave_ads::RemoveCallback callback) {
+  [bridge_ remove:name callback:std::move(callback)];
+}
+
 void AdsClientIOS::Load(const std::string& name,
                         brave_ads::LoadCallback callback) {
   [bridge_ load:name callback:std::move(callback)];

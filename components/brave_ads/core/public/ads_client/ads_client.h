@@ -77,6 +77,11 @@ class AdsClient {
                     const std::string& value,
                     SaveCallback callback) = 0;
 
+  // Remove the file for the specified `name` from persistent storage. The
+  // callback takes one argument - `bool` is set to `true` if successful
+  // otherwise `false`.
+  virtual void Remove(const std::string& name, RemoveCallback callback) = 0;
+
   // Load a file for the specified `name` from persistent storage. The callback
   // takes one argument - optional containing the loaded `value`.
   virtual void Load(const std::string& name, LoadCallback callback) = 0;

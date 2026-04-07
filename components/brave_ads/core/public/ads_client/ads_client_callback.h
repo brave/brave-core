@@ -21,6 +21,8 @@ namespace brave_ads {
 
 using SaveCallback = base::OnceCallback<void(bool success)>;
 
+using RemoveCallback = base::OnceCallback<void(bool success)>;
+
 using LoadCallback =
     base::OnceCallback<void(const std::optional<std::string>& value)>;
 

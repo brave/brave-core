@@ -1344,6 +1344,12 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   std::move(callback).Run(success);
 }
 
+- (void)remove:(const std::string&)name
+      callback:(brave_ads::RemoveCallback)callback {
+  const bool success = [self.commonOps removeFileWithName:name];
+  std::move(callback).Run(success);
+}
+
 - (void)load:(const std::string&)name
     callback:(brave_ads::LoadCallback)callback {
   const auto contents = [self.commonOps loadContentsFromFileWithName:name];

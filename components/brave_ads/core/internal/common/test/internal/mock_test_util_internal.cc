@@ -91,6 +91,13 @@ void MockSave(AdsClientMock& ads_client_mock) {
       });
 }
 
+void MockRemove(AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, Remove)
+      .WillByDefault([](const std::string& /*name*/, RemoveCallback callback) {
+        std::move(callback).Run(/*success=*/true);
+      });
+}
+
 void MockLoad(AdsClientMock& ads_client_mock,
               const base::FilePath& profile_path) {
   ON_CALL(ads_client_mock, Load)

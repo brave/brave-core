@@ -31,6 +31,7 @@
 #include "brave/components/brave_ads/core/browser/virtual_pref/virtual_pref_provider.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -321,6 +322,7 @@ class AdsServiceImpl final : public AdsService,
   void Save(const std::string& name,
             const std::string& value,
             SaveCallback callback) override;
+  void Remove(const std::string& name, RemoveCallback callback) override;
   void Load(const std::string& name, LoadCallback callback) override;
 
   // TODO(https://github.com/brave/brave-browser/issues/26195) Decouple load
