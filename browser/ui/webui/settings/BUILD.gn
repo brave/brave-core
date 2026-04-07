@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
 source_set("unit_tests") {
@@ -30,6 +31,16 @@ source_set("unit_tests") {
       "//ui/base/clipboard",
       "//ui/base/clipboard:clipboard_test_support",
     ]
+
+    if (enable_brave_ads) {
+      sources += [ "brave_clear_browsing_data_handler_unittest.cc" ]
+
+      deps += [
+        "//brave/browser/brave_ads",
+        "//brave/components/brave_ads/core/browser/service:test_support",
+        "//testing/gmock",
+      ]
+    }
 
     if (enable_brave_wallet) {
       sources += [ "brave_wallet_handler_unittest.cc" ]
