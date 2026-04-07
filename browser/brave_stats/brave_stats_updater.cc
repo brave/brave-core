@@ -172,7 +172,7 @@ BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service,
           GetFirstRunTime(pref_service));
 
   if (profile_manager != nullptr) {
-    g_browser_process->profile_manager()->AddObserver(this);
+    profile_manager_->AddObserver(this);
   }
 
   Start();
@@ -180,7 +180,7 @@ BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service,
 
 BraveStatsUpdater::~BraveStatsUpdater() {
   if (profile_manager_ != nullptr) {
-    g_browser_process->profile_manager()->RemoveObserver(this);
+    profile_manager_->RemoveObserver(this);
   }
 }
 
@@ -295,15 +295,14 @@ void BraveStatsUpdater::OnProfileAdded(Profile* profile) {
   CHECK(profile);
 
   general_browser_usage_p3a_->ReportProfileCount(
-      g_browser_process->profile_manager()->GetNumberOfProfiles());
+      profile_manager_->GetNumberOfProfiles());
 
-  MaybeMigrateSerpMetricsToProfileAttributes(
-      g_browser_process->profile_manager(), *profile);
+  MaybeMigrateSerpMetricsToProfileAttributes(profile_manager_, *profile);
 }
 
 void BraveStatsUpdater::QueueServerPing() {
   const bool referrals_initialized = IsReferralInitialized();
-  int num_closures = 0;
+  size_t num_closures = 0;
 
   // Note: We don't have the callbacks here because otherwise there is a race
   // condition whereby the callback completes before the barrier has been
