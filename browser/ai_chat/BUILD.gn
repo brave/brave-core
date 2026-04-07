@@ -106,6 +106,8 @@ static_library("ai_chat") {
 
   if (enable_brave_ai_chat_agent_profile) {
     sources += [
+      "ai_page_content_fetcher.cc",
+      "ai_page_content_fetcher.h",
       "content_agent_task_provider.h",
       "content_agent_tool_provider.h",
       "content_agent_tool_provider_factory.cc",

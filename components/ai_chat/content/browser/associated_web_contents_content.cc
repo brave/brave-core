@@ -75,15 +75,21 @@ void ExtractTextFromAIPageContentNode(
 AssociatedWebContentsContent::AssociatedWebContentsContent(
     content::WebContents* web_contents,
     std::unique_ptr<PrintPreviewExtractionDelegate>
-        print_preview_extraction_delegate)
+        print_preview_extraction_delegate,
+    std::unique_ptr<PageContentFetcherDelegate> page_content_fetcher_delegate)
     : content::WebContentsObserver(web_contents),
       AssociatedContentDriver(web_contents->GetBrowserContext()
                                   ->GetDefaultStoragePartition()
                                   ->GetURLLoaderFactoryForBrowserProcess()),
       print_preview_extraction_delegate_(
           std::move(print_preview_extraction_delegate)),
-      page_content_fetcher_delegate_(
-          std::make_unique<PageContentFetcher>(web_contents)) {
+      page_content_fetcher_delegate_(nullptr) {
+  if (page_content_fetcher_delegate) {
+    page_content_fetcher_delegate_ = std::move(page_content_fetcher_delegate);
+  } else {
+    page_content_fetcher_delegate_ =
+        std::make_unique<PageContentFetcher>(web_contents);
+  }
   previous_page_title_ = web_contents->GetTitle();
 }
 

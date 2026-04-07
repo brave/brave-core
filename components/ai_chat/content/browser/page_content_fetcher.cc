@@ -554,6 +554,22 @@ std::optional<GURL> GetGithubContentURL(const GURL& url) {
 
 }  // namespace
 
+// static
+bool PageContentFetcher::HasCustomExtraction(const GURL& url) {
+  if (GetGithubContentURL(url).has_value()) {
+    return true;
+  }
+  if (kYouTubeHosts.contains(url.host())) {
+    return true;
+  }
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+  if (kScreenshotRetrievalHosts.contains(url.host())) {
+    return true;
+  }
+#endif
+  return false;
+}
+
 PageContentFetcher::PageContentFetcher(content::WebContents* web_contents)
     : web_contents_(web_contents),
       url_loader_factory_(web_contents_->GetBrowserContext()

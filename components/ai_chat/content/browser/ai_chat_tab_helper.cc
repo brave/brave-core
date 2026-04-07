@@ -26,11 +26,14 @@ AIChatTabHelper::AIChatTabHelper(
     content::WebContents* web_contents,
     std::unique_ptr<
         AssociatedWebContentsContent::PrintPreviewExtractionDelegate>
-        print_preview_extraction_delegate)
+        print_preview_extraction_delegate,
+    std::unique_ptr<AssociatedWebContentsContent::PageContentFetcherDelegate>
+        page_content_fetcher_delegate)
     : content::WebContentsUserData<AIChatTabHelper>(*web_contents),
       web_contents_content_(std::make_unique<AssociatedWebContentsContent>(
           web_contents,
-          std::move(print_preview_extraction_delegate))) {}
+          std::move(print_preview_extraction_delegate),
+          std::move(page_content_fetcher_delegate))) {}
 
 AIChatTabHelper::~AIChatTabHelper() = default;
 

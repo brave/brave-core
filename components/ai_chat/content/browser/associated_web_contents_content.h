@@ -79,11 +79,15 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
             callback) = 0;
   };
 
-  // PrintPreviewExtractionDelegate is provided as it's implementation is
-  // in a different layer.
+  // PrintPreviewExtractionDelegate and PageContentFetcherDelegate are provided
+  // as their implementations may be in a different layer.
+  // If |page_content_fetcher_delegate| is null, a default PageContentFetcher
+  // will be created.
   AssociatedWebContentsContent(content::WebContents* web_contents,
                                std::unique_ptr<PrintPreviewExtractionDelegate>
-                                   print_preview_extraction_delegate);
+                                   print_preview_extraction_delegate,
+                               std::unique_ptr<PageContentFetcherDelegate>
+                                   page_content_fetcher_delegate = nullptr);
 
   AssociatedWebContentsContent(const AssociatedWebContentsContent&) = delete;
   AssociatedWebContentsContent& operator=(const AssociatedWebContentsContent&) =
