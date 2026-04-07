@@ -14,6 +14,24 @@ index 8b0fd5c3b6a656128b0e9f5e4e2084c288fb55a1..d5d02b1c5c2b4af0d5ad364a5d3d6aa9
      {
        name: "BrowserInitiatedAutomaticPictureInPicture",
        public: true,
+@@ -1676,7 +1681,7 @@
+     },
+     {
+       name: "CSSPseudoElementInterface",
+-      status: "stable",
++      status: "experimental",
+     },
+     {
+       // Enables the :has-slotted pseudo-selector.
+@@ -2369,7 +2374,7 @@
+     {
+       // `event.pseudoTarget` property to represent pseudo-elements in events. Returns `CSSPseudoElement` or null.
+       name: "EventPseudoTargetProperty",
+-      status: "stable",
++      status: "experimental",
+       depends_on: ["CSSPseudoElementInterface"],
+     },
+     {
 @@ -2614,6 +2619,7 @@
        // In-development features for the File System Access API.
        name: "FileSystemAccessAPIExperimental",
@@ -38,3 +56,12 @@ index 8b0fd5c3b6a656128b0e9f5e4e2084c288fb55a1..d5d02b1c5c2b4af0d5ad364a5d3d6aa9
      },
      // Killswitch for crbug.com/40062462 fix.
      {
+@@ -4453,7 +4461,7 @@
+       // Support hit-testing for ::after, ::before, ::marker
+       // (e.g. for CSSPseudoElement).
+       name: "PseudoElementsHitTestable",
+-      status: "stable",
++      status: "experimental",
+     },
+     {
+       // Support :hover on ::after, ::before, ::marker.
