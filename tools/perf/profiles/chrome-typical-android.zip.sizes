@@ -1,17 +1,17 @@
-Total size 17120K
+Total size 17227K
 
-GROUP chromium [10474K total]
+GROUP chromium [10538K total]
      2K Amount Extraction Heuristic Regexes 4 [AmountExtractionHeuristicRegexes]
      2K captcha_providers.json 8.5419.4434 [CaptchaProviders]
-   889K crl-set-170544253110819900.data 10435 [CertificateRevocation]
+   936K crl-set-8871187355086302747.data 10449 [CertificateRevocation]
     31K chromeCommerceHeuristics 2023.3.30.1305 [CommerceHeuristics]
-   283K Crowd Deny 2026.3.30.61 [Crowd Deny]
+   280K Crowd Deny 2026.4.6.61 [Crowd Deny]
      9K fileTypePolicies 145.0.7584.0 [FileTypePolicies]
     13K First Party Sets 2025.7.24.0 [FirstPartySetsPreloaded]
   7744K OnDeviceHeadSuggestENUS500000 20251024.824731831.14 [OnDeviceHeadSuggestModel]
-   460K Optimization Hints 649 [OptimizationHints]
+   480K Optimization Hints 653 [OptimizationHints]
      1K Origin Trials Updates 1.0.0.20 [OriginTrials]
-   380K pkiMetadata 1625 [PKIMetadata]
+   380K pkiMetadata 1629 [PKIMetadata]
      9K Privacy Sandbox Attestations 2025.6.16.0 [PrivacySandboxAttestationsPreloaded]
     31K real_time_url_checks_allowlist 144.0.7531.0 [RealTimeUrlChecksAllowlist]
      4K sslErrorAssistant 7 [SSLErrorAssistant]
