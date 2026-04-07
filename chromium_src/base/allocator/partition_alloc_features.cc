@@ -12,8 +12,10 @@ namespace base::features {
 
 #if BUILDFLAG(IS_ANDROID)
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    // Temporary disable kPartitionAllocFreeWithSize on Android as it causes crashes.
-    // This override should be removed in cr148 as it is already disabled there https://chromium-review.googlesource.com/c/chromium/src/+/7707531
+    // Temporary disable kPartitionAllocFreeWithSize on Android as it causes
+    // crashes.
+    // This override should be removed in cr148 as it is already disabled there
+    // https://chromium-review.googlesource.com/c/chromium/src/+/7707531
     {kPartitionAllocFreeWithSize, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 #endif  // BUILDFLAG(IS_ANDROID)
