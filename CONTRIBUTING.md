@@ -112,7 +112,7 @@ Do not open large numbers of pull requests in short periods of time. Each PR req
 
 New contributors should start with one or two pull requests, wait for them to be reviewed and merged, and scale up gradually over time. This helps you learn the codebase conventions, build trust with reviewers, and avoid repeating the same mistakes across many PRs.
 
-#### Mana's stance on vibe coding
+#### Mana's stance on vibe coding:
 # NO AI ALLOWED
 
 #### Considerations before submitting a pull request
