@@ -16,15 +16,7 @@ ScopedCurrentLanguageCode::ScopedCurrentLanguageCode(
 }
 
 ScopedCurrentLanguageCode::~ScopedCurrentLanguageCode() {
-  Reset();
-}
-
-void ScopedCurrentLanguageCode::Reset() {
   MutableCurrentLanguageCodeForTesting() = last_language_code_;  // IN-TEST
-}
-
-void ScopedCurrentLanguageCode::Set(const std::string& language_code) {
-  MutableCurrentLanguageCodeForTesting() = language_code;  // IN-TEST
 }
 
 ScopedCurrentCountryCode::ScopedCurrentCountryCode(
@@ -34,15 +26,7 @@ ScopedCurrentCountryCode::ScopedCurrentCountryCode(
 }
 
 ScopedCurrentCountryCode::~ScopedCurrentCountryCode() {
-  Reset();
-}
-
-void ScopedCurrentCountryCode::Reset() {
-  MutableCurrentLanguageCodeForTesting() = last_country_code_;  // IN-TEST
-}
-
-void ScopedCurrentCountryCode::Set(const std::string& country_code) {
-  MutableCurrentLanguageCodeForTesting() = country_code;  // IN-TEST
+  MutableCurrentCountryCodeForTesting() = last_country_code_;  // IN-TEST
 }
 
 }  // namespace brave_ads::test

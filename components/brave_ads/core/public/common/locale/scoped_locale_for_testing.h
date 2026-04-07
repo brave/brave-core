@@ -26,12 +26,6 @@ class ScopedCurrentLanguageCode final {
 
   ~ScopedCurrentLanguageCode();
 
-  // Resets the language code to the original value.
-  void Reset();
-
-  // Sets the language code to the specified value.
-  void Set(const std::string& language_code);
-
  private:
   std::string last_language_code_;
 };
@@ -47,12 +41,6 @@ class ScopedCurrentCountryCode final {
       delete;
 
   ~ScopedCurrentCountryCode();
-
-  // Resets the country code to the original value.
-  void Reset();
-
-  // Sets the country code to the specified value.
-  void Set(const std::string& country_code);
 
  private:
   std::string last_country_code_;
