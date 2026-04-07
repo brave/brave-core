@@ -74,6 +74,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
+#include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #endif
@@ -275,7 +276,8 @@ WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
   }
 #else
   if ((url.host() == kWalletPageHost || url.host() == kWalletPanelHost) &&
-      !brave_wallet::IsAllowedForContext(browser_context)) {
+      (brave_origin::IsBraveOriginFeatureEnabled() ||
+       !brave_wallet::IsAllowedForContext(browser_context))) {
     return WebUI::kNoWebUI;
   }
 #endif  // BUILDFLAG(IS_ANDROID)
