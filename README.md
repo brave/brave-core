@@ -6,7 +6,7 @@ Brave Core is a set of changes, APIs, and scripts used for customizing Chromium 
 
 ## Overview
 
-This repository holds the build tools needed to build the Brave desktop browser for all platforms. In particular, it fetches and syncs code from the projects defined in `package.json` and `src/brave/DEPS`:
+This repository holds the build tools needed to build the Brave desktop browser for all platforms (should also work for Mana). In particular, it fetches and syncs code from the projects defined in `package.json` and `src/brave/DEPS`:
 
   - [Chromium](https://chromium.googlesource.com/chromium/src.git)
     - Fetches code via `depot_tools`.
@@ -18,16 +18,12 @@ This repository holds the build tools needed to build the Brave desktop browser 
     - Implements Brave's adblock engine.
     - Linked through [brave/adblock-rust-ffi](https://github.com/brave/brave-core/tree/master/components/adblock_rust_ffi).
 
-## Resources
+## Resources (for Brave)
 
 - [Documentation and guides](https://github.com/brave/brave-core/blob/master/docs/README.md)
 - [Issues](https://github.com/brave/brave-browser/issues)
 - [Releases](https://github.com/brave/brave-browser/releases)
 - [Wiki](https://github.com/brave/brave-browser/wiki)
-
-## Downloads
-
-You can [visit our website](https://brave.com/download) to get the latest stable release.
 
 ## Contributing
 
@@ -38,17 +34,6 @@ Our [Wiki](https://github.com/brave/brave-browser/wiki) also has some useful tec
 ## Security Policy
 
 Please see the [security policy](./SECURITY.md).
-
-## Community
-
-[Join the Q&A community](https://community.brave.app/) if you'd like to get more involved with Brave. You can [ask for help](https://community.brave.app/c/support-and-troubleshooting),
-[discuss features you'd like to see](https://community.brave.app/c/brave-feature-requests), and a lot more. We'd love to have your help so that we can continue improving Brave.
-
-You can also ask questions and interact in the [`community-guest`](https://bravesoftware.slack.com) channel on Brave Software's Slack.
-
-Help us translate Brave to your language by submitting translations at https://explore.transifex.com/brave/brave_en/.
-
-Follow [@brave](https://x.com/brave) on X for important news and announcements.
 
 ## Install prerequisites
 
@@ -209,6 +194,6 @@ src/brave> npm run apply_patches
 - [Brave's internal security guidelines](https://github.com/brave/internal/wiki/Pull-request-security-audit-checklist) (for employees only)
 - [Rust usage](https://github.com/brave/brave-core/blob/master/docs/rust.md)
 
-## Troubleshooting
+## Troubleshooting (for Brave)
 
 See [Troubleshooting](https://github.com/brave/brave-browser/wiki/Troubleshooting) for solutions to common problems.
