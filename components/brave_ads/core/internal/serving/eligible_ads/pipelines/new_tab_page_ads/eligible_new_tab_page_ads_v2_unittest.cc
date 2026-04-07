@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/test/creative_new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/round_robin/creative_ad_round_robin.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
@@ -34,13 +35,23 @@ class BraveAdsEligibleNewTabPageAdsV2Test : public test::TestBase {
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
     anti_targeting_resource_ = std::make_unique<AntiTargetingResource>();
     eligible_ads_ = std::make_unique<EligibleNewTabPageAdsV2>(
-        *subdivision_targeting_, *anti_targeting_resource_);
+        *subdivision_targeting_, *anti_targeting_resource_,
+        creative_ad_round_robin_);
+  }
+
+  void SimulateServeAd(const CreativeNewTabPageAdInfo& creative_ad) {
+    creative_ad_round_robin_.MarkAsServed(creative_ad);
+  }
+
+  void SimulateServeAd(const CreativeNewTabPageAdList& creative_ads) {
+    SimulateServeAd(creative_ads.at(0));
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;
 
   std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
   std::unique_ptr<AntiTargetingResource> anti_targeting_resource_;
+  CreativeAdRoundRobin creative_ad_round_robin_;
   std::unique_ptr<EligibleNewTabPageAdsV2> eligible_ads_;
 };
 
@@ -187,11 +198,13 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test,
   eligible_ads_->GetForUserModel(user_model, test_future_1.GetCallback());
   const CreativeNewTabPageAdList creative_ads_1 = test_future_1.Take();
   EXPECT_THAT(creative_ads_1, ::testing::SizeIs(1));
+  SimulateServeAd(creative_ads_1);
 
   base::test::TestFuture<CreativeNewTabPageAdList> test_future_2;
   eligible_ads_->GetForUserModel(user_model, test_future_2.GetCallback());
   const CreativeNewTabPageAdList creative_ads_2 = test_future_2.Take();
   EXPECT_THAT(creative_ads_2, ::testing::SizeIs(1));
+  SimulateServeAd(creative_ads_2);
 
   ASSERT_NE(creative_ads_1, creative_ads_2);
 
@@ -278,6 +291,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test,
     base::test::TestFuture<CreativeNewTabPageAdList> test_future;
     eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
     EXPECT_THAT(test_future.Take(), ::testing::ElementsAre(creative_ad_1));
+    SimulateServeAd(creative_ad_1);
   }
 
   // Assert: round-robin excludes the already-seen `creative_ad_1`, leaving
@@ -313,12 +327,14 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test,
     base::test::TestFuture<CreativeNewTabPageAdList> test_future;
     eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
     EXPECT_THAT(test_future.Take(), ::testing::ElementsAre(creative_ad_1));
+    SimulateServeAd(creative_ad_1);
   }
 
   {
     base::test::TestFuture<CreativeNewTabPageAdList> test_future;
     eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
     EXPECT_THAT(test_future.Take(), ::testing::ElementsAre(creative_ad_2));
+    SimulateServeAd(creative_ad_2);
   }
 
   // Assert: all ads have been seen so the rotation resets. `creative_ad_1` is
@@ -355,6 +371,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test,
     base::test::TestFuture<CreativeNewTabPageAdList> test_future;
     eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
     EXPECT_THAT(test_future.Take(), ::testing::ElementsAre(creative_ad_1));
+    SimulateServeAd(creative_ad_1);
   }
 
   // Add a new priority 1 ad to the campaign.

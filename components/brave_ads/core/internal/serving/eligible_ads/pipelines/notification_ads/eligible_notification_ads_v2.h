@@ -8,12 +8,12 @@
 
 #include <cstdint>
 
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_base.h"
-#include "brave/components/brave_ads/core/internal/serving/eligible_ads/round_robin/creative_ad_round_robin.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/public/history/site_history.h"
@@ -21,6 +21,7 @@
 namespace brave_ads {
 
 class AntiTargetingResource;
+class CreativeAdRoundRobin;
 class SubdivisionTargeting;
 struct UserModelInfo;
 
@@ -28,7 +29,8 @@ class EligibleNotificationAdsV2 final : public EligibleNotificationAdsBase {
  public:
   EligibleNotificationAdsV2(
       const SubdivisionTargeting& subdivision_targeting,
-      const AntiTargetingResource& anti_targeting_resource);
+      const AntiTargetingResource& anti_targeting_resource,
+      CreativeAdRoundRobin& creative_ad_round_robin);
 
   ~EligibleNotificationAdsV2() override;
 
@@ -77,7 +79,9 @@ class EligibleNotificationAdsV2 final : public EligibleNotificationAdsBase {
 
   const database::table::AdEvents ad_events_database_table_;
 
-  CreativeAdRoundRobin creative_ad_round_robin_;
+  // Must outlive `this`. Guaranteed by `NotificationAdServing`, which owns both
+  // and declares `creative_ad_round_robin_` before `eligible_ads_`.
+  const raw_ref<CreativeAdRoundRobin> creative_ad_round_robin_;
 
   base::WeakPtrFactory<EligibleNotificationAdsV2> weak_factory_{this};
 };

@@ -34,7 +34,7 @@ class BraveAdsCreativeAdRoundRobinTest : public testing::Test {
   CreativeAdRoundRobin creative_ad_round_robin_;
 };
 
-TEST_F(BraveAdsCreativeAdRoundRobinTest, UnseenAdsShouldBeEligible) {
+TEST_F(BraveAdsCreativeAdRoundRobinTest, UnservedAdsShouldBeEligible) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
@@ -48,7 +48,7 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest, UnseenAdsShouldBeEligible) {
   CreativeNewTabPageAdList creative_ads = {creative_ad_1, creative_ad_2,
                                            creative_ad_3};
 
-  creative_ad_round_robin_.MarkAsSeen(creative_ad_1);
+  creative_ad_round_robin_.MarkAsServed(creative_ad_1);
 
   // Act
   creative_ad_round_robin_.Filter(creative_ads);
@@ -58,7 +58,7 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest, UnseenAdsShouldBeEligible) {
 }
 
 TEST_F(BraveAdsCreativeAdRoundRobinTest,
-       AllAdsShouldBeEligibleAgainAfterEachHasBeenSeen) {
+       AllAdsShouldBeEligibleAgainAfterEachHasBeenServed) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
@@ -68,19 +68,19 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest,
                                       /*use_random_uuids=*/true);
   CreativeNewTabPageAdList creative_ads = {creative_ad_1, creative_ad_2};
 
-  creative_ad_round_robin_.MarkAsSeen(creative_ad_1);
-  creative_ad_round_robin_.MarkAsSeen(creative_ad_2);
+  creative_ad_round_robin_.MarkAsServed(creative_ad_1);
+  creative_ad_round_robin_.MarkAsServed(creative_ad_2);
 
   // Act
   creative_ad_round_robin_.Filter(creative_ads);
 
-  // Assert: `creative_ad_2` was last seen so it is excluded from the next
+  // Assert: `creative_ad_2` was last served so it is excluded from the next
   // rotation to avoid an immediate repeat.
   EXPECT_THAT(creative_ads, testing::ElementsAre(creative_ad_1));
 }
 
 TEST_F(BraveAdsCreativeAdRoundRobinTest,
-       LastSeenAdShouldBeExcludedWhenAllAdsHaveBeenShown) {
+       LastServedAdShouldBeExcludedWhenAllAdsHaveBeenServed) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
@@ -94,9 +94,9 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest,
   CreativeNewTabPageAdList creative_ads = {creative_ad_1, creative_ad_2,
                                            creative_ad_3};
 
-  creative_ad_round_robin_.MarkAsSeen(creative_ad_1);
-  creative_ad_round_robin_.MarkAsSeen(creative_ad_2);
-  creative_ad_round_robin_.MarkAsSeen(creative_ad_3);
+  creative_ad_round_robin_.MarkAsServed(creative_ad_1);
+  creative_ad_round_robin_.MarkAsServed(creative_ad_2);
+  creative_ad_round_robin_.MarkAsServed(creative_ad_3);
 
   // Act
   creative_ad_round_robin_.Filter(creative_ads);
@@ -106,14 +106,14 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest,
 }
 
 TEST_F(BraveAdsCreativeAdRoundRobinTest,
-       LastSeenAdShouldBeEligibleWhenItIsTheOnlyAd) {
+       LastServedAdShouldBeEligibleWhenItIsTheOnlyAd) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
                                       /*use_random_uuids=*/true);
   CreativeNewTabPageAdList creative_ads = {creative_ad};
 
-  creative_ad_round_robin_.MarkAsSeen(creative_ad);
+  creative_ad_round_robin_.MarkAsServed(creative_ad);
 
   // Act
   creative_ad_round_robin_.Filter(creative_ads);
@@ -132,7 +132,7 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest,
 
   CreativeNewTabPageAdInfo stale_creative_ad;
   stale_creative_ad.creative_instance_id = kStaleCreativeInstanceId;
-  creative_ad_round_robin_.MarkAsSeen(stale_creative_ad);
+  creative_ad_round_robin_.MarkAsServed(stale_creative_ad);
 
   // Act
   creative_ad_round_robin_.Filter(creative_ads);
@@ -153,7 +153,7 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest,
 
   CreativeNewTabPageAdInfo stale_creative_ad;
   stale_creative_ad.creative_instance_id = kStaleCreativeInstanceId;
-  creative_ad_round_robin_.MarkAsSeen(stale_creative_ad);
+  creative_ad_round_robin_.MarkAsServed(stale_creative_ad);
 
   CreativeNewTabPageAdList empty_ads;
   creative_ad_round_robin_.Filter(empty_ads);
@@ -168,7 +168,7 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest,
 }
 
 TEST_F(BraveAdsCreativeAdRoundRobinTest,
-       AllAdsShouldBeEligibleWhenNoneHaveBeenSeen) {
+       AllAdsShouldBeEligibleWhenNoneHaveBeenServed) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
@@ -191,7 +191,7 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest,
 }
 
 TEST_F(BraveAdsCreativeAdRoundRobinTest,
-       AllAdsShouldBeEligibleWhenLastSeenIsStaleAndAllHaveBeenShown) {
+       AllAdsShouldBeEligibleWhenLastServedIsStaleAndAllHaveBeenServed) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
@@ -204,9 +204,9 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest,
   CreativeNewTabPageAdInfo stale_creative_ad;
   stale_creative_ad.creative_instance_id = kStaleCreativeInstanceId;
 
-  creative_ad_round_robin_.MarkAsSeen(creative_ad_1);
-  creative_ad_round_robin_.MarkAsSeen(creative_ad_2);
-  creative_ad_round_robin_.MarkAsSeen(stale_creative_ad);
+  creative_ad_round_robin_.MarkAsServed(creative_ad_1);
+  creative_ad_round_robin_.MarkAsServed(creative_ad_2);
+  creative_ad_round_robin_.MarkAsServed(stale_creative_ad);
 
   // Act
   creative_ad_round_robin_.Filter(creative_ads);
