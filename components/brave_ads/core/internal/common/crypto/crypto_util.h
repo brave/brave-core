@@ -11,7 +11,6 @@
 #include <string>
 #include <vector>
 
-
 namespace brave_ads::crypto {
 
 struct KeyPairInfo;
@@ -30,14 +29,17 @@ std::optional<std::string> Sign(const std::string& message,
                           const std::string& public_key_base64,
                           const std::string& signature_base64);
 
+// `crypto_box` always succeeds, so there is no failure mode on the encrypt
+// path; unlike `MaybeDecrypt`, this never returns an error.
 std::vector<uint8_t> Encrypt(const std::vector<uint8_t>& plaintext,
                              const std::vector<uint8_t>& nonce,
                              const std::vector<uint8_t>& public_key,
                              const std::vector<uint8_t>& secret_key);
-std::vector<uint8_t> Decrypt(const std::vector<uint8_t>& ciphertext,
-                             const std::vector<uint8_t>& nonce,
-                             const std::vector<uint8_t>& public_key,
-                             const std::vector<uint8_t>& secret_key);
+[[nodiscard]] std::optional<std::vector<uint8_t>> MaybeDecrypt(
+    const std::vector<uint8_t>& ciphertext,
+    const std::vector<uint8_t>& nonce,
+    const std::vector<uint8_t>& public_key,
+    const std::vector<uint8_t>& secret_key);
 
 }  // namespace brave_ads::crypto
 

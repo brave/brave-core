@@ -9,9 +9,10 @@
 #include <openssl/hkdf.h>
 #include <openssl/sha.h>
 
-#include <algorithm>
+#include <cstddef>
 #include <cstdint>
-#include <iterator>
+#include <optional>
+#include <vector>
 
 #include "base/base64.h"
 #include "base/check.h"
@@ -43,7 +44,7 @@ std::optional<std::vector<uint8_t>> GetHKDF(
 
   if (HKDF(derived_key.data(), kHKDFSeedLength, EVP_sha512(), secret.data(),
            secret.size(), kHKDFSalt, std::size(kHKDFSalt), kInfo,
-           sizeof(kInfo) / sizeof(kInfo[0])) == 0) {
+           std::size(kInfo)) == 0) {
     return std::nullopt;
   }
 
@@ -108,7 +109,7 @@ std::optional<std::string> Sign(const std::string& message,
                                 const std::string& secret_key_base64) {
   std::optional<std::vector<uint8_t>> secret_key =
       base::Base64Decode(secret_key_base64);
-  if (!secret_key) {
+  if (!secret_key || secret_key->size() != ED25519_PRIVATE_KEY_LEN) {
     return std::nullopt;
   }
 
@@ -129,13 +130,13 @@ bool Verify(const std::string& message,
             const std::string& signature_base64) {
   std::optional<std::vector<uint8_t>> public_key =
       base::Base64Decode(public_key_base64);
-  if (!public_key) {
+  if (!public_key || public_key->size() != ED25519_PUBLIC_KEY_LEN) {
     return false;
   }
 
   std::optional<std::vector<uint8_t>> signature =
       base::Base64Decode(signature_base64);
-  if (!signature) {
+  if (!signature || signature->size() != ED25519_SIGNATURE_LEN) {
     return false;
   }
 
@@ -160,19 +161,22 @@ std::vector<uint8_t> Encrypt(const std::vector<uint8_t>& plaintext,
   return ciphertext;
 }
 
-std::vector<uint8_t> Decrypt(const std::vector<uint8_t>& ciphertext,
-                             const std::vector<uint8_t>& nonce,
-                             const std::vector<uint8_t>& public_key,
-                             const std::vector<uint8_t>& secret_key) {
+std::optional<std::vector<uint8_t>> MaybeDecrypt(
+    const std::vector<uint8_t>& ciphertext,
+    const std::vector<uint8_t>& nonce,
+    const std::vector<uint8_t>& public_key,
+    const std::vector<uint8_t>& secret_key) {
   std::vector<uint8_t> padded_plaintext(ciphertext.size());
-  crypto_box_open(padded_plaintext.data(), ciphertext.data(), ciphertext.size(),
-                  nonce.data(), public_key.data(), secret_key.data());
+  if (crypto_box_open(padded_plaintext.data(), ciphertext.data(),
+                      ciphertext.size(), nonce.data(), public_key.data(),
+                      secret_key.data()) != 0) {
+    return std::nullopt;
+  }
 
-  std::vector<uint8_t> plaintext;
-  std::ranges::copy_n(padded_plaintext.cbegin() + crypto_box_ZEROBYTES,
-                      padded_plaintext.size() - crypto_box_ZEROBYTES,
-                      std::back_inserter(plaintext));
-  return plaintext;
+  // `crypto_box_open` returns non-zero for ciphertexts shorter than
+  // `crypto_box_ZEROBYTES`, so the `+ crypto_box_ZEROBYTES` offset is safe.
+  return std::vector<uint8_t>(padded_plaintext.cbegin() + crypto_box_ZEROBYTES,
+                              padded_plaintext.cend());
 }
 
 }  // namespace brave_ads::crypto

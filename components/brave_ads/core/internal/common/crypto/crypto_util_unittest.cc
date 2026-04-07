@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 
+#include <iterator>
+
 #include "base/base64.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/key_pair_info.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -51,25 +53,30 @@ TEST(BraveAdsCryptoUtilTest, GenerateSignKeyPairFromSeed) {
 
   // Act
   std::optional<KeyPairInfo> key_pair = GenerateSignKeyPairFromSeed(*seed);
+
+  // Assert
   ASSERT_TRUE(key_pair);
   ASSERT_THAT(key_pair->public_key,
               ::testing::SizeIs(crypto_sign_ed25519_PUBLICKEYBYTES));
   ASSERT_THAT(key_pair->secret_key,
               ::testing::SizeIs(crypto_sign_ed25519_SECRETKEYBYTES));
-
-  // Assert
   EXPECT_TRUE(key_pair->IsValid());
+}
+
+TEST(BraveAdsCryptoUtilTest, DoesNotGenerateSignKeyPairFromSeedWithEmptySeed) {
+  // Act & Assert
+  EXPECT_FALSE(GenerateSignKeyPairFromSeed(/*seed=*/{}));
 }
 
 TEST(BraveAdsCryptoUtilTest, GenerateBoxKeyPair) {
   // Act
   const KeyPairInfo key_pair = GenerateBoxKeyPair();
+
+  // Assert
   ASSERT_THAT(key_pair.public_key,
               ::testing::SizeIs(crypto_box_PUBLICKEYBYTES));
   ASSERT_THAT(key_pair.secret_key,
               ::testing::SizeIs(crypto_box_SECRETKEYBYTES));
-
-  // Assert
   EXPECT_TRUE(key_pair.IsValid());
 }
 
@@ -79,20 +86,58 @@ TEST(BraveAdsCryptoUtilTest, GenerateRandomNonce) {
 }
 
 TEST(BraveAdsCryptoUtilTest, Sign) {
-  // Act
-  std::optional<std::string> signature = Sign(kMessage, kSecretKeyBase64);
+  // Act & Assert
+  EXPECT_TRUE(Sign(kMessage, kSecretKeyBase64));
+}
 
-  // Assert
-  EXPECT_TRUE(signature);
+TEST(BraveAdsCryptoUtilTest, DoesNotSignWithInvalidSecretKey) {
+  // Act & Assert
+  EXPECT_FALSE(Sign(kMessage, /*secret_key_base64=*/"!"));
+}
+
+TEST(BraveAdsCryptoUtilTest, DoesNotSignWithMalformedSecretKey) {
+  // Act & Assert
+  EXPECT_FALSE(Sign(kMessage, /*secret_key_base64=*/"AA=="));
 }
 
 TEST(BraveAdsCryptoUtilTest, Verify) {
-  // Act
+  // Arrange
   std::optional<std::string> signature = Sign(kMessage, kSecretKeyBase64);
   ASSERT_TRUE(signature);
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(Verify(kMessage, kPublicKeyBase64, *signature));
+}
+
+TEST(BraveAdsCryptoUtilTest, DoesNotVerifyWithInvalidPublicKey) {
+  // Act & Assert
+  EXPECT_FALSE(
+      Verify(kMessage, /*public_key_base64=*/"!", /*signature_base64=*/"AA=="));
+}
+
+TEST(BraveAdsCryptoUtilTest, DoesNotVerifyWithMalformedPublicKey) {
+  // Act & Assert
+  EXPECT_FALSE(Verify(kMessage, /*public_key_base64=*/"AA==",
+                      /*signature_base64=*/"AA=="));
+}
+
+TEST(BraveAdsCryptoUtilTest, DoesNotVerifyWithInvalidSignature) {
+  // Act & Assert
+  EXPECT_FALSE(Verify(kMessage, kPublicKeyBase64, /*signature_base64=*/"!"));
+}
+
+TEST(BraveAdsCryptoUtilTest, DoesNotVerifyWithMalformedSignature) {
+  // Act & Assert
+  EXPECT_FALSE(Verify(kMessage, kPublicKeyBase64, /*signature_base64=*/"AA=="));
+}
+
+TEST(BraveAdsCryptoUtilTest, DoesNotVerifyWithTamperedMessage) {
+  // Arrange
+  std::optional<std::string> signature = Sign(kMessage, kSecretKeyBase64);
+  ASSERT_TRUE(signature);
+
+  // Act & Assert
+  EXPECT_FALSE(Verify(/*message=*/"foo", kPublicKeyBase64, *signature));
 }
 
 TEST(BraveAdsCryptoUtilTest, EncryptAndDecrypt) {
@@ -100,16 +145,33 @@ TEST(BraveAdsCryptoUtilTest, EncryptAndDecrypt) {
   const KeyPairInfo key_pair = GenerateBoxKeyPair();
   const KeyPairInfo ephemeral_key_pair = GenerateBoxKeyPair();
   const std::vector<uint8_t> nonce = GenerateRandomNonce();
-  const std::vector<uint8_t> plaintext(
-      kMessage, UNSAFE_TODO(kMessage + std::size(kMessage)));
+  const std::vector<uint8_t> plaintext(std::cbegin(kMessage),
+                                       std::cend(kMessage));
 
   // Act
   const std::vector<uint8_t> ciphertext = Encrypt(
       plaintext, nonce, key_pair.public_key, ephemeral_key_pair.secret_key);
 
   // Assert
-  EXPECT_EQ(plaintext, Decrypt(ciphertext, nonce, ephemeral_key_pair.public_key,
-                               key_pair.secret_key));
+  EXPECT_EQ(plaintext,
+            MaybeDecrypt(ciphertext, nonce, ephemeral_key_pair.public_key,
+                         key_pair.secret_key));
+}
+
+TEST(BraveAdsCryptoUtilTest, DoesNotDecryptWithWrongKey) {
+  // Arrange
+  const KeyPairInfo key_pair = GenerateBoxKeyPair();
+  const KeyPairInfo ephemeral_key_pair = GenerateBoxKeyPair();
+  const KeyPairInfo wrong_key_pair = GenerateBoxKeyPair();
+  const std::vector<uint8_t> nonce = GenerateRandomNonce();
+  const std::vector<uint8_t> plaintext(std::cbegin(kMessage),
+                                       std::cend(kMessage));
+  const std::vector<uint8_t> ciphertext = Encrypt(
+      plaintext, nonce, key_pair.public_key, ephemeral_key_pair.secret_key);
+
+  // Act & Assert
+  EXPECT_FALSE(MaybeDecrypt(ciphertext, nonce, ephemeral_key_pair.public_key,
+                            wrong_key_pair.secret_key));
 }
 
 }  // namespace brave_ads::crypto
