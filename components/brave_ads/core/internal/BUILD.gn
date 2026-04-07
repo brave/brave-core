@@ -752,6 +752,8 @@ static_library("internal") {
     "serving/eligible_ads/exclusion_rules/subdivision_targeting_exclusion_rule.h",
     "serving/eligible_ads/exclusion_rules/total_max_exclusion_rule.cc",
     "serving/eligible_ads/exclusion_rules/total_max_exclusion_rule.h",
+    "serving/eligible_ads/exclusion_rules/zero_priority_exclusion_rule.cc",
+    "serving/eligible_ads/exclusion_rules/zero_priority_exclusion_rule.h",
     "serving/eligible_ads/pacing/pacing.h",
     "serving/eligible_ads/pacing/pacing_random_util.cc",
     "serving/eligible_ads/pacing/pacing_random_util.h",
