@@ -70,6 +70,18 @@ BraveOriginService::BraveOriginService(
 
   // Eagerly check purchase state on startup so the cached value is available.
   CheckPurchaseState(base::DoNothing());
+
+  // Record whether Origin was enforcing policies in the previous session.
+  startup_was_enforcing_ =
+      local_state_->GetBoolean(kOriginPoliciesWereEnforced);
+
+  // Snapshot policy values at construction time so NeedsRestart() can
+  // detect settings changes later.
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  if (manager->IsInitialized()) {
+    startup_browser_policies_ = manager->GetAllBrowserPolicies();
+    startup_profile_policies_ = manager->GetAllProfilePolicies(profile_id_);
+  }
 }
 
 BraveOriginService::~BraveOriginService() = default;
@@ -166,6 +178,25 @@ bool BraveOriginService::IsPurchased() const {
   return BraveOriginPolicyManager::GetInstance()->IsPurchased();
 }
 
+bool BraveOriginService::NeedsRestart() const {
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  if (!manager->IsInitialized()) {
+    return false;
+  }
+
+  // First purchase this session: policies are now enforced but weren't
+  // in the previous session. startup_was_enforcing_ is read from the
+  // persisted kOriginPoliciesWereEnforced pref (set by this service
+  // when a purchase is confirmed via OnCredentialSummary).
+  if (manager->IsPurchased() && !startup_was_enforcing_) {
+    return true;
+  }
+
+  return manager->GetAllBrowserPolicies() != startup_browser_policies_ ||
+         manager->GetAllProfilePolicies(profile_id_) !=
+             startup_profile_policies_;
+}
+
 void BraveOriginService::OnCredentialSummary(
     base::OnceCallback<void(bool)> callback,
     skus::mojom::SkusResultPtr summary) {
@@ -189,6 +220,13 @@ void BraveOriginService::OnCredentialSummary(
   }
 
   BraveOriginPolicyManager::GetInstance()->SetPurchased(purchased);
+
+  // Persist enforcement state so NeedsRestart() can detect first-purchase
+  // across sessions. This pref is read at next startup to distinguish
+  // existing purchasers (no restart needed) from new ones.
+  if (local_state_ && purchased) {
+    local_state_->SetBoolean(kOriginPoliciesWereEnforced, true);
+  }
   std::move(callback).Run(purchased);
 }
 

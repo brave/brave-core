@@ -13,6 +13,58 @@
   .label.secondary-title {
     padding-bottom: var(--leo-spacing-xl);
   }
+
+  #needsRestart {
+    background-color: #fff;
+    bottom: 0;
+    box-shadow: 0 -2px 2px 0 var(--shadow-color);
+    box-sizing: border-box;
+    left: 0;
+    opacity: 1;
+    padding: 16px;
+    position: fixed;
+    transform: translate(0);
+    transition: all 225ms var(--ease-in-out);
+    width: 100%;
+    z-index: 10;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    #needsRestart {
+      background-color: rgb(22, 23, 25);
+    }
+
+    button.primary {
+      color: white;
+    }
+  }
+
+  #needsRestart .flex:last-child {
+    text-align: right;
+  }
+
+  .flex {
+    align-self: center;
+    flex: 1 1 auto;
+  }
+
+  .flex-container {
+    display: flex;
+    padding: 8px 1em;
+  }
+
+  .restart-notice {
+    font-size: .9375rem;
+    line-height: 1.4;
+  }
+
+  button.primary {
+    background: var(--interactive-color);
+    border: 0;
+    border-radius: 3px;
+    font-size: .875rem;
+    padding: 14px 38px;
+  }
 </style>
 
 <template is="dom-if" if="[[!isPurchased_]]">
@@ -147,4 +199,22 @@
   </cr-link-row>
 </div>
 </settings-section>
+<template is="dom-if" if="[[showRestartToast_]]">
+  <div id="needsRestart">
+    <div class="flex-container">
+      <div class="flex restart-notice">$i18n{braveOriginRestartNotice}</div>
+      <div class="flex">
+        <button id="restartButton" class="primary" tabindex="9"
+            on-click="restartBrowser_">
+          $i18n{relaunchButtonLabel}
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+<template is="dom-if" if="[[shouldShowRelaunchDialog]]" restamp>
+  <relaunch-confirmation-dialog restart-type="[[restartTypeEnum.RESTART]]"
+      on-close="onRelaunchDialogClose">
+  </relaunch-confirmation-dialog>
+</template>
 </template>

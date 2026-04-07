@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 
+#include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -63,6 +64,11 @@ class BraveOriginService : public KeyedService {
   // Returns the cached purchase state (synchronous).
   bool IsPurchased() const;
 
+  // Returns true if any policy values have been changed since the service
+  // was created (i.e., since browser startup). This indicates that a restart
+  // is needed for the changes to fully take effect.
+  bool NeedsRestart() const;
+
  protected:
   // Local state and profile preferences this state is associated with
   raw_ptr<PrefService> local_state_;
@@ -82,6 +88,15 @@ class BraveOriginService : public KeyedService {
   SkusServiceGetter skus_service_getter_;
   mojo::Remote<skus::mojom::SkusService> skus_service_;
   std::string origin_sku_domain_;
+
+  // Whether Origin policies were being enforced in the previous session.
+  // Read from kOriginPoliciesWereEnforced pref at construction.
+  bool startup_was_enforcing_ = false;
+
+  // Snapshot of policy values at construction time, used to detect
+  // settings changes that require a restart.
+  base::flat_map<std::string, bool> startup_browser_policies_;
+  base::flat_map<std::string, bool> startup_profile_policies_;
 
   base::WeakPtrFactory<BraveOriginService> weak_ptr_factory_{this};
 };

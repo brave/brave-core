@@ -21,6 +21,12 @@ inline constexpr char kBraveOriginPolicies[] = "brave.brave_origin.policies";
 inline constexpr char kOriginPurchaseValidated[] =
     "brave.origin.purchase_validated";
 
+// Whether Origin policies were being enforced in the previous session.
+// Set to true by BraveOriginService when a purchase is confirmed,
+// read at next startup to distinguish existing purchasers from new ones.
+inline constexpr char kOriginPoliciesWereEnforced[] =
+    "brave.origin.policies_were_enforced";
+
 #if BUILDFLAG(IS_LINUX)
 // Whether the user accepted the Linux free tier without purchasing.
 // Stored in local state so the startup dialog doesn't re-show, but

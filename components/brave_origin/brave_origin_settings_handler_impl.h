@@ -39,6 +39,7 @@ class BraveOriginSettingsHandlerImpl
   void SetPolicyValue(const std::string& policy_key,
                       bool value,
                       SetPolicyValueCallback callback) override;
+  void GetNeedsRestart(GetNeedsRestartCallback callback) override;
 
  private:
   raw_ptr<BraveOriginService> brave_origin_service_;

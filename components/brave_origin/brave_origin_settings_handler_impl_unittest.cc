@@ -51,7 +51,7 @@ class BraveOriginHandlerTest : public testing::Test {
 
     // Register the BraveOrigin policies dictionary pref in local_state
     local_state_.registry()->RegisterDictionaryPref(kBraveOriginPolicies);
-    local_state_.registry()->RegisterBooleanPref(kOriginPurchaseValidated,
+    local_state_.registry()->RegisterBooleanPref(kOriginPoliciesWereEnforced,
                                                  false);
 
     // Register test browser preferences in local_state
@@ -71,6 +71,7 @@ class BraveOriginHandlerTest : public testing::Test {
     // Set purchased state so IsBraveOriginPurchased() returns true when the
     // feature flag is enabled.
     manager->SetPurchased(true);
+    local_state_.SetBoolean(kOriginPoliciesWereEnforced, true);
 
     // Create the service with both policy services
     service_ = std::make_unique<BraveOriginService>(
@@ -316,6 +317,54 @@ TEST_F(BraveOriginHandlerTest, RefreshPurchaseState_NoSkus_ReturnsFalse) {
 }
 #endif
 
+TEST_F(BraveOriginHandlerTest, GetNeedsRestart_NoChanges_ReturnsFalse) {
+  base::test::TestFuture<bool> result;
+  handler_->GetNeedsRestart(result.GetCallback());
+  EXPECT_FALSE(result.Get());
+}
+
+TEST_F(BraveOriginHandlerTest,
+       GetNeedsRestart_AfterBrowserPolicyChange_ReturnsTrue) {
+  // Change a browser policy value
+  service_->SetPolicyValue(kTestBrowserPolicyKey, true);
+
+  base::test::TestFuture<bool> result;
+  handler_->GetNeedsRestart(result.GetCallback());
+  EXPECT_TRUE(result.Get());
+}
+
+TEST_F(BraveOriginHandlerTest,
+       GetNeedsRestart_AfterProfilePolicyChange_ReturnsTrue) {
+  // Change a profile policy value
+  service_->SetPolicyValue(kTestProfilePolicyKey, false);
+
+  base::test::TestFuture<bool> result;
+  handler_->GetNeedsRestart(result.GetCallback());
+  EXPECT_TRUE(result.Get());
+}
+
+TEST_F(BraveOriginHandlerTest, GetNeedsRestart_AfterRevert_ReturnsFalse) {
+  // Get the original value
+  auto original = service_->GetPolicyValue(kTestBrowserPolicyKey);
+  ASSERT_TRUE(original.has_value());
+
+  // Change the value
+  service_->SetPolicyValue(kTestBrowserPolicyKey, !original.value());
+  {
+    base::test::TestFuture<bool> result;
+    handler_->GetNeedsRestart(result.GetCallback());
+    EXPECT_TRUE(result.Get());
+  }
+
+  // Revert back to original
+  service_->SetPolicyValue(kTestBrowserPolicyKey, original.value());
+  {
+    base::test::TestFuture<bool> result;
+    handler_->GetNeedsRestart(result.GetCallback());
+    EXPECT_FALSE(result.Get());
+  }
+}
+
 // Test fixture for handler with a FakeSkusService wired up.
 class BraveOriginHandlerWithSkusTest : public testing::Test {
  public:
@@ -326,8 +375,9 @@ class BraveOriginHandlerWithSkusTest : public testing::Test {
     feature_list_.InitAndEnableFeature(features::kBraveOrigin);
 
     local_state_.registry()->RegisterDictionaryPref(kBraveOriginPolicies);
-    local_state_.registry()->RegisterBooleanPref(kOriginPurchaseValidated,
+    local_state_.registry()->RegisterBooleanPref(kOriginPoliciesWereEnforced,
                                                  false);
+
     local_state_.registry()->RegisterBooleanPref(kTestBrowserPrefName, false);
     profile_prefs_.registry()->RegisterBooleanPref(kTestProfilePrefName, true);
 
@@ -445,7 +495,7 @@ class BraveOriginHandlerDisabledTest : public testing::Test {
 
     // Register the BraveOrigin policies dictionary pref in local_state
     local_state_.registry()->RegisterDictionaryPref(kBraveOriginPolicies);
-    local_state_.registry()->RegisterBooleanPref(kOriginPurchaseValidated,
+    local_state_.registry()->RegisterBooleanPref(kOriginPoliciesWereEnforced,
                                                  false);
 
     // Register test preferences (needed for pref service not to crash)
