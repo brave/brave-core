@@ -18,12 +18,16 @@ FromMojomMaybeBuildCreativeSetConversion(
     return std::nullopt;
   }
 
+  if (!mojom_creative_ad->creative_set_conversion->url_pattern) {
+    return std::nullopt;
+  }
+
   CreativeSetConversionInfo creative_set_conversion;
 
   creative_set_conversion.id = mojom_creative_ad->creative_set_id;
 
   creative_set_conversion.url_pattern =
-      mojom_creative_ad->creative_set_conversion->url_pattern;
+      *mojom_creative_ad->creative_set_conversion->url_pattern;
 
   creative_set_conversion.observation_window =
       mojom_creative_ad->creative_set_conversion->observation_window;

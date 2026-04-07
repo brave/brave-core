@@ -39,8 +39,9 @@ void VerifyRequiredMojomCreativeAdExpectations(
 
 void VerifyRequiredMojomCreativeSetConversionExpectations(
     const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad) {
-  EXPECT_EQ(mojom_creative_ad->creative_set_conversion->url_pattern,
-            test::kCreativeSetConversionUrlPattern);
+  EXPECT_THAT(
+      mojom_creative_ad->creative_set_conversion->url_pattern,
+      ::testing::Optional(std::string(test::kCreativeSetConversionUrlPattern)));
   EXPECT_EQ(mojom_creative_ad->creative_set_conversion->observation_window,
             test::kCreativeSetConversionObservationWindow);
 }
@@ -308,6 +309,28 @@ TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
                 mojom_web_page_entities);
     EXPECT_THAT(creative_search_result_ads, ::testing::IsEmpty());
   }
+}
+
+TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
+     ExtractWithEmptyConversionUrlPattern) {
+  // Arrange
+  const std::vector<schema_org::mojom::EntityPtr> mojom_web_page_entities =
+      test::CreativeSearchResultAdMojomWebPageEntitiesWithProperty(
+          kCreativeSetConversionUrlPatternPropertyName, /*value=*/"");
+
+  // Act
+  const std::vector<mojom::CreativeSearchResultAdInfoPtr>
+      creative_search_result_ads =
+          ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
+              mojom_web_page_entities);
+
+  // Assert
+  ASSERT_THAT(creative_search_result_ads, ::testing::SizeIs(1));
+  const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad =
+      creative_search_result_ads[0];
+  ASSERT_TRUE(mojom_creative_ad);
+  ASSERT_TRUE(mojom_creative_ad->creative_set_conversion);
+  EXPECT_FALSE(mojom_creative_ad->creative_set_conversion->url_pattern);
 }
 
 TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
