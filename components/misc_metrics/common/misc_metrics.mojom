@@ -51,4 +51,8 @@ interface MiscAndroidMetrics {
 
   // Records a bookmark navigation from the omnibox.
   RecordOmniboxBookmarkNavigation();
+
+  // Records a top site tile navigation from the NTP.
+  // isCustom is true for pinned/custom-link tiles, false for frequented tiles.
+  RecordTopSiteNavigation(bool isCustom);
 };
