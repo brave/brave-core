@@ -1,0 +1,20 @@
+diff --git a/third_party/blink/web_tests/virtual/stable/webexposed/element-instance-property-listing-expected.txt b/third_party/blink/web_tests/virtual/stable/webexposed/element-instance-property-listing-expected.txt
+index 557ab942ed78f6b84fb30acb3e50a3af1b9ec084..b5b529da0af6f0e2b1f4c3c0682b5acb3e87d3ac 100644
+--- a/third_party/blink/web_tests/virtual/stable/webexposed/element-instance-property-listing-expected.txt
++++ b/third_party/blink/web_tests/virtual/stable/webexposed/element-instance-property-listing-expected.txt
+@@ -300,7 +300,6 @@ namespace http://www.w3.org/1999/xhtml
+     property prepend
+     property previousElementSibling
+     property previousSibling
+-    property pseudo
+     property querySelector
+     property querySelectorAll
+     property releasePointerCapture
+@@ -1549,7 +1548,6 @@ namespace http://www.w3.org/2000/svg
+     property prepend
+     property previousElementSibling
+     property previousSibling
+-    property pseudo
+     property querySelector
+     property querySelectorAll
+     property releasePointerCapture
