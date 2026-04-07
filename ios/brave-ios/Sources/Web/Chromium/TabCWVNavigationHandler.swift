@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 
 class TabCWVNavigationHandler: NSObject, BraveWebViewNavigationDelegate {
   private weak var tab: ChromiumTabState?
@@ -33,7 +34,12 @@ class TabCWVNavigationHandler: NSObject, BraveWebViewNavigationDelegate {
     userAgentForUserAgentType userAgentType: CWVUserAgentType,
     request: URLRequest
   ) -> String? {
-    guard let tab, let delegate = tab.delegate else { return nil }
+    guard let tab, let delegate = tab.delegate else {
+      let log =
+        "webView(_:userAgentForUserAgentType:request:) - request.mainDocumentURL=\(request.mainDocumentURL?.absoluteString ?? "nil") - returning early"
+      DebugLogger.log(for: .userAgent, text: log)
+      return nil
+    }
     return delegate.tab(tab, userAgentForType: .init(userAgentType), request: request)
   }
 
@@ -75,6 +81,10 @@ class TabCWVNavigationHandler: NSObject, BraveWebViewNavigationDelegate {
     decisionHandler: @escaping (CWVNavigationActionPolicy) -> Void
   ) {
     guard let tab else { return }
+    let log =
+      "webView(_:decidePolicyFor:decisionHandler:) - navigationAction.request=\(navigationAction.request.mainDocumentURL?.absoluteString ?? "nil")"
+    DebugLogger.log(for: .userAgent, text: log)
+
     let navigationType: WebNavigationType = {
       if navigationAction.navigationType.contains(.forwardBack) {
         return .backForward

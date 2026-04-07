@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import Foundation
 import Preferences
 import UserAgent
@@ -16,7 +17,11 @@ extension BrowserViewController {
     userAgentForType type: UserAgentType,
     braveUserAgentExceptions: BraveUserAgentExceptionsIOS?
   ) -> String {
+    let logSource =
+      "tab(_:userAgentForType:request:) - request.mainDocumentURL=\(request.mainDocumentURL?.absoluteString ?? "nil") - type=\(type)"
     if !Preferences.Debug.userAgentOverride.value.isEmpty {
+      let log = "\(logSource) - returning userAgentOverride"
+      DebugLogger.log(for: .userAgent, text: log)
       return Preferences.Debug.userAgentOverride.value
     }
     let isBraveAllowedInUA =
@@ -35,17 +40,23 @@ extension BrowserViewController {
       desktop = UserAgent.desktopMasked
     }
 
-    switch type {
-    case .none, .automatic:
-      let screenWidth = UIScreen.main.bounds.width
-      if traitCollection.horizontalSizeClass == .compact && view.bounds.width < screenWidth / 2 {
-        return mobile
+    let userAgent: String = {
+      switch type {
+      case .none, .automatic:
+        let screenWidth = UIScreen.main.bounds.width
+        if traitCollection.horizontalSizeClass == .compact && view.bounds.width < screenWidth / 2 {
+          return mobile
+        }
+        return traitCollection.userInterfaceIdiom == .pad
+          && profileController.defaultHostContentSettings.defaultPageMode == .desktop
+          ? desktop : mobile
+      case .desktop: return desktop
+      case .mobile: return mobile
       }
-      return traitCollection.userInterfaceIdiom == .pad
-        && profileController.defaultHostContentSettings.defaultPageMode == .desktop
-        ? desktop : mobile
-    case .desktop: return desktop
-    case .mobile: return mobile
-    }
+    }()
+    let log =
+      "\(logSource) - isBraveAllowedInUA=\(isBraveAllowedInUA) returning \(userAgent)"
+    DebugLogger.log(for: .userAgent, text: log)
+    return userAgent
   }
 }

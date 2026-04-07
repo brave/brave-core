@@ -9,22 +9,23 @@ import UIKit
 
 public enum LoggerType {
   case secureState
+  case userAgent
 
   var prefsKey: String {
     switch self {
     case .secureState:
       return "secureStateLogs"
+    case .userAgent:
+      return "userAgentLogs"
     }
   }
 }
 
 public struct DebugLogger {
   public static func log(for type: LoggerType, text: String) {
-    // Secure State Logger should not be invoked for public channels
-    if type == .secureState {
-      if AppConstants.isOfficialBuild && !Preferences.Debug.developerOptionsEnabled.value {
-        return
-      }
+    // Logger should not be invoked for public channels unless developer options enabled
+    if AppConstants.isOfficialBuild && !Preferences.Debug.developerOptionsEnabled.value {
+      return
     }
 
     var logs = UserDefaults.standard.string(forKey: type.prefsKey) ?? ""
@@ -44,7 +45,7 @@ public struct DebugLogger {
     let time = "\(year)-\(month)-\(day) \(hour):\(minute)"
 
     switch type {
-    case .secureState:
+    case .secureState, .userAgent:
       logs.append("------------------------------------\n\n")
       logs.append(" [\(time)]\n\n \(text)\n")
     }
@@ -81,6 +82,8 @@ public class DebugLogViewController: UIViewController {
     switch loggerType {
     case .secureState:
       title = "Secure Content State"
+    case .userAgent:
+      title = "User Agent Debug"
     }
 
     let rightBarButtonItem = UIBarButtonItem(
@@ -116,7 +119,7 @@ public class DebugLogViewController: UIViewController {
     ])
 
     guard let logs = UserDefaults.standard.string(forKey: loggerType.prefsKey) else { return }
-    let title = "Secure Content Logs\n\n"
+    let title = "\(title ?? "") Logs\n\n"
 
     textView.text = title + logs
   }
