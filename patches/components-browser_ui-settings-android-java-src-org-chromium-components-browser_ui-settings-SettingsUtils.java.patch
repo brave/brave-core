@@ -1,0 +1,12 @@
+diff --git a/components/browser_ui/settings/android/java/src/org/chromium/components/browser_ui/settings/SettingsUtils.java b/components/browser_ui/settings/android/java/src/org/chromium/components/browser_ui/settings/SettingsUtils.java
+index a92d2866e67f635264ee16d5af0d17ef74d96eab..726a03968f814d289e9828bf448178c4a1b5f595 100644
+--- a/components/browser_ui/settings/android/java/src/org/chromium/components/browser_ui/settings/SettingsUtils.java
++++ b/components/browser_ui/settings/android/java/src/org/chromium/components/browser_ui/settings/SettingsUtils.java
+@@ -139,6 +139,7 @@ public class SettingsUtils {
+                 addVisiblePreferences(preference, visiblePreferences);
+             }
+         }
++        visiblePreferences.sort((a, b) -> Integer.compare(a.getOrder(), b.getOrder()));
+         return visiblePreferences;
+     }
+ 

@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# getVisiblePreferences() iterates the PreferenceScreen via getPreference(i),
+# which returns preferences in insertion order, not sorted order. The
+# PreferenceGroupAdapter calls sortPreferences() before rendering, but callers
+# of getVisiblePreferences() (e.g. applyContainmentForFragment) may run before
+# that sort happens. Sort by getOrder() here so containment group boundaries
+# are always correct regardless of call timing.
+
+[[substitution]]
+description = 'Sort visible preferences by order before returning from getVisiblePreferences'
+re_pattern = '(getVisiblePreferences\b[\s\S]+?)(\n(\s+)return visiblePreferences;)'
+replace = '\1\n\3visiblePreferences.sort((a, b) -> Integer.compare(a.getOrder(), b.getOrder()));\2'
+count = 1
