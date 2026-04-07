@@ -220,7 +220,7 @@ void GetPublisher::Request(const std::string& publisher_key,
   request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
 
   engine_->Get<URLLoader>().Load(
-      std::move(request), URLLoader::LogLevel::kDetailed,
+      std::move(request), URLLoader::LogLevel::kBasic,
       base::BindOnce(&GetPublisher::OnRequest, base::Unretained(this),
                      publisher_key, std::move(callback)));
 }
