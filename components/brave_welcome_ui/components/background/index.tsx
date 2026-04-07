@@ -15,8 +15,9 @@ import Stars01 from '../svg/stars01'
 import Stars02 from '../svg/stars02'
 import Stars03 from '../svg/stars03'
 import Stars04 from '../svg/stars04'
-import fullCompositeBgUrl from '../../assets/background@2x.webp'
-import skyBgUrl from '../../assets/sky.webp'
+import fullCompositeBgUrl
+  from 'gen/brave/components/brave_welcome_ui/background@2x.webp'
+import skyBgUrl from 'gen/brave/components/brave_welcome_ui/sky.webp'
 
 interface BackgroundProps {
   children?: JSX.Element
@@ -29,6 +30,10 @@ function Background (props: BackgroundProps) {
   const { setScenes } = React.useContext(DataContext)
   const [hasLoaded, setHasLoaded] = React.useState(false)
   const isReadyForAnimation = hasLoaded && !props.static
+  let shouldShowStars = isReadyForAnimation
+  // <if expr="is_brave_origin_branded">
+  shouldShowStars = false
+  // </if>
 
   React.useEffect(() => {
     if (!ref.current) return
@@ -40,41 +45,53 @@ function Background (props: BackgroundProps) {
     const hill01 = ref.current.querySelector('.hills01')
     const hill02 = ref.current.querySelector('.hills02')
     const hills03 = ref.current.querySelector('.hills03')
-
-    const stars01 = ref.current.querySelector('.stars01')
-    const stars02 = ref.current.querySelector('.stars02')
-    const stars03 = ref.current.querySelector('.stars03')
-    const stars04 = ref.current.querySelector('.stars04')
     const pyramid = ref.current.querySelector('.pyramid')
 
     s1.to(hill01, { transform: 'translateX(-650px) scale(2.5)', filter: 'blur(3px)' })
       .to(hill02, { transform: 'scale(1.5)' })
-      .to(stars01, { transform: 'scale(2.5)' })
-      .to(stars02, { transform: 'scale(3.5)', filter: 'blur(3px)' })
-      .to(stars03, { transform: 'scale(2.5)' })
-      .to(stars04, { opacity: 1, transform: 'scale(1)' })
+    if (shouldShowStars) {
+      const stars01 = ref.current.querySelector('.stars01')
+      const stars02 = ref.current.querySelector('.stars02')
+      const stars03 = ref.current.querySelector('.stars03')
+      const stars04 = ref.current.querySelector('.stars04')
+
+      s1.to(stars01, { transform: 'scale(2.5)' })
+        .to(stars02, { transform: 'scale(3.5)', filter: 'blur(3px)' })
+        .to(stars03, { transform: 'scale(2.5)' })
+        .to(stars04, { opacity: 1, transform: 'scale(1)' })
+    }
 
     s2.to(hill01, { transform: 'translateX(-120%)' })
       .to(hill02, { transform: 'translateX(-500px) scale(4.0)', filter: 'blur(3px)' })
       .to(hills03, { transform: 'scale(2.5)' })
       .to(pyramid, { transform: 'translateX(0px)', backgroundSize: '40%', filter: 'blur(3px)' })
-      .to(stars02, { transform: 'scale(5.0)' })
-      .to(stars03, { transform: 'scale(3.5)', filter: 'blur(3px)' })
-      .to(stars04, { transform: 'scale(1.5)' })
+    if (shouldShowStars) {
+      const stars02 = ref.current.querySelector('.stars02')
+      const stars03 = ref.current.querySelector('.stars03')
+      const stars04 = ref.current.querySelector('.stars04')
+
+      s2.to(stars02, { transform: 'scale(5.0)' })
+        .to(stars03, { transform: 'scale(3.5)', filter: 'blur(3px)' })
+        .to(stars04, { transform: 'scale(1.5)' })
+    }
 
     setScenes({ s1, s2 })
-  }, [isReadyForAnimation])
+  }, [isReadyForAnimation, shouldShowStars])
 
   React.useEffect(() => {
     if (!ref.current) return
     if (!isReadyForAnimation) return
 
     const s1 = new WebAnimationPlayer()
-    const starsContainer = ref.current.querySelector('.stars-container')
     const hillsContainer = ref.current.querySelector('.hills-container')
 
+    // <if expr="is_brave_origin_branded">
+    s1.to(hillsContainer, { opacity: 1 }, { delay: 250 })
+    // <else>
+    const starsContainer = ref.current.querySelector('.stars-container')
     s1.to(starsContainer, { opacity: 1 }, { delay: 250 })
       .to(hillsContainer, { opacity: 1 }, { delay: 250 })
+    // </if>
 
     const lastAnimationEl = s1.animations[s1.animations.length - 1]
     lastAnimationEl.addEventListener('finish', () => props.onLoad?.())
@@ -93,7 +110,7 @@ function Background (props: BackgroundProps) {
 
   return (
     <S.Box ref={isReadyForAnimation ? ref : null}>
-      {isReadyForAnimation && (
+      {shouldShowStars && (
         <div className="stars-container">
           <Stars01 />
           <Stars02 />

@@ -8,14 +8,42 @@ import("//brave/components/common/typescript.gni")
 
 if (is_brave_origin_branded) {
   _welcome_logo_source = "assets/brave_origin_logo@2x.webp"
+  _background_source = "assets/background@2x_origin.webp"
+  _hill_source = "assets/hill_origin.webp"
+  _pyramid_source = "assets/pyramid_origin.webp"
+  _sky_source = "assets/sky_origin.webp"
 } else {
   _welcome_logo_source = "assets/brave_logo_3d@2x.webp"
+  _background_source = "assets/background@2x.webp"
+  _hill_source = "assets/hill.webp"
+  _pyramid_source = "assets/pyramid.webp"
+  _sky_source = "assets/sky.webp"
 }
 
 copy("welcome_logo") {
   sources = [ _welcome_logo_source ]
   outputs =
       [ "$root_gen_dir/brave/components/brave_welcome_ui/welcome_logo@2x.webp" ]
+}
+
+copy("welcome_background") {
+  sources = [ _background_source ]
+  outputs = [ "$root_gen_dir/brave/components/brave_welcome_ui/background@2x.webp" ]
+}
+
+copy("welcome_hill") {
+  sources = [ _hill_source ]
+  outputs = [ "$root_gen_dir/brave/components/brave_welcome_ui/hill.webp" ]
+}
+
+copy("welcome_pyramid") {
+  sources = [ _pyramid_source ]
+  outputs = [ "$root_gen_dir/brave/components/brave_welcome_ui/pyramid.webp" ]
+}
+
+copy("welcome_sky") {
+  sources = [ _sky_source ]
+  outputs = [ "$root_gen_dir/brave/components/brave_welcome_ui/sky.webp" ]
 }
 
 transpile_web_ui("brave_welcome_ui") {
@@ -29,7 +57,13 @@ transpile_web_ui("brave_welcome_ui") {
 
   imports_from = [ "//brave/components/brave_welcome_ui/" ]
 
-  deps = [ ":welcome_logo" ]
+  deps = [
+    ":welcome_background",
+    ":welcome_hill",
+    ":welcome_logo",
+    ":welcome_pyramid",
+    ":welcome_sky",
+  ]
 }
 
 pack_web_resources("generated_resources") {
