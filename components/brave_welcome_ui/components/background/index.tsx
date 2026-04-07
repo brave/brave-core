@@ -11,10 +11,6 @@ import WebAnimationPlayer from '../../api/web_animation_player'
 import DataContext from '../../state/context'
 import { shouldPlayAnimations } from '../../state/hooks'
 
-import Stars01 from '../svg/stars01'
-import Stars02 from '../svg/stars02'
-import Stars03 from '../svg/stars03'
-import Stars04 from '../svg/stars04'
 import fullCompositeBgUrl from '../../assets/background@2x.webp'
 import skyBgUrl from '../../assets/sky.webp'
 
@@ -70,11 +66,9 @@ function Background (props: BackgroundProps) {
     if (!isReadyForAnimation) return
 
     const s1 = new WebAnimationPlayer()
-    const starsContainer = ref.current.querySelector('.stars-container')
     const hillsContainer = ref.current.querySelector('.hills-container')
 
-    s1.to(starsContainer, { opacity: 1 }, { delay: 250 })
-      .to(hillsContainer, { opacity: 1 }, { delay: 250 })
+    s1.to(hillsContainer, { opacity: 1 }, { delay: 250 })
 
     const lastAnimationEl = s1.animations[s1.animations.length - 1]
     lastAnimationEl.addEventListener('finish', () => props.onLoad?.())
@@ -93,14 +87,6 @@ function Background (props: BackgroundProps) {
 
   return (
     <S.Box ref={isReadyForAnimation ? ref : null}>
-      {isReadyForAnimation && (
-        <div className="stars-container">
-          <Stars01 />
-          <Stars02 />
-          <Stars03 />
-          <Stars04 />
-        </div>
-      )}
       <div className="content-box">
         {props.children}
       </div>

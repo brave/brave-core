@@ -10,7 +10,6 @@
  * anything to take precedence.
  */
 
-@import url(//resources/brave/fonts/poppins.css);
 @import url(//resources/brave/fonts/inter.css);
 
 html {
@@ -29,5 +28,5 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: Poppins, $i18nRaw{fontfamily};
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", $i18nRaw{fontfamily};
 }

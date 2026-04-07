@@ -42,41 +42,6 @@ export const Box = styled.div`
     opacity: 0;
   }
 
-  .stars-container {
-    position: fixed;
-    width: 100vw;
-    height: 100%;
-    z-index: 50;
-    opacity: 0;
-
-    svg {
-      width: 100%;
-      height: auto;
-      position: absolute;
-      transform-origin: center;
-    }
-
-    .stars01 {
-      bottom: 0;
-      transform: scale(1.14);
-      filter: blur(3px);
-    }
-
-    .stars02 {
-      top: 10%;
-    }
-
-    .stars03 {
-      top: 15%;
-    }
-
-    .stars04 {
-      top: 30%;
-      transform: scale(0.8);
-      opacity: 0;
-    }
-  }
-
   .hills-base {
     width: 100%;
     height: 100%;

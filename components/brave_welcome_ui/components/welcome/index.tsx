@@ -53,7 +53,7 @@ function Welcome () {
 
     s1.to(logoBoxEl, {
         transform: 'translateY(-20px)',
-        filter: 'drop-shadow(7px 2px 5px rgba(14, 1, 41, 0.2)) drop-shadow(14px 3px 10px rgba(32, 5, 89, 0.3)) drop-shadow(20px 3px 15px rgba(37, 7, 87, 0.2))  drop-shadow(25px 5px 30px rgba(25, 3, 73, 0.1)) drop-shadow(50px 4px 50px rgba(19, 3, 40, 0.1))'
+        filter: 'drop-shadow(7px 2px 5px rgba(0, 0, 0, 0.18)) drop-shadow(14px 3px 10px rgba(24, 24, 24, 0.24)) drop-shadow(20px 3px 15px rgba(48, 48, 48, 0.18)) drop-shadow(25px 5px 30px rgba(16, 16, 16, 0.1)) drop-shadow(50px 4px 50px rgba(0, 0, 0, 0.08))'
         }, { fill: 'forwards', easing: 'ease-out' })
       .to(backdropEl, { scale: 1, opacity: 1 }, { duration: 250, delay: 200, easing: 'ease-out' })
       .to(contentEl, { transform: 'translateY(0px)', opacity: 1 }, { duration: 250, delay: 200, easing: 'ease-out' })

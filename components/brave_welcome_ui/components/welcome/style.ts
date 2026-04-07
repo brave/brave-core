@@ -10,7 +10,7 @@ export const Box = styled.div`
   max-width: 800px;
   border-radius: 30px;
   color: white;
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;

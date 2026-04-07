@@ -13,7 +13,7 @@ export const MainBox = styled.div`
   border-radius: 30px;
   max-width: 656px;
   color: white;
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   display: flex;
   gap: var(--common-gap);
   align-items: center;
@@ -58,7 +58,7 @@ export const MainBox = styled.div`
 `
 
 export const BodyBox = styled.div`
-  font-family: Poppins;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
