@@ -632,6 +632,7 @@ source_set("brave_ads_unit_tests") {
   deps = [
     "//base/test:test_support",
     "//brave/components/brave_ads/core",
+    "//brave/components/brave_ads/core/browser/internals:unit_tests",
     "//brave/components/brave_ads/core/browser/network:unit_tests",
     "//brave/components/brave_ads/core/browser/service:test_support",
     "//brave/components/brave_ads/core/browser/virtual_pref:unit_tests",

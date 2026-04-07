@@ -29,20 +29,22 @@ AdsInternalsHandler::AdsInternalsHandler(brave_ads::AdsService* ads_service,
 AdsInternalsHandler::~AdsInternalsHandler() = default;
 
 void AdsInternalsHandler::BindInterface(
-    mojo::PendingReceiver<bat_ads::mojom::AdsInternals> pending_receiver) {
-  if (receiver_.is_bound()) {
-    receiver_.reset();
+    mojo::PendingReceiver<bat_ads::mojom::AdsInternals>
+        mojom_pending_receiver) {
+  if (mojom_receiver_.is_bound()) {
+    mojom_receiver_.reset();
   }
 
-  receiver_.Bind(std::move(pending_receiver));
+  mojom_receiver_.Bind(std::move(mojom_pending_receiver));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void AdsInternalsHandler::CreateAdsInternalsPageHandler(
-    mojo::PendingRemote<bat_ads::mojom::AdsInternalsPage> page_pending_remote) {
-  page_remote_ = mojo::Remote<bat_ads::mojom::AdsInternalsPage>(
-      std::move(page_pending_remote));
+    mojo::PendingRemote<bat_ads::mojom::AdsInternalsPage>
+        mojom_pending_remote) {
+  mojom_remote_ = mojo::Remote<bat_ads::mojom::AdsInternalsPage>(
+      std::move(mojom_pending_remote));
 
   UpdateBraveRewardsEnabled();
 }
@@ -67,13 +69,13 @@ void AdsInternalsHandler::ClearAdsData(brave_ads::ClearDataCallback callback) {
 
 void AdsInternalsHandler::GetInternalsCallback(
     GetAdsInternalsCallback callback,
-    std::optional<base::DictValue> internals) {
-  // `value` can be nullopt in the following cases:
+    std::optional<base::DictValue> dict) {
+  // `dict` can be nullopt in the following cases:
   // - `bat_ads::mojom::BatAds` associated remote is not bound.
   // - A database query fails.
   std::string json;
-  CHECK(base::JSONWriter::Write(
-      std::move(internals).value_or(base::DictValue{}), &json));
+  CHECK(base::JSONWriter::Write(std::move(dict).value_or(base::DictValue{}),
+                                &json));
   std::move(callback).Run(json);
 }
 
@@ -83,10 +85,10 @@ void AdsInternalsHandler::OnBraveRewardsEnabledPrefChanged(
 }
 
 void AdsInternalsHandler::UpdateBraveRewardsEnabled() {
-  if (!page_remote_) {
+  if (!mojom_remote_) {
     return;
   }
 
   const bool is_enabled = prefs_->GetBoolean(brave_rewards::prefs::kEnabled);
-  page_remote_->UpdateBraveRewardsEnabled(is_enabled);
+  mojom_remote_->UpdateBraveRewardsEnabled(is_enabled);
 }
