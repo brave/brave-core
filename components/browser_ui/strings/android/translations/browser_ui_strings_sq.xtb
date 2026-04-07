@@ -7,8 +7,10 @@
 <translation id="1070329623210597193">Skedarët që mund të shikojë ose modifikojë ky sajt</translation>
 <translation id="1882093842020941518">Na ndihmo të përmirësojmë Brave duke na treguar se pse ke lejuar kukit e palëve të treta. <ph name="BEGIN_LINK"/>Dërgo komente<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Mund të kërkosh për të parë versionin e desktopit të sajteve</translation>
-<translation id="9183227624343766158">Përdor Brave si parazgjedhje</translation>
+<translation id="1109482864356262001">Veçoritë që kanë nevojë për sensorët e lëvizjes ose të dritës nuk do të funksionojnë</translation>
+<translation id="6670155282615872564">Përfundo këto veprime të sugjeruara më poshtë për të përfituar sa më shumë nga Brave</translation>
 <translation id="113098737392899175">Navigo te faqet me një kursor teksti kur lidhet një tastierë</translation>
+<translation id="1148624853678088576">Je gati!</translation>
 <translation id="738393714577080438">Ruaj fjalëkalimet në Brave</translation>
 <translation id="1178015372320901893">Fleta e poshtme e shkurtoreve të mia</translation>
 <translation id="1178581264944972037">Pauzë</translation>
@@ -53,6 +55,7 @@
 <translation id="3665719978526894928">Shpejto sajtet me motorin V8 të Brave, por bëje Brave më pak rezistent ndaj sulmeve</translation>
 <translation id="1593426485665524382">Veprime të reja të disponueshme pranë kreut të ekranit</translation>
 <translation id="1594521731409209842">Kap ekranin me dy gishta për të ndryshuar përmasat e fotografisë</translation>
+<translation id="1599268789440304082">Fleta e konfigurimit u hap</translation>
 <translation id="1601560923496285236">Zbato</translation>
 <translation id="1615755956145364867">Sajtet mund të kërkojnë të luajnë përmbajtje të mbrojtura</translation>
 <translation id="1620510694547887537">Kamera</translation>
@@ -64,7 +67,6 @@
 <translation id="1677097821151855053">Kukit dhe të dhënat e tjera të sajtit përdoren për të të kujtuar ty, për shembull për të të identifikuar ose për të personalizuar reklamat. Për të menaxhuar kukit për të gjitha sajtet, shiko <ph name="BEGIN_LINK"/>Cilësimet<ph name="END_LINK"/>.</translation>
 <translation id="1679305402657584804">Sajtet mund të kërkojnë që të përdorin pajisjet me NFC</translation>
 <translation id="1686785653877010442">Sajtet zakonisht dërgojnë njoftime për të të njoftuar rreth lajmeve të fundit ose mesazheve të bisedës.</translation>
-<translation id="169515064810179024">Bllokojua faqeve hapjen e sensorëve të lëvizjes</translation>
 <translation id="1703666494654169921">Mos lejo që sajtet të përdorin të dhënat ose pajisjet e realitetit virtual</translation>
 <translation id="1704230497453185209">Mos lejo që sajtet të luajnë tinguj</translation>
 <translation id="1717218214683051432">Sensorët e lëvizjes</translation>
@@ -127,6 +129,7 @@
 <translation id="2241587408274973373">Kartat në faqen e skedës së re</translation>
 <translation id="2241634353105152135">Vetëm një herë</translation>
 <translation id="2253414712144136228"><ph name="NAME_OF_LIST_ITEM"/> - Hiq</translation>
+<translation id="227763434929139750">Mos lejo që sajtet të përdorin sensorët e lëvizjes ose të dritës</translation>
 <translation id="228293613124499805">Shumica e sajteve që viziton ka mundësi që të ruajnë të dhëna në pajisjen tënde, shpesh për të përmirësuar përvojën tënde duke ruajtur preferencat e tua ose informacionet që ti ndan me sajtin. Ne rekomandojmë që ta mbash të aktivizuar këtë cilësim.</translation>
 <translation id="2289270750774289114">Pyet kur një sajt dëshiron të zbulojë pajisjet Bluetooth në afërsi (rekomandohet)</translation>
 <translation id="2315043854645842844">Përzgjedhja e certifikatës nga ana e klientit nuk mbështetet nga sistemi operativ.</translation>
@@ -191,12 +194,12 @@
 <translation id="2802908157808345702">Mos lejo që sajtet të dërgojnë dritare kërcyese apo të përdorin ridrejtimet</translation>
 <translation id="5801312978029568377">Brave tani shfaq skedat e tua të fundit në listën e aplikacioneve dhe rezultatet e kërkimit të pajisjes sate. Mund ta çaktivizosh këtë në çdo kohë te cilësimet e Brave.</translation>
 <translation id="2822354292072154809">Je i sigurt që dëshiron t'i rivendosësh të gjitha lejet e sajtit për <ph name="CHOSEN_OBJECT_NAME"/>?</translation>
+<translation id="7298052657381934345">Tani do të përfitosh më shumë nga Brave në pajisjen tënde.</translation>
 <translation id="2850913818900871965">Kërko pamjen për celular</translation>
 <translation id="2870560284913253234">Sajti</translation>
 <translation id="2874939134665556319">Kënga e mëparshme</translation>
 <translation id="2891975107962658722">Blloko një sajt që të mos ruajë të dhëna në pajisjen tënde</translation>
 <translation id="2903493209154104877">Adresat</translation>
-<translation id="2910701580606108292">Pyet përpara se sajtet të lejohen të luajnë përmbajtje të mbrojtura</translation>
 <translation id="2918484639460781603">Shko te cilësimet</translation>
 <translation id="2932883381142163287">Raporto abuzim</translation>
 <translation id="2939338015096024043">Kur cilësimi është aktiv, sajtet mund të kërkojnë që të gjurmojnë pozicionin e kamerës dhe të mësojnë për ambientin tënd rrethues. Kur cilësimi është joaktiv, sajtet nuk mund të gjurmojnë pozicionin e kamerës apo të mësojnë për ambientin tënd rrethues.</translation>
@@ -210,6 +213,7 @@
 <translation id="3065787901655140044">"Mbrojtja e përparuar" është aktive</translation>
 <translation id="3069226013421428034">Lejo identifikimin e palëve të treta për një sajt specifik.</translation>
 <translation id="310297983047869047">Diapozitivi i mëparshëm</translation>
+<translation id="3108122610701115301">Cakto si të parazgjedhur</translation>
 <translation id="3109724472072898302">Palosur</translation>
 <translation id="310979712355504754">Fshiji të gjitha</translation>
 <translation id="311394601889664316">Mos lejo që sajtet të modifikojnë skedarët ose dosjet në pajisjen tënde</translation>
@@ -232,7 +236,6 @@
 <translation id="3232293466644486101">Fshi të dhënat e shfletimit…</translation>
 <translation id="3242646949159196181">Kur cilësimi është aktiv, sajtet mund të luajnë tinguj. Kur cilësimi është joaktiv, sajtet nuk mund të luajnë tinguj.</translation>
 <translation id="3273479183583863618">Uljet e çmimeve në skeda</translation>
-<translation id="3277252321222022663">Lejoju faqeve të të hapin sensorët (rekomandohet)</translation>
 <translation id="3285500645985761267">Lejo që sajtet e lidhura të shikojnë aktivitetin tënd te grupi</translation>
 <translation id="3295019059349372795">Kapitulli 11: Qyteti i mrekullueshëm i smeraldtë i Ozit</translation>
 <translation id="3295602654194328831">Fshih informacionin</translation>
@@ -264,6 +267,7 @@
 <translation id="3658847490588580244">Fleta e poshtme e shfletuesit të parazgjedhur</translation>
 <translation id="3669841141196828854">{COUNT,plural, =1{<ph name="RWS_MEMBERS_COUNT"/> sajt në grupin e sajteve të <ph name="RWS_OWNER"/> që mund ta shikojnë aktivitetin tënd në grup}other{<ph name="RWS_MEMBERS_COUNT"/> sajte në grupin e sajteve të <ph name="RWS_OWNER"/> që mund ta shikojnë aktivitetin tënd në këtë grup}}</translation>
 <translation id="3676777756440746804">Sajtet janë bllokuar që të mos të kërkojnë të përdorin informacionet që kanë ruajtur në lidhje me ty</translation>
+<translation id="3677897809642449131">Sajtet mund të kërkojnë të përdorin sensorët e lëvizjes</translation>
 <translation id="3678318839615834650">Fleta e poshtme e kartave të faqeve të skedave të reja u hap në lartësi të plotë</translation>
 <translation id="3697164069658504920">Kur cilësimi është aktiv, sajtet mund të kërkojnë që të përdorin pajisjet USB. Kur cilësimi është joaktiv, sajtet nuk mund të përdorin pajisjet USB.</translation>
 <translation id="3703430731944883733">Menaxho furnizimin tënd</translation>
@@ -295,8 +299,8 @@
 <translation id="3922092564198021702">Në telefon, hap "Cilësimet"</translation>
 <translation id="3924858949939391676">Shfaq lidhjet pasi të jetë aktivizuar "Modaliteti i leximit"</translation>
 <translation id="3933121352599513978">Palos kërkesat e padëshiruara (rekomandohet)</translation>
+<translation id="393417216277380082">Sensorët e lëvizjes dhe të dritës</translation>
 <translation id="3934905113567851655">Afro gishtat për të ndryshuar përmasat</translation>
-<translation id="3955193568934677022">Lejo që sajtet të luajnë përmbajtje të mbrojtur (rekomandohet)</translation>
 <translation id="3955321697524543127">Mos lejo që sajtet të lidhen me pajisjet me USB</translation>
 <translation id="3965467402665811906">Sajtet mund të kërkojnë që të përdorin informacionet që kanë ruajtur në lidhje me ty</translation>
 <translation id="3967822245660637423">Shkarkimi përfundoi</translation>
@@ -312,6 +316,7 @@
 <translation id="4046123991198612571">Kënga tjetër</translation>
 <translation id="4077310749977440510">Sajtet lexojnë zakonisht kujtesën tënde të fragmenteve për veçoritë si ruajtja e formatimit të tekstit që ke kopjuar</translation>
 <translation id="4082080074595021446">Përjashtimet për uebsajte specifike nuk lejohen sepse pajisja Android nuk ka RAM të mjaftueshëm.</translation>
+<translation id="6601032802262472844">Disa cilësime të Brave janë ndryshuar</translation>
 <translation id="4149890623864272035">E konfirmon që dëshiron t'i fshish të gjitha të dhënat lokale, duke përfshirë kukit, dhe të rivendosësh të gjitha lejet për këtë uebsajt?</translation>
 <translation id="4149994727733219643">Pamje e thjeshtuar për faqet e uebit</translation>
 <translation id="4151930093518524179">Zmadhimi i parazgjedhur</translation>
@@ -347,8 +352,11 @@
 <translation id="4478158430052450698">Bëje më të lehtë të personalizosh zmadhimin për sajte të ndryshme</translation>
 <translation id="4479647676395637221">Pyet përpara se të lejohen sajtet të përdorin kamerën (rekomandohet)</translation>
 <translation id="4505788138578415521">URL e zgjeruar</translation>
+<translation id="4522570452068850558">Detajet</translation>
 <translation id="4523472416386354622">Identifikohu për të filluar</translation>
+<translation id="4529207923544043455">Fleta e poshtme që shfaq detyrat e përfunduara dhe të papërfunduara të listës së konfigurimit</translation>
 <translation id="4534723447064627427">Për të lejuar që <ph name="APP_NAME"/> të ketë qasje te mikrofoni yt, aktivizo gjithashtu mikrofonin në <ph name="BEGIN_LINK"/>Cilësimet e Android<ph name="END_LINK"/>.</translation>
+<translation id="4545694195887112015">Fleta e konfigurimit u mbyll</translation>
 <translation id="4566417217121906555">Çaktivizo mikrofonin</translation>
 <translation id="4570913071927164677">Detajet</translation>
 <translation id="4578289292431526768">Fillojmë</translation>
@@ -363,7 +371,7 @@
 <translation id="5652778654712411580">Trokit tek "Aplikacioni i shfletuesit" dhe më pas trokit te Brave</translation>
 <translation id="4676059169848868271">Për të lejuar që <ph name="APP_NAME"/> të përdorë gjurmimin e duarve, aktivizo gjithashtu gjurmimin e duarve te <ph name="BEGIN_LINK"/>cilësimet e sistemit<ph name="END_LINK"/>.</translation>
 <translation id="4688045258817337666">Menaxho kartat e tua</translation>
-<translation id="4751476147751820511">Sensorët e lëvizjes ose të dritës</translation>
+<translation id="4722332387043141878">Sajtet përdorin zakonisht sensorët e lëvizjes dhe të dritës të pajisjes për veçoritë si realiteti virtual ose monitorimi i fitnesit</translation>
 <translation id="4755971844837804407">Kur cilësimi është aktiv, sajtet mund të të shfaqin çdo reklamë. Kur cilësimi është joaktiv, sajtet nuk mund të shfaqin reklama ndërhyrëse ose mashtruese.</translation>
 <translation id="4779083564647765204">Zmadho</translation>
 <translation id="4807122856660838973">Aktivizo "Shfletimin e sigurt"</translation>
@@ -390,7 +398,6 @@
 <translation id="5001526427543320409">Kukit e palëve të treta</translation>
 <translation id="5007392906805964215">Rishiko</translation>
 <translation id="5039804452771397117">Lejo</translation>
-<translation id="5048398596102334565">Lejoju faqeve të të hapin sensorët e lëvizjes (rekomandohet)</translation>
 <translation id="5048841907079026162">Menaxho të dhënat e tua të shfletimit</translation>
 <translation id="5063480226653192405">Përdorimi</translation>
 <translation id="5068293087784369013">Personalizo faqen e skedës së re</translation>
@@ -480,6 +487,7 @@
 <translation id="5922853908706496913">Po ndan ekranin tënd</translation>
 <translation id="5922967540311291836">Blloko kukit e palëve të treta</translation>
 <translation id="5923512600150154850">Kjo do të fshijë <ph name="DATASIZE"/> të dhëna dhe kuki të ruajtura nga sajtet.</translation>
+<translation id="5930707844513754220">Lista e konfigurimit e "Shiko më shumë"</translation>
 <translation id="5939518447894949180">Rivendos</translation>
 <translation id="5948139900367969951">Shko me shpejtësi tek ato që kanë rëndësi për ty</translation>
 <translation id="5964247741333118902">Përmbajtjet e integruara</translation>
@@ -488,6 +496,7 @@
 <translation id="5976059395673079613"><ph name="PERMISSION"/> - <ph name="WARNING_MESSAGE"/></translation>
 <translation id="5998071268779572583">Aktivizo furnizimin e "Zbulo"</translation>
 <translation id="6012967556075291653">Shkurtore e gozhduar</translation>
+<translation id="6013003831291591200">Detyra u përfundua</translation>
 <translation id="6015775454662021376">Kontrollo qasjen e këtij sajti te pajisja jote</translation>
 <translation id="296137235951584143">Bëje Brave shfletuesin tënd</translation>
 <translation id="6040143037577758943">Mbyll</translation>
@@ -503,11 +512,11 @@
 <translation id="6171020522141473435">Kur cilësimi është aktiv, sajtet mund të kërkojnë që të përdorin pajisjet me Bluetooth. Kur cilësimi është joaktiv, sajtet nuk mund të përdorin pajisjet me Bluetooth.</translation>
 <translation id="6177128806592000436">Lidhja jote me këtë sajt nuk është e sigurt</translation>
 <translation id="6181444274883918285">Shto përjashtim për sajt</translation>
-<translation id="6192792657125177640">Përjashtimet</translation>
 <translation id="7938602278189860250">{DAYS,plural, =1{Brave do t'i bllokojë kukit përsëri nesër}other{# ditë derisa kukit të bllokohen përsëri}}</translation>
 <translation id="6196640612572343990">Blloko kukit e palëve të treta</translation>
 <translation id="6205314730813004066">Privatësia e reklamave</translation>
 <translation id="6207207788774442484">Fshi të dhënat dhe rivendos lejet</translation>
+<translation id="6211409961905616543">Sajtet mund të përdorin sensorët e lëvizjes dhe të dritës</translation>
 <translation id="6218508144653756827">Tema vjollcë e ndezur</translation>
 <translation id="6231752747840485235">Të çinstalohet "<ph name="APP_NAME"/>"?</translation>
 <translation id="4789073065838177382">Trokit tek Aplikacioni i shfletuesit &gt; Brave</translation>
@@ -626,7 +635,6 @@
 <translation id="7561196759112975576">Gjithmonë</translation>
 <translation id="7573594921350120855">Sajtet përdorin zakonisht videokamerën tënde për veçoritë e komunikimit si biseda me video</translation>
 <translation id="7574529565935733861">{NUM_MONTHS,plural, =1{<ph name="NUM_MONTHS_ONE"/> muaj më parë}other{<ph name="NUM_MONTHS_MANY"/> muaj më parë}}</translation>
-<translation id="757524316907819857">Blloko sajtet që të mos luajnë përmbajtje të mbrojtura</translation>
 <translation id="7586676035079382730">Njoftimet nuk lejohen</translation>
 <translation id="7594634374516752650">U lidh me një pajisje me Bluetooth</translation>
 <translation id="7617547684249261169">Mund të fshish disa ose të gjitha nga historiku, kukit, të dhënat e sajteve etj.</translation>
@@ -678,9 +686,9 @@
 <translation id="8088603949666785339">Më shumë opsione te "<ph name="BANNER_TITLE"/>"</translation>
 <translation id="8112925981674547014">Shiko skedat në listën e aplikacioneve</translation>
 <translation id="8116925261070264013">Zëri i çaktivizuar</translation>
-<translation id="8117244575099414087">Kur cilësimi është aktiv, sajtet mund të përdorin sensorët e pajisjes. Kur cilësimi është joaktiv, sajtet nuk mund të përdorin sensorët.</translation>
 <translation id="813082847718468539">Shiko informacionin rreth faqes</translation>
 <translation id="8131740175452115882">Konfirmo</translation>
+<translation id="8148160259207090265">Ky cilësim mbetet aktiv për sa kohë që "Mbrojtja e përparuar" është e aktivizuar te "Cilësimet" e Android.</translation>
 <translation id="8163152278172770963">Mos lejo që sajtet të kalojnë automatikisht në modalitetin "figurë brenda figurës"</translation>
 <translation id="8168435359814927499">Përmbajtja</translation>
 <translation id="818487310457576362">Zvarrit nga ana e ekranit për të dalë nga ekrani i plotë.</translation>
@@ -710,6 +718,7 @@
 <translation id="8441146129660941386">Kërko prapa</translation>
 <translation id="8444433999583714703">Për të lejuar që <ph name="APP_NAME"/> të ketë qasje te vendndodhja jote, aktivizo gjithashtu vendndodhjen në <ph name="BEGIN_LINK"/>Cilësimet e Android<ph name="END_LINK"/>.</translation>
 <translation id="8447861592752582886">Revoko lejen e pajisjes</translation>
+<translation id="8463843545738141778">Ky cilësim është i çaktivizuar sepse ke aktivizuar "Mbrojtjen e përparuar" te "Cilësimet" e Android.</translation>
 <translation id="8467359479529706065">Fleta e poshtme e pamjes së faqeve të skedave të reja u hap në gjysmë lartësi</translation>
 <translation id="8471525937465764768">Sajtet lidhen zakonisht me pajisjet me USB për veçoritë si printimi i një dokumenti ose ruajtja te një pajisje e hapësirës ruajtëse</translation>
 <translation id="8473055640493819707"><ph name="APP_NAME"/> nuk është përditësuar. Riinstalo aplikacionin.</translation>
@@ -738,9 +747,11 @@
 <translation id="8707904142362025782">Sajtet mund të kërkojnë që të përdorin kamerën</translation>
 <translation id="8712637175834984815">E kuptova</translation>
 <translation id="8715862698998036666">Zvarrit nga pjesa e sipërme ose rrëshqit shpejt nga skaji i majtë ose i djathtë për të dalë nga ekrani i plotë.</translation>
+<translation id="8716050156658570300">Sajtet mund të kërkojnë të përdorin sensorët e lëvizjes dhe të dritës</translation>
 <translation id="8719283222052720129">Aktivizo lejen për <ph name="APP_NAME"/> në <ph name="BEGIN_LINK"/>Cilësimet e Android<ph name="END_LINK"/>.</translation>
 <translation id="8721719390026067591">Kur cilësimi është aktiv, sajtet mund të kërkojnë leje që të kërkojnë për pajisjet me Bluetooth. Kur cilësimi është joaktiv, sajtet mund të kërkojnë për pajisjet me Bluetooth.</translation>
 <translation id="8725066075913043281">Provo sërish</translation>
+<translation id="6614332522102257453">Përfito sa më shumë nga Brave</translation>
 <translation id="8730621377337864115">U krye</translation>
 <translation id="8737426583868847403">Sajtet për të cilat ruan një nivel të personalizuar të zmadhimit do të shfaqen këtu</translation>
 <translation id="8748714929822124637">Mos i lejo sajtet të qasen në pajisjet e tjera në rrjetin tënd lokal</translation>
@@ -751,7 +762,7 @@
 <translation id="2026315747406172223">V8 është motori i JavaScript dhe WebAssembly i Brave që përdoret për të përmirësuar performancën e sajteve</translation>
 <translation id="8803526663383843427">Kur është e aktive</translation>
 <translation id="8805385115381080995">Shfletimi është më i shpejtë pasi një sajt ka më pak gjasa që të të kërkojë të verifikosh që je një person real</translation>
-<translation id="8816026460808729765">Bllokojua faqeve hapjen e sensorëve</translation>
+<translation id="881644524232657178">Kur cilësimi është aktiv, sajtet mund të përdorin sensorët e lëvizjes dhe të dritës të pajisjes. Kur cilësimi është joaktiv, sajtet nuk mund t'i përdorin sensorët.</translation>
 <translation id="8847988622838149491">USB</translation>
 <translation id="8874790741333031443">Provo të lejosh përkohësisht kukit e palëve të treta, që do të thotë se ka më pak mbrojtje gjatë shfletimit, por veçoritë e sajteve me shumë mundësi mund të funksionojnë siç pritet.</translation>
 <translation id="7532165358672313130">Ndërkohë që ti vazhdon të shfletosh, sajtet mund të kontrollojnë në Brave dhe të verifikojnë nga një sajt i mëparshëm që ke vizituar që ka gjasa të jesh një person real.</translation>

@@ -1826,6 +1826,7 @@
 <translation id="8897189056319316783">დაცული ZEC</translation>
 <translation id="508249542337194541">ZEC-ის გაუქმება</translation>
 <translation id="3382275793825152362">ტრანზაქციების დაცვა</translation>
+<translation id="617149752238892649">დაცვის დაშვება</translation>
 <translation id="8631765320256788981">თქვენ აგზავნით თანხას თქვენი გამჭვირვალე ანგარიშიდან დაცულ ანგარიშზე.</translation>
 <translation id="3860364671495430495">თქვენ აგზავნით თანხას თქვენი დაცული ანგარიშიდან გამჭვირვალე ანგარიშზე.</translation>
 <translation id="7144878232160441200">ხელახლა ცდა</translation>
@@ -2172,6 +2173,7 @@
     }</translation>
 <translation id="6961721183181597848">როგორ შემიძლია დაგეხმაროთ დღეს?</translation>
 <translation id="2966135729673253768">მიმართეთ გაგრძელებას</translation>
+<translation id="5923170497201832190">გადახვიდი ბოლოში</translation>
 <translation id="6219262425964000211">ფაილების აქ გადმოტანა</translation>
 <translation id="4313763911013851687">გადმოიტანეთ ნებისმიერი ფაილი აქ, რათა დაამატოთ საუბარში</translation>
 <translation id="4524675003624341892">კითხვების შეთავაზება...</translation>
@@ -2193,20 +2195,21 @@
 <translation id="999273441077650169">მოდელი მყისიერად იცვლება სამუშაოს საუკეთესოდ შესასრულებლად. <ph name="LINK_BEFORE"/> გაიგეთ მეტი <ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Llama 3.1 8B-ზეა, მოდელი, რომელიც შექმნილია Meta-ს მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევებთან შესაფერისი. Llama Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Qwen VL 30B-ზეა, მოდელი, რომელიც შექმნილია Alibaba Cloud-ის მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Qwen Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა DeepSeek V3.1-ზეა, მოდელი, რომელიც შექმნილია DeepSeek-ის მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. DeepSeek V3.1 Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა GLM-5-ზეა, მოდელი, რომელიც შექმნილია Zhipu AI-ს მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევებთან შესაფერისი. GLM-5 NEAR-ის მიერ მასპინძლობს მათ საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">გამარჯობა, მე ლეო ვარ. ვარ Brave-ის ხელოვნური ინტელექტის ასისტენტი. მუშაობს Claude Instant-ზე — მოდელზე, რომელიც Anthropic-ს მიერაა შექმნილი ტექსტებისა და დიალოგების დასამუშავებლად. Claude Instant Brave-ის ინფრასტრუქტურაზე მუშაობს საიმედოდ და უსაფრთხოდ.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Claude Haiku-ზეა, მოდელი, რომელიც შექმნილია Anthropic-ის მიერ, რომ ემსახუროს საუბრის და ტექსტის დამუშავების ამოცანებს. Claude Haiku Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Claude Sonnet-ზეა, მოდელი, რომელიც შექმნილია Anthropic-ის მიერ, რომ ემსახუროს საუბრის და ტექსტის დამუშავების ამოცანებს. Claude Sonnet Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Llama 4 Scout-ზეა, მოდელი, რომელიც შექმნილია Meta-ს მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Llama 4 Scout Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Llama 4 Maverick-ზეა, მოდელი, რომელიც შექმნილია Meta-ს მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Llama 4 Maverick Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა GPT OSS 20B-ზეა, მოდელი, რომელიც შექმნილია OpenAI-ს მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. GPT OSS 20B Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა GPT OSS 120B-ზეა, მოდელი, რომელიც შექმნილია OpenAI-ს მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. GPT OSS 120B Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Mistral Large-ზეა, მოდელი, რომელიც შექმნილია Mistral-ის მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Mistral Large Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Pixtral Large-ზეა, მოდელი, რომელიც შექმნილია Mistral-ის მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Pixtral Large Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Qwen 3 235B-ზეა, მოდელი, რომელიც შექმნილია Alibaba Cloud-ის მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Qwen 3 235B Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Deepseek V3.1-ზეა, მოდელი, რომელიც შექმნილია Deepseek-ის მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Deepseek V3.1 Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Deepseek V3.2-ზეა, მოდელი, რომელიც შექმნილია Deepseek-ის მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Deepseek V3.2 Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Qwen 3 Coder 480B-ზეა, მოდელი, რომელიც შექმნილია Alibaba Cloud-ის მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Qwen 3 Coder 480B Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Claude Opus-ზეა, მოდელი, რომელიც შექმნილია Anthropic-ის მიერ, რომ ემსახუროს საუბრის და ტექსტის დამუშავების ამოცანებს. Claude Opus Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა GLM-4-7-Flash-ზეა, მოდელი, რომელიც შექმნილია Zhipu AI-ს მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. GLM-4-7-Flash Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Kimi K2.5-ზეა, მოდელი, რომელიც შექმნილია Moonshot AI-ს მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Kimi K2.5 Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Brave Ocelot-ზეა, მოდელი, რომელიც შექმნილია Brave-ის მიერ ვებ გვერდების შეჯამების მიზნით. Brave Ocelot Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">პრემიუმი</translation>
 <translation id="5807427080183870259">ლოკალური</translation>
 <translation id="830868413617744215">ბეტა</translation>
@@ -2339,6 +2342,8 @@
 <translation id="7465032796278724624">დამოწმებული კონფიდენციალურობა NEAR AI TEE-სთან ერთად</translation>
 <translation id="8782867266498869301">მოდელი მყისიერად იცვლება სამუშაოს საუკეთესოდ შესასრულებლად</translation>
 <translation id="3213834013136637671">ძიება • ხედვა</translation>
+<translation id="5276681919620506371">ძიება • ინსტრუმენტები</translation>
+<translation id="7434375176361995333">შეჯამებები • სწრაფი</translation>
 <translation id="3965507912994218570">ლეოს პარამეტრები</translation>
 <translation id="3754337604877048671">გაიცანით ლეო AI</translation>
 <translation id="5295261408976371809">თქვენი <ph name="TEXT_BEFORE"/>პირადი<ph name="TEXT_AFTER"/> AI ასისტენტი, ბრაუზერში ჩაშენებული.</translation>
@@ -2394,6 +2399,8 @@
 <translation id="4572010449071015143">ახალი საუბრის დაწყება</translation>
 <translation id="345901077335355561">დაბრუნდეთ აქტიურ საუბარზე</translation>
 <translation id="6287023598025162715">ახალი საუბარი</translation>
+<translation id="7230502562132448519">საუბრის ფილტრი</translation>
+<translation id="821070843380699990">სცადეთ განსხვავებული შეკითხვა</translation>
 <translation id="7097822247923237815">დროებითი ჩატი</translation>
 <translation id="7481750859362986254">ეს ჩატი არ შეინახება თქვენს ისტორიაში და არ გამოიყენებს Leo-ს პერსონალიზაციის ფუნქციებსა თუ მეხსიერებას.</translation>
 <translation id="4238305333951712482">მეხსიერება განახლებულია:<ph name="MEMORY_CONTENT"/></translation>
@@ -2431,6 +2438,21 @@
 <translation id="6338250692384725496">შეასრულა კოდი ქვიშის დინებაში თქვენი მოთხოვნის დასახმარებლად</translation>
 <translation id="4379566111233326721">კოდი:</translation>
 <translation id="3542130965673205258">გამოსვლა:</translation>
+<translation id="5382076391290708074">თქვენი ჩანართების გადატანა</translation>
+<translation id="3862123464576147769">ამის დაშვება გამოიწვევს <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> და <ph name="TITLE_FORMAT_START"/>სათაურის<ph name="TITLE_FORMAT_END"/> გაგზავნას ყველა თქვენი ჩანართის და ჩანართის ჯგუფის Brave AI-ში, და ნებას Brave AI-ს მათი გადატანისთვის. ეს ნებართვა გამოიყენება მხოლოდ ამ საუბრისთვის.</translation>
+<translation id="396165714586708444">ღრმა კვლევა</translation>
+<translation id="577747221882855891">ძიება: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338"><ph name="COUNT"/> წყაროს ანალიზი "<ph name="QUERY"/>"-სთვის</translation>
+<translation id="1202264349398113062"><ph name="COUNT"/> ახალი URL-ის დამუშავება "<ph name="QUERY"/>"-სთვის</translation>
+<translation id="6189479600023022289"><ph name="COUNT"/> URL ნაპოვნი "<ph name="QUERY"/>"-სთვის</translation>
+<translation id="5150674341374247355"><ph name="FETCHED"/>/<ph name="TOTAL"/> URL გამოთხოვნილი</translation>
+<translation id="1075606740174445363"><ph name="COUNT"/> URL ანალიზირებული "<ph name="QUERY"/>"-სთვის</translation>
+<translation id="6220878652174655112"><ph name="COUNT"/> შეკითხვის ძიება</translation>
+<translation id="3571450204565012512"><ph name="URL_COUNT"/> URL ანალიზირებული <ph name="QUERY_COUNT"/> ძებნიდან</translation>
+<translation id="5733200563889491347">კვლევა დასრულებულია</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>წთ <ph name="SECONDS"/>წმ</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>წმ</translation>
+<translation id="5067194014665306881">კვლევის შეცდომა: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">AI ბრაუზინგი</translation>
 <translation id="2854657728271352435">AI ბრაუზინგის პროფილის შესახებ</translation>
 <translation id="2301685062527585986">თქვენი მონაცემების დასაცავად, ამ იზოლირებულ AI ბრაუზინგის პროფილს არ აქვს წვდომა თქვენს ძირითად ბრაუზერის პროფილზე და დახმარება შეუძლია მხოლოდ საჭიროებისამებრ ვებსაიტების მონახულებასა და მათთან ურთიერთობაზე. თქვენი პროდუქტიულობის გაზრდა შეგიძლიათ, როცა მას დავალებებს აძლევთ და ნებას აძლევთ თქვენთვის დაათვალიეროს ვები.</translation>
@@ -2495,11 +2517,14 @@
 <translation id="7847477075635510673">სიახლეების დამალვა</translation>
 <translation id="9173319813356700250">სიახლეები</translation>
 <translation id="6543799171249004861">სურათი ავტორისგან <ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="466214682712474574">შედით თქვენს <ph name="PROVIDER"/> ანგარიშში ბალანსის სანახავად</translation>
 <translation id="8332875111286275890">შედით ბალანსის სანახავად</translation>
 <translation id="5430001801813715388">ჯილდოები</translation>
+<translation id="988042349921505128">ძიება და AI</translation>
 <translation id="2430295257226173518">დასვით ნებისმიერი კითხვა, იპოვეთ ნებისმიერი რამ…</translation>
 <translation id="167018310108390163">ახალი ჩანართის გვერდის რედაქტირება</translation>
+<translation id="3500134717967948757">Leo AI ვიჯეტის ჩვენება ახალ ჩანართებში</translation>
 <translation id="6851426306697017546">საათის ჩვენება</translation>
 <translation id="4844370919312937270">ძიების ვიჯეტის ჩვენება ახალ ჩანართებში</translation>
 <translation id="7328310113820087094"><ph name="LINK_BEGIN"/>Brave ჯილდოებ<ph name="LINK_END"/>-ის გამოყენებით, თქვენ შეგიძლიათ გამოიმუშავოთ ახალი ჩანართის გვერდის სარეკლამო გამოსახულებების ნახვისას.</translation>
@@ -2528,8 +2553,14 @@
 <translation id="8458987127502506209">Brave-ის დაცვის ჩართვა</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>დაცვა<ph name="STATUS_AFTER"/> განახლებულია ამ საიტისთვის</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/> დაცვა<ph name="STATUS_AFTER"/> გათიშულია ამ საიტისთვის</translation>
+<translation id="8426214145426269584">Shields <ph name="UP_BEFORE"/>up<ph name="UP_AFTER"/> for this site</translation>
+<translation id="3325367578778625743">Shields <ph name="DOWN_BEFORE"/>down<ph name="DOWN_AFTER"/> for this site</translation>
 <translation id="4724752924364329714">თუ ეს საიტი გატეხილია, სცადეთ Shields-ის გათიშვა.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>შენიშვნა: შესაძლოა ამან Brave-ის კონფიდენციალურობის დაცვის ხარისხი შეამციროს.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">ეს შეიძლება შეამციროს Brave-ის კონფიდენციალურობის დაცვა. <ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">ტრეკერები, რეკლამები და სხვა დაბლოკილია.</translation>
+<translation id="4968268657895673116">ამ საიტი სწორად არ მუშაობს Shields-ით?</translation>
+<translation id="5412004902081180614">დაკანიკება</translation>
 <translation id="3620004479054499575">გაქვთ პრობლემები ამ საიტთან?</translation>
 <translation id="9176447766421988172">ვატარებთ ექსპერიმენტს საიტების თავსებადობის გასაზრდელად: ვტოვებთ მხოლოდ რეკლამების დაბლოკვას. გაფრთხილება: აკრძალულია ყველა კონფიდენციალურობის დაცვა. გსურთ ცდა? <ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">გთხოვთ გაითვალისწინოთ, რომ Brave-ის კონფიდენციალურობის დაცვით გატეხილი საიტებისთვის შეგიძლიათ Shields გადართოთ DOWN-ზე.</translation>
@@ -2544,9 +2575,12 @@
 <translation id="8377155647357436161">ტრეკერები, რეკლამები და სხვა დაბლოკილია <ph name="LINK_BEFORE"/>დამატებითი დეტალები<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">არ დაცულია Brave Shields-ით <ph name="LINK_BEFORE"/>დამატებითი დეტალები<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">გაფართოებული კონტროლი</translation>
+<translation id="7939062555109487992">მოწინავე პარამეტრები</translation>
 <translation id="5799940914270080805">ამ პარამეტრების შეცვლამ შეიძლება საიტები არ იმუშაოს.</translation>
 <translation id="9204041448536398473">გლობალური Shields პარამეტრები</translation>
 <translation id="2108334320919763866">გლობალური ნაგულისხმევები</translation>
+<translation id="1896472873031845605">გლობალური პარამეტრები</translation>
+<translation id="8324318899000695659">ელემენტის დაბლოკვა</translation>
 <translation id="7205939464631857223">ბლოკირებული ელემენტების გასუფთავება</translation>
 <translation id="3440043456924990296">პარამეტრები მართავს ორგანიზაცია</translation>
 <translation id="7053983685419859001">ბლოკი</translation>
@@ -2631,7 +2665,6 @@
 <translation id="7207456302801184289">კეთილი იყოს თქვენი მობრძანება Brave-ში</translation>
 <translation id="4988030440045495002">ულტრამუქი თემა</translation>
 <translation id="2422927186524098759">გვერდითი პანელი</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">ხელსაწყოების პანელი</translation>
 <translation id="6225572914528673855">მისამართის ზოლი</translation>

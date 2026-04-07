@@ -1837,6 +1837,7 @@
 <translation id="8897189056319316783">屏蔽 ZEC</translation>
 <translation id="508249542337194541">取消屏蔽 ZEC</translation>
 <translation id="3382275793825152362">保护资金</translation>
+<translation id="617149752238892649">取消屏蔽资金</translation>
 <translation id="8631765320256788981">您正在将资金从您的透明账户发送到您的保护账户。</translation>
 <translation id="3860364671495430495">您正在将资金从您的保护账户发送到您的透明账户。</translation>
 <translation id="7144878232160441200">重试</translation>
@@ -2186,6 +2187,7 @@ other {# 个来源}
     }</translation>
 <translation id="6961721183181597848">今天我可以如何帮助您？</translation>
 <translation id="2966135729673253768">询问后续</translation>
+<translation id="5923170497201832190">滚动至底部</translation>
 <translation id="6219262425964000211">将文件拖放到此处</translation>
 <translation id="4313763911013851687">将任何文件拖放到此处，以将其添加到对话中</translation>
 <translation id="4524675003624341892">建议问题…</translation>
@@ -2207,20 +2209,21 @@ other {# 个来源}
 <translation id="999273441077650169">模型会动态变化以使用最适合任务的模型。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Llama 3.1 8B 提供支持，这是一个由 Meta 创建的模型，性能卓越，适用于多种用例。Llama 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Qwen VL 30B 提供支持，这是一个由阿里巴巴云创建的模型，性能卓越，适用于多种用例。Qwen 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 DeepSeek V3.1 提供支持，这是一个由 DeepSeek 创建的模型，性能卓越，适用于多种用例。DeepSeek V3.1 通过他们自己的可验证私密安全基础设施由 NEAR 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 GLM-5 提供支持，这是一个由 Zhipu AI 创建的模型，性能卓越，适用于多种用例。GLM-5 通过他们自己的可验证私密安全基础设施由 NEAR 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">您好，我是 Leo。是 Brave 提供的 AI 助手，由 Anthropic 创建的 Claude Instant 模型驱动⸺该模型可处理对话及文本任务。Claude Instant 由 Brave 自有安全基础架构托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Claude Haiku 提供支持，这是一个由 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Haiku 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Claude Sonnet 提供支持，这是一个由 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Sonnet 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Llama 4 Scout 提供支持，这是一个由 Meta 创建的模型，性能卓越，适用于多种用例。Llama 4 Scout 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Llama 4 Maverick 提供支持，这是一个由 Meta 创建的模型，性能卓越，适用于多种用例。Llama 4 Maverick 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 GPT OSS 20B 提供支持，这是一个由 OpenAI 创建的模型，性能卓越，适用于多种用例。GPT OSS 20B 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 GPT OSS 120B 提供支持，这是一个由 OpenAI 创建的模型，性能卓越，适用于多种用例。GPT OSS 120B 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Mistral Large 提供支持，这是一个由 Mistral 创建的模型，性能卓越，适用于多种用例。Mistral Large 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Pixtral Large 提供支持，这是一个由 Mistral 创建的模型，性能卓越，适用于多种用例。Pixtral Large 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Qwen 3 235B 提供支持，这是一个由阿里巴巴云创建的模型，性能卓越，适用于多种用例。Qwen 3 235B 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Deepseek V3.1 提供支持，这是一个由 Deepseek 创建的模型，性能卓越，适用于多种用例。Deepseek V3.1 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Deepseek V3.2 提供支持，这是一个由 Deepseek 创建的模型，性能卓越，适用于多种用例。Deepseek V3.2 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Qwen 3 Coder 480B 提供支持，这是一个由阿里巴巴云创建的模型，性能卓越，适用于多种用例。Qwen 3 Coder 480B 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Claude Opus 提供支持，这是一个由 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Opus 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 GLM-4-7-Flash 提供支持，这是一个由 Zhipu AI 创建的模型，性能卓越，适用于多种用例。GLM-4-7-Flash 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Kimi K2.5 提供支持，这是一个由 Moonshot AI 创建的模型，性能卓越，适用于多种用例。Kimi K2.5 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Brave Ocelot 提供支持，这是一个由 Brave 创建的模型，用于总结网页。Brave Ocelot 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">高级</translation>
 <translation id="5807427080183870259">本地</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -2353,6 +2356,8 @@ other {# 个来源}
 <translation id="7465032796278724624">通过 NEAR AI TEE 可验证私密性</translation>
 <translation id="8782867266498869301">模型会动态变化以使用最适合任务的模型</translation>
 <translation id="3213834013136637671">搜索 • 视觉</translation>
+<translation id="5276681919620506371">搜索 • 工具</translation>
+<translation id="7434375176361995333">总结 • 快速</translation>
 <translation id="3965507912994218570">Leo 设置</translation>
 <translation id="3754337604877048671">Leo AI 简介</translation>
 <translation id="5295261408976371809">您的 <ph name="TEXT_BEFORE"/>私密<ph name="TEXT_AFTER"/> AI 助手，内建于浏览器中。</translation>
@@ -2408,6 +2413,8 @@ other {# 个来源}
 <translation id="4572010449071015143">开始新会话</translation>
 <translation id="345901077335355561">返回当前正在进行的对话</translation>
 <translation id="6287023598025162715">新对话</translation>
+<translation id="7230502562132448519">筛选对话</translation>
+<translation id="821070843380699990">请尝试其他查询</translation>
 <translation id="7097822247923237815">临时聊天</translation>
 <translation id="7481750859362986254">该聊天不会保存到您的历史记录中，也不会使用 Leo 的任何自定义功能或记忆。</translation>
 <translation id="4238305333951712482">记忆已更新：<ph name="MEMORY_CONTENT"/></translation>
@@ -2445,6 +2452,21 @@ other {# 个来源}
 <translation id="6338250692384725496">在沙盒中执行代码以帮助解答您的问题</translation>
 <translation id="4379566111233326721">代码：</translation>
 <translation id="3542130965673205258">输出：</translation>
+<translation id="5382076391290708074">移动你的标签页</translation>
+<translation id="3862123464576147769">允许此操作将向 Brave AI 发送所有标签页和标签页组的 <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> 和 <ph name="TITLE_FORMAT_START"/>标题<ph name="TITLE_FORMAT_END"/>，并允许 Brave AI 移动它们。此权限仅适用于此对话。</translation>
+<translation id="396165714586708444">深度研究</translation>
+<translation id="577747221882855891">正在搜索："<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">正在分析 <ph name="COUNT"/> 个来源中的 "<ph name="QUERY"/>"</translation>
+<translation id="1202264349398113062">正在处理 "<ph name="QUERY"/>" 的 <ph name="COUNT"/> 个新网址</translation>
+<translation id="6189479600023022289">为 "<ph name="QUERY"/>" 找到了 <ph name="COUNT"/> 个网址</translation>
+<translation id="5150674341374247355">正在获取 <ph name="FETCHED"/>/<ph name="TOTAL"/> 个网址</translation>
+<translation id="1075606740174445363">已分析 "<ph name="QUERY"/>" 的 <ph name="COUNT"/> 个网址</translation>
+<translation id="6220878652174655112">正在搜索 <ph name="COUNT"/> 个查询</translation>
+<translation id="3571450204565012512">已从 <ph name="QUERY_COUNT"/> 次搜索中分析了 <ph name="URL_COUNT"/> 个网址</translation>
+<translation id="5733200563889491347">研究完成</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>分 <ph name="SECONDS"/>秒</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>秒</translation>
+<translation id="5067194014665306881">研究错误：<ph name="ERROR"/></translation>
 <translation id="3428245742224818842">AI 浏览</translation>
 <translation id="2854657728271352435">关于 AI 浏览配置文件</translation>
 <translation id="2301685062527585986">为保护您的数据，此独立的 AI 浏览配置文件确保 AI 代理无法访问您的主力浏览配置文件，仅在必要时具有访问和与网站交互的权限。您可以通过分派任务、让它帮您浏览网站以提升效率。</translation>
@@ -2509,11 +2531,14 @@ other {# 个来源}
 <translation id="7847477075635510673">隐藏新闻</translation>
 <translation id="9173319813356700250">新闻</translation>
 <translation id="6543799171249004861">照片提供者：<ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">Leo 人工智能</translation>
 <translation id="466214682712474574">登录您的<ph name="PROVIDER"/>账户查看余额</translation>
 <translation id="8332875111286275890">登录查看余额</translation>
 <translation id="5430001801813715388">奖励</translation>
+<translation id="988042349921505128">搜索和 AI</translation>
 <translation id="2430295257226173518">随心提问 随心查询…</translation>
 <translation id="167018310108390163">自定义新标签页</translation>
+<translation id="3500134717967948757">在新标签页中显示 Leo AI 小部件</translation>
 <translation id="6851426306697017546">显示时钟</translation>
 <translation id="4844370919312937270">在新标签页中显示搜索小部件</translation>
 <translation id="7328310113820087094">通过 <ph name="LINK_BEGIN"/>Brave 奖励<ph name="LINK_END"/>，您可以通过查看新标签页广告来赚取收益。</translation>
@@ -2542,8 +2567,14 @@ other {# 个来源}
 <translation id="8458987127502506209">启用 Brave 盾牌</translation>
 <translation id="8443488493738411048">已为此网站<ph name="STATUS_BEFORE"/>启用盾牌<ph name="STATUS_AFTER"/></translation>
 <translation id="2458631245058451506">已为此网站<ph name="STATUS_BEFORE"/>禁用盾牌<ph name="STATUS_AFTER"/></translation>
+<translation id="8426214145426269584">已为此网站<ph name="UP_BEFORE"/>启用盾牌<ph name="UP_AFTER"/></translation>
+<translation id="3325367578778625743">已为此网站<ph name="DOWN_BEFORE"/>禁用盾牌<ph name="DOWN_AFTER"/></translation>
 <translation id="4724752924364329714">如果该网站出现故障，请尝试关闭盾牌。</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>注意：这可能会降低 Brave 的隐私保护。<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">这可能会降低 Brave 的隐私保护。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">拦截了跟踪器、广告和其他内容。</translation>
+<translation id="4968268657895673116">此网站在启用盾牌时是否无法正常工作？</translation>
+<translation id="5412004902081180614">报告</translation>
 <translation id="3620004479054499575">您是否在使用本网站时遇到问题？</translation>
 <translation id="9176447766421988172">我们正在进行一项实验，以提高网站的兼容性，实验期间我们仅启用广告拦截功能。警告：所有隐私保护功能将会取消。您想要尝试吗？<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/>。</translation>
 <translation id="5372101283158221516">请注意，如果有个别网站因为 Brave 的隐私保护功能出现故障，您可以将盾牌功能设置为关闭。</translation>
@@ -2558,9 +2589,12 @@ other {# 个来源}
 <translation id="8377155647357436161">拦截了跟踪器、广告和其他 <ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">不受 Brave 防护盾保护 <ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">高级控制</translation>
+<translation id="7939062555109487992">進階控制項</translation>
 <translation id="5799940914270080805">更改这些设置有可能会影响网站的兼容性。</translation>
 <translation id="9204041448536398473">盾牌全局设置</translation>
 <translation id="2108334320919763866">全局默认值</translation>
+<translation id="1896472873031845605">所有设置</translation>
+<translation id="8324318899000695659">拦截元素</translation>
 <translation id="7205939464631857223">清除所有已屏蔽的元素</translation>
 <translation id="3440043456924990296">由组织管理的设置</translation>
 <translation id="7053983685419859001">禁止</translation>
@@ -2645,7 +2679,6 @@ other {# 个来源}
 <translation id="7207456302801184289">歡迎使用 Brave</translation>
 <translation id="4988030440045495002">超深色主题</translation>
 <translation id="2422927186524098759">侧边栏</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">工具栏</translation>
 <translation id="6225572914528673855">地址栏</translation>
