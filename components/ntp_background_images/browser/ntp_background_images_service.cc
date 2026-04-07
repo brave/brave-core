@@ -216,9 +216,12 @@ void NTPBackgroundImagesService::RegisterBackgroundImagesComponent() {
                           weak_factory_.GetWeakPtr()));
 }
 
+std::string NTPBackgroundImagesService::GetCountryCode() const {
+  return GetVariationsCountryCode(variations_service_);
+}
+
 void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
-  const std::string variations_country_code =
-      GetVariationsCountryCode(variations_service_);
+  const std::string variations_country_code = GetCountryCode();
   const std::optional<SponsoredImagesComponentInfo> sponsored_images_component =
       GetSponsoredImagesComponent(variations_country_code);
   if (!sponsored_images_component) {
