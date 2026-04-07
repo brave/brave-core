@@ -22,7 +22,7 @@ TEST_F(BraveAdsTimeFormattingUtilTest,
   // Arrange
   const base::test::ScopedRestoreICUDefaultLocale scoped_locale("en-US");
   const test::ScopedTimezoneForTesting scoped_timezone("UTC");
-  const base::Time time = test::TimeFromString("November 18 2020 14:30:00");
+  const base::Time time = test::TimeFromUTCString("November 18 2020 14:30:00");
 
   // Act & Assert
   EXPECT_EQ("on Wednesday, November 18, 2020 at 2:30:00\xE2\x80\xAFPM",
@@ -34,7 +34,7 @@ TEST_F(BraveAdsTimeFormattingUtilTest,
   // Arrange
   const base::test::ScopedRestoreICUDefaultLocale scoped_locale("en-US");
   const test::ScopedTimezoneForTesting scoped_timezone("UTC");
-  const base::Time time = test::TimeFromString("November 18 2020 14:30:00");
+  const base::Time time = test::TimeFromUTCString("November 18 2020 14:30:00");
 
   // Act & Assert
   EXPECT_EQ("Wednesday, November 18, 2020 at 2:30:00\xE2\x80\xAFPM",
@@ -45,12 +45,12 @@ TEST_F(BraveAdsTimeFormattingUtilTest, FriendlyDateAndTimeWithSentenceStyle) {
   // Arrange
   const base::test::ScopedRestoreICUDefaultLocale scoped_locale("en-US");
   const test::ScopedTimezoneForTesting scoped_timezone("UTC");
-  AdvanceClockTo(test::TimeFromString("November 18 2020 14:30:00"));
+  AdvanceClockTo(test::TimeFromUTCString("November 18 2020 14:30:00"));
 
   // Act & Assert
-  EXPECT_EQ(
-      "on Friday, November 20, 2020 at 2:30:00\xE2\x80\xAFPM",
-      FriendlyDateAndTime(test::TimeFromString("November 20 2020 14:30:00")));
+  EXPECT_EQ("on Friday, November 20, 2020 at 2:30:00\xE2\x80\xAFPM",
+            FriendlyDateAndTime(
+                test::TimeFromUTCString("November 20 2020 14:30:00")));
 }
 
 TEST_F(BraveAdsTimeFormattingUtilTest,
@@ -58,12 +58,12 @@ TEST_F(BraveAdsTimeFormattingUtilTest,
   // Arrange
   const base::test::ScopedRestoreICUDefaultLocale scoped_locale("en-US");
   const test::ScopedTimezoneForTesting scoped_timezone("UTC");
-  AdvanceClockTo(test::TimeFromString("November 18 2020 14:30:00"));
+  AdvanceClockTo(test::TimeFromUTCString("November 18 2020 14:30:00"));
 
   // Act & Assert
   EXPECT_EQ(
       "Friday, November 20, 2020 at 2:30:00\xE2\x80\xAFPM",
-      FriendlyDateAndTime(test::TimeFromString("November 20 2020 14:30:00"),
+      FriendlyDateAndTime(test::TimeFromUTCString("November 20 2020 14:30:00"),
                           /*use_sentence_style=*/false));
 }
 

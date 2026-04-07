@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/test/base/browser_with_test_window_test.h"
 
@@ -62,6 +63,7 @@ class RewardsPanelCoordinatorTest : public BrowserWithTestWindowTest {
   RewardsPanelCoordinator& coordinator() { return *coordinator_; }
 
  private:
+  brave_l10n::test::ScopedDefaultLocale scoped_locale_{"en_US"};
   bool called_ = false;
   std::unique_ptr<RewardsPanelCoordinator::Observer> observer_;
   raw_ptr<RewardsPanelCoordinator> coordinator_ = nullptr;
