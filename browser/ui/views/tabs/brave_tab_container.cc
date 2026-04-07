@@ -614,6 +614,13 @@ void BraveTabContainer::InvalidateIdealBounds() {
     last_layout_size_ = std::nullopt;
   }
 
+  if (IsAnimating()) {
+    // In case of there's an animation in progress, we need to stop it first
+    // before invalidating the ideal bounds. Otherwise, newly calculated ideal
+    // bounds will be ignored.
+    CancelAnimation();
+  }
+
   TabContainerImpl::InvalidateIdealBounds();
   UpdatePinnedUnpinnedSeparator();
 }
