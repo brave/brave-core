@@ -25,6 +25,7 @@ import { ModelSelector } from '../model_selector'
 import usePromise from '$web-common/usePromise'
 import { isImageFile } from '../../constants/file_types'
 import { convertFileToUploadedFile } from '../../utils/file_utils'
+import { isFullPageScreenshot } from '../../../common/conversation_history_utils'
 import Editable from './editable'
 import { stringifyContent } from './editable_content'
 
@@ -106,12 +107,77 @@ function usePlaceholderText(
   return getLocale(S.CHAT_UI_INITIAL_PLACEHOLDER_LABEL)
 }
 
+function useChipClassName(totalVisible: number, isStandalone: boolean) {
+  return React.useMemo(() => {
+    const scrollThreshold = isStandalone ? 4 : 3
+    if (totalVisible >= scrollThreshold) {
+      return isStandalone
+        ? styles.attachmentChipScrollFullPage
+        : styles.attachmentChipScrollPanel
+    }
+    if (totalVisible === 1) return styles.attachmentChipSingle
+    if (totalVisible === 2) return styles.attachmentChipHalf
+    if (totalVisible === 3 && isStandalone) return styles.attachmentChipThird
+    return styles.attachmentChipHalf
+  }, [totalVisible, isStandalone])
+}
+
+function getVisibleUploadCount(files: Mojom.UploadedFile[]) {
+  const hasFullPage = files.some(isFullPageScreenshot)
+  const nonFullPageCount = files.filter((f) => !isFullPageScreenshot(f)).length
+  return nonFullPageCount + (hasFullPage ? 1 : 0)
+}
+
+function AttachmentChips(props: {
+  pendingContent: Mojom.AssociatedContent[]
+  pendingMessageFiles: Mojom.UploadedFile[]
+  isUploadingFiles: boolean
+  isStandalone: boolean
+  disassociateContent: (content: Mojom.AssociatedContent) => void
+  removeFile: (index: number) => void
+}) {
+  const visibleUploadCount = getVisibleUploadCount(props.pendingMessageFiles)
+  const spinnerCount = props.isUploadingFiles ? 1 : 0
+  const totalVisible =
+    props.pendingContent.length + visibleUploadCount + spinnerCount
+  const scrollThreshold = props.isStandalone ? 4 : 3
+  const shouldScroll = totalVisible >= scrollThreshold
+  const chipClassName = useChipClassName(totalVisible, props.isStandalone)
+
+  return (
+    <div
+      className={classnames({
+        [styles.attachmentWrapper]: true,
+        [styles.attachmentWrapperScroll]: shouldScroll,
+      })}
+    >
+      {props.pendingContent.map((content) => (
+        <AttachmentPageItem
+          key={content.contentId}
+          title={content.title}
+          url={content.url.url}
+          remove={() => props.disassociateContent(content)}
+          className={chipClassName}
+        />
+      ))}
+      {props.isUploadingFiles && (
+        <AttachmentSpinnerItem
+          title={getLocale(S.AI_CHAT_UPLOADING_FILE_LABEL)}
+          className={chipClassName}
+        />
+      )}
+      <AttachmentUploadItems
+        uploadedFiles={props.pendingMessageFiles}
+        remove={(index) => props.removeFile(index)}
+        chipClassName={chipClassName}
+      />
+    </div>
+  )
+}
+
 function InputBox(props: InputBoxProps) {
   const aiChatContext = useAIChat()
   const querySubmitted = React.useRef(false)
-  const attachmentWrapperRef = React.useRef<HTMLDivElement>(null)
-  const [attachmentWrapperHeight, setAttachmentWrapperHeight] =
-    React.useState(0)
 
   const handleSubmit = () => {
     querySubmitted.current = true
@@ -189,21 +255,6 @@ function InputBox(props: InputBoxProps) {
       node.focus()
     }
   }
-
-  const updateAttachmentWrapperHeight = () => {
-    let { height } = attachmentWrapperRef?.current?.getBoundingClientRect() ?? {
-      height: 0,
-    }
-    setAttachmentWrapperHeight(height)
-  }
-
-  React.useEffect(() => {
-    // Update the height of the attachment wrapper when
-    // pendingMessageFiles changes.
-    if (props.context.pendingMessageFiles.length > 0) {
-      updateAttachmentWrapperHeight()
-    }
-  }, [props.context.pendingMessageFiles])
 
   const placeholderText = usePlaceholderText(
     props.context.associatedContentInfo.length,
@@ -330,33 +381,14 @@ function InputBox(props: InputBoxProps) {
       )}
 
       {(showUploadedFiles || pendingContent.length > 0) && (
-        <div
-          className={classnames({
-            [styles.attachmentWrapper]: true,
-            [styles.attachmentWrapperScrollStyles]:
-              attachmentWrapperHeight >= 240,
-          })}
-          ref={attachmentWrapperRef}
-        >
-          {!props.context.isGenerating
-            && pendingContent.map((content) => (
-              <AttachmentPageItem
-                key={content.contentId}
-                title={content.title}
-                url={content.url.url}
-                remove={() => props.context.disassociateContent(content)}
-              />
-            ))}
-          {props.context.isUploadingFiles && (
-            <AttachmentSpinnerItem
-              title={getLocale(S.AI_CHAT_UPLOADING_FILE_LABEL)}
-            />
-          )}
-          <AttachmentUploadItems
-            uploadedFiles={props.context.pendingMessageFiles}
-            remove={(index) => props.context.removeFile(index)}
-          />
-        </div>
+        <AttachmentChips
+          pendingContent={props.context.isGenerating ? [] : pendingContent}
+          pendingMessageFiles={props.context.pendingMessageFiles}
+          isUploadingFiles={props.context.isUploadingFiles}
+          isStandalone={!!aiChatContext.isStandalone}
+          disassociateContent={props.context.disassociateContent}
+          removeFile={props.context.removeFile}
+        />
       )}
       <Editable
         ref={maybeAutofocus}

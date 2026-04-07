@@ -91,9 +91,9 @@
   display: flex;
   align-items: center;
   justify-content: stretch;
-  gap: var(--leo-spacing-m);
   margin: var(--leo-spacing-m);
   margin-bottom: 0;
+  gap: var(--leo-spacing-m);
 }
 
 .taskStateActionButtonStop {
@@ -103,17 +103,44 @@
 
 .attachmentWrapper {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: nowrap;
   width: 100%;
-  padding: var(--leo-spacing-m) var(--leo-spacing-m) 0px var(--leo-spacing-m);
-  max-height: 240px;
-  overflow-y: auto;
-  gap: var(--leo-spacing-s);
+  padding: var(--leo-spacing-m) var(--leo-spacing-m) 0 var(--leo-spacing-m);
+  gap: var(--leo-spacing-m);
+  box-sizing: border-box;
 }
 
-.attachmentWrapperScrollStyles {
-  padding: var(--leo-spacing-m);
-  border-bottom: 1px solid var(--leo-color-divider-subtle);
+.attachmentWrapperScroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  padding-bottom: var(--leo-spacing-s);
+}
+
+.attachmentChipSingle {
+  max-width: 400px;
+  flex: 0 1 auto;
+}
+
+.attachmentChipHalf {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.attachmentChipThird {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.attachmentChipScrollPanel {
+  flex: 0 0 40%;
+  min-width: 0;
+}
+
+.attachmentChipScrollFullPage {
+  flex: 0 0 30%;
+  min-width: 0;
 }
 
 .button {

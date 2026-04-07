@@ -8,6 +8,7 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import ProgressRing from '@brave/leo/react/progressRing'
 import Tooltip from '@brave/leo/react/tooltip'
+import classnames from '$web-common/classnames'
 
 // Types
 import * as Mojom from '../../../common/mojom'
@@ -39,6 +40,7 @@ type Props = {
   icon: React.ReactNode
   title: string
   subtitle: React.ReactNode
+  className?: string
 
   // remove is optional here so we can also reuse
   // this component in the conversation thread where remove
@@ -51,7 +53,7 @@ const tooltipShowDelay = 500
 
 export function AttachmentItem(props: Props) {
   return (
-    <div className={styles.itemWrapper}>
+    <div className={classnames(styles.itemWrapper, props.className)}>
       <div className={styles.leftSide}>
         {props.icon}
         <div className={styles.info}>
@@ -82,7 +84,10 @@ export function AttachmentItem(props: Props) {
   )
 }
 
-export function AttachmentSpinnerItem(props: { title: string }) {
+export function AttachmentSpinnerItem(props: {
+  title: string
+  className?: string
+}) {
   return (
     <AttachmentItem
       icon={
@@ -92,6 +97,7 @@ export function AttachmentSpinnerItem(props: { title: string }) {
       }
       title={props.title}
       subtitle={''}
+      className={props.className}
     />
   )
 }
@@ -100,6 +106,7 @@ export function AttachmentPageItem(props: {
   title: string
   url: string
   remove?: () => void
+  className?: string
 }) {
   // We don't display the scheme in the subtitle.
   const sansSchemeUrl = props.url.replace(/^https?:\/\//, '')
@@ -148,6 +155,7 @@ export function AttachmentPageItem(props: {
         </>
       }
       remove={props.remove}
+      className={props.className}
     />
   )
 }
@@ -156,10 +164,12 @@ function AttachmentUploadItem({
   file,
   index,
   remove,
+  className,
 }: {
   file: Mojom.UploadedFile
   index: number
   remove?: (index: number) => void
+  className?: string
 }) {
   const isImage =
     file.type === Mojom.UploadedFileType.kImage
@@ -195,6 +205,7 @@ function AttachmentUploadItem({
         }
         subtitle={filesize}
         remove={remove ? () => remove(index) : undefined}
+        className={className}
       />
     )
   } else if (isPdf) {
@@ -204,6 +215,7 @@ function AttachmentUploadItem({
         title={file.filename}
         subtitle={filesize}
         remove={remove ? () => remove(index) : undefined}
+        className={className}
       />
     )
   }
@@ -214,6 +226,7 @@ function AttachmentUploadItem({
 export function AttachmentUploadItems(props: {
   uploadedFiles: Mojom.UploadedFile[]
   remove?: (index: number) => void
+  chipClassName?: string
 }) {
   // Calculate first full page screenshot index.
   const firstFullPageScreenshotIndex =
@@ -239,6 +252,7 @@ export function AttachmentUploadItems(props: {
               file={file}
               index={originalIndex}
               remove={props.remove}
+              className={props.chipClassName}
             />
           )
         })}
