@@ -23,6 +23,8 @@ class BraveClearBrowsingDataHandler : public ClearBrowsingDataHandler {
   ~BraveClearBrowsingDataHandler() override;
 
  private:
+  friend class TestingBraveClearBrowsingDataHandler;
+
   // ClearBrowsingDataHandler:
   void RegisterMessages() override;
 
