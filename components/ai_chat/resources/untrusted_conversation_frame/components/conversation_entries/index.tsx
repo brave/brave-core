@@ -445,7 +445,7 @@ function ConversationEntries() {
           {pair.flatMap((group, groupIndex) =>
             renderEntryGroup(
               pairIndex === entryPairs.length - 1
-                && groupIndex === group.length - 1,
+                && groupIndex === pair.length - 1,
               group,
               groupIndex,
             ),
