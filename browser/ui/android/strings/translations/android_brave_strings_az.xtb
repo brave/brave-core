@@ -190,12 +190,27 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="834487290629916192">SONRA</translation>
 <translation id="4117451092682672487">Məxfilik. Sadə və asan.</translation>
 <translation id="7909375417585209817">Brave standart olaraq təyin edildikdə, toxunduğunuz hər keçid Brave-in məxfiliyin qorunması funksiyası ilə açılır.</translation>
-<translation id="5148943178722443958">Brave-i təkmilləşdirməyə kömək edin.</translation>
+<translation id="763369711159699222">Brave-i təkmilləşdirməyə kömək edin</translation>
+<translation id="8025937231644975408">Hansı funksiyalardan ən çox istifadə etdiyinizi bizə bildirin.</translation>
 <translation id="6718362830686703942">Sistem qəzası və ya donmasına məruz qaldıqda diaqnostika hesabatları göndərin.</translation>
 <translation id="8616157231067364693">Brave istifadəçilərinin hansı funksiyalardan istifadə etdiyi ilə əlaqəli məxfi və anonim məhsul məlumatları paylaşın.</translation>
 <translation id="2888496576732880897">Brave Axtarışı genişləndirməyə kömək edin</translation>
+<translation id="7198716519700700181">Axışda fasilələri bloklayın</translation>
 <translation id="7044431516245362795">İndeksi artırmağa və axtarış nəticələrini təkmilləşdirməyə kömək etmək üçün Veb Kəşfetmə Layihəsində iştirak edin. <ph name="LEARN_MORE_START"/>Ətraflı məlumat.<ph name="LEARN_MORE_END"/></translation>
+<translation id="4847979153841887006">Brave loqosu</translation>
+<translation id="1389386068457132299">Onboarding fonu</translation>
+<translation id="5101985748360228609">Üst yarpaq dekorası</translation>
+<translation id="5270920361877570459">Alt yarpaq dekorası</translation>
+<translation id="4021716437419160885">Aşağı sürüşdür</translation>
+<translation id="4767173360729868049">Brave Axtarışına kömək illüstrasiyası</translation>
+<translation id="8241918461631453498">Fasilələri bloklama illüstrasiyası</translation>
+<translation id="8213310572767907663">Brave-i daha yaxşı etmə illüstrasiyası</translation>
+<translation id="2427917529469438577">Sevdiyiniz axış saytlarında narahat edən fasilələri bloklayın.</translation>
 <translation id="7818938154803162778">Əlbəttə, kömək edərəm</translation>
+<translation id="5298784657468199167">Qəza hesabatları göndərin</translation>
+<translation id="6188781052835527980">Sistem qəzası və ya donmasına məruz qaldıqda diaqnostika hesabatları göndərin.</translation>
+<translation id="4780647518983772446">Brave funksiyalarının istifadəsi haqqında məxfi və anonim məhsul məlumatları paylaşın.</translation>
+<translation id="5109496672133133896">Məxfi məhsul məlumatları</translation>
 <translation id="3545804467215833536">Brave Təhlükəsizlik Qalxanlarına baxmaq üçün toxunun</translation>
 <translation id="1724327820822194498">Hər bir səhifədə Brave Təhlükəsizlik Qalxanları ilə Brave-in blokladığı bütün zərərli şeyləri görün.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> və <ph name="TRACKER"/> digər reklamlar &amp; iz elementləri bloklandı</translation>
@@ -378,7 +393,7 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="717952606991220586">Oops, bir səhv baş verdi. Zəhmət olmasa daha sonra yenidən cəhd edin.</translation>
 <translation id="987264212798334818">Ümumi</translation>
 <translation id="1116694919640316211">Haqqımızda</translation>
-<translation id="1275213816424141989">Bəlkə daha sonra</translation>
+<translation id="2370739752330685659">Bəlkə daha sonra</translation>
 <translation id="3624048886326677117">İzləyiciləri və reklamları bloklayın (aqressiv)</translation>
 <translation id="7151914815476509258">İzləyiciləri və reklamları bloklayın (standart)</translation>
 <translation id="7384778069178817075">Bütün izləyicilərə və reklamlara icazə ver</translation>
@@ -496,7 +511,6 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="5705882733397021510">Geri Qayıt</translation>
 <translation id="7889432931837317731">İmkan olduqda avtomatik açın</translation>
 <translation id="1029304566263314007">Yükləmə prosesinin bildirişlərini göstər</translation>
-<translation id="2910433761530295035">Faylların harada saxlanılacağını soruşun (əgər SD kart aşkar edilərsə)</translation>
 <translation id="2977501775944575564">Paralel Yükləmə</translation>
 <translation id="6224180438946945617">Yükləmə sürətini artırmaq üçün paralel yükləməni aktivləşdirin</translation>
 <translation id="8967385052772844086">Tam Məxfilik Hesabatına baxın</translation>
@@ -921,6 +935,9 @@ Lütfən, bizimlə bölüşməyə rahat olduğunuz məlumatları seçin.
 <translation id="703185154752046151">Widget ana ekrana əlavə edildi</translation>
 <translation id="4635094429202343515">Brave Axtarış widjetini sınayın</translation>
 <translation id="4809681171446727314">Özəl və müstəqil axtarışa ana ekrandan daxil olun.</translation>
+<translation id="3280562213547448728">Səs axtarışı</translation>
+<translation id="3925312712530886302">Məxfi axtarışı aç</translation>
+<translation id="9214590551301647710">Leo-nu aç</translation>
 <translation id="7751715172931488388">Widget əlavə et</translation>
 <translation id="7285167584112910782">Brave sürətli fəaliyyət axtarışı</translation>
 <translation id="2326703104633309781">Brave Tərcümədən istifadə et</translation>
@@ -960,7 +977,14 @@ Lütfən, bizimlə bölüşməyə rahat olduğunuz məlumatları seçin.
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Hamısını ilkin vəziyyətinə qaytar</translation>
 <translation id="4922034974043704366">Bu funksiya sizin tərəfindən aktiv edildiyi üçün aktivdir</translation>
-<translation id="3144818380093107753">Brave Origin, Brave-i bir biznes kimi dəstəkləyən gəlir gətirən xüsusiyyətləri deaktiv etmək üçün abunə əsaslı bir yoldur. Brave Origin abunəçiləri dünya səviyyəli məxfilik, reklam bloklama və sürət (Brave Təhlükəsizlik Qalxanı vasitəsilə), eləcə də müntəzəm proqram təminatı yeniləmələri, Chromium yamaqları, və təhlükəsizlik/məxfilik təkmilləşdirmələrindən faydalanmağa davam edəcəklər. Həmçinin Brave Leo, Xəbərlər, Rewards, Wallet, VPN, Web3 domenləri və daha çox xüsusiyyəti deaktiv etmək seçimini də açacaqlar.&lt;br/&gt;&lt;br/&gt;Abunəçilər brauzer ayarları menyusunda yeni bir idarəetmə paneli görəcəklər. Mövcud xüsusiyyətlər — və gələcəkdə təqdim edəcəyimiz yeni xüsusiyyətlər — burada görsənəcək və standart olaraq deaktiv olunacaq.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Qeyd: Brave Origin hazırda istifadə etdiyiniz brauzer funksiyalarını deaktiv etməyəcək və Brave Axtarış və Brave Axtarış Reklamlarına təsir etməyəcək.&lt;/b&gt;</translation>
+<translation id="2587535830241068901">Brauzeri fərdiləşdir və eyni zamanda Brave-i dəstəklə</translation>
+<translation id="7235314227387539944">Brave Origin, Brave-ı bir biznes kimi dəstəkləmək üçün lazım olan bütün özəlliklərə ehtiyacı olmayan istifadəçilər üçün ödənişli brauzer versiyasıdır, lakin yalnız Brave-in təqdim etdiyi məxfiyyəti istəyirlər. Origin istifadəçiləri sənayedə aparıcı məxfilik, reklam bloklama və sürətdən (Təhlükəsizlik Qalxanları vasitəsilə), həmçinin müntəzəm proqram təminatı yeniləmələrindən, Chromium yamaqlarından və təhlükəsizlik və məxfilik təbəlşələrindən faydalanmağa davam edəcəklər. Origin braunzerin əksər digər funksiyalarını siləcəkdir.</translation>
+<translation id="7941943775131052130">Qeyd edək ki, Brave Origin alışı Brave Premium Axtarışa da giriş hüququ verəcəkdir, çünki Origin Brave Axtarış nəticələri səhifəsindən reklamları siləcəkdir.</translation>
+<translation id="2573819149217596923">Brave funksiyalarını dəyişdirmə</translation>
+<translation id="7415416427817229128">Brave funksiyasını aktivləşdirmə və ya deaktivləşdirmə dəyişiklikləri tətbiq etmək üçün braunzerin yenidən başlanmasını tələb edir. İndi yenidən başlatmaq istəyirsiniz?</translation>
+<translation id="2256115617011615191">İndi yenidən başlat</translation>
+<translation id="8554205386170195281">Almaq</translation>
+<translation id="7071521146534760487">Hesabı idarə et</translation>
 <translation id="8613144770663526433">Brave Wallet ilə daxil olun</translation>
 <translation id="3696514931437952995">Siz hazırda <ph name="ORIGIN"/> daxil olursunuz. Brave cüzdanınız <ph name="ORIGIN"/> ilə paylaşılacaq.</translation>
 <translation id="1028781062521375153">Təfərrüatlara bax</translation>
@@ -1085,12 +1109,13 @@ Lütfən, bizimlə bölüşməyə rahat olduğunuz məlumatları seçin.
 <translation id="2735247450315842119">Xüsusi tablarda ekran görüntülərini aktiv edin</translation>
 <translation id="8420414929552321089">İcazə verilərsə, xüsusi tablar həmçinin birdən çox tətbiqlər açıldığında görünəcək.</translation>
 <translation id="7956713633345437162">Mobil əlfəcinlər</translation>
+<translation id="7984508421152399880">İndi satın al</translation>
 <translation id="6261139507111008244">Missiyamıza və açıq mənbə işimizə dəstək olun</translation>
-<translation id="7882690061170175552">Təhlükəsizlik Qalxanı əsaslı minimal brauzer interfeysi</translation>
+<translation id="6073373503121903099">Brave Təhlükəsizlik Qalxanı əsaslı minimalist brauzer interfeysi</translation>
 <translation id="2267973897341040743">Əsas reklam bloklama, məxfilik və sürəti qoruyun</translation>
-<translation id="1361157028850796410">ən yaxşI dəyər</translation>
-<translation id="7280825497485894053">Aylıq abunə</translation>
-<translation id="4570901726096223030">Origin haqqında daha ətraflı öyrənin</translation>
+<translation id="3339535734679532460">Bir dəfə almaq, heç bir əlavə abonə haqqı yoxdur</translation>
+<translation id="2805615640226281689">Bir Dəfə Almaq</translation>
+<translation id="261433018299584676">Giriş kodu əldə et</translation>
 <translation id="1943432128510653496">Parolları yadda saxlayın</translation>
 <translation id="2100273922101894616">Hesaba avtomatik giriş</translation>
 <translation id="363596933471559332">Saxlanmış kredensialları istifadə edərək vebsaytlara avtomatik daxil olun. Funksiya deaktiv olanda sayta hər dəfə girdiyinizdə doğrulama tələb olunacaq.</translation>

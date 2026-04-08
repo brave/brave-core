@@ -1837,6 +1837,7 @@
 <translation id="8897189056319316783">Kalkan ZEC</translation>
 <translation id="508249542337194541">Gizliliği kaldır ZEC</translation>
 <translation id="3382275793825152362">Kalkan fonları</translation>
+<translation id="617149752238892649">Fon kaynaklarının korumasını kaldır</translation>
 <translation id="8631765320256788981">Şeffaf hesabınızdan kalkanlı hesabınıza para gönderiyorsunuz.</translation>
 <translation id="3860364671495430495">Kalkanlı hesabınızdan şeffaf hesabınıza para gönderiyorsunuz.</translation>
 <translation id="7144878232160441200">Tekrar Dene</translation>
@@ -2186,6 +2187,7 @@
     }</translation>
 <translation id="6961721183181597848">Bugün size nasıl yardımcı olabilirim?</translation>
 <translation id="2966135729673253768">Ek soru yönelt</translation>
+<translation id="5923170497201832190">En aşağıya kaydır</translation>
 <translation id="6219262425964000211">Dosyaları buraya sürükleyin</translation>
 <translation id="4313763911013851687">Konuşmaya eklemek istediğiniz dosyaları buraya sürükleyin</translation>
 <translation id="4524675003624341892">Soru önerin...</translation>
@@ -2207,20 +2209,21 @@
 <translation id="999273441077650169">Görev için en iyisini kullanmak üzere model dinamik olarak değişir.<ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Meta tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Llama 3.1 8B modeliyle çalışıyorum. Llama, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Merhaba, ben Leo. Brave tarafından geliştirilen bir yapay zeka asistanıyım. Alibaba Cloud tarafından birçok kullanım durumuna uygun olacak şekilde tasarlanmış Qwen VL 30B modeliyle çalışıyorum. Qwen, Brave tarafından kendi güvenli altyapımızda barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">Merhaba, ben Leo. Brave tarafından geliştirilen bir yapay zeka asistanıyım. DeepSeek tarafından birçok kullanım durumuna uygun olarak oluşturulan DeepSeek V3.1 modeli ile çalışıyorum. DeepSeek V3.1, kendi doğrulanabilir özel güvenli altyapıları aracılığıyla NEAR tarafından barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">Merhaba, ben Leo. Brave tarafından geliştirilen bir yapay zeka asistanıyım. Zhipu AI tarafından birçok kullanım durumuna uygun olarak oluşturulan GLM-5 modeliyle çalışıyorum. GLM-5, kendi doğrulanabilir özel güvenli altyapıları aracılığıyla NEAR tarafından barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Merhaba, ben Leo. Brave tarafından geliştirilen bir Yapay Zeka asistanıyım. Konuşma ve metin işleme görevleri için Anthropic tarafından eğitilen Claude Instant modeliyle çalışıyorum. Claude Instant modeli, güvenli altyapımız sayesinde Brave tarafından barındırılır.<ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Anthropic'in sohbet ve metin işleme görevleri için geliştirdiği Claude Haiku modeliyle çalışıyorum. Claude Haiku, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Anthropic'in sohbet ve metin işleme görevleri için geliştirdiği Claude Sonnet modeliyle çalışıyorum. Claude Sonnet, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Meta tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Llama 4 Scout modeliyle çalışıyorum. Llama 4 Scout, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Meta tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Llama 4 Maverick modeliyle çalışıyorum. Llama 4 Maverick, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. OpenAI tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen GPT OSS 20B modeliyle çalışıyorum. GPT OSS 20B, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. OpenAI tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen GPT OSS 120B modeliyle çalışıyorum. GPT OSS 120B, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Mistral tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Mistral Large modeliyle çalışıyorum. Mistral Large, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Mistral tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Pixtral Large modeliyle çalışıyorum. Pixtral Large, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Alibaba Cloud tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Qwen 3 235B modeliyle çalışıyorum. Qwen 3 235B, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Deepseek tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Deepseek V3.1 modeliyle çalışıyorum. Deepseek V3.1, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Deepseek tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Deepseek V3.2 modeliyle çalışıyorum. Deepseek V3.2, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Alibaba Cloud tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Qwen 3 Coder 480B modeliyle çalışıyorum. Qwen 3 Coder 480B, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Anthropic'in sohbet ve metin işleme görevleri için geliştirdiği Claude Opus modeliyle çalışıyorum. Claude Opus, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Zhipu AI tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen GLM-4-7-Flash modeliyle çalışıyorum. GLM-4-7-Flash, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Moonshot AI tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Kimi K2.5 modeliyle çalışıyorum. Kimi K2.5, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Brave tarafından web sayfalarını özetlemek üzere geliştirilen Brave Ocelot modeliyle çalışıyorum. Brave Ocelot, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Yerel</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -2353,6 +2356,8 @@
 <translation id="7465032796278724624">NEAR AI TEE ile Doğrulanabilir Gizlilik</translation>
 <translation id="8782867266498869301">Görev için en iyi olanı kullanmak üzere model dinamik olarak değişir</translation>
 <translation id="3213834013136637671">Arama • Görüntü</translation>
+<translation id="5276681919620506371">Arama • Araçlar</translation>
+<translation id="7434375176361995333">Özetler • Hızlı</translation>
 <translation id="3965507912994218570">Leo ayarları</translation>
 <translation id="3754337604877048671">Leo AI'ı Tanıtıyoruz</translation>
 <translation id="5295261408976371809">Tarayıcınıza entegre edilmiş <ph name="TEXT_BEFORE"/>özel<ph name="TEXT_AFTER"/> bir Yapay Zeka asistanı.</translation>
@@ -2408,6 +2413,8 @@
 <translation id="4572010449071015143">Yeni konuşma başlat</translation>
 <translation id="345901077335355561">Aktif konuşmaya geri dönün</translation>
 <translation id="6287023598025162715">Yeni sohbet</translation>
+<translation id="7230502562132448519">Sohbetleri filtrele</translation>
+<translation id="821070843380699990">Lütfen farklı bir sorgu deneyin</translation>
 <translation id="7097822247923237815">Geçici sohbet</translation>
 <translation id="7481750859362986254">Bu sohbet, geçmişinize kaydedilmeyecek veya Leo'nun herhangi bir özelleştirme veya anısını kullanmayacaktır.</translation>
 <translation id="4238305333951712482">Bellek güncellendi: <ph name="MEMORY_CONTENT"/></translation>
@@ -2445,6 +2452,21 @@
 <translation id="6338250692384725496">Sorununuza yardımcı olması için korumalı alanda kod yürütüldü</translation>
 <translation id="4379566111233326721">Kod:</translation>
 <translation id="3542130965673205258">Çıkış:</translation>
+<translation id="5382076391290708074">Sekme yönetiminizi hareket ettiriyor</translation>
+<translation id="3862123464576147769">Buna izin vermek, tüm sekme ve sekme gruplarınızın <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> ve <ph name="TITLE_FORMAT_START"/>Başlığını<ph name="TITLE_FORMAT_END"/> Brave AI'ye göndereceğini ve Brave AI'nin bunları hareket ettirmesine izin vereceğini. Bu izin yalnızca bu sohbet için geçerlidir.</translation>
+<translation id="396165714586708444">Derin Araştırma</translation>
+<translation id="577747221882855891">Aranıyor: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">"<ph name="QUERY"/>" için <ph name="COUNT"/> kaynak analiz ediliyor</translation>
+<translation id="1202264349398113062">"<ph name="QUERY"/>" için <ph name="COUNT"/> yeni URL işleniyor</translation>
+<translation id="6189479600023022289">"<ph name="QUERY"/>" için <ph name="COUNT"/> URL bulundu</translation>
+<translation id="5150674341374247355">Getiriliyor <ph name="FETCHED"/>/<ph name="TOTAL"/> URL</translation>
+<translation id="1075606740174445363">"<ph name="QUERY"/>" için <ph name="COUNT"/> URL analiz edildi</translation>
+<translation id="6220878652174655112"><ph name="COUNT"/> sorgu aranıyor</translation>
+<translation id="3571450204565012512"><ph name="QUERY_COUNT"/> aramanın <ph name="URL_COUNT"/> URL'si analiz edildi</translation>
+<translation id="5733200563889491347">Araştırma tamamlandı</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>d <ph name="SECONDS"/>s</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>s</translation>
+<translation id="5067194014665306881">Araştırma hatası: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">AI tarama</translation>
 <translation id="2854657728271352435">AI tarama profili hakkında</translation>
 <translation id="2301685062527585986">Verilerinizi korumak için, bu izole edilmiş AI tarama profili, AI aracının ana gezinme profilinize erişimi olmadığından emin olur. Araç yalnızca gerektiğinde siteleri ziyaret etmek ve onlarla etkileşim kurmak için izinlere sahiptir. Görevler vererek ve onun sizin yerinize tarama yapmasına izin vererek verimliliğinizi artırabilirsiniz.</translation>
@@ -2509,11 +2531,14 @@
 <translation id="7847477075635510673">Haberleri Gizle</translation>
 <translation id="9173319813356700250">HABERLER</translation>
 <translation id="6543799171249004861">Fotoğraf: <ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">Leo YZ</translation>
 <translation id="466214682712474574">Bakiyenizi görmek için <ph name="PROVIDER"/> hesabınıza giriş yapın</translation>
 <translation id="8332875111286275890">Bakiyenizi görmek için giriş yapın</translation>
 <translation id="5430001801813715388">ÖDÜLLER</translation>
+<translation id="988042349921505128">Arama ve AI</translation>
 <translation id="2430295257226173518">Dilediğinizi sorun, her şeyi bulun…</translation>
 <translation id="167018310108390163">Yeni Sekme Sayfasını Özelleştir</translation>
+<translation id="3500134717967948757">Yeni sekmelerde Leo AI widget'ını göster</translation>
 <translation id="6851426306697017546">Saati göster</translation>
 <translation id="4844370919312937270">Yeni sekmelerde arama widget'ını göster</translation>
 <translation id="7328310113820087094"><ph name="LINK_BEGIN"/>Brave Ödüller<ph name="LINK_END"/> ile yeni sekme sayfası reklamlarını görerek kazanabilirsiniz.</translation>
@@ -2542,8 +2567,14 @@
 <translation id="8458987127502506209">Brave Kalkanlarını Etkinleştir</translation>
 <translation id="8443488493738411048">Bu site için <ph name="STATUS_BEFORE"/>Kalkanlar AÇIK<ph name="STATUS_AFTER"/></translation>
 <translation id="2458631245058451506">Bu site için <ph name="STATUS_BEFORE"/>Kalkanlar KAPALI<ph name="STATUS_AFTER"/></translation>
+<translation id="8426214145426269584">Shields <ph name="UP_BEFORE"/>açık<ph name="UP_AFTER"/> bu site için</translation>
+<translation id="3325367578778625743">Shields <ph name="DOWN_BEFORE"/>kapalı<ph name="DOWN_AFTER"/> bu site için</translation>
 <translation id="4724752924364329714">Bu site bozuk görünüyorsa, Shields'i kapatmayı deneyin.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Not: Bu Brave'in gizlilik korumalarını azaltabilir.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">Bu, Brave'in gizlilik korumalarını azaltabilir. <ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">İzleyiciler, reklamlar ve daha fazlası engellendi.</translation>
+<translation id="4968268657895673116">Shields açık durumdayken bu site doğru çalışmıyor mu?</translation>
+<translation id="5412004902081180614">Bildir</translation>
 <translation id="3620004479054499575">Bu siteyle ilgili sorunlar mı yaşıyorsunuz?</translation>
 <translation id="9176447766421988172">Web sitesi uyumluluğunu artırmak için yalnızca reklam engellemeyi etkin tuttuğumuz bir deneme yapıyoruz. Uyarı: tüm gizlilik korumalarını kaldırır. Denemek ister misiniz? <ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Brave'in gizlilik korumaları tarafından ihlal edilen tek tek web siteleri için Kalkanları AŞAĞI olarak ayarlayabileceğinizi lütfen unutmayın.</translation>
@@ -2558,9 +2589,12 @@
 <translation id="8377155647357436161">İzleyiciler, reklamlar ve daha fazlası engellendi <ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave Kalkanları tarafından korunmuyor <ph name="LINK_BEFORE"/> Daha fazla bilgi alın <ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Gelişmiş kontroller</translation>
+<translation id="7939062555109487992">Gelişmiş seçenekler</translation>
 <translation id="5799940914270080805">Bu ayarları değiştirmek web siteleri uyumluluğunu etkiler.</translation>
 <translation id="9204041448536398473">Genel Kalkan ayarları</translation>
 <translation id="2108334320919763866">Genel varsayılan ayarlar</translation>
+<translation id="1896472873031845605">Genel Ayarlar</translation>
+<translation id="8324318899000695659">Ögeleri engelle</translation>
 <translation id="7205939464631857223">Engellenen tüm öğeleri temizle</translation>
 <translation id="3440043456924990296">Kuruluş tarafından yönetilen ayarlar</translation>
 <translation id="7053983685419859001">Engelle</translation>
@@ -2645,7 +2679,6 @@
 <translation id="7207456302801184289">Brave'e hoş geldiniz</translation>
 <translation id="4988030440045495002">Ultra koyu tema</translation>
 <translation id="2422927186524098759">Kenar Çubuğu</translation>
-<translation id="2361906291514218784">Leo YZ</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Araç çubuğu</translation>
 <translation id="6225572914528673855">Adres çubuğu</translation>

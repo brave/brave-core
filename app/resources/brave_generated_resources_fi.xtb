@@ -323,6 +323,8 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="8813509417421129632">Upotettu sivu sijainnissa <ph name="SITE"/> haluaa tallentaa</translation>
 <translation id="7700010743463174379">Tämä sivu haluaa tallentaa</translation>
 <translation id="6774238875569752630">Tämän sivun upotettu sivu haluaa tallentaa</translation>
+<translation id="1383876407941801731">Haku</translation>
+<translation id="5496587651328244253">Järjestä</translation>
 <translation id="1233913566967531780">Välilehtikeskus</translation>
 <translation id="4034992002364254340">Kokoa kaikki toisiinsa liittyvät välilehdet uuteen ikkunaan</translation>
 <translation id="8012125596344613514">Aihe-ehdotukset</translation>
@@ -340,6 +342,7 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="6501807887341963552">Teema ja värit</translation>
 <translation id="6724227215236550330">Tallennetut salasanat näkyvät tässä. Jos haluat tuoda salasanat kohteeseen <ph name="BRAND"/> tässä laitteessa, <ph name="BEGIN_LINK"/> valitse CSV-tiedosto<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">Jos haluat tuoda salasanat kohteeseen <ph name="BRAND"/> tässä laitteessa, valitse CSV-tiedosto</translation>
+<translation id="8570228839666486945">Laitteella toimiva AI</translation>
 <translation id="9156965752763025780">Muutokset tulevat voimaan, kun käynnistät Braven seuraavan kerran.</translation>
 <translation id="7179921470347911571">Käynnistä uudelleen nyt</translation>
 <translation id="1426410128494586442">Kyllä</translation>
@@ -392,6 +395,7 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="5297085818601043899">Työkaluvinkki</translation>
 <translation id="5219886318310413094">Näytä kiinnitetyt välilehdet kaikissa ikkunoissa</translation>
 <translation id="2396127686705429331">Näytä kirjanmerkkipainike</translation>
+<translation id="443318149139185498">Käytä outline-logoa päävalikkonapissa</translation>
 <translation id="2814998458708016836">Käytä leveää osoitekenttää</translation>
 <translation id="4749586705247636385">Näytä pyöristetyt kulmat tärkeimmillä sisältöalueilla</translation>
 <translation id="4109670531935487117">Näytä automaattisia ehdotuksia osoitepalkissa</translation>
@@ -545,7 +549,7 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="509873765238158442">Estä Microsoft Recall</translation>
 <translation id="4763421121695677716">Estä Microsoft Windows -tietokoneiden Recall-ominaisuutta ottamasta automaattisesti kuvakaappauksia kaikista avoimista Brave-välilehdistä.</translation>
 <translation id="1968895725257436430">Tietojen keräys</translation>
-<translation id="4846154056248462491">Poistuessa</translation>
+<translation id="1700052872056357670">Tyhjennä tiedot poistuttaessa</translation>
 <translation id="216468847346280584">Tyhjennä Brave-palkintojen tiedot...</translation>
 <translation id="2808630562319398131">Tyhjennä Brave Rewardsin tiedot...</translation>
 <translation id="6438096877646138757">Sivustot, jotka tyhjentävät evästeet, kun suljet ne</translation>
@@ -792,6 +796,7 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="1529674267267221673">Leo näkyy kontekstivalikossa, kun napsautat verkkosivua hiiren oikealla painikkeella. Tämä lähettää kontekstin nykyiseltä verkkosivulta Leolle.</translation>
 <translation id="5226020406479918122">Välilehtikeskustila</translation>
 <translation id="3705539672403311123">Ota välilehtien järjestäminen käyttöön välilehtihakusivulla. Kun se on avattu, se lähettää automaattisesti kaikkien muiden kuin yksityisten välilehtien otsikot ja lähteen Leolle niiden luokittelua varten. <ph name="BEGIN_LINK"/>Lisätietoja<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">Uusien keskustelujen oletusmalli</translation>
 <translation id="8172263161008556851">Näytä ehdotetut kehotteet keskustelussa</translation>
 <translation id="5781842473834867765">Tallenna keskusteluhistoria</translation>
 <translation id="1082960401708055995">Keskustelutallennustilan poistaminen käytöstä poistaa pysyvästi kaikki aiemmin tallennetut keskustelut. Tätä toimintoa ei voi perua.</translation>

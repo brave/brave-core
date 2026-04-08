@@ -323,6 +323,8 @@ Ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="8813509417421129632">Une page intégrée à <ph name="SITE"/> tente d'enregistrer</translation>
 <translation id="7700010743463174379">Cette page tente d'enregistrer</translation>
 <translation id="6774238875569752630">Une page intégrée à celle-ci tente d'enregistrer</translation>
+<translation id="1383876407941801731">Rechercher</translation>
+<translation id="5496587651328244253">Organiser</translation>
 <translation id="1233913566967531780">Focus</translation>
 <translation id="4034992002364254340">Regroupez tous vos onglets similaires dans une nouvelle fenêtre</translation>
 <translation id="8012125596344613514">Catégories recommandées</translation>
@@ -340,6 +342,7 @@ Ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="6501807887341963552">Thème et couleurs</translation>
 <translation id="6724227215236550330">Les mots de passe enregistrés apparaissent ici. Pour importer les mots de passe vers <ph name="BRAND"/> sur cet appareil, <ph name="BEGIN_LINK"/>sélectionnez un fichier CSV<ph name="END_LINK"/>.</translation>
 <translation id="3575561030014162610">Pour importer les mots de passe vers <ph name="BRAND"/> sur cet appareil, sélectionnez un fichier CSV.</translation>
+<translation id="8570228839666486945">IA sur l'appareil</translation>
 <translation id="9156965752763025780">Vos modifications seront prises en compte au prochain redémarrage de Brave.</translation>
 <translation id="7179921470347911571">Relancer maintenant</translation>
 <translation id="1426410128494586442">Oui</translation>
@@ -392,6 +395,7 @@ Ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="5297085818601043899">Info-bulle</translation>
 <translation id="5219886318310413094">Afficher les onglets épinglés dans toutes les fenêtres</translation>
 <translation id="2396127686705429331">Afficher le bouton des favoris</translation>
+<translation id="443318149139185498">Utiliser le logo de contour sur le bouton du menu principal</translation>
 <translation id="2814998458708016836">Utiliser une barre d'adresse large</translation>
 <translation id="4749586705247636385">Afficher des coins arrondis dans les principales zones de contenu</translation>
 <translation id="4109670531935487117">Afficher les suggestions semi-automatiques dans la barre d'adresse</translation>
@@ -545,7 +549,7 @@ Ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="509873765238158442">Bloquer la fonctionnalité Recall de Microsoft</translation>
 <translation id="4763421121695677716">Empêche la fonctionnalité Recall de prendre automatiquement des captures d'écran des onglets Brave ouverts sur les ordinateurs Windows.</translation>
 <translation id="1968895725257436430">Données recueillies</translation>
-<translation id="4846154056248462491">Lors de la fermeture</translation>
+<translation id="1700052872056357670">Effacer les données lors de la fermeture</translation>
 <translation id="216468847346280584">Effacer les données liées aux publicités Brave…</translation>
 <translation id="2808630562319398131">Réinitialiser les données associées aux récompenses Brave...</translation>
 <translation id="6438096877646138757">Sites effaçant les cookies lorsque vous les fermez</translation>
@@ -791,6 +795,7 @@ Ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="1529674267267221673">Leo sera affiché dans le menu contextuel lorsque vous faites un clic droit sur un site Web. Cette action enverra le contexte de la page Web actuelle à Leo.</translation>
 <translation id="5226020406479918122">Mode Focus</translation>
 <translation id="3705539672403311123">Active le classement des onglets dans la page de recherche d'onglets. Les noms et les noms de domaine de tous les onglets (hors ceux ouverts en navigation privée) seront automatiquement envoyés à Leo afin de les catégoriser. <ph name="BEGIN_LINK"/>En savoir plus.<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">Modèle par défaut pour la mise au point des onglets</translation>
 <translation id="8172263161008556851">Afficher les invites suggérées dans la conversation</translation>
 <translation id="5781842473834867765">Conserver l'historique des conversations</translation>
 <translation id="1082960401708055995">Si vous désactivez l'enregistrement des conversations, toutes les conversations enregistrées seront définitivement supprimées. Cette action ne peut être annulée.</translation>

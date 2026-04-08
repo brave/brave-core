@@ -188,12 +188,27 @@
 <translation id="834487290629916192">SENERE</translation>
 <translation id="4117451092682672487">Personvern. Helt enkelt.</translation>
 <translation id="7909375417585209817">Med Brave som standard åpnes alle linker du trykker på, med Braves personvernbeskyttelser.</translation>
-<translation id="5148943178722443958">Bidra til å gjøre Brave bedre.</translation>
+<translation id="763369711159699222">Bidra til å gjøre Brave bedre</translation>
+<translation id="8025937231644975408">Fortell oss hvilke funksjoner du liker best.</translation>
 <translation id="6718362830686703942">Send diagnoserapporter hvis du opplever at systemet krasjer eller henger seg opp.</translation>
 <translation id="8616157231067364693">Send privat og anonym produktinformasjon om hvilke funksjoner som brukes av Brave-brukerne.</translation>
 <translation id="2888496576732880897">Gjør Brave Søk bedre</translation>
+<translation id="7198716519700700181">Blokker avbrudd når du streamer</translation>
 <translation id="7044431516245362795">Bli med i Web Discovery Project for å gjøre indeksen større og søkeresultatene bedre. <ph name="LEARN_MORE_START"/>Finn ut mer.<ph name="LEARN_MORE_END"/></translation>
+<translation id="4847979153841887006">Brave-logo</translation>
+<translation id="1389386068457132299">Introduksjonsbackgrunn</translation>
+<translation id="5101985748360228609">Toppbladdekoration</translation>
+<translation id="5270920361877570459">Bunnbladdekoration</translation>
+<translation id="4021716437419160885">Rull ned</translation>
+<translation id="4767173360729868049">Illustrasjon for Hjælp Brave Søk</translation>
+<translation id="8241918461631453498">Illustrasjon for Blokker avbrudd</translation>
+<translation id="8213310572767907663">Illustrasjon for Gjør Brave bedre</translation>
+<translation id="2427917529469438577">Blokker irriterende avbrudd på dine favoritt-streamingsider.</translation>
 <translation id="7818938154803162778">Klart, jeg kan hjelpe</translation>
+<translation id="5298784657468199167">Send krasjrapporter</translation>
+<translation id="6188781052835527980">Send anonym diagnoserapporter hvis du opplever at systemet krasjer eller henger seg opp.</translation>
+<translation id="4780647518983772446">Del privat og anonym produktinformasjon om hvilke Brave-funksjoner som brukes.</translation>
+<translation id="5109496672133133896">Privat produktinformasjon</translation>
 <translation id="3545804467215833536">Trykk for å vise Brave Shields</translation>
 <translation id="1724327820822194498">Se alt det kjipe Brave har blokkert, på alle sider, med Shields.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> og <ph name="TRACKER"/> annonser og sporere er blokkert</translation>
@@ -380,7 +395,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="717952606991220586">Opp sann, noe er galt. Prøv igjen senere.</translation>
 <translation id="987264212798334818">Generelt</translation>
 <translation id="1116694919640316211">Info</translation>
-<translation id="1275213816424141989">Kanskje senere</translation>
+<translation id="2370739752330685659">Kanskje senere</translation>
 <translation id="3624048886326677117">Blokker sporere og annonsen (aggressiv)</translation>
 <translation id="7151914815476509258">Blokker sporere og annonsen (standard)</translation>
 <translation id="7384778069178817075">Tillat alle sporere og annonser</translation>
@@ -498,7 +513,6 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="5705882733397021510">Gå tilbake</translation>
 <translation id="7889432931837317731">Åpne automatisk når mulig</translation>
 <translation id="1029304566263314007">Vis fremdriftsvarsler for nedlastingen</translation>
-<translation id="2910433761530295035">Spør hvor filer skal lagres (hvis SD-kort oppdages)</translation>
 <translation id="2977501775944575564">Parallell nedlasting</translation>
 <translation id="6224180438946945617">Aktiver parallell nedlasting for å øke nedlastingshastigheten</translation>
 <translation id="8967385052772844086">Se hele Personvernrapporten</translation>
@@ -919,6 +933,9 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="703185154752046151">Widget lagt til Hjem-skjermen</translation>
 <translation id="4635094429202343515">Prøv Brave Søk-widgeten</translation>
 <translation id="4809681171446727314">Få tilgang til private, uavhengige søk rett fra Hjem-skjermen.</translation>
+<translation id="3280562213547448728">Stemmesøk</translation>
+<translation id="3925312712530886302">Åpne privat søk</translation>
+<translation id="9214590551301647710">Åpne Leo</translation>
 <translation id="7751715172931488388">Legg til widget</translation>
 <translation id="7285167584112910782">Brave-hurtigsøk</translation>
 <translation id="2326703104633309781">Bruk Brave Translate</translation>
@@ -958,7 +975,14 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Tilbakestill til standardoppsettet</translation>
 <translation id="4922034974043704366">Denne funksjonen er aktivert fordi du valgte det</translation>
-<translation id="3144818380093107753">Brave Origin er en abonnementsbasert måte å deaktivere inntektsgenererende funksjoner som ellers støtter Brave som selskap. Abonnenter på Brave Origin vil fortsatt dra nytte av vår bransjeledende personvernfunksjonalitet, annonseblokkering og hastighet (via Brave Shields), samt regelmessige programvareoppdateringer, Chromium-oppdateringer og forbedringer i sikkerhet og personvern.&lt;br/&gt;&lt;br/&gt;De vil også få mulighet til å deaktivere funksjoner som Brave Leo, News, Rewards, Wallet, VPN, Web3-domener og mer.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Merk: Brave Origin vil ikke deaktivere funksjoner i nettleseren som du allerede bruker, og vil ikke påvirke funksjoner i Brave Search eller Brave Search Ads.&lt;/b&gt;</translation>
+<translation id="2587535830241068901">Tilpass nettleseren din og støtt Brave samtidig</translation>
+<translation id="7235314227387539944">Brave Origin er en betalt versjon av nettleseren for brukere som ikke trenger alle funksjonene som støtter Brave som en bedrift, men som fortsatt ønsker personvernet som bare Brave tilbyr. Origin-brukere vil fortsette å dra nytte av vår bransjeledende personvern, annonseblokkering og hastighet (via Shields), samt regelmessige programvareoppdateringer, Chromium-oppdateringer og sikkerhet og personvernforbedringer. Origin vil fjerne de fleste andre funksjonene fra nettleseren.</translation>
+<translation id="7941943775131052130">Merk at et Brave Origin-kjøp også vil inkludere tilgang til Brave Søk Premium, siden Origin vil fjerne annonser fra Brave Søk-resultatenes side.</translation>
+<translation id="2573819149217596923">Endrer Brave-funksjoner</translation>
+<translation id="7415416427817229128">Aktivering eller deaktivering av en Brave-funksjon krever at nettleseren startes på nytt for å bruke endringene. Vil du starte på nytt nå?</translation>
+<translation id="2256115617011615191">Start på nytt nå</translation>
+<translation id="8554205386170195281">Kjøp</translation>
+<translation id="7071521146534760487">Administrer konto</translation>
 <translation id="8613144770663526433">Logg på med Brave-lommeboken</translation>
 <translation id="3696514931437952995">Du logger på <ph name="ORIGIN"/>. Brave-lommeboken vil dele lommebok-adressen din med <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Vis detaljer</translation>
@@ -1085,12 +1109,13 @@ Leo AI. Dette kan ikke angres.</translation>
 <translation id="2735247450315842119">Gjør det mulig å ta skjermbilder i private faner</translation>
 <translation id="8420414929552321089">Dersom dette er aktivert, vil også de private fanene være synlige når flere apper er åpne.</translation>
 <translation id="7956713633345437162">Mobilbokmerker</translation>
+<translation id="7984508421152399880">Kjøp nå</translation>
 <translation id="6261139507111008244">Støtt vårt oppdrag og arbeid med åpen kildekode</translation>
-<translation id="7882690061170175552">Minimal nettlesergrensesnitt med fokus på Shields</translation>
+<translation id="6073373503121903099">Minimalistisk nettlesergrensesnitt med fokus på Brave Shields</translation>
 <translation id="2267973897341040743">Behold grunnleggende annonseblokkering, personvern og hastighet</translation>
-<translation id="1361157028850796410">mest for pengene</translation>
-<translation id="7280825497485894053">Månedsabonnement</translation>
-<translation id="4570901726096223030">Finn ut mer om Origin</translation>
+<translation id="3339535734679532460">Engangskjøp, ingen tilleggskostnad for abonnement</translation>
+<translation id="2805615640226281689">Engangskjøp</translation>
+<translation id="261433018299584676">Få en innloggingskode</translation>
 <translation id="1943432128510653496">Lagring av passord</translation>
 <translation id="2100273922101894616">Automatisk pålogging</translation>
 <translation id="363596933471559332">Du logges på nettsteder automatisk ved hjelp av lagret legitimasjon. Når funksjonen er slått av, blir du bedt om å oppgi legitimasjonen din hver gang du logger på et nettsted.</translation>

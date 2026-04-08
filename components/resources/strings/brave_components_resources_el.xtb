@@ -1837,6 +1837,7 @@
 <translation id="8897189056319316783">Θωράκιση ZEC</translation>
 <translation id="508249542337194541">Αποπροστασία ZEC</translation>
 <translation id="3382275793825152362">Κεφάλαια προστασίας</translation>
+<translation id="617149752238892649">Ξεκλείδωση κεφαλαίων</translation>
 <translation id="8631765320256788981">Στέλνετε χρήματα από τον διαφανή λογαριασμό σας στον προστατευμένο λογαριασμό σας.</translation>
 <translation id="3860364671495430495">Στέλνετε χρήματα από τον προστατευμένο λογαριασμό σας στον διαφανή λογαριασμό σας.</translation>
 <translation id="7144878232160441200">Προσπαθήστε ξανά</translation>
@@ -2186,6 +2187,7 @@
     }</translation>
 <translation id="6961721183181597848">Πώς μπορώ να σε βοηθήσω σήμερα;</translation>
 <translation id="2966135729673253768">Ζήτα follow up</translation>
+<translation id="5923170497201832190">Κύλιση καρτέλας στο τέλος</translation>
 <translation id="6219262425964000211">Απόθεση αρχείων εδώ</translation>
 <translation id="4313763911013851687">Αποθέστε οποιαδήποτε αρχεία εδώ για να τα προσθέσετε στη συνομιλία</translation>
 <translation id="4524675003624341892">Προτεινόμενες ερωτήσεις...</translation>
@@ -2207,20 +2209,21 @@
 <translation id="999273441077650169">Το μοντέλο αλλάζει δυναμικά για να χρησιμοποιηθεί το καλύτερο για την εργασία.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Llama 3.1 8B, ένα μοντέλο που δημιουργήθηκε από τη Meta για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Llama φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Qwen VL 30B, ένα μοντέλο που δημιουργήθηκε από την Alibaba Cloud για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Qwen φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το DeepSeek V3.1, ένα μοντέλο που δημιουργήθηκε από τη DeepSeek για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το DeepSeek V3.1 φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το GLM-5, ένα μοντέλο που δημιουργήθηκε από τη Zhipu AI για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το GLM-5 φιλοξενείται από το NEAR μέσω της δικής τους επαληθευόμενης ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Γεια σου, είμαι ο Leo. Είμαι ο AI βοηθός της Brave. Τροφοδοτούμαι από το Claude Instant, ένα μοντέλο της Anthropic για συνομιλία και επεξεργασία κειμένου. Το Claude Instant φιλοξενείται από την Brave στη δική της ασφαλή υποδομή.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Claude Haiku, ένα μοντέλο που δημιουργήθηκε από την Anthropic για να υποστηρίζει εργασίες συνομιλίας και επεξεργασίας κειμένου. Το Claude Haiku φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Claude Sonnet, ένα μοντέλο που δημιουργήθηκε από την Anthropic για να υποστηρίζει εργασίες συνομιλίας και επεξεργασίας κειμένου. Το Claude Sonnet φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Llama 4 Scout, ένα μοντέλο που δημιουργήθηκε από τη Meta για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Llama 4 Scout φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Llama 4 Maverick, ένα μοντέλο που δημιουργήθηκε από τη Meta για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Llama 4 Maverick φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το GPT OSS 20B, ένα μοντέλο που δημιουργήθηκε από την OpenAI για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το GPT OSS 20B φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το GPT OSS 120B, ένα μοντέλο που δημιουργήθηκε από την OpenAI για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το GPT OSS 120B φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Mistral Large, ένα μοντέλο που δημιουργήθηκε από την Mistral για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Mistral Large φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Pixtral Large, ένα μοντέλο που δημιουργήθηκε από την Mistral για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Pixtral Large φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Qwen 3 235B, ένα μοντέλο που δημιουργήθηκε από την Alibaba Cloud για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Qwen 3 235B φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Deepseek V3.1, ένα μοντέλο που δημιουργήθηκε από τη Deepseek για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Deepseek V3.1 φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Deepseek V3.2, ένα μοντέλο που δημιουργήθηκε από τη Deepseek για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Deepseek V3.2 φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Qwen 3 Coder 480B, ένα μοντέλο που δημιουργήθηκε από την Alibaba Cloud για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Qwen 3 Coder 480B φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Claude Opus, ένα μοντέλο που δημιουργήθηκε από την Anthropic για να υποστηρίζει εργασίες συνομιλίας και επεξεργασίας κειμένου. Το Claude Opus φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">Γεία σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το GLM-4-7-Flash, ένα μοντέλο που δημιουργήθηκε από τη Zhipu AI για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το GLM-4-7-Flash φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">Γεία σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Kimi K2.5, ένα μοντέλο που δημιουργήθηκε από τη Moonshot AI για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Kimi K2.5 φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">Γεία σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Brave Ocelot, ένα μοντέλο που δημιουργήθηκε από το Brave για να συνοψίζει ιστοσελίδες. Το Brave Ocelot φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Τοπικά</translation>
 <translation id="830868413617744215">beta</translation>
@@ -2353,6 +2356,8 @@
 <translation id="7465032796278724624">Επαληθευμένα Ιδιωτικό με NEAR AI TEE</translation>
 <translation id="8782867266498869301">Το μοντέλο αλλάζει δυναμικά για να χρησιμοποιηθεί το καλύτερο για την εργασία</translation>
 <translation id="3213834013136637671">Αναζήτηση • Όραση</translation>
+<translation id="5276681919620506371">Αναζήτηση • Εργαλεία</translation>
+<translation id="7434375176361995333">Περιλήψεις • Ταχύτητα</translation>
 <translation id="3965507912994218570">Ρυθμίσεις Leo</translation>
 <translation id="3754337604877048671">Γνωρίστε τον Leo AI</translation>
 <translation id="5295261408976371809">Ο δικός σας <ph name="TEXT_BEFORE"/>προσωπικός<ph name="TEXT_AFTER"/> AI βοηθός, ενσωματωμένος απευθείας στο πρόγραμμα περιήγησης.</translation>
@@ -2408,6 +2413,8 @@
 <translation id="4572010449071015143">Έναρξη νέας συνομιλίας</translation>
 <translation id="345901077335355561">Επιστροφή στην ενεργή συνομιλία</translation>
 <translation id="6287023598025162715">Νέα συνομιλία</translation>
+<translation id="7230502562132448519">Φιλτράρισμα συνομιλιών</translation>
+<translation id="821070843380699990">Δοκιμάστε ένα διαφορετικό ερώτημα</translation>
 <translation id="7097822247923237815">Προσωρινή συνομιλία</translation>
 <translation id="7481750859362986254">Αυτή η συνομιλία δεν θα αποθηκευτεί στο ιστορικό σας ούτε θα χρησιμοποιήσει καμία από τις δυνατότητες προσαρμογής ή τις αναμνήσεις του Leo.</translation>
 <translation id="4238305333951712482">Ενημέρωση μνήμης: <ph name="MEMORY_CONTENT"/></translation>
@@ -2445,6 +2452,21 @@
 <translation id="6338250692384725496">Εκτελέστηκε κώδικας σε sandbox για να σας βοηθήσει με το ερώτημά σας</translation>
 <translation id="4379566111233326721">Κώδικας:</translation>
 <translation id="3542130965673205258">Έξοδος:</translation>
+<translation id="5382076391290708074">Μετακίνηση των καρτελών σας</translation>
+<translation id="3862123464576147769">Η ενεργοποίηση θα στείλει τη <ph name="URL_FORMAT_START"/>διεύθυνση URL<ph name="URL_FORMAT_END"/> και τον <ph name="TITLE_FORMAT_START"/>τίτλο<ph name="TITLE_FORMAT_END"/> όλων των καρτελών σας και των ομάδων καρτελών σας στο Brave AI, και θα επιτρέψει στο Brave AI να τις μετακινήσει. Αυτή η άδεια ισχύει μόνο για αυτήν τη συνομιλία.</translation>
+<translation id="396165714586708444">Εκτεταμένη έρευνα</translation>
+<translation id="577747221882855891">Αναζήτηση: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">Ανάλυση <ph name="COUNT"/> πηγών για "<ph name="QUERY"/>"</translation>
+<translation id="1202264349398113062">Επεξεργασία <ph name="COUNT"/> νέων διευθύνσεων URL για "<ph name="QUERY"/>"</translation>
+<translation id="6189479600023022289">Βρέθηκαν <ph name="COUNT"/> διευθύνσεις URL για "<ph name="QUERY"/>"</translation>
+<translation id="5150674341374247355">Λήψη <ph name="FETCHED"/>/<ph name="TOTAL"/> διευθύνσεων URL</translation>
+<translation id="1075606740174445363">Αναλύθηκαν <ph name="COUNT"/> διευθύνσεις URL για "<ph name="QUERY"/>"</translation>
+<translation id="6220878652174655112">Αναζήτηση <ph name="COUNT"/> ερωτημάτων</translation>
+<translation id="3571450204565012512">Αναλύθηκαν <ph name="URL_COUNT"/> διευθύνσεις URL από <ph name="QUERY_COUNT"/> αναζητήσεις</translation>
+<translation id="5733200563889491347">Η έρευνα ολοκληρώθηκε</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>λ <ph name="SECONDS"/>δ</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>δ</translation>
+<translation id="5067194014665306881">Σφάλμα έρευνας: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">Αναζήτηση με AI</translation>
 <translation id="2854657728271352435">Σχετικά με το προφίλ περιήγησης AI</translation>
 <translation id="2301685062527585986">Για να προστατεύσει τα δεδομένα σας, αυτό το απομονωμένο προφίλ περιήγησης AI διασφαλίζει ότι ο παράγοντας AI δεν έχει πρόσβαση στο κύριο προφίλ περιήγησής σας, με άδειες μόνο για να επισκέπτεται και να αλληλεπιδρά με ιστότοπους όπως χρειάζεται. Μπορείτε να ενισχύσετε την παραγωγικότητά σας δίνοντάς του εργασίες και επιτρέποντάς του να περιηγείται για εσάς.</translation>
@@ -2509,11 +2531,14 @@
 <translation id="7847477075635510673">Απόκρυψη Νέων</translation>
 <translation id="9173319813356700250">ΝΕΑ</translation>
 <translation id="6543799171249004861">Φωτογραφία από <ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">AI Leo</translation>
 <translation id="466214682712474574">Συνδεθείτε στον <ph name="PROVIDER"/> λογαριασμό σας για να δείτε το υπόλοιπό σας</translation>
 <translation id="8332875111286275890">Συνδεθείτε για να δείτε το υπόλοιπό σας</translation>
 <translation id="5430001801813715388">ΕΠΙΒΡΑΒΕΥΣΕΙΣ</translation>
+<translation id="988042349921505128">Αναζήτηση και AI</translation>
 <translation id="2430295257226173518">Ρωτήστε οτιδήποτε, βρείτε τα πάντα…</translation>
 <translation id="167018310108390163">Προσαρμογή της Νέας Καρτέλας</translation>
+<translation id="3500134717967948757">Εμφάνιση widget Leo AI σε νέες καρτέλες</translation>
 <translation id="6851426306697017546">Εμφάνιση ρολογιού</translation>
 <translation id="4844370919312937270">Εμφάνιση widget αναζήτησης σε νέες καρτέλες</translation>
 <translation id="7328310113820087094">Με <ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/>, μπορείτε να κερδίσετε βλέποντας διαφημίσεις στη σελίδα νέας καρτέλας.</translation>
@@ -2542,8 +2567,14 @@
 <translation id="8458987127502506209">Ενεργοποίηση Ασπίδων Brave</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Οι ασπίδες είναι ενεργοποιημένες<ph name="STATUS_AFTER"/> για αυτόν τον ιστότοπο</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Οι ασπίδες είναι απενεργοποιημένες<ph name="STATUS_AFTER"/> για αυτόν τον ιστότοπο</translation>
+<translation id="8426214145426269584">Οι ασπίδες <ph name="UP_BEFORE"/>ενεργοποιημένες<ph name="UP_AFTER"/> για αυτόν τον ιστότοπο</translation>
+<translation id="3325367578778625743">Οι ασπίδες <ph name="DOWN_BEFORE"/>απενεργοποιημένες<ph name="DOWN_AFTER"/> για αυτόν τον ιστότοπο</translation>
 <translation id="4724752924364329714">Αν αυτός ο ιστότοπος φαίνεται χαλασμένος, δοκιμάστε Shields down.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Σημείωση: αυτό μπορεί να μειώσει τις προστασίες απορρήτου του Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">Αυτό μπορεί να μειώσει τις προστασίες ιδιωτικότητας του Brave. <ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">Ιχνηλάτες, διαφημίσεις και άλλα αποκλείστηκαν.</translation>
+<translation id="4968268657895673116">Δεν λειτουργεί σωστά ο ιστότοπος με τις ασπίδες ενεργοποιημένες;</translation>
+<translation id="5412004902081180614">Αναφορά</translation>
 <translation id="3620004479054499575">Αντιμετωπίζετε προβλήματα με αυτόν τον ιστότοπο;</translation>
 <translation id="9176447766421988172">Δοκιμάζουμε ένα πείραμα για να αυξήσουμε τη συμβατότητα του ιστότοπου, όπου διατηρούμε μόνο τον αποκλεισμό διαφημίσεων ενεργοποιημένο. Προειδοποίηση: καταργεί όλες τις προστασίες απορρήτου. Θέλετε να το δοκιμάσετε; <ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Λάβετε υπόψη ότι για μεμονωμένους ιστότοπους που παραβιάζονται από τις προστασίες απορρήτου του Brave, μπορείτε να ρυθμίσετε τις Ασπίδες στο DOWN.</translation>
@@ -2558,9 +2589,12 @@
 <translation id="8377155647357436161">Ιχνηλάτες, διαφημίσεις και άλλα αποκλείστηκαν <ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Δεν προστατεύεται από Ασπίδες Brave <ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Ρυθμίσεις για προχωρημένους</translation>
+<translation id="7939062555109487992">Ρυθμίσεις για προχωρημένους</translation>
 <translation id="5799940914270080805">Η αλλαγή αυτών των ρυθμίσεων μπορεί να σπάσει τους ιστότοπους.</translation>
 <translation id="9204041448536398473">Ρυθμίσεις καθολικής ασπίδας</translation>
 <translation id="2108334320919763866">Καθολικές προεπιλογές</translation>
+<translation id="1896472873031845605">Όλες οι ρυθμίσεις</translation>
+<translation id="8324318899000695659">Αποκλεισμός στοιχείων</translation>
 <translation id="7205939464631857223">Εκκαθάριση όλων των μπλοκαρισμένων στοιχείων</translation>
 <translation id="3440043456924990296">Η διαχείριση των ρυθμίσεων γίνεται από οργανισμό</translation>
 <translation id="7053983685419859001">Αποκλεισμός</translation>
@@ -2645,7 +2679,6 @@
 <translation id="7207456302801184289">Καλώς ήλθατε στο Brave</translation>
 <translation id="4988030440045495002">Υπερσκοτεινό θέμα</translation>
 <translation id="2422927186524098759">Πλευρική γραμμή</translation>
-<translation id="2361906291514218784">AI Leo</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Γραμμή εργαλείων</translation>
 <translation id="6225572914528673855">Γραμμή διεύθυνσης</translation>

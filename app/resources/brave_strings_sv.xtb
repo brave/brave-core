@@ -9,6 +9,7 @@
 
 Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna sparas inte.</translation>
 <translation id="7577672138294294152">Din förälder har inaktiverat Behörigheter för webbplatser, appar och tillägg för Brave.</translation>
+<translation id="4408482856437790071">Om du vill söka efter en specifik funktion eller ett specifikt tillägg i Brave skriver du kortkommandot i adressfältet följt av önskad tangent</translation>
 <translation id="5918095577778020936">Lösenorden exporteras från Brave. Skriv ditt Windows-lösenord om du tillåter detta.</translation>
 <translation id="112640046208448578">Identifiera saker eller platser och kopiera eller översätt text. När du använder bildsökning skickas en skärmbild av sidan till servern. <ph name="LEARN_MORE"/></translation>
 <translation id="5468853758063275923">Brave är din standardwebbläsare</translation>
@@ -26,8 +27,10 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="8799570501820813406">När den här fliken var inaktiv frigjordes minne för att hålla Brave snabbt. Du kan välja att aldrig inaktivera den här webbplatsen.</translation>
 <translation id="8767381092474532098">Den här nedladdningen blockerades av Brave eftersom filen är farlig</translation>
 <translation id="3256289531845594061">När du loggar in på Braves tjänster, som Gmail eller YouTube, med <ph name="USER_EMAIL"/> kan du logga in automatiskt i Brave med samma konto</translation>
+<translation id="8508169558526580571">Skaffa Brave på telefonen</translation>
 <translation id="1290883685122687410">Konfigureringsfel: <ph name="METAINSTALLER_EXIT_CODE"/>. <ph name="WINDOWS_ERROR"/></translation>
 <translation id="4798342026247191171">Konfigurera din nya profil i Brave</translation>
+<translation id="4291722755910963157">Testa med Gemini i Brave</translation>
 <translation id="878572309106296578">Brave behöver åtkomst till Bluetooth för att utforska 
  Bluetooth-enheter. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="1330562121671411446">Identifiera språk</translation>
@@ -162,7 +165,6 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="2738871930057338499">Det går inte att ansluta till internet. HTTP 403 Förbjuden. Kontrollera proxykonfigurationen.</translation>
 <translation id="2753623023919742414">Klicka för att söka</translation>
 <translation id="1312769823139326127">Ställ in Brave som standard PDF-läsare</translation>
-<translation id="3173824377856109157">Brave kan fylla i svåra fält som standardautofyll kanske missar</translation>
 <translation id="1187986649024576560">Tillägget innehåller skadlig kod och är osäkert. Ta bort det från Brave så att det inte längre kan se och ändra data, inklusive dina personliga uppgifter, på webbplatser du besöker.</translation>
 <translation id="2799223571221894425">Starta om</translation>
 <translation id="5962774139606909656">Ditt Brave</translation>
@@ -237,7 +239,9 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="8703492925273919597">Stäng alla Brave-fönster och försök igen.</translation>
 <translation id="599091950194451698">För att dela fönstret tillåter du skärminspelning för Brave i systeminställningarna</translation>
 <translation id="1447863765638888625"><ph name="EXISTING_USER"/> är redan inloggad.  Du kan hålla isär webbinformationen genom att logga in i Brave i din egen profil med <ph name="USER_EMAIL_ADDRESS"/>.</translation>
+<translation id="7624624622436403494">QR-kod för att ladda ned webbläsaren Brave på mobila enheter</translation>
 <translation id="8981774130895723211">För att dela skärmen tillåter du skärminspelning för Brave i systeminställningarna.</translation>
+<translation id="2981961446160697133">Utökat skydd inaktiverar JavaScript-optimering för webbplatser som Brave inte känner igen</translation>
 <translation id="3597003331831379823">Det gick inte att köra konfigureringen med förhöjd behörighet. <ph name="METAINSTALLER_ERROR"/></translation>
 <translation id="4167284810587724062">Logga in i Brave</translation>
 <translation id="3066805437003400520">Den här personens webbläsardata tas bort från enheten. Logga in i Brave som <ph name="USER_EMAIL"/> om du vill återställa data.</translation>
@@ -370,6 +374,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="6234515504547364178">Logga ut från Brave</translation>
 <translation id="5234764350956374838">Stäng</translation>
 <translation id="5254739261293693943">Ställ en fråga om den här videon</translation>
+<translation id="7690383309583926074">Skaffa Brave-appen för att spara lösenord på språng</translation>
 <translation id="8586264863973514035">Ändringarna tillämpas när du startar om Brave</translation>
 <translation id="5286907366254680517">Identifierades</translation>
 <translation id="7264453786974905915">Skaffa Brave-appen</translation>
@@ -416,6 +421,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="1224606669200461217">Uppdatera Brave om du vill använda och spara Brave-data i ditt Brave-konto</translation>
 <translation id="5824893331272123205">Det gick inte att läsa in panelen. Försök igen</translation>
 <translation id="7207456302801184289">Välkommen till Brave</translation>
+<translation id="4026807082142463673">Aktiverar ytterligare funktioner för att tillhandahålla Braves starkaste skydd</translation>
 <translation id="5871205389137001634">Klicka för att avsluta bildsökningen</translation>
 <translation id="8054200348483755053">Brave har upptäckt att dessa objekt innehåller skadlig kod:</translation>
 <translation id="3955583201925082436">Brave kontrollerar regelbundet att webbläsaren har de säkraste inställningarna. Vi meddelar dig om du behöver granska något.</translation>
@@ -468,6 +474,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="6327105987658262776">Det finns ingen tillgänglig uppdatering.</translation>
 <translation id="1819119299840995223">En annan process i Brave pågår. Försök igen senare.</translation>
 <translation id="8616874628011103667">Nu är det enklare att använda Brave med ditt Brave-konto och på delade datorer.</translation>
+<translation id="5213389303624223677">Få enkel åtkomst till funktionerna du känner till, gillar och litar på genom att ställa in Brave som standardwebbläsare.</translation>
 <translation id="4264606872840545968">Brave-genväg</translation>
 <translation id="6890616081898535725">Den här nedladdningen blockerades av Brave eftersom filen inte brukar laddas ned och den kan vara farlig</translation>
 <translation id="335632367599648646">Vill du avinstallera Brave?</translation>
@@ -576,6 +583,9 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="4631170166710903214">Detta tillägg stöds inte längre. Vi rekommenderar att du tar bort det i stället.</translation>
 <translation id="7951152294775418909">Fortsätt där du slutade: Brave återställer dina flikar varje gång du startar om. Inaktivera detta genom att öppna</translation>
 <translation id="3191314862567596053">Importera lösenord till Brave</translation>
+<translation id="284799389314308801">1. Klicka på <ph name="BUTTON_LABEL"/> nedan
+2. Klicka på <ph name="BUTTON_2"/> i Windows-inställningarna
+3. Klicka på <ph name="BUTTON_3"/> i Windows-aviseringen för att fästa Brave i aktivitetsfältet för snabb åtkomst</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="7450541714075000668">Texten har kopierats</translation>
 <translation id="2034072705932785495">Du behöver ge Brave behörighet att använda kameran på webbplatsen</translation>
@@ -583,7 +593,6 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="5296583608321648908">Du behöver Windows 10 eller senare för att få kommande uppdateringar av Brave. På den här datorn används Windows 7.</translation>
 <translation id="3962395975456095331">Vill du starta om Brave?</translation>
 <translation id="2619516027171717873">Det går inte att installera samma version av Brave som den som redan körs. Stäng Brave och försök igen.</translation>
-<translation id="2731639583336131792">Du sparar och använder lösenord med mera i Brave-kontot när du är inloggad i Brave. <ph name="LEARN_MORE"/></translation>
 <translation id="5337027666828618338">Webbplatser bör fungera som förväntat. Du loggas ut från de flesta webbplatser när du stänger alla fönster i Brave, med undantag för Brave-kontot om du är inloggad i Brave.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Om en minut startas Brave om}other{Om # minuter startas Brave om}}</translation>
 <translation id="552342471964912391">Låt Brave ta bort behörigheter från webbplatser som du inte har besökt nyligen för att skydda din data.</translation>
@@ -592,7 +601,9 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="3293668930608086049">Brave använder din kamera och mikrofon.</translation>
 <translation id="2827121003398607864">Vi har förbättrat Brave</translation>
 <translation id="3071313329776323836">Nu finns fler funktioner tillgängliga i Brave</translation>
+<translation id="7624307931717240213">Vi använder informationen för att förbättra tjänsten. Läs integritetspolicyn och användarvillkoren.</translation>
 <translation id="7649070708921625228">Hjälp</translation>
+<translation id="222435847253721602">Skaffa Brave-appen</translation>
 <translation id="4008841832817149051">Låt Brave surfa åt dig</translation>
 <translation id="7658239707568436148">Avbryt</translation>
 <translation id="3343095737966473035">Brave är inte din standardwebbläsare</translation>
@@ -673,6 +684,7 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="871233388178581868">Brave kan bara kontrollera dina lösenord om du sparar dem</translation>
 <translation id="3667461919057407535">Få en varning om Brave upptäcker att ett av dina lösenord har läckt ut i ett offentligt dataintrång</translation>
 <translation id="8555465886620020932">Tjänstfel: <ph name="SERVICE_ERROR"/>.</translation>
+<translation id="7998982887712810347">Vissa funktioner och tillägg i Brave har kortkommandon. Du kan välja att aktivera dem igen.</translation>
 <translation id="8556420416730706394">Du kan fästa Bildsökning för enkel åtkomst. Klicka på knappen Fäst högst upp på sidopanelen</translation>
 <translation id="856656450041460113">Sök efter språklista</translation>
 <translation id="227028348235968071">Brave kan kontrollera dina lösenord när du loggar in med Brave-kontot</translation>
@@ -707,6 +719,7 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="6500340165622970282">Det går inte att starta Brave eftersom något gick fel när profilen öppnades. Testa att starta om Brave.</translation>
 <translation id="3424657754843264466">Hantera Brave-profiler</translation>
 <translation id="7055223246119657449">Den här nedladdningen blockerades av Brave eftersom arkivfilen innehåller andra filer som kan dölja skadlig kod</translation>
+<translation id="8341362078156319636">Håll dina lösenord, bokmärken och din historik helt synkroniserade på alla enheter. Få enkel åtkomst till funktionerna du känner till och gillar genom att uppdatera standardwebbläsaren till Brave. Brave fästs i aktivitetsfältet för snabb åtkomst.</translation>
 <translation id="9049928023195059068">Logga in i Brave när du loggar in i andra tjänster från Brave</translation>
 <translation id="4561046754724442504">Brave avslutades automatiskt</translation>
 <translation id="5173820533850252773">Den här versionen av Brave är inaktuell</translation>
@@ -722,7 +735,6 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="8208548103319284047">Tips för Brave: Sök med Lens</translation>
 <translation id="7902365066753170041">Starta om för att uppdatera &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
-<translation id="49909619875329637">Få mer när du är inloggad i Brave</translation>
 <translation id="296137235951584143">Anpassa Brave</translation>
 <translation id="7977787072794666032">Brave kanske inte fungerar ordentligt eftersom den inte längre stöds på Windows XP och Windows Vista</translation>
 <translation id="945522503751344254">Skicka feedback</translation>

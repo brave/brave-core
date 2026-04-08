@@ -1837,6 +1837,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="8897189056319316783">Защита на ZEC</translation>
 <translation id="508249542337194541">Премахване на защита от ZEC</translation>
 <translation id="3382275793825152362">Защита на средствата</translation>
+<translation id="617149752238892649">Отблокира средства</translation>
 <translation id="8631765320256788981">Изпращаш средства от прозрачния си акаунт към защитения си акаунт.</translation>
 <translation id="3860364671495430495">Изпращаш средства от защитения си акаунт към прозрачния си акаунт.</translation>
 <translation id="7144878232160441200">Нов опит</translation>
@@ -2186,6 +2187,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
     }</translation>
 <translation id="6961721183181597848">Как мога да ти помогна днес?</translation>
 <translation id="2966135729673253768">Задай допълнителен въпрос</translation>
+<translation id="5923170497201832190">Превъртане до най-долната част на раздела</translation>
 <translation id="6219262425964000211">Пусни файловете тук</translation>
 <translation id="4313763911013851687">Пусни каквито искаш файлове тук, за да ги добавиш към разговора</translation>
 <translation id="4524675003624341892">Предложени въпроси...</translation>
@@ -2207,20 +2209,21 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="999273441077650169">Моделът се променя динамично, за да се използва най-добрият за задачата.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Llama 3.1 8B - модел, създаден от Meta, с цел ефективност и широко приложение. Llama се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Здравей, аз съм Лио, асистентът на Brave с изкуствен интелект. Задвижван съм от Qwen VL 30B – модел, създаден от Alibaba Cloud с цел ефективност и широк обхват. Qwen се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">Здравей, аз съм Лио, асистентът на Brave с изкуствен интелект. Задвижен съм от DeepSeek V3.1 – модел, създаден от DeepSeek с цел ефективност и широк обхват. DeepSeek V3.1 се хоства от NEAR чрез тяхна проверимо защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">Здравей, аз съм Лио, асистентът на Brave с изкуствен интелект. Задвижен съм от GLM-5 – модел, създаден от Zhipu AI с цел ефективност и широк обхват. GLM-5 се хоства от NEAR чрез тяхна проверимо защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Здравей, аз съм Leo. Аз съм AI асистент на Brave. Захранвам се от Claude Instant — модел, създаден от Anthropic за водене на диалог и обработка на текст. Claude Instant се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научете повече<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Здравей, аз съм Лио. Проксиран съм от Brave и съм задвижван от Claude Haiku – модел, създаден от Anthropic с цел да захранва разговорни задачи и задачи за обработка на текст. Claude Haiku се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Здравей, аз съм Лио. Проксиран съм от Brave и съм задвижван от Claude Sonnet – модел, създаден от Anthropic с цел да захранва разговорни задачи и задачи за обработка на текст. Claude Sonnet се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Llama 4 Scout – модел, създаден от Meta с цел ефективност и широко приложение. Llama 4 Scout се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Llama 4 Maverick – модел, създаден от Meta с цел ефективност и широко приложение. Llama 4 Maverick се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от GPT OSS 20B – модел, създаден от OpenAI с цел ефективност и широко приложение. GPT OSS 20B се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от GPT OSS 120B – модел, създаден от OpenAI с цел ефективност и широко приложение. GPT OSS 120B се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Mistral Large – модел, създаден от Mistral с цел ефективност и широко приложение. Mistral Large се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Pixtral Large – модел, създаден от Mistral с цел ефективност и широко приложение. Pixtral Large се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижван съм от Qwen 3 235B – модел, създаден от Alibaba Cloud с цел ефективност и широко приложение. Qwen 3 235B се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Deepseek V3.1 – модел, създаден от Deepseek с цел ефективност и широко приложение. Deepseek V3.1 се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Deepseek V3.2 – модел, създаден от Deepseek с цел ефективност и широко приложение. Deepseek V3.2 се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижван съм от Qwen 3 Coder 480B – модел, създаден от Alibaba Cloud с цел ефективност и широко приложение. Qwen 3 Coder 480B се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Здравей, аз съм Лио. Проксиран съм от Brave и съм задвижван от Claude Opus – модел, създаден от Anthropic с цел да захранва разговорни задачи и задачи за обработка на текст. Claude Opus се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">Здравей, аз съм Лио, асистентът на Brave с изкуствен интелект. Задвижен съм от GLM-4-7-Flash – модел, създаден от Zhipu AI с цел ефективност и широк обхват. GLM-4-7-Flash се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">Здравей, аз съм Лио, асистентът на Brave с изкуствен интелект. Задвижен съм от Kimi K2.5 – модел, създаден от Moonshot AI с цел ефективност и широк обхват. Kimi K2.5 се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">Здравей, аз съм Лио, асистентът на Brave с изкуствен интелект. Задвижен съм от Brave Ocelot – модел, създаден от Brave за обобщаване на уеб страници. Brave Ocelot се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Локален</translation>
 <translation id="830868413617744215">Бета</translation>
@@ -2353,6 +2356,8 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="7465032796278724624">Проверимо поверителен чрез NEAR AI TEE</translation>
 <translation id="8782867266498869301">Моделът се променя динамично, за да се използва най-добрият за задачата</translation>
 <translation id="3213834013136637671">Търсене • Визия</translation>
+<translation id="5276681919620506371">Търсене • Инструменти</translation>
+<translation id="7434375176361995333">Обобщения • Бързо</translation>
 <translation id="3965507912994218570">Настройки на Leo</translation>
 <translation id="3754337604877048671">Представяме Leo AI</translation>
 <translation id="5295261408976371809">Вашият <ph name="TEXT_BEFORE"/>личен<ph name="TEXT_AFTER"/> AI асистент, вграден директно в браузъра.</translation>
@@ -2408,6 +2413,8 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="4572010449071015143">Начало на нов разговор</translation>
 <translation id="345901077335355561">Връщане към активния разговор</translation>
 <translation id="6287023598025162715">Нов разговор</translation>
+<translation id="7230502562132448519">Филтриране на разговори</translation>
+<translation id="821070843380699990">Опитайте с другу заявка</translation>
 <translation id="7097822247923237815">Временен чат</translation>
 <translation id="7481750859362986254">Този чат няма да се запази в историята ти, нито ще използва някоя от персонализациите или спомените на Лио.</translation>
 <translation id="4238305333951712482">Паметта е актуализирана: <ph name="MEMORY_CONTENT"/></translation>
@@ -2445,6 +2452,21 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="6338250692384725496">Изпълнение на код в пясъчница, за да помогна с вашата заявка</translation>
 <translation id="4379566111233326721">Код:</translation>
 <translation id="3542130965673205258">Изход:</translation>
+<translation id="5382076391290708074">Преместване на раздели</translation>
+<translation id="3862123464576147769">Позволяването на това ще изпрати <ph name="URL_FORMAT_START"/>URL адреса<ph name="URL_FORMAT_END"/> и <ph name="TITLE_FORMAT_START"/>заглавието<ph name="TITLE_FORMAT_END"/> на всички ваши раздели и групи раздели към Brave AI и ще позволи на Brave AI да ги преместит. Това разрешение се отнася само за този разговор.</translation>
+<translation id="396165714586708444">Дълбокото търсене</translation>
+<translation id="577747221882855891">Търсене: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">Анализиране на <ph name="COUNT"/> източници за "<ph name="QUERY"/>"</translation>
+<translation id="1202264349398113062">Обработка на <ph name="COUNT"/> нови URL адреса за "<ph name="QUERY"/>"</translation>
+<translation id="6189479600023022289">Намерени <ph name="COUNT"/> URL адреса за "<ph name="QUERY"/>"</translation>
+<translation id="5150674341374247355">Получаване на <ph name="FETCHED"/>/<ph name="TOTAL"/> URL адреса</translation>
+<translation id="1075606740174445363">Анализирани <ph name="COUNT"/> URL адреса за "<ph name="QUERY"/>"</translation>
+<translation id="6220878652174655112">Търсене на <ph name="COUNT"/> заявки</translation>
+<translation id="3571450204565012512">Анализирани <ph name="URL_COUNT"/> URL адреса от <ph name="QUERY_COUNT"/> търсения</translation>
+<translation id="5733200563889491347">Разсъждението приключи</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>м <ph name="SECONDS"/>с</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>с</translation>
+<translation id="5067194014665306881">Грешка при разсъждението: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">AI сърфиране</translation>
 <translation id="2854657728271352435">Относно профила за AI сърфиране</translation>
 <translation id="2301685062527585986">За да защити данните ви, този изолиран профил за AI сърфиране гарантира, че AI агентът няма достъп до основния ви профил, с разрешения само за посещение и взаимодействие със сайтове, когато е необходимо. Можете да повишите продуктивността си, като му възлагате задачи и го оставите да сърфира вместо вас.</translation>
@@ -2509,11 +2531,14 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="7847477075635510673">Скриване на новините</translation>
 <translation id="9173319813356700250">НОВИНИ</translation>
 <translation id="6543799171249004861">Снимка от <ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="466214682712474574">Влез в <ph name="PROVIDER"/> акаунта си, за да видиш баланса си</translation>
 <translation id="8332875111286275890">Влез, за да видиш баланса си</translation>
 <translation id="5430001801813715388">НАГРАДИ</translation>
+<translation id="988042349921505128">Търсене и AI</translation>
 <translation id="2430295257226173518">Питайте за всичко, намирате всичко…</translation>
 <translation id="167018310108390163">Персонализирай страницата за нов раздел</translation>
+<translation id="3500134717967948757">Показване на уиджета на Лио в новите раздели</translation>
 <translation id="6851426306697017546">Показване на часовник</translation>
 <translation id="4844370919312937270">Показване на уиджета за търсене в новите раздели</translation>
 <translation id="7328310113820087094">С <ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/> можеш да печелиш, като гледаш реклами на страницата за нов раздел.</translation>
@@ -2542,8 +2567,14 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="8458987127502506209">Активиране на щитове на Brave</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Щитовете са ВДИГНАТИ<ph name="STATUS_AFTER"/> за този сайт</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Щитовете са СВАЛЕНИ<ph name="STATUS_AFTER"/> за този сайт</translation>
+<translation id="8426214145426269584">Защити <ph name="UP_BEFORE"/>вдигнати<ph name="UP_AFTER"/> за този сайт</translation>
+<translation id="3325367578778625743">Защити <ph name="DOWN_BEFORE"/>свалени<ph name="DOWN_AFTER"/> за този сайт</translation>
 <translation id="4724752924364329714">Ако сайтът изглежда повреден, опитайте да свалите щитовете.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Забележка: това може да намали защитата на личните данни на Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">Това може да намали защитата на неприкосновеността на Brave. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">Проследяващите елементи, рекламите и други елементи са блокирани.</translation>
+<translation id="4968268657895673116">Кажете ни, ако сайтът не работи правилно с вдигнати защити?</translation>
+<translation id="5412004902081180614">Доклад</translation>
 <translation id="3620004479054499575">Имате проблеми с този сайт?</translation>
 <translation id="9176447766421988172">Изпробваме експеримент за подобряване на съвместимостта на уебсайта, при който запазваме активирано само блокирането на реклами. Предупреждение: премахва всички защити за поверителност. Искате ли да го изпробвате? <ph name="LINK_BEFORE"/>Научете повече<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Моля, обърнете внимание, че за отделни уебсайтове, които не са защитени от защитата за поверителност на Brave, можете да настроите Щитовете на ОТПАДНАТ.</translation>
@@ -2558,9 +2589,12 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="8377155647357436161">Проследяващите елементи, рекламите и други елементи са блокирани<ph name="LINK_BEFORE"/>Научете повече<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Не е защитено от щитовете на Brave <ph name="LINK_BEFORE"/>Научете повече<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Разширени контроли</translation>
+<translation id="7939062555109487992">Разширени опции</translation>
 <translation id="5799940914270080805">Промяната на тези настройки може да повреди сайтовете.</translation>
 <translation id="9204041448536398473">Настройки на глобалния щит</translation>
 <translation id="2108334320919763866">Глобални настройки по подразбиране</translation>
+<translation id="1896472873031845605">Глобални настройки</translation>
+<translation id="8324318899000695659">Блокиране на елементи</translation>
 <translation id="7205939464631857223">Изчистване на всички блокирани елементи</translation>
 <translation id="3440043456924990296">Настройки, управлявани от организацията</translation>
 <translation id="7053983685419859001">Блокиране</translation>
@@ -2645,7 +2679,6 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="7207456302801184289">Добре дошли в Brave</translation>
 <translation id="4988030440045495002">Много тъмна тема</translation>
 <translation id="2422927186524098759">Странична лента</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Лента с инструменти</translation>
 <translation id="6225572914528673855">Адресна лента</translation>
