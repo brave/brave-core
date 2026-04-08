@@ -6,21 +6,17 @@
 #ifndef BRAVE_BROWSER_AI_CHAT_PDF_TEXT_EXTRACTOR_H_
 #define BRAVE_BROWSER_AI_CHAT_PDF_TEXT_EXTRACTOR_H_
 
-#include <memory>
 #include <optional>
 #include <string>
 #include <vector>
 
-#include "base/files/file_path.h"
-#include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
-#include "base/timer/timer.h"
-#include "content/public/browser/web_contents_delegate.h"
-#include "content/public/browser/web_contents_observer.h"
+#include "brave/browser/ai_chat/file_text_extractor_base.h"
+#include "services/network/public/cpp/web_sandbox_flags.h"
 
 namespace content {
 class BrowserContext;
-class WebContents;
+class RenderFrameHost;
 }  // namespace content
 
 namespace ai_chat {
@@ -36,17 +32,10 @@ namespace ai_chat {
 //       Writes bytes to a temp file first (e.g. from drag-and-drop).
 //
 // The extractor should be kept alive until the callback fires.
-class PdfTextExtractor : public content::WebContentsDelegate,
-                         public content::WebContentsObserver {
+class PdfTextExtractor : public FileTextExtractorBase {
  public:
-  using ExtractTextCallback =
-      base::OnceCallback<void(std::optional<std::string>)>;
-
   PdfTextExtractor();
   ~PdfTextExtractor() override;
-
-  PdfTextExtractor(const PdfTextExtractor&) = delete;
-  PdfTextExtractor& operator=(const PdfTextExtractor&) = delete;
 
   // Use an existing file path directly (no temp file created).
   void ExtractText(content::BrowserContext* browser_context,
@@ -59,46 +48,20 @@ class PdfTextExtractor : public content::WebContentsDelegate,
                    ExtractTextCallback callback);
 
  private:
-  // content::WebContentsDelegate:
-  bool ShouldSuppressDialogs(content::WebContents* source) override;
-  void CanDownload(const GURL& url,
-                   const std::string& request_method,
-                   base::OnceCallback<void(bool)> callback) override;
-  bool IsWebContentsCreationOverridden(
-      content::RenderFrameHost* opener,
-      content::SiteInstance* source_site_instance,
-      content::mojom::WindowContainerType window_container_type,
-      const GURL& opener_url,
-      const std::string& frame_name,
-      const GURL& target_url) override;
-  bool CanEnterFullscreenModeForTab(
-      content::RenderFrameHost* requesting_frame) override;
-  bool CanDragEnter(content::WebContents* source,
-                    const content::DropData& data,
-                    blink::DragOperationsMask operations_allowed) override;
-  void RequestKeyboardLock(content::WebContents* web_contents,
-                           bool esc_key_locked) override;
+  // FileTextExtractorBase:
+  void OnDocumentReady() override;
+  network::mojom::WebSandboxFlags AdditionalUnsandboxFlags() const override;
 
   // content::WebContentsObserver:
+  // PDF uses DidFinishLoad → TryRegisterForDocumentLoad instead of the
+  // base class's DocumentOnLoadCompletedInPrimaryMainFrame.
+  void DocumentOnLoadCompletedInPrimaryMainFrame() override {}
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                      const GURL& validated_url) override;
-  void PrimaryMainFrameRenderProcessGone(
-      base::TerminationStatus status) override;
 
-  void OnTempFileWritten(content::BrowserContext* browser_context,
-                         std::optional<base::FilePath> temp_path);
-  void LoadPdfInWebContents(content::BrowserContext* browser_context,
-                            const base::FilePath& pdf_path);
   void TryRegisterForDocumentLoad();
   void OnDocumentLoadComplete();
-  void OnTimeout();
-  void Finish(std::optional<std::string> result);
-  void Cleanup();
 
-  ExtractTextCallback callback_;
-  std::unique_ptr<content::WebContents> web_contents_;
-  base::FilePath temp_file_path_;
-  base::OneShotTimer timeout_timer_;
   bool registered_for_load_ = false;
   base::WeakPtrFactory<PdfTextExtractor> weak_ptr_factory_{this};
 };
