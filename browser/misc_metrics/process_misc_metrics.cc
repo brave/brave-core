@@ -5,10 +5,13 @@
 
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 
+#include "base/metrics/histogram_macros.h"
 #include "brave/browser/misc_metrics/doh_metrics.h"
 #include "brave/browser/misc_metrics/media_session_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/default_browser_monitor.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #if !BUILDFLAG(IS_ANDROID)
@@ -24,7 +27,14 @@
 
 namespace misc_metrics {
 
-ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state) {
+ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state)
+    : local_state_(local_state) {
+  pref_change_registrar_.Init(local_state);
+  pref_change_registrar_.Add(
+      kWidevineEnabled,
+      base::BindRepeating(&ProcessMiscMetrics::ReportSimpleMetrics,
+                          base::Unretained(this)));
+
 #if !BUILDFLAG(IS_ANDROID)
   menu_metrics_ = std::make_unique<MenuMetrics>(local_state);
   new_tab_metrics_ = std::make_unique<NewTabMetrics>(local_state);
@@ -42,6 +52,8 @@ ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state) {
   uptime_monitor_ = std::make_unique<UptimeMonitorImpl>(local_state);
   media_session_metrics_ =
       std::make_unique<MediaSessionMetrics>(local_state, uptime_monitor_.get());
+
+  ReportSimpleMetrics();
 }
 
 ProcessMiscMetrics::~ProcessMiscMetrics() = default;
@@ -82,6 +94,11 @@ UptimeMonitorImpl* ProcessMiscMetrics::uptime_monitor() {
 
 MediaSessionMetrics* ProcessMiscMetrics::media_session_metrics() {
   return media_session_metrics_.get();
+}
+
+void ProcessMiscMetrics::ReportSimpleMetrics() {
+  UMA_HISTOGRAM_BOOLEAN(kWidevineEnabledHistogramName,
+                        local_state_->GetBoolean(kWidevineEnabled));
 }
 
 void ProcessMiscMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
