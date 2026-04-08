@@ -11,6 +11,7 @@ import {
   event,
   clearAllDataForTesting,
 } from './create_interface_api'
+import { endpointsFor } from './endpoints_for'
 
 describe('createInterfaceApi', () => {
   // Clear the shared QueryClient between tests to avoid cache pollution
@@ -530,6 +531,68 @@ describe('createInterfaceApi', () => {
     expect(doSomething).toHaveBeenCalledWith('4')
     expect(doSomething).toHaveBeenCalledTimes(1)
     expect(api.moreThings.doAnotherThing()).toBeUndefined()
+  })
+
+  it('update does not prevent in-progress fetch', async () => {
+    // We need to wrap with endpointsFor in this test only so that
+    // prefetchWithArgs doesn't interfere with the QArgs type inference.
+    type MyInterface = {
+      getData(): Promise<{ id: string; anotherProperty: string }>
+    }
+
+    let allowGetDataToResolve = (_?: unknown) => {}
+
+    const getDataObserver = jest.fn()
+
+    const impl: MyInterface = {
+      getData: async () => {
+        getDataObserver()
+        await new Promise((resolve) => (allowGetDataToResolve = resolve))
+        return Promise.resolve({ id: '1', anotherProperty: 'fetched' })
+      },
+    }
+
+    const api = createInterfaceApi({
+      actions: {},
+      endpoints: endpointsFor(impl, {
+        getData: {
+          response: (result) => result,
+          prefetchWithArgs: [],
+          placeholderData: {
+            id: '0',
+            anotherProperty: 'placeholder',
+          },
+        },
+      }),
+    })
+
+    // prefetch has happened
+    expect(getDataObserver).toHaveBeenCalled()
+
+    // initially placeholder data
+    expect(api.getData.current()).not.toBeUndefined()
+    expect(api.getData.current()).toEqual({
+      id: '0',
+      anotherProperty: 'placeholder',
+    })
+
+    // make a partial update
+    api.getData.update({ anotherProperty: 'update' })
+
+    // verify other properties still intact
+    expect(api.getData.current()).toEqual({
+      id: '0',
+      anotherProperty: 'update',
+    })
+
+    // when initial fetch returns, it replaces the update
+    allowGetDataToResolve()
+    await new Promise((resolve) => setTimeout(resolve, 0))
+
+    expect(api.getData.current()).toEqual({
+      id: '1',
+      anotherProperty: 'fetched',
+    })
   })
 
   it('updates the query cache when update is called', async () => {
