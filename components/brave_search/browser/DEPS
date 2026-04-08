@@ -4,3 +4,9 @@ include_rules = [
   "+components/search_engines",
   "+services/network/public/cpp",
 ]
+
+specific_include_rules = {
+  "brave_search_default_host_unittest\.cc": [
+    "+brave/components/l10n/common/test/scoped_default_locale.h",
+  ],
+}

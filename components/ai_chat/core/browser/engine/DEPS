@@ -1,8 +1,14 @@
 specific_include_rules = {
   "conversation_api_client\.cc": [
-    "!brave/components/l10n/common/locale_util.h",
+    "+brave/components/l10n/common/locale_util.h",
   ],
   "conversation_api_v2_client\.cc": [
-    "!brave/components/l10n/common/locale_util.h",
+    "+brave/components/l10n/common/locale_util.h",
+  ],
+  "conversation_api_client_unittest\.cc": [
+    "+brave/components/l10n/common/test/scoped_default_locale.h",
+  ],
+  "conversation_api_v2_client_unittest\.cc": [
+    "+brave/components/l10n/common/test/scoped_default_locale.h",
   ],
 }

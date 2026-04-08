@@ -1,0 +1,5 @@
+specific_include_rules = {
+  "list_action_modifiers_unittest\.cc": [
+    "+brave/components/l10n/common/test/scoped_default_locale.h",
+  ],
+}

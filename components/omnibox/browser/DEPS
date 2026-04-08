@@ -34,4 +34,7 @@ specific_include_rules = {
     "!chrome/browser/search_engines/template_url_service_factory.h",
     "!chrome/test/base/testing_profile.h",
   ],
+  "promotion_unittest\.cc": [
+    "+brave/components/l10n/common/test/scoped_default_locale.h",
+  ],
 }
