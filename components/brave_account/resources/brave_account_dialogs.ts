@@ -5,6 +5,7 @@
 
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 // <if expr="not is_android and not is_ios">
+import { assert } from '//resources/js/assert.js'
 import { EventTracker } from '//resources/js/event_tracker.js'
 import { hasKeyModifiers } from '//resources/js/util.js'
 import {
@@ -59,6 +60,8 @@ export class BraveAccountDialogsElement extends CrLitElement {
   protected accessor isCapsLockOn: boolean = false
 
   // <if expr="not is_android and not is_ios">
+  private accountStateListenerId: number | null = null
+
   override connectedCallback() {
     super.connectedCallback()
 
@@ -67,13 +70,14 @@ export class BraveAccountDialogsElement extends CrLitElement {
     // LOGGED_OUT (i.e. when transitioning to VERIFICATION or LOGGED_IN).
     // Since account state is profile-wide, this automatically closes dialogs
     // across all tabs.
-    this.browserProxy.authenticationObserverCallbackRouter.onAccountStateChanged.addListener(
-      (state: AccountState) => {
-        if (whichAccountState(state) !== AccountStateFieldTags.LOGGED_OUT) {
-          this.onCloseDialog()
-        }
-      },
-    )
+    this.accountStateListenerId =
+      this.browserProxy.authenticationObserverCallbackRouter.onAccountStateChanged.addListener(
+        (state: AccountState) => {
+          if (whichAccountState(state) !== AccountStateFieldTags.LOGGED_OUT) {
+            this.onCloseDialog()
+          }
+        },
+      )
 
     this.eventTracker.add(document, 'keydown', this.onKeyDown)
     this.eventTracker.add(document, 'keyup', this.onKeyUp)
@@ -81,6 +85,12 @@ export class BraveAccountDialogsElement extends CrLitElement {
 
   override disconnectedCallback() {
     super.disconnectedCallback()
+
+    assert(this.accountStateListenerId)
+    this.browserProxy.authenticationObserverCallbackRouter.removeListener(
+      this.accountStateListenerId,
+    )
+
     this.eventTracker.removeAll()
   }
 

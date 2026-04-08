@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import '//resources/cr_components/localized_link/localized_link.js'
+import { assert } from '//resources/js/assert.js'
 import { CrLitElement, PropertyValues } from '//resources/lit/v3_0/lit.rollup.js'
 import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
@@ -53,19 +54,25 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
   private isResendingConfirmationEmail = false
   private measure?: (text: string) => number
   private resizeObserver?: ResizeObserver
+  private accountStateListenerId: number | null = null
 
   override connectedCallback() {
     super.connectedCallback()
 
-    this.browserProxy.authenticationObserverCallbackRouter
-      .onAccountStateChanged
-      .addListener((state: AccountState) => {
-        this.state = state;
-      })
+    this.accountStateListenerId =
+      this.browserProxy.authenticationObserverCallbackRouter
+        .onAccountStateChanged
+        .addListener((state: AccountState) => {
+          this.state = state
+        })
   }
 
   override disconnectedCallback() {
     super.disconnectedCallback()
+
+    assert(this.accountStateListenerId)
+    this.browserProxy.authenticationObserverCallbackRouter.removeListener(
+      this.accountStateListenerId)
 
     this.cleanUpEmailTruncation()
   }
