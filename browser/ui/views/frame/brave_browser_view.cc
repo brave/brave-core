@@ -274,6 +274,12 @@ bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
     return false;
   }
 
+  if (auto* controller = browser->GetFeatures().focus_mode_controller()) {
+    if (controller->IsEnabled()) {
+      return true;
+    }
+  }
+
   if (browser->profile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners)) {
     return true;
   }
@@ -747,6 +753,10 @@ void BraveBrowserView::AddedToWidget() {
 
   UpdateWebViewRoundedCorners();
 
+  if (auto* controller = browser()->GetFeatures().focus_mode_controller()) {
+    focus_mode_observation_.Observe(controller);
+  }
+
   if (vertical_tab_strip_host_view_) {
     if (base::FeatureList::IsEnabled(tabs::kBraveVerticalTabStripEmbedded)) {
       vertical_tab_strip_widget_delegate_view_ = AddChildView(
@@ -796,6 +806,10 @@ bool BraveBrowserView::ShowBraveHelpBubbleView(const std::string& text) {
   brave_help_bubble_host_view_->set_text(text);
   brave_help_bubble_host_view_->set_tracked_element(shields_action_view);
   return brave_help_bubble_host_view_->Show();
+}
+
+void BraveBrowserView::OnFocusModeToggled(bool enabled) {
+  UpdateRoundedCornersUI();
 }
 
 void BraveBrowserView::LoadAccelerators() {

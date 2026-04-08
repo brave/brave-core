@@ -91,14 +91,11 @@ gfx::RoundedCornersF BraveContentsViewUtil::GetRoundedCornersForContentsView(
   auto* vertical_tab_strip_widget_delegate_view =
       browser_view->vertical_tab_strip_widget_delegate_view();
 
-  // When hide completely is on, we think vertical tab is invisible
-  // except it's expanded.
   if (show_vertical_tab && vertical_tab_strip_widget_delegate_view) {
     auto* vtsr_view = vertical_tab_strip_widget_delegate_view
                           ->vertical_tab_strip_region_view();
     CHECK(vtsr_view);
-    if (tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(
-            browser_window_interface->GetBrowserForMigrationOnly())) {
+    if (vtsr_view->ShouldHideCompletelyWhenCollapsed()) {
       show_vertical_tab = (vtsr_view->state() ==
                            BraveVerticalTabStripRegionView::State::kExpanded);
     }

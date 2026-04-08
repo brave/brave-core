@@ -17,6 +17,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -77,6 +78,7 @@ class WalletButton;
 #endif
 
 class BraveBrowserView : public BrowserView,
+                         public FocusModeController::Observer,
                          public commands::AcceleratorService::Observer {
   METADATA_HEADER(BraveBrowserView, BrowserView)
  public:
@@ -153,6 +155,9 @@ class BraveBrowserView : public BrowserView,
     return vertical_tab_strip_widget_delegate_view_;
   }
   bool ShowBraveHelpBubbleView(const std::string& text) override;
+
+  // FocusModeController::Observer:
+  void OnFocusModeToggled(bool enabled) override;
 
   // commands::AcceleratorService:
   void OnAcceleratorsChanged(
@@ -295,6 +300,8 @@ class BraveBrowserView : public BrowserView,
   base::ScopedObservation<commands::AcceleratorService,
                           commands::AcceleratorService::Observer>
       accelerators_observation_{this};
+  base::ScopedObservation<FocusModeController, FocusModeController::Observer>
+      focus_mode_observation_{this};
 
 #if BUILDFLAG(IS_MAC)
   // Cached at construction: true if vertical tabs were enabled at startup.

@@ -17,6 +17,8 @@
 #include "base/time/time.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
+#include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/sidebar/features.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
@@ -171,6 +173,10 @@ void SidebarContainerView::Init() {
       base::BindRepeating(&SidebarContainerView::UpdateToolbarButtonVisibility,
                           base::Unretained(this)));
 
+  if (auto* controller = browser_->GetFeatures().focus_mode_controller()) {
+    focus_mode_observation_.Observe(controller);
+  }
+
   AddChildViews();
   UpdateToolbarButtonVisibility();
   SetSidebarShowOption(
@@ -209,7 +215,7 @@ void SidebarContainerView::ShowSidebarOnMouseOver(
     return;
   }
 
-  if (show_sidebar_option_ != ShowSidebarOption::kShowOnMouseOver) {
+  if (GetEffectiveShowOption() != ShowSidebarOption::kShowOnMouseOver) {
     return;
   }
 
@@ -294,23 +300,35 @@ void SidebarContainerView::UpdateBorder() {
 
 void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {
   DVLOG(2) << __func__;
-
   show_sidebar_option_ = show_option;
+  ApplyShowOption();
+}
+
+sidebar::SidebarService::ShowSidebarOption
+SidebarContainerView::GetEffectiveShowOption() const {
+  if (IsFocusModeEnabled(browser_) &&
+      show_sidebar_option_ != ShowSidebarOption::kShowNever) {
+    return ShowSidebarOption::kShowOnMouseOver;
+  }
+  return show_sidebar_option_;
+}
+
+void SidebarContainerView::ApplyShowOption() {
+  const auto show_option = GetEffectiveShowOption();
 
   if (base::FeatureList::IsEnabled(sidebar::features::kSidebarV2)) {
-    // When panel is visible, option change doesn't affect current UI status.
     if (IsSidePanelShowing()) {
       return;
     }
 
-    if (show_sidebar_option_ == ShowSidebarOption::kShowAlways) {
+    if (show_option == ShowSidebarOption::kShowAlways) {
       if (!IsSidebarVisible()) {
         ShowSidebarControlView();
       }
       return;
     }
 
-    if (show_sidebar_option_ == ShowSidebarOption::kShowNever) {
+    if (show_option == ShowSidebarOption::kShowNever) {
       HideSidebarAll();
       return;
     }
@@ -323,12 +341,12 @@ void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {
   }
 
   const bool is_panel_visible = side_panel_->GetVisible();
-  if (show_sidebar_option_ == ShowSidebarOption::kShowAlways) {
+  if (show_option == ShowSidebarOption::kShowAlways) {
     is_panel_visible ? ShowSidebarAll() : ShowSidebarControlView();
     return;
   }
 
-  if (show_sidebar_option_ == ShowSidebarOption::kShowNever) {
+  if (show_option == ShowSidebarOption::kShowNever) {
     if (!is_panel_visible) {
       HideSidebarAll();
     }
@@ -343,6 +361,10 @@ void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {
   HideSidebarAll();
 }
 
+void SidebarContainerView::OnFocusModeToggled(bool enabled) {
+  ApplyShowOption();
+}
+
 void SidebarContainerView::UpdateSidebarItemsState() {
   // control view has items.
   sidebar_control_view_->Update();
@@ -352,7 +374,7 @@ void SidebarContainerView::MenuClosed() {
   DVLOG(1) << __func__;
 
   // Don't need to to auto hide sidebar UI for other options.
-  if (show_sidebar_option_ != ShowSidebarOption::kShowOnMouseOver) {
+  if (GetEffectiveShowOption() != ShowSidebarOption::kShowOnMouseOver) {
     return;
   }
 
@@ -506,7 +528,7 @@ bool SidebarContainerView::ShouldForceShowSidebar() const {
 }
 
 void SidebarContainerView::OnMouseEntered(const ui::MouseEvent& event) {
-  if (show_sidebar_option_ != ShowSidebarOption::kShowOnMouseOver) {
+  if (GetEffectiveShowOption() != ShowSidebarOption::kShowOnMouseOver) {
     return;
   }
 
@@ -515,7 +537,7 @@ void SidebarContainerView::OnMouseEntered(const ui::MouseEvent& event) {
 }
 
 void SidebarContainerView::OnMouseExited(const ui::MouseEvent& event) {
-  if (show_sidebar_option_ != ShowSidebarOption::kShowOnMouseOver) {
+  if (GetEffectiveShowOption() != ShowSidebarOption::kShowOnMouseOver) {
     return;
   }
 
@@ -701,7 +723,7 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel) {
   // because it checks the tab size of initial tab and dupclited tab.
   // Initial tab width could be more wider than later opened tab because of
   // sidebar show animation.
-  if (show_sidebar_option_ == ShowSidebarOption::kShowAlways &&
+  if (GetEffectiveShowOption() == ShowSidebarOption::kShowAlways &&
       !show_side_panel) {
     DVLOG(1) << __func__ << ": show w/o animation";
     InvalidateLayout();
@@ -840,19 +862,19 @@ void SidebarContainerView::HideSidebarPanel() {
 void SidebarContainerView::HideSidebarForShowOption() {
   CHECK(!base::FeatureList::IsEnabled(sidebar::features::kSidebarV2));
 
-  if (show_sidebar_option_ == ShowSidebarOption::kShowAlways) {
+  const auto effective = GetEffectiveShowOption();
+  if (effective == ShowSidebarOption::kShowAlways) {
     HideSidebarPanel();
     return;
   }
 
-  if (show_sidebar_option_ == ShowSidebarOption::kShowOnMouseOver) {
-    // Hide all if mouse is outside of control view.
+  if (effective == ShowSidebarOption::kShowOnMouseOver) {
     sidebar_control_view_->IsMouseHovered() ? HideSidebarPanel()
                                             : HideSidebarAll();
     return;
   }
 
-  if (show_sidebar_option_ == ShowSidebarOption::kShowNever) {
+  if (effective == ShowSidebarOption::kShowNever) {
     HideSidebarAll();
     return;
   }

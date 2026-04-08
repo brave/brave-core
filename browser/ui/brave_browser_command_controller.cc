@@ -18,6 +18,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
@@ -366,6 +367,8 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   }
 
   UpdateCommandEnabled(IDC_FORCE_PASTE, true);
+
+  UpdateCommandForFocusMode();
 }
 
 void BraveBrowserCommandController::UpdateCommandsForFullscreenMode() {
@@ -512,6 +515,11 @@ void BraveBrowserCommandController::UpdateCommandsForSend() {
 void BraveBrowserCommandController::UpdateCommandsForPin() {
   UpdateCommandEnabled(IDC_WINDOW_CLOSE_UNPINNED_TABS,
                        brave::CanCloseUnpinnedTabs(&*browser_));
+}
+
+void BraveBrowserCommandController::UpdateCommandForFocusMode() {
+  UpdateCommandEnabled(IDC_TOGGLE_FOCUS_MODE,
+                       BrowserSupportsFocusMode(&*browser_));
 }
 
 void BraveBrowserCommandController::UpdateCommandForSplitView() {
@@ -802,6 +810,11 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::ForcePasteInBrowser(base::to_address(browser_));
       break;
     }
+    case IDC_TOGGLE_FOCUS_MODE:
+#if defined(TOOLKIT_VIEWS)
+      brave::ToggleFocusMode(base::to_address(browser_));
+#endif
+      break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;
       break;
