@@ -519,15 +519,6 @@ export function createInterfaceApi<
 
         const queryKey = [...baseKey, ...args]
 
-        // Cancel because our set could be replaced if there is a query
-        // in-progress.
-        if (queryClient.isFetching({ queryKey, exact: true })) {
-          queryClient.cancelQueries({
-            queryKey,
-            exact: true,
-          })
-        }
-
         queryClient.setQueryData<QData>(queryKey, (old) => {
           const updateData: AllowedUpdateParam =
             typeof up === 'function'
@@ -551,6 +542,22 @@ export function createInterfaceApi<
           const newData = updateFromOld(old, updateData)
           return newData
         })
+
+        // Cancel and re-queue because our set could be replaced if there is a
+        // query in-progress.
+        if (queryClient.isFetching({ queryKey, exact: true })) {
+          queryClient.cancelQueries({
+            queryKey,
+            exact: true,
+          })
+          // re-queue, but must first invalidate so that fetcher performs a new
+          // fetch instead of return the cached result
+          queryClient.invalidateQueries({
+            queryKey,
+            exact: true,
+          })
+          fetcher(...args)
+        }
       }
 
       if (prefetchWithArgs && queryOptions.enabled !== false) {
