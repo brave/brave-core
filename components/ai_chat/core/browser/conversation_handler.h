@@ -482,10 +482,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   // close. Therefore, these are not guaranteed to be active.
   std::set<int32_t> task_tab_ids_;
 
-  raw_ptr<AIChatService, DanglingUntriaged> ai_chat_service_;
+  raw_ptr<AIChatService> ai_chat_service_;
   raw_ptr<ModelService> model_service_;
-  raw_ptr<AIChatCredentialManager, DanglingUntriaged> credential_manager_;
-  raw_ptr<AIChatFeedbackAPI, DanglingUntriaged> feedback_api_;
+  raw_ptr<AIChatCredentialManager> credential_manager_;
+  raw_ptr<AIChatFeedbackAPI> feedback_api_;
   raw_ptr<PrefService> prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
