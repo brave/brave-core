@@ -1839,6 +1839,7 @@
 <translation id="8897189056319316783">Skydas ZEC</translation>
 <translation id="508249542337194541">Atskleisti ZEC</translation>
 <translation id="3382275793825152362">Lėšų apsauga</translation>
+<translation id="617149752238892649">Atblokoti lėšas</translation>
 <translation id="8631765320256788981">Jūs siunčiate lėšas iš savo skaidrios sąskaitos į saugią sąskaitą.</translation>
 <translation id="3860364671495430495">Jūs siunčiate lėšas iš savo apsaugotos paskyros į skaidrią paskyrą.</translation>
 <translation id="7144878232160441200">Kartoti</translation>
@@ -2189,6 +2190,7 @@
     }</translation>
 <translation id="6961721183181597848">Kuo galiu jums šiandien padėti?</translation>
 <translation id="2966135729673253768">Paklauskite, kokie tolesni veiksmai</translation>
+<translation id="5923170497201832190">Slinkti skirtuką į apačią</translation>
 <translation id="6219262425964000211">Tempkite failus čia</translation>
 <translation id="4313763911013851687">Tempkite arba įklijuokite failus čia, kad pridėtumėte juos prie pokalbio</translation>
 <translation id="4524675003624341892">Siūlyti klausimus…</translation>
@@ -2210,18 +2212,16 @@
 <translation id="999273441077650169">Modelis dinamiškai keičiasi, kad būtų naudojamas geriausias užduočiai atlikti.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Meta“ sukurtu „Llama 3.1 8B“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „Llama“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Sveiki! Mano vardas Leo. Esu AI asistentas iš Brave. Mane valdo Qwen VL 30B – modelis, sukurtas Alibaba Cloud, kad veiktų našiai ir būtų pritaikomas įvairiems panaudojimo atvejams. Qwen veikia „Brave“ saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">Sveiki! Mano vardas Leo. Esu AI asistentas iš Brave. Mane valdo DeepSeek V3.1 – modelis, sukurtas DeepSeek, kad veiktų našiai ir būtų pritaikomas įvairiems panaudojimo atvejams. DeepSeek V3.1 veikia per NEAR teikiamą patikimą ir privačią infrastruktūrą.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">Sveiki! Mano vardas Leo. Esu AI asistentas iš Brave. Mane valdo GLM-5 – modelis, sukurtas Zhipu AI, kad veiktų našiai ir būtų pritaikomas įvairiems panaudojimo atvejams. GLM-5 veikia per NEAR teikiamą patikimą ir privačią infrastruktūrą.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Sveiki, aš – Leo. Esu Brave dirbtinio intelekto asistentas. Dirbu su Claude Instant modeliu, sukurtu Anthropic, siekiant vykdyti pokalbių ir teksto apdorojimo užduotis. Claude Instant yra talpinamas Brave per mūsų saugią infrastruktūrą.<ph name="LINK_BEFORE"/>Sužinoti daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Anthropic“ sukurtu „Claude Haiku“ modeliu, skirtu pokalbių ir tekstų apdorojimo užduotims atlikti. „Brave“ naudoja „Claude Haiku“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Anthropic“ sukurtu „Claude Sonnet“ modeliu, skirtu pokalbių ir tekstų apdorojimo užduotims atlikti. „Brave“ naudoja „Claude Sonnet“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Meta“ sukurtu „Llama 4 Scout“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „Llama 4 Scout“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Meta“ sukurtu „Llama 4 Maverick“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „Llama 4 Maverick“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „OpenAI“ sukurtu „GPT OSS 20B“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „GPT OSS 20B“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „OpenAI“ sukurtu „GPT OSS 120B“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „GPT OSS 120B“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Mistral“ sukurtu „Mistral Large“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „Mistral Large“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Mistral“ sukurtu „Pixtral Large“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „Pixtral Large“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Alibaba Cloud“ sukurtu „Qwen 3 235B“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „Qwen 3 235B“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Deepseek“ sukurtu „Deepseek V3.1“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „Deepseek V3.1“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Deepseek“ sukurtu „Deepseek V3.2“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „Deepseek V3.2“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Alibaba Cloud“ sukurtu „Qwen 3 Coder 480B“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „Qwen 3 Coder 480B“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Anthropic“ sukurtu „Claude Opus“ modeliu, skirtu pokalbių ir tekstų apdorojimo užduotims atlikti. „Brave“ naudoja „Claude Opus“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">„Premium“</translation>
@@ -2356,6 +2356,8 @@
 <translation id="7465032796278724624">Patikimai privatu naudojant NEAR AI TEE</translation>
 <translation id="8782867266498869301">Modelis dinamiškai keičiasi, kad būtų naudojamas geriausias užduočiai atlikti</translation>
 <translation id="3213834013136637671">Paieška • Vizija</translation>
+<translation id="5276681919620506371">Paieška • Įrankiai</translation>
+<translation id="7434375176361995333">Santraukos • Greita</translation>
 <translation id="3965507912994218570">"Leo" nustatymai</translation>
 <translation id="3754337604877048671">Pristatome Leo AI</translation>
 <translation id="5295261408976371809">Jūsų <ph name="TEXT_BEFORE"/>privatus<ph name="TEXT_AFTER"/> dirbtinio intelekto asistentas tiesiai naršyklėje.</translation>
@@ -2411,6 +2413,8 @@
 <translation id="4572010449071015143">Pradėti naują pokalbį</translation>
 <translation id="345901077335355561">Grįžti prie aktyvaus pokalbio</translation>
 <translation id="6287023598025162715">Naujas pokalbis</translation>
+<translation id="7230502562132448519">Filtruoti pokalbius</translation>
+<translation id="821070843380699990">Pabandykite kitą paieškos užklausą</translation>
 <translation id="7097822247923237815">Laikinas pokalbis</translation>
 <translation id="7481750859362986254">Šis pokalbis nebus išsaugotas jūsų istorijoje ir jame nebus naudojamas joks „Leo“ tinkinimas ar prisiminimai.</translation>
 <translation id="4238305333951712482">Atmintis atnaujinta: <ph name="MEMORY_CONTENT"/></translation>
@@ -2448,6 +2452,20 @@
 <translation id="6338250692384725496">Paleidžiau kodą smėlyje, norėdama padėti jūsų užklausai</translation>
 <translation id="4379566111233326721">Kodas:</translation>
 <translation id="3542130965673205258">Išvedinys:</translation>
+<translation id="5382076391290708074">Perkeliant jūsų skirtukus</translation>
+<translation id="396165714586708444">Gilumi tyrinėjimas</translation>
+<translation id="577747221882855891">Paieška: „<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">Analizuojama <ph name="COUNT"/> šaltinių dėl „<ph name="QUERY"/>"</translation>
+<translation id="1202264349398113062">Apdorojama <ph name="COUNT"/> nauji URL adresai dėl „<ph name="QUERY"/>"</translation>
+<translation id="6189479600023022289">Rasta <ph name="COUNT"/> URL adresų dėl „<ph name="QUERY"/>"</translation>
+<translation id="5150674341374247355">Parsiunčiama <ph name="FETCHED"/>/<ph name="TOTAL"/> URL adresai</translation>
+<translation id="1075606740174445363">Išanalizuota <ph name="COUNT"/> URL adresai dėl „<ph name="QUERY"/>"</translation>
+<translation id="6220878652174655112">Paieškoma <ph name="COUNT"/> užklausų</translation>
+<translation id="3571450204565012512">Išanalizuota <ph name="URL_COUNT"/> URL iš <ph name="QUERY_COUNT"/> paieškų</translation>
+<translation id="5733200563889491347">Tyrimas baigtas</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>m <ph name="SECONDS"/>s</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>s</translation>
+<translation id="5067194014665306881">Tyrimą rašyme klaida: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">AI naršymas</translation>
 <translation id="2854657728271352435">Apie AI naršymo profilį</translation>
 <translation id="2301685062527585986">Kad apsaugotumėte savo duomenis, šis izoliuotas AI naršymo profilis užtikrina, kad AI agentas neturėtų prieigos prie pagrindinio naršymo profilio ir turėtų tik reikiamas teises lankytis svetainėse bei bendrauti jose. Galite padidinti savo produktyvumą, pavestami jam užduotis ir leisdami naršyti už jus.</translation>
@@ -2512,11 +2530,14 @@
 <translation id="7847477075635510673">Slėpti naujienas</translation>
 <translation id="9173319813356700250">NAUJIENOS</translation>
 <translation id="6543799171249004861">Nuotraukos autorius <ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">„Leo“ DI</translation>
 <translation id="466214682712474574">Prisijunkite prie savo <ph name="PROVIDER"/> sąskaitos, kad pamatytumėte savo likutį</translation>
 <translation id="8332875111286275890">Prisijungti norint pamatyti savo likutį</translation>
 <translation id="5430001801813715388">APDOVANOJIMAI</translation>
+<translation id="988042349921505128">Paieška ir AI</translation>
 <translation id="2430295257226173518">Klauskite bet ko, raskite viską…</translation>
 <translation id="167018310108390163">Naujos kortelės puslapio pritaikymas</translation>
+<translation id="3500134717967948757">Rodyti Leo AI valdiklį naujose kortelėse</translation>
 <translation id="6851426306697017546">Rodyti laikrodį</translation>
 <translation id="4844370919312937270">Rodyti paieškos valdiklį naujose kortelėse</translation>
 <translation id="7328310113820087094">Su <ph name="LINK_BEGIN"/>„Brave“ apdovanojimais<ph name="LINK_END"/> galite uždirbti žiūrėdami naujos kortelės puslapio reklamas.</translation>
@@ -2545,8 +2566,14 @@
 <translation id="8458987127502506209">Įgalinti „Brave“ skydus</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Skydai yra ĮJUNGTI<ph name="STATUS_AFTER"/> šiai svetainei</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Skydai yra IŠJUNGTI<ph name="STATUS_AFTER"/> šiai svetainei</translation>
+<translation id="8426214145426269584"><ph name="UP_BEFORE"/>Skydai yra ĮJUNGTI<ph name="UP_AFTER"/> šiai svetainei</translation>
+<translation id="3325367578778625743"><ph name="DOWN_BEFORE"/>Skydai yra IŠJUNGTI<ph name="DOWN_AFTER"/> šiai svetainei</translation>
 <translation id="4724752924364329714">Jei atrodo, kad ši svetainė neveikia, pabandykite nuleisti skydus.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Pastaba: tai gali sumažinti "Brave" privatumo apsaugą.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">Tai gali sumažinti Brave privatumo apsaugą. <ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">Sekikliai, reklamos ir kt. užblokuoti.</translation>
+<translation id="4968268657895673116">Ar ši svetainė neworkiko tinkamai, kai skydai buvo įjungti?</translation>
+<translation id="5412004902081180614">Pranešti</translation>
 <translation id="3620004479054499575">Ar susiduriate su šios svetainės problemomis?</translation>
 <translation id="9176447766421988172">Siekdami padidinti svetainių suderinamumą bandome eksperimentą, kurio metu įjungiame tik skelbimų blokavimą. Įspėjimas: pašalinamos visos privatumo apsaugos priemonės. Ar norite tai išbandyti? <ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Atkreipkite dėmesį, kad atskiroms svetainėms, kurioms neveikia "Brave" privatumo apsauga, galite nustatyti skydus į NUSTATYTI.</translation>
@@ -2561,9 +2588,12 @@
 <translation id="8377155647357436161">Sekikliai, reklamos ir kt. užblokuoti <ph name="LINK_BEFORE"/>Sužinoti daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Neapsaugota „Brave“ skydais <ph name="LINK_BEFORE"/>Sužinoti daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Išplėstiniai valdikliai</translation>
+<translation id="7939062555109487992">Išplėstiniai nustatymai</translation>
 <translation id="5799940914270080805">Pakeitus šiuos nustatymus svetainės gali neveikti.</translation>
 <translation id="9204041448536398473">Visuotinių skydų nuostatos</translation>
 <translation id="2108334320919763866">Visuotiniai numatytieji nustatymai</translation>
+<translation id="1896472873031845605">Visuotiniai nustatymai</translation>
+<translation id="8324318899000695659">Blokuoti elementus</translation>
 <translation id="7205939464631857223">Išvalykite visus užblokuotus elementus</translation>
 <translation id="3440043456924990296">Organizacijos valdomi nustatymai</translation>
 <translation id="7053983685419859001">Blokuoti</translation>
@@ -2648,7 +2678,6 @@
 <translation id="7207456302801184289">Dėkojame, kad naudojate „Brave“</translation>
 <translation id="4988030440045495002">Ypač tamsus apipavidalinimas</translation>
 <translation id="2422927186524098759">Šoninė juosta</translation>
-<translation id="2361906291514218784">„Leo“ DI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Įrankių juosta</translation>
 <translation id="6225572914528673855">Adreso juosta</translation>

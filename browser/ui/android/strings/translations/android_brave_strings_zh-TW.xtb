@@ -188,12 +188,27 @@
 <translation id="834487290629916192">稍後</translation>
 <translation id="4117451092682672487">輕鬆捍衛個人隱私。</translation>
 <translation id="7909375417585209817">只要將 Brave 設為預設瀏覽器，您輕觸的每個連結都會在 Brave 的隱私保護功能下開啟。</translation>
-<translation id="5148943178722443958">協助提升 Brave 品質。</translation>
+<translation id="763369711159699222">協助提升 Brave 品質。</translation>
+<translation id="8025937231644975408">請告訴我們您最喜愛的功能有哪些。</translation>
 <translation id="6718362830686703942">系統當機或停止回應時傳送診斷報告。</translation>
 <translation id="8616157231067364693">分享不公開的匿名產品深入分析，指出 Brave 使用者正在使用哪些功能。</translation>
 <translation id="2888496576732880897">幫助 Brave 搜尋成長</translation>
+<translation id="7198716519700700181">觀看串流媒體時防止受到中斷</translation>
 <translation id="7044431516245362795">選擇加入「網路探索計畫」，以幫助索引成長並改善搜尋結果。 <ph name="LEARN_MORE_START"/>了解更多資訊。<ph name="LEARN_MORE_END"/></translation>
+<translation id="4847979153841887006">Brave 標誌</translation>
+<translation id="1389386068457132299">內嵌教程背景</translation>
+<translation id="5101985748360228609">頂部葉片裝飾</translation>
+<translation id="5270920361877570459">底部葉片裝飾</translation>
+<translation id="4021716437419160885">向下捲動</translation>
+<translation id="4767173360729868049">幫助 Brave 搜尋插圖</translation>
+<translation id="8241918461631453498">防止受到中斷插圖</translation>
+<translation id="8213310572767907663">改進 Brave 插圖</translation>
+<translation id="2427917529469438577">在您最愛的串流網站阻擋惱人干擾。</translation>
 <translation id="7818938154803162778">沒問題，我願意協助</translation>
+<translation id="5298784657468199167">傳送當機報告</translation>
+<translation id="6188781052835527980">系統當機或停止回應時傳送匿名診斷報告。</translation>
+<translation id="4780647518983772446">分享不公開的匿名產品深入分析，指出 Brave 正在使用哪些功能。</translation>
+<translation id="5109496672133133896">私人產品深入分析</translation>
 <translation id="3545804467215833536">輕觸以查看 Brave Shields</translation>
 <translation id="1724327820822194498">查看 Brave 使用 Shields 在每個頁面上封鎖的所有惡意內容。</translation>
 <translation id="5386259141409498372">已封鎖 <ph name="BIG_TECH"/> 和其他 <ph name="TRACKER"/> 個廣告和追蹤器</translation>
@@ -383,7 +398,7 @@
 <translation id="717952606991220586">唉呀，發生問題了。請待會再試一次。</translation>
 <translation id="987264212798334818">一般</translation>
 <translation id="1116694919640316211">關於</translation>
-<translation id="1275213816424141989">晚點再說</translation>
+<translation id="2370739752330685659">稍後再說</translation>
 <translation id="3624048886326677117">封鎖追蹤程式 &amp; 廣告（積極）</translation>
 <translation id="7151914815476509258">封鎖追蹤程式 &amp; 廣告（標準）</translation>
 <translation id="7384778069178817075">允許所有追蹤器與廣告</translation>
@@ -501,7 +516,6 @@
 <translation id="5705882733397021510">返回</translation>
 <translation id="7889432931837317731">可能的話自動開啟</translation>
 <translation id="1029304566263314007">顯示下載進度通知</translation>
-<translation id="2910433761530295035">詢問檔案儲存位置（若偵測到 SD 卡）</translation>
 <translation id="2977501775944575564">並行下載</translation>
 <translation id="6224180438946945617">啟用並行下載以加快下載速度</translation>
 <translation id="8967385052772844086">檢視完整的隱私權報告</translation>
@@ -922,6 +936,9 @@
 <translation id="703185154752046151">新增至主畫面的小工具</translation>
 <translation id="4635094429202343515">試試 Brave 搜尋小工具</translation>
 <translation id="4809681171446727314">透過您的主畫面執行私密的獨立搜尋作業。</translation>
+<translation id="3280562213547448728">語音搜尋</translation>
+<translation id="3925312712530886302">開啟無痕搜尋</translation>
+<translation id="9214590551301647710">開啟 Leo</translation>
 <translation id="7751715172931488388">新增小工具</translation>
 <translation id="7285167584112910782">Brave 快速行動搜尋</translation>
 <translation id="2326703104633309781">使用 Brave 翻譯</translation>
@@ -961,7 +978,14 @@
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">重設為預設值</translation>
 <translation id="4922034974043704366">此功能已啟用，因為您已選擇使用。</translation>
-<translation id="3144818380093107753">Brave Origin 是一種以訂閱為基礎的方式，讓您停用原本用來支持 Brave 業務的創收功能。Brave Origin 訂閱者將繼續受益於我們領先業界的隱私、廣告攔截和速度（透過 Brave 盾牌）以及定期的軟體更新、Chromium 修補程式、安全和隱私改進。他們也可以選擇停用 Brave Leo、新聞、獎賞、錢包、VPN、Web3 網域等功能。&lt;br/&gt;&lt;br/&gt;用戶將在瀏覽器設定選單中看到一個新的控制面板。&lt;br/&gt;&lt;br/&gt;&lt;b&gt;注意：Brave Origin 不會禁用您當前使用的瀏覽器功能，也不會影響 Brave 搜尋功能或 Brave 搜尋廣告。&lt;/b&gt;</translation>
+<translation id="2587535830241068901">自訂您的瀏覽器，同時仍支援 Brave</translation>
+<translation id="7235314227387539944">Brave Origin 是瀏覽器的付費版本，適合不需要支持 Brave 業務所有功能，但仍想要只有 Brave 提供的隱私保護的用戶。Origin 用戶將繼續受益於我們業界領先的隱私保護、廣告攔截和速度（透過 Brave 盾牌），以及定期軟件更新、Chromium 補丁和安全與隱私改進。Origin 將從瀏覽器中移除大多數其他功能。</translation>
+<translation id="7941943775131052130">請注意，Brave Origin 購買還將包括對 Brave 搜尋高級版的存取權限，因為 Origin 將從 Brave 搜尋結果頁面中移除廣告。</translation>
+<translation id="2573819149217596923">改變 Brave 功能</translation>
+<translation id="7415416427817229128">啟用或停用 Brave 功能需要瀏覽器重新啟動以套用變更。您想立即重新啟動嗎？</translation>
+<translation id="2256115617011615191">立即重新啟動</translation>
+<translation id="8554205386170195281">購買</translation>
+<translation id="7071521146534760487">管理帳戶</translation>
 <translation id="8613144770663526433">用 Brave 錢包登入</translation>
 <translation id="3696514931437952995">您正在登入 <ph name="ORIGIN"/>。Brave 錢包將與 <ph name="ORIGIN"/> 分享您的錢包位址。</translation>
 <translation id="1028781062521375153">檢視詳細資料</translation>
@@ -1086,12 +1110,13 @@
 <translation id="2735247450315842119">允許在無痕標籤頁中截圖</translation>
 <translation id="8420414929552321089">如果允許，開啟多個應用程式時，無痕標籤頁也會顯示。</translation>
 <translation id="7956713633345437162">手機書籤</translation>
+<translation id="7984508421152399880">立即購買</translation>
 <translation id="6261139507111008244">支持我們的使命 &amp; 開源工作</translation>
-<translation id="7882690061170175552">以盾牌為中心的極簡瀏覽器 UI</translation>
+<translation id="6073373503121903099">以 Brave 盾牌為中心的極簡瀏覽器 UI</translation>
 <translation id="2267973897341040743">維持核心廣告攔截、隱私權、 &amp; 速度</translation>
-<translation id="1361157028850796410">最佳價值</translation>
-<translation id="7280825497485894053">按月訂閱</translation>
-<translation id="4570901726096223030">深入瞭解 Origin</translation>
+<translation id="3339535734679532460">一次性購買，無需額外的訂閱費用</translation>
+<translation id="2805615640226281689">一次性購買</translation>
+<translation id="261433018299584676">取得登入代碼</translation>
 <translation id="1943432128510653496">儲存密碼</translation>
 <translation id="2100273922101894616">自動登入</translation>
 <translation id="363596933471559332">自動使用已儲存的憑證登入網站。如果關閉這項功能，每次在您登入網站之前，網站一律會要求驗證。</translation>

@@ -188,12 +188,27 @@
 <translation id="834487290629916192">MAI TÂRZIU</translation>
 <translation id="4117451092682672487">E simplu să vă păstrați confidențialitatea.</translation>
 <translation id="7909375417585209817">Atunci când Brave este setat ca browser implicit, orice link pe care îl accesați va fi deschis cu setările de confidențialitate ale Brave.</translation>
-<translation id="5148943178722443958">Ajutați-ne să îmbunătățim Brave.</translation>
+<translation id="763369711159699222">Ajută-ne să îmbunătățim Brave</translation>
+<translation id="8025937231644975408">Spune-ne ce funcționalități apreciezi cel mai mult.</translation>
 <translation id="6718362830686703942">Transmiteți rapoarte de diagnostic în caz că întâmpinați erori sau blocaje.</translation>
 <translation id="8616157231067364693">Trimiteți în mod confidențial și anonim informații privind funcțiile care sunt folosite de către utilizatorii Brave.</translation>
 <translation id="2888496576732880897">Ajută Brave Search să crească</translation>
+<translation id="7198716519700700181">Blochează întreruperile când faci streaming</translation>
 <translation id="7044431516245362795">Participă la Web Discovery Project pentru a contribui la creșterea indexului și la îmbunătățirea rezultatelor căutărilor. <ph name="LEARN_MORE_START"/>Află mai multe.<ph name="LEARN_MORE_END"/></translation>
+<translation id="4847979153841887006">Logo Brave</translation>
+<translation id="1389386068457132299">Fundal onboarding</translation>
+<translation id="5101985748360228609">Decorație frunze sus</translation>
+<translation id="5270920361877570459">Decorație frunze jos</translation>
+<translation id="4021716437419160885">Derulați în jos</translation>
+<translation id="4767173360729868049">Ilustrație ajutor Brave Search</translation>
+<translation id="8241918461631453498">Ilustrație blocare întreruperi</translation>
+<translation id="8213310572767907663">Ilustrație îmbunătățire Brave</translation>
+<translation id="2427917529469438577">Blochează întreruperile enervante pe site-urile tale de streaming preferate.</translation>
 <translation id="7818938154803162778">Sigur, voi ajuta</translation>
+<translation id="5298784657468199167">Trimiteți rapoarte de crash</translation>
+<translation id="6188781052835527980">Trimiteți rapoarte de diagnostic anonime în caz că întâmpinați erori sau blocaje.</translation>
+<translation id="4780647518983772446">Trimiteți în mod confidențial și anonim informații privind funcțiile care sunt folosite de utilizatorii Brave.</translation>
+<translation id="5109496672133133896">Informații private despre produs</translation>
 <translation id="3545804467215833536">Atingeți pentru a deschide Brave Shields.</translation>
 <translation id="1724327820822194498">Vizualizați toate lucrurile dăunătoare pe care Brave le-a blocat, pe fiecare pagină, cu ajutorul Shields.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> și<ph name="TRACKER"/> alte reclame &amp; monitoare de activitate blocate</translation>
@@ -383,7 +398,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="717952606991220586">Hopa, ceva nu funcționează. Vă rugăm încercați din nou mai târziu.</translation>
 <translation id="987264212798334818">General</translation>
 <translation id="1116694919640316211">Despre</translation>
-<translation id="1275213816424141989">Poate mai târziu</translation>
+<translation id="2370739752330685659">Poate mai târziu</translation>
 <translation id="3624048886326677117">Blocați șabloanele de urmărire și reclamele (agresiv)</translation>
 <translation id="7151914815476509258">Blocați șabloanele de urmărire și reclamele (standard)</translation>
 <translation id="7384778069178817075">Permiteți toate șabloanele de urmărire &amp; reclamele</translation>
@@ -501,7 +516,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="5705882733397021510">Înapoi</translation>
 <translation id="7889432931837317731">Deschideți automat atunci când este posibil</translation>
 <translation id="1029304566263314007">Afișați notificările de progres al descărcărilor</translation>
-<translation id="2910433761530295035">Întreabă unde să fie salvate fișierele (dacă este detectat un card SD)</translation>
 <translation id="2977501775944575564">Descărcare paralelă</translation>
 <translation id="6224180438946945617">Activați descărcarea paralelă pentru a accelera viteza de descărcare</translation>
 <translation id="8967385052772844086">Vizualizare text integral al Raportului de confidențialitate</translation>
@@ -922,6 +936,9 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="703185154752046151">Widget adăugat la ecranul principal</translation>
 <translation id="4635094429202343515">Încearcă widget-ul Brave Search</translation>
 <translation id="4809681171446727314">Accesați căutarea privată și independentă direct de pe ecranul de pornire.</translation>
+<translation id="3280562213547448728">Căutare vocală</translation>
+<translation id="3925312712530886302">Deschideți căutare privată</translation>
+<translation id="9214590551301647710">Deschideți Leo</translation>
 <translation id="7751715172931488388">Adăugați widget</translation>
 <translation id="7285167584112910782">Căutare rapidă Brave</translation>
 <translation id="2326703104633309781">Utilizați Brave Traducere</translation>
@@ -961,7 +978,14 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Resetare la valorile implicite</translation>
 <translation id="4922034974043704366">Această caracteristică este activată deoarece ați optat pentru ea</translation>
-<translation id="3144818380093107753">Brave Origin este o modalitate pe bază de abonament de a dezactiva funcțiile generatoare de venituri care susțin Brave ca o afacere. Abonații Brave Origin vor continua să beneficieze de confidențialitate, adblock și viteză de top (prin Brave Shields), precum și de actualizări software regulate, patch-uri Chromium și îmbunătățiri ale securității și confidențialității. De asemenea, ei vor debloca opțiunea de a dezactiva funcții precum Brave Leo, Știri, Recompense, Portofel, VPN, Domenii Web3 și multe altele.&lt;br/&gt;&lt;br/&gt;Abonații vor vedea un nou panou de control în meniul de setări al browserului. Funcțiile existente - precum și orice funcții noi pe care le vom livra în viitor - vor apărea aici și vor fi dezactivate în mod implicit.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Notă: Brave Origin nu va dezactiva funcțiile browserului pe care le utilizați în prezent și nu va afecta funcțiile Brave Search sau reclamele Brave Search.&lt;/b&gt;</translation>
+<translation id="2587535830241068901">Personalizați-vă browserul în timp ce susțineți Brave</translation>
+<translation id="7235314227387539944">Brave Origin este o versiune plătită a browserului pentru utilizatorii care nu au nevoie de toate funcțiile care susțin Brave ca business, dar care doresc totuși confidențialitatea pe care doar Brave o oferă. Utilizatorii Origin vor continua să beneficieze de confidențialitate de top din industrie, blocare de reclame și viteză (prin Shields), precum și actualizări regulate ale software-ului, patch-uri Chromium și îmbunătățiri de securitate și confidențialitate. Origin va elimina majoritatea celorlalte funcții din browser.</translation>
+<translation id="7941943775131052130">Rețineți că o achiziție Brave Origin va include, de asemenea, acces la Brave Search Premium, deoarece Origin va elimina reclamele din pagina de rezultate Brave Search.</translation>
+<translation id="2573819149217596923">Modificarea funcțiilor Brave</translation>
+<translation id="7415416427817229128">Activarea sau dezactivarea unei funcții Brave necesită redeschiderea browserului pentru a aplica modificările. Doriți să redeschideți acum?</translation>
+<translation id="2256115617011615191">Redeschideți acum</translation>
+<translation id="8554205386170195281">Achiziție</translation>
+<translation id="7071521146534760487">Gestionați contul</translation>
 <translation id="8613144770663526433">Conectați-vă cu Brave Wallet</translation>
 <translation id="3696514931437952995">Vă conectați la <ph name="ORIGIN"/>. Brave Wallet va partaja adresa portofelului dvs. cu <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Vedeți detaliile</translation>
@@ -1086,12 +1110,13 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="2735247450315842119">Permite capturi de ecran în filele private</translation>
 <translation id="8420414929552321089">Dacă este permis, filele private vor fi vizibile și atunci când sunt deschise mai multe aplicații.</translation>
 <translation id="7956713633345437162">Marcaje mobile</translation>
+<translation id="7984508421152399880">Cumpără acum</translation>
 <translation id="6261139507111008244">Sprijiniți-ne misiunea &amp; muncă open-source</translation>
-<translation id="7882690061170175552">Interfața minimală a browserului centrată pe scuturi</translation>
+<translation id="6073373503121903099">IU minimalist a browserului centrat pe Brave Shields</translation>
 <translation id="2267973897341040743">Mențineți adblock-ul de bază, confidențialitatea, viteza &amp;</translation>
-<translation id="1361157028850796410">cea mai bună valoare</translation>
-<translation id="7280825497485894053">Abonament lunar</translation>
-<translation id="4570901726096223030">Află mai multe despre Origin</translation>
+<translation id="3339535734679532460">Achiziție unică, fără costuri suplimentare de abonament</translation>
+<translation id="2805615640226281689">Achiziție unică</translation>
+<translation id="261433018299584676">Obțineți un cod de conectare</translation>
 <translation id="1943432128510653496">Parole salvate</translation>
 <translation id="2100273922101894616">Conectare automată</translation>
 <translation id="363596933471559332">Te conectezi automat la site-uri folosind datele de conectare stocate. Când funcția este dezactivată, ți se va solicita verificarea de fiecare dată înainte de a te conecta la un site.</translation>

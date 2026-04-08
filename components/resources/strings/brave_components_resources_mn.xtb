@@ -1834,6 +1834,7 @@
 <translation id="8897189056319316783">ZEC-н хамгаалалт</translation>
 <translation id="508249542337194541">ZEC-г хамгаалагдаагүй болгох</translation>
 <translation id="3382275793825152362">Санхүүг хамгаалах</translation>
+<translation id="617149752238892649">Санхүүгээ шалгалтгүй болгох</translation>
 <translation id="8631765320256788981">Таны ил тод данснаас хамгаалагдсан данс руу санхүү шилжүүлж байна.</translation>
 <translation id="3860364671495430495">Та хамгаалагдсан бүртгэлээс ил тод бүртгэл рүү санхүү шилжүүлж байна.</translation>
 <translation id="7144878232160441200">Дахин оролдох</translation>
@@ -2183,6 +2184,7 @@
     }</translation>
 <translation id="6961721183181597848">Өнөөдөр танд хэрхэн туслах вэ?</translation>
 <translation id="2966135729673253768">Дараагийн асуулт</translation>
+<translation id="5923170497201832190">Доош гүйлгэх</translation>
 <translation id="6219262425964000211">Файлуудыг энд оруулна уу</translation>
 <translation id="4313763911013851687">Буудлагын файлуудыг ярианд нэмэхийн тулд энд унагана уу</translation>
 <translation id="4524675003624341892">Асуулт санал болгох…</translation>
@@ -2204,20 +2206,21 @@
 <translation id="999273441077650169">Ажлын даалгаварт хамгийн сайныг ашиглах зорилгоор загвар хурдацтай өөрчлөгдөнө.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">Сайн байна уу, би Leo байна. Би Brave-ийх нэгэн хиймэл оюун ухаан туслах. Намайг Meta-гийн боловсруулсан, олон төрлийн хэрэглээнд тохиромжтой, өндөр гүйцэтгэлтэй Llama 3.1 8B загвар ажиллуулдаг. Llama нь бидний өөрийн баталгаат дэд бүтцээр Brave-д байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Сайн байна уу, би Leo. Би Brave-ийх нэгэн хиймэл оюун ухааны туслах. Намайг Alibaba Cloud-оор боловсруулсан, олон хэрэглээнд тохиромжтой, өндөр гүйцэтгэлийн Qwen VL 30B загвар ажиллуулдаг. Qwen нь бидний өөрийн баталгаат дэд бүтцээр Brave-д байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">Сайн байна уу, би Leo. Би Brave-ийх нэгэн хиймэл оюун ухааны туслах. Намайг DeepSeek-ээр боловсруулсан, олон төрлийн хэрэглээнд тохиромжтой, өндөр гүйцэтгэлтэй DeepSeek V3.1 загвар ажиллуулдаг. DeepSeek V3.1 нь NEAR-ийн баталгаат, хувийн дэд бүтцэд байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">Сайн байна уу, би Leo. Би Brave-ийх нэгэн хиймэл оюун ухааны туслах. Намайг GLM-5-аар боловсруулсан, олон төрлийн хэрэглээнд тохиромжтой, өндөр гүйцэтгэлтэй GLM-5 загвар ажиллуулдаг. GLM-5 нь NEAR-ийн баталгаат, хувийн дэд бүтцэд байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Сайн байна уу, би Лео. Би Brave-ийн хиймэл оюун ухаанд суурилсан туслах. Намайг Anthropic компаниас бүтээсэн Claude Instant загвар дэмждэг бөгөөд энэ загварыг Brave өөрийн тохирсон аюулгүй дэд бүтцээр хост хийдэг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй мэдээлэл<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Сайн байна уу, би Leo байна. Би Brave-ийх нэгэн хиймэл оюун ухаан туслах. Намайг Anthropic-оор боловсруулсан, харилцан ярилцах болон текст боловсруулалтын үүргийг гүйцэтгэх Claude Haiku загвар ажиллуулдаг. Claude Haiku нь бидний өөрийн баталгаат дэд бүтцээр Brave-д байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Сайн байна уу, би Leo байна. Би Brave-ийх нэгэн хиймэл оюун ухаан туслах. Намайг Anthropic-оор боловсруулсан, харилцан ярилцах болон текст боловсруулалтын үүргийг гүйцэтгэх Claude Sonnet загвар ажиллуулдаг. Claude Sonnet нь бидний өөрийн баталгаат дэд бүтцээр Brave-д байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">Сайн байна уу, би Leo байна. Би Brave-ийх нэгэн хиймэл оюун ухаан туслах. Намайг Meta-гийн боловсруулсан, олон төрлийн хэрэглээнд тохиромжтой, өндөр гүйцэтгэлтэй Llama 4 Scout загвар ажиллуулдаг. Llama 4 Scout нь бидний өөрийн баталгаат дэд бүтцээр Brave-д байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">Сайн байна уу, би Leo байна. Би Brave-ийх нэгэн хиймэл оюун ухаан туслах. Намайг Meta-гийн боловсруулсан, олон төрлийн хэрэглээнд тохиромжтой, өндөр гүйцэтгэлтэй Llama 4 Maverick загвар ажиллуулдаг. Llama 4 Maverick нь бидний өөрийн баталгаат дэд бүтцээр Brave-д байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">Сайн байна уу, би Leo байна. Би Brave-ийх нэгэн хиймэл оюун ухаан туслах. Намайг OpenAI-оор боловсруулсан, олон төрлийн хэрэглээнд тохиромжтой, өндөр гүйцэтгэлтэй GPT OSS 20B загвар ажиллуулдаг. GPT OSS 20B нь бидний өөрийн баталгаат дэд бүтцээр Brave-д байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">Сайн байна уу, би Leo байна. Би Brave-ийх нэгэн хиймэл оюун ухаан туслах. Намайг OpenAI-оор боловсруулсан, олон төрлийн хэрэглээнд тохиромжтой, өндөр гүйцэтгэлтэй GPT OSS 120B загвар ажиллуулдаг. GPT OSS 120B нь бидний өөрийн баталгаат дэд бүтцээр Brave-д байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Сайн байна уу, би Leo байна. Би Brave-ийх нэгэн хиймэл оюун ухаан туслах. Намайг Mistral-оор боловсруулсан, олон төрлийн хэрэглээнд тохиромжтой, өндөр гүйцэтгэлтэй Mistral Large загвар ажиллуулдаг. Mistral Large нь бидний өөрийн баталгаат дэд бүтцээр Brave-д байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">Сайн байна уу, би Leo байна. Би Brave-ийх нэгэн хиймэл оюун ухаан туслах. Намайг Mistral-оор боловсруулсан, олон төрлийн хэрэглээнд тохиромжтой, өндөр гүйцэтгэлтэй Pixtral Large загвар ажиллуулдаг. Pixtral Large нь бидний өөрийн баталгаат дэд бүтцээр Brave-д байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Сайн байна уу, би Leo байна. Би Brave-ийх нэгэн хиймэл оюун ухаан туслах. Намайг Alibaba Cloud-оор боловсруулсан, олон төрлийн хэрэглээнд тохиромжтой, өндөр гүйцэтгэлтэй Qwen 3 235B загвар ажиллуулдаг. Qwen 3 235B нь бидний өөрийн баталгаат дэд бүтцээр Brave-д байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">Сайн байна уу, би Leo байна. Би Brave-ийх нэгэн хиймэл оюун ухаан туслах. Намайг Deepseek-ээр боловсруулсан, олон төрлийн хэрэглээнд тохиромжтой, өндөр гүйцэтгэлтэй Deepseek V3.1 загвар ажиллуулдаг. Deepseek V3.1 нь бидний өөрийн баталгаат дэд бүтцээр Brave-д байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">Сайн байна уу, би Leo байна. Би Brave-ийх нэгэн хиймэл оюун ухаан туслах. Намайг Deepseek-ээр боловсруулсан, олон төрлийн хэрэглээнд тохиромжтой, өндөр гүйцэтгэлтэй Deepseek V3.2 загвар ажиллуулдаг. Deepseek V3.2 нь бидний өөрийн баталгаат дэд бүтцээр Brave-д байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">Сайн байна уу, би Leo байна. Би Brave-ийх нэгэн хиймэл оюун ухаан туслах. Намайг Alibaba Cloud-оор боловсруулсан, олон төрлийн хэрэглээнд тохиромжтой, өндөр гүйцэтгэлтэй Qwen 3 Coder 480B загвар ажиллуулдаг. Qwen 3 Coder 480B нь бидний өөрийн баталгаат дэд бүтцээр Brave-д байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Сайн байна уу, би Leo байна. Би Brave-ийх нэгэн хиймэл оюун ухаан туслах. Намайг Anthropic-оор боловсруулсан, харилцан ярилцах болон текст боловсруулалтын үүргийг гүйцэтгэх Claude Opus загвар ажиллуулдаг. Claude Opus нь бидний өөрийн баталгаат дэд бүтцээр Brave-д байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">Сайн байна уу, би Leo байна. Би Brave-ийх нэгэн хиймэл оюун ухаан туслах. Намайг Zhipu AI-оор боловсруулсан, олон төрлийн хэрэглээнд тохиромжтой, өндөр гүйцэтгэлтэй GLM-4-7-Flash загвар ажиллуулдаг. GLM-4-7-Flash нь бидний өөрийн баталгаат дэд бүтцээр Brave-д байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">Сайн байна уу, би Leo байна. Би Brave-ийх нэгэн хиймэл оюун ухаан туслах. Намайг Moonshot AI-оор боловсруулсан, олон төрлийн хэрэглээнд тохиромжтой, өндөр гүйцэтгэлтэй Kimi K2.5 загвар ажиллуулдаг. Kimi K2.5 нь бидний өөрийн баталгаат дэд бүтцээр Brave-д байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">Сайн байна уу, би Leo байна. Би Brave-ийх нэгэн хиймэл оюун ухаан туслах. Намайг Brave-оор боловсруулсан, вэб хуудасыг нэгтгэх Brave Ocelot загвар ажиллуулдаг. Brave Ocelot нь бидний өөрийн баталгаат дэд бүтцээр Brave-д байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Орон нутагт</translation>
 <translation id="830868413617744215">Бета</translation>
@@ -2350,6 +2353,8 @@
 <translation id="7465032796278724624">NEAR AI TEE ашиглан баталгаатай хувийн хамгаалалттай</translation>
 <translation id="8782867266498869301">Ажлын даалгаварт хамгийн сайныг ашиглах зорилгоор загвар хурдацтай өөрчлөгдөнө</translation>
 <translation id="3213834013136637671">Хайлт • Хараа</translation>
+<translation id="5276681919620506371">Хайлт • Багажууд</translation>
+<translation id="7434375176361995333">Нэгтгэл • Хурдан</translation>
 <translation id="3965507912994218570">Leo тохиргоо</translation>
 <translation id="3754337604877048671">Leo AI-г танилцуулж байна</translation>
 <translation id="5295261408976371809">Таны <ph name="TEXT_BEFORE"/>хувийн<ph name="TEXT_AFTER"/> хиймэл оюун ухааны туслах, хөтөчид шууд суурилуулсан.</translation>
@@ -2405,6 +2410,8 @@
 <translation id="4572010449071015143">Шинэ яриа эхлүүлэх</translation>
 <translation id="345901077335355561">Идэвхтэй яриандаа буцаж очих</translation>
 <translation id="6287023598025162715">Шинэ яриа</translation>
+<translation id="7230502562132448519">Яриаг шүүх</translation>
+<translation id="821070843380699990">Өөр хайлт оролдоно уу</translation>
 <translation id="7097822247923237815">Түр байрлах чат</translation>
 <translation id="7481750859362986254">Энэ чат таны түүхэнд хадгалагдахгүй бөгөөд Leo-ийн захиалгат болон санамжууд ашиглагдахгүй.</translation>
 <translation id="4238305333951712482">Санах ойг шинэчилсэн: <ph name="MEMORY_CONTENT"/></translation>
@@ -2442,6 +2449,21 @@
 <translation id="6338250692384725496">Таны асуултад туслах зорилгоор кодыг sandbox дээр ажиллуулсан</translation>
 <translation id="4379566111233326721">Код:</translation>
 <translation id="3542130965673205258">Гаралт:</translation>
+<translation id="5382076391290708074">Таб удирдлагыг зөөх</translation>
+<translation id="3862123464576147769">Үүнийг зөвшөөрөх нь бүх таб болон таб бүлгүүдийн <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> болон <ph name="TITLE_FORMAT_START"/>Гарчиг<ph name="TITLE_FORMAT_END"/> Brave AI-д илгээх бөгөөд Brave AI-г тэдгээрийг зөөх боломжийг өгнө. Энэ зөвшөөрөл нь зөвхөн энэ яриатай хамаатай.</translation>
+<translation id="396165714586708444">Гүнзгий судалгаа</translation>
+<translation id="577747221882855891">Хайж байна: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">"<ph name="QUERY"/>"-д зориулсан <ph name="COUNT"/> эх сурвалжийг шинжлэж байна</translation>
+<translation id="1202264349398113062">"<ph name="QUERY"/>"-д зориулсан <ph name="COUNT"/> шинэ URL боловсруулж байна</translation>
+<translation id="6189479600023022289">"<ph name="QUERY"/>"-д зориулсан <ph name="COUNT"/> URL олдсон</translation>
+<translation id="5150674341374247355"><ph name="FETCHED"/>/<ph name="TOTAL"/> URL авчирч байна</translation>
+<translation id="1075606740174445363">"<ph name="QUERY"/>"-д зориулсан <ph name="COUNT"/> URL шинжлэгдлээ</translation>
+<translation id="6220878652174655112"><ph name="COUNT"/> асуулга хайж байна</translation>
+<translation id="3571450204565012512"><ph name="QUERY_COUNT"/> хайлтаас <ph name="URL_COUNT"/> URL-г шинжлэгдлээ</translation>
+<translation id="5733200563889491347">Судалгаа дууссан</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>m <ph name="SECONDS"/>s</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>s</translation>
+<translation id="5067194014665306881">Судалгааны алдаа: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">AI хөтөч</translation>
 <translation id="2854657728271352435">AI хөтөчийн профайлын тухай</translation>
 <translation id="2301685062527585986">Таны өгөгдлийг хамгаалахын тулд энэ тусгаарлагдсан AI хөтөчийн профайл нь AI агент үндсэн хөтөчийн профайлд хандах эрхгүй байх нөхцөлийг бүрдүүлж, зөвхөн шаардлагатай вэбсайтууд руу зочлох, харилцах эрхтэйгээр тохируулагдсан. Та үүнийг даалгавар өгч ашигласнаар бүтээмжтэй байх боломжтой.</translation>
@@ -2506,11 +2528,14 @@
 <translation id="7847477075635510673">Мэдээг нуух</translation>
 <translation id="9173319813356700250">МЭДЭЭ</translation>
 <translation id="6543799171249004861"><ph name="AUTHOR"/>-ийн зураг</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="466214682712474574">Балансаа харахын тулд <ph name="PROVIDER"/> дансандаа нэвтэрнэ үү</translation>
 <translation id="8332875111286275890">Балансаа харахын тулд нэвтэрнэ үү</translation>
 <translation id="5430001801813715388">ШАГНАЛУУД</translation>
+<translation id="988042349921505128">Хайлт ба AI</translation>
 <translation id="2430295257226173518">Юу ч асуу, юу ч олох...</translation>
 <translation id="167018310108390163">Шинэ таб хуудсыг тохируулах</translation>
+<translation id="3500134717967948757">Шинэ таб хирүүс дээр Leo AI виджетийг харуулах</translation>
 <translation id="6851426306697017546">Цагийг харуулах</translation>
 <translation id="4844370919312937270">Шинэ таб хирүүс дээрх хайлтын виджетийг харуулах</translation>
 <translation id="7328310113820087094">Та <ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/> ашиглан шинэ таб хуудсан дээрх заруудыг харж орлого олох боломжтой.</translation>
@@ -2539,8 +2564,14 @@
 <translation id="8458987127502506209">Brave-н Бамбай</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Бамбай хамгаалалт НЭЭГДСЭН<ph name="STATUS_AFTER"/> энэ сайтад</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Бамбай хамгаалалт ХААГДСАН<ph name="STATUS_AFTER"/> энэ сайтад</translation>
+<translation id="8426214145426269584">Shields <ph name="UP_BEFORE"/>нээгдсэн<ph name="UP_AFTER"/> энэ сайтад</translation>
+<translation id="3325367578778625743">Shields <ph name="DOWN_BEFORE"/>хаагдсан<ph name="DOWN_AFTER"/> энэ сайтад</translation>
 <translation id="4724752924364329714">Энэ сайт эвдэрсэн мэт санагдаж байвал, Бамбай хамгаалалтыг унтраагаад туршаад үзээрэй.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Анхаар: энэ нь Brave-гийн нууцлал хамгаалалтыг бууруулна.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">Энэ нь Brave-ийн эмзэглэлийн хамгаалалтыг багасгаж болно. <ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">Тракерс, зар сурталчилгаа, болон бусад бүхэл хаагдсан.</translation>
+<translation id="4968268657895673116">Энэ сайт Shields-ээр дээш ажиллахгүй байгаа уу?</translation>
+<translation id="5412004902081180614">Мэдэгдэл</translation>
 <translation id="3620004479054499575">Та энэ сайтад асуудал тулгарч байна уу?</translation>
 <translation id="9176447766421988172">Бид сурталчилгаа хааснаас бусдыг идэвхгүй болгох туршилтыг хийж байна. Сануулга: бүх нууцлалын хамгаалалт алдагдана. Туршиж үзэх үү? <ph name="LINK_BEFORE"/>Дэлгэрэнгүйг үзэх<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Brave-ийн нууцлал хамгаалалтаас болж эвдэрсэн сайтыг тус тусад нь Бамбай хамгаалалт доошлон тохируулж болно.</translation>
@@ -2555,9 +2586,12 @@
 <translation id="8377155647357436161">Трекер, зар сурталчилгаа болон бусад хориглосон зүйлсийн тухай гэх мэт зүйлсийг блоклож байна <ph name="LINK_BEFORE"/>Дэлгэрэнгүйг харах<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave Shields-р хамгаалагдаагүй - Нууцлалын талаар <ph name="LINK_BEFORE"/>дэлгэрэнгүйг харна уу<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Дэвшилтэт хяналтууд</translation>
+<translation id="7939062555109487992">Дэвшилтэт сонголтууд</translation>
 <translation id="5799940914270080805">Энэхүү тохиргоог өөрчлөх нь сайтуудыг эвдэх боломжтой.</translation>
 <translation id="9204041448536398473">Global Shield тохиргоо</translation>
 <translation id="2108334320919763866">Global defaults</translation>
+<translation id="1896472873031845605">Дэвшилтэт хяналтууд</translation>
+<translation id="8324318899000695659">Элементийг блоклох</translation>
 <translation id="7205939464631857223">Бүх блоклосон элементийг арилгах</translation>
 <translation id="3440043456924990296">Байгууллагаас удирддаг тохиргоо</translation>
 <translation id="7053983685419859001">Блоклох</translation>
@@ -2642,7 +2676,6 @@
 <translation id="7207456302801184289">Brave-д тавтай морил</translation>
 <translation id="4988030440045495002">Ер бусын хар сэдэв</translation>
 <translation id="2422927186524098759">Хажуугийн самбар</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Хэрэгслийн самбар</translation>
 <translation id="6225572914528673855">Хаягийн мөр</translation>

@@ -7,8 +7,10 @@
 <translation id="1070329623210597193">這個網站可以查看或編輯的檔案</translation>
 <translation id="1882093842020941518">請說明你允許使用第三方 Cookie 的原因，協助我們改善 Brave。<ph name="BEGIN_LINK"/>提供意見<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">你可以要求查看電腦版網站</translation>
-<translation id="9183227624343766158">使用 Brave 做為預設瀏覽器</translation>
+<translation id="1109482864356262001">需要動作或光源感應器的功能將無法運作</translation>
+<translation id="6670155282615872564">完成下列建議動作，充分運用 Brave 的各項功能</translation>
 <translation id="113098737392899175">接上鍵盤時，使用文字游標瀏覽頁面</translation>
+<translation id="1148624853678088576">大功告成！</translation>
 <translation id="738393714577080438">在 Brave 儲存密碼</translation>
 <translation id="1178015372320901893">「我的捷徑」底部功能表</translation>
 <translation id="1178581264944972037">暫停</translation>
@@ -53,6 +55,7 @@
 <translation id="3665719978526894928">使用 Brave 的 V8 引擎加快網站速度，但稍微降低 Brave 防範攻擊的能力</translation>
 <translation id="1593426485665524382">畫面頂端附近有可執行的新動作</translation>
 <translation id="1594521731409209842">雙指撥動螢幕即可調整相片大小</translation>
+<translation id="1599268789440304082">已開啟設定工作表</translation>
 <translation id="1601560923496285236">套用</translation>
 <translation id="1615755956145364867">網站可以要求播放受著作權保護的內容</translation>
 <translation id="1620510694547887537">攝影機</translation>
@@ -64,7 +67,6 @@
 <translation id="1677097821151855053">系統會使用 Cookie 和其他網站資料來記住你，以便將你登入帳戶或是提供個人化廣告等服務。如要管理所有網站的 Cookie，請查看<ph name="BEGIN_LINK"/>設定<ph name="END_LINK"/>。</translation>
 <translation id="1679305402657584804">網站可以要求使用 NFC 裝置</translation>
 <translation id="1686785653877010442">網站通常會傳送通知，方便你掌握最新消息或留意即時通訊訊息。</translation>
-<translation id="169515064810179024">禁止網站存取動作感應器</translation>
 <translation id="1703666494654169921">禁止網站使用虛擬實境裝置或資料</translation>
 <translation id="1704230497453185209">禁止網站播放音效</translation>
 <translation id="1717218214683051432">動作感應器</translation>
@@ -127,6 +129,7 @@
 <translation id="2241587408274973373">新分頁資訊卡</translation>
 <translation id="2241634353105152135">只有這一次</translation>
 <translation id="2253414712144136228">移除<ph name="NAME_OF_LIST_ITEM"/></translation>
+<translation id="227763434929139750">禁止網站使用動作或光源感應器</translation>
 <translation id="228293613124499805">你造訪的大多數網站可能會在裝置上儲存資料 (偏好設定或你與網站分享的資訊)，通常是為了改善使用體驗。建議你將這項設定保持開啟。</translation>
 <translation id="2289270750774289114">當網站要搜尋附近的藍牙裝置時，必須先詢問你 (建議)</translation>
 <translation id="2315043854645842844">作業系統不允許您在用戶端選取憑證。</translation>
@@ -191,12 +194,12 @@
 <translation id="2802908157808345702">不允許網站傳送彈出式視窗和使用重新導向</translation>
 <translation id="5801312978029568377">Brave 現在會在裝置的應用程式清單和搜尋結果顯示最近開啟的分頁。你隨時可以前往 Brave 設定頁面關閉這項功能。</translation>
 <translation id="2822354292072154809">確定要重設「<ph name="CHOSEN_OBJECT_NAME"/>」的所有網站權限嗎？</translation>
+<translation id="7298052657381934345">現在可以在這部裝置上充分運用 Brave 了。</translation>
 <translation id="2850913818900871965">要求使用行動裝置檢視畫面</translation>
 <translation id="2870560284913253234">網站</translation>
 <translation id="2874939134665556319">上一首曲目</translation>
 <translation id="2891975107962658722">禁止特定網站將資料儲存到裝置</translation>
 <translation id="2903493209154104877">地址</translation>
-<translation id="2910701580606108292">允許網站播放受保護的內容前，必須先詢問你</translation>
 <translation id="2918484639460781603">前往設定</translation>
 <translation id="2932883381142163287">檢舉濫用情形</translation>
 <translation id="2939338015096024043">如果啟用，網站就可以要求追蹤攝影機位置，並瞭解周遭環境動靜。如果停用，網站將無法追蹤攝影機位置，也無法瞭解周遭環境動靜。</translation>
@@ -210,6 +213,7 @@
 <translation id="3065787901655140044">進階保護功能已開啟</translation>
 <translation id="3069226013421428034">允許特定網站使用第三方登入功能。</translation>
 <translation id="310297983047869047">上一張投影片</translation>
+<translation id="3108122610701115301">設為預設值</translation>
 <translation id="3109724472072898302">已收合</translation>
 <translation id="310979712355504754">全部刪除</translation>
 <translation id="311394601889664316">禁止網站編輯裝置上的檔案或資料夾</translation>
@@ -232,7 +236,6 @@
 <translation id="3232293466644486101">刪除瀏覽資料…</translation>
 <translation id="3242646949159196181">如果啟用，網站就可以播放音效。如果停用，網站將無法播放音效。</translation>
 <translation id="3273479183583863618">分頁中的降價資訊</translation>
-<translation id="3277252321222022663">允許網站存取感應器 (建議)</translation>
 <translation id="3285500645985761267">允許相關網站查看你在群組中的活動</translation>
 <translation id="3295019059349372795">第 11 章：奧茲國的翡翠城</translation>
 <translation id="3295602654194328831">隱藏資訊</translation>
@@ -264,6 +267,7 @@
 <translation id="3658847490588580244">預設瀏覽器底部功能表</translation>
 <translation id="3669841141196828854">{COUNT,plural, =1{在 <ph name="RWS_OWNER"/> 的網站群組中，有 <ph name="RWS_MEMBERS_COUNT"/> 個網站可以查看你在群組中的活動}other{在 <ph name="RWS_OWNER"/> 的網站群組中，有 <ph name="RWS_MEMBERS_COUNT"/> 個網站可以查看你在群組中的活動}}</translation>
 <translation id="3676777756440746804">已禁止網站要求使用與你相關的既有資訊</translation>
+<translation id="3677897809642449131">網站可以要求使用動作感應器</translation>
 <translation id="3678318839615834650">新分頁資訊卡底部功能表已開啟，並顯示在整個畫面</translation>
 <translation id="3697164069658504920">如果啟用，網站就可以要求使用 USB 裝置。如果停用，網站將無法使用 USB 裝置。</translation>
 <translation id="3703430731944883733">管理動態消息</translation>
@@ -295,8 +299,8 @@
 <translation id="3922092564198021702">在手機上開啟「設定」</translation>
 <translation id="3924858949939391676">開啟朗讀模式後顯示連結</translation>
 <translation id="3933121352599513978">收合不需要的要求 (建議)</translation>
+<translation id="393417216277380082">動作和光源感應器</translation>
 <translation id="3934905113567851655">雙指撥動即可調整大小</translation>
-<translation id="3955193568934677022">允許網站播放受保護的內容 (建議)</translation>
 <translation id="3955321697524543127">禁止網站連線至 USB 裝置</translation>
 <translation id="3965467402665811906">網站可以要求使用與你相關的既有資訊</translation>
 <translation id="3967822245660637423">下載完成</translation>
@@ -312,6 +316,7 @@
 <translation id="4046123991198612571">下一首曲目</translation>
 <translation id="4077310749977440510">網站通常會讀取剪貼簿，以提供保留複製文字的格式等功能</translation>
 <translation id="4082080074595021446">Android 裝置的 RAM 不足，因此不允許將特定網站設為例外。</translation>
+<translation id="6601032802262472844">部分 Brave 設定有變動</translation>
 <translation id="4149890623864272035">確定要刪除 Cookie 等所有本機資料，並重設這個網站的所有權限嗎？</translation>
 <translation id="4149994727733219643">使用簡易檢視模式查看網頁</translation>
 <translation id="4151930093518524179">預設縮放</translation>
@@ -347,8 +352,11 @@
 <translation id="4478158430052450698">在不同網站上都能更輕鬆地自訂縮放比例</translation>
 <translation id="4479647676395637221">允許網站使用你的攝影機前，必須先詢問你 (建議)</translation>
 <translation id="4505788138578415521">已展開網址</translation>
+<translation id="4522570452068850558">詳細資料</translation>
 <translation id="4523472416386354622">登入即可開始使用</translation>
+<translation id="4529207923544043455">底部功能表，顯示已完成和未完成的設定清單工作</translation>
 <translation id="4534723447064627427">如要允許 <ph name="APP_NAME"/> 存取裝置的麥克風，請一併在 <ph name="BEGIN_LINK"/>Android 設定<ph name="END_LINK"/>中開啟麥克風。</translation>
+<translation id="4545694195887112015">已關閉設定工作表</translation>
 <translation id="4566417217121906555">關閉麥克風</translation>
 <translation id="4570913071927164677">詳細資料</translation>
 <translation id="4578289292431526768">開始設定</translation>
@@ -363,7 +371,7 @@
 <translation id="5652778654712411580">依序輕觸「瀏覽器應用程式」和「Brave」</translation>
 <translation id="4676059169848868271">如要讓 <ph name="APP_NAME"/> 使用手勢追蹤功能，請一併在<ph name="BEGIN_LINK"/>系統設定<ph name="END_LINK"/>中開啟手勢追蹤。</translation>
 <translation id="4688045258817337666">管理資訊卡</translation>
-<translation id="4751476147751820511">動作或光源感應器</translation>
+<translation id="4722332387043141878">網站通常會使用裝置的動作和光源感應器，以提供虛擬實境或健身追蹤等功能</translation>
 <translation id="4755971844837804407">如果啟用，網站就可以向你顯示任何廣告。如果停用，網站將無法顯示誤導性或侵入式廣告。</translation>
 <translation id="4779083564647765204">縮放</translation>
 <translation id="4807122856660838973">開啟安全瀏覽功能</translation>
@@ -390,7 +398,6 @@
 <translation id="5001526427543320409">第三方 Cookie</translation>
 <translation id="5007392906805964215">查看</translation>
 <translation id="5039804452771397117">允許</translation>
-<translation id="5048398596102334565">允許網站存取動作感應器 (建議)</translation>
 <translation id="5048841907079026162">管理瀏覽資料</translation>
 <translation id="5063480226653192405">用量</translation>
 <translation id="5068293087784369013">自訂新分頁</translation>
@@ -480,6 +487,7 @@
 <translation id="5922853908706496913">正在分享你的螢幕畫面</translation>
 <translation id="5922967540311291836">封鎖第三方 Cookie：</translation>
 <translation id="5923512600150154850">這會刪除網站儲存的資料和 Cookie (共 <ph name="DATASIZE"/>)。</translation>
+<translation id="5930707844513754220">查看更多設定清單</translation>
 <translation id="5939518447894949180">重設</translation>
 <translation id="5948139900367969951">快速取得重要資訊</translation>
 <translation id="5964247741333118902">嵌入的內容</translation>
@@ -488,6 +496,7 @@
 <translation id="5976059395673079613"><ph name="PERMISSION"/> - <ph name="WARNING_MESSAGE"/></translation>
 <translation id="5998071268779572583">開啟「探索」動態消息</translation>
 <translation id="6012967556075291653">已固定的捷徑</translation>
+<translation id="6013003831291591200">工作已完成</translation>
 <translation id="6015775454662021376">控管這個網站對裝置的存取權</translation>
 <translation id="296137235951584143">打造專屬的 Brave</translation>
 <translation id="6040143037577758943">關閉</translation>
@@ -503,11 +512,11 @@
 <translation id="6171020522141473435">如果啟用，網站就可以要求使用藍牙裝置。如果停用，網站將無法使用藍牙裝置。</translation>
 <translation id="6177128806592000436">你與這個網站的連線不安全</translation>
 <translation id="6181444274883918285">新增例外網站</translation>
-<translation id="6192792657125177640">例外</translation>
 <translation id="7938602278189860250">{DAYS,plural, =1{Brave 將於明天再次封鎖 Cookie}other{# 天後將再次封鎖 Cookie}}</translation>
 <translation id="6196640612572343990">封鎖第三方 Cookie</translation>
 <translation id="6205314730813004066">廣告隱私權設定</translation>
 <translation id="6207207788774442484">刪除資料並重設權限</translation>
+<translation id="6211409961905616543">網站可以使用動作和光源感應器</translation>
 <translation id="6218508144653756827">紫紅色主題</translation>
 <translation id="6231752747840485235">要解除安裝「<ph name="APP_NAME"/>」嗎？</translation>
 <translation id="4789073065838177382">依序輕觸「瀏覽器應用程式」&gt;「Brave」</translation>
@@ -626,7 +635,6 @@
 <translation id="7561196759112975576">一律使用</translation>
 <translation id="7573594921350120855">網站通常會使用你的攝影機提供通訊功能 (例如視訊通訊)</translation>
 <translation id="7574529565935733861">{NUM_MONTHS,plural, =1{<ph name="NUM_MONTHS_ONE"/> 個月前}other{<ph name="NUM_MONTHS_MANY"/> 個月前}}</translation>
-<translation id="757524316907819857">禁止網站播放受保護的內容</translation>
 <translation id="7586676035079382730">不允許通知</translation>
 <translation id="7594634374516752650">已連線至藍牙裝置</translation>
 <translation id="7617547684249261169">你可以刪除部分或全部的歷史記錄、Cookie、網站資料和其他資料</translation>
@@ -678,9 +686,9 @@
 <translation id="8088603949666785339">「<ph name="BANNER_TITLE"/>」的其他選項</translation>
 <translation id="8112925981674547014">在應用程式清單中查看分頁</translation>
 <translation id="8116925261070264013">已設為靜音</translation>
-<translation id="8117244575099414087">如果啟用，網站就可以使用裝置的感應器。如果停用，網站將無法使用感應器。</translation>
 <translation id="813082847718468539">查看網站資訊</translation>
 <translation id="8131740175452115882">確認</translation>
+<translation id="8148160259207090265">只要在 Android 設定中啟用「進階保護」功能，這項設定就會保持開啟。</translation>
 <translation id="8163152278172770963">不允許網站自動進入子母畫面</translation>
 <translation id="8168435359814927499">內容</translation>
 <translation id="818487310457576362">從畫面側邊向下拖曳即可退出全螢幕模式。</translation>
@@ -710,6 +718,7 @@
 <translation id="8441146129660941386">倒轉到特定的播放時間點</translation>
 <translation id="8444433999583714703">如要允許 <ph name="APP_NAME"/> 存取你的位置，請一併在 <ph name="BEGIN_LINK"/>Android 設定<ph name="END_LINK"/>中開啟定位功能。</translation>
 <translation id="8447861592752582886">撤銷裝置權限</translation>
+<translation id="8463843545738141778">已啟用 Android 設定中的「進階保護」功能，因此這項設定已停用。</translation>
 <translation id="8467359479529706065">新分頁外觀底部功能表已開啟，並顯示在畫面下半部</translation>
 <translation id="8471525937465764768">網站通常會連線至 USB 裝置，以提供列印文件或儲存至裝置等功能</translation>
 <translation id="8473055640493819707">「<ph name="APP_NAME"/>」版本過舊，請重新安裝應用程式。</translation>
@@ -738,9 +747,11 @@
 <translation id="8707904142362025782">網站可以要求使用攝影機</translation>
 <translation id="8712637175834984815">我瞭解了</translation>
 <translation id="8715862698998036666">從頂端向下拖曳並向右側或左側滑動，即可退出全螢幕模式。</translation>
+<translation id="8716050156658570300">網站可以要求使用動作感應器和光度感應器</translation>
 <translation id="8719283222052720129">請在 <ph name="BEGIN_LINK"/>Android 設定<ph name="END_LINK"/>中啟用「<ph name="APP_NAME"/>」的權限。</translation>
 <translation id="8721719390026067591">如果啟用，網站就可以要求尋找藍牙裝置。如果停用，網站將無法尋找藍牙裝置。</translation>
 <translation id="8725066075913043281">再試一次</translation>
+<translation id="6614332522102257453">充分運用 Brave 的各項功能</translation>
 <translation id="8730621377337864115">完成</translation>
 <translation id="8737426583868847403">這裡會顯示已儲存自訂縮放比例的網站</translation>
 <translation id="8748714929822124637">禁止網站存取區域網路上的其他裝置</translation>
@@ -751,7 +762,7 @@
 <translation id="2026315747406172223">V8 是 Brave 的 JavaScript 和 WebAssembly 引擎，可提升網站效能</translation>
 <translation id="8803526663383843427">開啟時</translation>
 <translation id="8805385115381080995">降低網站確認你是否為真人的機率，提供更快速的瀏覽體驗</translation>
-<translation id="8816026460808729765">禁止網站存取感應器</translation>
+<translation id="881644524232657178">如果啟用，網站就能使用裝置的動作和光源感應器。如果停用，網站將無法使用感應器。</translation>
 <translation id="8847988622838149491">USB</translation>
 <translation id="8874790741333031443">請嘗試暫時允許使用第三方 Cookie。這個操作會降低瀏覽防護程度，但會增加網站功能正常運作的機率。</translation>
 <translation id="7532165358672313130">你隨後瀏覽的網站可從 Brave 取得前一個網站提供的資訊，確認你應該是真人</translation>

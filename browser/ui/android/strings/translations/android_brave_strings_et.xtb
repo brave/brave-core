@@ -188,12 +188,27 @@
 <translation id="834487290629916192">HILJEM</translation>
 <translation id="4117451092682672487">Privaatsus on nüüd lihtne.</translation>
 <translation id="7909375417585209817">Kui kasutate vaikimisi Brave'i, kasutatakse iga puudutatud lingi avamisel Brave'i privaatsuskaitseid.</translation>
-<translation id="5148943178722443958">Aidake Brave'i paremaks muuta.</translation>
+<translation id="763369711159699222">Aidake Brave'i paremaks muuta</translation>
+<translation id="8025937231644975408">Andke meile teada, millised funktsioonid teile kõige rohkem meeldivad.</translation>
 <translation id="6718362830686703942">Saatke diagnostikaaruanne, kui kogete krahhi minekut või hangumist.</translation>
 <translation id="8616157231067364693">Jagage täiesti privaatselt ja anonüümselt tooteteavet funktsioonide kohta, mida Brave'i kasutajad tarvitavad.</translation>
 <translation id="2888496576732880897">Aita Brave otsingul kasvada</translation>
+<translation id="7198716519700700181">Blokeeri häired voogesituse ajal</translation>
 <translation id="7044431516245362795">Osale Web Discovery Project'is, et aidata indeksit kasvatada ja otsingutulemusi parandada. <ph name="LEARN_MORE_START"/>Lisateave.<ph name="LEARN_MORE_END"/></translation>
+<translation id="4847979153841887006">Brave'i logo</translation>
+<translation id="1389386068457132299">Sissejuhatuse taust</translation>
+<translation id="5101985748360228609">Ülemine lehekülge kaunistav</translation>
+<translation id="5270920361877570459">Alumine lehekülge kaunistav</translation>
+<translation id="4021716437419160885">Alla kerimine</translation>
+<translation id="4767173360729868049">Aidake Brave otsingut kasvada illustratsioon</translation>
+<translation id="8241918461631453498">Häirete blokeerimise illustratsioon</translation>
+<translation id="8213310572767907663">Tee Brave'i paremaks illustratsioon</translation>
+<translation id="2427917529469438577">Blokeeri ärritavad häired oma lemmikuallikates.</translation>
 <translation id="7818938154803162778">Muidugi ma aitan</translation>
+<translation id="5298784657468199167">Saada krahhiaruanded</translation>
+<translation id="6188781052835527980">Saatke anonüümne diagnostikaaruanne, kui kogete krahhi minekut või hangumist.</translation>
+<translation id="4780647518983772446">Jagage täiesti privaatselt ja anonüümselt tooteteavet funktsioonide kohta, mida Brave'i kasutajad tarvitavad.</translation>
+<translation id="5109496672133133896">Privaatne tooteteave</translation>
 <translation id="3545804467215833536">Puudutage Brave'i kaitsete kuvamiseks</translation>
 <translation id="1724327820822194498">Vaadake, millist jama Brave on igal lehel oma kaitsete abil blokeerinud.</translation>
 <translation id="5386259141409498372">Blokeeritud on ettevõtete <ph name="BIG_TECH"/> ja <ph name="TRACKER"/> muud reklaamid ning jälgijad</translation>
@@ -381,7 +396,7 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="717952606991220586">Ups, midagi on valesti. Palun proovi hiljem uuesti.</translation>
 <translation id="987264212798334818">Üldine</translation>
 <translation id="1116694919640316211">Teave</translation>
-<translation id="1275213816424141989">Ehk hiljem</translation>
+<translation id="2370739752330685659">Võib-olla hiljem</translation>
 <translation id="3624048886326677117">Blokeeri jälitajad ja reklaamid (agressiivne)</translation>
 <translation id="7151914815476509258">Blokeeri jälitajad ja reklaamid (tavapärane)</translation>
 <translation id="7384778069178817075">Luba kõik jälgijad ja reklaamid</translation>
@@ -499,7 +514,6 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="5705882733397021510">Mine tagasi</translation>
 <translation id="7889432931837317731">Võimalusel avatakse automaatselt</translation>
 <translation id="1029304566263314007">Kuva allalaadimise edenemise teated</translation>
-<translation id="2910433761530295035">Küsi, kuhu failid salvestada (kui on tuvastatud SD-kaart)</translation>
 <translation id="2977501775944575564">Paralleelne allalaadimine</translation>
 <translation id="6224180438946945617">Allalaadimise kiirendamiseks lubage paralleelne allalaadimine</translation>
 <translation id="8967385052772844086">Kuva täielik privaatsusaruanne</translation>
@@ -920,6 +934,9 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="703185154752046151">Vidinat lisati avakuvale</translation>
 <translation id="4635094429202343515">Proovige Brave'i otsinguvidinat</translation>
 <translation id="4809681171446727314">Privaatse ja sõltumatu otsingu kasutamine otse avakuvalt.</translation>
+<translation id="3280562213547448728">Hääleotsing</translation>
+<translation id="3925312712530886302">Ava privaatne otsing</translation>
+<translation id="9214590551301647710">Ava Leo</translation>
 <translation id="7751715172931488388">Lisa vidin</translation>
 <translation id="7285167584112910782">Brave'i kiirtoimingute otsing</translation>
 <translation id="2326703104633309781">Kasutage Brave'i tõlget</translation>
@@ -959,7 +976,14 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Lähtestamine vaikimisi seadistustele</translation>
 <translation id="4922034974043704366">See funktsioon on lubatud, sest te valisite selle kasutamise.</translation>
-<translation id="3144818380093107753">Brave Origin on tellimuspõhine viis, kuidas keelata tulu teenivad funktsioonid, mis muidu toetavad Brave'i kui äri. Brave Origin'i tellijad saavad jätkuvalt kasu meie valdkonna juhtivast privaatsusest, reklaamblokeerimisest ja kiirusest (Brave Shieldsi kaudu), samuti regulaarsetest tarkvarauuendustest, Chromiumi parandustest ning turvalisuse ja privaatsuse parandustest. Samuti avavad nad võimaluse keelata sellised funktsioonid nagu Brave Leo, Uudised, preemiad, rahakott, VPN, Web3-domeenid ja muud.&lt;br/&gt;&lt;br/&gt;Tellijatele avaneb brauseri seadete menüüs uus juhtpaneel. Olemasolevad funktsioonid - ja ka kõik uued funktsioonid, mida me tulevikus tarnime - ilmuvad siia ja on vaikimisi välja lülitatud.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Märkus: Brave Origin ei lülita välja brauserifunktsioone, mida te praegu kasutate, ega mõjuta Brave Searchi funktsioone ega Brave Searchi reklaame.&lt;/b&gt;</translation>
+<translation id="2587535830241068901">Kohandage oma brauserit, toetades samal ajal Brave'i</translation>
+<translation id="7235314227387539944">Brave Origin on Brave'i tasuliste versioon kasutajatele, kes ei vaja kõiki funktsioone, mis toetavad Brave'i kui äri, kuid siiski soovivad privaatsust, mida pakub ainult Brave. Origin'i kasutajad jätkavad meie tööstuslikult juhtivast privaatsusest, adblockerist ja kiirusest (Brave kaitse kaudu) saamist, samuti regulaarsetest tarkvara värskendustest, Chromium plaastrite ning turvalisuse ja privaatsuse parandustest. Origin eemaldab brauserist enamiku muudest funktsioonidest.</translation>
+<translation id="7941943775131052130">Pange tähele, et Brave Origin'i ost sisaldab ka juurdepääsu Brave Premium otsingule, kuna Origin eemaldab reklaame Brave'i otsingutulemustest.</translation>
+<translation id="2573819149217596923">Brave'i funktsioonide muutmine</translation>
+<translation id="7415416427817229128">Brave'i funktsiooni lubamine või keelamine nõuab brauseri taaskäivitamist muudatuste rakendamiseks. Kas soovite kohe taaskäivitada?</translation>
+<translation id="2256115617011615191">Taaskäivita kohe</translation>
+<translation id="8554205386170195281">Ost</translation>
+<translation id="7071521146534760487">Halda kontot</translation>
 <translation id="8613144770663526433">Logi sisse Brave’i rahakotiga</translation>
 <translation id="3696514931437952995">Logite sisse kohta <ph name="ORIGIN"/>. Brave’i rahakott jagab teie rahakotiaadressi ressursiga <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Kuva üksikasjad</translation>
@@ -1087,12 +1111,13 @@ Seda tegevust ei saa tagasi võtta.</translation>
 <translation id="2735247450315842119">Luba ekraanipildid privaatsetel vahelehtedel</translation>
 <translation id="8420414929552321089">Kui see on lubatud, on privaatsed vahelehed nähtavad ka siis, kui mitu rakendust on avatud.</translation>
 <translation id="7956713633345437162">Mobiilne järjehoidja</translation>
+<translation id="7984508421152399880">Osta nüüd</translation>
 <translation id="6261139507111008244">Toetage meie missiooni &amp; avatud lähtekoodiga töö</translation>
-<translation id="7882690061170175552">Minimaalne brauseri kasutajaliides, mille keskmes on Shields</translation>
+<translation id="6073373503121903099">Minimalistlik brauseri UI, mille keskmes on Brave kaitse</translation>
 <translation id="2267973897341040743">Säilitage põhilised reklaamblokeeringud, privaatsus, &amp; kiirus.</translation>
-<translation id="1361157028850796410">parima hinnaga</translation>
-<translation id="7280825497485894053">Kuupõhine tellimus</translation>
-<translation id="4570901726096223030">Lisateave Origini kohta</translation>
+<translation id="3339535734679532460">Ühekordne ost, lisatasusid pole</translation>
+<translation id="2805615640226281689">Ühekordne ost</translation>
+<translation id="261433018299584676">Hangi sisselogimislink</translation>
 <translation id="1943432128510653496">Paroolide salvestamine</translation>
 <translation id="2100273922101894616">Automaatne sisselogimine</translation>
 <translation id="363596933471559332">Teid logitakse salvestatud mandaadiga veebisaitidele automaatselt sisse. Kui funktsioon on välja lülitatud, palutakse teilt kinnitust iga kord enne veebisaidile sisselogimist.</translation>

@@ -98,6 +98,8 @@ class BraveTabStripModel : public TabStripModel {
   // this will be null.
   std::unique_ptr<TreeTabModel> tree_tab_model_;
 
+  // Note that we wrapped the subscriptions in a unique_ptr so that we can reset
+  // them when the tree tabs are flattened.
   std::unique_ptr<base::CallbackListSubscription>
       tree_tab_node_created_subscription_;
   std::unique_ptr<base::CallbackListSubscription>

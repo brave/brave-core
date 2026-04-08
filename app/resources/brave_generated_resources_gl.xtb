@@ -324,6 +324,8 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="8813509417421129632">Unha páxina incrustada en <ph name="SITE"/> quere gardarse</translation>
 <translation id="7700010743463174379">Esta páxina quere gardarse</translation>
 <translation id="6774238875569752630">Unha páxina inserida nesta páxina quere gardarse</translation>
+<translation id="1383876407941801731">Buscar</translation>
+<translation id="5496587651328244253">Organizar</translation>
 <translation id="1233913566967531780">Agrupación de separadores</translation>
 <translation id="4034992002364254340">Reúne todas os separadores relacionados nunha nova xanela</translation>
 <translation id="8012125596344613514">Temas suxeridos</translation>
@@ -341,6 +343,7 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="6501807887341963552">Tema e cores</translation>
 <translation id="6724227215236550330">Os contrasinais gardados aparecerán aquí. Para importar os contrasinais <ph name="BRAND"/> neste dispositivo, <ph name="BEGIN_LINK"/> escolle un arquivo CSV<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">Para importar os contrasinais <ph name="BRAND"/> neste dispositivo, escolle un arquivo CSV</translation>
+<translation id="8570228839666486945">IA no dispositivo</translation>
 <translation id="9156965752763025780">Os cambios aplicaranse a próxima vez que reinicies Brave.</translation>
 <translation id="7179921470347911571">Relanzamento agora</translation>
 <translation id="1426410128494586442">Si</translation>
@@ -393,6 +396,7 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="5297085818601043899">Información sobre ferramentas</translation>
 <translation id="5219886318310413094">Mostrar as pestanas fixadas en todas as ventás</translation>
 <translation id="2396127686705429331">Amosar botón de marcadores</translation>
+<translation id="443318149139185498">Usar logo de contorno no botón do menú principal</translation>
 <translation id="2814998458708016836">Use unha barra de enderezos ampla</translation>
 <translation id="4749586705247636385">Amosar esquinas redondeadas nas áreas principais de contido</translation>
 <translation id="4109670531935487117">Mostrar suxestións autocompletadas na barra de enderezos</translation>
@@ -546,7 +550,7 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="509873765238158442">Bloquear Microsoft Recall</translation>
 <translation id="4763421121695677716">Bloquear a función Recall nos ordenadores con Microsoft Windows para que non tome capturas de pantalla automaticamente dos separadores abertos en Brave.</translation>
 <translation id="1968895725257436430">Recompilación de datos</translation>
-<translation id="4846154056248462491">Á saída</translation>
+<translation id="1700052872056357670">Borrar os datos ao saír</translation>
 <translation id="216468847346280584">Borrar datos de Anuncios de Brave...</translation>
 <translation id="2808630562319398131">Restablecer os datos de Brave Rewards…</translation>
 <translation id="6438096877646138757">Sitios que borran as cookies cando os pechas</translation>
@@ -793,6 +797,7 @@ volver usar Sincronización, terás que crear unha conta nova e volver engadir o
 <translation id="1529674267267221673">Leo aparecerá no menú contextual cando fagas clic co botón dereito nun sitio web. Desta forma enviarase contexto desde a páxina web actual a Leo.</translation>
 <translation id="5226020406479918122">Modo de agrupación de separadores</translation>
 <translation id="3705539672403311123">Activa a organización dos separadores na páxina de Busca de separadores. Cando se abra, isto enviará automaticamente os títulos e a orixe de todos os separadores non privados a Leo para clasificalos. <ph name="BEGIN_LINK"/>Máis información<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">Modelo predeterminado para tab focus</translation>
 <translation id="8172263161008556851">Mostrar mensaxes emerxentes suxeridas na conversa</translation>
 <translation id="5781842473834867765">Gardar o meu historial de conversas</translation>
 <translation id="1082960401708055995">Ao desactivar o almacenamento das conversas, eliminaranse de forma permanente todas as conversas gardadas. Isto non se pode desfacer.</translation>

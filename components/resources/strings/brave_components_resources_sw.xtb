@@ -1837,6 +1837,7 @@
 <translation id="8897189056319316783">Kinga ZEC</translation>
 <translation id="508249542337194541">Funua ZEC</translation>
 <translation id="3382275793825152362">Lindavifungashio</translation>
+<translation id="617149752238892649">Fungua fedha za Shields</translation>
 <translation id="8631765320256788981">Unatuma fedha kutoka kwa akaunti yako ya wazi kwenda kwenye akaunti yako iliyolindwa.</translation>
 <translation id="3860364671495430495">Unatuma fedha kutoka kwenye akaunti yako iliyofichwa kwenda kwenye akaunti yako ya wazi.</translation>
 <translation id="7144878232160441200">Jaribu tena</translation>
@@ -2183,6 +2184,7 @@
 <translation id="4348006373172097089">{PAGE_COUNT, plural, =1 {Uliza swali kuhusu maudhui ya ukurasa huu} other {Uliza swali kuhusu yaliyomo kwenye kurasa hizi}}</translation>
 <translation id="6961721183181597848">Ninaweza kusaidiaje leo?</translation>
 <translation id="2966135729673253768">Uliza kufuatilia</translation>
+<translation id="5923170497201832190">Telezesha hadi chini</translation>
 <translation id="6219262425964000211">Acha faili hapa</translation>
 <translation id="4313763911013851687">Achia faili zozote hapa ili kuziunganisha na mazungumzo</translation>
 <translation id="4524675003624341892">Pendekeza maswali...</translation>
@@ -2201,20 +2203,21 @@
 <translation id="999273441077650169">Mfano hubadilika kwa nguvu ili kutumia bora zaidi kwa kazi.<ph name="LINK_BEFORE"/>Jifunze zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Llama 3.1 8B, muundo ulioundwa na Meta kufanya kazi na kutumika katika hali nyingi za matumizi. Llama inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Qwen VL 30B, muundo ulioundwa na Alibaba Cloud kufanya kazi na kutumika katika hali nyingi za matumizi. Qwen inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na DeepSeek V3.1, muundo ulioundwa na DeepSeek kufanya kazi na kutumika katika hali nyingi za matumizi. DeepSeek V3.1 imewekwa na NEAR kupitia miundombinu yao binafsi na salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na GLM-5, muundo ulioundwa na Zhipu AI kufanya kazi na kutumika katika hali nyingi za matumizi. GLM-5 imewekwa na NEAR kupitia miundombinu yao binafsi na salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Habari, mimi ni Leo. Mimi ni msaidizi wa AI kutoka Brave. Ninaendeshwa na Claude Instant, mfano ulioundwa na Anthropic kwa ajili ya kazi za mazungumzo na uchakataji maandishi. Claude Instant unaendesha ndani ya miundombinu salama ya Brave.<ph name="LINK_BEFORE"/>Jifunze zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Claude Haiku, muundo ulioundwa na Anthropic kuwezesha mazungumzo na kazi za kuchakata maandishi. Claude Haiku inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Claude Sonnet, muundo ulioundwa na Anthropic kuwezesha mazungumzo na kazi za kuchakata maandishi. Claude Sonnet inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Llama 4 Scout, muundo ulioundwa na Meta kufanya kazi na kutumika katika hali nyingi za matumizi. Llama 4 Scout inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Llama 4 Maverick, muundo ulioundwa na Meta kufanya kazi na kutumika katika hali nyingi za matumizi. Llama 4 Maverick inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na GPT OSS 20B, muundo ulioundwa na OpenAI kufanya kazi na kutumika katika hali nyingi za matumizi. GPT OSS 20B inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na GPT OSS 120B, muundo ulioundwa na OpenAI kufanya kazi na kutumika katika hali nyingi za matumizi. GPT OSS 120B inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Mistral Large, muundo ulioundwa na Mistral kufanya kazi na kutumika katika hali nyingi za matumizi. Mistral Large inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Pixtral Large, muundo ulioundwa na Mistral kufanya kazi na kutumika katika hali nyingi za matumizi. Pixtral Large inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Qwen 3 235B, muundo ulioundwa na Alibaba Cloud kufanya kazi na kutumika katika hali nyingi za matumizi. Qwen 3 235B inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Deepseek V3.1, muundo ulioundwa na Deepseek kufanya kazi na kutumika katika hali nyingi za matumizi. Deepseek V3.1 inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Deepseek V3.2, muundo ulioundwa na Deepseek kufanya kazi na kutumika katika hali nyingi za matumizi. Deepseek V3.2 inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Qwen 3 Coder 480B, muundo ulioundwa na Alibaba Cloud kufanya kazi na kutumika katika hali nyingi za matumizi. Qwen 3 Coder 480B inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Claude Opus, muundo ulioundwa na Anthropic kuwezesha mazungumzo na kazi za kuchakata maandishi. Claude Opus inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na GLM-4-7-Flash, muundo ulioundwa na Zhipu AI kufanya kazi na kutumika katika hali nyingi za matumizi. GLM-4-7-Flash inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Kimi K2.5, muundo ulioundwa na Moonshot AI kufanya kazi na kutumika katika hali nyingi za matumizi. Kimi K2.5 inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Brave Ocelot, muundo ulioundwa na Brave kupunguza muhtasari wa kurasa za wavuti. Brave Ocelot inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Toleo la Kulipia</translation>
 <translation id="5807427080183870259">Ndani</translation>
 <translation id="830868413617744215">beta</translation>
@@ -2347,6 +2350,8 @@
 <translation id="7465032796278724624">Faragha Iliyothibitishwa kwa NEAR AI TEE</translation>
 <translation id="8782867266498869301">Mfano hubadilika kwa nguvu ili kutumia bora zaidi kwa kazi</translation>
 <translation id="3213834013136637671">Tafuta • Maono</translation>
+<translation id="5276681919620506371">Tafuta • Zana</translation>
+<translation id="7434375176361995333">Muhtasari • Haraka</translation>
 <translation id="3965507912994218570">Mipangilio ya Leo</translation>
 <translation id="3754337604877048671">Utambulisho wa Leo AI</translation>
 <translation id="5295261408976371809">Msaidizi wako wa AI <ph name="TEXT_BEFORE"/>binafsi<ph name="TEXT_AFTER"/>, aliyejengwa moja kwa moja ndani ya kivinjari.</translation>
@@ -2402,6 +2407,8 @@
 <translation id="4572010449071015143">Anzisha mazungumzo mapya</translation>
 <translation id="345901077335355561">Rudi kwenye mazungumzo yanayoendelea</translation>
 <translation id="6287023598025162715">Mazungumzo mapya</translation>
+<translation id="7230502562132448519">Chuja mazungumzo</translation>
+<translation id="821070843380699990">Tafadhali jaribu hoja tofauti</translation>
 <translation id="7097822247923237815">Gumzo la muda</translation>
 <translation id="7481750859362986254">Gumzo hili halitawekwa kwenye historia yako wala kutumia marekebisho yoyote ya Leo.</translation>
 <translation id="4238305333951712482">Kumbukumbu imesasishwa: <ph name="MEMORY_CONTENT"/></translation>
@@ -2439,6 +2446,21 @@
 <translation id="6338250692384725496">Nilitekeleza kod katika sandbox ili kusaidia na swali lako</translation>
 <translation id="4379566111233326721">Msimbo:</translation>
 <translation id="3542130965673205258">Toleo:</translation>
+<translation id="5382076391290708074">Kuhamisha vichupo vyako</translation>
+<translation id="3862123464576147769">Kwa kuruhusu hii, kutakuwa kusambazwa kwa hii <ph name="URL_FORMAT_START"/>Anwani<ph name="URL_FORMAT_END"/> na <ph name="TITLE_FORMAT_START"/>Kichwa<ph name="TITLE_FORMAT_END"/> ya vichupo vyako vyote na vikundi vya vichupo kwa Brave AI, na kuruhusu Brave AI kuzivuta. Ruhusa hii inatumika tu kwa mazungumzo haya.</translation>
+<translation id="396165714586708444">Uchunguzi Malalim</translation>
+<translation id="577747221882855891">Kutafuta: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">Kuchanganua vyanzo <ph name="COUNT"/> kwa "<ph name="QUERY"/>"</translation>
+<translation id="1202264349398113062">Kukamatia URL <ph name="COUNT"/> mpya kwa "<ph name="QUERY"/>"</translation>
+<translation id="6189479600023022289">Ilipata URL <ph name="COUNT"/> kwa "<ph name="QUERY"/>"</translation>
+<translation id="5150674341374247355">Kuambil <ph name="FETCHED"/>/<ph name="TOTAL"/> URL</translation>
+<translation id="1075606740174445363">Ilichambuliwa URL <ph name="COUNT"/> kwa "<ph name="QUERY"/>"</translation>
+<translation id="6220878652174655112">Kutafuta <ph name="COUNT"/> hoja</translation>
+<translation id="3571450204565012512">Ilichambuliwa URL <ph name="URL_COUNT"/> kutoka kwa utafutaji <ph name="QUERY_COUNT"/></translation>
+<translation id="5733200563889491347">Kurekebisha kukamilika</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>m <ph name="SECONDS"/>s</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>s</translation>
+<translation id="5067194014665306881">Hitilafu ya utafutaji: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">Kuvinjari kwa AI</translation>
 <translation id="2854657728271352435">Kuhusu wasifu wa kuvinjari kwa AI</translation>
 <translation id="2301685062527585986">Ili kulinda data zako, wasifu huu wa kuvinjari kwa AI umesitishwa na kuhakikisha wakala wa AI hana ufikiaji kwa wasifu wako kuu wa kuvinjari, na ana ruhusa tu ya kutembelea na kuingiliana na tovuti inapohitajika. Unaweza kuongeza tija yako kwa kuipa kazi na kuiwezesha kuvinjari kwa niaba yako.</translation>
@@ -2503,11 +2525,14 @@
 <translation id="7847477075635510673">Ficha Habari</translation>
 <translation id="9173319813356700250">NEWS</translation>
 <translation id="6543799171249004861">Picha imepigwa na <ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="466214682712474574">Ingia kwenye <ph name="PROVIDER"/> akaunti yako ili kuona usawa wako</translation>
 <translation id="8332875111286275890">Ingia ili kuona usawa wako</translation>
 <translation id="5430001801813715388">REWARDS</translation>
+<translation id="988042349921505128">Tafuta na AI</translation>
 <translation id="2430295257226173518">Uliza chochote, pata chochote…</translation>
 <translation id="167018310108390163">Badilisha Ukurasa Mpya</translation>
+<translation id="3500134717967948757">Onyesha widget ya Leo AI katika vichupo vipya</translation>
 <translation id="6851426306697017546">Onyesha saa</translation>
 <translation id="4844370919312937270">Onyesha widget ya utafutaji katika vichupo vipya</translation>
 <translation id="7328310113820087094">Pamoja na <ph name="LINK_BEGIN"/>Zawadi za Brave<ph name="LINK_END"/>, unaweza kupata kwa kuona matangazo ya ukurasa mpya wa tab.</translation>
@@ -2536,8 +2561,14 @@
 <translation id="8458987127502506209">Wezesha Ulinzi wa Brave</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Shields ziko juu<ph name="STATUS_AFTER"/> kwa tovuti hii</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Shields ziko chini<ph name="STATUS_AFTER"/> kwa tovuti hii</translation>
+<translation id="8426214145426269584">Shields <ph name="UP_BEFORE"/>juu<ph name="UP_AFTER"/> kwa tovuti hii</translation>
+<translation id="3325367578778625743">Shields <ph name="DOWN_BEFORE"/>chini<ph name="DOWN_AFTER"/> kwa tovuti hii</translation>
 <translation id="4724752924364329714">Ikiwa tovuti inaonekana kuwa na kasoro, jaribu Shields hapa chini.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Kumbuka: hili linaweza kupunguza ulinzi wa faragha wa Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">Hii inaweza kupunguza protekshe za faragha ya Brave. <ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">Vifuatiliaji, matangazo na zaidi vimezimwa.</translation>
+<translation id="4968268657895673116">Je, tovuti hii haikufanya kazi vizuri na Shields juu?</translation>
+<translation id="5412004902081180614">Toa Ripoti</translation>
 <translation id="3620004479054499575">Je, unakutana na matatizo kwenye tovuti hii?</translation>
 <translation id="9176447766421988172">Tunajaribu jaribio la kuongeza uoanifu wa tovuti, ambapo tunahifadhi kuzuia matangazo pekee. Onyo: huondoa ulinzi wote wa faragha. Je, unataka kujaribu? <ph name="LINK_BEFORE"/>Jifunze zaidi<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Tafadhali kumbuka kuwa kwa tovuti binafsi zilizovunjwa na ulinzi wa faragha wa Brave, unaweza kuweka Shields hadi CHINI.</translation>
@@ -2552,9 +2583,12 @@
 <translation id="8377155647357436161">Vifuatiliaji, matangazo na zaidi vimezimwa<ph name="LINK_BEFORE"/>Jifunze zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Haijalindwa kwa Brave Shields<ph name="LINK_BEFORE"/>Jifunze zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Vidhibiti vya hali ya juu</translation>
+<translation id="7939062555109487992">Chaguo za juu</translation>
 <translation id="5799940914270080805">Kubadilisha mipangilio hii kunaweza kuharibu utendakazi wa tovuti.</translation>
 <translation id="9204041448536398473">Mipangilio ya Ulinzi</translation>
 <translation id="2108334320919763866">Machaguo msingi ya kimataifa</translation>
+<translation id="1896472873031845605">Mipangilio ya Kimataifa</translation>
+<translation id="8324318899000695659">Zuia vipengele</translation>
 <translation id="7205939464631857223">Futa vipengee vyote vilivyofungiwa</translation>
 <translation id="3440043456924990296">Mipangilio inayodhibitiwa na shirika</translation>
 <translation id="7053983685419859001">Zuia</translation>
@@ -2639,7 +2673,6 @@
 <translation id="7207456302801184289">Karibu kwenye Brave</translation>
 <translation id="4988030440045495002">Mandhari yenye giza sana</translation>
 <translation id="2422927186524098759">Upau upande</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Upau wa zana</translation>
 <translation id="6225572914528673855">Upau wa anwani</translation>

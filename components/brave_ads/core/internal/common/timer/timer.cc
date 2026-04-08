@@ -39,7 +39,7 @@ base::Time Timer::Start(const base::Location& location,
 base::Time Timer::StartWithPrivacy(const base::Location& location,
                                    base::TimeDelta delay,
                                    base::OnceClosure user_task) {
-  const base::TimeDelta rand_delay = RandTimeDelta(delay);
+  const base::TimeDelta rand_delay = RandTimeDeltaWithJitter(delay);
   CHECK(!rand_delay.is_negative());
 
   return Start(location, rand_delay, std::move(user_task));

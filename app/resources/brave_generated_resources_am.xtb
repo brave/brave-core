@@ -326,6 +326,8 @@
 <translation id="8813509417421129632">በ<ph name="SITE"/> ላይ የተካተተ ገጽ ማስቀመጥ ይፈልጋል</translation>
 <translation id="7700010743463174379">ይህ ገፅ መቀመጥ ይፈልጋል</translation>
 <translation id="6774238875569752630">እነዚህ ገፆች ማቀናበር ከፈለጉ</translation>
+<translation id="1383876407941801731">ፍለጋ</translation>
+<translation id="5496587651328244253">ማደራጀት</translation>
 <translation id="1233913566967531780">ትር አመለካከት</translation>
 <translation id="4034992002364254340">ሁሉንም ተዛማጅ ትሮች በአሰሳማ መስኮት ውስጥ ሰብስቡ</translation>
 <translation id="8012125596344613514">የተጠቃሚ ጭንስ መዝሙር</translation>
@@ -343,6 +345,7 @@
 <translation id="6501807887341963552">ገጽታ እና ቀለም</translation>
 <translation id="6724227215236550330">የተቀመጡ የይለፍ ቃሎች እዚህ ይታያሉ። እንደ ተለይነት የይለፍ ቃሎችን ወደ <ph name="BRAND"/> በዚህ መሳሪያ ለማምጣት <ph name="BEGIN_LINK"/> የCSV ፋይል ይምረጡ <ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">የይለፍ ቃሎችን ወደ <ph name="BRAND"/> በዚህ መሳሪያ ለማምጣት የCSV ፋይል ይምረጡ</translation>
+<translation id="8570228839666486945">በመሳሪያ ላይ ያለ AI</translation>
 <translation id="9156965752763025780">ለውጦችዎ Brave በሚያስጀምሩበት ቀጣዩ ጊዜ ላይ ይተገበራሉ።</translation>
 <translation id="7179921470347911571">አሁን እንደገና ያስጀምሩ</translation>
 <translation id="1426410128494586442">አዎ</translation>
@@ -395,6 +398,7 @@
 <translation id="5297085818601043899">አጭር መረጃ</translation>
 <translation id="5219886318310413094">ያፈላ ጠባቂዎችን በሁሉም Windows የሚታያቸው ቴቦሎችን አሳይ</translation>
 <translation id="2396127686705429331">የዕልባቶች አዝራር አሳይ</translation>
+<translation id="443318149139185498">ርቅ ዓምዲ ምልክት በዋናው ምናሌ ቁልፍ ላይ ይጠቀሙ</translation>
 <translation id="2814998458708016836">ሰፊ የአድራሻ አሞሌን ተጠቀም</translation>
 <translation id="4749586705247636385">ዋና የይዘት ክልሎች ላይ ዙሪያ አጠቃላይ ዳራዎችን አሳይ</translation>
 <translation id="4109670531935487117">በአድራሻ ማስገቢያው ላይ የራስ-አጠናቅቅ ጥቆማዎችን አሳይ</translation>
@@ -548,7 +552,7 @@
 <translation id="509873765238158442">የMicrosoft Recallን አግድ</translation>
 <translation id="4763421121695677716">የMicrosoft Windows ኮምፒዩተሮች ላይ ባሉ ሆም ትሮቷችን የእይታ እቃዎች ቶሎ ያጠናቀቃል</translation>
 <translation id="1968895725257436430">ውሂብ ማከማቸት</translation>
-<translation id="4846154056248462491">ሲወጣ</translation>
+<translation id="1700052872056357670">ሲወጡ ውሂብን ያጽዱ</translation>
 <translation id="216468847346280584">የ Brave Ads ውሂብ አጽዳ...</translation>
 <translation id="2808630562319398131">የ Brave ሽልማቶች ውሂብን ዳግም ያስጀምሩ...</translation>
 <translation id="6438096877646138757">ኩኪዎችን ሲዘጉ የሚያጸዱ ጣቢያዎች</translation>
@@ -792,6 +796,7 @@
 <translation id="1529674267267221673">Leo አንድ የድር ጣቢያ ላይ በቀኝ ጠቅ ሲያደርጉ በአውድ ምናሌው ውስጥ ይታያል። ይህም አውድን ከአሁኑ ድረ-ገጽ ወደ Leo ይልካል።</translation>
 <translation id="5226020406479918122">የትር አመለካከት ሁኔታ</translation>
 <translation id="3705539672403311123">በትር ፍለጋ ገጽ ውስጥ የትር አደረጃጀትን ያንቁ። ሲከፈት፣ ይህ ሁሉንም የግል ያልሆኑ ትሮችን ርዕሶች እና አመጣጥ በራስ-ሰር ወደ ሊዮ ይልካል እና ለመመደብ። <ph name="BEGIN_LINK"/>ተጨማሪ ይወቁ<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">ነባሪ ሞዴል ለትሳቢ ትኩረት</translation>
 <translation id="8172263161008556851">በውይይቱ ውስጥ የተጠቆሙ ጥያቄዎችን አሳይ</translation>
 <translation id="5781842473834867765">እንግዲህ የግል ቃል ታሪክ ይኖራል</translation>
 <translation id="1082960401708055995">የቃል ታሪክን መውደቅ በቅድሚያ ያከናውኑትን ተውዋጎች ፍጥረታቸውን ማጥፋት ይኖረታል። ይህ እርምጃ ሊስታርሽት አይችልም።</translation>

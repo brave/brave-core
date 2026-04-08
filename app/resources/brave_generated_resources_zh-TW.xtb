@@ -323,6 +323,8 @@
 <translation id="8813509417421129632">在 <ph name="SITE"/> 頁面中的嵌入頁面要求儲存</translation>
 <translation id="7700010743463174379">此頁面要求儲存</translation>
 <translation id="6774238875569752630">此頁面中的嵌入頁面要求儲存</translation>
+<translation id="1383876407941801731">搜尋</translation>
+<translation id="5496587651328244253">組織</translation>
 <translation id="1233913566967531780">標籤頁焦點</translation>
 <translation id="4034992002364254340">將所有相關標籤頁匯集到新視窗中</translation>
 <translation id="8012125596344613514">建議的主題</translation>
@@ -340,6 +342,7 @@
 <translation id="6501807887341963552">主題與顏色</translation>
 <translation id="6724227215236550330">已儲存的密碼將顯示於此處。若要將密碼匯入本裝置上的 <ph name="BRAND"/>，<ph name="BEGIN_LINK"/> 請點選 CSV 檔案<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">若要將密碼匯入本裝置上的 <ph name="BRAND"/>，請選擇 CSV 檔案</translation>
+<translation id="8570228839666486945">裝置內AI</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
 <translation id="7179921470347911571">立刻重新啟動</translation>
 <translation id="1426410128494586442">是</translation>
@@ -392,6 +395,7 @@
 <translation id="5297085818601043899">工具提示</translation>
 <translation id="5219886318310413094">在所有視窗中顯示已釘選的分頁</translation>
 <translation id="2396127686705429331">顯示書籤按鈕</translation>
+<translation id="443318149139185498">在主菜單按鈕上使用輪廓標誌</translation>
 <translation id="2814998458708016836">使用寬網址列</translation>
 <translation id="4749586705247636385">在主要內容區域顯示圓角</translation>
 <translation id="4109670531935487117">在網址列顯示自動完成建議</translation>
@@ -545,7 +549,7 @@
 <translation id="509873765238158442">阻止 Microsoft 召回</translation>
 <translation id="4763421121695677716">阻止 Microsoft Windows 電腦上的 Recall 功能自動為任何開啟的 Brave 分頁截圖。</translation>
 <translation id="1968895725257436430">資料集合</translation>
-<translation id="4846154056248462491">離開</translation>
+<translation id="1700052872056357670">結束時清除資料</translation>
 <translation id="216468847346280584">清除 Brave Ads 資料...</translation>
 <translation id="2808630562319398131">重設 Brave 獎勵資料…</translation>
 <translation id="6438096877646138757">關閉時清除 cookie 的網站</translation>
@@ -793,6 +797,7 @@
 <translation id="1529674267267221673">以滑鼠右鍵按一下網站，Leo 就會出現在內容選單中。這會將目前網頁的內容傳送給 Leo。</translation>
 <translation id="5226020406479918122">標籤頁焦點模式</translation>
 <translation id="3705539672403311123">在「標籤頁搜尋」頁啟用標籤頁組織。開啟後，這會自動將所有非無痕標籤頁的標題和來源傳送至 Leo 進行分類。 <ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">標籤焦點的預設模式</translation>
 <translation id="8172263161008556851">在對話中顯示建議的提示語</translation>
 <translation id="5781842473834867765">儲存我的對話紀錄</translation>
 <translation id="1082960401708055995">停用對話儲存功能會永久刪除所有先前儲存的對話。此動作無法復原。</translation>

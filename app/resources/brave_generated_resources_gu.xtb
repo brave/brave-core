@@ -323,6 +323,8 @@
 <translation id="8813509417421129632"><ph name="SITE"/> ખાતે એમ્બેડ પેજ સાચવવા માંગે છે</translation>
 <translation id="7700010743463174379">આ પેજ સાચવવા માંગે છે</translation>
 <translation id="6774238875569752630">આ પેજ પર એમ્બેડ પેજ સાચવવા માંગે છે</translation>
+<translation id="1383876407941801731">શોધો</translation>
+<translation id="5496587651328244253">સંગઠિત કરો</translation>
 <translation id="1233913566967531780">સભ્યો ટૅબ</translation>
 <translation id="4034992002364254340">સંબંધિત ટૅબ્સને નવી વિન્ડોમાં ભેગાં કરો</translation>
 <translation id="8012125596344613514">સૂચવાયેલા વિષયો</translation>
@@ -340,6 +342,7 @@
 <translation id="6501807887341963552">થીમ અને રંગો</translation>
 <translation id="6724227215236550330">સાચવેલા પાસવર્ડ્સ અહીં દેખાશે. આ ડિવાઇસ પર <ph name="BRAND"/> પર પાસવર્ડ ઇમ્પોર્ટ કરવા માટે, <ph name="BEGIN_LINK"/> એક CSV ફાઇલ પસંદ કરો<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">આ ડિવાઇસ પર <ph name="BRAND"/> પર પાસવર્ડ ઇમ્પોર્ટ કરવા માટે, એક CSV ફાઇલ પસંદ કરો</translation>
+<translation id="8570228839666486945">ઑન-ડિવાઇસ AI</translation>
 <translation id="9156965752763025780">તમારા ફેરફારો તમે આગલી વખતે Brave ફરીથી લોંચ કરશો ત્યારે પ્રભાવમાં આવશે.</translation>
 <translation id="7179921470347911571">હવે ફરીથી લોંચ કરો</translation>
 <translation id="1426410128494586442">હા</translation>
@@ -392,6 +395,7 @@
 <translation id="5297085818601043899">ટૂલટિપ</translation>
 <translation id="5219886318310413094">બધા વિંડોઝમાં પિન્યું ટેબ બતાવો</translation>
 <translation id="2396127686705429331">બુકમાર્ક્સ બટન બતાવો</translation>
+<translation id="443318149139185498">મુખ્ય મેનુ બટન પર આઉટલાઇન લોગો વાપરો</translation>
 <translation id="2814998458708016836">વિશાળ સરનામું બાર વાપરો</translation>
 <translation id="4749586705247636385">મુખ્ય સામગ્રી વિસ્તારોમાં રાઉન્ડ કરેલા ખૂણા બતાવો</translation>
 <translation id="4109670531935487117">એડ્રેસ બારમાં ઓટોકમ્પ્લીટ સૂચનો બતાવો</translation>
@@ -545,7 +549,7 @@
 <translation id="509873765238158442">Microsoft Recallને બ્લોક કરો</translation>
 <translation id="4763421121695677716">Microsoft Windows કમ્પ્યુટર પરથી Recall ફીચરને કોઈપણ ખુલ્લી Brave ટૅબના આપમેળે સ્ક્રીનશૉટ લેવાથી બ્લોક કરો.</translation>
 <translation id="1968895725257436430">માહિતી સંગ્રહ</translation>
-<translation id="4846154056248462491">બહાર નીકળતી વખતે</translation>
+<translation id="1700052872056357670">બહાર નીકળતી વખતે ડેટા સાફ કરો</translation>
 <translation id="216468847346280584">Brave આધારનાં ડેટા સાફ કરો...</translation>
 <translation id="2808630562319398131">Brave Rewards ડેટા ફરીથી સેટ કરો...</translation>
 <translation id="6438096877646138757">તેઓને બંધ કરવાથી તમે કૂકીઝ સાફ કરવી/ કરવું છે તેવી સાઇટ્સ</translation>
@@ -791,6 +795,7 @@
 <translation id="1529674267267221673">Leoકન્ટેક્સ્ટ મેનુમાં વેબસાઇટ્સ પર રાઇટ-ક્લિક પર દેખાશે. આ વાચકને વર્તમાન વેબ પૃષ્ઠનું સંદર્ભ મોકલશે.</translation>
 <translation id="5226020406479918122">ટૅબ ફોકસ મોડ</translation>
 <translation id="3705539672403311123">ટૅબ સર્ચ પેજમાં ટૅબ નિયમન સક્ષમ કરો. ઓપન હોવા પર, આ Leo ને ક્લાસિફાઈ કરવા માટે તમામ નોન-પ્રાઈવેટ ટૅબ્સના શીર્ષકો અને મૂળ આપોઆપ મોકલી દેશે. <ph name="BEGIN_LINK"/>વધુ જાણો<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">ટેબ ફોકસ માટે ડિફોલ્ટ મોડેલ</translation>
 <translation id="8172263161008556851">વાતચીતમાં સૂચિત સૂચનો બતાવો</translation>
 <translation id="5781842473834867765">મારી વાતચીતના ઇતિહાસને સ્ટોર કરો</translation>
 <translation id="1082960401708055995">કૉન્વર્સેશન સ્ટોરેજ અક્ષમ કરવાથી અગાઉ સ્ટોર કરેલી બધી કોલવિચારો કાયમ માટે મિટાવી નાખશે. આ ક્રિયા પૂર્વવત્ થઈ શકતી નથી.</translation>

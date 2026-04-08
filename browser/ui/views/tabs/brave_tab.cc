@@ -276,7 +276,7 @@ void BraveTab::UpdateIconVisibility() {
   }
 
   if (tree_toggle_button_ && HasTreeTabNodeDescendants() &&
-      showing_close_button_) {
+      (showing_close_button_ || mouse_hovered_)) {
     // We show tree toggle button instead of close button when there are
     // descendants. We need to update the icon to show the correct collapsed
     // state, here. The toggle button's visibility is updated in Layout().
@@ -310,7 +310,7 @@ void BraveTab::LayoutTreeToggleButton() {
     tree_toggle_button_->SetBoundsRect(close_button_->bounds());
     close_button_->SetVisible(false);
     tree_toggle_button_->SetVisible(true);
-  } else if (has_descendants && node->collapsed()) {
+  } else if (has_descendants && (node->collapsed() || mouse_hovered_)) {
     // In this case, we always show tree toggle button in order to indicate that
     // this tab has descendants hidden by collapsed state.
     // Here, showing_close_button_ is false and the bounds of the close button
@@ -338,7 +338,7 @@ void BraveTab::LayoutTreeToggleButton() {
                   close_button_actual_size.height()));
     tree_toggle_button_->SetVisible(true);
   } else {
-    //  Otherwise, hide the button.
+    // Otherwise, hide the button.
     tree_toggle_button_->SetVisible(false);
   }
 }
@@ -533,6 +533,14 @@ TabNestingInfo BraveTab::GetTabNestingInfo() const {
   }
 
   return {.tree_height = GetTreeHeight(), .level = GetTreeTabNode()->level()};
+}
+
+void BraveTab::MaybeUpdateHoverStatus(const ui::MouseEvent& event) {
+  Tab::MaybeUpdateHoverStatus(event);
+
+  if (tree_tab_node().has_value()) {
+    LayoutTreeToggleButton();
+  }
 }
 
 bool BraveTab::IsInCollapsedTreeTabNode() const {

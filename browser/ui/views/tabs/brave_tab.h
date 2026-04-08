@@ -77,6 +77,7 @@ class BraveTab : public Tab {
   TabSizeInfo GetTabSizeInfo() const override;
   TabNestingInfo GetTabNestingInfo() const override;
   bool IsInCollapsedTreeTabNode() const override;
+  void MaybeUpdateHoverStatus(const ui::MouseEvent& event) override;
 
   // Returns whether this tab should have an accent painted.
   bool ShouldPaintTabAccent() const;
@@ -127,6 +128,9 @@ class BraveTab : public Tab {
       TreeToggleButtonAlwaysVisibleWhenCollapsedAndHasDescendants);
   FRIEND_TEST_ALL_PREFIXES(containers::ContainersBrowserTest,
                            SmallAccentIconViewVisibility);
+  FRIEND_TEST_ALL_PREFIXES(
+      BraveTabTestWithTreeTab,
+      TreeToggleButtonVisibleMouseHoveredEvenWhenCloseButtonHiddenByPref);
 
   bool IsAtMinWidthForVerticalTabStrip() const;
 

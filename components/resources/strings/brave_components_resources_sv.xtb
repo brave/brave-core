@@ -1837,6 +1837,7 @@
 <translation id="8897189056319316783">Skydd-ZEC</translation>
 <translation id="508249542337194541">Avskärma ZEC</translation>
 <translation id="3382275793825152362">Skydda medel</translation>
+<translation id="617149752238892649">Skydda medel</translation>
 <translation id="8631765320256788981">Du skickar pengar från ditt transparenta konto till ditt skyddade konto.</translation>
 <translation id="3860364671495430495">Du skickar pengar från ditt skyddade konto till ditt transparenta konto.</translation>
 <translation id="7144878232160441200">Försök igen</translation>
@@ -2186,6 +2187,7 @@
     }</translation>
 <translation id="6961721183181597848">Hur kan jag hjälpa dig idag?</translation>
 <translation id="2966135729673253768">Fråga efter uppföljning</translation>
+<translation id="5923170497201832190">Bläddra flik till underst</translation>
 <translation id="6219262425964000211">Släpp filer här</translation>
 <translation id="4313763911013851687">Släpp filer här för att lägga till dem i konversationen</translation>
 <translation id="4524675003624341892">Föreslå frågor ...</translation>
@@ -2207,20 +2209,21 @@
 <translation id="999273441077650169">Modellen ändras dynamiskt för att använda den bästa för uppgiften.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Llama 3.1 8B, en modell skapad av Meta för att vara effektiv och mångsidig. Llama arrangeras av Brave genom vår egna säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Qwen VL 30B, en modell skapad av Alibaba Cloud för att vara effektiv och mångsidig. Qwen arrangeras av Brave genom vår egna säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av DeepSeek V3.1, en modell skapad av DeepSeek för att vara effektiv och mångsidig. DeepSeek V3.1 arrangeras av Brave genom vår egna säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av GLM-5, en modell skapad av Zhipu AI för att vara effektiv och mångsidig. GLM-5 är värdhostat av NEAR genom deras egen verifierbar privat säker infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hej, jag är Leo. Jag är en AI-assistent från Brave. Jag drivs av Claude Instant, en modell skapad av Anthropic för att hantera konversationer och textbehandling. Claude Instant hostas av Brave via vår egen säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Hej! Jag heter Leo. Jag är en proxybaserad AI-assistent från Brave. Jag drivs av Claude Haiku, en modell skapad av Anthropic med förmåga att klara konversations- och textbehandlingsuppgifter. Claude Haiku arrangeras av Brave genom vår egna säkra infrastruktur. <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hej! Jag heter Leo. Jag är en proxybaserad AI-assistent från Brave. Jag drivs av Claude Sonnet, en modell skapad av Anthropic med förmåga att klara konversations- och textbehandlingsuppgifter. Claude Sonnet arrangeras av Brave genom vår egna säkra infrastruktur. <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Llama 4 Scout, en modell skapad av Meta för att vara effektiv och mångsidig. Llama 4 Scout arrangeras av Brave genom vår egna säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Llama 4 Maverick, en modell skapad av Meta för att vara effektiv och mångsidig. Llama 4 Maverick arrangeras av Brave genom vår egna säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av GPT OSS 20B, en modell skapad av OpenAI för att vara effektiv och mångsidig. GPT OSS 20B arrangeras av Brave genom vår egna säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av GPT OSS 120B, en modell skapad av OpenAI för att vara effektiv och mångsidig. GPT OSS 120B arrangeras av Brave genom vår egna säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Mistral Large, en modell skapad av Mistral för att vara effektiv och mångsidig. Mistral Large arrangeras av Brave genom vår egna säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Pixtral Large, en modell skapad av Mistral för att vara effektiv och mångsidig. Pixtral Large arrangeras av Brave genom vår egna säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Qwen 3 235B, en modell skapad av Alibaba Cloud för att vara effektiv och mångsidig. Qwen 3 235B arrangeras av Brave genom vår egna säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Deepseek V3.1, en modell skapad av Deepseek för att vara effektiv och mångsidig. Deepseek V3.1 arrangeras av Brave genom vår egna säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Deepseek V3.2, en modell skapad av Deepseek för att vara effektiv och mångsidig. Deepseek V3.2 arrangeras av Brave genom vår egna säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Qwen 3 Coder 480B, en modell skapad av Alibaba Cloud för att vara effektiv och mångsidig. Qwen 3 Coder 480B arrangeras av Brave genom vår egna säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hej, jag heter Leo. Jag är en proxybaserad AI-assistent från Brave. Jag drivs av Claude Opus, en modell skapad av Anthropic med förmåga att klara konversations- och textbehandlingsuppgifter. Claude Opus arrangeras av Brave genom vår egna säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av GLM-4-7-Flash, en modell skapad av Zhipu AI för att vara effektiv och mångsidig. GLM-4-7-Flash är värdhostad av Brave genom vår egen säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Kimi K2.5, en modell skapad av Moonshot AI för att vara effektiv och mångsidig. Kimi K2.5 är värdhostad av Brave genom vår egen säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Brave Ocelot, en modell skapad av Brave för att sammanfatta webbsidor. Brave Ocelot är värdhostad av Brave genom vår egen säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Lokal</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -2353,6 +2356,8 @@
 <translation id="7465032796278724624">Verifierbart privat med NEAR AI TEE</translation>
 <translation id="8782867266498869301">Modellen ändras dynamiskt för att använda den bästa för uppgiften</translation>
 <translation id="3213834013136637671">Sök • Vision</translation>
+<translation id="5276681919620506371">Sök • Verktyg</translation>
+<translation id="7434375176361995333">Sammanfattningar • Snabbt</translation>
 <translation id="3965507912994218570">Leo-inställningar</translation>
 <translation id="3754337604877048671">Presenting Leo AI</translation>
 <translation id="5295261408976371809">Din <ph name="TEXT_BEFORE"/>privata<ph name="TEXT_AFTER"/> AI-assistent, inbyggd direkt i webbläsaren.</translation>
@@ -2408,6 +2413,8 @@
 <translation id="4572010449071015143">Starta ny konversation</translation>
 <translation id="345901077335355561">Gå tillbaka till den aktiva konversationen</translation>
 <translation id="6287023598025162715">Ny konversation</translation>
+<translation id="7230502562132448519">Filtrera konversationer</translation>
+<translation id="821070843380699990">Försök med en annan fråga</translation>
 <translation id="7097822247923237815">Tillfällig chatt</translation>
 <translation id="7481750859362986254">Denna chatt kommer inte att sparas i din historik eller använda någon av Leos anpassningar eller minnen.</translation>
 <translation id="4238305333951712482">Minne uppdaterat: <ph name="MEMORY_CONTENT"/></translation>
@@ -2445,6 +2452,21 @@
 <translation id="6338250692384725496">Körde kod i sandbox för att hjälpa till med din fråga</translation>
 <translation id="4379566111233326721">Kod:</translation>
 <translation id="3542130965673205258">Ut:</translation>
+<translation id="5382076391290708074">Flytta dina flikar</translation>
+<translation id="3862123464576147769">Om du tillåter detta skickas <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> och <ph name="TITLE_FORMAT_START"/>Titel<ph name="TITLE_FORMAT_END"/> för alla dina flikar och flikgrupper till Brave AI, och Brave AI kommer att kunna flytta dem. Denna behörighet gäller endast för denna konversation.</translation>
+<translation id="396165714586708444">Djupgående forskning</translation>
+<translation id="577747221882855891">Söker: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">Analyserar <ph name="COUNT"/> källor för "<ph name="QUERY"/>"</translation>
+<translation id="1202264349398113062">Bearbetar <ph name="COUNT"/> nya URL:er för "<ph name="QUERY"/>"</translation>
+<translation id="6189479600023022289">Hittade <ph name="COUNT"/> URL:er för "<ph name="QUERY"/>"</translation>
+<translation id="5150674341374247355">Hämtar <ph name="FETCHED"/>/<ph name="TOTAL"/> URL:er</translation>
+<translation id="1075606740174445363">Analyserade <ph name="COUNT"/> URL:er för "<ph name="QUERY"/>"</translation>
+<translation id="6220878652174655112">Söker <ph name="COUNT"/> frågor</translation>
+<translation id="3571450204565012512">Analyserade <ph name="URL_COUNT"/> URL:er från <ph name="QUERY_COUNT"/> sökningar</translation>
+<translation id="5733200563889491347">Forskning slutförd</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>m <ph name="SECONDS"/>s</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>s</translation>
+<translation id="5067194014665306881">Forskningsfel: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">AI-bläddring</translation>
 <translation id="2854657728271352435">Om AI-bläddringsprofilen</translation>
 <translation id="2301685062527585986">För att skydda dina data, ser denna isolerade AI-bläddringsprofil till att AI-agenten inte har åtkomst till din huvudsakliga bläddringsprofil och endast har behörigheter att besöka och interagera med webbplatser efter behov. Du kan öka din produktivitet genom att ge den uppgifter och låta den bläddra åt dig.</translation>
@@ -2509,11 +2531,14 @@
 <translation id="7847477075635510673">Dölj nyheter</translation>
 <translation id="9173319813356700250">NYHETER</translation>
 <translation id="6543799171249004861">Foto: <ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="466214682712474574">Logga in på ditt <ph name="PROVIDER"/>-konto för att se ditt saldo</translation>
 <translation id="8332875111286275890">Logga in för att se ditt saldo</translation>
 <translation id="5430001801813715388">BELÖNINGAR</translation>
+<translation id="988042349921505128">Sök och AI</translation>
 <translation id="2430295257226173518">Fråga vad som helst, hitta vad som helst…</translation>
 <translation id="167018310108390163">Anpassa sidan för ny flik</translation>
+<translation id="3500134717967948757">Visa Leo AI-widgeten i nya flikar</translation>
 <translation id="6851426306697017546">Visa klocka</translation>
 <translation id="4844370919312937270">Visa sökwidgeten i nya flikar</translation>
 <translation id="7328310113820087094">Med <ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/> kan du tjäna pengar på att se annonser på ny fliksidan.</translation>
@@ -2542,8 +2567,14 @@
 <translation id="8458987127502506209">Aktivera Brave Shields</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Skydden är UP<ph name="STATUS_AFTER"/> för denna webbplats</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Skydden är NERE<ph name="STATUS_AFTER"/> för denna webbplats</translation>
+<translation id="8426214145426269584">Skydd <ph name="UP_BEFORE"/>aktiverat<ph name="UP_AFTER"/> för denna webbplats</translation>
+<translation id="3325367578778625743">Skydd <ph name="DOWN_BEFORE"/>inaktiverat<ph name="DOWN_AFTER"/> för denna webbplats</translation>
 <translation id="4724752924364329714">Om webbplatsen inte fungerar kan du prova att stänga av sköldarna.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Obs: detta kan minska Braves integritetsskydd.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">Det här kan minska Braves sekretessskydd. <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">Spårare, annonser och mycket mer blockeras.</translation>
+<translation id="4968268657895673116">Fungerar denna webbplats inte korrekt med aktiverade Skydd?</translation>
+<translation id="5412004902081180614">Rapportera</translation>
 <translation id="3620004479054499575">Upplever du problem med den här webbplatsen?</translation>
 <translation id="9176447766421988172">Vi testar ett experiment för att öka webbplatsens kompatibilitet, där vi bara behåller annonsblockering aktiverad. Varning: tar bort alla integritetsskydd. Vill du prova det? <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Observera att för enskilda webbplatser som bryts av Brages integritetsskydd kan du ställa in Sköldar till NER.</translation>
@@ -2558,9 +2589,12 @@
 <translation id="8377155647357436161">Spårare, annonser och mer blockeras <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Skyddas inte av Brave Shields <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Avancerade kontroller</translation>
+<translation id="7939062555109487992">Avancerade alternativ</translation>
 <translation id="5799940914270080805">Om du ändrar dessa inställningar kan webbplatser sluta fungera.</translation>
 <translation id="9204041448536398473">Globala inställningar för Shields</translation>
 <translation id="2108334320919763866">Global standard</translation>
+<translation id="1896472873031845605">Globala inställningar</translation>
+<translation id="8324318899000695659">Blockera element</translation>
 <translation id="7205939464631857223">Rensa alla blockerade element</translation>
 <translation id="3440043456924990296">Inställningar hanterade av organisation</translation>
 <translation id="7053983685419859001">Blockera</translation>
@@ -2645,7 +2679,6 @@
 <translation id="7207456302801184289">Välkommen till Brave</translation>
 <translation id="4988030440045495002">Ultramörkt tema</translation>
 <translation id="2422927186524098759">Sidofält</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Verktygsfält</translation>
 <translation id="6225572914528673855">Adressrad</translation>

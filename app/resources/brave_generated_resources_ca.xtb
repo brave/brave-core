@@ -323,6 +323,8 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="8813509417421129632">Es vol desar una pàgina incrustada a <ph name="SITE"/></translation>
 <translation id="7700010743463174379">Es vol desar aquesta pàgina</translation>
 <translation id="6774238875569752630">Es vol desar una pàgina incrustada en aquesta pàgina</translation>
+<translation id="1383876407941801731">Cerca</translation>
+<translation id="5496587651328244253">Organitza</translation>
 <translation id="1233913566967531780">Classificació de pestanyes</translation>
 <translation id="4034992002364254340">Combina totes les pestanyes relacionades en una nova finestra</translation>
 <translation id="8012125596344613514">Temes suggerits</translation>
@@ -340,6 +342,7 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="6501807887341963552">Tema i colors</translation>
 <translation id="6724227215236550330">Les contrasenyes guardades apareixeran aquí. Per importar contrasenyes a <ph name="BRAND"/> aquest dispositiu, <ph name="BEGIN_LINK"/> selecciona un arxiu CSV<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">Per importar contrasenyes a <ph name="BRAND"/> aquest dispositiu, selecciona un arxiu CSV</translation>
+<translation id="8570228839666486945">IA en dispositiu</translation>
 <translation id="9156965752763025780">Els canvis s'aplicaran la pròxima vegada que reiniciïs Brave.</translation>
 <translation id="7179921470347911571">Rellança ara</translation>
 <translation id="1426410128494586442">Sí</translation>
@@ -392,6 +395,7 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="5297085818601043899">Informació sobre eines</translation>
 <translation id="5219886318310413094">Mostra les pestanyes fixades a totes les finestres</translation>
 <translation id="2396127686705429331">Mostra el botó d'adreces d'interès</translation>
+<translation id="443318149139185498">Utilitzar el logotip de contorn al botó del menú principal</translation>
 <translation id="2814998458708016836">Fes servir una barra d'adreces ampla</translation>
 <translation id="4749586705247636385">Mostra cantonades arrodonides a les àrees de contingut principal</translation>
 <translation id="4109670531935487117">Mostra suggeriments d'autocompletat a la barra d'adreces</translation>
@@ -545,7 +549,7 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="509873765238158442">Bloquejar Microsoft Recall</translation>
 <translation id="4763421121695677716">Bloqueja la funció de recuperació als ordinadors amb Microsoft Windows perquè no es facin captures de pantalla automàtiques de cap de les pestanyes obertes de Brave.</translation>
 <translation id="1968895725257436430">Recopilació de dades</translation>
-<translation id="4846154056248462491">En sortir</translation>
+<translation id="1700052872056357670">Esborra les dades en sortir</translation>
 <translation id="216468847346280584">Esborra les dades d'anuncis de Brave...</translation>
 <translation id="2808630562319398131">Restableix les dades de Recompenses de Brave...</translation>
 <translation id="6438096877646138757">Llocs que esborren les galetes quan les tanques</translation>
@@ -792,6 +796,7 @@ Segur que vols continuar?</translation>
 <translation id="1529674267267221673">Leo es mostrarà al menú contextual quan cliquis amb el botó dret en un lloc web. D'aquesta manera, s'enviarà context a Leo des d'aquesta pàgina web.</translation>
 <translation id="5226020406479918122">Mode Classificació de pestanyes</translation>
 <translation id="3705539672403311123">Activa l'organització de pestanyes a la pàgina de Cerca de pestanyes. En obrir-se, enviarà automàticament els títols i l'origen de totes les pestanyes no privades a Leo perquè pugui classificar-les. <ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">Model predeterminal per a l'enfocament de pestanyes</translation>
 <translation id="8172263161008556851">Mostra suggeriments de missatges en la conversa</translation>
 <translation id="5781842473834867765">Desar el meu historial de converses</translation>
 <translation id="1082960401708055995">Si desactives l'opció de desar les converses, s'eliminaran totes les converses emmagatzemades prèviament. Aquesta acció no es pot revertir.</translation>

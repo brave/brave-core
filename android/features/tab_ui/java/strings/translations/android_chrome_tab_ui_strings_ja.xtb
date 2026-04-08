@@ -39,13 +39,14 @@
 <translation id="2118649612461486615">ストア情報</translation>
 <translation id="2153899164605463849">{TAB_COUNT,plural, =1{サイトのミュートを解除}other{サイトのミュートを解除}}</translation>
 <translation id="2162620598375156287">現在の価格は <ph name="SOURCE_WEBSITE"/> で <ph name="CURRENT_PRICE"/></translation>
-<translation id="22623456902492423">{TABS_COUNT,plural, =1{タブのグループ化を解除する}other{タブのグループ化を解除する}}</translation>
+<translation id="22623456902492423">{TABS_COUNT,plural, =1{タブのグループ化を解除}other{タブのグループ化を解除}}</translation>
 <translation id="2271452184061378400">タブグループはここに保存されます</translation>
 <translation id="2277224997687551299">グループ名を編集</translation>
 <translation id="2330212241471632770">{TABS_COUNT,plural, =1{タブをブックマークに追加}other{タブをブックマークに追加}}</translation>
 <translation id="2359808026110333948">続行</translation>
 <translation id="2371084566192454134">タブとタブグループ</translation>
 <translation id="2375257132547014176">{TABS_COUNT,plural, =1{<ph name="TITLE_OF_GROUP"/> タブグループの <ph name="TABS_COUNT_ONE"/> 個のタブを折りたたみます。}other{<ph name="TITLE_OF_GROUP"/> タブグループの <ph name="TABS_COUNT_MANY"/> 個のタブを折りたたみます。}}</translation>
+<translation id="2476179388576975626">ピクチャー イン ピクチャー</translation>
 <translation id="2498435670446402865">タブグループの名前を変更</translation>
 <translation id="2536366509642644298">「<ph name="TAB_GROUP_NAME_1"/>」と「<ph name="TAB_GROUP_NAME_2"/>」のタブグループは使用できなくなりました</translation>
 <translation id="2539705006853443997">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> 個のタブを折りたたみます。}other{タブグループの <ph name="TABS_COUNT_MANY"/> 個のタブを折りたたみます。}}</translation>
@@ -81,7 +82,6 @@
 <translation id="3619255692378312441">アクセスを管理</translation>
 <translation id="3649471731638882002">{TAB_COUNT,plural, =1{アイテムを閉じる}other{アイテムを閉じる}}</translation>
 <translation id="3652027618765638838"><ph name="CURRENT_RATING"/> / <ph name="RATING_BASELINE"/></translation>
-<translation id="3714430408451673233">タブのボトムシートが画面の下半分に表示されています。</translation>
 <translation id="374923079891132274">共有シートのプレビューのサムネイル。</translation>
 <translation id="3776329373944672717">タブグループのタイトル <ph name="TITLE_OF_GROUP"/></translation>
 <translation id="3810973564298564668">管理</translation>
@@ -125,7 +125,6 @@
 <translation id="5339733443032484186">最後のタブ</translation>
 <translation id="5380159289133845234">重複するタブをアーカイブする</translation>
 <translation id="5446043142172831860">タブを削除するとグループから退出します</translation>
-<translation id="5465437530117042974">タブのボトムシートが閉じられました。</translation>
 <translation id="5490235265819901748">タブグループを展開しました</translation>
 <translation id="5494920125229734069">すべて選択</translation>
 <translation id="5505998972479309757">{LIMIT_COUNT,plural, =1{追加できるファイル、タブ、または画像は最大 <ph name="LIMIT_COUNT_ONE"/> 個です}other{追加できるファイル、タブ、または画像は最大 <ph name="LIMIT_COUNT_MANY"/> 個です}}</translation>
@@ -141,7 +140,6 @@
 <translation id="6040143037577758943">閉じる</translation>
 <translation id="6051432659151380973">タブグループは自動的に保存されます</translation>
 <translation id="6054741997831917303">このアイテムの価格は最近 <ph name="PREVIOUS_PRICE"/> から <ph name="NEW_PRICE"/> に下がりました</translation>
-<translation id="606985262342505139">タブのボトムシートが画面全体に表示されています</translation>
 <translation id="6109251075362363230">最後に使用したもの以外の重複するすべてのタブをアーカイブします</translation>
 <translation id="612596694132302162">サイトのミュートを解除</translation>
 <translation id="6149218574440723463">{TABS_COUNT,plural, =1{選択した <ph name="TABS_COUNT_ONE"/> 個のアイテムを閉じる}other{選択した <ph name="TABS_COUNT_MANY"/> 個のアイテムを閉じる}}</translation>
@@ -172,7 +170,7 @@
 <translation id="6957436309971790274">アクティブでない状態で 21 日経過</translation>
 <translation id="7064815189603108598">{NUMBER_OF_TABS,plural, =1{共有タブグループ <ph name="TITLE_OF_GROUP"/>（タブの数: <ph name="TABS_COUNT_ONE"/>、色: <ph name="COLOR_NAME"/>）を開きます。}other{共有タブグループ <ph name="TITLE_OF_GROUP"/>（タブの数: <ph name="TABS_COUNT_MANY"/>、色: <ph name="COLOR_NAME"/>）を開きます。}}</translation>
 <translation id="709473454666962555">タブグループを選択します</translation>
-<translation id="7100731960740376323">{TABS_COUNT,plural, =1{タブを共有する}other{タブを共有する}}</translation>
+<translation id="7100731960740376323">{TABS_COUNT,plural, =1{タブを共有}other{タブを共有}}</translation>
 <translation id="7129458170538955174">このショップに関する情報が画面の下半分に表示されています</translation>
 <translation id="7204204600596740190">複数選択モード</translation>
 <translation id="7211038039686180558">タブグループは自動的に保存され、ログインしているすべてのデバイスで更新されます</translation>

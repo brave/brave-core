@@ -323,6 +323,8 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="8813509417421129632">Una página incrustada en <ph name="SITE"/> desea guardar</translation>
 <translation id="7700010743463174379">Esta página desea guardar</translation>
 <translation id="6774238875569752630">Una página incrustada en esta página desea guardar</translation>
+<translation id="1383876407941801731">Búsqueda</translation>
+<translation id="5496587651328244253">Organizar</translation>
 <translation id="1233913566967531780">Enfoque de pestaña</translation>
 <translation id="4034992002364254340">Reunir todas las pestañas relacionadas en una nueva ventana</translation>
 <translation id="8012125596344613514">Temas sugeridos</translation>
@@ -340,6 +342,7 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="6501807887341963552">Tema y colores</translation>
 <translation id="6724227215236550330">Las contraseñas guardadas aparecerán aquí. Para importar contraseñas a <ph name="BRAND"/> en este dispositivo, <ph name="BEGIN_LINK"/> selecciona un archivo CSV<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">Para importar contraseñas a <ph name="BRAND"/> en este dispositivo, selecciona un archivo CSV</translation>
+<translation id="8570228839666486945">IA en el dispositivo</translation>
 <translation id="9156965752763025780">Tus cambios se aplicarán la próxima vez que reinicies Brave.</translation>
 <translation id="7179921470347911571">Relanzar Ahora</translation>
 <translation id="1426410128494586442">Sí</translation>
@@ -392,6 +395,7 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="5297085818601043899">Información sobre herramientas</translation>
 <translation id="5219886318310413094">Mostrar las pestañas fijadas en todas las ventanas</translation>
 <translation id="2396127686705429331">Mostrar botón de marcadores</translation>
+<translation id="443318149139185498">Usar logo de esquema en el botón del menú principal</translation>
 <translation id="2814998458708016836">Usar la barra de direcciones extendida</translation>
 <translation id="4749586705247636385">Mostrar esquinas redondeadas en las principales áreas de contenido</translation>
 <translation id="4109670531935487117">Mostrar sugerencias autocompletadas en la barra de direcciones</translation>
@@ -545,7 +549,7 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="509873765238158442">Bloquear el recordatorio de Microsoft</translation>
 <translation id="4763421121695677716">Bloquea la función de recordatorio en los ordenadores con Microsoft Windows para que no realice automáticamente capturas de pantalla de las pestañas abiertas de Brave.</translation>
 <translation id="1968895725257436430">Recopilación de datos</translation>
-<translation id="4846154056248462491">Al salir</translation>
+<translation id="1700052872056357670">Borrar datos al salir</translation>
 <translation id="216468847346280584">Borrar los datos de Anuncios de Brave...</translation>
 <translation id="2808630562319398131">Restablecer los datos de las recompensas de Brave...</translation>
 <translation id="6438096877646138757">Sitios que borran las cookies cuando los cierras</translation>
@@ -792,6 +796,7 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="1529674267267221673">Leo aparecerá en el menú contextual cuando hagas clic con el botón derecho en un sitio web. Al hacerlo, Leo recibirá el contexto de la página web en cuestión.</translation>
 <translation id="5226020406479918122">Modo de enfoque de pestaña</translation>
 <translation id="3705539672403311123">Habilitar la organización de pestañas en la página de Búsqueda de pestañas. Cuando se abre, esto enviará automáticamente los títulos y orígenes de todas las pestañas que no son de incógnito a Leo para clasificarlas. <ph name="BEGIN_LINK"/>Saber más<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">Modelo predeterminado para tab focus</translation>
 <translation id="8172263161008556851">Mostrar sugerencias en la conversación</translation>
 <translation id="5781842473834867765">Guardar mi historial de conversaciones</translation>
 <translation id="1082960401708055995">Desactivar el almacenamiento de conversaciones borrará permanentemente todas las conversaciones guardadas previamente. Esta acción no se puede deshacer.</translation>

@@ -1837,6 +1837,7 @@
 <translation id="8897189056319316783">屏蔽 ZEC</translation>
 <translation id="508249542337194541">取消盾牌 ZEC</translation>
 <translation id="3382275793825152362">以盾牌保護資金</translation>
+<translation id="617149752238892649">以盾牌保護資金</translation>
 <translation id="8631765320256788981">您正在將資金從您的透明帳戶傳送到您的盾牌防護帳戶。</translation>
 <translation id="3860364671495430495">您正在將資金從您的盾牌帳戶傳送至您的透明帳戶。</translation>
 <translation id="7144878232160441200">重試</translation>
@@ -2186,6 +2187,7 @@
     }</translation>
 <translation id="6961721183181597848">今天有什麼能幫到您的？</translation>
 <translation id="2966135729673253768">詢問後續</translation>
+<translation id="5923170497201832190">將分頁捲動到最下方</translation>
 <translation id="6219262425964000211">將檔案拖放至此處</translation>
 <translation id="4313763911013851687">將任何檔案拖放至此處即可將其加入對話</translation>
 <translation id="4524675003624341892">建議的問題……</translation>
@@ -2207,20 +2209,21 @@
 <translation id="999273441077650169">模型動態更改以選擇最適合的任務。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Meta 建立的模型 Llama 3.1 8B 提供技術支援，效能強大，可適用於許多使用案例。Llama 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Alibaba Cloud 建立的模型 Qwen VL 30B 提供技術支援，效能強大，可適用於許多使用案例。Qwen 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 DeepSeek 建立的模型 DeepSeek V3.1 提供技術支援，效能強大，可適用於許多使用案例。DeepSeek V3.1 通過其自主可驗證的私有安全基礎架構由 NEAR 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Zhipu AI 建立的模型 GLM-5 提供技術支援，效能強大，可適用於許多使用案例。GLM-5 通過其自主可驗證的私有安全基礎架構由 NEAR 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">嗨，我是 Leo，是由 Brave 提供的 AI 助理。我由 Claude Instant 提供支援，這是一個由 Anthropic 所創建的模型，用於進行對話與文字處理工作。Claude Instant 透過 Brave 自有的安全基礎設施託管。<ph name="LINK_BEFORE"/>深入了解<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Claude Haiku 提供技術支援，Claude Haiku 是 Anthropic 建立的模型，用來執行會話與文字處理工作。Claude Haiku 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Claude Sonnet 提供技術支援，Claude Sonnet 是 Anthropic 建立的模型，用來執行會話與文字處理工作。Claude Sonnet 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Meta 建立的模型 Llama 4 Scout 提供技術支援，效能強大，可適用於許多使用案例。Llama 4 Scout 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Meta 建立的模型 Llama 4 Maverick 提供技術支援，效能強大，可適用於許多使用案例。Llama 4 Maverick 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 OpenAI 建立的模型 GPT OSS 20B 提供技術支援，效能強大，可適用於許多使用案例。GPT OSS 20B 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 OpenAI 建立的模型 GPT OSS 120B 提供技術支援，效能強大，可適用於許多使用案例。GPT OSS 120B 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Mistral 建立的模型 Mistral Large 提供技術支援，效能強大，可適用於許多使用案例。Mistral Large 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Mistral 建立的模型 Pixtral Large 提供技術支援，效能強大，可適用於許多使用案例。Pixtral Large 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Alibaba Cloud 建立的模型 Qwen 3 235B 提供技術支援，效能強大，可適用於許多使用案例。Qwen 3 235B 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Deepseek 建立的模型 Deepseek V3.1 提供技術支援，效能強大，可適用於許多使用案例。Deepseek V3.1 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Deepseek 建立的模型 Deepseek V3.2 提供技術支援，效能強大，可適用於許多使用案例。Deepseek V3.2 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Alibaba Cloud 建立的模型 Qwen 3 Coder 480B 提供技術支援，效能強大，可適用於許多使用案例。Qwen 3 Coder 480B 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Anthropic 建立的模型 Claude Opus 提供技術支援，Claude Opus 用來執行會話與文字處理工作。Claude Opus 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Zhipu AI 建立的模型 GLM-4-7-Flash 提供技術支援，效能強大，可適用於許多使用案例。GLM-4-7-Flash 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Moonshot AI 建立的模型 Kimi K2.5 提供技術支援，效能強大，可適用於許多使用案例。Kimi K2.5 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Brave 建立的模型 Brave Ocelot 提供技術支援，用於總結網頁內容。Brave Ocelot 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">本地</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -2353,6 +2356,8 @@
 <translation id="7465032796278724624">以 NEAR AI TEE 驗證隱私</translation>
 <translation id="8782867266498869301">模型動態更改以選擇最適合的任務</translation>
 <translation id="3213834013136637671">搜尋 • 顯示</translation>
+<translation id="5276681919620506371">搜尋 • 工具</translation>
+<translation id="7434375176361995333">摘要 • 快速</translation>
 <translation id="3965507912994218570">Leo 設定</translation>
 <translation id="3754337604877048671">介紹 Leo AI</translation>
 <translation id="5295261408976371809">您<ph name="TEXT_BEFORE"/>專屬私密<ph name="TEXT_AFTER"/>的 AI 助理，已內建於瀏覽器中。</translation>
@@ -2408,6 +2413,8 @@
 <translation id="4572010449071015143">開啟新對話</translation>
 <translation id="345901077335355561">回到活躍對話</translation>
 <translation id="6287023598025162715">新對話</translation>
+<translation id="7230502562132448519">篩選對話</translation>
+<translation id="821070843380699990">請嘗試其他搜尋</translation>
 <translation id="7097822247923237815">臨時聊天</translation>
 <translation id="7481750859362986254">這次聊天不會儲存到您的歷史記錄中，也不會使用任何 Leo 的自訂或記憶。</translation>
 <translation id="4238305333951712482">記憶體更新： <ph name="MEMORY_CONTENT"/></translation>
@@ -2445,6 +2452,21 @@
 <translation id="6338250692384725496">在沙箱中執行程式碼以幫助您查詢</translation>
 <translation id="4379566111233326721">程式碼：</translation>
 <translation id="3542130965673205258">輸出:</translation>
+<translation id="5382076391290708074">移動你的標籤</translation>
+<translation id="3862123464576147769">允許此操作將傳送所有標籤頁和標籤群組的<ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/>和<ph name="TITLE_FORMAT_START"/>標題<ph name="TITLE_FORMAT_END"/>至 Brave AI，並允許 Brave AI 移動它們。此權限僅適用於此對話。</translation>
+<translation id="396165714586708444">深度研究</translation>
+<translation id="577747221882855891">搜尋："<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">分析<ph name="COUNT"/>個來源以取得"<ph name="QUERY"/>"</translation>
+<translation id="1202264349398113062">正在處理<ph name="COUNT"/>個"<ph name="QUERY"/>"的新 URL</translation>
+<translation id="6189479600023022289">找到<ph name="COUNT"/>個"<ph name="QUERY"/>"的 URL</translation>
+<translation id="5150674341374247355">正在取得<ph name="FETCHED"/>/<ph name="TOTAL"/>個 URL</translation>
+<translation id="1075606740174445363">分析了<ph name="COUNT"/>個"<ph name="QUERY"/>"的 URL</translation>
+<translation id="6220878652174655112">搜尋<ph name="COUNT"/>項查詢</translation>
+<translation id="3571450204565012512">分析了<ph name="URL_COUNT"/>個來自<ph name="QUERY_COUNT"/>次搜尋的 URL</translation>
+<translation id="5733200563889491347">研究完成</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>分<ph name="SECONDS"/>秒</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>秒</translation>
+<translation id="5067194014665306881">研究錯誤：<ph name="ERROR"/></translation>
 <translation id="3428245742224818842">AI 瀏覽</translation>
 <translation id="2854657728271352435">關於 AI 瀏覽個人檔案</translation>
 <translation id="2301685062527585986">為了保護您的資料，此隔離的 AI 瀏覽個人檔案可確保 AI 代理無法存取您的主要瀏覽個人檔案，僅具有造訪與互動網站的權限。將任務交給它並讓它幫您瀏覽，即可提升您的工作效率。</translation>
@@ -2509,11 +2531,14 @@
 <translation id="7847477075635510673">隱藏新聞</translation>
 <translation id="9173319813356700250">新聞</translation>
 <translation id="6543799171249004861">攝影者：<ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="466214682712474574">登入您的 <ph name="PROVIDER"/> 帳戶查看您的餘額</translation>
 <translation id="8332875111286275890">登入查看您的餘額</translation>
 <translation id="5430001801813715388">獎勵</translation>
+<translation id="988042349921505128">搜尋和 AI</translation>
 <translation id="2430295257226173518">無所不問，無所不答…</translation>
 <translation id="167018310108390163">自定義新標籤頁面</translation>
+<translation id="3500134717967948757">在新標籤頁中顯示 Leo AI 小工具</translation>
 <translation id="6851426306697017546">顯示時鐘</translation>
 <translation id="4844370919312937270">在新標籤頁中顯示搜尋小工具</translation>
 <translation id="7328310113820087094">有了 <ph name="LINK_BEGIN"/>Brave 獎勵<ph name="LINK_END"/>，您可以透過查看新標籤頁廣告來賺取獎勵。</translation>
@@ -2542,8 +2567,14 @@
 <translation id="8458987127502506209">啟用 Brave 防護</translation>
 <translation id="8443488493738411048">針對此網站<ph name="STATUS_BEFORE"/>已開啟盾牌<ph name="STATUS_AFTER"/></translation>
 <translation id="2458631245058451506">針對此網站<ph name="STATUS_BEFORE"/>已關閉盾牌<ph name="STATUS_AFTER"/></translation>
+<translation id="8426214145426269584">針對此網站<ph name="UP_BEFORE"/>盾牌已開啟<ph name="UP_AFTER"/></translation>
+<translation id="3325367578778625743">針對此網站<ph name="DOWN_BEFORE"/>盾牌已關閉<ph name="DOWN_AFTER"/></translation>
 <translation id="4724752924364329714">如果此網站似乎已損壞，請嘗試關閉盾牌。</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>注意：這可能會降低 Brave 的隱私防護。<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">這可能會降低 Brave 的隱私保護。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">已封鎖追蹤程式、廣告等。</translation>
+<translation id="4968268657895673116">此網站在盾牌開啟時運作不正常嗎？</translation>
+<translation id="5412004902081180614">舉報</translation>
 <translation id="3620004479054499575">您是否在使用本網站時遇到問題？</translation>
 <translation id="9176447766421988172">我們正在嘗試一項實驗以增加網站的相容性，我們將僅僅保留啟用廣告攔截。警告：會移除所有隱私防護。您想試試看嗎？ <ph name="LINK_BEFORE"/>了解更多資訊<ph name="LINK_AFTER"/>。</translation>
 <translation id="5372101283158221516">請注意，對於被 Brave 隱私防護破壞的個別網站，您可以將盾牌設定為「關閉」。</translation>
@@ -2558,9 +2589,12 @@
 <translation id="8377155647357436161">已封鎖追蹤程式、廣告等 <ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">未受 Brave Shields 保護 <ph name="LINK_BEFORE"/>深入瞭解<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">進階控制</translation>
+<translation id="7939062555109487992">進階選項</translation>
 <translation id="5799940914270080805">變更這些設定可能會使網站無法正常運作。</translation>
 <translation id="9204041448536398473">全域防護設定</translation>
 <translation id="2108334320919763866">全域預設值</translation>
+<translation id="1896472873031845605">全域設定</translation>
+<translation id="8324318899000695659">封鎖元素</translation>
 <translation id="7205939464631857223">清除所有攔截元件</translation>
 <translation id="3440043456924990296">由組織管理的設定</translation>
 <translation id="7053983685419859001">封鎖</translation>
@@ -2645,7 +2679,6 @@
 <translation id="7207456302801184289">歡迎使用 Brave</translation>
 <translation id="4988030440045495002">超深色主題</translation>
 <translation id="2422927186524098759">側邊欄</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">工具列</translation>
 <translation id="6225572914528673855">地址欄</translation>

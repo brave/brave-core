@@ -322,6 +322,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8813509417421129632">ទំព័រមួយត្រូវបានបង្កប់នៅ <ph name="SITE"/> ចង់រក្សាទុក</translation>
 <translation id="7700010743463174379">ទំព័រនេះចង់រក្សាទុក</translation>
 <translation id="6774238875569752630">ទំព័រមួយត្រូវបានបង្កប់នៅទំព័រនេះចង់រក្សាទុក</translation>
+<translation id="1383876407941801731">ស្វែងរក</translation>
+<translation id="5496587651328244253">រៀបចំ</translation>
 <translation id="1233913566967531780">អាប់ឡូតផ្ទាំងក្រោម</translation>
 <translation id="4034992002364254340">ប្រមូលផ្ទាំងទាំងអស់ដែលទាក់ទងទៅក្នុងវីនដូថ្មី</translation>
 <translation id="8012125596344613514">ប្រធានបទ​ដែលបានណែនាំ</translation>
@@ -339,6 +341,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6501807887341963552">ផ្នែក​និង​ពណ៌</translation>
 <translation id="6724227215236550330">ពាក្យសម្ងាត់ដែលបានរក្សាទុកនឹងបង្ហាញនៅទីនេះ។ ដើម្បីនាំចូលពាក្យសម្ងាត់ទៅ <ph name="BRAND"/> នៅលើឧបករណ៍នេះ <ph name="BEGIN_LINK"/> សូមជ្រើសរើសឯកសារ CSV<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">ដើម្បីនាំចូលពាក្យសម្ងាត់ទៅ <ph name="BRAND"/> នៅលើឧបករណ៍នេះ សូមជ្រើសរើសឯកសារ CSV</translation>
+<translation id="8570228839666486945">AI នៅលើឧបករណ៍</translation>
 <translation id="9156965752763025780">ការផ្លាស់ប្តូររបស់អ្នកនឹងមានប្រសិទ្ធភាពនៅពេលដែលបើកដំណើរការ Brave ឡើងវិញពេលក្រោយ។</translation>
 <translation id="7179921470347911571">បើកដំណើរការឡើងវិញឥឡូវនេះ</translation>
 <translation id="1426410128494586442">បាទ/ចាស</translation>
@@ -391,6 +394,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5297085818601043899">ដើម្បីមើលជំនួយ</translation>
 <translation id="5219886318310413094">បង្ហាញផ្ទាំងរកណៃក្កៈគ្រប​មគរុ</translation>
 <translation id="2396127686705429331">បង្ហាញប៊ូតុងតំណាំចំងូ</translation>
+<translation id="443318149139185498">استخدم شعار الخطوط العريضة على زر القائمة الرئيسية</translation>
 <translation id="2814998458708016836">ប្រើប៉ារាយអាសយដ្ឋានជាងទូលៃ</translation>
 <translation id="4749586705247636385">បង្ហាញគែមមូលនៅលើតំបន់មាតិកាមេ</translation>
 <translation id="4109670531935487117">បង្ហាញការណែនាំអំពីការបំពេញដោយស្វ័យប្រវត្តិនៅក្នុងរបារអាសយដ្ឋាន</translation>
@@ -544,7 +548,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="509873765238158442">ទប់ស្កាត់មុខងាររំលឹកឡើងវិញ Microsoft</translation>
 <translation id="4763421121695677716">ទប់ស្កាត់មុខងាររំលឹកឡើងវិញនៅលើកុំព្យូទ័រ Microsoft Windows ពីការថតអេក្រង់ដោយស្វ័យប្រវត្តិនៃផ្ទាំង Brave ដែលបើកណាមួយ។</translation>
 <translation id="1968895725257436430">ការប្រមូលទិន្នន័យ</translation>
-<translation id="4846154056248462491">យុកចេញ</translation>
+<translation id="1700052872056357670">ជម្រះទិន្នន័យនៅពេល​ចាកចេញ​</translation>
 <translation id="216468847346280584">ជម្រះទិន្នន័យការផ្សាយពាណិជ្ជកម្ម Brave...</translation>
 <translation id="2808630562319398131">កំណត់សារូបីរដៅឡើងវិញ...</translation>
 <translation id="6438096877646138757">គេហទំព័រដែលមានជាផ្សេងជាប់និងពីគេនិង អាចផុតនៅពេលគេបិទ</translation>
@@ -788,6 +792,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1529674267267221673">Leo នឹងបង្ហាញនៅក្នុងមឺនុយបរិបទនៅពេលអ្នកចុចស្តាំលើគេហទំព័រ។ នេះនឹងផ្ញើបរិបទពីទំព័រ Web បច្ចុប្បន្នទៅកាន់ Leo។</translation>
 <translation id="5226020406479918122">របៀបមើលផ្ទាំង</translation>
 <translation id="3705539672403311123">បើកការរៀបចំផ្ទាំងក្នុងទំព័រស្វែងរកផលិតភាព។ នៅពេលបើក វានឹងផ្ញើអត្តបទ និងប្រភពរបស់ផ្ទាំងមិនឯកជនទាំងអស់ ទៅ តាមរម្លង់ផ្កាយ ដើម្បីតម្រៀបវា។ <ph name="BEGIN_LINK"/>ស្វែងយល់បន្ថែម<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">ម៉ូដែលលំនាំដើមសម្រាប់ការស្វាគមន៍ផ្តោតលើផ្ទាំងសូត្រ</translation>
 <translation id="8172263161008556851">បង្ហាញការប្រាប់អំពើណែនាំនៅក្នុងការសន្ទនា</translation>
 <translation id="5781842473834867765">រក្សាទុកប្រវត្តិសន្ទនារបស់ខ្ញុំ</translation>
 <translation id="1082960401708055995">ការលុបការផ្ទុកអាងចំនួននឹងលុបការចំនួនទាំងអស់ដែលបានផ្ទុកមុននេះ។ សកម្មភាពនេះមិនអាចត្រឡប់មកវិញបានទេ។</translation>

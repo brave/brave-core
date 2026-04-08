@@ -322,6 +322,8 @@
 <translation id="8813509417421129632">یک صفحه جاسازی‌شده در ‎<ph name="SITE"/> می‌خواهد ذخیره شود</translation>
 <translation id="7700010743463174379">این صفحه می‌خواهد ذخیره شود</translation>
 <translation id="6774238875569752630">یک صفحه جاسازی‌شده در این صفحه می‌خواهد ذخیره شود</translation>
+<translation id="1383876407941801731">جستجو</translation>
+<translation id="5496587651328244253">سازماندهی</translation>
 <translation id="1233913566967531780">برگه متمرکز</translation>
 <translation id="4034992002364254340">تمام برگه‌های مرتبط را در یک پنجره جدید جمع کنید</translation>
 <translation id="8012125596344613514">موضوعات پیشنهادی</translation>
@@ -339,6 +341,7 @@
 <translation id="6501807887341963552">پوسته و رنگ‌ها</translation>
 <translation id="6724227215236550330">گذرواژه‌های ذخیره‌شده در اینجا نمایش داده می‌شوند. برای وارد کردن گذرواژه‌ها به <ph name="BRAND"/> در این دستگاه، <ph name="BEGIN_LINK"/>یک فایل CSV انتخاب کنید<ph name="END_LINK"/>؛</translation>
 <translation id="3575561030014162610">برای وارد کردن گذرواژه‌ها به <ph name="BRAND"/> در این دستگاه، یک فایل CSV انتخاب کنید</translation>
+<translation id="8570228839666486945">AI روی دستگاه</translation>
 <translation id="9156965752763025780">‏دفعه بعدی که Brave را مجدداً راه‌اندازی می‌کنید، این تغییرات اعمال می‌شوند.</translation>
 <translation id="7179921470347911571">اکنون راه‌اندازی مجدد شود</translation>
 <translation id="1426410128494586442">بله</translation>
@@ -391,6 +394,7 @@
 <translation id="5297085818601043899">راهنمای ابزار</translation>
 <translation id="5219886318310413094">نمایش زبانه‌های پین‌شده در همه پنجره‌ها</translation>
 <translation id="2396127686705429331">نمایش دکمه نشانک‌ها</translation>
+<translation id="443318149139185498">استفاده از لوگوی طرح‌ریزی شده در دکمه منو اصلی</translation>
 <translation id="2814998458708016836">استفاده از نوار نشانی عریض</translation>
 <translation id="4749586705247636385">نمایش گوشه‌های گرد در بخش‌های اصلی محتوا</translation>
 <translation id="4109670531935487117">نشان دادن پیشنهادهای تکمیل خودکار در نوار نشانی</translation>
@@ -544,7 +548,7 @@
 <translation id="509873765238158442">مسدود کردن فراخوانی Microsoft</translation>
 <translation id="4763421121695677716">قابلیت فراخوانی را در Microsoft Windows مسدود کنید تا به‌ صورت خودکار از زبانه‌های باز Brave عکس صفحه گرفته نشود.</translation>
 <translation id="1968895725257436430">جمع‌آوری داده</translation>
-<translation id="4846154056248462491">در برگه خروج</translation>
+<translation id="1700052872056357670">پاک کردن داده‌ها هنگام خروج</translation>
 <translation id="216468847346280584">پاک کردن داده‌های تبلیغات Brave...</translation>
 <translation id="2808630562319398131">بازنشانی داده‌های Brave Rewards…</translation>
 <translation id="6438096877646138757">سایت‌هایی که با بسته شدن، کوکی‌ها را پاک می‌کنند</translation>
@@ -791,6 +795,7 @@
 <translation id="1529674267267221673">وقتی روی یک وب‌سایت کلیک راست می‌کنید، Leo در منوی زمینه ظاهر می‌شود. بدین ترتیب زمینه از صفحه وب فعلی به Leo ارسال می‌شود.</translation>
 <translation id="5226020406479918122">حالت برگه متمرکز</translation>
 <translation id="3705539672403311123">سازماندهی برگه‌ها را در صفحه «جستجوی برگه» فعال می‌کند. زمانی که این ویژگی باز شود، عناوین و مبدأ همه برگه‌های غیرخصوصی را به‌طور خودکار برای طبقه‌بندی به Leo ارسال می‌کند. <ph name="BEGIN_LINK"/>اطلاعات بیشتر<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">مدل پیش‌فرض برای تمرکز تب</translation>
 <translation id="8172263161008556851">نمایش دستورهای پیشنهادی در گفتگو</translation>
 <translation id="5781842473834867765">سابقه گفتگوهایم را ذخیره کن</translation>
 <translation id="1082960401708055995">غیرفعال کردن ذخیره‌سازی گفتگوها، تمام گفتگوهای ذخیره‌شده قبلی را برای همیشه پاک خواهد کرد. این اقدام بازگشت‌ناپذیر است.</translation>

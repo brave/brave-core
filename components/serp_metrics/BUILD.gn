@@ -48,18 +48,42 @@ source_set("prefs") {
   public = [ "pref_names.h" ]
 }
 
+source_set("test_support") {
+  testonly = true
+
+  public = [
+    "fake_time_period_store.h",
+    "timezone_test_util.h",
+  ]
+
+  sources = [ "fake_time_period_store.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/components/time_period_storage",
+    "//testing/gtest",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
 
   sources = [
     "serp_classifier_unittest.cc",
     "serp_classifier_utils_unittest.cc",
-    "serp_metrics_unittest.cc",
   ]
+
+  # `ScopedLibcTimezoneOverride` is a no-op on Windows for IANA timezone
+  # identifiers, so timezone-parameterized tests are excluded on Windows to
+  # avoid spurious failures caused by a non-overridable libc timezone.
+  if (!is_win) {
+    sources += [ "serp_metrics_unittest.cc" ]
+  }
 
   deps = [
     ":features",
     ":serp_metrics",
+    ":test_support",
     "//base",
     "//base/test:test_support",
     "//brave/components/constants",

@@ -9,3 +9,9 @@ include_rules += [
   "+brave/components/tabs",
   "+brave/components/text_recognition/common/buildflags",
 ]
+
+specific_include_rules = {
+  "brave_file_select_utils_unittest\.cc": [
+    "+brave/components/l10n/common/test/scoped_default_locale.h",
+  ],
+}

@@ -1834,6 +1834,7 @@
 <translation id="8897189056319316783">ZEC ni himoya qilish</translation>
 <translation id="508249542337194541">ZEC ni himoyasizlantirish</translation>
 <translation id="3382275793825152362">Mablagʻlarni himoyalash</translation>
+<translation id="617149752238892649">Mablagʻlarni himoyalash</translation>
 <translation id="8631765320256788981">Siz shaffof hisobingizdan himoyalangan hisobingizga mablagʻ oʻtkazyapsiz.</translation>
 <translation id="3860364671495430495">Siz mablag‘ni himoyalangan hisobingizdan shaffof hisobingizga yuboryapsiz.</translation>
 <translation id="7144878232160441200">Qayta urinib koʻring</translation>
@@ -2183,6 +2184,7 @@
     }</translation>
 <translation id="6961721183181597848">Bugun qanday yordam bera olaman?</translation>
 <translation id="2966135729673253768">Davom eting so'rang</translation>
+<translation id="5923170497201832190">Varaqni pastga aylantirish</translation>
 <translation id="6219262425964000211">Fayllarni shu yerga tashlash</translation>
 <translation id="4313763911013851687">Suhbatga qoʻshish uchun istalgan faylni shu yerga tashlang</translation>
 <translation id="4524675003624341892">Savollarni taklif qiling…</translation>
@@ -2204,20 +2206,21 @@
 <translation id="999273441077650169">Model vazifaga mos ravishda eng yaxshi variantni tanlab, dinamik tarzda oʻzgaradi. <ph name="LINK_BEFORE"/>Batafsil maʼlumot<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Meta tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo'lish uchun yaratilgan Llama 3.1 8B modeli ishlaydi. Llama Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Alibaba Cloud tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo‘lishi uchun yaratilgan Qwen VL 30B modeli ishlaydi. Qwen Brave tomonidan o‘z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko‘proq bilib oling<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni DeepSeek tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo‘lishi uchun yaratilgan DeepSeek V3.1 modeli ishlaydi. DeepSeek V3.1 NEAR tomonidan o‘zining isbotli shaxsiy xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko‘proq bilib oling<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni DeepSeek tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo'lishi uchun yaratilgan DeepSeek V3.1 modeli ishlaydi. DeepSeek V3.1 NEAR tomonidan o'zining isbotli shaxsiy xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Salom, men Leo. Men Brave tomonidan taqdim etilgan sunʼiy intellekt yordamchisiman. Meni Claude Instant ishlatadi — bu Antropic tomonidan muloqot va matnni qayta ishlash vazifalari uchun yaratilgan model. Claude Instant Brave’ning xavfsiz infratuzilmasida joylashgan.<ph name="LINK_BEFORE"/>Batafsil maʼlumot<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Anthropic tomonidan suhbat va matnni qayta ishlash vazifalarini bajarish uchun yaratilgan Claude Haiku modeli ishlaydi. Claude Haiku Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Anthropic tomonidan suhbat va matnni qayta ishlash vazifalarini bajarish uchun yaratilgan Claude Sonnet modeli ishlaydi. Claude Sonnet Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Meta tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo'lish uchun yaratilgan Llama 4 Scout modeli ishlaydi. Llama 4 Scout Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Meta tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo'lish uchun yaratilgan Llama 4 Maverick modeli ishlaydi. Llama 4 Maverick Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni OpenAI tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo'lish uchun yaratilgan GPT OSS 20B modeli ishlaydi. GPT OSS 20B Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni OpenAI tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo'lish uchun yaratilgan GPT OSS 120B modeli ishlaydi. GPT OSS 120B Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Mistral tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo'lish uchun yaratilgan Mistral Large modeli ishlaydi. Mistral Large Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Mistral tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo'lish uchun yaratilgan Pixtral Large modeli ishlaydi. Pixtral Large Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Alibaba Cloud tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo'lish uchun yaratilgan Qwen 3 235B modeli ishlaydi. Qwen 3 235B Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Deepseek tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo'lish uchun yaratilgan Deepseek V3.1 modeli ishlaydi. Deepseek V3.1 Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Deepseek tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo'lish uchun yaratilgan Deepseek V3.2 modeli ishlaydi. Deepseek V3.2 Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Alibaba Cloud tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo'lish uchun yaratilgan Qwen 3 Coder 480B modeli ishlaydi. Qwen 3 Coder 480B Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Anthropic tomonidan suhbat va matnni qayta ishlash vazifalarini bajarish uchun yaratilgan Claude Opus modeli ishlaydi. Claude Opus Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni OpenAI tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo'lish uchun yaratilgan GPT OSS 20B modeli ishlaydi. GPT OSS 20B Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni OpenAI tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo'lish uchun yaratilgan GPT OSS 120B modeli ishlaydi. GPT OSS 120B Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni DeepSeek tomonidan chuqur aqliy tahlil vazifalarini bajarish uchun yaratilgan DeepSeek R1 modeli ishlaydi. DeepSeek R1 Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Mahalliy</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -2350,6 +2353,8 @@
 <translation id="7465032796278724624">NEAR AI TEE bilan tekshirilgan maxfiylik</translation>
 <translation id="8782867266498869301">Model vazifani bajarish uchun eng yaxshisiga o'zgartiriladi</translation>
 <translation id="3213834013136637671">Qidiruv • Ko‘rish</translation>
+<translation id="5276681919620506371">Qidiruv • Asboblar</translation>
+<translation id="7434375176361995333">Jami ma'lumotlar • Tez</translation>
 <translation id="3965507912994218570">Leo sozlamalari</translation>
 <translation id="3754337604877048671">Leo sunʼiy intellektini tanishtiramiz</translation>
 <translation id="5295261408976371809">Brauzerga to‘g‘ridan-to‘g‘ri o‘rnatilgan <ph name="TEXT_BEFORE"/>shaxsiy<ph name="TEXT_AFTER"/> AI yordamchi.</translation>
@@ -2405,6 +2410,8 @@
 <translation id="4572010449071015143">Yangi suhbatni boshlash</translation>
 <translation id="345901077335355561">Aktiv suhbatga qaytish</translation>
 <translation id="6287023598025162715">Yangi suhbat</translation>
+<translation id="7230502562132448519">Suhbatlarni filtrlash</translation>
+<translation id="821070843380699990">Boshqa so'rov sinab ko'ring</translation>
 <translation id="7097822247923237815">Vaqtinchalik chat</translation>
 <translation id="7481750859362986254">Ushbu suhbat tarixingizga saqlanmaydi va Leo'ning sozlamalari yoki eslab qolish funksiyalaridan foydalanilmaydi.</translation>
 <translation id="4238305333951712482">Xotira yangilandi: <ph name="MEMORY_CONTENT"/></translation>
@@ -2442,6 +2449,21 @@
 <translation id="6338250692384725496">So'rovingizga yordam berish uchun qum xavfsizligi muhitida kod bajarish</translation>
 <translation id="4379566111233326721">Kod:</translation>
 <translation id="3542130965673205258">Chiqish:</translation>
+<translation id="5382076391290708074">Varaqlaringizni atrofida o'tkazish</translation>
+<translation id="3862123464576147769">Buni tasdiqlash <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> va <ph name="TITLE_FORMAT_START"/>Sarlavha<ph name="TITLE_FORMAT_END"/>ni va barcha Varaqlar va Varaq Guruhlarining Sarlavhalarini Brave AI ga yuboring va Brave AI ni ularni atrofida o'tkazishga ruxsat berish. Ushbu ruxsat faqat ushbu suhbatga tegishli.</translation>
+<translation id="396165714586708444">Chuqur tadqiqot</translation>
+<translation id="577747221882855891">Qidiryapti: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">"<ph name="QUERY"/>" uchun <ph name="COUNT"/> ta manba tahlil qilinyapti</translation>
+<translation id="1202264349398113062">"<ph name="QUERY"/>" uchun <ph name="COUNT"/> ta yangi URL ni qayta ishlanyapti</translation>
+<translation id="6189479600023022289">"<ph name="QUERY"/>" uchun <ph name="COUNT"/> ta URL topildi</translation>
+<translation id="5150674341374247355"><ph name="FETCHED"/>/<ph name="TOTAL"/> ta URL olinmoqda</translation>
+<translation id="1075606740174445363">"<ph name="QUERY"/>" uchun <ph name="COUNT"/> ta URL tahlil qilindi</translation>
+<translation id="6220878652174655112"><ph name="COUNT"/> ta so'rov qidirinyapti</translation>
+<translation id="3571450204565012512"><ph name="QUERY_COUNT"/> ta izlanishdan <ph name="URL_COUNT"/> ta URL tahlil qilindi</translation>
+<translation id="5733200563889491347">Tadqiqat tugadi</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>m <ph name="SECONDS"/>s</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>s</translation>
+<translation id="5067194014665306881">Tadqiqat xatosi: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">AI koʻrish</translation>
 <translation id="2854657728271352435">AI koʻrish profili haqida</translation>
 <translation id="2301685062527585986">Ma’lumotlaringizni himoya qilish uchun ushbu alohida AI koʻrish profili AI agentining asosiy koʻrish profilingizga kirishini bloklaydi va faqat kerak bo‘lgan veb-saytlarga tashrif buyurish va ular bilan oʻzaro aloqada boʻlishga ruxsat beradi. Siz undan vazifalarni ado etishni so‘rash va koʻrish ishlarini unga topshirish orqali ish unumdorligingizni oshirishingiz mumkin.</translation>
@@ -2506,11 +2528,14 @@
 <translation id="7847477075635510673">Yangiliklarni yashirish</translation>
 <translation id="9173319813356700250">YANGILIKLAR</translation>
 <translation id="6543799171249004861"><ph name="AUTHOR"/> surati</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="466214682712474574">Balansingizni koʻrish uchun <ph name="PROVIDER"/> hisobingizga kiring.</translation>
 <translation id="8332875111286275890">Balansingizni koʻrish uchun tizimga kiring</translation>
 <translation id="5430001801813715388">MUKOFOTLAR</translation>
+<translation id="988042349921505128">Qidiruv va AI</translation>
 <translation id="2430295257226173518">Istalganini so'rang, hamma narsani toping...</translation>
 <translation id="167018310108390163">Yangi varaq sahifasini moslashtirish</translation>
+<translation id="3500134717967948757">Yangi varaqlarda Leo AI vidjetini ko'rsatish</translation>
 <translation id="6851426306697017546">Soatni ko'rsatish</translation>
 <translation id="4844370919312937270">Yangi varaqlarda qidiruv vidjetini ko'rsatish</translation>
 <translation id="7328310113820087094"><ph name="LINK_BEGIN"/>Brave mukofotlari<ph name="LINK_END"/> orqali siz yangi varaq sahifasidagi reklamalarni koʻrib daromad olishingiz mumkin.</translation>
@@ -2539,8 +2564,14 @@
 <translation id="8458987127502506209">Brave Qalqon funksiyasini yoqish</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Bu sayt uchun qalqonlar YOQILGAN<ph name="STATUS_AFTER"/></translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Bu sayt uchun qalqonlar OʻCHIRILGAN<ph name="STATUS_AFTER"/></translation>
+<translation id="8426214145426269584">Shields <ph name="UP_BEFORE"/>up<ph name="UP_AFTER"/> for this site</translation>
+<translation id="3325367578778625743">Shields <ph name="DOWN_BEFORE"/>down<ph name="DOWN_AFTER"/> for this site</translation>
 <translation id="4724752924364329714">Agar ushbu sayt kutilganidek ishlamayotgan boʻlsa, Qalqon funksiyalarini faolsizlantirishingiz mumkin.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Eslatma: bu Brave'ning maxfiylik himoyasini kamaytirishi mumkin.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">Bu Brave ning maxfiylik himoyasini kamaytirishi mumkin. <ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">Bloklangan trekerlar, reklamalar va boshqa narsalar.</translation>
+<translation id="4968268657895673116">Agar sayt Shields bilan to'g'ri ishlamagan bo'lsa bizga ayting?</translation>
+<translation id="5412004902081180614">Xabar berish</translation>
 <translation id="3620004479054499575">Ushbu sayt bilan bog‘liq muammolar bormi?</translation>
 <translation id="9176447766421988172">Biz faqat reklama blokirovkasini yoqib, veb-saytlar mosligini oshirish uchun tajriba o'tkazmoqdamiz. Diqqat: bu barcha maxfiylik himoyalarini olib tashlaydi. Sinab ko‘rmoqchimisiz? <ph name="LINK_BEFORE"/>Batafsil ma'lumot<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Brave'ning maxfiylik himoyalari sababli buzilgan individual veb-saytlar uchun siz Qalqonlarni PAST holatiga o‘rnatishingiz mumkin.</translation>
@@ -2555,9 +2586,12 @@
 <translation id="8377155647357436161">Kuzatuvchilar, Ads va boshqa narsalar bloklandi <ph name="LINK_BEFORE"/>Batafsil<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave Shields tomonidan himoya qilinmaydi <ph name="LINK_BEFORE"/>Batafsil<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Kengaytirilgan boshqaruv</translation>
+<translation id="7939062555109487992">Kengaytirilgan optsiyalar</translation>
 <translation id="5799940914270080805">Ushbu sozlamalarni o'zgartirish saytlarni nosoz qilishi mumkin.</translation>
 <translation id="9204041448536398473">Global Shield sozlamalari</translation>
 <translation id="2108334320919763866">Global standartlar</translation>
+<translation id="1896472873031845605">Global sozlamalar</translation>
+<translation id="8324318899000695659">Elementlarni bloklash</translation>
 <translation id="7205939464631857223">Bloklangan barcha elementlarni tozalash</translation>
 <translation id="3440043456924990296">Tashkilot tomonidan boshqariladigan sozlamalar</translation>
 <translation id="7053983685419859001">Bloklash</translation>
@@ -2642,7 +2676,6 @@
 <translation id="7207456302801184289">Brave brauzeriga xush kelibsiz</translation>
 <translation id="4988030440045495002">Ultra qorong‘i mavzu</translation>
 <translation id="2422927186524098759">Yon panel</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Asboblar paneli</translation>
 <translation id="6225572914528673855">Manzil maydoni</translation>

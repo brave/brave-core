@@ -323,6 +323,8 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8813509417421129632">Uma página incorporada no <ph name="SITE"/> deseja salvar</translation>
 <translation id="7700010743463174379">Esta página quer salvar</translation>
 <translation id="6774238875569752630">Uma página incorporada nesta página deseja salvar</translation>
+<translation id="1383876407941801731">Pesquisar</translation>
+<translation id="5496587651328244253">Organizar</translation>
 <translation id="1233913566967531780">Manter foco na guia</translation>
 <translation id="4034992002364254340">Agrupar todas as guias relacionadas em uma nova janela</translation>
 <translation id="8012125596344613514">Tópicos sugeridos</translation>
@@ -340,6 +342,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6501807887341963552">Tema e cores</translation>
 <translation id="6724227215236550330">Você vai ver as senhas salvas aqui. Para importar as senhas para <ph name="BRAND"/> nesse dispositivo, <ph name="BEGIN_LINK"/> selecione um arquivo CSV<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">Para importar senhas para <ph name="BRAND"/> neste dispositivo, selecione um arquivo CSV</translation>
+<translation id="8570228839666486945">IA no Dispositivo</translation>
 <translation id="9156965752763025780">As alterações entrarão em vigor na próxima vez que você reiniciar o Brave.</translation>
 <translation id="7179921470347911571">Reiniciar agora</translation>
 <translation id="1426410128494586442">Sim</translation>
@@ -392,6 +395,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5297085818601043899">Dica de ferramenta</translation>
 <translation id="5219886318310413094">Mostrar guias fixadas em todas as janelas</translation>
 <translation id="2396127686705429331">Mostrar botão de favoritos</translation>
+<translation id="443318149139185498">Usar logotipo de contorno no botão de menu principal</translation>
 <translation id="2814998458708016836">Usar barra de endereços larga</translation>
 <translation id="4749586705247636385">Mostrar cantos arredondados nas principais áreas de conteúdo</translation>
 <translation id="4109670531935487117">Exibir sugestões de preenchimento automático na barra de endereço</translation>
@@ -545,7 +549,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="509873765238158442">Bloquear o recall da Microsoft</translation>
 <translation id="4763421121695677716">Bloqueia o recurso de recall nos computadores Microsoft Windows o impedindo de tirar capturas de tela automaticamente de qualquer guia aberta do Brave.</translation>
 <translation id="1968895725257436430">Coleta de dados</translation>
-<translation id="4846154056248462491">Ao sair</translation>
+<translation id="1700052872056357670">Limpar dados ao sair</translation>
 <translation id="216468847346280584">Limpar dados dos Anúncios Brave...</translation>
 <translation id="2808630562319398131">Redefinir dados de recompensas do Brave...</translation>
 <translation id="6438096877646138757">Sites que limpam os cookies quando você os fecha</translation>
@@ -792,6 +796,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1529674267267221673">Leo aparecerá no menu de contexto quando você clicar com o botão direito em um site. Isso enviará o contexto da página da web atual para Leo.</translation>
 <translation id="5226020406479918122">Modo manter foco na guia</translation>
 <translation id="3705539672403311123">Habilite a organização de guias na página Pesquisa de Guias. Quando aberta, os títulos e as origens de todas as guias não privadas serão enviados ao Leo para classificação. <ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">Modelo padrão para tab focus</translation>
 <translation id="8172263161008556851">Mostrar sugestões de perguntas na conversa.</translation>
 <translation id="5781842473834867765">Armazenar meu histórico de conversas</translation>
 <translation id="1082960401708055995">Desativar o armazenamento de conversas apagará permanentemente todas as conversas armazenadas anteriormente. Esta ação não pode ser desfeita.</translation>

@@ -323,6 +323,8 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="8813509417421129632">Een ingesloten pagina op <ph name="SITE"/> wil iets opslaan</translation>
 <translation id="7700010743463174379">Deze pagina wil iets opslaan</translation>
 <translation id="6774238875569752630">Een ingesloten pagina op deze pagina wil iets opslaan</translation>
+<translation id="1383876407941801731">Zoeken</translation>
+<translation id="5496587651328244253">Organiseren</translation>
 <translation id="1233913566967531780">Tabbladfocus</translation>
 <translation id="4034992002364254340">Verzamel alle gerelateerde tabbladen in een nieuw venster</translation>
 <translation id="8012125596344613514">Voorgestelde onderwerpen</translation>
@@ -340,6 +342,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="6501807887341963552">Thema en kleuren</translation>
 <translation id="6724227215236550330">Opgeslagen wachtwoorden verschijnen hier. Om wachtwoorden naar <ph name="BRAND"/> op dit device te importeren, <ph name="BEGIN_LINK"/> selecteer een CSV-bestand<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">Om wachtwoorden naar <ph name="BRAND"/> op dit device te importeren, selecteer een CSV-bestand</translation>
+<translation id="8570228839666486945">On-Device AI</translation>
 <translation id="9156965752763025780">Je wijzigingen worden toegepast wanneer je Brave opnieuw start.</translation>
 <translation id="7179921470347911571">Nu Opnieuw Opstarten</translation>
 <translation id="1426410128494586442">Ja</translation>
@@ -392,6 +395,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="5297085818601043899">Tooltip</translation>
 <translation id="5219886318310413094">Vastgemaakte tabbladen in alle vensters tonen</translation>
 <translation id="2396127686705429331">Bladwijzerknop weergeven</translation>
+<translation id="443318149139185498">Gebruik overzichtslogo op knop hoofdmenu</translation>
 <translation id="2814998458708016836">Gebruik brede adresbalk</translation>
 <translation id="4749586705247636385">Afgeronde hoeken op hoofdinhoudsgebieden weergeven</translation>
 <translation id="4109670531935487117">Suggesties voor automatisch aanvullen in de adresbalk weergeven</translation>
@@ -545,7 +549,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="509873765238158442">Microsoft Recall blokkeren</translation>
 <translation id="4763421121695677716">Blokkeer de Recall-functie op Microsoft Windows-computers en belet dat er automatisch screenshots van geopende Brave-tabbladen worden gemaakt.</translation>
 <translation id="1968895725257436430">Gegevensverzameling</translation>
-<translation id="4846154056248462491">Bij het verlaten</translation>
+<translation id="1700052872056357670">Gegevens wissen bij het verlaten</translation>
 <translation id="216468847346280584">Brave Ads-gegevens wissen...</translation>
 <translation id="2808630562319398131">Brave Rewards-gegevens resetten...</translation>
 <translation id="6438096877646138757">Websites die cookies wissen wanneer u alle vensters sluit</translation>
@@ -792,6 +796,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="1529674267267221673">Leo wordt weergegeven in het contextmenu wanneer u met de rechtermuisknop op een website klikt. Hiermee wordt de context van de huidige webpagina naar Leo verstuurd.</translation>
 <translation id="5226020406479918122">Modus Tabbladfocus</translation>
 <translation id="3705539672403311123">Schakel de organisatie van tabbladen in bij het zoeken op tabbladen. Wanneer dit wordt geopend, worden de titels en de oorsprong van alle niet-privétabbladen automatisch naar Leo gestuurd om ze te classificeren. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">Standaardmodel voor tabfocus</translation>
 <translation id="8172263161008556851">Voorgestelde prompts in het gesprek weergeven</translation>
 <translation id="5781842473834867765">Mijn gespreksgeschiedenis opslaan</translation>
 <translation id="1082960401708055995">Als je je gesprekken niet meer opslaat, worden alle eerder opgeslagen gesprekken ook definitief gewist. Deze actie kan niet ongedaan worden gemaakt.</translation>

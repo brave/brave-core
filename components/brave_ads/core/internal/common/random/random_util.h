@@ -6,19 +6,23 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RANDOM_RANDOM_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RANDOM_RANDOM_UTIL_H_
 
+// Jitters a time delta by a random factor in [0.5, 1.5). Used to prevent
+// thundering-herd effects when scheduling ads-related timers.
+
 namespace base {
 class TimeDelta;
 }  // namespace base
 
 namespace brave_ads {
 
-base::TimeDelta RandTimeDelta(base::TimeDelta time_delta);
+base::TimeDelta RandTimeDeltaWithJitter(base::TimeDelta time_delta);
 
-class ScopedRandTimeDeltaSetterForTesting final {
+class ScopedRandTimeDeltaWithJitterSetterForTesting final {
  public:
-  explicit ScopedRandTimeDeltaSetterForTesting(base::TimeDelta time_delta);
+  explicit ScopedRandTimeDeltaWithJitterSetterForTesting(
+      base::TimeDelta time_delta);
 
-  ~ScopedRandTimeDeltaSetterForTesting();
+  ~ScopedRandTimeDeltaWithJitterSetterForTesting();
 };
 
 }  // namespace brave_ads

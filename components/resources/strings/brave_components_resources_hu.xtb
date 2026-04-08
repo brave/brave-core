@@ -1829,6 +1829,7 @@
 <translation id="8897189056319316783">ZEC védelem</translation>
 <translation id="508249542337194541">ZEC árnyékolása</translation>
 <translation id="3382275793825152362">Pénzeszközök védelme</translation>
+<translation id="617149752238892649">Pénzeszközök feloldása</translation>
 <translation id="8631765320256788981">Pénzt küld az átlátható számlájáról egy biztonságos számlára.</translation>
 <translation id="3860364671495430495">Pénzt küld biztonságos fiókjáról az átlátható fiókjára.</translation>
 <translation id="7144878232160441200">Újra</translation>
@@ -2178,6 +2179,7 @@
     }</translation>
 <translation id="6961721183181597848">Miben segíthetek ma?</translation>
 <translation id="2966135729673253768">Válasz kérése</translation>
+<translation id="5923170497201832190">Görgetés a lap aljára</translation>
 <translation id="6219262425964000211">Húzza ide a fájlokat</translation>
 <translation id="4313763911013851687">Húzza ide a fájlokat, hogy hozzáadja őket a beszélgetéshez</translation>
 <translation id="4524675003624341892">Kérdések javasolása...</translation>
@@ -2199,20 +2201,21 @@
 <translation id="999273441077650169">A modell dinamikusan változik a legjobb feladatellátás érdekében.<ph name="LINK_BEFORE"/>Tudj meg többet<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Llama 3.1 8B modellen alapul, amelyet a Meta fejlesztett ki, amely számos esetben használható. A Llama a Brave által biztosított, saját biztonságos infrastruktúrán fut. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Qwen VL 30B modellen alapul, amelyet az Alibaba Cloud fejlesztett ki annak érdekében, hogy teljesítményorientált és sokféle felhasználási területre alkalmas legyen. A Qwen a Brave saját, biztonságos infrastruktúráján keresztül működik.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a DeepSeek V3.1 modellen alapul, amelyet a DeepSeek fejlesztett ki annak érdekében, hogy teljesítményorientált és sokféle felhasználási területre alkalmas legyen. A DeepSeek V3.1 modellt a NEAR egy ellenőrizhetően privát, biztonságos infrastruktúráján keresztül üzemelteti.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a GLM-5 modellen alapul, amelyet a Zhipu AI fejlesztett ki annak érdekében, hogy teljesítményorientált és sokféle felhasználási területre alkalmas legyen. A GLM-5 modellt a NEAR egy ellenőrizhetően privát, biztonságos infrastruktúráján keresztül üzemelteti.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Szia, Leo vagyok. Én vagyok a Brave által működtetett AI-asszisztens. Az Anthropoc által létrehozott Claude Instant modell hajt végre beszélgetési és szövegfeldolgozási feladatokat. A Claude Instant a Brave biztonságos infrastruktúráján fut.<ph name="LINK_BEFORE"/>További információ<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem a Claude Haiku modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetésre és szövegfeldolgozási feladatok elvégzésére. A Claude Haiku a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>Tudjon meg többet<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem a Claude Sonnet modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetésre és szövegfeldolgozási feladatok elvégzésére. A Claude Sonnet a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>Tudjon meg többet<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Llama 4 Scout modellen alapul, amelyet a Meta fejlesztett ki, amely számos esetben használható. A Llama 4 Scout a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Llama 4 Maverick modellen alapul, amelyet a Meta fejlesztett ki, amely számos esetben használható. A Llama 4 Maverick a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a GPT OSS 20B modellen alapul, amelyet az OpenAI fejlesztett ki, amely számos esetben használható. A GPT OSS 20B a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a GPT OSS 120B modellen alapul, amelyet az OpenAI fejlesztett ki, amely számos esetben használható. A GPT OSS 120B a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Mistral Large modellen alapul, amelyet a Mistral fejlesztett ki, amely számos esetben használható. A Mistral Large a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Pixtral Large modellen alapul, amelyet a Mistral fejlesztett ki, amely számos esetben használható. A Pixtral Large a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Qwen 3 235B modellen alapul, amelyet az Alibaba Cloud fejlesztett ki, amely számos esetben használható. A Qwen 3 235B a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Deepseek V3.1 modellen alapul, amelyet a Deepseek fejlesztett ki, amely számos esetben használható. A Deepseek V3.1 a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Deepseek V3.2 modellen alapul, amelyet a Deepseek fejlesztett ki annak érdekében, hogy teljesítményorientált és sokféle felhasználási területre alkalmas legyen. A Deepseek V3.2 modellt a Brave egy ellenőrizhetően privát, biztonságos infrastruktúráján keresztül üzemelteti.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Qwen 3 Coder 480B modellen alapul, amelyet az Alibaba Cloud fejlesztett ki, amely számos esetben használható. A Qwen 3 Coder 480B a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem a Claude Opus modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetésre és szövegfeldolgozási feladatok elvégzésére. A Claude Opus a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>Tudjon meg többet<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a GLM-4-7-Flash modellen alapul, amelyet a Zhipu AI fejlesztett ki, amely számos esetben használható. A GLM-4-7-Flash a Brave által biztosított, saját biztonságos infrastruktúrán fut. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Kimi K2.5 modellen alapul, amelyet a Moonshot AI fejlesztett ki, amely számos esetben használható. A Kimi K2.5 a Brave által biztosított, saját biztonságos infrastruktúrán fut. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Brave Ocelot modellen alapul, amelyet a Brave fejlesztett ki weboldalak összegzésére. A Brave Ocelot a Brave által biztosított, saját biztonságos infrastruktúrán fut. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Helyi</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -2342,9 +2345,11 @@
 <translation id="2793458212460902934">Gyors • Keresés • Eszközök</translation>
 <translation id="8506027496671575183">Keresés • Képességek • Eszközök</translation>
 <translation id="3184606955650139158">Gyors • Keresés • Látás</translation>
-<translation id="7465032796278724624">Verifiable módon privát a NEAR AI TEE segítségével</translation>
+<translation id="7465032796278724624">Ellenőrizhetően privát a NEAR AI TEE-vel</translation>
 <translation id="8782867266498869301">A modell dinamikusan változik a legjobb feladatellátás érdekében</translation>
 <translation id="3213834013136637671">Keresés • Látás</translation>
+<translation id="5276681919620506371">Keresés • Eszközök</translation>
+<translation id="7434375176361995333">Összegzések • Gyors</translation>
 <translation id="3965507912994218570">Leo-beállítások</translation>
 <translation id="3754337604877048671">Leo AI bemutatkozik</translation>
 <translation id="5295261408976371809">A <ph name="TEXT_BEFORE"/>privát<ph name="TEXT_AFTER"/> AI-asszisztens közvetlenül a böngészőbe építve.</translation>
@@ -2400,6 +2405,8 @@
 <translation id="4572010449071015143">Új beszélgetés indítása</translation>
 <translation id="345901077335355561">Visszatérés az aktív beszélgetéshez</translation>
 <translation id="6287023598025162715">Új beszélgetés</translation>
+<translation id="7230502562132448519">Beszélgetések szűrése</translation>
+<translation id="821070843380699990">Kérjük, próbáljon ki egy másik lekérdezést</translation>
 <translation id="7097822247923237815">Ideiglenes csevegés</translation>
 <translation id="7481750859362986254">Ez a beszélgetés nem lesz elmentve, és nem használja Leo testreszabását vagy memóriáját.</translation>
 <translation id="4238305333951712482">Memória frissítve: <ph name="MEMORY_CONTENT"/></translation>
@@ -2437,6 +2444,21 @@
 <translation id="6338250692384725496">Kód végrehajtása homokozóban a lekérdezés támogatásához</translation>
 <translation id="4379566111233326721">Kód:</translation>
 <translation id="3542130965673205258">Kimenet:</translation>
+<translation id="5382076391290708074">A lapok áthelyezése</translation>
+<translation id="3862123464576147769">Ennek engedélyezésével a <ph name="URL_FORMAT_START"/>webes cím<ph name="URL_FORMAT_END"/> és az összes lap <ph name="TITLE_FORMAT_START"/>címe<ph name="TITLE_FORMAT_END"/> elküldésre kerül a Brave AI-nak, és a Brave AI áthelyezheti azokat. Ez az engedély csak erre a beszélgetésre vonatkozik.</translation>
+<translation id="396165714586708444">Mély kutatás</translation>
+<translation id="577747221882855891">Keresés: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338"><ph name="COUNT"/> forrás elemzése a "<ph name="QUERY"/>" kifejezéshez</translation>
+<translation id="1202264349398113062"><ph name="COUNT"/> új webcím feldolgozása a "<ph name="QUERY"/>" kifejezéshez</translation>
+<translation id="6189479600023022289"><ph name="COUNT"/> webcím található a "<ph name="QUERY"/>" kifejezéshez</translation>
+<translation id="5150674341374247355"><ph name="FETCHED"/>/<ph name="TOTAL"/> webcím letöltése</translation>
+<translation id="1075606740174445363"><ph name="COUNT"/> webcím elemzése a "<ph name="QUERY"/>" kifejezéshez</translation>
+<translation id="6220878652174655112"><ph name="COUNT"/> lekérdezés keresése</translation>
+<translation id="3571450204565012512"><ph name="URL_COUNT"/> webcím elemzése <ph name="QUERY_COUNT"/> keresésből</translation>
+<translation id="5733200563889491347">A kutatás befejeződött</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>p <ph name="SECONDS"/>mp</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>mp</translation>
+<translation id="5067194014665306881">Kutatási hiba: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">AI böngészés</translation>
 <translation id="2854657728271352435">Az AI böngészési profilról</translation>
 <translation id="2301685062527585986">Adatainak védelme érdekében ez a különálló AI böngészési profil biztosítja, hogy az AI ügynök ne férjen hozzá fő profiljához, kizárólag akkor kap engedélyt webhelyek megtekintésére és használatára, ha az szükséges. Fokozza hatékonyságát azáltal, hogy feladatokat ad neki, és engedi, hogy helyette böngésszen.</translation>
@@ -2501,11 +2523,14 @@
 <translation id="7847477075635510673">Hírek elrejtése</translation>
 <translation id="9173319813356700250">ÚJDONSÁG</translation>
 <translation id="6543799171249004861">A fénykép készítője: <ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">Leo MI</translation>
 <translation id="466214682712474574">Lépjen be ide:<ph name="PROVIDER"/> az egyenlege megtekintéséhez</translation>
 <translation id="8332875111286275890">Lépjen be az egyenlege megtekintéséhez</translation>
 <translation id="5430001801813715388">JUTALMAK</translation>
+<translation id="988042349921505128">Keresés és AI</translation>
 <translation id="2430295257226173518">Kérdezzen bármit, találjon meg bármit…</translation>
 <translation id="167018310108390163">Új fül testreszabása</translation>
+<translation id="3500134717967948757">Leo AI widget megjelenítése új lapokon</translation>
 <translation id="6851426306697017546">Óra mutatása</translation>
 <translation id="4844370919312937270">A keresőmotor widget megjelenítése új lapokon</translation>
 <translation id="7328310113820087094">A <ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/> segítségével jutalmakat szerezhetsz az új füloldali hirdetések megtekintésével.</translation>
@@ -2534,8 +2559,14 @@
 <translation id="8458987127502506209">Brave pajzsok engedélyezése</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>A Shields aktív<ph name="STATUS_AFTER"/> ezen az oldalon</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>A Shields inaktív<ph name="STATUS_AFTER"/> ezen az oldalon</translation>
+<translation id="8426214145426269584">Shields <ph name="UP_BEFORE"/>aktív<ph name="UP_AFTER"/> ezen az oldalon</translation>
+<translation id="3325367578778625743">Shields <ph name="DOWN_BEFORE"/>inaktív<ph name="DOWN_AFTER"/> ezen az oldalon</translation>
 <translation id="4724752924364329714">Ha ez az oldal töröttnek tűnik, próbálja meg a Shields down-t.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Megjegyzés: ez csökkentheti a Brave adatvédelmi védelmét.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">Ez csökkenthet a Brave adatvédelmi védelemét. <ph name="LINK_BEFORE"/>További információ<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">Nyomkövetők, hirdetések és még több blokkolva.</translation>
+<translation id="4968268657895673116">A webhely nem működik megfelelően engedélyezett pajzsokkal?</translation>
+<translation id="5412004902081180614">Bejelentés</translation>
 <translation id="3620004479054499575">Problémái vannak ezzel az oldallal?</translation>
 <translation id="9176447766421988172">Kipróbálunk egy kísérletet a weboldal kompatibilitásának növelése érdekében, ahol csak a reklámblokkolást tartjuk engedélyezve. Figyelmeztetés: eltávolít minden adatvédelmi védelmet. Szeretné kipróbálni? <ph name="LINK_BEFORE"/>További információk<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Felhívjuk figyelmét, hogy a Brave adatvédelmi védelme által megzavart egyes weboldalak esetében a Pajzsok leállítását lefelé állíthatja.</translation>
@@ -2550,9 +2581,12 @@
 <translation id="8377155647357436161">Nyomkövetők, hirdetések és még több blokkolva <ph name="LINK_BEFORE"/>További információ<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Nincs felállítva a Brave pajzsok általi védelem<ph name="LINK_BEFORE"/>További információ<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Speciális vezérlők</translation>
+<translation id="7939062555109487992">Speciális beállítások</translation>
 <translation id="5799940914270080805">E beállítások módosításával előfordulhat, hogy egyes webhelyek nem működnek megfelelően.</translation>
 <translation id="9204041448536398473">Globális pajzs beállításai</translation>
 <translation id="2108334320919763866">Globális alapbeállítások</translation>
+<translation id="1896472873031845605">Globális beállítások</translation>
+<translation id="8324318899000695659">Elemek letiltása</translation>
 <translation id="7205939464631857223">Az összes letiltott elem törlése</translation>
 <translation id="3440043456924990296">A szervezet által kezelt beállítások</translation>
 <translation id="7053983685419859001">Tiltás</translation>
@@ -2637,7 +2671,6 @@ other {A Brave Pajzsok {BLOCKED_COUNT} követőt blokkolt itt: <ph name="SITE_UR
 <translation id="7207456302801184289">Üdvözli önt a Brave</translation>
 <translation id="4988030440045495002">Ultra sötét téma</translation>
 <translation id="2422927186524098759">Oldalsáv</translation>
-<translation id="2361906291514218784">Leo MI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Eszköztár</translation>
 <translation id="6225572914528673855">Címsor</translation>

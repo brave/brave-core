@@ -323,6 +323,8 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8813509417421129632">Gustong mag-save ng embededed page sa <ph name="SITE"/></translation>
 <translation id="7700010743463174379">Gustong i-save ng page na ito</translation>
 <translation id="6774238875569752630">Isang naka-embed na page sa page na it ay gustong i-save</translation>
+<translation id="1383876407941801731">Hanapin</translation>
+<translation id="5496587651328244253">Ayusin</translation>
 <translation id="1233913566967531780">Focus ng tab</translation>
 <translation id="4034992002364254340">Kunin ang lahat ng mga nauugnay na tab sa isang bagong window</translation>
 <translation id="8012125596344613514">Mga iminumungkahing paksa</translation>
@@ -340,6 +342,7 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6501807887341963552">Tema at mga kulay</translation>
 <translation id="6724227215236550330">Makikita rito ang mga naka-save na password. Para i-import ang mga password sa <ph name="BRAND"/> sa device na ito, <ph name="BEGIN_LINK"/> pumili ng CSV file<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">Para mag-import ng mga password sa <ph name="BRAND"/> sa device na igto, pumili ng CSV file</translation>
+<translation id="8570228839666486945">On-Device AI</translation>
 <translation id="9156965752763025780">Magkakabisa ang iyong mga pagbabago sa susunod na ilunsad mong muli ang Brave.</translation>
 <translation id="7179921470347911571">Muling Ilunsad Ngayon</translation>
 <translation id="1426410128494586442">Oo</translation>
@@ -392,6 +395,7 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5297085818601043899">Tooltip</translation>
 <translation id="5219886318310413094">Ipakita ang mga naka-pin na tab sa lahat ng window</translation>
 <translation id="2396127686705429331">Ipakita ang bookmarks button</translation>
+<translation id="443318149139185498">Gamitin ang outline logo sa pangunahing menu button</translation>
 <translation id="2814998458708016836">Gumamit ng malapad na address bar</translation>
 <translation id="4749586705247636385">Ipakita ang bilugan na sulok sa mga pangunahing bahagi ng nilalaman</translation>
 <translation id="4109670531935487117">Ipakita ang mga suhestyon sa autocomplete sa address bar</translation>
@@ -545,7 +549,7 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="509873765238158442">I-block ang Microsoft Recall</translation>
 <translation id="4763421121695677716">I-block ang feature ng Recall sa awtomatikong pagkuha ng mga screenshot ng anumang nakabukas na mga tab ng Brave sa mga computer ng Microsoft Windows.</translation>
 <translation id="1968895725257436430">Koleksyon ng data</translation>
-<translation id="4846154056248462491">Sa pag-exit</translation>
+<translation id="1700052872056357670">I-delete ang data kapag nag-exit</translation>
 <translation id="216468847346280584">I-clear ang data ng Mga Barave Ad...</translation>
 <translation id="2808630562319398131">I-reset ang data ng Mga Reward ng Brave...</translation>
 <translation id="6438096877646138757">Mga site na nagki-clear ng cookies kapag isinara mo ang mga ito</translation>
@@ -792,6 +796,7 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1529674267267221673">Magpapakita si Leo sa menu ng konteksto kapag nag-right click ka sa website. Ipapadala nito ang konteksto mula sa kasalukuyang pahina ng web kay Leo.</translation>
 <translation id="5226020406479918122">Tab Focus Mode</translation>
 <translation id="3705539672403311123">I-enable ang tab organization sa page na Tab Search. Kapag binuksan, awtomatiko itong magpapadala ng mga titulo at pinagmulan ng lahat ng mga non-private tab sa Leo para i-classify ang mga ito. <ph name="BEGIN_LINK"/>Alamin ang higit pa<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">Default na model para sa tab focus</translation>
 <translation id="8172263161008556851">Ipakita ang mga iminumungkahing prompt sa conversation</translation>
 <translation id="5781842473834867765">I-store ang aking history ng pakikipag-usap</translation>
 <translation id="1082960401708055995">Kapag na-disable ang storage ng pakikipag-usap, tuluyan nang mabubura ang lahat ng dating naka-store na mga pakikipag-usap. Hindi puwedeng i-undo ang aksyong ito.</translation>

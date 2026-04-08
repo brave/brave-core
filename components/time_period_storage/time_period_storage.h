@@ -27,6 +27,7 @@ class TimePeriodStorage {
   // Will use a TimePeriodStore for storage.
   TimePeriodStorage(std::unique_ptr<TimePeriodStore> store,
                     size_t period_days,
+                    bool should_use_utc = false,
                     bool should_offset_dst = true);
 
   // Will use a list pref for storage. This is a deprecated constructor for
@@ -34,6 +35,7 @@ class TimePeriodStorage {
   TimePeriodStorage(PrefService* prefs,
                     const char* pref_name,
                     size_t period_days,
+                    bool should_use_utc = false,
                     bool should_offset_dst = true);
   // Will use a list within a dictionary pref for storage. This is a deprecated
   // constructor for backward compatibility. Use constructor with
@@ -42,6 +44,7 @@ class TimePeriodStorage {
                     const char* pref_name,
                     const char* dict_key,
                     size_t period_days,
+                    bool should_use_utc = false,
                     bool should_offset_dst = true);
 
   // For tests only. Deprecated constructor for backward compatibility. Use
@@ -51,6 +54,7 @@ class TimePeriodStorage {
                     const char* dict_key,
                     size_t period_days,
                     std::unique_ptr<base::Clock> clock,
+                    bool should_use_utc = false,
                     bool should_offset_dst = true);
   ~TimePeriodStorage();
 
@@ -77,12 +81,15 @@ class TimePeriodStorage {
     base::Time day;
     uint64_t value = 0ull;
   };
+  base::Time Midnight(base::Time time) const;
+  base::TimeDelta GetDstOffset() const;
   void FilterToPeriod();
   void Load();
   void Save();
 
   std::unique_ptr<TimePeriodStore> store_;
   size_t period_days_;
+  const bool should_use_utc_;
   const bool should_offset_dst_;
 
   std::list<DailyValue> daily_values_;

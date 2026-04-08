@@ -322,6 +322,8 @@
 <translation id="8813509417421129632"><ph name="SITE"/> 上的一个内嵌页面需要保存</translation>
 <translation id="7700010743463174379">此页面试图保存</translation>
 <translation id="6774238875569752630">此页面上的嵌入式页面试图保存</translation>
+<translation id="1383876407941801731">搜索</translation>
+<translation id="5496587651328244253">整理</translation>
 <translation id="1233913566967531780">标签页聚合</translation>
 <translation id="4034992002364254340">将所有相关标签页在新窗口中聚合</translation>
 <translation id="8012125596344613514">建议主题</translation>
@@ -339,6 +341,7 @@
 <translation id="6501807887341963552">主题和颜色</translation>
 <translation id="6724227215236550330">保存的密码会在此处显示。如要将密码导入到此设备上的 <ph name="BRAND"/>，请<ph name="BEGIN_LINK"/>选择 CSV 文件<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">如要将密码导入到此设备上的 <ph name="BRAND"/>，请选择 CSV 文件</translation>
+<translation id="8570228839666486945">设备端AI</translation>
 <translation id="9156965752763025780">您所做的更改会在下次重新启动 Brave 时生效。</translation>
 <translation id="7179921470347911571">立即重新启动</translation>
 <translation id="1426410128494586442">是</translation>
@@ -391,6 +394,7 @@
 <translation id="5297085818601043899">工具提示</translation>
 <translation id="5219886318310413094">在所有窗口中显示固定的标签页</translation>
 <translation id="2396127686705429331">显示书签栏按钮</translation>
+<translation id="443318149139185498">在主菜单按钮上使用轮廓徽标</translation>
 <translation id="2814998458708016836">使用宽地址栏</translation>
 <translation id="4749586705247636385">在主要内容区域显示圆角</translation>
 <translation id="4109670531935487117">在地址栏中显示自动完成建议</translation>
@@ -544,7 +548,7 @@
 <translation id="509873765238158442">阻止  Microsoft Recall</translation>
 <translation id="4763421121695677716">在 Microsoft Windows 电脑上阻止 Recall 功能，停止自动截取任何打开的 Brave 标签页的屏幕截图。</translation>
 <translation id="1968895725257436430">资料合集</translation>
-<translation id="4846154056248462491">退出时</translation>
+<translation id="1700052872056357670">退出时删除数据</translation>
 <translation id="216468847346280584">清除 Brave 广告数据…</translation>
 <translation id="2808630562319398131">重置 Brave Rewards 计划数据...</translation>
 <translation id="6438096877646138757">关闭时所有网站窗口时清除 cookie 的网站</translation>
@@ -791,6 +795,7 @@
 <translation id="1529674267267221673">当你右键点击网站时，Leo 将出现在上下文菜单中。这将把当前网页的上下文发送到 Leo。</translation>
 <translation id="5226020406479918122">标签页聚合模式</translation>
 <translation id="3705539672403311123">在“标签页搜索”页面启用标签页整理功能。开启后，这会自动将所有非无痕标签页的标题和来源发送给 Leo 以进行分类。 <ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">标签焦点的默认模型</translation>
 <translation id="8172263161008556851">在对话中显示建议提示</translation>
 <translation id="5781842473834867765">保存我的对话记录</translation>
 <translation id="1082960401708055995">禁用对话存储功能将永久删除所有以前存储的对话。此操作无法撤销。</translation>

@@ -324,6 +324,8 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="8813509417421129632">En indlejret side på <ph name="SITE"/> vil gerne gemme</translation>
 <translation id="7700010743463174379">Denne side vil gerne gemme</translation>
 <translation id="6774238875569752630">En indlejret side på denne side vil gerne gemme</translation>
+<translation id="1383876407941801731">Søg</translation>
+<translation id="5496587651328244253">Organiser</translation>
 <translation id="1233913566967531780">Fanefokus</translation>
 <translation id="4034992002364254340">Saml alle relaterede faner i et nyt vindue</translation>
 <translation id="8012125596344613514">Foreslåede emner</translation>
@@ -341,6 +343,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="6501807887341963552">Tema og farver</translation>
 <translation id="6724227215236550330">Gemte adgangskoder vises her. For at importere adgangskoder til <ph name="BRAND"/> på denne enhed skal du <ph name="BEGIN_LINK"/> vælge en CSV-fil<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">For at importere adgangskoder til <ph name="BRAND"/> på denne enhed skal du vælge en CSV-fil</translation>
+<translation id="8570228839666486945">On-Device AI</translation>
 <translation id="9156965752763025780">Dine ændringer træder i kraft, næste gang du genstarter Brave.</translation>
 <translation id="7179921470347911571">Genstart nu</translation>
 <translation id="1426410128494586442">Ja</translation>
@@ -393,6 +396,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="5297085818601043899">Værktøjstip</translation>
 <translation id="5219886318310413094">Vis fastgjorte faner i alle vinduer</translation>
 <translation id="2396127686705429331">Vis bogmærkeknap</translation>
+<translation id="443318149139185498">Brug omrids-logo på hovedmenuknap</translation>
 <translation id="2814998458708016836">Brug bred adresselinje</translation>
 <translation id="4749586705247636385">Vis afrundede hjørner på hovedindholdsområder</translation>
 <translation id="4109670531935487117">Vis autofuldførelsesforslag i adressefeltet</translation>
@@ -546,7 +550,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="509873765238158442">Bloker Microsoft Recall-funktionen</translation>
 <translation id="4763421121695677716">Bloker Recall-funktionen på Microsoft Windows-computere fra automatisk at tage skærmbilleder af alle åbne Brave-faner.</translation>
 <translation id="1968895725257436430">Dataindsamling</translation>
-<translation id="4846154056248462491">Ved udgang</translation>
+<translation id="1700052872056357670">Ryd data, når du forlader siden</translation>
 <translation id="216468847346280584">Slet data om Brave-reklamer ...</translation>
 <translation id="2808630562319398131">Nulstil Brave-belønningsdata...</translation>
 <translation id="6438096877646138757">Sider, der fjerner cookies, når du lukker dem</translation>
@@ -793,6 +797,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="1529674267267221673">Leo vil blive vist i kontekstmenuen, når du højreklikker på en hjemmeside. Dette vil sende konteksten fra den aktuelle hjemmeside til Leo.</translation>
 <translation id="5226020406479918122">Fanefokus-tilstand</translation>
 <translation id="3705539672403311123">Aktivér organisering af faner på siden Fanesøgning. Når den åbnes, sender den automatisk titlerne og oprindelserne på alle ikke-private faner til Leo for at klassificere dem. <ph name="BEGIN_LINK"/>Få mere at vide<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">Standardmodel for tab-fokus</translation>
 <translation id="8172263161008556851">Vis anbefalede forespørgsler i samtalen</translation>
 <translation id="5781842473834867765">Gem min samtalehistorik</translation>
 <translation id="1082960401708055995">Hvis du deaktiverer lagring af samtaler, slettes alle tidligere gemte samtaler permanent. Denne handling kan ikke fortrydes.</translation>

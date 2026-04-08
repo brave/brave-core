@@ -22,14 +22,16 @@
 <translation id="1089606299949659462">¡Se completó la revisión!</translation>
 <translation id="1094555143448724771">Para ver las pestañas de tus otros dispositivos, sincroniza las pestañas y el historial</translation>
 <translation id="1095761715416917775">Asegúrate de que siempre puedas acceder a tus datos sincronizados</translation>
+<translation id="7960321740458168757">Hoja inferior de habilitación de Brave Finds</translation>
 <translation id="1100066534610197918">Abrir en pestaña nueva en grupo</translation>
 <translation id="4660777881054855091">¿Quieres ayudar a mejorar Brave?</translation>
 <translation id="1105960400813249514">Captura de pantalla</translation>
 <translation id="1108214977745280468">Ver estadísticas de la pág.</translation>
 <translation id="1108938384783527433">Sincronización del historial</translation>
 <translation id="1111673857033749125">Los favoritos guardados en tus otros dispositivos aparecerán aquí.</translation>
+<translation id="1123537484474186311"><ph name="TAB_TITLE"/>, pestaña de pantalla en pantalla</translation>
 <translation id="1126696498560056882">Administrar cuentas en este dispositivo</translation>
-<translation id="9171525955914564119">Para acceder a tus favoritos y más en todos tus dispositivos, accede a Brave como <ph name="EMAIL"/></translation>
+<translation id="9171525955914564119">Para obtener tus favoritos y más en todos tus dispositivos, accede a Brave como <ph name="EMAIL"/></translation>
 <translation id="1138458427267715730">Recibe alertas cuando haya reducciones de precio en cualquier sitio de la Web</translation>
 <translation id="1140317858355046628">Si lo borras, todos los usuarios perderán de inmediato el acceso al grupo de pestañas “<ph name="GROUP_NAME"/>”, y se borrará de todos los dispositivos.</translation>
 <translation id="1142732900304639782">No ofrecer traducir estos sitios</translation>
@@ -52,6 +54,7 @@
 <translation id="1197267115302279827">Mover favoritos</translation>
 <translation id="1197761954713363183">Se cerró la hoja de confirmación de la llave de acceso</translation>
 <translation id="1197933394627598677">Mostrar el Modo de lectura</translation>
+<translation id="1197935538609051549">Desactivar</translation>
 <translation id="1201402288615127009">Siguiente</translation>
 <translation id="1202892408424955784">Productos con seguimiento</translation>
 <translation id="1204037785786432551">Descargar vínculo</translation>
@@ -87,7 +90,6 @@
 <translation id="873343310451048603">Para revisar si hay contraseñas hackeadas, ve al Administrador de contraseñas de Brave</translation>
 <translation id="4167284810587724062">Accede a Brave</translation>
 <translation id="1344653310988386453">Incluir el vínculo al texto destacado</translation>
-<translation id="1347468774581902829">Administrar actividad</translation>
 <translation id="1355088659320425659">Historial y pestañas</translation>
 <translation id="1360432990279830238">¿Salir y desactivar la sincronización?</translation>
 <translation id="1363028406613469049">Seguimiento</translation>
@@ -159,7 +161,7 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="1680919990519905526">Comprar con Brave Lens <ph name="BEGIN_NEW"/>Nuevo<ph name="END_NEW"/></translation>
 <translation id="1683774088349393383">\u0020y se cierran después de <ph name="MONTHS_ARCHIVED"/> meses</translation>
 <translation id="7870200641233500458">Pronto, verás lo que publica <ph name="SITE_NAME"/>, así como contenido sobre ese sitio en Siguiendo. Los sitios y las búsquedas que sigues se guardan en tu Cuenta de Brave. Puedes administrar lo que sigues en la configuración cuando quieras.</translation>
-<translation id="1689333818294560261">Sobrenombre</translation>
+<translation id="1689333818294560261">Alias</translation>
 <translation id="1696555181932908973">Puedes probar otras formas de continuar en <ph name="SITE_ETLD_PLUS_ONE"/>.</translation>
 <translation id="1702543251015153180">¿Quieres cambiar la configuración del Tema oscuro?</translation>
 <translation id="1702907158640575240">Navegador administrado</translation>
@@ -172,7 +174,6 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="12433225238423439">Sigue usando las contraseñas en tu Cuenta de Brave</translation>
 <translation id="17513872634828108">Pestañas abiertas</translation>
 <translation id="1753744496844366747">Aa</translation>
-<translation id="1755203724116202818">Para medir el rendimiento de un anuncio, se comparten algunos tipos de datos entre sitios, por ejemplo, si realizaste una compra después de visitar un sitio.</translation>
 <translation id="1760873718737761808">{FILE_COUNT,plural, =1{Páginas, 1 página en la lista}other{Páginas, # páginas en la lista}}</translation>
 <translation id="9142246815232811613">Se envía información de tu uso de Brave a Brave, pero no está vinculada a ti.\n\nSi Brave falla, es posible que los detalles de la falla incluyan información personal.\n\nSi sincronizas el historial con tu Cuenta de Brave, es posible que las métricas incluyan información de las URL que visitas.</translation>
 <translation id="1778457539567749232">Marcar como no leído</translation>
@@ -237,6 +238,7 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="7675869148432102528"><ph name="APP_NAME"/> también tiene datos en Brave</translation>
 <translation id="2049574241039454490"><ph name="FILE_SIZE_OF_TOTAL"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
 <translation id="2051669996101374349">Usa HTTPS siempre que sea posible y recibe advertencias antes de cargar sitios que no lo admitan. No puedes cambiar este parámetro de configuración porque tienes habilitada la Protección avanzada.</translation>
+<translation id="2052723746739622752">Dejar de fijar Gemini</translation>
 <translation id="2056878612599315956">Se pausó el sitio</translation>
 <translation id="2063047797624276601">Tu organización activó la Navegación segura mejorada</translation>
 <translation id="2065944887543506430">{FILE_COUNT,plural, =1{No se pudo realizar 1 descarga}other{No se pudieron realizar # descargas}}</translation>
@@ -271,11 +273,13 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="2205701497928406883"><ph name="TAB_TITLE"/>, pestaña de uso compartido fijada</translation>
 <translation id="22091350895006575">Agregar nombre de usuario</translation>
 <translation id="4075202346699640887">Si abres Brave sin un bloqueo de perfil, se quitarán del automóvil las contraseñas y las formas de pago guardadas. El uso de un bloqueo de perfil mantiene estos datos seguros.</translation>
+<translation id="2226826835915474236">Atajos inactivos</translation>
 <translation id="2227179592712503583">Quitar sugerencia</translation>
 <translation id="2227444325776770048">Continuar como <ph name="USER_FULL_NAME"/></translation>
 <translation id="2230777942707397948">Ventana vacía</translation>
 <translation id="223356358902285214">Actividad web y en aplicaciones</translation>
 <translation id="2233735624724508540">Elige un período y, luego, presiona Borrar datos.</translation>
+<translation id="2234031676056123135">Personaliza tus accesos directos</translation>
 <translation id="2234827758954819389">Guía de privacidad</translation>
 <translation id="2238038374973843156">Mover grupo a otra ventana</translation>
 <translation id="2239812875700136898">Controla tus historias desde las opciones del botón Descubre</translation>
@@ -289,6 +293,7 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="2287421207599770907">{NUMBER_OF_TABS,plural, =1{Ver <ph name="TABS_COUNT_ONE"/> pestaña}other{Ver <ph name="TABS_COUNT_MANY"/> pestañas}}</translation>
 <translation id="2297822946037605517">Compartir esta página</translation>
 <translation id="230115972905494466">No se encontraron dispositivos compatibles</translation>
+<translation id="2316129865977710310">No, gracias</translation>
 <translation id="2318045970523081853">Presiona para realizar la llamada</translation>
 <translation id="2323763861024343754">Almacenamiento del sitio</translation>
 <translation id="2328474416100889417">Todos los usuarios perderán de inmediato el acceso al grupo de pestañas “<ph name="GROUP_NAME"/>”, y se desactivarán todos los vínculos de invitación</translation>
@@ -306,6 +311,7 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="2385605401818128172">Puedes revisar los sitios que envían muchas notificaciones y evitar que te envíen más en el futuro</translation>
 <translation id="2386938421315164605">Oculta y muestra temas.</translation>
 <translation id="2390510615457643724">¿Quieres descargar <ph name="FILE_NAME"/><ph name="FILE_SIZE"/> de nuevo?</translation>
+<translation id="2392369802118427583">Activar</translation>
 <translation id="2410754283952462441">Elegir una cuenta</translation>
 <translation id="2411239243988279592"><ph name="TAB_TITLE"/>, pestaña con sonido seleccionada</translation>
 <translation id="2413014528833954543">No se pueden revisar las contraseñas en este dispositivo</translation>
@@ -363,6 +369,7 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="2604446170045642109">En la configuración, puedes desactivar el Tema oscuro para los sitios.</translation>
 <translation id="2605017215201958293">Escucha esta página con IA</translation>
 <translation id="2607441479295509868">Saliste de tu cuenta. Vuelve a acceder para usar los favoritos, las contraseñas y otros datos de tu cuenta.</translation>
+<translation id="2616989802003447151">{COUNT,plural, =1{1 elemento}other{# elementos}}</translation>
 <translation id="2620314865574742210"><ph name="NAME"/> te invitó a acceder a un elemento compartido.</translation>
 <translation id="2634393460268044753">Envía a la Navegación segura de Brave las URLs de sitios que visitas y una pequeña muestra del contenido de las páginas, las descargas, la actividad de las extensiones y la información del sistema para revisar si los sitios son dañinos.</translation>
 <translation id="2643064289437760082">Para borrar los datos de medición de anuncios, borra tus datos de navegación en cualquier momento.</translation>
@@ -417,6 +424,7 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="2870560284913253234">Sitio</translation>
 <translation id="2871733351037274014">Precargar páginas</translation>
 <translation id="2876136027428473467"><ph name="CHILD_NAME"/> quiere que apruebes este sitio web:</translation>
+<translation id="2876556152483133018">Búsqueda en sitios</translation>
 <translation id="6756656512757374876">Más información sobre <ph name="BEGIN_LINK"/>cómo Brave mantiene la privacidad de tus datos<ph name="END_LINK"/></translation>
 <translation id="2885355868600171871">Ir a la barra de direcciones</translation>
 <translation id="8541922081612557424">Acerca de Brave</translation>
@@ -469,6 +477,7 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="3037177537145227281">Se está haciendo el seguimiento de precios</translation>
 <translation id="3251012123600267109">Muestra mensajes para acceder a Brave</translation>
 <translation id="3038272154009688107">Ver todos los sitios</translation>
+<translation id="3057938290530993634">Mantén presionado para fijar los sitios web que más visitas y acceder a ellos fácilmente la próxima vez</translation>
 <translation id="3060635849835183725">{BOOKMARKS_COUNT,plural, =1{<ph name="BOOKMARKS_COUNT_ONE"/> favorito}other{<ph name="BOOKMARKS_COUNT_MANY"/> favoritos}}</translation>
 <translation id="6153252609477956632">Artículos de Brave relacionados con tus intereses</translation>
 <translation id="3066573403916685335">Bajar</translation>
@@ -483,6 +492,7 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="3122883569442693641">Más detalles</translation>
 <translation id="3123734510202723619">Anuncios</translation>
 <translation id="3134385238404760368">No hay pestañas recientes</translation>
+<translation id="3135655388926735587">Presiona Pestañas recientes.</translation>
 <translation id="5063487983358782016">Página principal de Brave</translation>
 <translation id="3158667104057012316">Ordenados manualmente</translation>
 <translation id="3159335509547415276">Más información sobre cuentas bloqueadas</translation>
@@ -509,6 +519,7 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="3268048651973962414">Desliza hacia arriba para ver los resultados de la búsqueda</translation>
 <translation id="3269093882174072735">Cargar imagen</translation>
 <translation id="3280562213547448728">Búsqueda por voz</translation>
+<translation id="3282801380074962248">Expandir sección</translation>
 <translation id="3285065882678541460">{TAB_COUNT,plural, =1{<ph name="TAB_GROUPS_PART"/>, <ph name="TAB_COUNT_ONE"/> pestaña}other{<ph name="TAB_GROUPS_PART"/>, <ph name="TAB_COUNT_MANY"/> pestañas}}</translation>
 <translation id="8794905135160933967">{PASSWORDS_COUNT,plural, =1{1 contraseña se guarda solo en este dispositivo. Para usarla en tus otros dispositivos, guárdala en tu Cuenta de Brave.}other{# contraseñas se guardan solo en este dispositivo. Para usarlas en tus otros dispositivos, guárdalas en tu Cuenta de Brave.}}</translation>
 <translation id="3293181007446299124">Se mantendrá la privacidad del historial de navegación en tu dispositivo y los informes se enviarán con demora para proteger tu identidad.</translation>
@@ -527,6 +538,7 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="333863344734218290">Te advierte sobre sitios públicos y privados no seguros</translation>
 <translation id="3340978935015468852">configuración</translation>
 <translation id="3341262203274374114">No se puede dejar de seguir. Se produjo un error.</translation>
+<translation id="3351959803838327376">Mantén presionado el sitio web y abre el menú.</translation>
 <translation id="3359667936385849800">Usa tu proveedor de servicios actual</translation>
 <translation id="3373701465337594448">Cuando esta configuración está activada, se muestra una lista de los sitios que visitas y que descubren tus intereses</translation>
 <translation id="3384347053049321195">Compartir imagen</translation>
@@ -543,7 +555,6 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="3444179773590444986">¿Deseas compartir comentarios sobre el Tema oscuro para los sitios?</translation>
 <translation id="3448874648066942074">Resumir página con IA</translation>
 <translation id="7384339501748168186">Para proteger tu privacidad, Brave no completará de forma automática tu contraseña en este campo.</translation>
-<translation id="3467081767799433066">Con la medición de anuncios, se comparten tipos limitados de datos entre sitios para medir el rendimiento de sus anuncios, por ejemplo, si realizaste una compra después de visitar un sitio.</translation>
 <translation id="3474624961160222204">Continuar como <ph name="NAME"/></translation>
 <translation id="3478363558367712427">Puedes elegir tu motor de búsqueda</translation>
 <translation id="6165882953768534820">Es posible que otras personas y apps tengan acceso al archivo exportado. Una vez que exportes tus contraseñas, se borrarán de Brave.</translation>
@@ -568,6 +579,7 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="719175600387583059">Debido a que las páginas precargadas están encriptadas, y que la app o el sitio vinculado a las páginas es una app o un sitio de Brave, los servidores de Brave no recibirán información nueva cuando se precarguen estas páginas de forma privada.</translation>
 <translation id="3549657413697417275">Buscar en el historial</translation>
 <translation id="3557336313807607643">Agregar a contactos</translation>
+<translation id="3560831525486613327">Abre una página en una nueva pestaña.</translation>
 <translation id="3563767357928833671">Se muestra el contenido del Portapapeles</translation>
 <translation id="3566639033325271639">Actualizar configuración</translation>
 <translation id="3568945271227339929">No tienes contraseñas hackeadas</translation>
@@ -586,6 +598,7 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="871233388178581868">Brave puede revisar las contraseñas cuando las guardas</translation>
 <translation id="3636940436873918441">Idiomas preferidos</translation>
 <translation id="7120697372526128040">Si olvidaste tu frase de contraseña o quieres cambiar este parámetro de configuración, <ph name="BEGIN_LINK"/>borra los datos de Brave de tu cuenta<ph name="END_LINK"/>.</translation>
+<translation id="3804929868868110240">Se cerró la habilitación de Brave Finds</translation>
 <translation id="3647019414263135904">Abrir o cerrar la ventana emergente de contexto</translation>
 <translation id="3653111872753786013"><ph name="WEBSITE_TITLE"/>: <ph name="WEBSITE_URL"/></translation>
 <translation id="5399378599142661690">Ir a la página principal de la app de Brave</translation>
@@ -602,6 +615,7 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="3709577906275923507"><ph name="FILE_NAME"/> puede contener información sensible y no se debe compartir</translation>
 <translation id="3710501561113687889">Para continuar, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> compartirá tu <ph name="FIELDS_STRING"/> con este sitio.</translation>
 <translation id="3710560693796335511">Colaboración</translation>
+<translation id="3714430408451673233">Hoja inferior de pestañas a media altura.</translation>
 <translation id="7305861879874805497">Es posible que veas el historial de otras apps que abren vínculos en Brave.</translation>
 <translation id="8397843425685839889">Tú y Brave</translation>
 <translation id="3727000368239390918">Accede para obtener tus pestañas y más en todos tus dispositivos</translation>
@@ -617,6 +631,7 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="3775705724665058594">Enviar a tus dispositivos</translation>
 <translation id="3777796259512476958">Se cerrará tu sesión en la mayoría de los sitios.</translation>
 <translation id="3791957072666773229">{TAB_COUNT,plural, =1{1 pestaña}other{# pestañas}}</translation>
+<translation id="3792938779249970121">Selecciona una cuenta</translation>
 <translation id="3795154175078851242">Copiar imagen con el vínculo</translation>
 <translation id="3810973564298564668">Administrar</translation>
 <translation id="3819178904835489326"><ph name="NUMBER_OF_DOWNLOADS"/> descargas borradas</translation>
@@ -633,6 +648,7 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="3858860766373142691">Nombre</translation>
 <translation id="3863527519275151528">Procesando la notificación</translation>
 <translation id="3866863539038222107">Inspeccionar</translation>
+<translation id="3870538285500327859"><ph name="TAB_TITLE"/>, pestaña de pantalla en pantalla seleccionada</translation>
 <translation id="3870908470613821006">Todos los usuarios perderán de inmediato el acceso al grupo de pestañas “<ph name="GROUP_NAME"/>”, y se borrará de todos los dispositivos</translation>
 <translation id="3873174561423636563">Para continuar, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> compartirá tu <ph name="FIELDS_STRING"/> con este sitio. Consulta las <ph name="BEGIN_LINK1"/>condiciones del servicio<ph name="END_LINK1"/> del sitio.</translation>
 <translation id="3892148308691398805">Copiar texto</translation>
@@ -647,6 +663,7 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="3927692899758076493">Sans Serif</translation>
 <translation id="3931947361983910192">hace cuatro semanas</translation>
 <translation id="393697183122708255">La búsqueda por voz no está habilitada</translation>
+<translation id="3943322906274039960"><ph name="TAB_TITLE"/>, pestaña de pantalla en pantalla fijada</translation>
 <translation id="3950820424414687140">Acceder</translation>
 <translation id="395377504920307820">Usar sin una cuenta</translation>
 <translation id="6945986954012067786">{NUM_IN_PROGRESS,plural, =1{Brave cargará la página cuando esté lista}other{Brave cargará las páginas cuando estén listas}}</translation>
@@ -664,7 +681,7 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="4694008025405984126">Personaliza y controla Brave con un elemento destacado</translation>
 <translation id="5267293611589304570">{NUM_PASSWORDS,plural, =1{1 contraseña hackeada en tu Cuenta de Brave}other{# contraseñas hackeadas en tu Cuenta de Brave}}</translation>
 <translation id="4016425174436051808">No se puede seguir. Se produjo un error.</translation>
-<translation id="7002462047122704254">Para acceder a tus favoritos y más en todos tus dispositivos, accede a Brave</translation>
+<translation id="7002462047122704254">Para obtener tus favoritos y más en todos tus dispositivos, accede a Brave</translation>
 <translation id="4024768890073681126">Tu madre o padre administra el navegador</translation>
 <translation id="4027569221211770437">Carpeta <ph name="FOLDER_TITLE"/></translation>
 <translation id="4034817413553209278">{HOURS,plural, =1{# h}other{# h}}</translation>
@@ -689,13 +706,13 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="4113030288477039509">Administrado por tu administrador</translation>
 <translation id="4116038641877404294">Descarga las páginas para usarlas sin conexión</translation>
 <translation id="37459938731864814">No será necesario que recuerdes esta contraseña. Se guardará en el Administrador de contraseñas de Brave de <ph name="USERNAME"/>.</translation>
-<translation id="4124152339699379357">El flujo de permisos de notificaciones está abierto en su totalidad</translation>
 <translation id="4132137475637520539">Permite que se una cualquier persona que tenga el vínculo</translation>
 <translation id="4135200667068010335">La lista de dispositivos con los que se puede compartir una pestaña está cerrada.</translation>
 <translation id="4136632885151622181"><ph name="TAB_TITLE"/>, pestaña con grabación fijada con selección múltiple</translation>
 <translation id="4137746084635924146">Idioma actual del dispositivo</translation>
 <translation id="414128724510021958">Se solicitan los sitios de escritorio de forma predeterminada</translation>
 <translation id="4162867837470729563">La lista de opciones para compartir está totalmente abierta.</translation>
+<translation id="4165077084524712774">Más herramientas</translation>
 <translation id="4170011742729630528">El servicio no se encuentra disponible; vuelve a intentarlo más tarde.</translation>
 <translation id="4170577491341606575">Obteniendo tu contenido\u2026</translation>
 <translation id="4177222230309051052">Accede a todos tus favoritos</translation>
@@ -707,9 +724,11 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="6423270958351890725">{NUM_REVOKED_PERMISSIONS,plural, =1{Brave impidió que este sitio enviara notificaciones debido a la presencia de contenido engañoso o spam}other{Brave impidió que estos sitios enviaran notificaciones debido a la presencia de contenido engañoso o spam}}</translation>
 <translation id="4195643157523330669">Abrir en una pestaña nueva</translation>
 <translation id="4197828496439691735">{NUM_TABS,plural, =1{1 pestaña en este dispositivo}other{# pestañas en este dispositivo}}</translation>
+<translation id="4198268995694216131">Sitios adicionales</translation>
 <translation id="4198423547019359126">No hay ubicaciones de descarga disponibles</translation>
 <translation id="4209029522667123437"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> • La usaste en este sitio</translation>
 <translation id="1675646381334855139">Si permites las cookies, Brave puede usarlas para la precarga.</translation>
+<translation id="421517251707893998">Presiona fijar este acceso directo</translation>
 <translation id="4216511743389425832">Escuchar esta página</translation>
 <translation id="4225725533026049334">Siguiendo</translation>
 <translation id="4225895483398857530">Acceso directo a la barra de herramientas</translation>
@@ -740,6 +759,7 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="6329878711227695496">Para usar y guardar datos de Brave en tu Cuenta de Brave, verifica tu identidad</translation>
 <translation id="433213510553688132">Siguiendo…</translation>
 <translation id="4335835283689002019">La Navegación segura está desactivada</translation>
+<translation id="3147982553903764426">Si quieres realizar una búsqueda en un sitio específico o en una parte de Brave, escribe el atajo correspondiente en la barra de direcciones seguido de la combinación de teclas que hayas elegido.</translation>
 <translation id="4351244548802238354">Cerrar cuadro de diálogo</translation>
 <translation id="4352287748243729941">¿Quieres usar la contraseña de <ph name="PROVIDER"/>?</translation>
 <translation id="4355272626458588338">Agrega un favorito para poder regresar a una página que consideres importante</translation>
@@ -752,6 +772,7 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="4384468725000734951">Se usa Sogou para la búsqueda</translation>
 <translation id="4387647248986092471">Crear un bloqueo de perfil en el automóvil</translation>
 <translation id="4387817230000841154">Abrir Descargas</translation>
+<translation id="7921023456188177005">La opción de habilitar Brave Finds está totalmente abierta</translation>
 <translation id="4402611456429872546"><ph name="LANG"/>: descargando…</translation>
 <translation id="4404568932422911380">No hay favoritos</translation>
 <translation id="4405224443901389797">Mover a…</translation>
@@ -759,6 +780,7 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="4408965460206576430">Este archivo contiene software malicioso o proviene de un sitio sospechoso</translation>
 <translation id="4409014848144759297"><ph name="WEBSITE_TITLE"/> y <ph name="TAB_COUNT"/> pestañas más</translation>
 <translation id="441100617989818073">Pestañas y grupos sin usar o duplicados</translation>
+<translation id="4412123112245770507">Contraer sección</translation>
 <translation id="4414179633735763985">Se borró <ph name="TAB_GROUPS_AND_TABS_PART"/></translation>
 <translation id="5749788945734786627">Administrar tu Cuenta de Brave</translation>
 <translation id="4425140285732600465">Sigues el precio. Recibe alertas si baja el precio en algún sitio.</translation>
@@ -790,7 +812,7 @@ Es posible que tu cuenta de Brave tenga otros formularios de historial de navega
 <translation id="4537137366307982887">La opción de habilitar las notificaciones de sugerencias está totalmente abierta</translation>
 <translation id="4543131175509360848">No ninguna hoja de llaves de acceso</translation>
 <translation id="4558311620361989323">Accesos directos a páginas web</translation>
-<translation id="4572422548854449519">Acceder a una cuenta administrada</translation>
+<translation id="4572422548854449519">Acceso a una cuenta administrada</translation>
 <translation id="4577115723294378384">Ordenar de la A a la Z</translation>
 <translation id="4578289292431526768">Continuar</translation>
 <translation id="4583164079174244168">{MINUTES,plural, =1{Hace # minuto}other{Hace # minutos}}</translation>
@@ -809,6 +831,7 @@ Es posible que tu cuenta de Brave tenga otros formularios de historial de navega
 <translation id="4640331037679501949">{NUM_PASSWORDS,plural, =1{1 contraseña hackeada}other{# contraseñas hackeadas}}</translation>
 <translation id="4641919525231168205">Ir a la página siguiente</translation>
 <translation id="4642472735733036929">Se detuvo el seguimiento de precios</translation>
+<translation id="4649493483932335039">Ver pestañas recientes</translation>
 <translation id="465657074423018424">La Navegación segura te protege ante sitios web engañosos. Si la desactivas, debes tener mucho cuidado cuando navegas, en especial al ingresar contraseñas.</translation>
 <translation id="4662373422909645029">El sobrenombre no admite números</translation>
 <translation id="4663756553811254707"><ph name="NUMBER_OF_BOOKMARKS"/> favoritos eliminados</translation>
@@ -847,7 +870,6 @@ Es posible que tu cuenta de Brave tenga otros formularios de historial de navega
 <translation id="4763480195061959176">video</translation>
 <translation id="4766313118839197559">Las contraseñas se guardan en el Administrador de contraseñas en este dispositivo</translation>
 <translation id="4766678251456904326">Agregar una cuenta al dispositivo</translation>
-<translation id="1996253762801922860">Lanzamos una nueva función de privacidad en los anuncios llamada medición de anuncios. Brave solo comparte información muy limitada entre los sitios y las apps, como cuándo se te mostró un anuncio, para ayudar a medir el rendimiento de los anuncios.</translation>
 <translation id="4769095993849849966">Nuevo nombre de archivo</translation>
 <translation id="4769632191812288342">Recibes protección estándar</translation>
 <translation id="4773122030389014189">Compartir el grupo de pestañas “<ph name="GROUP_NAME"/>”</translation>
@@ -912,7 +934,7 @@ Es posible que tu cuenta de Brave tenga otros formularios de historial de navega
 <translation id="5007392906805964215">Revisar</translation>
 <translation id="5010886807652684893">Vista visual</translation>
 <translation id="5011311129201317034"><ph name="SITE"/> desea conectarse</translation>
-<translation id="5012016139642806466">Accede a tus contraseñas y más en todos tus dispositivos</translation>
+<translation id="5012016139642806466">Obtén tus contraseñas y más en todos tus dispositivos</translation>
 <translation id="5012253429094023177">Los sitios <ph name="BEGIN_BOLD1"/><ph name="PROVIDER1"/><ph name="END_BOLD1"/> y <ph name="BEGIN_BOLD2"/><ph name="PROVIDER2"/><ph name="END_BOLD2"/> parecen estar relacionados. Asegúrate de confiar en <ph name="BEGIN_BOLD3"/><ph name="PROVIDER2"/><ph name="END_BOLD3"/> antes de usar esta contraseña.</translation>
 <translation id="5016205925109358554">Serif</translation>
 <translation id="5017529052065664584">Últimos 15 minutos</translation>
@@ -925,7 +947,9 @@ Es posible que tu cuenta de Brave tenga otros formularios de historial de navega
 <translation id="5056587122125565772">Crear imagen</translation>
 <translation id="506254248375231072">No hay pestañas</translation>
 <translation id="5075939510584558547">Guardar sin encriptación</translation>
+<translation id="5078638979202084724">Agregar a favoritos todas las pestañas</translation>
 <translation id="6518666204737985156">Accede a este sitio y a Brave para obtener tus favoritos y mucho más en todos tus dispositivos</translation>
+<translation id="5088347662971855383">Fijar Gemini</translation>
 <translation id="4744980273298156620">Pronto, cuando abras una nueva pestaña, verás historias de <ph name="SITE_NAME"/>. Los sitios que sigues se guardan en tu Cuenta de Brave. Puedes administrarlos en la configuración de Descubre.</translation>
 <translation id="509429900233858213">Se ha producido un error.</translation>
 <translation id="5096775069898886423">Para los sitios que no admiten conexiones seguras, recibe una advertencia antes de visitar el sitio</translation>
@@ -967,11 +991,13 @@ Es posible que tu cuenta de Brave tenga otros formularios de historial de navega
 <translation id="5267572070504076962">Activa la Navegación segura para obtener protección contra sitios peligrosos</translation>
 <translation id="5271967389191913893">El dispositivo no puede abrir el contenido que se descargará.</translation>
 <translation id="5273031377282080577">El administrador gestiona este parámetro de configuración.</translation>
+<translation id="5290322819358431297">Autocompleta tus contraseñas</translation>
 <translation id="5292796745632149097">Enviar a</translation>
 <translation id="1078957913029848404">Accediste como <ph name="EMAIL"/>. Puedes detener la sincronización en cualquier momento desde la configuración. Es posible que Brave personalice la Búsqueda y otros servicios en función de tu historial.</translation>
 <translation id="5304593522240415983">Este campo no puede quedar en blanco.</translation>
 <translation id="5306014156308790439">Se inhabilitó la opción Agregar a una colección</translation>
 <translation id="5308380583665731573">Conectar</translation>
+<translation id="5313967007315987356">Agregar sitio</translation>
 <translation id="5316947901395241499">El administrador desactivó la opción para guardar contraseñas</translation>
 <translation id="5317780077021120954">Guardar</translation>
 <translation id="989239400026154074">Brave recomienda Brave</translation>
@@ -1003,9 +1029,12 @@ Es posible que tu cuenta de Brave tenga otros formularios de historial de navega
 <translation id="544776284582297024">Para abrir pestañas y visitar diferentes páginas al mismo tiempo, presiona el botón de pestañas abiertas</translation>
 <translation id="5456381639095306749">Descargar página</translation>
 <translation id="5458366071038729214">Aquí encontrarás los sitios que sigues.</translation>
+<translation id="5465437530117042974">Se cerró la hoja inferior de pestañas.</translation>
 <translation id="5469852975082458401">Puedes navegar páginas con un cursor de texto. Presiona F7 para desactivar esta función.</translation>
 <translation id="5471273988133666918">No se puede mover la pestaña <ph name="TAB_TITLE"/></translation>
 <translation id="548278423535722844">Abrir en una app de mapas</translation>
+<translation id="2862544809772369780">¿Quieres que Brave siga buscando?</translation>
+<translation id="5490848366863949315"><ph name="TAB_TITLE"/>, pestaña de pantalla en pantalla con selección múltiple</translation>
 <translation id="5494920125229734069">Seleccionar todo</translation>
 <translation id="549660026907543296">Únete como <ph name="MEMBER_FULL_NAME"/></translation>
 <translation id="5517326820028369152">Hoja inferior de actividad reciente</translation>
@@ -1128,9 +1157,11 @@ Es posible que tu cuenta de Brave tenga otros formularios de historial de navega
 <translation id="6040143037577758943">Cerrar</translation>
 <translation id="604124094241169006">Automático</translation>
 <translation id="6042308850641462728">Más</translation>
+<translation id="6047066316630165190">Abre el alternador de pestañas en cuadrícula.</translation>
 <translation id="604996488070107836"><ph name="FILE_NAME"/> no se pudo descargar debido a un error desconocido.</translation>
 <translation id="605721222689873409">AA</translation>
 <translation id="6059830886158432458">Controla tus noticias y actividad aquí</translation>
+<translation id="606985262342505139">Hoja inferior de pestañas en pantalla completa</translation>
 <translation id="4701065218405772222">Para revisar si hay contraseñas hackeadas, accede a tu Cuenta de Brave</translation>
 <translation id="6078323886959318429">Acceso directo</translation>
 <translation id="6085886413119427067">Determina cómo conectarse a sitios web mediante una conexión segura</translation>
@@ -1141,12 +1172,14 @@ Es posible que tu cuenta de Brave tenga otros formularios de historial de navega
 <translation id="610630277578876674">Abre rápidamente vínculos en mensajes y mucho más</translation>
 <translation id="6108923351542677676">Configuración en curso…</translation>
 <translation id="6112702117600201073">Actualizando la página</translation>
+<translation id="612221930823678863">URL con <ph name="QUERY"/> en lugar de la consulta</translation>
 <translation id="6122831415929794347">¿Quieres desactivar la Navegación segura?</translation>
 <translation id="6124936178263837501">Informar que no es spam</translation>
 <translation id="6125202119952209826">Únete al grupo de pestañas con <ph name="OWNER_FIRST_NAME"/></translation>
 <translation id="6125864963080902918"><ph name="BEGIN_LINK"/>Más detalles<ph name="END_LINK"/></translation>
 <translation id="6127860394906721547">Abrir el grupo de pestañas <ph name="TITLE_OF_GROUP"/>, en color <ph name="COLOR_NAME"/>, con los sitios <ph name="URL_LIST"/>.</translation>
 <translation id="6130303040046284160">Minimizar pestaña</translation>
+<translation id="4852158809106762963">Brave te ofrecerá guardar la contraseña</translation>
 <translation id="6134168885321518274">Abrir la barra de búsqueda</translation>
 <translation id="6135608400322377268">{TAB_COUNT,plural, =1{<ph name="TAB_COUNT_ONE"/> pestaña}other{<ph name="TAB_COUNT_MANY"/> pestañas}}</translation>
 <translation id="6137022273846704445">Idioma de <ph name="APP_NAME"/></translation>
@@ -1169,6 +1202,7 @@ Es posible que tu cuenta de Brave tenga otros formularios de historial de navega
 <translation id="6202812185118613467">Vuelve a acceder para iniciar la sincronización</translation>
 <translation id="7766137781166927396">Brave detectó posible spam de <ph name="DOMAIN"/>.</translation>
 <translation id="6205314730813004066">Privacidad en los anuncios</translation>
+<translation id="6210282067670792090">En la barra de direcciones, usa esta combinación de teclas con atajos para los motores de búsqueda y las búsquedas en el sitio</translation>
 <translation id="6210748933810148297">¿No eres <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">Vista previa de esta página</translation>
 <translation id="6212567362666004597">Agregar pestaña al grupo</translation>
@@ -1194,6 +1228,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mediante anuncio
 <translation id="6301526076346731664">Abrir las Herramientas para desarrolladores</translation>
 <translation id="630308129961693966">Posiciona la barra de direcciones</translation>
 <translation id="6303969859164067831">Salir y desactivar la sincronización</translation>
+<translation id="6305257382500066042">Probar ahora</translation>
 <translation id="6307241780749477694">Verifica tu identidad para obtener todas tus contraseñas en este dispositivo</translation>
 <translation id="6309082029962045994"><ph name="TAB_TITLE"/>, pestaña fijada con audio y selección múltiple</translation>
 <translation id="6312687380483398334">Aplicaciones web (discretas)</translation>
@@ -1207,6 +1242,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mediante anuncio
 <translation id="6340526405444716530">Personalización</translation>
 <translation id="6341580099087024258">Preguntar dónde guardar los archivos</translation>
 <translation id="6342069812937806050">Recién</translation>
+<translation id="634208815998129842">Administrador de tareas</translation>
 <translation id="6343495912647200061">{SHIPPING_ADDRESS,plural, =1{<ph name="SHIPPING_ADDRESS_PREVIEW"/> y <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> más}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/> y <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> más}}</translation>
 <translation id="6345878117466430440">Marcar como leído</translation>
 <translation id="6356893102071098867">Revisa si elegiste la cuenta correcta</translation>
@@ -1250,6 +1286,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mediante anuncio
 <translation id="3960299545138990065">Reiniciar Brave</translation>
 <translation id="6513924416597632811">Copiar el vínculo a la página de resultados de búsqueda para: <ph name="SEARCH_QUERY"/>. Fuente: <ph name="PAGE_URL"/></translation>
 <translation id="6518133107902771759">Verificar</translation>
+<translation id="6521218807522232085">Crea, guarda y administra tus contraseñas para acceder fácilmente</translation>
 <translation id="6527303717912515753">Compartir</translation>
 <translation id="3700405816184340252">Historial de Brave</translation>
 <translation id="708829030563435351">No se mostrarán los sitios que visites en Brave. Se borrarán todos los temporizadores.</translation>
@@ -1263,7 +1300,6 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mediante anuncio
 <translation id="6556501700899673703">Lexend</translation>
 <translation id="6560414384669816528">Buscar con Sogou</translation>
 <translation id="656065428026159829">Ver más</translation>
-<translation id="971059121491380239">Es posible que tu dispositivo Android incluya una configuración similar. Si la medición de anuncios está activada en Brave y en tu dispositivo Android, es posible que una empresa pueda medir la efectividad de un anuncio en los sitios web que visitas y en las apps que usas.</translation>
 <translation id="6565959834589222080">Se utilizará Wi-Fi cuando esté disponible.</translation>
 <translation id="4480935821314799946">Ahora, cuando abras una nueva pestaña, verás historias de <ph name="SITE_NAME"/>. Los sitios que sigues se guardan en tu Cuenta de Brave. Puedes administrarlos en la configuración de Descubre.</translation>
 <translation id="657177046675873214">Para ver tus favoritos en todos tus dispositivos, activa “Favoritos” en la configuración</translation>
@@ -1285,14 +1321,20 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mediante anuncio
 <translation id="7556503430569358637">Se enviarán a Brave las URL que visites para predecir los sitios que posiblemente vayas a visitar</translation>
 <translation id="6648977384226967773">{CONTACT,plural, =1{<ph name="CONTACT_PREVIEW"/> y <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> más}other{<ph name="CONTACT_PREVIEW"/> y <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> más}}</translation>
 <translation id="6649642165559792194">Vista previa de imagen <ph name="BEGIN_NEW"/>Nueva<ph name="END_NEW"/></translation>
+<translation id="6659594942844771486">Tab</translation>
+<translation id="4427119768469699410">Se abrió la opción de habilitar Brave Finds a media altura</translation>
 <translation id="666731172850799929">Abrir en <ph name="APP_NAME"/></translation>
+<translation id="6669390930482049506">Notificarme</translation>
+<translation id="7256334756499709483">Algunas extensiones pueden agregar motores de búsqueda a Brave.</translation>
 <translation id="6671495933530132209">Copiar imagen</translation>
 <translation id="6672697278890207089">Ingresa tu frase de contraseña</translation>
 <translation id="6672917148207387131">Agregar <ph name="DOMAIN"/></translation>
 <translation id="6674571176963658787">Para iniciar la sincronización, ingresa tu frase de contraseña.</translation>
 <translation id="3683330416566109578">Accede a este sitio y a Brave</translation>
+<translation id="6684262542644248484">Accede a un sitio web.</translation>
 <translation id="3385384709865894288">Mejora Brave</translation>
 <translation id="6689436252814043643">El Modo de lectura no está disponible</translation>
+<translation id="669971068476817798">Presiona guardar</translation>
 <translation id="6700279777779583398">Se guardaron las selecciones</translation>
 <translation id="670498945988402717">Se verificó ayer</translation>
 <translation id="6710213216561001401">Anterior</translation>
@@ -1303,7 +1345,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mediante anuncio
 <translation id="6738867403308150051">Descargando…</translation>
 <translation id="6745063744988317486">Mono</translation>
 <translation id="6746338529702829275">Revisa los datos de tu cuenta</translation>
-<translation id="6746834324024491643">Para ver tus contraseñas y más en todos tus dispositivos, accede como <ph name="EMAIL"/></translation>
+<translation id="6746834324024491643">Para obtener tus contraseñas y más en todos tus dispositivos, accede como <ph name="EMAIL"/></translation>
 <translation id="6751521182688001123">Abre rápidamente una nueva pestaña. Para editar este atajo, mantenlo presionado.</translation>
 <translation id="6752130751133944215">Para restablecer una ventana nueva, reduce la cantidad total de ventanas activas e inactivas a <ph name="MAX_WINDOW_COUNT_MINUS_ONE"/> o menos. Las ventanas inactivas se borran después de 6 meses.</translation>
 <translation id="6754359471209693699">Iniciar nueva búsqueda</translation>
@@ -1331,6 +1373,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mediante anuncio
 <translation id="6828070228333235514">Dejar de seguir el precio</translation>
 <translation id="6830728435402077660">No seguro</translation>
 <translation id="6831043979455480757">Traducir</translation>
+<translation id="9090109834269142153">Recibe una notificación cuando Brave encuentre los mejores resultados para tus búsquedas mientras no estás.</translation>
 <translation id="6846298663435243399">Cargando…</translation>
 <translation id="6850409657436465440">La descarga sigue en curso</translation>
 <translation id="6850830437481525139">Se cerraron <ph name="TAB_COUNT"/> pestañas</translation>
@@ -1383,6 +1426,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mediante anuncio
 <translation id="6979737339423435258">Todos</translation>
 <translation id="6980258170429555165">Se destaca el menú <ph name="MENU_NAME"/>.</translation>
 <translation id="6983306615164277634">También puedes mantener presionada la barra de direcciones para cambiar la posición.</translation>
+<translation id="6989358895283601928">Guardar e imprimir</translation>
 <translation id="6996145122199359148">Descargar esta página</translation>
 <translation id="7013762323294215682">Esta llave de acceso se guardará en el administrador de contraseñas. Cualquier persona que tenga acceso podrá usar esta llave de acceso.</translation>
 <translation id="7020741890149022655">Agregar a lista de lect. <ph name="BEGIN_NEW"/>Nuevo<ph name="END_NEW"/></translation>
@@ -1394,6 +1438,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mediante anuncio
 <translation id="7054588988317389591">¿Deseas obtener la descripción de las imágenes?</translation>
 <translation id="754645164710303412">Abrir el historial de Brave completo</translation>
 <translation id="7063006564040364415">No se pudo establecer conexión con el servidor de sincronización.</translation>
+<translation id="7063106218165698546">Personaliza el grupo de pestañas y presiona listo</translation>
 <translation id="7071521146534760487">Administrar cuenta</translation>
 <translation id="707155805709242880">Elige lo que quieres sincronizar a continuación</translation>
 <translation id="7077143737582773186">Tarjeta SD</translation>
@@ -1409,6 +1454,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mediante anuncio
 <translation id="7117485132243600300">Administra el contenido que sigues y los temas y las búsquedas sugeridos</translation>
 <translation id="7119984597597798764">Cerrar <ph name="INSTANCE_TITLE"/></translation>
 <translation id="721261350616678948">Acceder a Brave</translation>
+<translation id="7136694880210472378">Configurar como predeterminado</translation>
 <translation id="7136902389402789299">{NUM_SITES,plural, =1{Se revisaron los permisos de 1 sitio}other{Se revisaron los permisos de # sitios}}</translation>
 <translation id="7138678301420049075">Otros</translation>
 <translation id="7140829094791862589">Ordenar manualmente</translation>
@@ -1436,6 +1482,7 @@ Para cambiar este parámetro de configuración, <ph name="BEGIN_LINK"/>borra los
 <translation id="7196215469483532480">La explicación de la guía sobre privacidad está totalmente abierta.</translation>
 <translation id="7196455519852483601">Puedes borrar tu historial, cookies, datos de sitios y más de forma parcial o por completo</translation>
 <translation id="7197682514647286393">Borra tus datos de navegación rápidamente</translation>
+<translation id="719791532916917144">Combinación de teclas</translation>
 <translation id="7207760545532569765">Restablece <ph name="TAB_COUNT"/> pestañas como nuevas pestañas en segundo plano.</translation>
 <translation id="7221869452894271364">Volver a cargar esta página</translation>
 <translation id="722681077040152344">Se anuló la suscripción a <ph name="COUNT"/> sitios</translation>
@@ -1457,12 +1504,12 @@ Para cambiar este parámetro de configuración, <ph name="BEGIN_LINK"/>borra los
 <translation id="7291910923717764901">Se agregaron descripciones de imágenes en esta página.</translation>
 <translation id="7293429513719260019">Seleccionar idioma</translation>
 <translation id="7298319215489933099"><ph name="TAB_TITLE"/>, pestaña de uso compartido fijada seleccionada</translation>
-<translation id="7581648335850642193">Es posible que tu dispositivo Android incluya un parámetro de configuración similar. Si este parámetro está activado en Brave y en tu dispositivo Android, es posible que una empresa pueda medir la eficacia de un anuncio en los sitios web que visitas y en las apps que usas.</translation>
 <translation id="7311244614769792472">No se encontraron resultados</translation>
 <translation id="7313188324932846546">Presionar para configurar la sincronización</translation>
 <translation id="7314734791127433392">No se pueden revisar las contraseñas</translation>
 <translation id="7324354302972299151">Enviar una solicitud de "Do Not Track"</translation>
 <translation id="7333041109965360609">Se anuló la suscripción a las notificaciones</translation>
+<translation id="7335766481146072567">Presiona Continuar.</translation>
 <translation id="7336259382292148213">Las notificaciones parecen estar en orden</translation>
 <translation id="7339898014177206373">Nueva ventana</translation>
 <translation id="7340958967809483333">Opciones para Descubre</translation>
@@ -1473,6 +1520,8 @@ Para cambiar este parámetro de configuración, <ph name="BEGIN_LINK"/>borra los
 <translation id="7363349185727752629">Una guía de las opciones de privacidad</translation>
 <translation id="7364103838544876661">Más opciones para borrar los datos de navegación</translation>
 <translation id="5640892076695177498">Para comenzar a guardar y usar contraseñas con el Administrador de contraseñas de Brave, actualiza los Servicios de Google Play</translation>
+<translation id="7368009310682364976">Accede a las pestañas abiertas recientemente.</translation>
+<translation id="7368927539449986686">Edita las búsquedas en el sitio</translation>
 <translation id="7375125077091615385">Tipo:</translation>
 <translation id="7376560087009844242">Si incluyes más texto de la página, obtendrás mejores resultados cuando uses la función Tocar para buscar. Puedes cambiar esta opción en la <ph name="BEGIN_LINK"/>configuración<ph name="END_LINK"/> en cualquier momento.</translation>
 <translation id="7379900596734708416">El Tema oscuro está disponible para los sitios</translation>
@@ -1524,7 +1573,6 @@ Para cambiar este parámetro de configuración, <ph name="BEGIN_LINK"/>borra los
 <translation id="3987895309799116299">No se puede verificar la versión de Brave</translation>
 <translation id="7557508262441527045">Saliste de la cuenta</translation>
 <translation id="7573665567024262965">Elige tus apps predeterminadas</translation>
-<translation id="7577900504646297215">Administrar intereses</translation>
 <translation id="757855969265046257">{FILES,plural, =1{<ph name="FILES_DOWNLOADED_ONE"/> archivo descargado}other{<ph name="FILES_DOWNLOADED_MANY"/> archivos descargados}}</translation>
 <translation id="7581273696622423628">Responder encuesta</translation>
 <translation id="7583262514280211622">Aquí encontrarás tu lista de lectura</translation>
@@ -1563,6 +1611,7 @@ Para cambiar este parámetro de configuración, <ph name="BEGIN_LINK"/>borra los
 <translation id="7733878270780732638">No hay espacio suficiente en el dispositivo.</translation>
 <translation id="7740287852186792672">Resultados de búsqueda</translation>
 <translation id="774876555279732384">Los servicios de autocompletado también se administran en la <ph name="BEGIN_LINK"/>Configuración de Android<ph name="END_LINK"/>.</translation>
+<translation id="7758884017823246335">Agrega búsquedas en el sitio</translation>
 <translation id="7759809451544302770">Opcional</translation>
 <translation id="7762668264895820836">Tarjeta SD <ph name="SD_CARD_NUMBER"/></translation>
 <translation id="7764225426217299476">Agregar dirección</translation>
@@ -1586,6 +1635,7 @@ Para cambiar este parámetro de configuración, <ph name="BEGIN_LINK"/>borra los
 <translation id="7824665136384946951">Tu organización desactivó la Navegación segura</translation>
 <translation id="802130069867035673">Tu navegador Brave, en todos lados</translation>
 <translation id="7844171778363018843">No se seleccionaron datos para sincronizar</translation>
+<translation id="3184308080593643754">Prueba Gemini en Brave para obtener respuestas, información clave y mucho más.</translation>
 <translation id="7846161022626028328">Se produjo un error. Vuelve a intentarlo.</translation>
 <translation id="7068829570137757602">Servicios de Brave</translation>
 <translation id="784652447248278262">Ventana actual</translation>
@@ -1595,6 +1645,7 @@ Para cambiar este parámetro de configuración, <ph name="BEGIN_LINK"/>borra los
 <translation id="7853202427316060426">Actividad</translation>
 <translation id="7859988229622350291">Nunca traducir</translation>
 <translation id="7866213166286285359">Presiona aquí para mostrar la opción "Traducir páginas"</translation>
+<translation id="2300323368362163087">Prueba Gemini en Brave para obtener respuestas, información clave y mucho más con el botón Más opciones.</translation>
 <translation id="7875915731392087153">Crear correo electrónico</translation>
 <translation id="7876243839304621966">Eliminar todo</translation>
 <translation id="6143689084714664628">Se está ejecutando en Brave</translation>
@@ -1604,7 +1655,7 @@ Para cambiar este parámetro de configuración, <ph name="BEGIN_LINK"/>borra los
 <translation id="7917574899775263813">Pasar a la última pestaña</translation>
 <translation id="7919123827536834358">Traducir estos idiomas de forma automática</translation>
 <translation id="7921782882718083488">Resumir esta página</translation>
-<translation id="7926975587469166629">Sobrenombre de la tarjeta</translation>
+<translation id="7926975587469166629">Alias de la tarjeta</translation>
 <translation id="7927073875790626822">RE</translation>
 <translation id="6485598694371328620">Brave quita automáticamente los permisos de los sitios que abusan de las notificaciones o que no visitaste recientemente</translation>
 <translation id="7934668619883965330">No se puede descargar el archivo. No se admite el formato de archivo.</translation>
@@ -1629,6 +1680,7 @@ Para cambiar este parámetro de configuración, <ph name="BEGIN_LINK"/>borra los
 <translation id="7998918019931843664">Volver a abrir la pestaña cerrada</translation>
 <translation id="8001245658307297681">Estás viendo un archivo local</translation>
 <translation id="8004582292198964060">Navegador</translation>
+<translation id="8006630792898017994">Barra espaciadora o tecla de tabulación</translation>
 <translation id="8025972204417227828">Agregar nueva</translation>
 <translation id="8027863900915310177">Elige dónde descargarlo</translation>
 <translation id="8030852056903932865">Aprobar</translation>
@@ -1641,6 +1693,7 @@ Para cambiar este parámetro de configuración, <ph name="BEGIN_LINK"/>borra los
 <translation id="8062594758852531064">Precarga extendida:</translation>
 <translation id="8063895661287329888">Se produjo un error al agregar el marcador.</translation>
 <translation id="8066816452984416180">Agrega esta página a favoritos de forma rápida. Para editar este acceso directo, mantenlo presionado.</translation>
+<translation id="2290379131850170046">Puedes volver a abrir las pestañas que cerraste recientemente desde cualquier lugar en el que uses Brave</translation>
 <translation id="8073388330009372546">Abrir imagen en pestaña nueva</translation>
 <translation id="8076492880354921740">Pestañas</translation>
 <translation id="8078096376109663956">Comparte texto solamente.</translation>
@@ -1665,6 +1718,7 @@ Para cambiar este parámetro de configuración, <ph name="BEGIN_LINK"/>borra los
 <translation id="813082847718468539">Ver la información del sitio</translation>
 <translation id="8135406045838672858">Los archivos PDF descargados se abren automáticamente con <ph name="APP_NAME"/></translation>
 <translation id="6337533477704327362">No será necesario que recuerdes esta contraseña. Se guardará en el Administrador de contraseñas de Brave.</translation>
+<translation id="8151185429379586178">Herramientas del programador</translation>
 <translation id="8152331954420209374">Ir a Lens</translation>
 <translation id="8153206878708357851">Activar o desactivar la navegación por cursor de texto</translation>
 <translation id="8154784523622173959">Personaliza el fondo de esta página</translation>
@@ -1741,10 +1795,13 @@ Para cambiar este parámetro de configuración, <ph name="BEGIN_LINK"/>borra los
 <translation id="8449781591250785734">{NUM_SITES,plural, =1{Se quitaron los permisos de 1 sitio}other{Se quitaron los permisos de # sitios}}</translation>
 <translation id="8453310803815879010">Comenzar el juego del dinosaurio</translation>
 <translation id="8455675988389029454">Accede a tus favoritos, contraseñas y otros datos en todos tus dispositivos</translation>
+<translation id="8458341576712814616">Atajo</translation>
 <translation id="8458413889418591446">Para volver rápidamente a los sitios que visitaste, sincroniza el historial y las pestañas</translation>
 <translation id="7018408824172283743">Sigue usando los datos de Brave en tu Cuenta de Brave</translation>
+<translation id="8460008946585880786">Arrastra y suelta una pestaña sobre otra.</translation>
 <translation id="8460448946170646641">Revisa los controles de seguridad y privacidad más importantes</translation>
 <translation id="8460932807646981183">Administrar la búsqueda en sitios y los motores de búsqueda</translation>
+<translation id="8465252176946159372">No válido</translation>
 <translation id="8473863474539038330">Direcciones y más</translation>
 <translation id="847433688444405067">Navega en distintos dispositivos</translation>
 <translation id="8477178913400731244">Borrar datos</translation>
@@ -1757,14 +1814,15 @@ Para cambiar este parámetro de configuración, <ph name="BEGIN_LINK"/>borra los
 <translation id="8506357771923193001">Encontrarás tus descargas aquí</translation>
 <translation id="8512053371384421952">Ya no recibirás notificaciones de <ph name="DOMAIN"/>.</translation>
 <translation id="8516012719330875537">Editor de imágenes</translation>
-<translation id="8526855376374973824">Flujo de permisos de notificaciones</translation>
 <translation id="8533670235862049797">Se activó la Navegación segura</translation>
+<translation id="8538291624121505885"><ph name="TAB_TITLE"/>, pestaña con pantalla en pantalla fijada y con selección múltiple</translation>
 <translation id="8540136935098276800">Ingresa una URL con el formato correcto</translation>
 <translation id="854522910157234410">Abrir esta página</translation>
 <translation id="8547466829003330976">Revisar PDF con IA</translation>
 <translation id="5503308854539525011">Brave limita la cantidad total de datos que los sitios pueden compartir a través del navegador para medir el rendimiento de los anuncios.</translation>
 <translation id="8559990750235505898">Ofrecer la traducción de páginas en otros idiomas</translation>
 <translation id="8560602726703398413">Encuentra tu lista de lectura en favoritos.</translation>
+<translation id="85618473456579127">Presiona el perfil en la esquina superior derecha.</translation>
 <translation id="8565021320663436446">¿Quieres quitar a <ph name="MEMBER_FULL_NAME"/>?</translation>
 <translation id="8570677896027847510">No es posible descargar el archivo de forma segura</translation>
 <translation id="8571213806525832805">Últimas 4 semanas</translation>
@@ -1783,6 +1841,7 @@ Para cambiar este parámetro de configuración, <ph name="BEGIN_LINK"/>borra los
 <translation id="8634050254805484913">Oculta en pantallas angostas</translation>
 <translation id="8635399646025169806">¿Quieres conservar el grupo de pestañas?</translation>
 <translation id="8636825310635137004">Activa la sincronización para obtener las pestañas de tus otros dispositivos.</translation>
+<translation id="8639963783467694461">Configuración de Autocompletar</translation>
 <translation id="8662474268934425487">Accede a <ph name="SITE_ETLD_PLUS_ONE"/></translation>
 <translation id="8664979001105139458">Ya existe el nombre del archivo</translation>
 <translation id="8676276370198826499">Accede a <ph name="SITE_ETLD_PLUS_ONE"/> con <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
@@ -1824,10 +1883,10 @@ Para cambiar este parámetro de configuración, <ph name="BEGIN_LINK"/>borra los
 <translation id="8854223127042600341">Ver tus archivos sin conexión</translation>
 <translation id="885480114717186641">Puedes solicitar el sitio para computadoras de <ph name="HOST_NAME"/></translation>
 <translation id="8856607253650333758">Obtener descripciones</translation>
-<translation id="8856931513242997049">El flujo de permisos de notificaciones está cerrado</translation>
 <translation id="8863714995118816041">Se volvieron a otorgar permisos para <ph name="SITE_NAME"/></translation>
 <translation id="7261356974224431851">Datos de Brave de tu cuenta</translation>
 <translation id="8872506776304248286">Abrir en la app</translation>
+<translation id="8892234476517513962">Ya accediste</translation>
 <translation id="1984646864943401749">Envía a Brave las URLs de algunas páginas que visitas, información limitada del sistema y parte del contenido de las páginas para ayudar a detectar nuevas amenazas y proteger a todos los usuarios en la Web.</translation>
 <translation id="8903921497873541725">Acercar</translation>
 <translation id="8909135823018751308">Compartir…</translation>
@@ -1846,6 +1905,7 @@ Para cambiar este parámetro de configuración, <ph name="BEGIN_LINK"/>borra los
 <translation id="8969796057708736017">La descarga se completará si el archivo cumple con las políticas de tu organización</translation>
 <translation id="8970887620466824814">Se produjo un error</translation>
 <translation id="8972098258593396643">¿Deseas descargarlo a la carpeta predeterminada?</translation>
+<translation id="8987736167266086032">Retoma la sesión desde donde la dejaste</translation>
 <translation id="2481553173340651149">Tus datos se encriptan con tu frase de contraseña. Ingrésala para usar y guardar datos de Brave en tu Cuenta de Brave.</translation>
 <translation id="8995521496079646922">Las apps que elegiste se usarán de forma predeterminada. Si una app no está en este dispositivo, se descargará en breve.</translation>
 <translation id="8996847606757455498">Elegir otro proveedor</translation>
@@ -1861,6 +1921,7 @@ Para cambiar este parámetro de configuración, <ph name="BEGIN_LINK"/>borra los
 <translation id="9050666287014529139">Frase de contraseña</translation>
 <translation id="9055497320631373736">Se volvió a agregar el sitio a los sitios potenciales</translation>
 <translation id="9057030985451135243">Más información sobre los grupos de pestañas compartidos</translation>
+<translation id="905722970894408436"><ph name="TAB_TITLE"/>, pestaña de pantalla en pantalla fijada y seleccionada</translation>
 <translation id="9063400323119781058">Suscripción anulada</translation>
 <translation id="9063523880881406963">Desactivar la opción para solicitar versión de escritorio</translation>
 <translation id="9065203028668620118">Editar</translation>
@@ -1990,6 +2051,12 @@ Para cambiar este parámetro de configuración, <ph name="BEGIN_LINK"/>borra los
 <translation id="8863593791818172234"><ph name="TAB_TITLE"/>, Pestaña privada compartida seleccionada y fijada</translation>
 <translation id="6170315821493413320"><ph name="TAB_TITLE"/>, Pestaña privada compartida con selección múltiple</translation>
 <translation id="6860042518876405074"><ph name="TAB_TITLE"/>, Pestaña privada compartida fijada y seleccionada múltiplemente</translation>
+<translation id="2228077448589249209"><ph name="TAB_TITLE"/>, Pestaña privada de imagen en imagen</translation>
+<translation id="1888307590966923120"><ph name="TAB_TITLE"/>, Pestaña privada de imagen en imagen fijada</translation>
+<translation id="7680316848324619799"><ph name="TAB_TITLE"/>, Pestaña privada de imagen en imagen seleccionada</translation>
+<translation id="4055078452671856759"><ph name="TAB_TITLE"/>, Pestaña privada de imagen en imagen seleccionada y fijada</translation>
+<translation id="9155597906448699781"><ph name="TAB_TITLE"/>, Pestaña privada de imagen en imagen con selección múltiple</translation>
+<translation id="576288884052793146"><ph name="TAB_TITLE"/>, Pestaña privada de imagen en imagen fijada con selección múltiple</translation>
 <translation id="3797119261502402695"><ph name="TAB_TITLE"/>, Pestaña privada multiseleccionada</translation>
 <translation id="8511632746183549739"><ph name="TAB_TITLE"/>, Pestaña privada fijada con selección múltiple</translation>
 <translation id="2280910239864711607">Abrir una pestaña nueva en modo de incógnito</translation>

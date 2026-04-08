@@ -324,6 +324,8 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="8813509417421129632"><ph name="SITE"/> adresindeki gömülü bir sayfa kaydetmek istiyor</translation>
 <translation id="7700010743463174379">Bu sayfa kaydetmek istiyor</translation>
 <translation id="6774238875569752630">Bu sayfada gömülü bir sayfa kaydetmek istiyor</translation>
+<translation id="1383876407941801731">Ara</translation>
+<translation id="5496587651328244253">Organize</translation>
 <translation id="1233913566967531780">Sekme odağı</translation>
 <translation id="4034992002364254340">İlgili tüm sekmeleri yeni bir pencerede topla</translation>
 <translation id="8012125596344613514">Önerilen konular</translation>
@@ -341,6 +343,7 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="6501807887341963552">Tema ve renkler</translation>
 <translation id="6724227215236550330">Kaydedilen parolalar burada görünecek. Parolaları <ph name="BRAND"/>bu cihaza aktarmak için <ph name="BEGIN_LINK"/> bir CSV dosyası seçin<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">Parolaları <ph name="BRAND"/> bu cihaza aktarmak için bir CSV dosyası seçin</translation>
+<translation id="8570228839666486945">Cihazda AI</translation>
 <translation id="9156965752763025780">Değişiklikleriniz, Brave tekrar başlatıldığında geçerli olacak.</translation>
 <translation id="7179921470347911571">Şimdi Tekrar Başlat</translation>
 <translation id="1426410128494586442">Evet</translation>
@@ -393,6 +396,7 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="5297085818601043899">Araç ipucu</translation>
 <translation id="5219886318310413094">Tüm pencerelerdeki sabitlenmiş sekmeleri göster</translation>
 <translation id="2396127686705429331">Yer işaretleri butonunu göster</translation>
+<translation id="443318149139185498">Ana menü düğmesinde anahat logosunu kullan</translation>
 <translation id="2814998458708016836">Geniş adres çubuğu kullan</translation>
 <translation id="4749586705247636385">Ana içerik alanlarında yuvarlatılmış köşeleri gösterme</translation>
 <translation id="4109670531935487117">Adres çubuğunda otomatik tamamlamayı göster</translation>
@@ -546,7 +550,7 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="509873765238158442">Microsoft Recall'u Engelle</translation>
 <translation id="4763421121695677716">Microsoft Windows bilgisayarlardaki Recall özelliğinin açık Brave sekmelerinin ekran görüntülerini otomatik olarak almasını engelleyin.</translation>
 <translation id="1968895725257436430">Veri toplama</translation>
-<translation id="4846154056248462491">Çıkışta</translation>
+<translation id="1700052872056357670">Çıkışta verileri temizle</translation>
 <translation id="216468847346280584">Brave Reklamları verilerini temizle...</translation>
 <translation id="2808630562319398131">Brave Rewards verilerini yeniden ayarlayın...</translation>
 <translation id="6438096877646138757">Kapattığınız zaman çerezleri temizleyen siteler</translation>
@@ -793,6 +797,7 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="1529674267267221673">Bir web sitesinde sağ tıkladığınızda, Leo içerik menüsünde görünecektir. Bu ayar, mevcut web sayfasındaki bağlamı Leo'ya gönderecektir.</translation>
 <translation id="5226020406479918122">Sekme Odağı Modu</translation>
 <translation id="3705539672403311123">Sekme Arama sayfasında sekme organizasyonunu etkinleştirin. Bu özellik açıldığında, gizli olmayan tüm sekmelerin başlıklarını ve kaynaklarını sınıflandırması için otomatik olarak Leo'ya gönderir. <ph name="BEGIN_LINK"/>Daha fazla bilgi<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">Sekme odağı için varsayılan model</translation>
 <translation id="8172263161008556851">Konuşmada önerilen istemleri göster</translation>
 <translation id="5781842473834867765">Konuşma geçmişimi sakla</translation>
 <translation id="1082960401708055995">Konuşma geçmişi saklamayı devre dışı bırakmak, önceden saklanmış tüm konuşmaları kalıcı olarak siler. Bu eylem geri alınamaz.</translation>

@@ -80,6 +80,7 @@
 <translation id="1131264053432022307">Imatge que has copiat</translation>
 <translation id="1132735979845538847"><ph name="ORIGIN"/>. Per sortir de la pantalla completa, arrossega des de la part superior i toca el botó Enrere.</translation>
 <translation id="1133418583142946603">Afegeix la pestanya actual</translation>
+<translation id="1137064693271855979">Vols compartir les pestanyes obertes rellevants per obtenir millors respostes per a tots els fils de discussió?</translation>
 <translation id="1138458427267715730">Rep alertes quan el preu baixi en qualsevol lloc web d'Internet</translation>
 <translation id="1142713751288681188">Tipus de paper</translation>
 <translation id="1142965388643537393">Informació de viatges</translation>
@@ -183,7 +184,6 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="1289129165308566697">Consulta el teu historial en altres dispositius</translation>
 <translation id="1292571435393770077">Safata 16</translation>
 <translation id="1209478311331937175">"L'ordinador conté programari que impedeix que Brave es connecti de manera segura al web" (només en ordinadors Windows)</translation>
-<translation id="5797331194304636673">El contingut de la pàgina de tramitació de la compra es comparteix amb Brave per oferir aquestes opcions. Per amagar les opcions que permeten pagar més tard a Emplenament automàtic, ves a <ph name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_HIDE_OPTION_PAYMENT_SETTINGS_LINK_TEXT"/>.</translation>
 <translation id="1293556467332435079">Fitxers</translation>
 <translation id="1293797321964802402">Sobre de 9 x 11 polzades</translation>
 <translation id="129553762522093515">Tancades recentment</translation>
@@ -210,6 +210,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="1323433172918577554">Mostra'n més</translation>
 <translation id="1329916999021038454">Envia un informe</translation>
 <translation id="1330449323196174374">Plegat amb finestra a l'esquerra</translation>
+<translation id="133173645041092770">Tanca el lloc web</translation>
 <translation id="4274264486214599895">Juga al joc El dinosaure de Brave</translation>
 <translation id="1333989956347591814">És possible que la teva activitat <ph name="BEGIN_EMPHASIS"/>continuï sent visible<ph name="END_EMPHASIS"/> per a:
 <ph name="BEGIN_LIST"/>
@@ -217,6 +218,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <ph name="LIST_ITEM"/>la teva empresa o el teu centre educatiu
 <ph name="LIST_ITEM"/>el teu proveïdor d'Internet
 <ph name="END_LIST"/></translation>
+<translation id="133753543318803399">País emissor</translation>
 <translation id="1337692097987160377">Comparteix aquesta pestanya</translation>
 <translation id="1339601241726513588">Domini d'inscripció:</translation>
 <translation id="1340482604681802745">Adreça de recollida</translation>
@@ -229,10 +231,12 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="1357195169723583938">Qui ha utilitzat el dispositiu recentment i quan</translation>
 <translation id="1358187717814494928">Crea un full de càlcul</translation>
 <translation id="1359836962251219822">Cuina i menjador</translation>
+<translation id="4471036740481432056">La teva informació es desarà a Brave Wallet per a <ph name="ACCOUNT"/>. Pots utilitzar-la en tots els serveis de Brave per emplenar formularis més ràpidament.</translation>
 <translation id="1361528602584216624">Límit de <ph name="TRANSACTION_LIMIT"/> R$ per Pix</translation>
 <translation id="1363015776076529485">Formes de pagament disponibles per seleccionar i continuar el pagament obertes a alçada completa.</translation>
 <translation id="1363028406613469049">Fes un seguiment</translation>
 <translation id="1364822246244961190">Aquesta política està bloquejada i, per tant, se n'ignorarà el valor.</translation>
+<translation id="1367909869526928761">Tria com el mode IA pot utilitzar les pestanyes obertes rellevants</translation>
 <translation id="1368318639262510626">Joc del dinosaure. Un dinosaure pixelat esquiva cactus i pterodàctils tot corrent per un paisatge desolat. Quan sentis un so, prem la barra espaiadora per saltar per damunt dels obstacles.</translation>
 <translation id="1374468813861204354">suggeriments</translation>
 <translation id="1375198122581997741">Quan a la versió</translation>
@@ -250,6 +254,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="1392813880755413602">Presentació d'OpenDocument</translation>
 <translation id="139305205187523129"><ph name="HOST_NAME"/> no ha enviat dades.</translation>
 <translation id="3057197202055415269">Els atacants del lloc web que has provat de visitar poden enganyar-te perquè instal·lis programari o perquè revelis dades com ara la contrasenya, el telèfon o números de targeta de crèdit. Brave et recomana que tornis a un lloc web segur. <ph name="BEGIN_LEARN_MORE_LINK"/>Més informació sobre aquest advertiment<ph name="END_LEARN_MORE_LINK"/></translation>
+<translation id="1402151528875251561">Mostra l'historial al tauler lateral</translation>
 <translation id="1405567553485452995">Verd clar</translation>
 <translation id="1406370515365284486">Les teves formes de pagament continuaran desades</translation>
 <translation id="1406500794671479665">S'està verificant...</translation>
@@ -362,7 +367,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="1385693425784118652">Brave està provant d'activar Windows Hello per emplenar contrasenyes.</translation>
 <translation id="1572765991610098222"><ph name="WIDTH"/> x <ph name="HEIGHT"/> polzades</translation>
 <translation id="1574714699824202614">S'està verificant la forma de pagament</translation>
-<translation id="1576277203042721907">Shopping Insights</translation>
+<translation id="1576277203042721907">Estadístiques de compra</translation>
 <translation id="1579189948231786790">La teva organització ha bloquejat aquest lloc web</translation>
 <translation id="1581080074034554886">CVC</translation>
 <translation id="1583429793053364125">Hi ha hagut un error en mostrar aquesta pàgina web.</translation>
@@ -426,6 +431,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="1664389769577564606">Fotopolímer flexogràfic</translation>
 <translation id="1667730174533834274">verificar la teva identitat abans que canviïs la configuració</translation>
 <translation id="1668071460721346172">Rep un correu electrònic</translation>
+<translation id="1670861525135254448">Desa el vehicle</translation>
 <translation id="1674504678466460478"><ph name="SOURCE_LANGUAGE"/> a <ph name="TARGET_LANGUAGE"/></translation>
 <translation id="1682696192498422849">La vora curta primer</translation>
 <translation id="168693727862418163">No s'ha pogut validar el valor d'aquesta política comparant-lo amb l'esquema i, per tant, s'ignorarà.</translation>
@@ -468,6 +474,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="1734878702283171397">Prova de contactar amb l'administrador del sistema.</translation>
 <translation id="1736163675982669961"><ph name="CARD_NICKNAME"/>, <ph name="CARD_NETWORK_NAME"/>, <ph name="CARD_LAST_FOUR_DIGITS"/>; data de caducitat: <ph name="CARD_EXPIRATION"/></translation>
 <translation id="1736420071277903564">Ordinador</translation>
+<translation id="1739364174357629566">Actualitza el número de viatger conegut</translation>
 <translation id="1740404923954980840">Per sortir de la pantalla completa, arrossega des de la part superior i toca el botó Enrere</translation>
 <translation id="1741474054575634405">Gestiona les targetes de fidelització...</translation>
 <translation id="1741613555002899862">S'ha d'especificar juntament amb una cadena vàlida quan DnsOverHttpsMode sigui <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
@@ -479,7 +486,6 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="1748225549612934682">Escurça el text per obtenir ajuda per escriure</translation>
 <translation id="1752021286346845558">Bústia de correu 8</translation>
 <translation id="1753706481035618306">Número de pàgina</translation>
-<translation id="1755203724116202818">Per mesurar el rendiment d'un anunci, es comparteixen tipus de dades limitats entre llocs web, com ara si has fet una compra després de visitar un lloc web.</translation>
 <translation id="1755621011177747277">Adopció</translation>
 <translation id="1756026472674246267">Obre l'enllaç en una pestanya nova</translation>
 <translation id="1756555787993603971">Ara pots utilitzar una targeta virtual per tramitar compres de manera més segura amb la funció Emplenament automàtic.</translation>
@@ -586,6 +592,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="1943994668912612445">Disseny</translation>
 <translation id="1946849748901605102">12 x 15 polzades</translation>
 <translation id="1947454675006758438">Grapat a la part superior dreta</translation>
+<translation id="1950524225823308149">Comparteix les pestanyes obertes per a cada fil de discussió</translation>
 <translation id="1953729392594614704">En bloquejar <ph name="TOPIC"/>, també es bloquejaran tots els temes relacionats, encara que el tema en qüestió estigui actiu</translation>
 <translation id="1954847915560574887">A3x3</translation>
 <translation id="1955773397805078763">Afegeix una forma de pagament</translation>
@@ -613,7 +620,6 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="1999416967035780066">Programari a 0 € i de prova</translation>
 <translation id="2001146170449793414">{COUNT,plural, =1{i 1 aplicació més}other{i # aplicacions més}}</translation>
 <translation id="2001469757375372617">S'ha produït un error. El canvi no s'ha desat.</translation>
-<translation id="4459209913348050986">Pots fer canvis a la configuració de Brave.</translation>
 <translation id="2003709556000175978">Restableix la contrasenya ara</translation>
 <translation id="2003775180883135320">Encunyació quàdruple a la part superior</translation>
 <translation id="6855500251167861792">Botó Crea un esdeveniment: activa'l per crear ràpidament un esdeveniment nou a Brave Calendar</translation>
@@ -629,6 +635,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="2027465737841872819">Plàstic</translation>
 <translation id="2027707238798802149">Targeta no disponible</translation>
 <translation id="2029735183873159415">Genealogia i ascendència</translation>
+<translation id="2031095660415483845">Cerca i emplena des de qualsevol lloc...</translation>
 <translation id="2032962459168915086"><ph name="BEGIN_LINK"/>Comproveu el servidor intermediari i el tallafoc<ph name="END_LINK"/></translation>
 <translation id="2033900728810589426">La drecera no pot ser igual que la paraula clau del proveïdor de cerca predeterminat definida per <ph name="DEFAULT_SEARCH_PROVIDER_KEYWORD_POLICY_NAME"/>: <ph name="SHORTCUT_NAME"/></translation>
 <translation id="2034971124472263449">Desa igualment</translation>
@@ -638,10 +645,10 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="2040894699575719559">S'ha bloquejat la ubicació</translation>
 <translation id="2041788246978549610">Utilitza els micròfons disponibles (<ph name="MICS_COUNT"/>)</translation>
 <translation id="2042213636306070719">Safata 7</translation>
+<translation id="2043091580538548438">Els llocs web que s'afegeixin aquí no es faran servir com a referència per a les respostes, encara que les pestanyes estiguin obertes.</translation>
 <translation id="2045871135676061132">Sobre personal</translation>
 <translation id="2046951263634619614">Llibreters</translation>
 <translation id="2048261947532620704">S'està traduint la pàgina</translation>
-<translation id="5469355573019315764">Els llocs web poden demanar informació a Brave per personalitzar els anuncis que veus.</translation>
 <translation id="2059166748188874810">Municipi</translation>
 <translation id="2059202684901022309">22 x 34 polzades</translation>
 <translation id="2064568741209980952">Crèdit i préstec</translation>
@@ -726,6 +733,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="2166049586286450108">Accés administratiu complet</translation>
 <translation id="2166378884831602661">Aquest lloc web no pot proporcionar una connexió segura</translation>
 <translation id="2168151236314517198">La política de l'administrador ha bloquejat l'opció d'imprimir aquest contingut</translation>
+<translation id="2171244127100824330">A <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> per a <ph name="ACCOUNT"/></translation>
 <translation id="2172089022819052306">Manteniment i reparació de vehicles</translation>
 <translation id="2173302385160625112">Comprova la connexió a Internet</translation>
 <translation id="2174875517416416684">La transacció no s'ha pogut processar. No s'han retirat fons del compte.</translation>
@@ -742,6 +750,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="2188375229972301266">Encunyació múltiple a la part inferior</translation>
 <translation id="218940509700321686">Valors separats per comes</translation>
 <translation id="2191980191135734720">Desbloqueja la pantalla al pas següent, normalment amb l'empremta digital. També pots <ph name="LINK_TEXT"/>.</translation>
+<translation id="2194856509914051091">Aspectes que cal tenir en compte</translation>
 <translation id="2198183835992354675">Número de viatger conegut</translation>
 <translation id="2198215508485017216">Hi ha hagut un error inesperat. <ph name="BEGIN_LINK"/>Més informació sobre les pujades de Drive<ph name="END_LINK"/></translation>
 <translation id="2200678913752027654">Botó No m'agrada: prem Retorn per obrir un formulari i enviar comentaris detallats sobre per què indiques que no t'agrada aquest suggeriment</translation>
@@ -898,7 +907,6 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="2436976580469434549">Fibres i arts tèxtils</translation>
 <translation id="4819123264415400027">Aquesta targeta no s'ha pogut desar al teu Compte de Brave. S'ha desat a Brave en aquest dispositiu.</translation>
 <translation id="2438874542388153331">Encunyació quàdruple a la dreta</translation>
-<translation id="2440855519769445271">Per amagar les opcions de Paga més tard, ves a la <ph name="BEGIN_LINK"/>configuració de pagament<ph name="END_LINK"/></translation>
 <translation id="2441854154602066476">Formes de pagament disponibles que es poden emplenar amb un toc. El teclat està amagat.</translation>
 <translation id="2448295565072560657">Perifèrics connectats a aquest dispositiu mentre tens la sessió iniciada</translation>
 <translation id="7174054574169352743">Formes de pagament i altres dades de Brave Wallet</translation>
@@ -917,18 +925,21 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="2466004615675155314">Mostra informació del web</translation>
 <translation id="2466682894498377850">S'ha enviat una pestanya des del teu <ph name="DEVICE_NAME"/></translation>
 <translation id="2467272921457885625">Especificacions i estadístiques de maquinari del dispositiu, com ara l'historial d'ús de CPU o RAM</translation>
+<translation id="2467421459221956357">Vols utilitzar els sensors?</translation>
 <translation id="2467694685043708798"><ph name="BEGIN_LINK"/>Executar el diagnòstic de xarxes<ph name="END_LINK"/></translation>
 <translation id="2469153820345007638">Ordre d'1 a N</translation>
 <translation id="24699311393038040">Paper (estucat)</translation>
 <translation id="2471632709106952369">Taules de comparació</translation>
 <translation id="2473810985261856484">Serveis legals</translation>
 <translation id="50589553892093838">Altres dades de Brave</translation>
+<translation id="247903268499247848">Els sensors de moviment i de llum no estan permesos</translation>
 <translation id="2479148705183875116">Ves a Configuració</translation>
 <translation id="2479410451996844060">URL de cerca no vàlid.</translation>
 <translation id="6944854796979239513">Al teu Compte de Brave, <ph name="USER_EMAIL"/></translation>
 <translation id="248064299258688299">L'extensió <ph name="EXTENSION_NAME"/> diu</translation>
 <translation id="2482878487686419369">Notificacions</translation>
 <translation id="248348093745724435">Polítiques de l'ordinador</translation>
+<translation id="248395913932153421">Dia</translation>
 <translation id="2485243023686553468">Telèfons intel·ligents</translation>
 <translation id="2491120439723279231">El certificat del servidor conté errors.</translation>
 <translation id="2491414235131909199">Una extensió ha bloquejat aquesta pàgina</translation>
@@ -978,6 +989,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="2553352788023127673">L'historial de cerques i les contrasenyes es poden suprimir a la configuració de gestió corresponent</translation>
 <translation id="2553853292994445426">Revisa la configuració de DNS segur. Pot ser que hagis configurat un servidor de DNS segur en què fallin les connexions.</translation>
 <translation id="255497580849974774">Mantén el dispositiu connectat a un carregador durant l'actualització.</translation>
+<translation id="2555855727505718984">Emplenament automàtic no disposarà d'aquesta informació en aquest dispositiu per ajudar-te a emplenar formularis</translation>
 <translation id="2556876185419854533">&amp;Desfés la modificació</translation>
 <translation id="2559566667529177711">Multicapa</translation>
 <translation id="2570734079541893434">Gestiona la configuració</translation>
@@ -1042,6 +1054,8 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="2674524144218093528">Pintura i acabaments de cases</translation>
 <translation id="26774279487328902"><ph name="GROUP_COUNT"/> grups de pestanyes ja no estan disponibles</translation>
 <translation id="2677748264148917807">Surt</translation>
+<translation id="2679216653373462289">Utilitzar els sensors de moviment i de llum</translation>
+<translation id="2679659833697380">La teva informació es desa al dispositiu</translation>
 <translation id="2683195745483370038">S'han trobat altres resultats</translation>
 <translation id="2686919536310834199">Envia suggeriments sobre la funció Ajuda'm a escriure.</translation>
 <translation id="2687555958734450033">Mida òptima</translation>
@@ -1097,6 +1111,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="2768397283109119044">Has provat d'accedir a <ph name="DOMAIN"/>, però el servidor ha presentat un certificat no vàlid emès a aquest nom. El nom és una adreça IP reservada o un nom d'amfitrió intern.</translation>
 <translation id="2770159525358613612">Prova de tornar a penjar els fitxers</translation>
 <translation id="277133753123645258">Mètode d'enviament</translation>
+<translation id="2772464848856512911">Vols compartir les pestanyes obertes per a cada fil de discussió?</translation>
 <translation id="277499241957683684">Falta el registre del dispositiu</translation>
 <translation id="2775884851269838147">Primera pàgina d'impressió</translation>
 <translation id="2781185443919227679">Platges i illes</translation>
@@ -1105,7 +1120,6 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="2782088940970074970">Lloguers de cotxes</translation>
 <translation id="278436560439594386">Aparells domèstics</translation>
 <translation id="2784474685437057136">B5 Extra</translation>
-<translation id="3289836055270312815">El contingut de la pàgina de tramitació de la compra es comparteix amb Brave per oferir aquestes opcions.</translation>
 <translation id="2784949926578158345">S'ha restablert la connexió.</translation>
 <translation id="2786008859124691917">Bicicletes i accessoris</translation>
 <translation id="2792012897584536778">Els administradors d'aquest dispositiu han configurat certificats de seguretat que els permeten veure el contingut dels llocs web que visites.</translation>
@@ -1120,6 +1134,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="2820957248982571256">S'està cercant...</translation>
 <translation id="2824775600643448204">Barra d'adreces i de cerca</translation>
 <translation id="2826760142808435982">La connexió s'ha encriptat i autenticat mitjançant <ph name="CIPHER"/> i fa servir <ph name="KX"/> com a mecanisme d'intercanvi clau.</translation>
+<translation id="2828797285817981634">Els sensors de moviment estan permesos ara mateix</translation>
 <translation id="2833637280516285136">Ràdio parlada</translation>
 <translation id="2835170189407361413">Esborra el formulari</translation>
 <translation id="2835907903001172712">Informació general del navegador</translation>
@@ -1223,6 +1238,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="3005723025932146533">Mostra la còpia desada</translation>
 <translation id="300580149047131921">Utilitzada fa poc</translation>
 <translation id="3006864083554020786">adreça de casa</translation>
+<translation id="3007110814003834680">Exclusions de llocs</translation>
 <translation id="3009036448238594149"><ph name="ACTION_IN_SUGGEST_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Prem Tab per navegar per les accions disponibles i, a continuació, prem Retorn per executar l'acció seleccionada.</translation>
 <translation id="3010991137650052245">Per utilitzar la <ph name="PERMISSION"/> en aquest lloc web, concedeix accés a <ph name="SHORT_PRODUCT_NAME"/></translation>
 <translation id="3013711734159931232">Productes per a la llar</translation>
@@ -1233,12 +1249,12 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="3017086357773116182"><ph name="REMOVE_SUGGESTION_SUFFIX"/>, prem la tecla de tabulació i després la d'introducció per suprimir el suggeriment.</translation>
 <translation id="3019738915977809060">Desa la targeta d'embarcament a Wallet</translation>
 <translation id="3022959067768579802">Continua escrivint</translation>
-<translation id="3023165109041533893">Els anuncis suggerits per llocs web ajuden a protegir el teu historial de navegació i la teva identitat, alhora que permeten als llocs web mostrar-te anuncis rellevants. En funció de la teva activitat, un lloc web que has visitat pot suggerir anuncis relacionats mentre continues navegant. Pots veure una llista d'aquests llocs web i bloquejar els que no vulguis a la configuració.</translation>
 <translation id="3024663005179499861">Tipus de política incorrecte</translation>
 <translation id="3027915437837548462">Imatge SVG</translation>
 <translation id="3030331669969285614">Aquestes marques impedeixen o reverteixen un canvi conflictiu i només estaran disponibles durant un temps limitat.</translation>
 <translation id="3030542417256082866">Vols desar el vehicle?</translation>
 <translation id="5877261609750575671">L'adreça de casa et pot ajudar a enllestir tasques amb els serveis de Brave, fent més rellevants els resultats de la Cerca i les indicacions a Brave Maps, entre d'altres. Pots editar o suprimir l'adreça <ph name="BEGIN_LINK"/>al teu Compte de Brave <ph name="ACCOUNT"/><ph name="END_LINK"/>.</translation>
+<translation id="3033777742142108756">Els sensors de moviment i de llum estan permesos ara mateix</translation>
 <translation id="3034526003882782781">Es permet desplaçar-se i fer zoom</translation>
 <translation id="3036894576201005614">Productes de neteja per a la llar</translation>
 <translation id="3037177537145227281">Estàs fent un seguiment del preu</translation>
@@ -1277,6 +1293,9 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="3102312643185441063">Estalvis</translation>
 <translation id="3103188521861412364">Accions i bons</translation>
 <translation id="3105172416063519923">Identificador de l'element:</translation>
+<translation id="3105223248029915046">Els plans de pagament estan subjectes a la idoneïtat.
+Per amagar les opcions de Paga més tard, ves a la <ph name="BEGIN_LINK"/>configuració de pagament<ph name="END_LINK"/></translation>
+<translation id="3105477369449879017">Proveïdor del servei d'emplenament automàtic</translation>
 <translation id="3107591622054137333"><ph name="BEGIN_LINK"/>Comprova la configuració de DNS segur<ph name="END_LINK"/></translation>
 <translation id="3108943290502734357">Safata central</translation>
 <translation id="3109061346635850169">Tractaments facials i corporals</translation>
@@ -1292,6 +1311,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="3115363211799416195">{0,plural, =1{Vols baixar el fitxer confidencial?}other{Vols baixar els fitxers confidencials?}}</translation>
 <translation id="3115874930288085374"><ph name="ENROLLMENT_DOMAIN"/> requereix que creïs una còpia de seguretat de les teves dades i que tornis aquest dispositiu <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="3116158981186517402">Laminat</translation>
+<translation id="3116695032231023709">Desa el document d'identitat</translation>
 <translation id="3119689199889622589">Aliments naturals i ecològics</translation>
 <translation id="3120730422813725195">Elo</translation>
 <translation id="31207688938192855"><ph name="BEGIN_LINK"/>Proveu d'executar el Diagnòstic de connectivitat<ph name="END_LINK"/>.</translation>
@@ -1299,6 +1319,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="3121994479408824897">Ves a <ph name="DOMAIN"/></translation>
 <translation id="3122696783148405307">Mostra els resultats dels 30 darrers dies</translation>
 <translation id="3126023634486644099">Etiquetes (permanents)</translation>
+<translation id="3132345256151444894">Desa el número Redress</translation>
 <translation id="3133565499688974786">Ara, <ph name="SEARCH_ENGINE_NAME"/> és el teu motor de cerca predeterminat</translation>
 <translation id="3134859781443140237">Xarxa local</translation>
 <translation id="3137283076021007034"><ph name="KEYWORD"/> - Cerca <ph name="KEYWORD_SHORT_NAME"/></translation>
@@ -1318,6 +1339,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="3156511682997763015">Avança 10 segons</translation>
 <translation id="3157931365184549694">Restaura</translation>
 <translation id="3158539265159265653">Disc</translation>
+<translation id="3159556963589020896">Pro</translation>
 <translation id="3162070126914310576">Aquest dispositiu no es pot inscriure ara mateix perquè la teva unitat organitzativa ha arribat al límit d'inscripció inicial. Contacta amb l'administrador per obtenir assistència.</translation>
 <translation id="3162559335345991374">És possible que la xarxa Wi-Fi que esteu fent servir requereixi que visiteu la seva pàgina d'inici de sessió.</translation>
 <translation id="316638481603975524">Poden demanar permís per instal·lar aplicacions web</translation>
@@ -1332,9 +1354,9 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
           <ph name="PLATFORM_TEXT"/></translation>
 <translation id="317878711435188021">Saber quan estàs utilitzant aquest dispositiu de manera activa</translation>
 <translation id="3180358318770512945">Criança dels fills</translation>
+<translation id="3181543705317761806">Obtén respostes basades en la IA amb context del web.</translation>
 <translation id="3182185041786697613">Vols desar el codi de seguretat?</translation>
 <translation id="3185635157430775689">Components informàtics</translation>
-<translation id="3187472288455401631">Mesurament d'anuncis</translation>
 <translation id="3190736958609431397">Deixa de fer el seguiment</translation>
 <translation id="3194737229810486521"><ph name="URL"/> vol emmagatzemar dades al dispositiu de manera permanent</translation>
 <translation id="3194765668709099364">Klarna</translation>
@@ -1366,11 +1388,13 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="3226387218769101247">Miniatures</translation>
 <translation id="3227137524299004712">Micròfon</translation>
 <translation id="3229041911291329567">Informació sobre la versió del dispositiu i del navegador</translation>
+<translation id="3229254977651514276">Comprova la data</translation>
 <translation id="3229277193950731405">Copia la cadena de versió</translation>
 <translation id="323107829343500871">Introdueix el CVC de la targeta <ph name="CREDIT_CARD"/></translation>
 <translation id="323585066388831737">Vermell clar</translation>
 <translation id="3235902901585019063">Els fitxers locals se suprimiran el dia <ph name="DATE_TIME"/>. Assegura't que totes les dades empresarials o personals essencials s'emmagatzemin externament.</translation>
 <translation id="3236212803136366317">Avantatges de les targetes</translation>
+<translation id="2816340899490518371">No s'ha pogut desar a Brave Wallet</translation>
 <translation id="3240683217920639535"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>: prem Tab i després Retorn per personalitzar l'aspecte del teu navegador</translation>
 <translation id="3240791268468473923">S'ha obert el full de credencials no coincidents de credencials de pagament segur</translation>
 <translation id="324180406144491771">Els enllaços de "<ph name="HOST_NAME"/>" estan bloquejats</translation>
@@ -1383,7 +1407,6 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="3261488570342242926">Informació sobre les targetes virtuals</translation>
 <translation id="3262698603497362968">Opcions de compra</translation>
 <translation id="3264315627780269177">Aquesta pestanya no es pot compartir</translation>
-<translation id="3266367459139339908">Llançarem noves maneres de limitar la informació que els llocs web poden obtenir sobre tu quan et mostren anuncis personalitzats, per exemple:</translation>
 <translation id="3266793032086590337">Valor (en conflicte)</translation>
 <translation id="3268451620468152448">Pestanyes obertes</translation>
 <translation id="3270041629388773465">Desa els CVC per tramitar les compres més ràpidament</translation>
@@ -1425,7 +1448,6 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="333839153442689579">Entrenament per intervals intensiu</translation>
 <translation id="3339446062576134663">Al núvol (Ash)</translation>
 <translation id="3340978935015468852">configuració</translation>
-<translation id="3342018947887487892">Més tard, un lloc web que visitis pot demanar aquesta informació, ja siguin els temes d'anunci o els anuncis suggerits pels llocs web que has visitat.</translation>
 <translation id="334438173029876234">Equipament per a patinatge de monopatí</translation>
 <translation id="3347146863028219517">Esquí i surf de neu</translation>
 <translation id="3349610303043713601">Navega amb IA</translation>
@@ -1477,7 +1499,6 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="3423742043356668186">Especificat pel sistema</translation>
 <translation id="3427342743765426898">&amp;Refés la modificació</translation>
 <translation id="3428151540071562330">Un o més dels URI de plantilla de servidor corresponents a DnsOverHttpsTemplates no són vàlids i no s'utilitzaran.</translation>
-<translation id="3428789896412418755">Historial agrupat</translation>
 <translation id="3432601291244612633">Tanca la pàgina</translation>
 <translation id="3433111389595862568">Programari de col·laboració i conferències</translation>
 <translation id="3433144818443565002">Xat de veu i vídeo</translation>
@@ -1501,7 +1522,6 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="6152501781902660923"><ph name="CONTEXTUAL_SEARCH_OPEN_LENS_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Prem Retorn per preguntar a Brave sobre aquesta pàgina.</translation>
 <translation id="3465972433695735758">Aquest PDF és inaccessible. S'ha extret el text amb la tecnologia de la IA de Brave.</translation>
 <translation id="346601286295919445">Química</translation>
-<translation id="3467081767799433066">Amb el mesurament d'anuncis, es comparteixen tipus de dades limitats entre llocs web per mesurar el rendiment dels anuncis, com ara si has fet una compra després de visitar un lloc web.</translation>
 <translation id="3468054117417088249"><ph name="TAB_SWITCH_SUFFIX"/>, oberta actualment; prem Tab i després Retorn per canviar a la pestanya oberta</translation>
 <translation id="3472469028191701821">S'obre en una pestanya nova</translation>
 <translation id="3807334561457710885">Botó Personalitza els tipus de lletra a Brave: activa'l per personalitzar les fonts i els cossos de les fonts a Brave</translation>
@@ -1540,6 +1560,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="3532624859962632484">Accés a altres dispositius de la teva xarxa local</translation>
 <translation id="3532844647053365774"><ph name="HOST"/> vol utilitzar el micròfon</translation>
 <translation id="3533328374079021623">Bústia de correu 5</translation>
+<translation id="9189079507725944836">Obtén respostes més ràpides i personalitzades en cada fil de discussió compartint les teves pestanyes obertes de manera predeterminada. Pots canviar aquesta opció en qualsevol moment a la configuració de Brave.</translation>
 <translation id="3536227077203206203">S'ha permès aquesta vegada</translation>
 <translation id="3537165859691846083">Letter Plus</translation>
 <translation id="353816159217417898">Pantalla (paginada)</translation>
@@ -1570,6 +1591,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="3575121482199441727">Permet per a aquest lloc web</translation>
 <translation id="3575168918110434329">A4x7</translation>
 <translation id="3575589330755445706">S'ha seleccionat l'opció de nom del carrer</translation>
+<translation id="3576315803647905285">Fes que soni més formal</translation>
 <translation id="3576616784287504635">Una pàgina inserida a <ph name="SITE"/> diu</translation>
 <translation id="3577473026931028326">S'ha produït un error. Torna-ho a provar.</translation>
 <translation id="3577902790357386792">Gimnàstica</translation>
@@ -1620,7 +1642,6 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="3642196846309122856">Prova de tornar a baixar els fitxers</translation>
 <translation id="3642638418806704195">Aplicació:</translation>
 <translation id="3644768007456662469">Icona d'element de pagaments</translation>
-<translation id="3646643500201740985">Mesurar el rendiment d'un anunci</translation>
 <translation id="3647286794400715637">Cada entrada de la cadena d'URL ha de contenir 1 o 2 URL.</translation>
 <translation id="5085151248144746413">Botó per ignorar el consell de Brave, prem Retorn per ignorar-lo, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
 <translation id="3650584904733503804">Validació correcta</translation>
@@ -1648,7 +1669,6 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="3678914302246317895">Introdueix el codi de verificació de <ph name="OTP_LENGTH"/> dígits</translation>
 <translation id="3681007416295224113">Informació del certificat</translation>
 <translation id="318206792789506219">Brave creu que no vols utilitzar la teva ubicació en aquest lloc web. Per tant, les sol·licituds s'amaguen per reduir les interrupcions.</translation>
-<translation id="2659564324969662497">Brave pren nota dels temes d'interès basant-se en el teu historial de navegació recent.</translation>
 <translation id="3681841880472207951">Vídeo QuickTime</translation>
 <translation id="3682094733650754138">S'ha seleccionat l'opció d'emplenar l'adreça</translation>
 <translation id="3687920599421452763">Furgonetes i monovolums</translation>
@@ -1698,6 +1718,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="3752181611900535304">Vols desar l'adreça al compte?</translation>
 <translation id="3752543821772132562">S'ha ignorat perquè la política <ph name="POLICY_NAME"/> no està establerta.</translation>
 <translation id="3754210790023674521">Surt d'imatge sobre imatge</translation>
+<translation id="3754664361823138853">&amp;Obre la pàgina de l'historial</translation>
 <translation id="3759461132968374835">No has informat de cap error recentment. Els errors que s'hagin produït mentre la creació d'informes d'error estava desactivada no es mostraran aquí.</translation>
 <translation id="3760561303380396507">Vols utilitzar Windows Hello en lloc del CVC?</translation>
 <translation id="3761171036307311438">Nom a la targeta:</translation>
@@ -1716,6 +1737,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="3789841737615482174">Instal·la</translation>
 <translation id="3791118028061680614">Paga sense canviar d'aplicació</translation>
 <translation id="3792100426446126328"><ph name="NAME"/> (<ph name="WIDTH"/> x <ph name="HEIGHT"/> polzades)</translation>
+<translation id="3792251736135878332">S'utilitzen les pestanyes obertes rellevants per personalitzar les respostes en tots els fils de discussió</translation>
 <translation id="3792826587784915501">Pel·lícules de culte i independents</translation>
 <translation id="3793574014653384240">Nombre i motius dels errors que s'han produït recentment</translation>
 <translation id="1064391869156884018">Fa poc vas canviar una contrasenya que es va fer pública a causa d'una violació de les dades. Si tens problemes, el gestor de contrasenyes de Brave et pot ajudar a iniciar la sessió.</translation>
@@ -1788,13 +1810,13 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="3909695131102177774"><ph name="LABEL"/> <ph name="ERROR"/></translation>
 <translation id="2432806109793094400">La informació desada i la pàgina de <ph name="WEBSITE"/> s'envien a Brave i és possible que les vegin revisors humans per millorar aquesta funció.</translation>
 <translation id="3910231615117880630">Més informació sobre el contingut inserit</translation>
-<translation id="3117446487153407265"><ph name="BEGIN_BOLD"/>Com pots gestionar les teves dades<ph name="END_BOLD"/>: Brave suprimeix automàticament els llocs web que tenen més de 30 dies. És possible que un lloc web que tornis a visitar reaparegui a la llista. També pots impedir que un lloc web et suggereixi anuncis i desactivar els anuncis suggerits per llocs web en qualsevol moment a la configuració de Brave.</translation>
 <translation id="3921869355029467742">Introdueix el codi de seguretat</translation>
 <translation id="3927538228901078312">No hi ha cap taula de comparació</translation>
 <translation id="3927692899758076493">Sans Serif</translation>
 <translation id="3927932062596804919">Denega</translation>
 <translation id="3928806096717999469">Edita (s'obre una finestra nova)</translation>
 <translation id="3930260846839546333">Bosses de mà i carteres</translation>
+<translation id="393417216277380082">Sensors de moviment i de llum</translation>
 <translation id="3937834511546249636">Sector de defensa</translation>
 <translation id="3939773374150895049">Vols utilitzar WebAuthn en lloc del CVC?</translation>
 <translation id="3941630233824954464">Activa la reautenticació obligatòria</translation>
@@ -1861,6 +1883,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="4031179711345676612">El micròfon es pot utilitzar</translation>
 <translation id="4036753017940930924">Parcel·les i terres</translation>
 <translation id="403724377879219932">Pot demanar permís per accedir a altres dispositius de la teva xarxa local</translation>
+<translation id="4038863931942689384"><ph name="ATTRIBUTE_VALUE"/>, nou</translation>
 <translation id="4039506337798853114">Per mostrar el cursor, prem |<ph name="ACCELERATOR"/>|</translation>
 <translation id="4042597221652780603">Aproximada</translation>
 <translation id="4045070493270310437">Torna a obrir les pestanyes</translation>
@@ -1881,6 +1904,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="406358100705415968">Equipament per a seguretat laboral</translation>
 <translation id="7022955130848497285">Brave vol verificar la teva identitat abans que canviïs la configuració</translation>
 <translation id="4065659219963895623">Restaurants</translation>
+<translation id="4065914898561361692">No comparteixis automàticament les pestanyes obertes rellevants (opció predeterminada)</translation>
 <translation id="4067774859633143413">Per sortir de la pantalla completa i veure la baixada, mantén premut |<ph name="ACCELERATOR"/>|</translation>
 <translation id="4067947977115446013">Afegeix una adreça vàlida</translation>
 <translation id="4072486802667267160">S’ha produït un error en processar la comanda. Torna-ho a provar.</translation>
@@ -1987,9 +2011,9 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="422722221769396062">Serveis d'entrega a domicili de restaurants</translation>
 <translation id="4230204356098880324">Pot demanar permís per utilitzar i moure la càmera</translation>
 <translation id="4231448684371260244">8 x 13 polzades</translation>
-<translation id="2706343222967082402">En un termini de 30 dies, Brave suprimeix automàticament els temes i els llocs web que suggereixen anuncis. També pots bloquejar temes i llocs web concrets que no t'agradin.</translation>
 <translation id="4235360514405112390">Vàlid</translation>
 <translation id="4239799716689808527">Etiquetes</translation>
+<translation id="424063167283213501">Desa el número de viatger conegut</translation>
 <translation id="4241830393007970744">Els atacants del lloc web que has provat de visitar poden enganyar-te perquè instal·lis programari o perquè revelis dades com ara la contrasenya, el telèfon o números de targeta de crèdit.</translation>
 <translation id="4242380780309416996">Sobre (alt gramatge)</translation>
 <translation id="4242981939686657948">Per fer cerques a l'historial de navegació d'una manera més eficaç, activa</translation>
@@ -2027,10 +2051,8 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="4282346679996504092">Les alertes d'aquest producte s'han desactivat i l'adreça d'interès s'ha suprimit</translation>
 <translation id="4284885181066817063">Bloquejat per <ph name="DOMAIN"/></translation>
 <translation id="4285498937028063278">No fixis</translation>
-<translation id="2820825061680010514">Privadesa d'anuncis millorada a Brave</translation>
 <translation id="4288101205645068104">Suprimeix el vehicle</translation>
 <translation id="4290920330097335010">No permetis mai</translation>
-<translation id="4296207570293932800">La nova funció de privadesa d'anuncis ja està disponible</translation>
 <translation id="4297502707443874121">Miniatura de la pàgina <ph name="THUMBNAIL_PAGE"/></translation>
 <translation id="4297937944457164390">S'ha actualitzat <ph name="ATTRIBUTE_NAME"/></translation>
 <translation id="4298000214066716287">Inversions</translation>
@@ -2079,6 +2101,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="4355383636893709732">Actualització de ChromeOS per a aplicacions d'Android</translation>
 <translation id="4358059973562876591">Pot ser que les plantilles que has especificat no s'apliquin a causa d'un error amb la política DnsOverHttpsMode.</translation>
 <translation id="4358461427845829800">Gestiona les formes de pagament...</translation>
+<translation id="4359853272024672680">Cerca en mode IA</translation>
 <translation id="4363222835916186793">Les alertes d'aquest producte s'han desactivat</translation>
 <translation id="4366943895537458493">Làmina</translation>
 <translation id="4369179505195332608">Edita el permís de conduir</translation>
@@ -2109,6 +2132,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="4415426530740016218">Adreça de recollida</translation>
 <translation id="4419287616181386201">Les contrasenyes es poden suprimir a la configuració de gestió corresponent</translation>
 <translation id="4425750422187370446">Moda esportiva</translation>
+<translation id="443008484043213881">Eines</translation>
 <translation id="443121186588148776">Port en sèrie</translation>
 <translation id="4432688616882109544"><ph name="HOST_NAME"/> no ha acceptat el certificat d'inici de sessió o pot ser que no se n'hagi proporcionat cap.</translation>
 <translation id="4432792777822557199">A partir d'ara, les pàgines en <ph name="SOURCE_LANGUAGE"/> es traduiran a <ph name="TARGET_LANGUAGE"/></translation>
@@ -2221,10 +2245,10 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="4648262692072505866">El valor resum ha de tenir el format SHA-256.</translation>
 <translation id="4652266463001779298">No permès</translation>
 <translation id="4652440160515225514">La teva organització ha bloquejat aquest lloc web perquè infringeix una política.</translation>
-<translation id="4654457557264366314">Els plans de pagament estan subjectes a la idoneïtat.</translation>
 <translation id="4658638640878098064">Grapat a la part superior esquerra</translation>
 <translation id="4658801711339831733">L'escaneig s'ha desat a Google Drive</translation>
 <translation id="4660592918803576381">Obre a Drive</translation>
+<translation id="4660780573807106293">Pot demanar permís per utilitzar els sensors de moviment i de llum</translation>
 <translation id="4661556981531699496">Animals de companyia i altres animals</translation>
 <translation id="4661868874067696603">Cerca més opcions de compra</translation>
 <translation id="4663373278480897665">La càmera es pot utilitzar</translation>
@@ -2241,11 +2265,11 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="4682496302933121474">Vols traduir la pàgina?</translation>
 <translation id="468314109939257734">Mostra el número de la targeta virtual</translation>
 <translation id="4686942373615810936">Creat ara mateix</translation>
-<translation id="4687718960473379118">Anuncis suggerits per llocs web</translation>
 <translation id="4690205240253392065">Tria un proveïdor de Paga més tard</translation>
 <translation id="4691093235373904540">Teulats</translation>
 <translation id="4692623383562244444">Motors de cerca</translation>
 <translation id="4695702626068620848"><ph name="KEYWORD"/> - Pregunta a <ph name="KEYWORD_SHORT_NAME"/></translation>
+<translation id="4698308118265482293">Actualitza el passaport</translation>
 <translation id="4698692901173737941">Esports de combat</translation>
 <translation id="4701488924964507374"><ph name="SENTENCE1"/> <ph name="SENTENCE2"/></translation>
 <translation id="4702504834785592287">Costat</translation>
@@ -2283,9 +2307,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="4750671009706599284">aquest telèfon</translation>
 <translation id="4750917950439032686">La teva informació (com ara les contrasenyes o els números de targeta de crèdit) és privada quan s'envia a aquest lloc web.</translation>
 <translation id="4751249061288707459">Darrera actualització del consentiment:</translation>
-<translation id="4751476147751820511">Sensors de moviment o de llum</translation>
 <translation id="4754461935447132332">No s'admet en llocs web no segurs</translation>
-<translation id="4756388243121344051">&amp;Historial</translation>
 <translation id="4756501505996488486">PRC 16K</translation>
 <translation id="4757740693289347881">El codi no és vàlid</translation>
 <translation id="1015173303159845845">Acabes d'introduir la contrasenya en un lloc web enganyós. Per protegir els teus comptes, Brave et recomana que comprovis les contrasenyes desades.</translation>
@@ -2339,6 +2361,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="6907401036011007312">Per compartir grups de pestanyes, actualitza Brave</translation>
 <translation id="483241715238664915">Activa els advertiments</translation>
 <translation id="4832961164064927107">Barbacoa i cuina a la brasa</translation>
+<translation id="3970015471727108357">Desa la informació i enllesteix més ràpidament les tasques, com ara emplenar formularis en tots els productes de Brave. Pots <ph name="BEGIN_LINK"/>gestionar la teva informació<ph name="END_LINK"/> a <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> per a <ph name="ACCOUNT"/></translation>
 <translation id="246176083348620700">Mostra l'historial de Brave</translation>
 <translation id="484462545196658690">Automàtic</translation>
 <translation id="4844937814014739139">Desplaçar-se i fer zoom a les pestanyes compartides</translation>
@@ -2402,6 +2425,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="4929871932072157101"><ph name="KEYWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, prem el tabulador i després Retorn per fer una cerca</translation>
 <translation id="4930153903256238152">Gran capacitat</translation>
 <translation id="4930714375720679147">Activa</translation>
+<translation id="4931347573573430180">Data d'emissió</translation>
 <translation id="4932035752129140860">El text que enganxes o adjuntes s'envia a Google Cloud o a tercers perquè s'analitzi. Per exemple, pot ser que s'analitzi per detectar-hi dades sensibles, que s'emmagatzemi d'acord amb les polítiques de l'empresa i que el teu administrador el pugui veure.</translation>
 <translation id="4932733599132424254">Data</translation>
 <translation id="4933788293078559286">Paga amb Pix</translation>
@@ -2415,11 +2439,12 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="4950898438188848926">Botó per canviar de pestanya; prem Retorn per canviar a la pestanya oberta, <ph name="TAB_SWITCH_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
 <translation id="495170559598752135">Accions</translation>
 <translation id="4953689047182316270">Respondre als esdeveniments d'accessibilitat</translation>
+<translation id="2087849210737883918">Per oferir suggeriments i millorar aquesta funció, l'URL i el contingut de la pàgina es comparteixen amb Brave</translation>
 <translation id="888946399124114802">Pagaràs més ràpidament quan es desi la targeta. Les dades de la targeta s'encripten a Brave Wallet.</translation>
 <translation id="2351178841237473727">Botó Mostra l'historial de Brave: activa'l per veure i gestionar l'historial de navegació a la configuració de Brave</translation>
 <translation id="4957781475307065660">{DOMAIN_COUNT,plural, =1{+ 1 lloc web}other{+ # llocs web}}</translation>
 <translation id="4958444002117714549">Desplega la llista</translation>
-<translation id="5398999400894437316">Pots fer canvis a la configuració de privadesa d'anuncis de Brave</translation>
+<translation id="4960061221656117224">Exclou llocs</translation>
 <translation id="4960203958361543136">Tria el motor de cerca</translation>
 <translation id="8766700032073359331">Per poder utilitzar el micròfon, dona accés a Brave a la <ph name="LINK"/>.</translation>
 <translation id="4963413887558778009">Paisatgisme</translation>
@@ -2429,6 +2454,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="4968665849807487749">Pot demanar permís per gestionar finestres en totes les pantalles</translation>
 <translation id="4969341057194253438">Suprimeix la gravació</translation>
 <translation id="4973922308112707173">Encunyació doble a la part superior</translation>
+<translation id="4975266898030581282">S'estan tenint en compte les pestanyes obertes rellevants</translation>
 <translation id="4976702386844183910">Darrera visita: <ph name="DATE"/></translation>
 <translation id="4983145717627482381">Visites guiades i vacances en grup</translation>
 <translation id="498323057460789381">Error de validació de l'esquema: <ph name="ERROR"/></translation>
@@ -2455,6 +2481,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="5018802455907704660">16 x 20 polzades</translation>
 <translation id="5019198164206649151">L'emmagatzematge de la còpia de seguretat està en mal estat</translation>
 <translation id="2013297594801702701">Pots utilitzar les adreces desades en tots els productes de Brave. Aquesta adreça es desarà al teu Compte de Brave, <ph name="USER_EMAIL"/>.</translation>
+<translation id="5019819206251569004">sensors de moviment i de llum</translation>
 <translation id="5019952743397118625">La política <ph name="EXTENSION_DEVELOPER_MODE_SETTINGS_POLICY_NAME"/> està establerta. <ph name="DEVELOPER_TOOLS_AVAILABILITY_POLICY_NAME"/> no controlarà la disponibilitat del mode de desenvolupador a la pàgina d'extensions.</translation>
 <translation id="5021500396464456616">Contacta amb la persona que t'ha enviat aquest enllaç</translation>
 <translation id="6516968977334148048">Fes un seguiment dels preus amb Brave</translation>
@@ -2474,6 +2501,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="5045550434625856497">Contrasenya incorrecta</translation>
 <translation id="5048293684454354469">Els temes d'anunci només són un dels molts elements que un lloc web pot utilitzar per personalitzar anuncis. Encara que no hi hagi temes d'anunci, els llocs web podran continuar mostrant-te anuncis, però pot ser que estiguin menys personalitzats. Obtén més informació sobre com pots <ph name="BEGIN_LINK"/>gestionar la privadesa d'anuncis<ph name="LINK_END"/>.</translation>
 <translation id="5051254010007014901"><ph name="TOOLBELT_PRECEDING_MATCH_TEXT"/>. Prem el tabulador per veure més dreceres de cerca disponibles després d'aquest suggeriment de cerca.</translation>
+<translation id="5052488928733955073">Hi ha hagut un problema en emplenar la teva informació. Comprova la connexió.</translation>
 <translation id="5052517576853118371">Temes actius</translation>
 <translation id="5056425809654826431">{NUM_FILES,plural, =1{Per enviar aquest fitxer amb Compartició Nearby, allibera espai (<ph name="DISK_SPACE_SIZE"/>) al dispositiu}other{Per enviar aquests fitxers amb Compartició Nearby, allibera espai (<ph name="DISK_SPACE_SIZE"/>) al dispositiu}}</translation>
 <translation id="5056587122125565772">Crea una imatge</translation>
@@ -2497,6 +2525,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="5093232627742069661">Plegat en Z</translation>
 <translation id="5093417502834168387">No pots iniciar la sessió? Prova una altra manera.</translation>
 <translation id="4906192414477726331">Aquest servidor no ha pogut comprovar que sigui <ph name="DOMAIN"/> perquè Brave considera que el seu certificat de seguretat no és de confiança. Això pot ser a causa d'una configuració incorrecta o d'un atacant que intercepta la vostra connexió.</translation>
+<translation id="5096066272198024688">S'està desant la teva informació...</translation>
 <translation id="5097099694988056070">Estadístiques del dispositiu, com ara l'ús de CPU o RAM</translation>
 <translation id="5097468150760963273">27 x 39 polzades</translation>
 <translation id="5097501891273180634">A2</translation>
@@ -2513,6 +2542,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="5114987907971894280">realitat virtual</translation>
 <translation id="5115232566827194440">Substitució de la sessió de convidat gestionada restringida</translation>
 <translation id="5115563688576182185">(64 bits)</translation>
+<translation id="5116015291385561204">Verifica la teva identitat per emplenar automàticament informació sensible</translation>
 <translation id="5120526915373271910">Pel·lícules familiars</translation>
 <translation id="5122786942953798871">Sobre (cotó)</translation>
 <translation id="5123063207673082822">Cap de setmana</translation>
@@ -2525,7 +2555,6 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="512756860033933700">S'ha permès el bloqueig del teclat</translation>
 <translation id="5127934926273826089">Flors</translation>
 <translation id="5129534298163637277">Quadre de diàleg de confirmació</translation>
-<translation id="5129662217315786329">Polonès</translation>
 <translation id="5135404736266831032">Gestiona les adreces...</translation>
 <translation id="5136841603454277753">Introdueix el codi correcte</translation>
 <translation id="5137761395480718572">Aquesta aplicació demana permís per instal·lar les credencials de la Wi-Fi. En finalitzar la configuració, <ph name="DEVICE_TYPE"/> es connectarà automàticament a les xarxes Wi-Fi disponibles. Per suprimir aquestes credencials, desinstal·la l'aplicació. <ph name="LEARN_MORE"/>.</translation>
@@ -2540,6 +2569,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="5147633291963801297">Consulta les baixades de preu al tauler lateral</translation>
 <translation id="5148809049217731050">Cara amunt</translation>
 <translation id="5148889558173091794">La teva organització ha bloquejat <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> perquè infringeix una política. <ph name="BEGIN_LEARN_MORE_LINK"/>Més informació sobre aquest advertiment<ph name="END_LEARN_MORE_LINK"/></translation>
+<translation id="3780045618446958024">El meu historial de la Cerca de Brave</translation>
 <translation id="5153907427821264830"><ph name="STATUS"/> • <ph name="MESSAGE"/></translation>
 <translation id="5157504274688344097">Grans distribuïdors i centres comercials</translation>
 <translation id="5158275234811857234">Portada</translation>
@@ -2559,6 +2589,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="5190072300954988691">No està permès utilitzar la càmera ni el micròfon</translation>
 <translation id="5191315092027169558">El teu perfil està gestionat per <ph name="DOMAIN"/></translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> vol baixar diversos fitxers</translation>
+<translation id="5199121357983849992">Vols desar el document d'identitat?</translation>
 <translation id="5200063972779787617">Desa l'adreça al compte</translation>
 <translation id="5201306358585911203">Una pàgina inserida en aquesta pàgina diu</translation>
 <translation id="5203716867500274632">L'administrador ha activat la sincronització dels elements següents entre les sessions anteriors i les actuals en tots els teus dispositius ChromeOS:</translation>
@@ -2607,7 +2638,9 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="5266128565379329178">Enquadernació per la part superior</translation>
 <translation id="5269225904387178860">Encunyació quàdruple a la part inferior</translation>
 <translation id="5271381225185906340">La condició "<ph name="DATA_CONTROLS_ATTRIBUTE"/>" no s'admet per a "<ph name="DATA_CONTROLS_RESTRICTION"/>"</translation>
+<translation id="527191520368130807">Polonès</translation>
 <translation id="5273658854610202413">Advertiment: aquesta política no s'ha combinat segons el que s'especifica a la política PolicyDictionaryMultipleSourceMergeList perquè no forma part de les polítiques de diccionari que es poden combinar.</translation>
+<translation id="6277752902920763273">Brave envia a Brave les pestanyes obertes, el contingut de les pàgines i els URL per personalitzar les respostes</translation>
 <translation id="5278778426231952189">Penja ara</translation>
 <translation id="5279286380302340275">Gestiona les baixades</translation>
 <translation id="5282008206326321696">{count,plural, =0{# adreça d'interès}=1{# adreça d'interès}other{# adreces d'interès}}</translation>
@@ -2658,6 +2691,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="5351548097010183514">Materials i subministraments per a la construcció</translation>
 <translation id="5354143049423063163">Fons d'inversió lliure</translation>
 <translation id="5355557959165512791">En aquest moment no pots visitar <ph name="SITE"/> perquè se li ha revocat el certificat. Els atacs i els errors de xarxa acostumen a ser temporals, o sigui que probablement la pàgina funcionarà més endavant.</translation>
+<translation id="5359752295193133096">Comparteix les pestanyes obertes rellevants de manera predeterminada per obtenir respostes més ràpides i personalitzades.</translation>
 <translation id="5360706051680403227">Làmpades i enllumenat</translation>
 <translation id="536296301121032821">No s'ha pogut emmagatzemar la configuració de la política</translation>
 <translation id="5363148545938487338">Salesforce</translation>
@@ -2666,6 +2700,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="5371425731340848620">Actualitza la targeta</translation>
 <translation id="537425196847960924"><ph name="USER_DISPLAY_NAME"/> ha canviat una pestanya</translation>
 <translation id="5374324662289354619">Actualment, les pàgines de depuració internes estan desactivades.</translation>
+<translation id="5374983318402742558"><ph name="URL"/> vol utilitzar els sensors de moviment</translation>
 <translation id="5375686690914744327">SRA1</translation>
 <translation id="5377026284221673050">"El rellotge està endarrerit", "El rellotge està avançat" o "&lt;span class="error-code"&gt;NET::ERR_CERT_DATE_INVALID&lt;/span&gt;"</translation>
 <translation id="5379618281582508161">Per obtenir aquesta contrasenya en tots els teus dispositius, verifica la teva identitat</translation>
@@ -2678,10 +2713,12 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="5385966243497224160">No es pot previsualitzar l'URL que no és HTTPS</translation>
 <translation id="5386426401304769735">La cadena de certificats d'aquest lloc conté un certificat que s'ha signat amb SHA-1.</translation>
 <translation id="5391010642126249196">Hi has accedit</translation>
+<translation id="5391306025131596142">&amp;Obre la pàgina de l'historial</translation>
 <translation id="539203134595252721">Tennis de taula</translation>
 <translation id="5392506727170022660">Metall (semibrillant)</translation>
 <translation id="5394069166371280357">Programes de televisió orientats a les famílies</translation>
 <translation id="5396631636586785122">Cosit de la vora a la dreta</translation>
+<translation id="5396837962335265787"><ph name="ATTRIBUTE_NAME"/> (abans <ph name="OLD_ATTRIBUTE_ATTRIBUTE"/>)</translation>
 <translation id="5397794290049113714">Usuari</translation>
 <translation id="7948560911043168202">Perquè aquest IBAN s'empleni automàticament la propera vegada, desa'l a Brave Wallet</translation>
 <translation id="5398772614898833570">Anuncis bloquejats</translation>
@@ -2713,6 +2750,8 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
           <ph name="END_LIST"/></translation>
 <translation id="4203264631355936344">Per tramitar les compres més ràpid, desa aquest CVC a Brave Wallet (<ph name="ACCOUNT_EMAIL"/>)</translation>
 <translation id="5436307623797390637">Aplicacions al dispositiu</translation>
+<translation id="543656192084990644">Els sensors de moviment no estan permesos</translation>
+<translation id="5441409130426352029"><ph name="ATTRIBUTE_VALUE"/>, abans <ph name="PREVIOUS_VALUE"/></translation>
 <translation id="5443468954631487277">Ordre invers de cara amunt</translation>
 <translation id="5447235695608032700">Permet que <ph name="SITE"/> utilitzi la informació que ha desat sobre tu</translation>
 <translation id="5447973833955560753">Contrasenya de recuperació</translation>
@@ -2768,6 +2807,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="5521782189689806907">Ebenisteria</translation>
 <translation id="5523118979700054094">Nom de la política</translation>
 <translation id="5523588073846127669">El comerciant no accepta aquesta targeta virtual</translation>
+<translation id="5524476634211040742">Més informació sobre la IA i la privadesa</translation>
 <translation id="5525755241743357906">El fitxer s'ha copiat o mogut</translation>
 <translation id="5526617258931667850"><ph name="MANAGE_CHROMEOS_ACCESSIBILITY_FOCUSED_FRIENDLY_MATCH_TEXT"/>: prem Tab i després Retorn per personalitzar les eines d'accessibilitat a la configuració de Chrome OS</translation>
 <translation id="55293785478302737">Cosit de la vora</translation>
@@ -2786,7 +2826,6 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="5543564889050342791">Zoològics, aquaris i reserves naturals</translation>
 <translation id="5543722831081909240">180 graus</translation>
 <translation id="5544836308113951378">Creuers i xàrters</translation>
-<translation id="5545314360139398232">Enllaça <ph name="ISSUER_NAME"/> per pagar al llarg del temps</translation>
 <translation id="5547939254150808298">Premsa i editorials</translation>
 <translation id="554815783948612276">Proveïdors de xats i fòrums</translation>
 <translation id="5548606607480005320">Comprovació de seguretat</translation>
@@ -2795,6 +2834,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="555146886889455303">Imatge JPEG</translation>
 <translation id="5551890439174915351">100 x 200 mm</translation>
 <translation id="5556459405103347317">Torna a carregar</translation>
+<translation id="5326534475767029369">És possible que revisors humans vegin els fils de discussió per millorar la IA de Brave</translation>
 <translation id="5558083606899411167">Aparells d'aire condicionat</translation>
 <translation id="5558125320634132440">Aquest lloc web s'ha bloquejat perquè pot tenir contingut no apte per a menors</translation>
 <translation id="5559311991468302423">Suprimeix l'adreça</translation>
@@ -2999,6 +3039,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="5918847752193018339">Desa els CVC per tramitar les compres més ràpidament. <ph name="LINK_BEGIN"/>Suprimeix els codis de seguretat desats<ph name="LINK_END"/></translation>
 <translation id="5919090499915321845">B10</translation>
 <translation id="5921185718311485855">Activat</translation>
+<translation id="5921432337686792850">Pot demanar permís per utilitzar els sensors de moviment</translation>
 <translation id="2687595201721621314">Vols desar la targeta al Compte de Brave?</translation>
 <translation id="5921952831792678223">Camionetes descobertes</translation>
 <translation id="5923492272538889093">Vols utilitzar el desbloqueig del dispositiu en lloc del CVC?</translation>
@@ -3019,6 +3060,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="5950901984834744590">Màquines i fulles d'afaitar</translation>
 <translation id="5951495562196540101">El dispositiu no es pot inscriure amb un compte de consumidor (hi ha una llicència associada disponible).</translation>
 <translation id="5952076224478208938">Marca</translation>
+<translation id="5952196777020238475">Número de llicència</translation>
 <translation id="5953516610448771166">La funció Subtítols instantanis no està disponible per a aquest contingut multimèdia. Per obtenir subtítols, bloqueja <ph name="CONTENT_SETTINGS"/> per a aquest lloc web.</translation>
 <translation id="5960795367348889467">Verificació</translation>
 <translation id="5963413905009737549">Secció</translation>
@@ -3029,6 +3071,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="5968022600320704045">No hi ha cap resultat de la cerca</translation>
 <translation id="5968400720580217226">Mode IA</translation>
 <translation id="5969199813874624822">Desa el preu i fes-ne un seguiment</translation>
+<translation id="5969933937005244170">Les pestanyes obertes rellevants només s'utilitzaran si les comparteixes en un fil de discussió</translation>
 <translation id="5973514677932942122"><ph name="EXPIRATION_DATE"/> | <ph name="SECURITY_CODE"/></translation>
 <translation id="5974052231147553524">Sisè corró</translation>
 <translation id="5975083100439434680">Redueix</translation>
@@ -3065,6 +3108,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="6028591542479806248">Gestiona les notificacions al mòbil i per correu electrònic</translation>
 <translation id="6028833024483927901">Cuina del món</translation>
 <translation id="603068602130820122">Grapat doble a la dreta</translation>
+<translation id="6031824805267965302">Utilitzar els sensors de moviment</translation>
 <translation id="6032524144326295339">Bústia de correu 2</translation>
 <translation id="6032955021262906325">Enquadernació a l'esquerra</translation>
 <translation id="6034000775414344507">Gris clar</translation>
@@ -3146,6 +3190,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="6133984428121856852">L'extensió de fitxer està buida o té un format incorrecte.</translation>
 <translation id="6139975341602920272">17 x 22 polzades</translation>
 <translation id="6143097244789397208">Realitat virtual i augmentada</translation>
+<translation id="614327212146763975">Els sensors de moviment i de llum estan permesos</translation>
 <translation id="6146055958333702838">Reviseu els cables i reinicieu els encaminadors, els mòdems o altres
         dispositius de xarxa que feu servir.</translation>
 <translation id="614940544461990577">Prova:</translation>
@@ -3202,6 +3247,8 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="6236290670123303279">Gestiona la configuració</translation>
 <translation id="623825323736974198">Gestiona els llocs web que estaran sempre actius i dels quals no se n'alliberarà memòria</translation>
 <translation id="6240447795304464094">Logotip de Brave Pay</translation>
+<translation id="6240553182907836376">Actualitza el document d'identitat</translation>
+<translation id="6240601837375010619">Desa el passaport</translation>
 <translation id="4174528239215311406">Per utilitzar el gestor de contrasenyes de Brave amb el teu sistema operatiu, reinicia Brave i permet l'accés al gestor de contrasenyes de l'ordinador. Les pestanyes es tornaran a obrir després de reiniciar.</translation>
 <translation id="6241121617266208201">Amaga els suggeriments</translation>
 <translation id="624499991300733384">Servei de composició d'impressió</translation>
@@ -3235,7 +3282,6 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="5035989418943891979">El teu motor de cerca a Brave</translation>
 <translation id="6293309776179964942">JIS B5</translation>
 <translation id="6295618774959045776">CVC:</translation>
-<translation id="6295855836753816081">S'està desant…</translation>
 <translation id="629730747756840877">Compte</translation>
 <translation id="6300452962057769623">{0,plural, =0{El dispositiu es reiniciarà ara}=1{El dispositiu es reiniciarà d'aquí a 1 segon}other{El dispositiu es reiniciarà d'aquí a # segons}}</translation>
 <translation id="6301104306974789820">Rep notificacions de seguiment de preus</translation>
@@ -3256,6 +3302,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="6327065120806001832">accés a la xarxa local</translation>
 <translation id="6328639280570009161">Proveu de desactivar la predicció de xarxa</translation>
 <translation id="6329815962353376655">&lt;Escriu una pregunta&gt;</translation>
+<translation id="6331597954316706229">Per obtenir les respostes més personalitzades, permet que tots els fils de discussió facin referència a les pestanyes obertes rellevants.</translation>
 <translation id="633348045801643466">Mostra les opcions per <ph name="PAY_LATER_OPTIONS_HELP_LINK_BEGIN"/>pagar més tard<ph name="PAY_LATER_OPTIONS_HELP_LINK_END"/> en tramitar la compra</translation>
 <translation id="6335029926534404762">Sabatilles esportives</translation>
 <translation id="6336948221660696475">No es permet la RV</translation>
@@ -3282,6 +3329,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="6366710531182496394">Grapat doble a l'esquerra</translation>
 <translation id="6367196786591004737">Suprimeix l'entrada</translation>
 <translation id="6370022303958842211">Accions d'accés al dispositiu, com ara inicis de sessió (inclosos els motius pels quals no s'ha pogut iniciar la sessió), tancaments de sessió, bloquejos i desbloquejos</translation>
+<translation id="6372779601614872746">Comparteix les pestanyes obertes rellevants</translation>
 <translation id="6374469231428023295">Torna-ho a provar</translation>
 <translation id="6374865374745447009">gestió de finestres</translation>
 <translation id="6376881782310775282">No es pot contactar amb el servidor de desenvolupament d'aquesta aplicació</translation>
@@ -3301,6 +3349,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="6390533465682072118">Recuperació</translation>
 <translation id="639068771471208680">Formulari de diverses parts</translation>
 <translation id="6391700400718590966">S'ha tancat el full de credencials no coincidents de credencials de pagament segur</translation>
+<translation id="6391911601916058725">Vols compartir sempre les pestanyes obertes rellevants?</translation>
 <translation id="6392799395081100092">Paper (vitel·la)</translation>
 <translation id="6393156038355142111">Suggereix una contrasenya segura</translation>
 <translation id="6393310910507376797">El comerciant no l'admet</translation>
@@ -3364,7 +3413,6 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="6472874020827012601">Tela (mat)</translation>
 <translation id="647330291963761005">S'estan instal·lant les actualitzacions</translation>
 <translation id="6474220430271405609">Proves de la política</translation>
-<translation id="2252963430820803723">Els llocs web que visites poden demanar a Brave informació que els ajuda a mesurar el rendiment dels seus anuncis. Brave protegeix la teva privadesa limitant la informació que els llocs web poden compartir entre ells.</translation>
 <translation id="6476284679642588870">Gestiona les formes de pagament</translation>
 <translation id="647881094269678013">Interpretació i teatre</translation>
 <translation id="6480864723214312258">Piles i bateries</translation>
@@ -3407,6 +3455,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="6547208576736763147">Encunyació doble a l'esquerra</translation>
 <translation id="6549443526281184652">Disfresses</translation>
 <translation id="6550245281449521513">No està permès bloquejar el ratolí</translation>
+<translation id="6551737294564628267"><ph name="ATTRIBUTE_NAME"/>, nou</translation>
 <translation id="6552566579578780089">Pagaments</translation>
 <translation id="6554732001434021288">Darrera visita: fa <ph name="NUM_DAYS"/> dies</translation>
 <translation id="6556866813142980365">Refés</translation>
@@ -3458,11 +3507,11 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="6649510485211003056">195 x 270 mm</translation>
 <translation id="6651270836885078973">Gestionades per:</translation>
 <translation id="6652101503459149953">Utilitza Windows Hello</translation>
-<translation id="6654224358955673568">Fes que soni més formal</translation>
 <translation id="6654244995031366386">Vidre (texturat)</translation>
 <translation id="6655085656059574817">Si mantens el compte enllaçat, podràs pagar més ràpidament amb <ph name="BNPL_ISSUER_NAME"/>, però pots desenllaçar-lo a <ph name="BEGIN_LINK"/><ph name="IDS_AUTOFILL_BNPL_TOS_LINK_TEXT_WALLET_LINK_TEXT"/><ph name="END_LINK"/></translation>
 <translation id="6656935431494847393">Inclou informació com ara les reserves de vols i les dades dels vehicles</translation>
 <translation id="6657585470893396449">Contrasenya</translation>
+<translation id="6659156657345021268">La teva informació només es desa al dispositiu. Tindràs l'oportunitat de desar-la a Wallet la propera vegada que emplenis un formulari rellevant.</translation>
 <translation id="6659246032834639189">Aquest preu és baix</translation>
 <translation id="6660413144148052430">ubicació</translation>
 <translation id="6662457027866368246">Primer corró</translation>
@@ -3494,6 +3543,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="6698097747703777657">No has rebut el codi? <ph name="BEGIN_LINK"/>Obtén un codi nou<ph name="END_LINK"/></translation>
 <translation id="6698381487523150993">Creat:</translation>
 <translation id="2705279181653063410">Per desactivar Pix a Brave, ves a la <ph name="BEGIN_LINK1"/>configuració de pagament<ph name="END_LINK1"/></translation>
+<translation id="6089469914764503915">Desa la informació i enllesteix més ràpidament les tasques, com ara emplenar formularis en tots els productes de Brave. Pots <ph name="MANAGE_INFO_LINK"/> a <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> per a <ph name="ACCOUNT"/>.</translation>
 <translation id="67007264085648978">Control lliscant de posició del temps</translation>
 <translation id="6702851555558236418">Programari de música i àudio</translation>
 <translation id="6702919718839027939">Presenta</translation>
@@ -3517,6 +3567,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="6727094998759448074">SRA4</translation>
 <translation id="6732087373923685049">càmera</translation>
 <translation id="6734506549556896534">Jocs de simulació</translation>
+<translation id="3195271249864852838">Els plans de pagament estan subjectes a la idoneïtat. <ph name="BEGIN_BOLD"/>El contingut de la pàgina de tramitació de la compra es comparteix amb Brave per oferir aquestes opcions<ph name="END_BOLD"/>. Per amagar les opcions que permeten pagar més tard, ves a la <ph name="BEGIN_LINK"/>configuració de pagament<ph name="END_LINK"/>.</translation>
 <translation id="6737708609449480586">Pa i brioixeria</translation>
 <translation id="6738516213925468394">Les teves dades es van encriptar el dia <ph name="TIME"/> amb la teva <ph name="BEGIN_LINK"/>frase de contrasenya de sincronització<ph name="END_LINK"/>. Introdueix-la per començar la sincronització.</translation>
 <translation id="6740851646645036700">Has arribat al límit d'ajuda amb l'escriptura per ara. Torna-ho a provar més tard.</translation>
@@ -3530,6 +3581,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="6753434778807740853">Suprimeix l'entrada <ph name="ENTRY_VOICEOVER"/></translation>
 <translation id="6754547388777247439">Comptes d'estalvi</translation>
 <translation id="6757797048963528358">El dispositiu ha entrat en mode de repòs.</translation>
+<translation id="6758934187792712102"><ph name="URL"/> vol utilitzar els sensors de moviment i de llum</translation>
 <translation id="6766558780547452153">Cuina i receptes</translation>
 <translation id="6770747695101757579">Paper (cotó)</translation>
 <translation id="677257480647123231">Seguretat infantil a Internet</translation>
@@ -3561,10 +3613,12 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="681021252041861472">Camp obligatori</translation>
 <translation id="6810899417690483278">Identificador de personalització</translation>
 <translation id="6816109178681043245">Productes esportius</translation>
+<translation id="681631578600400068">Desa el permís de conduir</translation>
 <translation id="6817217109584391709">JavaScript</translation>
 <translation id="6820143000046097424">ports en sèrie</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6820949753458790123">Paga en còmodes terminis</translation>
+<translation id="6822745163454377107">Obtén respostes més ràpides i personalitzades compartint les teves pestanyes obertes amb aquest fil de discussió.</translation>
 <translation id="6825578344716086703">Has provat d'accedir a <ph name="DOMAIN"/>, però el servidor ha presentat un certificat signat mitjançant un algoritme de signatura dèbil (com ara SHA-1). Això indica que les credencials de seguretat que ha presentat el servidor podrien haver estat falsificades i que pot ser que el servidor no sigui el que esperaves (és possible que t'estiguis comunicant amb un atacant).</translation>
 <translation id="6826993739343257035">Vols permetre la realitat augmentada?</translation>
 <translation id="6828150717884939426">Truca</translation>
@@ -3580,6 +3634,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="6850286078059909152">Color del text</translation>
 <translation id="6852204201400771460">Vols tornar a carregar l'aplicació?</translation>
 <translation id="6854691830678097752">Per pagar ràpidament, desa aquest CVC al teu compte, <ph name="ACCOUNT_EMAIL"/></translation>
+<translation id="6855951327659224749">Esborra el formulari a fi d'utilitzar l'opció per pagar més tard</translation>
 <translation id="6857776781123259569">Gestiona les contrasenyes...</translation>
 <translation id="6858034839887287663">A2x4</translation>
 <translation id="6860888819347870819">Pot demanar permís per entrar al mode d'imatge sobre imatge</translation>
@@ -3626,7 +3681,6 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="6926216138694948720">Art corporal</translation>
 <translation id="692638818576287323">Vehicles comercials</translation>
 <translation id="6927878187051807444">fitxers de la càmera i captures de pantalla</translation>
-<translation id="6929949393612835405">Tanca i torna a "<ph name="OPENER_TITLE"/>"</translation>
 <translation id="6930607614725241390">Cerca al tauler lateral</translation>
 <translation id="6090573860187511325"><ph name="BEGIN_BOLD"/>El motor de cerca predeterminat et permet fer cerques al web i proporciona les funcions de Brave<ph name="END_BOLD"/>, com ara la cerca des de la barra d'adreces i des d'imatges de pàgines web. Si el teu motor de cerca no admet una funció, és possible que no estigui disponible.</translation>
 <translation id="6722453239914327220">Aquest nom prové del teu Compte de Brave</translation>
@@ -3682,6 +3736,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="7003278537452757231">Catifes i estores</translation>
 <translation id="7003322000677139268">Peces i accessoris de vehicles</translation>
 <translation id="7004499039102548441">Pestanyes recents</translation>
+<translation id="9034916448420493087">La informació es desa a <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> per a <ph name="ACCOUNT"/>. Pots utilitzar-la en tots els productes de Brave per emplenar formularis més ràpidament.</translation>
 <translation id="7006930604109697472">Envia de totes maneres</translation>
 <translation id="7009364359744329733">La targeta no està disponible en aquest moment. Torna-ho a provar més tard.</translation>
 <translation id="7010658264061801199">Menjar i beguda</translation>
@@ -3716,6 +3771,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="6761410840196521760">Perquè la propera vegada puguis pagar més ràpidament, desa la targeta i l'adreça de facturació a Brave Wallet</translation>
 <translation id="5320462991730735481">Afegeix i gestiona adreces a la configuració de Brave</translation>
 <translation id="7063157783216323487">Verd 2</translation>
+<translation id="7064111249130685461">Per obtenir les respostes més personalitzades, permet que aquest fil de discussió faci referència a les teves pestanyes obertes.</translation>
 <translation id="7064443976734085921">Cotxes compactes</translation>
 <translation id="7064851114919012435">Informació de contacte</translation>
 <translation id="7067633076996245366">Soul i rhythm and blues</translation>
@@ -3771,6 +3827,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="7143668445748322952">fitxers de la càmera, baixades i captures de pantalla</translation>
 <translation id="7143682719845053166">PRC 32K</translation>
 <translation id="7144878232160441200">Torna-ho a provar</translation>
+<translation id="7145337554745942724">Actualitza el permís de conduir</translation>
 <translation id="7150146631451105528"><ph name="DATE"/></translation>
 <translation id="7152230779180489711">Darrera visita</translation>
 <translation id="7153549335910886479">{PAYMENT_METHOD,plural, =0{<ph name="PAYMENT_METHOD_PREVIEW"/>}=1{<ph name="PAYMENT_METHOD_PREVIEW"/> i <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> més}other{<ph name="PAYMENT_METHOD_PREVIEW"/> i <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> més}}</translation>
@@ -3802,6 +3859,7 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="7195432682252510959">Utilitza aquest codi en el moment de tramitar la compra. Vàlid fins al dia <ph name="DATE"/>.</translation>
 <translation id="7195852673246414183">Un cop hagis activat aquesta opció de configuració, torna a aquesta pestanya per començar a escriure</translation>
 <translation id="7199278868241956094">Oficio</translation>
+<translation id="7200963436813710587">Hem tingut en compte les pestanyes obertes següents:</translation>
 <translation id="2540471381262404386">Estableix Brave com a navegador predeterminat del sistema</translation>
 <translation id="7210863904660874423"><ph name="HOST_NAME"/> no compleix la normativa de seguretat.</translation>
 <translation id="7210993021468939304">L'activitat de Linux al contenidor; i també pot instal·lar-hi i executar-hi aplicacions de Linux</translation>
@@ -3883,6 +3941,7 @@ Detalls addicionals:
 <translation id="7353601530677266744">Línia d'ordres</translation>
 <translation id="7359588939039777303">S'han bloquejat els anuncis.</translation>
 <translation id="7308957539693927108">Quan Brave trobi descomptes disponibles, es mostraran durant la tramitació de la compra</translation>
+<translation id="7362039113312920489">Revisa i gestiona</translation>
 <translation id="7362281996276843968">Aquest grup està tancat</translation>
 <translation id="5417725730200908216"><ph name="MANAGE_ADDRESSES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, prem Tab i després Retorn per afegir i gestionar adreces a la configuració de Brave</translation>
 <translation id="7365849542400970216">Vols deixar que se sàpiga l'ús que fas del dispositiu?</translation>
@@ -3895,6 +3954,7 @@ Detalls addicionals:
 <translation id="7372973238305370288">resultat de la cerca</translation>
 <translation id="7374461526650987610">Gestors de protocol</translation>
 <translation id="3898257577441589237">Aquest problema es produeix a causa d'un certificat que tu o una altra persona heu instal·lat al dispositiu. Se sap que aquest certificat s'utilitza per supervisar i interceptar xarxes, i Brave no hi confia. Tot i que hi ha casos en què és legítim dur a terme una supervisió, per exemple, en el cas d'una empresa o d'un centre educatiu, Brave vol assegurar-se que estiguis al cas d'aquesta situació, encara que no la puguis evitar. La supervisió es pot produir en qualsevol navegador o aplicació que accedeixi al web.</translation>
+<translation id="73750335798090836">Per millorar la protecció, utilitza sempre l'empremta digital, la cara o un altre bloqueig de pantalla quan facis servir informació sensible, com ara documents de viatge i d'identitat</translation>
 <translation id="7375532151824574023">{NUM_COOKIES,plural, =0{No es permet cap lloc web}=1{Es permet 1 lloc web}other{Es permeten # llocs web}}</translation>
 <translation id="7375818412732305729">S'adjunta un fitxer</translation>
 <translation id="7376031331622621328">Full inferior de comerç</translation>
@@ -3902,6 +3962,7 @@ Detalls addicionals:
 <translation id="7377314930809374926">Sector de l'hostaleria</translation>
 <translation id="7378594059915113390">Controls multimèdia</translation>
 <translation id="7378810950367401542">/</translation>
+<translation id="3173824377856109157">Brave pot emplenar automàticament els camps difícils que l'emplenament automàtic estàndard podria ometre</translation>
 <translation id="7380398842872229465">10 x 15 polzades</translation>
 <translation id="7381551826960739226">L'emplenament automàtic de formes de pagament està desactivat perquè aquest formulari no utilitza una connexió segura.</translation>
 <translation id="7388380253839603603">Preus de la gasolina i combustibles</translation>
@@ -3956,6 +4017,7 @@ Detalls addicionals:
 <translation id="7444176988908839653">{COUNT,plural, =0{Les galetes es tornaran a bloquejar avui}=1{Les galetes es tornaran a bloquejar demà}other{# dies perquè es tornin a bloquejar les galetes}}</translation>
 <translation id="7447234474237738389">Serveis de confecció</translation>
 <translation id="7447625772313191651"><ph name="NAME"/> (<ph name="WIDTH"/> x <ph name="HEIGHT"/> mm)</translation>
+<translation id="7450486349221991286">Actualitza el vehicle</translation>
 <translation id="1548956355291859153">Botó Gestiona la sincronització: activa'l per gestionar quina informació sincronitzes a la configuració de Brave</translation>
 <translation id="7451311239929941790"><ph name="BEGIN_LINK"/>Obtenir més informació<ph name="END_LINK"/> sobre aquest problema</translation>
 <translation id="745208957946308667">Joc del dinosaure. Prem la barra espaiadora per jugar-hi.</translation>
@@ -3971,6 +4033,7 @@ Detalls addicionals:
 <translation id="746412105358554870">Seguretat i optimització de JavaScript</translation>
 <translation id="7465036432780054056"><ph name="EMBEDDED_URL"/> sabrà que has visitat <ph name="TOP_LEVEL_URL"/></translation>
 <translation id="7465963048299965912">10 x 13 polzades</translation>
+<translation id="7467332121947433617">Vols actualitzar el document d'identitat?</translation>
 <translation id="7469935732330206581">El formulari no és segur</translation>
 <translation id="7470854469646445678">Indica el motiu pel qual el vols copiar (obligatori)</translation>
 <translation id="7471007961486718967">Indica el motiu pel qual el vols transferir (obligatori)</translation>
@@ -3992,10 +4055,10 @@ Detalls addicionals:
 <translation id="1314010941893038514">Quan facis compres a Brave, veuràs la cartera electrònica i Pix com a opcions</translation>
 <translation id="7500917112031739411">Mostra per grup</translation>
 <translation id="7501663406926337752">La teva organització ha marcat aquest lloc web</translation>
+<translation id="7502044688973049724">gestionar la teva informació</translation>
 <translation id="7507075214339298899">Sobre número 9</translation>
 <translation id="7508255263130623398">L'identificador de dispositiu de la política que s'ha tornat és buit o no coincideix amb l'actual</translation>
 <translation id="7508577201115425418">Serveis documentals i d’impressió</translation>
-<translation id="4881941912089635446"><ph name="BEGIN_BOLD"/>Com els llocs web utilitzen aquestes dades<ph name="END_BOLD"/>: els llocs web poden emmagatzemar informació a Brave sobre les coses que t'agraden. Per exemple, si utilitzes una aplicació sobre entrenament de maratons, el lloc web pot decidir que t'interessen les sabatilles de córrer. Més endavant, si visites un altre lloc web, aquest lloc web pot mostrar-te un anunci de sabatilles de córrer suggerit pel primer lloc web.</translation>
 <translation id="7510269639068718544">Gats</translation>
 <translation id="7511955381719512146">És possible que la xarxa Wi-Fi que esteu fent servir requereixi que visiteu <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>.</translation>
 <translation id="7512685745044087310">Com que aquesta política no es pot establir en "True" i ser obligatòria, s'ha canviat a recomanada.</translation>
@@ -4022,6 +4085,7 @@ Detalls addicionals:
 <translation id="753714465667062283">Inicia la sessió per desar la foto</translation>
 <translation id="7537536606612762813">Obligatòria</translation>
 <translation id="7543525346216957623">Demana-ho al teu pare o a la teva mare</translation>
+<translation id="7544639168115776013">Obtén respostes més ràpides i personalitzades en cada fil de discussió compartint les pestanyes obertes rellevants de manera predeterminada.</translation>
 <translation id="7546409722674205727">S'està iniciant <ph name="APP_NAME"/></translation>
 <translation id="7548892272833184391">Solucionar errors de connexió</translation>
 <translation id="7549584377607005141">Aquesta pàgina web necessita dades que heu introduït anteiorment per poder mostrar-la correctament. Podeu tornar a enviar les dades, però es tornarà a repetir qualsevol acció que la pàgina hagi dut a terme prèviament.</translation>
@@ -4146,6 +4210,7 @@ Detalls addicionals:
 <translation id="7714404809393719981">Foto (semibrillant)</translation>
 <translation id="7714424966701020172">S'ha seleccionat l'opció d'emplenar el nom complet</translation>
 <translation id="7714464543167945231">Certificat</translation>
+<translation id="3466385513710051641">El contingut de la pàgina de tramitació de la compra es comparteix amb Brave per oferir aquestes opcions. Per amagar les opcions que permeten pagar més tard a Emplenament automàtic, ves a <ph name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_HIDE_OPTION_PAYMENT_SETTINGS_LINK_TEXT"/>.</translation>
 <translation id="7716147886133743102">Bloquejat per l'administrador</translation>
 <translation id="7716375162095500223">Ignorat o encara no penjat</translation>
 <translation id="7716424297397655342">Aquest lloc no es pot carregar des de la memòria cau</translation>
@@ -4184,6 +4249,8 @@ Detalls addicionals:
 <translation id="7779418012194492374">Revoca l'accés a <ph name="DEVICE_NAME"/></translation>
 <translation id="7781829728241885113">Ahir</translation>
 <translation id="7782465647372057580">La informació del compte s'encripta i es manté privada</translation>
+<translation id="6214595317070153965">Pots canviar-ho en qualsevol moment a la configuració de Brave</translation>
+<translation id="7785471469930192436">Consulta les instruccions del teu motor de cerca per suprimir l'historial de cerques, si escau</translation>
 <translation id="7785790577395078482">aquesta tauleta</translation>
 <translation id="7786368602962652765">Un camp obligatori és buit. Emplena'l abans de desar.</translation>
 <translation id="7791011319128895129">No publicada</translation>
@@ -4191,7 +4258,6 @@ Detalls addicionals:
 <translation id="7791543448312431591">Afegeix</translation>
 <translation id="7798389633136518089">S'ha ignorat perquè la política no s'ha establert al núvol.</translation>
 <translation id="7800304661137206267">La connexió està encriptada mitjançant <ph name="CIPHER"/>, amb <ph name="MAC"/> per a l'autenticació de missatges i amb <ph name="KX"/> com a mecanisme d'intercanvi clau.</translation>
-<translation id="7022547472659133044">Brave pren nota dels temes d'interès segons el teu historial de navegació recent. Els llocs que visites també poden determinar què t'agrada. Més tard, els llocs web poden demanar aquesta informació per mostrar-te anuncis personalitzats. Pots triar quins temes i quins llocs web vols que s'utilitzin per mostrar-te anuncis.</translation>
 <translation id="7802523362929240268">El lloc web és legítim</translation>
 <translation id="7802989406998618639">Introdueix el codi de seguretat de <ph name="NUMBER_OF_DIGITS"/> dígits que es troba <ph name="SIDE_OF_CARD"/> perquè el banc pugui verificar la teva identitat</translation>
 <translation id="780301667611848630">No, gràcies</translation>
@@ -4212,13 +4278,13 @@ Detalls addicionals:
 <translation id="782886543891417279">És possible que la xarxa Wi-Fi (<ph name="WIFI_NAME"/>) que esteu fent servir requereixi que visiteu la seva pàgina d'inici de sessió.</translation>
 <translation id="7831993212387676366">Què és la llista de la compra?</translation>
 <translation id="7840103971441592723">La captura de pantalla s'ha iniciat</translation>
-<translation id="784137052867620416">Shopping Insights</translation>
+<translation id="784137052867620416">Estadístiques de compra</translation>
 <translation id="7841633276323004751">Formes de pagament disponibles per seleccionar i continuar el pagament. El teclat està amagat.</translation>
-<translation id="784404208867107517">Historial agrupat</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Cap}=1{1 aplicació (<ph name="EXAMPLE_APP_1"/>)}=2{2 aplicacions (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}other{# aplicacions (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
 <translation id="7846161022626028328">S'ha produït un error. Torna-ho a provar.</translation>
 <translation id="784623644169604270">Sense activitat recent</translation>
 <translation id="7848926355794727168">Navegació automàtica</translation>
+<translation id="7849695969708971789">S'utilitzaran les pestanyes obertes rellevants per personalitzar les respostes en tots els fils de discussió</translation>
 <translation id="7853222852810008596">L'opció Paga més tard no està disponible en aquesta moneda</translation>
 <translation id="785476343534277563">Esports universitaris</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/>: <ph name="FORMATTED_TOTAL_AMOUNT"/> <ph name="CURRENCY_CODE"/></translation>
@@ -4227,6 +4293,7 @@ Detalls addicionals:
 <translation id="7862306158978555061">mostra la informació sensible</translation>
 <translation id="7865448901209910068">Velocitat òptima</translation>
 <translation id="7865482168955081228">La pantalla d'error de Compra ara, paga després està tancada.</translation>
+<translation id="3178316939409145825">El contingut de la pàgina de tramitació de la compra es comparteix amb Brave per oferir aquestes opcions.</translation>
 <translation id="7870281855125116701">S'ha trobat un descompte</translation>
 <translation id="7971990257511863579">Canvia la contrasenya del teu Compte de Brave.</translation>
 <translation id="5478215009057706238">Inicia la sessió a Brave per compartir grups de pestanyes, unir-t'hi i col·laborar en idees</translation>
@@ -4251,6 +4318,7 @@ Detalls addicionals:
 <translation id="7908648876066812348">S'està activant la targeta virtual</translation>
 <translation id="3733419689526948053"><ph name="RUN_CHROME_SAFETY_CHECK_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Prem Tab i després Retorn per anar a la pàgina de comprovació de seguretat de Brave a la configuració.</translation>
 <translation id="791107458486222637">S'està refent el resultat</translation>
+<translation id="7911651285409665023">Tanca i torna a <ph name="TAB_TITLE"/></translation>
 <translation id="7912924955815015552">Importat de Safari</translation>
 <translation id="791551905239004656">Dibuix i pintura</translation>
 <translation id="7916162853251942238">Base flexogràfica</translation>
@@ -4264,6 +4332,7 @@ Detalls addicionals:
 <translation id="79338296614623784">Introdueix un número de telèfon vàlid</translation>
 <translation id="8329449853370113380"><ph name="URL"/> vol reproduir contingut protegit. Brave verificarà la identitat del teu dispositiu.</translation>
 <translation id="7935318582918952113">Destil·lador DOM</translation>
+<translation id="7935520077478121175">Els sensors de moviment estan permesos</translation>
 <translation id="7937163678541954811">El CVC d'aquesta targeta s'encriptarà i es desarà al teu dispositiu per tramitar les compres més ràpidament</translation>
 <translation id="7937554595067888181">Data de caducitat: <ph name="EXPIRATION_DATE_ABBR"/></translation>
 <translation id="7938958445268990899">El certificat del servidor encara no és vàlid.</translation>
@@ -4477,7 +4546,6 @@ Detalls addicionals:
 <translation id="2164614088382669062">Les notificacions de Brave han d'estar activades. Pots activar-les a la <ph name="BEGIN_LINK"/><ph name="NOTIFICATION_SETTINGS"/><ph name="END_LINK"/>.</translation>
 <translation id="8280569545097027381">Suprimeix els fitxers d'aquí a <ph name="HOURS"/> h</translation>
 <translation id="8280630997017109758">Safata 11</translation>
-<translation id="8281730697546299650">Ara hi ha altres funcions de privadesa d'anuncis disponibles</translation>
 <translation id="8281886186245836920">Omet</translation>
 <translation id="8282292167096638950">Suprimeix el permís de conduir</translation>
 <translation id="8282409409360764263">Manteniment de jardins</translation>
@@ -4490,6 +4558,7 @@ Detalls addicionals:
 <translation id="8288320283441806607">Per utilitzar aquesta funció, activa l'opció Millora les cerques i la navegació</translation>
 <translation id="8288807391153049143">Mostra el certificat</translation>
 <translation id="8289355894181816810">Si no esteu segur de què significa això, contacteu amb l'administrador de la xarxa.</translation>
+<translation id="8291367150570302588">Document d'identitat</translation>
 <translation id="829335040383910391">so</translation>
 <translation id="8294431847097064396">Font</translation>
 <translation id="8297545700510100061">Les galetes i altres dades dels llocs web s'utilitzen per recordar-te amb finalitats com ara iniciar la teva sessió o personalitzar anuncis. Per gestionar les galetes de tots els llocs web, consulta <ph name="SETTINGS"/>.</translation>
@@ -4591,7 +4660,6 @@ Detalls addicionals:
 <translation id="8456775115498700722">Ara pots emplenar automàticament les dades de les teves targetes de <ph name="CARD_ISSUER_NAME"/> perquè el teu compte de <ph name="CARD_ISSUER_NAME"/> està enllaçat a Google Pay.</translation>
 <translation id="8457125768502047971">Indefinit</translation>
 <translation id="8458202188076138974">Letter Extra</translation>
-<translation id="8460854335417802511">Activa</translation>
 <translation id="8461289985785035071">Edita el número Redress</translation>
 <translation id="8461694314515752532">Encripta les dades sincronitzades amb la teva frase de contrasenya de sincronització</translation>
 <translation id="8461973047386722744">No s'ha trobat cap contrasenya</translation>
@@ -4641,6 +4709,7 @@ Detalls addicionals:
 <translation id="907470742420136113">Brave està provant de modificar la configuració per emplenar les formes de pagament.</translation>
 <translation id="8544303911974837265">Polièster</translation>
 <translation id="854548366864113872">Opció de preu alt</translation>
+<translation id="854583198371106098"><ph name="ATTRIBUTE_VALUE"/>  <ph name="BEGIN_NEW"/>Nou<ph name="END_NEW"/></translation>
 <translation id="8546254312340305428">Indica el motiu pel qual el vols penjar (obligatori)</translation>
 <translation id="8546350655047701518">Exporta els registres a JSON</translation>
 <translation id="8546667245446052521">Paper (arxiu)</translation>
@@ -4673,7 +4742,6 @@ Detalls addicionals:
 <translation id="8597726363542221027">Vehicles de segona mà</translation>
 <translation id="8600271352425265729">Només aquesta vegada</translation>
 <translation id="860043288473659153">Nom del titular de la targeta</translation>
-<translation id="5748651208190537252"><ph name="BEGIN_BOLD"/>Quines dades s'utilitzen<ph name="END_BOLD"/>: la teva activitat en un lloc web que visites amb Brave en aquest dispositiu.</translation>
 <translation id="8601456038554914806">Equipament d'esports aquàtics</translation>
 <translation id="8601782593888534566">Fantasia i ciència-ficció</translation>
 <translation id="8604103095921958091">La pantalla de les condicions del servei de Compra ara, paga després està oberta a alçada completa.</translation>
@@ -4752,6 +4820,7 @@ Detalls addicionals:
 <translation id="8751426954251315517">Torna-ho a provar la propera vegada</translation>
 <translation id="8753913772043329557">Registres de les polítiques</translation>
 <translation id="8754546574216727970">Botes</translation>
+<translation id="8755119102172890580">Comparteix automàticament les pestanyes obertes rellevants</translation>
 <translation id="8755125092386286553">A4x9</translation>
 <translation id="875657606603537618">contingut inserit</translation>
 <translation id="8757526089434340176">Hi ha una oferta de Brave Pay disponible</translation>
@@ -4783,6 +4852,7 @@ Detalls addicionals:
 <translation id="8796062699363039080">Configuració de <ph name="OPERATING_SYSTEM"/></translation>
 <translation id="8798099450830957504">Predeterminat</translation>
 <translation id="8800034312320686233">El lloc web no funciona?</translation>
+<translation id="8803526663383843427">Quan està activada</translation>
 <translation id="8805819170075074995">Entrada "<ph name="LANGUAGE_ID"/>" de la llista: l'entrada s'ha ignorat perquè també s'inclou a la política SpellcheckLanguage.</translation>
 <translation id="8806062468703310719">Proveïdors de servei telefònic</translation>
 <translation id="8806696968588872703">Plàstic (setinat)</translation>
@@ -4791,6 +4861,7 @@ Detalls addicionals:
 <translation id="8811725516933141693">Escriu @gemini per xatejar amb Gemini</translation>
 <translation id="8813277370772331957">Recorda-m'ho més tard</translation>
 <translation id="8814707942599948500">Sobre C8</translation>
+<translation id="881559332211266856">Actualitza el número Redress</translation>
 <translation id="7674607358106534914"><ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT"/>; prem Tab i després Retorn per actualitzar Brave des de la configuració de Brave</translation>
 <translation id="8819855907485254989">Desa el bitllet de transport a Wallet</translation>
 <translation id="882338992931677877">Alimentador manual</translation>
@@ -4838,6 +4909,7 @@ Detalls addicionals:
 <translation id="8894794286471754040">La vora llarga primer</translation>
 <translation id="7192431032621242241">Per demanar veure aquest contingut, continua al teu Compte de Brave</translation>
 <translation id="8897428486789851669">Natació</translation>
+<translation id="8898854704577986668">Mostra l'historial al tauler lateral</translation>
 <translation id="8899807382908246773">Anuncis intrusius</translation>
 <translation id="8903921497873541725">Amplia el zoom</translation>
 <translation id="8903998444169664879">Verifica la teva identitat per canviar la configuració de pagament</translation>
@@ -4881,6 +4953,7 @@ Detalls addicionals:
 <translation id="447219378802101672"><ph name="VIEW_CHROME_HISTORY_FOCUSED_FRIENDLY_MATCH_TEXT"/>: prem Tab i després Retorn per veure l'historial de navegació a Brave</translation>
 <translation id="8987663052629670333">Serveis d'impressió de fotos</translation>
 <translation id="8987927404178983737">Mes</translation>
+<translation id="8988966534058783995">Vols utilitzar els sensors de moviment?</translation>
 <translation id="8989148748219918422"><ph name="ORGANIZATION"/> [<ph name="COUNTRY"/>]</translation>
 <translation id="899688752321268742"><ph name="URL"/> vol saber quan estàs utilitzant aquest dispositiu de manera activa</translation>
 <translation id="8997023839087525404">El servidor ha presentat un certificat que no s'ha divulgat públicament mitjançant la política Transparència de certificats. Això és un requisit d'alguns certificats per garantir que són de confiança i una mesura de protecció contra els atacants.</translation>
@@ -4893,7 +4966,6 @@ Detalls addicionals:
 <translation id="9005998258318286617">No es pot carregar el document PDF.</translation>
 <translation id="9008201768610948239">Ignora</translation>
 <translation id="9011281744469077577">{COUNT,plural, =0{Cap}=1{D'1 lloc web}other{De # llocs web}}</translation>
-<translation id="3490877224436695295">Els llocs web que visites poden demanar a Brave informació que els ajudi a mesurar el rendiment dels anuncis. Brave permet que els llocs web recullin tipus de dades limitats, com ara si has fet una compra després de visitar un lloc web.</translation>
 <translation id="9018120810758822233">Introdueix el teu codi de seguretat per a <ph name="CREDIT_CARD"/></translation>
 <translation id="901834265349196618">correu electrònic</translation>
 <translation id="90196294733273307">S'ha mostrat un quadre de diàleg amb les dades de la targeta de crèdit</translation>
@@ -4925,7 +4997,6 @@ Detalls addicionals:
 <translation id="9049981332609050619">Heu provat d'accedir a <ph name="DOMAIN"/>, però el servidor ha presentat un certificat no vàlid.</translation>
 <translation id="9050666287014529139">Frase de contrasenya</translation>
 <translation id="9051072642122229460">Cafeteres i cafeteres exprés</translation>
-<translation id="104719866786855422">Estem llançant una nova funció de privadesa d'anuncis anomenada "mesurament d'anuncis". Brave només comparteix informació molt limitada entre llocs web, com ara quan se t'ha mostrat un anunci, per ajudar els llocs web a mesurar el rendiment dels anuncis.</translation>
 <translation id="9053955920216300738">Els URL que visites</translation>
 <translation id="90542379288189611">Matrícula</translation>
 <translation id="9054288282721240609">Es permet el seguiment de mans</translation>
@@ -4965,7 +5036,6 @@ Detalls addicionals:
 <translation id="9114101423898634479">Afegeix el número de viatger conegut</translation>
 <translation id="9114524666733003316">S'està confirmant la targeta...</translation>
 <translation id="3582535072753734287">Cap empresa ni cap altra organització no gestiona aquest navegador. És possible que l'activitat d'aquest dispositiu es gestioni fora de Brave. <ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/></translation>
-<translation id="7839260860373627374">Més informació sobre els anuncis a Brave</translation>
 <translation id="2628864952962474930"><ph name="HISTORY_CLUSTERS_SEARCH_FOCUSED_FRIENDLY_MATCH_TEXT"/>: prem Tab i després Retorn per reprendre el recorregut i veure activitat rellevant a l'historial de Brave</translation>
 <translation id="9119042192571987207">Penjat</translation>
 <translation id="9119308212838450857"><ph name="PROVIDER_ORIGIN"/> vol verificar la teva identitat</translation>
@@ -4998,8 +5068,6 @@ Detalls addicionals:
 <translation id="9161794544616754735">{0,plural, =1{És possible que <ph name="FILE_NAME"/> inclogui contingut sensible}other{És possible que <ph name="FILE_COUNT"/> fitxers incloguin contingut sensible}}</translation>
 <translation id="9162097962559874470"><ph name="ORIGIN"/>. Per sortir de la pantalla completa, prem |<ph name="ACCELERATOR"/>|.</translation>
 <translation id="9163287596625611517">Missatge de Slack</translation>
-<translation id="9165305804774426672">Els llocs web que visites també poden determinar què t'agrada a partir de l'activitat que hi duus a terme. Per exemple, si visites un lloc web que ven sabatilles per córrer llargues distàncies, el lloc web pot decidir que t'interessa córrer maratons.</translation>
-<translation id="9166851138617700776">Més informació sobre els anuncis suggerits per llocs web i el mesurament d'anuncis</translation>
 <translation id="9167054383925257837">Informació del navegador i del sistema operatiu del dispositiu (com ara les versions del navegador i del sistema operatiu)</translation>
 <translation id="9167594211215946097">Tenir accés directe a les teves impressores</translation>
 <translation id="9168814207360376865">Permet que els llocs web comprovin si tens formes de pagament desades</translation>
@@ -5026,12 +5094,14 @@ Detalls addicionals:
 <translation id="9191834167571392248">Encunyació a la part inferior esquerra</translation>
 <translation id="9192361865877479444">Metall (mat)</translation>
 <translation id="9192947025498305328">Cosmètica ètica i sostenible</translation>
+<translation id="9193018794001479794">Elabora</translation>
 <translation id="6436745840109002184">Si la teva organització limita el que pots desar al teu Compte de Brave, no podràs compartir grups de pestanyes ni unir-t'hi</translation>
 <translation id="1909245870069628406">A <ph name="BEGIN_LINK_GMA"/>myactivity.google.com<ph name="END_LINK_GMA"/> trobaràs altres maneres d'explorar l'historial de navegació del teu Compte de Brave</translation>
 <translation id="9199905725844810519">La impressió està bloquejada</translation>
 <translation id="9204089334327209740">Un cop s'hagi completat la pujada, podràs modificar els fitxers a <ph name="CLOUD_PROVIDER"/>. L'emmagatzematge local, inclosos els fitxers de la paperera, se suprimirà automàticament.</translation>
 <translation id="9205078245616868884">Les vostres dades estan encriptades amb la vostra frase de contrasenya de sincronització. Introduïu-la per començar la sincronització.</translation>
 <translation id="920643408853370361">Assegurança de viatges</translation>
+<translation id="9206639970165643781">Vols compartir les pestanyes obertes rellevants per obtenir millors respostes en aquest fil de discussió?</translation>
 <translation id="9207861905230894330">No s'ha pogut afegir l'article.</translation>
 <translation id="9209339767782560829">Hi ha hagut un problema en utilitzar el certificat d'inici de sessió.</translation>
 <translation id="9210152531668884481">D'acord</translation>
@@ -5083,7 +5153,6 @@ Detalls addicionals:
 <translation id="3666543487519182654">Emplena automàticament aquesta targeta per a les compres fetes a Brave quan s'hagi desat a Brave Wallet</translation>
 <translation id="979107176848483472"><ph name="DOMAIN"/> gestiona el navegador i el perfil</translation>
 <translation id="979189555234810423">Exposicions i convencions</translation>
-<translation id="979503328401807348">Anuncis més útils</translation>
 <translation id="981121421437150478">Sense connexió</translation>
 <translation id="984101218975906499">Farmàcia i biotecnologia</translation>
 <translation id="984275831282074731">Formes de pagament</translation>
@@ -5092,7 +5161,6 @@ Detalls addicionals:
 <translation id="987264212798334818">General</translation>
 <translation id="988159990683914416">Muntatge del desenvolupador</translation>
 <translation id="989988560359834682">Edita l'adreça</translation>
-<translation id="991413375315957741">sensors de moviment o de llum</translation>
 <translation id="991936891556421157">Calçat</translation>
 <translation id="992110854164447044">Una targeta virtual amaga la teva targeta real per contribuir a protegir-te de possibles fraus. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="992115559265932548"><ph name="MICROSOFT_ACTIVE_DIRECTORY"/></translation>

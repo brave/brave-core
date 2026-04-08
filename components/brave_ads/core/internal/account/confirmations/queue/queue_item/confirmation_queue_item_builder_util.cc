@@ -17,9 +17,9 @@ constexpr base::TimeDelta kDebugInitialBackoffDelay = base::Seconds(5);
 }  // namespace
 
 base::TimeDelta RetryProcessingConfirmationAfter() {
-  return ShouldDebug()
-             ? kDebugInitialBackoffDelay
-             : RandTimeDelta(kProcessConfirmationInitialBackoffDelay.Get());
+  return ShouldDebug() ? kDebugInitialBackoffDelay
+                       : RandTimeDeltaWithJitter(
+                             kProcessConfirmationInitialBackoffDelay.Get());
 }
 
 }  // namespace brave_ads

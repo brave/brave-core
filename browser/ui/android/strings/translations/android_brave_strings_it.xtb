@@ -60,7 +60,7 @@
 <translation id="6583902294974160967">Assistenza</translation>
 <translation id="1799030480311994998">Funzioni</translation>
 <translation id="1919345977826869612">Ads</translation>
-<translation id="2839742394543397416">Analisi</translation>
+<translation id="2839742394543397416">Dati Analytics</translation>
 <translation id="2005732746077850308">Protezioni Brave e privacy</translation>
 <translation id="4692623383562244444">Motori di ricerca</translation>
 <translation id="1468415711258933398">Scheda standard</translation>
@@ -148,8 +148,8 @@
 <translation id="1680858055899097121">Non rimanere nelle schede tra una sessione di navigazione e l'altra</translation>
 <translation id="7142548388914389999">Acconsenti all'analisi dei prodotti di tutela della privacy (P3A).</translation>
 <translation id="5254037869598726291">Le informazioni di analisi P3A rese anonime consentono a Brave di stimare l'utilizzo complessivo e ci aiutano a migliorare le funzioni più popolari.</translation>
-<translation id="4174337572777167894">Progetto Web Discovery</translation>
-<translation id="8659271182272561965">Contribuisci alla ricerca anonima e ai dati di navigazione per perfezionare la ricerca Brave.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Fornisci alcuni dati di ricerca e navigazione anonimi per aiutarci a perfezionare la ricerca Brave.</translation>
 <translation id="933652931229970927">Invia automaticamente i rapporti di diagnostica</translation>
 <translation id="5987838417172370108">Contribuisci ad aumentare la stabilità di Brave inviando automaticamente i rapporti di diagnostica quando il browser di Brave si arresta in modo anomalo o resta bloccato.</translation>
 <translation id="7977176350719484850">Dati\nrisparmiati</translation>
@@ -188,12 +188,27 @@
 <translation id="834487290629916192">PIÙ TARDI</translation>
 <translation id="4117451092682672487">Privacy. In tutta semplicità.</translation>
 <translation id="7909375417585209817">Se Brave è il browser predefinito, tutti i link si aprono con le protezioni per la privacy di Brave.</translation>
-<translation id="5148943178722443958">Contribuisci a migliorare Brave.</translation>
+<translation id="763369711159699222">Aiutaci a migliorare Brave</translation>
+<translation id="8025937231644975408">Facci sapere quali funzioni ti piacciono di più.</translation>
 <translation id="6718362830686703942">In caso di arresto anomalo o blocco, invia dei resoconti diagnostici.</translation>
 <translation id="8616157231067364693">Condividi informazioni di prodotto totalmente private e anonime per farci sapere quali sono le funzioni usate dagli utenti di Brave.</translation>
 <translation id="2888496576732880897">Aiuta Ricerca Brave a crescere</translation>
+<translation id="7198716519700700181">Blocca le interruzioni mentre guardi in streaming</translation>
 <translation id="7044431516245362795">Unisciti al Web Discovery Project e aiutaci a migliorare la ricerca e indicizzazione dei risultati.<ph name="LEARN_MORE_START"/>Scopri di più<ph name="LEARN_MORE_END"/>.</translation>
+<translation id="4847979153841887006">Logo Brave</translation>
+<translation id="1389386068457132299">Sfondo onboarding</translation>
+<translation id="5101985748360228609">Decorazione foglia superiore</translation>
+<translation id="5270920361877570459">Decorazione foglia inferiore</translation>
+<translation id="4021716437419160885">Scorri verso il basso</translation>
+<translation id="4767173360729868049">Illustrazione Aiuta Ricerca Brave</translation>
+<translation id="8241918461631453498">Illustrazione Blocca interruzioni</translation>
+<translation id="8213310572767907663">Illustrazione Rendi Brave migliore</translation>
+<translation id="2427917529469438577">Blocca quelle fastidiose interruzioni sui tuoi siti di streaming preferiti.</translation>
 <translation id="7818938154803162778">Sì, partecipo</translation>
+<translation id="5298784657468199167">Invia report di arresto anomalo</translation>
+<translation id="6188781052835527980">In caso di arresto anomalo o blocco, invia dei resoconti diagnostici anonimi.</translation>
+<translation id="4780647518983772446">Condividi informazioni di prodotto totalmente private e anonime su quali funzioni di Brave vengono utilizzate.</translation>
+<translation id="5109496672133133896">Informazioni di prodotto private</translation>
 <translation id="3545804467215833536">Tocca per visualizzare le protezioni di Brave</translation>
 <translation id="1724327820822194498">Guarda tutti gli elementi indesiderati che Brave ha bloccato con le protezioni su ogni pagina.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> e altri <ph name="TRACKER"/> annunci e tracker bloccati</translation>
@@ -356,7 +371,7 @@ Confermi di voler procedere?</translation>
 <translation id="5789441016350810005">Brave Ads inviati quando il browser non è attivo</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Nuova pagina</translation>
-<translation id="5927196110206824867">Le immagini di sfondo sponsorizzate supportano l'impegno di Brave nel creare un Web indipedente in cui l'utente sia al primo posto. Al contrario delle Big Tech, misuriamo le prestazioni degli annunci in modo anonimo, rispettando la tua privacy.</translation>
+<translation id="5927196110206824867">Le immagini di sfondo sponsorizzate supportano l'impegno di Brave nel creare un Web indipendente in cui l'utente sia al primo posto. Al contrario delle Big Tech, misuriamo le prestazioni degli annunci in modo anonimo, rispettando la tua privacy.</translation>
 <translation id="8748471354357836070">Scopri di più / Scelte di opt-out</translation>
 <translation id="3171669670217312786">Immagini di sfondo</translation>
 <translation id="8522669544471808198">Mostra immagini di sfondo</translation>
@@ -380,7 +395,7 @@ Confermi di voler procedere?</translation>
 <translation id="717952606991220586">Ops, qualcosa è andato storto. Per favore, riprova più tardi.</translation>
 <translation id="987264212798334818">Generali</translation>
 <translation id="1116694919640316211">Informazioni</translation>
-<translation id="1275213816424141989">Forse più tardi</translation>
+<translation id="2370739752330685659">Forse più tardi</translation>
 <translation id="3624048886326677117">Blocca tracker e annunci (aggressivo)</translation>
 <translation id="7151914815476509258">Blocca tracker e annunci (standard)</translation>
 <translation id="7384778069178817075">Permetti tutti gli indicatori &amp; annunci</translation>
@@ -433,7 +448,7 @@ Confermi di voler procedere?</translation>
 <translation id="721949491455392748">Allega uno screenshot della pagina attuale</translation>
 <translation id="8459191579769999214">Visualizza screenshot</translation>
 <translation id="6476216365964140603">Dettagli aggiuntivi (facoltativo)</translation>
-<translation id="6145852496180774737">Contattami via: (facoltativo)</translation>
+<translation id="6145852496180774737">Contattatemi via: (facoltativo)</translation>
 <translation id="6367576083705149078">Se fornisci i dati di contatto, questi saranno memorizzati per future segnalazioni.</translation>
 <translation id="7616645803364270729">E-mail, Twitter ecc.</translation>
 <translation id="5299848999918506028">Grazie!</translation>
@@ -498,7 +513,6 @@ Confermi di voler procedere?</translation>
 <translation id="5705882733397021510">Vai indietro</translation>
 <translation id="7889432931837317731">Apri automaticamente quando possibile</translation>
 <translation id="1029304566263314007">Mostra le notifiche di avanzamento del download</translation>
-<translation id="2910433761530295035">Chiedi dove salvare i file (se viene rilevata una scheda SD)</translation>
 <translation id="2977501775944575564">Download parallelo</translation>
 <translation id="6224180438946945617">Abilita il download parallelo per accelerare la velocità di download</translation>
 <translation id="8967385052772844086">Visualizza il rapporto completo sulla privacy</translation>
@@ -919,6 +933,9 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="703185154752046151">Widget aggiunto alla schermata iniziale</translation>
 <translation id="4635094429202343515">Prova il widget di Ricerca Brave</translation>
 <translation id="4809681171446727314">Accedi allo strumento di ricerca, indipendente e rispettoso della privacy, direttamente dalla schermata iniziale.</translation>
+<translation id="3280562213547448728">Ricerca vocale</translation>
+<translation id="3925312712530886302">Apri ricerca privata</translation>
+<translation id="9214590551301647710">Apri Leo</translation>
 <translation id="7751715172931488388">Aggiungi widget</translation>
 <translation id="7285167584112910782">Ricerca rapida di Brave</translation>
 <translation id="2326703104633309781">Usa il Traduttore di Brave</translation>
@@ -948,7 +965,7 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="7618347247876614969">Account della tabella di ricerca degli indirizzi:</translation>
 <translation id="7659483790930268440">Indice della tabella di ricerca degli indirizzi:</translation>
 <translation id="5494920125229734069">Seleziona tutto</translation>
-<translation id="2361906291514218784">IA di Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="944736176598169208">Ricompense</translation>
 <translation id="4272190451231642425">Invia automaticamente i rapporti sui crash</translation>
 <translation id="1199170151481311646">Telemetrie a tutela della privacy</translation>
@@ -958,7 +975,14 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Ripristina le impostazioni predefinite</translation>
 <translation id="4922034974043704366">Questa funzione è abilitata perché lei vi ha aderito.</translation>
-<translation id="3144818380093107753">Brave Origin è un abbonamento che disattiva gli elementi con cui Brave genera introiti per sostenere la sua attività. Abbonandoti a Brave Origin, continuerai a beneficiare delle nostre protezioni per la privacy, dell'adblock e della velocità di navigazione che ti offriamo (tramite Protezioni Brave), nonché degli aggiornamenti regolari del software, delle patch di Chromium e dei miglioramenti alla sicurezza della privacy. Abbonandoti a Brave Origin, potrai anche scegliere di disattivare funzioni come Brave Leo, Notizie, Ricompense, Wallet, VPN, domini Web3 e altro ancora.&lt;br/&gt;&lt;br/&gt;Gli abbonati vedranno un nuovo pannello di controllo nel menu delle impostazioni del browser. Le funzioni esistenti, così come le nuove funzioni che verranno introdotte in futuro, appariranno qui e saranno disattivate come impostazione predefinita.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Nota: Brave Origin non disabiliterà le funzioni del browser che già usi e non influenza i risultati, le funzionalità e gli annunci di Ricerca Brave.&lt;/b&gt;</translation>
+<translation id="2587535830241068901">Personalizza il tuo browser e supporta Brave</translation>
+<translation id="7235314227387539944">Brave Origin è una versione a pagamento del browser per gli utenti che non hanno bisogno di tutte le funzionalità che supportano Brave come azienda, ma desiderano comunque la privacy che solo Brave offre. Gli utenti di Origin continueranno a beneficiare della nostra privacy leader del settore, adblock e velocità (tramite Protezioni), nonché degli aggiornamenti software regolari, delle patch Chromium e dei miglioramenti di sicurezza e privacy. Origin rimuoverà la maggior parte delle altre funzionalità dal browser.</translation>
+<translation id="7941943775131052130">Nota che l'acquisto di Brave Origin includerà anche l'accesso a Ricerca Brave Premium, poiché Origin rimuoverà gli annunci dalla pagina dei risultati di Ricerca Brave.</translation>
+<translation id="2573819149217596923">Modifica delle funzionalità Brave</translation>
+<translation id="7415416427817229128">L'abilitazione o la disabilitazione di una funzionalità Brave richiede il riavvio del browser per applicare le modifiche. Vuoi riavviare ora?</translation>
+<translation id="2256115617011615191">Riavvia ora</translation>
+<translation id="8554205386170195281">Acquista</translation>
+<translation id="7071521146534760487">Gestisci account</translation>
 <translation id="8613144770663526433">Accedi con il Portafoglio Brave</translation>
 <translation id="3696514931437952995">Stai eseguendo l’accesso a <ph name="ORIGIN"/>. Portafoglio Brave condividerà l’indirizzo del tuo portafoglio con <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Vedi dettagli</translation>
@@ -1076,19 +1100,20 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="1336494649091412226">Vuoi davvero uscire da Brave?</translation>
 <translation id="6061635824229591714">Cancellare i dati del sito?</translation>
 <translation id="1265051174491933207">La cancellazione eliminerà i dati del sito e chiuderà tutte le schede di '<ph name="SITE_NAME"/>'. L’azione non può essere annullata.</translation>
-<translation id="5528772406060281700">Cancellare i dati del sito</translation>
+<translation id="5528772406060281700">Cancella i dati del sito</translation>
 <translation id="4426990318287827331">Cancella i dati</translation>
 <translation id="7942415993090181327">Cronologia delle chat</translation>
 <translation id="6859935199732075666">Mostra gli errori di Navigazione Sicura</translation>
 <translation id="2735247450315842119">Consenti gli screenshot nelle finestre private</translation>
 <translation id="8420414929552321089">Se abilitata, questa opzione rende visibili le finestre private anche quando vengono aperte altre app.</translation>
 <translation id="7956713633345437162">Segnalibri mobili</translation>
+<translation id="7984508421152399880">Acquista ora</translation>
 <translation id="6261139507111008244">Sostenere la nostra missione &amp; lavoro open-source</translation>
-<translation id="7882690061170175552">UI del browser compatta incentrata su Protezioni</translation>
+<translation id="6073373503121903099">UI del browser minimalista incentrata su Protezioni Brave</translation>
 <translation id="2267973897341040743">Solo puro adblock, privacy e velocità</translation>
-<translation id="1361157028850796410">offerta migliore</translation>
-<translation id="7280825497485894053">Abbonamento mensile</translation>
-<translation id="4570901726096223030">Scopri di più su Origin</translation>
+<translation id="3339535734679532460">Acquisto una tantum, nessun costo di abbonamento aggiuntivo</translation>
+<translation id="2805615640226281689">Acquisto una tantum</translation>
+<translation id="261433018299584676">Ottieni un codice di accesso</translation>
 <translation id="1943432128510653496">Salva password</translation>
 <translation id="2100273922101894616">Accesso automatico</translation>
 <translation id="363596933471559332">Accedi automaticamente ai siti web utilizzando credenziali memorizzate. Quando la funzione non è attiva, ti viene chiesta la verifica prima di ogni accesso ai siti web.</translation>

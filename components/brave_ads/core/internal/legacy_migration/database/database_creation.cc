@@ -11,6 +11,8 @@
 #include "base/location.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_database_table.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
@@ -36,6 +38,12 @@ void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
 
   table::ConfirmationQueue confirmation_queue_database_table;
   confirmation_queue_database_table.Create(mojom_db_transaction);
+
+  table::ConfirmationTokens confirmation_tokens_database_table;
+  confirmation_tokens_database_table.Create(mojom_db_transaction);
+
+  table::PaymentTokens payment_tokens_database_table;
+  payment_tokens_database_table.Create(mojom_db_transaction);
 
   table::AdEvents ad_events_database_table;
   ad_events_database_table.Create(mojom_db_transaction);

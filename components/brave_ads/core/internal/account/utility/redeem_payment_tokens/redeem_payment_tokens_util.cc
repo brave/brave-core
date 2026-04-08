@@ -40,8 +40,9 @@ void SetNextTokenRedemptionAt(base::Time next_payment_token_redemption_at) {
 
 base::Time ScheduleNextTokenRedemptionAt() {
   return base::Time::Now() +
-         (ShouldDebug() ? kDebugRedeemPaymentTokensAfter
-                        : RandTimeDelta(kRedeemPaymentTokensAfter.Get()));
+         (ShouldDebug()
+              ? kDebugRedeemPaymentTokensAfter
+              : RandTimeDeltaWithJitter(kRedeemPaymentTokensAfter.Get()));
 }
 
 base::TimeDelta CalculateDelayBeforeRedeemingTokens() {

@@ -323,6 +323,8 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="8813509417421129632">Halaman yang disematkan pada <ph name="SITE"/> ingin menyimpan</translation>
 <translation id="7700010743463174379">Halaman ini ingin menyimpan</translation>
 <translation id="6774238875569752630">Halaman yang disematkan pada halaman ini ingin menyimpan</translation>
+<translation id="1383876407941801731">Pencarian</translation>
+<translation id="5496587651328244253">Atur</translation>
 <translation id="1233913566967531780">Tab fokus</translation>
 <translation id="4034992002364254340">Mengumpulkan semua tab terkait ke jendela baru</translation>
 <translation id="8012125596344613514">Topik yang disarankan</translation>
@@ -340,6 +342,7 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="6501807887341963552">Tema dan warna</translation>
 <translation id="6724227215236550330">Kata sandi tersimpan ditampilkan di sini. Untuk mengimpor kata sandi ke <ph name="BRAND"/> di perangkat ini, <ph name="BEGIN_LINK"/> pilih file CSV<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">Untuk mengimpor kata sandi ke <ph name="BRAND"/> di perangkat ini, pilih file CSV</translation>
+<translation id="8570228839666486945">AI On-Device</translation>
 <translation id="9156965752763025780">Perubahan Anda akan berlaku saat berikutnya Anda membuka Brave.</translation>
 <translation id="7179921470347911571">Luncurkan Ulang Sekarang</translation>
 <translation id="1426410128494586442">Ya</translation>
@@ -392,6 +395,7 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="5297085818601043899">Keterangan alat</translation>
 <translation id="5219886318310413094">Tampilkan tab yang disematkan di semua jendela</translation>
 <translation id="2396127686705429331">Tampilkan tombol markah</translation>
+<translation id="443318149139185498">Gunakan logo garis besar pada tombol menu utama</translation>
 <translation id="2814998458708016836">Gunakan bilah alamat lebar</translation>
 <translation id="4749586705247636385">Menampilkan sudut membulat pada area konten utama</translation>
 <translation id="4109670531935487117">Tampilkan usulan penyelesaian otomatis pada bilah alamat</translation>
@@ -545,7 +549,7 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="509873765238158442">Blokir Microsoft Recall</translation>
 <translation id="4763421121695677716">Blokir fitur Recall di komputer Microsoft Windows agar tidak bisa secara otomatis mengambil tangkapan layar dari tab Brave yang terbuka.</translation>
 <translation id="1968895725257436430">Pengumpulan data</translation>
-<translation id="4846154056248462491">Saat keluar</translation>
+<translation id="1700052872056357670">Hapus data saat keluar</translation>
 <translation id="216468847346280584">Menghapus data Iklan Brave...</translation>
 <translation id="2808630562319398131">Atur ulang data Brave Reward...</translation>
 <translation id="6438096877646138757">Situs yang menghapus cookie saat Anda menutupnya</translation>
@@ -792,6 +796,7 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="1529674267267221673">Leo akan tampil di menu konteks ketika Anda mengklik kanan di sebuah situs web. Ini akan mengirimkan konteks dari halaman web saat ini ke Leo.</translation>
 <translation id="5226020406479918122">Mode Tab Fokus</translation>
 <translation id="3705539672403311123">Aktifkan penyusunan tab di halaman Penelusuran Tab. Ketika dibuka, fitur ini otomatis mengirimkan judul dan asal dari semua tab non-pribadi ke Leo untuk diklasifikasikan. <ph name="BEGIN_LINK"/>Pelajari selengkapnya<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">Model bawaan untuk tab focus</translation>
 <translation id="8172263161008556851">Tampilkan petunjuk yang diusulkan dalam percakapan</translation>
 <translation id="5781842473834867765">Simpan riwayat percakapan saya</translation>
 <translation id="1082960401708055995">Menonaktifkan penyimpanan percakapan akan hapus permanen semua percakapan yang tersimpan sebelumnya. Tidak bisa diurungkan.</translation>

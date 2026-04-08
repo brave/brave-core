@@ -60,9 +60,11 @@ struct ControllableCloseButtonState final {
 #define ShouldRenderAsNormalTab virtual ShouldRenderAsNormalTab
 #define MaybeAdjustLeftForPinnedTab virtual MaybeAdjustLeftForPinnedTab
 #define IsActive virtual IsActive
+#define MaybeUpdateHoverStatus virtual MaybeUpdateHoverStatus
 
 #include <chrome/browser/ui/views/tabs/tab.h>  // IWYU pragma: export
 
+#undef MaybeUpdateHoverStatus
 #undef IsActive
 #undef MaybeAdjustLeftForPinnedTab
 #undef ShouldRenderAsNormalTab

@@ -188,12 +188,27 @@
 <translation id="834487290629916192">MAMAYA</translation>
 <translation id="4117451092682672487">Privacy. Pinasimple.</translation>
 <translation id="7909375417585209817">Kapag default ang Brave, bubukas ang bawat link na ita-tap mo nang may mga proteksyon sa privacy ng Brave.</translation>
-<translation id="5148943178722443958">Tumulong na pagandahin ang Brave.</translation>
+<translation id="763369711159699222">Tumulong na pagandahin ang Brave</translation>
+<translation id="8025937231644975408">Hayaan kaming malaman kung aling mga feature ang pinakagustong-gusto mo.</translation>
 <translation id="6718362830686703942">Magpadala ng mga diagnostic report kung nakakaranas ka ng pag-crash o pag-freeze.</translation>
 <translation id="8616157231067364693">Magbahagi ng prvate at walang pagkakakilanlang kaisipan sa produkto tungkol sa kung anong mga feature ang ginagamit ng mga user ng Brave.</translation>
 <translation id="2888496576732880897">Tumulong na palaguin ang Brave Search</translation>
+<translation id="7198716519700700181">Blokhin ang mga interruption kapag nag-stream ka</translation>
 <translation id="7044431516245362795">Mag-opt in sa Web Discovery Project para makatulong sa pagpapalago sa index at mapahusay ang mga resulta ng paghahanap. <ph name="LEARN_MORE_START"/>Alamin ang higit pa.<ph name="LEARN_MORE_END"/></translation>
+<translation id="4847979153841887006">Brave logo</translation>
+<translation id="1389386068457132299">Onboarding background</translation>
+<translation id="5101985748360228609">Top leaf decoration</translation>
+<translation id="5270920361877570459">Bottom leaf decoration</translation>
+<translation id="4021716437419160885">Mag-scroll pababa</translation>
+<translation id="4767173360729868049">Help Brave Search illustration</translation>
+<translation id="8241918461631453498">Block interruptions illustration</translation>
+<translation id="8213310572767907663">Make Brave better illustration</translation>
+<translation id="2427917529469438577">Blokhin ang mga nakakaabala na interruption sa iyong paboritong streaming sites.</translation>
 <translation id="7818938154803162778">Oo, tutulong ako</translation>
+<translation id="5298784657468199167">Magpadala ng crash reports</translation>
+<translation id="6188781052835527980">Magpadala ng mga anonymous diagnostic report kung nakakaranas ka ng pag-crash o pag-freeze.</translation>
+<translation id="4780647518983772446">Magbahagi ng private at walang pagkakakilanlang insight sa produkto tungkol sa kung anong mga feature ng Brave ang ginagamit.</translation>
+<translation id="5109496672133133896">Private product insights</translation>
 <translation id="3545804467215833536">I-tap para tingnan ang Brave Shields</translation>
 <translation id="1724327820822194498">Tingnan ang lahat ng masasamang bagay na na-block Brave, sa bawat page, gamit ang Shields.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> at <ph name="TRACKER"/> iba pang ad &amp; tracker ang na-block</translation>
@@ -380,7 +395,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="717952606991220586">Naku, may mali. Pakisubukang muli sa ibang pagkakataon.</translation>
 <translation id="987264212798334818">Pangkalahatan</translation>
 <translation id="1116694919640316211">Tungkol sa</translation>
-<translation id="1275213816424141989">Sa Ibang Pagkakataon Siguro</translation>
+<translation id="2370739752330685659">Sa ibang pagkakataon siguro</translation>
 <translation id="3624048886326677117">I-block ang mga tracker at ads (Agresibo)</translation>
 <translation id="7151914815476509258">I-block ang trackers at ads (Standard)</translation>
 <translation id="7384778069178817075">Payagan ang lahat ng tracker at ad</translation>
@@ -498,7 +513,6 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="5705882733397021510">Bumalik</translation>
 <translation id="7889432931837317731">Awtomatikong buksan kung posible</translation>
 <translation id="1029304566263314007">Ipakita ang mga notification sa pagtakbo ng pag-download</translation>
-<translation id="2910433761530295035">Itanong kung saan ise-save ang mga file (kung na-detect ang SD card)</translation>
 <translation id="2977501775944575564">Parallel na Pag-download</translation>
 <translation id="6224180438946945617">Paganahin ang parallel na pag-download para pabilisin ang tulin ng pag-download</translation>
 <translation id="8967385052772844086">Tingnan ang buong Ulat sa Privacy</translation>
@@ -919,6 +933,9 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="703185154752046151">Idinagdag ang widget sa home screen</translation>
 <translation id="4635094429202343515">Subukan ang widget ng Brave Search</translation>
 <translation id="4809681171446727314">I-access ang pribado at independent na paghanap sa home screen mo mismo.</translation>
+<translation id="3280562213547448728">Voice search</translation>
+<translation id="3925312712530886302">Open private search</translation>
+<translation id="9214590551301647710">Open Leo</translation>
 <translation id="7751715172931488388">Magdagdag ng widget</translation>
 <translation id="7285167584112910782">Paghananap ng mabilisang pagkilos ng Brave</translation>
 <translation id="2326703104633309781">Gamitin ang Brave Translate</translation>
@@ -958,7 +975,14 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">I-reset lahat sa mga default</translation>
 <translation id="4922034974043704366">Na-enable ang tampok na ito dahil pinili mong gamitin ito</translation>
-<translation id="3144818380093107753">Ang Brave Origin ay isang paraan na may subscription upang i-disable ang mga tampok na lumilikha ng kita na sumusuporta sa Brave bilang negosyo. Patuloy na makikinabang ang mga tagasubaybay ng Brave Origin sa aming nangunguna sa industriya na privacy, adblock, at bilis (sa pamamagitan ng Brave Shields), gayundin sa mga regular na pag-update ng software, Chromium patch, at mga pagpapabuti sa seguridad at privacy.&lt;br/&gt;&lt;br/&gt;Mau-unlock din nila ang opsyon na i-disable ang mga tampok tulad ng Brave Leo, News, Rewards, Wallet, VPN, Web3 domain, at iba pa.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Tandaan: Hindi i-disable ng Brave Origin ang mga tampok ng browser na kasalukuyan mong ginagamit, at hindi nito maaapektuhan ang mga tampok ng Brave Search o ang Brave Search Ads.&lt;/b&gt;</translation>
+<translation id="2587535830241068901">I-customize ang iyong browser habang sinusuportahan pa rin ang Brave</translation>
+<translation id="7235314227387539944">Ang Brave Origin ay isang paid na bersyon ng browser para sa mga gumagamit na hindi kailangan ng lahat ng features na sumusuporta sa Brave bilang isang negosyo, ngunit nais pa rin ang privacy na nag-aalok lamang ang Brave. Ang mga Origin users ay patuloy na makikinabang mula sa aming industry-leading privacy, adblock, at speed (sa pamamagitan ng Shields), pati na rin ang regular na software updates, Chromium patches, at security at privacy improvements. Ang Origin ay maglalabas ng karamihan ng ibang features mula sa browser.</translation>
+<translation id="7941943775131052130">Tandaan na ang Brave Origin purchase ay magsasama rin ng access sa Brave Search Premium, dahil ang Origin ay maglalabas ng ads mula sa Brave Search results page.</translation>
+<translation id="2573819149217596923">Pagbabago ng Brave features</translation>
+<translation id="7415416427817229128">Ang pagpapagana o pagpapadisable ng isang Brave feature ay nangangailangan ng browser restart upang mailapat ang mga pagbabago. Gusto mo bang i-restart ngayon?</translation>
+<translation id="2256115617011615191">I-restart ngayon</translation>
+<translation id="8554205386170195281">Bumili</translation>
+<translation id="7071521146534760487">Pamahalaan ang account</translation>
 <translation id="8613144770663526433">Mag-sign in gamit ang Brave Wallet</translation>
 <translation id="3696514931437952995">Nagsa-sign in ka sa <ph name="ORIGIN"/>. Ibabahagi ng Brave wallet ang wallet address mo sa <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Tingnan ang mga detalye</translation>
@@ -1083,12 +1107,13 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="2735247450315842119">Payagan ang mga screenshot sa mga private tab</translation>
 <translation id="8420414929552321089">Kung papayagan, makikita rin ang mga private tab kapag nakabukas ang maraming app.</translation>
 <translation id="7956713633345437162">Mga bookmark sa Mobile</translation>
+<translation id="7984508421152399880">Bumili na ngayon</translation>
 <translation id="6261139507111008244">Suportahan ang aming misyon at open-source na gawain</translation>
-<translation id="7882690061170175552">Minimal na UI ng browser na nakasentro sa Shields</translation>
+<translation id="6073373503121903099">Minimalist na UI ng browser na nakasentro sa Brave Shields</translation>
 <translation id="2267973897341040743">Panatilihin ang pangunahing adblock, privacy, at bilis</translation>
-<translation id="1361157028850796410">pinakamahusay na value</translation>
-<translation id="7280825497485894053">Buwanang subscription</translation>
-<translation id="4570901726096223030">Alamin pa ang tungkol sa Origin</translation>
+<translation id="3339535734679532460">One-time purchase, walang karagdagang subscription cost</translation>
+<translation id="2805615640226281689">One Time Purchase</translation>
+<translation id="261433018299584676">Kunin ang login code</translation>
 <translation id="1943432128510653496">I-save ang mga password</translation>
 <translation id="2100273922101894616">Awtomatikong Mag-sign in</translation>
 <translation id="363596933471559332">Awtomatikong mag-sign in sa mga website gamit ang mga naka-store na kredensyal. Kapag naka-off ang feature, hihilingin sa iyong mag-verify sa tuwing magsa-sign in ka sa isang website.</translation>

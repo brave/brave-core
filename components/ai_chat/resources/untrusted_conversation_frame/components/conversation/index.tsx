@@ -150,6 +150,29 @@ function Conversation(props: ConversationProps) {
     scrollToBottomContinuously(/*animate=*/ false)
   }, [scrollToBottomContinuously])
 
+  // Keep --suggested-questions-height on document.body in sync with the
+  // rendered height of the suggestions container. Resets to 0 when the
+  // suggestions are not shown or the component unmounts.
+  const suggestionsRef = React.useRef<HTMLDivElement | null>(null)
+  React.useEffect(() => {
+    const el = suggestionsRef.current
+    if (!el) {
+      document.body.style.setProperty('--suggested-questions-height', '0px')
+      return
+    }
+    const observer = new ResizeObserver(() => {
+      document.body.style.setProperty(
+        '--suggested-questions-height',
+        `calc(${el.offsetHeight}px + var(--leo-spacing-2xl) * 2)`,
+      )
+    })
+    observer.observe(el)
+    return () => {
+      observer.disconnect()
+      document.body.style.setProperty('--suggested-questions-height', '0px')
+    }
+  }, [showSuggestions])
+
   // Notify parent when content is ready
   React.useEffect(() => {
     onIsContentReady?.(true)
@@ -176,7 +199,10 @@ function Conversation(props: ConversationProps) {
         <ConversationEntries />
 
         {showSuggestions && (
-          <div className={styles.suggestionsContainer}>
+          <div
+            ref={suggestionsRef}
+            className={styles.suggestionsContainer}
+          >
             <div className={styles.questionsList}>
               {state.suggestedQuestions.map((question, i) => (
                 <SuggestedQuestion

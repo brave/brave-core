@@ -7,6 +7,7 @@
 <translation id="3814674848168165531">Apabila laman meminta prapemuatan pautan secara peribadi pada halaman mereka, Brave menggunakan pelayan Brave. Tindakan ini akan menyembunyikan identiti anda daripada laman yang dipramuat tetapi Brave mengetahui laman yang dipramuat.</translation>
 <translation id="1065672644894730302">Pilihan anda tidak dapat dibaca. Beberapa ciri mungkin tidak tersedia dan perubahan terhadap pilihan tidak akan disimpan.</translation>
 <translation id="7577672138294294152">Ibu/bapa anda telah mematikan "Kebenaran untuk laman, apl dan sambungan" untuk Brave</translation>
+<translation id="4408482856437790071">Untuk mencari ciri atau sambungan Brave tertentu, taip pintasan carian dalam bar alamat, diikuti dengan kekunci papan kekunci pilihan anda</translation>
 <translation id="5918095577778020936">Brave mahu mengeksport kata laluan anda. Taip kata laluan Windows anda untuk membenarkannya.</translation>
 <translation id="112640046208448578">Kenal pasti perkara atau tempat dan salin atau terjemahkan teks. Apabila anda menggunakan Carian Imej, tangkapan skrin halaman akan dihantar kepada pelayan. <ph name="LEARN_MORE"/></translation>
 <translation id="5468853758063275923">Brave ialah penyemak imbas lalai anda</translation>
@@ -24,8 +25,10 @@
 <translation id="8799570501820813406">Semasa tab ini tidak aktif, memori dikosongkan untuk mengekalkan kepantasan Brave. Anda boleh memilih untuk sentiasa mengecualikan laman ini daripada menjadi tidak aktif.</translation>
 <translation id="8767381092474532098">Brave menyekat muat turun ini kerana fail ini berbahaya</translation>
 <translation id="3256289531845594061">Apabila anda log masuk ke perkhidmatan Brave seperti Gmail atau YouTube dengan <ph name="USER_EMAIL"/>, anda boleh log masuk ke Brave secara automatik dengan akaun yang sama</translation>
+<translation id="8508169558526580571">Dapatkan Brave pada telefon anda</translation>
 <translation id="1290883685122687410">Ralat persediaan: <ph name="METAINSTALLER_EXIT_CODE"/>. <ph name="WINDOWS_ERROR"/></translation>
 <translation id="4798342026247191171">Sediakan profil Brave baharu anda</translation>
+<translation id="4291722755910963157">Cuba dengan Gemini dalam Brave</translation>
 <translation id="878572309106296578">Brave memerlukan akses Bluetooth untuk meneroka 
 peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="1330562121671411446">Kesan bahasa</translation>
@@ -160,7 +163,6 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="2738871930057338499">Tidak dapat disambungkan kepada Internet. HTTP 403 Dilarang. Sila semak konfigurasi proksi anda.</translation>
 <translation id="2753623023919742414">Klik untuk mencari</translation>
 <translation id="1312769823139326127">Tetapkan Brave sebagai alat lihat PDF lalai anda</translation>
-<translation id="3173824377856109157">Brave boleh membuat autolengkap medan sukar yang mungkin terlepas daripada autolengkap standard</translation>
 <translation id="1187986649024576560">Sambungan ini mengandungi perisian hasad dan tidak selamat. Alih keluar sambungan ini daripada Brave supaya sambungan ini tidak dapat melihat dan mengubah data anda pada laman yang anda lawati lagi, termasuk maklumat peribadi anda.</translation>
 <translation id="2799223571221894425">Lancarkan semula</translation>
 <translation id="5962774139606909656">Brave anda</translation>
@@ -235,7 +237,9 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="8703492925273919597">Sila tutup semua tetingkap Brave dan cuba lagi.</translation>
 <translation id="599091950194451698">Untuk berkongsi tetingkap anda, benarkan rakaman skrin untuk Brave dalam Tetapan Sistem</translation>
 <translation id="1447863765638888625"><ph name="EXISTING_USER"/> sudah log masuk.  Untuk memastikan penyemakan imbas anda terpisah, log masuk ke Brave dalam profil anda sendiri sebagai <ph name="USER_EMAIL_ADDRESS"/>.</translation>
+<translation id="7624624622436403494">Kod QR untuk memuat turun penyemak imbas Brave pada peranti mudah alih</translation>
 <translation id="8981774130895723211">Untuk berkongsi skrin anda, benarkan rakaman skrin untuk Brave dalam Tetapan Sistem.</translation>
+<translation id="2981961446160697133">Perlindungan dipertingkat mematikan pengoptimuman JavaScript untuk laman yang tidak dikenali oleh Brave</translation>
 <translation id="3597003331831379823">Gagal untuk menjalankan persediaan dengan keistimewaan dipertingkat. <ph name="METAINSTALLER_ERROR"/></translation>
 <translation id="4167284810587724062">Log masuk ke Brave</translation>
 <translation id="3066805437003400520">Data semakan imbas orang ini akan dipadamkan daripada peranti ini. Untuk memulihkan data itu, log masuk ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
@@ -368,6 +372,7 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="6234515504547364178">Log keluar daripada Brave</translation>
 <translation id="5234764350956374838">Ketepikan</translation>
 <translation id="5254739261293693943">Tanya tentang video ini</translation>
+<translation id="7690383309583926074">Dapatkan apl Brave untuk menyimpan kata laluan semasa dalam perjalanan</translation>
 <translation id="8586264863973514035">Untuk menggunakan perubahan anda, mulakan semula Brave</translation>
 <translation id="5286907366254680517">Dikesan</translation>
 <translation id="7264453786974905915">Dapatkan apl Brave</translation>
@@ -414,6 +419,7 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="1224606669200461217">Untuk menggunakan dan menyimpan data Brave dalam Brave sync chain anda, kemas kinikan Brave</translation>
 <translation id="5824893331272123205">Tidak dapat memuatkan panel ini, cuba lagi</translation>
 <translation id="7207456302801184289">Selamat datang ke Brave</translation>
+<translation id="4026807082142463673">Menghidupkan ciri tambahan untuk memberikan perlindungan terkuat Brave</translation>
 <translation id="5871205389137001634">Klik untuk keluar daripada Carian Imej</translation>
 <translation id="8054200348483755053">Brave mendapati bahawa item ini mengandungi perisian hasad:</translation>
 <translation id="3955583201925082436">Brave sentiasa menyemak untuk memastikan penyemak imbas anda menawarkan tetapan paling selamat. Kami akan memaklumi anda jika ada apa-apa yang memerlukan semakan anda.</translation>
@@ -466,6 +472,7 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="6327105987658262776">Kemas kini tidak tersedia.</translation>
 <translation id="1819119299840995223">Terdapat operasi lain sedang dijalankan pada Brave. Sila cuba sebentar lagi.</translation>
 <translation id="8616874628011103667">Kini lebih mudah menggunakan Brave dengan Brave sync chain anda dan pada komputer yang dikongsi.</translation>
+<translation id="5213389303624223677">Dapatkan akses mudah kepada ciri yang anda ketahui, sukai dan percayai dengan menetapkan Brave sebagai penyemak imbas lalai anda.</translation>
 <translation id="4264606872840545968">Pintasan Brave</translation>
 <translation id="6890616081898535725">Brave menyekat muat turun ini kerana fail jarang dimuat turun dan mungkin berbahaya</translation>
 <translation id="335632367599648646">Adakah anda pasti mahu menyahpasang Brave?</translation>
@@ -574,6 +581,9 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="4631170166710903214">Sambungan ini tidak disokong lagi. Brave mengesyorkan supaya anda mengalih keluar sambungan tersebut.</translation>
 <translation id="7951152294775418909">Teruskan dari tempat anda berhenti: Brave memulihkan tab anda setiap kali anda memulakan semula apl. Untuk mematikan ciri ini, akses</translation>
 <translation id="3191314862567596053">Import Kata Laluan Kepada Brave</translation>
+<translation id="284799389314308801">1. Klik <ph name="BUTTON_LABEL"/> di bawah
+2. Klik <ph name="BUTTON_2"/> dalam tetapan Windows anda
+3. Klik <ph name="BUTTON_3"/> dalam pemberitahuan Windows untuk menyematkan Brave pada bar tugas anda untuk akses pantas</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="7450541714075000668">Teks disalin</translation>
 <translation id="2034072705932785495">Brave memerlukan kebenaran untuk mengakses kamera anda bagi tapak ini</translation>
@@ -581,7 +591,6 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="5296583608321648908">Untuk mendapatkan kemaskinian Brave yang akan datang, anda memerlukan Windows 10 atau yang lebih baharu. Komputer ini menggunakan Windows 7.</translation>
 <translation id="3962395975456095331">Lancarkan Semula Brave?</translation>
 <translation id="2619516027171717873">Tidak boleh memasang versi Brave yang sama dengan yang sedang dijalankan. Sila tutup Brave dan cuba lagi.</translation>
-<translation id="2731639583336131792">Anda akan menyimpan dan menggunakan kata laluan dan pelbagai lagi dalam Brave sync chain anda apabila anda log masuk ke Brave. <ph name="LEARN_MORE"/></translation>
 <translation id="5337027666828618338">Laman mungkin akan berfungsi seperti yang dijangkakan. Anda akan dilog keluar dari kebanyakan laman apabila anda menutup semua tetingkap Brave kecuali Brave sync chain anda, jika anda log masuk ke Brave.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave akan dilancarkan semula dalam masa seminit}other{Brave akan dilancarkan semula dalam masa # minit}}</translation>
 <translation id="552342471964912391">Untuk melindungi data anda, benarkan Brave mengalih keluar kebenaran daripada laman yang belum anda lawati baru-baru ini.</translation>
@@ -590,7 +599,9 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="3293668930608086049">Brave menggunakan kamera dan mikrofon anda.</translation>
 <translation id="2827121003398607864">Brave kini lebih baik</translation>
 <translation id="3071313329776323836">Kini anda mempunyai lebih banyak ciri yang tersedia dalam Brave</translation>
+<translation id="7624307931717240213">Kami menggunakan maklumat untuk meningkatkan perkhidmatan ini. Lihat Dasar Privasi dan Syarat Perkhidmatan.</translation>
 <translation id="7649070708921625228">Bantuan</translation>
+<translation id="222435847253721602">Dapatkan Apl Brave</translation>
 <translation id="4008841832817149051">Benarkan Brave menyemak imbas untuk anda</translation>
 <translation id="7658239707568436148">Batal</translation>
 <translation id="3343095737966473035">Brave bukan penyemak imbas lalai anda</translation>
@@ -671,6 +682,7 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="871233388178581868">Brave boleh menyemak kata laluan anda yang disimpan</translation>
 <translation id="3667461919057407535">Dapatkan amaran jika Brave menemukan satu daripada kata laluan anda dalam pelanggaran data umum</translation>
 <translation id="8555465886620020932">Ralat perkhidmatan: <ph name="SERVICE_ERROR"/>.</translation>
+<translation id="7998982887712810347">Sesetengah ciri dan sambungan Brave disertakan dengan pintasan. Anda boleh memilih untuk menghidupkan semula tetapan tersebut.</translation>
 <translation id="8556420416730706394">Anda boleh menyematkan Carian Imej untuk akses mudah; klik butang Semat pada bahagian atas panel sisi</translation>
 <translation id="856656450041460113">Cari senarai bahasa</translation>
 <translation id="227028348235968071">Brave boleh menyemak kata laluan anda apabila anda log masuk menggunakan Brave sync chain anda</translation>
@@ -705,6 +717,7 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="6500340165622970282">Tidak dapat memulakan Brave kerana terdapat masalah semasa membuka profil anda. Cuba mulakan semula Brave.</translation>
 <translation id="3424657754843264466">Urus profil Brave</translation>
 <translation id="7055223246119657449">Brave menyekat muat turun ini kerana fail arkib termasuk fail lain yang mungkin menyembunyikan perisian hasad</translation>
+<translation id="8341362078156319636">Pastikan kata laluan, penanda halaman dan sejarah anda disegerakkan dengan sempurna merentas peranti. Akses ciri yang anda ketahui dan sukai dengan mudah dengan mengemaskinikan penyemak imbas lalai anda kepada Brave. Brave akan disematkan pada bar tugas anda untuk akses pantas.</translation>
 <translation id="9049928023195059068">Log masuk ke Brave apabila anda log masuk ke perkhidmatan Brave yang lain</translation>
 <translation id="4561046754724442504">Brave telah ditutup secara automatik</translation>
 <translation id="5173820533850252773">Brave sudah usang</translation>
@@ -720,7 +733,6 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="8208548103319284047">Petua Brave: Cari Dengan Lens</translation>
 <translation id="7902365066753170041">Lancarkan semula untuk mengemas kini &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
-<translation id="49909619875329637">Dapatkan lebih banyak manfaat apabila anda log masuk ke Brave</translation>
 <translation id="296137235951584143">Peribadikan Brave anda</translation>
 <translation id="7977787072794666032">Brave mungkin tidak akan berfungsi dengan betul kerana tidak lagi disokong pada Windows XP atau Windows Vista</translation>
 <translation id="945522503751344254">Hantar maklum balas</translation>

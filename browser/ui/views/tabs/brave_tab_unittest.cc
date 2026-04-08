@@ -497,6 +497,37 @@ TEST_F(BraveTabTestWithTreeTab,
   EXPECT_TRUE(tab.tree_toggle_button_->GetVisible());
 }
 
+TEST_F(BraveTabTestWithTreeTab,
+       TreeToggleButtonVisibleMouseHoveredEvenWhenCloseButtonHiddenByPref) {
+  testing::NiceMock<MockTabSlotController> tab_slot_controller;
+  auto node_id = tree_tab::TreeTabNodeId::GenerateNew();
+  tabs::TreeTabNodeTabCollection collection(
+      node_id, std::make_unique<MockTabInterfaceWithWeakPtr>(),
+      base::DoNothing(), base::DoNothing());
+  collection.node().set_height_for_test(100);
+  collection.node().set_collapsed(false);
+
+  EXPECT_CALL(tab_slot_controller, GetTreeTabNode(testing::_))
+      .WillRepeatedly(testing::Return(&collection.node()));
+  tab_slot_controller.set_should_always_hide_close_button(true);
+
+  auto widget = CreateTestWidget(views::Widget::InitParams::CLIENT_OWNS_WIDGET);
+  BraveTab tab(tabs::TabHandle(1), &tab_slot_controller);
+  widget->SetContentsView(&tab);
+
+  tab.set_tree_tab_node(node_id);
+  tab.SetBoundsRect({0, 0, 200, 50});
+  views::test::RunScheduledLayout(&tab);
+  ASSERT_FALSE(tab.showing_close_button_for_test());
+  EXPECT_FALSE(tab.tree_toggle_button_->GetVisible());
+
+  tab.MaybeUpdateHoverStatus(ui::MouseEvent(ui::EventType::kMouseMoved,
+                                            gfx::Point(100, 25), gfx::Point(),
+                                            base::TimeTicks(), 0, 0));
+  ASSERT_FALSE(tab.showing_close_button_for_test());
+  EXPECT_TRUE(tab.tree_toggle_button_->GetVisible());
+}
+
 TEST_F(BraveTabTest, TabMinWidthFloorPixels) {
   EXPECT_EQ(10, BraveTab::GetTabMinWidthForMode(
                     brave_tabs::TabMinWidthMode::kDefault, 10, 100));

@@ -1837,6 +1837,7 @@
 <translation id="8897189056319316783">Anonymiser</translation>
 <translation id="508249542337194541">Désanonymiser ZEC</translation>
 <translation id="3382275793825152362">Anonymiser les fonds</translation>
+<translation id="617149752238892649">Anonymiser les fonds</translation>
 <translation id="8631765320256788981">Vous envoyez des fonds de votre compte public vers votre compte anonymisé.</translation>
 <translation id="3860364671495430495">Vous envoyez des fonds de votre compte anonymisé vers votre compte transparent.</translation>
 <translation id="7144878232160441200">Réessayer</translation>
@@ -2186,6 +2187,7 @@
     }</translation>
 <translation id="6961721183181597848">Comment puis-je vous aider aujourd'hui ?</translation>
 <translation id="2966135729673253768">Poser une question complémentaire</translation>
+<translation id="5923170497201832190">Faire défiler l'onglet vers le bas</translation>
 <translation id="6219262425964000211">Déposez vos fichiers ici</translation>
 <translation id="4313763911013851687">Déposez vos fichiers ici pour les ajouter à la conversation.</translation>
 <translation id="4524675003624341892">Suggérer des questions…</translation>
@@ -2207,20 +2209,21 @@
 <translation id="999273441077650169">Le modèle utilisé peut varier selon la tâche à effectuer.<ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur Llama 3.1 8B, un modèle développé par Meta, conçu pour vous assister dans diverses tâches. Le modèle Llama est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur Qwen VL 30B, un modèle développé par Alibaba Cloud, conçu pour vous assister dans diverses tâches. Qwen est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur DeepSeek V3.1, un modèle développé par DeepSeek, conçu pour vous assister dans diverses tâches. DeepSeek V3.1 est hébergé par NEAR via leur propre infrastructure vérifiablement privée et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur GLM-5, un modèle développé par Zhipu AI, conçu pour vous assister dans diverses tâches. Le modèle GLM-5 est hébergé par NEAR sur une infrastructure interne sécurisée et vérifiablement privée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Bonjour, je m'appelle Leo. Je suis un assistant de discussion et de traitement de texte basé sur Claude Instant, un modèle développé par Anthropic. Le modèle Claude Instant est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Bonjour, je m'appelle Leo. Je suis un assistant de discussion et de traitement de texte basé sur Claude Haiku, un modèle développé par Anthropic. Le modèle Claude Haiku est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Bonjour, je m'appelle Leo. Je suis un assistant de discussion et de traitement de texte basé sur Claude Sonnet, un modèle développé par Anthropic. Le modèle Claude Sonnet est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur Llama 4 Scout, un modèle développé par Meta, conçu pour vous assister dans diverses tâches. Le modèle Llama 4 Scout est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur Llama 4 Maverick, un modèle développé par Meta, conçu pour vous assister dans diverses tâches. Le modèle Llama 4 Maverick est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur GPT OSS 20B, un modèle développé par OpenAI, conçu pour vous assister dans diverses tâches. Le modèle GPT OSS 20B est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur GPT OSS 120B, un modèle développé par OpenAI, conçu pour vous assister dans diverses tâches. Le modèle GPT OSS 120B est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur Mistral Large, un modèle développé par Mistral, conçu pour vous assister dans diverses tâches. Le modèle Mistral Large est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur Pixtral Large, un modèle développé par Mistral, conçu pour vous assister dans diverses tâches. Le modèle Pixtral Large est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur Qwen 3 235B, un modèle développé par Alibaba Cloud, conçu pour vous assister dans diverses tâches. Le modèle Qwen 3 235B est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur Deepseek V3.1, un modèle développé par Deepseek, conçu pour vous assister dans diverses tâches. Deepseek V3.1 est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur Deepseek V3.2, un modèle développé par Deepseek, conçu pour vous assister dans diverses tâches. Deepseek V3.2 est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur Qwen 3 Coder 480B, un modèle développé par Alibaba Cloud, conçu pour vous assister dans diverses tâches. Le modèle Qwen 3 Coder 480B est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Bonjour, je m'appelle Leo. Je suis un assistant de discussion et de traitement de texte basé sur Claude Opus, un modèle développé par Anthropic. Le modèle Claude Opus est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur GLM-4-7-Flash, un modèle développé par Zhipu AI, conçu pour vous assister dans diverses tâches. Le modèle GLM-4-7-Flash est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur Kimi K2.5, un modèle développé par Moonshot AI, conçu pour vous assister dans diverses tâches. Le modèle Kimi K2.5 est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">Bonjour, je m'appelle Leo. Je suis un assistant IA créé par Brave pour résumer les pages web. Je suis alimenté par Brave Ocelot, un modèle créé par Brave pour résumer les pages web. Brave Ocelot est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Local</translation>
 <translation id="830868413617744215">Bêta</translation>
@@ -2353,6 +2356,8 @@
 <translation id="7465032796278724624">Confidentialité vérifiable avec le TEE IA de NEAR</translation>
 <translation id="8782867266498869301">Le modèle utilisé peut varier selon la tâche à effectuer.</translation>
 <translation id="3213834013136637671">Recherche • Vision</translation>
+<translation id="5276681919620506371">Recherche • Outils</translation>
+<translation id="7434375176361995333">Résumés • Rapide</translation>
 <translation id="3965507912994218570">Paramètres de Leo</translation>
 <translation id="3754337604877048671">Découvrez Leo AI</translation>
 <translation id="5295261408976371809">Votre assistant IA <ph name="TEXT_BEFORE"/>privé<ph name="TEXT_AFTER"/>, intégré au navigateur.</translation>
@@ -2408,6 +2413,8 @@
 <translation id="4572010449071015143">Démarrer une nouvelle conversation</translation>
 <translation id="345901077335355561">Revenir à la conversation en cours</translation>
 <translation id="6287023598025162715">Nouvelle conversation</translation>
+<translation id="7230502562132448519">Filtrer les conversations</translation>
+<translation id="821070843380699990">Veuillez essayer une autre requête</translation>
 <translation id="7097822247923237815">Conversation temporaire</translation>
 <translation id="7481750859362986254">Cette conversation ne sera pas enregistrée dans votre historique et n'utilisera aucune personnalisation ni élément mémorisé.</translation>
 <translation id="4238305333951712482">Mémoire mise à jour : <ph name="MEMORY_CONTENT"/></translation>
@@ -2445,6 +2452,21 @@
 <translation id="6338250692384725496">Code exécuté dans un bac à sable pour vous aider dans votre requête</translation>
 <translation id="4379566111233326721">Code :</translation>
 <translation id="3542130965673205258">Output:</translation>
+<translation id="5382076391290708074">Déplacement de vos onglets</translation>
+<translation id="3862123464576147769">L'autorisation de cela enverra l'<ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> et le <ph name="TITLE_FORMAT_START"/>Titre<ph name="TITLE_FORMAT_END"/> de tous vos onglets et groupes d'onglets à Brave IA, et permettra à Brave IA de les déplacer. Cette permission s'applique uniquement à cette conversation.</translation>
+<translation id="396165714586708444">Recherche approfondie</translation>
+<translation id="577747221882855891">Recherche : « <ph name="QUERY"/> »</translation>
+<translation id="5061713007774798338">Analyse de <ph name="COUNT"/> sources pour « <ph name="QUERY"/> »</translation>
+<translation id="1202264349398113062">Traitement de <ph name="COUNT"/> nouvelles URL pour « <ph name="QUERY"/> »</translation>
+<translation id="6189479600023022289"><ph name="COUNT"/> URL trouvées pour « <ph name="QUERY"/> »</translation>
+<translation id="5150674341374247355">Récupération de <ph name="FETCHED"/>/<ph name="TOTAL"/> URL</translation>
+<translation id="1075606740174445363"><ph name="COUNT"/> URL analysées pour « <ph name="QUERY"/> »</translation>
+<translation id="6220878652174655112">Recherche de <ph name="COUNT"/> requêtes</translation>
+<translation id="3571450204565012512"><ph name="URL_COUNT"/> URL analysées à partir de <ph name="QUERY_COUNT"/> recherches</translation>
+<translation id="5733200563889491347">Recherche terminée</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>m <ph name="SECONDS"/>s</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>s</translation>
+<translation id="5067194014665306881">Erreur de recherche : <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">Navigation avec IA</translation>
 <translation id="2854657728271352435">À propos du profil de navigation avec IA</translation>
 <translation id="2301685062527585986">Pour protéger vos données, ce profil de navigation avec IA isolé garantit que l’agent IA n’a pas accès à votre profil de navigation principal, avec uniquement les autorisations nécessaires pour visiter des sites et interagir avec eux. Vous pouvez améliorer votre productivité en lui confiant des tâches et en le laissant naviguer pour vous.</translation>
@@ -2509,11 +2531,14 @@
 <translation id="7847477075635510673">Masquer les actualités</translation>
 <translation id="9173319813356700250">ACTUALITÉS</translation>
 <translation id="6543799171249004861">Photo de <ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="466214682712474574">Connectez-vous à <ph name="PROVIDER"/> pour voir votre solde</translation>
 <translation id="8332875111286275890">Connectez-vous pour voir votre solde</translation>
 <translation id="5430001801813715388">RÉCOMPENSES</translation>
+<translation id="988042349921505128">Recherche et IA</translation>
 <translation id="2430295257226173518">Des réponses à toutes vos questions…</translation>
 <translation id="167018310108390163">Personnaliser la page de nouvel onglet</translation>
+<translation id="3500134717967948757">Afficher le widget Leo IA dans les nouveaux onglets</translation>
 <translation id="6851426306697017546">Afficher l'horloge</translation>
 <translation id="4844370919312937270">Afficher le widget du moteur de recherche dans les nouveaux onglets</translation>
 <translation id="7328310113820087094">Gagnez des BAT lorsque vous voyez des annonces sponsorisées sur la page de nouvel onglet grâce au <ph name="LINK_BEGIN"/>programme de récompenses Brave<ph name="LINK_END"/>.</translation>
@@ -2542,8 +2567,14 @@
 <translation id="8458987127502506209">Activer les boucliers Brave</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Les boucliers sont ACTIVÉS<ph name="STATUS_AFTER"/> pour ce site</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Les boucliers sont DÉSACTIVÉS<ph name="STATUS_AFTER"/> pour ce site</translation>
+<translation id="8426214145426269584">Les boucliers <ph name="UP_BEFORE"/>activés<ph name="UP_AFTER"/> pour ce site</translation>
+<translation id="3325367578778625743">Les boucliers <ph name="DOWN_BEFORE"/>désactivés<ph name="DOWN_AFTER"/> pour ce site</translation>
 <translation id="4724752924364329714">Si ce site semble ne pas fonctionner correctement, essayez de désactiver les boucliers.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Remarque : cette action peut perturber les protections de confidentialité.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">Cela peut réduire les protections de confidentialité de Brave. <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">Traqueurs, pubs et autres contenus bloqués.</translation>
+<translation id="4968268657895673116">Ce site ne fonctionne-t-il pas correctement avec les boucliers activés ?</translation>
+<translation id="5412004902081180614">Signaler</translation>
 <translation id="3620004479054499575">Vous rencontrez des problèmes avec ce site ?</translation>
 <translation id="9176447766421988172">Notre nouveau mode expérimental bloque uniquement les publicités pour améliorer la compatibilité avec les sites. Attention : toutes les protections de confidentialité seront désactivées. Souhaitez-vous activer ce mode ? <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Si vous rencontrez un problème avec un site à cause des protections de Brave, vous pouvez désactiver individuellement les boucliers.</translation>
@@ -2558,9 +2589,12 @@
 <translation id="8377155647357436161">Traqueurs, pubs et autres contenus bloqués. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Non protégé par les boucliers Brave <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Paramètres avancés</translation>
+<translation id="7939062555109487992">Paramètres avancés</translation>
 <translation id="5799940914270080805">La modification de ces paramètres pourrait empêcher certains sites de fonctionner.</translation>
 <translation id="9204041448536398473">Paramètres globaux des boucliers</translation>
 <translation id="2108334320919763866">Paramètres généraux par défaut</translation>
+<translation id="1896472873031845605">Tous les paramètres</translation>
+<translation id="8324318899000695659">Éléments bloqués</translation>
 <translation id="7205939464631857223">Effacer tous les éléments bloqués</translation>
 <translation id="3440043456924990296">Paramètres gérés par l'organisation</translation>
 <translation id="7053983685419859001">Bloquer</translation>
@@ -2645,7 +2679,6 @@
 <translation id="7207456302801184289">Bienvenue dans Brave</translation>
 <translation id="4988030440045495002">Thème ultra sombre</translation>
 <translation id="2422927186524098759">Barre latérale</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Barre d'outils</translation>
 <translation id="6225572914528673855">Barre d'adresse</translation>

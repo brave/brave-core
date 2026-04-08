@@ -80,6 +80,10 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Core.TabCount", {}},
     {"Brave.Core.WeeklyUsage", {}},
     {"Brave.Core.WeeklyUsage.Nebula", MetricConfig{.nebula = true}},
+    {"Brave.Core.WidevineEnabled", MetricConfig{
+      .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kWoi, MetricAttribute::kWeekOfActivation, MetricAttribute::kPlatform, MetricAttribute::kCountryCode},
+      .record_activation_date = true,
+    }},
     {"Brave.Core.WindowCount.2", {}},
     {"Brave.DNS.AutoSecureRequests.2", MetricConfig{.ephemeral = true}},
     {"Brave.DNS.AutoSecureRequests.Cloudflare.2", MetricConfig{.ephemeral = true}},

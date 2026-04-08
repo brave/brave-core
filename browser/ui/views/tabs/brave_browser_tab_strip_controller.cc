@@ -281,13 +281,9 @@ void BraveBrowserTabStripController::OnTreeTabChanged(
         if (IsActiveTab(index) && IsInCollapsedTreeTabNode(change.id)) {
           ExpandAllCollapsedAncestors(change.id);
         }
-
-        if (auto* tab_container =
-                views::AsViewClass<BraveTabContainer>(tab_view->parent())) {
-          tab_container->InvalidateIdealBounds();
-          tab_container->InvalidateLayout();
-        }
       }
+      static_cast<BraveTabStrip*>(tabstrip_.get())
+          ->InvalidateTabContainerLayout();
       break;
     }
     case TreeTabChange::Type::kNodeWillBeDestroyed: {
@@ -306,12 +302,9 @@ void BraveBrowserTabStripController::OnTreeTabChanged(
 
         auto* tab_view = tabstrip_->tab_at(index);
         tab_view->set_tree_tab_node(std::nullopt);
-        if (auto* tab_container =
-                views::AsViewClass<BraveTabContainer>(tab_view->parent())) {
-          tab_container->InvalidateIdealBounds();
-          tab_container->InvalidateLayout();
-        }
       }
+      static_cast<BraveTabStrip*>(tabstrip_.get())
+          ->InvalidateTabContainerLayout();
       break;
     }
     case TreeTabChange::Type::kNodeCollapsedStateChanged: {
@@ -324,7 +317,8 @@ void BraveBrowserTabStripController::OnTreeTabChanged(
         static_cast<BraveTab*>(tabstrip_->tab_at(index))
             ->UpdateTreeToggleButtonIcon();
       }
-      tabstrip_->InvalidateLayout();
+      static_cast<BraveTabStrip*>(tabstrip_.get())
+          ->InvalidateTabContainerLayout();
       break;
     }
   }

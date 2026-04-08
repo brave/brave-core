@@ -1837,6 +1837,7 @@
 <translation id="8897189056319316783">Shield ZEC</translation>
 <translation id="508249542337194541">ZEC અનશિલ્ડ કરો</translation>
 <translation id="3382275793825152362">ફંડને શિલ્ડ કરો</translation>
+<translation id="617149752238892649">ફંડને અનશીલ્ડ કરો</translation>
 <translation id="8631765320256788981">તમે તમારા ટ્રાન્સપેરેંટ એકાઉન્ટથી તમારા શિલ્ડ કરેલા એકાઉન્ટ પર ફંડ મોકલી રહ્યા છો.</translation>
 <translation id="3860364671495430495">તમે તમારા શિલ્ડ કરેલા એકાઉન્ટમાંથી તમારા ટ્રાન્સપેરેંટ એકાઉન્ટમાં ફંડ મોકલી રહ્યા છો.</translation>
 <translation id="7144878232160441200">ફરી પ્રયાસ કરો</translation>
@@ -2186,6 +2187,7 @@
     }</translation>
 <translation id="6961721183181597848">આજે હું કેવી રીતે મદદ કરી શકું?</translation>
 <translation id="2966135729673253768">અનુસંધાનની પુછતાછ</translation>
+<translation id="5923170497201832190">તળિયા પર સ્ક્રોલ કરો</translation>
 <translation id="6219262425964000211">અહીં ફાઇલો મૂકો</translation>
 <translation id="4313763911013851687">કોઈપણ ફાઇલોને વાતચીતમાં ઉમેરવા માટે અહીં મૂકો</translation>
 <translation id="4524675003624341892">પ્રસ્તાવનાઓ પૂછો...</translation>
@@ -2207,20 +2209,21 @@
 <translation id="999273441077650169">ટાસ્ક માટે શ્રેષ્ઠનો ઉપયોગ કરવા માટે મોડલ ગતિશીલ રીતે બદલાય છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Llama 3.1 8B દ્વારા સંચાલિત છું, જે Meta દ્વારા ઉત્કૃષ્ટ પ્રદર્શન અને વિવિધ માળખાકીય ઉદ્દેશ્ય માટે બનાવવામાં આવ્યું છે. Brave માં અમારાં પોતાના સુરક્ષિત ઢાંચા દ્વારા Llama હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">હાય, હું Leo છું. હું Brave નો AI સહાયક છું. હું Qwen VL 30B દ્વારા સંચાલિત છું, જે Alibaba Cloud દ્વારા ઉત્તમ પ્રદર્શન અને વિવિધ ઉપયોગ માટે તૈયાર કરવામાં આવ્યું છે. Qwen Brave માં અમારા પોતાના સુરક્ષિત માળખા મારફતે હોસ્ટ થયેલ છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">હાય, હું Leo છું. હું Brave નો AI સહાયક છું. હું DeepSeek V3.1 દ્વારા સંચાલિત છું, જે DeepSeek દ્વારા ઉત્તમ પ્રદર્શન અને વિવિધ ઉપયોગ માટે બનાવવામાં આવ્યો છે. DeepSeek V3.1 Brave ના પોતાના સુરક્ષિત માળખા દ્વારા હોસ્ટ થયેલ છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું GLM-5 દ્વારા સંચાલિત છું, જે Zhipu AI દ્વારા ઉત્કૃષ્ટ પ્રદર્શન અને વિવિધ માળખાકીય ઉદ્દેશ્ય માટે બનાવવામાં આવ્યું છે. GLM-5 NEAR દ્વારા હોસ્ટ કરવામાં આવે છે તેમના પોતાના ચકાસી શકાય તેવા ખાનગી સુરક્ષિત ઢાંચા દ્વારા.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">હાય, હું લિયો છું. હું Brave તરફથી એક AI સહાયક છું. હું Claude Instant દ્વારા સંચાલિત છું, જે ઉચ્ચારણ અને લખાણ પ્રક્રિયા કરવાના કાર્ય માટે બનાવવામાં આવેલ મોડલ છે અને Brave ની સુરક્ષિત ઇન્ફ્રાસ્ટ્રક્ચર દ્વારા હોસ્ટ કરવામાં આવેલ છે.<ph name="LINK_BEFORE"/>વિશેષ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Claude Haiku દ્વારા સંચાલિત છું, જે Anthropic દ્વારા વાર્તાલાપ અને ટેક્સ્ટ પ્રક્રિયા કાર્યો માટે બનાવવામાં આવ્યું છે. Brave માં અમારાં પોતનાં સુરક્ષિત ઢાંચા દ્વારા Claude Haiku હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Claude Sonnet દ્વારા સંચાલિત છું, જે Anthropic દ્વારા વાર્તાલાપ અને ટેક્સ્ટ પ્રક્રિયા કાર્યો માટે બનાવવામાં આવ્યું છે. Brave માં અમારાં પોતનાં સુરક્ષિત ઢાંચા દ્વારા Claude Sonnet હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Llama 4 Scout દ્વારા સંચાલિત છું, જે Meta દ્વારા ઉત્તમ પ્રદર્શન અને ઘણા ઉપયોગના કેસો માટે લાગુ પडे́ તેવી રીતે બનાવવામાં આવ્યું છે. Brave માં અમારાં પોતાના સુરક્ષિત ઢાંચા દ્વારા Llama 4 Scout હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Llama 4 Maverick દ્વારા સંચાલિત છું, જે Meta દ્વારા શ્રેષ્ઠ પ્રદર્શન અને વિવિધ ઉપયોગકેસ માટે યોગ્ય આકાર આપવામાં આવ્યો છે. Brave માં અમારાં પોતાના સુરક્ષિત ઢાંચા દ્વારા Llama 4 Maverick હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું GPT OSS 20B દ્વારા સંચાલિત છું, જે OpenAI દ્વારા શ્રેષ્ઠ પ્રદર્શન અને વિવિધ ઉપયોગકેસ માટે બનાવવામાં આવ્યું છે. GPT OSS 20B Brave ના પોતાના સુરક્ષિત ઢાંચા દ્વારા હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું GPT OSS 120B દ્વારા સંચાલિત છું, જે OpenAI દ્વારા શ્રેષ્ઠ પ્રદર્શન અને વિવિધ ઉપયોગકેસ માટે બનાવવામાં આવ્યું છે. GPT OSS 120B Brave ના પોતાના સુરક્ષિત ઢાંચા દ્વારા હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Mistral Large દ્વારા સંચાલિત છું, જે Mistral દ્વારા શ્રેષ્ઠ કાર્યક્ષમતા અને વિવિધ ઉપયોગ માટે લાગુ પડતા મૉડેલ તરીકે વિકસાવવામાં આવ્યું છે. Brave ના પોતાના સુરક્ષિત ઢાંચા દ્વારા Mistral Large હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Pixtral Large દ્વારા સંચાલિત છું, જે Mistral દ્વારા શ્રેષ્ઠ કાર્યક્ષમતા અને વિવિધ ઉપયોગ માટે લાગુ પાડેલ મૉડેલ છે. Brave ના પોતાના સુરક્ષિત ઇન્ફ્રાસ્ટ્રક્ચર દ્વારા Pixtral Large હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Qwen 3 235B દ્વારા સંચાલિત છું, જે Alibaba Cloud દ્વારા શ્રેષ્ઠ કાર્યક્ષમતા અને ઘણા ઉપયોગકેસ માટે બનાવવામાં આવ્યું છે. Brave ના પોતાના સુરક્ષિત માળખાં દ્વારા Qwen 3 235B હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Deepseek V3.1 દ્વારા સંચાલિત છું, જે Deepseek દ્વારા શ્રેષ્ઠ રજૂઆત અને વિવિધ ઉપયોગો માટે વિનિયોજન માટે બનાવવામાં આવ્યું છે. Brave ના પોતાના સુરક્ષિત ઢાંચા દ્વારા Deepseek V3.1 હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું DeepSeek V3.2 દ્વારા સંચાલિત છું, જે DeepSeek દ્વારા ઉત્કૃષ્ટ પ્રદર્શન અને વિવિધ માળખાકીય ઉદ્દેશ્ય માટે બનાવવામાં આવ્યું છે. DeepSeek V3.2 Brave માં અમારાં પોતાના સુરક્ષિત ઢાંચા દ્વારા હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Qwen 3 Coder 480B દ્વારા સંચાલિત છું, જે Alibaba Cloud દ્વારા શ્રેષ્ઠ કામગીરી અને અનેક ઉપયોગકેસ માટે લાગુ પડે તેવા મોડેલ તરીકે બનાવવામાં આવ્યું છે. Brave એ આ મોડલને પોતાનાં સુરક્ષિત ઢાંખાં હેઠળ હોસ્ટ કર્યું છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Claude Opus દ્વારા સંચાલિત છું, જે Anthropic દ્વારાવાર્તાલાપ અને લખાણ પ્રક્રિયા કાર્યો માટે બનાવવામાં આવ્યું છે. Brave એ Claude Opus ને પોતાનાં સુરક્ષિત ઢાંખાં દ્વારા હોસ્ટ કર્યું છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું GLM-4-7-Flash દ્વારા સંચાલિત છું, જે Zhipu AI દ્વારા ઉત્કૃષ્ટ પ્રદર્શન અને વિવિધ ઉપયોગકેસ માટે બનાવવામાં આવ્યું છે. GLM-4-7-Flash Brave ના પોતાના સુરક્ષિત ઢાંચા દ્વારા હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Kimi K2.5 દ્વારા સંચાલિત છું, જે Moonshot AI દ્વારા ઉત્કૃષ્ટ પ્રદર્શન અને વિવિધ ઉપયોગકેસ માટે બનાવવામાં આવ્યું છે. Kimi K2.5 Brave ના પોતાના સુરક્ષિત ઢાંચા દ્વારા હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Brave Ocelot દ્વારા સંચાલિત છું, જે Brave દ્વારા વેબ પૃષ્ઠોનો સારાંશ આપવા માટે બનાવવામાં આવ્યું છે. Brave Ocelot Brave ના પોતાના સુરક્ષિત ઢાંચા દ્વારા હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">પ્રાઈમ</translation>
 <translation id="5807427080183870259">લોકલ</translation>
 <translation id="830868413617744215">બેટા</translation>
@@ -2350,9 +2353,11 @@
 <translation id="2793458212460902934">ઝડપભર્યું • શોધ • ટૂલ્સ</translation>
 <translation id="8506027496671575183">શોધ • વિઝન • ટૂલ્સ</translation>
 <translation id="3184606955650139158">ઝડપભર્યું • શોધો • વિઝન</translation>
-<translation id="7465032796278724624">NEAR AI TEE સાથે ખંભે ખાતરી કરી શકાય તેવી ખાનગીતા</translation>
+<translation id="7465032796278724624">NEAR AI TEE સાથે ચકાસણીપૂર્વક ખાનગી</translation>
 <translation id="8782867266498869301">મોડલને ક્રિયાપ્રતિક્રિયાઓ માટે શ્રેષ્ઠ વિડીયો ઉપયોગ કરવા માટે ગતિશીલપણે બદલાય છે.</translation>
 <translation id="3213834013136637671">શોધ • વિઝન</translation>
+<translation id="5276681919620506371">શોધ • ટૂલ્સ</translation>
+<translation id="7434375176361995333">સારાંશ • ઝડપભર્યું</translation>
 <translation id="3965507912994218570">લિઓ સેટિંગ્સ</translation>
 <translation id="3754337604877048671">Leo AI નો પરિચય</translation>
 <translation id="5295261408976371809">તમારું <ph name="TEXT_BEFORE"/>ખાનગી<ph name="TEXT_AFTER"/> AI સહાયક, જે બ્રાઉઝરમાં જ બનાવવામાં આવ્યું છે.</translation>
@@ -2408,6 +2413,8 @@
 <translation id="4572010449071015143">નવી વાતચીત શરૂ કરો</translation>
 <translation id="345901077335355561">સક્રિય સંવાદ પર પાછા જાઓ</translation>
 <translation id="6287023598025162715">નવી વાતચીત</translation>
+<translation id="7230502562132448519">વાતચીતોને ફિલ્ટર કરો</translation>
+<translation id="821070843380699990">કૃપા કરી કોઇ અલગ પ્રશ્ન અજમાવો</translation>
 <translation id="7097822247923237815">કામચલાઉ ચેટ</translation>
 <translation id="7481750859362986254">આ ચેટ તમારા ઇતિહાસમાં સેવ નહીં થાય કે Leoના કોઈ કસ્ટમાઇઝેશન અથવા મેમરીનો ઉપયોગ નહીં કરે.</translation>
 <translation id="4238305333951712482">મેમરી અપડેટ કરી: <ph name="MEMORY_CONTENT"/></translation>
@@ -2445,6 +2452,21 @@
 <translation id="6338250692384725496">તમારા પ્રશ્નમાં મદદ કરવા માટે સેન્ડબોક્સમાં કોડ કાર્યચલન કર્યું</translation>
 <translation id="4379566111233326721">કોડ:</translation>
 <translation id="3542130965673205258">આઉટપુટ:</translation>
+<translation id="5382076391290708074">તમારી ટેબને ચારેબાજુ ખસેડી રહ્યા છીએ</translation>
+<translation id="3862123464576147769">આને મંજુરી આપવાથી તમારી તમામ ટેબ અને ટેબ ગ્રુપનું <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> અને <ph name="TITLE_FORMAT_START"/>શીર્ષક<ph name="TITLE_FORMAT_END"/> Brave AI ને મોકલવામાં આવશે, અને Brave AI તેમને ચારેબાજુ ખસેડવા દશે. આ પરવાનગી માત્ર આ વાતચીતમાં લાગુ પડે છે.</translation>
+<translation id="396165714586708444">ગહન સંશોધન</translation>
+<translation id="577747221882855891">શોધી રહ્યા છીએ: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">"<ph name="QUERY"/>" માટે <ph name="COUNT"/> સ્રોતોનું વિશ્લેષણ કરી રહ્યા છીએ</translation>
+<translation id="1202264349398113062">"<ph name="QUERY"/>" માટે <ph name="COUNT"/> નવા URLs પર પ્રક્રિયા કરી રહ્યા છીએ</translation>
+<translation id="6189479600023022289">"<ph name="QUERY"/>" માટે <ph name="COUNT"/> URLs મળ્યા</translation>
+<translation id="5150674341374247355"><ph name="FETCHED"/>/<ph name="TOTAL"/> URLs મેળવી રહ્યા છીએ</translation>
+<translation id="1075606740174445363">"<ph name="QUERY"/>" માટે <ph name="COUNT"/> URLs નું વિશ્લેષણ કર્યું</translation>
+<translation id="6220878652174655112"><ph name="COUNT"/> પ્રશ્નો શોધી રહ્યા છીએ</translation>
+<translation id="3571450204565012512"><ph name="QUERY_COUNT"/> શોધમાંથી <ph name="URL_COUNT"/> URLs નું વિશ્લેષણ કર્યું</translation>
+<translation id="5733200563889491347">સંશોધન પૂર્ણ</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>m <ph name="SECONDS"/>s</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>s</translation>
+<translation id="5067194014665306881">સંશોધન ભૂલ: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">AI બ્રાઉઝિંગ</translation>
 <translation id="2854657728271352435">AI બ્રાઉઝિંગ પ્રોફાઇલ વિશે</translation>
 <translation id="2301685062527585986">તમારા ડેટાને સુરક્ષિત રાખવા માટે, આ જુદી પડેલી AI બ્રાઉઝિંગ પ્રોફાઇલ એ સુનિશ્ચિત કરે છે કે એજન્ટને તમારા મુખ્ય બ્રાઉઝિંગ પ્રોફાઇલમાં પ્રવેશ મળતો નથી, અને તેને જરૂરીયાત મુજબ વેબસાઇટ્સ પર જઇને ક્રિયાઓ કરવાની પારમિશન હોય છે. તમે તેને ટાસ્ક આપીને અને તેને તમારી તરફથી બ્રાઉઝ કરવા દેીને તમારી કાર્યક્ષમતા વધારી શકો છો.</translation>
@@ -2509,11 +2531,14 @@
 <translation id="7847477075635510673">News છુપાવો</translation>
 <translation id="9173319813356700250">સમાચાર</translation>
 <translation id="6543799171249004861"><ph name="AUTHOR"/> દ્વારા ફોટો</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="466214682712474574">તમારા <ph name="PROVIDER"/> ખાતામાં પ્રવેશ કરો અને તમારું બેલેન્સ જુઓ</translation>
 <translation id="8332875111286275890">તમારું બેલેન્સ જોવા માટે લોગ ઇન કરો</translation>
 <translation id="5430001801813715388">પાસાનુંવું</translation>
+<translation id="988042349921505128">શોધ અને AI</translation>
 <translation id="2430295257226173518">કોઈપણ વસ્તુ પૂછો, કોઈપણ વસ્તુ શોધો...</translation>
 <translation id="167018310108390163">નવી ટેબ પેજ કસ્ટમાઇઝ કરો</translation>
+<translation id="3500134717967948757">નવી ટેબમાં Leo AI વિજેટ બતાવો</translation>
 <translation id="6851426306697017546">ઘડિયાળ બતાવો</translation>
 <translation id="4844370919312937270">નવી ટૅબમાં Brave સર્ચ વિજેટ બતાવો</translation>
 <translation id="7328310113820087094"><ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/> સાથે, તમે નવા ટેબ પેજની જાહેરાતો જોઈને કમાઈ શકો છો.</translation>
@@ -2542,8 +2567,14 @@
 <translation id="8458987127502506209">Brave શિલ્ડ સક્ષમ કરો</translation>
 <translation id="8443488493738411048">આ સાઇટ માટે <ph name="STATUS_BEFORE"/>Shields ચાલુ છે<ph name="STATUS_AFTER"/></translation>
 <translation id="2458631245058451506">આ સાઇટ માટે <ph name="STATUS_BEFORE"/>Shields બંધ છે<ph name="STATUS_AFTER"/></translation>
+<translation id="8426214145426269584">આ સાઇટ માટે શિલ્ડ્સ <ph name="UP_BEFORE"/>ચાલુ<ph name="UP_AFTER"/></translation>
+<translation id="3325367578778625743">આ સાઇટ માટે શિલ્ડ્સ <ph name="DOWN_BEFORE"/>બંધ<ph name="DOWN_AFTER"/></translation>
 <translation id="4724752924364329714">જો આ સાઇટ બરાબર ન દેખાતી હોય, તો શિલ્ડ નીચે કરી જુઓ.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>નોંધ: આ Brave ના ગોપનીયતા સંરક્ષણ ઘટાડે છે.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">આ Brave ની ગોપનીયતા સુરક્ષા ઘટાડી શકે છે. <ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">ટ્રેકર્સ, એડ્સ, અને વધુને બ્લોક કર્યું.</translation>
+<translation id="4968268657895673116">શું આ સાઇટ શિલ્ડ્સ ચાલુ હોય તે દરમિયાન યોગ્ય રીતે કામ કરતી નથી?</translation>
+<translation id="5412004902081180614">અહેવાલ</translation>
 <translation id="3620004479054499575">શું તમે આ સાઇટમાં તકલીફ અનુભવતા હોવ છો?</translation>
 <translation id="9176447766421988172">અમે સાઇટ સુસંગતતા વધારવા માટે એક પ્રયોગ કરી રહ્યા છીએ, જેમાં અમે ફક્ત એડ બ્લોકિંગ ચાલુ રાખીએ છીએ. ચેતવણી: તમામ ગોપનીયતા સંરક્ષણ દૂર કરે છે. શું તમે આ પ્રયાસ કરવા ઈચ્છો છો? <ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">વ્યક્તિગત વેબસાઇટ્સ જે Brave ના ગોપનીયતા સંરક્ષણથી બગડી ગઈ હોય, માટે તમે શિલ્ડ્સને નીચે ઘસાડી શકો છો.</translation>
@@ -2558,9 +2589,12 @@
 <translation id="8377155647357436161">ટ્રેકર્સ, એડ્સ, અને વધુને બ્લોક કર્યું <ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave શિલ્ડ્સ દ્વારા સુરક્ષિત નથી <ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">ઉન્નત કંટ્રોલ</translation>
+<translation id="7939062555109487992">ઉન્નત વિકલ્પ</translation>
 <translation id="5799940914270080805">આ સેટિંગ્સને બદલવાથી સાઇટ્સ તૂટી શકે છે.</translation>
 <translation id="9204041448536398473">વૈશ્વિક શિલ્ડ સેટિંગ્સ</translation>
 <translation id="2108334320919763866">વૈશ્વિક મૂળભૂત સેટિંગ્સ</translation>
+<translation id="1896472873031845605">વૈશ્વિક સેટિંગ્સ</translation>
+<translation id="8324318899000695659">તત્વોને બ્લોક કરો</translation>
 <translation id="7205939464631857223">બધા બ્લોક કરેલા એલિમેંટ સાફ કરો</translation>
 <translation id="3440043456924990296">સંગઠન દ્વારા મેનેજ દ્વારા સેટિંગ્સ</translation>
 <translation id="7053983685419859001">અવરોધિત કરો</translation>
@@ -2645,7 +2679,6 @@
 <translation id="7207456302801184289">Welcome to Brave</translation>
 <translation id="4988030440045495002">અલ્ટ્રા ડાર્ક થીમ</translation>
 <translation id="2422927186524098759">સાઇડબાર</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">ટૂલબાર</translation>
 <translation id="6225572914528673855">સરનામું બાર</translation>

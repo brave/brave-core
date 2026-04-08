@@ -323,6 +323,8 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="8813509417421129632">Integrirana stranica na <ph name="SITE"/> želi se spremiti</translation>
 <translation id="7700010743463174379">Ova stranica želi spremiti</translation>
 <translation id="6774238875569752630">Ugrađena stranica na ovoj stranici želi spremiti</translation>
+<translation id="1383876407941801731">Pretraži</translation>
+<translation id="5496587651328244253">Organiziraj</translation>
 <translation id="1233913566967531780">Fokus kartice</translation>
 <translation id="4034992002364254340">Skupite sve povezane kartice u novi prozor</translation>
 <translation id="8012125596344613514">Predložene teme</translation>
@@ -340,6 +342,7 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="6501807887341963552">Teme i boje</translation>
 <translation id="6724227215236550330">Spremljene lozinke pojavit će se ovdje. Da biste uvezli lozinke u <ph name="BRAND"/> na ovom uređaju, <ph name="BEGIN_LINK"/> odaberite dokument CSV<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">Da biste uvezli lozinke uo <ph name="BRAND"/> na ovom uređaju, odaberite dokument CSV</translation>
+<translation id="8570228839666486945">AI na uređaju</translation>
 <translation id="9156965752763025780">Promjene će početi vrijediti sljedeći put kad ponovo pokrenete preglednik Brave.</translation>
 <translation id="7179921470347911571">Ponovno pokreni sad</translation>
 <translation id="1426410128494586442">Da</translation>
@@ -392,6 +395,7 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="5297085818601043899">Opis elementa</translation>
 <translation id="5219886318310413094">Prikaži prikvačene kartice u svim prozorima</translation>
 <translation id="2396127686705429331">Prikaži gumb knjižnih oznaka</translation>
+<translation id="443318149139185498">Koristi logo u obliku obrisa na gumbu glavnog izbornika</translation>
 <translation id="2814998458708016836">Upotrijebi široku adresnu traku</translation>
 <translation id="4749586705247636385">Prikaži zaobljene kutove u glavnim područjima sadržaja</translation>
 <translation id="4109670531935487117">Prikaži prijedloge automatskog završavanja u adresnoj traci</translation>
@@ -545,7 +549,7 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="509873765238158442">Blokiraj Microsoft Recall</translation>
 <translation id="4763421121695677716">Blokira funkcionalnost Recall na računalima Microsoft Windows kako se ne bi automatski radile snimke zaslona bilo koje otvorene tablice u Braveu.</translation>
 <translation id="1968895725257436430">Prikupljanje podataka</translation>
-<translation id="4846154056248462491">Na izlasku</translation>
+<translation id="1700052872056357670">Izbriši podatke pri izlazu</translation>
 <translation id="216468847346280584">Obriši podatke o oglasima Brave</translation>
 <translation id="2808630562319398131">Ponovno postavite podatke za Brave Rewards...</translation>
 <translation id="6438096877646138757">Mrežna mjesta na kojima se uklanjaju kolačići kada ih zatvorite</translation>
@@ -791,6 +795,7 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="1529674267267221673">Pomoćnik Leo pojavljuje se u kontekstnom izborniku kada kliknete desnom tipkom miša na mrežno mjesto. Na taj način šaljete kontekst s trenutačne mrežne stranice pomoćniku Leu.</translation>
 <translation id="5226020406479918122">Način rada Fokus kartice</translation>
 <translation id="3705539672403311123">Omogućite organizaciju kartica na stranici Pretraživanje kartica. Kad je otvorena, ova funkcionalnost automatski šalje naslove i izvor svih ne-privatnih kartica Leu kako bi ih razvrstao. <ph name="BEGIN_LINK"/>Doznajte više<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">Zadani model za tab fokus</translation>
 <translation id="8172263161008556851">Prikaži predložene upite u razgovoru</translation>
 <translation id="5781842473834867765">Spremi povijest mog razgovora</translation>
 <translation id="1082960401708055995">Ako isključite spremanje razgovora trajno će se izbrisati svi prethodno spremljeni razgovori. Ova se radnja ne može opozvati.</translation>

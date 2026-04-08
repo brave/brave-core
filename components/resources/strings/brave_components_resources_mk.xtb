@@ -1823,6 +1823,7 @@
 <translation id="8897189056319316783">Заштити ZEC</translation>
 <translation id="508249542337194541">Незаштити ZEC</translation>
 <translation id="3382275793825152362">Заштити ги средствата</translation>
+<translation id="617149752238892649">Откажи ги средствата</translation>
 <translation id="8631765320256788981">Испраќате средства од вашата транспарентна сметка на вашата заштитена сметка.</translation>
 <translation id="3860364671495430495">Испраќате средства од вашата заштитена сметка на вашата транспарентна сметка.</translation>
 <translation id="7144878232160441200">Обиди се повторно</translation>
@@ -2172,6 +2173,7 @@
     }</translation>
 <translation id="6961721183181597848">Како можам да ви помогнам денес?</translation>
 <translation id="2966135729673253768">Постави последователно прашање</translation>
+<translation id="5923170497201832190">Премотај на дното</translation>
 <translation id="6219262425964000211">Испушти датотеки тука</translation>
 <translation id="4313763911013851687">Испушти било кои датотеки тука за да ги додадеш во разговорот</translation>
 <translation id="4524675003624341892">Предложи прашања...</translation>
@@ -2193,20 +2195,21 @@
 <translation id="999273441077650169">Моделот се менува динамички за да го користи најдобриот за задачата.<ph name="LINK_BEFORE"/>Дознајте повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Llama 3.1 8B, модел создаден од Meta да биде ефикасен и применлив за многу случаи. Llama е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Qwen VL 30B, модел создаден од Alibaba Cloud да биде ефикасен и применлив за многу случаи. Qwen е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува DeepSeek V3.1, модел создаден од DeepSeek да биде ефикасен и применлив за многу случаи. DeepSeek V3.1 е хостиран од NEAR преку нивна потврдена приватна сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува GLM-5, модел создаден од Zhipu AI да биде ефикасен и применлив за многу случаи. GLM-5 е хостиран од NEAR преку нивна потврдена приватна сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Здраво, јас сум Лео. Јас сум AI асистент од Brave. Работам со Claude Instant, модел создаден од Anthropic за разговори и обработка на текст. Claude Instant е хостиран од Brave преку нашата сопствена безбедна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Claude Haiku, модел создаден од Anthropic за поддршка на разговорни и задачи за обработка на текст. Claude Haiku е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Claude Sonnet, модел создаден од Anthropic за поддршка на разговорни и задачи за обработка на текст. Claude Sonnet е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Llama 4 Scout, модел создаден од Meta да биде ефикасен и применлив за многу случаи. Llama 4 Scout е хостиран од Brave преку нашата сопствена сигурна инфраструктура.&amp;<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Llama 4 Maverick, модел создаден од Meta да биде ефикасен и применлив за многу случаи. Llama 4 Maverick е хостиран од Brave преку нашата сопствена сигурна инфраструктура.&amp;<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува GPT OSS 20B, модел создаден од OpenAI да биде ефикасен и применлив за многу случаи. GPT OSS 20B е хостиран од Brave преку нашата сопствена сигурна инфраструктура.&amp;<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува GPT OSS 120B, модел создаден од OpenAI да биде ефикасен и применлив за многу случаи. GPT OSS 120B е хостиран од Brave преку нашата сопствена сигурна инфраструктура.&amp;<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Mistral Large, модел создаден од Mistral да биде ефикасен и применлив за многу случаи. Mistral Large е хостиран од Brave преку нашата сопствена сигурна инфраструктура.&amp;<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Pixtral Large, модел создаден од Mistral да биде ефикасен и применлив за многу случаи. Pixtral Large е хостиран од Brave преку нашата сопствена сигурна инфраструктура.&amp;<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Qwen 3 235B, модел создаден од Alibaba Cloud да биде ефикасен и применлив за многу случаи. Qwen 3 235B е хостиран од Brave преку нашата сопствена сигурна инфраструктура.&amp;<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Deepseek V3.1, модел создаден од Deepseek да биде ефикасен и применлив за многу случаи. Deepseek V3.1 е хостиран од Brave преку нашата сопствена сигурна инфраструктура.&amp;<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Deepseek V3.2, модел создаден од Deepseek да биде ефикасен и применлив за многу случаи. Deepseek V3.2 е хостиран од Brave преку нашата сопствена сигурна инфраструктура.&amp;<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Qwen 3 Coder 480B, модел создаден од Alibaba Cloud да биде ефикасен и применлив за многу случаи. Qwen 3 Coder 480B е хостиран од Brave преку нашата сопствена сигурна инфраструктура.&amp;<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Claude Opus, модел создаден од Anthropic за поддршка на разговорни и задачи за обработка на текст. Claude Opus е хостиран од Brave преку нашата сопствена сигурна инфраструктура.&amp;<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува GLM-4-7-Flash, модел создаден од Zhipu AI да биде ефикасен и применлив за многу случаи. GLM-4-7-Flash е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Kimi K2.5, модел создаден од Moonshot AI да биде ефикасен и применлив за многу случаи. Kimi K2.5 е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Brave Ocelot, модел создаден од Brave за резимирање на веб страницы. Brave Ocelot е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Локален</translation>
 <translation id="830868413617744215">Бета</translation>
@@ -2339,6 +2342,8 @@
 <translation id="7465032796278724624">Проверено приватно со NEAR AI TEE</translation>
 <translation id="8782867266498869301">Моделот се менува динамички за да го користи најдобриот за задачата</translation>
 <translation id="3213834013136637671">Пребарување • Визија</translation>
+<translation id="5276681919620506371">Пребарување • Алатки</translation>
+<translation id="7434375176361995333">Резимирања • Брзо</translation>
 <translation id="3965507912994218570">Leo поставки</translation>
 <translation id="3754337604877048671">Претставување на Leo AI</translation>
 <translation id="5295261408976371809">Вашиот <ph name="TEXT_BEFORE"/>приватен<ph name="TEXT_AFTER"/> AI асистент, директно вграден во прелистувачот.</translation>
@@ -2394,6 +2399,8 @@
 <translation id="4572010449071015143">Започни нов разговор</translation>
 <translation id="345901077335355561">Вратете се на активниот разговор</translation>
 <translation id="6287023598025162715">Нов разговор</translation>
+<translation id="7230502562132448519">Филтрирај разговори</translation>
+<translation id="821070843380699990">Обиди се со поинаква бара</translation>
 <translation id="7097822247923237815">Привремен разговор</translation>
 <translation id="7481750859362986254">Овој разговор нема да биде зачуван во вашата историја, ниту ќе користи персонализации или спомени на Лео.</translation>
 <translation id="4238305333951712482">Меморијата е ажурирана: <ph name="MEMORY_CONTENT"/></translation>
@@ -2431,6 +2438,21 @@
 <translation id="6338250692384725496">Извршен код во песочник за да се помогне со вашето барање</translation>
 <translation id="4379566111233326721">Код:</translation>
 <translation id="3542130965673205258">Излез:</translation>
+<translation id="5382076391290708074">Преместување на твоите картички</translation>
+<translation id="3862123464576147769">Дозволување на ова ќе испрати <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> и <ph name="TITLE_FORMAT_START"/>Наслов<ph name="TITLE_FORMAT_END"/> на сите твои Картички и Групи картички на Brave AI, и ќе дозволи Brave AI да ги движи. Оваа дозвола се однесува само на овој разговор.</translation>
+<translation id="396165714586708444">Длабоко истражување</translation>
+<translation id="577747221882855891">Пребарување: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">Анализирање <ph name="COUNT"/> извори за "<ph name="QUERY"/>"</translation>
+<translation id="1202264349398113062">Обработка <ph name="COUNT"/> нови URL-и за "<ph name="QUERY"/>"</translation>
+<translation id="6189479600023022289">Пронајдени <ph name="COUNT"/> URL-и за "<ph name="QUERY"/>"</translation>
+<translation id="5150674341374247355">Преземање <ph name="FETCHED"/>/<ph name="TOTAL"/> URL-и</translation>
+<translation id="1075606740174445363">Анализирани <ph name="COUNT"/> URL-и за "<ph name="QUERY"/>"</translation>
+<translation id="6220878652174655112">Пребарување <ph name="COUNT"/> барања</translation>
+<translation id="3571450204565012512">Анализирани <ph name="URL_COUNT"/> URL-и од <ph name="QUERY_COUNT"/> пребарувања</translation>
+<translation id="5733200563889491347">Истражувањето е завршено</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>m <ph name="SECONDS"/>s</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>s</translation>
+<translation id="5067194014665306881">Грешка во истражување: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">AI прелистување</translation>
 <translation id="2854657728271352435">За профилот за AI прелистување</translation>
 <translation id="2301685062527585986">За да ги заштити вашите податоци, овој изолиран профил за AI прелистување осигурува дека AI агентот нема пристап до вашиот главен профил за прелистување, со дозволи само за посета и интеракција со страници кога е потребно. Можете да ја зголемите вашата продуктивност давајќи му задачи и дозволувајќи му да прелистува наместо вас.</translation>
@@ -2495,11 +2517,14 @@
 <translation id="7847477075635510673">Скриј Вести</translation>
 <translation id="9173319813356700250">ВЕСТИ</translation>
 <translation id="6543799171249004861">Фотографија од <ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">Лео ВИ</translation>
 <translation id="466214682712474574">Најавете се на вашата <ph name="PROVIDER"/> сметка за да го видите вашето салдо</translation>
 <translation id="8332875111286275890">Најавете се за да го видите вашето салдо</translation>
 <translation id="5430001801813715388">НАГРАДИ</translation>
+<translation id="988042349921505128">Пребарување и AI</translation>
 <translation id="2430295257226173518">Пронајди или пренесување...</translation>
 <translation id="167018310108390163">Приспособете ја стр. на новата картичка</translation>
+<translation id="3500134717967948757">Прикажи го Лео AI графички элемент во нови табови</translation>
 <translation id="6851426306697017546">Прикажи часовник</translation>
 <translation id="4844370919312937270">Прикажи го Brave пребарувањето во новите табови</translation>
 <translation id="7328310113820087094">Со <ph name="LINK_BEGIN"/>Brave награди<ph name="LINK_END"/>, може да заработите од гледање реклами на новите картички.</translation>
@@ -2528,8 +2553,14 @@
 <translation id="8458987127502506209">Активирај Штитови на Brave</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Штитовите се ВКЛ<ph name="STATUS_AFTER"/> за оваа страница</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Штитовите се ИСКЛ<ph name="STATUS_AFTER"/> за оваа страница</translation>
+<translation id="8426214145426269584">Штитови <ph name="UP_BEFORE"/>горе<ph name="UP_AFTER"/> за оваа страница</translation>
+<translation id="3325367578778625743">Штитови <ph name="DOWN_BEFORE"/>долу<ph name="DOWN_AFTER"/> за оваа страница</translation>
 <translation id="4724752924364329714">Ако оваа страница не функционира, исклучете ги штитовите.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Забелешка: ова може да ги намали заштитите за приватност на Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">Ова може да ги намали приватните заштити на Brave. <ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">Блокирани следачи, реклами и друго.</translation>
+<translation id="4968268657895673116">Оваа страница не работи правилно со Штитовите горе?</translation>
+<translation id="5412004902081180614">Пријави</translation>
 <translation id="3620004479054499575">Дали доживувате проблеми со оваа страница?</translation>
 <translation id="9176447766421988172">Ние правиме експеримент за зголемување на компатибилноста на веб-страниците, каде што само блокирањето реклами е вклучено. Предупредување: се отстрануваат сите заштити за приватност. Дали сакате да го пробате? <ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Имајте на ум дека за поединечни веб-страници оштетени од заштитите за приватност на Brave, можете да ги поставите Штитовите на ИСКЛУЧЕНА СОСТОЈБА.</translation>
@@ -2544,9 +2575,12 @@
 <translation id="8377155647357436161">Следачи, реклами и многу блокирани <ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Не е заштитено од Brave Shields <ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Напредни контроли</translation>
+<translation id="7939062555109487992">Напредни опции</translation>
 <translation id="5799940914270080805">Промената на овие поставки може да ги оштети страниците.</translation>
 <translation id="9204041448536398473">Глобални поставки за штитови</translation>
 <translation id="2108334320919763866">Глобални стандарди</translation>
+<translation id="1896472873031845605">Глобални поставки</translation>
+<translation id="8324318899000695659">Блокирај елементи</translation>
 <translation id="7205939464631857223">Исчисти ги сите блокирани елементи</translation>
 <translation id="3440043456924990296">Поставките управувани од организација</translation>
 <translation id="7053983685419859001">Блокирај</translation>
@@ -2631,7 +2665,6 @@
 <translation id="7207456302801184289">Добре дојдовте на Brave</translation>
 <translation id="4988030440045495002">Ултра темна тема</translation>
 <translation id="2422927186524098759">Странична лента</translation>
-<translation id="2361906291514218784">Лео ВИ</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Алатник</translation>
 <translation id="6225572914528673855">Адресна лента</translation>

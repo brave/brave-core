@@ -18,7 +18,7 @@ class BraveAdsConfirmationQueueItemBuilderUtilTest : public test::TestBase {};
 TEST_F(BraveAdsConfirmationQueueItemBuilderUtilTest,
        RetryProcessingConfirmationAfter) {
   // Arrange
-  const ScopedRandTimeDeltaSetterForTesting scoped_rand_time_delta(
+  const ScopedRandTimeDeltaWithJitterSetterForTesting scoped_rand_time_delta(
       base::Seconds(7));
 
   // Act

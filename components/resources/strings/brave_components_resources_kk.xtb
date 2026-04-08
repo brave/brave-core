@@ -1837,6 +1837,7 @@
 <translation id="8897189056319316783">Shield ZEC</translation>
 <translation id="508249542337194541">ZEC қорғаудан шығару</translation>
 <translation id="3382275793825152362">Қаржыны қорғау</translation>
+<translation id="617149752238892649">Қаржыны ашыту</translation>
 <translation id="8631765320256788981">Сіз қаржыны ашық аккаунттан қорғалған аккаунтқа жіберіп жатырсыз.</translation>
 <translation id="3860364671495430495">Сіз қаржыны қорғалған аккаунтыңыздан ашық аккаунтыңызға жіберіп жатырсыз.</translation>
 <translation id="7144878232160441200">Қайталау</translation>
@@ -2186,6 +2187,7 @@
  }</translation>
 <translation id="6961721183181597848">Сізге бүгін қалай көмектесе аламын?</translation>
 <translation id="2966135729673253768">Келесі сұрақ қою</translation>
+<translation id="5923170497201832190">Қойындыны төмен айналдыру</translation>
 <translation id="6219262425964000211">Файлдарды мұнда тастаңыз</translation>
 <translation id="4313763911013851687">Сөйлесуге қосу үшін кез келген файлдарды мұнда тастаңыз</translation>
 <translation id="4524675003624341892">Сұрақтарды ұсыну...</translation>
@@ -2207,20 +2209,21 @@
 <translation id="999273441077650169">Модель тапсырма үшін үздік болып өзгереді.<ph name="LINK_BEFORE"/>Толығырақ<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">Сәлем, мен Лео. Мен Brave жасаған AI көмекшісімін. Мен Meta жасаған, түрлі қолдану жағдайларына ыңғайлы болу үшін жасаған Llama 3.1 8B моделін қолданып жұмыс істеймін. Llama біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған. <ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Сәлем, мен Лео. Мен Brave жасаған AI көмекшімін. Мен Alibaba Cloud жасаған, түрлі қолдану жағдайларына ыңғайлы болу үшін жасаған Qwen VL 30B моделін қолданып жұмыс істеймін. Qwen біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған. <ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">Сәлем, мен Лео. Мен Brave жасаған AI көмекшімін. Мен DeepSeek жасаған, түрлі қолдану жағдайларына ыңғайлы болу үшін жасаған DeepSeek V3.1 моделін қолданып жұмыс істеймін. DeepSeek V3.1 олардың өз жеке әрі қауіпсіз инфрақұрылымында NEAR арқылы орналастырылған. <ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">Сәлем, мен Лео. Мен Brave жасаған AI көмекшімін. Мен GLM-5 моделін қолданып жұмыс істеймін, оны Zhipu AI жасаған орындықты істеуге және көптеген қолдану жағдайларына қолдану үшін құрастырылған. GLM-5 олардың өз жеке әрі қауіпсіз инфрақұрылымында NEAR арқылы орналастырылған.<ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Сәлем, менің атым Лео. Мен Brave жасаған Жасанды Интеллект көмекшісімін. Мен Anthropic компаниясы әзірлеген Claude Instant моделіне негізделемін және Brave-тің жеке қауіпсіз инфрақұрылымы арқылы ұсынылады.<ph name="LINK_BEFORE"/>Қосымша ақпарат алыңыз<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Сәлем, мен Лео. Мен Brave жасаған AI көмекшісімін. Мен Антропик жасаған Claude Haiku моделін қолданып, әңгімелесу және мәтіндерді өңдеу тапсырмаларын орындауға арналған. Claude Haiku біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған. <ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Сәлем, мен Лео. Мен Brave жасаған AI көмекшісімін. Мен Антропик жасаған Claude Sonnet моделін қолданып, әңгімелесу және мәтіндерді өңдеу тапсырмаларын орындауға арналған. Claude Sonnet біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған. <ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">Сәлем, мен Лео. Мен Brave жасаған AI көмекшісімін. Мен Meta жасаған, түрлі қолдану жағдайларына ыңғайлы болу үшін жасаған Llama 4 Scout моделін қолданып жұмыс істеймін. Llama 4 Scout біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған. <ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">Сәлем, мен Лео. Мен Brave жасаған AI көмекшісімін. Мен Meta жасаған, түрлі қолдану жағдайларына ыңғайлы болу үшін жасаған Llama 4 Maverick моделін қолданып жұмыс істеймін. Llama 4 Maverick біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған. <ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">Сәлем, мен Лео. Мен Brave жасаған AI көмекшісімін. Мен OpenAI жасаған, түрлі қолдану жағдайларына ыңғайлы болу үшін жасаған GPT OSS 20B моделін қолданып жұмыс істеймін. GPT OSS 20B біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған. <ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">Сәлем, мен Лео. Мен Brave жасаған AI көмекшісімін. Мен OpenAI жасаған, түрлі қолдану жағдайларына ыңғайлы болу үшін жасаған GPT OSS 120B моделін қолданып жұмыс істеймін. GPT OSS 120B біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған. <ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Сәлем, мен Лео. Мен Brave жасаған AI көмекшісімін. Мен Mistral жасаған, түрлі қолдану жағдайларына ыңғайлы болу үшін жасаған Mistral Large моделін қолданып жұмыс істеймін. Mistral Large біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған. <ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">Сәлем, мен Лео. Мен Brave жасаған AI көмекшісімін. Мен Mistral жасаған, түрлі қолдану жағдайларына ыңғайлы болу үшін жасаған Pixtral Large моделін қолданып жұмыс істеймін. Pixtral Large біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған. <ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Сәлем, мен Лео. Мен Brave жасаған AI көмекшісімін. Мен Alibaba Cloud жасаған, түрлі қолдану жағдайларына ыңғайлы болу үшін жасаған Qwen 3 235B моделін қолданып жұмыс істеймін. Qwen 3 235B біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған. <ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">Сәлем, мен Лео. Мен Brave жасаған AI көмекшісімін. Мен Deepseek жасаған, түрлі қолдану жағдайларына ыңғайлы болу үшін жасаған Deepseek V3.1 моделін қолданып жұмыс істеймін. Deepseek V3.1 біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған. <ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">Сәлем, мен Лео. Мен Brave жасаған AI көмекшісімін. Мен Deepseek жасаған, түрлі қолдану жағдайларына ыңғайлы болу үшін жасаған Deepseek V3.2 моделін қолданып жұмыс істеймін. Deepseek V3.2 біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған. <ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">Сәлем, мен Лео. Мен Brave жасаған AI көмекшісімін. Мен Alibaba Cloud жасаған, түрлі қолдану жағдайларына ыңғайлы болу үшін жасаған Qwen 3 Coder 480B моделін қолданып жұмыс істеймін. Qwen 3 Coder 480B біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған. <ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Сәлем, мен Лео. Мен Brave жасаған AI көмекшісімін. Мен Антропик жасаған Claude Opus моделін қолданып, әңгімелесу және мәтіндерді өңдеу тапсырмаларын орындауға арналған. Claude Opus біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған. <ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">Сәлем, мен Лео. Мен Brave жасаған AI көмекшісімін. Мен GLM-4-7-Flash моделін қолданып жұмыс істеймін, оны Zhipu AI жасаған түрлі қолдану жағдайларына ыңғайлы болу үшін құрастырылған. GLM-4-7-Flash біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған.<ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">Сәлем, мен Лео. Мен Brave жасаған AI көмекшісімін. Мен Kimi K2.5 моделін қолданып жұмыс істеймін, оны Moonshot AI жасаған түрлі қолдану жағдайларына ыңғайлы болу үшін құрастырылған. Kimi K2.5 біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған.<ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">Сәлем, мен Лео. Мен Brave жасаған AI көмекшісімін. Мен веб-беттерді қорытындылау үшін құрастырылған Brave Ocelot моделін қолданып жұмыс істеймін. Brave Ocelot біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған.<ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Премиум</translation>
 <translation id="5807427080183870259">Жергілікті</translation>
 <translation id="830868413617744215">Бета</translation>
@@ -2353,6 +2356,8 @@
 <translation id="7465032796278724624">NEAR AI TEE көмегімен расталған құпиялық</translation>
 <translation id="8782867266498869301">Модель тапсырма үшін үздік болып өзгереді</translation>
 <translation id="3213834013136637671">Іздеу • Көру мүмкіндігі</translation>
+<translation id="5276681919620506371">Іздеу • Құралдар</translation>
+<translation id="7434375176361995333">Қорытындылар • Жылдам</translation>
 <translation id="3965507912994218570">Лео параметрлері</translation>
 <translation id="3754337604877048671">Leo AI көмегімен танысу</translation>
 <translation id="5295261408976371809">Сіздің <ph name="TEXT_BEFORE"/>жекелікке басымдық беретін<ph name="TEXT_AFTER"/> ЖИ көмекшіңіз, браузерге ендірілген.</translation>
@@ -2408,6 +2413,8 @@
 <translation id="4572010449071015143">Жаңа әңгімелесуді бастау</translation>
 <translation id="345901077335355561">Белсенді әңгімені қайтару</translation>
 <translation id="6287023598025162715">Жаңа әңгімелесу</translation>
+<translation id="7230502562132448519">Әңгімелерді сүзгілеу</translation>
+<translation id="821070843380699990">Басқа сұрау қолданып көріңіз</translation>
 <translation id="7097822247923237815">Уақытша чат</translation>
 <translation id="7481750859362986254">Бұл чат тарихыңызға сақталмайды және Leo-ның ешқандай теңшелімдерін немесе естеліктерін пайдаланбайды.</translation>
 <translation id="4238305333951712482">Жад жаңартылды: <ph name="MEMORY_CONTENT"/></translation>
@@ -2445,6 +2452,21 @@
 <translation id="6338250692384725496">Сіздің сұрауыңызға көмектесу үшін құм қоршегінде код орындады</translation>
 <translation id="4379566111233326721">Код:</translation>
 <translation id="3542130965673205258">Шығыс:</translation>
+<translation id="5382076391290708074">Сіздің қойындыларын жайғастыру</translation>
+<translation id="3862123464576147769">Осыны ішінара беру Brave AI-ге <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> және <ph name="TITLE_FORMAT_START"/>Атауы<ph name="TITLE_FORMAT_END"/> барлық сіздің Қойындылар және Қойынды Топтарының және Brave AI-ге оларды жайғастыруға рұқсат етеді. Бұл рұқсат бұл әңгімеге ғана қолданылады.</translation>
+<translation id="396165714586708444">Терең ізденіс</translation>
+<translation id="577747221882855891">Іздеу: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">"<ph name="QUERY"/>" үшін <ph name="COUNT"/> көзінің талдауы</translation>
+<translation id="1202264349398113062">"<ph name="QUERY"/>" үшін <ph name="COUNT"/> жаңа URL іске асырылуы</translation>
+<translation id="6189479600023022289">"<ph name="QUERY"/>" үшін <ph name="COUNT"/> URL табылды</translation>
+<translation id="5150674341374247355"><ph name="FETCHED"/>/<ph name="TOTAL"/> URL индесінің ойластырылуы</translation>
+<translation id="1075606740174445363">"<ph name="QUERY"/>" үшін <ph name="COUNT"/> URL талданды</translation>
+<translation id="6220878652174655112"><ph name="COUNT"/> сұрау іздеу істеу</translation>
+<translation id="3571450204565012512"><ph name="QUERY_COUNT"/> істеу істердің <ph name="URL_COUNT"/> URL-ін талданды</translation>
+<translation id="5733200563889491347">Ойлау аяқталды</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>м <ph name="SECONDS"/>с</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>с</translation>
+<translation id="5067194014665306881">Ойлау қатесі: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">AI шолу</translation>
 <translation id="2854657728271352435">AI шолу профилі туралы</translation>
 <translation id="2301685062527585986">Деректеріңізді қорғау үшін бұл оқшауланған AI шолу профилі AI агентінің негізгі шолу профиліңізге қол жеткізе алмауына кепілдік береді және оған тек қажетті сайттарға кіріп, оларға әрекет жасауға ғана рұқсат беріледі. Оған тапсырмалар тағайындап, ол сіз үшін шолу жасағанда, жұмыс өнімділігіңізді арттыра аласыз.</translation>
@@ -2509,11 +2531,14 @@
 <translation id="7847477075635510673">Жаңалықтарды жасыру</translation>
 <translation id="9173319813356700250">ЖАҢАЛЫҚТАР</translation>
 <translation id="6543799171249004861">Фото <ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">Лео AI</translation>
 <translation id="466214682712474574">Баланс көру үшін <ph name="PROVIDER"/> аккаунтына кіріңіз</translation>
 <translation id="8332875111286275890">Балансты көру үшін кіріңіз</translation>
 <translation id="5430001801813715388">СЫЙАҚЫЛАР</translation>
+<translation id="988042349921505128">Іздеу және AI</translation>
 <translation id="2430295257226173518">Бәрсіне де сұрау қойыңыз...</translation>
 <translation id="167018310108390163">Жаңа қойынды бетін баптау</translation>
+<translation id="3500134717967948757">Жаңа қойындылардағы Лео AI виджетін көрсету</translation>
 <translation id="6851426306697017546">Сағатты көрсету</translation>
 <translation id="4844370919312937270">Жаңа қойындылардағы іздеу виджетін көрсету</translation>
 <translation id="7328310113820087094">Brave Rewards <ph name="LINK_BEGIN"/>жаңартылған қойындыларға жарнамаларды қарап, табыс таба аласыз.<ph name="LINK_END"/></translation>
@@ -2542,8 +2567,14 @@
 <translation id="8458987127502506209">Brave Shields функциясын қосу</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Бұл сайтта Shields ҚОСУЛЫ<ph name="STATUS_AFTER"/></translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Бұл сайтта Shields ӨШІРУЛІ<ph name="STATUS_AFTER"/></translation>
+<translation id="8426214145426269584">Shields <ph name="UP_BEFORE"/>ұстап<ph name="UP_AFTER"/> осы сайт үшін</translation>
+<translation id="3325367578778625743">Shields <ph name="DOWN_BEFORE"/>түсіп<ph name="DOWN_AFTER"/> осы сайт үшін</translation>
 <translation id="4724752924364329714">Егер бұл сайт бүлінген болып көрінсе, Shields-ті өшіріп көріңіз.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Ескерту: бұл Brave-тің құпиялылық қорғанысын азайтады.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">Бұл Brave-ның құпиялау қорғаулары төмендейді. <ph name="LINK_BEFORE"/>Көбірек білу<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">Трекерлер, жарнамалар және тағы да бәрі бұғатталды.</translation>
+<translation id="4968268657895673116">Осы сайт Shields ұстағанда дұрыс жұмыс істемеген сайт ба?</translation>
+<translation id="5412004902081180614">Есеп беру</translation>
 <translation id="3620004479054499575">Бұл сайтпен қиындықтар бар ма?</translation>
 <translation id="9176447766421988172">Біз сайтпен үйлесімділікті жақсартуға арналған экспериментті сынап көрудеміз, бұл кезде тек жарнама бұғаттау белсенді болады. Ескерту: барлық құпиялылық қорғанысы алынып тасталады. Қаласаңыз, сынап көресіз бе? <ph name="LINK_BEFORE"/>Толығырақ білу<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Brave-тің құпиялылық қорғауының әсерінен бүлінген жеке сайттар үшін Shields мәнін ТӨМЕН етіп орната аласыз.</translation>
@@ -2558,9 +2589,12 @@
 <translation id="8377155647357436161">Трекерлер, жарнамалар және көбірек бұғатталған. <ph name="LINK_BEFORE"/>Толығырақ білу<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave Shields қорғанысымен қорғалмаған. <ph name="LINK_BEFORE"/>Толығырақ білу<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Қосымша басқару құралдары</translation>
+<translation id="7939062555109487992">Қосымша параметрлер</translation>
 <translation id="5799940914270080805">Бұл параметрлерді өзгерту сайттарды бұғатыуы мүмкін.</translation>
 <translation id="9204041448536398473">Жалпы Shield параметрлері</translation>
 <translation id="2108334320919763866">Жалпы әдепкілер</translation>
+<translation id="1896472873031845605">Глобальды параметрлер</translation>
+<translation id="8324318899000695659">Элементтерді бұғаттау</translation>
 <translation id="7205939464631857223">Барлық бұғатталған элементтерді жою</translation>
 <translation id="3440043456924990296">Ұйым басқаратын параметрлер</translation>
 <translation id="7053983685419859001">Блоктау</translation>
@@ -2641,7 +2675,6 @@
 <translation id="7207456302801184289">Brave-ге қош келдіңіз</translation>
 <translation id="4988030440045495002">Өте қою тақырып</translation>
 <translation id="2422927186524098759">Шеткі баған</translation>
-<translation id="2361906291514218784">Лео AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Құралдар тақтасы</translation>
 <translation id="6225572914528673855">Мекенжай жолы</translation>

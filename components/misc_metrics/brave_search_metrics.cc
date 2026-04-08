@@ -123,6 +123,10 @@ void BraveSearchMetrics::MaybeRecordWidgetSearch(const GURL& url) {
   if (!IsBraveSearchURL(url)) {
     return;
   }
+  if (last_intent_url_ && *last_intent_url_ == url.spec()) {
+    return;
+  }
+  last_intent_url_ = url.spec();
   IncrementDictCount(kWidgetSearchCountKey);
 }
 #endif  // BUILDFLAG(IS_ANDROID)

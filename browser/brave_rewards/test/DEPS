@@ -1,3 +1,9 @@
 include_rules = [
   "+brave/components/ntp_background_images/common"
 ]
+
+specific_include_rules = {
+  "rewards_ofac_browsertest\.cc": [
+    "+brave/components/l10n/common/test/scoped_default_locale.h",
+  ],
+}

@@ -1842,6 +1842,7 @@
 <translation id="8897189056319316783">إخفاء ZEC</translation>
 <translation id="508249542337194541">إزالة حماية ZEC</translation>
 <translation id="3382275793825152362">أموال Shields</translation>
+<translation id="617149752238892649">إلغاء حماية الأموال</translation>
 <translation id="8631765320256788981">أنت ترسل الأموال من حسابك الشفاف إلى حسابك المحمي.</translation>
 <translation id="3860364671495430495">أنت ترسل الأموال من حسابك المحمي إلى حسابك الشفاف.</translation>
 <translation id="7144878232160441200">إعادة المحاولة</translation>
@@ -2191,6 +2192,7 @@
     }</translation>
 <translation id="6961721183181597848">كيف يمكنني مساعدتك اليوم؟</translation>
 <translation id="2966135729673253768">اطلب المتابعة</translation>
+<translation id="5923170497201832190">تمرير علامة التبويب لأسفل</translation>
 <translation id="6219262425964000211">إنزال الملفات هنا</translation>
 <translation id="4313763911013851687">أنزل أي ملفات هنا لإضافتها إلى المحادثة</translation>
 <translation id="4524675003624341892">اقتراح أسئلة...</translation>
@@ -2212,20 +2214,21 @@
 <translation id="999273441077650169">يتغير النموذج ديناميكيًا لاستخدام الأفضل للمهمة.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Llama 3.1 8B، وهو نموذج تم إنشاؤه من طرف Meta ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Llama من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Qwen VL 30B، وهو نموذج تم إنشاؤه من طرف Alibaba Cloud ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Qwen من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة DeepSeek V3.1، وهو نموذج تم إنشاؤه من طرف DeepSeek ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة DeepSeek V3.1 من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GLM-5، وهو نموذج تم إنشاؤه من طرف Zhipu AI ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة GLM-5 من خلال البنية التحتية الآمنة المتحققة من صحتها الخاصة بـ NEAR.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">مرحبًا، أنا ليو. أنا مساعد ذكي من Brave. أعمل بواسطة Claude Instant، نموذج طورته Anthropic لأداء مهام المحادثة ومعالجة النصوص. يتم تشغيل Claude Instant عبر بنية Brave التحتية الآمنة الخاصة.<ph name="LINK_BEFORE"/>اعرف المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Claude Haiku، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Haiku من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Claude Sonnet، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Sonnet من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Llama 4 Scout، وهو نموذج تم إنشاؤه من طرف Meta ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Llama 4 Scout من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Llama 4 Maverick، وهو نموذج تم إنشاؤه من طرف Meta ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Llama 4 Maverick من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GPT OSS 20B، وهو نموذج تم إنشاؤه من طرف OpenAI ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة GPT OSS 20B من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GPT OSS 120B، وهو نموذج تم إنشاؤه من طرف OpenAI ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة GPT OSS 120B من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Mistral Large، وهو نموذج تم إنشاؤه من طرف Mistral ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Mistral Large من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Pixtral Large، وهو نموذج تم إنشاؤه من طرف Mistral ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Pixtral Large من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Qwen 3 235B، وهو نموذج تم إنشاؤه من طرف Alibaba Cloud ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Qwen 3 235B من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Deepseek V3.1، وهو نموذج تم إنشاؤه من طرف Deepseek ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Deepseek V3.1 من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Deepseek V3.2، وهو نموذج تم إنشاؤه من طرف Deepseek ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Deepseek V3.2 من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Qwen 3 Coder 480B، وهو نموذج تم إنشاؤه من طرف Alibaba Cloud ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Qwen 3 Coder 480B من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Claude Opus، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Opus من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GLM-4-7-Flash، وهو نموذج تم إنشاؤه من طرف Zhipu AI ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة GLM-4-7-Flash من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Kimi K2.5، وهو نموذج تم إنشاؤه من طرف Moonshot AI ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Kimi K2.5 من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Brave Ocelot، وهو نموذج تم إنشاؤه من طرف Brave لتلخيص صفحات الويب. يتم استضافة Brave Ocelot من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">محلي</translation>
 <translation id="830868413617744215">بيتا</translation>
@@ -2358,6 +2361,8 @@
 <translation id="7465032796278724624">خاص يمكن التحقق منه باستخدام NEAR AI TEE</translation>
 <translation id="8782867266498869301">يتغير النموذج ديناميكيًا لاستخدام الأفضل للمهمة</translation>
 <translation id="3213834013136637671">Search • رؤى</translation>
+<translation id="5276681919620506371">بحث • أدوات</translation>
+<translation id="7434375176361995333">ملخصات • سريع</translation>
 <translation id="3965507912994218570">إعدادات Leo</translation>
 <translation id="3754337604877048671">تعرف على Leo AI</translation>
 <translation id="5295261408976371809">مساعدك الذكي <ph name="TEXT_BEFORE"/>الخاص<ph name="TEXT_AFTER"/>، مدمج مباشرة في المتصفح.</translation>
@@ -2413,6 +2418,8 @@
 <translation id="4572010449071015143">بدء محادثة جديدة</translation>
 <translation id="345901077335355561">العودة إلى المحادثة النشطة</translation>
 <translation id="6287023598025162715">محادثة جديدة</translation>
+<translation id="7230502562132448519">تصفية المحادثات</translation>
+<translation id="821070843380699990">يرجى تجربة استعلام مختلف</translation>
 <translation id="7097822247923237815">دردشة مؤقتة</translation>
 <translation id="7481750859362986254">لن يتم حفظ هذه الدردشة في سجلك أو استخدام أي من تخصيصات أو ذكريات Leo.</translation>
 <translation id="4238305333951712482">تم تحديث الذاكرة: <ph name="MEMORY_CONTENT"/></translation>
@@ -2450,6 +2457,21 @@
 <translation id="6338250692384725496">تم تنفيذ الكود في صندوق رمل للمساعدة في استعلامك</translation>
 <translation id="4379566111233326721">الكود:</translation>
 <translation id="3542130965673205258">الناتج:</translation>
+<translation id="5382076391290708074">نقل علامات التبويب الخاصة بك</translation>
+<translation id="3862123464576147769">السماح بهذا سيرسل <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> و <ph name="TITLE_FORMAT_START"/>العنوان<ph name="TITLE_FORMAT_END"/> لجميع علامات التبويب والمجموعات الخاصة بك إلى Brave AI، والسماح لـ Brave AI بنقلها حول. ينطبق هذا الإذن فقط على هذه المحادثة.</translation>
+<translation id="396165714586708444">البحث العميق</translation>
+<translation id="577747221882855891">البحث عن: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">تحليل <ph name="COUNT"/> مصادر لـ "<ph name="QUERY"/>"</translation>
+<translation id="1202264349398113062">معالجة <ph name="COUNT"/> عناوين URL جديدة لـ "<ph name="QUERY"/>"</translation>
+<translation id="6189479600023022289">وجدت <ph name="COUNT"/> عناوين URL لـ "<ph name="QUERY"/>"</translation>
+<translation id="5150674341374247355">جلب <ph name="FETCHED"/>/<ph name="TOTAL"/> عناوين URL</translation>
+<translation id="1075606740174445363">تم تحليل <ph name="COUNT"/> عنوان URL لـ "<ph name="QUERY"/>"</translation>
+<translation id="6220878652174655112">البحث عن <ph name="COUNT"/> استعلام</translation>
+<translation id="3571450204565012512">تم تحليل <ph name="URL_COUNT"/> عناوين URL من <ph name="QUERY_COUNT"/> عمليات بحث</translation>
+<translation id="5733200563889491347">انتهت عملية البحث</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>د <ph name="SECONDS"/>ث</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>ث</translation>
+<translation id="5067194014665306881">خطأ في البحث: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">تصفح AI</translation>
 <translation id="2854657728271352435">حول ملف التصفح باستخدام AI</translation>
 <translation id="2301685062527585986">لحماية بياناتك، يضمن ملف التصفح باستخدام AI المعزول هذا عدم وصول وكيل الذكاء الاصطناعي إلى ملف التصفح الرئيسي الخاص بك، مع السماح له فقط بزيارة المواقع والتفاعل معها عند الحاجة. يمكنك زيادة إنتاجيتك من خلال إعطائه المهام وتركه يتصفح بدلًا منك.</translation>
@@ -2514,11 +2536,14 @@
 <translation id="7847477075635510673">إخفاء الأخبار</translation>
 <translation id="9173319813356700250">الأخبار</translation>
 <translation id="6543799171249004861">الصورة بعدسة <ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">Leo الذكاء الاصطناعي</translation>
 <translation id="466214682712474574">سجّل الدخول إلى حسابك <ph name="PROVIDER"/> لمعرفة رصيدك</translation>
 <translation id="8332875111286275890">سجّل الدخول لمعرفة رصيدك</translation>
 <translation id="5430001801813715388">المكافآت</translation>
+<translation id="988042349921505128">البحث والذكاء الاصطناعي</translation>
 <translation id="2430295257226173518">اطرح أي سؤال وابحث عن أي شيء…</translation>
 <translation id="167018310108390163">تخصيص صفحة تبويب جديدة</translation>
+<translation id="3500134717967948757">إظهار أداة Leo AI في علامات التبويب الجديدة</translation>
 <translation id="6851426306697017546">عرض الساعة</translation>
 <translation id="4844370919312937270">إظهار أداة البحث في علامات التبويب الجديدة</translation>
 <translation id="7328310113820087094">مع <ph name="LINK_BEGIN"/>مكافآت Brave<ph name="LINK_END"/>، يمكنك الربح عند رؤية إعلانات صفحة التبويب الجديدة.</translation>
@@ -2547,8 +2572,14 @@
 <translation id="8458987127502506209">تمكين دروع حماية  Brave</translation>
 <translation id="8443488493738411048">دروع <ph name="STATUS_BEFORE"/> مفعلة<ph name="STATUS_AFTER"/> لهذا الموقع</translation>
 <translation id="2458631245058451506">دروع <ph name="STATUS_BEFORE"/>غير مفعلة<ph name="STATUS_AFTER"/> لهذا الموقع</translation>
+<translation id="8426214145426269584">Shields <ph name="UP_BEFORE"/>مفعلة<ph name="UP_AFTER"/> لهذا الموقع</translation>
+<translation id="3325367578778625743">Shields <ph name="DOWN_BEFORE"/>غير مفعلة<ph name="DOWN_AFTER"/> لهذا الموقع</translation>
 <translation id="4724752924364329714">إذا كان هذا الموقع يبدو معطلاً، جرب شيلدز داونز.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>ملاحظة: قد يقلل هذا من حماية خصوصية Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">قد يؤدي هذا إلى تقليل حماية الخصوصية في Brave. <ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="1574700443447059851">تم حظر أدوات التتبع والإعلانات وغيرها.</translation>
+<translation id="4968268657895673116">هل هذا الموقع لا يعمل بشكل صحيح مع Shields مفعلة؟</translation>
+<translation id="5412004902081180614">تقرير</translation>
 <translation id="3620004479054499575">هل تواجه مشاكل في هذا الموقع؟</translation>
 <translation id="9176447766421988172">نحن نجرب تجربة لزيادة توافق الموقع الإلكتروني، حيث نبقي على تمكين حظر الإعلانات فقط. تحذير: يزيل جميع وسائل حماية الخصوصية. هل ترغب في تجربتها؟ <ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">يُرجى ملاحظة أنه بالنسبة لمواقع الويب الفردية التي تعطلها حماية الخصوصية في Brave، يمكنك ضبط الدروع على "أسفل".</translation>
@@ -2563,9 +2594,12 @@
 <translation id="8377155647357436161">تم حظر أدوات التتبع والإعلانات وغيرها <ph name="LINK_BEFORE"/>معرفة المزيد <ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">غير محمي بواسطة Brave Shields <ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">الضوابط المتقدمة</translation>
+<translation id="7939062555109487992">خيارات متقدمة</translation>
 <translation id="5799940914270080805">قد يتسبب تغيير هذه الإعدادات في تعطل المواقع.</translation>
 <translation id="9204041448536398473">إعدادات دروع الحماية العالمية</translation>
 <translation id="2108334320919763866">الإعدادات الافتراضية العالمية</translation>
+<translation id="1896472873031845605">الإعدادات العامة</translation>
+<translation id="8324318899000695659">حظر العناصر</translation>
 <translation id="7205939464631857223">مسح جميع العناصر المحجوبة</translation>
 <translation id="3440043456924990296">الإعدادات التي تديرها المؤسسة</translation>
 <translation id="7053983685419859001">منع</translation>
@@ -2650,7 +2684,6 @@
 <translation id="7207456302801184289">مرحباً بك في Brave</translation>
 <translation id="4988030440045495002">مظهر فائق الظلام</translation>
 <translation id="2422927186524098759">الشريط الجانبي</translation>
-<translation id="2361906291514218784">Leo الذكاء الاصطناعي</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">شريط الأدوات</translation>
 <translation id="6225572914528673855">شريط العناوين</translation>

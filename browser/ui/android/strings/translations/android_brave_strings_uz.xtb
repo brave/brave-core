@@ -188,12 +188,27 @@
 <translation id="834487290629916192">KEYINROQ</translation>
 <translation id="4117451092682672487">Maxfiylikni himoyalash juda oson.</translation>
 <translation id="7909375417585209817">Brave birlamchi brauzer qilib sozlansa, bosilgan har bir havola Brave maxfiylik vositalaridan foydalanib ochiladi.</translation>
-<translation id="5148943178722443958">Brave rivojlanishiga yordam bering.</translation>
+<translation id="763369711159699222">Brave rivojlanishiga yordam bering</translation>
+<translation id="8025937231644975408">Qaysi xususiyatlardan eng ko'p foydalanayotganingizni bizga xabar bering.</translation>
 <translation id="6718362830686703942">Ilova ishdan chiqqan yoki qotib qolganida diagnostika hisobotlarini yuborish.</translation>
 <translation id="8616157231067364693">Brave foydalanuvchilarining qaysi funksiyalarni ishlatayotgani haqidagi maxfiy va anonim mahsulot axborotini yuborish.</translation>
 <translation id="2888496576732880897">Brave Qidiruvining o‘sishiga yordam bering</translation>
+<translation id="7198716519700700181">Oqim vaqtida to'siqlarni blokirovka qiling</translation>
 <translation id="7044431516245362795">Indeksni kengaytirish va qidiruv natijalarini yaxshilashga yordam berish uchun Web Discovery Project'da qatnashing. <ph name="LEARN_MORE_START"/>Batafsil.<ph name="LEARN_MORE_END"/></translation>
+<translation id="4847979153841887006">Brave logotipi</translation>
+<translation id="1389386068457132299">Onboarding foni</translation>
+<translation id="5101985748360228609">Yuqori barguzor dekoratsiyasi</translation>
+<translation id="5270920361877570459">Pastki barguzor dekoratsiyasi</translation>
+<translation id="4021716437419160885">Pastga aylantiring</translation>
+<translation id="4767173360729868049">Brave Qidiruviga yordam berishdagi illyustrasiya</translation>
+<translation id="8241918461631453498">To'siqlarni blokirovka qilish illyustratsiyasi</translation>
+<translation id="8213310572767907663">Brave-ni yaxshiroq qilish illyustratsiyasi</translation>
+<translation id="2427917529469438577">Sevimli oqim saytlarida zerikarli to'siqlarni blokirovka qiling.</translation>
 <translation id="7818938154803162778">Albatta, yordam beraman</translation>
+<translation id="5298784657468199167">Xira hisobotlarini yuboring</translation>
+<translation id="6188781052835527980">Ilova ishdan chiqqan yoki qotib qolganida diagnostika hisobotlarini yuborish.</translation>
+<translation id="4780647518983772446">Brave xususiyatlarining qaysi funksiyalarni ishlatayotgani haqidagi maxfiy va anonim mahsulot axborotini yuborish.</translation>
+<translation id="5109496672133133896">Maxfiy mahsulot tafsilotlari</translation>
 <translation id="3545804467215833536">Brave Qalqonlar bilan tanishish uchun bosing</translation>
 <translation id="1724327820822194498">Har sahifada Brave Shields bilan Brave bloklagan yomon narsalarni ko'ring.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> va <ph name="TRACKER"/> boshqa rekamalar &amp; va kuzatuvchilar bloklandi</translation>
@@ -387,7 +402,7 @@ Buni qilishga ishonchingiz komilmi?</translation>
 <translation id="717952606991220586">Oops, bir narsa xato. Iltimos, keyinroq qayta urinib ko'ring.</translation>
 <translation id="987264212798334818">Umumiy</translation>
 <translation id="1116694919640316211">Haqida</translation>
-<translation id="1275213816424141989">Balki keyinroq</translation>
+<translation id="2370739752330685659">Balki keyinroq</translation>
 <translation id="3624048886326677117">Trekerlar va reklamalarni bloklash (hujumkor)</translation>
 <translation id="7151914815476509258">Trekerlar va reklamalarni bloklash (Standart)</translation>
 <translation id="7384778069178817075">Barcha trekerlar va reklamalarga ruxsat berish</translation>
@@ -509,7 +524,6 @@ bloklandi</translation>
 <translation id="5705882733397021510">Orqaga qaytish</translation>
 <translation id="7889432931837317731">Imkon boʻlganda avtomatik ochish</translation>
 <translation id="1029304566263314007">Yuklash jarayoni to'g'risida xabarnomalarni koʻrsatish</translation>
-<translation id="2910433761530295035">Fayllarni qayerda saqlashni so'rash (SD karta aniqlangan bo'lsa)</translation>
 <translation id="2977501775944575564">Paralel Yuklash</translation>
 <translation id="6224180438946945617">Yuklash tezligini oshirish uchun paralel yuklashni yoqing</translation>
 <translation id="8967385052772844086">To'liq Maxfiylik Hisobotini ko'rish</translation>
@@ -940,6 +954,9 @@ Dastlab yanada koʻproq maʼlumot baham koʻrsangiz, bizning yordam xizmatimiz m
 <translation id="703185154752046151">Vidjet asosiy ekran qoʻshildi</translation>
 <translation id="4635094429202343515">Brave Qidiruv vidjetini sinab ko‘ring</translation>
 <translation id="4809681171446727314">Uy ekraningizdan maxfiy, mustaqil qidiruvga kirish imkoniyati.</translation>
+<translation id="3280562213547448728">Ovozli qidiruv</translation>
+<translation id="3925312712530886302">Maxfiy qidiruvni ochish</translation>
+<translation id="9214590551301647710">Leo-ni ochish</translation>
 <translation id="7751715172931488388">Vidjet qo'shish</translation>
 <translation id="7285167584112910782">Brave tezkor qidiruv</translation>
 <translation id="2326703104633309781">Brave Tarjimadan foydalanish</translation>
@@ -979,7 +996,14 @@ Dastlab yanada koʻproq maʼlumot baham koʻrsangiz, bizning yordam xizmatimiz m
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Andozalarga tiklash</translation>
 <translation id="4922034974043704366">Bu funksiya siz uni yoqqaningiz uchun yoqilgan</translation>
-<translation id="3144818380093107753">Brave Origin — bu obunaga asoslangan xizmat bo‘lib, u boshqa hollarda Brave kompaniyasini qo‘llab-quvvatlaydigan daromad keltiruvchi funksiyalarni o‘chirish imkoniyatini beradi. Brave Origin obunachilari sanoat yetakchi maxfiylik, reklamalarni bloklash va tezlik (Brave Qalqonlari orqali), shuningdek, muntazam dasturiy ta'minot yangilanishlari, Chromium yamoqlari va xavfsizlik hamda maxfiylik takomillashtirishlaridan foydalanishda davom etadilar. Ular shuningdek, Brave Leo, Yangiliklar, Rewards, Hamyon, VPN, Web3 domenlari va boshqalar kabi funksiyalarni o‘chirish variantini ochib beradilar.&lt;br/&gt;&lt;br/&gt;Obunachilar brauzer sozlamalari menyusida yangi boshqaruv panelini ko'radilar. Mavjud funksiyalar — kelgusida chiqariladigan barcha yangi funksiyalar bilan birga — shu yerda ko‘rinadi va andoza bo‘yicha o‘chirilgan bo‘ladi.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Eslatma: Brave Origin hozirda foydalanayotgan brauzer funksiyalarini o‘chirib qo‘ymaydi va Brave Qidiruv yoki Brave Qidiruv Ads funksiyalariga ta’sir qilmaydi.&lt;/b&gt;</translation>
+<translation id="2587535830241068901">Brave’ni moslashtiring va baribir Brave’ni qo‘llab-quvvatlang</translation>
+<translation id="7235314227387539944">Brave Origin - brauzer foydalanuvchilari uchun to'langan versiya bo'lib, Brave-ni biznes sifatida qo'llab-quvvatlash uchun zarur bo'lgan barcha xususiyatlarga ehtiyoj sezmaydigan, lekin faqat Brave taklif qiladigan maxfiylikni xohlaydiganlar uchun. Origin foydalanuvchilari bizning sanoat etakchi maxfiylik, bloklovchi va tezlik (Qalqonlar orqali), shuningdek muntazam dasturiy ta'minotning yangilanishlari, Chromium yamojalari va xavfsizlik hamda maxfiylik yaxshilanishlaridan foydalanishda davom etadilar. Origin brauzerdan ko'pchilik boshqa xususiyatlarni olib tashlaydi.</translation>
+<translation id="7941943775131052130">Eʼtibor bering, Brave Origin sotib olish Brave Qidiruv Premium-ga kirish huquqini ham oʻz ichiga oladi, chunki Origin Brave Qidiruv natijalari sahifasidagi Ads-ni olib tashlaydi.</translation>
+<translation id="2573819149217596923">Brave xususiyatlarini oʻzgartirish</translation>
+<translation id="7415416427817229128">Brave xususiyatini yoqish yoki oʻchirish brauzerning qayta ishga tushishini talab qiladi, shunda oʻzgarishlar amal qila boshlaydi. Hozir qayta ishga tushirmoqchimisiz?</translation>
+<translation id="2256115617011615191">Hozir qayta ishga tushiring</translation>
+<translation id="8554205386170195281">Sotib olish</translation>
+<translation id="7071521146534760487">Hisobni boshqarish</translation>
 <translation id="8613144770663526433">Brave hamyon bilan kirish</translation>
 <translation id="3696514931437952995">Siz <ph name="ORIGIN"/> ga kiryapsiz. Brave hamyon manzilingizni <ph name="ORIGIN"/> bilan boʻlishadi.</translation>
 <translation id="1028781062521375153">Tafsilotlarni koʻrish</translation>
@@ -1104,12 +1128,13 @@ Dastlab yanada koʻproq maʼlumot baham koʻrsangiz, bizning yordam xizmatimiz m
 <translation id="2735247450315842119">Maxfiy varaqlarda skrinshotlarga ruxsat berish</translation>
 <translation id="8420414929552321089">Ruxsat berilganda, maxfiy varaqlar boshqa ilovalar bilan ochiq bo'lganda ham ko'rinadi.</translation>
 <translation id="7956713633345437162">Mobil bukmarklar</translation>
+<translation id="7984508421152399880">Hozir sotib oling</translation>
 <translation id="6261139507111008244">Vazifamiz va ochiq manba ishlanmalarimizni qo'llab-quvvatlang</translation>
-<translation id="7882690061170175552">Qalqonlarga yo‘naltirilgan minimal brauzer interfeysi</translation>
+<translation id="6073373503121903099">Brave Qalqonlarga yo'naltirilgan minimal brauzer interfeysi</translation>
 <translation id="2267973897341040743">Asosiy reklama bloklash, maxfiylik va tezlikni saqlang</translation>
-<translation id="1361157028850796410">eng yaxshi narx</translation>
-<translation id="7280825497485894053">Oylik obuna</translation>
-<translation id="4570901726096223030">Origin haqida batafsil</translation>
+<translation id="3339535734679532460">Bir martalik sotib olish, qoʻshimcha obuna toʻlovi yo'q</translation>
+<translation id="2805615640226281689">Bir martalik sotib olish</translation>
+<translation id="261433018299584676">Kirish kodini olish</translation>
 <translation id="1943432128510653496">Parollarni saqlash</translation>
 <translation id="2100273922101894616">Avtomatik kirish</translation>
 <translation id="363596933471559332">Saytlarga kirish vaqtida saqlangan hisob ma’lumotlaridan foydalanish. Agar funksiya o‘chiq bo‘lsa, har safar kirish vaqtida hisob ma’lumotlarini to‘ldirish kerak bo‘ladi.</translation>
