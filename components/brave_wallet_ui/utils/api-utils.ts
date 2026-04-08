@@ -57,7 +57,9 @@ export function navigateToConnectHardwareWallet(
   }
 
   store.dispatch(PanelActions.navigateTo('connectHardwareWallet'))
-  store.dispatch(PanelActions.setHardwareWalletInteractionError(undefined))
+  store.dispatch(
+    PanelActions.setHardwareWalletInteractionError('deviceNotConnected'),
+  )
 }
 
 export const getHasPendingRequests = async () => {

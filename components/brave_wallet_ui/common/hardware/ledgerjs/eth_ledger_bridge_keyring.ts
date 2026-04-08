@@ -210,9 +210,12 @@ export default class EthereumLedgerBridgeKeyring
         derivationPath: path,
       })
     }
+
+    const deviceName = await this.getDeviceName()
     return {
       success: true,
-      accounts: accounts,
+      accounts,
+      deviceName: deviceName.success ? deviceName.deviceName : '',
     }
   }
 }

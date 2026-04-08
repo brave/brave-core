@@ -5,7 +5,13 @@
 
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import { LedgerMessagingTransport } from './ledger-messaging-transport'
-import { UnlockCommand, UnlockResponse } from './ledger-messages'
+import {
+  GetDeviceNameCommand,
+  GetDeviceNameResponse,
+  LedgerCommand,
+  UnlockCommand,
+  UnlockResponse,
+} from './ledger-messages'
 
 // LedgerUntrustedMessagingTransport is the messaging transport object
 // for chrome-untrusted://ledger-bridge. It primarily handles postMessages
@@ -20,12 +26,43 @@ export class LedgerUntrustedMessagingTransport //
 {
   constructor(targetWindow: Window, targetUrl: string) {
     super(targetWindow, targetUrl)
+
+    this.addCommandHandler<GetDeviceNameResponse>(
+      LedgerCommand.GetDeviceName,
+      this.handleGetDeviceName,
+    )
   }
 
   promptAuthorization = async () => {
     if (await this.authorizationNeeded()) {
       const transport = await TransportWebHID.create()
       await transport.close()
+    }
+  }
+
+  private handleGetDeviceName = async (
+    command: GetDeviceNameCommand,
+  ): Promise<GetDeviceNameResponse> => {
+    try {
+      const transport = await TransportWebHID.create()
+      const deviceName = transport.deviceModel?.productName ?? ''
+      transport.close()
+      return {
+        ...command,
+        payload: {
+          success: true,
+          deviceName,
+        },
+      }
+    } catch (error) {
+      return {
+        ...command,
+        payload: {
+          success: false,
+          error: 'Failed to get device name',
+          code: undefined,
+        },
+      }
     }
   }
 

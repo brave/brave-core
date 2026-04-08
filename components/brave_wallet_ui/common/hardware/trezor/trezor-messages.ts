@@ -18,6 +18,7 @@ export const kTrezorBridgeUrl = loadTimeData.getString(
 
 export enum TrezorCommand {
   Unlock = 'trezor-unlock',
+  GetDeviceName = 'trezor-get-device-name',
   GetAccounts = 'trezor-get-accounts',
   SignTransaction = 'trezor-sign-transaction',
   SignMessage = 'trezor-sign-message',
@@ -41,6 +42,20 @@ export type TrezorAccount = {
   publicKey: string
   serializedPath: string
   fingerprint: number
+}
+
+// GetDeviceName command
+export type GetDeviceNameResponse =
+  | Unsuccessful
+  | {
+      success: true
+      deviceName: string
+    }
+export type GetDeviceNameResponsePayload = CommandMessage & {
+  payload: GetDeviceNameResponse
+}
+export type GetDeviceNameCommand = CommandMessage & {
+  command: TrezorCommand.GetDeviceName
 }
 
 // Unlock command
@@ -108,6 +123,7 @@ export type SignTypedMessageResponsePayload = CommandMessage & {
 }
 
 export type TrezorFrameCommand =
+  | GetDeviceNameCommand
   | GetAccountsCommand
   | UnlockCommand
   | SignTransactionCommand

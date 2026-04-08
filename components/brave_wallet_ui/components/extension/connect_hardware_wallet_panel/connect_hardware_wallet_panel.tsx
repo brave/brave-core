@@ -48,6 +48,9 @@ import {
   EmptySpace,
 } from './connect_hardware_wallet_panel.style'
 import { Row, Column } from '../../shared/style'
+
+import { getDeviceNameFromDevice } from '../../../common/async/hardware'
+
 export interface Props {
   hardwareWalletCode: HardwareWalletResponseCodeType | undefined
 }
@@ -99,6 +102,8 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
 
   const { account: signMessageAccount } = useAccountQuery(request?.accountId)
 
+  const [deviceName, setDeviceName] = React.useState<string>('')
+
   // pending transactions
   const {
     onConfirm: onConfirmTransaction,
@@ -108,13 +113,38 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
 
   const account = signMessageAccount || confirmTransactionAccount
 
+  React.useEffect(() => {
+    let subscribed = true
+
+    const fetchDeviceName = async () => {
+      if (!account || !account.hardware) {
+        return
+      }
+
+      const name = await getDeviceNameFromDevice(
+        account.hardware.vendor,
+        account.accountId.coin,
+      )
+      if (subscribed) {
+        setDeviceName(name.success ? name.deviceName : '')
+      }
+    }
+
+    fetchDeviceName()
+
+    return () => {
+      subscribed = false
+    }
+  }, [account, hardwareWalletCode])
+
   // memos
   const isConnected = React.useMemo((): boolean => {
     return (
-      hardwareWalletCode !== 'deviceNotConnected'
+      deviceName != ''
+      && hardwareWalletCode !== 'deviceNotConnected'
       && hardwareWalletCode !== 'unauthorized'
     )
-  }, [hardwareWalletCode])
+  }, [deviceName, hardwareWalletCode])
 
   const title = React.useMemo(() => {
     if (!account) {
@@ -239,10 +269,9 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
             name={isConnected ? 'check-circle-filled' : 'close-circle-filled'}
           />
           {isConnected
-            ? getLocale('braveWalletConnectHardwarePanelConnected').replace(
-                '$1',
-                account.name,
-              )
+            ? getLocale('braveWalletConnectHardwarePanelConnected')
+                .replace('$1', account.name)
+                .replace('$2', deviceName)
             : getLocale('braveWalletConnectHardwarePanelDisconnected').replace(
                 '$1',
                 account.name,

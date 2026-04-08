@@ -188,6 +188,7 @@ export const HardwareWalletConnect = ({
     React.useState<boolean>(false)
   const hideAuthorizeDevice = () => setShowAuthorizeDevice(false)
   const [totalNumberOfAccounts, setTotalNumberOfAccounts] = React.useState(0)
+  const [deviceName, setDeviceName] = React.useState<string>('')
 
   const currentHardwareImportScheme: HardwareImportScheme =
     findHardwareImportScheme(currentDerivationScheme)
@@ -267,6 +268,7 @@ export const HardwareWalletConnect = ({
       }
       setIsLoadingAccounts(false)
       setShowAccountsList(result.success)
+      setDeviceName(result.success ? result.deviceName : '')
 
       if (result.success) {
         setAccounts((prev) =>
@@ -394,6 +396,7 @@ export const HardwareWalletConnect = ({
     return (
       <HardwareWalletAccountsList
         currentHardwareImportScheme={currentHardwareImportScheme}
+        deviceName={deviceName}
         supportedSchemes={supportedSchemes}
         setHardwareImportScheme={setHardwareImportScheme}
         accounts={accounts}

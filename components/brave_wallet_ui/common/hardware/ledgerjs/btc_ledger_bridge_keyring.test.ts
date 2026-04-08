@@ -14,6 +14,7 @@ import {
   LedgerCommand,
   UnlockResponse,
   BtcGetAccountResponse,
+  GetDeviceNameResponse,
 } from './ledger-messages'
 
 const createKeyring = () => {
@@ -47,9 +48,18 @@ const unlockSuccessResponse: UnlockResponse = {
   payload: { success: true },
 }
 
+const deviceNameResponse: GetDeviceNameResponse = {
+  id: LedgerCommand.GetDeviceName,
+  origin: window.origin,
+  command: LedgerCommand.GetDeviceName,
+  payload: { success: true, deviceName: 'Ledger Device' },
+}
+
 test('getAccounts unlock error', async () => {
   const { keyring, transport } = createKeyring()
   transport.addSendCommandResponse(unlockErrorResponse)
+  transport.addSendCommandResponse(deviceNameResponse)
+
   const result = await keyring.getAccounts(
     0,
     1,
@@ -84,6 +94,7 @@ test('getAccounts success', async () => {
     },
   }
   transport.addSendCommandResponse(getAccountsResponse2)
+  transport.addSendCommandResponse(deviceNameResponse)
 
   const result = await keyring.getAccounts(
     0,
@@ -102,6 +113,7 @@ test('getAccounts success', async () => {
         derivationPath: "84'/0'/1'",
       },
     ],
+    deviceName: 'Ledger Device',
   }
   expect(result).toEqual(expectedResult)
 })
@@ -118,6 +130,8 @@ test('getAccounts ledger error after successful unlock', async () => {
   }
 
   transport.addSendCommandResponse(getAccountResponseLedgerError)
+  transport.addSendCommandResponse(deviceNameResponse)
+
   const result = await keyring.getAccounts(
     0,
     1,
