@@ -57,6 +57,7 @@
 .leftSide {
   display: flex;
   flex: 1 1 auto;
+  width: 100%;
   flex-direction: row;
   align-items: center;
   gap: var(--leo-spacing-l);
@@ -68,6 +69,7 @@
 .info {
   display: flex;
   flex: 1 1 auto;
+  width: 100%;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
