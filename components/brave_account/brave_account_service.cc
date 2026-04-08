@@ -723,8 +723,11 @@ void BraveAccountService::NotifyObservers() {
 mojom::AccountStatePtr BraveAccountService::GetAccountState() const {
   if (!pref_service_->GetString(prefs::kBraveAccountAuthenticationToken)
            .empty()) {
-    return mojom::AccountState::NewLoggedIn(mojom::LoggedInState::New(
-        pref_service_->GetString(prefs::kBraveAccountEmailAddress)));
+    std::string email =
+        pref_service_->GetString(prefs::kBraveAccountEmailAddress);
+    CHECK(!email.empty());
+    return mojom::AccountState::NewLoggedIn(
+        mojom::LoggedInState::New(std::move(email)));
   }
 
   if (!pref_service_->GetString(prefs::kBraveAccountVerificationToken)

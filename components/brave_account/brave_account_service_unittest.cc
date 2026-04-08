@@ -34,6 +34,33 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+namespace {
+
+constexpr char kAuthenticationToken[] = "authentication_token";
+constexpr char kEmailAddress[] = "email@address.com";
+constexpr char kLoginToken[] = "login_token";
+constexpr char kVerificationToken[] = "verification_token";
+
+const std::string& EncryptedAuthenticationToken() {
+  static const base::NoDestructor<std::string> kEncryptedAuthenticationToken(
+      base::Base64Encode(kAuthenticationToken));
+  return *kEncryptedAuthenticationToken;
+}
+
+const std::string& EncryptedLoginToken() {
+  static const base::NoDestructor<std::string> kEncryptedLoginToken(
+      base::Base64Encode(kLoginToken));
+  return *kEncryptedLoginToken;
+}
+
+const std::string& EncryptedVerificationToken() {
+  static const base::NoDestructor<std::string> kEncryptedVerificationToken(
+      base::Base64Encode(kVerificationToken));
+  return *kEncryptedVerificationToken;
+}
+
+}  // namespace
+
 namespace brave_account {
 
 using endpoints::AuthValidate;
@@ -67,12 +94,12 @@ struct AuthenticationObserverTestCase {
         break;
       case mojom::AccountState::Tag::kVerification:
         pref_service.SetString(prefs::kBraveAccountVerificationToken,
-                               "verification_token");
+                               EncryptedVerificationToken());
         break;
       case mojom::AccountState::Tag::kLoggedIn:
-        pref_service.SetString(prefs::kBraveAccountEmailAddress, "email");
+        pref_service.SetString(prefs::kBraveAccountEmailAddress, kEmailAddress);
         pref_service.SetString(prefs::kBraveAccountAuthenticationToken,
-                               "authentication_token");
+                               EncryptedAuthenticationToken());
         break;
     }
 
@@ -93,12 +120,12 @@ struct AuthenticationObserverTestCase {
     switch (test_case.action) {
       case StateAction::kSwitchToVerification:
         pref_service.SetString(prefs::kBraveAccountVerificationToken,
-                               "verification_token");
+                               EncryptedVerificationToken());
         break;
       case StateAction::kSwitchToLoggedIn:
-        pref_service.SetString(prefs::kBraveAccountEmailAddress, "email");
+        pref_service.SetString(prefs::kBraveAccountEmailAddress, kEmailAddress);
         pref_service.SetString(prefs::kBraveAccountAuthenticationToken,
-                               "authentication_token");
+                               EncryptedAuthenticationToken());
         break;
       case StateAction::kSwitchToLoggedOut:
         pref_service.ClearPref(prefs::kBraveAccountAuthenticationToken);
@@ -143,7 +170,7 @@ AuthenticationObserverVerificationToLoggedIn() {
            .action =
                AuthenticationObserverTestCase::StateAction::kSwitchToLoggedIn,
            .to = mojom::AccountState::NewLoggedIn(
-               mojom::LoggedInState::New("email"))});
+               mojom::LoggedInState::New(kEmailAddress))});
   return kAuthenticationObserverVerificationToLoggedIn.get();
 }
 
@@ -153,7 +180,7 @@ AuthenticationObserverLoggedInToLoggedOut() {
       kAuthenticationObserverLoggedInToLoggedOut(
           {.test_name = "authentication_observer_logged_in_to_logged_out",
            .from = mojom::AccountState::NewLoggedIn(
-               mojom::LoggedInState::New("email")),
+               mojom::LoggedInState::New(kEmailAddress)),
            .action =
                AuthenticationObserverTestCase::StateAction::kSwitchToLoggedOut,
            .to = mojom::AccountState::NewLoggedOut(
@@ -171,7 +198,7 @@ AuthenticationObserverLoggedOutToLoggedIn() {
            .action =
                AuthenticationObserverTestCase::StateAction::kSwitchToLoggedIn,
            .to = mojom::AccountState::NewLoggedIn(
-               mojom::LoggedInState::New("email"))});
+               mojom::LoggedInState::New(kEmailAddress))});
   return kAuthenticationObserverLoggedOutToLoggedIn.get();
 }
 
@@ -182,7 +209,7 @@ AuthenticationObserverLoggedInToLoggedInEmailChange() {
           {.test_name =
                "authentication_observer_logged_in_to_logged_in_email_change",
            .from = mojom::AccountState::NewLoggedIn(
-               mojom::LoggedInState::New("email")),
+               mojom::LoggedInState::New(kEmailAddress)),
            .action =
                AuthenticationObserverTestCase::StateAction::kUpdateEmailAddress,
            .to = mojom::AccountState::NewLoggedIn(
@@ -254,7 +281,7 @@ const RegisterInitializeTestCase* RegisterInitializeBlindedMessageEmpty() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeBlindedMessageEmpty({
           .test_name = "register_initialize_blinded_message_empty",
-          .email = "email",
+          .email = kEmailAddress,
           .blinded_message = "",
           .fail_encryption = {},    // not used
           .fail_decryption = {},    // not used
@@ -269,7 +296,7 @@ RegisterInitializeBodyMissingOrFailedToParse() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeBodyMissingOrFailedToParse({
           .test_name = "register_initialize_body_missing_or_failed_to_parse",
-          .email = "email",
+          .email = kEmailAddress,
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -286,7 +313,7 @@ const RegisterInitializeTestCase* RegisterInitializeErrorCodeIsNull() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeErrorCodeIsNull({
           .test_name = "register_initialize_error_code_is_null",
-          .email = "email",
+          .email = kEmailAddress,
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -307,7 +334,7 @@ const RegisterInitializeTestCase* RegisterInitializeNewAccountEmailRequired() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeNewAccountEmailRequired({
           .test_name = "register_initialize_new_account_email_required",
-          .email = "email",
+          .email = kEmailAddress,
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -329,7 +356,7 @@ const RegisterInitializeTestCase* RegisterInitializeIntentNotAllowed() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeIntentNotAllowed({
           .test_name = "register_initialize_intent_not_allowed",
-          .email = "email",
+          .email = kEmailAddress,
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -351,7 +378,7 @@ const RegisterInitializeTestCase* RegisterInitializeTooManyVerifications() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeTooManyVerifications({
           .test_name = "register_initialize_too_many_verifications",
-          .email = "email",
+          .email = kEmailAddress,
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -373,7 +400,7 @@ const RegisterInitializeTestCase* RegisterInitializeAccountExists() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeAccountExists({
           .test_name = "register_initialize_account_exists",
-          .email = "email",
+          .email = kEmailAddress,
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -394,7 +421,7 @@ const RegisterInitializeTestCase* RegisterInitializeEmailDomainNotSupported() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeEmailDomainNotSupported({
           .test_name = "register_initialize_email_domain_not_supported",
-          .email = "email",
+          .email = kEmailAddress,
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -416,7 +443,7 @@ const RegisterInitializeTestCase* RegisterInitializeUnauthorized() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeUnauthorized({
           .test_name = "register_initialize_unauthorized",
-          .email = "email",
+          .email = kEmailAddress,
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -438,7 +465,7 @@ const RegisterInitializeTestCase* RegisterInitializeServerError() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeServerError({
           .test_name = "register_initialize_server_error",
-          .email = "email",
+          .email = kEmailAddress,
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -460,7 +487,7 @@ const RegisterInitializeTestCase* RegisterInitializeUnknown() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeUnknown({
           .test_name = "register_initialize_unknown",
-          .email = "email",
+          .email = kEmailAddress,
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -481,7 +508,7 @@ const RegisterInitializeTestCase* RegisterInitializeVerificationTokenEmpty() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeVerificationTokenEmpty({
           .test_name = "register_initialize_verification_token_empty",
-          .email = "email",
+          .email = kEmailAddress,
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -505,7 +532,7 @@ const RegisterInitializeTestCase* RegisterInitializeSerializedResponseEmpty() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeSerializedResponseEmpty({
           .test_name = "register_initialize_serialized_response_empty",
-          .email = "email",
+          .email = kEmailAddress,
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -515,7 +542,7 @@ const RegisterInitializeTestCase* RegisterInitializeSerializedResponseEmpty() {
                                      [] {
                                        PasswordInit::Response::SuccessBody body;
                                        body.verification_token =
-                                           "verification_token";
+                                           kVerificationToken;
                                        body.serialized_response = "";
                                        return body;
                                      }()}},
@@ -531,7 +558,7 @@ RegisterInitializeVerificationTokenFailedToEncrypt() {
       kRegisterInitializeVerificationTokenFailedToEncrypt({
           .test_name =
               "register_initialize_verification_token_failed_to_encrypt",
-          .email = "email",
+          .email = kEmailAddress,
           .blinded_message = "blinded_message",
           .fail_encryption = true,
           .fail_decryption = {},  // not used
@@ -541,7 +568,7 @@ RegisterInitializeVerificationTokenFailedToEncrypt() {
                                      [] {
                                        PasswordInit::Response::SuccessBody body;
                                        body.verification_token =
-                                           "verification_token";
+                                           kVerificationToken;
                                        body.serialized_response =
                                            "serialized_response";
                                        return body;
@@ -557,7 +584,7 @@ const RegisterInitializeTestCase* RegisterInitializeSuccess() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeSuccess({
           .test_name = "register_initialize_success",
-          .email = "email",
+          .email = kEmailAddress,
           .blinded_message = "blinded_message",
           .fail_encryption = false,
           .fail_decryption = {},  // not used
@@ -567,13 +594,13 @@ const RegisterInitializeTestCase* RegisterInitializeSuccess() {
                                      [] {
                                        PasswordInit::Response::SuccessBody body;
                                        body.verification_token =
-                                           "verification_token";
+                                           kVerificationToken;
                                        body.serialized_response =
                                            "serialized_response";
                                        return body;
                                      }()}},
           .mojo_expected = mojom::RegisterInitializeResult::New(
-              base::Base64Encode("verification_token"), "serialized_response"),
+              EncryptedVerificationToken(), "serialized_response"),
       });
   return kRegisterInitializeSuccess.get();
 }
@@ -655,8 +682,7 @@ const RegisterFinalizeTestCase* RegisterFinalizeSerializedRecordEmpty() {
   static const base::NoDestructor<RegisterFinalizeTestCase>
       kRegisterFinalizeSerializedRecordEmpty({
           .test_name = "register_finalize_serialized_record_empty",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .serialized_record = "",
           .fail_encryption = {},    // not used
           .fail_decryption = {},    // not used
@@ -671,8 +697,7 @@ RegisterFinalizeVerificationTokenFailedToDecrypt() {
   static const base::NoDestructor<RegisterFinalizeTestCase>
       kRegisterFinalizeVerificationTokenFailedToDecrypt({
           .test_name = "register_finalize_verification_token_failed_to_decrypt",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .serialized_record = "serialized_record",
           .fail_encryption = {},  // not used
           .fail_decryption = true,
@@ -688,8 +713,7 @@ const RegisterFinalizeTestCase* RegisterFinalizeBodyMissingOrFailedToParse() {
   static const base::NoDestructor<RegisterFinalizeTestCase>
       kRegisterFinalizeBodyMissingOrFailedToParse({
           .test_name = "register_finalize_body_missing_or_failed_to_parse",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .serialized_record = "serialized_record",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
@@ -706,8 +730,7 @@ const RegisterFinalizeTestCase* RegisterFinalizeErrorCodeIsNull() {
   static const base::NoDestructor<RegisterFinalizeTestCase>
       kRegisterFinalizeErrorCodeIsNull({
           .test_name = "register_finalize_error_code_is_null",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .serialized_record = "serialized_record",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
@@ -728,8 +751,7 @@ const RegisterFinalizeTestCase* RegisterFinalizeInterimPasswordStateNotFound() {
   static const base::NoDestructor<RegisterFinalizeTestCase>
       kRegisterFinalizeInterimPasswordStateNotFound({
           .test_name = "register_finalize_interim_password_state_not_found",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .serialized_record = "serialized_record",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
@@ -751,8 +773,7 @@ const RegisterFinalizeTestCase* RegisterFinalizeInterimPasswordStateExpired() {
   static const base::NoDestructor<RegisterFinalizeTestCase>
       kRegisterFinalizeInterimPasswordStateExpired({
           .test_name = "register_finalize_interim_password_state_expired",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .serialized_record = "serialized_record",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
@@ -774,8 +795,7 @@ const RegisterFinalizeTestCase* RegisterFinalizeUnauthorized() {
   static const base::NoDestructor<RegisterFinalizeTestCase>
       kRegisterFinalizeUnauthorized({
           .test_name = "register_finalize_unauthorized",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .serialized_record = "serialized_record",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
@@ -797,8 +817,7 @@ const RegisterFinalizeTestCase* RegisterFinalizeForbidden() {
   static const base::NoDestructor<RegisterFinalizeTestCase>
       kRegisterFinalizeForbidden({
           .test_name = "register_finalize_forbidden",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .serialized_record = "serialized_record",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
@@ -819,8 +838,7 @@ const RegisterFinalizeTestCase* RegisterFinalizeServerError() {
   static const base::NoDestructor<RegisterFinalizeTestCase>
       kRegisterFinalizeServerError({
           .test_name = "register_finalize_server_error",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .serialized_record = "serialized_record",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
@@ -842,8 +860,7 @@ const RegisterFinalizeTestCase* RegisterFinalizeUnknown() {
   static const base::NoDestructor<RegisterFinalizeTestCase>
       kRegisterFinalizeUnknown({
           .test_name = "register_finalize_unknown",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .serialized_record = "serialized_record",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
@@ -864,8 +881,7 @@ const RegisterFinalizeTestCase* RegisterFinalizeSuccess() {
   static const base::NoDestructor<RegisterFinalizeTestCase>
       kRegisterFinalizeSuccess({
           .test_name = "register_finalize_success",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .serialized_record = "serialized_record",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
@@ -961,8 +977,7 @@ ResendConfirmationEmailVerificationTokenFailedToDecrypt() {
       kResendConfirmationEmailVerificationTokenFailedToDecrypt({
           .test_name =
               "resend_confirmation_email_verification_token_failed_to_decrypt",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = true,
           .endpoint_response = {},  // not used
           .mojo_expected =
@@ -977,8 +992,7 @@ const ResendConfirmationEmailTestCase* ResendConfirmationEmailSuccess() {
   static const base::NoDestructor<ResendConfirmationEmailTestCase>
       kResendConfirmationEmailSuccess({
           .test_name = "resend_confirmation_email_success",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_NO_CONTENT,
@@ -992,8 +1006,7 @@ const ResendConfirmationEmailTestCase* ResendConfirmationEmailNetworkError() {
   static const base::NoDestructor<ResendConfirmationEmailTestCase>
       kResendConfirmationEmailNetworkError({
           .test_name = "resend_confirmation_email_network_error",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::ERR_CONNECTION_REFUSED,
                                  .status_code = std::nullopt,
@@ -1011,8 +1024,7 @@ ResendConfirmationEmailBodyMissingOrFailedToParse() {
       kResendConfirmationEmailBodyMissingOrFailedToParse({
           .test_name =
               "resend_confirmation_email_body_missing_or_failed_to_parse",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
@@ -1030,8 +1042,7 @@ ResendConfirmationEmailBadRequestWithNullErrorCode() {
       kResendConfirmationEmailBadRequestWithNullErrorCode({
           .test_name =
               "resend_confirmation_email_bad_request_with_null_error_code",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_BAD_REQUEST,
@@ -1053,8 +1064,7 @@ ResendConfirmationEmailMaximumEmailSendAttemptsExceeded() {
       kResendConfirmationEmailMaximumEmailSendAttemptsExceeded({
           .test_name =
               "resend_confirmation_email_maximum_email_send_attempts_exceeded",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_BAD_REQUEST,
@@ -1077,8 +1087,7 @@ ResendConfirmationEmailEmailAlreadyVerified() {
   static const base::NoDestructor<ResendConfirmationEmailTestCase>
       kResendConfirmationEmailEmailAlreadyVerified({
           .test_name = "resend_confirmation_email_email_already_verified",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_BAD_REQUEST,
@@ -1100,8 +1109,7 @@ const ResendConfirmationEmailTestCase* ResendConfirmationEmailServerError() {
   static const base::NoDestructor<ResendConfirmationEmailTestCase>
       kResendConfirmationEmailServerError({
           .test_name = "resend_confirmation_email_server_error",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
@@ -1121,8 +1129,7 @@ const ResendConfirmationEmailTestCase* ResendConfirmationEmailUnknown() {
   static const base::NoDestructor<ResendConfirmationEmailTestCase>
       kResendConfirmationEmailUnknown({
           .test_name = "resend_confirmation_email_unknown",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_TOO_EARLY,
@@ -1225,13 +1232,11 @@ const VerifyResultTestCase* VerifyResultVerificationTokenFailedToDecrypt() {
   static const base::NoDestructor<VerifyResultTestCase>
       kVerifyResultVerificationTokenFailedToDecrypt({
           .test_name = "verify_result_verification_token_failed_to_decrypt",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_encryption = {},  // not used
           .fail_decryption = true,
           .endpoint_response = {},  // not used
-          .expected_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .expected_verification_token = EncryptedVerificationToken(),
           .expected_authentication_token = "",
           .expected_email = "",
           .expected_verify_result_timer_delay = {},
@@ -1243,8 +1248,7 @@ const VerifyResultTestCase* VerifyResultSuccessAuthTokenNull() {
   static const base::NoDestructor<VerifyResultTestCase>
       kVerifyResultSuccessAuthTokenNull({
           .test_name = "verify_result_success_auth_token_null",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_encryption = {},  // not used
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
@@ -1256,8 +1260,7 @@ const VerifyResultTestCase* VerifyResultSuccessAuthTokenNull() {
                                        body.email = std::nullopt;
                                        return body;
                                      }()}},
-          .expected_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .expected_verification_token = EncryptedVerificationToken(),
           .expected_authentication_token = "",
           .expected_email = "",
           .expected_verify_result_timer_delay = kVerifyResultPollInterval,
@@ -1269,8 +1272,7 @@ const VerifyResultTestCase* VerifyResultSuccessAuthTokenEmpty() {
   static const base::NoDestructor<VerifyResultTestCase>
       kVerifyResultSuccessAuthTokenEmpty({
           .test_name = "verify_result_success_auth_token_empty",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_encryption = {},  // not used
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
@@ -1279,11 +1281,10 @@ const VerifyResultTestCase* VerifyResultSuccessAuthTokenEmpty() {
                                      [] {
                                        VerifyResult::Response::SuccessBody body;
                                        body.auth_token = base::Value("");
-                                       body.email = "email";
+                                       body.email = kEmailAddress;
                                        return body;
                                      }()}},
-          .expected_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .expected_verification_token = EncryptedVerificationToken(),
           .expected_authentication_token = "",
           .expected_email = "",
           .expected_verify_result_timer_delay = kVerifyResultPollInterval,
@@ -1295,8 +1296,7 @@ const VerifyResultTestCase* VerifyResultSuccessEmailNotPresent() {
   static const base::NoDestructor<VerifyResultTestCase>
       kVerifyResultSuccessEmailNotPresent({
           .test_name = "verify_result_success_email_not_present",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_encryption = {},  // not used
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
@@ -1309,8 +1309,7 @@ const VerifyResultTestCase* VerifyResultSuccessEmailNotPresent() {
                                        body.email = std::nullopt;
                                        return body;
                                      }()}},
-          .expected_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .expected_verification_token = EncryptedVerificationToken(),
           .expected_authentication_token = "",
           .expected_email = "",
           .expected_verify_result_timer_delay = kVerifyResultPollInterval,
@@ -1322,8 +1321,7 @@ const VerifyResultTestCase* VerifyResultSuccessEmailEmpty() {
   static const base::NoDestructor<VerifyResultTestCase>
       kVerifyResultSuccessEmailEmpty({
           .test_name = "verify_result_success_email_empty",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_encryption = {},  // not used
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
@@ -1336,8 +1334,7 @@ const VerifyResultTestCase* VerifyResultSuccessEmailEmpty() {
                                        body.email = "";
                                        return body;
                                      }()}},
-          .expected_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .expected_verification_token = EncryptedVerificationToken(),
           .expected_authentication_token = "",
           .expected_email = "",
           .expected_verify_result_timer_delay = kVerifyResultPollInterval,
@@ -1348,8 +1345,7 @@ const VerifyResultTestCase* VerifyResultSuccessEmailEmpty() {
 const VerifyResultTestCase* VerifyResultSuccess() {
   static const base::NoDestructor<VerifyResultTestCase> kVerifyResultSuccess({
       .test_name = "verify_result_success",
-      .encrypted_verification_token =
-          base::Base64Encode("encrypted_verification_token"),
+      .encrypted_verification_token = EncryptedVerificationToken(),
       .fail_encryption = {},  // not used
       .fail_decryption = false,
       .endpoint_response = {{.net_error = net::OK,
@@ -1357,13 +1353,14 @@ const VerifyResultTestCase* VerifyResultSuccess() {
                              .body =
                                  [] {
                                    VerifyResult::Response::SuccessBody body;
-                                   body.auth_token = base::Value("auth_token");
-                                   body.email = "email";
+                                   body.auth_token =
+                                       base::Value(kAuthenticationToken);
+                                   body.email = kEmailAddress;
                                    return body;
                                  }()}},
       .expected_verification_token = "",
-      .expected_authentication_token = base::Base64Encode("auth_token"),
-      .expected_email = "email",
+      .expected_authentication_token = EncryptedAuthenticationToken(),
+      .expected_email = kEmailAddress,
       .expected_verify_result_timer_delay = {},
   });
   return kVerifyResultSuccess.get();
@@ -1375,8 +1372,7 @@ VerifyResultSuccessAuthenticationTokenFailedToEncrypt() {
       kVerifyResultSuccessAuthenticationTokenFailedToEncrypt({
           .test_name =
               "verify_result_success_authentication_token_failed_to_encrypt",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_encryption = true,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
@@ -1386,7 +1382,7 @@ VerifyResultSuccessAuthenticationTokenFailedToEncrypt() {
                                        VerifyResult::Response::SuccessBody body;
                                        body.auth_token =
                                            base::Value("auth_token");
-                                       body.email = "email";
+                                       body.email = kEmailAddress;
                                        return body;
                                      }()}},
           .expected_verification_token = "",
@@ -1401,8 +1397,7 @@ const VerifyResultTestCase* VerifyResultBadRequest() {
   static const base::NoDestructor<VerifyResultTestCase> kVerifyResultBadRequest(
       {
           .test_name = "verify_result_bad_request",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_encryption = false,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
@@ -1424,8 +1419,7 @@ const VerifyResultTestCase* VerifyResultUnauthorized() {
   static const base::NoDestructor<VerifyResultTestCase>
       kVerifyResultUnauthorized({
           .test_name = "verify_result_unauthorized",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_encryption = false,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
@@ -1447,8 +1441,7 @@ const VerifyResultTestCase* VerifyResultInternalServerError() {
   static const base::NoDestructor<VerifyResultTestCase>
       kVerifyResultInternalServerError({
           .test_name = "verify_result_internal_server_error",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_encryption = {},  // not used
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
@@ -1458,8 +1451,7 @@ const VerifyResultTestCase* VerifyResultInternalServerError() {
                                    body.code = base::Value(0);
                                    return body;
                                  }())}},
-          .expected_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .expected_verification_token = EncryptedVerificationToken(),
           .expected_authentication_token = "",
           .expected_email = "",
           .expected_verify_result_timer_delay = kVerifyResultPollInterval,
@@ -1501,8 +1493,11 @@ struct AuthValidateTestCase {
                   PrefService& pref_service,
                   base::test::TaskEnvironment& task_environment,
                   base::OneShotTimer& auth_validate_timer) {
-    pref_service.SetString(prefs::kBraveAccountAuthenticationToken,
-                           test_case.encrypted_authentication_token);
+    if (test_case.logged_in) {
+      pref_service.SetString(prefs::kBraveAccountEmailAddress, kEmailAddress);
+      pref_service.SetString(prefs::kBraveAccountAuthenticationToken,
+                             EncryptedAuthenticationToken());
+    }
 
     task_environment.FastForwardBy(kAuthValidatePollInterval -
                                    base::Seconds(1));
@@ -1521,7 +1516,7 @@ struct AuthValidateTestCase {
   }
 
   std::string test_name;
-  std::string encrypted_authentication_token;
+  bool logged_in;
   bool fail_decryption;
   std::optional<EndpointResponse> endpoint_response;
   std::string expected_email;
@@ -1535,7 +1530,7 @@ const AuthValidateTestCase* AuthValidateAuthenticationTokenEmpty() {
   static const base::NoDestructor<AuthValidateTestCase>
       kAuthValidateAuthenticationTokenEmpty({
           .test_name = "auth_validate_authentication_token_empty",
-          .encrypted_authentication_token = "",
+          .logged_in = false,
           .fail_decryption = {},    // not used
           .endpoint_response = {},  // not used
           .expected_email = "",
@@ -1549,13 +1544,11 @@ const AuthValidateTestCase* AuthValidateAuthenticationTokenFailedToDecrypt() {
   static const base::NoDestructor<AuthValidateTestCase>
       kAuthValidateAuthenticationTokenFailedToDecrypt({
           .test_name = "auth_validate_authentication_token_failed_to_decrypt",
-          .encrypted_authentication_token =
-              base::Base64Encode("encrypted_authentication_token"),
+          .logged_in = true,
           .fail_decryption = true,
           .endpoint_response = {},  // not used
-          .expected_email = "",
-          .expected_authentication_token =
-              base::Base64Encode("encrypted_authentication_token"),
+          .expected_email = kEmailAddress,
+          .expected_authentication_token = EncryptedAuthenticationToken(),
           .expected_auth_validate_timer_delay = {},
       });
   return kAuthValidateAuthenticationTokenFailedToDecrypt.get();
@@ -1565,15 +1558,13 @@ const AuthValidateTestCase* AuthValidateSuccessNoBody() {
   static const base::NoDestructor<AuthValidateTestCase>
       kAuthValidateSuccessNoBody({
           .test_name = "auth_validate_success_no_body",
-          .encrypted_authentication_token =
-              base::Base64Encode("encrypted_authentication_token"),
+          .logged_in = true,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_OK,
                                  .body = {}}},
-          .expected_email = "",
-          .expected_authentication_token =
-              base::Base64Encode("encrypted_authentication_token"),
+          .expected_email = kEmailAddress,
+          .expected_authentication_token = EncryptedAuthenticationToken(),
           .expected_auth_validate_timer_delay = kAuthValidatePollInterval,
       });
   return kAuthValidateSuccessNoBody.get();
@@ -1583,8 +1574,7 @@ const AuthValidateTestCase* AuthValidateSuccessEmailEmpty() {
   static const base::NoDestructor<AuthValidateTestCase>
       kAuthValidateSuccessEmailEmpty({
           .test_name = "auth_validate_success_email_empty",
-          .encrypted_authentication_token =
-              base::Base64Encode("encrypted_authentication_token"),
+          .logged_in = true,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_OK,
@@ -1594,9 +1584,8 @@ const AuthValidateTestCase* AuthValidateSuccessEmailEmpty() {
                                        body.email = "";
                                        return body;
                                      }()}},
-          .expected_email = "",
-          .expected_authentication_token =
-              base::Base64Encode("encrypted_authentication_token"),
+          .expected_email = kEmailAddress,
+          .expected_authentication_token = EncryptedAuthenticationToken(),
           .expected_auth_validate_timer_delay = kAuthValidatePollInterval,
       });
   return kAuthValidateSuccessEmailEmpty.get();
@@ -1605,20 +1594,18 @@ const AuthValidateTestCase* AuthValidateSuccessEmailEmpty() {
 const AuthValidateTestCase* AuthValidateSuccess() {
   static const base::NoDestructor<AuthValidateTestCase> kAuthValidateSuccess({
       .test_name = "auth_validate_success",
-      .encrypted_authentication_token =
-          base::Base64Encode("encrypted_authentication_token"),
+      .logged_in = true,
       .fail_decryption = false,
       .endpoint_response = {{.net_error = net::OK,
                              .status_code = net::HTTP_OK,
                              .body =
                                  [] {
                                    AuthValidate::Response::SuccessBody body;
-                                   body.email = "email";
+                                   body.email = "email_from_response";
                                    return body;
                                  }()}},
-      .expected_email = "email",
-      .expected_authentication_token =
-          base::Base64Encode("encrypted_authentication_token"),
+      .expected_email = "email_from_response",
+      .expected_authentication_token = EncryptedAuthenticationToken(),
       .expected_auth_validate_timer_delay = kAuthValidatePollInterval,
   });
   return kAuthValidateSuccess.get();
@@ -1628,8 +1615,7 @@ const AuthValidateTestCase* AuthValidateUnauthorized() {
   static const base::NoDestructor<AuthValidateTestCase>
       kAuthValidateUnauthorized({
           .test_name = "auth_validate_unauthorized",
-          .encrypted_authentication_token =
-              base::Base64Encode("encrypted_authentication_token"),
+          .logged_in = true,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_UNAUTHORIZED,
@@ -1648,8 +1634,7 @@ const AuthValidateTestCase* AuthValidateUnauthorized() {
 const AuthValidateTestCase* AuthValidateForbidden() {
   static const base::NoDestructor<AuthValidateTestCase> kAuthValidateForbidden({
       .test_name = "auth_validate_forbidden",
-      .encrypted_authentication_token =
-          base::Base64Encode("encrypted_authentication_token"),
+      .logged_in = true,
       .fail_decryption = false,
       .endpoint_response = {{.net_error = net::OK,
                              .status_code = net::HTTP_FORBIDDEN,
@@ -1669,8 +1654,7 @@ const AuthValidateTestCase* AuthValidateInternalServerError() {
   static const base::NoDestructor<AuthValidateTestCase>
       kAuthValidateInternalServerError({
           .test_name = "auth_validate_internal_server_error",
-          .encrypted_authentication_token =
-              base::Base64Encode("encrypted_authentication_token"),
+          .logged_in = true,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
@@ -1679,9 +1663,8 @@ const AuthValidateTestCase* AuthValidateInternalServerError() {
                                    body.code = base::Value();
                                    return body;
                                  }())}},
-          .expected_email = "",
-          .expected_authentication_token =
-              base::Base64Encode("encrypted_authentication_token"),
+          .expected_email = kEmailAddress,
+          .expected_authentication_token = EncryptedAuthenticationToken(),
           .expected_auth_validate_timer_delay = kAuthValidatePollInterval,
       });
   return kAuthValidateInternalServerError.get();
@@ -1743,8 +1726,7 @@ CancelRegistrationVerificationTokenNonEmpty() {
   static const base::NoDestructor<CancelRegistrationTestCase>
       kCancelRegistrationVerificationTokenNonEmpty({
           .test_name = "cancel_registration_verification_token_non_empty",
-          .encrypted_verification_token =
-              base::Base64Encode("encrypted_verification_token"),
+          .encrypted_verification_token = EncryptedVerificationToken(),
           .expected_verification_token = "",
       });
   return kCancelRegistrationVerificationTokenNonEmpty.get();
@@ -1771,6 +1753,8 @@ struct LogOutTestCase {
   static void Run(const LogOutTestCase& test_case,
                   PrefService& pref_service,
                   mojom::Authentication& authentication) {
+    pref_service.SetString(prefs::kBraveAccountEmailAddress,
+                           test_case.email_address);
     pref_service.SetString(prefs::kBraveAccountAuthenticationToken,
                            test_case.encrypted_authentication_token);
     authentication.LogOut();
@@ -1779,6 +1763,7 @@ struct LogOutTestCase {
   }
 
   std::string test_name;
+  std::string email_address;
   std::string encrypted_authentication_token;
   std::string expected_authentication_token;
 };
@@ -1789,6 +1774,7 @@ const LogOutTestCase* LogOutAuthenticationTokenEmpty() {
   static const base::NoDestructor<LogOutTestCase>
       kLogOutAuthenticationTokenEmpty({
           .test_name = "log_out_authentication_token_empty",
+          .email_address = "",
           .encrypted_authentication_token = "",
           .expected_authentication_token = "",
       });
@@ -1799,8 +1785,8 @@ const LogOutTestCase* LogOutAuthenticationTokenNonEmpty() {
   static const base::NoDestructor<LogOutTestCase>
       kLogOutAuthenticationTokenNonEmpty({
           .test_name = "log_out_authentication_token_non_empty",
-          .encrypted_authentication_token =
-              base::Base64Encode("authentication_token"),
+          .email_address = kEmailAddress,
+          .encrypted_authentication_token = EncryptedAuthenticationToken(),
           .expected_authentication_token = "",
       });
   return kLogOutAuthenticationTokenNonEmpty.get();
@@ -1865,7 +1851,7 @@ const LoginInitializeTestCase* LoginInitializeSerializedKe1Empty() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeSerializedKe1Empty({
           .test_name = "login_initialize_serialized_ke1_empty",
-          .email = "email",
+          .email = kEmailAddress,
           .serialized_ke1 = "",
           .fail_encryption = {},    // not used
           .fail_decryption = {},    // not used
@@ -1879,7 +1865,7 @@ const LoginInitializeTestCase* LoginInitializeBodyMissingOrFailedToParse() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeBodyMissingOrFailedToParse({
           .test_name = "login_initialize_body_missing_or_failed_to_parse",
-          .email = "email",
+          .email = kEmailAddress,
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -1896,7 +1882,7 @@ const LoginInitializeTestCase* LoginInitializeErrorCodeIsNull() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeErrorCodeIsNull({
           .test_name = "login_initialize_error_code_is_null",
-          .email = "email",
+          .email = kEmailAddress,
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -1917,7 +1903,7 @@ const LoginInitializeTestCase* LoginInitializeEmailNotVerified() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeEmailNotVerified({
           .test_name = "login_initialize_email_not_verified",
-          .email = "email",
+          .email = kEmailAddress,
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -1939,7 +1925,7 @@ const LoginInitializeTestCase* LoginInitializeIncorrectCredentials() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeIncorrectCredentials({
           .test_name = "login_initialize_incorrect_credentials",
-          .email = "email",
+          .email = kEmailAddress,
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -1961,7 +1947,7 @@ const LoginInitializeTestCase* LoginInitializeIncorrectEmail() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeIncorrectEmail({
           .test_name = "login_initialize_incorrect_email",
-          .email = "email",
+          .email = kEmailAddress,
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -1982,7 +1968,7 @@ const LoginInitializeTestCase* LoginInitializeIncorrectPassword() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeIncorrectPassword({
           .test_name = "login_initialize_incorrect_password",
-          .email = "email",
+          .email = kEmailAddress,
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -2004,7 +1990,7 @@ const LoginInitializeTestCase* LoginInitializeServerError() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeServerError({
           .test_name = "login_initialize_server_error",
-          .email = "email",
+          .email = kEmailAddress,
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -2026,7 +2012,7 @@ const LoginInitializeTestCase* LoginInitializeUnknown() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeUnknown({
           .test_name = "login_initialize_unknown",
-          .email = "email",
+          .email = kEmailAddress,
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -2047,7 +2033,7 @@ const LoginInitializeTestCase* LoginInitializeLoginTokenEmpty() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeLoginTokenEmpty({
           .test_name = "login_initialize_login_token_empty",
-          .email = "email",
+          .email = kEmailAddress,
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -2070,7 +2056,7 @@ const LoginInitializeTestCase* LoginInitializeSerializedKe2Empty() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeSerializedKe2Empty({
           .test_name = "login_initialize_serialized_ke2_empty",
-          .email = "email",
+          .email = kEmailAddress,
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
@@ -2079,7 +2065,7 @@ const LoginInitializeTestCase* LoginInitializeSerializedKe2Empty() {
                                  .body =
                                      [] {
                                        LoginInit::Response::SuccessBody body;
-                                       body.login_token = "login_token";
+                                       body.login_token = kLoginToken;
                                        body.serialized_ke2 = "";
                                        return body;
                                      }()}},
@@ -2093,7 +2079,7 @@ const LoginInitializeTestCase* LoginInitializeLoginTokenFailedToEncrypt() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeLoginTokenFailedToEncrypt({
           .test_name = "login_initialize_login_token_failed_to_encrypt",
-          .email = "email",
+          .email = kEmailAddress,
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = true,
           .fail_decryption = {},  // not used
@@ -2102,7 +2088,7 @@ const LoginInitializeTestCase* LoginInitializeLoginTokenFailedToEncrypt() {
                                  .body =
                                      [] {
                                        LoginInit::Response::SuccessBody body;
-                                       body.login_token = "login_token";
+                                       body.login_token = kLoginToken;
                                        body.serialized_ke2 = "serialized_ke2";
                                        return body;
                                      }()}},
@@ -2117,7 +2103,7 @@ const LoginInitializeTestCase* LoginInitializeSuccess() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeSuccess({
           .test_name = "login_initialize_success",
-          .email = "email",
+          .email = kEmailAddress,
           .serialized_ke1 = "serialized_ke1",
           .fail_encryption = false,
           .fail_decryption = {},  // not used
@@ -2126,12 +2112,12 @@ const LoginInitializeTestCase* LoginInitializeSuccess() {
                                  .body =
                                      [] {
                                        LoginInit::Response::SuccessBody body;
-                                       body.login_token = "login_token";
+                                       body.login_token = kLoginToken;
                                        body.serialized_ke2 = "serialized_ke2";
                                        return body;
                                      }()}},
           .mojo_expected = mojom::LoginInitializeResult::New(
-              base::Base64Encode("login_token"), "serialized_ke2"),
+              EncryptedLoginToken(), "serialized_ke2"),
       });
   return kLoginInitializeSuccess.get();
 }
@@ -2225,7 +2211,7 @@ const LoginFinalizeTestCase* LoginFinalizeClientMacEmpty() {
   static const base::NoDestructor<LoginFinalizeTestCase>
       kLoginFinalizeClientMacEmpty({
           .test_name = "login_finalize_client_mac_empty",
-          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .encrypted_login_token = EncryptedLoginToken(),
           .client_mac = "",
           .fail_encryption = {},    // not used
           .fail_decryption = {},    // not used
@@ -2241,7 +2227,7 @@ const LoginFinalizeTestCase* LoginFinalizeLoginTokenFailedToDecrypt() {
   static const base::NoDestructor<LoginFinalizeTestCase>
       kLoginFinalizeLoginTokenFailedToDecrypt({
           .test_name = "login_finalize_login_token_failed_to_decrypt",
-          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .encrypted_login_token = EncryptedLoginToken(),
           .client_mac = "client_mac",
           .fail_encryption = {},  // not used
           .fail_decryption = true,
@@ -2259,7 +2245,7 @@ const LoginFinalizeTestCase* LoginFinalizeBodyMissingOrFailedToParse() {
   static const base::NoDestructor<LoginFinalizeTestCase>
       kLoginFinalizeBodyMissingOrFailedToParse({
           .test_name = "login_finalize_body_missing_or_failed_to_parse",
-          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .encrypted_login_token = EncryptedLoginToken(),
           .client_mac = "client_mac",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
@@ -2278,7 +2264,7 @@ const LoginFinalizeTestCase* LoginFinalizeErrorCodeIsNull() {
   static const base::NoDestructor<LoginFinalizeTestCase>
       kLoginFinalizeErrorCodeIsNull({
           .test_name = "login_finalize_error_code_is_null",
-          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .encrypted_login_token = EncryptedLoginToken(),
           .client_mac = "client_mac",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
@@ -2301,7 +2287,7 @@ const LoginFinalizeTestCase* LoginFinalizeInterimPasswordStateMismatch() {
   static const base::NoDestructor<LoginFinalizeTestCase>
       kLoginFinalizeInterimPasswordStateMismatch({
           .test_name = "login_finalize_interim_password_state_mismatch",
-          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .encrypted_login_token = EncryptedLoginToken(),
           .client_mac = "client_mac",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
@@ -2325,7 +2311,7 @@ const LoginFinalizeTestCase* LoginFinalizeInterimPasswordStateNotFound() {
   static const base::NoDestructor<LoginFinalizeTestCase>
       kLoginFinalizeInterimPasswordStateNotFound({
           .test_name = "login_finalize_interim_password_state_not_found",
-          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .encrypted_login_token = EncryptedLoginToken(),
           .client_mac = "client_mac",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
@@ -2349,7 +2335,7 @@ const LoginFinalizeTestCase* LoginFinalizeInterimPasswordStateHasExpired() {
   static const base::NoDestructor<LoginFinalizeTestCase>
       kLoginFinalizeInterimPasswordStateHasExpired({
           .test_name = "login_finalize_interim_password_state_has_expired",
-          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .encrypted_login_token = EncryptedLoginToken(),
           .client_mac = "client_mac",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
@@ -2373,7 +2359,7 @@ const LoginFinalizeTestCase* LoginFinalizeIncorrectCredentials() {
   static const base::NoDestructor<LoginFinalizeTestCase>
       kLoginFinalizeIncorrectCredentials({
           .test_name = "login_finalize_incorrect_credentials",
-          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .encrypted_login_token = EncryptedLoginToken(),
           .client_mac = "client_mac",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
@@ -2397,7 +2383,7 @@ const LoginFinalizeTestCase* LoginFinalizeIncorrectEmail() {
   static const base::NoDestructor<LoginFinalizeTestCase>
       kLoginFinalizeIncorrectEmail({
           .test_name = "login_finalize_incorrect_email",
-          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .encrypted_login_token = EncryptedLoginToken(),
           .client_mac = "client_mac",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
@@ -2420,7 +2406,7 @@ const LoginFinalizeTestCase* LoginFinalizeIncorrectPassword() {
   static const base::NoDestructor<LoginFinalizeTestCase>
       kLoginFinalizeIncorrectPassword({
           .test_name = "login_finalize_incorrect_password",
-          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .encrypted_login_token = EncryptedLoginToken(),
           .client_mac = "client_mac",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
@@ -2444,7 +2430,7 @@ const LoginFinalizeTestCase* LoginFinalizeServerError() {
   static const base::NoDestructor<LoginFinalizeTestCase>
       kLoginFinalizeServerError({
           .test_name = "login_finalize_server_error",
-          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .encrypted_login_token = EncryptedLoginToken(),
           .client_mac = "client_mac",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
@@ -2467,7 +2453,7 @@ const LoginFinalizeTestCase* LoginFinalizeServerError() {
 const LoginFinalizeTestCase* LoginFinalizeUnknown() {
   static const base::NoDestructor<LoginFinalizeTestCase> kLoginFinalizeUnknown({
       .test_name = "login_finalize_unknown",
-      .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+      .encrypted_login_token = EncryptedLoginToken(),
       .client_mac = "client_mac",
       .fail_encryption = {},  // not used
       .fail_decryption = false,
@@ -2490,7 +2476,7 @@ const LoginFinalizeTestCase* LoginFinalizeAuthTokenEmpty() {
   static const base::NoDestructor<LoginFinalizeTestCase>
       kLoginFinalizeAuthTokenEmpty({
           .test_name = "login_finalize_auth_token_empty",
-          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .encrypted_login_token = EncryptedLoginToken(),
           .client_mac = "client_mac",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
@@ -2501,7 +2487,7 @@ const LoginFinalizeTestCase* LoginFinalizeAuthTokenEmpty() {
                                        LoginFinalize::Response::SuccessBody
                                            body;
                                        body.auth_token = "";
-                                       body.email = "email";
+                                       body.email = kEmailAddress;
                                        return body;
                                      }()}},
           .expected_email = "",
@@ -2516,7 +2502,7 @@ const LoginFinalizeTestCase* LoginFinalizeEmailEmpty() {
   static const base::NoDestructor<LoginFinalizeTestCase>
       kLoginFinalizeEmailEmpty({
           .test_name = "login_finalize_email_empty",
-          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .encrypted_login_token = EncryptedLoginToken(),
           .client_mac = "client_mac",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
@@ -2542,7 +2528,7 @@ const LoginFinalizeTestCase* LoginFinalizeAuthenticationTokenFailedToEncrypt() {
   static const base::NoDestructor<LoginFinalizeTestCase>
       kLoginFinalizeAuthenticationTokenFailedToEncrypt({
           .test_name = "login_finalize_authentication_token_failed_to_encrypt",
-          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .encrypted_login_token = EncryptedLoginToken(),
           .client_mac = "client_mac",
           .fail_encryption = true,
           .fail_decryption = false,
@@ -2553,7 +2539,7 @@ const LoginFinalizeTestCase* LoginFinalizeAuthenticationTokenFailedToEncrypt() {
                                        LoginFinalize::Response::SuccessBody
                                            body;
                                        body.auth_token = "auth_token";
-                                       body.email = "email";
+                                       body.email = kEmailAddress;
                                        return body;
                                      }()}},
           .expected_email = "",
@@ -2568,7 +2554,7 @@ const LoginFinalizeTestCase* LoginFinalizeAuthenticationTokenFailedToEncrypt() {
 const LoginFinalizeTestCase* LoginFinalizeSuccess() {
   static const base::NoDestructor<LoginFinalizeTestCase> kLoginFinalizeSuccess({
       .test_name = "login_finalize_success",
-      .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+      .encrypted_login_token = EncryptedLoginToken(),
       .client_mac = "client_mac",
       .fail_encryption = false,
       .fail_decryption = false,
@@ -2577,12 +2563,12 @@ const LoginFinalizeTestCase* LoginFinalizeSuccess() {
                              .body =
                                  [] {
                                    LoginFinalize::Response::SuccessBody body;
-                                   body.auth_token = "auth_token";
-                                   body.email = "email";
+                                   body.auth_token = kAuthenticationToken;
+                                   body.email = kEmailAddress;
                                    return body;
                                  }()}},
-      .expected_email = "email",
-      .expected_authentication_token = base::Base64Encode("auth_token"),
+      .expected_email = kEmailAddress,
+      .expected_authentication_token = EncryptedAuthenticationToken(),
       .mojo_expected = mojom::LoginFinalizeResult::New(),
   });
   return kLoginFinalizeSuccess.get();
@@ -2635,9 +2621,10 @@ struct GetServiceTokenTestCase {
         prefs::kBraveAccountServiceTokens,
         std::move(test_case.service_tokens_dict).Run(base::Time::Now()));
 
-    if (test_case.set_authentication_token) {
+    if (test_case.logged_in) {
+      pref_service.SetString(prefs::kBraveAccountEmailAddress, kEmailAddress);
       pref_service.SetString(prefs::kBraveAccountAuthenticationToken,
-                             base::Base64Encode("auth_token"));
+                             EncryptedAuthenticationToken());
     }
 
     task_environment.FastForwardBy(test_case.time_advance);
@@ -2683,7 +2670,7 @@ struct GetServiceTokenTestCase {
   // when constructing the dictionary. This is necessary for cache expiration
   // tests that need to set timestamps relative to when the test runs.
   mutable base::OnceCallback<base::DictValue(base::Time)> service_tokens_dict;
-  bool set_authentication_token;
+  bool logged_in;
   bool fail_decryption;
   bool clear_authentication_token;
   bool fail_encryption;
@@ -2707,7 +2694,7 @@ const GetServiceTokenTestCase* GetServiceTokenCacheHit() {
                     .Set(prefs::keys::kLastFetched,
                          base::TimeToValue(mock_now)));
           }),
-          .set_authentication_token = {},    // not used
+          .logged_in = {},                   // not used
           .fail_decryption = {},             // not used
           .clear_authentication_token = {},  // not used
           .fail_encryption = {},             // not used
@@ -2725,7 +2712,7 @@ const GetServiceTokenTestCase* GetServiceTokenUserNotLoggedIn() {
           .test_name = "get_service_token_user_not_logged_in",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .set_authentication_token = {},    // not used
+          .logged_in = {},                   // not used
           .fail_decryption = {},             // not used
           .clear_authentication_token = {},  // not used
           .fail_encryption = {},             // not used
@@ -2745,7 +2732,7 @@ GetServiceTokenAuthenticationTokenDecryptionFailed() {
               "get_service_token_authentication_token_decryption_failed",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .set_authentication_token = true,
+          .logged_in = true,
           .fail_decryption = true,
           .clear_authentication_token = {},  // not used
           .fail_encryption = {},             // not used
@@ -2764,7 +2751,7 @@ const GetServiceTokenTestCase* GetServiceTokenAuthenticationSessionChanged() {
           .test_name = "get_service_token_authentication_session_changed",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .set_authentication_token = true,
+          .logged_in = true,
           .fail_decryption = false,
           .clear_authentication_token = true,
           .fail_encryption = {},  // not used
@@ -2791,7 +2778,7 @@ const GetServiceTokenTestCase* GetServiceTokenNetworkError() {
           .test_name = "get_service_token_network_error",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .set_authentication_token = true,
+          .logged_in = true,
           .fail_decryption = false,
           .clear_authentication_token = false,
           .fail_encryption = {},  // not used
@@ -2811,7 +2798,7 @@ const GetServiceTokenTestCase* GetServiceTokenBodyMissingOrFailedToParse() {
           .test_name = "get_service_token_body_missing_or_failed_to_parse",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .set_authentication_token = true,
+          .logged_in = true,
           .fail_decryption = false,
           .clear_authentication_token = false,
           .fail_encryption = {},  // not used
@@ -2831,7 +2818,7 @@ const GetServiceTokenTestCase* GetServiceTokenErrorCodeIsNull() {
           .test_name = "get_service_token_error_code_is_null",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .set_authentication_token = true,
+          .logged_in = true,
           .fail_decryption = false,
           .clear_authentication_token = false,
           .fail_encryption = {},  // not used
@@ -2855,7 +2842,7 @@ const GetServiceTokenTestCase* GetServiceTokenEmailDomainNotSupported() {
           .test_name = "get_service_token_email_domain_not_supported",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .set_authentication_token = true,
+          .logged_in = true,
           .fail_decryption = false,
           .clear_authentication_token = false,
           .fail_encryption = {},  // not used
@@ -2880,7 +2867,7 @@ const GetServiceTokenTestCase* GetServiceTokenIncorrectCredentials() {
           .test_name = "get_service_token_incorrect_credentials",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .set_authentication_token = true,
+          .logged_in = true,
           .fail_decryption = false,
           .clear_authentication_token = false,
           .fail_encryption = {},  // not used
@@ -2905,7 +2892,7 @@ const GetServiceTokenTestCase* GetServiceTokenInvalidTokenAudience() {
           .test_name = "get_service_token_invalid_token_audience",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .set_authentication_token = true,
+          .logged_in = true,
           .fail_decryption = false,
           .clear_authentication_token = false,
           .fail_encryption = {},  // not used
@@ -2930,7 +2917,7 @@ const GetServiceTokenTestCase* GetServiceTokenBadRequest() {
           .test_name = "get_service_token_bad_request",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .set_authentication_token = true,
+          .logged_in = true,
           .fail_decryption = false,
           .clear_authentication_token = false,
           .fail_encryption = {},  // not used
@@ -2955,7 +2942,7 @@ const GetServiceTokenTestCase* GetServiceTokenUnauthorized() {
           .test_name = "get_service_token_unauthorized",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .set_authentication_token = true,
+          .logged_in = true,
           .fail_decryption = false,
           .clear_authentication_token = false,
           .fail_encryption = {},  // not used
@@ -2980,7 +2967,7 @@ const GetServiceTokenTestCase* GetServiceTokenServerError() {
           .test_name = "get_service_token_internal_server_error",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .set_authentication_token = true,
+          .logged_in = true,
           .fail_decryption = false,
           .clear_authentication_token = false,
           .fail_encryption = {},  // not used
@@ -3005,7 +2992,7 @@ const GetServiceTokenTestCase* GetServiceTokenUnknown() {
           .test_name = "get_service_token_unknown",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .set_authentication_token = true,
+          .logged_in = true,
           .fail_decryption = false,
           .clear_authentication_token = false,
           .fail_encryption = {},  // not used
@@ -3029,7 +3016,7 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenEmpty() {
           .test_name = "get_service_token_service_token_empty",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .set_authentication_token = true,
+          .logged_in = true,
           .fail_decryption = false,
           .clear_authentication_token = false,
           .fail_encryption = {},  // not used
@@ -3054,7 +3041,7 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenEncryptionFailed() {
           .test_name = "get_service_token_service_token_encryption_failed",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .set_authentication_token = true,
+          .logged_in = true,
           .fail_decryption = false,
           .clear_authentication_token = false,
           .fail_encryption = true,
@@ -3081,7 +3068,7 @@ const GetServiceTokenTestCase* GetServiceTokenSuccess() {
           .test_name = "get_service_token_success",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .set_authentication_token = true,
+          .logged_in = true,
           .fail_decryption = false,
           .clear_authentication_token = false,
           .fail_encryption = false,
@@ -3107,7 +3094,7 @@ const GetServiceTokenTestCase* GetServiceTokenServiceDictMissing() {
           .test_name = "get_service_token_service_dict_missing",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .set_authentication_token = true,
+          .logged_in = true,
           .fail_decryption = false,
           .clear_authentication_token = false,
           .fail_encryption = false,
@@ -3137,7 +3124,7 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenMissing() {
                 base::DictValue().Set(prefs::keys::kLastFetched,
                                       base::TimeToValue(mock_now)));
           }),
-          .set_authentication_token = true,
+          .logged_in = true,
           .fail_decryption = false,
           .clear_authentication_token = false,
           .fail_encryption = false,
@@ -3168,7 +3155,7 @@ const GetServiceTokenTestCase* GetServiceTokenLastFetchedMissing() {
                     prefs::keys::kServiceToken,
                     base::Base64Encode("cached_service_token")));
           }),
-          .set_authentication_token = true,
+          .logged_in = true,
           .fail_decryption = false,
           .clear_authentication_token = false,
           .fail_encryption = false,
@@ -3200,7 +3187,7 @@ const GetServiceTokenTestCase* GetServiceTokenLastFetchedInvalid() {
                          base::Base64Encode("cached_service_token"))
                     .Set(prefs::keys::kLastFetched, "invalid-time-format"));
           }),
-          .set_authentication_token = true,
+          .logged_in = true,
           .fail_decryption = false,
           .clear_authentication_token = false,
           .fail_encryption = false,
@@ -3233,7 +3220,7 @@ const GetServiceTokenTestCase* GetServiceTokenCacheExpired() {
                     .Set(prefs::keys::kLastFetched,
                          base::TimeToValue(mock_now)));
           }),
-          .set_authentication_token = true,
+          .logged_in = true,
           .fail_decryption = false,
           .clear_authentication_token = false,
           .fail_encryption = false,
@@ -3267,7 +3254,7 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenDecryptionFailed() {
                     .Set(prefs::keys::kLastFetched,
                          base::TimeToValue(mock_now)));
           }),
-          .set_authentication_token = true,
+          .logged_in = true,
           .fail_decryption = false,
           .clear_authentication_token = false,
           .fail_encryption = false,
