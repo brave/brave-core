@@ -73,7 +73,7 @@ export function FingerprintingDetails(props: Props) {
         onBack={props.onBack}
       >
         <p className='header-text'>
-          {getString('BRAVE_SHIELDS_FINGERPRINTING_LIST_DESCRIPTION')}
+          {getString('BRAVE_SHIELDS_FINGERPRINTING_LIST_DESCRIPTION')}{' '}
           <button onClick={() => api.openTab(learnMoreUrl)}>
             {getString('BRAVE_SHIELDS_LEARN_MORE_LINK_TEXT')}
           </button>
