@@ -3,12 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "brave/components/constants/webui_url_constants.h"
+
 #include <chrome/browser/web_applications/web_app_helpers_unittest.cc>
 
 namespace web_app {
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 TEST(WebAppHelpers, Brave_IsValidWebAppUrl) {
   EXPECT_TRUE(IsValidWebAppUrl(GURL("chrome://leo-ai")));
 }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 }  // namespace web_app
