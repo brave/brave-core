@@ -158,8 +158,7 @@ uint64_t TimePeriodStorage::GetPeriodSum() const {
 
 uint64_t TimePeriodStorage::GetHighestValueInPeriod() const {
   // We record only value for last N days.
-  const base::Time n_days_ago =
-      Midnight(clock_->Now()) - base::Days(period_days_);
+  const base::Time n_days_ago = clock_->Now() - base::Days(period_days_);
   std::list<DailyValue> in_period_daily_values(daily_values_.size());
   auto copied_it =
       std::copy_if(daily_values_.begin(), daily_values_.end(),
