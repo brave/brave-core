@@ -20,6 +20,7 @@ import {
   EthSignTransactionResponse,
   EthSignPersonalMessageResponse,
   EthSignEip712MessageResponse,
+  GetDeviceNameResponse,
 } from './ledger-messages'
 import { Untrusted } from '../untrusted_shared_types'
 
@@ -65,6 +66,13 @@ const unlockErrorResponse: UnlockResponse = {
   payload: unlockError,
 }
 
+const deviceNameResponse: GetDeviceNameResponse = {
+  id: LedgerCommand.GetDeviceName,
+  origin: window.origin,
+  command: LedgerCommand.GetDeviceName,
+  payload: { success: true, deviceName: 'Ledger Device' },
+}
+
 test('getAccounts unlock error', async () => {
   const { keyring, transport } = createKeyring()
 
@@ -103,6 +111,7 @@ test('getAccounts ledger live derivation path success', async () => {
     },
   }
   transport.addSendCommandResponse(getAccountsResponse2)
+  transport.addSendCommandResponse(deviceNameResponse)
 
   const result = await keyring.getAccounts(
     0,
@@ -121,6 +130,7 @@ test('getAccounts ledger live derivation path success', async () => {
         derivationPath: "m/44'/60'/1'/0/0",
       },
     ],
+    deviceName: 'Ledger Device',
   })
 })
 
@@ -150,6 +160,7 @@ test('getAccounts legacy derivation path success', async () => {
     },
   }
   transport.addSendCommandResponse(getAccountsResponse2)
+  transport.addSendCommandResponse(deviceNameResponse)
 
   const result = await keyring.getAccounts(
     0,
@@ -168,6 +179,7 @@ test('getAccounts legacy derivation path success', async () => {
         derivationPath: "m/44'/60'/0'/1",
       },
     ],
+    deviceName: 'Ledger Device',
   })
 })
 
@@ -198,6 +210,7 @@ test('getAccounts deprecated derivation path success', async () => {
     },
   }
   transport.addSendCommandResponse(getAccountsResponse2)
+  transport.addSendCommandResponse(deviceNameResponse)
 
   const result = await keyring.getAccounts(
     0,
@@ -216,6 +229,7 @@ test('getAccounts deprecated derivation path success', async () => {
         derivationPath: "m/44'/60'/1'/0",
       },
     ],
+    deviceName: 'Ledger Device',
   })
 })
 
