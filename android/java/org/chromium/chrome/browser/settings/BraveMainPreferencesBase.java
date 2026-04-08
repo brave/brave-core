@@ -334,11 +334,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         setPreferenceOrder(PREF_SHIELDS_AND_PRIVACY, ++featuresSectionOrder);
         setPreferenceOrder(PREF_BRAVE_NEWS_V2, ++featuresSectionOrder);
 
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET)) {
-            setPreferenceOrder(PREF_BRAVE_WALLET, ++featuresSectionOrder);
-        } else {
-            removePreferenceIfPresent(PREF_BRAVE_WALLET);
-        }
+        setPreferenceOrder(PREF_BRAVE_WALLET, ++featuresSectionOrder);
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
             setPreferenceOrder(PREF_BRAVE_PLAYLIST, ++featuresSectionOrder);

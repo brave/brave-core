@@ -129,7 +129,6 @@ import java.util.List;
 })
 @EnableFeatures({
     BraveFeatureList.AI_CHAT,
-    BraveFeatureList.NATIVE_BRAVE_WALLET,
 })
 public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();

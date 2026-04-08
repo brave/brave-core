@@ -10,14 +10,13 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
-import org.chromium.base.BraveFeatureList;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletPolicy;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.toolbar.optional_button.BaseButtonDataProvider;
@@ -62,7 +61,9 @@ public class BraveWalletButtonController extends BaseButtonDataProvider {
     protected boolean shouldShowButton(@Nullable Tab tab) {
         if (!super.shouldShowButton(tab)) return false;
 
-        // Show the Brave Wallet button only if the feature is enabled
-        return ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET);
+        Profile profile = tab != null ? tab.getProfile() : null;
+
+        // Show the Brave Wallet button only not disabled by policy.
+        return profile != null && !BraveWalletPolicy.isDisabledByPolicy(profile);
     }
 }

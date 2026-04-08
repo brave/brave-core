@@ -141,7 +141,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 new PolicyControlledMenuItem(
                         R.id.brave_wallet_id,
                         this::buildBraveWalletItem,
-                        () -> ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET),
+                        () -> true,
                         () -> {
                             Tab tab = mActivityTabProvider.get();
                             return tab != null
