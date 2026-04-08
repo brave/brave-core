@@ -12,6 +12,7 @@
 #include "base/strings/strcat.h"
 #include "base/test/gtest_util.h"
 #include "base/test/run_until.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/scoped_run_loop_timeout.h"
 #include "base/test/test_future.h"
 #include "base/threading/thread_restrictions.h"
@@ -20,12 +21,18 @@
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/platform_browser_test.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/test/base/ui_test_utils.h"
+#endif
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
@@ -361,5 +368,287 @@ IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest,
   // the profile destructor is called. This test is essentially checking that
   // its destroyed during the profile shutdown phase, rather than destruction.
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+
+// Minimal mojom::ChatUI implementation to capture OnNewDefaultConversation.
+class FakeChatUI : public mojom::ChatUI {
+ public:
+  void OnNewDefaultConversation(std::optional<int32_t> content_id) override {
+    last_content_id_ = content_id;
+    call_count_++;
+  }
+  void OnChildFrameBound(
+      mojo::PendingReceiver<mojom::ParentUIFrame> receiver) override {}
+  void OnUploadFilesSelected() override {}
+
+  std::optional<int32_t> last_content_id_;
+  int call_count_ = 0;
+};
+
+// Minimal mojom::ConversationUI implementation that ignores all events.
+class FakeConversationUI : public mojom::ConversationUI {
+ public:
+  void OnConversationHistoryUpdate(
+      const mojom::ConversationTurnPtr entry) override {}
+  void OnAPIRequestInProgress(bool in_progress) override {}
+  void OnAPIResponseError(mojom::APIError error) override {}
+  void OnTaskStateChanged(mojom::TaskState task_state) override {}
+  void OnModelDataChanged(const std::string& conversation_model_key,
+                          const std::string& default_model_key,
+                          std::vector<mojom::ModelPtr> all_models) override {}
+  void OnAssociatedContentInfoChanged(
+      std::vector<mojom::AssociatedContentPtr> associated_content) override {}
+  void OnConversationDeleted() override {}
+};
+
+// Tests that the page handler fires OnNewDefaultConversation on tab switches
+// and navigations when the global side panel feature is enabled.
+class AIChatGlobalSidePanelPageHandlerBrowserTest
+    : public InProcessBrowserTest {
+ public:
+  AIChatGlobalSidePanelPageHandlerBrowserTest()
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+    scoped_feature_list_.InitAndEnableFeature(
+        ai_chat::features::kAIChatGlobalSidePanelEverywhere);
+  }
+
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    https_server_.ServeFilesFromDirectory(
+        base::PathService::CheckedGet(brave::DIR_TEST_DATA));
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
+    host_resolver()->AddRule("*", "127.0.0.1");
+    ASSERT_TRUE(https_server_.Start());
+
+    // Navigate the initial tab to an associatable (HTTPS) page.
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(
+        browser(), https_server_.GetURL("a.test", "/simple.html")));
+  }
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+  }
+
+  // Creates an AIChatUIPageHandler simulating the global side panel: |context|
+  // is the tab whose content is "shown" in the panel, and the browser's tab
+  // strip model is passed so the handler receives tab-switch notifications.
+  std::unique_ptr<AIChatUIPageHandler> CreateGlobalPanelHandler(
+      content::WebContents* context) {
+    mojo::PendingReceiver<mojom::AIChatUIHandler> receiver;
+    return std::make_unique<AIChatUIPageHandler>(
+        context, context,
+        Profile::FromBrowserContext(context->GetBrowserContext()),
+        std::move(receiver), browser()->tab_strip_model());
+  }
+
+  // Binds a FakeChatUI to the handler. Waits for the synchronous SetChatUI
+  // callback before returning. The FakeChatUI is owned by this fixture.
+  FakeChatUI* BindFakeChatUI(AIChatUIPageHandler* handler) {
+    fake_chat_ui_ = std::make_unique<FakeChatUI>();
+    mojo::PendingRemote<mojom::ChatUI> pending_remote;
+    fake_chat_ui_receiver_ = std::make_unique<mojo::Receiver<mojom::ChatUI>>(
+        fake_chat_ui_.get(), pending_remote.InitWithNewPipeAndPassReceiver());
+    base::test::TestFuture<bool> future;
+    handler->SetChatUI(std::move(pending_remote), future.GetCallback());
+    EXPECT_TRUE(future.Wait());
+    return fake_chat_ui_.get();
+  }
+
+ protected:
+  net::EmbeddedTestServer https_server_;
+
+ private:
+  content::ContentMockCertVerifier mock_cert_verifier_;
+  base::test::ScopedFeatureList scoped_feature_list_;
+  std::unique_ptr<FakeChatUI> fake_chat_ui_;
+  std::unique_ptr<mojo::Receiver<mojom::ChatUI>> fake_chat_ui_receiver_;
+};
+
+// Switching to a different tab should notify the frontend with the new tab's
+// content_id so it can detach the old content and attach the new tab's content.
+IN_PROC_BROWSER_TEST_F(AIChatGlobalSidePanelPageHandlerBrowserTest,
+                       TabSwitchNotifiesFrontend) {
+  auto* tab_strip = browser()->tab_strip_model();
+  auto* tab1_contents = tab_strip->GetActiveWebContents();
+  ASSERT_TRUE(tab1_contents);
+
+  auto handler = CreateGlobalPanelHandler(tab1_contents);
+  auto* fake_ui = BindFakeChatUI(handler.get());
+
+  // SetChatUI immediately queues a NotifyNewDefaultConversation call.
+  ASSERT_TRUE(base::test::RunUntil([&] { return fake_ui->call_count_ >= 1; }));
+  auto tab1_content_id = fake_ui->last_content_id_;
+  EXPECT_TRUE(tab1_content_id.has_value())
+      << "HTTPS tab should have an associatable content_id";
+
+  // Open a second HTTPS tab in the background so it is fully loaded at an
+  // HTTPS URL before we switch to it. Opening as a foreground tab starts the
+  // tab blank, which causes OnTabStripModelChanged to see a non-associatable
+  // URL and skip observation — the subsequent navigation then goes unnoticed.
+  GURL url2 = https_server_.GetURL("b.test", "/simple.html");
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url2, WindowOpenDisposition::NEW_BACKGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  ASSERT_EQ(tab_strip->count(), 2);
+  // Explicitly wait for the background tab to finish loading.
+  content::WaitForLoadStop(tab_strip->GetWebContentsAt(1));
+
+  // Now switch to tab 2; the handler sees an already-loaded HTTPS page.
+  int count_before = fake_ui->call_count_;
+  tab_strip->ActivateTabAt(1);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return fake_ui->call_count_ > count_before; }));
+  auto tab2_content_id = fake_ui->last_content_id_;
+  EXPECT_TRUE(tab2_content_id.has_value())
+      << "Switching to a loaded HTTPS tab should produce a non-null content_id";
+  EXPECT_NE(tab1_content_id, tab2_content_id);
+
+  // Switch back to tab 1 — original content_id should be restored.
+  count_before = fake_ui->call_count_;
+  tab_strip->ActivateTabAt(0);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return fake_ui->call_count_ > count_before; }));
+  EXPECT_EQ(fake_ui->last_content_id_, tab1_content_id);
+}
+
+// Navigating the active tab to a new page should notify the frontend so it can
+// detach the old page's content and attach the new page's content.
+IN_PROC_BROWSER_TEST_F(AIChatGlobalSidePanelPageHandlerBrowserTest,
+                       NavigationNotifiesFrontend) {
+  auto* tab_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(tab_contents);
+
+  auto handler = CreateGlobalPanelHandler(tab_contents);
+  auto* fake_ui = BindFakeChatUI(handler.get());
+
+  // Wait for the initial notification from SetChatUI.
+  ASSERT_TRUE(base::test::RunUntil([&] { return fake_ui->call_count_ >= 1; }));
+  auto initial_content_id = fake_ui->last_content_id_;
+  EXPECT_TRUE(initial_content_id.has_value());
+  int initial_count = fake_ui->call_count_;
+
+  // Navigate the tab to a new page.
+  GURL url2 = https_server_.GetURL("b.test", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url2));
+
+  // Navigation should trigger a new OnNewDefaultConversation call.
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return fake_ui->call_count_ > initial_count; }));
+  EXPECT_TRUE(fake_ui->last_content_id_.has_value());
+  // Each navigation gets a fresh content_id derived from the navigation ID.
+  EXPECT_NE(fake_ui->last_content_id_, initial_content_id);
+}
+
+// Switching to a chrome:// tab should notify the frontend with a null
+// content_id: chrome:// pages are not associatable content.
+IN_PROC_BROWSER_TEST_F(AIChatGlobalSidePanelPageHandlerBrowserTest,
+                       ChromePageTabSwitchHasNullContentId) {
+  auto* tab_strip = browser()->tab_strip_model();
+  auto* tab1_contents = tab_strip->GetActiveWebContents();
+  ASSERT_TRUE(tab1_contents);
+
+  auto handler = CreateGlobalPanelHandler(tab1_contents);
+  auto* fake_ui = BindFakeChatUI(handler.get());
+
+  // Wait for the initial notification from SetChatUI.
+  ASSERT_TRUE(base::test::RunUntil([&] { return fake_ui->call_count_ >= 1; }));
+  EXPECT_TRUE(fake_ui->last_content_id_.has_value())
+      << "HTTPS tab should have an associatable content_id";
+
+  // Open a chrome:// tab in the background so it is fully loaded before we
+  // switch to it. Opening as a foreground tab causes the same blank-tab issue
+  // as in TabSwitchNotifiesFrontend.
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("chrome://version"),
+      WindowOpenDisposition::NEW_BACKGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  ASSERT_EQ(tab_strip->count(), 2);
+  content::WaitForLoadStop(tab_strip->GetWebContentsAt(1));
+
+  // Switch to the chrome:// tab.
+  int count_before = fake_ui->call_count_;
+  tab_strip->ActivateTabAt(1);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return fake_ui->call_count_ > count_before; }));
+
+  EXPECT_FALSE(fake_ui->last_content_id_.has_value())
+      << "chrome:// tab should produce a null content_id";
+}
+
+// Navigating the active tab to a chrome:// page should notify the frontend
+// with a null content_id.
+IN_PROC_BROWSER_TEST_F(AIChatGlobalSidePanelPageHandlerBrowserTest,
+                       ChromePageNavigationHasNullContentId) {
+  auto* tab_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(tab_contents);
+
+  auto handler = CreateGlobalPanelHandler(tab_contents);
+  auto* fake_ui = BindFakeChatUI(handler.get());
+
+  // Wait for the initial notification from SetChatUI.
+  ASSERT_TRUE(base::test::RunUntil([&] { return fake_ui->call_count_ >= 1; }));
+  EXPECT_TRUE(fake_ui->last_content_id_.has_value());
+  int initial_count = fake_ui->call_count_;
+
+  // Navigate to a chrome:// page.
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("chrome://version")));
+
+  // Navigation should trigger a new OnNewDefaultConversation with null
+  // content_id, since chrome:// is not an associatable scheme.
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return fake_ui->call_count_ > initial_count; }));
+  EXPECT_FALSE(fake_ui->last_content_id_.has_value())
+      << "chrome:// navigation should produce a null content_id";
+}
+
+// A new conversation started while the active tab is a chrome:// page should
+// have no associated content.
+IN_PROC_BROWSER_TEST_F(AIChatGlobalSidePanelPageHandlerBrowserTest,
+                       NewConversationOnChromePageHasNoAssociatedContent) {
+  auto* tab_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(tab_contents);
+
+  auto handler = CreateGlobalPanelHandler(tab_contents);
+  auto* fake_ui = BindFakeChatUI(handler.get());
+
+  // Wait for the initial notification and navigate to chrome://.
+  ASSERT_TRUE(base::test::RunUntil([&] { return fake_ui->call_count_ >= 1; }));
+  int initial_count = fake_ui->call_count_;
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("chrome://version")));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return fake_ui->call_count_ > initial_count; }));
+  ASSERT_FALSE(fake_ui->last_content_id_.has_value());
+
+  // Start a new conversation while on the chrome:// page.
+  FakeConversationUI fake_conversation_ui;
+  mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver(
+      &fake_conversation_ui);
+  mojo::Remote<mojom::ConversationHandler> conversation;
+  handler->NewConversation(conversation.BindNewPipeAndPassReceiver(),
+                           conversation_ui_receiver.BindNewPipeAndPassRemote());
+
+  // The new conversation should not be associated with any content.
+  base::test::TestFuture<std::vector<mojom::AssociatedContentPtr>>
+      content_future;
+  conversation->GetAssociatedContentInfo(content_future.GetCallback());
+  EXPECT_TRUE(content_future.Take().empty())
+      << "New conversation on chrome:// page should have no associated content";
+}
+
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace ai_chat

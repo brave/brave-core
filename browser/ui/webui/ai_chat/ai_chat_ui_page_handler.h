@@ -160,6 +160,8 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
       const TabStripSelectionChange& selection) override;
 #endif
 
+  void NotifyNewDefaultConversation();
+
   void OnFilesUploaded(
       UploadFileCallback callback,
       std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files);

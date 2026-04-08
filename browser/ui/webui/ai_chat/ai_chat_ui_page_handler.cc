@@ -498,19 +498,23 @@ void AIChatUIPageHandler::OnTabStripModelChanged(
   // Unobserve the old tab.
   associated_content_delegate_observation_.Reset();
   chat_context_observer_.reset();
+  active_chat_tab_helper_ = nullptr;
 
   auto* new_contents = selection.new_contents.get();
   if (new_contents) {
-    active_chat_tab_helper_ =
+    // Note: We treat not being allowed to associate the content the same as not
+    // having content.
+    auto* active_chat_tab_helper =
         ai_chat::AIChatTabHelper::FromWebContents(new_contents);
-    if (active_chat_tab_helper_) {
+    if (active_chat_tab_helper &&
+        ai_chat::CanAssociateContent(
+            &active_chat_tab_helper->web_contents_content())) {
+      active_chat_tab_helper_ = active_chat_tab_helper;
       associated_content_delegate_observation_.Observe(
           &active_chat_tab_helper_->web_contents_content());
       chat_context_observer_ =
           std::make_unique<ChatContextObserver>(new_contents, *this);
     }
-  } else {
-    active_chat_tab_helper_ = nullptr;
   }
 
   // Always notify the frontend of the new default tab content ID so that the
@@ -518,11 +522,7 @@ void AIChatUIPageHandler::OnTabStripModelChanged(
   if (!chat_ui_.is_bound()) {
     return;
   }
-  chat_ui_->OnNewDefaultConversation(
-      active_chat_tab_helper_
-          ? std::make_optional(
-                active_chat_tab_helper_->web_contents_content().content_id())
-          : std::nullopt);
+  NotifyNewDefaultConversation();
 }
 #endif
 
@@ -538,8 +538,7 @@ void AIChatUIPageHandler::OnNewPage(AssociatedContentDelegate* delegate) {
   if (!chat_ui_.is_bound()) {
     return;
   }
-  chat_ui_->OnNewDefaultConversation(
-      active_chat_tab_helper_->web_contents_content().content_id());
+  NotifyNewDefaultConversation();
 }
 
 void AIChatUIPageHandler::OnRequestArchive(
@@ -557,11 +556,7 @@ void AIChatUIPageHandler::OnRequestArchive(
   if (!chat_ui_.is_bound()) {
     return;
   }
-  chat_ui_->OnNewDefaultConversation(
-      active_chat_tab_helper_
-          ? std::make_optional(
-                active_chat_tab_helper_->web_contents_content().content_id())
-          : std::nullopt);
+  NotifyNewDefaultConversation();
 }
 
 void AIChatUIPageHandler::OnFilesSelected() {
@@ -591,8 +586,14 @@ void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
 #endif
   );
 
+  NotifyNewDefaultConversation();
+}
+
+void AIChatUIPageHandler::NotifyNewDefaultConversation() {
   chat_ui_->OnNewDefaultConversation(
-      active_chat_tab_helper_
+      active_chat_tab_helper_ &&
+              ai_chat::CanAssociateContent(
+                  &active_chat_tab_helper_->web_contents_content())
           ? std::make_optional(
                 active_chat_tab_helper_->web_contents_content().content_id())
           : std::nullopt);
@@ -613,11 +614,13 @@ void AIChatUIPageHandler::BindRelatedConversation(
           &active_chat_tab_helper_->web_contents_content());
     }
   } else {
-    conversation =
-        AIChatServiceFactory::GetForBrowserContext(profile_)
-            ->GetOrCreateConversationHandlerForContent(
-                active_chat_tab_helper_->web_contents_content().content_id(),
-                active_chat_tab_helper_->web_contents_content().GetWeakPtr());
+    conversation = AIChatServiceFactory::GetForBrowserContext(profile_)
+                       ->CreateConversation();
+    if (ai_chat::CanAssociateContent(
+            &active_chat_tab_helper_->web_contents_content())) {
+      conversation->associated_content_manager()->AddContent(
+          &active_chat_tab_helper_->web_contents_content());
+    }
   }
 
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
@@ -683,7 +686,9 @@ void AIChatUIPageHandler::NewConversation(
                        ->CreateConversation();
     // For global panel, associate the current tab's content synchronously so
     // GetState() on the frontend returns it already populated.
-    if (active_chat_tab_helper_) {
+    if (active_chat_tab_helper_ &&
+        ai_chat::CanAssociateContent(
+            &active_chat_tab_helper_->web_contents_content())) {
       conversation->associated_content_manager()->AddContent(
           &active_chat_tab_helper_->web_contents_content());
     }
