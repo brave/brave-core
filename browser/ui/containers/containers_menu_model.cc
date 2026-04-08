@@ -33,7 +33,7 @@ ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
     : ui::SimpleMenuModel(this), delegate_(delegate), items_(std::move(items)) {
   // Trim the items to fit within the command ID range.
   const auto max_items = static_cast<size_t>(IDC_OPEN_IN_CONTAINER_END -
-                                             IDC_OPEN_IN_CONTAINER_START + 1);
+                                             IDC_OPEN_IN_CONTAINER_START);
   if (items_.size() > max_items) {
     items_.erase(items_.begin() + max_items, items_.end());
     LOG(WARNING) << "Too many containers for the current menu model. "
