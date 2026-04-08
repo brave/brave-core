@@ -131,12 +131,16 @@ function renderAssistant(isSummaryResponse: boolean) {
       ]
   return render(
     <MockContext
+      conversationHandler={{
+        getConversationHistory() {
+          return Promise.resolve({ conversationHistory })
+        },
+      }}
       initialState={{
         conversationEntriesState: {
           allModels: mockModels,
           isPremiumUser: false,
         },
-        conversationHistory,
       }}
     >
       <ContextActionsAssistant
