@@ -34,6 +34,7 @@ import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
+import org.chromium.build.annotations.EnsuresNonNull;
 import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
@@ -47,6 +48,7 @@ import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
 import org.chromium.chrome.browser.settings.ChromeManagedPreferenceDelegate;
 import org.chromium.chrome.browser.settings.MainSettings;
 import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
+import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SearchUtils;
 import org.chromium.components.browser_ui.settings.SearchViewProvider;
@@ -116,6 +118,8 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     private @Nullable Preference mLinkPref;
     private /*@Nullable*/ Menu mMenu;
     private @Nullable Preference mExportPasswordsPreference;
+    private @MonotonicNonNull FaviconHelper mFaviconHelper;
+    private @MonotonicNonNull FaviconHelper.DefaultFaviconHelper mDefaultFaviconHelper;
 
     private @ManagePasswordsReferrer int mManagePasswordsReferrer;
     private final SettableMonotonicObservableSupplier<String> mPageTitle =
@@ -134,6 +138,7 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     }
 
     @Override
+    @EnsuresNonNull({"mFaviconHelper", "mDefaultFaviconHelper"})
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
         mExportFlow.onCreate(
                 savedInstanceState,
@@ -189,6 +194,9 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
                     }
                 });
         mPageTitle.set(getString(R.string.password_manager_settings_title));
+
+        mFaviconHelper = new FaviconHelper();
+        mDefaultFaviconHelper = new FaviconHelper.DefaultFaviconHelper();
 
         // Load preferences from XML instead of creating programmatically
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_password_settings_preferences);
@@ -540,7 +548,13 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
             if (shouldBeFiltered(url, name)) {
                 continue; // The current password won't show with the active filter, try the next.
             }
-            Preference preference = new Preference(getStyledContext());
+            PasswordEntryPreference preference =
+                    new PasswordEntryPreference(
+                            getStyledContext(),
+                            saved.getOriginUrl(),
+                            assumeNonNull(mFaviconHelper),
+                            assumeNonNull(mDefaultFaviconHelper),
+                            getProfile());
             preference.setTitle(url);
             preference.setOnPreferenceClickListener(this);
             preference.setSummary(name);
@@ -671,6 +685,7 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
         // by the system.
         if (getActivity().isFinishing()) {
             PasswordManagerHandlerProvider.getForProfile(getProfile()).removeObserver(this);
+            assumeNonNull(mFaviconHelper).destroy();
         }
     }
 

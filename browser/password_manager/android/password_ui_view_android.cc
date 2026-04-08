@@ -172,10 +172,11 @@ ScopedJavaLocalRef<jobject> PasswordUiViewAndroid::GetSavedPasswordEntry(
   DCHECK_EQ(State::ALIVE, state_);
   if (static_cast<size_t>(index) >= passwords_.size()) {
     return Java_PasswordUiView_createSavedPasswordEntry(
-        env, std::string(), std::u16string(), std::u16string());
+        env, std::string(), std::string(), std::u16string(), std::u16string());
   }
   return Java_PasswordUiView_createSavedPasswordEntry(
       env, password_manager::GetShownOrigin(passwords_[index]),
+      password_manager::GetShownUrl(passwords_[index]).spec(),
       passwords_[index].username, passwords_[index].password);
 }
 
