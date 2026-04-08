@@ -1858,6 +1858,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, SidebarRightSideTest) {
   // Changed to sidebar on left side.
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
   EXPECT_TRUE(IsSidebarUIOnLeft());
+  RunScheduledLayouts();
 
   int expected_sidebar_x = vertical_tabs_container->GetBoundsInScreen().right();
   if (BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser())) {

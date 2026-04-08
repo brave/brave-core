@@ -261,6 +261,7 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest,
     widget_delegate_view->vertical_tab_strip_region_view()->InvalidateLayout();
     views::test::RunScheduledLayout(
         widget_delegate_view->vertical_tab_strip_region_view());
+    RunScheduledLayouts();
   }
 
  protected:
