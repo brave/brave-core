@@ -17,4 +17,6 @@ inline constexpr char kWebViewRoundedCorners[] =
 // (outline-only) Brave logo instead of the full color logo.
 inline constexpr char kBraveSubtleAppMenuLogo[] = "brave.subtle_app_menu_logo";
 
+inline constexpr char kBraveFocusModeEnabled[] = "brave.focus_mode.enabled";
+
 #endif  // BRAVE_COMMON_PREF_NAMES_H_

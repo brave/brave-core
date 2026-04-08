@@ -63,6 +63,9 @@
 #endif
 
 #if defined(TOOLKIT_VIEWS)
+#include "brave/browser/ui/focus_mode/focus_mode_features.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/common/pref_names.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_key.h"
@@ -656,6 +659,79 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithSideBySideTest,
   EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_BREAK_TILE));
   EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_SWAP_SPLIT_VIEW));
 }
+
+#if defined(TOOLKIT_VIEWS)
+class BraveBrowserCommandControllerWithFocusModeTest
+    : public BraveBrowserCommandControllerTest {
+ public:
+  BraveBrowserCommandControllerWithFocusModeTest() {
+    scoped_features_.InitWithFeatures({features::kBraveFocusMode}, {});
+  }
+  ~BraveBrowserCommandControllerWithFocusModeTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithFocusModeTest,
+                       FocusModeCommandEnabled) {
+  EXPECT_TRUE(
+      browser()->command_controller()->IsCommandEnabled(IDC_TOGGLE_FOCUS_MODE));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithFocusModeTest,
+                       FocusModeToggle) {
+  auto* browser_view =
+      BraveBrowserView::From(BrowserView::GetBrowserViewForBrowser(browser()));
+  ASSERT_TRUE(browser_view);
+  auto* controller = browser_view->focus_mode_controller();
+  ASSERT_TRUE(controller);
+
+  EXPECT_FALSE(controller->IsEnabled());
+
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_FOCUS_MODE);
+  EXPECT_TRUE(controller->IsEnabled());
+  EXPECT_TRUE(
+      browser()->profile()->GetPrefs()->GetBoolean(kBraveFocusModeEnabled));
+
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_FOCUS_MODE);
+  EXPECT_FALSE(controller->IsEnabled());
+  EXPECT_FALSE(
+      browser()->profile()->GetPrefs()->GetBoolean(kBraveFocusModeEnabled));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithFocusModeTest,
+                       FocusModeSyncsAcrossWindows) {
+  Browser* second = CreateBrowser(browser()->profile());
+  auto* view1 =
+      BraveBrowserView::From(BrowserView::GetBrowserViewForBrowser(browser()));
+  auto* view2 =
+      BraveBrowserView::From(BrowserView::GetBrowserViewForBrowser(second));
+  ASSERT_TRUE(view1->focus_mode_controller());
+  ASSERT_TRUE(view2->focus_mode_controller());
+
+  EXPECT_FALSE(view1->focus_mode_controller()->IsEnabled());
+  EXPECT_FALSE(view2->focus_mode_controller()->IsEnabled());
+
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_FOCUS_MODE);
+  EXPECT_TRUE(view1->focus_mode_controller()->IsEnabled());
+  EXPECT_TRUE(view2->focus_mode_controller()->IsEnabled());
+
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_FOCUS_MODE);
+  EXPECT_FALSE(view1->focus_mode_controller()->IsEnabled());
+  EXPECT_FALSE(view2->focus_mode_controller()->IsEnabled());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithFocusModeTest,
+                       FocusModeDisabledForPopupWindow) {
+  Browser* popup = Browser::Create(
+      Browser::CreateParams(Browser::TYPE_POPUP, browser()->profile(), true));
+  chrome::AddTabAt(popup, GURL("about:blank"), -1, true);
+  popup->window()->Show();
+  EXPECT_FALSE(
+      popup->command_controller()->IsCommandEnabled(IDC_TOGGLE_FOCUS_MODE));
+}
+#endif  // defined(TOOLKIT_VIEWS)
 
 class BraveBrowserCommandControllerWithEmailAliasesTest
     : public BraveBrowserCommandControllerTest {

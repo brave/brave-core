@@ -23,6 +23,7 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
+#include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/sidebar/buildflags/buildflags.h"
 #include "brave/browser/ui/sidebar/features.h"
@@ -341,6 +342,13 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
                           base::Unretained(this)));
 #endif
 
+  if (BrowserSupportsFocusMode(browser_)) {
+    pref_change_registrar_.Add(
+        kBraveFocusModeEnabled,
+        base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
+                            base::Unretained(this)));
+  }
+
   // When the ENABLE_SIDEBAR_V2 buildflag is on, upstream's SidePanel is
   // compiled in and requires V2 behavior. Disabling kSidebarV2 at runtime
   // would cause V1-only code paths (removed from this build) to be entered.
@@ -421,6 +429,18 @@ void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
     return;
   }
 #endif
+
+  if (pref_name == kBraveFocusModeEnabled) {
+    if (focus_mode_controller_) {
+      focus_mode_controller_->SetEnabled(
+          GetProfile()->GetPrefs()->GetBoolean(kBraveFocusModeEnabled));
+    }
+    return;
+  }
+}
+
+void BraveBrowserView::OnFocusModeChanged(bool enabled) {
+  GetProfile()->GetPrefs()->SetBoolean(kBraveFocusModeEnabled, enabled);
 }
 
 void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
@@ -737,6 +757,14 @@ void BraveBrowserView::AddedToWidget() {
 
   browser_window_mouse_event_handler_ =
       std::make_unique<BrowserWindowMouseEventHandler>(this);
+
+  if (BrowserSupportsFocusMode(browser())) {
+    focus_mode_controller_ =
+        std::make_unique<FocusModeController>(this, GetWidget());
+    if (GetProfile()->GetPrefs()->GetBoolean(kBraveFocusModeEnabled)) {
+      focus_mode_controller_->SetEnabled(true);
+    }
+  }
 
   // we must call all new views once BraveBrowserView is added to widget
 

@@ -37,6 +37,8 @@
 #include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
 #endif
 
+#include "brave/browser/ui/views/frame/focus_mode/focus_mode_controller.h"
+
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 namespace speedreader {
 class SpeedreaderBubbleView;
@@ -77,7 +79,8 @@ class WalletButton;
 #endif
 
 class BraveBrowserView : public BrowserView,
-                         public commands::AcceleratorService::Observer {
+                         public commands::AcceleratorService::Observer,
+                         public FocusModeController::Delegate {
   METADATA_HEADER(BraveBrowserView, BrowserView)
  public:
   explicit BraveBrowserView(Browser* browser);
@@ -166,6 +169,10 @@ class BraveBrowserView : public BrowserView,
 
   SidebarContainerView* sidebar_container_view() {
     return sidebar_container_view_;
+  }
+
+  FocusModeController* focus_mode_controller() {
+    return focus_mode_controller_.get();
   }
 
  private:
@@ -260,6 +267,9 @@ class BraveBrowserView : public BrowserView,
   void ShowWaybackMachineBubble() override;
 #endif
 
+  // FocusModeController::Delegate:
+  void OnFocusModeChanged(bool enabled) override;
+
   void UpdateSideBarHorizontalAlignment();
   views::View* top_container_separator_for_testing() const {
     return top_container_separator_;
@@ -287,6 +297,7 @@ class BraveBrowserView : public BrowserView,
   raw_ptr<ReaderModeToolbarView> reader_mode_toolbar_;
 #endif
 
+  std::unique_ptr<FocusModeController> focus_mode_controller_;
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
   std::unique_ptr<BrowserWindowMouseEventHandler>
       browser_window_mouse_event_handler_;

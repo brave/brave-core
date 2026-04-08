@@ -572,6 +572,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   if (base::FeatureList::IsEnabled(darker_theme::features::kBraveDarkerTheme)) {
     registry->RegisterBooleanPref(darker_theme::prefs::kBraveDarkerMode, false);
   }
+  registry->RegisterBooleanPref(kBraveFocusModeEnabled, false);
 #endif  // defined(TOOLKIT_VIEWS)
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)

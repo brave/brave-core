@@ -89,6 +89,7 @@
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/focus_mode/focus_mode_controller.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_enums.h"
@@ -486,6 +487,23 @@ void CleanAndCopySelectedURL(Browser* browser) {
     brave_browser_window->CleanAndCopySelectedURL();
   }
 }
+
+#if defined(TOOLKIT_VIEWS)
+void ToggleFocusMode(Browser* browser) {
+  auto* browser_view =
+      BraveBrowserView::From(BrowserView::GetBrowserViewForBrowser(browser));
+  if (!browser_view) {
+    return;
+  }
+
+  auto* controller = browser_view->focus_mode_controller();
+  if (!controller) {
+    return;
+  }
+
+  controller->SetEnabled(!controller->IsEnabled());
+}
+#endif
 
 void ToggleShieldsEnabled(Browser* browser) {
   if (!browser) {
