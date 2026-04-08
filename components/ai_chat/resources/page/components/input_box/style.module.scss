@@ -112,9 +112,9 @@
 }
 
 .attachmentWrapperScroll {
+  scrollbar-width: thin;
   overflow-x: auto;
   overflow-y: hidden;
-  scrollbar-width: thin;
   padding-bottom: var(--leo-spacing-s);
 }
 
