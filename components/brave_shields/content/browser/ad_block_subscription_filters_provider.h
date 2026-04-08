@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_SUBSCRIPTION_FILTERS_PROVIDER_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_SUBSCRIPTION_FILTERS_PROVIDER_H_
 
+#include <optional>
 #include <string>
+#include <utility>
 
-#include "base/files/file.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/time/time.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
@@ -50,20 +50,18 @@ class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
 
   void OnListAvailable();
 
-  base::Time GetTimestamp() const override;
+  std::optional<std::string> GetCacheKey() const override;
 
  private:
   void OnDATFileDataReady(
       base::OnceCallback<
           void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
       const perfetto::Flow& flow,
-      const DATFileDataBuffer& dat_buf);
+      std::pair<DATFileDataBuffer, std::string> result);
 
   std::string GetNameForDebugging() override;
 
-  void OnGetFileInfo(base::File::Info info);
-
-  std::string GetCacheKey() const;
+  std::string GetPrefKey() const;
 
   base::FilePath list_file_;
   const raw_ptr<PrefService> local_state_;

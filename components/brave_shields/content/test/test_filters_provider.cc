@@ -5,11 +5,13 @@
 
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 
 #include "base/check.h"
-#include "base/time/time.h"
+#include "base/hash/hash.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
@@ -72,18 +74,24 @@ void TestFiltersProvider::LoadFilterSet(
 void TestFiltersProvider::Initialize() {
   CHECK(!is_initialized_);
   is_initialized_ = true;
-  NotifyObservers(engine_is_default_, GetTimestamp());
+  if (content_hash_.empty()) {
+    content_hash_ = base::NumberToString(base::FastHash(rules_));
+  }
+  NotifyObservers(engine_is_default_);
 }
 
 bool TestFiltersProvider::IsInitialized() const {
   return is_initialized_;
 }
 
-base::Time TestFiltersProvider::GetTimestamp() const {
-  if (timestamp_.is_null()) {
-    return base::Time::Now();
+std::optional<std::string> TestFiltersProvider::GetCacheKey() const {
+  if (force_nullopt_cache_key_) {
+    return std::nullopt;
   }
-  return timestamp_;
+  if (content_hash_.empty()) {
+    return base::NumberToString(base::FastHash(rules_));
+  }
+  return content_hash_;
 }
 
 }  // namespace brave_shields

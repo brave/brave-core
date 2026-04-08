@@ -5,15 +5,14 @@
 
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_filters_provider.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 
 #include "base/check_is_test.h"
-#include "base/files/file.h"
-#include "base/files/file_util.h"
-#include "base/json/values_util.h"
+#include "base/hash/hash.h"
 #include "base/logging.h"
-#include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/task/thread_pool.h"
@@ -68,7 +67,14 @@ void AdBlockSubscriptionFiltersProvider::LoadFilterSet(
               "AdBlockSubscriptionFiltersProvider::LoadFilterSet", flow);
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&brave_component_updater::ReadDATFileData, list_file_),
+      base::BindOnce(
+          [](const base::FilePath& path) {
+            auto buffer = brave_component_updater::ReadDATFileData(path);
+            std::string hash = base::NumberToString(
+                base::FastHash(std::string(buffer.begin(), buffer.end())));
+            return std::make_pair(std::move(buffer), std::move(hash));
+          },
+          list_file_),
       base::BindOnce(&AdBlockSubscriptionFiltersProvider::OnDATFileDataReady,
                      weak_factory_.GetWeakPtr(), std::move(cb), flow));
 }
@@ -77,42 +83,41 @@ std::string AdBlockSubscriptionFiltersProvider::GetNameForDebugging() {
   return "AdBlockSubscriptionFiltersProvider";
 }
 
-void AdBlockSubscriptionFiltersProvider::OnGetFileInfo(base::File::Info info) {
-  if (!local_state_) {
-    CHECK_IS_TEST();
-  } else {
-    ScopedDictPrefUpdate update(
-        local_state_, prefs::kAdBlockSubscriptionFiltersCacheTimestamp);
-    update->Set(GetCacheKey(), base::TimeToValue(info.last_modified));
-  }
-  NotifyObservers(engine_is_default_, info.last_modified);
-}
-
-std::string AdBlockSubscriptionFiltersProvider::GetCacheKey() const {
+std::string AdBlockSubscriptionFiltersProvider::GetPrefKey() const {
   return list_file_.BaseName().RemoveExtension().MaybeAsASCII();
 }
 
-base::Time AdBlockSubscriptionFiltersProvider::GetTimestamp() const {
+std::optional<std::string> AdBlockSubscriptionFiltersProvider::GetCacheKey()
+    const {
   if (!local_state_) {
     CHECK_IS_TEST();
-    return base::Time::Now();
+    return std::nullopt;
   }
   const auto& dict =
-      local_state_->GetDict(prefs::kAdBlockSubscriptionFiltersCacheTimestamp);
-  auto* value = dict.Find(GetCacheKey());
-  if (value) {
-    return base::ValueToTime(value).value_or(base::Time());
+      local_state_->GetDict(prefs::kAdBlockSubscriptionFiltersCacheHash);
+  const std::string* stored = dict.FindString(GetPrefKey());
+  if (stored) {
+    return *stored;
   }
-  return base::Time();
+  return std::nullopt;
 }
 
 void AdBlockSubscriptionFiltersProvider::OnDATFileDataReady(
     base::OnceCallback<
         void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
     const perfetto::Flow& flow,
-    const DATFileDataBuffer& dat_buf) {
+    std::pair<DATFileDataBuffer, std::string> result) {
   TRACE_EVENT("brave.adblock",
               "AdBlockSubscriptionFiltersProvider::OnDATFileDataReady", flow);
+  // Persist the content hash that was computed on the thread pool.
+  if (local_state_) {
+    ScopedDictPrefUpdate update(local_state_,
+                                prefs::kAdBlockSubscriptionFiltersCacheHash);
+    update->Set(GetPrefKey(), result.second);
+  } else {
+    CHECK_IS_TEST();
+  }
+
   std::move(cb).Run(base::BindOnce(
       &AddDATBufferToFilterSet,
       base::BindOnce(
@@ -125,21 +130,19 @@ void AdBlockSubscriptionFiltersProvider::OnDATFileDataReady(
           },
           base::SingleThreadTaskRunner::GetCurrentDefault(),
           on_metadata_retrieved_),
-      dat_buf, flow));
+      result.first, flow));
 }
 
 void AdBlockSubscriptionFiltersProvider::OnListAvailable() {
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(
-          [](const base::FilePath& list_file) {
-            base::File::Info info;
-            base::GetFileInfo(list_file, &info);
-            return info;
-          },
-          list_file_),
-      base::BindOnce(&AdBlockSubscriptionFiltersProvider::OnGetFileInfo,
-                     weak_factory_.GetWeakPtr()));
+  // Clear the persisted hash so the combined cache key changes, forcing
+  // ShouldLoadFilterState to return true and trigger a reload. The new hash
+  // will be computed in OnDATFileDataReady when the file content is read.
+  if (local_state_) {
+    ScopedDictPrefUpdate update(local_state_,
+                                prefs::kAdBlockSubscriptionFiltersCacheHash);
+    update->Remove(GetPrefKey());
+  }
+  NotifyObservers(engine_is_default_);
 }
 
 }  // namespace brave_shields

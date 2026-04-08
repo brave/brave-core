@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_COMPONENT_FILTERS_PROVIDER_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_COMPONENT_FILTERS_PROVIDER_H_
 
+#include <optional>
 #include <string>
 
-#include "base/files/file.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
-#include "base/time/time.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
@@ -29,7 +29,6 @@ class FilePath;
 class AdBlockComponentFiltersProviderTest;
 class AdBlockServiceTest;
 class DebounceBrowserTest;
-class PrefService;
 
 namespace brave_shields {
 
@@ -45,14 +44,12 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
       std::string base64_public_key,
       std::string title,
       uint8_t permission_mask,
-      PrefService* local_state,
       bool is_default_engine = true);
   // Helper to build a particular adblock component from a catalog entry
   AdBlockComponentFiltersProvider(
       component_updater::ComponentUpdateService* cus,
       AdBlockFiltersProviderManager* manager,
       const FilterListCatalogEntry& catalog_entry,
-      PrefService* local_state,
       bool is_default_engine = true);
   ~AdBlockComponentFiltersProvider() override;
   AdBlockComponentFiltersProvider(const AdBlockComponentFiltersProvider&) =
@@ -78,7 +75,7 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
 
   bool IsInitialized() const override;
 
-  base::Time GetTimestamp() const override;
+  std::optional<std::string> GetCacheKey() const override;
 
  private:
   friend class ::AdBlockComponentFiltersProviderTest;
@@ -86,15 +83,12 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
   friend class ::DebounceBrowserTest;
 
   void OnComponentReady(const base::FilePath&);
-  void OnGetNewPathFileInfo(base::FilePath path, base::File::Info info);
-  std::string GetCacheKey() const;
+
   base::FilePath component_path_;
-  base::Time last_updated_;
   std::string component_id_;
   uint8_t permission_mask_;
   const raw_ptr<component_updater::ComponentUpdateService>
       component_updater_service_;
-  const raw_ptr<PrefService> local_state_;
 
   base::WeakPtrFactory<AdBlockComponentFiltersProvider> weak_factory_{this};
 };

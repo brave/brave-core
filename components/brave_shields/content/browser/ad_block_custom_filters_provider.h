@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_CUSTOM_FILTERS_PROVIDER_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_CUSTOM_FILTERS_PROVIDER_H_
 
+#include <optional>
 #include <string>
 
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/sequence_checker.h"
-#include "base/time/time.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
@@ -54,7 +54,7 @@ class AdBlockCustomFiltersProvider : public AdBlockFiltersProvider {
 
   std::string GetNameForDebugging() override;
 
-  base::Time GetTimestamp() const override;
+  std::optional<std::string> GetCacheKey() const override;
 
  private:
   void AppendCustomFilter(std::string_view filter);

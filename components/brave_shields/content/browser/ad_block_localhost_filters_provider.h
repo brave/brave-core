@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_LOCALHOST_FILTERS_PROVIDER_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_LOCALHOST_FILTERS_PROVIDER_H_
 
+#include <optional>
 #include <string>
 
 #include "base/functional/callback.h"
 #include "base/sequence_checker.h"
-#include "base/time/time.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
@@ -38,7 +38,7 @@ class AdBlockLocalhostFiltersProvider : public AdBlockFiltersProvider {
 
   std::string GetNameForDebugging() override;
 
-  base::Time GetTimestamp() const override;
+  std::optional<std::string> GetCacheKey() const override;
 
  private:
   SEQUENCE_CHECKER(sequence_checker_);

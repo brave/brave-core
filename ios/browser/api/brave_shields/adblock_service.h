@@ -31,8 +31,7 @@ OBJC_EXPORT
 - (nullable NSURL*)installPathForFilterListUUID:(NSString*)uuid;
 
 /// Listen to downloaded version changes of filter lists
-- (void)registerFilterListChanges:(void (^)(bool isDefaultEngine,
-                                            NSDate* timestamp))callback;
+- (void)registerFilterListChanges:(void (^)(bool isDefaultEngine))callback;
 
 /// Listen to downloaded version changes of the filter list catalog
 - (void)registerCatalogChanges:(void (^)())callback;

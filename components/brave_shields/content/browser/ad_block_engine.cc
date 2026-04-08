@@ -378,8 +378,7 @@ bool AdBlockEngine::OnDATLoaded(
 
 DATFileDataBuffer AdBlockEngine::Serialize() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  auto rust_vec = ad_block_client_->serialize();
-  return base::ToVector(rust_vec);
+  return base::ToVector(ad_block_client_->serialize());
 }
 
 void AdBlockEngine::AddObserverForTest(AdBlockEngine::TestObserver* observer) {

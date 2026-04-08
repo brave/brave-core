@@ -4,6 +4,7 @@ include_rules = [
   "+components/prefs",
   "+components/sync_preferences/testing_pref_service_syncable.h",
   "+content/public/test",
+  "+crypto/sha2.h",
   "+services/network/public",
   "+third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h",
 ]

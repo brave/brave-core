@@ -48,10 +48,9 @@ void AdBlockFiltersProvider::RemoveObserver(
   }
 }
 
-void AdBlockFiltersProvider::NotifyObservers(bool is_for_default_engine,
-                                             base::Time timestamp) {
+void AdBlockFiltersProvider::NotifyObservers(bool is_for_default_engine) {
   for (auto& observer : observers_) {
-    observer.OnChanged(is_for_default_engine, timestamp);
+    observer.OnChanged(is_for_default_engine);
   }
 }
 

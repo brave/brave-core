@@ -7,7 +7,6 @@
 
 #include <string>
 
-#include "base/time/time.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -19,52 +18,45 @@ class AdBlockCustomFiltersProviderTest : public testing::Test {
   void SetUp() override {
     prefs_.registry()->RegisterStringPref(
         brave_shields::prefs::kAdBlockCustomFilters, std::string());
-    prefs_.registry()->RegisterTimePref(
-        brave_shields::prefs::kAdBlockCustomFiltersLastModified, base::Time());
   }
 
  protected:
   TestingPrefServiceSimple prefs_;
 };
 
-TEST_F(AdBlockCustomFiltersProviderTest, TimestampUpdatedOnFilterChange) {
+TEST_F(AdBlockCustomFiltersProviderTest, HashUpdatedOnFilterChange) {
   brave_shields::AdBlockCustomFiltersProvider provider(&prefs_, nullptr);
 
-  // Initially timestamp should be unset.
-  EXPECT_EQ(provider.GetTimestamp(), base::Time());
+  // Initially hash should be the hash of empty string (not empty itself).
+  std::string initial_hash = provider.GetCacheKey().value();
+  EXPECT_FALSE(initial_hash.empty());
 
   provider.UpdateCustomFilters("||example.com^");
 
-  // After update, timestamp should be recent (not zero).
-  EXPECT_NE(provider.GetTimestamp(), base::Time());
-  EXPECT_LE(provider.GetTimestamp(), base::Time::Now());
+  // After update, hash should differ from the initial hash.
+  EXPECT_NE(provider.GetCacheKey().value(), initial_hash);
 }
 
-TEST_F(AdBlockCustomFiltersProviderTest, TimestampAdvancesOnSubsequentUpdates) {
+TEST_F(AdBlockCustomFiltersProviderTest, HashChangesWithDifferentContent) {
   brave_shields::AdBlockCustomFiltersProvider provider(&prefs_, nullptr);
 
   provider.UpdateCustomFilters("||first.com^");
-  base::Time first_timestamp = provider.GetTimestamp();
-  ASSERT_NE(first_timestamp, base::Time());
+  std::string first_hash = provider.GetCacheKey().value();
+  ASSERT_FALSE(first_hash.empty());
 
   provider.UpdateCustomFilters("||second.com^");
-  base::Time second_timestamp = provider.GetTimestamp();
+  std::string second_hash = provider.GetCacheKey().value();
 
-  EXPECT_GE(second_timestamp, first_timestamp);
+  EXPECT_NE(second_hash, first_hash);
 }
 
-TEST_F(AdBlockCustomFiltersProviderTest,
-       NotifiesObserversWithTimestampOnUpdate) {
+TEST_F(AdBlockCustomFiltersProviderTest, NotifiesObserversWithHashOnUpdate) {
   brave_shields::AdBlockCustomFiltersProvider provider(&prefs_, nullptr);
 
   class TestObserver : public brave_shields::AdBlockFiltersProvider::Observer {
    public:
-    void OnChanged(bool is_default_engine, base::Time timestamp) override {
-      notified = true;
-      last_timestamp = timestamp;
-    }
+    void OnChanged(bool is_default_engine) override { notified = true; }
     bool notified = false;
-    base::Time last_timestamp;
   };
 
   TestObserver observer;
@@ -73,8 +65,6 @@ TEST_F(AdBlockCustomFiltersProviderTest,
   provider.UpdateCustomFilters("||notify-test.com^");
 
   EXPECT_TRUE(observer.notified);
-  EXPECT_NE(observer.last_timestamp, base::Time());
-  EXPECT_EQ(observer.last_timestamp, provider.GetTimestamp());
 
   provider.RemoveObserver(&observer);
 }

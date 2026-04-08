@@ -9,22 +9,16 @@
 #include <string>
 #include <utility>
 
-#include "base/files/file.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
-#include "base/json/values_util.h"
 #include "base/rand_util.h"
-#include "base/strings/strcat.h"
 #include "base/task/thread_pool.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_installer.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
-#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/component_updater/component_updater_service.h"
-#include "components/prefs/pref_service.h"
-#include "components/prefs/scoped_user_pref_update.h"
 
 constexpr char kListFile[] = "list.txt";
 
@@ -66,13 +60,11 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
     std::string base64_public_key,
     std::string title,
     uint8_t permission_mask,
-    PrefService* local_state,
     bool is_default_engine)
     : AdBlockFiltersProvider(is_default_engine, manager),
       component_id_(component_id),
       permission_mask_(permission_mask),
-      component_updater_service_(cus),
-      local_state_(local_state) {
+      component_updater_service_(cus) {
   // Can be nullptr in unit tests
   if (cus) {
     TRACE_EVENT("brave.adblock", "AdBlockComponentFiltersProvider::Register",
@@ -93,7 +85,6 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
     component_updater::ComponentUpdateService* cus,
     AdBlockFiltersProviderManager* manager,
     const FilterListCatalogEntry& catalog_entry,
-    PrefService* local_state,
     bool is_default_engine)
     : AdBlockComponentFiltersProvider(cus,
                                       manager,
@@ -101,7 +92,6 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
                                       catalog_entry.base64_public_key,
                                       catalog_entry.title,
                                       catalog_entry.permission_mask,
-                                      local_state,
                                       is_default_engine) {}
 
 AdBlockComponentFiltersProvider::~AdBlockComponentFiltersProvider() {}
@@ -113,21 +103,15 @@ void AdBlockComponentFiltersProvider::UnregisterComponent() {
   }
 }
 
-void AdBlockComponentFiltersProvider::OnGetNewPathFileInfo(
-    base::FilePath path,
-    base::File::Info info) {
+void AdBlockComponentFiltersProvider::OnComponentReady(
+    const base::FilePath& path) {
+  TRACE_EVENT(
+      "brave.adblock", "AdBlockComponentFiltersProvider::OnComponentReady",
+      perfetto::TerminatingFlow::FromPointer(this), "path", path.value());
+
   base::FilePath old_path = component_path_;
   component_path_ = path;
-  // Use the file modification time for component updates (old_path non-empty),
-  // but use Now() for first initialization to ensure the engine rebuilds even
-  // if the cached DAT has a newer timestamp (e.g. list was toggled off then on).
-  last_updated_ =
-      old_path.empty() ? base::Time::Now() : info.last_modified;
-
-  ScopedDictPrefUpdate update(local_state_,
-                              prefs::kAdBlockComponentFiltersCacheTimestamp);
-  update->Set(component_id_, base::TimeToValue(last_updated_));
-  NotifyObservers(engine_is_default_, last_updated_);
+  NotifyObservers(engine_is_default_);
 
   if (!old_path.empty()) {
     base::ThreadPool::PostTask(
@@ -136,46 +120,22 @@ void AdBlockComponentFiltersProvider::OnGetNewPathFileInfo(
   }
 }
 
-void AdBlockComponentFiltersProvider::OnComponentReady(
-    const base::FilePath& path) {
-  TRACE_EVENT(
-      "brave.adblock", "AdBlockComponentFiltersProvider::OnComponentReady",
-      perfetto::TerminatingFlow::FromPointer(this), "path", path.value());
-
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::TaskPriority::USER_BLOCKING, base::MayBlock()},
-      base::BindOnce(
-          [](const base::FilePath& path) {
-            base::File::Info info;
-            base::GetFileInfo(path, &info);
-            return info;
-          },
-          path),
-      base::BindOnce(&AdBlockComponentFiltersProvider::OnGetNewPathFileInfo,
-                     weak_factory_.GetWeakPtr(), path));
-}
-
 bool AdBlockComponentFiltersProvider::IsInitialized() const {
   return !component_path_.empty();
 }
 
-std::string AdBlockComponentFiltersProvider::GetCacheKey() const {
-  return base::StrCat(
-      {prefs::kAdBlockComponentFiltersCacheTimestamp, ".", component_id_});
-}
-base::Time AdBlockComponentFiltersProvider::GetTimestamp() const {
-  const auto& dict =
-      local_state_->GetDict(prefs::kAdBlockComponentFiltersCacheTimestamp);
-  auto* value = dict.Find(component_id_);
-  if (value) {
-    return base::ValueToTime(value).value_or(base::Time());
+std::optional<std::string> AdBlockComponentFiltersProvider::GetCacheKey()
+    const {
+  if (component_path_.empty()) {
+    return std::nullopt;
   }
-  return base::Time();
+  // Use the component path as the hash — it changes with each component
+  // version, naturally invalidating the cache.
+  return component_path_.MaybeAsASCII();
 }
 
 base::FilePath AdBlockComponentFiltersProvider::GetFilterSetPath() {
   if (component_path_.empty()) {
-    // Since we know it's empty return it as is.
     return component_path_;
   }
 
@@ -192,8 +152,6 @@ void AdBlockComponentFiltersProvider::LoadFilterSet(
               flow);
 
   if (list_file_path.empty()) {
-    // If the path is not ready yet, provide a no-op callback immediately. An
-    // update will be pushed later to notify about the newly available list.
     std::move(cb).Run(base::BindOnce(AddNothingToFilterSet));
     return;
   }

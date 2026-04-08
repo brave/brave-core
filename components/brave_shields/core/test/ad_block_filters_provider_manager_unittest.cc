@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 
-#include "base/time/time.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -16,13 +15,9 @@ class FiltersProviderManagerTestObserver
   FiltersProviderManagerTestObserver() = default;
 
   // AdBlockFiltersProvider::Observer
-  void OnChanged(bool is_default_engine, base::Time timestamp) override {
-    changed_count += 1;
-    last_timestamp = timestamp;
-  }
+  void OnChanged(bool is_default_engine) override { changed_count += 1; }
 
   int changed_count = 0;
-  base::Time last_timestamp;
 };
 
 TEST(AdBlockFiltersProviderManagerTest, WaitUntilInitialized) {
@@ -40,28 +35,25 @@ TEST(AdBlockFiltersProviderManagerTest, WaitUntilInitialized) {
   EXPECT_EQ(test_observer.changed_count, 2);
 }
 
-TEST(AdBlockFiltersProviderManagerTest, ForceNotifyObserverUsesMaxTimestamp) {
+TEST(AdBlockFiltersProviderManagerTest, ForceNotifyObserverCombinesHashes) {
   brave_shields::AdBlockFiltersProviderManager m;
 
-  // Create providers with specific timestamps
-  base::Time earlier = base::Time::Now() - base::Hours(2);
-  base::Time later = base::Time::Now() - base::Hours(1);
-
-  brave_shields::TestFiltersProvider provider1("", true, 0);
-  provider1.set_timestamp(earlier);
+  // Create providers with specific content hashes
+  brave_shields::TestFiltersProvider provider1("rules_a", true, 0);
   provider1.RegisterAsSourceProvider(&m);
 
-  brave_shields::TestFiltersProvider provider2("", true, 0);
-  provider2.set_timestamp(later);
+  brave_shields::TestFiltersProvider provider2("rules_b", true, 0);
   provider2.RegisterAsSourceProvider(&m);
 
   // Create a separate observer for ForceNotifyObserver
   FiltersProviderManagerTestObserver force_observer;
   m.ForceNotifyObserver(force_observer, true);
 
-  // Should have been notified once with the maximum timestamp
+  // Should have been notified once
   EXPECT_EQ(force_observer.changed_count, 1);
-  EXPECT_EQ(force_observer.last_timestamp, later);
+
+  // Both providers should be in the default engine set.
+  EXPECT_EQ(m.GetProviders(true).size(), 2u);
 }
 
 TEST(AdBlockFiltersProviderManagerTest,
@@ -79,13 +71,12 @@ TEST(AdBlockFiltersProviderManagerTest, ForceNotifyObserverRespectsEngineType) {
   brave_shields::AdBlockFiltersProviderManager m;
 
   // Create a default engine provider
-  brave_shields::TestFiltersProvider default_provider("", true, 0);
-  default_provider.set_timestamp(base::Time::Now());
+  brave_shields::TestFiltersProvider default_provider("default_rules", true, 0);
   default_provider.RegisterAsSourceProvider(&m);
 
   // Create an additional engine provider
-  brave_shields::TestFiltersProvider additional_provider("", false, 0);
-  additional_provider.set_timestamp(base::Time::Now());
+  brave_shields::TestFiltersProvider additional_provider("additional_rules",
+                                                         false, 0);
   additional_provider.RegisterAsSourceProvider(&m);
 
   // Observer for default engine only
@@ -99,19 +90,17 @@ TEST(AdBlockFiltersProviderManagerTest, ForceNotifyObserverRespectsEngineType) {
   EXPECT_EQ(additional_observer.changed_count, 1);
 }
 
-TEST(AdBlockFiltersProviderManagerTest,
-     OnChangedPropagatesTimestampToObservers) {
+TEST(AdBlockFiltersProviderManagerTest, OnChangedCombinesProviderHashes) {
   brave_shields::AdBlockFiltersProviderManager m;
 
   FiltersProviderManagerTestObserver observer;
   m.AddObserver(&observer);
 
   // Create and initialize a provider
-  brave_shields::TestFiltersProvider provider("", true, 0);
-  auto timestamp = base::Time::Now() - base::Hours(1);
-  provider.set_timestamp(timestamp);
+  brave_shields::TestFiltersProvider provider("test_rules", true, 0);
   provider.RegisterAsSourceProvider(&m);
 
   EXPECT_EQ(observer.changed_count, 1);
-  EXPECT_EQ(observer.last_timestamp, timestamp);
+  // Provider should be in the default engine set.
+  EXPECT_EQ(m.GetProviders(true).size(), 1u);
 }

@@ -391,7 +391,7 @@ public class BrowserViewController: UIViewController {
       screenTimeViewController = STWebpageController()
     }
 
-    braveCore.adblockService.registerFilterListChanges { [weak self] _, _ in
+    braveCore.adblockService.registerFilterListChanges { [weak self] _ in
       // Filter lists updated, reset selectors cache(s).
       self?.tabManager.allTabs.forEach {
         $0.contentBlocker?.resetSelectorsCache()

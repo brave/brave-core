@@ -17,8 +17,6 @@ namespace base {
 class FilePath;
 }
 
-class AdBlockServiceTest;
-
 namespace brave_shields {
 
 class AdBlockDefaultResourceProvider : public AdBlockResourceProvider {
@@ -36,16 +34,11 @@ class AdBlockDefaultResourceProvider : public AdBlockResourceProvider {
 
   void LoadResources(
       base::OnceCallback<void(AdblockResourceStorageBox)>) override;
-  void OverrideResourcesForTesting(AdblockResourceStorageBox storage);
 
  private:
-  friend class ::AdBlockServiceTest;
-
   void OnComponentReady(const base::FilePath&);
 
   base::FilePath component_path_;
-
-  std::optional<AdblockResourceStorageBox> storage_testing_override_;
 
   base::WeakPtrFactory<AdBlockDefaultResourceProvider> weak_factory_{this};
 };

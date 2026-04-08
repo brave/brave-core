@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_TEST_TEST_FILTERS_PROVIDER_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_TEST_TEST_FILTERS_PROVIDER_H_
 
+#include <optional>
 #include <string>
 
 #include "base/functional/callback.h"
-#include "base/time/time.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "third_party/rust/cxx/v1/cxx.h"
@@ -39,14 +39,16 @@ class TestFiltersProvider : public AdBlockFiltersProvider {
 
   std::string GetNameForDebugging() override;
 
-  base::Time GetTimestamp() const override;
-  void set_timestamp(base::Time timestamp) { timestamp_ = timestamp; }
+  std::optional<std::string> GetCacheKey() const override;
+  void set_cache_key(const std::string& hash) { content_hash_ = hash; }
+  void set_cache_key_nullopt() { force_nullopt_cache_key_ = true; }
 
  private:
   std::string rules_;
   uint8_t permission_mask_;
   bool is_initialized_;
-  base::Time timestamp_;
+  std::string content_hash_;
+  bool force_nullopt_cache_key_ = false;
 };
 
 }  // namespace brave_shields
