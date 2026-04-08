@@ -5,6 +5,20 @@
 
 module brave_account.mojom;
 
+struct LoggedOutState {};
+
+struct VerificationState {};
+
+struct LoggedInState {
+  string email;
+};
+
+union AccountState {
+  LoggedOutState logged_out;
+  VerificationState verification;
+  LoggedInState logged_in;
+};
+
 struct RegisterInitializeResult {
   // Verification token from the backend, locally encrypted with OSCrypt.
   string encryptedVerificationToken;
@@ -154,7 +168,15 @@ struct GetServiceTokenError {
   GetServiceTokenErrorCode? errorCode;
 };
 
+interface AuthenticationObserver {
+  // Notified immediately upon registration with the current state,
+  // and whenever the account state changes thereafter.
+  OnAccountStateChanged(AccountState state);
+};
+
 interface Authentication {
+  AddObserver(pending_remote<AuthenticationObserver> observer);
+
   // First step of the registration process.
   // `initiatingService`: the service that
   //                      initiated the registration process

@@ -35,6 +35,7 @@
 
 namespace brave_account {
 
+struct AuthenticationObserverTestCase;
 struct AuthValidateTestCase;
 struct CancelRegistrationTestCase;
 struct GetServiceTokenTestCase;
@@ -93,7 +94,9 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
     } else if constexpr (std::is_same_v<TestCase, AuthValidateTestCase>) {
       TestCase::Run(test_case, pref_service_, task_environment_,
                     *auth_validate_timer_);
-    } else if constexpr (std::is_same_v<TestCase, CancelRegistrationTestCase> ||
+    } else if constexpr (std::is_same_v<TestCase,
+                                        AuthenticationObserverTestCase> ||
+                         std::is_same_v<TestCase, CancelRegistrationTestCase> ||
                          std::is_same_v<TestCase, LogOutTestCase>) {
       TestCase::Run(test_case, pref_service_,
                     CHECK_DEREF(brave_account_service_.get()));

@@ -17,7 +17,9 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
+import org.chromium.brave_account.mojom.AccountState;
 import org.chromium.brave_account.mojom.Authentication;
+import org.chromium.brave_account.mojom.AuthenticationObserver;
 import org.chromium.brave_account.mojom.ResendConfirmationEmailError;
 import org.chromium.brave_account.mojom.ResendConfirmationEmailErrorCode;
 import org.chromium.brave_account.mojom.ResendConfirmationEmailResult;
@@ -26,13 +28,8 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.brave_account.BraveAccountServiceFactory;
 import org.chromium.chrome.browser.customtabs.BraveAccountCustomTabActivity;
-import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.preferences.PrefServiceUtil;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.brave_account.BraveAccountFeatures;
-import org.chromium.components.prefs.PrefChangeRegistrar;
-import org.chromium.components.prefs.PrefChangeRegistrar.PrefObserver;
-import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Result;
 import org.chromium.mojo.system.MojoException;
@@ -41,7 +38,8 @@ import java.util.Locale;
 import java.util.Map;
 
 @NullMarked
-public class BraveAccountSectionController implements PrefObserver, ConnectionErrorHandler {
+public class BraveAccountSectionController
+        implements AuthenticationObserver, ConnectionErrorHandler {
     private static final Map<Integer, Integer> ERROR_STRINGS =
             Map.of(
                     ResendConfirmationEmailErrorCode.MAXIMUM_EMAIL_SEND_ATTEMPTS_EXCEEDED,
@@ -70,7 +68,6 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
     private final PreferenceFragmentCompat mFragment;
     private final Profile mProfile;
     private @Nullable Authentication mBraveAccountService;
-    private @Nullable PrefChangeRegistrar mPrefChangeRegistrar;
 
     public static @Nullable BraveAccountSectionController maybeCreate(
             PreferenceFragmentCompat fragment, Profile profile) {
@@ -85,26 +82,19 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
         initBraveAccountService();
 
         setupPreferenceListeners();
-        setupPrefChangeRegistrar();
     }
 
     public void destroy() {
-        if (mPrefChangeRegistrar != null) {
-            mPrefChangeRegistrar.destroy();
-            mPrefChangeRegistrar = null;
-        }
-
         cleanUpBraveAccountService();
     }
 
-    public void updateUI() {
-        PostTask.postTask(TaskTraits.UI_DEFAULT, this::updateBraveAccountSection);
+    @Override
+    public void onAccountStateChanged(AccountState state) {
+        PostTask.postTask(TaskTraits.UI_DEFAULT, () -> updateBraveAccountSection(state));
     }
 
     @Override
-    public void onPreferenceChange() {
-        updateUI();
-    }
+    public void close() {}
 
     @Override
     public void onConnectionError(MojoException e) {
@@ -166,19 +156,7 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
         }
     }
 
-    private void setupPrefChangeRegistrar() {
-        mPrefChangeRegistrar = PrefServiceUtil.createFor(mProfile);
-        mPrefChangeRegistrar.addObserver(BravePref.BRAVE_ACCOUNT_AUTHENTICATION_TOKEN, this);
-        mPrefChangeRegistrar.addObserver(BravePref.BRAVE_ACCOUNT_EMAIL_ADDRESS, this);
-        mPrefChangeRegistrar.addObserver(BravePref.BRAVE_ACCOUNT_VERIFICATION_TOKEN, this);
-    }
-
-    private boolean hasPrefValue(String prefKey) {
-        String value = UserPrefs.get(mProfile).getString(prefKey);
-        return value != null && !value.isEmpty();
-    }
-
-    private void updateBraveAccountSection() {
+    private void updateBraveAccountSection(AccountState state) {
         if (!mFragment.isAdded() || mFragment.isDetached()) {
             return;
         }
@@ -191,23 +169,22 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
         Preference cancelRegistrationPref = mFragment.findPreference(PREF_CANCEL_REGISTRATION);
         Preference getStartedPref = mFragment.findPreference(PREF_GET_STARTED);
 
-        if (hasPrefValue(BravePref.BRAVE_ACCOUNT_AUTHENTICATION_TOKEN)) { // logged in
-            userInfoPref.setTitle(
-                    UserPrefs.get(mProfile).getString(BravePref.BRAVE_ACCOUNT_EMAIL_ADDRESS));
+        if (state.which() == AccountState.Tag.LoggedIn) {
+            userInfoPref.setTitle(state.getLoggedIn().email);
             setVisibility(userInfoPref, true);
             setVisibility(signOutPref, true);
             setVisibility(almostTherePref, false);
             setVisibility(resendConfirmationEmailPref, false);
             setVisibility(cancelRegistrationPref, false);
             setVisibility(getStartedPref, false);
-        } else if (hasPrefValue(BravePref.BRAVE_ACCOUNT_VERIFICATION_TOKEN)) { // verification
+        } else if (state.which() == AccountState.Tag.Verification) {
             setVisibility(userInfoPref, false);
             setVisibility(signOutPref, false);
             setVisibility(almostTherePref, true);
             setVisibility(resendConfirmationEmailPref, true);
             setVisibility(cancelRegistrationPref, true);
             setVisibility(getStartedPref, false);
-        } else { // logged out
+        } else {
             setVisibility(userInfoPref, false);
             setVisibility(signOutPref, false);
             setVisibility(almostTherePref, false);
@@ -227,6 +204,7 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
         mBraveAccountService =
                 BraveAccountServiceFactory.getInstance().getBraveAccountService(mProfile, this);
         assert mBraveAccountService != null;
+        mBraveAccountService.addObserver(this);
     }
 
     private void cleanUpBraveAccountService() {

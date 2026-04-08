@@ -65,6 +65,8 @@ source_set("test_support") {
   sources = [
     "mock_brave_account_authentication.cc",
     "mock_brave_account_authentication.h",
+    "mock_brave_account_authentication_observer.cc",
+    "mock_brave_account_authentication_observer.h",
   ]
 
   deps = [
@@ -88,6 +90,7 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/brave_account",
     "//brave/components/brave_account:features",
+    "//brave/components/brave_account:test_support",
     "//brave/components/brave_account/endpoint_client:test_support",
     "//brave/components/brave_account/endpoints",
     "//brave/components/brave_account/mojom",
@@ -96,6 +99,7 @@ source_set("unit_tests") {
     "//net",
     "//services/network:test_support",
     "//services/network/public/cpp",
+    "//testing/gmock",
     "//testing/gtest",
   ]
 }
