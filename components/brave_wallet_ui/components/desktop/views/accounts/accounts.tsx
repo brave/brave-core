@@ -45,6 +45,7 @@ import {
 } from '../../../../common/hooks/use-balances-fetcher'
 import {
   useGetDefaultFiatCurrencyQuery,
+  useGetHiddenAccountsQuery,
   useGetVisibleNetworksQuery,
   useGetRewardsInfoQuery,
   useGetUserTokensRegistryQuery,
@@ -66,12 +67,15 @@ export const Accounts = () => {
 
   // queries
   const { accounts } = useAccountsQuery()
+  const { data: hiddenAccounts = [] } = useGetHiddenAccountsQuery()
   const {
     data: { rewardsAccount: externalRewardsAccount } = emptyRewardsInfo,
   } = useGetRewardsInfoQuery()
   const { data: userTokensRegistry } = useGetUserTokensRegistryQuery()
 
-  const zcashAccountIds = accounts
+  const displayedAccounts = accounts
+
+  const zcashAccountIds = displayedAccounts
     .filter((account) => account.accountId.coin === BraveWallet.CoinType.ZEC)
     .map((account) => account.accountId)
 
@@ -95,43 +99,43 @@ export const Accounts = () => {
 
   // memos && computed
   const derivedAccounts = React.useMemo(() => {
-    return accounts.filter(
+    return displayedAccounts.filter(
       (account) => account.accountId.kind === BraveWallet.AccountKind.kDerived,
     )
-  }, [accounts])
+  }, [displayedAccounts])
 
   const importedAccounts = React.useMemo(() => {
-    return accounts.filter(
+    return displayedAccounts.filter(
       (account) => account.accountId.kind === BraveWallet.AccountKind.kImported,
     )
-  }, [accounts])
+  }, [displayedAccounts])
 
   const trezorAccounts = React.useMemo(() => {
-    const foundTrezorAccounts = accounts.filter((account) => {
+    const foundTrezorAccounts = displayedAccounts.filter((account) => {
       return (
         account.accountId.kind === BraveWallet.AccountKind.kHardware
         && account.hardware?.vendor === BraveWallet.HardwareVendor.kTrezor
       )
     })
     return groupAccountsById(foundTrezorAccounts, 'deviceId')
-  }, [accounts])
+  }, [displayedAccounts])
 
   const ledgerAccounts = React.useMemo(() => {
-    const foundLedgerAccounts = accounts.filter((account) => {
+    const foundLedgerAccounts = displayedAccounts.filter((account) => {
       return (
         account.accountId.kind === BraveWallet.AccountKind.kHardware
         && account.hardware?.vendor === BraveWallet.HardwareVendor.kLedger
       )
     })
     return groupAccountsById(foundLedgerAccounts, 'deviceId')
-  }, [accounts])
+  }, [displayedAccounts])
 
   const { data: networks } = useGetVisibleNetworksQuery()
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
   const { data: tokenBalancesRegistry, isLoading: isLoadingBalances } =
     useBalancesFetcher({
-      accounts,
+      accounts: displayedAccounts,
       networks,
     })
 
@@ -237,7 +241,7 @@ export const Accounts = () => {
   return (
     <WalletPageWrapper
       wrapContentInBox
-      cardHeader={<AccountsHeader />}
+      cardHeader={<AccountsHeader hiddenAccounts={hiddenAccounts} />}
       useCardInPanel={true}
     >
       <Row

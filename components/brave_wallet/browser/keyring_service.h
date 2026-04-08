@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -168,6 +169,15 @@ class KeyringService : public mojom::KeyringService {
   void SetAccountName(mojom::AccountIdPtr account_id,
                       const std::string& name,
                       SetAccountNameCallback callback) override;
+  void GetHiddenAccounts(GetHiddenAccountsCallback callback) override;
+  virtual std::vector<mojom::AccountInfoPtr> GetHiddenAccountsSync();
+  bool CanHideAccount(const mojom::AccountId& account_id) const;
+  void CanHideAccount(mojom::AccountIdPtr account_id,
+                      CanHideAccountCallback callback) override;
+  void AddHiddenAccount(mojom::AccountIdPtr account_id,
+                        AddHiddenAccountCallback callback) override;
+  void RemoveHiddenAccounts(std::vector<mojom::AccountIdPtr> account_ids,
+                            RemoveHiddenAccountsCallback callback) override;
   void Reset(bool notify_observer = true);
   void SignTransactionByDefaultKeyring(const mojom::AccountIdPtr& account_id,
                                        EthTransaction* tx);

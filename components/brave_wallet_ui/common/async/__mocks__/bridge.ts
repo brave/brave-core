@@ -98,6 +98,7 @@ export class MockedWalletApiProxy {
     mockFilecoinAccount,
     mockCardanoAccount,
   ]
+  hiddenAccountInfos: BraveWallet.AccountInfo[] = []
 
   selectedNetwork: BraveWallet.NetworkInfo = mockEthMainnet
 
@@ -622,6 +623,11 @@ export class MockedWalletApiProxy {
       }
       return { allAccounts }
     },
+    getHiddenAccounts: async () => {
+      return {
+        accounts: this.hiddenAccountInfos,
+      }
+    },
     validatePassword: async (password: string) => ({
       result: password === 'password',
     }),
@@ -660,6 +666,73 @@ export class MockedWalletApiProxy {
       return {
         success: validId,
       }
+    },
+    addHiddenAccount: async (accountId) => {
+      const accountToHide = this.accountInfos.find(
+        (a) => a.accountId.uniqueKey === accountId.uniqueKey,
+      )
+      if (!accountToHide) {
+        return { success: false }
+      }
+      this.accountInfos = this.accountInfos.filter(
+        (a) => a.accountId.uniqueKey !== accountId.uniqueKey,
+      )
+      if (
+        !this.hiddenAccountInfos.some(
+          (a) => a.accountId.uniqueKey === accountId.uniqueKey,
+        )
+      ) {
+        this.hiddenAccountInfos = [...this.hiddenAccountInfos, accountToHide]
+      }
+      return { success: true }
+    },
+    canHideAccount: async (accountId) => {
+      const account = this.accountInfos.find(
+        (a) => a.accountId.uniqueKey === accountId.uniqueKey,
+      )
+      if (
+        !account
+        || account.accountId.kind !== BraveWallet.AccountKind.kDerived
+      ) {
+        return { canHide: false }
+      }
+
+      const keyringDerivedAccounts = this.accountInfos.filter(
+        (a) =>
+          a.accountId.kind === BraveWallet.AccountKind.kDerived
+          && a.accountId.keyringId === account.accountId.keyringId,
+      )
+
+      return {
+        canHide:
+          keyringDerivedAccounts.length > 1
+          && keyringDerivedAccounts[0].accountId.uniqueKey
+            !== account.accountId.uniqueKey,
+      }
+    },
+    removeHiddenAccounts: async (accountIds) => {
+      const requestedKeys = new Set(accountIds.map((a) => a.uniqueKey))
+      const accountsToUnhide = this.hiddenAccountInfos.filter((a) =>
+        requestedKeys.has(a.accountId.uniqueKey),
+      )
+      if (accountsToUnhide.length === 0) {
+        return { success: false }
+      }
+
+      this.hiddenAccountInfos = this.hiddenAccountInfos.filter(
+        (a) => !requestedKeys.has(a.accountId.uniqueKey),
+      )
+      for (const accountToUnhide of accountsToUnhide) {
+        if (
+          !this.accountInfos.some(
+            (a) =>
+              a.accountId.uniqueKey === accountToUnhide.accountId.uniqueKey,
+          )
+        ) {
+          this.accountInfos = [...this.accountInfos, accountToUnhide]
+        }
+      }
+      return { success: true }
     },
     unlock: async (password) => {
       return { success: password === 'password' }

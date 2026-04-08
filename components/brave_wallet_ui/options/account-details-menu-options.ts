@@ -27,6 +27,11 @@ export const AccountDetailsMenuOptions: AccountButtonOptionsObjectType[] = [
     icon: 'key',
   },
   {
+    id: 'hide',
+    name: 'braveWalletAccountsHide',
+    icon: 'eye-off',
+  },
+  {
     id: 'remove',
     name: 'braveWalletAccountsRemove',
     icon: 'trash',
