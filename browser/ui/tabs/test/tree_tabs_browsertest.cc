@@ -2930,3 +2930,22 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                 tab_strip_model().GetIndexOfTab(tab_in_b_remaining)),
             group_b);
 }
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       AddTab_EmptyNewTab_NoNestedTreeTab) {
+  SetTreeTabsEnabled(true);
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
+  ASSERT_EQ(2, tab_strip_model().count());
+  EXPECT_EQ(tab_strip_model()
+                .GetTabAtIndex(0)
+                ->GetParentCollection()
+                ->GetParentCollection()
+                ->type(),
+            tabs::TabCollection::Type::UNPINNED);
+  EXPECT_EQ(tab_strip_model()
+                .GetTabAtIndex(1)
+                ->GetParentCollection()
+                ->GetParentCollection()
+                ->type(),
+            tabs::TabCollection::Type::UNPINNED);
+}
