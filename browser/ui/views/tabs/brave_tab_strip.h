@@ -36,6 +36,8 @@ class BraveTabStrip : public TabStrip {
 
   TabContainer* GetTabContainerForTesting();
 
+  void InvalidateTabContainerLayout();
+
   // TabStrip:
   void ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) override;
   void HideHover(Tab* tab, TabStyle::HideHoverStyle style) override;
