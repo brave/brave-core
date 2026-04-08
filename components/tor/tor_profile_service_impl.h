@@ -29,6 +29,10 @@ class ProxyConfigService;
 class ProxyConfigServiceTor;
 }  // namespace net
 
+namespace network {
+class SharedURLLoaderFactory;
+}
+
 namespace tor {
 
 using NewTorCircuitCallback =
@@ -41,7 +45,7 @@ class TorProfileServiceImpl
       public TorLauncherObserver {
  public:
   TorProfileServiceImpl(
-      content::BrowserContext* original_context,
+      scoped_refptr<network::SharedURLLoaderFactory> direct_url_loader_factory,
       content::BrowserContext* context,
       PrefService* local_state,
       BraveTorClientUpdater* tor_client_updater,
@@ -76,6 +80,7 @@ class TorProfileServiceImpl
 
   void OnBuiltinBridgesResponse(const base::DictValue& bridges);
 
+  scoped_refptr<network::SharedURLLoaderFactory> direct_url_loader_factory_;
   raw_ptr<content::BrowserContext> context_ = nullptr;
   raw_ptr<PrefService> local_state_ = nullptr;
   raw_ptr<BraveTorClientUpdater> tor_client_updater_ = nullptr;
