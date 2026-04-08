@@ -553,20 +553,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             return;
         }
 
-        // Check if subscription is active
-        boolean isSubscriptionActive =
-                BraveOriginSubscriptionPrefs.getIsSubscriptionActive(getProfile());
-
-        if (!isSubscriptionActive) {
-            Intent intent = new Intent(getActivity(), BraveOriginPlansActivity.class);
-            getActivity().startActivity(intent);
-
-            return;
-        }
-
-        // Subscription is active - request credential summary and open activity
-        // BraveOriginPlansActivity if not active
-        // BraveOriginPreferences if active
+        // Always check SKUs SDK credential summary to handle both Play Store
+        // purchases and linked desktop purchases.
         BraveOriginSubscriptionPrefs.requestCredentialSummary(
                 getProfile(),
                 new Callback<Boolean>() {
