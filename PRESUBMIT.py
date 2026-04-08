@@ -43,7 +43,8 @@ def CheckLeoVariables(input_api, output_api):
     try:
         parts = [
             brave_node.PathInNodeModules('@brave', 'leo', 'src', 'scripts',
-                                         'audit-tokens.js')
+                                         'audit-tokens.js'), '--ignore',
+            '.storybook-out'
         ]
         brave_node.RunNode(parts, include_command_in_error=False)
         return []
