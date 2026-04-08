@@ -44,6 +44,8 @@ import {
   TokenBalancesRegistry, //
 } from '../../../common/slices/entities/token-balance.entity'
 import {
+  useAddHiddenAccountMutation,
+  useCanHideAccountQuery,
   useGetChainTipStatusQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetRewardsInfoQuery,
@@ -155,6 +157,10 @@ export const AccountListItem = ({
   const [showAccountMenu, setShowAccountMenu] = React.useState<boolean>(false)
   const [showShieldAccountModal, setShowShieldAccountModal] =
     React.useState<boolean>(false)
+  const [addHiddenAccount] = useAddHiddenAccountMutation()
+  const { data: canHideAccount = false } = useCanHideAccountQuery({
+    accountId: account.accountId,
+  })
 
   // refs
   const accountMenuRef = React.useRef<HTMLDivElement>(null)
@@ -195,6 +201,10 @@ export const AccountListItem = ({
         onSelectAccount()
         return
       }
+      if (id === 'hide') {
+        void addHiddenAccount({ accountId: account.accountId })
+        return
+      }
       if (id === 'remove') {
         onRemoveAccount()
         return
@@ -205,7 +215,13 @@ export const AccountListItem = ({
       }
       onShowAccountsModal(id)
     },
-    [onSelectAccount, onRemoveAccount, onShowAccountsModal],
+    [
+      account,
+      addHiddenAccount,
+      onSelectAccount,
+      onRemoveAccount,
+      onShowAccountsModal,
+    ],
   )
 
   // memos & computed
@@ -340,8 +356,19 @@ export const AccountListItem = ({
       && isShieldingAvailable
       && zcashAccountInfo
       && !zcashAccountInfo.accountShieldBirthday
+    const canToggleHiddenAccount = canHideAccount
 
     let options = [...AccountButtonOptions]
+    options = options.map((option) =>
+      option.id === 'hide'
+        ? {
+            ...option,
+            id: 'hide',
+            name: 'braveWalletAccountsHide',
+            icon: 'eye-off',
+          }
+        : option,
+    )
 
     if (!canRemove) {
       options = options.filter((option) => option.id !== 'remove')
@@ -352,9 +379,13 @@ export const AccountListItem = ({
     if (!canShieldAccount) {
       options = options.filter((option) => option.id !== 'shield')
     }
+    if (!canToggleHiddenAccount) {
+      options = options.filter((option) => option.id !== 'hide')
+    }
     return options
   }, [
     account,
+    canHideAccount,
     isZCashShieldedTransactionsEnabled,
     isShieldingAvailable,
     zcashAccountInfo,

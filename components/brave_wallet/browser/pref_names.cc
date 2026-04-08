@@ -225,6 +225,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterDictionaryPref(kBraveWalletEip1559CustomChains);
   registry->RegisterDictionaryPref(kBraveWalletHiddenNetworks,
                                    GetDefaultHiddenNetworks());
+  registry->RegisterListPref(kBraveWalletHiddenAccounts);
   registry->RegisterDictionaryPref(kBraveWalletSelectedNetworks,
                                    GetDefaultSelectedNetworks());
   registry->RegisterDictionaryPref(kBraveWalletSelectedNetworksPerOrigin,
@@ -312,6 +313,7 @@ void ClearKeyringServiceProfilePrefs(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletSelectedEthDappAccount);
   prefs->ClearPref(kBraveWalletSelectedSolDappAccount);
   prefs->ClearPref(kBraveWalletSelectedAdaDappAccount);
+  prefs->ClearPref(kBraveWalletHiddenAccounts);
 }
 
 void ClearBraveWalletServicePrefs(PrefService* prefs) {

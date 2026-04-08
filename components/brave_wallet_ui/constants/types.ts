@@ -549,6 +549,7 @@ export enum WalletRoutes {
   // hardware wallet import modals
   AddHardwareAccountModalStart = '/crypto/accounts/add-account/hardware',
   AddHardwareAccountModal = '/crypto/accounts/add-account/hardware/:accountTypeName?',
+  RestoreAccountsModal = '/crypto/accounts/add-account/restore',
 
   // wallet backup
   Backup = '/crypto/backup-wallet',
@@ -852,6 +853,7 @@ export type AccountModalTypes =
   | 'privateKey'
   | 'edit'
   | 'details'
+  | 'hide'
   | 'remove'
   | 'buy'
   | 'explorer'

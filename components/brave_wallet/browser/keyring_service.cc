@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 
+#include <algorithm>
 #include <array>
 #include <optional>
 #include <set>
@@ -334,6 +335,15 @@ struct ImportedAccountInfo {
   std::optional<uint32_t> bitcoin_next_receive_address_index;
   std::optional<uint32_t> bitcoin_next_change_address_index;
 };
+
+bool IsAccountHidden(PrefService* profile_prefs, std::string_view unique_key) {
+  return std::ranges::any_of(
+      profile_prefs->GetList(kBraveWalletHiddenAccounts),
+      [&](const base::Value& hidden_account) {
+        const auto* hidden_unique_key = hidden_account.GetIfString();
+        return hidden_unique_key && *hidden_unique_key == unique_key;
+      });
+}
 
 // Gets all imported account from prefs.
 std::vector<ImportedAccountInfo> GetImportedAccountsForKeyring(
@@ -2721,6 +2731,113 @@ void KeyringService::SetAccountName(mojom::AccountIdPtr account_id,
   NOTREACHED() << account_id->kind;
 }
 
+void KeyringService::GetHiddenAccounts(GetHiddenAccountsCallback callback) {
+  std::move(callback).Run(GetHiddenAccountsSync());
+}
+
+std::vector<mojom::AccountInfoPtr> KeyringService::GetHiddenAccountsSync() {
+  std::set<std::string> account_unique_keys;
+  for (const auto& hidden_account :
+       profile_prefs_->GetList(kBraveWalletHiddenAccounts)) {
+    if (auto* unique_key = hidden_account.GetIfString()) {
+      account_unique_keys.insert(*unique_key);
+    }
+  }
+
+  std::vector<mojom::AccountInfoPtr> hidden_accounts;
+  for (const auto& keyring_id : GetEnabledKeyrings()) {
+    for (auto& account_info : GetAccountInfosForKeyring(keyring_id)) {
+      if (account_unique_keys.contains(account_info->account_id->unique_key)) {
+        hidden_accounts.push_back(std::move(account_info));
+      }
+    }
+  }
+
+  return hidden_accounts;
+}
+
+bool KeyringService::CanHideAccount(const mojom::AccountId& account_id) const {
+  if (account_id.kind != mojom::AccountKind::kDerived) {
+    return false;
+  }
+
+  auto derived_accounts =
+      GetDerivedAccountsForKeyring(profile_prefs_, account_id.keyring_id);
+  const auto account_it =
+      std::ranges::find_if(derived_accounts, [&](const auto& account_info) {
+        return *account_info.GetAccountId() == account_id;
+      });
+  if (account_it == derived_accounts.end()) {
+    return false;
+  }
+
+  if (account_it == derived_accounts.begin() &&
+      account_id.coin == mojom::CoinType::ETH &&
+      account_id.keyring_id == mojom::KeyringId::kDefault) {
+    return false;
+  }
+
+  return true;
+}
+
+void KeyringService::CanHideAccount(
+    mojom::AccountIdPtr account_id,
+    KeyringService::CanHideAccountCallback callback) {
+  CHECK(account_id);
+  std::move(callback).Run(CanHideAccount(*account_id));
+}
+
+void KeyringService::AddHiddenAccount(mojom::AccountIdPtr account_id,
+                                      AddHiddenAccountCallback callback) {
+  CHECK(account_id);
+
+  if (!CanHideAccount(*account_id)) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  ScopedListPrefUpdate update(profile_prefs_, kBraveWalletHiddenAccounts);
+  if (!std::ranges::contains(*update, base::Value(account_id->unique_key))) {
+    update->Append(account_id->unique_key);
+    NotifyAccountsChanged();
+    MaybeFixAccountSelection();
+  }
+
+  std::move(callback).Run(true);
+}
+
+void KeyringService::RemoveHiddenAccounts(
+    std::vector<mojom::AccountIdPtr> account_ids,
+    RemoveHiddenAccountsCallback callback) {
+  base::flat_set<std::string> unique_keys_to_remove;
+  for (const auto& account_id : account_ids) {
+    if (!account_id || account_id->unique_key.empty()) {
+      std::move(callback).Run(false);
+      return;
+    }
+    unique_keys_to_remove.insert(account_id->unique_key);
+  }
+
+  if (unique_keys_to_remove.empty()) {
+    std::move(callback).Run(true);
+    return;
+  }
+
+  ScopedListPrefUpdate update(profile_prefs_, kBraveWalletHiddenAccounts);
+  const size_t removed_count = update->EraseIf([&](const base::Value& value) {
+    const auto* unique_key = value.GetIfString();
+    if (!unique_key || !unique_keys_to_remove.contains(*unique_key)) {
+      return false;
+    }
+    return true;
+  });
+  if (removed_count > 0) {
+    NotifyAccountsChanged();
+  }
+
+  std::move(callback).Run(true);
+}
+
 bool KeyringService::SetKeyringDerivedAccountNameInternal(
     const mojom::AccountId& account_id,
     const std::string& name) {
@@ -3549,6 +3666,10 @@ const std::vector<mojom::AccountInfoPtr>& KeyringService::GetAllAccountInfos() {
         std::make_unique<std::vector<mojom::AccountInfoPtr>>();
     for (const auto& keyring_id : GetEnabledKeyrings()) {
       for (auto& account_info : GetAccountInfosForKeyring(keyring_id)) {
+        if (IsAccountHidden(profile_prefs_,
+                            account_info->account_id->unique_key)) {
+          continue;
+        }
         account_info_cache_->push_back(std::move(account_info));
       }
     }

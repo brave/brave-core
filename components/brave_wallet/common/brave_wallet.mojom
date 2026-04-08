@@ -1472,6 +1472,18 @@ interface KeyringService {
   // Sets the account name for a derived account
   SetAccountName(AccountId account_id, string name) => (bool success);
 
+  // Gets all hidden accounts.
+  GetHiddenAccounts() => (array<AccountInfo> accounts);
+
+  // Marks account as hidden.
+  AddHiddenAccount(AccountId account_id) => (bool success);
+
+  // Returns whether account can be hidden.
+  CanHideAccount(AccountId account_id) => (bool can_hide);
+
+  // Removes account from hidden list.
+  RemoveHiddenAccounts(array<AccountId> account_ids) => (bool success);
+
   // Adds hardware accounts
   AddHardwareAccounts(array<HardwareWalletAccount> info)
       => (array<AccountInfo>? account_infos);

@@ -36,10 +36,12 @@ import { Row } from '../../shared/style'
 interface Props {
   title: string
   expandRoute?: WalletRoutes
+  actionIconName?: string
+  onClickActionButton?: () => void
 }
 
 export const DefaultPanelHeader = (props: Props) => {
-  const { title, expandRoute } = props
+  const { title, expandRoute, actionIconName, onClickActionButton } = props
 
   // UI Selectors (safe)
   const isMobile = useSafeUISelector(UISelectors.isMobile)
@@ -86,6 +88,11 @@ export const DefaultPanelHeader = (props: Props) => {
         width='unset'
         justifyContent='flex-end'
       >
+        {actionIconName && onClickActionButton && (
+          <Button onClick={onClickActionButton}>
+            <ButtonIcon name={actionIconName} />
+          </Button>
+        )}
         <MenuWrapper ref={settingsMenuRef}>
           <Button onClick={() => setShowSettingsMenu((prev) => !prev)}>
             <ButtonIcon name='more-vertical' />

@@ -39,6 +39,7 @@ import Amount from '../../../utils/amount'
 
 // Queries
 import {
+  useCanHideAccountQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetUserTokensRegistryQuery,
 } from '../../../common/slices/api.slice'
@@ -105,6 +106,9 @@ export const AccountDetailsHeader = (props: Props) => {
     }),
   })
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
+  const { data: canHideAccount = false } = useCanHideAccountQuery({
+    accountId: account.accountId,
+  })
 
   // state
   const [showAccountDetailsMenu, setShowAccountDetailsMenu] =
@@ -187,6 +191,7 @@ export const AccountDetailsHeader = (props: Props) => {
 
   const menuOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {
     let options = AccountDetailsMenuOptions
+    const canToggleHiddenAccount = canHideAccount
     // We are not able to remove a Derived account
     // so we filter out this option.
     if (account.accountId.kind === BraveWallet.AccountKind.kDerived) {
@@ -219,8 +224,23 @@ export const AccountDetailsHeader = (props: Props) => {
         (option: AccountButtonOptionsObjectType) => option.id !== 'explorer',
       )
     }
+    if (!canToggleHiddenAccount) {
+      options = options.filter(
+        (option: AccountButtonOptionsObjectType) => option.id !== 'hide',
+      )
+    }
+    options = options.map((option) =>
+      option.id === 'hide'
+        ? {
+            ...option,
+            id: 'hide',
+            name: 'braveWalletAccountsHide',
+            icon: 'eye-off',
+          }
+        : option,
+    )
     return options
-  }, [account])
+  }, [account, canHideAccount])
 
   const headerPadding = React.useMemo(() => {
     if (isMobileOrPanel) {

@@ -14,6 +14,7 @@ import { UISelectors } from '../../../common/selectors'
 
 // Options
 import { CreateAccountOptions } from '../../../options/nav-options'
+import { BraveWallet } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -26,7 +27,12 @@ import {
   ButtonIcon,
 } from './wellet-menus.style'
 
-export const AccountsMenu = () => {
+interface Props {
+  hiddenAccounts: BraveWallet.AccountInfo[]
+  onCloseMenu: () => void
+}
+
+export const AccountsMenu = ({ hiddenAccounts, onCloseMenu }: Props) => {
   // routing
   const history = useHistory()
 
@@ -35,14 +41,26 @@ export const AccountsMenu = () => {
 
   return (
     <StyledWrapper yPosition={42}>
-      {CreateAccountOptions.filter(
-        (option) =>
-          // Filter out hardware wallet item on Android.
-          !isMobile || option.name !== 'braveWalletConnectHardwareWallet',
-      ).map((option) => (
+      {CreateAccountOptions.filter((option) => {
+        // Filter out hardware wallet item on Android.
+        if (isMobile && option.name === 'braveWalletConnectHardwareWallet') {
+          return false
+        }
+        // Show restore route only when we have hidden accounts.
+        if (
+          option.name === 'braveWalletWelcomeRestoreButton'
+          && hiddenAccounts.length === 0
+        ) {
+          return false
+        }
+        return true
+      }).map((option) => (
         <PopupButton
           key={option.name}
-          onClick={() => history.push(option.route)}
+          onClick={() => {
+            history.push(option.route)
+            onCloseMenu()
+          }}
           minWidth={240}
         >
           <ButtonIcon name={option.icon} />
