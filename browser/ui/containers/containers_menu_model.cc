@@ -40,11 +40,15 @@ ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
                  << "Trimming to fit within command ID range.";
   }
 
-  // 1. Add items for each container.
+  // 1. Add an item to indicate "No container" state.
+  AddCheckItemWithStringId(IDC_OPEN_IN_CONTAINER_NO_CONTAINER,
+                           IDS_CXMENU_NO_CONTAINER);
+
+  // 2. Add items for each container.
   int index = 0;
   for (const auto& item : items_) {
     AddCheckItem(ItemIndexToCommandId(index), base::UTF8ToUTF16(item.name()));
-    SetIcon(index,
+    SetIcon(index + 1,
 #if BUILDFLAG(IS_MAC)
             // On macOS, vector icon version of menu items are not supported.
             // For the reference, we tried fix this with adhoc patch in
@@ -60,10 +64,10 @@ ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
     index++;
   }
 
-  // 2. Add a separator.
+  // 3. Add a separator.
   AddSeparator(ui::NORMAL_SEPARATOR);
 
-  // 3. Add an item to open settings page.
+  // 4. Add an item to open settings page.
   AddItemWithStringId(IDC_OPEN_CONTAINERS_SETTING,
                       IDS_CXMENU_OPEN_CONTAINERS_SETTINGS);
 
@@ -73,6 +77,12 @@ ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
 ContainersMenuModel::~ContainersMenuModel() = default;
 
 void ContainersMenuModel::ExecuteCommand(int command_id, int event_flags) {
+  if (command_id == IDC_OPEN_IN_CONTAINER_START) {
+    // "No container" is selected.
+    delegate_->OnNoContainerSelected();
+    return;
+  }
+
   if (command_id == IDC_OPEN_CONTAINERS_SETTING) {
     // Open the containers settings page
     OpenContainerSettingsPage();
@@ -94,6 +104,11 @@ void ContainersMenuModel::ContainerSelected(int command_id) {
 }
 
 bool ContainersMenuModel::IsCommandIdChecked(int command_id) const {
+  if (command_id == IDC_OPEN_IN_CONTAINER_START) {
+    // IDC_OPEN_IN_CONTAINER_START is the command ID for the "No container"
+    return current_container_ids_.empty();
+  }
+
   return current_container_ids_.contains(
       items_[CommandIdToItemIndex(command_id)].container()->id);
 }
@@ -103,7 +118,7 @@ bool ContainersMenuModel::IsCommandIdEnabled(int command_id) const {
 }
 
 int ContainersMenuModel::CommandIdToItemIndex(int command_id) const {
-  const auto item_index = command_id - IDC_OPEN_IN_CONTAINER_START;
+  const auto item_index = command_id - IDC_OPEN_IN_CONTAINER_START - 1;
   CHECK(item_index >= 0 && item_index < static_cast<int>(items_.size()))
       << "Command ID " << command_id
       << " is out of range for the current menu model.";
@@ -114,7 +129,7 @@ int ContainersMenuModel::ItemIndexToCommandId(int item_index) const {
   CHECK(item_index >= 0 && item_index < static_cast<int>(items_.size()))
       << "Item index " << item_index
       << " is out of range for the current menu model.";
-  return item_index + IDC_OPEN_IN_CONTAINER_START;
+  return item_index + IDC_OPEN_IN_CONTAINER_START + 1;
 }
 
 }  // namespace containers

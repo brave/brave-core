@@ -1197,6 +1197,30 @@ void OpenUrlInContainer(BrowserWindowInterface* browser_window,
   Navigate(&params);
 }
 
+void OpenTabUrlWithoutContainer(BrowserWindowInterface* browser_window,
+                                const tabs::TabHandle& tab) {
+  const auto* tab_ptr = tab.Get();
+  if (!tab_ptr) {
+    LOG(ERROR) << "Tab is not valid";
+    return;
+  }
+
+  const GURL& url = tab_ptr->GetContents()->GetLastCommittedURL();
+  OpenUrlWithoutContainer(browser_window, url);
+}
+
+void OpenUrlWithoutContainer(BrowserWindowInterface* browser_window,
+                             const GURL& url) {
+  if (!url.is_valid()) {
+    LOG(ERROR) << "Url is not valid";
+    return;
+  }
+
+  NavigateParams params(browser_window, url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  Navigate(&params);
+}
+
 void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser_window) {
   // TODO(https://github.com/brave/brave-browser/issues/53350)
   NOTIMPLEMENTED();

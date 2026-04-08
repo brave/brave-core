@@ -36,6 +36,7 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
     virtual ~Delegate() = default;
 
     virtual void OnContainerSelected(const mojom::ContainerPtr& container) = 0;
+    virtual void OnNoContainerSelected() = 0;
     virtual base::flat_set<std::string> GetCurrentContainerIds() = 0;
     virtual Browser* GetBrowserToOpenSettings() = 0;
     virtual float GetScaleFactor() = 0;

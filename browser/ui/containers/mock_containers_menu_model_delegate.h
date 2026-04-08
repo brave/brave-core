@@ -21,6 +21,7 @@ class MockContainersMenuModelDelegate
               OnContainerSelected,
               (const containers::mojom::ContainerPtr& container),
               (override));
+  MOCK_METHOD(void, OnNoContainerSelected, (), (override));
 
   MOCK_METHOD(base::flat_set<std::string>,
               GetCurrentContainerIds,
