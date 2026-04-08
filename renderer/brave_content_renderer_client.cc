@@ -317,6 +317,6 @@ bool BraveContentRendererClient::IsOnionAllowed() const {
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 bool BraveContentRendererClient::IsBraveWalletAvailable() const {
-  return brave_observer_->IsBraveWalletAvailable();
+  return brave_observer_ && brave_observer_->IsBraveWalletAvailable();
 }
 #endif
