@@ -3,12 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import * as React from 'react'
 import * as Mojom from '../../../common/mojom'
-import { getCompletionEvent } from '../../../common/test_data_utils'
-import MockContext from '../../mock_untrusted_conversation_context'
+import {
+  createConversationTurnWithDefaults,
+  getCompletionEvent,
+} from '../../../common/test_data_utils'
+import MockContext, {
+  MockContextRef,
+} from '../../mock_untrusted_conversation_context'
 import { UntrustedConversationContext } from '../../untrusted_conversation_context'
 import type { AssistantResponseProps } from '../assistant_response'
 import ConversationEntries from '.'
@@ -674,5 +679,75 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
     expect(container.querySelector('.skillLabel')).not.toHaveTextContent(
       'and additional text',
     )
+  })
+})
+
+describe('last entry pair scroll on mount', () => {
+  const humanTurn = createConversationTurnWithDefaults({
+    characterType: Mojom.CharacterType.HUMAN,
+    text: 'Hello',
+  })
+
+  let scrollIntoViewMock: jest.Mock
+
+  beforeEach(() => {
+    scrollIntoViewMock = jest.fn()
+    HTMLElement.prototype.scrollIntoView = scrollIntoViewMock
+  })
+
+  afterEach(() => {
+    delete (HTMLElement.prototype as any).scrollIntoView
+  })
+
+  it('scrolls the last entry pair into view when generation has started', () => {
+    render(
+      <MockContext
+        overrides={{ isGenerating: true }}
+        initialState={{ conversationHistory: [humanTurn] }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    expect(scrollIntoViewMock).toHaveBeenCalledTimes(1)
+    expect(scrollIntoViewMock).toHaveBeenCalledWith({
+      block: 'start',
+      behavior: 'smooth',
+    })
+  })
+
+  it('does not scroll when generation has never started', () => {
+    render(
+      <MockContext initialState={{ conversationHistory: [humanTurn] }}>
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    expect(scrollIntoViewMock).not.toHaveBeenCalled()
+  })
+
+  it('only scrolls once per element mount, not on subsequent re-renders', async () => {
+    const mockRef = React.createRef<MockContextRef>()
+
+    render(
+      <MockContext
+        ref={mockRef}
+        initialState={{
+          conversationHistory: [humanTurn],
+          conversationEntriesState: { isGenerating: true },
+        }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    expect(scrollIntoViewMock).toHaveBeenCalledTimes(1)
+
+    // Re-render with isGenerating: false — entry pairs unchanged, ref value unchanged
+    await act(async () => {
+      mockRef.current!.api.state.update({ isGenerating: false })
+    })
+
+    expect(scrollIntoViewMock).toHaveBeenCalledTimes(1)
   })
 })
