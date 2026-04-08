@@ -17,6 +17,8 @@ const PERIOD: u32 = 64;
 
 const PHASE_APPLY_EXTRINSIC: u8 = 0;
 
+const WITHDRAW_VARIANT_INDEX: u8 = 0x08;
+
 // transactionpayment(TransactionFeePaid)
 const TRANSACTION_FEE_PAID_VARIANT_INDEX: u8 = 0x00;
 
@@ -519,22 +521,61 @@ fn was_extrinsic_successful(
     // status. We can theoretically probe for everything such as who the fee was
     // paid out to but it isn't strictly required for our current needs.
 
-    let mut needle = [0_u8; 39];
-    needle[0] = PHASE_APPLY_EXTRINSIC;
-    needle[1..5].copy_from_slice(&extrinsic_idx.to_le_bytes());
-    needle[5] = chain_metadata.transaction_payment_pallet_index;
-    needle[6] = TRANSACTION_FEE_PAID_VARIANT_INDEX;
-    needle[7..39].copy_from_slice(sender);
+    // We first probe for the balances(Withdraw) event, so that we can use the
+    // withdrawn fee as a sanity check when we probe for our TransactionFeePaid
+    // event later on.
+    let mut withdraw_needle = [0_u8; 39];
+    withdraw_needle[0] = PHASE_APPLY_EXTRINSIC;
+    withdraw_needle[1..5].copy_from_slice(&extrinsic_idx.to_le_bytes());
+    withdraw_needle[5] = chain_metadata.balances_pallet_index;
+    withdraw_needle[6] = WITHDRAW_VARIANT_INDEX;
+    withdraw_needle[7..39].copy_from_slice(sender);
 
+    // Use `rfind` here because extrinsic blobs can be huge, and our events are
+    // typically found at the end of the events blob.
     let mut events = events;
-    let Some(needle_idx) = memchr::memmem::rfind(events, &needle) else {
+    let Some(needle_idx) = memchr::memmem::rfind(events, &withdraw_needle) else {
         return false;
     };
 
-    events = &events[needle_idx + needle.len()..];
+    events = &events[needle_idx + withdraw_needle.len()..];
+
+    let Ok(withdrawn_fee) = next_n_bytes(&mut events, 16) else {
+        return false;
+    };
+
+    let Ok(topics) = next_n_bytes(&mut events, 1) else {
+        return false;
+    };
+
+    if topics[0] != 0 {
+        return false;
+    };
+
+    // Look for the remainining two events we need,
+    // transactionpayment(TransactionFeePaid) and system(ExtrinsicSuccess |
+    // ExtrinsicFailed)
+    let mut transaction_fee_paid_needle = [0_u8; 39];
+    transaction_fee_paid_needle[0] = PHASE_APPLY_EXTRINSIC;
+    transaction_fee_paid_needle[1..5].copy_from_slice(&extrinsic_idx.to_le_bytes());
+    transaction_fee_paid_needle[5] = chain_metadata.transaction_payment_pallet_index;
+    transaction_fee_paid_needle[6] = TRANSACTION_FEE_PAID_VARIANT_INDEX;
+    transaction_fee_paid_needle[7..39].copy_from_slice(sender);
+
+    // Use `find` here because we've located the start of our event sequence above.
+    let Some(needle_idx) = memchr::memmem::find(events, &transaction_fee_paid_needle) else {
+        return false;
+    };
+
+    events = &events[needle_idx + transaction_fee_paid_needle.len()..];
     let Ok(fee) = next_n_bytes(&mut events, 16) else {
         return false;
     };
+
+    // If our fees don't match here, we can consider the events blob invalid.
+    if withdrawn_fee != fee {
+        return false;
+    }
 
     let Ok(_tip) = next_n_bytes(&mut events, 16) else {
         return false;

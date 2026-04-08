@@ -1125,6 +1125,20 @@ TEST(PolkadotExtrinsics, EventsParsing_Error) {
 
   std::vector<std::string> inputs;
 
+  // Incorrect balances(Withdraw).
+  {
+    std::string bad_withdraw_event_prefix = valid_events;
+    auto n = bad_withdraw_event_prefix.find("00020000000508");
+    bad_withdraw_event_prefix[n] = '1';
+    inputs.push_back(std::move(bad_withdraw_event_prefix));
+  }
+  {
+    std::string bad_withdraw_event_prefix = valid_events;
+    auto n = bad_withdraw_event_prefix.find("00020000000508");
+    bad_withdraw_event_prefix.erase(n + 5, 2);
+    inputs.push_back(std::move(bad_withdraw_event_prefix));
+  }
+
   // Incorrect transactionpayment(TransactionFeePaid).
   {
     std::string bad_fee_paid_event_prefix = valid_events;
@@ -1153,6 +1167,14 @@ TEST(PolkadotExtrinsics, EventsParsing_Error) {
     inputs.push_back(std::move(bad_extrinsic_success_event_prefix));
   }
 
+  // Incorrect sender in balances withdraw.
+  {
+    std::string bad_sender_transfer = valid_events;
+    auto n = bad_sender_transfer.find(sender_hex);
+    bad_sender_transfer[n] = '0';
+    inputs.push_back(std::move(bad_sender_transfer));
+  }
+
   // Incorrect sender in transaction fee paid.
   {
     std::string bad_sender_transfer = valid_events;
@@ -1161,6 +1183,21 @@ TEST(PolkadotExtrinsics, EventsParsing_Error) {
     n = bad_sender_transfer.find(sender_hex, n + 64);
     bad_sender_transfer[n] = '0';
     inputs.push_back(std::move(bad_sender_transfer));
+  }
+
+  // Incorrect topics for withdrawal.
+  {
+    std::string needle =
+        "5f139909000000000000000000000000"
+        "00"
+        "0002000000";
+
+    std::string bad_fee_paid_topics = valid_events;
+    auto n = bad_fee_paid_topics.find(needle);
+    bad_fee_paid_topics[n + needle.size() -
+                        std::string_view("0002000000").size() - 2] = '1';
+
+    inputs.push_back(std::move(bad_fee_paid_topics));
   }
 
   // Incorrect topics for fee paid.
@@ -1232,6 +1269,20 @@ TEST(PolkadotExtrinsics, EventsParsing_Error) {
     truncated.erase(n);
 
     inputs.push_back(std::move(truncated));
+  }
+
+  // Withdrawal doesn't match transaction fee paid.
+  {
+    std::string needle =
+        "0508"
+        "bf0be0352ca5bc12a8ac6cf0006e220e5c55bb03126890ad37ce9753f9b3e3db"
+        "5f139909000000000000000000000000";
+
+    std::string mismatched_withdrawal = valid_events;
+    auto n = mismatched_withdrawal.find(needle);
+    mismatched_withdrawal[n + 4 + 64 + 1] = '6';
+
+    inputs.push_back(std::move(mismatched_withdrawal));
   }
 
   ASSERT_FALSE(inputs.empty());
