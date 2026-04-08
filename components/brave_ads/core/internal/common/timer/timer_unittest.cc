@@ -130,7 +130,7 @@ TEST_F(BraveAdsTimerTest, StopReturnsFalseIfNotRunning) {
 
 TEST_F(BraveAdsTimerTest, StartWithPrivacyChecksNegativeDelay) {
   // Arrange
-  const ScopedRandTimeDeltaSetterForTesting scoped_rand_delay(
+  const ScopedRandTimeDeltaWithJitterSetterForTesting scoped_rand_delay(
       base::Milliseconds(-1));
 
   // Act & Assert

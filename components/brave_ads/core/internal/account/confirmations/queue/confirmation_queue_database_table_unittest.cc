@@ -319,7 +319,7 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest, RetryConfirmationQueueItem) {
 
   test::SaveConfirmationQueueItems(confirmation_queue_items);
 
-  const ScopedRandTimeDeltaSetterForTesting scoped_rand_time_delta(
+  const ScopedRandTimeDeltaWithJitterSetterForTesting scoped_rand_time_delta(
       base::Minutes(7));
 
   // Act
@@ -357,7 +357,7 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
 
   test::SaveConfirmationQueueItems(confirmation_queue_items);
 
-  const ScopedRandTimeDeltaSetterForTesting scoped_rand_time_delta(
+  const ScopedRandTimeDeltaWithJitterSetterForTesting scoped_rand_time_delta(
       base::Minutes(7));
 
   {
