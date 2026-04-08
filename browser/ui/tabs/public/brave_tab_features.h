@@ -54,6 +54,13 @@ class BraveTabFeatures : public TabFeatures {
   }
 #endif
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  page_actions::PartitionedStoragePageActionController*
+  partitioned_storage_page_action_controller() {
+    return partitioned_storage_page_action_controller_.get();
+  }
+#endif
+
  private:
 #if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;

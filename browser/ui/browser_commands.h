@@ -21,6 +21,10 @@
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/core/mojom/containers.mojom-forward.h"
+
+namespace actions {
+class ActionItem;
+}
 #endif
 
 class Browser;
@@ -172,7 +176,8 @@ void OpenUrlWithoutContainer(BrowserWindowInterface* browser_window,
 
 // Opens the container menu on the page action view if the active tab is in a
 // container.
-void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser);
+void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser,
+                                       ::actions::ActionItem* item);
 #endif
 
 }  // namespace brave

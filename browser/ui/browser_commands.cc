@@ -21,7 +21,6 @@
 #include "base/i18n/time_formatting.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/notimplemented.h"
 #include "base/notreached.h"
 #include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
@@ -128,8 +127,11 @@
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
+#include "brave/browser/ui/views/page_action/partitioned_storage_page_action_controller.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
+#include "components/tabs/public/tab_interface.h"
 #endif
 
 using content::WebContents;
@@ -1221,9 +1223,27 @@ void OpenUrlWithoutContainer(BrowserWindowInterface* browser_window,
   Navigate(&params);
 }
 
-void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser_window) {
-  // TODO(https://github.com/brave/brave-browser/issues/53350)
-  NOTIMPLEMENTED();
+void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser_window,
+                                       actions::ActionItem* item) {
+  if (!browser_window) {
+    LOG(ERROR) << "Browser window is not valid";
+    return;
+  }
+
+  tabs::TabInterface* tab = browser_window->GetActiveTabInterface();
+  if (!tab) {
+    LOG(ERROR) << "Tab is not valid";
+    return;
+  }
+
+  tabs::BraveTabFeatures* brave_tab_features =
+      tabs::BraveTabFeatures::FromTabFeatures(tab->GetTabFeatures());
+  CHECK(brave_tab_features);
+
+  page_actions::PartitionedStoragePageActionController* const controller =
+      brave_tab_features->partitioned_storage_page_action_controller();
+  CHECK(controller);
+  controller->ExecuteAction(item);
 }
 #endif
 

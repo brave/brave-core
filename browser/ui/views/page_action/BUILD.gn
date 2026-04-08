@@ -20,12 +20,17 @@ source_set("page_action") {
     deps += [
       "//brave/browser/containers",
       "//brave/browser/ui/containers",
+      "//brave/browser/ui/tabs:tab_menu",
       "//brave/components/containers/content/browser",
       "//brave/components/containers/core/common:features",
       "//chrome/browser/profiles",
       "//chrome/browser/ui/actions",
+      "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/views/frame",
+      "//chrome/browser/ui/views/frame:toolbar_button_provider",
       "//chrome/browser/ui/views/page_action",
       "//components/tabs:public",
+      "//ui/views",
     ]
   }
 }
