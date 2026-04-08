@@ -23,8 +23,6 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 
-namespace {}  // namespace
-
 // static
 tor::TorProfileService* TorProfileServiceFactory::GetForContext(
     content::BrowserContext* context) {
