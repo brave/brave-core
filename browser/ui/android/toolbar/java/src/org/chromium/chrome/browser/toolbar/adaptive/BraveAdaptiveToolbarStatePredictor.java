@@ -48,7 +48,7 @@ public class BraveAdaptiveToolbarStatePredictor
             case AdaptiveToolbarButtonVariant.LEO:
                 return ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT);
             case AdaptiveToolbarButtonVariant.WALLET:
-                return ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET);
+                return true;
         }
 
         return BraveAdaptiveToolbarStatePredictorDummySuper.isValidSegment(variant);

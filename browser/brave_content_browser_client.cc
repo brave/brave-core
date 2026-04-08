@@ -930,7 +930,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   map->Add<brave_wallet::mojom::BraveWalletP3A>(
       base::BindRepeating(&MaybeBindWalletP3A));
-  if (brave_wallet::IsNativeWalletEnabled()) {
+  if (brave_wallet::IsAllowedForContext(
+          render_frame_host->GetBrowserContext())) {
     map->Add<brave_wallet::mojom::EthereumProvider>(base::BindRepeating(
         &brave_wallet::BraveWalletTabHelper::BindEthereumProvider));
     map->Add<brave_wallet::mojom::SolanaProvider>(base::BindRepeating(

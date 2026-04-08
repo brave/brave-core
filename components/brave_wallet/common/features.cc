@@ -11,10 +11,6 @@
 
 namespace brave_wallet::features {
 
-BASE_FEATURE(kNativeBraveWalletFeature,
-             "NativeBraveWallet",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
 BASE_FEATURE(kBraveWalletBitcoinFeature,
              "BraveWalletBitcoin",
              base::FEATURE_ENABLED_BY_DEFAULT);

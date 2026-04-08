@@ -49,8 +49,8 @@ source_set("customize_chrome") {
 
   if (enable_brave_wallet) {
     deps += [
+      "//brave/browser/brave_wallet",
       "//brave/components/brave_wallet/browser:pref_names",
-      "//brave/components/brave_wallet/common",
     ]
   }
 
@@ -124,7 +124,10 @@ source_set("unit_tests") {
   }
 
   if (enable_brave_wallet) {
-    deps += [ "//brave/components/brave_wallet/common" ]
+    deps += [
+      "//brave/browser/brave_wallet",
+      "//brave/components/brave_wallet/browser:pref_names",
+    ]
   }
 
   if (enable_ai_chat) {

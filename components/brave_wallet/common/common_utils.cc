@@ -21,10 +21,6 @@
 
 namespace brave_wallet {
 
-bool IsNativeWalletEnabled() {
-  return base::FeatureList::IsEnabled(features::kNativeBraveWalletFeature);
-}
-
 bool IsBitcoinEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletBitcoinFeature);
 }

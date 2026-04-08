@@ -79,11 +79,6 @@ public class BraveRadioButtonGroupAdaptiveToolbarPreference
         }
         mBraveWalletButton =
                 (RadioButtonWithDescription) holder.findViewById(R.id.adaptive_option_brave_wallet);
-        if (!sIsJunitTesting
-                && mBraveWalletButton != null
-                && !ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET)) {
-            mBraveWalletButton.setVisibility(View.GONE);
-        }
 
         super.onBindViewHolder(holder);
 

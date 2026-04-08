@@ -149,9 +149,6 @@ class TestBraveWalletHandler : public BraveWalletHandler {
   void GetWeb3ProviderList(const base::ListValue& args) {
     BraveWalletHandler::GetWeb3ProviderList(args);
   }
-  void IsNativeWalletEnabled(const base::ListValue& args) {
-    BraveWalletHandler::IsNativeWalletEnabled(args);
-  }
   content::TestWebUI* web_ui() { return &test_web_ui_; }
   PrefService* prefs() { return profile_->GetPrefs(); }
 
@@ -439,18 +436,4 @@ TEST(TestBraveWalletHandler, GetWeb3ProviderList) {
   ASSERT_TRUE(provider_list[2].is_dict());
   EXPECT_EQ(provider_list[2].GetDict().FindInt("value"),
             static_cast<int>(brave_wallet::mojom::DefaultWallet::None));
-}
-
-TEST(TestBraveWalletHandler, IsNativeWalletEnabled) {
-  TestBraveWalletHandler handler;
-
-  base::ListValue args;
-  args.Append(base::Value("test-callback-id"));
-
-  handler.IsNativeWalletEnabled(args);
-
-  const auto& data = *handler.web_ui()->call_data()[0];
-  ASSERT_TRUE(data.arg1()->is_string());
-  EXPECT_EQ(data.arg1()->GetString(), "test-callback-id");
-  ASSERT_TRUE(data.arg3()->is_bool());
 }

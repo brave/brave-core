@@ -94,10 +94,6 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
         }
       },
 
-      isNativeWalletEnabled_: {
-        type: Boolean
-      },
-
       isCardanoDAppSupportEnabled_: {
         type: Boolean
       },
@@ -131,7 +127,6 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
   private declare transaction_simulation_opt_in_options_: Option[]
   private declare cryptocurrency_list_: CurrencyType[]
   private declare currency_list_: CurrencyType[]
-  private declare isNativeWalletEnabled_: boolean
   private declare isTransactionSimulationsFeatureEnabled: boolean
   private declare isPrivateWindowsEnabled_: chrome.settingsPrivate.PrefObject<boolean>
   private declare showRestartToast_: boolean
@@ -153,9 +148,6 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     })
     this.browserProxy_.getCardanoProviderOptions().then(list => {
       this.cardano_provider_options_ = list
-    })
-    this.browserProxy_.isNativeWalletEnabled().then(val => {
-      this.isNativeWalletEnabled_ = val
     })
     this.browserProxy_.getAutoLockMinutes().then(val => {
       this.$.walletAutoLockMinutes.value = String(val)

@@ -69,14 +69,6 @@
 #define BRAVE_VPN_FLAG
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-// CHROMIUM_SRC_INTERNAL_USE
-#define BRAVE_WALLET_FLAG &brave_wallet::features::kNativeBraveWalletFeature,
-#else
-// CHROMIUM_SRC_INTERNAL_USE
-#define BRAVE_WALLET_FLAG
-#endif
-
 // clang-format off
 #define kForceWebContentsDarkMode kForceWebContentsDarkMode,                   \
     BRAVE_AI_CHAT_FLAGS                                                        \
@@ -85,7 +77,6 @@
     BRAVE_VPN_FLAG                                                             \
     &brave_rewards::features::kBraveRewards,                                   \
     &brave_search_conversion::features::kOmniboxBanner,                        \
-    BRAVE_WALLET_FLAG                                                          \
     &playlist::features::kPlaylist,                                            \
     &download::features::kParallelDownloading,                                 \
     &preferences::features::kBraveBackgroundVideoPlayback,                     \

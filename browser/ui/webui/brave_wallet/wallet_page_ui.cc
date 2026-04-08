@@ -221,6 +221,5 @@ WalletPageUIConfig::WalletPageUIConfig()
 
 bool WalletPageUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
-  return brave_wallet::IsNativeWalletEnabled() &&
-         brave_wallet::IsAllowedForContext(browser_context);
+  return brave_wallet::IsAllowedForContext(browser_context);
 }

@@ -18,7 +18,6 @@ static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 
 namespace brave_wallet {
 
-bool IsNativeWalletEnabled();
 bool IsBitcoinEnabled();
 bool IsBitcoinImportEnabled();
 bool IsBitcoinLedgerEnabled();

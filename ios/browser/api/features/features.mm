@@ -300,17 +300,6 @@
       initWithFeature:&brave_search_conversion::features::kNTP];
 }
 
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-+ (Feature*)kNativeBraveWalletFeature {
-  return [[Feature alloc]
-      initWithFeature:&brave_wallet::features::kNativeBraveWalletFeature];
-}
-#else
-+ (nullable Feature*)kNativeBraveWalletFeature {
-  return nil;
-}
-#endif
-
 + (Feature*)kSkusFeature {
   return [[Feature alloc] initWithFeature:&skus::features::kSkusFeature];
 }

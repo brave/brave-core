@@ -152,10 +152,6 @@ void BraveWalletHandler::RegisterMessages() {
       "getWeb3ProviderList",
       base::BindRepeating(&BraveWalletHandler::GetWeb3ProviderList,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "isNativeWalletEnabled",
-      base::BindRepeating(&BraveWalletHandler::IsNativeWalletEnabled,
-                          base::Unretained(this)));
 }
 
 void BraveWalletHandler::GetAutoLockMinutes(const base::ListValue& args) {
@@ -495,11 +491,4 @@ void BraveWalletHandler::GetWeb3ProviderList(const base::ListValue& args) {
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(json_string));
-}
-
-void BraveWalletHandler::IsNativeWalletEnabled(const base::ListValue& args) {
-  CHECK_EQ(args.size(), 1U);
-  AllowJavascript();
-  ResolveJavascriptCallback(
-      args[0], base::Value(::brave_wallet::IsNativeWalletEnabled()));
 }

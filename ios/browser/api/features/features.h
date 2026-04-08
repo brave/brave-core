@@ -69,8 +69,6 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kCosmeticFilteringSyncLoad;
 @property(class, nonatomic, readonly, nullable) Feature* kGeminiFeature;
 @property(class, nonatomic, readonly) Feature* kNTP;
-@property(class, nonatomic, readonly, nullable)
-    Feature* kNativeBraveWalletFeature;
 @property(class, nonatomic, readonly) Feature* kSkusFeature;
 @property(class, nonatomic, readonly) Feature* kUseDevUpdaterUrl;
 @property(class, nonatomic, readonly) Feature* kVerboseLoggingFeature;

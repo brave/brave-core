@@ -144,13 +144,11 @@ RegisterPolymerComponentReplacement(
             }
             // </if>
             // <if expr="enable_brave_wallet">
-            const isNativeBraveWalletEnabled =
-              loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
             const isCardanoDappSupportFeatureEnabled =
               loadTimeData.getBoolean('isCardanoDappSupportFeatureEnabled')
             const isBraveWalletAllowed =
               loadTimeData.getBoolean('isBraveWalletAllowed')
-            if (isNativeBraveWalletEnabled && isBraveWalletAllowed) {
+            if (isBraveWalletAllowed) {
               currentIndex++
               const ethereumItem = {
                 route: routes.SITE_SETTINGS_ETHEREUM,
