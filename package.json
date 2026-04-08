@@ -127,7 +127,7 @@
     "@types/react-syntax-highlighter": "15.5.11",
     "@types/react-virtualized-auto-sizer": "1.0.4",
     "@types/react-window": "1.8.5",
-    "@types/redux-logger": "3.0.9",
+    "@types/redux-logger": "3.0.13",
     "@types/styled-components": "5.1.26",
     "acorn": "8.0.5",
     "browserify-zlib": "0.2.0",
