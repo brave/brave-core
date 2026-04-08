@@ -124,12 +124,18 @@ public class BraveOriginPreferences extends BravePreferenceFragment
 
         Preference linkPurchase = findPreference(PREF_LINK_PURCHASE);
         if (linkPurchase != null) {
+            // "Link Purchase" is only relevant when there's a Play Store purchase
+            // that hasn't been linked to a Brave account yet. For desktop purchases
+            // there's no Play Store receipt to link.
+            boolean hasPlayStorePurchase =
+                    BraveOriginSubscriptionPrefs.getIsSubscriptionActive(profile);
             boolean isLinked = BraveOriginSubscriptionPrefs.isSubscriptionLinked(profile);
-            linkPurchase.setVisible(!isLinked);
+            boolean showLink = hasPlayStorePurchase && !isLinked;
+            linkPurchase.setVisible(showLink);
 
             Preference purchaseSection = findPreference(PREF_PURCHASE_SECTION);
             if (purchaseSection != null) {
-                purchaseSection.setVisible(!isLinked);
+                purchaseSection.setVisible(showLink);
             }
 
             linkPurchase.setOnPreferenceClickListener(
