@@ -91,7 +91,7 @@ class BraveOriginService : public KeyedService {
 
   // Whether Origin policies were being enforced in the previous session.
   // Read from kOriginPoliciesWereEnforced pref at construction.
-  bool startup_was_enforcing_ = false;
+  bool startup_was_enforcing_;
 
   // Snapshot of policy values at construction time, used to detect
   // settings changes that require a restart.
