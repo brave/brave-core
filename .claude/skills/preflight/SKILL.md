@@ -69,9 +69,9 @@ README.md or confirm with the user which build arguments or technique to use.
 - `npm run test -- brave_component_unittests`
 - `npm run test-unit`
 
-**Otherwise (default):** Determine which test targets are affected by the
+**Otherwise (default):** Determine which test suites are affected by the
 changes in this branch (compare against `master`). Look at the changed files and
-identify the corresponding test targets and relevant test filters.
+identify the corresponding test suites and relevant test filters.
 
 - `npm run test -- [test suite] --filter="..."`
 

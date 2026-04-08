@@ -103,31 +103,6 @@ We aim to make the only patches required to be trivial changes, and not nested l
 
 See [best-practices/patches.md](best-practices/patches.md) for important criteria.
 
-If possible write the patch to add a new line vs appending/prepending to an existing line.
-
-For example, instead of
-```
--  return !url.is_empty() && !url.SchemeIs(content::kChromeUIScheme) &&
-+  return IsBraveTranslateEnabled() && !url.is_empty() && !url.SchemeIs(content::kChromeUIScheme) &&
-!url.SchemeIs(content::kChromeDevToolsScheme) &&
-```
-it should be
-```
-return !url.is_empty() && !url.SchemeIs(content::kChromeUIScheme) &&
-+  IsBraveTranslateEnabled() &&
-!url.SchemeIs(content::kChromeDevToolsScheme) &&
-```
-
-You should almost never patch in two methods calls in a row. We should prefer extensible patches.
-
-```
-// Brave has some extras we need to consider
-CopyBraveExtensionLocalization(config, staging_dir, g_archive_inputs)
-CopyBraveRewardsExtensionLocalization(config, staging_dir, g_archive_inputs)
-```
-inside `CopyAllFilesToStagingDir` would be collapsed to
-```
-BraveCopyAllFilesToStagingDir(config, staging_dir, g_archive_inputs)
 ```
 
 Make sure you do NOT have the following in your `~/.gitconfig`:
