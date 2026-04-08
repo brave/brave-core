@@ -38,9 +38,9 @@ namespace {
 
 constexpr int kDialogWidth = 540;
 #if BUILDFLAG(IS_LINUX)
-constexpr int kDialogHeight = 560;
+constexpr int kDialogHeight = 600;
 #else
-constexpr int kDialogHeight = 450;
+constexpr int kDialogHeight = 500;
 #endif
 
 BraveOriginStartupView* g_startup_view = nullptr;
