@@ -168,4 +168,24 @@ TEST_F(WebDiscoveryCTATest, ShouldShowInfoBarTest) {
   EXPECT_TRUE(ShouldShowWebDiscoveryInfoBar());
 }
 
+TEST_F(WebDiscoveryCTATest, ShouldNotShowInfoBarWhenManagedByPolicy) {
+  SetBraveSearchAsDefaultProvider();
+  EXPECT_TRUE(ShouldShowWebDiscoveryInfoBar());
+
+  // When the policy disables Web Discovery, infobar should not show.
+  test_util()->profile()->GetTestingPrefService()->SetManagedPref(
+      kWebDiscoveryEnabled, base::Value(false));
+  EXPECT_FALSE(ShouldShowWebDiscoveryInfoBar());
+
+  // When the policy enables Web Discovery, infobar should also not show.
+  test_util()->profile()->GetTestingPrefService()->SetManagedPref(
+      kWebDiscoveryEnabled, base::Value(true));
+  EXPECT_FALSE(ShouldShowWebDiscoveryInfoBar());
+
+  // Removing the managed pref should allow the infobar to show again.
+  test_util()->profile()->GetTestingPrefService()->RemoveManagedPref(
+      kWebDiscoveryEnabled);
+  EXPECT_TRUE(ShouldShowWebDiscoveryInfoBar());
+}
+
 }  // namespace web_discovery
