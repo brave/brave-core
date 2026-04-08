@@ -1,4 +1,4 @@
-![Brave Browser](./docs/images/brave.svg)
+![Brave Browser](./docs/images/mana-banner.svg)
 
 # Mana Core
 
