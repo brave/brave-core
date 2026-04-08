@@ -860,7 +860,7 @@
 -ExtensionSyncTypeTest.UserScriptNoUpdateUrl
 -ExtensionTelemetryServiceSystemTimeTest.PersistsReportsWithUnspecifiedManagementAuthorityOnShutdown
 -ExtensionTelemetryServiceTest.*
--ExtensionUpdaterTest.*
+-ExtensionUpdaterTest.TestProfileDestruction
 -FullStreamUIPolicyTest.*
 -GCMProfileServiceTest.*
 -GetUserPopulationForProfileTest.PopulatesPopulation

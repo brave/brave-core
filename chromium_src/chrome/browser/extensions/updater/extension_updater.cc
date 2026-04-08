@@ -3,22 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "base/feature_list.h"
+#include "brave/browser/extensions/updater/features.h"
 
-// Forward declaration; defined in brave/browser/extensions/updater/features.cc
-// and linked at build time from //brave/browser/extensions:extensions.
-namespace extensions::features {
-BASE_DECLARE_FEATURE(kBraveAutoUpdateExtensions);
-}  // namespace extensions::features
-
-// Guards scheduled extension update checks behind the kBraveAutoUpdateExtensions
-// feature flag. Injected at two call sites in extension_updater.cc via patch:
+// Guards automated extension update checks behind the
+// `kBraveAutoUpdateExtensions` feature flag. A check for this flag gets patched
+// into two methods inside `extension_updater.cc`:
 //   1. ExtensionUpdater::Start() - skips the startup check and periodic
 //      scheduling when auto-updates are disabled.
 //   2. ExtensionUpdater::NextCheck() - skips individual scheduled update
 //      checks and their rescheduling when auto-updates are disabled.
-// User-triggered CheckNow() calls (e.g. the Update button in
-// chrome://extensions) are unaffected and continue to work normally.
+// Manually initiated updates (ex: CheckNow() via the Update button in
+// brave://extensions) are unaffected and continue to work normally.
 #define BRAVE_EXTENSION_UPDATER_SCHEDULED_CHECK_GUARD        \
   if (!base::FeatureList::IsEnabled(                         \
           extensions::features::kBraveAutoUpdateExtensions)) \

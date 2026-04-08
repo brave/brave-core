@@ -12,7 +12,6 @@ namespace extensions::features {
 //
 // Can be disabled to prevent automatic extension updates. Folks can still
 // update them manually from the brave://extensions page.
-BASE_FEATURE(kBraveAutoUpdateExtensions,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveAutoUpdateExtensions, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace extensions::features
