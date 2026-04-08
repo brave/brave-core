@@ -8,12 +8,17 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "build/build_config.h"
+#include "components/prefs/pref_change_registrar.h"
 
 class PrefRegistrySimple;
 class PrefService;
 
 namespace misc_metrics {
+
+inline constexpr char kWidevineEnabledHistogramName[] =
+    "Brave.Core.WidevineEnabled";
 
 #if !BUILDFLAG(IS_ANDROID)
 class MenuMetrics;
@@ -53,6 +58,10 @@ class ProcessMiscMetrics {
   MediaSessionMetrics* media_session_metrics();
 
  private:
+  void ReportSimpleMetrics();
+
+  raw_ptr<PrefService> local_state_;
+  PrefChangeRegistrar pref_change_registrar_;
 
 #if !BUILDFLAG(IS_ANDROID)
   std::unique_ptr<MenuMetrics> menu_metrics_;
