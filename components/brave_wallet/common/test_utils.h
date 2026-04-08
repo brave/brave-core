@@ -69,8 +69,8 @@ inline constexpr mojom::KeyringId kAllKeyrings[] = {
     mojom::KeyringId::kZCashTestnet,
     mojom::KeyringId::kBitcoinImport,
     mojom::KeyringId::kBitcoinImportTestnet,
-    mojom::KeyringId::kZCashMainnet,
-    mojom::KeyringId::kZCashTestnet,
+    mojom::KeyringId::kBitcoinHardware,
+    mojom::KeyringId::kBitcoinHardwareTestnet,
     mojom::KeyringId::kCardanoMainnet,
     mojom::KeyringId::kCardanoTestnet,
     // TODO(https://github.com/brave/brave-browser/issues/49225): Polkadot

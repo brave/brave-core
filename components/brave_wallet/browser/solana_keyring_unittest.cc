@@ -290,7 +290,9 @@ TEST(SolanaKeyringUnitTest, AddNewHDAccount_OfacSanctionedAddress) {
   // Try to add account again - should fail because it generates the same
   // address.
   auto result = keyring.AddNewHDAccount(0);
-  EXPECT_FALSE(result) << "OFAC sanctioned Solana address should be rejected";
+EXPECT_FALSE(result) << "OFAC sanctioned Solana address should be rejected";
+
+  registry->UpdateRestrictedAddressesList({});
 }
 
 TEST(SolanaKeyringUnitTest, ImportAccount_OfacSanctionedAddress) {
@@ -322,7 +324,9 @@ TEST(SolanaKeyringUnitTest, ImportAccount_OfacSanctionedAddress) {
 
   // Try to import account again - should fail.
   auto result = keyring.ImportAccount(private_key);
-  EXPECT_FALSE(result) << "OFAC sanctioned Solana address should be rejected";
+EXPECT_FALSE(result) << "OFAC sanctioned Solana address should be rejected";
+
+  registry->UpdateRestrictedAddressesList({});
 }
 
 }  // namespace brave_wallet
