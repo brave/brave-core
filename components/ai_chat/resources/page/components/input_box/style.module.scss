@@ -112,14 +112,13 @@
 }
 
 .attachmentWrapperScroll {
+  scrollbar-width: thin;
   overflow-x: auto;
   overflow-y: hidden;
-  scrollbar-width: thin;
   padding-bottom: var(--leo-spacing-s);
 }
 
 .attachmentChipSingle {
-  max-width: 400px;
   flex: 0 1 auto;
 }
 
