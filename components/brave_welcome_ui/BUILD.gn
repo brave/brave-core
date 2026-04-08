@@ -28,7 +28,8 @@ copy("welcome_logo") {
 
 copy("welcome_background") {
   sources = [ _background_source ]
-  outputs = [ "$root_gen_dir/brave/components/brave_welcome_ui/background@2x.webp" ]
+  outputs =
+      [ "$root_gen_dir/brave/components/brave_welcome_ui/background@2x.webp" ]
 }
 
 copy("welcome_hill") {
