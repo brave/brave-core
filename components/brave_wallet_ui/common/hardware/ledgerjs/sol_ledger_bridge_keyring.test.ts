@@ -17,6 +17,7 @@ import {
   SolGetAccountResponse,
   SolSignTransactionResponse,
   LedgerResponse,
+  GetDeviceNameResponse,
 } from './ledger-messages'
 import { MockLedgerTransport } from './mock_ledger_transport'
 
@@ -47,6 +48,13 @@ const unlockSuccessResponse: UnlockResponse = {
   origin: window.origin,
   command: LedgerCommand.Unlock,
   payload: { success: true },
+}
+
+const deviceNameResponse: GetDeviceNameResponse = {
+  id: LedgerCommand.GetDeviceName,
+  origin: window.origin,
+  command: LedgerCommand.GetDeviceName,
+  payload: { success: true, deviceName: 'Ledger Device' },
 }
 
 test('getAccounts unlock error', async () => {
@@ -95,6 +103,7 @@ test('getAccounts success', async () => {
     command: LedgerCommand.GetAccount,
     payload: getAccountsResponsePayload2,
   })
+  transport.addSendCommandResponse(deviceNameResponse)
 
   const result = await keyring.getAccounts(
     0,
@@ -115,6 +124,7 @@ test('getAccounts success', async () => {
   expect(result).toEqual({
     success: true,
     accounts: expectedResult,
+    deviceName: 'Ledger Device',
   })
 })
 

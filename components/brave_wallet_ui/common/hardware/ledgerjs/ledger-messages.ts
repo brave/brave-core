@@ -15,6 +15,7 @@ export const LEDGER_BRIDGE_URL =
     ? braveWalletLedgerBridgeUrl.slice(0, -1) // Strip off trailing '/' in URL
     : braveWalletLedgerBridgeUrl
 export enum LedgerCommand {
+  GetDeviceName = 'ledger-get-device-name',
   Unlock = 'ledger-unlock',
   GetAccount = 'ledger-get-accounts',
   SignTransaction = 'ledger-sign-transaction',
@@ -60,6 +61,14 @@ export type UnlockCommand = CommandMessage & {
   command: LedgerCommand.Unlock
 }
 
+export type GetDeviceNameResponse = CommandMessage
+  & LedgerResponsePayload<{
+    deviceName: string
+  }>
+export type GetDeviceNameCommand = CommandMessage & {
+  command: LedgerCommand.GetDeviceName
+}
+
 // AuthorizationRequired command
 export type AuthorizationRequiredCommand = CommandMessage & {
   command: LedgerCommand.AuthorizationRequired
@@ -72,6 +81,7 @@ export type AuthorizationSuccessCommand = CommandMessage & {
 
 export type LedgerFrameCommand =
   | UnlockCommand
+  | GetDeviceNameCommand
   | AuthorizationRequiredCommand
   | AuthorizationSuccessCommand
   | SolLedgerFrameCommand
@@ -80,6 +90,7 @@ export type LedgerFrameCommand =
   | BtcLedgerFrameCommand
 export type LedgerFrameResponse =
   | UnlockResponse
+  | GetDeviceNameResponse
   | SolLedgerFrameResponse
   | EthLedgerFrameResponse
   | FilLedgerFrameResponse
