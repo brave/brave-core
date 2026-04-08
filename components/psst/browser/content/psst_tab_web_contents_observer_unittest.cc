@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <string>
 #include <string_view>
 #include <utility>
 #include <vector>
@@ -118,9 +119,17 @@ ACTION_P(InsertScriptInPageCallback, future, value) {
       .Run(value.Clone());
   future->SetValue(value.Clone());
 }
-ACTION_P(ShowCallback, future) {
-  std::move(const_cast<PsstTabWebContentsObserver::ConsentCallback&>(arg2))
-      .Run();
+
+ACTION_P(InsertPolicyScriptInPageCallback, future, value) {
+  std::move(
+      const_cast<PsstTabWebContentsObserver::InsertScriptInPageCallback&>(arg2))
+      .Run(value.Clone());
+  future->SetValue(value.Clone());
+}
+
+ACTION_P(ShowCallback, future, urls_to_skip) {
+  std::move(const_cast<PsstTabWebContentsObserver::ConsentCallback&>(arg3))
+      .Run(urls_to_skip);
   future->SetValue();
 }
 
@@ -156,8 +165,9 @@ class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
   MOCK_METHOD(
       void,
       Show,
-      (const url::Origin& origin,
+      (url::Origin origin,
        PsstWebsiteSettings dialog_data,
+       std::optional<UserScriptResult> user_script_result,
        PsstTabWebContentsObserver::ConsentCallback apply_changes_callback),
       (override));
 
@@ -194,7 +204,8 @@ class PsstTabWebContentsObserverUnitTestBase
     psst_web_contents_observer_ = base::WrapUnique<PsstTabWebContentsObserver>(
         new PsstTabWebContentsObserver(web_contents(), rule_registry_.get(),
                                        &prefs_, std::move(ui_delegate),
-                                       inject_script_callback_.Get()));
+                                       inject_script_callback_.Get(),
+                                       inject_async_script_callback_.Get()));
   }
 
   void TearDown() override {
@@ -215,6 +226,11 @@ class PsstTabWebContentsObserverUnitTestBase
     return inject_script_callback_;
   }
 
+  base::MockCallback<PsstTabWebContentsObserver::InjectScriptAsyncCallback>&
+  inject_async_script_callback() {
+    return inject_async_script_callback_;
+  }
+
   MockUiDelegate& ui_delegate() { return *ui_delegate_; }
 
  protected:
@@ -224,6 +240,8 @@ class PsstTabWebContentsObserverUnitTestBase
   raw_ptr<MockUiDelegate> ui_delegate_;
   base::MockCallback<PsstTabWebContentsObserver::InjectScriptCallback>
       inject_script_callback_;
+  base::MockCallback<PsstTabWebContentsObserver::InjectScriptAsyncCallback>
+      inject_async_script_callback_;
   std::unique_ptr<MockPsstRuleRegistry> rule_registry_;
   std::unique_ptr<PsstTabWebContentsObserver> psst_web_contents_observer_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -596,16 +614,27 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
   // User script result is an dictionary, and user key is not empty
   auto script_params = base::Value(
-      base::DictValue().Set("user_id", user_id).Set("site_name", "example"));
+      base::DictValue()
+          .Set("initial_execution", true)
+          .Set("user_id", user_id)
+          .Set("site_name", "example")
+          .Set("tasks",
+               base::ListValue().Append(base::DictValue()
+                                            .Set("url", "https://example1.com")
+                                            .Set("description", "settings"))));
 
   // Policy script result is a dictionary, but it is not deserializable
   auto policy_script_result = base::Value(
       base::DictValue()
-          .Set("progress", 100)
-          .Set("applied_tasks",
-               base::ListValue().Append(base::DictValue()
-                                            .Set("url", "https://example1.com")
-                                            .Set("description", "settings"))));
+          .Set("next_url", "https://example2.com")
+          .Set("psst", base::DictValue()
+                           .Set("progress", 100)
+                           .Set("applied_tasks",
+                                base::ListValue().Append(
+                                    base::DictValue()
+                                        .Set("url", "https://example1.com")
+                                        .Set("description", "settings"))))
+          .Set("result", true));
 
   // Call UI delegate method once (Failed state) as policy_script_result
   // is not deserializable
@@ -623,8 +652,9 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
               Show(url::Origin::Create(url),
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
                                          std::vector<std::string>()),
-                   _))
-      .WillOnce(ShowCallback(&user_accept_psst_settings_future));
+                   _, _))
+      .WillOnce(ShowCallback(&user_accept_psst_settings_future,
+                             std::vector<std::string>()));
 
   const auto script_with_parameters = base::StrCat(
       {"const params = ",
@@ -634,9 +664,9 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
        ";\n", policy_script});
 
   // Policy script executed, parameters added
-  EXPECT_CALL(inject_script_callback(), Run(script_with_parameters, _))
-      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_future,
-                                           policy_script_result.Clone()));
+  EXPECT_CALL(inject_async_script_callback(), Run(_, script_with_parameters, _))
+      .WillOnce(InsertPolicyScriptInPageCallback(&policy_script_insert_future,
+                                                 policy_script_result.Clone()));
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -717,6 +747,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   // Create a dictionary with unsupported blob storage value
   auto script_params = base::Value(
       base::DictValue()
+          .Set("initial_execution", true)
           .Set("user_id", user_id)
           .Set("tasks",
                base::ListValue().Append(base::DictValue()
@@ -740,13 +771,14 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
               Show(url::Origin::Create(url),
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
                                          std::vector<std::string>()),
-                   _))
-      .WillOnce(ShowCallback(&user_accept_psst_settings_future));
+                   _, _))
+      .WillOnce(ShowCallback(&user_accept_psst_settings_future,
+                             std::vector<std::string>()));
 
   // Policy script executed, parameters not added
-  EXPECT_CALL(inject_script_callback(), Run(policy_script, _))
-      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_future,
-                                           policy_script_result.Clone()));
+  EXPECT_CALL(inject_async_script_callback(), Run(_, policy_script, _))
+      .WillOnce(InsertPolicyScriptInPageCallback(&policy_script_insert_future,
+                                                 policy_script_result.Clone()));
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -799,6 +831,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
   // Create a user script return value
   auto script_params = base::Value(
       base::DictValue()
+          .Set("initial_execution", true)
           .Set("user_id", user_id)
           .Set("tasks",
                base::ListValue().Append(base::DictValue()
@@ -807,14 +840,17 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
           .Set("site_name", "example"));
 
   // prepare return value for policy script (status should be STARTED)
-  auto policy_script_result =
-      base::Value(base::DictValue()
-                      .Set("progress", progress)
-                      .Set("applied_tasks",
-                           base::ListValue().Append(
-                               base::DictValue()
-                                   .Set("url", url.spec())
-                                   .Set("description", task_description))));
+  auto policy_script_result = base::Value(
+      base::DictValue()
+          .Set("next_url", "https://example2.com")
+          .Set("psst", base::DictValue()
+                           .Set("progress", progress)
+                           .Set("applied_tasks",
+                                base::ListValue().Append(
+                                    base::DictValue()
+                                        .Set("url", url.spec())
+                                        .Set("description", task_description))))
+          .Set("result", true));
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
@@ -824,8 +860,9 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
               Show(url::Origin::Create(url),
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
                                          std::vector<std::string>()),
-                   _))
-      .WillOnce(ShowCallback(&user_accept_psst_settings_future));
+                   _, _))
+      .WillOnce(ShowCallback(&user_accept_psst_settings_future,
+                             std::vector<std::string>()));
 
   const auto policy_script_with_parameters = base::StrCat(
       {"const params = ",
@@ -834,9 +871,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
            .value(),
        ";\n", policy_script});
   // Policy script executed, parameters added
-  EXPECT_CALL(inject_script_callback(), Run(policy_script_with_parameters, _))
-      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_future,
-                                           policy_script_result.Clone()));
+  EXPECT_CALL(inject_async_script_callback(),
+              Run(_, policy_script_with_parameters, _))
+      .WillOnce(InsertPolicyScriptInPageCallback(&policy_script_insert_future,
+                                                 policy_script_result.Clone()));
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),

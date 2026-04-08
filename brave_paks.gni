@@ -6,6 +6,7 @@
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_origin/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
+import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
 import("//chrome/common/features.gni")
@@ -114,6 +115,14 @@ template("brave_extra_paks") {
           [ "$root_gen_dir/brave/components/tor/resources/tor_resources.pak" ]
 
       deps += [ "//brave/components/tor/resources" ]
+    }
+
+    if (enable_psst) {
+      sources += [
+        "$root_gen_dir/brave/components/psst/resources/brave_psst_dialog_generated.pak",
+        "$root_gen_dir/brave/components/psst/resources/brave_psst_resources.pak",
+      ]
+      deps += [ "//brave/components/psst/resources" ]
     }
 
     if (enable_extensions) {

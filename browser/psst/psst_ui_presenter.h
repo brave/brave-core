@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_PSST_PSST_UI_PRESENTER_H_
 
 #include "base/functional/callback_forward.h"
+#include "url/origin.h"
 
 namespace psst {
 
@@ -18,6 +19,7 @@ class PsstUiPresenter {
   virtual ~PsstUiPresenter() = default;
 
   virtual void ShowInfoBar(InfoBarCallback on_accept_callback) = 0;
+  virtual void ShowConsentDialog() = 0;
 };
 
 }  // namespace psst
