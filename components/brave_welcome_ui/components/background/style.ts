@@ -5,8 +5,8 @@
 
 import styled from 'styled-components'
 
-import hillBgUrl from '../../assets/hill.webp'
-import pyramidBgUrl from '../../assets/pyramid.webp'
+import hillBgUrl from 'gen/brave/components/brave_welcome_ui/hill.webp'
+import pyramidBgUrl from 'gen/brave/components/brave_welcome_ui/pyramid.webp'
 
 export const Box = styled.div`
   .content-box {
