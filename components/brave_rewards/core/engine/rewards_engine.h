@@ -45,10 +45,6 @@ namespace bitflyer {
 class Bitflyer;
 }
 
-namespace gemini {
-class Gemini;
-}
-
 namespace uphold {
 class Uphold;
 }
@@ -237,8 +233,6 @@ class RewardsEngine : public mojom::RewardsEngine,
 
   bitflyer::Bitflyer* bitflyer() { return bitflyer_.get(); }
 
-  gemini::Gemini* gemini() { return gemini_.get(); }
-
   uphold::Uphold* uphold() { return uphold_.get(); }
 
   zebpay::ZebPay* zebpay() { return zebpay_.get(); }
@@ -275,7 +269,6 @@ class RewardsEngine : public mojom::RewardsEngine,
   std::unique_ptr<wallet::Wallet> wallet_;
   std::unique_ptr<database::Database> database_;
   std::unique_ptr<bitflyer::Bitflyer> bitflyer_;
-  std::unique_ptr<gemini::Gemini> gemini_;
   std::unique_ptr<uphold::Uphold> uphold_;
   std::unique_ptr<zebpay::ZebPay> zebpay_;
 

@@ -26,7 +26,6 @@
 #include "brave/components/brave_rewards/core/engine/constants.h"
 #include "brave/components/brave_rewards/core/engine/contribution/contribution_util.h"
 #include "brave/components/brave_rewards/core/engine/database/database.h"
-#include "brave/components/brave_rewards/core/engine/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/brave_rewards/core/engine/publisher/publisher_status_helper.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
@@ -100,7 +99,6 @@ Contribution::~Contribution() = default;
 void Contribution::Initialize() {
   engine_->uphold()->Initialize();
   engine_->bitflyer()->Initialize();
-  engine_->gemini()->Initialize();
 
   CheckContributionQueue();
   CheckNotCompletedContributions();
@@ -531,8 +529,7 @@ void Contribution::OnEntrySaved(const std::string& contribution_id,
   const std::string& queue_id = queue->id;
 
   if (wallet_type == constant::kWalletUphold ||
-      wallet_type == constant::kWalletBitflyer ||
-      wallet_type == constant::kWalletGemini) {
+      wallet_type == constant::kWalletBitflyer) {
     external_wallet_.Process(
         contribution_id,
         base::BindOnce(&Contribution::Result, weak_factory_.GetWeakPtr(),
@@ -752,18 +749,13 @@ void Contribution::Retry(mojom::ContributionInfoPtr contribution,
                      contribution->contribution_id);
 
   switch (contribution->processor) {
-    case mojom::ContributionProcessor::BRAVE_TOKENS: {
-      Result("", contribution->contribution_id, mojom::Result::FAILED);
-      return;
-    }
     case mojom::ContributionProcessor::UPHOLD:
-    case mojom::ContributionProcessor::BITFLYER:
-    case mojom::ContributionProcessor::GEMINI: {
+    case mojom::ContributionProcessor::BITFLYER: {
       external_wallet_.Retry(std::move(contribution),
                              std::move(result_callback));
       return;
     }
-    case mojom::ContributionProcessor::NONE: {
+    default: {
       Result("", contribution->contribution_id, mojom::Result::FAILED);
       return;
     }

@@ -38,10 +38,6 @@ mojom::ContributionProcessor GetProcessor(const std::string& wallet_type) {
     return mojom::ContributionProcessor::BITFLYER;
   }
 
-  if (wallet_type == constant::kWalletGemini) {
-    return mojom::ContributionProcessor::GEMINI;
-  }
-
   return mojom::ContributionProcessor::NONE;
 }
 
@@ -55,10 +51,6 @@ std::string GetNextProcessor(const std::string& current_processor) {
   }
 
   if (current_processor == constant::kWalletBitflyer) {
-    return constant::kWalletGemini;
-  }
-
-  if (current_processor == constant::kWalletGemini) {
     return "";
   }
 

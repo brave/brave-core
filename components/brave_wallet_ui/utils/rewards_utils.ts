@@ -6,7 +6,6 @@
 // Assets
 import {
   UpholdIcon,
-  GeminiIcon,
   ZebpayIcon,
   BitflyerIcon,
 } from '../assets/svg-icons/provider_icons'
@@ -134,8 +133,6 @@ export const getRewardsProviderIcon = (
   switch (provider) {
     case 'bitflyer':
       return BitflyerIcon
-    case 'gemini':
-      return GeminiIcon
     case 'uphold':
       return UpholdIcon
     case 'zebpay':
@@ -151,8 +148,6 @@ export const getRewardsProviderBackground = (
   switch (provider) {
     case 'bitflyer':
       return 'rgb(52, 152, 212)'
-    case 'gemini':
-      return 'rgb(97, 217, 245)'
     case 'uphold':
       return 'rgb(73, 204, 104)'
     case 'zebpay':

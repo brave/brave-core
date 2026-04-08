@@ -67,7 +67,6 @@ OBJC_EXPORT
     Feature* kCosmeticFilteringExtraPerfMetrics;
 @property(class, nonatomic, readonly) Feature* kCosmeticFilteringJsPerformance;
 @property(class, nonatomic, readonly) Feature* kCosmeticFilteringSyncLoad;
-@property(class, nonatomic, readonly, nullable) Feature* kGeminiFeature;
 @property(class, nonatomic, readonly) Feature* kNTP;
 @property(class, nonatomic, readonly) Feature* kSkusFeature;
 @property(class, nonatomic, readonly) Feature* kUseDevUpdaterUrl;

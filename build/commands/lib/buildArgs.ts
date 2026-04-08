@@ -33,12 +33,6 @@ const FORWARD_ENV_CONFIG_VARS_TO_GN_ARGS = [
   'concurrent_links',
   'dcheck_always_on',
   'enable_updater',
-  'gemini_production_api_url',
-  'gemini_production_fee_address',
-  'gemini_production_oauth_url',
-  'gemini_sandbox_api_url',
-  'gemini_sandbox_fee_address',
-  'gemini_sandbox_oauth_url',
   'google_default_client_id',
   'google_default_client_secret',
   'msan_track_origins',
@@ -380,12 +374,6 @@ export function getBuildArgs(config: Config) {
     delete args.bitflyer_sandbox_client_secret
     delete args.bitflyer_sandbox_fee_address
     delete args.bitflyer_sandbox_url
-    delete args.gemini_production_api_url
-    delete args.gemini_production_fee_address
-    delete args.gemini_production_oauth_url
-    delete args.gemini_sandbox_api_url
-    delete args.gemini_sandbox_fee_address
-    delete args.gemini_sandbox_oauth_url
     delete args.uphold_production_api_url
     delete args.uphold_production_fee_address
     delete args.uphold_production_oauth_url

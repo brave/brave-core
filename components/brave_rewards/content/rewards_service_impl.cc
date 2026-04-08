@@ -946,12 +946,6 @@ std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
     providers.push_back(internal::constant::kWalletZebPay);
   } else {
     providers.push_back(internal::constant::kWalletUphold);
-
-#if BUILDFLAG(ENABLE_GEMINI_WALLET)
-    if (base::FeatureList::IsEnabled(features::kGeminiFeature)) {
-      providers.push_back(internal::constant::kWalletGemini);
-    }
-#endif
   }
 
   if (base::FeatureList::IsEnabled(
