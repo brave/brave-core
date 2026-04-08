@@ -8,8 +8,8 @@
 
 namespace brave_ads::database {
 
-inline constexpr int kVersionNumber = 55;
-inline constexpr int kCompatibleVersionNumber = 55;
+inline constexpr int kVersionNumber = 56;
+inline constexpr int kCompatibleVersionNumber = 56;
 
 // If the database version number is less than or equal to this value, the
 // database will be razed and recreated during migration. This should be updated
