@@ -37,6 +37,7 @@ static_library("psst") {
     "//components/infobars/core",
     "//components/permissions",
     "//components/prefs",
+    "//ui/web_dialogs",
   ]
 }
 
@@ -79,6 +80,7 @@ source_set("browser_tests") {
     "//components/infobars/content",
     "//content/test:test_support",
     "//net:test_support",
+    "//ui/web_dialogs",
     "//url",
   ]
 

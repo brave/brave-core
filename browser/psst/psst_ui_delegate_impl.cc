@@ -5,6 +5,7 @@
 
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 
+#include "base/strings/string_util.h"
 #include "brave/components/psst/common/pref_names.h"
 #include "brave/components/psst/common/psst_metadata_schema.h"
 #include "components/prefs/pref_service.h"
@@ -43,6 +44,27 @@ void PsstUiDelegateImpl::UpdateTasks(
     const std::vector<PolicyTask>& applied_tasks,
     const mojom::PsstStatus status) {
   // Implementation for setting the current progress.
+  for (Observer& obs : observer_list_) {
+    std::ranges::for_each(applied_tasks, [&obs](const PolicyTask& task) {
+      obs.OnSetRequestDone(task.url, task.error_description);
+    });
+  }
+
+  if (status != mojom::PsstStatus::kCompleted) {
+    return;
+  }
+
+  std::vector<std::string> applied_list;
+  std::vector<std::string> failed_list;
+  std::ranges::for_each(
+      applied_tasks, [&applied_list, &failed_list](const PolicyTask& task) {
+        (!task.error_description.has_value() || task.error_description->empty())
+            ? applied_list.emplace_back(task.url)
+            : failed_list.emplace_back(task.url);
+      });
+  for (Observer& obs : observer_list_) {
+    obs.OnSetCompleted(applied_list, failed_list);
+  }
 }
 
 std::optional<PsstWebsiteSettings> PsstUiDelegateImpl::GetPsstWebsiteSettings(
@@ -91,7 +113,7 @@ void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
       dialog_data_->user_id, std::move(perform_for_uids_list));
 
   if (apply_changes_callback_) {
-    std::move(apply_changes_callback_).Run();
+    std::move(apply_changes_callback_).Run(urls_to_skip);
   }
 }
 

@@ -8,6 +8,7 @@
 
 #include <cstddef>
 #include <optional>
+#include <vector>
 
 #include "brave/browser/psst/psst_ui_presenter.h"
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
