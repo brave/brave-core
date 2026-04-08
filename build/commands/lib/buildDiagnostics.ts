@@ -126,9 +126,12 @@ export function dumpProcessHangDiagnostics() {
       // We use timeout to ensure strace doesn't block our runner
       let straceOut = ''
       try {
-        straceOut = execSync(`timeout 2 strace -p ${pid} -s 256 2>&1`, {
-          encoding: 'utf-8',
-        })
+        straceOut = execSync(
+          `timeout 2 strace -f -y -tt -p ${pid} -s 256 2>&1`,
+          {
+            encoding: 'utf-8',
+          },
+        )
         console.log(`Strace summary (2s):\n${straceOut}`)
       } catch (e) {
         straceOut = `${e.stdout || ''}\n${e.stderr || ''}`
