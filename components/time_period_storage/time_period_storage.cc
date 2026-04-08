@@ -13,6 +13,7 @@
 #include "base/check_op.h"
 #include "base/time/clock.h"
 #include "base/time/default_clock.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/time_period_storage/pref_time_period_store.h"
 #include "brave/components/time_period_storage/time_period_store.h"
@@ -26,10 +27,12 @@ constexpr base::TimeDelta kPotentialDSTOffset = base::Hours(1);
 
 TimePeriodStorage::TimePeriodStorage(std::unique_ptr<TimePeriodStore> store,
                                      size_t period_days,
+                                     bool should_use_utc,
                                      bool should_offset_dst)
     : clock_(std::make_unique<base::DefaultClock>()),
       store_(std::move(store)),
       period_days_(period_days),
+      should_use_utc_(should_use_utc),
       should_offset_dst_(should_offset_dst) {
   CHECK(store_);
   Load();
@@ -38,21 +41,25 @@ TimePeriodStorage::TimePeriodStorage(std::unique_ptr<TimePeriodStore> store,
 TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
                                      const char* pref_name,
                                      size_t period_days,
+                                     bool should_use_utc,
                                      bool should_offset_dst)
     : TimePeriodStorage(prefs,
                         pref_name,
                         nullptr,
                         period_days,
+                        should_use_utc,
                         should_offset_dst) {}
 
 TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
                                      const char* pref_name,
                                      const char* dict_key,
                                      size_t period_days,
+                                     bool should_use_utc,
                                      bool should_offset_dst)
     : clock_(std::make_unique<base::DefaultClock>()),
       store_(std::make_unique<PrefTimePeriodStore>(prefs, pref_name, dict_key)),
       period_days_(period_days),
+      should_use_utc_(should_use_utc),
       should_offset_dst_(should_offset_dst) {
   DCHECK(pref_name);
   if (prefs) {
@@ -65,10 +72,12 @@ TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
                                      const char* dict_key,
                                      size_t period_days,
                                      std::unique_ptr<base::Clock> clock,
+                                     bool should_use_utc,
                                      bool should_offset_dst)
     : clock_(std::move(clock)),
       store_(std::make_unique<PrefTimePeriodStore>(prefs, pref_name, dict_key)),
       period_days_(period_days),
+      should_use_utc_(should_use_utc),
       should_offset_dst_(should_offset_dst) {
   DCHECK(prefs);
   DCHECK(pref_name);
@@ -108,7 +117,7 @@ void TimePeriodStorage::ReplaceTodaysValueIfGreater(uint64_t value) {
 void TimePeriodStorage::ReplaceIfGreaterForDate(const base::Time& date,
                                                 uint64_t value) {
   FilterToPeriod();
-  base::Time date_mn = date.LocalMidnight();
+  base::Time date_mn = Midnight(date);
   std::list<DailyValue>::iterator day_insert_it = std::ranges::find_if(
       daily_values_,
       [date_mn](const DailyValue& val) { return val.day <= date_mn; });
@@ -126,8 +135,7 @@ void TimePeriodStorage::ReplaceIfGreaterForDate(const base::Time& date,
 uint64_t TimePeriodStorage::GetPeriodSumInTimeRange(
     const base::Time& start_time,
     const base::Time& end_time) const {
-  base::TimeDelta dst_offset =
-      should_offset_dst_ ? kPotentialDSTOffset : base::TimeDelta();
+  const base::TimeDelta dst_offset = GetDstOffset();
   // We only record values between the specified time range (inclusive).
   return std::accumulate(
       daily_values_.begin(), daily_values_.end(), 0ull,
@@ -144,14 +152,14 @@ uint64_t TimePeriodStorage::GetPeriodSumInTimeRange(
 
 uint64_t TimePeriodStorage::GetPeriodSum() const {
   const base::Time now = clock_->Now();
-  const base::Time n_days_ago =
-      now.LocalMidnight() - base::Days(period_days_ - 1);
+  const base::Time n_days_ago = Midnight(now) - base::Days(period_days_ - 1);
   return GetPeriodSumInTimeRange(n_days_ago, now);
 }
 
 uint64_t TimePeriodStorage::GetHighestValueInPeriod() const {
   // We record only value for last N days.
-  const base::Time n_days_ago = clock_->Now() - base::Days(period_days_);
+  const base::Time n_days_ago =
+      Midnight(clock_->Now()) - base::Days(period_days_);
   std::list<DailyValue> in_period_daily_values(daily_values_.size());
   auto copied_it =
       std::copy_if(daily_values_.begin(), daily_values_.end(),
@@ -180,8 +188,22 @@ void TimePeriodStorage::Clear() {
   store_->Clear();
 }
 
+base::Time TimePeriodStorage::Midnight(base::Time time) const {
+  return should_use_utc_ ? time.UTCMidnight() : time.LocalMidnight();
+}
+
+base::TimeDelta TimePeriodStorage::GetDstOffset() const {
+  // DST offset is only applied when using local time, since UTC time does not
+  // have DST adjustments.
+  if (should_use_utc_ || !should_offset_dst_) {
+    return base::TimeDelta();
+  }
+
+  return kPotentialDSTOffset;
+}
+
 void TimePeriodStorage::FilterToPeriod() {
-  base::Time now_midnight = clock_->Now().LocalMidnight();
+  base::Time now_midnight = Midnight(clock_->Now());
   base::Time last_saved_midnight;
 
   if (!daily_values_.empty()) {
@@ -190,8 +212,7 @@ void TimePeriodStorage::FilterToPeriod() {
 
   // Push daily values for new days. In loop condition, add one hour
   // to now_midnight to account for DST changes.
-  base::TimeDelta dst_offset =
-      should_offset_dst_ ? kPotentialDSTOffset : base::TimeDelta();
+  const base::TimeDelta dst_offset = GetDstOffset();
   for (base::Time day_midnight = last_saved_midnight + base::Days(1);
        day_midnight <= (now_midnight + dst_offset);
        day_midnight += base::Days(1)) {
