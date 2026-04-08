@@ -261,6 +261,13 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private void prepareBravePreferences() {
         setCustomTabPreference();
         setAutofillPrivateWindowPreference();
+        // Register the final containment update listener. This runs after the current call stack
+        // completes (posted via PostTask), so it fires after any synchronous observer callbacks
+        // from MainSettings (e.g. onSignInAllowedChanged → updatePreferences →
+        // notifyPreferencesUpdated) that would otherwise replace our listener with one that sees
+        // preferences before Brave's rearrangement. Also handles the back-navigation timing race
+        // where GlobalLayout fires before onResume's organiseBravePreferences completes.
+        notifyPreferencesUpdated();
     }
 
     private void setAutofillPrivateWindowPreference() {
@@ -454,11 +461,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         assumeNonNull(featuresSectionPref);
         getPreferenceScreen().removePreference(featuresSectionPref);
         getPreferenceScreen().addPreference(featuresSectionPref);
-        // The GlobalLayout listener registered by onFragmentViewCreated may have already fired
-        // before this sort runs (e.g. on resume with a fast back-navigation animation), leaving
-        // no listener to pick up the corrected order. Calling notifyPreferencesUpdated() here
-        // always registers a fresh listener so containment is re-applied after the sort.
-        notifyPreferencesUpdated();
     }
 
     // A wrapper to suppress NullAway warning for the prefs which always present

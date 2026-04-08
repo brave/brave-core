@@ -1,0 +1,29 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/SettingsActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/SettingsActivity.java
+index 7209768dd31ecf29b627c86db950b37fad5fadf4..8d9b2dac0ce2a8372bb099377d1e9fd5115fec98 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/settings/SettingsActivity.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/SettingsActivity.java
+@@ -3,7 +3,7 @@
+ // found in the LICENSE file.
+ 
+ package org.chromium.chrome.browser.settings;
+-
++    import java.util.ArrayList;
+ import static org.chromium.build.NullUtil.assertNonNull;
+ import static org.chromium.build.NullUtil.assumeNonNull;
+ 
+@@ -643,9 +643,12 @@ public class SettingsActivity extends ChromeBaseAppCompatActivity
+             // This is only needed the first time the theme is applied to this fragment view.
+             reInflateViews(fragment);
+         }
+-        itemDecoration.updatePreferenceStyles(
+-                controller.generatePreferenceStyles(
+-                        SettingsUtils.getVisiblePreferences(fragment.getPreferenceScreen())));
++        var visiblePrefs = SettingsUtils.getVisiblePreferences(fragment.getPreferenceScreen());
++        // getPreference(i) returns prefs in insertion order, not sorted order. The adapter
++        // calls sortPreferences() before rendering, but that may not have happened yet when
++        // this runs. Sort by order explicitly so containment group boundaries are correct.
++        visiblePrefs.sort((a, b) -> Integer.compare(a.getOrder(), b.getOrder()));
++        itemDecoration.updatePreferenceStyles(controller.generatePreferenceStyles(visiblePrefs));
+         recyclerView.invalidateItemDecorations();
+     }
+ 
