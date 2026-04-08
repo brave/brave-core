@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import chalk from 'chalk'
-import config from './config.js'
+import config from './config.ts'
 import { isCI } from './ciDetect.ts'
 import fs from 'node:fs'
 import path from 'node:path'

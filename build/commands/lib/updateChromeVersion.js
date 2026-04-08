@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import assert from 'node:assert'
-import config from './config.js'
+import config from './config.ts'
 import fs from 'node:fs'
 import path from 'node:path'
 import * as Log from './log.ts'

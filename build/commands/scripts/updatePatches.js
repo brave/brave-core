@@ -5,7 +5,7 @@
 
 import fs from 'node:fs'
 import path from 'node:path'
-import config from '../lib/config.js'
+import config from '../lib/config.ts'
 import updatePatches from '../lib/updatePatches.js'
 
 function loadChromiumPathFilter(filePath) {
