@@ -10,7 +10,9 @@
 #include <optional>
 
 #include "base/memory/raw_ptr.h"
+#include "base/scoped_observation.h"
 #include "base/timer/timer.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/sidebar/sidebar.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
@@ -51,7 +53,8 @@ class SidebarContainerView : public sidebar::Sidebar,
                              public views::AnimationDelegateViews,
                              public sidebar::SidebarModel::Observer,
                              public SidePanelEntryObserver,
-                             public TabStripModelObserver {
+                             public TabStripModelObserver,
+                             public FocusModeController::Observer {
   METADATA_HEADER(SidebarContainerView, views::View)
  public:
   SidebarContainerView(Browser* browser,
@@ -124,6 +127,9 @@ class SidebarContainerView : public sidebar::Sidebar,
   void OnEntryShown(SidePanelEntry* entry) override;
   void OnEntryHidden(SidePanelEntry* entry) override;
 
+  // FocusModeController::Observer:
+  void OnFocusModeToggled(bool enabled) override;
+
   // TabStripModelObserver:
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,
@@ -190,6 +196,14 @@ class SidebarContainerView : public sidebar::Sidebar,
   void AddSidePanelEntryObservation(SidePanelEntry* entry);
   void RemoveSidePanelEntryObservation(SidePanelEntry* entry);
 
+  // Returns the current effective show option for the view. This may differ
+  // from the value of the corresponding profile pref depending on browser state
+  // (e.g. if Focus Mode is active).
+  sidebar::SidebarService::ShowSidebarOption GetEffectiveShowOption() const;
+
+  // Adjusts sidebar visibility based on the effective show option.
+  void ApplyShowOption();
+
   raw_ptr<Browser> browser_ = nullptr;
   raw_ptr<SidePanelCoordinator> side_panel_coordinator_ = nullptr;
   raw_ptr<SidePanel> side_panel_ = nullptr;
@@ -210,6 +224,8 @@ class SidebarContainerView : public sidebar::Sidebar,
   base::ScopedObservation<sidebar::SidebarModel,
                           sidebar::SidebarModel::Observer>
       sidebar_model_observation_{this};
+  base::ScopedObservation<FocusModeController, FocusModeController::Observer>
+      focus_mode_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_CONTAINER_VIEW_H_

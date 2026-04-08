@@ -16,6 +16,7 @@ source_set("sidebar") {
 
   public_deps = [
     "//base",
+    "//brave/browser/ui/focus_mode",
     "//brave/browser/ui/sidebar",
     "//brave/browser/ui/views/side_panel",
     "//brave/components/sidebar/browser",

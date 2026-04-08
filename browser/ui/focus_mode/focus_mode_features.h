@@ -11,6 +11,7 @@
 namespace features {
 
 BASE_DECLARE_FEATURE(kBraveFocusMode);
+BASE_DECLARE_FEATURE(kBraveFocusModeTitleBar);
 
 }  // namespace features
 

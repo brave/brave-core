@@ -11,14 +11,18 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/notreached.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/common/pref_names.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/window/caption_button_layout_constants.h"
+#include "ui/views/window/non_client_view.h"
 #include "ui/views/window/window_button_order_provider.h"
 
 namespace {
@@ -53,6 +57,12 @@ BraveBrowserFrameViewLinuxNative::BraveBrowserFrameViewLinuxNative(
                                   std::move(nav_button_provider)) {}
 
 BraveBrowserFrameViewLinuxNative::~BraveBrowserFrameViewLinuxNative() = default;
+
+void BraveBrowserFrameViewLinuxNative::OnFocusModeToggled(bool enabled) {
+  BrowserFrameViewLinuxNative::OnFocusModeToggled(enabled);
+  MaybeUpdateCachedFrameButtonImages();
+  UpdateLeadingTrailingCaptionButtonWidth();
+}
 
 void BraveBrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages() {
   auto* browser = GetBrowserView()->browser();
@@ -110,6 +120,17 @@ void BraveBrowserFrameViewLinuxNative::Layout(PassKey) {
   LayoutSuperclass<BrowserFrameViewLinuxNative>(this);
 
   UpdateLeadingTrailingCaptionButtonWidth();
+
+  if (const int offset =
+          BraveBrowserView::From(GetBrowserView())->GetTopRevealOffset();
+      offset != 0) {
+    for (views::Button* button : {minimize_button(), maximize_button(),
+                                  restore_button(), close_button()}) {
+      if (button) {
+        button->SetY(button->y() + offset);
+      }
+    }
+  }
 }
 
 views::Button* BraveBrowserFrameViewLinuxNative::FrameButtonToButton(

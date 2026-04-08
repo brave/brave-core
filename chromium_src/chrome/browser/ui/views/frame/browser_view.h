@@ -53,9 +53,11 @@
   virtual ReparentTopContainerForEndOfImmersive
 #define ShouldDrawTabStrokes virtual ShouldDrawTabStrokes
 #define GetFrameElementInfo virtual GetFrameElementInfo
+#define FullscreenStateChanged virtual FullscreenStateChanged
 
 #include <chrome/browser/ui/views/frame/browser_view.h>  // IWYU pragma: export
 
+#undef FullscreenStateChanged
 #undef GetFrameElementInfo
 #undef ReparentTopContainerForEndOfImmersive
 #undef ShouldDrawTabStrokes

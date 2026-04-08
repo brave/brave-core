@@ -20,6 +20,7 @@
 #include "base/strings/string_split.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/brave_tab_search_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -362,6 +363,10 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
                             base::Unretained(this)));
   }
 
+  if (auto* controller = browser_->GetFeatures().focus_mode_controller()) {
+    focus_mode_observation_.Observe(controller);
+  }
+
   widget_observation_.Observe(browser_view->GetWidget());
 
   // Note: This should happen after all the PrefMembers have been initialized.
@@ -382,7 +387,9 @@ void BraveVerticalTabStripRegionView::ToggleState() {
     SetState(State::kCollapsed);
   } else {
     collapsed_pref_.SetValue(false);
-    SetState(State::kExpanded);
+    if (!IsCollapsedStateForced()) {
+      SetState(State::kExpanded);
+    }
   }
 }
 
@@ -413,7 +420,24 @@ void BraveVerticalTabStripRegionView::OnFullscreenStateChanged() {
     return;
   }
 
-  if (IsFloatingEnabledForBrowserFullscreen()) {
+  if (ShouldHideCompletelyWhenCollapsed()) {
+    width_animation_.Stop();
+    SetVisible(false);
+    SetState(State::kCollapsed);
+  } else {
+    SetVisible(true);
+  }
+
+  PreferredSizeChanged();
+}
+
+void BraveVerticalTabStripRegionView::OnFocusModeToggled(bool enabled) {
+  // TODO: This function body duplicates OnFullscreenStateChanged.
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(browser_)) {
+    return;
+  }
+
+  if (ShouldHideCompletelyWhenCollapsed()) {
     width_animation_.Stop();
     SetVisible(false);
     SetState(State::kCollapsed);
@@ -581,9 +605,7 @@ gfx::Size BraveVerticalTabStripRegionView::CalculatePreferredSize(
 
 gfx::Size BraveVerticalTabStripRegionView::GetMinimumSize() const {
   if (IsFloatingEnabledForBrowserFullscreen() ||
-      ((tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(browser_) &&
-        state_ != State::kExpanded))) {
-    // Vertical tab strip always overlaps the contents area.
+      (ShouldHideCompletelyWhenCollapsed() && state_ != State::kExpanded)) {
     return {};
   }
 
@@ -1006,10 +1028,7 @@ void BraveVerticalTabStripRegionView::
     OnHideComopletelyWhenCollapsedPrefChanged() {
   OnFloatingModePrefChanged();
   if (state_ == State::kCollapsed) {
-    // When setting is turned on/off, we should make sure vertical tab strip is
-    // getting hidden/shown.
-    SetVisible(
-        !tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(browser_));
+    SetVisible(!ShouldHideCompletelyWhenCollapsed());
   }
 
   // Call after setting visibility as region view's visibility is referred when
@@ -1055,13 +1074,7 @@ int BraveVerticalTabStripRegionView::GetPreferredWidthForState(
   };
 
   auto calculate_collapsed_width = [&]() {
-    if (IsFloatingEnabledForBrowserFullscreen()) {
-      // In this case, vertical tab strip should be invisible but show up when
-      // mouse hovers.
-      return 0;
-    }
-
-    if (tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(browser_)) {
+    if (ShouldHideCompletelyWhenCollapsed()) {
       return 0;
     }
 
@@ -1098,14 +1111,18 @@ int BraveVerticalTabStripRegionView::GetPreferredWidthForState(
 }
 
 bool BraveVerticalTabStripRegionView::IsFloatingVerticalTabsEnabled() const {
-  return IsFloatingEnabledForBrowserFullscreen() ||
-         tabs::utils::IsFloatingVerticalTabsEnabled(browser_) ||
-         tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(browser_);
+  return ShouldHideCompletelyWhenCollapsed() ||
+         tabs::utils::IsFloatingVerticalTabsEnabled(browser_);
 }
 
 bool BraveVerticalTabStripRegionView::IsFloatingEnabledForBrowserFullscreen()
     const {
   return IsBrowserFullscren() && !ShouldShowVerticalTabsInBrowserFullscreen();
+}
+
+bool BraveVerticalTabStripRegionView::IsCollapsedStateForced() const {
+  return IsFloatingEnabledForBrowserFullscreen() ||
+         IsFocusModeEnabled(browser_);
 }
 
 void BraveVerticalTabStripRegionView::ScheduleFloatingModeTimer() {
@@ -1209,17 +1226,19 @@ std::u16string BraveVerticalTabStripRegionView::GetShortcutTextForNewTabButton(
 void BraveVerticalTabStripRegionView::OnCollapseAnimationEnded() {
   CHECK_EQ(state_, State::kCollapsed);
 
-  if (IsFloatingEnabledForBrowserFullscreen() ||
-      tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(browser_)) {
-    // When the animation ends, we should hide the vertical tab strip as we
-    // don't want the tabstrip to be visible partially. This view only takes a
-    // little width and watches mouse movement to expand itself.
+  if (ShouldHideCompletelyWhenCollapsed()) {
     SetVisible(false);
   }
 }
 
 bool BraveVerticalTabStripRegionView::IsMenuShowing() const {
   return menu_runner_ && menu_runner_->IsRunning();
+}
+
+bool BraveVerticalTabStripRegionView::ShouldHideCompletelyWhenCollapsed()
+    const {
+  return IsCollapsedStateForced() ||
+         tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(browser_);
 }
 
 // Show context menu in unobscured area.

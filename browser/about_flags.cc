@@ -512,15 +512,24 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #endif  // defined(TOOLKIT_VIEWS)
 
 #if defined(TOOLKIT_VIEWS)
-#define BRAVE_FOCUS_MODE_FEATURE_ENTRIES                             \
-  EXPAND_FEATURE_ENTRIES({                                           \
-      "brave-focus-mode",                                            \
-      "Focus Mode",                                                  \
-      "Enables Focus Mode, which hides browser chrome and provides " \
-      "hover-to-reveal access to hidden UI elements",                \
-      kOsWin | kOsMac | kOsLinux,                                    \
-      FEATURE_VALUE_TYPE(features::kBraveFocusMode),                 \
-  })
+#define BRAVE_FOCUS_MODE_FEATURE_ENTRIES                                 \
+  EXPAND_FEATURE_ENTRIES(                                                \
+      {                                                                  \
+          "brave-focus-mode",                                            \
+          "Focus Mode",                                                  \
+          "Enables Focus Mode, which hides browser chrome and provides " \
+          "hover-to-reveal access to hidden UI elements",                \
+          kOsWin | kOsMac | kOsLinux,                                    \
+          FEATURE_VALUE_TYPE(features::kBraveFocusMode),                 \
+      },                                                                 \
+      {                                                                  \
+          "brave-focus-mode-title-bar",                                  \
+          "Focus Mode Title Bar",                                        \
+          "Shows a small title bar with the site's domain and favicon "  \
+          "when Focus Mode is enabled",                                  \
+          kOsWin | kOsMac | kOsLinux,                                    \
+          FEATURE_VALUE_TYPE(features::kBraveFocusModeTitleBar),         \
+      })
 #else
 #define BRAVE_FOCUS_MODE_FEATURE_ENTRIES
 #endif  // defined(TOOLKIT_VIEWS)

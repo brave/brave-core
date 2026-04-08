@@ -13,6 +13,7 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/fullscreen_util_mac.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/view_ids.h"
@@ -22,6 +23,7 @@
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/scoped_canvas.h"
+#include "ui/views/window/non_client_view.h"
 
 BraveBrowserFrameViewMac::BraveBrowserFrameViewMac(
     BrowserWidget* browser_widget,
@@ -43,6 +45,10 @@ BraveBrowserFrameViewMac::BraveBrowserFrameViewMac(
         base::BindRepeating(
             &BraveBrowserFrameViewMac::UpdateWindowTitleVisibility,
             base::Unretained(this)));
+  }
+
+  if (auto* focus_mode = browser->GetFeatures().focus_mode_controller()) {
+    focus_mode_observation_.Observe(focus_mode);
   }
 }
 
@@ -172,6 +178,13 @@ gfx::Size BraveBrowserFrameViewMac::GetMinimumSize() const {
   }
 
   return BrowserFrameViewMac::GetMinimumSize();
+}
+
+void BraveBrowserFrameViewMac::OnFocusModeToggled(bool /*enabled*/) {
+  UpdateWindowTitleAndControls();
+  if (auto* non_client_view = browser_widget()->non_client_view()) {
+    non_client_view->InvalidateLayout();
+  }
 }
 
 bool BraveBrowserFrameViewMac::ShouldHideTopUIInFullscreen() const {

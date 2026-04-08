@@ -7,6 +7,7 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "brave/browser/ui/views/frame/edge_reveal_controller.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -92,4 +93,16 @@ bool BrowserViewLayoutDelegateImpl::IsFullscreenForTab() const {
 
 bool BrowserViewLayoutDelegateImpl::IsFullscreen() const {
   return browser_view().IsFullscreen();
+}
+
+std::optional<double>
+BrowserViewLayoutDelegateImpl::GetTopOverlayRevealFraction() const {
+  if (auto* view = BraveBrowserView::From(&browser_view())) {
+    if (auto* controller = view->GetTopEdgeRevealController()) {
+      if (controller->IsEnabled()) {
+        return controller->GetRevealFraction();
+      }
+    }
+  }
+  return std::nullopt;
 }

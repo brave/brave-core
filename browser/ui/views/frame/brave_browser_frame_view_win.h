@@ -8,12 +8,15 @@
 
 #include <memory>
 
+#include "base/scoped_observation.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view_win.h"
 #include "components/prefs/pref_member.h"
 
 class BraveWindowFrameGraphic;
 
-class BraveBrowserFrameViewWin : public BrowserFrameViewWin {
+class BraveBrowserFrameViewWin : public BrowserFrameViewWin,
+                                 public FocusModeController::Observer {
  public:
   BraveBrowserFrameViewWin(BrowserWidget* browser_widget,
                            BrowserView* browser_view);
@@ -23,6 +26,9 @@ class BraveBrowserFrameViewWin : public BrowserFrameViewWin {
   BraveBrowserFrameViewWin& operator=(const BraveBrowserFrameViewWin&) = delete;
 
   bool ShouldCaptionButtonsBeDrawnOverToolbar() const;
+
+  // FocusModeController::Observer:
+  void OnFocusModeToggled(bool enabled) override;
 
  private:
   void OnVerticalTabsPrefsChanged();
@@ -38,6 +44,9 @@ class BraveBrowserFrameViewWin : public BrowserFrameViewWin {
 
   BooleanPrefMember using_vertical_tabs_;
   BooleanPrefMember showing_window_title_for_vertical_tabs_;
+
+  base::ScopedObservation<FocusModeController, FocusModeController::Observer>
+      focus_mode_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_VIEW_WIN_H_
