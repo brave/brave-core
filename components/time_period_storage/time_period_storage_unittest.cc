@@ -10,8 +10,11 @@
 
 #include "base/check.h"
 #include "base/memory/raw_ptr.h"
+#include "base/test/icu_test_util.h"
+#include "base/test/scoped_libc_timezone_override.h"
 #include "base/test/simple_test_clock.h"
 #include "base/time/time.h"
+#include "build/buildflag.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -341,6 +344,44 @@ TEST_P(TimePeriodStorageTest, DstOffsetExpandsQueryRange) {
   EXPECT_EQ(state_->GetPeriodSumInTimeRange(midnight + base::Minutes(30),
                                             midnight + base::Days(1)),
             expected_saving);
+}
+
+// The test is disbled on Windows because `ScopedLibcTimezoneOverride` is a
+// no-op for IANA timezone identifiers, causing spurious failures caused by a
+// non-overridable libc timezone.
+#if BUILDFLAG(IS_WIN)
+#define MAYBE_GetHighestValueInPeriodExcludesDataOutsideWindowAfterDSTTransition \
+  DISABLED_GetHighestValueInPeriodExcludesDataOutsideWindowAfterDSTTransition
+#else
+#define MAYBE_GetHighestValueInPeriodExcludesDataOutsideWindowAfterDSTTransition \
+  GetHighestValueInPeriodExcludesDataOutsideWindowAfterDSTTransition
+#endif
+
+TEST_P(
+    TimePeriodStorageTest,
+    MAYBE_GetHighestValueInPeriodExcludesDataOutsideWindowAfterDSTTransition) {
+  // America/New_York DST transition: clocks spring forward on March 8, 2020.
+  base::test::ScopedLibcTimezoneOverride scoped_libc_timezone(
+      "America/New_York");
+  base::test::ScopedRestoreDefaultTimezone scoped_icu_timezone(
+      "America/New_York");
+  uint64_t low_value = 50;
+  uint64_t high_value = 75;
+
+  InitStorage(7);
+
+  base::Time time;
+  ASSERT_TRUE(base::Time::FromString("March 8 2020 01:30:00", &time));
+  clock_->SetNow(time);
+  state_->AddDelta(high_value);
+
+  ASSERT_TRUE(base::Time::FromString("March 14 2020 02:30:00", &time));
+  clock_->SetNow(time);
+  state_->AddDelta(low_value);
+  // Advance clock so the high-value entry falls outside the time period.
+  clock_->Advance(base::Days(1));
+
+  EXPECT_EQ(state_->GetHighestValueInPeriod(), low_value);
 }
 
 INSTANTIATE_TEST_SUITE_P(
