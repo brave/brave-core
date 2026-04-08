@@ -52,8 +52,6 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
         to: mockBasicAttentionToken.contractAddress,
         value: '0x15ddf09c97b0000',
         data: Array.from(new Uint8Array(24)),
-        signOnly: false,
-        signedTransaction: undefined,
       },
       maxPriorityFeePerGas: '80410000', // (0.08041 gwei)
       maxFeePerGas: '3600000000', // (3.6 gwei)
@@ -545,8 +543,6 @@ export const mockERC20TransferTransaction: SerializableTransactionInfo = {
         data: [
           168, 0, 5, 168, 0, 5, 168, 0, 5, 168, 0, 5, 168, 0, 5, 168, 0, 5,
         ],
-        signOnly: false,
-        signedTransaction: 'mockSignedTx',
       },
     },
   },

@@ -27,11 +27,11 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
                     mojom::AccountKind::kDerived, from_address);
 
   // type 0
-  std::unique_ptr<EthTransaction> tx = std::make_unique<EthTransaction>(
-      *EthTransaction::FromTxData(mojom::TxData::New(
-          "0x1", "0x09", "0x4a817c800", "0x5208",
-          "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
-          std::vector<uint8_t>(), false, std::nullopt)));
+  std::unique_ptr<EthTransaction> tx =
+      std::make_unique<EthTransaction>(*EthTransaction::FromTxData(
+          mojom::TxData::New("0x1", "0x09", "0x4a817c800", "0x5208",
+                             "0x3535353535353535353535353535353535353535",
+                             "0x0de0b6b3a7640000", std::vector<uint8_t>())));
   EthTxMeta meta(eth_account_id, std::move(tx));
   base::Time::Exploded x{1981, 3, 0, 1, 2};
   base::Time confirmed_time = meta.confirmed_time();
@@ -75,8 +75,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
       std::make_unique<Eip2930Transaction>(*Eip2930Transaction::FromTxData(
           mojom::TxData::New("0x3", "0x09", "0x4a817c800", "0x5208",
                              "0x3535353535353535353535353535353535353535",
-                             "0x0de0b6b3a7640000", std::vector<uint8_t>(),
-                             false, std::nullopt)));
+                             "0x0de0b6b3a7640000", std::vector<uint8_t>())));
   auto* access_list = tx1->access_list();
   Eip2930Transaction::AccessListItem item_a;
   item_a.address.fill(0x0a);
@@ -117,8 +116,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
           *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
               mojom::TxData::New("0x3", "0x09", "0x4a817c800", "0x5208",
                                  "0x3535353535353535353535353535353535353535",
-                                 "0x0de0b6b3a7640000", std::vector<uint8_t>(),
-                                 false, std::nullopt),
+                                 "0x0de0b6b3a7640000", std::vector<uint8_t>()),
               "0x1E", "0x32")));
   EthTxMeta meta2(eth_account_id, std::move(tx2));
   mojom::TransactionInfoPtr ti2 = meta2.ToTransactionInfo();
@@ -168,8 +166,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                 mojom::TxData::New(mojom::kFilecoinEthereumMainnetChainId,
                                    "0x09", "0x4a817c800", "0x5208",
                                    "0x3535353535353535353535353535353535353535",
-                                   "0x0de0b6b3a7640000", data, false,
-                                   std::nullopt),
+                                   "0x0de0b6b3a7640000", data),
                 "0x1E", "0x32")));
 
     EthTxMeta meta(eth_account_id, std::move(tx));
@@ -188,10 +185,10 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
     std::unique_ptr<Eip1559Transaction> tx =
         std::make_unique<Eip1559Transaction>(
             *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
-                mojom::TxData::New(
-                    mojom::kSepoliaChainId, "0x09", "0x4a817c800", "0x5208",
-                    "0x3535353535353535353535353535353535353535",
-                    "0x0de0b6b3a7640000", encoded_data, false, std::nullopt),
+                mojom::TxData::New(mojom::kSepoliaChainId, "0x09",
+                                   "0x4a817c800", "0x5208",
+                                   "0x3535353535353535353535353535353535353535",
+                                   "0x0de0b6b3a7640000", encoded_data),
                 "0x1E", "0x32")));
 
     EthTxMeta meta(eth_account_id, std::move(tx));
@@ -211,10 +208,10 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
     std::unique_ptr<Eip1559Transaction> tx =
         std::make_unique<Eip1559Transaction>(
             *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
-                mojom::TxData::New(
-                    mojom::kSepoliaChainId, "0x09", "0x4a817c800", "0x5208",
-                    "0x3535353535353535353535353535353535353535",
-                    "0x0de0b6b3a7640000", encoded_data, false, std::nullopt),
+                mojom::TxData::New(mojom::kSepoliaChainId, "0x09",
+                                   "0x4a817c800", "0x5208",
+                                   "0x3535353535353535353535353535353535353535",
+                                   "0x0de0b6b3a7640000", encoded_data),
                 "0x1E", "0x32")));
 
     EthTxMeta meta(eth_account_id, std::move(tx));
@@ -234,10 +231,10 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
     std::unique_ptr<Eip1559Transaction> tx =
         std::make_unique<Eip1559Transaction>(
             *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
-                mojom::TxData::New(
-                    mojom::kSepoliaChainId, "0x09", "0x4a817c800", "0x5208",
-                    "0x3535353535353535353535353535353535353535",
-                    "0x0de0b6b3a7640000", encoded_data, false, std::nullopt),
+                mojom::TxData::New(mojom::kSepoliaChainId, "0x09",
+                                   "0x4a817c800", "0x5208",
+                                   "0x3535353535353535353535353535353535353535",
+                                   "0x0de0b6b3a7640000", encoded_data),
                 "0x1E", "0x32")));
 
     EthTxMeta meta(eth_account_id, std::move(tx));
@@ -250,11 +247,10 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
     std::unique_ptr<Eip1559Transaction> tx =
         std::make_unique<Eip1559Transaction>(
             *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
-                mojom::TxData::New(mojom::kSepoliaChainId, "0x09",
-                                   "0x4a817c800", "0x5208",
-                                   "0x3535353535353535353535353535353535353535",
-                                   "0x0de0b6b3a7640000", std::vector<uint8_t>(),
-                                   false, std::nullopt),
+                mojom::TxData::New(
+                    mojom::kSepoliaChainId, "0x09", "0x4a817c800", "0x5208",
+                    "0x3535353535353535353535353535353535353535",
+                    "0x0de0b6b3a7640000", std::vector<uint8_t>()),
                 "0x1E", "0x32")));
 
     EthTxMeta meta(eth_account_id, std::move(tx));

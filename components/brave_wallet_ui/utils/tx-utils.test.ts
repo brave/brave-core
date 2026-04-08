@@ -57,7 +57,6 @@ import {
   getTransactionTypeName,
   isCancelTransaction,
   parseSwapInfo,
-  toTxDataUnion,
 } from './tx-utils'
 
 const mockCardanoMinswapTokenIdHex = 'deadbeefcafe'
@@ -733,30 +732,6 @@ describe('check for insufficient funds errors', () => {
       expect(insufficientFundsError).toBeFalsy()
       expect(insufficientFundsForGasError).toBeFalsy()
     })
-  })
-})
-
-describe('toTxDataUnion', () => {
-  test('works', () => {
-    const filTxData: BraveWallet.FilTxData = {
-      nonce: '',
-      gasPremium: '',
-      gasFeeCap: '',
-      gasLimit: '',
-      maxFee: '0',
-      to: 'to',
-      value: 'value',
-    }
-
-    const union = toTxDataUnion({ filTxData: filTxData })
-
-    expect(Object.keys(union).length).toBe(1)
-    expect(union.filTxData).toBe(filTxData)
-    expect(union.ethTxData).toBe(undefined)
-    expect(union.ethTxData1559).toBe(undefined)
-    expect(union.solanaTxData).toBe(undefined)
-    expect(union.btcTxData).toBe(undefined)
-    expect(union.zecTxData).toBe(undefined)
   })
 })
 

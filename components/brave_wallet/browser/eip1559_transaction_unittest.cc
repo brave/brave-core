@@ -25,7 +25,7 @@ TEST(Eip1559TransactionUnitTest, GetMessageToSign) {
       *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
           mojom::TxData::New("0x04", "0x00", "0x00", "0x00",
                              "0x0101010101010101010101010101010101010101",
-                             "0x00", data, false, std::nullopt),
+                             "0x00", data),
           "0x0", "0x0"));
   ASSERT_EQ(tx.type(), EthTransactionType::kEip1559);
   auto* access_list = tx.access_list();
@@ -125,8 +125,7 @@ TEST(Eip1559TransactionUnitTest, GetSignedTransactionAndHash) {
         *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
             mojom::TxData::New("0x04", entry.nonce, "0x00", entry.gas_limit,
                                "0x000000000000000000000000000000000000aaaa",
-                               entry.value, std::vector<uint8_t>(), false,
-                               std::nullopt),
+                               entry.value, std::vector<uint8_t>()),
             entry.max_priority_fee_per_gas, entry.max_fee_per_gas));
 
     auto signature = *key->SignCompact(tx.GetHashedMessageToSign());
@@ -141,8 +140,7 @@ TEST(Eip1559TransactionUnitTest, Serialization) {
       *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
           mojom::TxData::New("0x15BE", "0x09", "0x4a817c800", "0x5208",
                              "0x3535353535353535353535353535353535353535",
-                             "0xde0b6b3a7640000", std::vector<uint8_t>(), false,
-                             std::nullopt),
+                             "0xde0b6b3a7640000", std::vector<uint8_t>()),
           "0x7B", "0x1C8"));
 
   auto* access_list = tx.access_list();
@@ -164,7 +162,7 @@ TEST(Eip1559TransactionUnitTest, FromTxData) {
   auto valid_tx_data = mojom::TxData1559::New(
       mojom::TxData::New("0x15BE", "0x01", "0x3E8", "0x989680",
                          "0x3535353535353535353535353535353535353535", "0x2A",
-                         std::vector<uint8_t>{1}, false, std::nullopt),
+                         std::vector<uint8_t>{1}),
       "0x7B", "0x1C8");
 
   auto tx = Eip1559Transaction::FromTxData(valid_tx_data);

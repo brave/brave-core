@@ -13,7 +13,6 @@
 
 #include "base/functional/bind.h"
 #include "base/notimplemented.h"
-#include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_block_tracker.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_tx_meta.h"
@@ -46,16 +45,6 @@ ZCashTxManager::~ZCashTxManager() = default;
 void ZCashTxManager::OnLatestHeightUpdated(const std::string& chain_id,
                                            uint32_t latest_height) {
   UpdatePendingTransactions(chain_id);
-}
-
-void ZCashTxManager::AddUnapprovedTransaction(
-    const std::string& chain_id,
-    mojom::TxDataUnionPtr tx_data_union,
-    const mojom::AccountIdPtr& from,
-    const std::optional<url::Origin>& origin,
-    mojom::SwapInfoPtr swap_info,
-    AddUnapprovedTransactionCallback callback) {
-  NOTREACHED() << "AddUnapprovedZCashTransaction must be used";
 }
 
 void ZCashTxManager::AddUnapprovedZCashTransaction(
@@ -124,7 +113,7 @@ void ZCashTxManager::ContinueAddUnapprovedTransaction(
     const mojom::AccountIdPtr& from,
     const std::optional<url::Origin>& origin,
     mojom::SwapInfoPtr swap_info,
-    AddUnapprovedTransactionCallback callback,
+    AddUnapprovedZCashTransactionCallback callback,
     base::expected<ZCashTransaction, std::string> zcash_transaction) {
   if (!zcash_transaction.has_value()) {
     std::move(callback).Run(false, "", zcash_transaction.error());

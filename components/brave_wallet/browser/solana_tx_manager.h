@@ -31,6 +31,9 @@ struct SolanaAccountInfo;
 
 class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
  public:
+  using AddUnapprovedSolanaTransactionCallback =
+      mojom::TxService::AddUnapprovedSolanaTransactionCallback;
+
   SolanaTxManager(TxService& tx_service,
                   JsonRpcService* json_rpc_service,
                   KeyringService& keyring_service,
@@ -38,13 +41,15 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
                   AccountResolverDelegate& account_resolver_delegate);
   ~SolanaTxManager() override;
 
+  void AddUnapprovedSolanaTransaction(
+      const std::string& chain_id,
+      mojom::SolanaTxDataPtr solana_tx_data,
+      const mojom::AccountIdPtr& from,
+      const std::optional<url::Origin>& origin,
+      mojom::SwapInfoPtr swap_info,
+      AddUnapprovedSolanaTransactionCallback callback);
+
   // TxManager
-  void AddUnapprovedTransaction(const std::string& chain_id,
-                                mojom::TxDataUnionPtr tx_data_union,
-                                const mojom::AccountIdPtr& from,
-                                const std::optional<url::Origin>& origin,
-                                mojom::SwapInfoPtr swap_info,
-                                AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
 
@@ -210,7 +215,7 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
       const std::string& error_message);
 
   void ContinueAddUnapprovedTransaction(
-      AddUnapprovedTransactionCallback callback,
+      AddUnapprovedSolanaTransactionCallback callback,
       std::unique_ptr<SolanaTxMeta> meta,
       mojom::SolanaFeeEstimationPtr estimation,
       mojom::SolanaProviderError error,

@@ -7,7 +7,6 @@
 
 #include <memory>
 #include <optional>
-#include <unordered_map>
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
@@ -90,18 +89,6 @@ class BitcoinTxManagerUnitTest : public testing::Test {
 
   PrefService* prefs() { return &prefs_; }
 
-  void AddUnapprovedTransaction(
-      std::string chain_id,
-      mojom::TxDataUnionPtr tx_data_union,
-      mojom::AccountIdPtr from,
-      std::optional<url::Origin> origin,
-      mojom::SwapInfoPtr swap_info,
-      BitcoinTxManager::AddUnapprovedTransactionCallback callback) {
-    btc_tx_manager()->AddUnapprovedTransaction(
-        std::move(chain_id), std::move(tx_data_union), std::move(from),
-        std::move(origin), std::move(swap_info), std::move(callback));
-  }
-
   void ApproveTransaction(
       std::string tx_meta_id,
       BitcoinTxManager::ApproveTransactionCallback callback) {
@@ -132,7 +119,8 @@ TEST_F(BitcoinTxManagerUnitTest, SubmitTransaction) {
       mojom::kBitcoinMainnet, from_account.Clone(), kMockBtcAddress, 5000,
       false, nullptr);
 
-  base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
+  base::MockCallback<BitcoinTxManager::AddUnapprovedBitcoinTransactionCallback>
+      add_callback;
   std::string meta_id;
   EXPECT_CALL(add_callback, Run(_, _, _)).WillOnce(SaveArg<1>(&meta_id));
   btc_tx_manager()->AddUnapprovedBitcoinTransaction(params.Clone(),
@@ -178,7 +166,8 @@ TEST_F(BitcoinTxManagerUnitTest, SubmitTransactionError) {
       mojom::kBitcoinMainnet, from_account.Clone(), kMockBtcAddress, 5000,
       false, nullptr);
 
-  base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
+  base::MockCallback<BitcoinTxManager::AddUnapprovedBitcoinTransactionCallback>
+      add_callback;
   std::string meta_id;
   EXPECT_CALL(add_callback, Run(_, _, _)).WillOnce(SaveArg<1>(&meta_id));
   btc_tx_manager()->AddUnapprovedBitcoinTransaction(params.Clone(),

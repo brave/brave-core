@@ -105,18 +105,6 @@ class CardanoTxManagerUnitTest : public testing::Test {
 
   PrefService* prefs() { return &prefs_; }
 
-  void AddUnapprovedTransaction(
-      std::string chain_id,
-      mojom::TxDataUnionPtr tx_data_union,
-      mojom::AccountIdPtr from,
-      std::optional<url::Origin> origin,
-      mojom::SwapInfoPtr swap_info,
-      CardanoTxManager::AddUnapprovedTransactionCallback callback) {
-    cardano_tx_manager()->AddUnapprovedTransaction(
-        std::move(chain_id), std::move(tx_data_union), std::move(from),
-        std::move(origin), std::move(swap_info), std::move(callback));
-  }
-
   void ApproveTransaction(
       std::string tx_meta_id,
       CardanoTxManager::ApproveTransactionCallback callback) {
@@ -147,7 +135,8 @@ TEST_F(CardanoTxManagerUnitTest, SubmitTransaction) {
       mojom::kCardanoMainnet, from_account.Clone(), kMockCardanoAddress1,
       1000000, false, std::nullopt, nullptr);
 
-  base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
+  base::MockCallback<CardanoTxManager::AddUnapprovedCardanoTransactionCallback>
+      add_callback;
   std::string meta_id;
   EXPECT_CALL(add_callback, Run(_, _, _))
       .WillOnce(
@@ -209,7 +198,8 @@ TEST_F(CardanoTxManagerUnitTest, SubmitTransaction_SendToken) {
       mojom::kCardanoMainnet, from_account.Clone(), kMockCardanoAddress1, 5,
       false, base::HexEncodeLower(GetMockTokenId("brave")), nullptr);
 
-  base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
+  base::MockCallback<CardanoTxManager::AddUnapprovedCardanoTransactionCallback>
+      add_callback;
   std::string meta_id;
   EXPECT_CALL(add_callback, Run(_, _, _))
       .WillOnce(
@@ -265,7 +255,8 @@ TEST_F(CardanoTxManagerUnitTest, SubmitTransactionError) {
       mojom::kCardanoMainnet, from_account.Clone(), kMockCardanoAddress1,
       1000000, false, std::nullopt, nullptr);
 
-  base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
+  base::MockCallback<CardanoTxManager::AddUnapprovedCardanoTransactionCallback>
+      add_callback;
   std::string meta_id;
   EXPECT_CALL(add_callback, Run(_, _, _))
       .WillOnce(

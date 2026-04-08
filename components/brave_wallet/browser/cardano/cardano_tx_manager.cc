@@ -13,7 +13,6 @@
 
 #include "base/functional/bind.h"
 #include "base/notimplemented.h"
-#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_block_tracker.h"
@@ -93,22 +92,12 @@ void CardanoTxManager::OnLatestHeightUpdated(const std::string& chain_id,
   UpdatePendingTransactions(chain_id);
 }
 
-void CardanoTxManager::AddUnapprovedTransaction(
-    const std::string& chain_id,
-    mojom::TxDataUnionPtr tx_data_union,
-    const mojom::AccountIdPtr& from,
-    const std::optional<url::Origin>& origin,
-    mojom::SwapInfoPtr swap_info,
-    AddUnapprovedTransactionCallback callback) {
-  NOTREACHED() << "AddUnapprovedCardanoTransaction must be used";
-}
-
 void CardanoTxManager::ContinueAddUnapprovedTransaction(
     const std::string& chain_id,
     const mojom::AccountIdPtr& from,
     const std::optional<url::Origin>& origin,
     mojom::SwapInfoPtr swap_info,
-    AddUnapprovedTransactionCallback callback,
+    AddUnapprovedCardanoTransactionCallback callback,
     base::expected<CardanoTransaction, std::string> cardano_transaction) {
   if (!cardano_transaction.has_value()) {
     std::move(callback).Run(false, "", cardano_transaction.error());

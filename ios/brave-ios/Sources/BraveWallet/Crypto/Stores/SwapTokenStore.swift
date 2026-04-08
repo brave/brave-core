@@ -986,8 +986,8 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       self.state = .error(Strings.Wallet.unknownError)
       return false
     }
-    let (success, _, _) = await txService.addUnapprovedTransaction(
-      txDataUnion: .init(solanaTxData: solTxData),
+    let (success, _, _) = await txService.addUnapprovedSolanaTransaction(
+      txData: solTxData,
       chainId: network.chainId,
       from: accountInfo.accountId,
       swapInfo: nil

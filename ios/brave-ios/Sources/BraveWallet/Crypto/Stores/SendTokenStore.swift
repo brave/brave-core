@@ -857,9 +857,8 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
             completion(false, errMsg)
             return
           }
-          let txDataUnion = BraveWallet.TxDataUnion(solanaTxData: solanaTxData)
-          self.txService.addUnapprovedTransaction(
-            txDataUnion: txDataUnion,
+          self.txService.addUnapprovedSolanaTransaction(
+            txData: solanaTxData,
             chainId: network.chainId,
             from: fromAccountInfo.accountId,
             swapInfo: nil
@@ -924,9 +923,8 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     errMsg: String,
     completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
   ) {
-    let txDataUnion = BraveWallet.TxDataUnion(solanaTxData: solTxData)
-    self.txService.addUnapprovedTransaction(
-      txDataUnion: txDataUnion,
+    self.txService.addUnapprovedSolanaTransaction(
+      txData: solTxData,
       chainId: network.chainId,
       from: fromAccountInfo.accountId,
       swapInfo: nil
@@ -968,8 +966,8 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         to: sendAddress,
         value: weiString
       )
-      self.txService.addUnapprovedTransaction(
-        txDataUnion: BraveWallet.TxDataUnion(filTxData: filTxData),
+      self.txService.addUnapprovedFilecoinTransaction(
+        txData: filTxData,
         chainId: network.chainId,
         from: fromAccountId,
         swapInfo: nil

@@ -42,8 +42,7 @@ mojom::TransactionInfoPtr GetCannedScanEVMTransactionParams(
       "0x3", "0x09", "0x4a817c800", "0x5208",
       is_deploy_contract ? "0x" : "0x3535353535353535353535353535353535353535",
       "0xde0b6b3a7640000",
-      is_eth_send ? std::vector<uint8_t>() : std::vector<uint8_t>(1, 10u),
-      false, std::nullopt);
+      is_eth_send ? std::vector<uint8_t>() : std::vector<uint8_t>(1, 10u));
 
   auto tx = eip1559
                 ? std::make_unique<Eip1559Transaction>(

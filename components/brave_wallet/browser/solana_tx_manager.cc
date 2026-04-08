@@ -206,17 +206,14 @@ SolanaTxManager::~SolanaTxManager() {
   GetSolanaBlockTracker().RemoveObserver(this);
 }
 
-void SolanaTxManager::AddUnapprovedTransaction(
+void SolanaTxManager::AddUnapprovedSolanaTransaction(
     const std::string& chain_id,
-    mojom::TxDataUnionPtr tx_data_union,
+    mojom::SolanaTxDataPtr solana_tx_data,
     const mojom::AccountIdPtr& from,
     const std::optional<url::Origin>& origin,
     mojom::SwapInfoPtr swap_info,
-    AddUnapprovedTransactionCallback callback) {
-  DCHECK(tx_data_union->is_solana_tx_data());
-
-  auto tx = SolanaTransaction::FromSolanaTxData(
-      std::move(tx_data_union->get_solana_tx_data()));
+    AddUnapprovedSolanaTransactionCallback callback) {
+  auto tx = SolanaTransaction::FromSolanaTxData(std::move(solana_tx_data));
   if (!tx) {
     std::move(callback).Run(
         false, "",
@@ -260,7 +257,7 @@ void SolanaTxManager::AddUnapprovedTransaction(
 }
 
 void SolanaTxManager::ContinueAddUnapprovedTransaction(
-    AddUnapprovedTransactionCallback callback,
+    AddUnapprovedSolanaTransactionCallback callback,
     std::unique_ptr<SolanaTxMeta> meta,
     mojom::SolanaFeeEstimationPtr estimation,
     mojom::SolanaProviderError error,

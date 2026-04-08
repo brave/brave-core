@@ -11,8 +11,6 @@
 #include <vector>
 
 #include "base/files/scoped_temp_dir.h"
-#include "base/memory/scoped_refptr.h"
-#include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
@@ -70,7 +68,7 @@ class WalletNotificationServiceUnitTest : public testing::Test {
         *EthTransaction::FromTxData(mojom::TxData::New(
             mojom::kMainnetChainId, "0x01", "0x4a817c800", "0x5208",
             "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
-            std::vector<uint8_t>(), false, std::nullopt)));
+            std::vector<uint8_t>())));
     EthTxMeta meta(EthAccount(0), std::move(tx));
     meta.set_status(status);
     notification_service_->OnTransactionStatusChanged(meta.ToTransactionInfo());

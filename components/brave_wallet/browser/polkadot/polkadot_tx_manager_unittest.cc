@@ -140,28 +140,6 @@ TEST_F(PolkadotTxManagerUnitTest, GetCoinType) {
   EXPECT_EQ(polkadot_tx_manager_->GetCoinType(), mojom::CoinType::DOT);
 }
 
-TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedTransaction) {
-  auto tx_data_union = mojom::TxDataUnion::NewPolkadotTxData(
-      mojom::PolkadotTxdata::New("", Uint128ToMojom(uint128_t{0}),
-                                 Uint128ToMojom(uint128_t{0}), false));
-
-  auto account_id = mojom::AccountId::New();
-  account_id->coin = mojom::CoinType::DOT;
-  account_id->keyring_id = mojom::KeyringId::kPolkadotMainnet;
-  account_id->kind = mojom::AccountKind::kDerived;
-  account_id->address = "test_address";
-
-  polkadot_tx_manager_->AddUnapprovedTransaction(
-      "polkadot_mainnet", std::move(tx_data_union), account_id, std::nullopt,
-      nullptr,
-      base::BindOnce([](bool success, const std::string& tx_meta_id,
-                        const std::string& error_message) {
-        EXPECT_FALSE(success);
-        EXPECT_TRUE(tx_meta_id.empty());
-        EXPECT_EQ(error_message, "Not implemented");
-      }));
-}
-
 namespace {
 
 // Use the BOB account here:
@@ -489,7 +467,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_NoTransaction) {
 }
 
 TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_RejectedExtrinsic) {
-  // Prove that we can handle the case where the RPC nodes reject the exrinsic
+  // Prove that we can handle the case where the RPC nodes reject the extrinsic
   // outright without returning a transaction hash.
 
   polkadot_mock_rpc_->RejectExtrinsicSubmission();
@@ -544,7 +522,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_RejectedExtrinsic) {
 }
 
 TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_NetworkFailure) {
-  // Prove that we can handle the case where an intermitent network failure
+  // Prove that we can handle the case where an intermittent network failure
   // during extrinsic signing fails.
 
   polkadot_mock_rpc_->AddReqResPairs();

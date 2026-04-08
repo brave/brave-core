@@ -10,9 +10,7 @@
 #include <optional>
 #include <utility>
 
-#include "base/memory/scoped_refptr.h"
 #include "base/test/bind.h"
-#include "base/test/gtest_util.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -29,7 +27,6 @@
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/grit/brave_components_strings.h"
@@ -128,10 +125,10 @@ class SimulationServiceUnitTest : public testing::Test {
   mojom::TransactionInfoPtr GetCannedScanEVMTransactionParams(
       bool eip1559,
       const std::string& chain_id) {
-    auto base_tx_data = mojom::TxData::New(
-        chain_id, "0x09", "0x4a817c800", "0x5208",
-        "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
-        std::vector<uint8_t>(), false, std::nullopt);
+    auto base_tx_data =
+        mojom::TxData::New(chain_id, "0x09", "0x4a817c800", "0x5208",
+                           "0x3535353535353535353535353535353535353535",
+                           "0x0de0b6b3a7640000", std::vector<uint8_t>());
 
     if (eip1559) {
       std::unique_ptr<Eip1559Transaction> tx =

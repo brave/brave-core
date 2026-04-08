@@ -47,11 +47,12 @@ FilTxManager::~FilTxManager() {
   GetFilBlockTracker().RemoveObserver(this);
 }
 
-void FilTxManager::GetEstimatedGas(const std::string& chain_id,
-                                   const mojom::AccountIdPtr& from,
-                                   const std::optional<url::Origin>& origin,
-                                   std::unique_ptr<FilTransaction> tx,
-                                   AddUnapprovedTransactionCallback callback) {
+void FilTxManager::GetEstimatedGas(
+    const std::string& chain_id,
+    const mojom::AccountIdPtr& from,
+    const std::optional<url::Origin>& origin,
+    std::unique_ptr<FilTransaction> tx,
+    AddUnapprovedFilecoinTransactionCallback callback) {
   const std::string gas_premium = tx->gas_premium();
   const std::string gas_fee_cap = tx->gas_fee_cap();
   auto gas_limit = tx->gas_limit();
@@ -72,7 +73,7 @@ void FilTxManager::ContinueAddUnapprovedTransaction(
     const mojom::AccountIdPtr& from,
     const std::optional<url::Origin>& origin,
     std::unique_ptr<FilTransaction> tx,
-    AddUnapprovedTransactionCallback callback,
+    AddUnapprovedFilecoinTransactionCallback callback,
     const std::string& gas_premium,
     const std::string& gas_fee_cap,
     int64_t gas_limit,
@@ -102,17 +103,15 @@ void FilTxManager::ContinueAddUnapprovedTransaction(
   std::move(callback).Run(true, meta.id(), "");
 }
 
-void FilTxManager::AddUnapprovedTransaction(
+void FilTxManager::AddUnapprovedFilecoinTransaction(
     const std::string& chain_id,
-    mojom::TxDataUnionPtr tx_data_union,
+    mojom::FilTxDataPtr fil_tx_data,
     const mojom::AccountIdPtr& from,
     const std::optional<url::Origin>& origin,
     mojom::SwapInfoPtr swap_info,
-    AddUnapprovedTransactionCallback callback) {
-  DCHECK(tx_data_union->is_fil_tx_data());
+    AddUnapprovedFilecoinTransactionCallback callback) {
   const bool is_mainnet = chain_id == mojom::kFilecoinMainnet;
-  auto tx =
-      FilTransaction::FromTxData(is_mainnet, tx_data_union->get_fil_tx_data());
+  auto tx = FilTransaction::FromTxData(is_mainnet, fil_tx_data);
   if (!tx) {
     std::move(callback).Run(
         false, "",

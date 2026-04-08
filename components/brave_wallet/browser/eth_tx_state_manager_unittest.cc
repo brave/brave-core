@@ -67,11 +67,11 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
                     "0x2f015c60e0be116b1f0cd534704db9c92118fb6a"));
 
   // type 0
-  std::unique_ptr<EthTransaction> tx = std::make_unique<EthTransaction>(
-      *EthTransaction::FromTxData(mojom::TxData::New(
-          "0x1", "0x09", "0x4a817c800", "0x5208",
-          "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
-          std::vector<uint8_t>(), false, std::nullopt)));
+  std::unique_ptr<EthTransaction> tx =
+      std::make_unique<EthTransaction>(*EthTransaction::FromTxData(
+          mojom::TxData::New("0x1", "0x09", "0x4a817c800", "0x5208",
+                             "0x3535353535353535353535353535353535353535",
+                             "0x0de0b6b3a7640000", std::vector<uint8_t>())));
   EthTxMeta meta(eth_account_id, std::move(tx));
   meta.set_id(TxMeta::GenerateMetaID());
   meta.set_status(mojom::TransactionStatus::Submitted);
@@ -126,8 +126,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
       std::make_unique<Eip2930Transaction>(*Eip2930Transaction::FromTxData(
           mojom::TxData::New("0x3", "0x09", "0x4a817c800", "0x5208",
                              "0x3535353535353535353535353535353535353535",
-                             "0x0de0b6b3a7640000", std::vector<uint8_t>(),
-                             false, std::nullopt)));
+                             "0x0de0b6b3a7640000", std::vector<uint8_t>())));
   auto* access_list = tx1->access_list();
   Eip2930Transaction::AccessListItem item_a;
   item_a.address.fill(0x0a);
@@ -151,8 +150,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
           *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
               mojom::TxData::New("0x3", "0x09", "0x4a817c800", "0x5208",
                                  "0x3535353535353535353535353535353535353535",
-                                 "0x0de0b6b3a7640000", std::vector<uint8_t>(),
-                                 false, std::nullopt),
+                                 "0x0de0b6b3a7640000", std::vector<uint8_t>()),
               "0x1E", "0x32")));
   EthTxMeta meta2(eth_account_id, std::move(tx2));
   base::DictValue value2 = meta2.ToValue();
@@ -164,11 +162,11 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   EXPECT_EQ(*tx_from_value2, *static_cast<Eip1559Transaction*>(meta2.tx()));
 
   // test sign_only
-  std::unique_ptr<EthTransaction> tx3 = std::make_unique<EthTransaction>(
-      *EthTransaction::FromTxData(mojom::TxData::New(
-          "0x3", "0x09", "0x4a817c800", "0x5208",
-          "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
-          std::vector<uint8_t>(), false, std::nullopt)));
+  std::unique_ptr<EthTransaction> tx3 =
+      std::make_unique<EthTransaction>(*EthTransaction::FromTxData(
+          mojom::TxData::New("0x3", "0x09", "0x4a817c800", "0x5208",
+                             "0x3535353535353535353535353535353535353535",
+                             "0x0de0b6b3a7640000", std::vector<uint8_t>())));
   EthTxMeta meta3(eth_account_id, std::move(tx3));
   meta3.set_sign_only(true);
   base::DictValue meta_value3 = meta3.ToValue();
@@ -188,11 +186,11 @@ TEST_F(EthTxStateManagerUnitTest, MetaChainIdUsedWhenTxChainIdMissing) {
                     mojom::AccountKind::kDerived,
                     "0x2f015c60e0be116b1f0cd534704db9c92118fb6a"));
 
-  std::unique_ptr<EthTransaction> tx = std::make_unique<EthTransaction>(
-      *EthTransaction::FromTxData(mojom::TxData::New(
-          "0x1", "0x09", "0x4a817c800", "0x5208",
-          "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
-          std::vector<uint8_t>(), false, std::nullopt)));
+  std::unique_ptr<EthTransaction> tx =
+      std::make_unique<EthTransaction>(*EthTransaction::FromTxData(
+          mojom::TxData::New("0x1", "0x09", "0x4a817c800", "0x5208",
+                             "0x3535353535353535353535353535353535353535",
+                             "0x0de0b6b3a7640000", std::vector<uint8_t>())));
   EthTxMeta meta(eth_account_id, std::move(tx));
   meta.set_chain_id(mojom::kMainnetChainId);
   base::DictValue meta_value = meta.ToValue();

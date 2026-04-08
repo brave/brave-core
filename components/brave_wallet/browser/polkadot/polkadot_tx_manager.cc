@@ -45,18 +45,6 @@ PolkadotTxManager::~PolkadotTxManager() {
   GetPolkadotBlockTracker().RemoveObserver(this);
 }
 
-void PolkadotTxManager::AddUnapprovedTransaction(
-    const std::string& chain_id,
-    mojom::TxDataUnionPtr tx_data_union,
-    const mojom::AccountIdPtr& from,
-    const std::optional<url::Origin>& origin,
-    mojom::SwapInfoPtr swap_info,
-    AddUnapprovedTransactionCallback callback) {
-  NOTIMPLEMENTED_LOG_ONCE();
-
-  std::move(callback).Run(false, "", "Not implemented");
-}
-
 std::unique_ptr<PolkadotTxMeta> PolkadotTxManager::GetPolkadotTx(
     const std::string& tx_meta_id) {
   auto tx_meta = tx_state_manager().GetTx(tx_meta_id);

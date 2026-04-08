@@ -14,7 +14,6 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/notimplemented.h"
-#include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_block_tracker.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_meta.h"
@@ -137,19 +136,9 @@ void BitcoinTxManager::AddUnapprovedBitcoinTransaction(
                      std::move(callback)));
 }
 
-void BitcoinTxManager::AddUnapprovedTransaction(
-    const std::string& chain_id,
-    mojom::TxDataUnionPtr tx_data_union,
-    const mojom::AccountIdPtr& from,
-    const std::optional<url::Origin>& origin,
-    mojom::SwapInfoPtr swap_info,
-    AddUnapprovedTransactionCallback callback) {
-  NOTREACHED() << "AddUnapprovedBitcoinTransaction must be used";
-}
-
 void BitcoinTxManager::ContinueAddUnapprovedTransaction(
     std::unique_ptr<BitcoinTxMeta> meta,
-    AddUnapprovedTransactionCallback callback,
+    AddUnapprovedBitcoinTransactionCallback callback,
     base::expected<BitcoinTransaction, std::string> bitcoin_transaction) {
   if (!bitcoin_transaction.has_value()) {
     std::move(callback).Run(false, "", bitcoin_transaction.error());

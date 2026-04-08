@@ -15,7 +15,6 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "url/origin.h"
 
 namespace brave_wallet {
 
@@ -42,14 +41,6 @@ class PolkadotTxManager : public TxManager,
   PolkadotTxManager& operator=(const PolkadotTxManager&) = delete;
 
   // TxManager
-  void AddUnapprovedTransaction(
-      const std::string& chain_id,
-      mojom::TxDataUnionPtr tx_data_union,
-      const mojom::AccountIdPtr& from,
-      const std::optional<url::Origin>& origin,
-      mojom::SwapInfoPtr swap_info,
-      AddUnapprovedTransactionCallback callback) override;
-
   void AddUnapprovedPolkadotTransaction(
       mojom::NewPolkadotTransactionParamsPtr params,
       AddUnapprovedPolkadotTransactionCallback callback);
