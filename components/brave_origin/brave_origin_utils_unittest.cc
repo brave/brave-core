@@ -48,6 +48,8 @@ TEST_F(BraveOriginUtilsTest,
   scoped_feature_list_.InitAndEnableFeature(features::kBraveOrigin);
 
   pref_service_.registry()->RegisterDictionaryPref(kBraveOriginPolicies);
+  pref_service_.registry()->RegisterBooleanPref(kOriginPurchaseValidated,
+                                                false);
   auto* manager = BraveOriginPolicyManager::GetInstance();
   manager->Init(BraveOriginPolicyMap(), BraveOriginPolicyMap(), &pref_service_);
 
@@ -59,6 +61,8 @@ TEST_F(BraveOriginUtilsTest, IsBraveOriginPurchased_FeatureEnabled_Purchased) {
   scoped_feature_list_.InitAndEnableFeature(features::kBraveOrigin);
 
   pref_service_.registry()->RegisterDictionaryPref(kBraveOriginPolicies);
+  pref_service_.registry()->RegisterBooleanPref(kOriginPurchaseValidated,
+                                                false);
   auto* manager = BraveOriginPolicyManager::GetInstance();
   manager->Init(BraveOriginPolicyMap(), BraveOriginPolicyMap(), &pref_service_);
   manager->SetPurchased(true);
