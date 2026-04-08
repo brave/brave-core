@@ -18,6 +18,7 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
+import org.chromium.chrome.browser.util.BraveDynamicColors;
 
 /** Base class for the upstream's `TabbedNavigationBarColorController` class. */
 @RequiresApi(Build.VERSION_CODES.O_MR1)
@@ -47,15 +48,18 @@ class BraveTabbedNavigationBarColorControllerBase {
      */
     @ColorInt
     public int getNavigationBarColor(boolean forceDarkNavigationBar) {
-        // Adjust navigation bar color to match the bottom toolbar color when it is visible.
-        if (BottomToolbarConfiguration.isBraveBottomControlsEnabled()
-                && BraveMenuButtonCoordinator.isMenuFromBottom()
-                && mContext != null
-                && mTabModelSelector != null) {
-            if (mTabModelSelector.isIncognitoSelected()) {
-                return mContext.getColor(R.color.toolbar_background_primary_dark);
-            } else {
-                return mContext.getColor(R.color.default_bg_color_baseline);
+        // Adjust navigation bar color to match the bottom toolbar color when it is visible,
+        // unless dynamic colors are enabled (in which case we let upstream handle it).
+        if (!BraveDynamicColors.sDynamicColorsEnabled.isEnabled()) {
+            if (BottomToolbarConfiguration.isBraveBottomControlsEnabled()
+                    && BraveMenuButtonCoordinator.isMenuFromBottom()
+                    && mContext != null
+                    && mTabModelSelector != null) {
+                if (mTabModelSelector.isIncognitoSelected()) {
+                    return mContext.getColor(R.color.toolbar_background_primary_dark);
+                } else {
+                    return mContext.getColor(R.color.default_bg_color_baseline);
+                }
             }
         }
 
