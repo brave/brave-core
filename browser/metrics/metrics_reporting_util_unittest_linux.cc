@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/metrics/metrics_reporting_util.h"
-
 #include "base/environment.h"
+#include "brave/browser/metrics/metrics_reporting_util.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "chrome/common/channel_info.h"
 #include "components/version_info/channel.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -20,15 +20,27 @@ TEST(MetricsUtilTest, DefaultValueTest) {
 
   env->SetVar("CHROME_VERSION_EXTRA", LINUX_CHANNEL_BETA);
   EXPECT_EQ(version_info::Channel::BETA, chrome::GetChannel());
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  EXPECT_FALSE(GetDefaultPrefValueForMetricsReporting());
+#else
   EXPECT_TRUE(GetDefaultPrefValueForMetricsReporting());
+#endif
 
   env->SetVar("CHROME_VERSION_EXTRA", LINUX_CHANNEL_DEV);
   EXPECT_EQ(version_info::Channel::DEV, chrome::GetChannel());
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  EXPECT_FALSE(GetDefaultPrefValueForMetricsReporting());
+#else
   EXPECT_TRUE(GetDefaultPrefValueForMetricsReporting());
+#endif
 
   env->SetVar("CHROME_VERSION_EXTRA", BRAVE_LINUX_CHANNEL_NIGHTLY);
   EXPECT_EQ(version_info::Channel::CANARY, chrome::GetChannel());
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  EXPECT_FALSE(GetDefaultPrefValueForMetricsReporting());
+#else
   EXPECT_TRUE(GetDefaultPrefValueForMetricsReporting());
+#endif
 #else  // OFFICIAL_BUILD
   EXPECT_EQ(version_info::Channel::UNKNOWN, chrome::GetChannel());
   EXPECT_FALSE(GetDefaultPrefValueForMetricsReporting());
