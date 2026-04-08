@@ -173,9 +173,8 @@ base::Time SerpMetrics::GetStartOfStalePeriod() const {
     return {};
   }
 
-  // Return the start of the ping day. The ping associated with `kLastCheckYMD`
-  // reports SERP metrics collected through the end of the prior day and does
-  // not include any data from `kLastCheckYMD` itself.
+  // Searches recorded on `kLastCheckYMD` have not yet been reported, so the
+  // stale period begins at local midnight of that day.
   return last_checked_at.LocalMidnight();
 }
 
