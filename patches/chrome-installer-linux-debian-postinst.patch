@@ -10,3 +10,12 @@ index 0613a69af29b01822254170fb0e42178c45bda12..7483b20bd469ad1f85086c8b182dba93
  
  update-alternatives --install /usr/bin/x-www-browser x-www-browser \
    /usr/bin/@@usr_bin_symlink_name $PRIORITY
+@@ -60,6 +61,8 @@ update-alternatives --install /usr/bin/@@package_orig @@package_orig \
+ 
+ remove_udev_symlinks
+ 
++# Don't add the Chrome repo (brave/brave-browser#54299)
++exit 0
+ ## MAIN ##
+ install_key
+ install_deb822_sources
