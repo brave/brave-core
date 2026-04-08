@@ -2,7 +2,7 @@
 
 # Mana Core
 
-Mana Core is a set of changes, APIs, and scripts used for customizing Chromium to make the Mana browser. Please also check https://github.com/brave/brave-browser which only holds the issues, releases and the wiki.
+Mana Core is a set of changes, APIs, and scripts used for customizing Chromium to make the Mana browser. Please also check https://github.com/brave/brave-browser which only holds the issues, releases and the wiki (for Brave).
 
 ## Overview
 
