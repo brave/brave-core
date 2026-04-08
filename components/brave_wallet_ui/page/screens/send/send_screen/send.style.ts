@@ -24,6 +24,6 @@ export const ToRow = styled(Row)`
   min-height: 26px;
 `
 
-export const ShieldingFundsAlert = styled(Alert)`
+export const AlertMessage = styled(Alert)`
   width: 100%;
 `

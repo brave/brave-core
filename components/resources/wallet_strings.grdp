@@ -1296,6 +1296,7 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_TYPE_NAME_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION" desc="Blockchain function name for Solana SPL token transfer with associated token account creation">SPL Token Transfer With Associated Token Account Creation</message>
   <message name="IDS_BRAVE_WALLET_PAGE_NOT_FOUND_TITLE" desc="Page not found title">We can’t find the page you’re looking for right now.</message>
   <message name="IDS_BRAVE_WALLET_PAGE_NOT_FOUND_DESCRIPTION" desc="Page not found description">It may have moved to a different place or the URL may contain a typo.</message>
+  <message name="IDS_BRAVE_WALLET_PROCESS_TRANSACTION_ERROR_MESSAGE" desc="Warning alert in send screen when a UTXO transaction fails due to insufficient balance for the network fee; $1 is the token symbol">There was an error processing your transaction. In many cases, this means there isn't enough <ph name="SYMBOL">$1<ex>ADA</ex></ph> to cover the network fee. Try a smaller amount instead.</message>
   <message name="IDS_BRAVE_WALLET_GO_TO_PORTFOLIO" desc="Go to portfolio button text">Go to Portfolio</message>
   <message name="IDS_BRAVE_WALLET_ADD_TOKEN" desc="Add token button text">Add token</message>
   <message name="IDS_BRAVE_WALLET_UTILITY_PROCESS_WALLET_UTILS_NAME" desc="The display name (in the system task manager, etc) of the service process used for running wallet utils">Brave Wallet Utility Service</message>
