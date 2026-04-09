@@ -81,20 +81,17 @@ class AssociatedContentManagerUnitTest : public testing::Test {
         std::make_unique<NiceMock<MockEngineConsumer>>());
   }
 
-  void TearDown() override { ai_chat_service_.reset(); }
-
  protected:
   base::test::TaskEnvironment task_environment_;
-  AIChatFeedbackAPI feedback_api_;
-  std::unique_ptr<AIChatService> ai_chat_service_;
-  std::unique_ptr<ModelService> model_service_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  AIChatFeedbackAPI feedback_api_;
+  std::unique_ptr<ModelService> model_service_;
+  std::unique_ptr<AIChatService> ai_chat_service_;
   mojom::ConversationPtr conversation_;
-
   std::unique_ptr<ConversationHandler> conversation_handler_;
 
  private:
