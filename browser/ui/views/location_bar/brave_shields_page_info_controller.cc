@@ -121,7 +121,7 @@ void BraveShieldsPageInfoController::ShowBubbleForRepeatedReloads() {
 
   std::unique_ptr<PageInfoBubbleSpecification> specification =
       PageInfoBubbleSpecification::Builder(
-          &location_icon_view_.get(),
+          views::BubbleAnchor(&*location_icon_view_),
           location_icon_view_->GetWidget()->GetNativeWindow(), web_contents(),
           entry->GetVirtualURL())
           .Build();
