@@ -183,30 +183,21 @@ public class BraveAdaptiveToolbarSettingsFragmentTest {
                             ChromeSharedPreferences.getInstance()
                                     .readInt(ADAPTIVE_TOOLBAR_CUSTOMIZATION_SETTINGS));
 
-                    // Check indexes of Brave buttons and MAX_VALUE
+                    // All toolbar variants (upstream and Brave) are persisted to SharedPreferences
+                    // as integers. Upstream guards against shifts by using explicit numeric
+                    // assignments in the header. Brave values must do the same — if they are
+                    // defined implicitly and upstream inserts a new entry above them, the whole
+                    // range shifts and users lose their saved setting.
+                    Assert.assertEquals(17, AdaptiveToolbarButtonVariant.BOOKMARKS);
+                    Assert.assertEquals(18, AdaptiveToolbarButtonVariant.HISTORY);
+                    Assert.assertEquals(19, AdaptiveToolbarButtonVariant.DOWNLOADS);
+                    Assert.assertEquals(20, AdaptiveToolbarButtonVariant.PLAYLIST);
+                    Assert.assertEquals(21, AdaptiveToolbarButtonVariant.LEO);
+                    Assert.assertEquals(22, AdaptiveToolbarButtonVariant.WALLET);
+                    Assert.assertEquals(23, AdaptiveToolbarButtonVariant.NEWS);
+                    Assert.assertEquals(24, AdaptiveToolbarButtonVariant.GLIC);
                     Assert.assertEquals(
-                            AdaptiveToolbarButtonVariant.BOOKMARKS,
-                            AdaptiveToolbarButtonVariant.GLIC + 1);
-                    Assert.assertEquals(
-                            AdaptiveToolbarButtonVariant.HISTORY,
-                            AdaptiveToolbarButtonVariant.BOOKMARKS + 1);
-                    Assert.assertEquals(
-                            AdaptiveToolbarButtonVariant.DOWNLOADS,
-                            AdaptiveToolbarButtonVariant.HISTORY + 1);
-                    Assert.assertEquals(
-                            AdaptiveToolbarButtonVariant.PLAYLIST,
-                            AdaptiveToolbarButtonVariant.DOWNLOADS + 1);
-                    Assert.assertEquals(
-                            AdaptiveToolbarButtonVariant.LEO,
-                            AdaptiveToolbarButtonVariant.PLAYLIST + 1);
-                    Assert.assertEquals(
-                            AdaptiveToolbarButtonVariant.WALLET,
-                            AdaptiveToolbarButtonVariant.LEO + 1);
-                    Assert.assertEquals(
-                            AdaptiveToolbarButtonVariant.NEWS,
-                            AdaptiveToolbarButtonVariant.WALLET + 1);
-                    Assert.assertEquals(
-                            AdaptiveToolbarButtonVariant.NEWS,
+                            AdaptiveToolbarButtonVariant.GLIC,
                             AdaptiveToolbarButtonVariant.MAX_VALUE);
 
                     // Test Bookmarks button
