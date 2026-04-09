@@ -7,7 +7,28 @@ source_set("focus_mode") {
   sources = [
     "focus_mode_controller.cc",
     "focus_mode_controller.h",
+    "focus_mode_reveal_zone.cc",
+    "focus_mode_reveal_zone.h",
+    "focus_mode_revealed_lock.cc",
+    "focus_mode_revealed_lock.h",
+    "focus_mode_types.h",
   ]
 
   public_deps = [ "//base" ]
+
+  deps = [ "//ui/gfx/animation" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "focus_mode_reveal_zone_unittest.cc" ]
+
+  deps = [
+    ":focus_mode",
+    "//base",
+    "//base/test:test_support",
+    "//testing/gtest",
+    "//ui/gfx/animation",
+  ]
 }

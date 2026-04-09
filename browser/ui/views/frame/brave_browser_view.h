@@ -269,6 +269,8 @@ class BraveBrowserView : public BrowserView,
 
   // FocusModeController::Delegate:
   void OnFocusModeChanged(bool enabled) override;
+  void OnFocusModeRevealFractionChanged(FocusModeController::Edge edge,
+                                        double fraction) override;
 
   void UpdateSideBarHorizontalAlignment();
   views::View* top_container_separator_for_testing() const {

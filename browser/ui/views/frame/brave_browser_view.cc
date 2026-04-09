@@ -443,6 +443,10 @@ void BraveBrowserView::OnFocusModeChanged(bool enabled) {
   GetProfile()->GetPrefs()->SetBoolean(kBraveFocusModeEnabled, enabled);
 }
 
+void BraveBrowserView::OnFocusModeRevealFractionChanged(
+    FocusModeController::Edge edge,
+    double fraction) {}
+
 void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
   DCHECK(sidebar_container_view_);
 
