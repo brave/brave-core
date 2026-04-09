@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 97b17f850c30d38216224bcd0e6d1a47efeaceb5..8847b24521319932c2cd8797b54ea7fbc66f4238 100644
+index 1d25571ff5ef64abacf9cd8c7ce11e2452dff7ba..d5a05931ae1df869b37b4531aaf2a366a0dea845 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2360,6 +2360,7 @@ static_library("browser") {
-   } else {
-     sources += [ "net/net_error_diagnostics_dialog_stub.cc" ]
-   }
+@@ -2005,6 +2005,7 @@ static_library("browser") {
+     "//chrome/browser/page_load_metrics:impl",
+     "//chrome/browser/ui/webauthn:impl",
+   ]
 +  import("//brave/browser/sources.gni") sources += brave_chrome_browser_sources deps += brave_chrome_browser_deps public_deps += brave_chrome_browser_public_deps allow_circular_includes_from += brave_chrome_browser_allow_circular_includes_from
  
-   if (is_android) {
+   if (!is_android) {
      deps += [
-@@ -7753,6 +7754,7 @@ group("browser_public_dependencies") {
+@@ -6382,6 +6383,7 @@ group("browser_public_dependencies") {
        "//components/offline_pages/core/background:background_offliner",
      ]
    }
