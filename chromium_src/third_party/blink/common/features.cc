@@ -19,7 +19,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kAllowURNsInIframes, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBackgroundResourceFetch, base::FEATURE_DISABLED_BY_DEFAULT},
     {kControlledFrame, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kCssSelectorFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFencedFrames, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledge, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledgeBiddingAndAuctionServer, base::FEATURE_DISABLED_BY_DEFAULT},
