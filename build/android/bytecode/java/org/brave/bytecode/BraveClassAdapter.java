@@ -120,6 +120,7 @@ public class BraveClassAdapter {
         chain = new BraveSearchEnginePreferenceClassAdapter(chain);
         chain = new BraveSettingsIntentUtilClassAdapter(chain);
         chain = new BraveSettingsLauncherImplClassAdapter(chain);
+        chain = new BraveSettingsUtilsClassAdapter(chain);
         chain = new BraveShareDelegateImplClassAdapter(chain);
         chain = new BraveSingleCategorySettingsClassAdapter(chain);
         chain = new BraveSingleWebsiteSettingsClassAdapter(chain);
