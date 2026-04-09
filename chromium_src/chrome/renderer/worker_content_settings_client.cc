@@ -14,8 +14,11 @@
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "components/content_settings/renderer/content_settings_agent_impl.h"
+#include "content/public/renderer/render_frame.h"
 #include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "third_party/blink/public/web/web_document.h"
+#include "third_party/blink/public/web/web_local_frame.h"
 
 #define WorkerContentSettingsClient WorkerContentSettingsClient_ChromiumImpl
 
@@ -25,14 +28,23 @@
 
 WorkerContentSettingsClient_BraveImpl::WorkerContentSettingsClient_BraveImpl(
     content::RenderFrame* render_frame)
-    : WorkerContentSettingsClient_ChromiumImpl(render_frame) {}
+    : WorkerContentSettingsClient_ChromiumImpl(render_frame) {
+  blink::WebLocalFrame* frame = render_frame->GetWebFrame();
+  const blink::WebDocument& document = frame->GetDocument();
+  document_origin_ = document.GetSecurityOrigin();
+  site_for_cookies_ = document.SiteForCookies();
+  top_frame_origin_ = document.TopFrameOrigin();
+}
 
 WorkerContentSettingsClient_BraveImpl::
     ~WorkerContentSettingsClient_BraveImpl() = default;
 
 WorkerContentSettingsClient_BraveImpl::WorkerContentSettingsClient_BraveImpl(
     const WorkerContentSettingsClient_BraveImpl& other)
-    : WorkerContentSettingsClient_ChromiumImpl(other) {
+    : WorkerContentSettingsClient_ChromiumImpl(other),
+      document_origin_(other.document_origin_),
+      site_for_cookies_(other.site_for_cookies_),
+      top_frame_origin_(other.top_frame_origin_) {
   if (other.shields_settings_) {
     shields_settings_ = other.shields_settings_->Clone();
   }
