@@ -508,10 +508,6 @@
 -ContextualCueingHelperTest.*
 -ContextualCueingServiceTestZeroStateSuggestions.*
 
-# These tests fail because we disable kTpcdMetadataGrants.
--ChromeBrowsingDataRemoverDelegateTpcdMetadataTest.ResetAllCohort_PreserveSome
--ChromeBrowsingDataRemoverDelegateTpcdMetadataTest.ResetAllCohorts
-
 # These tests fail because we disable
 # ntp_features::kCustomizeChromeWallpaperSearch.
 -WallpaperSearchBackgroundManagerTest.*
