@@ -110,7 +110,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kAllowURNsInIframes,
       &blink::features::kBackgroundResourceFetch,
       &blink::features::kControlledFrame,
-      &blink::features::kCssSelectorFragmentAnchor,
       &blink::features::kFencedFrames,
       &blink::features::kFledge,
       &blink::features::kFledgeBiddingAndAuctionServer,
