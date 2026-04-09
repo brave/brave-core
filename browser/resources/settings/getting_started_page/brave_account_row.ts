@@ -130,7 +130,7 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
     this.browserProxy.authentication.cancelRegistration()
   }
 
-  protected onGetStartedButtonClicked() {
+  protected openBraveAccountDialog() {
     this.browserProxy.rowHandler.openDialog(this.initiatingServiceName)
   }
 
@@ -194,7 +194,14 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
           ]
         )}
         <div class="second-row">
-          <leo-button kind="plain-faint"
+          <leo-button kind="plain"
+                      size="small"
+                      @click=${this.openBraveAccountDialog}>
+            ${this.i18n(
+                  BraveAccountSettingsStrings
+                       .SETTINGS_BRAVE_ACCOUNT_ENTER_REGISTRATION_CODE_BUTTON_LABEL)}
+          </leo-button>
+          <leo-button kind="plain"
                       size="small"
                       class="cancel-registration-button"
                       @click=${this.onCancelRegistrationButtonClicked}>
@@ -214,7 +221,7 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
         html`
           <leo-button kind="filled"
                       size="small"
-                      @click=${this.onGetStartedButtonClicked}>
+                      @click=${this.openBraveAccountDialog}>
             ${this.i18n(
                   BraveAccountSettingsStrings
                        .SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL)}

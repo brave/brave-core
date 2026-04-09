@@ -65,7 +65,6 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
         encryptedVerificationToken,
         serializedRecord,
       )
-      this.fire('close-dialog')
     } catch (error) {
       let details: RegisterError
 

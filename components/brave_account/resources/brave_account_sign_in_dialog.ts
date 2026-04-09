@@ -65,7 +65,6 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
         encryptedLoginToken,
         clientMac,
       )
-      this.fire('close-dialog')
     } catch (error) {
       let details: LoginError
 

@@ -28,6 +28,9 @@
       Don't see the email? Check your spam folder or resend it.
     </message>
   </if>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ENTER_REGISTRATION_CODE_BUTTON_LABEL" translateable="false" desc="Label for the button that opens a dialog to enter the registration code when clicked" formatter_data="webui=BraveAccountSettings android_java">
+    Enter registration code
+  </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL" translateable="false" desc="Label for the button that cancels the pending registration when clicked" formatter_data="webui=BraveAccountSettings android_java">
     Cancel registration
   </message>

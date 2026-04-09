@@ -5,7 +5,13 @@
 
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
+import {
+  BraveAccountBrowserProxy,
+  BraveAccountBrowserProxyImpl,
+} from './brave_account_browser_proxy.js'
+import { Error } from './brave_account_common.js'
 import { getHtml } from './brave_account_otp_dialog.html.js'
+import { RegisterError } from './brave_account.mojom-webui.js'
 
 export class BraveAccountOtpDialogElement extends CrLitElement {
   static get is() {
@@ -23,9 +29,30 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
     }
   }
 
-  protected onConfirmCodeButtonClicked() {}
+  protected async onConfirmCodeButtonClicked() {
+    try {
+      await this.browserProxy.authentication.registerVerify(this.code)
+    } catch (error) {
+      let details: RegisterError
+
+      if (error && typeof error === 'object') {
+        details = error as RegisterError
+      } else {
+        console.error('Unexpected error:', error)
+        details = { netErrorOrHttpStatus: null, errorCode: null }
+      }
+
+      this.fire('error-occurred', {
+        flow: 'register',
+        details,
+      } satisfies Extract<Error, { flow: 'register' }>)
+    }
+  }
 
   protected onResendEmailCodeButtonClicked() {}
+
+  private browserProxy: BraveAccountBrowserProxy =
+    BraveAccountBrowserProxyImpl.getInstance()
 
   protected accessor code = ''
   protected accessor isCodeValid = false

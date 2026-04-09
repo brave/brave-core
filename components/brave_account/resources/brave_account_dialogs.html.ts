@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { html } from '//resources/lit/v3_0/lit.rollup.js'
+import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 
 import './brave_account_create_dialog.js'
 import './brave_account_entry_dialog.js'
@@ -15,76 +15,80 @@ import { BraveAccountDialogsElement } from './brave_account_dialogs.js'
 import { Error } from './brave_account_common.js'
 
 export function getHtml(this: BraveAccountDialogsElement) {
-  switch (this.dialog.type) {
-    case 'ENTRY':
-      return html`
-        <brave-account-entry-dialog
-          @close-dialog=${this.onCloseDialog}
-          @create-button-clicked=${() => (this.dialog = { type: 'CREATE' })}
-          @logo-double-clicked=${() => (this.dialog = { type: 'OTP' })}
-          @sign-in-button-clicked=${() => (this.dialog = { type: 'SIGN_IN' })}
-        >
-        </brave-account-entry-dialog>
-      `
+  return !this.dialog
+    ? nothing
+    : (() => {
+        switch (this.dialog.type) {
+          case 'ENTRY':
+            return html`
+              <brave-account-entry-dialog
+                @create-button-clicked=${() =>
+                  (this.dialog = { type: 'CREATE' })}
+                @sign-in-button-clicked=${() =>
+                  (this.dialog = { type: 'SIGN_IN' })}
+              >
+              </brave-account-entry-dialog>
+            `
 
-    case 'CREATE':
-      return html`
-        <brave-account-create-dialog
-          .isCapsLockOn=${this.isCapsLockOn}
-          @back-button-clicked=${this.onBackButtonClicked}
-          @close-dialog=${this.onCloseDialog}
-          @error-occurred=${(e: CustomEvent<Error>) =>
-            (this.dialog = {
-              type: 'ERROR',
-              error: e.detail,
-            })}
-        >
-        </brave-account-create-dialog>
-      `
+          case 'CREATE':
+            return html`
+              <brave-account-create-dialog
+                .isCapsLockOn=${this.isCapsLockOn}
+                @back-button-clicked=${this.onBackButtonClicked}
+                @error-occurred=${(e: CustomEvent<Error>) =>
+                  (this.dialog = {
+                    type: 'ERROR',
+                    error: e.detail,
+                  })}
+              >
+              </brave-account-create-dialog>
+            `
 
-    case 'SIGN_IN':
-      return html`
-        <brave-account-sign-in-dialog
-          .isCapsLockOn=${this.isCapsLockOn}
-          @back-button-clicked=${this.onBackButtonClicked}
-          @close-dialog=${this.onCloseDialog}
-          @error-occurred=${(e: CustomEvent<Error>) =>
-            (this.dialog = {
-              type: 'ERROR',
-              error: e.detail,
-            })}
-          @forgot-password-button-clicked=${() =>
-            (this.dialog = { type: 'FORGOT_PASSWORD' })}
-        >
-        </brave-account-sign-in-dialog>
-      `
+          case 'SIGN_IN':
+            return html`
+              <brave-account-sign-in-dialog
+                .isCapsLockOn=${this.isCapsLockOn}
+                @back-button-clicked=${this.onBackButtonClicked}
+                @error-occurred=${(e: CustomEvent<Error>) =>
+                  (this.dialog = {
+                    type: 'ERROR',
+                    error: e.detail,
+                  })}
+                @forgot-password-button-clicked=${() =>
+                  (this.dialog = { type: 'FORGOT_PASSWORD' })}
+              >
+              </brave-account-sign-in-dialog>
+            `
 
-    case 'FORGOT_PASSWORD':
-      return html`
-        <brave-account-forgot-password-dialog
-          @back-button-clicked=${this.onBackButtonClicked}
-          @close-dialog=${this.onCloseDialog}
-        >
-        </brave-account-forgot-password-dialog>
-      `
+          case 'FORGOT_PASSWORD':
+            return html`
+              <brave-account-forgot-password-dialog
+                @back-button-clicked=${this.onBackButtonClicked}
+              >
+              </brave-account-forgot-password-dialog>
+            `
 
-    case 'OTP':
-      return html`
-        <brave-account-otp-dialog
-          @back-button-clicked=${this.onBackButtonClicked}
-          @close-dialog=${this.onCloseDialog}
-        >
-        </brave-account-otp-dialog>
-      `
+          case 'OTP':
+            return html`
+              <brave-account-otp-dialog
+                @back-button-clicked=${this.onBackButtonClicked}
+                @error-occurred=${(e: CustomEvent<Error>) =>
+                  (this.dialog = {
+                    type: 'ERROR',
+                    error: e.detail,
+                  })}
+              >
+              </brave-account-otp-dialog>
+            `
 
-    case 'ERROR':
-      return html`
-        <brave-account-error-dialog
-          @back-button-clicked=${this.onBackButtonClicked}
-          @close-dialog=${this.onCloseDialog}
-          .error=${this.dialog.error}
-        >
-        </brave-account-error-dialog>
-      `
-  }
+          case 'ERROR':
+            return html`
+              <brave-account-error-dialog
+                @back-button-clicked=${this.onBackButtonClicked}
+                .error=${this.dialog.error}
+              >
+              </brave-account-error-dialog>
+            `
+        }
+      })()
 }
