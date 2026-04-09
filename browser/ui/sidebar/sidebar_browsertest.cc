@@ -698,10 +698,9 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, DefaultEntryTest) {
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return controller()->IsActiveIndex(bookmark_item_index); }));
 
-  panel_ui->Close(SidePanelEntry::PanelType::kContent);
+  panel_ui->Close(SidePanelType::kContent);
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return !panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent)
-                .has_value();
+    return !panel_ui->GetCurrentEntryId(SidePanelType::kContent).has_value();
   }));
 
   // Remove bookmarks and check it's gone.
@@ -712,12 +711,11 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, DefaultEntryTest) {
   // Open panel w/o entry id.
   panel_ui->Toggle();
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent)
-        .has_value();
+    return panel_ui->GetCurrentEntryId(SidePanelType::kContent).has_value();
   }));
   // Check bookmark panel is not opened again as it's deleted item.
   EXPECT_NE(SidePanelEntryId::kBookmarks,
-            panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
+            panel_ui->GetCurrentEntryId(SidePanelType::kContent));
 }
 
 // Category A:
@@ -967,7 +965,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
     panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
     ASSERT_TRUE(
         base::test::RunUntil([&]() { return GetSidePanel()->GetVisible(); }));
-    panel_ui->Close(SidePanelEntry::PanelType::kContent);
+    panel_ui->Close(SidePanelType::kContent);
     ASSERT_TRUE(
         base::test::RunUntil([&]() { return !GetSidePanel()->GetVisible(); }));
     return;
@@ -1365,11 +1363,10 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, UnManagedPanelEntryTest) {
 
   // Close panel and wait till panel closing animation ends. Panel is hidden
   // when closing completes.
-  panel_ui->Close(SidePanelEntry::PanelType::kContent);
+  panel_ui->Close(SidePanelType::kContent);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return !GetSidePanel()->GetVisible(); }));
-  EXPECT_FALSE(
-      !!panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
+  EXPECT_FALSE(!!panel_ui->GetCurrentEntryId(SidePanelType::kContent));
 
   // Remove bookmarks and check it's gone.
   SidebarServiceFactory::GetForProfile(browser()->profile())
@@ -1381,7 +1378,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, UnManagedPanelEntryTest) {
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return GetSidePanel()->GetVisible(); }));
   EXPECT_EQ(SidePanelEntryId::kBookmarks,
-            panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
+            panel_ui->GetCurrentEntryId(SidePanelType::kContent));
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -1438,27 +1435,26 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2,
 
   // No panel when activated tab at 1 because we don't open any global panel.
   tab_model()->ActivateTabAt(1);
-  EXPECT_FALSE(
-      panel_ui->IsSidePanelShowing(SidePanelEntry::PanelType::kContent));
+  EXPECT_FALSE(panel_ui->IsSidePanelShowing(SidePanelType::kContent));
 
   // Open global panel when active tab index is 1.
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent) ==
+    return panel_ui->GetCurrentEntryId(SidePanelType::kContent) ==
            SidePanelEntryId::kBookmarks;
   }));
 
   // Contextual panel should be set when activate tab at 0.
   tab_model()->ActivateTabAt(0);
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent) ==
+    return panel_ui->GetCurrentEntryId(SidePanelType::kContent) ==
            SidePanelEntryId::kCustomizeChrome;
   }));
 
   // Global panel should be set when activate tab at 1.
   tab_model()->ActivateTabAt(1);
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent) ==
+    return panel_ui->GetCurrentEntryId(SidePanelType::kContent) ==
            SidePanelEntryId::kBookmarks;
   }));
 }
@@ -1594,17 +1590,16 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
   if (GetParam()) {
     // Wait till browser has active panel.
     WaitUntil(base::BindLambdaForTesting([&]() {
-      return !!panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent);
+      return !!panel_ui->GetCurrentEntryId(SidePanelType::kContent);
     }));
 
     EXPECT_EQ(SidePanelEntryId::kChatUI,
-              panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
+              panel_ui->GetCurrentEntryId(SidePanelType::kContent));
   }
   testing::Mock::VerifyAndClearExpectations(&observer_);
 
-  panel_ui->Close(SidePanelEntry::PanelType::kContent);
-  EXPECT_FALSE(
-      panel_ui->IsSidePanelShowing(SidePanelEntry::PanelType::kContent));
+  panel_ui->Close(SidePanelType::kContent);
+  EXPECT_FALSE(panel_ui->IsSidePanelShowing(SidePanelType::kContent));
 
   // Check one shot panel is not opened anymore.
   EXPECT_CALL(observer_, OnActiveIndexChanged(testing::_, testing::_)).Times(0);
@@ -1612,8 +1607,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
       browser(), GURL("https://www.brave.com/"),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
-  EXPECT_FALSE(
-      panel_ui->IsSidePanelShowing(SidePanelEntry::PanelType::kContent));
+  EXPECT_FALSE(panel_ui->IsSidePanelShowing(SidePanelType::kContent));
   testing::Mock::VerifyAndClearExpectations(&observer_);
 
   observation_.Reset();
@@ -1772,7 +1766,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
   tab_model()->ActivateTabAt(1);
   SimulateSidebarItemClickAt(tab_specific_item_index.value());
   EXPECT_EQ(SidePanelEntryId::kChatUI,
-            panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
+            panel_ui->GetCurrentEntryId(SidePanelType::kContent));
   EXPECT_TRUE(GetSidePanel()->GetVisible());
   // Tab Specific panel should be open when Tab 1 is active
   EXPECT_EQ(model()->active_index(), tab_specific_item_index);
@@ -1780,7 +1774,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
   // Global panel should be open when Tab 0 is active
   tab_model()->ActivateTabAt(0);
   EXPECT_EQ(SidePanelEntryId::kBookmarks,
-            panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
+            panel_ui->GetCurrentEntryId(SidePanelType::kContent));
   EXPECT_TRUE(model()->active_index().has_value());
   EXPECT_EQ(model()->active_index(),
             model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
@@ -1788,7 +1782,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
   // Global panel should be open when Tab 2 is active
   tab_model()->ActivateTabAt(2);
   EXPECT_EQ(SidePanelEntryId::kBookmarks,
-            panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
+            panel_ui->GetCurrentEntryId(SidePanelType::kContent));
   EXPECT_TRUE(model()->active_index().has_value());
   EXPECT_EQ(model()->active_index(),
             model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
@@ -1909,7 +1903,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2,
   // Create a kToolbar type SidePanelEntry
   std::unique_ptr<SidePanelEntry> toolbar_entry =
       std::make_unique<SidePanelEntry>(
-          SidePanelEntry::PanelType::kToolbar,
+          SidePanelType::kToolbar,
           SidePanelEntry::Key(SidePanelEntry::Id::kAboutThisSite),
           base::BindRepeating([](SidePanelEntryScope&) {
             return std::make_unique<views::View>();
@@ -2096,7 +2090,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2ActiveItemStateSync) {
   EXPECT_EQ(model()->active_index(), bookmark_item_index);
 
   // Deactivate by closing the panel.
-  panel_ui->Close(SidePanelEntry::PanelType::kContent);
+  panel_ui->Close(SidePanelType::kContent);
   ASSERT_TRUE(base::test::RunUntil(
       [&]() { return !model()->active_index().has_value(); }));
 
@@ -2107,7 +2101,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2ActiveItemStateSync) {
       [&]() { return controller()->IsActiveIndex(bookmark_item_index); }));
 
   // Closing the side panel via the panel UI deactivates the item in the model.
-  panel_ui->Close(SidePanelEntry::PanelType::kContent);
+  panel_ui->Close(SidePanelType::kContent);
   ASSERT_TRUE(base::test::RunUntil(
       [&]() { return !model()->active_index().has_value(); }));
 
@@ -2120,9 +2114,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2ActiveItemStateSync) {
   // Wait for the panel to be fully shown before toggling closed, so that
   // BraveSidePanelCoordinator::Toggle() sees IsSidePanelShowing() == true
   // and takes the close branch instead of the show branch.
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return panel_ui->IsSidePanelShowing(SidePanelEntry::PanelType::kContent);
-  }));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return panel_ui->IsSidePanelShowing(SidePanelType::kContent); }));
 
   // Toggling the panel closed deactivates the item in the model.
   panel_ui->Toggle();

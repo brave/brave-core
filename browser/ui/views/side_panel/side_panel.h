@@ -45,7 +45,7 @@ class SidePanel : public views::View,
 
   // Same signature as chromium SidePanel
   explicit SidePanel(BrowserView* browser_view,
-                     SidePanelEntry::PanelType type,
+                     SidePanelType type,
                      bool has_border);
   SidePanel(const SidePanel&) = delete;
   SidePanel& operator=(const SidePanel&) = delete;
@@ -99,7 +99,7 @@ class SidePanel : public views::View,
   void AddedToWidget() override;
   void Layout(PassKey) override;
 
-  SidePanelEntry::PanelType type() const { return type_; }
+  SidePanelType type() const { return type_; }
 
   // Reflects the current state of the visibility of the side panel.
   enum class State { kClosed, kOpening, kOpen, kClosing };
@@ -152,7 +152,7 @@ class SidePanel : public views::View,
   // contents layout while sidebar show/hide animation is in-progress.
   std::optional<int> fixed_contents_width_;
   raw_ptr<BrowserView> browser_view_ = nullptr;
-  const SidePanelEntry::PanelType type_;
+  const SidePanelType type_;
   IntegerPrefMember side_panel_width_;
   std::unique_ptr<SidePanelResizeWidget> resize_widget_;
   std::unique_ptr<ViewShadow> shadow_;

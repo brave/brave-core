@@ -28,7 +28,7 @@ class BraveSidePanelCoordinator : public SidePanelCoordinator {
   void Show(const UniqueKey& entry,
             std::optional<SidePanelOpenTrigger> open_trigger,
             bool suppress_animations) override;
-  void Close(SidePanelEntry::PanelType panel_type,
+  void Close(SidePanelType panel_type,
              SidePanelEntryHideReason hide_reason,
              bool suppress_animations) override;
   void OnActiveTabChanged(content::WebContents* old_contents,

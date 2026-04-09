@@ -110,7 +110,7 @@ content::WebContents* AIChatSidePanelWebView::AddNewContents(
 
   // If AI Chat is not open in the side panel, don't open the tab.
   if (browser->browser_window_features()->side_panel_ui()->GetCurrentEntryId(
-          SidePanelEntry::PanelType::kContent) != SidePanelEntryId::kChatUI) {
+          SidePanelType::kContent) != SidePanelEntryId::kChatUI) {
     return nullptr;
   }
 
