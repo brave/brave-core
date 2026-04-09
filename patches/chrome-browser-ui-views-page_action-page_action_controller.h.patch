@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_controller.h b/chrome/browser/ui/views/page_action/page_action_controller.h
-index 730b49f9a3e8a9d10c3ba1357a0d8d1172e170d5..b26e564898ec31ece4ae55059cb1296ce6f3af67 100644
+index d75ed9aef5c8245d775ad3bbd88ff38ccc51fe38..5a076341f6c9532ceae38751cbe113ed4895e2bb 100644
 --- a/chrome/browser/ui/views/page_action/page_action_controller.h
 +++ b/chrome/browser/ui/views/page_action/page_action_controller.h
-@@ -144,6 +144,27 @@ class PageActionController {
-  public:
+@@ -162,6 +162,27 @@ class PageActionController {
+ 
    virtual ~PageActionController() = default;
  
 +  // Force the label to be shown regardless of the available space
@@ -30,7 +30,7 @@ index 730b49f9a3e8a9d10c3ba1357a0d8d1172e170d5..b26e564898ec31ece4ae55059cb1296c
    // Requests that the page action be shown or hidden.
    virtual void Show(actions::ActionId action_id) = 0;
    virtual void Hide(actions::ActionId action_id) = 0;
-@@ -286,6 +307,18 @@ class PageActionControllerImpl : public PageActionController,
+@@ -289,6 +310,18 @@ class PageActionControllerImpl : public PageActionController,
    PageActionControllerImpl& operator=(const PageActionControllerImpl&) = delete;
    ~PageActionControllerImpl() override;
  

@@ -1,9 +1,9 @@
 diff --git a/components/content_settings/core/common/content_settings.h b/components/content_settings/core/common/content_settings.h
-index e41e55092dccb3de966911f0a293f175b82b4208..b8d8fb03041c9bf7c0a09394653ba02f17458b53 100644
+index 882dc2e387774b15feb0386a853e61c15e94f89e..a2341c32232875fc474e0799afccce43484474bf 100644
 --- a/components/content_settings/core/common/content_settings.h
 +++ b/components/content_settings/core/common/content_settings.h
-@@ -144,6 +144,7 @@ enum class SettingSource {
-   kTpcdGrant,
+@@ -143,6 +143,7 @@ enum class SettingSource {
+   kInstalledWebApp,
    kOsJavascriptOptimizer,
    kTest,
 +  kRemoteList,

@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/actions/chrome_action_id.h b/chrome/browser/ui/actions/chrome_action_id.h
-index 89d7ca24222243b88c99cdb5b92a14dab7c720f4..45259de71fbbdb1bacfc7d40f3825e85c1f8f356 100644
+index 5eb489a0709e46b0a715fa513c4ab1add6c8b198..8467aa9915a7006b56c0d52a31cb9c782ad1a3c4 100644
 --- a/chrome/browser/ui/actions/chrome_action_id.h
 +++ b/chrome/browser/ui/actions/chrome_action_id.h
-@@ -556,6 +556,7 @@
+@@ -564,6 +564,7 @@
    /* Side Panel items */ \
    E(kActionSidePanelShowAboutThisSite) \
    E(kActionSidePanelShowAssistant) \
 +  E(kActionSidePanelShowPlaylist) E(kActionSidePanelShowChatUI) \
    E(kActionSidePanelShowBookmarks, IDC_SHOW_BOOKMARK_SIDE_PANEL) \
    E(kActionSidePanelShowComments, IDC_SHOW_COMMENTS_SIDE_PANEL) \
-   E(kActionSidePanelShowCustomizeChrome) \
-@@ -603,6 +604,7 @@
+   E(kActionSidePanelShowCustomizeChrome, IDC_SHOW_CUSTOMIZE_CHROME_SIDE_PANEL) \
+@@ -612,6 +613,7 @@
    E(kActionCopyUrl, IDC_COPY_URL) \
    E(kActionTabGroupsMenu, IDC_SAVED_TAB_GROUPS_MENU) \
    E(kActionTabSearch, IDC_TAB_SEARCH) \
