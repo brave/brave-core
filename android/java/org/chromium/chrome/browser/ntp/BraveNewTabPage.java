@@ -10,7 +10,6 @@ import static org.chromium.build.NullUtil.assumeNonNull;
 
 import android.app.Activity;
 
-import org.chromium.base.Callback;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
@@ -22,6 +21,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.feed.BraveFeedSurfaceCoordinator;
 import org.chromium.chrome.browser.feed.FeedActionDelegate;
+import org.chromium.chrome.browser.feed.FeedActionDelegate.PageLoadObserver;
 import org.chromium.chrome.browser.feed.FeedFeatures;
 import org.chromium.chrome.browser.feed.FeedSurfaceCoordinator;
 import org.chromium.chrome.browser.feed.FeedSurfaceProvider;
@@ -200,7 +200,7 @@ public class BraveNewTabPage extends NewTabPage implements NewTabPage.MostVisite
                                     boolean inGroup,
                                     int pageId,
                                     PageLoadObserver pageLoadObserver,
-                                    Callback<VisitResult> onVisitComplete) {
+                                    int surfaceId) {
                                 assert false : "Not supposed to be invoked";
                             }
                         };
