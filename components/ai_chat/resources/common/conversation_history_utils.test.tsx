@@ -6,7 +6,7 @@
 import {
   processUploadedFilesWithLimits,
   getImageFiles,
-  getDocumentFiles,
+  getRawDocumentFiles,
   shouldDisableAttachmentsButton,
   isFullPageScreenshot,
   formatConversationForClipboard,
@@ -23,11 +23,13 @@ describe('processUploadedFilesWithLimits', () => {
     type: Mojom.UploadedFileType,
     filesize: number,
     filename: string = 'test-file',
+    extractedText?: string,
   ): Mojom.UploadedFile => ({
     type,
     filesize: filesize,
     filename,
     data: [1, 2, 3, 4],
+    extractedText,
   })
 
   it('should process files in original order while respecting limits', () => {
@@ -442,6 +444,118 @@ describe('processUploadedFilesWithLimits', () => {
       ]),
     )
   })
+
+  it('should bypass document limits for PDFs with extracted text', () => {
+    // Create more PDFs with extracted text than MAX_DOCUMENTS
+    const files = Array.from({ length: Mojom.MAX_DOCUMENTS + 5 }, (_, i) =>
+      createMockFile(
+        Mojom.UploadedFileType.kPdf,
+        Mojom.MAX_DOCUMENT_SIZE_BYTES + 1024,
+        `doc${i}.pdf`,
+        'extracted text content',
+      ),
+    )
+
+    const result = processUploadedFilesWithLimits(files, [], [])
+
+    // All PDFs should be accepted since they have extracted text
+    expect(result).toHaveLength(Mojom.MAX_DOCUMENTS + 5)
+  })
+
+  it('should bypass size limit for PDFs with extracted text', () => {
+    const files = [
+      createMockFile(
+        Mojom.UploadedFileType.kPdf,
+        Mojom.MAX_DOCUMENT_SIZE_BYTES + 1024,
+        'large-with-text.pdf',
+        'extracted text content',
+      ),
+      createMockFile(
+        Mojom.UploadedFileType.kPdf,
+        Mojom.MAX_DOCUMENT_SIZE_BYTES + 1024,
+        'large-without-text.pdf',
+      ),
+    ]
+
+    const result = processUploadedFilesWithLimits(files, [], [])
+
+    // Only the PDF with extracted text should be accepted
+    expect(result).toHaveLength(1)
+    expect(result[0].filename).toBe('large-with-text.pdf')
+  })
+
+  it('should only count raw PDFs toward document limit', () => {
+    // Fill up document limit with raw PDFs in history
+    const existingDocs = Array.from({ length: Mojom.MAX_DOCUMENTS }, (_, i) =>
+      createMockFile(Mojom.UploadedFileType.kPdf, 1024, `existing-doc${i}.pdf`),
+    )
+    const conversationHistory = [
+      {
+        uuid: 'turn1',
+        text: 'test',
+        uploadedFiles: existingDocs,
+      },
+    ]
+
+    // Try to add both raw and extracted PDFs
+    const newFiles = [
+      createMockFile(Mojom.UploadedFileType.kPdf, 1024, 'new-raw.pdf'),
+      createMockFile(
+        Mojom.UploadedFileType.kPdf,
+        1024,
+        'new-extracted.pdf',
+        'extracted text',
+      ),
+    ]
+
+    const result = processUploadedFilesWithLimits(
+      newFiles,
+      conversationHistory,
+      [],
+    )
+
+    // Raw PDF should be rejected (limit reached),
+    // but extracted PDF should be accepted
+    expect(result).toHaveLength(1)
+    expect(result[0].filename).toBe('new-extracted.pdf')
+  })
+
+  it('should not count extracted PDFs in history toward limit', () => {
+    // Fill history with PDFs that have extracted text
+    const existingDocs = Array.from(
+      { length: Mojom.MAX_DOCUMENTS + 5 },
+      (_, i) =>
+        createMockFile(
+          Mojom.UploadedFileType.kPdf,
+          1024,
+          `existing-doc${i}.pdf`,
+          'extracted text',
+        ),
+    )
+    const conversationHistory = [
+      {
+        uuid: 'turn1',
+        text: 'test',
+        uploadedFiles: existingDocs,
+      },
+    ]
+
+    // Try to add a raw PDF
+    const newFiles = [
+      createMockFile(Mojom.UploadedFileType.kPdf, 1024, 'new-raw.pdf'),
+    ]
+
+    const result = processUploadedFilesWithLimits(
+      newFiles,
+      conversationHistory,
+      [],
+    )
+
+    // Raw PDF should be accepted since extracted PDFs don't
+    // count toward the limit
+    expect(result).toHaveLength(1)
+    expect(result[0].filename).toBe('new-raw.pdf')
+  })
 })
 
 describe('getImageFiles', () => {
@@ -490,52 +604,49 @@ describe('getImageFiles', () => {
   })
 })
 
-describe('getDocumentFiles', () => {
+describe('getRawDocumentFiles', () => {
   const createMockFile = (
     type: Mojom.UploadedFileType,
     filename: string = 'test-file',
+    extractedText?: string,
   ): Mojom.UploadedFile => ({
     type,
     filesize: 1024,
     filename,
     data: [1, 2, 3, 4],
+    extractedText,
   })
 
-  it('should filter out only PDF document files', () => {
+  it('should filter out PDFs with extracted text', () => {
     const files = [
-      createMockFile(Mojom.UploadedFileType.kImage, 'image.jpg'),
-      createMockFile(Mojom.UploadedFileType.kPdf, 'document1.pdf'),
-      createMockFile(Mojom.UploadedFileType.kScreenshot, 'screenshot.png'),
-      createMockFile(Mojom.UploadedFileType.kPdf, 'document2.pdf'),
+      createMockFile(Mojom.UploadedFileType.kPdf, 'raw.pdf'),
+      createMockFile(Mojom.UploadedFileType.kPdf, 'extracted.pdf', 'text'),
+      createMockFile(Mojom.UploadedFileType.kPdf, 'raw2.pdf'),
     ]
 
-    const result = getDocumentFiles(files)
+    const result = getRawDocumentFiles(files)
 
     expect(result).toHaveLength(2)
     expect(result).toEqual([
-      expect.objectContaining({ filename: 'document1.pdf' }),
-      expect.objectContaining({ filename: 'document2.pdf' }),
+      expect.objectContaining({ filename: 'raw.pdf' }),
+      expect.objectContaining({ filename: 'raw2.pdf' }),
     ])
   })
 
-  it('should return undefined when no files are provided', () => {
-    expect(getDocumentFiles(undefined)).toBeUndefined()
+  it('should return empty array for empty input', () => {
+    expect(getRawDocumentFiles([])).toEqual([])
   })
 
-  it('should return empty array when no document files exist', () => {
+  it('should return undefined when no files are provided', () => {
+    expect(getRawDocumentFiles(undefined)).toBeUndefined()
+  })
+
+  it('should return empty array when all PDFs have extracted text', () => {
     const files = [
-      createMockFile(Mojom.UploadedFileType.kImage, 'image.jpg'),
-      createMockFile(Mojom.UploadedFileType.kScreenshot, 'screenshot.png'),
+      createMockFile(Mojom.UploadedFileType.kPdf, 'doc.pdf', 'extracted'),
     ]
 
-    const result = getDocumentFiles(files)
-
-    expect(result).toHaveLength(0)
-  })
-
-  it('should return empty array for empty input', () => {
-    const result = getDocumentFiles([])
-
+    const result = getRawDocumentFiles(files)
     expect(result).toHaveLength(0)
   })
 })
@@ -544,11 +655,13 @@ describe('shouldDisableAttachmentsButton', () => {
   const createMockFile = (
     type: Mojom.UploadedFileType,
     filename: string = 'test-file',
+    extractedText?: string,
   ): Mojom.UploadedFile => ({
     type,
     filesize: 1024,
     filename,
     data: [1, 2, 3, 4],
+    extractedText,
   })
 
   it('should return false when conversation history is empty', () => {
@@ -638,6 +751,49 @@ describe('shouldDisableAttachmentsButton', () => {
         uploadedFiles: Array.from({ length: imagesPerTurn }, (_, i) =>
           createMockFile(Mojom.UploadedFileType.kImage, `image2-${i}.jpg`),
         ),
+      },
+    ]
+
+    expect(shouldDisableAttachmentsButton(conversationHistory)).toBe(true)
+  })
+
+  it('should not count PDFs with extracted text toward document limit', () => {
+    const documents = Array.from({ length: Mojom.MAX_DOCUMENTS + 5 }, (_, i) =>
+      createMockFile(
+        Mojom.UploadedFileType.kPdf,
+        `doc${i}.pdf`,
+        'extracted text',
+      ),
+    )
+
+    const conversationHistory = [
+      {
+        uuid: 'turn1',
+        text: 'test',
+        uploadedFiles: documents,
+      },
+    ]
+
+    expect(shouldDisableAttachmentsButton(conversationHistory)).toBe(false)
+  })
+
+  it('should count only raw PDFs toward document limit', () => {
+    const rawDocs = Array.from({ length: Mojom.MAX_DOCUMENTS }, (_, i) =>
+      createMockFile(Mojom.UploadedFileType.kPdf, `raw-doc${i}.pdf`),
+    )
+    const extractedDocs = Array.from({ length: 10 }, (_, i) =>
+      createMockFile(
+        Mojom.UploadedFileType.kPdf,
+        `extracted-doc${i}.pdf`,
+        'extracted text',
+      ),
+    )
+
+    const conversationHistory = [
+      {
+        uuid: 'turn1',
+        text: 'test',
+        uploadedFiles: [...rawDocs, ...extractedDocs],
       },
     ]
 

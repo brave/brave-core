@@ -151,15 +151,20 @@ export function getImageFiles(
 }
 
 /**
- * Filters uploaded files to only include documents
+ * Filters uploaded files to only include PDFs without extracted text.
+ * These are PDFs that will be sent as raw file bytes and are subject
+ * to MAX_DOCUMENTS and MAX_DOCUMENT_SIZE_BYTES limits.
  *
  * @param files - The array of uploaded files to filter
- * @returns Filtered array containing only document files
+ * @returns Filtered array containing only raw PDFs (without extracted
+ *   text), or undefined if input is undefined
  */
-export function getDocumentFiles(
+export function getRawDocumentFiles(
   files?: readonly Mojom.UploadedFile[],
 ): Mojom.UploadedFile[] | undefined {
-  return files?.filter((file) => file.type === Mojom.UploadedFileType.kPdf)
+  return files?.filter(
+    (file) => file.type === Mojom.UploadedFileType.kPdf && !file.extractedText,
+  )
 }
 
 /**
@@ -176,15 +181,18 @@ export function shouldDisableAttachmentsButton(
     0,
   )
 
-  const totalUploadedDocuments = conversationHistory.reduce(
+  // Only count PDFs without extracted text toward the document limit,
+  // since PDFs with extracted text are sent as text and bypass the
+  // raw file upload limits.
+  const totalUploadedRawDocuments = conversationHistory.reduce(
     (total, turn) =>
-      total + (getDocumentFiles(turn.uploadedFiles)?.length || 0),
+      total + (getRawDocumentFiles(turn.uploadedFiles)?.length || 0),
     0,
   )
 
   return (
     totalUploadedImages >= Mojom.MAX_IMAGES
-    || totalUploadedDocuments >= Mojom.MAX_DOCUMENTS
+    || totalUploadedRawDocuments >= Mojom.MAX_DOCUMENTS
   )
 }
 
@@ -206,20 +214,23 @@ export const processUploadedFilesWithLimits = (
     (total, turn) => total + (getImageFiles(turn.uploadedFiles)?.length || 0),
     0,
   )
-  const totalUploadedDocuments = conversationHistory.reduce(
+  // Only count PDFs without extracted text toward the document limit,
+  // since PDFs with extracted text are sent as text and bypass the
+  // raw file upload limits.
+  const totalUploadedRawDocuments = conversationHistory.reduce(
     (total, turn) =>
-      total + (getDocumentFiles(turn.uploadedFiles)?.length || 0),
+      total + (getRawDocumentFiles(turn.uploadedFiles)?.length || 0),
     0,
   )
 
   // Calculate current pending files by type
   const currentPendingImages = getImageFiles(currentPendingFiles)?.length || 0
-  const currentPendingDocuments =
-    getDocumentFiles(currentPendingFiles)?.length || 0
+  const currentPendingRawDocuments =
+    getRawDocumentFiles(currentPendingFiles)?.length || 0
 
   // Track current counts for each type
   let currentImages = 0
-  let currentDocuments = 0
+  let currentRawDocuments = 0
   // Process files in original order while respecting limits
   const newFiles: Mojom.UploadedFile[] = []
   for (const file of files) {
@@ -235,15 +246,24 @@ export const processUploadedFilesWithLimits = (
         currentImages++
       }
     } else if (isDocument) {
-      const maxNewDocuments =
-        Mojom.MAX_DOCUMENTS - totalUploadedDocuments - currentPendingDocuments
-      const fileSize = Number(file.filesize)
-      if (
-        currentDocuments < maxNewDocuments
-        && fileSize <= Mojom.MAX_DOCUMENT_SIZE_BYTES
-      ) {
+      const hasExtractedText = !!file.extractedText
+      if (hasExtractedText) {
+        // PDFs with extracted text bypass raw file limits
         newFiles.push(file)
-        currentDocuments++
+      } else {
+        // Raw PDFs are subject to count and size limits
+        const maxNewRawDocuments =
+          Mojom.MAX_DOCUMENTS
+          - totalUploadedRawDocuments
+          - currentPendingRawDocuments
+        const fileSize = Number(file.filesize)
+        if (
+          currentRawDocuments < maxNewRawDocuments
+          && fileSize <= Mojom.MAX_DOCUMENT_SIZE_BYTES
+        ) {
+          newFiles.push(file)
+          currentRawDocuments++
+        }
       }
     }
   }
