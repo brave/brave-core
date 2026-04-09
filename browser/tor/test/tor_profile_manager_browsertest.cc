@@ -539,7 +539,8 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CanWebRTC) {
 IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, BuiltInBridgesRequest) {
   // No bridges.
   SwitchToTorProfile(browser()->profile(), GetTorLauncherFactory());
-  EXPECT_EQ(0u, test_url_loader_factory_.total_requests());
+  EXPECT_EQ(0u, test_url_loader_factory_.total_requests())
+      << "No requests expected";
 
   tor::BridgesConfig bridges_config;
   bridges_config.use_bridges = tor::BridgesConfig::Usage::kBuiltIn;

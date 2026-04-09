@@ -151,9 +151,9 @@ class BuiltinBridgesRequest {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* local_state,
       ResultCallback callback) {
-    auto config = tor::BridgesConfig::FromDict(
-                      local_state->GetDict(tor::prefs::kBridgesConfig))
-                      .value_or(tor::BridgesConfig());
+    const auto config = tor::BridgesConfig::FromDict(
+                            local_state->GetDict(tor::prefs::kBridgesConfig))
+                            .value_or(tor::BridgesConfig());
     if (config.use_bridges != tor::BridgesConfig::Usage::kBuiltIn) {
       return nullptr;
     }
