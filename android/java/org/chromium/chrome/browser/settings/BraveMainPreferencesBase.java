@@ -689,8 +689,10 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                     MainSettings.SEARCH_INDEX_DATA_PROVIDER.updateDynamicPreferences(
                             context, indexData, profile);
                     // Remove upstream preferences hidden from the main settings UI.
-                    // "languages" is safe to remove now that LanguageSettings.SEARCH_INDEX_DATA_PROVIDER
-                    // is replaced by BraveLanguageSettings.SEARCH_INDEX_DATA_PROVIDER in the registry.
+                    // "languages" is safe to remove now that
+                    // LanguageSettings.SEARCH_INDEX_DATA_PROVIDER
+                    // is replaced by BraveLanguageSettings.SEARCH_INDEX_DATA_PROVIDER in the
+                    // registry.
                     indexData.removeEntry(getUniqueId("languages"));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_SIGN_IN));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_SEARCH_ENGINE));

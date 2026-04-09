@@ -30,12 +30,10 @@ public class BraveLanguageSettings extends LanguageSettings {
                     org.chromium.chrome.browser.language.R.xml.languages_detailed_preferences) {
 
                 @Override
-                public void updateDynamicPreferences(
-                        Context context, SettingsIndexData indexData) {
+                public void updateDynamicPreferences(Context context, SettingsIndexData indexData) {
                     // Brave removes translation_settings_section entirely.
                     indexData.removeEntryForKey(
-                            BraveLanguageSettings.class.getName(),
-                            TRANSLATION_SETTINGS_SECTION);
+                            BraveLanguageSettings.class.getName(), TRANSLATION_SETTINGS_SECTION);
                 }
             };
 
