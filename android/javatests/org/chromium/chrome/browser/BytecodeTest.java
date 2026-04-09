@@ -32,6 +32,7 @@ import android.widget.RadioGroup;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceScreen;
 import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.filters.SmallTest;
@@ -304,6 +305,9 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/download/MimeUtils"));
+        Assert.assertTrue(classExists("org/chromium/components/browser_ui/settings/SettingsUtils"));
+        Assert.assertTrue(
+                classExists("org/chromium/components/browser_ui/settings/BraveSettingsUtils"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/app/ChromeActivity"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ChromeTabbedActivity"));
         Assert.assertTrue(
@@ -584,6 +588,13 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         boolean.class,
                         String.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/browser_ui/settings/SettingsUtils",
+                        "getVisiblePreferences",
+                        MethodModifier.STATIC,
+                        ArrayList.class,
+                        PreferenceScreen.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/bookmarks/BookmarkUtils",

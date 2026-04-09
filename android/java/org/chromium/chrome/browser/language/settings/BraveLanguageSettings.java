@@ -14,6 +14,7 @@ import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
+import org.chromium.components.browser_ui.widget.containment.ContainmentItem;
 import org.chromium.components.user_prefs.UserPrefs;
 
 public class BraveLanguageSettings extends LanguageSettings {
@@ -37,7 +38,12 @@ public class BraveLanguageSettings extends LanguageSettings {
                     UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                             .getBoolean(BravePref.OFFER_TRANSLATE_ENABLED);
             ChromeSwitchPreference braveTranslateFeaturePreference =
-                    new ChromeSwitchPreference(getContext());
+                    new ChromeSwitchPreference(getContext()) {
+                        @Override
+                        public int getCustomBackgroundStyle() {
+                            return ContainmentItem.BackgroundStyle.CARD;
+                        }
+                    };
             braveTranslateFeaturePreference.setTitle(
                     getResources().getString(R.string.use_brave_translate));
             braveTranslateFeaturePreference.setChecked(isBraveTranslateEnabled);
