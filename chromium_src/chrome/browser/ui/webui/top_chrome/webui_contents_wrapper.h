@@ -41,7 +41,18 @@
   webui_resizes_host_;             \
   std::vector<int32_t> popup_ids_; \
   base::WeakPtr<content::WebContentsDelegate> browser_delegate_
+
+// Add new method to WebUIContentsWrapper::Host to pre-handle keyboard events.
+#define ShowCustomContextMenu                                            \
+  ShowCustomContextMenu_Unused() {}                                      \
+  virtual content::KeyboardEventProcessingResult PreHandleKeyboardEvent( \
+      content::WebContents* source,                                      \
+      const input::NativeWebKeyboardEvent& event);                       \
+  virtual void ShowCustomContextMenu
+
 #include <chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h>  // IWYU pragma: export
+
+#undef ShowCustomContextMenu
 #undef webui_resizes_host_
 #undef PrimaryPageChanged
 #undef HideCustomContextMenu

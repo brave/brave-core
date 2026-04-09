@@ -1368,6 +1368,8 @@ source_set("ui") {
         "views/toolbar/wallet_button_notification_source.h",
         "wallet_bubble_manager_delegate_impl.cc",
         "wallet_bubble_manager_delegate_impl.h",
+        "wallet_webui_contents_wrapper.cc",
+        "wallet_webui_contents_wrapper.h",
         "webui/brave_wallet/ledger/ledger_ui.cc",
         "webui/brave_wallet/ledger/ledger_ui.h",
         "webui/brave_wallet/page_handler/wallet_page_handler.cc",

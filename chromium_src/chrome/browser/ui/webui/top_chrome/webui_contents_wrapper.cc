@@ -67,3 +67,10 @@ content::WebContents* WebUIContentsWrapper::AddNewContents(
   popup_ids_.push_back(tab_id);
   return contents;
 }
+
+content::KeyboardEventProcessingResult
+WebUIContentsWrapper::Host::PreHandleKeyboardEvent(
+    content::WebContents* source,
+    const input::NativeWebKeyboardEvent& event) {
+  return content::KeyboardEventProcessingResult::NOT_HANDLED;
+}
