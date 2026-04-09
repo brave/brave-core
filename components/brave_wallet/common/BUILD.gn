@@ -132,6 +132,24 @@ mojom("mojom") {
     "//url/mojom:url_mojom_gurl",
     "//url/mojom:url_mojom_origin",
   ]
+  cpp_typemaps = [
+    {
+      types = [
+        {
+          mojom = "brave_wallet.mojom.Uint256"
+          cpp = "::brave_wallet::uint256_t"
+        },
+      ]
+
+      traits_headers = [
+        "//brave/components/brave_wallet/common/mojom/uint256_mojom_traits.h",
+      ]
+      traits_sources = [
+        "//brave/components/brave_wallet/common/mojom/uint256_mojom_traits.cc",
+      ]
+      traits_deps = [ "//base" ]
+    },
+  ]
 }
 
 source_set("unit_tests") {

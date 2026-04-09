@@ -13,6 +13,9 @@ import("//build/config/ios/ios_sdk.gni")
 #     the target which generates C++ mojom files
 #   exclude_types
 #     a list of types to exclude from within the mojom file provided
+#   bridge_sources
+#     optional list of ObjC++ .mm files that implement property getters/setters
+#     for cpp-typemapped structs (as ObjC categories on the generated class)
 #
 template("ios_objc_mojom_wrappers") {
   assert(defined(invoker.sources) && invoker.sources != [],
@@ -102,6 +105,7 @@ template("ios_objc_mojom_wrappers") {
     forward_variables_from(invoker,
                            "*",
                            [
+                             "bridge_sources",
                              "mojom_target",
                              "sources",
                            ])
@@ -110,6 +114,9 @@ template("ios_objc_mojom_wrappers") {
     }
     configs += [ ":$no_shadows_config_name" ]
     sources = generate_wrappers_output
+    if (defined(invoker.bridge_sources)) {
+      sources += invoker.bridge_sources
+    }
     public_configs = [ ":$type_headers_target_name" ]
     public_deps += [
       ":$generate_wrappers_target",

@@ -1,7 +1,14 @@
 
-{%- set cpp_namespace = struct|cpp_namespace_from_kind %}
+{%- if struct|is_struct_with_cpp_typemap %}
+{%-   set cpp_type = struct|cpp_mapped_typename %}
+{%- else %}
+{%-   set cpp_namespace = struct|cpp_namespace_from_kind %}
+{%-   set cpp_type = cpp_namespace + "::" + struct.name %}
+{%- endif %}
 @interface {{class_prefix}}{{struct.name}} (Private)
-- (instancetype)initWith{{struct.name}}:(const {{cpp_namespace}}::{{struct.name}} &)obj;
-- (instancetype)initWith{{struct.name}}Ptr:({{cpp_namespace}}::{{struct.name}}Ptr)obj;
-- ({{cpp_namespace}}::{{struct.name}}Ptr)cppObjPtr;
+- (instancetype)initWith{{struct.name}}:(const {{cpp_type}}&)obj;
+{%- if not struct|is_struct_with_cpp_typemap %}
+- (instancetype)initWith{{struct.name}}Ptr:({{cpp_type}}Ptr)obj;
+{%- endif %}
+- ({{cpp_type}}{% if not struct|is_struct_with_cpp_typemap %}Ptr{% endif %})cppObjPtr;
 @end

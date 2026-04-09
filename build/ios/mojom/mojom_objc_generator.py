@@ -16,22 +16,34 @@ from mojom.generate.generator import WriteFile
 from mojom.generate.template_expander import UseJinja
 
 class MojoTypemap():
+    """Base class for mapping mojom types to ObjC and C++ types.
+    Subclasses implement specific type conversions between mojom, ObjC, and C++ representations.
+    """
+
     @staticmethod
     def IsMojoType(_):
+        """Check if the given kind matches this typemap."""
         return False
+
     def __init__(self, kind, is_inside_container=False):
+        """Initialize with a mojom kind and optional container context."""
         self.kind = kind
         self.is_inside_container = is_inside_container
+
     def ObjCWrappedType(self):
-        pass
+        """Return the ObjC type name (e.g., NSString*, NSDate*)."""
+
     def ExpectedCppType(self):
-        pass
+        """Return the C++ type name (e.g., std::string, base::Time)."""
+
     def DefaultObjCValue(self, default):
-        pass
+        """Return the default ObjC value for this kind."""
+
     def ObjCToCpp(self, accessor):
-        pass
+        """Generate conversion code from ObjC to C++."""
+
     def CppToObjC(self, accessor):
-        pass
+        """Generate conversion code from C++ to ObjC."""
 
 class StringMojoTypemap(MojoTypemap):
     @staticmethod
@@ -199,6 +211,61 @@ class ArrayMojoTypemap(MojoTypemap):
             }
             return a;
         }()""" % args
+
+
+class CppTypemappedStructMojoTypemap(MojoTypemap):
+    """Handles mojom structs that have a cpp_typemap (mapped to a custom C++ type).
+
+    The ObjC wrapper stores the mapped C++ type directly as a private ivar.
+    Properties are read-only and backed by StructTraits getters. cppObjPtr
+    returns the stored mapped type directly, making interface method calls
+    type-correct without mojo serialization overhead.
+    """
+
+    @staticmethod
+    def IsMojoType(_):
+        return False  # Not in _mojo_typemaps; instantiated via _MojoTypemapForKind
+
+    def __init__(self,
+                 kind,
+                 is_inside_container,
+                 cpp_typename,
+                 nullable_is_same_type=False):
+        super().__init__(kind, is_inside_container)
+        self.cpp_typename = cpp_typename
+        self.nullable_is_same_type = nullable_is_same_type
+
+    def _needs_optional(self):
+        return (self.is_inside_container and mojom.IsNullableKind(self.kind)
+                and not self.nullable_is_same_type)
+
+    def ObjCWrappedType(self):
+        return "%s%s*" % (ObjCPrefixFromKind(self.kind), self.kind.name)
+
+    def ExpectedCppType(self):
+        if self._needs_optional():
+            return "std::optional<%s>" % self.cpp_typename
+        return self.cpp_typename
+
+    def DefaultObjCValue(self, default):
+        args = (ObjCPrefixFromKind(self.kind), self.kind.name)
+        return "[[%s%s alloc] init]" % args
+
+    def ObjCToCpp(self, accessor):
+        # cppObjPtr now returns the mapped C++ type directly
+        if self._needs_optional():
+            return ("[%s isKindOfClass:[NSNull class]] ? std::nullopt"
+                    " : std::make_optional(%s.cppObjPtr)" %
+                    (accessor, accessor))
+        return "%s.cppObjPtr" % accessor
+
+    def CppToObjC(self, accessor):
+        args = (ObjCPrefixFromKind(self.kind), self.kind.name, self.kind.name,
+                accessor)
+        if self._needs_optional():
+            inner = "[[%s%s alloc] initWith%s:%s.value()]" % args
+            return "%s ? %s : [NSNull null]" % (accessor, inner)
+        return "[[%s%s alloc] initWith%s:%s]" % args
 
 class StructMojoTypemap(MojoTypemap):
     @staticmethod
@@ -461,8 +528,36 @@ class Generator(generator.Generator):
             "under_to_lower_camel": UnderToLowerCamel,
             "interface_remote_sets": self._GetInterfaceRemoteSets,
             "objc_import_module_name": self._GetObjCImportModuleName,
+            "is_struct_with_cpp_typemap": self._IsStructWithCppTypemap,
+            "cpp_mapped_typename": self._GetCppMappedTypename,
+            "cpp_mapped_data_view_type": self._GetCppMappedDataViewType,
         }
         return objc_filters
+
+    def _MojoTypemapForKind(self, kind, is_inside_container=False):
+        """Returns a typemap for the given kind, preferring CppTypemappedStructMojoTypemap
+        for structs that have a cpp_typemap defined in the mojom target's BUILD.gn.
+
+        Only replaces the generic StructMojoTypemap — hardcoded special-case
+        typemaps (TimeDeltaMojoTypemap, URLMojoTypemap, etc.) take precedence
+        so that transitive cpp_typemap entries for mojo_base/url types do not
+        override the already-correct ObjC wrappers for those types."""
+        regular_typemap = MojoTypemapForKind(kind, is_inside_container)
+        if (isinstance(regular_typemap, StructMojoTypemap)
+                and self._IsTypemappedKind(kind)):
+            entry = self.typemap[self._GetFullMojomNameForKind(kind)]
+            return CppTypemappedStructMojoTypemap(
+                kind, is_inside_container, entry["typename"],
+                entry["nullable_is_same_type"])
+        if isinstance(regular_typemap, ArrayMojoTypemap):
+            regular_typemap.wrappedTypemap = self._MojoTypemapForKind(
+                kind.kind, True)
+        elif isinstance(regular_typemap, DictionaryMojoTypemap):
+            regular_typemap.keyTypemap = self._MojoTypemapForKind(
+                kind.key_kind, True)
+            regular_typemap.valueTypemap = self._MojoTypemapForKind(
+                kind.value_kind, True)
+        return regular_typemap
 
     def _GetObjCImportModuleName(self, module):
         return os.path.basename(module.path)
@@ -479,12 +574,19 @@ class Generator(generator.Generator):
 
     def _GetExpectedCppParamType(self, kind):
         should_pass_param_by_value = self._ShouldPassParamByValue(kind)
-        typemap = MojoTypemapForKind(kind, False)
+        typemap = self._MojoTypemapForKind(kind, False)
         typestring = typemap.ExpectedCppType()
-        if (mojom.IsNullableKind(kind) and not (isinstance(
-                typemap,
-            (StructMojoTypemap, UnionMojoTypemap, PendingRemoteMojoTypemap)))):
-            typestring = "std::optional<%s>" % typestring
+        if mojom.IsNullableKind(kind):
+            needs_optional = not isinstance(
+                typemap, (StructMojoTypemap, UnionMojoTypemap,
+                          PendingRemoteMojoTypemap))
+            if isinstance(typemap, CppTypemappedStructMojoTypemap):
+                needs_optional = (
+                    self._IsTypemappedKind(kind)
+                    and not self.typemap[self._GetFullMojomNameForKind(
+                        kind)]["nullable_is_same_type"])
+            if needs_optional:
+                typestring = "std::optional<%s>" % typestring
         if should_pass_param_by_value:
             return typestring
         return "const %s&" % typestring
@@ -502,7 +604,7 @@ class Generator(generator.Generator):
 
     def _ObjcPropertyNeedsDefaultValueAssignment(self, field):
         kind = field.kind
-        typemap = MojoTypemapForKind(kind)
+        typemap = self._MojoTypemapForKind(kind)
         if not field.default and mojom.IsNullableKind(kind):
             return False
         default = typemap.DefaultObjCValue(field.default)
@@ -517,7 +619,7 @@ class Generator(generator.Generator):
 
     def _GetObjCPropertyDefaultValue(self, field):
         kind = field.kind
-        typemap = MojoTypemapForKind(kind)
+        typemap = self._MojoTypemapForKind(kind)
         if not field.default and mojom.IsNullableKind(kind):
             return 'nil'
         default = typemap.DefaultObjCValue(field.default)
@@ -528,7 +630,7 @@ class Generator(generator.Generator):
         return default
 
     def _GetObjCUnionNullReturnValue(self, kind):
-        typemap = MojoTypemapForKind(kind)
+        typemap = self._MojoTypemapForKind(kind)
         if mojom.IsEnumKind(kind):
             return 'static_cast<%s>(0)' % typemap.ObjCWrappedType()
         if mojom.IsObjectKind(kind) or mojom.IsAnyInterfaceKind(kind):
@@ -536,7 +638,7 @@ class Generator(generator.Generator):
         return '0'
 
     def _GetObjCWrapperType(self, kind, objectType=False):
-        typemap = MojoTypemapForKind(kind, objectType)
+        typemap = self._MojoTypemapForKind(kind, objectType)
         return typemap.ObjCWrappedType()
 
     def _GetObjCArgumentModifiers(self, kind, inside_callback=False):
@@ -583,16 +685,17 @@ class Generator(generator.Generator):
         kind = field.kind
         accessor = "%s%s" % (obj + "." if obj else "",
                              self._ObjCPropertyFormatter(field.name))
-        typemap = MojoTypemapForKind(kind)
+        typemap = self._MojoTypemapForKind(kind)
         if typemap is None:
             raise Exception("No typemap found for the given kind: %s" % kind)
         cpp_assign = typemap.ObjCToCpp(accessor)
         if mojom.IsNullableKind(kind):
             if ((self._IsTypemappedKind(kind)
                  and not self.typemap[self._GetFullMojomNameForKind(
-                     kind)]["nullable_is_same_type"])
-                    or not isinstance(typemap,
-                                      (StructMojoTypemap, UnionMojoTypemap))):
+                     kind)]["nullable_is_same_type"]) or not isinstance(
+                         typemap,
+                         (StructMojoTypemap, CppTypemappedStructMojoTypemap,
+                          UnionMojoTypemap))):
                 cpp_assign = "%s ? std::make_optional(%s) : std::nullopt" % (
                     accessor, cpp_assign)
             else:
@@ -603,20 +706,49 @@ class Generator(generator.Generator):
         kind = field.kind
         accessor = "%s%s%s" % (prefix if prefix else "",
                                field.name, (suffix if suffix else ""))
-        typemap = MojoTypemapForKind(kind)
+        typemap = self._MojoTypemapForKind(kind)
         if mojom.IsNullableKind(kind):
             if ((self._IsTypemappedKind(kind)
                  and not self.typemap[self._GetFullMojomNameForKind(
-                     kind)]["nullable_is_same_type"])
-                    or not isinstance(typemap,
-                                      (StructMojoTypemap, UnionMojoTypemap,
-                                       PendingRemoteMojoTypemap))):
+                     kind)]["nullable_is_same_type"]) or not isinstance(
+                         typemap,
+                         (StructMojoTypemap, CppTypemappedStructMojoTypemap,
+                          UnionMojoTypemap, PendingRemoteMojoTypemap))):
                 value_accessor = "%s.value()" % accessor
             else:
                 value_accessor = accessor
             return "%s ? %s : nil" % (
                 accessor, typemap.CppToObjC(value_accessor))
         return typemap.CppToObjC(accessor)
+
+    def _IsStructWithCppTypemap(self, struct):
+        """Returns True if this mojom struct has a custom cpp_typemap AND no
+        more-specific hardcoded typemap handles it."""
+        if not mojom.IsStructKind(struct) or not self._IsTypemappedKind(
+                struct):
+            return False
+        return isinstance(MojoTypemapForKind(struct), StructMojoTypemap)
+
+    def _GetCppMappedTypename(self, struct):
+        """Returns the C++ typename for a cpp-typemapped struct."""
+        return self.typemap[self._GetFullMojomNameForKind(struct)]["typename"]
+
+    def _GetCppMappedDataViewType(self, struct):
+        """Returns the mojo DataView type for a cpp-typemapped struct."""
+        cpp_namespace = CppNamespaceFromKind(struct)
+        return "%s::%sDataView" % (cpp_namespace, struct.name)
+
+    def _GetTypemappedTraitsHeaders(self):
+        """Collects traits headers from all cpp-typemapped structs in this module.
+        In the type_mappings JSON, GN's traits_headers → public_headers."""
+        headers = []
+        for struct in self.module.structs:
+            if self._IsTypemappedKind(struct):
+                full_name = self._GetFullMojomNameForKind(struct)
+                entry = self.typemap[full_name]
+                headers.extend(entry.get("public_headers", []))
+                headers.extend(entry.get("traits_headers", []))
+        return headers
 
     def _GetFullMojomNameForKind(self, kind):
         return kind.qualified_name
@@ -721,7 +853,8 @@ class Generator(generator.Generator):
             "structs": all_structs,
             "unions": all_unions,
             "constants": self.module.constants,
-            "generate_namespace": self.generateNamespace
+            "generate_namespace": self.generateNamespace,
+            "typemapped_traits_headers": self._GetTypemappedTraitsHeaders(),
         }
 
     @UseJinja("module.h.tmpl")

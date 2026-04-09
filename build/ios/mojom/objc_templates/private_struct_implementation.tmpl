@@ -43,6 +43,7 @@
   return copy;
 }
 @end
+{%- if not struct|is_struct_with_cpp_typemap %}
 
 @implementation {{objc_class_name}} (Private)
 - (instancetype)initWith{{struct.name}}:(const {{cpp_namespace}}::{{struct.name}} &)obj
@@ -67,3 +68,4 @@
   return obj;
 }
 @end
+{%- endif %}
