@@ -34,7 +34,7 @@ export class BraveAccountDialogsElement extends CrLitElement {
 
   static override get properties() {
     return {
-      dialog: { type: Object },
+      dialog: { type: String },
       isCapsLockOn: { type: Boolean, state: true },
     }
   }
