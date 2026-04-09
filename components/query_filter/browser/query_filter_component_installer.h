@@ -29,9 +29,9 @@ inline constexpr char kQueryFilterComponentName[] = "Query Filter";
 // Component id and public key must match the signing key used in
 // brave-core-crx-packager for this component. 
 // TODO(brave/brave-browser/issues/10188): Add the actual component id and public key.
-inline constexpr char kQueryFilterComponentId[] = "";
-inline constexpr char kQueryFilterComponentBase64PublicKey[] = "";
-inline constexpr uint8_t kQueryFilterComponentPublicKey[] = {};
+inline constexpr char kQueryFilterComponentId[] = "dummy-component-id";
+inline constexpr char kQueryFilterComponentBase64PublicKey[] = "dummy-public-key";
+inline constexpr uint8_t kQueryFilterComponentPublicKey[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 class QueryFilterComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {

@@ -89,8 +89,6 @@ bool QueryFilterComponentInstallerPolicy::IsBraveComponent() const {
   return true;
 }
 
-}  // namespace
-
 void RegisterQueryFilterComponent(
     component_updater::ComponentUpdateService* cus) {
   if (!base::FeatureList::IsEnabled(features::kQueryFilterComponent) || !cus) {

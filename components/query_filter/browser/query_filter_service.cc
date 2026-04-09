@@ -24,6 +24,11 @@ constexpr char kQueryFilterJsonFile[] = "query-filter.json";
 
 }  // namespace
 
+QueryFilterRule::QueryFilterRule() = default;
+QueryFilterRule::~QueryFilterRule() = default;
+QueryFilterRule::QueryFilterRule(const QueryFilterRule& other) = default;
+QueryFilterRule& QueryFilterRule::operator=(const QueryFilterRule& other) = default;
+
 // static
 QueryFilterService* QueryFilterService::GetInstance() {
   if (!base::FeatureList::IsEnabled(features::kQueryFilterComponent)) {

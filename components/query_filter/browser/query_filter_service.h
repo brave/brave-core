@@ -17,6 +17,12 @@ namespace query_filter {
 
 // One rule from query-filter.json: URL patterns and query params to strip.
 struct QueryFilterRule {
+  QueryFilterRule();
+  ~QueryFilterRule();
+
+  QueryFilterRule(const QueryFilterRule&);
+  QueryFilterRule& operator=(const QueryFilterRule&);
+
   std::vector<std::string> include;
   std::vector<std::string> exclude;
   std::vector<std::string> params;
