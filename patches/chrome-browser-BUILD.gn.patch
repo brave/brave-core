@@ -8,6 +8,7 @@ index 08482133f0eb7c8410d94efd56498de0334ef1c3..a5e82aff770a03289dde6f80826b6708
    }
 +  import("//brave/browser/sources.gni") sources += brave_chrome_browser_sources deps += brave_chrome_browser_deps public_deps += brave_chrome_browser_public_deps allow_circular_includes_from += brave_chrome_browser_allow_circular_includes_from
  
++  import("//brave/browser/sources.gni") sources += brave_chrome_browser_sources deps += brave_chrome_browser_deps public_deps += brave_chrome_browser_public_deps allow_circular_includes_from += brave_chrome_browser_allow_circular_includes_from
    if (is_android) {
      deps += [
 @@ -7752,6 +7753,7 @@ group("browser_public_dependencies") {

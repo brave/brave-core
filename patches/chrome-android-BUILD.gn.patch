@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 0d659a9b28dfffe047878f99d3c6f01afc342c9c..028af9b04edc8a6d2f8b8f2dd4bcb859fb3d2b08 100644
+index 025cbfa8c3dfa99c110ccb179ba7b87c689a51c7..cc0ed254cc8e235b4ce89680e5f3db9777e9cb3c 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -164,6 +164,7 @@ if (_is_default_toolchain) {
@@ -65,8 +65,8 @@ index 0d659a9b28dfffe047878f99d3c6f01afc342c9c..028af9b04edc8a6d2f8b8f2dd4bcb859
 +    sources += brave_java_base_module_sources deps += brave_java_base_module_deps
  
      # More deps for DFMs.
-     if (dfmify_dev_ui) {
-@@ -3153,6 +3161,7 @@ if (_is_default_toolchain) {
+     if (enable_chrome_android_internal) {
+@@ -3105,6 +3113,7 @@ if (_is_default_toolchain) {
        "java/src/org/chromium/chrome/browser/webapps/WebApkUpdateManager.java",
        "java/src/org/chromium/chrome/browser/webapps/WebappRegistry.java",
      ]

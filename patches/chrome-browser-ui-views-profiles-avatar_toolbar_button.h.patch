@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-index ea090b62bd84b029c2e21895272963cc8c8e5656..d5b15390c34147742a2bcafaab8ccb26df2ef862 100644
+index c6a81d99c6ee18bcc212253f8a77df1afba14d6d..0867f71f4ba667ea3a529efaf8ceabbfa0ec6124 100644
 --- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
 +++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-@@ -174,6 +174,7 @@ class AvatarToolbarButton : public ToolbarButton,
- #endif  // BUILDFLAG(ENABLE_DICE_SUPPORT)
+@@ -94,6 +94,7 @@ class AvatarToolbarButton : public ToolbarButton,
+   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
  
   private:
 +  BRAVE_AVATAR_BUTTON_H

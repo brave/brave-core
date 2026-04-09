@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 4bbb6e5b0690f690a291654f42fe381fd97a62b6..b3679fa76bf7b8242b9995c2f423bce661411c76 100644
+index 0936b2d9b53a874731bb97bc7b5e4396cc3624ee..7f2ec274ca77f6d44e44cfb6a7de292105f0623d 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -825,6 +825,7 @@ static_library("ui") {
-     # translate's impl no longer includes headers from //chrome/browser/ui.
-     "//chrome/browser/translate:impl",
+@@ -843,6 +843,7 @@ static_library("ui") {
+     # browser_window_interface.h, and tab_strip_model.h.
+     "//chrome/browser/vr:impl",
    ]
 +  import("//brave/browser/sources.gni") import("//brave/components/brave_wallet/sources.gni") public_deps += [ "//brave/browser/ui" ] deps += brave_chrome_browser_ui_allow_circular_includes_from + brave_chrome_browser_ui_deps allow_circular_includes_from += brave_chrome_browser_ui_allow_circular_includes_from
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -3496,7 +3497,10 @@ static_library("ui") {
+@@ -3417,7 +3418,10 @@ static_library("ui") {
          "//chrome/updater/app/server/win:updater_legacy_idl",
        ]
      } else {
@@ -22,7 +22,7 @@ index 4bbb6e5b0690f690a291654f42fe381fd97a62b6..b3679fa76bf7b8242b9995c2f423bce6
      }
    }
  
-@@ -5619,6 +5623,7 @@ group("ui_public_dependencies") {
+@@ -5538,6 +5542,7 @@ group("ui_public_dependencies") {
      "//components/enterprise/buildflags",
      "//components/paint_preview/buildflags",
      "//components/safe_browsing:buildflags",
@@ -30,7 +30,7 @@ index 4bbb6e5b0690f690a291654f42fe381fd97a62b6..b3679fa76bf7b8242b9995c2f423bce6
      "//components/segmentation_platform/public",
      "//components/sync",
      "//components/sync_user_events",
-@@ -5631,6 +5636,7 @@ group("ui_public_dependencies") {
+@@ -5550,6 +5555,7 @@ group("ui_public_dependencies") {
    if (enable_extensions_core) {
      public_deps += [ "//extensions/browser" ]
    }
@@ -38,7 +38,7 @@ index 4bbb6e5b0690f690a291654f42fe381fd97a62b6..b3679fa76bf7b8242b9995c2f423bce6
    if (!is_android) {
      public_deps += [
        "//build:branding_buildflags",
-@@ -5769,6 +5775,7 @@ source_set("browser_navigator_params_headers") {
+@@ -5688,6 +5694,7 @@ source_set("browser_navigator_params_headers") {
      "//url",
    ]
    deps = []
