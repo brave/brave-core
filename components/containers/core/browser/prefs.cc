@@ -8,6 +8,7 @@
 #include <string_view>
 #include <utility>
 
+#include "base/logging.h"
 #include "brave/components/containers/core/browser/pref_names.h"
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
