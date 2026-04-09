@@ -164,6 +164,12 @@ void OpenUrlInContainer(BrowserWindowInterface* browser_window,
                         const GURL& url,
                         const containers::mojom::ContainerPtr& container);
 
+// Creates a new tab with the given tab's URL without a container.
+void OpenTabUrlWithoutContainer(BrowserWindowInterface* browser_window,
+                                const tabs::TabHandle& tab);
+void OpenUrlWithoutContainer(BrowserWindowInterface* browser_window,
+                             const GURL& url);
+
 // Opens the container menu on the page action view if the active tab is in a
 // container.
 void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser);

@@ -33,6 +33,12 @@ void ContainersTabMenuModelDelegate::OnContainerSelected(
   }
 }
 
+void ContainersTabMenuModelDelegate::OnNoContainerSelected() {
+  for (auto tab_handle : selected_tabs_) {
+    brave::OpenTabUrlWithoutContainer(browser_window_.get(), tab_handle);
+  }
+}
+
 base::flat_set<std::string>
 ContainersTabMenuModelDelegate::GetCurrentContainerIds() {
   base::flat_set<std::string> container_ids;

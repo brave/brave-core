@@ -731,6 +731,14 @@ void RenderViewContextMenu::OnContainerSelected(
   brave::OpenUrlInContainer(GetBrowser(), params_.link_url, container);
 }
 
+void RenderViewContextMenu::OnNoContainerSelected() {
+  if (!params_.link_url.is_valid()) {
+    return;
+  }
+
+  brave::OpenUrlWithoutContainer(GetBrowser(), params_.link_url);
+}
+
 base::flat_set<std::string> RenderViewContextMenu::GetCurrentContainerIds() {
   CHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
 
