@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import '//resources/brave/leo.bundle.js'
+// import '//resources/brave/leo.bundle.js'
 
 import {CrLitElement, css} from '//resources/lit/v3_0/lit.rollup.js';
 import {type CSSResultGroup} from '//resources/lit/v3_0/lit.rollup.js';
