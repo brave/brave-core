@@ -1760,8 +1760,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             return;
         }
 
+        Tab tab = getToolbarDataProvider().getTab();
+        Profile profile = tab != null ? Profile.fromWebContents(tab.getWebContents()) : null;
         mRewardsLayout.setVisibility(
                 width >= DeviceFormFactor.getNonMultiDisplayMinimumTabletWidthPx(getContext())
+                                && !BraveRewardsPolicy.isDisabledByPolicy(profile)
                         ? View.VISIBLE
                         : View.GONE);
         // Update the shields layout background to match the rewards layout visibility.
