@@ -280,8 +280,8 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
   SidePanelEntryKey ai_chat_key =
       SidePanelEntry::Key(SidePanelEntryId::kChatUI);
   auto* side_panel_coordinator = SidePanelCoordinator::From(browser());
-  EXPECT_FALSE(side_panel_coordinator->IsSidePanelShowing(
-      SidePanelEntry::PanelType::kContent));
+  EXPECT_FALSE(
+      side_panel_coordinator->IsSidePanelShowing(SidePanelType::kContent));
   button->ButtonPressed();
   EXPECT_TRUE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
 

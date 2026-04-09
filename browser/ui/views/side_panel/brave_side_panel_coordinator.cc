@@ -65,9 +65,9 @@ void BraveSidePanelCoordinator::OnActiveTabChanged(
 }
 
 void BraveSidePanelCoordinator::Toggle() {
-  if (IsSidePanelShowing(SidePanelEntry::PanelType::kContent) &&
+  if (IsSidePanelShowing(SidePanelType::kContent) &&
       !browser_view_->contents_height_side_panel()->IsClosing()) {
-    Close(SidePanelEntry::PanelType::kContent);
+    Close(SidePanelType::kContent);
   } else if (const auto key = GetLastActiveEntryKey()) {
     SidePanelUIBase::Show(*key, SidePanelOpenTrigger::kToolbarButton);
   }
@@ -87,8 +87,7 @@ void BraveSidePanelCoordinator::OnViewVisibilityChanged(
   // See the comment of SidePanelCoordinator::OnViewVisibilityChanged()
   // about this condition.
   bool update_items_state = true;
-  if (observed_view->GetVisible() ||
-      !current_key(SidePanelEntry::PanelType::kContent)) {
+  if (observed_view->GetVisible() || !current_key(SidePanelType::kContent)) {
     update_items_state = false;
   }
 
