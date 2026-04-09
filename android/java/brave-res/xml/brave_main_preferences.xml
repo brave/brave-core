@@ -36,13 +36,18 @@
         android:summary="@string/settings_brave_account_verification_row_description_2"
         app:summary_text_color="@color/brave_theme_subtitle_text"/>
     <org.chromium.chrome.browser.settings.BraveAccountPreference
-        android:key="cancel_registration"
+        android:key="enter_registration_code"
         android:order="5"
+        android:title="@string/settings_brave_account_enter_registration_code_button_label"
+        app:title_text_color="@color/brave_link"/>
+    <org.chromium.chrome.browser.settings.BraveAccountPreference
+        android:key="cancel_registration"
+        android:order="6"
         android:title="@string/settings_brave_account_cancel_registration_button_label"
         app:title_text_color="@color/systemfeedback_error_text"/>
     <org.chromium.chrome.browser.settings.BraveAccountPreference
         android:key="get_started"
-        android:order="6"
+        android:order="7"
         android:icon="@drawable/ic_brave"
         android:title="@string/settings_brave_account_get_started_button_label"/>
     <PreferenceCategory
