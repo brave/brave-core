@@ -8,8 +8,12 @@ package org.chromium.components.browser_ui.settings;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
+
 import java.util.ArrayList;
 
+@NullMarked
 public class BraveSettingsUtils {
     /**
      * Replacement for {@link SettingsUtils#getVisiblePreferences} that sorts only top-level items
@@ -22,7 +26,8 @@ public class BraveSettingsUtils {
      * children with {@code DEFAULT_ORDER = Integer.MAX_VALUE} would be pushed to the end of the
      * flat list, misaligning containment styles with the adapter's actual view positions.
      */
-    public static ArrayList<Preference> getVisiblePreferences(PreferenceScreen preferenceScreen) {
+    public static ArrayList<Preference> getVisiblePreferences(
+            @Nullable PreferenceScreen preferenceScreen) {
         ArrayList<Preference> visiblePreferences = new ArrayList<>();
         if (preferenceScreen == null) return visiblePreferences;
 
