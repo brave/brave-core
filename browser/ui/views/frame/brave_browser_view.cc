@@ -140,19 +140,6 @@ bool IsUnsupportedCommand(int command_id, Browser* browser) {
          !IsCommandAllowedInAppMode(command_id, browser->is_type_popup());
 }
 
-// A control separator that is displayed when the sidebar is displayed adjacent
-// to the tabstrip in vertical tabs mode.
-class SidebarSeparator : public views::View {
-  METADATA_HEADER(SidebarSeparator, views::View)
- public:
-  SidebarSeparator() {
-    SetBackground(
-        views::CreateSolidBackground(kColorBraveVerticalTabSeparator));
-  }
-};
-BEGIN_METADATA(SidebarSeparator)
-END_METADATA
-
 // A view that paints a background under the content area of the browser view so
 // that the web content area can be displayed with rounded corners and a shadow.
 class ContentsBackground : public views::View {
@@ -378,11 +365,6 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
               browser_, SidePanelCoordinator::From(browser_),
               std::move(original_side_panel)));
       contents_height_side_panel_ = sidebar_container_view_->side_panel();
-    }
-
-    if (IsBraveWebViewRoundedCornersEnabled()) {
-      sidebar_separator_view_ =
-          AddChildView(std::make_unique<SidebarSeparator>());
     }
 
 #if defined(USE_AURA)
@@ -760,7 +742,6 @@ void BraveBrowserView::AddedToWidget() {
 
   GetBrowserViewLayout()->set_contents_background(contents_background_view_);
   GetBrowserViewLayout()->set_sidebar_container(sidebar_container_view_);
-  GetBrowserViewLayout()->set_sidebar_separator(sidebar_separator_view_);
 
   UpdateWebViewRoundedCorners();
 
