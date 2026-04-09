@@ -41,7 +41,7 @@ class BraveActionsContainerTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override { Init(browser()); }
 
-  void Init(Browser* browser) {
+  void Init(BrowserWindowInterface* browser) {
     BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
     ASSERT_NE(browser_view, nullptr);
     BraveLocationBarView* brave_location_bar_view =
@@ -49,7 +49,7 @@ class BraveActionsContainerTest : public InProcessBrowserTest {
     ASSERT_NE(brave_location_bar_view, nullptr);
     brave_actions_ = brave_location_bar_view->brave_actions_;
     ASSERT_NE(brave_actions_, nullptr);
-    prefs_ = browser->profile()->GetPrefs();
+    prefs_ = browser->GetProfile()->GetPrefs();
   }
 
   void CheckBraveRewardsActionShown(bool expected_shown) {
@@ -103,7 +103,7 @@ IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest,
       TemplateURLServiceFactory::GetForProfile(guest));
 
   // Access the browser with the Guest profile and re-init test for it.
-  Browser* browser = chrome::FindAnyBrowser(guest, true);
+  BrowserWindowInterface* browser = ui_test_utils::FindAnyBrowser(guest, true);
   EXPECT_TRUE(browser);
   Init(browser);
   CheckBraveRewardsActionShown(false);
