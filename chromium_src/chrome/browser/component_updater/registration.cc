@@ -14,6 +14,7 @@
 
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_user_agent/browser/brave_user_agent_component_installer.h"
+#include "brave/components/query_filter/browser/query_filter_component_installer.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/local_ai/core/local_models_updater.h"
 #include "brave/components/p3a/component_installer.h"
@@ -54,6 +55,7 @@ void RegisterComponentsForUpdate() {
 #endif  // BUILDFLAG(IS_ANDROID)
   brave_user_agent::RegisterBraveUserAgentComponent(cus);
   local_ai::ManageLocalModelsComponentRegistration(cus);
+  query_filter::RegisterQueryFilterComponent(cus);
 }
 
 }  // namespace component_updater
