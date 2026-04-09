@@ -122,7 +122,7 @@ class PrivacySandboxSettingsTest : public testing::Test {
     cookie_settings_ = new content_settings::CookieSettings(
         host_content_settings_map_.get(), &prefs_, false,
         content_settings::CookieSettings::NoFedCmSharingPermissionsCallback(),
-        /*tpcd_metadata_manager=*/nullptr, "chrome-extension");
+        "chrome-extension");
   }
   ~PrivacySandboxSettingsTest() override {
     host_content_settings_map()->ShutdownOnUIThread();
