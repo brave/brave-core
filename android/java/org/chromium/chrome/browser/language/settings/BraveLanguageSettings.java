@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.language.settings;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.preference.PreferenceCategory;
@@ -14,12 +15,29 @@ import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.browser_ui.widget.containment.ContainmentItem;
 import org.chromium.components.user_prefs.UserPrefs;
 
 public class BraveLanguageSettings extends LanguageSettings {
     static final String TRANSLATION_SETTINGS_SECTION = "translation_settings_section";
     static final String APP_LANGUAGE_SECTION = "app_language_section";
+
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(
+                    BraveLanguageSettings.class.getName(),
+                    org.chromium.chrome.browser.language.R.xml.languages_detailed_preferences) {
+
+                @Override
+                public void updateDynamicPreferences(
+                        Context context, SettingsIndexData indexData) {
+                    // Brave removes translation_settings_section entirely.
+                    indexData.removeEntryForKey(
+                            BraveLanguageSettings.class.getName(),
+                            TRANSLATION_SETTINGS_SECTION);
+                }
+            };
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
