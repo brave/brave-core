@@ -180,7 +180,14 @@ void SidePanel::OnThemeChanged() {
 }
 
 gfx::Size SidePanel::GetMinimumSize() const {
-  // Use default width as a minimum width.
+  // The toolbar-height side panel is an upstream feature laid out by
+  // CalculateHorizontalLayout, which checks whether the panel's minimum width
+  // fits in the remaining space beside the toolbar. Use the upstream-compatible
+  // minimum for toolbar panels so that clamping logic works correctly.
+  // The content-height panel (inside the sidebar) keeps kDefaultSidePanelWidth.
+  if (type_ == SidePanelEntry::PanelType::kToolbar) {
+    return gfx::Size(SidePanelEntry::kSidePanelDefaultContentWidth, 0);
+  }
   return gfx::Size(sidebar::kDefaultSidePanelWidth, 0);
 }
 
