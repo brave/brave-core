@@ -169,28 +169,31 @@ void TabSearchPageHandler::OnGetFocusTabs(
   }
 
   // Move all tabs from normal browser window to a new window.
-  std::vector<TabDetails> tab_details_before_move;
+  std::vector<tabs::TabInterface*> tabs_before_move;
   for (const auto& tab_id_str : *result) {
     int tab_id = 0;
     if (!base::StringToInt(tab_id_str, &tab_id)) {
       continue;
     }
 
-    std::optional<TabDetails> details = GetTabDetails(tab_id);
-    if (!details) {
+    tabs::TabInterface* tab = GetTabInterface(tab_id);
+    if (!tab) {
       continue;
     }
 
-    // Store all details before move to preserve the index.
-    tab_details_before_move.push_back(*details);
+    // Store all tab before move to preserve the index.
+    tabs_before_move.push_back(tab);
     // Store old window ID (session ID), tab ID, and tab strip index for
     // undo.
-    original_tabs_info_by_window_[details->tab->GetBrowserWindowInterface()
+    int tab_index =
+        tab->GetBrowserWindowInterface()->GetTabStripModel()->GetIndexOfTab(
+            tab);
+    original_tabs_info_by_window_[tab->GetBrowserWindowInterface()
                                       ->GetSessionID()]
-        .push_back({tab_id, details->GetIndex()});
+        .push_back({tab_id, tab_index});
   }
 
-  if (tab_details_before_move.empty()) {
+  if (tabs_before_move.empty()) {
     std::move(callback).Run(false, nullptr);
     return;
   }
@@ -198,12 +201,16 @@ void TabSearchPageHandler::OnGetFocusTabs(
   auto create_params = Browser::CreateParams(Profile::FromWebUI(web_ui_), true);
   create_params.user_title = topic;
   Browser* new_browser = Browser::Create(create_params);
-  for (const auto& details : tab_details_before_move) {
-    std::unique_ptr<tabs::TabModel> tab =
-        details.tab->GetBrowserWindowInterface()
+  for (auto* tab : tabs_before_move) {
+    int tab_index =
+        tab->GetBrowserWindowInterface()->GetTabStripModel()->GetIndexOfTab(
+            tab);
+
+    std::unique_ptr<tabs::TabModel> detached_tab_model =
+        tab->GetBrowserWindowInterface()
             ->GetTabStripModel()
-            ->DetachTabAtForInsertion(details.GetIndex());
-    new_browser->tab_strip_model()->AppendTab(std::move(tab),
+            ->DetachTabAtForInsertion(tab_index);
+    new_browser->tab_strip_model()->AppendTab(std::move(detached_tab_model),
                                               false /* foreground */);
   }
   new_browser->window()->Show();
@@ -240,17 +247,21 @@ void TabSearchPageHandler::UndoFocusTabs(UndoFocusTabsCallback callback) {
 
     for (const auto& tab_info : iter.second) {
       // Find the moved tab.
-      std::optional<TabDetails> details = GetTabDetails(tab_info.tab_id);
-      if (!details) {
+      tabs::TabInterface* tab = GetTabInterface(tab_info.tab_id);
+      if (!tab) {
         continue;
       }
 
-      std::unique_ptr<tabs::TabModel> tab =
-          details->tab->GetBrowserWindowInterface()
+      int tab_index =
+          tab->GetBrowserWindowInterface()->GetTabStripModel()->GetIndexOfTab(
+              tab);
+
+      std::unique_ptr<tabs::TabModel> detached_tab_model =
+          tab->GetBrowserWindowInterface()
               ->GetTabStripModel()
-              ->DetachTabAtForInsertion(details->GetIndex());
+              ->DetachTabAtForInsertion(tab_index);
       target->tab_strip_model()->InsertDetachedTabAt(
-          tab_info.index, std::move(tab), AddTabTypes::ADD_NONE);
+          tab_info.index, std::move(detached_tab_model), AddTabTypes::ADD_NONE);
     }
   }
 
