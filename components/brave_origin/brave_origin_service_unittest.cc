@@ -53,6 +53,8 @@ class BraveOriginServiceTest : public testing::Test {
 
     // Register the BraveOrigin policies dictionary pref in local_state
     local_state_.registry()->RegisterDictionaryPref(kBraveOriginPolicies);
+    local_state_.registry()->RegisterBooleanPref(kOriginPurchaseValidated,
+                                                 false);
     local_state_.registry()->RegisterBooleanPref(kOriginPoliciesWereEnforced,
                                                  false);
 
@@ -566,6 +568,8 @@ class BraveOriginServiceWithSkusTest : public testing::Test {
     feature_list_.InitAndEnableFeature(features::kBraveOrigin);
 
     local_state_.registry()->RegisterDictionaryPref(kBraveOriginPolicies);
+    local_state_.registry()->RegisterBooleanPref(kOriginPurchaseValidated,
+                                                 false);
     local_state_.registry()->RegisterBooleanPref(kOriginPoliciesWereEnforced,
                                                  false);
 
@@ -749,6 +753,8 @@ class BraveOriginServiceDisabledTest : public testing::Test {
 
     // Register the BraveOrigin policies dictionary pref in local_state
     local_state_.registry()->RegisterDictionaryPref(kBraveOriginPolicies);
+    local_state_.registry()->RegisterBooleanPref(kOriginPurchaseValidated,
+                                                 false);
     local_state_.registry()->RegisterBooleanPref(kOriginPoliciesWereEnforced,
                                                  false);
 
