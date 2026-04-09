@@ -29,13 +29,6 @@
 #include "ui/views/border.h"
 #include "ui/views/view_class_properties.h"
 
-namespace {
-
-constexpr int kSidebarSeparatorWidth = 1;
-constexpr int kSidebarSeparatorMargin = 4;
-
-}  // namespace
-
 BraveBrowserViewTabbedLayoutImpl::BraveBrowserViewTabbedLayoutImpl(
     std::unique_ptr<BrowserViewLayoutDelegate> delegate,
     Browser* browser,
@@ -174,11 +167,6 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
   if (auto* sidebar_layout = layout.GetLayoutFor(views().sidebar_container)) {
     sidebar_layout->bounds =
         views().browser_view->GetMirroredRect(sidebar_layout->bounds);
-  }
-  if (auto* sidebar_separator_layout =
-          layout.GetLayoutFor(views().sidebar_separator)) {
-    sidebar_separator_layout->bounds =
-        views().browser_view->GetMirroredRect(sidebar_separator_layout->bounds);
   }
   if (auto* vertical_tab_host_layout =
           layout.GetLayoutFor(views().vertical_tab_strip_host)) {
@@ -363,23 +351,9 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
   }
 #endif
 
-  gfx::Rect separator_bounds;
   const bool on_left = views().sidebar_container->sidebar_on_left();
   if (on_left) {
     contents_bounds.set_x(contents_bounds.x() + sidebar_bounds.width());
-
-    // When vertical tabs and the sidebar are adjacent, add a separator between
-    // them.
-    if (delegate().ShouldShowVerticalTabs() && views().sidebar_separator &&
-        !sidebar_bounds.IsEmpty()) {
-      separator_bounds = sidebar_bounds;
-      separator_bounds.set_width(kSidebarSeparatorWidth);
-      separator_bounds.Inset(gfx::Insets::VH(kSidebarSeparatorMargin, 0));
-
-      // Move sidebar and content over to make room for the separator.
-      sidebar_bounds.set_x(sidebar_bounds.x() + kSidebarSeparatorWidth);
-      contents_bounds.Inset(gfx::Insets::TLBR(0, kSidebarSeparatorWidth, 0, 0));
-    }
   } else {
     sidebar_bounds.set_x(contents_bounds.right());
   }
@@ -391,22 +365,6 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
   // upstream's logic.
   CHECK(views().sidebar_container);
   layout.AddChild(views().sidebar_container, sidebar_bounds);
-
-  // Sidebar separator bounds/visibility via ProposedLayout. The separator could
-  // be null when IsBraveWebViewRoundedCornersEnabled() is false.
-  if (views().sidebar_separator) {
-    // This is Brave specific view so the layout shouldn't be populated by
-    // upstream's logic.
-    CHECK(!layout.GetLayoutFor(views().sidebar_separator));
-
-    if (separator_bounds.IsEmpty()) {
-      layout.AddChild(views().sidebar_separator, gfx::Rect(),
-                      /*visibility=*/false);
-    } else {
-      layout.AddChild(views().sidebar_separator, separator_bounds,
-                      /*visibility=*/false);
-    }
-  }
 }
 
 void BraveBrowserViewTabbedLayoutImpl::InsetContentsContainerBounds(
