@@ -3,166 +3,223 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveUI
 import DesignSystem
-import OSLog
-import SnapKit
+import SwiftUI
 import UIKit
 
-class QuickViewToolbar: UIView {
+enum QuickViewSecondaryTopButton {
+  case playlist(action: () -> Void)
+  case readerMode(action: () -> Void)
+  case translate(action: () -> Void)
+}
 
-  // MARK: - Properties
-
-  /// Closure called when close button is tapped
+@Observable
+class QuickViewToolbarModel {
+  var url: URL
+  var secondaryTopButton: QuickViewSecondaryTopButton?
+  var isBackDisabled: Bool = true
+  var onShield: (() -> Void)?
+  var onRefresh: (() -> Void)?
   var onClose: (() -> Void)?
+  var onBack: (() -> Void)?
+  var onShare: (() -> Void)?
+  var onOpenTab: (() -> Void)?
 
-  // MARK: - First Row Components
+  init(
+    url: URL,
+    secondaryTopButton: QuickViewSecondaryTopButton? = nil,
+    onClose: (() -> Void)? = nil
+  ) {
+    self.url = url
+    self.secondaryTopButton = secondaryTopButton
+    self.onClose = onClose
+  }
+}
 
-  private let shieldsButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.setImage(UIImage(braveSystemNamed: "leo.shield.done"), for: .normal)
-    button.tintColor = UIColor(braveSystemName: .iconDefault)
-    return button
-  }()
+struct QuickViewToolbarView: View {
+  var viewModel: QuickViewToolbarModel
 
-  private let urlLabel: UILabel = {
-    let label = UILabel()
-    label.font = .preferredFont(forTextStyle: .subheadline)
-    label.textAlignment = .center
-    label.textColor = UIColor(braveSystemName: .textTertiary)
-    label.text = "Loading..."
-    return label
-  }()
-
-  private let refreshButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.setImage(UIImage(braveSystemNamed: "leo.browser.refresh"), for: .normal)
-    button.tintColor = UIColor(braveSystemName: .iconDefault)
-    return button
-  }()
-
-  // MARK: - Second Row Components
-
-  private let backButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.setImage(UIImage(braveSystemNamed: "leo.browser.back"), for: .normal)
-    button.tintColor = UIColor(braveSystemName: .iconDefault)
-    return button
-  }()
-
-  private let shareButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.setImage(UIImage(braveSystemNamed: "leo.share.macos"), for: .normal)
-    button.tintColor = UIColor(braveSystemName: .iconDefault)
-    return button
-  }()
-
-  private let openInTabButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.setImage(UIImage(braveSystemNamed: "leo.add.tab"), for: .normal)
-    button.tintColor = UIColor(braveSystemName: .iconDefault)
-    return button
-  }()
-
-  private let closeButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.setImage(UIImage(braveSystemNamed: "leo.close"), for: .normal)
-    button.tintColor = UIColor(braveSystemName: .schemesOnPrimary)
-    button.backgroundColor = UIColor(braveSystemName: .buttonBackground)
-    button.layer.cornerRadius = 22
-    button.clipsToBounds = true
-    return button
-  }()
-
-  // MARK: - Initialization
-
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    setupUI()
-    setupActions()
+  var body: some View {
+    toolbarContent
+      .padding(8)
   }
 
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  // MARK: - Setup
-
-  private func setupUI() {
-    backgroundColor = .braveGroupedBackground
-
-    // First row: [shields] [URL] [refresh]
-    let leftButtonsStack = UIStackView(arrangedSubviews: [shieldsButton])
-    leftButtonsStack.axis = .horizontal
-    leftButtonsStack.spacing = 12
-    leftButtonsStack.distribution = .fillEqually
-
-    let firstRowStack = UIStackView(arrangedSubviews: [
-      leftButtonsStack,
-      urlLabel,
-      refreshButton,
-    ])
-    firstRowStack.axis = .horizontal
-    firstRowStack.spacing = 12
-    firstRowStack.alignment = .center
-
-    // Second row: [back] [share] [open-in-tab] [close X]
-    let centerButtonsStack = UIStackView(arrangedSubviews: [
-      backButton,
-      shareButton,
-      openInTabButton,
-    ])
-    centerButtonsStack.axis = .horizontal
-    centerButtonsStack.spacing = 24
-    centerButtonsStack.distribution = .fillEqually
-
-    let secondRowStack = UIStackView(arrangedSubviews: [
-      centerButtonsStack,
-      closeButton,
-    ])
-    secondRowStack.axis = .horizontal
-    secondRowStack.spacing = 16
-    secondRowStack.alignment = .center
-
-    // Main vertical stack
-    let mainStack = UIStackView(arrangedSubviews: [firstRowStack, secondRowStack])
-    mainStack.axis = .vertical
-    mainStack.spacing = 12
-
-    addSubview(mainStack)
-
-    // Constraints
-    mainStack.snp.makeConstraints {
-      $0.top.equalTo(self).offset(12)
-      $0.leading.trailing.equalTo(self).inset(16)
-      $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-12)
+  private var toolbarContent: some View {
+    VStack(spacing: 0) {
+      topRow
+        .padding(.horizontal, 16)
+        .padding(.top, 8)
+      bottomRow
+        .padding(.leading, 16)
+        .padding(.top, 16)
     }
-
-    // Set button sizes
-    shieldsButton.snp.makeConstraints { $0.width.height.equalTo(22) }
-    refreshButton.snp.makeConstraints { $0.width.height.equalTo(22) }
-    backButton.snp.makeConstraints { $0.width.height.equalTo(26) }
-    shareButton.snp.makeConstraints { $0.width.height.equalTo(26) }
-    openInTabButton.snp.makeConstraints { $0.width.height.equalTo(26) }
-    closeButton.snp.makeConstraints { $0.width.height.equalTo(44) }
-
-    urlLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
-    urlLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+    .padding(8)
+    .background(
+      Group {
+        if #available(iOS 26.0, *), LiquidGlassMode.isEnabled {
+          Color.clear
+            .glassEffect(in: RoundedRectangle(cornerRadius: 30, style: .continuous))
+        } else {
+          RoundedRectangle(cornerRadius: 30, style: .continuous)
+            .fill(.ultraThinMaterial)
+        }
+      }
+    )
   }
 
-  private func setupActions() {
-    closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
+  private var shieldButton: some View {
+    Button {
+      viewModel.onShield?()
+    } label: {
+      Image(braveSystemName: "leo.shield.done")
+        .font(.headline)
+        .foregroundColor(Color(braveSystemName: .iconDefault))
+    }
   }
 
-  // MARK: - Actions
-
-  @objc private func closeButtonTapped() {
-    onClose?()
+  @ViewBuilder
+  private var secondaryTopButtonView: some View {
+    if let button = viewModel.secondaryTopButton {
+      switch button {
+      case .playlist(let action):
+        Button(action: action) {
+          Image(braveSystemName: "leo.product.playlist-add")
+            .font(.headline)
+            .foregroundColor(Color(braveSystemName: .iconDefault))
+        }
+      case .readerMode(let action):
+        Button(action: action) {
+          Image(braveSystemName: "leo.product.speedreader")
+            .font(.headline)
+            .foregroundColor(Color(braveSystemName: .iconDefault))
+        }
+      case .translate(let action):
+        Button(action: action) {
+          Image(braveSystemName: "leo.product.translate")
+            .font(.headline)
+            .foregroundColor(Color(braveSystemName: .iconDefault))
+        }
+      }
+    }
   }
 
-  // MARK: - Public Methods
+  private var refreshButton: some View {
+    Button {
+      viewModel.onRefresh?()
+    } label: {
+      Image(braveSystemName: "leo.browser.refresh")
+        .font(.headline)
+        .foregroundColor(Color(braveSystemName: .iconDefault))
+    }
+  }
 
-  /// Updates the displayed URL
-  func updateURL(_ url: URL) {
-    urlLabel.text = url.host ?? url.absoluteString
+  private var addressView: some View {
+    HStack(spacing: 0) {
+      Spacer()
+      Text(viewModel.url.host ?? viewModel.url.absoluteString)
+        .font(.subheadline)
+        .foregroundColor(Color(braveSystemName: .textTertiary))
+        .lineLimit(1)
+        .frame(maxWidth: .infinity)
+      Spacer()
+    }
+  }
+
+  private var topLeftButtonsView: some View {
+    HStack(spacing: 8) {
+      shieldButton
+      secondaryTopButtonView
+    }
+  }
+
+  private var topRow: some View {
+    HStack(spacing: 8) {
+      topLeftButtonsView
+
+      addressView
+
+      refreshButton
+    }
+  }
+
+  private var backButton: some View {
+    Button {
+      viewModel.onBack?()
+    } label: {
+      Image(braveSystemName: "leo.browser.back")
+        .font(.title2)
+        .foregroundColor(
+          viewModel.isBackDisabled
+            ? Color(braveSystemName: .iconDisabled) : Color(braveSystemName: .iconDefault)
+        )
+    }
+    .disabled(viewModel.isBackDisabled)
+  }
+
+  private var shareButton: some View {
+    Button {
+      viewModel.onShare?()
+    } label: {
+      Image(braveSystemName: "leo.share.macos")
+        .font(.title2)
+        .foregroundColor(Color(braveSystemName: .iconDefault))
+    }
+  }
+
+  private var openInTabButton: some View {
+    Button {
+      viewModel.onOpenTab?()
+    } label: {
+      Image(braveSystemName: "leo.add.tab")
+        .font(.title2)
+        .foregroundColor(Color(braveSystemName: .iconDefault))
+    }
+  }
+
+  private var closeButton: some View {
+    Button {
+      viewModel.onClose?()
+    } label: {
+      if #available(iOS 26.0, *), LiquidGlassMode.isEnabled {
+        Image(braveSystemName: "leo.close")
+          .font(.title2)
+          .padding(14)
+          .foregroundColor(Color(braveSystemName: .schemesOnPrimary))
+          .glassEffect(
+            .regular
+              .tint(Color(braveSystemName: .buttonBackground))
+              .interactive(),
+            in: .circle
+          )
+      } else {
+        Image(braveSystemName: "leo.close")
+          .font(.title2)
+          .padding(14)
+          .foregroundColor(Color(braveSystemName: .schemesOnPrimary))
+          .background(
+            Color(braveSystemName: .buttonBackground),
+            in: .circle
+          )
+      }
+    }
+  }
+
+  private var bottomRow: some View {
+    HStack(spacing: 0) {
+      backButton
+
+      Spacer()
+
+      shareButton
+
+      Spacer()
+
+      openInTabButton
+
+      Spacer()
+
+      closeButton
+    }
   }
 }
