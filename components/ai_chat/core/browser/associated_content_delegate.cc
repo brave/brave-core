@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/logging.h"
 #include "base/uuid.h"
 
 namespace ai_chat {
