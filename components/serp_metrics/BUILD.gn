@@ -9,6 +9,7 @@ static_library("serp_metrics") {
     "serp_classifier_utils.h",
     "serp_metric_type.h",
     "serp_metrics.h",
+    "serp_metrics_day_boundary_calculator.h",
     "serp_metrics_service.h",
   ]
 
@@ -16,6 +17,7 @@ static_library("serp_metrics") {
     "serp_classifier.cc",
     "serp_classifier_utils.cc",
     "serp_metrics.cc",
+    "serp_metrics_day_boundary_calculator.cc",
     "serp_metrics_service.cc",
   ]
 
@@ -78,6 +80,7 @@ source_set("unit_tests") {
   # avoid spurious failures caused by a non-overridable libc timezone.
   if (!is_win) {
     sources += [
+      "serp_metrics_day_boundary_calculator_unittest.cc",
       "serp_metrics_dst_end_unittest.cc",
       "serp_metrics_dst_start_unittest.cc",
       "serp_metrics_unittest.cc",

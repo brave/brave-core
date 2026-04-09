@@ -8,6 +8,7 @@
 
 #include <string>
 #include <string_view>
+#include <tuple>
 
 #include "base/strings/string_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -27,13 +28,20 @@ inline const auto kTimezones = ::testing::Values(
     "Pacific/Auckland"    // UTC+12/+13, DST, Southern Hemisphere.
 );
 
+using TimezoneAndReportInUTCParam =
+    std::tuple</*timezone=*/std::string_view, /*report_in_utc=*/bool>;
+
 // Sanitizes an IANA time zone identifier into a valid GTest parameter name.
 // GTest requires names matching [a-zA-Z0-9_], so '/' is removed; '_' is also
 // removed for cleaner output (e.g. "America/New_York" to "AmericaNewYork").
-inline std::string TimezoneTestParamName(
-    const ::testing::TestParamInfo<std::string_view>& test_param) {
+// Also appends `_ReportInUTC` or `_ReportInLocalTime` based on the
+// `report_in_utc` parameter.
+inline std::string TimezoneAndReportInUtcParamName(
+    const ::testing::TestParamInfo<TimezoneAndReportInUTCParam>& test_param) {
   std::string test_param_name;
-  base::RemoveChars(test_param.param, "/_", &test_param_name);
+  base::RemoveChars(std::get<0>(test_param.param), "/_", &test_param_name);
+  test_param_name +=
+      std::get<1>(test_param.param) ? "_ReportInUTC" : "_ReportInLocalTime";
   return test_param_name;
 }
 

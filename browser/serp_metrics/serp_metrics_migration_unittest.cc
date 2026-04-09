@@ -38,7 +38,8 @@ std::unique_ptr<SerpMetrics> CreateProfilePrefsSerpMetrics(
   return std::make_unique<SerpMetrics>(
       local_state,
       PrefTimePeriodStoreFactory(
-          prefs, prefs::kDeprecatedSerpMetricsTimePeriodStorage.data()));
+          prefs, prefs::kDeprecatedSerpMetricsTimePeriodStorage.data()),
+      /*report_in_utc=*/false);
 }
 
 }  // namespace
@@ -94,8 +95,10 @@ TEST_F(SerpMetricsMigrationTest, MigrateFromEmptySerpMetrics) {
                                              profile_attributes_entry());
 
   std::unique_ptr<SerpMetrics> serp_metrics = std::make_unique<SerpMetrics>(
-      local_state(), SerpMetricsTimePeriodStoreFactory(
-                         profile_path(), profile_attributes_storage()));
+      local_state(),
+      SerpMetricsTimePeriodStoreFactory(profile_path(),
+                                        profile_attributes_storage()),
+      /*report_in_utc=*/false);
   ASSERT_TRUE(serp_metrics);
 
   EXPECT_EQ(0U,
@@ -138,8 +141,10 @@ TEST_F(SerpMetricsMigrationTest, MigrateFromNonEmptySerpMetrics) {
                   .empty());
 
   std::unique_ptr<SerpMetrics> serp_metrics = std::make_unique<SerpMetrics>(
-      local_state(), SerpMetricsTimePeriodStoreFactory(
-                         profile_path(), profile_attributes_storage()));
+      local_state(),
+      SerpMetricsTimePeriodStoreFactory(profile_path(),
+                                        profile_attributes_storage()),
+      /*report_in_utc=*/false);
   ASSERT_TRUE(serp_metrics);
 
   EXPECT_EQ(1U,
@@ -177,8 +182,10 @@ TEST_F(SerpMetricsMigrationTest,
                   .empty());
 
   std::unique_ptr<SerpMetrics> serp_metrics = std::make_unique<SerpMetrics>(
-      local_state(), SerpMetricsTimePeriodStoreFactory(
-                         profile_path(), profile_attributes_storage()));
+      local_state(),
+      SerpMetricsTimePeriodStoreFactory(profile_path(),
+                                        profile_attributes_storage()),
+      /*report_in_utc=*/false);
   ASSERT_TRUE(serp_metrics);
 
   AdvanceClockToNextDay();
@@ -222,8 +229,10 @@ TEST_F(SerpMetricsMigrationTest, DoubleMigrationIsNoOp) {
                   .empty());
 
   std::unique_ptr<SerpMetrics> serp_metrics = std::make_unique<SerpMetrics>(
-      local_state(), SerpMetricsTimePeriodStoreFactory(
-                         profile_path(), profile_attributes_storage()));
+      local_state(),
+      SerpMetricsTimePeriodStoreFactory(profile_path(),
+                                        profile_attributes_storage()),
+      /*report_in_utc=*/false);
   ASSERT_TRUE(serp_metrics);
 
   EXPECT_EQ(1U,

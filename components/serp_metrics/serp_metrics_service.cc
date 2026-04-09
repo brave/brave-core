@@ -15,10 +15,11 @@ namespace serp_metrics {
 
 SerpMetricsService::SerpMetricsService(
     PrefService& local_state,
-    const TimePeriodStoreFactory& time_period_store_factory) {
+    const TimePeriodStoreFactory& time_period_store_factory,
+    bool report_in_utc) {
   if (base::FeatureList::IsEnabled(serp_metrics::kSerpMetricsFeature)) {
-    serp_metrics_ =
-        std::make_unique<SerpMetrics>(&local_state, time_period_store_factory);
+    serp_metrics_ = std::make_unique<SerpMetrics>(
+        &local_state, time_period_store_factory, report_in_utc);
   }
 }
 

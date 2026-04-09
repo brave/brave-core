@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string_view>
+#include <tuple>
 
 #include "absl/strings/str_format.h"
 #include "base/test/icu_test_util.h"
@@ -31,12 +32,13 @@
 
 namespace serp_metrics {
 
-class SerpMetricsTest : public testing::TestWithParam<std::string_view> {
+class SerpMetricsTest
+    : public testing::TestWithParam<test::TimezoneAndReportInUTCParam> {
  public:
   SerpMetricsTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        libc_timezone_(std::string(GetParam())),
-        icu_timezone_(GetParam().data()) {}
+        libc_timezone_(std::string(timezone())),
+        icu_timezone_(timezone().data()) {}
 
   void SetUp() override {
     // Register `kLastCheckYMD` pref (YYYY-MM-DD). This pref is part of the
@@ -49,14 +51,15 @@ class SerpMetricsTest : public testing::TestWithParam<std::string_view> {
         kSerpMetricsFeature, {{"time_period_in_days", "7"}});
 
     serp_metrics_ = std::make_unique<SerpMetrics>(
-        &local_state_, test::FakeTimePeriodStoreFactory());
+        &local_state_, test::FakeTimePeriodStoreFactory(), report_in_utc());
   }
 
   // Advances the clock to one millisecond shy of a brand new day.
   void AdvanceClockToJustBeforeNextDay() {
     const base::Time now = base::Time::Now();
     const base::Time end_of_day =
-        now.LocalMidnight() + base::Days(1) - base::Milliseconds(1);
+        (report_in_utc() ? now.UTCMidnight() : now.LocalMidnight()) +
+        base::Days(1) - base::Milliseconds(1);
     task_environment_.AdvanceClock(end_of_day - now);
   }
 
@@ -75,12 +78,20 @@ class SerpMetricsTest : public testing::TestWithParam<std::string_view> {
   // Searches are reported by calendar day based on the last checked date.
   void SimulateSendingDailyUsagePingAt(base::Time at) {
     base::Time::Exploded now_exploded;
-    at.LocalExplode(&now_exploded);
+    if (report_in_utc()) {
+      at.UTCExplode(&now_exploded);
+    } else {
+      at.LocalExplode(&now_exploded);
+    }
     local_state_.SetString(
         kLastCheckYMD,
         absl::StrFormat("%04d-%02d-%02d", now_exploded.year, now_exploded.month,
                         now_exploded.day_of_month));
   }
+
+  std::string_view timezone() const { return std::get<0>(GetParam()); }
+
+  bool report_in_utc() const { return std::get<1>(GetParam()); }
 
  protected:
   base::test::TaskEnvironment task_environment_;
@@ -94,10 +105,11 @@ class SerpMetricsTest : public testing::TestWithParam<std::string_view> {
   std::unique_ptr<SerpMetrics> serp_metrics_;
 };
 
-INSTANTIATE_TEST_SUITE_P(SerpMetricsTimezones,
-                         SerpMetricsTest,
-                         test::kTimezones,
-                         test::TimezoneTestParamName);
+INSTANTIATE_TEST_SUITE_P(
+    SerpMetricsTimezones,
+    SerpMetricsTest,
+    ::testing::Combine(test::kTimezones, /*report_in_utc=*/::testing::Bool()),
+    test::TimezoneAndReportInUtcParamName);
 
 TEST_P(SerpMetricsTest, NoSearchCountsWhenNoSearchesRecorded) {
   EXPECT_EQ(0U,

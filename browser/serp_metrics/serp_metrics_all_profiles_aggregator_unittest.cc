@@ -79,8 +79,10 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
       base::FilePath(kUserDataDir).AppendASCII("testing_profile");
   AddProfile(profile_path);
   std::unique_ptr<SerpMetrics> serp_metrics = std::make_unique<SerpMetrics>(
-      local_state(), SerpMetricsTimePeriodStoreFactory(
-                         profile_path, profile_attributes_storage()));
+      local_state(),
+      SerpMetricsTimePeriodStoreFactory(profile_path,
+                                        profile_attributes_storage()),
+      /*report_in_utc=*/false);
 
   // Day 0: Stale
   serp_metrics->RecordSearch(SerpMetricType::kBrave);
@@ -108,8 +110,10 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
       base::FilePath(kUserDataDir).AppendASCII("testing_profile");
   AddProfile(profile_path);
   std::unique_ptr<SerpMetrics> serp_metrics = std::make_unique<SerpMetrics>(
-      local_state(), SerpMetricsTimePeriodStoreFactory(
-                         profile_path, profile_attributes_storage()));
+      local_state(),
+      SerpMetricsTimePeriodStoreFactory(profile_path,
+                                        profile_attributes_storage()),
+      /*report_in_utc=*/false);
 
   // Day 0: Stale
   serp_metrics->RecordSearch(SerpMetricType::kBrave);
@@ -151,14 +155,18 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
       base::FilePath(kUserDataDir).AppendASCII("testing_profile_1");
   AddProfile(profile_path_1);
   std::unique_ptr<SerpMetrics> serp_metrics_1 = std::make_unique<SerpMetrics>(
-      local_state(), SerpMetricsTimePeriodStoreFactory(
-                         profile_path_1, profile_attributes_storage()));
+      local_state(),
+      SerpMetricsTimePeriodStoreFactory(profile_path_1,
+                                        profile_attributes_storage()),
+      /*report_in_utc=*/false);
   base::FilePath profile_path_2 =
       base::FilePath(kUserDataDir).AppendASCII("testing_profile_2");
   AddProfile(profile_path_2);
   std::unique_ptr<SerpMetrics> serp_metrics_2 = std::make_unique<SerpMetrics>(
-      local_state(), SerpMetricsTimePeriodStoreFactory(
-                         profile_path_2, profile_attributes_storage()));
+      local_state(),
+      SerpMetricsTimePeriodStoreFactory(profile_path_2,
+                                        profile_attributes_storage()),
+      /*report_in_utc=*/false);
 
   // Day 0: Stale
   serp_metrics_1->RecordSearch(SerpMetricType::kBrave);
@@ -191,14 +199,18 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
       base::FilePath(kUserDataDir).AppendASCII("testing_profile_1");
   AddProfile(profile_path_1);
   std::unique_ptr<SerpMetrics> serp_metrics_1 = std::make_unique<SerpMetrics>(
-      local_state(), SerpMetricsTimePeriodStoreFactory(
-                         profile_path_1, profile_attributes_storage()));
+      local_state(),
+      SerpMetricsTimePeriodStoreFactory(profile_path_1,
+                                        profile_attributes_storage()),
+      /*report_in_utc=*/false);
   base::FilePath profile_path_2 =
       base::FilePath(kUserDataDir).AppendASCII("testing_profile_2");
   AddProfile(profile_path_2);
   std::unique_ptr<SerpMetrics> serp_metrics_2 = std::make_unique<SerpMetrics>(
-      local_state(), SerpMetricsTimePeriodStoreFactory(
-                         profile_path_2, profile_attributes_storage()));
+      local_state(),
+      SerpMetricsTimePeriodStoreFactory(profile_path_2,
+                                        profile_attributes_storage()),
+      /*report_in_utc=*/false);
 
   // Day 0: Stale
   serp_metrics_1->RecordSearch(SerpMetricType::kBrave);

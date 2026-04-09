@@ -21,7 +21,8 @@ class SerpMetrics;
 class SerpMetricsService : public KeyedService {
  public:
   SerpMetricsService(PrefService& local_state,
-                     const TimePeriodStoreFactory& time_period_store_factory);
+                     const TimePeriodStoreFactory& time_period_store_factory,
+                     bool report_in_utc);
 
   SerpMetricsService(const SerpMetricsService&) = delete;
   SerpMetricsService& operator=(const SerpMetricsService&) = delete;

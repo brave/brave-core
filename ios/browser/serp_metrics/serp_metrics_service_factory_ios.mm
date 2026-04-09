@@ -50,10 +50,12 @@ void SerpMetricsServiceFactoryIOS::RegisterProfilePrefs(
 std::unique_ptr<KeyedService>
 SerpMetricsServiceFactoryIOS::BuildServiceInstanceFor(
     ProfileIOS* profile) const {
+  // Report SERP metrics in UTC to match iOS daily usage ping behavior.
   return std::make_unique<SerpMetricsService>(
       *GetApplicationContext()->GetLocalState(),
       PrefTimePeriodStoreFactory(profile->GetPrefs(),
-                                 kSerpMetricsTimePeriodStorage));
+                                 kSerpMetricsTimePeriodStorage),
+      /*report_in_utc=*/true);
 }
 
 }  // namespace serp_metrics

@@ -131,7 +131,8 @@ class SerpMetricsTabHelperTest : public PlatformTest {
     scoped_feature_list_.InitAndEnableFeature(kSerpMetricsFeature);
 
     serp_metrics_ = std::make_unique<SerpMetrics>(&local_state_,
-                                                  FakeTimePeriodStoreFactory());
+                                                  FakeTimePeriodStoreFactory(),
+                                                  /*report_in_utc=*/true);
 
     SerpMetricsTabHelper::CreateForWebState(&web_state_, *serp_metrics_);
   }
