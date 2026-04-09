@@ -1,4 +1,4 @@
-// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -50,12 +50,17 @@ class AIPageContentFetcher
       mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback)
       override;
 
+ protected:
+  // Calls optimization_guide::GetAIPageContent. Virtual for testing.
+  virtual void CallGetAIPageContent(
+      optimization_guide::OnAIPageContentDone callback);
+
  private:
   void OnAIPageContentReceived(
       FetchPageContentCallback callback,
       optimization_guide::AIPageContentResultOrError result);
 
-  raw_ptr<content::WebContents> web_contents_;
+  raw_ptr<content::WebContents> web_contents_;  // not owned
   std::unique_ptr<PageContentFetcher> page_content_fetcher_;
   base::WeakPtrFactory<AIPageContentFetcher> weak_ptr_factory_{this};
 };

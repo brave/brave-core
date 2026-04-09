@@ -136,10 +136,8 @@ static_library("ai_chat") {
       "tools/wait_tool.h",
     ]
 
-    deps += [
-      "//components/optimization_guide/content/browser",
-      "//components/optimization_guide/proto:optimization_guide_proto",
-    ]
+    public_deps += [ "//components/optimization_guide/content/browser" ]
+    deps += [ "//components/optimization_guide/proto:optimization_guide_proto" ]
   }
 }
 
@@ -322,6 +320,7 @@ source_set("unit_tests") {
 
   if (enable_brave_ai_chat_agent_profile) {
     sources += [
+      "ai_page_content_fetcher_unittest.cc",
       "content_agent_tool_provider_unittest.cc",
       "page_content_blocks_unittest.cc",
       "tools/click_tool_unittest.cc",

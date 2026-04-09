@@ -1,4 +1,4 @@
-// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -36,12 +36,18 @@ void AIPageContentFetcher::FetchPageContent(std::string_view invalidation_token,
     return;
   }
 
+  CallGetAIPageContent(
+      base::BindOnce(&AIPageContentFetcher::OnAIPageContentReceived,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void AIPageContentFetcher::CallGetAIPageContent(
+    optimization_guide::OnAIPageContentDone callback) {
   optimization_guide::GetAIPageContent(
       web_contents_,
       optimization_guide::ActionableAIPageContentOptions(
           /*on_critical_path=*/false),
-      base::BindOnce(&AIPageContentFetcher::OnAIPageContentReceived,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+      std::move(callback));
 }
 
 void AIPageContentFetcher::OnAIPageContentReceived(
