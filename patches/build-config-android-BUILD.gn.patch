@@ -1,9 +1,9 @@
 diff --git a/build/config/android/BUILD.gn b/build/config/android/BUILD.gn
-index 8c59c78bce5995391e344b99c4eb3c383f5163be..1bdc9ea6bb329d71b8da9f617c4778941c691e17 100644
+index 481763e48039b3aae6f8af8d0a53a88e65319a74..5d6c1fef61230fd3a6306a01d2a7c1aa6122ae2d 100644
 --- a/build/config/android/BUILD.gn
 +++ b/build/config/android/BUILD.gn
-@@ -64,6 +64,7 @@ config("compiler") {
-       rustflags += [ "-Zbranch-protection=pac-ret" ]
+@@ -63,6 +63,7 @@ config("compiler") {
+       rustflags = [ "-Zbranch-protection=pac-ret" ]
      }
    }
 +  import("//brave/build/config/android/brave_compiler_ldflags.gni") ldflags += brave_build_config_android_compiler_ldflags

@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/content_settings/BUILD.gn b/chrome/browser/content_settings/BUILD.gn
-index 4f8d86fd41a8066bf440c2a6512636fff19fc84f..e814c9286e19e12a67ad836e7c62014563347959 100644
+index fbbfc7b6f76453a745122ee8c7c8a5b8966a09b6..0c4c02519c557aebb24ce0eb121949953adaf235 100644
 --- a/chrome/browser/content_settings/BUILD.gn
 +++ b/chrome/browser/content_settings/BUILD.gn
-@@ -131,6 +131,7 @@ source_set("impl") {
-   if (enable_pdf) {
-     deps += [ "//chrome/browser/pdf" ]
+@@ -135,6 +135,7 @@ source_set("impl") {
+       "//extensions/browser/mime_handler",
+     ]
    }
 +  import("//brave/browser/content_settings/sources.gni") deps += brave_browser_content_settings_deps
  }
  
  # Fixes circular deps with different components. For example -
-@@ -340,6 +341,7 @@ source_set("unit_tests") {
+@@ -347,6 +348,7 @@ source_set("unit_tests") {
    if (is_android) {
      sources += [ "javascript_optimizer_provider_android_unittest.cc" ]
      deps += [ "//chrome/browser/android:tabs_public" ]
