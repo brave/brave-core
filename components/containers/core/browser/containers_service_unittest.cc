@@ -47,15 +47,12 @@ class MockContainersServiceDelegate : public ContainersService::Delegate {
  public:
   MockContainersServiceDelegate() {
     ON_CALL(*this, GetReferencedContainerIds(_))
-        .WillByDefault(
-            [this](base::OnceCallback<void(base::flat_set<std::string>)>
-                       on_referenced_container_ids_loaded) {
-              std::move(on_referenced_container_ids_loaded)
-                  .Run(referenced_container_ids_);
-            });
+        .WillByDefault([this](OnReferencedContainerIdsReadyCallback callback) {
+          std::move(callback).Run(referenced_container_ids_);
+        });
     ON_CALL(*this, DeleteContainerStorage(_, _))
         .WillByDefault([this](const std::string& id,
-                              base::OnceCallback<void(bool success)> callback) {
+                              DeleteContainerStorageCallback callback) {
           delete_requests_.push_back(id);
           std::move(callback).Run(delete_result_);
         });
@@ -63,11 +60,11 @@ class MockContainersServiceDelegate : public ContainersService::Delegate {
 
   MOCK_METHOD(void,
               GetReferencedContainerIds,
-              (base::OnceCallback<void(base::flat_set<std::string>)>),
+              (OnReferencedContainerIdsReadyCallback),
               (override));
   MOCK_METHOD(void,
               DeleteContainerStorage,
-              (const std::string&, base::OnceCallback<void(bool success)>),
+              (const std::string&, DeleteContainerStorageCallback),
               (override));
 
   void SetReferencedContainersIds(base::flat_set<std::string> ids) {

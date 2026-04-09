@@ -29,16 +29,20 @@ class ContainersService : public KeyedService {
    public:
     virtual ~Delegate() = default;
 
+    using OnReferencedContainerIdsReadyCallback =
+        base::OnceCallback<void(const base::flat_set<std::string>&)>;
+    using DeleteContainerStorageCallback =
+        base::OnceCallback<void(bool success)>;
+
     // Returns the container ids referenced by tab restore, session service and
     // currently opened tabs.
     virtual void GetReferencedContainerIds(
-        base::OnceCallback<void(base::flat_set<std::string>)>
-            on_referenced_container_ids) = 0;
+        OnReferencedContainerIdsReadyCallback callback) = 0;
 
     // Deletes the storage for the container with the given id.
     virtual void DeleteContainerStorage(
         const std::string& id,
-        base::OnceCallback<void(bool success)> callback) = 0;
+        DeleteContainerStorageCallback callback) = 0;
   };
 
   ContainersService(PrefService* prefs, std::unique_ptr<Delegate> delegate);
@@ -77,7 +81,7 @@ class ContainersService : public KeyedService {
   void ScheduleOrphanedContainersCleanup();
 
   // Called when the container ids referenced by the current profile are ready.
-  void OnReferencedContainerIdsReady(base::flat_set<std::string> ids);
+  void OnReferencedContainerIdsReady(const base::flat_set<std::string>& ids);
 
   // Called when the storage for the container with the given id is deleted.
   void OnContainerStorageDeleted(const std::string& id, bool success);

@@ -35,6 +35,7 @@ ContainersService::ContainersService(PrefService* prefs,
 ContainersService::~ContainersService() = default;
 
 void ContainersService::Shutdown() {
+  weak_factory_.InvalidateWeakPtrs();
   pref_change_registrar_.RemoveAll();
   delegate_.reset();
 }
@@ -118,7 +119,7 @@ void ContainersService::ScheduleOrphanedContainersCleanup() {
 }
 
 void ContainersService::OnReferencedContainerIdsReady(
-    base::flat_set<std::string> referenced_container_ids) {
+    const base::flat_set<std::string>& referenced_container_ids) {
   const auto& synced_containers = GetContainersFromPrefs(*prefs_);
   for (const auto& locally_used_container :
        GetLocallyUsedContainersFromPrefs(*prefs_)) {

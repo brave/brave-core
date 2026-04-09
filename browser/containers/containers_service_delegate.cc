@@ -15,6 +15,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/types/to_address.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
@@ -25,6 +26,7 @@
 #include "components/sessions/core/session_types.h"
 #include "components/sessions/core/tab_restore_service.h"
 #include "components/sessions/core/tab_restore_types.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/storage_partition_config.h"
@@ -162,9 +164,8 @@ ContainersServiceDelegate::ContainersServiceDelegate(
 ContainersServiceDelegate::~ContainersServiceDelegate() = default;
 
 void ContainersServiceDelegate::GetReferencedContainerIds(
-    base::OnceCallback<void(base::flat_set<std::string>)>
-        on_referenced_container_ids) {
-  on_referenced_container_ids_loaded_ = std::move(on_referenced_container_ids);
+    OnReferencedContainerIdsReadyCallback callback) {
+  on_referenced_container_ids_loaded_ = std::move(callback);
 
   // Run the requests in parallel. After each request is completed,
   // MaybeRunOnReferencedContainerIdsLoaded() is called to check if all requests
@@ -177,7 +178,7 @@ void ContainersServiceDelegate::GetReferencedContainerIds(
 
 void ContainersServiceDelegate::DeleteContainerStorage(
     const std::string& id,
-    base::OnceCallback<void(bool success)> callback) {
+    DeleteContainerStorageCallback callback) {
   const content::StoragePartitionConfig config =
       content::StoragePartitionConfig::Create(
           base::to_address(profile_),
@@ -305,6 +306,9 @@ void ContainersServiceDelegate::MaybeRunOnReferencedContainerIdsLoaded() {
   AppendOpenTabReferencedContainerIds(base::to_address(profile_),
                                       pending_referenced_container_ids_);
 
-  std::move(on_referenced_container_ids_loaded_)
-      .Run(std::move(pending_referenced_container_ids_));
+  // Reply via task runner to avoid synchronous reply in case everything is
+  // ready immediately.
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(std::move(on_referenced_container_ids_loaded_),
+                                std::move(pending_referenced_container_ids_)));
 }

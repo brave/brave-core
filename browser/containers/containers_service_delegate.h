@@ -56,11 +56,9 @@ class ContainersServiceDelegate
       delete;
 
   void GetReferencedContainerIds(
-      base::OnceCallback<void(base::flat_set<std::string>)>
-          on_referenced_container_ids) override;
-  void DeleteContainerStorage(
-      const std::string& id,
-      base::OnceCallback<void(bool success)> callback) override;
+      OnReferencedContainerIdsReadyCallback callback) override;
+  void DeleteContainerStorage(const std::string& id,
+                              DeleteContainerStorageCallback callback) override;
 
  private:
 #if BUILDFLAG(ENABLE_SESSION_SERVICE)
@@ -95,8 +93,7 @@ class ContainersServiceDelegate
                           sessions::TabRestoreServiceObserver>
       tab_restore_service_observation_{this};
 
-  base::OnceCallback<void(base::flat_set<std::string>)>
-      on_referenced_container_ids_loaded_;
+  OnReferencedContainerIdsReadyCallback on_referenced_container_ids_loaded_;
   base::flat_set<std::string> pending_referenced_container_ids_;
 
   base::WeakPtrFactory<ContainersServiceDelegate> weak_factory_{this};

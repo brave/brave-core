@@ -27,6 +27,7 @@ source_set("containers") {
     "//chrome/common:buildflags",
     "//components/sessions",
     "//content/public/browser",
+    "//crypto",
   ]
 }
 
