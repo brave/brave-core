@@ -14,6 +14,7 @@ struct CxxPolkadotChainMetadataFields {
     balances_pallet_index: u8,
     transaction_payment_pallet_index: u8,
     transfer_allow_death_call_index: u8,
+    transfer_keep_alive_call_index: u8,
     ss58_prefix: u16,
     spec_version: u32,
 }
@@ -39,6 +40,7 @@ mod ffi {
         fn balances_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8;
         fn transaction_payment_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8;
         fn transfer_allow_death_call_index(self: &CxxPolkadotChainMetadataFields) -> u8;
+        fn transfer_keep_alive_call_index(self: &CxxPolkadotChainMetadataFields) -> u8;
         fn ss58_prefix(self: &CxxPolkadotChainMetadataFields) -> u16;
         fn spec_version(self: &CxxPolkadotChainMetadataFields) -> u32;
     }
@@ -59,6 +61,10 @@ impl CxxPolkadotChainMetadataFields {
 
     fn transfer_allow_death_call_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
         self.transfer_allow_death_call_index
+    }
+
+    fn transfer_keep_alive_call_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
+        self.transfer_keep_alive_call_index
     }
 
     fn ss58_prefix(self: &CxxPolkadotChainMetadataFields) -> u16 {
@@ -342,6 +348,18 @@ fn decode_runtime_spec_version(raw: &[u8]) -> Option<u32> {
 
 const RUNTIME_METADATA_PREFIX_MAGIC: u32 = 0x6174_656d;
 
+fn get_call_index(
+    portable_registry: &HashMap<u32, Vec<VariantInfo>>,
+    pallet: &PalletInfo,
+    call_name: &str,
+) -> Result<u8, Error> {
+    portable_registry
+        .get(&pallet.calls_type_id.ok_or(Error::InvalidMetadata)?)
+        .and_then(|variants| variants.iter().find(|v| normalize_ident(&v.name) == call_name))
+        .map(|v| v.index)
+        .ok_or(Error::InvalidMetadata)
+}
+
 /// Parses SCALE-encoded `state_getMetadata` bytes (RuntimeMetadataPrefixed).
 ///
 /// Structure expected by this parser:
@@ -389,15 +407,12 @@ fn parse_chain_metadata_fields(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata,
         .find(|p| normalize_ident(&p.name) == "balances")
         .ok_or(Error::InvalidMetadata)?;
     let balances_pallet_index = balances_pallet.index;
-    let calls_type_id = balances_pallet.calls_type_id.ok_or(Error::InvalidMetadata)?;
 
-    let transfer_allow_death_call_index = portable_registry
-        .get(&calls_type_id)
-        .and_then(|variants| {
-            variants.iter().find(|v| normalize_ident(&v.name) == "transferallowdeath")
-        })
-        .map(|v| v.index)
-        .ok_or(Error::InvalidMetadata)?;
+    let transfer_allow_death_call_index =
+        get_call_index(&portable_registry, balances_pallet, "transferallowdeath")?;
+
+    let transfer_keep_alive_call_index =
+        get_call_index(&portable_registry, balances_pallet, "transferkeepalive")?;
 
     let system_pallet = pallets
         .iter()
@@ -431,6 +446,7 @@ fn parse_chain_metadata_fields(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata,
         balances_pallet_index,
         transaction_payment_pallet_index,
         transfer_allow_death_call_index,
+        transfer_keep_alive_call_index,
         ss58_prefix,
         spec_version,
     })
@@ -445,6 +461,7 @@ fn parse_chain_metadata_from_scale(
             balances_pallet_index: metadata.balances_pallet_index,
             transaction_payment_pallet_index: metadata.transaction_payment_pallet_index,
             transfer_allow_death_call_index: metadata.transfer_allow_death_call_index,
+            transfer_keep_alive_call_index: metadata.transfer_keep_alive_call_index,
             ss58_prefix: metadata.ss58_prefix,
             spec_version: metadata.spec_version,
         }

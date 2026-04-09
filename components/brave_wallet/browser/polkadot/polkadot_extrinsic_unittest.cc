@@ -38,6 +38,7 @@ PolkadotChainMetadata MakeWestendMetadata() {
       /*system_pallet_index=*/0, /*balances_pallet_index=*/4,
       /*transaction_payment_pallet_index=*/0x1a,
       /*transfer_allow_death_call_index=*/0,
+      /*transfer_keep_alive_call_index=*/3,
       /*ss58_prefix=*/42, kSpecVersion);
 }
 
@@ -46,6 +47,7 @@ PolkadotChainMetadata MakePolkadotMetadata() {
       /*system_pallet_index=*/0, /*balances_pallet_index=*/5,
       /*transaction_payment_pallet_index=*/0x20,
       /*transfer_allow_death_call_index=*/0,
+      /*transfer_keep_alive_call_index=*/3,
       /*ss58_prefix=*/0, kSpecVersion);
 }
 
@@ -54,6 +56,7 @@ PolkadotChainMetadata MakeWestendAssetHubMetadata() {
       /*system_pallet_index=*/0, /*balances_pallet_index=*/10,
       /*transaction_payment_pallet_index=*/0x0b,
       /*transfer_allow_death_call_index=*/0,
+      /*transfer_keep_alive_call_index=*/3,
       /*ss58_prefix=*/42, kSpecVersion);
 }
 
@@ -62,6 +65,7 @@ PolkadotChainMetadata MakePolkadotAssetHubMetadata() {
       /*system_pallet_index=*/0, /*balances_pallet_index=*/10,
       /*transaction_payment_pallet_index=*/0x0b,
       /*transfer_allow_death_call_index=*/0,
+      /*transfer_keep_alive_call_index=*/3,
       /*ss58_prefix=*/0, kSpecVersion);
 }
 

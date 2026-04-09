@@ -37,6 +37,7 @@ mod ffi {
         pub balances_pallet_index: u8,
         pub transaction_payment_pallet_index: u8,
         pub transfer_allow_death_call_index: u8,
+        pub transfer_keep_alive_call_index: u8,
         pub ss58_prefix: u16,
         pub spec_version: u32,
     }

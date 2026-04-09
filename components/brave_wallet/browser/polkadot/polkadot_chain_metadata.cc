@@ -36,6 +36,7 @@ std::optional<PolkadotChainMetadata> PolkadotChainMetadata::FromBytes(
                     parsed->balances_pallet_index(),
                     parsed->transaction_payment_pallet_index(),
                     parsed->transfer_allow_death_call_index(),
+                    parsed->transfer_keep_alive_call_index(),
                     parsed->ss58_prefix(), parsed->spec_version());
 }
 
@@ -45,6 +46,7 @@ PolkadotChainMetadata PolkadotChainMetadata::FromFields(
     uint8_t balances_pallet_index,
     uint8_t transaction_payment_pallet_index,
     uint8_t transfer_allow_death_call_index,
+    uint8_t transfer_keep_alive_call_index,
     uint16_t ss58_prefix,
     uint32_t spec_version) {
   CxxPolkadotChainMetadata metadata;
@@ -52,6 +54,7 @@ PolkadotChainMetadata PolkadotChainMetadata::FromFields(
   metadata.balances_pallet_index = balances_pallet_index;
   metadata.transaction_payment_pallet_index = transaction_payment_pallet_index;
   metadata.transfer_allow_death_call_index = transfer_allow_death_call_index;
+  metadata.transfer_keep_alive_call_index = transfer_keep_alive_call_index;
   metadata.ss58_prefix = ss58_prefix;
   metadata.spec_version = spec_version;
   return PolkadotChainMetadata(metadata);
@@ -70,6 +73,7 @@ std::optional<PolkadotChainMetadata> PolkadotChainMetadata::FromChainName(
                       /*balances_pallet_index=*/4,
                       /*transaction_payment_pallet_index=*/0x1a,
                       /*transfer_allow_death_call_index=*/0,
+                      /*transfer_keep_alive_call_index=*/3,
                       /*ss58_prefix=*/42, kUnknownSpecVersion);
   }
 
@@ -79,6 +83,7 @@ std::optional<PolkadotChainMetadata> PolkadotChainMetadata::FromChainName(
                       /*balances_pallet_index=*/10,
                       /*transaction_payment_pallet_index=*/0x0b,
                       /*transfer_allow_death_call_index=*/0,
+                      /*transfer_keep_alive_call_index=*/3,
                       /*ss58_prefix=*/42, kUnknownSpecVersion);
   }
 
@@ -88,6 +93,7 @@ std::optional<PolkadotChainMetadata> PolkadotChainMetadata::FromChainName(
                       /*balances_pallet_index=*/5,
                       /*transaction_payment_pallet_index=*/0x20,
                       /*transfer_allow_death_call_index=*/0,
+                      /*transfer_keep_alive_call_index=*/3,
                       /*ss58_prefix=*/0, kUnknownSpecVersion);
   }
 
@@ -97,6 +103,7 @@ std::optional<PolkadotChainMetadata> PolkadotChainMetadata::FromChainName(
                       /*balances_pallet_index=*/10,
                       /*transaction_payment_pallet_index=*/0x0b,
                       /*transfer_allow_death_call_index=*/0,
+                      /*transfer_keep_alive_call_index=*/3,
                       /*ss58_prefix=*/0, kUnknownSpecVersion);
   }
 
@@ -121,6 +128,10 @@ uint8_t PolkadotChainMetadata::GetTransactionPaymentPalletIndex() const {
 
 uint8_t PolkadotChainMetadata::GetTransferAllowDeathCallIndex() const {
   return chain_metadata_.transfer_allow_death_call_index;
+}
+
+uint8_t PolkadotChainMetadata::GetTransferKeepAliveCallIndex() const {
+  return chain_metadata_.transfer_keep_alive_call_index;
 }
 
 uint16_t PolkadotChainMetadata::GetSs58Prefix() const {
