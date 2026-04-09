@@ -147,10 +147,9 @@ BraveBookmarksSidePanelView::BraveBookmarksSidePanelView(
   AddChildView(std::make_unique<BookmarksSidePanelHeaderView>(scope));
 
   // Reuse upstream's bookmarks panel webui.
-  auto* web_view = AddChildView(scope.GetBrowserWindowInterface()
-                                    .GetFeatures()
-                                    .bookmarks_side_panel_coordinator()
-                                    ->CreateBookmarksWebView(scope));
+  auto* web_view = AddChildView(
+      BookmarksSidePanelCoordinator::From(&scope.GetBrowserWindowInterface())
+          ->CreateBookmarksWebView(scope));
   web_view->SetProperty(
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
