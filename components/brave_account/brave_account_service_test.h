@@ -44,6 +44,7 @@ struct LoginInitializeTestCase;
 struct LogOutTestCase;
 struct RegisterFinalizeTestCase;
 struct RegisterInitializeTestCase;
+struct RegisterVerifyTestCase;
 struct ResendConfirmationEmailTestCase;
 
 template <typename TestCase>
@@ -77,6 +78,7 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
 
     if constexpr (std::is_same_v<TestCase, RegisterInitializeTestCase> ||
                   std::is_same_v<TestCase, RegisterFinalizeTestCase> ||
+                  std::is_same_v<TestCase, RegisterVerifyTestCase> ||
                   std::is_same_v<TestCase, ResendConfirmationEmailTestCase> ||
                   std::is_same_v<TestCase, LoginInitializeTestCase> ||
                   std::is_same_v<TestCase, LoginFinalizeTestCase> ||

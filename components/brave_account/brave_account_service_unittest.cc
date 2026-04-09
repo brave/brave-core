@@ -68,6 +68,7 @@ using endpoints::LoginInit;
 using endpoints::PasswordFinalize;
 using endpoints::PasswordInit;
 using endpoints::ServiceToken;
+using endpoints::VerifyComplete;
 using endpoints::VerifyResend;
 
 struct AuthenticationObserverTestCase {
@@ -924,6 +925,409 @@ INSTANTIATE_TEST_SUITE_P(
                     RegisterFinalizeUnknown(),
                     RegisterFinalizeSuccess()),
     BraveAccountServiceRegisterFinalizeTest::kNameGenerator);
+
+struct RegisterVerifyTestCase {
+  using Endpoint = endpoints::VerifyComplete;
+  using EndpointResponse = Endpoint::Response;
+  using MojoExpected =
+      base::expected<mojom::RegisterVerifyResultPtr, mojom::RegisterErrorPtr>;
+
+  static void Run(const RegisterVerifyTestCase& test_case,
+                  PrefService& pref_service,
+                  base::test::TaskEnvironment& task_environment,
+                  mojom::Authentication& authentication,
+                  base::OnceCallback<void(MojoExpected)> callback) {
+    if (!test_case.encrypted_verification_token.empty()) {
+      pref_service.SetString(prefs::kBraveAccountVerificationToken,
+                             test_case.encrypted_verification_token);
+    }
+
+    authentication.RegisterVerify(
+        test_case.code,
+        std::move(callback).Then(base::BindOnce(
+            [](PrefService* pref_service,
+               std::string initial_verification_token, bool success) {
+              if (success) {
+                EXPECT_EQ(
+                    pref_service->GetString(prefs::kBraveAccountEmailAddress),
+                    kEmailAddress);
+                EXPECT_EQ(pref_service->GetString(
+                              prefs::kBraveAccountAuthenticationToken),
+                          EncryptedAuthenticationToken());
+                EXPECT_TRUE(
+                    pref_service
+                        ->GetString(prefs::kBraveAccountVerificationToken)
+                        .empty());
+              } else {
+                EXPECT_TRUE(
+                    pref_service->GetString(prefs::kBraveAccountEmailAddress)
+                        .empty());
+                EXPECT_TRUE(
+                    pref_service
+                        ->GetString(prefs::kBraveAccountAuthenticationToken)
+                        .empty());
+                EXPECT_EQ(pref_service->GetString(
+                              prefs::kBraveAccountVerificationToken),
+                          initial_verification_token);
+              }
+            },
+            base::Unretained(&pref_service),
+            test_case.encrypted_verification_token,
+            test_case.mojo_expected.has_value())));
+  }
+
+  std::string test_name;
+  std::string code;
+  std::string encrypted_verification_token;
+  bool fail_decryption;
+  bool fail_encryption;
+  std::optional<EndpointResponse> endpoint_response;
+  MojoExpected mojo_expected;
+};
+
+namespace {
+
+const RegisterVerifyTestCase* RegisterVerifyCodeEmpty() {
+  static const base::NoDestructor<RegisterVerifyTestCase>
+      kRegisterVerifyCodeEmpty({
+          .test_name = "register_verify_code_empty",
+          .code = "",
+          .encrypted_verification_token = {},  // not used
+          .fail_decryption = {},               // not used
+          .fail_encryption = {},               // not used
+          .endpoint_response = {},             // not used
+          .mojo_expected = base::unexpected(mojom::RegisterError::New()),
+      });
+  return kRegisterVerifyCodeEmpty.get();
+}
+
+const RegisterVerifyTestCase* RegisterVerifyVerificationTokenEmpty() {
+  static const base::NoDestructor<RegisterVerifyTestCase>
+      kRegisterVerifyVerificationTokenEmpty({
+          .test_name = "register_verify_verification_token_empty",
+          .code = "23TZMP",
+          .encrypted_verification_token = "",
+          .fail_decryption = {},    // not used
+          .fail_encryption = {},    // not used
+          .endpoint_response = {},  // not used
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              std::nullopt,
+              mojom::RegisterErrorCode::kUserNotInTheVerificationState)),
+      });
+  return kRegisterVerifyVerificationTokenEmpty.get();
+}
+
+const RegisterVerifyTestCase* RegisterVerifyVerificationTokenFailedToDecrypt() {
+  static const base::NoDestructor<RegisterVerifyTestCase>
+      kRegisterVerifyVerificationTokenFailedToDecrypt({
+          .test_name = "register_verify_verification_token_failed_to_decrypt",
+          .code = "23TZMP",
+          .encrypted_verification_token = EncryptedVerificationToken(),
+          .fail_decryption = true,
+          .fail_encryption = {},    // not used
+          .endpoint_response = {},  // not used
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              std::nullopt,
+              mojom::RegisterErrorCode::kVerificationTokenDecryptionFailed)),
+      });
+  return kRegisterVerifyVerificationTokenFailedToDecrypt.get();
+}
+
+const RegisterVerifyTestCase* RegisterVerifyNetworkError() {
+  static const base::NoDestructor<RegisterVerifyTestCase>
+      kRegisterVerifyNetworkError({
+          .test_name = "register_verify_network_error",
+          .code = "23TZMP",
+          .encrypted_verification_token = EncryptedVerificationToken(),
+          .fail_decryption = false,
+          .fail_encryption = {},  // not used
+          .endpoint_response = {{.net_error = net::ERR_CONNECTION_REFUSED,
+                                 .status_code = std::nullopt,
+                                 .body = std::nullopt}},
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              net::ERR_CONNECTION_REFUSED, std::nullopt)),
+      });
+  return kRegisterVerifyNetworkError.get();
+}
+
+const RegisterVerifyTestCase* RegisterVerifyBodyMissingOrFailedToParse() {
+  static const base::NoDestructor<RegisterVerifyTestCase>
+      kRegisterVerifyBodyMissingOrFailedToParse({
+          .test_name = "register_verify_body_missing_or_failed_to_parse",
+          .code = "23TZMP",
+          .encrypted_verification_token = EncryptedVerificationToken(),
+          .fail_decryption = false,
+          .fail_encryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
+                                 .body = std::nullopt}},
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+      });
+  return kRegisterVerifyBodyMissingOrFailedToParse.get();
+}
+
+const RegisterVerifyTestCase* RegisterVerifyErrorCodeIsNull() {
+  static const base::NoDestructor<RegisterVerifyTestCase>
+      kRegisterVerifyErrorCodeIsNull({
+          .test_name = "register_verify_error_code_is_null",
+          .code = "23TZMP",
+          .encrypted_verification_token = EncryptedVerificationToken(),
+          .fail_decryption = false,
+          .fail_encryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_UNAUTHORIZED,
+                                 .body = base::unexpected([] {
+                                   VerifyComplete::Response::ErrorBody body;
+                                   body.code = base::Value();
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(
+              mojom::RegisterError::New(net::HTTP_UNAUTHORIZED, std::nullopt)),
+      });
+  return kRegisterVerifyErrorCodeIsNull.get();
+}
+
+const RegisterVerifyTestCase*
+RegisterVerifyVerificationNotFoundOrInvalidIdOrCode() {
+  static const base::NoDestructor<RegisterVerifyTestCase>
+      kRegisterVerifyVerificationNotFoundOrInvalidIdOrCode({
+          .test_name =
+              "register_verify_verification_not_found_or_invalid_id_or_code",
+          .code = "23TZMP",
+          .encrypted_verification_token = EncryptedVerificationToken(),
+          .fail_decryption = false,
+          .fail_encryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_NOT_FOUND,
+                                 .body = base::unexpected([] {
+                                   VerifyComplete::Response::ErrorBody body;
+                                   body.code = base::Value(13002);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              net::HTTP_NOT_FOUND, mojom::RegisterErrorCode::
+                                       kVerificationNotFoundOrInvalidIdOrCode)),
+      });
+  return kRegisterVerifyVerificationNotFoundOrInvalidIdOrCode.get();
+}
+
+const RegisterVerifyTestCase* RegisterVerifyEmailAlreadyVerified() {
+  static const base::NoDestructor<RegisterVerifyTestCase>
+      kRegisterVerifyEmailAlreadyVerified({
+          .test_name = "register_verify_email_already_verified",
+          .code = "23TZMP",
+          .encrypted_verification_token = EncryptedVerificationToken(),
+          .fail_decryption = false,
+          .fail_encryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   VerifyComplete::Response::ErrorBody body;
+                                   body.code = base::Value(13009);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              net::HTTP_BAD_REQUEST,
+              mojom::RegisterErrorCode::kEmailAlreadyVerified)),
+      });
+  return kRegisterVerifyEmailAlreadyVerified.get();
+}
+
+const RegisterVerifyTestCase*
+RegisterVerifyMaximumCodeVerificationAttemptsExceeded() {
+  static const base::NoDestructor<RegisterVerifyTestCase>
+      kRegisterVerifyMaximumCodeVerificationAttemptsExceeded({
+          .test_name =
+              "register_verify_maximum_code_verification_attempts_exceeded",
+          .code = "23TZMP",
+          .encrypted_verification_token = EncryptedVerificationToken(),
+          .fail_decryption = false,
+          .fail_encryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   VerifyComplete::Response::ErrorBody body;
+                                   body.code = base::Value(13010);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              net::HTTP_BAD_REQUEST,
+              mojom::RegisterErrorCode::
+                  kMaximumCodeVerificationAttemptsExceeded)),
+      });
+  return kRegisterVerifyMaximumCodeVerificationAttemptsExceeded.get();
+}
+
+const RegisterVerifyTestCase* RegisterVerifyInvalidVerificationCode() {
+  static const base::NoDestructor<RegisterVerifyTestCase>
+      kRegisterVerifyInvalidVerificationCode({
+          .test_name = "register_verify_invalid_verification_code",
+          .code = "23TZMP",
+          .encrypted_verification_token = EncryptedVerificationToken(),
+          .fail_decryption = false,
+          .fail_encryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   VerifyComplete::Response::ErrorBody body;
+                                   body.code = base::Value(13011);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              net::HTTP_BAD_REQUEST,
+              mojom::RegisterErrorCode::kInvalidVerificationCode)),
+      });
+  return kRegisterVerifyInvalidVerificationCode.get();
+}
+
+const RegisterVerifyTestCase* RegisterVerifyServerError() {
+  static const base::NoDestructor<RegisterVerifyTestCase>
+      kRegisterVerifyServerError({
+          .test_name = "register_verify_server_error",
+          .code = "23TZMP",
+          .encrypted_verification_token = EncryptedVerificationToken(),
+          .fail_decryption = false,
+          .fail_encryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
+                                 .body = base::unexpected([] {
+                                   VerifyComplete::Response::ErrorBody body;
+                                   body.code = base::Value();
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+      });
+  return kRegisterVerifyServerError.get();
+}
+
+const RegisterVerifyTestCase* RegisterVerifyAuthTokenEmpty() {
+  static const base::NoDestructor<RegisterVerifyTestCase>
+      kRegisterVerifyAuthTokenEmpty({
+          .test_name = "register_verify_auth_token_empty",
+          .code = "23TZMP",
+          .encrypted_verification_token = EncryptedVerificationToken(),
+          .fail_decryption = false,
+          .fail_encryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       VerifyComplete::Response::SuccessBody
+                                           body;
+                                       body.auth_token = "";
+                                       body.email = kEmailAddress;
+                                       return body;
+                                     }()}},
+          .mojo_expected = base::unexpected(
+              mojom::RegisterError::New(net::HTTP_OK, std::nullopt)),
+      });
+  return kRegisterVerifyAuthTokenEmpty.get();
+}
+
+const RegisterVerifyTestCase* RegisterVerifyEmailEmpty() {
+  static const base::NoDestructor<RegisterVerifyTestCase>
+      kRegisterVerifyEmailEmpty({
+          .test_name = "register_verify_email_empty",
+          .code = "23TZMP",
+          .encrypted_verification_token = EncryptedVerificationToken(),
+          .fail_decryption = false,
+          .fail_encryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       VerifyComplete::Response::SuccessBody
+                                           body;
+                                       body.auth_token = kAuthenticationToken;
+                                       body.email = "";
+                                       return body;
+                                     }()}},
+          .mojo_expected = base::unexpected(
+              mojom::RegisterError::New(net::HTTP_OK, std::nullopt)),
+      });
+  return kRegisterVerifyEmailEmpty.get();
+}
+
+const RegisterVerifyTestCase*
+RegisterVerifyAuthenticationTokenEncryptionFailed() {
+  static const base::NoDestructor<RegisterVerifyTestCase>
+      kRegisterVerifyAuthenticationTokenEncryptionFailed({
+          .test_name = "register_verify_authentication_token_encryption_failed",
+          .code = "23TZMP",
+          .encrypted_verification_token = EncryptedVerificationToken(),
+          .fail_decryption = false,
+          .fail_encryption = true,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       VerifyComplete::Response::SuccessBody
+                                           body;
+                                       body.auth_token = kAuthenticationToken;
+                                       body.email = kEmailAddress;
+                                       return body;
+                                     }()}},
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              std::nullopt,
+              mojom::RegisterErrorCode::kAuthenticationTokenEncryptionFailed)),
+      });
+  return kRegisterVerifyAuthenticationTokenEncryptionFailed.get();
+}
+
+const RegisterVerifyTestCase* RegisterVerifySuccess() {
+  static const base::NoDestructor<RegisterVerifyTestCase>
+      kRegisterVerifySuccess({
+          .test_name = "register_verify_success",
+          .code = "23TZMP",
+          .encrypted_verification_token = EncryptedVerificationToken(),
+          .fail_decryption = false,
+          .fail_encryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       VerifyComplete::Response::SuccessBody
+                                           body;
+                                       body.auth_token = kAuthenticationToken;
+                                       body.email = kEmailAddress;
+                                       return body;
+                                     }()}},
+          .mojo_expected = mojom::RegisterVerifyResult::New(),
+      });
+  return kRegisterVerifySuccess.get();
+}
+
+using BraveAccountServiceRegisterVerifyTest =
+    BraveAccountServiceTest<RegisterVerifyTestCase>;
+
+}  // namespace
+
+TEST_P(BraveAccountServiceRegisterVerifyTest,
+       MapsEndpointExpectedToMojoExpected) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    BraveAccountServiceTests,
+    BraveAccountServiceRegisterVerifyTest,
+    testing::Values(RegisterVerifyCodeEmpty(),
+                    RegisterVerifyVerificationTokenEmpty(),
+                    RegisterVerifyVerificationTokenFailedToDecrypt(),
+                    RegisterVerifyNetworkError(),
+                    RegisterVerifyBodyMissingOrFailedToParse(),
+                    RegisterVerifyErrorCodeIsNull(),
+                    RegisterVerifyVerificationNotFoundOrInvalidIdOrCode(),
+                    RegisterVerifyEmailAlreadyVerified(),
+                    RegisterVerifyMaximumCodeVerificationAttemptsExceeded(),
+                    RegisterVerifyInvalidVerificationCode(),
+                    RegisterVerifyServerError(),
+                    RegisterVerifyAuthTokenEmpty(),
+                    RegisterVerifyEmailEmpty(),
+                    RegisterVerifyAuthenticationTokenEncryptionFailed(),
+                    RegisterVerifySuccess()),
+    BraveAccountServiceRegisterVerifyTest::kNameGenerator);
 
 struct ResendConfirmationEmailTestCase {
   using Endpoint = VerifyResend;

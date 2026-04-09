@@ -47,6 +47,7 @@ using endpoints::LoginInit;
 using endpoints::PasswordFinalize;
 using endpoints::PasswordInit;
 using endpoints::ServiceToken;
+using endpoints::VerifyComplete;
 using endpoints::VerifyDelete;
 using endpoints::VerifyResend;
 
@@ -207,6 +208,37 @@ void BraveAccountService::RegisterFinalize(
       base::BindOnce(&BraveAccountService::OnRegisterFinalize,
                      weak_factory_.GetWeakPtr(), std::move(callback),
                      encrypted_verification_token));
+}
+
+void BraveAccountService::RegisterVerify(const std::string& code,
+                                         RegisterVerifyCallback callback) {
+  if (code.empty()) {
+    return std::move(callback).Run(
+        base::unexpected(mojom::RegisterError::New()));
+  }
+
+  const auto encrypted_verification_token =
+      pref_service_->GetString(prefs::kBraveAccountVerificationToken);
+  if (encrypted_verification_token.empty()) {
+    return std::move(callback).Run(base::unexpected(mojom::RegisterError::New(
+        std::nullopt,
+        mojom::RegisterErrorCode::kUserNotInTheVerificationState)));
+  }
+
+  const auto verification_token = Decrypt(encrypted_verification_token);
+  if (verification_token.empty()) {
+    return std::move(callback).Run(base::unexpected(mojom::RegisterError::New(
+        std::nullopt,
+        mojom::RegisterErrorCode::kVerificationTokenDecryptionFailed)));
+  }
+
+  auto request = MakeRequest<WithHeaders<VerifyComplete::Request>>();
+  SetBearerToken(request, verification_token);
+  request.body.code = code;
+  Client<VerifyComplete>::Send(
+      url_loader_factory_, std::move(request),
+      base::BindOnce(&BraveAccountService::OnRegisterVerify,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void BraveAccountService::ResendConfirmationEmail(
@@ -431,6 +463,53 @@ void BraveAccountService::OnRegisterFinalize(
                                      encrypted_verification_token);
 
             return mojom::RegisterFinalizeResult::New();
+          });
+
+  std::move(callback).Run(std::move(result));
+}
+
+void BraveAccountService::OnRegisterVerify(RegisterVerifyCallback callback,
+                                           VerifyComplete::Response response) {
+  if (!response.body) {
+    return std::move(callback).Run(base::unexpected(mojom::RegisterError::New(
+        response.status_code.value_or(response.net_error), std::nullopt)));
+  }
+
+  const auto status_code = CHECK_DEREF(response.status_code);
+
+  auto result =
+      std::move(*response.body)
+          // expected<SuccessBody, [ErrorBody       ]> ==>
+          // expected<SuccessBody, [RegisterErrorPtr]>
+          .transform_error([&](auto error_body) {
+            return MakeMojomError<mojom::RegisterError>(status_code,
+                                                        std::move(error_body));
+          })
+          // expected<[SuccessBody            ], RegisterErrorPtr> ==>
+          // expected<[RegisterVerifyResultPtr], RegisterErrorPtr>
+          .and_then([&](auto success_body)
+                        -> base::expected<mojom::RegisterVerifyResultPtr,
+                                          mojom::RegisterErrorPtr> {
+            if (success_body.auth_token.empty() || success_body.email.empty()) {
+              return base::unexpected(
+                  mojom::RegisterError::New(status_code, std::nullopt));
+            }
+
+            const std::string encrypted_authentication_token =
+                Encrypt(success_body.auth_token);
+            if (encrypted_authentication_token.empty()) {
+              return base::unexpected(mojom::RegisterError::New(
+                  std::nullopt, mojom::RegisterErrorCode::
+                                    kAuthenticationTokenEncryptionFailed));
+            }
+
+            pref_service_->SetString(prefs::kBraveAccountEmailAddress,
+                                     success_body.email);
+            pref_service_->SetString(prefs::kBraveAccountAuthenticationToken,
+                                     encrypted_authentication_token);
+            pref_service_->ClearPref(prefs::kBraveAccountVerificationToken);
+
+            return mojom::RegisterVerifyResult::New();
           });
 
   std::move(callback).Run(std::move(result));

@@ -42,6 +42,11 @@ class MockBraveAccountAuthentication : public mojom::Authentication {
               (override));
 
   MOCK_METHOD(void,
+              RegisterVerify,
+              (const std::string& code, RegisterVerifyCallback callback),
+              (override));
+
+  MOCK_METHOD(void,
               ResendConfirmationEmail,
               (ResendConfirmationEmailCallback callback),
               (override));
