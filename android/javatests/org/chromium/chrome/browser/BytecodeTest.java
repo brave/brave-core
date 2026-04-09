@@ -2745,6 +2745,10 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/ui/appmenu/AppMenuHandlerImpl",
                         "mAppMenuDragHelper"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator",
+                        "mAdvancedProtectionCoordinator"));
     }
 
     @Test
