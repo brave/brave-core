@@ -22,6 +22,7 @@
 #include "brave/components/p3a/metric_names.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/pref_names.h"
+#include "brave/components/p3a_utils/event_receiver.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -84,6 +85,8 @@ P3AService::P3AService(PrefService& local_state,
 
   message_manager_ = std::make_unique<MessageManager>(
       local_state, &config_, *this, channel, first_run_time);
+
+  event_receiver_observation_.Observe(p3a_utils::EventReceiver::GetInstance());
 }
 
 P3AService::~P3AService() = default;
@@ -95,6 +98,7 @@ void P3AService::RegisterPrefs(PrefRegistrySimple* registry, bool first_run) {
   // New users are shown the P3A notice via the welcome page.
   registry->RegisterBooleanPref(kP3ANoticeAcknowledged, first_run);
 
+  registry->RegisterDictionaryPref(kCustomAttributesDictPref);
   registry->RegisterDictionaryPref(kDynamicMetricsDictPref);
   registry->RegisterDictionaryPref(kActivationDatesDictPref);
 }
@@ -341,6 +345,17 @@ void P3AService::OnDefaultBrowserStatusChanged(bool is_default) {
   message_manager_->SetIsBrowserDefault(is_default);
 }
 #endif  // !BUILDFLAG(IS_IOS)
+
+void P3AService::OnCustomAttributeSet(
+    std::string_view attribute_name,
+    std::optional<std::string_view> attribute_value) {
+  ScopedDictPrefUpdate update(&*local_state_, kCustomAttributesDictPref);
+  if (attribute_value) {
+    update->Set(attribute_name, *attribute_value);
+  } else {
+    update->Remove(attribute_name);
+  }
+}
 
 void P3AService::HandleHistogramChange(std::string_view histogram_name,
                                        size_t bucket) {

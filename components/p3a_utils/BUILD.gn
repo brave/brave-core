@@ -1,6 +1,10 @@
 static_library("p3a_utils") {
   sources = [
     "bucket.h",
+    "custom_attributes.cc",
+    "custom_attributes.h",
+    "event_receiver.cc",
+    "event_receiver.h",
     "feature_usage.cc",
     "feature_usage.h",
   ]
