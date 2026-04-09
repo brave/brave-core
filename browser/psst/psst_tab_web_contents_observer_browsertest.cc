@@ -14,6 +14,8 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
+#include "brave/browser/psst/psst_settings_service_factory.h"
+#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
@@ -760,6 +762,11 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
             infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
 
   confirm_delegate->Accept();
+
+  // Ensure browser window is visible and has proper bounds for dialog
+  // positioning
+  browser()->window()->Show();
+  browser()->window()->SetBounds(gfx::Rect(0, 0, 800, 600));
 
   auto* dialog_wc = WaitForAndGetDialogWebContents();
   ASSERT_TRUE(dialog_wc);
