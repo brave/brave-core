@@ -1,0 +1,30 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module mojom;
+
+struct SomeStruct {
+  string my_value;
+  int32 my_count;
+};
+
+struct WrapperStruct {
+  SomeStruct some_struct;
+  string value;
+};
+
+struct WrapperOptStruct {
+  SomeStruct? some_struct;
+  string value;
+};
+
+interface SomeService {
+  ProcessArg(SomeStruct some_struct) => (SomeStruct result);
+  ProcessArgOpt(SomeStruct? some_struct) => (SomeStruct? result);
+  ProcessArray(array<SomeStruct> some_structs) => (array<SomeStruct> result);
+  ProcessArrayOpt(array<SomeStruct?> some_structs) => (array<SomeStruct?> result);
+  ProcessWrapper(WrapperStruct wrapper_struct) => (WrapperStruct result);
+  ProcessWrapperOpt(WrapperOptStruct wrapper_struct) => (WrapperOptStruct result);
+};
