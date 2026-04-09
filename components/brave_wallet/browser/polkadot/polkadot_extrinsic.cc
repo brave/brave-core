@@ -7,20 +7,10 @@
 
 #include "base/containers/span_rust.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_wallet/browser/internal/polkadot_extrinsic.rs.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
-
-namespace {
-
-bool IsBoxNonNull(const rust::Box<CxxPolkadotChainMetadata>& chain_metadata) {
-  return chain_metadata.operator->();
-}
-
-::rust::Str StringViewToRustStr(std::string_view sv) {
-  return ::rust::Str(sv.data(), sv.size());
-}
-
-}  // namespace
 
 PolkadotExtrinsicMetadata::PolkadotExtrinsicMetadata() = default;
 PolkadotExtrinsicMetadata::~PolkadotExtrinsicMetadata() = default;
@@ -36,9 +26,6 @@ PolkadotExtrinsicMetadata::PolkadotExtrinsicMetadata(
 
 PolkadotExtrinsicMetadata& PolkadotExtrinsicMetadata::operator=(
     PolkadotExtrinsicMetadata&&) = default;
-
-PolkadotChainMetadata::PolkadotChainMetadata(const PolkadotChainMetadata& other)
-    : chain_metadata_(other.chain_metadata_->clone_metadata()) {}
 
 base::DictValue PolkadotExtrinsicMetadata::ToValue() const {
   base::DictValue value;
@@ -96,38 +83,6 @@ std::optional<PolkadotExtrinsicMetadata> PolkadotExtrinsicMetadata::FromValue(
 
   return metadata;
 }
-
-PolkadotChainMetadata::PolkadotChainMetadata(PolkadotChainMetadata&&) noexcept =
-    default;
-
-PolkadotChainMetadata::~PolkadotChainMetadata() = default;
-
-PolkadotChainMetadata& PolkadotChainMetadata::operator=(
-    PolkadotChainMetadata&&) noexcept = default;
-
-std::optional<PolkadotChainMetadata> PolkadotChainMetadata::FromChainName(
-    std::string_view chain_name) {
-  auto result = make_chain_metadata(StringViewToRustStr(chain_name));
-  if (!result->is_ok()) {
-    return std::nullopt;
-  }
-
-  return PolkadotChainMetadata(result->unwrap());
-}
-
-const CxxPolkadotChainMetadata& PolkadotChainMetadata::operator*() const {
-  CHECK(IsBoxNonNull(chain_metadata_));
-  return *chain_metadata_;
-}
-
-PolkadotChainMetadata::PolkadotChainMetadata(
-    ::rust::Box<CxxPolkadotChainMetadata> chain_metadata)
-    : chain_metadata_(std::move(chain_metadata)) {}
-
-uint16_t PolkadotChainMetadata::GetSs58Prefix() const {
-  return get_ss58_prefix(*chain_metadata_);
-}
-
 PolkadotUnsignedTransfer::PolkadotUnsignedTransfer(
     base::span<uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
     uint128_t send_amount)

@@ -8,6 +8,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
+#include "brave/components/brave_wallet/browser/internal/polkadot_extrinsic.rs.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -20,17 +21,7 @@ namespace {
 inline constexpr const char kBob[] =
     "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48";
 
-// These can be trivially derived using something like:
-// clang-format off
-//
-// curl -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "system_chain", "params":[]}' https://westend-rpc.polkadot.io
-// outputs => {"jsonrpc":"2.0","id":1,"result":"Westend"}
-//
-// clang-format on
-inline constexpr const char kWestendChainType[] = "Westend";
-inline constexpr const char kPolkadotChainType[] = "Polkadot";
-inline constexpr const char kWestendAssetHubChainType[] = "Westend Asset Hub";
-inline constexpr const char kPolkadotAssetHubChainType[] = "Polkadot Asset Hub";
+constexpr uint32_t kSpecVersion = 0;
 
 // Taken from:
 // https://docs.rs/schnorrkel/0.11.4/schnorrkel/keys/struct.MiniSecretKey.html#method.from_bytes
@@ -42,14 +33,36 @@ constexpr uint8_t kSchnorrkelSeed[] = {
 
 }  // namespace
 
-TEST(PolkadotExtrinsics, MetadataFromChainName) {
-  EXPECT_TRUE(PolkadotChainMetadata::FromChainName(kWestendChainType));
-  EXPECT_TRUE(PolkadotChainMetadata::FromChainName(kPolkadotChainType));
-  EXPECT_TRUE(PolkadotChainMetadata::FromChainName(kWestendAssetHubChainType));
-  EXPECT_TRUE(PolkadotChainMetadata::FromChainName(kPolkadotAssetHubChainType));
+PolkadotChainMetadata MakeWestendMetadata() {
+  return PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/4,
+      /*transaction_payment_pallet_index=*/0x1a,
+      /*transfer_allow_death_call_index=*/0,
+      /*ss58_prefix=*/42, kSpecVersion);
+}
 
-  EXPECT_FALSE(PolkadotChainMetadata::FromChainName("random text"));
-  EXPECT_FALSE(PolkadotChainMetadata::FromChainName(""));
+PolkadotChainMetadata MakePolkadotMetadata() {
+  return PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/5,
+      /*transaction_payment_pallet_index=*/0x20,
+      /*transfer_allow_death_call_index=*/0,
+      /*ss58_prefix=*/0, kSpecVersion);
+}
+
+PolkadotChainMetadata MakeWestendAssetHubMetadata() {
+  return PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/10,
+      /*transaction_payment_pallet_index=*/0x0b,
+      /*transfer_allow_death_call_index=*/0,
+      /*ss58_prefix=*/42, kSpecVersion);
+}
+
+PolkadotChainMetadata MakePolkadotAssetHubMetadata() {
+  return PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/10,
+      /*transaction_payment_pallet_index=*/0x0b,
+      /*transfer_allow_death_call_index=*/0,
+      /*ss58_prefix=*/0, kSpecVersion);
 }
 
 TEST(PolkadotExtrinsics, UnsignedTransfer) {
@@ -57,11 +70,9 @@ TEST(PolkadotExtrinsics, UnsignedTransfer) {
   // transfer_allow_death call and then serialize it appropriately to a hex
   // string.
 
-  auto testnet_metadata =
-      PolkadotChainMetadata::FromChainName(kWestendChainType).value();
+  auto testnet_metadata = MakeWestendMetadata();
 
-  auto mainnet_metadata =
-      PolkadotChainMetadata::FromChainName(kPolkadotChainType).value();
+  auto mainnet_metadata = MakePolkadotMetadata();
 
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
   base::HexStringToSpan(kBob, pubkey);
@@ -113,11 +124,9 @@ TEST(PolkadotExtrinsics, UnsignedTransferAssetHub) {
   // AssetHub, that we can still generate an extrinsic with the correct pallet
   // and call indices.
 
-  auto testnet_metadata =
-      PolkadotChainMetadata::FromChainName(kWestendAssetHubChainType).value();
+  auto testnet_metadata = MakeWestendAssetHubMetadata();
 
-  auto mainnet_metadata =
-      PolkadotChainMetadata::FromChainName(kPolkadotAssetHubChainType).value();
+  auto mainnet_metadata = MakePolkadotAssetHubMetadata();
 
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
   base::HexStringToSpan(kBob, pubkey);
@@ -172,8 +181,7 @@ TEST(PolkadotExtrinsics, UnsignedTransferNumericLimits) {
   // Test our extrinsic creation and serialization using numeric limits for a
   // uint128_t.
 
-  auto testnet_metadata =
-      PolkadotChainMetadata::FromChainName(kWestendChainType).value();
+  auto testnet_metadata = MakeWestendMetadata();
 
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
   base::HexStringToSpan(kBob, pubkey);
@@ -211,11 +219,9 @@ TEST(PolkadotExtrinsics, DecodedUnsignedTransfer) {
   // Test that we can appropriately decode the hex representation of an
   // extrinsic for a given relay chain.
 
-  auto testnet_metadata =
-      PolkadotChainMetadata::FromChainName(kWestendChainType).value();
+  auto testnet_metadata = MakeWestendMetadata();
 
-  auto mainnet_metadata =
-      PolkadotChainMetadata::FromChainName(kPolkadotChainType).value();
+  auto mainnet_metadata = MakePolkadotMetadata();
 
   // These extrinsics can be verified using the polkadot-js API as such:
   // clang-format off
@@ -260,11 +266,9 @@ TEST(PolkadotExtrinsics, DecodedUnsignedTransfer) {
 TEST(PolkadotExtrinsics, DecodedUnsignedTransferAssetHub) {
   // Test that we can decode extrinsics for a specific parachain, like AssetHub.
 
-  auto testnet_metadata =
-      PolkadotChainMetadata::FromChainName(kWestendAssetHubChainType).value();
+  auto testnet_metadata = MakeWestendAssetHubMetadata();
 
-  auto mainnet_metadata =
-      PolkadotChainMetadata::FromChainName(kPolkadotAssetHubChainType).value();
+  auto mainnet_metadata = MakePolkadotAssetHubMetadata();
 
   // These extrinsics can be verified using the polkadot-js API as such:
   // clang-format off
@@ -309,8 +313,7 @@ TEST(PolkadotExtrinsics, DecodedUnsignedTransferAssetHub) {
 TEST(PolkadotExtrinsics, DecodeNumericLimits) {
   // Test extrinsic decoding for numeric limits.
 
-  auto testnet_metadata =
-      PolkadotChainMetadata::FromChainName(kWestendChainType).value();
+  auto testnet_metadata = MakeWestendMetadata();
 
   {
     const char* testnet_extrinsic =
@@ -342,11 +345,9 @@ TEST(PolkadotExtrinsics, InvalidDecode) {
   // Test that subtle differences in the hex-encoded extrinsics will cause our
   // code to fail to parse.
 
-  auto testnet_metadata =
-      PolkadotChainMetadata::FromChainName(kWestendChainType).value();
+  auto testnet_metadata = MakeWestendMetadata();
 
-  auto mainnet_metadata =
-      PolkadotChainMetadata::FromChainName(kPolkadotChainType).value();
+  auto mainnet_metadata = MakePolkadotMetadata();
 
   {
     // Valid data, but not enough.
@@ -388,17 +389,13 @@ TEST(PolkadotExtrinsics, InvalidDecodeFromIncompatibleParachain) {
   const char* testnet_extrinsic =
       R"(98040400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913)";
 
-  auto testnet_metadata =
-      PolkadotChainMetadata::FromChainName(kWestendChainType).value();
+  auto testnet_metadata = MakeWestendMetadata();
 
-  auto mainnet_metadata =
-      PolkadotChainMetadata::FromChainName(kPolkadotChainType).value();
+  auto mainnet_metadata = MakePolkadotMetadata();
 
-  auto testnet_assethub_metadata =
-      PolkadotChainMetadata::FromChainName(kWestendAssetHubChainType).value();
+  auto testnet_assethub_metadata = MakeWestendAssetHubMetadata();
 
-  auto mainnet_assethub_metadata =
-      PolkadotChainMetadata::FromChainName(kPolkadotAssetHubChainType).value();
+  auto mainnet_assethub_metadata = MakePolkadotAssetHubMetadata();
 
   auto transfer_extrinsic =
       PolkadotUnsignedTransfer::Decode(testnet_metadata, testnet_extrinsic);
@@ -462,11 +459,9 @@ TEST(PolkadotExtrinsics, MortalityEncoding) {
 }
 
 TEST(PolkadotExtrinsics, SignaturePayload) {
-  auto testnet_metadata =
-      PolkadotChainMetadata::FromChainName(kWestendChainType).value();
+  auto testnet_metadata = MakeWestendMetadata();
 
-  auto mainnet_metadata =
-      PolkadotChainMetadata::FromChainName(kPolkadotChainType).value();
+  auto mainnet_metadata = MakePolkadotMetadata();
 
   uint32_t sender_nonce = 2;
 
@@ -505,8 +500,7 @@ TEST(PolkadotExtrinsics, SignaturePayload) {
 }
 
 TEST(PolkadotExtrinsics, SignedExtrinsic) {
-  auto testnet_metadata =
-      PolkadotChainMetadata::FromChainName(kWestendChainType).value();
+  auto testnet_metadata = MakeWestendMetadata();
 
   std::array<uint8_t, 32> recipient = {};
   base::HexStringToSpan(kBob, recipient);
@@ -635,8 +629,7 @@ TEST(PolkadotExtrinsics, UnsignedExtrinsicBase) {
   std::string_view testnet_extrinsic =
       R"(98040400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913)";
 
-  auto testnet_metadata =
-      PolkadotChainMetadata::FromChainName(kWestendChainType).value();
+  auto testnet_metadata = MakeWestendMetadata();
 
   auto transfer_extrinsic =
       PolkadotUnsignedTransfer::Decode(testnet_metadata, testnet_extrinsic);

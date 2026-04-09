@@ -186,6 +186,8 @@ static_library("browser") {
     "polkadot/polkadot_block_header.h",
     "polkadot/polkadot_block_tracker.cc",
     "polkadot/polkadot_block_tracker.h",
+    "polkadot/polkadot_chain_metadata.cc",
+    "polkadot/polkadot_chain_metadata.h",
     "polkadot/polkadot_extrinsic.cc",
     "polkadot/polkadot_extrinsic.h",
     "polkadot/polkadot_signed_transfer_task.cc",
@@ -678,6 +680,8 @@ if (is_ios) {
       "//brave/components/test/data/brave_wallet/cardano/cardano_sdk_cip30/test_vectors.json",
       "//brave/components/test/data/brave_wallet/cardano/cardano_sdk_crypto_slip23/index.mts",
       "//brave/components/test/data/brave_wallet/cardano/cardano_sdk_crypto_slip23/test_vectors.json",
+      "//brave/components/test/data/brave_wallet/polkadot/chain_metadata/state_getMetadata_polkadot.json",
+      "//brave/components/test/data/brave_wallet/polkadot/chain_metadata/state_getMetadata_westend.json",
       "//brave/third_party/bitcoin-core/src/src/test/data/key_io_valid.json",
     ]
     outputs = [ "{{bundle_resources_dir}}/" +
@@ -761,6 +765,7 @@ source_set("unit_tests") {
     "nft_metadata_fetcher_unittest.cc",
     "password_encryptor_unittest.cc",
     "polkadot/polkadot_block_header_unittest.cc",
+    "polkadot/polkadot_chain_metadata_unittest.cc",
     "polkadot/polkadot_extrinsic_unittest.cc",
     "polkadot/polkadot_import_keyring_unittest.cc",
     "polkadot/polkadot_keyring_unittest.cc",

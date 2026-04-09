@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_SUBSTRATE_RPC_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_SUBSTRATE_RPC_H_
 
+#include <vector>
+
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -59,8 +61,8 @@ class PolkadotSubstrateRpc {
       base::OnceCallback<void(std::optional<PolkadotRuntimeVersion>,
                               std::optional<std::string>)>;
 
-  using GetMetadataCallback =
-      base::OnceCallback<void(base::expected<std::string, std::string>)>;
+  using GetMetadataCallback = base::OnceCallback<void(
+      base::expected<std::vector<uint8_t>, std::string>)>;
 
   using SubmitExtrinsicCallback =
       base::OnceCallback<void(std::optional<std::string>,
@@ -137,8 +139,8 @@ class PolkadotSubstrateRpc {
       std::optional<base::span<uint8_t, kPolkadotBlockHashSize>> block_hash,
       GetRuntimeVersionCallback callback);
 
-  // Fetches runtime metadata for |chain_id| and returns it as a hex-encoded
-  // SCALE blob. The callback receives base::expected<std::string, std::string>
+  // Fetches runtime metadata for |chain_id| and returns it as SCALE bytes.
+  // The callback receives base::expected<std::vector<uint8_t>, std::string>
   // where the value is metadata on success and the error contains a human-
   // readable failure message for transport/RPC/parsing failures.
   void GetMetadata(std::string_view chain_id, GetMetadataCallback callback);

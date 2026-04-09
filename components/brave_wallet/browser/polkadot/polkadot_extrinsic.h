@@ -13,7 +13,7 @@
 #include <string_view>
 
 #include "base/containers/span.h"
-#include "brave/components/brave_wallet/browser/internal/polkadot_extrinsic.rs.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
@@ -62,48 +62,6 @@ class PolkadotExtrinsicMetadata {
   // individual mortality periods so it's best to build the scaffolding for this
   // now.
   uint32_t mortality_period_ = 64;
-};
-
-// Using the name of the chain spec provided here:
-// https://github.com/w3f/PSPs/blob/b6d570173146e7a012cf43d270177e02ed886e2e/PSPs/drafts/psp-6.md#154-system_chain
-//
-// we obtain the runtime metadata associated with the chain.
-//
-// In the future, the chain spec name will most likely be replaced by the hex
-// string that describes the capabilities of the connected remote described
-// here:
-// https://github.com/w3f/PSPs/blob/b6d570173146e7a012cf43d270177e02ed886e2e/PSPs/drafts/psp-6.md#1119-state_getmetadata
-// https://spec.polkadot.network/sect-metadata
-//
-// To this end, we're able to support the relay chain and multiple independent
-// parachains which will all contain their own pallet indices for the common
-// pallets we need like Balance.
-class PolkadotChainMetadata {
- public:
-  PolkadotChainMetadata() = delete;
-  PolkadotChainMetadata(const PolkadotChainMetadata&);
-  PolkadotChainMetadata(PolkadotChainMetadata&&) noexcept;
-  ~PolkadotChainMetadata();
-
-  PolkadotChainMetadata& operator=(PolkadotChainMetadata&&) noexcept;
-
-  // Fallibly retrieve the metadata associated with the provided chain spec.
-  static std::optional<PolkadotChainMetadata> FromChainName(
-      std::string_view chain_name);
-
-  // Obtain a reference to the underlying opaque type so that it can be passed
-  // to Rust routines.
-  const CxxPolkadotChainMetadata& operator*() const;
-
-  // Returns the ss58 prefix used by the chain when encoding/working with ss58
-  // addresses.
-  uint16_t GetSs58Prefix() const;
-
- private:
-  explicit PolkadotChainMetadata(
-      ::rust::Box<CxxPolkadotChainMetadata> chain_metadata);
-
-  rust::Box<CxxPolkadotChainMetadata> chain_metadata_;
 };
 
 // The unsigned extrinsic base class meant to be a type-erasing view of a

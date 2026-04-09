@@ -1941,7 +1941,8 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
 
   EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
 
-  base::test::TestFuture<base::expected<std::string, std::string>> future;
+  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+      future;
 
   {
     // Successful RPC call (nullary).
@@ -1973,7 +1974,10 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
 
     auto metadata = future.Take();
     ASSERT_TRUE(metadata.has_value());
-    EXPECT_EQ(*metadata, "0x6d65746164617461");
+    std::vector<uint8_t> expected_bytes;
+    ASSERT_TRUE(
+        PrefixedHexStringToBytes("0x6d65746164617461", &expected_bytes));
+    EXPECT_EQ(*metadata, expected_bytes);
   }
 
   {

@@ -675,7 +675,13 @@ void PolkadotSubstrateRpc::OnGetMetadata(GetMetadataCallback callback,
         base::unexpected(WalletParsingErrorMessage()));
   }
 
-  return std::move(callback).Run(base::ok(*res->result));
+  std::vector<uint8_t> metadata_bytes;
+  if (!PrefixedHexStringToBytes(*res->result, &metadata_bytes)) {
+    return std::move(callback).Run(
+        base::unexpected(WalletParsingErrorMessage()));
+  }
+
+  return std::move(callback).Run(base::ok(std::move(metadata_bytes)));
 }
 
 void PolkadotSubstrateRpc::SubmitExtrinsic(std::string_view chain_id,
