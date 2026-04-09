@@ -30,25 +30,31 @@ struct RegisterFinalizeResult {
   // Currently empty, serves as a placeholder for success.
 };
 
+struct RegisterVerifyResult {
+  // Currently empty, serves as a placeholder for success.
+};
+
 enum RegisterErrorCode {
   // Client-side errors:
-  kOpaqueError                       = -3,
-  kVerificationTokenEncryptionFailed = -2,
-  kVerificationTokenDecryptionFailed = -1,
+  kAuthenticationTokenEncryptionFailed = -5,
+  kUserNotInTheVerificationState       = -4,
+  kOpaqueError                         = -3,
+  kVerificationTokenEncryptionFailed   = -2,
+  kVerificationTokenDecryptionFailed   = -1,
   // Server-side errors:
-  kMiscServerError                   = 0,
+  kMiscServerError                     = 0,
   // /v2/accounts/password/init:
   // - internal:
-  kNewAccountEmailRequired           = 11005,
-  kIntentNotAllowed                  = 13003,
+  kNewAccountEmailRequired             = 11005,
+  kIntentNotAllowed                    = 13003,
   // - user-facing:
-  kTooManyVerifications              = 13001,
-  kAccountExists                     = 13004,
-  kEmailDomainNotSupported           = 13006,
+  kTooManyVerifications                = 13001,
+  kAccountExists                       = 13004,
+  kEmailDomainNotSupported             = 13006,
   // /v2/accounts/password/finalize:
   // - internal:
-  kInterimPasswordStateNotFound      = 14001,
-  kInterimPasswordStateExpired       = 14002,
+  kInterimPasswordStateNotFound        = 14001,
+  kInterimPasswordStateExpired         = 14002,
   // - user-facing: -
 };
 
@@ -203,6 +209,9 @@ interface Authentication {
   //         `RegisterError` on failure.
   RegisterFinalize(string encryptedVerificationToken, string serializedRecord)
     => result<RegisterFinalizeResult, RegisterError>;
+
+  RegisterVerify(string code)
+    => result<RegisterVerifyResult, RegisterError>;
 
   // Resends the confirmation email to the user during the registration process.
   // Returns `ResendConfirmationEmailResult` on success, or
