@@ -38,7 +38,7 @@ void ClosePanel(content::WebContents* web_contents) {
   }
 
   if (SidePanelUI* ui = browser->GetFeatures().side_panel_ui()) {
-    ui->Close(SidePanelEntry::PanelType::kContent);
+    ui->Close(SidePanelType::kContent);
   }
 }
 

@@ -157,10 +157,9 @@ void SpeedreaderToolbarDataHandlerImpl::AiChat() {
     return;
   }
 
-  if (auto entry =
-          side_panel->GetCurrentEntryId(SidePanelEntry::PanelType::kContent);
+  if (auto entry = side_panel->GetCurrentEntryId(SidePanelType::kContent);
       entry == SidePanelEntryId::kChatUI) {
-    side_panel->Close(SidePanelEntry::PanelType::kContent);
+    side_panel->Close(SidePanelType::kContent);
   } else {
     side_panel->Show(SidePanelEntryId::kChatUI);
   }
