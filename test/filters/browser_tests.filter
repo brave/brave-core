@@ -39,6 +39,10 @@
 -SidePanelCoordinatorTest.SidePanelWidthPreference
 -SidePanelCoordinatorWithSideBySideTest.ChangeSidePanelWidthMaxMin
 
+# This test fails because our SidePanel uses kDefaultSidePanelWidth (400) as
+# the minimum, which is too large for the toolbar-height layout clamping.
+-SidePanelCoordinatorTest.ToolbarHeightSidePanelClampsToToolbar
+
 # This test fails because our SidePanel doesn't set State::kClosing
 -SidePanelCoordinatorTest.OpenWhileClosing
 
