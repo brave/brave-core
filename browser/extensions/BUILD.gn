@@ -91,7 +91,6 @@ source_set("extensions") {
   deps = [
     ":brave_prefs_util_impl",
     ":resources",
-    "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser:browser_process",
     "//brave/browser/brave_search",
@@ -139,6 +138,7 @@ source_set("extensions") {
 
   public_deps = [
     ":component_loader",
+    "//base",
     "//extensions/browser",
   ]
 

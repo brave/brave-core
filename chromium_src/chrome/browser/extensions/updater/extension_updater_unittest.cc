@@ -38,7 +38,6 @@ TEST_F(ExtensionUpdaterTest, BraveExtensionAutoUpdateDisabledStart) {
   updater.Start();
 
   EXPECT_FALSE(updater.WillCheckSoon());
-  RunUntilIdle();
 }
 
 // When the feature is disabled, NextCheck() must not trigger CheckNow() or
@@ -66,7 +65,6 @@ TEST_F(ExtensionUpdaterTest, BraveExtensionAutoUpdateDisabledNextCheck) {
 
   // Simulate the scheduler calling NextCheck() directly.
   SimulateTimerFired(&updater);
-  RunUntilIdle();
 }
 
 }  // namespace extensions
