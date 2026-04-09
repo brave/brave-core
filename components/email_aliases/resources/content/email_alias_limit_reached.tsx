@@ -3,13 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {
-  color,
-  font,
-  radius,
-  spacing,
-  typography,
-} from '@brave/leo/tokens/css/variables'
+import { color, font, radius, spacing } from '@brave/leo/tokens/css/variables'
 import * as React from 'react'
 import { formatLocale, getLocale } from '$web-common/locale'
 import Alert from '@brave/leo/react/alert'
@@ -24,7 +18,6 @@ const SectionCol = styled(Col)`
 
 const LimitAlertTitle = styled.div`
   font: ${font.heading.h4};
-  letter-spacing: ${typography.letterSpacing.large};
 `
 
 const LimitDescription = styled.div`
@@ -33,7 +26,6 @@ const LimitDescription = styled.div`
 
 const ListLabel = styled.div`
   font: ${font.small.semibold};
-  line-height: ${typography.lineHeight.small};
   margin: 0;
   padding: 0 ${spacing.s};
 `
@@ -46,11 +38,13 @@ const AliasListBox = styled.div`
 `
 
 const AliasRow = styled.div<{ showDivider: boolean }>`
-  font-weight: ${font.default.semibold};
+  font: ${font.default.semibold};
   padding: ${spacing.m} ${spacing.l};
   gap: 8px;
   border-bottom: ${(p) =>
-    p.showDivider ? `1px solid ${color.divider.subtle}` : 'none'};
+    p.showDivider
+      ? `1px solid ${color.divider.subtle}`
+      : '1px solid transparent'};
 `
 
 export const EmailAliasLimitReached = ({
@@ -69,15 +63,15 @@ export const EmailAliasLimitReached = ({
         </LimitAlertTitle>
         <LimitDescription>
           {formatLocale(S.SETTINGS_EMAIL_ALIASES_LIMIT_REACHED_ALERT_BODY, {
-            $1: String(aliasLimit),
+            $1: aliasLimit,
           })}
         </LimitDescription>
       </Alert>
       <div>
         <ListLabel>
           {formatLocale(S.SETTINGS_EMAIL_ALIASES_YOUR_ALIASES_COUNT_LABEL, {
-            $1: String(count),
-            $2: String(aliasLimit),
+            $1: count,
+            $2: aliasLimit,
           })}
         </ListLabel>
         <AliasListBox>

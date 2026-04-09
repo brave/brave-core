@@ -330,7 +330,7 @@ export const EmailAliasModal = ({
       )}
       {limitReached ? (
         <EmailAliasLimitReached
-          aliases={aliases ?? []}
+          aliases={aliases!}
           aliasLimit={aliasLimit}
         />
       ) : (
