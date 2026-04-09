@@ -230,7 +230,7 @@ TEST(FilecoinKeyring, AddNewHDAccount_OfacSanctionedAddress) {
   auto result = keyring.AddNewHDAccount(0);
   EXPECT_FALSE(result) << "OFAC sanctioned Filecoin address should be rejected";
 
-  registry->UpdateRestrictedAddressesList({});
+  registry->UpdateOfacAddressesList({});
 }
 
 TEST(FilecoinKeyring, ImportAccount_SECP256K1_OfacSanctionedAddress) {
@@ -269,7 +269,7 @@ TEST(FilecoinKeyring, ImportAccount_SECP256K1_OfacSanctionedAddress) {
   EXPECT_FALSE(result)
       << "OFAC sanctioned Filecoin SECP256K1 address should be rejected";
 
-  registry->UpdateRestrictedAddressesList({});
+  registry->UpdateOfacAddressesList({});
 }
 
 TEST(FilecoinKeyring, ImportAccount_BLS_OfacSanctionedAddress) {
@@ -309,7 +309,7 @@ TEST(FilecoinKeyring, ImportAccount_BLS_OfacSanctionedAddress) {
   EXPECT_FALSE(result)
       << "OFAC sanctioned Filecoin BLS address should be rejected";
 
-  registry->UpdateRestrictedAddressesList({});
+  registry->UpdateOfacAddressesList({});
 }
 
 }  // namespace brave_wallet

@@ -420,7 +420,7 @@ TEST(EthereumKeyringUnitTest, AddNewHDAccount_OfacSanctionedAddress) {
   auto result = keyring.AddNewHDAccount(0);
   EXPECT_FALSE(result) << "OFAC sanctioned Ethereum address should be rejected";
 
-  registry->UpdateRestrictedAddressesList({});
+  registry->UpdateOfacAddressesList({});
 }
 
 TEST(EthereumKeyringUnitTest, ImportAccount_OfacSanctionedAddress) {
@@ -453,7 +453,7 @@ TEST(EthereumKeyringUnitTest, ImportAccount_OfacSanctionedAddress) {
   auto result = keyring.ImportAccount(private_key);
   EXPECT_FALSE(result) << "OFAC sanctioned Ethereum address should be rejected";
 
-  registry->UpdateRestrictedAddressesList({});
+  registry->UpdateOfacAddressesList({});
 }
 
 }  // namespace brave_wallet
