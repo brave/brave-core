@@ -496,6 +496,28 @@ class SettingsViewController: TableViewController {
           ),
           Row(
             text: L10nUtils.string(
+              messageId: .SETTINGS_BRAVE_ACCOUNT_ENTER_REGISTRATION_CODE_BUTTON_LABEL
+            ),
+            selection: { [unowned self] in
+              let controller = ChromeWebUIController(braveCore: braveCore, isPrivateBrowsing: false)
+              let container = UINavigationController(rootViewController: controller)
+              controller.title = L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)
+              controller.webView.load(URLRequest(url: URL(string: "brave://account")!))
+              controller.navigationItem.rightBarButtonItem = .init(
+                systemItem: .done,
+                primaryAction: .init { [unowned container] _ in
+                  container.dismiss(animated: true)
+                }
+              )
+              present(container, animated: true)
+            },
+            cellClass: BraveAccountIconCell.self,
+            context: [
+              BraveAccountIconCell.textColor: view.tintColor
+            ]
+          ),
+          Row(
+            text: L10nUtils.string(
               messageId: .SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL
             ),
             selection: { [unowned self] in braveAccountAuthentication.cancelRegistration() },
