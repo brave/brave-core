@@ -40,14 +40,12 @@ using views::ShapeContextTokensOverride::kRoundedCornersBorderRadius;
 
 namespace {
 
-SidePanel::HorizontalAlignment GetHorizontalAlignment(
-    PrefService* pref_service,
-    SidePanelEntry::PanelType type) {
+SidePanel::HorizontalAlignment GetHorizontalAlignment(PrefService* pref_service,
+                                                      SidePanelType type) {
   bool is_right_aligned =
       pref_service->GetBoolean(prefs::kSidePanelHorizontalAlignment);
-  is_right_aligned = type == SidePanelEntry::PanelType::kToolbar
-                         ? !is_right_aligned
-                         : is_right_aligned;
+  is_right_aligned =
+      type == SidePanelType::kToolbar ? !is_right_aligned : is_right_aligned;
   return is_right_aligned ? SidePanel::HorizontalAlignment::kRight
                           : SidePanel::HorizontalAlignment::kLeft;
 }
@@ -76,7 +74,7 @@ END_METADATA
 }  // namespace
 
 SidePanel::SidePanel(BrowserView* browser_view,
-                     SidePanelEntry::PanelType type,
+                     SidePanelType type,
                      bool has_border)
     : horizontal_alignment_(
           GetHorizontalAlignment(browser_view->GetProfile()->GetPrefs(), type)),
@@ -112,7 +110,6 @@ SidePanel::SidePanel(BrowserView* browser_view,
       prefs::kSidePanelHorizontalAlignment,
       base::BindRepeating(&SidePanel::UpdateHorizontalAlignment,
                           base::Unretained(this)));
-
 }
 
 SidePanel::~SidePanel() {
@@ -186,7 +183,7 @@ gfx::Size SidePanel::GetMinimumSize() const {
   // fits in the remaining space beside the toolbar. Use the upstream-compatible
   // minimum for toolbar panels so that clamping logic works correctly.
   // The content-height panel (inside the sidebar) keeps kDefaultSidePanelWidth.
-  if (type_ == SidePanelEntry::PanelType::kToolbar) {
+  if (type_ == SidePanelType::kToolbar) {
     return gfx::Size(SidePanelEntry::kSidePanelDefaultContentWidth, 0);
   }
   return gfx::Size(sidebar::kDefaultSidePanelWidth, 0);
