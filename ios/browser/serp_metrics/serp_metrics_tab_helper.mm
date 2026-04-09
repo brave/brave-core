@@ -3,12 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/serp_metrics/serp_metrics_tab_helper.h"
+#include "brave/ios/browser/serp_metrics/serp_metrics_tab_helper.h"
 
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/feature_list.h"
-#include "brave/browser/serp_metrics/serp_metrics_service_factory.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/serp_metrics/serp_classifier.h"
 #include "brave/components/serp_metrics/serp_classifier_utils.h"
@@ -16,12 +15,13 @@
 #include "brave/components/serp_metrics/serp_metrics.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "brave/components/serp_metrics/serp_metrics_service.h"
-#include "chrome/browser/browser_process.h"
+#include "brave/ios/browser/serp_metrics/serp_metrics_service_factory_ios.h"
 #include "components/prefs/pref_service.h"
-#include "components/search_engines/search_engine_utils.h"
-#include "content/public/browser/browser_context.h"
-#include "content/public/browser/navigation_handle.h"
-#include "content/public/browser/web_contents.h"
+#include "ios/chrome/browser/shared/model/application_context/application_context.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/web/public/browser_state.h"
+#include "ios/web/public/navigation/navigation_context.h"
+#include "ios/web/public/web_state.h"
 #include "ui/base/page_transition_types.h"
 
 namespace serp_metrics {
@@ -29,7 +29,8 @@ namespace serp_metrics {
 namespace {
 
 bool IsAllowedToSendUsagePings() {
-  return g_browser_process->local_state()->GetBoolean(kStatsReportingEnabled);
+  return GetApplicationContext()->GetLocalState()->GetBoolean(
+      kStatsReportingEnabled);
 }
 
 bool ShouldRecordSearchEngine(SearchEngineType search_engine_type,
@@ -41,33 +42,37 @@ bool ShouldRecordSearchEngine(SearchEngineType search_engine_type,
 
 }  // namespace
 
-SerpMetricsTabHelper::~SerpMetricsTabHelper() = default;
+SerpMetricsTabHelper::~SerpMetricsTabHelper() {
+  if (web_state_) {
+    web_state_->RemoveObserver(this);
+  }
+}
 
 // static
-void SerpMetricsTabHelper::MaybeCreateForWebContents(
-    content::WebContents* web_contents) {
-  CHECK(web_contents);
+void SerpMetricsTabHelper::MaybeCreateForWebState(web::WebState* web_state) {
+  CHECK(web_state);
   CHECK(base::FeatureList::IsEnabled(serp_metrics::kSerpMetricsFeature));
 
   SerpMetricsService* serp_metrics_service =
-      SerpMetricsServiceFactory::GetFor(web_contents->GetBrowserContext());
+      SerpMetricsServiceFactoryIOS::GetForProfile(
+          ProfileIOS::FromBrowserState(web_state->GetBrowserState()));
   if (!serp_metrics_service) {
-    // `SerpMetricsService` is null for off-the-record profiles and may be null
-    // in tests.
+    // `SerpMetricsService` is null for off-the-record profiles.
     return;
   }
 
   SerpMetrics* serp_metrics = serp_metrics_service->Get();
-  CreateForWebContents(web_contents, CHECK_DEREF(serp_metrics));
+  CreateForWebState(web_state, CHECK_DEREF(serp_metrics));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-SerpMetricsTabHelper::SerpMetricsTabHelper(content::WebContents* web_contents,
+SerpMetricsTabHelper::SerpMetricsTabHelper(web::WebState* web_state,
                                            SerpMetrics& serp_metrics)
-    : content::WebContentsObserver(web_contents),
-      content::WebContentsUserData<SerpMetricsTabHelper>(*web_contents),
-      serp_metrics_(serp_metrics) {}
+    : web_state_(web_state), serp_metrics_(serp_metrics) {
+  CHECK(web_state_);
+  web_state_->AddObserver(this);
+}
 
 bool SerpMetricsTabHelper::IsSameSerpAsLastRecorded(const GURL& url) const {
   return last_recorded_serp_url_ &&
@@ -82,6 +87,10 @@ void SerpMetricsTabHelper::MaybeClassifyAndRecordSearchEngineForUrl(
 
   std::optional<SearchEngineType> search_engine_type =
       MaybeClassifySearchEngine(url);
+  if (!search_engine_type) {
+    return;
+  }
+
   if (search_engine_type &&
       ShouldRecordSearchEngine(*search_engine_type, url)) {
     RecordSearchEngine(*search_engine_type);
@@ -111,21 +120,21 @@ void SerpMetricsTabHelper::RecordSearchEngine(
 }
 
 void SerpMetricsTabHelper::DidFinishNavigation(
-    content::NavigationHandle* navigation_handle) {
+    web::WebState* web_state,
+    web::NavigationContext* navigation_context) {
   if (!IsAllowedToSendUsagePings()) {
     // The user has opted out of usage pings, so SERP metrics are not collected.
     return;
   }
 
-  if (!navigation_handle->IsInPrimaryMainFrame() ||
-      !navigation_handle->HasCommitted()) {
+  if (!navigation_context->HasCommitted()) {
     return;
   }
 
-  const bool is_new_navigation =
-      ui::PageTransitionIsNewNavigation(navigation_handle->GetPageTransition());
+  const bool is_new_navigation = ui::PageTransitionIsNewNavigation(
+      navigation_context->GetPageTransition());
 
-  const GURL& url = navigation_handle->GetURL();
+  const GURL& url = navigation_context->GetUrl();
 
   if (!is_new_navigation || !IsSameSerpAsLastRecorded(url)) {
     // If this isn't a new navigation or it doesn't go to the same SERP as the
@@ -137,6 +146,9 @@ void SerpMetricsTabHelper::DidFinishNavigation(
   MaybeClassifyAndRecordSearchEngineForUrl(url);
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(SerpMetricsTabHelper);
+void SerpMetricsTabHelper::WebStateDestroyed(web::WebState* web_state) {
+  web_state_->RemoveObserver(this);
+  web_state_ = nullptr;
+}
 
 }  // namespace serp_metrics

@@ -7,6 +7,8 @@ source_set("serp_metrics") {
   sources = [
     "serp_metrics_service_factory_ios.h",
     "serp_metrics_service_factory_ios.mm",
+    "serp_metrics_tab_helper.h",
+    "serp_metrics_tab_helper.mm",
   ]
 
   public_deps = [
@@ -21,7 +23,35 @@ source_set("serp_metrics") {
     "//brave/components/time_period_storage",
     "//components/keyed_service/core",
     "//components/pref_registry",
+    "//components/search_engines",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/profile",
+    "//ios/web/public",
+    "//ui/base",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "serp_metrics_tab_helper_unittest.mm" ]
+
+  deps = [
+    ":serp_metrics",
+    "//base/test:test_support",
+    "//brave/components/constants",
+    "//brave/components/serp_metrics",
+    "//brave/components/serp_metrics:features",
+    "//brave/components/time_period_storage",
+    "//brave/ios/browser/brave_stats",
+    "//components/prefs:test_support",
+    "//ios/chrome/test:test_support",
+    "//ios/web/public/test",
+    "//ios/web/public/test/fakes",
+    "//net",
+    "//testing/gtest",
+    "//ui/base",
+    "//url",
   ]
 }
