@@ -153,7 +153,7 @@ bool IsBraveSummaryModelEnabled() {
 
 BASE_FEATURE(kRichSearchWidgets, base::FEATURE_ENABLED_BY_DEFAULT);
 
-BASE_FEATURE(kAIChatConversationAPIV2, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kAIChatConversationAPIV2, base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsAIChatConversationAPIV2Enabled() {
   return base::FeatureList::IsEnabled(features::kAIChatConversationAPIV2);
@@ -175,7 +175,7 @@ bool IsCodeExecutionToolEnabled() {
 }
 
 #if BUILDFLAG(IS_IOS)
-BASE_FEATURE(kAIChatWebUIEnabled, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kAIChatWebUIEnabled, base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsAIChatWebUIEnabled() {
   return base::FeatureList::IsEnabled(kAIChatWebUIEnabled);
