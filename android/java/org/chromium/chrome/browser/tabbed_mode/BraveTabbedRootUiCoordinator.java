@@ -39,7 +39,9 @@ import org.chromium.chrome.browser.keyboard_accessory.ManualFillingComponent;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
+import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.safe_browsing.AdvancedProtectionCoordinator;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
@@ -71,6 +73,9 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
+    // To delete in bytecode, parent class field will be used instead.
+    private AdvancedProtectionCoordinator mAdvancedProtectionCoordinator;
+
     private final AppCompatActivity mBraveActivity;
     private final OneshotSupplier<HubManager> mHubManagerSupplier;
     private final MonotonicObservableSupplier<EdgeToEdgeController>
@@ -189,6 +194,19 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
         mBraveActivity = activity;
         mHubManagerSupplier = hubManagerSupplier;
         mBraveEdgeToEdgeControllerSupplier = edgeToEdgeSupplier;
+    }
+
+    @Override
+    public void onFinishNativeInitialization() {
+        super.onFinishNativeInitialization();
+
+        // Replace the upstream coordinator (which uses PrivacySettings.class) with one that
+        // points to BravePrivacySettings so the advanced protection message navigates correctly.
+        if (mAdvancedProtectionCoordinator != null) {
+            mAdvancedProtectionCoordinator.destroy();
+        }
+        mAdvancedProtectionCoordinator =
+                new AdvancedProtectionCoordinator(mWindowAndroid, BravePrivacySettings.class);
     }
 
     @Override

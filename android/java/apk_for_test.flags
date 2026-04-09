@@ -774,6 +774,7 @@
 
 -keep class org.chromium.chrome.browser.tabbed_mode.TabbedRootUiCoordinator {
     public <init>(...);
+    *** mAdvancedProtectionCoordinator;
 }
 
 -keep class org.chromium.chrome.browser.tabbed_mode.BraveTabbedRootUiCoordinator {
