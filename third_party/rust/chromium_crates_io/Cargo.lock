@@ -1160,7 +1160,7 @@ dependencies = [
 
 [[package]]
 name = "indexmap"
-version = "2.13.0"
+version = "2.13.1"
 dependencies = [
  "equivalent",
  "hashbrown 0.16.1",
@@ -1237,7 +1237,7 @@ dependencies = [
 
 [[package]]
 name = "libc"
-version = "0.2.183"
+version = "0.2.184"
 
 [[package]]
 name = "libm"
