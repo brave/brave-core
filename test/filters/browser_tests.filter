@@ -1623,13 +1623,6 @@
 -HistoryEmbeddingsWithUrlFilterBrowserTest.DoesNotFilterUrlNotOnBlocklist
 -HistoryEmbeddingsWithUrlFilterBrowserTest.FilterUrlOnBlocklist
 
-# This test fails because we disable kTpcdMetadataGrants
--All/ManagerPrefsBrowserTest.NoSpecificBlockedCookieSpecs*
--All/ManagerPrefsBrowserTest.RelevantUserCookieSpecsPrecede/*
--GetAffectedUrlsForThirdPartyCookieMetadataTest.*
--ManagerBrowserTest.TpcdDtGracePeriodEnforced_InValidDtToken
--PrivacySandboxInternalsMojoTest.GetTpcdMetadataGrants
-
 # These tests fail because we override prefs::kSearchSuggestEnabled to false.
 -All/SearchEnginePreconnectorEnabledOnlyBrowserTest.AllowedSearch/*
 -All/SearchEnginePreconnectorWithBindReceiversEverytimeFeatureBrowserTest.BindNewRemoteOnEachPreconnect/*
