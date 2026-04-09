@@ -1,10 +1,10 @@
 diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
-index 718b28f411f7c32af45dc1e1cf4b4deeba78b06b..adccba81003ba752e09a0f149e8bc01c32f09009 100644
+index 5009ca7758d4dc0b002673e400b1cffb6d2c25ea..3725a8cf17974d18ca23e32144f99994fa9b6da0 100644
 --- a/content/browser/BUILD.gn
 +++ b/content/browser/BUILD.gn
-@@ -3774,6 +3774,7 @@ source_set("browser") {
-       "surface_embed/surface_embed_connector_impl.h",
-     ]
+@@ -3793,6 +3793,7 @@ source_set("browser") {
+     deps += [ "//components/vrp_flags" ]
+     public_deps += [ "//components/vrp_flags:mojom" ]
    }
 +  import("//brave/content/browser/sources.gni") sources += brave_content_browser_sources deps += brave_content_browser_deps
  }

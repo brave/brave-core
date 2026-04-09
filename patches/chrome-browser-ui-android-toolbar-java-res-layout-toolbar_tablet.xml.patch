@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
-index 49abb2500e1b3bc32c900216b849d9df43c209dd..ad15507e1722c98e17165c70fcb89c092bbdf3a0 100644
+index 4e18c1dc7330c4e1dc788fa4fea5289b9899f291..9c46c82962ddf7eb9de9348c97d76f72bd021b58 100644
 --- a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
 +++ b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
-@@ -79,6 +79,7 @@ found in the LICENSE file.
-             android:background="@drawable/modern_toolbar_tablet_text_box_background"
-             android:paddingEnd="@dimen/location_bar_end_padding"
-             android:clipToPadding="false" />
-+        <include layout="@layout/brave_toolbar" android:layout_height="@dimen/modern_toolbar_background_size" android:layout_width="wrap_content" android:layout_gravity="center_vertical" />
+@@ -85,6 +85,7 @@ found in the LICENSE file.
+           android:paddingEnd="@dimen/location_bar_end_padding"
+           android:clipToPadding="false"
+           />
++      <include layout="@layout/brave_toolbar" android:layout_height="@dimen/modern_toolbar_background_size" android:layout_width="wrap_content" android:layout_gravity="center_vertical" />
+     </FrameLayout>
  
-         <!-- TODO(crbug.com/433976037): Reset horizontal margins when optional button expands to action chip. -->
-         <ViewStub
+     <!-- TODO(crbug.com/433976037): Reset horizontal margins when optional button expands to action chip. -->

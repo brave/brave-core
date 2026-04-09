@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/first_run/upgrade_util_win.cc b/chrome/browser/first_run/upgrade_util_win.cc
-index c940c926c173d8477f18d230a7e8605fdc5f900e..0ae584f590cce10aec07d45b970f1396fd0fb9b2 100644
+index 043740980c68875ff846cd40b69852033377378c..cc7542b8bef8d62a42d355b4d6ea43f4e7870d59 100644
 --- a/chrome/browser/first_run/upgrade_util_win.cc
 +++ b/chrome/browser/first_run/upgrade_util_win.cc
 @@ -62,7 +62,7 @@
@@ -28,5 +28,5 @@ index c940c926c173d8477f18d230a7e8605fdc5f900e..0ae584f590cce10aec07d45b970f1396
 +  return InvokeGoogleUpdateForRenameBrave();
 +#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || defined(OFFICIAL_BUILD)
    // This has been identified as very slow on some startups. Detailed trace
-   // events below try to shine a light on each steps. crbug.com/1252004
+   // events below try to shine a light on each steps. crbug.com/40792898
    TRACE_EVENT0("startup", "upgrade_util::InvokeGoogleUpdateForRename");

@@ -1,9 +1,9 @@
 diff --git a/build/dotfile_settings.gni b/build/dotfile_settings.gni
-index 928b3215b71cbf1b36ba182e3f38ef02fe9d1da0..ef404ebcd7e97c4290b12fddd0ed5279e64f0976 100644
+index dc47c40070b238996d694663e540c75c36fabb88..432e7874fa75514125f2cfc57458e5d7746e0145 100644
 --- a/build/dotfile_settings.gni
 +++ b/build/dotfile_settings.gni
-@@ -39,3 +39,4 @@ build_dotfile_settings = {
-     "//build/util/branding.gni",
+@@ -63,3 +63,4 @@ build_dotfile_settings = {
+     "//build/modules/BUILD.gn",
    ]
  }
 +import("//brave/build/dotfile_settings.gni") build_dotfile_settings.exec_script_allowlist += brave_exec_script_allowlist

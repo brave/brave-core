@@ -16,6 +16,6 @@ index b8a50b3999318cdab31d7b285976a95c7ea88740..e4f085d55b5e2cf9d68937c62243271a
      private void updateSyncPreferences() {
          String signedInAccountName =
 +                mGoogleActivityControls != null ? "" : // We want the next `if` to be always false.
-                 CoreAccountInfo.getEmailFrom(
-                         getIdentityManager()
-                                 .getPrimaryAccountInfo(
+                 CoreAccountInfo.getEmailFrom(getIdentityManager().getPrimaryAccountInfo());
+         // May happen if account is removed from the device while this screen is shown.
+         if (signedInAccountName == null) {
