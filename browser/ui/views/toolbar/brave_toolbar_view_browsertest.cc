@@ -131,7 +131,7 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
   }
 #endif
 
-  void Init(Browser* browser) {
+  void Init(BrowserWindowInterface* browser) {
     BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
     ASSERT_NE(browser_view, nullptr);
 
@@ -165,7 +165,7 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  bool is_ai_chat_button_shown(Browser* browser) {
+  bool is_ai_chat_button_shown(BrowserWindowInterface* browser) {
     BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
     toolbar_view_ = static_cast<BraveToolbarView*>(browser_view->toolbar());
     AIChatButton* button = toolbar_view_->ai_chat_button();
@@ -343,7 +343,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
       ProfileManager::GetGuestProfilePath());
 
   // Access the browser with the Guest profile and re-init test for it.
-  Browser* browser = chrome::FindAnyBrowser(guest, true);
+  BrowserWindowInterface* browser = ui_test_utils::FindAnyBrowser(guest, true);
   EXPECT_TRUE(browser);
   Init(browser);
   EXPECT_EQ(false, is_ai_chat_button_shown(browser));
@@ -466,7 +466,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, AvatarButtonIsShownGuestProfile) {
       ProfileManager::GetGuestProfilePath());
 
   // Access the browser with the Guest profile and re-init test for it.
-  Browser* browser = chrome::FindAnyBrowser(guest, true);
+  BrowserWindowInterface* browser = ui_test_utils::FindAnyBrowser(guest, true);
   EXPECT_TRUE(browser);
   Init(browser);
   EXPECT_EQ(true, is_avatar_button_shown());
@@ -502,7 +502,8 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   EXPECT_EQ(2U, chrome::GetTotalBrowserCount());
 
   // Check it's shown in second profile
-  Browser* browser = chrome::FindAnyBrowser(&new_profile, true);
+  BrowserWindowInterface* browser =
+      ui_test_utils::FindAnyBrowser(&new_profile, true);
   EXPECT_TRUE(browser);
   Init(browser);
   EXPECT_EQ(true, is_avatar_button_shown());
