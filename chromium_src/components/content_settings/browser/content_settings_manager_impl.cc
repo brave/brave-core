@@ -17,7 +17,6 @@ void ContentSettingsManagerImpl::AllowEphemeralStorageAccess(
     const net::SiteForCookies& site_for_cookies,
     const url::Origin& top_frame_origin,
     AllowEphemeralStorageAccessCallback callback) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   url::Origin storage_origin;
   const bool should_use = cookie_settings_->ShouldUseEphemeralStorage(
       origin, site_for_cookies, top_frame_origin, storage_origin);
@@ -29,7 +28,6 @@ void ContentSettingsManagerImpl::AllowEphemeralStorageAccess(
 void ContentSettingsManagerImpl::GetBraveShieldsSettings(
     const blink::LocalFrameToken& frame_token,
     GetBraveShieldsSettingsCallback callback) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   delegate_->GetBraveShieldsSettings(
       content::GlobalRenderFrameHostToken(render_process_id_, frame_token),
       std::move(callback));
