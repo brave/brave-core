@@ -3610,3 +3610,10 @@
 # Not disabled by Chromium. No Brave chromium_src modifications in this area.
 # https://github.com/brave/brave-browser/issues/54104
 -SensitivePaymentRedactionMultiSourcePageContextFetcherBrowserTest.BasicRedactionInIframe
+
+# Chromium test: upstream flake. The globally registered UpdateMetricsProvider
+# may record histogram samples during browser startup (e.g. via initial
+# stability log). The test's histogram_tester_ starts at construction before
+# startup, so it captures stray samples and ExpectUniqueSample fails.
+# https://github.com/brave/brave-browser/issues/54247
+-UpdateMetricsProviderBrowserTest.RunInBackground
