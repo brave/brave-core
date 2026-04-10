@@ -100,8 +100,6 @@ constexpr std::string_view kBravePinsJson = R"brave_pins_json({
     { "name": "mainnet-infura.brave.com", "pins": "brave"},
     { "name": "mainnet-beta-solana.brave.com", "pins": "brave"},
     { "name": "mainnet-polygon.brave.com", "pins": "brave"},
-    { "name": "gate3.wallet.brave.com", "pins": "brave"},
-    { "name": "gate3.wallet.brave.software", "pins": "brave"},
 
     // Rewards
     { "name": "api.rewards.brave.com", "pins": "brave"},
@@ -362,16 +360,6 @@ constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
     },
     {
       "name": "mainnet-polygon.brave.com",
-      "mode": "force-https",
-      "policy": "custom"
-    },
-    {
-      "name": "gate3.wallet.brave.com",
-      "mode": "force-https",
-      "policy": "custom"
-    },
-    {
-      "name": "gate3.wallet.brave.software",
       "mode": "force-https",
       "policy": "custom"
     },
