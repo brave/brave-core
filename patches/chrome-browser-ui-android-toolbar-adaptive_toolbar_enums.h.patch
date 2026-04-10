@@ -1,21 +1,22 @@
 diff --git a/chrome/browser/ui/android/toolbar/adaptive_toolbar_enums.h b/chrome/browser/ui/android/toolbar/adaptive_toolbar_enums.h
-index bfcd84476de607d00df467ce6c62c8dbcffe40fd..2bea21fa092e838bf35bf5ef5c78e88f995a3933 100644
+index bfcd84476de607d00df467ce6c62c8dbcffe40fd..131dbc46fcbb39dd55219e8d52ed9f8430b24f56 100644
 --- a/chrome/browser/ui/android/toolbar/adaptive_toolbar_enums.h
 +++ b/chrome/browser/ui/android/toolbar/adaptive_toolbar_enums.h
-@@ -52,7 +52,15 @@ enum class AdaptiveToolbarButtonVariant {
-   // Glic button.
-   kGlic = 17,
- 
--  kMaxValue = kGlic,
+@@ -49,8 +49,16 @@ enum class AdaptiveToolbarButtonVariant {
+   kOpenInBrowser = 15,
+   // Tab grouping action.
+   kTabGrouping = 16,
 +  // We have to use multiline patch since this enum is parsed by `java_cpp_enum.py`
-+  kBookmarks,
-+  kHistory,
-+  kDownloads,
-+  kPlaylist,
-+  kLeo,
-+  kWallet,
-+  kNews,
-+  kMaxValue = kNews,
- };
- // LINT.ThenChange(/tools/metrics/histograms/enums.xml:AdaptiveToolbarButtonVariant)
++  kBookmarks = 17,
++  kHistory = 18,
++  kDownloads = 19,
++  kPlaylist = 20,
++  kLeo = 21,
++  kWallet = 22,
++  kNews = 23,
+   // Glic button.
+-  kGlic = 17,
++  kGlic = 24,
  
+   kMaxValue = kGlic,
+ };
