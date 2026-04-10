@@ -60,6 +60,8 @@ static_library("p3a") {
     "utils.h",
   ]
 
+  public_deps = [ "//brave/components/p3a_utils" ]
+
   deps = [
     "constellation/rs/cxx:rust_lib",
     "//base",
@@ -68,7 +70,6 @@ static_library("p3a") {
     "//brave/components/brave_origin/buildflags",
     "//brave/components/brave_stats/browser",
     "//brave/components/l10n/common",
-    "//brave/components/p3a_utils",
     "//brave/components/version_info",
     "//brave/vendor/brave_base",
     "//components/cbor",
@@ -99,6 +100,7 @@ source_set("unit_tests") {
     "constellation_helper_unittest.cc",
     "constellation_log_store_unittest.cc",
     "message_manager_unittest.cc",
+    "metric_config_unittest.cc",
     "metric_log_store_unittest.cc",
     "metric_names_unittest.cc",
     "nitro_utils/attestation_unittest.cc",
