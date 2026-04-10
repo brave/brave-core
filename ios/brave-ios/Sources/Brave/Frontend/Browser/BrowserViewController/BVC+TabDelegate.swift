@@ -688,23 +688,8 @@ extension BrowserViewController {
     let desktop: String
     if isBraveAllowedInUA {
       let userAgentType = GetDefaultBraveIOSUserAgentType()
-      switch userAgentType {
-      case .masked:
-        mobile = UserAgent.mobileMasked
-        desktop = UserAgent.desktopMasked
-      case .version:
-        mobile = UserAgent.mobile
-        desktop = UserAgent.desktop
-      case .suffix:
-        mobile = UserAgent.safariMobileBraveSuffix
-        desktop = UserAgent.safariDesktopBraveSuffix
-      case .suffixComment:
-        mobile = UserAgent.safariMobileBraveSuffixComment
-        desktop = UserAgent.safariDesktopBraveSuffixComment
-      @unknown default:
-        mobile = UserAgent.safariMobileBraveSuffix
-        desktop = UserAgent.safariDesktopBraveSuffix
-      }
+      mobile = userAgentType.userAgentForMode(isMobile: true)
+      desktop = userAgentType.userAgentForMode(isMobile: false)
     } else {
       mobile = UserAgent.mobileMasked
       desktop = UserAgent.desktopMasked
