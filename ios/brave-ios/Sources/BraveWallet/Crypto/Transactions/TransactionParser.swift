@@ -1606,6 +1606,8 @@ extension BraveWallet.TransactionInfo {
       break
     case .ethFilForwarderTransfer:
       break
+    case .cardanoSendLovelace, .cardanoSendToken:
+      break
     @unknown default:
       break
     }
