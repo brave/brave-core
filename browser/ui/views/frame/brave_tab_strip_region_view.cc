@@ -10,6 +10,7 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tab_search_feature.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -142,6 +143,12 @@ void BraveHorizontalTabStripRegionView::Initialize() {
   // Use our own icon for the new tab button.
   if (auto* ntb = views::AsViewClass<TabStripControlButton>(new_tab_button_)) {
     ntb->SetVectorIcon(kLeoPlusAddIcon);
+  }
+
+  if (features::HasTabSearchToolbarButton() && tab_search_container_) {
+    // We have tab search button on toolbar, so we don't need to show the
+    // tab search container in horizontal tab strip region view.
+    tab_search_container_->SetVisible(false);
   }
 }
 
