@@ -130,7 +130,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &commerce::kShoppingPDPMetrics,
       &commerce::kRetailCoupons,
       &compose::features::kEnableCompose,
-      &content_settings::features::kTrackingProtection3pcd,
       &content_settings::features::kUserBypassUI,
       &contextual_tasks::kContextualTasks,
 #if !BUILDFLAG(IS_ANDROID)
