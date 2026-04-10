@@ -308,8 +308,11 @@ class BraveWalletServiceUnitTest : public testing::Test {
  protected:
   void SetUp() override {
     scoped_feature_list_.InitWithFeatures(
-        {features::kBraveWalletBitcoinFeature,
-         features::kBraveWalletCardanoFeature},
+        {
+            features::kBraveWalletBitcoinFeature,
+            features::kBraveWalletCardanoFeature,
+            features::kBraveWalletPolkadotFeature,
+        },
         {});
 
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
@@ -2889,14 +2892,16 @@ TEST_F(BraveWalletServiceUnitTest, ConvertFEVMToFVMAddress) {
   }
 }
 
-TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_EthFilSol) {
+TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_EthFilSolDot) {
   SetupWallet();
 
   std::vector<mojom::AccountInfoPtr> accounts;
   accounts.push_back(GetAccountUtils().EnsureEthAccount(0));
   accounts.push_back(GetAccountUtils().EnsureSolAccount(0));
   accounts.push_back(GetAccountUtils().EnsureFilAccount(0));
+  accounts.push_back(GetAccountUtils().EnsureDotAccount(0));
   accounts.push_back(GetAccountUtils().EnsureFilTestAccount(0));
+  accounts.push_back(GetAccountUtils().EnsureDotTestAccount(0));
 
   for (auto& acc : accounts) {
     base::MockCallback<BraveWalletService::GenerateReceiveAddressCallback>
