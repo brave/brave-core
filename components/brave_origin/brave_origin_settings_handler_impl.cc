@@ -86,4 +86,9 @@ void BraveOriginSettingsHandlerImpl::SetPolicyValue(
   std::move(callback).Run(success);
 }
 
+void BraveOriginSettingsHandlerImpl::GetNeedsRestart(
+    GetNeedsRestartCallback callback) {
+  std::move(callback).Run(brave_origin_service_->NeedsRestart());
+}
+
 }  // namespace brave_origin

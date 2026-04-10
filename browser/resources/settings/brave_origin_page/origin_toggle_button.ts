@@ -113,6 +113,11 @@ export class OriginToggleButtonElement extends PolymerElement {
 
       if (!success) {
         this.checked_ = !this.checked_;
+      } else {
+        this.dispatchEvent(new CustomEvent('policy-value-changed', {
+          bubbles: true,
+          composed: true,
+        }));
       }
     } catch (error) {
       console.error(

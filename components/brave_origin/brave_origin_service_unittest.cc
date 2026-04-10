@@ -55,6 +55,8 @@ class BraveOriginServiceTest : public testing::Test {
     local_state_.registry()->RegisterDictionaryPref(kBraveOriginPolicies);
     local_state_.registry()->RegisterBooleanPref(kOriginPurchaseValidated,
                                                  false);
+    local_state_.registry()->RegisterBooleanPref(kOriginPoliciesWereEnforced,
+                                                 false);
 
     // Register test browser preferences in local_state
     // These are needed because BraveOriginService::SetBrowserPolicyValue()
@@ -82,6 +84,8 @@ class BraveOriginServiceTest : public testing::Test {
     // Set purchased state so IsBraveOriginPurchased() returns true when the
     // feature flag is enabled.
     manager->SetPurchased(true);
+    // Simulate existing purchaser: pref was set in a previous session.
+    local_state_.SetBoolean(kOriginPoliciesWereEnforced, true);
 
     // Create the service with both policy services
     service_ = std::make_unique<BraveOriginService>(
@@ -504,6 +508,56 @@ TEST_F(BraveOriginServiceTest,
   EXPECT_FALSE(service_->IsPurchased());
 }
 
+TEST_F(BraveOriginServiceTest, NeedsRestart_NoChanges_ReturnsFalse) {
+  EXPECT_FALSE(service_->NeedsRestart());
+}
+
+TEST_F(BraveOriginServiceTest,
+       NeedsRestart_AfterBrowserPolicyChange_ReturnsTrue) {
+  service_->SetPolicyValue(kTestBrowserPolicyKey, true);
+  EXPECT_TRUE(service_->NeedsRestart());
+}
+
+TEST_F(BraveOriginServiceTest,
+       NeedsRestart_AfterProfilePolicyChange_ReturnsTrue) {
+  service_->SetPolicyValue(kTestProfilePolicyKey, false);
+  EXPECT_TRUE(service_->NeedsRestart());
+}
+
+TEST_F(BraveOriginServiceTest, NeedsRestart_AfterRevert_ReturnsFalse) {
+  // Get original value
+  auto original = service_->GetPolicyValue(kTestBrowserPolicyKey);
+  ASSERT_TRUE(original.has_value());
+
+  // Change the value
+  service_->SetPolicyValue(kTestBrowserPolicyKey, !original.value());
+  EXPECT_TRUE(service_->NeedsRestart());
+
+  // Revert back
+  service_->SetPolicyValue(kTestBrowserPolicyKey, original.value());
+  EXPECT_FALSE(service_->NeedsRestart());
+}
+
+TEST_F(BraveOriginServiceTest, NeedsRestart_AfterFirstPurchase_ReturnsTrue) {
+  // Simulate first-purchase: recreate service without enforcement pref.
+  service_.reset();
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  manager->SetPurchased(false);
+  local_state_.SetBoolean(kOriginPoliciesWereEnforced, false);
+
+  service_ = std::make_unique<BraveOriginService>(
+      &local_state_, &profile_prefs_, kTestProfileId,
+      &mock_profile_policy_service_, &mock_browser_policy_service_,
+      BraveOriginService::SkusServiceGetter());
+
+  EXPECT_FALSE(service_->NeedsRestart());
+
+  // Simulate purchase completing (async SKU check returns true).
+  // OnCredentialSummary sets IsPurchased(true) and persists the pref.
+  manager->SetPurchased(true);
+  EXPECT_TRUE(service_->NeedsRestart());
+}
+
 // Test fixture that wires up a FakeSkusService.
 class BraveOriginServiceWithSkusTest : public testing::Test {
  public:
@@ -516,6 +570,9 @@ class BraveOriginServiceWithSkusTest : public testing::Test {
     local_state_.registry()->RegisterDictionaryPref(kBraveOriginPolicies);
     local_state_.registry()->RegisterBooleanPref(kOriginPurchaseValidated,
                                                  false);
+    local_state_.registry()->RegisterBooleanPref(kOriginPoliciesWereEnforced,
+                                                 false);
+
     local_state_.registry()->RegisterBooleanPref(kTestBrowserPref, false);
     profile_prefs_.registry()->RegisterBooleanPref(kTestProfilePref, true);
 
@@ -697,6 +754,8 @@ class BraveOriginServiceDisabledTest : public testing::Test {
     // Register the BraveOrigin policies dictionary pref in local_state
     local_state_.registry()->RegisterDictionaryPref(kBraveOriginPolicies);
     local_state_.registry()->RegisterBooleanPref(kOriginPurchaseValidated,
+                                                 false);
+    local_state_.registry()->RegisterBooleanPref(kOriginPoliciesWereEnforced,
                                                  false);
 
     // Register test preferences (needed for pref service not to crash)
