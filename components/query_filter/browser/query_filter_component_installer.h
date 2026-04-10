@@ -13,8 +13,8 @@
 #include <vector>
 
 #include "base/files/file_path.h"
-#include "base/version.h"
 #include "base/values.h"
+#include "base/version.h"
 #include "components/component_updater/component_installer.h"
 #include "crypto/sha2.h"
 
@@ -27,14 +27,20 @@ namespace query_filter {
 inline constexpr char kQueryFilterComponentName[] = "Query Filter";
 
 // Component id and public key must match the signing key used in
-// brave-core-crx-packager for this component. 
-inline constexpr char kQueryFilterComponentId[] = "cemdlagocoimleflkfkjoihojfainiho";
+// brave-core-crx-packager for this component.
+inline constexpr char kQueryFilterComponentId[] =
+    "cemdlagocoimleflkfkjoihojfainiho";
 inline constexpr char kQueryFilterComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw0g6wGTClhdNu5EnYKTK10sAZH4l9QIE"
-    "OX3A866gVfa3hFrXkSdVEtoqW+jY/vZQDuZbzMK03AlAy7WPoriyLndSCaLQ9xpepPAzY3mmAR8K"
-    "nm4Lfm/cgyoI3X01HFTOWKfZk/xIQhOyu7IGSWm7LpctEWRfRouvXS7JY4GfIH9M6RsMK/8BvDQz"
-    "oEP1Y9OaSfNH0c0/yZ4A0LZei6I3wx00CykGXlgQeVwxbQkS0UKU8tKGUhQdg68EOp2W5ymmMFz1"
-    "Gf3imoDiinfqVxkYF1z7+Bulu0IVKFrmoW+1CyaxdjgjiHRvw9mfIoPJgw+aRg2FgAsSaXF1E1sC"
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw0g6wGTClhdNu5EnYKTK10sAZH4l9Q"
+    "IE"
+    "OX3A866gVfa3hFrXkSdVEtoqW+jY/"
+    "vZQDuZbzMK03AlAy7WPoriyLndSCaLQ9xpepPAzY3mmAR8K"
+    "nm4Lfm/cgyoI3X01HFTOWKfZk/xIQhOyu7IGSWm7LpctEWRfRouvXS7JY4GfIH9M6RsMK/"
+    "8BvDQz"
+    "oEP1Y9OaSfNH0c0/"
+    "yZ4A0LZei6I3wx00CykGXlgQeVwxbQkS0UKU8tKGUhQdg68EOp2W5ymmMFz1"
+    "Gf3imoDiinfqVxkYF1z7+Bulu0IVKFrmoW+1CyaxdjgjiHRvw9mfIoPJgw+"
+    "aRg2FgAsSaXF1E1sC"
     "IqZSHQIDAQAB";
 inline constexpr uint8_t kQueryFilterComponentPublicKey[] = {
     0x30, 0x82, 0x01, 0x22, 0x30, 0x0d, 0x06, 0x09, 0x2a, 0x86, 0x48, 0x86,
@@ -61,8 +67,7 @@ inline constexpr uint8_t kQueryFilterComponentPublicKey[] = {
     0xa1, 0x6f, 0xb5, 0x0b, 0x26, 0xb1, 0x76, 0x38, 0x23, 0x88, 0x74, 0x6f,
     0xc3, 0xd9, 0x9f, 0x22, 0x83, 0xc9, 0x83, 0x0f, 0x9a, 0x46, 0x0d, 0x85,
     0x80, 0x0b, 0x12, 0x69, 0x71, 0x75, 0x13, 0x5b, 0x02, 0x22, 0xa6, 0x52,
-    0x1d, 0x02, 0x03, 0x01, 0x00, 0x01
-  };
+    0x1d, 0x02, 0x03, 0x01, 0x00, 0x01};
 
 class QueryFilterComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {

@@ -10,9 +10,9 @@
 #include <string>
 #include <vector>
 
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/feature_list.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/query_filter/common/features.h"
 #include "components/component_updater/component_installer.h"
@@ -52,7 +52,8 @@ void QueryFilterComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& path,
     base::DictValue manifest) {
-  // TODO(https://github.com/brave/brave-browser/issues/54395): Pass the path to query filter service when it is implemented.
+  // TODO(https://github.com/brave/brave-browser/issues/54395): Pass the path to
+  // query filter service when it is implemented.
 }
 
 bool QueryFilterComponentInstallerPolicy::VerifyInstallation(
@@ -94,8 +95,8 @@ void RegisterQueryFilterComponent(
       std::make_unique<QueryFilterComponentInstallerPolicy>());
   installer->Register(
       cus, base::BindOnce([]() {
-        brave_component_updater::BraveOnDemandUpdater::GetInstance()->EnsureInstalled(
-            kQueryFilterComponentId);
+        brave_component_updater::BraveOnDemandUpdater::GetInstance()
+            ->EnsureInstalled(kQueryFilterComponentId);
       }));
 }
 
