@@ -77,6 +77,9 @@ bool GetMetricAttributes(
       break;
     }
     if (!GetMetricAttribute(&item, &attributes[attr_idx])) {
+      // Gracefully ignore unknown attributes.
+      // Do not increment attr_idx++, otherwise we'll have a nullopt
+      // in the middle of the array.
       continue;
     }
     attr_idx++;
