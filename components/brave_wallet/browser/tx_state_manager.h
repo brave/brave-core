@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
-#include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
@@ -23,11 +22,11 @@ namespace brave_wallet {
 
 class AccountResolverDelegate;
 class TxMeta;
-class TxStorageDelegate;
+class TxStorage;
 
 class TxStateManager {
  public:
-  TxStateManager(TxStorageDelegate& delegate,
+  TxStateManager(TxStorage& tx_storage,
                  AccountResolverDelegate& account_resolver_delegate);
   virtual ~TxStateManager();
   TxStateManager(const TxStateManager&) = delete;
@@ -80,7 +79,7 @@ class TxStateManager {
       const base::DictValue& value) = 0;
 
   bool no_retire_for_testing_ = false;
-  const raw_ref<TxStorageDelegate> delegate_;
+  const raw_ref<TxStorage> tx_storage_;
   const raw_ref<AccountResolverDelegate> account_resolver_delegate_;
   base::ObserverList<Observer> observers_;
   base::WeakPtrFactory<TxStateManager> weak_factory_;

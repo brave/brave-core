@@ -15,9 +15,9 @@
 namespace brave_wallet {
 
 SolanaTxStateManager::SolanaTxStateManager(
-    TxStorageDelegate& delegate,
+    TxStorage& tx_storage,
     AccountResolverDelegate& account_resolver_delegate)
-    : TxStateManager(delegate, account_resolver_delegate) {}
+    : TxStateManager(tx_storage, account_resolver_delegate) {}
 
 SolanaTxStateManager::~SolanaTxStateManager() = default;
 

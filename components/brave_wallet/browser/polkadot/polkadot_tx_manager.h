@@ -20,7 +20,7 @@ namespace brave_wallet {
 
 class KeyringService;
 class TxService;
-class TxStorageDelegate;
+class TxStorage;
 class AccountResolverDelegate;
 class PolkadotWalletService;
 
@@ -34,7 +34,7 @@ class PolkadotTxManager : public TxManager,
   PolkadotTxManager(TxService& tx_service,
                     PolkadotWalletService& polkadot_wallet_service,
                     KeyringService& keyring_service,
-                    TxStorageDelegate& delegate,
+                    TxStorage& tx_storage,
                     AccountResolverDelegate& account_resolver_delegate);
   ~PolkadotTxManager() override;
   PolkadotTxManager(const PolkadotTxManager&) = delete;

@@ -396,7 +396,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
     brave_wallet_service()
         ->asset_ratio_service()
         ->EnableDummyPricesForTesting();
-    WaitForTxStorageDelegateInitialized(tx_service()->GetDelegateForTesting());
+    WaitForTxStorageInitialized(tx_service()->GetTxStorageForTesting());
 
     StartRPCServer(base::BindRepeating(&SolanaProviderTest::HandleRequest,
                                        base::Unretained(this)));

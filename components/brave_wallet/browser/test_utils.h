@@ -12,18 +12,15 @@
 
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
-#include "base/memory/scoped_refptr.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "components/value_store/test_value_store_factory.h"
 #include "components/value_store/value_store_frontend.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
-class PrefService;
 
 namespace base {
 class ScopedTempDir;
@@ -53,8 +50,7 @@ inline constexpr char kMnemonicGalleryEqual[] =
 inline constexpr char kTestWalletPassword[] = "brave";
 
 class KeyringService;
-class TxStorageDelegate;
-class TxStorageDelegateImpl;
+class TxStorage;
 
 base::FilePath BraveWalletComponentsTestDataFolder();
 base::FilePath BraveWalletTestDataFolder();
@@ -164,14 +160,10 @@ class TestBraveWalletServiceDelegate : public BraveWalletServiceDelegate {
   base::ScopedTempDir temp_dir_;
 };
 
-void WaitForTxStorageDelegateInitialized(TxStorageDelegate* delegate);
+void WaitForTxStorageInitialized(TxStorage* delegate);
 
-scoped_refptr<value_store::TestValueStoreFactory> GetTestValueStoreFactory(
-    base::ScopedTempDir& temp_dir);
-
-std::unique_ptr<TxStorageDelegateImpl> GetTxStorageDelegateForTest(
-    PrefService* prefs,
-    scoped_refptr<value_store::ValueStoreFactory> store_factory);
+std::unique_ptr<TxStorage> CreateTxStorageForTest(
+    const base::FilePath& wallet_base_directory);
 
 // Helper class to mock BraveWalletService::AddSignMessageRequest and
 // BraveWalletService::NotifySignMessageRequestProcessed methods.

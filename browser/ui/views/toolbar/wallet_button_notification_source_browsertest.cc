@@ -36,7 +36,7 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
 
     json_rpc_service()->SetGasPriceForTesting("0x123");
-    WaitForTxStorageDelegateInitialized(tx_service()->GetDelegateForTesting());
+    WaitForTxStorageInitialized(tx_service()->GetTxStorageForTesting());
 
     StartRPCServer(
         base::BindRepeating(&WalletButtonNotificationSourceTest::HandleRequest,

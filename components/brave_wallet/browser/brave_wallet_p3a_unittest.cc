@@ -69,7 +69,7 @@ class BraveWalletP3AUnitTest : public testing::Test {
             bitcoin_test_rpc_server_->GetURLLoaderFactory());
     cardano_test_rpc_server_ = std::make_unique<CardanoTestRpcServer>(
         *brave_wallet_service_->GetCardanoWalletService());
-    WaitForTxStorageDelegateInitialized(tx_service()->GetDelegateForTesting());
+    WaitForTxStorageInitialized(tx_service()->GetTxStorageForTesting());
   }
   void WaitForResponse() { task_environment_.RunUntilIdle(); }
 

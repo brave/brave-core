@@ -10,17 +10,13 @@
 
 #include "base/check.h"
 #include "base/files/scoped_temp_dir.h"
-#include "base/memory/raw_ref.h"
 #include "base/notreached.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
-#include "base/scoped_observation.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
-#include "brave/components/brave_wallet/browser/tx_storage_delegate.h"
-#include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
+#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -464,46 +460,21 @@ TestBraveWalletServiceDelegate::Create() {
   return std::make_unique<TestBraveWalletServiceDelegate>();
 }
 
-void WaitForTxStorageDelegateInitialized(TxStorageDelegate* delegate) {
+void WaitForTxStorageInitialized(TxStorage* delegate) {
   if (delegate->IsInitialized()) {
     return;
   }
 
   base::RunLoop run_loop;
-  class TestTxStorageDelegateObserver : public TxStorageDelegate::Observer {
-   public:
-    explicit TestTxStorageDelegateObserver(TxStorageDelegate* delegate,
-                                           base::RunLoop& run_loop)
-        : run_loop_(run_loop) {
-      observation_.Observe(delegate);
-    }
-
-    void OnStorageInitialized() override { run_loop_->Quit(); }
-
-   private:
-    base::ScopedObservation<TxStorageDelegate, TxStorageDelegate::Observer>
-        observation_{this};
-    const raw_ref<base::RunLoop> run_loop_;
-  } observer(delegate, run_loop);
+  delegate->SetOnInitializedCallbackForTesting(run_loop.QuitClosure());
   run_loop.Run();
 }
 
-scoped_refptr<value_store::TestValueStoreFactory> GetTestValueStoreFactory(
-    base::ScopedTempDir& temp_dir) {
-  CHECK(temp_dir.CreateUniqueTempDir());
-
-  base::FilePath db_path = temp_dir.GetPath().AppendASCII("temp_db");
-
-  return new value_store::TestValueStoreFactory(db_path);
-}
-
-std::unique_ptr<TxStorageDelegateImpl> GetTxStorageDelegateForTest(
-    PrefService* prefs,
-    scoped_refptr<value_store::ValueStoreFactory> store_factory) {
-  auto delegate = std::make_unique<TxStorageDelegateImpl>(
-      prefs, store_factory, base::SequencedTaskRunner::GetCurrentDefault());
-  WaitForTxStorageDelegateInitialized(delegate.get());
-  return delegate;
+std::unique_ptr<TxStorage> CreateTxStorageForTest(
+    const base::FilePath& wallet_base_directory) {
+  auto tx_storage = TxStorage::MakeWithDbStorage(wallet_base_directory);
+  WaitForTxStorageInitialized(tx_storage.get());
+  return tx_storage;
 }
 
 AccountResolverDelegateForTest::AccountResolverDelegateForTest() = default;

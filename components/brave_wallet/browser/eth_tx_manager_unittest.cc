@@ -14,12 +14,9 @@
 #include <vector>
 
 #include "base/files/scoped_temp_dir.h"
-#include "base/functional/callback_helpers.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
-#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -37,8 +34,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
-#include "brave/components/brave_wallet/browser/tx_storage_delegate.h"
-#include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
+#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -248,11 +244,11 @@ class EthTxManagerUnitTest : public testing::Test {
     keyring_service_ = std::make_unique<KeyringService>(
         json_rpc_service_.get(), &profile_prefs_, &local_state_);
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    auto tx_storage = CreateTxStorageForTest(temp_dir_.GetPath());
+    tx_storage_ptr_ = tx_storage.get();
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), nullptr, nullptr, nullptr, nullptr,
-        *keyring_service_, GetPrefs(), temp_dir_.GetPath(),
-        base::SequencedTaskRunner::GetCurrentDefault());
-    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
+        *keyring_service_, GetPrefs(), std::move(tx_storage));
 
     GetAccountUtils().CreateWallet(kMnemonicAbandonAbandon,
                                    kTestWalletPassword);
@@ -262,6 +258,8 @@ class EthTxManagerUnitTest : public testing::Test {
         "0f0000000000000000000000000000000000000000000000003fffffffffffffff",
         &data_));
   }
+
+  void TearDown() override { tx_storage_ptr_ = nullptr; }
 
   AccountUtils GetAccountUtils() {
     return AccountUtils(keyring_service_.get());
@@ -453,6 +451,7 @@ class EthTxManagerUnitTest : public testing::Test {
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<TxService> tx_service_;
+  raw_ptr<TxStorage> tx_storage_ptr_ = nullptr;
   std::vector<uint8_t> data_;
 };
 
@@ -2402,7 +2401,7 @@ TEST_F(EthTxManagerUnitTest, Reset) {
   auto tx = EthTransaction::FromTxData(tx_data, false);
   meta.set_tx(std::make_unique<EthTransaction>(*tx));
   ASSERT_TRUE(eth_tx_manager()->tx_state_manager().AddOrUpdateTx(meta));
-  EXPECT_EQ(tx_service_->GetDelegateForTesting()->GetTxs().size(), 1u);
+  EXPECT_EQ(tx_storage_ptr_->GetTxs().size(), 1u);
 
   tx_service_->Reset();
 
@@ -2410,16 +2409,11 @@ TEST_F(EthTxManagerUnitTest, Reset) {
   EXPECT_FALSE(
       eth_tx_manager()->block_tracker().IsRunning(mojom::kLocalhostChainId));
   // cache should be empty
-  EXPECT_TRUE(tx_service_->GetDelegateForTesting()->GetTxs().empty());
+  EXPECT_TRUE(tx_storage_ptr_->GetTxs().empty());
   // db should be empty
-  base::RunLoop run_loop;
-  static_cast<TxStorageDelegateImpl*>(tx_service_->GetDelegateForTesting())
-      ->store_->Get("transactions", base::BindLambdaForTesting(
-                                        [&](std::optional<base::Value> value) {
-                                          EXPECT_FALSE(value);
-                                          run_loop.Quit();
-                                        }));
-  run_loop.Run();
+  base::test::TestFuture<std::optional<base::Value>> get_future;
+  tx_storage_ptr_->store_->Get("transactions", get_future.GetCallback());
+  EXPECT_FALSE(get_future.Take().has_value());
 }
 
 TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {

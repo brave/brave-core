@@ -28,10 +28,10 @@ ZCashTxManager::ZCashTxManager(
     TxService& tx_service,
     ZCashWalletService& zcash_wallet_service,
     KeyringService& keyring_service,
-    TxStorageDelegate& delegate,
+    TxStorage& tx_storage,
     AccountResolverDelegate& account_resolver_delegate)
     : TxManager(
-          std::make_unique<ZCashTxStateManager>(delegate,
+          std::make_unique<ZCashTxStateManager>(tx_storage,
                                                 account_resolver_delegate),
           std::make_unique<ZCashBlockTracker>(zcash_wallet_service.zcash_rpc()),
           tx_service,
