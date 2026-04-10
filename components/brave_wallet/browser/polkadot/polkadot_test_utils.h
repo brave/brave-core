@@ -6,6 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TEST_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TEST_UTILS_H_
 
+#include <string>
+#include <string_view>
+#include <vector>
+
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
@@ -15,6 +19,8 @@
 namespace brave_wallet {
 
 base::DictValue RequestBodyToJsonDict(const network::ResourceRequest& req);
+std::string ReadMetadataFixtureJson(std::string_view file_name);
+std::vector<uint8_t> ReadMetadataFixture(std::string_view file_name);
 
 struct PolkadotMockRpc {
  public:
