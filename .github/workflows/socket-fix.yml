@@ -8,7 +8,15 @@ on:
         required: true
         type: string
       issue_link:
-        description: 'Link to the related security issue (e.g. https://github.com/brave/security/issues/123)'
+        description: 'Link to the related security issue (e.g. https://github.com/brave/brave-browser/issues/54048)'
+        required: true
+        type: string
+      wdp_ref:
+        description: 'Commit hash for web-discovery-project DEPS update (optional)'
+        required: false
+        type: string
+      leo_ref:
+        description: 'Commit hash for @brave/leo package.json update (optional)'
         required: false
         type: string
 
@@ -26,6 +34,24 @@ jobs:
       - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: '24'
+
+      - name: Update WDP in DEPS
+        if: inputs.wdp_ref != ''
+        env:
+          WDP_REF: ${{ inputs.wdp_ref }}
+        run: |
+          [[ "$WDP_REF" =~ ^[0-9a-f]{40}$ ]] || { echo "::error::Invalid wdp_ref: must be a 40-char hex SHA"; exit 1; }
+          sed -i -E "s|(\"vendor/web-discovery-project\"[^@]*@)[0-9a-f]{40}|\1${WDP_REF}|" DEPS
+          grep -q "$WDP_REF" DEPS || { echo "::error::Failed to update WDP hash in DEPS"; exit 1; }
+
+      - name: Update Leo in package.json
+        if: inputs.leo_ref != ''
+        env:
+          LEO_REF: ${{ inputs.leo_ref }}
+        run: |
+          [[ "$LEO_REF" =~ ^[0-9a-f]{40}$ ]] || { echo "::error::Invalid leo_ref: must be a 40-char hex SHA"; exit 1; }
+          sed -i -E "s|(\"@brave/leo\"[^#]*#)[0-9a-f]{40}|\1${LEO_REF}|" package.json
+          grep -q "$LEO_REF" package.json || { echo "::error::Failed to update Leo hash in package.json"; exit 1; }
 
       - name: Install Socket CLI
         run: npm install -g @socketsecurity/cli
@@ -60,8 +86,7 @@ jobs:
             git add -A
             git commit -m "fix: address security advisories"
             git push origin "$BRANCH"
-            BODY="Addresses: $GHSA_IDS"
-            if [[ -n "$ISSUE_LINK" ]]; then BODY="$BODY"$'\n\n'"closes $ISSUE_LINK"; fi
+            BODY="Addresses: $GHSA_IDS"$'\n\n'"closes $ISSUE_LINK"
             gh pr create \
               --title "fix: address security advisories" \
               --body "$BODY" \
