@@ -10,20 +10,28 @@
 namespace ai_chat {
 
 AIChatEnterprisePolicyChecker::AIChatEnterprisePolicyChecker(
-    actor::EnterprisePolicyBlockReason reason)
+    actor::EnterprisePolicyChecker::UrlBlockReason reason)
     : reason_(reason) {}
 AIChatEnterprisePolicyChecker::~AIChatEnterprisePolicyChecker() = default;
 
-actor::EnterprisePolicyBlockReason AIChatEnterprisePolicyChecker::Evaluate(
-    const GURL& url) const {
+actor::EnterprisePolicyChecker::UrlBlockReason
+AIChatEnterprisePolicyChecker::Evaluate(const GURL& url) const {
   return reason_;
 }
 
-const actor::EnterprisePolicyUrlChecker*
+const actor::EnterprisePolicyChecker*
 AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker() {
   static base::NoDestructor<AIChatEnterprisePolicyChecker> checker(
-      actor::EnterprisePolicyBlockReason::kNotBlocked);
+      actor::EnterprisePolicyChecker::UrlBlockReason::kNotBlocked);
   return checker.get();
+}
+
+void AIChatEnterprisePolicyChecker::ValidateContentSentToRenderer(
+    content::RenderFrameHost* frame,
+    const std::string& content,
+    actor::EnterprisePolicyChecker::ContentValidationCallback callback) const {
+  std::move(callback).Run(
+      actor::EnterprisePolicyChecker::ContentValidationReason::kAllowed);
 }
 
 }  // namespace ai_chat
