@@ -717,7 +717,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
       EXPAND_FEATURE_ENTRIES({                                                 \
           "brave-user-extension-auto-update",                                  \
           "Automatically Update Extensions",                                   \
-          "Automatically update user installed extensions. When "              \
+          "Automatically update user-installed Web extensions. When "          \
           "disabled, extensions will not update in the background. Folks can " \
           "still update them manually from the brave://extensions page.",      \
           kOsWin | kOsLinux | kOsMac,                                          \
