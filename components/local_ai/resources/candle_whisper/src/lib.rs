@@ -72,10 +72,6 @@ struct TranscribeResult {
     is_final: bool,
 }
 
-// 2 seconds of audio at 16kHz mono, matching
-// Chromium's OnDeviceSpeechRecognitionEngine.
-const FLUSH_THRESHOLD: usize = SAMPLE_RATE * 2;
-
 #[wasm_bindgen]
 pub struct WhisperRecognizer {
     model: model::Whisper,
@@ -118,17 +114,14 @@ impl WhisperRecognizer {
         Ok(Self { model, tokenizer, mel_filters, config, audio_buffer: Vec::new() })
     }
 
-    /// Push normalized float32 audio samples into the
-    /// internal buffer. Returns empty string if buffer
-    /// not full yet, or JSON
-    /// {"transcript":"...","is_final":false} when flushed.
+    /// Push normalized float32 audio samples and run
+    /// inference immediately. The C++ base class already
+    /// batches audio to 2s before sending via Mojo, so
+    /// no additional buffering is needed here.
+    /// Returns JSON {"transcript":"...","is_final":false}.
     pub fn add_audio(&mut self, audio: Vec<f32>) -> Result<String, JsError> {
         self.audio_buffer.extend_from_slice(&audio);
-        if self.audio_buffer.len() >= FLUSH_THRESHOLD {
-            self.flush(false)
-        } else {
-            Ok(String::new())
-        }
+        self.flush(false)
     }
 
     /// Signal end of audio. Flushes remaining buffer.
