@@ -17,3 +17,20 @@ static_library("browser") {
     "//crypto",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "query_filter_component_installer_unittest.cc" ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_component_updater/browser:test_support",
+    "//brave/components/query_filter/common",
+    "//components/component_updater:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}

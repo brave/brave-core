@@ -19,8 +19,6 @@
 #include "components/component_updater/component_updater_service.h"
 #include "crypto/sha2.h"
 
-using brave_component_updater::BraveOnDemandUpdater;
-
 namespace query_filter {
 
 QueryFilterComponentInstallerPolicy::QueryFilterComponentInstallerPolicy()
@@ -96,7 +94,7 @@ void RegisterQueryFilterComponent(
       std::make_unique<QueryFilterComponentInstallerPolicy>());
   installer->Register(
       cus, base::BindOnce([]() {
-        BraveOnDemandUpdater::GetInstance()->EnsureInstalled(
+        brave_component_updater::BraveOnDemandUpdater::GetInstance()->EnsureInstalled(
             kQueryFilterComponentId);
       }));
 }
