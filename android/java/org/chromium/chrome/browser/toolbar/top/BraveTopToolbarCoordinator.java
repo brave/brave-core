@@ -24,6 +24,7 @@ import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsV
 import org.chromium.chrome.browser.browser_controls.TopControlsStacker;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
+import org.chromium.chrome.browser.omnibox.OmniboxStub;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
@@ -107,6 +108,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             BrowserControlsVisibilityManager browserControlsVisibilityManager,
             Supplier<Integer> incognitoWindowCountSupplier,
             MonotonicObservableSupplier<Profile> profileSupplier,
+            OneshotSupplier<OmniboxStub> omniboxStubSupplier,
             SigninAndHistorySyncActivityLauncher signinAndHistorySyncActivityLauncher,
             WindowAndroid windowAndroid,
             ActivityResultTracker activityResultTracker,
@@ -151,6 +153,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 browserControlsVisibilityManager,
                 incognitoWindowCountSupplier,
                 profileSupplier,
+                omniboxStubSupplier,
                 signinAndHistorySyncActivityLauncher,
                 windowAndroid,
                 activityResultTracker,
