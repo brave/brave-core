@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/misc_metrics/uptime_monitor.h"

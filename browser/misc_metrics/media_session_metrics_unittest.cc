@@ -11,7 +11,8 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/task_environment.h"
 #include "brave/components/misc_metrics/uptime_monitor.h"
-#include "brave/components/p3a_utils/event_relay.h"
+#include "brave/components/p3a_utils/custom_attributes.h"
+#include "brave/components/p3a_utils/test_event_relay_observer.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/mock_media_session.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -170,6 +171,21 @@ TEST_F(MediaSessionMetricsTest, FrameResetAfterReport) {
   histogram_tester_.ExpectTotalCount(kMediaSessionUsageHistogramName, 2);
   EXPECT_EQ(relay_observer_.GetCustomAttribute(kMediaSessionUsageAttributeName),
             "0");
+}
+
+TEST_F(MediaSessionMetricsTest, NoActiveTimeAttributeCleared) {
+  // Pre-set the attribute to a known value so we can confirm it is cleared.
+  p3a_utils::SetCustomAttribute(kMediaSessionUsageAttributeName, "1-33");
+  ASSERT_EQ(relay_observer_.GetCustomAttribute(kMediaSessionUsageAttributeName),
+            "1-33");
+
+  // Browser never in use and no media playing: active_time stays zero.
+  // After the frame elapses the attribute should be cleared to std::nullopt.
+  uptime_monitor_.is_in_use = false;
+  task_environment_.FastForwardBy(base::Days(7));
+  histogram_tester_.ExpectTotalCount(kMediaSessionUsageHistogramName, 0);
+  EXPECT_EQ(relay_observer_.GetCustomAttribute(kMediaSessionUsageAttributeName),
+            std::nullopt);
 }
 
 TEST_F(MediaSessionMetricsTest, ActiveProcessTimeOnlyWhenInUseOrPlaying) {
