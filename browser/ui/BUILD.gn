@@ -776,6 +776,8 @@ source_set("ui") {
         "views/frame/brave_browser_native_widget_mac.h",
         "views/frame/brave_browser_native_widget_mac.mm",
       ]
+
+      deps += [ "//chrome/browser/ui/cocoa" ]
     }
   }
 
