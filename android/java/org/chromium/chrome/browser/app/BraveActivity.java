@@ -2704,8 +2704,10 @@ public abstract class BraveActivity extends ChromeActivity
     private void showWidgetPromoPanel() {
         if (mSearchWidgetPromoPanel != null) {
             final View rootView = requireViewById(android.R.id.content);
-            rootView.post(() -> mSearchWidgetPromoPanel.showIfNeeded(rootView, getBottomOffsetForWidgetPromo(), BraveActivity.this));
-
+            rootView.post(
+                    () ->
+                            mSearchWidgetPromoPanel.showIfNeeded(
+                                    rootView, getBottomOffsetForWidgetPromo(), BraveActivity.this));
         }
     }
 
