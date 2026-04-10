@@ -929,10 +929,6 @@ test("brave_browser_tests") {
     "//chrome/browser/extensions/extension_browsertest.h",
     "//chrome/browser/media/media_browsertest.cc",
     "//chrome/browser/media/media_browsertest.h",
-    "//chrome/browser/ui/test/test_browser_dialog.cc",
-    "//chrome/browser/ui/test/test_browser_dialog.h",
-    "//chrome/browser/ui/test/test_browser_ui.cc",
-    "//chrome/browser/ui/test/test_browser_ui.h",
   ]
 
   deps = [
