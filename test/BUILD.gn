@@ -18,7 +18,6 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
-import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
@@ -617,7 +616,10 @@ test("brave_unit_tests") {
   }
 
   if (enable_containers) {
-    deps += [ "//brave/browser/ui/containers:unit_tests" ]
+    deps += [
+      "//brave/browser/containers:unit_tests",
+      "//brave/browser/ui/containers:unit_tests",
+    ]
   }
 
   if (enable_omaha4) {
