@@ -262,8 +262,6 @@ TEST_P(AssociatedWebContentsContentUnitTest, GetPageContent_VideoContent) {
 
 TEST_P(AssociatedWebContentsContentUnitTest,
        GetPageContent_PrintPreviewTriggeringURL) {
-  base::MockCallback<AssociatedWebContentsContent::FetchPageContentCallback>
-      callback;
   // A url that triggers print preview extraction - should return empty content
   // to allow autoscreenshots mechanism to handle server-side OCR
   for (const auto& host : kPrintPreviewRetrievalHosts) {
@@ -271,14 +269,19 @@ TEST_P(AssociatedWebContentsContentUnitTest,
     if (is_print_preview_supported_) {
       // PrintPreview returns empty content to trigger autoscreenshots
       EXPECT_CALL(*page_content_fetcher_, FetchPageContent).Times(0);
-      // No Extract call - we now return empty to trigger autoscreenshots
     } else {
       EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
           .WillOnce(base::test::RunOnceCallback<1>("", false, ""));
     }
-    // Expect empty content which will trigger autoscreenshots in real usage
-    EXPECT_CALL(callback, Run("", false, ""));
-    GetPageContent(callback.Get(), "");
+    // Expect empty content which will trigger autoscreenshots in real
+    // usage. Use TestFuture to wait for the async AIPageContentAgent
+    // fallback that triggers when fetcher returns empty on loaded pages.
+    base::test::TestFuture<std::string, bool, std::string> future;
+    GetPageContent(future.GetCallback(), "");
+    auto [content, is_video, invalidation_token] = future.Get();
+    EXPECT_EQ(content, "");
+    EXPECT_FALSE(is_video);
+    EXPECT_TRUE(invalidation_token.empty());
   }
 }
 
@@ -294,10 +297,12 @@ TEST_P(AssociatedWebContentsContentUnitTest,
     EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
         .WillOnce(base::test::RunOnceCallback<1>("", false, ""));
   }
-  base::MockCallback<AssociatedWebContentsContent::FetchPageContentCallback>
-      callback;
-  EXPECT_CALL(callback, Run("", false, ""));
-  GetPageContent(callback.Get(), "");
+  base::test::TestFuture<std::string, bool, std::string> future;
+  GetPageContent(future.GetCallback(), "");
+  auto [content, is_video, invalidation_token] = future.Get();
+  EXPECT_EQ(content, "");
+  EXPECT_FALSE(is_video);
+  EXPECT_TRUE(invalidation_token.empty());
 }
 
 TEST_P(AssociatedWebContentsContentUnitTest,
@@ -328,21 +333,24 @@ TEST_P(AssociatedWebContentsContentUnitTest,
     testing::Mock::VerifyAndClearExpectations(&print_preview_extractor_);
     testing::Mock::VerifyAndClearExpectations(&callback);
   } else {
-    // FetchPageContent will not wait for page load. Let's test that the
-    // re-try will wait for page load.
+    // FetchPageContent will not wait for page load. Let's test that
+    // the re-try will wait for page load. Use TestFuture since the
+    // AIPageContentAgent fallback is async after page load.
     EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
         .WillRepeatedly(
             base::test::RunOnceCallbackRepeatedly<1>("", false, ""));
-    GetPageContent(callback.Get(), "");
-    testing::Mock::VerifyAndClearExpectations(&callback);
+    base::test::TestFuture<std::string, bool, std::string> future;
+    GetPageContent(future.GetCallback(), "");
 
     // Simulate page load should trigger check again and, even with
-    // empty content, callback should run.
-    EXPECT_CALL(callback, Run("", false, ""));
+    // empty content, callback should run after fallback completes.
     SimulateLoadFinished();
+    auto [content, is_video, invalidation_token] = future.Get();
+    EXPECT_EQ(content, "");
+    EXPECT_FALSE(is_video);
+    EXPECT_TRUE(invalidation_token.empty());
 
     testing::Mock::VerifyAndClearExpectations(&page_content_fetcher_);
-    testing::Mock::VerifyAndClearExpectations(&callback);
   }
 }
 

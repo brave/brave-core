@@ -35,6 +35,8 @@ static_library("browser") {
     ]
   }
 
+  public_deps = [ "//mojo/public/cpp/bindings" ]
+
   deps = [
     "//base",
     "//brave/components/ai_chat/core/browser",
@@ -96,7 +98,6 @@ source_set("unit_tests") {
     "//components/pdf/common:constants",
     "//content/public/browser",
     "//content/test:test_support",
-    "//mojo/public/cpp/bindings",
     "//net:test_support",
     "//pdf:buildflags",
     "//services/data_decoder/public/cpp",
