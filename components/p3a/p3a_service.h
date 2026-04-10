@@ -24,7 +24,7 @@
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/remote_config_manager.h"
-#include "brave/components/p3a_utils/event_receiver.h"
+#include "brave/components/p3a_utils/event_relay.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -58,7 +58,7 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
 #if !BUILDFLAG(IS_IOS)
                    public misc_metrics::DefaultBrowserMonitor::Observer,
 #endif  // !BUILDFLAG(IS_IOS)
-                   public p3a_utils::EventReceiver::Observer,
+                   public p3a_utils::EventRelay::Observer,
                    public RemoteConfigManager::Delegate {
  public:
   P3AService(PrefService& local_state,
@@ -130,7 +130,7 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   // RemoteConfigManager::Delegate
   void OnRemoteConfigLoaded() override;
 
-  // p3a_utils::EventReceiver::Observer
+  // p3a_utils::EventRelay::Observer
   void OnCustomAttributeSet(
       std::string_view attribute_name,
       std::optional<std::string_view> attribute_value) override;
@@ -198,9 +198,9 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   base::RepeatingCallbackList<void(const std::string& histogram_name)>
       metric_cycled_callbacks_;
 
-  base::ScopedObservation<p3a_utils::EventReceiver,
-                          p3a_utils::EventReceiver::Observer>
-      event_receiver_observation_{this};
+  base::ScopedObservation<p3a_utils::EventRelay,
+                          p3a_utils::EventRelay::Observer>
+      event_relay_observation_{this};
 
 #if !BUILDFLAG(IS_IOS)
   base::ScopedObservation<misc_metrics::DefaultBrowserMonitor,

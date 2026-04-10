@@ -3,28 +3,28 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/p3a_utils/event_receiver.h"
+#include "brave/components/p3a_utils/event_relay.h"
 
 namespace p3a_utils {
 
 // static
-EventReceiver* EventReceiver::GetInstance() {
-  static base::NoDestructor<EventReceiver> instance;
+EventRelay* EventRelay::GetInstance() {
+  static base::NoDestructor<EventRelay> instance;
   return instance.get();
 }
 
-EventReceiver::EventReceiver() = default;
-EventReceiver::~EventReceiver() = default;
+EventRelay::EventRelay() = default;
+EventRelay::~EventRelay() = default;
 
-void EventReceiver::AddObserver(Observer* observer) {
+void EventRelay::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
 }
 
-void EventReceiver::RemoveObserver(Observer* observer) {
+void EventRelay::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void EventReceiver::NotifyCustomAttributeSet(
+void EventRelay::NotifyCustomAttributeSet(
     std::string_view attribute_name,
     std::optional<std::string_view> attribute_value) {
   observers_.Notify(&Observer::OnCustomAttributeSet, attribute_name,

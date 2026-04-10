@@ -5,14 +5,14 @@
 
 #include "brave/components/p3a_utils/custom_attributes.h"
 
-#include "brave/components/p3a_utils/event_receiver.h"
+#include "brave/components/p3a_utils/event_relay.h"
 
 namespace p3a_utils {
 
 void SetCustomAttribute(std::string_view attribute_name,
                         std::optional<std::string_view> attribute_value) {
-  EventReceiver::GetInstance()->NotifyCustomAttributeSet(attribute_name,
-                                                         attribute_value);
+  EventRelay::GetInstance()->NotifyCustomAttributeSet(attribute_name,
+                                                      attribute_value);
 }
 
 }  // namespace p3a_utils

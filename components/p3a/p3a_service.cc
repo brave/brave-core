@@ -22,7 +22,7 @@
 #include "brave/components/p3a/metric_names.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/pref_names.h"
-#include "brave/components/p3a_utils/event_receiver.h"
+#include "brave/components/p3a_utils/event_relay.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -86,7 +86,7 @@ P3AService::P3AService(PrefService& local_state,
   message_manager_ = std::make_unique<MessageManager>(
       local_state, &config_, *this, channel, first_run_time);
 
-  event_receiver_observation_.Observe(p3a_utils::EventReceiver::GetInstance());
+  event_relay_observation_.Observe(p3a_utils::EventRelay::GetInstance());
 }
 
 P3AService::~P3AService() = default;

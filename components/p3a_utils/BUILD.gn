@@ -3,8 +3,8 @@ static_library("p3a_utils") {
     "bucket.h",
     "custom_attributes.cc",
     "custom_attributes.h",
-    "event_receiver.cc",
-    "event_receiver.h",
+    "event_relay.cc",
+    "event_relay.h",
     "feature_usage.cc",
     "feature_usage.h",
   ]

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_P3A_UTILS_EVENT_RECEIVER_H_
-#define BRAVE_COMPONENTS_P3A_UTILS_EVENT_RECEIVER_H_
+#ifndef BRAVE_COMPONENTS_P3A_UTILS_EVENT_RELAY_H_
+#define BRAVE_COMPONENTS_P3A_UTILS_EVENT_RELAY_H_
 
 #include <optional>
 #include <string_view>
@@ -15,7 +15,7 @@
 
 namespace p3a_utils {
 
-class EventReceiver {
+class EventRelay {
  public:
   class Observer : public base::CheckedObserver {
    public:
@@ -24,10 +24,10 @@ class EventReceiver {
         std::optional<std::string_view> attribute_value) = 0;
   };
 
-  static EventReceiver* GetInstance();
+  static EventRelay* GetInstance();
 
-  EventReceiver(const EventReceiver&) = delete;
-  EventReceiver& operator=(const EventReceiver&) = delete;
+  EventRelay(const EventRelay&) = delete;
+  EventRelay& operator=(const EventRelay&) = delete;
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
@@ -37,14 +37,14 @@ class EventReceiver {
       std::optional<std::string_view> attribute_value);
 
  private:
-  friend class base::NoDestructor<EventReceiver>;
+  friend class base::NoDestructor<EventRelay>;
 
-  EventReceiver();
-  ~EventReceiver();
+  EventRelay();
+  ~EventRelay();
 
   base::ObserverList<Observer> observers_;
 };
 
 }  // namespace p3a_utils
 
-#endif  // BRAVE_COMPONENTS_P3A_UTILS_EVENT_RECEIVER_H_
+#endif  // BRAVE_COMPONENTS_P3A_UTILS_EVENT_RELAY_H_
