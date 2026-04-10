@@ -3,12 +3,12 @@
 <grit-part>
   <if expr="not use_titlecase">
     <message name="IDS_BOOKMARK_BAR_FOLDER_NAME" desc="Name shown in the tree for the Bookmarks Bar folder.">
-      Bookmarks
+      Bookmarks bar
     </message>
   </if>
   <if expr="use_titlecase">
     <message name="IDS_BOOKMARK_BAR_FOLDER_NAME" desc="In Title Case: Name shown in the tree for the Bookmarks Bar folder.">
-      Bookmarks
+      Bookmarks Bar
     </message>
   </if>
 
