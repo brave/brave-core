@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path, PurePath
 import subprocess
 from typing import Optional
+from rich.markup import escape
 
 from terminal import terminal
 
@@ -83,7 +84,7 @@ class Repository:
         """
         self.run_git('reset', 'HEAD')
 
-    def has_staged_changed(self):
+    def has_staged_changed(self) -> bool:
         return self.run_git('diff', '--cached', '--stat') != ''
 
     def get_commit_short_description(self, commit: str = 'HEAD') -> str:
@@ -93,24 +94,46 @@ class Repository:
         """
         return self.run_git('log', '-1', '--pretty=%s', commit)
 
-    def git_commit(self, message):
+    def git_commit(self,
+                   message: str,
+                   allows_empty: bool = False,
+                   no_verify: bool = False):
         """Commits the current staged changes.
 
-        This function also prints the commit hash/message to the user.
+    This function calls `git commit` and prints a user friendly message as a
+    result. No commit will be greated if nothing is staged, unless allows_empty
+    is set to True.
+
         Args:
         message:
             The message to be used for the commit.
+        allows_empty:
+            Whether to allow empty commits.
+        no_verify:
+            Whether to skip pre-commit and commit-msg hooks.
         """
-        if not self.has_staged_changed():
+        has_staged_changed = self.has_staged_changed()
+        if not allows_empty and not has_staged_changed:
             # Nothing to commit
             return
+        if allows_empty and has_staged_changed:
+            # Throwing an error if anything is staged as that could result in
+            # unintentionally committing changes.
+            raise ValueError(
+                'Cannot allow empty commits if there are staged changes.')
 
-        self.run_git('commit', '-m', message)
+        args = ['commit', '-m', message]
+        if allows_empty:
+            args.append('--allow-empty')
+        if no_verify:
+            args.append('--no-verify')
+        self.run_git(*args)
+
         commit = self.run_git('log', '-1', '--pretty=oneline',
                               '--abbrev-commit')
-        terminal.log_task(f'[bold]✔️ [/] [italic]{commit}')
+        terminal.log_task(f'[bold]✔️ [/] [italic]{escape(commit)}')
 
-    def is_valid_git_reference(self, reference) -> bool:
+    def is_valid_git_reference(self, reference: str) -> bool:
         """Checks if a name is a valid git branch name or hash.
         """
         try:
