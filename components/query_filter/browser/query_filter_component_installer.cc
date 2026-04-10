@@ -95,7 +95,8 @@ void QueryFilterComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& path,
     base::DictValue manifest) {
-  // TODO(https://github.com/brave/brave-browser/issues/54395): Pass the path to query filter service when it is implemented.
+  // TODO(https://github.com/brave/brave-browser/issues/54395): Pass the path to
+  // query filter service when it is implemented.
 }
 
 bool QueryFilterComponentInstallerPolicy::VerifyInstallation(
@@ -127,6 +128,8 @@ QueryFilterComponentInstallerPolicy::GetInstallerAttributes() const {
 bool QueryFilterComponentInstallerPolicy::IsBraveComponent() const {
   return true;
 }
+
+}  // namespace
 
 void RegisterQueryFilterComponent(
     component_updater::ComponentUpdateService* cus) {
