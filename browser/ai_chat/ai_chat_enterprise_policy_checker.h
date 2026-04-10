@@ -6,24 +6,31 @@
 #ifndef BRAVE_BROWSER_AI_CHAT_AI_CHAT_ENTERPRISE_POLICY_CHECKER_H_
 #define BRAVE_BROWSER_AI_CHAT_AI_CHAT_ENTERPRISE_POLICY_CHECKER_H_
 
-#include "chrome/browser/actor/enterprise_policy_url_checker.h"
+#include "chrome/browser/actor/enterprise_policy_checker.h"
 
 class GURL;
 
 namespace ai_chat {
 
-class AIChatEnterprisePolicyChecker : public actor::EnterprisePolicyUrlChecker {
+class AIChatEnterprisePolicyChecker : public actor::EnterprisePolicyChecker {
  public:
-  static const actor::EnterprisePolicyUrlChecker* NoEnterprisePolicyChecker();
+  static const actor::EnterprisePolicyChecker* NoEnterprisePolicyChecker();
 
   explicit AIChatEnterprisePolicyChecker(
-      actor::EnterprisePolicyBlockReason reason);
-  ~AIChatEnterprisePolicyChecker();
+      actor::EnterprisePolicyChecker::UrlBlockReason reason);
+  ~AIChatEnterprisePolicyChecker() override;
 
-  actor::EnterprisePolicyBlockReason Evaluate(const GURL& url) const override;
+  actor::EnterprisePolicyChecker::UrlBlockReason Evaluate(
+      const GURL& url) const override;
+
+  void ValidateContentSentToRenderer(
+      content::RenderFrameHost* frame,
+      const std::string& content,
+      actor::EnterprisePolicyChecker::ContentValidationCallback callback)
+      const override;
 
  private:
-  actor::EnterprisePolicyBlockReason reason_;
+  actor::EnterprisePolicyChecker::UrlBlockReason reason_;
 };
 
 }  // namespace ai_chat
