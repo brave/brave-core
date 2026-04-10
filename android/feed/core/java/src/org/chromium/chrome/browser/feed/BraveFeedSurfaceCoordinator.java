@@ -9,7 +9,6 @@ import static org.chromium.build.NullUtil.assertNonNull;
 
 import android.app.Activity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import androidx.annotation.Px;
@@ -61,7 +60,6 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             long embeddingSurfaceCreatedTimeNs,
             FeedSwipeRefreshLayout swipeRefreshLayout,
             boolean overScrollDisabled,
-            @Nullable ViewGroup viewportView,
             FeedSurfaceCoordinator.ActionDelegateFactory createActionDelegate,
             NonNullObservableSupplier<Integer> tabStripHeightSupplier,
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
@@ -85,7 +83,6 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
                 embeddingSurfaceCreatedTimeNs,
                 swipeRefreshLayout,
                 overScrollDisabled,
-                viewportView,
                 createActionDelegate,
                 tabStripHeightSupplier,
                 edgeToEdgeControllerSupplier,
