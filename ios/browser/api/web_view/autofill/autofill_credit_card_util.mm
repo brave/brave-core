@@ -8,7 +8,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "components/application_locale_storage/application_locale_storage.h"
 #include "components/autofill/core/browser/data_model/payments/credit_card.h"
-#include "ios/chrome/browser/autofill/ui_bundled/autofill_credit_card_util.h"
+#include "ios/chrome/browser/autofill/ui_bundled/util/autofill_credit_card_util.h"
 #include "ios/web_view/internal/autofill/cwv_credit_card_internal.h"
 #include "ios/web_view/public/cwv_credit_card.h"
 
