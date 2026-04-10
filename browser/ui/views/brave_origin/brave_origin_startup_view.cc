@@ -20,6 +20,7 @@
 #include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"
 #include "chrome/browser/profiles/keep_alive/scoped_profile_keep_alive.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/grit/chrome_unscaled_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/keep_alive_registry/keep_alive_types.h"
 #include "components/keep_alive_registry/scoped_keep_alive.h"
@@ -28,6 +29,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/common/content_switches.h"
+#include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/controls/webview/webview.h"
 #include "ui/views/widget/widget.h"
@@ -217,6 +219,20 @@ void BraveOriginStartupView::Init(Profile* profile) {
 
 views::View* BraveOriginStartupView::GetContentsView() {
   return web_view_.get();
+}
+
+bool BraveOriginStartupView::ShouldShowWindowIcon() const {
+  return true;
+}
+
+ui::ImageModel BraveOriginStartupView::GetWindowAppIcon() {
+  ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
+  return ui::ImageModel::FromImageSkia(
+      *rb.GetImageSkiaNamed(IDR_PRODUCT_LOGO_128));
+}
+
+ui::ImageModel BraveOriginStartupView::GetWindowIcon() {
+  return GetWindowAppIcon();
 }
 
 void BraveOriginStartupView::WidgetIsZombie(views::Widget* widget) {

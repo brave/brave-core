@@ -18,6 +18,7 @@ static_assert(BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/web_contents_delegate.h"
 #include "content/public/browser/web_contents_observer.h"
+#include "ui/base/models/image_model.h"
 #include "ui/views/controls/webview/unhandled_keyboard_event_handler.h"
 #include "ui/views/widget/widget_delegate.h"
 
@@ -110,6 +111,9 @@ class BraveOriginStartupView : public views::WidgetDelegate,
 
   // views::WidgetDelegate:
   views::View* GetContentsView() override;
+  bool ShouldShowWindowIcon() const override;
+  ui::ImageModel GetWindowAppIcon() override;
+  ui::ImageModel GetWindowIcon() override;
   void WidgetIsZombie(views::Widget* widget) override;
   void WindowClosing() override;
 
