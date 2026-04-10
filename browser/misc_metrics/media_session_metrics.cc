@@ -5,6 +5,7 @@
 
 #include "brave/browser/misc_metrics/media_session_metrics.h"
 
+#include <array>
 #include <utility>
 
 #include "base/check.h"
@@ -28,7 +29,9 @@ constexpr base::TimeDelta kTickInterval = base::Seconds(30);
 constexpr base::TimeDelta kFrameDuration = base::Days(7);
 
 constexpr int kMediaSessionUsageBuckets[] = {0, 20, 40, 60, 80, 100};
-constexpr int kMediaSessionUsageAttributeBuckets[] = {0, 33, 67, 100};
+constexpr int kMediaSessionUsageAttributeThresholds[] = {0, 33, 67};
+constexpr std::array<std::string_view, 4> kMediaSessionUsageAttributeValues = {
+    "0", "1-33", "34-67", "68-100"};
 
 }  // namespace
 
@@ -164,11 +167,10 @@ void MediaSessionMetrics::ReportMetric() {
     percentage = 1;
   }
 
-  const int* bucket_it = std::lower_bound(
-      std::begin(kMediaSessionUsageAttributeBuckets),
-      std::end(kMediaSessionUsageAttributeBuckets), percentage);
-  p3a_utils::SetCustomAttribute(kMediaSessionUsageAttributeName,
-                                base::NumberToString(*bucket_it));
+  p3a_utils::SetCustomAttribute(
+      kMediaSessionUsageAttributeName,
+      kMediaSessionUsageAttributeValues.at(p3a_utils::BucketIndex(
+          kMediaSessionUsageAttributeThresholds, percentage)));
 
   p3a_utils::RecordToHistogramBucket(kMediaSessionUsageHistogramName,
                                      kMediaSessionUsageBuckets, percentage);

@@ -107,7 +107,7 @@ TEST_F(MediaSessionMetricsTest, ZeroPercentBucket) {
 }
 
 TEST_F(MediaSessionMetricsTest, CorrectPercentageBucket) {
-  // 40h playing → ~20% → bucket 2. Attribute bucket: 20% → "33".
+  // 40h playing → ~20% → bucket 2. Attribute: 20% → "1-33".
   task_environment_.FastForwardBy(base::Days(1));
   auto* session = AddSession();
   task_environment_.FastForwardBy(base::Hours(40));
@@ -117,7 +117,7 @@ TEST_F(MediaSessionMetricsTest, CorrectPercentageBucket) {
 
   histogram_tester_.ExpectUniqueSample(kMediaSessionUsageHistogramName, 2, 1);
   EXPECT_EQ(relay_observer_.GetCustomAttribute(kMediaSessionUsageAttributeName),
-            "33");
+            "1-33");
 }
 
 TEST_F(MediaSessionMetricsTest, SimultaneousSessionsNoDuplication) {
@@ -134,7 +134,7 @@ TEST_F(MediaSessionMetricsTest, SimultaneousSessionsNoDuplication) {
 
   histogram_tester_.ExpectUniqueSample(kMediaSessionUsageHistogramName, 2, 1);
   EXPECT_EQ(relay_observer_.GetCustomAttribute(kMediaSessionUsageAttributeName),
-            "33");
+            "1-33");
 }
 
 TEST_F(MediaSessionMetricsTest, SessionRemovedWhilePlaying) {
@@ -147,9 +147,9 @@ TEST_F(MediaSessionMetricsTest, SessionRemovedWhilePlaying) {
   task_environment_.FastForwardBy(base::Days(7));
 
   histogram_tester_.ExpectUniqueSample(kMediaSessionUsageHistogramName, 1, 1);
-  // 2h media / ~8 days active ≈ 1% → attribute bucket "33".
+  // 2h media / ~8 days active ≈ 1% → attribute "1-33".
   EXPECT_EQ(relay_observer_.GetCustomAttribute(kMediaSessionUsageAttributeName),
-            "33");
+            "1-33");
 }
 
 TEST_F(MediaSessionMetricsTest, FrameResetAfterReport) {
@@ -163,7 +163,7 @@ TEST_F(MediaSessionMetricsTest, FrameResetAfterReport) {
   task_environment_.FastForwardBy(base::Days(7));
   histogram_tester_.ExpectBucketCount(kMediaSessionUsageHistogramName, 1, 1);
   EXPECT_EQ(relay_observer_.GetCustomAttribute(kMediaSessionUsageAttributeName),
-            "33");
+            "1-33");
 
   task_environment_.FastForwardBy(base::Days(7));
   histogram_tester_.ExpectBucketCount(kMediaSessionUsageHistogramName, 0, 1);
@@ -189,10 +189,10 @@ TEST_F(MediaSessionMetricsTest, ActiveProcessTimeOnlyWhenInUseOrPlaying) {
   // Advance remaining time to trigger report.
   task_environment_.FastForwardBy(base::Days(4));
 
-  // 1 day playing / 1 day active = 100% → bucket 5. Attribute bucket: "100".
+  // 1 day playing / 1 day active = 100% → bucket 5. Attribute: "68-100".
   histogram_tester_.ExpectUniqueSample(kMediaSessionUsageHistogramName, 5, 1);
   EXPECT_EQ(relay_observer_.GetCustomAttribute(kMediaSessionUsageAttributeName),
-            "100");
+            "68-100");
 }
 
 }  // namespace misc_metrics
