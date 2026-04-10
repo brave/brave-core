@@ -760,6 +760,18 @@ const util = {
       options.stdio = 'pipe'
     }
 
+    if (isCI) {
+      options.env.NODE_OPTIONS = [
+        '--report-uncaught-exception',
+        '--report-on-signal',
+        '--report-signal=SIGUSR2',
+        '--report-directory',
+        outputDir,
+        '--report-exclude-env',
+        '--report-exclude-network',
+      ].join(' ')
+    }
+
     // Enable to allow error post-processing after autoninja/siso failure.
     options.continueOnFail = true
 
@@ -810,7 +822,7 @@ const util = {
             `Build aborted: no autoninja output for ${idleTimeoutMs / 1000}s `,
           )
           buildDiagnostics.dumpBuildHangDiagnostics(outputDir)
-          buildDiagnostics.dumpProcessHangDiagnostics()
+          buildDiagnostics.dumpProcessHangDiagnostics(outputDir)
           processUtil.killProcessTree(buildProcess)
         }, 10 * 1000)
       }

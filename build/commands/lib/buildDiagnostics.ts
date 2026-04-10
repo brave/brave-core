@@ -10,6 +10,9 @@ import { execSync } from 'node:child_process'
 
 const kReadFileTailLimitBytes = 128 * 1024
 
+/** Seconds to wait after SIGUSR2 before reading Node diagnostic report files. */
+const kNodeReportWriteSettleSeconds = 8
+
 /**
  * Dumps the hanged build diagnostics for a build.
  * @param {string} outputDir
@@ -71,11 +74,99 @@ function readFileTailUtf8Sync(filePath: string, maxBytes: number): string {
   }
 }
 
+function psLineLooksLikeNodeProcess(line: string): boolean {
+  console.log(`psLineLooksLikeNodeProcess: ${line}`)
+  return /node-linux-x64\/bin\/node/.test(line)
+}
+
+function triggerNodeDiagnosticReportsAndPrint(
+  outputDir: string,
+  nodePids: string[],
+) {
+  if (!fs.existsSync(outputDir)) {
+    return
+  }
+
+  const beforeMs = Date.now()
+
+  if (nodePids.length === 0) {
+    console.log(
+      '--- Node diagnostic reports: no PIDs with --report-on-signal in environ (skipping SIGUSR2) ---',
+    )
+    return
+  }
+
+  console.log(
+    `--- Requesting Node diagnostic reports (SIGUSR2) for PIDs: ${nodePids.join(', ')} ---`,
+  )
+  for (const pid of nodePids) {
+    try {
+      execSync(`kill -USR2 ${Number(pid)}`, {
+        encoding: 'utf-8',
+        stdio: 'pipe',
+      })
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e)
+      console.log(`kill -USR2 ${pid} failed: ${msg}`)
+    }
+  }
+
+  try {
+    execSync(`sleep ${kNodeReportWriteSettleSeconds}`, { stdio: 'ignore' })
+  } catch {
+    // ignore
+  }
+
+  let names: string[]
+  try {
+    names = fs.readdirSync(outputDir)
+  } catch (e) {
+    Log.error(e instanceof Error ? e.message : String(e))
+    return
+  }
+
+  const reportFiles = names.filter(
+    (n) => n.startsWith('report.') && n.endsWith('.json'),
+  )
+  const recentReports: string[] = []
+  const skewMs = 2000
+  for (const name of reportFiles) {
+    const fp = path.join(outputDir, name)
+    try {
+      const st = fs.statSync(fp)
+      if (st.mtimeMs >= beforeMs - skewMs) {
+        recentReports.push(fp)
+      }
+    } catch {
+      // ignore missing / race
+    }
+  }
+  recentReports.sort()
+
+  if (recentReports.length === 0) {
+    console.log(
+      `--- Node diagnostic reports: no new report.*.json under ${outputDir} after ${kNodeReportWriteSettleSeconds}s wait ---`,
+    )
+    return
+  }
+
+  for (const fp of recentReports) {
+    console.log(`--- Node diagnostic report: ${fp} ---`)
+    try {
+      console.log(fs.readFileSync(fp, 'utf8'))
+    } catch (e) {
+      Log.error(e instanceof Error ? e.message : String(e))
+    }
+  }
+}
+
 /**
  * Dumps the hang diagnostics for the processes that are suspicious of being the
  * cause of the build hang. This is a best-effort attempt to diagnose the hang.
+ * @param outputDir GN output directory; when set on Linux, triggers SIGUSR2 for
+ * node processes that have `--report-on-signal` and prints new report JSONs.
  */
-export function dumpProcessHangDiagnostics() {
+export function dumpProcessHangDiagnostics(outputDir?: string) {
   // Restrict to Linux for now.
   if (process.platform !== 'linux') {
     return
@@ -104,10 +195,22 @@ export function dumpProcessHangDiagnostics() {
       console.log(process)
     }
 
+    const looksLikeNumericPid = (pid: string | undefined): pid is string =>
+      Boolean(pid && !isNaN(Number(pid)))
+
     // Extract just the PIDs of the processes to probe them further
     const pidsToProbe = suspiciousProcesses
       .map((line) => line.trim().split(/\s+/)[0])
-      .filter((pid) => pid && !isNaN(Number(pid)))
+      .filter(looksLikeNumericPid)
+
+    const nodePids = suspiciousProcesses
+      .filter(psLineLooksLikeNodeProcess)
+      .map((line) => line.trim().split(/\s+/)[0])
+      .filter(looksLikeNumericPid)
+
+    if (outputDir) {
+      triggerNodeDiagnosticReportsAndPrint(outputDir, nodePids)
+    }
 
     console.log(`--- Deep Dive into PIDs: ${pidsToProbe.join(', ')} ---`)
 
