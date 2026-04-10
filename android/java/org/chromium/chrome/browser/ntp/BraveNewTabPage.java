@@ -230,7 +230,6 @@ public class BraveNewTabPage extends NewTabPage implements NewTabPage.MostVisite
                         mConstructedTimeNs,
                         FeedSwipeRefreshLayout.create(activity, R.id.toolbar_container),
                         /* overScrollDisabled= */ false,
-                        /* viewportView= */ null,
                         actionDelegate,
                         mTabStripHeightSupplier,
                         edgeToEdgeControllerSupplier,
