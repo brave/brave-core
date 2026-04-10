@@ -91,6 +91,11 @@ pub struct WhisperRecognizer {
     config: Config,
     audio_buffer: Vec<f32>,
     accumulated_transcript: String,
+    /// Cached result from last transcribe() call.
+    /// Used by mark_done to skip redundant inference
+    /// when buffer hasn't changed.
+    last_result: String,
+    buffer_dirty: bool,
 }
 
 #[wasm_bindgen]
@@ -130,47 +135,82 @@ impl WhisperRecognizer {
             config,
             audio_buffer: Vec::new(),
             accumulated_transcript: String::new(),
+            last_result: String::new(),
+            buffer_dirty: false,
         })
     }
 
-    /// Push normalized float32 audio samples. Runs
-    /// inference when 5s of audio has accumulated for
-    /// better transcription quality. C++ base class
-    /// sends 2s chunks via Mojo, so first result
-    /// arrives after ~6s (3 chunks).
-    /// Returns empty string while buffering, or JSON
-    /// {"transcript":"...","is_final":false} after
-    /// inference.
+    /// Push audio samples. Accumulates audio and
+    /// re-transcribes the entire buffer each time
+    /// so Whisper sees full context. When buffer
+    /// exceeds 30s, commits the segment transcript
+    /// and keeps the overflow.
     pub fn add_audio(
         &mut self,
         audio: Vec<f32>,
     ) -> Result<String, JsError> {
-        // Skip silent chunks — don't accumulate them.
+        // Skip silent chunks. Don't add them (real
+        // silence hurts Whisper, which is trained on
+        // zero-padded segments) and don't re-run
+        // inference (buffer unchanged, avoids ~2s
+        // of wasted compute per silent chunk).
         let energy = Self::rms_energy(&audio);
+        log_error(&format!(
+            "[whisper] chunk energy={:.6} samples={}",
+            energy,
+            audio.len(),
+        ));
         if energy < SILENCE_ENERGY_THRESHOLD {
-            return self.make_result(false);
+            return Ok(String::new());
         }
 
         self.audio_buffer.extend_from_slice(&audio);
-        self.flush(false)
+        self.buffer_dirty = true;
+
+        // When buffer exceeds 30s, commit current
+        // segment transcript and keep overflow.
+        if self.audio_buffer.len() > N_SAMPLES {
+            self.commit_segment()?;
+        }
+
+        self.transcribe(false)
     }
 
-    /// Signal end of audio. Flushes remaining buffer
-    /// and returns the final transcript.
-    pub fn mark_done(&mut self) -> Result<String, JsError> {
-        if !self.audio_buffer.is_empty() {
-            self.flush(true)
-        } else if !self.accumulated_transcript.is_empty() {
-            self.make_result(true)
-        } else {
-            Ok(String::new())
+    /// Signal end of audio. Returns cached result
+    /// if buffer hasn't changed, otherwise runs
+    /// final inference.
+    pub fn mark_done(
+        &mut self,
+    ) -> Result<String, JsError> {
+        if self.audio_buffer.is_empty()
+            && self.accumulated_transcript.is_empty()
+        {
+            return Ok(String::new());
         }
+        if !self.buffer_dirty
+            && !self.last_result.is_empty()
+        {
+            // Buffer unchanged since last inference.
+            // Return cached result as final.
+            let result = TranscribeResult {
+                transcript:
+                    self.last_result.clone(),
+                is_final: true,
+            };
+            return serde_json::to_string(&result)
+                .map_err(|e| {
+                    JsError::new(&e.to_string())
+                });
+        }
+        self.transcribe(true)
     }
 
     pub fn reset(&mut self) {
         self.model.reset_kv_cache();
         self.audio_buffer.clear();
         self.accumulated_transcript.clear();
+        self.last_result.clear();
+        self.buffer_dirty = false;
     }
 }
 
@@ -196,38 +236,75 @@ impl WhisperRecognizer {
         (sum_sq / samples.len() as f32).sqrt()
     }
 
-    fn make_result(
-        &self,
+    /// Commit the first 30s of audio as a finalized
+    /// segment. Saves transcript and keeps overflow.
+    fn commit_segment(
+        &mut self,
+    ) -> Result<(), JsError> {
+        let segment: Vec<f32> = self
+            .audio_buffer
+            .drain(..N_SAMPLES)
+            .collect();
+        let text = self.run_inference(&segment)?;
+        if !text.is_empty() {
+            if !self.accumulated_transcript.is_empty()
+            {
+                self.accumulated_transcript.push(' ');
+            }
+            self.accumulated_transcript
+                .push_str(text.trim());
+        }
+        Ok(())
+    }
+
+    /// Re-transcribe the entire audio buffer and
+    /// return combined result (committed segments +
+    /// current buffer).
+    fn transcribe(
+        &mut self,
         is_final: bool,
     ) -> Result<String, JsError> {
+        let audio = self.audio_buffer.clone();
+        let text = self.run_inference(&audio)?;
+
+        // Combine committed segments with current.
+        let mut full =
+            self.accumulated_transcript.clone();
+        if !text.is_empty() {
+            if !full.is_empty() {
+                full.push(' ');
+            }
+            full.push_str(text.trim());
+        }
+
+        self.last_result = full.clone();
+        self.buffer_dirty = false;
+
         let result = TranscribeResult {
-            transcript:
-                self.accumulated_transcript.clone(),
+            transcript: full,
             is_final,
         };
         serde_json::to_string(&result)
             .map_err(|e| JsError::new(&e.to_string()))
     }
 
-    fn flush(
+    /// Core inference: audio -> mel -> encode ->
+    /// decode. Returns decoded text, or empty string
+    /// if audio is too short or silent.
+    fn run_inference(
         &mut self,
-        is_final: bool,
+        audio_f32: &[f32],
     ) -> Result<String, JsError> {
-        let audio_f32: Vec<f32> =
-            self.audio_buffer.drain(..).collect();
-
-        let energy = Self::rms_energy(&audio_f32);
         log_error(&format!(
-            "[whisper] energy={:.6} samples={}",
-            energy,
+            "[whisper] samples={}",
             audio_f32.len(),
         ));
 
-        // Skip inference on very short or silent audio.
-        if audio_f32.len() < MIN_AUDIO_SAMPLES
-            || energy < SILENCE_ENERGY_THRESHOLD
-        {
-            return self.make_result(is_final);
+        // Buffer only contains non-silent chunks
+        // (filtered in add_audio), so no energy
+        // check here. Just skip if too short.
+        if audio_f32.len() < MIN_AUDIO_SAMPLES {
+            return Ok(String::new());
         }
 
         let t0 = now();
@@ -235,7 +312,7 @@ impl WhisperRecognizer {
         // 1. Compute mel spectrogram
         let mel = audio::pcm_to_mel(
             &self.config,
-            &audio_f32,
+            audio_f32,
             &self.mel_filters,
         );
         let n_mels = self.config.num_mel_bins;
@@ -245,7 +322,9 @@ impl WhisperRecognizer {
             (1, n_mels, mel_len),
             &Device::Cpu,
         )
-        .map_err(|e| JsError::new(&e.to_string()))?;
+        .map_err(|e| {
+            JsError::new(&e.to_string())
+        })?;
 
         let t1 = now();
 
@@ -254,14 +333,18 @@ impl WhisperRecognizer {
             .model
             .encoder
             .forward(&mel_tensor, true)
-            .map_err(|e| JsError::new(&e.to_string()))?;
+            .map_err(|e| {
+                JsError::new(&e.to_string())
+            })?;
 
         let t2 = now();
 
         // 3. Greedy decode
         let text = self
             .greedy_decode(&encoder_output)
-            .map_err(|e| JsError::new(&e.to_string()))?;
+            .map_err(|e| {
+                JsError::new(&e.to_string())
+            })?;
 
         let t3 = now();
         log_error(&format!(
@@ -273,22 +356,12 @@ impl WhisperRecognizer {
             t2 - t1,
             t3 - t2,
             t3 - t0,
-            audio_f32.len() as f64 / SAMPLE_RATE as f64,
+            audio_f32.len() as f64
+                / SAMPLE_RATE as f64,
             text,
         ));
 
-        // Accumulate transcript across chunks so interim
-        // results are cumulative (each replaces the
-        // previous in WebSpeech API).
-        if !text.is_empty() {
-            if !self.accumulated_transcript.is_empty() {
-                self.accumulated_transcript.push(' ');
-            }
-            self.accumulated_transcript
-                .push_str(text.trim());
-        }
-
-        self.make_result(is_final)
+        Ok(text)
     }
 
     fn greedy_decode(
