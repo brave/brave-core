@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/containers/flat_set.h"
-#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
@@ -34,9 +33,9 @@ class TabRestoreService;
 struct SessionWindow;
 }  // namespace sessions
 
-// Delegate for the ContainersService to interact with the //chrome layer
-// (session service, tab restore service, currently opened tabs) to get the
-// container ids referenced by the current profile.
+// Collects container ids from the last saved session (when enabled), tab
+// restore entries, and currently open tabs, then reports the union to
+// ContainersService.
 class ContainersServiceDelegate
     : public containers::ContainersService::Delegate,
 #if BUILDFLAG(ENABLE_SESSION_SERVICE)
@@ -55,8 +54,15 @@ class ContainersServiceDelegate
   ContainersServiceDelegate& operator=(const ContainersServiceDelegate&) =
       delete;
 
+  // Starts async collection of container ids (from last session, tab restore,
+  // open tabs). Invokes |callback| once with the merged set; see
+  // MaybeRunOnReferencedContainerIdsLoaded().
   void GetReferencedContainerIds(
       OnReferencedContainerIdsReadyCallback callback) override;
+
+  // Clears the container's storage partition, then deletes its on-disk
+  // directory under the profile. |callback| receives whether deletion
+  // succeeded.
   void DeleteContainerStorage(const std::string& id,
                               DeleteContainerStorageCallback callback) override;
 
@@ -65,6 +71,8 @@ class ContainersServiceDelegate
   // SessionServiceBaseObserver:
   void OnDestroying(SessionServiceBase* service) override;
 
+  // Asks SessionService for the previous browser session and merges container
+  // ids from serialized navigations into |pending_referenced_container_ids_|.
   void RequestLastSessionContainerReferences();
   void OnGotLastSession(
       std::vector<std::unique_ptr<sessions::SessionWindow>> windows,
@@ -77,8 +85,13 @@ class ContainersServiceDelegate
       sessions::TabRestoreService* service) override;
   void TabRestoreServiceLoaded(sessions::TabRestoreService* service) override;
 
+  // Ensures tab restore is loading if needed, then checks whether all sources
+  // are ready (with MaybeRunOnReferencedContainerIdsLoaded).
   void RequestTabRestoreContainerReferences();
-  void RequestOpenedTabsContainerReferences();
+
+  // When the last-session result (if enabled) and tab restore are ready, merges
+  // tab restore entries and open tabs into |pending_referenced_container_ids_|,
+  // then posts |on_referenced_container_ids_loaded_| with that set.
   void MaybeRunOnReferencedContainerIdsLoaded();
 
   const raw_ref<Profile> profile_;
@@ -86,6 +99,8 @@ class ContainersServiceDelegate
   raw_ptr<SessionService> session_service_ = nullptr;
   base::ScopedObservation<SessionService, SessionServiceBaseObserver>
       session_service_observation_{this};
+  // Set after RequestLastSessionContainerReferences completes (including
+  // no-op).
   bool got_last_session_ = false;
 #endif
   raw_ptr<sessions::TabRestoreService> tab_restore_service_ = nullptr;
@@ -93,7 +108,11 @@ class ContainersServiceDelegate
                           sessions::TabRestoreServiceObserver>
       tab_restore_service_observation_{this};
 
+  // Callback passed to the most recent GetReferencedContainerIds; cleared when
+  // invoked.
   OnReferencedContainerIdsReadyCallback on_referenced_container_ids_loaded_;
+  // Accumulates ids from last session and tab restore before the final merge
+  // with open tabs.
   base::flat_set<std::string> pending_referenced_container_ids_;
 
   base::WeakPtrFactory<ContainersServiceDelegate> weak_factory_{this};

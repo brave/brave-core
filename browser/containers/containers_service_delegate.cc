@@ -39,7 +39,10 @@
 
 namespace {
 
-// Returns the path to the container's storage partition on disk.
+// Returns the on-disk directory for this container's isolated storage.
+// The leaf name is a short hash of |id|, matching Chromium's layout under
+// Storage/ext/<domain>/ so it stays a safe path segment and lines up with
+// GetStoragePartition() for the same |id|.
 base::FilePath GetContainerStoragePartitionPath(Profile* profile,
                                                 const std::string& id) {
   constexpr int kPartitionNameHashBytes = 6;
@@ -167,9 +170,9 @@ void ContainersServiceDelegate::GetReferencedContainerIds(
     OnReferencedContainerIdsReadyCallback callback) {
   on_referenced_container_ids_loaded_ = std::move(callback);
 
-  // Run the requests in parallel. After each request is completed,
-  // MaybeRunOnReferencedContainerIdsLoaded() is called to check if all requests
-  // are completed to invoke the callback.
+  // Last-session and tab-restore work proceeds in parallel; each path calls
+  // MaybeRunOnReferencedContainerIdsLoaded() when its prerequisite is
+  // satisfied.
 #if BUILDFLAG(ENABLE_SESSION_SERVICE)
   RequestLastSessionContainerReferences();
 #endif
@@ -191,8 +194,11 @@ void ContainersServiceDelegate::DeleteContainerStorage(
   base::FilePath partition_path =
       GetContainerStoragePartitionPath(base::to_address(profile_), id);
 
+  // can_create=false: never instantiate a partition we are trying to remove.
   if (content::StoragePartition* partition =
           profile_->GetStoragePartition(config, /*can_create=*/false)) {
+    // Clear in-memory/live storage first; the hash-named directory may still
+    // remain until we delete it explicitly below.
     partition->ClearData(
         content::StoragePartition::REMOVE_DATA_MASK_ALL,
         /*filter_builder=*/nullptr,
@@ -210,6 +216,8 @@ void ContainersServiceDelegate::DeleteContainerStorage(
     return;
   }
 
+  // No live partition object (e.g. never opened in this session); still remove
+  // any leftover on-disk directory from a prior run.
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&DeletePathRecursively, partition_path),
@@ -273,12 +281,12 @@ void ContainersServiceDelegate::TabRestoreServiceLoaded(
 
 void ContainersServiceDelegate::RequestTabRestoreContainerReferences() {
   if (tab_restore_service_ && !tab_restore_service_->IsLoaded()) {
+    // Completion runs from TabRestoreServiceLoaded(); MaybeRun below is a no-op
+    // until then unless the service is already loaded or absent.
     tab_restore_service_->LoadTabsFromLastSession();
   }
   MaybeRunOnReferencedContainerIdsLoaded();
 }
-
-void ContainersServiceDelegate::RequestOpenedTabsContainerReferences() {}
 
 void ContainersServiceDelegate::MaybeRunOnReferencedContainerIdsLoaded() {
   if (!on_referenced_container_ids_loaded_) {
@@ -296,6 +304,8 @@ void ContainersServiceDelegate::MaybeRunOnReferencedContainerIdsLoaded() {
     return;
   }
 
+  // Tab-restore entries are only read once loading has finished; open tabs are
+  // merged afterward so the result includes the live session.
   if (tab_restore_service_ && tab_restore_service_->IsLoaded()) {
     for (const auto& entry : tab_restore_service_->entries()) {
       AddReferencedContainerIdsFromEntry(*entry,
@@ -306,7 +316,7 @@ void ContainersServiceDelegate::MaybeRunOnReferencedContainerIdsLoaded() {
   AppendOpenTabReferencedContainerIds(base::to_address(profile_),
                                       pending_referenced_container_ids_);
 
-  // Reply via task runner to avoid synchronous reply in case everything is
+  // Reply via a task runner to avoid a synchronous reply in case everything is
   // ready immediately.
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(std::move(on_referenced_container_ids_loaded_),
