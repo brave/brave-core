@@ -7,8 +7,6 @@ static_library("browser") {
   sources = [
     "query_filter_component_installer.cc",
     "query_filter_component_installer.h",
-    "query_filter_service.cc",
-    "query_filter_service.h",
   ]
 
   deps = [

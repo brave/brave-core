@@ -16,7 +16,6 @@
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-#include "brave/components/query_filter/browser/query_filter_service.h"
 #include "brave/components/query_filter/common/features.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
@@ -96,9 +95,7 @@ void QueryFilterComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& path,
     base::DictValue manifest) {
-  if (QueryFilterService* service = QueryFilterService::GetInstance()) {
-    service->OnComponentReady(path);
-  }
+  // TODO(https://github.com/brave/brave-browser/issues/54395): Pass the path to query filter service when it is implemented.
 }
 
 bool QueryFilterComponentInstallerPolicy::VerifyInstallation(
