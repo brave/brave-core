@@ -21,6 +21,43 @@
 
 namespace query_filter {
 
+namespace {
+
+class QueryFilterComponentInstallerPolicy
+    : public component_updater::ComponentInstallerPolicy {
+ public:
+  QueryFilterComponentInstallerPolicy();
+  ~QueryFilterComponentInstallerPolicy() override;
+
+  QueryFilterComponentInstallerPolicy(
+      const QueryFilterComponentInstallerPolicy&) = delete;
+  QueryFilterComponentInstallerPolicy& operator=(
+      const QueryFilterComponentInstallerPolicy&) = delete;
+
+  // component_updater::ComponentInstallerPolicy
+  bool SupportsGroupPolicyEnabledComponentUpdates() const override;
+  bool RequiresNetworkEncryption() const override;
+  update_client::CrxInstaller::Result OnCustomInstall(
+      const base::DictValue& manifest,
+      const base::FilePath& install_dir) override;
+  void OnCustomUninstall() override;
+  bool VerifyInstallation(const base::DictValue& manifest,
+                          const base::FilePath& install_dir) const override;
+  void ComponentReady(const base::Version& version,
+                      const base::FilePath& path,
+                      base::DictValue manifest) override;
+  base::FilePath GetRelativeInstallDir() const override;
+  void GetHash(std::vector<uint8_t>* hash) const override;
+  std::string GetName() const override;
+  update_client::InstallerAttributes GetInstallerAttributes() const override;
+  bool IsBraveComponent() const override;
+
+ private:
+  const std::string component_id_;
+  const std::string component_name_;
+  std::array<uint8_t, crypto::kSHA256Length> component_hash_;
+};
+
 QueryFilterComponentInstallerPolicy::QueryFilterComponentInstallerPolicy()
     : component_id_(kQueryFilterComponentId),
       component_name_(kQueryFilterComponentName) {
@@ -84,6 +121,8 @@ QueryFilterComponentInstallerPolicy::GetInstallerAttributes() const {
 bool QueryFilterComponentInstallerPolicy::IsBraveComponent() const {
   return true;
 }
+
+}  // namespace
 
 void RegisterQueryFilterComponent(
     component_updater::ComponentUpdateService* cus) {

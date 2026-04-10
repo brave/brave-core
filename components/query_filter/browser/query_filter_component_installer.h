@@ -8,15 +8,7 @@
 
 #include <stdint.h>
 
-#include <array>
-#include <string>
-#include <vector>
-
 #include "base/files/file_path.h"
-#include "base/values.h"
-#include "base/version.h"
-#include "components/component_updater/component_installer.h"
-#include "crypto/sha2.h"
 
 namespace component_updater {
 class ComponentUpdateService;
@@ -69,41 +61,7 @@ inline constexpr uint8_t kQueryFilterComponentPublicKey[] = {
     0x80, 0x0b, 0x12, 0x69, 0x71, 0x75, 0x13, 0x5b, 0x02, 0x22, 0xa6, 0x52,
     0x1d, 0x02, 0x03, 0x01, 0x00, 0x01};
 
-class QueryFilterComponentInstallerPolicy
-    : public component_updater::ComponentInstallerPolicy {
- public:
-  QueryFilterComponentInstallerPolicy();
-  ~QueryFilterComponentInstallerPolicy() override;
-
-  QueryFilterComponentInstallerPolicy(
-      const QueryFilterComponentInstallerPolicy&) = delete;
-  QueryFilterComponentInstallerPolicy& operator=(
-      const QueryFilterComponentInstallerPolicy&) = delete;
-
-  // component_updater::ComponentInstallerPolicy
-  bool SupportsGroupPolicyEnabledComponentUpdates() const override;
-  bool RequiresNetworkEncryption() const override;
-  update_client::CrxInstaller::Result OnCustomInstall(
-      const base::DictValue& manifest,
-      const base::FilePath& install_dir) override;
-  void OnCustomUninstall() override;
-  bool VerifyInstallation(const base::DictValue& manifest,
-                          const base::FilePath& install_dir) const override;
-  void ComponentReady(const base::Version& version,
-                      const base::FilePath& path,
-                      base::DictValue manifest) override;
-  base::FilePath GetRelativeInstallDir() const override;
-  void GetHash(std::vector<uint8_t>* hash) const override;
-  std::string GetName() const override;
-  update_client::InstallerAttributes GetInstallerAttributes() const override;
-  bool IsBraveComponent() const override;
-
- private:
-  const std::string component_id_;
-  const std::string component_name_;
-  std::array<uint8_t, crypto::kSHA256Length> component_hash_;
-};
-
+// Registers the Query Filter component with the component updater.
 void RegisterQueryFilterComponent(
     component_updater::ComponentUpdateService* cus);
 
