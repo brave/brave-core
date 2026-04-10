@@ -2886,6 +2886,7 @@ public abstract class BraveActivity extends ChromeActivity
         searchEngines.add(0, defaultQuickSearchEnginesModel);
 
         if (!profile.isOffTheRecord()
+                && BraveLeoPrefUtils.isLeoEnabled()
                 && BraveLeoPrefUtils.shouldShowLeoQuickSearchEngine()
                 && !BraveLeoPrefUtils.isLeoDisabledByPolicy(profile)) {
             QuickSearchEnginesModel leoQuickSearchEnginesModel =
