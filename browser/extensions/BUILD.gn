@@ -84,12 +84,13 @@ source_set("extensions") {
     "brave_extensions_browser_client_impl.h",
     "updater/brave_update_client_config.cc",
     "updater/brave_update_client_config.h",
+    "updater/features.cc",
+    "updater/features.h",
   ]
 
   deps = [
     ":brave_prefs_util_impl",
     ":resources",
-    "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser:browser_process",
     "//brave/browser/brave_search",
@@ -137,6 +138,7 @@ source_set("extensions") {
 
   public_deps = [
     ":component_loader",
+    "//base",
     "//extensions/browser",
   ]
 

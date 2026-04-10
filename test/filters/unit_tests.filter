@@ -806,6 +806,11 @@
 # This test fails because we disable installing the Captcha Provider component
 -CaptchaProviderComponentInstallerPolicyTest.ComponentRegistered
 
+# ExtensionUpdaterTest.* was previously disabled. When adding more tests with
+# https://github.com/brave/brave-core/pull/35301, it seems most of the tests
+# pass. This is the only one remaining with a failure.
+-ExtensionUpdaterTest.TestProfileDestruction
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
@@ -860,7 +865,6 @@
 -ExtensionSyncTypeTest.UserScriptNoUpdateUrl
 -ExtensionTelemetryServiceSystemTimeTest.PersistsReportsWithUnspecifiedManagementAuthorityOnShutdown
 -ExtensionTelemetryServiceTest.*
--ExtensionUpdaterTest.*
 -FullStreamUIPolicyTest.*
 -GCMProfileServiceTest.*
 -GetUserPopulationForProfileTest.PopulatesPopulation
