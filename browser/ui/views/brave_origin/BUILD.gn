@@ -21,6 +21,7 @@ source_set("brave_origin") {
     "//brave/components/brave_origin/buildflags",
     "//brave/components/resources:strings_grit",
     "//brave/components/skus/browser",
+    "//chrome/app/theme:chrome_unscaled_resources",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/profiles/keep_alive",
     "//components/keep_alive_registry",
