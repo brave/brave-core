@@ -5,6 +5,8 @@
 
 #include "brave/components/p3a_utils/event_relay.h"
 
+#include "base/containers/map_util.h"
+
 namespace p3a_utils {
 
 // static
@@ -29,6 +31,26 @@ void EventRelay::NotifyCustomAttributeSet(
     std::optional<std::string_view> attribute_value) {
   observers_.Notify(&Observer::OnCustomAttributeSet, attribute_name,
                     attribute_value);
+}
+
+TestEventRelayObserver::TestEventRelayObserver() {
+  observation_.Observe(EventRelay::GetInstance());
+}
+
+TestEventRelayObserver::~TestEventRelayObserver() = default;
+
+std::optional<std::string> TestEventRelayObserver::GetCustomAttribute(
+    std::string_view attribute_name) const {
+  const auto* value = base::FindOrNull(attributes_, attribute_name);
+  return value ? *value : std::nullopt;
+}
+
+void TestEventRelayObserver::OnCustomAttributeSet(
+    std::string_view attribute_name,
+    std::optional<std::string_view> attribute_value) {
+  attributes_[std::string(attribute_name)] =
+      attribute_value ? std::optional<std::string>(*attribute_value)
+                      : std::nullopt;
 }
 
 }  // namespace p3a_utils

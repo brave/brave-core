@@ -6,10 +6,12 @@
 #include "brave/browser/misc_metrics/media_session_metrics.h"
 
 #include <memory>
+#include <string>
 
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/task_environment.h"
 #include "brave/components/misc_metrics/uptime_monitor.h"
+#include "brave/components/p3a_utils/event_relay.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/mock_media_session.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -76,6 +78,7 @@ class MediaSessionMetricsTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
   base::HistogramTester histogram_tester_;
+  p3a_utils::TestEventRelayObserver relay_observer_;
 
   MockUptimeMonitor uptime_monitor_;
 
@@ -91,16 +94,20 @@ TEST_F(MediaSessionMetricsTest, NoReportBeforeOneWeek) {
   AddSession();
   task_environment_.FastForwardBy(base::Days(6));
   histogram_tester_.ExpectTotalCount(kMediaSessionUsageHistogramName, 0);
+  EXPECT_EQ(relay_observer_.GetCustomAttribute(kMediaSessionUsageAttributeName),
+            std::nullopt);
 }
 
 TEST_F(MediaSessionMetricsTest, ZeroPercentBucket) {
   // No media playing → 0 media minutes → 0% → bucket 0.
   task_environment_.FastForwardBy(base::Days(7));
   histogram_tester_.ExpectUniqueSample(kMediaSessionUsageHistogramName, 0, 1);
+  EXPECT_EQ(relay_observer_.GetCustomAttribute(kMediaSessionUsageAttributeName),
+            "0");
 }
 
 TEST_F(MediaSessionMetricsTest, CorrectPercentageBucket) {
-  // 40h playing → ~20% → bucket 2.
+  // 40h playing → ~20% → bucket 2. Attribute bucket: 20% → "33".
   task_environment_.FastForwardBy(base::Days(1));
   auto* session = AddSession();
   task_environment_.FastForwardBy(base::Hours(40));
@@ -109,6 +116,8 @@ TEST_F(MediaSessionMetricsTest, CorrectPercentageBucket) {
   task_environment_.FastForwardBy(base::Days(7));
 
   histogram_tester_.ExpectUniqueSample(kMediaSessionUsageHistogramName, 2, 1);
+  EXPECT_EQ(relay_observer_.GetCustomAttribute(kMediaSessionUsageAttributeName),
+            "33");
 }
 
 TEST_F(MediaSessionMetricsTest, SimultaneousSessionsNoDuplication) {
@@ -124,6 +133,8 @@ TEST_F(MediaSessionMetricsTest, SimultaneousSessionsNoDuplication) {
   task_environment_.FastForwardBy(base::Days(7));
 
   histogram_tester_.ExpectUniqueSample(kMediaSessionUsageHistogramName, 2, 1);
+  EXPECT_EQ(relay_observer_.GetCustomAttribute(kMediaSessionUsageAttributeName),
+            "33");
 }
 
 TEST_F(MediaSessionMetricsTest, SessionRemovedWhilePlaying) {
@@ -136,6 +147,9 @@ TEST_F(MediaSessionMetricsTest, SessionRemovedWhilePlaying) {
   task_environment_.FastForwardBy(base::Days(7));
 
   histogram_tester_.ExpectUniqueSample(kMediaSessionUsageHistogramName, 1, 1);
+  // 2h media / ~8 days active ≈ 1% → attribute bucket "33".
+  EXPECT_EQ(relay_observer_.GetCustomAttribute(kMediaSessionUsageAttributeName),
+            "33");
 }
 
 TEST_F(MediaSessionMetricsTest, FrameResetAfterReport) {
@@ -148,10 +162,14 @@ TEST_F(MediaSessionMetricsTest, FrameResetAfterReport) {
 
   task_environment_.FastForwardBy(base::Days(7));
   histogram_tester_.ExpectBucketCount(kMediaSessionUsageHistogramName, 1, 1);
+  EXPECT_EQ(relay_observer_.GetCustomAttribute(kMediaSessionUsageAttributeName),
+            "33");
 
   task_environment_.FastForwardBy(base::Days(7));
   histogram_tester_.ExpectBucketCount(kMediaSessionUsageHistogramName, 0, 1);
   histogram_tester_.ExpectTotalCount(kMediaSessionUsageHistogramName, 2);
+  EXPECT_EQ(relay_observer_.GetCustomAttribute(kMediaSessionUsageAttributeName),
+            "0");
 }
 
 TEST_F(MediaSessionMetricsTest, ActiveProcessTimeOnlyWhenInUseOrPlaying) {
@@ -171,8 +189,10 @@ TEST_F(MediaSessionMetricsTest, ActiveProcessTimeOnlyWhenInUseOrPlaying) {
   // Advance remaining time to trigger report.
   task_environment_.FastForwardBy(base::Days(4));
 
-  // 1 day playing / 1 day active = 100% → bucket 5.
+  // 1 day playing / 1 day active = 100% → bucket 5. Attribute bucket: "100".
   histogram_tester_.ExpectUniqueSample(kMediaSessionUsageHistogramName, 5, 1);
+  EXPECT_EQ(relay_observer_.GetCustomAttribute(kMediaSessionUsageAttributeName),
+            "100");
 }
 
 }  // namespace misc_metrics

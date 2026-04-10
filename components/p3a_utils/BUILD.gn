@@ -13,5 +13,6 @@ static_library("p3a_utils") {
     "//base",
     "//brave/components/time_period_storage",
     "//components/prefs",
+    "//third_party/abseil-cpp:absl",
   ]
 }
