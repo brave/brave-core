@@ -7,10 +7,10 @@
 description = 'Insert kActionShowPartitionedStorage before kActionVirtualCardEnroll'
 pattern = 'kActionVirtualCardEnroll,'
 replace = '''kActionShowPartitionedStorage,
-            {
-                .histogram_name = "PartitionedStorage",
-                .type = brave::kPartitionedStorageActionIconType,
-            },
-        },
         {
-            kActionVirtualCardEnroll,'''
+            .histogram_name = "PartitionedStorage",
+            .type = brave::kPartitionedStorageActionIconType,
+        },
+    },
+    {
+        kActionVirtualCardEnroll,'''
