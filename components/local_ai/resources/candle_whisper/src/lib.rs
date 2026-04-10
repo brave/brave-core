@@ -35,6 +35,16 @@ use serde::{Deserialize, Serialize};
 use tokenizers::Tokenizer;
 use wasm_bindgen::prelude::*;
 
+#[wasm_bindgen]
+extern "C" {
+    #[wasm_bindgen(js_namespace = console)]
+    fn log(s: &str);
+    #[wasm_bindgen(js_namespace = console, js_name = error)]
+    fn log_error(s: &str);
+    #[wasm_bindgen(js_namespace = performance)]
+    fn now() -> f64;
+}
+
 // Whisper model configuration, matching the HuggingFace
 // config.json format.
 #[derive(Debug, Clone, PartialEq, Deserialize)]
@@ -72,6 +82,7 @@ struct TranscribeResult {
     is_final: bool,
 }
 
+
 #[wasm_bindgen]
 pub struct WhisperRecognizer {
     model: model::Whisper,
@@ -79,6 +90,7 @@ pub struct WhisperRecognizer {
     mel_filters: Vec<f32>,
     config: Config,
     audio_buffer: Vec<f32>,
+    accumulated_transcript: String,
 }
 
 #[wasm_bindgen]
@@ -111,25 +123,45 @@ impl WhisperRecognizer {
         let model =
             model::Whisper::load(&vb, config.clone()).map_err(|e| JsError::new(&e.to_string()))?;
 
-        Ok(Self { model, tokenizer, mel_filters, config, audio_buffer: Vec::new() })
+        Ok(Self {
+            model,
+            tokenizer,
+            mel_filters,
+            config,
+            audio_buffer: Vec::new(),
+            accumulated_transcript: String::new(),
+        })
     }
 
-    /// Push normalized float32 audio samples and run
-    /// inference immediately. The C++ base class already
-    /// batches audio to 2s before sending via Mojo, so
-    /// no additional buffering is needed here.
-    /// Returns JSON {"transcript":"...","is_final":false}.
-    pub fn add_audio(&mut self, audio: Vec<f32>) -> Result<String, JsError> {
+    /// Push normalized float32 audio samples. Runs
+    /// inference when 5s of audio has accumulated for
+    /// better transcription quality. C++ base class
+    /// sends 2s chunks via Mojo, so first result
+    /// arrives after ~6s (3 chunks).
+    /// Returns empty string while buffering, or JSON
+    /// {"transcript":"...","is_final":false} after
+    /// inference.
+    pub fn add_audio(
+        &mut self,
+        audio: Vec<f32>,
+    ) -> Result<String, JsError> {
+        // Skip silent chunks — don't accumulate them.
+        let energy = Self::rms_energy(&audio);
+        if energy < SILENCE_ENERGY_THRESHOLD {
+            return self.make_result(false);
+        }
+
         self.audio_buffer.extend_from_slice(&audio);
         self.flush(false)
     }
 
-    /// Signal end of audio. Flushes remaining buffer.
-    /// Returns empty string if nothing to flush, or
-    /// JSON {"transcript":"...","is_final":true}.
+    /// Signal end of audio. Flushes remaining buffer
+    /// and returns the final transcript.
     pub fn mark_done(&mut self) -> Result<String, JsError> {
         if !self.audio_buffer.is_empty() {
             self.flush(true)
+        } else if !self.accumulated_transcript.is_empty() {
+            self.make_result(true)
         } else {
             Ok(String::new())
         }
@@ -138,19 +170,84 @@ impl WhisperRecognizer {
     pub fn reset(&mut self) {
         self.model.reset_kv_cache();
         self.audio_buffer.clear();
+        self.accumulated_transcript.clear();
     }
 }
 
+// Minimum audio length for meaningful inference.
+// 0.5s at 16kHz = 8000 samples.
+const MIN_AUDIO_SAMPLES: usize = SAMPLE_RATE / 2;
+
+// RMS energy below this is silence. Skip inference
+// to save compute. Set conservatively low so quiet
+// speech passes through.
+// Observed: silence ~0.002-0.004,
+//           quiet speech ~0.005-0.007,
+//           normal speech ~0.02+.
+const SILENCE_ENERGY_THRESHOLD: f32 = 0.003;
+
 impl WhisperRecognizer {
-    fn flush(&mut self, is_final: bool) -> Result<String, JsError> {
-        let audio_f32: Vec<f32> = self.audio_buffer.drain(..).collect();
+    fn rms_energy(samples: &[f32]) -> f32 {
+        if samples.is_empty() {
+            return 0.0;
+        }
+        let sum_sq: f32 =
+            samples.iter().map(|&s| s * s).sum();
+        (sum_sq / samples.len() as f32).sqrt()
+    }
+
+    fn make_result(
+        &self,
+        is_final: bool,
+    ) -> Result<String, JsError> {
+        let result = TranscribeResult {
+            transcript:
+                self.accumulated_transcript.clone(),
+            is_final,
+        };
+        serde_json::to_string(&result)
+            .map_err(|e| JsError::new(&e.to_string()))
+    }
+
+    fn flush(
+        &mut self,
+        is_final: bool,
+    ) -> Result<String, JsError> {
+        let audio_f32: Vec<f32> =
+            self.audio_buffer.drain(..).collect();
+
+        let energy = Self::rms_energy(&audio_f32);
+        log_error(&format!(
+            "[whisper] energy={:.6} samples={}",
+            energy,
+            audio_f32.len(),
+        ));
+
+        // Skip inference on very short or silent audio.
+        if audio_f32.len() < MIN_AUDIO_SAMPLES
+            || energy < SILENCE_ENERGY_THRESHOLD
+        {
+            return self.make_result(is_final);
+        }
+
+        let t0 = now();
 
         // 1. Compute mel spectrogram
-        let mel = audio::pcm_to_mel(&self.config, &audio_f32, &self.mel_filters);
+        let mel = audio::pcm_to_mel(
+            &self.config,
+            &audio_f32,
+            &self.mel_filters,
+        );
         let n_mels = self.config.num_mel_bins;
         let mel_len = mel.len() / n_mels;
-        let mel_tensor = Tensor::from_vec(mel, (1, n_mels, mel_len), &Device::Cpu)
-            .map_err(|e| JsError::new(&e.to_string()))?;
+        let mel_tensor = Tensor::from_vec(
+            mel,
+            (1, n_mels, mel_len),
+            &Device::Cpu,
+        )
+        .map_err(|e| JsError::new(&e.to_string()))?;
+
+        let t1 = now();
 
         // 2. Encode
         let encoder_output = self
@@ -159,45 +256,103 @@ impl WhisperRecognizer {
             .forward(&mel_tensor, true)
             .map_err(|e| JsError::new(&e.to_string()))?;
 
-        // 3. Greedy decode
-        let transcript =
-            self.greedy_decode(&encoder_output).map_err(|e| JsError::new(&e.to_string()))?;
+        let t2 = now();
 
-        let result = TranscribeResult { transcript, is_final };
-        serde_json::to_string(&result).map_err(|e| JsError::new(&e.to_string()))
+        // 3. Greedy decode
+        let text = self
+            .greedy_decode(&encoder_output)
+            .map_err(|e| JsError::new(&e.to_string()))?;
+
+        let t3 = now();
+        log_error(&format!(
+            "[whisper] timing: mel={:.0}ms \
+             encode={:.0}ms decode={:.0}ms \
+             total={:.0}ms audio={:.1}s \
+             text=\"{}\"",
+            t1 - t0,
+            t2 - t1,
+            t3 - t2,
+            t3 - t0,
+            audio_f32.len() as f64 / SAMPLE_RATE as f64,
+            text,
+        ));
+
+        // Accumulate transcript across chunks so interim
+        // results are cumulative (each replaces the
+        // previous in WebSpeech API).
+        if !text.is_empty() {
+            if !self.accumulated_transcript.is_empty() {
+                self.accumulated_transcript.push(' ');
+            }
+            self.accumulated_transcript
+                .push_str(text.trim());
+        }
+
+        self.make_result(is_final)
     }
 
-    fn greedy_decode(&mut self, encoder_output: &Tensor) -> candle_core::Result<String> {
-        let sot_token = self.tokenizer.token_to_id(SOT_TOKEN).unwrap_or(50258);
-        let lang_token = self.tokenizer.token_to_id(LANG_TOKEN).unwrap_or(50259);
-        let transcribe_token = self.tokenizer.token_to_id(TRANSCRIBE_TOKEN).unwrap_or(50359);
-        let no_timestamps_token = self.tokenizer.token_to_id(NO_TIMESTAMPS_TOKEN).unwrap_or(50363);
-        let eot_token = self.tokenizer.token_to_id(EOT_TOKEN).unwrap_or(50257);
+    fn greedy_decode(
+        &mut self,
+        encoder_output: &Tensor,
+    ) -> candle_core::Result<String> {
+        let sot_token = self
+            .tokenizer
+            .token_to_id(SOT_TOKEN)
+            .unwrap_or(50258);
+        let lang_token = self
+            .tokenizer
+            .token_to_id(LANG_TOKEN)
+            .unwrap_or(50259);
+        let transcribe_token = self
+            .tokenizer
+            .token_to_id(TRANSCRIBE_TOKEN)
+            .unwrap_or(50359);
+        let no_timestamps_token = self
+            .tokenizer
+            .token_to_id(NO_TIMESTAMPS_TOKEN)
+            .unwrap_or(50363);
+        let eot_token = self
+            .tokenizer
+            .token_to_id(EOT_TOKEN)
+            .unwrap_or(50257);
 
-        // Initial prompt tokens:
-        // <|startoftranscript|><|en|><|transcribe|>
-        // <|notimestamps|>
-        let mut tokens = vec![sot_token, lang_token, transcribe_token, no_timestamps_token];
-        let max_tokens = self.config.max_target_positions / 2;
+        let mut tokens = vec![
+            sot_token,
+            lang_token,
+            transcribe_token,
+            no_timestamps_token,
+        ];
+        let max_tokens =
+            self.config.max_target_positions / 2;
 
         self.model.decoder.reset_kv_cache();
 
         for i in 0..max_tokens {
-            let tokens_tensor = Tensor::new(tokens.as_slice(), &Device::Cpu)?.unsqueeze(0)?;
+            let tokens_tensor = Tensor::new(
+                tokens.as_slice(),
+                &Device::Cpu,
+            )?
+            .unsqueeze(0)?;
 
             let flush = i == 0;
-            let logits = self.model.decoder.forward(&tokens_tensor, encoder_output, flush)?;
-            let logits = self.model.decoder.final_linear(&logits)?;
+            let logits = self.model.decoder.forward(
+                &tokens_tensor,
+                encoder_output,
+                flush,
+            )?;
+            let logits =
+                self.model.decoder.final_linear(&logits)?;
 
-            // Get last token logits
             let seq_len = logits.dim(1)?;
-            let last_logits = logits.i((0, seq_len - 1))?;
+            let last_logits =
+                logits.i((0, seq_len - 1))?;
 
-            // Suppress tokens
-            let last_logits = self.apply_suppress_tokens(&last_logits)?;
+            let last_logits =
+                self.apply_suppress_tokens(&last_logits)?;
 
-            // Greedy: argmax
-            let next_token = last_logits.argmax(0)?.to_scalar::<u32>()?;
+            let next_token = last_logits
+                .argmax(0)?
+                .to_scalar::<u32>()?;
 
             if next_token == eot_token {
                 break;
@@ -206,14 +361,12 @@ impl WhisperRecognizer {
             tokens.push(next_token);
         }
 
-        // Decode tokens (skip 4 prompt tokens)
         let output_tokens = &tokens[4..];
-        let text = self
-            .tokenizer
+        self.tokenizer
             .decode(output_tokens, true)
-            .map_err(|e| candle_core::Error::Msg(e.to_string()))?;
-
-        Ok(text)
+            .map_err(|e| {
+                candle_core::Error::Msg(e.to_string())
+            })
     }
 
     fn apply_suppress_tokens(&self, logits: &Tensor) -> candle_core::Result<Tensor> {
