@@ -9,10 +9,12 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/misc_metrics/uptime_monitor.h"
 #include "brave/components/p3a_utils/bucket.h"
+#include "brave/components/p3a_utils/custom_attributes.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/media_session.h"
@@ -26,6 +28,7 @@ constexpr base::TimeDelta kTickInterval = base::Seconds(30);
 constexpr base::TimeDelta kFrameDuration = base::Days(7);
 
 constexpr int kMediaSessionUsageBuckets[] = {0, 20, 40, 60, 80, 100};
+constexpr int kMediaSessionUsageAttributeBuckets[] = {0, 33, 67, 100};
 
 }  // namespace
 
@@ -149,6 +152,8 @@ void MediaSessionMetrics::ReportMetric() {
   base::TimeDelta active_time =
       local_state_->GetTimeDelta(kMiscMetricsMediaSessionActiveProcessTime);
   if (active_time.is_zero()) {
+    p3a_utils::SetCustomAttribute(kMediaSessionUsageAttributeName,
+                                  std::nullopt);
     return;
   }
 
@@ -158,6 +163,12 @@ void MediaSessionMetrics::ReportMetric() {
   if (percentage == 0 && !media_time.is_zero()) {
     percentage = 1;
   }
+
+  const int* bucket_it = std::lower_bound(
+      std::begin(kMediaSessionUsageAttributeBuckets),
+      std::end(kMediaSessionUsageAttributeBuckets), percentage);
+  p3a_utils::SetCustomAttribute(kMediaSessionUsageAttributeName,
+                                base::NumberToString(*bucket_it));
 
   p3a_utils::RecordToHistogramBucket(kMediaSessionUsageHistogramName,
                                      kMediaSessionUsageBuckets, percentage);
