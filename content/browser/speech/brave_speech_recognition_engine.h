@@ -37,7 +37,9 @@ class BraveSpeechRecognitionEngine : public OnDeviceSpeechRecognitionEngine {
   ~BraveSpeechRecognitionEngine() override;
 
   // SpeechRecognitionEngine:
-  void SetAudioParameters(media::AudioParameters audio_parameters) override;
+  void TakeAudioChunk(const AudioChunk& data) override;
+  void SetAudioParameters(
+      media::AudioParameters audio_parameters) override;
   void AudioChunksEnded() override;
   void EndRecognition() override;
 

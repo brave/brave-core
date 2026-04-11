@@ -14,6 +14,7 @@
 #include "content/public/browser/content_browser_client.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/common/content_client.h"
+#include "media/base/audio_timestamp_helper.h"
 
 namespace content {
 
@@ -61,6 +62,25 @@ void BraveSpeechRecognitionEngine::OnServiceReady(
   }
   service_.Bind(std::move(pending));
   MaybeCreateSession();
+}
+
+void BraveSpeechRecognitionEngine::TakeAudioChunk(
+    const AudioChunk& data) {
+  // Base class accumulates audio and flushes at 2s.
+  OnDeviceSpeechRecognitionEngine::TakeAudioChunk(data);
+  // Flush sooner: Parakeet CTC inference is ~350ms,
+  // so 500ms gives responsive interim results.
+  constexpr base::TimeDelta kBufferDuration =
+      base::Milliseconds(500);
+  if (media::AudioTimestampHelper::FramesToTime(
+          accumulated_audio_data_.size(),
+          audio_parameters_.sample_rate()) >=
+      kBufferDuration) {
+    if (asr_stream_.is_bound()) {
+      asr_stream_->AddAudioChunk(
+          ConvertAccumulatedAudioData());
+    }
+  }
 }
 
 void BraveSpeechRecognitionEngine::SetAudioParameters(
