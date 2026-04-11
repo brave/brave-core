@@ -14,12 +14,12 @@ import PsstDlgContainer from '../containers/App'
 // Set icon path for Storybook
 setIconBasePath('/icons')
 
-function PsstDialogStory({ 
-  autoLoadSettings = true, 
+function PsstDialogStory({
+  autoLoadSettings = true,
   requestDelay = 1000,
   errorUrls = [],
   siteName = 'example.com',
-  items = [] as Mojom.SettingCardDataItem[]
+  items = [] as Mojom.SettingCardDataItem[],
 }) {
   const mockAPI = React.useMemo(() => {
     return createMockPsstDialogAPI({
@@ -28,9 +28,9 @@ function PsstDialogStory({
       errorUrls,
       settingsCardData: {
         siteName,
-        items
+        items,
       },
-      onCloseDialog: () => console.log('[Storybook] Dialog closed')
+      onCloseDialog: () => console.log('[Storybook] Dialog closed'),
     })
   }, [autoLoadSettings, requestDelay, errorUrls, siteName, items])
 
@@ -48,28 +48,29 @@ export default {
     layout: 'fullscreen',
     docs: {
       description: {
-        component: 'Privacy Settings Synchronization Tool (PSST) dialog for managing site privacy preferences.'
-      }
-    }
+        component:
+          'Privacy Settings Synchronization Tool (PSST) dialog for managing site privacy preferences.',
+      },
+    },
   },
   argTypes: {
     siteName: {
       control: 'text',
-      description: 'Name of the site to configure privacy settings for'
+      description: 'Name of the site to configure privacy settings for',
     },
     autoLoadSettings: {
       control: 'boolean',
-      description: 'Whether to automatically load settings data'
+      description: 'Whether to automatically load settings data',
     },
     requestDelay: {
       control: { type: 'range', min: 100, max: 5000, step: 100 },
-      description: 'Simulated network delay in milliseconds'
+      description: 'Simulated network delay in milliseconds',
     },
     errorUrls: {
       control: 'object',
-      description: 'Array of URLs that should simulate errors'
-    }
-  }
+      description: 'Array of URLs that should simulate errors',
+    },
+  },
 } satisfies Meta<typeof PsstDialogStory>
 
 type Story = StoryObj<typeof PsstDialogStory>
@@ -83,25 +84,25 @@ export const Default: Story = {
     autoLoadSettings: true,
     requestDelay: 1000,
     items: [
-        {
+      {
         url: 'https://example.com/cookies',
         description: 'Manage cookie preferences and tracking protection',
-        },
-        {
+      },
+      {
         url: 'https://example.com/analytics',
         description: 'Control analytics and data collection settings',
-        },
-        {
+      },
+      {
         url: 'https://example.com/ads',
         description: 'Configure advertising preferences',
-        },
-        {
+      },
+      {
         url: 'https://example.com/location',
         description: 'Manage location data sharing',
-        },
+      },
     ],
-    errorUrls: []
-  }
+    errorUrls: [],
+  },
 }
 
 /**
@@ -113,26 +114,26 @@ export const WithErrors: Story = {
     autoLoadSettings: true,
     requestDelay: 1500,
     items: [
-        {
+      {
         url: 'https://example.com/cookies',
         description: 'Manage cookie preferences and tracking protection',
-        },
-        {
+      },
+      {
         url: 'https://problematic-site.com/analytics',
         description: 'Control analytics and data collection settings',
-        },
-        {
+      },
+      {
         url: 'https://example.com/ads',
         description: 'Configure advertising preferences',
-        },
-        {
+      },
+      {
         url: 'https://problematic-site.com/location',
         description: 'Manage location data sharing',
-        },
+      },
     ],
     errorUrls: [
       'https://problematic-site.com/analytics',
-      'https://problematic-site.com/location'
-    ]
-  }
+      'https://problematic-site.com/location',
+    ],
+  },
 }

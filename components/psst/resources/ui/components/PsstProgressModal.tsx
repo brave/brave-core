@@ -149,7 +149,7 @@ export const PsstProgressModal = () => {
     }
   }, [requestStatus, setPropForUrl])
 
-  // Handle completion status updates 
+  // Handle completion status updates
   React.useEffect(() => {
     if (
       completionStatus
@@ -208,9 +208,7 @@ export const PsstProgressModal = () => {
       <HorizontalContainer>
         <LeftAlignedItem>
           <TextSection>
-            <ModalTitle>
-              {getLocale(S.PSST_CONSENT_DIALOG_TITLE)}
-            </ModalTitle>
+            <ModalTitle>{getLocale(S.PSST_CONSENT_DIALOG_TITLE)}</ModalTitle>
           </TextSection>
         </LeftAlignedItem>
         <RightAlignedItem>
@@ -224,9 +222,7 @@ export const PsstProgressModal = () => {
           </Button>
         </RightAlignedItem>
       </HorizontalContainer>
-      <TextSection>
-        {getLocale(S.PSST_CONSENT_DIALOG_TITLE)}
-      </TextSection>
+      <TextSection>{getLocale(S.PSST_CONSENT_DIALOG_TITLE)}</TextSection>
       <SettingsCard
         title={getLocale(S.PSST_CONSENT_DIALOG_OPTIONS_TITLE)}
         subTitle={siteName}
@@ -270,9 +266,7 @@ export const PsstProgressModal = () => {
                 isDisabled={false}
                 onClick={closeDialog}
               >
-                {getLocale(
-                  S.PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED,
-                )}
+                {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED)}
               </PsstDlgButton>
               <PsstDlgButton
                 kind='filled'
