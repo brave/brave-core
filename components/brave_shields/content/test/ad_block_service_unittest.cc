@@ -173,10 +173,13 @@ class AdBlockServiceTest : public AdBlockServiceTestBase {
   // provider set. This simulates a previous session that cached the DAT files.
   void SetCacheHashesFromProviders() {
     auto service = CreateService();
-    prefs_.SetString(prefs::kAdBlockDefaultCacheHash,
-                     service->ComputeCombinedCacheKeyForTesting(true));
-    prefs_.SetString(prefs::kAdBlockAdditionalCacheHash,
-                     service->ComputeCombinedCacheKeyForTesting(false));
+    prefs_.SetString(
+        prefs::kAdBlockDefaultCacheHash,
+        service->GetDATCacheManagerForTesting()->ComputeCombinedCacheKey(true));
+    prefs_.SetString(
+        prefs::kAdBlockAdditionalCacheHash,
+        service->GetDATCacheManagerForTesting()->ComputeCombinedCacheKey(
+            false));
   }
 
   base::test::TaskEnvironment task_environment_;
@@ -357,7 +360,7 @@ TEST_F(AdBlockServiceTest,
   service->AddObserver(&observer);
 
   // Register a test filters provider for the default engine. The default cache
-  // hash is empty, so ShouldLoadFilterState returns true and loading proceeds.
+  // hash is empty, so ShouldLoadFilterSet returns true and loading proceeds.
   auto provider =
       std::make_unique<TestFiltersProvider>("||default-rule.com^",
                                             /*engine_is_default=*/true);
@@ -440,10 +443,51 @@ TEST_F(AdBlockServiceTest, DifferentProviderContentTriggersReload) {
   EXPECT_TRUE(result.matched);
 }
 
+TEST_F(AdBlockServiceTest, EmptyFilterSetDoesNotCrash) {
+  // An empty filter set should load successfully without crashing,
+  // even when DAT caching is enabled. The serialized DAT may be empty
+  // for an engine with no rules.
+  auto service = CreateService();
+
+  bool filter_list_loaded = false;
+  FilterListObserver observer(
+      base::BindLambdaForTesting([&](bool is_default, bool success) {
+        if (is_default) {
+          filter_list_loaded = true;
+        }
+      }));
+  service->AddObserver(&observer);
+
+  auto provider =
+      std::make_unique<TestFiltersProvider>("", /*engine_is_default=*/true);
+  provider->RegisterAsSourceProvider(service.get());
+
+  ASSERT_TRUE(base::test::RunUntil([&]() { return filter_list_loaded; }))
+      << "Timeout: empty filter set should still complete loading";
+
+  // Should not block anything.
+  auto result = service->GetDefaultEngineForTesting().ShouldStartRequest(
+      GURL("https://example.com/script.js"),
+      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
+  EXPECT_FALSE(result.matched);
+
+  // Check whether a DAT file was written. Even with an empty ruleset,
+  // the engine serializes some data (headers), so the file should exist.
+  // If Serialize returns empty for an empty engine, no file is written.
+  base::FilePath dat_file =
+      profile_dir_.GetPath().AppendASCII("adblock_cache/engine0.dat");
+  if (base::PathExists(dat_file)) {
+    // File was written — verify it's non-empty.
+    std::optional<int64_t> size = base::GetFileSize(dat_file);
+    EXPECT_TRUE(size.has_value());
+    EXPECT_GT(*size, 0);
+  }
+}
+
 TEST_F(AdBlockServiceTest, ProviderWithNulloptCacheKeyTriggersReload) {
   // When a provider's GetCacheKey() returns nullopt (e.g. after invalidation),
   // the filter set should still reload rather than being blocked. This tests
-  // that the hash computation in ShouldLoadFilterState handles nullopt
+  // that the hash computation in ShouldLoadFilterSet handles nullopt
   // providers correctly.
   auto service = CreateService();
 
@@ -487,7 +531,7 @@ TEST_F(AdBlockServiceQueuedTest, FilterSetLoadingBlocksDATLoading) {
       CreateServiceWithTaskRunner(service_task_runner);
 
   // Verify DAT loading is initially allowed.
-  ASSERT_TRUE(service->GetAllowDatLoadingForTesting());
+  ASSERT_TRUE(service->GetDATCacheManagerForTesting()->allow_dat_loading());
 
   // Verify neither DAT rules nor filter rules are active before loading.
   auto result = service->GetDefaultEngineForTesting().ShouldStartRequest(
@@ -552,9 +596,9 @@ TEST_F(AdBlockServiceQueuedTest, FilterSetLoadingBlocksDATLoading) {
       }
     }
   }
-  ASSERT_FALSE(service->GetAllowDatLoadingForTesting());
+  ASSERT_FALSE(service->GetDATCacheManagerForTesting()->allow_dat_loading());
 
-  // Drain thread pool (DAT serialize + write) and main thread (OnDatCached
+  // Drain thread pool (DAT serialize + write) and main thread (OnDATFileWritten
   // reply) so the cache hash pref is written.
   task_environment_.RunUntilIdle();
   ASSERT_NE(prefs_.GetString(prefs::kAdBlockAdditionalCacheHash), "");
@@ -589,7 +633,7 @@ TEST_F(AdBlockServiceQueuedTest, FilterSetLoadingBlocksDATLoading) {
   EXPECT_TRUE(result.matched);
 
   // DAT rules should NOT be loaded because filter set loading
-  // set allow_load_dat_loading_ = false before DAT callback ran.
+  // set allow_dat_loading = false before DAT callback ran.
   result = service->GetDefaultEngineForTesting().ShouldStartRequest(
       GURL("https://blocked-by-dat.com/script.js"),
       blink::mojom::ResourceType::kScript, "test.com", false, false, false);
@@ -598,7 +642,7 @@ TEST_F(AdBlockServiceQueuedTest, FilterSetLoadingBlocksDATLoading) {
 
 TEST_F(AdBlockServiceQueuedTest, MatchingCacheHashSkipsFilterSetLoad) {
   // When cache hash matches the provider's combined content hash, filter set
-  // loading should be skipped (ShouldLoadFilterState returns false).
+  // loading should be skipped (ShouldLoadFilterSet returns false).
   // This test requires queued execution to ensure the DAT loads before any
   // filter set loading would occur.
   CreateCachedDefaultDATFile("||from-cache.com^\n");
@@ -609,10 +653,14 @@ TEST_F(AdBlockServiceQueuedTest, MatchingCacheHashSkipsFilterSetLoad) {
   {
     auto temp_service = CreateServiceWithTaskRunner(
         base::MakeRefCounted<base::TestMockTimeTaskRunner>());
-    prefs_.SetString(prefs::kAdBlockDefaultCacheHash,
-                     temp_service->ComputeCombinedCacheKeyForTesting(true));
-    prefs_.SetString(prefs::kAdBlockAdditionalCacheHash,
-                     temp_service->ComputeCombinedCacheKeyForTesting(false));
+    prefs_.SetString(
+        prefs::kAdBlockDefaultCacheHash,
+        temp_service->GetDATCacheManagerForTesting()->ComputeCombinedCacheKey(
+            true));
+    prefs_.SetString(
+        prefs::kAdBlockAdditionalCacheHash,
+        temp_service->GetDATCacheManagerForTesting()->ComputeCombinedCacheKey(
+            false));
   }
 
   auto service_task_runner =
@@ -629,7 +677,7 @@ TEST_F(AdBlockServiceQueuedTest, MatchingCacheHashSkipsFilterSetLoad) {
   base::RunLoop().RunUntilIdle();
 
   // The cached DAT rules should be loaded since cache hash matched and
-  // ShouldLoadFilterState returned false, skipping filter set loading.
+  // ShouldLoadFilterSet returned false, skipping filter set loading.
   auto result = service->GetDefaultEngineForTesting().ShouldStartRequest(
       GURL("https://from-cache.com/script.js"),
       blink::mojom::ResourceType::kScript, "test.com", false, false, false);
@@ -650,12 +698,13 @@ TEST_F(AdBlockServiceQueuedTest, MatchingCacheHashSkipsFilterSetLoad) {
   EXPECT_TRUE(result.matched);
 
   // Now register a new provider. Update the cache hash to match the new
-  // combined hash so ShouldLoadFilterState returns false (skip).
+  // combined hash so ShouldLoadFilterSet returns false (skip).
   auto provider = std::make_unique<TestFiltersProvider>(
       "||from-filter-set.com^", /*engine_is_default=*/true);
   provider->RegisterAsSourceProvider(service.get());
-  prefs_.SetString(prefs::kAdBlockDefaultCacheHash,
-                   service->ComputeCombinedCacheKeyForTesting(true));
+  prefs_.SetString(
+      prefs::kAdBlockDefaultCacheHash,
+      service->GetDATCacheManagerForTesting()->ComputeCombinedCacheKey(true));
 
   // Drain tasks from the provider registration.
   while (service_task_runner->HasPendingTask()) {

@@ -12,8 +12,6 @@
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_installer.h"
-#include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
-#include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 
 namespace {
 

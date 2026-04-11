@@ -60,6 +60,7 @@ class AdBlockCustomFiltersProvider : public AdBlockFiltersProvider {
   void AppendCustomFilter(std::string_view filter);
 
   const raw_ptr<PrefService> local_state_;
+  std::string cached_hash_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 };

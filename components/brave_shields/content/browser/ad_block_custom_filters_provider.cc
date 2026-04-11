@@ -40,12 +40,17 @@ void AddDATBufferToFilterSet(uint8_t permission_mask,
 // i.e. the maximum possible uint8_t.
 constexpr uint8_t kCustomFiltersPermissionLevel = UINT8_MAX;
 
+std::string ComputeCacheHash(std::string_view content) {
+  return base::NumberToString(base::FastHash(content));
+}
+
 }  // namespace
 
 AdBlockCustomFiltersProvider::AdBlockCustomFiltersProvider(
     PrefService* local_state,
     AdBlockFiltersProviderManager* manager)
     : AdBlockFiltersProvider(false, manager), local_state_(local_state) {
+  cached_hash_ = ComputeCacheHash(GetCustomFilters());
   NotifyObservers(engine_is_default_);
 }
 
@@ -85,12 +90,7 @@ std::string AdBlockCustomFiltersProvider::GetNameForDebugging() {
 }
 
 std::optional<std::string> AdBlockCustomFiltersProvider::GetCacheKey() const {
-  if (!local_state_) {
-    CHECK_IS_TEST();
-    return base::NumberToString(base::FastHash(std::string()));
-  }
-  return base::NumberToString(
-      base::FastHash(local_state_->GetString(prefs::kAdBlockCustomFilters)));
+  return cached_hash_;
 }
 
 void AdBlockCustomFiltersProvider::CreateSiteExemption(std::string_view host) {
@@ -116,6 +116,7 @@ bool AdBlockCustomFiltersProvider::UpdateCustomFilters(
     return false;
   }
   local_state_->SetString(prefs::kAdBlockCustomFilters, custom_filters);
+  cached_hash_ = ComputeCacheHash(custom_filters);
 
   NotifyObservers(engine_is_default_);
 

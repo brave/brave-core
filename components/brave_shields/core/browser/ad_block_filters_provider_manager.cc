@@ -55,13 +55,13 @@ void AdBlockFiltersProviderManager::ForceNotifyObserver(
   auto& filters_providers = is_for_default_engine
                                 ? default_engine_filters_providers_
                                 : additional_engine_filters_providers_;
+  if (filters_providers.empty()) {
+    return;
+  }
   for (auto* const& provider : filters_providers) {
     if (!provider->IsInitialized()) {
       return;
     }
-  }
-  if (filters_providers.empty()) {
-    return;
   }
   observer.OnChanged(is_for_default_engine);
 }

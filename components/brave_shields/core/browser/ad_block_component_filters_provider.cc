@@ -108,9 +108,9 @@ void AdBlockComponentFiltersProvider::OnComponentReady(
   TRACE_EVENT(
       "brave.adblock", "AdBlockComponentFiltersProvider::OnComponentReady",
       perfetto::TerminatingFlow::FromPointer(this), "path", path.value());
-
   base::FilePath old_path = component_path_;
   component_path_ = path;
+
   NotifyObservers(engine_is_default_);
 
   if (!old_path.empty()) {
@@ -136,6 +136,7 @@ std::optional<std::string> AdBlockComponentFiltersProvider::GetCacheKey()
 
 base::FilePath AdBlockComponentFiltersProvider::GetFilterSetPath() {
   if (component_path_.empty()) {
+    // Since we know it's empty return it as is.
     return component_path_;
   }
 
@@ -152,6 +153,8 @@ void AdBlockComponentFiltersProvider::LoadFilterSet(
               flow);
 
   if (list_file_path.empty()) {
+    // If the path is not ready yet, provide a no-op callback immediately. An
+    // update will be pushed later to notify about the newly available list.
     std::move(cb).Run(base::BindOnce(AddNothingToFilterSet));
     return;
   }

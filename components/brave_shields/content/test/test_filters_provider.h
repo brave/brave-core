@@ -40,7 +40,10 @@ class TestFiltersProvider : public AdBlockFiltersProvider {
   std::string GetNameForDebugging() override;
 
   std::optional<std::string> GetCacheKey() const override;
-  void set_cache_key(const std::string& hash) { content_hash_ = hash; }
+  void set_cache_key(const std::string& hash) {
+    content_hash_ = hash;
+    force_nullopt_cache_key_ = false;
+  }
   void set_cache_key_nullopt() { force_nullopt_cache_key_ = true; }
 
  private:

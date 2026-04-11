@@ -121,6 +121,7 @@ bool AdBlockEngineWrapper::Load(
 bool AdBlockEngineWrapper::LoadDAT(bool is_default_engine,
                                    DATFileDataBuffer dat,
                                    AdblockResourceStorageBox storage) {
+  CHECK(base::FeatureList::IsEnabled(features::kAdblockDATCache));
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto* engine = is_default_engine ? default_engine_.get()
                                    : additional_filters_engine_.get();
@@ -133,6 +134,7 @@ bool AdBlockEngineWrapper::LoadDAT(bool is_default_engine,
 }
 
 DATFileDataBuffer AdBlockEngineWrapper::Serialize(bool is_default_engine) {
+  CHECK(base::FeatureList::IsEnabled(features::kAdblockDATCache));
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto* engine = is_default_engine ? default_engine_.get()
                                    : additional_filters_engine_.get();

@@ -13,7 +13,6 @@
 #include <string>
 #include <string_view>
 #include <utility>
-#include <vector>
 
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
@@ -30,6 +29,7 @@
 #include "base/values.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_dat_cache_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
@@ -80,16 +80,19 @@ class AdBlockService {
     // If filter_set is non-null, calls Load; otherwise calls UseResources.
     using OnResourcesLoadedCallback = base::RepeatingCallback<void(
         bool,
+        std::string,
         std::optional<DATFileDataBuffer>,
         std::unique_ptr<rust::Box<adblock::FilterSet>>,
         AdblockResourceStorageBox)>;
     using ShouldLoadFilterSetCallback = base::RepeatingCallback<bool()>;
+    using ComputeCacheKeyCallback = base::RepeatingCallback<std::string()>;
 
     SourceProviderObserver(
         OnResourcesLoadedCallback on_resources_loaded,
         AdBlockResourceProvider* resource_provider,
         AdBlockFiltersProviderManager* filters_provider_manager,
         ShouldLoadFilterSetCallback should_load_filter_set,
+        ComputeCacheKeyCallback compute_cache_key,
         bool engine_is_default,
         scoped_refptr<base::SequencedTaskRunner> task_runner);
 
@@ -113,10 +116,12 @@ class AdBlockService {
 
     OnResourcesLoadedCallback on_resources_loaded_;
     ShouldLoadFilterSetCallback should_load_filter_set_;
+    ComputeCacheKeyCallback compute_cache_key_;
     const bool engine_is_default_;
 
     std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set_;
     std::optional<DATFileDataBuffer> dat_;
+    std::string cache_key_;
     scoped_refptr<base::SequencedTaskRunner> task_runner_;
 
     raw_ptr<AdBlockResourceProvider> resource_provider_ = nullptr;  // not owned
@@ -188,29 +193,27 @@ class AdBlockService {
   AdBlockFiltersProviderManager* GetFiltersProviderManagerForTesting();
   AdBlockDefaultResourceProvider* GetDefaultResourceProviderForTesting();
   base::SequencedTaskRunner* GetTaskRunnerForTesting();
-  bool GetAllowDatLoadingForTesting() const;
-  std::string ComputeCombinedCacheKeyForTesting(bool is_default_engine) const;
+  AdBlockDATCacheManager* GetDATCacheManagerForTesting();
 
  private:
   static std::string g_ad_block_dat_file_version_;
 
-  bool ShouldLoadFilterState(bool is_default_engine);
-  std::string ComputeCombinedCacheKey(bool is_default_engine) const;
-
-  std::string_view cache_hash_pref_name(bool engine_is_default);
-
   void OnResourcesLoaded(
       bool is_default_engine,
+      std::string cache_key,
       std::optional<DATFileDataBuffer> dat,
       std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
       AdblockResourceStorageBox storage);
 
   void NotifyOnDATLoaded(bool is_default_engine, bool success);
-  void OnEngineLoaded(bool is_default_engine, DATFileDataBuffer serialized_dat);
-  void OnDatCached(bool is_default_engine, bool success);
-  void OnReadCachedDATFiles(
-      std::pair<std::optional<DATFileDataBuffer>,
-                std::optional<DATFileDataBuffer>> read_result);
+  void OnEngineLoaded(bool is_default_engine,
+                      std::string cache_key,
+                      std::pair<bool, std::optional<DATFileDataBuffer>> result);
+  void OnDATFileWritten(bool is_default_engine,
+                        std::string cache_key,
+                        bool success);
+  void OnReadCachedDATFiles(std::optional<DATFileDataBuffer> default_dat,
+                            std::optional<DATFileDataBuffer> additional_dat);
 
   AdBlockComponentFiltersProvider* default_filters_provider() {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -235,8 +238,6 @@ class AdBlockService {
 
   AdBlockListP3A list_p3a_;
 
-  bool allow_load_dat_loading_ = true;
-
   // The AdBlockEngineWrapper should be deleted last to ensure that any code
   // that posts to the task runner will run before the deletion.
   //
@@ -247,6 +248,8 @@ class AdBlockService {
       engine_wrapper_ GUARDED_BY_CONTEXT(sequence_checker_);
 
   std::unique_ptr<AdBlockFiltersProviderManager> filters_provider_manager_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<AdBlockDATCacheManager> dat_cache_manager_
       GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockResourceProvider> resource_provider_
       GUARDED_BY_CONTEXT(sequence_checker_);
