@@ -229,6 +229,10 @@ void BraveAppMenu::OnMenuClosed(views::MenuItemView* menu) {
   if (menu == nullptr) {
     menu_metrics_->RecordMenuDismiss();
   }
+
+  // Don't add any code after this. AppMenu::OnMenuClosed() may execute a
+  // deferred command (e.g. IDC_FULLSCREEN) that triggers re-entrant menu
+  // destruction via AppMenuButton::CloseMenu(), destroying `this`.
   AppMenu::OnMenuClosed(menu);
 }
 
