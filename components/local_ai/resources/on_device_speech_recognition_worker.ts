@@ -20,8 +20,10 @@ import {
   SpeechRecognitionResult,
 } from 'gen/services/on_device_model/public/mojom/on_device_model.mojom.m.js'
 
-// Minimal type for the WASM WhisperRecognizer class
-interface WasmWhisperRecognizer {
+// Minimal type for WASM recognizer classes
+// (WhisperRecognizer and ParakeetRecognizer share
+// the same interface)
+interface WasmRecognizer {
   add_audio(audio: Float32Array): string
   mark_done(): string
   reset(): void
@@ -50,12 +52,12 @@ function extractBigBuffer(buffer: any, name: string): Uint8Array | null {
 }
 
 class AsrStreamInputImpl implements AsrStreamInputInterface {
-  private recognizer: WasmWhisperRecognizer
+  private recognizer: WasmRecognizer
   private responder: AsrStreamResponderRemote
   private receiver: AsrStreamInputReceiver
 
   constructor(
-    recognizer: WasmWhisperRecognizer,
+    recognizer: WasmRecognizer,
     pendingReceiver: AsrStreamInputPendingReceiver,
     responder: AsrStreamResponderRemote,
     onDisconnect: () => void,
@@ -118,7 +120,7 @@ class AsrStreamInputImpl implements AsrStreamInputInterface {
 // Single WASM recognizer instance, created once during
 // init and reused across sessions. Avoids re-parsing
 // model weights and growing WASM memory each bind().
-let wasmRecognizer: WasmWhisperRecognizer | null = null
+let wasmRecognizer: WasmRecognizer | null = null
 
 class SpeechRecognitionFactoryImpl
   implements SpeechRecognitionFactoryInterface
@@ -163,19 +165,45 @@ class SpeechRecognitionFactoryImpl
           + 'candle_whisper.bundle.js'
       )
 
-      // Create the single WASM recognizer. Model bytes are
-      // only needed during construction and will be GC'd
-      // after this function returns.
-      const startTime = performance.now()
-      wasmRecognizer = new module.WhisperRecognizer(
-        weights,
-        tokenizer,
-        melFilters,
-        config,
+      // Detect model type from config.json.
+      // Parakeet configs have "hidden_size",
+      // Whisper configs have "d_model".
+      const configJson = JSON.parse(
+        new TextDecoder().decode(config),
       )
+      const isParakeet =
+        'hidden_size' in configJson
+
+      const modelName = isParakeet
+        ? 'parakeet'
+        : 'whisper'
+      console.log(
+        `[worker] Detected model: ${modelName}`,
+      )
+
+      // Create the single WASM recognizer.
+      const startTime = performance.now()
+      if (isParakeet) {
+        wasmRecognizer =
+          new module.ParakeetRecognizer(
+            weights,
+            tokenizer,
+            melFilters,
+            config,
+          )
+      } else {
+        wasmRecognizer =
+          new module.WhisperRecognizer(
+            weights,
+            tokenizer,
+            melFilters,
+            config,
+          )
+      }
       const elapsed = performance.now() - startTime
       console.log(
-        `[whisper-worker] Recognizer created in ` + `${elapsed.toFixed(0)}ms`,
+        `[worker] ${modelName} recognizer `
+          + `created in ${elapsed.toFixed(0)}ms`,
       )
 
       this.isInitialized = true

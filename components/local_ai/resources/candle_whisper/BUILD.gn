@@ -19,6 +19,8 @@ transpile_web_ui("candle_whisper_module") {
     rebase_path("src/lib.rs"),
     rebase_path("src/model.rs"),
     rebase_path("src/audio.rs"),
+    rebase_path("src/parakeet_model.rs"),
+    rebase_path("src/parakeet_audio.rs"),
   ]
 
   imports_from = [ "//brave/components/local_ai/resources/candle_whisper/" ]

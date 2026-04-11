@@ -6,4 +6,5 @@
 export {
   init,
   WhisperRecognizer,
+  ParakeetRecognizer,
 } from 'gen/brave/components/local_ai/resources/candle_whisper/bundler/pkg'

@@ -30,7 +30,7 @@
 
 use std::f32::consts::PI;
 
-fn fft(inp: &[f32]) -> Vec<f32> {
+pub(crate) fn fft(inp: &[f32]) -> Vec<f32> {
     let n = inp.len();
     if n == 1 {
         return vec![inp[0], 0.0];
@@ -73,7 +73,7 @@ fn fft(inp: &[f32]) -> Vec<f32> {
     out
 }
 
-fn dft(inp: &[f32]) -> Vec<f32> {
+pub(crate) fn dft(inp: &[f32]) -> Vec<f32> {
     let n = inp.len();
     let two_pi = 2.0 * PI;
     let n_f = n as f32;
@@ -97,7 +97,7 @@ fn dft(inp: &[f32]) -> Vec<f32> {
 }
 
 #[allow(clippy::too_many_arguments)]
-fn log_mel_spectrogram_w(
+pub(crate) fn log_mel_spectrogram_w(
     ith: usize,
     hann: &[f32],
     samples: &[f32],

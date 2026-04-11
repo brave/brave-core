@@ -26,7 +26,7 @@ namespace {
 constexpr char kDefaultModelDir[] =
     "/Users/yrliou/brave/brave-browser/src/brave/"
     "components/local_ai/resources/candle_whisper/"
-    "tmp/whisper-tiny";
+    "tmp/parakeet-110m";
 
 mojom::SpeechRecognitionModelFilesPtr LoadSpeechModelFilesFromDisk(
     const base::FilePath& dir) {
