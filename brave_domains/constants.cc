@@ -7,61 +7,19 @@
 
 #include <string>
 
-#include "base/command_line.h"
-#include "base/containers/fixed_flat_set.h"
-#include "base/logging.h"
+#include "base/strings/strcat.h"
+#include "brave/brave_domains/service_domains.h"
+#include "url/url_constants.h"
 
 namespace brave_domains {
 
 namespace {
-
-constexpr char kGate3ProdURL[] = "https://gate3.wallet.brave.com";
-constexpr char kGate3DevURL[] = "https://gate3.wallet.brave.software";
+constexpr char kGate3DomainPrefix[] = "gate3.wallet";
 }  // namespace
 
-bool IsValidSwitchValue(const std::string& value) {
-  static constexpr auto kAllowedValues =
-      base::MakeFixedFlatSet<std::string_view>(
-          {kBraveServicesSwitchValueDev, kBraveServicesSwitchValueStaging,
-           kBraveServicesSwitchValueProduction});
-  return kAllowedValues.contains(value);
-}
-
-void MaybeWarnSwitchValue(const std::string& switch_name,
-                          const std::string& value) {
-  if (!value.empty()) {
-    if (!IsValidSwitchValue(value)) {
-      LOG(ERROR) << "Invalid value for --" << switch_name << ": \"" << value
-                 << "\". Expected \"" << kBraveServicesSwitchValueDev
-                 << "\", \"" << kBraveServicesSwitchValueStaging << "\", or \""
-                 << kBraveServicesSwitchValueProduction << "\".";
-    } else {
-      LOG(WARNING) << "Services environment overridden with --" << switch_name
-                   << "=\"" << value << "\"";
-    }
-  }
-}
-
-std::string GetGate3URL(base::CommandLine* command_line) {
-  CHECK(base::CommandLine::InitializedForCurrentProcess());
-  CHECK(command_line);
-
-  // Prefix-specific switch takes precedence.
-  std::string env = command_line->GetSwitchValueASCII(kEnvGate3Switch);
-  MaybeWarnSwitchValue(kEnvGate3Switch, env);
-
-  // Fall back to global services environment switch.
-  if (env.empty() || !IsValidSwitchValue(env)) {
-    env = command_line->GetSwitchValueASCII(kBraveServicesEnvironmentSwitch);
-    MaybeWarnSwitchValue(kBraveServicesEnvironmentSwitch, env);
-  }
-
-  if (env == kBraveServicesSwitchValueDev ||
-      env == kBraveServicesSwitchValueStaging) {
-    return kGate3DevURL;
-  }
-
-  return kGate3ProdURL;
+std::string GetGate3URL() {
+  return base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
+                       GetServicesDomain(kGate3DomainPrefix)});
 }
 
 }  // namespace brave_domains

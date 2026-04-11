@@ -8,31 +8,19 @@
 
 #include <string>
 
-#include "base/command_line.h"
-
 namespace brave_domains {
 
-// Common CLI switch names and values for environment overrides.
-inline constexpr char kBraveServicesEnvironmentSwitch[] = "brave-services-env";
-inline constexpr char kEnvGate3Switch[] = "env-gate3";
-inline constexpr char kBraveServicesSwitchValueDev[] = "dev";
-inline constexpr char kBraveServicesSwitchValueStaging[] = "staging";
-inline constexpr char kBraveServicesSwitchValueProduction[] = "prod";
-
-// Returns true if the value is a recognized environment switch value.
-bool IsValidSwitchValue(const std::string& value);
-
-// Logs an error if the switch value is unrecognized, or a warning if it is
-// valid and non-empty.
-void MaybeWarnSwitchValue(const std::string& switch_name,
-                          const std::string& value);
-
-// Returns the gate3 URL, checking --env-gate3 and --brave-services-env
-// CLI switches on the provided command line:
-//   DEV/STAGING: https://gate3.wallet.brave.software
-//   PRODUCTION:  https://gate3.wallet.brave.com
-std::string GetGate3URL(
-    base::CommandLine* command_line = base::CommandLine::ForCurrentProcess());
+// Returns the gate3 URL for the current environment.
+// Uses GetServicesDomain("gate3.wallet") with https:// scheme.
+//
+// Environment is selected via CLI switches:
+//   --env-gate3.wallet={dev,staging,prod}  (prefix-specific)
+//   --brave-services-env={dev,staging,prod} (global fallback)
+//
+//   DEV:     https://gate3.wallet.brave.software
+//   STAGING: https://gate3.wallet.bravesoftware.com
+//   PROD:    https://gate3.wallet.brave.com
+std::string GetGate3URL();
 
 }  // namespace brave_domains
 

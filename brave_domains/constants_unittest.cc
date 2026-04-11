@@ -5,59 +5,50 @@
 
 #include "brave/brave_domains/constants.h"
 
-#include <utility>
-#include <vector>
+#include <string>
 
-#include "base/command_line.h"
+#include "base/strings/strcat.h"
+#include "base/test/scoped_command_line.h"
+#include "brave/brave_domains/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 namespace brave_domains {
 
-TEST(GetGate3URLTest, AllCases) {
-  struct TestCase {
-    const char* name;
-    std::vector<std::pair<const char*, const char*>> switches;
-    const char* expected_url;
-  };
+namespace {
+std::string ExpectedGate3Host(const char* domain) {
+  return base::StrCat({"gate3.wallet.", domain});
+}
+}  // namespace
 
-  const TestCase cases[] = {
-      {"DefaultIsProduction", {}, "https://gate3.wallet.brave.com"},
-      {"EnvGate3Dev",
-       {{kEnvGate3Switch, kBraveServicesSwitchValueDev}},
-       "https://gate3.wallet.brave.software"},
-      {"EnvGate3Staging",
-       {{kEnvGate3Switch, kBraveServicesSwitchValueStaging}},
-       "https://gate3.wallet.brave.software"},
-      {"EnvGate3Prod",
-       {{kEnvGate3Switch, kBraveServicesSwitchValueProduction}},
-       "https://gate3.wallet.brave.com"},
-      {"GlobalSwitchDev",
-       {{kBraveServicesEnvironmentSwitch, kBraveServicesSwitchValueDev}},
-       "https://gate3.wallet.brave.software"},
-      {"GlobalSwitchStaging",
-       {{kBraveServicesEnvironmentSwitch, kBraveServicesSwitchValueStaging}},
-       "https://gate3.wallet.brave.software"},
-      {"EnvGate3TakesPrecedenceOverGlobal",
-       {{kBraveServicesEnvironmentSwitch, kBraveServicesSwitchValueProduction},
-        {kEnvGate3Switch, kBraveServicesSwitchValueDev}},
-       "https://gate3.wallet.brave.software"},
-      {"InvalidValueFallsBackToProduction",
-       {{kEnvGate3Switch, "invalid"}},
-       "https://gate3.wallet.brave.com"},
-      {"InvalidEnvGate3FallsBackToGlobal",
-       {{kEnvGate3Switch, "invalid"},
-        {kBraveServicesEnvironmentSwitch, kBraveServicesSwitchValueDev}},
-       "https://gate3.wallet.brave.software"},
-  };
+TEST(GetGate3URLTest, DefaultIsProductionURL) {
+  GURL gurl(GetGate3URL());
+  EXPECT_TRUE(gurl.is_valid());
+  EXPECT_EQ(gurl.scheme(), "https");
+  EXPECT_EQ(gurl.host(),
+            ExpectedGate3Host(BUILDFLAG(BRAVE_SERVICES_PRODUCTION_DOMAIN)));
+}
 
-  for (const auto& tc : cases) {
-    SCOPED_TRACE(tc.name);
-    base::CommandLine cl(base::CommandLine::NO_PROGRAM);
-    for (const auto& [flag, value] : tc.switches) {
-      cl.AppendSwitchASCII(flag, value);
-    }
-    EXPECT_EQ(GetGate3URL(&cl), tc.expected_url);
-  }
+TEST(GetGate3URLTest, DevEnvironment) {
+  base::test::ScopedCommandLine scoped_cl;
+  scoped_cl.GetProcessCommandLine()->AppendSwitchASCII("env-gate3.wallet",
+                                                       "dev");
+
+  GURL gurl(GetGate3URL());
+  EXPECT_TRUE(gurl.is_valid());
+  EXPECT_EQ(gurl.host(),
+            ExpectedGate3Host(BUILDFLAG(BRAVE_SERVICES_DEV_DOMAIN)));
+}
+
+TEST(GetGate3URLTest, StagingEnvironment) {
+  base::test::ScopedCommandLine scoped_cl;
+  scoped_cl.GetProcessCommandLine()->AppendSwitchASCII("env-gate3.wallet",
+                                                       "staging");
+
+  GURL gurl(GetGate3URL());
+  EXPECT_TRUE(gurl.is_valid());
+  EXPECT_EQ(gurl.host(),
+            ExpectedGate3Host(BUILDFLAG(BRAVE_SERVICES_STAGING_DOMAIN)));
 }
 
 }  // namespace brave_domains
