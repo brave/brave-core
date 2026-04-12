@@ -77,6 +77,16 @@ bool IsAIChatAgentProfileEnabled() {
 #endif
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+BASE_FEATURE(kAIChatDetailedPageContentExtraction,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsAIChatDetailedPageContentExtractionEnabled() {
+  return base::FeatureList::IsEnabled(
+      features::kAIChatDetailedPageContentExtraction);
+}
+#endif
+
 BASE_FEATURE(kAIChatGlobalSidePanelEverywhere,
              base::FEATURE_DISABLED_BY_DEFAULT);
 

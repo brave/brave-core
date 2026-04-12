@@ -661,6 +661,19 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
                    FEATURE_VALUE_TYPE(ai_chat::features::kTabManagementTool), \
                }))
 
+#define BRAVE_AI_CHAT_DETAILED_PAGE_CONTENT_EXTRACTION_ENTRY              \
+  IF_BUILDFLAG(                                                           \
+      ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE,                                 \
+      EXPAND_FEATURE_ENTRIES({                                            \
+          "brave-ai-chat-detailed-page-content-extraction",               \
+          "Brave AI Chat Detailed Page Content Extraction",               \
+          "Uses optimization_guide-based page content extraction as the " \
+          "default method for AI Chat page context.",                     \
+          kOsWin | kOsMac | kOsLinux,                                     \
+          FEATURE_VALUE_TYPE(                                             \
+              ai_chat::features::kAIChatDetailedPageContentExtraction),   \
+      }))
+
 #define BRAVE_LOCAL_AI_MODELS                                 \
   EXPAND_FEATURE_ENTRIES({                                    \
       "brave-local-ai-models",                                \
@@ -1325,6 +1338,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_PAGE_INFO_FEATURE_ENTRIES                                              \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_AI_CHAT_TAB_MANAGEMENT_TOOL_ENTRY                                      \
+  BRAVE_AI_CHAT_DETAILED_PAGE_CONTENT_EXTRACTION_ENTRY                         \
   BRAVE_LOCAL_AI_MODELS                                                        \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
