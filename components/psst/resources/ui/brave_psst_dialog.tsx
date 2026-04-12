@@ -7,7 +7,7 @@ import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { setIconBasePath } from '@brave/leo/react/icon'
 import { createPsstDialogApi } from './api/psst_dialog_api'
-import * as Mojom from 'gen/brave/components/psst/common/psst_ui_common.mojom.m.js'
+import * as Mojom from './types/mojom_types'
 
 // Containers
 import PsstDlgContainer from './containers/App'

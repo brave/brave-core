@@ -222,7 +222,7 @@ export const PsstProgressModal = () => {
           </Button>
         </RightAlignedItem>
       </HorizontalContainer>
-      <TextSection>{getLocale(S.PSST_CONSENT_DIALOG_TITLE)}</TextSection>
+      <TextSection>{getLocale(S.PSST_CONSENT_DIALOG_BODY)}</TextSection>
       <SettingsCard
         title={getLocale(S.PSST_CONSENT_DIALOG_OPTIONS_TITLE)}
         subTitle={siteName}

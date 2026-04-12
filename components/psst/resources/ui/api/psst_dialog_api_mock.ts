@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { createPsstDialogApi, type PsstDialogAPI } from './psst_dialog_api'
-import * as Mojom from './psst_dialog_api'
+import * as Mojom from '../types/mojom_types'
 
 /**
  * Mock implementations for PSST Dialog API used in Storybook stories and tests.
@@ -26,7 +26,7 @@ import * as Mojom from './psst_dialog_api'
  * Mock setting card data with realistic privacy settings
  */
 const mockSettingCardData: Mojom.SettingCardData = {
-  siteName: 'example.com',
+  site_name: 'example.com',
   items: [
     {
       url: 'https://example.com/cookies',
@@ -53,21 +53,20 @@ const mockSettingCardData: Mojom.SettingCardData = {
 function createMockConsentHelper(): Mojom.PsstConsentHelperRemote {
   const mock = {
     // Mojom interface methods that endpointsFor/actionsFor expect
-    async applyChanges(params: [string, string[]]) {
-      const [siteName, disabledSettingsList] = params
+    async applyChanges(siteName: string, disabledSettingsList: string[]) {
       console.log('[Mock] applyChanges called with:', {
         siteName,
         disabledSettingsList,
       })
-      return Promise.resolve()
     },
 
     async closeDialog() {
       console.log('[Mock] closeDialog called')
-      return Promise.resolve()
     },
 
     // Mock Mojom remote properties (these are usually auto-generated)
+    proxy: {} as any,
+    onConnectionError: { addListener: () => {} } as any,
     $: {
       bindNewPipeAndPassReceiver: () => ({}),
     } as any,
@@ -193,8 +192,10 @@ export function createMockPsstDialogAPI(
   }
 
   // Override the apply changes action with mock behavior
-  mockConsentHelper.applyChanges = async (params: [string, string[]]) => {
-    const [siteName, disabledSettingsList] = params
+  mockConsentHelper.applyChanges = async (
+    siteName: string,
+    disabledSettingsList: string[],
+  ) => {
     console.log('[Mock] Processing apply changes for:', {
       siteName,
       disabledSettingsList,
@@ -245,7 +246,8 @@ export function createMockPsstDialogAPI(
   }
 
   // Add simulation methods to the returned API for testing
-  ;(api as any)._simulateActions = {
+  const apiWithSimulations = api as any
+  apiWithSimulations._simulateActions = {
     /**
      * Simulate receiving new settings data
      */
@@ -274,5 +276,5 @@ export function createMockPsstDialogAPI(
     getCallbackRouter: () => mockCallbackRouter,
   }
 
-  return api
+  return apiWithSimulations
 }

@@ -10,6 +10,7 @@ import styles from './style.module.scss'
 
 import { createMockPsstDialogAPI } from '../api/psst_dialog_api_mock'
 import PsstDlgContainer from '../containers/App'
+import * as Mojom from '../types/mojom_types'
 
 // Set icon path for Storybook
 setIconBasePath('/icons')
@@ -17,9 +18,15 @@ setIconBasePath('/icons')
 function PsstDialogStory({
   autoLoadSettings = true,
   requestDelay = 1000,
-  errorUrls = [],
+  errorUrls = [] as string[],
   siteName = 'example.com',
   items = [] as Mojom.SettingCardDataItem[],
+}: {
+  readonly autoLoadSettings?: boolean
+  readonly requestDelay?: number
+  readonly errorUrls?: string[]
+  readonly siteName?: string
+  readonly items?: Mojom.SettingCardDataItem[]
 }) {
   const mockAPI = React.useMemo(() => {
     return createMockPsstDialogAPI({
@@ -27,7 +34,7 @@ function PsstDialogStory({
       requestDelay,
       errorUrls,
       settingsCardData: {
-        siteName,
+        siteName: siteName,
         items,
       },
       onCloseDialog: () => console.log('[Storybook] Dialog closed'),

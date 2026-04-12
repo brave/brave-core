@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as Mojom from 'gen/brave/components/psst/common/psst_ui_common.mojom.m.js'
+import * as Mojom from '../types/mojom_types'
 
 import {
   createInterfaceApi,
@@ -11,7 +11,7 @@ import {
   actionsFor,
   state,
 } from '$web-common/api'
-export * from 'gen/brave/components/psst/common/psst_ui_common.mojom.m.js'
+export * from '../types/mojom_types'
 
 export function createPsstDialogApi(
   consentHelper: Mojom.PsstConsentHelperRemote,

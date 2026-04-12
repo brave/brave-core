@@ -9,7 +9,7 @@ import { PsstDialogAPI } from '../api/psst_dialog_api'
 import { PsstDialogAPIProvider } from '../api/psst_dialog_api_context'
 
 export interface Props {
-  apiContext: PsstDialogAPI['api']
+  apiContext: PsstDialogAPI
 }
 
 export default function PsstDlgContainer(_props: Readonly<Props>) {
