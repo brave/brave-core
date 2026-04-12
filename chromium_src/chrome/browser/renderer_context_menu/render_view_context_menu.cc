@@ -29,6 +29,7 @@
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/desktop_wallpaper/desktop_wallpaper_service.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
@@ -385,6 +386,11 @@ bool RenderViewContextMenu::IsCommandIdEnabled(int id) const {
       return true;
     case IDC_NEW_EMAIL_ALIAS:
       return !!GetEmailAliasesController(GetBrowser());
+#if BUILDFLAG(IS_MAC)
+    case IDC_CONTENT_CONTEXT_SET_IMAGE_AS_BACKGROUND:
+      return params_.has_image_contents;
+#endif
+      // ... rest
     default:
       return RenderViewContextMenu_Chromium::IsCommandIdEnabled(id);
   }
@@ -447,6 +453,12 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
                                   params_.field_renderer_id);
       }
       break;
+#if BUILDFLAG(IS_MAC)
+    case IDC_CONTENT_CONTEXT_SET_IMAGE_AS_BACKGROUND:
+      desktop_wallpaper::DesktopWallpaper::SetImageAsDesktopWallpaper(
+          GetProfile()->GetURLLoaderFactory(), params_.src_url);
+      break;
+#endif
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);
   }
@@ -834,12 +846,27 @@ void RenderViewContextMenu::InitMenu() {
   if (GetSelectedURL(GetProfile(), params_.selection_text).has_value()) {
     std::optional<size_t> copy_index =
         menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_COPY);
+
     if (copy_index.has_value() &&
         !menu_model_.GetIndexOfCommandId(IDC_COPY_CLEAN_LINK).has_value()) {
       menu_model_.InsertItemWithStringIdAt(
           copy_index.value() + 1, IDC_COPY_CLEAN_LINK, IDS_COPY_CLEAN_LINK);
     }
   }
+
+#if BUILDFLAG(IS_MAC)
+  const bool is_image = content_type_->SupportsGroup(
+      ContextMenuContentType::ITEM_GROUP_MEDIA_IMAGE);
+  if (is_image) {
+    std::optional<size_t> idx =
+        menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_SAVEIMAGEAS);
+    if (idx.has_value()) {
+      menu_model_.InsertItemWithStringIdAt(
+          idx.value() + 1, IDC_CONTENT_CONTEXT_SET_IMAGE_AS_BACKGROUND,
+          IDS_CONTENT_CONTEXT_SET_IMAGE_AS_BACKGROUND);
+    }
+  }
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   BuildAIChatMenu();

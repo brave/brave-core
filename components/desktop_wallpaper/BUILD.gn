@@ -1,0 +1,16 @@
+    source_set("desktop_wallpaper") {
+
+    deps = [
+        "//base",
+        "//net",
+        "//services/network/public/cpp",
+        "//url",
+    ]
+
+    sources = [
+        "desktop_wallpaper_service.h",
+        "desktop_wallpaper_service.mm",
+        "desktop_wallpaper_controller.cc"
+    ]
+    frameworks = ["AppKit.framework"]
+    }
