@@ -305,6 +305,13 @@ bool BraveTabStrip::ShouldShowPinnedTabsInGrid() const {
 }
 
 void BraveTabStrip::UpdateOrientation() {
+  // When Chromium's upstream vertical tabs feature is active,
+  // TabStrip::Initialize() is never called so tab_container_ remains null.
+  // This method must bail out early to avoid crashing when accessing it.
+  if (!tabs::utils::SupportsBraveVerticalTabs(GetBrowserWindowInterface())) {
+    return;
+  }
+
   const bool using_vertical_tabs = ShouldShowVerticalTabs();
   auto* browser = GetBrowserWindowInterface();
   DCHECK(browser);
