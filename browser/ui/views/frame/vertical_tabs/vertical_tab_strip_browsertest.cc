@@ -2330,9 +2330,12 @@ class UpstreamVerticalTabsCrashTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsCrashTest, NoCrashOnStartup) {
   // Simulate the user choosing "Side" in Tab strip position settings,
-  // then opening a new window. Previously this crashed in
-  // BraveTabStrip::UpdateOrientation() because tab_container_ was null.
+  // then opening a new window. verifies no crash when kVerticalTabs is active
+  // and kVerticalTabsEnabled is set, since tab_container_ may be null in that
+  // configuration.
   browser()->profile()->GetPrefs()->SetBoolean(prefs::kVerticalTabsEnabled,
                                                true);
-  CreateBrowser(browser()->profile());
+  Browser* new_browser = CreateBrowser(browser()->profile());
+  ASSERT_TRUE(new_browser);
+  EXPECT_EQ(1, new_browser->tab_strip_model()->count());
 }
