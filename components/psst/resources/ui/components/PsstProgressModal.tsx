@@ -238,51 +238,45 @@ export const PsstProgressModal = () => {
         }}
         onItemChecked={handleSettingItemCheck}
       />
-      {(() => {
-        if (commonState !== SettingState.Completed) {
-          return (
-            <RightAlignedItem>
-              <PsstDlgButton
-                kind='outline'
-                size='medium'
-                isDisabled={isInProgress}
-                onClick={closeDialog}
-              >
-                {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_CANCEL)}
-              </PsstDlgButton>
-              <PsstDlgButton
-                id='psst-dialog-ok-btn'
-                kind='filled'
-                size='medium'
-                isDisabled={isInProgress}
-                isLoading={isInProgress}
-                onClick={handleApplyChanges}
-              >
-                {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_OK)}
-              </PsstDlgButton>
-            </RightAlignedItem>
-          )
-        } else {
-          return (
-            <RightAlignedItem>
-              <PsstDlgButton
-                kind='outline'
-                size='medium'
-                onClick={closeDialog}
-              >
-                {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED)}
-              </PsstDlgButton>
-              <PsstDlgButton
-                kind='filled'
-                size='medium'
-                onClick={closeDialog}
-              >
-                {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_CLOSE)}
-              </PsstDlgButton>
-            </RightAlignedItem>
-          )
-        }
-      })()}
+      {commonState !== SettingState.Completed ? (
+        <RightAlignedItem>
+          <PsstDlgButton
+            kind='outline'
+            size='medium'
+            isDisabled={isInProgress}
+            onClick={closeDialog}
+          >
+            {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_CANCEL)}
+          </PsstDlgButton>
+          <PsstDlgButton
+            id='psst-dialog-ok-btn'
+            kind='filled'
+            size='medium'
+            isDisabled={isInProgress}
+            isLoading={isInProgress}
+            onClick={handleApplyChanges}
+          >
+            {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_OK)}
+          </PsstDlgButton>
+        </RightAlignedItem>
+      ) : (
+        <RightAlignedItem>
+          <PsstDlgButton
+            kind='outline'
+            size='medium'
+            onClick={closeDialog}
+          >
+            {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED)}
+          </PsstDlgButton>
+          <PsstDlgButton
+            kind='filled'
+            size='medium'
+            onClick={closeDialog}
+          >
+            {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_CLOSE)}
+          </PsstDlgButton>
+        </RightAlignedItem>
+      )}
     </Container>
   )
 }
