@@ -36,7 +36,7 @@ int OnBeforeStartTransaction_BraveServiceKey(
 // go through this network delegate path. Wallet gate3 requests use
 // APIRequestHelper which adds the services key explicitly.
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-      std::string(GURL(brave_domains::GetGate3URL()).host()),
+      std::string(brave_domains::GetGate3URL().host()),
 #endif
   }};
 

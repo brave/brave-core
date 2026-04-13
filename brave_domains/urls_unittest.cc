@@ -11,6 +11,7 @@
 #include "base/test/scoped_command_line.h"
 #include "brave/brave_domains/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 namespace brave_domains {
 

@@ -996,9 +996,8 @@ inline constexpr char kGate3Url[] = "https://gate3.brave.com";
 // components/brave_wallet/common/constants.h
 inline constexpr char kGate3Url[] = "https://gate3.brave.com";
 
-// ✅ CORRECT - shared constant or function via brave_domains/urls.h
-inline constexpr char kGate3Url[] = "https://gate3.brave.com";
-std::string GetGate3URL();  // environment-aware, uses GetServicesDomain()
+// ✅ CORRECT - shared via brave_domains/urls.h
+GURL GetGate3URL();  // environment-aware, uses GetServicesDomain()
 ```
 
 ---
