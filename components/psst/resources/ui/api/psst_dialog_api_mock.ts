@@ -17,7 +17,7 @@ import { createPsstDialogApi, type PsstDialogAPI } from './psst_dialog_api'
  * // With custom state
  * const mockAPI = createMockPsstDialogAPI({
  *   settingsCardData: {
- *     site_name: 'custom-site.com',
+ *     siteName: 'custom-site.com',
  *     setting_items: customSettingItems
  *   }
  * })
@@ -27,7 +27,7 @@ import { createPsstDialogApi, type PsstDialogAPI } from './psst_dialog_api'
  * Mock setting card data with realistic privacy settings
  */
 const mockSettingCardData: Mojom.SettingCardData = {
-  site_name: 'example.com',
+  siteName: 'example.com',
   items: [
     {
       url: 'https://example.com/cookies',
@@ -67,7 +67,7 @@ function createMockConsentHelper(): Mojom.PsstConsentHelperRemote {
 
     // Mock Mojom remote properties (these are usually
     // auto-generated)
-    proxy: {} as any,
+    _proxy: {} as any,
     onConnectionError: { addListener: () => {} } as any,
     $: {
       bindNewPipeAndPassReceiver: () => ({}),
