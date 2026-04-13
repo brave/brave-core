@@ -49,7 +49,7 @@ export class BraveAccountEmailInputElement extends CrLitElement {
       this.email.length > 0 && detail.innerEvent.target.validity.valid
     this.fire('email-input', {
       email: this.email,
-      isValid: this.isValid,
+      isValid: this.isValid(),
     } satisfies EmailInputEventDetail)
   }
 
@@ -57,19 +57,19 @@ export class BraveAccountEmailInputElement extends CrLitElement {
   private accessor email = ''
   private accessor isFormatValid = false
 
-  protected get isBraveAlias(): boolean {
+  protected isBraveAlias(): boolean {
     return this.isFormatValid && /@bravealias\.com$/i.test(this.email)
   }
 
-  protected get shouldStyleAsError(): boolean {
+  protected shouldStyleAsError(): boolean {
     return (
       (this.email.length !== 0 && !this.isFormatValid)
-      || (this.blockBraveAlias && this.isBraveAlias)
+      || (this.blockBraveAlias && this.isBraveAlias())
     )
   }
 
-  private get isValid(): boolean {
-    return this.isFormatValid && (!this.blockBraveAlias || !this.isBraveAlias)
+  private isValid(): boolean {
+    return this.isFormatValid && (!this.blockBraveAlias || !this.isBraveAlias())
   }
 }
 

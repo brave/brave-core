@@ -79,7 +79,7 @@ export class BraveAccountPasswordInputElement extends CrLitElement {
     this.password = detail.value
     this.fire('password-input', {
       password: this.password,
-      isValid: this.isValid,
+      isValid: this.isValid(),
     } satisfies PasswordInputEventDetail)
   }
 
@@ -98,29 +98,29 @@ export class BraveAccountPasswordInputElement extends CrLitElement {
     }
   }
 
-  protected get confirmPassword() {
+  protected confirmPassword() {
     return this.config.mode === 'confirmation'
       ? this.config.confirmPassword
       : ''
   }
 
-  protected get shouldStyleAsError() {
+  protected shouldStyleAsError() {
     return (
       this.password.length !== 0
       && (this.config.mode === 'confirmation'
-        ? this.password !== this.confirmPassword
+        ? this.password !== this.confirmPassword()
         : this.password !== this.password.trim())
     )
   }
 
-  protected get shouldShowDropdown() {
+  protected shouldShowDropdown() {
     return (
       this.password.length !== 0
-      && (this.config.mode !== 'regular' || !this.isValid)
+      && (this.config.mode !== 'regular' || !this.isValid())
     )
   }
 
-  protected get isValid() {
+  protected isValid() {
     return this.password.length !== 0 && this.password === this.password.trim()
   }
 

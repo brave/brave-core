@@ -40,7 +40,7 @@ export class LeoModelSelectorElement extends CrLitElement {
   accessor models: ModelWithSubtitle[] = []
   accessor isPremiumUser: boolean = false
 
-  get selectedDisplayName(): string {
+  selectedDisplayName(): string {
     return this.models?.find(
       (entry) => entry.model.key === this.selectedKey
     )?.model.displayName ?? ''
