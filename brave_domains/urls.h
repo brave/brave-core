@@ -10,6 +10,9 @@
 
 namespace brave_domains {
 
+// This file is for URLs shared across multiple components with no clear single
+// owner. Feature-specific URLs should be colocated in their feature's target.
+
 // Returns the gate3 URL for the current environment.
 // Uses GetServicesDomain("gate3.wallet") with https:// scheme.
 //
