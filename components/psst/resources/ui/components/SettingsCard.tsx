@@ -4,17 +4,69 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import {
-  CheckBoxIconCompleted,
-  CheckBoxIconFailed,
-  SettingGrid,
-  SettingGridHeaderRow,
-  SettingGridRow,
-  SettingProgressRing,
-} from './basic/display'
+import styled from 'styled-components'
 import Checkbox from '@brave/leo/react/checkbox'
+import Ring from '@brave/leo/react/progressRing'
+import Icon from '@brave/leo/react/icon'
 import { PsstProgressModalState, SettingState } from './PsstProgressModal'
-import { HorizontalContainer, TextLabel, TextSection } from './basic/structure'
+import { HorizontalContainer, LeftAlignedItem } from './basic/structure'
+import { color, font } from '@brave/leo/tokens/css/variables'
+
+// Styled components
+const TextSection = styled.div`
+`
+
+const SettingGrid = styled(LeftAlignedItem)`
+  border-radius: 8px;
+  border: ${color.primitive.neutral[90]} 1px solid;
+  margin-bottom: 18px;
+`
+
+const SettingGridHeaderRow = styled(LeftAlignedItem)`
+  padding: 16px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  background-color: ${color.container.interactive};
+  display: flex;
+  align-items: center;
+`
+
+const SettingGridRow = styled(LeftAlignedItem)`
+  padding: 16px;
+  border-top: ${color.primitive.neutral[90]} 1px solid;
+`
+
+const SettingsGridBoldText = styled(TextSection)`
+  color: ${color.text.primary};
+  font: ${font.default.semibold};
+`
+
+const SettingsGridSmallText = styled(TextSection)`
+  color: ${color.text.primary};
+  font: ${font.small.regular};
+`
+
+const SettingProgressRing = styled(Ring)`
+  --leo-progressring-size: 18px;
+    margin-right: 10px;
+`
+
+const CheckBoxIconCompleted = styled(Icon)`
+  --leo-icon-color: ${color.systemfeedback.successIcon};
+  --leo-icon-size: 20px;
+  margin-right: 8px;
+`
+
+const CheckBoxIconFailed = styled(Icon)`
+  --leo-icon-color: ${color.systemfeedback.errorIcon};
+  --leo-icon-size: 20px;
+  margin-right: 8px;
+`
+
+export const TextLabel = styled('label')<{}>`
+  font: ${font.default.regular};
+  color: ${color.text.primary};
+`
 
 export interface Props {
   title: string
@@ -42,8 +94,8 @@ export default class SettingsCard extends React.PureComponent<Props, {}> {
             /> */}
           </div>
           <div>
-            <div style={titleStyle}>{title}</div>
-            <div style={urlStyle}>{subTitle}</div>
+            <SettingsGridBoldText>{title}</SettingsGridBoldText>
+            <SettingsGridSmallText>{subTitle}</SettingsGridSmallText>
           </div>
         </SettingGridHeaderRow>
         {progressModelState
@@ -106,15 +158,4 @@ const iconContainerStyle = {
   justifyContent: 'center',
   alignItems: 'center',
   marginRight: '12px',
-}
-
-const titleStyle = {
-  fontWeight: 'bold',
-  fontSize: '16px',
-  color: '#333',
-}
-
-const urlStyle = {
-  fontSize: '14px',
-  color: '#777',
 }

@@ -4,26 +4,32 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { ModalTitle } from './basic/display'
+import styled from 'styled-components'
+import { color, font } from '@brave/leo/tokens/css/variables'
 import {
   Container,
   HorizontalContainer,
   LeftAlignedItem,
   PsstDlgButton,
   RightAlignedItem,
-  TextSection,
 } from './basic/structure'
 import SettingsCard from './SettingsCard'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-//import { PsstStrings } from 'gen/components/grit/brave_components_webui_strings'
 import { getLocale } from '$web-common/locale'
 import { usePsstDialogAPI } from '../api/psst_dialog_api_context'
 import { SettingCardDataItem } from '../api/psst_dialog_api'
 import '../strings'
 
-export interface Props {}
-
+// Styled components
+const ModalTitle = styled.div`
+  font: ${font.heading.h4};
+  color: ${color.text.secondary};
+`
+const ModalTitleBody = styled.div`
+  font: ${font.default.regular};
+  color: ${color.text.primary};
+`
 export enum SettingState {
   None,
   Selection,
@@ -207,9 +213,7 @@ export const PsstProgressModal = () => {
     <Container>
       <HorizontalContainer>
         <LeftAlignedItem>
-          <TextSection>
-            <ModalTitle>{getLocale(S.PSST_CONSENT_DIALOG_TITLE)}</ModalTitle>
-          </TextSection>
+          <ModalTitle>{getLocale(S.PSST_CONSENT_DIALOG_TITLE)}</ModalTitle>
         </LeftAlignedItem>
         <RightAlignedItem>
           <Button
@@ -222,7 +226,7 @@ export const PsstProgressModal = () => {
           </Button>
         </RightAlignedItem>
       </HorizontalContainer>
-      <TextSection>{getLocale(S.PSST_CONSENT_DIALOG_BODY)}</TextSection>
+      <ModalTitleBody>{getLocale(S.PSST_CONSENT_DIALOG_BODY)}</ModalTitleBody>
       <SettingsCard
         title={getLocale(S.PSST_CONSENT_DIALOG_OPTIONS_TITLE)}
         subTitle={siteName}
