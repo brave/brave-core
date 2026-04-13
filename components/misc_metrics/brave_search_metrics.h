@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_MISC_METRICS_BRAVE_SEARCH_METRICS_H_
 #define BRAVE_COMPONENTS_MISC_METRICS_BRAVE_SEARCH_METRICS_H_
 
+#include <optional>
+#include <string>
 #include <string_view>
 
 #include "base/time/time.h"
@@ -67,6 +69,9 @@ class BraveSearchMetrics : public PagePercentageMetrics {
 
  private:
   raw_ptr<TemplateURLService> template_url_service_ = nullptr;
+#if BUILDFLAG(IS_ANDROID)
+  std::optional<std::string> last_intent_url_;
+#endif  // BUILDFLAG(IS_ANDROID)
 };
 
 }  // namespace misc_metrics
