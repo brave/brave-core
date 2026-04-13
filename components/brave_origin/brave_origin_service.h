@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ORIGIN_BRAVE_ORIGIN_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_ORIGIN_BRAVE_ORIGIN_SERVICE_H_
 
+#include <memory>
 #include <optional>
 #include <string>
 
@@ -17,6 +18,7 @@
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 class PrefService;
@@ -69,6 +71,17 @@ class BraveOriginService : public KeyedService {
   // is needed for the changes to fully take effect.
   bool NeedsRestart() const;
 
+  // Delegate for browser-layer actions the service cannot perform directly.
+  class Delegate {
+   public:
+    virtual ~Delegate() = default;
+    // Called once when a purchase is first detected, after credentials
+    // have been verified.
+    virtual void OpenOriginSettings() = 0;
+  };
+
+  void SetDelegate(std::unique_ptr<Delegate> delegate);
+
  protected:
   // Local state and profile preferences this state is associated with
   raw_ptr<PrefService> local_state_;
@@ -83,6 +96,7 @@ class BraveOriginService : public KeyedService {
  private:
   void OnCredentialSummary(base::OnceCallback<void(bool)> callback,
                            skus::mojom::SkusResultPtr summary);
+  void OnSkusStateChanged();
   bool EnsureSkusConnected();
 
   SkusServiceGetter skus_service_getter_;
@@ -97,6 +111,13 @@ class BraveOriginService : public KeyedService {
   // settings changes that require a restart.
   base::flat_map<std::string, bool> startup_browser_policies_;
   base::flat_map<std::string, bool> startup_profile_policies_;
+
+  // Browser-layer delegate for actions like opening the settings page.
+  std::unique_ptr<Delegate> delegate_;
+
+  // Re-checks purchase state when SKU credentials change (e.g. after
+  // the user completes a purchase on account.brave.com).
+  PrefChangeRegistrar skus_pref_registrar_;
 
   base::WeakPtrFactory<BraveOriginService> weak_ptr_factory_{this};
 };

@@ -16,6 +16,7 @@ import("//build/config/features.gni")
 
 source_set("brave_origin") {
   sources = [
+    "brave_origin_navigation.h",
     "brave_origin_service_factory.cc",
     "brave_origin_service_factory.h",
   ]

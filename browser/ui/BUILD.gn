@@ -67,6 +67,7 @@ source_set("ui") {
     "//brave/browser/brave_origin",
     "//brave/browser/brave_shields",
     "//brave/browser/skus",
+    "//brave/browser/ui/brave_origin",
     "//brave/browser/ui/page_info",
     "//brave/browser/ui/webui/brave_account",
     "//brave/browser/ui/webui/email_aliases",
