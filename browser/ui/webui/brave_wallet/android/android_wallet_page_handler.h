@@ -26,6 +26,7 @@ class AndroidWalletPageHandler : WalletPageHandler {
   void ShowWalletBackupUI() override;
   void UnlockWalletUI() override;
   void ShowOnboarding(bool is_new_wallet) override;
+  void OpenWalletHome() override;
 
  private:
   raw_ptr<ui::MojoWebUIController> const webui_controller_;

@@ -471,6 +471,12 @@ interface PageHandler {
   // - Also available for Android and can be implemented once Android
   // start allowing Wallet WebUI with no wallet created.
   ShowOnboarding(bool is_new_wallet);
+
+  // Mobile only
+  // - Used by iOS Wallet WebUI when there is an interaction to open
+  // Wallet WebUI in another tab. For example, the user taps the button
+  // to open Wallet WebUI in another tab while syncing ZCash Shielded Account.
+  OpenWalletHome();
 };
 
 enum AssetPriceTimeframe {

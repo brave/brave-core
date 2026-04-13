@@ -44,3 +44,8 @@ void WalletPageHandler::ShowOnboarding(bool is_new_wallet) {
   // iOS/Mobile only
   NOTREACHED();
 }
+
+void WalletPageHandler::OpenWalletHome() {
+  // iOS/Mobile only
+  NOTREACHED();
+}
