@@ -6,14 +6,11 @@
 #include "brave/components/time_period_storage/time_period_storage.h"
 
 #include <memory>
-#include <utility>
 
 #include "base/check.h"
-#include "base/memory/raw_ptr.h"
-#include "base/test/icu_test_util.h"
-#include "base/test/scoped_libc_timezone_override.h"
-#include "base/test/simple_test_clock.h"
+#include "base/test/task_environment.h"
 #include "base/time/time.h"
+#include "brave/components/time_period_storage/scoped_timezone_for_testing.h"
 #include "build/buildflag.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
@@ -35,22 +32,20 @@ class TimePeriodStorageTest
   TimePeriodStorageTest() {
     pref_service_.registry()->RegisterListPref(kListPrefName);
     pref_service_.registry()->RegisterDictionaryPref(kDictPrefName);
+
+    // Advance to a fixed date to avoid DST-related issues. 4 hours before
+    // midnight gives tests room to advance forward within the same day.
+    base::Time future_mock_time;
+    CHECK(base::Time::FromString("2050-01-04", &future_mock_time));
+    task_environment_.AdvanceClock(Midnight(future_mock_time) - base::Hours(4) -
+                                   base::Time::Now());
   }
 
   void InitStorage(size_t days, const char* dict_key = nullptr) {
-    std::unique_ptr<base::SimpleTestClock> clock =
-        std::make_unique<base::SimpleTestClock>();
-
-    base::Time future_mock_time;
-    // Set to fixed date to avoid DST related issues
-    CHECK(base::Time::FromString("2050-01-04", &future_mock_time));
-    clock->SetNow(Midnight(future_mock_time) - base::Hours(4));
-    clock_ = clock.get();
-
     const char* pref_name = dict_key ? kDictPrefName : kListPrefName;
     state_ = std::make_unique<TimePeriodStorage>(
-        &pref_service_, pref_name, dict_key, days, std::move(clock),
-        should_use_utc(), should_offset_dst());
+        &pref_service_, pref_name, dict_key, days, should_use_utc(),
+        should_offset_dst());
   }
 
   bool should_use_utc() const { return GetParam().should_use_utc; }
@@ -62,9 +57,10 @@ class TimePeriodStorageTest
   }
 
  protected:
+  base::test::TaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<TimePeriodStorage> state_;
-  raw_ptr<base::SimpleTestClock> clock_ = nullptr;
 };
 
 TEST_P(TimePeriodStorageTest, StartsZero) {
@@ -87,18 +83,18 @@ TEST_P(TimePeriodStorageTest, AddsSavings) {
 TEST_P(TimePeriodStorageTest, SubDelta) {
   InitStorage(7);
   state_->AddDelta(5000);
-  clock_->Advance(base::Days(1));
+  task_environment_.AdvanceClock(base::Days(1));
   state_->AddDelta(3000);
-  clock_->Advance(base::Days(1));
+  task_environment_.AdvanceClock(base::Days(1));
   state_->AddDelta(1000);
-  clock_->Advance(base::Days(1));
+  task_environment_.AdvanceClock(base::Days(1));
 
   state_->SubDelta(500);
   EXPECT_EQ(state_->GetPeriodSum(), 8500U);
   state_->SubDelta(4000);
   EXPECT_EQ(state_->GetPeriodSum(), 4500U);
 
-  clock_->Advance(base::Days(4));
+  task_environment_.AdvanceClock(base::Days(4));
   // First day value should expire
   EXPECT_EQ(state_->GetPeriodSum(), 0U);
 
@@ -119,37 +115,37 @@ TEST_P(TimePeriodStorageTest, GetSumInCustomPeriod) {
   InitStorage(14);
   state_->AddDelta(saving);
 
-  clock_->Advance(base::Days(1));
+  task_environment_.AdvanceClock(base::Days(1));
   state_->AddDelta(saving);
   state_->AddDelta(saving);
 
-  clock_->Advance(base::Days(2));
+  task_environment_.AdvanceClock(base::Days(2));
 
-  base::Time midnight = Midnight(clock_->Now());
+  base::Time midnight = Midnight(base::Time::Now());
   EXPECT_EQ(state_->GetPeriodSumInTimeRange(midnight - start_time_delta,
                                             midnight - end_time_delta),
             0u);
 
-  clock_->Advance(base::Days(1));
-  midnight = Midnight(clock_->Now());
+  task_environment_.AdvanceClock(base::Days(1));
+  midnight = Midnight(base::Time::Now());
   EXPECT_EQ(state_->GetPeriodSumInTimeRange(midnight - start_time_delta,
                                             midnight - end_time_delta),
             saving);
 
-  clock_->Advance(base::Days(1));
-  midnight = Midnight(clock_->Now());
+  task_environment_.AdvanceClock(base::Days(1));
+  midnight = Midnight(base::Time::Now());
   EXPECT_EQ(state_->GetPeriodSumInTimeRange(midnight - start_time_delta,
                                             midnight - end_time_delta),
             saving * 3);
 
-  clock_->Advance(base::Days(5));
-  midnight = Midnight(clock_->Now());
+  task_environment_.AdvanceClock(base::Days(5));
+  midnight = Midnight(base::Time::Now());
   EXPECT_EQ(state_->GetPeriodSumInTimeRange(midnight - start_time_delta,
                                             midnight - end_time_delta),
             saving * 2);
 
-  clock_->Advance(base::Days(1));
-  midnight = Midnight(clock_->Now());
+  task_environment_.AdvanceClock(base::Days(1));
+  midnight = Midnight(base::Time::Now());
   EXPECT_EQ(state_->GetPeriodSumInTimeRange(midnight - start_time_delta,
                                             midnight - end_time_delta),
             0u);
@@ -161,7 +157,7 @@ TEST_P(TimePeriodStorageTest, ForgetsOldSavingsWeekly) {
   state_->AddDelta(saving);
   EXPECT_EQ(state_->GetPeriodSum(), saving);
 
-  clock_->Advance(base::Days(8));
+  task_environment_.AdvanceClock(base::Days(8));
 
   // More savings
   state_->AddDelta(saving);
@@ -176,7 +172,7 @@ TEST_P(TimePeriodStorageTest, ForgetsOldSavingsMonthly) {
   state_->AddDelta(saving);
   EXPECT_EQ(state_->GetPeriodSum(), saving);
 
-  clock_->Advance(base::Days(31));
+  task_environment_.AdvanceClock(base::Days(31));
 
   // More savings
   state_->AddDelta(saving);
@@ -189,7 +185,7 @@ TEST_P(TimePeriodStorageTest, RetrievesDailySavings) {
   InitStorage(7);
   uint64_t saving = 10000;
   for (int day = 0; day <= 7; day++) {
-    clock_->Advance(base::Days(1));
+    task_environment_.AdvanceClock(base::Days(1));
     state_->AddDelta(saving);
   }
   EXPECT_EQ(state_->GetPeriodSum(), 7 * saving);
@@ -199,7 +195,7 @@ TEST_P(TimePeriodStorageTest, HandlesSkippedDay) {
   InitStorage(7);
   uint64_t saving = 10000;
   for (int day = 0; day < 7; day++) {
-    clock_->Advance(base::Days(1));
+    task_environment_.AdvanceClock(base::Days(1));
     if (day == 3)
       continue;
     state_->AddDelta(saving);
@@ -211,7 +207,7 @@ TEST_P(TimePeriodStorageTest, IntermittentUsageWeekly) {
   InitStorage(7);
   uint64_t saving = 10000;
   for (int day = 0; day < 10; day++) {
-    clock_->Advance(base::Days(2));
+    task_environment_.AdvanceClock(base::Days(2));
     state_->AddDelta(saving);
   }
   EXPECT_EQ(state_->GetPeriodSum(), 4 * saving);
@@ -221,7 +217,7 @@ TEST_P(TimePeriodStorageTest, IntermittentUsageMonthly) {
   InitStorage(30);
   uint64_t saving = 10000;
   for (int day = 0; day < 40; day++) {
-    clock_->Advance(base::Days(10));
+    task_environment_.AdvanceClock(base::Days(10));
     state_->AddDelta(saving);
   }
   EXPECT_EQ(state_->GetPeriodSum(), 3 * saving);
@@ -231,7 +227,7 @@ TEST_P(TimePeriodStorageTest, InfrequentUsageWeekly) {
   InitStorage(7);
   uint64_t saving = 10000;
   state_->AddDelta(saving);
-  clock_->Advance(base::Days(6));
+  task_environment_.AdvanceClock(base::Days(6));
   state_->AddDelta(saving);
   EXPECT_EQ(state_->GetPeriodSum(), 2 * saving);
 }
@@ -240,7 +236,7 @@ TEST_P(TimePeriodStorageTest, InfrequentUsageMonthly) {
   InitStorage(30);
   uint64_t saving = 10000;
   state_->AddDelta(saving);
-  clock_->Advance(base::Days(29));
+  task_environment_.AdvanceClock(base::Days(29));
   state_->AddDelta(saving);
   EXPECT_EQ(state_->GetPeriodSum(), 2 * saving);
 }
@@ -251,12 +247,12 @@ TEST_P(TimePeriodStorageTest, GetHighestValueInPeriod) {
   uint64_t low_value = 50;
   uint64_t high_value = 75;
   state_->AddDelta(low_value);
-  clock_->Advance(base::Days(1));
+  task_environment_.AdvanceClock(base::Days(1));
   state_->AddDelta(high_value);
-  clock_->Advance(base::Days(1));
+  task_environment_.AdvanceClock(base::Days(1));
   state_->AddDelta(lowest_value);
   EXPECT_EQ(state_->GetHighestValueInPeriod(), high_value);
-  clock_->Advance(base::Days(1));
+  task_environment_.AdvanceClock(base::Days(1));
   EXPECT_EQ(state_->GetHighestValueInPeriod(), high_value);
 }
 
@@ -283,7 +279,7 @@ TEST_P(TimePeriodStorageTest, GetsHighestValueInWeekFromReplacement) {
   uint64_t low_value = 50;
   uint64_t high_value = 75;
   state_->ReplaceTodaysValueIfGreater(high_value);
-  clock_->Advance(base::Days(2));
+  task_environment_.AdvanceClock(base::Days(2));
   state_->ReplaceTodaysValueIfGreater(low_value);
   EXPECT_EQ(state_->GetHighestValueInPeriod(), high_value);
   // Sanity check disparate days were not replaced
@@ -294,25 +290,25 @@ TEST_P(TimePeriodStorageTest, ReplaceIfGreaterForDate) {
   InitStorage(30);
 
   state_->AddDelta(4);
-  clock_->Advance(base::Days(1));
+  task_environment_.AdvanceClock(base::Days(1));
   state_->AddDelta(2);
-  clock_->Advance(base::Days(1));
+  task_environment_.AdvanceClock(base::Days(1));
   state_->AddDelta(1);
-  clock_->Advance(base::Days(1));
+  task_environment_.AdvanceClock(base::Days(1));
 
   // should replace
-  state_->ReplaceIfGreaterForDate(clock_->Now() - base::Days(2), 3);
+  state_->ReplaceIfGreaterForDate(base::Time::Now() - base::Days(2), 3);
   // should not replace
-  state_->ReplaceIfGreaterForDate(clock_->Now() - base::Days(3), 3);
+  state_->ReplaceIfGreaterForDate(base::Time::Now() - base::Days(3), 3);
 
   EXPECT_EQ(state_->GetPeriodSum(), 8U);
 
   // should insert new daily value
-  state_->ReplaceIfGreaterForDate(clock_->Now() - base::Days(4), 3);
+  state_->ReplaceIfGreaterForDate(base::Time::Now() - base::Days(4), 3);
   EXPECT_EQ(state_->GetPeriodSum(), 11U);
 
   // should store, but should not be in sum because it's too old
-  state_->ReplaceIfGreaterForDate(clock_->Now() - base::Days(31), 10);
+  state_->ReplaceIfGreaterForDate(base::Time::Now() - base::Days(31), 10);
   EXPECT_EQ(state_->GetPeriodSum(), 11U);
 }
 
@@ -340,15 +336,15 @@ TEST_P(TimePeriodStorageTest, DstOffsetExpandsQueryRange) {
   const bool dst_offset_active = !should_use_utc() && should_offset_dst();
   const uint64_t expected_saving = dst_offset_active ? saving : 0U;
 
-  base::Time midnight = Midnight(clock_->Now());
+  const base::Time midnight = Midnight(base::Time::Now());
   EXPECT_EQ(state_->GetPeriodSumInTimeRange(midnight + base::Minutes(30),
                                             midnight + base::Days(1)),
             expected_saving);
 }
 
-// The test is disbled on Windows because `ScopedLibcTimezoneOverride` is a
-// no-op for IANA timezone identifiers, causing spurious failures caused by a
-// non-overridable libc timezone.
+// The test is disabled on Windows because `ScopedTimezoneForTesting` relies
+// on `ScopedLibcTimezoneOverride`, which is a no-op for IANA timezone
+// identifiers on Windows, causing spurious failures.
 #if BUILDFLAG(IS_WIN)
 #define MAYBE_GetHighestValueInPeriodExcludesDataOutsideWindowAfterDSTTransition \
   DISABLED_GetHighestValueInPeriodExcludesDataOutsideWindowAfterDSTTransition
@@ -360,26 +356,28 @@ TEST_P(TimePeriodStorageTest, DstOffsetExpandsQueryRange) {
 TEST_P(
     TimePeriodStorageTest,
     MAYBE_GetHighestValueInPeriodExcludesDataOutsideWindowAfterDSTTransition) {
-  // America/New_York DST transition: clocks spring forward on March 8, 2020.
-  base::test::ScopedLibcTimezoneOverride scoped_libc_timezone(
-      "America/New_York");
-  base::test::ScopedRestoreDefaultTimezone scoped_icu_timezone(
-      "America/New_York");
-  uint64_t low_value = 50;
-  uint64_t high_value = 75;
+  // America/New_York DST starts in 2050 on March 13 (the second Sunday of
+  // March). Clocks advance at 02:00 EST (07:00 UTC) to 03:00 EDT. These
+  // dates are safely after the fixture's mock-time start of 2050-01-04.
+  const ScopedTimezoneForTesting scoped_timezone("America/New_York");
+  const uint64_t low_value = 50;
+  const uint64_t high_value = 75;
 
   InitStorage(7);
 
   base::Time time;
-  ASSERT_TRUE(base::Time::FromString("March 8 2020 01:30:00", &time));
-  clock_->SetNow(time);
+  ASSERT_TRUE(base::Time::FromString("March 13 2050 01:30:00", &time));
+  task_environment_.AdvanceClock(time - base::Time::Now());
   state_->AddDelta(high_value);
 
-  ASSERT_TRUE(base::Time::FromString("March 14 2020 02:30:00", &time));
-  clock_->SetNow(time);
+  ASSERT_TRUE(base::Time::FromString("March 19 2050 02:30:00", &time));
+  task_environment_.AdvanceClock(time - base::Time::Now());
   state_->AddDelta(low_value);
-  // Advance clock so the high-value entry falls outside the time period.
-  clock_->Advance(base::Days(1));
+  // Advance two days so the high-value entry falls outside the seven-day
+  // window. Two days are needed because the DST transition shifts the local
+  // midnight by one hour — one day is not enough to clear the boundary in
+  // local-time mode.
+  task_environment_.AdvanceClock(base::Days(2));
 
   EXPECT_EQ(state_->GetHighestValueInPeriod(), low_value);
 }

@@ -6,14 +6,10 @@
 #include "brave/components/time_period_storage/weekly_event_storage.h"
 
 #include <list>
-#include <memory>
 #include <optional>
-#include <utility>
 
 #include "base/check.h"
 #include "base/json/values_util.h"
-#include "base/time/clock.h"
-#include "base/time/default_clock.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "components/prefs/pref_service.h"
@@ -25,17 +21,8 @@ static constexpr size_t kDaysInWeek = 7;
 
 WeeklyEventStorage::WeeklyEventStorage(PrefService* prefs,
                                        const char* pref_name)
-    : WeeklyEventStorage(prefs,
-                         pref_name,
-                         std::make_unique<base::DefaultClock>()) {}
-
-// Accept an explicit clock so tests can manipulate the passage of time.
-WeeklyEventStorage::WeeklyEventStorage(PrefService* prefs,
-                                       const char* pref_name,
-                                       std::unique_ptr<base::Clock> clock)
-    : prefs_(*prefs), pref_name_(pref_name), clock_(std::move(clock)) {
+    : prefs_(*prefs), pref_name_(pref_name) {
   DCHECK(pref_name);
-  DCHECK(clock_);
   Load();
 }
 
@@ -44,7 +31,7 @@ WeeklyEventStorage::~WeeklyEventStorage() = default;
 void WeeklyEventStorage::Add(int value) {
   FilterToWeek();
   // Round the timestamp to the nearest day to make correlation harder.
-  base::Time day = clock_->Now().LocalMidnight();
+  base::Time day = base::Time::Now().LocalMidnight();
   events_.push_front({day, value});
   Save();
 }
@@ -69,7 +56,7 @@ void WeeklyEventStorage::FilterToWeek() {
   }
 
   // Remove all events older than a week.
-  auto cutoff = clock_->Now() - base::Days(kDaysInWeek);
+  const auto cutoff = base::Time::Now() - base::Days(kDaysInWeek);
   events_.remove_if([cutoff](Event event) { return event.day <= cutoff; });
 }
 

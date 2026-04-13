@@ -7,10 +7,8 @@
 
 #include <memory>
 #include <optional>
-#include <utility>
 
-#include "base/memory/raw_ptr.h"
-#include "base/test/simple_test_clock.h"
+#include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
@@ -36,16 +34,14 @@ class WeeklyEventStorageTest : public ::testing::Test {
   }
 
   void CreateWeeklyEventStorage() {
-    clock_ = new base::SimpleTestClock;
-    clock_->SetNow(base::Time::Now());
-    state_ = std::make_unique<WeeklyEventStorage>(
-        &pref_service_, kPrefName, std::unique_ptr<base::Clock>(clock_));
+    state_ = std::make_unique<WeeklyEventStorage>(&pref_service_, kPrefName);
   }
 
  protected:
+  base::test::TaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<WeeklyEventStorage> state_;
-  raw_ptr<base::SimpleTestClock> clock_ = nullptr;
 };
 
 TEST_F(WeeklyEventStorageTest, StartsEmpty) {
@@ -68,7 +64,7 @@ TEST_F(WeeklyEventStorageTest, ForgetsOldEvents) {
   EXPECT_EQ(state_->GetLatest(), std::optional<TestValues>(TestValues::kFoo));
 
   // Jump to the next week.
-  clock_->Advance(base::Days(8));
+  task_environment_.AdvanceClock(base::Days(8));
   // Should have forgotten about older days.
   EXPECT_FALSE(state_->HasEvent());
 
@@ -81,7 +77,7 @@ TEST_F(WeeklyEventStorageTest, ForgetsOldEvents) {
 TEST_F(WeeklyEventStorageTest, IntermittentUsage) {
   auto value = TestValues::kFoo;
   for (int day = 0; day < 10; day++) {
-    clock_->Advance(base::Days(day % 3));
+    task_environment_.AdvanceClock(base::Days(day % 3));
     state_->Add(value);
   }
   EXPECT_EQ(state_->GetLatest(), std::optional<TestValues>(value));
@@ -89,10 +85,10 @@ TEST_F(WeeklyEventStorageTest, IntermittentUsage) {
 
 TEST_F(WeeklyEventStorageTest, InfrequentUsage) {
   state_->Add(TestValues::kFoo);
-  clock_->Advance(base::Days(6));
+  task_environment_.AdvanceClock(base::Days(6));
   state_->Add(TestValues::kBar);
   EXPECT_EQ(state_->GetLatest(), std::optional<TestValues>(TestValues::kBar));
-  clock_->Advance(base::Days(10));
+  task_environment_.AdvanceClock(base::Days(10));
   EXPECT_EQ(state_->GetLatest(), std::nullopt);
 }
 
@@ -102,10 +98,10 @@ TEST_F(WeeklyEventStorageTest, SerializationOrder) {
   // Add a series of events.
   state_->Add(TestValues::kFoo);
   state_->Add(TestValues::kBar);
-  clock_->Advance(base::Days(1));
+  task_environment_.AdvanceClock(base::Days(1));
   state_->Add(TestValues::kFoo);
   state_->Add(TestValues::kBrave);
-  clock_->Advance(base::Days(1));
+  task_environment_.AdvanceClock(base::Days(1));
   EXPECT_EQ(state_->GetLatest(), std::optional<TestValues>(TestValues::kBrave));
 
   // Create a new WeeklyEventStorage object.

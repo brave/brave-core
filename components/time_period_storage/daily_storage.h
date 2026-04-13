@@ -7,14 +7,9 @@
 #define BRAVE_COMPONENTS_TIME_PERIOD_STORAGE_DAILY_STORAGE_H_
 
 #include <list>
-#include <memory>
 
 #include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
-
-namespace base {
-class Clock;
-}
 
 class PrefService;
 
@@ -25,11 +20,6 @@ class PrefService;
 class DailyStorage {
  public:
   DailyStorage(PrefService* prefs, const char* pref_name);
-
-  // For tests.
-  DailyStorage(PrefService* user_prefs,
-               const char* pref_name,
-               std::unique_ptr<base::Clock> clock);
   ~DailyStorage();
 
   DailyStorage(const DailyStorage&) = delete;
@@ -49,7 +39,6 @@ class DailyStorage {
 
   const raw_ptr<PrefService> prefs_ = nullptr;
   const char* pref_name_ = nullptr;
-  std::unique_ptr<base::Clock> clock_;
 
   std::list<DailyValue> daily_values_;
 };
