@@ -101,7 +101,12 @@ class ToolProvider {
  protected:
   void NotifyTaskStateChanged();
 
-  base::ObserverList<Observer> observers_;
+  // TODO(petemill): Investigate if reentrancy can be removed.
+  base::ObserverList<
+      Observer,
+      /*check_empty=*/false,
+      base::ObserverListReentrancyPolicy::kAllowReentrancyUntriaged>
+      observers_;
 };
 
 }  // namespace ai_chat
