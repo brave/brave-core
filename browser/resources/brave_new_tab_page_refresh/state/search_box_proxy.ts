@@ -28,8 +28,11 @@ export class SearchBoxProxy {
   static getInstance(): SearchBoxProxy {
     if (!instance) {
       const callbackRouter = new mojom.PageCallbackRouter()
-      const handler = mojom.PageHandler.getRemote()
-      handler.setPage(callbackRouter.$.bindNewPipeAndPassRemote())
+      const handler = new mojom.PageHandlerRemote()
+      mojom.PageHandlerFactory.getRemote().createPageHandler(
+        callbackRouter.$.bindNewPipeAndPassRemote(),
+        handler.$.bindNewPipeAndPassReceiver(),
+      )
       instance = new SearchBoxProxy(callbackRouter, handler)
     }
     return instance
