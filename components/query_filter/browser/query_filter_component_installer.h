@@ -8,8 +8,6 @@
 
 #include <stdint.h>
 
-#include "base/files/file_path.h"
-
 namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
