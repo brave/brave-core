@@ -52,18 +52,9 @@ void AdBlockFiltersProviderManager::RemoveProvider(
 void AdBlockFiltersProviderManager::ForceNotifyObserver(
     AdBlockFiltersProvider::Observer& observer,
     bool is_for_default_engine) {
-  auto& filters_providers = is_for_default_engine
-                                ? default_engine_filters_providers_
-                                : additional_engine_filters_providers_;
-  if (filters_providers.empty()) {
-    return;
+  if (AreAllProvidersInitialized(is_for_default_engine)) {
+    observer.OnChanged(is_for_default_engine);
   }
-  for (auto* const& provider : filters_providers) {
-    if (!provider->IsInitialized()) {
-      return;
-    }
-  }
-  observer.OnChanged(is_for_default_engine);
 }
 
 std::string AdBlockFiltersProviderManager::GetNameForDebugging() {
@@ -77,7 +68,25 @@ AdBlockFiltersProviderManager::GetProviders(bool is_for_default_engine) const {
 }
 
 void AdBlockFiltersProviderManager::OnChanged(bool is_for_default_engine) {
-  NotifyObservers(is_for_default_engine);
+  if (AreAllProvidersInitialized(is_for_default_engine)) {
+    NotifyObservers(is_for_default_engine);
+  }
+}
+
+bool AdBlockFiltersProviderManager::AreAllProvidersInitialized(
+    bool is_for_default_engine) const {
+  auto& filters_providers = is_for_default_engine
+                                ? default_engine_filters_providers_
+                                : additional_engine_filters_providers_;
+  if (filters_providers.empty()) {
+    return false;
+  }
+  for (auto* const& provider : filters_providers) {
+    if (!provider->IsInitialized()) {
+      return false;
+    }
+  }
+  return true;
 }
 
 // Use LoadDATBufferForEngine instead, for Filter Provider Manager.

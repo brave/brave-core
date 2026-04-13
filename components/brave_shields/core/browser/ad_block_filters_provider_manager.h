@@ -64,6 +64,8 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
       bool is_for_default_engine) const;
 
  private:
+  bool AreAllProvidersInitialized(bool is_for_default_engine) const;
+
   std::optional<std::string> GetCacheKey() const override;
 
   void FinishCombinating(
