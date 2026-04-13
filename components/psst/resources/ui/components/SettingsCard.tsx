@@ -14,8 +14,6 @@ import { color, font } from '@brave/leo/tokens/css/variables'
 import Flex from '$web-common/Flex'
 
 // Styled components
-const TextSection = styled.div``
-
 const SettingGrid = styled(LeftAlignedItem)`
   border-radius: 8px;
   border: ${color.primitive.neutral[90]} 1px solid;
@@ -36,12 +34,12 @@ const SettingGridRow = styled(LeftAlignedItem)`
   border-top: ${color.primitive.neutral[90]} 1px solid;
 `
 
-const SettingsGridBoldText = styled(TextSection)`
+const SettingsGridBoldText = styled.div`
   color: ${color.text.primary};
   font: ${font.default.semibold};
 `
 
-const SettingsGridSmallText = styled(TextSection)`
+const SettingsGridSmallText = styled.div`
   color: ${color.text.primary};
   font: ${font.small.regular};
 `
@@ -63,7 +61,7 @@ const CheckBoxIconFailed = styled(Icon)`
   margin-right: 8px;
 `
 
-const TextLabel = styled('label')<{}>`
+const SettingText = styled.span`
   font: ${font.default.regular};
   color: ${color.text.primary};
 `
@@ -114,9 +112,7 @@ const SettingsCard: React.FC<Props> = ({
                       align='flex-start'
                     >
                       <SettingProgressRing mode='indeterminate' />
-                      <TextSection>
-                        <TextLabel>{item.description}</TextLabel>
-                      </TextSection>
+                      <SettingText>{item.description}</SettingText>
                     </Flex>
                   )
                 } else if (item.settingState === SettingState.Selection) {
@@ -126,7 +122,7 @@ const SettingsCard: React.FC<Props> = ({
                       isDisabled={item.disabled}
                       onChange={(e) => onItemChecked(item.url, e.checked)}
                     >
-                      <TextLabel>{item.description}</TextLabel>
+                      <SettingText>{item.description}</SettingText>
                     </Checkbox>
                   )
                 } else if (item.settingState === SettingState.Completed) {
@@ -137,7 +133,7 @@ const SettingsCard: React.FC<Props> = ({
                       align='flex-start'
                     >
                       <CheckBoxIconCompleted name='check-circle-outline' />
-                      <TextLabel>{item.description}</TextLabel>
+                      <SettingText>{item.description}</SettingText>
                     </Flex>
                   )
                 } else if (item.settingState === SettingState.Failed) {
@@ -148,7 +144,7 @@ const SettingsCard: React.FC<Props> = ({
                       align='flex-start'
                     >
                       <CheckBoxIconFailed name='close-circle' />
-                      <TextLabel>{item.description}</TextLabel>
+                      <SettingText>{item.description}</SettingText>
                     </Flex>
                   )
                 } else {
