@@ -48,7 +48,7 @@ class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
       base::OnceCallback<void(
           base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
 
-  void OnListAvailable();
+  void OnListAvailable(bool is_new_list);
 
   std::optional<std::string> GetCacheKey() const override;
 

@@ -133,14 +133,16 @@ void AdBlockSubscriptionFiltersProvider::OnDATFileDataReady(
       result.first, flow));
 }
 
-void AdBlockSubscriptionFiltersProvider::OnListAvailable() {
-  // Clear the persisted hash so the combined cache key changes, forcing
-  // ShouldLoadFilterSet to return true and trigger a reload. The new hash
-  // will be computed in OnDATFileDataReady when the file content is read.
-  if (local_state_) {
-    ScopedDictPrefUpdate update(local_state_,
-                                prefs::kAdBlockSubscriptionFiltersCacheHash);
-    update->Remove(GetPrefKey());
+void AdBlockSubscriptionFiltersProvider::OnListAvailable(bool is_new_list) {
+  if (is_new_list) {
+    // Clear the persisted hash so the combined cache key changes, forcing
+    // ShouldLoadFilterSet to return true and trigger a reload. The new hash
+    // will be computed in OnDATFileDataReady when the file content is read.
+    if (local_state_) {
+      ScopedDictPrefUpdate update(local_state_,
+                                  prefs::kAdBlockSubscriptionFiltersCacheHash);
+      update->Remove(GetPrefKey());
+    }
   }
   NotifyObservers(engine_is_default_);
 }
