@@ -10,7 +10,7 @@ import { setIconBasePath } from '@brave/leo/react/icon'
 
 import { createMockPsstDialogAPI } from './api/psst_dialog_api_mock'
 import PsstDlgContainer from './containers/App'
-import * as Mojom from './types/mojom_types'
+import * as Mojom from 'gen/brave/components/psst/common/psst_ui_common.mojom.m.js'
 import Flex from '$web-common/Flex'
 
 // Set icon path for Storybook

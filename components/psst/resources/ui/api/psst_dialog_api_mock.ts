@@ -3,8 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as Mojom from 'gen/brave/components/psst/common/psst_ui_common.mojom.m.js'
+
 import { createPsstDialogApi, type PsstDialogAPI } from './psst_dialog_api'
-import * as Mojom from '../types/mojom_types'
 
 /**
  * Mock implementations for PSST Dialog API used in Storybook stories and tests.
@@ -64,7 +65,8 @@ function createMockConsentHelper(): Mojom.PsstConsentHelperRemote {
       console.log('[Mock] closeDialog called')
     },
 
-    // Mock Mojom remote properties (these are usually auto-generated)
+    // Mock Mojom remote properties (these are usually
+    // auto-generated)
     proxy: {} as any,
     onConnectionError: { addListener: () => {} } as any,
     $: {
@@ -162,7 +164,9 @@ export interface MockPsstDialogAPIOptions {
  */
 export function createMockPsstDialogAPI(
   options: MockPsstDialogAPIOptions = {},
-): PsstDialogAPI & { _simulateActions: any } {
+): PsstDialogAPI & {
+  _simulateActions: any
+} {
   const {
     settingsCardData = {},
     autoLoadSettings = true,
