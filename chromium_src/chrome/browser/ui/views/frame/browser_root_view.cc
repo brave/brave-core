@@ -20,10 +20,12 @@
     ConvertPointToTarget(THIS, target_v, POINT);                            \
   }
 
-// Disable scroll-event-changes-tab if scrollable tab strip is enabled.
-#define kScrollEventChangesTab \
-  kScrollEventChangesTab &&    \
-      !base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)
+// Disable scroll-event-changes-tab if scrollable tab strip is enabled and Ctrl
+// key is not pressed.
+#define kScrollEventChangesTab                                          \
+  kScrollEventChangesTab &&                                             \
+      (!base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip) || \
+       event.IsControlDown())
 
 #include <chrome/browser/ui/views/frame/browser_root_view.cc>
 

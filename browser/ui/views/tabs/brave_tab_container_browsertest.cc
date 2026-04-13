@@ -8,17 +8,23 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
+#include "chrome/browser/defaults.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/frame/browser_root_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
+#include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/events/base_event_utils.h"
+#include "ui/events/event_constants.h"
 #include "ui/views/view_utils.h"
+#include "url/url_constants.h"
 
 class HorizontalScrollableTabStripBrowserTest : public InProcessBrowserTest {
  public:
@@ -31,6 +37,28 @@ class HorizontalScrollableTabStripBrowserTest : public InProcessBrowserTest {
   }
 
   void AppendTab() { chrome::AddTabAt(browser(), GURL(), -1, true); }
+
+  BrowserRootView* browser_root_view() {
+    return static_cast<BrowserRootView*>(
+        browser_view()->GetWidget()->GetRootView());
+  }
+
+  // Dispatches a wheel event at the horizontal tab strip, as
+  // chrome/browser/ui/views/frame/browser_root_view_browsertest.cc does for
+  // WheelTabChange.
+  void PerformMouseWheelOnTabStrip(const gfx::Vector2d& offset, int flags) {
+    TabStrip* tabstrip = browser_view()->horizontal_tab_strip_for_testing();
+    const gfx::Point tabstrip_center = tabstrip->GetLocalBounds().CenterPoint();
+    const gfx::Point location = views::View::ConvertPointToTarget(
+        tabstrip, browser_root_view(), tabstrip_center);
+    const gfx::Point root_location =
+        views::View::ConvertPointToScreen(tabstrip, tabstrip_center);
+
+    ui::MouseWheelEvent wheel_event(offset, location, root_location,
+                                    ui::EventTimeForNow(), flags,
+                                    /*changed_button_flags=*/0);
+    browser_root_view()->OnMouseWheel(wheel_event);
+  }
 
   void StopAnimatingAndLayout() {
     browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
@@ -154,4 +182,40 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
 
   EXPECT_LT(container->scroll_offset_, scroll_before)
       << "Scroll should be clamped after closing a tab";
+}
+
+IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
+                       CtrlWheelSwitchesTabPlainWheelDoesNot) {
+  if (!browser_defaults::kScrollEventChangesTab) {
+    GTEST_SKIP() << "Scroll-to-change-tab is disabled on this platform.";
+  }
+
+  TabStripModel* model = browser()->tab_strip_model();
+  while (model->count() < 2) {
+    ASSERT_TRUE(
+        AddTabAtIndex(0, GURL(url::kAboutBlankURL), ui::PAGE_TRANSITION_LINK));
+  }
+  model->ActivateTabAt(1);
+  ASSERT_EQ(1, model->active_index());
+
+  const gfx::Vector2d kWheelUp(0, ui::MouseWheelEvent::kWheelDelta);
+  const gfx::Vector2d kWheelDown(0, -ui::MouseWheelEvent::kWheelDelta);
+
+  // With kBraveScrollableTabStrip, only Ctrl+wheel should change tabs; plain
+  // wheel is left for horizontal tab-strip scrolling.
+  PerformMouseWheelOnTabStrip(kWheelUp, /*flags=*/0);
+  EXPECT_EQ(1, model->active_index())
+      << "Plain wheel should not activate another tab";
+
+  PerformMouseWheelOnTabStrip(kWheelUp, ui::EF_CONTROL_DOWN);
+  EXPECT_EQ(0, model->active_index())
+      << "Ctrl+wheel should activate the previous tab";
+
+  PerformMouseWheelOnTabStrip(kWheelDown, /*flags=*/0);
+  EXPECT_EQ(0, model->active_index())
+      << "Plain wheel should not activate the next tab";
+
+  PerformMouseWheelOnTabStrip(kWheelDown, ui::EF_CONTROL_DOWN);
+  EXPECT_EQ(1, model->active_index())
+      << "Ctrl+wheel should activate the next tab";
 }
