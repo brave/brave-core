@@ -320,19 +320,16 @@ void AdBlockService::OnResourcesLoaded(
                        weak_factory_.GetWeakPtr(), is_default_engine,
                        std::move(cache_key)));
     if (should_cache) {
+      // We're loading the filter set so block any further dat cache loading
       dat_cache_manager_->set_allow_dat_loading(false);
     }
   }
 
-  for (auto& observer : observers_) {
-    observer.OnResourcesLoaded(is_default_engine);
-  }
+  observers_.Notify(&Observer::OnResourcesLoaded, is_default_engine);
 }
 
 void AdBlockService::NotifyOnDATLoaded(bool is_default_engine, bool success) {
-  for (auto& observer : observers_) {
-    observer.OnDATFileLoaded(is_default_engine, success);
-  }
+  observers_.Notify(&Observer::OnDATFileLoaded, is_default_engine, success);
 }
 
 void AdBlockService::OnEngineLoaded(
@@ -348,9 +345,8 @@ void AdBlockService::OnEngineLoaded(
                        weak_factory_.GetWeakPtr(), is_default_engine,
                        std::move(cache_key)));
   } else {
-    for (auto& observer : observers_) {
-      observer.OnFilterListLoaded(is_default_engine, load_success);
-    }
+    observers_.Notify(&Observer::OnFilterListLoaded, is_default_engine,
+                      load_success);
   }
 }
 
@@ -361,9 +357,7 @@ void AdBlockService::OnDATFileWritten(bool is_default_engine,
   if (success && !cache_key.empty()) {
     dat_cache_manager_->StoreCacheKey(is_default_engine, cache_key);
   }
-  for (auto& observer : observers_) {
-    observer.OnFilterListLoaded(is_default_engine, success);
-  }
+  observers_.Notify(&Observer::OnFilterListLoaded, is_default_engine, success);
 }
 
 void AdBlockService::OnReadCachedDATFiles(
