@@ -67,12 +67,11 @@ function createMockConsentHelper(): Mojom.PsstConsentHelperRemote {
 
     // Mock Mojom remote properties (these are usually
     // auto-generated)
-    _proxy: {} as any,
     onConnectionError: { addListener: () => {} } as any,
     $: {
       bindNewPipeAndPassReceiver: () => ({}),
     } as any,
-  }
+  } as unknown as Mojom.PsstConsentHelperRemote
 
   return mock
 }
