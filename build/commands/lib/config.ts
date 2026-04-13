@@ -21,6 +21,7 @@ type ExecOptions = {
   cwd: string
   git_cwd: string
   continueOnFail?: boolean
+  outputDir?: string
   onStdOutLine?: (line: string) => void
   onStdErrLine?: (line: string) => void
 }
