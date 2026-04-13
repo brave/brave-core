@@ -67,7 +67,12 @@ class AdsClientNotifier final {
   void NotifyDidSolveAdaptiveCaptcha();
 
  private:
-  base::ObserverList<AdsClientNotifierObserver> observers_;
+  // TODO(tmancey): Investigate if reentrancy can be removed.
+  base::ObserverList<
+      AdsClientNotifierObserver,
+      /*check_empty=*/false,
+      base::ObserverListReentrancyPolicy::kAllowReentrancyUntriaged>
+      observers_;
 
   std::unique_ptr<OnceClosureTaskQueue> task_queue_;
 
