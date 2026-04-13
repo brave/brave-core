@@ -51,7 +51,7 @@ export class BraveTabSearchAppElement extends CrLitElement {
     }
   }
 
-  protected get tabNames_(): string[] {
+  protected tabNames_(): string[] {
     return [
       loadTimeData.getString('tabSearchTabName'),
       loadTimeData.getString('tabOrganizationTabName'),
