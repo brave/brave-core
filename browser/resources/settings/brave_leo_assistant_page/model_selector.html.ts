@@ -15,7 +15,7 @@ export function getHtml(this: LeoModelSelectorElement) {
       value="${this.selectedKey}"
       @change="${this.onSelectionChange_}"
     >
-      <div slot="value">${this.selectedDisplayName}</div>
+      <div slot="value">${this.selectedDisplayName()}</div>
       <div class="menu-section-title">
         <span>$i18n{braveLeoModelSectionTitle}</span>
       </div>

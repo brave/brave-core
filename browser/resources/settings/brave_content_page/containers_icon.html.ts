@@ -14,7 +14,7 @@ export function getHtml(this: SettingsBraveContentContainersIconElement) {
       style="background-color: ${this.backgroundColor}"
       @click="${this.handleIconClick_}"
     >
-      <leo-icon name="${this.leoIcon}"></leo-icon>
+      <leo-icon name="${this.leoIcon()}"></leo-icon>
     </div>
   `
 }
