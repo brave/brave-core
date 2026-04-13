@@ -42,7 +42,7 @@ export class BraveAccountPasswordIconsElement extends CrLitElement {
     }
   }
 
-  protected get showCapsLock(): boolean {
+  protected showCapsLock(): boolean {
     return this.isCapsLockOn && this.isInputFocused && !this.isPasswordVisible
   }
 

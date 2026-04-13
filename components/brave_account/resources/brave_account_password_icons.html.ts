@@ -9,7 +9,7 @@ import { BraveAccountPasswordIconsElement } from './brave_account_password_icons
 
 export function getHtml(this: BraveAccountPasswordIconsElement) {
   return html`<!--_html_template_start_-->
-    ${this.showCapsLock
+    ${this.showCapsLock()
       ? html`<leo-tooltip>
           <div slot="content">$i18n{BRAVE_ACCOUNT_CAPS_LOCK_ON}</div>
           <leo-icon name="caps-lock"></leo-icon>
