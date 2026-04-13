@@ -106,7 +106,7 @@ export class Config {
   is_asan: boolean | undefined
   is_msan: boolean | undefined
   is_ubsan: boolean | undefined
-  use_no_gn_gen: boolean | undefined
+  use_no_gn_gen?: boolean | undefined
 
   chromiumCustomDeps: Record<string, any>
   chromiumCustomVars: Record<string, any>
