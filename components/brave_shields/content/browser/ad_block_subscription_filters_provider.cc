@@ -84,7 +84,7 @@ std::string AdBlockSubscriptionFiltersProvider::GetNameForDebugging() {
 }
 
 std::string AdBlockSubscriptionFiltersProvider::GetPrefKey() const {
-  return list_file_.BaseName().RemoveExtension().MaybeAsASCII();
+  return list_file_.MaybeAsASCII();
 }
 
 std::optional<std::string> AdBlockSubscriptionFiltersProvider::GetCacheKey()
