@@ -3,24 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
 import Button from '@brave/leo/react/button'
+import styled from 'styled-components'
 
 export const Container = styled.div`
   margin: 24px;
 `
 
-export const HorizontalContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`
 export const LeftAlignedItem = styled.div``
 export const RightAlignedItem = styled.div`
   margin-left: auto;
   text-align: right;
 `
-export const PsstDlgButton = styled(Button)<{}>`
+export const PsstDlgButton = styled(Button) < {} > `
   padding: 12px;
   min-height: 44px;
 `

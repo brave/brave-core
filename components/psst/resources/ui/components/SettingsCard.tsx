@@ -9,8 +9,9 @@ import Checkbox from '@brave/leo/react/checkbox'
 import Ring from '@brave/leo/react/progressRing'
 import Icon from '@brave/leo/react/icon'
 import { PsstProgressModalState, SettingState } from './PsstProgressModal'
-import { HorizontalContainer, LeftAlignedItem } from './basic/structure'
+import { LeftAlignedItem } from './basic/structure'
 import { color, font } from '@brave/leo/tokens/css/variables'
+import Flex from '$web-common/Flex'
 
 // Styled components
 const TextSection = styled.div`
@@ -63,7 +64,7 @@ const CheckBoxIconFailed = styled(Icon)`
   margin-right: 8px;
 `
 
-export const TextLabel = styled('label')<{}>`
+export const TextLabel = styled('label') <{}>`
   font: ${font.default.regular};
   color: ${color.text.primary};
 `
@@ -106,12 +107,16 @@ export default class SettingsCard extends React.PureComponent<Props, {}> {
                 {(() => {
                   if (item.settingState === SettingState.Progress) {
                     return (
-                      <HorizontalContainer>
+                      <Flex
+                        direction='row'
+                        justify='flex-start'
+                        align='flex-start'
+                      >
                         <SettingProgressRing mode='indeterminate' />
                         <TextSection>
                           <TextLabel>{item.description}</TextLabel>
                         </TextSection>
-                      </HorizontalContainer>
+                      </Flex>
                     )
                   } else if (item.settingState === SettingState.Selection) {
                     return (
@@ -125,17 +130,25 @@ export default class SettingsCard extends React.PureComponent<Props, {}> {
                     )
                   } else if (item.settingState === SettingState.Completed) {
                     return (
-                      <HorizontalContainer>
+                      <Flex
+                        direction='row'
+                        justify='flex-start'
+                        align='flex-start'
+                      >
                         <CheckBoxIconCompleted name='check-circle-outline' />
                         <TextLabel>{item.description}</TextLabel>
-                      </HorizontalContainer>
+                      </Flex>
                     )
                   } else if (item.settingState === SettingState.Failed) {
                     return (
-                      <HorizontalContainer>
+                      <Flex
+                        direction='row'
+                        justify='flex-start'
+                        align='flex-start'
+                      >
                         <CheckBoxIconFailed name='close-circle' />
                         <TextLabel>{item.description}</TextLabel>
-                      </HorizontalContainer>
+                      </Flex>
                     )
                   } else {
                     return null

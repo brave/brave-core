@@ -8,7 +8,6 @@ import styled from 'styled-components'
 import { color, font } from '@brave/leo/tokens/css/variables'
 import {
   Container,
-  HorizontalContainer,
   LeftAlignedItem,
   PsstDlgButton,
   RightAlignedItem,
@@ -16,6 +15,7 @@ import {
 import SettingsCard from './SettingsCard'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
+import Flex from '$web-common/Flex'
 import { getLocale } from '$web-common/locale'
 import { usePsstDialogAPI } from '../api/psst_dialog_api_context'
 import { SettingCardDataItem } from '../api/psst_dialog_api'
@@ -211,7 +211,11 @@ export const PsstProgressModal = () => {
 
   return (
     <Container>
-      <HorizontalContainer>
+      <Flex
+        direction='row'
+        justify='space-between'
+        align='center'
+      >
         <LeftAlignedItem>
           <ModalTitle>{getLocale(S.PSST_CONSENT_DIALOG_TITLE)}</ModalTitle>
         </LeftAlignedItem>
@@ -225,7 +229,7 @@ export const PsstProgressModal = () => {
             <Icon name={'close-circle'} />
           </Button>
         </RightAlignedItem>
-      </HorizontalContainer>
+      </Flex>
       <ModalTitleBody>{getLocale(S.PSST_CONSENT_DIALOG_BODY)}</ModalTitleBody>
       <SettingsCard
         title={getLocale(S.PSST_CONSENT_DIALOG_OPTIONS_TITLE)}
@@ -267,7 +271,6 @@ export const PsstProgressModal = () => {
               <PsstDlgButton
                 kind='outline'
                 size='medium'
-                isDisabled={false}
                 onClick={closeDialog}
               >
                 {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED)}
@@ -275,8 +278,6 @@ export const PsstProgressModal = () => {
               <PsstDlgButton
                 kind='filled'
                 size='medium'
-                isDisabled={false}
-                isLoading={false}
                 onClick={closeDialog}
               >
                 {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_CLOSE)}
