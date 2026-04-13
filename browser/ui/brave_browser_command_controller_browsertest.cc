@@ -550,15 +550,17 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 }
 
 #if BUILDFLAG(IS_MAC)
-// On macOS, we block vertical tab mode toggling in fullscreen.
-// Immersive fullscreen feeature is enabled by default but
-// it's not compatible with vertical tab now.
+// On macOS, vertical tab toggling is blocked only when immersive fullscreen is
+// active. With horizontal tabs (default), entering fullscreen activates
+// immersive mode, so the toggle should be disabled. With vertical tabs active,
+// immersive mode is not used, so the toggle should remain enabled.
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        VerticalTabToggleEnabledState) {
   EXPECT_FALSE(browser()->window()->IsFullscreen());
   EXPECT_TRUE(tabs::utils::IsVerticalTabToggleEnabled(browser()));
 
-  // Enter browser fullscreen.
+  // With horizontal tabs (default), fullscreen activates immersive mode,
+  // so the toggle should be disabled.
   chrome::ToggleFullscreenMode(browser());
   EXPECT_TRUE(browser()->window()->IsFullscreen());
   browser()->command_controller()->FullscreenStateChanged();
@@ -568,6 +570,28 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   chrome::ToggleFullscreenMode(browser());
   EXPECT_FALSE(browser()->window()->IsFullscreen());
   browser()->command_controller()->FullscreenStateChanged();
+  EXPECT_TRUE(tabs::utils::IsVerticalTabToggleEnabled(browser()));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       VerticalTabToggleEnabledInFullscreenWithVerticalTabs) {
+  auto* command_controller = browser()->command_controller();
+
+  // Enable vertical tabs.
+  command_controller->ExecuteCommand(IDC_TOGGLE_VERTICAL_TABS);
+  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+
+  // Enter fullscreen. With vertical tabs active, immersive mode is not used,
+  // so the toggle should remain enabled.
+  chrome::ToggleFullscreenMode(browser());
+  EXPECT_TRUE(browser()->window()->IsFullscreen());
+  command_controller->FullscreenStateChanged();
+  EXPECT_TRUE(tabs::utils::IsVerticalTabToggleEnabled(browser()));
+
+  // Exit fullscreen -- toggle should still be enabled.
+  chrome::ToggleFullscreenMode(browser());
+  EXPECT_FALSE(browser()->window()->IsFullscreen());
+  command_controller->FullscreenStateChanged();
   EXPECT_TRUE(tabs::utils::IsVerticalTabToggleEnabled(browser()));
 }
 #endif

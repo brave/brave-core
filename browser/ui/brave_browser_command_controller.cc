@@ -96,6 +96,11 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #endif
 
+#if BUILDFLAG(IS_MAC)
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#endif
+
 namespace {
 
 bool IsBraveCommands(int id) {
@@ -365,14 +370,21 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 void BraveBrowserCommandController::UpdateCommandsForFullscreenMode() {
   BrowserCommandController::UpdateCommandsForFullscreenMode();
 
-// On macOS, we block vertical tab mode toggling in fullscreen.
-// Immersive fullscreen feeature is enabled by default but
-// it's not compatible with vertical tab. See the comments in
-// BraveBrowserView::UsesImmersiveFullscreenMode() for more datail. Otherwise,
-// crash happens when turn on vertical tab while fullscreen.
+// On macOS, block vertical tab toggling only when immersive fullscreen is
+// active. Immersive fullscreen and vertical tabs both manage the tab strip
+// through separate widgets, which conflict. However, when vertical tabs are
+// already active (or the window started with vertical tabs), immersive mode
+// is disabled and there is no conflict, so toggling should remain available.
 #if BUILDFLAG(IS_MAC)
-  UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS,
-                       window() && !window()->IsFullscreen());
+  if (window() && window()->IsFullscreen()) {
+    auto* browser_view = static_cast<BraveBrowserView*>(
+        BrowserView::GetBrowserViewForBrowser(&*browser_));
+    const bool immersive_active =
+        browser_view && browser_view->UsesImmersiveFullscreenMode();
+    UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS, !immersive_active);
+  } else {
+    UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS, true);
+  }
 #endif
 }
 
