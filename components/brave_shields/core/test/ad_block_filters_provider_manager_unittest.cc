@@ -90,6 +90,36 @@ TEST(AdBlockFiltersProviderManagerTest, ForceNotifyObserverRespectsEngineType) {
   EXPECT_EQ(additional_observer.changed_count, 1);
 }
 
+TEST(AdBlockFiltersProviderManagerTest,
+     OnChangedWaitsForAllProvidersInitialized) {
+  brave_shields::AdBlockFiltersProviderManager m;
+
+  FiltersProviderManagerTestObserver observer;
+  m.AddObserver(&observer);
+
+  // Register provider1 — it initializes and calls NotifyObservers.
+  // Since it's the only provider, OnChanged sees all providers initialized.
+  brave_shields::TestFiltersProvider provider1("rules_a", true, 0);
+  provider1.RegisterAsSourceProvider(&m);
+  EXPECT_EQ(observer.changed_count, 1);
+
+  // Add provider2 without initializing it by adding directly to the manager.
+  // TestFiltersProvider starts uninitialized (is_initialized_ = false).
+  brave_shields::TestFiltersProvider provider2("rules_b", true, 0);
+  m.AddProvider(&provider2, true);
+  EXPECT_EQ(observer.changed_count, 1);
+
+  // Force a notification attempt. provider2 is not initialized,
+  // so the manager should NOT propagate to the observer.
+  m.ForceNotifyObserver(observer, true);
+  EXPECT_EQ(observer.changed_count, 1);
+
+  // Initialize provider2 — this calls NotifyObservers internally,
+  // and now all providers are initialized, so the observer IS notified.
+  provider2.Initialize();
+  EXPECT_EQ(observer.changed_count, 2);
+}
+
 TEST(AdBlockFiltersProviderManagerTest, OnChangedCombinesProviderHashes) {
   brave_shields::AdBlockFiltersProviderManager m;
 
