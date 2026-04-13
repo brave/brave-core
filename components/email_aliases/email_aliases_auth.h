@@ -6,30 +6,25 @@
 #ifndef BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_AUTH_H_
 #define BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_AUTH_H_
 
-#include <optional>
-
 #include "base/functional/callback_helpers.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
-#include "components/prefs/pref_change_registrar.h"
-#include "components/prefs/pref_member.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 class PrefRegistrySimple;
-class PrefService;
 
 namespace email_aliases {
 
-class EmailAliasesAuth {
+class EmailAliasesAuth : public brave_account::mojom::AuthenticationObserver {
  public:
   using OnChangedCallback = base::RepeatingClosure;
 
   explicit EmailAliasesAuth(
-      PrefService& prefs_service,
       mojo::PendingRemote<brave_account::mojom::Authentication>
           brave_account_auth,
       OnChangedCallback on_changed = base::DoNothing());
-  ~EmailAliasesAuth();
+  ~EmailAliasesAuth() override;
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
@@ -42,15 +37,18 @@ class EmailAliasesAuth {
 
  private:
   void OnDisconnect();
-  void OnPrefChanged(const std::string& pref_name);
 
-  std::optional<std::string> auth_email_for_testing_;
+  // brave_account::mojom::AuthenticationObserver:
+  void OnAccountStateChanged(
+      brave_account::mojom::AccountStatePtr state) override;
 
-  const raw_ref<PrefService> prefs_service_;
   mojo::Remote<brave_account::mojom::Authentication> brave_account_auth_;
 
-  PrefChangeRegistrar pref_change_registrar_;
   OnChangedCallback on_changed_;
+
+  brave_account::mojom::AccountStatePtr current_auth_state_;
+
+  mojo::Receiver<brave_account::mojom::AuthenticationObserver> receiver_{this};
 };
 
 }  // namespace email_aliases

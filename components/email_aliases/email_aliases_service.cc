@@ -98,7 +98,7 @@ EmailAliasesService::EmailAliasesService(
   CHECK(base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases));
   CHECK(brave_account_auth);
 
-  auth_.emplace(pref_service_.get(), std::move(brave_account_auth),
+  auth_.emplace(std::move(brave_account_auth),
                 base::BindRepeating(&EmailAliasesService::OnAuthChanged,
                                     weak_factory_.GetWeakPtr()));
 }
