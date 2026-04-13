@@ -191,10 +191,10 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
 
     private boolean isBraveLeoEnabled() {
         Tab tab = mActivityTabSupplier.get();
-        if (mLeoAutocompleteDelegate != null
-                && mLeoAutocompleteDelegate.isLeoEnabled()
-                && tab != null
+        if (tab != null
                 && !tab.isIncognito()
+                && mLeoAutocompleteDelegate != null
+                && mLeoAutocompleteDelegate.isLeoEnabled()
                 && ChromeSharedPreferences.getInstance()
                         .readBoolean(BravePreferenceKeys.BRAVE_LEO_AUTOCOMPLETE, true)) {
             return true;
@@ -205,11 +205,11 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
 
     private boolean isBraveSearchPromoBanner() {
         Tab activeTab = mActivityTabSupplier.get();
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SEARCH_OMNIBOX_BANNER)
+        if (activeTab != null
+                && !activeTab.isIncognito()
+                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SEARCH_OMNIBOX_BANNER)
                 && mUrlBarEditingTextProvider != null
                 && mUrlBarEditingTextProvider.getTextWithoutAutocomplete().length() > 0
-                && activeTab != null
-                && !activeTab.isIncognito()
                 && sBraveSearchEngineDefaultRegions.contains(Locale.getDefault().getCountry())
                 && !BraveSearchEngineAdapter.getDSEShortName(
                                 Profile.fromWebContents(activeTab.getWebContents()), false, null)
