@@ -5,20 +5,13 @@
 
 #include "brave/components/email_aliases/email_aliases_auth.h"
 
-#include "base/check_deref.h"
-#include "base/check_is_test.h"
-#include "brave/components/brave_account/pref_names.h"
-#include "components/prefs/pref_service.h"
-
 namespace email_aliases {
 
 EmailAliasesAuth::EmailAliasesAuth(
-    PrefService& prefs_service,
     mojo::PendingRemote<brave_account::mojom::Authentication>
         brave_account_auth,
     OnChangedCallback on_changed)
-    : prefs_service_(prefs_service),
-      brave_account_auth_(std::move(brave_account_auth)),
+    : brave_account_auth_(std::move(brave_account_auth)),
       on_changed_(std::move(on_changed)) {
   CHECK(brave_account_auth_);
   CHECK(on_changed_);
@@ -28,29 +21,21 @@ EmailAliasesAuth::EmailAliasesAuth(
       base::Unretained(
           this)));  // Unretained is safe because we own the remote<>
 
-  // TODO(https://github.com/brave/brave-browser/issues/55179)
-  pref_change_registrar_.Init(&prefs_service_.get());
-  pref_change_registrar_.Add(
-      brave_account::prefs::kBraveAccountState,
-      base::BindRepeating(&EmailAliasesAuth::OnPrefChanged,
-                          base::Unretained(this)));
+  brave_account_auth_->AddObserver(receiver_.BindNewPipeAndPassRemote());
 }
 
 EmailAliasesAuth::~EmailAliasesAuth() = default;
 
 bool EmailAliasesAuth::IsAuthenticated() const {
-  return brave_account_auth_ && !GetAuthEmail().empty();
+  return brave_account_auth_ && current_auth_state_ &&
+         current_auth_state_->is_logged_in();
 }
 
 std::string EmailAliasesAuth::GetAuthEmail() const {
-  if (auth_email_for_testing_) {
-    CHECK_IS_TEST();
-    return auth_email_for_testing_.value();
+  if (!IsAuthenticated()) {
+    return {};
   }
-  const auto* email =
-      prefs_service_->GetDict(brave_account::prefs::kBraveAccountState)
-          .FindString(brave_account::prefs::keys::kEmail);
-  return email ? *email : "";
+  return current_auth_state_->get_logged_in()->email;
 }
 
 void EmailAliasesAuth::GetServiceToken(
@@ -69,17 +54,27 @@ void EmailAliasesAuth::GetServiceToken(
 }
 
 void EmailAliasesAuth::SetAuthEmailForTesting(const std::string& email) {
-  auth_email_for_testing_ = email;
+  if (email.empty()) {
+    current_auth_state_.reset();
+  } else {
+    current_auth_state_ = brave_account::mojom::AccountState::NewLoggedIn(
+        brave_account::mojom::LoggedInState::New(email));
+  }
   on_changed_.Run();
 }
 
 void EmailAliasesAuth::OnDisconnect() {
   brave_account_auth_.reset();
+  current_auth_state_.reset();
   on_changed_.Run();
 }
 
-void EmailAliasesAuth::OnPrefChanged(const std::string& pref_name) {
-  on_changed_.Run();
+void EmailAliasesAuth::OnAccountStateChanged(
+    brave_account::mojom::AccountStatePtr state) {
+  if (current_auth_state_ != state) {
+    current_auth_state_ = std::move(state);
+    on_changed_.Run();
+  }
 }
 
 }  // namespace email_aliases
