@@ -106,7 +106,7 @@ public class BraveSigninManager implements SigninManager {
             @SigninAccessPoint int accessPoint,
             @Nullable SignInCallback callback) {}
 
-    @Deprecated
+    @Override
     public void turnOnSyncForTesting(
             CoreAccountInfo coreAccountInfo, @SigninAccessPoint int accessPoint) {}
 
