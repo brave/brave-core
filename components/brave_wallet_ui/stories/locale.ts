@@ -365,6 +365,7 @@ provideStrings({
   braveWalletWalletPopupConnectedSites: 'Connected sites',
   braveWalletWalletPopupHideBalances: 'Balances',
   braveWalletWalletPopupShowGraph: 'Graph',
+  braveWalletDistribution: 'Distribution',
   braveWalletWalletNFTsTab: 'NFTs tab',
 
   // Backup Warning
@@ -1238,6 +1239,7 @@ provideStrings({
   // Portfolio Filters
   braveWalletPortfolioFiltersTitle: 'Filters and display settings',
   braveWalletPortfolioNftsFiltersTitle: 'NFT display settings',
+  braveWalletPortfolioAssetsDistributionTitle: 'Assets distribution',
   braveWalletSortAssets: 'Sort assets',
   braveWalletSortAssetsDescription: 'Sort by fiat value or name',
   braveWalletHideSmallBalances: 'Hide small balances',
