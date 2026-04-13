@@ -514,6 +514,8 @@ test("brave_unit_tests") {
       "//chrome/browser/gcm",
       "//chrome/browser/history",
       "//chrome/browser/profile_resetter",
+      "//chrome/browser/push_messaging",
+      "//chrome/browser/push_messaging:service_impl_public",
       "//chrome/browser/ui/views/bubble",
       "//components/favicon/content",
       "//components/push_messaging:test_support",
