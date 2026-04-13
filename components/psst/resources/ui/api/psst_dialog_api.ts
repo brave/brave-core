@@ -39,17 +39,17 @@ export function createPsstDialogApi(
   })
 
   callbackRouter.setSettingsCardData.addListener(
-    (settingCardData: Mojom.SettingCardData) => {
+    (settingCardData) => {
       api.settingsCardData.update(settingCardData)
     },
   )
 
-  callbackRouter.onSetRequestDone.addListener((url: string, error?: string) => {
+  callbackRouter.onSetRequestDone.addListener((url, error) => {
     api.requestStatus.update({ url, error })
   })
 
   callbackRouter.onSetCompleted.addListener(
-    (appliedChecks?: string[], errors?: string[]) => {
+    (appliedChecks, errors) => {
       api.completionStatus.update({ appliedChecks, errors })
     },
   )
