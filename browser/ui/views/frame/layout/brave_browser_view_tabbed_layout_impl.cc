@@ -325,6 +325,41 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateBraveVerticalTabStripLayout(
   layout.AddChild(views().vertical_tab_strip_host, vertical_tab_strip_bounds);
 }
 
+// static
+gfx::Rect BraveBrowserViewTabbedLayoutImpl::ComputeSidebarBounds(
+    bool sidebar_on_left,
+    int sidebar_width,
+    int outer_left,
+    int outer_right,
+    int y,
+    int height) {
+  const int x = sidebar_on_left ? outer_left : outer_right - sidebar_width;
+  return gfx::Rect(x, y, sidebar_width, height);
+}
+
+// static
+gfx::Rect BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedPanelBounds(
+    bool sidebar_on_left,
+    const gfx::Rect& sidebar_bounds,
+    const gfx::Rect& panel_bounds) {
+  // The upstream layout animates the panel by varying panel.x:
+  //   right panel: x = right_edge - visible_width  (slides in from the right)
+  //   left  panel: x = left_edge  - (target - visible_width) (from the left)
+  //
+  // Shifting by ±sidebar_width offsets the whole slide range without changing
+  // the animation value, so the panel animates correctly against the sidebar
+  // edge instead of the browser edge.
+  gfx::Rect result = panel_bounds;
+  if (sidebar_on_left) {
+    // Sidebar on left: shift panel right by sidebar width.
+    result.set_x(panel_bounds.x() + sidebar_bounds.width());
+  } else {
+    // Sidebar on right: shift panel left by sidebar width.
+    result.set_x(panel_bounds.x() - sidebar_bounds.width());
+  }
+  return result;
+}
+
 void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
     ProposedLayout& layout,
     const BrowserLayoutParams& params) const {
@@ -337,32 +372,86 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
 
   gfx::Rect contents_bounds = contents_layout->bounds;
 
-  gfx::Rect sidebar_bounds = contents_bounds;
-  sidebar_bounds.set_width(GetIdealSideBarWidth(contents_bounds.width()));
-  contents_bounds.set_width(contents_bounds.width() - sidebar_bounds.width());
+  const bool on_left = views().sidebar_container->sidebar_on_left();
+
+  // The sidebar is always the outermost element on its side (only the vertical
+  // tab, when on the same side, sits further out).
+  //
+  // Desired LTR layout (sidebar right):
+  //   [vertical_tab] [contents] [panel] [sidebar]
+  //   [contents] [panel] [sidebar] [vertical_tab]
+  // Desired LTR layout (sidebar left):
+  //   [vertical_tab] [sidebar] [panel] [contents]
+  //   [sidebar] [panel] [contents] [vertical_tab]
+  //
+  // In V2, sidebar_container holds only the control view and the upstream
+  // side panels (toolbar/contents_height_side_panel) are direct children of
+  // browser_view positioned separately.  In V1, sidebar_container wraps both
+  // the control and the side panel, and those upstream panel pointers point
+  // back into the container (so they are NOT in the proposed layout as top-
+  // level entries — layout.GetLayoutFor returns null).  This means
+  // adjust_panel below is a no-op in V1 and meaningful only in V2.
+
+  // Vertical tab is outermost when on the same side as the sidebar.
+  const bool vtab_on_same_side = views().vertical_tab_strip_host &&
+                                 delegate().ShouldShowVerticalTabs() &&
+                                 (on_left != delegate().IsVerticalTabOnRight());
+  const int vtab_width =
+      vtab_on_same_side
+          ? views().vertical_tab_strip_host->GetPreferredSize().width()
+          : 0;
+
+  // Outer available edge in logical (pre-mirroring) coordinates, inset for
+  // any vertical tab on the same side.
+  const gfx::Rect browser_bounds = views().browser_view->GetLocalBounds();
+  const int outer_left = browser_bounds.x() + (on_left ? vtab_width : 0);
+  const int outer_right = browser_bounds.right() - (on_left ? 0 : vtab_width);
+
+  // Sidebar width capped at 80% of the space shared between contents and
+  // sidebar (contents_bounds.width()).  In V1 this is the full available width
+  // minus the vtab; in V2 it is further reduced by the upstream side panel
+  // width, but the sidebar control is narrow enough that the cap never fires.
+  const int sidebar_width = GetIdealSideBarWidth(contents_bounds.width());
+
+  const gfx::Rect sidebar_bounds =
+      ComputeSidebarBounds(on_left, sidebar_width, outer_left, outer_right,
+                           contents_bounds.y(), contents_bounds.height());
+
+  // Shift upstream side panels (V2 only; no-op in V1 since those panels are
+  // inside sidebar_container and are not top-level layout entries) inward so
+  // they sit between the contents and the sidebar control.
+  auto adjust_panel = [&](SidePanel* panel) {
+    if (!panel) {
+      return;
+    }
+    auto* panel_layout = layout.GetLayoutFor(panel);
+    if (!panel_layout) {
+      return;
+    }
+    panel_layout->bounds = ComputeAdjustedPanelBounds(on_left, sidebar_bounds,
+                                                      panel_layout->bounds);
+  };
+  adjust_panel(views().contents_height_side_panel.get());
+
+  // Reduce contents bounds by the sidebar width on the sidebar side.
+  if (on_left) {
+    contents_bounds.Inset(gfx::Insets().set_left(sidebar_width));
+  } else {
+    contents_bounds.Inset(gfx::Insets().set_right(sidebar_width));
+  }
 
 #if BUILDFLAG(IS_MAC)
-  // On Mac, setting an empty rect for the contents web view could cause a crash
-  // in `StatusBubbleViews`. As the `StatusBubbleViews` width is one third of
-  // the base view, set 3 here so that `StatusBubbleViews` can have a width of
-  // at least 1.
+  // On Mac, an empty-width rect for the contents web view can crash
+  // `StatusBubbleViews` (its width is one third of the base view, so set 3
+  // to guarantee a minimum width of 1).
   if (contents_bounds.width() <= 0) {
     contents_bounds.set_width(3);
   }
 #endif
 
-  const bool on_left = views().sidebar_container->sidebar_on_left();
-  if (on_left) {
-    contents_bounds.set_x(contents_bounds.x() + sidebar_bounds.width());
-  } else {
-    sidebar_bounds.set_x(contents_bounds.right());
-  }
-
-  // Apply the updated contents bounds via ProposedLayout.
   contents_layout->bounds = contents_bounds;
 
-  // This is Brave specific view so the layout shouldn't be populated by
-  // upstream's logic.
+  // This is a Brave-specific view; upstream must not have populated it.
   CHECK(views().sidebar_container);
   layout.AddChild(views().sidebar_container, sidebar_bounds);
 }
