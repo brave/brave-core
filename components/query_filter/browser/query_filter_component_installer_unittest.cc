@@ -7,12 +7,13 @@
 
 #include <memory>
 
-#include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_component_updater/browser/mock_on_demand_updater.h"
 #include "brave/components/query_filter/common/features.h"
 #include "components/component_updater/mock_component_updater_service.h"
+#include "components/update_client/update_client.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -37,17 +38,21 @@ class QueryFilterComponentInstallerTest : public testing::Test {
 
 TEST_F(QueryFilterComponentInstallerTest,
        RegistersOnDemandInstallForComponentId) {
-  base::RunLoop run_loop;
+  base::test::TestFuture<void> future;
   EXPECT_CALL(*cus_, RegisterComponent(testing::_))
       .Times(1)
       .WillOnce(testing::Return(true));
   EXPECT_CALL(on_demand_updater_,
               EnsureInstalled(kQueryFilterComponentId, testing::_))
       .Times(1)
-      .WillOnce([quit = run_loop.QuitClosure()]() { quit.Run(); });
+      .WillOnce([&future](const std::string& /*id*/,
+                          component_updater::Callback callback) {
+        std::move(callback).Run(update_client::Error::NONE);
+        future.SetValue();
+      });
 
   RegisterQueryFilterComponent(cus_.get());
-  run_loop.Run();
+  future.Get();
 }
 
 TEST_F(QueryFilterComponentInstallerTest, NoRegisterWhenFeatureDisabled) {
