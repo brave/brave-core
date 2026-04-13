@@ -9,18 +9,17 @@ import Checkbox from '@brave/leo/react/checkbox'
 import Ring from '@brave/leo/react/progressRing'
 import Icon from '@brave/leo/react/icon'
 import { PsstProgressModalState, SettingState } from './PsstProgressModal'
-import { LeftAlignedItem } from './basic/structure'
 import { color, font } from '@brave/leo/tokens/css/variables'
 import Flex from '$web-common/Flex'
 
 // Styled components
-const SettingGrid = styled(LeftAlignedItem)`
+const SettingGrid = styled.div`
   border-radius: 8px;
   border: ${color.primitive.neutral[90]} 1px solid;
   margin-bottom: 18px;
 `
 
-const SettingGridHeaderRow = styled(LeftAlignedItem)`
+const SettingGridHeaderRow = styled.div`
   padding: 16px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
@@ -29,7 +28,7 @@ const SettingGridHeaderRow = styled(LeftAlignedItem)`
   align-items: center;
 `
 
-const SettingGridRow = styled(LeftAlignedItem)`
+const SettingGridRow = styled.div`
   padding: 16px;
   border-top: ${color.primitive.neutral[90]} 1px solid;
 `
@@ -122,7 +121,7 @@ const SettingsCard: React.FC<Props> = ({
                       isDisabled={item.disabled}
                       onChange={(e) => onItemChecked(item.url, e.checked)}
                     >
-                      <SettingText>{item.description}</SettingText>
+                      {item.description}
                     </Checkbox>
                   )
                 } else if (item.settingState === SettingState.Completed) {

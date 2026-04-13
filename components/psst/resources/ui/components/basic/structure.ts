@@ -9,8 +9,6 @@ import styled from 'styled-components'
 export const Container = styled.div`
   margin: 24px;
 `
-
-export const LeftAlignedItem = styled.div``
 export const RightAlignedItem = styled.div`
   margin-left: auto;
   text-align: right;

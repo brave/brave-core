@@ -8,7 +8,6 @@ import styled from 'styled-components'
 import { color, font } from '@brave/leo/tokens/css/variables'
 import {
   Container,
-  LeftAlignedItem,
   PsstDlgButton,
   RightAlignedItem,
 } from './basic/structure'
@@ -216,9 +215,7 @@ export const PsstProgressModal = () => {
         justify='space-between'
         align='center'
       >
-        <LeftAlignedItem>
-          <ModalTitle>{getLocale(S.PSST_CONSENT_DIALOG_TITLE)}</ModalTitle>
-        </LeftAlignedItem>
+        <ModalTitle>{getLocale(S.PSST_CONSENT_DIALOG_TITLE)}</ModalTitle>
         <RightAlignedItem>
           <Button
             fab
