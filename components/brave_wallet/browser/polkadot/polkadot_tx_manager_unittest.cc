@@ -437,7 +437,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_TransferAll) {
   base::test::TestFuture<bool, const std::string&, const std::string&>
       unapproved_future;
 
-  polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
+  GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
       std::move(transaction_params), unapproved_future.GetCallback());
 
   auto [success, tx_meta_id, err_str] = unapproved_future.Take();
@@ -448,13 +448,13 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_TransferAll) {
   base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
       approved_future;
 
-  polkadot_tx_manager_->ApproveTransaction(tx_meta_id,
-                                           approved_future.GetCallback());
+  GetPolkadotTxManager()->ApproveTransaction(tx_meta_id,
+                                             approved_future.GetCallback());
 
   auto [success2, error, msg] = approved_future.Take();
   EXPECT_TRUE(success2);
 
-  const auto& txs = tx_service_->GetDelegateForTesting()->GetTxs();
+  const auto& txs = tx_storage_ptr_->GetTxs();
   const auto* tx = txs.FindDict(tx_meta_id);
   ASSERT_TRUE(tx);
 
@@ -492,7 +492,7 @@ TEST_F(PolkadotTxManagerUnitTest, TransferAll_InsufficientAmount) {
   base::test::TestFuture<bool, const std::string&, const std::string&>
       unapproved_future;
 
-  polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
+  GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
       std::move(transaction_params), unapproved_future.GetCallback());
 
   auto [success, tx_meta_id, err_str] = unapproved_future.Take();

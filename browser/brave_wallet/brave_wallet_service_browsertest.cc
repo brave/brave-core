@@ -245,6 +245,11 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest,
   // Still 1 transaction in regular profile after incognito closed.
   EXPECT_EQ(1u,
             wallet_service()->tx_service()->GetPendingTransactionsCountSync());
+
+  // No transactions for new incognito browser.
+  EXPECT_EQ(0u, incognito_wallet_service()
+                    ->tx_service()
+                    ->GetPendingTransactionsCountSync());
 }
 
 }  // namespace brave_wallet

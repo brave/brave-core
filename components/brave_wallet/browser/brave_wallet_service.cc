@@ -153,10 +153,6 @@ mojom::NetworkInfoPtr GetFixedSelectedNetworkForAccount(
 
 std::unique_ptr<TxStorage> CreateTxStorage(
     BraveWalletServiceDelegate& wallet_delegate) {
-  if (wallet_delegate.IsPrivateWindow()) {
-    return TxStorage::MakeWithMemoryOnlyStorage();
-  }
-
   return TxStorage::MakeWithDbStorage(wallet_delegate.GetWalletBaseDirectory());
 }
 
