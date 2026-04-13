@@ -101,17 +101,14 @@ struct TransactionConfirmationView: View {
     .navigationBarTitleDisplayMode(.inline)
     .foregroundColor(Color(.braveLabel))
     .background(Color(.braveGroupedBackground).edgesIgnoringSafeArea(.all))
-    .onChange(
-      of: confirmationStore.activeTransactionId,
-      perform: { newValue in
-        // we are looking for `activeTransactionId` value
-        // when the value is an empty string meaning there is no active transaction
-        // aka there is no remaining pending transations
-        if newValue == "" {
-          onDismiss()
-        }
+    .onChange(of: confirmationStore.activeTransactionId) { _, newValue in
+      // we are looking for `activeTransactionId` value
+      // when the value is an empty string meaning there is no active transaction
+      // aka there is no remaining pending transations
+      if newValue == "" {
+        onDismiss()
       }
-    )
+    }
     .onAppear {
       Task {
         await confirmationStore.prepare()

@@ -156,14 +156,11 @@ struct VerifyRecoveryPhraseView: View {
       )
     )
     .transparentNavigationBar(backButtonDisplayMode: .generic)
-    .onChange(
-      of: input,
-      perform: { newValue in
-        if newValue.isEmpty {
-          isShowingError = false
-        }
+    .onChange(of: input) { _, newValue in
+      if newValue.isEmpty {
+        isShowingError = false
       }
-    )
+    }
     .onAppear {
       isFieldFocused = true
     }

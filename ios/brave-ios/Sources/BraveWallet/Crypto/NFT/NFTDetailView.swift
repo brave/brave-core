@@ -211,23 +211,17 @@ struct NFTDetailView: View {
     }
     .scrollContentBackground(.hidden)
     .background(Color(UIColor.braveGroupedBackground))
-    .onChange(
-      of: nftDetailStore.nftMetadata,
-      perform: { newValue in
-        if let newMetadata = newValue {
-          onNFTMetadataRefreshed?(newMetadata)
-        }
+    .onChange(of: nftDetailStore.nftMetadata) { _, newValue in
+      if let newMetadata = newValue {
+        onNFTMetadataRefreshed?(newMetadata)
       }
-    )
-    .onChange(
-      of: keyringStore.isWalletLocked,
-      perform: { isLocked in
-        guard isLocked else { return }
-        if isPresentingRemoveAlert {
-          isPresentingRemoveAlert = false
-        }
+    }
+    .onChange(of: keyringStore.isWalletLocked) { _, isLocked in
+      guard isLocked else { return }
+      if isPresentingRemoveAlert {
+        isPresentingRemoveAlert = false
       }
-    )
+    }
     .background(Color(UIColor.braveGroupedBackground).ignoresSafeArea())
     .navigationBarTitle(nftDetailStore.nft.nftDetailTitle)
     .toolbar {

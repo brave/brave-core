@@ -124,10 +124,8 @@ extension BraveWalletJsonRpcService {
           completion(nil)
         }
       }
-    case .btc:
-      completion(nil)
-    case .zec:
-      completion(nil)
+    case .btc, .zec, .ada, .dot:
+      fallthrough
     @unknown default:
       completion(nil)
     }
@@ -247,12 +245,8 @@ extension BraveWalletJsonRpcService {
           completion(nil)
         }
       }
-    case .btc:
-      // Bitcoin balance should be fetched using `BraveWallet.BitcoinWalletService`
-      completion(nil)
-    case .zec:
-      // Zcash balance should be fetched using `BraveWallet.ZCashWalletService`
-      completion(nil)
+    case .btc, .zec, .ada, .dot:
+      fallthrough
     @unknown default:
       completion(nil)
     }
