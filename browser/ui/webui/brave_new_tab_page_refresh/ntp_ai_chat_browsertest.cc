@@ -23,6 +23,10 @@
 
 namespace {
 
+constexpr char kNtpLoadedCheckScript[] =
+    R"(!!document.querySelector(
+        `html[data-testid='brave-new-tab-page']`))";
+
 // Helper to wait for an element to exist (or not exist) in the DOM using
 // JavaScript MutationObserver. This avoids nested run loop issues.
 bool WaitForElement(content::WebContents* web_contents,
@@ -30,7 +34,7 @@ bool WaitForElement(content::WebContents* web_contents,
                     bool should_exist = true) {
   constexpr char kWaitForElementScript[] = R"(
     new Promise((resolve) => {
-      const selector = '[data-test-id="' + $1 + '"]';
+      const selector = '[data-testid="' + $1 + '"]';
       const shouldExist = $2;
       const timeout = 10000;
 
@@ -73,7 +77,7 @@ bool WaitForElement(content::WebContents* web_contents,
   return result.ExtractBool();
 }
 
-// Helper to click an element by its data-test-id
+// Helper to click an element by its data-testid
 bool ClickElement(content::WebContents* web_contents,
                   const std::string& test_id) {
   if (!WaitForElement(web_contents, test_id, true)) {
@@ -83,7 +87,7 @@ bool ClickElement(content::WebContents* web_contents,
   return content::ExecJs(
       web_contents,
       content::JsReplace(
-          R"(document.querySelector('[data-test-id="' + $1 + '"]').click())",
+          R"(document.querySelector('[data-testid="' + $1 + '"]').click())",
           test_id));
 }
 
@@ -100,7 +104,7 @@ bool EnterText(content::WebContents* web_contents,
   return content::ExecJs(web_contents, content::JsReplace(
                                            R"(
       (function() {
-        const el = document.querySelector('[data-test-id="' + $1 + '"]');
+        const el = document.querySelector('[data-testid="' + $1 + '"]');
         el.focus();
         el.innerText = $2;
         // Dispatch input event to trigger React state update
@@ -122,7 +126,7 @@ bool WaitForSubmitButtonEnabled(content::WebContents* web_contents) {
       const timeout = 10000;
 
       function checkButton() {
-        const btn = document.querySelector(`[data-test-id='leo-submit-button']`);
+        const btn = document.querySelector(`[data-testid='leo-submit-button']`);
         return btn && !btn.disabled;
       }
 
@@ -184,10 +188,7 @@ class NTPAIChatBrowserTest : public InProcessBrowserTest {
   }
 
   bool VerifyNewTabPageLoaded(content::WebContents* web_contents) {
-    return content::EvalJs(
-               web_contents,
-               R"(!!document.querySelector(`html[data-test-id='brave-new-tab-page']`))")
-        .ExtractBool();
+    return content::EvalJs(web_contents, kNtpLoadedCheckScript).ExtractBool();
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -314,10 +315,7 @@ IN_PROC_BROWSER_TEST_F(NTPAIChatDisabledBrowserTest,
 
   // Wait for the page to load
   ASSERT_TRUE(
-      content::EvalJs(
-          web_contents,
-          R"(!!document.querySelector(`html[data-test-id='brave-new-tab-page']`))")
-          .ExtractBool());
+      content::EvalJs(web_contents, kNtpLoadedCheckScript).ExtractBool());
 
   // The chat toggle should not be visible since the feature is disabled
   EXPECT_TRUE(WaitForElement(web_contents, "query-mode-toggle", false))
@@ -367,10 +365,7 @@ IN_PROC_BROWSER_TEST_F(NTPAIChatPrefDisabledBrowserTest,
 
   // Wait for the page to load
   ASSERT_TRUE(
-      content::EvalJs(
-          web_contents,
-          R"(!!document.querySelector(`html[data-test-id='brave-new-tab-page']`))")
-          .ExtractBool());
+      content::EvalJs(web_contents, kNtpLoadedCheckScript).ExtractBool());
 
   // The toggle should not be visible since the pref is disabled
   EXPECT_TRUE(WaitForElement(web_contents, "query-mode-toggle", false))

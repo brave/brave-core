@@ -421,7 +421,7 @@ function InputBox(props: InputBoxProps) {
               props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
             }}
             title={getLocale(S.AI_CHAT_LEO_TOOLS_BUTTON_LABEL)}
-            data-test-id='quick-action-button'
+            data-testid='quick-action-button'
           >
             <Icon
               className={classnames({
@@ -508,7 +508,7 @@ function InputBox(props: InputBoxProps) {
               onClick={handleSubmit}
               disabled={isSendButtonDisabled}
               title={getLocale(S.CHAT_UI_SEND_CHAT_BUTTON_LABEL)}
-              data-test-id='leo-submit-button'
+              data-testid='leo-submit-button'
             >
               <Icon
                 className={classnames({

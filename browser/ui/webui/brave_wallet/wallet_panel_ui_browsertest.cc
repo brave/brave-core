@@ -81,7 +81,7 @@ std::string NeonEVMNetworkChainName() {
 }
 
 std::string NetworksButton() {
-  return R"([data-test-id='select-network-button'])";
+  return R"([data-testid='select-network-button'])";
 }
 
 std::string QuerySelectorJS(const std::string& selector) {
