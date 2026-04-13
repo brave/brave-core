@@ -11,7 +11,6 @@
 #include "base/test/scoped_command_line.h"
 #include "brave/brave_domains/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "url/gurl.h"
 
 namespace brave_domains {
 
@@ -22,7 +21,7 @@ std::string ExpectedGate3Host(const char* domain) {
 }  // namespace
 
 TEST(GetGate3URLTest, DefaultIsProductionURL) {
-  GURL gurl(GetGate3URL());
+  GURL gurl = GetGate3URL();
   EXPECT_TRUE(gurl.is_valid());
   EXPECT_EQ(gurl.scheme(), "https");
   EXPECT_EQ(gurl.host(),
@@ -34,7 +33,7 @@ TEST(GetGate3URLTest, DevEnvironment) {
   scoped_cl.GetProcessCommandLine()->AppendSwitchASCII("env-gate3.wallet",
                                                        "dev");
 
-  GURL gurl(GetGate3URL());
+  GURL gurl = GetGate3URL();
   EXPECT_TRUE(gurl.is_valid());
   EXPECT_EQ(gurl.host(),
             ExpectedGate3Host(BUILDFLAG(BRAVE_SERVICES_DEV_DOMAIN)));
@@ -45,7 +44,7 @@ TEST(GetGate3URLTest, StagingEnvironment) {
   scoped_cl.GetProcessCommandLine()->AppendSwitchASCII("env-gate3.wallet",
                                                        "staging");
 
-  GURL gurl(GetGate3URL());
+  GURL gurl = GetGate3URL();
   EXPECT_TRUE(gurl.is_valid());
   EXPECT_EQ(gurl.host(),
             ExpectedGate3Host(BUILDFLAG(BRAVE_SERVICES_STAGING_DOMAIN)));

@@ -330,14 +330,13 @@ GURL SwapService::GetLiFiStatusURL(const std::string& tx_hash) {
 
 // static
 GURL SwapService::GetGate3QuoteURL(bool is_firm) {
-  return GURL(GetGate3URL())
-      .Resolve(is_firm ? "/api/swap/v1/quote/firm"
-                       : "/api/swap/v1/quote/indicative");
+  return GetGate3URL().Resolve(is_firm ? "/api/swap/v1/quote/firm"
+                                       : "/api/swap/v1/quote/indicative");
 }
 
 // static
 GURL SwapService::GetGate3StatusURL() {
-  return GURL(GetGate3URL()).Resolve("/api/swap/v1/status");
+  return GetGate3URL().Resolve("/api/swap/v1/status");
 }
 
 void SwapService::IsSwapSupported(const std::string& chain_id,

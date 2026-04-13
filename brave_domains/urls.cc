@@ -5,8 +5,6 @@
 
 #include "brave/brave_domains/urls.h"
 
-#include <string>
-
 #include "base/strings/strcat.h"
 #include "brave/brave_domains/service_domains.h"
 #include "url/url_constants.h"
@@ -17,9 +15,9 @@ namespace {
 constexpr char kGate3DomainPrefix[] = "gate3.wallet";
 }  // namespace
 
-std::string GetGate3URL() {
-  return base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
-                       GetServicesDomain(kGate3DomainPrefix)});
+GURL GetGate3URL() {
+  return GURL(base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
+                            GetServicesDomain(kGate3DomainPrefix)}));
 }
 
 }  // namespace brave_domains

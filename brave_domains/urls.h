@@ -6,7 +6,7 @@
 #ifndef BRAVE_BRAVE_DOMAINS_URLS_H_
 #define BRAVE_BRAVE_DOMAINS_URLS_H_
 
-#include <string>
+#include "url/gurl.h"
 
 namespace brave_domains {
 
@@ -20,7 +20,7 @@ namespace brave_domains {
 //   DEV:     https://gate3.wallet.brave.software
 //   STAGING: https://gate3.wallet.bravesoftware.com
 //   PROD:    https://gate3.wallet.brave.com
-std::string GetGate3URL();
+GURL GetGate3URL();
 
 }  // namespace brave_domains
 

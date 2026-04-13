@@ -13,7 +13,6 @@
 #include "base/containers/map_util.h"
 #include "base/containers/to_vector.h"
 #include "base/no_destructor.h"
-#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/types/expected.h"
 #include "base/types/optional_util.h"
@@ -340,8 +339,8 @@ void SimpleHashClient::OnFetchAllNFTsFromSimpleHash(
 void SimpleHashClient::FetchSolCompressedNftProofData(
     const std::string& token_address,
     FetchSolCompressedNftProofDataCallback callback) {
-  GURL url = GURL(base::StrCat(
-      {GetGate3URL(), "/simplehash/api/v0/nfts/proof/solana/", token_address}));
+  GURL url = GetGate3URL().Resolve("/simplehash/api/v0/nfts/proof/solana/" +
+                                   token_address);
   if (!url.is_valid()) {
     std::move(callback).Run(std::nullopt);
     return;
@@ -1212,9 +1211,6 @@ GURL SimpleHashClient::GetSimpleHashNftsByWalletUrl(
     return GURL();
   }
 
-  std::string url_str =
-      base::StrCat({GetGate3URL(), "/simplehash/api/v0/nfts/owners"});
-
   std::string chain_ids_param;
   for (const auto& chain_id : chain_ids) {
     std::optional<std::string> simple_hash_chain_id =
@@ -1231,7 +1227,7 @@ GURL SimpleHashClient::GetSimpleHashNftsByWalletUrl(
     return GURL();
   }
 
-  GURL url = GURL(url_str);
+  GURL url = GetGate3URL().Resolve("/simplehash/api/v0/nfts/owners");
   url = net::AppendQueryParameter(url, "chains", chain_ids_param);
   url = net::AppendQueryParameter(url, "wallet_addresses", account_address);
 
@@ -1284,8 +1280,7 @@ GURL SimpleHashClient::GetNftsUrl(
     }
   }
 
-  GURL url =
-      GURL(base::StrCat({GetGate3URL(), "/simplehash/api/v0/nfts/assets"}));
+  GURL url = GetGate3URL().Resolve("/simplehash/api/v0/nfts/assets");
   url = net::AppendQueryParameter(url, "nft_ids", query_params);
   return url;
 }

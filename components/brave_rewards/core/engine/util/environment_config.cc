@@ -151,14 +151,16 @@ std::string EnvironmentConfig::BraveServicesKeyHeader() const {
 }
 
 GURL EnvironmentConfig::BuildGate3OAuthURL(std::string_view provider) const {
-  std::string environment =
+  std::string_view environment =
       current_environment() == mojom::Environment::kProduction ? "production"
                                                                : "sandbox";
-  const std::optional<std::string>& gate3_url = engine().options().gate3_url;
+  const std::optional<GURL>& gate3_url = engine().options().gate3_url;
   CHECK(gate3_url || allow_default_values_for_testing_);
-  return URLValue(gate3_url ? base::StrCat({*gate3_url, "/api/oauth/", provider,
-                                            "/", environment, "/"})
-                            : std::string());
+  if (!gate3_url) {
+    return URLValue(std::string());
+  }
+  return gate3_url->Resolve(
+      base::StrCat({"/api/oauth/", provider, "/", environment, "/"}));
 }
 
 GURL EnvironmentConfig::URLValue(std::string value) const {
