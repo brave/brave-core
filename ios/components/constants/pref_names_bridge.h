@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT NSString* const kStatsReportingEnabledPrefName;
+OBJC_EXPORT NSString* const kLastCheckYMDPrefName;
 
 NS_ASSUME_NONNULL_END
 
