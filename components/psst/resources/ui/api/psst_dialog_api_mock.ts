@@ -74,7 +74,7 @@ function createMockConsentHelper(): Mojom.PsstConsentHelperRemote {
     } as any,
   }
 
-  return mock as Mojom.PsstConsentHelperRemote
+  return mock
 }
 
 function createMockCallbackRouter(): Mojom.PsstConsentDialogCallbackRouter {
