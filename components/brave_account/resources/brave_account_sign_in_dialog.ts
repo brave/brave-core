@@ -65,23 +65,22 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
         encryptedLoginToken,
         clientMac,
       )
-      this.fire('close-dialog')
-    } catch (error) {
-      let details: LoginError
+    } catch (e) {
+      let error: LoginError
 
-      if (error && typeof error === 'object') {
-        details = error as LoginError
-      } else if (typeof error === 'string') {
-        details = {
+      if (e && typeof e === 'object') {
+        error = e as LoginError
+      } else if (typeof e === 'string') {
+        error = {
           netErrorOrHttpStatus: null,
           errorCode: LoginErrorCode.kOpaqueError,
         }
       } else {
-        console.error('Unexpected error:', error)
-        details = { netErrorOrHttpStatus: null, errorCode: null }
+        console.error('Unexpected error:', e)
+        error = { netErrorOrHttpStatus: null, errorCode: null }
       }
 
-      showError({ kind: 'login', details })
+      showError({ kind: 'login', details: error })
     }
   }
 
