@@ -14,7 +14,9 @@
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 
 using brave_component_updater::DATFileDataBuffer;
@@ -73,6 +75,7 @@ class AdBlockDATCacheManager {
   raw_ptr<PrefService> local_state_;
   raw_ptr<AdBlockFiltersProviderManager> provider_manager_;
   base::FilePath cache_dir_;
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool allow_dat_loading_ = true;
 
   base::WeakPtrFactory<AdBlockDATCacheManager> weak_factory_{this};

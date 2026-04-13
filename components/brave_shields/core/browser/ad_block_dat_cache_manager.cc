@@ -21,6 +21,8 @@
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
 #include "base/strings/string_view_util.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
@@ -59,7 +61,9 @@ AdBlockDATCacheManager::AdBlockDATCacheManager(
     const base::FilePath& profile_dir)
     : local_state_(local_state),
       provider_manager_(provider_manager),
-      cache_dir_(profile_dir.AppendASCII(kAdblockCacheDir)) {}
+      cache_dir_(profile_dir.AppendASCII(kAdblockCacheDir)),
+      task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})) {}
 
 AdBlockDATCacheManager::~AdBlockDATCacheManager() = default;
 
@@ -104,9 +108,8 @@ void AdBlockDATCacheManager::WriteDATFile(
     DATFileDataBuffer dat,
     base::OnceCallback<void(bool)> on_complete) {
   CHECK(base::FeatureList::IsEnabled(features::kAdblockDATCache));
-  base::ThreadPool::PostTaskAndReplyWithResult(
+  task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
-      {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
       base::BindOnce(
           [](DATFileDataBuffer dat, base::FilePath cache_path) {
             if (!base::CreateDirectory(cache_path.DirName())) {
@@ -125,10 +128,8 @@ void AdBlockDATCacheManager::ReadCachedDATFiles(
     base::OnceCallback<void(std::optional<DATFileDataBuffer>,
                             std::optional<DATFileDataBuffer>)> on_complete) {
   CHECK(base::FeatureList::IsEnabled(features::kAdblockDATCache));
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE,
-      {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-      base::BindOnce(&ReadCachedDATFilesFromDisk, cache_dir_),
+  task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE, base::BindOnce(&ReadCachedDATFilesFromDisk, cache_dir_),
       base::BindOnce(
           [](base::OnceCallback<void(std::optional<DATFileDataBuffer>,
                                      std::optional<DATFileDataBuffer>)>
