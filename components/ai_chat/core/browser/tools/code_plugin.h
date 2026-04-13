@@ -37,6 +37,11 @@ class CodePlugin {
   // |artifact_value| is the parsed JSON.
   virtual std::optional<std::string> ValidateArtifact(
       const base::Value& artifact_value) const;
+
+  // Returns an optional log message for artifact creation, given the artifact
+  // ID. If nullopt, no output is emitted for artifacts of this type.
+  virtual std::optional<std::string> GetArtifactCreationMessage(
+      std::string_view artifact_id) const;
 };
 
 }  // namespace ai_chat

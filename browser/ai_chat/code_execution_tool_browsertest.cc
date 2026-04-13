@@ -281,6 +281,8 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, PluginReturnsValue) {
 
   EXPECT_EQ(output, "done");
   ASSERT_EQ(artifacts.size(), 1u);
+  ASSERT_TRUE(artifacts[0]->id.has_value());
+  EXPECT_FALSE(artifacts[0]->id->empty());
   EXPECT_EQ(artifacts[0]->type, "mock");
   EXPECT_EQ(artifacts[0]->content_json, "\"mock_value\"");
 }
@@ -320,10 +322,11 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, CreateLineChart) {
   std::vector<mojom::ToolArtifactPtr> artifacts;
   ExecuteCode(script, &output, &artifacts);
 
-  EXPECT_EQ(output, "Chart created successfully");
   ASSERT_EQ(artifacts.size(), 1u);
 
   const auto& artifact = artifacts[0];
+  ASSERT_TRUE(artifact->id.has_value());
+  EXPECT_THAT(output, HasSubstr("Chart created with ID: " + *artifact->id));
   EXPECT_EQ(artifact->type, mojom::kLineChartArtifactType);
   EXPECT_THAT(artifact->content_json, base::test::IsJson(R"json({
                 "data": [
