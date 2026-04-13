@@ -78,7 +78,8 @@ class BraveOriginHandlerTest : public testing::Test {
     // Create the service with both policy services
     service_ = std::make_unique<BraveOriginService>(
         &local_state_, &profile_prefs_, kTestProfileId, &mock_policy_service_,
-        &mock_policy_service_, BraveOriginService::SkusServiceGetter());
+        &mock_policy_service_, BraveOriginService::SkusServiceGetter(),
+        nullptr);
 
     // Create the handler
     handler_ = std::make_unique<BraveOriginSettingsHandlerImpl>(service_.get());
@@ -401,7 +402,7 @@ class BraveOriginHandlerWithSkusTest : public testing::Test {
         base::Unretained(this));
     service_ = std::make_unique<BraveOriginService>(
         &local_state_, &profile_prefs_, kTestProfileId, &mock_policy_service_,
-        &mock_policy_service_, std::move(getter));
+        &mock_policy_service_, std::move(getter), nullptr);
     // Wait for the constructor's eager CheckPurchaseState to complete.
     ASSERT_TRUE(base::test::RunUntil([&] { return service_->IsPurchased(); }));
 
@@ -519,7 +520,8 @@ class BraveOriginHandlerDisabledTest : public testing::Test {
     // Create the service with both policy services
     service_ = std::make_unique<BraveOriginService>(
         &local_state_, &profile_prefs_, kTestProfileId, &mock_policy_service_,
-        &mock_policy_service_, BraveOriginService::SkusServiceGetter());
+        &mock_policy_service_, BraveOriginService::SkusServiceGetter(),
+        nullptr);
 
     // Create the handler
     handler_ = std::make_unique<BraveOriginSettingsHandlerImpl>(service_.get());

@@ -39,12 +39,22 @@ class BraveOriginService : public KeyedService {
   using SkusServiceGetter =
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>;
 
+  // Delegate for browser-layer actions the service cannot perform directly.
+  class Delegate {
+   public:
+    virtual ~Delegate() = default;
+    // Called once when a purchase is first detected, after credentials
+    // have been verified.
+    virtual void OpenOriginSettings() = 0;
+  };
+
   BraveOriginService(PrefService* local_state,
                      PrefService* profile_prefs,
                      std::string_view profile_id,
                      policy::PolicyService* profile_policy_service,
                      policy::PolicyService* browser_policy_service,
-                     SkusServiceGetter skus_service_getter);
+                     SkusServiceGetter skus_service_getter,
+                     std::unique_ptr<Delegate> delegate);
   ~BraveOriginService() override;
 
   // KeyedService:
@@ -70,17 +80,6 @@ class BraveOriginService : public KeyedService {
   // was created (i.e., since browser startup). This indicates that a restart
   // is needed for the changes to fully take effect.
   bool NeedsRestart() const;
-
-  // Delegate for browser-layer actions the service cannot perform directly.
-  class Delegate {
-   public:
-    virtual ~Delegate() = default;
-    // Called once when a purchase is first detected, after credentials
-    // have been verified.
-    virtual void OpenOriginSettings() = 0;
-  };
-
-  void SetDelegate(std::unique_ptr<Delegate> delegate);
 
  protected:
   // Local state and profile preferences this state is associated with

@@ -54,7 +54,8 @@ BraveOriginService::BraveOriginService(
     std::string_view profile_id,
     policy::PolicyService* profile_policy_service,
     policy::PolicyService* browser_policy_service,
-    SkusServiceGetter skus_service_getter)
+    SkusServiceGetter skus_service_getter,
+    std::unique_ptr<Delegate> delegate)
     : local_state_(local_state),
       profile_prefs_(profile_prefs),
       profile_id_(profile_id),
@@ -64,7 +65,8 @@ BraveOriginService::BraveOriginService(
       // STAGING for unofficial builds; official builds always resolve to prod.
       origin_sku_domain_(brave_domains::GetServicesDomain(
           kOriginSkuHostnamePart,
-          brave_domains::ServicesEnvironment::STAGING)) {
+          brave_domains::ServicesEnvironment::STAGING)),
+      delegate_(std::move(delegate)) {
   CHECK(local_state_);
   CHECK(profile_prefs_);
   CHECK(!profile_id_.empty());
@@ -206,10 +208,6 @@ bool BraveOriginService::NeedsRestart() const {
   return manager->GetAllBrowserPolicies() != startup_browser_policies_ ||
          manager->GetAllProfilePolicies(profile_id_) !=
              startup_profile_policies_;
-}
-
-void BraveOriginService::SetDelegate(std::unique_ptr<Delegate> delegate) {
-  delegate_ = std::move(delegate);
 }
 
 void BraveOriginService::OnSkusStateChanged() {

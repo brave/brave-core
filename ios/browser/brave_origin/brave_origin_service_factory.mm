@@ -163,7 +163,7 @@ BraveOriginServiceFactory::BuildServiceInstanceFor(ProfileIOS* profile) const {
       user_prefs::UserPrefs::Get(profile), profile_id,
       profile->GetPolicyConnector()->GetPolicyService(),
       GetApplicationContext()->GetBrowserPolicyConnector()->GetPolicyService(),
-      std::move(skus_service_getter));
+      std::move(skus_service_getter), nullptr);
 }
 
 // static

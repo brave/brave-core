@@ -10,4 +10,8 @@ source_set("brave_origin") {
     "//brave/browser/brave_origin",
     "//chrome/browser/profiles",
   ]
+
+  # chrome/browser/ui/chrome_pages.h is provided transitively through the
+  # //chrome/browser/ui -> //brave/browser/ui dependency chain. Adding
+  # //chrome/browser/ui directly would create a dependency cycle.
 }

@@ -228,15 +228,11 @@ BraveOriginServiceFactory::BuildServiceInstanceForBrowserContext(
   std::string profile_id = GetProfileId(profile->GetPath());
   auto skus_service_getter =
       base::BindRepeating(&skus::SkusServiceFactory::GetForContext, context);
-  auto service = std::make_unique<BraveOriginService>(
+  return std::make_unique<BraveOriginService>(
       g_browser_process->local_state(), profile->GetPrefs(), profile_id,
       GetPolicyServiceFromProfile(profile), GetBrowserPolicyService(),
-      std::move(skus_service_getter));
-
-  service->SetDelegate(
+      std::move(skus_service_getter),
       std::make_unique<BraveOriginNavigationDelegate>(profile));
-
-  return service;
 }
 
 bool BraveOriginServiceFactory::ServiceIsCreatedWithBrowserContext() const {

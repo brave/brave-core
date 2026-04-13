@@ -104,7 +104,7 @@ class BraveOriginServiceTest : public testing::Test {
     service_ = std::make_unique<BraveOriginService>(
         &local_state_, &profile_prefs_, kTestProfileId,
         &mock_profile_policy_service_, &mock_browser_policy_service_,
-        BraveOriginService::SkusServiceGetter());
+        BraveOriginService::SkusServiceGetter(), nullptr);
   }
 
   void TearDown() override {
@@ -561,7 +561,7 @@ TEST_F(BraveOriginServiceTest, NeedsRestart_AfterFirstPurchase_ReturnsTrue) {
   service_ = std::make_unique<BraveOriginService>(
       &local_state_, &profile_prefs_, kTestProfileId,
       &mock_profile_policy_service_, &mock_browser_policy_service_,
-      BraveOriginService::SkusServiceGetter());
+      BraveOriginService::SkusServiceGetter(), nullptr);
 
   EXPECT_FALSE(service_->NeedsRestart());
 
@@ -609,7 +609,7 @@ class BraveOriginServiceWithSkusTest : public testing::Test {
     service_ = std::make_unique<BraveOriginService>(
         &local_state_, &profile_prefs_, kTestProfileId,
         &mock_profile_policy_service_, &mock_browser_policy_service_,
-        std::move(getter));
+        std::move(getter), nullptr);
 
     // Wait for the constructor's eager CheckPurchaseState to complete.
     ASSERT_TRUE(base::test::RunUntil([&] { return service_->IsPurchased(); }));
@@ -764,22 +764,21 @@ TEST_F(BraveOriginServiceWithSkusTest, FirstPurchaseDetection_CallsDelegate) {
   fake_skus_service_->SetCredentialSummaryResponse(
       R"({"remaining_credential_count": 0, "expires_at": ""})");
 
+  bool delegate_called = false;
   auto getter = base::BindRepeating(
       [](FakeSkusService* fake) { return fake->MakeRemote(); },
       base::Unretained(fake_skus_service_.get()));
   service_ = std::make_unique<BraveOriginService>(
       &local_state_, &profile_prefs_, kTestProfileId,
       &mock_profile_policy_service_, &mock_browser_policy_service_,
-      std::move(getter));
+      std::move(getter), std::make_unique<TestDelegate>(&delegate_called));
 
   // Wait for the constructor's eager check (not purchased).
   base::test::TestFuture<bool> initial_check;
   service_->CheckPurchaseState(initial_check.GetCallback());
   EXPECT_FALSE(initial_check.Get());
 
-  // Set a delegate and switch the fake to return valid credentials.
-  bool delegate_called = false;
-  service_->SetDelegate(std::make_unique<TestDelegate>(&delegate_called));
+  // Switch the fake to return valid credentials.
   fake_skus_service_->SetCredentialSummaryResponse(
       R"({"remaining_credential_count": 5})");
 
@@ -790,13 +789,22 @@ TEST_F(BraveOriginServiceWithSkusTest, FirstPurchaseDetection_CallsDelegate) {
 }
 
 TEST_F(BraveOriginServiceWithSkusTest, AlreadyPurchased_DoesNotCallDelegate) {
-  // After SetUp the service already detected a valid purchase, so
-  // kOriginPurchaseValidated is true. Setting a delegate now should
-  // NOT trigger it on subsequent checks.
+  // Recreate the service in an already-purchased state with a delegate.
+  // The delegate should NOT fire because the purchase was already known.
+  service_.reset();
   ASSERT_TRUE(local_state_.GetBoolean(kOriginPurchaseValidated));
 
   bool delegate_called = false;
-  service_->SetDelegate(std::make_unique<TestDelegate>(&delegate_called));
+  auto getter = base::BindRepeating(
+      [](FakeSkusService* fake) { return fake->MakeRemote(); },
+      base::Unretained(fake_skus_service_.get()));
+  service_ = std::make_unique<BraveOriginService>(
+      &local_state_, &profile_prefs_, kTestProfileId,
+      &mock_profile_policy_service_, &mock_browser_policy_service_,
+      std::move(getter), std::make_unique<TestDelegate>(&delegate_called));
+
+  // Wait for the constructor's eager check to complete.
+  ASSERT_TRUE(base::test::RunUntil([&] { return service_->IsPurchased(); }));
 
   base::test::TestFuture<bool> result;
   service_->CheckPurchaseState(result.GetCallback());
@@ -812,21 +820,20 @@ TEST_F(BraveOriginServiceWithSkusTest, DelegateIsOneShot_ResetAfterFirstFire) {
   fake_skus_service_->SetCredentialSummaryResponse(
       R"({"remaining_credential_count": 0, "expires_at": ""})");
 
+  bool delegate_called = false;
   auto getter = base::BindRepeating(
       [](FakeSkusService* fake) { return fake->MakeRemote(); },
       base::Unretained(fake_skus_service_.get()));
   service_ = std::make_unique<BraveOriginService>(
       &local_state_, &profile_prefs_, kTestProfileId,
       &mock_profile_policy_service_, &mock_browser_policy_service_,
-      std::move(getter));
+      std::move(getter), std::make_unique<TestDelegate>(&delegate_called));
 
   base::test::TestFuture<bool> initial_check;
   service_->CheckPurchaseState(initial_check.GetCallback());
   EXPECT_FALSE(initial_check.Get());
 
-  // Set delegate and trigger first purchase.
-  bool delegate_called = false;
-  service_->SetDelegate(std::make_unique<TestDelegate>(&delegate_called));
+  // Trigger first purchase.
   fake_skus_service_->SetCredentialSummaryResponse(
       R"({"remaining_credential_count": 5})");
 
@@ -853,13 +860,14 @@ TEST_F(BraveOriginServiceWithSkusTest,
   fake_skus_service_->SetCredentialSummaryResponse(
       R"({"remaining_credential_count": 0, "expires_at": ""})");
 
+  bool delegate_called = false;
   auto getter = base::BindRepeating(
       [](FakeSkusService* fake) { return fake->MakeRemote(); },
       base::Unretained(fake_skus_service_.get()));
   service_ = std::make_unique<BraveOriginService>(
       &local_state_, &profile_prefs_, kTestProfileId,
       &mock_profile_policy_service_, &mock_browser_policy_service_,
-      std::move(getter));
+      std::move(getter), std::make_unique<TestDelegate>(&delegate_called));
 
   // Ensure the constructor's eager check has completed by making an
   // explicit call that waits for its result.
@@ -867,9 +875,7 @@ TEST_F(BraveOriginServiceWithSkusTest,
   service_->CheckPurchaseState(initial_check.GetCallback());
   EXPECT_FALSE(initial_check.Get());
 
-  // Set a delegate and switch the fake to return valid credentials.
-  bool delegate_called = false;
-  service_->SetDelegate(std::make_unique<TestDelegate>(&delegate_called));
+  // Switch the fake to return valid credentials.
   fake_skus_service_->SetCredentialSummaryResponse(
       R"({"remaining_credential_count": 5})");
 
@@ -915,7 +921,7 @@ class BraveOriginServiceDisabledTest : public testing::Test {
     service_ = std::make_unique<BraveOriginService>(
         &local_state_, &profile_prefs_, kTestProfileId,
         &mock_profile_policy_service_, &mock_browser_policy_service_,
-        BraveOriginService::SkusServiceGetter());
+        BraveOriginService::SkusServiceGetter(), nullptr);
   }
 
   void TearDown() override {
