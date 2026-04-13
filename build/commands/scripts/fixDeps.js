@@ -143,6 +143,34 @@ function extractVulns(auditData, targetGhsaIds) {
   return vulns
 }
 
+function fetchAdvisory(ghsaId) {
+  try {
+    const raw = execSync(
+      `gh api /advisories/${ghsaId} --jq '{severity: .severity, packages: [.vulnerabilities[] | select(.package.ecosystem == "npm") | .package.name]}'`,
+      { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] },
+    )
+    const data = JSON.parse(raw.trim())
+    if (!data.packages || data.packages.length === 0) return null
+    return { package: data.packages[0], severity: data.severity }
+  } catch {
+    return null
+  }
+}
+
+function isPackageInstalled(packageName, cwd) {
+  try {
+    execSync(`npm ls "${packageName}" --all`, {
+      cwd,
+      encoding: 'utf-8',
+      stdio: ['pipe', 'pipe', 'pipe'],
+    })
+    return true
+  } catch (err) {
+    // npm ls exits non-zero but still prints the tree if the package exists
+    return err.stdout && err.stdout.includes(packageName)
+  }
+}
+
 function traceDependencyChain(packageName) {
   try {
     const tree = execSync(`npm ls "${packageName}" --all`, {
@@ -217,6 +245,63 @@ function identify(ghsaIds, { wdpDir, leoDir, issueUrl }) {
     } else {
       braveCoreDirectGhsaIds.add(vuln.ghsaId)
       addToAdvisory(advisories, vuln, 'brave-core', false, null)
+    }
+  }
+
+  // Fallback: for GHSA IDs not found by npm audit, query GitHub Advisory API
+  const foundGhsaIds = new Set([...leoGhsaIds, ...wdpGhsaIds, ...braveCoreDirectGhsaIds])
+  for (const id of ghsaIds) {
+    if (foundGhsaIds.has(id)) continue
+
+    console.log(`Advisory ${id} not in npm audit — querying GitHub Advisory API`)
+    const advisory = fetchAdvisory(id)
+    if (!advisory) {
+      console.warn(`Warning: Could not fetch advisory ${id} from GitHub API`)
+      continue
+    }
+
+    const pkg = advisory.package
+    const severity = advisory.severity || 'unknown'
+    const vuln = { package: pkg, severity, fixAvailable: false, ghsaId: id }
+
+    // Check which repos have this package
+    const inBraveCore = isPackageInstalled(pkg, process.cwd())
+    const inLeo = leoDir && existsSync(resolve(leoDir)) && isPackageInstalled(pkg, leoDir)
+    const inWdp = wdpDir && existsSync(resolve(wdpDir)) && isPackageInstalled(pkg, wdpDir)
+
+    if (inLeo) {
+      leoGhsaIds.add(id)
+      addToAdvisory(advisories, vuln, 'brave/leo', false, null)
+    }
+    if (inWdp) {
+      wdpGhsaIds.add(id)
+      addToAdvisory(advisories, vuln, 'brave/web-discovery-project', false, null)
+    }
+    if (inBraveCore) {
+      const { hasLeo } = traceDependencyChain(pkg)
+      const isWdpDep =
+        wdpPackageJson
+        && (wdpPackageJson.dependencies?.[pkg]
+          || wdpPackageJson.devDependencies?.[pkg])
+
+      if (hasLeo) {
+        leoGhsaIds.add(id)
+        addToAdvisory(advisories, vuln, 'brave-core', true, '@brave/leo')
+        if (!inLeo) addToAdvisory(advisories, vuln, 'brave/leo', false, null)
+        needsHashUpdate = true
+      } else if (isWdpDep) {
+        wdpGhsaIds.add(id)
+        addToAdvisory(advisories, vuln, 'brave-core', true, 'web-discovery-project')
+        if (!inWdp) addToAdvisory(advisories, vuln, 'brave/web-discovery-project', false, null)
+        needsHashUpdate = true
+      } else {
+        braveCoreDirectGhsaIds.add(id)
+        addToAdvisory(advisories, vuln, 'brave-core', false, null)
+      }
+    }
+
+    if (!inBraveCore && !inLeo && !inWdp) {
+      console.warn(`Warning: ${pkg} (${id}) not found in any repo dependency tree`)
     }
   }
 
