@@ -12,6 +12,8 @@ import * as Mojom from 'gen/brave/components/psst/common/psst_ui_common.mojom.m.
 // Containers
 import PsstDlgContainer from './containers/App'
 
+setIconBasePath('chrome://resources/brave-icons')
+
 function createBrowserPsstApi() {
   const consentHelper = new Mojom.PsstConsentHelperRemote()
   const callbackRouter = new Mojom.PsstConsentDialogCallbackRouter()
@@ -25,7 +27,6 @@ function createBrowserPsstApi() {
 }
 
 function initialize() {
-  setIconBasePath('chrome://resources/brave-icons')
   createRoot(document.getElementById('root')!).render(
     <PsstDlgContainer apiContext={createBrowserPsstApi()} />,
   )

@@ -6,11 +6,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { color, font } from '@brave/leo/tokens/css/variables'
-import {
-  Container,
-  PsstDlgButton,
-  RightAlignedItem,
-} from './basic/structure'
+import { Container, PsstDlgButton, RightAlignedItem } from './basic/structure'
 import SettingsCard from './SettingsCard'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
