@@ -244,6 +244,13 @@ void BraveTabStrip::MaybeStartDrag(TabSlotView* source,
 void BraveTabStrip::AddedToWidget() {
   TabStrip::AddedToWidget();
 
+  // When Chromium's upstream vertical tabs feature is active,
+  // TabStrip::Initialize() is never called so tab_container_ remains null.
+  // Skip UpdateOrientation() to avoid crashing when accessing it.
+  if (!tabs::utils::SupportsBraveVerticalTabs(GetBrowserWindowInterface())) {
+    return;
+  }
+
   if (BrowserView::GetBrowserViewForBrowser(GetBrowserWindowInterface())) {
     UpdateOrientation();
   } else {
@@ -305,6 +312,10 @@ bool BraveTabStrip::ShouldShowPinnedTabsInGrid() const {
 }
 
 void BraveTabStrip::UpdateOrientation() {
+  // Callers must guard against unsupported configurations (e.g. upstream
+  // vertical tabs where tab_container_ is null).
+  CHECK(tabs::utils::SupportsBraveVerticalTabs(GetBrowserWindowInterface()));
+
   const bool using_vertical_tabs = ShouldShowVerticalTabs();
   auto* browser = GetBrowserWindowInterface();
   DCHECK(browser);
