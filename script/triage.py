@@ -9,22 +9,13 @@
 # GITHUB_TOKEN=abc python script/triage.py --stale --leave-comment --close-issue
 #                                          --ignore-comments --ignore-priority
 
-from __future__ import print_function
-from builtins import str
-from builtins import object
 from datetime import datetime, timezone
 import argparse
 import os
-import re
 import sys
 
 from lib.helpers import channels, BRAVE_REPO, BRAVE_CORE_REPO
-from lib.github import (GitHub, get_authenticated_user_login,
-                        parse_user_logins, parse_labels, get_file_contents,
-                        get_milestones, add_reviewers_to_pull_request,
-                        create_pull_request, fetch_origin_check_staged,
-                        get_local_branch_name, get_title_from_first_commit,
-                        push_branches_to_remote, set_issue_details)
+from lib.github import (GitHub, parse_user_logins)
 
 
 class TriageConfig():
@@ -92,7 +83,7 @@ def parse_args():
     # team report
     parser.add_argument(
         '--team',
-        help='run the "team" script. Comma seperated list of GitHub logins',
+        help='run the "team" script. Comma separated list of GitHub logins',
         default=None)
 
     # stale script
@@ -223,7 +214,7 @@ def get_stale_issues(page=1):
     response = repo.issues().get(params=get_data, headers=get_headers)
 
     link_header = get_headers['ResponseHeaders']['Link']
-    has_pages_remaining = link_header.find('rel="next"') != -1
+    has_pages_remaining = link_header and link_header.find('rel="next"') != -1
 
     stale_issues = []
     now = datetime.now(timezone.utc)
