@@ -7,22 +7,20 @@ import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
 import './brave_account_create_dialog.js'
 import './brave_account_entry_dialog.js'
-import './brave_account_error_dialog.js'
 import './brave_account_forgot_password_dialog.js'
 import './brave_account_otp_dialog.js'
 import './brave_account_sign_in_dialog.js'
 import { BraveAccountDialogsElement } from './brave_account_dialogs.js'
-import { Error } from './brave_account_common.js'
 
 export function getHtml(this: BraveAccountDialogsElement) {
-  switch (this.dialog.type) {
+  switch (this.dialog) {
     case 'ENTRY':
       return html`
         <brave-account-entry-dialog
           @close-dialog=${this.onCloseDialog}
-          @create-button-clicked=${() => (this.dialog = { type: 'CREATE' })}
-          @logo-double-clicked=${() => (this.dialog = { type: 'OTP' })}
-          @sign-in-button-clicked=${() => (this.dialog = { type: 'SIGN_IN' })}
+          @create-button-clicked=${() => (this.dialog = 'CREATE')}
+          @logo-double-clicked=${() => (this.dialog = 'OTP')}
+          @sign-in-button-clicked=${() => (this.dialog = 'SIGN_IN')}
         >
         </brave-account-entry-dialog>
       `
@@ -33,11 +31,6 @@ export function getHtml(this: BraveAccountDialogsElement) {
           .isCapsLockOn=${this.isCapsLockOn}
           @back-button-clicked=${this.onBackButtonClicked}
           @close-dialog=${this.onCloseDialog}
-          @error-occurred=${(e: CustomEvent<Error>) =>
-            (this.dialog = {
-              type: 'ERROR',
-              error: e.detail,
-            })}
         >
         </brave-account-create-dialog>
       `
@@ -48,13 +41,8 @@ export function getHtml(this: BraveAccountDialogsElement) {
           .isCapsLockOn=${this.isCapsLockOn}
           @back-button-clicked=${this.onBackButtonClicked}
           @close-dialog=${this.onCloseDialog}
-          @error-occurred=${(e: CustomEvent<Error>) =>
-            (this.dialog = {
-              type: 'ERROR',
-              error: e.detail,
-            })}
           @forgot-password-button-clicked=${() =>
-            (this.dialog = { type: 'FORGOT_PASSWORD' })}
+            (this.dialog = 'FORGOT_PASSWORD')}
         >
         </brave-account-sign-in-dialog>
       `
@@ -75,16 +63,6 @@ export function getHtml(this: BraveAccountDialogsElement) {
           @close-dialog=${this.onCloseDialog}
         >
         </brave-account-otp-dialog>
-      `
-
-    case 'ERROR':
-      return html`
-        <brave-account-error-dialog
-          @back-button-clicked=${this.onBackButtonClicked}
-          @close-dialog=${this.onCloseDialog}
-          .error=${this.dialog.error}
-        >
-        </brave-account-error-dialog>
       `
   }
 }

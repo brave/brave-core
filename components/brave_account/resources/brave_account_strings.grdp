@@ -127,11 +127,8 @@
   </message>
 
   <!-- 'Error' dialog: -->
-  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_TITLE" translateable="false" desc="Title for the error dialog" formatter_data="webui=BraveAccount">
-    Something went wrong
-  </message>
-  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_DESCRIPTION" translateable="false" desc="Description for the error dialog" formatter_data="webui=BraveAccount">
-    We encountered an error while processing your request.
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_TOAST_TITLE" translateable="false" desc="" formatter_data="webui=BraveAccount">
+    An error occurred
   </message>
   <message name="IDS_BRAVE_ACCOUNT_ERROR" translateable="false" desc="" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     error

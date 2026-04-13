@@ -10,11 +10,11 @@ import {
   BraveAccountBrowserProxyImpl,
 } from './brave_account_browser_proxy.js'
 import { getHtml } from './brave_account_create_dialog.html.js'
-import { Error } from './brave_account_common.js'
 import {
   RegisterError,
   RegisterErrorCode,
 } from './brave_account.mojom-webui.js'
+import { showError } from './brave_account_common.js'
 
 // @ts-expect-error
 import { Registration } from 'chrome://resources/brave/opaque_ke.bundle.js'
@@ -81,10 +81,7 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
         details = { netErrorOrHttpStatus: null, errorCode: null }
       }
 
-      this.fire('error-occurred', {
-        flow: 'register',
-        details,
-      } satisfies Extract<Error, { flow: 'register' }>)
+      showError({ kind: 'register', details })
     }
   }
 
