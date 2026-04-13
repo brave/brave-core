@@ -25,7 +25,6 @@
 #include "base/observer_list_types.h"
 #include "base/sequence_checker.h"
 #include "base/task/sequenced_task_runner.h"
-#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
@@ -106,22 +105,30 @@ class AdBlockService {
     void OnDATFileLoaded(DATFileDataBuffer dat);
 
    private:
-    void LoadResources();
+    void LoadResources(
+        std::string cache_key,
+        std::optional<DATFileDataBuffer> dat,
+        std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set);
     void OnFilterSetLoaded(
+        std::string cache_key,
         base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb);
-    void OnFilterSetCreated(std::unique_ptr<rust::Box<adblock::FilterSet>>);
+    void OnFilterSetCreated(
+        std::string cache_key,
+        std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set);
 
     // AdBlockResourceProvider::Observer
     void OnResourcesLoaded(AdblockResourceStorageBox storage) override;
+
+    void OnAllLoaded(std::string cache_key,
+                     std::optional<DATFileDataBuffer> dat,
+                     std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
+                     AdblockResourceStorageBox storage);
 
     OnResourcesLoadedCallback on_resources_loaded_;
     ShouldLoadFilterSetCallback should_load_filter_set_;
     ComputeCacheKeyCallback compute_cache_key_;
     const bool engine_is_default_;
 
-    std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set_;
-    std::optional<DATFileDataBuffer> dat_;
-    std::string cache_key_;
     scoped_refptr<base::SequencedTaskRunner> task_runner_;
 
     raw_ptr<AdBlockResourceProvider> resource_provider_ = nullptr;  // not owned

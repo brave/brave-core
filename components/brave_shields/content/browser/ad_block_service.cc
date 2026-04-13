@@ -82,15 +82,16 @@ void AdBlockService::SourceProviderObserver::OnChanged(bool is_default_engine) {
     return;
   }
   // Capture the cache key now while it matches the provider state being loaded.
-  cache_key_ = compute_cache_key_.Run();
+  std::string cache_key = compute_cache_key_.Run();
   auto on_loaded_cb =
       base::BindOnce(&AdBlockService::SourceProviderObserver::OnFilterSetLoaded,
-                     weak_factory_.GetWeakPtr());
+                     weak_factory_.GetWeakPtr(), std::move(cache_key));
   filters_provider_manager_->LoadFilterSetForEngine(is_default_engine,
                                                     std::move(on_loaded_cb));
 }
 
 void AdBlockService::SourceProviderObserver::OnFilterSetLoaded(
+    std::string cache_key,
     base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb) {
   task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
@@ -104,35 +105,46 @@ void AdBlockService::SourceProviderObserver::OnFilterSetLoaded(
           std::move(cb)),
       base::BindOnce(
           &AdBlockService::SourceProviderObserver::OnFilterSetCreated,
-          weak_factory_.GetWeakPtr()));
+          weak_factory_.GetWeakPtr(), std::move(cache_key)));
 }
 
-void AdBlockService::SourceProviderObserver::LoadResources() {
+void AdBlockService::SourceProviderObserver::LoadResources(
+    std::string cache_key,
+    std::optional<DATFileDataBuffer> dat,
+    std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set) {
   // multiple AddObserver calls are ignored
   resource_provider_->AddObserver(this);
   resource_provider_->LoadResources(base::BindOnce(
-      &SourceProviderObserver::OnResourcesLoaded, weak_factory_.GetWeakPtr()));
+      &SourceProviderObserver::OnAllLoaded, weak_factory_.GetWeakPtr(),
+      std::move(cache_key), std::move(dat), std::move(filter_set)));
 }
 
 void AdBlockService::SourceProviderObserver::OnDATFileLoaded(
     DATFileDataBuffer dat) {
-  dat_.emplace(std::move(dat));
-  LoadResources();
+  LoadResources(std::string(), std::move(dat), nullptr);
 }
 
 void AdBlockService::SourceProviderObserver::OnFilterSetCreated(
+    std::string cache_key,
     std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set) {
   TRACE_EVENT("brave.adblock", "OnFilterSetCreated");
-  filter_set_ = std::move(filter_set);
-  LoadResources();
+  LoadResources(std::move(cache_key), std::nullopt, std::move(filter_set));
 }
 
 void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
     AdblockResourceStorageBox storage) {
-  on_resources_loaded_.Run(
-      engine_is_default_, std::exchange(cache_key_, std::string()),
-      std::exchange(dat_, std::nullopt), std::exchange(filter_set_, nullptr),
-      std::move(storage));
+  on_resources_loaded_.Run(engine_is_default_, std::string(), std::nullopt,
+                           nullptr, std::move(storage));
+}
+
+void AdBlockService::SourceProviderObserver::OnAllLoaded(
+    std::string cache_key,
+    std::optional<DATFileDataBuffer> dat,
+    std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
+    AdblockResourceStorageBox storage) {
+  on_resources_loaded_.Run(engine_is_default_, std::move(cache_key),
+                           std::move(dat), std::move(filter_set),
+                           std::move(storage));
 }
 
 AdBlockComponentServiceManager* AdBlockService::component_service_manager() {
