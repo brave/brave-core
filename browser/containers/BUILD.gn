@@ -11,6 +11,8 @@ source_set("containers") {
   sources = [
     "container_tab_tracker.cc",
     "container_tab_tracker.h",
+    "containers_service_delegate.cc",
+    "containers_service_delegate.h",
     "containers_service_factory.cc",
     "containers_service_factory.h",
   ]
@@ -20,8 +22,12 @@ source_set("containers") {
     "//brave/components/containers/core/browser",
     "//brave/components/containers/core/common",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/tab_contents",
     "//chrome/browser/ui/tabs",
+    "//chrome/common:buildflags",
+    "//components/sessions",
     "//content/public/browser",
+    "//crypto",
   ]
 }
 
@@ -41,4 +47,23 @@ source_set("browser_tests") {
   ]
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "containers_service_delegate_unittest.cc" ]
+
+  deps = [
+    ":containers",
+    "//brave/components/containers/content/browser",
+    "//brave/components/containers/core/browser",
+    "//brave/components/containers/core/common:features",
+    "//brave/components/containers/core/mojom",
+    "//chrome/browser",
+    "//chrome/test:test_support",
+    "//components/sessions:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
 }
