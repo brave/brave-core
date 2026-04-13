@@ -54,6 +54,7 @@
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/color_utils.h"
 #include "ui/views/layout/flex_layout.h"
+#include "ui/views/view_utils.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/containers_service_factory.h"
@@ -388,6 +389,10 @@ brave_tabs::TabMinWidthMode BraveTabStrip::GetTabMinWidthMode() const {
 
 TabContainer* BraveTabStrip::GetTabContainerForTesting() {
   return tab_container_.get();  // IN-TEST
+}
+
+BraveTabContainer* BraveTabStrip::GetBraveTabContainer() {
+  return views::AsViewClass<BraveTabContainer>(tab_container_.get());
 }
 
 void BraveTabStrip::InvalidateTabContainerLayout() {

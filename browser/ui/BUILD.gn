@@ -702,6 +702,7 @@ source_set("ui") {
       "//chrome/browser/ui/views/download",
       "//chrome/browser/ui/views/infobars",
       "//chrome/browser/ui/views/interaction",
+      "//chrome/browser/ui/views/tabs/shared",
       "//chrome/browser/ui/views/toolbar",
       "//components/bookmarks/browser",
     ]

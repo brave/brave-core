@@ -342,6 +342,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_tabs::kVerticalTabsShowScrollbar] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[brave_tabs::kShowHorizontalTabScrollButtons] =
+      settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_tabs::kVerticalTabsExpandedStatePerWindow] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed] =

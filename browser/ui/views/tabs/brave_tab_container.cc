@@ -99,12 +99,17 @@ BraveTabContainer::BraveTabContainer(
     return;
   }
 
-  PrefService* prefs = browser->GetProfile()->GetOriginalProfile()->GetPrefs();
+  PrefService* prefs = browser->GetProfile()->GetPrefs();
   if (base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
     scrollable_horizontal_tab_strip_.Init(
         brave_tabs::kScrollableHorizontalTabStrip, prefs,
         base::BindRepeating(
             &BraveTabContainer::OnScrollableHorizontalTabStripPrefChanged,
+            base::Unretained(this)));
+    show_horizontal_tab_scroll_buttons_.Init(
+        brave_tabs::kShowHorizontalTabScrollButtons, prefs,
+        base::BindRepeating(
+            &BraveTabContainer::OnHorizontalTabScrollButtonsPrefChanged,
             base::Unretained(this)));
   }
 
@@ -1422,7 +1427,8 @@ int BraveTabContainer::GetPinnedTabsAreaBoundary() const {
 }
 
 void BraveTabContainer::SetScrollOffset(int offset) {
-  if (!GetScrollDirection()) {
+  const auto scroll_direction = GetScrollDirection();
+  if (!scroll_direction) {
     return;
   }
 
@@ -1436,6 +1442,16 @@ void BraveTabContainer::SetScrollOffset(int offset) {
   last_layout_size_ = std::nullopt;
   CompleteAnimationAndLayout();
   UpdateScrollBarState();
+
+  if (scroll_direction == views::LayoutOrientation::kHorizontal) {
+    horizontal_scroll_offset_changed_callbacks_.Notify();
+  }
+}
+
+base::CallbackListSubscription
+BraveTabContainer::RegisterHorizontalScrollOffsetChangedCallback(
+    base::RepeatingClosure callback) {
+  return horizontal_scroll_offset_changed_callbacks_.Add(std::move(callback));
 }
 
 std::pair<TabSlotView*, TabSlotView*>
@@ -1795,6 +1811,70 @@ bool BraveTabContainer::IsPinned(const Tab* tab) const {
   const auto pinned_tab_count = layout_helper_->GetPinnedTabCount();
   auto tab_index = tabs_view_model_.GetIndexOfView(tab);
   return tab_index && *tab_index < pinned_tab_count;
+}
+
+void BraveTabContainer::OnHorizontalTabScrollButtonsPrefChanged() {
+  PreferredSizeChanged();
+  InvalidateLayout();
+  if (views::View* p = parent()) {
+    p->InvalidateLayout();
+  }
+}
+
+bool BraveTabContainer::ShouldShowHorizontalScrollButton() const {
+  // Scrollable strip behavior comes from kBraveScrollableTabStrip alone; this
+  // pref only gates the scroll *buttons* in BraveHorizontalTabStripRegionView.
+  if (!base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
+    return false;
+  }
+  if (!show_horizontal_tab_scroll_buttons_.GetValue()) {
+    return false;
+  }
+
+  const auto direction = GetScrollDirection();
+  if (direction != views::LayoutOrientation::kHorizontal) {
+    return false;
+  }
+
+  return GetMaxScrollOffset() > 0;
+}
+
+bool BraveTabContainer::CanScrollTabsStart() const {
+  return GetScrollDirection() == views::LayoutOrientation::kHorizontal &&
+         scroll_offset_ > 0;
+}
+
+bool BraveTabContainer::CanScrollTabsEnd() const {
+  return GetScrollDirection() == views::LayoutOrientation::kHorizontal &&
+         scroll_offset_ < GetMaxScrollOffset();
+}
+
+void BraveTabContainer::ScrollTabsBy(int offset) {
+  if (offset == 0) {
+    return;
+  }
+
+  if (!ShouldShowHorizontalScrollButton()) {
+    return;
+  }
+  HandleScroll(offset);
+}
+
+int BraveTabContainer::GetHorizontalTabScrollStep() const {
+  const int viewport = GetUnpinnedTabsViewportSize();
+  return viewport / 4;
+}
+
+int BraveTabContainer::GetScrollOffsetForTesting() const {
+  return scroll_offset_;
+}
+
+int BraveTabContainer::GetMaxScrollOffsetForTesting() const {
+  return GetMaxScrollOffset();
+}
+
+void BraveTabContainer::SetScrollOffsetForTesting(int offset) {
+  SetScrollOffset(offset);
 }
 
 BEGIN_METADATA(BraveTabContainer)
