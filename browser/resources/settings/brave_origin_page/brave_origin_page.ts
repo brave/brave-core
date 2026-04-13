@@ -18,6 +18,9 @@ import {RelaunchMixin, RelaunchMixinInterface, RestartType} from '../relaunch_mi
 import '../relaunch_confirmation_dialog.js'
 
 import {getTemplate} from './brave_origin_page.html.js'
+import {getSearchManager} from '../search_settings.js'
+import type {SearchResult} from '../search_settings.js'
+import type {SettingsPlugin} from '../settings_main/settings_plugin.js'
 import * as BraveOriginMojom from '../brave_origin_settings.mojom-webui.js'
 import './brave_origin_onboarding.js'
 import './origin_toggle_button.js'
@@ -38,7 +41,7 @@ const SettingsBraveOriginPageElementBase =
  * Brave Origin features.
  */
 export class SettingsBraveOriginPageElement
-    extends SettingsBraveOriginPageElementBase {
+    extends SettingsBraveOriginPageElementBase implements SettingsPlugin {
 
   static get is() {
     return 'settings-brave-origin-page'
@@ -157,6 +160,11 @@ export class SettingsBraveOriginPageElement
   private restartBrowser_(e: Event) {
     e.stopPropagation()
     this.performRestart(RestartType.RESTART)
+  }
+
+  async searchContents(query: string): Promise<SearchResult> {
+    const searchRequest = await getSearchManager().search(query, this)
+    return searchRequest.getSearchResult()
   }
 }
 
