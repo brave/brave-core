@@ -757,8 +757,8 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 #endif
 
   if (base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget)) {
-    ntp_refresh_registration.Add<searchbox::mojom::PageHandler>();
-    ntp_registration.Add<searchbox::mojom::PageHandler>();
+    ntp_refresh_registration.Add<searchbox::mojom::PageHandlerFactory>();
+    ntp_registration.Add<searchbox::mojom::PageHandlerFactory>();
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)

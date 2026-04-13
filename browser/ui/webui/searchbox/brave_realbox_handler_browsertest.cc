@@ -42,7 +42,8 @@ class BraveRealboxHandlerTest : public InProcessBrowserTest {
   void OnAutocompleteAccept(const GURL& url, const std::u16string& keyword) {
     mojo::Remote<searchbox::mojom::PageHandler> remote_page_handler;
     RealboxHandler handler(
-        remote_page_handler.BindNewPipeAndPassReceiver(), browser()->profile(),
+        remote_page_handler.BindNewPipeAndPassReceiver(),
+        mojo::PendingRemote<searchbox::mojom::Page>(), browser()->profile(),
         contents(),
         base::BindLambdaForTesting(
             []() -> contextual_search::ContextualSearchSessionHandle* {
