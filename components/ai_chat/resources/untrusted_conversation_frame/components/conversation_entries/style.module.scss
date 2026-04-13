@@ -19,7 +19,7 @@
 }
 
 .hasGenerated .entryPair:last-child {
-  min-height: calc(100vh - var(--suggested-questions-height));
+  min-height: calc(100vh - var(--suggested-questions-height) * 2);
 }
 
 .message {

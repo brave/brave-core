@@ -144,7 +144,7 @@ function ConversationEntries() {
   function renderEntryGroup(
     isLastGroup: boolean,
     group: Mojom.ConversationTurn[],
-    index: number,
+    entryNumber: number,
   ) {
     // TODO(https://github.com/brave/brave-browser/issues/50132):
     // Split this component up to make it more readable.
@@ -159,14 +159,14 @@ function ConversationEntries() {
     const isGeneratingResponse =
       isHuman && isLastGroup && conversationContext.isGenerating
     const showLongPageContentInfo =
-      index === 1
+      entryNumber === 1
       && isAIAssistant
       && ((conversationContext.contentUsedPercentage ?? 100) < 100
         || (conversationContext.trimmedTokens > 0
           && conversationContext.totalTokens > 0)
         || (conversationContext.visualContentUsedPercentage ?? 100) < 100)
 
-    const showEditInput = editInputId === index
+    const showEditInput = editInputId === entryNumber
     const showEditIndicator = !showEditInput && !!group[0].edits?.length
 
     // Can't edit complicated structured content (for now)
@@ -211,12 +211,12 @@ function ConversationEntries() {
       : null
 
     return (
-      <div key={firstEntryEdit.uuid || index}>
+      <div key={firstEntryEdit.uuid || entryNumber}>
         <div
-          data-id={index}
+          data-id={entryNumber}
           data-testid={isHuman ? 'human-turn' : 'assistant-turn'}
           className={turnClass}
-          onMouseEnter={() => isHuman && setHoverMenuButtonId(index)}
+          onMouseEnter={() => isHuman && setHoverMenuButtonId(entryNumber)}
           onMouseLeave={() => isHuman && setHoverMenuButtonId(undefined)}
         >
           <div className={isAIAssistant ? styles.message : styles.humanMessage}>
@@ -277,17 +277,17 @@ function ConversationEntries() {
                       && !showEditInput && (
                         <>
                           <ContextMenuHuman
-                            isOpen={activeMenuId === index}
+                            isOpen={activeMenuId === entryNumber}
                             isVisible={
                               conversationContext.isMobile
-                              || hoverMenuButtonId === index
-                              || activeMenuId === index
+                              || hoverMenuButtonId === entryNumber
+                              || activeMenuId === entryNumber
                             }
-                            onClick={() => showHumanMenu(index)}
+                            onClick={() => showHumanMenu(entryNumber)}
                             onClose={hideHumanMenu}
                             onEditQuestionClicked={
                               canEditEntry
-                                ? () => setEditInputId(index)
+                                ? () => setEditInputId(entryNumber)
                                 : undefined
                             }
                             onCopyQuestionClicked={handleCopyText}
@@ -334,7 +334,7 @@ function ConversationEntries() {
                     {showEditInput && (
                       <EditInput
                         text={firstEntryEdit.text}
-                        onSubmit={(text) => handleEditSubmit(index, text)}
+                        onSubmit={(text) => handleEditSubmit(entryNumber, text)}
                         onCancel={() => setEditInputId(undefined)}
                         isSubmitDisabled={
                           !conversationContext.canSubmitUserEntries
@@ -413,7 +413,9 @@ function ConversationEntries() {
                       group.at(-1)?.nearVerificationStatus?.verified
                     }
                     onEditAnswerClicked={
-                      canEditEntry ? () => setEditInputId(index) : undefined
+                      canEditEntry
+                        ? () => setEditInputId(entryNumber)
+                        : undefined
                     }
                     onCopyTextClicked={handleCopyText}
                   />
@@ -429,6 +431,8 @@ function ConversationEntries() {
       </div>
     )
   }
+
+  let entryNumber = 0
 
   return (
     <div className={hasGenerated.current ? styles.hasGenerated : ''}>
@@ -447,7 +451,8 @@ function ConversationEntries() {
               pairIndex === entryPairs.length - 1
                 && groupIndex === pair.length - 1,
               group,
-              groupIndex,
+              // Note, we need to keep track of the entry number across pairs and groups.
+              entryNumber++,
             ),
           )}
         </div>
