@@ -7,10 +7,13 @@ static_library("browser") {
   sources = [
     "query_filter_component_installer.cc",
     "query_filter_component_installer.h",
+    "query_filter_service.cc",
+    "query_filter_service.h",
   ]
 
+  public_deps = [ "//base" ]
+
   deps = [
-    "//base",
     "//brave/components/brave_component_updater/browser:public",
     "//brave/components/query_filter/common",
     "//components/component_updater",
