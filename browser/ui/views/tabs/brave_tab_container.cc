@@ -42,6 +42,7 @@
 #include "chrome/browser/ui/views/tabs/tab_group_highlight.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_layout_helper.h"
 #include "chrome/grit/theme_resources.h"
+#include "components/prefs/pref_service.h"
 #include "components/tabs/public/split_tab_data.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -98,11 +99,19 @@ BraveTabContainer::BraveTabContainer(
     return;
   }
 
+  PrefService* prefs = browser->GetProfile()->GetOriginalProfile()->GetPrefs();
+  if (base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
+    scrollable_horizontal_tab_strip_.Init(
+        brave_tabs::kScrollableHorizontalTabStrip, prefs,
+        base::BindRepeating(
+            &BraveTabContainer::OnScrollableHorizontalTabStripPrefChanged,
+            base::Unretained(this)));
+  }
+
   if (!tabs::utils::SupportsBraveVerticalTabs(browser)) {
     return;
   }
 
-  auto* prefs = browser->GetProfile()->GetOriginalProfile()->GetPrefs();
   show_vertical_tabs_.Init(
       brave_tabs::kVerticalTabsEnabled, prefs,
       base::BindRepeating(&BraveTabContainer::UpdateLayoutOrientation,
@@ -731,6 +740,16 @@ void BraveTabContainer::ScrollTabToBeVisible(Tab* tab) {
   }
 }
 
+void BraveTabContainer::OnScrollableHorizontalTabStripPrefChanged() {
+  CHECK(base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip));
+
+  if (!IsHorizontalScrollableTabStripEnabled()) {
+    SetScrollOffset(0);
+  }
+  InvalidateIdealBounds();
+  InvalidateLayout();
+}
+
 void BraveTabContainer::UpdateScrollBarVisibility() {
   if (!scroll_bar_) {
     return;
@@ -817,7 +836,7 @@ std::optional<views::LayoutOrientation> BraveTabContainer::GetScrollDirection()
     return views::LayoutOrientation::kVertical;
   }
 
-  if (base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
+  if (IsHorizontalScrollableTabStripEnabled()) {
     return views::LayoutOrientation::kHorizontal;
   }
 
@@ -1744,6 +1763,19 @@ void BraveTabContainer::OnTreeTabsEnabledChanged() {
 
   InvalidateIdealBounds();
   InvalidateLayout();
+}
+
+bool BraveTabContainer::IsHorizontalScrollableTabStripEnabled() const {
+  if (!base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
+    return false;
+  }
+
+  if (scrollable_horizontal_tab_strip_.GetPrefName().empty()) {
+    CHECK_IS_TEST();
+    return false;
+  }
+
+  return *scrollable_horizontal_tab_strip_;
 }
 
 bool BraveTabContainer::IsPinned(const Tab* tab) const {

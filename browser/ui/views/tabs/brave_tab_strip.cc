@@ -79,6 +79,11 @@ BraveTabStrip::BraveTabStrip(
       controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs(),
       base::BindRepeating(&BraveTabStrip::OnTabMinWidthModePrefChanged,
                           base::Unretained(this)));
+  if (base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
+    scrollable_horizontal_tab_strip_.Init(
+        brave_tabs::kScrollableHorizontalTabStrip,
+        controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs());
+  }
 }
 
 BraveTabStrip::~BraveTabStrip() = default;
@@ -139,7 +144,8 @@ bool BraveTabStrip::IsVerticalTabsAnimatingButNotFinalState() const {
 
 bool BraveTabStrip::CanPaintThrobberToLayer() const {
   if (!ShouldShowVerticalTabs() &&
-      !base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
+      !(base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip) &&
+        *scrollable_horizontal_tab_strip_)) {
     return TabStrip::CanPaintThrobberToLayer();
   }
 

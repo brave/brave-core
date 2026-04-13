@@ -240,6 +240,9 @@ class BraveTabContainer : public TabContainerImpl,
   // Update scroll offset to make the given tab visible.
   void ScrollTabToBeVisible(Tab* tab);
 
+  // Callback when the scrollable horizontal tab strip preference changes.
+  void OnScrollableHorizontalTabStripPrefChanged();
+
   // Show or hide scrollbar based on the preference
   void UpdateScrollBarVisibility();
 
@@ -269,6 +272,10 @@ class BraveTabContainer : public TabContainerImpl,
   // Called when the tree tabs enabled state changes.
   void OnTreeTabsEnabledChanged();
 
+  // Returns true if the horizontal scrollable tab strip is enabled by pref.
+  // In case of unit tests, the pref can be unintialized, so we return false.
+  bool IsHorizontalScrollableTabStripEnabled() const;
+
   base::flat_set<Tab*> closing_tabs_;
 
   raw_ptr<TabDragContext> drag_context_;
@@ -287,6 +294,7 @@ class BraveTabContainer : public TabContainerImpl,
   BooleanPrefMember vertical_tabs_collapsed_;
   BooleanPrefMember tree_tabs_enabled_;
   BooleanPrefMember should_show_scroll_bar_;
+  BooleanPrefMember scrollable_horizontal_tab_strip_;
 
   bool layout_locked_ = false;
 

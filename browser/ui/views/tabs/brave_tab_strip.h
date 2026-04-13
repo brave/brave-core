@@ -120,6 +120,7 @@ class BraveTabStrip : public TabStrip {
   BooleanPrefMember always_hide_close_button_;
   BooleanPrefMember middle_click_close_tab_enabled_;
   IntegerPrefMember tab_min_width_mode_;
+  BooleanPrefMember scrollable_horizontal_tab_strip_;
 
   base::WeakPtrFactory<BraveTabStrip> weak_factory_{this};
 };
