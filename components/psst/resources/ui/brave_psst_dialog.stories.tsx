@@ -6,7 +6,6 @@
 import * as React from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 import { setIconBasePath } from '@brave/leo/react/icon'
-//import styles from './style.module.scss'
 
 import { createMockPsstDialogAPI } from './api/psst_dialog_api_mock'
 import PsstDlgContainer from './containers/App'
