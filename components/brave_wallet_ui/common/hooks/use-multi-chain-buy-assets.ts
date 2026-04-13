@@ -10,7 +10,7 @@ import { BraveWallet } from '../../constants/types'
 import { getAssetSymbol } from '../../utils/meld_utils'
 
 // hooks
-import { useGetMeldCryptoCurrenciesQuery } from '../slices/api.slice'
+import { usePersistedMeldCryptoCurrenciesQuery } from './use_persisted_meld_crypto_currencies'
 
 export const useFindBuySupportedToken = (
   token?: Pick<
@@ -19,7 +19,7 @@ export const useFindBuySupportedToken = (
   >,
 ) => {
   // queries
-  const { data: options } = useGetMeldCryptoCurrenciesQuery()
+  const { data: options } = usePersistedMeldCryptoCurrenciesQuery()
 
   // computed
   const foundNativeToken =

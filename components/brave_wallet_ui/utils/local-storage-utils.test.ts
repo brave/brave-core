@@ -3,12 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { BraveWallet } from '../constants/types'
+import { BraveWallet, MeldCryptoCurrency } from '../constants/types'
+import { mockMeldCryptoCurrencies } from '../common/constants/mocks'
 import {
   parseJSONFromLocalStorage,
   makeInitialFilteredOutNetworkKeys,
   getPersistedSpotPrices,
   mergeAndPersistSpotPrices,
+  getPersistedMeldCryptoCurrencies,
+  persistMeldCryptoCurrencies,
 } from './local-storage-utils'
 import { networkEntityAdapter } from '../common/slices/entities/network.entity'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
@@ -268,5 +271,73 @@ describe('mergeAndPersistSpotPrices', () => {
     const stored = JSON.parse(mockLocalStorageSet.mock.calls[0][1])
     const keys = Object.keys(stored)
     expect(keys[0]).toContain('0x0d8775f648430679a709e98d2b0cb6250d2887ef')
+  })
+})
+
+describe('getPersistedMeldCryptoCurrencies', () => {
+  const mockLocalStorageGet = window.localStorage.getItem as jest.Mock
+
+  it('returns an empty array when localStorage is empty', () => {
+    mockLocalStorageGet.mockReturnValue(null)
+    expect(getPersistedMeldCryptoCurrencies()).toEqual([])
+  })
+
+  it('returns persisted tokens from localStorage', () => {
+    mockLocalStorageGet.mockReturnValue(
+      JSON.stringify(mockMeldCryptoCurrencies),
+    )
+    expect(getPersistedMeldCryptoCurrencies()).toEqual(mockMeldCryptoCurrencies)
+  })
+
+  it('returns an empty array on malformed JSON', () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation()
+    mockLocalStorageGet.mockReturnValue('not valid json')
+    expect(getPersistedMeldCryptoCurrencies()).toEqual([])
+    expect(spy).toHaveBeenCalled()
+    spy.mockRestore()
+  })
+
+  it('returns an empty array when stored value is not an array', () => {
+    mockLocalStorageGet.mockReturnValue(JSON.stringify({ foo: 1 }))
+    expect(getPersistedMeldCryptoCurrencies()).toEqual([])
+  })
+})
+
+describe('persistMeldCryptoCurrencies', () => {
+  const mockLocalStorageGet = window.localStorage.getItem as jest.Mock
+  const mockLocalStorageSet = jest.fn()
+
+  beforeEach(() => {
+    ;(window.localStorage as any).setItem = mockLocalStorageSet
+    mockLocalStorageSet.mockClear()
+  })
+
+  it('does not write when the list is empty', () => {
+    persistMeldCryptoCurrencies([])
+    expect(mockLocalStorageSet).not.toHaveBeenCalled()
+  })
+
+  it('persists the full token list snapshot', () => {
+    mockLocalStorageGet.mockReturnValue(null)
+    const tokens: MeldCryptoCurrency[] = [mockMeldCryptoCurrencies[0]]
+    persistMeldCryptoCurrencies(tokens)
+
+    expect(mockLocalStorageSet).toHaveBeenCalledTimes(1)
+    expect(mockLocalStorageSet).toHaveBeenCalledWith(
+      LOCAL_STORAGE_KEYS.MELD_CRYPTO_CURRENCIES,
+      JSON.stringify(tokens),
+    )
+  })
+
+  it('replaces the prior snapshot so delisted tokens are dropped', () => {
+    const two = mockMeldCryptoCurrencies.slice(0, 2)
+    const one = mockMeldCryptoCurrencies.slice(0, 1)
+    persistMeldCryptoCurrencies(two)
+    persistMeldCryptoCurrencies(one)
+
+    expect(mockLocalStorageSet).toHaveBeenLastCalledWith(
+      LOCAL_STORAGE_KEYS.MELD_CRYPTO_CURRENCIES,
+      JSON.stringify(one),
+    )
   })
 })

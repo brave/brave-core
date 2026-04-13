@@ -20,6 +20,7 @@ import {
 
 // Utils
 import { handleEndpointError } from '../../../utils/api-utils'
+import { persistMeldCryptoCurrencies } from '../../../utils/local-storage-utils'
 import { getMeldTokensChainId } from '../../../utils/meld_utils'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
@@ -122,6 +123,14 @@ export const meldIntegrationEndpoints = ({
           const { fiatCurrencies: cryptoCurrencies, error } =
             await meldIntegrationService.getCryptoCurrencies(filter)
 
+          if (error) {
+            return handleEndpointError(
+              endpoint,
+              'Error getting meld crypto currencies: ',
+              error,
+            )
+          }
+
           const tokenList = await mapLimit(
             cryptoCurrencies || [],
             1,
@@ -151,13 +160,8 @@ export const meldIntegrationEndpoints = ({
             },
           )
 
-          if (error) {
-            return handleEndpointError(
-              endpoint,
-              'Error getting crypto currencies: ',
-              error,
-            )
-          }
+          // Full list snapshot for usePersistedMeldCryptoCurrenciesQuery.
+          persistMeldCryptoCurrencies(tokenList)
 
           return {
             data: tokenList || [],
