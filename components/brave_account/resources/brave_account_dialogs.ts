@@ -20,11 +20,8 @@ import {
   BraveAccountBrowserProxyImpl,
 } from './brave_account_browser_proxy.js'
 import { getHtml } from './brave_account_dialogs.html.js'
-import { Error } from './brave_account_common.js'
 
-export type Dialog =
-  | { type: 'CREATE' | 'ENTRY' | 'FORGOT_PASSWORD' | 'OTP' | 'SIGN_IN' }
-  | { type: 'ERROR'; error: Error }
+export type Dialog = 'CREATE' | 'ENTRY' | 'FORGOT_PASSWORD' | 'OTP' | 'SIGN_IN'
 
 export class BraveAccountDialogsElement extends CrLitElement {
   static get is() {
@@ -43,10 +40,7 @@ export class BraveAccountDialogsElement extends CrLitElement {
   }
 
   protected onBackButtonClicked() {
-    this.dialog =
-      this.dialog.type === 'FORGOT_PASSWORD'
-        ? { type: 'SIGN_IN' }
-        : { type: 'ENTRY' }
+    this.dialog = this.dialog === 'FORGOT_PASSWORD' ? 'SIGN_IN' : 'ENTRY'
   }
 
   protected onCloseDialog() {
@@ -56,7 +50,7 @@ export class BraveAccountDialogsElement extends CrLitElement {
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
 
-  protected accessor dialog: Dialog = { type: 'ENTRY' }
+  protected accessor dialog: Dialog = 'ENTRY'
   protected accessor isCapsLockOn: boolean = false
 
   // <if expr="not is_android and not is_ios">
