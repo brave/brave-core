@@ -15,7 +15,7 @@ export const RightAlignedItem = styled.div`
   margin-left: auto;
   text-align: right;
 `
-export const PsstDlgButton = styled(Button) < {} > `
+export const PsstDlgButton = styled(Button)<{}>`
   padding: 12px;
   min-height: 44px;
 `

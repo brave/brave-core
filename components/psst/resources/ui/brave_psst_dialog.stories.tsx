@@ -6,11 +6,12 @@
 import * as React from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 import { setIconBasePath } from '@brave/leo/react/icon'
-import styles from './style.module.scss'
+//import styles from './style.module.scss'
 
-import { createMockPsstDialogAPI } from '../api/psst_dialog_api_mock'
-import PsstDlgContainer from '../containers/App'
-import * as Mojom from '../types/mojom_types'
+import { createMockPsstDialogAPI } from './api/psst_dialog_api_mock'
+import PsstDlgContainer from './containers/App'
+import * as Mojom from './types/mojom_types'
+import Flex from '$web-common/Flex'
 
 // Set icon path for Storybook
 setIconBasePath('/icons')
@@ -42,9 +43,13 @@ function PsstDialogStory({
   }, [autoLoadSettings, requestDelay, errorUrls, siteName, items])
 
   return (
-    <div className={styles.container}>
+    <Flex
+      direction='row'
+      justify='center'
+      align='flex-start'
+    >
       <PsstDlgContainer apiContext={mockAPI} />
-    </div>
+    </Flex>
   )
 }
 

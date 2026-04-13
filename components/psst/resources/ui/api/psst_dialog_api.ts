@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as Mojom from '../types/mojom_types'
+import * as Mojom from 'gen/brave/components/psst/common/psst_ui_common.mojom.m.js'
 
 import {
   createInterfaceApi,
@@ -11,7 +11,7 @@ import {
   actionsFor,
   state,
 } from '$web-common/api'
-export * from '../types/mojom_types'
+export * from 'gen/brave/components/psst/common/psst_ui_common.mojom.m.js'
 
 export function createPsstDialogApi(
   consentHelper: Mojom.PsstConsentHelperRemote,
@@ -39,17 +39,17 @@ export function createPsstDialogApi(
   })
 
   callbackRouter.setSettingsCardData.addListener(
-    (settingCardData) => {
+    (settingCardData: Mojom.SettingCardData) => {
       api.settingsCardData.update(settingCardData)
     },
   )
 
-  callbackRouter.onSetRequestDone.addListener((url, error) => {
+  callbackRouter.onSetRequestDone.addListener((url: string, error?: string) => {
     api.requestStatus.update({ url, error })
   })
 
   callbackRouter.onSetCompleted.addListener(
-    (appliedChecks, errors) => {
+    (appliedChecks?: string[], errors?: string[]) => {
       api.completionStatus.update({ appliedChecks, errors })
     },
   )

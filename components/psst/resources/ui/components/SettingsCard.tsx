@@ -14,8 +14,7 @@ import { color, font } from '@brave/leo/tokens/css/variables'
 import Flex from '$web-common/Flex'
 
 // Styled components
-const TextSection = styled.div`
-`
+const TextSection = styled.div``
 
 const SettingGrid = styled(LeftAlignedItem)`
   border-radius: 8px;
@@ -49,7 +48,7 @@ const SettingsGridSmallText = styled(TextSection)`
 
 const SettingProgressRing = styled(Ring)`
   --leo-progressring-size: 18px;
-    margin-right: 10px;
+  margin-right: 10px;
 `
 
 const CheckBoxIconCompleted = styled(Icon)`
@@ -64,9 +63,19 @@ const CheckBoxIconFailed = styled(Icon)`
   margin-right: 8px;
 `
 
-export const TextLabel = styled('label') <{}>`
+const TextLabel = styled('label')<{}>`
   font: ${font.default.regular};
   color: ${color.text.primary};
+`
+const IconContainer = styled.div`
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  background-color: ${color.white};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 12px;
 `
 
 export interface Props {
@@ -76,99 +85,81 @@ export interface Props {
   onItemChecked: (url: string, checked: boolean) => void
 }
 
-export default class SettingsCard extends React.PureComponent<Props, {}> {
-  constructor(props: Props) {
-    super(props)
-  }
-
-  render() {
-    const { title, subTitle, progressModelState, onItemChecked } = this.props
-
-    return (
-      <SettingGrid>
-        <SettingGridHeaderRow>
-          <div style={iconContainerStyle}>
-            {/* <img
-              src="https://abs.twimg.com/favicons/favicon.ico" // Replace with the actual X icon URL
-              alt="X Icon"
-              style={iconStyle}
-            /> */}
-          </div>
-          <div>
-            <SettingsGridBoldText>{title}</SettingsGridBoldText>
-            <SettingsGridSmallText>{subTitle}</SettingsGridSmallText>
-          </div>
-        </SettingGridHeaderRow>
-        {progressModelState
-          && progressModelState.optionsStatuses
-          && Array.from(progressModelState.optionsStatuses.values()).map(
-            (item) => (
-              <SettingGridRow key={item.url}>
-                {(() => {
-                  if (item.settingState === SettingState.Progress) {
-                    return (
-                      <Flex
-                        direction='row'
-                        justify='flex-start'
-                        align='flex-start'
-                      >
-                        <SettingProgressRing mode='indeterminate' />
-                        <TextSection>
-                          <TextLabel>{item.description}</TextLabel>
-                        </TextSection>
-                      </Flex>
-                    )
-                  } else if (item.settingState === SettingState.Selection) {
-                    return (
-                      <Checkbox
-                        checked={item.checked}
-                        isDisabled={item.disabled}
-                        onChange={(e) => onItemChecked(item.url, e.checked)}
-                      >
+const SettingsCard: React.FC<Props> = ({
+  title,
+  subTitle,
+  progressModelState,
+  onItemChecked,
+}) => {
+  return (
+    <SettingGrid>
+      <SettingGridHeaderRow>
+        <IconContainer />
+        <div>
+          <SettingsGridBoldText>{title}</SettingsGridBoldText>
+          <SettingsGridSmallText>{subTitle}</SettingsGridSmallText>
+        </div>
+      </SettingGridHeaderRow>
+      {progressModelState
+        && progressModelState.optionsStatuses
+        && Array.from(progressModelState.optionsStatuses.values()).map(
+          (item) => (
+            <SettingGridRow key={item.url}>
+              {(() => {
+                if (item.settingState === SettingState.Progress) {
+                  return (
+                    <Flex
+                      direction='row'
+                      justify='flex-start'
+                      align='flex-start'
+                    >
+                      <SettingProgressRing mode='indeterminate' />
+                      <TextSection>
                         <TextLabel>{item.description}</TextLabel>
-                      </Checkbox>
-                    )
-                  } else if (item.settingState === SettingState.Completed) {
-                    return (
-                      <Flex
-                        direction='row'
-                        justify='flex-start'
-                        align='flex-start'
-                      >
-                        <CheckBoxIconCompleted name='check-circle-outline' />
-                        <TextLabel>{item.description}</TextLabel>
-                      </Flex>
-                    )
-                  } else if (item.settingState === SettingState.Failed) {
-                    return (
-                      <Flex
-                        direction='row'
-                        justify='flex-start'
-                        align='flex-start'
-                      >
-                        <CheckBoxIconFailed name='close-circle' />
-                        <TextLabel>{item.description}</TextLabel>
-                      </Flex>
-                    )
-                  } else {
-                    return null
-                  }
-                })()}
-              </SettingGridRow>
-            ),
-          )}
-      </SettingGrid>
-    )
-  }
+                      </TextSection>
+                    </Flex>
+                  )
+                } else if (item.settingState === SettingState.Selection) {
+                  return (
+                    <Checkbox
+                      checked={item.checked}
+                      isDisabled={item.disabled}
+                      onChange={(e) => onItemChecked(item.url, e.checked)}
+                    >
+                      <TextLabel>{item.description}</TextLabel>
+                    </Checkbox>
+                  )
+                } else if (item.settingState === SettingState.Completed) {
+                  return (
+                    <Flex
+                      direction='row'
+                      justify='flex-start'
+                      align='flex-start'
+                    >
+                      <CheckBoxIconCompleted name='check-circle-outline' />
+                      <TextLabel>{item.description}</TextLabel>
+                    </Flex>
+                  )
+                } else if (item.settingState === SettingState.Failed) {
+                  return (
+                    <Flex
+                      direction='row'
+                      justify='flex-start'
+                      align='flex-start'
+                    >
+                      <CheckBoxIconFailed name='close-circle' />
+                      <TextLabel>{item.description}</TextLabel>
+                    </Flex>
+                  )
+                } else {
+                  return null
+                }
+              })()}
+            </SettingGridRow>
+          ),
+        )}
+    </SettingGrid>
+  )
 }
 
-const iconContainerStyle = {
-  width: '32px',
-  height: '32px',
-  borderRadius: '4px',
-  backgroundColor: '#fff', // White background for the icon
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginRight: '12px',
-}
+export default React.memo(SettingsCard)
