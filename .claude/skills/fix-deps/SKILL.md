@@ -66,6 +66,26 @@ opens a single brave-core PR that closes the tracking issue.
 **Step 6 — Report the brave-core PR URL.** The state file is cleaned up
 automatically.
 
+## Phase 3: Uplifts
+
+After the master PR merges, uplift the fix to all affected release branches.
+
+**Step 7 — Identify affected channels.** Check the tracking issue labels for
+version tags (e.g. `browser/beta/1.90.x`). Determine which channels need
+uplifts — typically both `beta` and `release`.
+
+**Step 8 — Run the uplift skill for each channel.** Use the `uplift` skill with
+the master PR number(s). Get the git username from `git config user.name` or
+ask the user:
+
+```
+/uplift <username> beta <master-pr-number>
+/uplift <username> release <master-pr-number>
+```
+
+The uplift skill handles cherry-picking, pre-submission checks, PR creation, and
+labeling.
+
 ## Error Handling
 
 | Situation | Action |
