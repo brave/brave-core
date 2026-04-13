@@ -23,10 +23,10 @@ source_set("brave_domains") {
   }
 }
 
-source_set("constants") {
+source_set("urls") {
   sources = [
-    "constants.cc",
-    "constants.h",
+    "urls.cc",
+    "urls.h",
   ]
 
   deps = [
@@ -52,14 +52,14 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
-    "constants_unittest.cc",
     "service_domains_unittest.cc",
+    "urls_unittest.cc",
   ]
 
   deps = [
     ":brave_domains",
     ":buildflags",
-    ":constants",
+    ":urls",
     "//base",
     "//base/test:test_support",
     "//testing/gmock",

@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BRAVE_DOMAINS_CONSTANTS_H_
-#define BRAVE_BRAVE_DOMAINS_CONSTANTS_H_
+#ifndef BRAVE_BRAVE_DOMAINS_URLS_H_
+#define BRAVE_BRAVE_DOMAINS_URLS_H_
 
 #include <string>
 
@@ -24,4 +24,4 @@ std::string GetGate3URL();
 
 }  // namespace brave_domains
 
-#endif  // BRAVE_BRAVE_DOMAINS_CONSTANTS_H_
+#endif  // BRAVE_BRAVE_DOMAINS_URLS_H_

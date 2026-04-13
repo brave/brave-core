@@ -18,7 +18,7 @@
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-#include "brave/brave_domains/constants.h"
+#include "brave/brave_domains/urls.h"
 #endif
 
 namespace brave {

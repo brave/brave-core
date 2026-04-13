@@ -987,7 +987,7 @@ if (old_value != visual_content_used_percentage_) {
 
 ## ✅ Shared URL Constants Belong in `brave_domains`
 
-**When a URL constant or URL-building function (like a service endpoint) is shared across multiple components with no clear single owner, place it in the `brave_domains:constants` target.** Don't duplicate it in each component, and don't add it to the legacy `brave_constants.h`. For environment-aware URLs, use `GetServicesDomain()` from `brave_domains/service_domains.h`.
+**When a URL constant or URL-building function (like a service endpoint) is shared across multiple components with no clear single owner, place it in the `brave_domains:urls` target.** Don't duplicate it in each component, and don't add it to the legacy `brave_constants.h`. For environment-aware URLs, use `GetServicesDomain()` from `brave_domains/service_domains.h`.
 
 ```cpp
 // ❌ WRONG - duplicated across components
@@ -996,7 +996,7 @@ inline constexpr char kGate3Url[] = "https://gate3.brave.com";
 // components/brave_wallet/common/constants.h
 inline constexpr char kGate3Url[] = "https://gate3.brave.com";
 
-// ✅ CORRECT - shared constant or function via brave_domains/constants.h
+// ✅ CORRECT - shared constant or function via brave_domains/urls.h
 inline constexpr char kGate3Url[] = "https://gate3.brave.com";
 std::string GetGate3URL();  // environment-aware, uses GetServicesDomain()
 ```

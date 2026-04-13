@@ -11,7 +11,7 @@
 #include <string_view>
 
 #include "base/containers/fixed_flat_map.h"
-#include "brave/brave_domains/constants.h"
+#include "brave/brave_domains/urls.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/webui/web_ui_util.h"
