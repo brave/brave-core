@@ -42,6 +42,7 @@ bool IsBraveOriginBundleId(NSString* identifier) {
          [identifier hasPrefix:@"com.brave.Browser.origin."];
 }
 
+#if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 // Returns true if |identifier| is a regular (non-Origin) Brave bundle ID
 // (com.brave.Browser or com.brave.Browser.<channel>, excluding Origin).
 bool IsRegularBraveBundleId(NSString* identifier) {
@@ -49,6 +50,7 @@ bool IsRegularBraveBundleId(NSString* identifier) {
           [identifier hasPrefix:@"com.brave.Browser."]) &&
          !IsBraveOriginBundleId(identifier);
 }
+#endif
 
 // Returns true if |other_identifier| is another channel of the same Brave
 // brand as |my_identifier|. Unlike upstream's IsAnotherChromeChannel() which
