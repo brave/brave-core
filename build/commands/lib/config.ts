@@ -25,7 +25,8 @@ type ExecOptions = {
   onStdErrLine?: (line: string) => void
 }
 
-type TargetOS = 'android' | 'ios' | 'linux' | 'mac' | 'win'
+const validTargetOSValues = ['android', 'ios', 'linux', 'mac', 'win'] as const
+type TargetOS = (typeof validTargetOSValues)[number]
 
 const braveCoreDir = path.join(rootDir, 'src', 'brave')
 
@@ -946,15 +947,18 @@ export class Config {
   }
 
   set targetOS(value: string) {
-    const supportedTargetOS = ['android', 'ios', 'linux', 'mac', 'win']
-    if (!supportedTargetOS.includes(value)) {
+    if (!isValidTargetOSValue(value)) {
       Log.error(
-        `Invalid target_os: ${value} (must be one of: ${supportedTargetOS.join(', ')})`,
+        `Invalid target_os: ${value} (must be one of: ${validTargetOSValues.join(', ')})`,
       )
       process.exit(1)
     }
-    this.#targetOS = value as TargetOS
+    this.#targetOS = value
   }
+}
+
+function isValidTargetOSValue(value: string): value is TargetOS {
+  return validTargetOSValues.some((os) => value === os)
 }
 
 function readArgsGn(srcDir, outputDir) {
