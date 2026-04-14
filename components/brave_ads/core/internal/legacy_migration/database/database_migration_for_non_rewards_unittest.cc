@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager_observer.h"
@@ -32,17 +33,11 @@ class BraveAdsDatabaseMigrationForNonRewardsTest
       public DatabaseManagerObserver {
  protected:
   void SetUpMocks() override {
-    DatabaseManager::GetInstance().AddObserver(this);
+    observation_.Observe(&DatabaseManager::GetInstance());
 
     test::DisableBraveRewards();
 
     MaybeMockDatabase();
-  }
-
-  void TearDown() override {
-    DatabaseManager::GetInstance().RemoveObserver(this);
-
-    test::TestBase::TearDown();
   }
 
   static int GetSchemaVersion() { return GetParam(); }
@@ -90,6 +85,9 @@ class BraveAdsDatabaseMigrationForNonRewardsTest
   bool did_migrate_database_ = false;
   bool failed_to_migrate_database_ = false;
   bool database_is_ready_ = false;
+
+  base::ScopedObservation<DatabaseManager, DatabaseManagerObserver>
+      observation_{this};
 };
 
 TEST_P(BraveAdsDatabaseMigrationForNonRewardsTest, MigrateFromSchema) {

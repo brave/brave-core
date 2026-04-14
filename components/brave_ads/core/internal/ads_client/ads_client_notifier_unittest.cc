@@ -7,8 +7,10 @@
 
 #include <cstdint>
 
+#include "base/scoped_observation.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads_client/test/ads_client_notifier_observer_mock.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 #include "net/http/http_status_code.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -42,13 +44,7 @@ constexpr bool kScreenWasLocked = true;
 
 class BraveAdsAdsClientNotifierTest : public ::testing::Test {
  protected:
-  void SetUp() override {
-    ads_client_notifier_.AddObserver(&ads_client_notifier_observer_mock_);
-  }
-
-  void TearDown() override {
-    ads_client_notifier_.RemoveObserver(&ads_client_notifier_observer_mock_);
-  }
+  void SetUp() override { observation_.Observe(&ads_client_notifier_); }
 
   void FireAdsClientNotifiers() {
     ads_client_notifier_.NotifyDidInitializeAds();
@@ -162,6 +158,8 @@ class BraveAdsAdsClientNotifierTest : public ::testing::Test {
 
   ::testing::StrictMock<AdsClientNotifierObserverMock>
       ads_client_notifier_observer_mock_;
+  base::ScopedObservation<AdsClientNotifier, AdsClientNotifierObserver>
+      observation_{&ads_client_notifier_observer_mock_};
 };
 
 TEST_F(BraveAdsAdsClientNotifierTest, FireQueuedAdsClientNotifications) {

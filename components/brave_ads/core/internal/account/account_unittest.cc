@@ -7,8 +7,10 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
+#include "base/scoped_observation.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/test_future.h"
+#include "brave/components/brave_ads/core/internal/account/account_observer.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/test/issuers_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
@@ -45,18 +47,14 @@ class BraveAdsAccountTest : public test::TestBase {
 
     ads_observer_mock_ = test::MockAdsObserver();
 
-    GetAccount().AddObserver(&account_observer_mock_);
-  }
-
-  void TearDown() override {
-    GetAccount().RemoveObserver(&account_observer_mock_);
-
-    test::TestBase::TearDown();
+    account_observation_.Observe(&GetAccount());
   }
 
   raw_ptr<AdsObserverMock> ads_observer_mock_ = nullptr;  // Not owned.
 
   AccountObserverMock account_observer_mock_;
+  base::ScopedObservation<Account, AccountObserver> account_observation_{
+      &account_observer_mock_};
 };
 
 TEST_F(BraveAdsAccountTest, SupportUserRewardsForRewardsUser) {
