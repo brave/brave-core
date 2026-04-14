@@ -38,6 +38,8 @@ static_library("browser") {
 
   if (enable_brave_ai_chat_agent_profile) {
     sources += [
+      "ai_page_content_fetcher.cc",
+      "ai_page_content_fetcher.h",
       "page_content_blocks.cc",
       "page_content_blocks.h",
     ]
@@ -86,6 +88,7 @@ static_library("browser") {
 
   if (enable_brave_ai_chat_agent_profile) {
     deps += [
+      "//components/optimization_guide/content/browser",
       "//components/optimization_guide/proto:optimization_guide_proto",
       "//third_party/abseil-cpp:absl",
     ]
@@ -134,9 +137,13 @@ source_set("unit_tests") {
   }
 
   if (enable_brave_ai_chat_agent_profile) {
-    sources += [ "page_content_blocks_unittest.cc" ]
+    sources += [
+      "ai_page_content_fetcher_unittest.cc",
+      "page_content_blocks_unittest.cc",
+    ]
     deps += [
       ":test_support",
+      "//components/optimization_guide/content/browser",
       "//components/optimization_guide/proto:optimization_guide_proto",
     ]
   }

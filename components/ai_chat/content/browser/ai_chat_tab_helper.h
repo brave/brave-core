@@ -31,17 +31,13 @@ class AIChatTabHelper : public content::WebContentsUserData<AIChatTabHelper> {
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;
 
-  // PrintPreviewExtractionDelegate and PageContentFetcherDelegate are provided
-  // as their implementations may be in a different layer.
-  // If |page_content_fetcher_delegate| is null, a default PageContentFetcher
-  // will be created.
+  // PrintPreviewExtractionDelegate is provided as it's implementation is
+  // in a different layer.
   AIChatTabHelper(
       content::WebContents* web_contents,
       std::unique_ptr<
           AssociatedWebContentsContent::PrintPreviewExtractionDelegate>
-          print_preview_extraction_delegate,
-      std::unique_ptr<AssociatedWebContentsContent::PageContentFetcherDelegate>
-          page_content_fetcher_delegate = nullptr);
+          print_preview_extraction_delegate);
 
   std::unique_ptr<AssociatedWebContentsContent> web_contents_content_;
 

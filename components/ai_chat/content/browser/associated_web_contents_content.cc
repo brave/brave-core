@@ -27,6 +27,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
@@ -45,6 +46,11 @@
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+#include "brave/components/ai_chat/content/browser/ai_page_content_fetcher.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#endif
 
 #if BUILDFLAG(ENABLE_PDF)
 #include "brave/components/ai_chat/content/browser/pdf_text_helper.h"
@@ -75,21 +81,25 @@ void ExtractTextFromAIPageContentNode(
 AssociatedWebContentsContent::AssociatedWebContentsContent(
     content::WebContents* web_contents,
     std::unique_ptr<PrintPreviewExtractionDelegate>
-        print_preview_extraction_delegate,
-    std::unique_ptr<PageContentFetcherDelegate> page_content_fetcher_delegate)
+        print_preview_extraction_delegate)
     : content::WebContentsObserver(web_contents),
       AssociatedContentDriver(web_contents->GetBrowserContext()
                                   ->GetDefaultStoragePartition()
                                   ->GetURLLoaderFactoryForBrowserProcess()),
       print_preview_extraction_delegate_(
-          std::move(print_preview_extraction_delegate)),
-      page_content_fetcher_delegate_(nullptr) {
-  if (page_content_fetcher_delegate) {
-    page_content_fetcher_delegate_ = std::move(page_content_fetcher_delegate);
+          std::move(print_preview_extraction_delegate)) {
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+  if (features::IsAIChatDetailedPageContentExtractionEnabled()) {
+    page_content_fetcher_delegate_ =
+        std::make_unique<AIPageContentFetcher>(web_contents);
   } else {
     page_content_fetcher_delegate_ =
         std::make_unique<PageContentFetcher>(web_contents);
   }
+#else
+  page_content_fetcher_delegate_ =
+      std::make_unique<PageContentFetcher>(web_contents);
+#endif
   previous_page_title_ = web_contents->GetTitle();
 }
 

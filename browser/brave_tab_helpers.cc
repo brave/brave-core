@@ -51,10 +51,6 @@
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
-#include "brave/components/ai_chat/core/common/features.h"
-#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
-#include "brave/browser/ai_chat/ai_page_content_fetcher.h"
-#endif
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
@@ -185,14 +181,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
                         return printing::PrintPreviewUI::
                             GetPrintPreviewUIRequestIdMap();
                       }));
-                })),
-#else
-        nullptr,
-#endif
-#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
-        ai_chat::features::IsAIChatDetailedPageContentExtractionEnabled()
-            ? std::make_unique<ai_chat::AIPageContentFetcher>(web_contents)
-            : nullptr
+                }))
 #else
         nullptr
 #endif

@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ai_chat/ai_page_content_fetcher.h"
+#include "brave/components/ai_chat/content/browser/ai_page_content_fetcher.h"
 
 #include <string>
 #include <utility>
@@ -11,8 +11,8 @@
 #include "base/functional/callback_helpers.h"
 #include "base/test/test_future.h"
 #include "brave/components/ai_chat/content/browser/annotated_page_content_test_util.h"
-#include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
+#include "content/public/test/test_renderer_host.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -46,10 +46,10 @@ class FakeAIPageContentFetcher : public AIPageContentFetcher {
 
 }  // namespace
 
-class AIPageContentFetcherTest : public ChromeRenderViewHostTestHarness {
+class AIPageContentFetcherTest : public content::RenderViewHostTestHarness {
  protected:
   void SetUp() override {
-    ChromeRenderViewHostTestHarness::SetUp();
+    content::RenderViewHostTestHarness::SetUp();
     fetcher_ = std::make_unique<FakeAIPageContentFetcher>(web_contents());
   }
 
@@ -57,7 +57,7 @@ class AIPageContentFetcherTest : public ChromeRenderViewHostTestHarness {
     // Reset before parent TearDown destroys web_contents() to avoid a dangling
     // raw_ptr on AIPageContentFetcher::web_contents_.
     fetcher_.reset();
-    ChromeRenderViewHostTestHarness::TearDown();
+    content::RenderViewHostTestHarness::TearDown();
   }
 
   std::unique_ptr<FakeAIPageContentFetcher> fetcher_;
