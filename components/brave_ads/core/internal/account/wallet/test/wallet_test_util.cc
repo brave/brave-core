@@ -21,7 +21,7 @@ WalletInfo Wallet() {
   return *wallet;
 }
 
-mojom::WalletInfoPtr WalletAsPtr() {
+mojom::WalletInfoPtr MojomWallet() {
   mojom::WalletInfoPtr mojom_wallet = mojom::WalletInfo::New();
   mojom_wallet->payment_id = kWalletPaymentId;
   mojom_wallet->recovery_seed_base64 = kWalletRecoverySeedBase64;
