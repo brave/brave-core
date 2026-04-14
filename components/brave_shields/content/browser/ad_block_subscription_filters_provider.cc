@@ -142,6 +142,8 @@ void AdBlockSubscriptionFiltersProvider::OnListAvailable(bool is_new_list) {
       ScopedDictPrefUpdate update(local_state_,
                                   prefs::kAdBlockSubscriptionFiltersCacheHash);
       update->Remove(GetPrefKey());
+    } else {
+      CHECK_IS_TEST();
     }
   }
   NotifyObservers(engine_is_default_);

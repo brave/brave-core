@@ -31,9 +31,7 @@ class AdBlockDATCacheManagerTest : public testing::Test {
 
   void SetUp() override {
     ASSERT_TRUE(profile_dir_.CreateUniqueTempDir());
-    prefs_.registry()->RegisterStringPref(prefs::kAdBlockDefaultCacheHash, "");
-    prefs_.registry()->RegisterStringPref(prefs::kAdBlockAdditionalCacheHash,
-                                          "");
+    AdBlockDATCacheManager::RegisterPrefs(prefs_.registry());
   }
 
  protected:
@@ -112,6 +110,58 @@ TEST_F(AdBlockDATCacheManagerTest, ComputeCombinedCacheKeyExcludesNullopt) {
   provider_b.set_cache_key("some_key");
   std::string combined_with_both = cache.ComputeCombinedCacheKey(true);
   EXPECT_NE(combined, combined_with_both);
+}
+
+TEST_F(AdBlockDATCacheManagerTest, ComputeCombinedCacheKeyIsStable) {
+  TestFiltersProvider provider("||example.com^", true, 0);
+  provider.RegisterAsSourceProvider(&manager_);
+
+  AdBlockDATCacheManager cache(&prefs_, &manager_, profile_dir_.GetPath());
+
+  std::string key1 = cache.ComputeCombinedCacheKey(true);
+  std::string key2 = cache.ComputeCombinedCacheKey(true);
+  EXPECT_FALSE(key1.empty());
+  EXPECT_EQ(key1, key2);
+}
+
+TEST_F(AdBlockDATCacheManagerTest, ComputeCombinedCacheKeyIsOrderIndependent) {
+  // Register providers in one order.
+  TestFiltersProvider provider_a("||a.com^", true, 0);
+  provider_a.RegisterAsSourceProvider(&manager_);
+  TestFiltersProvider provider_b("||b.com^", true, 0);
+  provider_b.RegisterAsSourceProvider(&manager_);
+
+  AdBlockDATCacheManager cache(&prefs_, &manager_, profile_dir_.GetPath());
+  std::string key_ab = cache.ComputeCombinedCacheKey(true);
+
+  // Register providers in reverse order on a fresh manager.
+  AdBlockFiltersProviderManager manager2;
+  TestFiltersProvider provider_b2("||b.com^", true, 0);
+  provider_b2.RegisterAsSourceProvider(&manager2);
+  TestFiltersProvider provider_a2("||a.com^", true, 0);
+  provider_a2.RegisterAsSourceProvider(&manager2);
+
+  AdBlockDATCacheManager cache2(&prefs_, &manager2, profile_dir_.GetPath());
+  std::string key_ba = cache2.ComputeCombinedCacheKey(true);
+
+  EXPECT_EQ(key_ab, key_ba);
+}
+
+TEST_F(AdBlockDATCacheManagerTest,
+       ComputeCombinedCacheKeyChangesWithExtraProvider) {
+  TestFiltersProvider provider_a("||a.com^", true, 0);
+  provider_a.RegisterAsSourceProvider(&manager_);
+
+  AdBlockDATCacheManager cache(&prefs_, &manager_, profile_dir_.GetPath());
+  std::string key_one = cache.ComputeCombinedCacheKey(true);
+
+  TestFiltersProvider provider_b("||b.com^", true, 0);
+  provider_b.RegisterAsSourceProvider(&manager_);
+  std::string key_two = cache.ComputeCombinedCacheKey(true);
+
+  EXPECT_FALSE(key_one.empty());
+  EXPECT_FALSE(key_two.empty());
+  EXPECT_NE(key_one, key_two);
 }
 
 TEST_F(AdBlockDATCacheManagerTest, WriteDATFileCreatesCacheFile) {

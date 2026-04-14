@@ -30,6 +30,7 @@
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_shields {
@@ -56,6 +57,12 @@ ReadCachedDATFilesFromDisk(base::FilePath cache_dir) {
 }
 
 }  // namespace
+
+// static
+void AdBlockDATCacheManager::RegisterPrefs(PrefRegistrySimple* registry) {
+  registry->RegisterStringPref(prefs::kAdBlockDefaultCacheHash, "");
+  registry->RegisterStringPref(prefs::kAdBlockAdditionalCacheHash, "");
+}
 
 AdBlockDATCacheManager::AdBlockDATCacheManager(
     PrefService* local_state,

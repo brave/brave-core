@@ -6,7 +6,10 @@
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 
 #include <string>
+#include <string_view>
 
+#include "base/hash/hash.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -23,6 +26,22 @@ class AdBlockCustomFiltersProviderTest : public testing::Test {
  protected:
   TestingPrefServiceSimple prefs_;
 };
+
+TEST_F(AdBlockCustomFiltersProviderTest, InitialHashMatchesContent) {
+  // Set custom filters in prefs before creating the provider.
+  prefs_.SetString(brave_shields::prefs::kAdBlockCustomFilters,
+                   "||example.com^");
+  brave_shields::AdBlockCustomFiltersProvider provider(&prefs_, nullptr);
+
+  auto key = provider.GetCacheKey();
+  ASSERT_TRUE(key.has_value());
+  EXPECT_FALSE(key->empty());
+
+  // The hash should match what FastHash produces for the same content.
+  std::string expected =
+      base::NumberToString(base::FastHash(std::string_view("||example.com^")));
+  EXPECT_EQ(key.value(), expected);
+}
 
 TEST_F(AdBlockCustomFiltersProviderTest, HashUpdatedOnFilterChange) {
   brave_shields::AdBlockCustomFiltersProvider provider(&prefs_, nullptr);

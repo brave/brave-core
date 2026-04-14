@@ -462,8 +462,7 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kAdBlockOnlyModeEnabled, false);
   registry->RegisterBooleanPref(
       prefs::kAdBlockOnlyModeWasEnabledForSupportedLocale, false);
-  registry->RegisterStringPref(prefs::kAdBlockDefaultCacheHash, "");
-  registry->RegisterStringPref(prefs::kAdBlockAdditionalCacheHash, "");
+  AdBlockDATCacheManager::RegisterPrefs(registry);
   registry->RegisterDictionaryPref(prefs::kAdBlockSubscriptionFiltersCacheHash);
 }
 

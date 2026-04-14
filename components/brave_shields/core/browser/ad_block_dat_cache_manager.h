@@ -21,6 +21,7 @@
 
 using brave_component_updater::DATFileDataBuffer;
 
+class PrefRegistrySimple;
 class PrefService;
 
 namespace brave_shields {
@@ -34,6 +35,8 @@ class AdBlockFiltersProviderManager;
 // This class lives in core/ so it can be shared between desktop and iOS.
 class AdBlockDATCacheManager {
  public:
+  static void RegisterPrefs(PrefRegistrySimple* registry);
+
   AdBlockDATCacheManager(PrefService* local_state,
                          AdBlockFiltersProviderManager* provider_manager,
                          const base::FilePath& profile_dir);
