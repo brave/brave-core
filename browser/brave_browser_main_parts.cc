@@ -143,24 +143,23 @@ void ChromeBrowserMainParts::PostBrowserStart() {
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
-  Browser* browser = chrome::FindLastActive();
+  BrowserWindowInterface* browser = chrome::FindLastActive();
   content::WebContents* active_web_contents = nullptr;
 
   if (browser) {
-    active_web_contents = browser->tab_strip_model()->GetActiveWebContents();
+    active_web_contents = browser->GetTabStripModel()->GetActiveWebContents();
 
     if (active_web_contents) {
-      Profile* profile =
-          Profile::FromBrowserContext(active_web_contents->GetBrowserContext());
+      Profile* profile = browser->GetProfile();
       infobars::ContentInfoBarManager* infobar_manager =
           infobars::ContentInfoBarManager::FromWebContents(active_web_contents);
-      if (profile && infobar_manager) {
+      if (infobar_manager) {
         BraveConfirmP3AInfoBarDelegate::Create(
             infobar_manager, g_browser_process->local_state());
-        SyncCannotRunInfoBarDelegate::Create(infobar_manager, profile, browser);
+        SyncCannotRunInfoBarDelegate::Create(infobar_manager, browser);
 
         BraveSyncAccountDeletedInfoBarDelegate::Create(active_web_contents,
-                                                       profile, browser);
+                                                       profile);
       }
     }
   }

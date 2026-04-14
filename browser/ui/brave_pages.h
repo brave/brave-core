@@ -11,30 +11,30 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 
-class Browser;
+class BrowserWindowInterface;
 
 namespace brave {
 
-void ShowBraveAdblock(Browser* browser);
-void ShowWebcompatReporter(Browser* browser);
-void ShowBraveRewards(Browser* browser);
-void ShowBraveWallet(Browser* browser);
-void ShowBraveWalletOnboarding(Browser* browser);
-void ShowBraveWalletAccountCreation(Browser* browser,
+void ShowBraveAdblock(BrowserWindowInterface* browser);
+void ShowWebcompatReporter(BrowserWindowInterface* browser);
+void ShowBraveRewards(BrowserWindowInterface* browser);
+void ShowBraveWallet(BrowserWindowInterface* browser);
+void ShowBraveWalletOnboarding(BrowserWindowInterface* browser);
+void ShowBraveWalletAccountCreation(BrowserWindowInterface* browser,
                                     std::string_view coin_name);
-void ShowExtensionSettings(Browser* browser);
-void ShowWalletSettings(Browser* browser);
-void ShowSync(Browser* browser);
-void ShowBraveNewsConfigure(Browser* browser);
-void ShowShortcutsPage(Browser* browser);
+void ShowExtensionSettings(BrowserWindowInterface* browser);
+void ShowWalletSettings(BrowserWindowInterface* browser);
+void ShowSync(BrowserWindowInterface* browser);
+void ShowBraveNewsConfigure(BrowserWindowInterface* browser);
+void ShowShortcutsPage(BrowserWindowInterface* browser);
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
-void ShowBraveTalk(Browser* browser);
+void ShowBraveTalk(BrowserWindowInterface* browser);
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
-void ShowFullpageChat(Browser* browser);
+void ShowFullpageChat(BrowserWindowInterface* browser);
 #endif
 
-void ShowAppsPage(Browser* browser);
+void ShowAppsPage(BrowserWindowInterface* browser);
 
 }  // namespace brave
 
