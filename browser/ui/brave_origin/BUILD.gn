@@ -7,6 +7,7 @@ source_set("brave_origin") {
   sources = [ "brave_origin_navigation.cc" ]
 
   deps = [
+    "//base",
     "//brave/browser/brave_origin",
     "//brave/browser/skus",
     "//chrome/browser/profiles",
