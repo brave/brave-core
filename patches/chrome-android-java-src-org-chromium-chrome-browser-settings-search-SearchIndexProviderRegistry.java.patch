@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
-index f1c6e7c3cc6b6896b8d07eb0e942178444a8c2eb..64d115514a260725c2284a68aa33928a1fe41a14 100644
+index f1c6e7c3cc6b6896b8d07eb0e942178444a8c2eb..14d9befe34e3524187918aa4efb803c303a611d1 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 @@ -26,7 +26,7 @@ public final class SearchIndexProviderRegistry {
@@ -11,7 +11,16 @@ index f1c6e7c3cc6b6896b8d07eb0e942178444a8c2eb..64d115514a260725c2284a68aa33928a
                      org.chromium.chrome.browser.about_settings.AboutChromeSettings
                              .SEARCH_INDEX_DATA_PROVIDER,
                      org.chromium.chrome.browser.toolbar.adaptive.settings
-@@ -122,8 +122,6 @@ public final class SearchIndexProviderRegistry {
+@@ -98,8 +98,6 @@ public final class SearchIndexProviderRegistry {
+                             .SEARCH_INDEX_DATA_PROVIDER,
+                     org.chromium.chrome.browser.autofill.settings.AndroidPaymentAppsFragment
+                             .SEARCH_INDEX_DATA_PROVIDER,
+-                    org.chromium.chrome.browser.appearance.settings.AppearanceSettingsFragment
+-                            .SEARCH_INDEX_DATA_PROVIDER,
+                     org.chromium.chrome.browser.autofill.settings.AutofillBuyNowPayLaterFragment
+                             .SEARCH_INDEX_DATA_PROVIDER,
+                     org.chromium.chrome.browser.autofill.settings.AutofillCardBenefitsFragment
+@@ -122,8 +120,6 @@ public final class SearchIndexProviderRegistry {
                              .NonCardPaymentMethodsManagementFragment.SEARCH_INDEX_DATA_PROVIDER,
                      org.chromium.chrome.browser.commerce.PriceNotificationSettingsFragment
                              .SEARCH_INDEX_DATA_PROVIDER,
@@ -20,11 +29,11 @@ index f1c6e7c3cc6b6896b8d07eb0e942178444a8c2eb..64d115514a260725c2284a68aa33928a
                      org.chromium.chrome.browser.safety_check.SafetyCheckSettingsFragment
                              .SEARCH_INDEX_DATA_PROVIDER,
                      org.chromium.chrome.browser.tasks.tab_management.TabsSettings
-@@ -140,6 +138,7 @@ public final class SearchIndexProviderRegistry {
+@@ -140,6 +136,7 @@ public final class SearchIndexProviderRegistry {
                              .SEARCH_INDEX_DATA_PROVIDER,
                      org.chromium.chrome.browser.tracing.settings.TracingSettings
                              .SEARCH_INDEX_DATA_PROVIDER,
-+                    org.chromium.components.browser_ui.site_settings.BraveSiteSettingsPreferencesBase.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.password_manager.settings.PasswordSettings.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.privacy.settings.BravePrivacySettings.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveLeoDefaultModelPreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveLeoPreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveLicensePreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveOriginPreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveSearchEnginesPreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveSyncScreensPreference.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveWalletNetworksPreferenceFragment.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveWalletPreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveWebrtcPolicyPreferencesFragment.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.developer.BraveQAPreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.site_settings.BraveWalletEthereumConnectedSites.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.site_settings.BraveWalletSolanaConnectedSites.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.vpn.settings.BraveVpnPreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.brave.browser.customize_menu.settings.BraveCustomizeMenuPreferenceFragment.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.password_entry_edit.BlockedCredentialFragmentView.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.password_entry_edit.CredentialEditFragmentView.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.password_entry_edit.FederatedCredentialFragmentView.SEARCH_INDEX_DATA_PROVIDER, org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesFragment.SEARCH_INDEX_DATA_PROVIDER, org.chromium.brave.browser.custom_search_engines.settings.AddCustomSearchEnginePreferenceFragment.SEARCH_INDEX_DATA_PROVIDER,
++                    org.chromium.components.browser_ui.site_settings.BraveSiteSettingsPreferencesBase.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.password_manager.settings.PasswordSettings.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.privacy.settings.BravePrivacySettings.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveLeoDefaultModelPreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveLeoPreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveLicensePreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveOriginPreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveSearchEnginesPreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveSyncScreensPreference.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveWalletNetworksPreferenceFragment.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveWalletPreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.BraveWebrtcPolicyPreferencesFragment.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.developer.BraveQAPreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.site_settings.BraveWalletEthereumConnectedSites.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.site_settings.BraveWalletSolanaConnectedSites.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.vpn.settings.BraveVpnPreferences.SEARCH_INDEX_DATA_PROVIDER, org.chromium.brave.browser.customize_menu.settings.BraveCustomizeMenuPreferenceFragment.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.password_entry_edit.BlockedCredentialFragmentView.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.password_entry_edit.CredentialEditFragmentView.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.password_entry_edit.FederatedCredentialFragmentView.SEARCH_INDEX_DATA_PROVIDER, org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesFragment.SEARCH_INDEX_DATA_PROVIDER, org.chromium.brave.browser.custom_search_engines.settings.AddCustomSearchEnginePreferenceFragment.SEARCH_INDEX_DATA_PROVIDER, org.chromium.chrome.browser.settings.AppearancePreferences.SEARCH_INDEX_DATA_PROVIDER,
                      org.chromium.chrome.browser.tracing.settings.TracingCategoriesSettings
                              .SEARCH_INDEX_DATA_PROVIDER);
  }
