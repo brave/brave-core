@@ -6,18 +6,9 @@
 #ifndef BRAVE_BROWSER_AI_CHAT_TEXT_FILE_EXTRACTOR_H_
 #define BRAVE_BROWSER_AI_CHAT_TEXT_FILE_EXTRACTOR_H_
 
-#include <optional>
-#include <string>
-#include <vector>
-
-#include "base/files/file_path.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ai_chat/file_text_extractor_base.h"
-
-namespace content {
-class BrowserContext;
-}  // namespace content
 
 namespace ai_chat {
 
@@ -30,18 +21,6 @@ class TextFileExtractor : public FileTextExtractorBase {
  public:
   TextFileExtractor();
   ~TextFileExtractor() override;
-
-  // Use an existing file path directly (e.g. from file picker).
-  void ExtractText(content::BrowserContext* browser_context,
-                   const base::FilePath& file_path,
-                   ExtractTextCallback callback);
-
-  // Write bytes to a temp file first (e.g. from drag-and-drop).
-  // |original_extension| is preserved for MIME type detection.
-  void ExtractText(content::BrowserContext* browser_context,
-                   std::vector<uint8_t> file_bytes,
-                   const base::FilePath::StringType& original_extension,
-                   ExtractTextCallback callback);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(TextFileExtractorTest,

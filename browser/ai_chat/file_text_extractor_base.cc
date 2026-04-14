@@ -64,6 +64,25 @@ FileTextExtractorBase::~FileTextExtractorBase() {
   Cleanup();
 }
 
+void FileTextExtractorBase::ExtractText(
+    content::BrowserContext* browser_context,
+    const base::FilePath& file_path,
+    ExtractTextCallback callback) {
+  CHECK(!callback_) << "ExtractText called while extraction in progress";
+  callback_ = std::move(callback);
+  LoadInWebContents(browser_context, file_path);
+}
+
+void FileTextExtractorBase::ExtractText(
+    content::BrowserContext* browser_context,
+    std::vector<uint8_t> file_bytes,
+    const base::FilePath::StringType& extension,
+    ExtractTextCallback callback) {
+  CHECK(!callback_) << "ExtractText called while extraction in progress";
+  callback_ = std::move(callback);
+  WriteTempFileAndLoad(browser_context, std::move(file_bytes), extension);
+}
+
 network::mojom::WebSandboxFlags
 FileTextExtractorBase::AdditionalUnsandboxFlags() const {
   return network::mojom::WebSandboxFlags::kNone;

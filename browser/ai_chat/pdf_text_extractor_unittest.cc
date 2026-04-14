@@ -40,7 +40,7 @@ TEST_F(PdfTextExtractorTest, BytesOverload_TimeoutReturnsNullopt) {
 
   std::vector<uint8_t> dummy_pdf = {0x25, 0x50, 0x44, 0x46};  // %PDF
   extractor->ExtractText(browser_context(), std::move(dummy_pdf),
-                         future.GetCallback());
+                         FILE_PATH_LITERAL("pdf"), future.GetCallback());
 
   // Fast-forward past the 30s extraction timeout.
   // This also processes pending ThreadPool tasks (temp-file write).
@@ -99,7 +99,7 @@ TEST_F(PdfTextExtractorTest, BytesOverload_CleanupAfterTimeout) {
 
   std::vector<uint8_t> dummy_pdf = {0x25, 0x50, 0x44, 0x46};
   extractor->ExtractText(browser_context(), std::move(dummy_pdf),
-                         future.GetCallback());
+                         FILE_PATH_LITERAL("pdf"), future.GetCallback());
 
   // Fast-forward past timeout to trigger cleanup.
   // This also processes pending ThreadPool tasks (temp-file write).

@@ -25,25 +25,6 @@ TextFileExtractor::TextFileExtractor() = default;
 
 TextFileExtractor::~TextFileExtractor() = default;
 
-void TextFileExtractor::ExtractText(content::BrowserContext* browser_context,
-                                    const base::FilePath& file_path,
-                                    ExtractTextCallback callback) {
-  CHECK(!callback_) << "ExtractText called while extraction in progress";
-  callback_ = std::move(callback);
-  LoadInWebContents(browser_context, file_path);
-}
-
-void TextFileExtractor::ExtractText(
-    content::BrowserContext* browser_context,
-    std::vector<uint8_t> file_bytes,
-    const base::FilePath::StringType& original_extension,
-    ExtractTextCallback callback) {
-  CHECK(!callback_) << "ExtractText called while extraction in progress";
-  callback_ = std::move(callback);
-  WriteTempFileAndLoad(browser_context, std::move(file_bytes),
-                       original_extension);
-}
-
 GURL TextFileExtractor::GetLoadURL(const base::FilePath& file_path) const {
   // Use view-source: to prevent HTML/XHTML from being rendered (which could
   // execute scripts or load external resources). The source is displayed as

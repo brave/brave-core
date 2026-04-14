@@ -45,6 +45,21 @@ class FileTextExtractorBase : public RestrictedWebContentsDelegate,
   FileTextExtractorBase(const FileTextExtractorBase&) = delete;
   FileTextExtractorBase& operator=(const FileTextExtractorBase&) = delete;
 
+  // Two entry points for text extraction:
+
+  // Use an existing file path directly (e.g. from file picker).
+  void ExtractText(content::BrowserContext* browser_context,
+                   const base::FilePath& file_path,
+                   ExtractTextCallback callback);
+
+  // Write bytes to a temp file first (e.g. from drag-and-drop).
+  // |extension| is the file extension for MIME type detection (without
+  // leading dot).
+  void ExtractText(content::BrowserContext* browser_context,
+                   std::vector<uint8_t> file_bytes,
+                   const base::FilePath::StringType& extension,
+                   ExtractTextCallback callback);
+
  protected:
   // Called when the document has loaded and is ready for text extraction.
   // Subclasses must implement this and call Finish() with the result.

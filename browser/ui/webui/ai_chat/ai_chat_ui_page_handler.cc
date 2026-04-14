@@ -445,7 +445,7 @@ void AIChatUIPageHandler::ProcessPdfFile(const std::vector<uint8_t>& file_data,
 
   auto response_data = std::vector<uint8_t>(file_data);
   extractor_ptr->ExtractText(
-      profile_, std::vector<uint8_t>(file_data),
+      profile_, std::vector<uint8_t>(file_data), FILE_PATH_LITERAL("pdf"),
       base::BindOnce(&AIChatUIPageHandler::OnPdfTextExtracted,
                      weak_ptr_factory_.GetWeakPtr(), extractor_ptr, filename,
                      std::move(response_data), std::move(callback)));
