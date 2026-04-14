@@ -18,9 +18,19 @@ curl -sL \
         --chromium-src=~/dev/chromium/src/
 ```
 
+If you do not have a Chromium checkout yet, pass `--clone-chromium` together
+with `--use-ref` to have the script fetch one automatically:
 
-Produces a .tar.xz archive containing two artifacts built against the
-Chromium-managed LLVM/Clang installation:
+```sh
+python3 build_rust_toolchain_standalone.py \
+    --out-dir=./out/ \
+    --chromium-src=~/dev/chromium/src/ \
+    --clone-chromium \
+    --use-ref=refs/heads/main
+```
+
+The output of this script is a .tar.xz archive containing two artifacts built
+against the Chromium-managed LLVM/Clang installation:
 
   * rust-lld  — Rust's copy of the LLD linker, taken from the Chromium-built
                 LLVM install tree (`RUST_HOST_LLVM_INSTALL_DIR/bin/lld`).
@@ -55,7 +65,9 @@ import contextlib
 import importlib
 import logging
 from pathlib import Path, PurePath
+import os
 import platform
+import shutil
 import subprocess
 import sys
 import tarfile
@@ -83,8 +95,14 @@ TOOLS_RUST = PurePath('tools') / 'rust'
 # <RUST_BUILD_DIR>/<triple>/stage1/lib/rustlib/wasm32-unknown-unknown/.
 STAGE1_RUSTLIB = PurePath('stage1') / 'lib' / 'rustlib'
 
+# The path for depot_tools under Chromium src.
+DEPOT_TOOLS_REL_PATH = PurePath('third_party/depot_tools/')
+
 # Relative path (within the Chromium src/ root) of the depot_tools vpython3
-VPYTHON_PATH = PurePath('third_party/depot_tools/vpython3')
+VPYTHON_PATH = DEPOT_TOOLS_REL_PATH / 'vpython3'
+
+# Latest Chromium depot_tools bundle
+DEPOT_TOOLS_URL = 'https://chromium.googlesource.com/chromium/tools/depot_tools'
 
 
 def _check_call(*command, cwd=None):
@@ -109,7 +127,7 @@ def _check_call(*command, cwd=None):
         subprocess.run(command, cwd=cwd, check=True, stderr=subprocess.PIPE)
     except subprocess.CalledProcessError as e:
         if e.stderr:
-            logging.warning(e.stderr.decode('utf-8', errors='replace'))
+            logging.warning(e.stderr.decode('utf-8', errors='replace').strip())
         raise
 
 
@@ -142,7 +160,10 @@ class ToolchainBuilder:
     both before the build starts and in a `finally` block afterwards.
     """
 
-    def __init__(self, chromium_src: str, out_dir: str) -> None:
+    def __init__(self,
+                 chromium_src: str,
+                 out_dir: str,
+                 clone_chromium: bool = False):
         """Validate inputs, resolve paths, and import the build/package modules.
 
         Args:
@@ -150,6 +171,8 @@ class ToolchainBuilder:
                 and contain a `tools/rust/` subdirectory.
             out_dir: Directory where the output `.tar.xz` archive is written.
                 Created (including parents) if it does not already exist.
+            clone_chromium: Whether the builder should operate in a mode that
+                allows cloning Chromium automatically, if necessary.
 
         Raises:
             RuntimeError: If `chromium_src` does not exist or does not look
@@ -157,24 +180,23 @@ class ToolchainBuilder:
                 directory.
         """
         self.chromium_src: Path = Path(chromium_src).expanduser().resolve()
-        if not self.chromium_src.is_dir():
-            raise RuntimeError(
-                f'--chromium-src must be an existing directory: {chromium_src}'
-            )
+        if not self._has_valid_chromium_path():
+            if clone_chromium:
+                logging.info('Chromium src not found at %s, cloning...',
+                             self.chromium_src)
+                self._clone_chromium()
+            else:
+                raise RuntimeError(
+                    '--chromium-src must be an existing Chromium src '
+                    f'directory: {chromium_src}')
 
         # Absolute path to tools/rust/ inside the Chromium source tree.
         self.tools_rust: Path = self.chromium_src / TOOLS_RUST
         if not self.tools_rust.is_dir():
-            raise RuntimeError(
-                f'--chromium-src is not a Chromium src directory: {chromium_src}'
-            )
+            raise RuntimeError(f'{self.tools_rust} is not a directory.')
 
         # Absolute path to depot_tools vpython3 inside the Chromium checkout.
         self.vpython_path: Path = self.chromium_src / VPYTHON_PATH
-        if not self.vpython_path.is_file():
-            raise RuntimeError(
-                f'Could not find vpython at expected path: {self.vpython_path}'
-            )
 
         # Resolved absolute path to the output directory.
         self.out_dir: Path = Path(out_dir).expanduser().resolve()
@@ -345,7 +367,80 @@ class ToolchainBuilder:
             tar.add(stage1_output_path / WASM32_UNKNOWN_UNKNOWN,
                     arcname=WASM32_UNKNOWN_UNKNOWN)
 
-    def run(self):
+    def _bootstrap_depot_tools(self):
+        """Clone depot_tools into this builder's Chromium checkout."""
+        if shutil.which('gclient') is not None:
+            logging.debug('depot_tools already on PATH, skipping clone')
+            return
+
+        depot_tools_path = self.chromium_src / DEPOT_TOOLS_REL_PATH
+        logging.info('Installing depot_tools under %s', depot_tools_path)
+        depot_tools_path.parent.mkdir(parents=True, exist_ok=True)
+        _check_call('git', 'clone', DEPOT_TOOLS_URL, str(depot_tools_path))
+
+        # Add depot_tools to PATH so that gclient can be used.
+        os.environ['PATH'] = os.pathsep.join(
+            [str(depot_tools_path), os.environ['PATH']])
+        _check_call('gclient')
+
+    def _has_valid_chromium_path(self) -> bool:
+        """Return whether self.chromium_src points to a valid Chromium repo."""
+        if not self.chromium_src.exists():
+            return False
+
+        if not self.chromium_src.is_dir():
+            raise RuntimeError(
+                f'--chromium-src exists but is not a directory: '
+                f'{self.chromium_src}')
+
+        logging.info('Checking for valid Chromium repo at %s',
+                     self.chromium_src)
+        try:
+            _check_call('git',
+                        'log',
+                        '-1',
+                        '--oneline',
+                        'chrome/VERSION',
+                        cwd=self.chromium_src)
+        except (subprocess.CalledProcessError, OSError):
+            return False
+
+        return True
+
+    def _checkout_chromium_ref(self, ref: str):
+        """Check out a specific Chromium ref and resync dependencies."""
+        logging.info('Checking out Chromium ref %s', ref)
+        try:
+            _check_call('git',
+                        'checkout',
+                        '--force',
+                        ref,
+                        cwd=self.chromium_src)
+        except subprocess.CalledProcessError:
+            logging.info('Ref %s not found locally, fetching from origin', ref)
+            _check_call('git', 'fetch', 'origin', ref, cwd=self.chromium_src)
+            _check_call('git',
+                        'checkout',
+                        '--force',
+                        'FETCH_HEAD',
+                        cwd=self.chromium_src)
+
+        _check_call('gclient', 'sync', '--force', '-D', cwd=self.chromium_src)
+        _check_call('git',
+                    'log',
+                    '-1',
+                    '--oneline',
+                    'chrome/VERSION',
+                    cwd=self.chromium_src)
+
+    def _clone_chromium(self):
+        """Clone a fresh Chromium checkout under `self.chromium_src.parent`."""
+        self._bootstrap_depot_tools()
+
+        self.chromium_src.parent.mkdir(parents=True, exist_ok=True)
+        _check_call('fetch', 'chromium', cwd=self.chromium_src.parent)
+
+    def run(self, use_ref: str = None):
         """Execute the full build-and-package pipeline.
 
         Coordinates the three phases in order:
@@ -356,7 +451,15 @@ class ToolchainBuilder:
         2. `_create_archive` — assemble the output .tar.xz.
 
         `config.toml.template` is returned to its original state always.
+
+        Args:
+            use_ref: Optional Git reference (branch, tag, or commit) to check
+                out before building. If provided, calls `_checkout_chromium_ref`
+                first.
         """
+        if use_ref:
+            self._checkout_chromium_ref(use_ref)
+
         # Build process
         with self._temporary_config_toml_template_edits():
             self._prepare_run_xpy()
@@ -375,15 +478,26 @@ def main():
     parser.add_argument('--out-dir',
                         required=True,
                         help='Output directory for the archive')
+    parser.add_argument('--clone-chromium',
+                        action='store_true',
+                        help='Allow cloning Chromium if needed')
+    parser.add_argument(
+        '--use-ref',
+        help='Git reference (branch, tag, commit) to check out before building'
+        ' the toolchain.')
     parser.add_argument('--verbose',
                         action='store_true',
                         help='Enable verbose (debug) logging')
     args = parser.parse_args()
 
+    if args.clone_chromium and not args.use_ref:
+        parser.error('--use-ref is required when --clone-chromium is provided')
+
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
 
-    builder = ToolchainBuilder(args.chromium_src, args.out_dir)
-    builder.run()
+    builder = ToolchainBuilder(args.chromium_src, args.out_dir,
+                               args.clone_chromium)
+    builder.run(args.use_ref)
     return 0
 
 
