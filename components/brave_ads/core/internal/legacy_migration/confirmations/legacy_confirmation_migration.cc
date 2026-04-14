@@ -12,9 +12,9 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_state_manager.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration_confirmations_json_reader.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration_util.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
@@ -57,8 +57,7 @@ void MigrateConfirmationState(InitializeCallback callback) {
 
             if (!GetProfileBooleanPref(
                     "brave.brave_ads.state.has_migrated.confirmations.v8") &&
-                !ConfirmationStateManager::GetInstance().FromJson(
-                    mutable_json)) {
+                !TokenStateManager::GetInstance().FromJson(mutable_json)) {
               // The confirmation state is corrupted, therefore, reset it to
               // the default values for version 8.
               BLOG(0,
@@ -67,8 +66,7 @@ void MigrateConfirmationState(InitializeCallback callback) {
               mutable_json = "{}";
             }
 
-            if (!ConfirmationStateManager::GetInstance().FromJson(
-                    mutable_json)) {
+            if (!TokenStateManager::GetInstance().FromJson(mutable_json)) {
               BLOG(0, "Failed to parse confirmation state");
               return FailedToMigrate(std::move(callback));
             }

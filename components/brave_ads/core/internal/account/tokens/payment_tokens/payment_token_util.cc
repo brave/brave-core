@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_util.h"
 
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens.h"
-#include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_state_manager.h"
 
 namespace brave_ads {
 
@@ -23,57 +23,54 @@ std::optional<PaymentTokenInfo> MaybeGetPaymentToken() {
     return std::nullopt;
   }
 
-  return ConfirmationStateManager::GetInstance().GetPaymentTokens().GetToken();
+  return TokenStateManager::GetInstance().GetPaymentTokens().GetToken();
 }
 
 const PaymentTokenList& GetAllPaymentTokens() {
-  return ConfirmationStateManager::GetInstance()
-      .GetPaymentTokens()
-      .GetAllTokens();
+  return TokenStateManager::GetInstance().GetPaymentTokens().GetAllTokens();
 }
 
 void AddPaymentTokens(const PaymentTokenList& payment_tokens) {
-  ConfirmationStateManager::GetInstance().GetPaymentTokens().AddTokens(
-      payment_tokens);
+  TokenStateManager::GetInstance().GetPaymentTokens().AddTokens(payment_tokens);
 
-  ConfirmationStateManager::GetInstance().SaveState();
+  TokenStateManager::GetInstance().SaveState();
 }
 
 bool RemovePaymentToken(const PaymentTokenInfo& payment_token) {
-  if (!ConfirmationStateManager::GetInstance().GetPaymentTokens().RemoveToken(
+  if (!TokenStateManager::GetInstance().GetPaymentTokens().RemoveToken(
           payment_token)) {
     return false;
   }
 
-  ConfirmationStateManager::GetInstance().SaveState();
+  TokenStateManager::GetInstance().SaveState();
 
   return true;
 }
 
 void RemovePaymentTokens(const PaymentTokenList& payment_tokens) {
-  ConfirmationStateManager::GetInstance().GetPaymentTokens().RemoveTokens(
+  TokenStateManager::GetInstance().GetPaymentTokens().RemoveTokens(
       payment_tokens);
 
-  ConfirmationStateManager::GetInstance().SaveState();
+  TokenStateManager::GetInstance().SaveState();
 }
 
 void RemoveAllPaymentTokens() {
-  ConfirmationStateManager::GetInstance().GetPaymentTokens().RemoveAllTokens();
+  TokenStateManager::GetInstance().GetPaymentTokens().RemoveAllTokens();
 
-  ConfirmationStateManager::GetInstance().SaveState();
+  TokenStateManager::GetInstance().SaveState();
 }
 
 bool PaymentTokenExists(const PaymentTokenInfo& payment_token) {
-  return ConfirmationStateManager::GetInstance().GetPaymentTokens().TokenExists(
+  return TokenStateManager::GetInstance().GetPaymentTokens().TokenExists(
       payment_token);
 }
 
 bool PaymentTokensIsEmpty() {
-  return ConfirmationStateManager::GetInstance().GetPaymentTokens().IsEmpty();
+  return TokenStateManager::GetInstance().GetPaymentTokens().IsEmpty();
 }
 
 size_t PaymentTokenCount() {
-  return ConfirmationStateManager::GetInstance().GetPaymentTokens().Count();
+  return TokenStateManager::GetInstance().GetPaymentTokens().Count();
 }
 
 }  // namespace brave_ads

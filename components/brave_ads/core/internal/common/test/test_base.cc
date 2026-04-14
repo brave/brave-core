@@ -15,6 +15,7 @@
 #include "base/functional/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/test/token_generator_mock.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_state_manager.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/test/wallet_test_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_waiter.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_path_test_util.h"
@@ -28,7 +29,6 @@
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
@@ -292,7 +292,7 @@ void TestBase::MockDefaultAdsServiceState() const {
 
   // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
   // from using JSON state to a more efficient data approach.
-  GlobalState::GetInstance()->GetConfirmationStateManager().LoadState(
+  GlobalState::GetInstance()->GetTokenStateManager().LoadState(
       Wallet(), base::BindOnce([](bool success) {
         ASSERT_TRUE(success) << "Failed to load confirmation state";
       }));
