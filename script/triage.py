@@ -10,6 +10,7 @@
 #                                          --ignore-comments --ignore-priority
 
 from datetime import datetime, timezone
+import calendar
 import argparse
 import os
 import sys
@@ -223,7 +224,8 @@ def get_stale_issues(page=1):
     if cutoff_month <= 0:
         cutoff_month += 12
         cutoff_year -= 1
-    cutoff_date = now.replace(year=cutoff_year, month=cutoff_month)
+    cutoff_day = min(now.day, calendar.monthrange(cutoff_year, cutoff_month)[1])
+    cutoff_date = now.replace(year=cutoff_year, month=cutoff_month, day=cutoff_day)
 
     for issue in response:
         # Search only issues opened by ghost (deleted account).
