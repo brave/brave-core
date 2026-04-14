@@ -19,6 +19,9 @@
 
 namespace query_filter {
 
+inline constexpr char kQueryFilterComponentId[] =
+    "cemdlagocoimleflkfkjoihojfainiho";
+
 class QueryFilterComponentInstallerTest : public testing::Test {
  public:
   QueryFilterComponentInstallerTest()
