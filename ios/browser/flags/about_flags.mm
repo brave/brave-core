@@ -7,6 +7,7 @@
 
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_component_updater/browser/features.h"
+#include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_sync/features.h"
@@ -353,6 +354,13 @@ const flags_ui::FeatureEntry::FeatureVariation
           "Enable QuickView feature",                                          \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave::features::kQuickViewEnabled),              \
+      },                                                                       \
+      {                                                                        \
+          "brave-origin",                                                      \
+          "Enable Brave Origin",                                               \
+          "Enables Brave Origin features and settings.",                       \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave_origin::features::kBraveOrigin),            \
       })                                                                       \
   BRAVE_SHIELDS_FEATURE_ENTRIES                                                \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
