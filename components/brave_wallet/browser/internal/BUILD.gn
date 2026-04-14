@@ -123,6 +123,7 @@ rust_static_library("polkadot_extrinsic_rs") {
 
   deps = [
     "//brave/third_party/rust/blake2b_simd/v1:lib",
+    "//brave/third_party/rust/memchr/v2:lib",
     "//brave/third_party/rust/parity_scale_codec/v3:lib",
   ]
 }
