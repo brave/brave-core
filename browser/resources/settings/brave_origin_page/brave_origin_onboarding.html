@@ -13,11 +13,15 @@
     padding-bottom: var(--leo-spacing-m);
   }
 
+  #learnMoreLink,
+  #proceedFreeButton {
+    margin-inline-start: var(--leo-spacing-xl);
+  }
+
   #learnMoreLink {
     color: var(--cr-link-color);
     cursor: pointer;
     font: var(--cr-button-font);
-    margin-inline-start: var(--leo-spacing-xl);
   }
 </style>
 
@@ -35,6 +39,11 @@
     <cr-button class="action-button" on-click="onBuyNowClick_">
       $i18n{braveOriginOnboardingBuyNow}
     </cr-button>
+    <if expr="is_linux">
+      <cr-button id="proceedFreeButton" on-click="onProceedFreeClick_">
+        $i18n{braveOriginOnboardingProceedFree}
+      </cr-button>
+    </if>
     <a id="learnMoreLink" on-click="onLearnMoreClick_">
       $i18n{braveOriginOnboardingLearnMore}
     </a>

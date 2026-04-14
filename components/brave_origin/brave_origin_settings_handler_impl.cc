@@ -10,6 +10,7 @@
 #include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
+#include "build/build_config.h"
 
 namespace brave_origin {
 
@@ -89,6 +90,15 @@ void BraveOriginSettingsHandlerImpl::SetPolicyValue(
 void BraveOriginSettingsHandlerImpl::GetNeedsRestart(
     GetNeedsRestartCallback callback) {
   std::move(callback).Run(brave_origin_service_->NeedsRestart());
+}
+
+void BraveOriginSettingsHandlerImpl::ProceedFree(ProceedFreeCallback callback) {
+#if BUILDFLAG(IS_LINUX)
+  brave_origin_service_->AcceptFreeTier();
+  std::move(callback).Run(true);
+#else
+  std::move(callback).Run(false);
+#endif
 }
 
 }  // namespace brave_origin
