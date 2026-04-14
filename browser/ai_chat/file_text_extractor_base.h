@@ -15,7 +15,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
-#include "content/public/browser/web_contents_delegate.h"
+#include "brave/components/restricted_web_contents_delegate/restricted_web_contents_delegate.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "services/network/public/cpp/web_sandbox_flags.h"
 
@@ -32,7 +32,7 @@ namespace ai_chat {
 //
 // Subclasses must implement OnDocumentReady() to perform their specific
 // text extraction logic and call Finish() when done.
-class FileTextExtractorBase : public content::WebContentsDelegate,
+class FileTextExtractorBase : public RestrictedWebContentsDelegate,
                               public content::WebContentsObserver {
  public:
   using ExtractTextCallback =
@@ -71,26 +71,6 @@ class FileTextExtractorBase : public content::WebContentsDelegate,
   ExtractTextCallback callback_;
 
  private:
-  // content::WebContentsDelegate:
-  bool ShouldSuppressDialogs(content::WebContents* source) override;
-  void CanDownload(const GURL& url,
-                   const std::string& request_method,
-                   base::OnceCallback<void(bool)> callback) override;
-  bool IsWebContentsCreationOverridden(
-      content::RenderFrameHost* opener,
-      content::SiteInstance* source_site_instance,
-      content::mojom::WindowContainerType window_container_type,
-      const GURL& opener_url,
-      const std::string& frame_name,
-      const GURL& target_url) override;
-  bool CanEnterFullscreenModeForTab(
-      content::RenderFrameHost* requesting_frame) override;
-  bool CanDragEnter(content::WebContents* source,
-                    const content::DropData& data,
-                    blink::DragOperationsMask operations_allowed) override;
-  void RequestKeyboardLock(content::WebContents* web_contents,
-                           bool esc_key_locked) override;
-
   // content::WebContentsObserver:
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
