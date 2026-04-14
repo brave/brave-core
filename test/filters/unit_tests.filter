@@ -29,6 +29,8 @@
 -GlicButtonControllerTest.*
 -GlicEnablingStandardFreTest.NotConsented_Returns*
 -GlicEnablingTrustFirstOnboardingTest.*
+-GlicFreControllerTest.*
+-GlicMediaIntegrationTest.*
 -GlicMetricsFeaturesEnabledTest.*
 -GlicMetricsTest.*
 -GlicMetricsTrustFirstOnboardingTest.*
@@ -115,6 +117,7 @@
 # These tests crash or fail because we have kOptimizationHints feature disabled,
 # which causes OptimizationGuideKeyedServiceFactory::GetForProfile return a
 # nullptr.
+-AIClassifierTest.*
 -AILanguageModel*Test.*
 -AILanguageModelTestWithLanguageParams.PromptWithEnabledLanguages/*
 -AIManagerTest.*
@@ -267,11 +270,13 @@
 -AccountExtensionTrackerUnitTest.AccountExtensionsRemovedWhenSignedOut
 -AccountExtensionTrackerUnitTest.ExtensionSyncDisabledWhileSignedIn
 -AccountsPolicyManagerTest.ClearProfileWhenSigninAndSignoutNotAllowed
+-All/DiceResponseHandlerParamTest.Signin/*
 -All/SigninUtilHistorySyncOptinForManagedSettingsTest.*
 -AppMenuModelTest.ProfileSyncOnTest
 -AvatarButtonPromoManagerTest.SigninPromoHasLastExternalEventTimeCheck
 -AvatarButtonPromoManagerTest.SigninPromoSupportIndependantProfileAndAccount*
 -BrowserSigninDetectorServiceTest.LateObservation
+-ConnectorsServiceRealTimeURLIdentifierTest.ReturnsCorrectIdentifier/*
 -ContextualSearchboxHandlerSignedInTestTabsTest.GetRecentTabs_SetsShowInRecentTabChip
 -DeveloperPrivateApiTransportModeUnitTest.CannotUploadAfterSignOut
 -DeveloperPrivateApiTransportModeUnitTest.CannotUploadWithFullSync
@@ -321,7 +326,9 @@
 -ChromePingManagerFactoryTest.ShouldSendPersistedReport_Yes
 -ChromeTailoredSecurityServiceTest.*
 -ClientSideDetectionHostCreditCardFormTest.*
+-ClientSideDetectionHostNewObserversForceRequestTest.*
 -ClientSideDetectionHostNotificationTest.*
+-ClientSideDetectionHostPriorityTest.*
 -ClientSideDetectionHostScamDetectionTest.*
 -ClientSideDetectionHostTest.*
 -ClientSideDetectionIntelligentScanDelegateDesktopTest*
@@ -381,6 +388,7 @@
 # optimization_guide::features::kOptimizationGuideFetchingForSRP
 -ChangePasswordFormFillingSubmissionHelperTest.*
 -ChromeHintsManagerFetchingTest.HintsFetched_*
+-FindsTabHelperTest.TestSRPBackNavigationThresholdMet
 -PasswordChangeDelegateImplTest.MetricsReportedFlowCanceledDuringSignInCheck
 -PasswordChangeDelegateImplTest.OtpDetectionProcessed
 -PasswordChangeDelegateImplTest.PasswordChangeFormNotFound
@@ -536,9 +544,14 @@
 # These tests fail because we disable one time permission functionality in
 # components/content_settings/core/browser/content_settings_utils.cc override.
 -All/OneTimePermissionProviderExpiryTest.RenewContentSetting_Noop/*
+-HostContentSettingsMapTest.SetOneTimeAndPersistentGeolocationSetting
+-HostContentSettingsMapTest.SetOneTimeGeolocationGrantWithPersistentPermissionBlocked
 -OneTimePermissionProviderTest.*
 -PageInfoToggleStatesUnitTest.TogglePermissionWithAllowOnceDefaultAskTest
 -PageInfoToggleStatesUnitTest.TogglePermissionWithAllowOnceDefaultBlockTest
+
+# These tests fail because we disable popular site suggestions functionality
+-MostVisitedHandlerTest/MostVisitedAutoRemovalTest.OnMostVisitedTileHoverMetrics/*
 
 # These fail because we override GetChromeChannel to always use
 # with_extended_stable = false and override channel info
@@ -577,6 +590,8 @@
 
 # These tests fail because we disable uploading these event logs
 # See WebRtcLogUploader::UploadCompressedLog patch.
+-RTCDiagnosticLoggingTest.EventLogUuidNotOverwrittenInFinish
+-RTCDiagnosticLoggingTest.MetadataMerged
 -RTCDiagnosticLoggingTest.StartFinishAndUploadDiagnosticLogging
 -RTCDiagnosticLoggingTest.UploadDiagnosticLoggingWithoutStop
 -RTCDiagnosticLoggingTest.UploadSiteOriginLogging
@@ -606,6 +621,7 @@
 
 # Read anything is disabled
 -All/RenderViewContextMenuReadAnythingTest.AppendPageItems/*
+-RenderViewContextMenuListenToThisPageTest.MenuItemPresentWhenEnabled
 
 # These tests fail because it's expected that the generated tabs have
 # suggestions like "Ask Google about this tab", whereas our results have
@@ -658,6 +674,28 @@
 
 # These tests fail because we disable `blink::features::kAIRewriterAPI`
 -AIRewriterTest.*
+
+# These tests fail because we change kRemoteFrontendDomain to devtools.brave.com
+-DevToolsUIBindingsLoadNetworkResourceTest.BlocksFileSchemeFromRemoteFrontend
+-DevToolsUIBindingsLoadNetworkResourceTest.BlocksFileSchemeFromRemoteFrontendWithLocalTarget
+
+# These tests fail because brave.omnibox.history_suggestions_enabled is not
+# registered.
+-OmniboxEditModelPopupTest.AiModeButtonClick*
+-OmniboxEditModelPopupTest.AimPopup*
+
+# These tests crash because the tests initialize profile first and then reset
+# the global features. The ephemeral_storage::ApplicationStateObserver created
+# by the EphemeralStorageServiceDelegate in EphemeralStorageService uses
+# global browser collection observer that becomes invalid when the global
+# features reset. ephemeral_storage::ApplicationStateObserver d'tor then causes
+# the crash.
+-DefaultBrowserManagerTest.*
+-DefaultBrowserNotificationObserverTest.DoesNotShowNotificationIfAlreadyNotDefault
+-DefaultBrowserNotificationObserverTest.DoesNotShowNotificationWhenDefault
+-DefaultBrowserNotificationObserverTest.DoesNotShowNotificationWhenUnknown
+-DefaultBrowserNotificationObserverTest.ShowsNotificationWhenNotDefault
+-SiteSettingsHelperChooserExceptionTest.GetChooserExceptionListFromProfile
 
 # These tests fail because we override HasTabSearchToolbarButton to always
 # return true.

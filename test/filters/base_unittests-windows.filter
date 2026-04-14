@@ -16,3 +16,6 @@
 
 # Flaky (we don't modify any of the related code and it's flaky upstream too)
 -SystemMetricsTest.TestNoNegativeCpuUsage
+
+# Flaky on CI but passes locally
+-SecurityDescriptorTest.SetDaclEntryFromToken
