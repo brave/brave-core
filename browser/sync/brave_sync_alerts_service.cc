@@ -78,16 +78,15 @@ void BraveSyncAlertsService::OnSyncShutdown(SyncService* sync_service) {
 
 void BraveSyncAlertsService::ShowSyncCannotRunInfobar() {
 #if !BUILDFLAG(IS_ANDROID)
-  Browser* browser = chrome::FindLastActive();
+  BrowserWindowInterface* browser = chrome::FindLastActive();
   if (browser) {
     content::WebContents* active_web_contents =
-        browser->tab_strip_model()->GetActiveWebContents();
+        browser->GetTabStripModel()->GetActiveWebContents();
     if (active_web_contents) {
       infobars::ContentInfoBarManager* infobar_manager =
           infobars::ContentInfoBarManager::FromWebContents(active_web_contents);
       if (infobar_manager) {
-        SyncCannotRunInfoBarDelegate::Create(infobar_manager, profile_,
-                                             browser);
+        SyncCannotRunInfoBarDelegate::Create(infobar_manager, browser);
       }
     }
   }
@@ -99,10 +98,10 @@ void BraveSyncAlertsService::ShowInfobar() {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveSyncAccountDeletedInformer_show(env);
 #else
-  Browser* browser = chrome::FindLastActive();
+  BrowserWindowInterface* browser = chrome::FindLastActive();
   if (browser) {
     content::WebContents* active_web_contents =
-        browser->tab_strip_model()->GetActiveWebContents();
+        browser->GetTabStripModel()->GetActiveWebContents();
     if (active_web_contents) {
       BraveSyncAccountDeletedInfoBarDelegate::Create(active_web_contents,
                                                      profile_);

@@ -58,6 +58,7 @@
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/profiles/profile_picker.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -347,12 +348,12 @@ void CloseWalletBubble(Browser* browser) {
 }
 #endif
 
-void CopySanitizedURL(Browser* browser, const GURL& url) {
-  if (!browser || !browser->profile()) {
+void CopySanitizedURL(BrowserWindowInterface* browser, const GURL& url) {
+  if (!browser || !browser->GetProfile()) {
     return;
   }
   GURL sanitized_url = brave::URLSanitizerServiceFactory::GetForBrowserContext(
-                           browser->profile())
+                           browser->GetProfile())
                            ->SanitizeURL(url);
 
   ui::ScopedClipboardWriter scw(ui::ClipboardBuffer::kCopyPaste);

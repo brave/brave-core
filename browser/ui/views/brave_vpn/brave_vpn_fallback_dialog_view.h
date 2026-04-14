@@ -8,7 +8,7 @@
 
 #include "ui/views/window/dialog_delegate.h"
 
-class Browser;
+class BrowserWindowInterface;
 class PrefService;
 
 namespace views {
@@ -20,15 +20,14 @@ namespace brave_vpn {
 class BraveVpnFallbackDialogView : public views::DialogDelegateView {
   METADATA_HEADER(BraveVpnFallbackDialogView, views::DialogDelegateView)
  public:
-
-  static void Show(Browser* browser);
+  static void Show(BrowserWindowInterface* browser);
 
   BraveVpnFallbackDialogView(const BraveVpnFallbackDialogView&) = delete;
   BraveVpnFallbackDialogView& operator=(const BraveVpnFallbackDialogView&) =
       delete;
 
  private:
-  explicit BraveVpnFallbackDialogView(Browser* browser);
+  explicit BraveVpnFallbackDialogView(PrefService* prefs);
   ~BraveVpnFallbackDialogView() override;
 
   void OnAccept();
@@ -39,7 +38,6 @@ class BraveVpnFallbackDialogView : public views::DialogDelegateView {
   bool ShouldShowCloseButton() const override;
   bool ShouldShowWindowTitle() const override;
 
-  raw_ptr<Browser> browser_ = nullptr;
   raw_ptr<PrefService> prefs_ = nullptr;
   raw_ptr<views::Checkbox> dont_ask_again_checkbox_ = nullptr;
 };

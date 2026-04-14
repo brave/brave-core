@@ -18,29 +18,29 @@ class GURL;
 
 namespace brave {
 
-void ShowBraveAdblock(Browser* browser);
-void ShowWebcompatReporter(Browser* browser);
-void ShowBraveRewards(Browser* browser);
+void ShowBraveAdblock(BrowserWindowInterface* browser);
+void ShowWebcompatReporter(BrowserWindowInterface* browser);
+void ShowBraveRewards(BrowserWindowInterface* browser);
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-void ShowBraveWallet(Browser* browser);
-void ShowBraveWalletOnboarding(Browser* browser);
+void ShowBraveWallet(BrowserWindowInterface* browser);
+void ShowBraveWalletOnboarding(BrowserWindowInterface* browser);
 void ShowBraveWalletTxNotificationUrl(BrowserWindowInterface* browser,
                                       GURL url);
-void ShowBraveWalletAccountCreation(Browser* browser,
+void ShowBraveWalletAccountCreation(BrowserWindowInterface* browser,
                                     std::string_view coin_name);
 #endif
-void ShowExtensionSettings(Browser* browser);
-void ShowSync(Browser* browser);
-void ShowBraveNewsConfigure(Browser* browser);
-void ShowShortcutsPage(Browser* browser);
+void ShowExtensionSettings(BrowserWindowInterface* browser);
+void ShowSync(BrowserWindowInterface* browser);
+void ShowBraveNewsConfigure(BrowserWindowInterface* browser);
+void ShowShortcutsPage(BrowserWindowInterface* browser);
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
-void ShowBraveTalk(Browser* browser);
+void ShowBraveTalk(BrowserWindowInterface* browser);
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
-void ShowFullpageChat(Browser* browser);
+void ShowFullpageChat(BrowserWindowInterface* browser);
 #endif
 
-void ShowAppsPage(Browser* browser);
+void ShowAppsPage(BrowserWindowInterface* browser);
 
 }  // namespace brave
 
