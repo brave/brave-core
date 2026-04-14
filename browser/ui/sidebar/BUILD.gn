@@ -88,6 +88,7 @@ source_set("browser_tests") {
     ":sidebar_impl",
     "//base",
     "//brave/app:command_ids",
+    "//brave/browser/ui/sidebar/buildflags",
     "//brave/browser/ui/views/frame",
     "//brave/browser/ui/views/frame/split_view",
     "//brave/browser/ui/views/side_panel",

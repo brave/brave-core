@@ -19,6 +19,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/sidebar/buildflags/buildflags.h"
 #include "brave/browser/ui/sidebar/features.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
@@ -30,7 +31,6 @@
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_mini_toolbar.h"
-#include "brave/browser/ui/views/side_panel/side_panel.h"
 #include "brave/browser/ui/views/side_panel/side_panel_resize_widget.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
@@ -67,6 +67,7 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -135,7 +136,11 @@ class SidebarBrowserTest : public InProcessBrowserTest {
   }
 
   views::Widget* GetSidePanelResizeWidget() {
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+    NOTREACHED() << "No resize widget in v2";
+#else
     return GetSidePanel()->resize_widget_->GetWidget();
+#endif
   }
 
   raw_ptr<SidebarItemsContentsView> GetSidebarItemsContentsView(
@@ -2022,5 +2027,46 @@ INSTANTIATE_TEST_SUITE_P(
     [](const testing::TestParamInfo<bool>& info) {
       return info.param ? "V2" : "V1";
     });
+
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+// In V2 the upstream side panel is a direct child of browser_view, positioned
+// by CalculateSideBarLayout.  Verify that when the panel is open it sits
+// between the contents container and the sidebar control, NOT outside it.
+// Covers both the default right-side and the explicitly set left-side layouts.
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2PanelPositionTest) {
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* panel = browser_view->contents_height_side_panel();
+  panel->DisableAnimationsForTesting();
+  SidebarContainerView* sidebar = GetSidebarContainerView();
+  auto* prefs = browser()->profile()->GetPrefs();
+
+  browser()->GetFeatures().side_panel_ui()->Toggle();
+  RunScheduledLayouts();
+
+  ASSERT_TRUE(panel->GetVisible());
+  ASSERT_TRUE(sidebar->IsSidebarVisible());
+
+  // --- Sidebar on right (default LTR: kSidePanelHorizontalAlignment = true)
+  ASSERT_FALSE(sidebar->sidebar_on_left());
+
+  // Panel sits immediately left of the sidebar control:
+  //   [contents] [panel] [sidebar_control]
+  EXPECT_EQ(panel->bounds().right(), sidebar->bounds().x())
+      << "panel=" << panel->bounds().ToString()
+      << " sidebar=" << sidebar->bounds().ToString();
+
+  // --- Sidebar on left (kSidePanelHorizontalAlignment = false)
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
+  RunScheduledLayouts();
+
+  ASSERT_TRUE(sidebar->sidebar_on_left());
+
+  // Panel sits immediately right of the sidebar control:
+  //   [sidebar_control] [panel] [contents]
+  EXPECT_EQ(sidebar->bounds().right(), panel->bounds().x())
+      << "sidebar=" << sidebar->bounds().ToString()
+      << " panel=" << panel->bounds().ToString();
+}
+#endif  // BUILDFLAG(ENABLE_SIDEBAR_V2)
 
 }  // namespace sidebar
