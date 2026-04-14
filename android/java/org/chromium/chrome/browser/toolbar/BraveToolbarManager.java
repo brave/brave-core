@@ -24,6 +24,8 @@ import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.base.supplier.SettableNonNullObservableSupplier;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.cc.input.BrowserControlsState;
 import org.chromium.chrome.R;
@@ -322,7 +324,15 @@ public class BraveToolbarManager extends ToolbarManager
                 return;
             }
         }
-        initBraveBottomControls();
+        // Defer bottom controls inflation to avoid ANR from GPU contention
+        // during startup. All consumers null-check the coordinator supplier.
+        // The bottom toolbar starts with visibility="gone", so the one-frame
+        // delay is imperceptible to the user. Using makeCancelable ensures
+        // the task is auto-cancelled when mCallbackController.destroy() is
+        // called during Activity teardown, preventing use-after-destroy.
+        PostTask.postTask(
+                TaskTraits.UI_DEFAULT,
+                mCallbackController.makeCancelable(this::initBraveBottomControls));
     }
 
     private void initBraveBottomControls() {
