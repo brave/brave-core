@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/search_engine/test/search_engine_results_page_test_constants.h"
 
 #include "base/no_destructor.h"
 #include "url/gurl.h"

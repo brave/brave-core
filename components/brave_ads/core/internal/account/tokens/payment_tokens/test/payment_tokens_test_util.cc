@@ -11,7 +11,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens.h"
-#include "brave/components/brave_ads/core/internal/account/transactions/transaction_test_constants.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/test/transaction_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
