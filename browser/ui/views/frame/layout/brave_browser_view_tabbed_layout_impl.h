@@ -9,10 +9,7 @@
 #include <memory>
 
 #include "chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.h"
-
-namespace gfx {
-class Rect;
-}  // namespace gfx
+#include "ui/gfx/geometry/rect.h"
 
 // Provides a specialized layout implementation for Brave tabbed browsers
 // using the new layout architecture (BrowserViewTabbedLayoutImpl).

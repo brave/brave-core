@@ -26,7 +26,6 @@
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h"
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
-#include "ui/gfx/geometry/rect.h"
 #include "ui/views/border.h"
 #include "ui/views/view_class_properties.h"
 
