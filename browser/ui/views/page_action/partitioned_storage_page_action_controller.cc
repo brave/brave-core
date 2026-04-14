@@ -201,11 +201,16 @@ void PartitionedStoragePageActionController::OnPartitionedStorageMenuClosed() {
   action_item_for_menu_ = nullptr;
 
   auto* bwi = tab_->GetBrowserWindowInterface();
-  auto* browser_view = BrowserView::GetBrowserViewForBrowser(bwi);
-  auto* anchor_view =
-      browser_view->toolbar_button_provider()->GetPageActionView(
-          kActionShowPartitionedStorage);
-  CHECK_DEREF(anchor_view).SetHighlighted(false);
+  if (bwi) {
+    // In case of the tab is detached from the browser, the browser window might
+    // be null.
+    auto* browser_view = BrowserView::GetBrowserViewForBrowser(bwi);
+    CHECK(browser_view);
+    auto* anchor_view =
+        browser_view->toolbar_button_provider()->GetPageActionView(
+            kActionShowPartitionedStorage);
+    CHECK_DEREF(anchor_view).SetHighlighted(false);
+  }
 
   menu_runner_.reset();
   menu_model_adapter_.reset();
