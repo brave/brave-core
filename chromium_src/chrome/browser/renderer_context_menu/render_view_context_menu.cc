@@ -711,14 +711,6 @@ void RenderViewContextMenu::AppendDeveloperItems() {
                                       IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENTS);
     }
   }
-  if (email_aliases::features::IsEmailAliasesEnabled()) {
-    if (auto* email_aliases = GetEmailAliasesController(GetBrowser());
-        email_aliases && email_aliases->IsAvailableFor(params_)) {
-      menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
-      menu_model_.AddItemWithStringId(IDC_NEW_EMAIL_ALIAS,
-                                      IDS_IDC_NEW_EMAIL_ALIAS);
-    }
-  }
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -848,11 +840,50 @@ void RenderViewContextMenu::InitMenu() {
 #if BUILDFLAG(ENABLE_CONTAINERS)
   BuildContainersMenu();
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+  BuildEmailAliasesMenu();
 }
 
 void RenderViewContextMenu::NotifyMenuShown() {
   auto* cb = BraveGetMenuShownCallback();
   if (!cb->is_null()) {
     std::move(*cb).Run(this);
+  }
+}
+
+void RenderViewContextMenu::BuildEmailAliasesMenu() {
+  if (!email_aliases::features::IsEmailAliasesEnabled()) {
+    return;
+  }
+  auto* email_aliases = GetEmailAliasesController(GetBrowser());
+  if (!email_aliases || !email_aliases->IsAvailableFor(params_)) {
+    return;
+  }
+
+  const auto autofill_anchor = [&]() -> std::optional<int> {
+    constexpr int kAutofillAnchors[] = {
+        IDC_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_SELECT_PASSWORD,
+        IDC_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_SUGGEST_PASSWORD,
+        IDC_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_IMPORT_PASSWORDS,
+        IDC_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_USE_PASSKEY_FROM_ANOTHER_DEVICE};
+
+    for (const auto anchor : kAutofillAnchors) {
+      if (const auto index = menu_model_.GetIndexOfCommandId(anchor);
+          index.has_value()) {
+        return index;
+      }
+    }
+
+    return std::nullopt;
+  }();
+
+  if (autofill_anchor.has_value()) {
+    menu_model_.InsertItemWithStringIdAt(autofill_anchor.value() + 1,
+                                         IDC_NEW_EMAIL_ALIAS,
+                                         IDS_IDC_NEW_EMAIL_ALIAS);
+  } else {
+    menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
+    menu_model_.AddItemWithStringId(IDC_NEW_EMAIL_ALIAS,
+                                    IDS_IDC_NEW_EMAIL_ALIAS);
   }
 }
