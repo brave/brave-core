@@ -5,18 +5,24 @@
 
 #include "brave/browser/brave_origin/brave_origin_navigation.h"
 
+#include "brave/browser/skus/skus_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/chrome_pages.h"
 
 namespace brave_origin {
 
-BraveOriginNavigationDelegate::BraveOriginNavigationDelegate(Profile* profile)
+BraveOriginNavigationDelegate::BraveOriginNavigationDelegate(Profile& profile)
     : profile_(profile) {}
 
 BraveOriginNavigationDelegate::~BraveOriginNavigationDelegate() = default;
 
 void BraveOriginNavigationDelegate::OpenOriginSettings() {
-  chrome::ShowSettingsSubPageForProfile(profile_, "origin");
+  chrome::ShowSettingsSubPageForProfile(&*profile_, "origin");
+}
+
+mojo::PendingRemote<skus::mojom::SkusService>
+BraveOriginNavigationDelegate::GetSkusService() {
+  return skus::SkusServiceFactory::GetForContext(&*profile_);
 }
 
 }  // namespace brave_origin

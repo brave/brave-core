@@ -8,6 +8,7 @@ source_set("brave_origin") {
 
   deps = [
     "//brave/browser/brave_origin",
+    "//brave/browser/skus",
     "//chrome/browser/profiles",
   ]
 

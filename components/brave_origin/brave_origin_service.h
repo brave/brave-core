@@ -36,9 +36,6 @@ namespace brave_origin {
 // integration with Chromium's policy framework.
 class BraveOriginService : public KeyedService {
  public:
-  using SkusServiceGetter =
-      base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>;
-
   // Delegate for browser-layer actions the service cannot perform directly.
   class Delegate {
    public:
@@ -46,6 +43,8 @@ class BraveOriginService : public KeyedService {
     // Called once when a purchase is first detected, after credentials
     // have been verified.
     virtual void OpenOriginSettings() = 0;
+    // Returns a pending remote for the SKU service.
+    virtual mojo::PendingRemote<skus::mojom::SkusService> GetSkusService() = 0;
   };
 
   BraveOriginService(PrefService* local_state,
@@ -53,7 +52,6 @@ class BraveOriginService : public KeyedService {
                      std::string_view profile_id,
                      policy::PolicyService* profile_policy_service,
                      policy::PolicyService* browser_policy_service,
-                     SkusServiceGetter skus_service_getter,
                      std::unique_ptr<Delegate> delegate);
   ~BraveOriginService() override;
 
@@ -98,7 +96,6 @@ class BraveOriginService : public KeyedService {
   void OnSkusStateChanged();
   bool EnsureSkusConnected();
 
-  SkusServiceGetter skus_service_getter_;
   mojo::Remote<skus::mojom::SkusService> skus_service_;
   std::string origin_sku_domain_;
 
@@ -110,6 +107,9 @@ class BraveOriginService : public KeyedService {
   // settings changes that require a restart.
   base::flat_map<std::string, bool> startup_browser_policies_;
   base::flat_map<std::string, bool> startup_profile_policies_;
+
+  // Whether OpenOriginSettings() has already been called this session.
+  bool did_open_origin_settings_ = false;
 
   // Browser-layer delegate for actions like opening the settings page.
   std::unique_ptr<Delegate> delegate_;

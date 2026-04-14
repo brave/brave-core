@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_ORIGIN_BRAVE_ORIGIN_NAVIGATION_H_
 #define BRAVE_BROWSER_BRAVE_ORIGIN_BRAVE_ORIGIN_NAVIGATION_H_
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_origin/brave_origin_service.h"
 
 class Profile;
@@ -17,13 +17,14 @@ namespace brave_origin {
 // Constructed with the Profile so it can locate the browser window.
 class BraveOriginNavigationDelegate : public BraveOriginService::Delegate {
  public:
-  explicit BraveOriginNavigationDelegate(Profile* profile);
+  explicit BraveOriginNavigationDelegate(Profile& profile);
   ~BraveOriginNavigationDelegate() override;
 
   void OpenOriginSettings() override;
+  mojo::PendingRemote<skus::mojom::SkusService> GetSkusService() override;
 
  private:
-  raw_ptr<Profile> profile_;
+  const raw_ref<Profile> profile_;
 };
 
 }  // namespace brave_origin

@@ -17,6 +17,8 @@ if (enable_ai_chat) {
       [ "//brave/browser/ui/webui/ai_chat" ]
 }
 if (!is_android) {
+  # TODO(bbondy): Remove this circular dependency when
+  # chrome/browser/ui/chrome_pages.h gets componentized.
   brave_ui_allow_circular_includes_from += [ "//brave/browser/ui/brave_origin" ]
   brave_ui_allow_circular_includes_from += [
     "//brave/browser/ui/browser_window/internal",

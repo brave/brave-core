@@ -54,14 +54,12 @@ BraveOriginService::BraveOriginService(
     std::string_view profile_id,
     policy::PolicyService* profile_policy_service,
     policy::PolicyService* browser_policy_service,
-    SkusServiceGetter skus_service_getter,
     std::unique_ptr<Delegate> delegate)
     : local_state_(local_state),
       profile_prefs_(profile_prefs),
       profile_id_(profile_id),
       profile_policy_service_(profile_policy_service),
       browser_policy_service_(browser_policy_service),
-      skus_service_getter_(std::move(skus_service_getter)),
       // STAGING for unofficial builds; official builds always resolve to prod.
       origin_sku_domain_(brave_domains::GetServicesDomain(
           kOriginSkuHostnamePart,
@@ -254,9 +252,10 @@ void BraveOriginService::OnCredentialSummary(
 
   // On first purchase detection, open the settings page so the user
   // can configure Origin policies.
-  if (purchased && !was_previously_purchased && delegate_) {
+  if (purchased && !was_previously_purchased && delegate_ &&
+      !did_open_origin_settings_) {
     delegate_->OpenOriginSettings();
-    delegate_.reset();
+    did_open_origin_settings_ = true;
   }
 
   std::move(callback).Run(purchased);
@@ -264,10 +263,10 @@ void BraveOriginService::OnCredentialSummary(
 
 bool BraveOriginService::EnsureSkusConnected() {
   if (!skus_service_) {
-    if (!skus_service_getter_) {
+    if (!delegate_) {
       return false;
     }
-    auto pending = skus_service_getter_.Run();
+    auto pending = delegate_->GetSkusService();
     if (pending.is_valid()) {
       skus_service_.Bind(std::move(pending));
       skus_service_.reset_on_disconnect();
