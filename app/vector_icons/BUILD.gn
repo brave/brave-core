@@ -36,7 +36,8 @@ aggregate_vector_icons("brave_vector_icons") {
       "sidebar_trash.icon",
       "vertical_tab_strip_toggle_collapsed.icon",
     ]
-    sources += rebase_path([ "leo_window_tabs_vertical_expanded.icon" ], ".",
+    sources += rebase_path([ "leo_window_tabs_vertical_expanded.icon" ],
+                           ".",
                            "//brave/node_modules/@brave/leo/icons-skia")
   }
 
