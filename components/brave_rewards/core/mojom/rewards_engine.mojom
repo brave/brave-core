@@ -8,6 +8,7 @@ import "brave/components/brave_rewards/core/mojom/rewards.mojom";
 import "brave/components/brave_rewards/core/mojom/rewards_database.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
+import "url/mojom/url.mojom";
 
 struct RewardsEngineOptions {
   Environment environment = Environment.kProduction;
@@ -15,6 +16,7 @@ struct RewardsEngineOptions {
   int32 reconcile_interval = 0;
   int32 retry_interval = 0;
   int32 check_linkage_interval = 0;
+  url.mojom.Url? gate3_url;
 };
 
 interface RewardsEngine {

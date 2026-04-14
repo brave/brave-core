@@ -23,8 +23,17 @@ source_set("brave_domains") {
   }
 }
 
-source_set("constants") {
-  sources = [ "constants.h" ]
+source_set("urls") {
+  sources = [
+    "urls.cc",
+    "urls.h",
+  ]
+
+  deps = [
+    ":brave_domains",
+    "//base",
+    "//url",
+  ]
 }
 
 buildflag_header("buildflags") {
@@ -42,13 +51,19 @@ buildflag_header("buildflags") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "service_domains_unittest.cc" ]
+  sources = [
+    "service_domains_unittest.cc",
+    "urls_unittest.cc",
+  ]
 
   deps = [
     ":brave_domains",
     ":buildflags",
+    ":urls",
     "//base",
+    "//base/test:test_support",
     "//testing/gmock",
     "//testing/gtest",
+    "//url",
   ]
 }

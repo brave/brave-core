@@ -17,7 +17,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "brave/brave_domains/constants.h"
+#include "brave/brave_domains/urls.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -126,6 +126,7 @@ void MaybeLoadRewardsURL(const GURL& redirect_url, WebContents* web_contents) {
   // added in the meantime to fix the build error. Remove this attribute and
   // provide a proper fix.
   [[clang::no_destroy]] static const auto kAllowedReferrerUrls{[] {
+    const GURL gate3_url = brave_domains::GetGate3URL();
     std::map<std::string, std::vector<GURL>> allowed_urls{
         {"bitflyer",
          {GURL(BUILDFLAG(BITFLYER_PRODUCTION_URL)),
@@ -134,19 +135,19 @@ void MaybeLoadRewardsURL(const GURL& redirect_url, WebContents* web_contents) {
          {
              GURL(BUILDFLAG(GEMINI_PRODUCTION_OAUTH_URL)),
              GURL(BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL)),
-             GURL(brave_domains::kGate3URL),
+             gate3_url,
          }},
         {"uphold",
          {
              GURL(BUILDFLAG(UPHOLD_PRODUCTION_OAUTH_URL)),
              GURL(BUILDFLAG(UPHOLD_SANDBOX_OAUTH_URL)),
-             GURL(brave_domains::kGate3URL),
+             gate3_url,
          }},
         {"zebpay",
          {
              GURL(BUILDFLAG(ZEBPAY_PRODUCTION_OAUTH_URL)),
              GURL(BUILDFLAG(ZEBPAY_SANDBOX_OAUTH_URL)),
-             GURL(brave_domains::kGate3URL),
+             gate3_url,
          }}};
 
     for (const auto& [wallet_provider, urls] : allowed_urls) {

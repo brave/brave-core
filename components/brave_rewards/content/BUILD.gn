@@ -34,7 +34,7 @@ static_library("content") {
 
   deps = [
     "//base",
-    "//brave/brave_domains:constants",
+    "//brave/brave_domains:urls",
     "//brave/components/api_request_helper",
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_rewards/core",
