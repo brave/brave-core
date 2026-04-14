@@ -41,8 +41,7 @@ class Account final : public AdsClientNotifierObserver,
 
   bool IsUserRewardsSupported() const { return !!user_rewards_; }
 
-  void SetWallet(const std::string& payment_id,
-                 const std::string& recovery_seed_base64);
+  void SetWallet(std::optional<WalletInfo> wallet);
 
   void GetStatement(GetStatementOfAccountsCallback callback);
 
@@ -83,8 +82,6 @@ class Account final : public AdsClientNotifierObserver,
   void Initialize();
 
   void InitializeConfirmations();
-
-  bool HasWallet() const { return !!wallet_; }
 
   void MaybeInitializeUserRewards();
 
